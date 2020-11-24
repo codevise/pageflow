@@ -1,4 +1,8 @@
-import {frontend, ThirdPartyConsent} from 'pageflow-scrolled/frontend';
+import {
+  frontend,
+  ThirdPartyOptIn,
+  ThirdPartyOptOutInfo
+} from 'pageflow-scrolled/frontend';
 
 import React, {useState} from 'react';
 import {cookies} from 'pageflow/frontend';
@@ -8,7 +12,7 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 import {fireEvent, within} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
-describe('ThirdPartyConsent', () => {
+describe('Third party consent', () => {
   beforeEach(() => cookies.removeItem('optIn'));
 
   useFakeTranslations({
@@ -24,9 +28,9 @@ describe('ThirdPartyConsent', () => {
         component: function Component() {
           return (
             <div data-testid="test-content-element">
-              <ThirdPartyConsent providerName="someService">
+              <ThirdPartyOptIn providerName="someService">
                 <div>Data from SomeService</div>
-              </ThirdPartyConsent>
+              </ThirdPartyOptIn>
             </div>
           );
         }
@@ -115,9 +119,9 @@ describe('ThirdPartyConsent', () => {
         component: function Component({configuration}) {
           return (
             <div data-testid={configuration.testId}>
-              <ThirdPartyConsent providerName="someService">
+              <ThirdPartyOptIn providerName="someService">
                 {(consentedHere) => <div>{consentedHere ? 'Consented here' : 'Consented elsewhere'}</div>}
-              </ThirdPartyConsent>
+              </ThirdPartyOptIn>
             </div>
           );
         }
@@ -149,9 +153,11 @@ describe('ThirdPartyConsent', () => {
         component: function Component() {
           return (
             <div data-testid="test-content-element">
-              <ThirdPartyConsent providerName="someService">
-                <div>Data from SomeService</div>
-              </ThirdPartyConsent>
+              <ThirdPartyOptIn providerName="someService">
+                <ThirdPartyOptOutInfo providerName="someService">
+                  <div>Data from SomeService</div>
+                </ThirdPartyOptOutInfo>
+              </ThirdPartyOptIn>
             </div>
           );
         }
@@ -199,12 +205,14 @@ describe('ThirdPartyConsent', () => {
 
           return (
             <div data-testid="test-content-element">
-              <ThirdPartyConsent providerName="someService" hideTooltip={hideOptOutInfo}>
-                <div>Data from SomeService</div>
-                <button onClick={() => setHideOptOutInfo(!hideOptOutInfo)}>
-                  Toggle
-                </button>
-              </ThirdPartyConsent>
+              <ThirdPartyOptIn providerName="someService">
+                <ThirdPartyOptOutInfo providerName="someService" hide={hideOptOutInfo}>
+                  <div>Data from SomeService</div>
+                  <button onClick={() => setHideOptOutInfo(!hideOptOutInfo)}>
+                    Toggle
+                  </button>
+                </ThirdPartyOptOutInfo>
+              </ThirdPartyOptIn>
             </div>
           );
         }
@@ -237,9 +245,9 @@ describe('ThirdPartyConsent', () => {
         component: function Component() {
           return (
             <div data-testid="test-content-element">
-              <ThirdPartyConsent providerName="someService">
+              <ThirdPartyOptIn providerName="someService">
                 <div>Data from SomeService</div>
-              </ThirdPartyConsent>
+              </ThirdPartyOptIn>
             </div>
           );
         }

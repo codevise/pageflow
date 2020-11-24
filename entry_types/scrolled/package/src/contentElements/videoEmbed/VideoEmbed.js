@@ -4,7 +4,8 @@ import styles from './VideoEmbed.module.css';
 
 import {
   Figure,
-  ThirdPartyConsent,
+  ThirdPartyOptIn,
+  ThirdPartyOptOutInfo,
   ViewportDependentPillarBoxes,
   useContentElementLifecycle,
   useContentElementEditorState,
@@ -21,25 +22,30 @@ const aspectRatios = {
 export function VideoEmbed({contentElementId, configuration}) {
   const {isEditable, isSelected} = useContentElementEditorState();
   const {shouldLoad} = useContentElementLifecycle();
+  const [playerState, setPlayerState] = useState('unplayed');
 
   return (
     <div className={styles.VideoEmbed}
          style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <Figure caption={configuration.caption}>
-        <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
-                                      position={configuration.position}
-                                      opaque={!!configuration.caption}>
-          {shouldLoad && <PreparedPlayer contentElementId={contentElementId}
-                                         configuration={configuration} />}
-        </ViewportDependentPillarBoxes>
+        <ThirdPartyOptOutInfo providerName="video"
+                              hide={playerState === 'playing'}
+                              placement="bottom-25">
+          <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
+                                        position={configuration.position}
+                                        opaque={!!configuration.caption}>
+            {shouldLoad && <PreparedPlayer playerState={playerState}
+                                           setPlayerState={setPlayerState}
+                                           contentElementId={contentElementId}
+                                           configuration={configuration} />}
+          </ViewportDependentPillarBoxes>
+        </ThirdPartyOptOutInfo>
       </Figure>
     </div>
   );
 }
 
-function PreparedPlayer({contentElementId, configuration}) {
-  const [playerState, setPlayerState] = useState('unplayed');
-
+function PreparedPlayer({contentElementId, configuration, playerState, setPlayerState}) {
   useAudioFocus({
     key: contentElementId,
     request: playerState === 'playing',
@@ -56,9 +62,7 @@ function PreparedPlayer({contentElementId, configuration}) {
   }
 
   return (
-    <ThirdPartyConsent providerName='video'
-                       hideTooltip={playerState === 'playing'}
-                       optOutPlacement='bottom-25'>
+    <ThirdPartyOptIn providerName="video">
       {(consentedHere) => (
         <ReactPlayer className={styles.embedPlayer}
                      key={keyFromConfiguration(configuration)}
@@ -84,6 +88,6 @@ function PreparedPlayer({contentElementId, configuration}) {
                        }
                      }} />
       )}
-    </ThirdPartyConsent>
+    </ThirdPartyOptIn>
   );
 }
