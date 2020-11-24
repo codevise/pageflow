@@ -10,12 +10,29 @@
   box-sizing: border-box;
 }
 
-.optInIcon {
+.optInIcon svg {
   fill: currentColor;
+  height: 90px;
 }
 
 .optInMessage {
   margin: 1em 0 1.5em 0;
+}
+
+@media (max-width: 600px) {
+  .optInIcon svg {
+    height: 50px;
+  }
+
+  .optInMessage {
+    margin: 0.5em 0 1em 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .optInIcon {
+    display: none
+  }
 }
 
 .optInButton {
