@@ -169,7 +169,7 @@ describe('Third party consent', () => {
           themeOptions: {
             thirdPartyConsent: {
               cookieName: 'optIn',
-              optOutLink: 'https://example.com/privacy'
+              optOutUrl: 'https://example.com/privacy'
             }
           },
           contentElements: [{typeName: 'test'}]
@@ -189,7 +189,7 @@ describe('Third party consent', () => {
           themeOptions: {
             thirdPartyConsent: {
               cookieName: 'optIn',
-              optOutLink: 'https://example.com/privacy'
+              optOutUrl: 'https://example.com/privacy'
             }
           },
           contentElements: [{typeName: 'test'}]
@@ -227,7 +227,7 @@ describe('Third party consent', () => {
           themeOptions: {
             thirdPartyConsent: {
               cookieName: 'optIn',
-              optOutLink: 'https://example.com/privacy'
+              optOutUrl: 'https://example.com/privacy'
             }
           },
           contentElements: [{typeName: 'test'}]
