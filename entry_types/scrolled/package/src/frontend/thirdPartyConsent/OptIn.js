@@ -19,6 +19,7 @@ export function OptIn({children, providerName}) {
   const {consents, giveConsent} = useContext(ThirdPartyConsentContext);
 
   if (!theme.options.privacyCookieName ||
+      !consents ||
       consents[providerName] ||
       isEditable ||
       isStaticPreview) {
