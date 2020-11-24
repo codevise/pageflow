@@ -12,6 +12,8 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/spec/support/fakeBrowserFeatures.js'],
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],
 
+  testURL: 'https://story.example.com',
+
   moduleNameMapper: {
     "^pageflow-scrolled/([^/]*)$": "<rootDir>/src/$1",
 

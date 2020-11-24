@@ -14,6 +14,7 @@ import '@testing-library/jest-dom/extend-expect'
 
 describe('Third party consent', () => {
   beforeEach(() => cookies.removeItem('optIn'));
+  beforeEach(() => jest.restoreAllMocks());
 
   useFakeTranslations({
     'pageflow_scrolled.public.third_party_consent.opt_in_prompt.someService': 'Enable SomeService?',
@@ -113,6 +114,8 @@ describe('Third party consent', () => {
     });
 
     it('uses cookie domain from theme option when setting cookie', () => {
+      // location.hostname is set to story.example.com via testURL in jest.config.js
+
       const {getByTestId} = renderEntry({
         seed: {
           themeOptions: {
@@ -129,6 +132,28 @@ describe('Third party consent', () => {
       fireEvent.click(getByText('Confirm'));
 
       expect(cookies.setItem).toHaveBeenCalledWith('optIn', expect.anything(), null, 'example.com');
+    });
+
+    it('does not set cookie if cookie domain does not match but still enabled embed', () => {
+      // location.hostname is set to story.example.com via testURL in jest.config.js
+
+      const {getByTestId} = renderEntry({
+        seed: {
+          themeOptions: {
+            thirdPartyConsent: {
+              cookieName: 'optIn',
+              cookieDomain: 'other.com'
+            }},
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      jest.spyOn(cookies, 'setItem');
+      const {getByText} = within(getByTestId('test-content-element'));
+      fireEvent.click(getByText('Confirm'));
+
+      expect(getByTestId('test-content-element')).toHaveTextContent('Data from SomeService');
+      expect(cookies.setItem).not.toHaveBeenCalled();
     });
   });
 
