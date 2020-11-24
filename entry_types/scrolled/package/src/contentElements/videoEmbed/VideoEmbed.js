@@ -70,7 +70,7 @@ function PreparedPlayer({contentElementId, configuration, playerState, setPlayer
                      onPlay={() => setPlayerState('playing')}
                      onPause={() => setPlayerState('paused')}
                      onEnded={() => setPlayerState('paused')}
-                     light={!consentedHere}
+                     light={!consentedHere && playerState === 'unplayed'}
                      width='100%'
                      height='100%'
                      controls={!configuration.hideControls}
