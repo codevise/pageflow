@@ -7,14 +7,17 @@ export const ThirdPartyConsentContext = createContext();
 export function ThirdPartyConsentProvider({children}) {
   const theme = useTheme();
 
-  const cookieName = theme.options.privacyCookieName || 'privacyOptIn';
-  const providerNameMapping = useMemo(() => theme.options.privacyCookieProviderNameMapping || {},
-                                      [theme]);
+  const cookieName = theme.options.thirdPartyConsent?.cookieName;
+  const providerNameMapping = useMemo(() => {
+    return theme.options.thirdPartyConsent?.cookieProviderNameMapping || {}
+  }, [theme])
 
   const [consents, setConsents] = useState(null);
 
   useEffect(() => {
-    setConsents(getConsentsFromCookie(cookieName, providerNameMapping));
+    if (cookieName) {
+      setConsents(getConsentsFromCookie(cookieName, providerNameMapping));
+    }
   }, [cookieName, providerNameMapping]);
 
   const giveConsent = useCallback(provider => {

@@ -19,7 +19,7 @@ export function OptOutInfo({
   const {isEditable} = useContentElementEditorState();
   const {consents} = useContext(ThirdPartyConsentContext);
   const theme = useTheme();
-  const optOutLink = theme.options.privacyOptOutLink;
+  const optOutLink = theme.options.thirdPartyConsent?.optOutLink;
 
   if (!consents ||
       !consents[providerName] ||

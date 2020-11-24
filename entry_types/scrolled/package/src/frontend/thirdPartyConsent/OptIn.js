@@ -1,7 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {ThirdPartyConsentContext} from './ThirdPartyConsentProvider';
 import {useIsStaticPreview} from '../useScrollPositionLifecycle';
-import {useTheme} from '../../entryState';
 import {useI18n} from '../i18n';
 import {useContentElementEditorState} from 'pageflow-scrolled/frontend';
 
@@ -12,14 +11,12 @@ export function OptIn({children, providerName}) {
   const {t} = useI18n();
   const cookieMessage =
     t(`pageflow_scrolled.public.third_party_consent.opt_in_prompt.${providerName}`);
-  const theme = useTheme();
   const {isEditable} = useContentElementEditorState();
   const isStaticPreview = useIsStaticPreview();
   const [consentedHere, setConsentedHere] = useState(false);
   const {consents, giveConsent} = useContext(ThirdPartyConsentContext);
 
-  if (!theme.options.privacyCookieName ||
-      !consents ||
+  if (!consents ||
       consents[providerName] ||
       isEditable ||
       isStaticPreview) {
