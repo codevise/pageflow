@@ -111,6 +111,25 @@ describe('Third party consent', () => {
 
       expect(JSON.parse(cookies.getItem('optIn'))).toMatchObject({'someService': true});
     });
+
+    it('uses cookie domain from theme option when setting cookie', () => {
+      const {getByTestId} = renderEntry({
+        seed: {
+          themeOptions: {
+            thirdPartyConsent: {
+              cookieName: 'optIn',
+              cookieDomain: 'example.com'
+            }},
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      jest.spyOn(cookies, 'setItem');
+      const {getByText} = within(getByTestId('test-content-element'));
+      fireEvent.click(getByText('Confirm'));
+
+      expect(cookies.setItem).toHaveBeenCalledWith('optIn', expect.anything(), null, 'example.com');
+    });
   });
 
   describe('opt in with render function', () => {

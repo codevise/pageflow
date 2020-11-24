@@ -37,6 +37,7 @@ third party embeds:
                                       # ...
                                       third_party_consent: {
                                         cookie_name: 'optIn',
+                                        cookie_domain: 'example.com', # optional
                                         opt_out_url: 'https://example.com/privacy'
                                       })
 
@@ -49,7 +50,9 @@ displayed:
 The `datawrapper` key is used for the chart content element. The
 `video` key controls whether YouTube and Vimeo videos shall be
 displayed. Clicking the consent button in a content element sets the
-respective key in the cookie.
+respective key in the cookie. If the entry is published under a
+sub-domain, but you want the cookie to be set for the parent domain,
+specifcy the `cookie_domain` option.
 
 If `opt_out_url` is set, an info icon linking to the given URL will
 be displayed next to embeds once the user has given consent. The opt
