@@ -38,6 +38,10 @@
   right: -5px;
 }
 
+.optOut.full {
+  right: 0;
+}
+
 .optOut.bottom-25 {
   bottom: 25%;
 }
