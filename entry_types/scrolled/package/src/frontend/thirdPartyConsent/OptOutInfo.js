@@ -5,6 +5,7 @@ import {ThirdPartyConsentContext} from './ThirdPartyConsentProvider';
 import {useTheme} from '../../entryState';
 import {useI18n} from '../i18n';
 import {useContentElementEditorState} from 'pageflow-scrolled/frontend';
+import {useIsStaticPreview} from '../useScrollPositionLifecycle';
 
 import styles from './OptOutInfo.module.css';
 import InfoIcon from '../icons/information.svg'
@@ -31,14 +32,14 @@ export function OptOutInfo({
 }) {
   const {t} = useI18n();
   const {isEditable} = useContentElementEditorState();
+  const isStaticPreview = useIsStaticPreview();
   const {consents} = useContext(ThirdPartyConsentContext);
   const theme = useTheme();
   const optOutLink = theme.options.thirdPartyConsent?.optOutLink;
 
   if (!consents ||
-      !consents[providerName] ||
       !optOutLink ||
-      isEditable) {
+      (!isEditable && !isStaticPreview && !consents[providerName])) {
     return null;
   }
 
