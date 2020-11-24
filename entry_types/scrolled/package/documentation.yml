@@ -18,6 +18,8 @@ toc:
       - Image
       - Figure
       - Text
+      - ThirdPartyOptIn
+      - ThirdPartyOptOutInfo
       - VideoPlayer
       - ViewportDependentPillarBoxes
   - name: Hooks
