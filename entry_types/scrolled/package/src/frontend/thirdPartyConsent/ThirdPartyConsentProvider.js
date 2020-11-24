@@ -23,7 +23,7 @@ export function ThirdPartyConsentProvider({children}) {
 
   const giveConsent = useCallback(provider => {
     enableProviderInCookie(provider, cookieName, cookieDomain, providerNameMapping);
-    setConsents(getConsentsFromCookie(cookieName, providerNameMapping));
+    setConsents(consents => ({...consents, [provider]: true}));
   }, [cookieName, cookieDomain, providerNameMapping]);
 
   const context = useMemo(() => ({
@@ -53,7 +53,9 @@ function getConsentsFromCookie(cookieName, providerNameMapping) {
 }
 
 function enableProviderInCookie(provider, cookieName, cookieDomain, providerNameMapping) {
-  const newCookieContent = getCookieContent(cookieName);
-  newCookieContent[providerNameMapping[provider] || provider] = true;
-  cookies.setItem(cookieName, JSON.stringify(newCookieContent), null, cookieDomain);
+  if (!cookieDomain || window.location.hostname.match(new RegExp(`${cookieDomain}$`))) {
+    const newCookieContent = getCookieContent(cookieName);
+    newCookieContent[providerNameMapping[provider] || provider] = true;
+    cookies.setItem(cookieName, JSON.stringify(newCookieContent), null, cookieDomain);
+  }
 }
