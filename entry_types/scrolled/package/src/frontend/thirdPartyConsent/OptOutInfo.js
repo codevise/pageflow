@@ -35,16 +35,16 @@ export function OptOutInfo({
   const isStaticPreview = useIsStaticPreview();
   const {consents} = useContext(ThirdPartyConsentContext);
   const theme = useTheme();
-  const optOutLink = theme.options.thirdPartyConsent?.optOutLink;
+  const optOutUrl = theme.options.thirdPartyConsent?.optOutUrl;
 
   if (!consents ||
-      !optOutLink ||
+      !optOutUrl ||
       (!isEditable && !isStaticPreview && !consents[providerName])) {
     return null;
   }
 
   const linkText = t('pageflow_scrolled.public.third_party_consent.opt_out.prompt_link');
-  const linkHtml = `<a href="${optOutLink}" target="_blank" rel="noopener">${linkText}</a>`;
+  const linkHtml = `<a href="${optOutUrl}" target="_blank" rel="noopener">${linkText}</a>`;
   const html = t('pageflow_scrolled.public.third_party_consent.opt_out.prompt', {link: linkHtml});
 
   return (
