@@ -30,7 +30,8 @@ export function VideoEmbed({contentElementId, configuration}) {
       <Figure caption={configuration.caption}>
         <ThirdPartyOptOutInfo providerName="video"
                               hide={playerState === 'playing'}
-                              placement="bottom-25">
+                              placement="bottom-25"
+                              contentElementPosition={configuration.position}>
           <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
                                         position={configuration.position}
                                         opaque={!!configuration.caption}>

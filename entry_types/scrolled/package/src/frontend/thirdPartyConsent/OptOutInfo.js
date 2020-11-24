@@ -13,7 +13,8 @@ export function OptOutInfo({
   children,
   providerName,
   hide,
-  placement = 'bottom'
+  placement = 'bottom',
+  contentElementPosition
 }) {
   const {t} = useI18n();
   const {isEditable} = useContentElementEditorState();
@@ -34,8 +35,8 @@ export function OptOutInfo({
   return (
     <>
       {children}
-      <div className={classNames(styles.optOut, styles[placement])}
-           style={{display: hide ? 'none' : undefined}}>
+    <div className={classNames(styles.optOut, styles[placement], styles[contentElementPosition])}
+         style={{display: hide ? 'none' : undefined}}>
         <span className={styles.tooltip}>
           <div dangerouslySetInnerHTML={{__html: html}} />
         </span>
