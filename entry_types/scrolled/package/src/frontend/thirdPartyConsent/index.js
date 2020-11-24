@@ -1,2 +1,3 @@
 export {ThirdPartyConsentProvider} from './ThirdPartyConsentProvider';
-export {ThirdPartyConsent} from './ThirdPartyConsent';
+export {OptIn} from './OptIn';
+export {OptOutInfo} from './OptOutInfo';

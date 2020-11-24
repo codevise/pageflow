@@ -1,7 +1,8 @@
 import React from 'react';
 
 import {
-  ThirdPartyConsent,
+  ThirdPartyOptIn,
+  ThirdPartyOptOutInfo,
   useContentElementLifecycle,
   useContentElementEditorState,
   useI18n,
@@ -34,12 +35,14 @@ export function DataWrapperChart({configuration}) {
                    color: textColorForBackgroundColor(backgroundColor),
                    height: height}}
            data-percy="hide">
-        <ThirdPartyConsent providerName='datawrapper'
-                           optOutPlacement='bottom'>
-          {shouldLoad && renderIframe(srcURL,
-                                      configuration.title ||
-                                      t('pageflow_scrolled.public.chart.default_title'))}
-        </ThirdPartyConsent>
+        <ThirdPartyOptIn providerName="datawrapper">
+          <ThirdPartyOptOutInfo providerName="datawrapper"
+                                placement='bottom'>
+            {shouldLoad && renderIframe(srcURL,
+                                        configuration.title ||
+                                        t('pageflow_scrolled.public.chart.default_title'))}
+          </ThirdPartyOptOutInfo>
+        </ThirdPartyOptIn>
       </div>
     </Figure>
   );
