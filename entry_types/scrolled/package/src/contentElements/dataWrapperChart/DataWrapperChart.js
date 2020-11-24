@@ -37,7 +37,6 @@ export function DataWrapperChart({configuration}) {
            data-percy="hide">
         <ThirdPartyOptIn providerName="datawrapper">
           <ThirdPartyOptOutInfo providerName="datawrapper"
-                                placement="bottom"
                                 contentElementPosition={configuration.position}>
             {shouldLoad && renderIframe(srcURL,
                                         configuration.title ||

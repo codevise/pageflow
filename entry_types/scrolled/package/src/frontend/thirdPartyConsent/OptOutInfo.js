@@ -13,7 +13,6 @@ export function OptOutInfo({
   children,
   providerName,
   hide,
-  placement = 'bottom',
   contentElementPosition
 }) {
   const {t} = useI18n();
@@ -35,14 +34,14 @@ export function OptOutInfo({
   return (
     <>
       {children}
-    <div className={classNames(styles.optOut, styles[placement], styles[contentElementPosition])}
-         style={{display: hide ? 'none' : undefined}}>
-        <span className={styles.tooltip}>
-          <div dangerouslySetInnerHTML={{__html: html}} />
-        </span>
+      <div className={classNames(styles.optOut, styles[contentElementPosition])}
+           style={hide ? {opacity: 0, visibility: 'hidden'} : undefined}>
         <button className={styles.icon}>
           <InfoIcon/>
         </button>
+        <div className={styles.tooltip}>
+          <div dangerouslySetInnerHTML={{__html: html}} />
+        </div>
       </div>
     </>
   );
