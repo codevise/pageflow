@@ -7,6 +7,19 @@ import {useContentElementEditorState} from 'pageflow-scrolled/frontend';
 import styles from './OptIn.module.css';
 import OptInIcon from '../icons/media.svg';
 
+/**
+ * Render opt in prompt instead of children if third party consent
+ * cookie has been configured in theme options and user has not given
+ * consent for passed provider.
+ *
+ * @param {Object} props
+ * @param {string} props.providerName -
+ *   Only render children if user has given consent for this provider.
+ * @param {React.ReactElement} props.children -
+ *   Children to conditionally render.
+ *
+ * @name ThirdPartyConsentOptIn
+ */
 export function OptIn({children, providerName}) {
   const {t} = useI18n();
   const cookieMessage =

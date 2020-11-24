@@ -9,6 +9,21 @@ import {useContentElementEditorState} from 'pageflow-scrolled/frontend';
 import styles from './OptOutInfo.module.css';
 import InfoIcon from '../icons/information.svg'
 
+/**
+ * Display info tooltip with a link to opt out of third party
+ * embeds. Opt out url needs to be configured in theme options.
+ *
+ * @param {Object} props
+ * @param {string} props.providerName -
+ *   Only display if user has given consent for this provider.
+ * @param {string} props.contentElementPosition -
+ *   Position setting of parent content element. Used to correctly place
+ *   tooltip when content element uses full width.
+ * @param {boolean} [hide] -
+ *   Temporarily hide the tooltip, e.g. while the embed is playing
+ *
+ * @name ThirdPartyOptOutInfo
+ */
 export function OptOutInfo({
   children,
   providerName,
