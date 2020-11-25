@@ -30,12 +30,16 @@ export const inputWithPlaceholderText = {
     }
   },
 
+  updateDisabled: function() {
+    this.updatePlaceholder();
+  },
+
   updatePlaceholder: function() {
     this.ui.input.attr('placeholder', this.placeholderText());
   },
 
   placeholderText: function() {
-    if (!this.options.disabled || !this.options.hidePlaceholderIfDisabled) {
+    if (!this.isDisabled() || !this.options.hidePlaceholderIfDisabled) {
       if (this.options.placeholder) {
         if (typeof this.options.placeholder == 'function') {
           return this.options.placeholder(this.model);
@@ -48,6 +52,8 @@ export const inputWithPlaceholderText = {
         return this.placeholderModelValue();
       }
     }
+
+    return '';
   },
 
   placeholderModelValue: function() {

@@ -31,6 +31,24 @@ describe('pageflow.TextInputView', () => {
     expect(input).toHaveAttr('placeholder', 'Default');
   });
 
+  it('supports hiding placeholder when disabled via binding', () => {
+    var model = new Backbone.Model({disabled: false});
+    var textInputView = new TextInputView({
+      model: model,
+      propertyName: 'name',
+      placeholder: 'Default',
+      hidePlaceholderIfDisabled: true,
+      disabledBinding: 'disabled'
+    });
+
+    textInputView.render();
+    var input = textInputView.$el.find('input');
+
+    expect(input).toHaveAttr('placeholder', 'Default');
+    model.set('disabled', true);
+    expect(input).toHaveAttr('placeholder', '');
+  });
+
   it('supports placeholder as function', () => {
     var model = new Backbone.Model({other: 'otherValue'});
     var textInputView = new TextInputView({

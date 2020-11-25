@@ -39,8 +39,12 @@ export const CheckBoxInputView = Marionette.ItemView.extend({
     this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
   },
 
+  updateDisabled: function() {
+    this.load();
+  },
+
   save: function() {
-    if (!this.options.disabled) {
+    if (!this.isDisabled()) {
       this.model.set(this.options.propertyName, this.ui.input.is(':checked'));
     }
   },
@@ -52,7 +56,7 @@ export const CheckBoxInputView = Marionette.ItemView.extend({
   },
 
   displayValue: function() {
-    if (this.options.disabled && this.options.displayUncheckedIfDisabled) {
+    if (this.isDisabled() && this.options.displayUncheckedIfDisabled) {
       return false;
     }
     else {

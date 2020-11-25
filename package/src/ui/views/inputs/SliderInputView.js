@@ -31,10 +31,21 @@ export const SliderInputView = Marionette.ItemView.extend({
     this.ui.widget.slider({
       animate: 'fast',
       min: 'minValue' in this.options ? this.options.minValue : 0,
-      max: 'maxValue' in this.options ? this.options.maxValue : 100,
+      max: 'maxValue' in this.options ? this.options.maxValue : 100
     });
 
     this.load();
+  },
+
+  updateDisabled: function(disabled) {
+    this.$el.toggleClass('disabled', !!disabled);
+
+    if (disabled) {
+      this.ui.widget.slider('disable');
+    }
+    else {
+      this.ui.widget.slider('enable');
+    }
   },
 
   save: function() {

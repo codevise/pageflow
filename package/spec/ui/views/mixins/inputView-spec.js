@@ -13,7 +13,7 @@ describe('pageflow.inputView', () => {
         'constructs fallback key from fallback prefix, model i18nKey and propertyName',
         () => {
           var view = createInputView({
-            model: {i18nKey: 'page'},
+            model: createModel({}, {i18nKey: 'page'}),
             propertyName: 'title'
           });
 
@@ -33,7 +33,7 @@ describe('pageflow.inputView', () => {
               'pageflow.rainbows.page_attributes',
               'pageflow.common_page_attributes'
             ],
-            model: {i18nKey: 'page'},
+            model: createModel({}, {i18nKey: 'page'}),
             propertyName: 'title'
           });
 
@@ -72,7 +72,7 @@ describe('pageflow.inputView', () => {
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
             ],
-            model: {i18nKey: 'page'},
+            model: createModel({}, {i18nKey: 'page'}),
             propertyName: 'title'
           });
 
@@ -92,7 +92,7 @@ describe('pageflow.inputView', () => {
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
             ],
-            model: {i18nKey: 'page'},
+            model: createModel({}, {i18nKey: 'page'}),
             propertyName: 'title'
           });
 
@@ -110,7 +110,7 @@ describe('pageflow.inputView', () => {
 
       it('uses active record attribute translation', () => {
         var view = createInputView({
-          model: {i18nKey: 'page'},
+          model: createModel({}, {i18nKey: 'page'}),
           propertyName: 'title'
         });
 
@@ -135,7 +135,7 @@ describe('pageflow.inputView', () => {
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
             ],
-            model: {i18nKey: 'page'},
+            model: createModel({}, {i18nKey: 'page'}),
             propertyName: 'title'
           });
 
@@ -151,7 +151,7 @@ describe('pageflow.inputView', () => {
               attributeTranslationKeyPrefixes: [
                 'pageflow.rainbows.page_attributes'
               ],
-              model: {i18nKey: 'page'},
+              model: createModel({}, {i18nKey: 'page'}),
               propertyName: 'title',
               disabled: true
             });
@@ -167,7 +167,7 @@ describe('pageflow.inputView', () => {
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
             ],
-            model: {i18nKey: 'page'},
+            model: createModel({}, {i18nKey: 'page'}),
             propertyName: 'title',
             additionalInlineHelpText: 'Extra'
           });
@@ -176,6 +176,29 @@ describe('pageflow.inputView', () => {
 
           expect(result).toBe('Rainbow Help Extra');
         });
+
+        it(
+          'is updated in DOM when attribute bound to disabled option changes',
+          () => {
+            var model = new Backbone.Model({enabled: true});
+            model.i18nKey = 'page';
+            var view = createInputView({
+              attributeTranslationKeyPrefixes: [
+                'pageflow.rainbows.page_attributes'
+              ],
+              model,
+              propertyName: 'title',
+              disabledBinding: 'enabled',
+              disabled: enabled => !enabled
+            });
+
+            view.render();
+
+            expect(view.ui.inlineHelp.text()).toBe('Rainbow Help');
+            view.model.set('enabled', false);
+            expect(view.ui.inlineHelp.text()).toBe('Rainbow Help Disabled');
+          }
+        );
       });
 
       describe('with multiple prefixed attribute translations', () => {
@@ -194,7 +217,7 @@ describe('pageflow.inputView', () => {
                 'pageflow.rainbows.page_attributes',
                 'pageflow.common_page_attributes'
               ],
-              model: {i18nKey: 'page'},
+              model: createModel({}, {i18nKey: 'page'}),
               propertyName: 'title',
               disabled: true
             });
@@ -218,7 +241,7 @@ describe('pageflow.inputView', () => {
               attributeTranslationKeyPrefixes: [
                 'pageflow.rainbows.page_attributes'
               ],
-              model: {i18nKey: 'page'},
+              model: createModel({}, {i18nKey: 'page'}),
               propertyName: 'title'
             });
 
@@ -238,7 +261,7 @@ describe('pageflow.inputView', () => {
 
       it('uses model/attribute based inline help translation', () => {
         var view = createInputView({
-          model: {i18nKey: 'page'},
+          model: createModel({}, {i18nKey: 'page'}),
           propertyName: 'title'
         });
 
@@ -249,7 +272,7 @@ describe('pageflow.inputView', () => {
 
       it('prefers disabled suffix if disabled', () => {
         var view = createInputView({
-          model: {i18nKey: 'page'},
+          model: createModel({}, {i18nKey: 'page'}),
           propertyName: 'title',
           disabled: true
         });
@@ -261,7 +284,186 @@ describe('pageflow.inputView', () => {
     });
   });
 
+  describe('disabledBinding', () => {
+    it('disables input when attribute is true', () => {
+      var view = createInputViewWithInput({
+        model: new Backbone.Model({disable: true}),
+        disabledBinding: 'disable'
+      });
+
+      view.render();
+
+      expect(view.ui.input).toHaveAttr('disabled');
+    });
+
+    it('does not disable input when attribute is false', () => {
+      var view = createInputViewWithInput({
+        model: new Backbone.Model({disable: false}),
+        disabledBinding: 'disable'
+      });
+
+      view.render();
+
+      expect(view.ui.input).not.toHaveAttr('disabled');
+    });
+
+    it('disabled input when attribute changes to true', () => {
+      var view = createInputViewWithInput({
+        model: new Backbone.Model({disable: false}),
+        disabledBinding: 'disable'
+      });
+
+      view.render();
+
+      view.model.set('disable', true);
+
+      expect(view.ui.input).toHaveAttr('disabled');
+    });
+
+    it('allows overriding updateDisabled method for custom behavior', () => {
+      var view = createInputViewWithInput({
+        model: new Backbone.Model({disable: false}),
+        disabledBinding: 'disable'
+      });
+      view.updateDisabled = jest.fn();
+
+      view.render();
+      expect(view.updateDisabled).toHaveBeenCalledWith(false);
+
+      view.model.set('disable', true);
+      expect(view.updateDisabled).toHaveBeenCalledWith(true);
+    });
+
+    describe('with disabledBindingValue option', () => {
+      it('disables input when value of attribute match', () => {
+        var view = createInputViewWithInput({
+          model: new Backbone.Model({disable: true}),
+          disabledBinding: 'disable',
+          disabledBindingValue: true
+        });
+
+        view.render();
+
+        expect(view.ui.input).toHaveAttr('disabled');
+      });
+
+      it('does not disable input when value of attribute do not match', () => {
+        var view = createInputViewWithInput({
+          model: new Backbone.Model({disable: false}),
+          disabledBinding: 'disable',
+          disabledBindingValue: true
+        });
+
+        view.render();
+
+        expect(view.ui.input).not.toHaveAttr('disabled');
+      });
+    });
+
+    describe('with function for disabled option', () => {
+      it('disables input when function returns true', () => {
+        var view = createInputViewWithInput({
+          model: new Backbone.Model({enabled: false}),
+          disabledBinding: 'enabled',
+          disabled: function(value) { return !value; }
+        });
+
+        view.render();
+
+        expect(view.ui.input).toHaveAttr('disabled');
+      });
+
+      it('does not disable input when function returns false', () => {
+        var view = createInputViewWithInput({
+          model: new Backbone.Model({enabled: true}),
+          disabledBinding: 'enabled',
+          disabled: function(value) { return !value; }
+        });
+
+        view.render();
+
+        expect(view.ui.input).not.toHaveAttr('disabled');
+      });
+
+      describe('with multiple binding attributes', () => {
+        it('passes array of values to function', () => {
+          const disabledFunction = jest.fn();
+          var view = createInputViewWithInput({
+            model: new Backbone.Model({disable: false, active: true}),
+            disabledBinding: ['disable', 'active'],
+            disabled: disabledFunction
+          });
+
+          view.render();
+
+          expect(disabledFunction).toHaveBeenCalledWith([false, true]);
+        });
+
+        it('disables input when return valie of function changes to true', () => {
+          var view = createInputViewWithInput({
+            model: new Backbone.Model({disable: false, active: true}),
+            disabledBinding: ['disable', 'active'],
+            disabled: ([disable, active]) => !active || disable
+          });
+
+          view.render();
+          view.model.set('active', false);
+
+          expect(view.ui.input).toHaveAttr('disabled');
+        });
+      });
+    });
+
+    describe('with boolean for disabled option', () => {
+      it('disables input if true', () => {
+        var view = createInputViewWithInput({
+          model: new Backbone.Model(),
+          disabled: true
+        });
+
+        view.render();
+
+        expect(view.ui.input).toHaveAttr('disabled');
+      });
+
+      it('does not disable input if false', () => {
+        var view = createInputViewWithInput({
+          model: new Backbone.Model(),
+          disabled: false
+        });
+
+        view.render();
+
+        expect(view.ui.input).not.toHaveAttr('disabled');
+      });
+    });
+
+    function createInputViewWithInput(options) {
+      var View = Marionette.ItemView.extend({
+        template: () => '<input />',
+
+        ui: {
+          input: 'input'
+        }
+      });
+
+      Cocktail.mixin(View, inputView);
+
+      return new View(options);
+    }
+  });
+
   describe('visibleBinding', () => {
+    it('does not set hidden class by default', () => {
+      var view = createInputView({
+        model: new Backbone.Model()
+      });
+
+      view.render();
+
+      expect(view.$el).not.toHaveClass('input-hidden_via_binding');
+    });
+
     it('sets hidden class when attribute is false', () => {
       var view = createInputView({
         model: new Backbone.Model({active: false}),
@@ -273,7 +475,7 @@ describe('pageflow.inputView', () => {
       expect(view.$el).toHaveClass('input-hidden_via_binding');
     });
 
-    it('does not set hidden class when function returns true', () => {
+    it('does not set hidden class when attribute is true', () => {
       var view = createInputView({
         model: new Backbone.Model({active: true}),
         visibleBinding: 'active'
@@ -346,6 +548,34 @@ describe('pageflow.inputView', () => {
         view.render();
 
         expect(view.$el).not.toHaveClass('input-hidden_via_binding');
+      });
+
+      describe('with multiple binding attributes', () => {
+        it('passes array of values to function', () => {
+          const visibleFunction = jest.fn();
+          var view = createInputView({
+            model: new Backbone.Model({hidden: false, active: true}),
+            visibleBinding: ['hidden', 'active'],
+            visible: visibleFunction
+          });
+
+          view.render();
+
+          expect(visibleFunction).toHaveBeenCalledWith([false, true]);
+        });
+
+        it('sets hidden class when attribute changes to false', () => {
+          var view = createInputView({
+            model: new Backbone.Model({hidden: false, active: true}),
+            visibleBinding: ['hidden', 'active'],
+            visible: ([hidden, active]) => active && !hidden
+          });
+
+          view.render();
+          view.model.set('active', false);
+
+          expect(view.$el).toHaveClass('input-hidden_via_binding');
+        });
       });
     });
 
@@ -470,11 +700,17 @@ describe('pageflow.inputView', () => {
 
   function createInputView(options) {
     var View = Marionette.ItemView.extend({
-      template: () => ''
+      template: () => '<label><div class="name"></div><div class="inline_help"></div></label>'
     });
 
     Cocktail.mixin(View, inputView);
 
     return new View(options);
+  }
+
+  function createModel(attributes, {i18nKey}) {
+    const model = new Backbone.Model(attributes);
+    model.i18nKey = i18nKey;
+    return model;
   }
 });
