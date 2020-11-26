@@ -48,7 +48,8 @@ function SectionContents(props) {
   }), [props.layout, props.invert, props.sectionIndex]);
 
   const [motifAreaState, setMotifAreaRef, setContentAreaRef, setForegroundContentRef] = useMotifAreaState({
-    isActive: shouldPrepare,
+    updateOnScrollAndResize: shouldPrepare,
+    exposeMotifArea: props.exposeMotifArea,
     transitions: getEnterAndExitTransitions(props, props.previousSection, props.nextSection),
     empty: !props.contentElements.length,
     sectionTransition: props.transition,
@@ -56,6 +57,9 @@ function SectionContents(props) {
   });
 
   const {Shadow, Box, BoxWrapper} = getAppearanceComponents(props.appearance)
+
+  const staticShadowOpacity = percentToFraction(props.staticShadowOpacity, {defaultValue: 0.7});
+  const dynamicShadowOpacity = percentToFraction(props.dynamicShadowOpacity, {defaultValue: 0.7});
 
   return (
     <>
@@ -67,7 +71,8 @@ function SectionContents(props) {
           <Shadow align={props.layout}
                   inverted={props.invert}
                   motifAreaState={motifAreaState}
-                  opacity={props.shadowOpacity >= 0 ? props.shadowOpacity / 100 : 0.7}>
+                  staticShadowOpacity={staticShadowOpacity}
+                  dynamicShadowOpacity={dynamicShadowOpacity}>
             {children}
           </Shadow>}
       </Backdrop>
@@ -83,7 +88,7 @@ function SectionContents(props) {
              transitionStyles={props.transitionStyles}
              state={props.state}
              motifAreaState={motifAreaState}
-             opacity={props.shadowOpacity}>
+             staticShadowOpacity={staticShadowOpacity}>
           <BackgroundColorProvider dark={!props.invert}>
             <Layout sectionId={props.id}
                     items={props.contentElements}
@@ -124,4 +129,8 @@ function heightMode(props) {
 function endsWithFullWidthElement(elements) {
   const lastElement = elements[elements.length - 1];
   return lastElement && lastElement.position === 'full';
+}
+
+function percentToFraction(value, {defaultValue}) {
+  return typeof value !== 'undefined' ? value / 100 : defaultValue;
 }

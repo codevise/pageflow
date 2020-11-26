@@ -531,18 +531,17 @@ de:
               Diese Einstellung legt fest wie die scrollenden Vordergrund-Ebene vom Hintergrund
               abgehoben werden soll. Bei der Einstellung "Karte" wird der Vordergrund mit einer
               Fläche mit abgerundeten Ecken hinterlegt, bei "Schatten" mit einem hellen oder dunklen
-              Farbverlauf und bei "Block" flächendeckend mit einer Farbe.
+              Farbverlauf.
             values:
               cards: Karte
               shadow: Schatten
-              solid: Block
               transparent: Keine
           backdropImage:
             label: Hintergrund-Bild
           backdropImageMobile:
             label: Hintergrund-Bild (Hochkant)
             inline_help: >
-              Wird geezigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones
+              Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones
               oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen
               Hintergrund-Bild konfiguriert werden, von dem ansonsten wichtige Teile abgeschnitten würden.
           backdropColor:
@@ -553,9 +552,11 @@ de:
             label: Hintergrund-Typ
             inline_help: >
               Im Hintergund des Abschnitts kann entweder ein Bild, eine Farbe oder ein Video-Loop
-              angezeigt werden. Im Fall eines Hintergrund-Bilds kann der wichtige Bildteil markiert
-              werden. Dieser wird dann sowohl in Desktop- als auch in Mobil-Darstellung zunächst
-              nicht vom scrollenden Vordergrund verdeckt.
+              angezeigt werden.
+            values:
+              image: Bild
+              color: Farbe
+              video: Video
           fullHeight:
             label: Volle Viewport-Höhe
             inline_help: >
@@ -583,6 +584,37 @@ de:
               left: Links
               right: Rechts
               center: Mitte
+          exposeMotifArea:
+            label: Motivbereich freilegen
+            inline_help: >
+              Sicherstellen, dass der markierte Motivbereich des Hintergrunds beim Erreichen des Abschnitts
+              sichtbar ist und nicht von anderen Elementen überlagert wird. Wenn Motivbereich
+              und Inhalt des Abschnitts nicht nebeneiner dargestellt werden können, wird zusätzlicher
+              Freiraum am Anfang des Abschnitts eingefügt und der Inhalt nach unten verschoben.
+            inline_help_disabled: >
+              Wähle "Motivbereich markieren" im Drei-Punkte-Menü des Hintergrund-Bilds/Videos weiter oben,
+              um diese Funktion zu verwenden. Du kannst damit sicherzustellen, dass wichtige Teile des
+              Hintegrunds nicht von anderen Elementen überdeckt werden.
+          staticShadowOpacity:
+            label: Statische Abblendung
+            inline_help: >
+              Intensität des Schattens, der hinter dem Text angezeigt wird, wenn Inhalt und
+              Motivbereich nebeneinander dargestellt werden können oder kein Motivbereich markiert wurde.
+              Bei links oder rechts positioniertem Vordergrund
+              hat dieser Schatten die Form eines horizontal verlaufenden halbtransparenten Farbverlaufs.
+              Bei "Vordergrund-Position" "Mitte", wird eine gleichmäßige halbtransparente
+              Abblendung hinter dem Text gezeigt.
+          dynamicShadowOpacity:
+            label: Dynamische Abblendung
+            inline_help: >
+              Intensität der Abblendung, die - gesteuert durch die Scrollposition - hinter dem
+              Text eingeblendet wird, sobald sich Motivbereich und Inhalt des Abschnitts zu
+              überschneiden beginnen, um einen ausreichnenden Kontrast zu gewährleisten. Beachte,
+              dass diese Abblendung nur sichtbar ist, wenn Motivbereich und Inhalt nicht nebeneinander
+              dargestellt werden können. Wechsle am besten in die Phone-Vorschau, wenn du den eingestellten
+              Wert veränderst.
+            inline_help_disabled: >
+              Aktiviere "Motivbereich freilegen" weiter oben, um diese Einstellung zu verwenden.
       edit_section_transition:
         tabs:
           transition: Übergang

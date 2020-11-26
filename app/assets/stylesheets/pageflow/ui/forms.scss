@@ -158,6 +158,12 @@ textarea.short {
     margin: 7px 0;
     float: left;
   }
+
+  &.disabled .slider,
+  &.disabled .value {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .validation {

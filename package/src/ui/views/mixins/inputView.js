@@ -95,13 +95,30 @@ import {attributeTranslationKeys, findTranslation, translationKeysWithSuffix} fr
  *   A text that will be appended to the translation based inline
  *   text.
  *
- * @param {boolean} [options.disabled]
- *   Render input as disabled.
+ * @param {string|string[]} [options.disabledBinding]
+ *   Name of an attribute to control whether the input is disabled. If
+ *   the `disabled` and `disabledBinding` options are not set,
+ *   input will be disabled whenever this attribute has a truthy value.
+ *   When multiple attribute names are passed, the function passed to
+ *   the `disabled` option will receive an array of values in the same
+ *   order.
  *
- * @param {string} [options.visibleBinding]
+ * @param {function|boolean} [options.disabled]
+ *   Render input as disabled. A Function taking the value of the
+ *  `disabledBinding` attribute as parameter. Input will be disabled
+ *  only if function returns `true`.
+ *
+ * @param {any} [options.disabledBindingValue]
+ *   Input will be disabled whenever the value of the `disabledBinding`
+ *   attribute equals the value of this option.
+ *
+ * @param {string|string[]} [options.visibleBinding]
  *   Name of an attribute to control whether the input is visible. If
  *   the `visible` and `visibleBindingValue` options are not set,
  *   input will be visible whenever this attribute has a truthy value.
+ *   When multiple attribute names are passed, the function passed to
+ *   the `visible` option will receive an array of values in the same
+ *   order.
  *
  * @param {function|boolean} [options.visible]
  *   A Function taking the value of the `visibleBinding` attribute as
@@ -162,15 +179,12 @@ export const inputView = {
     this.$el.data('inlineHelpText', this.inlineHelpText());
 
     this.ui.labelText.text(this.labelText());
-    this.ui.inlineHelp.html(this.inlineHelpText());
 
-    if (!this.inlineHelpText()) {
-      this.ui.inlineHelp.hide();
-    }
-
+    this.updateInlineHelp();
     this.setLabelFor();
-    this.updateDisabled();
-    this.setupVisibleBinding();
+
+    this.setupAttributeBinding('disabled', this.updateDisabled);
+    this.setupAttributeBinding('visible', this.updateVisible);
   },
 
   /**
@@ -187,6 +201,14 @@ export const inputView = {
     }));
   },
 
+  updateInlineHelp: function() {
+    this.ui.inlineHelp.html(this.inlineHelpText());
+
+    if (!this.inlineHelpText()) {
+      this.ui.inlineHelp.hide();
+    }
+  },
+
   /**
    * The inline help text for the form field.
    * @return {string}
@@ -196,7 +218,7 @@ export const inputView = {
       fallbackPrefix: 'pageflow.ui.inline_help'
     });
 
-    if (this.options.disabled) {
+    if (this.isDisabled()) {
       keys = translationKeysWithSuffix(keys, 'disabled');
     }
 
@@ -217,14 +239,20 @@ export const inputView = {
     }
   },
 
+  isDisabled: function() {
+    return this.getAttributeBoundOption('disabled');
+  },
+
   updateDisabled: function() {
+    this.updateInlineHelp();
+
     if (this.ui.input) {
       this.updateDisabledAttribute(this.ui.input);
     }
   },
 
   updateDisabledAttribute: function(element) {
-    if (this.options.disabled) {
+    if (this.isDisabled()) {
       element.attr('disabled', true);
     }
     else {
@@ -232,31 +260,47 @@ export const inputView = {
     }
   },
 
-  setupVisibleBinding: function() {
-    var view = this;
+  updateVisible: function() {
+    this.$el.toggleClass('input-hidden_via_binding',
+                         this.getAttributeBoundOption('visible') === false);
+  },
 
-    if (this.options.visibleBinding) {
-      this.listenTo(this.model, 'change:' + this.options.visibleBinding, updateVisible);
-      updateVisible(this.model, this.model.get(this.options.visibleBinding));
+  setupAttributeBinding: function(optionName, updateMethod) {
+    const binding = this.options[`${optionName}Binding`];
+    const view = this;
+
+    if (binding) {
+      _.flatten([binding]).forEach(attribute => {
+        this.listenTo(this.model, 'change:' + attribute, update);
+      });
     }
 
-    function updateVisible(model, value) {
-      view.$el.toggleClass('input-hidden_via_binding', !isVisible(value));
-    }
+    update();
 
-    function isVisible(value) {
-      if ('visibleBindingValue' in view.options) {
-        return value === view.options.visibleBindingValue;
-      }
-      else if (typeof view.options.visible === 'function') {
-        return !!view.options.visible(value);
-      }
-      else if ('visible' in view.options) {
-        return !!view.options.visible;
-      }
-      else {
-        return !!value;
-      }
+    function update() {
+      updateMethod.call(view, view.getAttributeBoundOption(optionName));
+    }
+  },
+
+  getAttributeBoundOption: function(optionName) {
+    const binding = this.options[`${optionName}Binding`];
+    const bindingValueOptionName = `${optionName}BindingValue`;
+
+    const value = Array.isArray(binding) ?
+                  binding.map(attribute => this.model.get(attribute)) :
+                  this.model.get(binding);
+
+    if (bindingValueOptionName in this.options) {
+      return value === this.options[bindingValueOptionName];
+    }
+    else if (typeof this.options[optionName] === 'function') {
+      return !!this.options[optionName](value);
+    }
+    else if (optionName in this.options) {
+      return !!this.options[optionName];
+    }
+    else if (binding) {
+      return !!value;
     }
   }
 };

@@ -437,11 +437,10 @@ en:
               This setting controls how the scrolling foreground should get dimmed to
               increase contrast from the background. The option "Cards" adds a box with rounded
               corners to the foreground, with "Shadow" you can add a light or dark shadow to
-              increase readability and "Block" adds an opaque area.
+              increase readability.
             values:
               shadow: Shadow
               cards: Card
-              solid: Block
               transparent: Transparent
           backdropImage:
             label: Background-Image
@@ -460,9 +459,10 @@ en:
             label: Background-Type
             inline_help: >
               The section background can either display an image, a color or a video loop.
-              In case of background images you can specify the main image motif area. This area will
-              then initially be left uncovered by foreground content on mobile as well as desktop
-              devices.
+            values:
+              image: Image
+              video: Video
+              color: Color
           fullHeight:
             label: Use Full Viewport-Height
             inline_help: >
@@ -488,6 +488,32 @@ en:
               left: Left
               right: Right
               center: Center
+          exposeMotifArea:
+            label: Expose motif area
+            inline_help: >
+              Ensure the selected motif area of the background asset is visible and not covered by other
+              elements when first reaching the section. If motif area and section content do not fit side
+              by side, extra space will be inserted at the top of the section to move content down.
+            inline_help_disabled: >
+              Click "Select motif area" in the "three dots" menu of the background image/video field above
+              to use this feature. It let's you make sure important parts of the backdrop asset won't
+              be hidden by other elements.
+          staticShadowOpacity:
+            label: Static shadow
+            inline_help: >
+              Intensity of the shadow displayed behind text when section content and motif area fit
+              side by side or no motif area has been specified. For left or right aligned content, the
+              shadow has the form of a horizontal gradient. When "Content alignment" is set
+              to "Center", the shadow is displayed as a translucent layer behind the text.
+          dynamicShadowOpacity:
+            label: Dynamic shadow
+            inline_help: >
+              Intensity of the shadow which is faded in behind the text to ensure contrast when content
+              is scrolled to intersect with the motif area. Note that this shadow is only visible if
+              motif area and section content do not fit side by side. It's best to switch to phone
+              preview when adjusting this value.
+            inline_help_disabled: >
+              Activate "Expose motif area" above to use this setting.
       edit_section_transition:
         tabs:
           transition: Transition

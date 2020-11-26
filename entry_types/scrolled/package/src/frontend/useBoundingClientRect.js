@@ -16,7 +16,7 @@ function getBoundingClientRect(el) {
   return el.getBoundingClientRect();
 }
 
-export default function useBoundingClientRect({isActive = true, dependencies = []} = {}) {
+export default function useBoundingClientRect({updateOnScrollAndResize = true, dependencies = []} = {}) {
   const [boundingClientRect, setBoundingClientRect] = useState(getBoundingClientRect(null));
   const [currentNode, setCurrentNode] = useState(null);
 
@@ -36,7 +36,7 @@ export default function useBoundingClientRect({isActive = true, dependencies = [
       setBoundingClientRect(getBoundingClientRect(currentNode))
     }
 
-    if (!currentNode || !isActive) {
+    if (!currentNode || !updateOnScrollAndResize) {
       return
     }
 
@@ -47,7 +47,7 @@ export default function useBoundingClientRect({isActive = true, dependencies = [
       window.removeEventListener('resize', handler);
       window.removeEventListener('scroll', handler);
     }
-  }, [currentNode, isActive]);
+  }, [currentNode, updateOnScrollAndResize]);
 
   return [boundingClientRect, measureRef]
 }
