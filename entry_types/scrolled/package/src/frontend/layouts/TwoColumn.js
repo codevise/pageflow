@@ -20,7 +20,7 @@ export function TwoColumn(props) {
 
   return (
     <div className={classNames(styles.root, styles[props.align], narrow ? styles.narrow : styles.wide)}>
-      <div className={classNames(styles.group)}>
+      <div className={classNames(styles.group)} key={props.align}>
         <div className={styles.inline} ref={props.contentAreaRef} />
       </div>
       {renderItems(props, narrow)}
