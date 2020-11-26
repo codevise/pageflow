@@ -24,7 +24,7 @@
   @import "./change_theme";
   @extend %pageflow-ui;
 
-  font-family: Helvetica, "Sans-Serif";
+  font-family: Helvetica, Arial, "Sans-Serif";
   font-size: 13px;
 
   padding: 0;
@@ -131,8 +131,9 @@
     top: 0;
     left: 0;
     right: 0;
-    bottom: 25px;
+    bottom: 31px;
     overflow: auto;
+    overflow-y: scroll;
   }
 }
 
