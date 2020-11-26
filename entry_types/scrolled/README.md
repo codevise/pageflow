@@ -17,3 +17,9 @@ TODO
 See the
 [Node Package Development guide](https://github.com/codevise/pageflow/blob/master/doc/contributing/node_package_development.md)
 in the main engine documentation.
+
+## Translations
+
+Edit the translations directly on the
+[pageflow_scrolled](http://www.localeapp.com/projects/public?search=tf/pageflow_scrolled)
+LocaleApp project.
