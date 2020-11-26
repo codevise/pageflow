@@ -11,7 +11,7 @@ export default function GradientShadow(props) {
   // not intersect, always make it visible. Shadow appearance will then
   // depend on alignment (i.e. a gradient from the left).
   const opacityFactor =
-    props.motifAreaState.isIntersectingX ?
+    props.motifAreaState.isContentPadded ?
     // Make shadow reach full opacity when content has been scrolled
     // up half way across the motif area.
     Math.min(1, props.motifAreaState.intersectionRatioY * 2) :
@@ -20,7 +20,7 @@ export default function GradientShadow(props) {
   return (
     <div className={classNames(styles.root,
                    styles[`align-${props.align}`],
-                   {[styles.intersecting]: props.motifAreaState.isIntersectingX})}>
+                   {[styles.intersecting]: props.motifAreaState.isContentPadded})}>
       <div className={classNames(styles.shadow, props.inverted ? styles.shadowWhite : styles.shadowBlack)}
            style={{opacity: props.opacity * Math.round(opacityFactor * 10) / 10}}>
         <Fullscreen />

@@ -7,7 +7,7 @@ export default function GradientBox(props) {
   return (
     <div className={classNames(styles.root,
                                {
-                                 [styles.gradient]: props.motifAreaState.isIntersectingX,
+                                 [styles.gradient]: props.motifAreaState.isContentPadded,
                                  [styles.long]: props.coverInvisibleNextSection
                                })}
          style={{paddingTop: props.motifAreaState.paddingTop}}>
