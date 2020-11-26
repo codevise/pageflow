@@ -32,6 +32,7 @@
   top: -33px;
   right: 0;
   height: 100%;
+  width: 50px;
   padding-left: 20px;
   z-index: 10;
   display: none;
@@ -51,13 +52,6 @@
   padding: 10px 0 10px 10px;
   z-index: 10;
   overflow: hidden;
-}
-
-.editToolbar {
-  composes: toolbar;
-  position: sticky;
-  top: calc(50vh - 30px);
-  margin-top: 55px;
 }
 
 .transitionToolbar-before {
