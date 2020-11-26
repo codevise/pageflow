@@ -1,0 +1,45 @@
+.optIn {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.optInIcon svg {
+  fill: currentColor;
+  height: 90px;
+}
+
+.optInMessage {
+  margin: 1em 0 1.5em 0;
+}
+
+@media (max-width: 600px) {
+  .optInIcon svg {
+    height: 50px;
+  }
+
+  .optInMessage {
+    margin: 0.5em 0 1em 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .optInIcon {
+    display: none
+  }
+}
+
+.optInButton {
+  padding: 10px;
+  background-color: transparent;
+  color: currentColor;
+  border: solid 1px currentColor;
+  border-radius: 4px;
+  cursor: pointer;
+}

@@ -53,11 +53,16 @@ export {useContentElementLifecycle} from './useContentElementLifecycle';
 export {useIsStaticPreview} from './useScrollPositionLifecycle';
 export {useMediaMuted} from './useMediaMuted';
 
-export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
 export {PhonePlatformProvider} from './PhonePlatformProvider';
+export {
+  OptIn as ThirdPartyOptIn,
+  OptOutInfo as ThirdPartyOptOutInfo,
+} from './thirdPartyConsent';
+export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
 
+export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 
 export {RootProviders};

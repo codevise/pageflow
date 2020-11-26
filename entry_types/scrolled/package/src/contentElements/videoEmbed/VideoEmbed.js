@@ -4,6 +4,8 @@ import styles from './VideoEmbed.module.css';
 
 import {
   Figure,
+  ThirdPartyOptIn,
+  ThirdPartyOptOutInfo,
   ViewportDependentPillarBoxes,
   useContentElementLifecycle,
   useContentElementEditorState,
@@ -20,6 +22,7 @@ const aspectRatios = {
 export function VideoEmbed({contentElementId, configuration}) {
   const {isEditable, isSelected} = useContentElementEditorState();
   const {shouldLoad} = useContentElementLifecycle();
+  const [playerState, setPlayerState] = useState('unplayed');
 
   return (
     <div className={styles.VideoEmbed}
@@ -28,17 +31,20 @@ export function VideoEmbed({contentElementId, configuration}) {
         <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
                                       position={configuration.position}
                                       opaque={!!configuration.caption}>
-          {shouldLoad && <PreparedPlayer contentElementId={contentElementId}
+          {shouldLoad && <PreparedPlayer playerState={playerState}
+                                         setPlayerState={setPlayerState}
+                                         contentElementId={contentElementId}
                                          configuration={configuration} />}
         </ViewportDependentPillarBoxes>
+        <ThirdPartyOptOutInfo providerName="video"
+                              hide={playerState === 'playing'}
+                              contentElementPosition={configuration.position} />
       </Figure>
     </div>
   );
 }
 
-function PreparedPlayer({contentElementId, configuration}) {
-  const [playerState, setPlayerState] = useState('unplayed');
-
+function PreparedPlayer({contentElementId, configuration, playerState, setPlayerState}) {
   useAudioFocus({
     key: contentElementId,
     request: playerState === 'playing',
@@ -55,28 +61,32 @@ function PreparedPlayer({contentElementId, configuration}) {
   }
 
   return (
-    <ReactPlayer className={styles.embedPlayer}
-                 key={keyFromConfiguration(configuration)}
-                 url={configuration.videoSource}
-                 playing={playerState !== 'paused'}
-                 onPlay={() => setPlayerState('playing')}
-                 onPause={() => setPlayerState('paused')}
-                 onEnded={() => setPlayerState('paused')}
-                 light={true}
-                 width='100%'
-                 height='100%'
-                 controls={!configuration.hideControls}
-                 config={{
-                   youtube: {
-                     playerVars: {
-                       showinfo: !configuration.hideInfo
-                     }
-                   },
-                   vimeo: {
-                     playerOptions: {
-                       byline: !configuration.hideInfo
-                     }
-                   }
-                 }} />
+    <ThirdPartyOptIn providerName="video">
+      {({consentedHere}) => (
+        <ReactPlayer className={styles.embedPlayer}
+                     key={keyFromConfiguration(configuration)}
+                     url={configuration.videoSource}
+                     playing={playerState !== 'paused'}
+                     onPlay={() => setPlayerState('playing')}
+                     onPause={() => setPlayerState('paused')}
+                     onEnded={() => setPlayerState('paused')}
+                     light={!consentedHere && playerState === 'unplayed'}
+                     width='100%'
+                     height='100%'
+                     controls={!configuration.hideControls}
+                     config={{
+                       youtube: {
+                         playerVars: {
+                           showinfo: !configuration.hideInfo
+                         }
+                       },
+                       vimeo: {
+                         playerOptions: {
+                           byline: !configuration.hideInfo
+                         }
+                       }
+                     }} />
+      )}
+    </ThirdPartyOptIn>
   );
 }

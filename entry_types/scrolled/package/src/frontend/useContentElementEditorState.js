@@ -8,8 +8,8 @@ export const ContentElementEditorStateContext = createContext({
 
 /**
  * Use inside a content element component to determine whether the
- * component is being rendered inside the editor and whether the
- * content element is currently selected. This can be used to
+ * component is being rendered inside the editor iframe, and whether
+ * the content element is currently selected. This can be used to
  * implement simple inline editing capabilities like displaying extra
  * information when the content element is selected.
  *

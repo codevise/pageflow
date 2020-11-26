@@ -11,6 +11,7 @@
     "debounce": "^1.2.0",
     "deep-assign": "^3.0.0",
     "intersection-observer": "^0.7.0",
+    "invert-color": "^2.0.0",
     "prop-types": "^15.7.2",
     "react-compare-image": "https://github.com/codevise/react-compare-image#offset-width-fix",
     "react-dnd": "^11.1.3",

@@ -2,11 +2,12 @@ import React from 'react';
 
 import {BrowserFeaturesProvider} from './useBrowserFeature';
 import {EntryStateProvider} from '../entryState';
-import {LocaleProvider} from './i18n';
 import {FocusOutlineProvider} from './focusOutline';
+import {LocaleProvider} from './i18n';
 import {PhonePlatformProvider} from './PhonePlatformProvider';
 import {MediaMutedProvider} from './useMediaMuted';
 import {AudioFocusProvider} from './useAudioFocus';
+import {ThirdPartyConsentProvider} from './thirdPartyConsent';
 
 export function RootProviders({seed, children}) {
   return (
@@ -17,7 +18,9 @@ export function RootProviders({seed, children}) {
             <AudioFocusProvider>
               <EntryStateProvider seed={seed}>
                 <LocaleProvider>
-                  {children}
+                  <ThirdPartyConsentProvider>
+                    {children}
+                  </ThirdPartyConsentProvider>
                 </LocaleProvider>
               </EntryStateProvider>
             </AudioFocusProvider>
