@@ -62,6 +62,15 @@ export const EditSectionView = EditConfigurationView.extend({
       });
       this.input('invert', CheckBoxInputView);
       this.input('fullHeight', CheckBoxInputView);
+      this.input('exposeMotifArea', CheckBoxInputView, {
+        displayUncheckedIfDisabled: true,
+        visibleBinding: ['backdropType'],
+        visible: ([backdropType]) => {
+          return backdropType !== 'color';
+        },
+        disabledBinding: motifAreaDisabledBinding,
+        disabled: motifAreaDisabled,
+      });
 
       this.input('atmoAudioFileId', FileInputView, {
         collection: 'audio_files',
@@ -71,3 +80,25 @@ export const EditSectionView = EditConfigurationView.extend({
     });
   }
 });
+
+const motifAreaDisabledBinding = [
+  'backdropType',
+  'backdropImageMotifArea', 'backdropImageMobileMotifArea', 'backdropVideoMotifArea',
+  'backdropImage', 'backdropImageMobile', 'backdropVideo'
+];
+
+function motifAreaDisabled([
+  backdropType,
+  backdropImageMotifArea, backdropImageMobileMotifArea, backdropVideoMotifArea,
+  backdropImage, backdropImageMobile, backdropVideo
+]) {
+  if (backdropType === 'video') {
+    return !backdropVideo || !backdropVideoMotifArea;
+  }
+  else if (backdropType !== 'color') {
+    return (!backdropImage || !backdropImageMotifArea) &&
+           (!backdropImageMobile || !backdropImageMobileMotifArea);
+  }
+
+  return true;
+}

@@ -10,12 +10,13 @@ import useDimension from './useDimension';
  *
  *     [
  *      {
- *        isIntersectingX,    // true if motif and content will
+ *        isContentPadded,    // true if motif and content will
  *                            // not fit side by side.
  *
  *        intersectionRatioY, // Ratio of the motif area that is
  *                            // covered by the content given the
- *                            // current scroll position.
+ *                            // current scroll position if motif
+ *                            // is exposed.
  *
  *        paddingTop,         // Distance to shift down the content
  *                            // to ensure the motif area can be
@@ -38,11 +39,15 @@ import useDimension from './useDimension';
  *   height.
  * @param {boolean} empty - Whether the section contains content
  *  elements.
+ * @param {boolean} exposeMotifArea - Whether to pad content down if it
+ *  would otherwise intersect with the motif area.
  *
  * @private
  */
-export function useMotifAreaState({transitions, fullHeight, empty, isActive = true} = {}) {
-  const [motifAreaRect, setMotifAreaRectRef] = useBoundingClientRect({isActive});
+export function useMotifAreaState({
+  transitions, fullHeight, empty, exposeMotifArea, updateOnScrollAndResize
+} = {}) {
+  const [motifAreaRect, setMotifAreaRectRef] = useBoundingClientRect({updateOnScrollAndResize});
   const [motifAreaDimension, setMotifAreaDimensionRef] = useDimension();
   const [isPadded, setIsPadded] = useState(false);
 
@@ -52,15 +57,16 @@ export function useMotifAreaState({transitions, fullHeight, empty, isActive = tr
   }, [setMotifAreaRectRef, setMotifAreaDimensionRef]);
 
   const [contentAreaRect, setContentAreaRef] = useBoundingClientRect({
-    isActive,
+    updateOnScrollAndResize,
     dependencies: [isPadded]
   });
 
-  const intersectingX = isIntersectingX(motifAreaRect, contentAreaRect) &&
-                        motifAreaRect.height > 0 &&
-                        !empty;
+  const isContentPadded = exposeMotifArea &&
+                          isIntersectingX(motifAreaRect, contentAreaRect) &&
+                          motifAreaRect.height > 0 &&
+                          !empty;
 
-  const paddingTop = getMotifAreaPadding(intersectingX, transitions, motifAreaDimension);
+  const paddingTop = getMotifAreaPadding(isContentPadded, transitions, motifAreaDimension);
 
   // Force measuring content area again since applying the padding
   // changes the intersection ratio.
@@ -73,17 +79,17 @@ export function useMotifAreaState({transitions, fullHeight, empty, isActive = tr
   return [
     {
       paddingTop,
+      isContentPadded,
       minHeight: getMotifAreaMinHeight(fullHeight, transitions, motifAreaDimension),
-      intersectionRatioY: getIntersectionRatioY(intersectingX, motifAreaRect, contentAreaRect),
-      isIntersectingX: intersectingX
+      intersectionRatioY: getIntersectionRatioY(isContentPadded, motifAreaRect, contentAreaRect)
     },
     setMotifAreaRef,
     setContentAreaRef
   ];
 }
 
-function getMotifAreaPadding(intersectingX, transitions, motifAreaDimension) {
-  if (!intersectingX) {
+function getMotifAreaPadding(isContentPadded, transitions, motifAreaDimension) {
+  if (!isContentPadded) {
     return;
   }
 
@@ -151,11 +157,11 @@ function getMotifAreaMinHeight(fullHeight, transitions, motifAreaDimension) {
   }
 }
 
-function getIntersectionRatioY(intersectingX, motifAreaRect, contentAreaRect) {
+function getIntersectionRatioY(isContentPadded, motifAreaRect, contentAreaRect) {
   const motifAreaOverlap = Math.max(
     0,
     Math.min(motifAreaRect.height,
              motifAreaRect.bottom - contentAreaRect.top)
   );
-  return intersectingX ? motifAreaOverlap / motifAreaRect.height : 0;
+  return isContentPadded ? motifAreaOverlap / motifAreaRect.height : 0;
 }

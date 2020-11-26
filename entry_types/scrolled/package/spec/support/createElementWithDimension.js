@@ -7,11 +7,14 @@ export function createElementWithDimension({
   const el = document.createElement('div');
 
   el.getBoundingClientRect = function() {
+    const left = typeof viewportLeft === 'function' ? viewportLeft() : viewportLeft;
+    const top = typeof viewportTop === 'function' ? viewportTop() : viewportTop;
+
     return {
-      left: viewportLeft,
-      top: viewportTop,
-      right: viewportLeft + width,
-      bottom: viewportTop + height,
+      left,
+      top,
+      right: left + width,
+      bottom: top + height,
       width,
       height
     }

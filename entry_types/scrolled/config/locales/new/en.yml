@@ -488,6 +488,16 @@ en:
               left: Left
               right: Right
               center: Center
+          exposeMotifArea:
+            label: Expose motif area
+            inline_help: >
+              Ensure the selected motif area of the background asset is visible and not covered by other
+              elements when first reaching the section. If motif area and section content do not fit side
+              by side, extra space will be inserted at the top of the section to move content down.
+            inline_help_disabled: >
+              Click "Select motif area" in the "three dots" menu of the background image/video field above
+              to use this feature. It let's you make sure important parts of the backdrop asset won't
+              be hidden by other elements.
       edit_section_transition:
         tabs:
           transition: Transition

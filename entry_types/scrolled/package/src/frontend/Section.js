@@ -48,7 +48,8 @@ function SectionContents(props) {
   }), [props.layout, props.invert, props.sectionIndex]);
 
   const [motifAreaState, setMotifAreaRef, setContentAreaRef, setForegroundContentRef] = useMotifAreaState({
-    isActive: shouldPrepare,
+    updateOnScrollAndResize: shouldPrepare,
+    exposeMotifArea: props.exposeMotifArea,
     transitions: getEnterAndExitTransitions(props, props.previousSection, props.nextSection),
     empty: !props.contentElements.length,
     sectionTransition: props.transition,

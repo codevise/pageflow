@@ -4,6 +4,7 @@ export const SectionConfiguration = Configuration.extend({
   defaults: {
     transition: 'scroll',
     fullHeight: true,
+    exposeMotifArea: true,
     backdrop: {
     }
   },
