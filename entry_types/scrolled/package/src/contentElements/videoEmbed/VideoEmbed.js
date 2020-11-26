@@ -62,7 +62,7 @@ function PreparedPlayer({contentElementId, configuration, playerState, setPlayer
 
   return (
     <ThirdPartyOptIn providerName="video">
-      {(consentedHere) => (
+      {({consentedHere}) => (
         <ReactPlayer className={styles.embedPlayer}
                      key={keyFromConfiguration(configuration)}
                      url={configuration.videoSource}
