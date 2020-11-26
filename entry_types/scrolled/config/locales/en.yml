@@ -1,0 +1,471 @@
+en:
+  pageflow_scrolled:
+    editor:
+      blank_entry:
+        create_chapter: Click <em>New chapter</em> to create your first chapter.
+        create_content_element: Use the <em>Plus buttons</em> inside the preview to add text blocks and other elements.
+        create_section: Click <em>New section</em> within the chapter to add a section.
+        header: This is an empty Pageflow.
+        intro: Pageflows consist of chapters and sections. The sidebar on the right shows the outline of your story.
+        outro: In this area, a live preview will be shown.
+      browser_not_supported:
+        heading: The browser or device you are using is not supported
+        text: While Pageflow stories work on all modern browsers and devices, the Pageflow editor requires a desktop computer running a recent version of Chrome, Firefox, Safari or Edge.
+      chapter_item:
+        add_section: New section
+        drag_hint: Drag to move chapter
+        save_error: There was an error while saving this chapter.
+      common_content_element_attributes:
+        caption:
+          inline_help: The caption of the element will be displayed directly underneath the element.
+          label: Caption
+        position:
+          inline_help: 'This setting allows you to control the position of the element in relation to surrounding text blocks: the element can prominently stand alone ("Full Width"), it can be anchored within the text ("Inline") or it can be positioned adjacent to the text ("Sticky"). Sticky elements remain static in the middle of the viewport alongside the text until either the section is scrolled out of the viewport or until they get pushed upwards by the next sticky element of the section. On mobile devices sticky elements automatically get positioned inline. Sticky elements work particularly well on desktop devices in combination with long texts.'
+          label: Position
+          values:
+            full: Full Width
+            inline: Inline
+            left: Floated left
+            right: Floated right
+            sticky: Sticky
+      content_elements:
+        dataWrapperChart:
+          attributes:
+            backgroundColor:
+              inline_help: Color of box containing the diagram. Especially for charts with transparent background, readability can be improved by choosing an appropriate background.
+              label: Background Color
+            create_chart:
+              label: Create new Datawrapper chart
+            title:
+              inline_help: Used by screen readers to describe the chart as a whole.
+              label: Title
+            url:
+              inline_help: URL of a chart published via Datawrapper. Datawrapper offers a special 'Pageflow' layout selectable on the 'Design' tab for optimal display inside Pageflow.
+              label: Chart URL
+          name: DataWrapper Chart
+          tabs:
+            general: Chart
+        externalLinkList:
+          add: Add
+          attributes:
+            description:
+              inline_help: Link-description for display in entry.
+              label: Description
+            open_in_new_tab:
+              label: Open in new tab
+            thumbnail:
+              inline_help: Link thumbnail image for display in entry.
+              label: Thumbnail
+            title:
+              inline_help: Link-title for display in entry.
+              label: Title
+            url:
+              inline_help: Absolute URL (inkluding http:// oder https://) of Link.
+              label: URL
+          back: Back
+          confirm_delete: Are you sure you want to delete this element?
+          confirm_delete_link: Are you sure you want to delete this link?
+          destroy: Delete
+          name: External links
+          outline: Outline
+          tabs:
+            edit_link: Edit Link
+            general: External Links
+        heading:
+          attributes:
+            children:
+              label: Text
+          name: Heading
+          tabs:
+            general: Heading
+        inlineAudio:
+          attributes:
+            atmoDuringPlayback:
+              inline_help: Choose which way the atmo shall behave during playback of this audio element.
+              label: Atmo During Playback
+              values:
+                mute: Mute
+                play: Keep playing
+                turnDown: Keep playing at lower volume
+            id:
+              label: Audio
+            playerControlVariant:
+              inline_help: Choose the style of player controls.
+              label: Player Controls
+              values:
+                classic: Classic
+                waveform: Waveform
+            posterId:
+              label: Poster
+            waveformColor:
+              inline_help: Color of the waveform's parts that represents the already played part of the audio.
+              label: Waveform Color
+          name: Inline Audio
+          tabs:
+            general: Inline Audio
+        inlineBeforeAfter:
+          attributes:
+            after_id:
+              inline_help: Shown to the right of divider.
+              label: After Image
+            after_label:
+              inline_help: 'Set the text of a short label for the After image. Examples: ''After'', ''January 2040'''
+              label: After Label
+            before_id:
+              inline_help: Shown to the left of divider.
+              label: Before Image
+            before_label:
+              inline_help: 'Set the text of a short label for the Before image. Examples: ''Before'', ''January 2000'''
+              label: Before Label
+            initial_slider_position:
+              inline_help: In case the divider shouldn't be in the middle at the start, its start position can be set here.
+              label: Divider start position
+            slider:
+              inline_help: Shows/hides visible slider at divider line.
+              label: Show Slider
+            slider_color:
+              inline_help: You can configure slider color (incl. slider handle) freely. Make sure that the slider can be seen clearly on every position over the entire Before/After area.
+              label: Slider Color
+            slider_handle:
+              inline_help: Activates/deactivates slider handle.
+              label: Show Slider Handle
+          name: Before/After
+          tabs:
+            general: Before/After
+        inlineImage:
+          attributes:
+            id:
+              label: Image
+          name: Inline Image
+          tabs:
+            general: Inline Image
+        inlineVideo:
+          attributes:
+            atmoDuringPlayback:
+              inline_help: Choose which way the atmo shall behave during playback of this video element.
+              label: Atmo During Playback
+              values:
+                mute: Mute
+                play: Keep playing
+                turnDown: Keep playing at lower volume
+            id:
+              label: Video
+            posterId:
+              label: Poster
+          name: Inline Video
+          tabs:
+            general: Inline Video
+        soundDisclaimer:
+          name: Audio Notice
+          tabs:
+            general: Audio Notice
+        textBlock:
+          name: Text Block
+          tabs:
+            general: Text Block
+        videoEmbed:
+          attributes:
+            aspectRatio:
+              label: Aspect ratio of video
+              values:
+                narrow: Landscape 4:3
+                portrait: Portrait (9:16)
+                square: Square
+                wide: Landscape 16:9
+            hideControls:
+              inline_help: Hides the player controls if possible (depends on the videos provider and configuration). The video can be played and paused via click.
+              label: Hide controls
+            hideInfo:
+              inline_help: Hides the video title and author info inside the embed if possible (depends on the videos provider and configuration).
+              label: Hide title in embed
+            videoSource:
+              label: Video-URL
+          name: Video Embed
+          tabs:
+            general: Video-Embed
+      edit_chapter:
+        attributes:
+          summary:
+            inline_help: Summary of the chapter for display in the navigation bar. Only chapters with both title and summary set will get added as menu items to the navigation.
+            label: Summary
+          title:
+            inline_help: The chapter title will be displayed in the editor overview and the navigation bar of the entry. Only chapters with both title and summary set will get added as menu items to the navigation.
+            label: Title
+        confirm_destroy: |-
+          Really delete this chapter including ALL its sections?
+
+          This operation cannot be undone.
+        save_error: There was an error while saving this chapter.
+        tabs:
+          chapter: Chapter
+      edit_motif_area:
+        blank_slate: No area selected.
+        cancel: Cancel
+        header: Motif area
+        help_link: What is this used for?
+        hint: Drag to select the most important part of the image.
+        reset: Reset
+        save: Save
+      edit_section:
+        attributes:
+          appearance:
+            inline_help: This setting controls how the scrolling foreground should get dimmed to increase contrast from the background. The option "Cards" adds a box with rounded corners to the foreground, with "Shadow" you can add a light or dark shadow to increase readability.
+            label: Text-Background
+            values:
+              cards: Card
+              shadow: Shadow
+              transparent: Transparent
+          atmoAudioFileId:
+            inline_help: Choose an audio file, that shall be played in the background. If you want this audio to continue playing on following sections, just choose the same file again there.
+            label: Atmo Audio
+          backdropColor:
+            label: Background-Color
+          backdropImage:
+            label: Background-Image
+          backdropImageMobile:
+            inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to supply an alternative to a landscape background image that would otherwise have important parts cropped off.
+            label: Background-Image (Portrait)
+          backdropType:
+            inline_help: The section background can either display an image, a color or a video loop.
+            label: Background-Type
+            values:
+              color: Color
+              image: Image
+              video: Video
+          backdropVideo:
+            label: Background-Video
+          dynamicShadowOpacity:
+            inline_help: Intensity of the shadow which is faded in behind the text to ensure contrast when content is scrolled to intersect with the motif area. Note that this shadow is only visible if motif area and section content do not fit side by side. It's best to switch to phone preview when adjusting this value.
+            inline_help_disabled: Activate "Expose motif area" above to use this setting.
+            label: Dynamic shadow
+          exposeMotifArea:
+            inline_help: Ensure the selected motif area of the background asset is visible and not covered by other elements when first reaching the section. If motif area and section content do not fit side by side, extra space will be inserted at the top of the section to move content down.
+            inline_help_disabled: Click "Select motif area" in the "three dots" menu of the background image/video field above to use this feature. It let's you make sure important parts of the backdrop asset won't be hidden by other elements.
+            label: Expose motif area
+          fullHeight:
+            inline_help: Activate this option if the background of this section (e.g. image, color or video) is supposed to be enlarged such that the whole browser window (the so called viewport) is covered. Deactivate this option to create a short section. The height of the section and its background is then determined only by the content of the section.  Multiple sections with different backgrounds can then be visible at once on the user's screen. This option needs to be activated for two adjacent sections to be able to use a fade transition between them.
+            label: Use Full Viewport-Height
+          invert:
+            label: Invert Text Colors
+          layout:
+            inline_help: This setting controls the position of the scrolling foreground layer of the section on desktop devices. On mobile devices the foreground layer will automatically become centered.
+            label: Content alignment
+            values:
+              center: Center
+              left: Left
+              right: Right
+          staticShadowOpacity:
+            inline_help: Intensity of the shadow displayed behind text when section content and motif area fit side by side or no motif area has been specified. For left or right aligned content, the shadow has the form of a horizontal gradient. When "Content alignment" is set to "Center", the shadow is displayed as a translucent layer behind the text.
+            label: Static shadow
+        edit_motif_area: Select motif area...
+        tabs:
+          section: Section
+      edit_section_transition:
+        attributes:
+          transition:
+            inline_help: This setting defines the transition when scrolling from the previous section to the current. The different settings have specific effects concerning the behaviors of background and foreground. The effects "Cross-Fade All" and "Cross-Fade Backgrounds" are only available if the "Use Full Viewport-Height" option has been enabled in the settings of both adjacent sections.
+            label: Effect
+            values:
+              beforeAfter: Scrolling with static Backgrounds
+              fade: Also fade section content
+              fadeBg: Cross Fade
+              reveal: Reveal
+              scroll: Scroll
+              scrollOver: Scroll Over
+        confirm_destroy: |-
+          Really delete this section including ALL its elements?
+
+          This operation cannot be undone.
+        save_error: There was an error while saving this section.
+        tabs:
+          transition: Transition
+      entry_outline:
+        add_chapter: New chapter
+        header: Outline
+      insert_content_element:
+        cancel: Cancel
+        header: Insert element
+      no_options: No options available
+      section_item:
+        drag_hint: Drag to move section
+        save_error: There was an error while saving this section.
+    help_entries:
+      content_elements:
+        menu_item: Content Elements
+        text: |
+          # Content Elements
+
+          TODO
+      meta_data:
+        menu_item: Title and Options
+        text: |
+          # Title and Options
+
+          General settings for the entry. Please select a sub item on the left.
+      motif_area:
+        menu_item: Motif areas
+        text: |
+          # Motif areas
+
+          By specifying a motif area of an image, you can tell
+          Pageflow which part of the image is most important. For
+          example, for a portrait this could be the face of the
+          depicted person.
+
+          When the image is then used as the background of a section,
+          Pageflow tries to make sure the reader has an undisturbed view  can actually see this
+          part of the image.
+
+          1. If the image cannot be displayed uncropped (e.g. because
+             it has landscape format while the entry is being viewed
+             on a phone in portrait orientation), the background is
+             positioned in a way to center the motif area in the
+             available space.
+
+          2. If the section contains text or other content elements,
+             empty space is inserted at the beginning of the section
+             to make sure the motif area is not covered by other
+             content when first reaching the section. The content
+             starts intersecting with the motif area only when the
+             reader continues scrolling.
+
+             Layout responds intelligently in such cases: If, for
+             example, the text of the section is positioned on the
+             left such that the motif area of the image can be
+             displayed completely on the right, no additional space
+             will be inserted at the beginning of the section.
+
+          You can edit the motif area of a background image via the
+          "Select motif area" menu item of the "Background image"
+          field in the section settings.
+      outline:
+        menu_item: Chapter, Sections, Content Elements
+        text: |
+          # Chapter, Sections, Content Elements
+
+          TODO
+      overview:
+        menu_item: Overview
+        text: |
+          # Overview
+
+          TODO
+      sections:
+        menu_item: Section Options
+        text: |
+          # Section Options
+
+          ## Layout
+
+          TODO
+
+          ## Background
+
+          TODO
+
+          ## Atmo Audio
+
+          TODO
+
+          ## Transitions
+
+          TODO
+    inline_editing:
+      add_content_element: Add new element
+      cancel: Cancel
+      drag_content_element: Drag to move element
+      edit_section_transition_after: Edit section transition
+      edit_section_transition_before: Edit section transition
+      external_links:
+        open_in_new_tab: Open in new tab
+        open_in_new_tab_message: Opening in same tab is disabled inside the editor
+      formats:
+        block_quote: Block quote
+        bold: Bold
+        bulleted_list: Bulleted list
+        heading: Heading
+        italic: Italic
+        ordered_list: Ordered list
+        paragraph: Paragraph
+        strikethrough: Strikethrough
+        underline: Underline
+      insert_content_element:
+        after: Insert new element below
+        before: Insert new element above
+      insert_link: Insert link
+      remove_link: Remove link
+      select_content_element: Select element
+      select_section: Select section
+      type_heading: Heading
+      type_text: Type some text
+      type_title: Title
+      url_placeholder: Type or paste URL
+    public:
+      chart:
+        default_title: Interactive chart
+      languages:
+        ar: Arabic
+        cs: Czech
+        de: German
+        dk: Danish
+        el: Greek
+        en: English
+        es: Spanish
+        fi: Finnish
+        fr: French
+        fy: Frisian
+        hi: Hindi
+        it: Italian
+        ja: Japanese
+        lb: Letzeburgesch
+        nb: Norsk Bokmål
+        nl: Dutch
+        nn: Norsk Nynorsk
+        'no': Norsk
+        pl: Polish
+        pt: Portuguese
+        rm: Romansh
+        ru: Russian
+        se: Northern Sami
+        sr: Serbian
+        sv: Swedish
+        tr: Turkish
+        unknown: "(Unknown)"
+        zh: Chinese
+      navigation:
+        chapter: Chapter %{number}
+        mute: Mute sound
+        unmute: Unmute sound
+      navigation_skip_links:
+        content: To the content
+      player_controls:
+        pause: Pause
+        play: Play
+        progress: 'Timeline. Current time: %{currentTime}. Duration: %{duration}'
+        quality: Quality
+        text_tracks: Subtitles
+      sound_disclaimer:
+        help_muted: This site works best with sound turned on. Click here to activate sound.
+        help_unmuted: Sound can be muted again using the speaker icon in the navigation.
+      text_track_modes:
+        auto: Auto (%{label})
+        auto_off: Auto (Off)
+        none: false
+      third_party_consent:
+        confirm: Okay
+        opt_in_prompt:
+          datawrapper: I agree with being shown Datawrapper graphs.
+          video: I agree with being shown videos from external providers.
+        opt_out:
+          prompt: To opt out of displaying external embeds, change your settings %{link}.
+          prompt_link: here
+      video_qualities:
+        annotations:
+          4k: 4K
+          fullhd: HD
+          medium: HD
+        labels:
+          4k: 2160p
+          auto: Auto
+          fullhd: 1080p
+          medium: 720p
