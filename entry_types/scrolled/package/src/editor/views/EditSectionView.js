@@ -1,5 +1,5 @@
 import {EditConfigurationView, FileInputView, ColorInputView} from 'pageflow/editor';
-import {SelectInputView, CheckBoxInputView} from 'pageflow/ui';
+import {SelectInputView, CheckBoxInputView, SliderInputView} from 'pageflow/ui';
 import I18n from 'i18n-js';
 
 import {EditMotifAreaDialogView} from './EditMotifAreaDialogView';
@@ -22,15 +22,10 @@ export const EditSectionView = EditConfigurationView.extend({
     };
 
     configurationEditor.tab('section', function() {
-      this.input('layout', SelectInputView, {
-        values: ['left', 'right', 'center']
-      });
-      this.input('appearance', SelectInputView, {
-        values: ['shadow', 'cards', 'transparent']
-      });
+      this.input('fullHeight', CheckBoxInputView);
+
       this.input('backdropType', SelectInputView, {
-        values: ['image', 'color', 'video'],
-        texts: ['Bild', 'Farbe', 'Video']
+        values: ['image', 'video', 'color'],
       });
       this.input('backdropImage', FileInputView, {
         collection: 'image_files',
@@ -60,8 +55,13 @@ export const EditSectionView = EditConfigurationView.extend({
         positioning: false,
         dropDownMenuItems: [editMotifAreaMenuItem]
       });
+      this.input('layout', SelectInputView, {
+        values: ['left', 'right', 'center']
+      });
+      this.input('appearance', SelectInputView, {
+        values: ['shadow', 'cards', 'transparent']
+      });
       this.input('invert', CheckBoxInputView);
-      this.input('fullHeight', CheckBoxInputView);
       this.input('exposeMotifArea', CheckBoxInputView, {
         displayUncheckedIfDisabled: true,
         visibleBinding: ['backdropType'],
@@ -70,6 +70,22 @@ export const EditSectionView = EditConfigurationView.extend({
         },
         disabledBinding: motifAreaDisabledBinding,
         disabled: motifAreaDisabled,
+      });
+      this.input('staticShadowOpacity', SliderInputView, {
+        defaultValue: 70,
+        visibleBinding: 'appearance',
+        visible: appearance => !appearance || appearance === 'shadow',
+      });
+      this.input('dynamicShadowOpacity', SliderInputView, {
+        defaultValue: 70,
+        visibleBinding: ['backdropType', 'appearance'],
+        visible: ([backdropType, appearance]) => {
+          return backdropType !== 'color' &&
+                 (!appearance || appearance === 'shadow');
+        },
+        disabledBinding: ['exposeMotifArea', ...motifAreaDisabledBinding],
+        disabled: ([exposeMotifArea, ...motifAreaDisabledBindingValues]) =>
+          !exposeMotifArea || motifAreaDisabled(motifAreaDisabledBindingValues)
       });
 
       this.input('atmoAudioFileId', FileInputView, {

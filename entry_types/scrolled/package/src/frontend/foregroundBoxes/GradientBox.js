@@ -16,15 +16,11 @@ export default function GradientBox(props) {
                                    props.inverted ? styles.shadowLight : styles.shadowDark,
                                    props.transitionStyles.boxShadow,
                                    props.transitionStyles[`boxShadow-${props.state}`])}
-             style={{top: props.motifAreaState.paddingTop, opacity: props.opacity}} />
+             style={{top: props.motifAreaState.paddingTop, opacity: props.staticShadowOpacity}} />
         <div className={styles.content}>
           {props.children}
         </div>
       </div>
     </div>
   );
-}
-
-GradientBox.defaultProps = {
-  opacity: 1
 }
