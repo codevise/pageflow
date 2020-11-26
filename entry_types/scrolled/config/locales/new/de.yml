@@ -74,15 +74,15 @@ de:
           Um Inhalte zu erstellen, klicke zunächst auf **„Neues
           Kapitel"**, um ein erstes Kapitel zu erstellen. Wenn du auf
           die Kopfzeile des Kapitels klickst, kannst du den Titel und
-          eine Beschreibung angegeben. Sobald beides eingetragen ist,
-          erscheint das Kapitel in der Navigationsleiste.
+          eine Beschreibung angegeben, die in der Navigationsleiste
+          erscheinen sollen.
 
           Klicke als nächstes auf **„Neuer Abschnitt"**, um dem Kapitel
           einen Abschnitt hinzuzufügen. In der Vorschau auf der linken
           Seite wird nun ein Auswahlrechteck um den neuen Abschnitt
           gezeigt. In der Seitenleiste kannst du die Optionen des
           Abschnitts bearbeiten. Hier kannst du z.B. ein Bild oder
-          eine Farbe als Hintergrund fpr den Abschnitts
+          eine Farbe als Hintergrund für den Abschnitt
           festlegen. Details findest du unter:
           [Abschnittsoptionen](#pageflow_scrolled.help_entries.sections)
 
@@ -96,7 +96,7 @@ de:
           **„Neues Element hinzufügen"** angezeigt. Wenn du darauf
           klickst, kannst du auswählen was für einen Typ von
           Inhaltselement du einfügen möchtest. Wenn ein Inhaltselement
-          per Klick auswählt wird, können in der Seitenleiste seine
+          per Klick ausgewählt wird, können in der Seitenleiste seine
           Einstellungen bearbeitet werden. Details zu den verfügbaren
           Inhaltselementen findest du unter:
           [Inhaltselemente](#pageflow_scrolled.help_entries.content_elements)
@@ -111,30 +111,97 @@ de:
         text: |
           # Abschnittsoptionen
 
+          Ein Klick in einen leeren Bereich eines Abschnitts lässt ein
+          Auswahlrechteck um den Abschnitt erscheinen. In der
+          Seitenleiste können die Optionen des ausgewählten Abschnitts
+          bearbeitet werden.
+
           ## Layout
 
-          TODO
+          Über die Option **Vordergrund-Positionierung** kann
+          ausgewählt werden, wie der Inhalt des Abschnitts horizontal
+          angeordnet werden soll. Ist das Motiv im Hintergrund des
+          Abschnittes beispielsweise auf der rechten Seite, können
+          Text- und Inhaltselemente auf der linken Seite positioniert
+          sein und umgekehrt. Bei Hintergründen in der Totale
+          bzw. einem zentrierten Motiv, bietet sich die mittige
+          Ausrichtung der Inhaltselemente an.
+
+          Durch Auswahl einer **Abblendung** kann ein ausreichender
+          Kontrast zwischen Text und Hintergrund sichergestellt
+          werden. Bei der Variante **Schatten** wird der Hintergrund
+          mit einem Farbverlauf verdunkelt bzw. aufgehellt. Mit der
+          Einstellung **Karte** werden die Inhaltselemente auf einer
+          Fläche mit abgerundeten Ecken abgebildet.
 
           ## Hintergrund
 
-          TODO
+          Im Hintergrund des Abschnitts kann entweder ein **Bild**,
+          ein **Video-Loop** oder eine **Farbe** angezeigt werden. Bei
+          Hintergrund-Bildern und -Videos kann der wichtigste Bildteil
+          markiert werden. Dieser sogenannte **Motivbereich** wird
+          dann sowohl in der Desktop- als auch in der Darstellung auf
+          mobilen Geräten zunächst nicht vom scrollenden Vordergrund
+          verdeckt. Weitere Infos findest du unter
+          [Motivbereiche](#pageflow_scrolled.help_entries.motif_area)
+
+          Über die Option **Hintergrund-Bild (Hochkant)** kann
+          optional ein alternatives Bild festgelegt werden, das
+          verwendet werden soll, wenn das Bildschirm-Seitenverhältnis
+          eines Endgerätes höher als breit ist, zum Beispiel auf
+          Smartphones und Tablets im Portrait-Modus (hochkant). Das
+          Bild kann als Alternative zum Hintergrund-Bild im Querformat
+          konfiguriert werden, von dem ansonsten eventuell wichtige
+          Teile abgeschnitten werden könnten.
 
           ## Atmo
 
-          TODO
+          Mit der **Atmo** kann jeder Abschnitt, unabhängig von seinen
+          Inhaltselementen, im Hintergrund Sound abspielen. Dabei kann
+          bestimmt werden, ob ein Sound nur in einem Abschnitt zu
+          hören ist oder über mehrere Abschnitte ohne Unterbrechung
+          weiterläuft. Wähle dazu einfach für die nachfolgenden
+          Abschnitte die selbe Audiodatei als Atmo aus. Auf diese
+          Weise lassen sich Kapitel akustisch voneinander absetzen und
+          zusammenhängende Abschnitte stärker verweben.
+
+          Beim Abspielen von Audios und Videos kann zusätzlich
+          ausgewählt werden, ob der Hintergrundsound während der
+          Medien-Wiedergabe normal oder leiser weitergespielt oder
+          ganz ausgeblendet werden soll. Wähle dazu ein Video oder
+          Audio Element aus und lege das gewünschte Verhalten über das
+          Feld **Atmo während Medien-Wiedergabe** fest.
+
+          Sollte Dich die Atmo während der Bearbeitung Deines Beitrags
+          im Editor einmal stören, kannst du sie mit der
+          Tastenkombination Alt + a vorübergehend stumm schalten. Um
+          die Atmo wieder zu aktivieren, drücke einfach erneut Alt +
+          a.
 
           ## Transitionen
 
-          TODO
+          Zwischen je zwei Abschnitte kann ein **Übergangseffekt**
+          ausgewählt werden. Klicke in den Hintergrund eines
+          Abschnitts, um diesen auszuwählen. Auf der rechten Seite des
+          Auswahlrechteck erscheinen dann an den Grenzen zum
+          benachbarten Abschnitten Buttons mit zwei verschränkten
+          Pfeilen als Symbol. Klicke auf einen der Buttons, um in der
+          Seitenleiste den Übergangseffekt für die Abschnittsgrenze
+          auszuwählen.
+
+          Der Effekt **Überblenden** steht nur zwischen Abschnitten
+          zur Verfügung, für die die Option **Volle Viewport-Höhe**
+          aktiviert wurde.
+
       motif_area:
         menu_item: Motivbereiche
         text: |
           # Motivbereiche
 
-          Durch das Markieren des Motivbereich eines Bildes teilst du
-          Pageflow mit, welcher Teil des Bildes der wichtigste
-          ist. Bei einem Portrait kann dies zum Beispiel das Gesicht
-          der abgebildeten Person sein.
+          Durch das Markieren des **Motivbereichs** eines Bildes oder
+          Videos teilst du Pageflow mit, welcher Bildauschnitt der
+          wichtigste ist. Bei einem Portrait kann dies zum Beispiel
+          das Gesicht der abgebildeten Person sein.
 
           Wird das Bild dann als Hintergrund eines Abschnitts
           verwendet, versucht Pageflow sicherzustellen, dass der Leser
@@ -159,16 +226,47 @@ de:
              rechts neben dem Text dargestellt werden kann, so wird
              kein zusätzlicher Abstand oberhalb des Texts eingefügt.
 
-          Der Motivbereich kann über den Menüpunkt "Bildmotiv
-          markieren" des "Hintergrund-Bild"-Feldes in den
-          Einstellungen eines Abschnitts bearbeiten werden.
+             Deaktiviere die Option **Motivbereich freilegen**, falls
+             der Bildauschnitt zwar passend zum Motivbereich gewählt
+             werden soll, der Inhalt des Abschnitts das Motiv aber
+             überlagern darf.
+
+          Der Motivbereich kann über den Menüpunkt **Bildmotiv
+          markieren** der **Hintergrund-Bild**- und **Hintergrund
+          Video**-Felder in den Einstellungen des Abschnitts
+          bearbeitet werden.
 
       content_elements:
         menu_item: Inhaltselemente
         text: |
           # Inhaltselemente
 
-          TODO
+          In jedem Abschnitt können beliebig viele Inhaltselemente
+          eingefügt werden.
+
+          Um ein neues Inhaltselement hinzuzufügen, klicke auf das
+          Plus-Zeichen ober- oder unterhalb eines bestehenden Elements
+          und füge dann Text-Blöcke, Medien, Embeds oder externe
+          Verweise ein.
+
+          Durch einen Klick auf ein Inhaltselement wird diese
+          ausgewählt. In der Seitenleiste erscheinen die verfügbaren
+          Konfigurationsoptionen. Hier kann unter anderem die
+          **Positionierung** der Inhaltselemente festgelegt und weitere
+          Optionen wie **Autoplay** für Audios und Videos oder
+          **Bildunterschriften** bearbeitet werden.
+
+          Für die Darstellung auf breiten
+          Bildschirm-Seitenverhältnissen (Desktop, Notebook, Tablet,
+          Smartphone quer) können einzelne Inhaltselemente, wie
+          Videos, Audios, Video Embeds, 360° Bilder auch als
+          **Sticky** oder **Volle Breite** angeordnet werden.
+
+          Wenn ein Abschnitt mittig ausgerichtet ist, können
+          Inhaltselemente zudem auch nach links oder rechts eingerückt
+          werden. Dabei wird das Inhaltselement soweit verkleinert,
+          dass der Text das Element umfließen kann.
+
     public:
       third_party_consent:
         opt_in_prompt:
