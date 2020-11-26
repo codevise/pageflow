@@ -33,7 +33,7 @@ export function OptIn({children, providerName}) {
       consents[providerName] ||
       isEditable ||
       isStaticPreview) {
-    return typeof children === 'function' ? children(consentedHere) : children;
+    return typeof children === 'function' ? children({consentedHere}) : children;
   }
 
   function consent() {

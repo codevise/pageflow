@@ -164,7 +164,7 @@ describe('Third party consent', () => {
           return (
             <div data-testid={configuration.testId}>
               <ThirdPartyOptIn providerName="someService">
-                {(consentedHere) => <div>{consentedHere ? 'Consented here' : 'Consented elsewhere'}</div>}
+                {({consentedHere}) => <div>{consentedHere ? 'Consented here' : 'Consented elsewhere'}</div>}
               </ThirdPartyOptIn>
             </div>
           );
