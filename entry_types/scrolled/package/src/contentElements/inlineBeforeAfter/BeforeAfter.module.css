@@ -54,7 +54,7 @@
 }
 
 @keyframes BeforeImageLeftRightShake {
-  10%, 90% {
+  10%, 100% {
     clip: rect(auto, calc(var(--initial-rect-width) + var(--frame1px)), auto, auto);
   }
 
@@ -72,7 +72,7 @@
 }
 
 @keyframes AfterImageLeftRightShake {
-  10%, 90% {
+  10%, 100% {
     clip: rect(auto, auto, auto, calc(var(--initial-rect-width) + var(--frame1px)));
   }
 
@@ -90,7 +90,7 @@
 }
 
 @keyframes SliderLeftRightShake {
-  10%, 90% {
+  10%, 100% {
     transform: translate3d(-20%, 0, 0);
   }
 
