@@ -97,10 +97,10 @@ en:
         mute: Mute sound
         unmute: Unmute sound
       sound_disclaimer:
-        help_muted: >
+        help_muted: >-
           This site works best with sound turned on.
           Click here to activate sound.
-        help_unmuted: >
+        help_unmuted: >-
           Sound can be muted again using the speaker icon in the navigation.
       chart:
         default_title: Interactive chart
@@ -222,16 +222,16 @@ en:
               label: Create new Datawrapper chart
             url:
               label: Chart URL
-              inline_help: >
+              inline_help: >-
                 URL of a chart published via Datawrapper. Datawrapper offers a special 'Pageflow'
                 layout selectable on the 'Design' tab for optimal display inside Pageflow.
             title:
               label: Title
-              inline_help: >
+              inline_help: >-
                 Used by screen readers to describe the chart as a whole.
             backgroundColor:
               label: Background Color
-              inline_help: >
+              inline_help: >-
                 Color of box containing the diagram. Especially for charts with transparent background,
                 readability can be improved by choosing an appropriate background.
         heading:
@@ -248,7 +248,7 @@ en:
           attributes:
             children:
               label: Text
-              inline_help: >
+              inline_help: >-
                 Continuous block of text for the section. Enrich text with media by inserting
                 media elements between two text blocks within a section. Positioning and appearance
                 of the scrolling foreground layer of the section can be configured in the section
@@ -275,7 +275,7 @@ en:
               label: "Poster"
             atmoDuringPlayback:
               label: Atmo During Playback
-              inline_help: >
+              inline_help: >-
                 Choose which way the atmo shall behave during playback of this video element.
               values:
                 mute: Mute
@@ -292,7 +292,7 @@ en:
               label: "Poster"
             playerControlVariant:
               label: Player Controls
-              inline_help: >
+              inline_help: >-
                 Choose the style of player controls.
               values:
                 classic: Classic
@@ -302,7 +302,7 @@ en:
               label: Waveform Color
             atmoDuringPlayback:
               label: Atmo During Playback
-              inline_help: >
+              inline_help: >-
                 Choose which way the atmo shall behave during playback of this audio element.
               values:
                 mute: Mute
@@ -315,38 +315,38 @@ en:
           attributes:
             before_id:
               label: Before Image
-              inline_help: >
+              inline_help: >-
                 Shown to the left of divider.
             before_label:
               label: Before Label
-              inline_help: >
+              inline_help: >-
                 Set the text of a short label for the Before
                 image. Examples: 'Before', 'January 2000'
             after_id:
               label: After Image
-              inline_help: >
+              inline_help: >-
                 Shown to the right of divider.
             after_label:
               label: After Label
-              inline_help: >
+              inline_help: >-
                 Set the text of a short label for the After
                 image. Examples: 'After', 'January 2040'
             initial_slider_position:
               label: Divider start position
-              inline_help: >
+              inline_help: >-
                 In case the divider shouldn't be in the middle at the
                 start, its start position can be set here.
             slider:
               label: Show Slider
-              inline_help: >
+              inline_help: >-
                 Shows/hides visible slider at divider line.
             slider_handle:
               label: Show Slider Handle
-              inline_help: >
+              inline_help: >-
                 Activates/deactivates slider handle.
             slider_color:
               label: Slider Color
-              inline_help: >
+              inline_help: >-
                 You can configure slider color (incl. slider handle)
                 freely. Make sure that the slider can be seen clearly
                 on every position over the entire Before/After area.
@@ -359,12 +359,12 @@ en:
               label: Video-URL
             hideControls:
               label: Hide controls
-              inline_help: >
+              inline_help: >-
                 Hides the player controls if possible (depends on the videos provider and
                 configuration). The video can be played and paused via click.
             hideInfo:
               label: Hide title in embed
-              inline_help: >
+              inline_help: >-
                 Hides the video title and author info inside the embed if possible (depends on the
                 videos provider and configuration).
             aspectRatio:
@@ -380,7 +380,7 @@ en:
           inline_help: The caption of the element will be displayed directly underneath the element.
         position:
           label: Position
-          inline_help: >
+          inline_help: >-
             This setting allows you to control the position of the element in relation to
             surrounding text blocks: the element can prominently stand alone ("Full Width"), it can
             be anchored within the text ("Inline") or it can be positioned adjacent to the text
@@ -411,13 +411,13 @@ en:
         attributes:
           title:
             label: Title
-            inline_help: >
+            inline_help: >-
               The chapter title will be displayed in the editor overview and the navigation bar of
               the entry. Only chapters with both title and summary set will get added as menu items
               to the navigation.
           summary:
             label: Summary
-            inline_help: >
+            inline_help: >-
               Summary of the chapter for display in the navigation bar. Only chapters with both
               title and summary set will get added as menu items to the navigation.
         confirm_destroy: |-
@@ -432,7 +432,7 @@ en:
         attributes:
           appearance:
             label: Text-Background
-            inline_help: >
+            inline_help: >-
               This setting controls how the scrolling foreground should get dimmed to
               increase contrast from the background. The option "Cards" adds a box with rounded
               corners to the foreground, with "Shadow" you can add a light or dark shadow to
@@ -445,7 +445,7 @@ en:
             label: Background-Image
           backdropImageMobile:
             label: Background-Image (Portrait)
-            inline_help: >
+            inline_help: >-
               Displayed when the browser viewport is taller than wide, for example
               on phones or tablets in portrait orientation. Can be used to supply an
               alternative to a landscape background image that would otherwise have
@@ -456,7 +456,7 @@ en:
             label: Background-Video
           backdropType:
             label: Background-Type
-            inline_help: >
+            inline_help: >-
               The section background can either display an image, a color or a video loop.
             values:
               image: Image
@@ -464,7 +464,7 @@ en:
               color: Color
           fullHeight:
             label: Use Full Viewport-Height
-            inline_help: >
+            inline_help: >-
               Activate this option if the background of this section (e.g. image, color or video) is supposed
               to be enlarged such that the whole browser window (the so called viewport) is covered.
               Deactivate this option to create a short section. The height of the section and its background
@@ -473,13 +473,13 @@ en:
               for two adjacent sections to be able to use a fade transition between them.
           atmoAudioFileId:
             label: Atmo Audio
-            inline_help: >
+            inline_help: >-
               Choose an audio file, that shall be played in the background. If you want this audio to continue playing on following sections, just choose the same file again there.
           invert:
             label: Invert Text Colors
           layout:
             label: Content alignment
-            inline_help: >
+            inline_help: >-
               This setting controls the position of the scrolling foreground layer of the section on
               desktop devices. On mobile devices the foreground layer will automatically become
               centered.
@@ -489,29 +489,29 @@ en:
               center: Center
           exposeMotifArea:
             label: Expose motif area
-            inline_help: >
+            inline_help: >-
               Ensure the selected motif area of the background asset is visible and not covered by other
               elements when first reaching the section. If motif area and section content do not fit side
               by side, extra space will be inserted at the top of the section to move content down.
-            inline_help_disabled: >
+            inline_help_disabled: >-
               Click "Select motif area" in the "three dots" menu of the background image/video field above
               to use this feature. It let's you make sure important parts of the backdrop asset won't
               be hidden by other elements.
           staticShadowOpacity:
             label: Static shadow
-            inline_help: >
+            inline_help: >-
               Intensity of the shadow displayed behind text when section content and motif area fit
               side by side or no motif area has been specified. For left or right aligned content, the
               shadow has the form of a horizontal gradient. When "Content alignment" is set
               to "Center", the shadow is displayed as a translucent layer behind the text.
           dynamicShadowOpacity:
             label: Dynamic shadow
-            inline_help: >
+            inline_help: >-
               Intensity of the shadow which is faded in behind the text to ensure contrast when content
               is scrolled to intersect with the motif area. Note that this shadow is only visible if
               motif area and section content do not fit side by side. It's best to switch to phone
               preview when adjusting this value.
-            inline_help_disabled: >
+            inline_help_disabled: >-
               Activate "Expose motif area" above to use this setting.
       edit_section_transition:
         tabs:
@@ -519,7 +519,7 @@ en:
         attributes:
           transition:
             label: Effect
-            inline_help: >
+            inline_help: >-
               This setting defines the transition when scrolling from the previous
               section to the current. The different settings have specific effects concerning the
               behaviors of background and foreground. The effects "Cross-Fade All" and
