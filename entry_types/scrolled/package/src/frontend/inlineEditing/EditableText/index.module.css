@@ -23,7 +23,7 @@
 .linkTooltip {
   background-color: #222;
   border-radius: 4px;
-  font-family: Helvetica, "Sans-Serif";
+  font-family: Helvetica, Arial, "Sans-Serif";
   font-size: 13px;
   line-height: 1;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
