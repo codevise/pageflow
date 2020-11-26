@@ -6,7 +6,7 @@ de:
         text: |
           # Übersicht
 
-          Dies ist der Editor zum Bearbeiten Pageflows. Mit
+          Dies ist der Editor zum Bearbeiten von Pageflows. Mit
           seiner Zweiteilung ermöglicht er die direkte Vorschau
           während der Bearbeitung, zeigt Änderungen am Text oder neu
           ausgewählte Dateien unmittelbar an und speichert diese
@@ -14,37 +14,37 @@ de:
 
           ## Titel und Optionen
 
-          Unter „Titel und Optionen“ kannst Du grundsätzliche
+          Unter „Titel und Optionen“ kannst du grundsätzliche
           Parameter des Erscheinungsbildes, sowie Titel, Sprache,
           Impressum etc. einstellen. Dazu können Texte festgelegt
           werden, die beim Teilen des Beitrags über Social Media
           Dienste angezeigt werden sollen.
 
-          Details findest Du unter: [Titel und Optionen](#pageflow_scrolled.help_entries.meta_data)
+          Details findest du unter: [Titel und Optionen](#pageflow_scrolled.help_entries.meta_data)
 
           ## Dateien verwalten
 
-          Unter „Dateien verwalten“ lädst Du die Mediendateien hoch,
-          die im Pageflow verwendet werden sollen. Du kannst hier auch
+          Unter „Dateien verwalten“ lädst du die Mediendateien hoch,
+          die im Pageflow verwendet werden sollen. du kannst hier auch
           bereits hochgeladene Videos, Fotos und Audios
           wiederverwenden.
 
-          Details findest Du unter: [Dateien verwalten](#pageflow.help_entries.files)
+          Details findest du unter: [Dateien verwalten](#pageflow.help_entries.files)
 
           ## Gliederung
 
-          Über die „Gliederung“ kannst Du Kapitel und Abschnitte
+          Über die „Gliederung“ kannst du Kapitel und Abschnitte
           hinzufügen, also die eigentlichen Inhalte bearbeiten. Per
           Drag&Drop lassen sich Abschnitte und Kapitel auch jederzeit
           umsortieren.
 
-          Details findest Du unter: [Kapitel und Abschnitte](#pageflow_scrolled.help_entries.outline)
+          Details findest du unter: [Kapitel und Abschnitte](#pageflow_scrolled.help_entries.outline)
 
           ## Phone Vorschau
 
           Über den Umschalter unten in der Seitenleiste neben dem
           Hilfe-Button, kann in die Phone-Vorschau umgeschaltet
-          werden. Damit kannst Du testen wie Dein Beitrag im
+          werden. Damit kannst du testen wie Dein Beitrag im
           Hochkant-Format aussieht und funktioniert.
 
       meta_data:
@@ -72,8 +72,8 @@ de:
           Inhalt des Beitrags aus, durch den der Leser scrollt.
 
           Um Inhalte zu erstellen, klicke zunächst auf **„Neues
-          Kapitel"**, um ein erstes Kapitel zu erstellen. Wenn Du auf
-          die Kopfzeile des Kapitels klickst, kannst Du den Titel und
+          Kapitel"**, um ein erstes Kapitel zu erstellen. Wenn du auf
+          die Kopfzeile des Kapitels klickst, kannst du den Titel und
           eine Beschreibung angegeben. Sobald beides eingetragen ist,
           erscheint das Kapitel in der Navigationsleiste.
 
@@ -81,24 +81,24 @@ de:
           einen Abschnitt hinzuzufügen. In der Vorschau auf der linken
           Seite wird nun ein Auswahlrechteck um den neuen Abschnitt
           gezeigt. In der Seitenleiste kannst du die Optionen des
-          Abschnitts bearbeiten. Hier kannst Du z.B. ein Bild oder
+          Abschnitts bearbeiten. Hier kannst du z.B. ein Bild oder
           eine Farbe als Hintergrund fpr den Abschnitts
-          festlegen. Details findest Du unter:
+          festlegen. Details findest du unter:
           [Abschnittsoptionen](#pageflow_scrolled.help_entries.sections)
 
           Der Abschnitt enthält bereits einen Text-Block. Klicke auf
           den Text, um diesen zu bearbeiten. Mit einem Klick in den
-          leeren Bereich neben dem Text, kannst Du wieder den
+          leeren Bereich neben dem Text, kannst du wieder den
           Abschnitt auswählen.
 
           Wenn der Abschnitt ausgewählt ist, wird unterhalb des
           letzten Elements ein Plus-Button mit der Beschriftung
-          **„Neues Element hinzufügen"** angezeigt. Wenn Du darauf
-          klickst, kannst Du auswählen was für einen Typ von
+          **„Neues Element hinzufügen"** angezeigt. Wenn du darauf
+          klickst, kannst du auswählen was für einen Typ von
           Inhaltselement du einfügen möchtest. Wenn ein Inhaltselement
           per Klick auswählt wird, können in der Seitenleiste seine
           Einstellungen bearbeitet werden. Details zu den verfügbaren
-          Inhaltselementen findest Du unter:
+          Inhaltselementen findest du unter:
           [Inhaltselemente](#pageflow_scrolled.help_entries.content_elements)
 
           Oben und unten am Auswahlrechteck um ein Inhaltselement
@@ -131,7 +131,7 @@ de:
         text: |
           # Motivbereiche
 
-          Durch das Markieren des Motivbereich eines Bildes teilst Du
+          Durch das Markieren des Motivbereich eines Bildes teilst du
           Pageflow mit, welcher Teil des Bildes der wichtigste
           ist. Bei einem Portrait kann dies zum Beispiel das Gesicht
           der abgebildeten Person sein.
@@ -185,7 +185,7 @@ de:
       sound_disclaimer:
         help_muted: >
           Diese Seite wirkt am besten mit eingeschaltetem Ton.
-          Klicken Sie hier, um den Ton zu aktivieren.
+          Klicke hier, um den Ton zu aktivieren.
         help_unmuted: >
           Der Ton kann über das Lautsprecher-Symbol
           in der Navigationsleiste wieder deaktiviert werden.
@@ -281,8 +281,8 @@ de:
           destroy: Löschen
           add: Hinzufügen
           back: Zurück
-          confirm_delete: Möchten Sie dieses Element wirklich löschen?
-          confirm_delete_link: Möchten Sie diesen Link wirklich löschen?
+          confirm_delete: Soll das Element wirklich gelöscht werden?
+          confirm_delete_link: Soll der Link wirklich gelöscht werden?
           attributes:
             url:
               label: URL
@@ -335,14 +335,6 @@ de:
           name: Text-Block
           tabs:
             general: Text-Block
-          attributes:
-            children:
-              label: Text
-              inline_help: >
-                Zusammenhängender Block von Fließtext des Abschnitts. Reichern Sie Fließtext mit
-                Medien an indem Sie die Medien-Elemente zwischen zwei Fließtexten innerhalb eines
-                Abschnitts einfügen. Positionierung und Abblendung von Texten innerhalb eines
-                Abschnitts können über die Einstellungen des Abschnitts konfiguriert werden.
         inlineImage:
           name: Inline-Bild
           tabs:
@@ -383,7 +375,7 @@ de:
             playerControlVariant:
               label: Player Controls
               inline_help: >
-                Wählen Sie den Stil der Player-Steuerelemente.
+                Wähle den Stil der Player-Steuerelemente.
               values:
                 classic: Klassisch
                 waveform: Waveform
@@ -441,7 +433,7 @@ de:
               label: Schieberegler-Farbe
               inline_help: >
                 Farbe des Schiebereglers inklusive Griff kann frei
-                konfiguriert werden. Achten Sie auf gute Sichtbarkeit
+                konfiguriert werden. Achte auf gute Sichtbarkeit
                 des Reglers über den gesamten Vorher/Nachher-Bereich.
         videoEmbed:
           name: Video Embed
@@ -474,7 +466,7 @@ de:
         position:
           label: Position
           inline_help: >
-            Mit dieser Einstellung können Sie die Position des Elements im Zusammenspiel mit
+            Mit dieser Einstellung kannst du die Position des Elements im Zusammenspiel mit
             Fließtext steuern: Das Element kann prominent für sich alleine stehen
             ("Volle Breite"), im Text verankert werden ("Im Textfluss") oder auch beim Scrollen
             begleitend neben dem Text stehenbleiben ("Sticky"). Sticky-Elemente bleiben statisch
@@ -577,7 +569,7 @@ de:
           layout:
             label: Vordergrund-Positionierung
             inline_help: >
-              Mit dieser Einstellung können Sie die Position der scrollenden
+              Mit dieser Einstellung kannst du die Position der scrollenden
               Vordergrund-Ebene des Abschnitts in Desktop-Darstellung konfigurieren.
               In Mobil-Darstellung wird die Vordergrund-Ebene automatisch zentriert.
             values:
@@ -593,7 +585,7 @@ de:
               Freiraum am Anfang des Abschnitts eingefügt und der Inhalt nach unten verschoben.
             inline_help_disabled: >
               Wähle "Motivbereich markieren" im Drei-Punkte-Menü des Hintergrund-Bilds/Videos weiter oben,
-              um diese Funktion zu verwenden. Du kannst damit sicherzustellen, dass wichtige Teile des
+              um diese Funktion zu verwenden. du kannst damit sicherzustellen, dass wichtige Teile des
               Hintegrunds nicht von anderen Elementen überdeckt werden.
           staticShadowOpacity:
             label: Statische Abblendung
@@ -656,7 +648,7 @@ de:
       blank_entry:
         create_chapter: Klicke jetzt auf <em>Neues Kapitel</em>, um ein erstes Kapitel zu erstellen.
         create_section: Klicke dann auf <em>Neuer Abschnitt</em>, um dem Kapitel einen ersten Abschnitt hinzuzufügen.
-        create_content_element: Über die <em>Plus-Buttons</em> in der Vorschau kannst Du Elemente hinzufügen.
+        create_content_element: Über die <em>Plus-Buttons</em> in der Vorschau kannst du Elemente hinzufügen.
         header: Dies ist ein leerer Pageflow.
-        intro: Pageflows bestehen aus Kapiteln und Abschnitten. In der Seitenleiste rechts findest Du die Gliederung.
-        outro: Hier siehst Du dann die Vorschau deines Pageflows.
+        intro: Pageflows bestehen aus Kapiteln und Abschnitten. In der Seitenleiste rechts findest du die Gliederung.
+        outro: Hier siehst du dann die Vorschau deines Pageflows.
