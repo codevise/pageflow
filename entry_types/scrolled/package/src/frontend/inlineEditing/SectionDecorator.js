@@ -9,18 +9,12 @@ import {useEditorSelection} from './EditorState';
 import {MotifAreaVisibilityProvider} from '../MotifArea';
 import {useI18n} from '../i18n';
 
-import editIcon from './images/settings.svg';
 import transitionIcon from './images/arrows.svg';
 
 export function SectionDecorator(props) {
   const {t} = useI18n({locale: 'ui'});
 
   const {isSelected, select, resetSelection} = useEditorSelection({
-    id: props.id,
-    type: 'section'
-  });
-
-  const settingsSelection = useEditorSelection({
     id: props.id,
     type: 'sectionSettings'
   });
@@ -42,8 +36,6 @@ export function SectionDecorator(props) {
     type: 'contentElement'
   });
 
-  const isSectionSelected = isSelected || settingsSelection.isSelected;
-
   function selectIfOutsideContentItem(event) {
     if (!event.target.closest(`.${contentElementStyles.wrapper}`)) {
       isSelected ? resetSelection() : select();
@@ -52,24 +44,18 @@ export function SectionDecorator(props) {
 
   return (
     <div aria-label={t('pageflow_scrolled.inline_editing.select_section')}
-         className={className(isSectionSelected, transitionSelection)}
+         className={className(isSelected, transitionSelection)}
          onMouseDown={selectIfOutsideContentItem}>
       <div className={styles.controls}>
         {renderEditTransitionButton({id: props.previousSection && props.id,
                                      selection: transitionSelection,
                                      position: 'before'})}
-        <div className={styles.editToolbar} >
-          <EditSectionButton id={props.id}
-                             selection={settingsSelection}
-                             text={t('pageflow_scrolled.inline_editing.edit_section_settings')}
-                             icon={editIcon} />
-        </div>
         {renderEditTransitionButton({id: props.nextSection && props.nextSection.id,
                                      selection: nextTransitionSelection,
                                      position: 'after'})}
       </div>
-      <MotifAreaVisibilityProvider visible={isSectionSelected}>
-        <ForcePaddingContext.Provider value={isLastContentElementSelected || isSectionSelected}>
+      <MotifAreaVisibilityProvider visible={isSelected}>
+        <ForcePaddingContext.Provider value={isLastContentElementSelected || isSelected}>
           {props.children}
         </ForcePaddingContext.Provider>
       </MotifAreaVisibilityProvider>

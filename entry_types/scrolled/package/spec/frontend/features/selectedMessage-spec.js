@@ -56,7 +56,7 @@ describe('SELECTED message', () => {
     }, expect.anything());
   });
 
-  it('is posted when edit button on section selection rect is clicked', () => {
+  it('is posted when section is selected', () => {
     frontend.contentElementTypes.register('text', {
       component: function Component() {
         return 'Content element';
@@ -70,7 +70,6 @@ describe('SELECTED message', () => {
     });
 
     getSectionByPermaId(10).select();
-    getSectionByPermaId(10).clickEditSettings();
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
