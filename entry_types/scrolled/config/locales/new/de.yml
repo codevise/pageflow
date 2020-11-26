@@ -281,10 +281,10 @@ de:
         mute: Ton stummschalten
         unmute: Ton aktivieren
       sound_disclaimer:
-        help_muted: >
+        help_muted: >-
           Diese Seite wirkt am besten mit eingeschaltetem Ton.
           Klicke hier, um den Ton zu aktivieren.
-        help_unmuted: >
+        help_unmuted: >-
           Der Ton kann über das Lautsprecher-Symbol
           in der Navigationsleiste wieder deaktiviert werden.
       chart:
@@ -407,17 +407,17 @@ de:
               label: Neues Datawrapper Diagramm erstellen
             url:
               label: Diagramm URL
-              inline_help: >
+              inline_help: >-
                 URL zu einem bei Datawrapper publizierten Diagramm. Datawrapper bietet in den
                 Diagramm Optionen ein spezielles "Pageflow"-Design für eine optimale Darstellung
                 innerhalb des Beitrags.
             title:
               label: Titel
-              inline_help: >
+              inline_help: >-
                 Dieser Titel wird von Screenreadern verwendet, um das Diagramm als Ganzes zu beschreiben.
             backgroundColor:
               label: Hintegrund-Farbe
-              inline_help: >
+              inline_help: >-
                 Farbe der Box, die das Diagramm enthält. Insbesondere für Diagramme mit transparentem
                 Hintergrund kann über die Lesbarkeit durch Wahl einer passenden Hintergrundfarbe
                 verbessert werden.
@@ -454,7 +454,7 @@ de:
               label: "Poster"
             atmoDuringPlayback:
               label: Atmo während Medien-Wiedergabe
-              inline_help: >
+              inline_help: >-
                 Wähle wie sich die Atmo während der Wiedergabe dieses Videos verhalten soll.
               values:
                 mute: Ausblenden
@@ -471,7 +471,7 @@ de:
               label: "Poster"
             playerControlVariant:
               label: Player Controls
-              inline_help: >
+              inline_help: >-
                 Wähle den Stil der Player-Steuerelemente.
               values:
                 classic: Klassisch
@@ -481,7 +481,7 @@ de:
               label: Waveform Farbe
             atmoDuringPlayback:
               label: Atmo während Medien-Wiedergabe
-              inline_help: >
+              inline_help: >-
                 Wähle wie sich die Atmo während der Wiedergabe dieses Audio-Elements verhalten soll.
               values:
                 mute: Ausblenden
@@ -494,41 +494,41 @@ de:
           attributes:
             before_id:
               label: Vorher-Bild
-              inline_help: >
+              inline_help: >-
                 Wird links von der Trennlinie gezeigt.
             before_label:
               label: Vorher-Beschriftung
-              inline_help: >
+              inline_help: >-
                 Hier kann ein kurzes Label für das Vorher-Bild mit
                 Text gefüllt werden. Beispiele: 'Vorher', 'Januar
                 2000'
             after_id:
               label: Nachher-Bild
-              inline_help: >
+              inline_help: >-
                 Wird rechts von der Trennlinie gezeigt.
             after_label:
               label: Nachher-Beschriftung
-              inline_help: >
+              inline_help: >-
                 Hier kann ein kurzes Label für das Nachher-Bild mit
                 Text gefüllt werden. Beispiele: 'Nachher', 'Januar
                 2040'
             initial_slider_position:
               label: Trennlinien-Startposition
-              inline_help: >
+              inline_help: >-
                 Falls die Trennlinie zu Beginn nicht in der Mitte des
                 Bildes liegen soll, lässt sich ihre Startposition hier
                 voreinstellen.
             slider:
               label: Schieberegler sichtbar
-              inline_help: >
+              inline_help: >-
                 Zeigt/versteckt den sichtbaren Schieberegler.
             slider_handle:
               label: Schieberegler-Griff sichtbar
-              inline_help: >
+              inline_help: >-
                 Aktiviert/deaktiviert den Griff des Schiebereglers.
             slider_color:
               label: Schieberegler-Farbe
-              inline_help: >
+              inline_help: >-
                 Farbe des Schiebereglers inklusive Griff kann frei
                 konfiguriert werden. Achte auf gute Sichtbarkeit
                 des Reglers über den gesamten Vorher/Nachher-Bereich.
@@ -541,12 +541,12 @@ de:
               label: Video-URL
             hideControls:
               label: Steuerelemente ausblenden
-              inline_help: >
+              inline_help: >-
                 Blendet die Steuerelemente aus wenn möglich (variiert je nach Anbieter und
                 Konfiguration). Das Video kann per Klick gestartet und pausiert werden.
             hideInfo:
               label: Titel in Embed ausblenden
-              inline_help: >
+              inline_help: >-
                 Blendet Titel und Author Informationen innerhalb des Embeds aus wenn möglich
                 (variiert je nach Anbieter und Konfiguration)
             aspectRatio:
@@ -562,7 +562,7 @@ de:
           inline_help: Die Beschriftung des Elements wird direkt unterhalb des Elements angezeigt.
         position:
           label: Position
-          inline_help: >
+          inline_help: >-
             Mit dieser Einstellung kannst du die Position des Elements im Zusammenspiel mit
             Fließtext steuern: Das Element kann prominent für sich alleine stehen
             ("Volle Breite"), im Text verankert werden ("Im Textfluss") oder auch beim Scrollen
@@ -594,13 +594,13 @@ de:
         attributes:
           title:
             label: Titel
-            inline_help: >
+            inline_help: >-
               Wird in der Editor-Übersicht und der Navigationsleiste des Beitrags angezeigt.
               Nur Kapitel die sowohl Titel als auch Zusammenfassung gesetzt haben werden als
               Menüpunkt zur Navigation hinzugefügt.
           summary:
             label: Zusammenfassung
-            inline_help: >
+            inline_help: >-
               Zusammenfassung des Kapitels für die Darstellung in der Navigationsleiste. Nur Kapitel
               die sowohl Titel als auch Zusammenfassung gesetzt haben werden als Menüpunkt zur
               Navigation hinzugefügt.
@@ -616,7 +616,7 @@ de:
         attributes:
           appearance:
             label: Abblendung
-            inline_help: >
+            inline_help: >-
               Diese Einstellung legt fest wie die scrollenden Vordergrund-Ebene vom Hintergrund
               abgehoben werden soll. Bei der Einstellung "Karte" wird der Vordergrund mit einer
               Fläche mit abgerundeten Ecken hinterlegt, bei "Schatten" mit einem hellen oder dunklen
@@ -629,7 +629,7 @@ de:
             label: Hintergrund-Bild
           backdropImageMobile:
             label: Hintergrund-Bild (Hochkant)
-            inline_help: >
+            inline_help: >-
               Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones
               oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen
               Hintergrund-Bild konfiguriert werden, von dem ansonsten wichtige Teile abgeschnitten würden.
@@ -639,7 +639,7 @@ de:
             label: Hintergrund-Video
           backdropType:
             label: Hintergrund-Typ
-            inline_help: >
+            inline_help: >-
               Im Hintergund des Abschnitts kann entweder ein Bild, eine Farbe oder ein Video-Loop
               angezeigt werden.
             values:
@@ -648,7 +648,7 @@ de:
               video: Video
           fullHeight:
             label: Volle Viewport-Höhe
-            inline_help: >
+            inline_help: >-
               Aktiviere diese Einstellung, wenn der Hintergrund des Abschnitts (z.B. Bild, Farbfläche oder
               Hintergrundvideo) so groß angezeigt werden soll, dass das gesamte Browserfenster (der sogenannte
               Viewport) gefüllt ist. Wenn du mit kurzen Abschnitten arbeiten möchtest, musst du diese Option
@@ -659,13 +659,13 @@ de:
               Option für beide Abschnitte aktiviert sein.
           atmoAudioFileId:
             label: Atmo-Audio
-            inline_help: >
+            inline_help: >-
               Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch in nachfolgenden Abschnitten nahtlos weiterspielen soll, wähle für diese Abschnitte die selbe Atmo aus.
           invert:
             label: Textfarben invertieren
           layout:
             label: Vordergrund-Positionierung
-            inline_help: >
+            inline_help: >-
               Mit dieser Einstellung kannst du die Position der scrollenden
               Vordergrund-Ebene des Abschnitts in Desktop-Darstellung konfigurieren.
               In Mobil-Darstellung wird die Vordergrund-Ebene automatisch zentriert.
@@ -675,18 +675,18 @@ de:
               center: Mitte
           exposeMotifArea:
             label: Motivbereich freilegen
-            inline_help: >
+            inline_help: >-
               Sicherstellen, dass der markierte Motivbereich des Hintergrunds beim Erreichen des Abschnitts
               sichtbar ist und nicht von anderen Elementen überlagert wird. Wenn Motivbereich
               und Inhalt des Abschnitts nicht nebeneiner dargestellt werden können, wird zusätzlicher
               Freiraum am Anfang des Abschnitts eingefügt und der Inhalt nach unten verschoben.
-            inline_help_disabled: >
+            inline_help_disabled: >-
               Wähle "Motivbereich markieren" im Drei-Punkte-Menü des Hintergrund-Bilds/Videos weiter oben,
               um diese Funktion zu verwenden. du kannst damit sicherzustellen, dass wichtige Teile des
               Hintegrunds nicht von anderen Elementen überdeckt werden.
           staticShadowOpacity:
             label: Statische Abblendung
-            inline_help: >
+            inline_help: >-
               Intensität des Schattens, der hinter dem Text angezeigt wird, wenn Inhalt und
               Motivbereich nebeneinander dargestellt werden können oder kein Motivbereich markiert wurde.
               Bei links oder rechts positioniertem Vordergrund
@@ -695,14 +695,14 @@ de:
               Abblendung hinter dem Text gezeigt.
           dynamicShadowOpacity:
             label: Dynamische Abblendung
-            inline_help: >
+            inline_help: >-
               Intensität der Abblendung, die - gesteuert durch die Scrollposition - hinter dem
               Text eingeblendet wird, sobald sich Motivbereich und Inhalt des Abschnitts zu
               überschneiden beginnen, um einen ausreichnenden Kontrast zu gewährleisten. Beachte,
               dass diese Abblendung nur sichtbar ist, wenn Motivbereich und Inhalt nicht nebeneinander
               dargestellt werden können. Wechsle am besten in die Phone-Vorschau, wenn du den eingestellten
               Wert veränderst.
-            inline_help_disabled: >
+            inline_help_disabled: >-
               Aktiviere "Motivbereich freilegen" weiter oben, um diese Einstellung zu verwenden.
       edit_section_transition:
         tabs:
@@ -710,7 +710,7 @@ de:
         attributes:
           transition:
             label: Effekt
-            inline_help: >
+            inline_help: >-
               Diese Einstellung definiert den Übergang vom vorigen Abschnitt zu diesem. Der Übergang
               wirkt sich jeweils auf den Hintergrund und den Vordergrund unterschiedlich aus.
               Die Effekte "Alles Überblenden" und "Nur Hintergrund überblenden" stehen nur zur Verfügung,
