@@ -31,12 +31,6 @@ export function useBackgroundFile({file, motifArea, containerDimension}) {
     return null ;
   }
 
-  // Motif area used to be file specific not section specific. Fall
-  // back to file configuration for backwards compatibility if no
-  // motif area has been supplied.
-
-  motifArea = motifArea !== undefined ? motifArea : file.configuration.motifArea;
-
   // Calculate scale factor required to make the file cover the container:
 
   const originalRatio = file.width / file.height;

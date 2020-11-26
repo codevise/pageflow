@@ -42,46 +42,6 @@ describe('MotifArea', () => {
     expect(container.firstChild).toHaveStyle('height: 500px');
   });
 
-  it('falls back to motif area from file configuration', () => {
-    const {container} =
-      renderInEntry(
-        () => {
-          const file = useBackgroundFile({
-            file: useFile({collectionName: 'imageFiles', permaId: 100}),
-            containerDimension: {width: 2000, height: 1000}
-          });
-
-          return (
-            <MotifArea file={file} />
-          )
-        },
-        {
-          seed: {
-            imageFiles: [
-              {
-                permaId: 100,
-                width: 200,
-                height: 100,
-                configuration: {
-                  motifArea: {
-                    top: 10,
-                    left: 10,
-                    width: 50,
-                    height: 50
-                  }
-                }
-              }
-            ]
-          }
-        }
-      );
-
-    expect(container.firstChild).toHaveStyle('top: 100px');
-    expect(container.firstChild).toHaveStyle('left: 200px');
-    expect(container.firstChild).toHaveStyle('width: 1000px');
-    expect(container.firstChild).toHaveStyle('height: 500px');
-  });
-
   it('renders nothing when file is not set', () => {
     const {container} =
       renderInEntry(
@@ -167,10 +127,11 @@ describe('MotifArea', () => {
       ]
     };
 
-    function useBackgroundFileByPermaId(permaId) {
+    function useBackgroundFileByPermaId(permaId, {motifArea} = {}) {
       return useBackgroundFile({
         file: useFile({collectionName: 'imageFiles', permaId}),
-        containerDimension: {width: 2000, height: 1000}
+        containerDimension: {width: 2000, height: 1000},
+        motifArea
       });
     }
 
@@ -204,14 +165,20 @@ describe('MotifArea', () => {
       const callback = jest.fn();
       const {container, rerender} =
         renderInEntry(
-          () => <MotifArea file={useBackgroundFileByPermaId(100)}
+          () => <MotifArea file={useBackgroundFileByPermaId(100,
+                                                            {motifArea: {
+                                                              top: 10, left: 10, width: 50, height: 50
+                                                            }})}
                            onUpdate={callback} />,
           {seed}
         );
 
       callback.mockReset();
       rerender(
-        () => <MotifArea file={useBackgroundFileByPermaId(101)}
+        () => <MotifArea file={useBackgroundFileByPermaId(101,
+                                                          {motifArea: {
+                                                            top: 20, left: 20, width: 100, height: 100
+                                                          }})}
                          onUpdate={callback} />
       );
 

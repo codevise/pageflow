@@ -34,26 +34,6 @@ describe('useBackgroundFile', () => {
     expect(result.current.motifArea).toEqual({left: 20, top: 10, width: 50, height: 60});
   });
 
-  it('falls back to motif area from file configuration if passed motif area is undefined', () => {
-    const {result} = renderHookInEntry(
-      () => useBackgroundFile({
-        file: useFile({collectionName: 'imageFiles', permaId: 10}),
-        containerDimension: {width: 200, height: 100}
-      }),
-      {
-        seed: {
-          imageFiles: [{
-            permaId: 10,
-            configuration: {
-              motifArea: {left: 30, top: 20, width: 60, height: 70}
-            }
-          }]
-        }
-      });
-
-    expect(result.current.motifArea).toEqual({left: 30, top: 20, width: 60, height: 70});
-  });
-
   describe('cropPosition property', () => {
     // The following tests assume that there is an image with size
     // 2000x1000 with a specified motif area. We want to display this
@@ -168,28 +148,5 @@ describe('useBackgroundFile', () => {
         height: 80
       });
     });
-  });
-
-  it('does not fall back to motif area from file configuration if passed motif area is null', () => {
-    const {result} = renderHookInEntry(
-      () => useBackgroundFile({
-        file: useFile({collectionName: 'imageFiles', permaId: 10}),
-        motifArea: null,
-        containerDimension: {width: 200, height: 100}
-      }),
-      {
-        seed: {
-          imageFiles: [{
-            permaId: 10,
-            configuration: {
-              motifArea: {left: 30, top: 20, width: 60, height: 70}
-            }
-          }]
-        }
-      });
-
-    expect(result.current.motifArea).toBeNull();
-    expect(result.current.cropPosition.x).toEqual(50);
-    expect(result.current.cropPosition.y).toEqual(50);
   });
 });
