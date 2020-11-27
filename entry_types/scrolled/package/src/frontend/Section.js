@@ -79,6 +79,7 @@ function SectionContents(props) {
 
       <Foreground transitionStyles={props.transitionStyles}
                   state={props.state}
+                  inFirstSection={props.sectionIndex === 0}
                   minHeight={motifAreaState.minHeight}
                   paddingBottom={!endsWithFullWidthElement(props.contentElements)}
                   contentRef={setForegroundContentRef}
