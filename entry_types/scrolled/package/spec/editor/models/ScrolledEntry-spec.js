@@ -15,7 +15,11 @@ describe('ScrolledEntry', () => {
 
     describe('for sections', () => {
       beforeEach(() => {
-        editor.contentElementTypes.register('inlineImage', {});
+        editor.contentElementTypes.register('inlineImage', {
+          defaultConfig: {
+            some: 'value'
+          }
+        });
 
         testContext.entry = factories.entry(
           ScrolledEntry,
@@ -49,7 +53,8 @@ describe('ScrolledEntry', () => {
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
           content_element: {
             typeName: 'inlineImage',
-            position: 2
+            position: 2,
+            configuration: {some: 'value'}
           }
         });
       });

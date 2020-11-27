@@ -1,6 +1,7 @@
 import {Entry, editor} from 'pageflow/editor';
 
 import {ChaptersCollection, SectionsCollection, ContentElementsCollection} from '../../collections';
+import {ContentElement} from '../ContentElement';
 
 import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
@@ -41,10 +42,14 @@ export const ScrolledEntry = Entry.extend({
 
   insertContentElement(attributes, {id, at, splitPoint}) {
     if (at === 'endOfSection') {
-      const contentElement = this.sections.get(id).contentElements.create({
+      const contentElement = new ContentElement({
         position: this.contentElements.length,
         ...attributes
       });
+      contentElement.applyDefaultConfiguration();
+
+      this.sections.get(id).contentElements.add(contentElement);
+      contentElement.save();
 
       contentElement.once('sync', () => {
         this.trigger('selectContentElement', contentElement);
