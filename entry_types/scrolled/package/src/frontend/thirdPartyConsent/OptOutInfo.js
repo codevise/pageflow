@@ -44,7 +44,7 @@ export function OptOutInfo({
   }
 
   const linkText = t('pageflow_scrolled.public.third_party_consent.opt_out.prompt_link');
-  const linkHtml = `<a href="${optOutUrl}" target="_blank" rel="noopener">${linkText}</a>`;
+  const linkHtml = `<a href="${optOutUrl}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
   const html = t('pageflow_scrolled.public.third_party_consent.opt_out.prompt', {link: linkHtml});
 
   return (
