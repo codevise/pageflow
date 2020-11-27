@@ -52,7 +52,8 @@ export function ExternalLink(props) {
        href={props.url || 'about:blank'}
        onClick={onClick}
        onMouseLeave={onMouseLeave}
-       target={props.open_in_new_tab ? '_blank' : '_self'}>
+       target={props.open_in_new_tab ? '_blank' : '_self'}
+       rel={props.open_in_new_tab ? 'noopen noreferrer' : undefined}>
       <div className={styles.link_thumbnail}>
         <Image imageFile={thumbnailImageFile}
                load={props.loadImages}

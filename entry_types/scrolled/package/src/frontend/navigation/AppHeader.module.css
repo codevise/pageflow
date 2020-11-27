@@ -9,6 +9,7 @@
   width: 100%;
   text-align: center;
   height: 0;
+  touch-action: none;
 }
 
 .navigationBarExpanded {
@@ -122,7 +123,9 @@ div:focus-within > .contextIcon,
     left: 0px;
     background: rgba(255, 255, 255, 0.95);
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 60px);
+    overscroll-behavior: contain;
+    overflow: scroll;
   }
 
   .navigationChaptersHidden {

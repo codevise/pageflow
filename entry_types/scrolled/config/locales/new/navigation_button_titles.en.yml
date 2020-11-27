@@ -1,0 +1,8 @@
+en:
+  pageflow_scrolled:
+    public:
+      navigation:
+        share: Share
+        legal_info: Imprint
+        open_mobile_menu: "Open chapter overview"
+        close_mobile_menu: "close chapter overview"

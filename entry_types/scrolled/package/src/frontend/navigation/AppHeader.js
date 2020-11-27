@@ -1,7 +1,6 @@
-import React, {useState, useRef, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import classNames from 'classnames';
 import useScrollPosition from '../useScrollPosition';
-import useNativeScrollPrevention from '../useNativeScrollPrevention';
 import {useChapters} from '../../entryState';
 import {useOnUnmuteMedia} from '../useMediaMuted';
 import {isBlank} from '../utils/blank';
@@ -22,10 +21,6 @@ export function AppHeader(props) {
   const [readingProgress, setReadingProgress] = useState(0);
   const [activeChapterLink, setActiveChapterLink] = useState('chapterLink1');
   const chapters = useChapters();
-
-  const ref = useRef();
-  useNativeScrollPrevention(ref);
-
 
   useScrollPosition(
     ({prevPos, currPos}) => {
@@ -90,8 +85,7 @@ export function AppHeader(props) {
 
     return (
       <nav className={classNames(styles.navigationChapters, {[styles.navigationChaptersHidden]: mobileNavHidden})}
-           role="navigation"
-           ref={ref}>
+           role="navigation">
         <ul className={styles.chapterList}>
           {renderChapterLinks(chapters)}
         </ul>
@@ -101,7 +95,7 @@ export function AppHeader(props) {
 
   return (
     <header className={classNames(styles.navigationBar, {
-        [styles.navigationBarExpanded]: navExpanded,
+        [styles.navigationBarExpanded]: navExpanded || !mobileNavHidden,
         [styles.hasChapters]: hasChapters
       })}>
       <div className={styles.navigationBarContentWrapper}>
