@@ -292,10 +292,7 @@ en:
     help_entries:
       content_elements:
         menu_item: Content Elements
-        text: |
-          # Content Elements
-
-          TODO
+        text: "# Content Elements\nIn each section, any number of content elements can be inserted and positioned against a background. The position of the content elements on wide screen aspect ratios is determined by the foreground **positioning of the section** (left, right, centre). In portrait mode on smartphones (upright) the content elements are always displayed one below the other for space reasons.\n\n## Insert elements\nTo add a new content element, click on the **plus button** above or below an existing one and then insert text blocks, media, embeds or external links. \n\nBy clicking on the selected content element, a dialog box for **positioning the content elements** and other options, such as activating **autoplay for audio and video** or entering a caption, appears on the right-hand editing bar. \n\nFor display on wide screen aspect ratios (desktop, notebook, tablet, smartphone landscape), individual content elements such as videos, audios, video embeds, 360° images can also be arranged separately from the positioning in the text flow as **sticky** or **full width**. \n\nIf a section is aligned centrally, content elements can also be **indented to the left or right**. In this case, the content element is reduced in size so that the text can be displayed next to, instead of above the content element."
       meta_data:
         menu_item: Title and Options
         text: |
@@ -340,36 +337,86 @@ en:
           field in the section settings.
       outline:
         menu_item: Chapter, Sections, Content Elements
-        text: |
-          # Chapter, Sections, Content Elements
-
-          TODO
+        text: "# Chapter, Sections, Content Elements\n\nA Pageflow consists of one or more **chapters**, which\ncan contain several **sections** each. For each section\na background (e.g. a picture or a video loop) can be used\nwhich is displayed while the reader is within the section.\n\nSections contain **content elements**, which\ncan be of different types (e.g. text, images,\nvideos, charts). They build the actual\ncontent of the entry through which the reader scrolls.\n\nTo insert content elements, first click on **\"New\nChapter \"** to create a first chapter. If you click on the\nchapter header, you can specify the title and a description\nthat should appear in the navigation bar.\n\nNext, click **\"New Section \"** to add a section to the chapter. \nIn the preview on the left side a selection rectangle is now shown \naround the new section. In the sidebar you can edit the options \nof the section. Here you can set a picture or a colour as background for the section.\n\nDetails can be found under: [Section Options](#pageflow_scrolled.help_entries.sections)\n\nThe section already contains a text block. Click on the text to edit it.  With a click in the empty area next to the text, you can select the section again.\n\nWhen the section is selected, a plus button with the caption **\"Add new element \"** is displayed below the last element. If you click on it, you can choose what type of content element you want to insert. When a content element is selected by clicking on it, its settings can be edited. For details on the available content elements, see: [Content Elements](#pageflow_scrolled.help_entries.content_elements)\n\nAt the top and bottom of the selection rectangle around a content element there are also plus buttons, which can be used to insert further elements before or after the selected element.."
       overview:
         menu_item: Overview
-        text: |
+        text: |-
           # Overview
 
-          TODO
+          This is the editor for editing pageflows. With its split screen it allows direct preview during editing, shows changes to the text or newly selected files immediately and saves them automatically.
+
+          ## Title and options
+
+          Under "Title and options" you can set basic parameters of the appearance, as well as title, language, imprint etc. For this purpose, you can define texts that are to be displayed when sharing the article via social media services.
+
+          Details can be found under: [Title and Options](#pageflow_scrolled.help_entries.meta_data)
+
+          ## Manage files
+
+          Under "Manage files" you upload the media files to be used in the pageflow. You can also reuse already uploaded videos, photos and audios here.
+
+          Details can be found under: [Manage Files](#pageflow.help_entries.files)
+
+          ## Outline
+
+          Via the "Outline" you can add chapters and sections, i.e. edit the actual content. You can also re-sort sections and chapters at any time using drag & drop.
+
+          Details can be found under: [Chapters and Sections](#pageflow_scrolled.help_entries.outline)
+
+          ## Phone Preview
+
+          The switch at the bottom of the sidebar next to the help button can be used to switch to the phone preview. This allows you to test how your entry looks and works in portrait format.
       sections:
         menu_item: Section Options
-        text: |
+        text: |-
           # Section Options
+
+          A click in an empty area of a section will display a selection rectangle around the section. On the right side of the selection rectangle you will find a button with a pencil icon that allows you to edit the options of the section in the sidebar.
 
           ## Layout
 
-          TODO
+          The **Foreground Positioning** option allows you to select how the contents of the section should be arranged horizontally. For example, if the background of the section is on the right side, text and content elements can be positioned on the left side and vice versa. For backgrounds in the total or a centred motif, the content elements can be positioned in the middle.
+
+          By selecting a **gradient function**, a sufficient contrast between text and background can be ensured. With the **shadow**, the background is darkened or lightened with a colour gradient. With the **Card** setting, the content elements are displayed on a surface with rounded corners.
 
           ## Background
 
-          TODO
+          Either an **image**, a **colour** or a **video loop** can be displayed in the background of the section. For background images and video, the important (to be emphasised, essential) part of the image can be marked. This motif area is then initially not covered by the scrolling foreground in both desktop and mobile device displays. Further information about the "motif areas" here.
+
+          The **Background image (portrait)** option can be used to optionally specify an alternative image to be used if the screen aspect ratio of a terminal device is higher than wide, for example on smartphones and tablets in portrait mode. The image can be configured as an alternative to the background image in landscape mode, from which otherwise important parts might be cut off.
 
           ## Atmo Audio
 
-          TODO
+          With the **"Atmo"**, each section can play sound in the background, regardless of the content element. It can be determined whether a sound can only be heard in one section or continues over several sections without interruption. Simply select the same audio file for the following sections under **Options** as Atmo. In this way chapters can be acoustically separated from each other and coherent pages can be interwoven more strongly.
+
+          When playing audio and video, you can also select whether the background sound should continue to play normally or more quietly during media playback, or whether it should fade out completely. The setting of the ambience sounds can be accessed on each page via the **Options** tab. If the atmosphere disturbs you while editing your entry in the editor, you can temporarily mute it with the key combination **Alt + a**. To reactivate the Atmo, simply press **Alt + a** again.
+
 
           ## Transitions
 
-          TODO
+          For each section a transition effect to the next section can be selected.  The transition has a different effect on the background and the foreground.  To set the transition from the currently selected section to the next, **click in the background of the section** and then on the **arrow button** in the upper right corner. The following **transitions** are available
+
+          ## Crossfade
+
+          Soft fade from section A to section B.
+
+          ## Scroll in/out
+
+          Both sections are scrolled in and out.
+
+          ## Overlay
+
+          Section B overlays section A from below.
+
+          ## Expose
+
+          Section A moves up as you scroll and exposes the section B below.
+
+          ## Scrolling with static backgrounds
+
+          Section B scrolls over the static section A.
+
+          The selected setting always defines the transition from the previous to the currently selected section. The transition affects the background and foreground differently.  The **Cross-Fade All** and **Cross-Fade Background Only** effects are only available when the **Use Full Viewport-Height** option is enabled.
     inline_editing:
       add_content_element: Add new element
       cancel: Cancel
@@ -434,7 +481,11 @@ en:
         zh: Chinese
       navigation:
         chapter: Chapter %{number}
+        close_mobile_menu: close chapter overview
+        legal_info: Imprint
         mute: Mute sound
+        open_mobile_menu: Open chapter overview
+        share: Share
         unmute: Unmute sound
       navigation_skip_links:
         content: To the content
