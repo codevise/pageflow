@@ -5,9 +5,3 @@
   background-color: #000;
   color: #fff;
 }
-
-.Entry > div:first-child {
-  /* Let content begin below navigation bar. Navigation bar has zero
-     height to let first chapter start at the very top. */
-  padding-top: 58px;
-}

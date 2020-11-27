@@ -17,6 +17,12 @@
   min-height: 100vh;
 }
 
+.inFirstSection {
+  /* Let content begin below navigation bar. Navigation bar has zero
+     height to let first chapter start at the very top. */
+  padding-top: 58px;
+}
+
 .paddingBottom {
   padding-bottom: 3em;
 }
