@@ -42,7 +42,7 @@ export const ContentElement = Backbone.Model.extend({
   applyDefaultConfiguration(sibling) {
     this.configuration.set({
       ...this.getType().defaultConfig,
-      position: sibling.getDefaultSiblingPosition()
+      position: sibling?.getDefaultSiblingPosition()
     });
   },
 
