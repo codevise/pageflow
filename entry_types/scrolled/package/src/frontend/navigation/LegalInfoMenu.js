@@ -7,12 +7,13 @@ import InfoIcon from '../icons/information.svg';
 import {Tooltip} from '../Tooltip';
 import {useFileRights, useLegalInfo, useCredits} from '../../entryState';
 import {LegalInfoLink} from "./LegalInfoLink";
-
+import {useI18n} from '../i18n';
 
 export function LegalInfoMenu(props) {
   const fileRights = useFileRights();
   const legalInfo = useLegalInfo();
   const credits = useCredits();
+  const {t} = useI18n();
 
   const content = (
     <div className={styles.legalInfoTooltip}>
@@ -34,7 +35,9 @@ export function LegalInfoMenu(props) {
     <Tooltip horizontalOffset={-30}
              arrowPos={120}
              content={content}>
-      <button className={classNames(headerStyles.contextIcon, styles.infoIcon)} aria-haspopup="true">
+      <button className={classNames(headerStyles.contextIcon, styles.infoIcon)}
+              aria-haspopup="true"
+              title={t('pageflow_scrolled.public.navigation.legal_info')}>
         <InfoIcon/>
       </button>
     </Tooltip>

@@ -7,6 +7,7 @@ import ShareIcon from '../icons/share.svg';
 import {useShareProviders, useShareUrl} from "../../entryState";
 
 import {Tooltip} from '../Tooltip';
+import {useI18n} from '../i18n';
 
 import {usePhonePlatform} from '../usePhonePlatform';
 
@@ -15,6 +16,7 @@ export function SharingMenu() {
   const shareProviders = useShareProviders({isPhonePlatform : isPhonePlatform});
 
   const shareUrl = useShareUrl();
+  const {t} = useI18n();
 
   function renderShareLinks(shareProviders) {
     return shareProviders.map((shareProvider) => {
@@ -39,7 +41,8 @@ export function SharingMenu() {
       <Tooltip horizontalOffset={-70}
                arrowPos={160}
                content={renderShareLinks(shareProviders)}>
-        <button className={classNames(headerStyles.contextIcon)}>
+        <button className={classNames(headerStyles.contextIcon)}
+                title={t('pageflow_scrolled.public.navigation.share')}>
           <ShareIcon/>
         </button>
       </Tooltip>
