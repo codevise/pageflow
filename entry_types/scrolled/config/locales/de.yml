@@ -614,7 +614,11 @@ de:
         zh: Chinesisch
       navigation:
         chapter: Kapitel %{number}
+        close_mobile_menu: Kapitelübersicht schließen
+        legal_info: Impressum
         mute: Ton stummschalten
+        open_mobile_menu: Kapitelübersicht öffnen
+        share: Teilen
         unmute: Ton aktivieren
       navigation_skip_links:
         content: Zum Inhalt
