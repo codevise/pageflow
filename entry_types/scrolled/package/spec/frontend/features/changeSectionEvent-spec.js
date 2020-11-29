@@ -1,6 +1,31 @@
 import {renderEntry} from 'support/pageObjects';
 import {events} from 'pageflow/frontend';
 
+const seedData = {
+  chapters: [
+    {
+      id: 1,
+      permaId: 10,
+      position: 1,
+      configuration: {
+        title: 'On the Origin of Species'
+      }
+    },
+    {
+      id: 2,
+      permaId: 11,
+      position: 2,
+      configuration: {
+        title: 'On the Destination of Species'
+      }
+    }
+  ],
+  sections: [
+    {sectionIndex: 0, permaId: 10, chapterId: 1},
+    {sectionIndex: 1, permaId: 11, chapterId: 2}
+  ]
+}
+
 describe('change section event', () => {
   beforeEach(() => {
     events.trigger = jest.fn();
@@ -8,30 +33,7 @@ describe('change section event', () => {
 
   it('is triggered when section becomes active', () => {
     const {getSectionByPermaId} = renderEntry({
-      seed: {
-        chapters: [
-          {
-            id: 1,
-            permaId: 10,
-            position: 1,
-            configuration: {
-              title: 'On the Origin of Species'
-            }
-          },
-          {
-            id: 2,
-            permaId: 11,
-            position: 2,
-            configuration: {
-              title: 'On the Destination of Species'
-            }
-          }
-        ],
-        sections: [
-          {sectionIndex: 0, permaId: 10, chapterId: 1},
-          {sectionIndex: 1, permaId: 11, chapterId: 2}
-        ]
-      }
+      seed: seedData
     });
 
     getSectionByPermaId(11).simulateScrollingIntoView();
@@ -46,4 +48,17 @@ describe('change section event', () => {
       }
     );
   });
+
+  it('updates history state with chapter reference as fragment', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: seedData
+    });
+    history.pushState = jest.fn();
+    getSectionByPermaId(10).simulateScrollingIntoView();
+
+    expect(history.pushState).toHaveBeenCalledWith(null, null, '#on-the-origin-of-species');
+  })
+
 });
+
+

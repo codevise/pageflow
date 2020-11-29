@@ -33,7 +33,7 @@ import {useEntryStateCollectionItems, useEntryStateCollectionItem} from './Entry
  *   ]
  */
 export function useEntryStructure() {
-  const chapters = useEntryStateCollectionItems('chapters');
+  const chapters = useChapters();
   const sections = useEntryStateCollectionItems('sections');
 
   return useMemo(() => {
@@ -44,10 +44,8 @@ export function useEntryStructure() {
       section.previousSection = linkedSections[index - 1];
       section.nextSection = linkedSections[index + 1];
     });
-
     return chapters.map(chapter => ({
-      permaId: chapter.permaId,
-      ...chapter.configuration,
+      ...chapter,
       sections: linkedSections.filter(
         item => item.chapterId === chapter.id
       )
@@ -105,12 +103,25 @@ export function useSectionContentElements({sectionId}) {
 
 export function useChapters() {
   const chapters = useEntryStateCollectionItems('chapters');
-
+  let chapterTitles = {};
   return chapters.map(chapter => {
+    let chapterRef = chapter.configuration.title;
+    if (chapterRef) {
+      chapterRef = escape(chapterRef.toLowerCase().replace(/ /g,'-')); //small case and replace spaces with hyphens
+      if (chapterTitles[chapterRef]) {
+        chapterRef = chapterRef+'-'+chapter.permaId; //append permaId if chapter reference is not unique
+      }
+      chapterTitles[chapterRef] = chapter;
+    }
+    else{
+      chapterRef = 'chapter-'+chapter.permaId;
+    }
     return ({
+      id: chapter.id,
       permaId: chapter.permaId,
       title: chapter.configuration.title,
-      summary: chapter.configuration.summary
+      summary: chapter.configuration.summary,
+      chapterRef: chapterRef
     });
   });
 }
