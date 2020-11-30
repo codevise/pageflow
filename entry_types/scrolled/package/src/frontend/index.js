@@ -13,6 +13,7 @@ import styles from './foregroundBoxes/GradientBox.module.css';
 
 import {RootProviders} from './RootProviders';
 import {loadInlineEditingComponents} from './inlineEditing';
+import {loadDashUnlessHlsSupported} from './dash';
 
 import {browser} from 'pageflow/frontend';
 
@@ -68,16 +69,17 @@ export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 export {RootProviders};
 export {default as registerTemplateWidgetType} from './registerTemplateWidgetType';
 
-global.pageflowScrolledRender = function(seed) {
+global.pageflowScrolledRender = async function(seed) {
   setupI18n(seed.i18n);
-  browser.detectFeatures().then(function(){
-    if (editMode) {
-      loadInlineEditingComponents().then(() => render(seed));
-    }
-    else {
-      render(seed);
-    }
-  });
+
+  await browser.detectFeatures();
+  await loadDashUnlessHlsSupported();
+
+  if (editMode) {
+    await loadInlineEditingComponents();
+  }
+
+  render(seed);
 }
 
 function render(seed) {

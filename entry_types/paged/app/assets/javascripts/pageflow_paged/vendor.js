@@ -1,3 +1,4 @@
+//= require ./videojs
 //= require pageflow/vendor
 
 // Pageflow Paged requires an older version of React than the one that

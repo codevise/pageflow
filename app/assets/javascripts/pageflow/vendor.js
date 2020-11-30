@@ -3,7 +3,6 @@
 // It means this asset will stay cached for much longer.
 
 // = require polyfills/bind
-// = require ./videojs
 // = require ./asset_urls
 
 // = require i18n
