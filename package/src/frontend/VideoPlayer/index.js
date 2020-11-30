@@ -7,7 +7,6 @@ import {bufferUnderrunWaiting} from './bufferUnderrunWaiting';
 import {filterSources} from './filterSources';
 import {mediaEvents} from './mediaEvents';
 import {cueSettingsMethods} from './cueSettingsMethods';
-import './dash';
 
 export * from './VideoPlayer';
 

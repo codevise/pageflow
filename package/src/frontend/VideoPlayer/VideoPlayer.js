@@ -1,4 +1,4 @@
-
+import './videojsGlobals';
 import {filterSources} from './filterSources';
 import {useSlimPlayerControlsDuringPhonePlayback} from './useSlimPlayerControlsDuringPhonePlayback';
 import {prebuffering} from './prebuffering';
@@ -9,7 +9,7 @@ import {mediaEvents} from './mediaEvents';
 import {bufferUnderrunWaiting} from './bufferUnderrunWaiting';
 import {rewindMethod} from './rewindMethod';
 
-import VideoJS from 'videojs';
+import VideoJS from 'video.js';
 
 export const VideoPlayer = function(element, options) {
   options = options || {};

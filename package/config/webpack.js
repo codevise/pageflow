@@ -9,8 +9,7 @@ module.exports = {
     'underscore': '_',
     'backbone.marionette': 'Backbone.Marionette',
     'iscroll': 'IScroll',
-    'wysihtml5': 'wysihtml5',
-    'videojs': 'videojs',
+    'wysihtml5': 'wysihtml5'
   },
   // Webpack's chunk loading code references `window` by default -
   // which is not available in server side rendering context.

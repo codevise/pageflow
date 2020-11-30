@@ -34,6 +34,10 @@ browser.feature('mse and native hls support', function(has) {
     !agent.matchesMobilePlatform();
 });
 
+browser.feature('hls support', function(has) {
+  return agent.matchesSafari() || agent.matchesMobilePlatform();
+});
+
 browser.feature('native video player', function(has) {
   return has('iphone platform');
 });

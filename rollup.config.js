@@ -19,7 +19,7 @@ const frontendGlobals = {
   'underscore': '_',
   'i18n-js': 'I18n',
   'iscroll': 'IScroll',
-  'videojs': 'videojs',
+  'video.js': 'videojs'
 };
 
 const editorGlobals = {
