@@ -26,6 +26,7 @@
     "slate-react": "^0.57.3",
     "striptags": "^3.1.1",
     "use-context-selector": "^1.2.11",
+    "video.js": "6.2.7",
     "wavesurfer.js": "https://github.com/tf/wavesurfer.js#patches",
     "whatwg-fetch": "^3.0.0"
   },
