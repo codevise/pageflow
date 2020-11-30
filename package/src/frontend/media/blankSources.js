@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-export const BLANK_AUDIO_SRC =
+const BLANK_AUDIO_SRC =
   'data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBA' +
   'AAAABAAEAIlYAAESsAAACABAAZGF0YRAAAAAAAAAAAAAAAAAAAAAAAA==';
 
-export const BLANK_VIDEO_SRC =
+const BLANK_VIDEO_SRC =
   'data:video/mp4;base64,AAAAHGZ0eXBNNFYgAAACAG' +
   'lzb21pc28yYXZjMQAAAAhmcmVlAAAGF21kYXTeBAAAbGliZmFhYyAxLjI4AABCAJMgBDIARw' +
   'AAArEGBf//rdxF6b3m2Ui3lizYINkj7u94MjY0IC0gY29yZSAxNDIgcjIgOTU2YzhkOCAtIE' +
@@ -91,7 +91,7 @@ export const BLANK_VIDEO_SRC =
   'AAAG1kaXJhcHBsAAAAAAAAAAAAAAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYX' +
   'ZmNTUuMzMuMTAw';
 
-  export const blankSources = {
-    'audio': BLANK_AUDIO_SRC,
-    'video': BLANK_VIDEO_SRC
-  }
+export const blankSources = {
+  audio: {src: BLANK_AUDIO_SRC, type: 'audio/wav'},
+  video: {src: BLANK_VIDEO_SRC, type: 'video/mp4'}
+}

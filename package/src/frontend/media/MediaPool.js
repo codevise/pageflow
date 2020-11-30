@@ -18,7 +18,7 @@ export class MediaPool {
     this.playerCount = options.playerCount;
     this.allocatedPlayers = {};
     this.unAllocatedPlayers = {};
-    
+
     this.mediaFactory_ = {
       [MediaType.AUDIO]: () => {
         const audioEl = document.createElement('audio');
@@ -53,11 +53,11 @@ export class MediaPool {
       player.poster(poster);
       player.controls(controls)
       if (playsInline) {
-        player.playsinline(true); 
+        player.playsinline(true);
       }
       player.updateHooks(hooks || {});
       player.updateMediaEventsContext(mediaEventsContextData);
-      
+
       this.allocatedPlayers[playerType].push(player);
       player.playerId = playerId || this.allocatedPlayers[playerType].length
       return player;
@@ -71,13 +71,13 @@ export class MediaPool {
   }
   unAllocatePlayer(player){
     if (player) {
-      let type = this.getMediaTypeFromEl(player.el());    
+      let type = this.getMediaTypeFromEl(player.el());
       this.allocatedPlayers[type] = this.allocatedPlayers[type].filter(p=>p!=player);
-      
+
       player.controls(false);
       player.getMediaElement().loop = false;
       player.playsinline(false);
-      player.getMediaElement().setAttribute('src', blankSources[type]);
+      player.src(blankSources[type]);
       player.poster('');
 
       clearTextTracks(player);
@@ -97,7 +97,7 @@ export class MediaPool {
   }
   allPlayersForType(type){
     if (this.unAllocatedPlayers[type]) {
-     return [...this.unAllocatedPlayers[type], ...this.allocatedPlayers[type]] 
+     return [...this.unAllocatedPlayers[type], ...this.allocatedPlayers[type]]
     }
     return [];
   }
@@ -129,7 +129,7 @@ export class MediaPool {
       mediaElement: mediaEl,
       tagName: type
     });
-    mediaEl.setAttribute('src', blankSources[type]);
+    mediaEl.setAttribute('src', blankSources[type].src);
     this.unAllocatedPlayers[type].push(player);
     return player;
   }
