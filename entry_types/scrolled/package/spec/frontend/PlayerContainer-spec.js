@@ -5,7 +5,7 @@ import 'support/mediaElementStub';
 import {render} from '@testing-library/react'
 import {media} from 'pageflow/frontend';
 import PlayerContainer from 'frontend/MediaPlayer/PlayerContainer';
-import videojs from 'videojs';
+import videojs from 'video.js';
 
 describe('PlayerContainer', () => {
   beforeEach(() => {

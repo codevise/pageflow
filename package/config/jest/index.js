@@ -17,8 +17,7 @@ module.exports = {
     '^underscore$': resolve('../../src/vendor/underscore'),
     '^cocktail$': resolve('../../src/vendor/cocktail'),
     '^iscroll$': resolve('../../src/vendor/iscroll'),
-    '^wysihtml5': resolve('../../spec/support/wysihtmlStub'),
-    '^videojs$': resolve('../../../vendor/assets/javascripts/videojs')
+    '^wysihtml5': resolve('../../spec/support/wysihtmlStub')
   },
 
   transform: {

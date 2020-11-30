@@ -1,5 +1,5 @@
 import {media, events} from 'pageflow/frontend';
-import videojs from 'videojs';
+import videojs from 'video.js';
 import '$support/mediaElementStub';
 import '$support/fakeBrowserFeatures';
 
