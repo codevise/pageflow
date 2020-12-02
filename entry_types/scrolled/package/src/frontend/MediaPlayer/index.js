@@ -6,6 +6,7 @@ import ScrollToSectionContext from "../ScrollToSectionContext";
 import watchPlayer, {unwatchPlayer} from './watchPlayer';
 import {applyPlayerState} from './applyPlayerState';
 import {updatePlayerState} from './updatePlayerState';
+import {updateObjectPosition} from './updateObjectPosition';
 
 import {useEventContextData} from '../useEventContextData';
 import {useIsStaticPreview} from '../useScrollPositionLifecycle';
@@ -66,6 +67,7 @@ function PreparedMediaPlayer(props){
 
     watchPlayer(newPlayer, props.playerActions);
     applyPlayerState(newPlayer, props.playerState, props.playerActions)
+    updateObjectPosition(newPlayer, props.objectPosition.x, props.objectPosition.y)
   }
 
   let onDispose = ()=>{
@@ -88,6 +90,13 @@ function PreparedMediaPlayer(props){
     }
   }, [props.textTracks.activeFileId]);
 
+  useEffect(() => {
+    const player = playerRef.current;
+    if (player) {
+      updateObjectPosition(player, props.objectPosition.x, props.objectPosition.y);
+    }
+  }, [props.objectPosition.x, props.objectPosition.y]);
+
   return (
     <PlayerContainer type={props.type}
                      sources={appendSuffix(props.sources, props.sourceUrlSuffix)}
@@ -96,7 +105,6 @@ function PreparedMediaPlayer(props){
                      loop={props.loop}
                      controls={props.controls}
                      playsInline={props.playsInline}
-                     objectPosition={props.objectPosition}
                      mediaEventsContextData={eventContextData}
                      atmoDuringPlayback={props.atmoDuringPlayback}
                      onSetup={onSetup}
@@ -106,6 +114,7 @@ function PreparedMediaPlayer(props){
 };
 
 PreparedMediaPlayer.defaultProps = {
+  objectPosition: {},
   textTracks: {
     files: []
   }

@@ -97,37 +97,4 @@ describe('PlayerContainer', () => {
       expect.objectContaining({loop: true, controls: true, playsInline: true})
     );
   });
-
-  it('calls media.getPlayer again, when object position changes', () => {
-    const spyMedia = jest.spyOn(media, 'getPlayer');
-    let sources = getVideoSources();
-    const {rerender} = render(<PlayerContainer type={'video'} sources={sources} />);
-    expect(spyMedia).toHaveBeenCalledTimes(1);
-
-    rerender(<PlayerContainer type={'video'} sources={sources} objectPosition={{x: 100, y: 50}} />);
-    expect(spyMedia).toHaveBeenCalledTimes(2);
-    expect(spyMedia).toHaveBeenCalledWith(
-      sources,
-      expect.objectContaining({objectPosition: {x: 100, y: 50}})
-    );
-
-    rerender(<PlayerContainer type={'video'} sources={sources} objectPosition={{x: 0, y: 50}} />);
-    expect(spyMedia).toHaveBeenCalledTimes(3);
-    expect(spyMedia).toHaveBeenCalledWith(
-      sources,
-      expect.objectContaining({objectPosition: {x: 0, y: 50}})
-    );
-  });
-
-  it('does not call media.getPlayer again, when object position stays deeply equal', () => {
-    const spyMedia = jest.spyOn(media, 'getPlayer');
-    let sources = getVideoSources();
-    const {rerender} = render(<PlayerContainer type={'video'}
-                                               sources={sources}
-                                               objectPosition={{x: 100, y: 50}} />);
-    expect(spyMedia).toHaveBeenCalledTimes(1);
-
-    rerender(<PlayerContainer type={'video'} sources={sources} objectPosition={{x: 100, y: 50}} />);
-    expect(spyMedia).toHaveBeenCalledTimes(1);
-  });
 });
