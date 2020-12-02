@@ -149,6 +149,29 @@ describe('MediaPlayer', () => {
     );
   });
 
+  it('applies object position to player', () => {
+    const {getPlayer} = render(<MediaPlayer {...requiredProps()}
+                                            type="video"
+                                            objectPosition={{x: 50, y: 0}}
+                                            sources={getVideoSources()} />);
+
+    expect(getPlayer().getMediaElement()).toHaveStyle('object-position: 50% 0%');
+  });
+
+  it('updates object position on player when props change', () => {
+    const {getPlayer, rerender} =
+      render(<MediaPlayer {...requiredProps()}
+                          type="video"
+                          objectPosition={{x: 100, y: 100}}
+                          sources={getVideoSources()} />);
+    rerender(<MediaPlayer {...requiredProps()}
+                          type="video"
+                          objectPosition={{x: 50, y: 0}}
+                          sources={getVideoSources()} />);
+
+    expect(getPlayer().getMediaElement()).toHaveStyle('object-position: 50% 0%');
+  });
+
   it('it passes data from EventContext to getPlayer as media events context data', () => {
     const eventContextData = {some: 'data'};
 

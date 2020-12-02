@@ -191,10 +191,8 @@ describe('VideoPlayer', () => {
     expect(result.container.querySelector('video').hasAttribute('alt')).toBe(true);
   });
 
-  it('passes object position based on motif area to media api when fit is cover', () => {
-    const spyMedia = jest.spyOn(media, 'getPlayer');
-
-    renderInEntry(
+  it('sets object position based on motif area to media api when fit is cover', () => {
+    const result = renderInEntry(
       () => {
         const file = useBackgroundFile({
           file: useFile({collectionName: 'videoFiles', permaId: 100}),
@@ -215,16 +213,11 @@ describe('VideoPlayer', () => {
       }
     );
 
-    expect(spyMedia).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.objectContaining({objectPosition: {x: 100, y: 50}})
-    );
+    expect(result.container.querySelector('video')).toHaveStyle('object-position: 100% 50%');
   });
 
-  it('does not pass object position when fit is not cover', () => {
-    const spyMedia = jest.spyOn(media, 'getPlayer');
-
-    renderInEntry(
+  it('does not set object position when fit is not cover', () => {
+    const result = renderInEntry(
       () => {
         const file = useBackgroundFile({
           file: useFile({collectionName: 'videoFiles', permaId: 100}),
@@ -244,9 +237,6 @@ describe('VideoPlayer', () => {
       }
     );
 
-    expect(spyMedia).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.not.objectContaining({objectPosition: expect.anything()})
-    );
+    expect(result.container.querySelector('video')).toHaveAttribute('style', '');
   });
 });

@@ -6,7 +6,7 @@ import './videojsBase.module.css';
 
 function PlayerContainer({
   filePermaId, sources, textTrackSources, type,
-  playsInline, loop, controls, objectPosition, altText,
+  playsInline, loop, controls, altText,
   mediaEventsContextData, atmoDuringPlayback, onSetup, onDispose
 }){
   const playerWrapperRef = useRef(null);
@@ -23,7 +23,6 @@ function PlayerContainer({
         playsInline: playsInline,
         loop: loop,
         controls: controls,
-        objectPosition,
         hooks: atmoDuringPlayback ? atmo.createMediaPlayerHooks(atmoDuringPlayback) : {}, //create hooks only for inline media players
         mediaEventsContextData,
         altText
@@ -87,8 +86,6 @@ function areEqual(prevProps, nextProps) {
          prevProps.playsInline === nextProps.playsInline &&
          prevProps.loop === nextProps.loop &&
          prevProps.controls === nextProps.controls &&
-         prevProps.objectPosition?.x === nextProps.objectPosition?.x &&
-         prevProps.objectPosition?.y === nextProps.objectPosition?.y &&
          prevProps.altText === nextProps.altText &&
          prevProps.atmoDuringPlayback === nextProps.atmoDuringPlayback &&
          deepEqual(prevProps.sources, nextProps.sources) &&
