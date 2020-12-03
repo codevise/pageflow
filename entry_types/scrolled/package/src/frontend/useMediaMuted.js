@@ -1,6 +1,7 @@
 import React, {createContext, useContext, useState, useEffect} from 'react';
 import {media} from 'pageflow/frontend';
 
+import {useIsomorphicLayoutEffect} from './useIsomorphicLayoutEffect';
 import {usePrevious} from './usePrevious';
 
 const MediaMutedContext = createContext(false);
@@ -31,7 +32,7 @@ export function useOnUnmuteMedia(callback) {
   const muted = useMediaMuted();
   const wasMuted = usePrevious(muted);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (wasMuted && !muted) {
       callback();
     }
