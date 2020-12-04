@@ -6,7 +6,7 @@
   min-height: 240px;
   width: auto;
   height: auto;
-  pointer-events: all;
+  pointer-events: auto;
   position: relative;
   -webkit-transition: opacity 0.5s;
   -moz-transition: opacity 0.5s;

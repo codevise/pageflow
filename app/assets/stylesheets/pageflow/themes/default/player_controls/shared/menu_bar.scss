@@ -15,7 +15,7 @@ $player-controls-quality-menu-annotation-color: #ff0000 !default;
     position: absolute;
     bottom: 0;
     z-index: 10;
-    pointer-events: all;
+    pointer-events: auto;
 
     @include transition(opacity 0.5s, visibility 0.5s);
 
@@ -98,7 +98,7 @@ $player-controls-quality-menu-annotation-color: #ff0000 !default;
   &-menu_bar_button-sub_menu_visible .player_controls-menu_bar_button_sub_menu {
     visibility: visible;
     opacity: 1;
-    pointer-events: all;
+    pointer-events: auto;
     @include transition(none);
   }
 

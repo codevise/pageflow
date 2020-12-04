@@ -80,7 +80,7 @@ $classic-player-controls-info-box-border-radius: 4px !default;
     pointer-events: none;
 
     a {
-      pointer-events: all;
+      pointer-events: auto;
     }
 
     margin: 0;

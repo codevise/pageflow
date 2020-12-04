@@ -34,7 +34,7 @@
 .subMenuExpanded .subMenu {
   visibility: visible;
   opacity: 1;
-  pointer-events: all;
+  pointer-events: auto;
   transition: none;
 }
 

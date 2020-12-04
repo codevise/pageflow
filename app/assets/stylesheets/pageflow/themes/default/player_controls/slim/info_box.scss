@@ -74,7 +74,7 @@ $slim-player-controls-info-box-header-typography: () !default;
     pointer-events: none;
 
     a {
-      pointer-events: all;
+      pointer-events: auto;
     }
 
     position: absolute;
