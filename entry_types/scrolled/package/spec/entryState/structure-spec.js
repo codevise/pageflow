@@ -213,7 +213,7 @@ describe('useChapters', () => {
   });
 
   it('escapes chapter titles', () => {
-    chaptersSeed[0].configuration.title = "<script>alert('test')</script>Title"
+    chaptersSeed[0].configuration.title = "<script>alert('test')</script>Titleä"
     const {result} = renderHookInEntry(
       () => useChapters(),
       {
@@ -228,7 +228,7 @@ describe('useChapters', () => {
     expect(chapters).toMatchObject([
       {
         permaId: 10,
-        chapterRef: '%3Cscript%3Ealert%28%27test%27%29%3C/script%3Etitle',
+        chapterRef: "lessscriptgreateralert('test')lessscriptgreatertitlea",
         title: chaptersSeed[0].configuration.title,
         summary: 'An introductory chapter'
       },

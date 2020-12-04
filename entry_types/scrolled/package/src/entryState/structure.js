@@ -1,6 +1,6 @@
 import {useMemo, useCallback} from 'react';
 import {useEntryStateCollectionItems, useEntryStateCollectionItem} from './EntryStateProvider';
-
+import slugify from 'slugify';
 /**
  * Returns a nested data structure representing the chapters, sections
  * and content elements of the entry.
@@ -107,7 +107,11 @@ export function useChapters() {
   return chapters.map(chapter => {
     let chapterRef = chapter.configuration.title;
     if (chapterRef) {
-      chapterRef = escape(chapterRef.toLowerCase().replace(/ /g,'-')); //small case and replace spaces with hyphens
+      if (slugify) {
+        chapterRef = slugify(chapterRef, {
+          lower: true,
+        });
+      }
       if (chapterTitles[chapterRef]) {
         chapterRef = chapterRef+'-'+chapter.permaId; //append permaId if chapter reference is not unique
       }
