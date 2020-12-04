@@ -31,7 +31,7 @@ $drop-down-button-menu-border-color: #aaa !default;
   &.is_visible {
     @include transition(visibility 0ms, opacity 100ms);
     visibility: visible;
-    pointer-events: all;
+    pointer-events: auto;
     opacity: 1;
   }
 }

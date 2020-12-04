@@ -53,7 +53,7 @@ $slim-player-controls-control-bar-text-phone-typography: () !default;
   }
 
   &-container-playing %player_controls-control_bar {
-    pointer-events: all;
+    pointer-events: auto;
   }
 
   &-control_bar_text {
@@ -248,7 +248,7 @@ $slim-player-controls-control-bar-text-phone-typography: () !default;
   &-control_bar_text,
   &-play_button,
   &-skip_button {
-    pointer-events: all;
+    pointer-events: auto;
   }
 
   &-progress_bar,

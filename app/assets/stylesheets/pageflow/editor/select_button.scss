@@ -37,7 +37,7 @@
   &:hover .dropdown {
     @include transition(visibility 0ms, opacity 100ms, top 200ms);
     visibility: visible;
-    pointer-events: all;
+    pointer-events: auto;
 
     top: 18px;
     opacity: 1;

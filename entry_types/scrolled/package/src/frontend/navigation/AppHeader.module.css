@@ -44,7 +44,7 @@
 }
 
 .contextIcons > * {
-  pointer-events: all;
+  pointer-events: auto;
 }
 
 .contextIcon {

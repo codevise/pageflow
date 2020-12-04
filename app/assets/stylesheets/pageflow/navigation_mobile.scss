@@ -75,7 +75,7 @@ body {
     background-position: -45px 0px;
     background-size: auto 100%;
     right: 10px;
-    pointer-events: all;
+    pointer-events: auto;
     cursor: pointer;
     @include transition(opacity 500ms, right 250ms);
 
@@ -99,7 +99,7 @@ body {
     @include background-icon-center($color: #ddd);
     @include fa-arrow-left-icon;
     cursor: pointer;
-    pointer-events: all;
+    pointer-events: auto;
     position: absolute;
     top: 16px;
     right: 60px;
@@ -277,7 +277,7 @@ body {
   }
 
   &.active {
-    pointer-events: all;
+    pointer-events: auto;
     visibility: visible;
 
     &:before {
@@ -293,7 +293,7 @@ body {
       right: 200px;
 
       &.sharing, &.imprint {
-        pointer-events: all;
+        pointer-events: auto;
         opacity: 1;
       }
     }
