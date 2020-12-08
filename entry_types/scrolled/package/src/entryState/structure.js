@@ -1,5 +1,6 @@
 import {useMemo, useCallback} from 'react';
 import {useEntryStateCollectionItems, useEntryStateCollectionItem} from './EntryStateProvider';
+import I18n from 'i18n-js';
 import slugify from 'slugify';
 /**
  * Returns a nested data structure representing the chapters, sections
@@ -103,29 +104,29 @@ export function useSectionContentElements({sectionId}) {
 
 export function useChapters() {
   const chapters = useEntryStateCollectionItems('chapters');
-  let chapterTitles = {};
+  let chapterSlugs = {};
   return chapters.map(chapter => {
-    let chapterRef = chapter.configuration.title;
-    if (chapterRef) {
-      if (slugify) {
-        chapterRef = slugify(chapterRef, {
-          lower: true,
-        });
+    let chapterSlug = chapter.configuration.title;
+    if (chapterSlug) {
+      chapterSlug = slugify(chapterSlug, {
+        lower: true,
+        locale: 'de',
+        strict: true
+      });
+      if (chapterSlugs[chapterSlug]) {
+        chapterSlug = chapterSlug+'-'+chapter.permaId; //append permaId if chapter reference is not unique
       }
-      if (chapterTitles[chapterRef]) {
-        chapterRef = chapterRef+'-'+chapter.permaId; //append permaId if chapter reference is not unique
-      }
-      chapterTitles[chapterRef] = chapter;
+      chapterSlugs[chapterSlug] = chapter;
     }
     else{
-      chapterRef = 'chapter-'+chapter.permaId;
+      chapterSlug = 'chapter-'+chapter.permaId;
     }
     return ({
       id: chapter.id,
       permaId: chapter.permaId,
       title: chapter.configuration.title,
       summary: chapter.configuration.summary,
-      chapterRef: chapterRef
+      chapterSlug: chapterSlug
     });
   });
 }

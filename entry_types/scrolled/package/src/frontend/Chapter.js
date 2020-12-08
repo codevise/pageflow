@@ -5,7 +5,7 @@ import {EventContextDataProvider} from './useEventContextData';
 
 export default function Chapter(props) {
   return (
-    <div id={props.chapterRef}>
+    <div id={props.chapterSlug}>
       {renderSections(props.sections,
                       props.currentSectionIndex,
                       props.setCurrentSectionIndex,

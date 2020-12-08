@@ -95,6 +95,7 @@ describe('useEntryStructure', () => {
   const expectedEntryStructure = [
     {
       title: 'Chapter 1',
+      chapterSlug: 'chapter-1',
       summary: 'An introductory chapter',
       sections: [
         {
@@ -109,6 +110,7 @@ describe('useEntryStructure', () => {
     },
     {
       title: 'Chapter 2',
+      chapterSlug: 'chapter-2',
       summary: 'A great chapter',
       sections: [
         {
@@ -199,26 +201,47 @@ describe('useChapters', () => {
     expect(chapters).toMatchObject([
       {
         permaId: 10,
-        chapterRef: 'chapter-1',
+        chapterSlug: 'chapter-1',
         title: 'Chapter 1',
         summary: 'An introductory chapter'
       },
       {
         permaId: 11,
-        chapterRef: 'chapter-2',
+        chapterSlug: 'chapter-2',
         title: 'Chapter 2',
         summary: 'A great chapter'
       }
     ]);
   });
 
-  it('escapes chapter titles', () => {
-    chaptersSeed[0].configuration.title = "<script>alert('test')</script>Titleä"
+  it('sanitizes chapter titles', () => {
     const {result} = renderHookInEntry(
       () => useChapters(),
       {
         seed: {
-          chapters: chaptersSeed
+          chapters: [
+            {
+              configuration: {
+                title: 'SmallCase',
+              }
+            },
+            {
+              configuration: {
+                title: 'RemöveUmläütß',
+              }
+            },
+            {
+              configuration: {
+                title: 'remove space',
+              }
+            },
+            {
+              configuration: {
+                title: 'remove#special$character',
+              }
+            },
+            
+          ]
         }
       }
     );
@@ -227,16 +250,16 @@ describe('useChapters', () => {
 
     expect(chapters).toMatchObject([
       {
-        permaId: 10,
-        chapterRef: "lessscriptgreateralert('test')lessscriptgreatertitlea",
-        title: chaptersSeed[0].configuration.title,
-        summary: 'An introductory chapter'
+        chapterSlug: "smallcase",
       },
       {
-        permaId: 11,
-        chapterRef: 'chapter-2',
-        title: 'Chapter 2',
-        summary: 'A great chapter'
+        chapterSlug: 'remoeveumlaeuetss',
+      },
+      {
+        chapterSlug: 'remove-space',
+      },
+      {
+        chapterSlug: 'removespecialdollarcharacter',
       }
     ]);
   });

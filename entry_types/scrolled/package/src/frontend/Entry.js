@@ -20,16 +20,22 @@ export default withInlineEditingDecorator('EntryDecorator', function Entry(props
   const entryStructure = useEntryStructure();
   useSectionChangeEvents(entryStructure, currentSectionIndex);
 
+  let updateChapterSlug = (slug) => {
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, null, '#'+slug);
+    }
+  }
+
   const setCurrentSectionIndex = useCallback(index => {
     sectionChangeMessagePoster(index);
     setCurrentSectionIndexState(index);
     let sectionCounter = 0;
     let chapter = entryStructure.find(chapter => {
-      sectionCounter += chapter.sections.length-1;
-      return index <= sectionCounter;
+      sectionCounter += chapter.sections.length;
+      return index < sectionCounter;
     });
     if (chapter) {
-      history.pushState(null, null, '#'+chapter.chapterRef)
+      updateChapterSlug(chapter.chapterSlug);
     }
   }, [setCurrentSectionIndexState, entryStructure]);
 
@@ -72,7 +78,7 @@ function renderChapters(entryStructure,
   return entryStructure.map((chapter, index) => {
     return(
       <Chapter key={index}
-               chapterRef={chapter.chapterRef}
+               chapterSlug={chapter.chapterSlug}
                permaId={chapter.permaId}
                sections={chapter.sections}
                currentSectionIndex={currentSectionIndex}
