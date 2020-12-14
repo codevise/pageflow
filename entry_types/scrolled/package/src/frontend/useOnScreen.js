@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import {browser} from 'pageflow/frontend';
 
 export function useOnScreen(ref, {rootMargin, onIntersecting, skipIframeFix} = {}) {
   const [isIntersecting, setIntersecting] = useState(false);
@@ -58,7 +59,7 @@ function createIntersectionObserver(callback, options, skipIframeFix) {
   try {
     let optionsWithIframeFix = options;
 
-    if (options.rootMargin && window.parent !== window) {
+    if (!browser.has('safari platform') && options.rootMargin && window.parent !== window) {
       optionsWithIframeFix = {
         ...options,
         root: window.document
