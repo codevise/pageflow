@@ -9,7 +9,6 @@
   width: 100%;
   text-align: center;
   height: 0;
-  touch-action: none;
 }
 
 .navigationBarExpanded {
@@ -116,7 +115,6 @@ div:focus-within > .contextIcon,
   }
 
   .navigationChapters {
-    touch-action: none;
     display: block;
     position: fixed;
     top: 60px;
@@ -133,7 +131,16 @@ div:focus-within > .contextIcon,
   }
 
   .chapterList {
-    margin-top: 50px;
+    padding-top: 50px;
+    box-sizing: border-box;
+    /*
+      Prevent scrolling the page when mobile navigation is open, by
+      forcing overflow and setting `overscroll-behavior: contain`
+      above. Normally this should be done with `touch-action: none`.
+      But using `touch-action` causes weird rendering bugs in Chrome
+      on Android.
+    */
+    min-height: 101%;
   }
 
   .chapterListItem {
