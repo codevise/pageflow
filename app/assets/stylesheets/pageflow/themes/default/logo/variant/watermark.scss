@@ -111,7 +111,7 @@ $logo-watermark-mobile-height: null !default;
   }
 
   .header.near_top .header_logo {
-    pointer-events: all;
+    pointer-events: auto;
   }
 
   @if $logo-watermark-variant-fade-in-near-top == "first-page" {

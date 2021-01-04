@@ -15,7 +15,7 @@
 
     position: relative;
     z-index: 1;
-    pointer-events: all;
+    pointer-events: auto;
     height: 70px;
 
     @media (min-height: 600px) {

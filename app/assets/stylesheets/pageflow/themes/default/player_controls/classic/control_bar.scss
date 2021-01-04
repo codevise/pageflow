@@ -61,7 +61,7 @@ $classic-player-controls-timestamp-position: "left" !default;
 
     background-color: $classic-player-controls-background-color;
     border: $classic-player-controls-border-width solid $classic-player-controls-border-color;
-    pointer-events: all;
+    pointer-events: auto;
 
     &:before {
       content: "";
