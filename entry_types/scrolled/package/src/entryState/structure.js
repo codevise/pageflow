@@ -1,6 +1,7 @@
 import {useMemo, useCallback} from 'react';
 import {useEntryStateCollectionItems, useEntryStateCollectionItem} from './EntryStateProvider';
-
+import I18n from 'i18n-js';
+import slugify from 'slugify';
 /**
  * Returns a nested data structure representing the chapters, sections
  * and content elements of the entry.
@@ -33,7 +34,7 @@ import {useEntryStateCollectionItems, useEntryStateCollectionItem} from './Entry
  *   ]
  */
 export function useEntryStructure() {
-  const chapters = useEntryStateCollectionItems('chapters');
+  const chapters = useChapters();
   const sections = useEntryStateCollectionItems('sections');
 
   return useMemo(() => {
@@ -44,10 +45,8 @@ export function useEntryStructure() {
       section.previousSection = linkedSections[index - 1];
       section.nextSection = linkedSections[index + 1];
     });
-
     return chapters.map(chapter => ({
-      permaId: chapter.permaId,
-      ...chapter.configuration,
+      ...chapter,
       sections: linkedSections.filter(
         item => item.chapterId === chapter.id
       )
@@ -105,12 +104,29 @@ export function useSectionContentElements({sectionId}) {
 
 export function useChapters() {
   const chapters = useEntryStateCollectionItems('chapters');
-
+  let chapterSlugs = {};
   return chapters.map(chapter => {
+    let chapterSlug = chapter.configuration.title;
+    if (chapterSlug) {
+      chapterSlug = slugify(chapterSlug, {
+        lower: true,
+        locale: 'de',
+        strict: true
+      });
+      if (chapterSlugs[chapterSlug]) {
+        chapterSlug = chapterSlug+'-'+chapter.permaId; //append permaId if chapter reference is not unique
+      }
+      chapterSlugs[chapterSlug] = chapter;
+    }
+    else{
+      chapterSlug = 'chapter-'+chapter.permaId;
+    }
     return ({
+      id: chapter.id,
       permaId: chapter.permaId,
       title: chapter.configuration.title,
-      summary: chapter.configuration.summary
+      summary: chapter.configuration.summary,
+      chapterSlug: chapterSlug
     });
   });
 }

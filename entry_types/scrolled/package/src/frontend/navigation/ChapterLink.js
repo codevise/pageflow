@@ -12,7 +12,7 @@ export function ChapterLink(props) {
   const item = (
     <div>
       <a className={classNames(styles.chapterLink, {[styles.chapterLinkActive]: props.active})}
-         href={`#chapter-${props.permaId}`}
+         href={`#${props.chapterSlug}`}
          onClick={() => props.handleMenuClick(props.chapterLinkId)}>
         {presence(props.title) || t('pageflow_scrolled.public.navigation.chapter', {number: props.chapterIndex})}
       </a>

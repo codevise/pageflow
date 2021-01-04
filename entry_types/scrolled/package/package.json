@@ -24,6 +24,7 @@
     "reselect": "^4.0.0",
     "slate": "^0.57.3",
     "slate-react": "^0.57.3",
+    "slugify": "^1.4.6",
     "striptags": "^3.1.1",
     "use-context-selector": "^1.2.11",
     "video.js": "6.2.7",

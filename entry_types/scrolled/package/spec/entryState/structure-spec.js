@@ -95,6 +95,7 @@ describe('useEntryStructure', () => {
   const expectedEntryStructure = [
     {
       title: 'Chapter 1',
+      chapterSlug: 'chapter-1',
       summary: 'An introductory chapter',
       sections: [
         {
@@ -109,6 +110,7 @@ describe('useEntryStructure', () => {
     },
     {
       title: 'Chapter 2',
+      chapterSlug: 'chapter-2',
       summary: 'A great chapter',
       sections: [
         {
@@ -199,13 +201,65 @@ describe('useChapters', () => {
     expect(chapters).toMatchObject([
       {
         permaId: 10,
+        chapterSlug: 'chapter-1',
         title: 'Chapter 1',
         summary: 'An introductory chapter'
       },
       {
         permaId: 11,
+        chapterSlug: 'chapter-2',
         title: 'Chapter 2',
         summary: 'A great chapter'
+      }
+    ]);
+  });
+
+  it('sanitizes chapter titles', () => {
+    const {result} = renderHookInEntry(
+      () => useChapters(),
+      {
+        seed: {
+          chapters: [
+            {
+              configuration: {
+                title: 'SmallCase',
+              }
+            },
+            {
+              configuration: {
+                title: 'RemöveUmläütß',
+              }
+            },
+            {
+              configuration: {
+                title: 'remove space',
+              }
+            },
+            {
+              configuration: {
+                title: 'remove#special$character',
+              }
+            },
+            
+          ]
+        }
+      }
+    );
+
+    const chapters = result.current;
+
+    expect(chapters).toMatchObject([
+      {
+        chapterSlug: "smallcase",
+      },
+      {
+        chapterSlug: 'remoeveumlaeuetss',
+      },
+      {
+        chapterSlug: 'remove-space',
+      },
+      {
+        chapterSlug: 'removespecialdollarcharacter',
       }
     ]);
   });

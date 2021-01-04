@@ -18,13 +18,26 @@ export default withInlineEditingDecorator('EntryDecorator', function Entry(props
   const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
 
   const entryStructure = useEntryStructure();
-
   useSectionChangeEvents(entryStructure, currentSectionIndex);
+
+  let updateChapterSlug = (slug) => {
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, null, '#'+slug);
+    }
+  }
 
   const setCurrentSectionIndex = useCallback(index => {
     sectionChangeMessagePoster(index);
     setCurrentSectionIndexState(index);
-  }, [setCurrentSectionIndexState]);
+    let sectionCounter = 0;
+    let chapter = entryStructure.find(chapter => {
+      sectionCounter += chapter.sections.length;
+      return index < sectionCounter;
+    });
+    if (chapter) {
+      updateChapterSlug(chapter.chapterSlug);
+    }
+  }, [setCurrentSectionIndexState, entryStructure]);
 
   const receiveMessage = useCallback(data => {
     if (data.type === 'SCROLL_TO_SECTION') {
@@ -65,6 +78,7 @@ function renderChapters(entryStructure,
   return entryStructure.map((chapter, index) => {
     return(
       <Chapter key={index}
+               chapterSlug={chapter.chapterSlug}
                permaId={chapter.permaId}
                sections={chapter.sections}
                currentSectionIndex={currentSectionIndex}

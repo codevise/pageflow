@@ -1,5 +1,4 @@
 import {renderEntry} from 'support/pageObjects';
-import {events} from 'pageflow/frontend';
 
 const seedData = {
   chapters: [
@@ -26,28 +25,18 @@ const seedData = {
   ]
 }
 
-describe('change section event', () => {
-  beforeEach(() => {
-    events.trigger = jest.fn();
-  });
+describe('change url fragment on section update', () => {
 
-  it('is triggered when section becomes active', () => {
+  it('updates history state with chapter reference as fragment', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: seedData
     });
-
+    window.history.replaceState = jest.fn();
     getSectionByPermaId(11).simulateScrollingIntoView();
 
-    expect(events.trigger).toHaveBeenCalledWith(
-      'page:change',
-      {
-        configuration: {
-          title: expect.stringContaining('Destination of Species, Section 1')
-        },
-        index: 1
-      }
-    );
-  });
+    expect(window.history.replaceState).toHaveBeenCalledWith(null, null, '#on-the-destination-of-species');
+  })
+
 });
 
 
