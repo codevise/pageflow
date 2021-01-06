@@ -288,6 +288,56 @@ describe('MediaPlayer', () => {
     expect(player.pause).toHaveBeenCalledTimes(1);
   });
 
+  it('calls fadeOutAndPause on player when isPlaying, shouldPlay changes to false and fadeDuration is present', () => {
+    let state = {
+      ...getInitialPlayerState(),
+      isPlaying: true,
+      shouldPlay: true
+    };
+    const {rerender, getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
+
+    state = {
+      ...state,
+      fadeDuration: 100,
+      shouldPlay: false
+    };
+    rerender(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+
+    expect(player.fadeOutAndPause).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls pause instead of fadeOutAndPause if player is muted', () => {
+    let state = {
+      ...getInitialPlayerState(),
+      isPlaying: true,
+      shouldPlay: true
+    };
+    const {rerender, getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
+    player.muted.mockReturnValue(true);
+
+    state = {
+      ...state,
+      fadeDuration: 100,
+      shouldPlay: false
+    };
+    rerender(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+
+    expect(player.fadeOutAndPause).not.toHaveBeenCalled();
+    expect(player.pause).toHaveBeenCalledTimes(1);
+  });
+
   it('sets initial volume factor accoring to playerState', () => {
     let state = {
       ...getInitialPlayerState(),
