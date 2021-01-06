@@ -12,7 +12,7 @@ export function updatePlayerState(player, prevPlayerState, playerState, playerAc
     }
   }
   else if (prevPlayerState.shouldPlay && !playerState.shouldPlay && playerState.isPlaying) {
-    if (playerState.fadeDuration) {
+    if (playerState.fadeDuration && !player.muted()) {
       player.fadeOutAndPause(playerState.fadeDuration);
     }
     else {
