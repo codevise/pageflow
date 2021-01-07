@@ -27,16 +27,16 @@ function PlayerContainer({
         mediaEventsContextData,
         altText
       });
+      playerWrapper.appendChild(player.el());
 
-      let playerElement = player.el();
-      playerWrapper.appendChild(playerElement);
       if (onSetup) {
         onSetup(player);
       }
 
       return () => {
         media.releasePlayer(player);
-        playerWrapper.innerHTML = '';
+        playerWrapper.removeChild(player.el());
+
         if (onDispose) {
           onDispose();
         }
