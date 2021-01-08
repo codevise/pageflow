@@ -1,6 +1,8 @@
 <%= stylesheet_link_tag 'pageflow/application_with_simulated_media_queries', media: 'all' %>
 <%= stylesheet_link_tag 'pageflow_paged/editor', media: 'all' %>
 
+<%= render 'layouts/pageflow_paged/loading_spinner_inline_script' %>
+
 <script>
   window.PAGEFLOW_EDITOR = true;
 </script>
