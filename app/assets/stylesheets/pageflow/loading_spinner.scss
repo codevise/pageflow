@@ -1,4 +1,7 @@
 .loading_spinner {
+  // Ensure loading spinner does not cover page if JS is
+  // disabled. Will be overridden by
+  // layouts/pageflow_paged/_loading_spinner_inline_script.html.erb
   display: none;
 
   position: absolute;
