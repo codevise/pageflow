@@ -49,7 +49,8 @@ export const ForeignKeySubsetCollection = SubsetCollection.extend({
       model.set(options.foreignKeyAttribute, parentModel.id);
     });
 
-    this.listenTo(parentModel, 'destroy', function() {
+    this.listenTo(parentModel, 'destroy dependentDestroy', function() {
+      this.invoke('trigger', 'dependentDestroy');
       this.clear();
     });
 
