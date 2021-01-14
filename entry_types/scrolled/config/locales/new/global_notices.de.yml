@@ -1,0 +1,5 @@
+de:
+  pageflow_scrolled:
+    public:
+      js_required: "Bitte aktivieren Sie JavaScript, um diese Website korrekt anzuzeigen."
+      unsupported_browser: "Diese Website verwendet Funktionen, die Ihr Browser nicht unterstützt. Bitte aktualisieren Sie Ihren Browser auf eine aktuelle Version."

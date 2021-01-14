@@ -1,4 +1,5 @@
 import './polyfills';
+import './globalNotices.module.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

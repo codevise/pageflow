@@ -34,7 +34,8 @@
   <body>
     <%= structured_data_for_entry(@entry) unless @skip_structured_data %>
 
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <%= render 'pageflow_scrolled/entries/global_notices' %>
+
     <div id="root"><%= render_scrolled_entry(@entry) unless @skip_ssr %></div>
 
     <div id='template-widget-container'>
