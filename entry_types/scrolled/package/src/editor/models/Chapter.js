@@ -24,7 +24,8 @@ export const Chapter = Backbone.Model.extend({
       parent: options.sections,
       parentModel: this,
       foreignKeyAttribute: 'chapterId',
-      parentReferenceAttribute: 'chapter'
+      parentReferenceAttribute: 'chapter',
+      autoConsolidatePositions: false
     });
     this.entry = options.entry;
   },

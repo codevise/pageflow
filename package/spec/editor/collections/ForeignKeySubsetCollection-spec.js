@@ -89,6 +89,52 @@ describe('ForeignKeySubsetCollection', () => {
     expect(postComments.length).toBe(0);
   });
 
+  it('removes models from parent collection when parent model is destroyed', () => {
+    const post = new Backbone.Model({id: 5}, {urlRoot: '/posts'});
+    const comments = new Backbone.Collection([
+      {id: 1, postId: 5, position: 3}
+    ]);
+    new ForeignKeySubsetCollection({
+      parentModel: post,
+      parent: comments,
+      foreignKeyAttribute: 'postId'
+    });
+
+    post.destroy();
+
+    expect(comments.length).toBe(0);
+  });
+
+  it('cascades removals across multiple levels of collections', () => {
+    const likes = new Backbone.Collection([
+      {id: 2, commentId: 1}
+    ]);
+    const Comment = Backbone.Model.extend({
+      initialize() {
+        this.likes = new ForeignKeySubsetCollection({
+          parentModel: this,
+          parent: likes,
+          foreignKeyAttribute: 'commentId'
+        });
+      }
+    });
+    const comments = new Backbone.Collection([
+      {id: 1, postId: 5, position: 3}
+    ], {model: Comment});
+    const post = new Backbone.Model({id: 5}, {urlRoot: '/posts'});
+    new ForeignKeySubsetCollection({
+      parentModel: post,
+      parent: comments,
+      foreignKeyAttribute: 'postId'
+    });
+    const comment = comments.first();
+
+    post.destroy();
+
+    expect(comment.likes.length).toBe(0);
+    expect(likes.length).toBe(0);
+  });
+
   it('constructs url from parent model url', () => {
     const post = new Backbone.Model({id: 5}, {urlRoot: '/posts'});
     const comments = new Backbone.Collection([], {url: '/comments'});
