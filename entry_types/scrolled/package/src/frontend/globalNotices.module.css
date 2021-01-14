@@ -1,0 +1,24 @@
+:global .globalNotices {
+  z-index: 100000000;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+}
+
+/* IE <= 11 does not know @supports and thus ignores this rule. In all
+   other browsers the condition evaluates to true. */
+@supports not (old: ie) {
+  :global .unsupported {
+    display: none;
+  }
+}
+
+:global .globalNotices div {
+  background: #fff;
+  padding: 20px;
+  max-width: 240px;
+  box-shadow: 0 3px 3px -2px rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
+  font-family: 'Source Sans Pro';
+  border-top: solid 2px #a50e0e;
+  margin-top: 10px;
+}
