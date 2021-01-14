@@ -126,7 +126,8 @@ In cases where this does not resolve the issue (e.g. due to caching multiple ass
 
 This is not about any chromedriver that you might have installed systemwide. Pageflow uses the `webdrivers` gem, which per default installs its own drivers and keeps them updated. According to `webdrivers`' documentation, we could expect that as soon as Selenium launches a browser, `webdrivers` checks for driver updates. However, sometimes, it seems it doesn't.
 
-Solution -- update manually. Create a file with the following content, e.g. in `spec/support/pageflow/support/config`:
+Solution -- update manually. Put the following content e.g. at the
+bottom of one of the files in `spec/support/pageflow/support/config`:
 
 ``` ruby
 require 'webdrivers/chromedriver'
@@ -137,5 +138,8 @@ RSpec.configure do |config|
   end
 end
 ```
+
+Depending on which file you put it in, the `require` might already be
+there.
 
 Having done that, run the test suite.
