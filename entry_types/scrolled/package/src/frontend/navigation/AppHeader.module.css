@@ -108,8 +108,7 @@ div:focus-within > .contextIcon,
   background-color: #e10028;
 }
 
-/* mobile view */
-@media (max-width: 780px) {
+@media screen and (max-width: 780px) {
   .hasChapters .logo {
     left: 65px;
   }
@@ -173,5 +172,23 @@ div:focus-within > .contextIcon,
 
   .progressBar {
     height: 10px;
+  }
+}
+
+@media print {
+  .navigationBar {
+    position: relative;
+    top: 0;
+    height: auto;
+  }
+
+  .logo {
+    left: 0;
+  }
+
+  .chapterList,
+  .contextIcons,
+  .progressBar {
+    display: none;
   }
 }

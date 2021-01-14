@@ -40,3 +40,9 @@
 .align-center .shadowWhite {
   background: rgba(255, 255, 255, 0.9);
 }
+
+@media print {
+  .shadow {
+    display: none;
+  }
+}

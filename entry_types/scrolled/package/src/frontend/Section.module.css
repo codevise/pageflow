@@ -1,9 +1,14 @@
 .Section {
   position: relative;
-  background-color: #000;
 }
 
-.invert {
-  background-color: #fff;
-  color: #222;
+@media screen {
+  .Section {
+    background-color: #000;
+  }
+
+  .invert {
+    background-color: #fff;
+    color: #222;
+  }
 }

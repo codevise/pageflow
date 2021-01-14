@@ -4,3 +4,9 @@
   position: relative;
   overflow: hidden;
 }
+
+@media print {
+  .root {
+    height: 400px;
+  }
+}

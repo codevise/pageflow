@@ -2,6 +2,11 @@
 
 .Entry {
   font-family: font-sans;
-  background-color: #000;
-  color: #fff;
+}
+
+@media screen {
+  .Entry {
+    background-color: #000;
+    color: #fff;
+  }
 }
