@@ -8,8 +8,7 @@
   outline: none;
 }
 
-/* mobile view */
-@media (max-width: 780px) {
+@media screen and (max-width: 780px) {
   .burgerMenuIconContainer {
     display: block;
   }

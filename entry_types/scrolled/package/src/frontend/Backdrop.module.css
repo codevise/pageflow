@@ -6,3 +6,17 @@
 .defaultBackground {
   background-color: #333;
 }
+
+@media print {
+  .Backdrop {
+    page-break-inside: avoid;
+  }
+
+  /* Reset section transition styles. */
+  .Backdrop,
+  .Backdrop > div,
+  .Backdrop > div > div {
+    position: static !important;
+    height: auto !important;
+  }
+}

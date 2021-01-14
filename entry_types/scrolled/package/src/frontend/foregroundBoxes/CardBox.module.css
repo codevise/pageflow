@@ -1,6 +1,9 @@
-.wrapper {
-}
-
 .content {
   position: relative;
+}
+
+@media print {
+  .wrapper {
+    padding-top: 0 !important;
+  }
 }
