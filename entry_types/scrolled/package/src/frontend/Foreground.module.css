@@ -26,3 +26,11 @@
 .paddingBottom {
   padding-bottom: 3em;
 }
+
+@media print {
+  .Foreground {
+    min-height: auto;
+    /* Set by some section transitions. */
+    margin-top: 0 !important;
+  }
+}

@@ -29,3 +29,13 @@
 .gradient .shadowLight {
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0px,rgba(255, 255, 255, 0.5) 100px,rgba(255, 255, 255, 0.5) 100%);
 }
+
+@media print {
+  .root {
+    padding-top: 0 !important;
+  }
+
+  .shadow {
+    display: none;
+  }
+}

@@ -36,18 +36,20 @@
   border-bottom-right-radius: 15px;
 }
 
-.cardBgWhite::before {
-  background-color: lightBackground;
-}
+@media screen {
+  .cardBgWhite::before {
+    background-color: lightBackground;
+  }
 
-.cardBgBlack::before {
-  background-color: darkBackground;
-}
+  .cardBgBlack::before {
+    background-color: darkBackground;
+  }
 
-.cardBgWhite {
-  color: black;
-}
+  .cardBgWhite {
+    color: black;
+  }
 
-.cardBgBlack {
-  color: white;
+  .cardBgBlack {
+    color: white;
+  }
 }
