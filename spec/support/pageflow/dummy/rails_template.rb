@@ -78,8 +78,8 @@ copy_file('create_test_uploadable_file.rb',
           'db/migrate/00000000000000_create_test_uploadable_file.rb')
 copy_file('create_test_multi_attachment_file.rb',
           'db/migrate/00000000000001_create_test_multi_attachment_file.rb')
-copy_file('create_test_revision_component.rb',
-          'db/migrate/00000000000002_create_test_revision_component.rb')
+copy_file('create_test_revision_components.rb',
+          'db/migrate/00000000000002_create_test_revision_components.rb')
 copy_file('add_custom_fields.rb',
           'db/migrate/99990000000000_add_custom_fields.rb')
 
