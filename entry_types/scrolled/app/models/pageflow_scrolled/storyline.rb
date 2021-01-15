@@ -26,14 +26,6 @@ module PageflowScrolled
              -> { reorder(CONTENT_ELEMENTS_ORDER) },
              through: :sections
 
-    def copy_to(revision)
-      storyline = dup
-      storyline.revision = revision
-      storyline.save!
-
-      chapters.each do |chapter|
-        chapter.copy_to(storyline)
-      end
-    end
+    nested_revision_components :chapters
   end
 end
