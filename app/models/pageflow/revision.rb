@@ -170,10 +170,6 @@ module Pageflow
         widget.copy_to(revision)
       end
 
-      storylines.each do |storyline|
-        storyline.copy_to(revision)
-      end
-
       file_usages.each do |file_usage|
         file_usage.copy_to(revision)
       end

@@ -17,7 +17,6 @@ module Pageflow
           Revision.transaction do
             revision = create_revision(data)
 
-            create_storylines_chapters_and_pages(revision, data['storylines'])
             create_widgets(revision, data['widgets'])
             create_revision_components(revision, data['components'])
             create_files(revision, data['file_usages'])
@@ -43,30 +42,6 @@ module Pageflow
 
           entry.revisions.create!(revision_attributes.merge(creator: creator)) do |revision|
             revision.published_until = Time.now if revision.published?
-          end
-        end
-
-        def create_storylines_chapters_and_pages(revision, storylines_data)
-          storylines_data.each do |storyline_data|
-            chapters_data = storyline_data.delete('chapters')
-            storyline = revision.storylines.create!(storyline_data.except(*DEFAULT_REMOVAL_COLUMNS))
-
-            create_chapters_and_pages(storyline, chapters_data)
-          end
-        end
-
-        def create_chapters_and_pages(storyline, chapters_data)
-          chapters_data.each do |chapter_data|
-            pages_data = chapter_data.delete('pages')
-            chapter = storyline.chapters.create!(chapter_data.except(*DEFAULT_REMOVAL_COLUMNS))
-
-            create_pages(chapter, pages_data)
-          end
-        end
-
-        def create_pages(chapter, pages_data)
-          pages_data.each do |page_data|
-            chapter.pages.create!(page_data.except(*DEFAULT_REMOVAL_COLUMNS))
           end
         end
 

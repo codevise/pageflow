@@ -10,19 +10,6 @@ module Pageflow
           widgets: {
             except: [:subject_id, :subject_type]
           },
-          storylines: {
-            except: :revision_id,
-            include: {
-              chapters: {
-                except: :storyline_id,
-                include: {
-                  pages: {
-                    except: :chapter_id
-                  }
-                }
-              }
-            }
-          },
           file_usages: {
             except: [:revision_id],
             include: {
