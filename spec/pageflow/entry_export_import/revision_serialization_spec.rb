@@ -232,6 +232,41 @@ module Pageflow
                                                                             'updated_at'))
       end
 
+      it 'preserves nested revision components' do
+        pageflow_configure do |config|
+          config.revision_components.register(TestCompositeRevisionComponent)
+        end
+
+        exported_revision = create(:revision)
+        exported_revision_component = create(:test_composite_revision_component,
+                                             revision: exported_revision)
+        nested_revision_component = exported_revision_component.items.create!(text: 'nested')
+        deeply_nested_revision_component = nested_revision_component.items.create!(text: 'deep')
+
+        data = RevisionSerialization.dump(exported_revision)
+        imported_revision = RevisionSerialization.import(data,
+                                                         entry: create(:entry),
+                                                         creator: create(:user))
+        imported_revision_component =
+          TestCompositeRevisionComponent.all_for_revision(imported_revision).first
+
+        expect(imported_revision_component).to be_present
+        expect(imported_revision_component.items.first).to be_present
+        expect(imported_revision_component.items.first.items.first).to be_present
+        expect(imported_revision_component)
+          .to have_attributes(exported_revision_component.attributes.except('id',
+                                                                            'revision_id',
+                                                                            'updated_at'))
+        expect(imported_revision_component.items.first)
+          .to have_attributes(nested_revision_component.attributes.except('id',
+                                                                          'parent_id',
+                                                                          'updated_at'))
+        expect(imported_revision_component.items.first.items.first)
+          .to have_attributes(deeply_nested_revision_component.attributes.except('id',
+                                                                                 'parent_id',
+                                                                                 'updated_at'))
+      end
+
       it 'preserves files and file usages' do
         exported_revision = create(:revision)
         exported_file = create(:image_file,
