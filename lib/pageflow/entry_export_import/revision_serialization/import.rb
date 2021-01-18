@@ -17,7 +17,6 @@ module Pageflow
           Revision.transaction do
             revision = create_revision(data)
 
-            create_storylines_chapters_and_pages(revision, data['storylines'])
             create_widgets(revision, data['widgets'])
             create_revision_components(revision, data['components'])
             create_files(revision, data['file_usages'])
@@ -46,30 +45,6 @@ module Pageflow
           end
         end
 
-        def create_storylines_chapters_and_pages(revision, storylines_data)
-          storylines_data.each do |storyline_data|
-            chapters_data = storyline_data.delete('chapters')
-            storyline = revision.storylines.create!(storyline_data.except(*DEFAULT_REMOVAL_COLUMNS))
-
-            create_chapters_and_pages(storyline, chapters_data)
-          end
-        end
-
-        def create_chapters_and_pages(storyline, chapters_data)
-          chapters_data.each do |chapter_data|
-            pages_data = chapter_data.delete('pages')
-            chapter = storyline.chapters.create!(chapter_data.except(*DEFAULT_REMOVAL_COLUMNS))
-
-            create_pages(chapter, pages_data)
-          end
-        end
-
-        def create_pages(chapter, pages_data)
-          pages_data.each do |page_data|
-            chapter.pages.create!(page_data.except(*DEFAULT_REMOVAL_COLUMNS))
-          end
-        end
-
         def create_widgets(revision, widgets_data)
           widgets_data.each do |widget_data|
             revision.widgets.create!(widget_data.except(*DEFAULT_REMOVAL_COLUMNS))
@@ -78,9 +53,26 @@ module Pageflow
 
         def create_revision_components(revision, revision_components_data)
           revision_components_data.each do |component_data|
+            nested_compontents_data = component_data.delete('components')
+
             component_model = component_data.delete('class_name').constantize
             component_data['revision_id'] = revision.id
-            component_model.create!(component_data.except(*DEFAULT_REMOVAL_COLUMNS))
+            component = component_model.create!(component_data.except(*DEFAULT_REMOVAL_COLUMNS))
+
+            create_nested_revision_components(component, nested_compontents_data)
+          end
+        end
+
+        def create_nested_revision_components(revision_component, nested_compontents_data)
+          nested_compontents_data.each do |collection_name, components_data|
+            components_data.each do |component_data|
+              nested_compontents_data = component_data.delete('components')
+
+              collection = revision_component.send(collection_name)
+              nested_component = collection.create!(component_data.except(*DEFAULT_REMOVAL_COLUMNS))
+
+              create_nested_revision_components(nested_component, nested_compontents_data)
+            end
           end
         end
 
