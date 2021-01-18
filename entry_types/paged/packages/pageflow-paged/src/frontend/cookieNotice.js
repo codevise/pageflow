@@ -1,7 +1,10 @@
 import {events} from 'pageflow/frontend';
+import {ready} from './ready';
 
 export const cookieNotice = {
   request: function() {
-    events.trigger('cookie_notice:request');
+    ready.then(function() {
+      events.trigger('cookie_notice:request');
+    });
   },
 };

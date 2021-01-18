@@ -45,4 +45,29 @@ feature 'as visitor, reading entry' do
 
     expect(Dom::Page.active).to have_text('Page two')
   end
+
+  scenario 'visitor sees cookie notice', js: true do
+    pageflow_configure do |config|
+      config.widget_types.register(Pageflow::BuiltInWidgetType.cookie_notice_bar)
+    end
+
+    account = create(:account,
+                     features_configuration: {'emphasize_new_pages' => true})
+    entry = create(:entry,
+                   :published,
+                   account: account,
+                   published_revision_attributes: {
+                     configuration: {
+                       emphasize_new_pages: true
+                     }
+                   })
+    storyline = create(:storyline, revision: entry.published_revision)
+    chapter = create(:chapter, storyline: storyline)
+    create(:page, chapter: chapter, template: 'background_image')
+    create(:widget, subject: entry.published_revision, type_name: 'cookie_notice_bar')
+
+    visit(pageflow.entry_path(entry))
+
+    expect(Dom::CookieNoticeBar.first).to have_notice_content
+  end
 end
