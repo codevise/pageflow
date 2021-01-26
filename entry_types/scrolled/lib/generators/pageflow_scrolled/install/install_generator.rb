@@ -15,8 +15,13 @@ module PageflowScrolled
       def webpack_environment
         inject_into_file('config/webpack/environment.js',
                          before: "module.exports = environment\n") do
-          "const pageflowConfig = require('pageflow/config/webpack')\n" \
-          "environment.config.merge(pageflowConfig)\n\n"
+          "environment.config.merge(require('pageflow/config/webpack'))\n" \
+          "environment.config.merge(require('pageflow-scrolled/config/webpack'))\n\n" \
+          "// Opt into future default behavior of Webpacker [1] to work around\n" \
+          "// problems with Video.js DASH service worker.\n" \
+          "//\n" \
+          "// [1] https://github.com/rails/webpacker/pull/2624\n" \
+          "environment.loaders.delete('nodeModules')\n\n"
         end
       end
 
