@@ -14,9 +14,12 @@ export const createMediaPlayer = function (options) {
     loop: options.loop,
     controls: options.controls,
     html5: {
-      nativeCaptions: !isAudio && browser.has('iphone platform')
+      nativeCaptions: !isAudio && browser.has('iphone platform'),
+      // Only used by pageflow-scrolled
+      vhs: {
+        useBandwidthFromLocalStorage: true
+      }
     },
-
     bufferUnderrunWaiting: true,
     fallbackToMutedAutoplay: !isAudio,
 

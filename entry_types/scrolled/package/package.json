@@ -27,13 +27,9 @@
     "slugify": "^1.4.6",
     "striptags": "^3.1.1",
     "use-context-selector": "^1.2.11",
-    "video.js": "6.2.7",
-    "videojs-contrib-dash": "2.11.0",
+    "video.js": "https://github.com/tf/video.js#pageflow-scrolled-5",
     "wavesurfer.js": "https://github.com/tf/wavesurfer.js#patches",
     "whatwg-fetch": "^3.0.0"
-  },
-  "resolutions": {
-    "video.js": "6.2.7"
   },
   "peerDependencies": {
     "pageflow": "15.1.0",
