@@ -31,7 +31,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'activeadmin-searchable_select', '~> 1.0'
 
   # User authentication
-  s.add_dependency 'devise', '~> 4.4.0'
+  #
+  # Pageflow::UserMixin depends on Devise internals. We therefore use
+  # a conservative version constraint.
+  s.add_dependency 'devise', '~> 4.7.3'
 
   # Faster JSON backend
   s.add_dependency 'yajl-ruby', '~> 1.2'
