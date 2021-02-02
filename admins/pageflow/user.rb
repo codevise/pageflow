@@ -25,8 +25,6 @@ module Pageflow
       column :first_name
       column :last_name
       column :email
-      column :last_sign_in_at
-      column :sign_in_count
       column :suspended?
     end
 
