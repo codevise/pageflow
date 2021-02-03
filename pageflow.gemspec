@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
 
-  s.add_dependency 'rails', '~> 5.2.0'
+  s.add_dependency 'rails', '~> 6.1.0'
 
   # Framework for admin interface
   s.add_dependency 'activeadmin', ['>= 1.3.0', '< 3']
@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cancancan', '~> 1.10'
 
   # State machines for active record
-  s.add_dependency 'state_machines-activerecord', '~> 0.5.1'
+  s.add_dependency 'state_machines-activerecord', '~> 0.8.0'
 
   # Trigger resque jobs with a state machine
   s.add_dependency 'state_machine_job', '~> 3.0'
@@ -144,7 +144,7 @@ Gem::Specification.new do |s|
   # Resque as default Active Job backend
   s.add_development_dependency 'resque', '~> 1.25'
   s.add_development_dependency 'resque-scheduler', '~> 2.5'
-  s.add_development_dependency 'ar_after_transaction', '~> 0.5.0'
+  s.add_development_dependency 'ar_after_transaction', '~> 0.7.0'
   s.add_development_dependency 'redis', '~> 3.0'
   s.add_development_dependency 'redis-namespace', '~> 1.5'
 

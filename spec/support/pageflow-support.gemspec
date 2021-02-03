@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'resque', '~> 1.25'
   s.add_runtime_dependency 'resque-scheduler', '~> 2.5'
 
-  s.add_runtime_dependency 'ar_after_transaction', '~> 0.5.0'
+  s.add_runtime_dependency 'ar_after_transaction', '~> 0.7.0'
 
   s.add_runtime_dependency 'redis', '~> 3.0'
   s.add_runtime_dependency 'redis-namespace', '~> 1.5'

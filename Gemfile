@@ -23,6 +23,8 @@ end
 # Required for XML serialization in Active Admin
 gem 'activemodel-serializers-xml'
 
+gem 'state_machine_job', git: 'https://github.com/tf/state_machine_job', branch: 'rails-6'
+
 # Make webpacker available in specs. Host applications that want to
 # use webpacker need to add it to their Gemfile themselves. Requiring
 # webpacker in an engine file (like we normally do) would force all
