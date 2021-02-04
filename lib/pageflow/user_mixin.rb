@@ -24,6 +24,7 @@ module Pageflow
       has_many :revisions, class_name: 'Pageflow::Revision', foreign_key: :creator_id
 
       validates :first_name, :last_name, presence: true
+      validates_inclusion_of :locale, in: Pageflow.config.available_locales.map(&:to_s)
 
       scope :admins, -> { where(admin: true) }
     end
@@ -41,7 +42,7 @@ module Pageflow
     end
 
     def locale
-      super.presence || I18n.default_locale
+      super.presence || I18n.default_locale.to_s
     end
 
     def update_with_password(attributes)
