@@ -1,7 +1,7 @@
-import {events} from 'pageflow/frontend';
+import {events} from './events';
 
 export const consentTrigger = {
-  request: function() {
-    events.trigger('cookie_notice:request');
+  request: function(consentRequest) {
+    events.trigger('cookie_notice:request', consentRequest);
   },
 };

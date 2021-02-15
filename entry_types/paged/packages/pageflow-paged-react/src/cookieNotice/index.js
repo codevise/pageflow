@@ -14,7 +14,9 @@ export default {
   init({isServerSide, events, dispatch}) {
     if (!isServerSide) {
       events.on('cookie_notice:request',
-                () => dispatch(request())
+                (args) => {
+                  dispatch(request());
+                }
       );
     }
   },
@@ -27,7 +29,7 @@ export default {
     };
   },
 
-  createSaga: function({widgetsApi, cookies}) {
+  createSaga: function({widgetsApi, cookies, consent}) {
     return function*() {
       yield takeEvery(REQUEST, function*() {
         if (yield select(isCookieNoticeVisible)) {
@@ -40,6 +42,7 @@ export default {
 
       yield takeEvery(DISMISS, function*() {
         yield call(function() {
+          consent.resolve();
           cookies.setItem(COOKIE_KEY, true);
         });
       });
