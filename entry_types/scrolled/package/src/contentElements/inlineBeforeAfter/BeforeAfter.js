@@ -1,5 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ReactCompareImage from 'react-compare-image';
+import Measure from 'react-measure';
+
 import styles from './BeforeAfter.module.css';
 import cx from 'classnames';
 import {useFile, useContentElementEditorState, ViewportDependentPillarBoxes} from 'pageflow-scrolled/frontend';
@@ -24,24 +26,15 @@ export function BeforeAfter({isActive,
                              slider_color,
                              slider_handle
                             }) {
-  const beforeAfterRef = useRef();
-  const current = beforeAfterRef.current;
 
-  var [wiggled, setWiggled] = useState(false);
-  var [wiggle, setWiggle] = useState(false);
+  const [wiggle, setWiggle] = useState(false);
+  const [moved, setMoved] = useState(false);
 
   useEffect(() => {
-    var node = current;
-    if (node) {
-      // Only wiggle once per element, when it is active for the first
-      // time
-      let shouldWiggle = !wiggled && isActive;
-      setWiggle(shouldWiggle);
-      // If wiggle was just set, mark this element as one that already
-      // wiggled
-      !wiggled && setWiggled(shouldWiggle);
-    }
-  }, [isActive, current]);
+    // Only wiggle once per element, when it is active for the first
+    // time
+    setWiggle(wiggle => wiggle || isActive);
+  }, [isActive]);
 
   const beforeImage = useFile({collectionName: 'imageFiles', permaId: before_id});
   const afterImage = useFile({collectionName: 'imageFiles', permaId: after_id});
@@ -68,27 +61,21 @@ export function BeforeAfter({isActive,
     }
   }
 
-  //Since the slider wiggle only the first time, set the variable once for performance purpose.
-  useEffect(() => {
-    if (beforeAfterRef.current) {
-      // Compute initial slider coordinate and pass it as a CSS
-      // variable, so that before/after images can wiggle together with
-      // the slider
-      const containerWidth = beforeAfterRef.current.getBoundingClientRect().width;
-      const initialRectWidth = initialSliderPos * containerWidth;
-      beforeAfterRef.current.style.setProperty('--initial-rect-width', initialRectWidth + 'px');
-    }
-  }, [wiggled, initialSliderPos]);
-
   return (
     <ViewportDependentPillarBoxes file={beforeImage || afterImage || placeholderFile} position={position}>
-      <div ref={beforeAfterRef}
-           className={cx({[styles.selected]: isSelected, [styles.wiggle]: wiggle}, styles.container)}>
-        <InitialSliderPositionIndicator parentSelected={isSelected}
-                                        position={initial_slider_position}/>
-        {/* onSliderPositionChange: Prevent wiggle if user uses slider */}
-        {renderCompareImage()}
-      </div>
+      <Measure bounds>
+        {({measureRef, contentRect}) =>
+          <div ref={measureRef}
+               style={{'--initial-rect-width': contentRect.bounds.width * initialSliderPos + 'px'}}
+               className={cx({[styles.selected]: isSelected,
+                              [styles.wiggle]: wiggle && !moved},
+                             styles.container)}>
+            <InitialSliderPositionIndicator parentSelected={isSelected}
+                                            position={initial_slider_position}/>
+            {renderCompareImage()}
+          </div>
+        }
+      </Measure>
     </ViewportDependentPillarBoxes>
   );
 
@@ -103,7 +90,7 @@ export function BeforeAfter({isActive,
                          leftImageLabel={before_label} rightImageLabel={after_label}
                          leftImageAlt={beforeImageAlt} rightImageAlt={afterImageAlt}
                          sliderPositionPercentage={initialSliderPos}
-                         onSliderPositionChange={() => setWiggle(false)}
+                         onSliderPositionChange={() => setMoved(true)}
                          {...opts} />
     );
   }
