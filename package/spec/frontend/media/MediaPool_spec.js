@@ -111,7 +111,7 @@ describe('MediaPool', function() {
       expect(player.getMediaElement().hasAttribute('src')).toBe(true);
 
       pool.unAllocatePlayer(player);
-      expect(player.currentSource()).toBe(blankSources[MediaType.VIDEO]);
+      expect(player.currentSource()).toStrictEqual(blankSources[MediaType.VIDEO]);
     });
 
   });
