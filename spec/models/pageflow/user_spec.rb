@@ -69,13 +69,19 @@ module Pageflow
       it 'falls back to default_locale' do
         user = build(:user, locale: '')
 
-        expect(user.locale).to eq(I18n.default_locale)
+        expect(user.locale).to eq(I18n.default_locale.to_s)
       end
 
       it 'returns present attribute' do
         user = build(:user, locale: 'fr')
 
         expect(user.locale).to eq('fr')
+      end
+
+      it 'ensures folder belongs to same account' do
+        user = build(:user, locale: 'not-a-locale')
+
+        expect(user).to have(1).error_on(:locale)
       end
     end
   end
