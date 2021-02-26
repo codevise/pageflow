@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {Audio, events, browser} from 'pageflow/frontend';
+import {Audio, consent, events, browser} from 'pageflow/frontend';
 import {links} from './links';
 import {nativeScrolling} from './nativeScrolling';
 import {delayedStart} from './delayedStart';
@@ -21,9 +21,9 @@ window.onload = function() {
   browser.detectFeatures().then(function() {
     var slideshow = $('[data-role=slideshow]');
     var body = $('body');
-    
+
     Visited.setup();
-    
+
     pagePreloaded.then(function() {
       readyDeferred.resolve();
       events.trigger('ready');
@@ -60,5 +60,6 @@ window.onload = function() {
     links.setup();
     FocusOutline.setup(body);
     nativeScrolling.preventScrollingOnEmbed(slideshow);
+    consent.requestResolve();
   });
 };

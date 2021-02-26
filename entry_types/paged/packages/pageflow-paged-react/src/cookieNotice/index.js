@@ -11,17 +11,15 @@ import {take, call, select, cps} from 'redux-saga/effects';
 const COOKIE_KEY = 'cookie_notice_dismissed';
 
 export default {
-  init({consent, dispatch, events, isServerSide, ready}) {
+  init({consent, dispatch, events, isServerSide}) {
     if (!isServerSide) {
       events.on('cookie_notice:request',
                 () => {
                   dispatch(request());
                 }
                );
-      ready.then(function() {
-        if (consent.requested) {
-          dispatch(request());
-        }
+      consent.requested.then(function() {
+        dispatch(request());
       });
     }
   },
@@ -42,12 +40,14 @@ export default {
 
           yield take(DISMISS);
           yield call(resetWidgetMargin);
+        } else {
+          consent.consentResolve();
         }
       });
 
       yield takeEvery(DISMISS, function*() {
         yield call(function() {
-          consent.resolve();
+          consent.consentResolve();
           cookies.setItem(COOKIE_KEY, true);
         });
       });
