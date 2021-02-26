@@ -3,7 +3,6 @@ import './polyfills';
 export {log, debugMode} from './base';
 export * from './assetUrls';
 export * from './consent';
-export * from './consentTrigger';
 export * from './cookies';
 export * from './events';
 export * from './browser';

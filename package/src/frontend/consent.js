@@ -1,5 +1,3 @@
-import {consentTrigger} from './consentTrigger';
-
 export const consent = consent || {requested: false};
 
 const trackConsentRequested = () => {
@@ -20,6 +18,5 @@ const consentRequest = consentRequest || new Promise((resolve, reject) => {
 consent.request = () => {
   trackConsentRequested();
   consent.promise = consentRequest;
-  consentTrigger.request(consent);
   return consent;
 };
