@@ -11,16 +11,18 @@ import {take, call, select, cps} from 'redux-saga/effects';
 const COOKIE_KEY = 'cookie_notice_dismissed';
 
 export default {
-  init({consent, dispatch, events, isServerSide}) {
+  init({consent, dispatch, events, isServerSide, ready}) {
     if (!isServerSide) {
       events.on('cookie_notice:request',
                 () => {
                   dispatch(request());
                 }
-      );
-      if (consent.requested) {
-        dispatch(request());
-      }
+               );
+      ready.then(function() {
+        if (consent.requested) {
+          dispatch(request());
+        }
+      });
     }
   },
 

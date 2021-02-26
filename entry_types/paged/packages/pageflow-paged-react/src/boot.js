@@ -57,6 +57,7 @@ export default function(pageflow) {
     backgroundMedia: pageflow.backgroundMedia,
 
     consent: pageflow.consent,
+    ready: pageflow.ready,
 
     window: isServerSide ? null : window
   };
