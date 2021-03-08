@@ -54,10 +54,11 @@ function PreparedPlayer({contentElementId, configuration, playerState, setPlayer
     }
   });
 
-  // base64-encoded configuration
-  // => make component re-render on configuration changes
+  // React player does not re-create player when controls or config
+  // prop changes. Ensure key changes to force React to re-mount
+  // component.
   function keyFromConfiguration(config) {
-    return btoa(JSON.stringify(config))
+    return [config.hideControls, config.hideInfo].join('');
   }
 
   return (
