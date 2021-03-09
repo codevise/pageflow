@@ -22,7 +22,7 @@ export function LegalInfoMenu(props) {
       }
 
       {fileRights &&
-       <p>{fileRights}</p>
+       <p>{t('pageflow_scrolled.public.image_rights')}: {fileRights}</p>
       }
 
       <LegalInfoLink {...legalInfo.imprint}/>

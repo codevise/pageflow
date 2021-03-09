@@ -96,7 +96,7 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toMatch(': author');
+    expect(fileRights).toEqual('author');
   });
 
   it('returns comma separated list of file rights', () => {
@@ -112,20 +112,41 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toMatch(': author1, author2');
+    expect(fileRights).toEqual('author1, author2');
   });
 
   it('falls back to default file rights', () => {
     const {result} = renderHookInEntry(
       () => useFileRights(), {
         seed: {
+          imageFiles: [
+            {}
+          ],
           defaultFileRights: 'default'
         }
       }
     );
 
     const fileRights = result.current;
-    expect(fileRights).toMatch(': default');
+    expect(fileRights).toEqual('default');
+  });
+
+  it('deduplicates file rights', () => {
+    const {result} = renderHookInEntry(
+      () => useFileRights(), {
+        seed: {
+          imageFiles: [
+            {rights: 'author1'},
+            {rights: 'author2'},
+            {rights: 'author1'},
+          ],
+          defaultFileRights: 'author1'
+        }
+      }
+    );
+
+    const fileRights = result.current;
+    expect(fileRights).toEqual('author1, author2');
   });
 
   it('does not insert extra comma if a file has no rights and defaults are not configured', () => {
@@ -142,20 +163,37 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toMatch(': author2');
+    expect(fileRights).toEqual('author2');
   });
 
   it('returns empty string if no rights are defined', () => {
     const {result} = renderHookInEntry(
       () => useFileRights(), {
         seed: {
+          imageFiles: [
+            {},
+          ],
           defaultFileRights: ''
         }
       }
     );
 
     const fileRights = result.current;
-    expect(fileRights).toMatch('');
+    expect(fileRights).toEqual('');
+  });
+
+  it('returns empty string if no image files are present', () => {
+    const {result} = renderHookInEntry(
+      () => useFileRights(), {
+        seed: {
+          imageFiles: [],
+          defaultFileRights: 'default'
+        }
+      }
+    );
+
+    const fileRights = result.current;
+    expect(fileRights).toEqual('');
   });
 
   it('reads data from watched collection', () => {
@@ -183,6 +221,6 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toMatch(': author');
+    expect(fileRights).toEqual('author');
   });
 });
