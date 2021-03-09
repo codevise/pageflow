@@ -17,17 +17,11 @@ export function useFileRights() {
   const config = useEntryStateConfig();
   const imageFiles = useEntryStateCollectionItems('imageFiles');
 
-  const defaultFileRights = config.defaultFileRights;
-  const imageFileRights = imageFiles.reduce(function(result, imageConfig) {
-    if(imageConfig && imageConfig.rights) {
-      result.push(imageConfig.rights.trim());
-    }
-    return result;
-  }, []).filter(Boolean).join(', ');
-  const fileRights = !!imageFileRights ? imageFileRights : defaultFileRights.trim();
-  const fileRightsString = !!fileRights ? ('Bildrechte: ' + fileRights) : '';
+  const defaultFileRights = config.defaultFileRights?.trim();
 
-  return fileRightsString;
+  return Array.from(new Set(imageFiles.map(function(imageFile) {
+    return imageFile.rights?.trim() || defaultFileRights;
+  }))).filter(Boolean).join(', ');
 }
 
 /**
