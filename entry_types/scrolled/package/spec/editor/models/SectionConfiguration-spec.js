@@ -67,6 +67,18 @@ describe('SectionConfiguration', () => {
     });
   });
 
+  describe('set backdrop*', () => {
+    it('does not raise multiple change events', () => {
+      const sectionConfiguration = new SectionConfiguration();
+      const listener = jest.fn();
+
+      sectionConfiguration.on('change', listener);
+      sectionConfiguration.set('backdropImage', 1);
+
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('set backdropImage', () => {
     it('sets backdrop image to value', () => {
       const sectionConfiguration = new SectionConfiguration();
