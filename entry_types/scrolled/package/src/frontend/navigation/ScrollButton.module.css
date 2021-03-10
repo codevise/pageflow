@@ -1,0 +1,32 @@
+.button {
+  composes: unstyledButton from '../utils.module.css';
+  position: absolute;
+  top: 5px;
+  height: 40px;
+  width: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 1;
+}
+
+.button svg {
+  width: 18px;
+  height: 18px;
+  color: rgb(0, 55, 90);
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.start {
+  composes: button;
+  right: 80%;
+}
+
+.end {
+  composes: button;
+  left: 79%;
+}

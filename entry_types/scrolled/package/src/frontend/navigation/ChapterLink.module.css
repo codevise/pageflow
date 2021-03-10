@@ -1,5 +1,5 @@
 .chapterLink {
-  line-height: 3rem;
+  line-height: 42px;
   color: rgb(0, 55, 90);
   text-decoration: none;
   position: relative;
@@ -7,7 +7,10 @@
   font-family: inherit;
   font-weight: 700;
   font-size: 1rem;
-  height: 50px;
+  height: 42px;
+  white-space: nowrap;
+  padding: 0 10px;
+  margin: 4px 0;
 }
 
 .chapterLink:hover,

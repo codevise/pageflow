@@ -6,46 +6,45 @@ import {normalizeAndMergeFixture} from 'pageflow-scrolled/spec/support/stories';
 import {AppHeader} from '../navigation/AppHeader';
 import {Entry, RootProviders} from 'pageflow-scrolled/frontend';
 
-const stories = storiesOf('Frontend/Navigation stories', module);
+const stories = storiesOf('Frontend/Navigation', module);
 
-let getSeed = function(){
+let getSeed = function({chapterCount}){
+  const summaries = [
+    'An introductory chapter',
+    'Second Chapter',
+    'The Third Chapter'
+  ]
   return {
-    chapters: [
+    chapters: Array(chapterCount).fill().map((_, index) => (
       {
-        id: 1,
-        permaId: 10,
-        position: 1,
+        id: index + 1,
+        permaId: (index + 1) * 10,
+        position: index + 1,
         configuration: {
-          title: 'Chapter 1',
-          summary: 'An introductory chapter'
+          title: `Chapter ${index + 1}`,
+          summary: summaries[index] || 'Another chapter'
         }
-      },
-      {
-        id: 2,
-        permaId: 20,
-        position: 2,
-        configuration: {
-          title: 'Chapter 2',
-          summary: 'Second Chapter'
-        }
-      },
-      {
-        id: 3,
-        permaId: 30,
-        position: 2,
-        configuration: {
-          title: 'Chapter 3',
-          summary: 'The Third Chapter'
-        }
-      },
-    ]
+      }
+    ))
   };
 }
 
 stories.add(
   'Desktop',
   () =>
-    <RootProviders seed={normalizeAndMergeFixture(getSeed())}>
+    <RootProviders seed={normalizeAndMergeFixture(getSeed({chapterCount: 3}))}>
+      <AppHeader />
+      <Entry />
+    </RootProviders>,
+  {
+    percy: {skip: false}
+  }
+);
+
+stories.add(
+  'Desktop - Many chapters',
+  () =>
+    <RootProviders seed={normalizeAndMergeFixture(getSeed({chapterCount: 20}))}>
       <AppHeader />
       <Entry />
     </RootProviders>,
@@ -57,7 +56,7 @@ stories.add(
 stories.add(
   'Mobile',
   () =>
-    <RootProviders seed={normalizeAndMergeFixture(getSeed())}>
+    <RootProviders seed={normalizeAndMergeFixture(getSeed({chapterCount: 3}))}>
       <AppHeader />
       <Entry />
     </RootProviders>,

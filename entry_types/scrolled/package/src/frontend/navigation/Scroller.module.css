@@ -1,0 +1,77 @@
+@media screen and (min-width: 781px) {
+  .scroller {
+    overflow: hidden;
+    scroll-behavior: smooth;
+
+    /* Prevent clipping chapter tooltips vertically. */
+    padding-bottom: 90vh;
+    pointer-events: none;
+
+    /* For browsers that do not support clip-path (e.g. IE11). */
+    margin: 0 auto;
+    width: 58%;
+  }
+
+  .scroller > * {
+    pointer-events: auto;
+  }
+
+  @supports (clip-path: polygon(0 0)) {
+    .scroller {
+      /* With only the above styles, chapter tooltips will be clipped when
+       * they do not fit inside the scroller horizontally (part of
+       * tooltip marked with "x"):
+       *
+       *       +- scroller -----------------+
+       * LOGO  | Chapter 2   Chapter 3   Cha|  MUTE INFO SHARE
+       *       |    ^                       |
+       *     xxx-----------+                |
+       *     xxx Tooltip   |                |
+       *     xxx-----------+                |
+       *       |                            |
+       *       +----------------------------+
+       *
+       * We therefore give the scroller full width and use clip-path
+       * to prevent chapter links from being visible behind logo and
+       * mute/info/share buttons:
+       *
+       *       +- scroller clip path -------+
+       * LOGO  | Chapter 2   Chapter 3   Cha|  MUTE INFO SHARE
+       * +-----+    ^                       +----------------+
+       * |   +-------------+                                 |
+       * |   |   Tooltip   |                                 |
+       * |   +-------------+                                 |
+       * |                                                   |
+       * +---------------------------------------------------+
+       */
+      width: auto;
+      clip-path: polygon(20% 0, 79% 0, 79% 50px, 100% 50px, 100% 400%, 0 400%, 0 50px, 20% 50px);
+
+      /* First gradient covers chapter list to soften clipping edge left and
+       * right. Second gradient covers lower area to prevent tooltips
+       * from being hidden by mask.
+       */
+      mask: linear-gradient(to right,
+                            transparent 0%,
+                            transparent 20%,
+                            black 22%,
+                            black 77%,
+                            transparent 79%,
+                            transparent 100%) top,
+            linear-gradient(to right,
+                            black 0%,
+                            black 100%) bottom;
+      mask-size: 100% 50px,
+                 100% calc(100% - 50px);
+      mask-repeat: no-repeat;
+    }
+
+    .inner {
+      /* Insert space before and after chapter list inside scroller to
+       * ensure first/last chapter is not hidden by logo/buttons.
+       */
+      display: inline-block;
+      margin: 0 22%;
+    }
+  }
+}
