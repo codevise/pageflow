@@ -12,6 +12,7 @@ import {SharingMenu} from "./SharingMenu";
 import {ToggleMuteButton} from './ToggleMuteButton';
 import {Logo} from './Logo';
 import {SkipLinks} from './SkipLinks';
+import {Scroller} from './Scroller';
 
 import styles from './AppHeader.module.css';
 
@@ -84,12 +85,14 @@ export function AppHeader(props) {
     }
 
     return (
-      <nav className={classNames(styles.navigationChapters, {[styles.navigationChaptersHidden]: mobileNavHidden})}
-           role="navigation">
-        <ul className={styles.chapterList}>
-          {renderChapterLinks(chapters)}
-        </ul>
-      </nav>
+      <Scroller>
+        <nav className={classNames(styles.navigationChapters, {[styles.navigationChaptersHidden]: mobileNavHidden})}
+             role="navigation">
+          <ul className={styles.chapterList}>
+            {renderChapterLinks(chapters)}
+          </ul>
+        </nav>
+      </Scroller>
     );
   }
 
