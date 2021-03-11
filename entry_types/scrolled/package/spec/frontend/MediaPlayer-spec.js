@@ -211,6 +211,28 @@ describe('MediaPlayer', () => {
     expect(media.getPlayer).toHaveBeenCalledTimes(2);
   });
 
+  it('releases player on unmount', () => {
+    const {getPlayer, unmount} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources({basename: 'example'})} />);
+
+    const player = getPlayer();
+    unmount();
+
+    expect(media.releasePlayer).toHaveBeenCalledWith(player);
+  });
+
+  it('does release player on unmount if it has been released by pool already', () => {
+    const {getPlayer, unmount} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources({basename: 'example'})} />);
+
+    getPlayer().releaseCallback();
+    unmount();
+
+    expect(media.releasePlayer).not.toHaveBeenCalled();
+  });
+
   it('calls play on player when shouldPlay is true in initial playerState', () => {
     let state = {
       ...getInitialPlayerState(),
