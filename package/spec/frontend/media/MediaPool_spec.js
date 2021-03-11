@@ -46,24 +46,25 @@ describe('MediaPool', function() {
     });
 
     it('reallocates the first allocated player if there is no more available player', function () {
-      let pool = new MediaPool();
-      for(let i = 0; i < pool.playerCount; i++){
-        pool.allocatePlayer({
-          playerType: MediaType.VIDEO
-        });
-      }
+      const pool = new MediaPool({playerCount: 2});
 
-      expect(pool.unAllocatedPlayers[MediaType.VIDEO].length).toBe(0);
-
-      let firstPlayer = pool.allocatedPlayers[MediaType.VIDEO][0];
-      let player = pool.allocatePlayer({
-        playerType: MediaType.VIDEO
-      });
-
-      expect(pool.unAllocatedPlayers[MediaType.VIDEO].length).toBe(0);
+      const firstPlayer = pool.allocatePlayer({playerType: MediaType.VIDEO});
+      pool.allocatePlayer({playerType: MediaType.VIDEO});
+      const player = pool.allocatePlayer({playerType: MediaType.VIDEO});
 
       expect(player).toBeDefined();
       expect(player).toBe(firstPlayer);
+    });
+
+    it('calls onRelease callback for reallocated player if there is are no more available player', () => {
+      const pool = new MediaPool({playerCount: 2});
+      const callback = jest.fn();
+
+      pool.allocatePlayer({playerType: MediaType.VIDEO, onRelease: callback});
+      pool.allocatePlayer({playerType: MediaType.VIDEO});
+      pool.allocatePlayer({playerType: MediaType.VIDEO});
+
+      expect(callback).toHaveBeenCalled();
     });
 
     it('resets text tracks when player is reused', () => {
@@ -114,6 +115,18 @@ describe('MediaPool', function() {
       expect(player.currentSource()).toStrictEqual(blankSources[MediaType.VIDEO]);
     });
 
+    it('calls onRelease callback passed to allocatePlayer', () => {
+      const pool = new MediaPool();
+      const callback = jest.fn();
+      const player = pool.allocatePlayer({
+        playerType: MediaType.VIDEO,
+        onRelease: callback
+      });
+
+      pool.unAllocatePlayer(player);
+
+      expect(callback).toHaveBeenCalled();
+    });
   });
 
   describe('#blessAll', function() {
