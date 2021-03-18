@@ -13,12 +13,12 @@ export const SectionConfiguration = Configuration.extend({
     Configuration.prototype.initialize.apply(this, arguments);
 
     this.attributes = {
-      ...this.getBackdropAttributes(),
+      ...this.getAttributesFromBackdropAttribute(),
       ...this.attributes
     }
   },
 
-  getBackdropAttributes() {
+  getAttributesFromBackdropAttribute() {
     const backdrop = this.attributes.backdrop || {};
 
     if (backdrop.image && backdrop.image.toString().startsWith('#')) {
@@ -49,33 +49,38 @@ export const SectionConfiguration = Configuration.extend({
   },
 
   set: function(name, value) {
-    Configuration.prototype.set.apply(this, arguments);
-
-    if (name !== 'backdrop' &&
-        name.startsWith &&
-        name.startsWith('backdrop')) {
-      this.updateBackdropAttribute();
+    if (name !== 'backdrop' && name.startsWith && name.startsWith('backdrop')) {
+      Configuration.prototype.set.call(this, {
+        backdrop: this.getBackdropAttribute({
+          ...this.attributes,
+          [name]: value
+        }),
+        [name]: value
+      });
+    }
+    else {
+      Configuration.prototype.set.apply(this, arguments);
     }
   },
 
-  updateBackdropAttribute() {
-    switch (this.get('backdropType')) {
+  getBackdropAttribute(nextAttributes) {
+    switch (nextAttributes.backdropType) {
     case 'color':
-      return this.set('backdrop', {
-        color: this.get('backdropColor')
-      });
+      return {
+        color: nextAttributes.backdropColor
+      };
     case 'video':
-      return this.set('backdrop', {
-        video: this.get('backdropVideo'),
-        videoMotifArea: this.get('backdropVideoMotifArea')
-      });
+      return {
+        video: nextAttributes.backdropVideo,
+        videoMotifArea: nextAttributes.backdropVideoMotifArea
+      };
     default:
-      return this.set('backdrop', {
-        image: this.get('backdropImage'),
-        imageMotifArea: this.get('backdropImageMotifArea'),
-        imageMobile: this.get('backdropImageMobile'),
-        imageMobileMotifArea: this.get('backdropImageMobileMotifArea')
-      });
+      return {
+        image: nextAttributes.backdropImage,
+        imageMotifArea: nextAttributes.backdropImageMotifArea,
+        imageMobile: nextAttributes.backdropImageMobile,
+        imageMobileMotifArea: nextAttributes.backdropImageMobileMotifArea
+      };
     }
   }
 });
