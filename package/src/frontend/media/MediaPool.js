@@ -32,8 +32,12 @@ export class MediaPool {
       }
     }
   }
-  allocatePlayer({playerType, playerId, playsInline, mediaEventsContextData,
-                  hooks, poster, loop = false, controls = false, altText}){
+
+  allocatePlayer({
+    playerType, playerId, playsInline, mediaEventsContextData,
+    hooks, poster, loop = false, controls = false, altText,
+    onRelease
+  }) {
     let player = undefined;
     if (!this.unAllocatedPlayers[playerType]) {
       this.populateMediaPool_();
@@ -43,8 +47,8 @@ export class MediaPool {
     }
 
     player = this.unAllocatedPlayers[playerType].pop();
-    if (player) {
 
+    if (player) {
       player.pause();
       player.getMediaElement().loop = loop;
       player.getMediaElement().setAttribute('alt', altText);
@@ -57,7 +61,10 @@ export class MediaPool {
       player.updateMediaEventsContext(mediaEventsContextData);
 
       this.allocatedPlayers[playerType].push(player);
+
       player.playerId = playerId || this.allocatedPlayers[playerType].length
+      player.releaseCallback = onRelease;
+
       return player;
     }
     else{
@@ -81,6 +88,11 @@ export class MediaPool {
       clearTextTracks(player);
 
       this.unAllocatedPlayers[type].push(player);
+
+      if (player.releaseCallback) {
+        player.releaseCallback();
+        player.releaseCallback = null;
+      }
     }
   }
   blessAll(value){

@@ -52,13 +52,20 @@ export const fakeMediaRenderQueries = {
 
 export function useFakeMedia() {
   beforeEach(() => {
-    jest.spyOn(media, 'getPlayer').mockImplementation((sources, {filePermaId, textTrackSources}) =>
-      createFakePlayer({filePermaId, textTrackSources})
-    );
-    media.releasePlayer = (player) => {}
-  });
+    jest.restoreAllMocks();
 
-  afterEach(() => jest.restoreAllMocks());
+    jest.spyOn(media, 'releasePlayer').mockImplementation(player => {
+      if (player.releaseCallback) {
+        player.releaseCallback();
+      }
+    });
+
+    jest.spyOn(media, 'getPlayer').mockImplementation((sources, {filePermaId, textTrackSources, onRelease}) => {
+      const player = createFakePlayer({filePermaId, textTrackSources});
+      player.releaseCallback = onRelease;
+      return player;
+    });
+  });
 }
 
 function createFakePlayer({filePermaId, textTrackSources}) {

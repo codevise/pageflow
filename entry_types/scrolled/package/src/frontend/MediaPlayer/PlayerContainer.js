@@ -25,7 +25,16 @@ function PlayerContainer({
         controls: controls,
         hooks: atmoDuringPlayback ? atmo.createMediaPlayerHooks(atmoDuringPlayback) : {}, //create hooks only for inline media players
         mediaEventsContextData,
-        altText
+        altText,
+
+        onRelease() {
+          playerWrapper.removeChild(player.el());
+          player = null;
+
+          if (onDispose) {
+            onDispose();
+          }
+        }
       });
       playerWrapper.appendChild(player.el());
 
@@ -34,11 +43,10 @@ function PlayerContainer({
       }
 
       return () => {
-        media.releasePlayer(player);
-        playerWrapper.removeChild(player.el());
-
-        if (onDispose) {
-          onDispose();
+        // onRelease might already have been called by the pool when
+        // it needed to re-use a player.
+        if (player) {
+          media.releasePlayer(player);
         }
       }
     }
