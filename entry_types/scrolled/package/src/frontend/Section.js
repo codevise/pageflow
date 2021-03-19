@@ -17,60 +17,67 @@ import styles from './Section.module.css';
 import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
 import {getAppearanceComponents} from './appearance';
 
-const Section = withInlineEditingDecorator('SectionDecorator', function Section(props) {
+const Section = withInlineEditingDecorator('SectionDecorator', function Section({
+  section, contentElements, state, isScrollTarget, onActivate
+}) {
   const ref = useRef();
-  useScrollTarget(ref, props.isScrollTarget);
+  useScrollTarget(ref, isScrollTarget);
 
-  const transitionStyles = getTransitionStyles(props, props.previousSection, props.nextSection);
+  const transitionStyles = getTransitionStyles(section, section.previousSection, section.nextSection);
 
   return (
-    <section id={`section-${props.permaId}`}
+    <section id={`section-${section.permaId}`}
              ref={ref}
              className={classNames(styles.Section,
                                    transitionStyles.section,
-                                   {[styles.narrow]: props.width === 'narrow'},
-                                   {[styles.invert]: props.invert})}>
-      <SectionLifecycleProvider onActivate={props.onActivate} isLast={!props.nextSection}>
-        <SectionAtmo audioFilePermaId={props.atmoAudioFileId} />
+                                   {[styles.narrow]: section.width === 'narrow'},
+                                   {[styles.invert]: section.invert})}>
+      <SectionLifecycleProvider onActivate={onActivate} isLast={!section.nextSection}>
+        <SectionAtmo audioFilePermaId={section.atmoAudioFileId} />
 
-        <SectionContents {...props} transitionStyles={transitionStyles} />
+        <SectionContents section={section}
+                         contentElements={contentElements}
+                         state={state}
+                         transitionStyles={transitionStyles} />
       </SectionLifecycleProvider>
     </section>
   );
 });
 
-function SectionContents(props) {
+function SectionContents({
+  section, contentElements, state, transitionStyles
+}) {
   const {shouldPrepare} = useSectionLifecycle();
 
   const sectionProperties = useMemo(() => ({
-    layout: props.layout,
-    invert: props.invert,
-    sectionIndex: props.sectionIndex
-  }), [props.layout, props.invert, props.sectionIndex]);
+    layout: section.layout,
+    invert: section.invert,
+    sectionIndex: section.sectionIndex
+  }), [section.layout, section.invert, section.sectionIndex]);
 
   const [motifAreaState, setMotifAreaRef, setContentAreaRef, setForegroundContentRef] = useMotifAreaState({
     updateOnScrollAndResize: shouldPrepare,
-    exposeMotifArea: props.exposeMotifArea,
-    transitions: getEnterAndExitTransitions(props, props.previousSection, props.nextSection),
-    empty: !props.contentElements.length,
-    sectionTransition: props.transition,
-    fullHeight: props.fullHeight
+    exposeMotifArea: section.exposeMotifArea,
+    transitions: getEnterAndExitTransitions(section, section.previousSection, section.nextSection),
+    empty: !contentElements.length,
+    sectionTransition: section.transition,
+    fullHeight: section.fullHeight
   });
 
-  const {Shadow, Box, BoxWrapper} = getAppearanceComponents(props.appearance)
+  const {Shadow, Box, BoxWrapper} = getAppearanceComponents(section.appearance)
 
-  const staticShadowOpacity = percentToFraction(props.staticShadowOpacity, {defaultValue: 0.7});
-  const dynamicShadowOpacity = percentToFraction(props.dynamicShadowOpacity, {defaultValue: 0.7});
+  const staticShadowOpacity = percentToFraction(section.staticShadowOpacity, {defaultValue: 0.7});
+  const dynamicShadowOpacity = percentToFraction(section.dynamicShadowOpacity, {defaultValue: 0.7});
 
   return (
     <>
-      <Backdrop {...props.backdrop}
+      <Backdrop {...section.backdrop}
                 onMotifAreaUpdate={setMotifAreaRef}
-                state={props.state}
-                transitionStyles={props.transitionStyles}>
+                state={state}
+                transitionStyles={transitionStyles}>
         {(children) =>
-          <Shadow align={props.layout}
-                  inverted={props.invert}
+          <Shadow align={section.layout}
+                  inverted={section.invert}
                   motifAreaState={motifAreaState}
                   staticShadowOpacity={staticShadowOpacity}
                   dynamicShadowOpacity={dynamicShadowOpacity}>
@@ -78,26 +85,26 @@ function SectionContents(props) {
           </Shadow>}
       </Backdrop>
 
-      <Foreground transitionStyles={props.transitionStyles}
-                  state={props.state}
-                  inFirstSection={props.sectionIndex === 0}
+      <Foreground transitionStyles={transitionStyles}
+                  state={state}
+                  inFirstSection={section.sectionIndex === 0}
                   minHeight={motifAreaState.minHeight}
-                  paddingBottom={!endsWithFullWidthElement(props.contentElements)}
+                  paddingBottom={!endsWithFullWidthElement(contentElements)}
                   contentRef={setForegroundContentRef}
-                  heightMode={heightMode(props)}>
-        <Box inverted={props.invert}
-             coverInvisibleNextSection={props.nextSection && props.nextSection.transition.startsWith('fade')}
-             transitionStyles={props.transitionStyles}
-             state={props.state}
+                  heightMode={heightMode(section)}>
+        <Box inverted={section.invert}
+             coverInvisibleNextSection={section.nextSection && section.nextSection.transition.startsWith('fade')}
+             transitionStyles={transitionStyles}
+             state={state}
              motifAreaState={motifAreaState}
              staticShadowOpacity={staticShadowOpacity}>
-          <BackgroundColorProvider dark={!props.invert}>
-            <Layout sectionId={props.id}
-                    items={props.contentElements}
-                    appearance={props.appearance}
+          <BackgroundColorProvider dark={!section.invert}>
+            <Layout sectionId={section.id}
+                    items={contentElements}
+                    appearance={section.appearance}
                     contentAreaRef={setContentAreaRef}
                     sectionProps={sectionProperties}>
-              {(children, boxProps) => <BoxWrapper {...boxProps} inverted={props.invert}>{children}</BoxWrapper>}
+              {(children, boxProps) => <BoxWrapper {...boxProps} inverted={section.invert}>{children}</BoxWrapper>}
             </Layout>
           </BackgroundColorProvider>
         </Box>
@@ -107,17 +114,17 @@ function SectionContents(props) {
 }
 
 function ConnectedSection(props) {
-  const contentElements = useSectionContentElements({sectionId: props.id});
+  const contentElements = useSectionContentElements({sectionId: props.section.id});
 
   return <Section {...props} contentElements={contentElements} />
 }
 
 export { ConnectedSection as Section };
 
-function heightMode(props) {
-  if (props.fullHeight) {
-    if ((props.transition.startsWith('fade') && props.previousSection) ||
-        (props.nextSection && props.nextSection.transition.startsWith('fade'))) {
+function heightMode(section) {
+  if (section.fullHeight) {
+    if ((section.transition.startsWith('fade') && section.previousSection) ||
+        (section.nextSection && section.nextSection.transition.startsWith('fade'))) {
       return 'fullFade';
     }
     else {

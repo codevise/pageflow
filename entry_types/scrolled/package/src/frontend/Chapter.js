@@ -31,7 +31,7 @@ function renderSections(sections,
         <Section state={section.sectionIndex > currentSectionIndex ? 'below' : section.sectionIndex < currentSectionIndex ? 'above' : 'active'}
                  isScrollTarget={section.sectionIndex === scrollTargetSectionIndex}
                  onActivate={() => onActivate(section.sectionIndex)}
-                 {...section} />
+                 section={section} />
       </EventContextDataProvider>
     )
   });

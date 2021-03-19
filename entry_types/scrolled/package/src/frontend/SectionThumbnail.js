@@ -37,7 +37,7 @@ function Inner({sectionPermaId, subscribe}) {
               <div ref={measureRef} className={styles.crop}>
                 <div className={styles.scale}>
                   <div className={contentStyles.Content}>
-                    <Section state="active" {...section} transition="preview" />
+                    <Section state="active" section={{...section, transition: 'preview'}} />
                   </div>
                 </div>
               </div>

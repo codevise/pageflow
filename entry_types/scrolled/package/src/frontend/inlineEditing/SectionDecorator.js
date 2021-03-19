@@ -11,25 +11,25 @@ import {useI18n} from '../i18n';
 
 import transitionIcon from './images/arrows.svg';
 
-export function SectionDecorator(props) {
+export function SectionDecorator({section, contentElements, children}) {
   const {t} = useI18n({locale: 'ui'});
 
   const {isSelected, select, resetSelection} = useEditorSelection({
-    id: props.id,
+    id: section.id,
     type: 'sectionSettings'
   });
 
   const transitionSelection = useEditorSelection({
-    id: props.id,
+    id: section.id,
     type: 'sectionTransition'
   });
 
   const nextTransitionSelection = useEditorSelection({
-    id: props.nextSection && props.nextSection.id,
+    id: section.nextSection && section.nextSection.id,
     type: 'sectionTransition'
   });
 
-  const lastContentElement = props.contentElements[props.contentElements.length - 1];
+  const lastContentElement = contentElements[contentElements.length - 1];
 
   const {isSelected: isLastContentElementSelected} = useEditorSelection({
     id: lastContentElement && lastContentElement.id,
@@ -47,16 +47,16 @@ export function SectionDecorator(props) {
          className={className(isSelected, transitionSelection)}
          onMouseDown={selectIfOutsideContentItem}>
       <div className={styles.controls}>
-        {renderEditTransitionButton({id: props.previousSection && props.id,
+        {renderEditTransitionButton({id: section.previousSection && section.id,
                                      selection: transitionSelection,
                                      position: 'before'})}
-        {renderEditTransitionButton({id: props.nextSection && props.nextSection.id,
+        {renderEditTransitionButton({id: section.nextSection && section.nextSection.id,
                                      selection: nextTransitionSelection,
                                      position: 'after'})}
       </div>
       <MotifAreaVisibilityProvider visible={isSelected}>
         <ForcePaddingContext.Provider value={isLastContentElementSelected || isSelected}>
-          {props.children}
+          {children}
         </ForcePaddingContext.Provider>
       </MotifAreaVisibilityProvider>
     </div>
