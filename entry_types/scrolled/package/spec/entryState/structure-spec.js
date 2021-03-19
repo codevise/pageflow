@@ -94,12 +94,14 @@ const contentElementsSeed = [
 describe('useEntryStructure', () => {
   const expectedEntryStructure = [
     {
+      permaId: 10,
       title: 'Chapter 1',
       chapterSlug: 'chapter-1',
       summary: 'An introductory chapter',
       sections: [
         {
           permaId: 101,
+          chapter: {permaId: 10},
           previousSection: undefined,
           nextSection: {permaId: 102},
           sectionIndex: 0,
@@ -109,12 +111,14 @@ describe('useEntryStructure', () => {
       ],
     },
     {
+      permaId: 11,
       title: 'Chapter 2',
       chapterSlug: 'chapter-2',
       summary: 'A great chapter',
       sections: [
         {
           permaId: 102,
+          chapter: {permaId: 11},
           previousSection: {permaId: 101},
           nextSection: undefined,
           sectionIndex: 1,
@@ -240,7 +244,7 @@ describe('useChapters', () => {
                 title: 'remove#special$character',
               }
             },
-            
+
           ]
         }
       }
