@@ -25,6 +25,9 @@ import slugify from 'slugify';
  *           sectionIndex: 0,
  *           transition: 'scroll',
  *
+ *           // references to parent chapter
+ *           chapter: { ... },
+ *
  *           // references to adjacent section objects
  *           previousSection: { ... },
  *           nextSection: { ... },
@@ -45,12 +48,20 @@ export function useEntryStructure() {
       section.previousSection = linkedSections[index - 1];
       section.nextSection = linkedSections[index + 1];
     });
-    return chapters.map(chapter => ({
-      ...chapter,
-      sections: linkedSections.filter(
+    return chapters.map(chapter => {
+      const chapterSections = linkedSections.filter(
         item => item.chapterId === chapter.id
-      )
-    }));
+      );
+
+      chapterSections.forEach(section =>
+        section.chapter = chapter
+      );
+
+      return {
+        ...chapter,
+        sections: chapterSections
+      };
+    });
   }, [chapters, sections]);
 };
 
