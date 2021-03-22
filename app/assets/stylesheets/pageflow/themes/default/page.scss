@@ -8,6 +8,9 @@ $page-typography: () !default;
 /// Typography for content text.
 $page-content-text-typography: () !default;
 
+/// Typography for content text in phone layout.
+$page-content-text-phone-typography: () !default
+
 /// Base font size for page content
 $page-content-font-size: 1em !default;
 
@@ -62,6 +65,10 @@ $page-content-list-indent: 40px !default;
         line-height: $page-content-text-line-height
       )
     );
+
+    @include phone {
+      @include typography($page-content-text-phone-typography);
+    }
   }
 
   .page_text > .paragraph ul,
