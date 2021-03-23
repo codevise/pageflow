@@ -15,7 +15,7 @@ editor.contentElementTypes.register('videoEmbed', {
           'http://www.facebook.com',
           'https://www.facebook.com'
         ],
-        displayPropertyName: 'videoSource',
+        displayPropertyName: 'displayVideoSource',
         required: true,
         permitHttps: true
       });
