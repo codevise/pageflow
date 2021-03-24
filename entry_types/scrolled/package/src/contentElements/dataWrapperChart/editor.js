@@ -17,7 +17,7 @@ editor.contentElementTypes.register('dataWrapperChart', {
           'http://charts.datawrapper.de',
           'https://charts.datawrapper.de',
         ],
-        displayPropertyName: 'url',
+        displayPropertyName: 'displayUrl',
         required: true,
         permitHttps: true
       });

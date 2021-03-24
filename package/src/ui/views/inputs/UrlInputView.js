@@ -47,30 +47,30 @@ export const UrlInputView = Marionette.Layout.extend(
   },
 
   onChange: function() {
-    var view = this;
-
-    this.saveDisplayProperty();
-
-    this.validate().done(function() {
-      view.save();
-    });
+    this.validate().then(() => this.save(),
+                         () => this.saveDisplayProperty());
   },
 
   saveDisplayProperty: function() {
+    this.model.unset(this.options.propertyName, {silent: true});
     this.model.set(this.options.displayPropertyName, this.ui.input.val());
-    this.model.unset(this.options.propertyName);
   },
 
   save: function() {
-    var view = this;
+    var value = this.ui.input.val();
 
-    $.when(this.transformPropertyValue(this.ui.input.val())).then(function(value) {
-      view.model.set(view.options.propertyName, value);
+    $.when(this.transformPropertyValue(value)).then(transformedValue => {
+      this.model.set({
+        [this.options.displayPropertyName]: value,
+        [this.options.propertyName]: transformedValue
+      });
     });
   },
 
   load: function() {
-    this.ui.input.val(this.model.get(this.options.displayPropertyName));
+    this.ui.input.val(this.model.has(this.options.displayPropertyName) ?
+                      this.model.get(this.options.displayPropertyName) :
+                      this.model.get(this.options.propertyName));
     this.onLoad();
   },
 
