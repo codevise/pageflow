@@ -25,6 +25,11 @@ Pageflow.configure do |config|
 
   config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
     entry_type_config.themes.register(:default,
+                                      stylesheet_packs: ['fonts/sourceSansPro'],
+                                      font_family: {
+                                        entry: '"Source Sans Pro", sans-serif',
+                                        navigation: '"Source Sans Pro", sans-serif'
+                                      },
                                       logo_alt_text: 'Pageflow',
                                       theme_color: '#ffffff')
   end

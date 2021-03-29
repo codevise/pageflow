@@ -28,6 +28,31 @@ the default favicons.
 This [tool](https://realfavicongenerator.net/) is an example which creates favicons
 for all the latest devices.
 
+## Custom Fonts
+
+[Fontsource](https://github.com/fontsource/fontsource) is the
+recommended way to load custom fonts. Add the npm package for the
+font:
+
+    $ yarn add @fontsource/open-sans
+
+Create a Webpacker entry point file for your font:
+
+    /* app/javascript/packs/fonts/openSans.css */
+    @import "@fontsource/open-sans/400.css";
+    @import "@fontsource/open-sans/700.css";
+
+Adjust theme options to load the font stylesheet pack and set the font
+family properties:
+
+    entry_type_config.themes.register(:my_custom_theme,
+                                      # ...
+                                      stylesheet_packs: ['font/openSans'],
+                                      font_family: {
+                                        entry: '"Open Sans", sans-serif',
+                                        navigation: '"Open Sans", sans-serif'
+                                      })
+
 ## Third Party Consent
 
 Set the following theme options to require user consent before loading
