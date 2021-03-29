@@ -12,6 +12,10 @@ module PageflowScrolled
         rake "webpacker:install BUNDLE_GEMFILE=#{gemfile}"
       end
 
+      def install_packages
+        run 'yarn add postcss-url@^8.0.0 @fontsource/source-sans-pro'
+      end
+
       def webpack_environment
         inject_into_file('config/webpack/environment.js',
                          before: "module.exports = environment\n") do
@@ -33,6 +37,14 @@ module PageflowScrolled
         inject_into_file('config/webpacker.yml',
                          after: "- .woff2\n") do
           "    - .mp3\n    - .webmanifest\n    - .xml\n"
+        end
+      end
+
+      def postcss_config
+        inject_into_file('postcss.config.js',
+                         after: "require('postcss-import'),\n") do
+          "    // Make relative urls in fontsource packages work\n" \
+          "    require('postcss-url')({url: 'rebase'}),\n"
         end
       end
 
@@ -65,6 +77,13 @@ module PageflowScrolled
           @import "pageflow-scrolled/frontend/index.css";
           @import "pageflow-scrolled/contentElements-frontend.css";
         JS
+      end
+
+      def default_font_pack
+        create_file 'app/javascript/packs/fonts/sourceSansPro.css', <<-CSS
+          @import "@fontsource/source-sans-pro/400.css";
+          @import "@fontsource/source-sans-pro/700.css";
+        CSS
       end
 
       def default_theme
