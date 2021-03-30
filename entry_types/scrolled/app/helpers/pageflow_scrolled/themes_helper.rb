@@ -14,6 +14,7 @@ module PageflowScrolled
     def scrolled_theme_properties_style_tag(theme)
       declarations = [
         scrolled_theme_deep_declarations(theme.options.fetch(:font_family, {}), 'font_family'),
+        scrolled_theme_deep_declarations(theme.options.fetch(:colors, {}), 'color')
       ].flatten
 
       content_tag('style', raw(":root {\n#{declarations.join("\n")}\n}\n"))

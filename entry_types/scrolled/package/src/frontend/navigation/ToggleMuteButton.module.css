@@ -1,5 +1,5 @@
 .button svg {
-  fill: rgb(0, 55, 90);
+  fill: var(--theme-navigation-primary-on-surface-color);
   width: 35px;
   height: 35px;
   margin: 7px 2px;
