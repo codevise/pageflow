@@ -20,8 +20,16 @@ module Pageflow
 
         expect(result['name']).to eq('test_theme')
         expect(result['preview_image_url']).to(
-          match(%r'http://test\.host/assets/pageflow/themes/test_theme/preview-[a-f0-9]+\.png')
+          match(%r{http://test\.host/assets/pageflow/themes/test_theme/preview-[a-f0-9]+\.png})
         )
+      end
+
+      it 'includes theme options' do
+        Pageflow.config.themes.register(:test_theme, some: 'value')
+
+        result = JSON.parse(helper.theme_json_seeds(Pageflow.config)).last
+
+        expect(result.dig('options', 'some')).to eq('value')
       end
     end
   end
