@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {useDarkBackground} from '../../backgroundColor';
+import {useTheme} from '../../../entryState';
 import {Waveform} from './Waveform';
 import {TimeDisplay} from '../TimeDisplay';
 import {TextTracksMenu} from '../TextTracksMenu';
@@ -12,6 +13,7 @@ import controlBarStyles from '../ControlBar.module.css';
 
 export function WaveformPlayerControls(props) {
   const darkBackground = useDarkBackground();
+  const theme = useTheme();
 
   return (
       <div onFocus={props.onFocus}
@@ -25,7 +27,7 @@ export function WaveformPlayerControls(props) {
         <Waveform isPlaying={props.isPlaying}
                   inverted={!darkBackground}
                   waveformColor={props.waveformColor}
-                  mainColor={'#e10028'}
+                  mainColor={theme.options.colors.accent}
                   play={props.play}
                   pause={props.pause}
                   mediaElementId={props.mediaElementId} />
