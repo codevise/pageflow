@@ -5,11 +5,11 @@
 }
 
 :global(header .share svg) {
-  fill: rgb(0, 55, 90);
+  fill: var(--theme-navigation-primary-on-surface-color);
 }
 
 :global(header .share:hover svg) {
-  fill: #e10028;
+  fill: var(--theme-accent-color);
 }
 
 .sharingTooltip {
@@ -32,12 +32,12 @@
 
 .shareLink {
   position: relative;
-  color: rgb(0, 55, 90);
+  color: var(--theme-navigation-primary-on-surface-color);
   text-decoration: none;
 }
 
 .shareLink:hover {
-  color: #e10028;
+  color: var(--theme-accent-color);
 }
 
 .shareIcon {

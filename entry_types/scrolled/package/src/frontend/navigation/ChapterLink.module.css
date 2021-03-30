@@ -1,6 +1,6 @@
 .chapterLink {
   line-height: 42px;
-  color: rgb(0, 55, 90);
+  color: var(--theme-navigation-primary-on-surface-color);
   text-decoration: none;
   position: relative;
   display: block;
@@ -15,7 +15,7 @@
 
 .chapterLink:hover,
 .chapterLinkActive {
-  color: #e10028;
+  color: var(--theme-accent-color);
 }
 
 .summary {
@@ -31,7 +31,7 @@
 
 .tooltipHeadline {
   margin: 5px 0 0px;
-  color: #e10028;
+  color: var(--theme-accent-color);
 }
 
 @media (max-width: 780px) {
