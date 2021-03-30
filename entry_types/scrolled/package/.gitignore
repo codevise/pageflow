@@ -7,3 +7,4 @@
 /contentElements-frontend.css
 /.storybook/out/
 /.storybook/seed.json
+/.storybook/preview-head.html
