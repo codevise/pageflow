@@ -171,7 +171,10 @@ function normalizeLegalInfo(legalInfo) {
 function normalizeTheme(options = {}) {
   return {
     assets: {},
-    options
+    options: {
+      colors: {},
+      ...options
+    }
   }
 }
 

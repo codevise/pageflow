@@ -1,9 +1,14 @@
 import React, {useState} from 'react';
 import {storiesOf} from '@storybook/react';
+import {normalizeAndMergeFixture} from 'pageflow-scrolled/spec/support/stories';
 
-import {PlayerControls} from 'pageflow-scrolled/frontend';
+import {RootProviders, PlayerControls} from 'pageflow-scrolled/frontend';
 
-const stories = storiesOf('Frontend/Player Controls', module);
+const stories = storiesOf('Frontend/Player Controls', module)
+  .addDecorator((Story) =>
+    <RootProviders seed={normalizeAndMergeFixture({})}>
+      <Story />
+    </RootProviders>);
 
 function addControlbarStory(name, props) {
   stories.add(
