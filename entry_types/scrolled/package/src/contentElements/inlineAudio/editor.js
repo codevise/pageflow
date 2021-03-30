@@ -3,7 +3,7 @@ import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView, ColorInputView} from 'pageflow/ui';
 
 editor.contentElementTypes.register('inlineAudio', {
-  configurationEditor() {
+  configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('id', FileInputView, {
         collection: 'audio_files',
@@ -19,7 +19,7 @@ editor.contentElementTypes.register('inlineAudio', {
       });
 
       this.input('autoplay', CheckBoxInputView);
-      
+
       this.input('playerControlVariant', SelectInputView, {
         values: ['classic', 'waveform'],
         ensureValueDefined: true
@@ -28,7 +28,7 @@ editor.contentElementTypes.register('inlineAudio', {
       this.input('waveformColor', ColorInputView, {
         visibleBinding: 'playerControlVariant',
         visibleBindingValue: 'waveform',
-        defaultValue: '#e10028'
+        defaultValue: entry.getTheme().get('options').colors.accent
       });
 
 
