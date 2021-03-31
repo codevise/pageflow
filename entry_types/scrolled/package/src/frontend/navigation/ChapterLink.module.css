@@ -29,11 +29,6 @@
   }
 }
 
-.tooltipHeadline {
-  margin: 5px 0 0px;
-  color: var(--theme-accent-color);
-}
-
 @media (max-width: 780px) {
   .tooltipBubble {
     display: none !important;
