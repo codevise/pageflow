@@ -1,0 +1,17 @@
+.button {
+  composes: unstyledButton from '../utils.module.css';
+  width: 40px;
+  height: 40px;
+  margin: 0 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  cursor: pointer;
+}
+
+.button svg {
+  fill: currentColor;
+  width: 20px;
+  height: 20px;
+}
