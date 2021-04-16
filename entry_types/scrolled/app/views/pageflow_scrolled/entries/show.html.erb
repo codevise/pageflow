@@ -37,6 +37,7 @@
 
     <%= render 'pageflow_scrolled/entries/global_notices' %>
 
+    <div id="fullscreenRoot"></div>
     <div id="root"><%= render_scrolled_entry(@entry) unless @skip_ssr %></div>
 
     <div id='template-widget-container'>
