@@ -66,6 +66,20 @@ namespace :pageflow_scrolled do
                 configuration: {
                   testReferenceName: 'churchBefore'
                 }
+              }.stringify_keys,
+              equirectangularMono: {
+                url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/images/equirectangular_mono.jpg',
+                configuration: {
+                  testReferenceName: 'equirectangularMono',
+                  projection: 'equirectangular_mono'
+                }
+              }.stringify_keys,
+              equirectangularStereo: {
+                url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/images/equirectangular_stereo.png',
+                configuration: {
+                  testReferenceName: 'equirectangularStereo',
+                  projection: 'equirectangular_stereo'
+                }
               }.stringify_keys
             },
             video_files: {
