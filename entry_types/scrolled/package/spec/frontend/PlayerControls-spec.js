@@ -3,8 +3,9 @@ import React from 'react';
 import {ClassicPlayerControls, WaveformPlayerControls} from 'frontend/PlayerControls';
 
 import '@testing-library/jest-dom/extend-expect'
-import {render, fireEvent} from '@testing-library/react'
+import {fireEvent} from '@testing-library/react'
 import {useFakeTranslations} from 'pageflow/testHelpers';
+import {renderInEntry} from 'support';
 
 describe('PlayerControls', () => {
   useFakeTranslations({
@@ -16,7 +17,7 @@ describe('PlayerControls', () => {
   [ClassicPlayerControls, WaveformPlayerControls].forEach((PlayerControlComponent)=>{
     it('supports onFocus prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = render(<PlayerControlComponent onFocus={listener} />);
+      const {getByLabelText} = renderInEntry(<PlayerControlComponent onFocus={listener} />);
 
       getByLabelText('Play').focus();
 
@@ -25,7 +26,7 @@ describe('PlayerControls', () => {
 
     it('supports onBlur prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = render(<PlayerControlComponent onBlur={listener} />);
+      const {getByLabelText} = renderInEntry(<PlayerControlComponent onBlur={listener} />);
 
       getByLabelText('Play').focus();
       getByLabelText('Play').blur();
@@ -35,7 +36,7 @@ describe('PlayerControls', () => {
 
     it('supports onMouseEnter prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = render(<PlayerControlComponent onMouseEnter={listener} />);
+      const {getByLabelText} = renderInEntry(<PlayerControlComponent onMouseEnter={listener} />);
 
       fireEvent.mouseEnter(getByLabelText('Play'));
 
@@ -44,7 +45,7 @@ describe('PlayerControls', () => {
 
     it('supports onMouseLeave prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = render(<PlayerControlComponent onMouseLeave={listener} />);
+      const {getByLabelText} = renderInEntry(<PlayerControlComponent onMouseLeave={listener} />);
 
       fireEvent.mouseLeave(getByLabelText('Play'));
 
@@ -54,12 +55,14 @@ describe('PlayerControls', () => {
 
     it('supports rendering and handling events for text track menu items', () => {
       const listener = jest.fn();
-      const {getByTitle, getByText} = render(<PlayerControlComponent
-                                                textTracksMenuItems={[
-                                                  {label: 'German', value: 'de'},
-                                                  {label: 'English', value: 'en'},
-                                                ]}
-                                                onTextTracksMenuItemClick={listener} />);
+      const {getByTitle, getByText} = renderInEntry(
+        <PlayerControlComponent
+            textTracksMenuItems={[
+              {label: 'German', value: 'de'},
+              {label: 'English', value: 'en'},
+            ]}
+            onTextTracksMenuItemClick={listener} />
+      );
 
       fireEvent.click(getByTitle('Text Tracks'));
       fireEvent.click(getByText('English'));
@@ -70,17 +73,18 @@ describe('PlayerControls', () => {
 
   it('Classic player controls supports rendering and handling events for quality menu items', () => {
     const listener = jest.fn();
-    const {getByTitle, getByText} = render(<ClassicPlayerControls
-                                              qualityMenuItems={[
-                                                {label: '1080p', value: 'fullhd'},
-                                                {label: '720p', value: 'medium'},
-                                              ]}
-                                              onQualityMenuItemClick={listener} />);
+    const {getByTitle, getByText} = renderInEntry(
+      <ClassicPlayerControls
+          qualityMenuItems={[
+            {label: '1080p', value: 'fullhd'},
+            {label: '720p', value: 'medium'},
+          ]}
+          onQualityMenuItemClick={listener} />
+    );
 
     fireEvent.click(getByTitle('Quality'));
     fireEvent.click(getByText('1080p'));
 
     expect(listener).toHaveBeenCalledWith('fullhd');
   });
-
 });

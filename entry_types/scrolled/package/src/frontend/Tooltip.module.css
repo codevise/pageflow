@@ -51,7 +51,7 @@
 }
 
 .highlight .inner {
-  border-bottom: 3px solid #e10028;
+  border-bottom: 3px solid var(--theme-accent-color);
 }
 
 .arrow {

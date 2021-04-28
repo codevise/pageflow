@@ -1,7 +1,5 @@
-@value font-sans: 'Source Sans Pro', sans-serif;
-
 .Entry {
-  font-family: font-sans;
+  font-family: var(--theme-entry-font-family);
 }
 
 @media screen {

@@ -7,8 +7,9 @@ namespace :pageflow_scrolled do
 
   namespace :storybook do
     namespace :seed do
-      desc 'Recreate storybook entry and set up storybook JSON seed from it'
-      task :setup, [:output] => [:destroy_entry, :create_entry, :generate_json]
+      desc 'Recreate storybook entry and set up storybook JSON seed/preview-head.html from it'
+      task :setup, [:output_dir] => [:destroy_entry, :create_entry,
+                                     :generate_json, :generate_head_html]
 
       desc 'Destroy entry to generate Storybook entry JSON seed from'
       task destroy_entry: :environment do
@@ -115,11 +116,17 @@ namespace :pageflow_scrolled do
       end
 
       desc 'Generate Storybook entry JSON seed'
-      task :generate_json, [:output] => :environment do |_t, args|
+      task :generate_json, [:output_dir] => :environment do |_t, args|
         entry = Pageflow::Entry.find_by_title('Storybook seed')
 
         unless entry
           puts 'Seed entry does not exist. Run pageflow_scrolled:storybook:seed:create_entry first.'
+          exit 1
+        end
+
+        if args[:output_dir].blank?
+          puts 'Missing argument: Pass output directory via '\
+            '`rake pageflow_scrolled:storybook:seed:setup[some/directory]`'
           exit 1
         end
 
@@ -134,14 +141,38 @@ namespace :pageflow_scrolled do
                       locals: {entry: draft_entry})
           end
 
-        if args[:output].blank?
-          puts 'Missing argument: Pass output path via '\
-            '`rake pageflow_scrolled:storybook:seed:setup[some/path/seed.json]`'
+        output = File.join(args[:output_dir], 'seed.json')
+        File.write(output, seed)
+        puts "Wrote #{output}"
+      end
+
+      desc 'Generate Storybook preview-head.html'
+      task :generate_head_html, [:output_dir] => :environment do |_t, args|
+        entry = Pageflow::Entry.find_by_title('Storybook seed')
+
+        unless entry
+          puts 'Seed entry does not exist. Run pageflow_scrolled:storybook:seed:create_entry first.'
           exit 1
         end
 
-        File.write(args[:output], seed)
-        puts "Wrote #{args[:output]}"
+        if args[:output_dir].blank?
+          puts 'Missing argument: Pass output directory via '\
+            '`rake pageflow_scrolled:storybook:seed:setup[some/directory]`'
+          exit 1
+        end
+
+        draft_entry = Pageflow::DraftEntry.new(entry)
+
+        html =
+          File.read(File.join(__dir__, '..', '..', 'package', '.storybook',
+                              'preview-head.html.template')) +
+          PageflowScrolled::EntriesController.render(inline: <<-ERB, locals: {entry: draft_entry})
+            <%= scrolled_theme_properties_style_tag(entry.theme) %>
+          ERB
+
+        output = File.join(args[:output_dir], 'preview-head.html')
+        File.write(output, html)
+        puts "Wrote #{output}"
       end
     end
   end

@@ -1,7 +1,5 @@
 .navigationBar {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: var(--theme-navigation-font-family);
   position: fixed;
   top: -50px;
   transition: top .15s;
@@ -19,7 +17,8 @@
 .navigationBarContentWrapper {
   position: relative;
   z-index: 2;
-  background-color: #fff;
+  background-color: var(--theme-navigation-surface-color);
+  color: var(--theme-navigation-on-surface-color);
   height: 50px;
 }
 
@@ -53,12 +52,12 @@
   cursor: pointer;
   width: 40px;
   height: 50px;
-  fill: #c2c2c2;
+  fill: var(--theme-navigation-secondary-on-surface-color);
 }
 
 div:focus-within > .contextIcon,
 .contextIcon:hover {
-  fill: rgb(0, 55, 90);
+  fill: var(--theme-navigation-primary-on-surface-color);
 }
 
 .logo {
@@ -106,7 +105,7 @@ div:focus-within > .contextIcon,
   left: 0;
   width: 0vw;
   height: 100%;
-  background-color: #e10028;
+  background-color: var(--theme-accent-color);
 }
 
 @media screen and (max-width: 780px) {
@@ -119,7 +118,7 @@ div:focus-within > .contextIcon,
     position: fixed;
     top: 60px;
     left: 0px;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--theme-navigation-background-color);
     width: 100vw;
     height: calc(100vh - 60px);
     overscroll-behavior: contain;
@@ -162,7 +161,7 @@ div:focus-within > .contextIcon,
 
   .chapterListItem:hover::before,
   .chapterListItem:hover::after {
-    border-top: 1px solid rgb(0, 55, 90);
+    border-top: 1px solid var(--theme-navigation-primary-on-background-color);
     width: 80%;
     margin: 0 10%;
   }

@@ -150,26 +150,35 @@ storiesOfContentElement(module, {
 });
 ```
 
-The storybook depends on a static JSON file that contains seed for
-example files (e.g. images, audio and video files) that would normally
-be served by the Pageflow server. The easiest way to generate the seed
-file is to use the development setup of a working host application.
-Run the following command in the root directory of your host application
-(in case of audio and video files, first see
+The storybook depends on two pieces of information that would normally
+be served by the Pageflow server:
+
+* a JSON file that contains seed data for example files (e.g. images,
+  audio and video files)
+
+* a snippet of HTML containing a `style` tag with custom CSS
+  properties based on a theme.
+
+The easiest way to generate these files is to use the development
+setup of a working host application.  Run the following command in the
+root directory of your host application (in case of audio and video
+files, first see
 [documentation below](#using-transcoded-files-in-storybook-or-percy)):
 
 ```bash
-$ bundle exec rake pageflow_scrolled:storybook:seed:setup[./seed.json]
+$ bundle exec rake pageflow_scrolled:storybook:seed:setup[.]
 ```
 
-Note that brackets need to be escaped in `zsh`, so that the latter becomes
+Replace `.` with a path to generate the files in a different
+directory.  Note that brackets need to be escaped in `zsh`, so that
+the latter becomes
 
 ```bash
-$ bundle exec rake pageflow_scrolled:storybook:seed:setup\[./seed.json\]
+$ bundle exec rake pageflow_scrolled:storybook:seed:setup\[.\]
 ```
 
-Then move the generated `seed.json` file into the
-`entry_types/scrolled/package/.storybook/` directory of your
+Then move the generated `seed.json` and `preview-head.html` files into
+the `entry_types/scrolled/package/.storybook/` directory of your
 development checkout of the `pageflow` project.
 
 From now on, you can run the following command from the
@@ -186,11 +195,14 @@ the stories and generate visual diffs.
 
 ### Using transcoded files in storybook
 
-The Rake-task to setup seeds for storybook described above comprises three separate tasks:
-Deleting the storybook seed entry (if present), creating the storybook seed entry (from data
-specified within the task files source) and serializing the created entry to JSON.
-In order to use transcoded audio and video files in the local storybook,
-you need to run these tasks separately while adding a step for transcoding in between:
+The Rake-task to set up seeds for storybook described above comprises
+four separate tasks: Deleting the storybook seed entry (if present),
+creating the storybook seed entry (from data specified within the task
+files source), serializing the created entry to JSON and rendering a
+HTML head fragment containing theme custom properties.  In order to
+use transcoded audio and video files in the local storybook, you need
+to run these tasks separately while adding a step for transcoding in
+between:
 
 First run `$ bundle exec rake pageflow_scrolled:storybook:seed:destroy_entry` to delete
 an existing "Storybook seed" entry if present.
@@ -202,13 +214,15 @@ some time for the actual transcoding. You can check the route `/resque` to view 
 of the transcoding workers, or simply open the newly created "Storybook seed" entry
 in the editor and check the status under the files tab.
 
-Once all audio and video files of the "Storybook seed" entry are transcoded
-successfully, you can stop the server and run the last part of the Rake-task:
-`$ bundle exec rake pageflow_scrolled:storybook:seed:generate_json[./seed.json]`.
-This will serialize the now transcoded files, including their "ready"-state and all
-available variants of the transcoded source files of the entry.
-Afterwards copy the generated `seed.json` file into the pageflow project directory as
-described above.
+Once all audio and video files of the "Storybook seed" entry are
+transcoded successfully, you can stop the server and run the last
+parts of the Rake-task: `$ bundle exec rake
+pageflow_scrolled:storybook:seed:generate_json[.]
+pageflow_scrolled:storybook:seed:generate_head_html[.]`.  This will
+serialize the now transcoded files, including their "ready"-state and
+all available variants of the transcoded source files of the entry.
+Afterwards copy the generated `seed.json` and `preview-head.html`
+files into the pageflow project directory as described above.
 
 ### Using transcoded files in CI/Percy
 Since in CI there is no transcoding configured, using transcoded files in Percy requires

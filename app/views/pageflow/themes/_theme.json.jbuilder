@@ -1,4 +1,4 @@
-json.(theme, :name)
+json.(theme, :name, :options)
 
 json.preview_image_url(image_url(theme.preview_image_path))
 json.preview_thumbnail_url(image_url(theme.preview_thumbnail_path))

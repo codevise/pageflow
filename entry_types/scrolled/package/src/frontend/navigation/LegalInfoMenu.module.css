@@ -17,5 +17,5 @@
 }
 
 .legalInfoTooltip a {
-  color: #e10028;
+  color: var(--theme-accent-color);
 }
