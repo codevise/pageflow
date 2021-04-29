@@ -26,7 +26,7 @@ describe('ContentElement', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'sticky', 'full']);
+      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'sticky', 'wide', 'full']);
     });
 
     it('returns positions for center layout if parent section uses that', () => {
@@ -46,7 +46,7 @@ describe('ContentElement', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'left', 'right', 'full']);
+      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'left', 'right', 'wide', 'full']);
     });
 
     it('filters by positions supported by content element type', () => {

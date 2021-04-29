@@ -1,7 +1,7 @@
-import {editor, NoOptionsHintView} from 'pageflow-scrolled/editor';
+import {editor} from 'pageflow-scrolled/editor';
 
 editor.contentElementTypes.register('heading', {
-  supportedPositions: ['inline', 'full'],
+  supportedPositions: ['inline', 'wide'],
 
   configurationEditor() {
     this.tab('general', function() {

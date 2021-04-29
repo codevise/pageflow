@@ -5,10 +5,12 @@ import {BackgroundColorProvider} from '../backgroundColor';
 
 import styles from "./CardBoxWrapper.module.css";
 
+const positionOutsideBox = ['sticky', 'wide', 'full']
+
 export default function CardBoxWrapper(props) {
   return(
     <div className={className(props)}>
-      <BackgroundColorProvider invert={props.position !== 'sticky' && props.position !== 'full'}>
+      <BackgroundColorProvider invert={!positionOutsideBox.includes(props.position)}>
         {props.children}
       </BackgroundColorProvider>
     </div>
@@ -16,7 +18,7 @@ export default function CardBoxWrapper(props) {
 }
 
 function className(props) {
-  if (props.position === 'sticky' || props.position === 'full') {
+  if (positionOutsideBox.includes(props.position)) {
     return undefined;
   }
 

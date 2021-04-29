@@ -42,8 +42,12 @@ function boxProps(items, item, index) {
 
   return {
     position: item.position,
-    openStart: previous && item.position !== 'full' && previous.position !== 'full',
-    openEnd: next && item.position !== 'full' && next.position !== 'full',
+    openStart: previous &&
+               item.position !== 'full' && previous.position !== 'full' &&
+               item.position !== 'wide' && previous.position !== 'wide',
+    openEnd: next &&
+             item.position !== 'full' && next.position !== 'full' &&
+             item.position !== 'wide' && next.position !== 'wide',
   }
 }
 function renderPlaceholder(placeholder) {

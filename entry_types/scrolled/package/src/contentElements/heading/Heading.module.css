@@ -6,6 +6,16 @@
   padding-top: 0.3em;
 }
 
+@media (min-width: 951px) {
+  .right {
+    text-align: right;
+  }
+}
+
+.center {
+  text-align: center;
+}
+
 @media (orientation: landscape) {
   .first {
     padding-top: 25%;
