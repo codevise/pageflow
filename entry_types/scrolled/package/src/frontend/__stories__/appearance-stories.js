@@ -98,6 +98,7 @@ function exampleSeed(appearance, invert = false) {
 
   function exampleContentElements(sectionId, layout) {
     return [
+      exampleHeading({sectionId, text: 'A Heading wider than the Section', position: 'wide'}),
       exampleHeading({sectionId, text: `${appearance}/${layout}`}),
 
       ...positionOptions[layout].map(position => [

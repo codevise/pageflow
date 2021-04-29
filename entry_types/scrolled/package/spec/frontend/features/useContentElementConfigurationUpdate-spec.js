@@ -42,6 +42,35 @@ describe('useContentElementConfigurationUpdate', () => {
     expect(getByTestId('test-component')).toHaveTextContent('New text');
   });
 
+  it('does not change other configuration attributes', () => {
+    frontend.contentElementTypes.register('text', {
+      component: function Component({configuration}) {
+        const update = useContentElementConfigurationUpdate();
+
+        useEffect(() => update({text: 'New text'}),
+                  [update]);
+
+        return (
+          <div data-testid="test-component">{configuration.other}</div>
+        )
+      }
+    });
+
+    const {getByTestId} = renderEntry({
+      seed: {
+        contentElements: [{
+          typeName: 'text',
+          configuration: {
+            text: 'Some text',
+            other: 'Unchanged'
+          }
+        }]
+      }
+    });
+
+    expect(getByTestId('test-component')).toHaveTextContent('Unchanged');
+  });
+
   it('posts UPDATE_CONTENT_ELEMENT message when content element updates its configuration', () => {
     frontend.contentElementTypes.register('text', {
       component: function Component({configuration}) {

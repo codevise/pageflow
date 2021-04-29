@@ -1,10 +1,12 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {ColorInputView, FileInputView} from 'pageflow/editor';
 import {
-  CheckBoxInputView, SelectInputView, SliderInputView, TextInputView
+  CheckBoxInputView, SliderInputView, TextInputView
 } from 'pageflow/ui';
 
 editor.contentElementTypes.register('inlineBeforeAfter', {
+  supportedPositions: ['inline'],
+
   configurationEditor() {
     this.tab('general', function() {
       this.input('before_id', FileInputView, {

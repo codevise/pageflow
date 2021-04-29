@@ -232,13 +232,14 @@ export function normalizeAndMergeFixture(options) {
   };
 }
 
-export function exampleHeading({sectionId, text}) {
+export function exampleHeading({sectionId, text, position}) {
   return {
     sectionId,
     typeName: 'heading',
     configuration: {
       children: text,
-      level: 1
+      level: 1,
+      position
     }
   }
 }

@@ -4,6 +4,8 @@ import {UrlInputView, TextInputView, ColorInputView} from 'pageflow/ui';
 import {DatawrapperAdView} from './editor/DataWrapperAdView';
 
 editor.contentElementTypes.register('dataWrapperChart', {
+  supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
+
   configurationEditor() {
     this.tab('general', function() {
       this.input('url', UrlInputView, {
