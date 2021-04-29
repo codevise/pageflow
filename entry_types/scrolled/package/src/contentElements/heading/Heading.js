@@ -21,6 +21,7 @@ export function Heading({configuration, sectionProps}) {
   return (
     <h1 className={classNames(styles.root,
                               {[styles.first]: firstSectionInEntry},
+                              {[styles[sectionProps.layout]]: configuration.position === 'wide'},
                               {[withShadowClassName]: !sectionProps.invert})}>
       <Text scaleCategory={firstSectionInEntry ? 'h1' : 'h2'} inline={true}>
         <EditableInlineText value={configuration.value}

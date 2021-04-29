@@ -3,6 +3,8 @@ import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView} from 'pageflow/ui';
 
 editor.contentElementTypes.register('inlineVideo', {
+  supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
+
   configurationEditor() {
     this.tab('general', function() {
       this.input('id', FileInputView, {
@@ -23,7 +25,7 @@ editor.contentElementTypes.register('inlineVideo', {
       this.input('atmoDuringPlayback', SelectInputView, {
         values: ['play', 'mute', 'turnDown']
       });
-      
+
       this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });

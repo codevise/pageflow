@@ -14,6 +14,8 @@ editor.registerSideBarRouting({
 
 // register external link list content element configuration editor for sidebar
 editor.contentElementTypes.register('externalLinkList', {
+  supportedPositions: ['inline'],
+
   configurationEditor({entry}) {
     this.tab('general', function() {
       this.view(SidebarListView, {

@@ -3,6 +3,8 @@ import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView, ColorInputView} from 'pageflow/ui';
 
 editor.contentElementTypes.register('inlineAudio', {
+  supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
+
   configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('id', FileInputView, {

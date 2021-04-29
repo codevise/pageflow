@@ -8,10 +8,10 @@ import styles from './TwoColumn.module.css';
 
 function availablePositions(narrow) {
   if (narrow) {
-    return ['inline', 'full'];
+    return ['inline', 'wide', 'full'];
   }
   else {
-    return ['inline', 'sticky', 'full'];
+    return ['inline', 'sticky', 'wide', 'full'];
   }
 }
 
@@ -19,7 +19,8 @@ export function TwoColumn(props) {
   const narrow = useNarrowViewport();
 
   return (
-    <div className={classNames(styles.root, styles[props.align], narrow ? styles.narrow : styles.wide)}>
+    <div className={classNames(styles.root, styles[props.align],
+                               narrow ? styles.narrowViewport : styles.wideViewport)}>
       <div className={classNames(styles.group)} key={props.align}>
         <div className={styles.inline} ref={props.contentAreaRef} />
       </div>
@@ -38,6 +39,7 @@ function renderItems(props, narrow) {
     <div key={index} className={classNames(styles.group, styles[`group-${group.position}`])}>
       {renderItemGroup(props, group, 'sticky')}
       {renderItemGroup(props, group, 'inline')}
+      {renderItemGroup(props, group, 'wide')}
       {renderItemGroup(props, group, 'full')}
     </div>
   );
@@ -73,6 +75,7 @@ function groupItemsByPosition(items, availablePositions) {
         position,
         sticky: [],
         inline: [],
+        wide: [],
         full: []
       };
       groups = [...groups, currentGroup];
@@ -86,7 +89,7 @@ function groupItemsByPosition(items, availablePositions) {
     const previous = groups[index - 1];
     const next = groups[index + 1];
 
-    group.openStart = previous && !previous.full.length;
+    group.openStart = previous && !(previous.full.length || previous.wide.length);
     group.openEnd = next && next.inline.length > 0;
   })
 

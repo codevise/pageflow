@@ -12,19 +12,25 @@
 }
 
 .sticky,
-.inline {
+.inline,
+.wide {
   max-width: 500px;
 }
 
-.right .inline {
+.wideViewport .wide {
+  max-width: 1200px;
+}
+
+.right .inline,
+.right .wide {
   margin-left: auto;
 }
 
-.narrow.right .sticky {
+.narrowViewport.right .sticky {
   margin-left: auto;
 }
 
-.wide .sticky {
+.wideViewport .sticky {
   position: sticky;
   float: right;
   clear: right;
@@ -33,6 +39,6 @@
   max-width: 600px;
 }
 
-.wide.right .sticky {
+.wideViewport.right .sticky {
   float: left;
 }

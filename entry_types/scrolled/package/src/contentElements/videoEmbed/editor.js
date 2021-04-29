@@ -1,7 +1,9 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {CheckBoxInputView, SelectInputView, TextInputView, UrlInputView} from 'pageflow/ui';
+import {CheckBoxInputView, SelectInputView, UrlInputView} from 'pageflow/ui';
 
 editor.contentElementTypes.register('videoEmbed', {
+  supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
+
   configurationEditor() {
     this.tab('general', function() {
       this.input('videoSource', UrlInputView, {

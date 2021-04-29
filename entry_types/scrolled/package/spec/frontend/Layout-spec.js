@@ -61,13 +61,14 @@ describe('Layout', () => {
     describe('in two column variant', () => {
       it('is called for each group of consecutive items with same position passing position', () => {
         const items = [
-          {id: 1, type: 'probe', position: 'inline'},
+          {id: 1, type: 'probe', position: 'wide'},
           {id: 2, type: 'probe', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'},
-          {id: 4, type: 'probe', position: 'sticky'},
+          {id: 4, type: 'probe', position: 'inline'},
           {id: 5, type: 'probe', position: 'sticky'},
-          {id: 6, type: 'probe', position: 'inline'},
-          {id: 7, type: 'probe', position: 'full'},
+          {id: 6, type: 'probe', position: 'sticky'},
+          {id: 7, type: 'probe', position: 'inline'},
+          {id: 8, type: 'probe', position: 'full'},
         ];
         const {container} = render(
           <Layout sectionProps={{layout: 'left'}} items={items}>
@@ -75,7 +76,7 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('inline 1 2 3 sticky 4 5 inline 6 full 7 ');
+        expect(container.textContent).toEqual('wide 1 inline 2 3 4 sticky 5 6 inline 7 full 8 ');
       });
 
       it('continues inline group after being interrupted by sticky group', () => {
@@ -100,6 +101,22 @@ describe('Layout', () => {
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'inline'},
           {id: 3, type: 'probe', position: 'full'},
+          {id: 4, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('( 1 2 )( 3 )( 4 )');
+      });
+
+      it('does not continue inline group after being interrupted by wide group', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline'},
+          {id: 3, type: 'probe', position: 'wide'},
           {id: 4, type: 'probe', position: 'inline'},
         ];
         const {container} = render(
@@ -164,9 +181,10 @@ describe('Layout', () => {
     describe('in center variant', () => {
       it('calls children for each item passing position', () => {
         const items = [
-          {id: 1, type: 'probe', position: 'inline'},
-          {id: 2, type: 'probe', position: 'sticky'},
-          {id: 3, type: 'probe', position: 'full'},
+          {id: 1, type: 'probe', position: 'wide'},
+          {id: 2, type: 'probe', position: 'inline'},
+          {id: 3, type: 'probe', position: 'sticky'},
+          {id: 4, type: 'probe', position: 'full'},
         ];
         const {container} = render(
           <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -174,7 +192,7 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('inline 1 sticky 2 full 3 ');
+        expect(container.textContent).toEqual('wide 1 inline 2 sticky 3 full 4 ');
       });
 
       it('renders consecutive inline items with open end/open start', () => {
@@ -211,6 +229,21 @@ describe('Layout', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'full'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('( 1 )( 2 )( 3 )');
+      });
+
+      it('renders items separated by wide item without open end/open start', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'wide'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
         const {container} = render(
