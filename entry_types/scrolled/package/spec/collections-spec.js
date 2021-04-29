@@ -821,6 +821,28 @@ describe('updateConfiguration', () => {
 
     expect(item.title).toBe('News');
   });
+
+  it('leaves other configuration attributes unchanged', () => {
+    const {result} = renderHook(() => useCollections({
+      posts: [{id: 10, configuration: {other: 'unchanged'}}]
+    }));
+
+    act(() => {
+      const [, dispatch] = result.current;
+
+      updateConfiguration({
+        name: 'posts',
+        key: 10,
+        configuration: {some: 'value'},
+        dispatch
+      });
+    });
+
+    let [state,] = result.current;
+    const item = getItem(state, 'posts', 10);
+
+    expect(item.configuration.other).toBe('unchanged');
+  });
 });
 
 describe('createItemsSelector', () => {
