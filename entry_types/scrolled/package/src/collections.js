@@ -5,7 +5,7 @@ const PREFIX = 'PAGEFLOW_SCROLLED_COLLECTION';
 const RESET = `${PREFIX}_RESET`;
 const ADD = `${PREFIX}_ADD`;
 const CHANGE = `${PREFIX}_CHANGE`;
-const PATCH = `${PREFIX}_PATCH`;
+const PATCH_CONFIGURATION = `${PREFIX}_PATCH_CONFIGURATION`;
 const REMOVE = `${PREFIX}_REMOVE`;
 const SORT = `${PREFIX}_SORT`;
 
@@ -48,7 +48,7 @@ function reducer(state, action) {
         }
       }
     }
-  case PATCH:
+  case PATCH_CONFIGURATION:
     const key = action.payload.key;
 
     return {
@@ -59,7 +59,10 @@ function reducer(state, action) {
           ...state[collectionName].items,
           [key]: {
             ...state[collectionName].items[key],
-            ...action.payload.attributes
+            configuration: {
+              ...state[collectionName].items[key].configuration,
+              ...action.payload.configuration
+            }
           }
         }
       }
@@ -104,11 +107,11 @@ function init(items, keyAttribute = 'id') {
 
 export function updateConfiguration({dispatch, name, key, configuration}) {
   dispatch({
-    type: PATCH,
+    type: PATCH_CONFIGURATION,
     payload: {
       collectionName: name,
       key,
-      attributes: {configuration}
+      configuration
     }
   })
 }

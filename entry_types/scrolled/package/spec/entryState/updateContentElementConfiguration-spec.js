@@ -3,8 +3,8 @@ import {useSectionContentElements, updateContentElementConfiguration} from 'entr
 import {renderHookInEntry} from 'support';
 
 describe('updateContentElementConfiguration', () => {
-  it('updates the configuration of a content element preserving object identity', () => {
-    const newConfiguration = {some: 'update'};
+  it('updates the configuration of a content element', () => {
+    const newConfiguration = {some: {text: 'update'}};
     const {result} = renderHookInEntry(() => useSectionContentElements({sectionId: 1}), {
       seed: {
         sections: [{id: 1, permaId: 10}],
@@ -20,6 +20,6 @@ describe('updateContentElementConfiguration', () => {
     });
     const contentElements = result.current;
 
-    expect(contentElements[0].props).toBe(newConfiguration);
+    expect(contentElements[0].props.some).toBe(newConfiguration.some);
   });
 });
