@@ -21,6 +21,12 @@ describe('ScrolledEntry', () => {
           }
         });
 
+        editor.contentElementTypes.register('heading', {
+          defaultConfig: {
+            position: 'wide'
+          }
+        });
+
         testContext.entry = factories.entry(
           ScrolledEntry,
           {
@@ -55,6 +61,22 @@ describe('ScrolledEntry', () => {
             typeName: 'inlineImage',
             position: 2,
             configuration: {some: 'value'}
+          }
+        });
+      });
+
+      it('uses position from default config when adding content element at end', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'heading'},
+                                   {at: 'endOfSection', id: 10});
+
+        expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements');
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_element: {
+            typeName: 'heading',
+            position: 2,
+            configuration: {position: 'wide'}
           }
         });
       });
@@ -229,9 +251,61 @@ describe('ScrolledEntry', () => {
       });
     });
 
+    describe('for sibling with inline position', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('heading', {
+          defaultConfig: {position: 'wide'}
+        });
+
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {
+            id: 100
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {id: 5, position: 0, configuration: {position: 'inline'}}
+              ]
+            })
+          }
+        );
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      it('uses position from default config', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'heading'},
+                                   {at: 'after', id: 5});
+
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5},
+            {typeName: 'heading', configuration: {position: 'wide'}},
+          ]
+        });
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(entry.contentElements.get(6).configuration.get('position')).toEqual('wide');
+      });
+    });
+
     describe('for sibling with sticky position', () => {
       beforeEach(() => {
         editor.contentElementTypes.register('inlineImage', {});
+        editor.contentElementTypes.register('heading', {
+          defaultConfig: {position: 'wide'}
+        });
 
         testContext.entry = factories.entry(
           ScrolledEntry,
@@ -274,11 +348,37 @@ describe('ScrolledEntry', () => {
 
         expect(entry.contentElements.get(6).configuration.get('position')).toEqual('sticky');
       });
+
+      it('ignores position from default config', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'heading'},
+                                   {at: 'after', id: 5});
+
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5},
+            {typeName: 'heading', configuration: {position: 'sticky'}},
+          ]
+        });
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(entry.contentElements.get(6).configuration.get('position')).toEqual('sticky');
+      });
     });
 
     describe('for sibling with full position', () => {
       beforeEach(() => {
         editor.contentElementTypes.register('inlineImage', {});
+        editor.contentElementTypes.register('heading', {
+          defaultConfig: {position: 'wide'}
+        });
 
         testContext.entry = factories.entry(
           ScrolledEntry,
@@ -299,7 +399,7 @@ describe('ScrolledEntry', () => {
         entry: () => testContext.entry
       });
 
-      it('gives inserted content element inline position', () => {
+      it('does not give element full position', () => {
         const {entry, requests} = testContext;
 
         entry.insertContentElement({typeName: 'inlineImage'},
@@ -308,7 +408,7 @@ describe('ScrolledEntry', () => {
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
           content_elements: [
             {id: 5},
-            {typeName: 'inlineImage', configuration: {position: 'inline'}},
+            {typeName: 'inlineImage', configuration: {}},
           ]
         });
 
@@ -319,7 +419,30 @@ describe('ScrolledEntry', () => {
           ])]
         );
 
-        expect(entry.contentElements.last().configuration.get('position')).toEqual('inline');
+        expect(entry.contentElements.last().configuration.get('position')).toBeUndefined();
+      });
+
+      it('uses position from default config', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'heading'},
+                                   {at: 'after', id: 5});
+
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5},
+            {typeName: 'heading', configuration: {position: 'wide'}},
+          ]
+        });
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(entry.contentElements.get(6).configuration.get('position')).toEqual('wide');
       });
     });
 
