@@ -26,12 +26,7 @@ export function ChapterLink(props) {
   }
 
   const content = (
-    <>
-      <h3 className={styles.tooltipHeadline}>
-        {t('pageflow_scrolled.public.navigation.chapter', {number: props.chapterIndex})}
-      </h3>
-      <p dangerouslySetInnerHTML={{__html: props.summary}} />
-    </>
+    <p dangerouslySetInnerHTML={{__html: props.summary}} />
   );
 
   return (
