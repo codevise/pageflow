@@ -40,6 +40,8 @@ export {VideoPlayerControls} from './VideoPlayerControls';
 export {AudioPlayerControls} from './AudioPlayerControls';
 export {PlayerControls, ClassicPlayerControls, WaveformPlayerControls} from './PlayerControls';
 
+export {Panorama} from './Panorama';
+
 export * from './useOnScreen';
 export * from './i18n';
 

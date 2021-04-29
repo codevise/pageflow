@@ -1,0 +1,15 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        vrImage:
+          attributes:
+            image:
+              label: 360°-Bild
+            initialPitch:
+              label: Initialer Gierungswinkel
+            initialYaw:
+              label: Initialer Neigungswinkel
+    public:
+      enter_fullscreen: Vollbild
+      exit_fullscreen: Vollbild verlassen
