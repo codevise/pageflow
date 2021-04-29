@@ -160,3 +160,7 @@
 @media print {
   :global .video-js > *:not(.vjs-tech):not(.vjs-poster) {
     visibility: hidden; } }
+
+:global .vjs-resize-manager {
+  border: none;
+}
