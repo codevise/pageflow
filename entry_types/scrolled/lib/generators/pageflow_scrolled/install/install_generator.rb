@@ -6,6 +6,25 @@ module PageflowScrolled
 
       source_root File.expand_path('templates', __dir__)
 
+      def initializer
+        inject_into_file('config/initializers/pageflow.rb',
+                         after: "Pageflow.configure do |config|\n") do
+          "  config.plugin(PageflowScrolled.plugin)\n\n" \
+          "  config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|\n" \
+          "    entry_type_config.plugin(ScrolledThemesPlugin.new)\n" \
+          "  end\n\n"
+        end
+      end
+
+      def theme_plugin
+        # Ruby files in the lib directory are eager loaded in
+        # production. This includes template files in
+        # lib/generators. Template file extension (.tt) is removed by
+        # Thor automatically and ensures the file is not picked up by
+        # eager loading.
+        template 'themes_plugin.rb.tt', 'app/plugins/scrolled_themes_plugin.rb'
+      end
+
       def install_packages
         run 'yarn add postcss-url@^8.0.0 @fontsource/source-sans-pro'
       end
