@@ -150,7 +150,7 @@ module Admin
       end
 
       it 'does not create widgets if entry template is invalid' do
-        existing_entry_template = create(:entry_template, entry_type_name: 'scrolled')
+        existing_entry_template = create(:entry_template, entry_type_name: 'paged')
         admin = create(:user, :admin)
         sign_in(admin, scope: :user)
 
@@ -159,7 +159,7 @@ module Admin
                params: {
                  account_id: existing_entry_template.account.id,
                  entry_template: {
-                   entry_type_name: 'scrolled'
+                   entry_type_name: 'paged'
                  },
                  widgets: {
                    navigation: 'some_widget'
@@ -273,8 +273,12 @@ module Admin
       end
 
       it 'does not update widgets if entry template validation fails' do
+        pageflow_configure do |config|
+          Pageflow::TestEntryType.register(config, name: 'other')
+        end
+
         entry_template = create(:entry_template, entry_type_name: 'paged')
-        create(:entry_template, entry_type_name: 'scrolled', account: entry_template.account)
+        create(:entry_template, entry_type_name: 'other', account: entry_template.account)
 
         admin = create(:user, :admin)
         sign_in(admin, scope: :user)
@@ -285,7 +289,7 @@ module Admin
                   id: entry_template.id,
                   account_id: entry_template.account.id,
                   entry_template: {
-                    entry_type_name: 'scrolled'
+                    entry_type_name: 'other'
                   },
                   widgets: {
                     navigation: 'some_widget'
