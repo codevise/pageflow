@@ -8,7 +8,7 @@ RSpec.describe 'storybook:seed' do
 
   before do
     Rake::Task.define_task(:environment)
-    Rake.application.rake_require 'tasks/pageflow_scrolled_tasks'
+    Rake.application.rake_require 'tasks/pageflow_scrolled/storybook'
 
     FileUtils.rm_r(test_output_dir) if File.exist?(test_output_dir)
     FileUtils.mkdir(test_output_dir)
