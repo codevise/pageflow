@@ -5,4 +5,5 @@ APP_RAKEFILE = File.expand_path("../#{Pageflow::Dummy::App.new.directory}/Rakefi
 
 load 'rails/tasks/engine.rake' if File.exist?(APP_RAKEFILE)
 
-load File.expand_path('lib/tasks/pageflow_scrolled_tasks.rake', File.dirname(__FILE__))
+load File.expand_path('lib/tasks/pageflow_scrolled/dummy.rake', File.dirname(__FILE__))
+load File.expand_path('lib/tasks/pageflow_scrolled/storybook.rake', File.dirname(__FILE__))

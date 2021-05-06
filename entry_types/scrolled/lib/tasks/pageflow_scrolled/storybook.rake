@@ -158,7 +158,7 @@ namespace :pageflow_scrolled do
         draft_entry = Pageflow::DraftEntry.new(entry)
 
         html =
-          File.read(File.join(__dir__, '..', '..', 'package', '.storybook',
+          File.read(File.join(__dir__, '..', '..', '..', 'package', '.storybook',
                               'preview-head.html.template')) +
           PageflowScrolled::EntriesController.render(inline: <<-ERB, locals: {entry: draft_entry})
             <%= scrolled_theme_properties_style_tag(entry.theme) %>
