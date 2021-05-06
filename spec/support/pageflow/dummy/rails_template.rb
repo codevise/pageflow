@@ -38,6 +38,10 @@ gsub_file('app/assets/javascripts/application.js', %r'//=.*', '')
 in_root { run('rake db:environment:set db:drop:all', capture: true, abort_on_failure: false) }
 rake 'db:create:all'
 
+# Install Webpacker
+
+rake 'webpacker:install' if ENV['PAGEFLOW_INSTALL_WEBPACKER'] == 'true'
+
 # Install pageflow and the tested engine via their generators.
 
 generate 'pageflow:install', '--force'
