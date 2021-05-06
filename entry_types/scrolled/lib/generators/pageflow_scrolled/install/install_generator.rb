@@ -6,6 +6,10 @@ module PageflowScrolled
 
       source_root File.expand_path('templates', __dir__)
 
+      def initializer
+        template 'initializer.rb', 'config/initializers/pageflow_scrolled.rb'
+      end
+
       def install_packages
         run 'yarn add postcss-url@^8.0.0 @fontsource/source-sans-pro'
       end
