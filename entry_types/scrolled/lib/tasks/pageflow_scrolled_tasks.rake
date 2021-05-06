@@ -1,10 +1,4 @@
 namespace :pageflow_scrolled do
-  desc 'Generate dummy app for current Rails version.'
-  task :dummy do
-    require 'pageflow/support'
-    Pageflow::Dummy.setup
-  end
-
   namespace :storybook do
     namespace :seed do
       desc 'Recreate storybook entry and set up storybook JSON seed/preview-head.html from it'

@@ -6,12 +6,6 @@ module PageflowScrolled
 
       source_root File.expand_path('templates', __dir__)
 
-      def install_webpacker
-        require 'webpacker'
-        gemfile = File.expand_path('../../../../../../Gemfile', __dir__)
-        rake "webpacker:install BUNDLE_GEMFILE=#{gemfile}"
-      end
-
       def install_packages
         run 'yarn add postcss-url@^8.0.0 @fontsource/source-sans-pro'
       end
