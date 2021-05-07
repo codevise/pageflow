@@ -672,6 +672,28 @@ module Pageflow
         expect(skulled_help_entry_names).not_to include('phaged_theme')
       end
 
+      it 'allows registering file importers in for_entry_type block' do
+        pageflow = PageflowModule.new
+        phaged_entry_type = TestEntryType.new(name: 'phaged')
+        skulled_entry_type = TestEntryType.new(name: 'skulled')
+        pageflow.configure do |config|
+          config.entry_types.register(phaged_entry_type)
+          config.entry_types.register(skulled_entry_type)
+
+          config.for_entry_type(phaged_entry_type) do |c|
+            c.file_importers.register(TestFileImporter.new)
+          end
+        end
+        phaged_entry = double('entry', entry_type: phaged_entry_type, enabled_feature_names: [])
+        skulled_entry = double('entry', entry_type: skulled_entry_type, enabled_feature_names: [])
+
+        phaged_file_importer_names = pageflow.config_for(phaged_entry).file_importers.map(&:name)
+        skulled_file_importer_names = pageflow.config_for(skulled_entry).file_importers.map(&:name)
+
+        expect(phaged_file_importer_names).to include('test_file_importer')
+        expect(skulled_file_importer_names).not_to include('test_file_importer')
+      end
+
       it 'allows calling plugin method inside for_entry_type block' do
         pageflow = PageflowModule.new
         entry_type = TestEntryType.new(name: 'phaged')

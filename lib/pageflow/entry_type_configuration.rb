@@ -11,6 +11,7 @@ module Pageflow
 
     attr_reader :features
 
+    delegate :file_importers, to: :@config
     delegate :file_types, to: :@config
     delegate :help_entries, to: :@config
     delegate :hooks, to: :@config
