@@ -2,7 +2,7 @@ module Pageflow
   # Include in models that are declared as nested revision components
   # of other revision components.
   #
-  # @since edge
+  # @since 15.5
   module NestedRevisionComponent
     # Shared functionality of revision components and nested revision
     # components.
