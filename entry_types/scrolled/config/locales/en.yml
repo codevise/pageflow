@@ -28,6 +28,7 @@ en:
             left: Floated left
             right: Floated right
             sticky: Sticky
+            wide: Wide
       content_elements:
         dataWrapperChart:
           attributes:
@@ -183,6 +184,14 @@ en:
           name: Video Embed
           tabs:
             general: Video-Embed
+        vrImage:
+          attributes:
+            image:
+              label: 360° Image
+            initialPitch:
+              label: Initial Pitch
+            initialYaw:
+              label: Initial Yaw
       edit_chapter:
         attributes:
           summary:
@@ -368,55 +377,7 @@ en:
           The switch at the bottom of the sidebar next to the help button can be used to switch to the phone preview. This allows you to test how your entry looks and works in portrait format.
       sections:
         menu_item: Section Options
-        text: |-
-          # Section Options
-
-          A click in an empty area of a section will display a selection rectangle around the section. On the right side of the selection rectangle you will find a button with a pencil icon that allows you to edit the options of the section in the sidebar.
-
-          ## Layout
-
-          The **Foreground Positioning** option allows you to select how the contents of the section should be arranged horizontally. For example, if the background of the section is on the right side, text and content elements can be positioned on the left side and vice versa. For backgrounds in the total or a centred motif, the content elements can be positioned in the middle.
-
-          By selecting a **gradient function**, a sufficient contrast between text and background can be ensured. With the **shadow**, the background is darkened or lightened with a colour gradient. With the **Card** setting, the content elements are displayed on a surface with rounded corners.
-
-          ## Background
-
-          Either an **image**, a **colour** or a **video loop** can be displayed in the background of the section. For background images and video, the important (to be emphasised, essential) part of the image can be marked. This motif area is then initially not covered by the scrolling foreground in both desktop and mobile device displays. Further information about the "motif areas" here.
-
-          The **Background image (portrait)** option can be used to optionally specify an alternative image to be used if the screen aspect ratio of a terminal device is higher than wide, for example on smartphones and tablets in portrait mode. The image can be configured as an alternative to the background image in landscape mode, from which otherwise important parts might be cut off.
-
-          ## Atmo Audio
-
-          With the **"Atmo"**, each section can play sound in the background, regardless of the content element. It can be determined whether a sound can only be heard in one section or continues over several sections without interruption. Simply select the same audio file for the following sections under **Options** as Atmo. In this way chapters can be acoustically separated from each other and coherent pages can be interwoven more strongly.
-
-          When playing audio and video, you can also select whether the background sound should continue to play normally or more quietly during media playback, or whether it should fade out completely. The setting of the ambience sounds can be accessed on each page via the **Options** tab. If the atmosphere disturbs you while editing your entry in the editor, you can temporarily mute it with the key combination **Alt + a**. To reactivate the Atmo, simply press **Alt + a** again.
-
-
-          ## Transitions
-
-          For each section a transition effect to the next section can be selected.  The transition has a different effect on the background and the foreground.  To set the transition from the currently selected section to the next, **click in the background of the section** and then on the **arrow button** in the upper right corner. The following **transitions** are available
-
-          ## Crossfade
-
-          Soft fade from section A to section B.
-
-          ## Scroll in/out
-
-          Both sections are scrolled in and out.
-
-          ## Overlay
-
-          Section B overlays section A from below.
-
-          ## Expose
-
-          Section A moves up as you scroll and exposes the section B below.
-
-          ## Scrolling with static backgrounds
-
-          Section B scrolls over the static section A.
-
-          The selected setting always defines the transition from the previous to the currently selected section. The transition affects the background and foreground differently.  The **Cross-Fade All** and **Cross-Fade Background Only** effects are only available when the **Use Full Viewport-Height** option is enabled.
+        text: "# Section Options\n\nA click in an empty area of a section will display a selection rectangle around the section. On the right side of the selection rectangle you will find a button with a pencil icon that allows you to edit the options of the section in the sidebar.\n\n## Layout\n\nThe **Foreground Positioning** option allows you to select how the contents of the section should be arranged horizontally. For example, if the background of the section is on the right side, text and content elements can be positioned on the left side and vice versa. For backgrounds in the total or a centred motif, the content elements can be positioned in the middle.\n\nBy selecting a **gradient function**, a sufficient contrast between text and background can be ensured. With the **shadow**, the background is darkened or lightened with a colour gradient. With the **Card** setting, the content elements are displayed on a surface with rounded corners.\n\n## Background\n\nEither an **image**, a **colour** or a **video loop** can be displayed in the background of the section. For background images and video, the important (to be emphasised, essential) part of the image can be marked. This motif area is then initially not covered by the scrolling foreground in both desktop and mobile device displays. Further information about the \"motif areas\" here.\n\nThe **Background image (portrait)** option can be used to optionally specify an alternative image to be used if the screen aspect ratio of a terminal device is higher than wide, for example on smartphones and tablets in portrait mode. The image can be configured as an alternative to the background image in landscape mode, from which otherwise important parts might be cut off.\n\n## Atmo Audio\n\nWith the **\"Atmo\"**, each section can play sound in the background, regardless of the content element. It can be determined whether a sound can only be heard in one section or continues over several sections without interruption. Simply select the same audio file for the following sections under **Options** as Atmo. In this way chapters can be acoustically separated from each other and coherent pages can be interwoven more strongly.\n\nWhen playing audio and video, you can also select whether the background sound should continue to play normally or more quietly during media playback, or whether it should fade out completely. The setting of the ambience sounds can be accessed on each page via the **Options** tab. If the atmosphere disturbs you while editing your entry in the editor, you can temporarily mute it with the key combination **Alt + a**. To reactivate the Atmo, simply press **Alt + a** again.\n\n\n## Transitions\n\nA **transition effect** can be selected between every two sections. \nClick in the background of a section to select it. On the right side \nof the selection rectangle, buttons with two interlocking arrows as \nsymbols appear at the borders of the neighbouring sections. \n\nClick on one of the buttons to select the transition effect for the section \nborder in the sidebar.\n\nThe **Fade** effect is only available between sections for which the \n**Full Viewport Height** option has been activated.\n"
     inline_editing:
       add_content_element: Add new element
       cancel: Cancel
@@ -450,6 +411,10 @@ en:
     public:
       chart:
         default_title: Interactive chart
+      enter_fullscreen: Fullscreen
+      exit_fullscreen: Exit fullscreen
+      image_rights: Image rights
+      js_required: Please activate JavaScript to make this website display correctly.
       languages:
         ar: Arabic
         cs: Czech
@@ -510,6 +475,7 @@ en:
         opt_out:
           prompt: To opt out of displaying external embeds, change your settings %{link}.
           prompt_link: here
+      unsupported_browser: This website uses features that your browser doesn't support. Please upgrade to a recent version of your browser.
       video_qualities:
         annotations:
           4k: 4K
