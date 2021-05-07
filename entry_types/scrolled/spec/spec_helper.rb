@@ -1,5 +1,6 @@
 ENV['RAILS_ENV'] ||= 'test'
 ENV['PAGEFLOW_PLUGIN_ENGINE'] = 'pageflow_scrolled'
+ENV['PAGEFLOW_INSTALL_WEBPACKER'] = 'true'
 
 require 'pageflow/support'
 Pageflow::Dummy.setup

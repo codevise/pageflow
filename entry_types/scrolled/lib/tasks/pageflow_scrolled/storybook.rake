@@ -1,10 +1,4 @@
 namespace :pageflow_scrolled do
-  desc 'Generate dummy app for current Rails version.'
-  task :dummy do
-    require 'pageflow/support'
-    Pageflow::Dummy.setup
-  end
-
   namespace :storybook do
     namespace :seed do
       desc 'Recreate storybook entry and set up storybook JSON seed/preview-head.html from it'
@@ -164,7 +158,7 @@ namespace :pageflow_scrolled do
         draft_entry = Pageflow::DraftEntry.new(entry)
 
         html =
-          File.read(File.join(__dir__, '..', '..', 'package', '.storybook',
+          File.read(File.join(__dir__, '..', '..', '..', 'package', '.storybook',
                               'preview-head.html.template')) +
           PageflowScrolled::EntriesController.render(inline: <<-ERB, locals: {entry: draft_entry})
             <%= scrolled_theme_properties_style_tag(entry.theme) %>
