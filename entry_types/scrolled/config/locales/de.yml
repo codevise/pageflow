@@ -28,6 +28,7 @@ de:
             left: Links eingerückt
             right: Rechts eingerückt
             sticky: Sticky
+            wide: Breit
       content_elements:
         dataWrapperChart:
           attributes:
@@ -183,6 +184,14 @@ de:
           name: Video Embed
           tabs:
             general: Video-Embed
+        vrImage:
+          attributes:
+            image:
+              label: 360°-Bild
+            initialPitch:
+              label: Initialer Gierungswinkel
+            initialYaw:
+              label: Initialer Neigungswinkel
       edit_chapter:
         attributes:
           summary:
@@ -583,6 +592,10 @@ de:
     public:
       chart:
         default_title: Interaktives Diagramm
+      enter_fullscreen: Vollbild
+      exit_fullscreen: Vollbild verlassen
+      image_rights: Bildrechte
+      js_required: Bitte aktivieren Sie JavaScript, um diese Website korrekt anzuzeigen.
       languages:
         ar: Arabisch
         cs: Tschechisch
@@ -643,6 +656,7 @@ de:
         opt_out:
           prompt: Um externe Dienste auszuschalten, %{link} klicken.
           prompt_link: hier
+      unsupported_browser: Diese Website verwendet Funktionen, die Ihr Browser nicht unterstützt. Bitte aktualisieren Sie Ihren Browser auf eine aktuelle Version.
       video_qualities:
         annotations:
           4k: 4K
