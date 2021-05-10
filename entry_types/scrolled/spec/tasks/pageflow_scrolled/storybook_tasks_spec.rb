@@ -1,5 +1,7 @@
 require 'spec_helper'
-require 'rake'
+
+require 'support/helpers/rake_test_helper'
+require 'support/helpers/suppress_output_test_helper'
 
 RSpec.describe 'storybook:seed' do
   let(:test_output_dir) do
@@ -90,21 +92,5 @@ RSpec.describe 'storybook:seed' do
       expect(html).to include('--theme-accent-color:')
       expect(html).to include('[data-percy=hide]')
     end
-  end
-
-  def rake(task, *args)
-    Rake.application.tasks.each(&:reenable)
-    Rake.application[task].invoke(*args)
-  end
-
-  def suppress_output
-    original_stdout = $stdout.clone
-    original_stderr = $stderr.clone
-    $stderr.reopen File.new('/dev/null', 'w')
-    $stdout.reopen File.new('/dev/null', 'w')
-    yield
-  ensure
-    $stdout.reopen original_stdout
-    $stderr.reopen original_stderr
   end
 end
