@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
                 '{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*',
                 'package/{config/**/*,editor.js,frontend.js,ui.js,testHelpers.js,package.json}',
                 'entry_types/scrolled/package/' \
-                '{contentElements-frontend.{js,css},frontend-server.js,' \
+                '{config/**/*,contentElements-frontend.{js,css},frontend-server.js,' \
                 'contentElements-editor.js,frontend/*.{js,css},editor.js,package.json}',
                 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
 
