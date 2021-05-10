@@ -12,9 +12,10 @@ namespace :pageflow_scrolled do
     This script is executed as preinstall script when running `yarn
     install`.
   DESC
-  task :create_bundle_symlinks_for_yarn do
+  task :create_bundle_symlinks_for_yarn, [:package_path] do |_t, args|
+    package_json_path = File.join(args.fetch(:package_path, '.'), 'package.json')
     referenced_gems =
-      File.read('package.json').scan(%r{.bundle/for-yarn/([a-z_-]+)}).flatten.uniq
+      File.read(package_json_path).scan(%r{.bundle/for-yarn/([a-z_-]+)}).flatten.uniq
 
     FileUtils.rm_rf '.bundle/for-yarn'
     FileUtils.mkdir_p '.bundle/for-yarn'
