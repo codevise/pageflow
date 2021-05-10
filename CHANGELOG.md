@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 15.6.1
+
+2021-05-10
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.6.0...v15.6.1)
+
+- Include shared config from `pageflow-scrolled` package in gem.
+  ([#1690](https://github.com/codevise/pageflow/pull/1690))
+
 ### Version 15.6.0
 
 2021-05-10
