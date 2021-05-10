@@ -1,3 +1,5 @@
+require 'rails'
+
 module PageflowScrolled
   # Rails integration
   class Engine < ::Rails::Engine
