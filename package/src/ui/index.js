@@ -17,6 +17,8 @@ import * as cssModulesUtils from './utils/cssModulesUtils';
 export { i18nUtils, cssModulesUtils };
 export {default as Object} from '../Object';
 
+export * from './models/mixins/serverSideValidation';
+
 export * from './views/SortableCollectionView';
 export * from './views/CollectionView';
 export * from './views/ConfigurationEditorView';
@@ -52,3 +54,4 @@ export * from './views/mixins/inputWithPlaceholderText';
 export * from './views/mixins/subviewContainer';
 export * from './views/mixins/tooltipContainer';
 export * from './views/mixins/inputView';
+export * from './views/mixins/viewWithValidationErrorMessages';
