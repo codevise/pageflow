@@ -12404,9 +12404,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-"video.js@^6 || ^7", "video.js@https://github.com/tf/video.js#pageflow-scrolled-5":
+"video.js@^6 || ^7", "video.js@https://github.com/tf/video.js#pageflow-scrolled-6":
   version "7.11.2"
-  resolved "https://github.com/tf/video.js#2e969455273e94d87bcff453c5b899b74805d695"
+  resolved "https://github.com/tf/video.js#44e3c47d9e5c52ebcc51dfecdd0a4e9d4ac7508f"
   dependencies:
     "@babel/runtime" "^7.9.2"
     "@videojs/http-streaming" "https://github.com/tf/http-streaming#object-fit-selector-2-4"

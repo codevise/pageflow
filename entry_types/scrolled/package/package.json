@@ -29,7 +29,7 @@
     "slugify": "^1.4.6",
     "striptags": "^3.1.1",
     "use-context-selector": "^1.2.11",
-    "video.js": "https://github.com/tf/video.js#pageflow-scrolled-5",
+    "video.js": "https://github.com/tf/video.js#pageflow-scrolled-6",
     "wavesurfer.js": "https://github.com/tf/wavesurfer.js#patches",
     "whatwg-fetch": "^3.0.0"
   },
