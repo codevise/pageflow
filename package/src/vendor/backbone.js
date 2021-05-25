@@ -1,6 +1,6 @@
-import $ from 'jquery';
-import _ from 'underscore';
-import Cocktail from 'cocktail';
+const $ = require('jquery');
+const _ = require('underscore');
+const Cocktail = require('cocktail');
 
 //     Backbone.js 1.0.0
 
@@ -1571,4 +1571,4 @@ import Cocktail from 'cocktail';
   Cocktail.patch(Backbone);
 }).call(window);
 
-export default Backbone;
+module.exports = Backbone;

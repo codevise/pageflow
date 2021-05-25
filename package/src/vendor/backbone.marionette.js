@@ -1,6 +1,6 @@
-import $ from 'jquery';
-import Backbone from 'backbone';
-import _ from 'underscore';
+const $ = require('jquery');
+const Backbone = require('backbone');
+const _ = require('underscore');
 
 // MarionetteJS (Marionette)
 // ----------------------------------
@@ -2366,4 +2366,4 @@ _.extend(Marionette.Module, {
   return Marionette;
 })(window, Backbone, _);
 
-export default Marionette;
+module.exports = Marionette;
