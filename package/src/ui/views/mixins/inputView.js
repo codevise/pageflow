@@ -244,6 +244,7 @@ export const inputView = {
   },
 
   updateDisabled: function() {
+    this.$el.toggleClass('input-disabled', !!this.isDisabled());
     this.updateInlineHelp();
 
     if (this.ui.input) {

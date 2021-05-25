@@ -296,6 +296,20 @@ describe('pageflow.inputView', () => {
       expect(view.ui.input).toHaveAttr('disabled');
     });
 
+    it('sets CSS class iff disabled', () => {
+      var view = createInputViewWithInput({
+        model: new Backbone.Model(),
+        disabledBinding: 'disable'
+      });
+
+      view.render();
+
+      expect(view.$el).not.toHaveClass('input-disabled');
+
+      view.model.set('disable', true);
+      expect(view.$el).toHaveClass('input-disabled');
+    });
+
     it('does not disable input when attribute is false', () => {
       var view = createInputViewWithInput({
         model: new Backbone.Model({disable: false}),
