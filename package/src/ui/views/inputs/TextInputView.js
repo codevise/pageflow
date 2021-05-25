@@ -3,6 +3,7 @@ import Marionette from 'backbone.marionette';
 
 import {inputView} from '../mixins/inputView';
 import {inputWithPlaceholderText} from '../mixins/inputWithPlaceholderText';
+import {viewWithValidationErrorMessages} from '../mixins/viewWithValidationErrorMessages';
 
 import template from '../../templates/inputs/textInput.jst';
 
@@ -26,7 +27,7 @@ import template from '../../templates/inputs/textInput.jst';
  * @class
  */
 export const TextInputView = Marionette.ItemView.extend({
-  mixins: [inputView, inputWithPlaceholderText],
+  mixins: [inputView, inputWithPlaceholderText, viewWithValidationErrorMessages],
 
   template,
 
