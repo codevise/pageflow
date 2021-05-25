@@ -1,4 +1,4 @@
-import _ from 'underscore';
+const _ = require('underscore');
 
 //     Cocktail.js 0.3.0
 //     (c) 2012 Onsi Fakhouri
@@ -78,4 +78,4 @@ import _ from 'underscore';
         });
     };
 
-export default Cocktail;
+module.exports = Cocktail;

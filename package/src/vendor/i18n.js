@@ -450,4 +450,4 @@ I18n.t = I18n.translate;
 I18n.l = I18n.localize;
 I18n.p = I18n.pluralize;
 
-export default I18n;
+module.exports = I18n;
