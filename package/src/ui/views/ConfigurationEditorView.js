@@ -44,10 +44,13 @@ export const ConfigurationEditorView = Marionette.View.extend({
 
   configure: function() {},
 
-  tab: function(name, callback) {
+  tab: function(name, callbackOrOptions, callback) {
+    callback = callback || callbackOrOptions;
+    const options = callback ? callbackOrOptions : {};
+
     this.tabsView.tab(name, _.bind(function() {
       var tabView = new ConfigurationEditorTabView({
-        model: this.model,
+        model: options.model || this.model,
         placeholderModel: this.options.placeholderModel,
         tab: name,
         attributeTranslationKeyPrefixes: this.options.attributeTranslationKeyPrefixes

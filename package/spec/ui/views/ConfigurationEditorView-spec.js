@@ -1,9 +1,51 @@
 import {ConfigurationEditorView} from 'pageflow/ui';
 
+import Marionette from 'backbone.marionette';
+import Backbone from 'backbone';
+
 import * as support from '$support';
 import {Tabs} from '$support/dominos/ui'
 
 describe('ConfigurationEditorView', () => {
+  it('passes model to inputs', () => {
+    let inputView;
+    const InputView = Marionette.View.extend({
+      initialize() {
+        inputView = this;
+      }
+    });
+    const model = new Backbone.Model();
+    const configurationEditorView = new ConfigurationEditorView({model});
+
+    configurationEditorView.tab('one', function() {
+      this.input('name', InputView);
+    });
+
+    configurationEditorView.render();
+
+    expect(inputView.model).toBe(model);
+  });
+
+  it('allows overriding model per tab', () => {
+    let inputView;
+    const InputView = Marionette.View.extend({
+      initialize() {
+        inputView = this;
+      }
+    });
+    const model = new Backbone.Model();
+    const tabModel = new Backbone.Model();
+    const configurationEditorView = new ConfigurationEditorView({model});
+
+    configurationEditorView.tab('one', {model: tabModel}, function() {
+      this.input('name', InputView);
+    });
+
+    configurationEditorView.render();
+
+    expect(inputView.model).toBe(tabModel);
+  });
+
   describe('without tab translation key option', () => {
     support.useFakeTranslations({
       'pageflow.ui.configuration_editor.tabs.one': 'Tab one',
