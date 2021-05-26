@@ -1,4 +1,4 @@
-import './core';
-import './widget';
-import './menu';
-import './selectmenu';
+require('./core');
+require('./widget');
+require('./menu');
+require('./selectmenu');

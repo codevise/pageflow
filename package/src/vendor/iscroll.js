@@ -1831,4 +1831,4 @@ return IScroll;
 
 })(window, document, Math);
 
-export default IScroll;
+module.exports = IScroll;

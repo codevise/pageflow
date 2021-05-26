@@ -1,5 +1,5 @@
-import Backbone from 'backbone';
-import _ from 'underscore';
+const Backbone = require('backbone');
+const _ = require('underscore');
 
 /*!
  * Includes BabySitter
@@ -24,8 +24,8 @@ import _ from 'underscore';
 // Provide a container to store, retrieve and
 // shut down child views.
 
-export default (function(Backbone, _){
-  
+module.exports = (function(Backbone, _){
+
   // Container Constructor
   // ---------------------
 
