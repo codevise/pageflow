@@ -44,4 +44,13 @@ module Pageflow
   def self.built_in_widget_types_plugin
     BuiltInWidgetTypesPlugin.new
   end
+
+  # Apply account wide customizations to themes of a specific entry
+  # type.
+  #
+  # @return [ThemeCustomizations]
+  # @since edge
+  def self.theme_customizations
+    ThemeCustomizations.new
+  end
 end

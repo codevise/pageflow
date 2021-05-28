@@ -2,6 +2,7 @@ module Pageflow
   FactoryBot.define do
     factory :published_entry, class: PublishedEntry do
       transient do
+        account
         type_name { 'paged' }
         revision_attributes { {} }
 
@@ -12,6 +13,7 @@ module Pageflow
       initialize_with do
         PublishedEntry.new(create(:entry,
                                   :published,
+                                  account: account,
                                   type_name: type_name,
                                   published_revision_attributes: revision_attributes,
                                   with_feature: with_feature,
