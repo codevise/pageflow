@@ -32,13 +32,16 @@ module Pageflow
              :image_files, :video_files, :audio_files,
              :locale,
              :author, :publisher, :keywords,
-             :theme,
              :published_at,
              :configuration,
              to: :revision)
 
     def resolve_widgets(options = {})
       widgets.resolve(Pageflow.config_for(entry), options)
+    end
+
+    def theme
+      @theme ||= CustomizedTheme.find(entry, revision.theme)
     end
 
     def home_button
