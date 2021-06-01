@@ -100,5 +100,51 @@ module Pageflow
 
       expect(entry.theme.options).to match(colors: {accent: '#f00', surface: '#000'})
     end
+
+    it 'allows uploading and processing theme files', unstub_paperclip: true do
+      Paperclip.register_processor(:test, TestPaperclipProcessor)
+      pageflow_configure do |config|
+        TestEntryType.register(config,
+                               name: 'rainbow',
+                               theme_files: {
+                                 logo: {
+                                   styles: {small: {processors: [:test], custom: :option}},
+                                   content_type: %r{\Aimage/.*\Z}
+                                 }
+                               })
+      end
+      entry = create(:published_entry, type_name: 'rainbow')
+
+      file = Pageflow.theme_customizations.upload_file(account: entry.account,
+                                                       entry_type_name: 'rainbow',
+                                                       type_name: 'logo',
+                                                       file: fixture_file_upload('image.png'))
+      Pageflow.theme_customizations.update(account: entry.account,
+                                           entry_type_name: 'rainbow',
+                                           file_ids: {inverted_logo: file.id})
+
+      expect(TestPaperclipProcessor.invoked_with_options)
+        .to include(hash_including(custom: :option))
+      expect(entry.theme.files).to match(inverted_logo: {small: %r{small/image.png}})
+    end
+
+    it 'validates uploads by content type', unstub_paperclip: true do
+      Paperclip.register_processor(:test, TestPaperclipProcessor)
+      pageflow_configure do |config|
+        TestEntryType.register(config,
+                               name: 'rainbow',
+                               theme_files: {
+                                 sound: {content_type: %r{\Aaudio/.*\Z}}
+                               })
+      end
+      entry = create(:published_entry, type_name: 'rainbow')
+
+      expect {
+        Pageflow.theme_customizations.upload_file(account: entry.account,
+                                                  entry_type_name: 'rainbow',
+                                                  type_name: 'sound',
+                                                  file: fixture_file_upload('image.png'))
+      }.to raise_error(/content type invalid/)
+    end
   end
 end

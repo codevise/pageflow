@@ -4,7 +4,8 @@ module Pageflow
   # @since 15.1
   class EntryType
     # @api private
-    attr_reader :name, :frontend_app, :editor_fragment_renderer, :configuration, :editor_app
+    attr_reader :name, :frontend_app, :editor_fragment_renderer, :configuration, :editor_app,
+                :theme_files
 
     # @param name [String] A unique name.
     #
@@ -20,12 +21,20 @@ module Pageflow
     # @param editor_app [#call] A rack app that extends the REST
     #   interface used by editor Backbone collections. Mounted at
     #   `/editor/entries/:id/<entry_type_name>/`
-    def initialize(name:, frontend_app:, editor_fragment_renderer:, configuration:, editor_app: nil)
+    #
+    # @param theme_files [Hash] A hash of the following form defining
+    #   what files can be uploaded when customizing themes of the
+    #   entry type and which Paperclip styles shall be processed:
+    #   `{logo: {content_type: %r{^image/}, styles: {small:
+    #   '300x300>'}}`.
+    def initialize(name:, frontend_app:, editor_fragment_renderer:, configuration:, editor_app: nil,
+                   theme_files: {})
       @name = name
       @frontend_app = frontend_app
       @editor_fragment_renderer = editor_fragment_renderer
       @configuration = configuration
       @editor_app = editor_app
+      @theme_files = theme_files
     end
   end
 end
