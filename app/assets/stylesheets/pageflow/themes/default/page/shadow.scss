@@ -6,7 +6,42 @@ $page-shadow-color: #000 !default;
 /// @group page-colors
 $page-shadow-inverted-color: #fff !default;
 
+/// Name of image file in theme directory to display behind the shadow
+$page-shadow-image: null !default;
+
+/// Opactiy of shadow image
+$page-shadow-image-opacity: null !default;
+
+/// Background position of shadow image
+$page-shadow-image-position: right bottom !default;
+
+/// Background size of shadow image
+$page-shadow-image-size: contain !default;
+
+/// Background size of shadow image in mobile layout.
+$page-shadow-mobile-image-size: null !default;
+
 .page {
+  @if $page-shadow-image {
+    .shadow::after {
+      content: "";
+      background-image: image-url("pageflow/themes/#{$theme-name}/#{$page-shadow-image}");
+      background-size: $page-shadow-image-size;
+      background-repeat: no-repeat;
+      background-position: $page-shadow-image-position;
+      opacity: $page-shadow-image-opacity;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      @include mobile {
+        background-size: $page-shadow-mobile-image-size;
+      }
+    }
+  }
+
   .shadow {
     @include shadow-start($page-shadow-color);
   }
