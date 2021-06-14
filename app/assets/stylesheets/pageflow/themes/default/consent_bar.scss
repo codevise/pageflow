@@ -1,0 +1,70 @@
+/// Color of the cookie notice bar
+$consent-bar-background-color: rgba(20, 20, 20, 0.9);
+
+/// Color of the text inside cookie notice bar
+$consent-bar-text-color: #fff;
+
+$consent-bar-link-text-color: $main-color;
+
+$consent-bar-typography: ();
+
+$consent-bar-accept-all-button-background-color: $main-color-dark;
+$consent-bar-deny-all-button-background-color: $main-color-dark;
+
+$consent-bar-accept-all-button-text-color: #fff;
+$consent-bar-deny-all-button-text-color: #fff;
+
+.consent_bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: $consent-bar-background-color;
+  color: $consent-bar-text-color;
+  padding: 10px 20px;
+  z-index: 2;
+
+  @include standard-typography(
+    $consent-bar-typography
+  );
+
+  &-content {
+    @extend %pageflow_widget_margin_right_max !optional;
+  }
+
+  &-text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+
+    a {
+      color: $consent-bar-link-text-color;
+    }
+  }
+
+  &-accept_all,
+  &-deny_all {
+    border: none;
+    border-radius: 3px;
+    float: right;
+    margin: 5px 5px 0;
+    padding: 5px 10px;
+    font: inherit;
+  }
+
+  &-accept_all {
+    background-color: $consent-bar-accept-all-button-background-color;
+    color: $consent-bar-accept-all-button-text-color;
+  }
+
+  &-deny_all {
+    background-color: $consent-bar-deny-all-button-background-color;
+    color: $consent-bar-deny-all-button-text-color;
+  }
+}
+
+@include pageflow-widget-margin("consent_bar_visible", "bottom") {
+  @include desktop {
+    margin-bottom: 60px;
+  }
+}
