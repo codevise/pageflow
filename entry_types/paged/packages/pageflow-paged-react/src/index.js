@@ -40,6 +40,7 @@ import ServerSidePageBackgroundAsset from 'pages/ServerSidePageBackgroundAsset';
 import {register as registerBuiltInPageTypes} from 'builtInPageTypes';
 import {registerWidgetTypes as registerBackgroundMediaWidgetTypes} from 'backgroundMedia';
 import {registerWidgetTypes as registerCookieNoticeWidgetTypes} from 'cookieNotice';
+import {registerWidgetTypes as registerConsentWidgetTypes} from 'consent';
 import {registerWidgetTypes as registerLoadingSpinnerWidgetTypes} from 'loadingSpinner';
 
 import pageflow from 'pageflow';
@@ -47,6 +48,7 @@ import boot from 'boot';
 
 registerBuiltInPageTypes();
 registerCookieNoticeWidgetTypes();
+registerConsentWidgetTypes();
 registerBackgroundMediaWidgetTypes();
 registerLoadingSpinnerWidgetTypes();
 

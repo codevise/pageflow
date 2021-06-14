@@ -44,6 +44,10 @@ module Pageflow
       Pageflow::React.create_widget_type('cookie_notice_bar', 'cookie_notice')
     end
 
+    def self.consent_bar
+      Pageflow::React.create_widget_type('consent_bar', 'cookie_notice')
+    end
+
     def self.unmute_button
       Pageflow::React.create_widget_type('unmute_button', 'background_media_control')
     end

@@ -8,6 +8,7 @@ module Pageflow
         navigation(entry_type_config)
         player_controls(entry_type_config)
         cookie_notice(entry_type_config)
+        consent_bar(entry_type_config)
         background_media_control(entry_type_config)
       end
     end
@@ -50,6 +51,10 @@ module Pageflow
 
     def cookie_notice(config)
       config.widget_types.register(BuiltInWidgetType.cookie_notice_bar)
+    end
+
+    def consent_bar(config)
+      config.widget_types.register(BuiltInWidgetType.consent_bar)
     end
 
     def background_media_control(config)
