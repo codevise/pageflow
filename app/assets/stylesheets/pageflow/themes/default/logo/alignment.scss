@@ -9,6 +9,9 @@ $logo-alignment: "left" !default;
 // Left position relative to page when logo is left aligned.
 $logo-left: 8% !default;
 
+// Left position relative to page when logo is left aligned in desktop layout.
+$logo-mobile-left: null !default;
+
 // Right position relative to page when logo is right aligned.
 $logo-right: 14% !default;
 
@@ -23,5 +26,9 @@ $logo-right: 14% !default;
 
   @include phone {
     left: $logo-left;
+  }
+
+  @include mobile {
+    @include position-start($logo-mobile-left);
   }
 }
