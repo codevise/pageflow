@@ -23,7 +23,7 @@ $page-shadow-mobile-image-size: null !default;
 
 .page {
   @if $page-shadow-image {
-    .shadow::after {
+    .shadow_wrapper::after {
       content: "";
       background-image: image-url("pageflow/themes/#{$theme-name}/#{$page-shadow-image}");
       background-size: $page-shadow-image-size;
@@ -35,10 +35,19 @@ $page-shadow-mobile-image-size: null !default;
       left: 0;
       width: 100%;
       height: 100%;
+      @include transition(opacity 0.2s linear);
 
       @include mobile {
         background-size: $page-shadow-mobile-image-size;
       }
+
+      .hideText & {
+        opacity: 0;
+      }
+    }
+
+    .video_page.should_play .shadow_wrapper::after {
+      opacity: 0;
     }
   }
 
