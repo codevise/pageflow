@@ -7,6 +7,7 @@ describe('consent', () => {
     const consent = new Consent();
 
     consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+    consent.closeVendorRegistration();
     const promise = consent.require('XY Analytics');
     const {acceptAll} = await consent.requested();
     acceptAll();
@@ -18,6 +19,7 @@ describe('consent', () => {
     const consent = new Consent();
 
     consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+    consent.closeVendorRegistration();
     const promise = consent.require('XY Analytics');
     const {denyAll} = await consent.requested();
     denyAll();
@@ -29,6 +31,7 @@ describe('consent', () => {
     const consent = new Consent();
 
     consent.registerVendor('XY Analytics', {paradigm: 'skip'});
+    consent.closeVendorRegistration();
     const promise = consent.require('XY Analytics');
 
     return expect(promise).resolves.toEqual('fulfilled');
@@ -38,10 +41,27 @@ describe('consent', () => {
     const consent = new Consent();
     const callback = jest.fn();
 
+    consent.closeVendorRegistration();
     consent.requested().then(callback);
     await flushPromises();
 
     expect(callback).not.toHaveBeenCalled();
+  });
+
+  it('requests only after vendor registration has been closed', async () => {
+    const consent = new Consent();
+    const callback = jest.fn();
+
+    consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+    consent.requested().then(callback);
+    await flushPromises();
+
+    expect(callback).not.toHaveBeenCalled();
+
+    consent.closeVendorRegistration();
+    await flushPromises();
+
+    expect(callback).toHaveBeenCalled();
   });
 
   it('does not request if paradigm is skip', async () => {
@@ -49,6 +69,7 @@ describe('consent', () => {
     const callback = jest.fn();
 
     consent.registerVendor('XY Analytics', {paradigm: 'skip'});
+    consent.closeVendorRegistration();
     consent.requested().then(callback);
     await flushPromises();
 
@@ -61,16 +82,16 @@ describe('consent', () => {
     expect(() =>
       consent.registerVendor('XY Analytics', {paradigm: 'rainbow'})
     ).toThrow(/unknown paradigm/);
-  })
+  });
 
-  it('throws error if vendor is registered after requested has been called', () => {
+  it('throws error if vendor is registered after registration has been closed', () => {
     const consent = new Consent();
 
-    consent.requested();
+    consent.closeVendorRegistration();
 
     expect(() =>
       consent.registerVendor('XY Analytics', {paradigm: 'opt-in'})
-    ).toThrow(/registered after requested/);
+    ).toThrow(/registered after registration has been closed/);
   });
 
   it('exports singleton consent object', () => {
