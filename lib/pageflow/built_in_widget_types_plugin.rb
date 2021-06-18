@@ -54,7 +54,9 @@ module Pageflow
     end
 
     def consent_bar(config)
-      config.widget_types.register(BuiltInWidgetType.consent_bar)
+      config.features.register('consent_bar') do |feature_config|
+        feature_config.widget_types.register(BuiltInWidgetType.consent_bar)
+      end
     end
 
     def background_media_control(config)
