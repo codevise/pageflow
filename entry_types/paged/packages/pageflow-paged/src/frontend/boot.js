@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {Audio, events, browser} from 'pageflow/frontend';
+import {Audio, events, browser, consent} from 'pageflow/frontend';
 import {links} from './links';
 import {nativeScrolling} from './nativeScrolling';
 import {delayedStart} from './delayedStart';
@@ -21,9 +21,9 @@ window.onload = function() {
   browser.detectFeatures().then(function() {
     var slideshow = $('[data-role=slideshow]');
     var body = $('body');
-    
+
     Visited.setup();
-    
+
     pagePreloaded.then(function() {
       readyDeferred.resolve();
       events.trigger('ready');
@@ -51,6 +51,7 @@ window.onload = function() {
           $('.multimedia_alert').multimediaAlert();
 
           widgetTypes.enhance(body);
+          consent.closeVendorRegistration();
           delayedStart.perform();
           phoneLandscapeFullscreen();
         }
