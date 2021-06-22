@@ -1,0 +1,12 @@
+de:
+  pageflow:
+    consent_bar:
+      feature_name: Consent-Leiste
+      widget_type_name: Consent-Leiste am unteren Seitenrand
+    editor:
+      consent_bar:
+        widget_type_info_box_text: WIP
+    ui:
+      configuration_editor:
+        tabs:
+          consent_bar: Consent-Leiste

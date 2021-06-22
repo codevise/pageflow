@@ -1,0 +1,12 @@
+en:
+  pageflow:
+    consent_bar:
+      feature_name: Consent bar
+      widget_type_name: Consent bar
+    editor:
+      consent_bar:
+        widget_type_info_box_text: WIP
+    ui:
+      configuration_editor:
+        tabs:
+          consent_bar: Consent bar

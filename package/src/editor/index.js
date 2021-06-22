@@ -160,6 +160,7 @@ export * from './views/ConfirmFileImportUploadView';
 export * from './views/EditConfigurationView';
 
 import './views/widgetTypes/classicLoadingSpinner';
+import './views/widgetTypes/consentBar';
 import './views/widgetTypes/cookieNoticeBar';
 import './views/widgetTypes/mediaLoadingSpinner';
 import './views/widgetTypes/phoneHorizontalSlideshowMode';

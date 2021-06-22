@@ -1,4 +1,5 @@
 import './polyfills';
+import {Consent} from './Consent';
 
 export {log, debugMode} from './base';
 export * from './assetUrls';
@@ -18,3 +19,6 @@ export * from './media';
 export * from './settings';
 
 export * from './documentHiddenState';
+
+export {Consent} from './Consent';
+export const consent = new Consent();

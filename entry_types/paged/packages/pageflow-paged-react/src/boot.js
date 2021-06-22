@@ -21,6 +21,7 @@ import hideTextModule from 'hideText';
 import widgetsModule, {createWidgetType} from 'widgets';
 import widgetPresenceModule from 'widgetPresence';
 import themeModule from 'theme';
+import consentModule from 'consent';
 
 export default function(pageflow) {
   const isEditor = !!pageflow.storylines;
@@ -55,6 +56,7 @@ export default function(pageflow) {
     settings: pageflow.settings,
     widgetsApi: pageflow.widgets,
     backgroundMedia: pageflow.backgroundMedia,
+    consent: pageflow.consent,
 
     window: isServerSide ? null : window
   };
@@ -77,7 +79,8 @@ export default function(pageflow) {
     widgetPresenceModule,
     pageTypesModule,
     hotkeysModule,
-    themeModule
+    themeModule,
+    consentModule
   ], options);
 
 
