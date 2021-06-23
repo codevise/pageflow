@@ -1,8 +1,7 @@
 export class Consent {
   constructor() {
-    this.requirePromise = new Promise((resolve) => {
-      this.requirePromiseResolve = resolve;
-    });
+    this.requirePromises = {};
+    this.requirePromiseResolves = {};
 
     this.requestedPromise = new Promise((resolve) => {
       this.requestedPromiseResolve = resolve;
@@ -30,22 +29,41 @@ export class Consent {
     if (!this.vendors.length) {
       return;
     }
-    const requirePromiseResolve = this.requirePromiseResolve;
+    const requirePromiseResolves = this.requirePromiseResolves;
+    const vendors = this.vendors;
+
     this.requestedPromiseResolve({
       vendors: this.vendors,
 
       acceptAll() {
-        requirePromiseResolve('fulfilled');
+        Object.values(requirePromiseResolves).forEach(resolve => {
+          resolve('fulfilled');
+        });
       },
       denyAll() {
-        requirePromiseResolve('failed');
+        Object.values(requirePromiseResolves).forEach(resolve => {
+          resolve('failed');
+        });
+      },
+      save(vendorConsent) {
+        Object.entries(requirePromiseResolves).forEach(([vendorName, resolve]) => {
+          if (vendorConsent[vendorName]) {
+            resolve('fulfilled');
+          }
+          else {
+            resolve('failed');
+          }
+        });
       }
     });
   }
 
   require(providerName) {
     if (this.vendors.find(vendor => vendor.name === providerName)) {
-      return this.requirePromise;
+      this.requirePromises[providerName] = this.requirePromises[providerName] ||
+        new Promise((resolve) => this.requirePromiseResolves[providerName] = resolve);
+
+      return this.requirePromises[providerName];
     }
     return Promise.resolve('fulfilled');
   }

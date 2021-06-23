@@ -15,6 +15,16 @@ describe('consent', () => {
     return expect(promise).resolves.toEqual('fulfilled');
   });
 
+  it('ignores not-required vendors on acceptAll', async () => {
+    const consent = new Consent();
+
+    consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+    consent.closeVendorRegistration();
+    const {acceptAll} = await consent.requested();
+
+    expect(acceptAll).not.toThrow();
+  });
+
   it('resolves require call after vendors have all been denied', async () => {
     const consent = new Consent();
 
@@ -25,6 +35,21 @@ describe('consent', () => {
     denyAll();
 
     return expect(promise).resolves.toEqual('failed');
+  });
+
+  it('resolves require call after vendors have been saved', async () => {
+    const consent = new Consent();
+
+    consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+    consent.registerVendor('yz_analytics', {paradigm: 'opt-in'});
+    consent.closeVendorRegistration();
+    const xyPromise = consent.require('xy_analytics');
+    const yzPromise = consent.require('yz_analytics');
+    const {save} = await consent.requested();
+    save({xy_analytics: false, yz_analytics: true});
+
+    await expect(xyPromise).resolves.toEqual('failed');
+    await expect(yzPromise).resolves.toEqual('fulfilled');
   });
 
   it('resolves require call if vendor has skip paradigm', async () => {
