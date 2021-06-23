@@ -1,4 +1,4 @@
-import {ACCEPT_ALL, DENY_ALL, REQUEST} from './actions';
+import {ACCEPT_ALL, DENY_ALL, REQUEST, SAVE} from './actions';
 
 export default function() {
   const initialState = {
@@ -18,6 +18,10 @@ export default function() {
         uiVisible: false
       };
     case DENY_ALL:
+      return {
+        uiVisible: false
+      };
+    case SAVE:
       return {
         uiVisible: false
       };

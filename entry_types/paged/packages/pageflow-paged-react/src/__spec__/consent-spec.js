@@ -1,6 +1,6 @@
 import consent from 'consent';
 import {isConsentUIVisible, requestedVendors} from 'consent/selectors';
-import {acceptAll, denyAll} from 'consent/actions';
+import {acceptAll, denyAll, save} from 'consent/actions';
 import createStore from 'createStore';
 
 import sinon from 'sinon';
@@ -10,20 +10,22 @@ describe('consent', () => {
   let resolve;
 
   function setup() {
-    const consentEagerlyRequestedFrom = [];
     const promise = new Promise((r) => resolve = r);
     const consentApi = {
       requested: async function() {
         const {vendors} = await promise;
         const acceptAll = jest.fn();
         const denyAll = jest.fn();
+        const save = jest.fn();
 
         this.mostRecentlyReturnedAcceptAll = acceptAll;
         this.mostRecentlyReturnedDenyAll = denyAll;
+        this.mostRecentlyReturnedSave = save;
 
         return {
           acceptAll,
           denyAll,
+          save,
           vendors
         };
       }
@@ -101,6 +103,17 @@ describe('consent', () => {
     expect(result).toBe(false);
   });
 
+  it('is hidden on save', async () => {
+    const {select, consentApi, dispatch} = setup();
+
+    await eagerlyRequireConsentElsewhere(consentApi);
+    dispatch(save());
+    const result = select(isConsentUIVisible);
+
+    expect(result).toBe(false);
+  });
+
+
   it('calls `acceptAll` returned by `required` on `acceptAll` action', async () => {
     const {consentApi, dispatch} = setup();
 
@@ -118,6 +131,16 @@ describe('consent', () => {
 
     expect(consentApi.mostRecentlyReturnedDenyAll).toHaveBeenCalled();
   });
+
+  it('calls `save` returned by `required` on `save` action', async () => {
+    const {consentApi, dispatch} = setup();
+
+    await eagerlyRequireConsentElsewhere(consentApi);
+    dispatch(save({vendorA: true}));
+
+    expect(consentApi.mostRecentlyReturnedSave).toHaveBeenCalledWith({vendorA: true});
+  });
+
 
   it('does not use consent_bar_visible widget before eagerly requiring consent', async () => {
     const {widgetsApi} = setup();
