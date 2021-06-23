@@ -2,13 +2,15 @@ import {ACCEPT_ALL, DENY_ALL, REQUEST} from './actions';
 
 export default function() {
   const initialState = {
-    uiVisible: false
+    uiVisible: false,
+    requestedVendors: []
   };
 
   return function(state = initialState, action) {
     switch (action.type) {
     case REQUEST:
       return {
+        requestedVendors: action.payload.vendors,
         uiVisible: true
       };
     case ACCEPT_ALL:

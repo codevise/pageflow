@@ -14,8 +14,8 @@ export default {
 
   createSaga: function({widgetsApi, consent}) {
     return function*() {
-      const {acceptAll, denyAll} = yield call(() => consent.requested());
-      yield put(request());
+      const {acceptAll, denyAll, vendors} = yield call(() => consent.requested());
+      yield put(request({vendors}));
       const resetWidgetMargin = yield cps(ensureWidgetMarginBottom, widgetsApi);
 
       yield takeEvery(ACCEPT_ALL, function*() {
