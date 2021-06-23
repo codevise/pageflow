@@ -11,13 +11,13 @@ export class Consent {
     this.vendors = [];
   }
 
-  registerVendor(name, {paradigm}) {
+  registerVendor(name, {displayName, paradigm}) {
     if (this.vendorRegistrationClosed) {
       throw new Error(`Vendor ${name} has been registered after registration has been closed.`);
     }
 
     if (paradigm === 'opt-in') {
-      this.vendors.push(name);
+      this.vendors.push({displayName, name});
     }
     else if (paradigm !== 'skip') {
       throw new Error(`unknown paradigm ${paradigm}`);
@@ -32,6 +32,8 @@ export class Consent {
     }
     const requirePromiseResolve = this.requirePromiseResolve;
     this.requestedPromiseResolve({
+      vendors: this.vendors,
+
       acceptAll() {
         requirePromiseResolve('fulfilled');
       },
@@ -42,7 +44,7 @@ export class Consent {
   }
 
   require(providerName) {
-    if (this.vendors.indexOf(providerName) >= 0) {
+    if (this.vendors.find(vendor => vendor.name === providerName)) {
       return this.requirePromise;
     }
     return Promise.resolve('fulfilled');

@@ -76,6 +76,43 @@ describe('consent', () => {
     expect(callback).not.toHaveBeenCalled();
   });
 
+  it('returns requested opt-in vendors', async () => {
+    const consent = new Consent();
+
+    consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+    consent.closeVendorRegistration();
+
+    const result = await consent.requested();
+
+    expect(result.vendors).toMatchObject([{name: 'xy_analytics'}]);
+  });
+
+  it('returns display name with requested opt-in vendors', async () => {
+    const consent = new Consent();
+
+    consent.registerVendor('xy_analytics', {
+      displayName: 'XY Analytics',
+      paradigm: 'opt-in'
+    });
+    consent.closeVendorRegistration();
+
+    const result = await consent.requested();
+
+    expect(result.vendors).toMatchObject([{displayName: 'XY Analytics'}]);
+  });
+
+  it('does not return skipped vendors from requested', async () => {
+    const consent = new Consent();
+
+    consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+    consent.registerVendor('za_analytics', {paradigm: 'skip'});
+    consent.closeVendorRegistration();
+
+    const result = await consent.requested();
+
+    expect(result.vendors).toMatchObject([{name: 'xy_analytics'}]);
+  });
+
   it('throws error if paradigm invalid', () => {
     const consent = new Consent();
 
