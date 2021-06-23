@@ -3,7 +3,7 @@ import registerWidgetType from 'registerWidgetType';
 import {privacyLinkUrl} from 'theming/selectors';
 import {editingWidget} from 'widgets/selectors';
 import {t, locale} from 'i18n/selectors';
-import {isConsentUIVisible} from '../selectors';
+import {isConsentUIVisible, requestedVendors} from '../selectors';
 
 import {acceptAll, denyAll} from '../actions';
 
@@ -13,7 +13,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 function ConsentBar(props) {
-  const {editing, t, acceptAll, denyAll, visible} = props;
+  const {editing, t, acceptAll, denyAll, requestedVendors, visible} = props;
 
   if (visible || editing) {
     return (
@@ -28,12 +28,27 @@ function ConsentBar(props) {
             {t('pageflow.public.consent_accept_all')}
           </button>
         </div>
+        <div className="consent_bar-vendor_box">
+          {renderVendors(requestedVendors)}
+        </div>
       </div>
     );
   }
   else {
     return <noscript />;
   }
+}
+
+function renderVendors(requestedVendors) {
+  return requestedVendors.map((vendor) => {
+    const id = `consent_bar-vendor_${vendor.name}`;
+
+    return (
+      <label htmlFor={id} key={id}>
+        <input id={id} type="checkbox" /> {vendor.displayName}
+      </label>
+    );
+  })
 }
 
 function renderText({privacyLinkUrl, t, locale}) {
@@ -56,6 +71,7 @@ export function register() {
         editing: editingWidget({role: 'cookie_notice'}),
         t,
         locale,
+        requestedVendors,
         visible: isConsentUIVisible
       }),
       {

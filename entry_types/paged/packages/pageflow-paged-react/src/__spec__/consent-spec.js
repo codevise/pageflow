@@ -1,5 +1,5 @@
 import consent from 'consent';
-import {isConsentUIVisible} from 'consent/selectors';
+import {isConsentUIVisible, requestedVendors} from 'consent/selectors';
 import {acceptAll, denyAll} from 'consent/actions';
 import createStore from 'createStore';
 
@@ -7,17 +7,14 @@ import sinon from 'sinon';
 import {flushPromises} from 'support/flushPromises';
 
 describe('consent', () => {
+  let resolve;
+
   function setup() {
     const consentEagerlyRequestedFrom = [];
-    let resolve;
     const promise = new Promise((r) => resolve = r);
     const consentApi = {
-      require: async function(vendorName) {
-        consentEagerlyRequestedFrom.push(vendorName);
-        resolve();
-      },
       requested: async function() {
-        await promise;
+        const {vendors} = await promise;
         const acceptAll = jest.fn();
         const denyAll = jest.fn();
 
@@ -26,7 +23,8 @@ describe('consent', () => {
 
         return {
           acceptAll,
-          denyAll
+          denyAll,
+          vendors
         };
       }
     };
@@ -55,10 +53,14 @@ describe('consent', () => {
     };
   }
 
-  async function eagerlyRequireConsentElsewhere(consentApi) {
+  async function eagerlyRequireConsentElsewhere(consentApi, {vendors} = {}) {
+    if (!vendors) {
+      vendors = ['elsewhere'];
+    }
     // in real use cases, some embed or analytics code elsewhere in
     // the codebase might use the eager require API like this
-    await consentApi.require('elsewhere');
+    resolve({vendors});
+    await flushPromises();
   }
 
   it('is invisible by default', async () => {
@@ -155,5 +157,24 @@ describe('consent', () => {
     dispatch(denyAll());
 
     expect(widgetsApi.resetCallback).toHaveBeenCalled();
+  });
+
+  describe('requestedVendors selector', () => {
+    it('is empty array by default', () => {
+      const {select} = setup();
+
+      const result = select(requestedVendors);
+
+      expect(result).toEqual([]);
+    });
+
+    it('returns vendors returned by last call to `requested`', async () => {
+      const {consentApi, select} = setup();
+      await eagerlyRequireConsentElsewhere(consentApi, {vendors: [{name: 'webtrekk', displayName: 'Webtrekk'}]});
+
+      const result = select(requestedVendors);
+
+      expect(result).toEqual([{name: 'webtrekk', displayName: 'Webtrekk'}]);
+    });
   });
 });
