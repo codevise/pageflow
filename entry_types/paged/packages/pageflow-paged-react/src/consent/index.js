@@ -1,5 +1,5 @@
 import {register as registerConsentBar} from './components/ConsentBar';
-import {request, ACCEPT_ALL, DENY_ALL} from './actions';
+import {request, ACCEPT_ALL, DENY_ALL, SAVE} from './actions';
 import createReducer from './createReducer';
 
 import {takeEvery} from 'redux-saga';
@@ -14,7 +14,7 @@ export default {
 
   createSaga: function({widgetsApi, consent}) {
     return function*() {
-      const {acceptAll, denyAll, vendors} = yield call(() => consent.requested());
+      const {acceptAll, denyAll, save, vendors} = yield call(() => consent.requested());
       yield put(request({vendors}));
       const resetWidgetMargin = yield cps(ensureWidgetMarginBottom, widgetsApi);
 
@@ -26,6 +26,11 @@ export default {
       yield takeEvery(DENY_ALL, function*() {
         yield call(resetWidgetMargin);
         denyAll();
+      });
+
+      yield takeEvery(SAVE, function*(action) {
+        yield call(resetWidgetMargin);
+        save(action.payload);
       });
     };
   }

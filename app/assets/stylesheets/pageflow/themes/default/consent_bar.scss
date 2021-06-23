@@ -10,9 +10,11 @@ $consent-bar-typography: ();
 
 $consent-bar-accept-all-button-background-color: $main-color-dark;
 $consent-bar-deny-all-button-background-color: $main-color-dark;
+$consent-bar-save-button-background-color: $main-color-dark;
 
 $consent-bar-accept-all-button-text-color: #fff;
 $consent-bar-deny-all-button-text-color: #fff;
+$consent-bar-save-button-text-color: #fff;
 
 .consent_bar {
   position: absolute;
@@ -43,7 +45,8 @@ $consent-bar-deny-all-button-text-color: #fff;
   }
 
   &-accept_all,
-  &-deny_all {
+  &-deny_all,
+  &-save {
     border: none;
     border-radius: 3px;
     float: right;
@@ -60,6 +63,31 @@ $consent-bar-deny-all-button-text-color: #fff;
   &-deny_all {
     background-color: $consent-bar-deny-all-button-background-color;
     color: $consent-bar-deny-all-button-text-color;
+  }
+
+  &-save {
+    background-color: $consent-bar-save-button-background-color;
+    color: $consent-bar-save-button-text-color;
+  }
+
+  &-vendor_box {
+    @extend %pageflow_widget_margin_right_max !optional;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background-color: $consent-bar-background-color;
+    color: $consent-bar-text-color;
+    padding: 10px 20px;
+    margin-bottom: 5px;
+    max-width: 300px;
+    width: 100%;
+    box-sizing: border-box;
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      padding: 5px 0;
+    }
   }
 }
 
