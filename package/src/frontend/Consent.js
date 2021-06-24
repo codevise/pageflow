@@ -1,8 +1,7 @@
 export class Consent {
   constructor() {
-    this.requirePromise = new Promise((resolve) => {
-      this.requirePromiseResolve = resolve;
-    });
+    this.requirePromises = {};
+    this.requirePromiseResolves = {};
 
     this.requestedPromise = new Promise((resolve) => {
       this.requestedPromiseResolve = resolve;
@@ -11,13 +10,13 @@ export class Consent {
     this.vendors = [];
   }
 
-  registerVendor(name, {paradigm}) {
+  registerVendor(name, {displayName, paradigm}) {
     if (this.vendorRegistrationClosed) {
       throw new Error(`Vendor ${name} has been registered after registration has been closed.`);
     }
 
     if (paradigm === 'opt-in') {
-      this.vendors.push(name);
+      this.vendors.push({displayName, name});
     }
     else if (paradigm !== 'skip') {
       throw new Error(`unknown paradigm ${paradigm}`);
@@ -30,20 +29,41 @@ export class Consent {
     if (!this.vendors.length) {
       return;
     }
-    const requirePromiseResolve = this.requirePromiseResolve;
+    const requirePromiseResolves = this.requirePromiseResolves;
+    const vendors = this.vendors;
+
     this.requestedPromiseResolve({
+      vendors: this.vendors,
+
       acceptAll() {
-        requirePromiseResolve('fulfilled');
+        Object.values(requirePromiseResolves).forEach(resolve => {
+          resolve('fulfilled');
+        });
       },
       denyAll() {
-        requirePromiseResolve('failed');
+        Object.values(requirePromiseResolves).forEach(resolve => {
+          resolve('failed');
+        });
+      },
+      save(vendorConsent) {
+        Object.entries(requirePromiseResolves).forEach(([vendorName, resolve]) => {
+          if (vendorConsent[vendorName]) {
+            resolve('fulfilled');
+          }
+          else {
+            resolve('failed');
+          }
+        });
       }
     });
   }
 
   require(providerName) {
-    if (this.vendors.indexOf(providerName) >= 0) {
-      return this.requirePromise;
+    if (this.vendors.find(vendor => vendor.name === providerName)) {
+      this.requirePromises[providerName] = this.requirePromises[providerName] ||
+        new Promise((resolve) => this.requirePromiseResolves[providerName] = resolve);
+
+      return this.requirePromises[providerName];
     }
     return Promise.resolve('fulfilled');
   }

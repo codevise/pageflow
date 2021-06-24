@@ -1,32 +1,32 @@
 import consent from 'consent';
-import {isConsentUIVisible} from 'consent/selectors';
-import {acceptAll, denyAll} from 'consent/actions';
+import {isConsentUIVisible, requestedVendors} from 'consent/selectors';
+import {acceptAll, denyAll, save} from 'consent/actions';
 import createStore from 'createStore';
 
 import sinon from 'sinon';
 import {flushPromises} from 'support/flushPromises';
 
 describe('consent', () => {
+  let resolve;
+
   function setup() {
-    const consentEagerlyRequestedFrom = [];
-    let resolve;
     const promise = new Promise((r) => resolve = r);
     const consentApi = {
-      require: async function(vendorName) {
-        consentEagerlyRequestedFrom.push(vendorName);
-        resolve();
-      },
       requested: async function() {
-        await promise;
+        const {vendors} = await promise;
         const acceptAll = jest.fn();
         const denyAll = jest.fn();
+        const save = jest.fn();
 
         this.mostRecentlyReturnedAcceptAll = acceptAll;
         this.mostRecentlyReturnedDenyAll = denyAll;
+        this.mostRecentlyReturnedSave = save;
 
         return {
           acceptAll,
-          denyAll
+          denyAll,
+          save,
+          vendors
         };
       }
     };
@@ -55,10 +55,14 @@ describe('consent', () => {
     };
   }
 
-  async function eagerlyRequireConsentElsewhere(consentApi) {
+  async function eagerlyRequireConsentElsewhere(consentApi, {vendors} = {}) {
+    if (!vendors) {
+      vendors = ['elsewhere'];
+    }
     // in real use cases, some embed or analytics code elsewhere in
     // the codebase might use the eager require API like this
-    await consentApi.require('elsewhere');
+    resolve({vendors});
+    await flushPromises();
   }
 
   it('is invisible by default', async () => {
@@ -99,6 +103,17 @@ describe('consent', () => {
     expect(result).toBe(false);
   });
 
+  it('is hidden on save', async () => {
+    const {select, consentApi, dispatch} = setup();
+
+    await eagerlyRequireConsentElsewhere(consentApi);
+    dispatch(save());
+    const result = select(isConsentUIVisible);
+
+    expect(result).toBe(false);
+  });
+
+
   it('calls `acceptAll` returned by `required` on `acceptAll` action', async () => {
     const {consentApi, dispatch} = setup();
 
@@ -116,6 +131,16 @@ describe('consent', () => {
 
     expect(consentApi.mostRecentlyReturnedDenyAll).toHaveBeenCalled();
   });
+
+  it('calls `save` returned by `required` on `save` action', async () => {
+    const {consentApi, dispatch} = setup();
+
+    await eagerlyRequireConsentElsewhere(consentApi);
+    dispatch(save({vendorA: true}));
+
+    expect(consentApi.mostRecentlyReturnedSave).toHaveBeenCalledWith({vendorA: true});
+  });
+
 
   it('does not use consent_bar_visible widget before eagerly requiring consent', async () => {
     const {widgetsApi} = setup();
@@ -155,5 +180,24 @@ describe('consent', () => {
     dispatch(denyAll());
 
     expect(widgetsApi.resetCallback).toHaveBeenCalled();
+  });
+
+  describe('requestedVendors selector', () => {
+    it('is empty array by default', () => {
+      const {select} = setup();
+
+      const result = select(requestedVendors);
+
+      expect(result).toEqual([]);
+    });
+
+    it('returns vendors returned by last call to `requested`', async () => {
+      const {consentApi, select} = setup();
+      await eagerlyRequireConsentElsewhere(consentApi, {vendors: [{name: 'webtrekk', displayName: 'Webtrekk'}]});
+
+      const result = select(requestedVendors);
+
+      expect(result).toEqual([{name: 'webtrekk', displayName: 'Webtrekk'}]);
+    });
   });
 });
