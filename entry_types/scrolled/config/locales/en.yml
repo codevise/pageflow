@@ -192,6 +192,7 @@ en:
               label: Initial Pitch
             initialYaw:
               label: Initial Yaw
+          name: 360° Image
       edit_chapter:
         attributes:
           summary:

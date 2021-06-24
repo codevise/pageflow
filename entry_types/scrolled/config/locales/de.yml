@@ -192,6 +192,7 @@ de:
               label: Initialer Gierungswinkel
             initialYaw:
               label: Initialer Neigungswinkel
+          name: 360°-Bild
       edit_chapter:
         attributes:
           summary:
