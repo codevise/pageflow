@@ -1,5 +1,7 @@
+const supportedParadigms = ['external opt-out', 'opt-in', 'skip'];
+
 export class Consent {
-  constructor() {
+  constructor({cookies}) {
     this.requirePromises = {};
     this.requirePromiseResolves = {};
 
@@ -8,32 +10,32 @@ export class Consent {
     });
 
     this.vendors = [];
+    this.cookies = cookies;
   }
 
-  registerVendor(name, {displayName, paradigm}) {
+  registerVendor(name, {displayName, paradigm, cookieName, cookieKey}) {
     if (this.vendorRegistrationClosed) {
       throw new Error(`Vendor ${name} has been registered after registration has been closed.`);
     }
 
-    if (paradigm === 'opt-in') {
-      this.vendors.push({displayName, name});
-    }
-    else if (paradigm !== 'skip') {
+    if (supportedParadigms.indexOf(paradigm) < 0) {
       throw new Error(`unknown paradigm ${paradigm}`);
     }
+
+    this.vendors.push({displayName, name, paradigm, cookieName, cookieKey});
   }
 
   closeVendorRegistration() {
+    const vendors = this.vendors.filter((vendor) => vendor.paradigm === 'opt-in');
     this.vendorRegistrationClosed = true;
 
-    if (!this.vendors.length) {
+    if (!vendors.length) {
       return;
     }
     const requirePromiseResolves = this.requirePromiseResolves;
-    const vendors = this.vendors;
 
     this.requestedPromiseResolve({
-      vendors: this.vendors,
+      vendors,
 
       acceptAll() {
         Object.values(requirePromiseResolves).forEach(resolve => {
@@ -58,17 +60,31 @@ export class Consent {
     });
   }
 
-  require(providerName) {
-    if (this.vendors.find(vendor => vendor.name === providerName)) {
-      this.requirePromises[providerName] = this.requirePromises[providerName] ||
-        new Promise((resolve) => this.requirePromiseResolves[providerName] = resolve);
+  require(vendorName) {
+    const vendor = this.vendors.find(vendor => vendor.name === vendorName)
 
-      return this.requirePromises[providerName];
+    if (vendor) {
+      if (vendor.paradigm === 'opt-in') {
+        this.requirePromises[vendorName] = this.requirePromises[vendorName] ||
+          new Promise((resolve) => this.requirePromiseResolves[vendorName] = resolve);
+
+        return this.requirePromises[vendorName];
+      } else if (vendor.paradigm === 'external opt-out') {
+        if (this.hasOptOutInCookieFor(vendor)) {
+          return Promise.resolve('failed');
+        }
+      }
     }
     return Promise.resolve('fulfilled');
   }
 
   requested() {
     return this.requestedPromise;
+  }
+
+  hasOptOutInCookieFor(vendor) {
+    const content = this.cookies.getItem(vendor.cookieName);
+    const flags = content ? JSON.parse(content) : {};
+    return flags[vendor.cookieKey || vendor.name] === false;
   }
 }
