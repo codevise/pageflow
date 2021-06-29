@@ -2,7 +2,7 @@ import {Consent} from 'pageflow/frontend/Consent';
 import {consent} from 'pageflow/frontend';
 import {flushPromises} from '$support/flushPromises';
 
-describe('consent', () => {
+describe('Consent', () => {
   let requiredOptions;
 
   beforeEach(() => {
@@ -82,6 +82,81 @@ describe('consent', () => {
       await expect(xyPromise).resolves.toEqual('failed');
       await expect(yzPromise).resolves.toEqual('fulfilled');
     });
+
+    it('resolves require call if all vendors have been accepted in previous session', async () => {
+      const cookies = fakeCookies();
+      const consent = new Consent({...requiredOptions, cookies});
+
+      consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const {acceptAll} = await consent.requested();
+      acceptAll();
+
+      const consentInNextSession = new Consent({...requiredOptions, cookies});
+      consentInNextSession.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consentInNextSession.closeVendorRegistration();
+      const promise = consentInNextSession.require('XY Analytics');
+
+      return expect(promise).resolves.toEqual('fulfilled');
+    });
+
+    it('resolves require call if all vendors have been denied in previous session', async () => {
+      const cookies = fakeCookies();
+      const consent = new Consent({...requiredOptions, cookies});
+
+      consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const {denyAll} = await consent.requested();
+      denyAll();
+
+      const consentInNextSession = new Consent({...requiredOptions, cookies});
+      consentInNextSession.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consentInNextSession.closeVendorRegistration();
+      const promise = consentInNextSession.require('XY Analytics');
+
+      return expect(promise).resolves.toEqual('failed');
+    });
+
+    it('resolves require call if vendors have been saved in previous session', async () => {
+      const cookies = fakeCookies();
+
+      const consent = new Consent({...requiredOptions, cookies});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+      consent.registerVendor('yz_analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const {save} = await consent.requested();
+      save({xy_analytics: false, yz_analytics: true});
+
+      const consentInNextSession = new Consent({...requiredOptions, cookies});
+      consentInNextSession.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+      consentInNextSession.registerVendor('yz_analytics', {paradigm: 'opt-in'});
+      consentInNextSession.closeVendorRegistration();
+      const xyPromise = consentInNextSession.require('xy_analytics');
+      const yzPromise = consentInNextSession.require('yz_analytics');
+
+      await expect(xyPromise).resolves.toEqual('failed');
+      await expect(yzPromise).resolves.toEqual('fulfilled');
+    });
+
+    it('does not request consent UI if consent for all vendors has been decided ' +
+       'in previous session', async () => {
+         const cookies = fakeCookies();
+         const consent = new Consent({...requiredOptions, cookies});
+         const callback = jest.fn();
+
+         consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+         consent.closeVendorRegistration();
+         const {denyAll} = await consent.requested();
+         denyAll();
+
+         const consentInNextSession = new Consent({...requiredOptions, cookies});
+         consentInNextSession.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+         consentInNextSession.closeVendorRegistration();
+         consentInNextSession.requested().then(callback);
+         await flushPromises();
+
+         expect(callback).not.toHaveBeenCalled();
+       });
   });
 
   describe('for external opt-out paradigm', () => {
@@ -252,6 +327,16 @@ describe('consent', () => {
     expect(() =>
       consent.registerVendor('XY Analytics', {paradigm: 'opt-in'})
     ).toThrow(/registered after registration has been closed/);
+  });
+
+  it('throws error if required vendor has not been registered', () => {
+    const consent = new Consent(requiredOptions);
+
+    consent.closeVendorRegistration();
+
+    expect(() =>
+      consent.require('XY Analytics')
+    ).toThrow(/unknown vendor/);
   });
 
   it('exports singleton consent object', () => {
