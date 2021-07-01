@@ -15,18 +15,17 @@ import {connect} from 'react-redux';
 export class ConsentBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = props.requestedVendors.reduce((result, {name}) => {
-      return {
-        ...result,
-        [name]: false
-      };
-    }, {});
+    this.state = {};
     this.handleSaveButtonClick = this.onSaveButtonClick.bind(this);
     this.handleVendorInputChange = this.onVendorInputChange.bind(this);
   }
 
   onSaveButtonClick() {
-    this.props.save(this.state);
+    const signal = this.props.requestedVendors.reduce((result, {name}) => ({
+      ...result,
+      [name]: this.state[name] || false
+    }), {});
+    this.props.save(signal);
   }
 
   onVendorInputChange(vendorName, event) {
