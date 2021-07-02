@@ -34,4 +34,28 @@ describe('ConsentBar', () => {
       vendor_c: false
     });
   });
+
+  it('handles update of requestedVendors prop correctly', () => {
+    const vendors = [
+      {name: 'vendor_a', displayName: 'Vendor A'},
+      {name: 'vendor_b', displayName: 'Vendor B'},
+      {name: 'vendor_c', displayName: 'Vendor C'}
+    ];
+    const listener = jest.fn();
+
+    const wrapper = shallow(
+      <ConsentBar
+        save={listener} requestedVendors={[]} visible={false} t={() => {}}/>
+    );
+
+    wrapper.setProps({requestedVendors: vendors, visible: true});
+    wrapper.find('.consent_bar-save').simulate('click');
+
+    expect(listener).toHaveBeenCalledWith({
+      vendor_a: false,
+      vendor_b: false,
+      vendor_c: false
+    });
+
+  });
 });
