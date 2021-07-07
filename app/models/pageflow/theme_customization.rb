@@ -1,5 +1,8 @@
 module Pageflow
-  # @api private
+  # Override theme options and upload theme files for an entry type on
+  # a per account basis.
+  #
+  # @since edge
   class ThemeCustomization < ApplicationRecord
     belongs_to :account
 
@@ -8,24 +11,32 @@ module Pageflow
 
     has_many :uploaded_files, class_name: 'ThemeCustomizationFile'
 
-    def selected_file_ids
-      super || {}
+    # Options that were passed to [ThemeCustomizations#update].
+    #
+    # @return [Hash<Symbol, Object>]
+    def overrides
+      super&.deep_symbolize_keys || {}
     end
 
-    def selected_file_urls
-      selected_files.map { |role, file| [role.to_sym, file.urls] }.to_h
+    # Theme customization files that have been assigned a role via
+    # [ThemeCustomizations#update].
+    #
+    # @return [Hash<Symbol, ThemeCustomizationFile>]
+    def selected_files
+      selected_file_ids.compact.transform_values do |id|
+        selected_files_by_id[id]
+      end
     end
 
+    # @api private
     def entry_type
       Pageflow.config.entry_types.find_by_name!(entry_type_name)
     end
 
     private
 
-    def selected_files
-      selected_file_ids.transform_values do |id|
-        selected_files_by_id[id]
-      end
+    def selected_file_ids
+      super&.deep_symbolize_keys || {}
     end
 
     def selected_files_by_id
