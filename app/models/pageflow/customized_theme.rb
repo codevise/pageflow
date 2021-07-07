@@ -10,13 +10,12 @@ module Pageflow
     attr_reader :options, :files
 
     def self.find(entry, theme)
-      theme_customization =
-        Pageflow::ThemeCustomization
-        .find_by(account: entry.account, entry_type_name: entry.type_name)
+      theme_customization = Pageflow.theme_customizations.get(account: entry.account,
+                                                              entry_type_name: entry.type_name)
 
       new(theme,
-          theme_customization&.overrides&.deep_symbolize_keys || {},
-          theme_customization&.selected_file_urls || {})
+          theme_customization.overrides,
+          theme_customization.selected_files.transform_values(&:urls))
     end
   end
 end
