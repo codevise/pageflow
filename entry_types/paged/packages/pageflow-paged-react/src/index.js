@@ -40,7 +40,8 @@ import ServerSidePageBackgroundAsset from 'pages/ServerSidePageBackgroundAsset';
 import {register as registerBuiltInPageTypes} from 'builtInPageTypes';
 import {registerWidgetTypes as registerBackgroundMediaWidgetTypes} from 'backgroundMedia';
 import {registerWidgetTypes as registerCookieNoticeWidgetTypes} from 'cookieNotice';
-import {registerWidgetTypes as registerConsentWidgetTypes} from 'consent';
+import {registerWidgetTypes as registerConsentWidgetTypes,
+        Settings as ConsentSettings} from 'consent';
 import {registerWidgetTypes as registerLoadingSpinnerWidgetTypes} from 'loadingSpinner';
 
 import pageflow from 'pageflow';
@@ -58,6 +59,7 @@ if (pageflow.events) {
 
 export default {
   components: {
+    ConsentSettings,
     MediaPageBackground,
     PageWithInteractiveBackground,
     ...components
