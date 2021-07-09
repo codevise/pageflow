@@ -55,6 +55,9 @@ Metrics/ModuleLength:
   Exclude:
     - '**/spec/**/*'
 
+Metricts/ParameterLists:
+  CountKeywordArgs: false
+
 # Do not require class documentation for specs and migrations
 Style/Documentation:
   Exclude:

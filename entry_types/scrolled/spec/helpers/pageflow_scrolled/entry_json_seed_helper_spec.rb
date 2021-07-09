@@ -342,6 +342,29 @@ module PageflowScrolled
                                        })
       end
 
+      it 'allows overriding theme assets via theme customization files' do
+        entry = create(:published_entry, type_name: 'scrolled')
+        file = Pageflow.theme_customizations.upload_file(
+          account: entry.account,
+          entry_type_name: 'scrolled',
+          type_name: :logo_desktop,
+          attachment: fixture_file_upload('image.svg')
+        )
+        Pageflow.theme_customizations.update(account: entry.account,
+                                             entry_type_name: 'scrolled',
+                                             file_ids: {logo_desktop: file.id})
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         theme: {
+                                           assets: {
+                                             logoDesktop: %r{resized/image.svg}
+                                           }
+                                         }
+                                       })
+      end
+
       it 'renders theme camelized options' do
         pageflow_configure do |config|
           config.themes.register(:default, some_option: 'value')

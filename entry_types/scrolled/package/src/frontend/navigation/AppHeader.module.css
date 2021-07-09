@@ -64,10 +64,13 @@ div:focus-within > .contextIcon,
   top: 0;
   left: 15px;
   height: 100%;
+  max-width: 15%;
 }
 
 .logo img {
   height: 100%;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 .chapterList {
@@ -109,6 +112,10 @@ div:focus-within > .contextIcon,
 }
 
 @media screen and (max-width: 780px) {
+  .logo {
+    max-width: 30%;
+  }
+
   .hasChapters .logo {
     left: 65px;
   }

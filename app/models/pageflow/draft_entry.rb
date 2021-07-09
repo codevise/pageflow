@@ -1,42 +1,13 @@
 module Pageflow
-  class DraftEntry
-    include ActiveModel::Conversion
-
+  # A merged view of an entry and its draft revision
+  class DraftEntry < EntryAtRevision
     class InvalidForeignKeyCustomAttributeError < StandardError; end
 
-    attr_reader :entry, :draft
-
-    delegate(:id, :slug,
-             :entry_type,
-             :edit_lock, :account, :theming, :slug,
-             :enabled_feature_names,
-             :published_until, :published?,
-             :password_digest,
-             :to_model, :to_key, :persisted?, :to_json,
-             :first_published_at,
-             :type_name,
-             :to => :entry)
-
-    delegate(:title, :summary, :credits,
-             :widgets,
-             :storylines, :main_storyline_chapters, :chapters, :pages,
-             :share_url, :share_image_id, :share_image_x, :share_image_y,
-             :share_providers, :active_share_providers,
-             :find_files, :find_file, :find_file_by_perma_id,
-             :image_files, :video_files, :audio_files,
-             :locale,
-             :author, :publisher, :keywords,
-             :theme,
-             :published_at,
-             :configuration,
-             :to => :draft)
-
     def initialize(entry, draft = nil)
-      @entry = entry
-      @draft = draft || entry.draft
+      super(entry, draft || entry.draft)
     end
 
-    alias revision draft
+    alias draft revision
 
     # So we can always get to the original Entry title.
     def entry_title
@@ -50,8 +21,8 @@ module Pageflow
         f.entry = entry
       end
 
-      usage = @draft.file_usages.create_with_lock!(file: file,
-                                                   configuration: attributes[:configuration])
+      usage = revision.file_usages.create_with_lock!(file: file,
+                                                     configuration: attributes[:configuration])
       UsedFile.new(file, usage)
     end
 
@@ -104,30 +75,6 @@ module Pageflow
 
     def stylesheet_cache_key
       draft.cache_key
-    end
-
-    def home_button
-      HomeButton.new(draft, theming)
-    end
-
-    def overview_button
-      OverviewButton.new(draft)
-    end
-
-    def manual_start
-      revision.configuration['manual_start']
-    end
-
-    def emphasize_chapter_beginning
-      revision.configuration['emphasize_chapter_beginning']
-    end
-
-    def emphasize_new_pages
-      revision.configuration['emphasize_new_pages']
-    end
-
-    def resolve_widgets(options = {})
-      widgets.resolve(Pageflow.config_for(entry), options)
     end
 
     private

@@ -1,56 +1,21 @@
 module Pageflow
-  class PublishedEntry
-    include ActiveModel::Conversion
+  # A merged view of an entry and its published revision.
+  class PublishedEntry < EntryAtRevision
     extend ActiveModel::Naming
 
-    attr_reader :entry, :revision
     attr_accessor :share_target
 
-    delegate(:id, :slug,
-             :entry_type,
-             :account, :theming,
-             :enabled_feature_names,
-             :to_model, :to_key, :persisted?,
-             :authenticate,
-             :first_published_at,
-             :type_name,
-             :to => :entry)
+    delegate(:authenticate, to: :entry)
 
-    delegate(:widgets,
-             :storylines, :main_storyline_chapters, :chapters, :pages,
-             :find_files, :find_file, :find_file_by_perma_id,
-             :image_files, :video_files, :audio_files,
-             :summary, :credits,
-             :share_url, :share_image_id, :share_image_x, :share_image_y,
-             :share_providers, :active_share_providers,
-             :locale,
-             :author, :publisher, :keywords,
-             :theme,
-             :password_protected?,
-             :published_at,
-             :configuration,
-             :to => :revision)
+    delegate(:password_protected?, to: :revision)
 
     def initialize(entry, revision = nil)
-      @entry = entry
-      @revision = revision || entry.published_revision
-      @custom_revision = !!revision
+      super(entry, revision || entry.published_revision)
+      @custom_revision = revision
     end
 
     def title
       revision.title.presence || entry.title
-    end
-
-    def manual_start
-      revision.configuration['manual_start']
-    end
-
-    def emphasize_chapter_beginning
-      revision.configuration['emphasize_chapter_beginning']
-    end
-
-    def emphasize_new_pages
-      revision.configuration['emphasize_new_pages']
     end
 
     def stylesheet_model
@@ -96,18 +61,6 @@ module Pageflow
         revision.cache_version,
         theming.cache_version
       ].compact.join('-').presence
-    end
-
-    def home_button
-      HomeButton.new(revision, theming)
-    end
-
-    def overview_button
-      OverviewButton.new(revision)
-    end
-
-    def resolve_widgets(options = {})
-      widgets.resolve(Pageflow.config_for(entry), options)
     end
 
     private
