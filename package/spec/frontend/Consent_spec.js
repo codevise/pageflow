@@ -342,7 +342,15 @@ describe('Consent', () => {
   it('exports singleton consent object', () => {
     expect(consent).toBeDefined();
   });
+
+  describe('.create', () => {
+    it('returns consent object', () => {
+      expect(Consent.create().registerVendor).toBeDefined();
+    });
+  });
 });
+
+
 
 function fakeCookies() {
   const cookies = {};
