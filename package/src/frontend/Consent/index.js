@@ -1,4 +1,5 @@
 import {Persistence} from './Persistence';
+import {cookies} from '../cookies';
 
 const supportedParadigms = ['external opt-out', 'opt-in', 'skip'];
 
@@ -116,3 +117,7 @@ export class Consent {
     });
   }
 }
+
+Consent.create = function() {
+  return new Consent({cookies});
+};
