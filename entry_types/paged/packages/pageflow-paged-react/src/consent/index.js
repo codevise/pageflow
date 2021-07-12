@@ -1,4 +1,5 @@
 import {register as registerConsentBar} from './components/ConsentBar';
+import {Settings} from './components/Settings';
 import {request, ACCEPT_ALL, DENY_ALL, SAVE} from './actions';
 import createReducer from './createReducer';
 
@@ -46,3 +47,5 @@ function ensureWidgetMarginBottom(widgetsApi, callback) {
 export function registerWidgetTypes() {
   registerConsentBar();
 }
+
+export {Settings};

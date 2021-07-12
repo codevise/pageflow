@@ -22,6 +22,18 @@ export class Persistence {
     });
   }
 
+
+  update(vendor, signal) {
+    const content = this.cookies.getItem(vendor.cookieName);
+    const flags = content ? JSON.parse(content) : {};
+
+    this.cookies.setItem(vendor.cookieName,
+                         JSON.stringify({
+                           ...flags,
+                           [vendor.cookieKey || vendor.name]: signal
+                         }));
+  }
+
   read(vendor) {
     const content = this.cookies.getItem(vendor.cookieName);
     const flags = content ? JSON.parse(content) : {};

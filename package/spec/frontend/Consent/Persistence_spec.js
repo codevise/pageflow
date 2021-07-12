@@ -1,6 +1,6 @@
 import {Persistence} from 'frontend/Consent/Persistence';
 
-describe('storeConsent', () => {
+describe('storing consent for all vendors', () => {
   it('stores allAccepted signal in cookie', () => {
     const cookies = fakeCookies();
     const vendors = [{name: 'xyAnalytics', cookieName: 'tracking'}];
@@ -51,9 +51,35 @@ describe('storeConsent', () => {
       {xyAnalytics: false, yzAnalytics: true}
     );
   });
+
+  it('supports updating consent for single vendor', () => {
+    const cookies = fakeCookies();
+    const vendors = [{name: 'xyAnalytics', cookieName: 'tracking'},
+                     {name: 'yzAnalytics', cookieName: 'tracking'}];
+    const persistence = new Persistence({cookies});
+
+    persistence.store(vendors, 'accepted');
+    persistence.update(vendors[0], false);
+
+    expect(JSON.parse(cookies.getItem('tracking'))).toEqual(
+      {xyAnalytics: false, yzAnalytics: true}
+    );
+  });
+
+  it('supports updating consent for single vendor with custom cookie key', () => {
+    const cookies = fakeCookies();
+    const vendors = [{name: 'xyAnalytics', cookieName: 'tracking', cookieKey: 'x_y'}];
+    const persistence = new Persistence({cookies});
+
+    persistence.update(vendors[0], true);
+
+    expect(JSON.parse(cookies.getItem('tracking'))).toEqual(
+      {x_y: true}
+    );
+  });
 });
 
-describe('readConsent', () => {
+describe('reading consent', () => {
   it('returns `accepted` if flag in cookie is true', () => {
     const cookies = fakeCookies();
     const vendors = [{name: 'xyAnalytics', cookieName: 'tracking'}];
