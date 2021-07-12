@@ -16,7 +16,7 @@ export class Consent {
     this.persistence = new Persistence({cookies});
   }
 
-  registerVendor(name, {displayName, paradigm, cookieName, cookieKey}) {
+  registerVendor(name, {displayName, description, paradigm, cookieName, cookieKey}) {
     if (this.vendorRegistrationClosed) {
       throw new Error(`Vendor ${name} has been registered after registration has been closed.`);
     }
@@ -27,6 +27,7 @@ export class Consent {
 
     this.vendors.push({
       displayName,
+      description,
       name,
       paradigm,
       cookieName: cookieName || 'consent',
