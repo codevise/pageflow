@@ -59,6 +59,16 @@ export class Consent {
     });
   }
 
+  relevantVendors() {
+    return this.vendors
+      .filter((vendor) => {
+        return vendor.paradigm !== 'skip';
+      })
+      .map((vendor) => {
+        return {...vendor, state: this.persistence.read(vendor)};
+      });
+  }
+
   require(vendorName) {
     const vendor = this.vendors.find(vendor => vendor.name === vendorName);
 
@@ -91,6 +101,28 @@ export class Consent {
 
   requested() {
     return this.requestedPromise;
+  }
+
+  accept(vendorName) {
+    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
+
+    if (!vendor) {
+      throw new Error(`Cannot accept consent for unknown vendor "${vendorName}". ` +
+                      'Consider using registerVendor.');
+    }
+
+    this.persistence.update(vendor, true);
+  }
+
+  deny(vendorName) {
+    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
+
+    if (!vendor) {
+      throw new Error(`Cannot deny consent for unknown vendor "${vendorName}". ` +
+                      'Consider using registerVendor.');
+    }
+
+    this.persistence.update(vendor, false);
   }
 
   getRequirePromise(vendorName) {
