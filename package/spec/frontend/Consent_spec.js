@@ -366,6 +366,20 @@ describe('Consent', () => {
     expect(result.vendors).toMatchObject([{displayName: 'XY Analytics'}]);
   });
 
+  it('returns descriptions with requested opt-in vendors', async () => {
+    const consent = new Consent(requiredOptions);
+
+    consent.registerVendor('xy_analytics', {
+      description: 'An analytics provider',
+      paradigm: 'opt-in'
+    });
+    consent.closeVendorRegistration();
+
+    const result = await consent.requested();
+
+    expect(result.vendors).toMatchObject([{description: 'An analytics provider'}]);
+  });
+
   it('does not return skipped vendors from requested', async () => {
     const consent = new Consent(requiredOptions);
 
