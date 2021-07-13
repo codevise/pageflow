@@ -1,5 +1,5 @@
 /// Color of the cookie notice bar
-$consent-bar-background-color: rgba(20, 20, 20, 0.9);
+$consent-bar-background-color: rgba(20, 20, 20, 0.95);
 
 /// Color of the text inside cookie notice bar
 $consent-bar-text-color: #fff;
@@ -46,10 +46,6 @@ $consent-bar-save-button-text-color: #fff;
     }
   }
 
-  &-buttons {
-    float: right;
-    text-align: right;
-  }
 
   &-accept_all,
   &-deny_all,
@@ -57,10 +53,16 @@ $consent-bar-save-button-text-color: #fff;
   &-save {
     border: none;
     border-radius: 3px;
-    margin: 5px;
-    padding: 5px 10px;
+    margin: 10px 5px 5px;
+    padding: 10px 15px;
     font: inherit;
     display: inline-block;
+
+    @include phone {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+    }
   }
 
   &-accept_all {
@@ -91,22 +93,56 @@ $consent-bar-save-button-text-color: #fff;
 
   &-vendor_box {
     @extend %pageflow_widget_margin_right_max !optional;
-    position: absolute;
-    bottom: 100%;
-    right: 0;
-    background-color: $consent-bar-background-color;
-    color: $consent-bar-text-color;
-    padding: 10px 20px;
-    margin-bottom: 5px;
-    max-width: 400px;
-    width: 90%;
-    box-sizing: border-box;
+
     display: none;
+
+    h3 {
+      margin: 0.5em 0;
+      font-size: 1em;
+    }
 
     label {
       display: block;
       margin-bottom: 5px;
       padding: 5px 0;
+    }
+  }
+
+  @include phone {
+    .consent_bar-vendor_box {
+      // scss-lint:disable ImportantRule
+      // Ensure widget margin is not being applied in phone layout
+      margin-right: 0 !important;
+      // scss-lint:enable ImportantRule
+    }
+  }
+
+  @include desktop {
+    &-vendor_box {
+      position: absolute;
+      bottom: 100%;
+      right: 0;
+      margin-bottom: 5px;
+      max-width: 400px;
+      width: 90%;
+      box-sizing: border-box;
+      padding: 10px 20px;
+      background-color: $consent-bar-background-color;
+      color: $consent-bar-text-color;
+    }
+
+    &-save {
+      float: right;
+    }
+
+    &-buttons {
+      float: right;
+      text-align: right;
+    }
+
+    &-decision_buttons {
+      display: inline-block;
+      white-space: nowrap;
     }
   }
 

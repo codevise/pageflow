@@ -53,26 +53,31 @@ export class ConsentBar extends React.Component {
           <div className="consent_bar-content">
             {renderText(this.props)}
 
+            <div className="consent_bar-vendor_box">
+              <h3>{t('pageflow.public.consent_settings')}</h3>
+              <VendorList vendors={requestedVendors}
+                          t={t}
+                          onVendorInputChange={this.handleVendorInputChange} />
+              <button className="consent_bar-save" onClick={this.handleSaveButtonClick}>
+                {t('pageflow.public.consent_save')}
+              </button>
+            </div>
+
             <div className="consent_bar-buttons">
               <button className="consent_bar-configure"
                       onClick={() => this.setState({showVendorBox: !this.state.showVendorBox})}>
                 <GearIcon width={10} height={10} />
-                {t('pageflow.public.consent_configure', {defaultValue: 'Einstellungen'})}
+                {t('pageflow.public.consent_configure')}
               </button>
-              <button className="consent_bar-deny_all" onClick={denyAll}>
-                {t('pageflow.public.consent_deny_all')}
-              </button>
-              <button className="consent_bar-accept_all" onClick={acceptAll}>
-                {t('pageflow.public.consent_accept_all')}
-              </button>
+              <div className="consent_bar-decision_buttons">
+                <button className="consent_bar-deny_all" onClick={denyAll}>
+                  {t('pageflow.public.consent_deny_all')}
+                </button>
+                <button className="consent_bar-accept_all" onClick={acceptAll}>
+                  {t('pageflow.public.consent_accept_all')}
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="consent_bar-vendor_box">
-            <VendorList vendors={requestedVendors}
-                        onVendorInputChange={this.handleVendorInputChange} />
-            <button className="consent_bar-save" onClick={this.handleSaveButtonClick}>
-              {t('pageflow.public.consent_save')}
-            </button>
           </div>
         </div>
       );

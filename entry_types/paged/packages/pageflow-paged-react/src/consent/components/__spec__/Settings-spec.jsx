@@ -11,7 +11,7 @@ describe('Settings', () => {
     };
 
     const wrapper = mount(
-      <Settings consent={consent} />
+      <Settings consent={consent} t={() => {}} />
     );
 
     expect(wrapper).toContainMatchingElement('input#consent_vendor_list-vendor_test');
@@ -29,7 +29,7 @@ describe('Settings', () => {
     };
 
     const wrapper = mount(
-      <Settings consent={consent} />
+      <Settings consent={consent} t={() => {}} />
     );
 
     expect(
@@ -52,7 +52,7 @@ describe('Settings', () => {
     };
 
     const wrapper = mount(
-      <Settings consent={consent} />
+      <Settings consent={consent} t={() => {}} />
     );
     wrapper.find('input#consent_vendor_list-vendor_test').simulate(
       'change',
@@ -74,7 +74,7 @@ describe('Settings', () => {
     };
 
     const wrapper = mount(
-      <Settings consent={consent} />
+      <Settings consent={consent} t={() => {}} />
     );
     wrapper.find('input#consent_vendor_list-vendor_test').simulate(
       'change',
