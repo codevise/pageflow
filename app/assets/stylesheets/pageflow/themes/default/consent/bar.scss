@@ -156,9 +156,3 @@ $consent-bar-save-button-text-color: #fff;
     }
   }
 }
-
-@include pageflow-widget-margin("consent_bar_visible", "bottom") {
-  @include desktop {
-    margin-bottom: 60px;
-  }
-}
