@@ -1,4 +1,5 @@
 import {Persistence} from './Persistence';
+import {cookies} from '../cookies';
 
 const supportedParadigms = ['external opt-out', 'opt-in', 'skip'];
 
@@ -58,6 +59,16 @@ export class Consent {
     });
   }
 
+  relevantVendors() {
+    return this.vendors
+      .filter((vendor) => {
+        return vendor.paradigm !== 'skip';
+      })
+      .map((vendor) => {
+        return {...vendor, state: this.persistence.read(vendor)};
+      });
+  }
+
   require(vendorName) {
     const vendor = this.vendors.find(vendor => vendor.name === vendorName);
 
@@ -92,6 +103,28 @@ export class Consent {
     return this.requestedPromise;
   }
 
+  accept(vendorName) {
+    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
+
+    if (!vendor) {
+      throw new Error(`Cannot accept consent for unknown vendor "${vendorName}". ` +
+                      'Consider using registerVendor.');
+    }
+
+    this.persistence.update(vendor, true);
+  }
+
+  deny(vendorName) {
+    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
+
+    if (!vendor) {
+      throw new Error(`Cannot deny consent for unknown vendor "${vendorName}". ` +
+                      'Consider using registerVendor.');
+    }
+
+    this.persistence.update(vendor, false);
+  }
+
   getRequirePromise(vendorName) {
     this.requirePromises[vendorName] = this.requirePromises[vendorName] ||
       new Promise((resolve) => this.requirePromiseResolves[vendorName] = resolve);
@@ -116,3 +149,7 @@ export class Consent {
     });
   }
 }
+
+Consent.create = function() {
+  return new Consent({cookies});
+};

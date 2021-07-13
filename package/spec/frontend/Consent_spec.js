@@ -31,6 +31,15 @@ describe('Consent', () => {
 
       expect(callback).not.toHaveBeenCalled();
     });
+
+    it('does not include vendor in relevantVendors', () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('XY Analytics', {paradigm: 'skip'});
+      consent.closeVendorRegistration();
+
+      expect(consent.relevantVendors()).toEqual([]);
+    });
   });
 
   describe('for opt-in paradigm', () => {
@@ -157,6 +166,53 @@ describe('Consent', () => {
 
          expect(callback).not.toHaveBeenCalled();
        });
+
+    it('includes vendor in relevantVendors', () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+
+      expect(consent.relevantVendors()).toEqual([
+        expect.objectContaining({name: 'XY Analytics', state: 'undecided'})
+      ]);
+    });
+
+    it('provides consent state for relevantVendors', async () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xyAnalytics', {paradigm: 'opt-in'});
+      consent.registerVendor('yzAnalytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const {save} = await consent.requested();
+      save({xyAnalytics: true, yzAnalytics: false});
+
+      expect(consent.relevantVendors()).toEqual([
+        expect.objectContaining({name: 'xyAnalytics', state: 'accepted'}),
+        expect.objectContaining({name: 'yzAnalytics', state: 'denied'})
+      ]);
+    });
+
+    it('allows updating consent decisions via accept/deny', async () => {
+      const cookies = fakeCookies();
+
+      const consent = new Consent({...requiredOptions, cookies});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+      consent.registerVendor('yz_analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      consent.accept('xy_analytics');
+      consent.deny('yz_analytics');
+
+      const consentInNextSession = new Consent({...requiredOptions, cookies});
+      consentInNextSession.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+      consentInNextSession.registerVendor('yz_analytics', {paradigm: 'opt-in'});
+      consentInNextSession.closeVendorRegistration();
+      const xyPromise = consentInNextSession.require('xy_analytics');
+      const yzPromise = consentInNextSession.require('yz_analytics');
+
+      await expect(xyPromise).resolves.toEqual('fulfilled');
+      await expect(yzPromise).resolves.toEqual('failed');
+    });
   });
 
   describe('for external opt-out paradigm', () => {
@@ -244,6 +300,17 @@ describe('Consent', () => {
       await flushPromises();
 
       expect(callback).not.toHaveBeenCalled();
+    });
+
+    it('includes vendor in relevantVendors', () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('XY Analytics', {paradigm: 'external opt-out'});
+      consent.closeVendorRegistration();
+
+      expect(consent.relevantVendors()).toEqual([
+        expect.objectContaining({name: 'XY Analytics'})
+      ]);
     });
   });
 
@@ -339,8 +406,34 @@ describe('Consent', () => {
     ).toThrow(/unknown vendor/);
   });
 
+  it('throws error if accepted vendor has not been registered', () => {
+    const consent = new Consent(requiredOptions);
+
+    consent.closeVendorRegistration();
+
+    expect(() =>
+           consent.accept('XY Analytics')
+          ).toThrow(/unknown vendor/);
+  });
+
+  it('throws error if denied vendor has not been registered', () => {
+    const consent = new Consent(requiredOptions);
+
+    consent.closeVendorRegistration();
+
+    expect(() =>
+           consent.accept('XY Analytics')
+          ).toThrow(/unknown vendor/);
+  });
+
   it('exports singleton consent object', () => {
     expect(consent).toBeDefined();
+  });
+
+  describe('.create', () => {
+    it('returns consent object', () => {
+      expect(Consent.create().registerVendor).toBeDefined();
+    });
   });
 });
 
