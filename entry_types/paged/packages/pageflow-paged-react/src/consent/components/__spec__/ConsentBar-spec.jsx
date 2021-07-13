@@ -1,15 +1,17 @@
 import {ConsentBar} from '../ConsentBar';
 
-import {shallow} from 'enzyme';
+import {mount} from 'enzyme';
 
 describe('ConsentBar', () => {
   it('renders inputs for vendors', () => {
     const vendors = [{name: 'the_vendor', displayName: 'The Vendor'}];
-    const wrapper = shallow(
+    const wrapper = mount(
       <ConsentBar requestedVendors={vendors} visible={true} t={() => {}}/>
     );
 
-    expect(wrapper).toContainMatchingElement('#consent_bar-vendor_the_vendor');
+    wrapper.find('.consent_bar-configure').simulate('click');
+
+    expect(wrapper).toContainMatchingElement('#consent_vendor_list-vendor_the_vendor');
   });
 
   it('forwards input values as arguments to save', () => {
@@ -20,12 +22,13 @@ describe('ConsentBar', () => {
     ];
     const listener = jest.fn();
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <ConsentBar
         save={listener} requestedVendors={vendors} visible={true} t={() => {}}/>
     );
 
-    wrapper.find('#consent_bar-vendor_vendor_b').simulate('change', {target: {checked: true}});
+    wrapper.find('.consent_bar-configure').simulate('click');
+    wrapper.find('#consent_vendor_list-vendor_vendor_b').simulate('change', {target: {checked: true}});
     wrapper.find('.consent_bar-save').simulate('click');
 
     expect(listener).toHaveBeenCalledWith({
@@ -43,12 +46,13 @@ describe('ConsentBar', () => {
     ];
     const listener = jest.fn();
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <ConsentBar
         save={listener} requestedVendors={[]} visible={false} t={() => {}}/>
     );
 
     wrapper.setProps({requestedVendors: vendors, visible: true});
+    wrapper.find('.consent_bar-configure').simulate('click');
     wrapper.find('.consent_bar-save').simulate('click');
 
     expect(listener).toHaveBeenCalledWith({

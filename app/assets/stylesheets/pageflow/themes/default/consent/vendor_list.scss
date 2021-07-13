@@ -1,0 +1,35 @@
+$consent-vendor-list-icon-color: #ddd;
+$consent-vendor-list-active-icon-color: #fff;
+
+.consent_vendor_list {
+  overflow: auto;
+  max-height: 40vh;
+  padding-right: 5px;
+  margin: 5px 0;
+
+  &-vendor {
+    position: relative;
+
+    p {
+      font-size: 13px;
+      margin-left: 24px;
+    }
+  }
+
+  &-expand_vendor {
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 5px;
+    top: 4px;
+
+    svg {
+      fill: $consent-vendor-list-icon-color;
+    }
+
+    &:hover svg,
+    &:active svg {
+      fill: $consent-vendor-list-active-icon-color;
+    }
+  }
+}
