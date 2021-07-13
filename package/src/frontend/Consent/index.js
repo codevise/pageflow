@@ -30,7 +30,7 @@ export class Consent {
       description,
       name,
       paradigm,
-      cookieName: cookieName || 'consent',
+      cookieName: cookieName || 'pageflow_consent',
       cookieKey});
   }
 
