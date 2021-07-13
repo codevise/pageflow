@@ -28,7 +28,7 @@ describe('ConsentBar', () => {
     );
 
     wrapper.find('.consent_bar-configure').simulate('click');
-    wrapper.find('#consent_vendor_list-vendor_vendor_b').simulate('change', {target: {checked: true}});
+    wrapper.find('button#consent_vendor_list-vendor_vendor_b').simulate('click');
     wrapper.find('.consent_bar-save').simulate('click');
 
     expect(listener).toHaveBeenCalledWith({

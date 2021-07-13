@@ -1,4 +1,5 @@
 import InfoIcon from 'components/icons/Info';
+import {Toggle} from './Toggle';
 
 import React from 'react';
 
@@ -7,10 +8,10 @@ export class VendorList extends React.Component {
     super(props);
     this.state = {};
 
-    this.handleVendorToggleClick = this.onVendorToggleClick.bind(this);
+    this.handleVendorInfoClick = this.onVendorInfoClick.bind(this);
   }
 
-  onVendorToggleClick(vendorName) {
+  onVendorInfoClick(vendorName) {
     this.setState({
       [vendorName]: !this.state[vendorName]
     });
@@ -40,14 +41,15 @@ export class VendorList extends React.Component {
         <div key={id}
              className="consent_vendor_list-vendor">
           <label htmlFor={id}>
-            <input id={id}
-                   defaultChecked={vendor.state === 'accepted'}
-                   onChange={event => this.props.onVendorInputChange(vendor.name, event)}
-                   type="checkbox" /> {vendor.displayName}
+            {vendor.displayName}
           </label>
+          <Toggle id={id}
+                  className="consent_vendor_list-toggle"
+                  defaultChecked={vendor.state === 'accepted'}
+                  onChange={event => this.props.onVendorInputChange(vendor.name, event)} />
           <button className="consent_vendor_list-expand_vendor"
                   title={this.props.t('pageflow.public.consent_expand_vendor')}
-                  onClick={() => this.handleVendorToggleClick(vendor.name)}>
+                  onClick={() => this.handleVendorInfoClick(vendor.name)}>
             <InfoIcon width={20} height={20} />
           </button>
           {this.renderVendorDescription(vendor)}
