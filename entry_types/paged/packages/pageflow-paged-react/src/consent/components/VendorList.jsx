@@ -25,6 +25,14 @@ export class VendorList extends React.Component {
   }
 
   renderVendors() {
+    if (!this.props.vendors.length) {
+      return (
+        <div className="consent_vendor_list-blank">
+          {this.props.t('pageflow.public.consent_no_vendors')}
+        </div>
+      );
+    }
+
     return this.props.vendors.map((vendor) => {
       const id = `consent_vendor_list-vendor_${vendor.name}`;
 
