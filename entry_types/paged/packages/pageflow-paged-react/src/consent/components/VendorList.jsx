@@ -38,6 +38,7 @@ export class VendorList extends React.Component {
                    type="checkbox" /> {vendor.displayName}
           </label>
           <button className="consent_vendor_list-expand_vendor"
+                  title={this.props.t('pageflow.public.consent_expand_vendor')}
                   onClick={() => this.handleVendorToggleClick(vendor.name)}>
             <InfoIcon width={20} height={20} />
           </button>

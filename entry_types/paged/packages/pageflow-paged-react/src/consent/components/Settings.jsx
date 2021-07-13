@@ -2,10 +2,11 @@ import React from 'react';
 
 import {VendorList} from './VendorList';
 
-export function Settings({consent}) {
+export function Settings({consent, t}) {
   return (
     <div>
       <VendorList vendors={consent.relevantVendors()}
+                  t={t}
                   onVendorInputChange={handleInputChange}/>
     </div>
   );

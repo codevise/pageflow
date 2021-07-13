@@ -7,6 +7,10 @@ $consent-vendor-list-active-icon-color: #fff;
   padding-right: 5px;
   margin: 5px 0;
 
+  @include phone {
+    max-height: 20vh;
+  }
+
   &-vendor {
     position: relative;
 
