@@ -17,32 +17,21 @@ export default {
     return function*() {
       const {acceptAll, denyAll, save, vendors} = yield call(() => consent.requested());
       yield put(request({vendors}));
-      const resetWidgetMargin = yield cps(ensureWidgetMarginBottom, widgetsApi);
 
-      yield takeEvery(ACCEPT_ALL, function*() {
-        yield call(resetWidgetMargin);
+      yield takeEvery(ACCEPT_ALL, function() {
         acceptAll();
       });
 
-      yield takeEvery(DENY_ALL, function*() {
-        yield call(resetWidgetMargin);
+      yield takeEvery(DENY_ALL, function() {
         denyAll();
       });
 
-      yield takeEvery(SAVE, function*(action) {
-        yield call(resetWidgetMargin);
+      yield takeEvery(SAVE, function(action) {
         save(action.payload);
       });
     };
   }
 };
-
-function ensureWidgetMarginBottom(widgetsApi, callback) {
-  widgetsApi.use({
-    name: 'consent_bar_visible',
-    insteadOf: 'consent_bar'
-  }, reset => callback(null, reset));
-}
 
 export function registerWidgetTypes() {
   registerConsentBar();
