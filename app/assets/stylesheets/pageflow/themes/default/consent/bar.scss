@@ -9,11 +9,13 @@ $consent-bar-link-text-color: $main-color;
 $consent-bar-typography: ();
 
 $consent-bar-accept-all-button-background-color: $main-color-dark;
-$consent-bar-deny-all-button-background-color: $main-color-dark;
-$consent-bar-save-button-background-color: $main-color-dark;
+$consent-bar-deny-all-button-background-color: #333;
+$consent-bar-configure-button-background-color: #333;
+$consent-bar-save-button-background-color: #333;
 
 $consent-bar-accept-all-button-text-color: #fff;
 $consent-bar-deny-all-button-text-color: #fff;
+$consent-bar-configure-button-text-color: #fff;
 $consent-bar-save-button-text-color: #fff;
 
 .consent_bar {
@@ -44,15 +46,21 @@ $consent-bar-save-button-text-color: #fff;
     }
   }
 
+  &-buttons {
+    float: right;
+    text-align: right;
+  }
+
   &-accept_all,
   &-deny_all,
+  &-configure,
   &-save {
     border: none;
     border-radius: 3px;
-    float: right;
-    margin: 5px 5px 0;
+    margin: 5px;
     padding: 5px 10px;
     font: inherit;
+    display: inline-block;
   }
 
   &-accept_all {
@@ -65,9 +73,20 @@ $consent-bar-save-button-text-color: #fff;
     color: $consent-bar-deny-all-button-text-color;
   }
 
+  &-configure {
+    background-color: $consent-bar-configure-button-background-color;
+    color: $consent-bar-configure-button-text-color;
+
+    svg {
+      fill: currentColor;
+      margin-right: 8px;
+    }
+  }
+
   &-save {
     background-color: $consent-bar-save-button-background-color;
     color: $consent-bar-save-button-text-color;
+    float: right;
   }
 
   &-vendor_box {
@@ -79,14 +98,25 @@ $consent-bar-save-button-text-color: #fff;
     color: $consent-bar-text-color;
     padding: 10px 20px;
     margin-bottom: 5px;
-    max-width: 300px;
-    width: 100%;
+    max-width: 400px;
+    width: 90%;
     box-sizing: border-box;
+    display: none;
 
     label {
       display: block;
       margin-bottom: 5px;
       padding: 5px 0;
+    }
+  }
+
+  &-expanded {
+    .consent_bar-vendor_box {
+      display: block;
+    }
+
+    .consent_bar-configure {
+      display: none;
     }
   }
 }

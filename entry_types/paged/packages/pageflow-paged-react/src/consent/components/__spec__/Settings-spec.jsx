@@ -1,6 +1,6 @@
 import {Settings} from '../Settings';
 
-import {shallow} from 'enzyme';
+import {mount} from 'enzyme';
 
 describe('Settings', () => {
   it('renders items for relevant vendors', () => {
@@ -10,12 +10,12 @@ describe('Settings', () => {
       }
     };
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <Settings consent={consent} />
     );
 
-    expect(wrapper).toContainMatchingElement('input#consent_settings-vendor_test');
-    expect(wrapper).toHaveText('TeSt Provider');
+    expect(wrapper).toContainMatchingElement('input#consent_vendor_list-vendor_test');
+    expect(wrapper).toHaveText(' TeSt Provider');
   });
 
   it('checks item if accepted', () => {
@@ -28,15 +28,15 @@ describe('Settings', () => {
       }
     };
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <Settings consent={consent} />
     );
 
     expect(
-      wrapper.find('input#consent_settings-vendor_test').props().defaultChecked
+      wrapper.find('input#consent_vendor_list-vendor_test').props().defaultChecked
     ).toEqual(true);
     expect(
-      wrapper.find('input#consent_settings-vendor_other').props().defaultChecked
+      wrapper.find('input#consent_vendor_list-vendor_other').props().defaultChecked
     ).toEqual(false);
   });
 
@@ -51,10 +51,10 @@ describe('Settings', () => {
       deny: jest.fn()
     };
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <Settings consent={consent} />
     );
-    wrapper.find('input#consent_settings-vendor_test').simulate(
+    wrapper.find('input#consent_vendor_list-vendor_test').simulate(
       'change',
       {target: {checked: false}}
     );
@@ -73,10 +73,10 @@ describe('Settings', () => {
       accept: jest.fn()
     };
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <Settings consent={consent} />
     );
-    wrapper.find('input#consent_settings-vendor_test').simulate(
+    wrapper.find('input#consent_vendor_list-vendor_test').simulate(
       'change',
       {target: {checked: true}}
     );

@@ -1,31 +1,18 @@
 import React from 'react';
 
+import {VendorList} from './VendorList';
+
 export function Settings({consent}) {
   return (
     <div>
-      {renderVendors({
-        vendors: consent.relevantVendors(),
-
-        onChange({vendor, checked}) {
-          checked ? consent.accept(vendor.name) : consent.deny(vendor.name);
-        }
-      })}
+      <VendorList vendors={consent.relevantVendors()}
+                  onVendorInputChange={handleInputChange}/>
     </div>
   );
-}
 
-function renderVendors({vendors, onChange}) {
-  return vendors.map((vendor) => {
-    const id = `consent_settings-vendor_${vendor.name}`;
-
-    return (
-      <label htmlFor={id} key={id}>
-        <input id={id}
-               type="checkbox"
-               onChange={event => onChange({vendor, checked: event.target.checked})}
-               defaultChecked={vendor.state == 'accepted'} />
-        {vendor.displayName}
-      </label>
-    );
-  });
+  function handleInputChange(vendorName, event) {
+    event.target.checked ?
+      consent.accept(vendorName) :
+      consent.deny(vendorName);
+  }
 }
