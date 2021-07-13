@@ -57,6 +57,7 @@ $consent-bar-save-button-text-color: #fff;
     padding: 10px 15px;
     font: inherit;
     display: inline-block;
+    cursor: pointer;
 
     @include phone {
       display: block;
@@ -99,12 +100,6 @@ $consent-bar-save-button-text-color: #fff;
     h3 {
       margin: 0.5em 0;
       font-size: 1em;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      padding: 5px 0;
     }
   }
 

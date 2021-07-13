@@ -14,8 +14,8 @@ describe('Settings', () => {
       <Settings consent={consent} t={() => {}} />
     );
 
-    expect(wrapper).toContainMatchingElement('input#consent_vendor_list-vendor_test');
-    expect(wrapper).toHaveText(' TeSt Provider');
+    expect(wrapper).toContainMatchingElement('button#consent_vendor_list-vendor_test');
+    expect(wrapper).toHaveText('TeSt Provider');
   });
 
   it('checks item if accepted', () => {
@@ -33,14 +33,14 @@ describe('Settings', () => {
     );
 
     expect(
-      wrapper.find('input#consent_vendor_list-vendor_test').props().defaultChecked
+      wrapper.find('button#consent_vendor_list-vendor_test').props()['aria-checked']
     ).toEqual(true);
     expect(
-      wrapper.find('input#consent_vendor_list-vendor_other').props().defaultChecked
+      wrapper.find('button#consent_vendor_list-vendor_other').props()['aria-checked']
     ).toEqual(false);
   });
 
-  it('denies consent for vendor when input is toggled to not be checked', () => {
+  it('denies consent for vendor when button is toggled to not be checked', () => {
     const consent = {
       relevantVendors() {
         return [
@@ -54,15 +54,12 @@ describe('Settings', () => {
     const wrapper = mount(
       <Settings consent={consent} t={() => {}} />
     );
-    wrapper.find('input#consent_vendor_list-vendor_test').simulate(
-      'change',
-      {target: {checked: false}}
-    );
+    wrapper.find('button#consent_vendor_list-vendor_test').simulate('click');
 
     expect(consent.deny).toHaveBeenCalledWith('test');
   });
 
-  it('accepts consent for vendor when input is toggled to be checked', () => {
+  it('accepts consent for vendor when button is toggled to be checked', () => {
     const consent = {
       relevantVendors() {
         return [
@@ -76,10 +73,7 @@ describe('Settings', () => {
     const wrapper = mount(
       <Settings consent={consent} t={() => {}} />
     );
-    wrapper.find('input#consent_vendor_list-vendor_test').simulate(
-      'change',
-      {target: {checked: true}}
-    );
+    wrapper.find('button#consent_vendor_list-vendor_test').simulate('click');
 
     expect(consent.accept).toHaveBeenCalledWith('test');
   });
