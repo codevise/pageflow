@@ -18,7 +18,7 @@ export class Persistence {
                            signal === 'denied' ? false :
                            signal[vendor.name]);
                         return result;
-                      }, {})));
+                      }, {})), null, '/');
     });
   }
 
@@ -31,7 +31,7 @@ export class Persistence {
                          JSON.stringify({
                            ...flags,
                            [vendor.cookieKey || vendor.name]: signal
-                         }));
+                         }), null, '/');
   }
 
   read(vendor) {
