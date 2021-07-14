@@ -11,7 +11,7 @@ import {FocusOutline} from './FocusOutline';
 import {Slideshow} from './Slideshow';
 import {readyDeferred} from './ready';
 import {Visited} from './Visited';
-
+import {pageType} from './pageType';
 
 var pagePreloaded = new $.Deferred(function(pagePreloadedDeferred) {
   $(document).one('pagepreloaded', pagePreloadedDeferred.resolve);
@@ -50,12 +50,14 @@ window.onload = function() {
           $('.overview').overview();
           $('.multimedia_alert').multimediaAlert();
 
+          pageType.invokeInitializers(state.pages);
           widgetTypes.enhance(body);
-          consent.closeVendorRegistration();
           delayedStart.perform();
           phoneLandscapeFullscreen();
         }
       });
+
+      consent.closeVendorRegistration();
     });
 
     links.setup();
