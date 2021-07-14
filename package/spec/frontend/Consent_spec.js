@@ -352,6 +352,25 @@ describe('Consent', () => {
     expect(result.vendors).toMatchObject([{name: 'xy_analytics'}]);
   });
 
+  it('returns opt-in vendors with state if only some vendors have been decided yet', async () => {
+    let consent = new Consent(requiredOptions);
+    consent.registerVendor('old_analytics', {paradigm: 'opt-in'});
+    consent.closeVendorRegistration();
+    consent.accept('old_analytics');
+
+    consent = new Consent(requiredOptions);
+    consent.registerVendor('old_analytics', {paradigm: 'opt-in'});
+    consent.registerVendor('new_analytics', {paradigm: 'opt-in'});
+    consent.closeVendorRegistration();
+
+    const result = await consent.requested();
+
+    expect(result.vendors).toMatchObject([
+      {name: 'old_analytics'},
+      {name: 'new_analytics'}
+    ]);
+  });
+
   it('returns display name with requested opt-in vendors', async () => {
     const consent = new Consent(requiredOptions);
 
