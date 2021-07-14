@@ -13,5 +13,6 @@ import './playerControls';
 import './scrollButton';
 import './shareMenu';
 import './skipPageButton';
+import './thirdPartyEmbedConsent';
 import './topButton';
 import './volumeSlider';
