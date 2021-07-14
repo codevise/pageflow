@@ -36,11 +36,12 @@ export class Consent {
 
   closeVendorRegistration() {
     this.vendorRegistrationClosed = true;
-    const vendors = this.getUndecidedOptInVendors();
 
-    if (!vendors.length) {
+    if (!this.getUndecidedOptInVendors().length) {
       return;
     }
+
+    const vendors = this.relevantVendors();
 
     this.requestedPromiseResolve({
       vendors,
