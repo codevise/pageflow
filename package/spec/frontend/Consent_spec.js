@@ -167,6 +167,26 @@ describe('Consent', () => {
          expect(callback).not.toHaveBeenCalled();
        });
 
+    it('allows denying previously accepted vendor if there are undecided opt-in vendors', async () => {
+      const cookies = fakeCookies();
+      const consent = new Consent({...requiredOptions, cookies});
+
+      consent.registerVendor('old', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const {acceptAll} = await consent.requested();
+      acceptAll();
+
+      const consentInNextSession = new Consent({...requiredOptions, cookies});
+      consentInNextSession.registerVendor('old', {paradigm: 'opt-in'});
+      consentInNextSession.registerVendor('new', {paradigm: 'opt-in'});
+      consentInNextSession.closeVendorRegistration();
+      const promise = consentInNextSession.require('old');
+      const {save} = await consentInNextSession.requested();
+      save({old: false, new: true});
+
+      return expect(promise).resolves.toEqual('failed');
+    });
+
     it('includes vendor in relevantVendors', () => {
       const consent = new Consent(requiredOptions);
 
