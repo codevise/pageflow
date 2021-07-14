@@ -38,6 +38,7 @@ export class Consent {
     this.vendorRegistrationClosed = true;
 
     if (!this.getUndecidedOptInVendors().length) {
+      this.resolvePendingRequirePromises();
       return;
     }
 
@@ -48,15 +49,15 @@ export class Consent {
 
       acceptAll: () => {
         this.persistence.store(vendors, 'accepted');
-        this.resolvePendingRequirePromises('fulfilled');
+        this.resolvePendingRequirePromises();
       },
       denyAll: () => {
         this.persistence.store(vendors, 'denied');
-        this.resolvePendingRequirePromises('failed');
+        this.resolvePendingRequirePromises();
       },
       save: (vendorConsent) => {
         this.persistence.store(vendors, vendorConsent);
-        this.resolvePendingRequirePromises(vendorConsent);
+        this.resolvePendingRequirePromises();
       }
     });
   }
@@ -81,11 +82,13 @@ export class Consent {
 
     switch (vendor.paradigm) {
     case 'opt-in':
+      if (this.getUndecidedOptInVendors().length) {
+        return this.getRequirePromise(vendorName);
+      }
+
       switch (this.persistence.read(vendor)) {
       case 'denied':
         return Promise.resolve('failed');
-      case 'undecided':
-        return this.getRequirePromise(vendorName);
       default: // 'accepted'
         return Promise.resolve('fulfilled');
       }
@@ -141,13 +144,10 @@ export class Consent {
     });
   }
 
-  resolvePendingRequirePromises(signal) {
+  resolvePendingRequirePromises() {
     Object.entries(this.requirePromiseResolves).forEach(([vendorName, resolve]) => {
-      if (typeof signal === 'string') {
-        resolve(signal);
-      } else {
-        resolve(signal[vendorName] ? 'fulfilled' : 'failed');
-      }
+      const vendor = this.vendors.find(vendor => vendor.name === vendorName);
+      resolve(this.persistence.read(vendor) === 'accepted' ? 'fulfilled' : 'failed');
     });
   }
 }
