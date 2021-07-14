@@ -36,6 +36,19 @@ export const pageType = (function() {
 
   return {
     repository: [],
+    initializers: {},
+
+    registerInitializer(name, fn) {
+      this.initializers[name] = fn;
+    },
+
+    invokeInitializers(pages) {
+      _.each(pages, page => {
+        if (this.initializers[page.template]) {
+          this.initializers[page.template](page.configuration);
+        }
+      });
+    },
 
     register: function(name, pageType) {
       var constructor = function() {};
