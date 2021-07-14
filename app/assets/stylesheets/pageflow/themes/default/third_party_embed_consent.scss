@@ -1,0 +1,103 @@
+.third_party_embed_opt_in {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  z-index: 1;
+
+  &::before {
+    content: image-url("pageflow/themes/default/embed_opt_in.svg");
+    display: block;
+    height: 90px;
+    width: 120px;
+  }
+
+  &-message {
+    margin: 1em 0 1.5em 0;
+  }
+
+  &-button {
+    padding: 10px;
+    background-color: transparent;
+    color: currentColor;
+    border: solid 1px currentColor;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  a {
+    color: currentColor;
+  }
+
+  .consent_given & {
+    display: none;
+  }
+}
+
+.third_party_embed_opt_out_info {
+  display: none;
+  color: #fff;
+  height: 100%;
+  pointer-events: none;
+
+  &-icon,
+  &-tooltip {
+    position: absolute;
+    right: 0;
+    box-sizing: border-box;
+    min-height: 40px;
+    height: 100%;
+    pointer-events: auto;
+  }
+
+  &-icon {
+    border: 0;
+    background-color: transparent;
+    text-align: initial;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 7px 7px;
+    z-index: 2;
+
+    &::before {
+      content: image-url("pageflow/themes/default/embed_opt_out_info.svg");
+      display: block;
+      width: 26px;
+      height: 26px;
+    }
+  }
+
+  &-tooltip {
+    background-color: #000;
+    display: none;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 5px 50px 5px 10px;
+    left: 0;
+    z-index: 1;
+
+    a {
+      color: currentColor;
+    }
+  }
+
+  &:hover,
+  &:focus-within {
+    .third_party_embed_opt_out_info-tooltip {
+      display: flex;
+    }
+  }
+
+  .consent_given & {
+    display: block;
+  }
+}

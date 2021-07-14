@@ -3,6 +3,7 @@ module Pageflow
     factory :published_entry, class: PublishedEntry do
       transient do
         account
+        theming
         type_name { 'paged' }
         revision_attributes { {} }
 
@@ -14,6 +15,7 @@ module Pageflow
         PublishedEntry.new(create(:entry,
                                   :published,
                                   account: account,
+                                  theming: theming,
                                   type_name: type_name,
                                   published_revision_attributes: revision_attributes,
                                   with_feature: with_feature,
