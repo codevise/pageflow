@@ -1026,8 +1026,6 @@ en:
         captions: Audio Replacement Text Track
         descriptions: Image Description Text Track
         subtitles: Translation Text Track
-    cookie_notice_bar:
-      widget_type_name: Bar at lower page margin
     default_theme:
       name: Default
     delayed_text_fade_in:
@@ -1886,7 +1884,6 @@ en:
       roles:
         analytics: Tracking
         background_media_control: Background media control
-        cookie_notice: Cookie Notice
         loading_spinner: Loading View
         mobile_navigation: Mobile navigation
         navigation: Navigation bar
