@@ -1,24 +1,29 @@
 import {Persistence} from './Persistence';
 import {cookies} from '../cookies';
+import BackboneEvents from 'backbone-events-standalone';
 
 const supportedParadigms = ['external opt-out', 'opt-in', 'skip'];
 
 export class Consent {
   constructor({cookies}) {
-    this.requirePromises = {};
-    this.requirePromiseResolves = {};
-
     this.requestedPromise = new Promise((resolve) => {
       this.requestedPromiseResolve = resolve;
     });
 
     this.vendors = [];
     this.persistence = new Persistence({cookies});
+    this.emitter = {...BackboneEvents};
   }
 
   registerVendor(name, {displayName, description, paradigm, cookieName, cookieKey}) {
     if (this.vendorRegistrationClosed) {
-      throw new Error(`Vendor ${name} has been registered after registration has been closed.`);
+      throw new Error(`Vendor ${name} has been registered after ` +
+                      'registration has been closed.');
+    }
+
+    if (!name.match(/^[a-z0-9-_]+$/i)) {
+      throw new Error(`Invalid vendor name '${name}'. ` +
+                      'Only letters, numbers, hyphens and underscores are allowed.');
     }
 
     if (supportedParadigms.indexOf(paradigm) < 0) {
@@ -38,7 +43,7 @@ export class Consent {
     this.vendorRegistrationClosed = true;
 
     if (!this.getUndecidedOptInVendors().length) {
-      this.resolvePendingRequirePromises();
+      this.triggerDecisionEvents();
       return;
     }
 
@@ -49,15 +54,15 @@ export class Consent {
 
       acceptAll: () => {
         this.persistence.store(vendors, 'accepted');
-        this.resolvePendingRequirePromises();
+        this.triggerDecisionEvents();
       },
       denyAll: () => {
         this.persistence.store(vendors, 'denied');
-        this.resolvePendingRequirePromises();
+        this.triggerDecisionEvents();
       },
       save: (vendorConsent) => {
         this.persistence.store(vendors, vendorConsent);
-        this.resolvePendingRequirePromises();
+        this.triggerDecisionEvents();
       }
     });
   }
@@ -83,14 +88,16 @@ export class Consent {
     switch (vendor.paradigm) {
     case 'opt-in':
       if (this.getUndecidedOptInVendors().length) {
-        return this.getRequirePromise(vendorName);
+        return new Promise(resolve => {
+          this.emitter.once(`${vendor.name}:accepted`, () => resolve('fulfilled'));
+          this.emitter.once(`${vendor.name}:denied`, () => resolve('failed'));
+        });
       }
 
-      switch (this.persistence.read(vendor)) {
-      case 'denied':
-        return Promise.resolve('failed');
-      default: // 'accepted'
+      if (this.persistence.read(vendor) === 'accepted') {
         return Promise.resolve('fulfilled');
+      } else {
+        return Promise.resolve('failed');
       }
     case 'external opt-out':
       if (this.persistence.read(vendor) === 'denied') {
@@ -130,13 +137,6 @@ export class Consent {
     this.persistence.update(vendor, false);
   }
 
-  getRequirePromise(vendorName) {
-    this.requirePromises[vendorName] = this.requirePromises[vendorName] ||
-      new Promise((resolve) => this.requirePromiseResolves[vendorName] = resolve);
-
-    return this.requirePromises[vendorName];
-  }
-
   getUndecidedOptInVendors() {
     return this.vendors.filter((vendor) => {
       return vendor.paradigm === 'opt-in' &&
@@ -144,11 +144,14 @@ export class Consent {
     });
   }
 
-  resolvePendingRequirePromises() {
-    Object.entries(this.requirePromiseResolves).forEach(([vendorName, resolve]) => {
-      const vendor = this.vendors.find(vendor => vendor.name === vendorName);
-      resolve(this.persistence.read(vendor) === 'accepted' ? 'fulfilled' : 'failed');
-    });
+  triggerDecisionEvents() {
+    this.vendors
+      .filter((vendor) => {
+        return vendor.paradigm !== 'skip';
+      })
+      .forEach((vendor) => {
+        this.emitter.trigger(`${vendor.name}:${this.persistence.read(vendor)}`);
+      });
   }
 }
 
