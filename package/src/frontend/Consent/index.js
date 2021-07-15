@@ -5,7 +5,7 @@ import BackboneEvents from 'backbone-events-standalone';
 const supportedParadigms = ['external opt-out', 'opt-in', 'lazy opt-in', 'skip'];
 
 export class Consent {
-  constructor({cookies}) {
+  constructor({cookies, inEditor}) {
     this.requestedPromise = new Promise((resolve) => {
       this.requestedPromiseResolve = resolve;
     });
@@ -13,6 +13,7 @@ export class Consent {
     this.vendors = [];
     this.persistence = new Persistence({cookies});
     this.emitter = {...BackboneEvents};
+    this.inEditor = inEditor;
   }
 
   registerVendor(name, {displayName, description, paradigm, cookieName, cookieKey}) {
@@ -80,6 +81,10 @@ export class Consent {
   }
 
   require(vendorName) {
+    if (this.inEditor) {
+      return Promise.resolve('fulfilled');
+    }
+
     const vendor = this.findVendor(vendorName, 'require consent for');
 
     switch (vendor.paradigm) {
@@ -110,6 +115,10 @@ export class Consent {
   }
 
   requireAccepted(vendorName) {
+    if (this.inEditor) {
+      return Promise.resolve('fulfilled');
+    }
+
     const vendor = this.findVendor(vendorName, 'require consent for');
 
     if (vendor.paradigm === 'opt-in' || vendor.paradigm === 'lazy opt-in') {
@@ -186,5 +195,6 @@ export class Consent {
 }
 
 Consent.create = function() {
-  return new Consent({cookies});
+  const inEditor = typeof PAGEFLOW_EDITOR !== 'undefined' && PAGEFLOW_EDITOR;
+  return new Consent({cookies, inEditor});
 };

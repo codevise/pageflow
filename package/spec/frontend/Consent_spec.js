@@ -477,6 +477,17 @@ describe('Consent', () => {
     });
   });
 
+  it('resolves all require/requireAccepted calls in editor ' +
+     'even before vendor registration closed', async () => {
+       const consent = new Consent({...requiredOptions, inEditor: true});
+
+       consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+       consent.registerVendor('embed', {paradigm: 'lazy opt-in'});
+
+       await expect(consent.require('xy_analytics')).resolves.toEqual('fulfilled');
+       await expect(consent.requireAccepted('embed')).resolves.toEqual('fulfilled');
+     });
+
   it('does not request if no vendors registered', async () => {
     const consent = new Consent(requiredOptions);
     const callback = jest.fn();
