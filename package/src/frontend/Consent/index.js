@@ -2,7 +2,7 @@ import {Persistence} from './Persistence';
 import {cookies} from '../cookies';
 import BackboneEvents from 'backbone-events-standalone';
 
-const supportedParadigms = ['external opt-out', 'opt-in', 'skip'];
+const supportedParadigms = ['external opt-out', 'opt-in', 'lazy opt-in', 'skip'];
 
 export class Consent {
   constructor({cookies}) {
@@ -47,10 +47,10 @@ export class Consent {
       return;
     }
 
-    const vendors = this.relevantVendors();
+    const vendors = this.getRequestedVendors();
 
     this.requestedPromiseResolve({
-      vendors,
+      vendors: this.withState(vendors),
 
       acceptAll: () => {
         this.persistence.store(vendors, 'accepted');
@@ -68,25 +68,22 @@ export class Consent {
   }
 
   relevantVendors() {
-    return this.vendors
-      .filter((vendor) => {
-        return vendor.paradigm !== 'skip';
+    return this.withState(
+      this.vendors.filter((vendor) => {
+        return vendor.paradigm === 'opt-in' ||
+          vendor.paradigm === 'external opt-out' ||
+          (vendor.paradigm === 'lazy opt-in' &&
+           this.persistence.read(vendor) !== 'undecided');
       })
-      .map((vendor) => {
-        return {...vendor, state: this.persistence.read(vendor)};
-      });
+    );
   }
 
   require(vendorName) {
-    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
-
-    if (!vendor) {
-      throw new Error(`Cannot require consent for unknown vendor "${vendorName}". ` +
-                      'Consider using registerVendor.');
-    }
+    const vendor = this.findVendor(vendorName, 'require consent for');
 
     switch (vendor.paradigm) {
     case 'opt-in':
+    case 'lazy opt-in':
       if (this.getUndecidedOptInVendors().length) {
         return new Promise(resolve => {
           this.emitter.once(`${vendor.name}:accepted`, () => resolve('fulfilled'));
@@ -112,14 +109,9 @@ export class Consent {
   }
 
   requireAccepted(vendorName) {
-    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
+    const vendor = this.findVendor(vendorName, 'require consent for');
 
-    if (!vendor) {
-      throw new Error(`Cannot require consent for unknown vendor "${vendorName}". ` +
-                      'Consider using registerVendor.');
-    }
-
-    if (vendor.paradigm === 'opt-in') {
+    if (vendor.paradigm === 'opt-in' || vendor.paradigm === 'lazy opt-in') {
       if (this.getUndecidedOptInVendors().length ||
           this.persistence.read(vendor) !== 'accepted') {
         return new Promise(resolve => {
@@ -139,26 +131,22 @@ export class Consent {
   }
 
   accept(vendorName) {
-    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
-
-    if (!vendor) {
-      throw new Error(`Cannot accept consent for unknown vendor "${vendorName}". ` +
-                      'Consider using registerVendor.');
-    }
+    const vendor = this.findVendor(vendorName, 'accept');
 
     this.persistence.update(vendor, true);
     this.emitter.trigger(`${vendor.name}:accepted`);
   }
 
   deny(vendorName) {
-    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
-
-    if (!vendor) {
-      throw new Error(`Cannot deny consent for unknown vendor "${vendorName}". ` +
-                      'Consider using registerVendor.');
-    }
+    const vendor = this.findVendor(vendorName, 'deny');
 
     this.persistence.update(vendor, false);
+  }
+
+  getRequestedVendors() {
+    return this.vendors.filter((vendor) => {
+      return vendor.paradigm !== 'skip';
+    });
   }
 
   getUndecidedOptInVendors() {
@@ -176,6 +164,23 @@ export class Consent {
       .forEach((vendor) => {
         this.emitter.trigger(`${vendor.name}:${this.persistence.read(vendor)}`);
       });
+  }
+
+  findVendor(vendorName, actionForErrorMessage) {
+    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
+
+    if (!vendor) {
+      throw new Error(`Cannot ${actionForErrorMessage} unknown vendor "${vendorName}". ` +
+                      'Consider using consent.registerVendor.');
+    }
+
+    return vendor;
+  }
+
+  withState(vendors) {
+    return vendors.map((vendor) => {
+      return {...vendor, state: this.persistence.read(vendor)};
+    });
   }
 }
 

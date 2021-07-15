@@ -262,6 +262,111 @@ describe('Consent', () => {
     });
   });
 
+  describe('for lazy opt-in paradigm', () => {
+    it('does not request consent UI', async () => {
+      const consent = new Consent(requiredOptions);
+      const callback = jest.fn();
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+      consent.requested().then(callback);
+      await flushPromises();
+
+      expect(callback).not.toHaveBeenCalled();
+    });
+
+    it('requests consent for vendor if other opt-in vendor is requested', async () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.registerVendor('yz_analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+
+      const result = await consent.requested();
+
+      expect(result.vendors).toMatchObject([
+        {name: 'xy_analytics'}, {name: 'yz_analytics'}
+      ]);
+    });
+
+    it('does not resolve require call by default', () => {
+      const consent = new Consent(requiredOptions);
+      const callback = jest.fn();
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+      consent.require('xy_analytics').then(callback);
+      flushPromises();
+
+      expect(callback).not.toHaveBeenCalled();
+    });
+
+    it('resolves require call when accepted together with opt-in vendors', async () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.registerVendor('yz_analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const promise = consent.require('xy_analytics');
+      const {acceptAll} = await consent.requested();
+      acceptAll();
+
+      return expect(promise).resolves.toEqual('fulfilled');
+    });
+
+    it('resolves requireAccepted call if consent is given via accept', async () => {
+      const cookies = fakeCookies();
+
+      const consent = new Consent({...requiredOptions, cookies});
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+      const promise = consent.requireAccepted('xy_analytics');
+      consent.accept('xy_analytics');
+
+      await expect(promise).resolves.toEqual('fulfilled');
+    });
+
+    it('does not include vendor in relevantVendors by default', () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+
+      expect(consent.relevantVendors()).toEqual([]);
+    });
+
+    it('includes vendor in relevantVendors if decided', () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+      consent.accept('xy_analytics');
+
+      expect(consent.relevantVendors()).toMatchObject([{name: 'xy_analytics'}]);
+    });
+
+    it('allows updating consent decisions via accept/deny', async () => {
+      const cookies = fakeCookies();
+
+      const consent = new Consent({...requiredOptions, cookies});
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.registerVendor('yz_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+      consent.accept('xy_analytics');
+      consent.deny('yz_analytics');
+
+      const consentInNextSession = new Consent({...requiredOptions, cookies});
+      consentInNextSession.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consentInNextSession.registerVendor('yz_analytics', {paradigm: 'lazy opt-in'});
+      consentInNextSession.closeVendorRegistration();
+      const xyPromise = consentInNextSession.require('xy_analytics');
+      const yzPromise = consentInNextSession.require('yz_analytics');
+
+      await expect(xyPromise).resolves.toEqual('fulfilled');
+      await expect(yzPromise).resolves.toEqual('failed');
+    });
+  });
+
   describe('for external opt-out paradigm', () => {
     it('fulfills require call by default', async () => {
       const consent = new Consent(requiredOptions);
@@ -413,8 +518,8 @@ describe('Consent', () => {
     const result = await consent.requested();
 
     expect(result.vendors).toMatchObject([
-      {name: 'old_analytics'},
-      {name: 'new_analytics'}
+      {name: 'old_analytics', state: 'accepted'},
+      {name: 'new_analytics', state: 'undecided'}
     ]);
   });
 
