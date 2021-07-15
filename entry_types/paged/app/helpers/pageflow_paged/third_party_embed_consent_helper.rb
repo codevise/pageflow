@@ -26,7 +26,7 @@ module PageflowPaged
     end
 
     def third_party_embed_privacy_link(entry:, text:, vendor_name: nil)
-      params = vendor_name ? "&vendor=#{vendor_name}" : ''
+      params = vendor_name ? "&vendors=#{vendor_name}" : ''
 
       link_to(
         text,

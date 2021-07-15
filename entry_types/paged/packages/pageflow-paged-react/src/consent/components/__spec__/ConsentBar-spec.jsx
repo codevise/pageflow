@@ -14,6 +14,24 @@ describe('ConsentBar', () => {
     expect(wrapper).toContainMatchingElement('#consent_vendor_list-vendor_the_vendor');
   });
 
+  it('lists requested vendors in privacy page link', () => {
+    const vendors = [
+      {name: 'vendor_a', displayName: 'Vendor A'},
+      {name: 'vendor_b', displayName: 'Vendor B'}
+    ];
+    const t = jest.fn();
+    mount(
+      <ConsentBar requestedVendors={vendors}
+                  visible={true}
+                  privacyLinkUrl="http://example.com/privacy"
+                  locale="de"
+                  t={t} />
+    );
+    expect(t).toHaveBeenCalledWith(expect.any(String), {
+      privacyLinkUrl: 'http://example.com/privacy?lang=de&vendors=vendor_a,vendor_b#consent'
+    });
+  });
+
   it('forwards input values as arguments to save', () => {
     const vendors = [
       {name: 'vendor_a', displayName: 'Vendor A'},
