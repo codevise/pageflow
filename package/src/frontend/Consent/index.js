@@ -111,6 +111,29 @@ export class Consent {
     }
   }
 
+  requireAccepted(vendorName) {
+    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
+
+    if (!vendor) {
+      throw new Error(`Cannot require consent for unknown vendor "${vendorName}". ` +
+                      'Consider using registerVendor.');
+    }
+
+    if (vendor.paradigm === 'opt-in') {
+      if (this.getUndecidedOptInVendors().length ||
+          this.persistence.read(vendor) !== 'accepted') {
+        return new Promise(resolve => {
+          this.emitter.once(`${vendor.name}:accepted`, () => resolve('fulfilled'));
+        });
+      }
+
+      return Promise.resolve('fulfilled');
+    }
+    else {
+      return this.require(vendorName);
+    }
+  }
+
   requested() {
     return this.requestedPromise;
   }
