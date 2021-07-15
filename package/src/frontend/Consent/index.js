@@ -124,6 +124,7 @@ export class Consent {
     }
 
     this.persistence.update(vendor, true);
+    this.emitter.trigger(`${vendor.name}:accepted`);
   }
 
   deny(vendorName) {

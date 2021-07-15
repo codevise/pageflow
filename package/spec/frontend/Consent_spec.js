@@ -233,6 +233,18 @@ describe('Consent', () => {
       await expect(xyPromise).resolves.toEqual('fulfilled');
       await expect(yzPromise).resolves.toEqual('failed');
     });
+
+    it('resolves require call if consent is given via accept', async () => {
+      const cookies = fakeCookies();
+
+      const consent = new Consent({...requiredOptions, cookies});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const promise = consent.require('xy_analytics');
+      consent.accept('xy_analytics');
+
+      await expect(promise).resolves.toEqual('fulfilled');
+    });
   });
 
   describe('for external opt-out paradigm', () => {
