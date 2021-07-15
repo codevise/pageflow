@@ -343,6 +343,17 @@ describe('Consent', () => {
       consent.accept('xy_analytics');
 
       expect(consent.relevantVendors()).toMatchObject([{name: 'xy_analytics'}]);
+});
+
+    it('supports explicitly including vendor in relevantVendors', () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+
+      expect(consent.relevantVendors({include: ['xy_analytics']})).toMatchObject([
+        {name: 'xy_analytics'}
+      ]);
     });
 
     it('allows updating consent decisions via accept/deny', async () => {

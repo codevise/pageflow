@@ -67,10 +67,11 @@ export class Consent {
     });
   }
 
-  relevantVendors() {
+  relevantVendors({include: additionalVendorNames} = {}) {
     return this.withState(
       this.vendors.filter((vendor) => {
-        return vendor.paradigm === 'opt-in' ||
+        return additionalVendorNames?.includes(vendor.name) ||
+          vendor.paradigm === 'opt-in' ||
           vendor.paradigm === 'external opt-out' ||
           (vendor.paradigm === 'lazy opt-in' &&
            this.persistence.read(vendor) !== 'undecided');

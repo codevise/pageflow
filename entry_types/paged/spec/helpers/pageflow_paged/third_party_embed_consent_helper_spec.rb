@@ -22,7 +22,7 @@ module PageflowPaged
                                                vendor_name: 'some-vendor')
 
         expect(html).to have_selector(
-          'a[href="http://example.com/privacy?lang=en&vendor=some-vendor#consent"]'
+          'a[href="http://example.com/privacy?lang=en&vendors=some-vendor#consent"]'
         )
       end
     end

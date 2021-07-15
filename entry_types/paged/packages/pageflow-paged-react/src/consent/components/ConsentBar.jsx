@@ -88,9 +88,10 @@ export class ConsentBar extends React.Component {
   }
 }
 
-function renderText({privacyLinkUrl, t, locale}) {
+function renderText({privacyLinkUrl, t, locale, requestedVendors}) {
+  const vendorNames = requestedVendors.map(vendor => vendor.name).join(',');
   const text = t('pageflow.public.consent_prompt_html', {
-    privacyLinkUrl: `${privacyLinkUrl}?lang=${locale}`
+    privacyLinkUrl: `${privacyLinkUrl}?lang=${locale}&vendors=${vendorNames}#consent`
   });
 
   return (
