@@ -245,6 +245,21 @@ describe('Consent', () => {
 
       await expect(promise).resolves.toEqual('fulfilled');
     });
+
+    it('resolves requireAccepted call if decision is changed via accept', async () => {
+      const cookies = fakeCookies();
+
+      const consent = new Consent({...requiredOptions, cookies});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const promise = consent.requireAccepted('xy_analytics');
+      const {save} = await consent.requested();
+      save({xy_analytics: false});
+      await flushPromises();
+      consent.accept('xy_analytics');
+
+      await expect(promise).resolves.toEqual('fulfilled');
+    });
   });
 
   describe('for external opt-out paradigm', () => {
