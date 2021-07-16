@@ -3,7 +3,6 @@ import {isConsentUIVisible, requestedVendors} from 'consent/selectors';
 import {acceptAll, denyAll, save} from 'consent/actions';
 import createStore from 'createStore';
 
-import sinon from 'sinon';
 import {flushPromises} from 'support/flushPromises';
 
 describe('consent', () => {
@@ -30,9 +29,8 @@ describe('consent', () => {
         };
       }
     };
-    const widgetsApi = fakeWidgetsApi();
 
-    const store = createStore([consent], {widgetsApi, consent: consentApi});
+    const store = createStore([consent], {consent: consentApi});
 
     return {
       dispatch: store.dispatch.bind(store),
@@ -41,17 +39,7 @@ describe('consent', () => {
         return selector(store.getState());
       },
 
-      widgetsApi,
       consentApi
-    };
-  }
-
-  function fakeWidgetsApi() {
-    const resetCallback = sinon.spy();
-
-    return {
-      resetCallback,
-      use: sinon.stub().yields(resetCallback)
     };
   }
 
@@ -139,47 +127,6 @@ describe('consent', () => {
     dispatch(save({vendorA: true}));
 
     expect(consentApi.mostRecentlyReturnedSave).toHaveBeenCalledWith({vendorA: true});
-  });
-
-
-  it('does not use consent_bar_visible widget before eagerly requiring consent', async () => {
-    const {widgetsApi} = setup();
-
-    await flushPromises();
-
-    expect(widgetsApi.use).not.toHaveBeenCalledWith({
-      name: 'consent_bar_visible',
-      insteadOf: 'consent_bar'
-    });
-  });
-
-  it('uses consent_bar_visible widget when it becomes visible', async () => {
-    const {consentApi, widgetsApi} = setup();
-
-    await eagerlyRequireConsentElsewhere(consentApi);
-
-    expect(widgetsApi.use).toHaveBeenCalledWith({
-      name: 'consent_bar_visible',
-      insteadOf: 'consent_bar'
-    });
-  });
-
-  it('resets consent_bar_visible widget once accepted', async () => {
-    const {dispatch, consentApi, widgetsApi} = setup();
-
-    await eagerlyRequireConsentElsewhere(consentApi);
-    dispatch(acceptAll());
-
-    expect(widgetsApi.resetCallback).toHaveBeenCalled();
-  });
-
-  it('resets consent_bar_visible widget once denied', async () => {
-    const {dispatch, consentApi, widgetsApi} = setup();
-
-    await eagerlyRequireConsentElsewhere(consentApi);
-    dispatch(denyAll());
-
-    expect(widgetsApi.resetCallback).toHaveBeenCalled();
   });
 
   describe('requestedVendors selector', () => {

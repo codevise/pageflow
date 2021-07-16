@@ -1,6 +1,6 @@
 import {Settings} from '../Settings';
 
-import {shallow} from 'enzyme';
+import {mount} from 'enzyme';
 
 describe('Settings', () => {
   it('renders items for relevant vendors', () => {
@@ -10,11 +10,11 @@ describe('Settings', () => {
       }
     };
 
-    const wrapper = shallow(
-      <Settings consent={consent} />
+    const wrapper = mount(
+      <Settings consent={consent} t={() => {}} />
     );
 
-    expect(wrapper).toContainMatchingElement('input#consent_settings-vendor_test');
+    expect(wrapper).toContainMatchingElement('button#consent_vendor_list-vendor_test');
     expect(wrapper).toHaveText('TeSt Provider');
   });
 
@@ -28,19 +28,19 @@ describe('Settings', () => {
       }
     };
 
-    const wrapper = shallow(
-      <Settings consent={consent} />
+    const wrapper = mount(
+      <Settings consent={consent} t={() => {}} />
     );
 
     expect(
-      wrapper.find('input#consent_settings-vendor_test').props().defaultChecked
+      wrapper.find('button#consent_vendor_list-vendor_test').props()['aria-checked']
     ).toEqual(true);
     expect(
-      wrapper.find('input#consent_settings-vendor_other').props().defaultChecked
+      wrapper.find('button#consent_vendor_list-vendor_other').props()['aria-checked']
     ).toEqual(false);
   });
 
-  it('denies consent for vendor when input is toggled to not be checked', () => {
+  it('denies consent for vendor when button is toggled to not be checked', () => {
     const consent = {
       relevantVendors() {
         return [
@@ -51,18 +51,15 @@ describe('Settings', () => {
       deny: jest.fn()
     };
 
-    const wrapper = shallow(
-      <Settings consent={consent} />
+    const wrapper = mount(
+      <Settings consent={consent} t={() => {}} />
     );
-    wrapper.find('input#consent_settings-vendor_test').simulate(
-      'change',
-      {target: {checked: false}}
-    );
+    wrapper.find('button#consent_vendor_list-vendor_test').simulate('click');
 
     expect(consent.deny).toHaveBeenCalledWith('test');
   });
 
-  it('accepts consent for vendor when input is toggled to be checked', () => {
+  it('accepts consent for vendor when button is toggled to be checked', () => {
     const consent = {
       relevantVendors() {
         return [
@@ -73,13 +70,10 @@ describe('Settings', () => {
       accept: jest.fn()
     };
 
-    const wrapper = shallow(
-      <Settings consent={consent} />
+    const wrapper = mount(
+      <Settings consent={consent} t={() => {}} />
     );
-    wrapper.find('input#consent_settings-vendor_test').simulate(
-      'change',
-      {target: {checked: true}}
-    );
+    wrapper.find('button#consent_vendor_list-vendor_test').simulate('click');
 
     expect(consent.accept).toHaveBeenCalledWith('test');
   });

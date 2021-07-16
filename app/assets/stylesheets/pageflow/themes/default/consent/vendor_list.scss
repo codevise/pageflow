@@ -1,0 +1,62 @@
+$consent-vendor-list-icon-color: #ddd;
+$consent-vendor-list-active-icon-color: #fff;
+$consent-vendor-list-toggle-color: #444;
+$consent-vendor-list-checked-toggle-color: $main-color;
+
+.consent_vendor_list {
+  overflow: auto;
+  max-height: 40vh;
+  padding-right: 5px;
+  margin: 5px 0;
+
+  @include phone {
+    max-height: 20vh;
+  }
+
+  &-vendor {
+    position: relative;
+    margin-bottom: 5px;
+    padding: 5px 0;
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  &-expand_vendor {
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 5px;
+    top: 4px;
+    cursor: pointer;
+
+    svg {
+      fill: $consent-vendor-list-icon-color;
+    }
+
+    &:hover svg,
+    &:active svg {
+      fill: $consent-vendor-list-active-icon-color;
+    }
+  }
+
+  &-toggle {
+    border: none;
+    background: transparent;
+    padding: 0;
+    position: absolute;
+    top: -2px;
+    right: 40px;
+    color: $consent-vendor-list-toggle-color;
+    cursor: pointer;
+
+    &[aria-checked=true] {
+      color: $consent-vendor-list-checked-toggle-color;
+    }
+
+    svg {
+      display: block;
+    }
+  }
+}
