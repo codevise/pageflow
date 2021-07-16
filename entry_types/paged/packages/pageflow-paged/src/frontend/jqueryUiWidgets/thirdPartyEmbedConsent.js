@@ -7,6 +7,10 @@ $.widget('pageflow.thirdPartyEmbedConsent', {
     var element = this.element;
     var vendorName = this.element.find('[data-consent-vendor]').data('consentVendor');
 
+    if (!vendorName) {
+      return;
+    }
+
     consent.requireAccepted(vendorName).then(function(result) {
       if (result === 'fulfilled') {
         element.addClass('consent_given');
