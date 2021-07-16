@@ -55,7 +55,7 @@ module Pageflow
 
     def consent_bar(config)
       config.features.register('consent_bar') do |feature_config|
-        feature_config.widget_types.register(BuiltInWidgetType.consent_bar)
+        feature_config.widget_types.register(BuiltInWidgetType.consent_bar, default: true)
       end
     end
 
