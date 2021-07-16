@@ -1,24 +1,30 @@
 import {Persistence} from './Persistence';
 import {cookies} from '../cookies';
+import BackboneEvents from 'backbone-events-standalone';
 
-const supportedParadigms = ['external opt-out', 'opt-in', 'skip'];
+const supportedParadigms = ['external opt-out', 'opt-in', 'lazy opt-in', 'skip'];
 
 export class Consent {
-  constructor({cookies}) {
-    this.requirePromises = {};
-    this.requirePromiseResolves = {};
-
+  constructor({cookies, inEditor}) {
     this.requestedPromise = new Promise((resolve) => {
       this.requestedPromiseResolve = resolve;
     });
 
     this.vendors = [];
     this.persistence = new Persistence({cookies});
+    this.emitter = {...BackboneEvents};
+    this.inEditor = inEditor;
   }
 
   registerVendor(name, {displayName, description, paradigm, cookieName, cookieKey}) {
     if (this.vendorRegistrationClosed) {
-      throw new Error(`Vendor ${name} has been registered after registration has been closed.`);
+      throw new Error(`Vendor ${name} has been registered after ` +
+                      'registration has been closed.');
+    }
+
+    if (!name.match(/^[a-z0-9-_]+$/i)) {
+      throw new Error(`Invalid vendor name '${name}'. ` +
+                      'Only letters, numbers, hyphens and underscores are allowed.');
     }
 
     if (supportedParadigms.indexOf(paradigm) < 0) {
@@ -38,56 +44,63 @@ export class Consent {
     this.vendorRegistrationClosed = true;
 
     if (!this.getUndecidedOptInVendors().length) {
+      this.triggerDecisionEvents();
       return;
     }
 
-    const vendors = this.relevantVendors();
+    const vendors = this.getRequestedVendors();
 
     this.requestedPromiseResolve({
-      vendors,
+      vendors: this.withState(vendors),
 
       acceptAll: () => {
         this.persistence.store(vendors, 'accepted');
-        this.resolvePendingRequirePromises('fulfilled');
+        this.triggerDecisionEvents();
       },
       denyAll: () => {
         this.persistence.store(vendors, 'denied');
-        this.resolvePendingRequirePromises('failed');
+        this.triggerDecisionEvents();
       },
       save: (vendorConsent) => {
         this.persistence.store(vendors, vendorConsent);
-        this.resolvePendingRequirePromises(vendorConsent);
+        this.triggerDecisionEvents();
       }
     });
   }
 
-  relevantVendors() {
-    return this.vendors
-      .filter((vendor) => {
-        return vendor.paradigm !== 'skip';
+  relevantVendors({include: additionalVendorNames} = {}) {
+    return this.withState(
+      this.vendors.filter((vendor) => {
+        return additionalVendorNames?.includes(vendor.name) ||
+          vendor.paradigm === 'opt-in' ||
+          vendor.paradigm === 'external opt-out' ||
+          (vendor.paradigm === 'lazy opt-in' &&
+           this.persistence.read(vendor) !== 'undecided');
       })
-      .map((vendor) => {
-        return {...vendor, state: this.persistence.read(vendor)};
-      });
+    );
   }
 
   require(vendorName) {
-    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
-
-    if (!vendor) {
-      throw new Error(`Cannot require consent for unknown vendor "${vendorName}". ` +
-                      'Consider using registerVendor.');
+    if (this.inEditor) {
+      return Promise.resolve('fulfilled');
     }
+
+    const vendor = this.findVendor(vendorName, 'require consent for');
 
     switch (vendor.paradigm) {
     case 'opt-in':
-      switch (this.persistence.read(vendor)) {
-      case 'denied':
-        return Promise.resolve('failed');
-      case 'undecided':
-        return this.getRequirePromise(vendorName);
-      default: // 'accepted'
+    case 'lazy opt-in':
+      if (this.getUndecidedOptInVendors().length) {
+        return new Promise(resolve => {
+          this.emitter.once(`${vendor.name}:accepted`, () => resolve('fulfilled'));
+          this.emitter.once(`${vendor.name}:denied`, () => resolve('failed'));
+        });
+      }
+
+      if (this.persistence.read(vendor) === 'accepted') {
         return Promise.resolve('fulfilled');
+      } else {
+        return Promise.resolve('failed');
       }
     case 'external opt-out':
       if (this.persistence.read(vendor) === 'denied') {
@@ -101,37 +114,49 @@ export class Consent {
     }
   }
 
+  requireAccepted(vendorName) {
+    if (this.inEditor) {
+      return Promise.resolve('fulfilled');
+    }
+
+    const vendor = this.findVendor(vendorName, 'require consent for');
+
+    if (vendor.paradigm === 'opt-in' || vendor.paradigm === 'lazy opt-in') {
+      if (this.getUndecidedOptInVendors().length ||
+          this.persistence.read(vendor) !== 'accepted') {
+        return new Promise(resolve => {
+          this.emitter.once(`${vendor.name}:accepted`, () => resolve('fulfilled'));
+        });
+      }
+
+      return Promise.resolve('fulfilled');
+    }
+    else {
+      return this.require(vendorName);
+    }
+  }
+
   requested() {
     return this.requestedPromise;
   }
 
   accept(vendorName) {
-    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
-
-    if (!vendor) {
-      throw new Error(`Cannot accept consent for unknown vendor "${vendorName}". ` +
-                      'Consider using registerVendor.');
-    }
+    const vendor = this.findVendor(vendorName, 'accept');
 
     this.persistence.update(vendor, true);
+    this.emitter.trigger(`${vendor.name}:accepted`);
   }
 
   deny(vendorName) {
-    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
-
-    if (!vendor) {
-      throw new Error(`Cannot deny consent for unknown vendor "${vendorName}". ` +
-                      'Consider using registerVendor.');
-    }
+    const vendor = this.findVendor(vendorName, 'deny');
 
     this.persistence.update(vendor, false);
   }
 
-  getRequirePromise(vendorName) {
-    this.requirePromises[vendorName] = this.requirePromises[vendorName] ||
-      new Promise((resolve) => this.requirePromiseResolves[vendorName] = resolve);
-
-    return this.requirePromises[vendorName];
+  getRequestedVendors() {
+    return this.vendors.filter((vendor) => {
+      return vendor.paradigm !== 'skip';
+    });
   }
 
   getUndecidedOptInVendors() {
@@ -141,17 +166,35 @@ export class Consent {
     });
   }
 
-  resolvePendingRequirePromises(signal) {
-    Object.entries(this.requirePromiseResolves).forEach(([vendorName, resolve]) => {
-      if (typeof signal === 'string') {
-        resolve(signal);
-      } else {
-        resolve(signal[vendorName] ? 'fulfilled' : 'failed');
-      }
+  triggerDecisionEvents() {
+    this.vendors
+      .filter((vendor) => {
+        return vendor.paradigm !== 'skip';
+      })
+      .forEach((vendor) => {
+        this.emitter.trigger(`${vendor.name}:${this.persistence.read(vendor)}`);
+      });
+  }
+
+  findVendor(vendorName, actionForErrorMessage) {
+    const vendor = this.vendors.find(vendor => vendor.name === vendorName);
+
+    if (!vendor) {
+      throw new Error(`Cannot ${actionForErrorMessage} unknown vendor "${vendorName}". ` +
+                      'Consider using consent.registerVendor.');
+    }
+
+    return vendor;
+  }
+
+  withState(vendors) {
+    return vendors.map((vendor) => {
+      return {...vendor, state: this.persistence.read(vendor)};
     });
   }
 }
 
 Consent.create = function() {
-  return new Consent({cookies});
+  const inEditor = typeof PAGEFLOW_EDITOR !== 'undefined' && PAGEFLOW_EDITOR;
+  return new Consent({cookies, inEditor});
 };

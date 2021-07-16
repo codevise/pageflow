@@ -1026,8 +1026,6 @@ de:
         captions: Ton-Ersatz-Textspur
         descriptions: Bild-Ersatz-Textspur
         subtitles: Übersetzungs-Textspur
-    cookie_notice_bar:
-      widget_type_name: Leiste am unteren Seitenrand
     default_theme:
       name: Standard
     delayed_text_fade_in:
@@ -1908,7 +1906,6 @@ de:
       roles:
         analytics: Zählpixel
         background_media_control: Hintergrund-Media-Control
-        cookie_notice: Cookie Hinweis
         loading_spinner: Lade-Ansicht
         mobile_navigation: Mobile Navigation
         navigation: Navigationsleiste

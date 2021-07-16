@@ -21,15 +21,33 @@ export class ConsentBar extends React.Component {
       checked: {}
     };
     this.handleSaveButtonClick = this.onSaveButtonClick.bind(this);
+    this.handleAcceptAllButtonClick = this.onAcceptAllButtonClick.bind(this);
+    this.handleDenyAllAllButtonClick = this.onDenyAllButtonClick.bind(this);
     this.handleVendorInputChange = this.onVendorInputChange.bind(this);
   }
 
   onSaveButtonClick() {
+    if (this.props.editing) {
+      return;
+    }
+
     const signal = this.props.requestedVendors.reduce((result, {name}) => ({
       ...result,
       [name]: this.state.checked[name] || false
     }), {});
     this.props.save(signal);
+  }
+
+  onAcceptAllButtonClick() {
+    if (!this.props.editing) {
+      this.props.acceptAll();
+    }
+  }
+
+  onDenyAllButtonClick() {
+    if (!this.props.editing) {
+      this.props.denyAll();
+    }
   }
 
   onVendorInputChange(vendorName, event) {
@@ -42,7 +60,7 @@ export class ConsentBar extends React.Component {
   }
 
   render() {
-    const {editing, t, acceptAll, denyAll, requestedVendors, visible} = this.props;
+    const {editing, t, requestedVendors, visible} = this.props;
 
     if (visible || editing) {
       return (
@@ -70,10 +88,12 @@ export class ConsentBar extends React.Component {
                 {t('pageflow.public.consent_configure')}
               </button>
               <div className="consent_bar-decision_buttons">
-                <button className="consent_bar-deny_all" onClick={denyAll}>
+                <button className="consent_bar-deny_all"
+                        onClick={this.handleDenyAllAllButtonClick}>
                   {t('pageflow.public.consent_deny_all')}
                 </button>
-                <button className="consent_bar-accept_all" onClick={acceptAll}>
+                <button className="consent_bar-accept_all"
+                        onClick={this.handleAcceptAllButtonClick}>
                   {t('pageflow.public.consent_accept_all')}
                 </button>
               </div>
@@ -88,9 +108,10 @@ export class ConsentBar extends React.Component {
   }
 }
 
-function renderText({privacyLinkUrl, t, locale}) {
+function renderText({privacyLinkUrl, t, locale, requestedVendors}) {
+  const vendorNames = requestedVendors.map(vendor => vendor.name).join(',');
   const text = t('pageflow.public.consent_prompt_html', {
-    privacyLinkUrl: `${privacyLinkUrl}?lang=${locale}`
+    privacyLinkUrl: `${privacyLinkUrl}?lang=${locale}&vendors=${vendorNames}#consent`
   });
 
   return (

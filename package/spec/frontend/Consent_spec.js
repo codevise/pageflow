@@ -13,9 +13,9 @@ describe('Consent', () => {
     it('fulfills require call', async () => {
       const consent = new Consent(requiredOptions);
 
-      consent.registerVendor('XY Analytics', {paradigm: 'skip'});
+      consent.registerVendor('xy_analytics', {paradigm: 'skip'});
       consent.closeVendorRegistration();
-      const promise = consent.require('XY Analytics');
+      const promise = consent.require('xy_analytics');
 
       return expect(promise).resolves.toEqual('fulfilled');
     });
@@ -24,7 +24,7 @@ describe('Consent', () => {
       const consent = new Consent(requiredOptions);
       const callback = jest.fn();
 
-      consent.registerVendor('XY Analytics', {paradigm: 'skip'});
+      consent.registerVendor('xy_analytics', {paradigm: 'skip'});
       consent.closeVendorRegistration();
       consent.requested().then(callback);
       await flushPromises();
@@ -35,7 +35,7 @@ describe('Consent', () => {
     it('does not include vendor in relevantVendors', () => {
       const consent = new Consent(requiredOptions);
 
-      consent.registerVendor('XY Analytics', {paradigm: 'skip'});
+      consent.registerVendor('xy_analytics', {paradigm: 'skip'});
       consent.closeVendorRegistration();
 
       expect(consent.relevantVendors()).toEqual([]);
@@ -46,9 +46,9 @@ describe('Consent', () => {
     it('resolves require call after all vendors have been accepted', async () => {
       const consent = new Consent(requiredOptions);
 
-      consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
       consent.closeVendorRegistration();
-      const promise = consent.require('XY Analytics');
+      const promise = consent.require('xy_analytics');
       const {acceptAll} = await consent.requested();
       acceptAll();
 
@@ -58,7 +58,7 @@ describe('Consent', () => {
     it('ignores not-required vendors on acceptAll', async () => {
       const consent = new Consent(requiredOptions);
 
-      consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
       consent.closeVendorRegistration();
       const {acceptAll} = await consent.requested();
 
@@ -68,9 +68,9 @@ describe('Consent', () => {
     it('resolves require call after vendors have all been denied', async () => {
       const consent = new Consent(requiredOptions);
 
-      consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consent.registerVendor('XY_Analytics', {paradigm: 'opt-in'});
       consent.closeVendorRegistration();
-      const promise = consent.require('XY Analytics');
+      const promise = consent.require('XY_Analytics');
       const {denyAll} = await consent.requested();
       denyAll();
 
@@ -96,15 +96,15 @@ describe('Consent', () => {
       const cookies = fakeCookies();
       const consent = new Consent({...requiredOptions, cookies});
 
-      consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
       consent.closeVendorRegistration();
       const {acceptAll} = await consent.requested();
       acceptAll();
 
       const consentInNextSession = new Consent({...requiredOptions, cookies});
-      consentInNextSession.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consentInNextSession.registerVendor('xy_analytics', {paradigm: 'opt-in'});
       consentInNextSession.closeVendorRegistration();
-      const promise = consentInNextSession.require('XY Analytics');
+      const promise = consentInNextSession.require('xy_analytics');
 
       return expect(promise).resolves.toEqual('fulfilled');
     });
@@ -113,15 +113,15 @@ describe('Consent', () => {
       const cookies = fakeCookies();
       const consent = new Consent({...requiredOptions, cookies});
 
-      consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
       consent.closeVendorRegistration();
       const {denyAll} = await consent.requested();
       denyAll();
 
       const consentInNextSession = new Consent({...requiredOptions, cookies});
-      consentInNextSession.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consentInNextSession.registerVendor('xy_analytics', {paradigm: 'opt-in'});
       consentInNextSession.closeVendorRegistration();
-      const promise = consentInNextSession.require('XY Analytics');
+      const promise = consentInNextSession.require('xy_analytics');
 
       return expect(promise).resolves.toEqual('failed');
     });
@@ -153,13 +153,13 @@ describe('Consent', () => {
          const consent = new Consent({...requiredOptions, cookies});
          const callback = jest.fn();
 
-         consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+         consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
          consent.closeVendorRegistration();
          const {denyAll} = await consent.requested();
          denyAll();
 
          const consentInNextSession = new Consent({...requiredOptions, cookies});
-         consentInNextSession.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+         consentInNextSession.registerVendor('xy_analytics', {paradigm: 'opt-in'});
          consentInNextSession.closeVendorRegistration();
          consentInNextSession.requested().then(callback);
          await flushPromises();
@@ -167,14 +167,34 @@ describe('Consent', () => {
          expect(callback).not.toHaveBeenCalled();
        });
 
+    it('allows denying previously accepted vendor if there are undecided opt-in vendors', async () => {
+      const cookies = fakeCookies();
+      const consent = new Consent({...requiredOptions, cookies});
+
+      consent.registerVendor('old', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const {acceptAll} = await consent.requested();
+      acceptAll();
+
+      const consentInNextSession = new Consent({...requiredOptions, cookies});
+      consentInNextSession.registerVendor('old', {paradigm: 'opt-in'});
+      consentInNextSession.registerVendor('new', {paradigm: 'opt-in'});
+      consentInNextSession.closeVendorRegistration();
+      const promise = consentInNextSession.require('old');
+      const {save} = await consentInNextSession.requested();
+      save({old: false, new: true});
+
+      return expect(promise).resolves.toEqual('failed');
+    });
+
     it('includes vendor in relevantVendors', () => {
       const consent = new Consent(requiredOptions);
 
-      consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
       consent.closeVendorRegistration();
 
       expect(consent.relevantVendors()).toEqual([
-        expect.objectContaining({name: 'XY Analytics', state: 'undecided'})
+        expect.objectContaining({name: 'xy_analytics', state: 'undecided'})
       ]);
     });
 
@@ -206,6 +226,149 @@ describe('Consent', () => {
       const consentInNextSession = new Consent({...requiredOptions, cookies});
       consentInNextSession.registerVendor('xy_analytics', {paradigm: 'opt-in'});
       consentInNextSession.registerVendor('yz_analytics', {paradigm: 'opt-in'});
+      consentInNextSession.closeVendorRegistration();
+      const xyPromise = consentInNextSession.require('xy_analytics');
+      const yzPromise = consentInNextSession.require('yz_analytics');
+
+      await expect(xyPromise).resolves.toEqual('fulfilled');
+      await expect(yzPromise).resolves.toEqual('failed');
+    });
+
+    it('resolves require call if consent is given via accept', async () => {
+      const cookies = fakeCookies();
+
+      const consent = new Consent({...requiredOptions, cookies});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const promise = consent.require('xy_analytics');
+      consent.accept('xy_analytics');
+
+      await expect(promise).resolves.toEqual('fulfilled');
+    });
+
+    it('resolves requireAccepted call if decision is changed via accept', async () => {
+      const cookies = fakeCookies();
+
+      const consent = new Consent({...requiredOptions, cookies});
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const promise = consent.requireAccepted('xy_analytics');
+      const {save} = await consent.requested();
+      save({xy_analytics: false});
+      await flushPromises();
+      consent.accept('xy_analytics');
+
+      await expect(promise).resolves.toEqual('fulfilled');
+    });
+  });
+
+  describe('for lazy opt-in paradigm', () => {
+    it('does not request consent UI', async () => {
+      const consent = new Consent(requiredOptions);
+      const callback = jest.fn();
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+      consent.requested().then(callback);
+      await flushPromises();
+
+      expect(callback).not.toHaveBeenCalled();
+    });
+
+    it('requests consent for vendor if other opt-in vendor is requested', async () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.registerVendor('yz_analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+
+      const result = await consent.requested();
+
+      expect(result.vendors).toMatchObject([
+        {name: 'xy_analytics'}, {name: 'yz_analytics'}
+      ]);
+    });
+
+    it('does not resolve require call by default', () => {
+      const consent = new Consent(requiredOptions);
+      const callback = jest.fn();
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+      consent.require('xy_analytics').then(callback);
+      flushPromises();
+
+      expect(callback).not.toHaveBeenCalled();
+    });
+
+    it('resolves require call when accepted together with opt-in vendors', async () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.registerVendor('yz_analytics', {paradigm: 'opt-in'});
+      consent.closeVendorRegistration();
+      const promise = consent.require('xy_analytics');
+      const {acceptAll} = await consent.requested();
+      acceptAll();
+
+      return expect(promise).resolves.toEqual('fulfilled');
+    });
+
+    it('resolves requireAccepted call if consent is given via accept', async () => {
+      const cookies = fakeCookies();
+
+      const consent = new Consent({...requiredOptions, cookies});
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+      const promise = consent.requireAccepted('xy_analytics');
+      consent.accept('xy_analytics');
+
+      await expect(promise).resolves.toEqual('fulfilled');
+    });
+
+    it('does not include vendor in relevantVendors by default', () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+
+      expect(consent.relevantVendors()).toEqual([]);
+    });
+
+    it('includes vendor in relevantVendors if decided', () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+      consent.accept('xy_analytics');
+
+      expect(consent.relevantVendors()).toMatchObject([{name: 'xy_analytics'}]);
+});
+
+    it('supports explicitly including vendor in relevantVendors', () => {
+      const consent = new Consent(requiredOptions);
+
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+
+      expect(consent.relevantVendors({include: ['xy_analytics']})).toMatchObject([
+        {name: 'xy_analytics'}
+      ]);
+    });
+
+    it('allows updating consent decisions via accept/deny', async () => {
+      const cookies = fakeCookies();
+
+      const consent = new Consent({...requiredOptions, cookies});
+      consent.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consent.registerVendor('yz_analytics', {paradigm: 'lazy opt-in'});
+      consent.closeVendorRegistration();
+      consent.accept('xy_analytics');
+      consent.deny('yz_analytics');
+
+      const consentInNextSession = new Consent({...requiredOptions, cookies});
+      consentInNextSession.registerVendor('xy_analytics', {paradigm: 'lazy opt-in'});
+      consentInNextSession.registerVendor('yz_analytics', {paradigm: 'lazy opt-in'});
       consentInNextSession.closeVendorRegistration();
       const xyPromise = consentInNextSession.require('xy_analytics');
       const yzPromise = consentInNextSession.require('yz_analytics');
@@ -279,13 +442,13 @@ describe('Consent', () => {
       const consent = new Consent({cookies});
 
       cookies.setItem('theCookie', JSON.stringify({xyAnalytics: false}));
-      consent.registerVendor('xy Analytics', {
+      consent.registerVendor('xy_analytics', {
         paradigm: 'external opt-out',
         cookieName: 'theCookie',
         cookieKey: 'xyAnalytics'
       });
       consent.closeVendorRegistration();
-      const promise = consent.require('xy Analytics');
+      const promise = consent.require('xy_analytics');
 
       return expect(promise).resolves.toEqual('failed');
     });
@@ -294,7 +457,7 @@ describe('Consent', () => {
       const consent = new Consent(requiredOptions);
       const callback = jest.fn();
 
-      consent.registerVendor('XY Analytics', {paradigm: 'external opt-out'});
+      consent.registerVendor('xy_analytics', {paradigm: 'external opt-out'});
       consent.closeVendorRegistration();
       consent.requested().then(callback);
       await flushPromises();
@@ -305,14 +468,25 @@ describe('Consent', () => {
     it('includes vendor in relevantVendors', () => {
       const consent = new Consent(requiredOptions);
 
-      consent.registerVendor('XY Analytics', {paradigm: 'external opt-out'});
+      consent.registerVendor('xy_analytics', {paradigm: 'external opt-out'});
       consent.closeVendorRegistration();
 
       expect(consent.relevantVendors()).toEqual([
-        expect.objectContaining({name: 'XY Analytics'})
+        expect.objectContaining({name: 'xy_analytics'})
       ]);
     });
   });
+
+  it('resolves all require/requireAccepted calls in editor ' +
+     'even before vendor registration closed', async () => {
+       const consent = new Consent({...requiredOptions, inEditor: true});
+
+       consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
+       consent.registerVendor('embed', {paradigm: 'lazy opt-in'});
+
+       await expect(consent.require('xy_analytics')).resolves.toEqual('fulfilled');
+       await expect(consent.requireAccepted('embed')).resolves.toEqual('fulfilled');
+     });
 
   it('does not request if no vendors registered', async () => {
     const consent = new Consent(requiredOptions);
@@ -329,7 +503,7 @@ describe('Consent', () => {
     const consent = new Consent(requiredOptions);
     const callback = jest.fn();
 
-    consent.registerVendor('XY Analytics', {paradigm: 'opt-in'});
+    consent.registerVendor('xy_analytics', {paradigm: 'opt-in'});
     consent.requested().then(callback);
     await flushPromises();
 
@@ -366,8 +540,8 @@ describe('Consent', () => {
     const result = await consent.requested();
 
     expect(result.vendors).toMatchObject([
-      {name: 'old_analytics'},
-      {name: 'new_analytics'}
+      {name: 'old_analytics', state: 'accepted'},
+      {name: 'new_analytics', state: 'undecided'}
     ]);
   });
 
@@ -375,14 +549,14 @@ describe('Consent', () => {
     const consent = new Consent(requiredOptions);
 
     consent.registerVendor('xy_analytics', {
-      displayName: 'XY Analytics',
+      displayName: 'xy_analytics',
       paradigm: 'opt-in'
     });
     consent.closeVendorRegistration();
 
     const result = await consent.requested();
 
-    expect(result.vendors).toMatchObject([{displayName: 'XY Analytics'}]);
+    expect(result.vendors).toMatchObject([{displayName: 'xy_analytics'}]);
   });
 
   it('returns descriptions with requested opt-in vendors', async () => {
@@ -415,7 +589,7 @@ describe('Consent', () => {
     const consent = new Consent(requiredOptions);
 
     expect(() =>
-      consent.registerVendor('XY Analytics', {paradigm: 'rainbow'})
+      consent.registerVendor('xy_analytics', {paradigm: 'rainbow'})
     ).toThrow(/unknown paradigm/);
   });
 
@@ -425,7 +599,7 @@ describe('Consent', () => {
     consent.closeVendorRegistration();
 
     expect(() =>
-      consent.registerVendor('XY Analytics', {paradigm: 'opt-in'})
+      consent.registerVendor('xy_analytics', {paradigm: 'opt-in'})
     ).toThrow(/registered after registration has been closed/);
   });
 
@@ -435,7 +609,7 @@ describe('Consent', () => {
     consent.closeVendorRegistration();
 
     expect(() =>
-      consent.require('XY Analytics')
+      consent.require('xy_analytics')
     ).toThrow(/unknown vendor/);
   });
 
@@ -445,7 +619,7 @@ describe('Consent', () => {
     consent.closeVendorRegistration();
 
     expect(() =>
-           consent.accept('XY Analytics')
+           consent.accept('xy_analytics')
           ).toThrow(/unknown vendor/);
   });
 
@@ -455,7 +629,7 @@ describe('Consent', () => {
     consent.closeVendorRegistration();
 
     expect(() =>
-           consent.accept('XY Analytics')
+           consent.accept('xy_analytics')
           ).toThrow(/unknown vendor/);
   });
 
