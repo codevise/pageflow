@@ -10,7 +10,13 @@ module.exports = {
       module: {
         ...config.module,
         rules: [
-          ...addModuleOptionToCssLoader(removeSvgFromFileLoader(config.module.rules)),
+          ...addModuleOptionToCssLoader(
+            removeSvgFromFileLoader(
+              includePageflowPackageInBabelRule(
+                config.module.rules
+              )
+            )
+          ),
           reactSvgLoader(),
         ]
       },
@@ -52,7 +58,7 @@ function removeSvgFromFileLoader(rules) {
     return {
       ...rule,
       test: new RegExp(rule.test.toString().replace('svg|', ''))
-    }
+    };
   });
 }
 
@@ -80,11 +86,30 @@ function addModuleOptionToCssLoader(rules) {
         ...u,
         options
       };
-    })
+    });
 
     return {
       ...rule,
       use
     };
-  })
+  });
+}
+
+// Since resolve.alias above makes imports from pageflow/frontend
+// point to the package's src directory, we need to make sure that
+// files from the pageflow package are also transpiled.
+function includePageflowPackageInBabelRule(rules) {
+  return rules.map(rule => {
+    if (rule.test.toString().includes('|jsx?)')) {
+      return {
+        ...rule,
+        include: [
+          ...rule.include,
+          path.resolve(__dirname, '../../../../package')
+        ]
+      };
+    }
+
+    return rule;
+  });
 }
