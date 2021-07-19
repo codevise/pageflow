@@ -4,6 +4,7 @@ on:
     # Skip if PR does not change scrolled package to reduce Percy usage
     paths:
       - entry_types/scrolled/package/src/**
+      - entry_types/scrolled/package/.storybook/**
   push:
     branches:
       - master
