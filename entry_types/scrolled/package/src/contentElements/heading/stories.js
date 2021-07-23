@@ -4,7 +4,7 @@ import {storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
 storiesOfContentElement(module, {
   typeName: 'heading',
   baseConfiguration: {
-    children: 'Some Text',
+    children: 'Some Heading Text',
     level: 1
   },
   variants: [
@@ -12,6 +12,24 @@ storiesOfContentElement(module, {
       name: 'First headline in entry',
       configuration: {
         level: 0
+      }
+    },
+    {
+      name: 'Large',
+      configuration: {
+        textSize: 'large'
+      }
+    },
+    {
+      name: 'Medium',
+      configuration: {
+        textSize: 'medium'
+      }
+    },
+    {
+      name: 'Small',
+      configuration: {
+        textSize: 'small'
       }
     }
   ]

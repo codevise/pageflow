@@ -1,0 +1,17 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        heading:
+          attributes:
+            textSize:
+              label: "Text size"
+              values:
+                auto: "(Auto)"
+                large: "Large"
+                medium: "Medium"
+                small: "Small"
+              inline_help: |
+                By default, a heading in the first section of the
+                entry is large. Headings in later sections have small
+                text size.

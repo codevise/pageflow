@@ -1,0 +1,17 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        heading:
+          attributes:
+            textSize:
+              label: "Schriftgröße"
+              values:
+                auto: "(Automatisch)"
+                large: "Groß"
+                medium: "Mittel"
+                small: "Klein"
+              inline_help: |
+                Standardmäßig haben Überschriften im ersten Abschnitt
+                des Beitrags große Schrift. Überschriften in späteren
+                Abschnitten verwenden Schriftgröße "Klein".
