@@ -6,7 +6,7 @@ import {
   useFile,
   Figure,
   Panorama,
-  ViewportDependentPillarBoxes
+  FitViewport
 } from 'pageflow-scrolled/frontend';
 
 export function VrImage({configuration}) {
@@ -25,13 +25,14 @@ export function VrImage({configuration}) {
 
   return (
     <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
-      <Figure caption={configuration.caption}>
-        <ViewportDependentPillarBoxes aspectRatio={configuration.position === 'full' ? 0.5 : 0.75}
-                                      position={configuration.position}
-                                      opaque={!!configuration.caption}>
-          {renderLazyPanorama(configuration, imageFile, shouldLoad, viewerRef)}
-        </ViewportDependentPillarBoxes>
-      </Figure>
+      <FitViewport
+        aspectRatio={configuration.position === 'full' ? 0.5 : 0.75}>
+        <Figure caption={configuration.caption}>
+          <FitViewport.Content>
+            {renderLazyPanorama(configuration, imageFile, shouldLoad, viewerRef)}
+          </FitViewport.Content>
+        </Figure>
+      </FitViewport>
     </div>
   );
 }

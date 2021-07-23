@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import {MediaPlayer} from '../MediaPlayer';
 import {useTextTracks} from '../useTextTracks';
 import {useMediaMuted} from '../useMediaMuted';
-import {ViewportDependentPillarBoxes} from '../ViewportDependentPillarBoxes';
 import {AudioStructuredData} from './AudioStructuredData';
 
 import styles from '../AudioPlayer.module.css';
@@ -16,7 +15,6 @@ import styles from '../AudioPlayer.module.css';
  * @param {Object} props.audioFile - Audio file obtained via `useFile`.
  * @param {number} [props.posterImageFile] - Poster image file obtained via `useFile`.
  * @param {number} [props.defaultTextTrackFileId] - Perma id of default text track file.
- * @param {String} [props.position] - Position of parent content element.
  * @param {string} [props.load] - Control lazy loading. `"auto"` (default), `"poster"` or `"none"`.
  */
 export function AudioPlayer({audioFile, posterImageFile, ...props}) {
@@ -28,7 +26,6 @@ export function AudioPlayer({audioFile, posterImageFile, ...props}) {
 
   if (audioFile && audioFile.isReady) {
     return (
-      <ViewportDependentPillarBoxes file={posterImageFile} position={props.position}>
         <div className={classNames(styles.spaceForTextTracks,
                                    {[styles.spaceForTextTracksActive]: !posterImageFile &&
                                      textTracks.files.length})}>
@@ -43,7 +40,6 @@ export function AudioPlayer({audioFile, posterImageFile, ...props}) {
                        {...props} />
           <AudioStructuredData file={audioFile} />
         </div>
-      </ViewportDependentPillarBoxes>
     );
   }
 

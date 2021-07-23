@@ -3,7 +3,7 @@ import React from 'react';
 import {
   Image,
   Figure,
-  ViewportDependentPillarBoxes,
+  FitViewport,
   useContentElementLifecycle,
   useFile
 } from 'pageflow-scrolled/frontend';
@@ -13,16 +13,16 @@ export function InlineImage({configuration}) {
   const imageFile = useFile({collectionName: 'imageFiles', permaId: configuration.id});
 
   return (
-    <Figure caption={configuration.caption}>
-      <ViewportDependentPillarBoxes file={imageFile}
-                                    aspectRatio={imageFile ? undefined : 0.75}
-                                    position={configuration.position}
-                                    opaque={!!configuration.caption}>
-        <Image imageFile={imageFile}
-               load={shouldLoad}
-               structuredData={true}
-               variant={configuration.position === 'full' ?  'large' : 'medium'} />
-      </ViewportDependentPillarBoxes>
-    </Figure>
+    <FitViewport file={imageFile}
+                                  aspectRatio={imageFile ? undefined : 0.75}>
+      <Figure caption={configuration.caption}>
+        <FitViewport.Content>
+          <Image imageFile={imageFile}
+                 load={shouldLoad}
+                 structuredData={true}
+                 variant={configuration.position === 'full' ?  'large' : 'medium'} />
+        </FitViewport.Content>
+      </Figure>
+    </FitViewport>
   )
 }

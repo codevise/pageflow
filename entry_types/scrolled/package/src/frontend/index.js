@@ -64,7 +64,7 @@ export {
   OptIn as ThirdPartyOptIn,
   OptOutInfo as ThirdPartyOptOutInfo,
 } from './thirdPartyConsent';
-export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
+export {FitViewport} from './FitViewport';
 
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
