@@ -74,5 +74,16 @@ storiesOfContentElement(module, {
         after_label: '2020',
       }
     },
+    {
+      name: 'With caption',
+      configuration: {
+        before_id: filePermaId('imageFiles', 'churchBefore'),
+        after_id: filePermaId('imageFiles', 'churchAfter'),
+        initial_slider_position: 50,
+        slider: true,
+        slider_handle: true,
+        caption: 'Some text here'
+      }
+    },
   ]
 });

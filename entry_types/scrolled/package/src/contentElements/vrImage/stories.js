@@ -19,6 +19,12 @@ storiesOfContentElement(module, {
       configuration: {
         image: filePermaId('imageFiles', 'equirectangularStereo')
       }
-    }
+    },
+    {
+      name: 'With caption',
+      configuration: {
+        caption: 'Some text here'
+      }
+    },
   ]
 });

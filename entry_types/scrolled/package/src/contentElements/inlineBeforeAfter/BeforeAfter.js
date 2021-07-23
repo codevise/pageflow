@@ -4,7 +4,12 @@ import Measure from 'react-measure';
 
 import styles from './BeforeAfter.module.css';
 import cx from 'classnames';
-import {useFile, useContentElementEditorState, ViewportDependentPillarBoxes} from 'pageflow-scrolled/frontend';
+import {
+  useFile,
+  useContentElementEditorState,
+  Figure,
+  FitViewport
+} from 'pageflow-scrolled/frontend';
 
 const placeholderForBeforeImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQwMyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KIDwhLS0gQ3JlYXRlZCB3aXRoIE1ldGhvZCBEcmF3IC0gaHR0cDovL2dpdGh1Yi5jb20vZHVvcGl4ZWwvTWV0aG9kLURyYXcvIC0tPgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9IiMzZDVhODAiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDUiIHdpZHRoPSI2NDIiIHk9Ii0xIiB4PSItMSIvPgogIDxnIGRpc3BsYXk9Im5vbmUiIG92ZXJmbG93PSJ2aXNpYmxlIiB5PSIwIiB4PSIwIiBoZWlnaHQ9IjEwMCUiIHdpZHRoPSIxMDAlIiBpZD0iY2FudmFzR3JpZCI+CiAgIDxyZWN0IGZpbGw9InVybCgjZ3JpZHBhdHRlcm4pIiBzdHJva2Utd2lkdGg9IjAiIHk9IjAiIHg9IjAiIGhlaWdodD0iMTAwJSIgd2lkdGg9IjEwMCUiLz4KICA8L2c+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiA8L2c+Cjwvc3ZnPg==';
 const placeholderForAfterImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQwMyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KIDwhLS0gQ3JlYXRlZCB3aXRoIE1ldGhvZCBEcmF3IC0gaHR0cDovL2dpdGh1Yi5jb20vZHVvcGl4ZWwvTWV0aG9kLURyYXcvIC0tPgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9IiM5OGMxZDkiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDUiIHdpZHRoPSI2NDIiIHk9Ii0xIiB4PSItMSIvPgogIDxnIGRpc3BsYXk9Im5vbmUiIG92ZXJmbG93PSJ2aXNpYmxlIiB5PSIwIiB4PSIwIiBoZWlnaHQ9IjEwMCUiIHdpZHRoPSIxMDAlIiBpZD0iY2FudmFzR3JpZCI+CiAgIDxyZWN0IGZpbGw9InVybCgjZ3JpZHBhdHRlcm4pIiBzdHJva2Utd2lkdGg9IjAiIHk9IjAiIHg9IjAiIGhlaWdodD0iMTAwJSIgd2lkdGg9IjEwMCUiLz4KICA8L2c+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiA8L2c+Cjwvc3ZnPg==';
@@ -16,6 +21,7 @@ const placeholderFile = {
 
 export function BeforeAfter({isActive,
                              load,
+                             caption,
                              position,
                              before_id,
                              before_label,
@@ -62,24 +68,32 @@ export function BeforeAfter({isActive,
   }
 
   return (
-    <ViewportDependentPillarBoxes file={beforeImage || afterImage || placeholderFile} position={position}>
-      <Measure bounds>
-        {({measureRef, contentRect}) =>
-          <div ref={measureRef}
-               style={{'--initial-rect-width': contentRect.bounds.width * initialSliderPos + 'px'}}
-               className={cx({[styles.selected]: isSelected,
-                              [styles.wiggle]: wiggle && !moved},
-                             styles.container)}>
-            <InitialSliderPositionIndicator parentSelected={isSelected}
-                                            position={initial_slider_position}/>
-            {renderCompareImage()}
-          </div>
-        }
-      </Measure>
-    </ViewportDependentPillarBoxes>
+    <FitViewport file={beforeImage || afterImage || placeholderFile}>
+      <Figure caption={caption}>
+        <FitViewport.Content>
+          <Measure bounds>
+            {({measureRef, contentRect}) => {
+              const initialRectWidth = contentRect.bounds.width * initialSliderPos + 'px';
+
+              return (
+                <div ref={measureRef}
+                     style={{'--initial-rect-width': initialRectWidth}}
+                     className={cx({[styles.selected]: isSelected,
+                                    [styles.wiggle]: wiggle && !moved},
+                                   styles.container)}>
+                  <InitialSliderPositionIndicator parentSelected={isSelected}
+                                                  position={initial_slider_position}/>
+                  {renderCompareImage()}
+                </div>
+              );
+            }}
+          </Measure>
+        </FitViewport.Content>
+      </Figure>
+    </FitViewport>
   );
 
-  function renderCompareImage() {
+              function renderCompareImage() {
     if (!load) {
       return null;
     }

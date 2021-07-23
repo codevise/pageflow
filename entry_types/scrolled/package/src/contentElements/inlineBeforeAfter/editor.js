@@ -29,6 +29,7 @@ editor.contentElementTypes.register('inlineBeforeAfter', {
       this.input('slider_color', ColorInputView, {
         visibleBinding: 'slider',
       });
+      this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });
   },

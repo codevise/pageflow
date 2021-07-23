@@ -6,7 +6,7 @@ import {
   Figure,
   ThirdPartyOptIn,
   ThirdPartyOptOutInfo,
-  ViewportDependentPillarBoxes,
+  FitViewport,
   useContentElementLifecycle,
   useContentElementEditorState,
   useAudioFocus
@@ -25,21 +25,21 @@ export function VideoEmbed({contentElementId, configuration}) {
   const [playerState, setPlayerState] = useState('unplayed');
 
   return (
-    <div className={styles.VideoEmbed}
-         style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
-      <Figure caption={configuration.caption}>
-        <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
-                                      position={configuration.position}
-                                      opaque={!!configuration.caption}>
-          {shouldLoad && <PreparedPlayer playerState={playerState}
-                                         setPlayerState={setPlayerState}
-                                         contentElementId={contentElementId}
-                                         configuration={configuration} />}
-        </ViewportDependentPillarBoxes>
-        <ThirdPartyOptOutInfo providerName="video"
-                              hide={playerState === 'playing'}
-                              contentElementPosition={configuration.position} />
-      </Figure>
+    <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
+      <FitViewport
+        aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}>
+        <Figure caption={configuration.caption}>
+          <FitViewport.Content>
+            {shouldLoad && <PreparedPlayer playerState={playerState}
+                                           setPlayerState={setPlayerState}
+                                           contentElementId={contentElementId}
+                                           configuration={configuration} />}
+          </FitViewport.Content>
+          <ThirdPartyOptOutInfo providerName="video"
+                                hide={playerState === 'playing'}
+                                contentElementPosition={configuration.position} />
+        </Figure>
+        </FitViewport>
     </div>
   );
 }

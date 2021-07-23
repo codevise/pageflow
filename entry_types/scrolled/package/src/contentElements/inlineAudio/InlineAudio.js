@@ -6,6 +6,7 @@ import {
   AudioPlayer,
   AudioPlayerControls,
   Figure,
+  FitViewport,
   useContentElementEditorState,
   useFile,
   usePlayerState,
@@ -55,29 +56,32 @@ export function InlineAudio({contentElementId, sectionProps, configuration}) {
   };
 
   return (
-    <Figure caption={configuration.caption}>
-      <AudioPlayerControls audioFile={audioFile}
-                           defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
-                           playerState={playerState}
-                           playerActions={playerActions}
-                           standAlone={!posterImageFile}
-                           configuration={configuration}
-                           sectionProps={sectionProps}
-                           onPlayerClick={onPlayerClick}>
-        <AudioPlayer load={shouldPrepare ? 'auto' :
-                           shouldLoad ? 'poster' :
-                           'none'}
-                     position={configuration.position}
-                     controls={configuration.controls}
-                     playerState={playerState}
-                     playerActions={playerActions}
-                     audioFile={audioFile}
-                     posterImageFile={posterImageFile}
-                     defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
-                     quality={'high'}
-                     playsInline={true}
-                     atmoDuringPlayback={configuration.atmoDuringPlayback} />
-      </AudioPlayerControls>
-    </Figure>
+    <FitViewport file={posterImageFile}>
+      <Figure caption={configuration.caption}>
+        <FitViewport.Content>
+          <AudioPlayerControls audioFile={audioFile}
+                               defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
+                               playerState={playerState}
+                               playerActions={playerActions}
+                               standAlone={!posterImageFile}
+                               configuration={configuration}
+                               sectionProps={sectionProps}
+                               onPlayerClick={onPlayerClick}>
+            <AudioPlayer load={shouldPrepare ? 'auto' :
+                               shouldLoad ? 'poster' :
+                               'none'}
+                         controls={configuration.controls}
+                         playerState={playerState}
+                         playerActions={playerActions}
+                         audioFile={audioFile}
+                         posterImageFile={posterImageFile}
+                         defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
+                         quality={'high'}
+                         playsInline={true}
+                         atmoDuringPlayback={configuration.atmoDuringPlayback} />
+          </AudioPlayerControls>
+        </FitViewport.Content>
+      </Figure>
+    </FitViewport>
   )
 }
