@@ -28,9 +28,7 @@ export function BeforeAfter({isActive,
                              after_id,
                              after_label,
                              initial_slider_position,
-                             slider,
-                             slider_color,
-                             slider_handle
+                             slider_color
                             }) {
 
   const [wiggle, setWiggle] = useState(false);
@@ -51,21 +49,6 @@ export function BeforeAfter({isActive,
   const afterImageUrl = afterImage && afterImage.urls.large;
   const afterImageAlt = afterImage && afterImage.configuration.alt;
   const initialSliderPos = initial_slider_position / 100;
-
-  let opts = {};
-  // Transform slider-related props into the format that
-  // react-compare-image needs
-  if (!slider) {
-    opts = {...opts, sliderLineWidth: 0, handle: <React.Fragment/>};
-  }
-  if (slider) {
-    if (!slider_handle) {
-      opts = {...opts, handle: <React.Fragment/>};
-    }
-    if (slider_color) {
-      opts = {...opts, sliderLineColor: slider_color};
-    }
-  }
 
   return (
     <FitViewport file={beforeImage || afterImage || placeholderFile}>
@@ -93,7 +76,7 @@ export function BeforeAfter({isActive,
     </FitViewport>
   );
 
-              function renderCompareImage() {
+  function renderCompareImage() {
     if (!load) {
       return null;
     }
@@ -105,7 +88,7 @@ export function BeforeAfter({isActive,
                          leftImageAlt={beforeImageAlt} rightImageAlt={afterImageAlt}
                          sliderPositionPercentage={initialSliderPos}
                          onSliderPositionChange={() => setMoved(true)}
-                         {...opts} />
+                         sliderLineColor={slider_color || undefined} />
     );
   }
 };
