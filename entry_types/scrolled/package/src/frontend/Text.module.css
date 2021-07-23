@@ -1,16 +1,24 @@
 @value text-s: 20px;
 @value text-base: 22px;
 @value text-l: 40px;
+@value text-2l: 50px;
 @value text-xl: 66px;
-@value text-2xl: 110px;
+@value text-2xl: 88px;
+@value text-3xl: 110px;
 
 .h2 {
   font-size: text-xl;
   font-weight: 700;
+  line-height: 1;
+}
+
+.h1-medium {
+  font-size: text-2xl;
+  line-height: 1;
 }
 
 .h1 {
-  font-size: text-2xl;
+  font-size: text-3xl;
   line-height: 1;
 }
 
@@ -29,7 +37,13 @@
     font-size: text-l;
   }
 
+  .h1-medium {
+    font-size: text-2l;
+    line-height: 1.1;
+  }
+
   .h1 {
     font-size: text-xl;
+    line-height: 1.1;
   }
 }

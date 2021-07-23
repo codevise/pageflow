@@ -5,7 +5,8 @@ import {
   Text,
   EditableInlineText,
   useContentElementConfigurationUpdate,
-  useI18n
+  useI18n,
+  useIsStaticPreview
 } from 'pageflow-scrolled/frontend';
 
 import styles from './Heading.module.css';
@@ -15,15 +16,21 @@ export function Heading({configuration, sectionProps}) {
   const firstSectionInEntry = level === 0;
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {t} = useI18n({locale: 'ui'});
+  const isStaticPreview = useIsStaticPreview();
 
   const legacyValue = configuration.children;
 
+  // Prevent collision with legacy editor rules for h2 elements. We do
+  // not care about header structure in the static preview thumbnails.
+  const Tag = firstSectionInEntry || isStaticPreview ? 'h1' : 'h2';
+
   return (
-    <h1 className={classNames(styles.root,
-                              {[styles.first]: firstSectionInEntry},
-                              {[styles[sectionProps.layout]]: configuration.position === 'wide'},
-                              {[withShadowClassName]: !sectionProps.invert})}>
-      <Text scaleCategory={firstSectionInEntry ? 'h1' : 'h2'} inline={true}>
+    <Tag className={classNames(styles.root,
+                               {[styles.first]: firstSectionInEntry},
+                               {[styles[sectionProps.layout]]: configuration.position === 'wide'},
+                               {[withShadowClassName]: !sectionProps.invert})}>
+      <Text scaleCategory={getScaleCategory(configuration, firstSectionInEntry)}
+            inline={true}>
         <EditableInlineText value={configuration.value}
                             defaultValue={legacyValue}
                             placeholder={firstSectionInEntry ?
@@ -31,6 +38,19 @@ export function Heading({configuration, sectionProps}) {
                                          t('pageflow_scrolled.inline_editing.type_heading')}
                             onChange={value => updateConfiguration({value})} />
       </Text>
-    </h1>
+    </Tag>
   );
+}
+
+function getScaleCategory(configuration, firstSectionInEntry) {
+  switch (configuration.textSize) {
+    case 'large':
+      return 'h1';
+    case 'medium':
+      return 'h1-medium';
+    case 'small':
+      return 'h2';
+    default:
+      return firstSectionInEntry ? 'h1' : 'h2';
+  }
 }
