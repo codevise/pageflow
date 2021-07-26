@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import ReactPlayer from 'react-player';
+
+import {getProviderName} from './getProviderName';
 import styles from './VideoEmbed.module.css';
 
 import {
@@ -24,6 +26,8 @@ export function VideoEmbed({contentElementId, configuration}) {
   const {shouldLoad} = useContentElementLifecycle();
   const [playerState, setPlayerState] = useState('unplayed');
 
+  const providerName = getProviderName(configuration.videoSource);
+
   return (
     <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <FitViewport
@@ -33,18 +37,21 @@ export function VideoEmbed({contentElementId, configuration}) {
             {shouldLoad && <PreparedPlayer playerState={playerState}
                                            setPlayerState={setPlayerState}
                                            contentElementId={contentElementId}
-                                           configuration={configuration} />}
+                                           configuration={configuration}
+                                           providerName={providerName} />}
           </FitViewport.Content>
-          <ThirdPartyOptOutInfo providerName="video"
+          <ThirdPartyOptOutInfo providerName={providerName}
                                 hide={playerState === 'playing'}
                                 contentElementPosition={configuration.position} />
         </Figure>
-        </FitViewport>
+      </FitViewport>
     </div>
   );
 }
 
-function PreparedPlayer({contentElementId, configuration, playerState, setPlayerState}) {
+function PreparedPlayer({
+  contentElementId, configuration, playerState, setPlayerState, providerName
+}) {
   useAudioFocus({
     key: contentElementId,
     request: playerState === 'playing',
@@ -62,7 +69,7 @@ function PreparedPlayer({contentElementId, configuration, playerState, setPlayer
   }
 
   return (
-    <ThirdPartyOptIn providerName="video">
+    <ThirdPartyOptIn providerName={providerName}>
       {({consentedHere}) => (
         <ReactPlayer className={styles.embedPlayer}
                      key={keyFromConfiguration(configuration)}

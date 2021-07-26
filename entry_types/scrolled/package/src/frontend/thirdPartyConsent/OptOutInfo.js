@@ -1,11 +1,9 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
-import {ThirdPartyConsentContext} from './ThirdPartyConsentProvider';
+import {useConsentGiven} from './useConsentGiven';
 import {useTheme} from '../../entryState';
 import {useI18n} from '../i18n';
-import {useContentElementEditorState} from 'pageflow-scrolled/frontend';
-import {useIsStaticPreview} from '../useScrollPositionLifecycle';
 
 import styles from './OptOutInfo.module.css';
 import InfoIcon from '../icons/information.svg'
@@ -31,15 +29,11 @@ export function OptOutInfo({
   contentElementPosition
 }) {
   const {t} = useI18n();
-  const {isEditable} = useContentElementEditorState();
-  const isStaticPreview = useIsStaticPreview();
-  const {consents} = useContext(ThirdPartyConsentContext);
   const theme = useTheme();
   const optOutUrl = theme.options.thirdPartyConsent?.optOutUrl;
+  const [consentGiven] = useConsentGiven(providerName);
 
-  if (!consents ||
-      !optOutUrl ||
-      (!isEditable && !isStaticPreview && !consents[providerName])) {
+  if (!optOutUrl || !consentGiven) {
     return null;
   }
 

@@ -1,0 +1,9 @@
+en:
+  pageflow_scrolled:
+    public:
+      third_party_consent:
+        opt_in_prompt:
+          video: DELETED
+          youtube: I agree with being shown YouTube videos.
+          vimeo: I agree with being shown Vimeo videos.
+          facebook: I agree with being shown Facebook videos.
