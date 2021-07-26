@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
-import {render} from '@testing-library/react'
+import {render} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
 
 import {RootProviders} from 'frontend';
 import {useEntryStateDispatch} from 'entryState';
 import {normalizeSeed} from './normalizeSeed';
+import {Consent} from 'pageflow/frontend';
 
 /**
  * Render a component that depends on entry state. Accepts all options
@@ -42,11 +43,13 @@ import {normalizeSeed} from './normalizeSeed';
  *   function. The normalized seed constructed from the `seed` option
  *   is passed as a second parameter.
  */
-export function renderInEntry(ui, {seed, setup, wrapper, ...options} = {}) {
+export function renderInEntry(ui, {
+  seed, setup, wrapper, consent = Consent.create(), ...options
+} = {}) {
   options = {
-    wrapper: createWrapper(seed, setup, wrapper),
+    wrapper: createWrapper(seed, setup, wrapper, consent),
     ...options
-  }
+  };
 
   if (typeof ui === 'function') {
     // Evaluate `ui` inside a React component to allow using hooks in
@@ -101,13 +104,13 @@ export function renderHookInEntry(callback, {seed, setup, wrapper, ...options} =
                     });
 }
 
-function createWrapper(seed, setup, originalWrapper) {
+function createWrapper(seed, setup, originalWrapper, consent) {
   const normalizedSeed = normalizeSeed(seed);
   const OriginalWrapper = originalWrapper || function Noop({children}) { return children; };
 
   return function Wrapper({children}) {
     return (
-      <RootProviders seed={normalizedSeed}>
+      <RootProviders seed={normalizedSeed} consent={consent}>
         <Dispatcher callback={setup} seed={normalizedSeed}>
           <OriginalWrapper>
             {children}

@@ -466,7 +466,6 @@ en:
         confirm: Okay
         opt_in_prompt:
           datawrapper: I agree with being shown Datawrapper graphs.
-          video: I agree with being shown videos from external providers.
         opt_out:
           prompt: To opt out of displaying external embeds, change your settings %{link}.
           prompt_link: here

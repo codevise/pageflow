@@ -7,9 +7,9 @@ import {LocaleProvider} from './i18n';
 import {PhonePlatformProvider} from './PhonePlatformProvider';
 import {MediaMutedProvider} from './useMediaMuted';
 import {AudioFocusProvider} from './useAudioFocus';
-import {ThirdPartyConsentProvider} from './thirdPartyConsent';
+import {ConsentProvider} from './thirdPartyConsent';
 
-export function RootProviders({seed, children}) {
+export function RootProviders({seed, consent, children}) {
   return (
     <FocusOutlineProvider>
       <BrowserFeaturesProvider>
@@ -18,9 +18,9 @@ export function RootProviders({seed, children}) {
             <AudioFocusProvider>
               <EntryStateProvider seed={seed}>
                 <LocaleProvider>
-                  <ThirdPartyConsentProvider>
+                  <ConsentProvider consent={consent}>
                     {children}
-                  </ThirdPartyConsentProvider>
+                  </ConsentProvider>
                 </LocaleProvider>
               </EntryStateProvider>
             </AudioFocusProvider>
