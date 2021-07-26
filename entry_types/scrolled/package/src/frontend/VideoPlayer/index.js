@@ -5,7 +5,6 @@ import {useTextTracks} from '../useTextTracks';
 import {useMediaMuted} from '../useMediaMuted';
 import {useVideoQualitySetting} from '../useVideoQualitySetting';
 import {sources} from './sources'
-import {ViewportDependentPillarBoxes} from '../ViewportDependentPillarBoxes';
 import {VideoStructuredData} from './VideoStructuredData';
 
 /**
@@ -17,7 +16,6 @@ import {VideoStructuredData} from './VideoStructuredData';
  * @param {number} [props.defaultTextTrackFileId] - Perma id of default text track file.
  * @param {string} [props.load] - Control lazy loading. `"auto"` (default), `"poster"` or `"none"`.
  * @param {String} [props.fit] - `"contain"` (default) or `"cover"`.
- * @param {String} [props.position] - Position of parent content element.
  */
 export function VideoPlayer({videoFile, posterImageFile, ...props}) {
   const [activeQuality] = useVideoQualitySetting();
@@ -27,56 +25,29 @@ export function VideoPlayer({videoFile, posterImageFile, ...props}) {
     captionsByDefault: useMediaMuted()
   });
 
-  function renderPlayer() {
-    if (videoFile && videoFile.isReady) {
-      return (
-        <>
-          <MediaPlayer type={'video'}
-                       fit={props.fit}
-                       textTracks={textTracks}
-                       filePermaId={videoFile.permaId}
-                       sources={sources(videoFile, activeQuality)}
-                       textTracksInset={true}
-                       posterImageUrl={posterImageFile && posterImageFile.isReady ?
-                                       posterImageFile.urls.large : videoFile.urls.posterLarge}
-                       altText={videoFile.configuration.alt}
-                       objectPosition={props.fit === 'cover' ? videoFile.cropPosition : undefined}
-                       {...props} />
-          <VideoStructuredData file={videoFile} />
-        </>
-      );
-    }
-    else {
-      return null;
-    }
+  if (videoFile && videoFile.isReady) {
+    return (
+      <>
+        <MediaPlayer type={'video'}
+                     fit={props.fit}
+                     textTracks={textTracks}
+                     filePermaId={videoFile.permaId}
+                     sources={sources(videoFile, activeQuality)}
+                     textTracksInset={true}
+                     posterImageUrl={posterImageFile && posterImageFile.isReady ?
+                                     posterImageFile.urls.large : videoFile.urls.posterLarge}
+                     altText={videoFile.configuration.alt}
+                     objectPosition={props.fit === 'cover' ? videoFile.cropPosition : undefined}
+                     {...props} />
+        <VideoStructuredData file={videoFile} />
+      </>
+    );
   }
 
-  return (
-    <Positioner file={videoFile} fit={props.fit} position={props.position}>
-      {renderPlayer()}
-    </Positioner>
-  );
+  return null;
 }
 
 VideoPlayer.defaultProps = {
   fit: 'contain',
   controls: true
 };
-
-const fallbackAspectRatio = 0.5625;
-
-function Positioner({children, fit, file, position}) {
-  if (fit === 'contain') {
-    return (
-      <ViewportDependentPillarBoxes file={file}
-                                    aspectRatio={file ? undefined : fallbackAspectRatio}
-                                    position={position}
-                                    opaque>
-        {children}
-      </ViewportDependentPillarBoxes>
-    );
-  }
-  else {
-    return children;
-  }
-}

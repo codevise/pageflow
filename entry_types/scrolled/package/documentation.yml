@@ -15,13 +15,13 @@ toc:
       React components for building content elements.
     children:
       - AudioPlayer
-      - Image
       - Figure
+      - FitViewport
+      - Image
       - Text
       - ThirdPartyOptIn
       - ThirdPartyOptOutInfo
       - VideoPlayer
-      - ViewportDependentPillarBoxes
   - name: Hooks
     description: |
       React hooks to obtain entry data.

@@ -6,6 +6,7 @@ import {
   Figure,
   MediaInteractionTracking,
   VideoPlayerControls,
+  FitViewport,
   useContentElementEditorState,
   useFile,
   usePlayerState,
@@ -55,30 +56,37 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
   };
 
   return (
-    <Figure caption={configuration.caption}>
-      <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
-        <VideoPlayerControls videoFile={videoFile}
-                             defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
-                             playerState={playerState}
-                             playerActions={playerActions}
-                             configuration={configuration}
-                             sectionProps={sectionProps}
-                             onPlayerClick={onPlayerClick}>
-          <VideoPlayer load={shouldPrepare ? 'auto' :
-                             shouldLoad ? 'poster' :
-                             'none'}
-                       position={configuration.position}
-                       controls={configuration.controls}
-                       playerState={playerState}
-                       playerActions={playerActions}
-                       videoFile={videoFile}
-                       posterImageFile={posterImageFile}
-                       defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
-                       quality={'high'}
-                       playsInline={true}
-                       atmoDuringPlayback={configuration.atmoDuringPlayback} />
-        </VideoPlayerControls>
-      </MediaInteractionTracking>
-    </Figure>
+    <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
+      <FitViewport file={videoFile}
+                                    aspectRatio={videoFile ?
+                                                 undefined : fallbackAspectRatio}>
+        <Figure caption={configuration.caption}>
+          <FitViewport.Content>
+            <VideoPlayerControls videoFile={videoFile}
+                                 defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
+                                 playerState={playerState}
+                                 playerActions={playerActions}
+                                 configuration={configuration}
+                                 sectionProps={sectionProps}
+                                 onPlayerClick={onPlayerClick}>
+              <VideoPlayer load={shouldPrepare ? 'auto' :
+                                 shouldLoad ? 'poster' :
+                                 'none'}
+                           controls={configuration.controls}
+                           playerState={playerState}
+                           playerActions={playerActions}
+                           videoFile={videoFile}
+                           posterImageFile={posterImageFile}
+                           defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
+                           quality={'high'}
+                           playsInline={true}
+                           atmoDuringPlayback={configuration.atmoDuringPlayback} />
+            </VideoPlayerControls>
+          </FitViewport.Content>
+        </Figure>
+      </FitViewport>
+    </MediaInteractionTracking>
   )
 }
+
+const fallbackAspectRatio = 0.5625;
