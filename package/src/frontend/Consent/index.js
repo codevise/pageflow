@@ -16,7 +16,8 @@ export class Consent {
     this.inEditor = inEditor;
   }
 
-  registerVendor(name, {displayName, description, paradigm, cookieName, cookieKey}) {
+  registerVendor(name, {displayName, description, paradigm,
+                        cookieName, cookieKey, cookieDomain}) {
     if (this.vendorRegistrationClosed) {
       throw new Error(`Vendor ${name} has been registered after ` +
                       'registration has been closed.');
@@ -37,7 +38,9 @@ export class Consent {
       name,
       paradigm,
       cookieName: cookieName || 'pageflow_consent',
-      cookieKey});
+      cookieKey,
+      cookieDomain
+    });
   }
 
   closeVendorRegistration() {

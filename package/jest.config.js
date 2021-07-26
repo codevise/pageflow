@@ -18,5 +18,7 @@ module.exports = {
 
     ...moduleNameMapper
   },
-  transform
+  transform,
+
+  testURL: 'https://story.example.com'
 };

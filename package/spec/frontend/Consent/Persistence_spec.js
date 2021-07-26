@@ -77,6 +77,41 @@ describe('storing consent for all vendors', () => {
       {x_y: true}
     );
   });
+
+  describe('for vendors with cookie domain', () => {
+    it('does not write to cookie if domain does not match hostname', () => {
+      // location.hostname is set to story.example.com via testURL in jest.config.js
+
+      const cookies = fakeCookies();
+      const vendors = [{name: 'xyAnalytics',
+                        cookieName: 'tracking',
+                        cookieDomain: 'other.example.com'}];
+      const persistence = new Persistence({cookies});
+
+      persistence.update(vendors[0], true);
+
+      expect(cookies.getItem('tracking')).not.toBeDefined();
+    });
+
+    it('writes to cookie for domain if domain matches hostname', () => {
+      // location.hostname is set to story.example.com via testURL in jest.config.js
+
+      const cookies = fakeCookies();
+      const vendors = [{name: 'xyAnalytics',
+                        cookieName: 'tracking',
+                        cookieDomain: 'example.com'}];
+      const persistence = new Persistence({cookies});
+
+      jest.spyOn(cookies, 'setItem');
+      persistence.update(vendors[0], true);
+
+      expect(cookies.setItem).toHaveBeenCalledWith('tracking',
+                                                   expect.anything(),
+                                                   null,
+                                                   '/',
+                                                   'example.com');
+    });
+  });
 });
 
 describe('reading consent', () => {
