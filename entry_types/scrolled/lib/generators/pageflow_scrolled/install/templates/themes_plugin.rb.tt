@@ -6,18 +6,19 @@ class ScrolledThemesPlugin
                            stylesheet_packs: ['fonts/sourceSansPro'],
                            font_family: {
                              entry: '"Source Sans Pro", sans-serif',
-                             navigation: '"Source Sans Pro", sans-serif'
+                             widget: '"Source Sans Pro", sans-serif'
                            },
                            colors: {
                              accent: '#e10028',
-                             navigation: {
+                             widget: {
                                surface: '#fff',
                                on_surface: '#000',
-                               primary_on_surface: '#00375a',
-                               secondary_on_surface: '#c2c2c2',
+                               primary: '#00375a',
+                               on_primary: '#fff',
+                               secondary: '#c2c2c2',
+                               on_seconday: '#000',
                                background: 'rgba(255, 255, 255, 0.95)',
-                               on_background: '#000',
-                               primary_on_background: '#00375a'
+                               on_background: '#000'
                              }
                            },
                            logo_alt_text: 'Pageflow',
