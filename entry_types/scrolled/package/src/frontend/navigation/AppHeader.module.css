@@ -1,5 +1,5 @@
 .navigationBar {
-  font-family: var(--theme-navigation-font-family);
+  font-family: var(--theme-widget-font-family);
   position: fixed;
   top: -50px;
   transition: top .15s;
@@ -17,8 +17,8 @@
 .navigationBarContentWrapper {
   position: relative;
   z-index: 2;
-  background-color: var(--theme-navigation-surface-color);
-  color: var(--theme-navigation-on-surface-color);
+  background-color: var(--theme-widget-surface-color);
+  color: var(--theme-widget-on-surface-color);
   height: 50px;
 }
 
@@ -52,12 +52,12 @@
   cursor: pointer;
   width: 40px;
   height: 50px;
-  fill: var(--theme-navigation-secondary-on-surface-color);
+  fill: var(--theme-widget-secondary-color);
 }
 
 div:focus-within > .contextIcon,
 .contextIcon:hover {
-  fill: var(--theme-navigation-primary-on-surface-color);
+  fill: var(--theme-widget-primary-color);
 }
 
 .logo {
@@ -125,7 +125,7 @@ div:focus-within > .contextIcon,
     position: fixed;
     top: 60px;
     left: 0px;
-    background: var(--theme-navigation-background-color);
+    background: var(--theme-widget-background-color);
     width: 100vw;
     height: calc(100vh - 60px);
     overscroll-behavior: contain;
@@ -168,7 +168,7 @@ div:focus-within > .contextIcon,
 
   .chapterListItem:hover::before,
   .chapterListItem:hover::after {
-    border-top: 1px solid var(--theme-navigation-primary-on-background-color);
+    border-top: 1px solid var(--theme-widget-primary-color);
     width: 80%;
     margin: 0 10%;
   }
