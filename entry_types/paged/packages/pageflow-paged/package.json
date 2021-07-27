@@ -10,12 +10,12 @@
     "pageflow": "15.1.0"
   },
   "devDependencies": {
-    "babel-jest": "^24.9.0",
+    "babel-jest": "^27.0.6",
     "eslint": "^6.7.1",
     "eslint-import-resolver-jest": "^3.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.0.4",
-    "jest": "^24.9.0"
+    "jest": "^27.0.6"
   },
   "scripts": {
     "test": "jest",

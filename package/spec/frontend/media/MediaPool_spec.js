@@ -142,7 +142,7 @@ describe('MediaPool', function() {
       expect(pool.allocatedPlayers[MediaType.VIDEO].length).toBe(0);
     });
 
-    it('blesses all the players with the given mute value', done => {
+    it('blesses all the players with the given mute value', () => {
       let pool = new MediaPool();
       pool.blessAll(false);
 
@@ -159,11 +159,9 @@ describe('MediaPool', function() {
         let type = MediaType[key];
         pool.allPlayersForType(type).forEach((player) => {
           expect(player.muted()).toBe(true);
-          done();
         });
       });
     });
-
   });
 
 });
