@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useConsentGiven} from './useConsentGiven';
+import {useConsentGiven} from './hooks';
 import {useI18n} from '../i18n';
 
 import styles from './OptIn.module.css';

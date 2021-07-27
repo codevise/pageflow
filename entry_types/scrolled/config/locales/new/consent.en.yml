@@ -7,3 +7,15 @@ en:
           youtube: I agree with being shown YouTube videos.
           vimeo: I agree with being shown Vimeo videos.
           facebook: I agree with being shown Facebook videos.
+      consent_accept_all: Accept all and close
+      consent_configure: More Information
+      consent_deny_all: Deny
+      consent_expand_vendor: More information
+      consent_no_vendors: Currently not using any third party integrations.
+      consent_prompt_html: |-
+        This website uses third party technologies.
+        We are asking your permission to use these technologies.
+        You can always change or withdraw your consent later via our
+        <a href="%{privacyLinkUrl}" target="_blank">privacy policy</a> page.
+      consent_save: Save selection
+      consent_settings: Privacy Settings

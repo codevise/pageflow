@@ -1,0 +1,136 @@
+.bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 10;
+  padding: 10px 20px;
+  font-family: var(--theme-widget-font-family);
+  font-size: 15px;
+  background-color: var(--theme-widget-surface-color);
+  color: var(--theme-widget-on-surface-color);
+}
+
+.text {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.text a {
+  color: var(--theme-accent-color);
+}
+
+.button {
+  border: none;
+  border-radius: 3px;
+  margin: 10px 5px 5px;
+  padding: 10px 15px;
+  font: inherit;
+  cursor: pointer;
+  background-color: var(--theme-widget-secondary-color);
+}
+
+.acceptAllButton {
+  composes: button;
+  background-color: var(--theme-widget-primary-color);
+  color: var(--theme-widget-on-primary-color);
+}
+
+.saveButton {
+  composes: button;
+}
+
+.configureButton {
+  composes: button;
+  margin-left: 0;
+}
+
+.configureButton svg {
+  fill: currentColor;
+  margin-right: 6px;
+  margin-bottom: 1px;
+  vertical-align: bottom;
+}
+
+.vendorsBox h3 {
+  margin: 0.5em 0;
+  font-size: 1em;
+}
+
+.vendorList {
+  overflow: auto;
+  max-height: 40vh;
+  padding-right: 5px;
+  margin: 5px 0;
+}
+
+.vendor {
+  position: relative;
+  margin-bottom: 5px;
+  padding: 8px 0;
+  min-height: 20px;
+}
+
+.vendor p {
+  font-size: 13px;
+}
+
+.vendor a {
+  color: inherit;
+}
+
+.expandVendor {
+  border: none;
+  background: transparent;
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  padding: 0 6px;
+  cursor: pointer;
+}
+
+.expandVendor svg {
+  fill: currentColor;
+  display: block;
+}
+
+.expandVendor:hover svg,
+.expandVendor:focus svg,
+.expandVendor:active svg {
+  fill: var(--theme-widget-primary-color);
+}
+
+@media (max-width: 780px) {
+  .button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+  }
+}
+
+@media (min-width: 781px) {
+  .vendorsBox {
+    position: absolute;
+    bottom: 100%;
+    right: 5px;
+    margin-bottom: 5px;
+    max-width: 400px;
+    width: 90%;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    background-color: inherit;
+    color: inherit;
+    border-radius: 5px;
+  }
+
+  .saveButton {
+    float: right;
+  }
+
+  .decisionButtons {
+    float: right;
+    display: inline-block;
+    white-space: nowrap;
+  }
+}

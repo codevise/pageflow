@@ -13,6 +13,44 @@ export function ConsentProvider({consent, children}) {
   );
 };
 
+export function useConsentRequested() {
+  const consent = useContext(ConsentContext);
+  const [request, setRequest] = useState({});
+
+  useIsomorphicLayoutEffect(() => {
+    let unmounted = false;
+
+    (async () => {
+      const {vendors, acceptAll, denyAll, save} = await consent.requested();
+
+      if (!unmounted) {
+        setRequest({
+          vendors,
+
+          acceptAll() {
+            acceptAll();
+            setRequest({});
+          },
+
+          denyAll() {
+            denyAll();
+            setRequest({});
+          },
+
+          save(decisions) {
+            save(decisions);
+            setRequest({});
+          }
+        });
+      }
+    })();
+
+    return () => unmounted = true;
+  }, [consent]);
+
+  return request;
+}
+
 export function useConsentGiven(vendorName) {
   const consent = useContext(ConsentContext);
   const {isEditable} = useContentElementEditorState();
