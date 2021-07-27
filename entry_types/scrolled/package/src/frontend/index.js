@@ -15,7 +15,7 @@ import styles from './foregroundBoxes/GradientBox.module.css';
 import {RootProviders} from './RootProviders';
 import {loadInlineEditingComponents} from './inlineEditing';
 import {loadDashUnlessHlsSupported} from './dash';
-import {registerConsentVendors} from './thirdPartyConsent';
+import {registerConsentVendors, ConsentBar} from './thirdPartyConsent';
 
 import {browser, consent} from 'pageflow/frontend';
 import {api} from './api';
@@ -106,6 +106,7 @@ function render(seed) {
 export function Root({seed}) {
   return (
     <RootProviders seed={seed} consent={consent}>
+      <ConsentBar />
       <AppHeader />
       <Entry />
     </RootProviders>

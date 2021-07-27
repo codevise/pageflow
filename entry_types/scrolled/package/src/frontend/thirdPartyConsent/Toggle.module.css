@@ -1,0 +1,20 @@
+.toggle {
+  border: none;
+  background: transparent;
+  padding: 0;
+  position: absolute;
+  top: 3px;
+  right: 40px;
+  cursor: pointer;
+}
+
+.toggle svg {
+  display: block;
+  fill: var(--theme-widget-on-surface-color);
+  color: var(--theme-widget-surface-color);
+}
+
+.toggle[aria-checked=true] svg {
+  fill: var(--theme-widget-primary-color);
+  color: var(--theme-widget-on-primary-color);
+}

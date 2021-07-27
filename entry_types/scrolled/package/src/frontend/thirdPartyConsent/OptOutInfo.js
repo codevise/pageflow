@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {useConsentGiven} from './useConsentGiven';
+import {useConsentGiven} from './hooks';
 import {useTheme} from '../../entryState';
 import {useI18n} from '../i18n';
 
