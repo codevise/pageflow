@@ -34,44 +34,43 @@ import WhatsAppIcon from '../frontend/icons/social/whatsApp.svg';
 export function useShareProviders({isPhonePlatform}) {
   const config = useEntryStateConfig();
   const entryMetadata = useEntryMetadata();
-
-  const shareProviders = entryMetadata ? entryMetadata.shareProviders : {};
-
+  const shareProviders = entryMetadata?.shareProviders || {};
   const urlTemplates = config.shareUrlTemplates;
-  const sharing = {
-    email: {
-      icon: EmailIcon,
-      name: 'Mail',
-      url: urlTemplates.email
-    },
-    facebook: {
-      icon: FacebookIcon,
-      name: 'Facebook',
-      url: urlTemplates.facebook
-    },
-    linked_in: {
-      icon: LinkedInIcon,
-      name: 'LinkedIn',
-      url: urlTemplates.linked_in
-    },
-    telegram: {
-      icon: TelegramIcon,
-      name: 'Telegram',
-      url: urlTemplates.telegram
-    },
-    twitter: {
-      icon: TwitterIcon,
-      name: 'Twitter',
-      url: urlTemplates.twitter
-    },
-    whats_app: {
-      icon: WhatsAppIcon,
-      name: 'WhatsApp',
-      url: urlTemplates.whats_app
-    }
-  };
 
   return useMemo(() => {
+    const sharing = {
+      email: {
+        icon: EmailIcon,
+        name: 'Mail',
+        url: urlTemplates.email
+      },
+      facebook: {
+        icon: FacebookIcon,
+        name: 'Facebook',
+        url: urlTemplates.facebook
+      },
+      linked_in: {
+        icon: LinkedInIcon,
+        name: 'LinkedIn',
+        url: urlTemplates.linked_in
+      },
+      telegram: {
+        icon: TelegramIcon,
+        name: 'Telegram',
+        url: urlTemplates.telegram
+      },
+      twitter: {
+        icon: TwitterIcon,
+        name: 'Twitter',
+        url: urlTemplates.twitter
+      },
+      whats_app: {
+        icon: WhatsAppIcon,
+        name: 'WhatsApp',
+        url: urlTemplates.whats_app
+      }
+    };
+
     return activeShareProviders(shareProviders, isPhonePlatform).map((provider) => {
       const config = sharing[provider];
       return ({
@@ -80,7 +79,7 @@ export function useShareProviders({isPhonePlatform}) {
         url: config.url
       })
     })
-  }, [shareProviders, isPhonePlatform]);
+  }, [shareProviders, isPhonePlatform, urlTemplates]);
 }
 
 function activeShareProviders(shareProvidersConfig, isPhonePlatform) {
