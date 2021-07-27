@@ -22,7 +22,7 @@ module.exports = {
 
   transform: {
     '^.+\\.jst$': resolve('./transformers/jst'),
-    '^.+\\.jsx?$': resolve('./transformers/upwardBabel'),
+    '^.+\\.jsx?$': ['babel-jest', {rootMode: "upward"}],
     '^.+\\.module.css$': 'jest-css-modules-processor'
   }
 }

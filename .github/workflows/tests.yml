@@ -91,10 +91,10 @@ jobs:
       with:
         ruby-version: 2.6
 
-    - name: Use Node.js 10.23
+    - name: Use Node.js 14
       uses: actions/setup-node@v1
       with:
-        node-version: 10.23
+        node-version: 14
 
     # Dependencies
 
@@ -162,10 +162,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    - name: Set up Node.js 10.23
+    - name: Set up Node.js 14
       uses: actions/setup-node@v1
       with:
-        node-version: 10.23
+        node-version: 14
 
     - name: Yarn install
       run: |

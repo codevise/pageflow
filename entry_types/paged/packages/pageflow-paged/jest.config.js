@@ -9,6 +9,7 @@ module.exports = {
     pageflow: {},
   },
   setupFilesAfterEnv: ["jest-sinon", "<rootDir>/spec/support/jest/jquery-matchers"],
+  testEnvironment: 'jsdom',
   testMatch: ["<rootDir>/spec/**/*-spec.js"],
   modulePaths: ["<rootDir>/src"],
   moduleNameMapper: {
