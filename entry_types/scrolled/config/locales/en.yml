@@ -121,15 +121,9 @@ en:
             initial_slider_position:
               inline_help: In case the divider shouldn't be in the middle at the start, its start position can be set here.
               label: Divider start position
-            slider:
-              inline_help: Shows/hides visible slider at divider line.
-              label: Show Slider
             slider_color:
               inline_help: You can configure slider color (incl. slider handle) freely. Make sure that the slider can be seen clearly on every position over the entire Before/After area.
               label: Slider Color
-            slider_handle:
-              inline_help: Activates/deactivates slider handle.
-              label: Show Slider Handle
           name: Before/After
           tabs:
             general: Before/After

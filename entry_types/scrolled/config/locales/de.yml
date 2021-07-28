@@ -121,15 +121,9 @@ de:
             initial_slider_position:
               inline_help: Falls die Trennlinie zu Beginn nicht in der Mitte des Bildes liegen soll, lässt sich ihre Startposition hier voreinstellen.
               label: Trennlinien-Startposition
-            slider:
-              inline_help: Zeigt/versteckt den sichtbaren Schieberegler.
-              label: Schieberegler sichtbar
             slider_color:
               inline_help: Farbe des Schiebereglers inklusive Griff kann frei konfiguriert werden. Achte auf gute Sichtbarkeit des Reglers über den gesamten Vorher/Nachher-Bereich.
               label: Schieberegler-Farbe
-            slider_handle:
-              inline_help: Aktiviert/deaktiviert den Griff des Schiebereglers.
-              label: Schieberegler-Griff sichtbar
           name: Vorher/Nachher
           tabs:
             general: Vorher/Nachher
