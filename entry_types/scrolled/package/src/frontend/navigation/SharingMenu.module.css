@@ -5,7 +5,7 @@
 }
 
 :global(header .share svg) {
-  fill: var(--theme-navigation-primary-on-surface-color);
+  fill: var(--theme-widget-primary-color);
 }
 
 :global(header .share:hover svg) {
@@ -32,7 +32,7 @@
 
 .shareLink {
   position: relative;
-  color: var(--theme-navigation-primary-on-surface-color);
+  color: var(--theme-widget-primary-color);
   text-decoration: none;
 }
 

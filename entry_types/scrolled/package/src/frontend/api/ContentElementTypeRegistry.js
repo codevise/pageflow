@@ -44,4 +44,25 @@ export class ContentElementTypeRegistry {
   getOptions(typeName) {
     return this.types[typeName];
   }
+
+  consentVendors({contentElements, t}) {
+    const vendorsByName = {};
+
+    contentElements.forEach((contentElement) => {
+      const type = this.types[contentElement.typeName];
+      const consentVendors =
+            typeof type.consentVendors === 'function' ?
+            type.consentVendors({
+              configuration: contentElement.configuration,
+              t
+            }) :
+            type.consentVendors || [];
+
+      consentVendors.forEach(vendor => {
+        vendorsByName[vendor.name] = vendor;
+      });
+    });
+
+    return Object.values(vendorsByName);
+  }
 }

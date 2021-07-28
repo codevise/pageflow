@@ -15,8 +15,10 @@ import styles from './foregroundBoxes/GradientBox.module.css';
 import {RootProviders} from './RootProviders';
 import {loadInlineEditingComponents} from './inlineEditing';
 import {loadDashUnlessHlsSupported} from './dash';
+import {registerConsentVendors, ConsentBar} from './thirdPartyConsent';
 
-import {browser} from 'pageflow/frontend';
+import {browser, consent} from 'pageflow/frontend';
+import {api} from './api';
 
 const editMode = (typeof window !== 'undefined') && window.location.pathname.indexOf('/editor/entries') === 0;
 
@@ -69,7 +71,7 @@ export {FitViewport} from './FitViewport';
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 
-export {RootProviders};
+export {RootProviders, registerConsentVendors};
 export {default as registerTemplateWidgetType} from './registerTemplateWidgetType';
 
 global.pageflowScrolledRender = async function(seed) {
@@ -80,6 +82,13 @@ global.pageflowScrolledRender = async function(seed) {
 
   if (editMode) {
     await loadInlineEditingComponents();
+  }
+  else {
+    registerConsentVendors({
+      contentElementTypes: api.contentElementTypes,
+      consent,
+      seed
+    });
   }
 
   render(seed);
@@ -97,6 +106,7 @@ function render(seed) {
 export function Root({seed}) {
   return (
     <RootProviders seed={seed}>
+      <ConsentBar />
       <AppHeader />
       <Entry />
     </RootProviders>

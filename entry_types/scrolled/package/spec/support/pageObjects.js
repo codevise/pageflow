@@ -10,9 +10,10 @@ import {act, fireEvent, queryHelpers, queries, within} from '@testing-library/re
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {simulateScrollingIntoView} from './fakeIntersectionObserver';
 
-export function renderEntry({seed} = {}) {
+export function renderEntry({seed, consent} = {}) {
   return renderInEntry(<Entry />, {
     seed,
+    consent,
     queries: {...queries, ...pageObjectQueries}
   });
 }

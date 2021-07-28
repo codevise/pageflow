@@ -24,6 +24,13 @@ export class Persistence {
 
 
   update(vendor, signal) {
+    const cookieDomain = vendor.cookieDomain;
+
+    if (cookieDomain &&
+        !window.location.hostname.match(new RegExp(`${cookieDomain}$`))) {
+      return;
+    }
+
     const content = this.cookies.getItem(vendor.cookieName);
     const flags = content ? JSON.parse(content) : {};
 
@@ -31,7 +38,7 @@ export class Persistence {
                          JSON.stringify({
                            ...flags,
                            [vendor.cookieKey || vendor.name]: signal
-                         }), null, '/');
+                         }), null, '/', cookieDomain);
   }
 
   read(vendor) {

@@ -1,6 +1,12 @@
 import React from 'react';
-import {Entry, RootProviders, setupI18n} from 'pageflow-scrolled/frontend';
-import {browser} from 'pageflow/frontend';
+import {
+  Entry,
+  RootProviders,
+  setupI18n,
+  frontend,
+  registerConsentVendors
+} from 'pageflow-scrolled/frontend';
+import {browser, Consent} from 'pageflow/frontend';
 
 import {normalizeSeed} from './normalizeSeed';
 import {storiesOf} from '@storybook/react';
@@ -54,9 +60,17 @@ export function storiesOfContentElement(module, options) {
   }
 
   exampleStories(options).forEach(({title, seed, parameters = {}}) => {
+    const consent = Consent.create();
+
+    registerConsentVendors({
+      seed,
+      consent,
+      contentElementTypes: frontend.contentElementTypes
+    })
+
     stories.add(title,
                 () =>
-                  <RootProviders seed={seed}>
+                  <RootProviders seed={seed} consent={consent}>
                     <Entry />
                   </RootProviders>,
                 {

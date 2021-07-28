@@ -1,0 +1,12 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="60 170 90 157">
+  <path
+    d="m 150.00015,296.99993 a 50,50 0 0 0 50.00004,-50.00005 50,50 0 0 0 -50.00004,-50.00004 H 50.000048 A 50,50 0 0 0 0,246.99988 50,50 0 0 0 50.000048,296.99993 Z" />
+  <circle
+    cx="-150.0002"
+    cy="-246.99979"
+    fill="currentColor"
+    r="40"
+    transform="scale(-1)" />
+  <path fill-opacity="0" stroke="currentColor" stroke-width="6"
+        d="M 87,227 50,264 34,246" />
+</svg>

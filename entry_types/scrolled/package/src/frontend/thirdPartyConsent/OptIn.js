@@ -1,8 +1,6 @@
-import React, {useState, useContext} from 'react';
-import {ThirdPartyConsentContext} from './ThirdPartyConsentProvider';
-import {useIsStaticPreview} from '../useScrollPositionLifecycle';
+import React, {useState} from 'react';
+import {useConsentGiven} from './hooks';
 import {useI18n} from '../i18n';
-import {useContentElementEditorState} from 'pageflow-scrolled/frontend';
 
 import styles from './OptIn.module.css';
 import OptInIcon from '../icons/media.svg';
@@ -24,19 +22,14 @@ export function OptIn({children, providerName}) {
   const {t} = useI18n();
   const cookieMessage =
     t(`pageflow_scrolled.public.third_party_consent.opt_in_prompt.${providerName}`);
-  const {isEditable} = useContentElementEditorState();
-  const isStaticPreview = useIsStaticPreview();
   const [consentedHere, setConsentedHere] = useState(false);
-  const {consents, giveConsent} = useContext(ThirdPartyConsentContext);
+  const [consentGiven, giveConsent] = useConsentGiven(providerName);
 
-  if (!consents ||
-      consents[providerName] ||
-      isEditable ||
-      isStaticPreview) {
+  if (consentGiven || !providerName) {
     return typeof children === 'function' ? children({consentedHere}) : children;
   }
 
-  function consent() {
+  function accept() {
     giveConsent(providerName);
     setConsentedHere(true);
   }
@@ -50,7 +43,7 @@ export function OptIn({children, providerName}) {
         {cookieMessage}
       </div>
       <div>
-        <button className={styles.optInButton} onClick={consent}>
+        <button className={styles.optInButton} onClick={accept}>
           {t('pageflow_scrolled.public.third_party_consent.confirm')}
         </button>
       </div>

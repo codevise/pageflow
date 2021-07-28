@@ -1,6 +1,6 @@
 .chapterLink {
   line-height: 42px;
-  color: var(--theme-navigation-primary-on-surface-color);
+  color: var(--theme-widget-primary-color);
   text-decoration: none;
   position: relative;
   display: block;
