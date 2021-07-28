@@ -25,7 +25,7 @@ export function OptIn({children, providerName}) {
   const [consentedHere, setConsentedHere] = useState(false);
   const [consentGiven, giveConsent] = useConsentGiven(providerName);
 
-  if (consentGiven) {
+  if (consentGiven || !providerName) {
     return typeof children === 'function' ? children({consentedHere}) : children;
   }
 
