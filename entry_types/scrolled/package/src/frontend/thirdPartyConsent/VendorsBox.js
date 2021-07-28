@@ -14,7 +14,7 @@ function reducer(state, vendorName) {
   };
 }
 
-export function VendorsBox({vendors, save}) {
+export function VendorsBox({vendors, save, defaultExpanded = false}) {
   const {t} = useI18n();
 
   const [vendorStates, dispatch] = useReducer(
@@ -33,6 +33,7 @@ export function VendorsBox({vendors, save}) {
           vendors,
           vendorStates,
           t,
+          defaultExpanded,
           onToggle: dispatch
         })}
       </div>
@@ -45,7 +46,7 @@ export function VendorsBox({vendors, save}) {
   );
 }
 
-function renderVendors({vendors, vendorStates, t, onToggle}) {
+function renderVendors({vendors, vendorStates, t, defaultExpanded, onToggle}) {
   if (!vendors.length) {
     return (
       <div className="consent_vendor_list-blank">
@@ -59,12 +60,13 @@ function renderVendors({vendors, vendorStates, t, onToggle}) {
             vendor={vendor}
             state={vendorStates[vendor.name]}
             t={t}
+            defaultExpanded={defaultExpanded}
             onToggle={onToggle} />
   );
 }
 
-function Vendor({vendor, state, onToggle, t}) {
-  const [expanded, setExpanded] = useState(false);
+function Vendor({vendor, state, onToggle, t, defaultExpanded}) {
+  const [expanded, setExpanded] = useState(defaultExpanded);
   const id = `consent-vendor-${vendor.name}`;
 
   return (
