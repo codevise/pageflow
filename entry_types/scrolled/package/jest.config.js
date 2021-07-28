@@ -16,6 +16,7 @@ module.exports = {
   testURL: 'https://story.example.com',
 
   moduleNameMapper: {
+    '^pageflow-scrolled/contentElements-frontend$': '<rootDir>/src/contentElements/frontend',
     "^pageflow-scrolled/([^/]*)$": "<rootDir>/src/$1",
 
     // Make specs run even if ignored json file is not present

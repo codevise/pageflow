@@ -71,7 +71,7 @@ export {FitViewport} from './FitViewport';
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 
-export {RootProviders};
+export {RootProviders, registerConsentVendors};
 export {default as registerTemplateWidgetType} from './registerTemplateWidgetType';
 
 global.pageflowScrolledRender = async function(seed) {
@@ -105,7 +105,7 @@ function render(seed) {
 
 export function Root({seed}) {
   return (
-    <RootProviders seed={seed} consent={consent}>
+    <RootProviders seed={seed}>
       <ConsentBar />
       <AppHeader />
       <Entry />
