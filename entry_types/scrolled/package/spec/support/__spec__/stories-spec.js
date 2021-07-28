@@ -1,9 +1,13 @@
 import {storiesOfContentElement, filePermaId, exampleStories, stubSeedFixture} from '../stories';
+import {frontend} from 'pageflow-scrolled/frontend';
+import 'pageflow-scrolled/contentElements-frontend';
 import {normalizeSeed} from '../normalizeSeed';
 
 import {storiesOf} from '@storybook/react';
 
 jest.mock('@storybook/react');
+
+frontend.contentElementTypes.register('test', {});
 
 beforeEach(() => stubSeedFixture(normalizeSeed()));
 

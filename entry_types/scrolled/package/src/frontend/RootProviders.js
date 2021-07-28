@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {consent as consentApi} from 'pageflow/frontend';
+
 import {BrowserFeaturesProvider} from './useBrowserFeature';
 import {EntryStateProvider} from '../entryState';
 import {FocusOutlineProvider} from './focusOutline';
@@ -9,7 +11,7 @@ import {MediaMutedProvider} from './useMediaMuted';
 import {AudioFocusProvider} from './useAudioFocus';
 import {ConsentProvider} from './thirdPartyConsent';
 
-export function RootProviders({seed, consent, children}) {
+export function RootProviders({seed, consent = consentApi, children}) {
   return (
     <FocusOutlineProvider>
       <BrowserFeaturesProvider>
