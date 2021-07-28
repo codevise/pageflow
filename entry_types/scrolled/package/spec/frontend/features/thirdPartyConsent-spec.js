@@ -263,6 +263,35 @@ describe('Third party consent', () => {
     });
   });
 
+  describe('opt in with missing provider', () => {
+    beforeEach(() => {
+      frontend.contentElementTypes.register('test', {
+        consentVendors: [],
+
+        component: function Component({configuration}) {
+          return (
+            <div data-testid="test-content-element">
+              <ThirdPartyOptIn providerName={null}>
+                <div>Blank slate</div>
+              </ThirdPartyOptIn>
+            </div>
+          );
+        }
+      });
+    });
+
+    it('is skipped', async () => {
+      const {getByTestId} = await renderEntry({
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      expect(getByTestId('test-content-element')).toHaveTextContent('Blank slate');
+    });
+  });
+
   describe('opt out info', () => {
     beforeEach(() => {
       frontend.contentElementTypes.register('test', {
