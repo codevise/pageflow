@@ -6,6 +6,7 @@ module.exports = {
   // https://github.com/JoinColony/eslint-import-resolver-jest/issues/55
   rootDir: require('path').resolve(__dirname),
 
+  testEnvironment: 'jsdom',
   testMatch: ["<rootDir>/spec/**/*-spec.js"],
   globals,
   setupFiles: ['<rootDir>/spec/support/matchMediaStub.js'],
@@ -23,6 +24,6 @@ module.exports = {
   },
   transform: {
     ...transform,
-    '^.+\\.svg$': 'jest-svg-transformer'
+    '^.+\\.svg$': '<rootDir>/spec/support/jest/svg-transform'
   }
 };

@@ -82,10 +82,10 @@ jobs:
       with:
         ruby-version: 2.6
 
-    - name: Set up Node.js 10.23
+    - name: Set up Node.js 14
       uses: actions/setup-node@v1
       with:
-        node-version: 10.23
+        node-version: 14
 
     # Dependencies
 
