@@ -10,9 +10,9 @@ import GearIcon from '../icons/gear.svg';
 
 import styles from './Bar.module.css';
 
-export function Bar() {
+export function Bar({defaultExpanded = false}) {
   const {vendors, acceptAll, denyAll, save} = useConsentRequested();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(defaultExpanded);
   const {t} = useI18n();
   const locale = useLocale();
   const privacyLinkUrl = useLegalInfo().privacy.url;
@@ -29,7 +29,10 @@ export function Bar() {
          </button>}
 
         {expanded &&
-         <VendorsBox vendors={vendors} save={save} t={t} />}
+         <VendorsBox vendors={vendors}
+                     save={save}
+                     t={t}
+                     defaultExpanded={defaultExpanded} />}
 
         <div className={styles.decisionButtons}>
           <button className={styles.button} onClick={denyAll}>
