@@ -68,8 +68,8 @@ function DefaultSelectionRect(props) {
       </div>
       <DropTargets accept="contentElement"
                    canDrop={({id}) => id !== props.id}
-                   onDrop={({id, at}) =>
-                     postMoveContentElementMessage({id, to: {id: props.id, at}})}/>
+                   onDrop={({id, range, at}) =>
+                     postMoveContentElementMessage({id, range, to: {id: props.id, at}})}/>
     </SelectionRect>
   )
 }

@@ -1,5 +1,5 @@
 import React, {useMemo, useState, useCallback} from 'react';
-import {createEditor, Transforms, Node} from 'slate';
+import {createEditor, Transforms, Node, Text as SlateText} from 'slate';
 import {Slate, Editable, withReact} from 'slate-react';
 
 import {Text} from '../../Text';
@@ -86,8 +86,17 @@ function isBlank(value) {
 function resetSelectionIfOutsideNextValue(editor, nextValue) {
   const nextEditor = {children: nextValue};
 
-  if (editor.selection && (!Node.has(nextEditor, editor.selection.anchor.path) ||
-                           !Node.has(nextEditor, editor.selection.focus.path))) {
+  if (editor.selection && (!hasTextAtPoint(nextEditor, editor.selection.anchor) ||
+                           !hasTextAtPoint(nextEditor, editor.selection.focus))) {
     Transforms.deselect(editor);
   }
+}
+
+function hasTextAtPoint(editor, point) {
+  if (!Node.has(editor, point.path)) {
+    return false;
+  }
+
+  const node = Node.get(editor, point.path);
+  return SlateText.isText(node) && point.offset <= node.text.length;
 }

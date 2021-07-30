@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {Editor, Transforms, Range, Path, Node} from 'slate';
 import {useSlate, ReactEditor} from 'slate-react';
+import {useDrag} from 'react-dnd';
 
 import styles from './index.module.css';
 
@@ -66,34 +67,47 @@ export function Selection(props) {
     updateRect(editor, start, end, outerRef.current, ref.current, innerRef.current);
   });
 
+  const [, drag] = useDrag({
+    item: {type: 'contentElement', id: props.contentElementId},
+    begin: () => ({
+      type: 'contentElement',
+      id: props.contentElementId,
+      range: [
+        boundsRef.current.start,
+        boundsRef.current.end + 1
+      ]
+    })
+  });
+
   return (
     <div ref={outerRef}>
       <div ref={ref} className={styles.selection}>
         <SelectionRect selected={true}
+                       drag={drag}
                        scrollPoint={isContentElementSelected}
                        insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
                        onInsertButtonClick={at => {
-                           if ((at === 'before' &&boundsRef.current.start === 0) ||
-                               (at === 'after' && !Node.has(editor, [boundsRef.current.end + 1]))) {
-                             postInsertContentElementMessage({
-                               id: props.contentElementId,
-                               at
-                             });
-                           }
-                           else {
-                             postInsertContentElementMessage({
-                               id: props.contentElementId,
-                               at: 'split',
-                               splitPoint: at === 'before' ?
-                                           boundsRef.current.start :
-                                           boundsRef.current.end + 1
-                             });
-                           }
-                         }}
+                         if ((at === 'before' &&boundsRef.current.start === 0) ||
+                             (at === 'after' && !Node.has(editor, [boundsRef.current.end + 1]))) {
+                           postInsertContentElementMessage({
+                             id: props.contentElementId,
+                             at
+                           });
+                         }
+                         else {
+                           postInsertContentElementMessage({
+                             id: props.contentElementId,
+                             at: 'split',
+                             splitPoint: at === 'before' ?
+                                         boundsRef.current.start :
+                                         boundsRef.current.end + 1
+                           });
+                         }
+                       }}
                        toolbarButtons={toolbarButtons(t).map(button => ({
-                           ...button,
-                           active: isBlockActive(editor, button.name)
-                         }))}
+                         ...button,
+                         active: isBlockActive(editor, button.name)
+                       }))}
                        onToolbarButtonClick={name => toggleBlock(editor, name)}>
           <div ref={innerRef} />
         </SelectionRect>

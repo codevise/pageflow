@@ -27,10 +27,11 @@ export function DropTargets({contentElementId}) {
 }
 
 function renderDropTargets(targets, contentElementId) {
-  function handleDrop(itemId, index) {
+  function handleDrop(item, index) {
     if (index === 0) {
       postMoveContentElementMessage({
-        id: itemId,
+        id: item.id,
+        range: item.range,
         to: {
           at: 'before',
           id: contentElementId
@@ -39,7 +40,8 @@ function renderDropTargets(targets, contentElementId) {
     }
     else if (index === targets.length - 1) {
       postMoveContentElementMessage({
-        id: itemId,
+        id: item.id,
+        range: item.range,
         to: {
           at: 'after',
           id: contentElementId
@@ -48,7 +50,8 @@ function renderDropTargets(targets, contentElementId) {
     }
     else {
       postMoveContentElementMessage({
-        id: itemId,
+        id: item.id,
+        range: item.range,
         to: {
           at: 'split',
           id: contentElementId,
@@ -61,7 +64,7 @@ function renderDropTargets(targets, contentElementId) {
   return targets.map((target, index) =>
     <DropTarget {...target}
                 key={index}
-                onDrop={itemId => handleDrop(itemId, index)} />
+                onDrop={item => handleDrop(item, index)} />
   );
 }
 
@@ -71,7 +74,7 @@ function DropTarget({top, height, indicatorTop, onDrop}) {
     collect: monitor => ({
       isOver: monitor.isOver()
     }),
-    drop: item => onDrop(item.id)
+    drop: item => onDrop(item)
   });
 
   return (

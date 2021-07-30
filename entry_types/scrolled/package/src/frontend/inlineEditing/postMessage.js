@@ -8,11 +8,11 @@ export function postInsertContentElementMessage({id, at, splitPoint}) {
   );
 }
 
-export function postMoveContentElementMessage({id, to}) {
+export function postMoveContentElementMessage({id, range, to}) {
   window.parent.postMessage(
     {
       type: 'MOVE_CONTENT_ELEMENT',
-      payload: {id, to}
+      payload: {id, range, to}
     },
     window.location.origin
   );

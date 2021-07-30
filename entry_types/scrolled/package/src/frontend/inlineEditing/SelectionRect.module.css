@@ -132,6 +132,7 @@
   visibility: hidden;
   padding: 10px;
   cursor: move;
+  pointer-events: auto;
 }
 
 .selected .dragHandle {

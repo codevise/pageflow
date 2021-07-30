@@ -23,6 +23,7 @@ export function Batch(entry, section) {
 
   return {
     getAdjacent,
+    getLength,
     split,
     maybeMerge,
     insertBefore,
@@ -41,6 +42,12 @@ export function Batch(entry, section) {
       contentElements[index - 1],
       contentElements[index + 1]
     ];
+  }
+
+  function getLength(contentElement) {
+    return contentElement.getType().getLength ?
+           contentElement.getType().getLength(getCurrentConfiguration(contentElement)) :
+           0;
   }
 
   // Higher level transformations based on the more low level
@@ -129,6 +136,8 @@ export function Batch(entry, section) {
     if (before.isNew() && !after.isNew()) {
       remove(before);
       markForUpdate(after, mergedConfiguration);
+
+      return after;
     }
     else {
       markForUpdate(before, mergedConfiguration);
@@ -137,6 +146,8 @@ export function Batch(entry, section) {
       if (!after.isNew()) {
         markForDeletion(after);
       }
+
+      return before;
     }
   }
 
@@ -152,7 +163,13 @@ export function Batch(entry, section) {
 
   function markForUpdate(contentElement, configuration) {
     isDirty = true;
-    changedConfigurations[contentElement.id] = configuration;
+
+    if (contentElement.isNew()) {
+      contentElement.configuration.set(configuration);
+    }
+    else {
+      changedConfigurations[contentElement.id] = configuration;
+    }
   }
 
   function markForDeletion(contentElement) {
