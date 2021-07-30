@@ -1,0 +1,86 @@
+.indicator {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s linear, transform 0.2s ease;
+}
+
+.visible {
+  opacity: 1;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.arrowLeft {
+  composes: arrow;
+  margin-left: -50px;
+}
+
+.arrowRight {
+  composes: arrow;
+  margin-left: 50px;
+}
+
+.arrowLeft div {
+  animation: nudgeLeft 4s infinite ease;
+}
+
+.arrowRight div {
+  animation: nudgeRight 4s infinite ease;
+}
+
+.text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 30px;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+  margin-top: -3px;
+  margin-left: 3px;
+}
+
+.indicator svg {
+  transition: transform 0.2s ease;
+}
+
+*:hover > .indicator svg {
+  transform: scale(1.2);
+}
+
+.arrow div::before {
+  content: ' ';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 60%);
+  z-index: -1;
+}
+
+@keyframes nudgeLeft {
+  0% {
+  }
+  50% {
+    transform: translateX(-10px);
+  }
+  100% {
+  }
+}
+
+@keyframes nudgeRight {
+  0% {
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  100% {
+  }
+}
