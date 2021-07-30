@@ -59,16 +59,20 @@ export const ScrolledEntry = Entry.extend({
       insertContentElement(this,
                            this.contentElements.get(id),
                            attributes,
-                           {id, at, splitPoint});
+                           {at, splitPoint});
     }
   },
 
-  moveContentElement(movedContentElementId, {id, at, splitPoint}) {
-    moveContentElement(this,
-                       this.contentElements.get(movedContentElementId),
-                       this.contentElements.get(id),
-                       at,
-                       splitPoint);
+  moveContentElement(
+    {id: movedId, range: movedRange},
+    {id, at, splitPoint}
+  ) {
+    moveContentElement(this, this.contentElements.get(movedId), {
+      range: movedRange,
+      sibling: this.contentElements.get(id),
+      at,
+      splitPoint
+    });
   },
 
   deleteContentElement(id) {

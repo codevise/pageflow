@@ -10,14 +10,16 @@ editor.contentElementTypes.register('textBlock', {
   },
 
   split(configuration, insertIndex) {
+    const value = configuration.value || [{type: 'paragraph', children: [{text: ''}]}];
+
     return  [
       {
         ...configuration,
-        value: configuration.value.slice(0, insertIndex),
+        value: value.slice(0, insertIndex),
       },
       {
         ...configuration,
-        value: configuration.value.slice(insertIndex),
+        value: value.slice(insertIndex),
       }
     ];
   },
@@ -33,6 +35,10 @@ editor.contentElementTypes.register('textBlock', {
       // `value` is falsy.
       value: value.length ? value : undefined,
     };
+  },
+
+  getLength(configuration) {
+    return configuration.value?.length || 0;
   },
 
   handleDestroy(contentElement) {
