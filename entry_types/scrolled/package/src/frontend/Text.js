@@ -7,7 +7,8 @@ import styles from './Text.module.css';
  * Render some text using the default typography scale.
  *
  * @param {Object} props
- * @param {string} props.scaleCategory - One of the styles `'h1'`, `'h2'`, `'body'`, `'caption'`.
+ * @param {string} props.scaleCategory -
+ *   One of the styles `'h1'`, `'h1-medium'`, `'h2'`, `'h3'`, `'body'`, `'caption'`.
  * @param {string} [props.inline] - Render a span instread of a div.
  * @param {string} props.children - Nodes to render with specified typography.
  */
@@ -20,5 +21,5 @@ export function Text({inline, scaleCategory, children}) {
 Text.propTypes = {
   children: PropTypes.node.isRequired,
   inline: PropTypes.bool,
-  scaleCategory: PropTypes.oneOf(['h1', 'h2', 'body', 'caption']),
+  scaleCategory: PropTypes.oneOf(['h1', 'h1-medium', 'h2', 'body', 'caption']),
 }
