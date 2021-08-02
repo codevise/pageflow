@@ -1,6 +1,15 @@
 import '../frontend';
 import {storiesOfContentElement, filePermaId} from 'pageflow-scrolled/spec/support/stories';
 
+import MockDate from 'mockdate';
+import inPercy from '@percy-io/in-percy';
+
+if (inPercy()) {
+  // Freeze time to prevent autocruise panorama movement from causing
+  // visual diffs in Percy.
+  MockDate.set('2021-08-02');
+}
+
 storiesOfContentElement(module, {
   typeName: 'vrImage',
   baseConfiguration: {

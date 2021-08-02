@@ -1,4 +1,5 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
+import {useAutoCruising} from './useAutoCruising';
 
 import {
   useContentElementEditorState,
@@ -10,16 +11,8 @@ import {
 } from 'pageflow-scrolled/frontend';
 
 export function VrImage({configuration}) {
-  const {shouldLoad} = useContentElementLifecycle({
-    onActivate() {
-      if (viewerRef.current) {
-        viewerRef.current.lookAt({yaw: viewerRef.current.getYaw() + 20}, 1000);
-      }
-    }
-  });
-
+  const {shouldLoad} = useContentElementLifecycle();
   const {isEditable, isSelected} = useContentElementEditorState();
-  const viewerRef = useRef();
 
   const imageFile = useFile({collectionName: 'imageFiles', permaId: configuration.image});
 
@@ -29,7 +22,7 @@ export function VrImage({configuration}) {
         aspectRatio={configuration.position === 'full' ? 0.5 : 0.75}>
         <Figure caption={configuration.caption}>
           <FitViewport.Content>
-            {renderLazyPanorama(configuration, imageFile, shouldLoad, viewerRef)}
+            {renderLazyPanorama(configuration, imageFile, shouldLoad)}
           </FitViewport.Content>
         </Figure>
       </FitViewport>
@@ -37,13 +30,40 @@ export function VrImage({configuration}) {
   );
 }
 
-function renderLazyPanorama(configuration, imageFile, shouldLoad, viewerRef) {
+function renderLazyPanorama(configuration, imageFile, shouldLoad) {
   if (shouldLoad && imageFile && imageFile.isReady) {
-    return (
-      <Panorama imageFile={imageFile}
-                initialYaw={configuration.initialYaw}
-                initialPitch={configuration.initialPitch}
-                viewerRef={viewerRef} />
-    );
+    return (<AutoCruisingPanorama imageFile={imageFile}
+                                  initialYaw={configuration.initialYaw}
+                                  initialPitch={configuration.initialPitch} />)
   }
+}
+
+function AutoCruisingPanorama({
+  imageFile, initialYaw, initialPitch
+}) {
+  const viewerRef = useRef();
+
+  const [hidePanoramaIndicator, setHidePanoramaIndicator] = useState(false);
+  const [startAutoCruising, stopAutoCruising] = useAutoCruising({
+    viewerRef,
+    onCancel: () => setHidePanoramaIndicator(true)
+  });
+
+  useContentElementLifecycle({
+    onActivate() {
+      if (viewerRef.current) {
+        startAutoCruising();
+      }
+    }
+  });
+
+  return (
+    <Panorama imageFile={imageFile}
+              initialYaw={initialYaw}
+              initialPitch={initialPitch}
+              viewerRef={viewerRef}
+              hidePanoramaIndicator={hidePanoramaIndicator}
+              onReady={startAutoCruising}
+              onFullscreen={stopAutoCruising} />
+  );
 }

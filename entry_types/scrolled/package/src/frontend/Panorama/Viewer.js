@@ -4,13 +4,18 @@ import {PanoViewer} from '@egjs/view360';
 import screenfull from 'screenfull';
 
 import {useBrowserFeature} from '../useBrowserFeature';
+import {usePhonePlatform} from '../usePhonePlatform';
 import {ToggleFullscreenButton} from './ToggleFullscreenButton';
 import {Fullscreen} from './Fullscreen';
+import {PanoramaIndicator} from './PanoramaIndicator';
+import {FullscreenIndicator} from './FullscreenIndicator';
 
 import styles from './Viewer.module.css';
 import SpinnerIcon from '../icons/spinner.svg';
 
-export default function Viewer({imageFile, viewerRef, initialYaw, initialPitch}) {
+export default function Viewer({
+  imageFile, viewerRef, initialYaw, initialPitch, hidePanoramaIndicator, onReady, onFullscreen
+}) {
   const elRef = useRef();
 
   const initialYawRef = useRef(initialYaw);
@@ -20,6 +25,7 @@ export default function Viewer({imageFile, viewerRef, initialYaw, initialPitch})
 
   const [isLoading, setIsLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const isPhonePlatform = usePhonePlatform();
 
   // When toggling to fullscreen mode, this component renders to a
   // portal div in the body of the document. We do not want to recreate
@@ -54,6 +60,10 @@ export default function Viewer({imageFile, viewerRef, initialYaw, initialPitch})
       viewerRef.current.on(PanoViewer.EVENTS.READY, () => {
         viewerRef.current.updateViewportDimensions();
         setIsLoading(false);
+
+        if (onReady) {
+          onReady();
+        }
       });
     }
 
@@ -135,6 +145,10 @@ export default function Viewer({imageFile, viewerRef, initialYaw, initialPitch})
   }
 
   function enterFullscreen() {
+    if (onFullscreen) {
+      onFullscreen();
+    }
+
     if (screenfull.isEnabled) {
       screenfull.request();
     }
@@ -154,16 +168,26 @@ export default function Viewer({imageFile, viewerRef, initialYaw, initialPitch})
   return (
     <Fullscreen isFullscreen={isFullscreen}>
       <div className={styles.container}
-           onKeyDown={preventDefaultForArrowUpDown}>
+           onKeyDown={preventDefaultForArrowUpDown}
+           onClick={() => { isPhonePlatform && enterFullscreen(); }}>
         <DOMNodeContainer className={styles.full}
                           onUpdate={el => appendViewerTo(el)} />
       </div>
       <SpinnerIcon className={classNames(styles.spinner, {[styles.isLoading]: isLoading})} />
-      <div className={styles.controls}>
-        <ToggleFullscreenButton isFullscreen={isFullscreen}
-                                onEnter={enterFullscreen}
-                                onExit={exitFullscreen} />
-      </div>
+
+      {(!isPhonePlatform || isFullscreen) &&
+       <div className={styles.controls}>
+         <ToggleFullscreenButton isFullscreen={isFullscreen}
+                                 onEnter={enterFullscreen}
+                                 onExit={exitFullscreen} />
+       </div>}
+      <PanoramaIndicator visible={!isLoading &&
+                                  !isPhonePlatform &&
+                                  !isFullscreen &&
+                                  !hidePanoramaIndicator} />
+      <FullscreenIndicator visible={!isLoading &&
+                                    isPhonePlatform &&
+                                    !isFullscreen} />
     </Fullscreen>
   );
 }

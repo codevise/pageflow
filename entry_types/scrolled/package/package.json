@@ -39,6 +39,7 @@
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
+    "@percy-io/in-percy": "^0.1.11",
     "@percy/storybook": "^3.2.0",
     "@storybook/addon-viewport": "^5.3.13",
     "@storybook/react": "^5.3.9",
@@ -61,6 +62,7 @@
     "eslint-plugin-react-hooks": "1.x",
     "jest": "^27.0.6",
     "jest-svg-transformer": "^1.0.0",
+    "mockdate": "^3.0.5",
     "react-svg-loader": "^3.0.3",
     "react-test-renderer": "^16.9.0"
   },
