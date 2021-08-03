@@ -88,6 +88,69 @@ describe('Third party consent', () => {
 
       expect(vendors).toMatchObject([{name: 'someService'}]);
     });
+
+    it('allows setting custom paradigm', async () => {
+      const consent = Consent.create();
+      jest.spyOn(consent, 'registerVendor');
+
+      frontend.contentElementTypes.register('test', {
+        consentVendors() {
+          return [{
+            name: 'vendor',
+            displayName: 'Vendor',
+            paradigm: 'lazy opt-in'
+          }];
+        },
+
+        component: function Component() {
+          return (<div />);
+        }
+      });
+
+      await renderEntry({
+        consent,
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{typeName: 'test', configuration: {provider: 'someService'}}]
+        }
+      });
+
+      expect(consent.registerVendor).toHaveBeenCalledWith(
+        'vendor',
+        expect.objectContaining({paradigm: 'lazy opt-in'})
+      )
+    });
+
+    it('ignores custom paradigm if no cookieName is set', async () => {
+      const consent = Consent.create();
+      jest.spyOn(consent, 'registerVendor');
+
+      frontend.contentElementTypes.register('test', {
+        consentVendors() {
+          return [{
+            name: 'vendor',
+            displayName: 'Vendor',
+            paradigm: 'lazy opt-in'
+          }];
+        },
+
+        component: function Component() {
+          return (<div />);
+        }
+      });
+
+      await renderEntry({
+        consent,
+        seed: {
+          contentElements: [{typeName: 'test', configuration: {provider: 'someService'}}]
+        }
+      });
+
+      expect(consent.registerVendor).toHaveBeenCalledWith(
+        'vendor',
+        expect.objectContaining({paradigm: 'skip'})
+      )
+    });
   });
 
   describe('opt in', () => {
