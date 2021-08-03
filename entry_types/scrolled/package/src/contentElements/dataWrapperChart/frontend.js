@@ -11,7 +11,8 @@ frontend.contentElementTypes.register('dataWrapperChart', {
     return [{
       name: 'datawrapper',
       displayName: t(`${prefix}.consent_vendor_name`),
-      description: t(`${prefix}.consent_vendor_description`)
+      description: t(`${prefix}.consent_vendor_description`),
+      paradigm: 'lazy opt-in'
     }];
   }
 });

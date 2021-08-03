@@ -15,7 +15,8 @@ frontend.contentElementTypes.register('videoEmbed', {
       return [{
         name: provider,
         displayName: t(`${prefix}.${provider}.vendor_name`),
-        description: t(`${prefix}.${provider}.vendor_description`)
+        description: t(`${prefix}.${provider}.vendor_description`),
+        paradigm: 'lazy opt-in'
       }];
     }
 

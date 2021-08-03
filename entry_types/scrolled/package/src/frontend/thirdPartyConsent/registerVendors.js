@@ -13,7 +13,7 @@ export function registerVendors({contentElementTypes, seed, consent}) {
       consent.registerVendor(vendor.name, {
         displayName: vendor.displayName,
         description: vendor.description,
-        paradigm: options?.cookieName ? 'opt-in' : 'skip',
+        paradigm: options?.cookieName ? (vendor.paradigm || 'opt-in') : 'skip',
         cookieName: options?.cookieName,
         cookieKey: options?.cookieProviderNameMapping?.[vendor.name],
         cookieDomain: options?.cookieDomain
