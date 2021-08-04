@@ -9,6 +9,7 @@ export function ExternalLink(props) {
   const {t} = useI18n({locale: 'ui'});
   const {isEditable, isSelected} = useContentElementEditorState();
   const thumbnailImageFile = useFile({collectionName: 'imageFiles', permaId: props.thumbnail});
+  const url = ensureAbsolute(props.url);
 
   const onClick = function (event) {
     if (isEditable) {
@@ -29,7 +30,7 @@ export function ExternalLink(props) {
   function renderNewTabTooltip() {
     if (isEditable) {
       const onTooltipClick = function () {
-        window.open(props.url, '_blank');
+        window.open(url, '_blank');
         setHideTooltip(true);
       };
 
@@ -49,7 +50,7 @@ export function ExternalLink(props) {
                                [styles.invert]: props.invert,
                                [styles.layout_center]: layout === 'center'
                              })}
-       href={props.url || 'about:blank'}
+       href={url || 'about:blank'}
        onClick={onClick}
        onMouseLeave={onMouseLeave}
        target={props.open_in_new_tab ? '_blank' : '_self'}
@@ -68,4 +69,17 @@ export function ExternalLink(props) {
       {renderNewTabTooltip()}
     </a>
   );
+}
+
+ExternalLink.defaultProps = {
+  sectionProps: {}
+};
+
+function ensureAbsolute(url) {
+  if (url.match(/^(https?:)?\/\//)) {
+    return url;
+  }
+  else {
+    return `http://${url}`;
+  }
 }
