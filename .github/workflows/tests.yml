@@ -180,3 +180,14 @@ jobs:
       working-directory: ${{ matrix.package-directory }}
       run: |
         yarn test
+
+  trigger:
+    if: ${{ github.ref == 'master' && github.repository == 'codevise/pageflow' }}
+    needs: [rspec, jest]
+    steps:
+    - name: Trigger GitLab workflow
+      run: |
+        curl -X POST \
+        -F token=${{ secrets.GITLAB_WORKFLOW_TRIGGER_TOKEN }} \
+        -F ref=master \
+        https://gitlab.codevise.de/api/v4/projects/180/trigger/pipeline
