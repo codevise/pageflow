@@ -181,7 +181,7 @@ jobs:
       run: |
         yarn test
 
-  trigger:
+  trigger-edge-build:
     if: ${{ github.ref == 'master' && github.repository == 'codevise/pageflow' }}
     needs: [rspec, jest]
     runs-on: ubuntu-latest
