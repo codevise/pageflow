@@ -184,6 +184,7 @@ jobs:
   trigger:
     if: ${{ github.ref == 'master' && github.repository == 'codevise/pageflow' }}
     needs: [rspec, jest]
+    runs-on: ubuntu-latest
     steps:
     - name: Trigger GitLab workflow
       run: |
