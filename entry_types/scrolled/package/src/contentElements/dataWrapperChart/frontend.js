@@ -1,4 +1,5 @@
 import {frontend} from 'pageflow-scrolled/frontend';
+import {features} from 'pageflow/frontend'
 import {DataWrapperChart} from './DataWrapperChart';
 
 frontend.contentElementTypes.register('dataWrapperChart', {
@@ -12,7 +13,7 @@ frontend.contentElementTypes.register('dataWrapperChart', {
       name: 'datawrapper',
       displayName: t(`${prefix}.consent_vendor_name`),
       description: t(`${prefix}.consent_vendor_description`),
-      paradigm: 'lazy opt-in'
+      paradigm: features.isEnabled('datawrapper_chart_embed_opt_in') ? 'lazy opt-in' : 'skip'
     }];
   }
 });
