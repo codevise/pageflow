@@ -382,6 +382,19 @@ module PageflowScrolled
                                        })
       end
 
+      it 'renders enabled feature names' do
+        pageflow_configure do |config|
+          config.features.register('rainbows')
+        end
+        entry = create(:published_entry, type_name: 'scrolled', with_feature: 'rainbows')
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         enabledFeatureNames: include('rainbows')
+                                       })
+      end
+
       context 'i18n' do
         include_context 'fake translations'
 

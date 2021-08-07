@@ -17,7 +17,7 @@ import {loadInlineEditingComponents} from './inlineEditing';
 import {loadDashUnlessHlsSupported} from './dash';
 import {registerConsentVendors, ConsentBar} from './thirdPartyConsent';
 
-import {browser, consent} from 'pageflow/frontend';
+import {browser, consent, features} from 'pageflow/frontend';
 import {api} from './api';
 
 const editMode = (typeof window !== 'undefined') && window.location.pathname.indexOf('/editor/entries') === 0;
@@ -77,6 +77,7 @@ export {default as registerTemplateWidgetType} from './registerTemplateWidgetTyp
 global.pageflowScrolledRender = async function(seed) {
   setupI18n(seed.i18n);
 
+  features.enable('frontend', seed.config.enabledFeatureNames)
   await browser.detectFeatures();
   await loadDashUnlessHlsSupported();
 
