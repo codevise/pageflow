@@ -12,6 +12,9 @@ module PageflowScrolled
         c.file_types.register(Pageflow::BuiltInFileType.audio)
 
         c.revision_components.register(Storyline)
+
+        c.features.register('datawrapper_chart_embed_opt_in')
+        c.features.enable_by_default('datawrapper_chart_embed_opt_in')
       end
     end
   end

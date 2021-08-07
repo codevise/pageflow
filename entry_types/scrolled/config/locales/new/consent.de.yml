@@ -20,3 +20,6 @@ de:
         ändern oder widerrufen.
       consent_save: Auswahl speichern
       consent_settings: Privatsphäre-Einstellungen
+  pageflow:
+    datawrapper_chart_embed_opt_in:
+      feature_name: 'Opt-in für Datawrapper Embeds'

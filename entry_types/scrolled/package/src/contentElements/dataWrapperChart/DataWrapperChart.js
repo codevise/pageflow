@@ -9,6 +9,7 @@ import {
   Figure,
   textColorForBackgroundColor
 } from 'pageflow-scrolled/frontend';
+import {features} from 'pageflow/frontend';
 import {useIframeHeight} from './useIframeHeight';
 
 import styles from './DataWrapperChart.module.css';
@@ -39,11 +40,22 @@ export function DataWrapperChart({configuration}) {
           {shouldLoad && renderIframe(srcURL,
                                       configuration.title ||
                                       t('pageflow_scrolled.public.chart.default_title'))}
-          <ThirdPartyOptOutInfo providerName="datawrapper"
-                                contentElementPosition={configuration.position} />
         </ThirdPartyOptIn>
+        <DatawrapperOptOutInfo providerName="datawrapper"
+                               contentElementPosition={configuration.position} />
       </div>
     </Figure>
+  );
+}
+
+function DatawrapperOptOutInfo(props) {
+  if (!features.isEnabled('datawrapper_chart_embed_opt_in')) {
+    return null;
+  }
+
+  return (
+    <ThirdPartyOptOutInfo providerName="datawrapper"
+                          {...props} />
   );
 }
 

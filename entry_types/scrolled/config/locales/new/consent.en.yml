@@ -19,3 +19,6 @@ en:
         <a href="%{privacyLinkUrl}" target="_blank">privacy policy</a> page.
       consent_save: Save selection
       consent_settings: Privacy Settings
+  pageflow:
+    datawrapper_chart_embed_opt_in:
+      feature_name: 'Opt-in for Datawrapper embeds'
