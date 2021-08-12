@@ -94,6 +94,31 @@ describe('PreviewMessageController', () => {
     })).resolves.toMatchObject({type: 'SELECT', payload: {id: 1, type: 'contentElement'}});
   });
 
+  it('passes on range from selectContentElement event', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('selectContentElement', entry.contentElements.first(), {range: [1, 2]});
+    })).resolves.toMatchObject({type: 'SELECT', payload: {
+      id: 1,
+      range: [1, 2],
+      type: 'contentElement'
+    }});
+  });
+
   it('sends SELECT message to iframe on selectSection event on model', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({

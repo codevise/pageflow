@@ -25,11 +25,13 @@ export function Selection(props) {
   const innerRef = useRef()
 
   const boundsRef = useRef();
+  const lastRangeRef = useRef();
 
   const {
     setTransientState,
     select,
-    isSelected: isContentElementSelected
+    isSelected: isContentElementSelected,
+    range
   } = useContentElementEditorState();
 
   useEffect(() => {
@@ -37,6 +39,23 @@ export function Selection(props) {
 
     if (!ref.current) {
       return
+    }
+
+    if (isContentElementSelected && range && lastRangeRef.current !== range) {
+      lastRangeRef.current = range;
+
+      if (range[1] === range[0] + 1) {
+        Transforms.select(editor,
+                          Editor.point(editor, [range[0]], {edge: 'start'}));
+      }
+      else {
+        Transforms.select(editor, {
+          anchor: Editor.point(editor, [range[0]], {edge: 'start'}),
+          focus: Editor.point(editor, [range[1] - 1], {edge: 'end'}),
+        });
+      }
+
+      ReactEditor.focus(editor);
     }
 
     if (!selection) {
@@ -50,6 +69,8 @@ export function Selection(props) {
 
     if (!isContentElementSelected && boundsRef.current) {
       hideRect(ref.current);
+      boundsRef.current = null;
+      window.getSelection().removeAllRanges();
       return;
     }
 
