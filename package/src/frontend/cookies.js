@@ -5,26 +5,12 @@ export const cookies = {
     // eslint-disable-next-line no-useless-escape
     return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
   },
-  setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
-    // eslint-disable-next-line no-useless-escape
-    if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
-    var sExpires = "";
-    if (vEnd) {
-      switch (vEnd.constructor) {
-        case Number:
-          sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
-          break;
-        case String:
-          sExpires = "; expires=" + vEnd;
-          break;
-        case Date:
-          sExpires = "; expires=" + vEnd.toUTCString();
-          break;
-      }
-    }
-    document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+
+  setItem(...args) {
+    document.cookie = setItemCookieString(...args);
     return true;
   },
+
   removeItem: function (sKey, sPath, sDomain) {
     if (!this.hasItem(sKey)) { return false; }
     document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "");
@@ -42,3 +28,46 @@ export const cookies = {
     return aKeys;
   }
 };
+
+export function setItemCookieString(key, value, expiresOrOptions, path, domain, secure) {
+  if (expiresOrOptions &&
+      typeof expiresOrOptions === 'object' &&
+      expiresOrOptions.constructor !== Date) {
+    return setItemCookieStringWithOptions(key, value, expiresOrOptions);
+  }
+  else {
+    return setItemCookieStringWithOptions(key, value, {
+      expires: expiresOrOptions,
+      path,
+      domain,
+      secure
+    });
+  }
+}
+
+function setItemCookieStringWithOptions(key, value, {expires, path, domain, secure, sameSite}) {
+  let expiresPart = "";
+
+  if (expires) {
+    switch (expires.constructor) {
+      case Number:
+        expiresPart = expires === Infinity ?
+                      "; expires=Fri, 31 Dec 9999 23:59:59 GMT" :
+                      "; max-age=" + expires;
+        break;
+      case String:
+        expiresPart = "; expires=" + expires;
+        break;
+      case Date:
+        expiresPart = "; expires=" + expires.toUTCString();
+        break;
+    }
+  }
+
+  return encodeURIComponent(key) + "=" + encodeURIComponent(value) +
+         expiresPart +
+         (domain ? "; domain=" + domain : "") +
+         (path ? "; path=" + path : "") +
+         (sameSite ? "; SameSite=" + sameSite : "") +
+         (secure ? "; Secure" : "");
+}
