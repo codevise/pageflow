@@ -264,10 +264,16 @@ describe('Third party consent', () => {
       const {getByText} = within(getByTestId('test-content-element'));
       await click(getByText('Confirm'));
 
-      expect(cookies.setItem).toHaveBeenCalledWith('optIn', expect.anything(), null, '/', 'example.com');
+      expect(cookies.setItem).toHaveBeenCalledWith(
+        'optIn', expect.anything(),
+        expect.objectContaining({
+          path: '/',
+          domain: 'example.com'
+        })
+      );
     });
 
-    it('does not set cookie if cookie domain does not match but still enabled embed', async () => {
+    it('does not use domain if cookie domain does not match but still enabled embed', async () => {
       // location.hostname is set to story.example.com via testURL in jest.config.js
 
       const {getByTestId} = await renderEntry({
@@ -286,7 +292,13 @@ describe('Third party consent', () => {
       await click(getByText('Confirm'));
 
       expect(getByTestId('test-content-element')).toHaveTextContent('Data from SomeService');
-      expect(cookies.setItem).not.toHaveBeenCalled();
+      expect(cookies.setItem).toHaveBeenCalledWith(
+        'optIn', expect.anything(),
+        expect.objectContaining({
+          path: '/',
+          domain: null
+        })
+      );
     });
   });
 
