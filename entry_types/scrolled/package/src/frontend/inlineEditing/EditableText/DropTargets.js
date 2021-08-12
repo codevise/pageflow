@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import classNames from 'classnames';
-import {Node} from 'slate';
+import {Node, Range} from 'slate';
 import {useSlate, ReactEditor} from 'slate-react';
 import {useDrop} from 'react-dnd';
 
@@ -68,7 +68,7 @@ function renderDropTargets(targets, contentElementId) {
   );
 }
 
-function DropTarget({top, height, indicatorTop, onDrop}) {
+function DropTarget({display, top, height, indicatorTop, onDrop}) {
   const [{isOver}, drop] = useDrop({
     accept: 'contentElement',
     collect: monitor => ({
@@ -80,7 +80,7 @@ function DropTarget({top, height, indicatorTop, onDrop}) {
   return (
     <div ref={drop}
          className={classNames(styles.dropTarget, {[styles.isOver]: isOver})}
-         style={{top, height}}>
+         style={{display, top, height}}>
       <div className={styles.dropIndicator}
            style={{top: indicatorTop}}/>
     </div>
@@ -103,6 +103,8 @@ function measureHeights(editor, container) {
     const targetDimensions = {
       top,
       height: bottom - top,
+      display: editor.selection && Range.includes(editor.selection, [index]) ?
+               'none' : undefined,
       indicatorTop: index > 0 ?
                     lastRectBottom + (rect.top - lastRectBottom) / 2 - containerRect.top - top :
                     0
