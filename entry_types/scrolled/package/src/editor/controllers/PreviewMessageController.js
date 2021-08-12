@@ -68,15 +68,16 @@ export const PreviewMessageController = Object.extend({
           })
         );
 
-        this.listenTo(this.entry, 'selectContentElement', contentElement =>
+        this.listenTo(this.entry, 'selectContentElement', (contentElement, options) => {
           postMessage({
             type: 'SELECT',
             payload: {
               id: contentElement.id,
+              range: options?.range,
               type: 'contentElement'
             }
           })
-        );
+        });
 
         this.listenTo(this.entry, 'resetSelection', contentElement =>
           postMessage({
