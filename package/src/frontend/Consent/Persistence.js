@@ -11,34 +11,34 @@ export class Persistence {
       return sorted;
     }, {});
     Object.entries(vendorsByCookieName).forEach(([cookieName, vendors]) => {
-      this.cookies.setItem(cookieName,
-                      JSON.stringify(vendors.reduce((result, vendor) => {
-                        result[vendor.cookieKey || vendor.name] =
-                          (signal === 'accepted' ? true :
-                           signal === 'denied' ? false :
-                           signal[vendor.name]);
-                        return result;
-                      }, {})), null, '/');
+      const cookieDomain = vendors[0].cookieDomain;
+
+      this.setCookie(
+        cookieName,
+        JSON.stringify(vendors.reduce((result, vendor) => {
+          result[vendor.cookieKey || vendor.name] =
+            (signal === 'accepted' ? true :
+             signal === 'denied' ? false :
+             signal[vendor.name]);
+          return result;
+        }, {})),
+        cookieDomain
+      );
     });
   }
 
-
   update(vendor, signal) {
-    const cookieDomain = vendor.cookieDomain;
-
-    if (cookieDomain &&
-        !window.location.hostname.match(new RegExp(`${cookieDomain}$`))) {
-      return;
-    }
-
     const content = this.cookies.getItem(vendor.cookieName);
     const flags = content ? JSON.parse(content) : {};
 
-    this.cookies.setItem(vendor.cookieName,
-                         JSON.stringify({
-                           ...flags,
-                           [vendor.cookieKey || vendor.name]: signal
-                         }), null, '/', cookieDomain);
+    this.setCookie(
+      vendor.cookieName,
+      JSON.stringify({
+        ...flags,
+        [vendor.cookieKey || vendor.name]: signal
+      }),
+      vendor.cookieDomain
+    );
   }
 
   read(vendor) {
@@ -47,5 +47,25 @@ export class Persistence {
     const flag = flags[vendor.cookieKey || vendor.name];
     return flag === true ? 'accepted' :
       flag === false ? 'denied' : 'undecided';
+  }
+
+  setCookie(name, value, domain) {
+    if (domain &&
+        !window.location.hostname.match(new RegExp(`${domain}$`))) {
+      domain = null;
+    }
+
+    this.cookies.setItem(
+      name,
+      value,
+      {
+        path: '/',
+        domain,
+        expires: Infinity,
+        // Ensure cookie can be read iframe embed
+        sameSite: 'None',
+        secure: true
+      }
+    );
   }
 }

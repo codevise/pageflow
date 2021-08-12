@@ -52,7 +52,53 @@ describe('storing consent for all vendors', () => {
     );
   });
 
-  it('supports updating consent for single vendor', () => {
+  describe('for vendors with cookie domain', () => {
+    it('does not use domain if domain does not match hostname', () => {
+      // location.hostname is set to story.example.com via testURL in jest.config.js
+
+      const cookies = fakeCookies();
+      const vendors = [{name: 'xyAnalytics',
+                        cookieName: 'tracking',
+                        cookieDomain: 'other.example.com'}];
+      const persistence = new Persistence({cookies});
+
+      jest.spyOn(cookies, 'setItem');
+      persistence.store(vendors, {xyAnalytics: true});
+
+      expect(cookies.setItem).toHaveBeenCalledWith('tracking', expect.anything(), {
+        path: '/',
+        domain: null,
+        expires: Infinity,
+        sameSite: 'None',
+        secure: true
+      });
+    });
+
+    it('writes to cookie for domain if domain matches hostname', () => {
+      // location.hostname is set to story.example.com via testURL in jest.config.js
+
+      const cookies = fakeCookies();
+      const vendors = [{name: 'xyAnalytics',
+                        cookieName: 'tracking',
+                        cookieDomain: 'example.com'}];
+      const persistence = new Persistence({cookies});
+
+      jest.spyOn(cookies, 'setItem');
+      persistence.store(vendors, {xyAnalytics: true});
+
+      expect(cookies.setItem).toHaveBeenCalledWith('tracking', expect.anything(), {
+        path: '/',
+        domain: 'example.com',
+        expires: Infinity,
+        sameSite: 'None',
+        secure: true
+      });
+    });
+  });
+});
+
+describe('updating consent for single vendor', () => {
+  it('updates cookie value', () => {
     const cookies = fakeCookies();
     const vendors = [{name: 'xyAnalytics', cookieName: 'tracking'},
                      {name: 'yzAnalytics', cookieName: 'tracking'}];
@@ -66,7 +112,7 @@ describe('storing consent for all vendors', () => {
     );
   });
 
-  it('supports updating consent for single vendor with custom cookie key', () => {
+  it('supports custom cookie key', () => {
     const cookies = fakeCookies();
     const vendors = [{name: 'xyAnalytics', cookieName: 'tracking', cookieKey: 'x_y'}];
     const persistence = new Persistence({cookies});
@@ -79,7 +125,7 @@ describe('storing consent for all vendors', () => {
   });
 
   describe('for vendors with cookie domain', () => {
-    it('does not write to cookie if domain does not match hostname', () => {
+    it('does not use domain if domain does not match hostname', () => {
       // location.hostname is set to story.example.com via testURL in jest.config.js
 
       const cookies = fakeCookies();
@@ -88,9 +134,16 @@ describe('storing consent for all vendors', () => {
                         cookieDomain: 'other.example.com'}];
       const persistence = new Persistence({cookies});
 
+      jest.spyOn(cookies, 'setItem');
       persistence.update(vendors[0], true);
 
-      expect(cookies.getItem('tracking')).not.toBeDefined();
+      expect(cookies.setItem).toHaveBeenCalledWith('tracking', expect.anything(), {
+        path: '/',
+        domain: null,
+        expires: Infinity,
+        sameSite: 'None',
+        secure: true
+      });
     });
 
     it('writes to cookie for domain if domain matches hostname', () => {
@@ -105,11 +158,13 @@ describe('storing consent for all vendors', () => {
       jest.spyOn(cookies, 'setItem');
       persistence.update(vendors[0], true);
 
-      expect(cookies.setItem).toHaveBeenCalledWith('tracking',
-                                                   expect.anything(),
-                                                   null,
-                                                   '/',
-                                                   'example.com');
+      expect(cookies.setItem).toHaveBeenCalledWith('tracking', expect.anything(), {
+        path: '/',
+        domain: 'example.com',
+        expires: Infinity,
+        sameSite: 'None',
+        secure: true
+      });
     });
   });
 });
