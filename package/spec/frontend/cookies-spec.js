@@ -110,4 +110,12 @@ describe('setItemCookieString', () => {
 
     expect(result).toEqual('key=value; Secure')
   });
+
+  it('supports sameSite option', () => {
+    const result = setItemCookieString('key', 'value', {
+      sameSite: 'None'
+    });
+
+    expect(result).toEqual('key=value; SameSite=None')
+  });
 });
