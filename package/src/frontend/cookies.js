@@ -33,10 +33,10 @@ export function setItemCookieString(key, value, expiresOrOptions, path, domain, 
   if (expiresOrOptions &&
       typeof expiresOrOptions === 'object' &&
       expiresOrOptions.constructor !== Date) {
-    return setItemCookieStringFromOptions(key, value, expiresOrOptions);
+    return setItemCookieStringWithOptions(key, value, expiresOrOptions);
   }
   else {
-    return setItemCookieStringFromOptions(key, value, {
+    return setItemCookieStringWithOptions(key, value, {
       expires: expiresOrOptions,
       path,
       domain,
@@ -45,7 +45,7 @@ export function setItemCookieString(key, value, expiresOrOptions, path, domain, 
   }
 }
 
-function setItemCookieStringFromOptions(key, value, {expires, path, domain, secure, sameSite}) {
+function setItemCookieStringWithOptions(key, value, {expires, path, domain, secure, sameSite}) {
   let expiresPart = "";
 
   if (expires) {
@@ -68,5 +68,6 @@ function setItemCookieStringFromOptions(key, value, {expires, path, domain, secu
          expiresPart +
          (domain ? "; domain=" + domain : "") +
          (path ? "; path=" + path : "") +
+         (sameSite ? "; SameSite=" + sameSite : "") +
          (secure ? "; Secure" : "");
 }
