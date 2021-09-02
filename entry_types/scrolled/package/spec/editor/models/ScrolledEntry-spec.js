@@ -848,7 +848,7 @@ describe('ScrolledEntry', () => {
       it('supports moving before other content element', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(7, {at: 'before', id: 5});
+        entry.moveContentElement({id: 7}, {at: 'before', id: 5});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({
@@ -873,7 +873,7 @@ describe('ScrolledEntry', () => {
       it('supports moving after other content element', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(6, {at: 'after', id: 7});
+        entry.moveContentElement({id: 6}, {at: 'after', id: 7});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({
@@ -925,7 +925,7 @@ describe('ScrolledEntry', () => {
       it('gives moved content element the same position', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(4,
+        entry.moveContentElement({id: 4},
                                  {at: 'before', id: 5});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
@@ -951,7 +951,7 @@ describe('ScrolledEntry', () => {
       it('does not change position if sticky position is not supported', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(3,
+        entry.moveContentElement({id: 3},
                                  {at: 'before', id: 5});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
@@ -1026,7 +1026,7 @@ describe('ScrolledEntry', () => {
         const {entry, requests} = testContext;
         const section = entry.sections.first();
 
-        entry.moveContentElement(4,
+        entry.moveContentElement({id: 4},
                                  {at: 'split', id: 6, splitPoint: 2});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
@@ -1111,7 +1111,7 @@ describe('ScrolledEntry', () => {
       it('merges the two adjacent content elements when element is moved away', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(5, {at: 'after', id: 6});
+        entry.moveContentElement({id: 5}, {at: 'after', id: 6});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({
@@ -1136,7 +1136,7 @@ describe('ScrolledEntry', () => {
       it('does not merge the two adjacent content elements when element is moved to same position', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(5, {at: 'after', id: 4});
+        entry.moveContentElement({id: 5}, {at: 'after', id: 4});
 
         expect(requests.length).toEqual(0);
 
@@ -1213,7 +1213,7 @@ describe('ScrolledEntry', () => {
       it('merges mergable siblings in source section in a separate request', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(15, {at: 'after', id: 25});
+        entry.moveContentElement({id: 15}, {at: 'after', id: 25});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/20/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({
@@ -1252,7 +1252,7 @@ describe('ScrolledEntry', () => {
       it('makes no request for source section if no merge is required', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(25, {at: 'before', id: 14});
+        entry.moveContentElement({id: 25}, {at: 'before', id: 14});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(requests.length).toBe(1);
@@ -1313,7 +1313,7 @@ describe('ScrolledEntry', () => {
       it('leaves adjacent content elements unchanged', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(5, {at: 'before', id: 4});
+        entry.moveContentElement({id: 5}, {at: 'before', id: 4});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({
@@ -1368,7 +1368,7 @@ describe('ScrolledEntry', () => {
       it('leaves adjacent content element unchanged', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(5, {at: 'before', id: 4});
+        entry.moveContentElement({id: 5}, {at: 'before', id: 4});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({
@@ -1441,7 +1441,7 @@ describe('ScrolledEntry', () => {
       it('updates both siblings when moved into previous sibling', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(5, {at: 'split', id: 4, splitPoint: 1});
+        entry.moveContentElement({id: 5}, {at: 'split', id: 4, splitPoint: 1});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({
@@ -1467,7 +1467,7 @@ describe('ScrolledEntry', () => {
       it('updates both siblings when moved into next sibling', () => {
         const {entry, requests} = testContext;
 
-        entry.moveContentElement(5, {at: 'split', id: 6, splitPoint: 1});
+        entry.moveContentElement({id: 5}, {at: 'split', id: 6, splitPoint: 1});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({
@@ -1488,6 +1488,670 @@ describe('ScrolledEntry', () => {
         expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5, 6]);
         expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['a', 'b', 'c']);
         expect(entry.contentElements.get(6).configuration.get('items')).toEqual(['d']);
+      });
+    });
+
+    describe('for part of content element in range', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {});
+        editor.contentElementTypes.register('contentElementWithCustomMerge', {
+          merge(configurationA, configurationB) {
+            return {items: configurationA.items.concat(configurationB.items)}
+          },
+
+          split(configuration, at) {
+            return [
+              {items: configuration.items.slice(0, at)},
+              {items: configuration.items.slice(at)}
+            ]
+          },
+
+          getLength(configuration) {
+            return configuration.items?.length || 0
+          }
+        })
+
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {
+            id: 100
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {
+                  id: 4,
+                  permaId: 40,
+                  position: 0,
+                  typeName: 'contentElementWithCustomMerge',
+                  configuration: {
+                    items: ['a', 'b', 'c', 'd']
+                  }
+                },
+                {
+                  id: 5,
+                  permaId: 50,
+                  position: 1,
+                  typeName: 'inlineImage'
+                }
+              ]
+            })
+          }
+        );
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      describe('when moving suffix after other content element', () => {
+        it('updates source element and creates new element', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [2, 4]},
+                                   {at: 'after', id: 5});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['a', 'b']}},
+              {id: 5},
+              {typeName: 'contentElementWithCustomMerge', configuration: {items: ['c', 'd']}},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5, 6]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['a', 'b']);
+          expect(entry.contentElements.get(6).configuration.get('items')).toEqual(['c', 'd']);
+        });
+
+        it('triggers selectContentElement for target content element with range', () => {
+          const {entry, server} = testContext;
+          const listener = jest.fn();
+
+          entry.on('selectContentElement', listener);
+          entry.moveContentElement({id: 4, range: [2, 4]},
+                                   {at: 'after', id: 5});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(listener).toHaveBeenCalledWith(
+            entry.contentElements.get(6),
+            {range: [0, 2]}
+          );
+        });
+      });
+
+      describe('when moving prefix after other content element', () => {
+        it('updates source element and creates new element', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [0, 2]},
+                                   {at: 'after', id: 5});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['c', 'd']}},
+              {id: 5},
+              {typeName: 'contentElementWithCustomMerge', configuration: {items: ['a', 'b']}},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5, 6]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['c', 'd']);
+          expect(entry.contentElements.get(6).configuration.get('items')).toEqual(['a', 'b']);
+        });
+      });
+
+      describe('when moving infix after other content element', () => {
+        it('updates source element and creates new element', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [1, 2]},
+                                   {at: 'after', id: 5});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['a', 'c', 'd']}},
+              {id: 5},
+              {typeName: 'contentElementWithCustomMerge', configuration: {items: ['b']}},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5, 6]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['a', 'c', 'd']);
+          expect(entry.contentElements.get(6).configuration.get('items')).toEqual(['b']);
+        });
+      });
+
+      describe('when moving prefix inside content element', () => {
+        it('updates element', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [0, 1]},
+                                   {at: 'split', id: 4, splitPoint: 2});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['b', 'a', 'c', 'd']}},
+              {id: 5},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['b', 'a', 'c', 'd']);
+        });
+
+        it('triggers selectContentElement for target content element with range', () => {
+          const {entry, server} = testContext;
+          const listener = jest.fn();
+
+          entry.on('selectContentElement', listener);
+          entry.moveContentElement({id: 4, range: [0, 1]},
+                                   {at: 'split', id: 4, splitPoint: 2});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}
+            ])]
+          );
+
+          expect(listener).toHaveBeenCalledWith(
+            entry.contentElements.get(4),
+            {range: [1, 2]}
+          );
+        });
+      });
+
+      describe('when moving suffix inside content element', () => {
+        it('updates element', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [2, 4]},
+                                   {at: 'split', id: 4, splitPoint: 1});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['a', 'c', 'd', 'b']}},
+              {id: 5},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['a', 'c', 'd', 'b']);
+        });
+
+        it('triggers selectContentElement for target content element with range', () => {
+          const {entry, server} = testContext;
+          const listener = jest.fn();
+
+          entry.on('selectContentElement', listener);
+          entry.moveContentElement({id: 4, range: [2, 4]},
+                                   {at: 'split', id: 4, splitPoint: 1});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}
+            ])]
+          );
+
+          expect(listener).toHaveBeenCalledWith(
+            entry.contentElements.get(4),
+            {range: [1, 3]}
+          );
+        });
+      });
+
+      describe('when moving infix to beginning of content element', () => {
+        it('updates element', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [1, 2]},
+                                   {at: 'before', id: 4});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['b', 'a', 'c', 'd']}},
+              {id: 5},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['b', 'a', 'c', 'd']);
+        });
+
+        it('triggers selectContentElement for target content element with range', () => {
+          const {entry, server} = testContext;
+          const listener = jest.fn();
+
+          entry.on('selectContentElement', listener);
+          entry.moveContentElement({id: 4, range: [1, 2]},
+                                   {at: 'before', id: 4});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}
+            ])]
+          );
+
+          expect(listener).toHaveBeenCalledWith(
+            entry.contentElements.get(4),
+            {range: [0, 1]}
+          );
+        });
+      });
+
+      describe('when moving infix to end of content element', () => {
+        it('updates element', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [1, 2]},
+                                   {at: 'after', id: 4});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['a', 'c', 'd', 'b']}},
+              {id: 5},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['a', 'c', 'd', 'b']);
+        });
+
+        it('triggers selectContentElement for target content element with range', () => {
+          const {entry, server} = testContext;
+          const listener = jest.fn();
+
+          entry.on('selectContentElement', listener);
+          entry.moveContentElement({id: 4, range: [1, 2]},
+                                   {at: 'after', id: 4});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}
+            ])]
+          );
+
+          expect(listener).toHaveBeenCalledWith(
+            entry.contentElements.get(4),
+            {range: [3, 4]}
+          );
+        });
+      });
+
+      describe('when moving infix inside content element', () => {
+        it('updates element', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [1, 2]},
+                                   {at: 'split', id: 4, splitPoint: 3});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['a', 'c', 'b', 'd']}},
+              {id: 5},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['a', 'c', 'b', 'd']);
+        });
+
+        it('triggers selectContentElement for target content element with range', () => {
+          const {entry, server} = testContext;
+          const listener = jest.fn();
+
+          entry.on('selectContentElement', listener);
+          entry.moveContentElement({id: 4, range: [1, 2]},
+                                   {at: 'split', id: 4, splitPoint: 3});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}
+            ])]
+          );
+
+          expect(listener).toHaveBeenCalledWith(
+            entry.contentElements.get(4),
+            {range: [2, 3]}
+          );
+        });
+      });
+    });
+
+    describe('for multiple mergable content elements', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {});
+        editor.contentElementTypes.register('contentElementWithCustomMerge', {
+          merge(configurationA, configurationB) {
+            return {items: configurationA.items.concat(configurationB.items)}
+          },
+
+          split(configuration, at) {
+            return [
+              {items: configuration.items.slice(0, at)},
+              {items: configuration.items.slice(at)}
+            ]
+          },
+
+          getLength(configuration) {
+            return configuration.items?.length || 0
+          }
+        })
+
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {
+            id: 100
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {
+                  id: 4,
+                  permaId: 40,
+                  position: 0,
+                  typeName: 'contentElementWithCustomMerge',
+                  configuration: {
+                    items: ['a', 'b', 'c']
+                  }
+                },
+                {
+                  id: 5,
+                  permaId: 50,
+                  position: 1,
+                  typeName: 'inlineImage'
+                },
+                {
+                  id: 6,
+                  permaId: 60,
+                  position: 2,
+                  typeName: 'contentElementWithCustomMerge',
+                  configuration: {
+                    items: ['x', 'y', 'z']
+                  }
+                },
+              ]
+            })
+          }
+        );
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      describe('moving part before other content element', () => {
+        it('updates both elements', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [1, 2]},
+                                   {at: 'after', id: 5});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['a', 'c']}},
+              {id: 5},
+              {id: 6, configuration: {items: ['b', 'x', 'y', 'z']}},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5, 6]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['a', 'c']);
+          expect(entry.contentElements.get(6).configuration.get('items')).toEqual(['b', 'x', 'y', 'z']);
+        });
+
+        it('triggers selectContentElement for target content element with range', () => {
+          const {entry, server} = testContext;
+          const listener = jest.fn();
+
+          entry.on('selectContentElement', listener);
+          entry.moveContentElement({id: 4, range: [1, 2]},
+                                   {at: 'after', id: 5});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(listener).toHaveBeenCalledWith(
+            entry.contentElements.get(6),
+            {range: [0, 1]}
+          );
+        });
+      });
+
+      describe('moving part after other content element', () => {
+        it('updates both elements', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [2, 3]},
+                                   {at: 'after', id: 6});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['a', 'b']}},
+              {id: 5},
+              {id: 6, configuration: {items: ['x', 'y', 'z', 'c']}},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5, 6]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['a', 'b']);
+          expect(entry.contentElements.get(6).configuration.get('items')).toEqual(['x', 'y', 'z', 'c']);
+        });
+
+        it('triggers selectContentElement for target content element with range', () => {
+          const {entry, server} = testContext;
+          const listener = jest.fn();
+
+          entry.on('selectContentElement', listener);
+          entry.moveContentElement({id: 4, range: [2, 3]},
+                                   {at: 'after', id: 6});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(listener).toHaveBeenCalledWith(
+            entry.contentElements.get(6),
+            {range: [3, 4]}
+          );
+        });
+      });
+
+      describe('moving part inside other content element', () => {
+        it('updates both elements', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [0, 2]},
+                                   {at: 'split', id: 6, splitPoint: 1});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 4, configuration: {items: ['c']}},
+              {id: 5},
+              {id: 6, configuration: {items: ['x', 'a', 'b', 'y', 'z']}},
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([4, 5, 6]);
+          expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['c']);
+          expect(entry.contentElements.get(6).configuration.get('items')).toEqual(['x', 'a', 'b', 'y', 'z']);
+        });
+
+        it('triggers selectContentElement for target content element with range', () => {
+          const {entry, server} = testContext;
+          const listener = jest.fn();
+
+          entry.on('selectContentElement', listener);
+          entry.moveContentElement({id: 4, range: [0, 2]},
+                                   {at: 'split', id: 6, splitPoint: 1});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(listener).toHaveBeenCalledWith(
+            entry.contentElements.get(6),
+            {range: [1, 3]}
+          );
+        });
+      });
+
+      describe('moving whole content element inside other content element', () => {
+        it('deletes moved element and updates target', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 4, range: [0, 3]},
+                                   {at: 'split', id: 6, splitPoint: 1});
+
+          expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+          expect(JSON.parse(requests[0].requestBody)).toEqual({
+            content_elements: [
+              {id: 5},
+              {id: 6, configuration: {items: ['x', 'a', 'b', 'c', 'y', 'z']}},
+              {id: 4, _delete: true}
+            ]
+          });
+
+          testContext.server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(entry.sections.first().contentElements.pluck('id')).toEqual([5, 6]);
+          expect(entry.contentElements.get(6).configuration.get('items')).toEqual(['x', 'a', 'b', 'c', 'y', 'z']);
+        });
+
+        it('triggers selectContentElement for target content element with range', () => {
+          const {entry, server} = testContext;
+          const listener = jest.fn();
+
+          entry.on('selectContentElement', listener);
+          entry.moveContentElement({id: 4},
+                                   {at: 'split', id: 6, splitPoint: 1});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 5, permaId: 50}, {id: 6, permaId: 60}
+            ])]
+          );
+
+          expect(listener).toHaveBeenCalledWith(
+            entry.contentElements.get(6),
+            {range: [1, 4]}
+          );
+        });
       });
     });
   });

@@ -42,6 +42,7 @@ export function useEditorSelection(options) {
   }, [setSelection, options])
 
   return useMemo(() => (setSelection ? {
+    range: selection?.range,
     isSelected: selection && options && selection.id === options.id && selection.type === options.type,
     select,
     resetSelection

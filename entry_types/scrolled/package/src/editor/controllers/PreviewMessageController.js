@@ -68,15 +68,16 @@ export const PreviewMessageController = Object.extend({
           })
         );
 
-        this.listenTo(this.entry, 'selectContentElement', contentElement =>
+        this.listenTo(this.entry, 'selectContentElement', (contentElement, options) => {
           postMessage({
             type: 'SELECT',
             payload: {
               id: contentElement.id,
+              range: options?.range,
               type: 'contentElement'
             }
           })
-        );
+        });
 
         this.listenTo(this.entry, 'resetSelection', contentElement =>
           postMessage({
@@ -123,8 +124,8 @@ export const PreviewMessageController = Object.extend({
         });
       }
       else if (message.data.type === 'MOVE_CONTENT_ELEMENT') {
-        const {id, to} = message.data.payload;
-        this.entry.moveContentElement(id, to);
+        const {id, range, to} = message.data.payload;
+        this.entry.moveContentElement({id, range}, to);
       }
       else if (message.data.type === 'UPDATE_CONTENT_ELEMENT') {
         const {id, configuration} = message.data.payload;

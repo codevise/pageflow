@@ -16,7 +16,7 @@ export function DropTargets({
       canDropBefore: monitor.canDrop(),
       isBefore: monitor.isOver() && monitor.canDrop()
     }),
-    drop: item => onDrop({at: 'before', id: item.id})
+    drop: item => onDrop({at: 'before', id: item.id, range: item.range})
   });
 
   const [{canDropAfter, isAfter}, dropAfter] = useDrop({
@@ -26,7 +26,7 @@ export function DropTargets({
       canDropAfter: monitor.canDrop(),
       isAfter: monitor.isOver() && monitor.canDrop()
     }),
-    drop: item => onDrop({at: 'after', id: item.id})
+    drop: item => onDrop({at: 'after', id: item.id, range: item.range})
   });
 
   return (

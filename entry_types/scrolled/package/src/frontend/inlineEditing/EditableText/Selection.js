@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {Editor, Transforms, Range, Path, Node} from 'slate';
 import {useSlate, ReactEditor} from 'slate-react';
+import {useDrag} from 'react-dnd';
 
 import styles from './index.module.css';
 
@@ -24,11 +25,13 @@ export function Selection(props) {
   const innerRef = useRef()
 
   const boundsRef = useRef();
+  const lastRangeRef = useRef();
 
   const {
     setTransientState,
     select,
-    isSelected: isContentElementSelected
+    isSelected: isContentElementSelected,
+    range
   } = useContentElementEditorState();
 
   useEffect(() => {
@@ -36,6 +39,23 @@ export function Selection(props) {
 
     if (!ref.current) {
       return
+    }
+
+    if (isContentElementSelected && range && lastRangeRef.current !== range) {
+      lastRangeRef.current = range;
+
+      if (range[1] === range[0] + 1) {
+        Transforms.select(editor,
+                          Editor.point(editor, [range[0]], {edge: 'start'}));
+      }
+      else {
+        Transforms.select(editor, {
+          anchor: Editor.point(editor, [range[0]], {edge: 'start'}),
+          focus: Editor.point(editor, [range[1] - 1], {edge: 'end'}),
+        });
+      }
+
+      ReactEditor.focus(editor);
     }
 
     if (!selection) {
@@ -49,6 +69,8 @@ export function Selection(props) {
 
     if (!isContentElementSelected && boundsRef.current) {
       hideRect(ref.current);
+      boundsRef.current = null;
+      window.getSelection().removeAllRanges();
       return;
     }
 
@@ -66,34 +88,47 @@ export function Selection(props) {
     updateRect(editor, start, end, outerRef.current, ref.current, innerRef.current);
   });
 
+  const [, drag] = useDrag({
+    item: {type: 'contentElement', id: props.contentElementId},
+    begin: () => ({
+      type: 'contentElement',
+      id: props.contentElementId,
+      range: [
+        boundsRef.current.start,
+        boundsRef.current.end + 1
+      ]
+    })
+  });
+
   return (
     <div ref={outerRef}>
       <div ref={ref} className={styles.selection}>
         <SelectionRect selected={true}
+                       drag={drag}
                        scrollPoint={isContentElementSelected}
                        insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
                        onInsertButtonClick={at => {
-                           if ((at === 'before' &&boundsRef.current.start === 0) ||
-                               (at === 'after' && !Node.has(editor, [boundsRef.current.end + 1]))) {
-                             postInsertContentElementMessage({
-                               id: props.contentElementId,
-                               at
-                             });
-                           }
-                           else {
-                             postInsertContentElementMessage({
-                               id: props.contentElementId,
-                               at: 'split',
-                               splitPoint: at === 'before' ?
-                                           boundsRef.current.start :
-                                           boundsRef.current.end + 1
-                             });
-                           }
-                         }}
+                         if ((at === 'before' &&boundsRef.current.start === 0) ||
+                             (at === 'after' && !Node.has(editor, [boundsRef.current.end + 1]))) {
+                           postInsertContentElementMessage({
+                             id: props.contentElementId,
+                             at
+                           });
+                         }
+                         else {
+                           postInsertContentElementMessage({
+                             id: props.contentElementId,
+                             at: 'split',
+                             splitPoint: at === 'before' ?
+                                         boundsRef.current.start :
+                                         boundsRef.current.end + 1
+                           });
+                         }
+                       }}
                        toolbarButtons={toolbarButtons(t).map(button => ({
-                           ...button,
-                           active: isBlockActive(editor, button.name)
-                         }))}
+                         ...button,
+                         active: isBlockActive(editor, button.name)
+                       }))}
                        onToolbarButtonClick={name => toggleBlock(editor, name)}>
           <div ref={innerRef} />
         </SelectionRect>

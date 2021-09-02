@@ -5,7 +5,7 @@ import {useEditorSelection} from './EditorState';
 import {postUpdateTransientContentElementStateMessage} from './postMessage';
 
 export function ContentElementEditorStateProvider({id, children}) {
-  const {isSelected, select} = useEditorSelection({id, type: 'contentElement'});
+  const {isSelected, select, range} = useEditorSelection({id, type: 'contentElement'});
 
   const previousTransientState = useRef({});
   const setTransientState = useCallback(state => {
@@ -19,8 +19,9 @@ export function ContentElementEditorStateProvider({id, children}) {
     isEditable: true,
     select,
     isSelected,
+    range,
     setTransientState
-  }), [select, isSelected, setTransientState]);
+  }), [select, isSelected, range, setTransientState]);
 
   return (
     <ContentElementEditorStateContext.Provider value={value}>
