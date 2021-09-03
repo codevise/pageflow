@@ -33,29 +33,6 @@ describe('InsertContentElementDialogView', () => {
     expect(availableTypeNames(view)).toContain('Text block');
   });
 
-  it('filters content element types that do not support position of sibling', () => {
-    const editor = factories.editorApi();
-    editor.contentElementTypes.register('inlineImage');
-    editor.contentElementTypes.register('textBlock', {supportedPositions: ['inline']});
-    const entry = factories.entry(ScrolledEntry, {}, {
-      entryTypeSeed: normalizeSeed({
-        contentElements: [
-          {id: 1, typeName: 'inlineImage', configuration: {position: 'sticky'}}
-        ]
-      })
-    });
-    const view = new InsertContentElementDialogView({
-      entry,
-      editor,
-      insertOptions: {at: 'after', id: 1}
-    });
-
-    view.render();
-
-    expect(availableTypeNames(view)).toContain('Inline image');
-    expect(availableTypeNames(view)).not.toContain('Text block');
-  });
-
   function availableTypeNames(view) {
     return view.$el.find('li button').map(function() { return $(this).text() }).get();
   }

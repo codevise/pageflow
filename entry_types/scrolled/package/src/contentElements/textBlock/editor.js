@@ -10,7 +10,7 @@ editor.contentElementTypes.register('textBlock', {
   },
 
   split(configuration, insertIndex) {
-    const value = configuration.value || [{type: 'paragraph', children: [{text: ''}]}];
+    const value = getValue(configuration);
 
     return  [
       {
@@ -25,20 +25,16 @@ editor.contentElementTypes.register('textBlock', {
   },
 
   merge(configurationA, configurationB) {
-    // Value might still be empty if text block has not been edited
-    const value = (configurationA.value || []).concat(configurationB.value || []);
+    const value = getValue(configurationA).concat(getValue(configurationB));
 
     return {
       ...configurationA,
-      // Slate.js does not like empty arrays as value.
-      // `inlineEditing/EditableText` sets default value, but only if
-      // `value` is falsy.
-      value: value.length ? value : undefined,
+      value,
     };
   },
 
   getLength(configuration) {
-    return configuration.value?.length || 0;
+    return getValue(configuration).length;
   },
 
   handleDestroy(contentElement) {
@@ -50,3 +46,8 @@ editor.contentElementTypes.register('textBlock', {
     }
   }
 });
+
+function getValue(configuration) {
+  // Value might still be empty if text block has not been edited
+  return configuration.value || [{type: 'paragraph', children: [{text: ''}]}];
+}
