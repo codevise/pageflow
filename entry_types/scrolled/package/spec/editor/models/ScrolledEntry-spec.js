@@ -115,8 +115,8 @@ describe('ScrolledEntry', () => {
           {
             entryTypeSeed: normalizeSeed({
               contentElements: [
-                {id: 5, permaId: 50, position: 0},
-                {id: 6, permaId: 60, position: 1}
+                {id: 5, permaId: 50, position: 0, typeName: 'inlineImage'},
+                {id: 6, permaId: 60, position: 1, typeName: 'inlineImage'}
               ]
             })
           });
@@ -196,12 +196,15 @@ describe('ScrolledEntry', () => {
           ])]
         );
 
-        expect(listener).toHaveBeenCalledWith(entry.contentElements.get(7));
+        expect(listener).toHaveBeenCalledWith(
+          entry.contentElements.get(7), {range: undefined}
+        );
       });
     });
 
     describe('for content element type with default configuration', () => {
       beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {});
         editor.contentElementTypes.register('contentElementWithDefaults', {
           defaultConfig: {
             some: 'value'
@@ -216,7 +219,7 @@ describe('ScrolledEntry', () => {
           {
             entryTypeSeed: normalizeSeed({
               contentElements: [
-                {id: 5, permaId: 50, position: 0}
+                {id: 5, permaId: 50, position: 0, typeName: 'inlineImage'}
               ]
             })
           }
@@ -253,6 +256,7 @@ describe('ScrolledEntry', () => {
 
     describe('for sibling with inline position', () => {
       beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {});
         editor.contentElementTypes.register('heading', {
           defaultConfig: {position: 'wide'}
         });
@@ -265,7 +269,12 @@ describe('ScrolledEntry', () => {
           {
             entryTypeSeed: normalizeSeed({
               contentElements: [
-                {id: 5, position: 0, configuration: {position: 'inline'}}
+                {
+                  id: 5,
+                  position: 0,
+                  typeName: 'inlineImage',
+                  configuration: {position: 'inline'}
+                }
               ]
             })
           }
@@ -302,9 +311,8 @@ describe('ScrolledEntry', () => {
 
     describe('for sibling with sticky position', () => {
       beforeEach(() => {
-        editor.contentElementTypes.register('inlineImage', {});
-        editor.contentElementTypes.register('heading', {
-          defaultConfig: {position: 'wide'}
+        editor.contentElementTypes.register('inlineImage', {
+          supportedPositions: ['inline', 'sticky']
         });
 
         testContext.entry = factories.entry(
@@ -315,7 +323,12 @@ describe('ScrolledEntry', () => {
           {
             entryTypeSeed: normalizeSeed({
               contentElements: [
-                {id: 5, position: 0, configuration: {position: 'sticky'}}
+                {
+                  id: 5,
+                  position: 0,
+                  typeName: 'inlineImage',
+                  configuration: {position: 'sticky'}
+                }
               ]
             })
           }
@@ -326,7 +339,7 @@ describe('ScrolledEntry', () => {
         entry: () => testContext.entry
       });
 
-      it('gives inserted content element the same position', () => {
+      it('gives inserted content element the same position if supported', () => {
         const {entry, requests} = testContext;
 
         entry.insertContentElement({typeName: 'inlineImage'},
@@ -349,8 +362,13 @@ describe('ScrolledEntry', () => {
         expect(entry.contentElements.get(6).configuration.get('position')).toEqual('sticky');
       });
 
-      it('ignores position from default config', () => {
+      it('falls back to default config position if sibiling position not supported', () => {
         const {entry, requests} = testContext;
+
+        editor.contentElementTypes.register('heading', {
+          supportedPositions: ['inline', 'wide'],
+          defaultConfig: {position: 'wide'}
+        });
 
         entry.insertContentElement({typeName: 'heading'},
                                    {at: 'after', id: 5});
@@ -358,7 +376,65 @@ describe('ScrolledEntry', () => {
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
           content_elements: [
             {id: 5},
-            {typeName: 'heading', configuration: {position: 'sticky'}},
+            {typeName: 'heading', configuration: {position: 'wide'}},
+          ]
+        });
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(entry.contentElements.get(6).configuration.get('position')).toEqual('wide');
+      });
+
+      it('falls back to inline position if sibiling position not supported', () => {
+        const {entry, requests} = testContext;
+
+        editor.contentElementTypes.register('heading', {
+          supportedPositions: ['inline', 'wide']
+        });
+
+        entry.insertContentElement({typeName: 'heading'},
+                                   {at: 'after', id: 5});
+
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5},
+            {
+              typeName: 'heading',
+              configuration: expect.not.objectContaining({position: 'sticky'}),
+            }
+          ]
+        });
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(entry.contentElements.get(6).configuration.get('position')).not.toBeDefined();
+      });
+
+      it('ignores position from default config', () => {
+        const {entry, requests} = testContext;
+
+        editor.contentElementTypes.register('panorama', {
+          supportedPositions: ['inline', 'wide', 'sticky'],
+          defaultConfig: {position: 'wide'}
+        });
+
+        entry.insertContentElement({typeName: 'panorama'},
+                                   {at: 'after', id: 5});
+
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5},
+            {typeName: 'panorama', configuration: {position: 'sticky'}},
           ]
         });
 
@@ -388,7 +464,12 @@ describe('ScrolledEntry', () => {
           {
             entryTypeSeed: normalizeSeed({
               contentElements: [
-                {id: 5, position: 0, configuration: {position: 'full'}}
+                {
+                  id: 5,
+                  position: 0,
+                  typeName: 'inlineImage',
+                  configuration: {position: 'full'}
+                }
               ]
             })
           }
@@ -566,6 +647,130 @@ describe('ScrolledEntry', () => {
 
         expect(section.contentElements.pluck('id')).toEqual([4, 5, 6]);
         expect(entry.contentElements.pluck('id')).toEqual([4, 5, 6]);
+      });
+    });
+
+    describe('for content elements with custom merge function', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('contentElementWithCustomMerge', {
+          defaultConfig: {
+            items: ['new']
+          },
+
+          merge(configurationA, configurationB) {
+            return {items: configurationA.items.concat(configurationB.items)}
+          },
+
+          getLength(configuration) {
+            return configuration.items?.length || 0
+          }
+        })
+
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {
+            id: 100
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {
+                  id: 5,
+                  permaId: 50,
+                  position: 1,
+                  typeName: 'contentElementWithCustomMerge',
+                  configuration: {
+                    items: ['a', 'b', 'c']
+                  }
+                },
+                {
+                  id: 6,
+                  permaId: 60,
+                  position: 2
+                }
+              ]
+            })
+          }
+        );
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      it('updates mergable sibling instead of inserting', () => {
+        const {entry, requests} = testContext;
+        const section = entry.sections.first();
+
+        entry.insertContentElement({typeName: 'contentElementWithCustomMerge'},
+                                   {at: 'after', id: 5});
+
+        expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5, configuration: {items: ['a', 'b', 'c', 'new']}},
+            {id: 6}
+          ]
+        });
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50},
+            {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(section.contentElements.pluck('id')).toEqual([5, 6]);
+        expect(section.contentElements.pluck('permaId')).toEqual([50, 60]);
+      });
+
+      it('updates mergable adjacent element instead of inserting', () => {
+        const {entry, requests} = testContext;
+        const section = entry.sections.first();
+
+        entry.insertContentElement({typeName: 'contentElementWithCustomMerge'},
+                                   {at: 'before', id: 6});
+
+        expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5, configuration: {items: ['a', 'b', 'c', 'new']}},
+            {id: 6}
+          ]
+        });
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50},
+            {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(section.contentElements.pluck('id')).toEqual([5, 6]);
+        expect(section.contentElements.pluck('permaId')).toEqual([50, 60]);
+      });
+
+      it('triggers selectContentElement for target content element with range', () => {
+        const {entry, server} = testContext;
+        const listener = jest.fn();
+
+        entry.on('selectContentElement', listener);
+        entry.insertContentElement({typeName: 'contentElementWithCustomMerge'},
+                                   {at: 'after', id: 5});
+
+        server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(listener).toHaveBeenCalledWith(
+          entry.contentElements.get(5),
+          {range: [3, 4]}
+        );
       });
     });
   });

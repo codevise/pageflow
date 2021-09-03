@@ -1,4 +1,5 @@
 import {Batch} from './Batch';
+import {maybeMergeWithAdjacent} from './maybeMergeWithAdjacent';
 
 // Move content element inside section or between sections. Allow
 // moving content elements to "split points" inside content elements
@@ -82,7 +83,7 @@ export function moveContentElement(entry, contentElement, {range, sibling, at, s
   }
 
   const [before, after] = sourceBatch.getAdjacent(contentElement);
-  let targetRange = createRange(targetBatch, contentElement);
+  let targetRange;
 
   // Check if element was dragged to same position where it came from.
   if (!(at === 'before' && !range && sibling === after) &&
@@ -129,32 +130,6 @@ function extractRange(batch, contentElement, range) {
   batch.maybeMerge(contentElement, suffix);
 
   return extracted;
-}
-
-function maybeMergeWithAdjacent(batch, contentElement) {
-  const [before, after] = batch.getAdjacent(contentElement);
-
-  const range = createRange(batch, contentElement);
-  const beforeLength = before ? batch.getLength(before) : 0;
-
-  contentElement = batch.maybeMerge(contentElement, after) || contentElement;
-  const mergedContentElement = batch.maybeMerge(before, contentElement);
-
-  if (mergedContentElement) {
-    return [mergedContentElement, translateRange(range, beforeLength)];
-  }
-
-  return [contentElement, range]
-}
-
-function createRange(batch, contentElement) {
-  return batch.getLength(contentElement) ?
-         [0, batch.getLength(contentElement)] :
-         undefined;
-}
-
-function translateRange(range, delta) {
-  return range && [range[0] + delta, range[1] + delta]
 }
 
 function copyPositionIfAvailable(batch, contentElement, sibling) {

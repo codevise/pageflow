@@ -1,4 +1,5 @@
 import {Batch} from './Batch';
+import {maybeMergeWithAdjacent} from './maybeMergeWithAdjacent';
 import {ContentElement} from '../ContentElement';
 
 // Insert content element before, after or at a split of a sibling
@@ -10,7 +11,7 @@ export function insertContentElement(entry, sibling, attributes, {at, splitPoint
     batch.split(sibling, splitPoint, {insertAt: 'after'});
   }
 
-  const contentElement = new ContentElement(attributes);
+  let contentElement = new ContentElement(attributes);
   contentElement.applyDefaultConfiguration(sibling);
 
   if (at === 'before') {
@@ -20,9 +21,18 @@ export function insertContentElement(entry, sibling, attributes, {at, splitPoint
     batch.insertAfter(sibling, contentElement);
   }
 
+  let targetRange;
+
+  [contentElement, targetRange] = maybeMergeWithAdjacent(
+    batch,
+    contentElement
+  );
+
   batch.save({
     success() {
-      entry.trigger('selectContentElement', contentElement);
+      entry.trigger('selectContentElement', contentElement, {
+        range: targetRange
+      });
     }
   })
 }
