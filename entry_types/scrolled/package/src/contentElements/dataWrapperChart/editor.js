@@ -10,14 +10,10 @@ editor.contentElementTypes.register('dataWrapperChart', {
     this.tab('general', function() {
       this.input('url', UrlInputView, {
          supportedHosts: [
-          'http://cf.datawrapper.de',
-          'https://cf.datawrapper.de',
-          'http://datawrapper.dwcdn.de',
-          'https://datawrapper.dwcdn.de',
-          'http://datawrapper.dwcdn.net',
-          'https://datawrapper.dwcdn.net',
-          'http://charts.datawrapper.de',
-          'https://charts.datawrapper.de',
+          'cf.datawrapper.de',
+          'charts.datawrapper.de',
+          'datawrapper.dwcdn.de',
+          'datawrapper.dwcdn.net'
         ],
         displayPropertyName: 'displayUrl',
         required: true,

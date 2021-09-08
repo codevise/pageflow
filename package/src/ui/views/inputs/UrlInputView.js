@@ -106,6 +106,16 @@ export const UrlInputView = Marionette.Layout.extend(
     return this.options.supportedHosts;
   },
 
+  // Host names used to be expected to include protocols. Remove
+  // protocols for backwards compatilbity. Since supportedHosts
+  // is supposed to be overridden in subclasses, we do it in a
+  // separate method.
+  supportedHostsWithoutLegacyProtocols: function() {
+    return _.map(this.supportedHosts(), function(host) {
+      return host.replace(/^https?:\/\//, '');
+    });
+  },
+
   validate: function(success) {
     var view = this;
     var options = this.options;
@@ -149,13 +159,14 @@ export const UrlInputView = Marionette.Layout.extend(
     }
 
     function hasSupportedHost(url) {
-      return _.any(view.supportedHosts(), function(host) {
-        return url.match(new RegExp('^' + host));
+      return _.any(view.supportedHostsWithoutLegacyProtocols(), function(host) {
+        return url.match(new RegExp('^https?://' + host));
       });
     }
 
     function displayValidationError(message) {
       view.$el.addClass('invalid');
+      view.ui.input.attr('aria-invalid', 'true');
       view.ui.validation
         .removeClass('pending')
         .addClass('failed')
@@ -165,6 +176,7 @@ export const UrlInputView = Marionette.Layout.extend(
 
     function displayValidationPending(message) {
       view.$el.removeClass('invalid');
+      view.ui.input.removeAttr('aria-invalid');
       view.ui.validation
         .removeClass('failed')
         .addClass('pending')
@@ -174,6 +186,7 @@ export const UrlInputView = Marionette.Layout.extend(
 
     function resetValidationError(message) {
       view.$el.removeClass('invalid');
+      view.ui.input.attr('aria-invalid', 'false');
       view.ui.validation.hide();
     }
   }
