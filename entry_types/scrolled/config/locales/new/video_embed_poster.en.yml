@@ -1,0 +1,8 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        videoEmbed:
+          attributes:
+            posterId:
+              label: Poster
