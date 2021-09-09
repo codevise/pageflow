@@ -1,5 +1,6 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {CheckBoxInputView, SelectInputView, UrlInputView} from 'pageflow/ui';
+import {FileInputView} from 'pageflow/editor';
 
 editor.contentElementTypes.register('videoEmbed', {
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
@@ -20,6 +21,11 @@ editor.contentElementTypes.register('videoEmbed', {
         displayPropertyName: 'displayVideoSource',
         required: true,
         permitHttps: true
+      });
+      this.input('posterId', FileInputView, {
+        collection: 'image_files',
+        fileSelectionHandler: 'contentElementConfiguration',
+        positioning: false
       });
       this.input('hideInfo', CheckBoxInputView);
       this.input('hideControls', CheckBoxInputView);

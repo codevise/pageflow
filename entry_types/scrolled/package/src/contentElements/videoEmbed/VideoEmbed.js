@@ -11,7 +11,8 @@ import {
   FitViewport,
   useContentElementLifecycle,
   useContentElementEditorState,
-  useAudioFocus
+  useAudioFocus,
+  useFile
 } from 'pageflow-scrolled/frontend';
 
 const aspectRatios = {
@@ -61,6 +62,13 @@ function PreparedPlayer({
     }
   });
 
+  const posterImageFile = useFile({
+    collectionName: 'imageFiles',
+    permaId: configuration.posterId
+  });
+
+  const posterUrl = posterImageFile?.isReady && posterImageFile.urls.large;
+
   // React player does not re-create player when controls or config
   // prop changes. Ensure key changes to force React to re-mount
   // component.
@@ -78,7 +86,9 @@ function PreparedPlayer({
                      onPlay={() => setPlayerState('playing')}
                      onPause={() => setPlayerState('paused')}
                      onEnded={() => setPlayerState('paused')}
-                     light={!consentedHere && playerState === 'unplayed'}
+                     light={!consentedHere && playerState === 'unplayed' ?
+                            (posterUrl || true) :
+                            false}
                      width='100%'
                      height='100%'
                      controls={!configuration.hideControls}
