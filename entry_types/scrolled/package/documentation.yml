@@ -38,6 +38,7 @@ toc:
       - useIsStaticPreview
       - useLegalInfo
       - useMediaMuted
+      - usePortraitOrientation
       - useShareProviders
       - useShareUrl
       - useTheme
