@@ -1,0 +1,9 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        inlineImage:
+          attributes:
+            portraitId:
+              label: Bild (Hochkant)
+              inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Bild konfiguriert werden, das ansonsten zu klein dargestellt würde.

@@ -11,6 +11,11 @@ editor.contentElementTypes.register('inlineImage', {
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false
       });
+      this.input('portraitId', FileInputView, {
+        collection: 'image_files',
+        fileSelectionHandler: 'contentElementConfiguration',
+        positioning: false
+      });
       this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });

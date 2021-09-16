@@ -1,0 +1,9 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        inlineImage:
+          attributes:
+            portraitId:
+              label: Image (Portrait)
+              inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to provide an alternative to a landscape image that would otherwise be displayed too small.

@@ -16,7 +16,7 @@ import OptInIcon from '../icons/media.svg';
  * @param {React.ReactElement} props.children -
  *   Children to conditionally render.
  *
- * @name ThirdPartyConsentOptIn
+ * @name ThirdPartyOptIn
  */
 export function OptIn({children, providerName}) {
   const {t} = useI18n();
