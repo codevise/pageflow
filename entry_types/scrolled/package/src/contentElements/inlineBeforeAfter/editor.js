@@ -3,7 +3,7 @@ import {ColorInputView, FileInputView} from 'pageflow/editor';
 import {SliderInputView, TextInputView} from 'pageflow/ui';
 
 editor.contentElementTypes.register('inlineBeforeAfter', {
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 
   configurationEditor() {
     this.tab('general', function() {

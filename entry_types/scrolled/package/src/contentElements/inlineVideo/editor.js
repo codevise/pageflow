@@ -3,7 +3,7 @@ import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView} from 'pageflow/ui';
 
 editor.contentElementTypes.register('inlineVideo', {
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 
   configurationEditor() {
     this.tab('general', function() {
