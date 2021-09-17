@@ -3,7 +3,7 @@ import {CheckBoxInputView, SelectInputView, UrlInputView} from 'pageflow/ui';
 import {FileInputView} from 'pageflow/editor';
 
 editor.contentElementTypes.register('videoEmbed', {
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 
   configurationEditor() {
     this.tab('general', function() {
