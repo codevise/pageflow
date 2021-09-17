@@ -207,6 +207,18 @@ module Pageflow
     # construct the embed url of a published entry.
     attr_accessor :entry_embed_url_options
 
+    # Either a lambda or an object with a `call` method taking a hash
+    # of theme option overrides and an {EntryAtRevision} and returning
+    # a transformed hash of overrides. Can be used to filter overrides
+    # based on feature flags and other entry or account traits.
+    attr_accessor :transform_theme_customization_overrides
+
+    # Either a lambda or an object with a `call` method taking a hash
+    # of theme customization files and an {EntryAtRevision} and
+    # returning a transformed hash of files. Can be used to filter
+    # files based on feature flags and other entry or account traits.
+    attr_accessor :transform_theme_customization_files
+
     # Submit video/audio encoding jobs only after the user has
     # explicitly confirmed in the editor. Defaults to false.
     attr_accessor :confirm_encoding_jobs
@@ -386,6 +398,9 @@ module Pageflow
       @public_entry_redirect = ->(_entry, _request) { nil }
       @public_entry_url_options = Pageflow::ThemingsHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
       @entry_embed_url_options = {protocol: 'https'}
+
+      @transform_theme_customization_overrides = ->(overrides, _entry) { overrides }
+      @transform_theme_customization_files = ->(files, _entry) { files }
 
       @confirm_encoding_jobs = false
 

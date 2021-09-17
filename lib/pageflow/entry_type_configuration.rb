@@ -18,6 +18,8 @@ module Pageflow
     delegate :revision_components, to: :@config
     delegate :themes, to: :@config
     delegate :widget_types, to: :@config
+    delegate :transform_theme_customization_overrides=, to: :@config
+    delegate :transform_theme_customization_files=, to: :@config
 
     def plugin(plugin)
       plugin.configure(self)
