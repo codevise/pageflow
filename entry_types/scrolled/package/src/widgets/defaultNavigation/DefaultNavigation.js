@@ -17,9 +17,9 @@ import {Logo} from './Logo';
 import {SkipLinks} from './SkipLinks';
 import {Scroller} from './Scroller';
 
-import styles from './AppHeader.module.css';
+import styles from './DefaultNavigation.module.css';
 
-export function AppHeader(props) {
+export function DefaultNavigation(props) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);

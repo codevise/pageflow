@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import headerStyles from "./AppHeader.module.css";
+import headerStyles from "./DefaultNavigation.module.css";
 import styles from "./LegalInfoMenu.module.css";
 import InfoIcon from './icons/information.svg';
 

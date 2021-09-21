@@ -9,7 +9,7 @@ import {
   useTheme
 } from 'pageflow-scrolled/frontend';
 
-import headerStyles from './AppHeader.module.css';
+import headerStyles from './DefaultNavigation.module.css';
 import styles from './ToggleMuteButton.module.css';
 
 import MutedIcon from './icons/muted.svg';
