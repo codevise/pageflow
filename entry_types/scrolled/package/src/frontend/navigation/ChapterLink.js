@@ -2,9 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from "./ChapterLink.module.css";
 
-import {Tooltip} from '../Tooltip';
-import {useI18n} from '../i18n';
-import {isBlank, presence} from '../utils/blank';
+import {
+  Tooltip,
+  useI18n,
+  utils
+} from 'pageflow-scrolled/frontend'
+
+const {isBlank, presence} = utils;
 
 export function ChapterLink(props) {
   const {t} = useI18n();

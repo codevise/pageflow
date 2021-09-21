@@ -50,14 +50,27 @@ export * from './SectionThumbnail';
 export {Entry} from './Entry';
 export {useAudioFocus} from './useAudioFocus';
 export {useDarkBackground} from './backgroundColor';
-export {useFile} from '../entryState'
+
+export {
+  useChapters,
+  useCredits,
+  useFile,
+  useFileRights,
+  useLegalInfo,
+  useTheme,
+  useShareProviders,
+  useShareUrl
+} from '../entryState'
+
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
 export {useContentElementEditorCommandSubscription} from './useContentElementEditorCommandSubscription';
 export {useContentElementEditorState} from './useContentElementEditorState';
 export {useContentElementLifecycle} from './useContentElementLifecycle';
 export {useIsStaticPreview} from './useScrollPositionLifecycle';
-export {useMediaMuted} from './useMediaMuted';
+export {useMediaMuted, useOnUnmuteMedia} from './useMediaMuted';
 export {usePortraitOrientation} from './usePortraitOrientation';
+export {useScrollPosition} from './useScrollPosition';
+export {usePhonePlatform} from './usePhonePlatform';
 
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
@@ -67,12 +80,15 @@ export {
   OptOutInfo as ThirdPartyOptOutInfo,
 } from './thirdPartyConsent';
 export {FitViewport} from './FitViewport';
+export {Tooltip} from './Tooltip';
 
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 
 export {RootProviders, registerConsentVendors};
 export {default as registerTemplateWidgetType} from './registerTemplateWidgetType';
+
+export {utils} from './utils';
 
 global.pageflowScrolledRender = async function(seed) {
   setupI18n(seed.i18n);

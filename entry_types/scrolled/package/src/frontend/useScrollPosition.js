@@ -15,7 +15,7 @@ function getScrollPosition({ element, useWindow }) {
     : { x: position.left, y: position.top }
 }
 
-export default function useScrollPosition(effect, deps, element, useWindow, wait) {
+export function useScrollPosition(effect, deps, element, useWindow, wait) {
   const position = useRef(getScrollPosition({ useWindow }));
 
   let throttleTimeout = null;

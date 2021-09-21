@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
 import styles from "./HamburgerIcon.module.css";
 import hamburgerIconStyles from "./HamburgerIcons.module.css";
-import {useI18n} from '../i18n';
+import {useI18n} from 'pageflow-scrolled/frontend';
 
 export function HamburgerIcon(props) {
   const {t} = useI18n();

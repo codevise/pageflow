@@ -2,12 +2,16 @@ import React from 'react';
 import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
 import styles from "./LegalInfoMenu.module.css";
-import InfoIcon from '../icons/information.svg';
+import InfoIcon from './icons/information.svg';
 
-import {Tooltip} from '../Tooltip';
-import {useFileRights, useLegalInfo, useCredits} from '../../entryState';
+import {
+  Tooltip,
+  useFileRights,
+  useLegalInfo,
+  useCredits,
+  useI18n
+} from 'pageflow-scrolled/frontend';
 import {LegalInfoLink} from "./LegalInfoLink";
-import {useI18n} from '../i18n';
 
 export function LegalInfoMenu(props) {
   const fileRights = useFileRights();

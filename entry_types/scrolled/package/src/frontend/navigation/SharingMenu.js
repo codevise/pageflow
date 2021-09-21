@@ -2,14 +2,15 @@ import React from 'react';
 import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
 import styles from "./SharingMenu.module.css";
-import ShareIcon from '../icons/share.svg';
+import ShareIcon from './icons/share.svg';
 
-import {useShareProviders, useShareUrl} from "../../entryState";
-
-import {Tooltip} from '../Tooltip';
-import {useI18n} from '../i18n';
-
-import {usePhonePlatform} from '../usePhonePlatform';
+import {
+  useShareProviders,
+  useShareUrl,
+  useI18n,
+  Tooltip,
+  usePhonePlatform
+} from 'pageflow-scrolled/frontend';
 
 export function SharingMenu() {
   const isPhonePlatform = usePhonePlatform();
