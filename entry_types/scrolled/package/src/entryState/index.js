@@ -6,6 +6,7 @@ export {useNestedFiles} from './useNestedFiles';
 export {useFileRights, useLegalInfo, useCredits} from './legalInfo';
 export {useAvailableQualities} from './useAvailableQualities';
 export {useTheme} from './theme';
+export {useWidget} from './widgets';
 
 export {EntryStateProvider, useEntryStateDispatch} from './EntryStateProvider';
 

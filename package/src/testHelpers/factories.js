@@ -11,6 +11,7 @@ import {
   Theme,
   VideoFile,
   WidgetTypes,
+  WidgetsCollection,
   FileTypes
 } from 'pageflow/editor';
 
@@ -49,6 +50,7 @@ export const factories = {
 
     ensureFileTypes(options);
     ensureFilesCollections(options);
+    ensureWidgetsCollections(options);
 
     const entry = new model({
       id: 1,
@@ -327,5 +329,11 @@ function ensureFilesCollections(options) {
   if (!options.files) {
     options.files = FilesCollection.createForFileTypes(options.fileTypes,
                                                        options.filesAttributes);
+  }
+}
+
+function ensureWidgetsCollections(options) {
+  if (!options.widgets) {
+    options.widgets = new WidgetsCollection(options.widgetsAttributes);
   }
 }
