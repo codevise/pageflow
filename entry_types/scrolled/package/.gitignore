@@ -5,6 +5,8 @@
 /contentElements-editor.js
 /contentElements-frontend.js
 /contentElements-frontend.css
+/widgets/defaultNavigation.js
+/widgets/defaultNavigation.css
 /.storybook/out/
 /.storybook/seed.json
 /.storybook/preview-head.html

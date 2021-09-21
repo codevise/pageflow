@@ -91,6 +91,16 @@ module PageflowScrolled
         create_file 'app/javascript/packs/pageflow-scrolled-server.js', <<-JS
           import 'pageflow-scrolled/frontend-server';
           import 'pageflow-scrolled/contentElements-frontend';
+          import 'pageflow-scrolled/widgets/defaultNavigation';
+        JS
+      end
+
+      def default_navigation_widget_packs
+        widget_dir = 'app/javascript/packs/pageflow-scrolled/widgets'
+
+        create_file File.join(widget_dir, 'defaultNavigation.js'), <<-JS
+          import 'pageflow-scrolled/widgets/defaultNavigation';
+          import 'pageflow-scrolled/widgets/defaultNavigation.css';
         JS
       end
 

@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from 'classnames';
-import headerStyles from "./AppHeader.module.css";
+import headerStyles from "./DefaultNavigation.module.css";
 import styles from "./HamburgerIcon.module.css";
 import hamburgerIconStyles from "./HamburgerIcons.module.css";
 import {useI18n} from 'pageflow-scrolled/frontend';

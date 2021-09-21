@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import headerStyles from "./AppHeader.module.css";
+import headerStyles from "./DefaultNavigation.module.css";
 import styles from "./SharingMenu.module.css";
 import ShareIcon from './icons/share.svg';
 

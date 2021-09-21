@@ -1,5 +1,5 @@
 .button {
-  composes: unstyledButton from '../utils.module.css';
+  composes: unstyledButton from '../../frontend/utils.module.css';
   position: absolute;
   top: 5px;
   height: 40px;
