@@ -15,8 +15,7 @@
     <%= scrolled_favicons_for_entry(@entry.theme) %>
 
     <%= javascript_include_tag 'pageflow_scrolled/legacy' %>
-
-    <%= stylesheet_pack_tag 'pageflow-scrolled-theme', media: 'all' %>
+    <%= scrolled_frontend_stylesheet_packs_tag(@entry, widget_scope: @widget_scope) %>
 
     <%= render_widget_head_fragments(@entry, scope: @widget_scope) %>
 
@@ -44,7 +43,7 @@
       <%= render_widgets(@entry, scope: @widget_scope, insert_point: :bottom_of_entry) %>
     </div>
 
-    <%= javascript_pack_tag 'pageflow-scrolled-frontend' %>
+    <%= scrolled_frontend_javascript_packs_tag(@entry, widget_scope: @widget_scope) %>
 
     <%= scrolled_entry_json_seed_script_tag(@entry, @seed_options || {}) %>
   </body>
