@@ -11,7 +11,7 @@ import {
 } from './ContentElementEditorCommandSubscriptionProvider';
 import {ScrollPointMessageHandler} from './scrollPoints';
 
-export function EntryDecorator(props) {
+export function ContentDecorator(props) {
   const contentElementEditorCommandEmitter = useContentElementEditorCommandEmitter();
 
   return (
