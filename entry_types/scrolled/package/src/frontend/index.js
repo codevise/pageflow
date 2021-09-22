@@ -4,8 +4,7 @@ import './globalNotices.module.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {AppHeader} from './navigation/AppHeader';
-import Entry from './Entry';
+import {Entry} from './Entry';
 import {setupI18n} from './i18n';
 
 import './global.module.css';
@@ -15,7 +14,7 @@ import styles from './foregroundBoxes/GradientBox.module.css';
 import {RootProviders} from './RootProviders';
 import {loadInlineEditingComponents} from './inlineEditing';
 import {loadDashUnlessHlsSupported} from './dash';
-import {registerConsentVendors, ConsentBar} from './thirdPartyConsent';
+import {registerConsentVendors} from './thirdPartyConsent';
 
 import {browser, consent, features} from 'pageflow/frontend';
 import {api} from './api';
@@ -48,7 +47,7 @@ export * from './useOnScreen';
 export * from './i18n';
 
 export * from './SectionThumbnail';
-export {default as Entry} from './Entry';
+export {Entry} from './Entry';
 export {useAudioFocus} from './useAudioFocus';
 export {useDarkBackground} from './backgroundColor';
 export {useFile} from '../entryState'
@@ -108,8 +107,6 @@ function render(seed) {
 export function Root({seed}) {
   return (
     <RootProviders seed={seed}>
-      <ConsentBar />
-      <AppHeader />
       <Entry />
     </RootProviders>
   );

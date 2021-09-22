@@ -7,7 +7,7 @@ import {Section} from './Section';
 import {FullscreenHeightProvider} from './Fullscreen';
 import {StaticPreview} from './useScrollPositionLifecycle';
 
-import entryStyles from './Entry.module.css';
+import contentStyles from './Content.module.css';
 import styles from './SectionThumbnail.module.css';
 
 export function SectionThumbnail({seed, ...props}) {
@@ -36,7 +36,7 @@ function Inner({sectionPermaId, subscribe}) {
                                               Math.ceil(contentRect.client.height) * 5}>
               <div ref={measureRef} className={styles.crop}>
                 <div className={styles.scale}>
-                  <div className={entryStyles.Entry}>
+                  <div className={contentStyles.Content}>
                     <Section state="active" {...section} transition="preview" />
                   </div>
                 </div>

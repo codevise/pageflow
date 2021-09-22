@@ -1,4 +1,4 @@
-export {EntryDecorator} from './EntryDecorator';
+export {ContentDecorator} from './ContentDecorator';
 export {SectionDecorator} from './SectionDecorator';
 export {ContentElementDecorator} from './ContentElementDecorator';
 
