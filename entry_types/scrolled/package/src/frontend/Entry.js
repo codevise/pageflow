@@ -1,15 +1,16 @@
 import React from 'react';
 
 import {ConsentBar} from './thirdPartyConsent';
-import {AppHeader} from './navigation/AppHeader';
 import {Content} from './Content';
+import {Widget} from './Widget';
 
 export function Entry() {
   return (
     <>
       <ConsentBar />
-      <AppHeader />
+      <Widget role="header" />
       <Content />
+      <Widget role="footer" />
     </>
   )
 }

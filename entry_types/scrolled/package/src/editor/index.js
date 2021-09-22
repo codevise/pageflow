@@ -1,6 +1,7 @@
 /*global pageflow*/
 
 import './views/configurationEditors/groups/CommonContentElementAttributes';
+import './views/widgetTypes/roles';
 
 import * as globalInterop from 'pageflow/editor';
 
