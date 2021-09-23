@@ -45,12 +45,12 @@ export function Heading({configuration, sectionProps}) {
 function getScaleCategory(configuration, firstSectionInEntry) {
   switch (configuration.textSize) {
     case 'large':
-      return 'h1';
+      return 'heading-lg';
     case 'medium':
-      return 'h1-medium';
+      return 'heading-md';
     case 'small':
-      return 'h2';
+      return 'heading-sm';
     default:
-      return firstSectionInEntry ? 'h1' : 'h2';
+      return firstSectionInEntry ? 'heading-lg' : 'heading-sm';
   }
 }
