@@ -58,6 +58,67 @@ module PageflowScrolled
                                  text: '--theme-navigation-font-family: Roboto;',
                                  visible: false)
       end
+
+      it 'renders style tag with custom typography rules for theme' do
+        theme = Pageflow::Theme.new(:test,
+                                    typography: {
+                                      header: {
+                                        text_transform: 'uppercase'
+                                      }
+                                    })
+
+        html = helper.scrolled_theme_properties_style_tag(theme)
+
+        expect(html).to have_css('style',
+                                 text: /\.typography-header/,
+                                 visible: false)
+      end
+    end
+
+    describe '#scrolled_theme_typography_rules' do
+      it 'returns rules for theme' do
+        theme = Pageflow::Theme.new(:test,
+                                    typography: {
+                                      header_xl: {
+                                        text_transform: 'uppercase'
+                                      }
+                                    })
+
+        css = helper.scrolled_theme_typography_rules(theme)
+
+        expect(css).to include(<<~CSS)
+          .typography-header-xl {
+            text-transform: uppercase;
+          }
+        CSS
+      end
+
+      it 'supports media queries' do
+        theme = Pageflow::Theme.new(:test,
+                                    typography: {
+                                      header: {
+                                        font_size: '42px',
+                                        md: {
+                                          font_size: '64px'
+                                        }
+                                      }
+                                    })
+
+        css = helper.scrolled_theme_typography_rules(theme)
+
+        expect(css).to include(<<~CSS)
+          .typography-header {
+            font-size: 42px;
+          }
+
+          @media (min-width: 768px) {
+          .typography-header {
+            font-size: 64px;
+          }
+
+          }
+        CSS
+      end
     end
   end
 end
