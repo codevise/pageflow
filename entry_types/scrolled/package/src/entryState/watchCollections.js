@@ -1,7 +1,7 @@
 import {watchCollection} from '../collections';
 
 export function watchCollections(entry, {dispatch}) {
-  const {chapters, sections, contentElements, files} = entry;
+  const {chapters, sections, contentElements, widgets, files} = entry;
   const teardownFns = [];
 
   teardownFns.push(watchCollection(new Backbone.Collection([entry.metadata]), {
@@ -33,6 +33,14 @@ export function watchCollections(entry, {dispatch}) {
   teardownFns.push(watchCollection(contentElements, {
     name: 'contentElements',
     attributes: ['id', 'permaId', 'typeName', 'sectionId'],
+    keyAttribute: 'permaId',
+    includeConfiguration: true,
+    dispatch
+  }));
+
+  teardownFns.push(watchCollection(widgets, {
+    name: 'widgets',
+    attributes: [{typeName: 'type_name'}, 'role', {permaId: 'role'}],
     keyAttribute: 'permaId',
     includeConfiguration: true,
     dispatch

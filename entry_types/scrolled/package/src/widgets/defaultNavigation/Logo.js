@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {useTheme} from '../../entryState';
+import {useTheme} from 'pageflow-scrolled/frontend';
 
-import styles from './AppHeader.module.css';
+import styles from './DefaultNavigation.module.css';
 
 export function Logo() {
   const theme = useTheme();

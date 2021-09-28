@@ -32,6 +32,7 @@ module PageflowScrolled
                     entry_config: Pageflow.config_for(scrolled_entry),
                     sections: main_storyline.sections,
                     content_elements: main_storyline.content_elements,
+                    widgets: scrolled_entry.resolve_widgets(insert_point: :react),
                     options: options)
     end
   end

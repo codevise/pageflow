@@ -71,6 +71,13 @@ unless options[:skip_collections]
       end
     end
 
+    json.widgets do
+      json.array!(widgets) do |widget|
+        json.partial! 'pageflow_scrolled/entry_json_seed/widget',
+                      widget: widget
+      end
+    end
+
     files_json_seed(json, entry) unless options[:skip_files]
   end
 end

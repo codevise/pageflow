@@ -1,8 +1,8 @@
 import React, {useRef} from 'react';
 import classNames from 'classnames';
 
-import ChevronLeftIcon from '../icons/chevronLeft.svg';
-import ChevronRightIcon from '../icons/chevronRight.svg';
+import ChevronLeftIcon from './icons/chevronLeft.svg';
+import ChevronRightIcon from './icons/chevronRight.svg';
 
 import styles from './ScrollButton.module.css';
 

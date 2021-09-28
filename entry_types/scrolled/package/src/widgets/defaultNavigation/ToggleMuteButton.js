@@ -2,15 +2,18 @@ import React, {useRef, useEffect, useCallback} from 'react';
 import classNames from 'classnames';
 
 import {media} from 'pageflow/frontend';
-import {useMediaMuted, useOnUnmuteMedia} from '../useMediaMuted';
-import {useI18n} from '../i18n';
-import {useTheme} from '../../entryState';
+import {
+  useMediaMuted,
+  useOnUnmuteMedia,
+  useI18n,
+  useTheme
+} from 'pageflow-scrolled/frontend';
 
-import headerStyles from './AppHeader.module.css';
+import headerStyles from './DefaultNavigation.module.css';
 import styles from './ToggleMuteButton.module.css';
 
-import MutedIcon from '../icons/muted.svg';
-import UnmutedIcon from '../icons/unmuted.svg';
+import MutedIcon from './icons/muted.svg';
+import UnmutedIcon from './icons/unmuted.svg';
 
 export function ToggleMuteButton() {
   const muted = useMediaMuted();

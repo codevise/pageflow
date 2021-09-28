@@ -11,6 +11,7 @@ require 'domino'
 require 'ammeter/init'
 require 'pundit/matchers'
 
+require 'pageflow/test_entry_type'
 require 'pageflow/test_widget_type'
 require 'pageflow/used_file_test_helper'
 

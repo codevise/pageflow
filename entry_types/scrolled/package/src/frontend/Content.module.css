@@ -1,9 +1,9 @@
-.Entry {
+.Content {
   font-family: var(--theme-entry-font-family);
 }
 
 @media screen {
-  .Entry {
+  .Content {
     background-color: #000;
     color: #fff;
   }

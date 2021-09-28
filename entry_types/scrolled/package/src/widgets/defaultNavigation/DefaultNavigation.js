@@ -1,9 +1,12 @@
 import React, {useState, useCallback} from 'react';
 import classNames from 'classnames';
-import useScrollPosition from '../useScrollPosition';
-import {useChapters} from '../../entryState';
-import {useOnUnmuteMedia} from '../useMediaMuted';
-import {isBlank} from '../utils/blank';
+
+import {
+  useScrollPosition,
+  useChapters,
+  useOnUnmuteMedia,
+  utils
+} from 'pageflow-scrolled/frontend';
 
 import {HamburgerIcon} from './HamburgerIcon'
 import {ChapterLink} from "./ChapterLink";
@@ -14,9 +17,9 @@ import {Logo} from './Logo';
 import {SkipLinks} from './SkipLinks';
 import {Scroller} from './Scroller';
 
-import styles from './AppHeader.module.css';
+import styles from './DefaultNavigation.module.css';
 
-export function AppHeader(props) {
+export function DefaultNavigation(props) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);
@@ -47,8 +50,8 @@ export function AppHeader(props) {
   useOnUnmuteMedia(useCallback(() => setNavExpanded(true), []));
 
   const hasChapters = chapters.length > 1 ||
-                      !isBlank(chapters[0]?.title) ||
-                      !isBlank(chapters[0]?.summary);
+                      !utils.isBlank(chapters[0]?.title) ||
+                      !utils.isBlank(chapters[0]?.summary);
 
   function handleProgressBarMouseEnter() {
     setNavExpanded(true);

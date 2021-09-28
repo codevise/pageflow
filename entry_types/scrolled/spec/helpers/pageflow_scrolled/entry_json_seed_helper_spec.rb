@@ -199,6 +199,48 @@ module PageflowScrolled
         end
       end
 
+      describe 'widgets' do
+        it 'renders widgets registered using ReactWidgetType' do
+          pageflow_configure do |config|
+            config.widget_types.register(ReactWidgetType.new(name: 'customNavigation',
+                                                             role: 'header'))
+          end
+
+          entry = create(:published_entry, type_name: 'scrolled')
+          create(:widget,
+                 subject: entry.revision,
+                 type_name: 'customNavigation',
+                 role: 'header',
+                 configuration: {some: 'value'})
+
+          result = render(helper, entry)
+
+          expect(result)
+            .to include_json(collections: {
+                               widgets: [
+                                 {
+                                   permaId: 'header',
+                                   role: 'header',
+                                   typeName: 'customNavigation',
+                                   configuration: {some: 'value'}
+                                 }
+                               ]
+                             })
+        end
+
+        it 'ignores widgets that have not been registered using ReactWidgetType' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          create(:widget,
+                 subject: entry.revision,
+                 type_name: 'erb_based_widget',
+                 role: 'analytics')
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {widgets: []})
+        end
+      end
+
       it 'also works for draft entry' do
         entry = create(:draft_entry)
         create(:scrolled_chapter, revision: entry.revision)

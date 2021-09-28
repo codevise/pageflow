@@ -241,7 +241,8 @@ export function normalizeAndMergeFixture(options) {
       ...seedFixture.collections,
       chapters: seed.collections.chapters,
       sections: seed.collections.sections,
-      contentElements: seed.collections.contentElements
+      contentElements: seed.collections.contentElements,
+      widgets: seed.collections.widgets
     }
   };
 }

@@ -4,7 +4,7 @@ toc:
       Main entry point of frontend API to register new content element types.
     children:
       - frontend_contentElementTypes
-
+      - frontend_widgetTypes
   - name: Editor API
     description: |
       Main entry point of editor API to register new content element types.

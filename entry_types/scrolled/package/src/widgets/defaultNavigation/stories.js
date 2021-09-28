@@ -3,10 +3,10 @@ import {storiesOf} from '@storybook/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 import {normalizeAndMergeFixture} from 'pageflow-scrolled/spec/support/stories';
-import {AppHeader} from '../navigation/AppHeader';
+import '../../widgets/defaultNavigation';
 import {Entry, RootProviders} from 'pageflow-scrolled/frontend';
 
-const stories = storiesOf('Frontend/Navigation', module);
+const stories = storiesOf('Widgets/Default Navigation', module);
 
 let getSeed = function({chapterCount}){
   const summaries = [
@@ -15,6 +15,10 @@ let getSeed = function({chapterCount}){
     'The Third Chapter'
   ]
   return {
+    widgets: [{
+      role: 'navigation',
+      typeName: 'defaultNavigation'
+    }],
     chapters: Array(chapterCount).fill().map((_, index) => (
       {
         id: index + 1,
@@ -33,7 +37,6 @@ stories.add(
   'Desktop',
   () =>
     <RootProviders seed={normalizeAndMergeFixture(getSeed({chapterCount: 3}))}>
-      <AppHeader />
       <Entry />
     </RootProviders>,
   {
@@ -45,7 +48,6 @@ stories.add(
   'Desktop - Many chapters',
   () =>
     <RootProviders seed={normalizeAndMergeFixture(getSeed({chapterCount: 20}))}>
-      <AppHeader />
       <Entry />
     </RootProviders>,
   {
@@ -57,7 +59,6 @@ stories.add(
   'Mobile',
   () =>
     <RootProviders seed={normalizeAndMergeFixture(getSeed({chapterCount: 3}))}>
-      <AppHeader />
       <Entry />
     </RootProviders>,
   {

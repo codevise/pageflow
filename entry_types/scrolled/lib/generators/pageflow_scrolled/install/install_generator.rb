@@ -34,6 +34,12 @@ module PageflowScrolled
                          before: "module.exports = environment\n") do
           "environment.config.merge(require('pageflow/config/webpack'))\n" \
           "environment.config.merge(require('pageflow-scrolled/config/webpack'))\n\n" \
+          "// Allow loading only chunks of used widgets. runtimeChunk 'single'\n" \
+          "// ensures that modules are only evaluated once which is important\n" \
+          "// for modules with side effects.\n" \
+          "environment.splitChunks((config) =>\n" \
+          "  Object.assign({}, config, { optimization: { runtimeChunk: 'single' }})\n" \
+          ")\n\n" \
           "// Opt into future default behavior of Webpacker [1] to work around\n" \
           "// problems with Video.js DASH service worker.\n" \
           "//\n" \
@@ -71,6 +77,9 @@ module PageflowScrolled
 
       def frontend_pack
         create_file 'app/javascript/packs/pageflow-scrolled-frontend.js', <<-JS
+          import 'pageflow-scrolled/frontend/index.css';
+          import 'pageflow-scrolled/contentElements-frontend.css';
+
           import 'pageflow-scrolled/frontend';
           import 'pageflow-scrolled/contentElements-frontend';
 
@@ -82,13 +91,16 @@ module PageflowScrolled
         create_file 'app/javascript/packs/pageflow-scrolled-server.js', <<-JS
           import 'pageflow-scrolled/frontend-server';
           import 'pageflow-scrolled/contentElements-frontend';
+          import 'pageflow-scrolled/widgets/defaultNavigation';
         JS
       end
 
-      def theme_pack
-        create_file 'app/javascript/packs/pageflow-scrolled-theme.css', <<-JS
-          @import "pageflow-scrolled/frontend/index.css";
-          @import "pageflow-scrolled/contentElements-frontend.css";
+      def default_navigation_widget_packs
+        widget_dir = 'app/javascript/packs/pageflow-scrolled/widgets'
+
+        create_file File.join(widget_dir, 'defaultNavigation.js'), <<-JS
+          import 'pageflow-scrolled/widgets/defaultNavigation';
+          import 'pageflow-scrolled/widgets/defaultNavigation.css';
         JS
       end
 

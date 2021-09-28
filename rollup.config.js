@@ -235,6 +235,17 @@ const pageflowScrolled = [
     external,
     plugins: plugins({extractCss: true}),
     ...ignoreJSXWarning
+  },
+
+  {
+    input: pageflowScrolledPackageRoot + '/src/widgets/defaultNavigation/index.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/widgets/defaultNavigation.js',
+      format: 'esm',
+    },
+    external,
+    plugins: plugins({extractCss: true}),
+    ...ignoreJSXWarning
   }
 ];
 
