@@ -2,6 +2,7 @@ import React from 'react';
 
 import {withInlineEditingAlternative} from './inlineEditing';
 import {Text} from './Text';
+import textStyles from './Text.module.css';
 
 export const EditableText = withInlineEditingAlternative('EditableText', function EditableText({value}) {
   return (
@@ -37,7 +38,7 @@ export function renderElement({attributes, children, element}) {
   case 'list-item':
     return <li {...attributes}>{children}</li>;
   case 'heading':
-    return <h2 {...attributes}>{children}</h2>;
+    return <h2 {...attributes} className={textStyles['heading-xs']}>{children}</h2>;
   case 'link':
     return <a {...attributes} href={element.href}>{children}</a>;
   default:

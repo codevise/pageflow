@@ -6,44 +6,53 @@
 @value text-2xl: 88px;
 @value text-3xl: 110px;
 
-.h2 {
+.heading-lg {
+  composes: typography-heading from global;
+  font-size: text-3xl;
+  line-height: 1;
+}
+
+.heading-md {
+  composes: typography-heading from global;
+  font-size: text-2xl;
+  line-height: 1;
+}
+
+.heading-sm {
+  composes: typography-heading from global;
   font-size: text-xl;
   font-weight: 700;
   line-height: 1;
 }
 
-.h1-medium {
-  font-size: text-2xl;
-  line-height: 1;
-}
-
-.h1 {
-  font-size: text-3xl;
-  line-height: 1;
+.heading-xs {
+  composes: typography-heading from global;
 }
 
 .body {
+  composes: typography-body from global;
   font-size: text-base;
   line-height: 1.4;
 }
 
 .caption {
+  composes: typography-caption from global;
   font-size: text-s;
   line-height: 1.4;
 }
 
 @media (max-width: 600px) {
-  .h2 {
-    font-size: text-l;
+  .heading-lg {
+    font-size: text-xl;
+    line-height: 1.1;
   }
 
-  .h1-medium {
+  .heading-md {
     font-size: text-2l;
     line-height: 1.1;
   }
 
-  .h1 {
-    font-size: text-xl;
-    line-height: 1.1;
+  .heading-sm {
+    font-size: text-l;
   }
 }
