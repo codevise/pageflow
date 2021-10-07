@@ -9,7 +9,7 @@ describe('EditableInlineText', () => {
   it('renders empty string by default', () => {
     const {container} = render(<EditableInlineText />);
 
-    expect(container.innerHTML).toEqual('')
+    expect(container).toHaveTextContent('');
   });
 
   it('renders text from value', () => {

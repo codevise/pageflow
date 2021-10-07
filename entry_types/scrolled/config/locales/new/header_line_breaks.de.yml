@@ -1,0 +1,28 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        heading:
+          help_texts:
+            shortcuts: |
+              <dl class="shortcuts">
+                <dt><kbd>Shift</kbd> + <kbd>Enter</kbd></dt>
+                <dd>
+                  Bedingten Trennstrich einfügen.
+                </dd>
+              </dl>
+          attributes:
+            hyphens:
+              label: 'Silbentrennung'
+              inline_help: |
+                Bei manueller Silbentrennung werden Worte nur an
+                Stellen getrennt, die durch einen bedingten
+                Trennstrich ausgezeichnet wurden. Du kannst so
+                Trennung an unerwünschten Stellen verhindern.  Ohne
+                bedingte Trennstriche werden lange Worte in der
+                nächsten Zeile ohne Bindestrich fortgesetzt.  Prüfe
+                daher insbesondere die mobile Darstellung, wenn du
+                manuelle Silbentrennung verwendest.
+              values:
+                auto: 'Automatisch'
+                manual: 'Manuell'

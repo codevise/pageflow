@@ -11222,6 +11222,13 @@ slash@^3.0.0:
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
+slate-hyperscript@^0.57.3:
+  version "0.57.3"
+  resolved "https://registry.yarnpkg.com/slate-hyperscript/-/slate-hyperscript-0.57.3.tgz#69462c2f436f75f0c17d9a727514402fc8abbf3c"
+  integrity sha512-aUY+nXw9s9Fv0uEO7sBdRVQ9IJbKM/CaYixlUKFk+7lRZsBpplqSrb4XHL7cLPVmWIckjU4I2eCXoezNKsrgwQ==
+  dependencies:
+    is-plain-object "^3.0.0"
+
 slate-react@^0.57.3:
   version "0.57.3"
   resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.57.3.tgz#c20662359c55e6cc1e117036e18e818c68a6bb51"
