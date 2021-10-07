@@ -2,4 +2,25 @@
   p {
     margin-bottom: 1em;
   }
+
+  .shortcuts {
+    color: #333;
+
+    dt {
+      display: inline-block;
+      margin-top: 0.5em;
+    }
+
+    dd {
+      margin: 0.5em 0 0.5em 6px;
+    }
+
+    kbd {
+      border: solid 1px currentColor;
+      border-radius: 4px;
+      padding: 3px 5px;
+      display: inline-block;
+      font-size: 11px;
+    }
+  }
 }

@@ -33,6 +33,7 @@ export function Heading({configuration, sectionProps}) {
             inline={true}>
         <EditableInlineText value={configuration.value}
                             defaultValue={legacyValue}
+                            hyphens={configuration.hyphens}
                             placeholder={firstSectionInEntry ?
                                          t('pageflow_scrolled.inline_editing.type_title') :
                                          t('pageflow_scrolled.inline_editing.type_heading')}
