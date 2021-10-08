@@ -2,20 +2,22 @@
   hyphens: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
 
-  /*
-     `word-wrap: break-word` is required for browsers that do not
-     support automatic hyphenation (e.g. Edge on Windows as of
-     2021-10) to prevent long words from causing horinzontal
-     overflow. Mobile Safari (e.g. iPhone 11/iOS 13) does support
-     `hyhens: auto`, but disables hyphenation if `word-wrap:
-     break-word` is present. Since only Mobile Safari supports
-     `-webkit-touch-callout` [1], we can use it to reset `word-wrap`
-     for iOS only.
+/*
+  `word-wrap: break-word` is required for browsers that do not
+  support automatic hyphenation (e.g. Edge on Windows as of
+  2021-10) to prevent long words from causing horinzontal
+  overflow. Mobile Safari (e.g. iPhone 11/iOS 13) does support
+  `hyhens: auto`, but disables hyphenation if `word-wrap:
+  break-word` is present. Since only Mobile Safari supports
+  `-webkit-touch-callout` [1], we can use it to reset `word-wrap`
+  for iOS only.
 
-     [1] https://stackoverflow.com/questions/30102792/css-media-query-to-target-only-ios-devices
-  */
-  @supports (-webkit-touch-callout: none) {
+  [1] https://stackoverflow.com/questions/30102792/css-media-query-to-target-only-ios-devices
+*/
+@supports (-webkit-touch-callout: none) {
+  .root {
     word-wrap: normal;
   }
 }
