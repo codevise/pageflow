@@ -8,6 +8,7 @@ module PageflowScrolled
       include Pageflow::StructuredDataHelper
       include FaviconHelper
       include PacksHelper
+      include WebpackPublicPathHelper
 
       def scrolled_editor_iframe_seed_html_script_tag(entry)
         html = render(template: 'pageflow_scrolled/entries/show',

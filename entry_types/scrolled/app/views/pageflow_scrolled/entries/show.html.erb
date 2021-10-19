@@ -44,6 +44,7 @@
       <%= render_widgets(@entry, scope: @widget_scope, insert_point: :bottom_of_entry) %>
     </div>
 
+    <%= scrolled_webpack_public_path_script_tag %>
     <%= scrolled_frontend_javascript_packs_tag(@entry, widget_scope: @widget_scope) %>
 
     <%= scrolled_entry_json_seed_script_tag(@entry, @seed_options || {}) %>
