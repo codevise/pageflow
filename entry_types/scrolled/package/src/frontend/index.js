@@ -1,3 +1,4 @@
+import './webpackPublicPath';
 import './polyfills';
 import './globalNotices.module.css';
 
