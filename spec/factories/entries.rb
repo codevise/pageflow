@@ -21,6 +21,8 @@ module Pageflow
 
         with_feature { nil }
         without_feature { nil }
+
+        draft_attributes { nil }
       end
 
       after(:create) do |entry, evaluator|
@@ -40,6 +42,8 @@ module Pageflow
                entity: entry,
                user: evaluator.with_manager,
                role: :manager) if evaluator.with_manager
+
+        entry.draft.update!(evaluator.draft_attributes) if evaluator.draft_attributes
       end
 
       after(:build) do |entry, evaluator|

@@ -50,6 +50,68 @@ module Pageflow
         expect(helper.pretty_entry_url(entry)).to eq('http://my.example.com/test')
       end
 
+      it 'uses theming canonical entry url prefix if present' do
+        theming = create(:theming,
+                         canonical_entry_url_prefix: 'https://example.com/blog/')
+        entry = create(:published_entry, title: 'test', theming: theming)
+
+        expect(helper.pretty_entry_url(entry)).to eq('https://example.com/blog/test')
+      end
+
+      it 'prefers canonical entry url prefix over cname' do
+        theming = create(:theming,
+                         cname: 'my.example.com',
+                         canonical_entry_url_prefix: 'https://example.com/blog/')
+        entry = create(:published_entry, title: 'test', theming: theming)
+
+        expect(helper.pretty_entry_url(entry)).to eq('https://example.com/blog/test')
+      end
+
+      it 'supports interpolating entry locale in canonical entry url prefix' do
+        theming = create(:theming,
+                         canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
+        entry = create(:published_entry,
+                       title: 'test',
+                       theming: theming,
+                       revision_attributes: {locale: 'fr'})
+
+        expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
+      end
+
+      it 'supports reading locale from draft entry' do
+        theming = create(:theming,
+                         canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
+        entry = create(:draft_entry,
+                       title: 'test',
+                       theming: theming,
+                       revision_attributes: {locale: 'fr'})
+
+        expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
+      end
+
+      it 'uses locale of published revision if entry model is passed' do
+        theming = create(:theming,
+                         canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
+        entry = create(:entry,
+                       :published,
+                       title: 'test',
+                       theming: theming,
+                       published_revision_attributes: {locale: 'fr'})
+
+        expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
+      end
+
+      it 'falls back to draft locale if unpublished entry is passed' do
+        theming = create(:theming,
+                         canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
+        entry = create(:entry,
+                       title: 'test',
+                       theming: theming)
+        entry.draft.update(locale: 'fr')
+
+        expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
+      end
+
       it 'can be configured via hash in public_entry_url_options' do
         Pageflow.config.public_entry_url_options = {host: 'public.example.com'}
         entry = PublishedEntry.new(create(:entry, title: 'test'),

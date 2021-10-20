@@ -2,6 +2,7 @@ module Pageflow
   FactoryBot.define do
     factory :published_entry, class: PublishedEntry do
       transient do
+        title
         account
         theming
         type_name { 'paged' }
@@ -14,6 +15,7 @@ module Pageflow
       initialize_with do
         PublishedEntry.new(create(:entry,
                                   :published,
+                                  title: title,
                                   account: account,
                                   theming: theming,
                                   type_name: type_name,

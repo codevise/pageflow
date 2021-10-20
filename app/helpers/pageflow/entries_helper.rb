@@ -5,8 +5,42 @@ module Pageflow
     end
 
     def pretty_entry_url(entry, options = {})
-      params = options.reverse_merge(Pageflow.config.theming_url_options(entry.theming) || {})
-      pageflow.short_entry_url(entry.to_model, params)
+      PrettyUrl.build(pageflow, entry, options)
+    end
+
+    # @api private
+    module PrettyUrl
+      extend self
+
+      def build(routes, entry, options)
+        with_custom_canonical_url_prefix(entry) ||
+          default(routes, entry, options)
+      end
+
+      private
+
+      def with_custom_canonical_url_prefix(entry)
+        return if entry.theming.canonical_entry_url_prefix.blank?
+        entry = ensure_entry_with_revision(entry)
+
+        [
+          entry.theming.canonical_entry_url_prefix.gsub(':locale', entry.locale),
+          entry.to_param
+        ].join
+      end
+
+      def default(routes, entry, options)
+        params = options.reverse_merge(Pageflow.config.theming_url_options(entry.theming) || {})
+        routes.short_entry_url(entry.to_model, params)
+      end
+
+      def ensure_entry_with_revision(entry)
+        if entry.is_a?(EntryAtRevision)
+          entry
+        else
+          PublishedEntry.new(entry, entry.published_revision || entry.draft)
+        end
+      end
     end
 
     def entry_privacy_link_url(entry)
