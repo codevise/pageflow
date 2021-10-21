@@ -65,7 +65,10 @@ module PageflowScrolled
       ReactRenderer
         .new(files: ['pageflow-scrolled-server'],
              # Define required external globals.
-             code: 'function videojs() {};')
+             code: <<-JS)
+                #{WebpackPublicPathHelper.js_snippet}
+                function videojs() {};
+             JS
     end
   end
 end
