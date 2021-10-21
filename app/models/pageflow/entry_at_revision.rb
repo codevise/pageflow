@@ -18,7 +18,7 @@ module Pageflow
              :enabled_feature_names,
              :edit_lock,
              :password_digest,
-             :to_model, :to_key, :persisted?, :to_json,
+             :to_model, :to_key, :to_param, :persisted?, :to_json,
              :first_published_at, :published_until, :published?,
              :type_name,
              to: :entry)
