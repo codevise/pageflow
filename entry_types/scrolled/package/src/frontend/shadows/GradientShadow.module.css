@@ -5,6 +5,8 @@
   width: 100%;
   z-index: 1;
   transition: opacity 1s ease;
+  /* Prevents shadow from flickering on iPhone 12/iOS 14 */
+  will-change: opacity;
 }
 
 /* dark shadow */
