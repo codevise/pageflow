@@ -4,7 +4,7 @@ module Pageflow
 
     def page_type_json_seeds(config)
       render_json_partial('pageflow/page_types/page_type',
-                          collection: config.page_types,
+                          collection: config.page_types.to_a,
                           as: :page_type)
     end
 
