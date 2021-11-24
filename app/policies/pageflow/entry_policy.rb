@@ -46,6 +46,10 @@ module Pageflow
       @entry
     end
 
+    def filter_by_type?
+      user.admin?
+    end
+
     def preview?
       query.has_at_least_role?(:previewer)
     end

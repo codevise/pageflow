@@ -83,6 +83,10 @@ module Pageflow
         EntryPolicy.new(user, Entry.new).create_any?
       end
 
+      can :filter_by_type, :entries do
+        EntryPolicy.new(user, Entry).filter_by_type?
+      end
+
       can :see_own_role_on, :entries do
         !user.admin?
       end

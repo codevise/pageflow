@@ -61,6 +61,10 @@ module Pageflow
            as: :searchable_select,
            ajax: true,
            if: ->(_) { authorized?(:index, :accounts) }
+    filter :type_name,
+           as: :select,
+           collection: -> { entry_type_collection },
+           if: ->(_) { authorized?(:filter_by_type, :entries) }
     filter :created_at
     filter :edited_at
     filter :first_published_at
