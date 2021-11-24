@@ -10,7 +10,7 @@ module Pageflow
 
     def theme_json_seeds(config)
       render_json_partial('pageflow/themes/theme',
-                          collection: config.themes,
+                          collection: config.themes.to_a,
                           as: :theme)
     end
   end
