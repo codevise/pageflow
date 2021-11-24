@@ -237,6 +237,24 @@ module Pageflow
       end
     end
 
+    describe 'filter_by_type?' do
+      it 'is allowed for admin' do
+        user = create(:user, :admin)
+
+        policy = EntryPolicy.new(user, Entry.new)
+
+        expect(policy).to permit_action(:filter_by_type)
+      end
+
+      it 'is not allowed for non admins' do
+        user = create(:user, :publisher, on: create(:account))
+
+        policy = EntryPolicy.new(user, Entry.new)
+
+        expect(policy).not_to permit_action(:filter_by_type)
+      end
+    end
+
     describe '.resolve' do
       it 'includes all entries for admins' do
         user = create(:user, :admin)

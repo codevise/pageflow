@@ -27,6 +27,27 @@ describe Admin::EntriesController do
       end
     end
 
+    describe 'entry type filter' do
+      it 'is displayed for admin' do
+        user = create(:user, :admin)
+
+        sign_in(user, scope: :user)
+        get :index
+
+        expect(response.body).to have_selector('#q_type_name')
+      end
+
+      it 'is not displayed for other users' do
+        user = create(:user)
+        create(:account, with_manager: user)
+
+        sign_in(user, scope: :user)
+        get :index
+
+        expect(response.body).not_to have_selector('#q_type_name')
+      end
+    end
+
     describe 'new entry button' do
       let(:new_button_text) do
         I18n.t('active_admin.new_model',
