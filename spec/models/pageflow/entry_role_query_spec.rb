@@ -32,6 +32,16 @@ module Pageflow
           expect(result).to include(entry)
         end
 
+        it 'includes entries with account membership with stronger role' do
+          user = create(:user)
+          account = create(:account, with_publisher: user)
+          entry = create(:entry, account: account)
+
+          result = EntryRoleQuery::Scope.new(user, Entry).with_role_at_least(:editor)
+
+          expect(result).to include(entry)
+        end
+
         it 'does not include entries user is not member of' do
           user = create(:user)
           create(:entry, with_editor: user)
@@ -63,9 +73,19 @@ module Pageflow
           expect(result).not_to include(entry)
         end
 
-        it 'does not include entries with memberships of insufficient role' do
+        it 'does not include entries with entry memberships of insufficient role' do
           user = create(:user)
           entry = create(:entry, with_previewer: user)
+
+          result = EntryRoleQuery::Scope.new(user, Entry).with_role_at_least(:editor)
+
+          expect(result).not_to include(entry)
+        end
+
+        it 'does not include entries with account memberships of insufficient role' do
+          user = create(:user)
+          account = create(:account, with_previewer: user)
+          entry = create(:entry, account: account)
 
           result = EntryRoleQuery::Scope.new(user, Entry).with_role_at_least(:editor)
 

@@ -11,33 +11,39 @@ module Pageflow
 
       def with_role_at_least(role)
         scope
-          .joins(memberships_for_entries_with_at_least_role(role))
-          .joins(memberships_for_account_of_entries_with_at_least_role(role))
-          .where(either_membership_is_present)
+          .joins(memberships_for_account_of_entries)
+          .joins(memberships_for_entries)
+          .where(either_membership_has_at_least_role(role))
       end
 
       def with_account_role_at_least(role)
         scope
-          .joins(memberships_for_account_of_entries_with_at_least_role(role))
-          .where(entry_account_membership_is_present)
+          .joins(memberships_for_account_of_entries)
+          .where(entry_account_membership_has_at_least_role(role))
       end
 
       private
 
-      def memberships_for_entries_with_at_least_role(role)
-        join_memberships(table_alias: table_alias_for('entry'),
+      def memberships_for_account_of_entries
+        # Since every user with an entry membership also has a
+        # membership for the entry's account, we can use an INNER JOIN
+        # to prevent a full scan of the entries table. The database
+        # will first look up the account memberships and then get the
+        # entries using the index on `account_id`. Those are then
+        # filtered further based on entry memberships and roles.
+        join_memberships(join_type: 'INNER',
+                         table_alias: table_alias_for('entry_account'),
                          user_id: user.id,
-                         roles: Roles.at_least(role),
-                         entity_id_column: 'pageflow_entries.id',
-                         entity_type: 'Pageflow::Entry')
-      end
-
-      def memberships_for_account_of_entries_with_at_least_role(role)
-        join_memberships(table_alias: table_alias_for('entry_account'),
-                         user_id: user.id,
-                         roles: Roles.at_least(role),
                          entity_id_column: 'pageflow_entries.account_id',
                          entity_type: 'Pageflow::Account')
+      end
+
+      def memberships_for_entries
+        join_memberships(join_type: 'LEFT OUTER',
+                         table_alias: table_alias_for('entry'),
+                         user_id: user.id,
+                         entity_id_column: 'pageflow_entries.id',
+                         entity_type: 'Pageflow::Entry')
       end
 
       def join_memberships(options)
@@ -45,25 +51,39 @@ module Pageflow
         entity_id_column = options[:entity_id_column]
 
         sanitize_sql(<<-SQL, options)
-          LEFT OUTER JOIN pageflow_memberships as #{table_alias} ON
+          #{options[:join_type]} JOIN pageflow_memberships as #{table_alias} ON
           #{table_alias}.user_id = :user_id AND
-          #{table_alias}.role IN (:roles) AND
           #{table_alias}.entity_id = #{entity_id_column} AND
           #{table_alias}.entity_type = :entity_type
         SQL
       end
 
-      def either_membership_is_present
-        [entry_membership_is_present,
-         entry_account_membership_is_present].join(' OR ')
+      def either_membership_has_at_least_role(role)
+        [
+          entry_account_membership_has_at_least_role(role),
+          entry_membership_has_at_least_role(role)
+        ].join(' OR ')
       end
 
-      def entry_membership_is_present
-        "#{table_alias_for(:entry)}.entity_id IS NOT NULL"
+      def entry_account_membership_has_at_least_role(role)
+        membership_has_at_least_role(
+          table_alias: table_alias_for('entry_account'),
+          role: role
+        )
       end
 
-      def entry_account_membership_is_present
-        "#{table_alias_for(:entry_account)}.entity_id IS NOT NULL"
+      def entry_membership_has_at_least_role(role)
+        membership_has_at_least_role(
+          table_alias: table_alias_for('entry'),
+          role: role
+        )
+      end
+
+      def membership_has_at_least_role(table_alias:, role:)
+        sanitize_sql(
+          "#{table_alias}.role IN (:roles)",
+          roles: Roles.at_least(role)
+        )
       end
 
       def table_alias_for(type)
