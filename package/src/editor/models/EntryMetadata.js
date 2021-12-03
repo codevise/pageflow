@@ -13,8 +13,8 @@ export const EntryMetadata = Configuration.extend({
     this.configuration =
       new EntryMetadataConfiguration(_.clone(attributes.configuration) || {});
 
-    this.listenTo(this.configuration, 'change', function() {
-      this.trigger('change');
+    this.listenTo(this.configuration, 'change', function(model, options) {
+      this.trigger('change', model, options);
       this.parent.save();
     });
   },
