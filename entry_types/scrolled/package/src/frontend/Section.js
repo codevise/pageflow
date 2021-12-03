@@ -115,7 +115,7 @@ export { ConnectedSection as Section };
 
 function heightMode(props) {
   if (props.fullHeight) {
-    if (props.transition.startsWith('fade') ||
+    if ((props.transition.startsWith('fade') && props.previousSection) ||
         (props.nextSection && props.nextSection.transition.startsWith('fade'))) {
       return 'fullFade';
     }
