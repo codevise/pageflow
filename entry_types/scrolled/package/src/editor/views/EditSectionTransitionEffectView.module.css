@@ -1,218 +1,244 @@
 @value selectionColor from './colors.module.css';
 
-.upper_section {
-    background: #50514f;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: normal;
-}
-
-.lower_section {
-    background: #A2A2A2;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: normal;
-}
-
-.upper_background, .lower_background {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .disabled {
-    pointer-events: none;
-    opacity: 0.3;
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .active {
-    background: selectionColor !important;
+  background: selectionColor !important;
 }
 
 .active div,
-.active .extended_option {
-    color: #ffffff;
+.active .transitionVariant,
+.active .transitionVariant .transitionVariantLabel,
+.active .defaultTransition {
+  color: #ffffff;
 }
 
-.extended_option {
-    display: none !important;
-}
-
-.active .extended_option {
-    display: flex !important;
-    height: auto;
-    width: 82.5%;
-    align-items: center;
-    padding: 5% 2.5%;
-    padding-left: 15%;
-}
-
-.extended_option input {
-    opacity: 1 !important;
-    visibility: hidden;
-    position: absolute;
-    left: -15px;
-    top: 8px;
-    width: auto;
-}
-
-.container.container_with_option label:first-child {
-    padding-bottom: 10px;
-}
-
-.active .extended_option:before {
-    display: block;
-    content: ' ';
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMjIgMnYyMGgtMjB2LTIwaDIwem0yLTJoLTI0djI0aDI0di0yNHoiLz48L3N2Zz4=);
-    background-size: 15px 15px;
-    height: 15px;
-    width: 15px;
-    position: absolute;
-    left: 13px;
-    top: 10px;
-}
-
-.active .extended_option.active:before {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PHBhdGggZD0iTTIyIDJ2MjBoLTIwdi0yMGgyMHptMi0yaC0yNHYyNGgyNHYtMjR6bS01LjU0MSA4LjQwOWwtMS40MjItMS40MDktNy4wMjEgNy4xODMtMy4wOC0yLjkzNy0xLjM5NSAxLjQzNSA0LjUgNC4zMTkgOC40MTgtOC41OTF6Ii8+PC9zdmc+);
+.active .transitionVariantLabel input {
+  border-color: #fff;
 }
 
 .container {
-    height: 90px;
-    display: flex !important;
-    align-items: center;
-    border-top: 1px solid #ffffff;
-    background: #e5e5e5;
+  border-top: 1px solid #ffffff;
+  background: #e5e5e5;
+  position: relative;
 }
+
 .container:hover {
-     background: #ddd;
+  background: #ddd;
 }
 
-.container label:first-child {
-    height: 60px;
-    width: 100%;
-    padding: 15px 0;
+.defaultTransition input,
+.input input {
+  opacity: 0;
+  height: 0;
 }
 
-.container_with_option.active {
-    height: auto;
-    flex-direction: column;
+.input {
+  padding: 10px;
 }
 
 .transition {
-    height: 100%;
-    width: 100%;
-    display: flex;
+  display: flex;
 }
 
-
-/*Fade AND Fade Background Upper*/
-.container:hover .fadeBg .upper_section {
-    animation: FadeA 4s linear infinite;
-}
-.container:hover .fadeBg .lower_section {
-    animation: FadeB 4s linear infinite;
+.transitionLabel,
+.transitionVariantLabel {
+  margin: 0 !important;
 }
 
-/*Scroll, Scroll Over, Reveal, AND Fade Background Lower*/
-.container:hover .scroll .upper_section,
-.container:hover .scroll .lower_section,
-.container:hover .scrollOver .lower_section,
-.container:hover .reveal .upper_section{
-    animation: Translate 2s linear infinite;
+.transitionLabel {
+  padding: 10px;
 }
 
-/*Before After*/
-.container:hover .beforeAfter .upper_section {
-    animation: Translate 2s linear infinite;
+.transitionVariant {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.container:hover .beforeAfter .upper_section div {
-    animation: TranslateYPositive 2s linear infinite;
+
+.transitionVariant .transitionVariantLabel {
+  padding: 0 0 10px 10px;
+  display: inline-flex;
+  align-items: center;
+  text-transform: none;
+  font-size: 12px;
+  font-weight: normal;
+  color: #666;
+}
+
+.transitionVariantLabel input {
+  appearance: none;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 100%;
+  border-color: #888;
+  color: inherit;
+  margin: 0 10px 0 2px;
+}
+
+.transitionVariantLabel input:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+}
+
+.defaultTransition {
+}
+
+.container > .defaultTransition {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  margin: 0;
+}
+
+.container > .defaultTransition .defaultTransitionIcon,
+.container > .defaultTransition .markAsDefaultTransitionIcon {
+  padding: 5px;
+}
+
+.defaultTransitionIcon,
+.markAsDefaultTransitionIcon {
+  font-size: 18px;
+  font-weight: normal;
+  padding: 0 10px 10px 5px;
+}
+
+.defaultTransitionIcon {
+  composes: star from './icons.module.css';
+  display: none;
+}
+
+.markAsDefaultTransitionIcon {
+  composes: starOutlined from './icons.module.css';
+  opacity: 0.5;
+}
+
+.markAsDefaultTransitionIcon:hover {
+  opacity: 1;
+}
+
+input:checked + .defaultTransitionIcons .defaultTransitionIcon {
+  display: block;
+}
+
+input:checked + .defaultTransitionIcons .markAsDefaultTransitionIcon {
+  display: none;
+}
+
+.upperSection,
+.lowerSection,
+.upperBackground,
+.lowerBackground {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: normal;
+}
+
+.upperBackground::before {
+  content: "A";
+}
+
+.lowerBackground::before {
+  content: "B";
+}
+
+.upperSection {
+  background: #50514f;
+}
+
+.lowerSection {
+  background: #A2A2A2;
+}
+
+.container:hover .fade .upperSection {
+  animation: FadeA 4s linear infinite;
+}
+.container:hover .fade .lowerSection {
+  animation: FadeB 4s linear infinite;
+}
+
+.container:hover .scroll .upperSection,
+.container:hover .scroll .lowerSection,
+.container:hover .scrollOver .lowerSection,
+.container:hover .reveal .upperSection{
+  animation: Translate 2s linear infinite;
+}
+
+.container:hover .beforeAfter .upperSection {
+  animation: Translate 2s linear infinite;
+}
+.container:hover .beforeAfter .upperSection div {
+  animation: TranslateYPositive 2s linear infinite;
 }
 
 .animation {
-    width: 30%;
-    height: 100%;
-    margin: 0 2%;
-    border-radius: 5%;
-    color: #ffffff;
-    text-align: center;
-    font-size: 26px;
-    overflow: hidden;
+  width: 75px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 5%;
+  color: #ffffff;
+  text-align: center;
+  font-size: 26px;
+  overflow: hidden;
 }
 
-/*Fade + Reveal + Before After*/
-.fadeBg .animation,
+.fade .animation,
 .reveal .animation,
 .beforeAfter .animation {
-    position: relative;
+  position: relative;
 }
 
-/*Fade + Reveal + Before After Lower Sections*/
-.fadeBg .lower_section,
-.reveal .lower_section,
-.beforeAfter .lower_section {
-    position: absolute;
+.fade .lowerSection,
+.reveal .lowerSection,
+.beforeAfter .lowerSection {
+  position: absolute;
 }
 
-/*Reveal, fade Upper Section, & Before After Upper Section*/
-.reveal .upper_section,
-.beforeAfter .upper_section,
-.fadeBg .upper_section {
-    position: absolute;
-    z-index: 1;
+.reveal .upperSection,
+.beforeAfter .upperSection,
+.fade .upperSection {
+  position: absolute;
+  z-index: 1;
 }
 
-.beforeAfter .upper_section {
-    overflow: hidden;
+.beforeAfter .upperSection {
+  overflow: hidden;
 }
 
-/*Input*/
-.container input {
-    opacity: 0;
-}
-
-/*Label*/
-.container .input {
-    display: block;
-    text-align: left;
-    height: 100%;
-    width: 70%;
-}
-
-/*Keyframes*/
 @keyframes Translate {
-    50% {
-        transform: translateY(-100%);
-   }
+  50% {
+    transform: translateY(-100%);
+  }
 }
+
 @keyframes TranslateYPositive {
-    50% {
-        transform: translateY(100%);
-   }
+  50% {
+    transform: translateY(100%);
+  }
 }
+
 @keyframes FadeA {
-    25%,50% {
-        opacity: 0;
-        visibility: hidden;
-    }
-    10%, 80% {
-        visibility: visible;
-   }
+  25%,50% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  10%, 80% {
+    visibility: visible;
+  }
 }
+
 @keyframes FadeB {
-    25%, 50% {
-        opacity: 1;
-    }
-    90% {
-        visibility: hidden;
-        opacity: 0;
-   }
+  25%, 50% {
+    opacity: 1;
+  }
+  90% {
+    visibility: hidden;
+    opacity: 0;
+  }
 }

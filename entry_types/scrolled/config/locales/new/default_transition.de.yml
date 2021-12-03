@@ -1,0 +1,14 @@
+de:
+  pageflow_scrolled:
+    editor:
+      edit_section_transition:
+        attributes:
+          transition:
+            values:
+              fade: "Überblenden"
+              fadeBg: "DELETE"
+            variants:
+              fade: "Inhalte der Abschnitte ebenfalls überblenden"
+              fadeBg: "Nur Hintergründe der Abschnitte überblenden"
+            mark_as_default_transition: "Als Standard für neue Abschnitte verwenden"
+            default_transition: "Wird als Standard für neue Abschnitte verwendet"

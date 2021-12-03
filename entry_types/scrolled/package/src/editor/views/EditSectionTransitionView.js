@@ -1,7 +1,6 @@
 import {EditConfigurationView} from 'pageflow/editor';
-import {SelectInputView} from 'pageflow/ui';
 import {EditSectionTransitionEffectView} from './EditSectionTransitionEffectView';
-import {getTransitionNames, getAvailableTransitionNames} from 'pageflow-scrolled/frontend';
+import {getAvailableTransitionNames} from 'pageflow-scrolled/frontend';
 
 export const EditSectionTransitionView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_section_transition',
@@ -18,7 +17,8 @@ export const EditSectionTransitionView = EditConfigurationView.extend({
 
     configurationEditor.tab('transition', function() {
       this.input('transition', EditSectionTransitionEffectView, {
-        values: getTransitionNames(),
+        defaultsModel: entry.metadata.configuration,
+        defaultPropertyName: 'defaultTransition',
         optionDisabled: (value) => !availableTransitions.includes(value)
       });
     });
