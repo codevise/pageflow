@@ -2,7 +2,7 @@ import {editor, Configuration} from 'pageflow/editor';
 
 export const SectionConfiguration = Configuration.extend({
   defaults: {
-    transition: 'fade',
+    transition: 'fadeBg',
     fullHeight: true,
     exposeMotifArea: true,
     backdrop: {
