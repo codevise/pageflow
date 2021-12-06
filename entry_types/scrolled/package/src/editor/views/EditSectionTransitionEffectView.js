@@ -88,12 +88,12 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
     const value = model.get(propertyName);
 
     let input = this.ui.container.find(
-      `input[name="${name}"][value="${value}"]`
+      `input[name="${name}"][value="${value}"]:enabled`
     );
 
     if (!input.length) {
       input = this.ui.container.find(
-        `input[name="${name}"]`
+        `input[name="${name}"]:enabled`
       ).first();
     }
 
