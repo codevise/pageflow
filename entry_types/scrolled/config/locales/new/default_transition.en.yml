@@ -1,0 +1,14 @@
+en:
+  pageflow_scrolled:
+    editor:
+      edit_section_transition:
+        attributes:
+          transition:
+            values:
+              fade: "Cross Fade"
+              fadeBg: "DELETE"
+            variants:
+              fade: "Also fade content of sections"
+              fadeBg: "Fade only section backgrounds"
+            mark_as_default_transition: "Use as default for new sections"
+            default_transition: "Used as default for new sections"

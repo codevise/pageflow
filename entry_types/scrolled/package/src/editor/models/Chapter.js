@@ -34,6 +34,9 @@ export const Chapter = Backbone.Model.extend({
     const section = this.sections.create({
       position: this.sections.length,
       chapterId: this.id,
+      configuration: {
+        transition: this.entry.metadata.configuration.get('defaultTransition')
+      },
       ...attributes
     }, {
       contentElements: this.entry.contentElements
@@ -49,5 +52,7 @@ export const Chapter = Backbone.Model.extend({
         }
       });
     });
+
+    return section;
   }
 });
