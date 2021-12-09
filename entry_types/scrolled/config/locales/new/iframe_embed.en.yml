@@ -1,0 +1,39 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        iframeEmbed:
+          attributes:
+            aspectRatio:
+              label: Aspect Ratio
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Square (1:1)
+                wide: Landscape (16:9)
+            portraitAspectRatio:
+              label: Aspect Ratio (Portrait)
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Square (1:1)
+                wide: Landscape (16:9)
+              blank: '(Default)'
+            scale:
+              label: Scale
+              values:
+                p100: "100%"
+                p75: "75%"
+                p50: "50%"
+                p33: "33%"
+            source:
+              label: URL
+            title:
+              inline_help: Used by screen readers to describe the chart as a whole.
+              label: Title
+          name: iframe Embed
+          tabs:
+            general: iframe Embed
+  pageflow:
+    iframe_embed_content_element:
+      feature_name: "iframe embed content element"

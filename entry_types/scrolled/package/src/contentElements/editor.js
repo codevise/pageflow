@@ -9,3 +9,4 @@ import './videoEmbed/editor';
 import './externalLinkList/editor';
 import './dataWrapperChart/editor';
 import './vrImage/editor';
+import './iframeEmbed/editor';
