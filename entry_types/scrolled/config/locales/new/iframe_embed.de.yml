@@ -1,0 +1,39 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        iframeEmbed:
+          attributes:
+            aspectRatio:
+              label: Seitenverhältnis
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Quadratisch (1:1)
+                wide: Landscape (16:9)
+            portraitAspectRatio:
+              label: Seitenverhältnis (Hochkant)
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Quadratisch (1:1)
+                wide: Landscape (16:9)
+              blank: '(Standard)'
+            scale:
+              label: Skalieren
+              values:
+                p100: "100%"
+                p75: "75%"
+                p50: "50%"
+                p33: "33%"
+            source:
+              label: URL
+            title:
+              inline_help: Dieser Titel wird von Screenreadern verwendet, um das iframe als Ganzes zu beschreiben.
+              label: Titel
+          name: iframe-Embed
+          tabs:
+            general: iframe-Embed
+  pageflow:
+    iframe_embed_content_element:
+      feature_name: "iframe-Embed Inhaltselement"
