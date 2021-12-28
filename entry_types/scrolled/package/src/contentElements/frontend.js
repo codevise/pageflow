@@ -9,3 +9,4 @@ import './videoEmbed/frontend';
 import './externalLinkList/frontend';
 import './dataWrapperChart/frontend';
 import './vrImage/frontend';
+import './iframeEmbed/frontend';

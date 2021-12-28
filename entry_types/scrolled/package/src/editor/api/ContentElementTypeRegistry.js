@@ -5,7 +5,8 @@ import I18n from 'i18n-js'
  * @name editor_contentElementTypes
  */
 export class ContentElementTypeRegistry {
-  constructor() {
+  constructor({features}) {
+    this.features = features;
     this.contentElementTypes = {};
   }
 
@@ -70,10 +71,15 @@ export class ContentElementTypeRegistry {
   }
 
   toArray() {
-    return Object.keys(this.contentElementTypes).map(typeName => ({
-      ...this.contentElementTypes[typeName],
-      typeName,
-      displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`)
-    }));
+    return Object
+      .keys(this.contentElementTypes)
+      .map(typeName => ({
+        ...this.contentElementTypes[typeName],
+        typeName,
+        displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`)
+      }))
+      .filter(contentElement =>
+        !contentElement.featureName || this.features.isEnabled(contentElement.featureName)
+      );
   }
 }

@@ -1,0 +1,24 @@
+.iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  transform-origin: 0 0;
+}
+
+.scale-p33 {
+  width: 300%;
+  height: 300%;
+  transform: scale(0.333);
+}
+
+.scale-p50 {
+  width: 200%;
+  height: 200%;
+  transform: scale(0.5);
+}
+
+.scale-p75 {
+  width: 133.333%;
+  height: 133.333%;
+  transform: scale(0.75);
+}
