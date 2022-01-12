@@ -28,7 +28,8 @@ export function IframeEmbed({configuration}) {
                       configuration.aspectRatio;
 
   return (
-    <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
+    <div className={styles.wrapper}
+         style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <FitViewport aspectRatio={aspectRatios[aspectRatio || 'wide']}>
         <Figure caption={configuration.caption}>
           <FitViewport.Content>
