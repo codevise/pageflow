@@ -1,5 +1,6 @@
 .wrapper,
-.wrapper div,
+.wrapper > div,
+.wrapper > div > div,
 .wrapper img {
   width: 100%;
   height: 100%;
