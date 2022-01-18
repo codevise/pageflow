@@ -24,11 +24,17 @@ module PageflowScrolled
         }
 
         #{scrolled_theme_typography_rules(theme)}
+        #{scrolled_theme_properties_rules(theme)}
       CSS
     end
 
     def scrolled_theme_typography_rules(theme)
       RuleSet.new(prefix: 'typography').generate(theme.options.fetch(:typography, {}))
+    end
+
+    def scrolled_theme_properties_rules(theme)
+      RuleSet.new(prefix: 'scope',
+                  custom_properties: true).generate(theme.options.fetch(:properties, {}))
     end
 
     private
@@ -42,17 +48,19 @@ module PageflowScrolled
 
     # @api private
     class RuleSet
-      def initialize(prefix:)
+      def initialize(prefix:, custom_properties: false)
         @prefix = prefix
+        @property_prefix = custom_properties ? '--theme-' : ''
       end
 
       def generate(rules)
         rules.flat_map { |rule_name, declarations|
+          declarations = declarations.dup
           declarations_by_breakpoint = extract_breakpoint_declarations!(declarations)
 
           [
             generate_rule(rule_name, declarations),
-            declarations_by_breakpoint.map do |breakpoint_name, breakpoint_declarations|
+            *declarations_by_breakpoint.map do |breakpoint_name, breakpoint_declarations|
               generate_media_query_rule(breakpoint_name, rule_name, breakpoint_declarations)
             end
           ]
@@ -77,23 +85,28 @@ module PageflowScrolled
 
       def generate_rule(rule_name, declarations)
         declarations = declarations.map do |property, value|
-          "#{property.to_s.dasherize}: #{value};"
+          "#{@property_prefix}#{property.to_s.dasherize}: #{value};"
         end
 
         <<~CSS
-          .#{@prefix}-#{rule_name.to_s.dasherize} {
+          #{selector(rule_name)} {
             #{declarations.join("\n")}
           }
         CSS
       end
+
+      def selector(rule_name)
+        return ':root' if rule_name == :root
+        ".#{@prefix}-#{rule_name.to_s.camelize(:lower)}"
+      end
     end
 
-    def scrolled_theme_deep_declarations(hash, suffix, prefix = [])
+    def scrolled_theme_deep_declarations(hash, suffix = nil, prefix = [])
       hash.flat_map do |key, value|
         if value.is_a?(Hash)
           scrolled_theme_deep_declarations(value, suffix, [*prefix, key])
         else
-          name = [*prefix, key, suffix].join('_')
+          name = [*prefix, key, suffix].compact.join('_')
           "--theme-#{name.dasherize}: #{value};"
         end
       end

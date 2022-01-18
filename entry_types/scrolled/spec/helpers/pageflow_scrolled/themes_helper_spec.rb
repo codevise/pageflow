@@ -87,7 +87,7 @@ module PageflowScrolled
         css = helper.scrolled_theme_typography_rules(theme)
 
         expect(css).to include(<<~CSS)
-          .typography-header-xl {
+          .typography-headerXl {
             text-transform: uppercase;
           }
         CSS
@@ -114,6 +114,87 @@ module PageflowScrolled
           @media (min-width: 768px) {
           .typography-header {
             font-size: 64px;
+          }
+
+          }
+        CSS
+      end
+    end
+
+    describe '#scrolled_theme_properties_rules' do
+      it 'returns rules for theme' do
+        theme = Pageflow::Theme.new(:test,
+                                    properties: {
+                                      root: {
+                                        widget_surface_color: '#fff'
+                                      },
+                                      default_navigation: {
+                                        widget_surface_color: '#f00'
+                                      }
+                                    })
+
+        css = helper.scrolled_theme_properties_rules(theme)
+
+        expect(css).to include(<<~CSS)
+          :root {
+            --theme-widget-surface-color: #fff;
+          }
+
+          .scope-defaultNavigation {
+            --theme-widget-surface-color: #f00;
+          }
+        CSS
+      end
+
+      it 'supports media queries' do
+        theme = Pageflow::Theme.new(:test,
+                                    properties: {
+                                      default_navigation: {
+                                        widget_surface_color: '#f00',
+                                        md: {
+                                          widget_surface_color: '#fff'
+                                        }
+                                      }
+                                    })
+
+        css = helper.scrolled_theme_properties_rules(theme)
+
+        expect(css).to include(<<~CSS)
+          .scope-defaultNavigation {
+            --theme-widget-surface-color: #f00;
+          }
+
+          @media (min-width: 768px) {
+          .scope-defaultNavigation {
+            --theme-widget-surface-color: #fff;
+          }
+
+          }
+        CSS
+      end
+
+      it 'does not mutate theme options' do
+        theme = Pageflow::Theme.new(:test,
+                                    properties: {
+                                      default_navigation: {
+                                        widget_surface_color: '#f00',
+                                        md: {
+                                          widget_surface_color: '#fff'
+                                        }
+                                      }
+                                    })
+
+        helper.scrolled_theme_properties_rules(theme)
+        css = helper.scrolled_theme_properties_rules(theme)
+
+        expect(css).to include(<<~CSS)
+          .scope-defaultNavigation {
+            --theme-widget-surface-color: #f00;
+          }
+
+          @media (min-width: 768px) {
+          .scope-defaultNavigation {
+            --theme-widget-surface-color: #fff;
           }
 
           }
