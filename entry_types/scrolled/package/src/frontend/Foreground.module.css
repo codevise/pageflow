@@ -20,7 +20,7 @@
 .inFirstSection {
   /* Let content begin below navigation bar. Navigation bar has zero
      height to let first chapter start at the very top. */
-  padding-top: 58px;
+  padding-top: var(--theme-widget-margin-top, 58px);
 }
 
 .paddingBottom {
