@@ -1,4 +1,5 @@
 .chapterLink {
+  composes: typography-defaultNavigationChapterLink from global;
   line-height: 42px;
   color: var(--theme-widget-primary-color);
   text-decoration: none;
@@ -16,6 +17,10 @@
 .chapterLink:hover,
 .chapterLinkActive {
   color: var(--theme-accent-color);
+}
+
+.chapterLinkActive {
+  composes: typography-defaultNavigationActiveChapterLink from global;
 }
 
 .summary {
