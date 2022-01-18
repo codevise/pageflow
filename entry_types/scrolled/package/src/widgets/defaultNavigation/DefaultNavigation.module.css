@@ -1,4 +1,6 @@
 .navigationBar {
+  composes: scope-defaultNavigation from global;
+
   font-family: var(--theme-widget-font-family);
   position: fixed;
   top: -50px;
@@ -74,6 +76,7 @@ div:focus-within > .contextIcon,
 }
 
 .chapterList {
+  composes: scope-defaultNavigationChapterList from global;
   padding: 0;
   margin: 0;
   list-style: none;
