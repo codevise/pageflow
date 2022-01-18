@@ -1,9 +1,24 @@
 .navigationBar {
   composes: scope-defaultNavigation from global;
 
+  --default-navigation-bar-height:
+    var(--theme-default-navigation-bar-height, 50px);
+
+  --default-navigation-scroller-top:
+    var(--theme-default-navigation-scroller-top, 0);
+
+  --default-navigation-scroll-button-top:
+    var(--theme-default-navigation-scroll-button-top, 5px);
+
+  --default-navigation-chapter-link-height:
+    var(--theme-default-navigation-chapter-link-height, 50px);
+
+  --default-navigation-progress-indicator-height:
+    var(--theme-default-navigation-progress-indicator-height, 10px);
+
   font-family: var(--theme-widget-font-family);
   position: fixed;
-  top: -50px;
+  top: calc(-1 * var(--default-navigation-bar-height));
   transition: top .15s;
   z-index: 10000;
   width: 100%;
@@ -21,11 +36,16 @@
   z-index: 2;
   background-color: var(--theme-widget-surface-color);
   color: var(--theme-widget-on-surface-color);
-  height: 50px;
+  height: var(--default-navigation-bar-height);
+  box-sizing: border-box;
+  padding-top: var(--default-navigation-scroller-top);
 }
 
 .menuIcon {
   position: absolute;
+  top: 0;
+  left: 12px;
+  height: var(--default-navigation-bar-height);
 }
 
 .contextIcons {
@@ -53,7 +73,7 @@
   composes: unstyledButton from '../../frontend/utils.module.css';
   cursor: pointer;
   width: 40px;
-  height: 50px;
+  height: var(--default-navigation-bar-height);
   fill: var(--theme-widget-secondary-color);
 }
 
@@ -126,7 +146,8 @@ div:focus-within > .contextIcon,
   .navigationChapters {
     display: block;
     position: fixed;
-    top: 60px;
+    top: calc(var(--default-navigation-bar-height) +
+              var(--default-navigation-progress-indicator-height));
     left: 0px;
     background: var(--theme-widget-background-color);
     width: 100vw;
@@ -141,7 +162,7 @@ div:focus-within > .contextIcon,
 
   .chapterList {
     display: block;
-    padding-top: 50px;
+    padding-top: var(--default-navigation-bar-height);
     box-sizing: border-box;
     /*
       Prevent scrolling the page when mobile navigation is open, by
@@ -181,7 +202,7 @@ div:focus-within > .contextIcon,
   }
 
   .progressBar {
-    height: 10px;
+    height: var(--default-navigation-progress-indicator-height);
   }
 }
 

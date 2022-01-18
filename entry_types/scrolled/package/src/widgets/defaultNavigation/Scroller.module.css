@@ -45,7 +45,7 @@
        * +---------------------------------------------------+
        */
       width: auto;
-      clip-path: polygon(20% 0, 79% 0, 79% 50px, 100% 50px, 100% 400%, 0 400%, 0 50px, 20% 50px);
+      clip-path: polygon(20% 0, 79% 0, 79% var(--default-navigation-chapter-link-height), 100% var(--default-navigation-chapter-link-height), 100% 400%, 0 400%, 0 var(--default-navigation-chapter-link-height), 20% var(--default-navigation-chapter-link-height));
 
       /* First gradient covers chapter list to soften clipping edge left and
        * right. Second gradient covers lower area to prevent tooltips
@@ -61,8 +61,8 @@
             linear-gradient(to right,
                             black 0%,
                             black 100%) bottom;
-      mask-size: 100% 50px,
-                 100% calc(100% - 50px);
+      mask-size: 100% var(--default-navigation-chapter-link-height),
+                 100% calc(100% - var(--default-navigation-chapter-link-height));
       mask-repeat: no-repeat;
     }
 
