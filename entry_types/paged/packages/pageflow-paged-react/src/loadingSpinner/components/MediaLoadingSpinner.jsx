@@ -83,13 +83,17 @@ function preventScrollBouncing(e) {
   e.preventDefault();
 }
 
-function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundImage, blurStrength, backgroundImageX, backgroundImageY}) {
+function backgroundImageInlineStyles({firstPageBackgroundImageUrlMedium, firstPageBackgroundImageUrlLarge, backgroundImage, blurStrength, backgroundImageX, backgroundImageY}) {
 
   var backgroundPosition = {
     x: backgroundImageX != undefined ? backgroundImageX : 50,
     y: backgroundImageY != undefined ? backgroundImageY : 50
-  }
-  const url = backgroundImage ? backgroundImage.urls.medium : firstPageBackgroundImageUrl;
+  };
+
+  const url = blurStrength === 0 ?
+              (backgroundImage ? backgroundImage.urls.large : firstPageBackgroundImageUrlLarge) :
+              (backgroundImage ? backgroundImage.urls.medium : firstPageBackgroundImageUrlMedium);
+
   if (url) {
     var style = {
       backgroundImage: `url("${url}")`,
@@ -131,8 +135,12 @@ function inlineStyle(props) {
 export const MediaLoadingSpinner = connect(combineSelectors({
   editing: editingWidget({role: 'loading_spinner'}),
   firstPageInvert: firstPageAttribute('invert'),
-  firstPageBackgroundImageUrl: pageBackgroundImageUrl({
+  firstPageBackgroundImageUrlMedium: pageBackgroundImageUrl({
     variant: 'medium',
+    page: firstPageAttribures()
+  }),
+  firstPageBackgroundImageUrlLarge: pageBackgroundImageUrl({
+    variant: 'large',
     page: firstPageAttribures()
   }),
   backgroundImage: file('imageFiles', {
