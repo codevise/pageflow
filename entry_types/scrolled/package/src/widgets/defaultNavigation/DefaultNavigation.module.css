@@ -1,3 +1,5 @@
+@value breakpoint-below-md from 'pageflow-scrolled/values/breakpoints.module.css';
+
 .navigationBar {
   composes: scope-defaultNavigation from global;
 
@@ -134,7 +136,7 @@ div:focus-within > .contextIcon,
   background-color: var(--theme-accent-color);
 }
 
-@media screen and (max-width: 780px) {
+@media screen and breakpoint-below-md {
   .logo {
     max-width: 30%;
   }

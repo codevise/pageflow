@@ -1,13 +1,11 @@
-.burgerMenuIconContainer {
-  display: none;
+@value breakpoint-md from 'pageflow-scrolled/values/breakpoints.module.css';
+
+@media breakpoint-md {
+  .burgerMenuIconContainer {
+    display: none;
+  }
 }
 
 .burgerMenuIcon {
   outline: none;
-}
-
-@media screen and (max-width: 780px) {
-  .burgerMenuIconContainer {
-    display: block;
-  }
 }

@@ -1,4 +1,6 @@
-@media screen and (min-width: 781px) {
+@value breakpoint-md from 'pageflow-scrolled/values/breakpoints.module.css';
+
+@media screen and breakpoint-md {
   .scroller {
     overflow: hidden;
     scroll-behavior: smooth;
