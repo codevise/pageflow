@@ -1,3 +1,5 @@
+@value breakpoint-md from 'pageflow-scrolled/values/breakpoints.module.css';
+
 .chapterLink {
   composes: typography-defaultNavigationChapterLink from global;
   line-height: 42px;
@@ -24,19 +26,19 @@
 }
 
 .summary {
+  color: var(--theme-widget-on-background-color);
+}
+
+.tooltipBubble {
   display: none;
 }
 
-/* mobile view */
-@media (max-width: 780px) {
+@media breakpoint-md {
   .summary {
-    display: block;
-    color: var(--theme-widget-on-background-color);
+    display: none;
   }
-}
 
-@media (max-width: 780px) {
   .tooltipBubble {
-    display: none !important;
+    display: block;
   }
 }

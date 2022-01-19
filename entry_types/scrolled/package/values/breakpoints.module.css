@@ -1,0 +1,9 @@
+@value breakpoint-sm: (min-width: 640px);
+@value breakpoint-md: (min-width: 768px);
+@value breakpoint-lg: (min-width: 1024px);
+@value breakpoint-xl: (min-width: 1280px);
+
+@value breakpoint-below-sm: (max-width: 639px);
+@value breakpoint-below-md: (max-width: 767px);
+@value breakpoint-below-lg: (max-width: 1023px);
+@value breakpoint-below-xl: (max-width: 1279px);
