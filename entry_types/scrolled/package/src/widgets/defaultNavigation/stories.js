@@ -16,7 +16,7 @@ let getSeed = function({chapterCount}){
   ]
   return {
     widgets: [{
-      role: 'navigation',
+      role: 'header',
       typeName: 'defaultNavigation'
     }],
     chapters: Array(chapterCount).fill().map((_, index) => (
