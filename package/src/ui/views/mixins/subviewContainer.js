@@ -20,4 +20,6 @@ export const subviewContainer = {
   }
 };
 
-Cocktail.mixin(Marionette.View, subviewContainer);
+if (!Marionette.View.prototype.appendSubview) {
+  Cocktail.mixin(Marionette.View, subviewContainer);
+}
