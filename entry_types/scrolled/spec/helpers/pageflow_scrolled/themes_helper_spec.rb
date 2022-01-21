@@ -8,8 +8,9 @@ module PageflowScrolled
 
         html = helper.scrolled_theme_stylesheet_pack_tags(theme)
 
-        expect(html).to have_css('link[rel="stylesheet"][href*="fonts/sourceSansPro"]',
-                                 visible: false)
+        expect(html)
+          .to have_css('link[data-theme][rel="stylesheet"][href*="fonts/sourceSansPro"]',
+                       visible: false)
       end
 
       it 'handles missing theme option' do
@@ -34,7 +35,7 @@ module PageflowScrolled
 
         html = helper.scrolled_theme_properties_style_tag(theme)
 
-        expect(html).to have_css('style',
+        expect(html).to have_css('style[data-theme]',
                                  text: '--theme-navigation-on-surface-color: #000;',
                                  visible: false)
         expect(html).to have_css('style',

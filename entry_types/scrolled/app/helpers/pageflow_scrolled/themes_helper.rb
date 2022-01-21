@@ -8,7 +8,7 @@ module PageflowScrolled
 
     def scrolled_theme_stylesheet_pack_tags(theme)
       safe_join(theme.options.fetch(:stylesheet_packs, []).map do |pack|
-        stylesheet_pack_tag(pack, media: 'all')
+        stylesheet_pack_tag(pack, media: 'all', data: {theme: ''})
       end)
     end
 
@@ -18,7 +18,7 @@ module PageflowScrolled
         scrolled_theme_deep_declarations(theme.options.fetch(:colors, {}), 'color')
       ].flatten
 
-      content_tag('style', raw(<<~CSS))
+      content_tag('style', raw(<<~CSS), data: {theme: ''})
         :root {
           #{declarations.join("\n")}
         }
