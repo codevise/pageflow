@@ -23,6 +23,53 @@ module Pageflow
       expect(entry.theme.options).to match(colors: {accent: '#0f0', surface: '#000'})
     end
 
+    it 'allows previewing overriding theme options in an entry' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register('dark', colors: {accent: '#f00', surface: '#000'})
+        end
+      end
+      account = create(:account)
+      entry = create(:entry,
+                     account: account,
+                     type_name: 'rainbow',
+                     draft_attributes: {theme_name: 'dark'})
+
+      preview_entry =
+        Pageflow.theme_customizations.preview(account: account,
+                                              entry: entry,
+                                              overrides: {colors: {accent: '#0f0'}})
+
+      expect(preview_entry.theme.options).to match(colors: {accent: '#0f0', surface: '#000'})
+    end
+
+    it 'does not update customization when previewing' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register('dark', colors: {accent: '#f00', surface: '#000'})
+        end
+      end
+      account = create(:account)
+      entry = create(:entry,
+                     account: account,
+                     type_name: 'rainbow',
+                     draft_attributes: {theme_name: 'dark'})
+
+      Pageflow.theme_customizations.preview(account: account,
+                                            entry: entry,
+                                            overrides: {colors: {accent: '#0f0'}})
+
+      customization =
+        Pageflow.theme_customizations.get(account: account,
+                                          entry_type_name: 'rainbow')
+
+      expect(customization.overrides).to eq({})
+    end
+
     it 'allows reading overrides' do
       pageflow_configure do |config|
         rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')

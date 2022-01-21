@@ -7,9 +7,10 @@ module Pageflow
 
     attr_reader :entry, :revision
 
-    def initialize(entry, revision)
+    def initialize(entry, revision, theme: nil)
       @entry = entry
       @revision = revision
+      @theme = theme
     end
 
     delegate(:id, :slug,
@@ -41,7 +42,7 @@ module Pageflow
     end
 
     def theme
-      @theme ||= CustomizedTheme.find(self, revision.theme)
+      @theme ||= CustomizedTheme.find(entry: self, theme: revision.theme)
     end
 
     def home_button
