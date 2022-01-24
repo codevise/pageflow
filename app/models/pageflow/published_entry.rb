@@ -9,8 +9,8 @@ module Pageflow
 
     delegate(:password_protected?, to: :revision)
 
-    def initialize(entry, revision = nil)
-      super(entry, revision || entry.published_revision)
+    def initialize(entry, revision = nil, theme: nil)
+      super(entry, revision || entry.published_revision, theme: theme)
       @custom_revision = revision
     end
 

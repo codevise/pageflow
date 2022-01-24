@@ -12,6 +12,24 @@ module Pageflow
         .update!(overrides: overrides, selected_file_ids: file_ids)
     end
 
+    # Construct an entry that uses the given overrides and files in
+    # its theme without actually updating the theme customization.
+    #
+    # @return [PublishedEntry]
+    def preview(account:, entry:, overrides: {}, file_ids: {})
+      theme_customization =
+        ThemeCustomization
+        .find_or_initialize_by(account: account, entry_type_name: entry.type_name)
+
+      theme_customization.assign_attributes(overrides: overrides, selected_file_ids: file_ids)
+
+      theme = CustomizedTheme.build(entry: entry,
+                                    theme: entry.draft.theme,
+                                    theme_customization: theme_customization)
+
+      PublishedEntry.new(entry, entry.draft, theme: theme)
+    end
+
     # Get customization for entry type and account.
     #
     # @return [ThemeCustomization]

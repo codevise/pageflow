@@ -112,6 +112,20 @@ global.pageflowScrolledRender = async function(seed) {
   render(seed);
 }
 
+global.pageflowScrolledRegisterUpdateSeedHandler = function() {
+  if (window.parent !== window) {
+    window.addEventListener('message', receive);
+  }
+
+  function receive(message) {
+    if (window.location.href.indexOf(message.origin) === 0) {
+      if (message.data.type === 'UPDATE_SEED') {
+        render(message.data.payload);
+      }
+    }
+  }
+}
+
 function render(seed) {
   if (editMode) {
     ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
