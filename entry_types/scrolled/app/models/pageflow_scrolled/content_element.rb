@@ -12,6 +12,13 @@ module PageflowScrolled
         .where(pageflow_scrolled_storylines: {revision_id: revision})
     end
 
+    def self.select_used_type_names(revision, type_names)
+      all_for_revision(revision)
+        .where(type_name: type_names)
+        .map(&:type_name)
+        .uniq
+    end
+
     # @api private
     class Batch
       def initialize(section, items)
