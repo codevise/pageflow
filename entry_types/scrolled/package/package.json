@@ -65,6 +65,8 @@
     "jest": "^27.0.6",
     "jest-svg-transformer": "^1.0.0",
     "mockdate": "^3.0.5",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-svg-loader": "^3.0.3",
     "react-test-renderer": "^16.9.0",
     "slate-hyperscript": "^0.57.3"
