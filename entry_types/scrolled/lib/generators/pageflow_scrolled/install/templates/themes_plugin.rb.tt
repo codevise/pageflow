@@ -8,6 +8,7 @@ class ScrolledThemesPlugin
                              entry: '"Source Sans Pro", sans-serif',
                              widget: '"Source Sans Pro", sans-serif'
                            },
+                           custom_theme_icons: <%= @custom_theme_icons %>,
                            colors: {
                              accent: '#e10028',
                              widget: {
