@@ -9,6 +9,7 @@
  * @param {String} [options.defaultFileRights] - Default file rights of entry's account.
  * @param {Object} [options.legalInfo] - imprint, copyright and privacy information of entry.
  * @param {Object} [options.themeOptions] - Options set via theme registration.
+ * @param {Object} [options.themeAssets] - Paths to theme assets.
  * @param {Object} [options.entry] - attributes of entry.
  * @param {Array} [options.imageFiles] - Array of objects with image file attributes of entry.
  * @param {Array} [options.videoFiles] - Array of objects with video file attributes of entry.
@@ -29,6 +30,7 @@ export function normalizeSeed({
   defaultFileRights,
   legalInfo,
   themeOptions,
+  themeAssets,
   entry,
   imageFiles,
   videoFiles,
@@ -72,7 +74,7 @@ export function normalizeSeed({
       shareUrlTemplates: normalizeShareUrlTemplates(shareUrlTemplates),
       defaultFileRights: defaultFileRights,
       legalInfo: normalizeLegalInfo(legalInfo),
-      theme: normalizeTheme(themeOptions)
+      theme: normalizeTheme({themeOptions, themeAssets})
     },
     collections: {
       entries: normalizedEntries,
@@ -171,12 +173,15 @@ function normalizeLegalInfo(legalInfo) {
   }
 }
 
-function normalizeTheme(options = {}) {
+function normalizeTheme({themeAssets, themeOptions}) {
   return {
-    assets: {},
+    assets: {
+      icons: {},
+      ...themeAssets
+    },
     options: {
       colors: {},
-      ...options
+      ...themeOptions
     }
   }
 }
