@@ -82,6 +82,7 @@ export {
 } from './thirdPartyConsent';
 export {FitViewport} from './FitViewport';
 export {Tooltip} from './Tooltip';
+export {ThemeIcon} from './ThemeIcon';
 
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';

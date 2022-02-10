@@ -384,6 +384,40 @@ module PageflowScrolled
                                        })
       end
 
+      it 'renders theme assets for custom icons' do
+        pageflow_configure do |config|
+          config.themes.register(:default, custom_icons: [:share])
+        end
+        entry = create(:published_entry)
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         theme: {
+                                           assets: {
+                                             icons: {
+                                               share: %r{themes/default/icons/share.*svg$}
+                                             }
+                                           }
+                                         }
+                                       })
+      end
+
+      it 'renders empty icons object if theme has no custom icons' do
+        pageflow_configure do |config|
+          config.themes.register(:default, custom_icons: [])
+        end
+        entry = create(:published_entry)
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         theme: {
+                                           assets: {
+                                             icons: {}
+                                           }
+                                         }
+                                       })
+      end
+
       it 'allows overriding theme assets via theme customization files' do
         entry = create(:published_entry, type_name: 'scrolled')
         file = Pageflow.theme_customizations.upload_file(

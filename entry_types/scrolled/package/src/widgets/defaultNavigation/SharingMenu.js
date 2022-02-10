@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import headerStyles from "./DefaultNavigation.module.css";
 import styles from "./SharingMenu.module.css";
-import ShareIcon from './icons/share.svg';
 
 import {
+  ThemeIcon,
   useShareProviders,
   useShareUrl,
   useI18n,
@@ -44,7 +44,7 @@ export function SharingMenu() {
                content={renderShareLinks(shareProviders)}>
         <button className={classNames(headerStyles.contextIcon)}
                 title={t('pageflow_scrolled.public.navigation.share')}>
-          <ShareIcon/>
+          <ThemeIcon name="share" />
         </button>
       </Tooltip>
     )

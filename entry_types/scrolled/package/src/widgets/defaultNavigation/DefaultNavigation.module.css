@@ -76,12 +76,20 @@
   cursor: pointer;
   width: 40px;
   height: var(--default-navigation-bar-height);
-  fill: var(--theme-widget-secondary-color);
+  color: var(--theme-widget-secondary-color);
+  fill: currentcolor;
+  stroke: currentColor;
+}
+
+.contextIcon svg {
+  width: 35px;
+  height: 35px;
+  margin: 7px 2px;
 }
 
 div:focus-within > .contextIcon,
 .contextIcon:hover {
-  fill: var(--theme-widget-primary-color);
+  color: var(--theme-widget-primary-color);
 }
 
 .logo {

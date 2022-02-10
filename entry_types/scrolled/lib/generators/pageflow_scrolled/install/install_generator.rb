@@ -2,6 +2,8 @@ module PageflowScrolled
   module Generators
     # @api private
     class InstallGenerator < Rails::Generators::Base
+      CUSTOM_THEME_ICONS = [:information, :muted, :share, :unmuted].freeze
+
       desc 'Installs Pageflow Scrolled entry type.'
 
       source_root File.expand_path('templates', __dir__)
@@ -17,6 +19,8 @@ module PageflowScrolled
       end
 
       def theme_plugin
+        @custom_theme_icons = CUSTOM_THEME_ICONS.inspect
+
         # Ruby files in the lib directory are eager loaded in
         # production. This includes template files in
         # lib/generators. Template file extension (.tt) is removed by
@@ -112,7 +116,15 @@ module PageflowScrolled
       end
 
       def default_theme
-        directory 'theme', 'app/javascript/pageflow-scrolled/themes/default'
+        theme_dir = 'app/javascript/pageflow-scrolled/themes/default'
+        icons_src_dir = PageflowScrolled::Engine.root.join('package/src/frontend/icons')
+
+        directory 'theme', theme_dir
+
+        CUSTOM_THEME_ICONS.each do |icon|
+          copy_file icons_src_dir.join("#{icon}.svg"),
+                    File.join(theme_dir, "icons/#{icon}.svg")
+        end
       end
     end
   end
