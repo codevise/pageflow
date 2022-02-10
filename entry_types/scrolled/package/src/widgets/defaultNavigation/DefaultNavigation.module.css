@@ -79,6 +79,12 @@
   fill: var(--theme-widget-secondary-color);
 }
 
+.contextIcon svg {
+  width: 35px;
+  height: 35px;
+  margin: 7px 2px;
+}
+
 div:focus-within > .contextIcon,
 .contextIcon:hover {
   fill: var(--theme-widget-primary-color);

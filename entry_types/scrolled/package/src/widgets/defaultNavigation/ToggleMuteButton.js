@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import {media} from 'pageflow/frontend';
 import {
+  ThemeIcon,
   useMediaMuted,
   useOnUnmuteMedia,
   useI18n,
@@ -11,9 +12,6 @@ import {
 
 import headerStyles from './DefaultNavigation.module.css';
 import styles from './ToggleMuteButton.module.css';
-
-import MutedIcon from './icons/muted.svg';
-import UnmutedIcon from './icons/unmuted.svg';
 
 export function ToggleMuteButton() {
   const muted = useMediaMuted();
@@ -28,7 +26,7 @@ export function ToggleMuteButton() {
                      t('pageflow_scrolled.public.navigation.unmute') :
                      t('pageflow_scrolled.public.navigation.mute')}
               onClick={() => media.mute(!muted)}>
-        {muted ? <MutedIcon /> : <UnmutedIcon />}
+        {muted ? <ThemeIcon name="muted" /> : <ThemeIcon name="unmuted" />}
       </button>
     </div>
   )
