@@ -402,6 +402,25 @@ module PageflowScrolled
                                        })
       end
 
+      it 'does not use asset host in icon paths to allow xlink:href usage' do
+        controller.config.asset_host = 'some-asset-host'
+        pageflow_configure do |config|
+          config.themes.register(:default, custom_icons: [:share])
+        end
+        entry = create(:published_entry)
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         theme: {
+                                           assets: {
+                                             icons: {
+                                               share: %r{^/packs.*share.*svg$}
+                                             }
+                                           }
+                                         }
+                                       })
+      end
+
       it 'renders empty icons object if theme has no custom icons' do
         pageflow_configure do |config|
           config.themes.register(:default, custom_icons: [])
