@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import headerStyles from "./DefaultNavigation.module.css";
 import styles from "./LegalInfoMenu.module.css";
-import InfoIcon from './icons/information.svg';
 
 import {
+  ThemeIcon,
   Tooltip,
   useFileRights,
   useLegalInfo,
@@ -39,10 +39,10 @@ export function LegalInfoMenu(props) {
     <Tooltip horizontalOffset={-30}
              arrowPos={120}
              content={content}>
-      <button className={classNames(headerStyles.contextIcon, styles.infoIcon)}
+      <button className={classNames(headerStyles.contextIcon)}
               aria-haspopup="true"
               title={t('pageflow_scrolled.public.navigation.legal_info')}>
-        <InfoIcon/>
+        <ThemeIcon name="information" />
       </button>
     </Tooltip>
   )

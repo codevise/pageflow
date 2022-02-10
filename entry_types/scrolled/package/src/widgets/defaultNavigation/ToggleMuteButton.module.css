@@ -1,8 +1,5 @@
 .button svg {
-  fill: var(--theme-widget-primary-color);
-  width: 35px;
-  height: 35px;
-  margin: 7px 2px;
+  color: var(--theme-widget-primary-color);
 }
 
 /*

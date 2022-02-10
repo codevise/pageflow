@@ -80,7 +80,7 @@ function Vendor({vendor, state, onToggle, t, defaultExpanded}) {
       <button className={styles.expandVendor}
               title={t('pageflow_scrolled.public.consent_expand_vendor')}
               onClick={() => setExpanded(!expanded)}>
-        <InformationIcon width={20} height={35} />
+        <InformationIcon width={30} height={34} />
       </button>
       {expanded &&
        <p dangerouslySetInnerHTML={{__html: vendor.description}} />}
