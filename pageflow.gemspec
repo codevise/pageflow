@@ -169,6 +169,9 @@ Gem::Specification.new do |s|
   # Server for Capybara
   s.add_development_dependency 'puma', '~> 3.12'
 
+  # Visual diffs
+  s.add_development_dependency 'percy-capybara', '~> 5.0'
+
   # Chrome Headless browser testing
   s.add_development_dependency 'selenium-webdriver', '~> 3.6.x'
   s.add_development_dependency 'webdrivers', '~> 4.0'

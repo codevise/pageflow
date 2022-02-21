@@ -4,6 +4,7 @@ on: [push, pull_request]
 env:
   RAILS_ENV: test
   PAGEFLOW_DB_HOST: 127.0.0.1
+  PT: cc6a302d8960df4a3582a0ebae63f1a16434eca8f61b091dd070785467562d8d
 
 jobs:
   rspec:
@@ -20,6 +21,10 @@ jobs:
           - engine-name: pageflow
             engine-directory: .
             rspec-command: bin/rspec-with-retry --tag js
+
+          - engine-name: pageflow
+            engine-directory: .
+            rspec-command: PERCY_LOGLEVEL=debug PERCY_DEBUG=* PERCY_TOKEN=$PT node_modules/.bin/percy exec --verbose -- bin/rspec spec/visual
 
           - engine-name: pageflow_paged
             engine-directory: entry_types/paged

@@ -1,0 +1,9 @@
+version: 2
+snapshot:
+  widths: [1280]
+  min-height: 1024
+discovery:
+  network-idle-timeout: 300 # ms
+  disable-cache: true
+upload:
+  files: "**/*.{png,jpg,jpeg,woff}"

@@ -7,6 +7,7 @@
   "author": "Codevise Solutions GmbH <info@codevise.de>",
   "license": "MIT",
   "devDependencies": {
+    "@percy/cli": "^1.0.0-beta.75",
     "@testing-library/jest-dom": "^5.14.1",
     "babel-jest": "^27.0.6",
     "eslint": "^6.6.0",

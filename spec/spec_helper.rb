@@ -23,6 +23,9 @@ RSpec.configure do |config|
   # See ./support/database_cleaner.rb
   config.use_transactional_fixtures = false
 
+  # Exclude Percy snapshot tests by default
+  config.exclude_pattern = 'visual/**/*_spec.rb'
+
   config.infer_base_class_for_anonymous_controllers = false
   config.infer_spec_type_from_file_location!
 
