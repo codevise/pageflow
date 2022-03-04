@@ -28,7 +28,6 @@ export function Heading({configuration, sectionProps}) {
     <Tag className={classNames(styles.root,
                                configuration.typographyVariant &&
                                `typography-heading-${configuration.typographyVariant}`,
-                               {[styles.first]: firstSectionInEntry},
                                {[styles[sectionProps.layout]]:
                                  configuration.position === 'wide' ||
                                  sectionProps.layout === 'centerRagged'},

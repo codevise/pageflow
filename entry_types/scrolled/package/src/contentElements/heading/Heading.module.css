@@ -14,9 +14,3 @@
 .center {
   text-align: center;
 }
-
-@media (orientation: landscape) {
-  .first {
-    padding-top: 25%;
-  }
-}
