@@ -210,6 +210,21 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('( 1 || 2 || 3 )');
       });
 
+      it('treats sticky items like inline items', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'sticky'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('( 1 || 2 || 3 )');
+      });
+
       it('renders consecutive inline and floated items with open end/open start', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
@@ -253,6 +268,23 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual('( 1 )( 2 )( 3 )');
+      });
+    });
+
+    describe('in centerRagged variant', () => {
+      it('treats sticky items like inline items', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'sticky'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'centerRagged'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('( 1 || 2 || 3 )');
       });
     });
   });

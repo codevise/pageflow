@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import {
   EditableText,
   useContentElementConfigurationUpdate,
@@ -12,11 +13,12 @@ export function TextBlock(props) {
   const {t} = useI18n({locale: 'ui'});
 
   return (
-    <div className={styles.text}>
+    <div className={classNames(styles.text,
+                               styles[`layout-${props.sectionProps.layout}`])}>
       <EditableText value={props.configuration.value}
                     contentElementId={props.contentElementId}
                     placeholder={t('pageflow_scrolled.inline_editing.type_text')}
                     onChange={value => updateConfiguration({value})} />
     </div>
-  );
+    );
 }

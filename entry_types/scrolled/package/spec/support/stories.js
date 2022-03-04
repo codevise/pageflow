@@ -165,6 +165,11 @@ function layoutExampleStories({typeName, baseConfiguration}) {
         contentElementConfiguration: baseConfiguration
       },
       {
+        name: 'Center Ragged',
+        sectionConfiguration: {layout: 'centerRagged'},
+        contentElementConfiguration: baseConfiguration
+      },
+      {
         name: 'Right',
         sectionConfiguration: {layout: 'right'},
         contentElementConfiguration: baseConfiguration
