@@ -1,4 +1,11 @@
-import {storiesOfContentElement, filePermaId, exampleStories, stubSeedFixture} from '../stories';
+import {
+  storiesOfContentElement,
+  filePermaId,
+  exampleStories,
+  stubSeedFixture,
+  normalizeAndMergeFixture
+} from '../stories';
+
 import {frontend} from 'pageflow-scrolled/frontend';
 import 'pageflow-scrolled/contentElements-frontend';
 import {normalizeSeed} from '../normalizeSeed';
@@ -85,3 +92,30 @@ describe('filePermaId', () => {
     expect(filePermaId('imageFiles', 'tree')).toBe(17)
   });
 });
+
+describe('normalizeAndMergeFixture', () => {
+  it('supports merging custom theme options', () => {
+    stubSeedFixture(normalizeSeed({
+      themeOptions: {
+        properties: {
+          root: {
+            widgetPrimaryColor: '#f00'
+          }
+        }
+      }
+    }));
+
+    const seed = normalizeAndMergeFixture({themeOptions: {
+      properties: {
+        root: {
+          narrowViewportBreakpoint: '600px'
+        }
+      }
+    }});
+
+    expect(seed.config.theme.options.properties.root).toMatchObject({
+      narrowViewportBreakpoint: '600px',
+      widgetPrimaryColor: '#f00'
+    })
+  });
+})

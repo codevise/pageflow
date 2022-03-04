@@ -237,11 +237,15 @@ function exampleStoryGroup({name, typeName, examples, parameters}) {
   }
 }
 
-export function normalizeAndMergeFixture(options) {
+export function normalizeAndMergeFixture(options = {}) {
   const seed = normalizeSeed(options);
 
   return {
     ...seedFixture,
+    config: mergeDeep(
+      seedFixture.config,
+      {theme: {options: options.themeOptions || {}}}
+    ),
     collections: {
       ...seedFixture.collections,
       chapters: seed.collections.chapters,
@@ -299,4 +303,26 @@ export function examplePositionedElement({sectionId, position, caption}) {
 // anouth way to stub the missing seed.json file.
 export function stubSeedFixture(seed) {
   seedFixture = seed;
+}
+
+function mergeDeep(target, source) {
+  let output = Object.assign({}, target);
+
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach(key => {
+      if (isObject(source[key])) {
+        if (!(key in target))
+          Object.assign(output, { [key]: source[key] });
+        else
+          output[key] = mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(output, { [key]: source[key] });
+      }
+    });
+  }
+  return output;
+}
+
+function isObject(item) {
+  return (item && typeof item === 'object' && !Array.isArray(item));
 }

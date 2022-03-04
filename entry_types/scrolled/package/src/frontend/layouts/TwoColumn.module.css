@@ -2,23 +2,28 @@
 }
 
 .group {
-  margin-left: 8%;
-  margin-right: 8%;
+  padding-left: 8%;
+  padding-right: 8%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: var(--section-max-width, none);
 }
 
 .group-full {
-  margin-left: 0;
-  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  width: 100%;
 }
 
 .sticky,
 .inline,
 .wide {
-  max-width: 500px;
+  max-width: var(--two-column-inline-content-max-width, 500px);
 }
 
 .wideViewport .wide {
-  max-width: 1200px;
+  max-width: var(--two-column-wide-content-max-width, 1200px);
 }
 
 .right .inline,
@@ -35,8 +40,8 @@
   float: right;
   clear: right;
   top: 33%;
-  width: 30%;
-  max-width: 600px;
+  max-width: var(--two-column-sticky-content-max-width, 600px);
+  width: var(--theme-two-column-sticky-content-width, 30%);
 }
 
 .wideViewport.right .sticky {

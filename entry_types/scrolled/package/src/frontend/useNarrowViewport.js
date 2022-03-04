@@ -1,5 +1,10 @@
 import useMediaQuery from './useMediaQuery';
+import {useTheme} from '../entryState';
 
 export function useNarrowViewport() {
-  return useMediaQuery('(max-width: 950px)');
+  const theme = useTheme();
+  const maxWidth = theme.options.properties?.root?.narrowViewportBreakpoint ||
+                   '950px';
+
+  return useMediaQuery(`(max-width: ${maxWidth})`);
 }

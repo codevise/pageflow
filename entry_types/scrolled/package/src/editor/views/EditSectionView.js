@@ -58,6 +58,9 @@ export const EditSectionView = EditConfigurationView.extend({
       this.input('layout', SelectInputView, {
         values: ['left', 'right', 'center', 'centerRagged']
       });
+      this.input('width', SelectInputView, {
+        values: ['wide', 'narrow']
+      });
       this.input('appearance', SelectInputView, {
         values: ['shadow', 'cards', 'transparent']
       });
