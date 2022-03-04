@@ -24,6 +24,17 @@ const customTextColorStyles = {
   '--theme-dark-content-text-color': '#3e5d85'
 };
 
+const customWidthStyles = {
+  '--theme-section-max-width': '1110px',
+  '--theme-two-column-inline-content-max-width': '540px',
+  '--theme-two-column-sticky-content-width': '45%',
+  '--theme-centered-inline-content-max-width': '940px',
+
+  '--theme-narrow-section-max-width': '940px',
+  '--theme-narrow-section-two-column-inline-content-max-width': '380px',
+  '--theme-narrow-section-centered-inline-content-max-width': '540px'
+}
+
 appearanceOptions.forEach(appearance => {
   storiesOf(`Frontend/Section Appearance/${appearance}`, module)
     .add(
@@ -57,19 +68,58 @@ appearanceOptions.forEach(appearance => {
             <Entry />
           </div>
         </RootProviders>
+    )
+    .add(
+      'Custom Widths',
+      () =>
+        <RootProviders seed={exampleSeed(appearance)}>
+          <div style={customWidthStyles}>
+            <Entry />
+          </div>
+        </RootProviders>
+    )
+    .add(
+      'Custom Widths - Narrow',
+      () =>
+        <RootProviders seed={exampleSeed(appearance, {width: 'narrow'})}>
+          <div style={customWidthStyles}>
+            <Entry />
+          </div>
+        </RootProviders>
     );
 });
 
-function exampleSeed(appearance, {short, invert = false} = {}) {
+
+storiesOf(`Frontend/Section Appearance`, module)
+  .add(
+    'Custom Narrow Viewport Breakpoint',
+    () => {
+      const themeOptions = {
+        properties: {
+          root: {narrowViewportBreakpoint: '2000px'}
+        }
+      };
+
+      return (
+        <RootProviders seed={exampleSeed('shadow', {themeOptions})}>
+          <Entry />
+        </RootProviders>
+      );
+    }
+  )
+
+function exampleSeed(appearance, {short, invert, width, themeOptions} = {}) {
   const sectionBaseConfiguration = {
     appearance,
     transition: 'reveal',
     fullHeight: true,
-    invert
+    invert,
+    width
   };
 
   if (short) {
     return normalizeAndMergeFixture({
+      themeOptions,
       sections: [
         {
           id: 1,
@@ -86,6 +136,7 @@ function exampleSeed(appearance, {short, invert = false} = {}) {
   }
 
   return normalizeAndMergeFixture({
+    themeOptions,
     sections: [
       {
         id: 1,

@@ -28,6 +28,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
              ref={ref}
              className={classNames(styles.Section,
                                    transitionStyles.section,
+                                   {[styles.narrow]: props.width === 'narrow'},
                                    {[styles.invert]: props.invert})}>
       <SectionLifecycleProvider onActivate={props.onActivate} isLast={!props.nextSection}>
         <SectionAtmo audioFilePermaId={props.atmoAudioFileId} />

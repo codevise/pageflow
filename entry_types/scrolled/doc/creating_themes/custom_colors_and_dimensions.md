@@ -89,6 +89,53 @@ breakpoints. The following breakpoints are available:
 | `light_content_text_color` | Color of text in sections with dark background. |
 | `dark_content_text_color` | Color of text in inverted sections with light background. |
 
+### Content Widths
+
+By default, apart from a percentage padding, section content spans the
+whole width of the screen: Left aligned text stays at the very left of
+the screen. Sticky elements in left aligned sections move over all the
+way to the right section margin. Themes can limit choose to limit this
+width:
+
+| Name | Description |
+| ---- | ----------- |
+| `section_max_width` | Settings this property causes section content to be centered once the viewport becomes too wide. |
+
+Depending on their position, content elements have a maximum width by
+default to limit text line length. The following properties can be
+used to adjust these widths for sections using content alignment
+"left" or "right":
+
+| Name | Description |
+| ---- | ----------- |
+| `two_column_inline_content_max_width` | Maximum width of inline content (e.g., text block paragraphs) . |
+| `two_column_sticky_content_max_width` | Maximum width of sticky content (e.g., inline images using position "sticky"). |
+| `two_column_wide_content_max_width` | Maximum width of wide content (e.g., headings using their default position). |
+| `two_column_sticky_content_width` | Percentage width of sticky elements. |
+
+The following properties control width of content elements in section
+with content alignment "center":
+
+| Name | Description |
+| ---- | ----------- |
+| `centered_inline_content_max_width` | Maximum width of inline content (e.g., text block paragraphs). |
+| `centered_wide_content_max_width` | Maximum width of wide content (e.g., headings using their default position). |
+
+For all of these properties, also a variant using the prefix
+`narrow_section_` can be defined (e.g. `narrow_section_max_width` or
+`narrow_section_two_column_inline_content_max_width`. If one of these
+properties is defined for a theme, Pageflow offers an additional
+"Width" field in the section settings. The given values apply to a
+section once "Narrow" has been selected as width.
+
+To prevent sticky elements from overlapping inline elements on narrow
+viewports, the following property can be used to control the
+breakpoint below which sticky elements become inline:
+
+| Name | Description |
+| ---- | ----------- |
+| `narrow_viewport_breakpoint` | Minimum viewport width for sticky elements to be displayed in a second column. |
+
 ### Shared Widget Colors
 
 Surfaces use colors from specific categories in your color palette,
