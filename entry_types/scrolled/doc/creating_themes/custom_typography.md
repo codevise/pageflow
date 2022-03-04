@@ -58,7 +58,11 @@ The following rule names are supported:
 
 | Name | Description |
 | ---- | ----------- |
-| `heading` | Applies to all headings in the entry content |
+| `heading` | Applies to all headings in the entry content. |
+| `heading_lg` | Applies to heading content element with size "large". |
+| `heading_md` | Applies to heading content element with size "medium". |
+| `heading_sm` | Applies to heading content element with size "small". |
+| `heading_xs` | Applies to headings in text block content elements. |
 | `body` | Applies to text blocks (paragraphs, lists, block quotes) in the entry content. |
 | `caption` | Applies to captions of content elements like inline images or inline videos. |
 | `default_navigation_chapter_link` | Applies to chapter links in the default navigation. |
