@@ -16,6 +16,7 @@ const positionOptions = {
   left: ['inline', 'sticky', 'full'],
   right: ['inline', 'sticky', 'full'],
   center: ['inline', 'left', 'right', 'full'],
+  centerRagged: ['inline', 'left', 'right', 'full'],
 }
 
 const customTextColorStyles = {
@@ -110,6 +111,16 @@ function exampleSeed(appearance, {short, invert = false} = {}) {
         id: 3,
         configuration: {
           ...sectionBaseConfiguration,
+          layout: 'centerRagged',
+          backdrop: {
+            color: '#cad2c5'
+          },
+        }
+      },
+      {
+        id: 4,
+        configuration: {
+          ...sectionBaseConfiguration,
           layout: 'right',
           backdrop: {
             color: '#52796f'
@@ -117,7 +128,7 @@ function exampleSeed(appearance, {short, invert = false} = {}) {
         }
       },
       {
-        id: 4,
+        id: 5,
         configuration: {
           ...sectionBaseConfiguration,
           fullHeight: false,
@@ -130,15 +141,16 @@ function exampleSeed(appearance, {short, invert = false} = {}) {
     contentElements: [
       ...exampleContentElements(1, 'left'),
       ...exampleContentElements(2, 'center'),
-      ...exampleContentElements(3, 'right'),
-      examplePositionedElement({sectionId: 4, position: 'full'}),
+      ...exampleContentElements(3, 'centerRagged'),
+      ...exampleContentElements(4, 'right'),
+      examplePositionedElement({sectionId: 5, position: 'full'}),
     ]
   });
 
   function exampleContentElements(sectionId, layout) {
     return [
       exampleHeading({sectionId, text: 'A Heading wider than the Section', position: 'wide'}),
-      exampleHeading({sectionId, text: `${appearance}/${layout}`}),
+      exampleHeading({sectionId, text: `${appearance} / ${layout}`}),
 
       ...positionOptions[layout].map(position => [
         examplePositionedElement({sectionId, position, caption: `Position ${position}`}),

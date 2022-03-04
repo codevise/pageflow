@@ -27,7 +27,9 @@ export function Heading({configuration, sectionProps}) {
   return (
     <Tag className={classNames(styles.root,
                                {[styles.first]: firstSectionInEntry},
-                               {[styles[sectionProps.layout]]: configuration.position === 'wide'},
+                               {[styles[sectionProps.layout]]:
+                                 configuration.position === 'wide' ||
+                                 sectionProps.layout === 'centerRagged'},
                                {[withShadowClassName]: !sectionProps.invert})}>
       <Text scaleCategory={getScaleCategory(configuration, firstSectionInEntry)}
             inline={true}>

@@ -1,0 +1,8 @@
+en:
+  pagefow_scrolled:
+    editor:
+      edit_section:
+        layout:
+          values:
+            centerRagged: "Centered (Ragged)"
+            center: "Centered"

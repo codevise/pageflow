@@ -48,7 +48,8 @@ export function ExternalLink(props) {
     <a className={classNames(styles.link_item,
                              {
                                [styles.invert]: props.invert,
-                               [styles.layout_center]: layout === 'center'
+                               [styles.layout_center]:
+                                 layout === 'center' || layout === 'centerRagged'
                              })}
        href={url || 'about:blank'}
        onClick={onClick}

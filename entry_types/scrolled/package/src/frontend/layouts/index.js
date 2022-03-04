@@ -17,7 +17,8 @@ export const Layout = React.memo(
 );
 
 export function LayoutWithoutInlineEditing(props) {
-  if (props.sectionProps.layout === 'center') {
+  if (props.sectionProps.layout === 'center' ||
+      props.sectionProps.layout === 'centerRagged') {
     return (<Center {...props} />);
   }
   else if (props.sectionProps.layout === 'right') {
