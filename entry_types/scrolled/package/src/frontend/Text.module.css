@@ -7,18 +7,21 @@
 @value text-3xl: 110px;
 
 .heading-lg {
+  composes: typography-headingLg from global;
   composes: typography-heading from global;
   font-size: text-3xl;
   line-height: 1;
 }
 
 .heading-md {
+  composes: typography-headingMd from global;
   composes: typography-heading from global;
   font-size: text-2xl;
   line-height: 1;
 }
 
 .heading-sm {
+  composes: typography-headingSm from global;
   composes: typography-heading from global;
   font-size: text-xl;
   font-weight: 700;
@@ -26,6 +29,7 @@
 }
 
 .heading-xs {
+  composes: typography-headingXs from global;
   composes: typography-heading from global;
   margin-top: 1em;
   margin-bottom: 0;
