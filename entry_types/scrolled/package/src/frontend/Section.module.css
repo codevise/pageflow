@@ -1,14 +1,17 @@
+@value lightContentTextColor, darkContentTextColor from "./colors.module.css";
+
 .Section {
   position: relative;
 }
 
 @media screen {
   .Section {
+    color: lightContentTextColor;
     background-color: #000;
   }
 
   .invert {
     background-color: #fff;
-    color: #222;
+    color: darkContentTextColor;
   }
 }

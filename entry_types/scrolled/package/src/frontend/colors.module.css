@@ -1,2 +1,5 @@
 @value lightBackground: #fff;
 @value darkBackground: #101010;
+
+@value lightContentTextColor: var(--theme-light-content-text-color, #fff);
+@value darkContentTextColor: var(--theme-dark-content-text-color, #222);

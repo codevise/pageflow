@@ -1,4 +1,7 @@
-@value darkBackground, lightBackground from "../colors.module.css";
+@value (
+  darkBackground, lightBackground,
+  darkContentTextColor, lightContentTextColor
+) from "../colors.module.css";
 
 .card {
   position: relative;
@@ -46,10 +49,10 @@
   }
 
   .cardBgWhite {
-    color: black;
+    color: darkContentTextColor;
   }
 
   .cardBgBlack {
-    color: white;
+    color: lightContentTextColor;
   }
 }
