@@ -14,10 +14,10 @@ Widget types consist of the following elements:
 * JavaScript for the frontend that provides React component to render
   the widget.
 
-* CSS to style the widget. The recommended approach in Pageflow
+* CSS to style the widget. The recommended approach for Pageflow
   Scrolled is to use [CSS
-  modules](https://github.com/css-modules/css-modules) which supported
-  by Webpacker by default.
+  modules](https://github.com/css-modules/css-modules) which is
+  supported by Webpacker by default.
 
 * A Ruby class defining a Pageflow plugin that can be registered in
   a host application's Pageflow initializer.
@@ -87,7 +87,7 @@ import styles from './myFooter.module.css';
 frontend.widgetTypes.register('myFooter', {
   component: function MyFooter() {
     return (
-      <div className={styles.someStyle}>My Footer</div>
+      <div className={styles.myFooter}>My Footer</div>
     )
   }
 });
@@ -154,7 +154,7 @@ en:
 At this point widgets of the new type can be associated with entries
 and will be rendered.
 
-## Enabling Widgets by Default
+### Enabling Widgets by Default
 
 Sometimes it can be desirable to define a default widget type to be
 used for a specific role. This way, no manual configuration of entry
@@ -171,3 +171,116 @@ config.widget_types.register(
 
 The default option registers the widget type as default choice for the
 given role.
+
+## Theme Integration
+
+CSS custom properties can be used to apply color and typography
+related settings of the current theme.  The properties listed in the
+["Custom Colors and Dimensions"
+guide](./creating_themes/custom_colors_and_dimensions.md#available-properties),
+correspond to CSS custom properties with a `--theme-` prefix. For
+example, the value of the `widget_surface_color` property defined via
+
+``` ruby
+entry_type_config.themes.register(:default,
+                                  # ...
+                                  properties: {
+                                    root: {
+                                      # ...
+                                      widget_surface_color: '#fff'
+                                    },
+                                  }
+```
+
+is available as the CSS custom property
+`--theme-widget-surface-color`.
+
+To apply the default widget font family (see ["Custom Typography"
+guide](./creating_themes/custom_typography.md#custom-fonts)), add a
+rule of the following form which applies to the root element of your
+widget component:
+
+``` css
+.myFooter {
+  font-family: var(--theme-widget-font-family);
+}
+```
+
+Your widget can also define additional properties. It is recommended
+to prefix these properties with the name of your widget.
+
+``` css
+.myFooter {
+  height: var(--theme-my-footer-height, 100px);
+}
+```
+
+When registering a theme in Ruby code, the property can now be defined
+using the key `my_footer_height`.  Provide default values in your CSS
+in case a theme does not define a value.
+
+### Defining Scopes
+
+As described in the ["Custom Colors and Dimensions"
+guide](./creating_themes/custom_colors_and_dimensions.md#scopes),
+scopes can be used to allow adapting certain properties only for a
+specific widget type. To define a scope for your widget, compose a CSS
+class of the following form in the rule that applies to the root
+element of your widget component:
+
+``` css
+.myFooter {
+  composes: scope-myFooter from global;
+
+  background-color: var(--theme-widget-surface-color);
+  color: var(--theme-widget-on-surface-color);
+}
+```
+
+Theme authors can now change the surface color of the footer:
+
+``` ruby
+entry_type_config.themes.register(:my_custom_theme,
+                                  # ...
+                                  properties: {
+                                    # ...
+
+                                    my_footer: {
+                                      # ...
+                                      widget_surface_color: '#fdd'
+                                    }
+                                  }
+```
+
+### Defining Typography Rules
+
+As described in the ["Custom Typography"
+guide](./creating_themes/custom_typography.md#typography-rules),
+typography rules let theme authors set typography related CSS
+properties for certain classes of elements like headings or captions.
+Your widget type can define additional typography rules, to allow
+changing typography settings of certain elements. For example, to
+allow styling certain links within your component, create a CSS rule
+that composes a class of the following form using your widget name as
+an infix:
+
+``` css
+.footerLink {
+  composes: typography-myFooterLink from global;
+}
+```
+
+Theme authors can now use the typography rule when registering a
+theme:
+
+``` ruby
+entry_type_config.themes.register(:my_custom_theme,
+                                  # ...
+                                  typography: {
+                                    # ...
+
+                                    my_footer_link: {
+                                      font_weight: 'bold'
+                                    }
+                                  }
+```
