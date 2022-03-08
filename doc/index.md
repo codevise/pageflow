@@ -3,9 +3,12 @@
 This is growing collection of guides describing how to customize and
 extend Pageflow.
 
-### Theme Development
+### Entry Type Specific Guides
 
-* [Creating Themes](./creating_themes.md)
+* [Guides for Pageflow Paged](../entry_types/paged/doc/index.md) - The
+  classic page-based entry type
+* [Guides for Pageflow Scrolled](../entry_types/scrolled/doc/index.md) -
+  A continuously scrolled entry type.
 
 ### Plugin Development
 
@@ -13,10 +16,7 @@ extend Pageflow.
 * [Creating a Rails Engine for a Pageflow Plugin](creating_a_pageflow_plugin_rails_engine.md)
 * [Creating Entry Types](./creating_entry_types.md)
 * [Creating File Types](./creating_file_types.md)
-* [Creating Page types](./creating_page_types.md)
 * [Creating file importers](./creating_file_importers.md)
-* [Adding common page configuration tabs](./adding_common_page_configuration_tabs.md)
-* [Creating Widget types](./creating_widget_types.md)
 * [Extending Admin Resources](./extending_admin_resources.md)
 * [Adding app news](./adding_app_news.md)
 * [Understanding Entry Export and Import](./understanding_entry_export_and_import.md)
