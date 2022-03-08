@@ -1,4 +1,4 @@
-# Creating Content Elements
+# Creating Content Element Types
 
 Pageflow Scrolled entries are made of sections that contain blocks of
 content, so called content elements. Each header, text block, inline

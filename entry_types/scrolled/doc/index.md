@@ -5,7 +5,7 @@ extend Pageflow Scrolled.
 
 ### Plugin Development
 
-* [Creating Content Elements](./creating_content_elements.md)
+* [Creating Content Element Types](./creating_content_element_types.md)
 
 ### Contributing
 
