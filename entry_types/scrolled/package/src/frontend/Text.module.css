@@ -27,6 +27,8 @@
 
 .heading-xs {
   composes: typography-heading from global;
+  margin-top: 1em;
+  margin-bottom: 0;
 }
 
 .body {
