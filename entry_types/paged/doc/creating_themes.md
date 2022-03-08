@@ -31,7 +31,7 @@ The generator creates the following files and directories:
                 preview_thumbnail.png
 
 Now take a look at the
-[available variables](http://codevise.github.io/pageflow/theme/master/)
+[available variables](http://codevise.github.io/pageflow-docs/theme/master/index.html)
 and start customizing. Pageflow plugins might define their own set of
 variables. Refer to the README of the respective plugin for further
 information.

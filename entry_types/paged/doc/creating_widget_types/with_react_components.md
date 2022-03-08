@@ -3,7 +3,7 @@
 ## Ingredients of a Widget Type
 
 React-based widget types are
-[packaged as Rails engines](../creating_a_pageflow_plugin_rails_engine.md)
+[packaged as Rails engines](../../../../doc/creating_a_pageflow_plugin_rails_engine.md)
 that commonly contain the following elements:
 
 * JavaScript for the front end that provides React components and other
