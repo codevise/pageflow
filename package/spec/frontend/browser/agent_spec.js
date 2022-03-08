@@ -2,6 +2,38 @@ import {browser} from 'pageflow/frontend';
 
 describe('pageflow.browser.Agent', function() {
   var Agent = browser.Agent;
+
+  describe ('#matchesAndroid', function() {
+    it('returns false for Safari on iOS', function() {
+      var agent = new Agent(
+       'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X)' +
+       'AppleWebKit/603.1.23 (KHTML, like Gecko) Version/10.0' +
+       'Mobile/14E5239e Safari/602.1'
+      );
+
+      expect(agent.matchesAndroid()).toBe(false);
+    });
+
+    it('returns false for Chrome on iOS', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X)' +
+        'AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75' +
+        'Mobile/14E5239e Safari/602.1'
+      );
+
+      expect(agent.matchesAndroid()).toBe(false);
+    });
+
+    it('returns true for Chrome on Android', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Linux; Android 10) '+
+        'Mobile/14E5239e Safari/602.1'
+      );
+
+      expect(agent.matchesAndroid()).toBe(true);
+    });
+  });
+
   describe ('#matchesSafari11AndAbove', function() {
     it('returns false for Safari 10', function() {
       var agent = new Agent(

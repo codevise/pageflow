@@ -17,7 +17,7 @@ export const Agent = function(userAgent) {
       else {
         return this.matchesSafari() &&
                !this.matchesMobilePlatform()
-      }     
+      }
     },
 
     matchesDesktopSafari9: function() {
@@ -71,6 +71,14 @@ export const Agent = function(userAgent) {
     },
 
     /**
+     * Returns true on Android.
+     * @return {boolean}
+     */
+    matchesAndroid: function() {
+      return matches(/Android/i);
+    },
+
+    /**
      * Returns true on iOS or Android.
      * @return {boolean}
      */
@@ -108,7 +116,7 @@ export const Agent = function(userAgent) {
       else {
         return this.matchesChrome() &&
                !this.matchesMobilePlatform()
-      }     
+      }
     },
 
     matchesDesktopFirefox: function(options) {
@@ -120,9 +128,9 @@ export const Agent = function(userAgent) {
       else {
         return this.matchesFirefox() &&
                !this.matchesMobilePlatform();
-      }      
+      }
     },
-    
+
     matchesDesktopEdge: function(options) {
       if (options) {
         return this.matchesEdge() &&
@@ -132,9 +140,9 @@ export const Agent = function(userAgent) {
       else {
         return this.matchesEdge() &&
                !this.matchesMobilePlatform();
-      }     
+      }
     },
-    
+
     /**
    * Returns true on Google Chrome.
    * @return {boolean}
@@ -144,7 +152,7 @@ export const Agent = function(userAgent) {
       return matches(/Chrome\//i) &&
               !matches(/Edg/i);
     },
-    
+
     /**
    * Returns true on Firefox.
    * @return {boolean}
@@ -153,7 +161,7 @@ export const Agent = function(userAgent) {
       return matches(/Firefox\//i) &&
             !matches(/Seamonkey/i);
     },
-    
+
     /**
    * Returns true on Microsoft Edge.
    * @return {boolean}
@@ -169,7 +177,7 @@ export const Agent = function(userAgent) {
 
   function matchesMinVersion(exp, version) {
     var match = userAgent.match(exp);
-    return match && match[1] && parseInt(match[1], 10) >= version;   
+    return match && match[1] && parseInt(match[1], 10) >= version;
   }
 
   //After ios13 update, iPad reports the same user string
@@ -180,7 +188,7 @@ export const Agent = function(userAgent) {
   function matchesiPadSafari13AndAbove() {
     return agent.matchesSafari() &&
            navigator.maxTouchPoints > 1 &&
-           navigator.platform === 'MacIntel';       
+           navigator.platform === 'MacIntel';
   }
 };
 
