@@ -6,7 +6,7 @@ extended.
 ## Ingredients of a Page Type
 
 Page types are
-[packaged as Rails engines](creating_a_pageflow_plugin_rails_engine.md)
+[packaged as Rails engines](../../../doc/creating_a_pageflow_plugin_rails_engine.md)
 that commonly contain the following elements:
 
 * JavaScript for the front end that provides React components and other
@@ -44,8 +44,8 @@ the recommended React-based approach include:
 * [`pageflow-vr`](https://github.com/codevise/pageflow-vr)
 * All of the
   [built in page types](https://github.com/codevise/pageflow/tree/master/entry_types/paged/packages/pageflow-paged-react/src/builtInPageTypes). Note
-  that the Pageflow gem itself internally
-  [uses a Webpack-based build process](contributing/directory_layout_overview.md). This
+  that Pageflow Paged itself internally
+  [uses a Webpack-based build process](../../../doc/contributing/directory_layout_overview.md). This
   causes the source code to have a different shape than in the
   Sprockets-based examples in this guide.
 
@@ -212,7 +212,7 @@ editor:
               menu_item: "Name to display in the help index"
               text: "Contents of the help entry as Markdown."
 
-See the [help entries guide](adding_editor_help_entries.md) for
+See the [help entries guide](../../../doc/adding_editor_help_entries.md) for
 more information on adding items to the editor help dialog.
 
 The icon used to represent the page type in the editor's page type
