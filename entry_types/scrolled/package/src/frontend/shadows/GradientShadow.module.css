@@ -22,7 +22,8 @@
 }
 
 .intersecting .shadowBlack,
-.align-center .shadowBlack {
+.align-center .shadowBlack,
+.align-centerRagged .shadowBlack {
   background: rgba(0, 0, 0, 0.9);
 }
 
@@ -39,7 +40,8 @@
 }
 
 .intersecting .shadowWhite,
-.align-center .shadowWhite {
+.align-center .shadowWhite,
+.align-centerRagged .shadowWhite {
   background: rgba(255, 255, 255, 0.9);
 }
 

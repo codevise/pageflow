@@ -255,7 +255,6 @@ en:
             inline_help: This setting controls the position of the scrolling foreground layer of the section on desktop devices. On mobile devices the foreground layer will automatically become centered.
             label: Content alignment
             values:
-              center: Center
               left: Left
               right: Right
           staticShadowOpacity:

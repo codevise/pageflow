@@ -56,7 +56,7 @@ export const EditSectionView = EditConfigurationView.extend({
         dropDownMenuItems: [editMotifAreaMenuItem]
       });
       this.input('layout', SelectInputView, {
-        values: ['left', 'right', 'center']
+        values: ['left', 'right', 'center', 'centerRagged']
       });
       this.input('appearance', SelectInputView, {
         values: ['shadow', 'cards', 'transparent']

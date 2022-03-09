@@ -39,3 +39,13 @@
   left: 0;
   line-height: 1em;
 }
+
+.layout-centerRagged {
+  text-align: center;
+}
+
+.layout-centerRagged ol,
+.layout-centerRagged ul {
+  padding-left: 0;
+  list-style-position: inside;
+}

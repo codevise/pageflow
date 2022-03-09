@@ -9,6 +9,7 @@ describe('ContentElement', () => {
       editor.contentElementTypes.register('soundDisclaimer', {supportedPositions: ['inline']});
     })
 
+
     it('returns positions for left layout by default', () => {
       const entry = factories.entry(
         ScrolledEntry,
@@ -29,6 +30,26 @@ describe('ContentElement', () => {
       expect(contentElement.getAvailablePositions()).toEqual(['inline', 'sticky', 'wide', 'full']);
     });
 
+    it('returns positions for left layout if parent section uses that', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1, configuration: {layout: 'left'}}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'sticky', 'wide', 'full']);
+    });
+
     it('returns positions for center layout if parent section uses that', () => {
       const entry = factories.entry(
         ScrolledEntry,
@@ -37,6 +58,26 @@ describe('ContentElement', () => {
           entryTypeSeed: normalizeSeed({
             sections: [
               {id: 1, configuration: {layout: 'center'}}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'left', 'right', 'wide', 'full']);
+    });
+
+    it('returns positions for centerRagged layout if parent section uses that', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1, configuration: {layout: 'centerRagged'}}
             ],
             contentElements: [
               {id: 5, sectionId: 1, typeName: 'inlineImage'}
