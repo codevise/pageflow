@@ -18,6 +18,10 @@ const positionOptions = {
   center: ['inline', 'left', 'right', 'full'],
 }
 
+const customTextColorStyles = {
+  '--theme-light-content-text-color': '#add1ff',
+  '--theme-dark-content-text-color': '#3e5d85'
+};
 
 appearanceOptions.forEach(appearance => {
   storiesOf(`Frontend/Section Appearance/${appearance}`, module)
@@ -31,19 +35,54 @@ appearanceOptions.forEach(appearance => {
     .add(
       'Inverted',
       () =>
-        <RootProviders seed={exampleSeed(appearance, true)}>
+        <RootProviders seed={exampleSeed(appearance, {invert: true})}>
           <Entry />
         </RootProviders>
     )
+    .add(
+      'Custom text color',
+      () =>
+        <RootProviders seed={exampleSeed(appearance, {short: true})}>
+          <div style={customTextColorStyles}>
+            <Entry />
+          </div>
+        </RootProviders>
+    )
+    .add(
+      'Custom text color - Inverted',
+      () =>
+        <RootProviders seed={exampleSeed(appearance, {short: true, invert: true})}>
+          <div style={customTextColorStyles}>
+            <Entry />
+          </div>
+        </RootProviders>
+    );
 });
 
-function exampleSeed(appearance, invert = false) {
+function exampleSeed(appearance, {short, invert = false} = {}) {
   const sectionBaseConfiguration = {
     appearance,
     transition: 'reveal',
     fullHeight: true,
     invert
   };
+
+  if (short) {
+    return normalizeAndMergeFixture({
+      sections: [
+        {
+          id: 1,
+          configuration: {
+            ...sectionBaseConfiguration,
+            backdrop: {
+              color: '#cad2c5'
+            }
+          }
+        }
+      ],
+      contentElements: exampleContentElements(1, 'left')
+    });
+  }
 
   return normalizeAndMergeFixture({
     sections: [

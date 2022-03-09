@@ -82,6 +82,13 @@ breakpoints. The following breakpoints are available:
 | ---- | ----------- |
 | `accent_color` | Used for progress bar, active chapter and active icons in the default navigation. Text color of links in third party content bar. Default color for audio waveforms. |
 
+### Content Colors
+
+| Name | Description |
+| ---- | ----------- |
+| `light_content_text_color` | Color of text in sections with dark background. |
+| `dark_content_text_color` | Color of text in inverted sections with light background. |
+
 ### Shared Widget Colors
 
 Surfaces use colors from specific categories in your color palette,

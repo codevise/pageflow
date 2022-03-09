@@ -1,4 +1,7 @@
-@value darkBackground, lightBackground from "./colors.module.css";
+@value (
+  darkBackground, lightBackground,
+  darkContentTextColor, lightContentTextColor
+) from "./colors.module.css";
 
 .root {
   margin: 0;
@@ -7,10 +10,10 @@
 .root > figcaption {
   padding: 3px 10px 5px;
   background-color: lightBackground;
-  color: #222;
+  color: darkContentTextColor;
 }
 
 .invert > figcaption {
   background-color: darkBackground;
-  color: #fff;
+  color: lightContentTextColor;
 }
