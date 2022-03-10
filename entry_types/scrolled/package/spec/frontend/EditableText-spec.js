@@ -127,4 +127,34 @@ describe('EditableText', () => {
 
     expect(container.querySelector('p')).toHaveTextContent('\uFEFF', {normalizeWhitespace: false})
   });
+
+  it('renders typography variant class names for paragraphs', () => {
+    const value = [{
+      type: 'paragraph',
+      variant: 'highlight',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('p'))
+      .toHaveClass('typography-textBlock-paragraph-highlight');
+  });
+
+  it('renders typography variant class names for block quotes', () => {
+    const value = [{
+      type: 'block-quote',
+      variant: 'huge',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('blockquote'))
+      .toHaveClass('typography-textBlock-blockQuote-huge');
+  });
 });
