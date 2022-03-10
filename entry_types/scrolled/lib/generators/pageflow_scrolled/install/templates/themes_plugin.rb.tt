@@ -9,17 +9,17 @@ class ScrolledThemesPlugin
                              widget: '"Source Sans Pro", sans-serif'
                            },
                            custom_theme_icons: <%= @custom_theme_icons %>,
-                           colors: {
-                             accent: '#e10028',
-                             widget: {
-                               surface: '#fff',
-                               on_surface: '#000',
-                               primary: '#00375a',
-                               on_primary: '#fff',
-                               secondary: '#c2c2c2',
-                               on_seconday: '#000',
-                               background: 'rgba(255, 255, 255, 0.95)',
-                               on_background: '#000'
+                           properties: {
+                             root: {
+                               accent_color: '#e10028',
+                               widget_surface_color: '#fff',
+                               widget_on_surface_color: '#000',
+                               widget_primary_color: '#00375a',
+                               widget_on_primary_color: '#fff',
+                               widget_secondary_color: '#c2c2c2',
+                               widget_on_seconday_color: '#000',
+                               widget_background_color: 'rgba(255, 255, 255, 0.95)',
+                               widget_on_background_color: '#000'
                              }
                            },
                            logo_alt_text: 'Pageflow',
