@@ -40,7 +40,7 @@ jobs:
     - name: Build pageflow-scrolled JSDoc
       uses: codevise/documentation-js-action@v1.3.1
       with:
-        input: ./entry_types/scrolled/package/
+        input: ./entry_types/scrolled/package/src ./entry_types/scrolled/package/spec/support
         output: ./out/scrolled/js/<ref>
         config: ./entry_types/scrolled/package/documentation.yml
         github: true
