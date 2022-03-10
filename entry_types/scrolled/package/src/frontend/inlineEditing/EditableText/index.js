@@ -41,6 +41,10 @@ export const EditableText = React.memo(function EditableText({
     if (command.type === 'REMOVE') {
       Transforms.removeNodes(editor, {mode: 'highest'});
     }
+    else if (command.type === 'TRANSIENT_STATE_UPDATE' &&
+             'typographyVariant' in command.payload) {
+      Transforms.setNodes(editor, {variant: command.payload.typographyVariant});
+    }
   });
 
   const [dropTargetsActive, ref] = useDropTargetsActive();
