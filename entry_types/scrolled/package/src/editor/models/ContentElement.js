@@ -21,6 +21,23 @@ export const ContentElement = Backbone.Model.extend({
     failureTracking
   ],
 
+  initialize() {
+    this.transientState = new Backbone.Model(this.get('transientState'));
+
+    this.listenTo(this, 'change:transientState', () =>
+      this.transientState.set(this.get('transientState'), {skipCommand: true})
+    );
+
+    this.listenTo(this.transientState, 'change', (model, {skipCommand}) => {
+      if (!skipCommand) {
+        this.postCommand({
+          type: 'TRANSIENT_STATE_UPDATE',
+          payload: model.changed
+        });
+      }
+    });
+  },
+
   getType(contentElement) {
     return editor.contentElementTypes.findByTypeName(this.get('typeName'));
   },
