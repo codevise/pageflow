@@ -91,3 +91,50 @@ breakpoints. The following breakpoints are available:
 * `md`: Minimum width 768px.
 * `lg`: Minimum width 1024px.
 * `xl`: Minimum width 1280px.
+
+### Typography Variants
+
+Certain content elements support offering an input field with
+different typography variants for the user to choose from. This can,
+for example, be used to support differently styled headings. To define
+such variants, add typography rules using on of the prefixes listed
+below. Text block elements support specifying different variants per
+element type (paragraph, heading, block quote etc.)
+
+The following example defines a typography variant for block quotes in
+text block content elements.
+
+``` ruby
+entry_type_config.themes.register(:my_custom_theme,
+                                  # ...
+                                  typography: {
+                                    # ...
+                                    'text_block-block_quote-red' => {
+                                      color: 'red'
+                                    }
+                                  }
+
+```
+
+Define a translation key to be displayed in the editor:
+
+``` yaml
+en:
+  pageflow_scrolled:
+    editor:
+      themes:
+        website:
+          typography_variants:
+            "textBlock-blockQuote-red": "Red"
+```
+
+The following prefixes are supported by built in content elements:
+
+| Typography Rule Prefix | Description |
+| ---------------------- | ----------- |
+| `heading-` | Variants for the heading content element. |
+| `text_block-block_quote-` | Variants for block quotes in text block elements. |
+| `text_block-bulleted_list-` | Variants for bulleted lists in text block elements. |
+| `text_block-heading-` | Variants for headings in text block elements. |
+| `text_block-numbered_list-` | Variants for numbered lists in text block elements. |
+| `text_block-paragraph-` | Variants for paragraphs in text block elements. |

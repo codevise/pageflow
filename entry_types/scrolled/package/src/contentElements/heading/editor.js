@@ -8,13 +8,14 @@ editor.contentElementTypes.register('heading', {
 
   defaultConfig: {position: 'wide'},
 
-  configurationEditor() {
+  configurationEditor({entry}) {
     this.listenTo(this.model, 'change:hyphens', this.refresh);
 
     this.tab('general', function() {
       this.input('textSize', SelectInputView, {
         values: ['auto', 'large', 'medium', 'small']
       });
+      this.group('ContentElementTypographyVariant', {entry});
       this.group('ContentElementPosition');
       this.input('hyphens', SelectInputView, {
         values: ['auto', 'manual']

@@ -3,9 +3,23 @@ import {editor, NoOptionsHintView} from 'pageflow-scrolled/editor';
 editor.contentElementTypes.register('textBlock', {
   supportedPositions: ['inline'],
 
-  configurationEditor() {
+  configurationEditor({entry, contentElement}) {
+    this.listenTo(contentElement.transientState,
+                  'change:currentNodeType',
+                  () => this.refresh());
+
     this.tab('general', function() {
-      this.view(NoOptionsHintView);
+      const currentNodeType = contentElement.transientState.get('currentNodeType');
+
+      this.group('ContentElementTypographyVariant', {
+        entry,
+        model: contentElement.transientState,
+        prefix: currentNodeType || 'none',
+
+        fallback() {
+          this.view(NoOptionsHintView);
+        }
+      });
     });
   },
 

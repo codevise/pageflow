@@ -36,7 +36,7 @@ describe('EditContentElementView', () => {
     expect(configurationEditor.inputPropertyNames()).toContain('text');
   });
 
-  it('passes entry to configurationEditor method', () => {
+  it('passes entry and contentElement to configurationEditor method', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
@@ -60,7 +60,10 @@ describe('EditContentElementView', () => {
     });
     view.render();
 
-    expect(configurationEditorMethod).toHaveBeenCalledWith({entry});
+    expect(configurationEditorMethod).toHaveBeenCalledWith({
+      entry,
+      contentElement: contentElement
+    });
   });
 
   it('lets content element types override detroy button', () => {

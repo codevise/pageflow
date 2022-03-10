@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import {withInlineEditingAlternative} from './inlineEditing';
 import {Text} from './Text';
@@ -28,21 +29,35 @@ function render(children = []) {
 }
 
 export function renderElement({attributes, children, element}) {
+  const variantClassName = element.variant &&
+                           ['typography-textBlock',
+                            camelize(element.type),
+                            element.variant].join('-');
+
   switch (element.type) {
   case 'block-quote':
-    return <blockquote {...attributes}>{children}</blockquote>;
+    return (
+      <blockquote {...attributes} className={variantClassName}>
+        {children}
+      </blockquote>
+    );
   case 'bulleted-list':
-    return <ul {...attributes}>{children}</ul>;
+    return <ul {...attributes} className={variantClassName}>{children}</ul>;
   case 'numbered-list':
-    return <ol {...attributes}>{children}</ol>;
+    return <ol {...attributes} className={variantClassName}>{children}</ol>;
   case 'list-item':
     return <li {...attributes}>{children}</li>;
   case 'heading':
-    return <h2 {...attributes} className={textStyles['heading-xs']}>{children}</h2>;
+    return (
+      <h2 {...attributes}
+          className={classNames(variantClassName, textStyles['heading-xs'])}>
+        {children}
+      </h2>
+    );
   case 'link':
     return <a {...attributes} href={element.href}>{children}</a>;
   default:
-    return <p {...attributes}>{children}</p>;
+    return <p {...attributes} className={variantClassName}>{children}</p>;
   }
 }
 
@@ -64,4 +79,10 @@ export function renderLeaf({attributes, children, leaf}) {
   }
 
   return <span {...attributes}>{children}</span>
+}
+
+function camelize(snakeCase) {
+  return snakeCase.replace(/-[a-z]/g, function(match) {
+    return match[1].toUpperCase();
+  });
 }

@@ -9,6 +9,7 @@ import {SelectionRect} from '../SelectionRect';
 import {useContentElementEditorState} from '../../useContentElementEditorState';
 import {useI18n} from '../../i18n';
 import {postInsertContentElementMessage} from '../postMessage';
+import {getUniformSelectedNodeProperty} from './getUniformSelectedNodeProperty';
 
 import TextIcon from '../images/text.svg';
 import HeadingIcon from '../images/heading.svg';
@@ -81,7 +82,9 @@ export function Selection(props) {
     const [start, end] = computeBounds(editor);
 
     setTransientState({
-      editableTextIsSingleBlock: editor.children.length <= 1
+      editableTextIsSingleBlock: editor.children.length <= 1,
+      currentNodeType: getUniformSelectedNodeProperty(editor, 'type'),
+      typographyVariant: getUniformSelectedNodeProperty(editor, 'variant')
     });
 
     boundsRef.current = {start, end};
