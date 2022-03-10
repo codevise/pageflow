@@ -77,5 +77,29 @@ export const ScrolledEntry = Entry.extend({
 
   deleteContentElement(id) {
     deleteContentElement(this, this.contentElements.get(id));
+  },
+
+  getTypographyVariants({contentElement, prefix}) {
+    const typographyRuleNames = Object.keys(
+      this.scrolledSeed.config.theme.options.typography || {}
+    );
+
+    const rulePrefix = [
+      ...[contentElement.get('typeName'), prefix].filter(Boolean),
+      ''
+    ].join('-')
+
+    const ruleNames = typographyRuleNames.filter(
+      name => name.indexOf(rulePrefix) === 0
+    );
+    const values = ruleNames.map(
+      name => name.split('-').pop()
+    );
+    const translationKeys = ruleNames.map(name =>
+      `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
+      `.typography_variants.${name}`
+    );
+
+    return [values, translationKeys]
   }
 });

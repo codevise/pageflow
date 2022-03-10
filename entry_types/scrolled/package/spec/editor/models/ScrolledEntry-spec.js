@@ -2360,4 +2360,129 @@ describe('ScrolledEntry', () => {
       });
     });
   });
+
+  describe('getTypographyVariants', () => {
+    it('returns empty arrays by default', () => {
+      editor.contentElementTypes.register('someElement', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 5, typeName: 'someElement'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      const [values, translationKeys] = entry.getTypographyVariants({contentElement});
+
+      expect(values).toEqual([]);
+      expect(translationKeys).toEqual([]);
+    });
+
+    it('selects typography rules based on content element type name', () => {
+      editor.contentElementTypes.register('someElement', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              typography: {
+                'someElement-large': {
+                  fontSize: '3rem'
+                },
+                'someElement-small': {
+                  fontSize: '2rem'
+                }
+              }
+            },
+            contentElements: [
+              {id: 5, typeName: 'someElement'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      const [values] = entry.getTypographyVariants({contentElement});
+
+      expect(values).toEqual(['large', 'small']);
+    });
+
+    it('returns translations keys based on theme name', () => {
+      editor.contentElementTypes.register('someElement', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {
+          metadata: {theme_name: 'custom'}
+        },
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              typography: {
+                'someElement-large': {
+                  fontSize: '3rem'
+                },
+                'someElement-small': {
+                  fontSize: '2rem'
+                }
+              }
+            },
+            contentElements: [
+              {id: 5, typeName: 'someElement'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      const [, translationKeys] = entry.getTypographyVariants({contentElement});
+
+      expect(translationKeys).toEqual([
+        'pageflow_scrolled.editor.themes.custom.typography_variants.someElement-large',
+        'pageflow_scrolled.editor.themes.custom.typography_variants.someElement-small'
+      ]);
+    });
+
+    it('supports filtering by additional prefix', () => {
+      editor.contentElementTypes.register('someElement', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              typography: {
+                'someElement-heading-large': {
+                  fontSize: '3rem'
+                },
+                'someElement-heading-small': {
+                  fontSize: '2rem'
+                },
+                'someElement-body-highlight': {
+                  fontSize: '1rem'
+                }
+              }
+            },
+            contentElements: [
+              {id: 5, typeName: 'someElement'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      const [values] = entry.getTypographyVariants({contentElement, prefix: 'heading'});
+
+      expect(values).toEqual(['large', 'small']);
+    });
+  });
 });
