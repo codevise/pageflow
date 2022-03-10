@@ -2,6 +2,38 @@
 
 .Section {
   position: relative;
+
+  --section-max-width:
+    var(--theme-section-max-width);
+
+  --two-column-inline-content-max-width:
+    var(--theme-two-column-inline-content-max-width);
+  --two-column-wide-content-max-width:
+    var(--theme-two-column-wide-content-max-width);
+  --two-column-sticky-content-max-width:
+    var(--theme-two-column-sticky-content-max-width);
+
+  --centered-inline-content-max-width:
+    var(--theme-centered-inline-content-max-width);
+  --centered-wide-content-max-width:
+    var(--theme-centered-wide-content-max-width);
+}
+
+.narrow {
+  --section-max-width:
+    var(--theme-narrow-section-max-width);
+
+  --two-column-inline-content-max-width:
+    var(--theme-narrow-section-two-column-inline-content-max-width);
+  --two-column-wide-content-max-width:
+    var(--theme-narrow-section-two-column-wide-content-max-width);
+  --two-column-sticky-content-max-width:
+    var(--theme-narrow-section-two-column-sticky-content-max-width);
+
+  --centered-inline-content-max-width:
+    var(--theme-narrow-section-centered-inline-content-max-width);
+  --centered-wide-content-max-width:
+    var(--theme-narrow-section-centered-wide-content-max-width);
 }
 
 @media screen {
