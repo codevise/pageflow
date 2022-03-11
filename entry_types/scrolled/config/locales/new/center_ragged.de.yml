@@ -1,7 +1,8 @@
 de:
-  pagefow_scrolled:
+  pageflow_scrolled:
     editor:
       edit_section:
-        layout:
-          values:
-            centerRagged: "Zentriert"
+        attributes:
+          layout:
+            values:
+              centerRagged: "Zentriert"
