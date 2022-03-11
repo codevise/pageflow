@@ -8,6 +8,8 @@ export const EditSectionView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_section',
 
   configure: function(configurationEditor) {
+    const entry = this.options.entry;
+
     const editMotifAreaMenuItem = {
       name: 'editMotifArea',
       label: I18n.t('pageflow_scrolled.editor.edit_section.edit_motif_area'),
@@ -58,9 +60,11 @@ export const EditSectionView = EditConfigurationView.extend({
       this.input('layout', SelectInputView, {
         values: ['left', 'right', 'center', 'centerRagged']
       });
-      this.input('width', SelectInputView, {
-        values: ['wide', 'narrow']
-      });
+      if (entry.supportsSectionWidths()) {
+        this.input('width', SelectInputView, {
+          values: ['wide', 'narrow']
+        });
+      }
       this.input('appearance', SelectInputView, {
         values: ['shadow', 'cards', 'transparent']
       });
