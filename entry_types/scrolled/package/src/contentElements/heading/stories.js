@@ -9,6 +9,12 @@ storiesOfContentElement(module, {
   },
   variants: [
     {
+      name: 'First headline in entry',
+      configuration: {
+        level: 0
+      }
+    },
+    {
       name: 'Large',
       configuration: {
         textSize: 'large'
