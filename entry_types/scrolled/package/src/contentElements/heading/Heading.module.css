@@ -14,3 +14,9 @@
 .center {
   text-align: center;
 }
+
+@media (orientation: landscape) {
+  .first {
+    padding-top: var(--theme-first-heading-landscape-padding-top, 25%);
+  }
+}
