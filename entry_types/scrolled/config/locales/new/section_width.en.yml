@@ -1,0 +1,10 @@
+en:
+  pageflow_scrolled:
+    editor:
+      edit_section:
+        attributes:
+          width:
+            label: "Width"
+            values:
+              wide: "Wide"
+              narrow: "Narrow"
