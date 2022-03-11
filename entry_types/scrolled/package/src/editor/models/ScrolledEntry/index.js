@@ -101,5 +101,13 @@ export const ScrolledEntry = Entry.extend({
     );
 
     return [values, translationKeys]
+  },
+
+  supportsSectionWidths() {
+    const theme = this.scrolledSeed.config.theme;
+
+    return Object.keys(theme.options.properties?.root || {}).some(key =>
+      key.startsWith('narrowSection')
+    );
   }
 });
