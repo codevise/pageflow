@@ -17,12 +17,11 @@
 }
 
 .sticky,
-.inline,
-.wide {
+.inline {
   max-width: var(--two-column-inline-content-max-width, 500px);
 }
 
-.wideViewport .wide {
+.wide {
   max-width: var(--two-column-wide-content-max-width, 1200px);
 }
 
