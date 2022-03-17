@@ -1,3 +1,4 @@
+export {useAdditionalSeedData} from './additionalSeedData';
 export {useShareProviders, useShareUrl} from './sharing';
 export {useEntryMetadata} from './metadata';
 export {useEntryStructure, useSection, useChapters, useSectionContentElements} from './structure';
