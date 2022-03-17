@@ -558,6 +558,98 @@ module PageflowScrolled
           expect(JSON.parse(result)).not_to have_key('i18n')
         end
       end
+
+      it 'renders additional frontend seed data' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_seed_data.register(
+              'someSeed',
+              proc { {some: 'data'} }
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         additionalSeedData: {
+                                           someSeed: {
+                                             some: 'data'
+                                           }
+                                         }
+                                       })
+      end
+
+      it 'supports only rendering seed data of used content elements' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_seed_data.register(
+              'someSeed',
+              proc { {some: 'data'} },
+              content_element_type_names: ['extra']
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+        create(:content_element, revision: entry.revision, type_name: 'extra')
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         additionalSeedData: {
+                                           someSeed: {
+                                             some: 'data'
+                                           }
+                                         }
+                                       })
+      end
+
+      it 'does not renderer seed data of unused content elements' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_seed_data.register(
+              'someSeed',
+              proc { {some: 'data'} },
+              content_element_type_names: ['extra']
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = render(helper, entry)
+
+        expect(result).not_to include_json(config: {
+                                             additionalSeedData: {
+                                               someSeed: anything
+                                             }
+                                           })
+      end
+
+      it 'supports rendering seed data of unused content elements for editor' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_seed_data.register(
+              'someSeed',
+              proc { {some: 'data'} },
+              content_element_type_names: ['extra']
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = render(helper, entry, include_unused_additional_seed_data: true)
+
+        expect(result).to include_json(config: {
+                                         additionalSeedData: {
+                                           someSeed: {some: 'data'}
+                                         }
+                                       })
+      end
     end
 
     describe '#scrolled_entry_json_seed_script_tag' do
