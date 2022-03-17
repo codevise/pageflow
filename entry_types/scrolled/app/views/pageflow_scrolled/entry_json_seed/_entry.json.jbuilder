@@ -31,6 +31,14 @@ json.config do
 
   json.enabled_feature_names entry.enabled_feature_names
   json.partial! 'pageflow_scrolled/entry_json_seed/theme', theme: entry.theme
+
+  json.additional_seed_data(
+    entry_config
+      .additional_frontend_seed_data
+      .for(entry,
+           self,
+           include_unused: options[:include_unused_additional_seed_data])
+  )
 end
 
 unless options[:skip_i18n]
