@@ -1,4 +1,5 @@
 require 'pageflow/test_page_type'
+require 'pageflow/test_uploadable_file'
 
 module Pageflow
   class TestFileType
