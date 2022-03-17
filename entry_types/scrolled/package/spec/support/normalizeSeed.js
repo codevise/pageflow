@@ -39,7 +39,8 @@ export function normalizeSeed({
   chapters,
   sections,
   contentElements,
-  widgets
+  widgets,
+  additionalSeedData
 } = {}) {
   const entries = entry ? [entry] : [{}];
   const normalizedEntries = normalizeCollection(entries);
@@ -74,7 +75,8 @@ export function normalizeSeed({
       shareUrlTemplates: normalizeShareUrlTemplates(shareUrlTemplates),
       defaultFileRights: defaultFileRights,
       legalInfo: normalizeLegalInfo(legalInfo),
-      theme: normalizeTheme({themeOptions, themeAssets})
+      theme: normalizeTheme({themeOptions, themeAssets}),
+      additionalSeedData: additionalSeedData || {}
     },
     collections: {
       entries: normalizedEntries,

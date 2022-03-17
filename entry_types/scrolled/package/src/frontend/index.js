@@ -53,6 +53,7 @@ export {useAudioFocus} from './useAudioFocus';
 export {useDarkBackground} from './backgroundColor';
 
 export {
+  useAdditionalSeedData,
   useChapters,
   useCredits,
   useFile,
