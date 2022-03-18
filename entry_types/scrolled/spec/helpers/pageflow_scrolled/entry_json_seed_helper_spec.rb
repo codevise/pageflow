@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'pageflow/used_file_test_helper'
 require 'pageflow/shared_contexts/fake_translations'
+require 'pageflow/test_uploadable_file'
 
 module PageflowScrolled
   RSpec.describe EntryJsonSeedHelper, type: :helper do
@@ -16,6 +17,7 @@ module PageflowScrolled
       context 'entries' do
         it 'renders single-element entry array' do
           entry = create(:published_entry,
+                         type_name: 'scrolled',
                          revision_attributes: {
                            published_at: '2020-08-11 10:00'.in_time_zone('UTC'),
                            locale: 'fr',
@@ -43,7 +45,7 @@ module PageflowScrolled
 
       context 'chapters' do
         it 'renders chapters with id, perma_id, storyline_id, position and configuration' do
-          entry = create(:published_entry)
+          entry = create(:published_entry, type_name: 'scrolled')
           chapter = create(:scrolled_chapter, revision: entry.revision, position: 3)
 
           result = render(helper, entry)
@@ -65,7 +67,7 @@ module PageflowScrolled
         end
 
         it 'orders chapters according to position attribute' do
-          entry = create(:published_entry)
+          entry = create(:published_entry, type_name: 'scrolled')
           chapter1 = create(:scrolled_chapter, revision: entry.revision, position: 4)
           chapter2 = create(:scrolled_chapter, revision: entry.revision, position: 3)
 
@@ -83,7 +85,7 @@ module PageflowScrolled
 
       context 'sections' do
         it 'renders sections with id, perma_id, chapter_id, position and configuration' do
-          entry = create(:published_entry)
+          entry = create(:published_entry, type_name: 'scrolled')
           chapter = create(:scrolled_chapter, revision: entry.revision)
           section = create(:section,
                            chapter: chapter,
@@ -109,7 +111,7 @@ module PageflowScrolled
         end
 
         it 'orders sections by chapter position and section position' do
-          entry = create(:published_entry)
+          entry = create(:published_entry, type_name: 'scrolled')
           chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
           section22 = create(:section, chapter: chapter2, position: 2)
           section21 = create(:section, chapter: chapter2, position: 1)
@@ -134,7 +136,7 @@ module PageflowScrolled
       context 'content_elements' do
         it 'renders content elements with id, perma_id, type_name, position, section id ' \
          'and configuration' do
-          entry = create(:published_entry)
+          entry = create(:published_entry, type_name: 'scrolled')
           chapter = create(:scrolled_chapter, revision: entry.revision)
           section = create(:section, chapter: chapter)
           content_element = create(:content_element,
@@ -164,7 +166,7 @@ module PageflowScrolled
 
         it 'orders content elements by chapter position, section position and ' \
            'content element position' do
-          entry = create(:published_entry)
+          entry = create(:published_entry, type_name: 'scrolled')
           chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
           section22 = create(:section, chapter: chapter2, position: 2)
           content_element222 = create(:content_element, section: section22, position: 2)
@@ -242,7 +244,7 @@ module PageflowScrolled
       end
 
       it 'also works for draft entry' do
-        entry = create(:draft_entry)
+        entry = create(:draft_entry, type_name: 'scrolled')
         create(:scrolled_chapter, revision: entry.revision)
 
         result = render(helper, entry)
@@ -251,7 +253,7 @@ module PageflowScrolled
       end
 
       it 'supports skipping collections' do
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
 
         result = render(helper, entry, skip_collections: true)
 
@@ -259,7 +261,7 @@ module PageflowScrolled
       end
 
       it 'renders files' do
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
         image_file = create_used_file(:video_file, entry: entry, output_presences: {'high': true})
 
         result = render(helper, entry)
@@ -276,7 +278,7 @@ module PageflowScrolled
       end
 
       it 'supports skipping files' do
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
         create_used_file(:image_file, entry: entry)
 
         result = render(helper, entry, skip_files: true)
@@ -292,11 +294,11 @@ module PageflowScrolled
         pageflow_configure do |config|
           config
             .file_types
-            .register(Pageflow::FileType.new(model: 'Pageflow::VideoFile',
+            .register(Pageflow::FileType.new(model: 'Pageflow::TestUploadableFile',
                                              collection_name: 'test_files',
                                              url_templates: -> { {poster_medium: url_template} }))
         end
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
 
         result = render(helper, entry)
 
@@ -314,25 +316,27 @@ module PageflowScrolled
         pageflow_configure do |config|
           config
             .file_types
-            .register(Pageflow::FileType.new(model: 'Pageflow::VideoFile',
+            .register(Pageflow::FileType.new(model: 'Pageflow::TestUploadableFile',
                                              collection_name: 'test_files'))
         end
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
 
         result = render(helper, entry)
 
         expect(result)
           .to include_json(config: {
                              fileModelTypes: {
-                               testFiles: 'Pageflow::VideoFile'
+                               testFiles: 'Pageflow::TestUploadableFile'
                              }
                            })
       end
 
       it 'renders entry pretty url and provider share url templates' do
         theming = create(:theming, cname: '')
-        entry = Pageflow::PublishedEntry.new(create(:entry, title: 'test', theming: theming),
-                                             create(:revision))
+        entry = create(:published_entry,
+                       type_name: 'scrolled',
+                       title: 'test',
+                       theming: theming)
 
         result = render(helper, entry)
 
@@ -348,8 +352,10 @@ module PageflowScrolled
 
       it 'renders default file rights from account' do
         account = create(:account, default_file_rights: '@WDR')
-        entry = Pageflow::PublishedEntry.new(create(:entry, title: 'test', account: account),
-                                             create(:revision))
+        entry = create(:published_entry,
+                       type_name: 'scrolled',
+                       title: 'test',
+                       account: account)
 
         result = render(helper, entry)
 
@@ -357,7 +363,7 @@ module PageflowScrolled
       end
 
       it 'renders legal info' do
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
 
         result = render(helper, entry)
 
@@ -371,7 +377,7 @@ module PageflowScrolled
       end
 
       it 'renders theme assets' do
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
 
         result = render(helper, entry)
 
@@ -388,7 +394,7 @@ module PageflowScrolled
         pageflow_configure do |config|
           config.themes.register(:default, custom_icons: [:share])
         end
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
         result = render(helper, entry)
 
         expect(result).to include_json(config: {
@@ -407,7 +413,7 @@ module PageflowScrolled
         pageflow_configure do |config|
           config.themes.register(:default, custom_icons: [:share])
         end
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
         result = render(helper, entry)
 
         expect(result).to include_json(config: {
@@ -425,7 +431,7 @@ module PageflowScrolled
         pageflow_configure do |config|
           config.themes.register(:default, custom_icons: [])
         end
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
         result = render(helper, entry)
 
         expect(result).to include_json(config: {
@@ -464,7 +470,7 @@ module PageflowScrolled
         pageflow_configure do |config|
           config.themes.register(:default, some_option: 'value')
         end
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
 
         result = render(helper, entry)
 
@@ -495,7 +501,9 @@ module PageflowScrolled
 
         it 'renders public scrolled translations by default' do
           translation(:de, 'pageflow_scrolled.public.some', 'text')
-          entry = create(:published_entry, revision_attributes: {locale: 'de'})
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         revision_attributes: {locale: 'de'})
 
           result = render(helper, entry)
 
@@ -514,7 +522,7 @@ module PageflowScrolled
 
         it 'supports including scrolled inline editing translations' do
           translation(I18n.locale, 'pageflow_scrolled.inline_editing.some', 'text')
-          entry = create(:published_entry)
+          entry = create(:published_entry, type_name: 'scrolled')
 
           result = render(helper, entry, translations: {include_inline_editing: true})
 
@@ -532,7 +540,7 @@ module PageflowScrolled
         end
 
         it 'includes locale and default locale' do
-          entry = create(:published_entry)
+          entry = create(:published_entry, type_name: 'scrolled')
 
           result = render(helper, entry)
 
@@ -543,18 +551,110 @@ module PageflowScrolled
         end
 
         it 'supports skipping i18n' do
-          entry = create(:published_entry)
+          entry = create(:published_entry, type_name: 'scrolled')
 
           result = render(helper, entry, skip_i18n: true)
 
           expect(JSON.parse(result)).not_to have_key('i18n')
         end
       end
+
+      it 'renders additional frontend seed data' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_seed_data.register(
+              'someSeed',
+              proc { {some: 'data'} }
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         additionalSeedData: {
+                                           someSeed: {
+                                             some: 'data'
+                                           }
+                                         }
+                                       })
+      end
+
+      it 'supports only rendering seed data of used content elements' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_seed_data.register(
+              'someSeed',
+              proc { {some: 'data'} },
+              content_element_type_names: ['extra']
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+        create(:content_element, revision: entry.revision, type_name: 'extra')
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         additionalSeedData: {
+                                           someSeed: {
+                                             some: 'data'
+                                           }
+                                         }
+                                       })
+      end
+
+      it 'does not renderer seed data of unused content elements' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_seed_data.register(
+              'someSeed',
+              proc { {some: 'data'} },
+              content_element_type_names: ['extra']
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = render(helper, entry)
+
+        expect(result).not_to include_json(config: {
+                                             additionalSeedData: {
+                                               someSeed: anything
+                                             }
+                                           })
+      end
+
+      it 'supports rendering seed data of unused content elements for editor' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_seed_data.register(
+              'someSeed',
+              proc { {some: 'data'} },
+              content_element_type_names: ['extra']
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = render(helper, entry, include_unused_additional_seed_data: true)
+
+        expect(result).to include_json(config: {
+                                         additionalSeedData: {
+                                           someSeed: {some: 'data'}
+                                         }
+                                       })
+      end
     end
 
     describe '#scrolled_entry_json_seed_script_tag' do
       it 'renders script tag which assigns seed global variable' do
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.revision)
         create(:section, chapter: chapter)
 
@@ -564,7 +664,7 @@ module PageflowScrolled
       end
 
       it 'escapes illegal characters' do
-        entry = create(:published_entry)
+        entry = create(:published_entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.revision)
         section = create(:section, chapter: chapter)
         create(:content_element,
