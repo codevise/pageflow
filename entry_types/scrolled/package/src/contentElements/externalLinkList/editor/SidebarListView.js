@@ -23,6 +23,7 @@ export const SidebarListView = Marionette.Layout.extend({
   onRender: function () {
     this.linksContainer.show(new ListView({
       collection: this.collection,
+      sortable: true,
       onEdit: _.bind(this.onEdit, this),
       onRemove: _.bind(this.onRemove, this)
     }));
