@@ -124,6 +124,26 @@ module PageflowScrolled
                                               text: 'test_widget_meta',
                                               visible: false)
         end
+
+        it 'renders additional seed data of unused content elements' do
+          pageflow_configure do |config|
+            config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_conig|
+              entry_type_conig.additional_frontend_seed_data.register(
+                'extra',
+                ->(**) { {some: 'additional data'} },
+                content_element_type_names: ['extra']
+              )
+            end
+          end
+
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = helper.scrolled_editor_iframe_seed_html_script_tag(entry)
+
+          expect(result).to have_selector('script',
+                                          text: 'additional data',
+                                          visible: false)
+        end
       end
     end
   end
