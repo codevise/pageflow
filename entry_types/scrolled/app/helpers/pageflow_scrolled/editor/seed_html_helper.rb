@@ -19,6 +19,7 @@ module PageflowScrolled
                         :@skip_structured_data => true,
                         :@seed_options => {
                           skip_collections: true,
+                          include_unused_additional_seed_data: true,
                           translations: {include_inline_editing: true}
                         }
                       })
