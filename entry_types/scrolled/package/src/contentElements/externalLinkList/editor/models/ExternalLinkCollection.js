@@ -4,19 +4,22 @@ import {ExternalLinkModel} from './ExternalLinkModel';
 
 export const ExternalLinkCollection = Backbone.Collection.extend({
   model: ExternalLinkModel,
+  comparator: 'position',
+
   initialize: function (models, options) {
     this.entry = options.entry;
     this.configuration = options.configuration;
-    this.bind('change', this.updateConfiguration);
-    this.bind('add', this.updateConfiguration);
-    this.bind('remove', this.updateConfiguration);
+    this.listenTo(this, 'add remove sort change', this.updateConfiguration);
   },
+
   modelId: function (attrs) {
     return attrs.id;
   },
+
   updateConfiguration: function () {
     this.configuration.set('links', this.toJSON());
   },
+
   addNewLink: function(){
     var newLink = {
       id: this.length+1,
@@ -28,7 +31,9 @@ export const ExternalLinkCollection = Backbone.Collection.extend({
     }
     this.add(newLink);
     return this.get(this.length);
-  }
+  },
+
+  saveOrder() {}
 });
 
 ExternalLinkCollection.forContentElement = function(contentElement, entry) {
