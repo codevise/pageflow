@@ -183,7 +183,6 @@ jobs:
 
   trigger-edge-build:
     if: ${{ github.ref == 'refs/heads/master' && github.repository == 'codevise/pageflow' }}
-    needs: [rspec, jest]
     runs-on: ubuntu-latest
     steps:
     - name: Trigger GitLab workflow
