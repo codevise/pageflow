@@ -20,17 +20,19 @@ export const ExternalLinkCollection = Backbone.Collection.extend({
     this.configuration.set('links', this.toJSON());
   },
 
-  addNewLink: function(){
-    var newLink = {
-      id: this.length+1,
+  addNewLink() {
+    const id = this.length ? Math.max(...this.pluck('id')) + 1 : 1;
+
+    this.add({
+      id,
       title: '',
       url: '',
       thumbnail: '',
       description: '',
       open_in_new_tab: 1
-    }
-    this.add(newLink);
-    return this.get(this.length);
+    });
+
+    return this.get(id);
   },
 
   saveOrder() {}
