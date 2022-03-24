@@ -1,4 +1,7 @@
-@value lightContentTextColor, darkContentTextColor from "./colors.module.css";
+@value (
+  darkContentTextColor,
+  lightContentTextColor
+) from "pageflow-scrolled/values/colors.module.css";
 
 .Section {
   position: relative;

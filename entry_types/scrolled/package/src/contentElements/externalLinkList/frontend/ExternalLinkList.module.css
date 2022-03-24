@@ -1,4 +1,5 @@
 .ext_links_container{
+  composes: scope-externalLinks from global;
   display: flex;
   flex-wrap: wrap;
   border-collapse: separate;

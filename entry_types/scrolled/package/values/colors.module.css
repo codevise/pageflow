@@ -1,0 +1,5 @@
+@value lightContentSurfaceColor: var(--theme-light-content-surface-color, #fff);
+@value darkContentSurfaceColor: var(--theme-dark-content-surface-color, #101010);
+
+@value lightContentTextColor: var(--theme-light-content-text-color, #fff);
+@value darkContentTextColor: var(--theme-dark-content-text-color, #222);

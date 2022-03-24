@@ -1,7 +1,7 @@
 @value (
-  darkBackground, lightBackground,
+  darkContentSurfaceColor, lightContentSurfaceColor,
   darkContentTextColor, lightContentTextColor
-) from "./colors.module.css";
+) from "pageflow-scrolled/values/colors.module.css";
 
 .root {
   margin: 0;
@@ -9,11 +9,11 @@
 
 .root > figcaption {
   padding: 3px 10px 5px;
-  background-color: lightBackground;
+  background-color: lightContentSurfaceColor;
   color: darkContentTextColor;
 }
 
 .invert > figcaption {
-  background-color: darkBackground;
+  background-color: darkContentSurfaceColor;
   color: lightContentTextColor;
 }

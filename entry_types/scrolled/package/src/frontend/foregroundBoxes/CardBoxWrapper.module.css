@@ -1,7 +1,7 @@
 @value (
-  darkBackground, lightBackground,
+  darkContentSurfaceColor, lightContentSurfaceColor,
   darkContentTextColor, lightContentTextColor
-) from "../colors.module.css";
+) from "pageflow-scrolled/values/colors.module.css";
 
 .card {
   position: relative;
@@ -41,11 +41,11 @@
 
 @media screen {
   .cardBgWhite::before {
-    background-color: lightBackground;
+    background-color: lightContentSurfaceColor;
   }
 
   .cardBgBlack::before {
-    background-color: darkBackground;
+    background-color: darkContentSurfaceColor;
   }
 
   .cardBgWhite {
