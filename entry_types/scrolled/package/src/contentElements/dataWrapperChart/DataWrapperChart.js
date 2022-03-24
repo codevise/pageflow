@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  ContentElementBox,
   ThirdPartyOptIn,
   ThirdPartyOptOutInfo,
   useContentElementLifecycle,
@@ -29,22 +30,24 @@ export function DataWrapperChart({configuration}) {
   const backgroundColor = configuration.backgroundColor || '#323d4d';
 
   return (
-    <Figure caption={configuration.caption}>
-      <div className={styles.container}
-           style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined,
-                   backgroundColor,
-                   color: textColorForBackgroundColor(backgroundColor),
-                   height: height}}
-           data-percy="hide">
-        <ThirdPartyOptIn providerName="datawrapper">
-          {shouldLoad && renderIframe(srcURL,
-                                      configuration.title ||
-                                      t('pageflow_scrolled.public.chart.default_title'))}
-        </ThirdPartyOptIn>
-        <DatawrapperOptOutInfo providerName="datawrapper"
-                               contentElementPosition={configuration.position} />
-      </div>
-    </Figure>
+    <ContentElementBox>
+      <Figure caption={configuration.caption}>
+        <div className={styles.container}
+             style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined,
+                     backgroundColor,
+                     color: textColorForBackgroundColor(backgroundColor),
+                     height: height}}
+             data-percy="hide">
+          <ThirdPartyOptIn providerName="datawrapper">
+            {shouldLoad && renderIframe(srcURL,
+                                        configuration.title ||
+                                        t('pageflow_scrolled.public.chart.default_title'))}
+          </ThirdPartyOptIn>
+          <DatawrapperOptOutInfo providerName="datawrapper"
+                                 contentElementPosition={configuration.position} />
+        </div>
+      </Figure>
+    </ContentElementBox>
   );
 }
 

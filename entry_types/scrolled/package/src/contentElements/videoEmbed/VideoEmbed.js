@@ -5,6 +5,7 @@ import {getProviderName} from './getProviderName';
 import styles from './VideoEmbed.module.css';
 
 import {
+  ContentElementBox,
   Figure,
   ThirdPartyOptIn,
   ThirdPartyOptOutInfo,
@@ -33,18 +34,20 @@ export function VideoEmbed({contentElementId, configuration}) {
     <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <FitViewport
         aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}>
-        <Figure caption={configuration.caption}>
-          <FitViewport.Content>
-            {shouldLoad && <PreparedPlayer playerState={playerState}
-                                           setPlayerState={setPlayerState}
-                                           contentElementId={contentElementId}
-                                           configuration={configuration}
-                                           providerName={providerName} />}
-          </FitViewport.Content>
-          <ThirdPartyOptOutInfo providerName={providerName}
-                                hide={playerState === 'playing'}
-                                contentElementPosition={configuration.position} />
-        </Figure>
+        <ContentElementBox>
+          <Figure caption={configuration.caption}>
+            <FitViewport.Content>
+              {shouldLoad && <PreparedPlayer playerState={playerState}
+                                             setPlayerState={setPlayerState}
+                                             contentElementId={contentElementId}
+                                             configuration={configuration}
+                                             providerName={providerName} />}
+            </FitViewport.Content>
+            <ThirdPartyOptOutInfo providerName={providerName}
+                                  hide={playerState === 'playing'}
+                                  contentElementPosition={configuration.position} />
+          </Figure>
+        </ContentElementBox>
       </FitViewport>
     </div>
   );

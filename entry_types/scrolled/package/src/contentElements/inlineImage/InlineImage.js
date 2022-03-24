@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  ContentElementBox,
   Image,
   Figure,
   FitViewport,
@@ -53,14 +54,16 @@ function ImageWithCaption({imageFile, configuration}) {
   return (
     <FitViewport file={imageFile}
                  aspectRatio={imageFile ? undefined : 0.75}>
-      <Figure caption={configuration.caption}>
-        <FitViewport.Content>
-          <Image imageFile={imageFile}
-                 load={shouldLoad}
-                 structuredData={true}
-                 variant={configuration.position === 'full' ? 'large' : 'medium'} />
-        </FitViewport.Content>
-      </Figure>
+      <ContentElementBox>
+        <Figure caption={configuration.caption}>
+          <FitViewport.Content>
+            <Image imageFile={imageFile}
+                   load={shouldLoad}
+                   structuredData={true}
+                   variant={configuration.position === 'full' ? 'large' : 'medium'} />
+          </FitViewport.Content>
+        </Figure>
+      </ContentElementBox>
     </FitViewport>
   );
 }

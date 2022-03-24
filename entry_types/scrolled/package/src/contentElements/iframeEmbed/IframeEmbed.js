@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {
+  ContentElementBox,
   Figure,
   FitViewport,
   useContentElementEditorState,
@@ -31,15 +32,17 @@ export function IframeEmbed({configuration}) {
     <div className={styles.wrapper}
          style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <FitViewport aspectRatio={aspectRatios[aspectRatio || 'wide']}>
-        <Figure caption={configuration.caption}>
-          <FitViewport.Content>
-            {shouldLoad &&
-             <iframe className={classNames(styles.iframe,
-                                           styles[`scale-${configuration.scale}`])}
-                                   title={configuration.title}
-                                   src={configuration.source} />}
-          </FitViewport.Content>
-        </Figure>
+        <ContentElementBox>
+          <Figure caption={configuration.caption}>
+            <FitViewport.Content>
+              {shouldLoad &&
+               <iframe className={classNames(styles.iframe,
+                                             styles[`scale-${configuration.scale}`])}
+                       title={configuration.title}
+                       src={configuration.source} />}
+            </FitViewport.Content>
+          </Figure>
+        </ContentElementBox>
       </FitViewport>
     </div>
   );
