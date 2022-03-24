@@ -1,3 +1,8 @@
+@value (
+  darkContentSurfaceColor, lightContentSurfaceColor,
+  darkContentTextColor, lightContentTextColor
+) from "pageflow-scrolled/values/colors.module.css";
+
 .hidden {
   display: none;
 }
@@ -6,16 +11,15 @@
   width: 45%;
   vertical-align: top;
   margin: 2% auto;
-  background-color: #fff;
-  color: #000;
+  background-color: lightContentSurfaceColor;
+  color: darkContentTextColor;
   text-decoration: none;
   transition: transform 0.3s;
 }
 
-
 .link_item.invert {
-  background-color: #222;
-  color: #fff;
+  background-color: darkContentSurfaceColor;
+  color: lightContentTextColor;
 }
 
 .link_item.layout_center {
@@ -88,7 +92,7 @@
 @media only screen and (max-width: 600px) {
   .link_item.layout_center {
     width: 45%;
-  }  
+  }
 }
 
 @media only screen and (max-width: 350px) {
@@ -97,5 +101,5 @@
   }
   .link_item.layout_center {
     width: 85%;
-  }  
+  }
 }
