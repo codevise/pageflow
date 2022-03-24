@@ -43,6 +43,9 @@ The following scopes are available:
 * `tooltip`: Override color options for the share and legal tooltips
   of the default navigation bar.
 
+* `external_links`: Override content color options for external link
+  cards.
+
 Custom widget and content element types can define additional scopes.
 
 ## Responsive Breakpoints
