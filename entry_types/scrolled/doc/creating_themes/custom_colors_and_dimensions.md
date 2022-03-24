@@ -88,6 +88,8 @@ breakpoints. The following breakpoints are available:
 | ---- | ----------- |
 | `light_content_text_color` | Color of text in sections with dark background. |
 | `dark_content_text_color` | Color of text in inverted sections with light background. |
+| `light_content_surface_color` | Color of light surfaces like cards or figure captions. |
+| `dark_content_surface_color` | Color of dark surfaces like inverted cards or figure captions. |
 
 ### Content Widths
 
