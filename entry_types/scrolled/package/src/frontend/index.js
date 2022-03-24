@@ -36,6 +36,7 @@ export * from './AudioPlayer';
 export * from './Atmo';
 export * from './useAtmo';
 
+export {ContentElementBox} from './ContentElementBox';
 export {MediaInteractionTracking} from './MediaInteractionTracking';
 export {MediaPlayerControls} from './MediaPlayerControls';
 export {VideoPlayerControls} from './VideoPlayerControls';

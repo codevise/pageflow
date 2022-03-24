@@ -1,0 +1,4 @@
+.wrapper {
+  overflow: hidden;
+  border-radius: var(--theme-content-element-box-border-radius);
+}

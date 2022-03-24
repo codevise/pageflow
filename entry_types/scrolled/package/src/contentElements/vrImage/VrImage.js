@@ -5,6 +5,7 @@ import {
   useContentElementEditorState,
   useContentElementLifecycle,
   useFile,
+  ContentElementBox,
   Figure,
   Panorama,
   FitViewport
@@ -20,11 +21,13 @@ export function VrImage({configuration}) {
     <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <FitViewport
         aspectRatio={configuration.position === 'full' ? 0.5 : 0.75}>
-        <Figure caption={configuration.caption}>
-          <FitViewport.Content>
-            {renderLazyPanorama(configuration, imageFile, shouldLoad)}
-          </FitViewport.Content>
-        </Figure>
+        <ContentElementBox>
+          <Figure caption={configuration.caption}>
+            <FitViewport.Content>
+              {renderLazyPanorama(configuration, imageFile, shouldLoad)}
+            </FitViewport.Content>
+          </Figure>
+        </ContentElementBox>
       </FitViewport>
     </div>
   );

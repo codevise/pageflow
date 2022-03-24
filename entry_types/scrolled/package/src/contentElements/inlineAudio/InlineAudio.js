@@ -5,6 +5,7 @@ import {media} from 'pageflow/frontend';
 import {
   AudioPlayer,
   AudioPlayerControls,
+  ContentElementBox,
   Figure,
   FitViewport,
   useContentElementEditorState,
@@ -57,31 +58,33 @@ export function InlineAudio({contentElementId, sectionProps, configuration}) {
 
   return (
     <FitViewport file={posterImageFile}>
-      <Figure caption={configuration.caption}>
-        <FitViewport.Content>
-          <AudioPlayerControls audioFile={audioFile}
-                               defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
-                               playerState={playerState}
-                               playerActions={playerActions}
-                               standAlone={!posterImageFile}
-                               configuration={configuration}
-                               sectionProps={sectionProps}
-                               onPlayerClick={onPlayerClick}>
-            <AudioPlayer load={shouldPrepare ? 'auto' :
-                               shouldLoad ? 'poster' :
-                               'none'}
-                         controls={configuration.controls}
-                         playerState={playerState}
-                         playerActions={playerActions}
-                         audioFile={audioFile}
-                         posterImageFile={posterImageFile}
-                         defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
-                         quality={'high'}
-                         playsInline={true}
-                         atmoDuringPlayback={configuration.atmoDuringPlayback} />
-          </AudioPlayerControls>
-        </FitViewport.Content>
-      </Figure>
+      <ContentElementBox>
+        <Figure caption={configuration.caption}>
+          <FitViewport.Content>
+            <AudioPlayerControls audioFile={audioFile}
+                                 defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
+                                 playerState={playerState}
+                                 playerActions={playerActions}
+                                 standAlone={!posterImageFile}
+                                 configuration={configuration}
+                                 sectionProps={sectionProps}
+                                 onPlayerClick={onPlayerClick}>
+              <AudioPlayer load={shouldPrepare ? 'auto' :
+                                 shouldLoad ? 'poster' :
+                                 'none'}
+                           controls={configuration.controls}
+                           playerState={playerState}
+                           playerActions={playerActions}
+                           audioFile={audioFile}
+                           posterImageFile={posterImageFile}
+                           defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
+                           quality={'high'}
+                           playsInline={true}
+                           atmoDuringPlayback={configuration.atmoDuringPlayback} />
+            </AudioPlayerControls>
+          </FitViewport.Content>
+        </Figure>
+      </ContentElementBox>
     </FitViewport>
   )
 }

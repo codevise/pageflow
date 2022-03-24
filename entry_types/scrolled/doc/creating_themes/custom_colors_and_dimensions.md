@@ -141,6 +141,16 @@ breakpoint below which sticky elements become inline:
 | ---- | ----------- |
 | `narrow_viewport_breakpoint` | Minimum viewport width for sticky elements to be displayed in a second column. |
 
+### Content Element Style
+
+The following properties apply to all content elements that render
+content in a visible box: inline images, inline videos, before/after
+elements etc.
+
+| Name | Description |
+| ---- | ----------- |
+| `content_element_box_border_radius` | Display content element boxes with rounded corners. |
+
 ### Shared Widget Colors
 
 Surfaces use colors from specific categories in your color palette,
