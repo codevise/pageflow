@@ -7,6 +7,7 @@ import cx from 'classnames';
 import {
   useFile,
   useContentElementEditorState,
+  ContentElementBox,
   Figure,
   FitViewport
 } from 'pageflow-scrolled/frontend';
@@ -52,27 +53,29 @@ export function BeforeAfter({isActive,
 
   return (
     <FitViewport file={beforeImage || afterImage || placeholderFile}>
-      <Figure caption={caption}>
-        <FitViewport.Content>
-          <Measure bounds>
-            {({measureRef, contentRect}) => {
-              const initialRectWidth = contentRect.bounds.width * initialSliderPos + 'px';
+      <ContentElementBox>
+        <Figure caption={caption}>
+          <FitViewport.Content>
+            <Measure bounds>
+              {({measureRef, contentRect}) => {
+                const initialRectWidth = contentRect.bounds.width * initialSliderPos + 'px';
 
-              return (
-                <div ref={measureRef}
-                     style={{'--initial-rect-width': initialRectWidth}}
-                     className={cx({[styles.selected]: isSelected,
-                                    [styles.wiggle]: wiggle && !moved},
-                                   styles.container)}>
-                  <InitialSliderPositionIndicator parentSelected={isSelected}
-                                                  position={initial_slider_position}/>
-                  {renderCompareImage()}
-                </div>
-              );
-            }}
-          </Measure>
-        </FitViewport.Content>
-      </Figure>
+                return (
+                  <div ref={measureRef}
+                       style={{'--initial-rect-width': initialRectWidth}}
+                       className={cx({[styles.selected]: isSelected,
+                                      [styles.wiggle]: wiggle && !moved},
+                                     styles.container)}>
+                    <InitialSliderPositionIndicator parentSelected={isSelected}
+                                                    position={initial_slider_position}/>
+                    {renderCompareImage()}
+                  </div>
+                );
+              }}
+            </Measure>
+          </FitViewport.Content>
+        </Figure>
+      </ContentElementBox>
     </FitViewport>
   );
 

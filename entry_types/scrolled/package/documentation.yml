@@ -15,6 +15,7 @@ toc:
       React components for building content elements.
     children:
       - AudioPlayer
+      - ContentElementBox
       - Figure
       - FitViewport
       - Image
