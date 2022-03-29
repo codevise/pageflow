@@ -15,6 +15,9 @@
   color: darkContentTextColor;
   text-decoration: none;
   transition: transform 0.3s;
+  border-radius: var(--theme-content-element-box-border-radius);
+  overflow: hidden;
+  will-change: transform;
 }
 
 .link_item.invert {
@@ -76,7 +79,6 @@
   margin-left: -95px;
   background-color: #444;
   color: #fff;
-  border: solid 1px #fff;
   opacity: 0.9;
   font-size: 13px;
   text-align: center;
