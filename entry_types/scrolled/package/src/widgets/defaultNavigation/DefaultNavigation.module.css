@@ -161,7 +161,7 @@ div:focus-within > .contextIcon,
     left: 0px;
     background: var(--theme-widget-background-color);
     width: 100vw;
-    height: calc(100vh - 60px);
+    bottom: 0;
     overscroll-behavior: contain;
     overflow: scroll;
   }
