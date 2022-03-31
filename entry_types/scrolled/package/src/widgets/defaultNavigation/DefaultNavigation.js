@@ -28,7 +28,13 @@ export function DefaultNavigation(props) {
 
   useScrollPosition(
     ({prevPos, currPos}) => {
-      const expand = currPos.y > prevPos.y;
+
+      const expand = currPos.y > prevPos.y ||
+                     // Mobile Safari reports positive scroll position
+                     // during scroll bounce animation when scrolling
+                     // back to the top. Make sure navigation bar
+                     // stays expanded:
+                     currPos.y >= 0;
       if (expand !== navExpanded) setNavExpanded(expand);
     },
     [navExpanded]
