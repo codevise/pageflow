@@ -171,5 +171,32 @@ describe('TableView', () => {
 
       expect(tableView.$el.find('tbody td')).toHaveText('Test');
     });
+
+    it('is overridden by headerText column option', () => {
+      var collection = new Backbone.Collection();
+      var tableView = new TableView({
+        collection: collection,
+        columns: [
+          {
+            name: 'first_name',
+            headerText: 'Override',
+            cellView: TextTableCellView
+          },
+          {
+            name: 'last_name',
+            cellView: TextTableCellView
+          }
+        ],
+        attributeTranslationKeyPrefixes: [
+          'columns'
+        ]
+      });
+
+      tableView.render();
+
+      expect(tableView.$el.find('thead th').map(function() {
+        return $(this).text();
+      }).get()).toEqual(['Override', 'Last Name']);
+    });
   });
 });
