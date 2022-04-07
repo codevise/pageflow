@@ -1,6 +1,6 @@
 .file_stage_items {
-  border-top: solid 1px #aaa;
-  border-bottom: solid 1px #aaa;
+  border-top: solid 1px var(--ui-on-surface-color-lighter);
+  border-bottom: solid 1px var(--ui-on-surface-color-lighter);
   padding-bottom: 5px;
   margin-bottom: 5px;
 }
@@ -9,34 +9,33 @@
   white-space: normal;
 
   &.indented {
-    @include background-icon-center($left: 20px, $color: #bbb);
+    @include background-icon-center($left: 20px, $color: var(--ui-on-surface-color-lighter));
     padding: 10px 0 5px 60px;
     margin-left: -60px;
   }
 
   &.stand_alone {
-    @include background-icon-center($left: 31px, $color: #bbb);
+    @include background-icon-center($left: 31px, $color: var(--ui-on-surface-color-lighter));
     padding-left: 70px;
-}
+  }
 
   &.action_required,
   &.active {
-    @include background-icon-color(#444);
+    @include background-icon-color(var(--ui-primary-color));
     @include background-icon-animation(blink);
   }
 
   &.finished {
-    @include background-icon-color(#444);
+    @include background-icon-color(var(--ui-primary-color));
   }
 
   &.failed {
-    @include background-icon-color(#c22);
+    @include background-icon-color(var(--ui-error-color));
   }
 
   .percent {
-    color: #444;
+    color: var(--ui-on-surface-color-light);
     font-size: 12px;
-    font-weight: bold;
   }
 
   .error_message {

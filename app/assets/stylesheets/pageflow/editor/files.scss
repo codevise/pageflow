@@ -1,8 +1,9 @@
 ul.files {
-  margin-top: 10px;
+  margin-top: space(2);
 
   > li {
-    background-color: #eee;
+    background-color: var(--ui-primary-color-lightest);
+    border-radius: rounded();
     margin-bottom: 2px;
     position: relative;
     padding: 37px 10px 0 70px;
@@ -18,7 +19,7 @@ ul.files {
   li.blank_slate {
     text-align: center;
     padding: 10px 5px 20px 5px;
-    color: #888;
+    color: var(--ui-on-surface-color-light);
   }
 
   .file_thumbnail {
@@ -52,9 +53,8 @@ ul.files {
   a.settings,
   a.cancel,
   a.confirm,
-  a.remove,
   a.retry {
-    @include icon-only-button(#aaa);
+    @include icon-only-button();
   }
 
   a.settings {
@@ -62,6 +62,7 @@ ul.files {
   }
 
   a.remove {
+    @include icon-only-button("destructive");
     @include trash-icon;
   }
 
@@ -78,7 +79,7 @@ ul.files {
   }
 
   a.select {
-    @include button(#590);
+    @include simple-button("primary");
 
     padding-left: 5px;
     padding-right: 5px;

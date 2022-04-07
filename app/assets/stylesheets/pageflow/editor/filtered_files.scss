@@ -3,11 +3,10 @@
 
   &-banner {
     display: block;
-    padding: 7px 10px;
-    margin: 0 -10px;
-    background-color: #f9f1b7;
-    border-top: solid 1px #e4dc9d;
-    border-bottom: solid 1px #e4dc9d;
+    padding: space(2);
+    border-radius: rounded();
+    background-color: var(--ui-primary-color-lighter);
+    margin-top: space(2);
   }
 
   &-filter_name {
@@ -19,7 +18,7 @@
     @include cancel-icon;
 
     position: absolute;
-    right: 7px;
-    top: 15px;
+    right: space(4);
+    top: space(4);
   }
 }

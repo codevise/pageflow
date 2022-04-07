@@ -1,7 +1,3 @@
-$file-meta-data-label-color: #888 !default;
-$file-meta-data-icon-link-color: #555 !default;
-$file-meta-data-active-icon-link-color: #000 !default;
-
 .file_meta_data {
   margin-left: -65px;
   white-space: normal;
@@ -22,7 +18,7 @@ $file-meta-data-active-icon-link-color: #000 !default;
     font-weight: normal;
     text-align: right;
     font-size: 11px;
-    color: $file-meta-data-label-color;
+    color: var(--ui-on-surface-color-light);
   }
 
   td {
@@ -35,7 +31,7 @@ $file-meta-data-active-icon-link-color: #000 !default;
 
   .edit {
     @include background-icon-center($font-size: 15px,
-                                    $color: $file-meta-data-icon-link-color);
+                                    $color: var(--ui-primary-color-light));
     @include pencil-icon;
 
     display: inline-block;
@@ -45,7 +41,7 @@ $file-meta-data-active-icon-link-color: #000 !default;
     margin-top: -2px;
 
     &:hover {
-      @include background-icon-color($file-meta-data-active-icon-link-color);
+      @include background-icon-color(var(--ui-primary-color));
     }
   }
 }

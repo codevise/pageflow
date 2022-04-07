@@ -6,13 +6,9 @@
     height: 100%;
   }
 
-  .pictogram:hover {
-    background-color: #333;
-  }
-
   .pictogram {
-    background-color: #444;
-    @include background-icon-center($color: #eee, $font-size: 30px);
+    background-color: var(--ui-on-surface-color-light);
+    @include background-icon-center($color: var(--ui-on-primary-color), $font-size: 30px);
     @include background-icon-animation(blink);
 
     &.audio {
@@ -63,13 +59,13 @@
 
 .expandable {
   .file_thumbnail {
-    @include background-icon-left($color: #fff, $left: 70%, $top: 85%);
+    @include background-icon-left($color: var(--ui-on-primary-color), $left: 70%, $top: 85%);
     @include down-open-icon;
 
     &:before {
       z-index: 1;
       opacity: 0.4;
-      text-shadow: #000 1px 0px 4px;
+      text-shadow: var(--ui-on-surface-color) 1px 0 4px;
     }
 
     &:hover:before {

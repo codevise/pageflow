@@ -20,7 +20,7 @@
   }
 
   a.choose {
-    @include icon-only-button("primary");
+    @include icon-only-button;
     @include pencil-icon;
 
     position: absolute;
