@@ -1,9 +1,15 @@
 @value indicatorIconColor from './colors.module.css';
 
 .root {
-  background-color: #fff;
   margin-bottom: 10px;
   padding: 0 10px 10px 10px;
+  background-color: var(--ui-surface-color);
+  border: solid 1px var(--ui-on-surface-color-lighter);
+  border-radius: rounded(lg);
+}
+
+.root:global(.ui-sortable-helper) {
+  box-shadow: var(--ui-box-shadow-xl);
 }
 
 .link {
@@ -12,12 +18,11 @@
   position: relative;
   margin: 0 -10px 0 -10px;
   padding: 10px 10px 10px 30px;
-  background-color: #efefef;
 }
 
 .link::before {
   position: absolute;
-  right: 7px;
+  right: 10px;
   top: 7px;
   font-size: 19px;
   color: indicatorIconColor;
@@ -25,7 +30,7 @@
 
 .dragHandle {
   composes: dragHandle from './outline.module.css';
-  color: #444;
+  color: var(--ui-on-surface-color-light);
 }
 
 .link:hover .dragHandle {
