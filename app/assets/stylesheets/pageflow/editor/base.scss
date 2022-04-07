@@ -100,12 +100,12 @@
 
   a.close {
     @include cancel-icon;
-    @include icon-button(#888);
+    @include icon-button;
   }
 
   a.back {
     @include left-open-icon;
-    @include icon-button(#888);
+    @include icon-button;
   }
 
   a.add_chapter,
