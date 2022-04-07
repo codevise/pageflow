@@ -1,7 +1,7 @@
-@value selectionColor: #1c86fe;
+@value selectionColor: var(--ui-selection-color);
 
-@value errorIconColor: #d00;
-@value indicatorIconColor: #888;
-@value helpIconColor: #a0c4e0;
+@value errorIconColor: var(--ui-error-color);
+@value indicatorIconColor: var(--ui-ui-primary-color-light);
+@value helpIconColor: var(--ui-primary-color-lighter);
 
-@value linkColor: #005dc7;
+@value linkColor: var(--ui-primary-color);
