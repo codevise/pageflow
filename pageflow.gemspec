@@ -205,6 +205,8 @@ Gem::Specification.new do |s|
 
   # Scss code linter
   s.add_development_dependency 'scss_lint', '~> 0.50.0'
+  s.add_development_dependency 'scss_lint_reporter_checkstyle', '~> 0.2.0'
+
 
   # For oauth authentication
   s.add_development_dependency 'omniauth', '~> 1.9'
