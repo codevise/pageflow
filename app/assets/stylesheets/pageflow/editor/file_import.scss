@@ -1,12 +1,7 @@
-
 .choose_importer_box {
-  position: absolute;
-  top: 20px;
-  left: 10px;
-  bottom: 20px;
-  right: 20px;
+  min-width: 500px;
+  min-height: 400px;
   max-width: 1100px;
-  height: 75vh;
 
   .content {
     display: table;
@@ -17,12 +12,8 @@
   }
 
   .footer {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-
     .close {
-      @include icon-button(#888);
+      @include icon-button;
     }
   }
 }
@@ -35,9 +26,16 @@
     vertical-align: middle;
 
     button.importer {
-      padding: 5px;
+      background-color: var(--ui-primary-color-lightest);
+      border: 0;
+      border-radius: rounded();
+      padding: space(4);
       font-size: 16px;
       cursor: pointer;
+
+      &:hover {
+        background-color: var(--ui-primary-color-lighter);
+      }
     }
   }
 }
@@ -63,48 +61,34 @@
   left: 10px;
   bottom: 20px;
   right: 20px;
+  min-width: 880px;
   max-width: 1100px;
   height: 75vh;
 
   .content_panel {
+    min-height: 0;
+    flex: 1;
     width: 100%;
   }
 
   .footer {
-    width: 100%;
-    position: absolute;
-    bottom: 20px;
-    right: 23px;
-    margin-bottom: -15px;
     .import {
-      @include icon-button();
+      @include icon-button("primary");
+      @include down-icon;
     }
 
     .close {
-      @include icon-button(#888);
+      @include icon-button;
     }
   }
 
   .disclaimer {
+    @include background-icon-left($color: var(--ui-on-surface-color));
     @include info-circled-icon;
-    text-align: left;
-    font-size: 25px;
     position: absolute;
-    left: 44px;
-    width: 25px;
-    height: 30px;
-    overflow: hidden;
-    background-color: #a9a9a959;
-
-    &:hover {
-      width: 75%;
-    }
-
-    p {
-      position: absolute;
-      top: 5px;
-      left: 30px;
-      font-size: 0.4em;
-    }
+    text-align: left;
+    font-size: 10px;
+    width: 60%;
+    padding-left: space(10);
   }
 }

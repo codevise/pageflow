@@ -121,7 +121,7 @@
   }
 
   a.upload {
-    @include icon-button;
+    @include icon-button("primary");
     @include up-icon;
     float: right;
   }

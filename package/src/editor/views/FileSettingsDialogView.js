@@ -16,10 +16,13 @@ export const FileSettingsDialogView = Marionette.ItemView.extend({
   mixins: [dialogView],
 
   ui: {
-    content: '.content'
+    content: '.content',
+    header: '.dialog-header'
   },
 
   onRender: function() {
+    this.ui.header.text(this.model.title());
+
     this.tabsView = new TabsView({
       model: this.model,
       i18n: 'pageflow.editor.files.settings_dialog_tabs',

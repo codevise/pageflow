@@ -3,11 +3,7 @@ import _ from 'underscore';
 
 import {DeleteRowTableCellView, TableView} from 'pageflow/ui';
 
-import template from '../templates/nestedFiles.jst';
-
-export const NestedFilesView = Marionette.ItemView.extend({
-  template,
-
+export const NestedFilesView = Marionette.View.extend({
   className: 'nested_files',
 
   ui: {
@@ -29,11 +25,7 @@ export const NestedFilesView = Marionette.ItemView.extend({
     this.listenTo(this.collection, 'sync', this.update);
   },
 
-  onRender: function() {
-    this.ui.header.text(
-      this.collection.parentModel.get('file_name')
-    );
-
+  render: function() {
     this.appendSubview(new TableView({
       collection: this.collection,
       attributeTranslationKeyPrefixes: [
@@ -46,6 +38,7 @@ export const NestedFilesView = Marionette.ItemView.extend({
     }));
 
     this.update();
+    return this;
   },
 
   update: function() {

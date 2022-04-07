@@ -1,20 +1,21 @@
 <div class="box">
-  <div class="content">
-    <div>
-      <h2 class="themes_header"><%= I18n.t('pageflow.editor.templates.change_theme_dialog.header') %></h2>
-      <div class="themes_panel">
-      </div>
-      <div class="preview_panel">
-        <h2 class="preview_header"><%= I18n.t('pageflow.editor.templates.change_theme_dialog.preview_header_prefix') %>
-          <span class="preview_header_theme_name"></span><%= I18n.t('pageflow.editor.templates.change_theme_dialog.preview_header_suffix') %>
-        </h2>
-        <div class="preview_image_region">
-          <img class="preview_image" src="default_template.png">
-        </div>
+  <h1 class="dialog-header">
+    <%= I18n.t('pageflow.editor.templates.change_theme_dialog.header') %>
+  </h1>
+  <div class="panels">
+    <div class="themes_panel">
+    </div>
+    <div class="preview_panel">
+      <h2 class="dialog-sub_header">
+        <%= I18n.t('pageflow.editor.templates.change_theme_dialog.preview_header_prefix') %>
+        <span class="preview_header_theme_name"></span>
+        <%= I18n.t('pageflow.editor.templates.change_theme_dialog.preview_header_suffix') %>
+      </h2>
+      <div class="preview_image_region">
+        <img class="preview_image" src="default_template.png">
       </div>
     </div>
   </div>
-
   <div class="footer">
     <a href="" class="close">
       <%= I18n.t('pageflow.editor.templates.change_theme_dialog.close') %>

@@ -9,7 +9,7 @@ import template from '../templates/pageSelection.jst';
 
 export const PageSelectionView = Marionette.ItemView.extend({
   template,
-  className: 'page_selection dialog',
+  className: 'page_selection dialog editor',
 
   mixins: [dialogView],
 
