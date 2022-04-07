@@ -4,11 +4,7 @@ import _ from 'underscore';
 
 import {PresenceTableCellView, TableView, TextTableCellView} from 'pageflow/ui';
 
-import template from '../templates/uploadableFiles.jst';
-
-export const UploadableFilesView = Marionette.ItemView.extend({
-  template,
-
+export const UploadableFilesView = Marionette.View.extend({
   className: 'uploadable_files',
 
   ui: {
@@ -23,33 +19,38 @@ export const UploadableFilesView = Marionette.ItemView.extend({
     }
   },
 
-  onRender: function() {
-    this.ui.header.text(
-      I18n.t('pageflow.editor.files.tabs.' + this.options.fileType.collectionName)
-    );
-
+  render: function() {
     this.appendSubview(new TableView({
       collection: this.uploadableFiles,
       attributeTranslationKeyPrefixes: [
         'pageflow.editor.files.attributes.' + this.options.fileType.collectionName,
         'pageflow.editor.files.common_attributes'
       ],
-      columns: this.commonColumns().concat(this.fileTypeColumns()),
+      columns: this.commonColumns({
+        fileTypeDisplayName: I18n.t('pageflow.editor.files.tabs.' +
+                                       this.options.fileType.collectionName)
+      }).concat(this.fileTypeColumns()),
       selection: this.options.selection,
       selectionAttribute: 'file'
     }));
 
     this.listenTo(this.uploadableFiles, 'add remove', this.update);
     this.update();
+
+    return this;
   },
 
   update: function() {
     this.$el.toggleClass('is_empty', this.uploadableFiles.length === 0);
   },
 
-  commonColumns: function() {
+  commonColumns: function(options) {
     return [
-      {name: 'file_name', cellView: TextTableCellView},
+      {
+        name: 'file_name',
+        headerText: options.fileTypeDisplayName,
+        cellView: TextTableCellView
+      },
       {name: 'rights', cellView: PresenceTableCellView}
     ];
   },
