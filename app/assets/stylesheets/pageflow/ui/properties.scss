@@ -1,0 +1,32 @@
+:root { // scss-lint:disable PropertyCount
+  --ui-font-size: 13px;
+
+  --ui-surface-color: #fff;
+  --ui-backdrop-color: rgba(6, 32, 42, 0.6);
+
+  --ui-on-surface-color: #{mix(#06202a, #fff, 85%)};
+  --ui-on-surface-color-light: #{mix(#06202a, #fff, 60%)};
+  --ui-on-surface-color-lighter: #{mix(#06202a, #fff, 30%)};
+  --ui-on-surface-color-lightest: #{mix(#06202a, #fff, 10%)};
+
+  --ui-primary-color: #264653;
+  --ui-primary-color-light: #{mix(#264653, #fff, 60%)};
+  --ui-primary-color-lighter: rgb(52 114 138 / 30%);
+  --ui-primary-color-lightest: #{mix(#264653, #fff, 10%)};
+
+  --ui-on-primary-color: #fff;
+  --ui-on-primary-color-light: rgba(255, 255, 255, 0.6);
+  --ui-on-primary-color-lighter: rgba(255, 255, 255, 0.3);
+  --ui-on-primary-color-lightest: rgba(255, 255, 255, 0.1);
+
+  --ui-error-color: #8b332a;
+  --ui-on-error-color: #fff;
+  --ui-error-surface-color: #edd5d3;
+
+  --ui-box-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --ui-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.25), 0 1px 2px -1px rgb(0 0 0 / 0.25);
+  --ui-box-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.25), 0 2px 4px -2px rgb(0 0 0 / 0.25);
+  --ui-box-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --ui-box-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --ui-box-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
