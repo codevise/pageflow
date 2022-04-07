@@ -45,12 +45,12 @@
 
   a.close {
     @include cancel-icon;
-    @include icon-button;
+    @include icon-button("primary");
   }
 
   a.break {
     @include minus-circled-icon;
-    @include icon-button($base-color: #d00);
+    @include icon-button("destructive");
     float: right;
   }
 }

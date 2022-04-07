@@ -1,4 +1,4 @@
-@mixin background-icon-right($color: #444, $font-size: 19px, $right: 7px, $top: 7px) {
+@mixin background-icon-right($color: var(--ui-primary-color-light), $font-size: 19px, $right: 7px, $top: 7px) {
   position: relative;
 
   &:before {
@@ -11,7 +11,7 @@
   }
 }
 
-@mixin background-icon-left($color: #444, $font-size: 19px, $left: 7px, $top: 49%) {
+@mixin background-icon-left($color: var(--ui-primary-color-light), $font-size: 19px, $left: 7px, $top: 49%) {
   position: relative;
 
   &:before {
@@ -27,7 +27,7 @@
   }
 }
 
-@mixin background-icon-center($color: #444, $font-size: 19px, $left: 50%, $top: 50%) {
+@mixin background-icon-center($color: var(--ui-primary-color-light), $font-size: 19px, $left: 50%, $top: 50%) {
   position: relative;
 
   &:before {

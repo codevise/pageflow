@@ -132,7 +132,7 @@
   }
 
   .save {
-    @include icon-button;
+    @include icon-button("primary");
     @include check-icon;
 
     margin-top: 15px;
@@ -140,6 +140,5 @@
 
   &.publishing .save {
     @include hourglass-icon;
-    @include icon-button($base-color: #aaa);
   }
 }
