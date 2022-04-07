@@ -1,9 +1,9 @@
 .tabs_view {
   &-scroller {
-    background-color: #e5e5e5;
     position: relative;
     overflow: hidden;
-    height: 35px;
+    height: 36px;
+    border-bottom: solid 1px var(--ui-on-surface-color-lighter);
   }
 
   &-headers {
@@ -14,25 +14,22 @@
     li {
       display: inline-block;
       padding: 10px 10px;
-      background-color: #e5e5e5;
       cursor: pointer;
+      color: var(--ui-on-surface-color-light);
+      height: 14px;
 
       &.active {
-        background-color: #fff;
+        color: var(--ui-primary-color);
+        border-bottom: solid 2px var(--ui-primary-color);
+        font-weight: bold;
       }
 
       &.spinner {
         padding-left: 27px;
-        @include background-icon-left;
+        @include background-icon-left($color: var(--ui-primary-color));
         @include background-icon-animation(blink);
         @include up-bold-icon;
       }
     }
   }
-
-  &-container {
-    background-color: #fff;
-    padding: 10px;
-  }
-
 }
