@@ -1,6 +1,5 @@
 .file_processing_state_display {
   position: relative;
-  margin-top: -6px;
 
   &:before {
     content: "";
@@ -9,7 +8,6 @@
     left: 0;
     width: 62px;
     height: 100%;
-    background-color: #eee;
   }
 
   &-empty {
