@@ -19,7 +19,6 @@ export const ChangeThemeDialogView = Marionette.ItemView.extend({
   mixins: [dialogView],
 
   ui: {
-    content: '.content',
     themesPanel: '.themes_panel',
     previewPanel: '.preview_panel',
     previewImageRegion: '.preview_image_region',

@@ -7,9 +7,9 @@
 
   <div class="footer">
     <div class="disclaimer">
-      <p><%= I18n.t('pageflow.editor.file_importers.'+data.importerKey+'.disclaimer') %></p>
+      <%= I18n.t('pageflow.editor.file_importers.'+data.importerKey+'.disclaimer') %>
     </div>
-    <button class="import"><%= I18n.t('pageflow.editor.views.files_view.import') %></button>
+    <button class="import" disabled><%= I18n.t('pageflow.editor.views.files_view.import') %></button>
     <button class="close"><%= I18n.t('pageflow.editor.templates.files_explorer.cancel') %></button>
   </div>
 </div>

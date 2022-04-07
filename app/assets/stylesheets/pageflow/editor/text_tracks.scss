@@ -1,39 +1,23 @@
 .text_tracks {
-  $table-cell-color: #eee;
-
-  height: 700px;
-
   .text_tracks_container {
-    background-color: #fff;
-    min-height: 100%;
+    margin-top: space(4);
+    display: flex;
   }
 
   .files_upload_panel {
-    position: absolute;
-    top: 60px;
-    right: 370px;
-    bottom: 50px;
-    left: 20px;
-    overflow: auto;
+    flex: 1;
+    margin-right: space(8);
   }
 
   .selected_file_panel {
-    position: absolute;
-    right: 20px;
-    top: 60px;
-    width: 330px;
+    width: 300px;
   }
 
   .table_view {
     width: 100%;
   }
 
-  td {
-    background-color: $table-cell-color;
-  }
-
   .upload {
-    position: relative;
-    top: 12px;
+    margin-top: space(4);
   }
 }

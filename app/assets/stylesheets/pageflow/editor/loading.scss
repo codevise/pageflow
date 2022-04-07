@@ -1,5 +1,5 @@
 .spinner > div {
-  background-color: #ddd;
+  background-color: var(--ui-on-surface-color-lighter);
   height: 100%;
   width: 6px;
   display: inline-block;

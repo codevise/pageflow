@@ -25,7 +25,7 @@ export const StorylineOutlineView = Marionette.Layout.extend({
   },
 
   onRender: function() {
-    this.ui.chapters.toggleClass('outline navigatable', !!this.options.navigatable);
+    this.ui.chapters.toggleClass('navigatable', !!this.options.navigatable);
 
     var collectionView = this.options.sortable ? SortableCollectionView : CollectionView;
 

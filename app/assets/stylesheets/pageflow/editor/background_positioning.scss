@@ -1,5 +1,7 @@
 .background_positioning {
   .box {
+    min-width: 500px;
+    min-height: 400px;
     max-width: 1000px;
   }
 
@@ -34,14 +36,14 @@
     vertical-align: middle;
 
     .image {
-      border: solid 1px #444;
+      outline: solid 1px var(--ui-on-surface-color-light);
       background-size: cover;
     }
 
     .label {
       padding: 3px 0;
       font-size: 11px;
-      color: #444;
+      color: var(--ui-on-surface-color-light);
     }
   }
 
@@ -51,7 +53,7 @@
     height: 100%;
 
     img {
-      border: solid 1px #444;
+      outline: solid 1px var(--ui-on-surface-color-light);
       display: block;
       max-height: 300px;
       max-width: 600px;
@@ -62,22 +64,7 @@
   .slider {
     position: absolute;
     border: none;
-    background: #ddd;
-
-    a {
-      @include background-icon-center($font-size: 20px);
-      @include arrow-combo-icon;
-      position: absolute;
-      display: block;
-      width: 40px;
-      height: 40px;
-      margin: 0;
-      background-color: #fff;
-      border: solid 1px #888;
-      border-radius: 4px;
-      left: auto;
-      top: auto;
-    }
+    background: var(--ui-on-surface-color-lightest);
 
     &.horizontal {
       bottom: -10px;
@@ -112,29 +99,30 @@
     white-space: nowrap;
 
     input {
-      width: 45px;
+      display: inline;
+      width: 55px;
       height: 25px;
       box-sizing: border-box;
-      text-align: right;
+      padding-right: space(1);
     }
 
     &.horizontal {
-      left: -65px;
+      left: -80px;
       bottom: -26px;
     }
 
     &.vertical {
-      left: 100%;
-      top: -30px;
+      left: 115%;
+      top: 0;
     }
   }
 
   a.save {
     @include check-icon;
-    @include icon-button;
+    @include icon-button("primary");
   }
 
   a.close {
-    @include icon-button(#888);
+    @include icon-button;
   }
 }
