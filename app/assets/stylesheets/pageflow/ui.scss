@@ -2,6 +2,9 @@
 @import "jquery.minicolors";
 @import "pageflow/mixins";
 
+@import "./ui/properties";
+@import "./ui/functions";
+
 %pageflow-ui {
   @import "./ui/forms";
   @import "./ui/input/color_input";
