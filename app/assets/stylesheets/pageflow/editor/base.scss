@@ -25,12 +25,14 @@
   @import "./change_theme";
   @extend %pageflow-ui;
 
-  font-family: Helvetica, Arial, "Sans-Serif";
-  font-size: 13px;
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-font-size);
 
   padding: 0;
   display: block;
-  background-color: #ddd;
+  background-color: var(--ui-surface-color);
+  border: 0;
+  color: var(--ui-on-surface-color);
   overflow: hidden;
 
   * {
@@ -39,10 +41,8 @@
   }
 
   h2 {
-    font-size: 11px;
-    text-transform: uppercase;
-    font-weight: normal;
-    color: #444;
+    font-size: inherit;
+    font-weight: 500;
     margin: 15px 0 5px 0;
   }
 
@@ -52,7 +52,7 @@
   }
 
   a {
-    color: #000;
+    color: var(--ui-on-surface-color);
     text-decoration: none;
   }
 
@@ -94,7 +94,7 @@
 
   a.publish {
     @include eye-icon;
-    @include icon-button;
+    @include icon-button("primary");
     float: right;
   }
 
@@ -115,7 +115,7 @@
   }
 
   a.destroy {
-    @include icon-button(#d00);
+    @include icon-button("destructive");
     @include trash-icon;
     float: right;
   }
@@ -143,6 +143,20 @@ main.ui-layout-pane {
   overflow: hidden;
   border: 0;
   background-color: #000;
+}
+
+.ui-layout-resizer {
+  background-color: var(--ui-surface-color);
+  border: 0;
+  border-left: solid 1px var(--ui-on-surface-color-lightest);
+  border-top-left-radius: rounded(sm);
+  border-bottom-left-radius: rounded(sm);
+}
+
+.ui-layout-toggler {
+  border: 0;
+  border-top-right-radius: rounded(lg);
+  border-bottom-right-radius: rounded(lg);
 }
 
 main > div {

@@ -10,7 +10,7 @@
 
   &-desktop_icon,
   &-phone_icon {
-    @include background-icon-center($color: #444, $font-size: 16px);
+    @include background-icon-center($color: var(--ui-on-surface-color), $font-size: 16px);
     width: 40px;
     height: 100%;
   }
@@ -28,19 +28,19 @@
   &-track,
   &-thumb {
     position: absolute;
-    background-color: #1976d2;
   }
 
   &-track {
+    background-color: var(--ui-on-surface-color-lighter);
     top: 8px;
     left: 40px;
     border-radius: 7px;
-    opacity: 0.5;
     width: 34px;
     height: 14px;
   }
 
   &-thumb {
+    background-color: var(--ui-primary-color);
     top: 5px;
     left: 37px;
     width: 20px;
@@ -57,11 +57,6 @@
   &.disabled {
     .emulation_mode_button-wrapper {
       opacity: 0.4;
-    }
-
-    .emulation_mode_button-track,
-    .emulation_mode_button-thumb {
-      background-color: #000;
     }
   }
 }
