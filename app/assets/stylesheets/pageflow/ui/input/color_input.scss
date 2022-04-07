@@ -2,24 +2,24 @@
   .minicolors {
     box-sizing: border-box;
     width: 100%;
-    padding-right: 24px;
   }
 
   input {
-    padding-left: 26px;
+    padding-left: 30px;
     width: 100%;
+    height: auto;
   }
 
   .minicolors-input-swatch {
-    top: 3px;
-    left: 2px;
+    top: 5px;
+    left: 5px;
   }
 
   &.is_default input {
-    color: #888;
+    color: var(--ui-on-surface-color-light);
   }
 
   .minicolors-focus input {
-    color: #000;
+    color: var(--ui-on-surface-color);
   }
 }

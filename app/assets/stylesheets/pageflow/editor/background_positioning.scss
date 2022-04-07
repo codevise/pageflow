@@ -1,13 +1,6 @@
 .background_positioning {
   .box {
-    top: 5%;
-    width: 90%;
     max-width: 1000px;
-    max-height: 745px;
-    padding-bottom: 20px;
-    overflow: hidden;
-    height: 80%;
-    overflow-y: scroll;
   }
 
   label {
@@ -18,33 +11,6 @@
     font-size: 12px;
   }
 
-  ul.screens {
-    border-bottom: solid 1px #aaa;
-    padding: 0;
-
-    li {
-      display: inline-block;
-      list-style: none;
-      padding: 5px 10px;
-      margin-bottom: 1px;
-      background-color: #eee;
-
-      a {
-        text-decoration: none;
-        color: #000;
-      }
-
-      &:hover {
-        background-color: #ddd;
-      }
-
-      &.active {
-        background-color: #D2E5FA;
-        font-weight: bold;
-      }
-    }
-  }
-
   .wrapper {
     text-align: center;
     margin: 35px;
@@ -52,7 +18,7 @@
 
   .previews {
     overflow: scroll;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
     margin-bottom: 20px;
 
