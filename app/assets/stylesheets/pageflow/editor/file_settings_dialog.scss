@@ -7,23 +7,23 @@
     right: 20px;
     max-width: 1100px;
     max-height: 800px;
-    background-color: #eee;
   }
 
   .content {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    bottom: 50px;
-    left: 20px;
+    top: space(4);
+    right: space(4);
+    bottom: space(12);
+    left: space(4);
+    padding: 0 space(2);
     overflow: auto;
   }
 
   .footer {
     position: absolute;
-    right: 20px;
-    bottom: 10px;
-    left: 20px;
+    right: space(4);
+    bottom: space(2);
+    left: space(4);
   }
 
   .edit_file {
