@@ -12,7 +12,7 @@ import template from '../templates/backgroundPositioning.jst';
 
 export const BackgroundPositioningView = Marionette.ItemView.extend({
   template,
-  className: 'background_positioning dialog',
+  className: 'background_positioning editor dialog',
 
   mixins: [dialogView],
 
