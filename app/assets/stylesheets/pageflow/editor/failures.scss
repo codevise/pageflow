@@ -1,5 +1,5 @@
 .failure {
-  @include background-icon-left($color: #d00, $top: 25px);
+  @include background-icon-left($color: var(--ui-error-color), $top: 25px);
   @include attention-icon;
 
   padding: 10px 0 0 40px;
@@ -20,7 +20,7 @@
 
 .failure_icon {
   @include attention-icon;
-  @include background-icon-center($color: #d00);
+  @include background-icon-center($color: var(--ui-error-color));
 
   display: none;
   position: absolute;

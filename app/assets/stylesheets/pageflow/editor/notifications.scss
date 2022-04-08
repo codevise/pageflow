@@ -56,18 +56,20 @@
 
   li.failed {
     @include background-icon-animation(blink);
-    @include background-icon-color(#d00);
+    @include background-icon-color(var(--ui-error-color));
     @include attention-icon;
     color: var(--ui-primary-color-light);
     display: none;
   }
 
   li.confirmable_files {
-    @include background-icon-left($font-size: 15px, $top: 15px, $left: 15px, $color: var(--ui-primary-color-light));
+    @include background-icon-left($font-size: 15px, $top: 15px, $left: 15px, $color: var(--ui-primary-color));
     @include background-icon-animation(blink);
     @include bell-icon;
-    background-color: #D2E5FA;
-    color: #000;
+    margin: space(1) space(1) space(1) 0;
+    background-color: var(--ui-primary-color-lighter);
+    border-radius: rounded(md);
+    color: var(--ui-on-surface-color);
     padding-top: 8px;
     display: none;
   }
