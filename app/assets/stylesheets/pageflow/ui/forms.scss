@@ -110,49 +110,6 @@ textarea.short {
   padding-top: 10px;
 }
 
-.page_reference_input {
-  p {
-    margin: 10px 0;
-    color: #444;
-  }
-
-  ul.chapters {
-    margin-top: 10px;
-
-    > li {
-      margin: 0;
-      padding: 0;
-
-      > a:first-child {
-        cursor: default;
-        margin: 0;
-        padding: 0;
-        background-color: #fff;
-
-        .pictogram {
-          display: none;
-        }
-      }
-    }
-  }
-
-  ul.pages {
-    margin: 5px 0 10px 0;
-
-    .pictogram {
-      opacity: 0.5;
-    }
-
-    .used .pictogram {
-      opacity: 0.2;
-    }
-  }
-
-  .add_page {
-    display: none;
-  }
-}
-
 .configuration_editor,
 .configuration_editor_tab {
   > div {
