@@ -8,10 +8,9 @@
   }
 
   .quota_state {
-    @include background-icon-left($left: 7px, $top: 18px);
+    @include background-icon-left($left: 10px, $top: 18px);
     @include gauge-icon;
 
     padding: 10px 10px 10px 40px;
-    border-bottom: solid 1px #aaa;
   }
 }
