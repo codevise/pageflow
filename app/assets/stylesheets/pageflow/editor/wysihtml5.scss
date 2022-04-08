@@ -4,27 +4,25 @@
   position: relative;
 
   > a {
-    @include background-icon-center($font-size: 12px);
+    @include background-icon-center($color: var(--ui-on-surface-color-light), $font-size: 12px);
     @include hidden-text;
-
     margin: 0;
     display: inline-block;
     width: 25px;
     height: 25px;
     vertical-align: top;
-
-    border: solid 1px #eee;
+    background-color: var(--ui-primary-color-lightest);
+    border-radius: rounded(sm);
 
     &:hover {
-      background-color: #eee;
+      background-color: var(--ui-primary-color-lighter);
     }
   }
 
-  > .wysihtml5-command-active {
-    border: solid 1px #bbb;
-    background-color: #ddd;
+  > a.wysihtml5-command-active {
+    background-color: var(--ui-primary-color-light);
+    @include background-icon-color(var(--ui-on-primary-color));
   }
-
 
   [data-wysihtml5-command="bold"] {
     @include font-bold-icon;
@@ -86,30 +84,34 @@
 
   .fragment_link_panel {
     display: none;
-    margin: 0 -2px;
+    margin-bottom: space(2);
+  }
 
-    label {
-      margin: -1px 2px;
+  .url_link_panel {
+    label span {
+      display: inline-block;
+      width: 84%;
+      vertical-align: middle;
+      line-height: 15px;
     }
   }
 
   .link_type_select {
+    margin-bottom: space(2);
+
     label {
       display: inline;
+      margin-right: space(2);
     }
   }
 
   .open_in_new_tab_section {
     position: relative;
-    margin: 4px -4px 0 0;
+    margin-top: space(2);
     padding-right: 20px;
 
     label {
       z-index: 4;
-    }
-
-    .inline_help {
-      top: -3px;
     }
   }
 
@@ -118,10 +120,7 @@
   }
 
   label input {
-    display: inline;
-    width: 15px;
-    margin: 5px 0;
-    vertical-align: middle;
+    margin-right: space(1);
 
     &:focus {
       outline: none;
@@ -129,19 +128,26 @@
   }
 
   .dialog {
+    box-shadow: var(--ui-box-shadow);
     position: absolute;
     top: 30px;
     left: -2px;
     right: -6px;
-    padding: 5px 10px;
-
-    background-color: #fff;
-    border: solid 1px #444;
+    padding: space(4);
+    border: solid 1px var(--ui-on-surface-color-lighter);
+    background-color: var(--ui-surface-color);
+    z-index: 10;
 
     .button {
-      @include button;
+      @include simple-button;
       padding: 5px 10px;
-      margin-top: 5px;
+      margin-top: 0.5rem;
+    }
+
+    [data-wysihtml5-dialog-action="save"] {
+      @include simple-button("primary");
+      padding: 5px 10px;
+      margin-top: 0.5rem;
     }
   }
 
@@ -153,7 +159,7 @@
     pointer-events: none;
     border-top: solid 10px transparent;
     border-right: solid 10px transparent;
-    border-bottom: solid 10px #222;
+    border-bottom: solid 10px var(--ui-on-surface-color-lighter);
     border-left: solid 10px transparent;
   }
 
@@ -165,7 +171,7 @@
     pointer-events: none;
     border-top: solid 9px transparent;
     border-right: solid 9px transparent;
-    border-bottom: solid 9px #fff;
+    border-bottom: solid 9px var(--ui-surface-color);
     border-left: solid 9px transparent;
   }
 }
