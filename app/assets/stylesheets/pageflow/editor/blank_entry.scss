@@ -6,8 +6,8 @@
   letter-spacing: 0.01em;
   text-align: center;
   padding: 5% 25%;
-  background-color: #fff;
-  color: #333;
+  background-color: var(--ui-surface-color);
+  color: var(--ui-on-surface-color);
   height: 100%;
 
   h2 {
@@ -15,7 +15,7 @@
     font-weight: normal;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    color: #999;
+    color: var(--ui-on-surface-color-light);
 
     &:before {
       content: "";
@@ -26,7 +26,7 @@
       background-size: 33px 45px;
       background-repeat: no-repeat;
       background-image: image-url("pageflow/editor/blank_entry/logo.png");
-      opacity: 0.3;
+      opacity: 0.6;
     }
   }
 
@@ -39,8 +39,8 @@
     display: inline-block;
     text-align: left;
     padding: 20px 50px;
-    border-bottom: solid 1px #aaa;
-    border-top: solid 1px #aaa;
+    border-bottom: solid 1px var(--ui-on-surface-color-lighter);
+    border-top: solid 1px var(--ui-on-surface-color-lighter);
   }
 
   li {
