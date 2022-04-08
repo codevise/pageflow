@@ -1,8 +1,8 @@
 .disabled_atmo_indicator {
-  @include background-icon-center($color: #fff, $font-size: 30px);
+  @include background-icon-center($color: var(--ui-on-primary-color), $font-size: 30px);
   @include mute-icon;
 
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--ui-on-surface-color-light);
   border-radius: 5px;
   width: 50px;
   height: 50px;
