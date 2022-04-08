@@ -29,6 +29,7 @@
     padding: space(4) space(6);
     background-color: var(--ui-surface-color);
     border-radius: rounded();
+    box-shadow: var(--ui-box-shadow-md);
   }
 
   .content,
