@@ -1,6 +1,5 @@
 .confirm_encoding {
   .blank_slate {
-    background-color: #fff;
     margin: 10px 0;
     padding: 20px 0;
 
@@ -18,62 +17,39 @@
     margin-bottom: 15px;
 
     li {
-      background-color: #eee;
-      margin-bottom: 2px;
-      position: relative;
-      padding: 10px 10px 0 30px;
-      white-space: nowrap;
-      overflow: hidden;
-      height: 23px;
+      background-color: var(--ui-primary-color-lightest);
+      margin-bottom: space(1);
+      display: flex;
+      padding: space(2);
+      border-radius: rounded();
+      align-items: center;
     }
 
     input[type=checkbox] {
       display: block;
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      width: auto;
-      height: auto;
     }
 
     .file_name {
-      position: absolute;
-      left: 30px;
-      top: 9px;
-      right: 100px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
       font-weight: normal;
-      font-size: 13px;
+      margin: 0 space(2);
     }
 
     .duration {
-      position: absolute;
-      right: 50px;
-      top: 9px;
+      color: var(--ui-on-surface-color-light);
     }
 
     .actions {
-      position: absolute;
-      right: 10px;
-      top: 3px;
-      text-align: right;
-
-      a {
-        float: left;
-        margin-left: 5px;
-      }
+      margin-left: space(2);
     }
 
     a.remove {
-      @include icon-only-button(#aaa);
+      @include icon-only-button("destructive");
       @include trash-icon;
     }
   }
 
   button.confirm {
-    @include icon-button;
+    @include icon-button("primary");
     @include check-icon;
 
     &.checking {
