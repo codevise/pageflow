@@ -32,25 +32,40 @@ export const PageItemView = Marionette.ItemView.extend({
   update: function() {
     this.$el.attr('data-id', this.model.id);
     this.$el.attr('data-perma-id', this.model.get('perma_id'));
+    this.$el.attr('title', this._getItemTitle());
 
     this.$el.toggleClass('active', this.model.get('active'));
     this.$el.toggleClass('disabled',
                          !!(this.options.isDisabled && this.options.isDisabled(this.model)));
-    this.$el.toggleClass('display_in_navigation', !!this.model.configuration.get('display_in_navigation'));
+    this.$el.toggleClass('hide_in_navigation', !this.model.configuration.get('display_in_navigation'));
     this.$el
-      .removeClass(editor.pageTypes.pluck('name').join(' '))
+        .removeClass(editor.pageTypes.pluck('name').join(' '))
       .addClass(this.model.get('template'));
 
     this.ui.pictogram.attr('title', this._getPictogramTitle());
-    this.ui.title.text(this.model.title() || I18n.t('pageflow.editor.views.page_item_view.unnamed'));
+    this.ui.title.text(this._getTitle());
   },
 
   _getPictogramTitle: function() {
-    var result = I18n.t(this.model.pageType().translationKey());
-    result += ' Seite';
+    return I18n.t(this.model.pageType().translationKey()) + ' Seite';
+  },
 
-    if (this.options.displayInNavigationHint && !this.model.configuration.get('display_in_navigation')) {
-      result += ' (nicht in Navigationsleiste)';
+  _getItemTitle: function() {
+    if (this.options.displayInNavigationHint &&
+        !this.model.configuration.get('display_in_navigation')) {
+      return 'nicht in Navigationsleiste';
+    }
+
+    return '';
+  },
+
+  _getTitle: function() {
+    var result = this.model.title() ||
+                 I18n.t('pageflow.editor.views.page_item_view.unnamed');
+
+    if (this.options.displayInNavigationHint &&
+        !this.model.configuration.get('display_in_navigation')) {
+      return `(${result})`;
     }
 
     return result;

@@ -77,7 +77,7 @@ ul.outline {
       width: 35px;
       background-repeat: no-repeat;
       background-position: 3px 45%;
-      opacity: 0.2;
+      opacity: 0.3;
     }
 
     .page_thumbnail {
@@ -96,8 +96,8 @@ ul.outline {
       }
     }
 
-    &.display_in_navigation .type_pictogram {
-      opacity: 0.5;
+    &.hide_in_navigation a {
+      color: var(--ui-on-surface-color-light);
     }
 
     &.ui-sortable-helper {
