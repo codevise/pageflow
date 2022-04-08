@@ -1,18 +1,16 @@
 .tooltip {
-  $background-color: rgba(0, 0, 0, 0.9);
-
   position: absolute;
   z-index: 10001;
   top: 40px;
   max-width: 70%;
   padding: 10px 15px;
-  color: #fff;
-  font-size: 13px;
+  color: var(--ui-on-primary-color);
   font-weight: normal;
   text-decoration: none;
   pointer-events: none;
   border-radius: 5px;
-  background-color: $background-color;
+  background-color: var(--ui-primary-color);
+  box-shadow: var(--ui-box-shadow);
 
   opacity: 0;
   @include transition(opacity 0.15s ease);
@@ -24,7 +22,7 @@
   &:after {
     content: '';
     border-top: solid 10px transparent;
-    border-right: solid 10px $background-color;
+    border-right: solid 10px var(--ui-primary-color);
     border-bottom: solid 10px transparent;
     border-left: solid 10px transparent;
     position: absolute;
@@ -37,7 +35,7 @@
     &:after {
       border-top: solid 10px transparent;
       border-right: solid 10px transparent;
-      border-bottom: solid 10px $background-color;
+      border-bottom: solid 10px var(--ui-primary-color);
       border-left: solid 10px transparent;
 
       top: -20px;
@@ -49,7 +47,7 @@
     transform: translate(-50%, -100%);
 
     &:after {
-      border-top: solid 10px $background-color;
+      border-top: solid 10px var(--ui-primary-color);
       border-right: solid 10px transparent;
       border-bottom: solid 10px transparent;
       border-left: solid 10px transparent;
