@@ -3,8 +3,11 @@ import {editor} from 'pageflow-scrolled/editor';
 import {UrlInputView, TextInputView, ColorInputView} from 'pageflow/ui';
 import {DatawrapperAdView} from './editor/DataWrapperAdView';
 
+import pictogram from './pictogram.svg';
+
 editor.contentElementTypes.register('dataWrapperChart', {
   category: 'data',
+  pictogram,
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 
   configurationEditor() {

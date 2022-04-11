@@ -1,7 +1,10 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {SelectInputView, FileInputView, EnumTableCellView, SliderInputView} from 'pageflow/editor';
 
+import pictogram from './pictogram.svg';
+
 editor.contentElementTypes.register('vrImage', {
+  pictogram,
   category: 'interactive',
 
   configurationEditor() {

@@ -2,7 +2,10 @@ import {editor} from 'pageflow-scrolled/editor';
 import {ColorInputView, FileInputView} from 'pageflow/editor';
 import {SliderInputView, TextInputView} from 'pageflow/ui';
 
+import pictogram from './pictogram.svg';
+
 editor.contentElementTypes.register('inlineBeforeAfter', {
+  pictogram,
   category: 'interactive',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 
