@@ -2,7 +2,10 @@ import {editor} from 'pageflow-scrolled/editor';
 import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView, ColorInputView} from 'pageflow/ui';
 
+import pictogram from './pictogram.svg';
+
 editor.contentElementTypes.register('inlineAudio', {
+  pictogram,
   category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
 

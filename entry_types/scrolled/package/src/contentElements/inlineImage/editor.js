@@ -1,7 +1,10 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {FileInputView} from 'pageflow/editor';
 
+import pictogram from './pictogram.svg';
+
 editor.contentElementTypes.register('inlineImage', {
+  pictogram,
   category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 

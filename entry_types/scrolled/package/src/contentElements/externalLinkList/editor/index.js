@@ -5,6 +5,8 @@ import {SidebarController} from './SidebarController';
 import {SidebarListView} from './SidebarListView';
 import {ExternalLinkCollection} from './models/ExternalLinkCollection';
 
+import pictogram from './pictogram.svg';
+
 //register sidebar router to handle multiple sidebar views of this content element
 //router defines the URL hash path mapping and controller provides functions for the paths
 editor.registerSideBarRouting({
@@ -14,6 +16,7 @@ editor.registerSideBarRouting({
 
 // register external link list content element configuration editor for sidebar
 editor.contentElementTypes.register('externalLinkList', {
+  pictogram,
   category: 'links',
   supportedPositions: ['inline'],
 

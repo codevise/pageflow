@@ -3,7 +3,10 @@ import {editor} from 'pageflow-scrolled/editor';
 import {SelectInputView} from 'pageflow/ui';
 import {InfoBoxView} from 'pageflow/editor';
 
+import pictogram from './pictogram.svg';
+
 editor.contentElementTypes.register('heading', {
+  pictogram,
   supportedPositions: ['inline', 'wide'],
 
   defaultConfig: {position: 'wide'},
