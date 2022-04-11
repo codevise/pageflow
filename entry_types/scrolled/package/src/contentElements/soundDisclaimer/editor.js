@@ -1,6 +1,7 @@
 import {editor, NoOptionsHintView} from 'pageflow-scrolled/editor';
 
 editor.contentElementTypes.register('soundDisclaimer', {
+  category: 'media',
   supportedPositions: ['inline'],
 
   configurationEditor() {

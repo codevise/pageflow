@@ -3,6 +3,7 @@ import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
 import {app, CollectionView} from 'pageflow/editor';
+import {cssModulesUtils} from 'pageflow/ui';
 
 import {dialogView} from './mixins/dialogView';
 import dialogViewStyles from './mixins/dialogView.module.css';
@@ -13,7 +14,7 @@ export const InsertContentElementDialogView = Marionette.ItemView.extend({
     <div class="${dialogViewStyles.backdrop}">
       <div class="editor ${dialogViewStyles.box} ${styles.box}">
         <h1 class="${dialogViewStyles.header}">${I18n.t('pageflow_scrolled.editor.insert_content_element.header')}</h1>
-        <ul class="${styles.list}"></ul>
+        <ul class="${styles.categories}"></ul>
 
         <div class="${dialogViewStyles.footer}">
           <button class="${dialogViewStyles.close}">${I18n.t('pageflow_scrolled.editor.insert_content_element.cancel')}</a>
@@ -22,9 +23,7 @@ export const InsertContentElementDialogView = Marionette.ItemView.extend({
     </div>
   `,
 
-  ui: {
-    items: 'ul'
-  },
+  ui: cssModulesUtils.ui(styles, 'categories'),
 
   mixins: [dialogView],
 
@@ -36,9 +35,36 @@ export const InsertContentElementDialogView = Marionette.ItemView.extend({
 
   onRender() {
     this.subview(new CollectionView({
-      el: this.ui.items,
+      el: this.ui.categories,
       collection: new Backbone.Collection(
-        this.options.editor.contentElementTypes.toArray()
+        this.options.editor.contentElementTypes.groupedByCategory()
+      ),
+      itemViewConstructor: CategoryView,
+      itemViewOptions: {
+        entry: this.options.entry,
+        insertOptions: this.options.insertOptions
+      }
+    }));
+  }
+});
+
+const CategoryView = Marionette.ItemView.extend({
+  tagName: 'li',
+  className: styles.category,
+
+  template: ({displayName}) => `
+    <h2 class="${styles.categoryName}">${displayName}</h2>
+    <ul class="${styles.types}">
+    </ul>
+  `,
+
+  ui: cssModulesUtils.ui(styles, 'types'),
+
+  onRender() {
+    this.subview(new CollectionView({
+      el: this.ui.types,
+      collection: new Backbone.Collection(
+        this.model.get('contentElementTypes')
       ),
       itemViewConstructor: ItemView,
       itemViewOptions: {

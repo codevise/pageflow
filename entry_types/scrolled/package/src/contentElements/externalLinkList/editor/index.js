@@ -14,6 +14,7 @@ editor.registerSideBarRouting({
 
 // register external link list content element configuration editor for sidebar
 editor.contentElementTypes.register('externalLinkList', {
+  category: 'links',
   supportedPositions: ['inline'],
 
   configurationEditor({entry}) {

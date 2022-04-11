@@ -2,6 +2,7 @@ import {editor} from 'pageflow-scrolled/editor';
 import {FileInputView} from 'pageflow/editor';
 
 editor.contentElementTypes.register('inlineImage', {
+  category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 
   configurationEditor() {

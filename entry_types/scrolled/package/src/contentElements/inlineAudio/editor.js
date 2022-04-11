@@ -3,6 +3,7 @@ import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView, ColorInputView} from 'pageflow/ui';
 
 editor.contentElementTypes.register('inlineAudio', {
+  category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
 
   configurationEditor({entry}) {

@@ -4,6 +4,7 @@ import {TextInputView, SelectInputView} from 'pageflow/ui';
 const aspectRatios = ['wide', 'narrow', 'square', 'portrait'];
 
 editor.contentElementTypes.register('iframeEmbed', {
+  category: 'interactive',
   featureName: 'iframe_embed_content_element',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 

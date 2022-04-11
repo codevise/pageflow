@@ -2,6 +2,8 @@ import {editor} from 'pageflow-scrolled/editor';
 import {SelectInputView, FileInputView, EnumTableCellView, SliderInputView} from 'pageflow/editor';
 
 editor.contentElementTypes.register('vrImage', {
+  category: 'interactive',
+
   configurationEditor() {
     this.tab('general', function() {
       this.input('image', FileInputView, {
