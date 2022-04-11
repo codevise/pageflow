@@ -9,6 +9,8 @@ import {dialogView} from './mixins/dialogView';
 import dialogViewStyles from './mixins/dialogView.module.css';
 import styles from './InsertContentElementDialogView.module.css';
 
+import defaultPictogram from './images/defaultPictogram.svg';
+
 export const InsertContentElementDialogView = Marionette.ItemView.extend({
   template: () => `
     <div class="${dialogViewStyles.backdrop}">
@@ -79,8 +81,12 @@ const ItemView = Marionette.ItemView.extend({
   tagName: 'li',
   className: styles.item,
 
-  template: ({displayName}) => `
-    <button class="${styles.button}">${displayName}</button>
+  template: ({displayName, description, pictogram}) => `
+    <button class="${styles.type}">
+      <img class="${styles.typePictogram}" src="${pictogram || defaultPictogram}" width="20" height="20" />
+      <span class="${styles.typeName}">${displayName}</span>
+      <span class="${styles.typeDescription}">${description}</span>
+    </button>
   `,
 
   events: {
