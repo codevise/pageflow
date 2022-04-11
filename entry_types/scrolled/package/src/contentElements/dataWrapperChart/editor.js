@@ -4,6 +4,7 @@ import {UrlInputView, TextInputView, ColorInputView} from 'pageflow/ui';
 import {DatawrapperAdView} from './editor/DataWrapperAdView';
 
 editor.contentElementTypes.register('dataWrapperChart', {
+  category: 'data',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 
   configurationEditor() {
