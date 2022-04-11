@@ -101,7 +101,10 @@ export class ContentElementTypeRegistry {
       .map(typeName => ({
         ...this.contentElementTypes[typeName],
         typeName,
-        displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`)
+        displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`),
+        description: I18n.t(
+          `pageflow_scrolled.editor.content_elements.${typeName}.description`
+        )
       }))
       .filter(contentElement =>
         !contentElement.featureName || this.features.isEnabled(contentElement.featureName)

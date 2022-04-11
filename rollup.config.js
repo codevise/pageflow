@@ -6,6 +6,7 @@ import babel from 'rollup-plugin-babel';
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import reactSvg from "rollup-plugin-react-svg";
+import image from '@rollup/plugin-image';
 
 const pageflowPackageRoot = 'package';
 const pageflowPagedEngineRoot = 'entry_types/paged';
@@ -194,7 +195,10 @@ const pageflowScrolled = [
       format: 'esm',
     },
     external,
-    plugins: plugins()
+    plugins: [
+      image({include: pageflowScrolledPackageRoot + '/src/editor/views/images/*.svg'}),
+      ...plugins()
+    ]
   },
   {
     input: pageflowScrolledPackageRoot + '/src/frontend/index.js',
@@ -224,7 +228,10 @@ const pageflowScrolled = [
       format: 'esm',
     },
     external,
-    plugins: plugins()
+    plugins: [
+      image({include: '**/pictogram.svg'}),
+      ...plugins()
+    ]
   },
   {
     input: pageflowScrolledPackageRoot + '/src/contentElements/frontend.js',

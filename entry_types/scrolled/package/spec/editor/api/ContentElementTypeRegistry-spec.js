@@ -7,7 +7,8 @@ describe('ContentElementTypeRegistry', () => {
   useFakeTranslations({
     'pageflow_scrolled.editor.content_element_categories.media.name': 'Media',
     'pageflow_scrolled.editor.content_elements.textBlock.name': 'Text block',
-    'pageflow_scrolled.editor.content_elements.inlineImage.name': 'Inline image'
+    'pageflow_scrolled.editor.content_elements.inlineImage.name': 'Inline image',
+    'pageflow_scrolled.editor.content_elements.inlineImage.description': 'An image'
   });
 
   describe('groupedByCategory', () => {
@@ -75,7 +76,7 @@ describe('ContentElementTypeRegistry', () => {
       ]);
     });
 
-    it('includes translated display names', () => {
+    it('includes translated display names and descriptions', () => {
       const registry = new ContentElementTypeRegistry({features: new Features()});
       registry.register('inlineImage', {
         category: 'media'
@@ -88,7 +89,8 @@ describe('ContentElementTypeRegistry', () => {
           displayName: 'Media',
           contentElementTypes: [
             {
-              displayName: 'Inline image'
+              displayName: 'Inline image',
+              description: 'An image'
             }
           ]
         }

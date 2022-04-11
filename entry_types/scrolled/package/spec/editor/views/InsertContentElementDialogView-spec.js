@@ -58,7 +58,7 @@ describe('InsertContentElementDialogView', () => {
   });
 
   function availableTypeNames(view) {
-    return view.$el.find('li li button').map(function() { return $(this).text() }).get();
+    return view.$el.find('li li button span').map(function() { return $(this).text() }).get();
   }
 
   function availableCategories(view) {
