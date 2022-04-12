@@ -19,7 +19,9 @@ export const InsertContentElementDialogView = Marionette.ItemView.extend({
         <ul class="${styles.categories}"></ul>
 
         <div class="${dialogViewStyles.footer}">
-          <button class="${dialogViewStyles.close}">${I18n.t('pageflow_scrolled.editor.insert_content_element.cancel')}</a>
+          <button class="${dialogViewStyles.close} ${styles.close}">
+            ${I18n.t('pageflow_scrolled.editor.insert_content_element.cancel')}
+          </button>
         </div>
       </div>
     </div>
