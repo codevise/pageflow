@@ -26,15 +26,15 @@
     vertical-align: middle;
 
     button.importer {
-      background-color: var(--ui-primary-color-lightest);
       border: 0;
       border-radius: rounded();
       padding: space(4);
       font-size: 16px;
       cursor: pointer;
+      background-color: var(--ui-surface-color);
 
       &:hover {
-        background-color: var(--ui-primary-color-lighter);
+        background-color: var(--ui-selection-color-lighter);
       }
     }
   }

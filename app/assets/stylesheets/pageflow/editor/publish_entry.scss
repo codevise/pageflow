@@ -32,7 +32,7 @@
 
   .notice {
     @include background-icon-left($color: var(--ui-primary-color), $left: 10px, $top: 18px);
-    background-color: var(--ui-primary-color-lighter);
+    background-color: var(--ui-selection-color-lighter);
     border-radius: rounded(md);
     padding: 10px 10px 10px 40px;
 

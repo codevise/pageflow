@@ -45,7 +45,7 @@ textarea,
 
   &:focus {
     border-color: var(--ui-on-surface-color-light);
-    box-shadow: 0 0 0 2px var(--ui-primary-color-lighter);
+    box-shadow: 0 0 0 2px var(--ui-selection-color-light);
   }
 }
 
@@ -135,8 +135,8 @@ textarea.short {
   }
 
   .ui-slider-handle {
-    background: var(--ui-on-surface-color-lightest);
-    border: solid 1px var(--ui-on-surface-color-lighter);
+    background: var(--ui-on-surface-color-lightest-solid);
+    border: solid 1px var(--ui-on-surface-color-lighter-solid);
   }
 
   .value {

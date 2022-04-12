@@ -2,11 +2,11 @@
   width: 100%;
 
   &:hover {
-    background-color: var(--ui-primary-color-lightest);
+    background-color: var(--ui-selection-color-lighter);
   }
 
   &.active {
-    background-color: var(--ui-primary-color-lighter);
+    background-color: var(--ui-selection-color-light);
   }
 
   a {

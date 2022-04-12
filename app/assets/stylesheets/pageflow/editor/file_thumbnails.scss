@@ -7,7 +7,7 @@
   }
 
   .pictogram {
-    background-color: var(--ui-on-surface-color-light);
+    background-color: var(--ui-on-surface-color-light-solid);
     @include background-icon-center($color: var(--ui-on-primary-color), $font-size: 30px);
     @include background-icon-animation(blink);
 

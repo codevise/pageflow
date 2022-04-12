@@ -42,8 +42,8 @@
 
     &:disabled,
     &.disabled {
-      background-color: var(--ui-on-surface-color-lightest);
-      border-color: var(--ui-on-surface-color-lightest);
+      background-color: var(--ui-on-surface-color-lightest-solid);
+      border-color: var(--ui-on-surface-color-lightest-solid);
       color: var(--ui-primary-color-light);
       cursor: default;
     }

@@ -67,7 +67,7 @@
     @include background-icon-animation(blink);
     @include bell-icon;
     margin: space(1) space(1) space(1) 0;
-    background-color: var(--ui-primary-color-lighter);
+    background-color: var(--ui-selection-color-lighter);
     border-radius: rounded(md);
     color: var(--ui-on-surface-color);
     padding-top: 8px;
