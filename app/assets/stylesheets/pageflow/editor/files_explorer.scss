@@ -17,8 +17,8 @@
 
   .entries_panel {
     width: 20%;
-    padding-right: space(1);
-    margin-right: space(1);
+    padding: 0 space(1) 0 space(1);
+    margin: 0 space(1) 0 space(-1);
 
     li.blank_slate {
       text-align: center;
