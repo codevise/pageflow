@@ -14,11 +14,11 @@
   }
 
   tr:hover td {
-    background-color: var(--ui-primary-color-lightest);
+    background-color: var(--ui-selection-color-lighter);
   }
 
   tr.is_selected > td {
-    background-color: var(--ui-primary-color-lighter);
+    background-color: var(--ui-selection-color-light);
   }
 
   tr.blank_slate > td {

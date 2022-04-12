@@ -42,12 +42,8 @@
     margin: 0 space(1) space(1) 0;
     padding: space(4);
 
-    &:hover {
-      background-color: var(--ui-primary-color-lightest);
-    }
-
-    .active {
-      background-color: var(--ui-primary-color-lighter);
+    &.active {
+      background-color: var(--ui-selection-color-lighter);
     }
   }
 

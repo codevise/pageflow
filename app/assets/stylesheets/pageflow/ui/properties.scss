@@ -4,24 +4,33 @@
   --ui-surface-color: #fff;
   --ui-backdrop-color: rgba(6, 32, 42, 0.6);
 
-  --ui-on-surface-color: #{mix(#06202a, #fff, 85%)};
-  --ui-on-surface-color-light: #{mix(#06202a, #fff, 60%)};
-  --ui-on-surface-color-lighter: #{mix(#06202a, #fff, 30%)};
-  --ui-on-surface-color-lightest: #{mix(#06202a, #fff, 10%)};
+  --ui-on-surface-color: hsl(197, 26%, 23%);
+  --ui-on-surface-color-light: hsla(197, 26%, 23%, 0.6);
+  --ui-on-surface-color-lighter: hsla(197, 26%, 23%, 0.3);
+  --ui-on-surface-color-lightest: hsla(197, 26%, 23%, 0.1);
 
-  --ui-primary-color: #264653;
-  --ui-primary-color-light: #{mix(#264653, #fff, 60%)};
-  --ui-primary-color-lighter: rgb(52 114 138 / 30%);
-  --ui-primary-color-lightest: #{mix(#264653, #fff, 10%)};
+  --ui-on-surface-color-light-solid: #{mix(#06202a, #fff, 60%)};
+  --ui-on-surface-color-lighter-solid: #{mix(#06202a, #fff, 30%)};
+  --ui-on-surface-color-lightest-solid: #{mix(#06202a, #fff, 10%)};
 
-  --ui-on-primary-color: #fff;
+  --ui-primary-color: hsla(197, 37%, 24%);
+  --ui-primary-color-light: hsla(197, 37%, 24%, 0.6);
+  --ui-primary-color-lighter: hsla(197, 37%, 24%, 0.3);
+  --ui-primary-color-lightest: hsla(197, 37%, 24%, 0.1);
+
+  --ui-on-primary-color: rgba(255, 255, 255);
   --ui-on-primary-color-light: rgba(255, 255, 255, 0.6);
   --ui-on-primary-color-lighter: rgba(255, 255, 255, 0.3);
   --ui-on-primary-color-lightest: rgba(255, 255, 255, 0.1);
 
-  --ui-error-color: #8b332a;
+  --ui-selection-color: #99d4ec;
+  --ui-selection-color-light: hsla(197, 69%, 76%, 0.6);
+  --ui-selection-color-lighter: hsla(197, 69%, 76%, 0.3);
+  --ui-selection-color-lightest: hsla(197, 69%, 76%, 0.1);
+
+  --ui-error-color: #ff4d6d;
   --ui-on-error-color: #fff;
-  --ui-error-surface-color: #edd5d3;
+  --ui-error-surface-color: #{mix(#ff4d6d, #fff, 10%)};
 
   --ui-box-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --ui-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.25), 0 1px 2px -1px rgb(0 0 0 / 0.25);

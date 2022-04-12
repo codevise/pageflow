@@ -58,7 +58,7 @@ ul.outline {
     }
 
     &.active > a {
-      background-color: var(--ui-primary-color-lighter);
+      background-color: var(--ui-selection-color-light);
     }
 
     &.draggable {
