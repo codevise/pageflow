@@ -1,7 +1,7 @@
 @value selectionColor: var(--ui-selection-color);
 
 @value errorIconColor: var(--ui-error-color);
-@value indicatorIconColor: var(--ui-ui-primary-color-light);
+@value indicatorIconColor: var(--ui-primary-color-light);
 @value helpIconColor: var(--ui-primary-color-lighter);
 
 @value linkColor: var(--ui-primary-color);

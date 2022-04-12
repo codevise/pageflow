@@ -14,6 +14,7 @@
 .helpLink {
   composes: unstyledButton from './buttons.module.css';
   composes: helpCircled from './icons.module.css';
+  background-color: transparent;
   color: linkColor;
   float: left;
   padding: 7px 0;
