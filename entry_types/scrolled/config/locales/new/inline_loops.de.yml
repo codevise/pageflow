@@ -1,0 +1,26 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        inlineVideo:
+          attributes:
+            playbackMode:
+              label: "Wiedergabe-Modus"
+              values:
+                manual: "Manuell"
+                autoplay: "Automatisch"
+                loop: "Loop"
+              inline_help_html: "Bestimme, wie das Video gestartet wird:<ul><li><strong>Manuell:</strong> Durch einen Klick des Benutzers.</li><li><strong>Automatisch:</strong> Wenn es die Mitte des Browser-Viewports erreicht.</li><li><strong>Loop:</strong> In Endlosschleife sobald es sichtbar wird.</li></ul>"
+            hideControlBar:
+              label: "Controls ausblenden"
+              inline_help: "Für kurze Videos, bei denen der Benutzer nicht an bestimmte Stellen springen will."
+              inline_help_disabled: 'Für Videos mit Wiedergabe-Modus "Loop" sind die Controls immer ausgeblendet.'
+            unmuteLabel:
+              label: "Stummschaltung des Beitrags"
+              inline_help_html: 'Browser erlauben standardmäßig das Abspielen von Videos mit Ton nur nach einer Benutzer-Interaktion. Um Videos dennoch automatisch abspielen zu können, sind Beiträge zu Beginn stummgeschaltet.<br /><br />Die Stummschaltung kann z.B. über das Lautsprecher-Icon in der Navigationsleiste oder ein im Beitrag platziertes "Audio-Hinweis"-Element aufgehoben werden.'
+            unmute:
+              label: "...bei Klick auf Video aufheben"
+              inline_help_html: "Der Klick auf das Video wird verwendet, um den Ton für den gesamten Beitrag zu aktivieren.<br /><br />Nach dem Klick können Atmo-Audios sowie der Ton nachfolgender Videos dann unmittelbar wiedergegeben werden.<br /><br />Wenn diese Option aktiviert ist, wird bei automatisch ohne Ton gestarteten Videos ein animierter Indikator angezeigt, der auf die Stummschaltung hinweist."
+            rewindOnUnmute:
+              label: "...und Video von vorne abspielen"
+              inline_help_html: "Verhindere, dass der Benutzer bei einem automatisch ohne Ton gestarteten Video wichtige Inhalte verpasst.<br /><br />Alternativ kann dem Video eine Ton-Ersatz-Textspur hinzugefügt werden. Diese wird automatisch gezeigt solange der Beitrag stummgeschaltet ist."
