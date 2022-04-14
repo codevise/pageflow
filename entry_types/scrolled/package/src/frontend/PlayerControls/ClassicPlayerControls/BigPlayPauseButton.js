@@ -12,7 +12,9 @@ export function BigPlayPauseButton(props) {
     [styles.animated]: !props.unplayed
   });
   return (
-    <div className={classNames(styles.container, {[styles.hideCursor]: props.hideCursor})}
+    <div className={classNames(styles.container,
+                               {[styles.hideCursor]: props.hideCursor,
+                                [styles.pointerCursor]: !!props.onClick})}
          onClick={props.onClick}>
       <div key={props.isPlaying} className={c}>
         {pausePlayIcon(props)}
