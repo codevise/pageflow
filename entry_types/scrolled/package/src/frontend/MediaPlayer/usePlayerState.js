@@ -119,6 +119,7 @@ export function playerStateReducer(state, action){
     case SEEKED:
       return {
         ...state,
+        shouldSeekTo: undefined,
         scrubbingAt: undefined,
         isLoading: false
       };
