@@ -215,3 +215,12 @@ textarea.short {
 .input-hidden_via_binding {
   display: none;
 }
+
+.input-disabled {
+  select,
+  input,
+  textarea,
+  label .name {
+    opacity: 0.5;
+  }
+}
