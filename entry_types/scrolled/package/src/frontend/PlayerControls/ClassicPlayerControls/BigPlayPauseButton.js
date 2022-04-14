@@ -6,7 +6,8 @@ import PauseIcon from '../images/pause.svg';
 
 export function BigPlayPauseButton(props) {
   const c = classNames(styles.button, {
-    [styles.hidden]: props.lastControlledVia === 'playPauseButton',
+    [styles.hidden]: props.hidden ||
+                     props.lastControlledVia === 'playPauseButton',
     [styles.fadeIn]: props.unplayed,
     [styles.animated]: !props.unplayed
   });
