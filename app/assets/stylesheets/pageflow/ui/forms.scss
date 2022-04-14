@@ -115,6 +115,11 @@ textarea.short {
   > div {
     margin: space(2.5) 0;
   }
+
+  .separator {
+    border-top: solid 1px var(--ui-on-surface-color-lightest);
+    margin: space(4) 0;
+  }
 }
 
 .chapter_title,
