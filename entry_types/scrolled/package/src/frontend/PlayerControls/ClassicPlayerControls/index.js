@@ -22,6 +22,7 @@ export function ClassicPlayerControls(props) {
        <BigPlayPauseButton unplayed={props.unplayed}
                            isPlaying={props.isPlaying}
                            lastControlledVia={props.lastControlledVia}
+                           hidden={props.hideBigPlayButton}
                            hideCursor={props.isPlaying && props.inactive}
                            onClick={props.onPlayerClick} />}
       {!props.hideControlBar &&
