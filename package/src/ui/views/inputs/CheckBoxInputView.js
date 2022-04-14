@@ -14,6 +14,10 @@ import template from '../../templates/inputs/checkBox.jst';
  *   Ignore the attribute value if the input is disabled and display
  *   an unchecked check box.
  *
+ * @param {boolean} [options.displayCheckedIfDisabled=false]
+ *   Ignore the attribute value if the input is disabled and display
+ *   an checked check box.
+ *
  * @class
  */
 export const CheckBoxInputView = Marionette.ItemView.extend({
@@ -58,6 +62,9 @@ export const CheckBoxInputView = Marionette.ItemView.extend({
   displayValue: function() {
     if (this.isDisabled() && this.options.displayUncheckedIfDisabled) {
       return false;
+    }
+    if (this.isDisabled() && this.options.displayCheckedIfDisabled) {
+      return true;
     }
     else {
       return this.model.get(this.options.propertyName);
