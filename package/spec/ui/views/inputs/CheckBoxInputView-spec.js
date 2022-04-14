@@ -31,6 +31,20 @@ describe('pageflow.CheckBoxInputView', () => {
     expect(view.ui.input.is(':checked')).toEqual(false);
   });
 
+  it('supports displaying checked if disabled', () => {
+    var model = new Model({value: false});
+    var view = new CheckBoxInputView({
+      model: model,
+      propertyName: 'value',
+      disabled: true,
+      displayCheckedIfDisabled: true
+    });
+
+    view.render();
+
+    expect(view.ui.input.is(':checked')).toEqual(true);
+  });
+
   it('supports attribute binding for disabled option', () => {
     var model = new Model({value: true, disabled: false});
     var view = new CheckBoxInputView({
