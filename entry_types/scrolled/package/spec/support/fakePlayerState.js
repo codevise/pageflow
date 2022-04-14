@@ -1,43 +1,22 @@
 import {getInitialPlayerState as initialPlayerState} from 'frontend/MediaPlayer/usePlayerState';
+import {createActions} from 'frontend/MediaPlayer/playerActions';
 
 export const getInitialPlayerState = () => {
-    let state = initialPlayerState();
-    state.shouldPrebuffer = false;
-    return state;
-  }
+  let state = initialPlayerState();
+  state.shouldPrebuffer = false;
+  return state;
+}
 
 export const getPlayerActions = () => {
-  return {
-    play(){},
-    playing(){},
-    playFailed(){},
-    pause(){},
-    paused(){},
-    playAndFadeIn(fadeDuration){},
-    fadeOutAndPause(fadeDuration){},
-    changeVolumeFactor(volumeFactor, fadeDuration){},
-    metaDataLoaded(currentTime, duration){},
-    progress(bufferedEnd){},
-    timeUpdate(currentTime, duration){},
-    ended(){},
-    scrubTo(time){},
-    seekTo(time){},
-    seeking(){},
-    seeked(){},
-    waiting(){},
-    prebuffer(){},
-    prebuffered(){},
-    bufferUnderrun(){},
-    bufferUnderrunContinue(){},
-    mouseEntered(){},
-    mouseLeft(){},
-    mouseEnteredControls(){},
-    mouseLeftControls(){},
-    userInteraction(){},
-    userIdle(){},
-    focusEnteredControls(){},
-    focusLeftControls(){},
-    saveMediaElementId(id){},
-    discardMediaElementId(){}
-  };
+  const actions = {
+    calls: []
+  }
+
+  return Object.keys(createActions(() => {})).reduce((result, action) => {
+    result[action] = jest.fn(() => {
+      actions.calls.push(action);
+    });
+
+    return result;
+  }, actions);
 }
