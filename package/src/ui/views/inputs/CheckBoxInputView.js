@@ -18,6 +18,11 @@ import template from '../../templates/inputs/checkBox.jst';
  *   Ignore the attribute value if the input is disabled and display
  *   an checked check box.
  *
+ * @param {string} [options.storeInverted]
+ *   Display checked by default and store true in given attribute when
+ *   unchecked. The property name passed to `input` is only used for
+ *   translations.
+ *
  * @class
  */
 export const CheckBoxInputView = Marionette.ItemView.extend({
@@ -49,7 +54,14 @@ export const CheckBoxInputView = Marionette.ItemView.extend({
 
   save: function() {
     if (!this.isDisabled()) {
-      this.model.set(this.options.propertyName, this.ui.input.is(':checked'));
+      const value = this.ui.input.is(':checked');
+
+      if (this.options.storeInverted) {
+        this.model.set(this.options.storeInverted, !value);
+      }
+      else {
+        this.model.set(this.options.propertyName, value);
+      }
     }
   },
 
@@ -63,8 +75,11 @@ export const CheckBoxInputView = Marionette.ItemView.extend({
     if (this.isDisabled() && this.options.displayUncheckedIfDisabled) {
       return false;
     }
-    if (this.isDisabled() && this.options.displayCheckedIfDisabled) {
+    else if (this.isDisabled() && this.options.displayCheckedIfDisabled) {
       return true;
+    }
+    else if (this.options.storeInverted) {
+      return !this.model.get(this.options.storeInverted);
     }
     else {
       return this.model.get(this.options.propertyName);
