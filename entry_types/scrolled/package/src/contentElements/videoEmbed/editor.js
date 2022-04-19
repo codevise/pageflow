@@ -2,7 +2,11 @@ import {editor} from 'pageflow-scrolled/editor';
 import {CheckBoxInputView, SelectInputView, UrlInputView} from 'pageflow/ui';
 import {FileInputView} from 'pageflow/editor';
 
+import pictogram from './pictogram.svg';
+
 editor.contentElementTypes.register('videoEmbed', {
+  pictogram,
+  category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 
   configurationEditor() {

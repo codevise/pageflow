@@ -1,12 +1,16 @@
 .storyline_picker {
   position: relative;
 
+  .storyline_picker_storylines {
+    position: relative;
+  }
+
   .add_storyline,
   .edit_storyline {
     @include icon-only-button;
     display: none;
     position: absolute;
-    top: 11px;
+    bottom: 0;
   }
 
   .add_storyline {

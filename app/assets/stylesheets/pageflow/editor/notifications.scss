@@ -1,7 +1,6 @@
 .notifications {
-  background-color: #fff;
-  border-bottom: solid 1px #ccc;
-  color: #888;
+  border-bottom: solid 1px var(--ui-on-surface-color-lightest);
+  color: var(--ui-on-surface-color-light);
   font-size: 11px;
 
   margin: -10px -10px 10px -10px;
@@ -35,40 +34,42 @@
   }
 
   li {
-    @include background-icon-left($font-size: 15px, $left: 15px, $color: #888);
+    @include background-icon-left($font-size: 15px, $left: 15px, $color: var(--ui-primary-color-light));
     padding: 4px 10px 4px 35px;
   }
 
   li.uploading {
     @include background-icon-animation(blink);
-    @include background-icon-color(#444);
+    @include background-icon-color(var(--ui-primary-color-light));
     @include up-bold-icon;
-    color: #444;
+    color: var(--ui-primary-color-light);
     display: none;
   }
 
   li.saving {
     @include background-icon-animation(blink);
-    @include background-icon-color(#444);
+    @include background-icon-color(var(--ui-primary-color-light));
     @include arrows-ccw-icon;
-    color: #444;
+    color: var(--ui-primary-color-light);
     display: none;
   }
 
   li.failed {
     @include background-icon-animation(blink);
-    @include background-icon-color(#d00);
+    @include background-icon-color(var(--ui-error-color));
     @include attention-icon;
-    color: #444;
+    color: var(--ui-primary-color-light);
     display: none;
   }
 
   li.confirmable_files {
-    @include background-icon-left($font-size: 15px, $top: 15px, $left: 15px, $color: #888);
+    @include background-icon-left($font-size: 15px, $top: 15px, $left: 15px, $color: var(--ui-primary-color));
     @include background-icon-animation(blink);
     @include bell-icon;
-    background-color: #D2E5FA;
-    color: #000;
+    margin: space(1) space(1) space(1) 0;
+    background-color: var(--ui-selection-color-lighter);
+    border-radius: rounded(md);
+    color: var(--ui-on-surface-color);
     padding-top: 8px;
     display: none;
   }

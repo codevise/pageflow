@@ -1,18 +1,50 @@
 ul.outline {
   &.navigatable li a:first-child {
     @include right-open-icon;
-    @include background-icon-right($color: #888);
+    @include background-icon-right($color: var(--ui-primary-color-light));
+  }
+
+  .drag_handle {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 8px;
+    vertical-align: middle;
+    padding: 0 space(1.5) 0 space(0.5);
+    font-family: "entypo";
+    font-size: 10px;
+    opacity: 0.6;
+
+    &::before {
+      content: "\e75f";
+    }
+
+    &::after {
+      content: "\e75c";
+    }
+  }
+
+  .draggable .drag_handle {
+    display: inline-flex;
+    cursor: move;
+  }
+
+  a:hover .drag_handle {
+    opacity: 1;
   }
 
   li {
     position: relative;
-    background-color: #fff;
+    background-color: var(--ui-surface-color);
 
     > div:first-child,
     > a:first-child {
       display: block;
-      padding: 10px 10px 10px 70px;
-      background-color: #efefef;
+      padding: space(2.5) space(2.5) space(2.5) 70px;
+      background-color: var(--ui-primary-color-lightest);
+      border-radius: rounded();
+      overflow: hidden;
     }
 
     &.creating > a:first-child {
@@ -26,7 +58,7 @@ ul.outline {
     }
 
     &.active > a {
-      background-color: #D2E5FA;
+      background-color: var(--ui-selection-color-light);
     }
 
     &.draggable {
@@ -45,7 +77,7 @@ ul.outline {
       width: 35px;
       background-repeat: no-repeat;
       background-position: 3px 45%;
-      opacity: 0.2;
+      opacity: 0.3;
     }
 
     .page_thumbnail {
@@ -64,34 +96,40 @@ ul.outline {
       }
     }
 
-    &.display_in_navigation .type_pictogram {
-      opacity: 0.5;
+    &.hide_in_navigation a {
+      color: var(--ui-on-surface-color-light);
+    }
+
+    &.ui-sortable-helper {
+      box-shadow: var(--ui-box-shadow-xl);
     }
   }
 }
 
 ul.chapters {
   > li {
-    margin-bottom: 10px;
-    padding: 0 10px 10px 30px;
-
-    > a > .pictogram {
-      background-image: image-url("pageflow/chapter_pictogram_small.png");
-    }
+    border: solid 1px var(--ui-on-surface-color-lighter);
+    border-radius: rounded();
+    margin-bottom: space(2.5);
+    padding: 0 space(2.5) space(2.5);
 
     > a:first-child {
-      margin: 0 -10px 0 -30px;
-      padding-left: 30px;
+      padding-left: 0;
+      background-color: transparent;
     }
 
     .number {
       font-weight: bold;
     }
   }
+
+  > .sortable-placeholder {
+    border: 0;
+  }
 }
 
 ul.pages {
-  margin: 20px 0 10px 0;
+  margin: 0 0 space(2.5) 0;
 
   > li {
     margin-bottom: 2px;
@@ -109,6 +147,6 @@ ul.dragged {
 }
 
 .sortable-placeholder {
-  outline: 1px dotted #aaa;
-  background-color: inherit !important;
+  outline: 1px dotted var(--ui-on-surface-color-lighter);
+  border-radius: rounded();
 }

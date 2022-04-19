@@ -4,10 +4,11 @@
 .root {
   position: relative;
   border: solid selectionWidth transparent;
+  border-radius: rounded();
   padding: 3px;
-  margin-bottom: 4px;
+  margin-left: -6px;
+  margin-right: -6px;
   text-align: right;
-  background-color: #eee;
 }
 
 .active {
@@ -19,10 +20,10 @@
 }
 
 .thumbnail {
-  border: solid 1px #888;
   padding-top: 50%;
   position: relative;
   text-align: initial;
+  border: solid 1px var(--ui-on-surface-color-lightest);
 }
 
 .clickMask {

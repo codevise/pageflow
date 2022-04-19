@@ -1,18 +1,14 @@
 .reference_input {
   position: relative;
   white-space: nowrap;
-  height: 80px;
 
   .model_thumbnail {
     width: 60px;
     height: 60px;
     vertical-align: bottom;
     margin-right: 5px;
-    border: solid 1px #888;
-  }
-
-  div.model_thumbnail {
-    float: left;
+    border-radius: rounded();
+    border: solid 1px var(--ui-primary-color-light);
   }
 
   .file_thumbnail {
@@ -21,7 +17,7 @@
 
   div.title {
     position: absolute;
-    top: 20px;
+    top: space(7);
     left: 70px;
     right: 20px;
     overflow: hidden;
@@ -32,16 +28,16 @@
     @include pencil-icon;
 
     position: absolute;
-    top: 53px;
+    bottom: 0;
     right: 0;
   }
 
   .unset {
-    @include icon-only-button($base-color: #d00);
+    @include icon-only-button("destructive");
     @include cancel-circled-icon;
 
     position: absolute;
-    top: 53px;
+    bottom: 0;
     right: 35px;
   }
 

@@ -3,6 +3,7 @@ import {failureIndicatingView, loadable, editor} from 'pageflow/editor';
 
 export const NavigatableChapterItemView = ChapterItemView.extend({
   mixins: [loadable, failureIndicatingView],
+  className: 'draggable',
 
   events: {
     'click a.add_page': function() {

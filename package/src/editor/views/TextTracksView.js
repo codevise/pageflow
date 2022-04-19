@@ -59,6 +59,7 @@ export const TextTracksView = Marionette.Layout.extend({
     if (selectedFile) {
       this.selectedFileRegion.show(new EditFileView({
         model: selectedFile,
+        displayFileName: true,
         attributeTranslationKeyPrefixes: [
           'pageflow.editor.nested_files.text_track_files'
         ]

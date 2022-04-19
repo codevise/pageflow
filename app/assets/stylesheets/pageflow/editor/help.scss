@@ -8,6 +8,10 @@
 
   z-index: 5;
 
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-font-size);
+  color: var(--ui-on-surface-color);
+
   &:before {
     content: " ";
     position: absolute;
@@ -15,9 +19,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #000;
-
-    opacity: 0.2;
+    background-color: var(--ui-backdrop-color);
   }
 
   .box {
@@ -27,17 +29,16 @@
     min-height: 200px;
     height: 50%;
     top: 10%;
-    border: solid 1px #aaa;
     margin: auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: var(--ui-surface-color);
+    border-radius: rounded();
     padding-bottom: 100px;
   }
 
   a.close {
     @include cancel-icon;
     @include icon-button;
-
   }
 
   h2 {
@@ -68,12 +69,12 @@
     a {
       display: block;
       text-decoration: none;
-      color: #000;
+      color: var(--ui-on-surface-color);
       padding: 5px;
     }
 
     a:hover {
-      background-color: #eee;
+      background-color: var(--ui-selection-color-lighter);
     }
 
     .expandable > a {
@@ -84,16 +85,16 @@
 
     .expanded > a {
       @include up-open-mini-icon;
-      background-color: #eee;
+      background-color: var(--ui-primary-color-lightest);
     }
 
     .active > a {
-      background-color: #D2E5FA;
+      background-color: var(--ui-selection-color-light);
     }
 
     li ul {
       display: none;
-      border-bottom: solid 1px #ddd;
+      border-bottom: solid 1px var(--ui-on-surface-color-lightest);
     }
 
     .expanded ul {
@@ -117,7 +118,7 @@
     margin-left: 5px;
     padding-left: 20px;
     padding-right: 5px;
-    border-left: solid 1px #888;
+    border-left: solid 1px var(--ui-on-surface-color-lighter);
 
     h1 {
       margin: 0 0 10px 0;
@@ -136,6 +137,10 @@
       font-size: 16px;
       line-height: 26px;
     }
+
+    a {
+      color: var(--ui-primary-color);
+    }
   }
 
   .footer {
@@ -152,13 +157,13 @@
   img {
     float: right;
     margin: 5px;
-    border: solid 1px #888;
     padding: 1px;
   }
 }
 
 .editor .help_button {
-  @include background-icon-right($color: #a0c4e0, $font-size: 16px, $right: 5px, $top: 7px);
+  @include background-icon-right($color: var(--ui-primary-color),
+                                 $font-size: 16px, $right: 5px, $top: 5px);
   @include help-circled-icon;
 
   padding: 7px 30px 0 5px;

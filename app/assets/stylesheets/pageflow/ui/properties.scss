@@ -1,0 +1,41 @@
+:root { // scss-lint:disable PropertyCount
+  --ui-font-size: 13px;
+
+  --ui-surface-color: #fff;
+  --ui-backdrop-color: rgba(6, 32, 42, 0.6);
+
+  --ui-on-surface-color: hsl(197, 26%, 23%);
+  --ui-on-surface-color-light: hsla(197, 26%, 23%, 0.6);
+  --ui-on-surface-color-lighter: hsla(197, 26%, 23%, 0.3);
+  --ui-on-surface-color-lightest: hsla(197, 26%, 23%, 0.1);
+
+  --ui-on-surface-color-light-solid: #{mix(#06202a, #fff, 60%)};
+  --ui-on-surface-color-lighter-solid: #{mix(#06202a, #fff, 30%)};
+  --ui-on-surface-color-lightest-solid: #{mix(#06202a, #fff, 10%)};
+
+  --ui-primary-color: hsla(197, 37%, 24%);
+  --ui-primary-color-light: hsla(197, 37%, 24%, 0.6);
+  --ui-primary-color-lighter: hsla(197, 37%, 24%, 0.3);
+  --ui-primary-color-lightest: hsla(197, 37%, 24%, 0.1);
+
+  --ui-on-primary-color: rgba(255, 255, 255);
+  --ui-on-primary-color-light: rgba(255, 255, 255, 0.6);
+  --ui-on-primary-color-lighter: rgba(255, 255, 255, 0.3);
+  --ui-on-primary-color-lightest: rgba(255, 255, 255, 0.1);
+
+  --ui-selection-color: #99d4ec;
+  --ui-selection-color-light: hsla(197, 69%, 76%, 0.6);
+  --ui-selection-color-lighter: hsla(197, 69%, 76%, 0.3);
+  --ui-selection-color-lightest: hsla(197, 69%, 76%, 0.1);
+
+  --ui-error-color: #ff4d6d;
+  --ui-on-error-color: #fff;
+  --ui-error-surface-color: #{mix(#ff4d6d, #fff, 10%)};
+
+  --ui-box-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --ui-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.25), 0 1px 2px -1px rgb(0 0 0 / 0.25);
+  --ui-box-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.25), 0 2px 4px -2px rgb(0 0 0 / 0.25);
+  --ui-box-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --ui-box-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --ui-box-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}

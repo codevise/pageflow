@@ -1,29 +1,9 @@
 &.file_settings_dialog {
   .box {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    bottom: 20px;
-    right: 20px;
-    max-width: 1100px;
-    max-height: 800px;
-    background-color: #eee;
-  }
-
-  .content {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    bottom: 50px;
-    left: 20px;
-    overflow: auto;
-  }
-
-  .footer {
-    position: absolute;
-    right: 20px;
-    bottom: 10px;
-    left: 20px;
+    min-width: 500px;
+    min-height: 400px;
+    max-width: 800px;
+    max-height: 600px;
   }
 
   .edit_file {

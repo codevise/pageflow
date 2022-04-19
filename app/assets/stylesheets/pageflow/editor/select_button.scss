@@ -3,7 +3,7 @@
   float: right;
 
   button {
-    @include icon-button;
+    @include icon-button("primary");
     @include up-icon;
   }
 
@@ -18,28 +18,34 @@
 
     padding: 10px;
 
-    top: 14px;
+    top: 18px;
     right: -10px;
   }
 
   .dropdown-menu {
     position: relative;
-    background-color: #eee;
-    border: 1px solid #ccc;
+    background-color: var(--ui-surface-color);
+    border: 1px solid var(--ui-on-surface-color-lighter);
+    border-radius: rounded(sm);
+    box-shadow: var(--ui-box-shadow);
+    padding: 1px;
 
     li {
       padding: 7px 10px;
       cursor: pointer;
+
+      &:hover {
+        background-color: var(--ui-selection-color-light);
+      }
     }
   }
-
 
   &:hover .dropdown {
     @include transition(visibility 0ms, opacity 100ms, top 200ms);
     visibility: visible;
     pointer-events: auto;
 
-    top: 18px;
+    top: 20px;
     opacity: 1;
   }
 }

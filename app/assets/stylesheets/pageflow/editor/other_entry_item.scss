@@ -1,12 +1,16 @@
 .other_entry_item {
   width: 100%;
-  padding: 4px 0;
+
+  &:hover {
+    background-color: var(--ui-selection-color-lighter);
+  }
 
   &.active {
-    background-color: $highlight-color;
+    background-color: var(--ui-selection-color-light);
   }
 
   a {
-    padding-left: 4px;
+    display: block;
+    padding: space(2);
   }
 }

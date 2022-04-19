@@ -18,11 +18,11 @@
   }
 
   .settings {
-    @include icon-only-button(#aaa);
+    @include icon-only-button;
     @include cog-icon;
     display: none;
     position: absolute;
     right: 0;
-    top: 19px;
+    bottom: 5px;
   }
 }

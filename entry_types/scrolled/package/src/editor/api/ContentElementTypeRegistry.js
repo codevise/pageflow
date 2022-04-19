@@ -70,13 +70,41 @@ export class ContentElementTypeRegistry {
     return this.contentElementTypes[typeName];
   }
 
+  groupedByCategory() {
+    const result = [];
+    const categoriesByName = {};
+
+    this.toArray().forEach(contentElementType => {
+      const categoryName = contentElementType.category || 'basic';
+
+      if (!categoriesByName[categoryName]) {
+        categoriesByName[categoryName] = {
+          name: categoryName,
+          displayName: I18n.t(
+            `pageflow_scrolled.editor.content_element_categories.${categoryName}.name`
+          ),
+          contentElementTypes: []
+        };
+
+        result.push(categoriesByName[categoryName]);
+      }
+
+      categoriesByName[categoryName].contentElementTypes.push(contentElementType);
+    });
+
+    return result;
+  }
+
   toArray() {
     return Object
       .keys(this.contentElementTypes)
       .map(typeName => ({
         ...this.contentElementTypes[typeName],
         typeName,
-        displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`)
+        displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`),
+        description: I18n.t(
+          `pageflow_scrolled.editor.content_elements.${typeName}.description`
+        )
       }))
       .filter(contentElement =>
         !contentElement.featureName || this.features.isEnabled(contentElement.featureName)

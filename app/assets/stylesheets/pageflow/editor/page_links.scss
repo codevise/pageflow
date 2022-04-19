@@ -9,23 +9,25 @@ div.page_links {
   }
 
   a.edit {
-    @include icon-only-button(#aaa);
+    @include icon-only-button;
     @include pencil-icon;
     position: absolute;
     right: 40px;
-    top: 4px;
+    top: 3px;
   }
 
   a.remove {
-    @include icon-only-button(#aaa);
+    @include icon-only-button("destructive");
     @include trash-icon;
     position: absolute;
     right: 4px;
-    top: 4px;
+    top: 3px;
   }
 
   li {
     margin-bottom: 2px;
+    border-radius: rounded();
+    overflow: hidden;
 
     > div:first-child {
       padding-left: 45px;
@@ -38,7 +40,7 @@ div.page_links {
 
     .label {
       margin-top: 10px;
-      color: #666;
+      color: var(--ui-on-surface-color-light);
     }
 
     .thumbnail,
@@ -49,12 +51,12 @@ div.page_links {
       height: 100%;
       width: 35px;
       background-size: cover;
-      background-color: #444;
     }
 
     .missing_page_thumbnail {
       @include attention-icon;
-      @include background-icon-center($color: #fff);
+      @include background-icon-center($color: var(--ui-error-color));
+      background-color: var(--ui-error-surface-color);
       display: none;
       position: absolute;
     }

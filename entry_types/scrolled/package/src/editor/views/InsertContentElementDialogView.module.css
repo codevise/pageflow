@@ -1,22 +1,82 @@
 .box {
-  max-width: 500px;
+  max-width: 580px;
   min-width: 200px;
   width: 70%;
   display: flex;
   flex-direction: column;
+  background-color: var(--ui-primary-color);
+  color: var(--ui-on-primary-color);
 }
 
-.list {
+.categories {
+  padding: space(1) 0 space(1) space(1);
+  margin: space(-1) 0 space(2) space(-1);
   overflow-y: auto;
-  padding: 2px;
-  margin: -2px;
 }
 
-.button {
+.box .categoryName {
+  font-weight: 700;
+  border-bottom: solid 1px var(--ui-on-primary-color-lighter);
+  margin: space(1) 0;
+  padding-bottom: space(1);
+}
+
+.types {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.item {
+  width: 33.3333%;
+}
+
+.type {
   composes: unstyledButton from './buttons.module.css';
-  display: block;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
   width: 100%;
-  padding: 10px;
-  margin-bottom: 2px;
-  background-color: #fff;
+  height: 100%;
+  padding: space(2) space(2) space(2) space(10);
+  margin-bottom: space(1);
+  color: inherit;
+  background-color: transparent;
+}
+
+.type:hover,
+.type:focus {
+  background-color: var(--ui-on-primary-color-lightest);
+}
+
+.typePictogram {
+  position: absolute;
+  top: space(2);
+  left: space(2);
+  opacity: 0.8;
+}
+
+.type:hover .typePictogram,
+.type:focus .typePictogram {
+  opacity: 1;
+}
+
+.typeName {
+  font-weight: 500;
+}
+
+.typeDescription {
+  display: block;
+  font-size: 11px;
+  color: var(--ui-on-primary-color-light);
+  margin-top: space(1);
+}
+
+.box .close {
+  color: inherit;
+  border-color: var(--ui-on-primary-color-lightest);
+}
+
+.box .close:hover {
+  border-color: var(--ui-on-primary-color) !important;
 }

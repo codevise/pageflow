@@ -1,33 +1,29 @@
-$table-view-header-background-color: #444 !default;
-$table-view-header-color: #fff !default;
-$table-view-cell-background-color: #fff !default;
-$table-view-blank-slate-color: #888 !default;
-$table-view-selected-cell-background-color: #d2e5fa !default;
-
 .table_view {
   border-spacing: 0 1px;
+  margin-top: -1px;
 
   th {
-    background-color: $table-view-header-background-color;
-    color: $table-view-header-color;
-    padding: 5px 10px;
+    padding: space(1) space(2);
+    border-bottom: solid 1px var(--ui-on-surface-color-lighter);
     text-align: left;
-
-    font-size: 11px;
-    text-transform: uppercase;
+    font-weight: 500;
   }
 
   td {
-    background-color: $table-view-cell-background-color;
-    padding: 10px;
+    padding: space(2);
   }
 
-  .is_selected > td {
-    background-color: $table-view-selected-cell-background-color;
+  tr:hover td {
+    background-color: var(--ui-selection-color-lighter);
   }
 
-  .blank_slate > td {
+  tr.is_selected > td {
+    background-color: var(--ui-selection-color-light);
+  }
+
+  tr.blank_slate > td {
     text-align: center;
-    color: $table-view-blank-slate-color;
+    background-color: transparent;
+    color: var(--ui-on-surface-color-light);
   }
 }

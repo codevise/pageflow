@@ -1,8 +1,3 @@
-$drop-down-button-menu-background-color: #eee !default;
-$drop-down-button-menu-active-item-background-color: #ddd !default;
-$drop-down-button-menu-disabled-item-text-color: #ddd !default;
-$drop-down-button-menu-border-color: #aaa !default;
-
 .drop_down_button {
   display: inline-block;
   position: relative;
@@ -25,8 +20,10 @@ $drop-down-button-menu-border-color: #aaa !default;
   position: absolute;
   z-index: 1;
   padding: 1px;
-  border: solid 1px $drop-down-button-menu-border-color;
-  background-color: $drop-down-button-menu-background-color;
+  border: solid 1px var(--ui-on-surface-color-lighter);
+  border-radius: rounded(sm);
+  box-shadow: var(--ui-box-shadow);
+  background-color: var(--ui-surface-color);
 
   &.is_visible {
     @include transition(visibility 0ms, opacity 100ms);
@@ -47,7 +44,7 @@ $drop-down-button-menu-border-color: #aaa !default;
     cursor: pointer;
 
     &:hover {
-      background-color: $drop-down-button-menu-active-item-background-color;
+      background-color: var(--ui-selection-color-light);
     }
   }
 
@@ -66,7 +63,7 @@ $drop-down-button-menu-border-color: #aaa !default;
   }
 
   &.is_disabled a {
-    color: $drop-down-button-menu-disabled-item-text-color;
+    opacity: 0.5;
 
     &:hover {
       background-color: inherit;
@@ -83,7 +80,7 @@ $drop-down-button-menu-border-color: #aaa !default;
   }
 
   ul {
-    border-bottom: solid 1px $drop-down-button-menu-border-color;
+    border-bottom: solid 1px var(--ui-on-surface-color-lighter);
     padding-bottom: 1px;
     margin-bottom: 1px;
   }

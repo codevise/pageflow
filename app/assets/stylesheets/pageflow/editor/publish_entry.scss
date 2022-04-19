@@ -31,10 +31,10 @@
   }
 
   .notice {
-    @include background-icon-left($left: 10px, $top: 18px);
-
+    @include background-icon-left($color: var(--ui-primary-color), $left: 10px, $top: 18px);
+    background-color: var(--ui-selection-color-lighter);
+    border-radius: rounded(md);
     padding: 10px 10px 10px 40px;
-    border-bottom: solid 1px #aaa;
 
     &.files_pending {
       @include hourglass-icon;
@@ -67,7 +67,7 @@
     margin: 5px 0 0 0;
 
     &.invalid {
-      border: 1px solid red;
+      border: 1px solid var(--ui-error-color);
     }
   }
 
@@ -132,7 +132,7 @@
   }
 
   .save {
-    @include icon-button;
+    @include icon-button("primary");
     @include check-icon;
 
     margin-top: 15px;
@@ -140,6 +140,5 @@
 
   &.publishing .save {
     @include hourglass-icon;
-    @include icon-button($base-color: #aaa);
   }
 }

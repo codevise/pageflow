@@ -2,30 +2,32 @@ ul.files_gallery {
   margin-top: 10px;
 
   > li {
-    background-color: #eee;
     margin-bottom: 2px;
     position: relative;
     overflow: hidden;
     float: left;
     text-align: center;
-    padding: 10px 5px 5px 5px;
-
-    width: 20%;
-    min-width: 110px;
-    max-width: 180px;
-
+    padding: space(2);
+    width: 120px;
     cursor: pointer;
+    border: solid 3px transparent;
+    border-radius: rounded();
+
+    &:hover {
+      background-color: var(--ui-selection-color-lighter);
+    }
 
     &.active {
-      background-color: $highlight-color;
+      background-color: var(--ui-selection-color-lighter);
+      border: solid 3px var(--ui-selection-color);
     }
 
     &.disabled {
+      background-color: transparent;
       opacity: 0.5;
-
       cursor: default;
 
-      @include background-icon-right(#18A507, 22px, 18px);
+      @include background-icon-right(var(--ui-primary-color), 22px, 18px);
       @include check-icon;
     }
   }
@@ -33,7 +35,7 @@ ul.files_gallery {
   li.blank_slate {
     text-align: center;
     padding: 10px 5px 20px 5px;
-    color: #888;
+    color: var(--ui-primary-color-light);
   }
 
   .file_thumbnail {
@@ -41,6 +43,8 @@ ul.files_gallery {
     width: 100px;
     display: block;
     margin: auto;
+    border-radius: rounded();
+    overflow: hidden;
   }
 
   .file_name {

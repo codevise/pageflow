@@ -1,31 +1,10 @@
 .page_selection {
   .box {
-    top: 5%;
-    width: 90%;
     max-width: 400px;
     max-height: 745px;
-    padding-bottom: 20px;
-    height: 80%;
   }
 
-  .wrapper {
-    background-color: #fff;
-    padding-right: 10px;
-
-    overflow: hidden;
-    overflow-y: scroll;
-
-    position: absolute;
-    top: 70px;
-    bottom: 70px;
-    left: 0;
-    right: 10px;
-
-    .storyline_picker_select_region {
-      margin: 0 10px 20px 30px;
-    }
-
-    h2,
+  .content {
     .add_page,
     .add_chapter {
       display: none;
@@ -35,11 +14,5 @@
       cursor: default;
       outline: none;
     }
-  }
-
-  .footer {
-    position: absolute;
-    bottom: 20px;
-    right: 10px;
   }
 }

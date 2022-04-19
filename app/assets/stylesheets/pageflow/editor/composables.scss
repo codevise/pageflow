@@ -5,9 +5,9 @@
 // See entry_type/scrolled/package/src/editor/buttons.module.css
 
 .primary_icon_button {
-  @include icon-button;
+  @include icon-button("primary");
 }
 
 .secondary_icon_button {
-  @include icon-button(#888);
+  @include icon-button;
 }

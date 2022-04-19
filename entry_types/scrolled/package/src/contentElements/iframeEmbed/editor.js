@@ -1,9 +1,13 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {TextInputView, SelectInputView} from 'pageflow/ui';
 
+import pictogram from './pictogram.svg';
+
 const aspectRatios = ['wide', 'narrow', 'square', 'portrait'];
 
 editor.contentElementTypes.register('iframeEmbed', {
+  pictogram,
+  category: 'interactive',
   featureName: 'iframe_embed_content_element',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 

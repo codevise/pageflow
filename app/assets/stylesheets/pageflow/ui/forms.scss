@@ -1,11 +1,8 @@
 label {
   display: block;
   position: relative;
-  margin-bottom: 2px;
-  text-transform: uppercase;
-  color: #444;
-  font-size: 11px;
-  font-weight: bold;
+  margin-bottom: space(1);
+  font-weight: 500;
 
   .name {
     display: inline-block;
@@ -23,30 +20,62 @@ label:hover span.name {
 
 select,
 textarea,
-input {
-  font-family: Helvetica, Arial, "Sans-Serif";
+[type="text"],
+[type="email"],
+[type="url"],
+[type="password"],
+[type="number"],
+[type="date"],
+[type="datetime-local"],
+[type="month"],
+[type="search"],
+[type="tel"],
+[type="time"],
+[type="week"],
+[multiple] {
   font-size: 13px;
   display: block;
   width: 100%;
-  border: solid 1px #888;
+  border: solid 1px var(--ui-on-surface-color-lighter);
   line-height: 20px;
-  padding: 2px;
+  padding: space(1) space(2);
+  box-sizing: border-box;
+  border-radius: rounded();
+  color: var(--ui-on-surface-color);
+
+  &:focus {
+    border-color: var(--ui-on-surface-color-light);
+    box-shadow: 0 0 0 2px var(--ui-selection-color-light);
+  }
 }
 
-textarea,
-input {
-  padding: 2px;
-  margin: 0 -2px;
+select {
+  padding-right: space(8);
+}
+
+[type="checkbox"] {
+  border-radius: rounded();
+}
+
+[type="checkbox"],
+[type="radio"] {
+  border: solid 1px var(--ui-on-surface-color-light);
+  color: var(--ui-primary-color);
+
+  &:focus {
+    box-shadow: 0 0 0 2px var(--ui-surface-color), 0 0 0 4px var(--ui-primary-color-lighter);
+  }
 }
 
 .invalid input,
 .invalid textarea {
-  border: solid 1px #932419;
+  border: solid 1px var(--ui-error-color);
 }
 
 textarea {
   width: 100%;
   height: 300px;
+  padding-right: space(1);
 }
 
 textarea.short {
@@ -55,17 +84,10 @@ textarea.short {
 
 .radio_input,
 .check_box_input {
-  margin: 5px 0;
+  padding: space(1) 0;
   position: relative;
 
-  input {
-    display: inline;
-    width: auto;
-    vertical-align: middle;
-    margin-left: 5px;
-  }
-
-  /** Make sure the input is on top when an inline help text is displayed */
+  // Make sure the input is on top when an inline help text is displayed
   &:hover input {
     z-index: 4;
     position: relative;
@@ -75,11 +97,12 @@ textarea.short {
     position: static;
     display: inline;
     padding-left: 5px;
+    font-weight: normal;
   }
 
   .inline_help {
     right: -5px;
-    top: 0;
+    top: space(1) * -1;
   }
 }
 
@@ -87,56 +110,10 @@ textarea.short {
   padding-top: 10px;
 }
 
-.page_reference_input {
-  p {
-    margin: 10px 0;
-    color: #444;
-  }
-
-  ul.chapters {
-    margin-top: 10px;
-
-    > li {
-      margin: 0;
-      padding: 0;
-
-      > a:first-child {
-        cursor: default;
-        margin: 0;
-        padding: 0;
-        background-color: #fff;
-
-        .pictogram {
-          display: none;
-        }
-      }
-    }
-  }
-
-  ul.pages {
-    margin: 5px 0 10px 0;
-
-    .pictogram {
-      opacity: 0.5;
-    }
-
-    .used .pictogram {
-      opacity: 0.2;
-    }
-  }
-
-  .add_page {
-    display: none;
-  }
-}
-
 .configuration_editor,
 .configuration_editor_tab {
-  margin: 10px 0;
-  padding-bottom: 20px;
-
   > div {
-    padding: 5px 0;
+    margin: space(2.5) 0;
   }
 }
 
@@ -150,8 +127,16 @@ textarea.short {
 }
 
 .slider_input {
+  padding: space(1) 0 0;
+
   .slider {
     margin: 10px 10px 0 40px;
+    border: 1px solid var(--ui-on-surface-color-lighter);
+  }
+
+  .ui-slider-handle {
+    background: var(--ui-on-surface-color-lightest-solid);
+    border: solid 1px var(--ui-on-surface-color-lighter-solid);
   }
 
   .value {
@@ -168,30 +153,24 @@ textarea.short {
 }
 
 .validation {
-  margin: 5px -4px 0 -2px;
-  padding: 5px;
-  border: solid 1px #aaa;
+  padding: space(1) 0 0 space(1);
   position: relative;
 
-  &.pending {
-    background-color: #fffdeb;
-  }
-
   &.failed {
-    background-color: #ffdddd;
+    color: var(--ui-error-color);
   }
 
   li {
-    margin: 5px;
+    margin: space(1);
   }
 }
 
 .inline_help {
-  @include background-icon-right($color: #a0c4e0, $font-size: 16px);
+  @include background-icon-right($color: var(--ui-primary-color-lighter), $font-size: 16px);
   @include help-circled-icon;
 
   &:before {
-    top: 3px;
+    top: 5px;
     right: 3px;
     width: 20px;
     height: 17px;
@@ -211,12 +190,14 @@ textarea.short {
   margin: 1px;
 
   &:hover {
+    box-shadow: var(--ui-box-shadow);
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 12px;
     margin: 0;
-    background-color: #e4eef6;
-    border: solid 1px #aaa;
+    background: var(--ui-surface-color);
+    border: solid 1px var(--ui-on-surface-color-lighter);
+    border-radius: rounded(sm);
     width: 100%;
     height: auto;
     z-index: 3;
@@ -233,4 +214,13 @@ textarea.short {
 
 .input-hidden_via_binding {
   display: none;
+}
+
+.input-disabled {
+  select,
+  input,
+  textarea,
+  label .name {
+    opacity: 0.5;
+  }
 }

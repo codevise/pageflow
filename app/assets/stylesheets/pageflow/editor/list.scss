@@ -4,13 +4,16 @@
   }
 
   .list_blank_slate {
-    background-color: #efefef;
-    color: #888;
+    background-color: var(--ui-primary-color-lightest);
+    border-radius: rounded();
+    color: var(--ui-on-surface-color-light);
     padding: 10px;
   }
 
   .list_item {
-    background-color: #efefef;
+    background-color: var(--ui-primary-color-lightest);
+    border-radius: rounded();
+    overflow: hidden;
     cursor: default;
     padding: 10px 10px 10px 45px;
     position: relative;
@@ -29,7 +32,6 @@
     width: 35px;
     height: 100%;
     background-size: cover;
-    background-color: #444;
   }
 
   .list_item_thumbnail .thumbnail {
@@ -42,7 +44,8 @@
 
   .list_item_missing_thumbnail {
     @include attention-icon;
-    @include background-icon-center($color: #fff);
+    @include background-icon-center($color: var(--ui-error-color));
+    background-color: var(--ui-error-surface-color);
     display: none;
     position: absolute;
   }
@@ -74,13 +77,13 @@
 
   .list_item_description {
     margin-top: 10px;
-    color: #666;
+    color: var(--ui-on-surface-color-light);
   }
 
   .list_item_buttons {
     position: absolute;
     right: 4px;
-    top: 4px;
+    top: 3px;
     white-space: nowrap;
   }
 
@@ -93,12 +96,12 @@
   }
 
   .list_item_edit_button {
-    @include icon-only-button(#aaa);
+    @include icon-only-button;
     @include pencil-icon;
   }
 
   .list_item_remove_button {
-    @include icon-only-button(#aaa);
+    @include icon-only-button("destructive");
     @include trash-icon;
   }
 

@@ -1,12 +1,7 @@
 .files_explorer {
   .box {
-    height: 100%;
-    @include box-sizing(border-box);
-
-    h2 {
-      margin: 0;
-      position: absolute;
-    }
+    min-width: 500px;
+    min-height: 400px;
   }
 
   ul {
@@ -15,58 +10,46 @@
     list-style: none;
   }
 
-
-  .panels {
-    padding-top: 30px;
-    padding-bottom: 50px;
-    height: 100%;
-    @include box-sizing(border-box);
-  }
-
-  .entries_panel, .files_panel {
-    height: 100%;
-    display: inline-block;
-    vertical-align: top;
-    border: 1px solid #ddd;
+  .entries_panel,
+  .files_panel {
     overflow: auto;
   }
 
   .entries_panel {
     width: 20%;
+    padding: 0 space(1) 0 space(1);
+    margin: 0 space(1) 0 space(-1);
 
     li.blank_slate {
       text-align: center;
       padding: 10px 5px 20px 5px;
-      color: #888;
+      color: var(--ui-on-surface-color-light);
     }
   }
 
   .files_panel {
-    width: 77%;
+    flex: 1;
+    border-left: solid 1px var(--ui-on-surface-color-lighter);
+    padding-left: space(4);
 
     .tabs_view {
       height: 100%;
       position: relative;
 
       .tabs_view-container {
-        @include position(absolute, 37px  0 0px 0);
+        @include position(absolute, 37px  0 0 0);
         height: auto;
       }
     }
   }
 
-  .footer {
-    width: 98%;
-    @include position(absolute, 0 37px 14px 0);
-  }
-
   .close {
     @include cancel-icon;
-    @include icon-button(#888);
+    @include icon-button;
   }
 
   .ok {
     @include check-icon;
-    @include icon-button();
+    @include icon-button("primary");
   }
 }
