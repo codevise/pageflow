@@ -5,11 +5,11 @@
   --ui-backdrop-color: rgba(6, 32, 42, 0.6);
 
   --ui-on-surface-color: hsl(197, 26%, 23%);
-  --ui-on-surface-color-light: hsla(197, 26%, 23%, 0.6);
+  --ui-on-surface-color-light: hsla(197, 26%, 23%, 0.8);
   --ui-on-surface-color-lighter: hsla(197, 26%, 23%, 0.3);
   --ui-on-surface-color-lightest: hsla(197, 26%, 23%, 0.1);
 
-  --ui-on-surface-color-light-solid: #{mix(#06202a, #fff, 60%)};
+  --ui-on-surface-color-light-solid: #{mix(#06202a, #fff, 80%)};
   --ui-on-surface-color-lighter-solid: #{mix(#06202a, #fff, 30%)};
   --ui-on-surface-color-lightest-solid: #{mix(#06202a, #fff, 10%)};
 
