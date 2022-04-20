@@ -1,0 +1,73 @@
+.wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #fff;
+  background: linear-gradient(30deg, transparent, transparent 60%, #000000a6);
+  padding: 5px 5px 40px 70px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1;
+}
+
+.visible {
+  opacity: 1;
+}
+
+.eqBar {
+  transform: scale(1, -1) translate(0, -24px);
+  fill: #fff;
+}
+
+.eqBar1 {
+  composes: eqBar;
+  animation-name: short-eq;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-delay: 0s;
+}
+
+.eqBar2 {
+  composes: eqBar;
+  animation-name: tall-eq;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-delay: 0.17s;
+}
+
+.eqBar3 {
+  composes: eqBar;
+  animation-name: short-eq;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-delay: 0.34s;
+}
+
+@keyframes short-eq {
+  0% {
+    height: 8px
+  }
+
+  50% {
+    height: 4px
+  }
+
+  100% {
+    height: 8px
+  }
+}
+
+@keyframes tall-eq {
+  0% {
+    height: 16px
+  }
+
+  50% {
+    height: 6px
+  }
+
+  100% {
+    height: 16px
+  }
+}

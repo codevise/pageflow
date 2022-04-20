@@ -22,34 +22,42 @@ export function ClassicPlayerControls(props) {
        <BigPlayPauseButton unplayed={props.unplayed}
                            isPlaying={props.isPlaying}
                            lastControlledVia={props.lastControlledVia}
+                           hidden={props.hideBigPlayButton}
                            hideCursor={props.isPlaying && props.inactive}
                            onClick={props.onPlayerClick} />}
-      <div onFocus={props.onFocus}
-           onBlur={props.onBlur}
-           onMouseEnter={props.onMouseEnter}
-           onMouseLeave={props.onMouseLeave}
-           className={classNames(styles.controlBarContainer,
-                                 darkBackground ? styles.darkBackground : styles.lightBackground,
-                                 {
-                                   [styles.inset]: !props.standAlone,
-                                   [styles.transparent]: transparent
-                                 })}>
-        <PlayPauseButton isPlaying={props.isPlaying}
-                         play={props.play}
-                         pause={props.pause}/>
-        <ProgressIndicators currentTime={props.currentTime}
-                            duration={props.duration}
-                            bufferedEnd={props.bufferedEnd}
-                            scrubTo={props.scrubTo}
-                            seekTo={props.seekTo}/>
-        <TimeDisplay currentTime={props.currentTime}
-                     duration={props.duration}/>
-        <TextTracksMenu items={props.textTracksMenuItems}
-                        onItemClick={props.onTextTracksMenuItemClick} />
-        <QualityMenu items={props.qualityMenuItems}
-                     onItemClick={props.onQualityMenuItemClick}
-                     subMenuExpanded={props.qualityMenuExpanded} />
-      </div>
+      {!props.hideControlBar &&
+       renderControlBar(props, darkBackground, transparent)}
+    </div>
+  );
+}
+
+function renderControlBar(props, darkBackground, transparent) {
+  return (
+    <div onFocus={props.onFocus}
+         onBlur={props.onBlur}
+         onMouseEnter={props.onMouseEnter}
+         onMouseLeave={props.onMouseLeave}
+         className={classNames(styles.controlBarContainer,
+                               darkBackground ? styles.darkBackground : styles.lightBackground,
+                               {
+                                 [styles.inset]: !props.standAlone,
+                                 [styles.transparent]: transparent
+         })}>
+      <PlayPauseButton isPlaying={props.isPlaying}
+                       play={props.play}
+                       pause={props.pause}/>
+      <ProgressIndicators currentTime={props.currentTime}
+                          duration={props.duration}
+                          bufferedEnd={props.bufferedEnd}
+                          scrubTo={props.scrubTo}
+                          seekTo={props.seekTo}/>
+      <TimeDisplay currentTime={props.currentTime}
+                   duration={props.duration}/>
+      <TextTracksMenu items={props.textTracksMenuItems}
+                      onItemClick={props.onTextTracksMenuItemClick} />
+      <QualityMenu items={props.qualityMenuItems}
+                   onItemClick={props.onQualityMenuItemClick}
+                   subMenuExpanded={props.qualityMenuExpanded} />
     </div>
   );
 }

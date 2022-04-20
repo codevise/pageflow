@@ -6,12 +6,15 @@ import PauseIcon from '../images/pause.svg';
 
 export function BigPlayPauseButton(props) {
   const c = classNames(styles.button, {
-    [styles.hidden]: props.lastControlledVia === 'playPauseButton',
+    [styles.hidden]: props.hidden ||
+                     props.lastControlledVia === 'playPauseButton',
     [styles.fadeIn]: props.unplayed,
     [styles.animated]: !props.unplayed
   });
   return (
-    <div className={classNames(styles.container, {[styles.hideCursor]: props.hideCursor})}
+    <div className={classNames(styles.container,
+                               {[styles.hideCursor]: props.hideCursor,
+                                [styles.pointerCursor]: !!props.onClick})}
          onClick={props.onClick}>
       <div key={props.isPlaying} className={c}>
         {pausePlayIcon(props)}

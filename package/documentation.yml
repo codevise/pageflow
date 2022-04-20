@@ -87,8 +87,10 @@ toc:
       - CheckBoxGroupInputView
       - CheckBoxInputView
       - ColorInputView
+      - LabelOnlyView
       - ProxyUrlInputView
       - SelectInputView
+      - SeparatorView
       - SliderInputView
       - TextAreaInputView
       - TextInputView
