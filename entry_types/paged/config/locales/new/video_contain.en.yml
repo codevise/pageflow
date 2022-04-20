@@ -1,0 +1,7 @@
+en:
+  pageflow:
+    video:
+      page_attributes:
+        smart_contain:
+          label: "Avoid letterboxing/pillarboxing"
+          inline_help: "Scale video to prevent displaying black bars above and below it (letterboxing) or on the left and right (pillarboxing) when the aspect ratio of the video only deviates slightly from the aspect ratio of the browser viewport."
