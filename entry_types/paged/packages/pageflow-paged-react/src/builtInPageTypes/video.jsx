@@ -30,7 +30,8 @@ function VideoPage(props) {
 
       <PageVideoPlayer page={props.page}
                        playerState={props.playerState}
-                       playerActions={props.playerActions}/>
+                       playerActions={props.playerActions}
+                       fit={props.page.contain ? 'contain' : 'smart_contain'} />
       <MobilePageVideoPoster page={props.page} />
     </MediaPage>
   );

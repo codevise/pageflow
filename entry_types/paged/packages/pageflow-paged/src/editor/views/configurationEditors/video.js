@@ -36,6 +36,9 @@ ConfigurationEditorView.register('video', {
 
     this.tab('options', function() {
       this.input('autoplay', CheckBoxInputView);
+      this.input('smart_contain', CheckBoxInputView, {
+        storeInverted: 'contain'
+      });
 
       if (features.isEnabled('auto_change_page')) {
         this.input('auto_change_page_on_ended', CheckBoxInputView);
