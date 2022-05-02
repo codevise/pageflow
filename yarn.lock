@@ -12521,9 +12521,10 @@ watchpack@^1.6.0:
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
 
-"wavesurfer.js@https://github.com/tf/wavesurfer.js#patches":
-  version "1.4.0"
-  resolved "https://github.com/tf/wavesurfer.js#a364b2c26f9cb7bd940cc85a3b972a8a32c4ea2b"
+wavesurfer.js@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-6.1.0.tgz#c6d4a192cbe2cb60717c88ea3f0a95bedc3dd571"
+  integrity sha512-Ss8d4PC8r1vSE8Qtf3UhC6o4BWXL1J/tr9DFwshFW2pSZBdkzau6FzWGJUul3aoOZSFb+azC5F/m0I9F+vU72w==
 
 webidl-conversions@^5.0.0:
   version "5.0.0"

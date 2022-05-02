@@ -14,7 +14,7 @@ const EVENTS = [
   'pause',
   'play',
   'ready',
-  'scroll', 
+  'scroll',
   'seek',
   'zoom'
 ];
@@ -45,14 +45,14 @@ class Wavesurfer extends Component {
       throw new Error('WaveSurfer is undefined!');
     }
 
-    this._wavesurfer = Object.create(WaveSurfer);
     this._loadMediaElt = this._loadMediaElt.bind(this);
     this._loadAudio = this._loadAudio.bind(this);
     this._seekTo = this._seekTo.bind(this);
 
     this._handleResize = () => {
       if (this.state.isReady) {
-        this._wavesurfer.refresh();
+        // Force redraw
+        this._wavesurfer.zoom(false);
       }
     };
   }
@@ -67,7 +67,7 @@ class Wavesurfer extends Component {
       options.backend = 'MediaElement';
     }
 
-    this._wavesurfer.init(options);
+    this._wavesurfer = WaveSurfer.create(options);
 
     // file was loaded, wave was drawn
     this._wavesurfer.on('ready', () => {
@@ -88,7 +88,7 @@ class Wavesurfer extends Component {
 
       // set initial playing state
       if (this.props.playing) {
-        this.wavesurfer.play();
+        this._wavesurfer.play();
       }
 
       // set initial zoom
