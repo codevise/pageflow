@@ -56,6 +56,7 @@ Pageflow runs in environments with:
 * Redis server (for Resque)
 * A database server supported by Active Record (tested with MySQL)
 * ImageMagick
+* [Audio Waveform Image Generator](https://github.com/bbc/audiowaveform#installation)
 
 Accounts of the following cloud services have to be registered:
 

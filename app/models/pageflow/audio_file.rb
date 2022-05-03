@@ -5,6 +5,17 @@ module Pageflow
 
     belongs_to :confirmed_by, class_name: 'User', optional: true
 
+    has_attached_file(:peak_data,
+                      Pageflow.config.paperclip_s3_default_options
+                        .merge(styles: {
+                                 original: {
+                                   processors: [:pageflow_audio_waveform],
+                                   format: 'json'
+                                 }
+                               }))
+
+    do_not_validate_attachment_file_type :peak_data
+
     def attachment_s3_url
       "s3://#{File.join(attachment.bucket_name, attachment.path)}"
     end
