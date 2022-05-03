@@ -47,6 +47,7 @@ module Pageflow
     describe '#files_json_seed' do
       def render(helper, entry)
         helper.render_json do |json|
+          yield json if block_given?
           helper.files_json_seed(json, entry)
         end
       end
@@ -101,6 +102,50 @@ module Pageflow
         variants = json_get(result, path: ['video_files', 0, 'variants'])
 
         expect(variants).to include('fullhd')
+      end
+
+      describe 'for audio files' do
+        it 'includes default outputs in variants' do
+          entry = create(:published_entry)
+          create(:audio_file, used_in: entry.revision)
+
+          result = render(helper, entry)
+          variants = json_get(result, path: ['audio_files', 0, 'variants'])
+
+          expect(variants).to include('mp3')
+          expect(variants).to include('ogg')
+          expect(variants).to include('m4a')
+        end
+
+        it 'does not include peak data in variants by default' do
+          entry = create(:published_entry)
+          create(:audio_file, used_in: entry.revision)
+
+          result = render(helper, entry)
+          variants = json_get(result, path: ['audio_files', 0, 'variants'])
+
+          expect(variants).not_to include('peakData')
+        end
+
+        it 'includes peak data in variants if peak_data_file_name is present' do
+          entry = create(:published_entry)
+          create(:audio_file, used_in: entry.revision, peak_data_file_name: 'audio.json')
+
+          result = render(helper, entry)
+          variants = json_get(result, path: ['audio_files', 0, 'variants'])
+
+          expect(variants).to include('peak_data')
+        end
+
+        it 'applies key format to variants' do
+          entry = create(:published_entry)
+          create(:audio_file, used_in: entry.revision, peak_data_file_name: 'audio.json')
+
+          result = render(helper, entry) { |json| json.key_format!(camelize: :lower) }
+          variants = json_get(result, path: ['audioFiles', 0, 'variants'])
+
+          expect(variants).to include('peakData')
+        end
       end
     end
   end
