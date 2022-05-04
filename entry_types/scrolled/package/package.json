@@ -63,6 +63,7 @@
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "1.x",
     "jest": "^27.0.6",
+    "jest-fetch-mock": "^3.0.3",
     "jest-svg-transformer": "^1.0.0",
     "mockdate": "^3.0.5",
     "react": "^16.14.0",
