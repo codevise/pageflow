@@ -5,7 +5,9 @@ import {ClassicPlayerControls} from './ClassicPlayerControls';
 
 
 export function PlayerControls(props) {
-  const ControlComponent = props.variant === 'waveform' ? WaveformPlayerControls : ClassicPlayerControls;
+  const ControlComponent = props.variant?.startsWith('waveform') ?
+                           WaveformPlayerControls :
+                           ClassicPlayerControls;
 
   return (
     <ControlComponent {...props} />

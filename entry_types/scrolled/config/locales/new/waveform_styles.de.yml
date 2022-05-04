@@ -1,0 +1,11 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        inlineAudio:
+          attributes:
+            playerControlVariant:
+              values:
+                waveform: "Waveform (Fein)"
+                waveformBars: "Waveform (Balken)"
+                waveformLines: "Waveform (Linien)"

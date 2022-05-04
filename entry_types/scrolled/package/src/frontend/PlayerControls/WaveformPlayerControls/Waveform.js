@@ -13,6 +13,18 @@ const cursorColorInverted = '#888';
 
 const Wavesurfer = React.lazy(() => import('./Wavesurfer'));
 
+const waveformStyles = {
+  waveformLines: {
+    barWidth: 1,
+    barGap: 2
+  },
+  waveformBars: {
+    barWidth: 3,
+    barRadius: 3,
+    barGap: 3
+  }
+};
+
 export function Waveform(props) {
   const [height, setHeight] = useState(90);
 
@@ -24,9 +36,11 @@ export function Waveform(props) {
             <div ref={measureRef} className={styles.waveWrapper}>
               <RemotePeakData audioFile={props.audioFile}>
                 {peakData =>
-                  <Wavesurfer mediaElt={`#${props.mediaElementId}`}
+                  <Wavesurfer key={props.variant}
+                              mediaElt={`#${props.mediaElementId}`}
                               audioPeaks={peakData}
                               options={{
+                                ...waveformStyles[props.variant],
                                 normalize: true,
                                 removeMediaElementOnDestroy: false,
                                 hideScrollbar: true,
