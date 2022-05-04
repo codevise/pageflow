@@ -27,6 +27,7 @@ export function WaveformPlayerControls(props) {
         <Waveform audioFile={props.file}
                   isPlaying={props.isPlaying}
                   inverted={!darkBackground}
+                  variant={props.variant}
                   waveformColor={props.waveformColor}
                   mainColor={theme.options.colors.accent}
                   play={props.play}
