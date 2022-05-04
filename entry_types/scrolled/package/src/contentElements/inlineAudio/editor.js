@@ -9,6 +9,8 @@ editor.contentElementTypes.register('inlineAudio', {
   category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
 
+  defaultConfig: {playerControlVariant: 'waveformBars'},
+
   configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('id', FileInputView, {
@@ -35,7 +37,7 @@ editor.contentElementTypes.register('inlineAudio', {
       this.view(SeparatorView);
 
       this.input('playerControlVariant', SelectInputView, {
-        values: ['classic', 'waveform', 'waveformLines', 'waveformBars'],
+        values: ['waveformBars', 'waveformLines', 'waveform', 'classic'],
         ensureValueDefined: true
       });
 
