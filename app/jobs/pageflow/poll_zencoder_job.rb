@@ -10,7 +10,7 @@ module Pageflow
       catch(:halt) do
         poll_zencoder(file, api)
         fetch_input_details(file, api)
-        fetch_thumbnail(file) unless options[:skip_thumbnail]
+        file.post_process_encoded_files unless options[:skip_post_processing]
 
         :ok
       end
@@ -37,14 +37,6 @@ module Pageflow
     rescue ZencoderApi::Error => e
       file.encoding_error_message = e.message
       raise
-    end
-
-    def fetch_thumbnail(file)
-      return unless file.respond_to?(:thumbnail)
-      file.thumbnail = URI.parse(file.zencoder_thumbnail.url(default_protocol: 'https'))
-      file.poster = URI.parse(file.zencoder_poster.url(default_protocol: 'https'))
-    rescue OpenURI::HTTPError
-      throw(:halt, :pending)
     end
 
     def fetch_input_details(file, api)
