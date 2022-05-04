@@ -80,13 +80,13 @@ module Pageflow
       expect(result).to eq(:pending)
     end
 
-    it 'returns ok if thumbnail is not there yet but skip_thumbnail option is set' do
+    it 'returns ok if thumbnail is not there yet but skip_post_processing option is set' do
       video_file = build(:video_file)
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
       stub_request(:get, /.*amazonaws\.com/).to_return(:status => 404)
 
-      result = PollZencoderJob.new.perform_with_result(video_file, skip_thumbnail: true)
+      result = PollZencoderJob.new.perform_with_result(video_file, skip_post_processing: true)
 
       expect(result).to eq(:ok)
     end
@@ -103,16 +103,6 @@ module Pageflow
       expect(result).to eq(:ok)
     end
 
-    it 'returns ok if encoding is finished and file does not respond to thumbnail' do
-      audio_file = build(:audio_file)
-
-      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
-
-      result = PollZencoderJob.new.perform_with_result(audio_file, {})
-
-      expect(result).to eq(:ok)
-    end
-
     it 'returns error if encoding is failed and file does not respond to thumbnail' do
       audio_file = build(:audio_file)
 
@@ -123,11 +113,24 @@ module Pageflow
       expect(result).to eq(:error)
     end
 
+    it 'generates audio file peak data when encoding is finished' do
+      audio_file = build(:audio_file)
+
+      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+      stub_request(:any, /#{zencoder_options[:s3_host_alias]}.*audio\.ogg/)
+        .to_return(status: 200, body: File.read('spec/fixtures/audio.ogg'))
+
+      result = PollZencoderJob.new.perform_with_result(audio_file, {})
+
+      expect(audio_file.peak_data).to be_present
+      expect(result).to eq(:ok)
+    end
+
     it 'passes job id of file to get_details method of zencoder api' do
       video_file = build(:video_file, :job_id => 43)
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
-      stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
+      stub_request(:get, /#{zencoder_options[:s3_host_alias]}.*/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
 
       PollZencoderJob.new.perform_with_result(video_file, {})

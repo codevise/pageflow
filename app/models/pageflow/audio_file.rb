@@ -39,5 +39,11 @@ module Pageflow
     def meta_data_attributes=(attributes)
       self.attributes = attributes.symbolize_keys.slice(:format, :duration_in_ms)
     end
+
+    def post_process_encoded_files
+      self.peak_data = URI.parse(ogg.url(default_protocol: 'https'))
+    rescue OpenURI::HTTPError
+      throw(:halt, :pending)
+    end
   end
 end
