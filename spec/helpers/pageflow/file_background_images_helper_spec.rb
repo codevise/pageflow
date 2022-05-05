@@ -140,6 +140,27 @@ module Pageflow
 
         expect(result).to include(".custom_poster_#{uploadable_file.perma_id}")
       end
+
+      it 'supports taking entry keyword argument' do
+        pageflow_configure do |config|
+          TestFileType.register(
+            config,
+            model: TestUploadableFile,
+            css_background_image_urls: lambda do |_file, entry:|
+              {
+                poster: entry.feature_state('highdef_background_images') ? 'high' : 'low'
+              }
+            end
+          )
+        end
+
+        entry = PublishedEntry.new(create(:entry, :published))
+        create_used_file(:uploadable_file, entry: entry)
+
+        result = helper.file_background_images_css(entry, :desktop)
+
+        expect(result).to include("background-image: url('low')")
+      end
     end
   end
 end

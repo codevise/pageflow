@@ -123,6 +123,14 @@ module Pageflow
       @css_background_image_class_prefix || model.model_name.singular
     end
 
+    def css_background_image_urls_for(file, options)
+      if call_arity(css_background_image_urls) == 1
+        css_background_image_urls.call(file)
+      else
+        css_background_image_urls.call(file, options)
+      end
+    end
+
     # @api private
     def param_key
       model.model_name.param_key.to_sym
@@ -153,6 +161,22 @@ module Pageflow
       else
         {}
       end
+    end
+
+    def call_arity(callable)
+      # lambda's #call method always claims to have no required
+      # parameters:
+      #
+      #   lambda { |file| }.method(:call).arity # => -1
+      #   lambda { |file, entry:| }.method(:call).arity # => -1
+      #
+      # Use arity of lambda itself instead:
+      #
+      #   lambda { |file| }.arity # => 1
+      #   lambda { |file, entry:| }.arity # => 1
+      return callable.arity if callable.respond_to?(:arity)
+
+      callable.method(:call).arity
     end
   end
 end
