@@ -57,7 +57,8 @@ module Pageflow
 
           it 'provides css_background_image_urls that returns hash if present' do
             if file_type.css_background_image_urls
-              result = file_type.css_background_image_urls.call(file)
+              entry = create(:entry)
+              result = file_type.css_background_image_urls_for(file, entry: entry)
 
               expect(result).to be_a(Hash)
             end
