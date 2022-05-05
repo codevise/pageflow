@@ -16,6 +16,7 @@ jobs:
           - engine-name: pageflow
             engine-directory: .
             rspec-command: bin/rspec --tag ~js
+            install-audiowaveform: true
 
           - engine-name: pageflow
             engine-directory: .
@@ -97,6 +98,13 @@ jobs:
         node-version: 14
 
     # Dependencies
+
+    - name: Install audiowaveform package
+      if: ${{ matrix.install-audiowaveform == true}}
+      run: |
+        sudo add-apt-repository ppa:chris-needham/ppa
+        sudo apt-get update
+        sudo apt-get install audiowaveform
 
     - name: Bundle install
       run: |

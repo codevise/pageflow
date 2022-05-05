@@ -1,6 +1,6 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
-import {SelectInputView, ColorInputView} from 'pageflow/ui';
+import {SelectInputView, SeparatorView, ColorInputView} from 'pageflow/ui';
 
 import pictogram from './pictogram.svg';
 
@@ -8,6 +8,8 @@ editor.contentElementTypes.register('inlineAudio', {
   pictogram,
   category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
+
+  defaultConfig: {playerControlVariant: 'waveformBars'},
 
   configurationEditor({entry}) {
     this.tab('general', function() {
@@ -24,23 +26,28 @@ editor.contentElementTypes.register('inlineAudio', {
         positioning: false
       });
 
+      this.view(SeparatorView);
+
       this.input('autoplay', CheckBoxInputView);
 
+      this.input('atmoDuringPlayback', SelectInputView, {
+        values: ['play', 'mute', 'turnDown']
+      });
+
+      this.view(SeparatorView);
+
       this.input('playerControlVariant', SelectInputView, {
-        values: ['classic', 'waveform'],
+        values: ['waveformBars', 'waveformLines', 'waveform', 'classic'],
         ensureValueDefined: true
       });
 
       this.input('waveformColor', ColorInputView, {
         visibleBinding: 'playerControlVariant',
-        visibleBindingValue: 'waveform',
+        visible: variant => variant?.startsWith('waveform'),
         defaultValue: entry.getTheme().get('options').colors.accent
       });
 
-
-      this.input('atmoDuringPlayback', SelectInputView, {
-        values: ['play', 'mute', 'turnDown']
-      });
+      this.view(SeparatorView);
 
       this.group('ContentElementCaption');
       this.group('ContentElementPosition');

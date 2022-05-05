@@ -21,7 +21,11 @@ Paperclip.interpolates(:pageflow_attachments_version) do |attachment, style|
 end
 
 Paperclip.configure do |config|
-  config.register_processor(:pageflow_vtt, Pageflow::PaperclipProcessors::Vtt)
+  config.register_processor(:pageflow_vtt,
+                            Pageflow::PaperclipProcessors::Vtt)
+
+  config.register_processor(:pageflow_audio_waveform,
+                            Pageflow::PaperclipProcessors::AudioWaveform)
 end
 
 Paperclip::UriAdapter.register

@@ -153,5 +153,12 @@ module Pageflow
                                                         :height,
                                                         :output_presences)
     end
+
+    def post_process_encoded_files
+      self.thumbnail = URI.parse(zencoder_thumbnail.url(default_protocol: 'https'))
+      self.poster = URI.parse(zencoder_poster.url(default_protocol: 'https'))
+    rescue OpenURI::HTTPError
+      throw(:halt, :pending)
+    end
   end
 end

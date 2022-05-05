@@ -24,8 +24,10 @@ export function WaveformPlayerControls(props) {
            className={classNames(styles.container)} >
         {props.children}
         <div className={styles.clickMask} onClick={props.onPlayerClick} />
-        <Waveform isPlaying={props.isPlaying}
+        <Waveform audioFile={props.file}
+                  isPlaying={props.isPlaying}
                   inverted={!darkBackground}
+                  variant={props.variant}
                   waveformColor={props.waveformColor}
                   mainColor={theme.options.colors.accent}
                   play={props.play}

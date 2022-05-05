@@ -95,7 +95,6 @@ de:
               label: Player Controls
               values:
                 classic: Klassisch
-                waveform: Waveform
             posterId:
               label: Poster
             waveformColor:
