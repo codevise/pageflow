@@ -37,7 +37,7 @@ module Pageflow
       end
 
       def rules_for_file(file_type, file)
-        file_type.css_background_image_urls.call(file).map do |name, url|
+        file_type.css_background_image_urls_for(file, entry: entry).map do |name, url|
           {
             prefix: rule_prefix(file_type, name),
             file: file,
