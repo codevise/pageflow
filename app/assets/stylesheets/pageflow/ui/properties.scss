@@ -29,7 +29,10 @@
   --ui-selection-color-lightest: hsla(197, 69%, 76%, 0.1);
 
   --ui-error-color: #ff4d6d;
+  --ui-error-color-light: hsla(349, 100%, 65%, 0.6);
+  --ui-error-color-lighter: hsla(349, 100%, 65%, 0.3);
   --ui-on-error-color: #fff;
+  --ui-on-error-surface-color: #912c3c;
   --ui-error-surface-color: #{mix(#ff4d6d, #fff, 10%)};
 
   --ui-box-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
