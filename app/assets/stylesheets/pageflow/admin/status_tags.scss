@@ -1,13 +1,14 @@
-$status-tag-ok-background-color: #8daa92 !default;
+$pageflow-status-tag-ok-background-color: #8daa92 !default;
 
-$status-tag-warning-background-color: #e29b20 !default;
+$pageflow-status-tag-warning-background-color: #e29b20 !default;
 
 .status_tag {
+  &.yes,
   &.ok {
-    background: $status-tag-ok-background-color;
+    background: $pageflow-status-tag-ok-background-color;
   }
 
   &.warning {
-    background: $status-tag-warning-background-color;
+    background: $pageflow-status-tag-warning-background-color;
   }
 }
