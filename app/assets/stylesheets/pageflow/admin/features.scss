@@ -1,5 +1,7 @@
+$pageflow-feature-select-width: 200px !default;
+
 form.features {
   select {
-    width: 200px;
+    width: $pageflow-feature-select-width;
   }
 }
