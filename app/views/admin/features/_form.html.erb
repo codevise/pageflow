@@ -3,7 +3,7 @@
 
   <%= f.inputs do %>
     <% Pageflow.config_for(resource).features.each do |feature| %>
-      <li>
+      <li class="input">
         <%= label_tag(feature_state_input_name(resource, feature.name),
                       t(feature.name_translation_key)) %>
         <%= feature_state_select_tag(resource, feature.name) %>
