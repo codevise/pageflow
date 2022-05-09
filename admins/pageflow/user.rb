@@ -77,7 +77,7 @@ module Pageflow
       end
     end
 
-    action_item(:toggle_suspended, only: :show) do
+    action_item(:toggle_suspended, priority: 5, only: :show) do
       if user != current_user && authorized?(:suspend, resource)
         if user.suspended?
           link_to I18n.t('pageflow.admin.users.unsuspend'),
