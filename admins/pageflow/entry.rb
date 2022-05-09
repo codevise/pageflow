@@ -123,7 +123,7 @@ module Pageflow
                     resource: Entry,
                     collection_name: :eligible_accounts
                   },
-                  input_html: {class: 'entry_account_input', style: 'width: 200px'})
+                  input_html: {class: 'entry_account_input'})
         end
 
         if authorized?(:update_theming_on, resource) && !f.object.new_record?
@@ -136,8 +136,7 @@ module Pageflow
                       entry_id: resource.id
                     }
                   },
-                  include_blank: false,
-                  input_html: {style: 'width: 200px'})
+                  include_blank: false)
         end
 
         if f.object.new_record?
