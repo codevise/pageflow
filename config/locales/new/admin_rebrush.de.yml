@@ -1,0 +1,4 @@
+de:
+  time:
+    formats:
+      time_today: "Heute, %H:%M"

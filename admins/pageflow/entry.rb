@@ -25,9 +25,15 @@ module Pageflow
           end
         end
       end
-      column :created_at
-      column :edited_at
-      column :published_at, sortable: 'pageflow_revisions.published_at'
+      column :created_at do |entry|
+        timestamp(entry.created_at)
+      end
+      column :edited_at do |entry|
+        timestamp(entry.edited_at)
+      end
+      column :published_at, sortable: 'pageflow_revisions.published_at' do |entry|
+        timestamp(entry.published_at)
+      end
 
       column class: 'buttons' do |entry|
         if authorized?(:edit, entry)
