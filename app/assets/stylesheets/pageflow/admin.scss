@@ -1,6 +1,9 @@
 /// Do not includes styles that patch the Active Admin default theme.
 $pageflow-custom-admin-theme: false !default;
 
+/// Do not include styles for admin tabs.
+$pageflow-custom-admin-tabs: false !default;
+
 @import "active_admin/searchable_select";
 
 // Needs to be imported before bourbon which redefines functions used
