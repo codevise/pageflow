@@ -20,12 +20,11 @@ module Pageflow
       def build_badge(membership)
         li do
           if authorized?(:read, membership.entity)
-            account_name_display = span(link_to(membership.entity.name,
-                                                main_app.admin_account_path(membership.entity)),
-                                        class: 'abbreviation')
-            div class: 'tooltip' do
-              account_name_display +
-                " (#{I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')})"
+            text_node link_to(membership.entity.name,
+                              main_app.admin_account_path(membership.entity),
+                              class: 'abbreviation')
+            div class: 'tooltip_bubble' do
+              I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')
             end
           else
             span(membership.entity.name, class: 'abbreviation')

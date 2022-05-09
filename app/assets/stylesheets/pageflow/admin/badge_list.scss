@@ -1,47 +1,37 @@
+$pageflow-badge-color: #555 !default;
+$pageflow-badge-background-color: #fff !default;
+$pageflow-badge-border-color: #aaa !default;
+$pageflow-badge-border-radius: null !default;
+$pageflow-badge-margin: -4px 0 !default;
+
 .badge_list {
-  margin: -4px 0;
+  margin: $pageflow-badge-margin;
   padding: 0;
 
   li {
-    float: left;
     position: relative;
     list-style: none;
-
-    margin: 1px;
-    line-height: 22px;
-    padding: 0 5px;
-
-    background-color: #fff;
-    border: solid 1px #aaa;
-    text-align: center;
-
-    &:hover .tooltip {
-      opacity: 1;
-    }
+    float: left;
   }
 
-  .abbreviation, .name {
-    font-size: 11px;
-    font-weight: bold;
-    color: #555;
-  }
-
-  .tooltip {
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    padding: 0 5px;
-
-    white-space: nowrap;
-    z-index: 1;
-
-    background-color: #fff;
-    border: solid 1px #aaa;
-    opacity: 0;
-  }
-
-  a {
+  .abbreviation {
+    padding: 0 8px;
+    display: inline-block;
     text-decoration: none;
-    font-weight: bold;
+    margin: 2px;
+    background-color: $pageflow-badge-background-color;
+    border: solid 1px $pageflow-badge-border-color;
+    color: $pageflow-badge-color;
+    border-radius: $pageflow-badge-border-radius;
+    text-align: center;
+    font-size: 0.7rem;
+  }
+}
+
+.entry_user_badge_list {
+  .abbreviation {
+    width: 2em;
+    line-height: 2em;
+    padding: 0;
   }
 }
