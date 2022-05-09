@@ -4,6 +4,9 @@ $pageflow-custom-admin-theme: false !default;
 /// Do not include styles for admin tabs.
 $pageflow-custom-admin-tabs: false !default;
 
+/// Used for indicator icons, icon links and buttons
+$pageflow-icon-size: 16px !default;
+
 @import "active_admin/searchable_select";
 
 // Needs to be imported before bourbon which redefines functions used

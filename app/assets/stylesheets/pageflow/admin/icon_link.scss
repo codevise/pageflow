@@ -1,31 +1,47 @@
-$icon-link-color: #555;
+$pageflow-icon-link-icon-directory: "pageflow/admin/icons" !default;
 
-$icon-link-acitve-color: #000;
+$pageflow-icon-link-size: 25px !default;
+
+$pageflow-icon-link-opacity: 0.7 !default;
+
+$pageflow-active-icon-link-opacity: 1 !default;
 
 .icon_link_to {
   a {
-    @include background-icon-center($font-size: 16px, $color: $icon-link-color);
-    position: relative;
     display: inline-block;
-    width: 25px;
-    height: 25px;
+    position: relative;
     vertical-align: bottom;
+
+    &::before {
+      content: "";
+      display: block;
+      width: $pageflow-icon-link-size;
+      height: $pageflow-icon-link-size;
+      background-size: $pageflow-icon-size;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: $pageflow-icon-link-opacity;
+    }
+
+    $dir: $pageflow-icon-link-icon-directory;
+
+    &.editor::before {
+      background-image: image-url("#{$dir}/editor.svg");
+    }
+
+    &.preview::before {
+      background-image: image-url("#{$dir}/preview.svg");
+    }
+
+    &.show_public::before {
+      background-image: image-url("#{$dir}/show_public.svg");
+    }
 
     &:focus,
     &:hover {
-      @include background-icon-color($icon-link-acitve-color);
-    }
-
-    &.editor {
-      @include fa-pencil-icon;
-    }
-
-    &.preview {
-      @include fa-eye-icon;
-    }
-
-    &.show_public {
-      @include fa-external-link-icon;
+      &::before {
+        opacity: $pageflow-active-icon-link-opacity;
+      }
     }
   }
 }
