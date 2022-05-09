@@ -178,16 +178,13 @@ de:
       pageflow/entry:
         account: Konto
         author: Autor
-        created_at: Erstellt am
         credits: Credits
-        edited_at: Geändert am
         embed_code: Einbetten
         first_published_at: Erstmals veröffentlicht am
         keywords: Schlüsselwörter
         locale: Sprache
         own_role: Rolle
         published?: Veröffentlichungstatus
-        published_at: Veröffentlicht seit
         published_revision_published_at: Veröffentlicht am
         publisher: Herausgeber
         share_image_id: Social Sharing Bild
