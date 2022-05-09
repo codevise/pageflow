@@ -1,14 +1,17 @@
-$tooltip-bubble-background-color: rgba(0, 0, 0, 0.7);
+$pageflow-tooltip-bubble-background-color: rgba(0, 0, 0, 0.7) !default;
 
-$tooltip-bubble-text-color: #fff;
+$pageflow-tooltip-bubble-text-color: #fff !default;
+
+$pageflow-tooltip-clue-border-color: #aaa !default;
 
 .tooltip_bubble {
-  position: absolute;
   display: none;
-  background-color: $tooltip-bubble-background-color;
-  color: $tooltip-bubble-text-color;
+  position: absolute;
+  background-color: $pageflow-tooltip-bubble-background-color;
+  color: $pageflow-tooltip-bubble-text-color;
   padding: 5px 10px;
-  top: -30px;
+  bottom: 100%;
+  margin-bottom: 5px;
   white-space: nowrap;
   border-radius: 2px;
   pointer-events: none;
@@ -18,7 +21,7 @@ $tooltip-bubble-text-color: #fff;
     position: absolute;
     top: 100%;
     left: 8px;
-    @include triangle(10px, $tooltip-bubble-background-color, down);
+    @include triangle(10px, $pageflow-tooltip-bubble-background-color, down);
   }
 }
 
@@ -31,7 +34,8 @@ $tooltip-bubble-text-color: #fff;
 
 .tooltip_clue {
   position: relative;
-  border-bottom: 1px dotted;
+  cursor: default;
+  border-bottom: dotted 1px $pageflow-tooltip-clue-border-color;
 }
 
 [data-tooltip] {
@@ -40,8 +44,8 @@ $tooltip-bubble-text-color: #fff;
   &:after {
     position: absolute;
     display: none;
-    background-color: $tooltip-bubble-background-color;
-    color: $tooltip-bubble-text-color;
+    background-color: $pageflow-tooltip-bubble-background-color;
+    color: $pageflow-tooltip-bubble-text-color;
     padding: 5px 10px;
     top: -33px;
     white-space: nowrap;
@@ -55,7 +59,7 @@ $tooltip-bubble-text-color: #fff;
     position: absolute;
     top: -6px;
     left: 8px;
-    @include triangle(10px, $tooltip-bubble-background-color, down);
+    @include triangle(10px, $pageflow-tooltip-bubble-background-color, down);
   }
 
   &:hover:after {
