@@ -41,6 +41,8 @@ linters:
     enabled: true
   IdSelector:
     enabled: true
+    exclude:
+      - app/assets/stylesheets/pageflow/admin/**
   ImportantRule:
     enabled: true
   ImportPath:

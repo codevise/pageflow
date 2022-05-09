@@ -1,18 +1,20 @@
-form {
-  fieldset p {
-    margin-left: 20%;
-    max-width: 550px;
-  }
+@if not $pageflow-custom-admin-theme {
+  form {
+    fieldset p {
+      margin-left: 20%;
+      max-width: 550px;
+    }
 
-  .inline_help_item {
-    padding: 5px 10px;
-  }
+    .inline_help_item {
+      padding: 5px 10px;
+    }
 
-  fieldset.actions .link_action {
-    padding: 5px;
+    fieldset.actions .link_action {
+      padding: 5px;
 
-    &.cancel {
-      padding: 0;
+      &.cancel {
+        padding: 0;
+      }
     }
   }
 }
