@@ -1,18 +1,25 @@
-$publication-state-indicator-color: #5d5d5d;
+$pageflow-publication-state-indicator-icon-directory: "pageflow/admin/icons" !default;
+
+$pageflow-publication-state-indicator-size: 25px !default;
 
 .publication_state_indicator {
-  @include background-icon-center($font-size: 16px, $color: $publication-state-indicator-color);
   display: inline-block;
-  width: 25px;
-  height: 25px;
+  position: relative;
+  width: $pageflow-publication-state-indicator-size;
+  height: $pageflow-publication-state-indicator-size;
   vertical-align: bottom;
   border-bottom: none;
+  background-size: $pageflow-icon-size $pageflow-icon-size;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  $dir: $pageflow-publication-state-indicator-icon-directory;
 
   &.published_without_password_protection {
-    @include fa-globe-icon;
+    background-image: image-url("#{$dir}/published.svg");
   }
 
   &.published_with_password_protection {
-    @include fa-lock-icon;
+    background-image: image-url("#{$dir}/published_with_password.svg");
   }
 }
