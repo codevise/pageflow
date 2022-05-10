@@ -30,11 +30,21 @@ module Pageflow
               end
             end
             column :created_with do |revision|
-              span(I18n.t(revision.created_with, :scope => 'pageflow.admin.entries.revision_created_with'),
-                   :title => I18n.t(revision.created_with, :scope => 'pageflow.admin.entries.revision_created_with_hint'))
+              span(class: 'tooltip_clue') do
+                text_node t(revision.created_with,
+                            scope: 'pageflow.admin.entries.revision_created_with')
+                span class: 'tooltip_bubble' do
+                  t(revision.created_with,
+                    scope: 'pageflow.admin.entries.revision_created_with_hint')
+                end
+              end
 
               if revision.password_protected?
-                span('', :class => 'password_protected', :title => t('pageflow.admin.entries.password_protected'))
+                span(class: 'publication_state_indicator published_with_password_protection') do
+                  span(class: 'tooltip_bubble') do
+                    t('pageflow.admin.entries.password_protected')
+                  end
+                end
               end
             end
             column do |revision|

@@ -1,9 +1,10 @@
-.admin_entries {
-  $published-color: #BEEBB8;
+$pageflow-revision-color: #888 !default;
+$pageflow-published-revision-background-color: #beebb8 !default;
 
+.admin_entries {
   table.revisions {
-    tr {
-      color: #888;
+    td {
+      color: $pageflow-revision-color;
     }
 
     a.show {
@@ -13,49 +14,32 @@
     .published td {
       // scss-lint:disable ImportantRule
       // Win against overly specific Active Admin rule
-      background-color: $published-color !important;
+      background-color: $pageflow-published-revision-background-color !important;
       // scss-lint:enable ImportantRule
-      color: #000;
+      color: inherit;
     }
-  }
 
-  .snapshot {
-    float: right;
-  }
-
-  td > span[title] {
-    border-bottom: 1px #aaa dotted;
-    cursor: default;
-  }
-
-  span.password_protected {
-    @include background-icon-center($font-size: 13px, $color: #555);
-    @include lock-icon;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    vertical-align: bottom;
-    border-bottom: none;
+    .publication_state_indicator {
+      height: 17px;
+    }
   }
 
   .legend {
-    float: left;
-    position: relative;
-    padding: 0 15px 0 22px;
+    display: flex;
+    align-items: center;
+    color: $pageflow-hint-color;
 
     &:before {
       content: " ";
-      position: absolute;
       display: block;
-      left: 0;
-      top: 0;
       width: 14px;
       height: 14px;
       border: solid 1px #999;
+      margin-right: 10px;
     }
 
     &.published:before {
-      background-color: $published-color;
+      background-color: $pageflow-published-revision-background-color;
     }
   }
 
