@@ -45,7 +45,11 @@ module Pageflow
             end
           end
         end
-        para text_node I18n.t('pageflow.admin.resource_tabs.account_editor_hint')
+
+        div class: 'side_hint' do
+          para text_node I18n.t('pageflow.admin.resource_tabs.account_editor_hint')
+        end
+
         if authorized?(:add_member_to, entry)
           add_membership_button(current_user, entry, 'entry')
         end

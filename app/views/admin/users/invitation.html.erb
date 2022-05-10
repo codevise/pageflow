@@ -39,8 +39,8 @@
 
         <%= m.input :role,
                     collection: membership_roles_collection('Pageflow::Account'),
-                    include_blank: false,
-                    hint: t('pageflow.admin.memberships.on_account.role.hint_html') %>
+                    include_blank: false %>
+        <%= render 'admin/memberships/role_hint', entity_type: 'account' %>
         <%= u.input :admin if authorized?(:set_admin, current_user) %>
       <% end %>
     <% end %>
