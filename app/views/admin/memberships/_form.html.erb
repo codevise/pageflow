@@ -6,12 +6,11 @@
     <%= f.hidden_field :entity_type, value: entity_type %>
   <% end %>
   <%= f.inputs do %>
-    <%= render partial: 'admin/memberships/role_hint',
-               locals: {entity_type: entity_type
-                                      .gsub('Pageflow::', '').downcase} %>
     <%= f.input :role,
                 collection: membership_roles_collection(entity_type),
                 include_blank: false %>
+    <%= render 'admin/memberships/role_hint',
+               entity_type: entity_type.gsub('Pageflow::', '').downcase %>
   <% end %>
   <%= f.actions do %>
     <%= f.action(:submit) %>

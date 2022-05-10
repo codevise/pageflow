@@ -1,20 +1,14 @@
-$hint-text-color: #777777 !default;
-$hint-icon-color: #8aa5da !default;
-$background-color: #fbfbfb !default;
+$pageflow-hint-icon-directory: "pageflow/admin/icons" !default;
 
 .side_hint {
-  background-color: $background-color;
-  margin: 0 10px;
-  padding: 10px 0;
-  color: $hint-text-color;
+  margin: 10px 0;
+  color: $pageflow-hint-color;
 
   p {
-    @include background-icon-left($font-size: 20px,
-                                  $color: $hint-icon-color,
-                                  $top: 10px,
-                                  $left: -30px);
-    @include fa-info-circle-icon;
-
-    margin-left: 20%;
+    background-size: $pageflow-icon-size $pageflow-icon-size;
+    background-repeat: no-repeat;
+    background-position: left 1px;
+    background-image: image-url("#{$pageflow-hint-icon-directory}/info.svg");
+    padding-left: 1.75rem;
   }
 }
