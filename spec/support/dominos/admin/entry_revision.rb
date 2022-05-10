@@ -17,7 +17,7 @@ module Dom
       end
 
       def password_protected?
-        node.has_css?('.password_protected');
+        node.has_css?('.published_with_password_protection')
       end
 
       def self.published
