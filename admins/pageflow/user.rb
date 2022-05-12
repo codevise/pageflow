@@ -15,8 +15,6 @@ module Pageflow
       column I18n.t('pageflow.admin.users.accounts'), class: 'col-accounts' do |user|
         user_account_badge_list(user)
       end
-      column :last_sign_in_at
-      column :sign_in_count
       boolean_status_tag_column :suspended?
     end
 
@@ -77,7 +75,7 @@ module Pageflow
       end
     end
 
-    action_item(:toggle_suspended, only: :show) do
+    action_item(:toggle_suspended, priority: 5, only: :show) do
       if user != current_user && authorized?(:suspend, resource)
         if user.suspended?
           link_to I18n.t('pageflow.admin.users.unsuspend'),

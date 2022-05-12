@@ -1,5 +1,9 @@
-<% if quota.exhausted? %>
-  <%= t("pageflow.admin.entry.user_quota_exhausted") %>
-<% else %>
-    <%= t("pageflow.admin.entry.entry_membership_hint") %>
-<% end %>
+<div class="side_hint">
+  <p>
+    <% if quota.exhausted? %>
+      <%= t("pageflow.admin.entry.user_quota_exhausted") %>
+    <% else %>
+      <%= t("pageflow.admin.entry.entry_membership_hint") %>
+    <% end %>
+  </p>
+</div>

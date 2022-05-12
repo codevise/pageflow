@@ -1,0 +1,10 @@
+de:
+  time:
+    formats:
+      time_today: "Heute, %H:%M"
+  activerecord:
+    attributes:
+      pageflow/entry:
+        edited_at: Geändert
+        published_at: Veröffentlicht
+        created_at: Erstellt

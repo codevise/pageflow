@@ -15,17 +15,18 @@ module Pageflow
 
       def build_badge(membership)
         li do
-          span(user_initials(membership.user), class: 'abbreviation')
-          div class: 'tooltip' do
+          if authorized?(:read, membership.user)
+            text_node link_to(user_initials(membership.user),
+                              admin_user_path(membership.user),
+                              class: 'abbreviation')
+          else
+            span(user_initials(membership.user), class: 'abbreviation')
+          end
+
+          div class: 'tooltip_bubble' do
             role_string =
               " (#{I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')})"
-            if authorized?(:read, membership.user)
-              link_to(membership.user.full_name, admin_user_path(membership.user)) + role_string
-            else
-              span class: 'name' do
-                membership.user.full_name + role_string
-              end
-            end
+            membership.user.full_name + role_string
           end
         end
       end

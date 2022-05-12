@@ -9,5 +9,5 @@
                 collection: available_locales_collection %>
     <%= f.input :admin if authorized?(:set_admin, current_user) %>
   <% end %>
-  <%= f.actions %>
+  <%= f.actions :submit, :cancel %>
 <% end %>

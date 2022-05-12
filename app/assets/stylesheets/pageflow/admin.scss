@@ -1,3 +1,15 @@
+/// Do not includes styles that patch the Active Admin default theme.
+$pageflow-custom-admin-theme: false !default;
+
+/// Do not include styles for admin tabs.
+$pageflow-custom-admin-tabs: false !default;
+
+/// Used for indicator icons, icon links and buttons
+$pageflow-icon-size: 16px !default;
+
+/// Used for inline hint texts
+$pageflow-hint-color: #666 !default;
+
 @import "active_admin/searchable_select";
 
 // Needs to be imported before bourbon which redefines functions used

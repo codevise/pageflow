@@ -1,23 +1,25 @@
-.admin_tabs_view {
-  clear: both;
-  background-color: #f4f4f4;
-  @include inset-shadow(0, 1px, 4px, #ddd);
+@if not $pageflow-custom-admin-tabs {
+  .admin_tabs_view {
+    clear: both;
+    background-color: #f4f4f4;
+    @include inset-shadow(0, 1px, 4px, #ddd);
 
-  &-tabs {
-    @include gradient(#efefef, #dfe1e2);
-    box-shadow: 0 1px 1px rgba(0,0,0,0.10), 0 1px 0 0 rgba(255,255,255, 0.8) inset;
-    border: solid 1px #c7c7c7;
-    @include border-colors(#d3d3d3, #c7c7c7, #c2c2c2);
-    @include text-shadow;
-    color: $primary-color;
-    font-size: 0.9em;
-    padding: 0;
-    margin: 0;
+    &-tabs {
+      @include gradient(#efefef, #dfe1e2);
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.10), 0 1px 0 0 rgba(255, 255, 255, 0.8) inset;
+      border: solid 1px #c7c7c7;
+      @include border-colors(#d3d3d3, #c7c7c7, #c2c2c2);
+      @include text-shadow;
+      color: $primary-color;
+      font-size: 0.9em;
+      padding: 0;
+      margin: 0;
 
-    li {
-      display: inline-block;
+      > li {
+        display: inline-block;
+      }
 
-      &.active {
+      > .active {
         background-color: #fff;
         color: #444;
         box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.2) inset;
@@ -26,26 +28,26 @@
           cursor: default;
         }
       }
+
+      a {
+        display: block;
+        padding: 10px 15px;
+        color: $section-header-text-color;
+        text-decoration: none;
+        font-weight: bold;
+      }
     }
 
-    a {
-      display: block;
-      padding: 10px 15px;
-      color: $section-header-text-color;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  }
+    &-container {
+      @include clearfix;
+      @extend .panel_contents;
 
-  &-container {
-    @include clearfix;
-    @extend .panel_contents;
+      display: none;
+      padding: 10px;
 
-    display: none;
-    padding: 10px;
-
-    &.active {
-      display: block;
+      &.active {
+        display: block;
+      }
     }
   }
 }

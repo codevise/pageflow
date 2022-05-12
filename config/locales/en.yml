@@ -178,16 +178,13 @@ en:
       pageflow/entry:
         account: Account
         author: Author
-        created_at: Created at
         credits: Credits
-        edited_at: Updated at
         embed_code: Embed
         first_published_at: First published at
         keywords: Keywords
         locale: Language
         own_role: Role
         published?: Publication state
-        published_at: Published since
         published_revision_published_at: Published since
         publisher: Publisher
         share_image_id: Social Sharing Image

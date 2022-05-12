@@ -25,9 +25,15 @@ module Pageflow
           end
         end
       end
-      column :created_at
-      column :edited_at
-      column :published_at, sortable: 'pageflow_revisions.published_at'
+      column :created_at do |entry|
+        timestamp(entry.created_at)
+      end
+      column :edited_at do |entry|
+        timestamp(entry.edited_at)
+      end
+      column :published_at, sortable: 'pageflow_revisions.published_at' do |entry|
+        timestamp(entry.published_at)
+      end
 
       column class: 'buttons' do |entry|
         if authorized?(:edit, entry)
@@ -117,7 +123,7 @@ module Pageflow
                     resource: Entry,
                     collection_name: :eligible_accounts
                   },
-                  input_html: {class: 'entry_account_input', style: 'width: 200px'})
+                  input_html: {class: 'entry_account_input'})
         end
 
         if authorized?(:update_theming_on, resource) && !f.object.new_record?
@@ -130,8 +136,7 @@ module Pageflow
                       entry_id: resource.id
                     }
                   },
-                  include_blank: false,
-                  input_html: {style: 'width: 200px'})
+                  include_blank: false)
         end
 
         if f.object.new_record?
@@ -154,7 +159,7 @@ module Pageflow
       f.actions
     end
 
-    action_item(:depublish, only: :show) do
+    action_item(:depublish, only: :show, priority: 6) do
       if authorized?(:publish, entry) && entry.published?
         button_to(I18n.t('pageflow.admin.entries.depublish'),
                   pageflow.current_entry_revisions_path(entry),
@@ -167,7 +172,7 @@ module Pageflow
       end
     end
 
-    action_item(:duplicate, only: :show) do
+    action_item(:duplicate, only: :show, priority: 5) do
       if authorized?(:duplicate, entry)
         button_to(I18n.t('pageflow.admin.entries.duplicate'),
                   duplicate_admin_entry_path(entry),

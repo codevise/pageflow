@@ -1,25 +1,36 @@
-$icon-button-color: #fff;
+$pageflow-icon-button-icon-directory: "pageflow/admin/icons/buttons" !default;
 
-a.icon_button:link {
-  @include background-icon-left($font-size: 15px,
-                                $color: $icon-button-color,
-                                $left: 9px,
-                                $top: 50%);
+a.icon_button:link,
+a.icon_button:visited,
+a.icon_button:hover,
+a.icon_button:active {
+  position: relative;
   padding-left: 30px;
 
-  &:before {
-    font-weight: normal;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 9px;
+    transform: translateY(-50%);
+    width: $pageflow-icon-size;
+    height: $pageflow-icon-size;
+    background-size: $pageflow-icon-size;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
-  &.editor {
-    @include fa-pencil-icon;
+  $dir: $pageflow-icon-button-icon-directory;
+
+  &.editor::before {
+    background-image: image-url("#{$dir}/editor.svg");
   }
 
-  &.preview {
-    @include fa-eye-icon;
+  &.preview::before {
+    background-image: image-url("#{$dir}/preview.svg");
   }
 
-  &.show_public {
-    @include fa-external-link-icon;
+  &.show_public::before {
+    background-image: image-url("#{$dir}/show_public.svg");
   }
 }
