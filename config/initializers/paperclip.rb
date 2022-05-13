@@ -20,6 +20,14 @@ Paperclip.interpolates(:pageflow_attachments_version) do |attachment, style|
   Pageflow::PaperclipInterpolations::Support.pageflow_attachments_version(attachment, style)
 end
 
+Paperclip.interpolates(:pageflow_hls_qualities) do |attachment, _style|
+  # Placeholder :pageflow_hls_qualities is included here to let
+  # VideoFileUrlTemplates preserve the palceholder in url templates.
+  %w[:pageflow_hls_qualities low medium high fullhd 4k].select { |quality|
+    attachment.instance.output_presences[quality]
+  }.join(',')
+end
+
 Paperclip.configure do |config|
   config.register_processor(:pageflow_vtt,
                             Pageflow::PaperclipProcessors::Vtt)

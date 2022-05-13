@@ -79,6 +79,29 @@ describe('file', () => {
     expect(result).toHaveProperty('urls.high', 'http://example.com/my-video.mp4');
   });
 
+  it('interpolates hls qualities into video file url template', () => {
+    const files = {'video_files': [{
+      id: 2004,
+      perma_id: 31,
+      variants: ['low', 'medium', 'high', 'fullhd', 'hls-playlist'],
+      basename: 'my-video'
+    }]};
+    const fileUrlTemplates = {
+      'video_files': {
+        'hls-playlist': 'http://example.com/,:pageflow_hls_qualities,.mp4.csmil/master.m3u8'
+      }
+    };
+    const state = sample({files, fileUrlTemplates});
+
+    const result = file('videoFiles', {id: 31})(state);
+
+    expect(result)
+      .toHaveProperty(
+        'urls.hls-playlist',
+        'http://example.com/,low,medium,high,fullhd,.mp4.csmil/master.m3u8'
+      );
+  });
+
   it('skips url with missing template', () => {
     const files = {'video_files': [{id: 2004, perma_id: 31, variants: ['unknown']}]};
     const fileUrlTemplates = {'video_files': {}};
