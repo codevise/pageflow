@@ -18,8 +18,11 @@ module Pageflow
       zencoder_options[:attachments_version]
     end
 
-    def file_double(id:)
-      double('File', id: id, class: double(name: 'File'))
+    def file_double(id:, output_presences: [])
+      double('File',
+             id: id,
+             class: double(name: 'File'),
+             output_presences: output_presences)
     end
 
     describe '#original_filename' do
@@ -152,6 +155,24 @@ module Pageflow
 
         expect(attachment.url).to eq("#{s3_protocol}://#{s3_host_alias}/#{version}/" \
                                      'test-host/files/000/000/005/playlist.smil/master.m3u8')
+      end
+
+      it 'supports interpolations in file name pattern' do
+        file = file_double(id: 5,
+                           output_presences: {
+                             'low' => true,
+                             'medium' => true,
+                             'high' => true,
+                             'fullhd' => true,
+                             '4k' => false,
+                             'hls-playlist' => true
+                           })
+        attachment = ZencoderAttachment.new(file, ',:pageflow_hls_qualities,mp4.csmil',
+                                            url_suffix: '/master.m3u8')
+
+        expect(attachment.url)
+          .to eq("#{s3_protocol}://#{s3_host_alias}/#{version}/" \
+                 'test-host/files/000/000/005/,low,medium,high,fullhd,mp4.csmil/master.m3u8')
       end
 
       it 'can append url suffix and unique id to url' do

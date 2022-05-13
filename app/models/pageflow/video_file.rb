@@ -114,7 +114,10 @@ module Pageflow
     def hls_playlist
       if Pageflow.config.zencoder_options[:hls_smil_suffix].present?
         ZencoderAttachment.new(self,
-                               'hls-playlist.smil',
+                               Pageflow.config.zencoder_options.fetch(
+                                 :hls_smil_file_name,
+                                 'hls-playlist.smil'
+                               ),
                                host: :hls,
                                url_suffix: Pageflow.config.zencoder_options[:hls_smil_suffix])
       else
