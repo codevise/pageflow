@@ -27,6 +27,7 @@ module Pageflow
     def example_file
       @example_file ||= VideoFile.new(id: 0).tap do |video_file|
         video_file.file_name = ':basename.mp4'
+        video_file.output_presences = {':pageflow_hls_qualities' => true}
         video_file.poster_file_name = video_file.zencoder_poster.original_filename
       end
     end

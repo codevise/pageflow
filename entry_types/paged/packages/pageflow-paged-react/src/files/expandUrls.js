@@ -37,7 +37,8 @@ function getFileUrl(collectionName, file, quality, urlTemplates) {
   if (template) {
     return template
       .replace(':id_partition', idPartition(file.id))
-      .replace(':basename', file.basename);
+      .replace(':basename', file.basename)
+      .replace(':pageflow_hls_qualities', () => hlsQualities(file));
   }
 }
 
@@ -53,4 +54,10 @@ function partition(string, separator) {
 
 function pad(string, size) {
   return (Array(size).fill(0).join('') + string).slice(-size);
+}
+
+function hlsQualities(file) {
+  return ['low', 'medium', 'high', 'fullhd', '4k']
+    .filter(quality => file.variants.includes(quality))
+    .join(',');
 }

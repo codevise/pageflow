@@ -156,4 +156,40 @@ describe('useFile', () => {
       }
     });
   });
+
+  it('interpolates hls qualities into video file url templates', () => {
+    const {result} = renderHookInEntry(
+      () => useFile({collectionName: 'videoFiles', permaId: 1}),
+      {
+        seed: {
+          fileUrlTemplates: {
+            videoFiles: {
+              'hls-playlist': 'http://example.com/,:pageflow_hls_qualities,.mp4.csmil/master.m3u8'
+            }
+          },
+          fileModelTypes: {
+            videoFiles: 'Pageflow::VideoFile'
+          },
+          videoFiles: [
+            {
+              id: 100,
+              permaId: 1,
+              basename: 'video',
+              variants: ['low', 'medium', 'high', 'fullhd', 'hls-playlist'],
+            }
+          ]
+        }
+      }
+    );
+
+    const file = result.current;
+
+    expect(file).toMatchObject({
+      id: 100,
+      permaId: 1,
+      urls: {
+        'hls-playlist': 'http://example.com/,low,medium,high,fullhd,.mp4.csmil/master.m3u8'
+      }
+    });
+  });
 });
