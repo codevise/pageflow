@@ -8,7 +8,7 @@ import {registerConsentVendors} from 'frontend/thirdPartyConsent';
 import React, {useState} from 'react';
 import {cookies, Consent} from 'pageflow/frontend';
 
-import {normalizeSeed} from 'support/normalizeSeed';
+import {normalizeSeed} from 'support';
 import {renderEntry as originalRenderEntry} from 'support/pageObjects';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {act, fireEvent, within} from '@testing-library/react';

@@ -224,6 +224,15 @@ const pageflowScrolled = [
     plugins: plugins(),
     ...ignoreJSXWarning
   },
+  {
+    input: pageflowScrolledPackageRoot + '/src/testHelpers/index.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/testHelpers.js',
+      format: 'esm'
+    },
+    external,
+    plugins: plugins()
+  },
 
   {
     input: pageflowScrolledPackageRoot + '/src/contentElements/editor.js',

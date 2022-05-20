@@ -5,6 +5,7 @@
 /contentElements-editor.js
 /contentElements-frontend.js
 /contentElements-frontend.css
+/testHelpers.js
 /widgets/defaultNavigation.js
 /widgets/defaultNavigation.css
 /.storybook/out/

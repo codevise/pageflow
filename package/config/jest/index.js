@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
   globals: {
+    __webpack_public_path__: '',
     pageflow: {
       config: {}
     }

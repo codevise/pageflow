@@ -8,7 +8,7 @@ import {
 
 import {frontend} from 'pageflow-scrolled/frontend';
 import 'pageflow-scrolled/contentElements-frontend';
-import {normalizeSeed} from '../normalizeSeed';
+import {normalizeSeed} from '../index';
 
 import {storiesOf} from '@storybook/react';
 
