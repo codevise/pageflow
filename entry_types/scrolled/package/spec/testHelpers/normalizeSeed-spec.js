@@ -1,4 +1,4 @@
-import {normalizeSeed} from '../normalizeSeed';
+import {normalizeSeed} from 'testHelpers/normalizeSeed';
 
 describe('normalizeSeed', () => {
   it('ensures minimal config is present', () => {

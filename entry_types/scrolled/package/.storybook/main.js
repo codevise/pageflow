@@ -26,6 +26,7 @@ module.exports = {
           'videojs': path.resolve(__dirname, '../../../../vendor/assets/javascripts/videojs'),
           'pageflow/frontend': path.resolve(__dirname, '../../../../package/src/frontend'),
           'pageflow-scrolled/frontend': path.resolve(__dirname, '../src/frontend'),
+          'pageflow-scrolled/testHelpers': path.resolve(__dirname, '../src/testHelpers'),
 
           // css-loader (used by Storybook's Webpack setup) expects
           // imports from node modules to be prefixed with a tilde,

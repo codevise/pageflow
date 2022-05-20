@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {renderInEntry} from './rendering';
+import {renderInEntry} from './index';
 import {Entry} from 'frontend/Entry';
 import foregroundStyles from 'frontend/Foreground.module.css';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';

@@ -8,7 +8,7 @@ import {
 } from 'pageflow-scrolled/frontend';
 import {browser, Consent} from 'pageflow/frontend';
 
-import {normalizeSeed} from './normalizeSeed';
+import {normalizeSeed} from 'pageflow-scrolled/testHelpers';
 import {storiesOf} from '@storybook/react';
 
 import seedFixtureFromFile from '../../.storybook/seed.json'

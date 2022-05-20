@@ -2,10 +2,9 @@ import React, {useEffect} from 'react';
 import {render} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
 
-import {RootProviders} from 'frontend';
-import {useEntryStateDispatch} from 'entryState';
-import {normalizeSeed} from './normalizeSeed';
 import {Consent} from 'pageflow/frontend';
+import {useEntryStateDispatch, RootProviders} from 'pageflow-scrolled/frontend';
+import {normalizeSeed} from './normalizeSeed';
 
 /**
  * Render a component that depends on entry state. Accepts all options

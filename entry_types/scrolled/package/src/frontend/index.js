@@ -57,6 +57,7 @@ export {
   useAdditionalSeedData,
   useChapters,
   useCredits,
+  useEntryStateDispatch,
   useFile,
   useFileRights,
   useLegalInfo,
