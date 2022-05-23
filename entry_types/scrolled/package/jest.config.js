@@ -9,8 +9,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   testMatch: ["<rootDir>/spec/**/*-spec.js"],
   globals: {
-    ...globals,
-    __webpack_public_path__: ''
+    ...globals
   },
   setupFiles: ['<rootDir>/spec/support/matchMediaStub.js'],
   setupFilesAfterEnv: ['<rootDir>/spec/support/fakeBrowserFeatures.js'],

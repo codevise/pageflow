@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import BackboneEvents from 'backbone-events-standalone';
 import {act} from '@testing-library/react'
 
-import {renderInEntry} from './rendering';
+import {renderInEntry} from './index';
 import {SectionLifecycleContext} from 'frontend/useSectionLifecycle';
 import {isActiveProbe} from 'frontend/useScrollPositionLifecycle.module.css';
 
