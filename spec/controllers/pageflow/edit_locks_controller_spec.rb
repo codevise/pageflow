@@ -17,6 +17,30 @@ module Pageflow
           expect(response.status).to eq(201)
         end
 
+        it 'creates snapshot' do
+          user = create(:user)
+          entry = create(:entry, with_editor: user)
+
+          sign_in(user, scope: :user)
+
+          expect {
+            post(:create, params: {entry_id: entry}, format: :json)
+          }.to(change { entry.revisions.frozen.count })
+        end
+
+        it 'snapshot can be disabled' do
+          user = create(:user)
+          entry = create(:entry,
+                         with_editor: user,
+                         with_feature: 'no_edit_lock_snapshot')
+
+          sign_in(user, scope: :user)
+
+          expect {
+            post(:create, params: {entry_id: entry}, format: :json)
+          }.not_to(change { entry.revisions.frozen.count })
+        end
+
         it 'responds with id of created edit lock' do
           user = create(:user)
           entry = create(:entry, with_editor: user)
