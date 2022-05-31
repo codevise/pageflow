@@ -86,7 +86,7 @@ jQuery(function($) {
     }
   });
 
-  $('.admin_entries form.entry').each(function() {
+  $('.admin_entries form.pageflow_entry').each(function() {
     var accountSelect = $('#entry_account_id', this);
     var entryTypeInput = $('#entry_type_name_input', this);
     var entryTypeSelect = $('#entry_type_name', this);
