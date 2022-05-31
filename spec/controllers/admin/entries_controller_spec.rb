@@ -407,6 +407,43 @@ describe Admin::EntriesController do
 
       expect(response.body).to have_selector('[name="entry[custom_field]"]')
     end
+
+    it 'does not display entry type select if only one entry type is available' do
+      user = create(:user)
+      create(:account, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body).not_to have_selector('[name="entry[type_name]"]')
+    end
+
+    it 'displays entry type select if multiple entry type are available' do
+      pageflow_configure { |config| Pageflow::TestEntryType.register(config) }
+      user = create(:user)
+      create(:account, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body).to have_selector('[name="entry[type_name]"]')
+    end
+
+    it 'allows overriding entry type input partial in host application' do
+      stub_template('pageflow/admin/entries/_entry_type_name_input.html.erb' => <<-ERB)
+        <%= form.input(:entry_type,
+                       as: :radio,
+                       collection: entry_type_collection(entry_types)) %>
+      ERB
+
+      user = create(:user)
+      create(:account, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body).to have_selector('li input[type="radio"]')
+    end
   end
 
   describe '#create' do
@@ -515,6 +552,17 @@ describe Admin::EntriesController do
   end
 
   describe '#edit' do
+    it 'does not display entry type select even if multiple entry type are available' do
+      pageflow_configure { |config| Pageflow::TestEntryType.register(config) }
+      user = create(:user)
+      entry = create(:entry, with_editor: user)
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body).not_to have_selector('[name="entry[type_name]"]')
+    end
+
     it 'displays additional registered form inputs' do
       user = create(:user)
       entry = create(:entry, with_editor: user)
@@ -1062,32 +1110,56 @@ describe Admin::EntriesController do
     end
   end
 
-  describe 'get #entry_types' do
+  describe 'get #entry_type_name_input' do
     render_views
 
-    it 'allows to display entry types for account publisher' do
+    it 'is allowed for account publisher' do
       account = create(:account)
 
       sign_in(create(:user, :manager, on: account))
-      get(:entry_types, params: {account_id: account}, format: 'json')
+      get(:entry_type_name_input, params: {account_id: account})
 
       expect(response.status).to eq(200)
     end
 
-    it 'does not render layout' do
+    it 'renders select without layout if multiple entry types are available' do
+      pageflow_configure { |config| Pageflow::TestEntryType.register(config) }
       account = create(:account)
 
-      sign_in(create(:user, :publisher, on: account))
-      get(:entry_types, params: {account_id: account}, format: 'json')
+      sign_in(create(:user, :manager, on: account))
+      get(:entry_type_name_input, params: {account_id: account})
 
       expect(response.body).not_to have_selector('body.active_admin')
+      expect(response.body).to have_selector('li > select')
+    end
+
+    it 'renders invisible select if only one entry type is available' do
+      account = create(:account)
+
+      sign_in(create(:user, :manager, on: account))
+      get(:entry_type_name_input, params: {account_id: account})
+
+      expect(response.body).to have_selector('li > select', visible: :hidden)
+    end
+
+    it 'allows passing in selected entry type name' do
+      pageflow_configure { |config| Pageflow::TestEntryType.register(config) }
+      account = create(:account)
+
+      sign_in(create(:user, :manager, on: account))
+      get(:entry_type_name_input, params: {
+            account_id: account,
+            entry_type_name: 'test'
+          })
+
+      expect(response.body).to have_selector('option[value=test][selected]')
     end
 
     it 'is forbidden for account editor' do
       account = create(:account)
 
       sign_in(create(:user, :editor, on: account))
-      get(:entry_types, params: {account_id: account}, format: 'json')
+      get(:entry_type_name_input, params: {account_id: account})
 
       expect(response.status).to eq(403)
     end
