@@ -100,5 +100,15 @@ module Pageflow
       ThumbnailFileResolver.new(@entry, page.page_type.thumbnail_candidates, page.configuration)
                            .find_thumbnail
     end
+
+    def decide_caching(page, entry)
+      if entry.feature_state('page_level_caching')
+        cache [entry.locale, page] do
+          yield
+        end
+      else
+        yield
+      end
+    end
   end
 end

@@ -12,7 +12,9 @@ Pageflow.configure do |config|
     entry_type_config.features.register('editor_emulation_mode')
     entry_type_config.features.register('waveform_player_controls')
     entry_type_config.features.register('structured_data')
+    entry_type_config.features.register('page_level_caching')
 
     entry_type_config.features.enable_by_default('structured_data')
+    entry_type_config.features.enable_by_default('page_level_caching')
   end
 end
