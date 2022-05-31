@@ -88,66 +88,18 @@ jQuery(function($) {
 
   $('.admin_entries form.pageflow_entry').each(function() {
     var accountSelect = $('#entry_account_id', this);
-    var entryTypeInput = $('#entry_type_name_input', this);
-    var entryTypeSelect = $('#entry_type_name', this);
-    var entryTypeOptions = $('#entry_type_name option', this);
 
-    function updateEntryTypeOptions() {
+    function updateEntryTypeInput() {
       var selectedAccountId = accountSelect.val();
-      hideAllOptions();
 
-      $.get('/admin/entries/entry_types?account_id=' + selectedAccountId)
-        .done(function(response) {
-          var typeNames = response.map(function(item) {
-            return item.type_name;
-          });
-          updateForm(typeNames);
-          if (currentSelectedUnavailable(typeNames)) {
-            updateSelected(typeNames[0]);
-          }
-          if (response.length < 2) {
-            hideInput();
-          } else {
-            showInput();
-          }
-        });
+      $.get('/admin/entries/entry_type_name_input' +
+            '?account_id=' + selectedAccountId +
+            '&entry_type_name=' + $('[name="entry[type_name]"]').val())
+       .done(function(response) {
+         $('#entry_type_name_input').replaceWith(response);
+       });
     }
 
-    function updateForm(entryTypes) {
-      entryTypes.forEach(showOption);
-    }
-
-    function currentSelectedUnavailable(entryTypes) {
-      var selectedEntryType = entryTypeSelect.children('option:selected').val();
-
-      return !entryTypes.includes(selectedEntryType);
-    }
-
-    function updateSelected(firstAvailable) {
-      entryTypeSelect.val(firstAvailable);
-    }
-
-    function hideInput() {
-      entryTypeInput.hide();
-    }
-
-    function showInput() {
-      entryTypeInput.show();
-    }
-
-    function hideAllOptions() {
-      entryTypeOptions.each(function() {
-        $(this).hide();
-      });
-    }
-
-    function showOption(entryType) {
-      $('#entry_type_name option[value=' + entryType + ']').show();
-    }
-
-    if (entryTypeOptions.length > 1) {
-      accountSelect.on('change', updateEntryTypeOptions);
-      updateEntryTypeOptions();
-    }
+    accountSelect.on('change', updateEntryTypeInput);
   });
 });

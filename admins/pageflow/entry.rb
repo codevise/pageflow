@@ -139,15 +139,15 @@ module Pageflow
       end
     end
 
-    collection_action :entry_types do
+    collection_action :entry_type_name_input do
       account = Pageflow::Account.find(params[:account_id])
+      @entry = Pageflow::Entry.new(account: account,
+                                   type_name: params[:entry_type_name])
 
       if authorized?(:see_entry_types, account)
-        @entry_types = helpers.entry_type_collection_for_account(account)
-
         render(layout: false)
       else
-        render(partial: 'not_allowed_to_see_entry_types', status: 403)
+        head :forbidden
       end
     end
 

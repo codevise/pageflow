@@ -26,12 +26,10 @@
                   include_blank: false) %>
     <% end %>
 
-    <% if f.object.new_record? %>
-      <%= f.input :type_name,
-        as: :select,
-        include_blank: false,
-        collection: entry_type_collection,
-        wrapper_html: {style: 'display: none'} %>
+    <% if resource.new_record? %>
+      <%= render('pageflow/admin/entries/entry_type_name_input',
+                 form: f,
+                 entry_types: Pageflow.config_for(resource.account).entry_types) %>
     <% end %>
 
     <% if authorized?(:configure_folder_for, resource) %>

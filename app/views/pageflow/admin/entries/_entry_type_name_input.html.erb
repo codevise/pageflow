@@ -1,0 +1,7 @@
+<%= form.input(:type_name,
+               as: :select,
+               include_blank: false,
+               collection: entry_type_collection(entry_types),
+               wrapper_html: {
+                 style: ('display: none' if entry_types.one?)
+               }) %>
