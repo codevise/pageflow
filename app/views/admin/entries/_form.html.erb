@@ -2,7 +2,8 @@
   <%= f.inputs do %>
     <%= f.input :title, hint: I18n.t('pageflow.admin.entries.title_hint') %>
 
-    <% if authorized?(:update_account_on, resource) %>
+    <% if authorized?(:update_account_on, resource) &&
+          account_policy_scope.entry_creatable.many? %>
       <%= f.input(:account,
                   as: :searchable_select,
                   include_blank: false,

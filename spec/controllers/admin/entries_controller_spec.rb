@@ -408,6 +408,27 @@ describe Admin::EntriesController do
       expect(response.body).to have_selector('[name="entry[custom_field]"]')
     end
 
+    it 'displays account select if multiple accounts are available' do
+      user = create(:user)
+      create(:account, with_publisher: user)
+      create(:account, with_manager: user)
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body).to have_selector('[name="entry[account_id]"]')
+    end
+
+    it 'does not display account select if only one account is available' do
+      user = create(:user)
+      create(:account, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body).not_to have_selector('[name="entry[account_id]"]')
+    end
+
     it 'does not display entry type select if only one entry type is available' do
       user = create(:user)
       create(:account, with_publisher: user)
