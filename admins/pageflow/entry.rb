@@ -196,6 +196,12 @@ module Pageflow
       after_build do |entry|
         entry.account ||= account_policy_scope.entry_creatable.first || Account.first
         entry.theming ||= entry.account.default_theming
+
+        if action_name == 'new' &&
+           (default_entry_type = Pageflow.config.default_entry_type&.call(entry.account))
+
+          entry.type_name = default_entry_type.name
+        end
       end
 
       before_update do |entry|
