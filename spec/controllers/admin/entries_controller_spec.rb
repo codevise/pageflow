@@ -465,6 +465,25 @@ describe Admin::EntriesController do
 
       expect(response.body).to have_selector('li input[type="radio"]')
     end
+
+    it 'sets configured default entry type' do
+      test_entry_type = Pageflow::TestEntryType.new
+      pageflow_configure do |config|
+        config.entry_types.register(test_entry_type)
+
+        config.default_entry_type = lambda do |account|
+          test_entry_type if account.name == 'test'
+        end
+      end
+      user = create(:user)
+      create(:account, with_publisher: user, name: 'test')
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body)
+        .to have_selector('option[value="test"][selected]')
+    end
   end
 
   describe '#create' do
@@ -569,6 +588,20 @@ describe Admin::EntriesController do
       post(:create, params: {entry: {title: 'some_title'}})
 
       expect(Pageflow::Entry.last.revisions.first.locale).to eq('en')
+    end
+
+    it 'allows selecting entry type even if default is configured' do
+      pageflow_configure do |config|
+        test_entry_type = Pageflow::TestEntryType.register(config)
+        config.default_entry_type = ->(_account) { test_entry_type }
+      end
+      user = create(:user)
+      create(:account, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      post(:create, params: {entry: {title: 'some title2', type_name: 'paged'}})
+
+      expect(Pageflow::Entry.last.type_name).to eq('paged')
     end
   end
 

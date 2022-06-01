@@ -95,6 +95,13 @@ module Pageflow
     # @since 15.1
     attr_reader :entry_types
 
+    # Either a lambda or an object with a `call` method taking an
+    # {Account} as paramater and returing the entry type that shall be
+    # selected by default when creating a new entry.
+    # @return [#call]
+    # @since edge
+    attr_accessor :default_entry_type
+
     # List of {FileType} instances.
     # Can be registered globally or provided by page types.
     # @return [FileTypes]
