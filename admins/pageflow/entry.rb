@@ -111,53 +111,7 @@ module Pageflow
                                 scope.ransack(account_name_cont: term).result
                               end)
 
-    form do |f|
-      f.inputs do
-        f.input :title, hint: I18n.t('pageflow.admin.entries.title_hint')
-
-        if authorized?(:update_account_on, resource)
-          f.input(:account,
-                  as: :searchable_select,
-                  include_blank: false,
-                  ajax: {
-                    resource: Entry,
-                    collection_name: :eligible_accounts
-                  },
-                  input_html: {class: 'entry_account_input'})
-        end
-
-        if authorized?(:update_theming_on, resource) && !f.object.new_record?
-          f.input(:theming,
-                  as: :searchable_select,
-                  ajax: {
-                    resource: Entry,
-                    collection_name: :eligible_themings,
-                    params: {
-                      entry_id: resource.id
-                    }
-                  },
-                  include_blank: false)
-        end
-
-        if f.object.new_record?
-          f.input :type_name,
-                  as: :select,
-                  include_blank: false,
-                  collection: entry_type_collection,
-                  wrapper_html: {style: 'display: none'}
-        end
-
-        if authorized?(:configure_folder_for, resource)
-          folder_collection = collection_for_folders(resource.account, resource.folder)
-          f.input(:folder,
-                  collection: folder_collection,
-                  include_blank: true) unless folder_collection.empty?
-        end
-
-        Pageflow.config_for(f.object).admin_form_inputs.build(:entry, f)
-      end
-      f.actions
-    end
+    form(partial: 'form')
 
     action_item(:depublish, only: :show, priority: 6) do
       if authorized?(:publish, entry) && entry.published?
@@ -185,15 +139,15 @@ module Pageflow
       end
     end
 
-    collection_action :entry_types do
+    collection_action :entry_type_name_input do
       account = Pageflow::Account.find(params[:account_id])
+      @entry = Pageflow::Entry.new(account: account,
+                                   type_name: params[:entry_type_name])
 
       if authorized?(:see_entry_types, account)
-        @entry_types = helpers.entry_type_collection_for_account(account)
-
         render(layout: false)
       else
-        render(partial: 'not_allowed_to_see_entry_types', status: 403)
+        head :forbidden
       end
     end
 
@@ -237,9 +191,17 @@ module Pageflow
       helper Admin::MembershipsHelper
       helper Admin::RevisionsHelper
 
+      helper_method :account_policy_scope
+
       after_build do |entry|
         entry.account ||= account_policy_scope.entry_creatable.first || Account.first
         entry.theming ||= entry.account.default_theming
+
+        if action_name == 'new' &&
+           (default_entry_type = Pageflow.config.default_entry_type&.call(entry.account))
+
+          entry.type_name = default_entry_type.name
+        end
       end
 
       before_update do |entry|

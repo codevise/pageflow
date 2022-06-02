@@ -20,6 +20,16 @@ module Pageflow
 
           expect(result).to include('Test Type' => 'phaged')
         end
+
+        it 'supports passing in entry types' do
+          translation(I18n.locale,
+                      'activerecord.values.pageflow/entry.type_names.phaged',
+                      'Test Type')
+
+          result = helper.entry_type_collection([TestEntryType.new(name: 'phaged')])
+
+          expect(result).to include('Test Type' => 'phaged')
+        end
       end
     end
   end

@@ -1,0 +1,50 @@
+<%= admin_form_for([:admin, resource]) do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :title, hint: I18n.t('pageflow.admin.entries.title_hint') %>
+
+    <% if authorized?(:update_account_on, resource) &&
+          account_policy_scope.entry_creatable.many? %>
+      <%= f.input(:account,
+                  as: :searchable_select,
+                  include_blank: false,
+                  ajax: {
+                    resource: Pageflow::Entry,
+                    collection_name: :eligible_accounts
+                  },
+                  input_html: {class: 'entry_account_input'}) %>
+    <%end %>
+
+    <% if authorized?(:update_theming_on, resource) && !resource.new_record? %>
+      <%= f.input(:theming,
+                  as: :searchable_select,
+                  ajax: {
+                    resource: Pageflow::Entry,
+                    collection_name: :eligible_themings,
+                    params: {
+                      entry_id: resource.id
+                    }
+                  },
+                  include_blank: false) %>
+    <% end %>
+
+    <% if resource.new_record? %>
+      <%= render('pageflow/admin/entries/entry_type_name_input',
+                 form: f,
+                 entry_types: Pageflow.config_for(resource.account).entry_types) %>
+    <% end %>
+
+    <% if authorized?(:configure_folder_for, resource) %>
+      <% folder_collection = collection_for_folders(resource.account, resource.folder) %>
+      <%= f.input(:folder,
+                  collection: folder_collection,
+                  include_blank: true) unless folder_collection.empty? %>
+    <% end %>
+
+    <% entry_config = Pageflow.config_for(resource) %>
+    <% entry_config.admin_form_inputs.find_all_for(:entry).each do |form_input| %>
+      <%= form_input.build(f) %>
+    <% end %>
+  <% end %>
+
+  <%= f.actions %>
+<% end %>
