@@ -227,7 +227,9 @@ module Pageflow
     attr_accessor :transform_theme_customization_files
 
     # Submit video/audio encoding jobs only after the user has
-    # explicitly confirmed in the editor. Defaults to false.
+    # explicitly confirmed in the editor. Can either be set to a
+    # boolean or a lambda that is passed the file and returns a
+    # boolean. Defaults to false.
     attr_accessor :confirm_encoding_jobs
 
     # Used by Pageflow extensions to provide new tabs to be displayed
@@ -501,6 +503,15 @@ module Pageflow
     # @api private
     def lint!
       @features.lint!
+    end
+
+    # @api private
+    def confirm_encoding_jobs?(file)
+      if confirm_encoding_jobs.respond_to?(:call)
+        confirm_encoding_jobs.call(file)
+      else
+        confirm_encoding_jobs
+      end
     end
 
     # @api private
