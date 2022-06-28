@@ -42,6 +42,19 @@ shared_examples 'media encoding state machine' do |model|
         expect(file.reload.state).to eq('encoded')
       end
 
+      it 'invokes file_encoding hook' do
+        file = create(model, :uploading)
+        subscriber = double('subscriber', call: nil)
+
+        allow(Pageflow::ZencoderApi)
+          .to receive(:instance).and_return(ZencoderApiDouble.finished)
+
+        Pageflow.config.hooks.on(:file_encoding, subscriber)
+        file.publish!
+
+        expect(subscriber).to have_received(:call).with(file: file)
+      end
+
       it 'invokes file_encoded hook' do
         file = create(model, :uploading)
         subscriber = double('subscriber', :call => nil)
@@ -170,6 +183,22 @@ shared_examples 'media encoding state machine' do |model|
           .to have_received(:create_job).with(file.reload.output_definition)
         expect(file.reload.state).to eq('encoded')
       end
+
+      it 'invokes file_encoding hook if lambda returns false' do
+        file = create(model, :uploading)
+        subscriber = double('subscriber', call: nil)
+
+        allow(Pageflow::ZencoderApi)
+          .to(receive(:instance)
+                .and_return(ZencoderApiDouble.finished(file_details: {
+                                                         duration_in_ms: 1000
+                                                       })))
+
+        Pageflow.config.hooks.on(:file_encoding, subscriber)
+        file.publish!
+
+        expect(subscriber).to have_received(:call).with(file: file)
+      end
     end
   end
 
@@ -192,7 +221,6 @@ shared_examples 'media encoding state machine' do |model|
 
       it 'invokes file_encoding_confirmed hook' do
         file = create(model, :waiting_for_confirmation)
-        user = create(:user)
         subscriber = double('subscriber', :call => nil)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
@@ -201,6 +229,19 @@ shared_examples 'media encoding state machine' do |model|
         file.confirm_encoding!
 
         expect(subscriber).to have_received(:call).with({file: file})
+      end
+
+      it 'invokes file_encoding hook' do
+        file = create(model, :waiting_for_confirmation)
+        subscriber = double('subscriber', call: nil)
+
+        allow(Pageflow::ZencoderApi)
+          .to receive(:instance).and_return(ZencoderApiDouble.finished)
+
+        Pageflow.config.hooks.on(:file_encoding, subscriber)
+        file.confirm_encoding!
+
+        expect(subscriber).to have_received(:call).with(file: file)
       end
     end
   end
