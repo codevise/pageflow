@@ -58,6 +58,10 @@ module Pageflow
           Pageflow.config.hooks.invoke(:file_encoding_confirmed, file: file)
         end
 
+        after_transition any => 'waiting_for_encoding' do |file|
+          Pageflow.config.hooks.invoke(:file_encoding, file: file)
+        end
+
         job SubmitFileToZencoderJob do
           on_enter 'waiting_for_encoding'
           result ok: 'encoding'
