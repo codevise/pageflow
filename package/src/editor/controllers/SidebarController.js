@@ -40,11 +40,15 @@ export const SidebarController = Marionette.Controller.extend({
   },
 
   confirmableFiles: function(preselectedFileType, preselectedFileId) {
+    const model = EncodingConfirmation.createWithPreselection({
+      fileType: preselectedFileType,
+      fileId: preselectedFileId
+    });
+
+    model.check();
+
     this.region.show(ConfirmEncodingView.create({
-      model: EncodingConfirmation.createWithPreselection({
-        fileType: preselectedFileType,
-        fileId: preselectedFileId
-      })
+      model
     }));
   },
 
