@@ -198,6 +198,47 @@ module Pageflow
           expect(response.status).to eq(401)
         end
       end
+
+      it 'renders summary partial' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
+
+        stub_template('pageflow/editor/encoding_confirmations/_summary.html.erb' => <<-ERB)
+          Summary for <%= encoding_confirmation.files.size %> file
+        ERB
+
+        sign_in(user, scope: :user)
+        post(:check,
+             params: {
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]}
+             },
+             format: 'json')
+
+        expect(json_response(path: :summary_html).strip).to eq('Summary for 1 file')
+      end
+
+      it 'renders intro partial' do
+        user = create(:user)
+        account = create(:account, name: 'some-account', with_member: user)
+        entry = create(:entry, with_editor: user, account: account)
+        video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
+
+        stub_template('pageflow/editor/encoding_confirmations/_intro.html.erb' => <<-ERB)
+          Intro for <%= encoding_confirmation.account.name %>
+        ERB
+
+        sign_in(user, scope: :user)
+        post(:check,
+             params: {
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]}
+             },
+             format: 'json')
+
+        expect(json_response(path: :intro_html).strip).to eq('Intro for some-account')
+      end
     end
   end
 end
