@@ -103,5 +103,56 @@ module Pageflow
         expect(configuration.available_public_locales).to eq([:fr])
       end
     end
+
+    describe 'confirm_encoding_jobs?' do
+      it 'returns true if confirm_encoding_jobs is set to true' do
+        configuration = Configuration.new
+        file = build(:video_file)
+
+        configuration.confirm_encoding_jobs = true
+
+        expect(configuration.confirm_encoding_jobs?(file)).to eq(true)
+      end
+
+      it 'returns false if confirm_encoding_jobs is set to false' do
+        configuration = Configuration.new
+        file = build(:video_file)
+
+        configuration.confirm_encoding_jobs = false
+
+        expect(configuration.confirm_encoding_jobs?(file)).to eq(false)
+      end
+
+      it 'passes file if confirm_encoding_jobs is callable' do
+        configuration = Configuration.new
+        file = build(:video_file)
+        callable = double(call: true)
+
+        configuration.confirm_encoding_jobs = callable
+        configuration.confirm_encoding_jobs?(file)
+
+        expect(callable).to have_received(:call).with(file)
+      end
+
+      it 'returns true if callable returns true' do
+        configuration = Configuration.new
+        file = build(:video_file)
+
+        configuration.confirm_encoding_jobs = double(call: true)
+        result = configuration.confirm_encoding_jobs?(file)
+
+        expect(result).to eq(true)
+      end
+
+      it 'returns false if callable returns false' do
+        configuration = Configuration.new
+        file = build(:video_file)
+
+        configuration.confirm_encoding_jobs = double(call: false)
+        result = configuration.confirm_encoding_jobs?(file)
+
+        expect(result).to eq(false)
+      end
+    end
   end
 end

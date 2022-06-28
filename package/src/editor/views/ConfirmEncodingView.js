@@ -19,6 +19,7 @@ export const ConfirmEncodingView = Marionette.ItemView.extend({
     audioFilesPanel: '.audio_files_panel',
 
     summary: '.summary',
+    intro: '.intro',
     confirmButton: 'button'
   },
 
@@ -68,12 +69,17 @@ export const ConfirmEncodingView = Marionette.ItemView.extend({
   },
 
   updateBlankSlate: function() {
-    this.ui.blankSlate.toggle(!this.confirmableVideoFiles.length && !this.confirmableAudioFiles.length);
+    this.ui.blankSlate.toggle(!this.confirmableVideoFiles.length &&
+                              !this.confirmableAudioFiles.length);
+    this.ui.intro.toggle(!!this.confirmableVideoFiles.length ||
+                         !!this.confirmableAudioFiles.length);
     this.ui.videoFilesPanel.toggle(!!this.confirmableVideoFiles.length);
     this.ui.audioFilesPanel.toggle(!!this.confirmableAudioFiles.length);
+
   },
 
   updateSummary: function(enabled) {
+    this.ui.intro.html(this.model.get('intro_html'));
     this.ui.summary.html(this.model.get('summary_html'));
     this.ui.confirmButton.toggleClass('checking', !!this.model.get('checking'));
 

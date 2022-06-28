@@ -9,12 +9,12 @@ module ZencoderApiDouble
     api
   end
 
-  def finished
+  def finished(file_details: {})
     api = double
 
     allow(api).to receive(:create_job).and_return(1)
     allow(api).to receive(:get_info).and_return(finished_info_result)
-    allow(api).to receive(:get_details).and_return(details)
+    allow(api).to receive(:get_details).and_return(details(**file_details))
 
     api
   end
@@ -88,11 +88,11 @@ module ZencoderApiDouble
      finished: false}
   end
 
-  def details
+  def details(duration_in_ms: 5000)
     {format: 'ogg',
      width: 200,
      height: 100,
-     duration_in_ms: 5000,
+     duration_in_ms: duration_in_ms,
      output_presences: {avi: 'finished', gif: 'skipped'}}
   end
 end

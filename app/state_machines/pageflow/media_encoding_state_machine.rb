@@ -22,9 +22,9 @@ module Pageflow
 
         event :retry_encoding do
           transition 'encoding_failed' => 'waiting_for_confirmation',
-                     if: -> { Pageflow.config.confirm_encoding_jobs }
+                     if: ->(file) { Pageflow.config.confirm_encoding_jobs?(file) }
           transition 'encoded' => 'waiting_for_confirmation',
-                     if: -> { Pageflow.config.confirm_encoding_jobs }
+                     if: ->(file) { Pageflow.config.confirm_encoding_jobs?(file) }
 
           transition 'encoding_failed' => 'waiting_for_encoding'
           transition 'encoded' => 'waiting_for_encoding'
@@ -39,7 +39,14 @@ module Pageflow
         job PollMetaDataFromZencoderJob do
           on_enter 'fetching_meta_data'
           result :pending, retry_after: 2.seconds
-          result ok: 'waiting_for_confirmation'
+
+          result(
+            :ok,
+            state: 'waiting_for_confirmation',
+            if: ->(file) { Pageflow.config.confirm_encoding_jobs?(file) }
+          )
+          result ok: 'waiting_for_encoding'
+
           result error: 'fetching_meta_data_failed'
         end
 
@@ -49,6 +56,10 @@ module Pageflow
 
         after_transition 'waiting_for_confirmation' => 'waiting_for_encoding' do |file|
           Pageflow.config.hooks.invoke(:file_encoding_confirmed, file: file)
+        end
+
+        after_transition any => 'waiting_for_encoding' do |file|
+          Pageflow.config.hooks.invoke(:file_encoding, file: file)
         end
 
         job SubmitFileToZencoderJob do
