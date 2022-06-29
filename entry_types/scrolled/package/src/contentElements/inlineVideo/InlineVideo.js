@@ -74,7 +74,9 @@ function Player({
     request: playerState.shouldPlay,
 
     onLost() {
-      playerActions.fadeOutAndPause(400);
+      if (configuration.playbackMode !== 'loop') {
+        playerActions.fadeOutAndPause(400);
+      }
     }
   });
 
