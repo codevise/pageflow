@@ -53,6 +53,26 @@ describe('FitViewport', () => {
     expect(getOuter(container)).toHaveAttribute('style', 'max-width: 200vh;');
   });
 
+  it('is not opaque by default', () => {
+    const {container} = render(
+      <FitViewport aspectRatio={0.5}>
+        <FitViewport.Content />
+      </FitViewport>
+    );
+
+    expect(getOuter(container)).not.toHaveClass(styles.opaque);
+  });
+
+  it('can be made opaque', () => {
+    const {container} = render(
+      <FitViewport aspectRatio={0.5} opaque>
+        <FitViewport.Content />
+      </FitViewport>
+    );
+
+    expect(getOuter(container)).toHaveClass(styles.opaque);
+  });
+
   function getOuter(container) {
     return container.querySelector('div[style]');
   }

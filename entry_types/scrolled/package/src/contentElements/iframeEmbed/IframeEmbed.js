@@ -7,7 +7,8 @@ import {
   FitViewport,
   useContentElementEditorState,
   useContentElementLifecycle,
-  usePortraitOrientation
+  usePortraitOrientation,
+  utils
 } from 'pageflow-scrolled/frontend';
 
 import styles from './IframeEmbed.module.css';
@@ -31,7 +32,8 @@ export function IframeEmbed({configuration}) {
   return (
     <div className={styles.wrapper}
          style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
-      <FitViewport aspectRatio={aspectRatios[aspectRatio || 'wide']}>
+      <FitViewport aspectRatio={aspectRatios[aspectRatio || 'wide']}
+                   opaque={utils.isBlank(configuration.source)}>
         <ContentElementBox>
           <Figure caption={configuration.caption}>
             <FitViewport.Content>

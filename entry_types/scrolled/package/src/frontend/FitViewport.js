@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import classNames from 'classnames';
 
 import styles from "./FitViewport.module.css";
 import {HeightContext} from "./Fullscreen";
@@ -27,8 +28,9 @@ const AspectRatioContext = React.createContext();
  * @param {Object} props
  * @param {number} [props.aspectRatio] - Aspect ratio of div.
  * @param {Object} [props.file] - Use width/height of file to calculate aspect ratio.
+ * @param {Object} [props.opaque] - Render black background behind content.
  */
-export function FitViewport({file, aspectRatio, children}) {
+export function FitViewport({file, aspectRatio, opaque, children}) {
   const height = useContext(HeightContext);
 
   if (!file && !aspectRatio) return children;
@@ -46,7 +48,8 @@ export function FitViewport({file, aspectRatio, children}) {
   }
 
   return (
-    <div className={styles.container} style={{maxWidth: maxWidthCSS}}>
+    <div className={classNames(styles.container, {[styles.opaque]: opaque})}
+         style={{maxWidth: maxWidthCSS}}>
       <AspectRatioContext.Provider value={aspectRatio}>
         {children}
       </AspectRatioContext.Provider>

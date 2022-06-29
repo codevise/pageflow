@@ -53,7 +53,8 @@ function ImageWithCaption({imageFile, configuration}) {
 
   return (
     <FitViewport file={imageFile}
-                 aspectRatio={imageFile ? undefined : 0.75}>
+                 aspectRatio={imageFile ? undefined : 0.75}
+                 opaque={!imageFile}>
       <ContentElementBox>
         <Figure caption={configuration.caption}>
           <FitViewport.Content>
