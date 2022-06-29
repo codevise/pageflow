@@ -35,7 +35,8 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
     <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
       <FitViewport file={videoFile}
                    aspectRatio={videoFile ?
-                                undefined : fallbackAspectRatio}>
+                                undefined : fallbackAspectRatio}
+                   opaque={!videoFile}>
         <ContentElementBox>
           <Figure caption={configuration.caption}>
             <FitViewport.Content>
