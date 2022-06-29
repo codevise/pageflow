@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {render} from '@testing-library/react';
-import {renderHook} from '@testing-library/react-hooks';
+import {renderHook} from '@testing-library/react-hooks/dom';
 
 import {Consent} from 'pageflow/frontend';
 import {useEntryStateDispatch, RootProviders} from 'pageflow-scrolled/frontend';
