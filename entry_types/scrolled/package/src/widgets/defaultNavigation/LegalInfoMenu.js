@@ -22,17 +22,21 @@ export function LegalInfoMenu(props) {
 
   const content = (
     <div className={styles.legalInfoTooltip}>
-      {credits &&
-       <p dangerouslySetInnerHTML={{__html: credits}}></p>
-      }
+      <div className={styles.scroller}>
+        {credits &&
+         <p dangerouslySetInnerHTML={{__html: credits}}></p>
+        }
 
-      {fileRights &&
-       <p>{t('pageflow_scrolled.public.image_rights')}: {fileRights}</p>
-      }
+        {fileRights &&
+         <p>{t('pageflow_scrolled.public.image_rights')}: {fileRights}</p>
+        }
+      </div>
 
-      <LegalInfoLink {...legalInfo.imprint}/>
-      <LegalInfoLink {...legalInfo.copyright}/>
-      <LegalInfoLink {...legalInfo.privacy}/>
+      <div className={styles.links}>
+        <LegalInfoLink {...legalInfo.imprint}/>
+        <LegalInfoLink {...legalInfo.copyright}/>
+        <LegalInfoLink {...legalInfo.privacy}/>
+      </div>
 
       <Widget role="creditsBoxFooter" />
     </div>

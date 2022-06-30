@@ -2,6 +2,43 @@
   text-align: left;
 }
 
+.scroller {
+  overflow: auto;
+  max-height: 40vh;
+  scrollbar-width: thin;
+  margin-right: -5px;
+  padding-right: 5px;
+}
+
+.scroller::-webkit-scrollbar {
+  width: 3px;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  background-color: var(--theme-widget-secondary-color);
+  border-radius: 2px;
+}
+
+.scroller::-webkit-scrollbar-track {
+  background-color: var(--theme-widget-surface-color);
+}
+
+.links {
+  position: relative;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.links::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -5px;
+  right: -5px;
+  border-top: solid 1px var(--theme-widget-primary-color);
+  opacity: 0.1;
+}
+
 .legalInfoTooltip:after {
   left: 90% !important;
 }
@@ -12,4 +49,9 @@
 
 .legalInfoTooltip a {
   color: var(--theme-accent-color);
+}
+
+.legalInfoLink {
+  display: block;
+  margin-top: 5px;
 }
