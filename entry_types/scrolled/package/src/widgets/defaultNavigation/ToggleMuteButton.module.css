@@ -2,11 +2,6 @@
   color: var(--theme-widget-primary-color);
 }
 
-/*
-  Animation below depends on overflow being hidden in
-  AppHeader.module.css to prevent horizontal overflow/scroll bars.
-*/
-
 .animate {
   position: relative;
 }
