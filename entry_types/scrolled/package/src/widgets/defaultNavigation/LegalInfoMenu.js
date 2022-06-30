@@ -6,6 +6,7 @@ import styles from "./LegalInfoMenu.module.css";
 import {
   ThemeIcon,
   Tooltip,
+  Widget,
   useFileRights,
   useLegalInfo,
   useCredits,
@@ -32,6 +33,8 @@ export function LegalInfoMenu(props) {
       <LegalInfoLink {...legalInfo.imprint}/>
       <LegalInfoLink {...legalInfo.copyright}/>
       <LegalInfoLink {...legalInfo.privacy}/>
+
+      <Widget role="creditsBoxFooter" />
     </div>
   );
 
