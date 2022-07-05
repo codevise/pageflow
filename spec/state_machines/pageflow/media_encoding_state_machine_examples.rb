@@ -346,6 +346,14 @@ shared_examples 'media encoding state machine' do |model|
 
         expect(file).not_to be_retryable
       end
+
+      it 'does not invoke confirm_encoding_jobs if original entry is nil' do
+        Pageflow.config.confirm_encoding_jobs =
+          ->(file) { file.entry.duration_in_ms > 1000 }
+        file = create(model, :encoded, entry: nil)
+
+        expect(file).not_to be_retryable
+      end
     end
 
     describe '#failed?' do
