@@ -112,6 +112,26 @@ module Pageflow
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
       end
 
+      it 'supports adding trailing slash' do
+        theming = create(:theming,
+                         cname: 'my.example.com',
+                         trailing_slash_in_canonical_urls: true)
+        entry = PublishedEntry.new(create(:entry, title: 'test', theming: theming),
+                                   create(:revision))
+
+        expect(helper.pretty_entry_url(entry)).to eq('http://my.example.com/test/')
+      end
+
+      it 'supports adding trailing slash to url with custom prefix' do
+        theming = create(:theming,
+                         canonical_entry_url_prefix: 'https://example.com/blog/',
+                         trailing_slash_in_canonical_urls: true)
+        entry = PublishedEntry.new(create(:entry, title: 'test', theming: theming),
+                                   create(:revision))
+
+        expect(helper.pretty_entry_url(entry)).to eq('https://example.com/blog/test/')
+      end
+
       it 'can be configured via hash in public_entry_url_options' do
         Pageflow.config.public_entry_url_options = {host: 'public.example.com'}
         entry = PublishedEntry.new(create(:entry, title: 'test'),

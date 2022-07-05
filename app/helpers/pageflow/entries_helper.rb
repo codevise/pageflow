@@ -25,12 +25,17 @@ module Pageflow
 
         [
           entry.theming.canonical_entry_url_prefix.gsub(':locale', entry.locale),
-          entry.to_param
+          entry.to_param,
+          entry.theming.trailing_slash_in_canonical_urls ? '/' : ''
         ].join
       end
 
       def default(routes, entry, options)
-        params = options.reverse_merge(Pageflow.config.theming_url_options(entry.theming) || {})
+        params =
+          options
+          .reverse_merge(trailing_slash: entry.theming.trailing_slash_in_canonical_urls)
+          .reverse_merge(Pageflow.config.theming_url_options(entry.theming) || {})
+
         routes.short_entry_url(entry.to_model, params)
       end
 
