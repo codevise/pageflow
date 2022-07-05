@@ -87,7 +87,15 @@ module Pageflow
 
     # UploadableFile-overrides
     def retryable?
-      can_retry_encoding? && !encoded?
+      # Calling `can_retry_encoding?` invokes
+      # `Pageflow.config.confirm_encoding_jobs` which might depend on
+      # accessing `file.entry.account`. If the file has been reused in
+      # a different entry and the original entry has been deleted, we
+      # default to making the file not retryable to prevent
+      # exceptions.
+      entry &&
+        can_retry_encoding? &&
+        !encoded?
     end
 
     def ready?
