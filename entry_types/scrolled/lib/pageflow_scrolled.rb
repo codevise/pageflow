@@ -14,14 +14,8 @@ module PageflowScrolled
                               editor_fragment_renderer: editor_fragment_renderer,
                               editor_app: PageflowScrolled::Engine,
                               theme_files: {
-                                logo_mobile: {
-                                  content_type: %r{\Aimage/},
-                                  styles: {resized: '350x100>'}
-                                },
-                                logo_desktop: {
-                                  content_type: %r{\Aimage/},
-                                  styles: {resized: '350x100>'}
-                                }
+                                logo_mobile: LOGO_OPTIONS,
+                                logo_desktop: LOGO_OPTIONS
                               })
     end
 
@@ -31,4 +25,16 @@ module PageflowScrolled
       Pageflow::PartialEditorFragmentRenderer.new(PageflowScrolled::Editor::EntriesController)
     end
   end
+
+  LOGO_OPTIONS = {
+    content_type: %r{\Aimage/},
+
+    styles: lambda do |file|
+      if File.extname(file.file_name) == '.svg'
+        {resized: {processors: [:noop]}}
+      else
+        {resized: '350x100>'}
+      end
+    end
+  }.freeze
 end

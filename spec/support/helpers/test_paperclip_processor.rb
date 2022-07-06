@@ -5,4 +5,8 @@ class TestPaperclipProcessor < Paperclip::Processor
     invoked_with_options << options
     Tempfile.new
   end
+
+  def self.reset
+    invoked_with_options.clear
+  end
 end
