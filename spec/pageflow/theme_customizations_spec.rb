@@ -2,6 +2,10 @@ require 'spec_helper'
 
 module Pageflow
   describe '#theme_customizations' do
+    before do
+      TestPaperclipProcessor.reset
+    end
+
     it 'allows overriding theme options' do
       pageflow_configure do |config|
         rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
@@ -243,6 +247,40 @@ module Pageflow
 
       expect(TestPaperclipProcessor.invoked_with_options)
         .to include(hash_including(custom: :option))
+      expect(entry.theme.files).to match(inverted_logo: {small: %r{small/image.png}})
+    end
+
+    it 'allows passing lambda as styles', unstub_paperclip: true do
+      Paperclip.register_processor(:test, TestPaperclipProcessor)
+      pageflow_configure do |config|
+        TestEntryType.register(config,
+                               name: 'rainbow',
+                               theme_files: {
+                                 logo: {
+                                   styles: lambda do |file|
+                                     {
+                                       small: {
+                                         processors: [:test],
+                                         custom: file.file_name
+                                       }
+                                     }
+                                   end,
+                                   content_type: %r{\Aimage/.*\Z}
+                                 }
+                               })
+      end
+      entry = create(:published_entry, type_name: 'rainbow')
+
+      file = Pageflow.theme_customizations.upload_file(account: entry.account,
+                                                       entry_type_name: 'rainbow',
+                                                       type_name: 'logo',
+                                                       attachment: fixture_file_upload('image.png'))
+      Pageflow.theme_customizations.update(account: entry.account,
+                                           entry_type_name: 'rainbow',
+                                           file_ids: {inverted_logo: file.id})
+
+      expect(TestPaperclipProcessor.invoked_with_options)
+        .to include(hash_including(custom: 'image.png'))
       expect(entry.theme.files).to match(inverted_logo: {small: %r{small/image.png}})
     end
 

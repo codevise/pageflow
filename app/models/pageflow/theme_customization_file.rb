@@ -51,7 +51,8 @@ module Pageflow
 
     # @api private
     def attachment_styles
-      options_from_entry_type.fetch(:styles, {})
+      styles = options_from_entry_type.fetch(:styles, {})
+      styles.respond_to?(:call) ? styles.call(self) : styles
     end
   end
 end
