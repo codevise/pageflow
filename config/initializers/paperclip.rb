@@ -34,6 +34,9 @@ Paperclip.configure do |config|
 
   config.register_processor(:pageflow_audio_waveform,
                             Pageflow::PaperclipProcessors::AudioWaveform)
+
+  config.register_processor(:noop,
+                            Pageflow::PaperclipProcessors::Noop)
 end
 
 Paperclip::UriAdapter.register
