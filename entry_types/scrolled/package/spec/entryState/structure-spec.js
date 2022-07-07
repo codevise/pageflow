@@ -1,5 +1,6 @@
 import {
   useEntryStructure,
+  useSectionsWithChapter,
   useChapters,
   useSection,
   useSectionContentElements,
@@ -163,6 +164,47 @@ describe('useEntryStructure', () => {
     const entryStructure = result.current;
 
     expect(entryStructure).toMatchObject(expectedEntryStructure);
+  });
+});
+
+describe('useSectionsWithChapter', () => {
+  it('returns sections with nested chapter object', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionsWithChapter(),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed
+        }
+      }
+    );
+
+    const section = result.current;
+
+    expect(section).toMatchObject([
+      {
+        permaId: 101,
+        sectionIndex: 0,
+        chapter: {
+          permaId: 10,
+          chapterSlug: 'chapter-1',
+          title: 'Chapter 1',
+          summary: 'An introductory chapter'
+        },
+        transition: 'scroll'
+      },
+      {
+        permaId: 102,
+        sectionIndex: 1,
+        chapter: {
+          permaId: 11,
+          chapterSlug: 'chapter-2',
+          title: 'Chapter 2',
+          summary: 'A great chapter'
+        },
+        transition: 'fade'
+      }
+    ]);
   });
 });
 

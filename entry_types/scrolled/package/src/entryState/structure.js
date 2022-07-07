@@ -1,10 +1,10 @@
 import {useMemo, useCallback} from 'react';
 import {useEntryStateCollectionItems, useEntryStateCollectionItem} from './EntryStateProvider';
-import I18n from 'i18n-js';
 import slugify from 'slugify';
+
 /**
- * Returns a nested data structure representing the chapters, sections
- * and content elements of the entry.
+ * Returns a nested data structure representing the chapters and sections
+ * of the entry.
  *
  * @private
  *
@@ -66,6 +66,50 @@ export function useEntryStructure() {
 };
 
 /**
+ * Returns an array of sections each with a chapter property containing
+ * data about the parent chapter.
+ *
+ * @private
+ *
+ * @example
+ *
+ * const sections = useSectionsWithChapter();
+ * sections // =>
+ *   [
+ *     {
+ *       id: 1,
+ *       permaId: 101,
+ *       chapterId: 3,
+ *       transition: 'scroll',
+ *       chapter: {
+ *         id: 3,
+ *         permaId: 5,
+ *         title: 'Chapter 1',
+ *         summary: 'An introductory chapter',
+ *         chapterSlug: 'chapter-1'
+ *       },
+ *     }
+ *   ]
+ */
+export function useSectionsWithChapter() {
+  const chapters = useChapters();
+  const sections = useEntryStateCollectionItems('sections');
+
+  const chaptersById = useMemo(() => chapters.reduce((result, chapter) => {
+    result[chapter.id] = chapter;
+    return result;
+  }, {}), [chapters]);
+
+  return useMemo(() => {
+    return sections.map((section, sectionIndex) => ({
+      sectionIndex,
+      ...sectionData(section),
+      chapter: chaptersById[section.chapterId]
+    }));
+  }, [chaptersById, sections]);
+}
+
+/**
  * Returns a nested data structure representing the content elements
  * of section.
  *
@@ -115,29 +159,37 @@ export function useSectionContentElements({sectionId}) {
 
 export function useChapters() {
   const chapters = useEntryStateCollectionItems('chapters');
-  let chapterSlugs = {};
-  return chapters.map(chapter => {
-    let chapterSlug = chapter.configuration.title;
-    if (chapterSlug) {
-      chapterSlug = slugify(chapterSlug, {
-        lower: true,
-        locale: 'de',
-        strict: true
-      });
-      if (chapterSlugs[chapterSlug]) {
-        chapterSlug = chapterSlug+'-'+chapter.permaId; //append permaId if chapter reference is not unique
+
+  return useMemo(() => {
+    const chapterSlugs = {};
+
+    return chapters.map(chapter => {
+      let chapterSlug = chapter.configuration.title;
+
+      if (chapterSlug) {
+        chapterSlug = slugify(chapterSlug, {
+          lower: true,
+          locale: 'de',
+          strict: true
+        });
+
+        if (chapterSlugs[chapterSlug]) {
+          chapterSlug = chapterSlug+'-'+chapter.permaId; //append permaId if chapter reference is not unique
+        }
+
+        chapterSlugs[chapterSlug] = chapter;
       }
-      chapterSlugs[chapterSlug] = chapter;
-    }
-    else{
-      chapterSlug = 'chapter-'+chapter.permaId;
-    }
-    return ({
-      id: chapter.id,
-      permaId: chapter.permaId,
-      title: chapter.configuration.title,
-      summary: chapter.configuration.summary,
-      chapterSlug: chapterSlug
+      else{
+        chapterSlug = 'chapter-'+chapter.permaId;
+      }
+
+      return ({
+        id: chapter.id,
+        permaId: chapter.permaId,
+        title: chapter.configuration.title,
+        summary: chapter.configuration.summary,
+        chapterSlug: chapterSlug
+      });
     });
-  });
+  }, [chapters]);
 }
