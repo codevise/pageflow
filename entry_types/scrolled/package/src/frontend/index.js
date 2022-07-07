@@ -70,6 +70,7 @@ export {useContentElementConfigurationUpdate} from './useContentElementConfigura
 export {useContentElementEditorCommandSubscription} from './useContentElementEditorCommandSubscription';
 export {useContentElementEditorState} from './useContentElementEditorState';
 export {useContentElementLifecycle} from './useContentElementLifecycle';
+export {useCurrentChapter} from './useCurrentChapter';
 export {useIsStaticPreview} from './useScrollPositionLifecycle';
 export {useMediaMuted, useOnUnmuteMedia} from './useMediaMuted';
 export {usePortraitOrientation} from './usePortraitOrientation';

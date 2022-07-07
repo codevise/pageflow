@@ -10,6 +10,7 @@ import {PhonePlatformProvider} from './PhonePlatformProvider';
 import {MediaMutedProvider} from './useMediaMuted';
 import {AudioFocusProvider} from './useAudioFocus';
 import {ConsentProvider} from './thirdPartyConsent';
+import {CurrentSectionProvider} from './useCurrentChapter';
 
 export function RootProviders({seed, consent = consentApi, children}) {
   return (
@@ -19,11 +20,13 @@ export function RootProviders({seed, consent = consentApi, children}) {
           <MediaMutedProvider>
             <AudioFocusProvider>
               <EntryStateProvider seed={seed}>
-                <LocaleProvider>
-                  <ConsentProvider consent={consent}>
-                    {children}
-                  </ConsentProvider>
-                </LocaleProvider>
+                <CurrentSectionProvider>
+                  <LocaleProvider>
+                    <ConsentProvider consent={consent}>
+                      {children}
+                    </ConsentProvider>
+                  </LocaleProvider>
+                </CurrentSectionProvider>
               </EntryStateProvider>
             </AudioFocusProvider>
           </MediaMutedProvider>

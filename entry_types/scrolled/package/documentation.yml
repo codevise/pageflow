@@ -32,6 +32,7 @@ toc:
       - useAudioFocus
       - useContentElementEditorState
       - useContentElementLifecycle
+      - useCurrentChapter
       - useCredits
       - useDarkBackground
       - useEntryMetadata
