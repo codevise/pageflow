@@ -1,6 +1,6 @@
 import {usePlayerState, getInitialPlayerState} from 'frontend/MediaPlayer';
 import {renderHookInEntry} from 'support';
-import {act} from '@testing-library/react-hooks';
+import {act} from '@testing-library/react';
 
 describe('usePlayerState', () => {
   it('return player initial state and action function', () => {

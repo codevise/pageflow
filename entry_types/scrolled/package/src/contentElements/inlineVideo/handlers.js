@@ -59,7 +59,6 @@ export function getPlayerClickHandler({
     return () => {
       if (shouldPlay && mediaMuted) {
         if (configuration.rewindOnUnmute && lastControlledVia === 'autoplay') {
-          console.log('Rewind')
           playerActions.seekTo(0);
         }
 
