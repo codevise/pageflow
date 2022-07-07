@@ -1,7 +1,13 @@
 export {useAdditionalSeedData} from './additionalSeedData';
 export {useShareProviders, useShareUrl} from './sharing';
 export {useEntryMetadata} from './metadata';
-export {useEntryStructure, useSection, useChapters, useSectionContentElements} from './structure';
+export {
+  useEntryStructure,
+  useSectionsWithChapter,
+  useSection,
+  useChapters,
+  useSectionContentElements
+} from './structure';
 export {useFile} from './useFile';
 export {useNestedFiles} from './useNestedFiles';
 export {getFileUrlTemplateHost} from './getFileUrlTemplateHost';
