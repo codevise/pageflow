@@ -1,7 +1,12 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 
 export function useOnScreen(ref, {rootMargin, onIntersecting, skipIframeFix} = {}) {
   const [isIntersecting, setIntersecting] = useState(false);
+  const onIntersectingRef = useRef();
+
+  useEffect(() => {
+    onIntersectingRef.current = onIntersecting
+  }, [onIntersecting]);
 
   useEffect(() => {
     const current = ref.current;
@@ -19,8 +24,8 @@ export function useOnScreen(ref, {rootMargin, onIntersecting, skipIframeFix} = {
 
         setIntersecting(entry.isIntersecting);
 
-        if (entry.isIntersecting && onIntersecting) {
-          onIntersecting();
+        if (entry.isIntersecting && onIntersectingRef.current) {
+          onIntersectingRef.current();
         }
       },
       {
@@ -36,7 +41,7 @@ export function useOnScreen(ref, {rootMargin, onIntersecting, skipIframeFix} = {
     return () => {
       observer.unobserve(current);
     };
-  }, [ref, rootMargin, onIntersecting, skipIframeFix]);
+  }, [ref, rootMargin, skipIframeFix]);
 
   return isIntersecting;
 }
