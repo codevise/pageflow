@@ -2,6 +2,7 @@ import React, {useState, useCallback} from 'react';
 
 import Chapter from "./Chapter";
 import ScrollToSectionContext from './ScrollToSectionContext';
+import {useCurrentSectionIndexState} from './useCurrentChapter';
 import {useEntryStructure} from '../entryState';
 import {withInlineEditingDecorator} from './inlineEditing';
 import {usePostMessageListener} from './usePostMessageListener';
@@ -13,31 +14,29 @@ import { AtmoProvider } from './useAtmo';
 import styles from './Content.module.css';
 
 export const Content = withInlineEditingDecorator('ContentDecorator', function Content(props) {
-  const [currentSectionIndex, setCurrentSectionIndexState] = useState(0);
+  const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
 
   const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
 
   const entryStructure = useEntryStructure();
-  useSectionChangeEvents(entryStructure, currentSectionIndex);
+  useSectionChangeEvents(currentSectionIndex);
 
-  let updateChapterSlug = (slug) => {
+  let updateChapterSlug = (section) => {
     if (window.history && window.history.replaceState) {
-      window.history.replaceState(null, null, '#'+slug);
+      if (section.sectionIndex > 0) {
+        window.history.replaceState(null, null, '#'+ section.chapter.chapterSlug);
+      }
+      else {
+        window.history.replaceState(null, null, window.location.href.split('#')[0]);
+      }
     }
   }
 
-  const setCurrentSectionIndex = useCallback(index => {
-    sectionChangeMessagePoster(index);
-    setCurrentSectionIndexState(index);
-    let sectionCounter = 0;
-    let chapter = entryStructure.find(chapter => {
-      sectionCounter += chapter.sections.length;
-      return index < sectionCounter;
-    });
-    if (chapter) {
-      updateChapterSlug(chapter.chapterSlug);
-    }
-  }, [setCurrentSectionIndexState, entryStructure]);
+  const setCurrentSection = useCallback(section => {
+    sectionChangeMessagePoster(section.sectionIndex);
+    setCurrentSectionIndexState(section.sectionIndex);
+    updateChapterSlug(section);
+  }, [setCurrentSectionIndexState]);
 
   const receiveMessage = useCallback(data => {
     if (data.type === 'SCROLL_TO_SECTION') {
@@ -61,7 +60,7 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
         <ScrollToSectionContext.Provider value={scrollToSection}>
           {renderChapters(entryStructure,
                           currentSectionIndex,
-                          setCurrentSectionIndex,
+                          setCurrentSection,
                           scrollTargetSectionIndex,
                           setScrollTargetSectionIndex)}
         </ScrollToSectionContext.Provider>
@@ -72,7 +71,7 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
 
 function renderChapters(entryStructure,
                         currentSectionIndex,
-                        setCurrentSectionIndex,
+                        setCurrentSection,
                         scrollTargetSectionIndex,
                         setScrollTargetSectionIndex) {
   return entryStructure.map((chapter, index) => {
@@ -82,7 +81,7 @@ function renderChapters(entryStructure,
                permaId={chapter.permaId}
                sections={chapter.sections}
                currentSectionIndex={currentSectionIndex}
-               setCurrentSectionIndex={setCurrentSectionIndex}
+               setCurrentSection={setCurrentSection}
                scrollTargetSectionIndex={scrollTargetSectionIndex}
                setScrollTargetSectionIndex={setScrollTargetSectionIndex}
       />

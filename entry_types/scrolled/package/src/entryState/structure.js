@@ -1,10 +1,10 @@
 import {useMemo, useCallback} from 'react';
 import {useEntryStateCollectionItems, useEntryStateCollectionItem} from './EntryStateProvider';
-import I18n from 'i18n-js';
 import slugify from 'slugify';
+
 /**
- * Returns a nested data structure representing the chapters, sections
- * and content elements of the entry.
+ * Returns a nested data structure representing the chapters and sections
+ * of the entry.
  *
  * @private
  *
@@ -24,6 +24,9 @@ import slugify from 'slugify';
  *           chapterId: 3,
  *           sectionIndex: 0,
  *           transition: 'scroll',
+ *
+ *           // references to parent chapter
+ *           chapter: { ... },
  *
  *           // references to adjacent section objects
  *           previousSection: { ... },
@@ -45,14 +48,66 @@ export function useEntryStructure() {
       section.previousSection = linkedSections[index - 1];
       section.nextSection = linkedSections[index + 1];
     });
-    return chapters.map(chapter => ({
-      ...chapter,
-      sections: linkedSections.filter(
+    return chapters.map(chapter => {
+      const chapterSections = linkedSections.filter(
         item => item.chapterId === chapter.id
-      )
-    }));
+      );
+
+      chapterSections.forEach(section =>
+        section.chapter = chapter
+      );
+
+      return {
+        ...chapter,
+        sections: chapterSections
+      };
+    });
   }, [chapters, sections]);
 };
+
+/**
+ * Returns an array of sections each with a chapter property containing
+ * data about the parent chapter.
+ *
+ * @private
+ *
+ * @example
+ *
+ * const sections = useSectionsWithChapter();
+ * sections // =>
+ *   [
+ *     {
+ *       id: 1,
+ *       permaId: 101,
+ *       chapterId: 3,
+ *       transition: 'scroll',
+ *       chapter: {
+ *         id: 3,
+ *         permaId: 5,
+ *         title: 'Chapter 1',
+ *         summary: 'An introductory chapter',
+ *         chapterSlug: 'chapter-1'
+ *       },
+ *     }
+ *   ]
+ */
+export function useSectionsWithChapter() {
+  const chapters = useChapters();
+  const sections = useEntryStateCollectionItems('sections');
+
+  const chaptersById = useMemo(() => chapters.reduce((result, chapter) => {
+    result[chapter.id] = chapter;
+    return result;
+  }, {}), [chapters]);
+
+  return useMemo(() => {
+    return sections.map((section, sectionIndex) => ({
+      sectionIndex,
+      ...sectionData(section),
+      chapter: chaptersById[section.chapterId]
+    }));
+  }, [chaptersById, sections]);
+}
 
 /**
  * Returns a nested data structure representing the content elements
@@ -104,29 +159,37 @@ export function useSectionContentElements({sectionId}) {
 
 export function useChapters() {
   const chapters = useEntryStateCollectionItems('chapters');
-  let chapterSlugs = {};
-  return chapters.map(chapter => {
-    let chapterSlug = chapter.configuration.title;
-    if (chapterSlug) {
-      chapterSlug = slugify(chapterSlug, {
-        lower: true,
-        locale: 'de',
-        strict: true
-      });
-      if (chapterSlugs[chapterSlug]) {
-        chapterSlug = chapterSlug+'-'+chapter.permaId; //append permaId if chapter reference is not unique
+
+  return useMemo(() => {
+    const chapterSlugs = {};
+
+    return chapters.map(chapter => {
+      let chapterSlug = chapter.configuration.title;
+
+      if (chapterSlug) {
+        chapterSlug = slugify(chapterSlug, {
+          lower: true,
+          locale: 'de',
+          strict: true
+        });
+
+        if (chapterSlugs[chapterSlug]) {
+          chapterSlug = chapterSlug+'-'+chapter.permaId; //append permaId if chapter reference is not unique
+        }
+
+        chapterSlugs[chapterSlug] = chapter;
       }
-      chapterSlugs[chapterSlug] = chapter;
-    }
-    else{
-      chapterSlug = 'chapter-'+chapter.permaId;
-    }
-    return ({
-      id: chapter.id,
-      permaId: chapter.permaId,
-      title: chapter.configuration.title,
-      summary: chapter.configuration.summary,
-      chapterSlug: chapterSlug
+      else{
+        chapterSlug = 'chapter-'+chapter.permaId;
+      }
+
+      return ({
+        id: chapter.id,
+        permaId: chapter.permaId,
+        title: chapter.configuration.title,
+        summary: chapter.configuration.summary,
+        chapterSlug: chapterSlug
+      });
     });
-  });
+  }, [chapters]);
 }

@@ -29,7 +29,16 @@ let getSeed = function({chapterCount}){
           summary: summaries[index] || 'Another chapter'
         }
       }
-    ))
+    )),
+    sections: [
+      {
+        chapterId: 1,
+        configuration: {
+          backdrop: {color: '#fff'},
+          invert: true
+        }
+      }
+    ]
   };
 }
 

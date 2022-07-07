@@ -21,8 +21,8 @@ const seedData = {
     }
   ],
   sections: [
-    {sectionIndex: 0, permaId: 10, chapterId: 1},
-    {sectionIndex: 1, permaId: 11, chapterId: 2}
+    {permaId: 10, chapterId: 1},
+    {permaId: 11, chapterId: 2}
   ]
 }
 
@@ -49,5 +49,3 @@ describe('change section event', () => {
     );
   });
 });
-
-

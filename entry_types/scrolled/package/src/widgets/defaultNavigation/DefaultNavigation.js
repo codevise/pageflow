@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import {
   useScrollPosition,
   useChapters,
+  useCurrentChapter,
   useOnUnmuteMedia,
   utils
 } from 'pageflow-scrolled/frontend';
@@ -23,8 +24,8 @@ export function DefaultNavigation(props) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);
-  const [activeChapterLink, setActiveChapterLink] = useState('chapterLink1');
   const chapters = useChapters();
+  const currentChapter = useCurrentChapter();
 
   useScrollPosition(
     ({prevPos, currPos}) => {
@@ -68,7 +69,6 @@ export function DefaultNavigation(props) {
   };
 
   function handleMenuClick(chapterLinkId) {
-    setActiveChapterLink(chapterLinkId);
     setMobileNavHidden(true);
   };
 
@@ -81,7 +81,7 @@ export function DefaultNavigation(props) {
           <ChapterLink {...chapter}
                        chapterIndex={chapterIndex}
                        chapterLinkId={chapterLinkId}
-                       active={activeChapterLink === chapterLinkId}
+                       active={currentChapter?.id === chapter.id}
                        handleMenuClick={handleMenuClick}/>
         </li>
       );

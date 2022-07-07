@@ -4,7 +4,7 @@ import {settings} from 'pageflow/frontend';
 
 import {renderHookInEntry} from 'support';
 import {useFakeTranslations} from 'pageflow/testHelpers';
-import {act} from '@testing-library/react-hooks';
+import {act} from '@testing-library/react';
 
 describe('useTextTracks', () => {
   const videoFile1Id = 2004;

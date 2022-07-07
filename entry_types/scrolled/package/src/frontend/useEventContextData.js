@@ -1,16 +1,11 @@
 import React, {createContext, useContext, useMemo} from 'react';
-import {useEntryStructure} from '../entryState';
 
-export function getEventObject(sectionIndex, entryStructure){
-  const getSectionChapterTitle = (sectionIndex, delimiter = '') => entryStructure.filter(
-    chapter => chapter.sections.some(section => section.sectionIndex === sectionIndex)
-  )[0]?.title + delimiter;
-
+export function getEventObject(section) {
   let page = {
     configuration: {
-      title: entryStructure ? getSectionChapterTitle(sectionIndex, ', ') + 'Section ' + sectionIndex : null,
+      title: section ? section.chapter.title + ', Section ' + section.sectionIndex : null,
     },
-    index: sectionIndex === null ? -1 : sectionIndex,
+    index: section ? section.sectionIndex : -1,
   }
 
   return page;
@@ -18,16 +13,14 @@ export function getEventObject(sectionIndex, entryStructure){
 
 export const EventContext = createContext(getEventObject());
 
-export function EventContextDataProvider(props){
-  const entryStructure = useEntryStructure();
-
-  let contextValue = useMemo(()=>{
-    return {page: getEventObject(props.sectionIndex, entryStructure)};
-  }, [props.sectionIndex, entryStructure]);
+export function EventContextDataProvider({section, children}){
+  let contextValue = useMemo(() => {
+    return {page: getEventObject(section)};
+  }, [section]);
 
   return (
     <EventContext.Provider value={contextValue}>
-      {props.children}
+      {children}
     </EventContext.Provider>
   )
 };

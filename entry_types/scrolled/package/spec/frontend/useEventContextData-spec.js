@@ -6,36 +6,15 @@ import {renderHookInEntry} from 'support';
 
 describe('useEventContextData', () => {
   it('returns an object with current section and chapter index', () => {
-    const {result} = renderHookInEntry((props) => useEventContextData(), {
-      seed: {
-        entry: {
-          locale: 'en'
-        },
-        sections: [
-          {
-            id: 1,
-            permaId: 101,
-            chapterId: 1,
-            position: 1,
-            configuration: {
-              transition: 'scroll'
-            }
-          },
-        ],
-        chapters: [
-          {
-            id: 1,
-            permaId: 10,
-            position: 1,
-            configuration: {
-              title: 'Chapter 1',
-              summary: 'An introductory chapter'
-            }
-          },
-        ]
-      },
+    const section = {
+      sectionIndex: 0,
+      chapter: {
+        title: 'Chapter 1'
+      }
+    };
+    const {result} = renderHookInEntry(() => useEventContextData(), {
       wrapper: ({children}) =>
-        <EventContextDataProvider sectionIndex={0}>{children}</EventContextDataProvider>
+        <EventContextDataProvider section={section}>{children}</EventContextDataProvider>
     });
 
     expect(result.current).toMatchObject({

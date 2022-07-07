@@ -8,7 +8,7 @@ export default function Chapter(props) {
     <div id={props.chapterSlug}>
       {renderSections(props.sections,
                       props.currentSectionIndex,
-                      props.setCurrentSectionIndex,
+                      props.setCurrentSection,
                       props.scrollTargetSectionIndex,
                       props.setScrollTargetSectionIndex)}
     </div>
@@ -17,21 +17,21 @@ export default function Chapter(props) {
 
 function renderSections(sections,
                         currentSectionIndex,
-                        setCurrentSectionIndex,
+                        setCurrentSection,
                         scrollTargetSectionIndex,
                         setScrollTargetSectionIndex) {
-  function onActivate(sectionIndex) {
-    setCurrentSectionIndex(sectionIndex);
+  function onActivate(section) {
+    setCurrentSection(section);
     setScrollTargetSectionIndex(null);
   }
 
   return sections.map((section) => {
     return (
-      <EventContextDataProvider key={section.permaId} sectionIndex={section.sectionIndex}>
+      <EventContextDataProvider key={section.permaId} section={section}>
         <Section state={section.sectionIndex > currentSectionIndex ? 'below' : section.sectionIndex < currentSectionIndex ? 'above' : 'active'}
                  isScrollTarget={section.sectionIndex === scrollTargetSectionIndex}
-                 onActivate={() => onActivate(section.sectionIndex)}
-                 {...section} />
+                 onActivate={() => onActivate(section)}
+                 section={section} />
       </EventContextDataProvider>
     )
   });
