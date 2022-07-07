@@ -2,8 +2,7 @@ import React from 'react';
 import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 import {renderHookInEntry} from 'support';
-import {act} from '@testing-library/react-hooks'
-import {render as testingLibraryRender} from '@testing-library/react'
+import {render as testingLibraryRender, act} from '@testing-library/react'
 
 import {media} from 'pageflow/frontend';
 import {MediaPlayer} from 'frontend/MediaPlayer';
