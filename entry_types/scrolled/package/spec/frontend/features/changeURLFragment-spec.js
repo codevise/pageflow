@@ -26,17 +26,29 @@ const seedData = {
 }
 
 describe('change url fragment on section update', () => {
+  it('resets fragment when scrolling back to top', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: seedData
+    });
+    window.history.replaceState = jest.fn();
+
+    getSectionByPermaId(11).simulateScrollingIntoView();
+    window.history.replaceState.mockReset();
+    getSectionByPermaId(10).simulateScrollingIntoView();
+
+    expect(window.history.replaceState).toHaveBeenCalledWith(
+      null, null, 'https://story.example.com/'
+    );
+  });
 
   it('updates history state with chapter reference as fragment', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: seedData
     });
     window.history.replaceState = jest.fn();
+
     getSectionByPermaId(11).simulateScrollingIntoView();
 
     expect(window.history.replaceState).toHaveBeenCalledWith(null, null, '#on-the-destination-of-species');
-  })
-
+  });
 });
-
-

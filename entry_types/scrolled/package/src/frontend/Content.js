@@ -21,16 +21,21 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
   const entryStructure = useEntryStructure();
   useSectionChangeEvents(currentSectionIndex);
 
-  let updateChapterSlug = (slug) => {
+  let updateChapterSlug = (section) => {
     if (window.history && window.history.replaceState) {
-      window.history.replaceState(null, null, '#'+slug);
+      if (section.sectionIndex > 0) {
+        window.history.replaceState(null, null, '#'+ section.chapter.chapterSlug);
+      }
+      else {
+        window.history.replaceState(null, null, window.location.href.split('#')[0]);
+      }
     }
   }
 
   const setCurrentSection = useCallback(section => {
     sectionChangeMessagePoster(section.sectionIndex);
     setCurrentSectionIndexState(section.sectionIndex);
-    updateChapterSlug(section.chapter.chapterSlug);
+    updateChapterSlug(section);
   }, [setCurrentSectionIndexState]);
 
   const receiveMessage = useCallback(data => {
