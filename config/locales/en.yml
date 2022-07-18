@@ -178,13 +178,16 @@ en:
       pageflow/entry:
         account: Account
         author: Author
+        created_at: Created
         credits: Credits
+        edited_at: Edited
         embed_code: Embed
         first_published_at: First published at
         keywords: Keywords
         locale: Language
         own_role: Role
         published?: Publication state
+        published_at: Published
         published_revision_published_at: Published since
         publisher: Publisher
         share_image_id: Social Sharing Image
@@ -1023,6 +1026,11 @@ en:
         captions: Audio Replacement Text Track
         descriptions: Image Description Text Track
         subtitles: Translation Text Track
+    consent_bar:
+      feature_name: Consent bar
+      widget_type_name: Consent bar
+    cookie_notice_bar:
+      widget_type_name: Cookied notice
     default_theme:
       name: Default
     delayed_text_fade_in:
@@ -1061,6 +1069,10 @@ en:
         outro: In this area, a live preview will be shown.
       classic_loading_spinner:
         widget_type_info_box_text: This is a preview of the classic loading spinner. It is displayed while the page is loading.
+      consent_bar:
+        widget_type_info_box_text: |-
+          The bar is displayed when first viewing an entry that uses
+          third party integrations (e.g., website tracking or embeds).
       cookie_notice_bar:
         widget_type_info_box_text: The notice is displayed when visiting a story that uses Cookies. Cookies are set, if an analytics integration is active or the 'Emphasize new pages' feature has been enabled.
       entries:
@@ -1523,7 +1535,7 @@ en:
       meta_data:
         general:
           menu_item: General
-          text: |
+          text: |-
             # General
 
             ## Title of the Pageflow
@@ -1535,7 +1547,7 @@ en:
 
             ## Language
 
-            Decide in which language your Pageflow should be displayed. This refers to the frontend text such as multimedia tips, scroll-indicators, the overview and the legal notice.
+            Decide in which language your Pageflow should be displayed. This refers to the frontend text such as the legal notice and privacy settings.
 
             ## Credits
             Here you can enter your imprint information in free text. In addition, image rights can be assigned for all files under "Manage files", which are then automatically displayed in the imprint.
@@ -1665,6 +1677,8 @@ en:
       entries:
         global_links: Global links
         image_rights: Credits
+    highdef_background_images:
+      feature_name: High resolution background images
     highdef_video_encoding:
       feature_name: Full HD and 4K videos
     initial_password:
@@ -1757,6 +1771,7 @@ en:
     ui:
       configuration_editor:
         tabs:
+          consent_bar: Consent bar
           cookie_notice_bar: Cookie Notice
           files: Files
           general: General
@@ -1799,9 +1814,7 @@ en:
             The text-block can be formatted with the buttons underneath the input field. [B= bold / I=italic / U=underlined / infinity symbol= Link/URL to an external website]
 
             All changes are visible in the left front-end-view as soon as you leave the appropriate input field in the editor.
-          thumbnail_image_id: 'The thumbnail replaces the automatically generated preview-picture in the navigation and overview.
-
-'
+          thumbnail_image_id: 'The thumbnail replaces the automatically generated preview-picture in the navigation and overview.'
           transition: Choose the animation, that will be used when users scroll to this page.
       templates:
         inputs:
@@ -1881,6 +1894,7 @@ en:
       roles:
         analytics: Tracking
         background_media_control: Background media control
+        cookie_notice: Privacy settings
         loading_spinner: Loading View
         mobile_navigation: Mobile navigation
         navigation: Navigation bar
@@ -1905,6 +1919,7 @@ en:
       default: "%a, %d %b %Y %H:%M:%S %z"
       long: "%B %d, %Y %H:%M"
       short: "%d %b %H:%M"
+      time_today: Today, %H:%M
     pm: pm
   views:
     pagination:
