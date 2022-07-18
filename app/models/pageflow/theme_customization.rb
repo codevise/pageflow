@@ -2,7 +2,7 @@ module Pageflow
   # Override theme options and upload theme files for an entry type on
   # a per account basis.
   #
-  # @since edge
+  # @since 15.7
   class ThemeCustomization < ApplicationRecord
     belongs_to :account
 

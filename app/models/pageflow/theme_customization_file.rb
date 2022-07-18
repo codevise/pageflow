@@ -2,7 +2,7 @@ module Pageflow
   # A file that has been uploaded by the user to customize a theme,
   # e.g., to use a custom logo.
   #
-  # @since edge
+  # @since 15.7
   class ThemeCustomizationFile < ApplicationRecord
     belongs_to :theme_customization
 
