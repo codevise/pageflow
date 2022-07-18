@@ -49,7 +49,7 @@ module Pageflow
   # type.
   #
   # @return [ThemeCustomizations]
-  # @since edge
+  # @since 15.7
   def self.theme_customizations
     ThemeCustomizations.new
   end

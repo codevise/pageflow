@@ -99,7 +99,7 @@ module Pageflow
     # {Account} as paramater and returing the entry type that shall be
     # selected by default when creating a new entry.
     # @return [#call]
-    # @since edge
+    # @since 15.7
     attr_accessor :default_entry_type
 
     # List of {FileType} instances.

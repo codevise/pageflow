@@ -2,7 +2,7 @@ module Pageflow
   # Apply account wide customizations to themes of a specific entry
   # type.
   #
-  # @since edge
+  # @since 15.7
   class ThemeCustomizations
     # Override theme options and files for entries of an entry type in
     # a specific account.
