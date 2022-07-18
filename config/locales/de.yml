@@ -178,13 +178,16 @@ de:
       pageflow/entry:
         account: Konto
         author: Autor
+        created_at: Erstellt
         credits: Credits
+        edited_at: Geändert
         embed_code: Einbetten
         first_published_at: Erstmals veröffentlicht am
         keywords: Schlüsselwörter
         locale: Sprache
         own_role: Rolle
         published?: Veröffentlichungstatus
+        published_at: Veröffentlicht
         published_revision_published_at: Veröffentlicht am
         publisher: Herausgeber
         share_image_id: Social Sharing Bild
@@ -729,6 +732,12 @@ de:
       create: "%{model} erstellen"
       submit: "%{model} speichern"
       update: "%{model} aktualisieren"
+  i18n:
+    transliterate:
+      rule:
+        ä: ae
+        ö: oe
+        ü: ue
   language: Deutsch
   number:
     currency:
@@ -1023,6 +1032,11 @@ de:
         captions: Ton-Ersatz-Textspur
         descriptions: Bild-Ersatz-Textspur
         subtitles: Übersetzungs-Textspur
+    consent_bar:
+      feature_name: Consent-Leiste
+      widget_type_name: Consent-Leiste
+    cookie_notice_bar:
+      widget_type_name: Cookie-Hinweis
     default_theme:
       name: Standard
     delayed_text_fade_in:
@@ -1059,6 +1073,11 @@ de:
         outro: Hier siehst Du dann eine Vorschau deines Pageflows.
       classic_loading_spinner:
         widget_type_info_box_text: Dies ist eine Vorschau der klassischen Lade-Ansicht. Wird angezeigt, während der Beitrag lädt.
+      consent_bar:
+        widget_type_info_box_text: |-
+          Die Leiste wird beim ersten Öffnen von Beiträgen angezeigt,
+          wenn Integrationen von Drittanbietern (z.B. Website Tracking
+          oder Embeds) verwendet werden.
       cookie_notice_bar:
         widget_type_info_box_text: Der Hinweis wird beim ersten Öffnen von Beiträgen, die Cookies verwenden, am unteren Seitenrand angezeigt. Cookies werden gesetzt, falls ein Dienst zur Erhebnung von Nutzungsdaten (z.B. Google Analytics) verwendet wird oder wenn die Funktion 'Neue Seiten hervorheben' aktiv ist.
       entries:
@@ -1536,29 +1555,7 @@ de:
       meta_data:
         general:
           menu_item: Allgemein
-          text: |
-            # Allgemein
-
-            ## Titel des Pageflows
-
-            Hier kannst Du Deinem Pageflow einen Titel geben, der in der
-            Titelleiste des Browserfensters angezeigt wird. Unter diesem
-            Titel wird Dein Pageflow nach der Veröffentlichung auch in
-            Suchmaschinen indiziert werden.
-
-            ## Sprache
-
-            Wähle hier, in welcher Sprache Dein Pageflow ausgespielt
-            wird. Hierbei geht es um die Frontend-Elemente wie
-            z.B. Scroll-Hinweise, die Mouse-over-Texte der Navigation
-            und das Impressum.
-
-            ## Credits
-
-            Hier kannst Du Deine Impressums-Information im Freitext
-            eingeben. Zudem können für alle Dateien unter „Dateien
-            verwalten“ auch Bildrechte vergeben werden, die dann
-            automatisch im Impressum angezeigt werden.
+          text: "# Allgemein\n\n## Titel des Pageflows\n\nHier kannst Du Deinem Pageflow einen Titel geben, der in der\nTitelleiste des Browserfensters angezeigt wird. Unter diesem\nTitel wird Dein Pageflow nach der Veröffentlichung auch in\nSuchmaschinen indiziert werden.\n\n## Sprache\n\nWähle hier, in welcher Sprache Dein Pageflow ausgespielt\nwird. Hierbei geht es um die Frontend-Elemente wie das \nImpressum und die Datenschutz-Einstellung.\n\n## Credits\n\nHier kannst Du Deine Impressums-Information im Freitext\neingeben. Zudem können für alle Dateien unter „Dateien\nverwalten“ auch Bildrechte vergeben werden, die dann\nautomatisch im Impressum angezeigt werden."
         menu_item: Titel und Optionen
         social:
           menu_item: Social
@@ -1690,6 +1687,8 @@ de:
       entries:
         global_links: Globale Links
         image_rights: Bildrechte
+    highdef_background_images:
+      feature_name: Hochaufgelöste Hintergrundbilder
     highdef_video_encoding:
       feature_name: Full HD und 4K Videos
     initial_password:
@@ -1782,6 +1781,7 @@ de:
     ui:
       configuration_editor:
         tabs:
+          consent_bar: Consent-Leiste
           cookie_notice_bar: Cookie Hinweis
           files: Dateien
           general: Allgemein
@@ -1903,6 +1903,7 @@ de:
       roles:
         analytics: Zählpixel
         background_media_control: Hintergrund-Media-Control
+        cookie_notice: Privatsphäre-Einstellungen
         loading_spinner: Lade-Ansicht
         mobile_navigation: Mobile Navigation
         navigation: Navigationsleiste
@@ -1927,6 +1928,7 @@ de:
       default: "%d.%m.%Y, %H:%M"
       long: "%d.%m.%Y, %H:%M"
       short: "%d. %B %Y, %H:%M Uhr"
+      time_today: Heute, %H:%M
     pm: nachmittags
   views:
     pagination:
