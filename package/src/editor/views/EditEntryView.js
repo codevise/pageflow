@@ -87,12 +87,16 @@ export const EditEntryView = Marionette.Layout.extend({
       if (options.path) {
         link.data('path', options.path);
       }
+
+      if (options.id) {
+        link.attr('data-main-menu-item', options.id);
+      }
+
       link.text(I18n.t(options.translationKey));
 
       if (options.click) {
         $(link).click(options.click);
       }
-
 
       view.ui.menu.append(item);
     });
