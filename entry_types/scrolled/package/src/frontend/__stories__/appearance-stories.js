@@ -108,6 +108,25 @@ storiesOf(`Frontend/Section Appearance`, module)
     }
   )
 
+storiesOf(`Frontend/Section Appearance`, module)
+  .add(
+    'Custom Border Radiuses',
+    () => {
+      const customBorderRadiusStyles = {
+        '--theme-cards-border-radius': '0',
+        '--theme-content-element-box-border-radius': '10px'
+      };
+
+      return (
+        <RootProviders seed={exampleSeed('cards')}>
+          <div style={customBorderRadiusStyles}>
+            <Entry />
+          </div>
+        </RootProviders>
+      );
+    }
+  )
+
 function exampleSeed(appearance, {short, invert, width, themeOptions} = {}) {
   const sectionBaseConfiguration = {
     appearance,
