@@ -30,13 +30,13 @@
 }
 
 .cardStart::before {
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  border-top-left-radius: var(--theme-cards-border-radius, 15px);
+  border-top-right-radius: var(--theme-cards-border-radius, 15px);
 }
 
 .cardEnd::before {
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: var(--theme-cards-border-radius, 15px);
+  border-bottom-right-radius: var(--theme-cards-border-radius, 15px);
 }
 
 @media screen {

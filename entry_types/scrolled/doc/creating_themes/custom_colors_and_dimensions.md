@@ -141,6 +141,12 @@ breakpoint below which sticky elements become inline:
 | ---- | ----------- |
 | `narrow_viewport_breakpoint` | Minimum viewport width for sticky elements to be displayed in a second column. |
 
+### Section Appearance
+
+| Name | Description |
+| ---- | ----------- |
+| `cards_border_radius` | Change border radius of foreground boxes displayed when section appearance is set to "Card". |
+
 ### Content Element Style
 
 The following properties apply to all content elements that render
