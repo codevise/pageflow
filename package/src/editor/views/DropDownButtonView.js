@@ -101,6 +101,7 @@ export const DropDownButtonView = Marionette.ItemView.extend({
 
     clearTimeout(this.hideMenuTimeout);
     this.ui.menu.addClass('is_visible');
+    this.ui.button.addClass('hover');
   },
 
   ensureOnlyOneDropDownButtonShowsMenu: function() {
@@ -115,6 +116,7 @@ export const DropDownButtonView = Marionette.ItemView.extend({
     clearTimeout(this.hideMenuTimeout);
 
     if (!this.isClosed) {
+      this.ui.button.removeClass('hover');
       this.ui.menu.removeClass('is_visible');
     }
   },
