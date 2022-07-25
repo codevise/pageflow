@@ -16,6 +16,9 @@ import template from '../templates/dropDownButton.jst';
  * @param {Backbone.Collection} options.items
  *   Collection of menu items. See below for supported attributes.
  *
+ * @param {boolean} [options.fullWidth]
+ *   Make button and drop down span 100% of available width.
+ *
  * ## Item Models
  *
  * The following model attributes can be used to control the
@@ -55,6 +58,8 @@ export const DropDownButtonView = Marionette.ItemView.extend({
   onRender: function() {
     var view = this;
 
+    this.$el.toggleClass('full_width', !!this.options.fullWidth);
+
     this.ui.button.toggleClass('has_icon_and_text', !!this.options.label);
     this.ui.button.toggleClass('has_icon_only', !this.options.label);
 
@@ -86,7 +91,8 @@ export const DropDownButtonView = Marionette.ItemView.extend({
 
     this.ui.menu.css({
       top: offset.top + this.$el.height(),
-      left: offset.left
+      left: offset.left,
+      width: this.options.fullWidth ? this.$el.width() : null
     });
   },
 

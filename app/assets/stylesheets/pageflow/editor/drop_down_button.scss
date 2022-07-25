@@ -9,6 +9,14 @@
   > button.has_icon_only {
     @include icon-only-button;
   }
+
+  &.full_width {
+    width: 100%;
+
+    > button {
+      width: 100%;
+    }
+  }
 }
 
 .drop_down_button_menu {
@@ -24,6 +32,7 @@
   border-radius: rounded(sm);
   box-shadow: var(--ui-box-shadow);
   background-color: var(--ui-surface-color);
+  box-sizing: border-box;
 
   &.is_visible {
     @include transition(visibility 0ms, opacity 100ms);
