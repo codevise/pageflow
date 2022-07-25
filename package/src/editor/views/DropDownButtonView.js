@@ -76,6 +76,10 @@ export const DropDownButtonView = Marionette.ItemView.extend({
 
       'mouseleave': function() {
         view.scheduleHideMenu();
+      },
+
+      'click': function() {
+        view.hideMenu();
       }
     });
 
