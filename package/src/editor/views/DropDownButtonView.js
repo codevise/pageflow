@@ -19,6 +19,10 @@ import template from '../templates/dropDownButton.jst';
  * @param {boolean} [options.fullWidth]
  *   Make button and drop down span 100% of available width.
  *
+ * @param {boolean} [options.openOnClick]
+ *   Require click to open menu. By default, menu opens on when the
+ *   mouse enters the button.
+ *
  * ## Item Models
  *
  * The following model attributes can be used to control the
@@ -44,14 +48,16 @@ export const DropDownButtonView = Marionette.ItemView.extend({
     menu: '.drop_down_button_menu'
   },
 
-  events: {
-    'mouseenter': function() {
-      this.positionMenu();
-      this.showMenu();
-    },
+  events: function() {
+    return {
+      [this.options.openOnClick ? 'click' : 'mouseenter']: function() {
+        this.positionMenu();
+        this.showMenu();
+      },
 
-    'mouseleave': function() {
-      this.scheduleHideMenu();
+      'mouseleave': function() {
+        this.scheduleHideMenu();
+      }
     }
   },
 
