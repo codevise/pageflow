@@ -26,7 +26,7 @@
  *
  * @private
  */
-export function useBackgroundFile({file, motifArea, containerDimension}) {
+export function useBackgroundFile({file, motifArea, containerDimension, effects}) {
   if (!file) {
     return null ;
   }
@@ -124,6 +124,7 @@ export function useBackgroundFile({file, motifArea, containerDimension}) {
     ...file,
     cropPosition,
     motifArea,
-    motifAreaOffsetRect
+    motifAreaOffsetRect,
+    effects
   };
 }

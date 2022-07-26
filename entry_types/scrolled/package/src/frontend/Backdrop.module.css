@@ -7,6 +7,10 @@
   background-color: #333;
 }
 
+.effects {
+  height: 100%;
+}
+
 @media print {
   .Backdrop {
     page-break-inside: avoid;

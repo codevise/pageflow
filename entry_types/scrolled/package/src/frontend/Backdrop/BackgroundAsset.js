@@ -13,17 +13,20 @@ export function BackgroundAsset(props) {
   const video = useBackgroundFile({
     file: useFile({collectionName: 'videoFiles', permaId: props.video}),
     motifArea: props.videoMotifArea,
-    containerDimension: props.containerDimension
+    containerDimension: props.containerDimension,
+    effects: props.effects
   });
   const image = useBackgroundFile({
     file: useFile({collectionName: 'imageFiles', permaId: props.image}),
     motifArea: props.imageMotifArea,
-    containerDimension: props.containerDimension
+    containerDimension: props.containerDimension,
+    effects: props.effects
   });
   const imageMobile = useBackgroundFile({
     file: useFile({collectionName: 'imageFiles', permaId: props.imageMobile}),
     motifArea: props.imageMobileMotifArea,
-    containerDimension: props.containerDimension
+    containerDimension: props.containerDimension,
+    effects: props.effectsMobile
   });
 
   if (video) {

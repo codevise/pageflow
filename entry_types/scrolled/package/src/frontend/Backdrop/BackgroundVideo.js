@@ -4,6 +4,7 @@ import {VideoPlayer} from './../VideoPlayer';
 import {MotifArea} from './../MotifArea';
 import {usePlayerState} from './../MediaPlayer/usePlayerState';
 import {useSectionLifecycle} from './../useSectionLifecycle';
+import {Effects} from './Effects';
 import {documentHiddenState} from 'pageflow/frontend';
 
 export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {
@@ -43,16 +44,18 @@ export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) 
 
   return (
     <>
-      <VideoPlayer load={shouldPrepare ? 'auto' :
-                         shouldLoad ? 'poster' :
-                         'none'}
-                   playerState={playerState}
-                   playerActions={playerActions}
-                   videoFile={video}
-                   textTracksDisabled={true}
-                   fit="cover"
-                   loop={true}
-                   playsInline={true} />
+      <Effects file={video}>
+        <VideoPlayer load={shouldPrepare ? 'auto' :
+                           shouldLoad ? 'poster' :
+                           'none'}
+                     playerState={playerState}
+                     playerActions={playerActions}
+                     videoFile={video}
+                     textTracksDisabled={true}
+                     fit="cover"
+                     loop={true}
+                     playsInline={true} />
+      </Effects>
       <MotifArea key={video.permaId}
                  onUpdate={onMotifAreaUpdate}
                  file={video}
