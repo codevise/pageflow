@@ -59,6 +59,7 @@
         color: var(--ui-on-error-color);
       }
     } @else {
+      &.hover:not(:disabled):not(.disabled),
       &:hover:not(:disabled):not(.disabled) {
         border: 1px solid var(--ui-primary-color);
       }

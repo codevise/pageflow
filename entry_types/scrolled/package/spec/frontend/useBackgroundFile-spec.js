@@ -13,6 +13,23 @@ describe('useBackgroundFile', () => {
     expect(result.current).toBeNull();
   });
 
+  it('includes passed effects in result', () => {
+    const {result} = renderHookInEntry(
+      () => useBackgroundFile({
+        file: useFile({collectionName: 'imageFiles', permaId: 10}),
+        containerDimension: {width: 200, height: 100},
+        effects: [{name: 'blur', value: 50}]
+      }),
+      {
+        seed: {
+          imageFiles: [{permaId: 10}]
+        }
+      }
+    );
+
+    expect(result.current.effects).toEqual([{name: 'blur', value: 50}]);
+  });
+
   it('sets motif area image based on passed motif area', () => {
     const {result} = renderHookInEntry(
       () => useBackgroundFile({

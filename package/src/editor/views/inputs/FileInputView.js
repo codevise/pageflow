@@ -79,7 +79,8 @@ export const FileInputView = Marionette.ItemView.extend({
 
     if (dropDownMenuItems.length) {
       this.appendSubview(new DropDownButtonView({
-        items: dropDownMenuItems
+        items: dropDownMenuItems,
+        openOnClick: true
       }));
     }
   },

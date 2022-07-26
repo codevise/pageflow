@@ -18,10 +18,10 @@ export function Backdrop(props) {
         <div className={classNames(styles.defaultBackground,
                                    props.transitionStyles.backdropInner2)}>
           {props.children(
-             <BackgroundAsset {...props}
-                              containerDimension={containerDimension}
-                              setContainerRef={setContainerRef} />
-           )}
+            <BackgroundAsset {...props}
+                             containerDimension={containerDimension}
+                             setContainerRef={setContainerRef} />
+          )}
         </div>
       </div>
     </div>

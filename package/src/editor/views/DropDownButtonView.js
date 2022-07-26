@@ -16,6 +16,13 @@ import template from '../templates/dropDownButton.jst';
  * @param {Backbone.Collection} options.items
  *   Collection of menu items. See below for supported attributes.
  *
+ * @param {boolean} [options.fullWidth]
+ *   Make button and drop down span 100% of available width.
+ *
+ * @param {boolean} [options.openOnClick]
+ *   Require click to open menu. By default, menu opens on when the
+ *   mouse enters the button.
+ *
  * ## Item Models
  *
  * The following model attributes can be used to control the
@@ -41,19 +48,23 @@ export const DropDownButtonView = Marionette.ItemView.extend({
     menu: '.drop_down_button_menu'
   },
 
-  events: {
-    'mouseenter': function() {
-      this.positionMenu();
-      this.showMenu();
-    },
+  events: function() {
+    return {
+      [this.options.openOnClick ? 'click' : 'mouseenter']: function() {
+        this.positionMenu();
+        this.showMenu();
+      },
 
-    'mouseleave': function() {
-      this.scheduleHideMenu();
+      'mouseleave': function() {
+        this.scheduleHideMenu();
+      }
     }
   },
 
   onRender: function() {
     var view = this;
+
+    this.$el.toggleClass('full_width', !!this.options.fullWidth);
 
     this.ui.button.toggleClass('has_icon_and_text', !!this.options.label);
     this.ui.button.toggleClass('has_icon_only', !this.options.label);
@@ -71,6 +82,10 @@ export const DropDownButtonView = Marionette.ItemView.extend({
 
       'mouseleave': function() {
         view.scheduleHideMenu();
+      },
+
+      'click': function() {
+        view.hideMenu();
       }
     });
 
@@ -86,7 +101,8 @@ export const DropDownButtonView = Marionette.ItemView.extend({
 
     this.ui.menu.css({
       top: offset.top + this.$el.height(),
-      left: offset.left
+      left: offset.left,
+      width: this.options.fullWidth ? this.$el.width() : null
     });
   },
 
@@ -95,6 +111,7 @@ export const DropDownButtonView = Marionette.ItemView.extend({
 
     clearTimeout(this.hideMenuTimeout);
     this.ui.menu.addClass('is_visible');
+    this.ui.button.addClass('hover');
   },
 
   ensureOnlyOneDropDownButtonShowsMenu: function() {
@@ -109,6 +126,7 @@ export const DropDownButtonView = Marionette.ItemView.extend({
     clearTimeout(this.hideMenuTimeout);
 
     if (!this.isClosed) {
+      this.ui.button.removeClass('hover');
       this.ui.menu.removeClass('is_visible');
     }
   },

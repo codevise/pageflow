@@ -72,6 +72,8 @@ function SectionContents({
   return (
     <>
       <Backdrop {...section.backdrop}
+                effects={section.backdropEffects}
+                effectsMobile={section.backdropEffectsMobile}
                 onMotifAreaUpdate={setMotifAreaRef}
                 state={state}
                 transitionStyles={transitionStyles}>

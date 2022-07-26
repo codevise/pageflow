@@ -56,6 +56,30 @@ describe('Backdrop', () => {
     expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('image.jpg'));
   });
 
+  it('supports applying effects to image', () => {
+    const {container} =
+      renderInEntryWithSectionLifecycle(
+        <Backdrop image={100}
+                  effects={[{name: 'blur', value: 100}]} />,
+        {
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 100, basename: 'image'}
+            ]
+          }
+        }
+      );
+
+    expect(
+      container.querySelector('[style*="filter"]').style.filter
+    ).toEqual('blur(10px)');
+  });
+
   it('supports rendering mobile image given by id in portrait orientation', () => {
     usePortraitOrientation.mockReturnValue(true);
 
@@ -131,6 +155,60 @@ describe('Backdrop', () => {
     simulateScrollPosition('near viewport');
 
     expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('portrait.jpg'));
+  });
+
+  it('supports applying effects to protrait image', () => {
+    usePortraitOrientation.mockReturnValue(true);
+
+    const {container} =
+      renderInEntryWithSectionLifecycle(
+        <Backdrop image={100}
+                  imageMobile={200}
+                  effectsMobile={[{name: 'blur', value: 100}]} />,
+        {
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 100, basename: 'landscape'},
+              {permaId: 200, basename: 'portrait'},
+            ]
+          }
+        }
+      )
+
+    expect(
+      container.querySelector('[style*="filter"]').style.filter
+    ).toEqual('blur(10px)');
+  });
+
+  it('does not apply portrait effects to landscape image', () => {
+    usePortraitOrientation.mockReturnValue(false);
+
+    const {container} =
+      renderInEntryWithSectionLifecycle(
+        <Backdrop image={100}
+                  imageMobile={200}
+                  effectsMobile={[{name: 'blur', value: 100}]} />,
+        {
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 100, basename: 'landscape'},
+              {permaId: 200, basename: 'portrait'},
+            ]
+          }
+        }
+      )
+
+    expect(container.querySelector('[style*="filter"]')).toBeNull();
   });
 
   it('invokes onMotifAreaUpdate callback', () => {
@@ -295,6 +373,24 @@ describe('Backdrop', () => {
         );
 
       expect(callback).toHaveBeenCalled();
+    });
+
+    it('supports applying effects', () => {
+      const {container} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100}
+                    effects={[{name: 'blur', value: 100}]} />,
+          {
+            queries: fakeMediaRenderQueries,
+            seed: {
+              videoFiles: [{permaId: 100}]
+            }
+          }
+        );
+
+      expect(
+        container.querySelector('[style*="filter"]').style.filter
+      ).toEqual('blur(10px)');
     });
   });
 });

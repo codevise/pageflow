@@ -13,12 +13,12 @@ export const DropDownButtonItemView = Marionette.ItemView.extend({
   },
 
   events: {
-    'click > a': function() {
+    'click > a': function(event) {
       if (!this.model.get('disabled')) {
         this.model.selected();
       }
 
-      return false;
+      event.preventDefault();
     }
   },
 
