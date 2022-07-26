@@ -1,0 +1,102 @@
+.view {
+  composes: plusCircled from '../icons.module.css';
+  position: relative;
+  margin-top: space(-1) !important;
+}
+
+.view::before {
+  position: absolute;
+  bottom: space(1);
+  right: space(1.5);
+  color: var(--ui-primary-color);
+}
+
+.allUsed::before,
+.allUsed :global(.drop_down_button) {
+  display: none;
+}
+
+.view :global(.drop_down_button button.has_icon_and_text) {
+  font-size: 0.75rem;
+  font-weight: normal;
+  padding: space(1);
+  text-align: left;
+  border-color: var(--ui-on-surface-color-lightest);
+  color: var(--ui-on-surface-color-light);
+}
+
+.view :global(.drop_down_button button.hover) {
+  border-color: var(--ui-primary-color-light) !important;
+}
+
+.item {
+  display: flex;
+  padding: space(1) 0 space(1) space(1);
+  border-radius: rounded();
+  align-items: center;
+  border: solid 1px var(--ui-on-surface-color-lightest);
+  margin-bottom: space(1);
+}
+
+.label,
+.value {
+  font-size: 0.75rem;
+}
+
+.label {
+  margin-right: space(2);
+  width: 30%;
+}
+
+.value {
+  width: 3em;
+}
+
+.widget {
+  margin: 0 space(2);
+  flex: 1;
+  height: 0.25rem;
+  position: relative;
+  border-color: var(--ui-on-surface-color-lighter);
+}
+
+.centerZero::before,
+.centerZero::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  height: space(1);
+  border-left: solid 1px var(--ui-on-surface-color-lighter);
+}
+
+.centerZero::before {
+  bottom: 155%;
+}
+
+.centerZero::after {
+  top: 155%;
+}
+
+.widget :global(.ui-slider-handle) {
+  left: 0%;
+  top: -0.3rem;
+  height: 0.75rem;
+  width: 0.75rem;
+  margin-left: -0.375rem;
+  outline-width: 2px;
+}
+
+.remove {
+  composes: cancel from '../icons.module.css';
+  padding: 0 space(2);
+  border: 0;
+  color: var(--ui-primary-color);
+  background-color: transparent;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.remove:hover,
+.remove:focus {
+  opacity: 1;
+}

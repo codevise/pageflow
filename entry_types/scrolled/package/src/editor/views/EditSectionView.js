@@ -1,5 +1,11 @@
 import {EditConfigurationView, FileInputView, ColorInputView} from 'pageflow/editor';
-import {SelectInputView, CheckBoxInputView, SliderInputView} from 'pageflow/ui';
+import {
+  SelectInputView,
+  CheckBoxInputView,
+  SeparatorView,
+  SliderInputView
+} from 'pageflow/ui';
+import {EffectListInputView} from './inputs/EffectListInputView';
 import I18n from 'i18n-js';
 
 import {EditMotifAreaDialogView} from './EditMotifAreaDialogView';
@@ -37,18 +43,6 @@ export const EditSectionView = EditConfigurationView.extend({
         positioning: false,
         dropDownMenuItems: [editMotifAreaMenuItem]
       });
-      this.input('backdropImageMobile', FileInputView, {
-        collection: 'image_files',
-        fileSelectionHandler: 'sectionConfiguration',
-        visibleBinding: 'backdropType',
-        visibleBindingValue: 'image',
-        positioning: false,
-        dropDownMenuItems: [editMotifAreaMenuItem]
-      });
-      this.input('backdropColor', ColorInputView, {
-        visibleBinding: 'backdropType',
-        visibleBindingValue: 'color'
-      });
       this.input('backdropVideo', FileInputView, {
         collection: 'video_files',
         fileSelectionHandler: 'sectionConfiguration',
@@ -57,6 +51,33 @@ export const EditSectionView = EditConfigurationView.extend({
         positioning: false,
         dropDownMenuItems: [editMotifAreaMenuItem]
       });
+      this.input('backdropEffects', EffectListInputView, {
+        visibleBinding: ['backdropType', 'backdropImage'],
+        visible: ([backdropType]) =>
+          backdropType !== 'color' && this.model.getReference('backdropImage',
+                                                              'image_files')
+      });
+      this.input('backdropImageMobile', FileInputView, {
+        collection: 'image_files',
+        fileSelectionHandler: 'sectionConfiguration',
+        visibleBinding: 'backdropType',
+        visibleBindingValue: 'image',
+        positioning: false,
+        dropDownMenuItems: [editMotifAreaMenuItem]
+      });
+      this.input('backdropEffectsMobile', EffectListInputView, {
+        visibleBinding: ['backdropType', 'backdropImageMobile'],
+        visible: ([backdropType]) =>
+          backdropType === 'image' && this.model.getReference('backdropImageMobile',
+                                                              'image_files')
+      });
+      this.input('backdropColor', ColorInputView, {
+        visibleBinding: 'backdropType',
+        visibleBindingValue: 'color'
+      });
+
+      this.view(SeparatorView);
+
       this.input('layout', SelectInputView, {
         values: ['left', 'right', 'center', 'centerRagged']
       });
@@ -94,6 +115,8 @@ export const EditSectionView = EditConfigurationView.extend({
         disabled: ([exposeMotifArea, ...motifAreaDisabledBindingValues]) =>
           !exposeMotifArea || motifAreaDisabled(motifAreaDisabledBindingValues)
       });
+
+      this.view(SeparatorView);
 
       this.input('atmoAudioFileId', FileInputView, {
         collection: 'audio_files',
