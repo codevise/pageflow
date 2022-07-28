@@ -56,6 +56,8 @@
   }
 
   .dialog-sub_header {
+    font-size: inherit;
+    font-weight: 500;
     border-bottom: solid 1px var(--ui-on-surface-color-lighter);
     margin: 0;
     padding: space(1) 0;

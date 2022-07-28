@@ -16,10 +16,6 @@ export const WidgetItemView = Marionette.Layout.extend({
     widgetTypeContainer: '.widget_type'
   },
 
-  ui: {
-    role: 'h2'
-  },
-
   modelEvents: {
     'change:type_name': 'update'
   },

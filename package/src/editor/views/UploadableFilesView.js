@@ -7,10 +7,6 @@ import {PresenceTableCellView, TableView, TextTableCellView} from 'pageflow/ui';
 export const UploadableFilesView = Marionette.View.extend({
   className: 'uploadable_files',
 
-  ui: {
-    header: 'h2'
-  },
-
   initialize: function() {
     this.uploadableFiles = this.collection.uploadable();
 
