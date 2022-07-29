@@ -9,7 +9,7 @@ import {SelectionRect} from '../SelectionRect';
 import {useContentElementEditorState} from '../../useContentElementEditorState';
 import {useI18n} from '../../i18n';
 import {postInsertContentElementMessage} from '../postMessage';
-import {getUniformSelectedNodeProperty} from './getUniformSelectedNodeProperty';
+import {getUniformSelectedNode} from './getUniformSelectedNode';
 import {toggleBlock, isBlockActive} from './blocks';
 
 import TextIcon from '../images/text.svg';
@@ -84,8 +84,8 @@ export function Selection(props) {
 
     setTransientState({
       editableTextIsSingleBlock: editor.children.length <= 1,
-      currentNodeType: getUniformSelectedNodeProperty(editor, 'type'),
-      typographyVariant: getUniformSelectedNodeProperty(editor, 'variant')
+      exampleNode: getUniformSelectedNode(editor, 'type'),
+      typographyVariant: getUniformSelectedNode(editor, 'variant')?.variant
     });
 
     boundsRef.current = {start, end};

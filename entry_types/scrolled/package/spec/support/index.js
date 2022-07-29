@@ -5,3 +5,4 @@ export * from './fakeWindows';
 export * from './scrollPositionLifecycle';
 export * from './tick';
 export * from './useFakeXhr';
+export * from './reactBasedBackboneViews';

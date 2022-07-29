@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {camelize} from './utils/camelize';
 import {withInlineEditingAlternative} from './inlineEditing';
 import {Text} from './Text';
 import textStyles from './Text.module.css';
@@ -79,10 +80,4 @@ export function renderLeaf({attributes, children, leaf}) {
   }
 
   return <span {...attributes}>{children}</span>
-}
-
-function camelize(snakeCase) {
-  return snakeCase.replace(/-[a-z]/g, function(match) {
-    return match[1].toUpperCase();
-  });
 }

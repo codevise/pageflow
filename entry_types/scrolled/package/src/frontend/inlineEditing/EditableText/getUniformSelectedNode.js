@@ -1,6 +1,6 @@
 import {Editor} from 'slate';
 
-export function getUniformSelectedNodeProperty(editor, propertyName) {
+export function getUniformSelectedNode(editor, propertyName) {
   const currentNodeEntries = [...Editor.nodes(editor, {
     match: n => !!n.type, mode: 'highest'
   })];
@@ -9,5 +9,5 @@ export function getUniformSelectedNodeProperty(editor, propertyName) {
     ([node, path]) => node[propertyName]
   ))];
 
-  return values.length === 1 ? values[0] : null;
+  return values.length === 1 ? currentNodeEntries[0][0] : null;
 }

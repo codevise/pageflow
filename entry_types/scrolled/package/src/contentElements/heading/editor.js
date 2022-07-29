@@ -18,7 +18,15 @@ editor.contentElementTypes.register('heading', {
       this.input('textSize', SelectInputView, {
         values: ['auto', 'large', 'medium', 'small']
       });
-      this.group('ContentElementTypographyVariant', {entry});
+      this.group('ContentElementTypographyVariant', {
+        entry,
+        getPreviewConfiguration: (configuration, typographyVariant) =>
+          ({
+            ...configuration,
+            textSize: 'small',
+            typographyVariant
+          })
+      });
       this.group('ContentElementPosition');
       this.input('hyphens', SelectInputView, {
         values: ['auto', 'manual']
