@@ -1,0 +1,22 @@
+.preview {
+  overflow: hidden;
+  position: relative;
+  padding: space(1) space(2) space(2);
+  background-color: var(--ui-primary-color);
+  color: var(--ui-on-primary-color);
+  border: solid 1px var(--ui-on-surface-color-lightest-solid);
+  border-radius: rounded(sm);
+  margin-bottom: space(1);
+  height: size(24);
+  pointer-events: none;
+}
+
+.preview > div {
+  width: 200%;
+}
+
+.cardsAppearance > div {
+  margin-top: -3rem;
+  margin-left: -3rem;
+  padding-bottom: 3rem;
+}

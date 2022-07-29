@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import {
-  getUniformSelectedNodeProperty
-} from 'frontend/inlineEditing/EditableText/getUniformSelectedNodeProperty';
+  getUniformSelectedNode
+} from 'frontend/inlineEditing/EditableText/getUniformSelectedNode';
 
 import {createHyperscript} from 'slate-hyperscript';
 
@@ -12,20 +12,27 @@ export const jsx = createHyperscript({
   },
 });
 
-describe('getUniformSelectedNodeProperty', () => {
-  it('returs node property value if all selected nodes have same value', () => {
+describe('getUniformSelectedNode', () => {
+  it('returs first node if all selected nodes have same property value', () => {
     const editor = (
       <editor>
         <textBlock>
+          <anchor />
           Line 1
-          <cursor />
+        </textBlock>
+        <textBlock>
+          Line 2
+          <focus />
         </textBlock>
       </editor>
     );
 
-    const result = getUniformSelectedNodeProperty(editor, 'type');
+    const result = getUniformSelectedNode(editor, 'type');
 
-    expect(result).toEqual('textBlock');
+    expect(result).toMatchObject({
+      type: 'textBlock',
+      children: [{text: 'Line 1'}]
+    });
   });
 
   it('returs null if nodes with different property values are selected', () => {
@@ -43,7 +50,7 @@ describe('getUniformSelectedNodeProperty', () => {
       </editor>
     );
 
-    const result = getUniformSelectedNodeProperty(editor, 'type');
+    const result = getUniformSelectedNode(editor, 'type');
 
     expect(result).toBeNull();
   });
@@ -61,7 +68,7 @@ describe('getUniformSelectedNodeProperty', () => {
       </editor>
     );
 
-    const result = getUniformSelectedNodeProperty(editor, 'type');
+    const result = getUniformSelectedNode(editor, 'type');
 
     expect(result).toBeNull();
   });

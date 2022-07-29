@@ -6,10 +6,6 @@ import {DeleteRowTableCellView, TableView} from 'pageflow/ui';
 export const NestedFilesView = Marionette.View.extend({
   className: 'nested_files',
 
-  ui: {
-    header: 'h2'
-  },
-
   initialize: function() {
     if (!this.options.selection.has('file')) {
       this.options.selection.set('file', this.collection.first());

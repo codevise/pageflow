@@ -32,7 +32,8 @@ textarea,
 [type="tel"],
 [type="time"],
 [type="week"],
-[multiple] {
+[multiple],
+button[aria-haspopup] {
   font-size: 13px;
   display: block;
   width: 100%;
@@ -43,6 +44,7 @@ textarea,
   border-radius: rounded();
   color: var(--ui-on-surface-color);
 
+  &[aria-expanded=true],
   &:focus {
     border-color: var(--ui-on-surface-color-light);
     box-shadow: 0 0 0 2px var(--ui-selection-color-light);
@@ -222,6 +224,7 @@ textarea.short {
 }
 
 .input-disabled {
+  button,
   select,
   input,
   textarea,

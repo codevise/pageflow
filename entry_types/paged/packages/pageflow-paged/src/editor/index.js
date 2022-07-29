@@ -20,9 +20,10 @@ import './views/configurationEditors/groups/pageLink';
 import './views/configurationEditors/groups/pageTransitions';
 import './views/configurationEditors/groups/options';
 
-import './initializers/setupHotkeys'
-import './initializers/setupIndicators'
-import './initializers/stylesheetReloading'
+import './initializers/preventScrollingPreviewWhileFocusInSidebar';
+import './initializers/setupHotkeys';
+import './initializers/setupIndicators';
+import './initializers/stylesheetReloading';
 
 export * from './views/inputs/PageLinkInputView';
 

@@ -9,7 +9,8 @@ import {SelectionRect} from '../SelectionRect';
 import {useContentElementEditorState} from '../../useContentElementEditorState';
 import {useI18n} from '../../i18n';
 import {postInsertContentElementMessage} from '../postMessage';
-import {getUniformSelectedNodeProperty} from './getUniformSelectedNodeProperty';
+import {getUniformSelectedNode} from './getUniformSelectedNode';
+import {toggleBlock, isBlockActive} from './blocks';
 
 import TextIcon from '../images/text.svg';
 import HeadingIcon from '../images/heading.svg';
@@ -83,8 +84,8 @@ export function Selection(props) {
 
     setTransientState({
       editableTextIsSingleBlock: editor.children.length <= 1,
-      currentNodeType: getUniformSelectedNodeProperty(editor, 'type'),
-      typographyVariant: getUniformSelectedNodeProperty(editor, 'variant')
+      exampleNode: getUniformSelectedNode(editor, 'type'),
+      typographyVariant: getUniformSelectedNode(editor, 'variant')?.variant
     });
 
     boundsRef.current = {start, end};
@@ -185,35 +186,6 @@ function getDOMNodes(editor, startIndex, endIndex) {
   catch(e) {
     return [];
   }
-}
-
-const listTypes = ['numbered-list', 'bulleted-list'];
-
-function toggleBlock(editor, format) {
-  const isActive = isBlockActive(editor, format)
-  const isList = listTypes.includes(format)
-
-  Transforms.unwrapNodes(editor, {
-    match: n => listTypes.includes(n.type),
-    split: true,
-  })
-
-  Transforms.setNodes(editor, {
-    type: isActive ? 'paragraph' : isList ? 'list-item' : format,
-  })
-
-  if (!isActive && isList) {
-    const block = { type: format, children: [] }
-    Transforms.wrapNodes(editor, block)
-  }
-}
-
-function isBlockActive(editor, format) {
-  const [match] = Editor.nodes(editor, {
-    match: n => n.type === format,
-  })
-
-  return !!match
 }
 
 function toolbarButtons(t) {

@@ -11,7 +11,7 @@ export const EntryOutlineView = Marionette.Layout.extend({
   className: styles.root,
 
   template: () => `
-    <h2>${I18n.t('pageflow_scrolled.editor.entry_outline.header')}</h2>
+    <h2 class="sidebar-header">${I18n.t('pageflow_scrolled.editor.entry_outline.header')}</h2>
     <ul class="${styles.chapters}"></ul>
 
     <a class="${styles.addChapter}" href="">

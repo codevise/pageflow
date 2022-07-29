@@ -1,6 +1,6 @@
 .text li,
 .text p {
-  margin: 1em 0 0 0;
+  margin: 1.375rem 0 0 0;
 }
 
 .text h2 {
@@ -22,8 +22,8 @@
 }
 
 .text blockquote {
-  padding: 0.5em 1em 0.5em 2em;
-  margin: 1em 0 0 0.5em;
+  padding: 0.5em 1.375rem 0.5em 2em;
+  margin: 1.375rem 0 0 0.6875rem;
   position: relative;
   /* Prevent block quote symbol from overlapping with floated elements. */
   overflow: hidden;
@@ -33,11 +33,11 @@
   content: "“";
   font-size: 3em;
   font-weight: bold;
-  color: #aaa;
   position: absolute;
   top: 0;
   left: 0;
   line-height: 1em;
+  opacity: 0.5;
 }
 
 .layout-centerRagged {

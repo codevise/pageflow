@@ -1,4 +1,5 @@
-import {editor, NoOptionsHintView} from 'pageflow-scrolled/editor';
+import {utils} from 'pageflow-scrolled/frontend';
+import {editor} from 'pageflow-scrolled/editor';
 
 import pictogram from './pictogram.svg';
 
@@ -8,19 +9,33 @@ editor.contentElementTypes.register('textBlock', {
 
   configurationEditor({entry, contentElement}) {
     this.listenTo(contentElement.transientState,
-                  'change:currentNodeType',
+                  'change:exampleNode',
                   () => this.refresh());
 
     this.tab('general', function() {
-      const currentNodeType = contentElement.transientState.get('currentNodeType');
+      const exampleNode = ensureTextContent(
+        contentElement.transientState.get('exampleNode')
+      );
 
       this.group('ContentElementTypographyVariant', {
         entry,
         model: contentElement.transientState,
-        prefix: currentNodeType || 'none',
+        prefix: exampleNode ? utils.camelize(exampleNode.type) : 'none',
 
-        fallback() {
-          this.view(NoOptionsHintView);
+        getPreviewConfiguration(configuration, variant) {
+          return exampleNode ? {
+            ...configuration,
+            value: [
+              {
+                ...exampleNode,
+                variant
+              },
+              // Ensure content spans whole preview viewport if
+              // section uses "cards" appearance.
+              {type: 'paragraph', children: [{text: ''}]},
+              {type: 'paragraph', children: [{text: ''}]}
+            ]
+          } : configuration;
         }
       });
     });
@@ -67,4 +82,18 @@ editor.contentElementTypes.register('textBlock', {
 function getValue(configuration) {
   // Value might still be empty if text block has not been edited
   return configuration.value || [{type: 'paragraph', children: [{text: ''}]}];
+}
+
+function ensureTextContent(node) {
+  if (node &&
+      node.children.length === 1 &&
+      node.children[0].text === '') {
+    return {
+      ...node,
+      children: [{text: 'Lorem ipsum dolor sit amet'}]
+    };
+  }
+  else {
+    return node;
+  }
 }

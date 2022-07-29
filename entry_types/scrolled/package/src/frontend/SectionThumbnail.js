@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import classNames from 'classnames';
 import Measure from 'react-measure';
 
 import {RootProviders} from './RootProviders';
@@ -18,7 +19,7 @@ export function SectionThumbnail({seed, ...props}) {
   );
 }
 
-function Inner({sectionPermaId, subscribe}) {
+function Inner({sectionPermaId, subscribe, scale}) {
   const dispatch = useEntryStateDispatch();
 
   useEffect(() => {
@@ -26,16 +27,18 @@ function Inner({sectionPermaId, subscribe}) {
   }, [subscribe, dispatch])
 
   const section = useSection({sectionPermaId});
+  const scaleFactor = scale ? 5 : 1;
 
   if (section) {
     return (
       <StaticPreview>
         <Measure client>
           {({measureRef, contentRect}) =>
-            <FullscreenHeightProvider height={contentRect.client.height &&
-                                              Math.ceil(contentRect.client.height) * 5}>
+            <FullscreenHeightProvider
+              height={contentRect.client.height &&
+                      Math.ceil(contentRect.client.height) * scaleFactor}>
               <div ref={measureRef} className={styles.crop}>
-                <div className={styles.scale}>
+                <div className={classNames({[styles.scale]: scale})}>
                   <div className={contentStyles.Content}>
                     <Section state="active" section={{...section, transition: 'preview'}} />
                   </div>
@@ -57,5 +60,6 @@ function Inner({sectionPermaId, subscribe}) {
 }
 
 Inner.defaultProps = {
+  scale: true,
   subscribe: () => {}
 }

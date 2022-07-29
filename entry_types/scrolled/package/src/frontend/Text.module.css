@@ -1,5 +1,6 @@
 @value text-s: 20px;
 @value text-base: 22px;
+@value text-md: 33px;
 @value text-l: 40px;
 @value text-2l: 50px;
 @value text-xl: 66px;
@@ -31,6 +32,7 @@
 .heading-xs {
   composes: typography-headingXs from global;
   composes: typography-heading from global;
+  font-size: text-md;
   margin-top: 1em;
   margin-bottom: 0;
 }

@@ -8,6 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "@egjs/view360": "^3.4.3",
+    "@headlessui/react": "^1.6.6",
     "core-js": "^3.6.5",
     "debounce": "^1.2.0",
     "deep-assign": "^3.0.0",

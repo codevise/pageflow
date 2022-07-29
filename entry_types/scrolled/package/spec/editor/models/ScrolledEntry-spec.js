@@ -1,6 +1,6 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
-import {factories, setupGlobals} from 'pageflow/testHelpers';
+import {factories, setupGlobals, useFakeTranslations} from 'pageflow/testHelpers';
 import {useFakeXhr, normalizeSeed} from 'support';
 
 describe('ScrolledEntry', () => {
@@ -2415,41 +2415,99 @@ describe('ScrolledEntry', () => {
       expect(values).toEqual(['large', 'small']);
     });
 
-    it('returns translations keys based on theme name', () => {
-      editor.contentElementTypes.register('someElement', {});
+    describe('with shared translations', () => {
+      const commonPrefix = 'pageflow_scrolled.editor.typography_variants'
 
-      const entry = factories.entry(
-        ScrolledEntry,
-        {
-          metadata: {theme_name: 'custom'}
-        },
-        {
-          entryTypeSeed: normalizeSeed({
-            themeOptions: {
-              typography: {
-                'someElement-large': {
-                  fontSize: '3rem'
-                },
-                'someElement-small': {
-                  fontSize: '2rem'
+      useFakeTranslations({
+        [`${commonPrefix}.someElement-large`]: 'Large',
+        [`${commonPrefix}.someElement-small`]: 'Small'
+      });
+
+      it('returns translated display names', () => {
+        editor.contentElementTypes.register('someElement', {});
+
+        const entry = factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {theme_name: 'custom'}
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              themeOptions: {
+                typography: {
+                  'someElement-large': {
+                    fontSize: '3rem'
+                  },
+                  'someElement-small': {
+                    fontSize: '2rem'
+                  }
                 }
-              }
-            },
-            contentElements: [
-              {id: 5, typeName: 'someElement'}
-            ]
-          })
-        }
-      );
-      const contentElement = entry.contentElements.get(5);
+              },
+              contentElements: [
+                {id: 5, typeName: 'someElement'}
+              ]
+            })
+          }
+        );
+        const contentElement = entry.contentElements.get(5);
 
-      const [, translationKeys] = entry.getTypographyVariants({contentElement});
+        const [, texts] = entry.getTypographyVariants({contentElement});
 
-      expect(translationKeys).toEqual([
-        'pageflow_scrolled.editor.themes.custom.typography_variants.someElement-large',
-        'pageflow_scrolled.editor.themes.custom.typography_variants.someElement-small'
-      ]);
+        expect(texts).toEqual([
+          'Large',
+          'Small'
+        ]);
+      });
     });
+
+    describe('with theme specific translations', () => {
+      const commonPrefix = 'pageflow_scrolled.editor.typography_variants'
+      const themePrefix = `pageflow_scrolled.editor.themes.custom`
+
+      useFakeTranslations({
+        [`${commonPrefix}.someElement-large`]: 'Large',
+        [`${commonPrefix}.someElement-small`]: 'Small',
+        [`${themePrefix}.typography_variants.someElement-large`]: 'Custom Large',
+        [`${themePrefix}.typography_variants.someElement-small`]: 'Custom Small'
+      });
+
+      it('prefers theme specific translations', () => {
+        editor.contentElementTypes.register('someElement', {});
+
+        const entry = factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {theme_name: 'custom'}
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              themeOptions: {
+                typography: {
+                  'someElement-large': {
+                    fontSize: '3rem'
+                  },
+                  'someElement-small': {
+                    fontSize: '2rem'
+                  }
+                }
+              },
+              contentElements: [
+                {id: 5, typeName: 'someElement'}
+              ]
+            })
+          }
+        );
+        const contentElement = entry.contentElements.get(5);
+
+        const [, texts] = entry.getTypographyVariants({contentElement});
+
+        expect(texts).toEqual([
+          'Custom Large',
+          'Custom Small'
+        ]);
+      });
+    });
+
 
     it('supports filtering by additional prefix', () => {
       editor.contentElementTypes.register('someElement', {});
