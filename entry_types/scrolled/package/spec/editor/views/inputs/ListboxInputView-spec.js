@@ -4,11 +4,10 @@ import {
 
 import Backbone from 'backbone';
 
-import {within} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {useFakeTranslations} from 'pageflow/testHelpers';
-import {act} from 'react-dom/test-utils'
+import {useReactBasedBackboneViews} from 'support';
 
 describe('ListboxInputView', () => {
   useFakeTranslations({
@@ -17,25 +16,7 @@ describe('ListboxInputView', () => {
     'some.key.large': 'Large'
   });
 
-  // Since the view uses React internally, it needs to be attached to
-  // the DOM in order to make event handling work. We also need to
-  // wrap interactions in `act` to make React apply changes.
-
-  let currentElement;
-
-  function render(view) {
-    currentElement = view.el;
-    document.body.appendChild(view.el);
-
-    return within(view.render().el);
-  }
-
-  afterEach(() => {
-    if (currentElement) {
-      document.body.removeChild(currentElement);
-      currentElement = null;
-    }
-  })
+  const {render} = useReactBasedBackboneViews();
 
   it('renders radio inputs for values', () => {
     const model = new Backbone.Model({variant: 'large'});
@@ -47,7 +28,7 @@ describe('ListboxInputView', () => {
     });
 
     const {getByRole} = render(inputView);
-    act(() => userEvent.click(getByRole('button', {name: 'Large'})));
+    userEvent.click(getByRole('button', {name: 'Large'}));
 
     expect(getByRole('option', {name: 'Default'})).not.toBeNull();
     expect(getByRole('option', {name: 'Large'})).not.toBeNull();
@@ -63,7 +44,7 @@ describe('ListboxInputView', () => {
     });
 
     const {getByRole} = render(inputView);
-    act(() => userEvent.click(getByRole('button', {name: 'Large'})));
+    userEvent.click(getByRole('button', {name: 'Large'}));
 
     expect(getByRole('option', {name: 'Default'})).not.toBeNull();
     expect(getByRole('option', {name: 'Large'})).not.toBeNull();
@@ -94,8 +75,8 @@ describe('ListboxInputView', () => {
     });
 
     const {getByRole} = render(inputView);
-    act(() => userEvent.click(getByRole('button', {name: 'Default'})));
-    act(() => userEvent.click(getByRole('option', {name: 'Large'})));
+    userEvent.click(getByRole('button', {name: 'Default'}));
+    userEvent.click(getByRole('option', {name: 'Large'}));
 
     expect(model.get('variant')).toEqual('large');
   });
