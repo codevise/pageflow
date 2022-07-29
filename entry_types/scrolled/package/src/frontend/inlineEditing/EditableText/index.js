@@ -19,6 +19,7 @@ import {HoveringToolbar} from './HoveringToolbar';
 import {Selection} from './Selection';
 import {DropTargets} from './DropTargets';
 import {LinkTooltipProvider} from './LinkTooltip';
+import {applyTypograpyhVariant} from './blocks';
 
 import styles from './index.module.css';
 
@@ -43,7 +44,7 @@ export const EditableText = React.memo(function EditableText({
     }
     else if (command.type === 'TRANSIENT_STATE_UPDATE' &&
              'typographyVariant' in command.payload) {
-      Transforms.setNodes(editor, {variant: command.payload.typographyVariant});
+      applyTypograpyhVariant(editor, command.payload.typographyVariant);
     }
   });
 
