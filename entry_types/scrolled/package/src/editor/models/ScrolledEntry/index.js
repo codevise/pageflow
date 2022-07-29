@@ -1,4 +1,5 @@
 import {Entry, editor} from 'pageflow/editor';
+import I18n from 'i18n-js';
 
 import {ChaptersCollection, SectionsCollection, ContentElementsCollection} from '../../collections';
 import {ContentElement} from '../ContentElement';
@@ -95,12 +96,15 @@ export const ScrolledEntry = Entry.extend({
     const values = ruleNames.map(
       name => name.split('-').pop()
     );
-    const translationKeys = ruleNames.map(name =>
-      `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
-      `.typography_variants.${name}`
+    const texts = ruleNames.map(name =>
+      I18n.t(
+        `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
+        `.typography_variants.${name}`,
+        {defaultValue: I18n.t(`pageflow_scrolled.editor.typography_variants.${name}`)}
+      )
     );
 
-    return [values, translationKeys]
+    return [values, texts]
   },
 
   supportsSectionWidths() {

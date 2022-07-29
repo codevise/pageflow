@@ -24,7 +24,7 @@ ConfigurationEditorTabView.groups.define(
   function({entry, model, prefix, getPreviewConfiguration}) {
     const contentElement = this.model.parent;
 
-    const [variants, translationKeys] = entry.getTypographyVariants({
+    const [variants, texts] = entry.getTypographyVariants({
       contentElement,
       prefix
     });
@@ -45,7 +45,7 @@ ConfigurationEditorTabView.groups.define(
       disabled: !variants.length,
 
       values: variants,
-      translationKeys
+      texts,
     });
   }
 );
