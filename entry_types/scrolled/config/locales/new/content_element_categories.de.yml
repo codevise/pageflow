@@ -37,3 +37,5 @@ de:
           description: "Interaktives Panorama aus Bild mit rektangularer Projektion"
         iframeEmbed:
           description: "Einbindung einer extern gehosteten Website"
+        twitterEmbed:
+          description: "Tweets einbetten"
