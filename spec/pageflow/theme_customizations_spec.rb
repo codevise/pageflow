@@ -174,7 +174,7 @@ module Pageflow
       expect(entry.theme.options).to match(colors: {accent: '#f00', surface: '#000'})
     end
 
-    it 'passes entry when transforming overrides' do
+    it 'passes entry and theme when transforming overrides' do
       transform = double('transform', call: {})
       pageflow_configure do |config|
         rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
@@ -193,8 +193,34 @@ module Pageflow
                                            overrides: {colors: {accent: '#0f0'}})
       entry.theme
 
-      expect(transform).to have_received(:call).with({colors: {accent: '#0f0'}},
-                                                     entry)
+      expect(transform)
+        .to have_received(:call).with({colors: {accent: '#0f0'}},
+                                      entry: entry.to_model,
+                                      theme: entry.revision.theme)
+    end
+
+    it 'passes entry and theme when transforming overrides during preview' do
+      transform = double('transform', call: {})
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register('dark')
+        end
+
+        config.transform_theme_customization_overrides = transform
+      end
+      entry = create(:entry,
+                     type_name: 'rainbow',
+                     draft_attributes: {theme_name: 'dark'})
+
+      Pageflow.theme_customizations.preview(account: entry.account,
+                                            entry: entry,
+                                            overrides: {colors: {accent: '#0f0'}})
+
+      expect(transform)
+        .to have_received(:call).with({colors: {accent: '#0f0'}},
+                                      entry: entry.to_model,
+                                      theme: entry.draft.theme)
     end
 
     it 'scopes lambda to transform overrides to entry type' do
@@ -333,7 +359,7 @@ module Pageflow
       expect(entry.theme.files).to match(logo: {small: %r{small/image.png}})
     end
 
-    it 'passes entry when transforming files' do
+    it 'passes entry and theme when transforming files' do
       transform = double('transform', call: {})
       pageflow_configure do |config|
         TestEntryType.register(config,
@@ -359,12 +385,14 @@ module Pageflow
 
       entry.theme.files
 
-      expect(transform).to have_received(:call).with({
-                                                       inverted_logo: {
-                                                         small: %r{small/image.png}
-                                                       }
-                                                     },
-                                                     entry)
+      expect(transform)
+        .to have_received(:call).with({
+                                        inverted_logo: {
+                                          small: %r{small/image.png}
+                                        }
+                                      },
+                                      entry: entry.to_model,
+                                      theme: entry.revision.theme)
     end
 
     it 'allows reading urls of uploaded file from upload return value' do

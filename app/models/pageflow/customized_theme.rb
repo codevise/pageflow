@@ -26,11 +26,13 @@ module Pageflow
       new(theme,
           config.transform_theme_customization_overrides.call(
             theme_customization.overrides,
-            entry
+            entry: entry,
+            theme: theme
           ),
           config.transform_theme_customization_files.call(
             theme_customization.selected_files.transform_values(&:urls),
-            entry
+            entry: entry,
+            theme: theme
           ))
     end
   end

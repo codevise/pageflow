@@ -230,7 +230,7 @@ module Pageflow
     end
 
     def available_themes
-      Pageflow.config_for(entry).themes
+      @available_themes ||= Pageflow.config_for(entry).themes
     end
   end
 end
