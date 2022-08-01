@@ -10,3 +10,4 @@ import './inlineBeforeAfter/editor';
 import './externalLinkList/editor';
 import './vrImage/editor';
 import './iframeEmbed/editor';
+import './twitterEmbed/editor'

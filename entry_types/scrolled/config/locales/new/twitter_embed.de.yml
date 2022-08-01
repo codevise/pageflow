@@ -1,0 +1,22 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        twitterEmbed:
+          attributes:
+            url:
+              label: Tweet-URL
+            hideConversation:
+              label: Konversation ausblenden
+            hideMedia:
+              label: Medien ausblenden
+          name: Twitter-Einbettung
+          description: "Bettet einen Tweet ein"
+          tabs:
+            general: Twitter-Embed
+    public:
+      twitter:
+        default_title: Tweet
+      third_party_consent:
+        opt_in_prompt:
+          twitter: Ich bin damit einverstanden, dass Inhalte von Twitter angezeigt werden.
