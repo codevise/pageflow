@@ -24,28 +24,30 @@ ConfigurationEditorTabView.groups.define(
   function({entry, model, prefix, getPreviewConfiguration}) {
     const contentElement = this.model.parent;
 
-    const [variants, texts] = entry.getTypographyVariants({
-      contentElement,
-      prefix
-    });
+    if (entry.getTypographyVariants({contentElement})[0].length) {
+      const [variants, texts] = entry.getTypographyVariants({
+        contentElement,
+        prefix
+      });
 
-    this.input('typographyVariant', TypographyVariantSelectInputView, {
-      entry,
-      model: model || this.model,
-      contentElement: contentElement,
-      prefix,
-      getPreviewConfiguration,
+      this.input('typographyVariant', TypographyVariantSelectInputView, {
+        entry,
+        model: model || this.model,
+        contentElement: contentElement,
+        prefix,
+        getPreviewConfiguration,
 
-      blankTranslationKey: 'pageflow_scrolled.editor.' +
-                           'common_content_element_attributes.' +
-                           'typographyVariant.blank',
-      attributeTranslationKeyPrefixes: [
-        'pageflow_scrolled.editor.common_content_element_attributes'
-      ],
-      disabled: !variants.length,
+        blankTranslationKey: 'pageflow_scrolled.editor.' +
+                             'common_content_element_attributes.' +
+                             'typographyVariant.blank',
+        attributeTranslationKeyPrefixes: [
+          'pageflow_scrolled.editor.common_content_element_attributes'
+        ],
+        disabled: !variants.length,
 
-      values: variants,
-      texts,
-    });
+        values: variants,
+        texts,
+      });
+    }
   }
 );
