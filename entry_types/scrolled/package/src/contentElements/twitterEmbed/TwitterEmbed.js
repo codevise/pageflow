@@ -3,12 +3,14 @@ import React, { useEffect, useRef } from 'react';
 import {
   ThirdPartyOptIn,
   useContentElementEditorState,
-  ThirdPartyOptOutInfo
+  ThirdPartyOptOutInfo,
+  useContentElementLifecycle
 } from 'pageflow-scrolled/frontend';
 
 export function TwitterEmbed({configuration}) {
-  const {tweetId, hideConversation, hideMedia} = configuration
+  const {tweetId, hideConversation, hideMedia} = configuration;
   const {isEditable, isSelected} = useContentElementEditorState();
+  const {shouldLoad} = useContentElementLifecycle();
 
   const key = [
     tweetId,
@@ -21,12 +23,12 @@ export function TwitterEmbed({configuration}) {
     tweetId,
     hideConversation,
     hideMedia,
-  }
+  };
 
   return (
     <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <ThirdPartyOptIn providerName="twitter">
-        <Tweet {...props} />
+        {shouldLoad && <Tweet {...props} />}
       </ThirdPartyOptIn>
       <ThirdPartyOptOutInfo providerName="twitter"
                             contentElementPosition={configuration.position} />
@@ -76,7 +78,7 @@ function Tweet({
     })
 
     return () => isComponentMounted = false
-  }, [options, tweetId]);
+  }, []);
 
   return(
     <div ref={ref} />
