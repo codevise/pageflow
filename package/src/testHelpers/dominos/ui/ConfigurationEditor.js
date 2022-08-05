@@ -17,6 +17,10 @@ export const ConfigurationEditor = Base.extend({
     return ConfigurationEditorTab.find(this.$el).inputPropertyNames();
   },
 
+  visibleInputPropertyNames: function() {
+    return ConfigurationEditorTab.find(this.$el).visibleInputPropertyNames();
+  },
+
   inputLabels: function() {
     return ConfigurationEditorTab.find(this.$el).inputLabels();
   },
