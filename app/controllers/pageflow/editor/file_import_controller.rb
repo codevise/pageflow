@@ -19,24 +19,28 @@ module Pageflow
       def start_import_job
         entry = DraftEntry.find(entry_name)
 
-        @items = selected_files.map do |file|
-          file = file.permit(:file_name,
-                             :rights,
-                             :content_type,
-                             :file_size,
-                             :url,
-                             configuration: :alt)
-          entry_file, import_model = create_import_model entry, file
-          FileImportJob.perform_later import_model.id, file_importer_credentials
+        @items = files_params.map do |file_params|
+          file = entry.create_file!(file_type, file_params.except(:url))
+          file_import = create_file_import(file, file_params)
+
+          FileImportJob.perform_later(file_import.id, file_importer_credentials)
 
           {
-            file: entry_file,
-            source_url: file[:url]
+            file: file,
+            source_url: file_params[:url]
           }
         end
       end
 
       private
+
+      def create_file_import(file, file_params)
+        FileImport.create!(entry: file.entry,
+                           file_id: file.id,
+                           file_type: file_type.model.name,
+                           file_importer: file_importer.name,
+                           download_options: file_params.to_json)
+      end
 
       def authentication_provider
         file_importer.authentication_provider
@@ -50,28 +54,21 @@ module Pageflow
         params.require(:entry_id)
       end
 
-      def selected_files
-        params.require(:files)
+      def files_params
+        params
+          .permit(files: [:file_name,
+                          :rights,
+                          :content_type,
+                          :file_size,
+                          :url,
+                          configuration: :alt])
+          .require(:files)
       end
 
-      def collection_name
-        params.require(:collection)
-      end
-
-      def create_import_model(entry, file)
-        entry_file, file_type = create_entry_file entry, file
-        download_options = file.as_json
-        import_model = FileImport.create!(entry: entry_file.entry,
-                                          file_id: entry_file.id,
-                                          file_type: file_type.model.name,
-                                          file_importer: file_importer.name,
-                                          download_options: download_options.to_json)
-        [entry_file, import_model]
-      end
-
-      def create_entry_file(entry, file)
-        file_type = Pageflow.config.file_types.find_by_collection_name!(collection_name)
-        [entry.create_file!(file_type, file.except(:url)), file_type]
+      def file_type
+        @file_type ||= Pageflow.config.file_types.find_by_collection_name!(
+          params.require(:collection)
+        )
       end
 
       def file_importer
