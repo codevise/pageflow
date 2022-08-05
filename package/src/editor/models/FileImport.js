@@ -105,27 +105,17 @@ export const FileImport = Backbone.Model.extend({
           url: selections.at(index).get('source_url')
         }))
       },
-    }).then(function (data) {
-      if (data && data.data) {
-        var files = data.data;
-        if (files && files.length>0) {
-          files.forEach((file) => {
-            var localFile = selections.find(function (cFile) {
-              return cFile.get('attachment_on_s3_file_name') == file.file_name &&
-                cFile.get('source_url') == file.source_url && cFile.get('state') == 'uploadable'
-            });
-            if (localFile) {
-              state.files[collectionName].remove(localFile)
-              var fileType = editor.fileTypes.findByUpload(file);
-              file = new fileType.model(file, {
-                fileType: fileType
-              });
 
-              currentEntry.getFileCollection(fileType).add(file);
-              file.set('state', 'uploading');
-            }
-          });
-        }
+      success: function(items) {
+        items.forEach(item => {
+          const file = selections.find(file =>
+            file.get('source_url') == item.source_url
+          );
+
+          if (file) {
+            file.set(item.attributes);
+          }
+        });
       }
     });
   }

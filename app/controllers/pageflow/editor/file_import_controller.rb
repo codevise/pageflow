@@ -4,7 +4,6 @@ module Pageflow
     # appropriate file importer
     class FileImportController < Pageflow::ApplicationController
       before_action :authenticate_user!
-      respond_to :json
 
       def search
         result = file_importer.search file_importer_credentials, search_query
@@ -19,8 +18,8 @@ module Pageflow
 
       def start_import_job
         entry = DraftEntry.find(entry_name)
-        result = []
-        selected_files.each do |file|
+
+        @items = selected_files.map do |file|
           file = file.permit(:file_name,
                              :rights,
                              :content_type,
@@ -29,9 +28,12 @@ module Pageflow
                              configuration: :alt)
           entry_file, import_model = create_import_model entry, file
           FileImportJob.perform_later import_model.id, file_importer_credentials
-          result.push file_response(entry_file, file)
+
+          {
+            file: entry_file,
+            source_url: file[:url]
+          }
         end
-        render json: {data: result}
       end
 
       private
@@ -70,13 +72,6 @@ module Pageflow
       def create_entry_file(entry, file)
         file_type = Pageflow.config.file_types.find_by_collection_name!(collection_name)
         [entry.create_file!(file_type, file.except(:url)), file_type]
-      end
-
-      def file_response(entry_file, file)
-        entry_file = entry_file.as_json
-        entry_file['type'] = params[:collection]
-        entry_file['source_url'] = file[:url]
-        entry_file
       end
 
       def file_importer

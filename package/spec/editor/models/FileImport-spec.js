@@ -167,5 +167,48 @@ describe('FileImport', () => {
         ]
       });
     });
+
+    it('updates uploadable files form response', () => {
+      const entry = support.factories.entry({slug: 'test_entry'}, {
+        fileTypes: editor.fileTypes,
+        filesAttributes: {
+          image_files: [
+            {
+              state: 'uploadable',
+              file_name: 'image.png',
+              source_url: 'https://source.example.com/image.png'
+            }
+          ]
+        }
+      });
+      let fileImport = new FileImport({
+        importer: editor.fileImporters.find('test_importer'),
+        currentEntry: entry
+      });
+
+      fileImport.startImportJob('image_files');
+
+      testContext.server.respond(
+        'POST', '/editor/entries/test_entry/file_import/test_importer/start_import_job',
+        [201, {'Content-Type': 'application/json'}, JSON.stringify([
+          {
+            source_url: 'https://source.example.com/image.png',
+            attributes: {
+              id: 10,
+              perma_id: 2,
+              state: 'uploading'
+            }
+          }
+        ])]
+      );
+
+      const imageFileType = editor.fileTypes.findByCollectionName('image_files');
+      const imageFiles = entry.getFileCollection(imageFileType);
+      expect(imageFiles.first().attributes).toMatchObject({
+        id: 10,
+        perma_id: 2,
+        state: 'uploading'
+      });
+    });
   });
 });

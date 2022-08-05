@@ -175,10 +175,12 @@ module Pageflow
         meta_data = file_importer.files_meta_data(nil, selected_files)
         expect(file_importer).not_to receive(:donwload_file)
         expect {
-          post(:start_import_job, params: {files: meta_data[:files],
-                                           collection: meta_data[:collection],
-                                           file_import_name: file_importer.name,
-                                           entry_id: entry})
+          post(:start_import_job,
+               params: {files: meta_data[:files],
+                        collection: meta_data[:collection],
+                        file_import_name: file_importer.name,
+                        entry_id: entry},
+               format: :json)
         }.to raise_error(RuntimeError, "Unknown file importer with name '#{file_importer.name}'.")
 
         assert_performed_jobs 0
@@ -204,10 +206,12 @@ module Pageflow
         selected_files = {'0' => selected_file}
         meta_data = file_importer.files_meta_data(nil, selected_files)
         expect(file_importer).to receive(:download_file).with(token.auth_token, anything)
-        post(:start_import_job, params: {files: meta_data[:files],
-                                         collection: meta_data[:collection],
-                                         file_import_name: file_importer.name,
-                                         entry_id: entry})
+        post(:start_import_job,
+             params: {files: meta_data[:files],
+                      collection: meta_data[:collection],
+                      file_import_name: file_importer.name,
+                      entry_id: entry},
+             format: :json)
       end
 
       it 'creates the entry file and usage record in the database for each selected file' do
@@ -227,15 +231,14 @@ module Pageflow
         selected_file = file_importer.search(nil, nil)['photos'].first
         selected_files = {'0' => selected_file}
         meta_data = file_importer.files_meta_data(nil, selected_files)
-        post(:start_import_job, params: {files: meta_data[:files],
-                                         collection: meta_data[:collection],
-                                         file_import_name: file_importer.name,
-                                         entry_id: entry})
-        files = JSON.parse(response.body)['data']
-        expect(files.length).to eq(meta_data[:files].length)
-        files.each_with_index do |file, index|
-          expect(file['source_url']).to eq(meta_data[:files][index]['url'])
-        end
+        post(:start_import_job,
+             params: {files: meta_data[:files],
+                      collection: meta_data[:collection],
+                      file_import_name: file_importer.name,
+                      entry_id: entry},
+             format: :json)
+
+        expect(entry.draft.image_files.count).to eq(1)
       end
 
       it 'starts the file import job for each selected file' do
@@ -255,13 +258,60 @@ module Pageflow
         selected_file = file_importer.search(nil, nil)['photos'].first
         selected_files = {'0' => selected_file}
         meta_data = file_importer.files_meta_data(nil, selected_files)
-        post(:start_import_job, params: {files: meta_data[:files],
-                                         collection: meta_data[:collection],
-                                         file_import_name: file_importer.name,
-                                         entry_id: entry})
-        files = JSON.parse(response.body)['data']
-        expect(files.length).to eq(meta_data[:files].length)
-        assert_performed_jobs files.length * 2 # one job for file import and one for upload
+        post(:start_import_job,
+             params: {files: meta_data[:files],
+                      collection: meta_data[:collection],
+                      file_import_name: file_importer.name,
+                      entry_id: entry},
+             format: :json)
+
+        assert_performed_jobs selected_files.size * 2 # one job for file import and one for upload
+      end
+
+      it 'responds with list of files rendered from editor file partial' do
+        user = create(:user)
+        file_importer = TestFileImporter.new
+        entry = create(:entry,
+                       with_editor: user,
+                       with_feature: :test_file_importer)
+        sign_in(user, scope: :user)
+
+        pageflow_configure do |config|
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
+        end
+
+        selected_files = file_importer.search(nil, nil)['photos']
+        meta_data = file_importer.files_meta_data(nil,
+                                                  '0' => selected_files[0],
+                                                  '1' => selected_files[1])
+        post(:start_import_job,
+             params: {files: meta_data[:files],
+                      collection: meta_data[:collection],
+                      file_import_name: file_importer.name,
+                      entry_id: entry},
+             format: :json)
+
+        expect(response.body)
+          .to include_json([
+                             {
+                               source_url: selected_files[0]['url'],
+                               attributes: {
+                                 perma_id: (be > 0),
+                                 retryable: false,
+                                 file_name: a_kind_of(String)
+                               }
+                             },
+                             {
+                               source_url: selected_files[1]['url'],
+                               attributes: {
+                                 perma_id: (be > 0),
+                                 retryable: false,
+                                 file_name: a_kind_of(String)
+                               }
+                             }
+                           ])
       end
     end
   end
