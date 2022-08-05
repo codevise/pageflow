@@ -54,8 +54,12 @@ export const EditSectionView = EditConfigurationView.extend({
       this.input('backdropEffects', EffectListInputView, {
         visibleBinding: ['backdropType', 'backdropImage'],
         visible: ([backdropType]) =>
-          backdropType !== 'color' && this.model.getReference('backdropImage',
-                                                              'image_files')
+          (backdropType === 'image' &&
+           this.model.getReference('backdropImage',
+                                   'image_files')) ||
+          (backdropType === 'video' &&
+           this.model.getReference('backdropVideo',
+                                   'video_files'))
       });
       this.input('backdropImageMobile', FileInputView, {
         collection: 'image_files',
