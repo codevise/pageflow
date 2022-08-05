@@ -14,8 +14,6 @@ import {FileThumbnailView} from '../FileThumbnailView';
 
 import {state} from '$state';
 
-import template from '../../templates/inputs/fileInput.jst';
-
 /**
  * Input view to reference a file.
  *
@@ -24,7 +22,24 @@ import template from '../../templates/inputs/fileInput.jst';
 export const FileInputView = Marionette.ItemView.extend({
   mixins: [inputView],
 
-  template,
+  template: () => `
+    <label>
+      <span class="name"></span>
+      <span class="inline_help"></span>
+    </label>
+    <div class="file_thumbnail"></div>
+    <div class="file_name"></div>
+
+    <a href=""
+       class="unset"
+       title="${I18n.t('pageflow.ui.templates.inputs.file_input.reset')}">
+    </a>
+    <a href=""
+       class="choose"
+       title="${I18n.t('pageflow.ui.templates.inputs.file_input.edit')}">
+    </a>
+  `,
+
   className: 'file_input',
 
   ui: {
