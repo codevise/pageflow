@@ -20,8 +20,7 @@ module Pageflow
       def start_import_job
         entry = DraftEntry.find(entry_name)
         result = []
-        selected_files.each do |key, file|
-          file = key if file.nil?
+        selected_files.each do |file|
           file = file.permit(:file_name,
                              :rights,
                              :content_type,

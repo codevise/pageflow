@@ -92,19 +92,19 @@ export const FileImport = Backbone.Model.extend({
   },
   startImportJob: function (collectionName) {
     this.action = 'start_import_job';
-    var selections = state.files[collectionName].uploadable();
-    var jsonSelections = selections.toJSON();
-    jsonSelections.forEach(function (selection, index) {
-      selection['url'] = selections.at(index).get('source_url');
-    });
-    let currentEntry = this.get('currentEntry');
-    this.fetch({
-      data: {
+
+    const fileType = editor.fileTypes.findByCollectionName(collectionName);
+    const currentEntry = this.get('currentEntry');
+    const selections = currentEntry.getFileCollection(fileType).uploadable();
+
+    this.sync('create', this, {
+      attrs: {
         collection: collectionName,
-        files: jsonSelections
+        files: selections.toJSON().map((item, index) => ({
+          ...item,
+          url: selections.at(index).get('source_url')
+        }))
       },
-      postData: true,
-      type: 'POST'
     }).then(function (data) {
       if (data && data.data) {
         var files = data.data;

@@ -128,8 +128,44 @@ describe('FileImport', () => {
     });
   });
 
+  describe('startImportJob', () => {
+    support.useFakeXhr(() => testContext);
 
+    beforeEach(() => {
+      editor.fileTypes = support.factories.fileTypes(f => f.withImageFileType());
+    });
 
+    it('submits uploadable files to start_import_job endpoint', () => {
+      const entry = support.factories.entry({slug: 'test_entry'}, {
+        fileTypes: editor.fileTypes,
+        filesAttributes: {
+          image_files: [
+            {
+              state: 'uploadable',
+              file_name: 'image.png',
+              source_url: 'https://source.example.com/image.png'
+            }
+          ]
+        }
+      });
+      let fileImport = new FileImport({
+        importer: editor.fileImporters.find('test_importer'),
+        currentEntry: entry
+      });
 
+      fileImport.startImportJob('image_files');
 
+      expect(testContext.server.lastRequest.url)
+        .toBe('/editor/entries/test_entry/file_import/test_importer/start_import_job');
+      expect(JSON.parse(testContext.server.lastRequest.requestBody)).toMatchObject({
+        collection: 'image_files',
+        files: [
+          {
+            file_name: 'image.png',
+            url: 'https://source.example.com/image.png'
+          }
+        ]
+      });
+    });
+  });
 });
