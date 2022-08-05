@@ -9,8 +9,9 @@ import {EffectsCollection} from '../../collections/EffectsCollection';
 
 import styles from './EffectListInputView.module.css';
 
-export const EffectListInputView = Marionette.View.extend({
+export const EffectListInputView = Marionette.ItemView.extend({
   className: styles.view,
+  template: () => '',
 
   mixins: [inputView],
 
@@ -24,7 +25,7 @@ export const EffectListInputView = Marionette.View.extend({
     });
   },
 
-  render() {
+  onRender() {
     this.appendSubview(new CollectionView({
       itemViewConstructor: EffectListItemView,
       itemViewOptions: {effects: this.effects},
@@ -45,10 +46,6 @@ export const EffectListInputView = Marionette.View.extend({
 
     update();
     this.listenTo(unusedEffects, 'add remove', update);
-
-    this.setupAttributeBinding('visible', this.updateVisible);
-
-    return this;
   }
 });
 
