@@ -18,6 +18,7 @@ module Pageflow
 
       def start_import_job
         entry = DraftEntry.find(entry_name)
+        authorize!(:edit, entry.to_model)
 
         @items = files_params.map do |file_params|
           file = entry.create_file!(file_type, file_params.except(:url))
@@ -25,10 +26,7 @@ module Pageflow
 
           FileImportJob.perform_later(file_import.id, file_importer_credentials)
 
-          {
-            file: file,
-            source_url: file_params[:url]
-          }
+          {file: file, source_url: file_params[:url]}
         end
       end
 

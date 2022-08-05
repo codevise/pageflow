@@ -159,6 +159,33 @@ module Pageflow
         clear_performed_jobs
       end
 
+      it 'does not allow importing files for entries the signed in user is not editor of' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        file_importer = TestFileImporter.new
+
+        pageflow_configure do |config|
+          config.file_importers.register(file_importer)
+        end
+
+        sign_in(user, scope: :user)
+
+        selected_file = file_importer.search(nil, nil)['photos'].first
+        selected_files = {'0' => selected_file}
+        meta_data = file_importer.files_meta_data(nil, selected_files)
+
+        expect(file_importer).not_to receive(:donwload_file)
+
+        post(:start_import_job,
+             params: {files: meta_data[:files],
+                      collection: meta_data[:collection],
+                      file_import_name: file_importer.name,
+                      entry_id: entry},
+             format: :json)
+
+        expect(response.status).to eq(403)
+      end
+
       it 'does not start the import job if importer is disabled' do
         user = create(:user)
         file_importer = TestFileImporter.new
