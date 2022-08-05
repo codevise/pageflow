@@ -12,7 +12,8 @@ module Pageflow
       end
 
       def files_meta_data
-        result = file_importer.files_meta_data file_importer_credentials, selected_files
+        result = file_importer.files_meta_data(file_importer_credentials,
+                                               params.require(:files))
         render json: {data: result}
       end
 
