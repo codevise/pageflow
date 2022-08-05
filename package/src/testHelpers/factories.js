@@ -124,6 +124,23 @@ export const factories = {
         return this;
       },
 
+      withAudioFileType: function(options) {
+        fileTypes.register('audio_files', _.extend({
+          model: VideoFile,
+          matchUpload: /^audio/,
+          topLevelType: true
+        }, options));
+
+        fileTypesSetupArray.push({
+          collectionName: 'audio_files',
+          typeName: 'Pageflow::AudioFile',
+          i18nKey: 'pageflow/audio_files',
+          nestedFileTypes: [{collectionName: 'text_track_files'}]
+        });
+
+        return this;
+      },
+
       withTextTrackFileType: function(options) {
         fileTypes.register('text_track_files', _.extend({
           model: TextTrackFile,

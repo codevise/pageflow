@@ -11,6 +11,12 @@ export const ConfigurationEditorTab = Base.extend({
     }).get();
   },
 
+  visibleInputPropertyNames: function() {
+    return this.$el.find('.input:not(.input-hidden_via_binding)').map(function() {
+      return $(this).data('inputPropertyName');
+    }).get();
+  },
+
   inputLabels: function() {
     return this.$el.find('.input').map(function() {
       return $(this).data('labelText');
