@@ -46,8 +46,7 @@ module Pageflow
         collection: 'image_files',
         files: []
       }
-      selected_files.each do | key, file|
-        file = key if file.nil?
+      selected_files.each do |_key, file|
         meta_data[:files].push file_meta_data file
       end
       meta_data
