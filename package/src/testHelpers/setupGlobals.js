@@ -3,7 +3,7 @@ import _ from 'underscore';
 import {state} from '$state';
 
 /**
- * Setup global state for testing Backbone editro components.
+ * Setup global state for testing Backbone editor components.
  *
  * For some editor components like (some views or models) it's easier
  * to depend on the global mutable state (available via the `$state`
@@ -23,11 +23,7 @@ export const setupGlobals = function(mapping) {
     }
 
     globalsBackup = {};
-
-    _.each(mapping, function(value, key) {
-      globalsBackup[key] = state[key];
-      state[key] = typeof value === 'function' ? value.call(this) : value;
-    });
+    setGlobals(mapping);
   });
 
   afterEach(() => {
@@ -37,4 +33,17 @@ export const setupGlobals = function(mapping) {
 
     globalsBackup = null;
   });
+
+  function setGlobals(mapping) {
+    _.each(mapping, function(value, key) {
+      globalsBackup[key] = state[key];
+      state[key] = typeof value === 'function' ? value.call(this) : value;
+    });
+
+    return mapping;
+  }
+
+  return {
+    setGlobals
+  };
 };
