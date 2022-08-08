@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import ReactPlayer from 'react-player';
 
 import {getProviderName} from './getProviderName';
@@ -12,6 +12,7 @@ import {
   FitViewport,
   useContentElementLifecycle,
   useContentElementEditorState,
+  useAtmo,
   useAudioFocus,
   useFile
 } from 'pageflow-scrolled/frontend';
@@ -85,6 +86,18 @@ function PreparedPlayer({
     return [config.hideControls, config.hideInfo].join('');
   }
 
+  const atmoHooks = useAtmoHooks(configuration.atmoDuringPlayback);
+
+  function onPlay() {
+    setPlayerState('playing');
+    atmoHooks.before();
+  }
+
+  function onPauseOrEnd() {
+    setPlayerState('paused');
+    atmoHooks.after();
+  }
+
   return (
     <ThirdPartyOptIn providerName={providerName}>
       {({consentedHere}) => (
@@ -92,9 +105,9 @@ function PreparedPlayer({
                      key={keyFromConfiguration(configuration)}
                      url={configuration.videoSource}
                      playing={playerState !== 'paused'}
-                     onPlay={() => setPlayerState('playing')}
-                     onPause={() => setPlayerState('paused')}
-                     onEnded={() => setPlayerState('paused')}
+                     onPlay={onPlay}
+                     onPause={onPauseOrEnd}
+                     onEnded={onPauseOrEnd}
                      light={!consentedHere && playerState === 'unplayed' ?
                             (posterUrl || true) :
                             false}
@@ -116,4 +129,34 @@ function PreparedPlayer({
       )}
     </ThirdPartyOptIn>
   );
+}
+
+function useAtmoHooks(atmoDuringPlayback) {
+  const atmo = useAtmo();
+
+  return useMemo(() => {
+    const {before, after} = atmo.createMediaPlayerHooks(atmoDuringPlayback);
+    let timeout;
+
+    return {
+      before() {
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+        else {
+          before();
+        }
+      },
+
+      after() {
+        // When seeking in the video pause and play events
+        // fired. Prevent briefly fading the atmo back in.
+        timeout = setTimeout(() => {
+          after();
+          timeout = null;
+        }, 1000)
+      }
+    }
+  }, [atmo, atmoDuringPlayback]);
 }
