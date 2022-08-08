@@ -65,6 +65,12 @@ function PreparedPlayer({
     }
   });
 
+  useContentElementLifecycle({
+    onInvisible() {
+      setPlayerState('paused');
+    }
+  });
+
   const posterImageFile = useFile({
     collectionName: 'imageFiles',
     permaId: configuration.posterId
