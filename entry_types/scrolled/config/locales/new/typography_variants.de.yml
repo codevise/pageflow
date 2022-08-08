@@ -1,7 +1,0 @@
-de:
-  pageflow_scrolled:
-    editor:
-      common_content_element_attributes:
-        typographyVariant:
-          label: Variante
-          blank: (Standard)

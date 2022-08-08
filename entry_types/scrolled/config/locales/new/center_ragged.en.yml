@@ -1,9 +1,0 @@
-en:
-  pageflow_scrolled:
-    editor:
-      edit_section:
-        attributes:
-          layout:
-            values:
-              centerRagged: "Centered (Ragged)"
-              center: "Centered"

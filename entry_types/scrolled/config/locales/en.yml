@@ -1,6 +1,24 @@
 en:
+  pageflow:
+    datawrapper_chart_embed_opt_in:
+      feature_name: Opt-in for Datawrapper embeds
+    iframe_embed_content_element:
+      feature_name: iframe embed content element
   pageflow_scrolled:
     editor:
+      backdrop_effects:
+        blur:
+          label: Blur
+        brightness:
+          label: Brightness
+        contrast:
+          label: Contast
+        grayscale:
+          label: Grayscale
+        saturate:
+          label: Saturate
+        sepia:
+          label: Sepia
       blank_entry:
         create_chapter: Click <em>New chapter</em> to create your first chapter.
         create_content_element: Use the <em>Plus buttons</em> inside the preview to add text blocks and other elements.
@@ -29,6 +47,20 @@ en:
             right: Floated right
             sticky: Sticky
             wide: Wide
+        typographyVariant:
+          blank: "(Default)"
+          label: Variant
+      content_element_categories:
+        basic:
+          name: Basic
+        data:
+          name: Data and Diagrams
+        interactive:
+          name: Interactive
+        links:
+          name: Links
+        media:
+          name: Media
       content_elements:
         dataWrapperChart:
           attributes:
@@ -43,6 +75,7 @@ en:
             url:
               inline_help: URL of a chart published via Datawrapper. Datawrapper offers a special 'Pageflow' layout selectable on the 'Design' tab for optimal display inside Pageflow.
               label: Chart URL
+          description: Embedded chart created with Datawrapper
           name: DataWrapper Chart
           tabs:
             general: Chart
@@ -66,6 +99,7 @@ en:
           back: Back
           confirm_delete: Are you sure you want to delete this element?
           confirm_delete_link: Are you sure you want to delete this link?
+          description: A collection of links to external websites
           destroy: Delete
           name: External links
           outline: Outline
@@ -76,9 +110,75 @@ en:
           attributes:
             children:
               label: Text
+            hyphens:
+              inline_help: |
+                With manual hyphenation, words are only ever separated
+                at positions that have been marked with a soft
+                hyphen. This helps prevent separating words at
+                unwanted positions. Without soft hyphens, long words
+                will be continued to the next line without a hyphen.
+                Therefore, always double check mobile display when
+                using manual hyphenation.
+              label: Hyphenation
+              values:
+                auto: Automatic
+                manual: Manual
+            textSize:
+              inline_help: |
+                By default, a heading in the first section of the
+                entry is large. Headings in later sections have small
+                text size.
+              label: Text size
+              values:
+                auto: "(Auto)"
+                large: Large
+                medium: Medium
+                small: Small
+          description: Entry or chapter title
+          help_texts:
+            shortcuts: |
+              <dl class="shortcuts">
+                <dt><kbd>Shift</kbd> + <kbd>Enter</kbd></dt>
+                <dd>
+                  Insert soft hyphen.
+                </dd>
+              </dl>
           name: Heading
           tabs:
             general: Heading
+        iframeEmbed:
+          attributes:
+            aspectRatio:
+              label: Aspect Ratio
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Square (1:1)
+                wide: Landscape (16:9)
+            portraitAspectRatio:
+              blank: "(Default)"
+              label: Aspect Ratio (Portrait)
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Square (1:1)
+                wide: Landscape (16:9)
+            scale:
+              label: Scale
+              values:
+                p100: 100%
+                p33: 33%
+                p50: 50%
+                p75: 75%
+            source:
+              label: URL
+            title:
+              inline_help: Used by screen readers to describe the chart as a whole.
+              label: Title
+          description: Embed externally hosted websites
+          name: iframe Embed
+          tabs:
+            general: iframe Embed
         inlineAudio:
           attributes:
             atmoDuringPlayback:
@@ -92,14 +192,18 @@ en:
               label: Audio
             playerControlVariant:
               inline_help: Choose the style of player controls.
-              label: Player Controls
+              label: Waveform Style
               values:
                 classic: Classic
+                waveform: Waveform (Fein)
+                waveformBars: Waveform (Bars)
+                waveformLines: Waveform (Lines)
             posterId:
               label: Poster
             waveformColor:
               inline_help: Color of the waveform's parts that represents the already played part of the audio.
               label: Waveform Color
+          description: Player or waveform with controls
           name: Inline Audio
           tabs:
             general: Inline Audio
@@ -123,6 +227,7 @@ en:
             slider_color:
               inline_help: You can configure slider color (incl. slider handle) freely. Make sure that the slider can be seen clearly on every position over the entire Before/After area.
               label: Slider Color
+          description: Compare to images using a slider
           name: Before/After
           tabs:
             general: Before/After
@@ -130,6 +235,10 @@ en:
           attributes:
             id:
               label: Image
+            portraitId:
+              inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to provide an alternative to a landscape image that would otherwise be displayed too small.
+              label: Image (Portrait)
+          description: Display an image
           name: Inline Image
           tabs:
             general: Inline Image
@@ -142,18 +251,41 @@ en:
                 mute: Mute
                 play: Keep playing
                 turnDown: Keep playing at lower volume
+            hideControlBar:
+              inline_help: For short videos where there is no need to seek.
+              inline_help_disabled: Controls are always hidden for videos with playback mode "Loop".
+              label: Hide controls
             id:
               label: Video
+            playbackMode:
+              inline_help_html: Determines how the video starts:<ul><li><strong>Manual:</strong> When the user clicks the video.</li><li><strong>Autoplay:</strong> When the video is scrolled to the center of the browser viewport.</li><li><strong>Loop:</strong> In an endless loop soon as it becomes visible.</li></ul>
+              label: Playback Mode
+              values:
+                autoplay: Autoplay
+                loop: Loop
+                manual: Manual
             posterId:
               label: Poster
+            rewindOnUnmute:
+              inline_help_html: Prevent users from missing important content when videos are autoplayed without sound.<br /><br />Alternatively, you can add an audio replacement text track to the video. It will be displayed automatically as long as the entry is muted.
+              label: "...and play from the beginning"
+            unmute:
+              inline_help_html: The click is used to activate sound for the whole entry.<br /><br />After the click, atmo audios and audio of following video elements can then immediately be played.<br /><br />If this option is active, the video element displays an animated indicator icon when autoplaying without sound.
+              label: "...when user clicks video"
+            unmuteLabel:
+              inline_help_html: By default browsers only allow autoplaying videos with sound after a user interaction. To still be able to autoplay videos, entries therefore start muted.<br /><br />Sound can be activated using the speaker icon in the navigation bar or via an "Audio notice" element that has been placed in the entry.
+              label: Unmute entry
+          description: Player with controls
           name: Inline Video
           tabs:
             general: Inline Video
         soundDisclaimer:
+          description: Make sure users unmute before continuing
           name: Audio Notice
           tabs:
             general: Audio Notice
         textBlock:
+          description: Text with lists, block quotes and sub-headings
           name: Text Block
           tabs:
             general: Text Block
@@ -172,8 +304,11 @@ en:
             hideInfo:
               inline_help: Hides the video title and author info inside the embed if possible (depends on the videos provider and configuration).
               label: Hide title in embed
+            posterId:
+              label: Poster
             videoSource:
               label: Video-URL
+          description: Embed a video from YouTube, Vimeo or Facebook
           name: Video Embed
           tabs:
             general: Video-Embed
@@ -185,6 +320,7 @@ en:
               label: Initial Pitch
             initialYaw:
               label: Initial Yaw
+          description: Interactive panorama using an image with rectangular projection
           name: 360° Image
       edit_chapter:
         attributes:
@@ -254,26 +390,37 @@ en:
             inline_help: This setting controls the position of the scrolling foreground layer of the section on desktop devices. On mobile devices the foreground layer will automatically become centered.
             label: Content alignment
             values:
+              center: Centered
+              centerRagged: Centered (Ragged)
               left: Left
               right: Right
           staticShadowOpacity:
             inline_help: Intensity of the shadow displayed behind text when section content and motif area fit side by side or no motif area has been specified. For left or right aligned content, the shadow has the form of a horizontal gradient. When "Content alignment" is set to "Center", the shadow is displayed as a translucent layer behind the text.
             label: Static shadow
+          width:
+            label: Width
+            values:
+              narrow: Narrow
+              wide: Wide
         edit_motif_area: Select motif area...
         tabs:
           section: Section
       edit_section_transition:
         attributes:
           transition:
+            default_transition: Used as default for new sections
             inline_help: This setting defines the transition when scrolling from the previous section to the current. The different settings have specific effects concerning the behaviors of background and foreground. The effects "Cross-Fade All" and "Cross-Fade Backgrounds" are only available if the "Use Full Viewport-Height" option has been enabled in the settings of both adjacent sections.
             label: Effect
+            mark_as_default_transition: Use as default for new sections
             values:
               beforeAfter: Scrolling with static Backgrounds
-              fade: Also fade section content
-              fadeBg: Cross Fade
+              fade: Cross Fade
               reveal: Reveal
               scroll: Scroll
               scrollOver: Scroll Over
+            variants:
+              fade: Also fade content of sections
+              fadeBg: Fade only section backgrounds
         confirm_destroy: |-
           Really delete this section including ALL its elements?
 
@@ -281,6 +428,9 @@ en:
         save_error: There was an error while saving this section.
         tabs:
           transition: Transition
+      effect_list_input:
+        add: Add effect...
+        remove: Remove
       entry_outline:
         add_chapter: New chapter
         header: Outline
@@ -404,6 +554,18 @@ en:
     public:
       chart:
         default_title: Interactive chart
+      consent_accept_all: Accept all and close
+      consent_configure: More Information
+      consent_deny_all: Deny
+      consent_expand_vendor: More information
+      consent_no_vendors: Currently not using any third party integrations.
+      consent_prompt_html: |-
+        This website uses third party technologies.
+        We are asking your permission to use these technologies.
+        You can always change or withdraw your consent later via our
+        <a href="%{privacyLinkUrl}" target="_blank">privacy policy</a> page.
+      consent_save: Save selection
+      consent_settings: Privacy Settings
       enter_fullscreen: Fullscreen
       exit_fullscreen: Exit fullscreen
       image_rights: Image rights
@@ -464,6 +626,9 @@ en:
         confirm: Okay
         opt_in_prompt:
           datawrapper: I agree with being shown Datawrapper graphs.
+          facebook: I agree with being shown Facebook videos.
+          vimeo: I agree with being shown Vimeo videos.
+          youtube: I agree with being shown YouTube videos.
         opt_out:
           prompt: To opt out of displaying external embeds, change your settings %{link}.
           prompt_link: here

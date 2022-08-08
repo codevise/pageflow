@@ -1,6 +1,24 @@
 de:
+  pageflow:
+    datawrapper_chart_embed_opt_in:
+      feature_name: Opt-in für Datawrapper Embeds
+    iframe_embed_content_element:
+      feature_name: iframe-Embed Inhaltselement
   pageflow_scrolled:
     editor:
+      backdrop_effects:
+        blur:
+          label: Unschärfe
+        brightness:
+          label: Helligkeit
+        contrast:
+          label: Kontrast
+        grayscale:
+          label: Graustufen
+        saturate:
+          label: Sättigung
+        sepia:
+          label: Sepia
       blank_entry:
         create_chapter: Klicke jetzt auf <em>Neues Kapitel</em>, um ein erstes Kapitel zu erstellen.
         create_content_element: Über die <em>Plus-Buttons</em> in der Vorschau kannst du Elemente hinzufügen.
@@ -29,6 +47,20 @@ de:
             right: Rechts eingerückt
             sticky: Sticky
             wide: Breit
+        typographyVariant:
+          blank: "(Standard)"
+          label: Variante
+      content_element_categories:
+        basic:
+          name: Basic
+        data:
+          name: Daten und Diagramme
+        interactive:
+          name: Interaktiv
+        links:
+          name: Verweise
+        media:
+          name: Media
       content_elements:
         dataWrapperChart:
           attributes:
@@ -43,6 +75,7 @@ de:
             url:
               inline_help: URL zu einem bei Datawrapper publizierten Diagramm. Datawrapper bietet in den Diagramm Optionen ein spezielles "Pageflow"-Design für eine optimale Darstellung innerhalb des Beitrags.
               label: Diagramm URL
+          description: Einbindung von Diagrammen, die mit Datawrapper erstellt wurden
           name: DataWrapper Diagramm
           tabs:
             general: Diagramm
@@ -66,6 +99,7 @@ de:
           back: Zurück
           confirm_delete: Soll das Element wirklich gelöscht werden?
           confirm_delete_link: Soll der Link wirklich gelöscht werden?
+          description: Sammlung von Verweisen zu Webseiten außerhalb des Beitrags
           destroy: Löschen
           name: Externe Verweise
           outline: Gliederung
@@ -76,9 +110,76 @@ de:
           attributes:
             children:
               label: Text
+            hyphens:
+              inline_help: |
+                Bei manueller Silbentrennung werden Worte nur an
+                Stellen getrennt, die durch einen bedingten
+                Trennstrich ausgezeichnet wurden. Du kannst so
+                Trennung an unerwünschten Stellen verhindern.  Ohne
+                bedingte Trennstriche werden lange Worte in der
+                nächsten Zeile ohne Bindestrich fortgesetzt.  Prüfe
+                daher insbesondere die mobile Darstellung, wenn du
+                manuelle Silbentrennung verwendest.
+              label: Silbentrennung
+              values:
+                auto: Automatisch
+                manual: Manuell
+            textSize:
+              inline_help: |
+                Standardmäßig haben Überschriften im ersten Abschnitt
+                des Beitrags große Schrift. Überschriften in späteren
+                Abschnitten verwenden Schriftgröße "Klein".
+              label: Schriftgröße
+              values:
+                auto: "(Automatisch)"
+                large: Groß
+                medium: Mittel
+                small: Klein
+          description: Beitrags- oder Kapiteltitel
+          help_texts:
+            shortcuts: |
+              <dl class="shortcuts">
+                <dt><kbd>Shift</kbd> + <kbd>Enter</kbd></dt>
+                <dd>
+                  Bedingten Trennstrich einfügen.
+                </dd>
+              </dl>
           name: Überschrift
           tabs:
             general: Überschrift
+        iframeEmbed:
+          attributes:
+            aspectRatio:
+              label: Seitenverhältnis
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Quadratisch (1:1)
+                wide: Landscape (16:9)
+            portraitAspectRatio:
+              blank: "(Standard)"
+              label: Seitenverhältnis (Hochkant)
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Quadratisch (1:1)
+                wide: Landscape (16:9)
+            scale:
+              label: Skalieren
+              values:
+                p100: 100%
+                p33: 33%
+                p50: 50%
+                p75: 75%
+            source:
+              label: URL
+            title:
+              inline_help: Dieser Titel wird von Screenreadern verwendet, um das iframe als Ganzes zu beschreiben.
+              label: Titel
+          description: Einbindung einer extern gehosteten Website
+          name: iframe-Embed
+          tabs:
+            general: iframe-Embed
         inlineAudio:
           attributes:
             atmoDuringPlayback:
@@ -95,11 +196,15 @@ de:
               label: Player Controls
               values:
                 classic: Klassisch
+                waveform: Waveform (Fein)
+                waveformBars: Waveform (Balken)
+                waveformLines: Waveform (Linien)
             posterId:
               label: Poster
             waveformColor:
               inline_help: Farbe des Bereichs der Waveform, der den bereits abgespielten Teil der Audio-Datei repräsentiert.
               label: Waveform Farbe
+          description: Wiedergabe einer Audiodatei mit Steuerelementen
           name: Inline-Audio
           tabs:
             general: Inline-Audio
@@ -123,6 +228,7 @@ de:
             slider_color:
               inline_help: Farbe des Schiebereglers inklusive Griff kann frei konfiguriert werden. Achte auf gute Sichtbarkeit des Reglers über den gesamten Vorher/Nachher-Bereich.
               label: Schieberegler-Farbe
+          description: Zwei übereinandergelegte Bilder mit Schieberegler getrennt
           name: Vorher/Nachher
           tabs:
             general: Vorher/Nachher
@@ -130,6 +236,10 @@ de:
           attributes:
             id:
               label: Bild
+            portraitId:
+              inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Bild konfiguriert werden, das ansonsten zu klein dargestellt würde.
+              label: Bild (Hochkant)
+          description: Einbindung von Bildern
           name: Inline-Bild
           tabs:
             general: Inline-Bild
@@ -142,18 +252,41 @@ de:
                 mute: Ausblenden
                 play: Weiterspielen
                 turnDown: Leiser weiterspielen
+            hideControlBar:
+              inline_help: Für kurze Videos, bei denen der Benutzer nicht an bestimmte Stellen springen will.
+              inline_help_disabled: Für Videos mit Wiedergabe-Modus "Loop" sind die Controls immer ausgeblendet.
+              label: Controls ausblenden
             id:
               label: Video
+            playbackMode:
+              inline_help_html: Bestimme, wie das Video gestartet wird:<ul><li><strong>Manuell:</strong> Durch einen Klick des Benutzers.</li><li><strong>Automatisch:</strong> Wenn es die Mitte des Browser-Viewports erreicht.</li><li><strong>Loop:</strong> In Endlosschleife sobald es sichtbar wird.</li></ul>
+              label: Wiedergabe-Modus
+              values:
+                autoplay: Automatisch
+                loop: Loop
+                manual: Manuell
             posterId:
               label: Poster
+            rewindOnUnmute:
+              inline_help_html: Verhindere, dass der Benutzer bei einem automatisch ohne Ton gestarteten Video wichtige Inhalte verpasst.<br /><br />Alternativ kann dem Video eine Ton-Ersatz-Textspur hinzugefügt werden. Diese wird automatisch gezeigt solange der Beitrag stummgeschaltet ist.
+              label: "...und Video von vorne abspielen"
+            unmute:
+              inline_help_html: Der Klick auf das Video wird verwendet, um den Ton für den gesamten Beitrag zu aktivieren.<br /><br />Nach dem Klick können Atmo-Audios sowie der Ton nachfolgender Videos dann unmittelbar wiedergegeben werden.<br /><br />Wenn diese Option aktiviert ist, wird bei automatisch ohne Ton gestarteten Videos ein animierter Indikator angezeigt, der auf die Stummschaltung hinweist.
+              label: "...bei Klick auf Video aufheben"
+            unmuteLabel:
+              inline_help_html: Browser erlauben standardmäßig das Abspielen von Videos mit Ton nur nach einer Benutzer-Interaktion. Um Videos dennoch automatisch abspielen zu können, sind Beiträge zu Beginn stummgeschaltet.<br /><br />Die Stummschaltung kann z.B. über das Lautsprecher-Icon in der Navigationsleiste oder ein im Beitrag platziertes "Audio-Hinweis"-Element aufgehoben werden.
+              label: Stummschaltung des Beitrags
+          description: Wiedergabe einer Videodatei mit Steuerelementen
           name: Inline-Video
           tabs:
             general: Inline-Video
         soundDisclaimer:
+          description: Lass den Leser den Ton aktiveren
           name: Audio-Hinweis
           tabs:
             general: Audio-Hinweis
         textBlock:
+          description: Text mit Listen, Zitaten und Zwischenüberschriften
           name: Text-Block
           tabs:
             general: Text-Block
@@ -172,8 +305,11 @@ de:
             hideInfo:
               inline_help: Blendet Titel und Author Informationen innerhalb des Embeds aus wenn möglich (variiert je nach Anbieter und Konfiguration)
               label: Titel in Embed ausblenden
+            posterId:
+              label: Poster
             videoSource:
               label: Video-URL
+          description: Bettet ein externes Video von YouTube, Vimeo oder Facebook ein
           name: Video Embed
           tabs:
             general: Video-Embed
@@ -185,6 +321,7 @@ de:
               label: Initialer Gierungswinkel
             initialYaw:
               label: Initialer Neigungswinkel
+          description: Interaktives Panorama aus Bild mit rektangularer Projektion
           name: 360°-Bild
       edit_chapter:
         attributes:
@@ -255,26 +392,36 @@ de:
             label: Vordergrund-Positionierung
             values:
               center: Mitte
+              centerRagged: Zentriert
               left: Links
               right: Rechts
           staticShadowOpacity:
             inline_help: Intensität des Schattens, der hinter dem Text angezeigt wird, wenn Inhalt und Motivbereich nebeneinander dargestellt werden können oder kein Motivbereich markiert wurde. Bei links oder rechts positioniertem Vordergrund hat dieser Schatten die Form eines horizontal verlaufenden halbtransparenten Farbverlaufs. Bei "Vordergrund-Position" "Mitte", wird eine gleichmäßige halbtransparente Abblendung hinter dem Text gezeigt.
             label: Statische Abblendung
+          width:
+            label: Laufweite
+            values:
+              narrow: Schmal
+              wide: Breit
         edit_motif_area: Motivbereich markieren...
         tabs:
           section: Abschnitt
       edit_section_transition:
         attributes:
           transition:
+            default_transition: Wird als Standard für neue Abschnitte verwendet
             inline_help: Diese Einstellung definiert den Übergang vom vorigen Abschnitt zu diesem. Der Übergang wirkt sich jeweils auf den Hintergrund und den Vordergrund unterschiedlich aus. Die Effekte "Alles Überblenden" und "Nur Hintergrund überblenden" stehen nur zur Verfügung, wenn für beide angrenzende Abschnitte die Option "Volle Viewport-Höhe" aktiviert ist.
             label: Effekt
+            mark_as_default_transition: Als Standard für neue Abschnitte verwenden
             values:
               beforeAfter: Scrollen mit statischen Hintergründen
-              fade: Inhalt des Abschnitts ebenfalls überblenden
-              fadeBg: Überblenden
+              fade: Überblenden
               reveal: Freilegen
               scroll: Aus-/Einscrollen
               scrollOver: Überlagern
+            variants:
+              fade: Inhalte der Abschnitte ebenfalls überblenden
+              fadeBg: Nur Hintergründe der Abschnitte überblenden
         confirm_destroy: |-
           Abschnitt einschließlich ALLER enthaltener Elemente wirklich löschen?
 
@@ -282,6 +429,9 @@ de:
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
         tabs:
           transition: Übergang
+      effect_list_input:
+        add: Effekt hinzufügen...
+        remove: Entfernen
       entry_outline:
         add_chapter: Neues Kapitel
         header: Gliederung
@@ -586,6 +736,19 @@ de:
     public:
       chart:
         default_title: Interaktives Diagramm
+      consent_accept_all: Alle akzeptieren und schließen
+      consent_configure: Mehr Informationen
+      consent_deny_all: Ablehnen
+      consent_expand_vendor: Mehr Informationen
+      consent_no_vendors: Es werden im Moment keine Drittanbieter verwendet.
+      consent_prompt_html: |-
+        Diese Website nutzt Technologien von Drittanbietern.
+        Wir bitten Sie hiermit um Erlaubnis, diese Technologien zu verwenden.
+        Sie können Ihre Einwilligung später jederzeit auf unserer Seite zur
+        <a href="%{privacyLinkUrl}" target="_blank">Datenschutzerklärung</a>
+        ändern oder widerrufen.
+      consent_save: Auswahl speichern
+      consent_settings: Privatsphäre-Einstellungen
       enter_fullscreen: Vollbild
       exit_fullscreen: Vollbild verlassen
       image_rights: Bildrechte
@@ -646,6 +809,9 @@ de:
         confirm: Einverstanden
         opt_in_prompt:
           datawrapper: Ich bin damit einverstanden, dass mir Diagramme von Datawrapper angezeigt werden.
+          facebook: Ich bin damit einverstanden, dass mir Facebook Videos gezeigt werden.
+          vimeo: Ich bin damit einverstanden, dass mir Vimeo Videos gezeigt werden.
+          youtube: Ich bin damit einverstanden, dass mir YouTube Videos gezeigt werden.
         opt_out:
           prompt: Um externe Dienste auszuschalten, %{link} klicken.
           prompt_link: hier
