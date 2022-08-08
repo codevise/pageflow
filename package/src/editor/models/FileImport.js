@@ -92,40 +92,30 @@ export const FileImport = Backbone.Model.extend({
   },
   startImportJob: function (collectionName) {
     this.action = 'start_import_job';
-    var selections = state.files[collectionName].uploadable();
-    var jsonSelections = selections.toJSON();
-    jsonSelections.forEach(function (selection, index) {
-      selection['url'] = selections.at(index).get('source_url');
-    });
-    let currentEntry = this.get('currentEntry');
-    this.fetch({
-      data: {
-        collection: collectionName,
-        files: jsonSelections
-      },
-      postData: true,
-      type: 'POST'
-    }).then(function (data) {
-      if (data && data.data) {
-        var files = data.data;
-        if (files && files.length>0) {
-          files.forEach((file) => {
-            var localFile = selections.find(function (cFile) {
-              return cFile.get('attachment_on_s3_file_name') == file.file_name &&
-                cFile.get('source_url') == file.source_url && cFile.get('state') == 'uploadable'
-            });
-            if (localFile) {
-              state.files[collectionName].remove(localFile)
-              var fileType = editor.fileTypes.findByUpload(file);
-              file = new fileType.model(file, {
-                fileType: fileType
-              });
 
-              currentEntry.getFileCollection(fileType).add(file);
-              file.set('state', 'uploading');
-            }
-          });
-        }
+    const fileType = editor.fileTypes.findByCollectionName(collectionName);
+    const currentEntry = this.get('currentEntry');
+    const selections = currentEntry.getFileCollection(fileType).uploadable();
+
+    this.sync('create', this, {
+      attrs: {
+        collection: collectionName,
+        files: selections.toJSON().map((item, index) => ({
+          ...item,
+          url: selections.at(index).get('source_url')
+        }))
+      },
+
+      success: function(items) {
+        items.forEach(item => {
+          const file = selections.find(file =>
+            file.get('source_url') == item.source_url
+          );
+
+          if (file) {
+            file.set(item.attributes);
+          }
+        });
       }
     });
   }
