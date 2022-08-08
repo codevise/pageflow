@@ -1,0 +1,13 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        videoEmbed:
+          attributes:
+            atmoDuringPlayback:
+              inline_help: Wähle wie sich die Atmo während der Wiedergabe des Video-Embeds verhalten soll.
+              label: Atmo während Medien-Wiedergabe
+              values:
+                mute: Ausblenden
+                play: Weiterspielen
+                turnDown: Leiser weiterspielen

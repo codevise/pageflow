@@ -1,5 +1,5 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {CheckBoxInputView, SelectInputView, UrlInputView} from 'pageflow/ui';
+import {CheckBoxInputView, SelectInputView, SeparatorView, UrlInputView} from 'pageflow/ui';
 import {FileInputView} from 'pageflow/editor';
 
 import pictogram from './pictogram.svg';
@@ -36,6 +36,15 @@ editor.contentElementTypes.register('videoEmbed', {
       this.input('aspectRatio', SelectInputView, {
         values: ['wide', 'narrow', 'square', 'portrait']
       });
+
+      this.view(SeparatorView);
+
+      this.input('atmoDuringPlayback', SelectInputView, {
+        values: ['play', 'mute', 'turnDown']
+      });
+
+      this.view(SeparatorView);
+
       this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });
