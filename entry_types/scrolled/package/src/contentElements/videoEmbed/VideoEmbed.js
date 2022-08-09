@@ -142,7 +142,8 @@ function useAtmoHooks(atmoDuringPlayback) {
   const atmo = useAtmo();
 
   return useMemo(() => {
-    const {before, after} = atmo.createMediaPlayerHooks(atmoDuringPlayback);
+    const {before, after} = atmo.createMediaPlayerHooks(atmoDuringPlayback) ||
+                            {before() {}, after() {}};
     let timeout;
 
     return {
