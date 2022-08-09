@@ -115,6 +115,13 @@ function PreparedPlayer({
                      height='100%'
                      controls={!configuration.hideControls}
                      config={{
+                       // ReactPlayer does not rerender when only
+                       // event handler props change. Since event
+                       // handlers depend on latest value of
+                       // atmoDuringPlayback, we force a render by
+                       // changing this unused config option.
+                       _unused: configuration.atmoDuringPlayback,
+
                        youtube: {
                          playerVars: {
                            showinfo: !configuration.hideInfo
