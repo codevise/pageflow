@@ -4,6 +4,8 @@
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .card {
+  --theme-first-heading-landscape-padding-top: 0;
+
   position: relative;
   padding: 0 1.5em;
   margin-top: -1px;
