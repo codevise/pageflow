@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 
 import {
+  ContentElementBox,
   ThirdPartyOptIn,
   useContentElementEditorState,
   ThirdPartyOptOutInfo,
   useContentElementLifecycle
 } from 'pageflow-scrolled/frontend';
+import styles from './TwitterEmbed.module.css';
 
 export function TwitterEmbed({configuration}) {
   const {tweetId, hideConversation, hideMedia} = configuration;
@@ -26,13 +28,15 @@ export function TwitterEmbed({configuration}) {
   };
 
   return (
-    <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
-      <ThirdPartyOptIn providerName="twitter">
-        {shouldLoad && <Tweet {...props} />}
-      </ThirdPartyOptIn>
-      <ThirdPartyOptOutInfo providerName="twitter"
-                            contentElementPosition={configuration.position} />
-    </div>
+    <ContentElementBox>
+      <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
+        <ThirdPartyOptIn providerName="twitter">
+          {shouldLoad && <Tweet {...props} />}
+        </ThirdPartyOptIn>
+        <ThirdPartyOptOutInfo providerName="twitter"
+                              contentElementPosition={configuration.position} />
+      </div>
+    </ContentElementBox>
   );
 }
 
@@ -60,6 +64,14 @@ function Tweet({
     conversation: hideConversation ? "none" : "",
   };
 
+  function createTweetEmbed() {
+    window.twttr.widgets.createTweetEmbed(
+      tweetId,
+      ref.current,
+      options
+    )
+  };
+
   useEffect(() => {
     let isComponentMounted = true
 
@@ -67,11 +79,7 @@ function Tweet({
       if ( window.twttr.widgets && ref.current ) {
         if ( isComponentMounted ) {
           if ( window.twttr.widgets['createTweetEmbed'] ) {
-            window.twttr.widgets.createTweetEmbed(
-              tweetId,
-              ref.current,
-              options
-            )
+            createTweetEmbed();
           }
         }    
       }
@@ -81,6 +89,21 @@ function Tweet({
   }, []);
 
   return(
-    <div ref={ref} />
+    <div className={styles.container}>
+      {!tweetId && <Placeholder />}
+      <div ref={ref} />
+    </div>    
+  );
+}
+
+function Placeholder() {
+  return (
+    <div className={styles.placeholder_wrapper}>
+      <div className={styles.placeholder_upper_row }>
+        <div style={{height: "50px", width: "50px", borderRadius: "50%"}} className={styles.placeholder_item}/>
+        <div style={{height: "50px", width: "73%"}} className={styles.placeholder_item}/>
+      </div>
+      <div style={{height: "200px", width: "85%", marginLeft: "20px"}} className={styles.placeholder_item} />
+    </div>
   )
 }
