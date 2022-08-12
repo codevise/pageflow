@@ -59,36 +59,31 @@ function Tweet({
 }) {
   const ref = useRef(null)
 
-  const options = {
-    cards: hideMedia ? "hidden" : "",
-    conversation: hideConversation ? "none" : "",
-  };
-
   const tweetId = url ? url.split('/')[5] : undefined
-
-  function createTweetEmbed() {
-    window.twttr.widgets.createTweetEmbed(
-      tweetId,
-      ref.current,
-      options
-    )
-  };
 
   useEffect(() => {
     let isComponentMounted = true
+    const options = {
+      cards: hideMedia ? "hidden" : "",
+      conversation: hideConversation ? "none" : "",
+    };
 
     scriptLoaded().then(() => {
       if ( window.twttr.widgets && ref.current ) {
         if ( isComponentMounted ) {
           if ( window.twttr.widgets['createTweetEmbed'] ) {
-            createTweetEmbed();
+            window.twttr.widgets.createTweetEmbed(
+              tweetId,
+              ref.current,
+              options
+            );
           }
         }    
       }
     })
 
     return () => isComponentMounted = false
-  }, []);
+  }, [hideMedia, hideConversation, tweetId]);
 
   return(
     <div className={styles.container}>
@@ -103,9 +98,9 @@ function Placeholder() {
     <div className={styles.placeholder_wrapper}>
       <div className={styles.placeholder_upper_row }>
         <div style={{height: "50px", width: "50px", borderRadius: "50%"}} className={styles.placeholder_item}/>
-        <div style={{height: "50%", width: "80%"}} className={styles.placeholder_item}/>
+        <div style={{height: "50%", width: "100%"}} className={styles.placeholder_item}/>
       </div>
-      <div style={{height: "200px", width: "90%"}} className={styles.placeholder_item} />
+      <div style={{height: "200px", width: "100%"}} className={styles.placeholder_item} />
     </div>
   )
 }

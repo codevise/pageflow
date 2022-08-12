@@ -6,7 +6,7 @@
 
 .placeholder_wrapper {
   min-height: 300px;
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   padding: 5% 0;
@@ -17,7 +17,6 @@
   height: 100px;
   display: flex;
   flex-direction: row;
-  padding-right: 5%;
 }
 
 .placeholder_item {
