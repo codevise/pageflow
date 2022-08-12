@@ -4,6 +4,6 @@ import {storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
 storiesOfContentElement(module, {
   typeName: 'twitterEmbed',
   baseConfiguration: {
-    tweetId: "1554135644846395392"
+    url: 'https://twitter.com/pageflow_io/status/1484828278623985664'
   }
 });

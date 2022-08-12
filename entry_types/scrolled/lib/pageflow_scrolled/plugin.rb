@@ -20,8 +20,6 @@ module PageflowScrolled
         c.features.register('datawrapper_chart_embed_opt_in')
         c.features.enable_by_default('datawrapper_chart_embed_opt_in')
         c.features.register('iframe_embed_content_element')
-        c.features.register('twitter_embed_opt_in')
-        c.features.enable_by_default('twitter_embed_opt_in')
       end
     end
   end

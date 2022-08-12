@@ -186,15 +186,6 @@ en:
             initialYaw:
               label: Initial Yaw
           name: 360° Image
-        twitterEmbed:
-          attributes:
-            tweetId:
-              label: Tweet-ID
-            hideConversation:
-              label: Hide Conversation
-            hideMedia:
-              label: Hide Media
-          name: Twitter Embed
       edit_chapter:
         attributes:
           summary:
@@ -413,8 +404,6 @@ en:
     public:
       chart:
         default_title: Interactive chart
-      twitter:
-        default_title: Tweet
       enter_fullscreen: Fullscreen
       exit_fullscreen: Exit fullscreen
       image_rights: Image rights
@@ -475,7 +464,6 @@ en:
         confirm: Okay
         opt_in_prompt:
           datawrapper: I agree with being shown Datawrapper graphs.
-          twitter: I agree with being shown the following tweet.
         opt_out:
           prompt: To opt out of displaying external embeds, change your settings %{link}.
           prompt_link: here

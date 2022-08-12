@@ -186,15 +186,6 @@ de:
             initialYaw:
               label: Initialer Neigungswinkel
           name: 360°-Bild
-        twitterEmbed:
-          attributes:
-            tweetId:
-              label: Tweet-ID
-            hideConversation:
-              label: Konversation ausblenden
-            hideMedia:
-              label: Medien ausblenden
-          name: Twitter-Einbettung
       edit_chapter:
         attributes:
           summary:
@@ -595,8 +586,6 @@ de:
     public:
       chart:
         default_title: Interaktives Diagramm
-      twitter:
-        default_title: Tweet
       enter_fullscreen: Vollbild
       exit_fullscreen: Vollbild verlassen
       image_rights: Bildrechte
@@ -657,7 +646,6 @@ de:
         confirm: Einverstanden
         opt_in_prompt:
           datawrapper: Ich bin damit einverstanden, dass mir Diagramme von Datawrapper angezeigt werden.
-          twitter: Ich bin damit einverstanden, dass mir der folgende Tweet gezeigt wird.
         opt_out:
           prompt: Um externe Dienste auszuschalten, %{link} klicken.
           prompt_link: hier

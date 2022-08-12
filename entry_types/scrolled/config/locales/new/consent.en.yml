@@ -22,5 +22,3 @@ en:
   pageflow:
     datawrapper_chart_embed_opt_in:
       feature_name: 'Opt-in for Datawrapper embeds'
-    twitter_embed_opt_in:
-      feature_name: 'Opt-in for Twitter embeds'

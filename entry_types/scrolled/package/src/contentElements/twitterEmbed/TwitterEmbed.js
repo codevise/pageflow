@@ -10,19 +10,19 @@ import {
 import styles from './TwitterEmbed.module.css';
 
 export function TwitterEmbed({configuration}) {
-  const {tweetId, hideConversation, hideMedia} = configuration;
+  const {url, hideConversation, hideMedia} = configuration;
   const {isEditable, isSelected} = useContentElementEditorState();
   const {shouldLoad} = useContentElementLifecycle();
 
   const key = [
-    tweetId,
+    url,
     hideConversation,
     hideMedia,
   ].join('-');
 
   const props = {
     key: key,
-    tweetId,
+    url,
     hideConversation,
     hideMedia,
   };
@@ -53,7 +53,7 @@ function scriptLoaded() {
 }
 
 function Tweet({
-  tweetId,
+  url,
   hideConversation,
   hideMedia,
 }) {
@@ -63,6 +63,8 @@ function Tweet({
     cards: hideMedia ? "hidden" : "",
     conversation: hideConversation ? "none" : "",
   };
+
+  const tweetId = url ? url.split('/')[5] : undefined
 
   function createTweetEmbed() {
     window.twttr.widgets.createTweetEmbed(
@@ -101,9 +103,9 @@ function Placeholder() {
     <div className={styles.placeholder_wrapper}>
       <div className={styles.placeholder_upper_row }>
         <div style={{height: "50px", width: "50px", borderRadius: "50%"}} className={styles.placeholder_item}/>
-        <div style={{height: "50px", width: "73%"}} className={styles.placeholder_item}/>
+        <div style={{height: "50%", width: "80%"}} className={styles.placeholder_item}/>
       </div>
-      <div style={{height: "200px", width: "85%", marginLeft: "20px"}} className={styles.placeholder_item} />
+      <div style={{height: "200px", width: "90%"}} className={styles.placeholder_item} />
     </div>
   )
 }

@@ -1,17 +1,22 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {TextInputView, CheckBoxInputView} from 'pageflow/ui';
+import {UrlInputView, CheckBoxInputView} from 'pageflow/ui';
 import pictogram from './pictogram.svg'
 
 editor.contentElementTypes.register('twitterEmbed', {
   pictogram,
   category: 'media',
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide'],
   
   configurationEditor() {
     this.tab('general', function() {
-      this.input('tweetId', TextInputView, {
+      this.input('url', UrlInputView, {
+        supportedHosts: [
+          'http://twitter.com',
+          'https://twitter.com',
+        ],
         displayPropertyName: 'displayTweetId',
         required: true,
+        permitHttps: true
       });
       this.group('ContentElementPosition');
       this.input('hideConversation', CheckBoxInputView);
