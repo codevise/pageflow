@@ -4,8 +4,9 @@ import '@testing-library/jest-dom/extend-expect'
 import {renderInEntry} from 'support';
 
 import {useFile} from 'entryState';
-import {useBackgroundFile} from 'frontend/useBackgroundFile';
-import {MotifArea, MotifAreaVisibilityProvider} from 'frontend/MotifArea';
+import {useBackgroundFile} from 'frontend/v1/useBackgroundFile';
+import {MotifArea} from 'frontend/v1/MotifArea';
+import {MotifAreaVisibilityProvider} from 'frontend/MotifAreaVisibilityProvider';
 import styles from 'frontend/MotifArea.module.css';
 
 describe('MotifArea', () => {

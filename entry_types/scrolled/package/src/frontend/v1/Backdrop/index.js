@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import useDimension from './../useDimension';
+import useDimension from './../../useDimension';
 
 import {BackgroundAsset} from './BackgroundAsset';
 
-import styles from '../Backdrop.module.css';
+import styles from '../../Backdrop.module.css';
 
 export function Backdrop(props) {
   const [containerDimension, setContainerRef] = useDimension();

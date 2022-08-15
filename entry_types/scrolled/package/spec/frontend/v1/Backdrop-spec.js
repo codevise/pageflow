@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect'
 import {renderInEntryWithSectionLifecycle} from 'support';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
-import {Backdrop} from 'frontend/Backdrop';
+import {Backdrop} from 'frontend/v1/Backdrop';
 
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 jest.mock('frontend/usePortraitOrientation')

@@ -4,14 +4,13 @@ import classNames from 'classnames';
 import { SectionAtmo } from './SectionAtmo';
 
 import {useSectionContentElements} from '../entryState';
-import {Backdrop} from './Backdrop';
 import Foreground from './Foreground';
 import {Layout} from './layouts';
-import {useMotifAreaState} from './useMotifAreaState';
 import useScrollTarget from './useScrollTarget';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
 import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
+import * as v1 from './v1';
 
 import styles from './Section.module.css';
 import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
@@ -47,6 +46,11 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
 function SectionContents({
   section, contentElements, state, transitionStyles
 }) {
+  const {
+    Backdrop,
+    useMotifAreaState
+  } = v1;
+
   const {shouldPrepare} = useSectionLifecycle();
 
   const sectionProperties = useMemo(() => ({

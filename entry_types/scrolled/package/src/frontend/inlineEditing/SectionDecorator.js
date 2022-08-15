@@ -6,7 +6,7 @@ import contentElementStyles from './ContentElementDecorator.module.css';
 import {Toolbar} from './Toolbar';
 import {ForcePaddingContext} from '../Foreground';
 import {useEditorSelection} from './EditorState';
-import {MotifAreaVisibilityProvider} from '../MotifArea';
+import {MotifAreaVisibilityProvider} from '../MotifAreaVisibilityProvider';
 import {useI18n} from '../i18n';
 
 import transitionIcon from './images/arrows.svg';

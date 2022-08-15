@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {usePortraitOrientation} from './../usePortraitOrientation';
+import {usePortraitOrientation} from '../../usePortraitOrientation';
 import {BackgroundImage} from './BackgroundImage';
 
 export function OrientationAwareBackgroundImage({image, onMotifAreaUpdate, imageMobile, containerDimension}) {

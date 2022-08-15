@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 
-import {VideoPlayer} from './../VideoPlayer';
+import {VideoPlayer} from './../../VideoPlayer';
 import {MotifArea} from './../MotifArea';
-import {usePlayerState} from './../MediaPlayer/usePlayerState';
-import {useSectionLifecycle} from './../useSectionLifecycle';
-import {Effects} from './Effects';
+import {usePlayerState} from './../../MediaPlayer/usePlayerState';
+import {useSectionLifecycle} from './../../useSectionLifecycle';
+import {Effects} from '../../Backdrop/Effects';
 import {documentHiddenState} from 'pageflow/frontend';
 
 export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {

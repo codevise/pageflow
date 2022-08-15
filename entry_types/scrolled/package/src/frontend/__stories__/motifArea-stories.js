@@ -2,7 +2,7 @@ import React from 'react';
 import {storiesOf} from '@storybook/react';
 
 import {Entry, RootProviders} from 'pageflow-scrolled/frontend';
-import {MotifAreaVisibilityProvider} from '../MotifArea';
+import {MotifAreaVisibilityProvider} from '../MotifAreaVisibilityProvider';
 
 import {
   normalizeAndMergeFixture,

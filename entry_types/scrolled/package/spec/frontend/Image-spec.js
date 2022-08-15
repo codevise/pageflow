@@ -5,7 +5,7 @@ import {renderInEntry} from 'support';
 import * as jsonLdQueries from 'support/jsonLdQueries';
 
 import {Image} from 'frontend/Image';
-import {useBackgroundFile} from 'frontend/useBackgroundFile';
+import {useBackgroundFile} from 'frontend/v1/useBackgroundFile';
 import {useFile} from 'entryState';
 
 describe('Image', () => {

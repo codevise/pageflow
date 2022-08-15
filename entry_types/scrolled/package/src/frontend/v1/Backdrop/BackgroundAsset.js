@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Fullscreen from './../Fullscreen';
-import FillColor from './../FillColor';
+import Fullscreen from './../../Fullscreen';
+import FillColor from './../../FillColor';
 import {useBackgroundFile} from './../useBackgroundFile';
-import {useFile} from '../../entryState';
+import {useFile} from '../../../entryState';
 
 import {BackgroundVideo} from './BackgroundVideo';
 import {OrientationAwareBackgroundImage} from './OrientationAwareBackgroundImage';

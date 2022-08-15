@@ -4,7 +4,7 @@ import 'support/mediaElementStub';
 import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 
 import {renderInEntry} from "../support";
-import {useBackgroundFile} from 'frontend/useBackgroundFile';
+import {useBackgroundFile} from 'frontend/v1/useBackgroundFile';
 import {useFile} from 'entryState';
 import {VideoPlayer} from 'frontend/VideoPlayer';
 import {media, settings} from 'pageflow/frontend';
