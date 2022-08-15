@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { SectionAtmo } from './SectionAtmo';
 
-import {useSectionContentElements} from '../entryState';
+import {useSectionContentElements, useAdditionalSeedData} from '../entryState';
 import Foreground from './Foreground';
 import {Layout} from './layouts';
 import useScrollTarget from './useScrollTarget';
@@ -11,6 +11,7 @@ import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecyc
 import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
 import * as v1 from './v1';
+import * as v2 from './v2';
 
 import styles from './Section.module.css';
 import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
@@ -49,7 +50,7 @@ function SectionContents({
   const {
     Backdrop,
     useMotifAreaState
-  } = v1;
+  } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
 
   const {shouldPrepare} = useSectionLifecycle();
 
