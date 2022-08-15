@@ -55,7 +55,7 @@ function SectionContents({
     sectionIndex: section.sectionIndex
   }), [section.layout, section.invert, section.sectionIndex]);
 
-  const [motifAreaState, setMotifAreaRef, setContentAreaRef, setForegroundContentRef] = useMotifAreaState({
+  const [motifAreaState, setMotifAreaRef, setContentAreaRef] = useMotifAreaState({
     updateOnScrollAndResize: shouldPrepare,
     exposeMotifArea: section.exposeMotifArea,
     transitions: getEnterAndExitTransitions(section, section.previousSection, section.nextSection),
@@ -92,7 +92,6 @@ function SectionContents({
                   inFirstSection={section.sectionIndex === 0}
                   minHeight={motifAreaState.minHeight}
                   paddingBottom={!endsWithFullWidthElement(contentElements)}
-                  contentRef={setForegroundContentRef}
                   heightMode={heightMode(section)}>
         <Box inverted={section.invert}
              coverInvisibleNextSection={section.nextSection && section.nextSection.transition.startsWith('fade')}
