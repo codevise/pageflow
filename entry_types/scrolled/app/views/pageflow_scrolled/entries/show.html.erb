@@ -31,6 +31,14 @@
         }
       </script>
     <% end %>
+
+    <% ssr_html = @skip_ssr ? '' : render_scrolled_entry(@entry) %>
+
+    <% if params[:frontend] == 'v2' %>
+      <style>
+        <%= generated_media_queries_css_for(ssr_html) %>
+      </style>
+    <% end %>
   </head>
   <body>
     <%= structured_data_for_entry(@entry) unless @skip_structured_data %>
@@ -38,7 +46,7 @@
     <%= render 'pageflow_scrolled/entries/global_notices' %>
 
     <div id="fullscreenRoot"></div>
-    <div id="root"><%= render_scrolled_entry(@entry) unless @skip_ssr %></div>
+    <div id="root"><%= ssr_html %></div>
 
     <div id='template-widget-container'>
       <%= render_widgets(@entry, scope: @widget_scope, insert_point: :bottom_of_entry) %>
