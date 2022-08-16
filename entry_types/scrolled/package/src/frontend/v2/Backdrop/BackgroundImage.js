@@ -14,8 +14,7 @@ export function BackgroundImage({backdrop, onMotifAreaUpdate}) {
                  structuredData={true}/>
       </Effects>
       <MotifArea key={backdrop.file?.permaId}
-                 onUpdate={onMotifAreaUpdate}
-                 file={backdrop.file} />
+                 onUpdate={onMotifAreaUpdate} />
     </>
   );
 }

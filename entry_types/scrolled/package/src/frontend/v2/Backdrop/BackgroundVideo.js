@@ -57,8 +57,7 @@ export function BackgroundVideo({video, onMotifAreaUpdate}) {
                      playsInline={true} />
       </Effects>
       <MotifArea key={video.permaId}
-                 onUpdate={onMotifAreaUpdate}
-                 file={video} />
+                 onUpdate={onMotifAreaUpdate} />
     </>
   );
 }

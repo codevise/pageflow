@@ -1,0 +1,6 @@
+.root {
+  left: calc(var(--motif-left) * 1%);
+  top: calc(var(--motif-top) * 1%);
+  width: calc(var(--motif-width) * 1%);
+  height: calc(var(--motif-height) * 1%);
+}
