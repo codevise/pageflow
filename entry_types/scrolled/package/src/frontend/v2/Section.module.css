@@ -1,0 +1,59 @@
+.section {
+  --backdrop-width: var(--backdrop-w);
+  --backdrop-height: var(--backdrop-h);
+
+  --motif-left: var(--motif-l);
+  --motif-top: var(--motif-t);
+  --motif-width: var(--motif-w);
+  --motif-height: var(--motif-h);
+}
+
+@media (orientation: portrait) {
+  .section {
+    --backdrop-width: var(--mobile-backdrop-w, var(--backdrop-w));
+    --backdrop-height: var(--mobile-backdrop-h, var(--backdrop-h));
+
+    --motif-left: var(--mobile-motif-l, var(--motif-l));
+    --motif-top: var(--mobile-motif-t, var(--motif-t));
+    --motif-width: var(--mobile-motif-w, var(--motif-w));
+    --motif-height: var(--mobile-motif-h, var(--motif-h));
+  }
+}
+
+.section {
+  --motif-right: calc(100 - var(--motif-width) - var(--motif-left));
+
+  --motif-center-x: calc(var(--motif-left, 50) + var(--motif-width, 0) / 2);
+  --motif-center-y: calc(var(--motif-top, 50) + var(--motif-height, 0) / 2);
+
+  --backdrop-display-width: calc(var(--backdrop-width) * 100 * var(--vh) /
+                                 var(--backdrop-height));
+  --display-motif-center-x: calc(var(--motif-center-x) / 100 *
+                                 var(--backdrop-display-width));
+
+  --backdrop-translate-x-tmp: calc(var(--display-motif-center-x) * -1 +
+                                   50 * var(--vw));
+  --backdrop-max-translate-x: calc(100 * var(--vw) - var(--backdrop-display-width));
+  --backdrop-translate-x: max(var(--backdrop-max-translate-x),
+                              min(0px, var(--backdrop-translate-x-tmp)));
+
+  --backdrop-display-height: calc(var(--backdrop-height) * 100 * var(--vw) /
+                                  var(--backdrop-width));
+  --display-motif-center-y: calc(var(--motif-center-y) / 100 *
+                                 var(--backdrop-display-height));
+
+  --backdrop-translate-y-tmp: calc(var(--display-motif-center-y) * -1 +
+                                   50 * var(--vh));
+  --backdrop-max-translate-y: calc(100 * var(--vh) - var(--backdrop-display-height));
+  --backdrop-translate-y: max(var(--backdrop-max-translate-y),
+                              min(0px, var(--backdrop-translate-y-tmp)));
+
+
+  --backdrop-positioner-transform: translateX(var(--backdrop-translate-x));
+  --backdrop-positioner-width: var(--backdrop-display-width);
+  --backdrop-positioner-height: 100%;
+
+  --backdrop-positioner-min-ar-transform: translateY(var(--backdrop-translate-y));
+  --backdrop-positioner-min-ar-width: calc(100 * var(--vw));
+  --backdrop-positioner-min-ar-height: var(--backdrop-display-height);
+}
