@@ -3,7 +3,7 @@ import React from 'react';
 import {Image} from '../../Image';
 import {MotifArea} from '../MotifArea';
 import {useSectionLifecycle} from '../../useSectionLifecycle';
-import {Effects} from '../../Backdrop/Effects';
+import {Effects} from './Effects';
 
 export function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
   const {shouldLoad} = useSectionLifecycle();
