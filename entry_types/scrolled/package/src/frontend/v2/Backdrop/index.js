@@ -9,8 +9,7 @@ export function Backdrop(props) {
   return (
     <div className={classNames(styles.Backdrop,
                                props.transitionStyles.backdrop,
-                               props.transitionStyles[`backdrop-${props.state}`])}
-         data-testid="backdrop-v2">
+                               props.transitionStyles[`backdrop-${props.state}`])}>
       <div className={props.transitionStyles.backdropInner}>
         <div className={classNames(styles.defaultBackground,
                                    props.transitionStyles.backdropInner2)}>

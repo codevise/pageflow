@@ -1,21 +1,21 @@
 import React from 'react';
 
-import {Image} from '../../Image';
+import {Picture} from '../../Picture';
 import {MotifArea} from '../MotifArea';
-import {useSectionLifecycle} from '../../useSectionLifecycle';
-
-export function BackgroundImage({image, onMotifAreaUpdate}) {
-  const {shouldLoad} = useSectionLifecycle();
 import {Effects} from './Effects';
 
+export function BackgroundImage({backdrop, onMotifAreaUpdate}) {
   return (
     <>
-      <Effects file={image}>
-        <Image imageFile={image} load={shouldLoad} structuredData={true}/>
+      <Effects file={backdrop.file} mobileFile={backdrop.mobileFile}>
+        <Picture imageFile={backdrop.file}
+                 imageFileMobile={backdrop.mobileFile}
+                 loading="lazy"
+                 structuredData={true}/>
       </Effects>
-      <MotifArea key={image?.permaId}
+      <MotifArea key={backdrop.file?.permaId}
                  onUpdate={onMotifAreaUpdate}
-                 file={image} />
+                 file={backdrop.file} />
     </>
   );
 }

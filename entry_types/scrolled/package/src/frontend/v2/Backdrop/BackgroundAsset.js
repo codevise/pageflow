@@ -2,65 +2,36 @@ import React from 'react';
 
 import Fullscreen from './../../Fullscreen';
 import FillColor from './../../FillColor';
-import {useBackgroundFile} from './../useBackgroundFile';
-import {useFile} from '../../../entryState';
 
-import {BackgroundVideo} from './BackgroundVideo';
-import {OrientationAwareBackgroundImage} from './OrientationAwareBackgroundImage';
+import {Positioner} from './Positioner';
 import {BackgroundImage} from './BackgroundImage';
+import {BackgroundVideo} from './BackgroundVideo';
 
-export function BackgroundAsset(props) {
-  const video = useBackgroundFile({
-    file: useFile({collectionName: 'videoFiles', permaId: props.video}),
-    motifArea: props.videoMotifArea,
-    effects: props.effects
-  });
-  const image = useBackgroundFile({
-    file: useFile({collectionName: 'imageFiles', permaId: props.image}),
-    motifArea: props.imageMotifArea,
-    effects: props.effects
-  });
-  const imageMobile = useBackgroundFile({
-    file: useFile({collectionName: 'imageFiles', permaId: props.imageMobile}),
-    motifArea: props.imageMobileMotifArea,
-    effects: props.effectsMobile
-  });
-
-  if (video) {
+export function BackgroundAsset({backdrop, onMotifAreaUpdate}) {
+  if (backdrop.type === 'video') {
     return (
       <Fullscreen>
-        <BackgroundVideo video={video}
-                         onMotifAreaUpdate={props.onMotifAreaUpdate} />
+        <Positioner>
+          <BackgroundVideo video={backdrop.file}
+                           onMotifAreaUpdate={onMotifAreaUpdate} />
+        </Positioner>
       </Fullscreen>
     );
   }
-  else if (props.color ||
-           (props.image && props.image.toString().startsWith('#'))) {
+  if (backdrop.type === 'color') {
     return (
-      <FillColor color={props.color || props.image} />
-    );
-  } else {
-    return (
-      <Fullscreen>
-        {renderBackgroundImage({image, imageMobile, onMotifAreaUpdate: props.onMotifAreaUpdate})}
-      </Fullscreen>
-    );
-  }
-}
-
-function renderBackgroundImage({image, imageMobile, onMotifAreaUpdate}) {
-  if (image && imageMobile) {
-    return (
-      <OrientationAwareBackgroundImage image={image}
-                                       imageMobile={imageMobile}
-                                       onMotifAreaUpdate={onMotifAreaUpdate} />
+      <FillColor color={backdrop.color} />
     );
   }
   else {
     return (
-      <BackgroundImage
-          image={image || imageMobile}
-          onMotifAreaUpdate={onMotifAreaUpdate} />
+      <Fullscreen>
+        <Positioner>
+          <BackgroundImage
+            backdrop={backdrop}
+            onMotifAreaUpdate={onMotifAreaUpdate} />
+        </Positioner>
+      </Fullscreen>
     );
   }
 }

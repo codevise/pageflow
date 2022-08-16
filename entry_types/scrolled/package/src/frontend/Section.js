@@ -20,6 +20,14 @@ import {getAppearanceComponents} from './appearance';
 const Section = withInlineEditingDecorator('SectionDecorator', function Section({
   section, contentElements, state, isScrollTarget, onActivate
 }) {
+  const {
+    useBackdrop,
+    useBackdropSectionClassNames,
+    useBackdropSectionCustomProperties
+  } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
+
+  const backdrop = useBackdrop(section);
+
   const ref = useRef();
   useScrollTarget(ref, isScrollTarget);
 
@@ -30,12 +38,15 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
              ref={ref}
              className={classNames(styles.Section,
                                    transitionStyles.section,
+                                   useBackdropSectionClassNames(backdrop),
                                    {[styles.narrow]: section.width === 'narrow'},
-                                   {[styles.invert]: section.invert})}>
+                                   {[styles.invert]: section.invert})}
+             style={useBackdropSectionCustomProperties(backdrop)}>
       <SectionLifecycleProvider onActivate={onActivate} isLast={!section.nextSection}>
         <SectionAtmo audioFilePermaId={section.atmoAudioFileId} />
 
         <SectionContents section={section}
+                         backdrop={backdrop}
                          contentElements={contentElements}
                          state={state}
                          transitionStyles={transitionStyles} />
@@ -45,7 +56,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
 });
 
 function SectionContents({
-  section, contentElements, state, transitionStyles
+  section, backdrop, contentElements, state, transitionStyles
 }) {
   const {
     Backdrop,
@@ -79,6 +90,9 @@ function SectionContents({
       <Backdrop {...section.backdrop}
                 effects={section.backdropEffects}
                 effectsMobile={section.backdropEffectsMobile}
+
+                backdrop={backdrop}
+
                 onMotifAreaUpdate={setMotifAreaRef}
                 state={state}
                 transitionStyles={transitionStyles}>

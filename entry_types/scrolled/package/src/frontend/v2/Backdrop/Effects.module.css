@@ -1,0 +1,10 @@
+.effects {
+  height: 100%;
+  filter: var(--filter);
+}
+
+@media (orientation: portrait) {
+  .effects {
+    filter: var(--mobile-filter);
+  }
+}

@@ -1,11 +1,14 @@
 import React from 'react';
 
-import styles from '../../Backdrop.module.css';
+import styles from './Effects.module.css';
 
-export function Effects({file, children}) {
+export function Effects({file, mobileFile, children}) {
   return (
     <div className={styles.effects}
-         style={{filter: getFilter(file?.effects || [])}}>
+         style={{
+           '--filter': getFilter(file?.effects || []),
+           '--mobile-filter': getFilter(mobileFile?.effects || [])
+         }}>
       {children}
     </div>
   );

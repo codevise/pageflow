@@ -4,30 +4,34 @@ import '@testing-library/jest-dom/extend-expect'
 describe('v2 toggle', () => {
   usePageObjects();
 
-  it('does not render v2 background by default', () => {
-    const {queryByTestId} = renderEntry({
+  it('does not set backdrop section attributes by default ', () => {
+    const {container} = renderEntry({
       seed: {
         sections: [
-          {permaId: 10}
-        ]
+          {permaId: 10, configuration: {backdrop: {image: 1}}}
+        ],
+        imageFiles: [{permaId: 1}]
       }
     });
 
-    expect(queryByTestId('backdrop-v2')).toBeNull();
+    expect(container.querySelector('[style*="--backdrop-w"]')).toBeNull();
+    expect(container.querySelector('[class*=apsectRatio]')).toBeNull();
   });
 
-  it('renders v2 backdrop component when frontendVersion from seed data is 2', () => {
-    const {queryByTestId} = renderEntry({
+  it('renders v2 backdrop section attributes from seed data is 2', () => {
+    const {container} = renderEntry({
       seed: {
         sections: [
-          {permaId: 10}
+          {permaId: 10, configuration: {backdrop: {image: 1}}}
         ],
+        imageFiles: [{permaId: 1}],
         additionalSeedData: {
           frontendVersion: 2
         }
       }
     });
 
-    expect(queryByTestId('backdrop-v2')).not.toBeNull();
+    expect(container.querySelector('[style*="--backdrop-w"]')).not.toBeNull();
+    expect(container.querySelector('[class*=aspectRatio]')).not.toBeNull();
   });
 });
