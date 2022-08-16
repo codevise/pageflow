@@ -16,8 +16,7 @@ describe('MotifArea', () => {
         () => {
           const file = useBackgroundFile({
             file: useFile({collectionName: 'imageFiles', permaId: 100}),
-            motifArea: {top: 10, left: 10, width: 50, height: 50},
-            containerDimension: {width: 2000, height: 1000}
+            motifArea: {top: 10, left: 20, width: 50, height: 60}
           });
 
           return (
@@ -37,10 +36,40 @@ describe('MotifArea', () => {
         }
       );
 
-    expect(container.firstChild).toHaveStyle('top: 100px');
-    expect(container.firstChild).toHaveStyle('left: 200px');
-    expect(container.firstChild).toHaveStyle('width: 1000px');
-    expect(container.firstChild).toHaveStyle('height: 500px');
+    expect(container.firstChild).toHaveStyle('top: 10%');
+    expect(container.firstChild).toHaveStyle('left: 20%');
+    expect(container.firstChild).toHaveStyle('width: 50%');
+    expect(container.firstChild).toHaveStyle('height: 60%');
+  });
+
+  it('calls onUpdate callback with DOM element', () => {
+    const callback = jest.fn();
+    const {container} =
+      renderInEntry(
+        () => {
+          const file = useBackgroundFile({
+            file: useFile({collectionName: 'imageFiles', permaId: 100}),
+            motifArea: {top: 10, left: 20, width: 50, height: 60}
+          });
+
+          return (
+            <MotifArea file={file} onUpdate={callback} />
+          );
+        },
+        {
+          seed: {
+            imageFiles: [
+              {
+                permaId: 100,
+                width: 200,
+                height: 100
+              }
+            ]
+          }
+        }
+      );
+
+    expect(callback).toHaveBeenCalledWith(container.firstChild);
   });
 
   it('renders nothing when file is not set', () => {
@@ -96,115 +125,13 @@ describe('MotifArea', () => {
     expect(container.firstChild).toHaveStyle('height: 0px');
   });
 
-  describe('onUpdate prop', () => {
-    const seed = {
-      imageFiles: [
-        {
-          permaId: 100,
-          width: 200,
-          height: 100,
-          configuration: {
-            motifArea: {
-              top: 10,
-              left: 10,
-              width: 50,
-              height: 50
-            }
-          }
-        },
-        {
-          permaId: 101,
-          width: 200,
-          height: 100,
-          configuration: {
-            motifArea: {
-              top: 20,
-              left: 20,
-              width: 100,
-              height: 100
-            }
-          }
-        }
-      ]
-    };
-
-    function useBackgroundFileByPermaId(permaId, {motifArea} = {}) {
-      return useBackgroundFile({
-        file: useFile({collectionName: 'imageFiles', permaId}),
-        containerDimension: {width: 2000, height: 1000},
-        motifArea
-      });
-    }
-
-    it('is called with element on render', () => {
-      const callback = jest.fn();
-      const {container} =
-        renderInEntry(
-          () => <MotifArea file={useBackgroundFileByPermaId(100)} onUpdate={callback} />,
-          {seed}
-        );
-
-      expect(callback).toHaveBeenCalledWith(container.firstChild);
-    });
-
-    it('is not called when rerendering without changing position', () => {
-      const callback = jest.fn();
-      const {rerender} =
-        renderInEntry(
-          () => <MotifArea file={useBackgroundFileByPermaId(100)} onUpdate={callback} />,
-          {seed}
-        );
-
-      rerender(
-        () => <MotifArea file={useBackgroundFileByPermaId(100)} onUpdate={callback} />
-      );
-
-      expect(callback).toHaveBeenCalledTimes(1);
-    });
-
-    it('is called when position changes', () => {
-      const callback = jest.fn();
-      const {container, rerender} =
-        renderInEntry(
-          () => <MotifArea file={useBackgroundFileByPermaId(100,
-                                                            {motifArea: {
-                                                              top: 10, left: 10, width: 50, height: 50
-                                                            }})}
-                           onUpdate={callback} />,
-          {seed}
-        );
-
-      callback.mockReset();
-      rerender(
-        () => <MotifArea file={useBackgroundFileByPermaId(101,
-                                                          {motifArea: {
-                                                            top: 20, left: 20, width: 100, height: 100
-                                                          }})}
-                         onUpdate={callback} />
-      );
-
-      expect(callback).toHaveBeenCalledWith(container.firstChild);
-    });
-
-    it('is not called when image is not set', () => {
-      const callback = jest.fn();
-      renderInEntry(
-        () => <MotifArea file={null} onUpdate={callback} />,
-        {seed}
-      );
-
-      expect(callback).not.toHaveBeenCalled();
-    });
-  });
-
   it('makes motif area visible if rendered inside MotifAreaVisibilityProvider', () => {
     const {container} =
       renderInEntry(
         () => {
           const file = useBackgroundFile({
             file: useFile({collectionName: 'imageFiles', permaId: 100}),
-            motifArea: {top: 10, left: 10, width: 50, height: 50},
-            containerDimension: {width: 2000, height: 1000}
+            motifArea: {top: 10, left: 10, width: 50, height: 50}
           });
 
           return (

@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useCallback, useContext} from 'react';
+import React, {useContext} from 'react';
 import classNames from 'classnames';
 
 import styles from '../MotifArea.module.css';
@@ -6,42 +6,17 @@ import styles from '../MotifArea.module.css';
 import {MotifAreaVisibilityContext} from '../MotifAreaVisibilityProvider';
 
 export const MotifArea = function MotifArea(props) {
-  const lastPosition = useRef();
-  const position = props.file?.isReady && getPosition(props);
+  const position = props.file?.isReady && getPosition(props.file.motifArea);
   const visible = useContext(MotifAreaVisibilityContext);
-
-  const elementRef = useRef();
-  const onUpdate = props.onUpdate;
-
-  const setElementRef = useCallback(element => {
-    elementRef.current = element;
-    onUpdate(element);
-  }, [elementRef, onUpdate]);
-
-  useEffect(() => {
-    if (lastPosition.current &&
-        position &&
-        (lastPosition.current.top !== position.top ||
-         lastPosition.current.left !== position.left ||
-         lastPosition.current.width !== position.width ||
-         lastPosition.current.height !== position.height)) {
-      onUpdate(elementRef.current);
-    }
-
-    lastPosition.current = position;
-  });
 
   if (!position) {
     return null;
   }
 
   return (
-    <div ref={setElementRef}
+    <div ref={props.onUpdate}
          className={classNames(styles.root, {[styles.visible]: visible})}
-         style={position}
-         onMouseEnter={props.onMouseEnter}
-         onMouseLeave={props.onMouseLeave}>
-    </div>
+         style={position} />
   );
 };
 
@@ -49,6 +24,13 @@ MotifArea.defaultProps = {
   onUpdate: () => {}
 };
 
-function getPosition(props) {
-  return props.file.motifAreaOffsetRect || {top: 0, left: 0, width: 0, height: 0};
+function getPosition(motifArea) {
+  return motifArea ?
+         {
+           top: `${motifArea.top}%`,
+           left: `${motifArea.left}%`,
+           width: `${motifArea.width}%`,
+           height: `${motifArea.height}%`
+         } :
+         {top: 0, left: 0, width: 0, height: 0};
 }

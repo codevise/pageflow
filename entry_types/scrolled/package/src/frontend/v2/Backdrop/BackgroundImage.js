@@ -5,7 +5,7 @@ import {MotifArea} from '../MotifArea';
 import {useSectionLifecycle} from '../../useSectionLifecycle';
 import {Effects} from '../../Backdrop/Effects';
 
-export function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
+export function BackgroundImage({image, onMotifAreaUpdate}) {
   const {shouldLoad} = useSectionLifecycle();
 
   return (
@@ -15,9 +15,7 @@ export function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) 
       </Effects>
       <MotifArea key={image?.permaId}
                  onUpdate={onMotifAreaUpdate}
-                 file={image}
-                 containerWidth={containerDimension.width}
-                 containerHeight={containerDimension.height}/>
+                 file={image} />
     </>
   );
 }

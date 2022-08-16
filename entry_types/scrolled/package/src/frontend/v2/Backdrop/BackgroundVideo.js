@@ -7,7 +7,7 @@ import {useSectionLifecycle} from './../../useSectionLifecycle';
 import {Effects} from '../../Backdrop/Effects';
 import {documentHiddenState} from 'pageflow/frontend';
 
-export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {
+export function BackgroundVideo({video, onMotifAreaUpdate}) {
   const [playerState, playerActions] = usePlayerState();
   const {shouldLoad, shouldPrepare} = useSectionLifecycle({
     onVisible() {
@@ -58,9 +58,7 @@ export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) 
       </Effects>
       <MotifArea key={video.permaId}
                  onUpdate={onMotifAreaUpdate}
-                 file={video}
-                 containerWidth={containerDimension.width}
-                 containerHeight={containerDimension.height}/>
+                 file={video} />
     </>
   );
 }
