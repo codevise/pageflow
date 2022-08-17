@@ -20,6 +20,14 @@
     var(--theme-centered-inline-content-max-width);
   --centered-wide-content-max-width:
     var(--theme-centered-wide-content-max-width);
+
+  --foreground-padding-top: 0px;
+}
+
+.first {
+  /* Let content begin below navigation bar. Navigation bar has zero
+     height to let first chapter start at the very top. */
+  --foreground-padding-top: var(--theme-widget-margin-top, 58px);
 }
 
 .narrow {

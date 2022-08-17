@@ -39,6 +39,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
              className={classNames(styles.Section,
                                    transitionStyles.section,
                                    useBackdropSectionClassNames(backdrop),
+                                   {[styles.first]: section.sectionIndex === 0},
                                    {[styles.narrow]: section.width === 'narrow'},
                                    {[styles.invert]: section.invert})}
              style={useBackdropSectionCustomProperties(backdrop)}>
@@ -108,7 +109,6 @@ function SectionContents({
 
       <Foreground transitionStyles={transitionStyles}
                   state={state}
-                  inFirstSection={section.sectionIndex === 0}
                   minHeight={motifAreaState.minHeight}
                   paddingBottom={!endsWithFullWidthElement(contentElements)}
                   heightMode={heightMode(section)}>

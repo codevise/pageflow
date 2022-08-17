@@ -22,7 +22,6 @@ function className(props, forcePadding) {
     props.transitionStyles.foreground,
     props.transitionStyles[`foreground-${props.state}`],
     {[styles.paddingBottom]: props.paddingBottom || forcePadding},
-    {[styles.inFirstSection]: props.inFirstSection},
     styles[`${props.heightMode}Height`]
   )
 }
