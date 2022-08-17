@@ -20,6 +20,7 @@ module PageflowScrolled
         c.features.register('datawrapper_chart_embed_opt_in')
         c.features.enable_by_default('datawrapper_chart_embed_opt_in')
         c.features.register('iframe_embed_content_element')
+        c.features.register('frontend_v2')
 
         c.additional_frontend_seed_data.register(
           'frontendVersion',
@@ -28,8 +29,12 @@ module PageflowScrolled
       end
     end
 
-    FRONTEND_VERSION_SEED_DATA = lambda do |request:, **|
-      request.params[:frontend] == 'v2' ? 2 : 1
+    FRONTEND_VERSION_SEED_DATA = lambda do |request:, entry:, **|
+      if request.params[:frontend] == 'v2' || entry.feature_state('frontend_v2')
+        2
+      else
+        1
+      end
     end
   end
 end
