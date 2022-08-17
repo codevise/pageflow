@@ -34,7 +34,11 @@
 
     <% ssr_html = @skip_ssr ? '' : render_scrolled_entry(@entry) %>
 
-    <% if params[:frontend] == 'v2' || @entry.feature_state('frontend_v2') %>
+    <% if !@skip_ssr && (params[:frontend] == 'v2' ||
+                         @entry.feature_state('frontend_v2')) %>
+      <script>
+        window.pageflowScrolledSSRAspectRatioMediaQueries = true;
+      </script>
       <style>
         <%= generated_media_queries_css_for(ssr_html) %>
       </style>

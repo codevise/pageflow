@@ -3,6 +3,8 @@ module PageflowScrolled
   module GeneratedMediaQueriesHelper
     def generated_media_queries_css_for(html)
       html.scan(/class="[^"]*aspectRatio([0-9]+)/).map { |match|
+        # WARNING: This CSS snippet needs to be kept in sync with the
+        # corresponding snippet in useBackdropSectionClassName hook
         <<-CSS
           @media (min-aspect-ratio: #{match[0]}/1000) {
             section.aspectRatio#{match[0]} {
