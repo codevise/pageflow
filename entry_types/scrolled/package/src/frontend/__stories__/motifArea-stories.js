@@ -129,7 +129,8 @@ function exampleSeed({transition1, transition2, motifArea, fullHeight, title, te
             image: filePermaId('imageFiles', 'churchBefore'),
             imageMotifArea: motifArea
           },
-          fullHeight
+          fullHeight,
+          exposeMotifArea: true
         }
       },
       {
