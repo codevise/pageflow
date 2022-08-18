@@ -39,7 +39,9 @@ function Inner({sectionPermaId, subscribe, scale}) {
                       Math.ceil(contentRect.client.height) * scaleFactor}>
               <div ref={measureRef} className={styles.crop}>
                 <div className={classNames({[styles.scale]: scale})}>
-                  <div className={contentStyles.Content}>
+                  <div className={contentStyles.Content}
+                       style={viewportUnitCustomProperties(contentRect,
+                                                           scaleFactor)}>
                     <Section state="active" section={{...section, transition: 'preview'}} />
                   </div>
                 </div>
@@ -62,4 +64,13 @@ function Inner({sectionPermaId, subscribe, scale}) {
 Inner.defaultProps = {
   scale: true,
   subscribe: () => {}
+}
+
+function viewportUnitCustomProperties(contentRect, scaleFactor) {
+  return {
+    '--vw': contentRect.client.width &&
+      `${Math.ceil(contentRect.client.width / 100 * scaleFactor)}px`,
+    '--vh': contentRect.client.height &&
+      `${Math.ceil(contentRect.client.height / 100 * scaleFactor)}px`
+  }
 }
