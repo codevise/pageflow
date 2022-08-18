@@ -11,6 +11,12 @@ module PageflowScrolled
                --backdrop-positioner-transform: var(--backdrop-positioner-min-ar-transform);
                --backdrop-positioner-width: var(--backdrop-positioner-min-ar-width);
                --backdrop-positioner-height: var(--backdrop-positioner-min-ar-height);
+
+               --motif-placeholder-width: var(--motif-placeholder-min-ar-width);
+
+               --motif-display-top: var(--motif-display-min-ar-top);
+               --motif-display-bottom: var(--motif-display-min-ar-bottom);
+               --motif-display-height: var(--motif-display-min-ar-height);
             }
           }
         CSS

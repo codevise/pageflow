@@ -13,6 +13,7 @@ describe('useMotifAreaState', () => {
     exposeMotifArea
   }) {
     const {result} = renderHook(() => useMotifAreaState({
+      transitions: ['scrollIn', 'scrollOut'],
       empty,
       updateOnScrollAndResize,
       exposeMotifArea

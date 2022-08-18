@@ -33,12 +33,18 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
 
   const transitionStyles = getTransitionStyles(section, section.previousSection, section.nextSection);
 
+  const backdropSectionClassNames = useBackdropSectionClassNames(backdrop, {
+    layout: section.layout,
+    exposeMotifArea: section.exposeMotifArea,
+    empty: !contentElements.length,
+  });
+
   return (
     <section id={`section-${section.permaId}`}
              ref={ref}
              className={classNames(styles.Section,
                                    transitionStyles.section,
-                                   useBackdropSectionClassNames(backdrop),
+                                   backdropSectionClassNames,
                                    {[styles.first]: section.sectionIndex === 0},
                                    {[styles.narrow]: section.width === 'narrow'},
                                    {[styles.invert]: section.invert})}

@@ -22,6 +22,7 @@
 
 .section {
   --motif-right: calc(100 - var(--motif-width) - var(--motif-left));
+  --motif-bottom: calc(100 - var(--motif-height) - var(--motif-top));
 
   --motif-center-x: calc(var(--motif-left, 50) + var(--motif-width, 0) / 2);
   --motif-center-y: calc(var(--motif-top, 50) + var(--motif-height, 0) / 2);
@@ -56,4 +57,96 @@
   --backdrop-positioner-min-ar-transform: translateY(var(--backdrop-translate-y));
   --backdrop-positioner-min-ar-width: calc(100 * var(--vw));
   --backdrop-positioner-min-ar-height: var(--backdrop-display-height);
+
+  --motif-display-height: calc(var(--motif-height) * var(--vh));
+  --motif-display-min-ar-height: calc(
+    var(--motif-height) / 100 * var(--backdrop-display-height)
+  );
+
+  --motif-display-top: calc(var(--motif-top) * var(--vh));
+  --motif-display-min-ar-top: calc(
+    var(--motif-top) / 100 * var(--backdrop-display-height) +
+    var(--backdrop-translate-y) -
+    var(--foreground-padding-top)
+  );
+
+  --motif-display-bottom: calc(var(--motif-bottom) * var(--vh));
+  --motif-display-min-ar-bottom: calc(
+    var(--motif-bottom) / 100 * var(--backdrop-display-height) -
+    var(--backdrop-translate-y) +
+    var(--foreground-padding-top)
+  );
+
+  --motif-min-height-reveal-conceal: var(--motif-display-height);
+  --motif-min-height-reveal: calc(var(--motif-display-bottom) +
+                                  var(--motif-display-height));
+  --motif-min-height-scroll-in: calc(var(--motif-display-top) +
+                                     var(--motif-display-height));
+}
+
+.exposeMotifArea {
+  --inline-content-max-width: 100vw;
+  --motif-placeholder-width: 100vw;
+  --motif-placeholder-min-ar-width: 100vw;
+
+  /* Motif fits next to inline content if remaining-width is positive.
+
+     Example for layout "left":
+
+                100vw
+       |-----------------------|
+       |-|========|   |xxxxx...|
+        ^    ^      ^     ^
+        |    |      |     |
+        |    |      |     motif-placeholder-width
+        |    |      remaining-width
+        |    inline-content-max-width
+        8% section padding
+  */
+  --remaining-width: calc(
+    100vw
+    - var(--inline-content-max-width)
+    - 8vw
+    - var(--motif-placeholder-width)
+  );
+
+  /*
+    If --remaining-width is non-negative, this will be 0, causing the
+    motif paddings below to be 0 as well. If --remaining-width is
+    negative, this will be large value, causing the motif paddings to
+    be controlled by the motif display dimensions.
+  */
+  --zero-if-two-column: max(0px, var(--remaining-width) * -10000);
+
+  --motif-padding-fade-in: min(var(--zero-if-two-column),
+                               var(--motif-display-bottom) + var(--motif-display-height));
+
+  --motif-padding-reveal: min(var(--zero-if-two-column),
+                              var(--motif-display-height));
+
+  --motif-padding-scroll-in: min(var(--zero-if-two-column),
+                                 var(--motif-display-top) + var(--motif-display-height));
+}
+
+.layout-left,
+.layout-right {
+  --inline-content-max-width: var(--two-column-inline-content-max-width, 500px);
+}
+
+.layout-left {
+  --backdrop-overflow-h: calc(var(--backdrop-display-width) - 100vw);
+  --motif-placeholder-width: calc((var(--motif-right) + var(--motif-width)) / 100 *
+                                  var(--backdrop-display-width) -
+                                  var(--backdrop-overflow-h) -
+                                  var(--backdrop-translate-x));
+  --motif-placeholder-min-ar-width: calc((var(--motif-right) + var(--motif-width)) *
+                                         var(--vw));
+}
+
+.layout-right {
+  --motif-placeholder-width: calc((var(--motif-left) + var(--motif-width)) / 100 *
+                                  var(--backdrop-display-width) +
+                                  var(--backdrop-translate-x));
+  --motif-placeholder-min-ar-width: calc((var(--motif-left) + var(--motif-width)) *
+                                         var(--vw));
 }

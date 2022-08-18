@@ -2,9 +2,14 @@ import {useIsomorphicLayoutEffect} from '../useIsomorphicLayoutEffect';
 
 import styles from './Section.module.css';
 
-export function useBackdropSectionClassNames(backdrop) {
+export function useBackdropSectionClassNames(
+  backdrop,
+  {layout, exposeMotifArea, empty} = {}
+) {
   return [
     styles.section,
+    styles[`layout-${layout || 'left'}`],
+    exposeMotifArea && !empty && styles.exposeMotifArea,
     useBackdropSectionClassName(backdrop.file),
     useBackdropSectionClassName(backdrop.mobileFile, 'Mobile'),
   ].filter(Boolean);
@@ -49,7 +54,10 @@ function ensureAspectRatioMediaQueryStyleTag(aspectRatio, className) {
            --backdrop-positioner-height: var(--backdrop-positioner-min-ar-height);
 
            --motif-placeholder-width: var(--motif-placeholder-min-ar-width);
-           --motif-placeholder-height: var(--motif-placeholder-min-ar-height);
+
+           --motif-display-top: var(--motif-display-min-ar-top);
+           --motif-display-bottom: var(--motif-display-min-ar-bottom);
+           --motif-display-height: var(--motif-display-min-ar-height);
         }
       }
     `;

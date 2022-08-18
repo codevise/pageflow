@@ -11,14 +11,39 @@ describe('useBackdropSectionClassNames', () => {
     global.pageflowScrolledSSRAspectRatioMediaQueries = false;
   });
 
-  it('returns only section class by default', () => {
+  it('returns section and left layout class by default', () => {
     const {result} = renderHookInEntry(
       () => useBackdropSectionClassNames({
         file: null
       })
     );
 
-    expect(result.current).toEqual([styles.section]);
+    expect(result.current).toEqual([styles.section, styles['layout-left']]);
+  });
+
+  it('uses other layout class when passed', () => {
+    const {result} = renderHookInEntry(
+      () => useBackdropSectionClassNames({
+        file: null
+      }, {
+        layout: 'right'
+      })
+    );
+
+    expect(result.current).toEqual([styles.section, styles['layout-right']]);
+  });
+
+  it('sets exposeMotifArea class if exposeMotifArea setting is true and not empty', () => {
+    const {result} = renderHookInEntry(
+      () => useBackdropSectionClassNames({
+        file: null
+      }, {
+        exposeMotifArea: true,
+        empty: false
+      })
+    );
+
+    expect(result.current).toContain(styles.exposeMotifArea);
   });
 
   it('includes aspect ratio class name for file', () => {
