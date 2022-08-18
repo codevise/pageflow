@@ -2,7 +2,13 @@ module PageflowScrolled
   # @api private
   module GeneratedMediaQueriesHelper
     def generated_media_queries_css_for(html)
-      html.scan(/class="[^"]*aspectRatio(Mobile)?([0-9]+)/).map { |match|
+      aspect_ratio_class_strings = html.scan(/class="[^"]*aspectRatio[^"]*"/)
+      ratio_classes =
+        aspect_ratio_class_strings
+        .flat_map { |s| s.scan(/aspectRatio(Mobile)?([0-9]+)/) }
+        .uniq
+
+      ratio_classes.map { |match|
         generated_aspec_ratio_media_query(
           mobile_suffix: match[0],
           numerator: match[1]
