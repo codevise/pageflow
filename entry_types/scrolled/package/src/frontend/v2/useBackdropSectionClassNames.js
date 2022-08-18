@@ -18,7 +18,8 @@ export function useBackdropSectionClassNames(
 }
 
 function useBackdropSectionClassName(file, suffix = '', orientation = '') {
-  const aspectRatio = file && Math.round(file.width / file.height * 1000);
+  const aspectRatio = file && file.isReady &&
+                      Math.round(file.width / file.height * 1000);
   const className = aspectRatio && `aspectRatio${suffix}${aspectRatio}`;
 
   useAspectRatioMediaQueryStyleTag(aspectRatio, className, orientation);

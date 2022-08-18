@@ -61,6 +61,22 @@ describe('useBackdropSectionClassNames', () => {
     expect(result.current).toContain('aspectRatio1333');
   });
 
+  it('does not include aspect ratio class name if file is not ready', () => {
+    const {result} = renderHookInEntry(
+      () => useBackdropSectionClassNames({
+        file: useBackdropFile({collectionName: 'imageFiles', permaId: 10})
+      }),
+      {
+        seed: {
+          imageFiles: [{permaId: 10, isReady: false, width: 0, height: 0}]
+        }
+      }
+    );
+
+    expect(result.current).not.toContain(/aspectRatio/);
+  });
+
+
   it('includes aspect ratio class name for mobile file', () => {
     const {result} = renderHookInEntry(
       () => useBackdropSectionClassNames({
