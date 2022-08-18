@@ -116,7 +116,7 @@ describe('useBackdropSectionClassNames', () => {
     );
 
     expect(document.head).toHaveStyleTagIncluding(
-      '@media (min-aspect-ratio: 750/1000) {',
+      '@media (orientation: portrait) and (min-aspect-ratio: 750/1000) {',
       'aspectRatioMobile750 {'
     );
   });

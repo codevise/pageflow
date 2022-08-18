@@ -11,32 +11,34 @@ export function useBackdropSectionClassNames(
     styles[`layout-${layout || 'left'}`],
     exposeMotifArea && !empty && styles.exposeMotifArea,
     useBackdropSectionClassName(backdrop.file),
-    useBackdropSectionClassName(backdrop.mobileFile, 'Mobile'),
+    useBackdropSectionClassName(backdrop.mobileFile,
+                                'Mobile',
+                                '(orientation: portrait) and '),
   ].filter(Boolean);
 }
 
-function useBackdropSectionClassName(file, suffix = '') {
+function useBackdropSectionClassName(file, suffix = '', orientation = '') {
   const aspectRatio = file && Math.round(file.width / file.height * 1000);
   const className = aspectRatio && `aspectRatio${suffix}${aspectRatio}`;
 
-  useAspectRatioMediaQueryStyleTag(aspectRatio, className);
+  useAspectRatioMediaQueryStyleTag(aspectRatio, className, orientation);
 
   return className;
 }
 
-function useAspectRatioMediaQueryStyleTag(aspectRatio, className) {
+function useAspectRatioMediaQueryStyleTag(aspectRatio, className, orientation) {
   useIsomorphicLayoutEffect(() => {
     // global variable is set in script tag inserted by
     // GeneratedMediaQueriesHelper when style tags have been rendered
     // on the server
     if (!global.pageflowScrolledSSRAspectRatioMediaQueries &&
         aspectRatio) {
-      ensureAspectRatioMediaQueryStyleTag(aspectRatio, className)
+      ensureAspectRatioMediaQueryStyleTag(aspectRatio, className, orientation)
     }
   }, [aspectRatio, className]);
 }
 
-function ensureAspectRatioMediaQueryStyleTag(aspectRatio, className) {
+function ensureAspectRatioMediaQueryStyleTag(aspectRatio, className, orientation) {
   console.log('checking style tag', aspectRatio);
   if (!document.head.querySelector(`[data-for="${className}"]`)) {
     console.log('appending style tag', aspectRatio);
@@ -47,7 +49,7 @@ function ensureAspectRatioMediaQueryStyleTag(aspectRatio, className) {
     // WARNING: This CSS snippet needs to be kept in sync with the
     // corresponding snippet in GeneratedMediaQueriesHelper
     el.innerHTML = `
-      @media (min-aspect-ratio: ${aspectRatio}/1000) {
+      @media ${orientation}(min-aspect-ratio: ${aspectRatio}/1000) {
         section.${className} {
            --backdrop-positioner-transform: var(--backdrop-positioner-min-ar-transform);
            --backdrop-positioner-width: var(--backdrop-positioner-min-ar-width);
