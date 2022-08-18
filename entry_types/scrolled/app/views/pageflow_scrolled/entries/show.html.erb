@@ -40,7 +40,9 @@
         window.pageflowScrolledSSRAspectRatioMediaQueries = true;
       </script>
       <style>
-        <%= generated_media_queries_css_for(ssr_html) %>
+        <% benchmark 'Generate aspect ratio media queries' do %>
+          <%= generated_media_queries_css_for(ssr_html) %>
+        <% end %>
       </style>
     <% end %>
   </head>
