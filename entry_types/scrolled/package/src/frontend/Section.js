@@ -3,15 +3,15 @@ import classNames from 'classnames';
 
 import { SectionAtmo } from './SectionAtmo';
 
-import {useSectionContentElements} from '../entryState';
-import {Backdrop} from './Backdrop';
+import {useSectionContentElements, useAdditionalSeedData} from '../entryState';
 import Foreground from './Foreground';
 import {Layout} from './layouts';
-import {useMotifAreaState} from './useMotifAreaState';
 import useScrollTarget from './useScrollTarget';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
 import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
+import * as v1 from './v1';
+import * as v2 from './v2';
 
 import styles from './Section.module.css';
 import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
@@ -20,22 +20,40 @@ import {getAppearanceComponents} from './appearance';
 const Section = withInlineEditingDecorator('SectionDecorator', function Section({
   section, contentElements, state, isScrollTarget, onActivate
 }) {
+  const {
+    useBackdrop,
+    useBackdropSectionClassNames,
+    useBackdropSectionCustomProperties
+  } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
+
+  const backdrop = useBackdrop(section);
+
   const ref = useRef();
   useScrollTarget(ref, isScrollTarget);
 
   const transitionStyles = getTransitionStyles(section, section.previousSection, section.nextSection);
+
+  const backdropSectionClassNames = useBackdropSectionClassNames(backdrop, {
+    layout: section.layout,
+    exposeMotifArea: section.exposeMotifArea,
+    empty: !contentElements.length,
+  });
 
   return (
     <section id={`section-${section.permaId}`}
              ref={ref}
              className={classNames(styles.Section,
                                    transitionStyles.section,
+                                   backdropSectionClassNames,
+                                   {[styles.first]: section.sectionIndex === 0},
                                    {[styles.narrow]: section.width === 'narrow'},
-                                   {[styles.invert]: section.invert})}>
+                                   {[styles.invert]: section.invert})}
+             style={useBackdropSectionCustomProperties(backdrop)}>
       <SectionLifecycleProvider onActivate={onActivate} isLast={!section.nextSection}>
         <SectionAtmo audioFilePermaId={section.atmoAudioFileId} />
 
         <SectionContents section={section}
+                         backdrop={backdrop}
                          contentElements={contentElements}
                          state={state}
                          transitionStyles={transitionStyles} />
@@ -45,8 +63,13 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
 });
 
 function SectionContents({
-  section, contentElements, state, transitionStyles
+  section, backdrop, contentElements, state, transitionStyles
 }) {
+  const {
+    Backdrop,
+    useMotifAreaState
+  } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
+
   const {shouldPrepare} = useSectionLifecycle();
 
   const sectionProperties = useMemo(() => ({
@@ -55,7 +78,7 @@ function SectionContents({
     sectionIndex: section.sectionIndex
   }), [section.layout, section.invert, section.sectionIndex]);
 
-  const [motifAreaState, setMotifAreaRef, setContentAreaRef, setForegroundContentRef] = useMotifAreaState({
+  const [motifAreaState, setMotifAreaRef, setContentAreaRef] = useMotifAreaState({
     updateOnScrollAndResize: shouldPrepare,
     exposeMotifArea: section.exposeMotifArea,
     transitions: getEnterAndExitTransitions(section, section.previousSection, section.nextSection),
@@ -74,6 +97,9 @@ function SectionContents({
       <Backdrop {...section.backdrop}
                 effects={section.backdropEffects}
                 effectsMobile={section.backdropEffectsMobile}
+
+                backdrop={backdrop}
+
                 onMotifAreaUpdate={setMotifAreaRef}
                 state={state}
                 transitionStyles={transitionStyles}>
@@ -89,10 +115,8 @@ function SectionContents({
 
       <Foreground transitionStyles={transitionStyles}
                   state={state}
-                  inFirstSection={section.sectionIndex === 0}
                   minHeight={motifAreaState.minHeight}
                   paddingBottom={!endsWithFullWidthElement(contentElements)}
-                  contentRef={setForegroundContentRef}
                   heightMode={heightMode(section)}>
         <Box inverted={section.invert}
              coverInvisibleNextSection={section.nextSection && section.nextSection.transition.startsWith('fade')}

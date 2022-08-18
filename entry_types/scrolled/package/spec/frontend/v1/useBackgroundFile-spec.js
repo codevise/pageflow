@@ -1,4 +1,4 @@
-import {useBackgroundFile} from 'frontend/useBackgroundFile';
+import {useBackgroundFile} from 'frontend/v1/useBackgroundFile';
 import {useFile} from 'entryState';
 
 import {renderHookInEntry} from 'support';

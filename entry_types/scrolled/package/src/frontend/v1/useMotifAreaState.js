@@ -1,8 +1,8 @@
 import {useCallback, useState, useEffect} from 'react';
 
-import isIntersectingX from './isIntersectingX';
-import useBoundingClientRect from './useBoundingClientRect';
-import useDimension from './useDimension';
+import isIntersectingX from '../isIntersectingX';
+import useBoundingClientRect from '../useBoundingClientRect';
+import useDimension from '../useDimension';
 
 /**
  * Handles the state of the section layout based on the current

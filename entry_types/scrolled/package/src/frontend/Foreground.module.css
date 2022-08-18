@@ -7,6 +7,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  padding-top: var(--foreground-padding-top);
 }
 
 .fullFadeHeight {
@@ -15,12 +17,6 @@
 
 .fullHeight {
   min-height: 100vh;
-}
-
-.inFirstSection {
-  /* Let content begin below navigation bar. Navigation bar has zero
-     height to let first chapter start at the very top. */
-  padding-top: var(--theme-widget-margin-top, 58px);
 }
 
 .paddingBottom {

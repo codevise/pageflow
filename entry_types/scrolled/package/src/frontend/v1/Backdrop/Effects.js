@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from '../Backdrop.module.css';
+import styles from '../../Backdrop.module.css';
 
 export function Effects({file, children}) {
   return (

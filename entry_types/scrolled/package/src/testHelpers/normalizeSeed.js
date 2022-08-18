@@ -76,7 +76,9 @@ export function normalizeSeed({
       defaultFileRights: defaultFileRights,
       legalInfo: normalizeLegalInfo(legalInfo),
       theme: normalizeTheme({themeOptions, themeAssets}),
-      additionalSeedData: additionalSeedData || {}
+      additionalSeedData: additionalSeedData || {
+        frontendVersion: 1
+      }
     },
     collections: {
       entries: normalizedEntries,

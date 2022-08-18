@@ -1,21 +1,14 @@
 import React, {useRef, useEffect, useCallback, useContext} from 'react';
 import classNames from 'classnames';
 
-import styles from './MotifArea.module.css';
-const VisibilityContext = React.createContext(false);
+import styles from '../MotifArea.module.css';
 
-export function MotifAreaVisibilityProvider({visible, children}) {
-  return (
-    <VisibilityContext.Provider value={visible}>
-      {children}
-    </VisibilityContext.Provider>
-  );
-}
+import {MotifAreaVisibilityContext} from '../MotifAreaVisibilityProvider';
 
 export const MotifArea = function MotifArea(props) {
   const lastPosition = useRef();
   const position = props.file?.isReady && getPosition(props);
-  const visible = useContext(VisibilityContext);
+  const visible = useContext(MotifAreaVisibilityContext);
 
   const elementRef = useRef();
   const onUpdate = props.onUpdate;

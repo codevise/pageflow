@@ -1,4 +1,4 @@
-import {getFilter} from 'frontend/Backdrop/Effects';
+import {getFilter} from 'frontend/v1/Backdrop/Effects';
 
 describe('Backdrop Effects getFilter', () => {
   it('uses normalized range for brightness, contrast and saturate', () => {

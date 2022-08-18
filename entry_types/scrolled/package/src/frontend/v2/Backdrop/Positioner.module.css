@@ -1,0 +1,5 @@
+.wrapper {
+  transform: var(--backdrop-positioner-transform);
+  width: var(--backdrop-positioner-width);
+  height: var(--backdrop-positioner-height);
+}

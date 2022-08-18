@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 
-import {VideoPlayer} from './../VideoPlayer';
+import {VideoPlayer} from './../../VideoPlayer';
 import {MotifArea} from './../MotifArea';
-import {usePlayerState} from './../MediaPlayer/usePlayerState';
-import {useSectionLifecycle} from './../useSectionLifecycle';
+import {usePlayerState} from './../../MediaPlayer/usePlayerState';
+import {useSectionLifecycle} from './../../useSectionLifecycle';
 import {Effects} from './Effects';
 import {documentHiddenState} from 'pageflow/frontend';
 
-export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {
+export function BackgroundVideo({video, onMotifAreaUpdate}) {
   const [playerState, playerActions] = usePlayerState();
   const {shouldLoad, shouldPrepare} = useSectionLifecycle({
     onVisible() {
@@ -57,10 +57,7 @@ export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) 
                      playsInline={true} />
       </Effects>
       <MotifArea key={video.permaId}
-                 onUpdate={onMotifAreaUpdate}
-                 file={video}
-                 containerWidth={containerDimension.width}
-                 containerHeight={containerDimension.height}/>
+                 onUpdate={onMotifAreaUpdate} />
     </>
   );
 }

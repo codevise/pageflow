@@ -2,7 +2,7 @@ import React from 'react';
 import {storiesOf} from '@storybook/react';
 
 import {Entry, RootProviders} from 'pageflow-scrolled/frontend';
-import {MotifAreaVisibilityProvider} from '../MotifArea';
+import {MotifAreaVisibilityProvider} from '../MotifAreaVisibilityProvider';
 
 import {
   normalizeAndMergeFixture,
@@ -129,7 +129,8 @@ function exampleSeed({transition1, transition2, motifArea, fullHeight, title, te
             image: filePermaId('imageFiles', 'churchBefore'),
             imageMotifArea: motifArea
           },
-          fullHeight
+          fullHeight,
+          exposeMotifArea: true
         }
       },
       {

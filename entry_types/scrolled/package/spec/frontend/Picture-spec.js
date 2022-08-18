@@ -4,14 +4,14 @@ import '@testing-library/jest-dom/extend-expect'
 import {renderInEntry} from 'support';
 import * as jsonLdQueries from 'support/jsonLdQueries';
 
-import {Image} from 'frontend/Image';
-import {useBackgroundFile} from 'frontend/v1/useBackgroundFile';
+import {Picture} from 'frontend/Picture';
 import {useFile} from 'entryState';
 
-describe('Image', () => {
+describe('Picture', () => {
   it('renders nothing by default', () => {
     const {queryByRole} =
-      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
+      renderInEntry(() => <Picture imageFile={useFile({collectionName: 'imageFiles',
+                                                       permaId: 100})} />, {
         seed: {}
       });
 
@@ -20,7 +20,8 @@ describe('Image', () => {
 
   it('uses large variant of image given by id', () => {
     const {getByRole} =
-      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
+      renderInEntry(() => <Picture imageFile={useFile({collectionName: 'imageFiles',
+                                                       permaId: 100})} />, {
         seed: {
           imageFileUrlTemplates: {
             large: ':id_partition/image.jpg'
@@ -36,8 +37,9 @@ describe('Image', () => {
 
   it('supports custom variant of image given by id as background', () => {
     const {getByRole} = renderInEntry(
-      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
-                   variant="medium" />,
+      () => <Picture imageFile={useFile({collectionName: 'imageFiles',
+                                         permaId: 100})}
+                     variant="medium" />,
       {
         seed: {
           imageFileUrlTemplates: {
@@ -54,10 +56,10 @@ describe('Image', () => {
     expect(getByRole('img')).toHaveAttribute('src', '000/000/001/medium/image.jpg');
   });
 
-  it('does not render image if load is false', () => {
+  it('does not set loading attribute by default', () => {
     const {queryByRole} = renderInEntry(
-      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
-                   load={false} />,
+      () => <Picture imageFile={useFile({collectionName: 'imageFiles',
+                                         permaId: 100})} />,
       {
         seed: {
           imageFiles: [
@@ -67,12 +69,30 @@ describe('Image', () => {
       }
     );
 
-    expect(queryByRole('img')).toBeNull();
+    expect(queryByRole('img')).not.toHaveAttribute('loading');
+  });
+
+  it('supports setting loading attribute', () => {
+    const {queryByRole} = renderInEntry(
+      () => <Picture imageFile={useFile({collectionName: 'imageFiles',
+                                         permaId: 100})}
+                     loading="lazy" />,
+      {
+        seed: {
+          imageFiles: [
+            {id: 1, permaId: 100}
+          ]
+        }
+      }
+    );
+
+    expect(queryByRole('img')).toHaveAttribute('loading', 'lazy');
   });
 
   it('does not render image if image is not ready', () => {
     const {queryByRole} =
-      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
+      renderInEntry(() => <Picture imageFile={useFile({collectionName: 'imageFiles',
+                                                       permaId: 100})} />, {
         seed: {
           imageFiles: [
             {id: 1, permaId: 100, isReady: false}
@@ -83,44 +103,33 @@ describe('Image', () => {
     expect(queryByRole('img')).toBeNull();
   });
 
-  it('uses centered object position by default', () => {
-    const {getByRole} =
-      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
-        seed: {
-          imageFiles: [
-            {permaId: 100}
-          ]
-        }
-      });
-
-    expect(getByRole('img')).toHaveStyle('object-position: 50% 50%');
-  });
-
-  it('sets object position based on motif area', () => {
-    const {getByRole} = renderInEntry(
-      () => {
-        const file = useBackgroundFile({
-          file: useFile({collectionName: 'imageFiles', permaId: 100}),
-          motifArea: {left: 50, top: 0, width: 50, height: 40},
-          containerDimension: {width: 1000, height: 1000}
-        });
-
-        return (
-          <Image imageFile={file} />
-        );
-      },
+  it('supports rendering different image for portrait media query', () => {
+    const {container} = renderInEntry(
+      () => <Picture imageFile={useFile({collectionName: 'imageFiles',
+                                         permaId: 100})}
+                     imageFileMobile={useFile({collectionName: 'imageFiles',
+                                               permaId: 101})}/>,
       {
         seed: {
-          imageFiles: [{permaId: 100, width: 2000, height: 1000}]
+          imageFileUrlTemplates: {
+            large: ':id_partition/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100},
+            {id: 2, permaId: 101}
+          ]
         }
-      });
+    });
 
-    expect(getByRole('img')).toHaveStyle('object-position: 100% 50%');
+    const source = container.querySelector('source');
+    expect(source).toHaveAttribute('srcset', '000/000/002/image.jpg');
+    expect(source).toHaveAttribute('media', '(orientation: portrait)');
   });
 
   it('does not render structured data by default', () => {
     const {queryJsonLd} =
-      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
+      renderInEntry(() => <Picture imageFile={useFile({collectionName: 'imageFiles',
+                                                       permaId: 100})} />, {
         seed: {
           imageFiles: [
             {permaId: 100}
@@ -134,8 +143,9 @@ describe('Image', () => {
 
   it('supports rendering structured data', () => {
     const {getJsonLd} = renderInEntry(
-      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
-                   structuredData={true} />,
+      () => <Picture imageFile={useFile({collectionName: 'imageFiles',
+                                         permaId: 100})}
+                     structuredData={true} />,
       {
         seed: {
           imageFileUrlTemplates: {
@@ -173,12 +183,12 @@ describe('Image', () => {
                                        'copyrightHolder': {
                                          '@type': 'Organization',
                                          'name': 'some author'
-                                       }});
+    }});
   });
 
   it('render alt text', () => {
     const {getByRole} = renderInEntry(
-      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />,
+      () => <Picture imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />,
       {
         seed: {
           imageFileUrlTemplates: {
@@ -194,9 +204,9 @@ describe('Image', () => {
     expect(getByRole('img')).toHaveAttribute('alt', 'water');
   });
 
-  it('render empty alt attr', () => {
+  it('render empty alt attribute', () => {
     const {getByRole} = renderInEntry(
-      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />,
+      () => <Picture imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />,
       {
         seed: {
           imageFileUrlTemplates: {
@@ -209,6 +219,6 @@ describe('Image', () => {
       }
     );
 
-    expect(getByRole('img').hasAttribute('alt')).toBe(true);
+    expect(getByRole('img')).toHaveAttribute('alt', '');
   });
 });
