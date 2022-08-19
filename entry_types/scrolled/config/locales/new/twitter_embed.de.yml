@@ -10,8 +10,8 @@ de:
               label: Konversation ausblenden
             hideMedia:
               label: Medien ausblenden
-          name: Twitter-Einbettung
-          description: "Bettet einen Tweet ein"
+          name: Tweet
+          description: "Bettet Inhalte von Twitter ein"
           tabs:
             general: Twitter-Embed
     public:

@@ -10,8 +10,8 @@ en:
               label: Hide Conversation
             hideMedia:
               label: Hide Media
-          name: Twitter Embed
-          description: "Embed a Tweet"
+          name: Tweet
+          description: "Embed content from Twitter"
           tabs:
             general: Twitter Embed
     public:
