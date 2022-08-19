@@ -4,7 +4,7 @@ import styles from './Placeholder.module.css';
 
 import Icon from './icon.svg';
 
-export function Placeholder() {
+export function Placeholder({children}) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.row }>
@@ -15,7 +15,7 @@ export function Placeholder() {
         </div>
         <Icon width={24} height={24} />
       </div>
-      <div className={styles.text} />
+      {children || <div className={styles.text} />}
     </div>
   )
 }

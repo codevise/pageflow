@@ -27,13 +27,17 @@ export function TwitterEmbed({configuration}) {
   return (
     <ContentElementBox>
       <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
-        <ThirdPartyOptIn providerName="twitter">
-          {shouldLoad &&
+        {shouldLoad ?
+         <ThirdPartyOptIn
+           providerName="twitter"
+           icon={false}
+           wrapper={children => <Placeholder>{children}</Placeholder>}>
            <Tweet key={key}
                   url={url}
                   hideConversation={hideConversation}
-                  hideMedia={hideMedia} />}
-        </ThirdPartyOptIn>
+                  hideMedia={hideMedia} />
+         </ThirdPartyOptIn> :
+         <Placeholder />}
         <ThirdPartyOptOutInfo providerName="twitter"
                               contentElementPosition={configuration.position} />
       </div>
