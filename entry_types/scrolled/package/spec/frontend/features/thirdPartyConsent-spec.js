@@ -300,6 +300,17 @@ describe('Third party consent', () => {
         })
       );
     });
+
+    it('renders icon by default', async () => {
+      const {container} = await renderEntry({
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      expect(container.querySelector('[data-file-name=SvgMedia]')).not.toBeNull();
+    });
   });
 
   describe('opt in with wrapper', () => {
@@ -343,6 +354,36 @@ describe('Third party consent', () => {
       });
 
       expect(getByTestId('test-content-element')).toHaveTextContent('Data from SomeService');
+    });
+  });
+
+  describe('opt in with icon prop false', () => {
+    beforeEach(() => {
+      frontend.contentElementTypes.register('test', {
+        consentVendors: [{name: 'someService'}],
+
+        component: function Component() {
+          return (
+            <div data-testid="test-content-element">
+              <ThirdPartyOptIn providerName="someService"
+                               icon={false}>
+                <div>Data from SomeService</div>
+              </ThirdPartyOptIn>
+            </div>
+          );
+        }
+      });
+    });
+
+    it('does not render icon', async () => {
+      const {container} = await renderEntry({
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      expect(container.querySelector('[data-file-name=SvgMedia]')).toBeNull();
     });
   });
 
