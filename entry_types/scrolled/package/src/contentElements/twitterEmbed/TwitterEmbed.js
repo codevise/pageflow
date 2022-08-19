@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
 
 import {
   ContentElementBox,
@@ -58,8 +59,8 @@ function Tweet({
   hideMedia,
 }) {
   const ref = useRef(null)
-
   const tweetId = url ? url.split('/')[5] : undefined
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let isComponentMounted = true
@@ -69,14 +70,14 @@ function Tweet({
     };
 
     scriptLoaded().then(() => {
-      if (window.twttr.widgets && ref.current) {
+      if (window.twttr.widgets && tweetId) {
         if (isComponentMounted) {
           if (window.twttr.widgets['createTweetEmbed']) {
-            window.twttr.widgets.createTweetEmbed(
+            window.twttr.widgets.createTweet(
               tweetId,
               ref.current,
               options
-            );
+            ).then(() => setLoaded(true));
           }
         }
       }
@@ -86,9 +87,9 @@ function Tweet({
   }, [hideMedia, hideConversation, tweetId]);
 
   return(
-    <div className={styles.container}>
-      {!tweetId && <Placeholder />}
-      <div ref={ref} />
-    </div>
+    <>
+      {!loaded && <Placeholder />}
+      <div ref={ref} className={classNames({[styles.loadingContainer]: !loaded})} />
+    </>
   );
 }
