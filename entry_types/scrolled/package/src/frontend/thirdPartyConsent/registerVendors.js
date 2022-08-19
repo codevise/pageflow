@@ -1,8 +1,10 @@
 import I18n from 'i18n-js';
 
-export function registerVendors({contentElementTypes, seed, consent}) {
+export function registerVendors({contentElementTypes, seed, consent, cookieName}) {
   const options = seed.config.theme.options.thirdPartyConsent;
   const locale = seed.collections.entries[0].locale;
+
+  cookieName = cookieName || options?.cookieName;
 
   contentElementTypes
     .consentVendors({
@@ -13,8 +15,8 @@ export function registerVendors({contentElementTypes, seed, consent}) {
       consent.registerVendor(vendor.name, {
         displayName: vendor.displayName,
         description: vendor.description,
-        paradigm: options?.cookieName ? (vendor.paradigm || 'opt-in') : 'skip',
-        cookieName: options?.cookieName,
+        paradigm: cookieName ? (vendor.paradigm || 'opt-in') : 'skip',
+        cookieName: cookieName,
         cookieKey: options?.cookieProviderNameMapping?.[vendor.name],
         cookieDomain: options?.cookieDomain
       });
