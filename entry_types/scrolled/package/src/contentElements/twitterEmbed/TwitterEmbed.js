@@ -7,6 +7,9 @@ import {
   ThirdPartyOptOutInfo,
   useContentElementLifecycle
 } from 'pageflow-scrolled/frontend';
+
+import {Placeholder} from './Placeholder';
+
 import styles from './TwitterEmbed.module.css';
 
 export function TwitterEmbed({configuration}) {
@@ -88,16 +91,4 @@ function Tweet({
       <div ref={ref} />
     </div>
   );
-}
-
-function Placeholder() {
-  return (
-    <div className={styles.placeholder_wrapper}>
-      <div className={styles.placeholder_upper_row }>
-        <div style={{height: "50px", width: "50px", borderRadius: "50%"}} className={styles.placeholder_item}/>
-        <div style={{height: "50%", width: "100%"}} className={styles.placeholder_item}/>
-      </div>
-      <div style={{height: "200px", width: "100%"}} className={styles.placeholder_item} />
-    </div>
-  )
 }
