@@ -302,6 +302,50 @@ describe('Third party consent', () => {
     });
   });
 
+  describe('opt in with wrapper', () => {
+    beforeEach(() => {
+      frontend.contentElementTypes.register('test', {
+        consentVendors: [{name: 'someService'}],
+
+        component: function Component() {
+          return (
+            <div data-testid="test-content-element">
+              <ThirdPartyOptIn providerName="someService"
+                               wrapper={children => <div>Wrapper: {children}</div>}>
+                <div>Data from SomeService</div>
+              </ThirdPartyOptIn>
+            </div>
+          );
+        }
+      });
+    });
+
+    it('wraps prompt with result of render prop', async () => {
+      const {getByTestId} = await renderEntry({
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      expect(getByTestId('test-content-element'))
+        .toHaveTextContent('Wrapper: Enable SomeService?');
+    });
+
+    it('does not wrap contents if opt-in is skipped ', async () => {
+      cookies.setItem('optIn', '{"someService": true}');
+
+      const {getByTestId} = await renderEntry({
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      expect(getByTestId('test-content-element')).toHaveTextContent('Data from SomeService');
+    });
+  });
+
   describe('opt in with render function', () => {
     beforeEach(() => {
       frontend.contentElementTypes.register('test', {

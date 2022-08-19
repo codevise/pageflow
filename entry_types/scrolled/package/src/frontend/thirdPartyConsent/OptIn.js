@@ -15,10 +15,13 @@ import OptInIcon from '../icons/media.svg';
  *   Only render children if user has given consent for this provider.
  * @param {React.ReactElement} props.children -
  *   Children to conditionally render.
+ * @param {function} [props.wrapper] -
+ *   Function that receives children to allow wrapping opt-in prompt
+ *   in custom elements.
  *
  * @name ThirdPartyOptIn
  */
-export function OptIn({children, providerName}) {
+export function OptIn({children, providerName, wrapper}) {
   const {t} = useI18n();
   const cookieMessage =
     t(`pageflow_scrolled.public.third_party_consent.opt_in_prompt.${providerName}`);
@@ -34,7 +37,7 @@ export function OptIn({children, providerName}) {
     setConsentedHere(true);
   }
 
-  return (
+  return wrapper(
     <div className={styles.optIn}>
       <div className={styles.optInIcon}>
         <OptInIcon/>
@@ -50,3 +53,7 @@ export function OptIn({children, providerName}) {
     </div>
   );
 };
+
+OptIn.defaultProps = {
+  wrapper: children => children
+}
