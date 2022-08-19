@@ -1,0 +1,11 @@
+.loadingContainer > div {
+  /* Twitter already inserts a div with margins while the tweet still
+     loads. Since the placeholder also has these margins, prevent
+     displaying extra space. */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.container > div {
+  margin: 0 auto;
+}

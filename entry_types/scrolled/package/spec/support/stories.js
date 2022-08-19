@@ -31,6 +31,9 @@ let seedFixture = seedFixtureFromFile;
  *   `configuration` property. The configurations will be merged into
  *   the `baseConfiguration` to create further examples that shall be
  *   rendered as stories.
+ * @param {boolean} [consent=false] -
+ *   Set to true, to include a story which renders the content element
+ *   in a state where consent has not yet been given.
  *
  * @example
  *
@@ -59,14 +62,15 @@ export function storiesOfContentElement(module, options) {
     setupI18n(seedFixture.i18n);
   }
 
-  exampleStories(options).forEach(({title, seed, parameters = {}}) => {
+  exampleStories(options).forEach(({title, seed, requireConsentOptIn, parameters = {}}) => {
     const consent = Consent.create();
 
     registerConsentVendors({
       seed,
       consent,
-      contentElementTypes: frontend.contentElementTypes
-    })
+      contentElementTypes: frontend.contentElementTypes,
+      cookieName: requireConsentOptIn && 'pageflow_consent_storybook'
+    });
 
     stories.add(title,
                 () =>
@@ -130,7 +134,8 @@ export function exampleStories(options) {
   return [
     ...variantsExampleStories(options),
     ...layoutExampleStories(options),
-    ...mobileExampleStories(options)
+    ...mobileExampleStories(options),
+    ...consentOptInStories(options)
   ];
 }
 
@@ -199,7 +204,25 @@ function mobileExampleStories({typeName, baseConfiguration}) {
   });
 }
 
-function exampleStoryGroup({name, typeName, examples, parameters}) {
+function consentOptInStories({typeName, consent, baseConfiguration}) {
+  if (!consent) {
+    return [];
+  }
+
+  return exampleStoryGroup({
+    typeName,
+    name: 'Consent',
+    requireConsentOptIn: true,
+    examples: [
+      {
+        name: 'Opt-In',
+        contentElementConfiguration: baseConfiguration
+      }
+    ]
+  });
+}
+
+function exampleStoryGroup({name, typeName, examples, parameters, requireConsentOptIn}) {
   const defaultSectionConfiguration = {transition: 'scroll', backdrop: {image: '#000'}, fullHeight: false};
 
   const sections = examples.map((example, index) => ({
@@ -220,6 +243,7 @@ function exampleStoryGroup({name, typeName, examples, parameters}) {
         sections: [section],
         contentElements: contentElements
       }),
+      requireConsentOptIn,
       parameters
     }));
   }
@@ -231,6 +255,7 @@ function exampleStoryGroup({name, typeName, examples, parameters}) {
           sections: sections,
           contentElements: contentElements
         }),
+        requireConsentOptIn,
         parameters
       }
     ];

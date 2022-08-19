@@ -38,6 +38,8 @@ describe('storiesOfContentElement', () => {
 });
 
 describe('exampleStories', () => {
+  beforeEach(() => delete process.env.STORYBOOK_SPLIT);
+
   it('uses config from seed fixture file', () => {
     const seedFixture = normalizeSeed({
       prettyUrl: 'https://example.com/'
@@ -63,6 +65,8 @@ describe('exampleStories', () => {
   });
 
   it('supports adding stories for additional configurations', () => {
+    process.env.STORYBOOK_SPLIT = true
+
     const stories = exampleStories({
       typeName: 'test',
       baseConfiguration: {},
@@ -75,6 +79,45 @@ describe('exampleStories', () => {
     });
 
     expect(stories).toContainEqual(expect.objectContaining({title: 'Variants - Extra'}));
+  });
+
+  it('does not include consent stories by default', () => {
+    const stories = exampleStories({
+      typeName: 'test',
+      baseConfiguration: {}
+    });
+
+    expect(stories).not.toContainEqual(expect.objectContaining({
+      requireConsentOptIn: true
+    }));
+  });
+
+  it('supports adding story for when consent has not been given', () => {
+    const stories = exampleStories({
+      typeName: 'test',
+      consent: true,
+      baseConfiguration: {}
+    });
+
+    expect(stories).toContainEqual(expect.objectContaining({
+      title: 'Consent',
+      requireConsentOptIn: true
+    }));
+  });
+
+  it('supports adding consent story to split storybook', () => {
+    process.env.STORYBOOK_SPLIT = true
+
+    const stories = exampleStories({
+      typeName: 'test',
+      consent: true,
+      baseConfiguration: {}
+    });
+
+    expect(stories).toContainEqual(expect.objectContaining({
+      title: 'Consent - Opt-In',
+      requireConsentOptIn: true
+    }));
   });
 });
 
