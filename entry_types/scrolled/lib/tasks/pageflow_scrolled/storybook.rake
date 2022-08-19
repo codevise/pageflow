@@ -31,7 +31,7 @@ namespace :pageflow_scrolled do
           Paperclip::Storage::S3.class_eval { def flush_writes; end }
         end
 
-        account = seeds.account(name: 'Storybook seed') do |account_in_progress|
+        account = seeds.account(name: 'storybook-seed') do |account_in_progress|
           account_in_progress.features_configuration =
             account_in_progress.features_configuration.merge('scrolled_entry_type' => true)
         end
