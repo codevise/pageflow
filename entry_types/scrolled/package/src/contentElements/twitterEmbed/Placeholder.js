@@ -2,14 +2,20 @@ import React from 'react';
 
 import styles from './Placeholder.module.css';
 
+import Icon from './icon.svg';
+
 export function Placeholder() {
   return (
     <div className={styles.wrapper}>
-      <div className={styles.upperRow }>
-        <div style={{height: "50px", width: "50px", borderRadius: "50%"}} className={styles.item}/>
-        <div style={{height: "50%", width: "100%"}} className={styles.item}/>
+      <div className={styles.row }>
+        <div className={styles.avatar}/>
+        <div className={styles.info}>
+          <div className={styles.name}/>
+          <div className={styles.handle}/>
+        </div>
+        <Icon width={24} height={24} />
       </div>
-      <div style={{height: "200px", width: "100%"}} className={styles.item} />
+      <div className={styles.text} />
     </div>
   )
 }
