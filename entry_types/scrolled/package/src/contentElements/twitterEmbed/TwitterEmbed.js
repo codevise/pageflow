@@ -93,7 +93,8 @@ function Tweet({
   return(
     <>
       {!loaded && <Placeholder />}
-      <div ref={ref} className={classNames({[styles.loadingContainer]: !loaded})} />
+      <div ref={ref} className={classNames(styles.container,
+                                           {[styles.loadingContainer]: !loaded})} />
     </>
   );
 }
