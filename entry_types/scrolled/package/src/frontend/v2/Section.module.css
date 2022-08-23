@@ -1,4 +1,9 @@
 .section {
+  /*
+    Properties like --backdrop-w are set as inline styles via
+    useBackdropSectionCustomProperties. Assign to separate properties
+    to allow overriding with mobile backdrop properties below.
+  */
   --backdrop-width: var(--backdrop-w);
   --backdrop-height: var(--backdrop-h);
 
@@ -9,6 +14,10 @@
 }
 
 @media (orientation: portrait) {
+  /*
+    Use dimensions of mobile image in portrait orientation if one has
+    been assigned.
+  */
   .section {
     --backdrop-width: var(--mobile-backdrop-w, var(--backdrop-w));
     --backdrop-height: var(--mobile-backdrop-h, var(--backdrop-h));
@@ -21,47 +30,194 @@
 }
 
 .section {
+  /*
+    The following calculations use `var(--vw)` and `var(--vh)`instead
+    of using viewport units directly. The variables default to 1vw and
+    1vh respectively (see global.module.css). SectionThumbnail
+    overrides these with measured pixel sizes of the thumbnail, to
+    generate correct section previews.
+
+    # Derived motif area dimensions
+  */
+
   --motif-right: calc(100 - var(--motif-width) - var(--motif-left));
   --motif-bottom: calc(100 - var(--motif-height) - var(--motif-top));
 
   --motif-center-x: calc(var(--motif-left, 50) + var(--motif-width, 0) / 2);
   --motif-center-y: calc(var(--motif-top, 50) + var(--motif-height, 0) / 2);
 
+  /*
+    # Backdrop position
+
+    Our goal is to scale the backdrop to cover the whole viewport and
+    position it such that the motif area is centered in the viewport
+    as much as possible.
+
+    We could have given the backdrop viewport-size and controlled its
+    position via `background-size: cover` and `background-position`.
+    Since `calc` only allows dividing by (unit-less) numbers, we could
+    not find a way to calculate the (unit-less) background position
+    from our pixel-based backdrop dimensions.
+
+    Instead, we handle two cases:
+
+    (A) The aspect ratio of the viewport (= width / height) is _smaller_
+        than the aspect ratio of the backdrop image or video.
+
+    (B) The aspect ratio of the viewport (= width / height) is _greater_
+        than the aspect ratio of the backdrop image or video.
+
+    Note that, in case (A) the backdrop's height has to be equal to
+    the viewport height:
+
+      bbvvvvvvbb    v = viewport
+      bbvvvvvvbb    b = backdrop
+      bbvvvvvvbb
+      bbvvvvvvbb
+      bbvvvvvvbb
+
+    In case (B) the backdrop's width has to be equal to the viewport
+    width:
+
+      bbbbbbbbbb    v = viewport
+      vvvvvvvvvv    b = backdrop
+      vvvvvvvvvv
+      vvvvvvvvvv
+      bbbbbbbbbb
+
+    In both cases, we want to set the other dimension of the backdrop
+    such that the backdrop's aspect ratio is preserved, wrap the
+    backdrop in an `overflow: hidden` container and use CSS
+    `translate` transforms to position the backdrop inside that
+    container.
+
+    We can calculate the desired backdrop dimensions and translation
+    based only on the size of the viewport (using viewport units) and
+    the backdrops aspect ratio (which we read from custom properties
+    set in inline styles).
+
+    We'll end up with two sets of custom properties:
+
+      --backdrop-positioner-transform
+      --backdrop-positioner-width
+      --backdrop-positioner-height
+
+    and
+
+      --backdrop-positioner-min-ar-transform
+      --backdrop-positioner-min-ar-width
+      --backdrop-positioner-min-ar-height
+
+    where `min-ar` stands for `min-aspect-ratio`, i.e. case (B).
+
+    In `useBackdropSectionClassNames`, we set a CSS class on each
+    section which corresponds to the aspect ratio of its backdrop
+    image or video. For example, with a 4:3 image, we set the class
+    `apsectRatio1333` (4 / 3 * 1000 = 1333).
+
+    In server side rendering (see
+    PageflowScrolled::GeneratedMediaQueriesHelper), we generate an
+    aspect-ratio media query for each such class, which re-assigns the
+    custom properties to use the `min-ar` values instead to switch
+    between cases:
+
+      @media (min-aspect-ratio: 1333/1000) {
+        section.aspectRatio1333 {
+           --backdrop-positioner-transform: var(--backdrop-positioner-min-ar-transform);
+           --backdrop-positioner-width: var(--backdrop-positioner-min-ar-width);
+           --backdrop-positioner-height: var(--backdrop-positioner-min-ar-height);
+        }
+      }
+
+    We can then use these media query dependant properties in further
+    calculations.
+
+    ## Small viewport aspect ratio (A)
+
+    Since we know that the backdrop will be 100vh high, we can
+    calculate its width based on the backdrop's aspect ratio:
+  */
+
   --backdrop-display-width: calc(var(--backdrop-width) * 100 * var(--vh) /
                                  var(--backdrop-height));
-  --display-motif-center-x: calc(var(--motif-center-x) / 100 *
+  --motif-display-center-x: calc(var(--motif-center-x) / 100 *
                                  var(--backdrop-display-width));
 
-  --backdrop-translate-x-tmp: calc(var(--display-motif-center-x) * -1 +
-                                   50 * var(--vw));
-  --backdrop-max-translate-x: calc(100 * var(--vw) - var(--backdrop-display-width));
-  --backdrop-translate-x: max(var(--backdrop-max-translate-x),
-                              min(0px, var(--backdrop-translate-x-tmp)));
+  /*
+    We'll give the backdrop the calculated width, causing it to
+    overflow to the right. Our goal is to center the (center of the)
+    motif area in the viewport. If we did not care about covering the
+    viewport, translating by
 
-  --backdrop-display-height: calc(var(--backdrop-height) * 100 * var(--vw) /
-                                  var(--backdrop-width));
-  --display-motif-center-y: calc(var(--motif-center-y) / 100 *
-                                 var(--backdrop-display-height));
+      X = var(--motif-display-center-x) * -1 + 50vw
 
-  --backdrop-translate-y-tmp: calc(var(--display-motif-center-y) * -1 +
-                                   50 * var(--vh));
-  --backdrop-max-translate-y: calc(100 * var(--vh) - var(--backdrop-display-height));
-  --backdrop-translate-y: max(var(--backdrop-max-translate-y),
-                              min(0px, var(--backdrop-translate-y-tmp)));
+    would be enough. If we translate by a positive value, though, the
+    backdrop will no longer cover the viewport on the left. If, we
+    translate by a value smaller than
 
+      M = 100vw - var(--backdrop-display-width)
+
+    it will not cover on the right. Overall this gives us a
+    translation of:
+  */
+
+  --backdrop-translate-x: min(
+    0px,
+    max(
+      /* M: */ 100 * var(--vw) - var(--backdrop-display-width),
+      /* X: */ var(--motif-display-center-x) * -1 + 50 * var(--vw)
+    )
+  );
 
   --backdrop-positioner-transform: translateX(var(--backdrop-translate-x));
   --backdrop-positioner-width: var(--backdrop-display-width);
   --backdrop-positioner-height: 100%;
 
+  /*
+    ## Large viewport aspect ratio (B)
+
+    The following calculations follow exactly the same pattern as
+    above, only with width and height interchanged.
+  */
+
+  --backdrop-display-height: calc(var(--backdrop-height) * 100 * var(--vw) /
+                                  var(--backdrop-width));
+  --motif-display-center-y: calc(var(--motif-center-y) / 100 *
+                                 var(--backdrop-display-height));
+
+  --backdrop-translate-y: min(
+    0px,
+    max(
+      /* M: */ calc(100 * var(--vh) - var(--backdrop-display-height)),
+      /* Y: */ calc(var(--motif-display-center-y) * -1 + 50 * var(--vh))
+    )
+  );
+
   --backdrop-positioner-min-ar-transform: translateY(var(--backdrop-translate-y));
   --backdrop-positioner-min-ar-width: calc(100 * var(--vw));
   --backdrop-positioner-min-ar-height: var(--backdrop-display-height);
+
+  /*
+    # Motif Area Display Position
+
+    Following the same approach, we calculate height, top and bottom
+    of the motif area as it is displayed in the backdrop. We again
+    distinguish between cases (A) and (B) with separate `min-ar`
+    properties, which again will be assigned in the generated media
+    queries.
+  */
 
   --motif-display-height: calc(var(--motif-height) * var(--vh));
   --motif-display-min-ar-height: calc(
     var(--motif-height) / 100 * var(--backdrop-display-height)
   );
+
+  /*
+    In the first section, there might already be a padding to prevent
+    the foreground from being hidden behind a navigation widget. By by
+    accounting for this padding, we translate values into the
+    coordinate system of the section.
+  */
 
   --motif-display-top: calc(var(--motif-top) * var(--vh));
   --motif-display-min-ar-top: calc(
@@ -77,14 +233,65 @@
     var(--foreground-padding-top)
   );
 
+  /*
+    # Section min-height
+
+    For sections with dynamic height, we want to ensure, that the
+    section is tall enough, such that the motif area can become
+    visible. The required height, depends on the configured enter and
+    exit transitions. The resulting properties are used in
+    `useMotifAreaState`.
+
+    ## Reveal/Conceal
+
+    Ensure section is tall enough to reveal the full height of the
+    motif area once the section passes it:
+  */
   --motif-min-height-reveal-conceal: var(--motif-display-height);
+
+  /*
+    ## Reveal
+
+    Ensure backdrop can be revealed far enough before the section
+    starts scrolling:
+  */
   --motif-min-height-reveal: calc(var(--motif-display-bottom) +
                                   var(--motif-display-height));
+
+  /*
+    ## Scroll In
+
+    Ensure motif is visible in scrolled in section:
+  */
   --motif-min-height-scroll-in: calc(var(--motif-display-top) +
                                      var(--motif-display-height));
 }
 
 .exposeMotifArea {
+  /*
+    ## Content padding
+
+    If the section has content and the `exposeMotifArea` option has
+    been activated, we want to shift the content down to prevent it
+    from overlaying the motif area once we enter the section.
+
+    Depending on which enter and exit transitions have been
+    configured, different amounts of padding make sense. See below.
+
+    Still, if the section uses layout `left` or `right` and the
+    viewport is wide enough to allow displaying the motif area next to
+    the content, we do not want to apply a padding.
+
+    We, therefore, compute a value that is zero if there is enough
+    space for a two-column layout and has an arbitrary large value
+    otherwise. Applying the `min` function, we can use this value to
+    reset the padding to 0 in two-column layouts
+
+    Since we never want to reset the padding in a centered layout, we
+    set default widths, which ensure that there is never a remaining
+    width. These properties are overridden by layout-specific classes
+    below.
+  */
   --inline-content-max-width: calc(100 * var(--vw));
   --motif-placeholder-width: calc(100 * var(--vw));
   --motif-placeholder-min-ar-width: calc(100 * var(--vw));
@@ -113,18 +320,69 @@
   /*
     If --remaining-width is non-negative, this will be 0, causing the
     motif paddings below to be 0 as well. If --remaining-width is
-    negative, this will be large value, causing the motif paddings to
-    be controlled by the motif display dimensions.
+    negative, this will be a large value, causing the motif paddings
+    to be controlled by the motif display dimensions.
   */
   --zero-if-two-column: max(0px, var(--remaining-width) * -10000);
 
+  /*
+    If --remaining-width is negative, this will be 0. If
+    --remaining-width is non-negative, this will be large value. This
+    value hide the static shadow by resetting its height to 0 if motif
+    is displayed before the content.
+  */
+  --zero-if-intersecting: max(0px, (var(--remaining-width) + 1px) * 10000);
+
+  /*
+    We now compute appropriate paddings for different enter
+    transitions. The resulting properties are used in
+    `useMotifAreaState`.
+
+    ## Fade In
+
+    Once the section has become active, the backdrop becomes visible
+    all at once. Motif area aware background positioning ensures that
+    the motif area is within the viewport. Still, when scrolling fast,
+    the top of the section will already have reached the top of the
+    viewport once the fade transitions ends.
+
+    If the motif area is at the top of the backdrop, adding its height
+    as padding is enough to ensure that the content does not
+    immediately start intersecting.
+
+    If the motif area is at the bottom of the backdrop, additional
+    padding is needed to prevent the content from hiding the motif
+    right at the start. Adding the full top distance of the motif
+    area, though, means a full viewport height has to be scrolled by
+    after the content of the previous section has been faded out
+    before the content of the section enters the viewport.
+    Subjectively, this feels like to little feedback that more content
+    is coming. We therefore reduce the additional distance by a third.
+  */
   --motif-padding-fade-in: min(var(--zero-if-two-column),
                                var(--motif-display-top) * 2 / 3
                                   + var(--motif-display-height));
+  /*
+    ## Reveal
 
+    The backdrop remains in a fixed position while the content is
+    being scrolled in. Shifting the content down by the height of the
+    motif area means the motif area will be completely visible when
+    the top of the section aligns with the top of the motif area.
+
+    For exit transition `scrollOut`, the min height determined below,
+    ensures that the top of the section can actually reach that
+    position before the section begins to scroll.
+  */
   --motif-padding-reveal: min(var(--zero-if-two-column),
                               var(--motif-display-height));
 
+  /*
+    ## Scroll In
+
+    In the remaining `scrollIn` case, content and backdrop move in
+    together. We need to shift content down below the motif.
+  */
   --motif-padding-scroll-in: min(var(--zero-if-two-column),
                                  var(--motif-display-top) + var(--motif-display-height));
 }
@@ -136,15 +394,41 @@
 
 .layout-left {
   --backdrop-overflow-h: calc(var(--backdrop-display-width) - 100 * var(--vw));
+
+  /*
+    With layout `left`, we want to know how much space the motif takes
+    up on the right side of the viewport. If the backdrop overflows
+    horizontally (A), we can calculate this value as:
+
+      ......oooooooXXXooooooo......
+                   |--------|         <-- motif-placeholder-width
+                   |--------------|   <-- (motif-right + motif-width) *
+                                          backdrop-display-width
+      |----|                 |----|   <-- backdrop-overflow-h
+      |----|                          <-- -(backdrop-translate-x)
+
+    Legend:
+      .: Part of the backdrop image outside viewport
+      o: Part of the backdrop image inside viewport
+      X: Motif area
+  */
   --motif-placeholder-width: calc((var(--motif-right) + var(--motif-width)) / 100 *
                                   var(--backdrop-display-width) -
                                   var(--backdrop-overflow-h) -
                                   var(--backdrop-translate-x));
+
+  /*
+    If the backdrop overflows vertically (B), things are simpler:
+  */
   --motif-placeholder-min-ar-width: calc((var(--motif-right) + var(--motif-width)) *
                                          var(--vw));
 }
 
 .layout-right {
+  /*
+    With layout `right`, we want to know how much space the motif
+    takes up on the left side of the viewport.
+  */
   --motif-placeholder-width: calc((var(--motif-left) + var(--motif-width)) / 100 *
                                   var(--backdrop-display-width) +
                                   var(--backdrop-translate-x));
