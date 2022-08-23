@@ -62,7 +62,7 @@ const motifAreas = {
 [true, false].forEach(fullHeight =>
   [true, false].forEach(withContent => {
     const prefix = [
-      'Frontend/Motif Area',
+      'Frontend/Motif Area/Playground',
       fullHeight ? 'Full Height' : 'Dynamic Height',
       withContent ? 'With Content' : 'No Content'
     ].join('/');

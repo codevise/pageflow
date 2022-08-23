@@ -154,9 +154,9 @@ foreground height.
 
 ## Storybook
 
-The storybook entries below `frontend/Motif Area` use different
-combinations of the factors that influence motif area related backdrop
-and content positioning. They can be use as a playground to quickly
+The storybook entries below `frontend/Motif Area/Playground` use
+different combinations of the factors that influence motif area
+related backdrop and content positioning. They can be use to quickly
 compare different scenarios.
 
 ## Background Positioning
