@@ -40,10 +40,7 @@ function useAspectRatioMediaQueryStyleTag(aspectRatio, className, orientation) {
 }
 
 function ensureAspectRatioMediaQueryStyleTag(aspectRatio, className, orientation) {
-  console.log('checking style tag', aspectRatio);
   if (!document.head.querySelector(`[data-for="${className}"]`)) {
-    console.log('appending style tag', aspectRatio);
-
     const el = document.createElement('style');
     el.setAttribute('data-for', className);
 
