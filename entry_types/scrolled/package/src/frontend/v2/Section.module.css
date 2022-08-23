@@ -119,7 +119,8 @@
   --zero-if-two-column: max(0px, var(--remaining-width) * -10000);
 
   --motif-padding-fade-in: min(var(--zero-if-two-column),
-                               var(--motif-display-bottom) + var(--motif-display-height));
+                               var(--motif-display-top) * 2 / 3
+                                  + var(--motif-display-height));
 
   --motif-padding-reveal: min(var(--zero-if-two-column),
                               var(--motif-display-height));
