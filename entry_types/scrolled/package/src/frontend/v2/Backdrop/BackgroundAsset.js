@@ -7,7 +7,7 @@ import {Positioner} from './Positioner';
 import {BackgroundImage} from './BackgroundImage';
 import {BackgroundVideo} from './BackgroundVideo';
 
-export function BackgroundAsset({backdrop, onMotifAreaUpdate}) {
+export function BackgroundAsset({backdrop, eagerLoad, state, onMotifAreaUpdate}) {
   if (backdrop.type === 'video') {
     return (
       <Fullscreen>
@@ -29,9 +29,14 @@ export function BackgroundAsset({backdrop, onMotifAreaUpdate}) {
         <Positioner>
           <BackgroundImage
             backdrop={backdrop}
+            eagerLoad={eagerLoad && state === 'active' }
             onMotifAreaUpdate={onMotifAreaUpdate} />
         </Positioner>
       </Fullscreen>
     );
   }
 }
+
+BackgroundAsset.defaultProps = {
+  eagerLoad: false
+};

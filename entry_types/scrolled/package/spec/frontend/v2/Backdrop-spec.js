@@ -13,8 +13,8 @@ jest.mock('frontend/usePortraitOrientation')
 describe('Backdrop', () => {
   useFakeMedia();
 
-  it('supports rendering image given by id', () => {
-    const {getByRole} =
+  it('does not render image when outside viewport', () => {
+    const {queryByRole} =
       renderInEntryWithSectionLifecycle(
         () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})} />,
         {
@@ -30,6 +30,75 @@ describe('Backdrop', () => {
           }
         }
       );
+
+    expect(queryByRole('img')).toBeNull()
+  });
+
+  it('render image when backdrop is active and eagerLoad is true', () => {
+    const {getByRole} =
+      renderInEntryWithSectionLifecycle(
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})}
+                        eagerLoad={true}
+                        state="active" />,
+        {
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 100, basename: 'image'}
+            ]
+          }
+        }
+      );
+
+    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('image.jpg'));
+  });
+
+  it('does not render image when backdrop is not active event when eagerLoad is true', () => {
+    const {queryByRole} =
+      renderInEntryWithSectionLifecycle(
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})}
+                        eagerLoad={true}
+                        state="below" />,
+        {
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 100, basename: 'image'}
+            ]
+          }
+        }
+      );
+
+    expect(queryByRole('img')).toBeNull()
+  });
+
+  it('renders image when near viewport', () => {
+    const {simulateScrollPosition, getByRole} =
+      renderInEntryWithSectionLifecycle(
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})} />,
+        {
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 100, basename: 'image'}
+            ]
+          }
+        }
+      );
+
+    simulateScrollPosition('near viewport');
 
     expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('image.jpg'));
   });
@@ -62,7 +131,7 @@ describe('Backdrop', () => {
   });
 
   it('supports rendering mobile image given by id in portrait orientation', () => {
-    const {container, getByRole} =
+    const {simulateScrollPosition, container, getByRole} =
       renderInEntryWithSectionLifecycle(
         () => <Backdrop backdrop={useBackdrop({
           backdrop: {image: 100, imageMobile: 200}
@@ -82,8 +151,10 @@ describe('Backdrop', () => {
         }
       )
 
+    simulateScrollPosition('near viewport');
+
     expect(getByRole('img'))
-        .toHaveAttribute('src', expect.stringContaining('landscape.jpg'));
+      .toHaveAttribute('src', expect.stringContaining('landscape.jpg'));
     expect(container.querySelector('source'))
       .toHaveAttribute('srcset', expect.stringContaining('portrait.jpg'));
   });
