@@ -85,9 +85,9 @@
 }
 
 .exposeMotifArea {
-  --inline-content-max-width: 100vw;
-  --motif-placeholder-width: 100vw;
-  --motif-placeholder-min-ar-width: 100vw;
+  --inline-content-max-width: calc(100 * var(--vw));
+  --motif-placeholder-width: calc(100 * var(--vw));
+  --motif-placeholder-min-ar-width: calc(100 * var(--vw));
 
   /* Motif fits next to inline content if remaining-width is positive.
 
@@ -104,9 +104,9 @@
         8% section padding
   */
   --remaining-width: calc(
-    100vw
+    100 * var(--vw)
     - var(--inline-content-max-width)
-    - 8vw
+    - 8 * var(--vw)
     - var(--motif-placeholder-width)
   );
 
@@ -134,7 +134,7 @@
 }
 
 .layout-left {
-  --backdrop-overflow-h: calc(var(--backdrop-display-width) - 100vw);
+  --backdrop-overflow-h: calc(var(--backdrop-display-width) - 100 * var(--vw));
   --motif-placeholder-width: calc((var(--motif-right) + var(--motif-width)) / 100 *
                                   var(--backdrop-display-width) -
                                   var(--backdrop-overflow-h) -
