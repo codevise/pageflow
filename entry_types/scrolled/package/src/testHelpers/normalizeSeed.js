@@ -127,7 +127,14 @@ function normalizeSections(sections = [], contentElements) {
     ];
   }
 
- return normalizeCollection(sections, sectionDefaults);
+
+  return normalizeCollection(sections, sectionDefaults).map(section => ({
+    ...section,
+    configuration: {
+      transition: sectionDefaults.configuration.transition,
+      ...section.configuration,
+    }
+  }));
 }
 
 function normalizeChapters(chapters = [], sections) {
