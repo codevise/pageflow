@@ -43,67 +43,6 @@ describe('useMotifAreaState', () => {
     return result;
   }
 
-  describe('isContentPadded', () => {
-    describe('when exposeMotifArea is false', () => {
-      it('is false even if content area overlaps motif area horizontally', () => {
-        const [{isContentPadded}] = getMotifAreaState({
-          contentArea: {left: 100, width: 300},
-          motifArea: {left: 200, width: 500, height: 100},
-          empty: false,
-          exposeMotifArea: false
-        }).current;
-
-        expect(isContentPadded).toEqual(false);
-      });
-    });
-
-    describe('when exposeMotifArea is true', () => {
-      it('is true if content area overlaps motif area horizontally', () => {
-        const [{isContentPadded}] = getMotifAreaState({
-          contentArea: {left: 100, width: 300},
-          motifArea: {left: 200, width: 500, height: 100},
-          empty: false,
-          exposeMotifArea: true
-        }).current;
-
-        expect(isContentPadded).toEqual(true);
-      });
-
-      it('is false if content area does not overlap motif area horizontally', () => {
-        const [{isContentPadded}] = getMotifAreaState({
-          contentArea: {left: 100, width: 300},
-          motifArea: {left: 500, width: 500, height: 100},
-          empty: false,
-          exposeMotifArea: true
-        }).current;
-
-        expect(isContentPadded).toEqual(false);
-      });
-
-      it('is false if motif area has zero height', () => {
-        const [{isContentPadded}] = getMotifAreaState({
-          contentArea: {left: 100, width: 300},
-          motifArea: {left: 200, width: 500, height: 0},
-          empty: false,
-          exposeMotifArea: true
-        }).current;
-
-        expect(isContentPadded).toEqual(false);
-      });
-
-      it('is false if section does not have content elements', () => {
-        const [{isContentPadded}] = getMotifAreaState({
-          contentArea: {left: 100, width: 300},
-          motifArea: {left: 200, width: 500, height: 200},
-          empty: true,
-          exposeMotifArea: true
-        }).current;
-
-        expect(isContentPadded).toEqual(false);
-      });
-    });
-  });
-
   describe('intersectionRatioY', () => {
     describe('when exposeMotifArea is false', () => {
       it('equals 0 even if motif area is intersected by content area', () => {

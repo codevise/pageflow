@@ -60,7 +60,6 @@ export function useMotifAreaState({
   return [
     {
       paddingTop: getMotifAreaPadding(transitions),
-      isContentPadded,
       minHeight: getMotifAreaMinHeight(fullHeight, transitions),
       intersectionRatioY: getIntersectionRatioY(
         isContentPadded, motifAreaRect, contentAreaRect

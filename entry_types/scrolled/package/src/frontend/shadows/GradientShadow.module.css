@@ -1,4 +1,5 @@
-.shadow {
+.static,
+.dynamic {
   position: absolute;
   top: 0;
   left: 0;
@@ -9,39 +10,43 @@
   will-change: opacity;
 }
 
+.static {
+  max-width: var(--zero-if-motif-intersecting);
+}
+
 /* dark shadow */
-.align-right .shadowBlack,
-.align-left .shadowBlack {
+.align-right.dark .static,
+.align-left.dark .static {
   background: linear-gradient(to right, #000 0%,rgba(0, 0, 0, 0) 100%);
 }
 
 @media (min-width: 950px) {
-  .align-right .shadowBlack {
+  .align-right.dark .static {
     background: linear-gradient(to left, #000 0%,rgba(0, 0, 0, 0) 100%);
   }
 }
 
-.intersecting .shadowBlack,
-.align-center .shadowBlack,
-.align-centerRagged .shadowBlack {
+.dark .dynamic,
+.align-center.dark .static,
+.align-centerRagged.dark .static {
   background: rgba(0, 0, 0, 0.9);
 }
 
 /* light shadow */
-.align-right .shadowWhite,
-.align-left .shadowWhite {
+.align-right.light .static,
+.align-left.light .static {
   background: linear-gradient(to right, #fff 0%,rgba(255, 255, 255, 0) 100%);
 }
 
 @media (min-width: 950px) {
-  .align-right .shadowWhite {
+  .align-right.light .static {
     background: linear-gradient(to left, #fff 0%,rgba(255, 255, 255, 0) 100%);
   }
 }
 
-.intersecting .shadowWhite,
-.align-center .shadowWhite,
-.align-centerRagged .shadowWhite {
+.light .dynamic,
+.align-center.light .static,
+.align-centerRagged.light .static {
   background: rgba(255, 255, 255, 0.9);
 }
 

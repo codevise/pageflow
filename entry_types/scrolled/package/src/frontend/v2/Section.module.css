@@ -331,7 +331,7 @@
     value hide the static shadow by resetting its height to 0 if motif
     is displayed before the content.
   */
-  --zero-if-intersecting: max(0px, (var(--remaining-width) + 1px) * 10000);
+  --zero-if-motif-intersecting: max(0px, (var(--remaining-width) + 1px) * 10000);
 
   /*
     We now compute appropriate paddings for different enter
