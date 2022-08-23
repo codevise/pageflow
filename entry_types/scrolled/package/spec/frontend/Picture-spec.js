@@ -56,39 +56,6 @@ describe('Picture', () => {
     expect(getByRole('img')).toHaveAttribute('src', '000/000/001/medium/image.jpg');
   });
 
-  it('does not set loading attribute by default', () => {
-    const {queryByRole} = renderInEntry(
-      () => <Picture imageFile={useFile({collectionName: 'imageFiles',
-                                         permaId: 100})} />,
-      {
-        seed: {
-          imageFiles: [
-            {id: 1, permaId: 100}
-          ]
-        }
-      }
-    );
-
-    expect(queryByRole('img')).not.toHaveAttribute('loading');
-  });
-
-  it('supports setting loading attribute', () => {
-    const {queryByRole} = renderInEntry(
-      () => <Picture imageFile={useFile({collectionName: 'imageFiles',
-                                         permaId: 100})}
-                     loading="lazy" />,
-      {
-        seed: {
-          imageFiles: [
-            {id: 1, permaId: 100}
-          ]
-        }
-      }
-    );
-
-    expect(queryByRole('img')).toHaveAttribute('loading', 'lazy');
-  });
-
   it('does not render image if image is not ready', () => {
     const {queryByRole} =
       renderInEntry(() => <Picture imageFile={useFile({collectionName: 'imageFiles',
