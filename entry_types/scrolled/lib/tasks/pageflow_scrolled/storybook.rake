@@ -33,7 +33,8 @@ namespace :pageflow_scrolled do
 
         account = seeds.account(name: 'storybook-seed') do |account_in_progress|
           account_in_progress.features_configuration =
-            account_in_progress.features_configuration.merge('scrolled_entry_type' => true)
+            account_in_progress.features_configuration.merge('scrolled_entry_type' => true,
+                                                             'frontend_v2' => true)
         end
 
         seeds.sample_scrolled_entry(
