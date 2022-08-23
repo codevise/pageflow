@@ -103,6 +103,23 @@ describe('Picture', () => {
     expect(queryByRole('img')).toBeNull();
   });
 
+  it('does not render image if load is false', () => {
+    const {queryByRole} =
+      renderInEntry(
+        () => <Picture load={false}
+                       imageFile={useFile({collectionName: 'imageFiles',
+                                           permaId: 100})} />,
+        {
+          seed: {
+            imageFiles: [
+              {id: 1, permaId: 100}
+            ]
+          }
+      });
+
+    expect(queryByRole('img')).toBeNull();
+  });
+
   it('supports rendering different image for portrait media query', () => {
     const {container} = renderInEntry(
       () => <Picture imageFile={useFile({collectionName: 'imageFiles',

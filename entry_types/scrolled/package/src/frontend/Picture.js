@@ -6,9 +6,9 @@ import {ImageStructuredData} from './ImageStructuredData';
 import styles from './Picture.module.css';
 
 export function Picture({
-  imageFile, imageFileMobile, variant, loading, structuredData
+  imageFile, imageFileMobile, variant, loading, structuredData, load
 }) {
-  if (imageFile && imageFile.isReady) {
+  if (imageFile && imageFile.isReady && load) {
     return <>
       {renderTag({imageFile, imageFileMobile, variant, loading})}
       {renderStructuredData({imageFile, structuredData})}
@@ -39,5 +39,6 @@ function renderStructuredData({imageFile, structuredData}) {
 }
 
 Picture.defaultProps = {
+  load: true,
   variant: 'large'
 };
