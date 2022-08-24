@@ -232,6 +232,7 @@
                                var(--foreground-padding-top));
   --motif-display-min-ar-bottom: calc(
     var(--motif-bottom) / 100 * var(--backdrop-display-height) -
+    var(--backdrop-display-height) + 100 * var(--vh) -
     var(--backdrop-translate-y) +
     var(--foreground-padding-top)
   );
