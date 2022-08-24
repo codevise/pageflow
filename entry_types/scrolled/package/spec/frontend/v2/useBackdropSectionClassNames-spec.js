@@ -1,5 +1,8 @@
+import React from 'react';
+
 import {useBackdropSectionClassNames} from 'frontend/v2/useBackdropSectionClassNames';
 import {useBackdropFile} from 'frontend/v2/useBackdrop';
+import {FullscreenDimensionProvider} from 'frontend/Fullscreen';
 
 import {renderHookInEntry} from 'support';
 
@@ -75,7 +78,6 @@ describe('useBackdropSectionClassNames', () => {
 
     expect(result.current).not.toContain(/aspectRatio/);
   });
-
 
   it('includes aspect ratio class name for mobile file', () => {
     const {result} = renderHookInEntry(
@@ -184,6 +186,120 @@ describe('useBackdropSectionClassNames', () => {
     );
 
     expect(document.head.querySelectorAll('style').length).toEqual(0);
+  });
+
+  describe('when wrapped in FullscreenDimensionProvider', () => {
+    describe('with fullscreen aspect ratio > backdrop aspect ratio', () => {
+      it('includes media-query-independant aspect ratio class name', () => {
+        const {result} = renderHookInEntry(
+          () => useBackdropSectionClassNames({
+            file: useBackdropFile({collectionName: 'imageFiles', permaId: 10})
+          }),
+          {
+            wrapper: ({children}) =>
+              <FullscreenDimensionProvider width={1600} height={900}>
+                {children}
+              </FullscreenDimensionProvider>,
+            seed: {
+              imageFiles: [{id: 100, permaId: 10, width: 400, height: 300}]
+            }
+          }
+        );
+
+        expect(result.current).not.toContain(/aspectRatio/);
+        expect(result.current).toContain('minAspectRatio');
+      });
+    });
+
+    describe('with fullscreen aspect ratio < backdrop aspect ratio', () => {
+      it('includes no aspect ratio class name', () => {
+        const {result} = renderHookInEntry(
+          () => useBackdropSectionClassNames({
+            file: useBackdropFile({collectionName: 'imageFiles', permaId: 10})
+          }),
+          {
+            wrapper: ({children}) =>
+              <FullscreenDimensionProvider width={300} height={400}>
+                {children}
+              </FullscreenDimensionProvider>,
+            seed: {
+              imageFiles: [{id: 100, permaId: 10, width: 400, height: 300}]
+            }
+          }
+        );
+
+        expect(result.current).not.toContain(/aspectRatio/);
+      });
+    });
+
+    describe('with fullscreen aspect ratio > mobile backdrop aspect ratio', () => {
+      it('include aspect ratio class name if fullscreen is portrait', () => {
+        const {result} = renderHookInEntry(
+          () => useBackdropSectionClassNames({
+            file: useBackdropFile({collectionName: 'imageFiles', permaId: 10}),
+            mobileFile: useBackdropFile({collectionName: 'imageFiles', permaId: 11})
+          }),
+          {
+            wrapper: ({children}) =>
+              <FullscreenDimensionProvider width={201} height={400}>
+                {children}
+              </FullscreenDimensionProvider>,
+            seed: {
+              imageFiles: [{id: 100, permaId: 10, width: 400, height: 300},
+                           {id: 101, permaId: 11, width: 200, height: 400}]
+            }
+          }
+        );
+
+        expect(result.current).not.toContain(/aspectRatio/);
+        expect(result.current).toContain('minAspectRatio');
+      });
+
+      it('does not include aspect ratio class name if fullscreen is landscape', () => {
+        const {result} = renderHookInEntry(
+          () => useBackdropSectionClassNames({
+            file: useBackdropFile({collectionName: 'imageFiles', permaId: 10}),
+            mobileFile: useBackdropFile({collectionName: 'imageFiles', permaId: 11})
+          }),
+          {
+            wrapper: ({children}) =>
+              <FullscreenDimensionProvider width={390} height={300}>
+                {children}
+              </FullscreenDimensionProvider>,
+            seed: {
+              imageFiles: [{id: 100, permaId: 10, width: 400, height: 300},
+                           {id: 101, permaId: 11, width: 200, height: 400}]
+            }
+          }
+        );
+
+        expect(result.current).not.toContain(/aspectRatio/);
+        expect(result.current).not.toContain('minAspectRatio');
+      });
+    });
+
+    it('appends style tag with media-query-independant aspect ratio class', () => {
+      renderHookInEntry(
+        () => useBackdropSectionClassNames({
+          file: useBackdropFile({collectionName: 'imageFiles', permaId: 10})
+        }),
+        {
+          wrapper: ({children}) =>
+            <FullscreenDimensionProvider width={500} height={300}>
+              {children}
+            </FullscreenDimensionProvider>,
+          seed: {
+            imageFiles: [
+              {id: 100, permaId: 10, width: 400, height: 300},
+            ]
+          }
+        }
+      );
+
+      expect(document.head).toHaveStyleTagIncluding(
+        '.minAspectRatio {'
+      );
+    });
   });
 });
 
