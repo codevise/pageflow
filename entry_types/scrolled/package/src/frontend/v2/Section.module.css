@@ -220,14 +220,16 @@
     coordinate system of the section.
   */
 
-  --motif-display-top: calc(var(--motif-top) * var(--vh));
+  --motif-display-top: calc(var(--motif-top) * var(--vh) -
+                            var(--foreground-padding-top));
   --motif-display-min-ar-top: calc(
     var(--motif-top) / 100 * var(--backdrop-display-height) +
     var(--backdrop-translate-y) -
     var(--foreground-padding-top)
   );
 
-  --motif-display-bottom: calc(var(--motif-bottom) * var(--vh));
+  --motif-display-bottom: calc(var(--motif-bottom) * var(--vh) +
+                               var(--foreground-padding-top));
   --motif-display-min-ar-bottom: calc(
     var(--motif-bottom) / 100 * var(--backdrop-display-height) -
     var(--backdrop-translate-y) +
