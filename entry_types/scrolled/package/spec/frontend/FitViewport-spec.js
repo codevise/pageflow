@@ -1,5 +1,5 @@
 import {FitViewport} from 'pageflow-scrolled/frontend';
-import {HeightContext} from 'frontend/Fullscreen';
+import {FullscreenDimensionProvider} from 'frontend/Fullscreen';
 import styles from 'frontend/FitViewport.module.css';
 
 import React from 'react';
@@ -29,14 +29,14 @@ describe('FitViewport', () => {
     expect(getOuter(container)).toHaveAttribute('style', 'max-width: 200vh;');
   });
 
-  it('sets max width based on height provided via HeightContext', () => {
+  it('sets max width based on height provided via FullscreenDimensionProvider', () => {
     const file = {width: 200, height: 100};
     const {container} = render(
-      <HeightContext.Provider value={400}>
+      <FullscreenDimensionProvider height={400}>
         <FitViewport file={file}>
           <FitViewport.Content />
         </FitViewport>
-      </HeightContext.Provider>
+      </FullscreenDimensionProvider>
     );
 
     expect(getOuter(container)).toHaveAttribute('style', 'max-width: 800px;');

@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import classNames from 'classnames';
 
 import styles from "./FitViewport.module.css";
-import {HeightContext} from "./Fullscreen";
+import {useFullscreenDimensions} from "./Fullscreen";
 
 const AspectRatioContext = React.createContext();
 
@@ -31,7 +31,7 @@ const AspectRatioContext = React.createContext();
  * @param {Object} [props.opaque] - Render black background behind content.
  */
 export function FitViewport({file, aspectRatio, opaque, children}) {
-  const height = useContext(HeightContext);
+  const {height} = useFullscreenDimensions();
 
   if (!file && !aspectRatio) return children;
 
