@@ -6,11 +6,11 @@ import {ImageStructuredData} from './ImageStructuredData';
 import styles from './Picture.module.css';
 
 export function Picture({
-  imageFile, imageFileMobile, variant, loading, structuredData
+  imageFile, imageFileMobile, variant, structuredData, load
 }) {
-  if (imageFile && imageFile.isReady) {
+  if (imageFile && imageFile.isReady && load) {
     return <>
-      {renderTag({imageFile, imageFileMobile, variant, loading})}
+      {renderTag({imageFile, imageFileMobile, variant})}
       {renderStructuredData({imageFile, structuredData})}
     </>;
   }
@@ -18,14 +18,13 @@ export function Picture({
   return null;
 }
 
-function renderTag({imageFile, imageFileMobile, variant, loading}) {
+function renderTag({imageFile, imageFileMobile, variant}) {
   return (
     <picture>
       {imageFileMobile &&
        <source srcSet={imageFileMobile.urls[variant]}
                media="(orientation: portrait)" />}
       <img className={classNames(styles.root)}
-           loading={loading}
            src={imageFile.urls[variant]}
            alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''} />
     </picture>
@@ -39,5 +38,6 @@ function renderStructuredData({imageFile, structuredData}) {
 }
 
 Picture.defaultProps = {
+  load: true,
   variant: 'large'
 };

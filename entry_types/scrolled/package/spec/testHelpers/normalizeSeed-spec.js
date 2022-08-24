@@ -233,7 +233,31 @@ describe('normalizeSeed', () => {
           {
             id: expect.any(Number),
             permaId: expect.any(Number),
-            configuration: {}
+            configuration: {
+              backdrop: {image: '#000'},
+              transition: 'scroll'
+            }
+          }
+        ]
+      }
+    });
+  });
+
+  it('ensures required section properties are present when configuration is set', () => {
+    const result = normalizeSeed({
+      sections: [{configuration: {backdrop: {image: 1}}}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        sections: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            configuration: {
+              backdrop: {image: 1},
+              transition: 'scroll'
+            }
           }
         ]
       }

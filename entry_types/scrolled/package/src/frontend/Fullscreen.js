@@ -1,19 +1,26 @@
-import React, {useContext} from 'react';
+import React, {useContext, useMemo} from 'react';
 
 import styles from './Fullscreen.module.css';
 
-export const HeightContext = React.createContext();
+export const DimensionContext = React.createContext({});
 
-export function FullscreenHeightProvider({height, children}) {
+export function useFullscreenDimensions() {
+  return useContext(DimensionContext);
+}
+
+export function FullscreenDimensionProvider({width, height, children}) {
+  const value = useMemo(() => ({width, height}),
+                        [width, height])
+
   return (
-    <HeightContext.Provider value={height}>
+    <DimensionContext.Provider value={value}>
       {children}
-    </HeightContext.Provider>
+    </DimensionContext.Provider>
   );
 }
 
 export default React.forwardRef(function Fullscreen(props, ref) {
-  const height = useContext(HeightContext);
+  const {height} = useFullscreenDimensions();
 
   return (
     <div ref={ref} className={styles.root} style={{height}}>

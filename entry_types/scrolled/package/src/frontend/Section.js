@@ -99,6 +99,7 @@ function SectionContents({
                 effectsMobile={section.backdropEffectsMobile}
 
                 backdrop={backdrop}
+                eagerLoad={section.sectionIndex === 0}
 
                 onMotifAreaUpdate={setMotifAreaRef}
                 state={state}

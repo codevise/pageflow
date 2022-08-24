@@ -14,6 +14,24 @@ describe('useBackdropSectionCustomProperties', () => {
     expect(result.current).toEqual({});
   });
 
+  it('returns empty object if file is not ready', () => {
+    const {result} = renderHookInEntry(
+      () => useBackdropSectionCustomProperties({
+        file: useBackdropFile({
+          permaId: 10,
+          collectionName: 'imageFiles'
+        })
+      }),
+      {
+        seed: {
+          imageFiles: [{permaId: 10, isReady: false}]
+        }
+      }
+    );
+
+    expect(result.current).toEqual({});
+  });
+
   it('includes dimension properties for main file', () => {
     const {result} = renderHookInEntry(
       () => useBackdropSectionCustomProperties({

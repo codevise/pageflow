@@ -6,7 +6,7 @@ export function useBackdropSectionCustomProperties(backdrop) {
 }
 
 function backdropFileCustomProperties(backdropFile, prefix) {
-  if (!backdropFile) {
+  if (!backdropFile || !backdropFile.isReady) {
     return {}
   }
 

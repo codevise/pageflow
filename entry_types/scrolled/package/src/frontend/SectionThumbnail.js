@@ -5,7 +5,7 @@ import Measure from 'react-measure';
 import {RootProviders} from './RootProviders';
 import {useEntryStateDispatch, useSection} from '../entryState';
 import {Section} from './Section';
-import {FullscreenHeightProvider} from './Fullscreen';
+import {FullscreenDimensionProvider} from './Fullscreen';
 import {StaticPreview} from './useScrollPositionLifecycle';
 
 import contentStyles from './Content.module.css';
@@ -34,19 +34,18 @@ function Inner({sectionPermaId, subscribe, scale}) {
       <StaticPreview>
         <Measure client>
           {({measureRef, contentRect}) =>
-            <FullscreenHeightProvider
-              height={contentRect.client.height &&
-                      Math.ceil(contentRect.client.height) * scaleFactor}>
+            <FullscreenDimensionProvider {...clientDimensions(contentRect, scaleFactor)}>
               <div ref={measureRef} className={styles.crop}>
                 <div className={classNames({[styles.scale]: scale})}>
                   <div className={contentStyles.Content}
-                       style={viewportUnitCustomProperties(contentRect,
-                                                           scaleFactor)}>
+                       style={viewportUnitCustomProperties(
+                         clientDimensions(contentRect, scaleFactor)
+                       )}>
                     <Section state="active" section={{...section, transition: 'preview'}} />
                   </div>
                 </div>
               </div>
-            </FullscreenHeightProvider>
+            </FullscreenDimensionProvider>
           }
         </Measure>
       </StaticPreview>
@@ -66,11 +65,17 @@ Inner.defaultProps = {
   subscribe: () => {}
 }
 
-function viewportUnitCustomProperties(contentRect, scaleFactor) {
+function clientDimensions(contentRect, scaleFactor) {
   return {
-    '--vw': contentRect.client.width &&
-      `${Math.ceil(contentRect.client.width / 100 * scaleFactor)}px`,
-    '--vh': contentRect.client.height &&
-      `${Math.ceil(contentRect.client.height / 100 * scaleFactor)}px`
+    width: contentRect.client.width &&
+           Math.ceil(contentRect.client.width * scaleFactor),
+    height: contentRect.client.height &&
+            Math.ceil(contentRect.client.height * scaleFactor)
+  }
+}
+function viewportUnitCustomProperties({width, height}) {
+  return {
+    '--vw': width && `${width / 100}px`,
+    '--vh': height && `${height / 100}px`
   }
 }
