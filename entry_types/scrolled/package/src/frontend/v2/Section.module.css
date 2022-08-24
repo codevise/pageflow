@@ -16,9 +16,10 @@
 @media (orientation: portrait) {
   /*
     Use dimensions of mobile image in portrait orientation if one has
-    been assigned.
+    been assigned. This class is not set for sections in section
+    thumbnails since those always have landscape orientation.
   */
-  .section {
+  .orientation {
     --backdrop-width: var(--mobile-backdrop-w, var(--backdrop-w));
     --backdrop-height: var(--mobile-backdrop-h, var(--backdrop-h));
 

@@ -14,14 +14,17 @@ describe('useBackdropSectionClassNames', () => {
     global.pageflowScrolledSSRAspectRatioMediaQueries = false;
   });
 
-  it('returns section and left layout class by default', () => {
+  it('returns section, orientation and left layout class by default', () => {
     const {result} = renderHookInEntry(
       () => useBackdropSectionClassNames({
         file: null
       })
     );
 
-    expect(result.current).toEqual([styles.section, styles['layout-left']]);
+    expect(result.current).toEqual([
+      styles.section,
+      styles.orientation,
+      styles['layout-left']]);
   });
 
   it('uses other layout class when passed', () => {
@@ -33,7 +36,11 @@ describe('useBackdropSectionClassNames', () => {
       })
     );
 
-    expect(result.current).toEqual([styles.section, styles['layout-right']]);
+    expect(result.current).toEqual([
+      styles.section,
+      styles.orientation,
+      styles['layout-right']
+    ]);
   });
 
   it('sets exposeMotifArea class if exposeMotifArea setting is true and not empty', () => {
@@ -276,6 +283,22 @@ describe('useBackdropSectionClassNames', () => {
         expect(result.current).not.toContain(/aspectRatio/);
         expect(result.current).not.toContain('minAspectRatio');
       });
+    });
+
+    it('does not include orientation class', () => {
+      const {result} = renderHookInEntry(
+        () => useBackdropSectionClassNames({
+          file: null
+        }),
+        {
+          wrapper: ({children}) =>
+            <FullscreenDimensionProvider width={500} height={300}>
+              {children}
+            </FullscreenDimensionProvider>,
+        }
+      );
+
+      expect(result.current).not.toContain(styles.orientation);
     });
 
     it('appends style tag with media-query-independant aspect ratio class', () => {

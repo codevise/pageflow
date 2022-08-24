@@ -11,6 +11,7 @@ export function useBackdropSectionClassNames(
 
   return [
     styles.section,
+    !fullscreenDimensions.height && styles.orientation,
     styles[`layout-${layout || 'left'}`],
     exposeMotifArea && !empty && styles.exposeMotifArea,
     useAspectRatioClassName(backdrop.file,
