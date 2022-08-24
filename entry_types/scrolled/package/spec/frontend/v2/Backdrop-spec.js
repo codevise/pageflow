@@ -6,6 +6,7 @@ import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
 import {Backdrop} from 'frontend/v2/Backdrop';
 import {useBackdrop} from 'frontend/v2/useBackdrop';
+import {FullscreenDimensionProvider} from 'frontend/Fullscreen';
 
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 jest.mock('frontend/usePortraitOrientation')
@@ -157,6 +158,36 @@ describe('Backdrop', () => {
       .toHaveAttribute('src', expect.stringContaining('landscape.jpg'));
     expect(container.querySelector('source'))
       .toHaveAttribute('srcset', expect.stringContaining('portrait.jpg'));
+  });
+
+  it('ignores mobile image when rendered with custom fullscreen dimensions', () => {
+    const {simulateScrollPosition, container} =
+      renderInEntryWithSectionLifecycle(
+        () => <Backdrop backdrop={useBackdrop({
+          backdrop: {image: 100, imageMobile: 200}
+        })} />,
+        {
+          wrapper: ({children}) =>
+            <FullscreenDimensionProvider width={400} height={300}>
+              {children}
+            </FullscreenDimensionProvider>,
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 100, basename: 'landscape'},
+              {permaId: 200, basename: 'portrait'},
+            ]
+          }
+        }
+      )
+
+    simulateScrollPosition('near viewport');
+
+    expect(container.querySelector('source')).toBeNull();
   });
 
   it('supports applying effects to portrait image', () => {

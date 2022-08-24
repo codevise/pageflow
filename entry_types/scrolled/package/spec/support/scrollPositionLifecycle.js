@@ -29,19 +29,24 @@ function findProbe(el, className) {
   }
 }
 
-export function renderInEntryWithSectionLifecycle(ui, options = {}) {
+export function renderInEntryWithSectionLifecycle(ui, {wrapper, ...options} = {}) {
   const emitter = createEmitter();
 
   return withSimulateScrollPositionHelper(
     emitter,
     renderInEntry(ui, {
-      wrapper: createScrollPositionProvider(SectionLifecycleContext, emitter),
+      wrapper: createScrollPositionProvider(SectionLifecycleContext,
+                                            emitter,
+                                            wrapper),
       ...options
     })
   );
 }
 
-function createScrollPositionProvider(Context, emitter) {
+function createScrollPositionProvider(Context, emitter, originalWrapper) {
+  const OriginalWrapper = originalWrapper ||
+                          function Noop({children}) { return children; };
+
   return function ScrollPositionProvider({children}) {
     const [value, setValue] = useState({shouldLoad: false, shouldPrepare: false, isVisible: false, isActive: false});
 
@@ -69,9 +74,11 @@ function createScrollPositionProvider(Context, emitter) {
     })
 
     return (
-      <Context.Provider value={value}>
-        {children}
-      </Context.Provider>
+      <OriginalWrapper>
+        <Context.Provider value={value}>
+          {children}
+        </Context.Provider>
+      </OriginalWrapper>
     );
   };
 }
