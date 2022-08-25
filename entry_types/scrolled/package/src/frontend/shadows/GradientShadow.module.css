@@ -14,6 +14,10 @@
   max-width: var(--zero-if-motif-intersecting);
 }
 
+.dynamic {
+  max-width: var(--zero-if-two-column);
+}
+
 /* dark shadow */
 .align-right.dark .static,
 .align-left.dark .static {

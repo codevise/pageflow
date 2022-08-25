@@ -69,18 +69,6 @@ describe('useMotifAreaState', () => {
         expect(intersectionRatioY).toEqual(0.25);
       });
 
-      it('equals 0 if content area does not intersect with motif area horizontally', () => {
-        const [{intersectionRatioY}] = getMotifAreaState({
-          contentArea: {left: 100, viewportTop: 400, width: 300},
-          motifArea: {left: 500, viewportTop: 100, width: 500, height: 400},
-          empty: false,
-          transitions: ['scrollIn', 'scrollOut'],
-          exposeMotifArea: true
-        }).current;
-
-        expect(intersectionRatioY).toEqual(0);
-      });
-
       it('equals 0 if section does not have content elements', () => {
         const [{intersectionRatioY}] = getMotifAreaState({
           contentArea: {left: 100, viewportTop: 400, width: 300},
