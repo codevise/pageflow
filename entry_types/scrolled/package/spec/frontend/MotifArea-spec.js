@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 
 import {renderInEntry} from 'support';
 
-import {MotifArea} from 'frontend/v2/MotifArea';
+import {MotifArea} from 'frontend/MotifArea';
 import {MotifAreaVisibilityProvider} from 'frontend/MotifAreaVisibilityProvider';
 import styles from 'frontend/MotifArea.module.css';
 

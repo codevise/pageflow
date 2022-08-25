@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 
-import {VideoPlayer} from './../../VideoPlayer';
-import {MotifArea} from './../MotifArea';
-import {usePlayerState} from './../../MediaPlayer/usePlayerState';
-import {useSectionLifecycle} from './../../useSectionLifecycle';
+import {VideoPlayer} from '../VideoPlayer';
+import {MotifArea} from '../MotifArea';
+import {usePlayerState} from '../MediaPlayer/usePlayerState';
+import {useSectionLifecycle} from '../useSectionLifecycle';
 import {Effects} from './Effects';
 import {documentHiddenState} from 'pageflow/frontend';
 

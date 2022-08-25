@@ -5,12 +5,6 @@ import Fullscreen from '../Fullscreen';
 import styles from './GradientShadow.module.css';
 
 export default function GradientShadow(props) {
-  // Hide static shadow if motif area intersects with content area.
-  const staticShadowOpacity =
-    props.motifAreaState.isContentPadded ?
-    0 :
-    props.staticShadowOpacity;
-
   // If motif area intersects with content area horizontally, fade in
   // shadow soon as the content has been scrolled far enough to start
   // intersecting with the motif area vertically.
@@ -29,7 +23,7 @@ export default function GradientShadow(props) {
         <Fullscreen />
       </div>
       <div className={styles.static}
-           style={{opacity: staticShadowOpacity}}>
+           style={{opacity: props.staticShadowOpacity}}>
         <Fullscreen />
       </div>
       {props.children}
@@ -38,7 +32,6 @@ export default function GradientShadow(props) {
 }
 
 GradientShadow.defaultProps = {
-  opacity: 0.7,
   align: 'left'
 }
 

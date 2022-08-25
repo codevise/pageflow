@@ -4,7 +4,7 @@ import 'support/mediaElementStub';
 import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 
 import {renderInEntry} from "../support";
-import {useBackgroundFile} from 'frontend/v1/useBackgroundFile';
+import {useBackgroundFile} from 'frontend/useBackgroundFile';
 import {useFile} from 'entryState';
 import {VideoPlayer} from 'frontend/VideoPlayer';
 import {media, settings} from 'pageflow/frontend';
@@ -189,54 +189,5 @@ describe('VideoPlayer', () => {
       });
 
     expect(result.container.querySelector('video').hasAttribute('alt')).toBe(true);
-  });
-
-  it('sets object position based on motif area to media api when fit is cover', () => {
-    const result = renderInEntry(
-      () => {
-        const file = useBackgroundFile({
-          file: useFile({collectionName: 'videoFiles', permaId: 100}),
-          motifArea: {left: 50, top: 0, width: 50, height: 40},
-          containerDimension: {width: 1000, height: 1000}
-        });
-
-        return (
-          <VideoPlayer {...requiredProps()}
-                       videoFile={file}
-                       fit="cover" />
-        );
-      },
-      {
-        seed: getVideoFileSeed({
-          permaId: 100, width: 2000, height: 1000
-        })
-      }
-    );
-
-    expect(result.container.querySelector('video')).toHaveStyle('object-position: 100% 50%');
-  });
-
-  it('does not set object position when fit is not cover', () => {
-    const result = renderInEntry(
-      () => {
-        const file = useBackgroundFile({
-          file: useFile({collectionName: 'videoFiles', permaId: 100}),
-          motifArea: {left: 50, top: 0, width: 50, height: 40},
-          containerDimension: {width: 1000, height: 1000}
-        });
-
-        return (
-          <VideoPlayer {...requiredProps()}
-                       videoFile={file} />
-        );
-      },
-      {
-        seed: getVideoFileSeed({
-          permaId: 100, width: 2000, height: 1000
-        })
-      }
-    );
-
-    expect(result.container.querySelector('video')).toHaveAttribute('style', '');
   });
 });

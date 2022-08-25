@@ -1,4 +1,4 @@
-import {useMotifAreaState} from 'frontend/v2/useMotifAreaState';
+import {useMotifAreaState} from 'frontend/useMotifAreaState';
 
 import {renderHook, act} from '@testing-library/react-hooks';
 import {fireEvent} from '@testing-library/dom'

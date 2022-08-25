@@ -167,8 +167,7 @@ the motif area in the viewport as much as possible. Since we want the
 backdrop to cover the viewport, the motif area will still be
 off-center if it is located at the margin of the asset. For the same
 reason, large motif areas will not fit inside the viewport completely.
-See code comments for `useBackgroundFile` and its tests for more
-details.
+See code comments in `useBackdropSectionClassNames.module.css`.
 
 ## Section Min Height/Content Padding
 
@@ -180,8 +179,8 @@ If content and motif area do not fit side by side, we shift the
 content down such that the content does not intersect the motif area
 initially.
 
-For an overview of cases, look at the code comments and tests of the
-`useMotifAreaState` hook.
+For an overview of cases, look at the code comments in
+`useBackdropSectionClassNames.module.css`.
 
 ## Backdrop Translation (Not Implemented)
 

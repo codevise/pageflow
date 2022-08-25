@@ -34,7 +34,7 @@
 
     <% ssr_html = @skip_ssr ? '' : render_scrolled_entry(@entry) %>
 
-    <% if !@skip_ssr && (params[:frontend] == 'v2' || @entry.feature_state('frontend_v2')) %>
+    <% if !@skip_ssr %>
       <%= generated_media_queries_tags_for(ssr_html) %>
     <% end %>
   </head>

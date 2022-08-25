@@ -3,15 +3,19 @@ import classNames from 'classnames';
 
 import { SectionAtmo } from './SectionAtmo';
 
-import {useSectionContentElements, useAdditionalSeedData} from '../entryState';
+import {useSectionContentElements} from '../entryState';
 import Foreground from './Foreground';
 import {Layout} from './layouts';
 import useScrollTarget from './useScrollTarget';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
 import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
-import * as v1 from './v1';
-import * as v2 from './v2';
+
+import {Backdrop} from './Backdrop';
+import {useBackdrop} from './useBackdrop';
+import {useBackdropSectionClassNames} from './useBackdropSectionClassNames';
+import {useBackdropSectionCustomProperties} from './useBackdropSectionCustomProperties';
+import {useMotifAreaState} from './useMotifAreaState';
 
 import styles from './Section.module.css';
 import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
@@ -20,12 +24,6 @@ import {getAppearanceComponents} from './appearance';
 const Section = withInlineEditingDecorator('SectionDecorator', function Section({
   section, contentElements, state, isScrollTarget, onActivate
 }) {
-  const {
-    useBackdrop,
-    useBackdropSectionClassNames,
-    useBackdropSectionCustomProperties
-  } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
-
   const backdrop = useBackdrop(section);
 
   const ref = useRef();
@@ -65,11 +63,6 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
 function SectionContents({
   section, backdrop, contentElements, state, transitionStyles
 }) {
-  const {
-    Backdrop,
-    useMotifAreaState
-  } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
-
   const {shouldPrepare} = useSectionLifecycle();
 
   const sectionProperties = useMemo(() => ({
@@ -81,9 +74,10 @@ function SectionContents({
   const [motifAreaState, setMotifAreaRef, setContentAreaRef] = useMotifAreaState({
     updateOnScrollAndResize: shouldPrepare,
     exposeMotifArea: section.exposeMotifArea,
-    transitions: getEnterAndExitTransitions(section, section.previousSection, section.nextSection),
+    transitions: getEnterAndExitTransitions(section,
+                                            section.previousSection,
+                                            section.nextSection),
     empty: !contentElements.length,
-    sectionTransition: section.transition,
     fullHeight: section.fullHeight
   });
 
@@ -94,13 +88,8 @@ function SectionContents({
 
   return (
     <>
-      <Backdrop {...section.backdrop}
-                effects={section.backdropEffects}
-                effectsMobile={section.backdropEffectsMobile}
-
-                backdrop={backdrop}
+      <Backdrop backdrop={backdrop}
                 eagerLoad={section.sectionIndex === 0}
-
                 onMotifAreaUpdate={setMotifAreaRef}
                 state={state}
                 transitionStyles={transitionStyles}>

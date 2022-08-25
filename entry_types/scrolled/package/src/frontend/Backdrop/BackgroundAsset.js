@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Fullscreen from './../../Fullscreen';
-import FillColor from './../../FillColor';
+import Fullscreen from '../Fullscreen';
+import FillColor from '../FillColor';
 
 import {Positioner} from './Positioner';
 import {BackgroundImage} from './BackgroundImage';

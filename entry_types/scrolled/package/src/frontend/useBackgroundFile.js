@@ -26,7 +26,6 @@ export function useBackgroundFile({file, motifArea, effects}) {
 
   return {
     ...file,
-    cropPosition: {x: 0, y: 0},
     motifArea,
     effects
   };
