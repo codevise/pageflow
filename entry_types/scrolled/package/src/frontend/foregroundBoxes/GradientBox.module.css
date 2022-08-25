@@ -23,7 +23,7 @@
   bottom: -100vh;
 }
 
-.withShadow {
+.root .withShadow {
   text-shadow: 0px 1px min(5px, var(--zero-if-two-column)) black;
 }
 
