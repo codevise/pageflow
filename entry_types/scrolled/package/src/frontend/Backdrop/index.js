@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import {BackgroundAsset} from './BackgroundAsset';
 
-import styles from '../../Backdrop.module.css';
+import styles from '../Backdrop.module.css';
 
 export function Backdrop(props) {
   return (

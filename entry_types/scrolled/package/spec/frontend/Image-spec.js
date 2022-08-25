@@ -5,7 +5,6 @@ import {renderInEntry} from 'support';
 import * as jsonLdQueries from 'support/jsonLdQueries';
 
 import {Image} from 'frontend/Image';
-import {useBackgroundFile} from 'frontend/v1/useBackgroundFile';
 import {useFile} from 'entryState';
 
 describe('Image', () => {
@@ -188,41 +187,6 @@ describe('Image', () => {
       });
 
     expect(queryByRole('img')).toBeNull();
-  });
-
-  it('uses centered object position by default', () => {
-    const {getByRole} =
-      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
-        seed: {
-          imageFiles: [
-            {permaId: 100}
-          ]
-        }
-      });
-
-    expect(getByRole('img')).toHaveStyle('object-position: 50% 50%');
-  });
-
-  it('sets object position based on motif area', () => {
-    const {getByRole} = renderInEntry(
-      () => {
-        const file = useBackgroundFile({
-          file: useFile({collectionName: 'imageFiles', permaId: 100}),
-          motifArea: {left: 50, top: 0, width: 50, height: 40},
-          containerDimension: {width: 1000, height: 1000}
-        });
-
-        return (
-          <Image imageFile={file} />
-        );
-      },
-      {
-        seed: {
-          imageFiles: [{permaId: 100, width: 2000, height: 1000}]
-        }
-      });
-
-    expect(getByRole('img')).toHaveStyle('object-position: 100% 50%');
   });
 
   it('does not render structured data by default', () => {

@@ -4,7 +4,9 @@ import '@testing-library/jest-dom/extend-expect'
 import {renderInEntryWithSectionLifecycle} from 'support';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
-import {Backdrop} from 'frontend/v1/Backdrop';
+import {Backdrop} from 'frontend/Backdrop';
+import {useBackdrop} from 'frontend/useBackdrop';
+import {FullscreenDimensionProvider} from 'frontend/Fullscreen';
 
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 jest.mock('frontend/usePortraitOrientation')
@@ -15,7 +17,7 @@ describe('Backdrop', () => {
   it('does not render image when outside viewport', () => {
     const {queryByRole} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100} />,
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -33,10 +35,56 @@ describe('Backdrop', () => {
     expect(queryByRole('img')).toBeNull()
   });
 
-  it('supports rendering image given by id', () => {
+  it('render image when backdrop is active and eagerLoad is true', () => {
+    const {getByRole} =
+      renderInEntryWithSectionLifecycle(
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})}
+                        eagerLoad={true}
+                        state="active" />,
+        {
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 100, basename: 'image'}
+            ]
+          }
+        }
+      );
+
+    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('image.jpg'));
+  });
+
+  it('does not render image when backdrop is not active event when eagerLoad is true', () => {
+    const {queryByRole} =
+      renderInEntryWithSectionLifecycle(
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})}
+                        eagerLoad={true}
+                        state="below" />,
+        {
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 100, basename: 'image'}
+            ]
+          }
+        }
+      );
+
+    expect(queryByRole('img')).toBeNull()
+  });
+
+  it('renders image when near viewport', () => {
     const {simulateScrollPosition, getByRole} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100} />,
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -59,8 +107,10 @@ describe('Backdrop', () => {
   it('supports applying effects to image', () => {
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100}
-                  effects={[{name: 'blur', value: 100}]} />,
+        () => <Backdrop backdrop={useBackdrop({
+          backdrop: {image: 100},
+          backdropEffects: [{name: 'blur', value: 100}]
+        })} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -76,16 +126,17 @@ describe('Backdrop', () => {
       );
 
     expect(
-      container.querySelector('[style*="filter"]').style.filter
+      container.querySelector('[style*="--filter"]')
+               .style.getPropertyValue('--filter')
     ).toEqual('blur(10px)');
   });
 
   it('supports rendering mobile image given by id in portrait orientation', () => {
-    usePortraitOrientation.mockReturnValue(true);
-
-    const {simulateScrollPosition, getByRole} =
+    const {simulateScrollPosition, container, getByRole} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100} imageMobile={200} />,
+        () => <Backdrop backdrop={useBackdrop({
+          backdrop: {image: 100, imageMobile: 200}
+        })} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -103,16 +154,23 @@ describe('Backdrop', () => {
 
     simulateScrollPosition('near viewport');
 
-    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('portrait.jpg'));
+    expect(getByRole('img'))
+      .toHaveAttribute('src', expect.stringContaining('landscape.jpg'));
+    expect(container.querySelector('source'))
+      .toHaveAttribute('srcset', expect.stringContaining('portrait.jpg'));
   });
 
-  it('uses default image in landscape orientation even if mobile image is configured', () => {
-    usePortraitOrientation.mockReturnValue(false);
-
-    const {simulateScrollPosition, getByRole} =
+  it('ignores mobile image when rendered with custom fullscreen dimensions', () => {
+    const {simulateScrollPosition, container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100} imageMobile={200} />,
+        () => <Backdrop backdrop={useBackdrop({
+          backdrop: {image: 100, imageMobile: 200}
+        })} />,
         {
+          wrapper: ({children}) =>
+            <FullscreenDimensionProvider width={400} height={300}>
+              {children}
+            </FullscreenDimensionProvider>,
           seed: {
             fileUrlTemplates: {
               imageFiles: {
@@ -129,42 +187,16 @@ describe('Backdrop', () => {
 
     simulateScrollPosition('near viewport');
 
-    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('landscape.jpg'));
+    expect(container.querySelector('source')).toBeNull();
   });
 
-  it('falls back to portrait image if default image is not defined', () => {
-    usePortraitOrientation.mockReturnValue(false);
-
-    const {simulateScrollPosition, getByRole} =
-      renderInEntryWithSectionLifecycle(
-        <Backdrop imageMobile={200} />,
-        {
-          seed: {
-            fileUrlTemplates: {
-              imageFiles: {
-                large: ':basename.jpg'
-              }
-            },
-            imageFiles: [
-              {permaId: 200, basename: 'portrait'},
-            ]
-          }
-        }
-      )
-
-    simulateScrollPosition('near viewport');
-
-    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('portrait.jpg'));
-  });
-
-  it('supports applying effects to protrait image', () => {
-    usePortraitOrientation.mockReturnValue(true);
-
+  it('supports applying effects to portrait image', () => {
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100}
-                  imageMobile={200}
-                  effectsMobile={[{name: 'blur', value: 100}]} />,
+        () => <Backdrop backdrop={useBackdrop({
+          backdrop: {image: 100, imageMobile: 200},
+          backdropEffectsMobile: [{name: 'blur', value: 100}]
+        })} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -181,18 +213,19 @@ describe('Backdrop', () => {
       )
 
     expect(
-      container.querySelector('[style*="filter"]').style.filter
+      container.querySelector('[style*="--mobile-filter"]')
+               .style
+               .getPropertyValue('--mobile-filter')
     ).toEqual('blur(10px)');
   });
 
-  it('does not apply portrait effects to landscape image', () => {
-    usePortraitOrientation.mockReturnValue(false);
-
+  it('does not set portrait effects style if not configured', () => {
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100}
-                  imageMobile={200}
-                  effectsMobile={[{name: 'blur', value: 100}]} />,
+        () => <Backdrop backdrop={useBackdrop({
+          backdrop: {image: 100, imageMobile: 200},
+          backdropEffects: [{name: 'blur', value: 100}]
+        })} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -208,13 +241,14 @@ describe('Backdrop', () => {
         }
       )
 
-    expect(container.querySelector('[style*="filter"]')).toBeNull();
+    expect(container.querySelector('[style*="--mobile-filter"]')).toBeNull();
   });
 
   it('invokes onMotifAreaUpdate callback', () => {
     const callback = jest.fn();
     renderInEntryWithSectionLifecycle(
-      <Backdrop image={100} onMotifAreaUpdate={callback} />,
+      () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})}
+                      onMotifAreaUpdate={callback} />,
       {
         seed: {
           imageFiles: [
@@ -232,19 +266,7 @@ describe('Backdrop', () => {
 
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop color="#f00" />
-      )
-
-    expect(container.querySelector('div[style]'))
-        .toHaveAttribute('style', expect.stringContaining('rgb(255, 0, 0)'));
-  });
-
-  it('supports rendering color via legacy image prop', () => {
-    usePortraitOrientation.mockReturnValue(false);
-
-    const {container} =
-      renderInEntryWithSectionLifecycle(
-        <Backdrop image="#f00" />
+        () => <Backdrop backdrop={useBackdrop({backdrop: {color: '#f00'}})} />
       )
 
     expect(container.querySelector('div[style]'))
@@ -255,7 +277,7 @@ describe('Backdrop', () => {
     it('does not render video when outside viewport', () => {
       const {queryPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -270,7 +292,7 @@ describe('Backdrop', () => {
     it('renders video when near viewport', () => {
       const {simulateScrollPosition, queryPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -281,13 +303,13 @@ describe('Backdrop', () => {
 
       simulateScrollPosition('near viewport');
 
-      expect(queryPlayerByFilePermaId(100)).toBeDefined();
+      expect(queryPlayerByFilePermaId(100)).not.toBeNull();
     });
 
     it('plays without volume when scrolled into viewport', () => {
       const {simulateScrollPosition, getPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -306,7 +328,7 @@ describe('Backdrop', () => {
     it('fades in volume when section becomes active', () => {
       const {simulateScrollPosition, getPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -325,7 +347,7 @@ describe('Backdrop', () => {
     it('fades out volume when section becomes inactive', () => {
       const {simulateScrollPosition, getPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -345,7 +367,7 @@ describe('Backdrop', () => {
     it('pauses when scrolled outside viewport', () => {
       const {simulateScrollPosition, getPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -364,9 +386,10 @@ describe('Backdrop', () => {
     it('invokes onMotifAreaUpdate callback', () => {
       const callback = jest.fn();
       renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} onMotifAreaUpdate={callback} />,
-          {
-            seed: {
+        () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})}
+                        onMotifAreaUpdate={callback} />,
+        {
+          seed: {
               videoFiles: [{permaId: 100}]
             }
           }
@@ -378,8 +401,10 @@ describe('Backdrop', () => {
     it('supports applying effects', () => {
       const {container} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100}
-                    effects={[{name: 'blur', value: 100}]} />,
+          () => <Backdrop backdrop={useBackdrop({
+            backdrop: {video: 100},
+            backdropEffects: [{name: 'blur', value: 100}]
+          })} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -389,7 +414,8 @@ describe('Backdrop', () => {
         );
 
       expect(
-        container.querySelector('[style*="filter"]').style.filter
+        container.querySelector('[style*="--filter"]')
+                 .style.getPropertyValue('--filter')
       ).toEqual('blur(10px)');
     });
   });

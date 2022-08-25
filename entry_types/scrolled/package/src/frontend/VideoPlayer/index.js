@@ -37,7 +37,6 @@ export function VideoPlayer({videoFile, posterImageFile, ...props}) {
                      posterImageUrl={posterImageFile && posterImageFile.isReady ?
                                      posterImageFile.urls.large : videoFile.urls.posterLarge}
                      altText={videoFile.configuration.alt}
-                     objectPosition={props.fit === 'cover' ? videoFile.cropPosition : undefined}
                      {...props} />
         <VideoStructuredData file={videoFile} />
       </>

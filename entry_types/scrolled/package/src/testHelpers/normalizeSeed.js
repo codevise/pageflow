@@ -134,6 +134,7 @@ function normalizeSections(sections = [], contentElements) {
     ...section,
     configuration: {
       transition: sectionDefaults.configuration.transition,
+      backdrop: {},
       ...section.configuration,
     }
   }));

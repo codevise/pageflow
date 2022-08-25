@@ -4,6 +4,11 @@
   z-index: 2;
   opacity: 0;
 
+  left: calc(var(--motif-left) * 1%);
+  top: calc(var(--motif-top) * 1%);
+  width: calc(var(--motif-width) * 1%);
+  height: calc(var(--motif-height) * 1%);
+
   /*
     Fix Chrome z-index bug. Elements can not placed in front of video
     elements using z-index inside position fixed container.  See also

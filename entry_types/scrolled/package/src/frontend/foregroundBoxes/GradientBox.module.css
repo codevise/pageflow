@@ -15,20 +15,12 @@
   max-height: var(--zero-if-two-column, 0);
 }
 
-.gradient {
-  max-height: none;
-}
-
 .long .shadow {
   bottom: -100vh;
 }
 
 .root .withShadow {
   text-shadow: 0px 1px min(5px, var(--zero-if-two-column)) black;
-}
-
-.gradient .withShadow {
-  text-shadow: 0px 1px 5px black;
 }
 
 .shadowDark {

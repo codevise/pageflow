@@ -1,4 +1,4 @@
-import {useFile} from '../../entryState';
+import {useFile} from '../entryState';
 
 export function useBackdrop({backdrop, backdropEffects, backdropEffectsMobile}) {
   const videoFile = useBackdropFile({

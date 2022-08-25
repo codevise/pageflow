@@ -1,4 +1,4 @@
-import {useBackdrop} from 'frontend/v2/useBackdrop';
+import {useBackdrop} from 'frontend/useBackdrop';
 
 import {renderHookInEntry} from 'support';
 

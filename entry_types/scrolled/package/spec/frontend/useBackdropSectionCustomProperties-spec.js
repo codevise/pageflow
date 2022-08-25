@@ -1,7 +1,7 @@
 import {
   useBackdropSectionCustomProperties
-} from 'frontend/v2/useBackdropSectionCustomProperties';
-import {useBackdropFile} from 'frontend/v2/useBackdrop';
+} from 'frontend/useBackdropSectionCustomProperties';
+import {useBackdropFile} from 'frontend/useBackdrop';
 
 import {renderHookInEntry} from 'support';
 

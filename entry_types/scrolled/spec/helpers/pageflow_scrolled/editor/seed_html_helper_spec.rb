@@ -67,8 +67,7 @@ module PageflowScrolled
 
         it 'does not render generated media queries if frontend v2' do
           entry = create(:published_entry,
-                         type_name: 'scrolled',
-                         with_feature: 'frontend_v2')
+                         type_name: 'scrolled')
 
           result = helper.scrolled_editor_iframe_seed_html_script_tag(entry)
 

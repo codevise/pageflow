@@ -28,16 +28,10 @@ export function Image({imageFile, ...props}) {
 }
 
 function renderImageTag(props, imageFile) {
-  const cropPositionX = imageFile.cropPosition ? imageFile.cropPosition.x : 50;
-  const cropPositionY = imageFile.cropPosition ? imageFile.cropPosition.y : 50;
-
   return (
     <img className={classNames(styles.root)}
          src={imageUrl(imageFile, props)}
-         alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''}
-         style={{
-           objectPosition: `${cropPositionX}% ${cropPositionY}%`
-         }} />
+         alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''} />
   );
 }
 

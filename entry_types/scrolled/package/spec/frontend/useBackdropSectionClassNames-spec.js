@@ -1,12 +1,12 @@
 import React from 'react';
 
-import {useBackdropSectionClassNames} from 'frontend/v2/useBackdropSectionClassNames';
-import {useBackdropFile} from 'frontend/v2/useBackdrop';
+import {useBackdropSectionClassNames} from 'frontend/useBackdropSectionClassNames';
+import {useBackdropFile} from 'frontend/useBackdrop';
 import {FullscreenDimensionProvider} from 'frontend/Fullscreen';
 
 import {renderHookInEntry} from 'support';
 
-import styles from 'frontend/v2/Section.module.css';
+import styles from 'frontend/useBackdropSectionClassNames.module.css';
 
 describe('useBackdropSectionClassNames', () => {
   beforeEach(() => {

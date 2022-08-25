@@ -1,7 +1,7 @@
-import {useIsomorphicLayoutEffect} from '../useIsomorphicLayoutEffect';
-import {useFullscreenDimensions} from '../Fullscreen';
+import {useIsomorphicLayoutEffect} from './useIsomorphicLayoutEffect';
+import {useFullscreenDimensions} from './Fullscreen';
 
-import styles from './Section.module.css';
+import styles from './useBackdropSectionClassNames.module.css';
 
 export function useBackdropSectionClassNames(
   backdrop,

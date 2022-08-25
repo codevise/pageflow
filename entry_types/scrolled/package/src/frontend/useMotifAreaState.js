@@ -1,4 +1,4 @@
-import useBoundingClientRect from '../useBoundingClientRect';
+import useBoundingClientRect from './useBoundingClientRect';
 
 /**
  * Handles the state of the section layout based on the current
@@ -6,9 +6,6 @@ import useBoundingClientRect from '../useBoundingClientRect';
  *
  *     [
  *      {
- *        isContentPadded,    // true if motif and content will
- *                            // not fit side by side.
- *
  *        intersectionRatioY, // Ratio of the motif area that is
  *                            // covered by the content given the
  *                            // current scroll position if motif
