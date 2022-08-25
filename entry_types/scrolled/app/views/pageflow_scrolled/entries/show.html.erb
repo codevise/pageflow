@@ -34,16 +34,8 @@
 
     <% ssr_html = @skip_ssr ? '' : render_scrolled_entry(@entry) %>
 
-    <% if !@skip_ssr && (params[:frontend] == 'v2' ||
-                         @entry.feature_state('frontend_v2')) %>
-      <script>
-        window.pageflowScrolledSSRAspectRatioMediaQueries = true;
-      </script>
-      <style>
-        <% benchmark 'Generate aspect ratio media queries' do %>
-          <%= generated_media_queries_css_for(ssr_html) %>
-        <% end %>
-      </style>
+    <% if !@skip_ssr && (params[:frontend] == 'v2' || @entry.feature_state('frontend_v2')) %>
+      <%= generated_media_queries_tags_for(ssr_html) %>
     <% end %>
   </head>
   <body>

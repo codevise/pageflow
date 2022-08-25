@@ -51,6 +51,19 @@ module PageflowScrolled
                                           visible: false)
         end
 
+        it 'does not render generated media queries if frontend v2' do
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         with_feature: 'frontend_v2')
+
+          result = helper.scrolled_editor_iframe_seed_html_script_tag(entry)
+
+          expect(result)
+            .not_to have_selector('script',
+                                  visible: false,
+                                  text: 'pageflowScrolledSSRAspectRatioMediaQueries')
+        end
+
         it 'does not render collections seed data' do
           entry = create(:published_entry, type_name: 'scrolled')
           create(:section, revision: entry.revision)

@@ -1,8 +1,20 @@
 module PageflowScrolled
   # @api private
   module GeneratedMediaQueriesHelper
+    def generated_media_queries_tags_for(html)
+      safe_join(
+        [
+          content_tag(:script,
+                      'window.pageflowScrolledSSRAspectRatioMediaQueries = true;'),
+          content_tag(:style,
+                      generated_media_queries_css_for(html))
+        ]
+      )
+    end
+
     def generated_media_queries_css_for(html)
       aspect_ratio_class_strings = html.scan(/class="[^"]*aspectRatio[^"]*"/)
+
       ratio_classes =
         aspect_ratio_class_strings
         .flat_map { |s| s.scan(/aspectRatio(Mobile)?([0-9]+)/) }
@@ -15,6 +27,8 @@ module PageflowScrolled
         )
       }.join
     end
+
+    private
 
     def generated_aspec_ratio_media_query(numerator:, mobile_suffix:)
       orientation = mobile_suffix ? '(orientation: portrait) and ' : ''

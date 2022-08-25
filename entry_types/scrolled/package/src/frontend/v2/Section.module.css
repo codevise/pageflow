@@ -271,6 +271,24 @@
                                      var(--motif-display-height));
 }
 
+@supports not (transform: translateX(min(0px, 5px))) {
+  /*
+    If the browser does not support min/max functions, position
+    background based on motif center.
+  */
+  .section {
+    --backdrop-translate-x: calc(
+      (100 * var(--vw) - var(--backdrop-display-width)) *
+      var(--motif-center-x) / 100
+    );
+
+    --backdrop-translate-y: calc(
+      (100 * var(--vh) - var(--backdrop-display-height)) *
+      var(--motif-center-y) / 100
+    );
+  }
+}
+
 .exposeMotifArea {
   /*
     ## Content padding
@@ -389,6 +407,23 @@
   */
   --motif-padding-scroll-in: min(var(--zero-if-two-column),
                                  var(--motif-display-top) + var(--motif-display-height));
+}
+
+@supports not (transform: translateX(min(0px, 5px))) {
+  /*
+    If the browser does not support min/max functions, fallback to
+    never using two column layout.
+  */
+  .exposeMotifArea {
+    --zero-if-two-column: none;
+    --zero-if-motif-intersecting: 0px;
+
+    --motif-padding-fade-in: calc(var(--motif-display-top) * 2 / 3 +
+                                  var(--motif-display-height));
+    --motif-padding-reveal: var(--motif-display-height);
+    --motif-padding-scroll-in: calc(var(--motif-display-top) +
+                                    var(--motif-display-height));
+  }
 }
 
 .layout-left,

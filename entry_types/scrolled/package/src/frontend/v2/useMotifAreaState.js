@@ -1,4 +1,3 @@
-import isIntersectingX from '../isIntersectingX';
 import useBoundingClientRect from '../useBoundingClientRect';
 
 /**
@@ -53,7 +52,6 @@ export function useMotifAreaState({
   });
 
   const isContentPadded = exposeMotifArea &&
-                          isIntersectingX(motifAreaRect, contentAreaRect) &&
                           motifAreaRect.height > 0 &&
                           !empty;
 
