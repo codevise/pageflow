@@ -25,6 +25,18 @@ module Pageflow
       end
     end
 
+    def manifest
+      respond_to do |format|
+        format.webmanifest do
+          entry = PublishedEntry.find(params[:id], entry_request_scope)
+
+          return head :not_found unless entry.entry_type.web_app_manifest
+
+          render json: entry.entry_type.web_app_manifest.call(entry)
+        end
+      end
+    end
+
     def stylesheet
       respond_to do |format|
         format.css do

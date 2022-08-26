@@ -86,6 +86,7 @@ Pageflow::Engine.routes.draw do
   end
 
   get ':id', to: 'entries#show', as: :short_entry
+  get ':id/manifest', to: 'entries#manifest', as: :entry_manifest
   get ':id/embed', to: 'entries#show', defaults: {embed: '1'}, as: :entry_embed
 
   get '/', to: 'entries#index', as: :public_root

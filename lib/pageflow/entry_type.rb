@@ -5,7 +5,7 @@ module Pageflow
   class EntryType
     # @api private
     attr_reader :name, :frontend_app, :editor_fragment_renderer, :configuration, :editor_app,
-                :theme_files
+                :theme_files, :web_app_manifest
 
     # @param name [String] A unique name.
     #
@@ -27,14 +27,18 @@ module Pageflow
     #   entry type and which Paperclip styles shall be processed:
     #   `{logo: {content_type: %r{^image/}, styles: {small:
     #   '300x300>'}}`.
+    #
+    # @param web_app_manifest [#call] Receives published entry and
+    #   returns JSON for webmanifest file.
     def initialize(name:, frontend_app:, editor_fragment_renderer:, configuration:, editor_app: nil,
-                   theme_files: {})
+                   theme_files: {}, web_app_manifest: nil)
       @name = name
       @frontend_app = frontend_app
       @editor_fragment_renderer = editor_fragment_renderer
       @configuration = configuration
       @editor_app = editor_app
       @theme_files = theme_files
+      @web_app_manifest = web_app_manifest
     end
   end
 end
