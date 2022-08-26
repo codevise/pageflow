@@ -1,9 +1,13 @@
 module PageflowScrolled
   # @api private
   module ThemesHelper
-    def scrolled_theme_asset_path(theme, path, theme_file_role: nil, relative_url: false)
+    def scrolled_theme_asset_path(theme,
+                                  path,
+                                  theme_file_role: nil,
+                                  theme_file_style: :resized,
+                                  relative_url: false)
       path =
-        theme.files.dig(theme_file_role, :resized) ||
+        theme.files.dig(theme_file_role, theme_file_style) ||
         asset_pack_path("media/pageflow-scrolled/themes/#{theme.name}/#{path}")
 
       if relative_url

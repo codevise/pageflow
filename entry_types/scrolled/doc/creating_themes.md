@@ -6,7 +6,10 @@ with the name of your theme
 (e.g. `app/javascript/pageflow-scrolled/themes/my_custom_theme`) and
 replace images as needed. The favicons of the default theme have been
 generated using
-[realfavicongenerator.net](https://realfavicongenerator.net/).
+[realfavicongenerator.net](https://realfavicongenerator.net/), though,
+only a subset of icons [required for modern
+browsers](https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs)
+has been included. Webmanifests are generated dynamically.
 
 Register the theme in the theme plugin created by the
 `pageflow_scrolled:install` generator:

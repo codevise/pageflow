@@ -3,19 +3,45 @@ module PageflowScrolled
   module FaviconHelper
     include ThemesHelper
 
-    def scrolled_favicons_for_entry(theme)
-      render partial: 'pageflow_scrolled/favicons/entry',
-      locals:
-      {
-        icon_path: scrolled_theme_asset_path(theme, 'favicons/favicon.ico'),
-        apple_touch_icon_path: scrolled_theme_asset_path(theme, 'favicons/apple-touch-icon.png'),
-        icon_32_path: scrolled_theme_asset_path(theme, 'favicons/favicon-32x32.png'),
-        icon_16_path: scrolled_theme_asset_path(theme, 'favicons/favicon-16x16.png'),
-        safari_pinned_tab_path: scrolled_theme_asset_path(theme, 'favicons/safari-pinned-tab.svg'),
-        webmanifest_path: scrolled_theme_asset_path(theme, 'favicons/site.webmanifest'),
-        msapplication_image: scrolled_theme_asset_path(theme, 'favicons/browserconfig.xml'),
-        theme_color: theme.options[:theme_color]
-      } 
+    def scrolled_favicons_for_entry(entry)
+      render(
+        'pageflow_scrolled/favicons/entry',
+        manifest_path: pageflow.entry_manifest_path(
+          entry,
+          format: 'webmanifest'
+        ),
+
+        svg_path: entry.theme.files.dig(:favicon, :original),
+
+        png_16_path: scrolled_theme_asset_path(
+          entry.theme,
+          'favicons/favicon-16x16.png',
+          theme_file_role: :favicon_png,
+          theme_file_style: :w16
+        ),
+        png_32_path: scrolled_theme_asset_path(
+          entry.theme,
+          'favicons/favicon-32x32.png',
+          theme_file_role: :favicon_png,
+          theme_file_style: :w32
+        ),
+
+        apple_touch_icon_path: scrolled_theme_asset_path(
+          entry.theme,
+          'favicons/apple-touch-icon.png',
+          theme_file_role: :favicon_png,
+          theme_file_style: :w180
+        ),
+
+        ico_path: scrolled_theme_asset_path(
+          entry.theme,
+          'favicons/favicon.ico',
+          theme_file_role: :favicon_ico,
+          theme_file_style: :original
+        ),
+
+        theme_color: entry.theme.options[:theme_color]
+      )
     end
   end
 end

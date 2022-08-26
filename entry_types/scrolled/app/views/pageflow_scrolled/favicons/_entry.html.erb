@@ -1,10 +1,13 @@
-<link rel='icon' href='<%= icon_path %>' type='image/ico'>
-<link rel='icon' type='image/png' sizes='32x32' href='<%= icon_32_path %>'>
-<link rel='icon' type='image/png' sizes='16x16' href='<%= icon_16_path %>'>
+<link rel="icon" sizes="any" href="<%= ico_path %>">
 
-<link rel='apple-touch-icon' sizes='180x180' href='<%= apple_touch_icon_path %>'>
-<link rel='manifest' href='<%= webmanifest_path %>'>
-<link rel='mask-icon' href='<%= safari_pinned_tab_path %>' color='#5bbad5'>
-<meta name='msapplication-TileColor' content='#da532c'>
-<meta name="msapplication-config" content='<%= msapplication_image %>'>
-<meta name='theme-color' content='<%= theme_color %>'>
+<% if svg_path %>
+  <link rel="icon" href="<%= svg_path %>" type="image/svg+xml">
+<% else %>
+  <link rel="icon" type="image/png" sizes="32x32" href="<%= png_32_path %>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<%= png_16_path %>">
+<% end %>
+
+<link rel="apple-touch-icon" href="<%= apple_touch_icon_path %>">
+<link rel="manifest" href="<%= manifest_path %>">
+
+<meta name="theme-color" content="<%= theme_color %>">
