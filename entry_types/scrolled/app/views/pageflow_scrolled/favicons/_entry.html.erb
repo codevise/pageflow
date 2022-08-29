@@ -8,6 +8,9 @@
 <% end %>
 
 <link rel="apple-touch-icon" href="<%= apple_touch_icon_path %>">
-<link rel="manifest" href="<%= manifest_path %>">
+
+<% if manifest_path %>
+  <link rel="manifest" href="<%= manifest_path %>">
+<% end %>
 
 <meta name="theme-color" content="<%= theme_color %>">

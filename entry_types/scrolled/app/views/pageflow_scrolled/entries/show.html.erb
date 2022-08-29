@@ -10,7 +10,7 @@
     <%= social_share_meta_tags_for(@entry) %>
     <%= meta_tags_for_entry(@entry) %>
 
-    <%= scrolled_favicons_for_entry(@entry) %>
+    <%= scrolled_favicons_for_entry(@entry, entry_mode: @widget_scope) %>
 
     <%= javascript_include_tag 'pageflow_scrolled/legacy' %>
     <%= scrolled_frontend_stylesheet_packs_tag(@entry, widget_scope: @widget_scope) %>

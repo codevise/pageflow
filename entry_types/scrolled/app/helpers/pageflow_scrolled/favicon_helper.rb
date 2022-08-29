@@ -3,10 +3,10 @@ module PageflowScrolled
   module FaviconHelper
     include ThemesHelper
 
-    def scrolled_favicons_for_entry(entry)
+    def scrolled_favicons_for_entry(entry, entry_mode: :published)
       render(
         'pageflow_scrolled/favicons/entry',
-        manifest_path: pageflow.entry_manifest_path(
+        manifest_path: entry_mode == :published && pageflow.entry_manifest_path(
           entry,
           format: 'webmanifest'
         ),

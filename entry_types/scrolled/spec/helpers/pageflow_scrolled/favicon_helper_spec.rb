@@ -127,17 +127,29 @@ module PageflowScrolled
                             visible: false)
       end
 
-      it 'renders link to web app manifest' do
+      it 'renders link to web app manifest in published entry' do
         entry = create(:published_entry,
                        title: 'My Entry',
                        type_name: 'scrolled')
 
-        html = helper.scrolled_favicons_for_entry(entry)
+        html = helper.scrolled_favicons_for_entry(entry, entry_mode: :published)
 
         expect(html)
           .to have_selector('link[rel="manifest"]' \
                             '[href*="/my-entry/manifest.webmanifest"]',
                             visible: false)
+      end
+
+      it 'does not render link to web app manifest in preview' do
+        entry = create(:published_entry,
+                       title: 'My Entry',
+                       type_name: 'scrolled')
+
+        html = helper.scrolled_favicons_for_entry(entry, entry_mode: :preview)
+
+        expect(html)
+          .not_to have_selector('link[rel="manifest"]',
+                                visible: false)
       end
 
       it 'renders theme color meta tag' do
