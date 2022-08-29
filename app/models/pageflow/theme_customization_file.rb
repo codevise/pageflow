@@ -39,7 +39,7 @@ module Pageflow
     # A hash of urls based on the styles that were defined when
     # registering the entry type.
     def urls
-      attachment_styles.map { |style, _|
+      styles_from_options.map { |style, _|
         [style, attachment.url(style)]
       }.to_h
     end
@@ -51,6 +51,11 @@ module Pageflow
 
     # @api private
     def attachment_styles
+      styles_from_options.except(:original)
+    end
+
+    # @api private
+    def styles_from_options
       styles = options_from_entry_type.fetch(:styles, {})
       styles.respond_to?(:call) ? styles.call(self) : styles
     end
