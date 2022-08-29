@@ -76,6 +76,46 @@ module Pageflow
     # Specs for #show can be found in
     # spec/requests/entries_show_request_spec.rb
 
+    describe '#manifest' do
+      it 'responds with JSON provided by entry type' do
+        pageflow_configure do |config|
+          TestEntryType.register(config,
+                                 name: 'test',
+                                 web_app_manifest: lambda do |entry|
+                                   {"name": entry.title}.to_json
+                                 end)
+        end
+
+        entry = create(:entry, :published, type_name: 'test', title: 'Some title')
+
+        get(:manifest, params: {id: entry}, format: 'webmanifest')
+
+        expect(response.status).to eq(200)
+        expect(response.body).to include_json(name: 'Some title')
+      end
+
+      it 'responds with not found if entry type does not have web_app_manifest' do
+        pageflow_configure do |config|
+          TestEntryType.register(config,
+                                 name: 'test')
+        end
+
+        entry = create(:entry, :published, type_name: 'test', title: 'Some title')
+
+        get(:manifest, params: {id: entry}, format: 'webmanifest')
+
+        expect(response.status).to eq(404)
+      end
+
+      it 'responds with not found for not published entry' do
+        entry = create(:entry)
+
+        get(:stylesheet, params: {id: entry}, format: 'webmanifest')
+
+        expect(response.status).to eq(404)
+      end
+    end
+
     describe '#stylesheet' do
       context 'with format css' do
         include UsedFileTestHelper

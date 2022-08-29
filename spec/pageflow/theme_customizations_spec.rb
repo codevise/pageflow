@@ -276,6 +276,31 @@ module Pageflow
       expect(entry.theme.files).to match(inverted_logo: {small: %r{small/image.png}})
     end
 
+    it 'allows including original url, but ignores processing', unstub_paperclip: true do
+      pageflow_configure do |config|
+        TestEntryType.register(config,
+                               name: 'rainbow',
+                               theme_files: {
+                                 logo: {
+                                   styles: {original: {processors: [:test]}},
+                                   content_type: %r{\Aimage/.*\Z}
+                                 }
+                               })
+      end
+      entry = create(:published_entry, type_name: 'rainbow')
+
+      file = Pageflow.theme_customizations.upload_file(account: entry.account,
+                                                       entry_type_name: 'rainbow',
+                                                       type_name: 'logo',
+                                                       attachment: fixture_file_upload('image.png'))
+      Pageflow.theme_customizations.update(account: entry.account,
+                                           entry_type_name: 'rainbow',
+                                           file_ids: {inverted_logo: file.id})
+
+      expect(TestPaperclipProcessor.invoked_with_options).to be_empty
+      expect(entry.theme.files).to match(inverted_logo: {original: %r{original/image.png}})
+    end
+
     it 'allows passing lambda as styles', unstub_paperclip: true do
       Paperclip.register_processor(:test, TestPaperclipProcessor)
       pageflow_configure do |config|
@@ -401,7 +426,7 @@ module Pageflow
                                name: 'rainbow',
                                theme_files: {
                                  logo: {
-                                   styles: {small: '300x300>'},
+                                   styles: {original: {}, small: '300x300>'},
                                    content_type: %r{\Aimage/.*\Z}
                                  }
                                })
@@ -413,6 +438,7 @@ module Pageflow
                                                        type_name: 'logo',
                                                        attachment: fixture_file_upload('image.png'))
 
+      expect(file.urls[:original]).to match(%r{original/image.png})
       expect(file.urls[:small]).to match(%r{small/image.png})
     end
 
@@ -422,7 +448,7 @@ module Pageflow
                                name: 'rainbow',
                                theme_files: {
                                  logo: {
-                                   styles: {small: '300x300>'},
+                                   styles: {original: {}, small: '300x300>'},
                                    content_type: %r{\Aimage/.*\Z}
                                  }
                                })
@@ -440,6 +466,8 @@ module Pageflow
                                                         entry_type_name: 'rainbow')
 
       expect(customization.selected_files[:inverted_logo].file_name).to eq('image.png')
+      expect(customization.selected_files[:inverted_logo].urls[:original])
+        .to match(%r{original/image.png})
       expect(customization.selected_files[:inverted_logo].urls[:small])
         .to match(%r{small/image.png})
     end
