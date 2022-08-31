@@ -101,6 +101,10 @@ module Pageflow
 
     form(partial: 'form')
 
+    after_update do |user|
+      Pageflow.config.hooks.invoke(:user_changed, user)
+    end
+
     collection_action :invitation, method: [:get, :post] do
       @page_title = I18n.t('pageflow.admin.users.invite_user')
       @invitation_form = InvitationForm.new(invitation_form_params.fetch(:invitation_form, {}),
@@ -109,6 +113,7 @@ module Pageflow
 
       if request.post?
         if @invitation_form.save
+          Pageflow.config.hooks.invoke(:user_changed, @invitation_form.target_user)
           redirect_to(admin_user_path(@invitation_form.target_user))
         else
           render status: 422
@@ -130,6 +135,8 @@ module Pageflow
 
       if request.patch?
         if @user.update_with_password(user_profile_params)
+          Pageflow.config.hooks.invoke(:user_changed, @user)
+
           bypass_sign_in @user, scope: :user
           redirect_to admin_root_path, notice: I18n.t('pageflow.admin.users.me.updated')
         end

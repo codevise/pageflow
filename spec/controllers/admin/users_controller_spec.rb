@@ -239,6 +239,27 @@ module Pageflow
         }.to change { account.users.count }
       end
 
+      it 'invokes user_changed hook ' do
+        account = create(:account)
+        subscriber = double('subscriber', call: nil)
+        Pageflow.config.hooks.on(:user_changed, subscriber)
+
+        sign_in(create(:user, :manager, on: account))
+
+        post(:invitation,
+             params: {
+               invitation_form: {
+                 user: attributes_for(:valid_user),
+                 membership: {
+                   entity_id: account.id,
+                   role: 'member'
+                 }
+               }
+             })
+
+        expect(subscriber).to have_received(:call).with(kind_of(User))
+      end
+
       it 'responds with unprocessable entity if user is already member of account' do
         account = create(:account)
         existing_user = create(:user, :member, on: account)
@@ -486,6 +507,23 @@ module Pageflow
     end
 
     describe '#update' do
+      it 'invokes user_changed hook' do
+        account = create(:account)
+        user = create(:user, :previewer, on: account, locale: 'en')
+        subscriber = double('subscriber', call: nil)
+        Pageflow.config.hooks.on(:user_changed, subscriber)
+
+        sign_in(create(:user, :admin), scope: :user)
+        patch(:update, params: {
+                id: user,
+                user: {
+                  locale: 'de'
+                }
+              })
+
+        expect(subscriber).to have_received(:call).with(user)
+      end
+
       it 'does not allow account managers to make users admin' do
         account = create(:account)
         user = create(:user, :manager, on: account)
@@ -734,6 +772,21 @@ module Pageflow
               })
 
         expect(user.reload.valid_password?('new!123pass')).to eq(true)
+      end
+
+      it 'invokes user_changed hook' do
+        user = create(:user, password: 'some!123pass', first_name: 'Jane')
+        subscriber = double('subscriber', call: nil)
+        Pageflow.config.hooks.on(:user_changed, subscriber)
+
+        sign_in(user, scope: :user)
+        patch(:me, params: {
+                user: {
+                  first_name: 'Jane J.'
+                }
+              })
+
+        expect(subscriber).to have_received(:call).with(user)
       end
 
       it 'does not update password when current password is not correct' do
