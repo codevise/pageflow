@@ -80,6 +80,10 @@ module Pageflow
       File.basename(attachment.original_filename, '.*')
     end
 
+    def extension
+      File.extname(attachment.original_filename).sub(/\A\./, '')
+    end
+
     def can_upload?
       uploading?
     end

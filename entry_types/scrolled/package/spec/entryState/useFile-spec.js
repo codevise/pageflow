@@ -24,6 +24,7 @@ describe('useFile', () => {
               id: 100,
               permaId: 1,
               basename: 'image',
+              extension: 'jpg',
               rights: 'author',
               configuration: {
                 some: 'value'
@@ -40,6 +41,7 @@ describe('useFile', () => {
       id: 100,
       permaId: 1,
       modelType: 'Pageflow::ImageFile',
+      extension: 'jpg',
       configuration: {
         some: 'value'
       },
@@ -73,6 +75,7 @@ describe('useFile', () => {
                   id: 100,
                   perma_id: 1,
                   basename: 'image',
+                  extension: 'jpg',
                   rights: 'author',
                   configuration: {
                     some: 'value'
@@ -91,6 +94,8 @@ describe('useFile', () => {
       id: 100,
       permaId: 1,
       modelType: 'Pageflow::ImageFile',
+      basename: 'image',
+      extension: 'jpg',
       configuration: {
         some: 'value'
       },
@@ -153,6 +158,50 @@ describe('useFile', () => {
       urls: {
         high: '/video_files/000/000/100/high.mp4',
         posterLarge: '/video_files/000/000/100/posterLarge.jpg'
+      }
+    });
+  });
+
+  it('interpolates file basename and extension', () => {
+    const {result} = renderHookInEntry(
+      () => useFile({collectionName: 'imageFiles', permaId: 1}),
+      {
+        seed: {
+          fileUrlTemplates: {
+            imageFiles: {
+              original: '/image_files/:id_partition/:basename.:extension'
+            }
+          },
+          fileModelTypes: {
+            imageFiles: 'Pageflow::ImageFile'
+          },
+          imageFiles: [
+            {
+              id: 100,
+              permaId: 1,
+              basename: 'image',
+              extension: 'svg',
+              rights: 'author',
+              configuration: {
+                some: 'value'
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const file = result.current;
+
+    expect(file).toMatchObject({
+      id: 100,
+      permaId: 1,
+      modelType: 'Pageflow::ImageFile',
+      configuration: {
+        some: 'value'
+      },
+      urls: {
+        original: '/image_files/000/000/100/image.svg'
       }
     });
   });

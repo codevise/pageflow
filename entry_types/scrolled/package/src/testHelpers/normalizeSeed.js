@@ -84,6 +84,8 @@ export function normalizeSeed({
       entries: normalizedEntries,
       imageFiles: normalizeCollection(imageFiles, {
         isReady: true,
+        basename: 'image',
+        extension: 'jpg',
         width: 1920,
         height: 1279,
         configuration: {}

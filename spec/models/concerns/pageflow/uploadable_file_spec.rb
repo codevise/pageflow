@@ -49,11 +49,19 @@ module Pageflow
       end
     end
 
-    describe 'basename' do
+    describe '#basename' do
       it 'returns the original file name without extention' do
         uploadable_file = create(:uploadable_file, file_name: 'video.mp4')
 
         expect(uploadable_file.basename).to eq('video')
+      end
+    end
+
+    describe '#extension' do
+      it 'returns the extension of the file name without dot' do
+        uploadable_file = create(:uploadable_file, file_name: 'video.mp4')
+
+        expect(uploadable_file.extension).to eq('mp4')
       end
     end
 
