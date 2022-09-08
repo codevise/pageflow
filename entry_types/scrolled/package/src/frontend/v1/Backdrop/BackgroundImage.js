@@ -11,7 +11,10 @@ export function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) 
   return (
     <>
       <Effects file={image}>
-        <Image imageFile={image} load={shouldLoad} structuredData={true}/>
+        <Image imageFile={image}
+               load={shouldLoad}
+               structuredData={true}
+               preferSvg={true} />
       </Effects>
       <MotifArea key={image?.permaId}
                  onUpdate={onMotifAreaUpdate}

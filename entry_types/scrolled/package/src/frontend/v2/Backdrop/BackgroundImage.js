@@ -16,7 +16,8 @@ export function BackgroundImage({backdrop, eagerLoad, onMotifAreaUpdate}) {
         <Picture imageFile={backdrop.file}
                  imageFileMobile={!renderedInSectionThumbnail && backdrop.mobileFile}
                  load={shouldLoad || eagerLoad}
-                 structuredData={true}/>
+                 structuredData={true}
+                 preferSvg={true} />
       </Effects>
       <MotifArea key={backdrop.file?.permaId}
                  onUpdate={onMotifAreaUpdate} />
