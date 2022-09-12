@@ -112,7 +112,11 @@ module Pageflow
       private
 
       def permitted_params
-        params.permit(membership: [:user_id, :entity_id, :entity_type, :role])
+        if [:create, :new].include?(action_name.to_sym)
+          params.permit(membership: [:user_id, :entity_id, :entity_type, :role])
+        else
+          params.permit(membership: [:role])
+        end
       end
 
       def redirect_path
