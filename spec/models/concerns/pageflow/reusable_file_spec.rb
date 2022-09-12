@@ -75,5 +75,21 @@ module Pageflow
         }.not_to(change { revision.reload.updated_at })
       end
     end
+
+    describe '#basename' do
+      it 'returns placeholder value' do
+        reusable_file = Object.new.extend(ReusableFile)
+
+        expect(reusable_file.basename).to eq('unused')
+      end
+    end
+
+    describe '#extension' do
+      it 'returns placeholder value' do
+        reusable_file = Object.new.extend(ReusableFile)
+
+        expect(reusable_file.extension).to eq('unused')
+      end
+    end
   end
 end

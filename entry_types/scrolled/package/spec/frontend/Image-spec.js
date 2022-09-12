@@ -54,6 +54,113 @@ describe('Image', () => {
     expect(getByRole('img')).toHaveAttribute('src', '000/000/001/medium/image.jpg');
   });
 
+  it('uses original URL of svg image if preferSvg is true', () => {
+    const {getByRole} =
+      renderInEntry(
+        () => <Image imageFile={useFile({collectionName: 'imageFiles',
+                                         permaId: 100})}
+                       preferSvg={true} />,
+        {
+          seed: {
+            imageFileUrlTemplates: {
+              original: ':id_partition/original/:basename.:extension',
+              large: ':id_partition/large.jpg'
+            },
+            imageFiles: [
+              {
+                id: 1,
+                permaId: 100,
+                basename: 'image',
+                extension: 'svg'
+              }
+            ]
+          }
+        }
+      );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/original/image.svg');
+  });
+
+  it('does not use original URL of svg image if preferSvg is false', () => {
+    const {getByRole} =
+      renderInEntry(
+        () => <Image imageFile={useFile({collectionName: 'imageFiles',
+                                         permaId: 100})} />,
+        {
+          seed: {
+            imageFileUrlTemplates: {
+              original: ':id_partition/original/:basename.:extension',
+              large: ':id_partition/large.jpg'
+            },
+            imageFiles: [
+              {
+                id: 1,
+                permaId: 100,
+                basename: 'image',
+                extension: 'svg'
+              }
+            ]
+          }
+        }
+      );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/large.jpg');
+  });
+
+  it('does not use original URL of non-svg image if preferSvg is true', () => {
+    const {getByRole} =
+      renderInEntry(
+        () => <Image imageFile={useFile({collectionName: 'imageFiles',
+                                         permaId: 100})}
+                       preferSvg={true} />,
+        {
+          seed: {
+            imageFileUrlTemplates: {
+              original: ':id_partition/original/:basename.:extension',
+              large: ':id_partition/large.jpg'
+            },
+            imageFiles: [
+              {
+                id: 1,
+                permaId: 100,
+                basename: 'image',
+                extension: 'png'
+              }
+            ]
+          }
+        }
+      );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/large.jpg');
+  });
+
+  it('ignores file extension case when detecting svg', () => {
+    const {getByRole} =
+      renderInEntry(
+        () => <Image imageFile={useFile({collectionName: 'imageFiles',
+                                         permaId: 100})}
+                       preferSvg={true} />,
+        {
+          seed: {
+            imageFileUrlTemplates: {
+              original: ':id_partition/original/:basename.:extension',
+              large: ':id_partition/large.jpg'
+            },
+            imageFiles: [
+              {
+                id: 1,
+                permaId: 100,
+                basename: 'image',
+                extension: 'SVG'
+              }
+            ]
+          }
+        }
+      );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/original/image.SVG');
+  });
+
   it('does not render image if load is false', () => {
     const {queryByRole} = renderInEntry(
       () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}

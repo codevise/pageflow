@@ -12,6 +12,7 @@ import {ImageStructuredData} from './ImageStructuredData';
  * @param {string} [props.variant] - Paperclip style to use. Defaults to large.
  * @param {boolean} [props.load] - Whether to load the image. Can be used for lazy loading.
  * @param {boolean} [props.structuredData] - Whether to render a JSON+LD script tag.
+ * @param {boolean} [props.preferSvg] - Use original if image is SVG.
  */
 export function Image({imageFile, ...props}) {
   if (imageFile && imageFile.isReady && props.load) {
@@ -32,12 +33,21 @@ function renderImageTag(props, imageFile) {
 
   return (
     <img className={classNames(styles.root)}
-         src={imageFile.urls[props.variant]}
+         src={imageUrl(imageFile, props)}
          alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''}
          style={{
            objectPosition: `${cropPositionX}% ${cropPositionY}%`
          }} />
   );
+}
+
+function imageUrl(imageFile, {variant, preferSvg}) {
+  if (preferSvg && imageFile.extension.toLowerCase() === 'svg') {
+    return imageFile.urls.original;
+  }
+  else {
+    return imageFile.urls[variant];
+  }
 }
 
 function renderStructuredData(props, file) {

@@ -87,6 +87,11 @@ module Pageflow
       'unused'
     end
 
+    # Overwritten with the extension of the file.
+    def extension
+      'unused'
+    end
+
     # Overwritten in UploadableFile with attachment filename.
     def file_name
       'unused'

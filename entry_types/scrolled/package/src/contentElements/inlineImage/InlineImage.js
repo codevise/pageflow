@@ -61,7 +61,8 @@ function ImageWithCaption({imageFile, configuration}) {
             <Image imageFile={imageFile}
                    load={shouldLoad}
                    structuredData={true}
-                   variant={configuration.position === 'full' ? 'large' : 'medium'} />
+                   variant={configuration.position === 'full' ? 'large' : 'medium'}
+                   preferSvg={true} />
           </FitViewport.Content>
         </Figure>
       </ContentElementBox>

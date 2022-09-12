@@ -94,6 +94,16 @@ module Pageflow
         expect(value).to eq('some-video')
       end
 
+      it 'renders extention of files' do
+        entry = create(:published_entry)
+        create(:video_file, used_in: entry.revision, file_name: 'some-video.mp4')
+
+        result = render(helper, entry)
+        value = json_get(result, path: ['video_files', 0, 'extension'])
+
+        expect(value).to eq('mp4')
+      end
+
       it 'renders file type partial, for example variant property for video file' do
         entry = create(:published_entry)
         create(:video_file, used_in: entry.revision, output_presences: {fullhd: true})
