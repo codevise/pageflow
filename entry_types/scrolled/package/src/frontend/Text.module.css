@@ -49,6 +49,13 @@
   line-height: 1.4;
 }
 
+.question {
+  composes: typography-question from global;
+  font-size: text-base;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
 @media (max-width: 600px) {
   .heading-lg {
     font-size: text-xl;

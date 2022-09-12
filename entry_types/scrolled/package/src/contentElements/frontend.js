@@ -11,3 +11,4 @@ import './dataWrapperChart/frontend';
 import './vrImage/frontend';
 import './iframeEmbed/frontend';
 import './twitterEmbed/frontend'
+import './question/frontend'

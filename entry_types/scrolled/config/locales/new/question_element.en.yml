@@ -1,0 +1,16 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        question:
+          description: Expand to reveal an answer
+          name: Question/Answer
+          tabs:
+            general: Question/Answer
+          attributes:
+            expandByDefault:
+              label: "Expand by default"
+              inline_help: "Display answer initially."
+    inline_editing:
+      type_question: Type question text
+      type_answer: Type answer text

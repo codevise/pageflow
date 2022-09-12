@@ -31,8 +31,8 @@ export const EditableInlineText = memo(function EditableInlineText({
 
   return (
     <div className={classNames(frontendStyles.root,
+                               frontendStyles[`hyphens-${hyphens}`],
                                {[styles.manualHyphens]: hyphens === 'manual'},
-                               {[frontendStyles.manualHyphens]: hyphens === 'manual'},
                                {[styles.selected]: isSelected})}
          spellCheck="false">
       <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
