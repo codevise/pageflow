@@ -22,7 +22,12 @@
   }
 }
 
-.manualHyphens {
+.hyphens-manual {
   hyphens: manual;
   word-wrap: break-word;
+}
+
+.hyphens-none {
+  hypens: none;
+  word-wrap: normal;
 }

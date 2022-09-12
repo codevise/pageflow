@@ -10,7 +10,7 @@ export const EditableInlineText = withInlineEditingAlternative(
   function EditableInlineText({value, hyphens, defaultValue = ''}) {
     return (
       <span className={classNames(styles.root,
-                                  {[styles.manualHyphens]: hyphens === 'manual'})}>
+                                  styles[`hyphens-${hyphens}`])}>
         {value ? value[0]?.children[0]?.text : defaultValue}
       </span>
     );
