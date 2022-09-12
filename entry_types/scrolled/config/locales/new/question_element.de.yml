@@ -1,0 +1,16 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        question:
+          description: Aufklappen, um Antwort anzuzeigen
+          name: Frage/Anwort
+          tabs:
+            general: Frage/Anwort
+          attributes:
+            expandByDefault:
+              label: "Standardmäßig aufklappen"
+              inline_help: "Anwort zu Beginn anzeigen."
+    inline_editing:
+      type_question: "Fragetext eingeben"
+      type_answer: "Antworttext eingeben"
