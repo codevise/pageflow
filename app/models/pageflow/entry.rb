@@ -126,6 +126,14 @@ module Pageflow
       [:title, [:title, :id]]
     end
 
+    def self.ransackable_attributes(_auth_object)
+      %w[title type_name created_at edited_at first_published_at]
+    end
+
+    def self.ransackable_associations(_auth_object)
+      %w[account published_revision]
+    end
+
     def self.ransackable_scopes(_)
       [:with_publication_state, :published]
     end

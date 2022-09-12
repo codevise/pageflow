@@ -359,7 +359,7 @@ describe Admin::MembershipsController do
     end
   end
 
-  describe '#edit' do
+  describe '#update' do
     describe 'as admin' do
       it 'allows to edit user role on account' do
         user = create(:user)
@@ -586,6 +586,25 @@ describe Admin::MembershipsController do
             patch :update, params: {user_id: user, id: membership, membership: {role: :editor}}
           end.not_to change { membership.reload.role }
         end
+      end
+
+      it 'does not allow associating user with other account' do
+        account = create(:account)
+        other_account = create(:account)
+        user = create(:user, :manager, on: account)
+
+        sign_in(user, scope: :user)
+
+        expect {
+          patch :update,
+                params: {
+                  user_id: user,
+                  id: user.memberships.first,
+                  membership: {
+                    entity_id: other_account
+                  }
+                }
+        }.not_to(change { other_account.users.count })
       end
     end
 
