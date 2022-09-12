@@ -17,6 +17,7 @@ export function TextBlock(props) {
                                styles[`layout-${props.sectionProps.layout}`])}>
       <EditableText value={props.configuration.value}
                     contentElementId={props.contentElementId}
+                    selectionRect={true}
                     placeholder={t('pageflow_scrolled.inline_editing.type_text')}
                     onChange={value => updateConfiguration({value})} />
     </div>

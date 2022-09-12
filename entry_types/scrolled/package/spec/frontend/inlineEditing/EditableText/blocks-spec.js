@@ -3,8 +3,10 @@ import {
   applyTypograpyhVariant,
   isBlockActive,
   toggleBlock,
+  withBlockNormalization
 } from 'frontend/inlineEditing/EditableText/blocks';
 
+import {Transforms} from 'slate';
 import {createHyperscript} from 'slate-hyperscript';
 
 const h = createHyperscript({
@@ -270,5 +272,112 @@ describe('applyTypograpyhVariant', () => {
       </editor>
     );
     expect(editor.children).toEqual(output.children);
+  });
+});
+
+describe('withBlockNormalization', () => {
+  describe('with onlyParagraphs false', () => {
+    it('is no-op by default', () => {
+      const editor = withBlockNormalization(
+        {},
+        <editor>
+          <paragraph>
+            Line 1
+            <cursor />
+          </paragraph>
+        </editor>
+      );
+
+      Transforms.insertNodes(
+        editor,
+        <blockQuote>Some quote</blockQuote>
+      );
+
+      const output = (
+        <editor>
+          <paragraph>
+            Line 1
+          </paragraph>
+          <blockQuote>
+            Some quote
+            <cursor />
+          </blockQuote>
+        </editor>
+      );
+      expect(editor.children).toEqual(output.children);
+    });
+  });
+
+  describe('with onlyParagraphs true', () => {
+    it('turns blocks over other types into paragraphs', () => {
+      const editor = withBlockNormalization(
+        {onlyParagraphs: true},
+        <editor>
+          <paragraph>
+            Line 1
+            <cursor />
+          </paragraph>
+        </editor>
+      );
+
+      Transforms.insertNodes(
+        editor,
+        <blockQuote>Some quote</blockQuote>
+      );
+
+      const output = (
+        <editor>
+          <paragraph>
+            Line 1
+          </paragraph>
+          <paragraph>
+            Some quote
+            <cursor />
+          </paragraph>
+        </editor>
+      );
+      expect(editor.children).toEqual(output.children);
+    });
+
+    it('turns list into paragraphs', () => {
+      const editor = withBlockNormalization(
+        {onlyParagraphs: true},
+        <editor>
+          <paragraph>
+            Line 1
+            <cursor />
+          </paragraph>
+        </editor>
+      );
+
+      Transforms.insertNodes(
+        editor,
+        <bulletedList>
+          <listItem>
+            Item 1
+            <cursor />
+          </listItem>
+          <listItem>
+            Item 2
+          </listItem>
+        </bulletedList>
+      );
+
+      const output = (
+        <editor>
+          <paragraph>
+            Line 1
+          </paragraph>
+          <paragraph>
+            Item 1
+          </paragraph>
+          <paragraph>
+            Item 2
+            <cursor />
+          </paragraph>
+        </editor>
+      );
+      expect(editor.children).toEqual(output.children);
+    });
   });
 });

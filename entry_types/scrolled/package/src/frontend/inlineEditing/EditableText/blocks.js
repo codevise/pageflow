@@ -1,4 +1,4 @@
-import {Editor, Transforms, Range} from 'slate';
+import {Editor, Element, Node, Transforms, Range} from 'slate';
 
 export function isBlockActive(editor, format) {
   const [match] = Editor.nodes(editor, {
@@ -69,4 +69,32 @@ function preserveTypograpyhVariant(editor) {
   return nodeEntry && nodeEntry[0].variant ?
          {variant: nodeEntry[0].variant} :
          {};
+}
+
+export function withBlockNormalization({onlyParagraphs}, editor) {
+  if (!onlyParagraphs) {
+    return editor;
+  }
+
+  const { normalizeNode } = editor;
+
+  editor.normalizeNode = ([node, path]) => {
+    if (path.length === 0) {
+      for (const [child, childPath] of Node.children(editor, path)) {
+        if (Element.isElement(child) && child.type !== 'paragraph') {
+          Transforms.unwrapNodes(editor, {
+            match: n => listTypes.includes(n.type),
+            split: true,
+            at: childPath
+          });
+
+          Transforms.setNodes(editor, {type: 'paragraph'}, {at: childPath});
+        }
+      }
+    }
+
+    return normalizeNode([node, path]);
+  };
+
+  return editor;
 }

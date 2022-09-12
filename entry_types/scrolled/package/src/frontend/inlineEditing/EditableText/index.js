@@ -19,14 +19,29 @@ import {HoveringToolbar} from './HoveringToolbar';
 import {Selection} from './Selection';
 import {DropTargets} from './DropTargets';
 import {LinkTooltipProvider} from './LinkTooltip';
-import {applyTypograpyhVariant} from './blocks';
+import {
+  applyTypograpyhVariant,
+  withBlockNormalization
+} from './blocks';
 
 import styles from './index.module.css';
 
 export const EditableText = React.memo(function EditableText({
-  value, contentElementId, placeholder, onChange
+  value, contentElementId, placeholder, onChange, selectionRect
 }) {
-  const editor = useMemo(() => withLinks(withCustomInsertBreak(withReact(createEditor()))), []);
+  const editor = useMemo(
+    () => withLinks(
+      withCustomInsertBreak(
+        withBlockNormalization(
+          {onlyParagraphs: !selectionRect},
+          withReact(
+            createEditor()
+          )
+        )
+      )
+    ),
+    [selectionRect]
+  );
   const [linkSelection, setLinkSelection] = useState();
 
   const [cachedValue, setCachedValue] = useCachedValue(value, {
@@ -65,7 +80,7 @@ export const EditableText = React.memo(function EditableText({
       <div className={styles.container} ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
           <LinkTooltipProvider disabled={!!linkSelection}>
-            <Selection contentElementId={contentElementId} />
+            {selectionRect && <Selection contentElementId={contentElementId} />}
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
             <HoveringToolbar linkSelection={linkSelection} setLinkSelection={setLinkSelection} />
             <Editable
