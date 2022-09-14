@@ -171,15 +171,7 @@ If you run into problems during the installation of Pageflow, please refer to th
 
 ## Security Policy
 
-For major security issues, at least the current release series and the
-last major series will receive patches and new versions.
-
-Security related announcements will be posted to the
-[`ruby-security-ann`](https://groups.google.com/forum/#!forum/ruby-security-ann)
-mailing list.
-
-If you have found a security related bug, please contact
-`info(at)codevise.de` instead of creating a publicly visible issue.
+See [`SECURITY.md`](https://github.com/codevise/pageflow/blob/master/SECURITY.md).
 
 ## Contributing
 
