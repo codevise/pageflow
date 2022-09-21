@@ -1,7 +1,15 @@
-export default function(videoFile, quality, {hasHighBandwidth} = {}) {
+export default function(videoFile, quality, {
+  hasHighBandwidth, forceBestQuality
+} = {}) {
   quality = quality || 'auto';
 
-  if (quality == 'auto') {
+  if (forceBestQuality) {
+    return [{
+      type: 'video/mp4',
+      src: videoFile.urls['4k'] || videoFile.urls.fullhd || videoFile.urls.high
+    }];
+  }
+  else if (quality == 'auto') {
     let fallbackQuality = hasHighBandwidth ? 'high' : 'medium';
 
     let result = [
