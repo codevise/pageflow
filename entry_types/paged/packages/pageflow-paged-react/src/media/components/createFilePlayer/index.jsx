@@ -19,6 +19,7 @@ import {setting} from 'settings/selectors';
 import {prop} from 'selectors';
 import {has} from 'utils/selectors';
 import {widgetPresent} from 'widgetPresence/selectors';
+import {isFeatureEnabled} from 'features/selectors';
 
 import React from 'react';
 import {combineSelectors} from 'utils';
@@ -121,7 +122,8 @@ export default function({
 
                   sources={sources(this.props.file,
                                    this.props.quality,
-                                   {hasHighBandwidth: this.props.hasHighBandwidth})}
+                                   {hasHighBandwidth: this.props.hasHighBandwidth,
+                                    forceBestQuality: this.props.forceBestQuality})}
                   tracks={textTracksFromFiles(this.props.textTracks.files,
                                               this.props.textTracksEnabled)}
                   poster={poster(this.props.file, this.props.posterImageFile)}
@@ -160,6 +162,7 @@ export default function({
       quality: setting({property: 'videoQuality'}),
       hasNativeVideoPlayer: has('native video player'),
       hasHighBandwidth: has('high bandwidth'),
+      forceBestQuality: isFeatureEnabled('force_best_video_quality'),
       textTrackPosition
     }),
     {

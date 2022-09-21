@@ -93,6 +93,18 @@ describe('createFilePlayer', () => {
       expect(wrapper.render()).toHaveDescendant('source[src="high.mp4"]');
     });
 
+    it('passes forceBestQuality option to sources', () => {
+      const {FilePlayer} = setup({
+        sources: (file, quality, {forceBestQuality}) => [
+          {type: 'video/mp4', src: `${forceBestQuality ? 'high' : 'low'}.mp4`}
+        ]
+      });
+
+      const wrapper = mount(<FilePlayer {...requiredProps} forceBestQuality={true} />);
+
+      expect(wrapper.render()).toHaveDescendant('source[src="high.mp4"]');
+    });
+
     it('renders media tag with poster given by option', () => {
       const {FilePlayer} = setup({
         poster: file => file.posterUrl
