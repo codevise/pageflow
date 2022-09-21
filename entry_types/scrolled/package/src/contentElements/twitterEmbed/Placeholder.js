@@ -4,9 +4,9 @@ import styles from './Placeholder.module.css';
 
 import Icon from './icon.svg';
 
-export function Placeholder({children}) {
+export function Placeholder({children, minHeight}) {
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} style={{minHeight}}>
       <div className={styles.row }>
         <div className={styles.avatar}/>
         <div className={styles.info}>

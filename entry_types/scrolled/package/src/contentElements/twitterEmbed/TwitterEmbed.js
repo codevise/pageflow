@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import classNames from 'classnames';
 
 import {
@@ -18,11 +18,17 @@ export function TwitterEmbed({configuration}) {
   const {isEditable, isSelected} = useContentElementEditorState();
   const {shouldLoad} = useContentElementLifecycle();
 
+  const [minHeight, setMinHeight] = useState({});
+
   const key = [
     url,
     hideConversation,
     hideMedia,
   ].join('-');
+
+  const onLoad = useCallback(({height}) => {
+    setMinHeight({[key]: height})
+  }, [key]);
 
   return (
     <ContentElementBox>
@@ -35,9 +41,11 @@ export function TwitterEmbed({configuration}) {
            <Tweet key={key}
                   url={url}
                   hideConversation={hideConversation}
-                  hideMedia={hideMedia} />
+                  hideMedia={hideMedia}
+                  minHeight={minHeight[key]}
+                  onLoad={onLoad} />
          </ThirdPartyOptIn> :
-         <Placeholder />}
+         <Placeholder minHeight={minHeight[key]} />}
         <ThirdPartyOptOutInfo providerName="twitter"
                               contentElementPosition={configuration.position} />
       </div>
@@ -61,6 +69,8 @@ function Tweet({
   url,
   hideConversation,
   hideMedia,
+  minHeight,
+  onLoad
 }) {
   const ref = useRef(null)
   const tweetId = url ? url.split('/')[5] : undefined
@@ -81,18 +91,21 @@ function Tweet({
               tweetId,
               ref.current,
               options
-            ).then(() => setLoaded(true));
+            ).then(() => {
+              setLoaded(true);
+              onLoad({height: ref.current?.clientHeight})
+            });
           }
         }
       }
     })
 
     return () => isComponentMounted = false
-  }, [hideMedia, hideConversation, tweetId]);
+  }, [hideMedia, hideConversation, tweetId, onLoad]);
 
   return(
     <>
-      {!loaded && <Placeholder />}
+      {!loaded && <Placeholder minHeight={minHeight} />}
       <div ref={ref} className={classNames(styles.container,
                                            {[styles.loadingContainer]: !loaded})} />
     </>
