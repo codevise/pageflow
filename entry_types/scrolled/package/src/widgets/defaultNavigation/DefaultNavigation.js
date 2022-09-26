@@ -20,7 +20,7 @@ import {Scroller} from './Scroller';
 
 import styles from './DefaultNavigation.module.css';
 
-export function DefaultNavigation(props) {
+export function DefaultNavigation({configuration}) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);
@@ -107,9 +107,9 @@ export function DefaultNavigation(props) {
 
   return (
     <header className={classNames(styles.navigationBar, {
-        [styles.navigationBarExpanded]: navExpanded || !mobileNavHidden,
-        [styles.hasChapters]: hasChapters
-      })}>
+      [styles.navigationBarExpanded]: navExpanded || !mobileNavHidden,
+      [styles.hasChapters]: hasChapters
+    })}>
       <div className={styles.navigationBarContentWrapper}>
         {hasChapters && <HamburgerIcon onClick={handleBurgerMenuClick}
                                        mobileNavHidden={mobileNavHidden}/>}
@@ -120,9 +120,9 @@ export function DefaultNavigation(props) {
         {renderNav()}
 
         <div className={classNames(styles.contextIcons)}>
-          <ToggleMuteButton />
-          <LegalInfoMenu />
-          <SharingMenu />
+          {!configuration.hideToggleMuteButton && <ToggleMuteButton />}
+          <LegalInfoMenu tooltipOffset={configuration.hideSharingButton ? -40 : 0} />
+          {!configuration.hideSharingButton && <SharingMenu />}
         </div>
       </div>
 

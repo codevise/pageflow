@@ -5,12 +5,12 @@ import {ContentElementFileSelectionHandler} from './models/ContentElementFileSel
 
 import {EntryOutlineView} from './views/EntryOutlineView';
 import {EntryPreviewView} from './views/EntryPreviewView';
-import {NoOptionsHintView} from './views/NoOptionsHintView';
 
 import {SideBarRouter} from './routers/SideBarRouter';
 import {SideBarController} from './controllers/SideBarController';
 
 import {browser} from 'pageflow/frontend';
+import {CheckBoxInputView, ConfigurationEditorView} from 'pageflow/ui';
 import {BrowserNotSupportedView} from './views/BrowserNotSupportedView';
 
 editor.registerEntryType('scrolled', {
@@ -25,7 +25,6 @@ editor.registerEntryType('scrolled', {
   outlineView: EntryOutlineView,
 
   appearanceInputs(tabView) {
-    tabView.view(NoOptionsHintView);
   },
 
   isBrowserSupported() {
@@ -44,3 +43,18 @@ editor.registerSideBarRouting({
 
 editor.registerFileSelectionHandler('contentElementConfiguration',
                                     ContentElementFileSelectionHandler);
+
+editor.widgetTypes.registerRole('header', {
+  isOptional: true
+});
+
+editor.widgetTypes.register('defaultNavigation', {
+  configurationEditorView: ConfigurationEditorView.extend({
+    configure: function() {
+      this.tab('defaultNavigation', function() {
+        this.input('hideToggleMuteButton', CheckBoxInputView);
+        this.input('hideSharingButton', CheckBoxInputView);
+      });
+    }
+  })
+});
