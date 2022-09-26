@@ -43,18 +43,18 @@
 
 @media screen {
   .cardBgWhite::before {
-    background-color: lightContentSurfaceColor;
+    background-color: var(--theme-cards-light-surface-color, lightContentSurfaceColor);
   }
 
   .cardBgBlack::before {
-    background-color: darkContentSurfaceColor;
+    background-color: var(--theme-cards-dark-surface-color, darkContentSurfaceColor);
   }
 
   .cardBgWhite {
-    color: darkContentTextColor;
+    color: var(--theme-cards-on-light-surface-color, darkContentTextColor);
   }
 
   .cardBgBlack {
-    color: lightContentTextColor;
+    color: var(--theme-cards-on-dark-surface-color, lightContentTextColor);;
   }
 }
