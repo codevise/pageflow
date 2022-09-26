@@ -194,7 +194,7 @@ System](https://material.io/design/color/the-color-system.html#color-theme-creat
 | ---- | ----------- |
 | `widget_margin_top` | Margin to apply to the content of the entry to keep it from being hidden behind a navigation bar. |
 
-### Default Navigation Bar Dimensions
+### Default Navigation Bar
 
 | Name | Description |
 | ---- | ----------- |
@@ -203,3 +203,5 @@ System](https://material.io/design/color/the-color-system.html#color-theme-creat
 | `default_navigation_scroll_button_top` | Position of the left/right scroll buttons visible when the chapter list overflows horizontally. |
 | `default_navigation_chapter_link_height` | Height of the links inside the horizontal chapter list. |
 | `default_navigation_chapter_progress_indicator_height` | Height of the progress indicator. |
+| `default_navigation_progress_bar_background_color` | Background color of the progress bar. |
+| `default_navigation_progress_bar_indicator_color` | Color of the progress bar indicator. Defaults to `accent_color`. |

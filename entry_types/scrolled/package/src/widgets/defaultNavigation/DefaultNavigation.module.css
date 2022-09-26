@@ -120,7 +120,8 @@ div:focus-within > .contextIcon,
 
 .progressBar {
   position: relative;
-  background-color: rgba(194,194,194,0.8);
+  background-color: var(--theme-default-navigation-progress-bar-background-color,
+                        rgba(194,194,194,0.8));
   height: 8px;
   width: 100%;
 }
@@ -131,7 +132,8 @@ div:focus-within > .contextIcon,
   left: 0;
   width: 0vw;
   height: 100%;
-  background-color: var(--theme-accent-color);
+  background-color: var(--theme-default-navigation-progress-bar-indicator-color,
+                        var(--theme-accent-color));
 }
 
 @media screen and breakpoint-below-md {
