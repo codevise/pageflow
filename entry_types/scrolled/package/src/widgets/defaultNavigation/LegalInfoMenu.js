@@ -43,8 +43,8 @@ export function LegalInfoMenu(props) {
   );
 
   return (
-    <Tooltip horizontalOffset={-30}
-             arrowPos={120}
+    <Tooltip horizontalOffset={props.tooltipOffset - 30}
+             arrowPos={120 - props.tooltipOffset}
              content={content}>
       <button className={classNames(headerStyles.contextIcon)}
               aria-haspopup="true"

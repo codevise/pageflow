@@ -1,0 +1,16 @@
+de:
+  pageflow:
+    editor:
+      widgets:
+        attributes:
+          defaultNavigation:
+            hideToggleMuteButton:
+              label: "'Ton aktivieren'-Button ausblenden"
+            hideSharingButton:
+              label: "Share-Button ausblenden"
+    defaultNavigation:
+      widget_type_name: "Standard Navigation"
+    ui:
+      configuration_editor:
+        tabs:
+          defaultNavigation: "Standard Navigation"

@@ -1,0 +1,16 @@
+en:
+  pageflow:
+    editor:
+      widgets:
+        attributes:
+          defaultNavigation:
+            hideToggleMuteButton:
+              label: "Hide unmute button"
+            hideSharingButton:
+              label: "Hide share button"
+    defaultNavigation:
+      widget_type_name: "Default navigation"
+    ui:
+      configuration_editor:
+        tabs:
+          defaultNavigation: "Default navigation"
