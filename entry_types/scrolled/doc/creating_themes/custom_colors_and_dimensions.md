@@ -146,6 +146,10 @@ breakpoint below which sticky elements become inline:
 | Name | Description |
 | ---- | ----------- |
 | `cards_border_radius` | Change border radius of foreground boxes displayed when section appearance is set to "Card". |
+| `cards_light_surface_color` | Background color of boxes with section appearance "Card". |
+| `cards_dark_surface_color` | Background color of inverted boxes with section appearance "Card". |
+| `cards_on_light_surface_color` | Text color of boxes with section appearance "Card". |
+| `cards_on_dark_surface_color` | Text color of inverted boxes with section appearance "Card". |
 
 ### Content Element Style
 
