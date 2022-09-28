@@ -31,6 +31,20 @@ module PageflowScrolled
           expect(result).to have_selector('script', text: '<\/body>', visible: false)
         end
 
+        it 'sets lang attribute on head element based on entry locale' do
+          I18n.with_locale(:en) do
+            entry = create(:published_entry,
+                           type_name: 'scrolled',
+                           revision_attributes: {locale: 'de'})
+
+            result = helper.scrolled_editor_iframe_seed_html_script_tag(entry)
+
+            expect(result).to have_selector('script',
+                                            text: '<html lang="de"',
+                                            visible: false)
+          end
+        end
+
         it 'renders config seed data' do
           entry = create(:published_entry, type_name: 'scrolled')
 
