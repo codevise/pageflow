@@ -1,3 +1,5 @@
+@value breakpoint-sm from 'pageflow-scrolled/values/breakpoints.module.css';
+
 .text li,
 .text p {
   margin: 1.375rem 0 0 0;
@@ -22,8 +24,8 @@
 }
 
 .text blockquote {
-  padding: 0.5em 1.375rem 0.5em 2em;
-  margin: 1.375rem 0 0 0.6875rem;
+  padding: 0.5em 0.5em 0.5em 1.6em;
+  margin: 1.375rem 0 0 0;
   position: relative;
   /* Prevent block quote symbol from overlapping with floated elements. */
   overflow: hidden;
@@ -31,13 +33,26 @@
 
 .text blockquote::before {
   content: "“";
-  font-size: 3em;
+  font-size: 2.5em;
   font-weight: bold;
   position: absolute;
-  top: 0;
+  top: 0.1em;
   left: 0;
   line-height: 1em;
   opacity: 0.5;
+}
+
+@media screen and breakpoint-sm {
+  .text blockquote {
+    margin-left: 0.6875rem;
+    padding-left: 2em;
+    padding-right: 1.375rem;
+  }
+
+  .text blockquote::before {
+    font-size: 3em;
+    top: 0;
+  }
 }
 
 .layout-centerRagged {
