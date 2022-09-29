@@ -135,14 +135,6 @@ en:
                 medium: Medium
                 small: Small
           description: Entry or chapter title
-          help_texts:
-            shortcuts: |
-              <dl class="shortcuts">
-                <dt><kbd>Shift</kbd> + <kbd>Enter</kbd></dt>
-                <dd>
-                  Insert soft hyphen.
-                </dd>
-              </dl>
           name: Heading
           tabs:
             general: Heading

@@ -1,5 +1,7 @@
+import I18n from 'i18n-js';
 import {utils} from 'pageflow-scrolled/frontend';
 import {editor} from 'pageflow-scrolled/editor';
+import {InfoBoxView} from 'pageflow/editor';
 
 import pictogram from './pictogram.svg';
 
@@ -37,6 +39,12 @@ editor.contentElementTypes.register('textBlock', {
             ]
           } : configuration;
         }
+      });
+
+      this.view(InfoBoxView, {
+        text: I18n.t(
+          'pageflow_scrolled.editor.content_elements.textBlock.help_texts.shortcuts'
+        ),
       });
     });
   },

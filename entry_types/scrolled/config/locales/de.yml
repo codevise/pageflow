@@ -136,14 +136,6 @@ de:
                 medium: Mittel
                 small: Klein
           description: Beitrags- oder Kapiteltitel
-          help_texts:
-            shortcuts: |
-              <dl class="shortcuts">
-                <dt><kbd>Shift</kbd> + <kbd>Enter</kbd></dt>
-                <dd>
-                  Bedingten Trennstrich einfügen.
-                </dd>
-              </dl>
           name: Überschrift
           tabs:
             general: Überschrift

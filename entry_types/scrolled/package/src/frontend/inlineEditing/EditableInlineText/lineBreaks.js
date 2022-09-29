@@ -1,7 +1,7 @@
-import {Text, Transforms} from 'slate';
+import {Transforms} from 'slate';
 import {useCallback} from 'react';
 
-const shy = '\u00AD';
+import {shy, decorateCharacter, deleteCharacter} from '../EditableText/characters';
 
 export function useLineBreakHandler(editor) {
   return useCallback((event) => {
@@ -9,7 +9,11 @@ export function useLineBreakHandler(editor) {
       return true;
     }
 
-    if (event.shiftKey === true) {
+    // Soft hyphens used to be inserted with Shift + Enter.
+    // Since Shift + Enter is now used for soft breaks in text blocks,
+    // we switched to Alt + Enter. Since all line breaks in
+    // EdtiableInlineText are soft, we also keep the old short cut
+    if (event.shiftKey === true || event.altKey === true) {
       editor.insertText(shy);
     }
     else {
@@ -25,27 +29,6 @@ export function decorateLineBreaks(nodeEntry) {
     ...decorateCharacter(nodeEntry, shy, {shy: true}, {length: 1}),
     ...decorateCharacter(nodeEntry, "\n", {newLine: true}, {length: 0})
   ]
-}
-
-function decorateCharacter([node, path], character, attributes, {length}) {
-  if (Text.isText(node)) {
-    const parts = node.text.split(character);
-    parts.pop();
-
-    let i = 0;
-
-    return parts.map(part => {
-      i += part.length + 1;
-
-      return {
-        anchor: {path, offset: i - 1},
-        focus: {path, offset: i - 1 + length},
-        ...attributes
-      };
-    });
-  }
-
-  return [];
 }
 
 export function withLineBreakNormalization(editor) {
@@ -71,20 +54,4 @@ export function withLineBreakNormalization(editor) {
   };
 
   return editor;
-}
-
-function deleteCharacter(editor, node, path, regExp, offset = 0) {
-  const match = regExp.exec(node.text);
-
-  if (match) {
-    Transforms.delete(editor, {
-      at: {path, offset: match.index + offset},
-      distance: 1,
-      unit: 'character'
-    });
-
-    return true;
-  }
-
-  return false
 }
