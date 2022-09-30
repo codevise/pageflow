@@ -157,10 +157,13 @@ function variantsExampleStories({typeName, baseConfiguration, variants}) {
   return exampleStoryGroup({
     typeName,
     name: 'Variants',
-    examples: variants.map(({name, configuration, themeOptions}) => ({
+    examples: variants.map(({
+      name, configuration, themeOptions, sectionConfiguration
+    }) => ({
       name: name,
       contentElementConfiguration: {...baseConfiguration, ...configuration},
-      themeOptions
+      themeOptions,
+      sectionConfiguration
     }))
   });
 }

@@ -151,7 +151,7 @@ breakpoint below which sticky elements become inline:
 | `cards_on_light_surface_color` | Text color of boxes with section appearance "Card". |
 | `cards_on_dark_surface_color` | Text color of inverted boxes with section appearance "Card". |
 
-### Content Element Style
+### Shared Content Element Styles
 
 The following properties apply to all content elements that render
 content in a visible box: inline images, inline videos, before/after
@@ -160,6 +160,15 @@ elements etc.
 | Name | Description |
 | ---- | ----------- |
 | `content_element_box_border_radius` | Display content element boxes with rounded corners. |
+
+### Text Block Styles
+
+| Name | Description |
+| ---- | ----------- |
+| `text_block_link_color` | Text color of inline links. |
+| `text_block_dark_link_color` | Text color of inline links on light backgrounds (e.g. cards or inverted sections). Takes precedence over `text_block_link_color`. |
+| `text_block_light_link_color` | Text color of inline links on dark backgrounds sections (e.g. inverted cards sections). Takes precedence over `text_block_link_color`. |
+| `text_block_unordered_list_style_type` | Which icon to use for unordered lists. |
 
 ### Shared Widget Colors
 

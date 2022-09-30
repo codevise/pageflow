@@ -11,8 +11,14 @@
 }
 
 .text a {
-  color: currentColor;
+  color: var(--theme-text-block-dark-link-color,
+             var(--theme-text-block-link-color, currentColor));
   word-wrap: break-word;
+}
+
+.darkBackground a {
+  color: var(--theme-text-block-light-link-color,
+             var(--theme-text-block-link-color, currentColor));
 }
 
 .text ol,
@@ -21,6 +27,10 @@
   padding-left: 20px;
   /* Prevent list markers from overlapping with floated elements. */
   clear: both;
+}
+
+.text ul {
+  list-style-type: var(--theme-text-block-unordered-list-style-type)
 }
 
 .text blockquote {
