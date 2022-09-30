@@ -38,8 +38,6 @@ describe('storiesOfContentElement', () => {
 });
 
 describe('exampleStories', () => {
-  beforeEach(() => delete process.env.STORYBOOK_SPLIT);
-
   it('uses config from seed fixture file', () => {
     const seedFixture = normalizeSeed({
       prettyUrl: 'https://example.com/'
@@ -51,22 +49,13 @@ describe('exampleStories', () => {
     expect(stories[0].seed).toMatchObject({config: seedFixture.config});
   });
 
-  it('renders one story per example group by default', () => {
-    const stories = exampleStories({typeName: 'test', baseConfiguration: {}});
-
-    expect(stories).toContainEqual(expect.objectContaining({title: 'Layout'}));
-  });
-
-  it('supports splitting rendering one example per story', () => {
-    process.env.STORYBOOK_SPLIT = true
+  it('renders one story per example', () => {
     const stories = exampleStories({typeName: 'test', baseConfiguration: {}});
 
     expect(stories).toContainEqual(expect.objectContaining({title: 'Layout - Left'}));
   });
 
   it('supports adding stories for additional configurations', () => {
-    process.env.STORYBOOK_SPLIT = true
-
     const stories = exampleStories({
       typeName: 'test',
       baseConfiguration: {},
@@ -81,6 +70,37 @@ describe('exampleStories', () => {
     expect(stories).toContainEqual(expect.objectContaining({title: 'Variants - Extra'}));
   });
 
+  it('supports adding stories for different theme options', () => {
+    const stories = exampleStories({
+      typeName: 'test',
+      baseConfiguration: {},
+      variants: [{
+        name: 'With Properties',
+        themeOptions: {
+          properties: {
+            accentColor: 'red'
+          }
+        }
+      }]
+    });
+
+    expect(stories).toContainEqual(expect.objectContaining({
+      title: 'Variants - With Properties',
+      seed: expect.objectContaining({
+        config: expect.objectContaining({
+          theme: expect.objectContaining({
+            options: expect.objectContaining({
+              properties: expect.objectContaining({
+                accentColor: 'red'
+              })
+            })
+          })
+        })
+      }),
+      cssProperties: {'--theme-accent-color': 'red'}
+    }));
+  });
+
   it('does not include consent stories by default', () => {
     const stories = exampleStories({
       typeName: 'test',
@@ -93,21 +113,6 @@ describe('exampleStories', () => {
   });
 
   it('supports adding story for when consent has not been given', () => {
-    const stories = exampleStories({
-      typeName: 'test',
-      consent: true,
-      baseConfiguration: {}
-    });
-
-    expect(stories).toContainEqual(expect.objectContaining({
-      title: 'Consent',
-      requireConsentOptIn: true
-    }));
-  });
-
-  it('supports adding consent story to split storybook', () => {
-    process.env.STORYBOOK_SPLIT = true
-
     const stories = exampleStories({
       typeName: 'test',
       consent: true,

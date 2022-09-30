@@ -30,7 +30,8 @@ let seedFixture = seedFixtureFromFile;
  *   An array of objects each containing a `name` and a
  *   `configuration` property. The configurations will be merged into
  *   the `baseConfiguration` to create further examples that shall be
- *   rendered as stories.
+ *   rendered as stories. A `themeOptions` property can also be
+ *   supplied.
  * @param {boolean} [consent=false] -
  *   Set to true, to include a story which renders the content element
  *   in a state where consent has not yet been given.
@@ -50,7 +51,12 @@ let seedFixture = seedFixtureFromFile;
  *   variants: [
  *     {
  *       name: 'Large',
- *       configuration: {size: 'large'}
+ *       configuration: {size: 'large'},
+ *       themeOptions: {
+ *         properties: {
+ *           accentColor: '#0f0'
+ *         }
+ *       }
  *     }
  *   ]
  * });
@@ -62,7 +68,9 @@ export function storiesOfContentElement(module, options) {
     setupI18n(seedFixture.i18n);
   }
 
-  exampleStories(options).forEach(({title, seed, requireConsentOptIn, parameters = {}}) => {
+  exampleStories(options).forEach(({
+    title, seed, requireConsentOptIn, cssProperties, parameters = {}
+  }) => {
     const consent = Consent.create();
 
     registerConsentVendors({
@@ -75,7 +83,9 @@ export function storiesOfContentElement(module, options) {
     stories.add(title,
                 () =>
                   <RootProviders seed={seed} consent={consent}>
-                    <Entry />
+                    <div style={cssProperties}>
+                      <Entry />
+                    </div>
                   </RootProviders>,
                 {
                   ...parameters,
@@ -147,9 +157,13 @@ function variantsExampleStories({typeName, baseConfiguration, variants}) {
   return exampleStoryGroup({
     typeName,
     name: 'Variants',
-    examples: variants.map(({name, configuration}) => ({
+    examples: variants.map(({
+      name, configuration, themeOptions, sectionConfiguration
+    }) => ({
       name: name,
-      contentElementConfiguration: {...baseConfiguration, ...configuration}
+      contentElementConfiguration: {...baseConfiguration, ...configuration},
+      themeOptions,
+      sectionConfiguration
     }))
   });
 }
@@ -236,30 +250,30 @@ function exampleStoryGroup({name, typeName, examples, parameters, requireConsent
     {sectionId: index, typeName, configuration: example.contentElementConfiguration}
   ], []);
 
-  if (process.env.STORYBOOK_SPLIT) {
-    return sections.map((section, index) => ({
-      title: `${name} - ${examples[index].name}`,
-      seed: normalizeAndMergeFixture({
-        sections: [section],
-        contentElements: contentElements
-      }),
-      requireConsentOptIn,
-      parameters
-    }));
-  }
-  else {
-    return [
-      {
-        title: name,
-        seed: normalizeAndMergeFixture({
-          sections: sections,
-          contentElements: contentElements
-        }),
-        requireConsentOptIn,
-        parameters
-      }
-    ];
-  }
+  return sections.map((section, index) => ({
+    title: `${name} - ${examples[index].name}`,
+    seed: normalizeAndMergeFixture({
+      sections: [section],
+      contentElements: contentElements,
+      themeOptions: examples[index].themeOptions
+    }),
+    requireConsentOptIn,
+    parameters,
+    cssProperties: themeCssProperties(examples[index].themeOptions?.properties || {})
+  }));
+}
+
+function themeCssProperties(properties) {
+  return Object.keys(properties).reduce((result, key) => {
+    result[`--theme-${dasherize(key)}`] = properties[key];
+    return result;
+  }, {});
+}
+
+function dasherize(text) {
+  return text.replace(/[A-Z]/g, match =>
+    `-${match.toLowerCase()}`
+  );
 }
 
 export function normalizeAndMergeFixture(options = {}) {

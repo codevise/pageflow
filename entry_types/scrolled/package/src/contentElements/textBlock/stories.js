@@ -1,6 +1,28 @@
 import '../frontend';
 import {storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
 
+const linkExampleConfiguration = {
+  value: [
+    {
+      type: 'paragraph',
+      children: [
+        {
+          "text": "This is a "
+        },
+        {
+          "type": "link",
+          "href": "https://example.com",
+          "children": [
+            {
+              "text": "link"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
 storiesOfContentElement(module, {
   typeName: 'textBlock',
   baseConfiguration: {
@@ -14,7 +36,19 @@ storiesOfContentElement(module, {
       {
         type: 'paragraph',
         children: [
-          {text: 'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. '}
+          {text: 'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. '},
+          {
+            "text": "This is a "
+          },
+          {
+            "type": "link",
+            "href": "https://example.com",
+            "children": [
+              {
+                "text": "link"
+              }
+            ]
+          }
         ]
       },
       {
@@ -70,5 +104,39 @@ storiesOfContentElement(module, {
         ]
       }
     ]
-  }
+  },
+  variants: [
+    {
+      name: 'With theme link color',
+      configuration: linkExampleConfiguration,
+      themeOptions: {
+        properties: {
+          textBlockLinkColor: 'red'
+        }
+      }
+    },
+    {
+      name: 'With theme light link color',
+      configuration: linkExampleConfiguration,
+      themeOptions: {
+        properties: {
+          textBlockLightLinkColor: 'yellow',
+          textBlockDarkLinkColor: 'green',
+        }
+      }
+    },
+    {
+      name: 'With theme dark link color in inverted section',
+      configuration: linkExampleConfiguration,
+      sectionConfiguration: {
+        invert: true
+      },
+      themeOptions: {
+        properties: {
+          textBlockLightLinkColor: 'yellow',
+          textBlockDarkLinkColor: 'green',
+        }
+      }
+    }
+  ]
 });
