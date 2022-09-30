@@ -39,7 +39,6 @@
   }
 
   .scroller > div {
-    pointer-events: none;
     width: 75%;
 
     @include mobile {
@@ -70,7 +69,6 @@
   }
 
   .scroller > div {
-    pointer-events: none;
     width: 100%;
 
     @include mobile {
