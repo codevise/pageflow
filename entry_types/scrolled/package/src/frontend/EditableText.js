@@ -6,11 +6,15 @@ import {withInlineEditingAlternative} from './inlineEditing';
 import {Text} from './Text';
 import textStyles from './Text.module.css';
 
+import styles from './EditableText.module.css';
+
 export const EditableText = withInlineEditingAlternative('EditableText', function EditableText({value}) {
   return (
-    <Text scaleCategory="body">
-      {render(value)}
-    </Text>
+    <div className={styles.root}>
+      <Text scaleCategory="body">
+        {render(value)}
+      </Text>
+    </div>
   );
 });
 
