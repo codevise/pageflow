@@ -84,6 +84,12 @@
     @include fa-check-icon;
   }
 
+  &.divider_above:not(:first-child) {
+    border-top: solid 1px var(--ui-on-surface-color-lighter);
+    padding-top: 1px;
+    margin-top: 1px;
+  }
+
   .drop_down_button_item a {
     padding-left: 39px;
   }

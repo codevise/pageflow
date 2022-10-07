@@ -69,6 +69,21 @@ describe('DropDownButtonView', () => {
     expect(items.eq(1)).not.toHaveClass('is_checked');
   });
 
+  it('supports divider above item', () => {
+    var dropDownButtonView = new DropDownButtonView({
+      items: new Backbone.Collection([
+        {label: 'Item 1', dividerAbove: true},
+        {label: 'Item 2'}
+      ])
+    });
+
+    dropDownButtonView.render();
+    var items = dropDownButtonView.$el.find('ul li');
+
+    expect(items.eq(0)).toHaveClass('divider_above');
+    expect(items.eq(1)).not.toHaveClass('divider_above');
+  });
+
   it('marks items whose model has a selected method', () => {
     var itemModels = new Backbone.Collection([
       {label: 'Item 1'},
