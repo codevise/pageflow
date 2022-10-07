@@ -79,7 +79,7 @@ function renderChapters(entryStructure,
       <Chapter key={index}
                chapterSlug={chapter.chapterSlug}
                permaId={chapter.permaId}
-               sections={chapter.sections}
+               transitionGroups={chapter.transitionGroups}
                currentSectionIndex={currentSectionIndex}
                setCurrentSection={setCurrentSection}
                scrollTargetSectionIndex={scrollTargetSectionIndex}
