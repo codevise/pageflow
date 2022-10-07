@@ -1,0 +1,11 @@
+en:
+  pageflow_scrolled:
+    editor:
+      edit_section_transition:
+        attributes:
+          transition:
+            values:
+              panZoom: Pan/Zoom
+            variants:
+              panZoom: Always display section content
+              panZoomFade: Fade section content in/out

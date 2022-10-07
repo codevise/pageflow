@@ -1,0 +1,11 @@
+de:
+  pageflow_scrolled:
+    editor:
+      edit_section_transition:
+        attributes:
+          transition:
+            values:
+              panZoom: Schwenken/Zoomen
+            variants:
+              panZoom: Inhalte der Abschnitte immer anzeigen
+              panZoomFade: Inhalte der Abschnitte ein-/ausblenden

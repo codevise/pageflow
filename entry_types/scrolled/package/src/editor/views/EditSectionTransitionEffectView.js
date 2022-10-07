@@ -39,6 +39,10 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
         this.transitionVariant({value: 'fadeBg'}),
         this.transitionVariant({value: 'fade'})
       ]),
+      this.transitionItem({value: 'panZoom'}, [
+        this.transitionVariant({value: 'panZoom'}),
+        this.transitionVariant({value: 'panZoomFade'})
+      ]),
       this.transitionItem({value: 'scroll'}),
       this.transitionItem({value: 'scrollOver'}),
       this.transitionItem({value: 'reveal'}),

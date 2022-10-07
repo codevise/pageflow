@@ -161,6 +161,13 @@ input:checked + .defaultTransitionIcons .markAsDefaultTransitionIcon {
   animation: FadeB 4s linear infinite;
 }
 
+.container:hover .panZoom .upperSection {
+  animation: PanZoomA 3s ease infinite;
+}
+.container:hover .panZoom .lowerSection {
+  animation: PanZoomB 3s ease infinite;
+}
+
 .container:hover .scroll .upperSection,
 .container:hover .scroll .lowerSection,
 .container:hover .scrollOver .lowerSection,
@@ -186,18 +193,21 @@ input:checked + .defaultTransitionIcons .markAsDefaultTransitionIcon {
   overflow: hidden;
 }
 
+.panZoom .animation,
 .fade .animation,
 .reveal .animation,
 .beforeAfter .animation {
   position: relative;
 }
 
+.panZoom .lowerSection,
 .fade .lowerSection,
 .reveal .lowerSection,
 .beforeAfter .lowerSection {
   position: absolute;
 }
 
+.panZoom .upperSection,
 .reveal .upperSection,
 .beforeAfter .upperSection,
 .fade .upperSection {
@@ -207,6 +217,13 @@ input:checked + .defaultTransitionIcons .markAsDefaultTransitionIcon {
 
 .beforeAfter .upperSection {
   overflow: hidden;
+}
+
+.panZoom .lowerSection,
+.panZoom .upperSection {
+  padding: 100px;
+  margin-left: -100px;
+  margin-top: -100px;
 }
 
 @keyframes Translate {
@@ -238,5 +255,23 @@ input:checked + .defaultTransitionIcons .markAsDefaultTransitionIcon {
   90% {
     visibility: hidden;
     opacity: 0;
+  }
+}
+
+@keyframes PanZoomA {
+  45%, 55% {
+    opacity: 0;
+    transform: translate(-80px, -30px) scale(0.8);
+  }
+}
+
+@keyframes PanZoomB {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(80px, 30px) scale(1.2);
+  }
+  45%, 55% {
+    opacity: 1;
+    transform: translate(0, 0);
   }
 }
