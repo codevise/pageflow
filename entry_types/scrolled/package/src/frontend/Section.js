@@ -14,7 +14,7 @@ import {BackgroundColorProvider} from './backgroundColor';
 import {Backdrop} from './Backdrop';
 import {useBackdrop} from './useBackdrop';
 import {useBackdropSectionClassNames} from './useBackdropSectionClassNames';
-import {useBackdropSectionCustomProperties} from './useBackdropSectionCustomProperties';
+import {useBackdropFileCustomProperties} from './backdropCustomProperties';
 import {useMotifAreaState} from './useMotifAreaState';
 
 import styles from './Section.module.css';
@@ -46,7 +46,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                                    {[styles.first]: section.sectionIndex === 0},
                                    {[styles.narrow]: section.width === 'narrow'},
                                    {[styles.invert]: section.invert})}
-             style={useBackdropSectionCustomProperties(backdrop)}>
+             style={useBackdropFileCustomProperties(backdrop)}>
       <SectionLifecycleProvider onActivate={onActivate} isLast={!section.nextSection}>
         <SectionAtmo audioFilePermaId={section.atmoAudioFileId} />
 
