@@ -27,4 +27,12 @@ describe('Backdrop Effects getFilter', () => {
 
     expect(result).toEqual('sepia(70%) grayscale(20%)');
   });
+
+  it('ignores zoom effect', () => {
+    const result = getFilter([
+      {name: 'zoom', value: 50}
+    ]);
+
+    expect(result).toEqual('');
+  });
 });

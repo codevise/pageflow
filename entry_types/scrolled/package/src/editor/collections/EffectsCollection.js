@@ -16,6 +16,7 @@ export const EffectsCollection = Backbone.Collection.extend({
         model: Backbone.Model.extend({
           initialize({name}) {
             this.set('label', Effect.getLabel(name));
+            this.set('dividerAbove', name === 'zoom');
           },
 
           selected() {

@@ -15,7 +15,7 @@ export function Effects({file, mobileFile, children}) {
 }
 
 export function getFilter(effects) {
-  return effects.map(effect => {
+  return effects.filter(effect => effect.name !== 'zoom').map(effect => {
     if (effect.name === 'blur') {
       return `blur(${effect.value / 100 * 10}px)`;
     }

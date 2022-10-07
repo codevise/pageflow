@@ -9,3 +9,6 @@ en:
             variants:
               panZoom: Always display section content
               panZoomFade: Fade section content in/out
+      backdrop_effects:
+        zoom:
+          label: "Zoom"

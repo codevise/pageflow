@@ -9,3 +9,6 @@ de:
             variants:
               panZoom: Inhalte der Abschnitte immer anzeigen
               panZoomFade: Inhalte der Abschnitte ein-/ausblenden
+      backdrop_effects:
+        zoom:
+          label: "Zoom"

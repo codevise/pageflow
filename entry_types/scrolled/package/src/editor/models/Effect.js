@@ -31,6 +31,11 @@ const TYPES = {
     minValue: 0,
     maxValue: 100,
     defaultValue: 100
+  },
+  zoom: {
+    minValue: 0,
+    maxValue: 100,
+    defaultValue: 20
   }
 }
 
