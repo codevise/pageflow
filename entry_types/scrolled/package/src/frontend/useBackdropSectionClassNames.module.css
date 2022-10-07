@@ -141,8 +141,11 @@
 
   --backdrop-display-width: calc(var(--backdrop-width) * 100 * var(--vh) /
                                  var(--backdrop-height));
+  --backdrop-display-height-2: 100 * var(--vh);
   --motif-display-center-x: calc(var(--motif-center-x) / 100 *
                                  var(--backdrop-display-width));
+  --motif-display-center-y-2: calc(var(--motif-center-y) / 100 *
+                                   var(--backdrop-display-height-2));
 
   /*
     We'll give the backdrop the calculated width, causing it to
@@ -162,15 +165,29 @@
     translation of:
   */
 
+  /*--backdrop-scale: calc((100 - var(--backdrop-zoom)) / 100 +
+                         var(--backdrop-zoom) / var(--motif-height));*/
+  --backdrop-scale: calc(1 + var(--backdrop-zoom) / 100);
+
   --backdrop-translate-x: min(
     0px,
     max(
-      /* M: */ 100 * var(--vw) - var(--backdrop-display-width),
-      /* X: */ var(--motif-display-center-x) * -1 + 50 * var(--vw)
+      /* M: */ 100 * var(--vw) - var(--backdrop-display-width) * var(--backdrop-scale),
+      /* X: */ var(--motif-display-center-x) * var(--backdrop-scale) * -1 + 50 * var(--vw)
+    )
+  );
+  --backdrop-translate-y-2: min(
+    0px,
+    max(
+      /* M: */ 100 * var(--vh) - var(--backdrop-display-height-2) * var(--backdrop-scale),
+      /* X: */ var(--motif-display-center-y-2) * var(--backdrop-scale) * -1 + 50 * var(--vh)
     )
   );
 
-  --backdrop-positioner-transform: translateX(var(--backdrop-translate-x));
+
+  --backdrop-positioner-transform: translate(var(--backdrop-translate-x),
+                                             var(--backdrop-translate-y-2))
+                                   scale(var(--backdrop-scale));
   --backdrop-positioner-width: var(--backdrop-display-width);
   --backdrop-positioner-height: 100%;
 
@@ -181,21 +198,40 @@
     above, only with width and height interchanged.
   */
 
+
   --backdrop-display-height: calc(var(--backdrop-height) * 100 * var(--vw) /
                                   var(--backdrop-width));
   --motif-display-center-y: calc(var(--motif-center-y) / 100 *
                                  var(--backdrop-display-height));
 
+  /*--backdrop-scale-2: calc((100 - var(--backdrop-zoom)) / 100 +
+                           var(--backdrop-zoom) / var(--motif-width));*/
+  --backdrop-scale-2: calc(1 + var(--backdrop-zoom) / 100);
+
+  --backdrop-display-width-2: calc(100 * var(--vw));
+  --motif-display-center-x-2: calc(var(--motif-center-x) / 100 *
+                                   var(--backdrop-display-width-2));
+
   --backdrop-translate-y: min(
     0px,
     max(
-      /* M: */ calc(100 * var(--vh) - var(--backdrop-display-height)),
-      /* Y: */ calc(var(--motif-display-center-y) * -1 + 50 * var(--vh))
+      /* M: */ calc(100 * var(--vh) - var(--backdrop-display-height) * var(--backdrop-scale-2)),
+      /* Y: */ calc(var(--motif-display-center-y) * var(--backdrop-scale-2) * -1 + 50 * var(--vh))
     )
   );
 
-  --backdrop-positioner-min-ar-transform: translateY(var(--backdrop-translate-y));
-  --backdrop-positioner-min-ar-width: calc(100 * var(--vw));
+  --backdrop-translate-x-2: min(
+    0px,
+    max(
+      /* M: */ calc(100 * var(--vw) - var(--backdrop-display-width-2) * var(--backdrop-scale-2)),
+      /* Y: */ calc(var(--motif-display-center-x-2) * var(--backdrop-scale-2) * -1 + 50 * var(--vw))
+    )
+  );
+
+  --backdrop-positioner-min-ar-transform: translate(var(--backdrop-translate-x-2),
+                                                    var(--backdrop-translate-y))
+                                          scale(var(--backdrop-scale-2));
+  --backdrop-positioner-min-ar-width: var(--backdrop-display-width-2);
   --backdrop-positioner-min-ar-height: var(--backdrop-display-height);
 
   /*

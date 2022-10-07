@@ -1,6 +1,8 @@
 .wrapper {
   position: relative;
-  transform: var(--backdrop-positioner-transform);
+  transform-origin: 0 0;
   width: var(--backdrop-positioner-width);
+  transform: var(--backdrop-positioner-transform);
+  transition: transform 1s ease;
   height: var(--backdrop-positioner-height);
 }

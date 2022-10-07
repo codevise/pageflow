@@ -59,7 +59,7 @@ const exitTransitions = {
 }
 
 export function getTransitionNames() {
-  return Object.keys(exitTransitions);
+  return Object.keys(exitTransitions).concat(['panZoom', 'panZoomFade']);
 }
 
 export function getAvailableTransitionNames(section, previousSection) {
@@ -100,6 +100,13 @@ function getTransitionName(previousSection, section) {
   if ((!section.fullHeight || !previousSection.fullHeight) &&
       section.transition.startsWith('fade')) {
     return 'scroll';
+  }
+
+  if (section.transition === 'panZoom') {
+    return 'fadeBg';
+  }
+  else if (section.transition === 'panZoomFade') {
+    return 'fade';
   }
 
   return section.transition;
