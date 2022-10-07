@@ -48,6 +48,7 @@ export function useEntryStructure() {
       section.previousSection = linkedSections[index - 1];
       section.nextSection = linkedSections[index + 1];
     });
+
     return chapters.map(chapter => {
       const chapterSections = linkedSections.filter(
         item => item.chapterId === chapter.id
@@ -57,9 +58,29 @@ export function useEntryStructure() {
         section.chapter = chapter
       );
 
+      const transitionGroups = [];
+      let currentGroup;
+
+      chapterSections.forEach(section => {
+        if (!currentGroup || !section.transition.startsWith('panZoom')) {
+          currentGroup = {sections: []};
+          transitionGroups.push(currentGroup);
+        }
+
+        currentGroup.sections.push(section);
+      });
+
+      transitionGroups.forEach(transitionGroup => {
+        transitionGroup.previousSection =
+          transitionGroup.sections[0].previousSection;
+
+        transitionGroup.nextSection =
+          transitionGroup.sections[transitionGroup.sections.length - 1].nextSection;
+      });
+
       return {
         ...chapter,
-        sections: chapterSections
+        transitionGroups
       };
     });
   }, [chapters, sections]);

@@ -45,8 +45,17 @@ const sectionsSeed = [
   {
     id: 2,
     permaId: 102,
-    chapterId: 2,
+    chapterId: 1,
     position: 2,
+    configuration: {
+      transition: 'panZoom'
+    }
+  },
+  {
+    id: 3,
+    permaId: 103,
+    chapterId: 2,
+    position: 3,
     configuration: {
       transition: 'fade'
     }
@@ -99,32 +108,51 @@ describe('useEntryStructure', () => {
       title: 'Chapter 1',
       chapterSlug: 'chapter-1',
       summary: 'An introductory chapter',
-      sections: [
+      transitionGroups: [
         {
-          permaId: 101,
-          chapter: {permaId: 10},
           previousSection: undefined,
-          nextSection: {permaId: 102},
-          sectionIndex: 0,
-
-          transition: 'scroll'
+          nextSection: {permaId: 103},
+          sections: [
+            {
+              permaId: 101,
+              chapter: {permaId: 10},
+              previousSection: undefined,
+              nextSection: {permaId: 102},
+              sectionIndex: 0,
+              transition: 'scroll'
+            },
+            {
+              permaId: 102,
+              chapter: {permaId: 10},
+              previousSection: {permaId: 101},
+              nextSection: {permaId: 103},
+              sectionIndex: 1,
+              transition: 'panZoom'
+            }
+          ]
         }
-      ],
+      ]
     },
     {
       permaId: 11,
       title: 'Chapter 2',
       chapterSlug: 'chapter-2',
       summary: 'A great chapter',
-      sections: [
+      transitionGroups: [
         {
-          permaId: 102,
-          chapter: {permaId: 11},
-          previousSection: {permaId: 101},
+          previousSection: {permaId: 102},
           nextSection: undefined,
-          sectionIndex: 1,
+          sections: [
+            {
+              permaId: 103,
+              chapter: {permaId: 11},
+              previousSection: {permaId: 102},
+              nextSection: undefined,
+              sectionIndex: 2,
 
-          transition: 'fade'
+              transition: 'fade'
+            }
+          ]
         }
       ]
     }
@@ -196,6 +224,17 @@ describe('useSectionsWithChapter', () => {
       {
         permaId: 102,
         sectionIndex: 1,
+        chapter: {
+          permaId: 10,
+          chapterSlug: 'chapter-1',
+          title: 'Chapter 1',
+          summary: 'An introductory chapter'
+        },
+        transition: 'panZoom'
+      },
+      {
+        permaId: 103,
+        sectionIndex: 2,
         chapter: {
           permaId: 11,
           chapterSlug: 'chapter-2',
