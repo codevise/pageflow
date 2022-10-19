@@ -6,6 +6,8 @@ import {
   useChapters,
   useCurrentChapter,
   useOnUnmuteMedia,
+  usePhonePlatform,
+  useShareProviders,
   utils
 } from 'pageflow-scrolled/frontend';
 
@@ -26,6 +28,7 @@ export function DefaultNavigation({configuration}) {
   const [readingProgress, setReadingProgress] = useState(0);
   const chapters = useChapters();
   const currentChapter = useCurrentChapter();
+  const shareProviders = useShareProviders({isPhonePlatform: usePhonePlatform()});
 
   useScrollPosition(
     ({prevPos, currPos}) => {
@@ -105,6 +108,9 @@ export function DefaultNavigation({configuration}) {
     );
   }
 
+  const hideSharingButton = configuration.hideSharingButton ||
+                            !shareProviders.length;
+
   return (
     <header className={classNames(styles.navigationBar, {
       [styles.navigationBarExpanded]: navExpanded || !mobileNavHidden,
@@ -121,8 +127,8 @@ export function DefaultNavigation({configuration}) {
 
         <div className={classNames(styles.contextIcons)}>
           {!configuration.hideToggleMuteButton && <ToggleMuteButton />}
-          <LegalInfoMenu tooltipOffset={configuration.hideSharingButton ? -40 : 0} />
-          {!configuration.hideSharingButton && <SharingMenu />}
+          <LegalInfoMenu tooltipOffset={hideSharingButton ? -40 : 0} />
+          {!hideSharingButton && <SharingMenu shareProviders={shareProviders} />}
         </div>
       </div>
 
