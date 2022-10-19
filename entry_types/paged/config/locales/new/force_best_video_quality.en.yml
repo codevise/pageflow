@@ -2,3 +2,5 @@ en:
   pageflow:
     force_best_video_quality:
       feature_name: Force best video quality
+    force_fullhd_video_quality:
+      feature_name: Force FullHD video quality
