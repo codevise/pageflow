@@ -123,7 +123,8 @@ export default function({
                   sources={sources(this.props.file,
                                    this.props.quality,
                                    {hasHighBandwidth: this.props.hasHighBandwidth,
-                                    forceBestQuality: this.props.forceBestQuality})}
+                                    forceBestQuality: this.props.forceBestQuality,
+                                    forceFullhdQuality: this.props.forceFullhdQuality})}
                   tracks={textTracksFromFiles(this.props.textTracks.files,
                                               this.props.textTracksEnabled)}
                   poster={poster(this.props.file, this.props.posterImageFile)}
@@ -163,6 +164,7 @@ export default function({
       hasNativeVideoPlayer: has('native video player'),
       hasHighBandwidth: has('high bandwidth'),
       forceBestQuality: isFeatureEnabled('force_best_video_quality'),
+      forceFullhdQuality: isFeatureEnabled('force_fullhd_video_quality'),
       textTrackPosition
     }),
     {

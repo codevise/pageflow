@@ -1,5 +1,5 @@
 export default function(videoFile, quality, {
-  hasHighBandwidth, forceBestQuality
+  hasHighBandwidth, forceBestQuality, forceFullhdQuality
 } = {}) {
   quality = quality || 'auto';
 
@@ -7,6 +7,12 @@ export default function(videoFile, quality, {
     return [{
       type: 'video/mp4',
       src: videoFile.urls['4k'] || videoFile.urls.fullhd || videoFile.urls.high
+    }];
+  }
+  if (forceFullhdQuality) {
+    return [{
+      type: 'video/mp4',
+      src: videoFile.urls.fullhd || videoFile.urls.high
     }];
   }
   else if (quality == 'auto') {
