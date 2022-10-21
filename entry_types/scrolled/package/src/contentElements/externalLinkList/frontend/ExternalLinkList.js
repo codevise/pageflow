@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import {useContentElementLifecycle, useDarkBackground} from 'pageflow-scrolled/frontend';
 import {ExternalLink} from './ExternalLink';
 import styles from './ExternalLinkList.module.css';
@@ -9,7 +10,11 @@ export function ExternalLinkList(props) {
   const darkBackground = useDarkBackground();
 
   return (
-    <div className={styles.ext_links_container}>
+    <div className={classNames(
+      styles.ext_links_container,
+      props.configuration.variant &&
+      `scope-externalLinkList-${props.configuration.variant}`
+    )}>
       {linkList.map((link, index) =>
         <ExternalLink {...link} key={link.id}
                       invert={!darkBackground}

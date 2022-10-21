@@ -8,6 +8,7 @@ import I18n from 'i18n-js';
 
 export const SidebarListView = Marionette.Layout.extend({
   template: (data) => `
+    <label>Links</label>
     <div class='${styles.linksContainer}'></div>
     <button class="${buttonStyles.addButton}">
       ${I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.add')}

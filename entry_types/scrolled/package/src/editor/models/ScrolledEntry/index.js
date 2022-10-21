@@ -107,6 +107,30 @@ export const ScrolledEntry = Entry.extend({
     return [values, texts]
   },
 
+  getContentElementVariants({contentElement}) {
+    const scopeNames = Object.keys(
+      this.scrolledSeed.config.theme.options.properties || {}
+    );
+
+    const scopeNamePrefix = `${contentElement.get('typeName')}-`;
+
+    const matchingScopeNames = scopeNames.filter(
+      name => name.indexOf(scopeNamePrefix) === 0
+    );
+    const values = matchingScopeNames.map(
+      name => name.replace(scopeNamePrefix, '')
+    );
+    const texts = matchingScopeNames.map(name =>
+      I18n.t(
+        `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
+        `.content_element_variants.${name}`,
+        {defaultValue: I18n.t(`pageflow_scrolled.editor.content_element_variants.${name}`)}
+      )
+    );
+
+    return [values, texts]
+  },
+
   supportsSectionWidths() {
     const theme = this.scrolledSeed.config.theme;
 

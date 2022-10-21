@@ -51,3 +51,26 @@ ConfigurationEditorTabView.groups.define(
     }
   }
 );
+
+ConfigurationEditorTabView.groups.define(
+  'ContentElementVariant',
+  function({entry}) {
+    const [variants, texts] = entry.getContentElementVariants({
+      contentElement: this.model.parent
+    });
+
+    if (variants.length) {
+      this.input('variant', SelectInputView, {
+        attributeTranslationKeyPrefixes: [
+          'pageflow_scrolled.editor.common_content_element_attributes'
+        ],
+        includeBlank: true,
+        blankTranslationKey: 'pageflow_scrolled.editor.' +
+                             'common_content_element_attributes.' +
+                             'variant.blank',
+        values: variants,
+        texts,
+      });
+    }
+  }
+);
