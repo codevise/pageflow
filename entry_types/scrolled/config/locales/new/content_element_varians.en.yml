@@ -1,0 +1,7 @@
+en:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        variant:
+          label: "Variant"
+          blank: "(Default)"

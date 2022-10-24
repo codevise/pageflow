@@ -22,6 +22,8 @@ editor.contentElementTypes.register('externalLinkList', {
 
   configurationEditor({entry}) {
     this.tab('general', function() {
+      this.group('ContentElementVariant', {entry});
+
       this.view(SidebarListView, {
         contentElement: this.model.parent,
         collection: ExternalLinkCollection.forContentElement(this.model.parent, entry)
