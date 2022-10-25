@@ -15,7 +15,7 @@
   max-height: var(--zero-if-two-column, 0);
 }
 
-.gradient {
+.gradient .shadow {
   max-height: none;
 }
 
