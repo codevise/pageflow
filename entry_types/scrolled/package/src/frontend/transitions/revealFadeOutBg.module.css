@@ -20,10 +20,9 @@
 }
 
 .boxShadow {
-  transition: opacity 1s ease, visibility 1s;
+  transition: opacity 1s ease;
 }
 
 .boxShadow-above {
   opacity: 0;
-  visibility: hidden;
 }

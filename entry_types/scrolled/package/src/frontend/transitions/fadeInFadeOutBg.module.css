@@ -13,15 +13,20 @@
 }
 
 .backdrop .backdropInner,
-.boxShadow,
+.boxShadow {
+  transition: opacity fade-duration ease;
+}
+
+.backdrop-below .backdropInner,
+.boxShadow-above {
+  opacity: 0;
+}
+
 .foreground {
   transition: opacity fade-duration ease, visibility fade-duration;
 }
 
-.backdrop-below .backdropInner,
-.boxShadow-above,
 .foreground-below {
   opacity: 0;
   visibility: hidden;
 }
-
