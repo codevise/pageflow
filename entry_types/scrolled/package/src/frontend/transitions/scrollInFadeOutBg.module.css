@@ -7,10 +7,9 @@
 }
 
 .boxShadow {
-  transition: opacity fade-duration ease, visibility fade-duration;
+  transition: opacity fade-duration ease;
 }
 
 .boxShadow-above {
   opacity: 0;
-  visibility: hidden;
 }

@@ -13,10 +13,9 @@
 }
 
 .backdrop {
-  transition: opacity fade-duration ease, visibility fade-duration;
+  transition: opacity fade-duration ease;
 }
 
 .backdrop-below {
   opacity: 0;
-  visibility: hidden;
 }

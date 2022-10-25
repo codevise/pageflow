@@ -14,11 +14,10 @@
 
 .boxShadow,
 .backdrop .backdropInner {
-  transition: opacity fade-duration ease, visibility fade-duration;
+  transition: opacity fade-duration ease;
 }
 
 .boxShadow-above,
 .backdrop-below .backdropInner {
   opacity: 0;
-  visibility: hidden;
 }

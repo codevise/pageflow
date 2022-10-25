@@ -12,12 +12,18 @@
   width: 100%;
 }
 
-.backdrop,
+.backdrop {
+  transition: opacity fade-duration ease;
+}
+
+.backdrop-below {
+  opacity: 0;
+}
+
 .foreground {
   transition: opacity fade-duration ease, visibility fade-duration;
 }
 
-.backdrop-below,
 .foreground-below {
   opacity: 0;
   visibility: hidden;
