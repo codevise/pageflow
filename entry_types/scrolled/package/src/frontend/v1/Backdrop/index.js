@@ -14,7 +14,7 @@ export function Backdrop(props) {
 
   return (
     <div className={classNames(styles.Backdrop,
-                               {[styles.noCompositionLayer]: !shouldLoad},
+                               {[styles.noCompositionLayer]: !shouldLoad && !props.eagerLoad},
                                props.transitionStyles.backdrop,
                                props.transitionStyles[`backdrop-${props.state}`])}>
       <div className={props.transitionStyles.backdropInner}>

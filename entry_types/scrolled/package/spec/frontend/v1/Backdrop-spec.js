@@ -5,6 +5,7 @@ import {renderInEntryWithSectionLifecycle} from 'support';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
 import {Backdrop} from 'frontend/v1/Backdrop';
+import styles from 'frontend/Backdrop.module.css';
 
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 jest.mock('frontend/usePortraitOrientation')
@@ -392,5 +393,34 @@ describe('Backdrop', () => {
         container.querySelector('[style*="filter"]').style.filter
       ).toEqual('blur(10px)');
     });
+  });
+
+  it('hides element to unload compositor layer by default', () => {
+    const {container} =
+      renderInEntryWithSectionLifecycle(
+        <Backdrop />
+      );
+
+    expect(container.querySelector(`.${styles.noCompositionLayer}`)).not.toBeNull()
+  });
+
+  it('makes element visible when near viewport', () => {
+    const {container, simulateScrollPosition} =
+      renderInEntryWithSectionLifecycle(
+        <Backdrop />
+      );
+
+    simulateScrollPosition('near viewport');
+
+    expect(container.querySelector(`.${styles.noCompositionLayer}`)).toBeNull()
+  });
+
+  it('makes element visible when eagerLoad prop is set', () => {
+    const {container} =
+      renderInEntryWithSectionLifecycle(
+        <Backdrop eagerLoad={true} />
+      );
+
+    expect(container.querySelector(`.${styles.noCompositionLayer}`)).toBeNull()
   });
 });

@@ -11,5 +11,6 @@
 }
 
 .boxShadow-above {
-  opacity: 0;
+  /* Win against inline style on GradientBox */
+  opacity: 0 !important;
 }
