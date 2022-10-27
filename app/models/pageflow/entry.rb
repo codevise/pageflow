@@ -5,6 +5,7 @@ module Pageflow
 
     include FeatureTarget
     include EntryPublicationStates
+    include Permalinkable
     include SerializationBlacklist
 
     extend FriendlyId

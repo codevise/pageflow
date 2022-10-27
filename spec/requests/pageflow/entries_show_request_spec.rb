@@ -62,6 +62,47 @@ module Pageflow
         expect(response.body).to include('some-entry published rendered by entry type frontend app')
       end
 
+      it 'supports finding published entry based on permalink' do
+        theming = create(:theming, cname: 'my.example.com')
+        create(
+          :entry,
+          :published,
+          title: 'some-entry',
+          type_name: 'test',
+          theming: theming,
+          permalink_attributes: {
+            slug: 'custom-slug'
+          }
+        )
+
+        get('http://my.example.com/custom-slug')
+
+        expect(response.status).to eq(200)
+        expect(response.body)
+          .to include('some-entry published rendered by entry type frontend app')
+      end
+
+      it 'supports finding published entry based on permalink with directory' do
+        theming = create(:theming, cname: 'my.example.com')
+        create(
+          :entry,
+          :published,
+          title: 'some-entry',
+          type_name: 'test',
+          theming: theming,
+          permalink_attributes: {
+            slug: 'custom-slug',
+            directory_path: 'en/'
+          }
+        )
+
+        get('http://my.example.com/en/custom-slug')
+
+        expect(response.status).to eq(200)
+        expect(response.body)
+          .to include('some-entry published rendered by entry type frontend app')
+      end
+
       it 'responds with not found for non-published entry' do
         entry = create(:entry, type_name: 'test')
 

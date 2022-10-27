@@ -14,7 +14,7 @@ module Pageflow
     def show
       respond_to do |format|
         format.html do
-          entry = PublishedEntry.find(params[:id], entry_request_scope)
+          entry = find_by_permalink || find_by_slug
 
           return if redirect_according_to_entry_redirect(entry)
           return if redirect_according_to_public_https_mode
@@ -53,6 +53,18 @@ module Pageflow
     end
 
     protected
+
+    def find_by_permalink
+      PublishedEntry.find_by_permalink(
+        directory: params[:directory],
+        slug: params[:id],
+        scope: entry_request_scope
+      )
+    end
+
+    def find_by_slug
+      PublishedEntry.find(params[:id], entry_request_scope)
+    end
 
     def entry_request_scope
       Pageflow.config.public_entry_request_scope.call(Entry, request)
