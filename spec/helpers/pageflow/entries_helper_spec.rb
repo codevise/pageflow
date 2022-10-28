@@ -50,6 +50,19 @@ module Pageflow
         expect(helper.pretty_entry_url(entry)).to eq('http://my.example.com/test')
       end
 
+      it 'uses permalink if present' do
+        theming = create(:theming,
+                         cname: 'my.example.com')
+        entry = create(:published_entry,
+                       theming: theming,
+                       permalink_attributes: {
+                         slug: 'custom',
+                         directory_path: 'de/'
+                       })
+
+        expect(helper.pretty_entry_url(entry)).to eq('http://my.example.com/de/custom')
+      end
+
       it 'uses theming canonical entry url prefix if present' do
         theming = create(:theming,
                          canonical_entry_url_prefix: 'https://example.com/blog/')
