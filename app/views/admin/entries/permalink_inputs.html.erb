@@ -1,0 +1,7 @@
+<%= fields_for(:entry, @entry, builder: ActiveAdmin::FormBuilder) do |form| %>
+  <%= form.fields_for(:permalink, @entry.permalink || Pageflow::Permalink.new) do |permalink| %>
+    <%= render('admin/entries/permalink_inputs',
+               entry: @entry,
+               form: permalink) %>
+  <% end %>
+<% end %>

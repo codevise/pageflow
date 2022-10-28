@@ -88,6 +88,8 @@ jQuery(function($) {
 
   $('.admin_entries form.pageflow_entry').each(function() {
     var accountSelect = $('#entry_account_id', this);
+    var themingSelect = $('#entry_theming_id', this);
+    var titleInput = $('#entry_title', this);
 
     function updateEntryTypeInput() {
       var selectedAccountId = accountSelect.val();
@@ -100,6 +102,44 @@ jQuery(function($) {
        });
     }
 
+    function updatePermalinkInput() {
+      fetchPermalinkInput(function(response) {
+        $('#entry_permalink_attributes_permalink_input').replaceWith(response);
+      });
+    }
+
+    function updateSlugPlaceholder() {
+      fetchPermalinkInput(function(response) {
+        $('#entry_permalink_attributes_permalink_input input[placeholder]')
+          .attr('placeholder',
+                $(response).find('input[placeholder]').attr('placeholder'));
+      });
+    }
+
+    function fetchPermalinkInput(callback) {
+      $.get('/admin/entries/permalink_inputs' +
+            '?entry[account_id]=' + accountSelect.val() +
+                   (themingSelect.val() ? '&entry[theming_id]=' + themingSelect.val() : '') +
+            '&entry[title]=' + encodeURIComponent(titleInput.val()))
+       .done(callback);
+    }
+
     accountSelect.on('change', updateEntryTypeInput);
+
+    accountSelect.on('change', updatePermalinkInput);
+    themingSelect.on('change', updatePermalinkInput);
+
+    titleInput.on('change keyup', debounce(updateSlugPlaceholder, 300));
   });
 });
+
+function debounce(func, timeout){
+  var timer;
+
+  return function() {
+    var args = arguments;
+
+    clearTimeout(timer);
+    timer = setTimeout(function() { func.apply(this, args); }, timeout);
+  };
+}

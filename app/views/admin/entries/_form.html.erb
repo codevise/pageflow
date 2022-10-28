@@ -27,6 +27,12 @@
                   include_blank: false) %>
     <% end %>
 
+    <%= f.fields_for(:permalink, @entry.permalink || Pageflow::Permalink.new) do |permalink| %>
+      <%= render('admin/entries/permalink_inputs',
+                 entry: resource,
+                 form: permalink) %>
+    <% end %>
+
     <% if resource.new_record? %>
       <%= render('pageflow/admin/entries/entry_type_name_input',
                  form: f,
