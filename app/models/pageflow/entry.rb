@@ -127,6 +127,10 @@ module Pageflow
       [:title, [:title, :id]]
     end
 
+    def default_permalink_slug
+      title.to_s.parameterize
+    end
+
     def self.ransackable_attributes(_auth_object)
       %w[title type_name created_at edited_at first_published_at]
     end

@@ -4,6 +4,8 @@ module Pageflow
     extend FriendlyId
     friendly_id :slug_candidates, use: :scoped, scope: :directory
 
+    before_validation :set_default_slug
+
     has_one :entry
 
     belongs_to :directory, class_name: 'PermalinkDirectory'
@@ -15,6 +17,10 @@ module Pageflow
     validate :belongs_to_same_theming_as_entry
 
     private
+
+    def set_default_slug
+      self.slug = entry.default_permalink_slug if slug == ''
+    end
 
     def slug_candidates
       [entry.title, "#{entry.title}-#{entry.id}"]

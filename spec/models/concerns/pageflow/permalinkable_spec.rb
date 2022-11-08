@@ -3,7 +3,12 @@ require 'spec_helper'
 module Pageflow
   describe Permalinkable do
     it 'accepts permalink attributes on create' do
-      entry = create(:entry, permalink_attributes: {slug: 'some-slug'})
+      entry = build(:entry)
+      permalink_directory = create(:permalink_directory, theming: entry.theming)
+      entry.update!(permalink_attributes: {
+                      slug: 'some-slug',
+                      directory: permalink_directory
+                    })
 
       expect(entry.permalink).to have_attributes(slug: 'some-slug')
     end
@@ -115,11 +120,39 @@ module Pageflow
       expect(entry).to have(1).error_on('permalink.slug')
     end
 
-    it 'is invalid if slug is empty' do
-      entry = build(
+    it 'uses default slug based on entry title if empty string' do
+      entry = create(
         :entry,
+        title: 'My Example',
         permalink_attributes: {
           slug: ''
+        }
+      )
+
+      expect(entry.permalink).to have_attributes(slug: 'my-example')
+    end
+
+    it 'does not enforce uniqueness when generating default slug' do
+      account = create(:account)
+      permalink_directory = create(
+        :permalink_directory,
+        theming: account.default_theming
+      )
+      create(
+        :entry,
+        account: account,
+        permalink_attributes: {
+          slug: 'my-example',
+          directory: permalink_directory
+        }
+      )
+      entry = build(
+        :entry,
+        account: account,
+        title: 'My Example',
+        permalink_attributes: {
+          slug: '',
+          directory: permalink_directory
         }
       )
 
