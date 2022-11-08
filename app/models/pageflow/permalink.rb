@@ -1,6 +1,9 @@
 module Pageflow
   # @api private
   class Permalink < ApplicationRecord
+    extend FriendlyId
+    friendly_id :slug_candidates, use: :scoped, scope: :directory
+
     has_one :entry
 
     belongs_to :directory, class_name: 'PermalinkDirectory'
@@ -12,6 +15,14 @@ module Pageflow
     validate :belongs_to_same_theming_as_entry
 
     private
+
+    def slug_candidates
+      [entry.title, "#{entry.title}-#{entry.id}"]
+    end
+
+    def should_generate_new_friendly_id?
+      slug.nil?
+    end
 
     def belongs_to_same_theming_as_entry
       return if !directory || !entry || entry.theming_id == directory.theming_id

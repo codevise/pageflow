@@ -50,6 +50,77 @@ module Pageflow
 
         expect(duplicate.feature_state('fancy_page_type')).to eq(true)
       end
+
+      it 'creates a permalink in same directory if original has one' do
+        entry = create(
+          :entry,
+          title: 'My entry',
+          permalink_attributes: {
+            slug: 'slug',
+            directory_path: 'en/'
+          }
+        )
+
+        duplicate = EntryDuplicate.of(entry).create!
+
+        expect(duplicate.permalink)
+          .to have_attributes(slug: 'copy-of-my-entry',
+                              directory: entry.permalink.directory)
+      end
+
+      it 'makes permalink slugs unique in directory' do
+        account = create(:account)
+        permalink_directory = create(
+          :permalink_directory,
+          theming: account.default_theming
+        )
+        create(
+          :entry,
+          account: account,
+          permalink_attributes: {
+            slug: 'copy-of-my-entry',
+            directory: permalink_directory
+          }
+        )
+        entry = create(
+          :entry,
+          account: account,
+          title: 'My entry',
+          permalink_attributes: {
+            slug: 'slug',
+            directory: permalink_directory
+          }
+        )
+
+        duplicate = EntryDuplicate.of(entry).create!
+
+        expect(duplicate.permalink)
+          .to have_attributes(slug: "copy-of-my-entry-#{duplicate.id}",
+                              directory: permalink_directory)
+      end
+
+      it 'only keeps permalink unique in directory' do
+        create(
+          :entry,
+          permalink_attributes: {
+            slug: 'copy-of-my-entry'
+          }
+        )
+        entry = create(
+          :entry,
+          title: 'My entry',
+          permalink_attributes: {
+            slug: 'slug',
+            directory_path: 'en/'
+          }
+        )
+
+        duplicate = EntryDuplicate.of(entry).create!
+
+        expect(duplicate.permalink)
+          .to have_attributes(slug: 'copy-of-my-entry',
+                              directory: entry.permalink.directory)
+      end
     end
   end
 end
