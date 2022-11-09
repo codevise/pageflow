@@ -5,6 +5,7 @@ module Pageflow
 
     include FeatureTarget
     include EntryPublicationStates
+    include Permalinkable
     include SerializationBlacklist
 
     extend FriendlyId
@@ -124,6 +125,10 @@ module Pageflow
 
     def slug_candidates
       [:title, [:title, :id]]
+    end
+
+    def default_permalink_slug
+      title.to_s.parameterize
     end
 
     def self.ransackable_attributes(_auth_object)

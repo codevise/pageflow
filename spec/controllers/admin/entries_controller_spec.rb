@@ -484,6 +484,38 @@ describe Admin::EntriesController do
       expect(response.body)
         .to have_selector('option[value="test"][selected]')
     end
+
+    it 'displays permalink inputs if theming has permalink directories' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      permalink_directory = create(
+        :permalink_directory,
+        path: 'de/',
+        theming: account.default_theming
+      )
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body)
+        .to have_selector('select[name="entry[permalink_attributes][directory_id]"] '\
+                          "option[value='#{permalink_directory.id}']")
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]')
+    end
+
+    it 'does not display permalink inputs if theming has no permalink directories' do
+      user = create(:user)
+      create(:account, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body)
+        .not_to have_selector('select[name="entry[permalink_attributes][directory_id]"]')
+      expect(response.body)
+        .not_to have_selector('input[name="entry[permalink_attributes][slug]"]')
+    end
   end
 
   describe '#create' do
@@ -603,6 +635,59 @@ describe Admin::EntriesController do
 
       expect(Pageflow::Entry.last.type_name).to eq('paged')
     end
+
+    it 'creates permalink when theming has permalink directories' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      permalink_directory = create(
+        :permalink_directory,
+        theming: account.default_theming
+      )
+
+      sign_in(user, scope: :user)
+      post(
+        :create,
+        params: {
+          entry: {
+            title: 'some title2',
+            permalink_attributes: {
+              slug: 'custom-slug',
+              directory_id: permalink_directory
+            }
+          }
+        }
+      )
+
+      expect(Pageflow::Entry.last.permalink).to have_attributes(slug: 'custom-slug')
+    end
+
+    it 'renders validation error if permalink directory belongs to different theming' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      create(
+        :permalink_directory,
+        theming: account.default_theming
+      )
+      permalink_directory_of_other_account = create(
+        :permalink_directory
+      )
+
+      sign_in(user, scope: :user)
+      post(
+        :create,
+        params: {
+          entry: {
+            title: 'some title2',
+            permalink_attributes: {
+              slug: 'custom-slug',
+              directory_id: permalink_directory_of_other_account
+            }
+          }
+        }
+      )
+
+      expect(response.body).to have_selector('.pageflow_permalink.error')
+    end
   end
 
   describe '#edit' do
@@ -665,6 +750,66 @@ describe Admin::EntriesController do
       get :edit, params: {id: entry}
 
       expect(response.body).not_to have_selector('[name="entry[custom_field]"]')
+    end
+
+    it 'displays permalink inputs if permalink is present' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(
+        :entry,
+        account: account,
+        permalink_attributes: {
+          directory_path: 'de/',
+          slug: 'my-slug'
+        }
+      )
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body)
+        .to have_selector('select[name="entry[permalink_attributes][directory_id]"] '\
+                          "option[selected][value='#{entry.permalink.directory.id}']")
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
+                          '[value=my-slug]')
+    end
+
+    it 'displays permalink inputs if theming has permalink directories' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      permalink_directory = create(
+        :permalink_directory,
+        path: 'de/',
+        theming: account.default_theming
+      )
+      entry = create(
+        :entry,
+        account: account
+      )
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body)
+        .to have_selector('select[name="entry[permalink_attributes][directory_id]"] '\
+                          "option[value='#{permalink_directory.id}']")
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]')
+    end
+
+    it 'does not display permalink inputs if theming has no permalink directories' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account: account)
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body)
+        .not_to have_selector('select[name="entry[permalink_attributes][directory_id]"]')
+      expect(response.body)
+        .not_to have_selector('input[name="entry[permalink_attributes][slug]"]')
     end
   end
 
@@ -1011,6 +1156,36 @@ describe Admin::EntriesController do
       expect(entry.reload.custom_field).to eq(nil)
     end
 
+    it 'allows account publisher to update permalink' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      permalink_directory = create(
+        :permalink_directory,
+        theming: account.default_theming
+      )
+      entry = create(
+        :entry,
+        account: account,
+        permalink_attributes: {slug: 'old-slug'}
+      )
+
+      sign_in(user, scope: :user)
+      patch(
+        :update,
+        params: {
+          id: entry,
+          entry: {
+            permalink_attributes: {
+              slug: 'new-slug',
+              directory_id: permalink_directory
+            }
+          }
+        }
+      )
+
+      expect(entry.permalink.reload).to have_attributes(slug: 'new-slug')
+    end
+
     it 'redirects back to tab' do
       entry = create(:entry)
 
@@ -1214,6 +1389,103 @@ describe Admin::EntriesController do
 
       sign_in(create(:user, :editor, on: account))
       get(:entry_type_name_input, params: {account_id: account})
+
+      expect(response.status).to eq(403)
+    end
+  end
+
+  describe 'get #permalinks_inputs' do
+    render_views
+
+    it 'is allowed for account publisher' do
+      account = create(:account)
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs, params: {entry: {account_id: account}})
+
+      expect(response.status).to eq(200)
+    end
+
+    it 'is forbidden for other account' do
+      account = create(:account)
+      other_account = create(:account)
+
+      sign_in(create(:user, :manager, on: account))
+      get(:permalink_inputs, params: {entry: {account_id: other_account}})
+
+      expect(response.status).to eq(403)
+    end
+
+    it 'renders inputs without layout if theming has permalink directories' do
+      account = create(:account)
+      create(:permalink_directory, theming: account.default_theming)
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs, params: {entry: {account_id: account}})
+
+      expect(response.body).not_to have_selector('body.active_admin')
+      expect(response.body)
+        .to have_selector('#entry_permalink_attributes_permalink_input')
+      expect(response.body)
+        .to have_selector('select[name="entry[permalink_attributes][directory_id]"]')
+    end
+
+    it 'allows passing theming' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_account = create(:account, with_publisher: user)
+      create(:permalink_directory, theming: other_account.default_theming)
+
+      sign_in(user)
+      get(:permalink_inputs,
+          params: {
+            entry: {
+              account_id: account,
+              theming_id: other_account.default_theming
+            }
+          })
+
+      expect(response.body)
+        .to have_selector('select[name="entry[permalink_attributes][directory_id]"]')
+    end
+
+    it 'prefills slug based on passed title' do
+      account = create(:account)
+      create(:permalink_directory, theming: account.default_theming)
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs,
+          params: {
+            entry: {
+              account_id: account,
+              title: 'Some Title'
+            }
+          })
+
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
+                         '[placeholder="some-title"]')
+    end
+
+    it 'renders hidden permalink field without inputs if no permalink directories' do
+      account = create(:account)
+
+      sign_in(create(:user, :manager, on: account))
+      get(:permalink_inputs, params: {entry: {account_id: account}})
+
+      expect(response.body)
+        .to have_selector('#entry_permalink_attributes_permalink_input',
+                          visible: false)
+      expect(response.body)
+        .not_to have_selector('input[name="entry[permalink_attributes][slug]"]',
+                              visible: false)
+    end
+
+    it 'is forbidden for account editor' do
+      account = create(:account)
+
+      sign_in(create(:user, :editor, on: account))
+      get(:permalink_inputs, params: {entry: {account_id: account}})
 
       expect(response.status).to eq(403)
     end

@@ -1,0 +1,65 @@
+$pageflow-permalink-input-padding: 8px 10px 7px !default;
+$pageflow-permalink-input-line-height: 1.15 !default;
+$pageflow-permalink-input-border-color: #c9d0d6 !default;
+$pageflow-permalink-input-border-radius: 3px !default;
+$pageflow-permalink-input-focus-border-color: #99a2aa !default;
+$pageflow-permalink-input-focus-box-shadow: 0 0 4px #99a2aa !default;
+$pageflow-permalink-input-background-color: #fff !default;
+$pageflow-permalink-input-min-width: 30% !default;
+
+$pageflow-permalink-input-base-url-background-color: #f4f4f4 !default;
+$pageflow-permalink-input-base-url-color: null !default;
+
+$pageflow-permalink-input-directory-padding-left: 7px !default;
+$pageflow-permalink-input-directory-padding-right: 7px !default;
+$pageflow-permalink-input-directory-margin-h: 3px !default;
+$pageflow-permalink-input-directory-background-position: null !default;
+
+.pageflow_permalink.input {
+  .permalink {
+    display: inline-flex;
+    border: 1px solid $pageflow-permalink-input-border-color;
+    border-radius: $pageflow-permalink-input-border-radius;
+    background-color: $pageflow-permalink-input-background-color;
+    box-sizing: border-box;
+    min-width: $pageflow-permalink-input-min-width;
+    overflow: hidden;
+    width: 100%;
+
+    &:focus-within {
+      border-color: $pageflow-permalink-input-focus-border-color;
+      box-shadow: $pageflow-permalink-input-focus-box-shadow;
+    }
+  }
+
+  .permalink_base_url {
+    padding: $pageflow-permalink-input-padding;
+    line-height: $pageflow-permalink-input-line-height;
+    background-color: $pageflow-permalink-input-base-url-background-color;
+    color: $pageflow-permalink-input-base-url-color;
+  }
+
+  select,
+  input {
+    width: auto;
+    border: 0;
+
+    &:focus {
+      border: 0;
+      box-shadow: none;
+    }
+  }
+
+  select {
+    background-color: $pageflow-permalink-input-background-color;
+    background-position: $pageflow-permalink-input-directory-background-position;
+    padding-left: $pageflow-permalink-input-directory-padding-left;
+    padding-right: $pageflow-permalink-input-directory-padding-right;
+    margin: 0 $pageflow-permalink-input-directory-margin-h;
+  }
+
+  input {
+    padding-left: 0;
+    flex: 1;
+  }
+}

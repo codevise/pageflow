@@ -244,5 +244,127 @@ module Pageflow
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    describe '.find_by_permalink' do
+      it 'finds entry based on permalink slug in root directory' do
+        entry = create(
+          :entry,
+          :published,
+          permalink_attributes: {
+            slug: 'permalink-slug'
+          }
+        )
+
+        result = PublishedEntry.find_by_permalink(
+          slug: 'permalink-slug', scope: Entry
+        )
+
+        expect(result.id).to eq(entry.id)
+      end
+
+      it 'finds entry based on permalink slug and directory' do
+        entry = create(
+          :entry,
+          :published,
+          permalink_attributes: {
+            slug: 'permalink-slug',
+            directory_path: 'en/'
+          }
+        )
+
+        result = PublishedEntry.find_by_permalink(
+          directory: 'en/', slug: 'permalink-slug', scope: Entry
+        )
+
+        expect(result&.to_model).to eq(entry)
+      end
+
+      it 'can tell entries with same slug in different directories apart' do
+        root_entry = create(
+          :entry,
+          :published,
+          permalink_attributes: {
+            slug: 'permalink-slug',
+            directory_path: ''
+          }
+        )
+        directory_entry = create(
+          :entry,
+          :published,
+          permalink_attributes: {
+            slug: 'permalink-slug',
+            directory_path: 'en/'
+          }
+        )
+
+        root_result = PublishedEntry.find_by_permalink(
+          slug: 'permalink-slug', scope: Entry
+        )
+        directory_result = PublishedEntry.find_by_permalink(
+          directory: 'en/', slug: 'permalink-slug', scope: Entry
+        )
+
+        expect(root_result&.to_model).to eq(root_entry)
+        expect(directory_result&.to_model).to eq(directory_entry)
+      end
+
+      it 'returns nil if not found' do
+        result = PublishedEntry.find_by_permalink(
+          slug: 'not-there', scope: Entry
+        )
+
+        expect(result).to be_nil
+      end
+
+      it 'finds entry in scope' do
+        account = create(:account)
+        entry = create(
+          :entry,
+          :published,
+          account: account,
+          permalink_attributes: {
+            slug: 'permalink-slug'
+          }
+        )
+
+        result = PublishedEntry.find_by_permalink(
+          slug: 'permalink-slug', scope: account.entries
+        )
+
+        expect(result.id).to eq(entry.id)
+      end
+
+      it 'does not find entries not in scope' do
+        account = create(:account)
+        create(
+          :entry,
+          :published,
+          permalink_attributes: {
+            slug: 'permalink-slug'
+          }
+        )
+
+        result = PublishedEntry.find_by_permalink(
+          slug: 'permalink-slug', scope: account.entries
+        )
+
+        expect(result).to be_nil
+      end
+
+      it 'does not find not published entries' do
+        create(
+          :entry,
+          permalink_attributes: {
+            slug: 'permalink-slug'
+          }
+        )
+
+        result = PublishedEntry.find_by_permalink(
+          slug: 'permalink-slug', scope: Entry
+        )
+
+        expect(result).to be_nil
+      end
+    end
   end
 end

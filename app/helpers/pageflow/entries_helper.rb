@@ -36,7 +36,15 @@ module Pageflow
           .reverse_merge(trailing_slash: entry.theming.trailing_slash_in_canonical_urls)
           .reverse_merge(Pageflow.config.theming_url_options(entry.theming) || {})
 
-        routes.short_entry_url(entry.to_model, params)
+        if entry.permalink.present?
+          routes.permalink_url(
+            entry.permalink.directory&.path || '',
+            entry.permalink.slug,
+            params
+          )
+        else
+          routes.short_entry_url(entry.to_model, params)
+        end
       end
 
       def ensure_entry_with_revision(entry)

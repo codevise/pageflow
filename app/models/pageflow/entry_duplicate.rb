@@ -3,6 +3,7 @@ module Pageflow
     def create!
       create_entry
 
+      copy_permalink
       copy_draft
       copy_memberships
 
@@ -19,6 +20,12 @@ module Pageflow
 
     def create_entry
       @new_entry = Entry.create!(new_attributes)
+    end
+
+    def copy_permalink
+      return if original_entry.permalink.blank?
+
+      new_entry.create_permalink!(directory: original_entry.permalink.directory)
     end
 
     def copy_draft

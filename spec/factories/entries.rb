@@ -23,6 +23,8 @@ module Pageflow
         without_feature { nil }
 
         draft_attributes { nil }
+
+        permalink_attributes { nil }
       end
 
       after(:create) do |entry, evaluator|
@@ -50,6 +52,21 @@ module Pageflow
         entry.features_configuration =
           entry.features_configuration.merge(evaluator.with_feature => true,
                                              evaluator.without_feature => false)
+
+        if evaluator.permalink_attributes
+          permalink_directory =
+            evaluator.permalink_attributes[:directory] ||
+            build(
+              :permalink_directory,
+              theming: entry.theming,
+              path: evaluator.permalink_attributes.fetch(:directory_path, '')
+            )
+
+          entry.build_permalink(
+            directory: permalink_directory,
+            slug: evaluator.permalink_attributes.fetch(:slug)
+          )
+        end
       end
 
       trait :published do

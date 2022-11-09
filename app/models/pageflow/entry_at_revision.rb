@@ -16,6 +16,7 @@ module Pageflow
     delegate(:id, :slug,
              :entry_type,
              :account, :theming,
+             :permalink,
              :feature_state, :enabled_feature_names,
              :edit_lock,
              :password_digest,

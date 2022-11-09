@@ -85,14 +85,16 @@ Pageflow::Engine.routes.draw do
     get :stylesheet, on: :member
   end
 
-  get ':id', to: 'entries#show', as: :short_entry
+  # Authentication provider call back
+  get '/auth/:provider/callback', to: 'users/omniauth_callbacks#auth_callback'
+
   get ':id/manifest', to: 'entries#manifest', as: :entry_manifest
   get ':id/embed', to: 'entries#show', defaults: {embed: '1'}, as: :entry_embed
 
-  get '/', to: 'entries#index', as: :public_root
-
   get ':id/pages/:page_index', to: 'entries#page'
 
-  # Authentication provider call back
-  get '/auth/:provider/callback', to: 'users/omniauth_callbacks#auth_callback'
+  get ':id', to: 'entries#show', as: :short_entry
+  get '*directory:id', to: 'entries#show', as: :permalink, constraints: {directory: %r{(.+/)*}}
+
+  get '/', to: 'entries#index', as: :public_root
 end

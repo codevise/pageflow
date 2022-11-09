@@ -5,7 +5,7 @@ module Pageflow
     end
 
     def pretty_theming_url(theming)
-      public_root_url(Pageflow.config.theming_url_options(theming))
+      pageflow.public_root_url(Pageflow.config.theming_url_options(theming))
     end
   end
 end

@@ -151,6 +151,18 @@ module Pageflow
       end
     end
 
+    collection_action :permalink_inputs do
+      @entry = Entry.new(permitted_params[:entry])
+
+      apply_entry_defaults(@entry)
+
+      if authorized?(:create, @entry)
+        render(layout: false)
+      else
+        head :forbidden
+      end
+    end
+
     member_action :duplicate, method: :post do
       entry = Entry.find(params[:id])
       authorize!(:duplicate, entry)
@@ -185,17 +197,18 @@ module Pageflow
       helper FoldersHelper
       helper EntriesHelper
       helper EmbedCodeHelper
+      helper ThemingsHelper
       helper Admin::EntriesHelper
       helper Admin::FeaturesHelper
       helper Admin::FormHelper
       helper Admin::MembershipsHelper
+      helper Admin::PermalinksHelper
       helper Admin::RevisionsHelper
 
       helper_method :account_policy_scope
 
       after_build do |entry|
-        entry.account ||= account_policy_scope.entry_creatable.first || Account.first
-        entry.theming ||= entry.account.default_theming
+        apply_entry_defaults(entry)
 
         if action_name == 'new' &&
            (default_entry_type = Pageflow.config.default_entry_type&.call(entry.account))
@@ -217,7 +230,15 @@ module Pageflow
       end
 
       def scoped_collection
-        result = super.includes(:theming, :account, {memberships: :user}, :published_revision).references(:published_revision)
+        result =
+          super
+          .includes(:theming,
+                    {permalink: :directory},
+                    :account,
+                    {memberships: :user},
+                    :published_revision)
+          .references(:published_revision)
+
         params.key?(:folder_id) ? result.where(folder_id: params[:folder_id]) : result
       end
 
@@ -233,6 +254,11 @@ module Pageflow
 
       private
 
+      def apply_entry_defaults(entry)
+        entry.account ||= account_policy_scope.entry_creatable.first || Account.first
+        entry.theming ||= entry.account.default_theming
+      end
+
       def account_policy_scope
         AccountPolicy::Scope.new(current_user, Account)
       end
@@ -242,7 +268,7 @@ module Pageflow
       end
 
       def permitted_attributes
-        result = [:title, :type_name]
+        result = [:title, :type_name, {permalink_attributes: [:slug, :directory_id]}]
         target = if !params[:id] && current_user.admin?
                    Account.first
                  elsif params[:id]
@@ -289,7 +315,7 @@ module Pageflow
       end
 
       def create_or_new_action?
-        [:create, :new].include?(action_name.to_sym)
+        [:create, :new, :permalink_inputs].include?(action_name.to_sym)
       end
 
       def theming_in_allowed_themings_for?(accounts)
@@ -299,7 +325,7 @@ module Pageflow
 
       def permitted_account_attributes
         if account_params_present? &&
-           (action_name.to_sym == :create || legally_moving_entry_to_other_account)
+           (create_or_new_action? || legally_moving_entry_to_other_account)
           [:account_id]
         else
           []

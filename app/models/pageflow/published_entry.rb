@@ -46,6 +46,15 @@ module Pageflow
       PublishedEntry.new(scope.published.find(id))
     end
 
+    def self.find_by_permalink(directory: nil, slug:, scope:)
+      wrap(
+        scope.published.includes(permalink: :directory).where(
+          pageflow_permalink_directories: {path: directory || ''},
+          pageflow_permalinks: {slug: slug}
+        ).first
+      )
+    end
+
     def cache_key
       [
         self.class.model_name.cache_key,
@@ -71,6 +80,14 @@ module Pageflow
 
     def share_image_file
       PositionedFile.wrap(find_file_by_perma_id(ImageFile, share_image_id), share_image_x, share_image_y)
+    end
+
+    class << self
+      private
+
+      def wrap(entry)
+        entry && new(entry)
+      end
     end
   end
 end

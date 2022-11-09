@@ -1,6 +1,8 @@
 <%= admin_form_for([:admin, resource]) do |f| %>
   <%= f.inputs do %>
-    <%= f.input :title, hint: I18n.t('pageflow.admin.entries.title_hint') %>
+    <%= f.input(:title,
+                hint: @entry.theming.permalink_directories.blank? &&
+                      I18n.t('pageflow.admin.entries.title_hint')) %>
 
     <% if authorized?(:update_account_on, resource) &&
           account_policy_scope.entry_creatable.many? %>
@@ -25,6 +27,12 @@
                     }
                   },
                   include_blank: false) %>
+    <% end %>
+
+    <%= f.fields_for(:permalink, @entry.permalink || Pageflow::Permalink.new) do |permalink| %>
+      <%= render('admin/entries/permalink_inputs',
+                 entry: resource,
+                 form: permalink) %>
     <% end %>
 
     <% if resource.new_record? %>
