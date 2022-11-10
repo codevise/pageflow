@@ -2,6 +2,7 @@ import React, {useState, useCallback} from 'react';
 
 import Chapter from "./Chapter";
 import ScrollToSectionContext from './ScrollToSectionContext';
+import {VhFix} from './VhFix';
 import {useCurrentSectionIndexState} from './useCurrentChapter';
 import {useEntryStructure} from '../entryState';
 import {withInlineEditingDecorator} from './inlineEditing';
@@ -56,15 +57,17 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
 
   return (
     <div className={styles.Content} id='goToContent'>
-      <AtmoProvider>
-        <ScrollToSectionContext.Provider value={scrollToSection}>
-          {renderChapters(entryStructure,
-                          currentSectionIndex,
-                          setCurrentSection,
-                          scrollTargetSectionIndex,
-                          setScrollTargetSectionIndex)}
-        </ScrollToSectionContext.Provider>
-      </AtmoProvider>
+      <VhFix>
+        <AtmoProvider>
+          <ScrollToSectionContext.Provider value={scrollToSection}>
+            {renderChapters(entryStructure,
+                            currentSectionIndex,
+                            setCurrentSection,
+                            scrollTargetSectionIndex,
+                            setScrollTargetSectionIndex)}
+          </ScrollToSectionContext.Provider>
+        </AtmoProvider>
+      </VhFix>
     </div>
   );
 })
