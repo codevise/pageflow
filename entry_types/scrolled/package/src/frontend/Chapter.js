@@ -27,7 +27,7 @@ function renderSections(sections,
 
   return sections.map((section) => {
     return (
-      <EventContextDataProvider key={section.permaId} section={section}>
+      <EventContextDataProvider key={section.permaId} section={section} sectionsCount={sections.length}>
         <Section state={section.sectionIndex > currentSectionIndex ? 'below' : section.sectionIndex < currentSectionIndex ? 'above' : 'active'}
                  isScrollTarget={section.sectionIndex === scrollTargetSectionIndex}
                  onActivate={() => onActivate(section)}

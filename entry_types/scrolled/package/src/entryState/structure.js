@@ -163,7 +163,7 @@ export function useChapters() {
   return useMemo(() => {
     const chapterSlugs = {};
 
-    return chapters.map(chapter => {
+    return chapters.map((chapter, index) => {
       let chapterSlug = chapter.configuration.title;
 
       if (chapterSlug) {
@@ -186,6 +186,7 @@ export function useChapters() {
       return ({
         id: chapter.id,
         permaId: chapter.permaId,
+        index,
         title: chapter.configuration.title,
         summary: chapter.configuration.summary,
         chapterSlug: chapterSlug

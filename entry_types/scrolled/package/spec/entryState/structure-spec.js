@@ -248,12 +248,14 @@ describe('useChapters', () => {
       {
         permaId: 10,
         chapterSlug: 'chapter-1',
+        index: 0,
         title: 'Chapter 1',
         summary: 'An introductory chapter'
       },
       {
         permaId: 11,
         chapterSlug: 'chapter-2',
+        index: 1,
         title: 'Chapter 2',
         summary: 'A great chapter'
       }
