@@ -28,6 +28,10 @@ import {state} from '../state';
       return this.configuration;
     },
 
+    getAnalyticsData: function() {
+      return state.entryData.getPageAnalyticsData(this.getPermaId());
+    },
+
     update: function(configuration) {
       _.extend(this.configuration, configuration.attributes);
       this.pageType.update(this.element, configuration);

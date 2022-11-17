@@ -69,6 +69,20 @@ describe('pageflow.SeedEntryData', function() {
     });
   });
 
+  describe('#getChapterPosition', function() {
+    it('returns index of chapter in chapters list', function() {
+      var entryData = new SeedEntryData({
+        chapters: [
+          {id: 1},
+          {id: 2}
+        ]
+      });
+
+      expect(entryData.getChapterPosition(1)).toBe(0);
+      expect(entryData.getChapterPosition(2)).toBe(1);
+    });
+  });
+
   describe('#getChapterPagePermaIds', function() {
     it('returns perma ids of pages of chapter by chapter id', function() {
       var entryData = new SeedEntryData({

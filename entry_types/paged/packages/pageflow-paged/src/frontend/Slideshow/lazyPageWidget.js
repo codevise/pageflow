@@ -1,5 +1,6 @@
 import jQuery from 'jquery';
 import _ from 'underscore';
+import {state} from '../state';
 
 (function($) {
   var creatingMethods = [
@@ -36,6 +37,10 @@ import _ from 'underscore';
 
     getConfiguration: function() {
       return this.configuration;
+    },
+
+    getAnalyticsData: function() {
+      return state.entryData.getPageAnalyticsData(this.getPermaId());
     },
 
     update: function(configuration) {

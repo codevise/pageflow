@@ -29,6 +29,11 @@ export const SeedEntryData = EntryData.extend({
       return memo;
     }, {});
 
+    this.chapterPositions = _.reduce(options.chapters, function(memo, chapter, index) {
+      memo[chapter.id] = index;
+      return memo;
+    }, {});
+
     this.chapterPagePermaIds = _(options.pages).reduce(function(memo, page) {
       memo[page.chapter_id] = memo[page.chapter_id] || [];
       memo[page.chapter_id].push(page.perma_id);
@@ -61,6 +66,10 @@ export const SeedEntryData = EntryData.extend({
 
   getChapterConfiguration: function(id) {
     return this.chapterConfigurations[id] || {};
+  },
+
+  getChapterPosition: function(id) {
+    return this.chapterPositions[id];
   },
 
   getChapterPagePermaIds: function(id) {

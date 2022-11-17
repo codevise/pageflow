@@ -21,6 +21,10 @@ export const EntryData = Object.extend({
     throw 'Not implemented';
   },
 
+  getChapterPosition: function(id) {
+    throw 'Not implemented';
+  },
+
   getStorylineConfiguration: function(id) {
     throw 'Not implemented';
   },
@@ -71,5 +75,17 @@ export const EntryData = Object.extend({
     else {
       return 0;
     }
+  },
+
+  getPageAnalyticsData(permaId) {
+    var chapterId = this.getChapterIdByPagePermaId(permaId);
+
+    return {
+      chapterIndex: this.getChapterPosition(chapterId),
+      chapterTitle: this.getChapterConfiguration(chapterId)['title'],
+
+      title: this.getPageConfiguration(permaId)['title'],
+      index: this.getPagePosition(permaId)
+    };
   }
 });
