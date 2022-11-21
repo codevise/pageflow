@@ -34,6 +34,21 @@ export function EventContextDataProvider({section, sectionsCount, children}){
   )
 };
 
+export function PlayerEventContextDataProvider({playbackMode, playerDescription, children}) {
+  const original = useEventContextData();
+
+  const value = useMemo(
+    () => ({...original, playbackMode, playerDescription}),
+    [original, playbackMode, playerDescription]
+  );
+
+  return (
+    <EventContext.Provider value={value}>
+      {children}
+    </EventContext.Provider>
+  );
+}
+
 export function useEventContextData() {
   return useContext(EventContext);
 }
