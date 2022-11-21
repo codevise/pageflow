@@ -1,6 +1,7 @@
 import {Page as MediaPage,
         PageBackgroundAsset,
         PageAudioFilePlayer,
+        PlayerMediaContextProvider,
         WaveformPlayerControls,
         reduxModule as mediaReduxModule,
         pageBackgroundReduxModule as mediaPageBackgroundReduxModule} from 'media';
@@ -33,10 +34,13 @@ function AudioPage(props) {
                autoplayWhenBackgroundMediaMuted={false}>
 
       <PageBackgroundAsset />
-      <PageAudioFilePlayer file={props.audioFile}
-                           playerState={props.playerState}
-                           playerActions={props.playerActions}
-                           textTrackPosition={textTrackPosition(playerControlsVariant)} />
+      <PlayerMediaContextProvider playbackMode={props.page.autoplay === false ? 'manual' : 'autoplay'}
+                                  playerDescription="Audio Page Player">
+        <PageAudioFilePlayer file={props.audioFile}
+                             playerState={props.playerState}
+                             playerActions={props.playerActions}
+                             textTrackPosition={textTrackPosition(playerControlsVariant)} />
+      </PlayerMediaContextProvider>
     </MediaPage>
   );
 }

@@ -1,6 +1,7 @@
 import {Page as MediaPage,
         MobilePageVideoPoster,
         PageVideoPlayer,
+        PlayerMediaContextProvider,
         reduxModule as mediaReduxModule} from 'media';
 
 import registerPageType from 'registerPageType';
@@ -28,10 +29,13 @@ function VideoPage(props) {
                controlBarText={props.t('pageflow.public.start_video')}
                autoplayWhenBackgroundMediaMuted={true}>
 
-      <PageVideoPlayer page={props.page}
-                       playerState={props.playerState}
-                       playerActions={props.playerActions}
-                       fit={props.page.contain ? 'contain' : 'smart_contain'} />
+      <PlayerMediaContextProvider playbackMode={props.page.autoplay === false ? 'manual' : 'autoplay'}
+                                  playerDescription="Video Page Player">
+        <PageVideoPlayer page={props.page}
+                         playerState={props.playerState}
+                         playerActions={props.playerActions}
+                         fit={props.page.contain ? 'contain' : 'smart_contain'} />
+      </PlayerMediaContextProvider>
       <MobilePageVideoPoster page={props.page} />
     </MediaPage>
   );
