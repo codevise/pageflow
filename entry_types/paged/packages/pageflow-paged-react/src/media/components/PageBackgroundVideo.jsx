@@ -1,5 +1,6 @@
 import PageVideoPlayer from './PageVideoPlayer';
 import MobilePageVideoPoster from './MobilePageVideoPoster';
+import PlayerMediaContextProvider from './PlayerMediaContextProvider';
 import {combineSelectors, camelize} from 'utils';
 
 import {fileExists} from 'files/selectors';
@@ -16,12 +17,15 @@ export function PageBackgroundVideo(props) {
   }
   else {
     return (
-      <PageVideoPlayer loop={true}
-                       fit="cover"
-                       muted={!props.hasAutoplaySupport}
-                       playsInline={true}
-                       textTracksEnabled={false}
-                       {...props} />
+      <PlayerMediaContextProvider playbackMode="loop"
+                                  playerDescription="Background Video Player">
+        <PageVideoPlayer loop={true}
+                         fit="cover"
+                         muted={!props.hasAutoplaySupport}
+                         playsInline={true}
+                         textTracksEnabled={false}
+                         {...props} />
+      </PlayerMediaContextProvider>
     );
   }
 }

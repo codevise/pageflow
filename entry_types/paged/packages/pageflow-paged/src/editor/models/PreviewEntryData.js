@@ -27,6 +27,11 @@ export const PreviewEntryData = EntryData.extend({
     return chapter ? chapter.configuration.attributes : {};
   },
 
+  getChapterPosition: function(id) {
+    var chapter = this.chapters.get(id);
+    return this.chapters.indexOf(chapter);
+  },
+
   getChapterPagePermaIds: function(id) {
     var chapter = this.chapters.get(id);
     return chapter ? chapter.pages.pluck('perma_id') : [];

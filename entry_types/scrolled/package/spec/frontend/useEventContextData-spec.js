@@ -1,27 +1,84 @@
 import React from 'react';
 
-import {useEventContextData, EventContextDataProvider} from 'frontend/useEventContextData';
+import {useEntryStructure} from 'entryState';
+import {
+  useEventContextData,
+  EventContextDataProvider,
+  PlayerEventContextDataProvider
+} from 'frontend/useEventContextData';
 
 import {renderHookInEntry} from 'support';
 
 describe('useEventContextData', () => {
-  it('returns an object with current section and chapter index', () => {
-    const section = {
-      sectionIndex: 0,
-      chapter: {
-        title: 'Chapter 1'
-      }
-    };
+  it('returns an object providing tracking information about current section and chapter', () => {
     const {result} = renderHookInEntry(() => useEventContextData(), {
-      wrapper: ({children}) =>
-        <EventContextDataProvider section={section}>{children}</EventContextDataProvider>
+      seed: {
+        chapters: [
+          {id: 1, configuration: {title: 'Intro'}},
+          {id: 2, configuration: {title: 'Main part'}}
+        ],
+        sections: [
+          {chapterId: 1},
+          {chapterId: 1},
+          {chapterId: 2},
+          {chapterId: 2},
+          {chapterId: 2}
+        ]
+      },
+      wrapper: function Wrapper({children}) {
+        const chapters = useEntryStructure();
+
+        return (
+          <EventContextDataProvider section={chapters[1].sections[2]}
+                                    sectionsCount={5}>
+            {children}
+          </EventContextDataProvider>
+        );
+      }
     });
 
     expect(result.current).toMatchObject({
       page: {
+        index: 4,
+
         configuration: {
-          title: 'Chapter 1, Section 0'
-        },
+          title: 'Main part, Section 4'
+        }
+      }
+    });
+    expect(result.current.page.getAnalyticsData()).toMatchObject({
+      chapterIndex: 1,
+      chapterTitle: 'Main part',
+
+      index: 4,
+      total: 5,
+    });
+  });
+
+  it('supports supplying player event context data', () => {
+    const {result} = renderHookInEntry(() => useEventContextData(), {
+      seed: {
+        sections: [{}]
+      },
+      wrapper: function Wrapper({children}) {
+        const chapters = useEntryStructure();
+
+        return (
+          <EventContextDataProvider section={chapters[0].sections[0]}
+                                    sectionsCount={0}>
+            <PlayerEventContextDataProvider playerDescription="Inline Video"
+                                            playbackMode="autoplay">
+              {children}
+            </PlayerEventContextDataProvider>
+          </EventContextDataProvider>
+        );
+      }
+    });
+
+    expect(result.current).toMatchObject({
+      playbackMode: 'autoplay',
+      playerDescription: 'Inline Video',
+      page: {
         index: 0
       }
     });

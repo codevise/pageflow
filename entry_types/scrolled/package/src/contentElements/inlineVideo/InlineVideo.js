@@ -8,6 +8,7 @@ import {
   MediaInteractionTracking,
   VideoPlayerControls,
   FitViewport,
+  PlayerEventContextDataProvider,
   useContentElementEditorState,
   useFile,
   usePlayerState,
@@ -119,18 +120,22 @@ function Player({
                          configuration={configuration}
                          sectionProps={sectionProps}
                          onPlayerClick={onPlayerClick}>
-      <VideoPlayer load={shouldPrepare ? 'auto' :
-                         shouldLoad ? 'poster' :
-                         'none'}
-                   loop={configuration.playbackMode === 'loop'}
-                   playerState={playerState}
-                   playerActions={playerActions}
-                   videoFile={videoFile}
-                   posterImageFile={posterImageFile}
-                   defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
-                   quality={'high'}
-                   playsInline={true}
-                   atmoDuringPlayback={configuration.atmoDuringPlayback} />
+      <PlayerEventContextDataProvider playerDescription="Inline Video"
+                                      playbackMode={configuration.playbackMode ||
+                                                    (configuration.autoplay ? 'autoplay' : 'manual')}>
+        <VideoPlayer load={shouldPrepare ? 'auto' :
+                           shouldLoad ? 'poster' :
+                           'none'}
+                     loop={configuration.playbackMode === 'loop'}
+                     playerState={playerState}
+                     playerActions={playerActions}
+                     videoFile={videoFile}
+                     posterImageFile={posterImageFile}
+                     defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
+                     quality={'high'}
+                     playsInline={true}
+                     atmoDuringPlayback={configuration.atmoDuringPlayback} />
+      </PlayerEventContextDataProvider>
     </VideoPlayerControls>
   );
 }

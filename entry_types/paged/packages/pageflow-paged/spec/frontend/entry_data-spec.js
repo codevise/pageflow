@@ -189,4 +189,48 @@ describe('pageflow.EntryData', function() {
       expect(entryData.getStorylineLevel(1002)).toBe(2);
     });
   });
+
+  describe('#getPageAnalyticsData', function() {
+    it('returns tracking information about current page and chapter', function() {
+      var entryData = new createEntryData({
+        pages: [
+          {
+            perma_id: 3,
+            chapter_id: 100
+          },
+          {
+            perma_id: 4,
+            chapter_id: 101
+          },
+          {
+            perma_id: 5,
+            chapter_id: 101,
+            configuration: {
+              title: 'Some page'
+            }
+          }
+        ],
+        chapters: [
+          {
+            id: 100,
+          },
+          {
+            id: 101,
+            configuration: {
+              title: 'Some chapter'
+            }
+          }
+        ],
+      });
+
+      var result = entryData.getPageAnalyticsData(5);
+
+      expect(result).toEqual({
+        chapterIndex: 1,
+        chapterTitle: 'Some chapter',
+        title: 'Some page',
+        index: 2
+      });
+    });
+  });
 });

@@ -8,6 +8,7 @@ import {
   ContentElementBox,
   Figure,
   FitViewport,
+  PlayerEventContextDataProvider,
   useContentElementEditorState,
   useFile,
   usePlayerState,
@@ -69,18 +70,21 @@ export function InlineAudio({contentElementId, sectionProps, configuration}) {
                                  configuration={configuration}
                                  sectionProps={sectionProps}
                                  onPlayerClick={onPlayerClick}>
-              <AudioPlayer load={shouldPrepare ? 'auto' :
-                                 shouldLoad ? 'poster' :
-                                 'none'}
-                           controls={configuration.controls}
-                           playerState={playerState}
-                           playerActions={playerActions}
-                           audioFile={audioFile}
-                           posterImageFile={posterImageFile}
-                           defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
-                           quality={'high'}
-                           playsInline={true}
-                           atmoDuringPlayback={configuration.atmoDuringPlayback} />
+              <PlayerEventContextDataProvider playerDescription="Inline Audio"
+                                              playbackMode={configuration.autoplay ? 'autoplay' : 'manual'}>
+                <AudioPlayer load={shouldPrepare ? 'auto' :
+                                   shouldLoad ? 'poster' :
+                                   'none'}
+                             controls={configuration.controls}
+                             playerState={playerState}
+                             playerActions={playerActions}
+                             audioFile={audioFile}
+                             posterImageFile={posterImageFile}
+                             defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
+                             quality={'high'}
+                             playsInline={true}
+                             atmoDuringPlayback={configuration.atmoDuringPlayback} />
+              </PlayerEventContextDataProvider>
             </AudioPlayerControls>
           </FitViewport.Content>
         </Figure>

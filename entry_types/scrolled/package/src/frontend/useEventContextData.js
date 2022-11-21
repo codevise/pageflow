@@ -1,22 +1,31 @@
 import React, {createContext, useContext, useMemo} from 'react';
 
-export function getEventObject(section) {
+export function getEventObject({section, sectionsCount}) {
   let page = {
+    getAnalyticsData: () => ({
+      chapterIndex: section?.chapter.index,
+      chapterTitle: section?.chapter.title,
+
+      index: section ? section.sectionIndex : -1,
+      total: sectionsCount
+    }),
+
+    index: section ? section.sectionIndex : -1,
+
     configuration: {
       title: section ? section.chapter.title + ', Section ' + section.sectionIndex : null,
-    },
-    index: section ? section.sectionIndex : -1,
+    }
   }
 
   return page;
 }
 
-export const EventContext = createContext(getEventObject());
+export const EventContext = createContext(getEventObject({}));
 
-export function EventContextDataProvider({section, children}){
+export function EventContextDataProvider({section, sectionsCount, children}){
   let contextValue = useMemo(() => {
-    return {page: getEventObject(section)};
-  }, [section]);
+    return {page: getEventObject({section, sectionsCount})};
+  }, [section, sectionsCount]);
 
   return (
     <EventContext.Provider value={contextValue}>
@@ -24,6 +33,21 @@ export function EventContextDataProvider({section, children}){
     </EventContext.Provider>
   )
 };
+
+export function PlayerEventContextDataProvider({playbackMode, playerDescription, children}) {
+  const original = useEventContextData();
+
+  const value = useMemo(
+    () => ({...original, playbackMode, playerDescription}),
+    [original, playbackMode, playerDescription]
+  );
+
+  return (
+    <EventContext.Provider value={value}>
+      {children}
+    </EventContext.Provider>
+  );
+}
 
 export function useEventContextData() {
   return useContext(EventContext);

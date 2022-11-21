@@ -90,6 +90,20 @@ describe('pageflow.PreviewEntryData', () => {
     });
   });
 
+  describe('#getChapterPosition', () => {
+    it('returns index of chapter in chapters collection ', () => {
+      var entryData = new PreviewEntryData({
+        chapters: new ChaptersCollection([
+          new Chapter({id: 1}, {pages: new PagesCollection()}),
+          new Chapter({id: 2}, {pages: new PagesCollection()})
+        ])
+      });
+
+      expect(entryData.getChapterPosition(1)).toEqual(0);
+      expect(entryData.getChapterPosition(2)).toEqual(1);
+    });
+  });
+
   describe('#getChapterPagePermaIds', () => {
     it('returns perma ids of pages of chapter by chapter id', () => {
       var chapter = new Chapter({id: 1}, {

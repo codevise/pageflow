@@ -10,7 +10,10 @@ export function useSectionChangeEvents(currentSectionIndex) {
 
   useEffect(() => {
     if (previousSectionIndex !== currentSectionIndex) {
-      events.trigger('page:change', getEventObject(sections[currentSectionIndex]));
+      events.trigger('page:change', getEventObject({
+        section: sections[currentSectionIndex],
+        sectionsCount: sections.length
+      }));
     }
   });
 };

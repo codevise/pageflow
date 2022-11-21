@@ -1,6 +1,7 @@
 import Page from './components/Page';
 import PageAudioFilePlayer from './components/PageAudioFilePlayer';
 import PageVideoPlayer from './components/PageVideoPlayer';
+import PlayerMediaContextProvider from './components/PlayerMediaContextProvider';
 import MobilePageVideoPoster from './components/MobilePageVideoPoster';
 import PageBackgroundVideo from './components/PageBackgroundVideo';
 import PageBackgroundAsset from './components/PageBackgroundAsset';
@@ -52,5 +53,6 @@ export {
   PageBackgroundVideo,
   PageBackgroundAsset,
   PageBackground,
+  PlayerMediaContextProvider,
   WaveformPlayerControls
 };
