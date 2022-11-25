@@ -1,12 +1,9 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
-import React from 'react';
-import ReactDOM from 'react-dom';
 import {modelLifecycleTrackingView} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 
-import {watchCollections} from '../../entryState';
-import {SectionThumbnail} from 'pageflow-scrolled/frontend'
+import {SectionThumbnailView} from './SectionThumbnailView'
 
 import styles from './SectionItemView.module.css';
 
@@ -44,10 +41,6 @@ export const SectionItemView = Marionette.ItemView.extend({
     }
   },
 
-  modelEvents: {
-    'change:id': 'renderThumbnail'
-  },
-
   initialize() {
     this.listenTo(this.options.entry, 'change:currentSectionIndex', () => {
       const active = this.updateActive();
@@ -65,27 +58,11 @@ export const SectionItemView = Marionette.ItemView.extend({
     this.updateActive();
     this.$el.toggleClass(styles.invert, !!this.model.configuration.get('invert'));
 
-    this.timeout = setTimeout(() => {
-      this.renderThumbnail();
-    }, 100);
-  },
-
-  onClose() {
-    clearTimeout(this.timeout);
-    ReactDOM.unmountComponentAtNode(this.ui.thumbnail[0]);
-  },
-
-  renderThumbnail() {
-    if (!this.model.isNew()) {
-      ReactDOM.render(React.createElement(SectionThumbnail,
-                                          {
-                                            sectionPermaId: this.model.get('permaId'),
-                                            seed: this.options.entry.scrolledSeed,
-                                            subscribe: dispatch =>
-                                              watchCollections(this.options.entry, {dispatch})
-                                          }),
-                      this.ui.thumbnail[0]);
-    }
+    this.subview(new SectionThumbnailView({
+      el: this.ui.thumbnail,
+      model: this.model,
+      entry: this.options.entry
+    }));
   },
 
   updateActive() {
