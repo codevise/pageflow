@@ -25,27 +25,29 @@ describe('EffectListInputView', () => {
     expect(view.el).toHaveTextContent('Blur 30');
   });
 
-  it('allows adding effects', () => {
+  it('allows adding effects', async () => {
     const model = new Backbone.Model();
 
     const view = new EffectListInputView({model, propertyName: 'effects'});
 
+    const user = userEvent.setup();
     const {getByRole} = within(view.render().el);
-    userEvent.click(getByRole('button', {name: 'Add effect'}));
-    userEvent.click(getByRole('link', {name: 'Blur'}));
+    await user.click(getByRole('button', {name: 'Add effect'}));
+    await user.click(getByRole('link', {name: 'Blur'}));
 
     expect(model.get('effects')).toEqual([{name: 'blur', value: 50}])
   });
 
-  it('allows removing effects', () => {
+  it('allows removing effects', async () => {
     const model = new Backbone.Model({effects: [
       {name: 'blur', value: 30}
     ]});
 
     const view = new EffectListInputView({model, propertyName: 'effects'});
 
+    const user = userEvent.setup();
     const {getByRole} = within(view.render().el);
-    userEvent.click(getByRole('button', {name: 'Remove effect'}));
+    await user.click(getByRole('button', {name: 'Remove effect'}));
 
     expect(model.get('effects')).toEqual([])
   });

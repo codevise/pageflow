@@ -18,7 +18,7 @@ describe('ListboxInputView', () => {
 
   const {render} = useReactBasedBackboneViews();
 
-  it('renders radio inputs for values', () => {
+  it('renders radio inputs for values', async () => {
     const model = new Backbone.Model({variant: 'large'});
     const inputView = new ListboxInputView({
       model: model,
@@ -27,14 +27,15 @@ describe('ListboxInputView', () => {
       texts: ['Default', 'Large']
     });
 
+    const user = userEvent.setup();
     const {getByRole} = render(inputView);
-    userEvent.click(getByRole('button', {name: 'Large'}));
+    await user.click(getByRole('button', {name: 'Large'}));
 
     expect(getByRole('option', {name: 'Default'})).not.toBeNull();
     expect(getByRole('option', {name: 'Large'})).not.toBeNull();
   });
 
-  it('supports labels based on translation keys', () => {
+  it('supports labels based on translation keys', async () => {
     const model = new Backbone.Model({variant: 'large'});
     const inputView = new ListboxInputView({
       model: model,
@@ -43,8 +44,9 @@ describe('ListboxInputView', () => {
       translationKeys: ['some.key.default', 'some.key.large']
     });
 
+    const user = userEvent.setup();
     const {getByRole} = render(inputView);
-    userEvent.click(getByRole('button', {name: 'Large'}));
+    await user.click(getByRole('button', {name: 'Large'}));
 
     expect(getByRole('option', {name: 'Default'})).not.toBeNull();
     expect(getByRole('option', {name: 'Large'})).not.toBeNull();
@@ -65,7 +67,7 @@ describe('ListboxInputView', () => {
     expect(getByRole('button', {name: 'Large'})).not.toBeNull();
   });
 
-  it('sets value on change', () => {
+  it('sets value on change', async () => {
     const model = new Backbone.Model({variant: 'default'});
     const inputView = new ListboxInputView({
       model: model,
@@ -74,9 +76,10 @@ describe('ListboxInputView', () => {
       texts: ['Default', 'Large']
     });
 
+    const user = userEvent.setup();
     const {getByRole} = render(inputView);
-    userEvent.click(getByRole('button', {name: 'Default'}));
-    userEvent.click(getByRole('option', {name: 'Large'}));
+    await user.click(getByRole('button', {name: 'Default'}));
+    await user.click(getByRole('option', {name: 'Large'}));
 
     expect(model.get('variant')).toEqual('large');
   });
