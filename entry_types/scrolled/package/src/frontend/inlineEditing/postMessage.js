@@ -43,3 +43,12 @@ export function postUpdateTransientContentElementStateMessage({id, state}) {
     window.location.origin
   );
 }
+
+export function postSelectLinkDestinationMessage() {
+  window.parent.postMessage(
+    {
+      type: 'SELECT_LINK_DESTINATION'
+    },
+    window.location.origin
+  );
+}

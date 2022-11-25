@@ -1,6 +1,7 @@
 import {Object} from 'pageflow/ui';
 import {watchCollections} from '../../entryState';
 import {InsertContentElementDialogView} from '../views/InsertContentElementDialogView'
+import {SelectLinkDestinationDialogView} from '../views/SelectLinkDestinationDialogView'
 
 export const PreviewMessageController = Object.extend({
   initialize({entry, iframeWindow, editor}) {
@@ -113,6 +114,18 @@ export const PreviewMessageController = Object.extend({
         else {
           this.editor.navigate('/', {trigger: true})
         }
+      }
+      else if (message.data.type === 'SELECT_LINK_DESTINATION') {
+        SelectLinkDestinationDialogView.show({
+          entry: this.entry,
+
+          select(result){
+            postMessage({
+              type: 'LINK_DESTINATION_SELECTED',
+              payload: result
+            });
+          }
+        });
       }
       else if (message.data.type === 'INSERT_CONTENT_ELEMENT') {
         const {id, at, splitPoint} = message.data.payload;
