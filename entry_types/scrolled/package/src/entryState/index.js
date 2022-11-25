@@ -6,6 +6,7 @@ export {
   useSectionsWithChapter,
   useSection,
   useChapters,
+  useChapter,
   useSectionContentElements
 } from './structure';
 export {useFile} from './useFile';

@@ -1,6 +1,7 @@
 import {
   useEntryStructure,
   useSectionsWithChapter,
+  useChapter,
   useChapters,
   useSection,
   useSectionContentElements,
@@ -310,6 +311,30 @@ describe('useChapters', () => {
         chapterSlug: 'removespecialdollarcharacter',
       }
     ]);
+  });
+});
+
+describe('useChapter', () => {
+  it('returns data for one chapter', () => {
+    const {result} = renderHookInEntry(
+      () => useChapter({permaId: 10}),
+      {
+        seed: {
+          chapters: [
+            {permaId: 10, configuration: {title: 'The Intro'}}
+          ]
+        }
+      }
+    );
+
+    const section = result.current;
+
+    expect(section).toMatchObject({
+      index: 0,
+      permaId: 10,
+      title: 'The Intro',
+      chapterSlug: 'the-intro'
+    });
   });
 });
 
