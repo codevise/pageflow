@@ -101,8 +101,8 @@ function handleButtonClick(editor, format, selectLinkDestination) {
       unwrapLink(editor);
     }
     else {
-      selectLinkDestination().then(({url}) => {
-        wrapLink(editor, url);
+      selectLinkDestination().then(({href, openInNewTab}) => {
+        wrapLink(editor, href, openInNewTab);
       });
     }
   }
@@ -124,10 +124,11 @@ function unwrapLink(editor) {
   Transforms.unwrapNodes(editor, {match: n => n.type === 'link'});
 }
 
-function wrapLink(editor, href) {
+function wrapLink(editor, href, openInNewTab) {
   const link = {
     type: 'link',
     href,
+    openInNewTab,
     children: [],
   };
 

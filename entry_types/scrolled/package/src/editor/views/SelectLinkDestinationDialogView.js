@@ -45,7 +45,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
 
   events: cssModulesUtils.events(styles, {
     'click createButton': function() {
-      const link = {url: this.externalLink.get('url')};
+      const link = {href: this.externalLink.get('url')};
 
       if (this.externalLink.get('openInNewTab')) {
         link.openInNewTab = true;
@@ -81,11 +81,11 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
         entry: this.options.entry,
 
         onSelectChapter: chapter => {
-          this.options.onSelect({chapter: chapter.get(`permaId`)});
+          this.options.onSelect({href: {chapter: chapter.get(`permaId`)}});
           this.close();
         },
         onSelectSection: section => {
-          this.options.onSelect({section: section.get(`permaId`)});
+          this.options.onSelect({href: {section: section.get(`permaId`)}});
           this.close();
         }
       })).el

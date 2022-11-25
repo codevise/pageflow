@@ -3,6 +3,7 @@ import React from 'react';
 import {EditableText} from 'frontend';
 
 import {render} from '@testing-library/react';
+import {renderInEntry} from 'support';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('EditableText', () => {
@@ -100,6 +101,87 @@ describe('EditableText', () => {
     const {getByRole} = render(<EditableText value={value} />);
 
     expect(getByRole('link')).toHaveTextContent('here')
+    expect(getByRole('link')).toHaveAttribute('href', 'https://example.com')
+    expect(getByRole('link')).not.toHaveAttribute('target')
+    expect(getByRole('link')).not.toHaveAttribute('rel')
+  });
+
+  it('supports rendering links with target blank', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Find more '},
+        {
+          type: 'link',
+          href: 'https://example.com',
+          openInNewTab: true,
+          children: [
+            {text: 'here'}
+          ]
+        },
+        {text: '.'}
+      ]
+    }]
+
+    const {getByRole} = render(<EditableText value={value} />);
+
+    expect(getByRole('link')).toHaveTextContent('here')
+    expect(getByRole('link')).toHaveAttribute('target', '_blank')
+    expect(getByRole('link')).toHaveAttribute('rel', 'noopener noreferrer')
+  });
+
+  it('supports rendering internal chapter links', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Find more '},
+        {
+          type: 'link',
+          href: {chapter: 10},
+          children: [
+            {text: 'here'}
+          ]
+        },
+        {text: '.'}
+      ]
+    }];
+    const seed = {
+      chapters: [{id: 1, permaId: 10, configuration: {title: 'The Intro'}}]
+    };
+
+    const {getByRole} = renderInEntry(<EditableText value={value} />, {seed});
+
+    expect(getByRole('link')).toHaveTextContent('here')
+    expect(getByRole('link')).toHaveAttribute('href', '#the-intro')
+    expect(getByRole('link')).not.toHaveAttribute('target')
+    expect(getByRole('link')).not.toHaveAttribute('rel')
+  });
+
+  it('supports rendering internal section links', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Find more '},
+        {
+          type: 'link',
+          href: {section: 10},
+          children: [
+            {text: 'here'}
+          ]
+        },
+        {text: '.'}
+      ]
+    }];
+    const seed = {
+      sections: [{id: 1, permaId: 10}]
+    };
+
+    const {getByRole} = renderInEntry(<EditableText value={value} />, {seed});
+
+    expect(getByRole('link')).toHaveTextContent('here')
+    expect(getByRole('link')).toHaveAttribute('href', '#section-10')
+    expect(getByRole('link')).not.toHaveAttribute('target')
+    expect(getByRole('link')).not.toHaveAttribute('rel')
   });
 
   it('renders zero width no break space in empty leafs to prevent empty paragraphs from collapsing', () => {

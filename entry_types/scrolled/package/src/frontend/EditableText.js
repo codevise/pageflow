@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import {camelize} from './utils/camelize';
 import {withInlineEditingAlternative} from './inlineEditing';
+import {useChapter} from '../entryState';
 import {Text} from './Text';
 import textStyles from './Text.module.css';
 
@@ -60,10 +61,40 @@ export function renderElement({attributes, children, element}) {
       </h2>
     );
   case 'link':
-    return <a {...attributes} href={element.href}>{children}</a>;
+    return renderLink({attributes, children, element});
   default:
     return <p {...attributes} className={variantClassName}>{children}</p>;
   }
+}
+
+function renderLink({attributes, children, element}) {
+  if (element?.href?.chapter) {
+    const {key, ...otherAttributes} = attributes;
+
+    return (
+      <ChapterLink key={key}
+                   attributes={otherAttributes}
+                   chapterPermaId={element.href.chapter}>
+        {children}
+      </ChapterLink>
+    );
+  }
+  else if (element?.href?.section) {
+    return <a {...attributes} href={`#section-${element.href.section}`}>{children}</a>;
+  }
+  else {
+    const targetAttributes = element.openInNewTab ?
+                             {target: '_blank', rel: 'noopener noreferrer'} :
+                             {};
+
+    return <a {...attributes} {...targetAttributes} href={element.href}>{children}</a>;
+  }
+}
+
+function ChapterLink({attributes, children, chapterPermaId}) {
+  const chapter = useChapter({permaId: chapterPermaId});
+
+  return <a {...attributes} href={`#${chapter?.chapterSlug || ''}`}>{children}</a>;
 }
 
 export function renderLeaf({attributes, children, leaf}) {

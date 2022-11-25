@@ -39,7 +39,7 @@ describe('SelectLinkDestinationDialogView', () => {
     const {getByText} = within(view.render().el);
     await user.click(getByText('Intro'));
 
-    expect(listener).toHaveBeenCalledWith({chapter: 10});
+    expect(listener).toHaveBeenCalledWith({href: {chapter: 10}});
   });
 
   it('allows selecting section', async () => {
@@ -60,7 +60,7 @@ describe('SelectLinkDestinationDialogView', () => {
     const {getByTitle} = within(view.render().el);
     await user.click(getByTitle('Select section'));
 
-    expect(listener).toHaveBeenCalledWith({section: 10});
+    expect(listener).toHaveBeenCalledWith({href: {section: 10}});
   });
 
   it('allows entering url', async () => {
@@ -78,7 +78,7 @@ describe('SelectLinkDestinationDialogView', () => {
     await user.type(getByLabelText('Enter url'), 'https://example.com');
     await user.click(getByRole('button', {name: 'Create link'}));
 
-    expect(listener).toHaveBeenCalledWith({url: 'https://example.com'});
+    expect(listener).toHaveBeenCalledWith({href: 'https://example.com'});
   });
 
   it('allows setting link target', async () => {
@@ -98,7 +98,7 @@ describe('SelectLinkDestinationDialogView', () => {
     await user.click(getByRole('button', {name: 'Create link'}));
 
     expect(listener).toHaveBeenCalledWith({
-      url: 'https://example.com',
+      href: 'https://example.com',
       openInNewTab: true
     });
   });
