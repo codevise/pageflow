@@ -119,7 +119,7 @@ export const PreviewMessageController = Object.extend({
         SelectLinkDestinationDialogView.show({
           entry: this.entry,
 
-          select(result){
+          onSelect(result){
             postMessage({
               type: 'LINK_DESTINATION_SELECTED',
               payload: result

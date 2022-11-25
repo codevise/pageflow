@@ -1,0 +1,15 @@
+en:
+  pageflow_scrolled:
+    editor:
+      select_link_destination:
+        header: "Create link"
+        enter_url: "Use external URL as destination"
+        open_in_new_tab: "Open in new tab"
+        or: "or"
+        select_chapter_or_section: "Select chapter or section as destination"
+        create: "Create"
+        cancel: "Cancel"
+      selectable_section_item:
+        title: "Select section"
+      selectable_chapter_item:
+        title: "Select chapter"

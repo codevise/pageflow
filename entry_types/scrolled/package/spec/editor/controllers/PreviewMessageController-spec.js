@@ -280,7 +280,7 @@ describe('PreviewMessageController', () => {
     return expect(new Promise(resolve => {
       jest.spyOn(SelectLinkDestinationDialogView, 'show').mockImplementation(resolve);
       postSelectLinkDestinationMessage();
-    })).resolves.toMatchObject({select: expect.any(Function)});
+    })).resolves.toMatchObject({onSelect: expect.any(Function)});
   });
 
   it('sends LINK_DESTINATION_SELECTED message when callback passed to link destination dialog is invoked', () => {
@@ -299,7 +299,7 @@ describe('PreviewMessageController', () => {
       });
 
       jest.spyOn(SelectLinkDestinationDialogView, 'show').mockImplementation(
-        ({select}) => select({url: 'https://example.com'})
+        ({onSelect}) => onSelect({url: 'https://example.com'})
       );
       postSelectLinkDestinationMessage();
     })).resolves.toEqual({url: 'https://example.com'});

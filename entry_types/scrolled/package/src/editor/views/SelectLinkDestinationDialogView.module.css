@@ -1,0 +1,59 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  min-width: 400px;
+  max-width: 700px;
+}
+
+.urlContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.urlContainer > :first-child {
+  width: 100%;
+}
+
+.or {
+  position: relative;
+  margin: 0 auto space(4);
+  padding: 0 space(2);
+  color: var(--ui-on-surface-color-light);
+}
+
+.or::before,
+.or::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  width: space(8);
+  border-top: solid 1px var(--ui-on-surface-color-lighter);
+}
+
+.or::before {
+  right: 100%;
+}
+
+.or::after {
+  left: 100%;
+}
+
+.urlContainer,
+.openInNewTabContainer {
+  width: 100%;
+}
+
+.createButton {
+  composes: saveButton from './buttons.module.css';
+}
+
+.outlineContainer {
+  width: 100%;
+  box-sizing: border-box;
+  padding: space(2);
+  overflow: auto;
+}
