@@ -24,7 +24,7 @@ module Dom
         end
 
         def edit_link
-          node.find('[class^=ChapterItemView-module_link]')
+          node.find('[class^=ChapterItemView-module_outlineLink]')
         end
 
         def add_section_button

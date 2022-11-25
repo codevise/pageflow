@@ -11,6 +11,7 @@
   text-align: right;
 }
 
+.selectable:hover,
 .active {
   border: solid selectionWidth selectionColor;
 }
