@@ -3,8 +3,8 @@ import {Editor, Range, Transforms} from 'slate';
 import {ReactEditor, useSlate} from 'slate-react';
 
 import {Toolbar} from '../Toolbar';
-import {LinkInput} from './LinkInput';
 import {useI18n} from '../../i18n';
+import {useSelectLinkDestination} from '../useSelectLinkDestination';
 
 import styles from './index.module.css';
 
@@ -14,17 +14,18 @@ import ItalicIcon from '../images/italic.svg';
 import StrikethroughIcon from '../images/strikethrough.svg';
 import LinkIcon from '../images/link.svg';
 
-export function HoveringToolbar({linkSelection, setLinkSelection}) {
+export function HoveringToolbar() {
   const ref = useRef()
   const outerRef = useRef()
   const editor = useSlate()
   const {t} = useI18n({locale: 'ui'});
+  const selectLinkDestination = useSelectLinkDestination();
 
   useEffect(() => {
     const el = ref.current
     const {selection} = editor
 
-    if (!el || !outerRef.current || linkSelection) {
+    if (!el || !outerRef.current) {
       return;
     }
 
@@ -51,14 +52,13 @@ export function HoveringToolbar({linkSelection, setLinkSelection}) {
     <div ref={outerRef}>
       <div ref={ref}
            className={styles.hoveringToolbar}>
-        {!linkSelection && renderToolbar(editor, setLinkSelection, t)}
-        {linkSelection && renderLinkInput(editor, linkSelection, setLinkSelection)}
+        {renderToolbar(editor, t, selectLinkDestination)}
       </div>
     </div>
   );
 }
 
-function renderToolbar(editor, setLinkSelection, t) {
+function renderToolbar(editor, t, selectLinkDestination) {
   const buttons = [
     {
       name: 'bold',
@@ -91,21 +91,19 @@ function renderToolbar(editor, setLinkSelection, t) {
 
   return (
     <Toolbar buttons={buttons}
-             onButtonClick={name => handleButtonClick(editor, name, setLinkSelection)}/>
+             onButtonClick={name => handleButtonClick(editor, name, selectLinkDestination)}/>
   );
 }
 
-function handleButtonClick(editor, format, setLinkSelection) {
+function handleButtonClick(editor, format, selectLinkDestination) {
   if (format === 'link') {
     if (isLinkActive(editor)) {
       unwrapLink(editor);
     }
     else {
-      const selection = editor.selection;
-      // Required to prevent slate from focusing the editor in Firefox
-      // https://github.com/ianstormtaylor/slate/blob/44675c2080e3f6a2523170430bb92e426b7647e2/packages/slate-react/src/components/editable.tsx#L189
-      Transforms.deselect(editor);
-      setLinkSelection(selection);
+      selectLinkDestination().then(({url}) => {
+        wrapLink(editor, url);
+      });
     }
   }
   else {
@@ -120,28 +118,6 @@ function isButtonActive(editor, format) {
   else {
     return isMarkActive(editor, format);
   }
-}
-
-function renderLinkInput(editor, linkSelection, setLinkSelection) {
-  function handleSubmit(href) {
-    Transforms.select(editor, linkSelection);
-    ReactEditor.focus(editor);
-
-    wrapLink(editor, href);
-    setLinkSelection(null);
-  }
-
-  function handleCancel() {
-    setLinkSelection(null);
-
-    Transforms.select(editor, linkSelection);
-    ReactEditor.focus(editor);
-  }
-
-  return (
-    <LinkInput onSubmit={handleSubmit}
-               onCancel={handleCancel} />
-  )
 }
 
 function unwrapLink(editor) {

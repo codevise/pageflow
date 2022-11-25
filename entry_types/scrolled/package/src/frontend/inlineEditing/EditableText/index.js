@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useCallback} from 'react';
+import React, {useMemo} from 'react';
 import classNames from 'classnames';
 import {createEditor, Transforms, Node, Text as SlateText} from 'slate';
 import {Slate, Editable, withReact} from 'slate-react';
@@ -13,8 +13,6 @@ import {withCustomInsertBreak} from './withCustomInsertBreak';
 import {
   withLinks,
   renderElementWithLinkPreview,
-  renderLeafWithLinkSelection,
-  decorateLinkSelection
 } from './withLinks';
 import {useDropTargetsActive} from './useDropTargetsActive';
 import {HoveringToolbar} from './HoveringToolbar';
@@ -30,7 +28,7 @@ import {
   decorateLineBreaks,
   useLineBreakHandler,
   withLineBreakNormalization,
-  wrapLeafWithLineBreakDecoration
+  renderLeafWithLineBreakDecoration
 } from './lineBreaks';
 
 import styles from './index.module.css';
@@ -53,7 +51,6 @@ export const EditableText = React.memo(function EditableText({
     ),
     [selectionRect]
   );
-  const [linkSelection, setLinkSelection] = useState();
   const handleLineBreaks = useLineBreakHandler(editor);
 
   const [cachedValue, setCachedValue] = useCachedValue(value, {
@@ -79,35 +76,20 @@ export const EditableText = React.memo(function EditableText({
 
   const [dropTargetsActive, ref] = useDropTargetsActive();
 
-  const decorate = useCallback(nodeEntry => {
-    return [
-      ...decorateLinkSelection(nodeEntry, linkSelection),
-      ...decorateLineBreaks(nodeEntry)
-    ];
-  }, [linkSelection]);
-
-  // Ensure Slate rerenders when decorations change
-  // https://github.com/ianstormtaylor/slate/issues/3447
-  const renderLeaf = useCallback(options => {
-    return renderLeafWithLinkSelection(
-      wrapLeafWithLineBreakDecoration(options)
-    );
-  }, [linkSelection]); // eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <Text scaleCategory="body">
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
            ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
-          <LinkTooltipProvider disabled={!!linkSelection}>
+          <LinkTooltipProvider>
             {selectionRect && <Selection contentElementId={contentElementId} />}
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
-            <HoveringToolbar linkSelection={linkSelection} setLinkSelection={setLinkSelection} />
+            <HoveringToolbar />
             <Editable
-              decorate={decorate}
+              decorate={decorateLineBreaks}
               onKeyDown={handleLineBreaks}
               renderElement={renderElementWithLinkPreview}
-              renderLeaf={renderLeaf} />
+              renderLeaf={renderLeafWithLineBreakDecoration} />
           </LinkTooltipProvider>
         </Slate>
         <TextPlaceholder text={placeholder}

@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react';
 
 import {decorateCharacter, deleteCharacter, shy} from './characters';
+import {renderLeaf} from '../../EditableText';
 
 import styles from './index.module.css';
 
@@ -25,12 +26,12 @@ export function decorateLineBreaks(nodeEntry) {
   return decorateCharacter(nodeEntry, shy, {shy: true}, {length: 1});
 }
 
-export function wrapLeafWithLineBreakDecoration({leaf, children, attributes}) {
+export function renderLeafWithLineBreakDecoration({leaf, children, attributes}) {
   if (leaf.shy) {
     children = <span className={styles.shy}>{children}</span>;
   }
 
-  return {leaf, children, attributes};
+  return renderLeaf({leaf, children, attributes});
 }
 
 export function withLineBreakNormalization(editor) {
