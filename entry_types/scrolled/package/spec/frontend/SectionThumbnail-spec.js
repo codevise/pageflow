@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
-import {SectionThumbnail} from 'frontend/SectionThumbnail';
+import {StandaloneSectionThumbnail} from 'frontend/SectionThumbnail';
 import {watchCollections} from 'entryState';
 import 'contentElements/heading/frontend';
 
@@ -24,7 +24,9 @@ describe('SectionThumbnail', () => {
         }
       ]
     });
-    const {getByText} = render(<SectionThumbnail seed={seed} sectionPermaId={1} />);
+    const {getByText} = render(
+      <StandaloneSectionThumbnail seed={seed} sectionPermaId={1} />
+    );
 
     expect(getByText('Some Heading')).toBeDefined();
   });
@@ -45,13 +47,15 @@ describe('SectionThumbnail', () => {
       })
     });
 
-    const {getByText} = render(<SectionThumbnail
-                                   seed={normalizeSeed()}
-                                   subscribe={dispatch => watchCollections(
-                                       entry,
-                                       {dispatch}
-                                     )}
-                                   sectionPermaId={1} />);
+    const {getByText} = render(
+      <StandaloneSectionThumbnail seed={normalizeSeed()}
+                                  subscribe={dispatch => watchCollections(
+                                    entry,
+                                    {dispatch}
+                                  )}
+                                  sectionPermaId={1} />
+    );
+
     expect(getByText('Some Heading')).toBeDefined();
   });
 
@@ -72,13 +76,14 @@ describe('SectionThumbnail', () => {
     });
     const consoleError = jest.spyOn(global.console, 'error')
 
-    const {unmount} = render(<SectionThumbnail
-                                 seed={normalizeSeed()}
-                                 subscribe={dispatch => watchCollections(
-                                     entry,
-                                     {dispatch}
-                                   )}
-                                 sectionPermaId={1} />);
+    const {unmount} = render(
+      <StandaloneSectionThumbnail seed={normalizeSeed()}
+                                  subscribe={dispatch => watchCollections(
+                                    entry,
+                                    {dispatch}
+                                  )}
+                                  sectionPermaId={1} />
+    );
     unmount();
     act(() => { entry.contentElements.sort() });
 

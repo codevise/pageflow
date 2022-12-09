@@ -6,7 +6,7 @@ import styles from './TypographyVariantSelectInputView.module.css';
 
 import {ListboxInputView} from './ListboxInputView';
 import {watchCollections} from '../../../entryState';
-import {SectionThumbnail} from 'pageflow-scrolled/frontend'
+import {StandaloneSectionThumbnail} from 'pageflow-scrolled/frontend'
 
 export const TypographyVariantSelectInputView = ListboxInputView.extend({
   renderItem(item) {
@@ -34,10 +34,10 @@ function Preview({entry, contentElement, item, getPreviewConfiguration}) {
       <div className={classNames(styles.preview,
                                  styles[`${appearance}Appearance`])}
            aria-hidden="true">
-        <SectionThumbnail scale={false}
-                          seed={entry.scrolledSeed}
-                          sectionPermaId={1}
-                          subscribe={subscribe} />
+        <StandaloneSectionThumbnail scale={false}
+                                    seed={entry.scrolledSeed}
+                                    sectionPermaId={1}
+                                    subscribe={subscribe} />
       </div>
       {item.text}
     </>
