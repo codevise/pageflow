@@ -7,6 +7,19 @@ import {renderInEntry} from 'support';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('EditableText', () => {
+  it('renders class name', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} className="some-class" />);
+
+    expect(container.querySelector('.some-class')).toBeInTheDocument()
+  });
+
   it('renders paragraphs', () => {
     const value = [{
       type: 'paragraph',

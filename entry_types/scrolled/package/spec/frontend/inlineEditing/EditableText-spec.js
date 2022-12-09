@@ -28,6 +28,21 @@ describe('EditableText', () => {
     expect(queryByText('Some text')).toBeInTheDocument()
   });
 
+  it('renders class name', () => {
+    const value = [{
+      type: 'heading',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(
+      <EditableText value={value} className="some-class" />, {wrapper}
+    );
+
+    expect(container.querySelector('.some-class')).toBeInTheDocument()
+  });
+
   it('renders placeholder if value is undefined', () => {
     const {queryByText} = render(<EditableText placeholder="Some placeholder" />, {wrapper});
 

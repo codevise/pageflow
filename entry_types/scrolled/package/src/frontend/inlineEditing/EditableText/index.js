@@ -34,7 +34,7 @@ import {
 import styles from './index.module.css';
 
 export const EditableText = React.memo(function EditableText({
-  value, contentElementId, placeholder, onChange, selectionRect
+  value, contentElementId, placeholder, onChange, selectionRect, className
 }) {
   const editor = useMemo(
     () => withLinks(
@@ -86,6 +86,7 @@ export const EditableText = React.memo(function EditableText({
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
             <HoveringToolbar />
             <Editable
+              className={className}
               decorate={decorateLineBreaks}
               onKeyDown={handleLineBreaks}
               renderElement={renderElementWithLinkPreview}
