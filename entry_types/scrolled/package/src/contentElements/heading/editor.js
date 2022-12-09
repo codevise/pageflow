@@ -9,7 +9,7 @@ editor.contentElementTypes.register('heading', {
   pictogram,
   supportedPositions: ['inline', 'wide'],
 
-  defaultConfig: {position: 'wide'},
+  defaultConfig: {position: 'wide', marginTop: 'none'},
 
   configurationEditor({entry}) {
     this.listenTo(this.model, 'change:hyphens', this.refresh);

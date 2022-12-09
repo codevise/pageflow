@@ -16,7 +16,7 @@
 }
 
 @media (orientation: landscape) {
-  .first {
+  .forcePaddingTop {
     padding-top: var(--theme-first-heading-landscape-padding-top, 25%);
   }
 }

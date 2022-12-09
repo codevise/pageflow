@@ -19,11 +19,13 @@ export function Heading({configuration, sectionProps}) {
   const legacyValue = configuration.children;
   const Tag = firstSectionInEntry ? 'h1' : 'h2';
 
+  const forcePaddingTop = firstSectionInEntry && !('marginTop' in configuration);
+
   return (
     <Tag className={classNames(styles.root,
                                configuration.typographyVariant &&
                                `typography-heading-${configuration.typographyVariant}`,
-                               {[styles.first]: firstSectionInEntry},
+                               {[styles.forcePaddingTop]: forcePaddingTop},
                                {[styles[sectionProps.layout]]:
                                  configuration.position === 'wide' ||
                                  sectionProps.layout === 'centerRagged'},
