@@ -28,7 +28,8 @@ export function DefaultNavigation({configuration}) {
   const [readingProgress, setReadingProgress] = useState(0);
   const chapters = useChapters();
   const currentChapter = useCurrentChapter();
-  const shareProviders = useShareProviders({isPhonePlatform: usePhonePlatform()});
+  const isPhonePlatform = usePhonePlatform();
+  const shareProviders = useShareProviders({isPhonePlatform});
 
   useScrollPosition(
     ({prevPos, currPos}) => {
@@ -113,7 +114,11 @@ export function DefaultNavigation({configuration}) {
 
   return (
     <header className={classNames(styles.navigationBar, {
-      [styles.navigationBarExpanded]: navExpanded || !mobileNavHidden,
+      [styles.navigationBarExpanded]: (
+        navExpanded ||
+        (!isPhonePlatform && configuration.fixedOnDesktop) ||
+        !mobileNavHidden
+      ),
       [styles.hasChapters]: hasChapters
     })}>
       <div className={styles.navigationBarContentWrapper}>

@@ -8,6 +8,14 @@ de:
               label: "'Ton aktivieren'-Button ausblenden"
             hideSharingButton:
               label: "Share-Button ausblenden"
+            fixedOnDesktop:
+              label: "Im Desktop-Layout fixieren"
+              inline_help: |
+                Standardmäßig wird die Navigation beim Scrollen
+                ausgeblendet. Verwende diese Option, um die Navigation
+                im Desktop-Layout nie auszublenden. Um Platz zu
+                sparen, wird die Navigation im Phone-Layout beim
+                Scrollen dennoch immer ausgeblendet.
     defaultNavigation:
       widget_type_name: "Standard Navigation"
     ui:

@@ -54,6 +54,7 @@ editor.widgetTypes.register('defaultNavigation', {
       this.tab('defaultNavigation', function() {
         this.input('hideToggleMuteButton', CheckBoxInputView);
         this.input('hideSharingButton', CheckBoxInputView);
+        this.input('fixedOnDesktop', CheckBoxInputView);
       });
     }
   })
