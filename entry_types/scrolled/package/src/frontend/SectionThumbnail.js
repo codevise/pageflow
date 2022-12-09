@@ -37,7 +37,7 @@ export function SectionThumbnail({sectionPermaId, subscribe, scale}) {
         <Measure client>
           {({measureRef, contentRect}) =>
             <FullscreenDimensionProvider {...clientDimensions(contentRect, scaleFactor)}>
-              <div ref={measureRef} className={styles.crop}>
+              <div ref={measureRef} className={styles.crop} inert="">
                 <div className={classNames({[styles.scale]: scale})}>
                   <div className={contentStyles.Content}
                        style={viewportUnitCustomProperties(

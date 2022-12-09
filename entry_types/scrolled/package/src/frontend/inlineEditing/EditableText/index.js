@@ -81,7 +81,7 @@ export const EditableText = React.memo(function EditableText({
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
            ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
-          <LinkTooltipProvider>
+          <LinkTooltipProvider editor={editor}>
             {selectionRect && <Selection contentElementId={contentElementId} />}
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
             <HoveringToolbar />

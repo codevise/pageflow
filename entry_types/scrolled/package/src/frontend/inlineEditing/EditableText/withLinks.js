@@ -16,7 +16,9 @@ export function withLinks(editor) {
 export function renderElementWithLinkPreview(options) {
   if (options.element.type === 'link') {
     return (
-      <LinkPreview href={options.element.href}>
+
+      <LinkPreview href={options.element.href}
+                   openInNewTab={options.element.openInNewTab}>
         {renderElement(options)}
       </LinkPreview>
     )

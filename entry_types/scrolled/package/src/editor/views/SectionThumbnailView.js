@@ -10,7 +10,7 @@ import styles from './SectionThumbnailView.module.css';
 
 export const SectionThumbnailView = Marionette.ItemView.extend({
   template: () => `
-    <div class=${styles.thumbnail} inert></div>
+    <div class=${styles.thumbnail}></div>
   `,
 
   ui: cssModulesUtils.ui(styles, 'thumbnail'),
