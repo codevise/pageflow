@@ -18,7 +18,7 @@ describe('useSelectLinkDestination', () => {
     );
   });
 
-  it('returns function returns promise which resolved LINK_DESTINATION_SELECTED message', () => {
+  it('returns function returns promise which resolves on LINK_DESTINATION_SELECTED message', () => {
     fakeParentWindow();
     window.parent.postMessage = jest.fn();
 
@@ -32,6 +32,22 @@ describe('useSelectLinkDestination', () => {
     }, '*');
 
     return expect(promise).resolves.toEqual({url: 'https://example.com'});
+  });
+
+  it('rejects promise on LINK_DESTINATION_SELECTION_ABORTED message', () => {
+    fakeParentWindow();
+    window.parent.postMessage = jest.fn();
+
+    const {result} = renderHook(() => useSelectLinkDestination());
+    const selectLinkDestination = result.current;
+    const promise = selectLinkDestination();
+
+    window.postMessage({
+      type: 'LINK_DESTINATION_SELECTION_ABORTED',
+      payload: {}
+    }, '*');
+
+    return expect(promise).rejects.toEqual(undefined);
   });
 
   it('ignores other messages send to window', () => {

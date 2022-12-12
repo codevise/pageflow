@@ -12,7 +12,8 @@ describe('SelectLinkDestinationDialogView', () => {
     'pageflow_scrolled.editor.selectable_section_item.title': 'Select section',
     'pageflow_scrolled.editor.select_link_destination.enter_url': 'Enter url',
     'pageflow_scrolled.editor.select_link_destination.open_in_new_tab': 'Open in new tab',
-    'pageflow_scrolled.editor.select_link_destination.create': 'Create link'
+    'pageflow_scrolled.editor.select_link_destination.create': 'Create link',
+    'pageflow_scrolled.editor.select_link_destination.cancel': 'Cancel'
   });
 
   function render(view) {
@@ -101,5 +102,22 @@ describe('SelectLinkDestinationDialogView', () => {
       href: 'https://example.com',
       openInNewTab: true
     });
+  });
+
+  it('invokes onAbort callback on close', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed()
+    });
+    const listener = jest.fn();
+    const view = new SelectLinkDestinationDialogView({
+      entry,
+      onAbort: listener
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = render(view);
+    await user.click(getByRole('button', {name: 'Cancel'}));
+
+    expect(listener).toHaveBeenCalled();
   });
 });

@@ -103,7 +103,7 @@ function handleButtonClick(editor, format, selectLinkDestination) {
     else {
       selectLinkDestination().then(({href, openInNewTab}) => {
         wrapLink(editor, href, openInNewTab);
-      });
+      }, () => {});
     }
   }
   else {
