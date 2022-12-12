@@ -16,11 +16,11 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
       <div class="editor ${dialogViewStyles.box} ${styles.box}">
         <h1 class="${dialogViewStyles.header}">${I18n.t('pageflow_scrolled.editor.select_link_destination.header')}</h1>
 
-        <div class="${styles.urlContainer} configuration_editor_tab">
+        <form class="${styles.urlContainer} configuration_editor_tab">
           <div><button class="${styles.createButton}">
             ${I18n.t('pageflow_scrolled.editor.select_link_destination.create')}
           </button></div>
-        </div>
+        </form>
 
         <div class="${styles.or}">
           ${I18n.t('pageflow_scrolled.editor.select_link_destination.or')}
@@ -31,7 +31,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
         <div class="${styles.outlineContainer}"></div>
 
         <div class="${dialogViewStyles.footer}">
-          <button class="${dialogViewStyles.close} ${styles.close}">
+          <button type="submit" class="${dialogViewStyles.close} ${styles.close}">
             ${I18n.t('pageflow_scrolled.editor.select_link_destination.cancel')}
           </button>
         </div>
@@ -44,17 +44,27 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
   mixins: [dialogView],
 
   events: cssModulesUtils.events(styles, {
-    'click createButton': function() {
-      const link = {href: this.externalLink.get('url')};
-
-      if (this.externalLink.get('openInNewTab')) {
-        link.openInNewTab = true;
-      }
-
-      this.options.onSelect(link);
-      this.close();
+    'submit urlContainer': function(event) {
+      event.preventDefault();
+      this.createExternalLink();
     }
   }),
+
+  createExternalLink() {
+    if (!this.externalLink.get('url')) {
+      this.$el.find('input[type=text]').focus();
+      return;
+    }
+
+    const link = {href: this.externalLink.get('url')};
+
+    if (this.externalLink.get('openInNewTab')) {
+      link.openInNewTab = true;
+    }
+
+    this.options.onSelect(link);
+    this.close();
+  },
 
   onRender() {
     this.externalLink = new Backbone.Model();
