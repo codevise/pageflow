@@ -1,0 +1,22 @@
+de:
+  pageflow_scrolled:
+    editor:
+      select_link_destination:
+        header: "Link erstellen"
+        enter_url: "Verwende eine URL als Ziel"
+        open_in_new_tab: "In neuem Tab öffnen"
+        or: "oder"
+        select_chapter_or_section: "Wähle ein Kapitel oder einen Abschnitt als Ziel aus"
+        create: "Erstellen"
+        cancel: "Abbrechen"
+      selectable_section_item:
+        title: "Abschnitt auswählen"
+      selectable_chapter_item:
+        title: "Kapitel auswählen"
+    inline_editing:
+      link_tooltip:
+        chapter_number: "Kapitel %{number}"
+        opens_in_new_tab: "Öffnet in neuem Tab"
+        opens_in_same_tab: "Öffnet außerhalb des Editors im selben Tab"
+        visit_chapter: "Gehe zu Kapitel"
+        visit_section: "Gehe zu Abschnitt"

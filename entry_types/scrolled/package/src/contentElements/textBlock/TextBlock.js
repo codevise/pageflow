@@ -14,15 +14,15 @@ export function TextBlock(props) {
   const dark = useDarkBackground();
   const {t} = useI18n({locale: 'ui'});
 
-  return (
-    <div className={classNames(styles.text,
+  const className = classNames(styles.text,
                                {[styles.darkBackground]: dark},
-                               styles[`layout-${props.sectionProps.layout}`])}>
-      <EditableText value={props.configuration.value}
-                    contentElementId={props.contentElementId}
-                    selectionRect={true}
-                    placeholder={t('pageflow_scrolled.inline_editing.type_text')}
-                    onChange={value => updateConfiguration({value})} />
-    </div>
-    );
+                               styles[`layout-${props.sectionProps.layout}`]);
+  return (
+    <EditableText value={props.configuration.value}
+                  contentElementId={props.contentElementId}
+                  className={className}
+                  selectionRect={true}
+                  placeholder={t('pageflow_scrolled.inline_editing.type_text')}
+                  onChange={value => updateConfiguration({value})} />
+  );
 }

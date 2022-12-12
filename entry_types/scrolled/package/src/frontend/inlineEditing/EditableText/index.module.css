@@ -63,9 +63,7 @@
   border-left: solid 4px transparent;
 }
 
-.linkTooltip a,
-.linkTooltip button,
-.linkTooltip input {
+.linkTooltip a {
   color: #fff;
   background-color: transparent;
   border: 0;
@@ -73,15 +71,31 @@
   padding: 10px 10px;
 }
 
-.linkTooltip input {
-  outline: none;
-}
-
-.linkTooltip button {
-  border: 0;
-  cursor: pointer;
-}
-
 .linkTooltip svg {
   padding-left: 7px;
+}
+
+.linkTooltipThumbnail {
+  width: 200px;
+  height: 120px;
+  position: relative;
+  margin: 5px;
+}
+
+.linkTooltipThumbnailClickMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.linkTooltipNewTab {
+  opacity: 0.7;
+  padding: 0 10px 10px;
+  text-decoration: none;
+}
+
+.linkTooltipChapterNumber {
+  font-weight: bold;
 }

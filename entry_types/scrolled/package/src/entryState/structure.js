@@ -157,6 +157,14 @@ export function useSectionContentElements({sectionId}) {
   }));
 }
 
+export function useChapter({permaId}) {
+  const chapters = useChapters();
+
+  return useMemo(() =>
+    chapters.find(chapter => chapter.permaId === permaId)
+  , [chapters, permaId]);
+};
+
 export function useChapters() {
   const chapters = useEntryStateCollectionItems('chapters');
 

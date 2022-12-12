@@ -11,19 +11,21 @@ import {StaticPreview} from './useScrollPositionLifecycle';
 import contentStyles from './Content.module.css';
 import styles from './SectionThumbnail.module.css';
 
-export function SectionThumbnail({seed, ...props}) {
+export function StandaloneSectionThumbnail({seed, ...props}) {
   return (
     <RootProviders seed={seed}>
-      <Inner {...props} />
+      <SectionThumbnail {...props} />
     </RootProviders>
   );
 }
 
-function Inner({sectionPermaId, subscribe, scale}) {
+export function SectionThumbnail({sectionPermaId, subscribe, scale}) {
   const dispatch = useEntryStateDispatch();
 
   useEffect(() => {
-    return subscribe(dispatch);
+    if (subscribe) {
+      return subscribe(dispatch);
+    }
   }, [subscribe, dispatch])
 
   const section = useSection({sectionPermaId});
@@ -35,13 +37,15 @@ function Inner({sectionPermaId, subscribe, scale}) {
         <Measure client>
           {({measureRef, contentRect}) =>
             <FullscreenDimensionProvider {...clientDimensions(contentRect, scaleFactor)}>
-              <div ref={measureRef} className={styles.crop}>
+              <div ref={measureRef} className={styles.crop} inert="">
                 <div className={classNames({[styles.scale]: scale})}>
                   <div className={contentStyles.Content}
                        style={viewportUnitCustomProperties(
                          clientDimensions(contentRect, scaleFactor)
                        )}>
-                    <Section state="active" section={{...section, transition: 'preview'}} />
+                    <Section state="active"
+                             domIdPrefix="section-preview"
+                             section={{...section, transition: 'preview'}} />
                   </div>
                 </div>
               </div>
@@ -60,7 +64,7 @@ function Inner({sectionPermaId, subscribe, scale}) {
   }
 }
 
-Inner.defaultProps = {
+SectionThumbnail.defaultProps = {
   scale: true,
   subscribe: () => {}
 }

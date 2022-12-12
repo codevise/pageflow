@@ -18,7 +18,7 @@ import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
 import {getAppearanceComponents} from './appearance';
 
 const Section = withInlineEditingDecorator('SectionDecorator', function Section({
-  section, contentElements, state, isScrollTarget, onActivate
+  section, contentElements, state, isScrollTarget, onActivate, domIdPrefix
 }) {
   const {
     useBackdrop,
@@ -40,7 +40,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
   });
 
   return (
-    <section id={`section-${section.permaId}`}
+    <section id={`${domIdPrefix}-${section.permaId}`}
              ref={ref}
              className={classNames(styles.Section,
                                    transitionStyles.section,
@@ -61,6 +61,10 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
     </section>
   );
 });
+
+Section.defaultProps = {
+  domIdPrefix: 'section'
+};
 
 function SectionContents({
   section, backdrop, contentElements, state, transitionStyles

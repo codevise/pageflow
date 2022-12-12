@@ -15,7 +15,7 @@ import {
 describe('TypographyVariantSelectInputView', () => {
   const {render} = useReactBasedBackboneViews();
 
-  it('renders items with previews', () => {
+  it('renders items with previews', async () => {
     frontend.contentElementTypes.register('test', {
       component: function({configuration}) {
         return `This element uses variant ${configuration.variant}.`;
@@ -60,8 +60,9 @@ describe('TypographyVariantSelectInputView', () => {
       }
     });
 
+    const user = userEvent.setup();
     const {getByRole} = render(inputView);
-    userEvent.click(getByRole('button', {name: 'Default'}));
+    await user.click(getByRole('button', {name: 'Default'}));
 
     expect(getByRole('option', {name: 'Default'}))
       .toHaveTextContent('This element uses variant default.');

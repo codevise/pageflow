@@ -159,12 +159,8 @@ main.ui-layout-pane {
   border-bottom-right-radius: rounded(lg);
 }
 
-main > div {
+#entry_preview {
   height: 100%;
-
-  > .container {
-    height: 100%;
-  }
 }
 
 #help_entries_seed {

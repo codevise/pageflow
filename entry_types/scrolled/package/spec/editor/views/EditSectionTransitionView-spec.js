@@ -1,7 +1,7 @@
 import {EditSectionTransitionView} from 'editor/views/EditSectionTransitionView';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {useFakeTranslations, setupGlobals} from 'pageflow/testHelpers';
-import {normalizeSeed, factories} from 'support';
+import {normalizeSeed, factories, useFakeXhr} from 'support';
 import 'editor/config';
 
 import {within} from '@testing-library/dom';
@@ -25,6 +25,8 @@ describe('EditSectionTransitionView', () => {
     [`${prefix}.values.scroll`]: 'Scroll',
     [`${prefix}.values.beforeAfter`]: 'Before After'
   });
+
+  useFakeXhr();
 
   it('offers fade transtions if both adjacent sections have full height', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
@@ -68,7 +70,7 @@ describe('EditSectionTransitionView', () => {
     expect(getByLabelText('Scroll')).toBeEnabled();
   });
 
-  it('restores fade variant when toggling to other transition and back to fade', () => {
+  it('restores fade variant when toggling to other transition and back to fade', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
         sections: [
@@ -82,16 +84,17 @@ describe('EditSectionTransitionView', () => {
       entry
     });
 
+    const user = userEvent.setup();
     const {getByLabelText} = within(view.render().el);
-    userEvent.click(getByLabelText('Fade background and contents'));
-    userEvent.click(getByLabelText('Before After'));
-    userEvent.click(getByLabelText('Fade'));
+    await user.click(getByLabelText('Fade background and contents'));
+    await user.click(getByLabelText('Before After'));
+    await user.click(getByLabelText('Fade'));
 
     expect(getByLabelText('Fade background and contents')).toBeChecked();
 
-    userEvent.click(getByLabelText('Fade background only'));
-    userEvent.click(getByLabelText('Before After'));
-    userEvent.click(getByLabelText('Fade'));
+    await user.click(getByLabelText('Fade background only'));
+    await user.click(getByLabelText('Before After'));
+    await user.click(getByLabelText('Fade'));
 
     expect(getByLabelText('Fade background only')).toBeChecked();
   });
@@ -140,7 +143,7 @@ describe('EditSectionTransitionView', () => {
     expect(getByLabelText('Use Fade background only by default')).toBeChecked();
   });
 
-  it('allows setting default transition', () => {
+  it('allows setting default transition', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
         sections: [
@@ -154,8 +157,9 @@ describe('EditSectionTransitionView', () => {
       entry
     });
 
+    const user = userEvent.setup();
     const {getByTitle} = within(view.render().el);
-    userEvent.click(getByTitle('Use Before After by default'));
+    await user.click(getByTitle('Use Before After by default'));
 
     expect(entry.metadata.configuration.get('defaultTransition')).toEqual('beforeAfter');
   });

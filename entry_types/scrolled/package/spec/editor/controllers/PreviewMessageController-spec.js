@@ -1,11 +1,13 @@
 import 'editor/config';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {PreviewMessageController} from 'editor/controllers/PreviewMessageController';
-import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView'
+import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView';
+import {SelectLinkDestinationDialogView} from 'editor/views/SelectLinkDestinationDialogView';
 import {
   postInsertContentElementMessage,
   postUpdateContentElementMessage,
-  postUpdateTransientContentElementStateMessage
+  postUpdateTransientContentElementStateMessage,
+  postSelectLinkDestinationMessage
 } from 'frontend/inlineEditing/postMessage';
 import {setupGlobals} from 'pageflow/testHelpers';
 import {useFakeXhr, normalizeSeed, factories, createIframeWindow} from 'support';
@@ -265,6 +267,64 @@ describe('PreviewMessageController', () => {
       jest.spyOn(InsertContentElementDialogView, 'show').mockImplementation(resolve);
       postInsertContentElementMessage({id: 1, at: 'split', splitPoint: 3});
     })).resolves.toEqual({entry, editor, insertOptions: {id: 1, at: 'split', splitPoint: 3}});
+  });
+
+  it('displays link destination dialog on SELECT_LINK_DESTINATION message', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed()
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      jest.spyOn(SelectLinkDestinationDialogView, 'show').mockImplementation(resolve);
+      postSelectLinkDestinationMessage();
+    })).resolves.toMatchObject({onSelect: expect.any(Function)});
+  });
+
+  it('sends LINK_DESTINATION_SELECTED message when callback passed to link destination dialog is invoked', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed()
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'LINK_DESTINATION_SELECTED') {
+          resolve(event.data.payload);
+        }
+      });
+
+      jest.spyOn(SelectLinkDestinationDialogView, 'show').mockImplementation(
+        ({onSelect}) => onSelect({url: 'https://example.com'})
+      );
+      postSelectLinkDestinationMessage();
+    })).resolves.toEqual({url: 'https://example.com'});
+  });
+
+  it('sends LINK_DESTINATION_SELECTION_ABORTED message when onAbort callback of dialog is invoked', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed()
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'LINK_DESTINATION_SELECTION_ABORTED') {
+          resolve(event.data.payload);
+        }
+      });
+
+      jest.spyOn(SelectLinkDestinationDialogView, 'show').mockImplementation(
+        ({onAbort}) => onAbort()
+      );
+      postSelectLinkDestinationMessage();
+    })).resolves.toEqual(undefined);
   });
 
   it('navigates to root on SELECTED message without type', () => {
