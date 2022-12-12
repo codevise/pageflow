@@ -10,8 +10,6 @@ import styles from './index.module.css';
 
 import ExternalLinkIcon from '../images/externalLink.svg';
 
-const DisabledContext = createContext();
-const StateContext = createContext();
 const UpdateContext = createContext();
 
 export function LinkTooltipProvider({editor, disabled, children}) {
@@ -54,16 +52,12 @@ export function LinkTooltipProvider({editor, disabled, children}) {
   }, []);
 
   return (
-    <DisabledContext.Provider value={disabled}>
-      <StateContext.Provider value={state}>
-        <UpdateContext.Provider value={update}>
-          <div ref={outerRef}>
-            <LinkTooltip editor={editor} />
-            {children}
-          </div>
-        </UpdateContext.Provider>
-      </StateContext.Provider>
-    </DisabledContext.Provider>
+    <UpdateContext.Provider value={update}>
+      <div ref={outerRef}>
+        <LinkTooltip editor={editor} state={state} disabled={disabled} />
+        {children}
+      </div>
+    </UpdateContext.Provider>
   );
 }
 
@@ -80,9 +74,7 @@ export function LinkPreview({href, openInNewTab, children}) {
   );
 }
 
-export function LinkTooltip({editor}) {
-  const disabled = useContext(DisabledContext);
-  const state = useContext(StateContext);
+export function LinkTooltip({editor, disabled, state}) {
   const {keep, deactivate} = useContext(UpdateContext);
 
   if (disabled || !state || (editor.selection && !Range.isCollapsed(editor.selection))) {
