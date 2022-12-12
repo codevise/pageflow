@@ -43,7 +43,9 @@ export function SectionThumbnail({sectionPermaId, subscribe, scale}) {
                        style={viewportUnitCustomProperties(
                          clientDimensions(contentRect, scaleFactor)
                        )}>
-                    <Section state="active" section={{...section, transition: 'preview'}} />
+                    <Section state="active"
+                             domIdPrefix="section-preview"
+                             section={{...section, transition: 'preview'}} />
                   </div>
                 </div>
               </div>

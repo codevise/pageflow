@@ -31,6 +31,19 @@ describe('SectionThumbnail', () => {
     expect(getByText('Some Heading')).toBeDefined();
   });
 
+  it('renders DOM id with preview prefix', () => {
+    const seed = normalizeSeed({
+      sections: [
+        {id: 3, permaId: 19},
+      ]
+    });
+    const {container} = render(
+      <StandaloneSectionThumbnail seed={seed} sectionPermaId={19} />
+    );
+
+    expect(container.querySelector('section#section-preview-19')).not.toBeNull();
+  });
+
   it('supports subscribing to collection', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
