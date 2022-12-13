@@ -79,7 +79,8 @@ export class Consent {
           vendor.paradigm === 'external opt-out' ||
           (vendor.paradigm === 'lazy opt-in' &&
            this.persistence.read(vendor) !== 'undecided');
-      })
+      }),
+      {applyDefaults: true}
     );
   }
 
@@ -190,10 +191,23 @@ export class Consent {
     return vendor;
   }
 
-  withState(vendors) {
+  withState(vendors, {applyDefaults} = {}) {
     return vendors.map((vendor) => {
-      return {...vendor, state: this.persistence.read(vendor)};
+      const state = this.persistence.read(vendor);
+
+      return {
+        ...vendor,
+        state: state === 'undecided' && applyDefaults ? this.getDefaultState(vendor) : state
+      };
     });
+  }
+
+  getDefaultState(vendor) {
+    if (vendor.paradigm === 'external opt-out') {
+      return 'accepted';
+    }
+
+    return 'undecided';
   }
 }
 

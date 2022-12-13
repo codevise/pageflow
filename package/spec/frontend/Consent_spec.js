@@ -465,14 +465,30 @@ describe('Consent', () => {
       expect(callback).not.toHaveBeenCalled();
     });
 
-    it('includes vendor in relevantVendors', () => {
+    it('includes vendor in relevantVendors as accepted by default', () => {
       const consent = new Consent(requiredOptions);
 
       consent.registerVendor('xy_analytics', {paradigm: 'external opt-out'});
       consent.closeVendorRegistration();
 
       expect(consent.relevantVendors()).toEqual([
-        expect.objectContaining({name: 'xy_analytics'})
+        expect.objectContaining({name: 'xy_analytics', state: 'accepted'})
+      ]);
+    });
+
+    it('provides consent state for relevantVendors', () => {
+      const cookies = fakeCookies();
+      const consent = new Consent({cookies});
+
+      cookies.setItem('tracking', JSON.stringify({xy_analytics: false}));
+      consent.registerVendor('xy_analytics', {
+        paradigm: 'external opt-out',
+        cookieName: 'tracking'
+      });
+      consent.closeVendorRegistration();
+
+      expect(consent.relevantVendors()).toEqual([
+        expect.objectContaining({name: 'xy_analytics', state: 'denied'})
       ]);
     });
   });
@@ -542,6 +558,20 @@ describe('Consent', () => {
     expect(result.vendors).toMatchObject([
       {name: 'old_analytics', state: 'accepted'},
       {name: 'new_analytics', state: 'undecided'}
+    ]);
+  });
+
+  it('does not report external opt-out vendors as accepted if undecided vendors exist', async () => {
+    const consent = new Consent(requiredOptions);
+    consent.registerVendor('opt_in_analytics', {paradigm: 'opt-in'});
+    consent.registerVendor('external_opt_out_analytics', {paradigm: 'external opt-out'});
+    consent.closeVendorRegistration();
+
+    const result = await consent.requested();
+
+    expect(result.vendors).toMatchObject([
+      {name: 'opt_in_analytics', state: 'undecided'},
+      {name: 'external_opt_out_analytics', state: 'undecided'}
     ]);
   });
 
