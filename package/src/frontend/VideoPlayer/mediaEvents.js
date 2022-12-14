@@ -14,6 +14,7 @@ export const mediaEvents = function(player, context) {
         currentTime: player.currentTime(),
         duration: player.duration(),
         volume: player.volume(),
+        altText: player.getMediaElement().getAttribute('alt'),
         bitrate: 3500000
       });
     }
