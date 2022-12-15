@@ -220,5 +220,12 @@ module Pageflow
         expect(subject.widgets).to include_record_with(role: 'header', type_name: 'new_widget')
       end
     end
+
+    it 'supports legacy subject type' do
+      site = create(:site)
+      widget = create(:widget, subject_id: site.id, subject_type: 'Pageflow::Theming')
+
+      expect(widget.subject).to eq(site)
+    end
   end
 end
