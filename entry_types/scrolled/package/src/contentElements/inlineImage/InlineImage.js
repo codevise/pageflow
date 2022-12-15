@@ -7,8 +7,9 @@ import {
   FitViewport,
   useContentElementLifecycle,
   useFile,
-  usePortraitOrientation
+  usePortraitOrientation,
 } from 'pageflow-scrolled/frontend';
+import { Viewer } from './Viewer';
 
 export function InlineImage({configuration}) {
   const imageFile = useFile({
@@ -42,9 +43,9 @@ function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile, con
   const imageFile = portraitOrientation && portraitImageFile ?
                     portraitImageFile : landscapeImageFile;
 
-  return (
-    <ImageWithCaption imageFile={imageFile}
-                      configuration={configuration} />
+  return (   
+      <ImageWithCaption imageFile={imageFile}
+                        configuration={configuration} />
   );
 }
 
@@ -58,11 +59,14 @@ function ImageWithCaption({imageFile, configuration}) {
       <ContentElementBox>
         <Figure caption={configuration.caption}>
           <FitViewport.Content>
-            <Image imageFile={imageFile}
-                   load={shouldLoad}
-                   structuredData={true}
-                   variant={configuration.position === 'full' ? 'large' : 'medium'}
-                   preferSvg={true} />
+            <Viewer imageFile={imageFile}
+                    shouldLoad={shouldLoad}
+                    configuration={configuration}/>           
+            {/* <Image imageFile={imageFile}
+                  load={shouldLoad}
+                  structuredData={true}
+                  variant={configuration.position === 'full' ? 'large' : 'medium'}
+                  preferSvg={true} /> */}
           </FitViewport.Content>
         </Figure>
       </ContentElementBox>
