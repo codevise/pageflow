@@ -135,11 +135,8 @@ module Pageflow
       end
 
       def permitted_attributes_for(resource_name)
-        if params[:id]
-          Pageflow.config_for(resource).admin_form_inputs.permitted_attributes_for(resource_name)
-        else
-          []
-        end
+        config = params[:id] ? Pageflow.config_for(resource) : Pageflow.config
+        config.admin_form_inputs.permitted_attributes_for(resource_name)
       end
 
       def permit_feature_states(attributes)

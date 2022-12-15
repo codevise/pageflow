@@ -1,0 +1,4 @@
+<%= admin_form_for [:admin, resource] do |f| %>
+  <%= render 'fields', f: f, account_config: Pageflow.config_for(resource.account) %>
+  <%= f.actions :submit, :cancel %>
+<% end %>

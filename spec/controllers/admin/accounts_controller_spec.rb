@@ -246,6 +246,33 @@ module Admin
       end
     end
 
+    describe '#new' do
+      render_views
+
+      it 'displays additional registered account form inputs' do
+        pageflow_configure do |config|
+          config.admin_form_inputs.register(:account, :custom_field)
+        end
+
+        sign_in(create(:user, :admin), scope: :user)
+        get :new
+
+        expect(response.body).to have_selector('[name="account[custom_field]"]')
+      end
+
+      it 'displays additional registered site form inputs' do
+        pageflow_configure do |config|
+          config.admin_form_inputs.register(:site, :custom_field)
+        end
+
+        sign_in(create(:user, :admin), scope: :user)
+        get :new
+
+        expect(response.body)
+          .to have_selector('[name="account[default_site_attributes][custom_field]"]')
+      end
+    end
+
     describe '#create' do
       render_views
 
@@ -282,6 +309,56 @@ module Admin
 
         expect(entry_templates_count).to eq(0)
       end
+
+      it 'sets custom account field registered as form input' do
+        pageflow_configure do |config|
+          config.admin_form_inputs.register(:account, :custom_field)
+        end
+
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create, params: {account: {custom_field: 'some value'}})
+
+        expect(Pageflow::Account.last.custom_field).to eq('some value')
+      end
+
+      it 'ignores account custom field not registered as form input' do
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create, params: {account: {custom_field: 'some value'}})
+
+        expect(Pageflow::Account.last.custom_field).to eq(nil)
+      end
+
+      it 'sets custom field of nested default site registered as form input' do
+        pageflow_configure do |config|
+          config.admin_form_inputs.register(:site, :custom_field)
+        end
+
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create,
+             params: {
+               account: {
+                 default_site_attributes: {
+                   custom_field: 'some value'
+                 }
+               }
+             })
+
+        expect(Pageflow::Site.last.custom_field).to eq('some value')
+      end
+
+      it 'ignores custom field of nested default site not registered as form input' do
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create,
+             params: {
+               account: {
+                 default_site_attributes: {
+                   custom_field: 'some value'
+                 }
+               }
+             })
+
+        expect(Pageflow::Site.last.custom_field).to eq(nil)
+      end
     end
 
     describe '#edit' do
@@ -300,43 +377,19 @@ module Admin
         expect(response.body).to have_selector('[name="account[custom_field]"]')
       end
 
-      it 'displays additional registered site form inputs' do
+      it 'does not display default site inputs' do
         account = create(:account)
-
-        pageflow_configure do |config|
-          config.admin_form_inputs.register(:site, :custom_field)
-        end
 
         sign_in(create(:user, :admin), scope: :user)
         get :edit, params: {id: account}
 
         expect(response.body)
-          .to have_selector('[name="account[default_site_attributes][custom_field]"]')
+          .not_to have_selector('[name="account[default_site_attributes][cname]"]')
       end
     end
 
     describe '#update' do
       render_views
-
-      it 'updates nested default_site' do
-        pageflow_configure do |config|
-          config.themes.register(:custom)
-        end
-        site = create(:site)
-        account = create(:account, default_site: site)
-
-        sign_in(create(:user, :admin), scope: :user)
-        put(:update, params: {id: account.id, account: {
-              default_site_attributes: {
-                imprint_link_url: 'http://example.com/new'
-              },
-              paged_entry_template_attributes: {
-                theme_name: 'custom'
-              }
-            }})
-
-        expect(site.reload.imprint_link_url).to eq('http://example.com/new')
-      end
 
       it 'allows admin to update feature_configuration through feature_states param' do
         account = create(:account)
@@ -456,44 +509,6 @@ module Admin
         patch(:update, params: {id: account, account: {custom_field: 'some value'}})
 
         expect(account.reload.custom_field).to eq(nil)
-      end
-
-      it 'updates custom field of nested site registered as form input' do
-        account = create(:account)
-
-        pageflow_configure do |config|
-          config.admin_form_inputs.register(:site, :custom_field)
-        end
-
-        sign_in(create(:user, :admin), scope: :user)
-        patch(:update,
-              params: {
-                id: account,
-                account: {
-                  default_site_attributes: {
-                    custom_field: 'some value'
-                  }
-                }
-              })
-
-        expect(account.default_site.reload.custom_field).to eq('some value')
-      end
-
-      it 'does not update custom field of nested site not registered as form input' do
-        account = create(:account)
-
-        sign_in(create(:user, :admin), scope: :user)
-        patch(:update,
-              params: {
-                id: account,
-                account: {
-                  default_site_attributes: {
-                    custom_field: 'some value'
-                  }
-                }
-              })
-
-        expect(account.default_site.custom_field).to eq(nil)
       end
 
       it 'redirects back to tab' do
