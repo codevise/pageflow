@@ -20,7 +20,7 @@ module Pageflow
                     allows: :publisher,
                     but_forbids: :editor,
                     of_account: -> (topic) { topic },
-                    to: :update_theming_on_entry_of,
+                    to: :update_site_on_entry_of,
                     topic: -> { create(:account) }
 
     it_behaves_like 'a membership-based permission that',
@@ -338,11 +338,11 @@ module Pageflow
     end
   end
 
-  describe '.themings_accessible' do
+  describe '.sites_accessible' do
     it 'includes all accounts for admins' do
       user = create(:user, :admin)
 
-      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).to include(create(:account))
+      expect(AccountPolicy::Scope.new(user, Account).sites_accessible).to include(create(:account))
     end
 
     it 'includes accounts with memberships with correct user, correct account and ' \
@@ -350,14 +350,14 @@ module Pageflow
       user = create(:user)
       account = create(:account, with_publisher: user)
 
-      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).sites_accessible).to include(account)
     end
 
     it 'does not include accounts with memberships with wrong entity id' do
       user = create(:user)
       account = create(:account)
 
-      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).sites_accessible).not_to include(account)
     end
 
     it 'does not include accounts with memberships with wrong user' do
@@ -365,14 +365,14 @@ module Pageflow
       wrong_user = create(:user)
       account = create(:account, with_publisher: wrong_user)
 
-      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).sites_accessible).not_to include(account)
     end
 
     it 'does not include accounts with memberships with insufficient role' do
       user = create(:user)
       account = create(:account, with_editor: user)
 
-      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).sites_accessible).not_to include(account)
     end
   end
 

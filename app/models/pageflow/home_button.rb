@@ -1,14 +1,14 @@
 module Pageflow
   class HomeButton
-    attr_reader :revision, :theming
+    attr_reader :revision, :site
 
-    def initialize(revision, theming)
+    def initialize(revision, site)
       @revision = revision
-      @theming = theming
+      @site = site
     end
 
     def url
-      revision.configuration['home_url'].presence || theming_home_button_url
+      revision.configuration['home_url'].presence || site_home_button_url
     end
 
     def enabled?
@@ -27,9 +27,9 @@ module Pageflow
 
     private
 
-    def theming_home_button_url
-      if theming.home_url.present?
-        options = Pageflow.config.theming_url_options(theming) || {}
+    def site_home_button_url
+      if site.home_url.present?
+        options = Pageflow.config.site_url_options(site) || {}
         Pageflow::Engine.routes.url_for(options.merge(controller: 'pageflow/entries',
                                                       action: 'index',
                                                       only_path: !options[:host]))

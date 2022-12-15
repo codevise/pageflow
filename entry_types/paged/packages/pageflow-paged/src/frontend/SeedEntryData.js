@@ -56,7 +56,7 @@ export const SeedEntryData = EntryData.extend({
     }, {});
   },
 
-  getThemingOption: function(name) {
+  getSiteOption: function(name) {
     return this.theme[name];
   },
 

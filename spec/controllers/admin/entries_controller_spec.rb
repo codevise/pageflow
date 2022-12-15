@@ -92,7 +92,7 @@ describe Admin::EntriesController do
     end
   end
 
-  describe '#eligible_themings_options' do
+  describe '#eligible_sites_options' do
     it 'can be filtered by account name' do
       current_user = create(:user, :admin)
       account = create(:account, name: 'one')
@@ -100,7 +100,7 @@ describe Admin::EntriesController do
       entry = create(:entry, account: account)
 
       sign_in(current_user)
-      get(:eligible_themings_options, params: {entry_id: entry.id, term: 'one'})
+      get(:eligible_sites_options, params: {entry_id: entry.id, term: 'one'})
       option_texts = json_response(path: ['results', '*', 'text'])
 
       expect(option_texts).to include('one')
@@ -485,13 +485,13 @@ describe Admin::EntriesController do
         .to have_selector('option[value="test"][selected]')
     end
 
-    it 'displays permalink inputs if theming has permalink directories' do
+    it 'displays permalink inputs if site has permalink directories' do
       user = create(:user)
       account = create(:account, with_publisher: user)
       permalink_directory = create(
         :permalink_directory,
         path: 'de/',
-        theming: account.default_theming
+        site: account.default_site
       )
 
       sign_in(user, scope: :user)
@@ -504,7 +504,7 @@ describe Admin::EntriesController do
         .to have_selector('input[name="entry[permalink_attributes][slug]"]')
     end
 
-    it 'does not display permalink inputs if theming has no permalink directories' do
+    it 'does not display permalink inputs if site has no permalink directories' do
       user = create(:user)
       create(:account, with_publisher: user)
 
@@ -531,17 +531,17 @@ describe Admin::EntriesController do
       end.not_to change { other_account.entries.count }
     end
 
-    it 'does not allow account manager to create entries with custom theming' do
-      theming = create(:theming)
+    it 'does not allow account manager to create entries with custom site' do
+      site = create(:site)
       create(:entry)
 
       user = create(:user, :manager, on: create(:account))
       sign_in(user, scope: :user)
 
-      post :create, params: {entry: attributes_for(:entry, theming_id: theming)}
+      post :create, params: {entry: attributes_for(:entry, site_id: site)}
       entry = Pageflow::Entry.last
 
-      expect(entry.theming).to eq(entry.account.default_theming)
+      expect(entry.site).to eq(entry.account.default_site)
     end
 
     it 'allows account publisher to create entries for own account' do
@@ -565,25 +565,25 @@ describe Admin::EntriesController do
       end.to change { account.entries.count }
     end
 
-    it 'allows admin to create entries with custom theming' do
-      theming = create(:theming)
+    it 'allows admin to create entries with custom site' do
+      site = create(:site)
 
       sign_in(create(:user, :admin), scope: :user)
 
-      post :create, params: {entry: attributes_for(:entry, theming_id: theming)}
+      post :create, params: {entry: attributes_for(:entry, site_id: site)}
 
       entry = Pageflow::Entry.last
 
-      expect(entry.theming).to eq(theming)
+      expect(entry.site).to eq(site)
     end
 
-    it 'sets entry theming to default theming of account' do
+    it 'sets entry site to default site of account' do
       account = create(:account)
 
       sign_in(create(:user, :admin), scope: :user)
       post :create, params: {entry: attributes_for(:entry, account_id: account)}
 
-      expect(Pageflow::Entry.last.theming).to eq(account.default_theming)
+      expect(Pageflow::Entry.last.site).to eq(account.default_site)
     end
 
     it 'allows account publisher to define custom field registered as form input' do
@@ -636,12 +636,12 @@ describe Admin::EntriesController do
       expect(Pageflow::Entry.last.type_name).to eq('paged')
     end
 
-    it 'creates permalink when theming has permalink directories' do
+    it 'creates permalink when site has permalink directories' do
       user = create(:user)
       account = create(:account, with_publisher: user)
       permalink_directory = create(
         :permalink_directory,
-        theming: account.default_theming
+        site: account.default_site
       )
 
       sign_in(user, scope: :user)
@@ -661,12 +661,12 @@ describe Admin::EntriesController do
       expect(Pageflow::Entry.last.permalink).to have_attributes(slug: 'custom-slug')
     end
 
-    it 'renders validation error if permalink directory belongs to different theming' do
+    it 'renders validation error if permalink directory belongs to different site' do
       user = create(:user)
       account = create(:account, with_publisher: user)
       create(
         :permalink_directory,
-        theming: account.default_theming
+        site: account.default_site
       )
       permalink_directory_of_other_account = create(
         :permalink_directory
@@ -775,13 +775,13 @@ describe Admin::EntriesController do
                           '[value=my-slug]')
     end
 
-    it 'displays permalink inputs if theming has permalink directories' do
+    it 'displays permalink inputs if site has permalink directories' do
       user = create(:user)
       account = create(:account, with_publisher: user)
       permalink_directory = create(
         :permalink_directory,
         path: 'de/',
-        theming: account.default_theming
+        site: account.default_site
       )
       entry = create(
         :entry,
@@ -798,7 +798,7 @@ describe Admin::EntriesController do
         .to have_selector('input[name="entry[permalink_attributes][slug]"]')
     end
 
-    it 'does not display permalink inputs if theming has no permalink directories' do
+    it 'does not display permalink inputs if site has no permalink directories' do
       user = create(:user)
       account = create(:account, with_publisher: user)
       entry = create(:entry, account: account)
@@ -850,10 +850,10 @@ describe Admin::EntriesController do
       expect(entry.reload.account).to eq(other_account)
     end
 
-    context 'without config.permissions.only_admins_may_update_theming' do
-      it 'does not change entry theming when account publisher moves entry to other account' do
+    context 'without config.permissions.only_admins_may_update_site' do
+      it 'does not change entry site when account publisher moves entry to other account' do
         pageflow_configure do |config|
-          config.permissions.only_admins_may_update_theming = false
+          config.permissions.only_admins_may_update_site = false
         end
 
         user = create(:user)
@@ -864,15 +864,15 @@ describe Admin::EntriesController do
         sign_in(user, scope: :user)
         patch :update, params: {id: entry, entry: {account_id: other_account}}
 
-        expect(entry.reload.theming).to eq(account.default_theming)
+        expect(entry.reload.site).to eq(account.default_site)
       end
     end
 
-    context 'with config.permissions.only_admins_may_update_theming' do
-      it 'updates entry theming to default theming of new account ' \
+    context 'with config.permissions.only_admins_may_update_site' do
+      it 'updates entry site to default site of new account ' \
          ' when account publisher moves entry to other account' do
         pageflow_configure do |config|
-          config.permissions.only_admins_may_update_theming = true
+          config.permissions.only_admins_may_update_site = true
         end
 
         user = create(:user)
@@ -883,29 +883,29 @@ describe Admin::EntriesController do
         sign_in(user, scope: :user)
         patch :update, params: {id: entry, entry: {account_id: other_account}}
 
-        expect(entry.reload.theming).to eq(other_account.default_theming)
+        expect(entry.reload.site).to eq(other_account.default_site)
       end
 
-      it 'does not change custom entry theming when account publisher updates entry ' \
+      it 'does not change custom entry site when account publisher updates entry ' \
          'without changing the account' do
         pageflow_configure do |config|
-          config.permissions.only_admins_may_update_theming = true
+          config.permissions.only_admins_may_update_site = true
         end
 
         user = create(:user)
         account = create(:account, with_publisher: user)
-        custom_theming = create(:theming)
-        entry = create(:entry, account: account, theming: custom_theming)
+        custom_site = create(:site)
+        entry = create(:entry, account: account, site: custom_site)
 
         sign_in(user, scope: :user)
         patch :update, params: {id: entry, entry: {title: 'Some new title'}}
 
-        expect(entry.reload.theming).to eq(custom_theming)
+        expect(entry.reload.site).to eq(custom_site)
       end
 
-      it 'does not change entry theming when admin moves entry to other account' do
+      it 'does not change entry site when admin moves entry to other account' do
         pageflow_configure do |config|
-          config.permissions.only_admins_may_update_theming = true
+          config.permissions.only_admins_may_update_site = true
         end
 
         user = create(:user, :admin)
@@ -916,7 +916,7 @@ describe Admin::EntriesController do
         sign_in(user, scope: :user)
         patch :update, params: {id: entry, entry: {account_id: other_account}}
 
-        expect(entry.reload.theming).to eq(account.default_theming)
+        expect(entry.reload.site).to eq(account.default_site)
       end
     end
 
@@ -931,55 +931,55 @@ describe Admin::EntriesController do
       expect(entry.reload.account).to eq(other_account)
     end
 
-    it 'does not allow entry manager and account editor to change theming' do
+    it 'does not allow entry manager and account editor to change site' do
       user = create(:user)
       account = create(:account, with_editor: user)
-      theming = create(:theming, account: account)
-      other_theming = create(:theming, account: account)
-      entry = create(:entry, theming: theming, account: account, with_manager: user)
+      site = create(:site, account: account)
+      other_site = create(:site, account: account)
+      entry = create(:entry, site: site, account: account, with_manager: user)
 
       sign_in(user, scope: :user)
-      patch :update, params: {id: entry, entry: {theming_id: other_theming}}
+      patch :update, params: {id: entry, entry: {site_id: other_site}}
 
-      expect(entry.reload.theming).to eq(theming)
+      expect(entry.reload.site).to eq(site)
     end
 
-    it 'allows account publisher to change theming' do
+    it 'allows account publisher to change site' do
       user = create(:user)
       account = create(:account, with_publisher: user)
-      theming = create(:theming, account: account)
-      other_theming = create(:theming, account: account)
-      entry = create(:entry, theming: theming, account: account)
+      site = create(:site, account: account)
+      other_site = create(:site, account: account)
+      entry = create(:entry, site: site, account: account)
 
       sign_in(user, scope: :user)
-      patch :update, params: {id: entry, entry: {theming_id: other_theming}}
+      patch :update, params: {id: entry, entry: {site_id: other_site}}
 
-      expect(entry.reload.theming).to eq(other_theming)
+      expect(entry.reload.site).to eq(other_site)
     end
 
-    it 'does not allow account publisher to switch to theming of other account they manage' do
+    it 'does not allow account publisher to switch to site of other account they manage' do
       user = create(:user)
       account = create(:account, with_publisher: user)
       other_account = create(:account, with_manager: user)
-      theming = create(:theming, account: account)
-      other_theming = create(:theming, account: other_account)
-      entry = create(:entry, theming: theming, account: account)
+      site = create(:site, account: account)
+      other_site = create(:site, account: other_account)
+      entry = create(:entry, site: site, account: account)
 
       sign_in(user, scope: :user)
-      patch :update, params: {id: entry, entry: {theming_id: other_theming}}
+      patch :update, params: {id: entry, entry: {site_id: other_site}}
 
-      expect(entry.reload.theming).to eq(theming)
+      expect(entry.reload.site).to eq(site)
     end
 
-    it 'allows admin to change theming' do
-      theming = create(:theming)
-      other_theming = create(:theming)
-      entry = create(:entry, theming: theming)
+    it 'allows admin to change site' do
+      site = create(:site)
+      other_site = create(:site)
+      entry = create(:entry, site: site)
 
       sign_in(create(:user, :admin), scope: :user)
-      patch :update, params: {id: entry, entry: {theming_id: other_theming}}
+      patch :update, params: {id: entry, entry: {site_id: other_site}}
 
-      expect(entry.reload.theming).to eq(other_theming)
+      expect(entry.reload.site).to eq(other_site)
     end
 
     it 'does not allow entry manager and account editor to change folder' do
@@ -1161,7 +1161,7 @@ describe Admin::EntriesController do
       account = create(:account, with_publisher: user)
       permalink_directory = create(
         :permalink_directory,
-        theming: account.default_theming
+        site: account.default_site
       )
       entry = create(
         :entry,
@@ -1416,9 +1416,9 @@ describe Admin::EntriesController do
       expect(response.status).to eq(403)
     end
 
-    it 'renders inputs without layout if theming has permalink directories' do
+    it 'renders inputs without layout if site has permalink directories' do
       account = create(:account)
-      create(:permalink_directory, theming: account.default_theming)
+      create(:permalink_directory, site: account.default_site)
 
       sign_in(create(:user, :publisher, on: account))
       get(:permalink_inputs, params: {entry: {account_id: account}})
@@ -1430,18 +1430,18 @@ describe Admin::EntriesController do
         .to have_selector('select[name="entry[permalink_attributes][directory_id]"]')
     end
 
-    it 'allows passing theming' do
+    it 'allows passing site' do
       user = create(:user)
       account = create(:account, with_publisher: user)
       other_account = create(:account, with_publisher: user)
-      create(:permalink_directory, theming: other_account.default_theming)
+      create(:permalink_directory, site: other_account.default_site)
 
       sign_in(user)
       get(:permalink_inputs,
           params: {
             entry: {
               account_id: account,
-              theming_id: other_account.default_theming
+              site_id: other_account.default_site
             }
           })
 
@@ -1451,7 +1451,7 @@ describe Admin::EntriesController do
 
     it 'prefills slug based on passed title' do
       account = create(:account)
-      create(:permalink_directory, theming: account.default_theming)
+      create(:permalink_directory, site: account.default_site)
 
       sign_in(create(:user, :publisher, on: account))
       get(:permalink_inputs,

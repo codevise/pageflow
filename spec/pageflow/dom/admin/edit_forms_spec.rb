@@ -27,15 +27,15 @@ describe 'edit form dominos', type: :feature do
     expect(form).to have_input_for_attribute(:custom_field)
   end
 
-  it 'allows reading row contents of theming attributes form' do
+  it 'allows reading row contents of site attributes form' do
     account = create(:account)
 
     pageflow_configure do |config|
-      config.admin_form_inputs.register(:theming, :custom_field)
+      config.admin_form_inputs.register(:site, :custom_field)
     end
 
     Pageflow::Dom::Admin.sign_in_as(:admin)
-    form = Pageflow::Dom::Admin::ThemingEditForm.for(account.default_theming)
+    form = Pageflow::Dom::Admin::SiteEditForm.for(account.default_site)
 
     expect(form).to have_input_for_attribute(:custom_field)
   end

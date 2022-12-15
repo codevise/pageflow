@@ -1,7 +1,7 @@
 module Pageflow
-  class CnameThemingRequestScope
-    def call(themings, request)
-      themings.where(<<-SQL, host: request.host)
+  class CnameSiteRequestScope
+    def call(sites, request)
+      sites.where(<<-SQL, host: request.host)
         cname = :host OR
         FIND_IN_SET(
           :host,

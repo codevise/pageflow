@@ -21,22 +21,22 @@ module Pageflow
         expect(result).to eq(account)
       end
 
-      it 'creates default theming' do
+      it 'creates default site' do
         account = SeedsDsl.account(name: 'example')
 
-        expect(account.default_theming).to be_persisted
+        expect(account.default_site).to be_persisted
       end
 
-      it 'allows overriding default theming' do
+      it 'allows overriding default site' do
         account = SeedsDsl.account(name: 'example') do |created_account|
           created_account.name = 'example'
 
-          SeedsDsl.build_default_theming_for(created_account) do |theming|
-            theming.imprint_link_label = 'Other Text'
+          SeedsDsl.build_default_site_for(created_account) do |site|
+            site.imprint_link_label = 'Other Text'
           end
         end
 
-        expect(account.default_theming.imprint_link_label).to eq('Other Text')
+        expect(account.default_site.imprint_link_label).to eq('Other Text')
       end
     end
 
@@ -107,13 +107,13 @@ module Pageflow
 
       it 'allows overriding attributes in block' do
         account = create(:account)
-        theming = create(:theming, account: account)
+        site = create(:site, account: account)
 
         entry = SeedsDsl.sample_entry(account: account, title: 'Example') do |created_entry|
-          created_entry.theming = theming
+          created_entry.site = site
         end
 
-        expect(entry.theming).to eq(theming)
+        expect(entry.site).to eq(site)
       end
     end
 

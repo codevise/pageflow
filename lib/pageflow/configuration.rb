@@ -151,21 +151,21 @@ module Pageflow
     attr_accessor :editor_routing_constraint
 
     # Either a lambda or an object with a `call` method taking two
-    # parameters: An `ActiveRecord` scope of {Pageflow::Theming} records
+    # parameters: An `ActiveRecord` scope of {Pageflow::Site} records
     # and an {ActionDispatch::Request} object. Has to return the scope
-    # in which to find themings.
+    # in which to find sites.
     #
-    # Defaults to {CnameThemingRequestScope} which finds themings
+    # Defaults to {CnameSiteRequestScope} which finds sites
     # based on the request subdomain. Can be used to alter the logic
-    # of finding a theming whose home_url to redirect to when visiting
+    # of finding a site whose home_url to redirect to when visiting
     # the public root path.
     #
     # Example:
     #
-    #     config.theming_request_scope = lambda do |themings, request|
-    #       themings.where(id: Pageflow::Account.find_by_name!(request.subdomain).default_theming_id)
+    #     config.site_request_scope = lambda do |sites, request|
+    #       sites.where(id: Pageflow::Account.find_by_name!(request.subdomain).default_site_id)
     #     end
-    attr_accessor :theming_request_scope
+    attr_accessor :site_request_scope
 
     # Either a lambda or an object with a `call` method taking two
     # parameters: An `ActiveRecord` scope of `Pageflow::Entry` records
@@ -196,7 +196,7 @@ module Pageflow
     attr_accessor :public_entry_redirect
 
     # Either a lambda or an object with a `call` method taking a
-    # {Theming} as paramater and returing a hash of options used to
+    # {Site} as paramater and returing a hash of options used to
     # construct the url of a published entry.
     #
     # Can be used to change the host of the url under which entries
@@ -204,13 +204,13 @@ module Pageflow
     #
     # Example:
     #
-    #     config.public_entry_url_options = lambda do |theming|
-    #       {host: "#{theming.account.name}.example.com"}
+    #     config.public_entry_url_options = lambda do |site|
+    #       {host: "#{site.account.name}.example.com"}
     #     end
     attr_accessor :public_entry_url_options
 
     # Either a lambda or an object with a `call` method taking a
-    # {Theming} as paramater and returing a hash of options used to
+    # {Site} as paramater and returing a hash of options used to
     # construct the embed url of a published entry.
     attr_accessor :entry_embed_url_options
 
@@ -281,7 +281,7 @@ module Pageflow
     # @since 0.10
     attr_accessor :available_public_locales
 
-    # Array of sharing providers which can be configured on theming level.
+    # Array of sharing providers which can be configured on site level.
     # Defaults to `[:facebook, :twitter, :linked_in, :whats_app, :telegram, :email]`.
     # @since 14.1
     attr_accessor :available_share_providers
@@ -310,7 +310,7 @@ module Pageflow
 
     # Share provider defaults.
     #
-    # Default share providers for new themings.
+    # Default share providers for new sites.
     # Must be a subset or equal to `available_share_providers`
     # @since 14.1
     attr_accessor :default_share_providers
@@ -402,10 +402,10 @@ module Pageflow
       @thumbnail_styles = Defaults::THUMBNAIL_STYLES.dup
       @css_rendered_thumbnail_styles = Defaults::CSS_RENDERED_THUMBNAIL_STYLES.dup
 
-      @theming_request_scope = CnameThemingRequestScope.new
+      @site_request_scope = CnameSiteRequestScope.new
       @public_entry_request_scope = lambda { |entries, request| entries }
       @public_entry_redirect = ->(_entry, _request) { nil }
-      @public_entry_url_options = Pageflow::ThemingsHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
+      @public_entry_url_options = Pageflow::SitesHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
       @entry_embed_url_options = {protocol: 'https'}
 
       @transform_theme_customization_overrides = ->(overrides, _entry) { overrides }
@@ -515,9 +515,9 @@ module Pageflow
     end
 
     # @api private
-    def theming_url_options(theming)
+    def site_url_options(site)
       options = public_entry_url_options
-      options.respond_to?(:call) ? options.call(theming) : options
+      options.respond_to?(:call) ? options.call(site) : options
     end
 
     # @api private

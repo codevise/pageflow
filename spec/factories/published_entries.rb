@@ -4,7 +4,7 @@ module Pageflow
       transient do
         title
         account
-        theming
+        site
         type_name { 'paged' }
         revision_attributes { {} }
         permalink_attributes { nil }
@@ -18,7 +18,7 @@ module Pageflow
                                   :published,
                                   title: title,
                                   account: account,
-                                  theming: theming,
+                                  site: site,
                                   type_name: type_name,
                                   published_revision_attributes: revision_attributes,
                                   permalink_attributes: permalink_attributes,

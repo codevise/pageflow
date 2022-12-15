@@ -3,7 +3,7 @@ import {PreviewEntryData} from 'pageflow-paged/editor'
 import * as support from '$support';
 
 describe('pageflow.PreviewEntryData', () => {
-  describe('#getThemingOption', () => {
+  describe('#getSiteOption', () => {
     it('returns option value by name', () => {
       var entry = support.factories.entry(
         {
@@ -22,7 +22,7 @@ describe('pageflow.PreviewEntryData', () => {
         entry: entry
       });
 
-      var result = entryData.getThemingOption('page_change_by_scrolling');
+      var result = entryData.getSiteOption('page_change_by_scrolling');
 
       expect(result).toBe(true);
     });

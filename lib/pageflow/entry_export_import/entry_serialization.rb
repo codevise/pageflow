@@ -44,7 +44,7 @@ module Pageflow
       def create_entry(data, options)
         entry_data = data.except(*DEFAULT_REMOVAL_COLUMNS)
         entry_data['account_id'] = options[:account].id
-        entry_data['theming_id'] = options[:account].default_theming.id
+        entry_data['site_id'] = options[:account].default_site.id
         Entry.create!(entry_data.merge(skip_draft_creation: true))
       end
 

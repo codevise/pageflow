@@ -19,7 +19,7 @@ feature 'as account manager, editing an entry template' do
     expect(Dom::Admin::AccountPage.first.default_keywords).to eq('codevise, solutions')
   end
 
-  scenario 'changing theming' do
+  scenario 'changing site' do
     pageflow_configure do |config|
       config.themes.register(:foo)
       config.themes.register(:bar)

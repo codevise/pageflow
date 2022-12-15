@@ -3,7 +3,7 @@ FactoryBot.define do
     name { 'Account Name' }
 
     after(:build) do |account|
-      account.default_theming ||= build(:theming, account: account)
+      account.default_site ||= build(:site, account: account)
     end
 
     trait(:with_first_paged_entry_template) do

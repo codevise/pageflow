@@ -1,0 +1,66 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/account:
+        default_theming: DELETED
+        default_site: Standard-Site
+      pageflow/site:
+        additional_cnames: Zusätzliche CNAMES
+        cname: CNAME
+        copyright_link_label: Copyright-Link Text
+        copyright_link_url: Copyright-Link URL
+        home_url: Redirect URL
+        imprint_link_label: Impressum-Link Text
+        imprint_link_url: Impressum-Link URL
+        privacy_link_url: Datenschutz-Link URL
+        share_providers: Standard Share Links
+      pageflow/theming:
+        additional_cnames: DELETED
+        cname: DELETED
+        copyright_link_label: DELETED
+        copyright_link_url: DELETED
+        home_url: DELETED
+        imprint_link_label: DELETED
+        imprint_link_url: DELETED
+        privacy_link_url: DELETED
+        share_providers: DELETED
+    models:
+      pageflow/theming:
+        one: DELETED
+        other: DELETED
+      pageflow/site:
+        one: Site
+        other: Sites
+      theming:
+        one: DELETED
+        other: DELETED
+      site:
+        one: Site
+        other: Sites
+  pageflow:
+    admin:
+      accounts:
+        theming_defaults_inline_help: DELETED
+        site_defaults_inline_help: Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
+      sites:
+        additional_cnames_hint: Kommaseparierte Liste von weiteren CNAMES. Ausschließlich zur Auswahl der Redirect URL genutzt.
+        cname_hint: Wird in Share Links verwendet.
+        default_author_hint: Voreinstellung 'author' Meta-Feld für Eintrage
+        default_keywords_hint: Voreinstellung 'keywords' Meta-Feld für Eintrage
+        default_locale_hint: Voreinstellung Sprache für Einträge
+        default_publisher_hint: Voreinstellung 'publisher' Meta-Feld für Eintrage
+        home_url_hint: Wird einer der obigen CNAMES ohne Pfad in der URL verwendet, wird zu dieser URL umgeleitet. Standard Link Ziel des Home Buttons.
+        name: "%{account_name}"
+        remove_logo: Logo entfernen
+        show: Anzeigen
+      themings:
+        additional_cnames_hint: DELETED
+        cname_hint: DELETED
+        default_author_hint: DELETED
+        default_keywords_hint: DELETED
+        default_locale_hint: DELETED
+        default_publisher_hint: DELETED
+        home_url_hint: DELETED
+        name: DELETED
+        remove_logo: DELETED
+        show: DELETED

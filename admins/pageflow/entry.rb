@@ -99,13 +99,13 @@ module Pageflow
                                   .order(:name)
                               end)
 
-    searchable_select_options(name: :eligible_themings,
+    searchable_select_options(name: :eligible_sites,
                               text_attribute: :name,
                               scope: lambda do |params|
                                 entry = Entry.find(params[:entry_id])
-                                ThemingPolicy::Scope
-                                  .new(current_user, Theming)
-                                  .themings_allowed_for(entry.account)
+                                SitePolicy::Scope
+                                  .new(current_user, Site)
+                                  .sites_allowed_for(entry.account)
                               end,
                               filter: lambda do |term, scope|
                                 scope.ransack(account_name_cont: term).result
@@ -197,7 +197,7 @@ module Pageflow
       helper FoldersHelper
       helper EntriesHelper
       helper EmbedCodeHelper
-      helper ThemingsHelper
+      helper SitesHelper
       helper Admin::EntriesHelper
       helper Admin::FeaturesHelper
       helper Admin::FormHelper
@@ -218,8 +218,8 @@ module Pageflow
       end
 
       before_update do |entry|
-        if entry.account_id_changed? && !authorized?(:update_theming_on, resource)
-          entry.theming = entry.account.default_theming
+        if entry.account_id_changed? && !authorized?(:update_site_on, resource)
+          entry.site = entry.account.default_site
         end
       end
 
@@ -232,7 +232,7 @@ module Pageflow
       def scoped_collection
         result =
           super
-          .includes(:theming,
+          .includes(:site,
                     {permalink: :directory},
                     :account,
                     {memberships: :user},
@@ -256,15 +256,15 @@ module Pageflow
 
       def apply_entry_defaults(entry)
         entry.account ||= account_policy_scope.entry_creatable.first || Account.first
-        entry.theming ||= entry.account.default_theming
+        entry.site ||= entry.account.default_site
       end
 
       def account_policy_scope
         AccountPolicy::Scope.new(current_user, Account)
       end
 
-      def theming_policy_scope
-        ThemingPolicy::Scope.new(current_user, Theming)
+      def site_policy_scope
+        SitePolicy::Scope.new(current_user, Site)
       end
 
       def permitted_attributes
@@ -286,10 +286,10 @@ module Pageflow
         if params[:id]
           accounts = resource.account
         else
-          accounts = account_policy_scope.themings_accessible
+          accounts = account_policy_scope.sites_accessible
         end
 
-        result += permitted_theming_attributes(accounts)
+        result += permitted_site_attributes(accounts)
 
         result
       end
@@ -301,26 +301,26 @@ module Pageflow
         end
       end
 
-      def permitted_theming_attributes(accounts)
-        if (create_or_new_action? || authorized?(:update_theming_on, resource)) &&
-           theming_params_present? && theming_in_allowed_themings_for?(accounts)
-          [:theming_id]
+      def permitted_site_attributes(accounts)
+        if (create_or_new_action? || authorized?(:update_site_on, resource)) &&
+           site_params_present? && site_in_allowed_sites_for?(accounts)
+          [:site_id]
         else
           []
         end
       end
 
-      def theming_params_present?
-        params[:entry] && params[:entry][:theming_id]
+      def site_params_present?
+        params[:entry] && params[:entry][:site_id]
       end
 
       def create_or_new_action?
         [:create, :new, :permalink_inputs].include?(action_name.to_sym)
       end
 
-      def theming_in_allowed_themings_for?(accounts)
-        theming_policy_scope.themings_allowed_for(accounts)
-          .include?(Theming.find(params[:entry][:theming_id]))
+      def site_in_allowed_sites_for?(accounts)
+        site_policy_scope.sites_allowed_for(accounts)
+          .include?(Site.find(params[:entry][:site_id]))
       end
 
       def permitted_account_attributes

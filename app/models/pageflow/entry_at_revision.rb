@@ -15,7 +15,7 @@ module Pageflow
 
     delegate(:id, :slug,
              :entry_type,
-             :account, :theming,
+             :account, :site,
              :permalink,
              :feature_state, :enabled_feature_names,
              :edit_lock,
@@ -47,7 +47,7 @@ module Pageflow
     end
 
     def home_button
-      HomeButton.new(revision, theming)
+      HomeButton.new(revision, site)
     end
 
     def overview_button

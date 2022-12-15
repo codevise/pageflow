@@ -1,7 +1,7 @@
 <%= admin_form_for([:admin, resource]) do |f| %>
   <%= f.inputs do %>
     <%= f.input(:title,
-                hint: @entry.theming.permalink_directories.blank? &&
+                hint: @entry.site.permalink_directories.blank? &&
                       I18n.t('pageflow.admin.entries.title_hint')) %>
 
     <% if authorized?(:update_account_on, resource) &&
@@ -16,12 +16,12 @@
                   input_html: {class: 'entry_account_input'}) %>
     <%end %>
 
-    <% if authorized?(:update_theming_on, resource) && !resource.new_record? %>
-      <%= f.input(:theming,
+    <% if authorized?(:update_site_on, resource) && !resource.new_record? %>
+      <%= f.input(:site,
                   as: :searchable_select,
                   ajax: {
                     resource: Pageflow::Entry,
-                    collection_name: :eligible_themings,
+                    collection_name: :eligible_sites,
                     params: {
                       entry_id: resource.id
                     }

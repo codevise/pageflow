@@ -96,7 +96,7 @@ module Admin
           user = create(:user)
           account = create(:account, with_manager: user)
 
-          Pageflow.config.admin_resource_tabs.register(:theming,
+          Pageflow.config.admin_resource_tabs.register(:site,
                                                        name: :some_tab,
                                                        component: tab_view_component,
                                                        required_account_role: :manager)
@@ -111,7 +111,7 @@ module Admin
             user = create(:user, :admin)
             account = create(:account)
 
-            Pageflow.config.admin_resource_tabs.register(:theming,
+            Pageflow.config.admin_resource_tabs.register(:site,
                                                          name: :some_tab,
                                                          component: tab_view_component,
                                                          admin_only: true)
@@ -125,7 +125,7 @@ module Admin
             user = create(:user)
             account = create(:account, with_manager: user)
 
-            Pageflow.config.admin_resource_tabs.register(:theming,
+            Pageflow.config.admin_resource_tabs.register(:site,
                                                          name: :some_tab,
                                                          component: tab_view_component,
                                                          admin_only: true)
@@ -191,12 +191,12 @@ module Admin
           expect(response.body).not_to have_text('custom attribute')
         end
 
-        it 'renders additional rows registered for theming' do
+        it 'renders additional rows registered for site' do
           user = create(:user)
           account = create(:account, with_manager: user)
 
           pageflow_configure do |config|
-            config.admin_attributes_table_rows.register(:theming, :custom) { 'custom attribute' }
+            config.admin_attributes_table_rows.register(:site, :custom) { 'custom attribute' }
           end
 
           sign_in(user, scope: :user)
@@ -205,15 +205,15 @@ module Admin
           expect(response.body).to have_text('custom attribute')
         end
 
-        it 'renders additional rows registered for theming in enabled feature' do
+        it 'renders additional rows registered for site in enabled feature' do
           user = create(:user)
           account = create(:account,
                            with_manager: user,
-                           with_feature: :custom_theming_attribute)
+                           with_feature: :custom_site_attribute)
 
           pageflow_configure do |config|
-            config.features.register('custom_theming_attribute') do |feature_config|
-              feature_config.admin_attributes_table_rows.register(:theming, :custom) do
+            config.features.register('custom_site_attribute') do |feature_config|
+              feature_config.admin_attributes_table_rows.register(:site, :custom) do
                 'custom attribute'
               end
             end
@@ -231,8 +231,8 @@ module Admin
                            with_manager: user)
 
           pageflow_configure do |config|
-            config.features.register('custom_theming_attribute') do |feature_config|
-              feature_config.admin_attributes_table_rows.register(:theming, :custom) do
+            config.features.register('custom_site_attribute') do |feature_config|
+              feature_config.admin_attributes_table_rows.register(:site, :custom) do
                 'custom attribute'
               end
             end
@@ -249,18 +249,18 @@ module Admin
     describe '#create' do
       render_views
 
-      it 'creates nested default_theming' do
+      it 'creates nested default_site' do
         sign_in(create(:user, :admin), scope: :user)
         post(:create,
              params: {
                account: {
-                 default_theming_attributes: {
+                 default_site_attributes: {
                    imprint_link_url: 'http://example.com/new'
                  }
                }
              })
 
-        expect(Pageflow::Theming.last.imprint_link_url)
+        expect(Pageflow::Site.last.imprint_link_url)
           .to eq('http://example.com/new')
       end
 
@@ -300,34 +300,34 @@ module Admin
         expect(response.body).to have_selector('[name="account[custom_field]"]')
       end
 
-      it 'displays additional registered theming form inputs' do
+      it 'displays additional registered site form inputs' do
         account = create(:account)
 
         pageflow_configure do |config|
-          config.admin_form_inputs.register(:theming, :custom_field)
+          config.admin_form_inputs.register(:site, :custom_field)
         end
 
         sign_in(create(:user, :admin), scope: :user)
         get :edit, params: {id: account}
 
         expect(response.body)
-          .to have_selector('[name="account[default_theming_attributes][custom_field]"]')
+          .to have_selector('[name="account[default_site_attributes][custom_field]"]')
       end
     end
 
     describe '#update' do
       render_views
 
-      it 'updates nested default_theming' do
+      it 'updates nested default_site' do
         pageflow_configure do |config|
           config.themes.register(:custom)
         end
-        theming = create(:theming)
-        account = create(:account, default_theming: theming)
+        site = create(:site)
+        account = create(:account, default_site: site)
 
         sign_in(create(:user, :admin), scope: :user)
         put(:update, params: {id: account.id, account: {
-              default_theming_attributes: {
+              default_site_attributes: {
                 imprint_link_url: 'http://example.com/new'
               },
               paged_entry_template_attributes: {
@@ -335,7 +335,7 @@ module Admin
               }
             }})
 
-        expect(theming.reload.imprint_link_url).to eq('http://example.com/new')
+        expect(site.reload.imprint_link_url).to eq('http://example.com/new')
       end
 
       it 'allows admin to update feature_configuration through feature_states param' do
@@ -458,11 +458,11 @@ module Admin
         expect(account.reload.custom_field).to eq(nil)
       end
 
-      it 'updates custom field of nested theming registered as form input' do
+      it 'updates custom field of nested site registered as form input' do
         account = create(:account)
 
         pageflow_configure do |config|
-          config.admin_form_inputs.register(:theming, :custom_field)
+          config.admin_form_inputs.register(:site, :custom_field)
         end
 
         sign_in(create(:user, :admin), scope: :user)
@@ -470,16 +470,16 @@ module Admin
               params: {
                 id: account,
                 account: {
-                  default_theming_attributes: {
+                  default_site_attributes: {
                     custom_field: 'some value'
                   }
                 }
               })
 
-        expect(account.default_theming.reload.custom_field).to eq('some value')
+        expect(account.default_site.reload.custom_field).to eq('some value')
       end
 
-      it 'does not update custom field of nested theming not registered as form input' do
+      it 'does not update custom field of nested site not registered as form input' do
         account = create(:account)
 
         sign_in(create(:user, :admin), scope: :user)
@@ -487,13 +487,13 @@ module Admin
               params: {
                 id: account,
                 account: {
-                  default_theming_attributes: {
+                  default_site_attributes: {
                     custom_field: 'some value'
                   }
                 }
               })
 
-        expect(account.default_theming.custom_field).to eq(nil)
+        expect(account.default_site.custom_field).to eq(nil)
       end
 
       it 'redirects back to tab' do

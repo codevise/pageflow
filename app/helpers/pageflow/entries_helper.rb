@@ -1,7 +1,7 @@
 module Pageflow
   module EntriesHelper
     def pretty_entry_title(entry)
-      [entry.title, entry.theming.cname_domain.presence].compact.join(' - ')
+      [entry.title, entry.site.cname_domain.presence].compact.join(' - ')
     end
 
     def pretty_entry_url(entry, options = {})
@@ -20,21 +20,21 @@ module Pageflow
       private
 
       def with_custom_canonical_url_prefix(entry)
-        return if entry.theming.canonical_entry_url_prefix.blank?
+        return if entry.site.canonical_entry_url_prefix.blank?
         entry = ensure_entry_with_revision(entry)
 
         [
-          entry.theming.canonical_entry_url_prefix.gsub(':locale', entry.locale),
+          entry.site.canonical_entry_url_prefix.gsub(':locale', entry.locale),
           entry.to_param,
-          entry.theming.trailing_slash_in_canonical_urls ? '/' : ''
+          entry.site.trailing_slash_in_canonical_urls ? '/' : ''
         ].join
       end
 
       def default(routes, entry, options)
         params =
           options
-          .reverse_merge(trailing_slash: entry.theming.trailing_slash_in_canonical_urls)
-          .reverse_merge(Pageflow.config.theming_url_options(entry.theming) || {})
+          .reverse_merge(trailing_slash: entry.site.trailing_slash_in_canonical_urls)
+          .reverse_merge(Pageflow.config.site_url_options(entry.site) || {})
 
         if entry.permalink.present?
           routes.permalink_url(
@@ -57,8 +57,8 @@ module Pageflow
     end
 
     def entry_privacy_link_url(entry)
-      return unless entry.theming.privacy_link_url.present?
-      "#{entry.theming.privacy_link_url}?lang=#{entry.locale}"
+      return unless entry.site.privacy_link_url.present?
+      "#{entry.site.privacy_link_url}?lang=#{entry.locale}"
     end
 
     def entry_file_rights(entry)
@@ -80,23 +80,23 @@ module Pageflow
     def entry_global_links(entry)
       links = []
 
-      if entry.theming.imprint_link_label.present? && entry.theming.imprint_link_url.present?
-        links << link_to(raw(entry.theming.imprint_link_label),
-                         entry.theming.imprint_link_url,
+      if entry.site.imprint_link_label.present? && entry.site.imprint_link_url.present?
+        links << link_to(raw(entry.site.imprint_link_label),
+                         entry.site.imprint_link_url,
                          target: '_blank',
                          tabindex: 2,
                          class: 'legal')
       end
 
-      if entry.theming.copyright_link_label.present? && entry.theming.copyright_link_url.present?
-        links << link_to(raw(entry.theming.copyright_link_label),
-                         entry.theming.copyright_link_url,
+      if entry.site.copyright_link_label.present? && entry.site.copyright_link_url.present?
+        links << link_to(raw(entry.site.copyright_link_label),
+                         entry.site.copyright_link_url,
                          target: '_blank',
                          tabindex: 2,
                          class: 'copy')
       end
 
-      if entry.theming.privacy_link_url.present?
+      if entry.site.privacy_link_url.present?
         links << link_to(I18n.t('pageflow.public.privacy_notice'),
                          entry_privacy_link_url(entry),
                          target: '_blank',

@@ -45,7 +45,7 @@ module Pageflow
         type_name: original_entry.type_name,
         title: new_title,
         account: original_entry.account,
-        theming: original_entry.theming,
+        site: original_entry.site,
         features_configuration: original_entry.features_configuration,
 
         skip_draft_creation: true

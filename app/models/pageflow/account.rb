@@ -9,20 +9,20 @@ module Pageflow
     has_many :users, through: :memberships, source: :user, class_name: '::User'
     has_many :entry_memberships, through: :entries, source: :memberships
 
-    has_many :themings, dependent: :destroy
+    has_many :sites, dependent: :destroy
     has_many :entry_templates, dependent: :destroy
-    belongs_to :default_theming, :class_name => 'Theming'
+    belongs_to :default_site, :class_name => 'Site'
 
-    validates :default_theming, :presence => true
+    validates :default_site, :presence => true
     validates_associated :entry_templates
 
-    accepts_nested_attributes_for :default_theming, :update_only => true
+    accepts_nested_attributes_for :default_site, :update_only => true
 
     scope :with_landing_page, -> { where.not(:landing_page_name => '') }
 
-    def build_default_theming(*args)
-      super.tap do |theming|
-        theming.account = self
+    def build_default_site(*args)
+      super.tap do |site|
+        site.account = self
       end
     end
 

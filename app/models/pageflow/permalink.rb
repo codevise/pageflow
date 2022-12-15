@@ -14,7 +14,7 @@ module Pageflow
               format: /\A[0-9a-zA-Z_-]+\z/,
               uniqueness: {scope: :directory})
 
-    validate :belongs_to_same_theming_as_entry
+    validate :belongs_to_same_site_as_entry
 
     private
 
@@ -30,8 +30,8 @@ module Pageflow
       slug.nil?
     end
 
-    def belongs_to_same_theming_as_entry
-      return if !directory || !entry || entry.theming_id == directory.theming_id
+    def belongs_to_same_site_as_entry
+      return if !directory || !entry || entry.site_id == directory.site_id
 
       errors.add(:directory, :invalid)
     end

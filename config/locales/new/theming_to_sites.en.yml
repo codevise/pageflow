@@ -1,0 +1,66 @@
+en:
+  activerecord:
+    attributes:
+      pageflow/account:
+        default_theming: DELETED
+        default_site: Default site
+      pageflow/site:
+        additional_cnames: Additional CNAMES
+        cname: CNAME
+        copyright_link_label: Copyright link Text
+        copyright_link_url: Copyright link URL
+        home_url: Redirect URL
+        imprint_link_label: Legal notice link label
+        imprint_link_url: Legal notice link URL
+        privacy_link_url: Privacy link URL
+        share_providers: Default Share Links
+      pageflow/theming:
+        additional_cnames: DELETED
+        cname: DELETED
+        copyright_link_label: DELETED
+        copyright_link_url: DELETED
+        home_url: DELETED
+        imprint_link_label: DELETED
+        imprint_link_url: DELETED
+        privacy_link_url: DELETED
+        share_providers: DELETED
+    models:
+      pageflow/theming:
+        one: DELETED
+        other: DELETED
+      pageflow/site:
+        one: Site
+        other: Sites
+      theming:
+        one: DELETED
+        other: DELETED
+      site:
+        one: Site
+        other: Sites
+  pageflow:
+    admin:
+      accounts:
+        theming_defaults_inline_help: DELETED
+        site_defaults_inline_help: The following settings will be used as defaults for new stories in this account. Changes do not affect existing stories.
+      sites:
+        additional_cnames_hint: Comma separated list of additional CNAMES. Used only to select the correct redirect URL.
+        cname_hint: Used in public sharing URLs.
+        default_author_hint: Default 'author' meta field for stories
+        default_keywords_hint: Default 'keywords' meta field for stories
+        default_locale_hint: Default language for stories
+        default_publisher_hint: Default 'publisher' meta field for stories
+        home_url_hint: Used for requests to the root path with one of the above CNAMES. Default target location for the home button.
+        name: "%{account_name}"
+        remove_logo: Remove logo
+        show: View
+      themings:
+        additional_cnames_hint: DELETED
+        cname_hint: DELETED
+        default_author_hint: DELETED
+        default_keywords_hint: DELETED
+        default_locale_hint: DELETED
+        default_publisher_hint: DELETED
+        home_url_hint: DELETED
+        name: DELETED
+        remove_logo: DELETED
+        show: DELETED

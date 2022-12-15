@@ -5,10 +5,10 @@ Pageflow.configure do |config|
   config.admin_resource_tabs.register(:user, name: :accounts, component: Pageflow::Admin::UserAccountsTab)
   config.admin_resource_tabs.register(:user, name: :entries, component: Pageflow::Admin::UserEntriesTab)
 
-  config.admin_resource_tabs.register(:theming, name: :entries, component: Pageflow::Admin::EntriesTab)
-  config.admin_resource_tabs.register(:theming, name: :users, component: Pageflow::Admin::UsersTab)
+  config.admin_resource_tabs.register(:site, name: :entries, component: Pageflow::Admin::EntriesTab)
+  config.admin_resource_tabs.register(:site, name: :users, component: Pageflow::Admin::UsersTab)
   config.admin_resource_tabs.register(
-    :theming,
+    :site,
     name: :entry_templates,
     component: Pageflow::Admin::EntryTemplatesTab
   )
@@ -27,7 +27,7 @@ Pageflow.after_configure do |config|
                                       component: Pageflow::Admin::FeaturesTab,
                                       **features_tab_permissions)
 
-  config.admin_resource_tabs.register(:theming,
+  config.admin_resource_tabs.register(:site,
                                       name: :features,
                                       component: Pageflow::Admin::FeaturesTab,
                                       **features_tab_permissions)

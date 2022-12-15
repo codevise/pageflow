@@ -60,7 +60,7 @@ module Pageflow
         self.class.model_name.cache_key,
         entry.cache_key,
         revision.cache_key,
-        theming.cache_key
+        site.cache_key
       ].compact.join('-')
     end
 
@@ -68,7 +68,7 @@ module Pageflow
       [
         entry.cache_version,
         revision.cache_version,
-        theming.cache_version
+        site.cache_version
       ].compact.join('-').presence
     end
 

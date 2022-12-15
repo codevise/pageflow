@@ -6,7 +6,7 @@ import createStore from 'createStore';
 import backgroundMedia from 'backgroundMedia';
 import cookieNotice from 'cookieNotice';
 import featuresModule from 'features';
-import themingModule from 'theming';
+import siteModule from 'site';
 import storylinesModule from 'storylines';
 import chaptersModule from 'chapters';
 import pagesModule, {createPageType} from 'pages';
@@ -43,7 +43,7 @@ export default function(pageflow) {
 
     pageTypes: pageTypeRegistry,
 
-    theming: seed.theming,
+    site: seed.site,
     files: collections.files || {},
     storylines: collections.storylines,
     chapters: collections.chapters,
@@ -66,7 +66,7 @@ export default function(pageflow) {
     cookieNotice,
     featuresModule,
     i18nModule,
-    themingModule,
+    siteModule,
     entryModule,
     currentModule,
     storylinesModule,

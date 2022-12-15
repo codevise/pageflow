@@ -4,7 +4,7 @@ module Pageflow
       transient do
         title
         account
-        theming
+        site
         type_name { 'paged' }
         revision_attributes { {} }
 
@@ -16,7 +16,7 @@ module Pageflow
         DraftEntry.new(create(:entry,
                               title: title,
                               account: account,
-                              theming: theming,
+                              site: site,
                               type_name: type_name,
                               draft_attributes: revision_attributes,
                               with_feature: with_feature,

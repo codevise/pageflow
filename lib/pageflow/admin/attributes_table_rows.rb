@@ -12,7 +12,7 @@ module Pageflow
 
       # Insert an additional row into an attribute table.
       #
-      # @param resource_name [Symbol] Either :entry, :account or :theming.
+      # @param resource_name [Symbol] Either :entry, :account or :site.
       #
       # @param name [Symbol] Name of the attribute to display.
       #

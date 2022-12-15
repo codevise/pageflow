@@ -131,10 +131,10 @@ module Pageflow
                     to: :update_account_on,
                     topic: -> { create(:entry) }
 
-    context 'without only_admins_may_update_theming' do
+    context 'without only_admins_may_update_site' do
       before do
         pageflow_configure do |config|
-          config.permissions.only_admins_may_update_theming = false
+          config.permissions.only_admins_may_update_site = false
         end
       end
 
@@ -142,21 +142,21 @@ module Pageflow
                       allows: :publisher,
                       but_forbids: :editor,
                       of_account: ->(topic) { topic.account },
-                      to: :update_theming_on,
+                      to: :update_site_on,
                       topic: -> { create(:entry) }
     end
 
-    context 'with only_admins_may_update_theming' do
+    context 'with only_admins_may_update_site' do
       before do
         pageflow_configure do |config|
-          config.permissions.only_admins_may_update_theming = true
+          config.permissions.only_admins_may_update_site = true
         end
       end
 
       it_behaves_like 'an admin permission that',
                       allows_admins_but_forbids_even_managers: true,
                       of_account: ->(topic) { topic.account },
-                      to: :update_theming_on,
+                      to: :update_site_on,
                       topic: -> { create(:entry) }
     end
 

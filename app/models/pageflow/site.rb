@@ -1,12 +1,12 @@
 module Pageflow
-  class Theming < ApplicationRecord
+  class Site < ApplicationRecord
     belongs_to :account
 
     has_many :entries
     has_many :permalink_directories, -> { order('path ASC') }
 
     scope :with_home_url, -> { where.not(home_url: '') }
-    scope :for_request, ->(request) { Pageflow.config.theming_request_scope.call(all, request) }
+    scope :for_request, ->(request) { Pageflow.config.site_request_scope.call(all, request) }
 
     validates :account, :presence => true
 
@@ -15,7 +15,7 @@ module Pageflow
     end
 
     def name
-      I18n.t('pageflow.admin.themings.name',
+      I18n.t('pageflow.admin.sites.name',
              account_name: account.name,
              theme_name: 'default')
     end

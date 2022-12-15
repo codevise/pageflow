@@ -48,14 +48,14 @@ module Pageflow
         private_class_method :url
       end
 
-      # The theming attributes table on the account page
+      # The site attributes table on the account page
       #
       # @since 12.2
-      class ThemingAttributesTable < AttributesTable
-        selector '.attributes_table.pageflow_theming'
+      class SiteAttributesTable < AttributesTable
+        selector '.attributes_table.pageflow_site'
 
-        def self.url(theming)
-          url_helpers.admin_account_path(theming.account)
+        def self.url(site)
+          url_helpers.admin_account_path(site.account)
         end
         private_class_method :url
       end

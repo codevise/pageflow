@@ -127,9 +127,9 @@ module Pageflow
       publish_on_account_of?
     end
 
-    def update_theming_on?
+    def update_site_on?
       user.admin? ||
-        (!permissions_config.only_admins_may_update_theming &&
+        (!permissions_config.only_admins_may_update_site &&
          publish_on_account_of?)
     end
 

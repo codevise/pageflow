@@ -39,15 +39,15 @@ module Pageflow
         expect(permalink_directory).to have(1).errors_on(:path)
       end
 
-      it 'needs to be unique in theming' do
-        theming = create(:theming)
-        create(:permalink_directory, path: 'de/', theming: theming)
-        permalink_directory = build(:permalink_directory, path: 'de/', theming: theming)
+      it 'needs to be unique in site' do
+        site = create(:site)
+        create(:permalink_directory, path: 'de/', site: site)
+        permalink_directory = build(:permalink_directory, path: 'de/', site: site)
 
         expect(permalink_directory).to have(1).errors_on(:path)
       end
 
-      it 'does not need to be unique across themings' do
+      it 'does not need to be unique across sites' do
         create(:permalink_directory, path: 'de/')
         permalink_directory = build(:permalink_directory, path: 'de/')
 

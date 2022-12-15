@@ -88,7 +88,7 @@ jQuery(function($) {
 
   $('.admin_entries form.pageflow_entry').each(function() {
     var accountSelect = $('#entry_account_id', this);
-    var themingSelect = $('#entry_theming_id', this);
+    var siteSelect = $('#entry_site_id', this);
     var titleInput = $('#entry_title', this);
 
     function updateEntryTypeInput() {
@@ -119,7 +119,7 @@ jQuery(function($) {
     function fetchPermalinkInput(callback) {
       $.get('/admin/entries/permalink_inputs' +
             '?entry[account_id]=' + accountSelect.val() +
-                   (themingSelect.val() ? '&entry[theming_id]=' + themingSelect.val() : '') +
+                   (siteSelect.val() ? '&entry[site_id]=' + siteSelect.val() : '') +
             '&entry[title]=' + encodeURIComponent(titleInput.val()))
        .done(callback);
     }
@@ -127,7 +127,7 @@ jQuery(function($) {
     accountSelect.on('change', updateEntryTypeInput);
 
     accountSelect.on('change', updatePermalinkInput);
-    themingSelect.on('change', updatePermalinkInput);
+    siteSelect.on('change', updatePermalinkInput);
 
     titleInput.on('change keyup', debounce(updateSlugPlaceholder, 300));
   });

@@ -137,16 +137,16 @@ module Pageflow
         end
       end
 
-      describe '["theming"]' do
+      describe '["site"]' do
         it 'contains privacy link url and label' do
-          theming = create(:theming,
+          site = create(:site,
                            privacy_link_url: 'https://example.com/privacy')
-          entry = PublishedEntry.new(create(:entry, :published, theming: theming))
+          entry = PublishedEntry.new(create(:entry, :published, site: site))
 
           result = helper.render_json { |json| helper.common_entry_seed(json, entry) }
 
           expect(result)
-            .to include_json(theming: {
+            .to include_json(site: {
                                privacy_link_url: 'https://example.com/privacy'
                              })
         end

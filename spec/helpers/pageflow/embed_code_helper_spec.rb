@@ -34,9 +34,9 @@ module Pageflow
       end
 
       it 'uses entry_embed_url_options supplied as lambda' do
-        Pageflow.config.entry_embed_url_options = ->(theming) { {host: theming.cname} }
-        theming = create(:theming, cname: 'example.com')
-        entry = create(:entry, theming: theming, title: 'my-entry')
+        Pageflow.config.entry_embed_url_options = ->(site) { {host: site.cname} }
+        site = create(:site, cname: 'example.com')
+        entry = create(:entry, site: site, title: 'my-entry')
         snippet = helper.embed_code_entry_snippet(entry)
 
         result = snippet.call

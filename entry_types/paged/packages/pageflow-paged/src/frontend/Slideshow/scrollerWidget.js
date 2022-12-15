@@ -32,7 +32,7 @@ import {state} from '../state';
 
       this.iscroll.disable();
 
-      if (state.entryData.getThemingOption('page_change_by_scrolling')) {
+      if (state.entryData.getSiteOption('page_change_by_scrolling')) {
         this._initMousewheelBump('up');
         this._initMousewheelBump('down');
         this._initDragGestureBump();

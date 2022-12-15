@@ -10,7 +10,7 @@ import {PagesCollection} from '../collections/PagesCollection';
 import {StorylineOrdering} from '../models/StorylineOrdering';
 import {StorylinesCollection} from '../collections/StorylinesCollection';
 import {ThemesCollection} from '../collections/ThemesCollection';
-import {Theming} from '../models/Theming';
+import {Site} from '../models/Site';
 import {WidgetsCollection} from '../collections/WidgetsCollection';
 import {app} from '../app';
 import {editor} from '../base';
@@ -34,7 +34,7 @@ app.addInitializer(function(options) {
   state.chapters = new ChaptersCollection(options.chapters);
   state.storylines = new StorylinesCollection(options.storylines);
   state.entry = editor.createEntryModel(options, {widgets: widgets});
-  state.theming = new Theming(options.theming);
+  state.site = new Site(options.site);
   state.account = new Backbone.Model(options.account);
 
   widgets.subject = state.entry;

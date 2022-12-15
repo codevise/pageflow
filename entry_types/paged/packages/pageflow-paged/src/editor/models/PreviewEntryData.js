@@ -8,7 +8,7 @@ export const PreviewEntryData = EntryData.extend({
     this.pages = options.pages;
   },
 
-  getThemingOption: function(name) {
+  getSiteOption: function(name) {
     return this.entry.getTheme().get(name);
   },
 

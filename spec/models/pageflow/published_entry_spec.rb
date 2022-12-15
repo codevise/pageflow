@@ -99,13 +99,13 @@ module Pageflow
           expect(published_entry.cache_key).not_to eq(other_published_entry)
         end
 
-        it 'changes when different theming is used' do
+        it 'changes when different site is used' do
           entry = create(:entry)
           create(:revision, :published, entry: entry)
           published_entry = PublishedEntry.new(entry)
 
           expect {
-            entry.update(theming: create(:theming))
+            entry.update(site: create(:site))
           }.to(change { published_entry.cache_key })
         end
       end
@@ -133,13 +133,13 @@ module Pageflow
           }.to(change { published_entry.cache_key })
         end
 
-        it 'changes when theming changes' do
+        it 'changes when site changes' do
           entry = create(:entry)
           create(:revision, :published, entry: entry)
           published_entry = PublishedEntry.new(entry)
 
           expect {
-            Timecop.freeze(1.minute.from_now) { entry.theming.touch }
+            Timecop.freeze(1.minute.from_now) { entry.site.touch }
           }.to(change { published_entry.cache_key })
         end
       end
@@ -171,13 +171,13 @@ module Pageflow
           }.to(change { published_entry.cache_version })
         end
 
-        it 'changes when theming changes' do
+        it 'changes when site changes' do
           entry = create(:entry)
           create(:revision, :published, entry: entry)
           published_entry = PublishedEntry.new(entry)
 
           expect {
-            Timecop.freeze(1.minute.from_now) { entry.theming.touch }
+            Timecop.freeze(1.minute.from_now) { entry.site.touch }
           }.to(change { published_entry.cache_version })
         end
       end

@@ -5,20 +5,20 @@ module Pageflow
   # @since 12.4
   class PrimaryDomainEntryRedirect
     def call(entry, request)
-      theming = entry.theming
+      site = entry.site
 
-      if theming.cname.present? &&
-         !known_domains(theming).include?(request.host)
-        [request.protocol, theming.cname, request.fullpath].join
+      if site.cname.present? &&
+         !known_domains(site).include?(request.host)
+        [request.protocol, site.cname, request.fullpath].join
       end
     end
 
     private
 
-    def known_domains(theming)
+    def known_domains(site)
       [
-        theming.cname,
-        (theming.additional_cnames || '').split(',').map(&:strip)
+        site.cname,
+        (site.additional_cnames || '').split(',').map(&:strip)
       ].flatten
     end
   end

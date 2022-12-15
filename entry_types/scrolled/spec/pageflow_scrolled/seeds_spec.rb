@@ -561,17 +561,17 @@ module PageflowScrolled
 
       it 'allows overriding attributes in block' do
         account = create(:account)
-        theming = create(:theming, account: account)
+        site = create(:site, account: account)
 
         entry = SeedsDsl.sample_scrolled_entry(attributes: {
                                                  account: account,
                                                  title: 'Example',
                                                  chapters: []
                                                }) do |created_entry|
-          created_entry.theming = theming
+          created_entry.site = site
         end
 
-        expect(entry.theming).to eq(theming)
+        expect(entry.site).to eq(site)
       end
     end
   end

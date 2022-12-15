@@ -2,7 +2,7 @@ import {SeedEntryData} from 'pageflow-paged/frontend';
 
 describe('pageflow.SeedEntryData', function() {
 
-  describe('#getThemingOption', function() {
+  describe('#getSiteOption', function() {
     it('returns option value by name', function() {
       var entryData = new SeedEntryData({
         theme: {
@@ -10,7 +10,7 @@ describe('pageflow.SeedEntryData', function() {
         }
       });
 
-      var result = entryData.getThemingOption('page_change_by_scrolling');
+      var result = entryData.getSiteOption('page_change_by_scrolling');
 
       expect(result).toBe(true);
     });
