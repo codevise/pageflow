@@ -16,7 +16,7 @@ module Pageflow
     private
 
     def allows?(roles)
-      @user.memberships.where(role: roles, entity: @entry_template.account).any?
+      @user.memberships.where(role: roles, entity: @entry_template.site.account).any?
     end
   end
 end

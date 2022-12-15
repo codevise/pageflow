@@ -5,7 +5,7 @@ module Pageflow
     actions :index, :new, :create, :edit, :update
     form partial: 'form'
 
-    belongs_to :account, parent_class: Pageflow::Account
+    belongs_to :site, parent_class: Pageflow::Site
 
     breadcrumb do
       breadcrumb_links.first 3
@@ -20,9 +20,7 @@ module Pageflow
       end
 
       def new
-        account = Account.find(params[:account_id])
-        @entry_template = EntryTemplate.new(
-          account: account,
+        @entry_template = parent.entry_templates.build(
           entry_type_name: params[:entry_type_name]
         )
 
@@ -32,8 +30,8 @@ module Pageflow
       end
 
       def create
-        @entry_template = EntryTemplate.new(
-          entry_template_params.merge(account_id: permitted_params[:account_id])
+        @entry_template = parent.entry_templates.build(
+          entry_template_params
         )
         @page_title = page_title('new', @entry_template.entry_type_name)
         authorize!(:create, @entry_template)
@@ -87,7 +85,7 @@ module Pageflow
       end
 
       def redirect_path
-        admin_account_path(params[:account_id], tab: 'entry_templates')
+        admin_account_path(parent.account, tab: 'entry_templates')
       end
 
       def entry_template_params

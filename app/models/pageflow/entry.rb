@@ -57,8 +57,7 @@ module Pageflow
     end
 
     def entry_template
-      @entry_template ||= EntryTemplate.find_or_initialize_by(
-        account_id: account.id,
+      @entry_template ||= site.entry_templates.find_or_initialize_by(
         entry_type_name: type_name
       )
     end

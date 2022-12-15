@@ -57,11 +57,11 @@ module Pageflow
       end
 
       account = create(:account)
-      create(:entry_template, account: account, entry_type_name: 'rainbows')
+      create(:entry_template, site: account.default_site, entry_type_name: 'rainbows')
       account.update(features_configuration: {
                        'rainbows_entry_type' => false
                      })
-      create(:entry_template, account: account, entry_type_name: 'ponies')
+      create(:entry_template, site: account.default_site, entry_type_name: 'ponies')
 
       render(account.sites.first)
 

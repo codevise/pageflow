@@ -1,7 +1,7 @@
 h5(entry_template.translated_entry_type_name)
 
 extensible_attributes_table_for(entry_template,
-                                Pageflow.config_for(entry_template.account)
+                                Pageflow.config_for(entry_template.site.account)
                                   .admin_attributes_table_rows.for(:entry_template)) do
   row :theme, class: 'theme' do
     entry_template.theme_name

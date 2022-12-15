@@ -19,7 +19,7 @@ module Pageflow
         end
 
         account = create(:account, feature_states: {glitter_theme: false})
-        entry_template = build(:entry_template, account: account, theme_name: 'glitter')
+        entry_template = build(:entry_template, site: account.default_site, theme_name: 'glitter')
 
         entry_template.valid?
         expect(entry_template.errors).to include(:theme_name)
@@ -43,7 +43,7 @@ module Pageflow
         end
 
         account = create(:account, feature_states: {glitter_theme: true})
-        entry_template = build(:entry_template, account: account, theme_name: 'glitter')
+        entry_template = build(:entry_template, site: account.default_site, theme_name: 'glitter')
 
         expect(entry_template).to be_valid
       end

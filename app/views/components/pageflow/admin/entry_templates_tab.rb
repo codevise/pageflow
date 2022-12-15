@@ -26,8 +26,8 @@ module Pageflow
       def new_link(entry_template, account)
         link_to(
           I18n.t('active_admin.new'),
-          new_admin_account_entry_template_path(
-            account,
+          new_admin_site_entry_template_path(
+            account.default_site,
             entry_template,
             entry_type_name: entry_template.entry_type_name
           )
@@ -37,8 +37,8 @@ module Pageflow
       def edit_link(entry_template, account)
         link_to(
           I18n.t('active_admin.edit'),
-          edit_admin_account_entry_template_path(
-            account,
+          edit_admin_site_entry_template_path(
+            account.default_site,
             entry_template
           )
         )

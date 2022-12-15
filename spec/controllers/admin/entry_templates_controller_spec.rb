@@ -22,7 +22,7 @@ module Admin
 
         get(:new,
             params: {
-              account_id: admin.accounts.first.id,
+              site_id: admin.accounts.first.default_site,
               entry_type_name: 'ironed'
             })
 
@@ -49,7 +49,7 @@ module Admin
 
         get(:new,
             params: {
-              account_id: admin.accounts.first.id,
+              site_id: admin.accounts.first.default_site.id,
               entry_type_name: 'ironed'
             })
 
@@ -80,7 +80,7 @@ module Admin
 
         get(:new,
             params: {
-              account_id: account.id,
+              site_id: account.default_site.id,
               entry_type_name: 'paged'
             })
 
@@ -98,7 +98,7 @@ module Admin
 
         post(:create,
              params: {
-               account_id: admin.accounts.first.id,
+               site_id: admin.accounts.first.default_site,
                entry_template: {
                  entry_type_name: 'paged',
                  theme_name: 'unregistered'
@@ -120,7 +120,7 @@ module Admin
 
         post(:create,
              params: {
-               account_id: admin.accounts.first.id,
+               site_id: admin.accounts.first.default_site,
                entry_template: {
                  entry_type_name: 'paged',
                  theme_name: 'custom'
@@ -136,7 +136,7 @@ module Admin
 
         post(:create,
              params: {
-               account_id: admin.accounts.first.id,
+               site_id: admin.accounts.first.default_site,
                entry_template: {
                  entry_type_name: 'paged'
                },
@@ -157,7 +157,7 @@ module Admin
         expect {
           post(:create,
                params: {
-                 account_id: existing_entry_template.account.id,
+                 site_id: existing_entry_template.site.id,
                  entry_template: {
                    entry_type_name: 'paged'
                  },
@@ -174,7 +174,7 @@ module Admin
 
         post(:create,
              params: {
-               account_id: admin.accounts.first.id,
+               site_id: admin.accounts.first.default_site,
                entry_template: {
                  entry_type_name: 'paged',
                  share_providers: {
@@ -197,7 +197,7 @@ module Admin
 
         post(:create,
              params: {
-               account_id: admin.accounts.first.id,
+               site_id: admin.accounts.first.default_site,
                entry_template: {
                  entry_type_name: 'paged',
                  configuration: {
@@ -220,7 +220,7 @@ module Admin
         expect {
           post(:create,
                params: {
-                 account_id: editor.accounts.first.id,
+                 site_id: editor.accounts.first.default_site,
                  entry_template: {
                    entry_type_name: 'paged'
                  }
@@ -236,7 +236,7 @@ module Admin
 
         patch(:update,
               params: {
-                account_id: entry_template.account.id,
+                site_id: entry_template.site.id,
                 id: entry_template.id,
                 entry_template: {
                   theme_name: 'unregistered'
@@ -261,7 +261,7 @@ module Admin
           :update,
           params: {
             id: entry_template.id,
-            account_id: entry_template.account.id,
+            site_id: entry_template.site.id,
             entry_template: {
               entry_type_name: 'paged',
               theme_name: 'green'
@@ -278,7 +278,7 @@ module Admin
         end
 
         entry_template = create(:entry_template, entry_type_name: 'paged')
-        create(:entry_template, entry_type_name: 'other', account: entry_template.account)
+        create(:entry_template, entry_type_name: 'other', site: entry_template.site)
 
         admin = create(:user, :admin)
         sign_in(admin, scope: :user)
@@ -287,7 +287,7 @@ module Admin
           patch(:update,
                 params: {
                   id: entry_template.id,
-                  account_id: entry_template.account.id,
+                  site_id: entry_template.site.id,
                   entry_template: {
                     entry_type_name: 'other'
                   },
@@ -305,7 +305,7 @@ module Admin
         patch(:update,
               params: {
                 id: entry_template.id,
-                account_id: entry_template.account.id,
+                site_id: entry_template.site.id,
                 entry_template: {
                   entry_type_name: 'paged'
                 },
@@ -327,7 +327,7 @@ module Admin
         patch(:update,
               params: {
                 id: entry_template.id,
-                account_id: entry_template.account.id,
+                site_id: entry_template.site.id,
                 entry_template: {
                   entry_type_name: 'paged',
                   share_providers: {
@@ -351,7 +351,7 @@ module Admin
         patch(:update,
               params: {
                 id: entry_template.id,
-                account_id: entry_template.account.id,
+                site_id: entry_template.site.id,
                 entry_template: {
                   entry_type_name: 'paged',
                   configuration: {
@@ -371,7 +371,7 @@ module Admin
         create(:membership, entity: other_account, user: editor, role: :manager)
         entry_template = create(
           :entry_template,
-          account: account,
+          site: account.default_site,
           share_providers: {
             signal: true
           }
@@ -381,7 +381,7 @@ module Admin
         patch(:update,
               params: {
                 id: entry_template.id,
-                account_id: entry_template.account.id,
+                site_id: entry_template.site.id,
                 entry_template: {
                   entry_type_name: 'paged',
                   share_providers: {
@@ -400,15 +400,15 @@ module Admin
       it 'redirects to account page' do
         admin = create(:user, :admin)
         sign_in(admin, scope: :user)
-        account_id = admin.accounts.first.id
+        account = admin.accounts.first
 
         get(:index,
             params: {
-              account_id: account_id
+              site_id: account.default_site
             })
 
         expect(response).to redirect_to admin_account_path(
-          id: account_id, tab: 'entry_templates'
+          id: account, tab: 'entry_templates'
         )
       end
     end

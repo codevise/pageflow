@@ -26,7 +26,7 @@ module Pageflow
                                 configuration: {color_scheme: 'purple'},
                                 entry_type_name: 'test')
         entry = create(:entry,
-                       account: entry_template.account,
+                       site: entry_template.site,
                        type_name: entry_template.entry_type_name)
 
         expect(entry.draft.configuration['color_scheme'])
@@ -40,7 +40,7 @@ module Pageflow
                role: 'header',
                type_name: 'site_header')
         entry = create(:entry,
-                       account: entry_template.account,
+                       site: entry_template.site,
                        type_name: entry_template.entry_type_name)
 
         expect(entry.draft.widgets).to include_record_with(role: 'header', type_name: 'site_header')
@@ -60,7 +60,7 @@ module Pageflow
                                 entry_type_name: 'test')
         entry = create(:entry,
                        type_name: entry_template.entry_type_name,
-                       account: entry_template.account)
+                       site: entry_template.site)
 
         expect(entry.draft.author).to eq('Codevise')
         expect(entry.draft.publisher).to eq('Codevise Solutions')
