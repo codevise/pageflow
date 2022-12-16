@@ -190,59 +190,6 @@ module Admin
 
           expect(response.body).not_to have_text('custom attribute')
         end
-
-        it 'renders additional rows registered for site' do
-          user = create(:user)
-          account = create(:account, with_manager: user)
-
-          pageflow_configure do |config|
-            config.admin_attributes_table_rows.register(:site, :custom) { 'custom attribute' }
-          end
-
-          sign_in(user, scope: :user)
-          get(:show, params: {id: account.id})
-
-          expect(response.body).to have_text('custom attribute')
-        end
-
-        it 'renders additional rows registered for site in enabled feature' do
-          user = create(:user)
-          account = create(:account,
-                           with_manager: user,
-                           with_feature: :custom_site_attribute)
-
-          pageflow_configure do |config|
-            config.features.register('custom_site_attribute') do |feature_config|
-              feature_config.admin_attributes_table_rows.register(:site, :custom) do
-                'custom attribute'
-              end
-            end
-          end
-
-          sign_in(user, scope: :user)
-          get(:show, params: {id: account.id})
-
-          expect(response.body).to have_text('custom attribute')
-        end
-
-        it 'does not render additional rows registered for account in disabled feature' do
-          user = create(:user)
-          account = create(:account,
-                           with_manager: user)
-
-          pageflow_configure do |config|
-            config.features.register('custom_site_attribute') do |feature_config|
-              feature_config.admin_attributes_table_rows.register(:site, :custom) do
-                'custom attribute'
-              end
-            end
-          end
-
-          sign_in(user, scope: :user)
-          get(:show, params: {id: account.id})
-
-          expect(response.body).not_to have_text('custom attribute')
-        end
       end
     end
 

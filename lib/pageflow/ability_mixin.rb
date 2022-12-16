@@ -226,8 +226,12 @@ module Pageflow
           EntryPolicy.new(user, storyline.revision.entry).edit?
         end
 
-        can :edit, Site do |site|
-          SitePolicy.new(user, site).edit?
+        can :read, Site do |site|
+          SitePolicy.new(user, site).read?
+        end
+
+        can :update, Site do |site|
+          SitePolicy.new(user, site).update?
         end
 
         can :create, EntryTemplate do |entry_template|

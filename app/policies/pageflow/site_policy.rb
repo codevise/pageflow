@@ -35,19 +35,21 @@ module Pageflow
       end
     end
 
+    attr_reader :user
+
     def initialize(user, site)
       @user = user
-      @site = site
+      @account_role_query = AccountRoleQuery.new(user, site.account)
     end
 
-    def edit?
-      allows?(%w(publisher manager))
+    def read?
+      @user.admin? ||
+        (@account_role_query.has_at_least_role?(:manager) &&
+         Pageflow.config.allow_multiaccount_users)
     end
 
-    private
-
-    def allows?(roles)
-      @user.memberships.where(role: roles, entity: @site.account).any?
+    def update?
+      read?
     end
   end
 end

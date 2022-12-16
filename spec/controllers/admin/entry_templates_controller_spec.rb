@@ -397,7 +397,7 @@ module Admin
     end
 
     describe '#index' do
-      it 'redirects to account page' do
+      it 'redirects to site page' do
         admin = create(:user, :admin)
         sign_in(admin, scope: :user)
         account = admin.accounts.first
@@ -407,8 +407,8 @@ module Admin
               site_id: account.default_site
             })
 
-        expect(response).to redirect_to admin_account_path(
-          id: account, tab: 'entry_templates'
+        expect(response).to redirect_to admin_account_site_path(
+          account, account.default_site, tab: 'entry_templates'
         )
       end
     end

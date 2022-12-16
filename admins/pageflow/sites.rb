@@ -1,7 +1,18 @@
 module Pageflow
   ActiveAdmin.register Site, as: 'Site' do
+    belongs_to :account
+
     menu false
-    actions :index, :edit, :update
+    actions :index, :show, :edit, :update
+
+    show do
+      render 'attributes_table', site: site
+
+      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(site),
+                i18n: 'pageflow.admin.resource_tabs',
+                authorize: :see_site_admin_tab,
+                build_args: [site])
+    end
 
     form partial: 'form'
 

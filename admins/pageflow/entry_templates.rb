@@ -85,7 +85,7 @@ module Pageflow
       end
 
       def redirect_path
-        admin_account_path(parent.account, tab: 'entry_templates')
+        admin_account_site_path(parent.account, parent, tab: 'entry_templates')
       end
 
       def entry_template_params

@@ -59,7 +59,6 @@ module Pageflow
 
     show :title => :name do |account|
       render 'account_details', :account => account
-      render 'site_details', :account => account
 
       tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(account),
                 i18n: 'pageflow.admin.resource_tabs',
