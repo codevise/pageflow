@@ -96,7 +96,7 @@ module Admin
           user = create(:user)
           account = create(:account, with_manager: user)
 
-          Pageflow.config.admin_resource_tabs.register(:site,
+          Pageflow.config.admin_resource_tabs.register(:account,
                                                        name: :some_tab,
                                                        component: tab_view_component,
                                                        required_account_role: :manager)
@@ -111,7 +111,7 @@ module Admin
             user = create(:user, :admin)
             account = create(:account)
 
-            Pageflow.config.admin_resource_tabs.register(:site,
+            Pageflow.config.admin_resource_tabs.register(:account,
                                                          name: :some_tab,
                                                          component: tab_view_component,
                                                          admin_only: true)
@@ -125,7 +125,7 @@ module Admin
             user = create(:user)
             account = create(:account, with_manager: user)
 
-            Pageflow.config.admin_resource_tabs.register(:site,
+            Pageflow.config.admin_resource_tabs.register(:account,
                                                          name: :some_tab,
                                                          component: tab_view_component,
                                                          admin_only: true)

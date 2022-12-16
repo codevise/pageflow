@@ -61,10 +61,10 @@ module Pageflow
       render 'account_details', :account => account
       render 'site_details', :account => account
 
-      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(account.default_site),
+      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(account),
                 i18n: 'pageflow.admin.resource_tabs',
-                authorize: :see_site_admin_tab,
-                build_args: [account.default_site])
+                authorize: :see_account_admin_tab,
+                build_args: [account])
     end
 
     controller do

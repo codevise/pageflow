@@ -99,6 +99,10 @@ module Pageflow
         Admin::AdminOnlyTabPolicy.new(user, tab).see?
       end
 
+      can :see_account_admin_tab, Admin::Tab do |tab|
+        Admin::AdminOnlyTabPolicy.new(user, tab).see?
+      end
+
       can :see_user_admin_tab, Admin::Tab do |tab|
         Admin::AdminOnlyTabPolicy.new(user, tab).see?
       end

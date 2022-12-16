@@ -9,7 +9,7 @@ module Pageflow
       # Display additional tabs on admin resource pages.
       #
       # @param [Symbol] resource_name A resource name like `:entry`,
-      #   `:user` or `:account`
+      #   `:user`, `:account` or `:site`.
       # @param [Hash] options
       # @option options [Symbol] :name Unique identifier.
       # @option options [Arbre::Component] :component Component to

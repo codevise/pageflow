@@ -1,8 +1,7 @@
 module Pageflow
   module Admin
     class UsersTab < ViewComponent
-      def build(site)
-        account = site.account
+      def build(account)
         embedded_index_table(account.memberships.on_accounts.includes(:user)
                               .accessible_by(current_ability, :index)
                                             .where('pageflow_memberships.user_id IS NOT NULL'),
