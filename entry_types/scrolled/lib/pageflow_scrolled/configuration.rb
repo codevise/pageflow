@@ -15,7 +15,7 @@ module PageflowScrolled
     #     )
     #
     # @return [AdditionalPacks]
-    # @since edge
+    # @since 15.7
     attr_reader :additional_frontend_packs
 
     # Load additional Webpacker packs in editor.
@@ -27,7 +27,7 @@ module PageflowScrolled
     #     )
     #
     # @return [AdditionalPacks]
-    # @since edge
+    # @since 15.7
     attr_reader :additional_editor_packs
 
     # Provide additional seed data for custom widgets and content
@@ -41,7 +41,7 @@ module PageflowScrolled
     #     )
     #
     # @return [AdditionalSeedData]
-    # @since edge
+    # @since 15.7
     attr_reader :additional_frontend_seed_data
 
     def initialize(*)

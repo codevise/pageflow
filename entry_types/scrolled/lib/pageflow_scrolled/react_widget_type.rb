@@ -6,7 +6,7 @@ module PageflowScrolled
   # `pageflow-scrolled/widgets/<name>Theme.css` to define cutom
   # styles.
   #
-  # @since edge
+  # @since 15.7
   class ReactWidgetType < Pageflow::WidgetType
     def initialize(role:, name:)
       @role = role

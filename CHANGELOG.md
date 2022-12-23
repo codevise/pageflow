@@ -1,8 +1,10 @@
 # CHANGELOG
 
-### Unreleased Changes
+### Version 15.8.0
 
-[Compare changes](https://github.com/codevise/pageflow/compare/15-7-stable...master)
+2022-12-23
+
+[Compare changes](https://github.com/codevise/pageflow/compare/15-7-stable...v15.8.0)
 
 #### Core
 
