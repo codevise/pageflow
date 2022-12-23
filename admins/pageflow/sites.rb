@@ -3,7 +3,7 @@ module Pageflow
     belongs_to :account
 
     menu false
-    actions :index, :show, :edit, :update
+    actions :index, :show, :new, :edit, :create, :update
 
     show do
       render 'attributes_table', site: site
@@ -33,14 +33,14 @@ module Pageflow
       helper Pageflow::Admin::FormHelper
 
       def index
-        redirect_to admin_account_path(resource.account)
+        redirect_to admin_account_path(parent, tab: 'sites')
       end
 
       private
 
       def permitted_admin_form_input_params
         Pageflow
-          .config_for(resource.account)
+          .config_for(parent)
           .admin_form_inputs
           .permitted_attributes_for(:site)
       end

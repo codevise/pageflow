@@ -11,6 +11,18 @@ module Pageflow
             end
           end
         end
+
+        add_button(account)
+      end
+
+      private
+
+      def add_button(account)
+        return unless authorized?(:create, Site)
+
+        text_node(link_to(t('pageflow.admin.sites.add'),
+                          new_admin_account_site_path(account),
+                          class: 'button'))
       end
     end
   end

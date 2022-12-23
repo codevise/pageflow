@@ -12,12 +12,11 @@ module Admin
 
         get(:index,
             params: {
-              account_id: site.account,
-              id: site
+              account_id: site.account
             })
 
         expect(response)
-          .to redirect_to(admin_account_path(id: site.account))
+          .to redirect_to(admin_account_path(id: site.account, tab: 'sites'))
       end
     end
 
@@ -161,6 +160,30 @@ module Admin
       end
     end
 
+    describe '#new' do
+      it 'displays name input' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin), scope: :user)
+        get(:new, params: {account_id: account})
+
+        expect(response.body).to have_selector('[name="site[name]"]')
+      end
+
+      it 'displays additional registered site form inputs' do
+        account = create(:account)
+
+        pageflow_configure do |config|
+          config.admin_form_inputs.register(:site, :custom_field)
+        end
+
+        sign_in(create(:user, :admin), scope: :user)
+        get(:new, params: {account_id: account})
+
+        expect(response.body).to have_selector('[name="site[custom_field]"]')
+      end
+    end
+
     describe '#edit' do
       it 'does not display inputs for all fields' do
         site = create(:site)
@@ -182,6 +205,81 @@ module Admin
         get(:edit, params: {account_id: site.account, id: site})
 
         expect(response.body).to have_selector('[name="site[custom_field]"]')
+      end
+    end
+
+    describe '#create' do
+      it 'sets attributes' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create,
+             params: {
+               account_id: account,
+               site: {
+                 name: 'second',
+                 imprint_link_url: 'http://example.com/new'
+               }
+             })
+
+        site = account.sites.last
+        expect(site.imprint_link_url).to eq('http://example.com/new')
+        expect(site.name).to eq('second')
+      end
+
+      it 'does not allow managers to create sites ' do
+        account = create(:account)
+
+        sign_in(create(:user, :manager, on: account), scope: :user)
+
+        expect {
+          post(:create,
+               params: {
+                 account_id: account,
+                 site: {
+                   name: 'second',
+                   imprint_link_url: 'http://example.com/new'
+                 }
+               })
+        }.not_to(change { account.sites.count })
+
+        expect(flash[:error]).to be_present
+      end
+
+      it 'sets custom field registered as form input' do
+        account = create(:account)
+
+        pageflow_configure do |config|
+          config.admin_form_inputs.register(:site, :custom_field)
+        end
+
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create,
+             params: {
+               account_id: account,
+               site: {
+                 name: 'second',
+                 custom_field: 'some value'
+               }
+             })
+
+        expect(account.sites.last.custom_field).to eq('some value')
+      end
+
+      it 'does not set custom field not registered as form input' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create,
+             params: {
+               account_id: account,
+               site: {
+                 name: 'second',
+                 custom_field: 'some value'
+               }
+             })
+
+        expect(account.sites.last.custom_field).to eq(nil)
       end
     end
 
