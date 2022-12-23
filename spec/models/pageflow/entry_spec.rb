@@ -38,12 +38,12 @@ module Pageflow
         create(:widget,
                subject: entry_template,
                role: 'header',
-               type_name: 'theming_header')
+               type_name: 'site_header')
         entry = create(:entry,
                        account: entry_template.account,
                        type_name: entry_template.entry_type_name)
 
-        expect(entry.draft.widgets).to include_record_with(role: 'header', type_name: 'theming_header')
+        expect(entry.draft.widgets).to include_record_with(role: 'header', type_name: 'site_header')
       end
 
       it 'creates a first storyline in the draft' do

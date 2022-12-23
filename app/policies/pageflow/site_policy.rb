@@ -1,5 +1,5 @@
 module Pageflow
-  class ThemingPolicy < ApplicationPolicy
+  class SitePolicy < ApplicationPolicy
     class Scope < Scope
       attr_reader :user, :scope
 
@@ -8,7 +8,7 @@ module Pageflow
         @scope = scope
       end
 
-      def themings_allowed_for(accounts)
+      def sites_allowed_for(accounts)
         if user.admin?
           scope.all
         else
@@ -23,7 +23,7 @@ module Pageflow
       def publisher_memberships_for_accounts(user, accounts_ids)
         sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
                             'pageflow_memberships.user_id = :user_id AND ' \
-                            'pageflow_themings.account_id IN (:accounts_ids) AND ' \
+                            'pageflow_sites.account_id IN (:accounts_ids) AND ' \
                             'pageflow_memberships.entity_id IN (:accounts_ids) AND ' \
                             'pageflow_memberships.entity_type = \'Pageflow::Account\' AND ' \
                             'pageflow_memberships.role IN (\'publisher\', \'manager\')',
@@ -35,9 +35,9 @@ module Pageflow
       end
     end
 
-    def initialize(user, theming)
+    def initialize(user, site)
       @user = user
-      @theming = theming
+      @site = site
     end
 
     def edit?
@@ -47,7 +47,7 @@ module Pageflow
     private
 
     def allows?(roles)
-      @user.memberships.where(role: roles, entity: @theming.account).any?
+      @user.memberships.where(role: roles, entity: @site.account).any?
     end
   end
 end

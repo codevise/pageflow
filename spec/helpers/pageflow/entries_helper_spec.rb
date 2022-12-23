@@ -13,48 +13,48 @@ module Pageflow
       end
 
       it 'includes the cname domain when present' do
-        theming = build(:theming, cname: 'www.example.com')
-        entry = PublishedEntry.new(build(:entry, title: 'test', theming: theming), build(:revision))
+        site = build(:site, cname: 'www.example.com')
+        entry = PublishedEntry.new(build(:entry, title: 'test', site: site), build(:revision))
         expect(helper.pretty_entry_title(entry)).to eq('test - example.com')
       end
 
       it 'does not include empty cname domain' do
-        theming = build(:theming, cname: '')
-        entry = PublishedEntry.new(build(:entry, title: 'test', theming: theming), build(:revision))
+        site = build(:site, cname: '')
+        entry = PublishedEntry.new(build(:entry, title: 'test', site: site), build(:revision))
         expect(helper.pretty_entry_title(entry)).to eq('test')
       end
     end
 
     describe '#pretty_entry_url' do
       it 'uses default host' do
-        theming = create(:theming, cname: '')
-        entry = PublishedEntry.new(create(:entry, title: 'test', theming: theming),
+        site = create(:site, cname: '')
+        entry = PublishedEntry.new(create(:entry, title: 'test', site: site),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry)).to eq('http://test.host/test')
       end
 
       it 'supports custom params' do
-        theming = create(:theming, cname: '')
-        entry = PublishedEntry.new(create(:entry, title: 'test', theming: theming),
+        site = create(:site, cname: '')
+        entry = PublishedEntry.new(create(:entry, title: 'test', site: site),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry, page: 4)).to eq('http://test.host/test?page=4')
       end
 
-      it 'uses theming cname if present' do
-        theming = create(:theming, cname: 'my.example.com')
-        entry = PublishedEntry.new(create(:entry, title: 'test', theming: theming),
+      it 'uses site cname if present' do
+        site = create(:site, cname: 'my.example.com')
+        entry = PublishedEntry.new(create(:entry, title: 'test', site: site),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry)).to eq('http://my.example.com/test')
       end
 
       it 'uses permalink if present' do
-        theming = create(:theming,
+        site = create(:site,
                          cname: 'my.example.com')
         entry = create(:published_entry,
-                       theming: theming,
+                       site: site,
                        permalink_attributes: {
                          slug: 'custom',
                          directory_path: 'de/'
@@ -63,83 +63,83 @@ module Pageflow
         expect(helper.pretty_entry_url(entry)).to eq('http://my.example.com/de/custom')
       end
 
-      it 'uses theming canonical entry url prefix if present' do
-        theming = create(:theming,
+      it 'uses site canonical entry url prefix if present' do
+        site = create(:site,
                          canonical_entry_url_prefix: 'https://example.com/blog/')
-        entry = create(:published_entry, title: 'test', theming: theming)
+        entry = create(:published_entry, title: 'test', site: site)
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/blog/test')
       end
 
       it 'prefers canonical entry url prefix over cname' do
-        theming = create(:theming,
+        site = create(:site,
                          cname: 'my.example.com',
                          canonical_entry_url_prefix: 'https://example.com/blog/')
-        entry = create(:published_entry, title: 'test', theming: theming)
+        entry = create(:published_entry, title: 'test', site: site)
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/blog/test')
       end
 
       it 'supports interpolating entry locale in canonical entry url prefix' do
-        theming = create(:theming,
+        site = create(:site,
                          canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
         entry = create(:published_entry,
                        title: 'test',
-                       theming: theming,
+                       site: site,
                        revision_attributes: {locale: 'fr'})
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
       end
 
       it 'supports reading locale from draft entry' do
-        theming = create(:theming,
+        site = create(:site,
                          canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
         entry = create(:draft_entry,
                        title: 'test',
-                       theming: theming,
+                       site: site,
                        revision_attributes: {locale: 'fr'})
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
       end
 
       it 'uses locale of published revision if entry model is passed' do
-        theming = create(:theming,
+        site = create(:site,
                          canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
         entry = create(:entry,
                        :published,
                        title: 'test',
-                       theming: theming,
+                       site: site,
                        published_revision_attributes: {locale: 'fr'})
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
       end
 
       it 'falls back to draft locale if unpublished entry is passed' do
-        theming = create(:theming,
+        site = create(:site,
                          canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
         entry = create(:entry,
                        title: 'test',
-                       theming: theming)
+                       site: site)
         entry.draft.update(locale: 'fr')
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
       end
 
       it 'supports adding trailing slash' do
-        theming = create(:theming,
+        site = create(:site,
                          cname: 'my.example.com',
                          trailing_slash_in_canonical_urls: true)
-        entry = PublishedEntry.new(create(:entry, title: 'test', theming: theming),
+        entry = PublishedEntry.new(create(:entry, title: 'test', site: site),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry)).to eq('http://my.example.com/test/')
       end
 
       it 'supports adding trailing slash to url with custom prefix' do
-        theming = create(:theming,
+        site = create(:site,
                          canonical_entry_url_prefix: 'https://example.com/blog/',
                          trailing_slash_in_canonical_urls: true)
-        entry = PublishedEntry.new(create(:entry, title: 'test', theming: theming),
+        entry = PublishedEntry.new(create(:entry, title: 'test', site: site),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/blog/test/')
@@ -154,7 +154,7 @@ module Pageflow
       end
 
       it 'can be configured via lambda in public_entry_url_options' do
-        Pageflow.config.public_entry_url_options = lambda { |theming| {host: "#{theming.account.name}.example.com" } }
+        Pageflow.config.public_entry_url_options = lambda { |site| {host: "#{site.account.name}.example.com" } }
         account = create(:account, name: 'myaccount')
         entry = PublishedEntry.new(create(:entry, title: 'test', account: account),
                                    create(:revision))
@@ -165,11 +165,11 @@ module Pageflow
 
     describe '#entry_privacy_link_url' do
       it 'uses configured url and locale' do
-        theming = create(:theming,
+        site = create(:site,
                          privacy_link_url: 'https://example.com/privacy')
         entry = PublishedEntry.new(create(:entry,
                                           :published,
-                                          theming: theming,
+                                          site: site,
                                           published_revision_attributes: {
                                             locale: 'de'
                                           }))
@@ -322,8 +322,8 @@ module Pageflow
 
     describe '#entry_global_links' do
       it 'does not output links by default' do
-        theming = create(:theming)
-        entry = PublishedEntry.new(create(:entry, theming: theming))
+        site = create(:site)
+        entry = PublishedEntry.new(create(:entry, site: site))
 
         result = helper.entry_global_links(entry)
 
@@ -331,10 +331,10 @@ module Pageflow
       end
 
       it 'includes imprint link if configured' do
-        theming = create(:theming,
+        site = create(:site,
                          imprint_link_label: 'Imprint',
                          imprint_link_url: 'https://example.com/legal')
-        entry = PublishedEntry.new(create(:entry, theming: theming))
+        entry = PublishedEntry.new(create(:entry, site: site))
 
         result = helper.entry_global_links(entry)
 
@@ -343,10 +343,10 @@ module Pageflow
       end
 
       it 'includes copyright link if configured' do
-        theming = create(:theming,
+        site = create(:site,
                          copyright_link_label: 'Copyright',
                          copyright_link_url: 'https://example.com/copyright')
-        entry = PublishedEntry.new(create(:entry, theming: theming))
+        entry = PublishedEntry.new(create(:entry, site: site))
 
         result = helper.entry_global_links(entry)
 
@@ -355,11 +355,11 @@ module Pageflow
       end
 
       it 'includes privacy link if configured' do
-        theming = create(:theming,
+        site = create(:site,
                          privacy_link_url: 'https://example.com/privacy')
         entry = PublishedEntry.new(create(:entry,
                                           :published,
-                                          theming: theming,
+                                          site: site,
                                           published_revision_attributes: {
                                             locale: 'de'
                                           }))

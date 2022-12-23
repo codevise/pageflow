@@ -36,7 +36,7 @@ export * from './models/Scaffold';
 export * from './models/EncodedFile';
 export * from './models/ChapterScaffold';
 export * from './models/EditLockContainer';
-export * from './models/Theming';
+export * from './models/Site';
 export * from './models/ChapterConfiguration';
 export * from './models/Widget';
 export * from './models/UploadableFile';

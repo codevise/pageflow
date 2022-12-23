@@ -5,12 +5,12 @@ widgets such as navigation bars, headers or analytics snippets to be
 used in entries.
 
 Once a widget type is registered, it can either be enabled on a
-theming or per-entry basis. Each widget type defines which roles its
+site or per-entry basis. Each widget type defines which roles its
 instances play in the context of an entry. By default, Pageflow knows
 the roles `'navigation'`, `'head'` and `'overview'`, but arbitrary new
 roles can be specified by a widget type. For each role only one widget
 will be rendered in the entry. Widgets associated with an entry
-override those with the same role defined on the theming level.
+override those with the same role defined on the site level.
 
 * [Creating Widget Types with ERB Templates](creating_widget_types/with_erb_templates.md)
 

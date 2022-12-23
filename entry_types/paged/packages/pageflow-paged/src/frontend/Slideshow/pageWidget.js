@@ -202,7 +202,7 @@ import {state} from '../state';
     },
 
     _setupHideTextOnSwipe: function() {
-      if (state.entryData.getThemingOption('hide_text_on_swipe') &&
+      if (state.entryData.getSiteOption('hide_text_on_swipe') &&
           !navigationDirection.isHorizontal() &&
           !this.pageType.noHideTextOnSwipe) {
         this.element.hideTextOnSwipe({

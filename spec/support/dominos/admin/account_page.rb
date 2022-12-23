@@ -4,7 +4,7 @@ module Dom
       selector '.admin_accounts'
 
       attribute :name, '.attributes_table.pageflow_account .name td'
-      attribute :cname, '.attributes_table.pageflow_theming .cname td'
+      attribute :cname, '.attributes_table.pageflow_site .cname td'
       attribute :theme, '.attributes_table.pageflow_entry_template .theme td'
 
       attribute :default_author,

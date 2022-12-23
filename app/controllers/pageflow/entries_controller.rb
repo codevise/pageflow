@@ -6,9 +6,9 @@ module Pageflow
     include EntryPasswordProtection
 
     def index
-      theming = Theming.for_request(request).with_home_url.first!
+      site = Site.for_request(request).with_home_url.first!
 
-      redirect_to(theming.home_url)
+      redirect_to(site.home_url)
     end
 
     def show

@@ -95,7 +95,7 @@ module Pageflow
         Admin::EntryTabPolicy.new(user, tab).see?
       end
 
-      can :see_theming_admin_tab, Admin::Tab do |tab|
+      can :see_site_admin_tab, Admin::Tab do |tab|
         Admin::AdminOnlyTabPolicy.new(user, tab).see?
       end
 
@@ -112,8 +112,8 @@ module Pageflow
           AccountPolicy.new(user, account).configure_folder_on?
         end
 
-        can :update_theming_on_entry_of, Account do |account|
-          AccountPolicy.new(user, account).update_theming_on_entry_of?
+        can :update_site_on_entry_of, Account do |account|
+          AccountPolicy.new(user, account).update_site_on_entry_of?
         end
 
         can :create, Entry do |entry|
@@ -180,8 +180,8 @@ module Pageflow
           EntryPolicy.new(user, entry).update_feature_configuration_on?
         end
 
-        can :update_theming_on, Entry do |entry|
-          EntryPolicy.new(user, entry).update_theming_on?
+        can :update_site_on, Entry do |entry|
+          EntryPolicy.new(user, entry).update_site_on?
         end
 
         can :use_files, Entry, EntryPolicy::Scope.new(user, Entry).resolve do |entry|
@@ -222,8 +222,8 @@ module Pageflow
           EntryPolicy.new(user, storyline.revision.entry).edit?
         end
 
-        can :edit, Theming do |theming|
-          ThemingPolicy.new(user, theming).edit?
+        can :edit, Site do |site|
+          SitePolicy.new(user, site).edit?
         end
 
         can :create, EntryTemplate do |entry_template|
@@ -275,7 +275,7 @@ module Pageflow
         can :manage, [Entry, Revision]
         can :manage, Pageflow.config.file_types.map(&:model)
         can :manage, Folder
-        can :manage, Theming
+        can :manage, Site
         can :manage, EntryTemplate
         can :manage, ::User
       end

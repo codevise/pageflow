@@ -90,7 +90,7 @@ export const DomOrderScrollNavigator = function(slideshow, entryData) {
     var storylineConfiguration = getStorylineConfiguration(page);
 
     if ('parent_page_perma_id' in storylineConfiguration &&
-        entryData.getThemingOption('change_to_parent_page_at_storyline_boundary')) {
+        entryData.getSiteOption('change_to_parent_page_at_storyline_boundary')) {
 
       return pages.filter('#' + storylineConfiguration.parent_page_perma_id);
     }

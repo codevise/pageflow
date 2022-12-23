@@ -15,7 +15,7 @@ module Pageflow
 
       account = create(:account)
 
-      render(account.themings.first)
+      render(account.sites.first)
 
       expect(rendered).to have_text('ponies')
       expect(rendered).to have_text('rainbows')
@@ -38,7 +38,7 @@ module Pageflow
                          'rainbows_entry_type' => false
                        })
 
-      render(account.themings.first)
+      render(account.sites.first)
 
       expect(rendered).to have_text('ponies')
       expect(rendered).not_to have_text('rainbows')
@@ -63,7 +63,7 @@ module Pageflow
                      })
       create(:entry_template, account: account, entry_type_name: 'ponies')
 
-      render(account.themings.first)
+      render(account.sites.first)
 
       expect(rendered).not_to have_text('rainbows')
       expect(rendered).to have_text('ponies')

@@ -14,8 +14,8 @@ module PageflowPaged
       end
 
       it 'renders link to consent section of privacy page' do
-        theming = create(:theming, privacy_link_url: 'http://example.com/privacy')
-        entry = create(:published_entry, theming: theming)
+        site = create(:site, privacy_link_url: 'http://example.com/privacy')
+        entry = create(:published_entry, site: site)
 
         html = helper.third_party_embed_opt_in(entry: entry,
                                                message: 'I agree',
@@ -29,8 +29,8 @@ module PageflowPaged
 
     describe '#third_party_embed_opt_out_info' do
       it 'renders link to consent section of privacy page' do
-        theming = create(:theming, privacy_link_url: 'http://example.com/privacy')
-        entry = create(:published_entry, theming: theming)
+        site = create(:site, privacy_link_url: 'http://example.com/privacy')
+        entry = create(:published_entry, site: site)
 
         html = helper.third_party_embed_opt_out_info(entry)
 

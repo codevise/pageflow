@@ -1,7 +1,7 @@
 import Object from './Object'
 
 export const EntryData = Object.extend({
-  getThemingOption: function(name) {
+  getSiteOption: function(name) {
     throw 'Not implemented';
   },
 

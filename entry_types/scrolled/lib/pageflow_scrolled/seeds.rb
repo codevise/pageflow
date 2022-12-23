@@ -42,7 +42,7 @@ module PageflowScrolled
                                                             :video_files,
                                                             :audio_files,
                                                             :text_track_files)) do |created_entry|
-          created_entry.theming = attributes.fetch(:account).default_theming
+          created_entry.site = attributes.fetch(:account).default_site
 
           say_creating_scrolled_entry(created_entry)
           yield(created_entry) if block_given?

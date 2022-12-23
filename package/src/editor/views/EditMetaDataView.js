@@ -75,7 +75,7 @@ export const EditMetaDataView = Marionette.Layout.extend({
       editor.entryType.appearanceInputs &&
         editor.entryType.appearanceInputs(this, {
           entry,
-          theming: state.theming
+          site: state.site
         });
       entry.widgets && this.view(EditWidgetsView, {
         model: entry,

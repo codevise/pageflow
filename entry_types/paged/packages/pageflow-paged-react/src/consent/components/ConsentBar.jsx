@@ -1,6 +1,6 @@
 import registerWidgetType from 'registerWidgetType';
 
-import {privacyLinkUrl} from 'theming/selectors';
+import {privacyLinkUrl} from 'site/selectors';
 import {editingWidget} from 'widgets/selectors';
 import {t, locale} from 'i18n/selectors';
 import {isConsentUIVisible, requestedVendors} from '../selectors';

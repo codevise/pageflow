@@ -8,14 +8,14 @@ module Pageflow
       helper.extend(Pageflow::Admin::FeaturesHelper)
     end
 
-    it 'displays fields for account features of passed theming' do
+    it 'displays fields for account features of passed site' do
       pageflow_configure do |config|
         config.features.register('some_feature')
       end
 
-      theming = create(:theming)
+      site = create(:site)
 
-      render(theming)
+      render(site)
 
       expect(rendered).to have_selector('select[name*=some_feature]')
     end

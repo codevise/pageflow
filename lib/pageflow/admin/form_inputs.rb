@@ -11,7 +11,7 @@ module Pageflow
       # Register a proc which adds additional inputs to admin forms.
       #
       # @param resource_name [Symbol] A resource name like `:entry`,
-      #   `:account` or `:theming`
+      #   `:account` or `:site`
       # @param attribute_name [Symbol] The name of the additional
       #   attribute
       # @param options [Hash] Formtastic options

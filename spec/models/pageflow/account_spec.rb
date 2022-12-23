@@ -20,27 +20,27 @@ module Pageflow
       end
     end
 
-    describe '#build_default_theming' do
-      it 'sets default theming to new theming' do
+    describe '#build_default_site' do
+      it 'sets default site to new site' do
         account = create(:account)
 
-        theming = account.build_default_theming
+        site = account.build_default_site
 
-        expect(account.default_theming).to eq(theming)
+        expect(account.default_site).to eq(site)
       end
 
-      it 'initializes account of new theming to self' do
+      it 'initializes account of new site to self' do
         account = create(:account)
 
-        theming = account.build_default_theming
+        site = account.build_default_site
 
-        expect(theming.account).to eq(account)
+        expect(site.account).to eq(account)
       end
 
-      it 'destroys default theming when account is destroyed' do
+      it 'destroys default site when account is destroyed' do
         account = create(:account)
 
-        expect { account.destroy }.to change(Theming, :count).by(-1)
+        expect { account.destroy }.to change(Site, :count).by(-1)
       end
     end
 

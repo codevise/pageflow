@@ -29,7 +29,7 @@ module Pageflow
         entry_creatable
       end
 
-      def themings_accessible
+      def sites_accessible
         entry_creatable
       end
 
@@ -62,7 +62,7 @@ module Pageflow
       publish?
     end
 
-    def update_theming_on_entry_of?
+    def update_site_on_entry_of?
       publish?
     end
 

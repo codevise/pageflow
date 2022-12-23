@@ -8,7 +8,7 @@ module Dom
           fill_in('account_name',
                   with: options[:name]) if options[:name]
 
-          fill_in('account_default_theming_attributes_cname',
+          fill_in('account_default_site_attributes_cname',
                   with: options[:cname]) if options[:cname]
 
           if options[:default_author]

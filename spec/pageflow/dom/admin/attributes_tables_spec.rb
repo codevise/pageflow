@@ -27,15 +27,15 @@ describe 'attributes table dominos', type: :feature do
     expect(table.contents_of_row(:custom)).to have_text('Custom')
   end
 
-  it 'allows reading row contents of theming attributes table' do
+  it 'allows reading row contents of site attributes table' do
     account = create(:account)
 
     pageflow_configure do |config|
-      config.admin_attributes_table_rows.register(:theming, :custom) { 'Custom' }
+      config.admin_attributes_table_rows.register(:site, :custom) { 'Custom' }
     end
 
     Pageflow::Dom::Admin.sign_in_as(:admin)
-    table = Pageflow::Dom::Admin::ThemingAttributesTable.for(account.default_theming)
+    table = Pageflow::Dom::Admin::SiteAttributesTable.for(account.default_site)
 
     expect(table.contents_of_row(:custom)).to have_text('Custom')
   end

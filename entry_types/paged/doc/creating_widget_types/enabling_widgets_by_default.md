@@ -2,7 +2,7 @@
 
 Sometimes it can be desirable to define a default widget type to be
 used for a specific role. This way, no manual configuration of entry
-or theming is required for a widget to be rendered in all entries:
+or site is required for a widget to be rendered in all entries:
 
     config.widget_types.register(Rainbow::WidgetType.new, default: true)
 

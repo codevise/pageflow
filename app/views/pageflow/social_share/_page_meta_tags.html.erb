@@ -5,7 +5,7 @@
 <%= tag :meta, property: "og:title", content: social_share_page_title(page) %>
 <%= tag :meta, property: "og:description", name: "description", content: social_share_page_description(entry, page) %>
 <%= tag :meta, property: "og:url", content: social_share_page_url(entry, page) %>
-<%= tag :meta, property: "og:site_name", content: entry.theming.cname_domain %>
+<%= tag :meta, property: "og:site_name", content: entry.site.cname_domain %>
 <%= tag :meta, property: "og:type", content: "website" %>
 
 <%= tag :meta, name: "twitter:card", content: "summary_large_image" %>

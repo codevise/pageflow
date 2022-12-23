@@ -632,9 +632,9 @@ module Pageflow
           config.themes.register(:named_theme)
         end
 
-        theming = build(:revision, theme_name: 'named_theme')
+        site = build(:revision, theme_name: 'named_theme')
 
-        expect(theming.theme.name).to eq('named_theme')
+        expect(site.theme.name).to eq('named_theme')
       end
     end
 

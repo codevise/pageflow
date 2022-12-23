@@ -19,7 +19,7 @@ module Pageflow
   module Seeds
     DEFAULT_USER_PASSWORD = '!Pass123'
 
-    # Create an {Account} with a default {Theming} if no account by
+    # Create an {Account} with a default {Site} if no account by
     # that name exists.
     #
     # @param [Hash] attributes  attributes to override defaults
@@ -30,29 +30,29 @@ module Pageflow
       Account.find_or_create_by!(attributes.slice(:name)) do |account|
         account.attributes = attributes.reverse_merge(name: 'Pageflow')
 
-        build_default_theming_for(account)
+        build_default_site_for(account)
 
         say_creating_account(account)
         yield(account) if block_given?
       end
     end
 
-    # Build a default {Theming} for an {Account}. To be used inside a
+    # Build a default {Site} for an {Account}. To be used inside a
     # block passed to {#account}.
     #
     # @example
     #
     #   account(name: 'example') do |account|
-    #     build_default_theming_for(account) do |theming|
-    #       theming.theme_name = 'mdr'
+    #     build_default_site_for(account) do |site|
+    #       site.theme_name = 'mdr'
     #     end
     #   end
     #
     # @param [Account] account  the account to build a default themeing for
     # @param [Hash] attributes  further attributes to override defaults
-    # @yield [theming] a block which is passed the newly built theming
-    # @return [Theming] newly built theming
-    def build_default_theming_for(account, attributes = {}, &block)
+    # @yield [site] a block which is passed the newly built site
+    # @return [Site] newly built site
+    def build_default_site_for(account, attributes = {}, &block)
       default_attributes = {
         imprint_link_label: 'Impressum',
         imprint_link_url: 'http://example.com/impressum.html',
@@ -60,7 +60,7 @@ module Pageflow
         copyright_link_url: 'http://www.example.com/copyright.html'
       }
 
-      account.build_default_theming(default_attributes.merge(attributes), &block)
+      account.build_default_site(default_attributes.merge(attributes), &block)
     end
 
     # Create a {User} if none with the given email exists yet.
@@ -110,7 +110,7 @@ module Pageflow
 
       if entry.nil?
         entry = Entry.create!(attributes) do |created_entry|
-          created_entry.theming = attributes.fetch(:account).default_theming
+          created_entry.site = attributes.fetch(:account).default_site
 
           say_creating_entry(created_entry)
           yield(created_entry) if block_given?

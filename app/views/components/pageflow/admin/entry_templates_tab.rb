@@ -1,8 +1,8 @@
 module Pageflow
   module Admin
     class EntryTemplatesTab < ViewComponent
-      def build(theming)
-        account = theming.account
+      def build(site)
+        account = site.account
         table_subjects = account.existing_and_potential_entry_templates
 
         table_for(table_subjects, i18n: Pageflow::EntryTemplate) do

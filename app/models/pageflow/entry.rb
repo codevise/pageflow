@@ -13,7 +13,7 @@ module Pageflow
 
     belongs_to :account, counter_cache: true
     belongs_to :folder, optional: true
-    belongs_to :theming
+    belongs_to :site
 
     has_many :revisions, -> { order('frozen_at DESC') }
 
@@ -36,7 +36,7 @@ module Pageflow
 
     has_secure_password validations: false
 
-    validates :account, :theming, :presence => true
+    validates :account, :site, :presence => true
     validates :title, presence: true
     validate :entry_type_is_available_for_account
     validate :folder_belongs_to_same_account

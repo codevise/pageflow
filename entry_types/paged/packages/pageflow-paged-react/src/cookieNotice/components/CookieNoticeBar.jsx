@@ -1,7 +1,7 @@
 import registerWidgetType from 'registerWidgetType';
 
 import {isCookieNoticeVisible} from '../selectors';
-import {privacyLinkUrl} from 'theming/selectors';
+import {privacyLinkUrl} from 'site/selectors';
 import {editingWidget} from 'widgets/selectors';
 import {t, locale} from 'i18n/selectors';
 

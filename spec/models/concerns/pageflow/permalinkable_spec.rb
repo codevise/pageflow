@@ -4,7 +4,7 @@ module Pageflow
   describe Permalinkable do
     it 'accepts permalink attributes on create' do
       entry = build(:entry)
-      permalink_directory = create(:permalink_directory, theming: entry.theming)
+      permalink_directory = create(:permalink_directory, site: entry.site)
       entry.update!(permalink_attributes: {
                       slug: 'some-slug',
                       directory: permalink_directory
@@ -21,9 +21,9 @@ module Pageflow
       expect(entry.permalink.reload).to have_attributes(slug: 'new-slug')
     end
 
-    it 'is invalid if permalink directory belongs to different theming' do
-      other_theming = create(:theming)
-      permalink_directory = create(:permalink_directory, theming: other_theming)
+    it 'is invalid if permalink directory belongs to different site' do
+      other_site = create(:site)
+      permalink_directory = create(:permalink_directory, site: other_site)
       entry = build(
         :entry,
         permalink_attributes: {
@@ -36,12 +36,12 @@ module Pageflow
       expect(entry).to have(1).errors_on('permalink.directory')
     end
 
-    it 'is invalid if slug is already taken in permalink directory of theming' do
-      theming = create(:theming)
-      permalink_directory = create(:permalink_directory, theming: theming)
+    it 'is invalid if slug is already taken in permalink directory of site' do
+      site = create(:site)
+      permalink_directory = create(:permalink_directory, site: site)
       create(
         :entry,
-        theming: theming,
+        site: site,
         permalink_attributes: {
           slug: 'slug',
           directory: permalink_directory
@@ -49,7 +49,7 @@ module Pageflow
       )
       entry = build(
         :entry,
-        theming: theming,
+        site: site,
         permalink_attributes: {
           slug: 'slug',
           directory: permalink_directory
@@ -60,10 +60,10 @@ module Pageflow
     end
 
     it 'is valid if slug has been used in different permalink directory' do
-      theming = create(:theming)
+      site = create(:site)
       create(
         :entry,
-        theming: theming,
+        site: site,
         permalink_attributes: {
           slug: 'slug',
           directory_path: 'en/'
@@ -71,7 +71,7 @@ module Pageflow
       )
       entry = build(
         :entry,
-        theming: theming,
+        site: site,
         permalink_attributes: {
           slug: 'slug',
           directory_path: 'de/'
@@ -81,7 +81,7 @@ module Pageflow
       expect(entry).to be_valid
     end
 
-    it 'is valid if slug has been used in different theming' do
+    it 'is valid if slug has been used in different site' do
       create(
         :entry,
         permalink_attributes: {
@@ -136,7 +136,7 @@ module Pageflow
       account = create(:account)
       permalink_directory = create(
         :permalink_directory,
-        theming: account.default_theming
+        site: account.default_site
       )
       create(
         :entry,

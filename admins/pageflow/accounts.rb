@@ -59,12 +59,12 @@ module Pageflow
 
     show :title => :name do |account|
       render 'account_details', :account => account
-      render 'theming_details', :account => account
+      render 'site_details', :account => account
 
-      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(account.default_theming),
+      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(account.default_site),
                 i18n: 'pageflow.admin.resource_tabs',
-                authorize: :see_theming_admin_tab,
-                build_args: [account.default_theming])
+                authorize: :see_site_admin_tab,
+                build_args: [account.default_site])
     end
 
     controller do
@@ -76,14 +76,14 @@ module Pageflow
 
       def new
         @account = Account.new
-        @account.build_default_theming
+        @account.build_default_site
       end
 
       def create
         account_params = permitted_params[:account] || {}
         @account = Account.new(account_params)
-        @account.build_default_theming(permitted_params.fetch(:account, {})[
-                                         :default_theming_attributes])
+        @account.build_default_site(permitted_params.fetch(:account, {})[
+                                         :default_site_attributes])
         super
       end
 
@@ -100,7 +100,7 @@ module Pageflow
       end
 
       def scoped_collection
-        super.includes(:default_theming)
+        super.includes(:default_site)
       end
 
       private
@@ -115,12 +115,12 @@ module Pageflow
         [
           :name,
           :default_file_rights,
-          default_theming_attributes: permitted_theming_attributes
+          default_site_attributes: permitted_site_attributes
         ] +
           permitted_attributes_for(:account)
       end
 
-      def permitted_theming_attributes
+      def permitted_site_attributes
         [
           :cname,
           :additional_cnames,
@@ -131,7 +131,7 @@ module Pageflow
           :privacy_link_url,
           :home_url
         ] +
-          permitted_attributes_for(:theming)
+          permitted_attributes_for(:site)
       end
 
       def permitted_attributes_for(resource_name)

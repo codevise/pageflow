@@ -31,7 +31,7 @@
 
 Key: X = for all, A = on respective account, E = on respective entry, O = on own profile
 
-*) Account settings: feature configuration, indexing widgets, set default theming
+*) Account settings: feature configuration, indexing widgets, set default site
 
 **) Account/entry settings: set account on entry
 

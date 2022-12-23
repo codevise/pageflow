@@ -1,5 +1,0 @@
-extensible_attributes_table_for(account.default_theming,
-                                Pageflow.config_for(account)
-                                  .admin_attributes_table_rows.for(:theming)) do
-  row :cname, class: 'cname'
-end

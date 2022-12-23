@@ -4,7 +4,7 @@
 
   <%= f.inputs do %>
       <%= f.semantic_errors :entry_type_name %>
-      <%= render('admin/accounts/theming_defaults_inline_help') %>
+      <%= render('admin/accounts/site_defaults_inline_help') %>
       <%= f.hidden_field :entry_type_name, value: entry_type_name %>
       <%= f.input :default_locale,
                         as: :select,
@@ -12,15 +12,15 @@
                         collection: Pageflow.config.available_public_locales.map{ |locale|
                           [t('pageflow.public._language', locale: locale), locale.to_s]
                         },
-                        hint: t('pageflow.admin.themings.default_locale_hint') %>
+                        hint: t('pageflow.admin.sites.default_locale_hint') %>
       <%= f.input :default_author,
-        hint: t('pageflow.admin.themings.default_author_hint'),
+        hint: t('pageflow.admin.sites.default_author_hint'),
         placeholder: Pageflow.config.default_author_meta_tag %>
       <%= f.input :default_publisher,
-        hint: t('pageflow.admin.themings.default_publisher_hint'),
+        hint: t('pageflow.admin.sites.default_publisher_hint'),
         placeholder: Pageflow.config.default_publisher_meta_tag %>
       <%= f.input :default_keywords,
-        hint: t('pageflow.admin.themings.default_keywords_hint'),
+        hint: t('pageflow.admin.sites.default_keywords_hint'),
         placeholder: Pageflow.config.default_keywords_meta_tag %>
       <%= render('admin/accounts/share_providers_label') %>
       <%= f.semantic_fields_for :share_providers,

@@ -64,21 +64,21 @@ module Pageflow
         end
       end
 
-      # Edit form for theming in account admin.
+      # Edit form for site in account admin.
       #
       # @since 12.2
-      class ThemingEditForm < EditForm
+      class SiteEditForm < EditForm
         selector '.edit.admin_accounts'
 
-        def self.url(theming)
-          url_helpers.edit_admin_account_path(theming.account)
+        def self.url(site)
+          url_helpers.edit_admin_account_path(site.account)
         end
         private_class_method :url
 
         private
 
         def field_prefix
-          'account[default_theming_attributes]'
+          'account[default_site_attributes]'
         end
       end
     end

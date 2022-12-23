@@ -1,6 +1,6 @@
 module Pageflow
   FactoryBot.define do
-    factory :theming, :class => Pageflow::Theming do
+    factory :site, :class => Pageflow::Site do
       account
     end
   end

@@ -32,8 +32,8 @@ module Pageflow
 
       title = ["#{entry.title}:"]
       title << page.title
-      title << '-' if entry.theming.cname_domain.present?
-      title << entry.theming.cname_domain
+      title << '-' if entry.site.cname_domain.present?
+      title << entry.site.cname_domain
 
       title.join(' ')
     end

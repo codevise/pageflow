@@ -10,7 +10,7 @@ module Pageflow
       account
 
       after(:build) do |entry|
-        entry.theming ||= entry.account.default_theming
+        entry.site ||= entry.account.default_site
       end
 
       transient do
@@ -58,7 +58,7 @@ module Pageflow
             evaluator.permalink_attributes[:directory] ||
             build(
               :permalink_directory,
-              theming: entry.theming,
+              site: entry.site,
               path: evaluator.permalink_attributes.fetch(:directory_path, '')
             )
 

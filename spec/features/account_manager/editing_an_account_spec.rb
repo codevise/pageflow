@@ -13,8 +13,8 @@ feature 'as account manager, editing an account' do
   end
 
   scenario 'changing nested cname' do
-    theming = create(:theming, cname: 'xxx')
-    account = create(:account, default_theming: theming)
+    site = create(:site, cname: 'xxx')
+    account = create(:account, default_site: site)
 
     Dom::Admin::Page.sign_in_as(:manager, on: account)
     visit(admin_account_path(account))

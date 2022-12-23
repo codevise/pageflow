@@ -25,7 +25,7 @@ module Pageflow
                                                                'slug',
                                                                'account_id',
                                                                'folder_id',
-                                                               'theming_id',
+                                                               'site_id',
                                                                'updated_at'))
       end
 
@@ -43,7 +43,7 @@ module Pageflow
         expect(imported_entry.folder).to be_nil
       end
 
-      it 'uses passed account and its default theming' do
+      it 'uses passed account and its default site' do
         exported_entry = create(:entry,
                                 title: 'Some title',
                                 features_configuration: {'some_feature' => true},
@@ -59,7 +59,7 @@ module Pageflow
                                                    creator: create(:user))
 
         expect(imported_entry.account).to eq(import_account)
-        expect(imported_entry.theming).to eq(import_account.default_theming)
+        expect(imported_entry.site).to eq(import_account.default_site)
       end
 
       it 'does not include host system specific attributes in dump' do

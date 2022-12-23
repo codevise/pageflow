@@ -24,7 +24,7 @@ module Pageflow
 
       def entry_embed_url_options(entry)
         options = Pageflow.config.entry_embed_url_options
-        options = options.call(entry.theming) if options.respond_to?(:call)
+        options = options.call(entry.site) if options.respond_to?(:call)
         options
       end
     end

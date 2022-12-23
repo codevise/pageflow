@@ -332,11 +332,11 @@ module PageflowScrolled
       end
 
       it 'renders entry pretty url and provider share url templates' do
-        theming = create(:theming, cname: '')
+        site = create(:site, cname: '')
         entry = create(:published_entry,
                        type_name: 'scrolled',
                        title: 'test',
-                       theming: theming)
+                       site: site)
 
         result = render(helper, entry)
 

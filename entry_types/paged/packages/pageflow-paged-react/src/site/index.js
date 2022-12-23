@@ -2,11 +2,11 @@ import {init} from './actions';
 import reducer from './reducer';
 
 export default {
-  init({theming, dispatch}) {
-    dispatch(init(theming));
+  init({site, dispatch}) {
+    dispatch(init(site));
   },
 
   createReducers() {
-    return {theming: reducer};
+    return {site: reducer};
   }
 };

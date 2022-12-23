@@ -5,18 +5,18 @@ module Pageflow
     describe '#url' do
       it 'returns home_url of revision' do
         revision = build(:revision, configuration: {home_url: 'http://example.com'})
-        theming = create(:theming)
-        home_button = HomeButton.new(revision, theming)
+        site = create(:site)
+        home_button = HomeButton.new(revision, site)
 
         expect(home_button.url).to eq('http://example.com')
       end
 
-      it 'falls back to cname of theming if theming has home_url' do
+      it 'falls back to cname of site if site has home_url' do
         revision = build(:revision, configuration: {home_url: ''})
-        theming = create(:theming,
+        site = create(:site,
                          cname: 'pageflow.example.com',
                          home_url: 'http://example.com')
-        home_button = HomeButton.new(revision, theming)
+        home_button = HomeButton.new(revision, site)
 
         expect(home_button.url).to eq('http://pageflow.example.com/')
       end
@@ -33,13 +33,13 @@ module Pageflow
                            home_button_enabled: true
                          },
                          theme_name: 'with_home_button')
-        theming = create(:theming)
-        home_button = HomeButton.new(revision, theming)
+        site = create(:site)
+        home_button = HomeButton.new(revision, site)
 
         expect(home_button).to be_enabled
       end
 
-      it 'is true if home_button is enabled, configured in theming and supported by theme' do
+      it 'is true if home_button is enabled, configured in site and supported by theme' do
         pageflow_configure do |config|
           config.themes.register(:with_home_button)
         end
@@ -49,10 +49,10 @@ module Pageflow
                            home_button_enabled: true
                          },
                          theme_name: 'with_home_button')
-        theming = create(:theming,
+        site = create(:site,
                          home_url: 'http://example.com',
                          cname: 'pageflow.exmaple.com')
-        home_button = HomeButton.new(revision, theming)
+        home_button = HomeButton.new(revision, site)
 
         expect(home_button).to be_enabled
       end
@@ -67,16 +67,16 @@ module Pageflow
                            home_url: 'http://example.com',
                            home_button_enabled: false
                          })
-        theming = create(:theming)
-        home_button = HomeButton.new(revision, theming)
+        site = create(:site)
+        home_button = HomeButton.new(revision, site)
 
         expect(home_button).not_to be_enabled
       end
 
       it 'is false if no home_url is configured' do
         revision = build(:revision, configuration: {home_button_enabled: true})
-        theming = create(:theming, home_url: '')
-        home_button = HomeButton.new(revision, theming)
+        site = create(:site, home_url: '')
+        home_button = HomeButton.new(revision, site)
 
         expect(home_button).not_to be_enabled
       end
@@ -91,8 +91,8 @@ module Pageflow
                            home_url: 'http://example.com',
                            home_button_enabled: true
                          })
-        theming = create(:theming)
-        home_button = HomeButton.new(revision, theming)
+        site = create(:site)
+        home_button = HomeButton.new(revision, site)
 
         expect(home_button).not_to be_enabled
       end

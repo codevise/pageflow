@@ -175,22 +175,22 @@ end
 ```
 
 To display a tab on the account's page it needs to be registered for
-themings:
+sites:
 
 ```ruby
 # rainbow/lib/rainbow/plugin.rb
 module Rainbow
   class Plugin < Pageflow::Plugin
     def configure(config)
-      config.admin_resource_tabs.register(:theming,
+      config.admin_resource_tabs.register(:site,
                                           name: :my_custom_tab,
                                           component: SomeTab)
     end
   end
 
   class SomeTab < Arbre::Component
-    def build(theming)
-      # Use theming.account to access the account
+    def build(site)
+      # Use site.account to access the account
     end
   end
 end
