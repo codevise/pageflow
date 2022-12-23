@@ -100,7 +100,7 @@ module Pageflow
                               end)
 
     searchable_select_options(name: :eligible_sites,
-                              text_attribute: :name,
+                              text_attribute: :name_with_account_prefix,
                               scope: lambda do |params|
                                 entry = Entry.find(params[:entry_id])
                                 SitePolicy::Scope

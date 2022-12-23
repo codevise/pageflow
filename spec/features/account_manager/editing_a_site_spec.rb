@@ -9,6 +9,6 @@ feature 'as account manager, editing a site' do
     Dom::Admin::SitePage.first.edit_link.click
     Dom::Admin::SiteForm.first.submit_with(cname: 'foo.bar.org')
 
-    expect(Dom::Admin::SitePage.first.cname).to eq('foo.bar.org')
+    expect(Dom::Admin::SitePage.first.host).to eq('foo.bar.org')
   end
 end

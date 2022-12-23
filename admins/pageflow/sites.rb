@@ -18,6 +18,7 @@ module Pageflow
 
     permit_params do
       [
+        :name,
         :cname,
         :additional_cnames,
         :imprint_link_url,

@@ -3,7 +3,7 @@ module Dom
     class SitePage < Domino
       selector '.admin_sites'
 
-      attribute :cname, '.attributes_table.pageflow_site .cname td'
+      attribute :host, '.attributes_table.pageflow_site .host td'
       attribute :theme, '.attributes_table.pageflow_entry_template .theme td'
 
       attribute :default_author,

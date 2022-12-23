@@ -2,8 +2,9 @@ FactoryBot.define do
   factory :account, class: Pageflow::Account do
     name { 'Account Name' }
 
-    after(:build) do |account|
-      account.default_site ||= build(:site, account: account)
+    after(:build) do |account, evaluator|
+      account.default_site ||=
+        build(:site, account: account, **evaluator.default_site_attributes)
     end
 
     trait(:with_first_paged_entry_template) do
@@ -21,6 +22,8 @@ FactoryBot.define do
 
       with_feature { nil }
       without_feature { nil }
+
+      default_site_attributes { {} }
     end
 
     after(:create) do |account, evaluator|

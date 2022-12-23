@@ -5,9 +5,12 @@ module Pageflow
         embedded_index_table(account.sites,
                              blank_slate_text: I18n.t('pageflow.admin.accounts.no_sites')) do
           table_for_collection class: 'sites', i18n: Pageflow::Site do
-            column :cname do |site|
-              link_to(site.cname.presence || '(Default)',
+            column :name do |site|
+              link_to(site.display_name,
                       admin_account_site_path(site.account, site))
+            end
+            column :host do |site|
+              site.host.presence || '-'
             end
           end
         end

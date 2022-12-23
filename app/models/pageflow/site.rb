@@ -14,14 +14,20 @@ module Pageflow
 
     delegate :enabled_feature_names, to: :account
 
-    def cname_domain
-      cname.split('.').pop(2).join('.')
+    def display_name
+      name.presence || I18n.t('pageflow.admin.sites.default_name')
     end
 
-    def name
-      I18n.t('pageflow.admin.sites.name',
-             account_name: account.name,
-             theme_name: 'default')
+    def name_with_account_prefix
+      [account.name, name].compact.join(' - ')
+    end
+
+    def host
+      Pageflow.config.site_url_options(self)&.dig(:host)
+    end
+
+    def cname_domain
+      cname.split('.').pop(2).join('.')
     end
 
     def first_paged_entry_template

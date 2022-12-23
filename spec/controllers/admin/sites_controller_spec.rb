@@ -293,11 +293,13 @@ module Admin
               account_id: site.account,
               id: site.id,
               site: {
+                name: 'new name',
                 imprint_link_url: 'http://example.com/new'
               }
             })
 
         expect(site.reload.imprint_link_url).to eq('http://example.com/new')
+        expect(site.name).to eq('new name')
       end
 
       it 'does not update sites with insufficient privileges ' do
