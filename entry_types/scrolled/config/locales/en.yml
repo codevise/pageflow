@@ -2,8 +2,32 @@ en:
   pageflow:
     datawrapper_chart_embed_opt_in:
       feature_name: Opt-in for Datawrapper embeds
+    defaultNavigation:
+      widget_type_name: Default navigation
+    editor:
+      widgets:
+        attributes:
+          defaultNavigation:
+            fixedOnDesktop:
+              inline_help: |
+                By default, the navigation are hidden when the page is
+                scrolled. Use this option to prevent hiding the
+                navigation bar in desktop layout. To safe space, the
+                navigation is still always hidden when the page is
+                scrolled in phone layout.
+              label: Keep expanded in desktop layout
+            hideSharingButton:
+              label: Hide share button
+            hideToggleMuteButton:
+              label: Hide unmute button
+    frontend_v2:
+      feature_name: Frontend v2
     iframe_embed_content_element:
       feature_name: iframe embed content element
+    ui:
+      configuration_editor:
+        tabs:
+          defaultNavigation: Default navigation
   pageflow_scrolled:
     editor:
       backdrop_effects:
@@ -48,6 +72,9 @@ en:
             sticky: Sticky
             wide: Wide
         typographyVariant:
+          blank: "(Default)"
+          label: Variant
+        variant:
           blank: "(Default)"
           label: Variant
       content_element_categories:
@@ -135,6 +162,22 @@ en:
                 medium: Medium
                 small: Small
           description: Entry or chapter title
+          help_texts:
+            shortcuts: |
+              <dl class="shortcuts">
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Alt</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Specify potential line break points within long words
+                    to control hyphenation.
+                  </span>
+                </dt>
+                <dd>
+                  Insert soft hyphen
+                </dd>
+              </dl>
           name: Heading
           tabs:
             general: Heading
@@ -271,6 +314,15 @@ en:
           name: Inline Video
           tabs:
             general: Inline Video
+        question:
+          attributes:
+            expandByDefault:
+              inline_help: Display answer initially.
+              label: Expand by default
+          description: Expand to reveal an answer
+          name: Question/Answer
+          tabs:
+            general: Question/Answer
         soundDisclaimer:
           description: Make sure users unmute before continuing
           name: Audio Notice
@@ -278,9 +330,48 @@ en:
             general: Audio Notice
         textBlock:
           description: Text with lists, block quotes and sub-headings
+          help_texts:
+            shortcuts: |
+              <dl class="shortcuts">
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Shift</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Insert a new line without beginning a new paragraph.
+                  </span>
+                </dt>
+                <dd>
+                  Insert soft break/new line
+                </dd>
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Alt</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Specify potential line break points within long words
+                    to control hyphenation.
+                  </span>
+                </dt>
+                <dd>
+                  Insert soft hyphen
+                </dd>
+              </dl>
           name: Text Block
           tabs:
             general: Text Block
+        twitterEmbed:
+          attributes:
+            hideConversation:
+              label: Hide Conversation
+            hideMedia:
+              label: Hide Media
+            url:
+              label: Tweet URL
+          description: Embed content from Twitter
+          name: Tweet
+          tabs:
+            general: Twitter Embed
         videoEmbed:
           attributes:
             aspectRatio:
@@ -290,6 +381,13 @@ en:
                 portrait: Portrait (9:16)
                 square: Square
                 wide: Landscape 16:9
+            atmoDuringPlayback:
+              inline_help: Choose which way the atmo shall behave during playback of the video embed.
+              label: Atmo During Playback
+              values:
+                mute: Mute
+                play: Keep playing
+                turnDown: Keep playing at lower volume
             hideControls:
               inline_help: Hides the player controls if possible (depends on the videos provider and configuration). The video can be played and paused via click.
               label: Hide controls
@@ -433,6 +531,18 @@ en:
       section_item:
         drag_hint: Drag to move section
         save_error: There was an error while saving this section.
+      select_link_destination:
+        cancel: Cancel
+        create: Create
+        enter_url: Use external URL as destination
+        header: Create link
+        open_in_new_tab: Open in new tab
+        or: or
+        select_chapter_or_section: Select chapter or section as destination
+      selectable_chapter_item:
+        title: Select chapter
+      selectable_section_item:
+        title: Select section
     help_entries:
       content_elements:
         menu_item: Content Elements
@@ -536,10 +646,24 @@ en:
         after: Insert new element below
         before: Insert new element above
       insert_link: Insert link
+      link_tooltip:
+        chapter_number: Chapter %{number}
+        opens_in_new_tab: Opens in new tab
+        opens_in_same_tab: Outside editor, will open in same tab
+        visit_chapter: Go to chapter
+        visit_section: Go to section
       remove_link: Remove link
       select_content_element: Select element
       select_section: Select section
+      type_answer: Type answer text
       type_heading: Heading
+      type_question: Type question text
       type_text: Type some text
       type_title: Title
       url_placeholder: Type or paste URL
+    public:
+      third_party_consent:
+        opt_in_prompt:
+          twitter: I agree with being shown content from Twitter.
+      twitter:
+        default_title: Tweet

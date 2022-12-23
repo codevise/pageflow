@@ -2,8 +2,32 @@ de:
   pageflow:
     datawrapper_chart_embed_opt_in:
       feature_name: Opt-in für Datawrapper Embeds
+    defaultNavigation:
+      widget_type_name: Standard Navigation
+    editor:
+      widgets:
+        attributes:
+          defaultNavigation:
+            fixedOnDesktop:
+              inline_help: |
+                Standardmäßig wird die Navigation beim Scrollen
+                ausgeblendet. Verwende diese Option, um die Navigation
+                im Desktop-Layout nie auszublenden. Um Platz zu
+                sparen, wird die Navigation im Phone-Layout beim
+                Scrollen dennoch immer ausgeblendet.
+              label: Im Desktop-Layout fixieren
+            hideSharingButton:
+              label: Share-Button ausblenden
+            hideToggleMuteButton:
+              label: "'Ton aktivieren'-Button ausblenden"
+    frontend_v2:
+      feature_name: Frontend v2
     iframe_embed_content_element:
       feature_name: iframe-Embed Inhaltselement
+    ui:
+      configuration_editor:
+        tabs:
+          defaultNavigation: Standard Navigation
   pageflow_scrolled:
     editor:
       backdrop_effects:
@@ -48,6 +72,9 @@ de:
             sticky: Sticky
             wide: Breit
         typographyVariant:
+          blank: "(Standard)"
+          label: Variante
+        variant:
           blank: "(Standard)"
           label: Variante
       content_element_categories:
@@ -136,6 +163,22 @@ de:
                 medium: Mittel
                 small: Klein
           description: Beitrags- oder Kapiteltitel
+          help_texts:
+            shortcuts: |
+              <dl class="shortcuts">
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Alt</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Füge potentielle Zeilenumbruchspunkte in lange Worte ein,
+                    um Silbentrennung zu ermöglichen.
+                  </span>
+                </dt>
+                <dd>
+                  Bedingten Trennstrich einfügen
+                </dd>
+              </dl>
           name: Überschrift
           tabs:
             general: Überschrift
@@ -272,6 +315,15 @@ de:
           name: Inline-Video
           tabs:
             general: Inline-Video
+        question:
+          attributes:
+            expandByDefault:
+              inline_help: Anwort zu Beginn anzeigen.
+              label: Standardmäßig aufklappen
+          description: Aufklappen, um Antwort anzuzeigen
+          name: Frage/Anwort
+          tabs:
+            general: Frage/Anwort
         soundDisclaimer:
           description: Lass den Leser den Ton aktiveren
           name: Audio-Hinweis
@@ -279,9 +331,48 @@ de:
             general: Audio-Hinweis
         textBlock:
           description: Text mit Listen, Zitaten und Zwischenüberschriften
+          help_texts:
+            shortcuts: |
+              <dl class="shortcuts">
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Shift</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Füge eine neue Zeile ein, ohne einen neuen Absatz zu beginnen.
+                  </span>
+                </dt>
+                <dd>
+                  Zeilenumbruch einfügen
+                </dd>
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Alt</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Füge potentielle Zeilenumbruchspunkte in lange Worte ein,
+                    um Silbentrennung zu ermöglichen.
+                  </span>
+                </dt>
+                <dd>
+                  Bedingten Trennstrich einfügen
+                </dd>
+              </dl>
           name: Text-Block
           tabs:
             general: Text-Block
+        twitterEmbed:
+          attributes:
+            hideConversation:
+              label: Konversation ausblenden
+            hideMedia:
+              label: Medien ausblenden
+            url:
+              label: Tweet-URL
+          description: Bettet Inhalte von Twitter ein
+          name: Tweet
+          tabs:
+            general: Twitter-Embed
         videoEmbed:
           attributes:
             aspectRatio:
@@ -291,6 +382,13 @@ de:
                 portrait: Portrait (9:16)
                 square: Quadratisch
                 wide: Landscape 16:9
+            atmoDuringPlayback:
+              inline_help: Wähle wie sich die Atmo während der Wiedergabe des Video-Embeds verhalten soll.
+              label: Atmo während Medien-Wiedergabe
+              values:
+                mute: Ausblenden
+                play: Weiterspielen
+                turnDown: Leiser weiterspielen
             hideControls:
               inline_help: Blendet die Steuerelemente aus wenn möglich (variiert je nach Anbieter und Konfiguration). Das Video kann per Klick gestartet und pausiert werden.
               label: Steuerelemente ausblenden
@@ -434,6 +532,18 @@ de:
       section_item:
         drag_hint: Ziehen, um den Abschnitt zu verschieben
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
+      select_link_destination:
+        cancel: Abbrechen
+        create: Erstellen
+        enter_url: Verwende eine URL als Ziel
+        header: Link erstellen
+        open_in_new_tab: In neuem Tab öffnen
+        or: oder
+        select_chapter_or_section: Wähle ein Kapitel oder einen Abschnitt als Ziel aus
+      selectable_chapter_item:
+        title: Kapitel auswählen
+      selectable_section_item:
+        title: Abschnitt auswählen
     help_entries:
       content_elements:
         menu_item: Inhaltselemente
@@ -718,10 +828,24 @@ de:
         after: Neues Element unterhalb einfügen
         before: Neues Element oberhalb einfügen
       insert_link: Link einfügen
+      link_tooltip:
+        chapter_number: Kapitel %{number}
+        opens_in_new_tab: Öffnet in neuem Tab
+        opens_in_same_tab: Öffnet außerhalb des Editors im selben Tab
+        visit_chapter: Gehe zu Kapitel
+        visit_section: Gehe zu Abschnitt
       remove_link: Link entfernen
       select_content_element: Element auswählen
       select_section: Abschnitt auswählen
+      type_answer: Antworttext eingeben
       type_heading: Überschrift
+      type_question: Fragetext eingeben
       type_text: Text eingeben
       type_title: Titel
       url_placeholder: URL eingeben oder einfügen
+    public:
+      third_party_consent:
+        opt_in_prompt:
+          twitter: Ich bin damit einverstanden, dass Inhalte von Twitter angezeigt werden.
+      twitter:
+        default_title: Tweet

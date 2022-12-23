@@ -1,7 +1,0 @@
-de:
-  pageflow:
-    video:
-      page_attributes:
-        smart_contain:
-          label: "Letterboxing/Pillarboxing vermeiden"
-          inline_help: "Video skalieren, um die Darstellung von schwarzen Balken oben und unten (Letterboxing) bzw. rechts und links (Pillarboxing) zu vermeiden, wenn das Seitenverhältnis des Videos nur leicht vom Seitenverhältnis des Browser-Viewports abweicht."
