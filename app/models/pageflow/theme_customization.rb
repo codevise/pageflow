@@ -4,7 +4,7 @@ module Pageflow
   #
   # @since 15.7
   class ThemeCustomization < ApplicationRecord
-    belongs_to :account
+    belongs_to :site
 
     serialize :overrides, JSON
     serialize :selected_file_ids, JSON

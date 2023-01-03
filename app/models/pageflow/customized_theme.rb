@@ -14,7 +14,7 @@ module Pageflow
         entry: entry,
         theme: theme,
         theme_customization: Pageflow.theme_customizations.get(
-          account: entry.account,
+          site: entry.site,
           entry_type_name: entry.type_name
         )
       )

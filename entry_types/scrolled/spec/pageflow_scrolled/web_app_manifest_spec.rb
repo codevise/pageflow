@@ -5,12 +5,12 @@ module PageflowScrolled
     it 'includes links to theme customization file favicons' do
       entry = create(:published_entry, type_name: 'scrolled')
       file = Pageflow.theme_customizations.upload_file(
-        account: entry.account,
+        site: entry.site,
         entry_type_name: 'scrolled',
         type_name: :favicon_png,
         attachment: fixture_file_upload('image.jpg')
       )
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'scrolled',
                                            file_ids: {favicon_png: file.id})
 

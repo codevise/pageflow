@@ -6,12 +6,12 @@ module PageflowScrolled
       it 'renders link to favicon theme customization file' do
         entry = create(:published_entry, type_name: 'scrolled')
         file = Pageflow.theme_customizations.upload_file(
-          account: entry.account,
+          site: entry.site,
           entry_type_name: 'scrolled',
           type_name: :favicon,
           attachment: fixture_file_upload('image.svg')
         )
-        Pageflow.theme_customizations.update(account: entry.account,
+        Pageflow.theme_customizations.update(site: entry.site,
                                              entry_type_name: 'scrolled',
                                              file_ids: {favicon: file.id})
 
@@ -26,12 +26,12 @@ module PageflowScrolled
       it 'falls back to favicon_png theme customization file' do
         entry = create(:published_entry, type_name: 'scrolled')
         file = Pageflow.theme_customizations.upload_file(
-          account: entry.account,
+          site: entry.site,
           entry_type_name: 'scrolled',
           type_name: :favicon_png,
           attachment: fixture_file_upload('image.jpg')
         )
-        Pageflow.theme_customizations.update(account: entry.account,
+        Pageflow.theme_customizations.update(site: entry.site,
                                              entry_type_name: 'scrolled',
                                              file_ids: {favicon_png: file.id})
 
@@ -67,12 +67,12 @@ module PageflowScrolled
       it 'uses favicon_png theme customization file for apple touch icon' do
         entry = create(:published_entry, type_name: 'scrolled')
         file = Pageflow.theme_customizations.upload_file(
-          account: entry.account,
+          site: entry.site,
           entry_type_name: 'scrolled',
           type_name: :favicon_png,
           attachment: fixture_file_upload('image.jpg')
         )
-        Pageflow.theme_customizations.update(account: entry.account,
+        Pageflow.theme_customizations.update(site: entry.site,
                                              entry_type_name: 'scrolled',
                                              file_ids: {favicon_png: file.id})
 
@@ -98,12 +98,12 @@ module PageflowScrolled
       it 'renders link to favicon_ico theme customization file' do
         entry = create(:published_entry, type_name: 'scrolled')
         file = Pageflow.theme_customizations.upload_file(
-          account: entry.account,
+          site: entry.site,
           entry_type_name: 'scrolled',
           type_name: :favicon_ico,
           attachment: fixture_file_upload('image.ico')
         )
-        Pageflow.theme_customizations.update(account: entry.account,
+        Pageflow.theme_customizations.update(site: entry.site,
                                              entry_type_name: 'scrolled',
                                              file_ids: {favicon_ico: file.id})
 

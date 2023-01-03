@@ -5,10 +5,10 @@ module Pageflow
   # @since 15.7
   class ThemeCustomizations
     # Override theme options and files for entries of an entry type in
-    # a specific account.
-    def update(account:, entry_type_name:, overrides: {}, file_ids: {})
+    # a specific site.
+    def update(site:, entry_type_name:, overrides: {}, file_ids: {})
       ThemeCustomization
-        .find_or_initialize_by(account: account, entry_type_name: entry_type_name)
+        .find_or_initialize_by(site: site, entry_type_name: entry_type_name)
         .update!(overrides: overrides, selected_file_ids: file_ids)
     end
 
@@ -16,10 +16,10 @@ module Pageflow
     # its theme without actually updating the theme customization.
     #
     # @return [PublishedEntry]
-    def preview(account:, entry:, overrides: {}, file_ids: {})
+    def preview(site:, entry:, overrides: {}, file_ids: {})
       theme_customization =
         ThemeCustomization
-        .find_or_initialize_by(account: account, entry_type_name: entry.type_name)
+        .find_or_initialize_by(site: site, entry_type_name: entry.type_name)
 
       theme_customization.assign_attributes(overrides: overrides, selected_file_ids: file_ids)
 
@@ -30,12 +30,12 @@ module Pageflow
       PublishedEntry.new(entry, entry.draft, theme: theme)
     end
 
-    # Get customization for entry type and account.
+    # Get customization for entry type and site.
     #
     # @return [ThemeCustomization]
-    def get(account:, entry_type_name:)
+    def get(site:, entry_type_name:)
       ThemeCustomization
-        .find_or_initialize_by(account: account, entry_type_name: entry_type_name)
+        .find_or_initialize_by(site: site, entry_type_name: entry_type_name)
     end
 
     # Upload a file that shall be used to customize a theme. Uploading
@@ -43,10 +43,10 @@ module Pageflow
     # assign a role via the `file_ids` parameter.
     #
     # @return [ThemeCustomizationFile]
-    def upload_file(account:, entry_type_name:, type_name:, attachment:)
+    def upload_file(site:, entry_type_name:, type_name:, attachment:)
       theme_customization_file =
         ThemeCustomization
-        .find_or_create_by(account: account, entry_type_name: entry_type_name)
+        .find_or_create_by(site: site, entry_type_name: entry_type_name)
         .uploaded_files
         .build(type_name: type_name)
 
