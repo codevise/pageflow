@@ -91,14 +91,23 @@ jQuery(function($) {
     var siteSelect = $('#entry_site_id', this);
     var titleInput = $('#entry_title', this);
 
-    function updateEntryTypeInput() {
+    function updateSiteAndEntryTypeInput() {
       var selectedAccountId = accountSelect.val();
 
-      $.get('/admin/entries/entry_type_name_input' +
+      $.get('/admin/entries/entry_site_and_type_name_input' +
             '?account_id=' + selectedAccountId +
             '&entry_type_name=' + $('[name="entry[type_name]"]').val())
        .done(function(response) {
-         $('#entry_type_name_input').replaceWith(response);
+         $('#entry_type_name_input').replaceWith($(response).filter('#entry_type_name_input'));
+         $('#entry_site_input').replaceWith($(response).filter('#entry_site_input'));
+
+         // Set up searchable select
+         $(document).trigger('page:load');
+
+         siteSelect = $('#entry_site_id');
+         siteSelect.on('change', updatePermalinkInput);
+
+         updatePermalinkInput();
        });
     }
 
@@ -124,7 +133,7 @@ jQuery(function($) {
        .done(callback);
     }
 
-    accountSelect.on('change', updateEntryTypeInput);
+    accountSelect.on('change', updateSiteAndEntryTypeInput);
 
     accountSelect.on('change', updatePermalinkInput);
     siteSelect.on('change', updatePermalinkInput);

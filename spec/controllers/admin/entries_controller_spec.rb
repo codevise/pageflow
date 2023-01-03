@@ -97,10 +97,9 @@ describe Admin::EntriesController do
       current_user = create(:user, :admin)
       account = create(:account, name: 'one')
       create(:account, name: 'two')
-      entry = create(:entry, account: account)
 
       sign_in(current_user)
-      get(:eligible_sites_options, params: {entry_id: entry.id, term: 'one'})
+      get(:eligible_sites_options, params: {account_id: account.id, term: 'one'})
       option_texts = json_response(path: ['results', '*', 'text'])
 
       expect(option_texts).to include('one')
@@ -427,6 +426,50 @@ describe Admin::EntriesController do
       get :new
 
       expect(response.body).not_to have_selector('[name="entry[account_id]"]')
+    end
+
+    it 'renders site select if multiple sites are available for account' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      create(:site, account: account)
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body).to have_selector('[name="entry[site_id]"]')
+    end
+
+    it 'renders hidden site select if only one site is available for account' do
+      user = create(:user)
+      create(:account, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body).to have_selector('[name="entry[site_id]"]',
+                                             visible: :hidden)
+    end
+
+    it 'does not display site select even if user is publisher of multiple accounts' do
+      user = create(:user)
+      create(:account, with_publisher: user)
+      create(:account, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body).not_to have_selector('[name="entry[site_id]"]')
+    end
+
+    it 'display site select for admins' do
+      user = create(:user, admin: true)
+      create(:account)
+      create(:account)
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body).to have_selector('[name="entry[site_id]"]')
     end
 
     it 'does not display entry type select if only one entry type is available' do
@@ -1339,36 +1382,70 @@ describe Admin::EntriesController do
     end
   end
 
-  describe 'get #entry_type_name_input' do
+  describe 'get #entry_site_and_type_name_input' do
     render_views
 
     it 'is allowed for account publisher' do
       account = create(:account)
 
       sign_in(create(:user, :manager, on: account))
-      get(:entry_type_name_input, params: {account_id: account})
+      get(:entry_site_and_type_name_input, params: {account_id: account})
 
       expect(response.status).to eq(200)
     end
 
-    it 'renders select without layout if multiple entry types are available' do
+    it 'renders site select if multiple sites are available' do
+      account = create(:account)
+      create(:site, account: account)
+
+      sign_in(create(:user, :manager, on: account))
+      get(:entry_site_and_type_name_input, params: {account_id: account})
+
+      expect(response.body).to have_selector('li > select[name="entry[site_id]"]')
+      expect(response.body).to have_selector('select[name="entry[site_id]"] option[selected]')
+    end
+
+    it 'selects default site of account' do
+      account = create(:account)
+      create(:site, account: account)
+
+      sign_in(create(:user, :manager, on: account))
+      get(:entry_site_and_type_name_input, params: {account_id: account})
+
+      expect(response.body)
+        .to have_selector("select[name='entry[site_id]'] " \
+                          "option[selected][value=#{account.default_site.id}]")
+    end
+
+    it 'renders invisible site select if only one site is available' do
+      account = create(:account)
+
+      sign_in(create(:user, :manager, on: account))
+      get(:entry_site_and_type_name_input, params: {account_id: account})
+
+      expect(response.body).to have_selector('li > select[name="entry[site_id]"]',
+                                             visible: :hidden)
+    end
+
+    it 'renders type select without layout if multiple entry types are available' do
       pageflow_configure { |config| Pageflow::TestEntryType.register(config) }
       account = create(:account)
 
       sign_in(create(:user, :manager, on: account))
-      get(:entry_type_name_input, params: {account_id: account})
+      get(:entry_site_and_type_name_input, params: {account_id: account})
 
       expect(response.body).not_to have_selector('body.active_admin')
-      expect(response.body).to have_selector('li > select')
+      expect(response.body).to have_selector('li > select[name="entry[type_name]"]')
     end
 
-    it 'renders invisible select if only one entry type is available' do
+    it 'renders invisible type select if only one entry type is available' do
       account = create(:account)
 
       sign_in(create(:user, :manager, on: account))
-      get(:entry_type_name_input, params: {account_id: account})
+      get(:entry_site_and_type_name_input, params: {account_id: account})
 
-      expect(response.body).to have_selector('li > select', visible: :hidden)
+      expect(response.body).to have_selector('li > select[name="entry[type_name]"]',
+                                             visible: :hidden)
     end
 
     it 'allows passing in selected entry type name' do
@@ -1376,19 +1453,20 @@ describe Admin::EntriesController do
       account = create(:account)
 
       sign_in(create(:user, :manager, on: account))
-      get(:entry_type_name_input, params: {
+      get(:entry_site_and_type_name_input, params: {
             account_id: account,
             entry_type_name: 'test'
           })
 
-      expect(response.body).to have_selector('option[value=test][selected]')
+      expect(response.body)
+        .to have_selector('select[name="entry[type_name]"] option[value=test][selected]')
     end
 
     it 'is forbidden for account editor' do
       account = create(:account)
 
       sign_in(create(:user, :editor, on: account))
-      get(:entry_type_name_input, params: {account_id: account})
+      get(:entry_site_and_type_name_input, params: {account_id: account})
 
       expect(response.status).to eq(403)
     end

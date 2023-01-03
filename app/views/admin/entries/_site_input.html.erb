@@ -1,0 +1,15 @@
+<% if authorized?(:update_site_on, entry) %>
+  <%= form.input(:site,
+                 as: :searchable_select,
+                 ajax: {
+                   resource: Pageflow::Entry,
+                   collection_name: :eligible_sites,
+                   params: {
+                     account_id: entry.account_id
+                   }
+                 },
+                 include_blank: false,
+                 wrapper_html: {
+                   style: ('display: none' if site_policy_scope.sites_allowed_for(entry.account).one?)
+                 }) %>
+<% end %>

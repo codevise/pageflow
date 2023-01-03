@@ -1,4 +1,7 @@
 <%= fields_for(:entry, @entry, builder: ActiveAdmin::FormBuilder) do |form| %>
+  <%= render('admin/entries/site_input',
+             entry: @entry,
+             form: form) %>
   <%= render('pageflow/admin/entries/entry_type_name_input',
              form: form,
              entry_types: Pageflow.config_for(@entry.account).entry_types) %>
