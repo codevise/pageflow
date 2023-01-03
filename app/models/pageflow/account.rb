@@ -24,26 +24,6 @@ module Pageflow
       end
     end
 
-    def existing_and_potential_entry_templates
-      entry_type_names = Pageflow.config_for(self).entry_types.map(&:name)
-      existing_entry_templates = default_site.entry_templates.load
-      allowed_existing_entry_templates =
-        existing_entry_templates.select do |template|
-          entry_type_names.include?(template.entry_type_name)
-        end
-      free_type_names =
-        entry_type_names - allowed_existing_entry_templates.map(&:entry_type_name)
-
-      potential_entry_templates = free_type_names.map do |type_name|
-        EntryTemplate.new(
-          site: default_site,
-          entry_type_name: type_name
-        )
-      end
-
-      allowed_existing_entry_templates + potential_entry_templates
-    end
-
     def blacklist_for_serialization
       [:features_configuration]
     end

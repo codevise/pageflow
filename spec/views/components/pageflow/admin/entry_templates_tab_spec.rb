@@ -68,5 +68,23 @@ module Pageflow
       expect(rendered).not_to have_text('rainbows')
       expect(rendered).to have_text('ponies')
     end
+
+    it 'supports non-default sites' do
+      pageflow_configure do |config|
+        TestEntryType.register(config, name: 'rainbows')
+      end
+
+      account = create(:account)
+      site = create(:site, account: account)
+      create(:entry_template,
+             site: site,
+             entry_type_name: 'rainbows',
+             default_author: 'Some author')
+
+      render(site)
+
+      expect(rendered).to have_text('rainbows')
+      expect(rendered).to have_text('Some author')
+    end
   end
 end

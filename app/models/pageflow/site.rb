@@ -10,7 +10,6 @@ module Pageflow
     scope :for_request, ->(request) { Pageflow.config.site_request_scope.call(all, request) }
 
     validates :account, :presence => true
-    validates_associated :entry_templates
 
     delegate :enabled_feature_names, to: :account
 
@@ -32,6 +31,22 @@ module Pageflow
 
     def first_paged_entry_template
       entry_templates.find_or_initialize_by(entry_type_name: 'paged')
+    end
+
+    def existing_and_potential_entry_templates
+      entry_type_names = Pageflow.config_for(account).entry_types.map(&:name)
+
+      allowed_existing_entry_templates =
+        entry_templates.where(entry_type_name: entry_type_names)
+
+      free_type_names =
+        entry_type_names - allowed_existing_entry_templates.map(&:entry_type_name)
+
+      potential_entry_templates = free_type_names.map do |type_name|
+        entry_templates.build(entry_type_name: type_name)
+      end
+
+      allowed_existing_entry_templates + potential_entry_templates
     end
 
     # @deprecated Depending on what you need this for, consider
