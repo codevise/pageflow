@@ -4,15 +4,11 @@ import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories} from 'pageflow/testHelpers';
 import {renderHookInEntry, normalizeSeed} from 'support';
 
-import FacebookIcon from 'frontend/icons/social/facebook.svg';
-import TwitterIcon from 'frontend/icons/social/twitter.svg';
-import WhatsappIcon from 'frontend/icons/social/whatsApp.svg';
-
 describe('useShareProviders', () => {
   const expectedShareProviders = [{
     name: 'Facebook',
     url: 'http://www.facebook.com/sharer/sharer.php?u=%{url}',
-    icon: FacebookIcon
+    iconName: 'facebook'
   }];
 
   it('reads data from seed', () => {
@@ -62,12 +58,12 @@ describe('useShareProviders', () => {
       {
         name: 'Facebook',
         url: 'http://www.facebook.com/sharer/sharer.php?u=%{url}',
-        icon: FacebookIcon
+        iconName: 'facebook'
       },
       {
         name: 'Twitter',
         url: 'https://twitter.com/intent/tweet?url=%{url}',
-        icon: TwitterIcon
+        iconName: 'twitter'
       }
     ];
     const {result} = renderHookInEntry(
@@ -94,17 +90,17 @@ describe('useShareProviders', () => {
       {
         name: 'Facebook',
         url: 'http://www.facebook.com/sharer/sharer.php?u=%{url}',
-        icon: FacebookIcon
+        iconName: 'facebook'
       },
       {
         name: 'Twitter',
         url: 'https://twitter.com/intent/tweet?url=%{url}',
-        icon: TwitterIcon
+        iconName: 'twitter'
       },
       {
         name: 'WhatsApp',
         url: 'WhatsApp://send?text=%{url}',
-        icon: WhatsappIcon
+        iconName: 'whatsApp'
       }
     ];
     const {result} = renderHookInEntry(

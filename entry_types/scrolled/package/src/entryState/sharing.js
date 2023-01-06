@@ -3,16 +3,11 @@ import {useMemo} from 'react';
 import {useEntryStateConfig} from "./EntryStateProvider";
 import {useEntryMetadata} from "./metadata";
 
-import EmailIcon from '../frontend/icons/social/email.svg';
-import FacebookIcon from '../frontend/icons/social/facebook.svg';
-import LinkedInIcon from '../frontend/icons/social/linkedIn.svg';
-import TelegramIcon from '../frontend/icons/social/telegram.svg';
-import TwitterIcon from '../frontend/icons/social/twitter.svg';
-import WhatsAppIcon from '../frontend/icons/social/whatsApp.svg';
-
 /**
- * Returns a list of attributes (icon, name and url) of all configured share providers of the entry.
- * The url provides a %{url} placeholder where the link can be inserted.
+ * Returns a list of attributes (iconName, name and url) of all configured share
+ * providers of the entry. The url provides a %{url} placeholder where the link
+ * can be inserted. iconName can be passed to ThemeIcon to render a theme
+ * specific icon.
  *
  * @example
  *
@@ -20,12 +15,12 @@ import WhatsAppIcon from '../frontend/icons/social/whatsApp.svg';
  * shareProviders // =>
  *   [
  *     {
- *       icon: <FacebookSVGIcon />,
+ *       iconName: 'facebook',
  *       name: 'Facebook',
  *       url: http://www.facebook.com/sharer/sharer.php?u=%{url}
  *     },
  *     {
- *       icon: <TwitterSVGIcon />,
+ *       iconName: 'twitter',
  *       name: 'Twitter',
  *       url: https://twitter.com/intent/tweet?url=%{url}
  *     }
@@ -40,32 +35,32 @@ export function useShareProviders({isPhonePlatform}) {
   return useMemo(() => {
     const sharing = {
       email: {
-        icon: EmailIcon,
+        iconName: 'email',
         name: 'Mail',
         url: urlTemplates.email
       },
       facebook: {
-        icon: FacebookIcon,
+        iconName: 'facebook',
         name: 'Facebook',
         url: urlTemplates.facebook
       },
       linked_in: {
-        icon: LinkedInIcon,
+        iconName: 'linkedIn',
         name: 'LinkedIn',
         url: urlTemplates.linked_in
       },
       telegram: {
-        icon: TelegramIcon,
+        iconName: 'telegram',
         name: 'Telegram',
         url: urlTemplates.telegram
       },
       twitter: {
-        icon: TwitterIcon,
+        iconName: 'twitter',
         name: 'Twitter',
         url: urlTemplates.twitter
       },
       whats_app: {
-        icon: WhatsAppIcon,
+        iconName: 'whatsApp',
         name: 'WhatsApp',
         url: urlTemplates.whats_app
       }
@@ -75,7 +70,7 @@ export function useShareProviders({isPhonePlatform}) {
       const config = sharing[provider];
       return ({
         name: config.name,
-        icon: config.icon,
+        iconName: config.iconName,
         url: config.url
       })
     })

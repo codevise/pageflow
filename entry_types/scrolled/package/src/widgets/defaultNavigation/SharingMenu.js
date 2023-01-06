@@ -21,7 +21,6 @@ export function SharingMenu() {
 
   function renderShareLinks(shareProviders) {
     return shareProviders.map((shareProvider) => {
-      const Icon = shareProvider.icon;
       return (
         <div key={shareProvider.name}
              className={styles.shareLinkContainer}>
@@ -29,7 +28,7 @@ export function SharingMenu() {
              href={shareProvider.url.replace('%{url}', shareUrl)}
              target={'_blank'}
              rel="noopener noreferrer">
-            <Icon className={styles.shareIcon}/>
+            <ThemeIcon name={shareProvider.iconName} />
             {shareProvider.name}
           </a>
         </div>
