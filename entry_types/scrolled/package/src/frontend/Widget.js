@@ -3,7 +3,7 @@ import React from 'react';
 import {api} from './api';
 import {useWidget} from '../entryState';
 
-export function Widget({role}) {
+export function Widget({role, props}) {
   const widget = useWidget({role});
 
   if (!widget) {
@@ -13,6 +13,6 @@ export function Widget({role}) {
   const Component = api.widgetTypes.getComponent(widget.typeName);
 
   return (
-    <Component configuration={widget.configuration} />
+    <Component configuration={widget.configuration} {...props} />
   );
 }
