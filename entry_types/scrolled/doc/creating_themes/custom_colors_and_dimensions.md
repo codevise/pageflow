@@ -214,3 +214,4 @@ System](https://material.io/design/color/the-color-system.html#color-theme-creat
 | `default_navigation_chapter_progress_indicator_height` | Height of the progress indicator. |
 | `default_navigation_progress_bar_background_color` | Background color of the progress bar. |
 | `default_navigation_progress_bar_indicator_color` | Color of the progress bar indicator. Defaults to `accent_color`. |
+| `default_navigation_separator_color` | Color of separator lines between chapters. |
