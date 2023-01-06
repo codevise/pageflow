@@ -3,9 +3,10 @@ import classNames from 'classnames';
 import headerStyles from "./DefaultNavigation.module.css";
 import styles from "./HamburgerIcon.module.css";
 import hamburgerIconStyles from "./HamburgerIcons.module.css";
-import {useI18n} from 'pageflow-scrolled/frontend';
+import {useI18n, useTheme} from 'pageflow-scrolled/frontend';
 
 export function HamburgerIcon(props) {
+  const theme = useTheme();
   const {t} = useI18n();
 
   return (
@@ -14,6 +15,8 @@ export function HamburgerIcon(props) {
                                     styles.burgerMenuIcon,
                                     hamburgerIconStyles.hamburger,
                                     hamburgerIconStyles['hamburger--collapse'],
+                                    {[styles.small]:
+                                      theme.options.defaultNavigationMenuIconVariant === 'small'},
                                     {[hamburgerIconStyles['is-active']]: !props.mobileNavHidden})}
               title={props.mobileNavHidden ?
                      t('pageflow_scrolled.public.navigation.open_mobile_menu') :
