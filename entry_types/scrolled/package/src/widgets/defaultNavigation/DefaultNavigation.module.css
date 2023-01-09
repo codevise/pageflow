@@ -185,26 +185,14 @@ div:focus-within > .contextIcon,
   }
 
   .chapterListItem {
-    width: 80vw;
-    padding: 25px 10vw;
+    padding: 1rem;
+    margin: 0 1.5rem;
     border-right: none;
+    border-bottom: 1px solid var(--default-navigation-separator-color);
   }
 
-  .chapterListItem::before,
-  .chapterListItem::after {
-    display: table;
-    content: " ";
-    border-top: 1px solid rgb(100, 100, 100);
-    width: 14%;
-    margin: 0 43%;
-    transition: width .15s, margin .15s;
-  }
-
-  .chapterListItem:hover::before,
-  .chapterListItem:hover::after {
-    border-top: 1px solid var(--theme-widget-primary-color);
-    width: 80%;
-    margin: 0 10%;
+  .chapterListItem:last-child {
+    border-bottom: none;
   }
 
   .chapterListItem p {
