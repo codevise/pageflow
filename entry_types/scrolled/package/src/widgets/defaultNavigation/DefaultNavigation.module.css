@@ -15,8 +15,8 @@
   --default-navigation-chapter-link-height:
     var(--theme-default-navigation-chapter-link-height, 50px);
 
-  --default-navigation-progress-indicator-height:
-    var(--theme-default-navigation-progress-indicator-height, 10px);
+  --default-navigation-progress-bar-height:
+    var(--theme-default-navigation-progress-bar-height, 8px);
 
   font-family: var(--theme-widget-font-family);
   position: fixed;
@@ -122,7 +122,7 @@ div:focus-within > .contextIcon,
   position: relative;
   background-color: var(--theme-default-navigation-progress-bar-background-color,
                         rgba(194,194,194,0.8));
-  height: 8px;
+  height: var(--default-navigation-progress-bar-height);
   width: 100%;
 }
 
@@ -137,6 +137,11 @@ div:focus-within > .contextIcon,
 }
 
 @media screen and breakpoint-below-md {
+  .navigationBar {
+    --default-navigation-progress-bar-height:
+      var(--theme-default-navigation-progress-bar-height, 10px);
+  }
+
   .logo {
     max-width: 30%;
   }
@@ -149,7 +154,7 @@ div:focus-within > .contextIcon,
     display: block;
     position: fixed;
     top: calc(var(--default-navigation-bar-height) +
-              var(--default-navigation-progress-indicator-height));
+              var(--default-navigation-progress-bar-height));
     left: 0px;
     background: var(--theme-widget-background-color);
     width: 100vw;
@@ -201,10 +206,6 @@ div:focus-within > .contextIcon,
 
   .chapterListItem p {
     margin-top: 0;
-  }
-
-  .progressBar {
-    height: var(--default-navigation-progress-indicator-height);
   }
 }
 
