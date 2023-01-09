@@ -2,6 +2,7 @@ import React, {useState, useCallback} from 'react';
 import classNames from 'classnames';
 
 import {
+  Widget,
   useScrollPosition,
   useChapters,
   useCurrentChapter,
@@ -113,6 +114,7 @@ export function DefaultNavigation({configuration}) {
                             !shareProviders.length;
 
   return (
+    <>
     <header className={classNames(styles.navigationBar, {
       [styles.navigationBarExpanded]: (
         navExpanded ||
@@ -141,5 +143,9 @@ export function DefaultNavigation({configuration}) {
         <span className={styles.progressIndicator} style={{width: readingProgress + '%'}}/>
       </div>
     </header>
+    <Widget role="defaultNavigationExtra"
+            props={{navigationExpanded: navExpanded,
+                    mobileNavigationVisible: !mobileNavHidden}} />
+    </>
   );
 }
