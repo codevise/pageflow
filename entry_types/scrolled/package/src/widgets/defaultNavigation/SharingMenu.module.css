@@ -1,9 +1,3 @@
-.shareIcon svg {
-  width: 40px;
-  height: 40px;
-  margin: 5px 0px;
-}
-
 :global(header .share svg) {
   fill: var(--theme-widget-primary-color);
 }
@@ -40,7 +34,7 @@
   color: var(--theme-accent-color);
 }
 
-.shareIcon {
+.shareLink svg {
   width: 80px;
   height: 25px;
   margin-top: 5px;
