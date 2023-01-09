@@ -9,3 +9,8 @@
 .burgerMenuIcon {
   outline: none;
 }
+
+.small {
+  --hamburger-icon-transform: scale(0.7);
+  --hamburger-icon-line-width: 3px;
+}

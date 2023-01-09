@@ -32,6 +32,7 @@
   display: inline-block;
   position: relative;
   vertical-align: top;
+  transform: var(--hamburger-icon-transform);
 }
 
 .hamburger-inner {
@@ -40,9 +41,11 @@
   margin-top: -2px;
 }
 
-.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
   width: 30px;
-  height: 4px;
+  height: var(--hamburger-icon-line-width, 4px);
   background-color: var(--theme-widget-primary-color);
   border-radius: 4px;
   position: absolute;
