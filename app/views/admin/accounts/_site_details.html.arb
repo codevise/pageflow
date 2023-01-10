@@ -1,5 +1,0 @@
-extensible_attributes_table_for(account.default_site,
-                                Pageflow.config_for(account)
-                                  .admin_attributes_table_rows.for(:site)) do
-  row :cname, class: 'cname'
-end

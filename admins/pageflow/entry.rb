@@ -100,12 +100,12 @@ module Pageflow
                               end)
 
     searchable_select_options(name: :eligible_sites,
-                              text_attribute: :name,
+                              text_attribute: :name_with_account_prefix,
                               scope: lambda do |params|
-                                entry = Entry.find(params[:entry_id])
+                                account = Account.find(params[:account_id])
                                 SitePolicy::Scope
                                   .new(current_user, Site)
-                                  .sites_allowed_for(entry.account)
+                                  .sites_allowed_for(account)
                               end,
                               filter: lambda do |term, scope|
                                 scope.ransack(account_name_cont: term).result
@@ -139,10 +139,12 @@ module Pageflow
       end
     end
 
-    collection_action :entry_type_name_input do
+    collection_action :entry_site_and_type_name_input do
       account = Pageflow::Account.find(params[:account_id])
       @entry = Pageflow::Entry.new(account: account,
                                    type_name: params[:entry_type_name])
+
+      apply_entry_defaults(@entry)
 
       if authorized?(:see_entry_types, account)
         render(layout: false)
@@ -206,6 +208,7 @@ module Pageflow
       helper Admin::RevisionsHelper
 
       helper_method :account_policy_scope
+      helper_method :site_policy_scope
 
       after_build do |entry|
         apply_entry_defaults(entry)

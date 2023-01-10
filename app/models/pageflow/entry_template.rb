@@ -3,15 +3,15 @@ module Pageflow
     include ThemeReferencer
     include SerializedConfiguration
     serialize :default_share_providers, JSON
-    belongs_to :account
-    delegate :enabled_feature_names, to: :account
+    belongs_to :site
+    delegate :enabled_feature_names, to: :site
     has_many :widgets, as: :subject, dependent: :destroy
 
-    validates :account, presence: true
+    validates :site, presence: true
     validates :entry_type_name, presence: true
     validates :entry_type_name,
               uniqueness: {
-                scope: :account
+                scope: :site
               }
 
     def entry_type

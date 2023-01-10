@@ -1,0 +1,17 @@
+<%= f.inputs do %>
+  <%= f.input :cname, hint: t('pageflow.admin.sites.cname_hint') %>
+  <%= f.input :additional_cnames, hint: t('pageflow.admin.sites.additional_cnames_hint') %>
+  <%= f.input :home_url, hint: t('pageflow.admin.sites.home_url_hint') %>
+<% end %>
+
+<%= f.inputs do %>
+  <%= f.input :imprint_link_label %>
+  <%= f.input :imprint_link_url %>
+  <%= f.input :copyright_link_label %>
+  <%= f.input :copyright_link_url %>
+  <%= f.input :privacy_link_url %>
+
+  <% account_config.admin_form_inputs.find_all_for(:site).each do |form_input| %>
+    <%= form_input.build(f) %>
+  <% end %>
+<% end %>

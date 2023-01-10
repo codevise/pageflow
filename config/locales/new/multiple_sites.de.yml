@@ -1,0 +1,6 @@
+de:
+  pageflow:
+    admin:
+      sites:
+        add: "Site hinzufügen"
+        default_name: "(Standard)"

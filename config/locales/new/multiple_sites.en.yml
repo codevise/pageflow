@@ -1,0 +1,6 @@
+en:
+  pageflow:
+    admin:
+      sites:
+        default_name: "(Default)"
+        add: "Add site"

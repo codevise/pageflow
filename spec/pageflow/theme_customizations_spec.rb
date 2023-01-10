@@ -14,13 +14,13 @@ module Pageflow
           c.themes.register('dark', colors: {accent: '#f00', surface: '#000'})
         end
       end
-      account = create(:account)
+      site = create(:site)
       entry = create(:published_entry,
-                     account: account,
+                     site: site,
                      type_name: 'rainbow',
                      revision_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.update(account: account,
+      Pageflow.theme_customizations.update(site: site,
                                            entry_type_name: 'rainbow',
                                            overrides: {colors: {accent: '#0f0'}})
 
@@ -35,14 +35,14 @@ module Pageflow
           c.themes.register('dark', colors: {accent: '#f00', surface: '#000'})
         end
       end
-      account = create(:account)
+      site = create(:site)
       entry = create(:entry,
-                     account: account,
+                     site: site,
                      type_name: 'rainbow',
                      draft_attributes: {theme_name: 'dark'})
 
       preview_entry =
-        Pageflow.theme_customizations.preview(account: account,
+        Pageflow.theme_customizations.preview(site: site,
                                               entry: entry,
                                               overrides: {colors: {accent: '#0f0'}})
 
@@ -57,18 +57,18 @@ module Pageflow
           c.themes.register('dark', colors: {accent: '#f00', surface: '#000'})
         end
       end
-      account = create(:account)
+      site = create(:site)
       entry = create(:entry,
-                     account: account,
+                     site: site,
                      type_name: 'rainbow',
                      draft_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.preview(account: account,
+      Pageflow.theme_customizations.preview(site: site,
                                             entry: entry,
                                             overrides: {colors: {accent: '#0f0'}})
 
       customization =
-        Pageflow.theme_customizations.get(account: account,
+        Pageflow.theme_customizations.get(site: site,
                                           entry_type_name: 'rainbow')
 
       expect(customization.overrides).to eq({})
@@ -82,13 +82,13 @@ module Pageflow
           c.themes.register('dark', colors: {accent: '#f00', surface: '#000'})
         end
       end
-      account = create(:account)
+      site = create(:site)
 
-      Pageflow.theme_customizations.update(account: account,
+      Pageflow.theme_customizations.update(site: site,
                                            entry_type_name: 'rainbow',
                                            overrides: {colors: {accent: '#0f0'}})
       customization =
-        Pageflow.theme_customizations.get(account: account,
+        Pageflow.theme_customizations.get(site: site,
                                           entry_type_name: 'rainbow')
 
       expect(customization.overrides).to match(colors: {accent: '#0f0'})
@@ -98,16 +98,16 @@ module Pageflow
       pageflow_configure do |config|
         TestEntryType.register(config, name: 'rainbow')
       end
-      account = create(:account)
+      site = create(:site)
 
       customization =
-        Pageflow.theme_customizations.get(account: account,
+        Pageflow.theme_customizations.get(site: site,
                                           entry_type_name: 'rainbow')
 
       expect(customization.overrides).to eq({})
     end
 
-    it 'is scoped by account' do
+    it 'is scoped by site' do
       pageflow_configure do |config|
         rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
 
@@ -115,17 +115,17 @@ module Pageflow
           c.themes.register('dark', colors: {accent: '#f00', surface: '#000'})
         end
       end
-      account = create(:account)
-      other_account = create(:account)
+      site = create(:site)
+      other_site = create(:site)
       entry = create(:published_entry,
-                     account: account,
+                     site: site,
                      type_name: 'rainbow',
                      revision_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.update(account: account,
+      Pageflow.theme_customizations.update(site: site,
                                            entry_type_name: 'rainbow',
                                            overrides: {colors: {accent: '#ff0'}})
-      Pageflow.theme_customizations.update(account: other_account,
+      Pageflow.theme_customizations.update(site: other_site,
                                            entry_type_name: 'rainbow',
                                            overrides: {colors: {accent: '#0f0'}})
 
@@ -145,7 +145,7 @@ module Pageflow
                      type_name: 'rainbow',
                      revision_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'other',
                                            overrides: {colors: {accent: '#0f0'}})
 
@@ -167,7 +167,7 @@ module Pageflow
                      type_name: 'rainbow',
                      revision_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'rainbow',
                                            overrides: {colors: {accent: '#0f0'}})
 
@@ -188,7 +188,7 @@ module Pageflow
                      type_name: 'rainbow',
                      revision_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'rainbow',
                                            overrides: {colors: {accent: '#0f0'}})
       entry.theme
@@ -213,7 +213,7 @@ module Pageflow
                      type_name: 'rainbow',
                      draft_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.preview(account: entry.account,
+      Pageflow.theme_customizations.preview(site: entry.site,
                                             entry: entry,
                                             overrides: {colors: {accent: '#0f0'}})
 
@@ -242,7 +242,7 @@ module Pageflow
                      type_name: 'rainbow',
                      revision_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'rainbow',
                                            overrides: {colors: {accent: '#0f0'}})
 
@@ -263,11 +263,11 @@ module Pageflow
       end
       entry = create(:published_entry, type_name: 'rainbow')
 
-      file = Pageflow.theme_customizations.upload_file(account: entry.account,
+      file = Pageflow.theme_customizations.upload_file(site: entry.site,
                                                        entry_type_name: 'rainbow',
                                                        type_name: 'logo',
                                                        attachment: fixture_file_upload('image.png'))
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'rainbow',
                                            file_ids: {inverted_logo: file.id})
 
@@ -289,11 +289,11 @@ module Pageflow
       end
       entry = create(:published_entry, type_name: 'rainbow')
 
-      file = Pageflow.theme_customizations.upload_file(account: entry.account,
+      file = Pageflow.theme_customizations.upload_file(site: entry.site,
                                                        entry_type_name: 'rainbow',
                                                        type_name: 'logo',
                                                        attachment: fixture_file_upload('image.png'))
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'rainbow',
                                            file_ids: {inverted_logo: file.id})
 
@@ -322,11 +322,11 @@ module Pageflow
       end
       entry = create(:published_entry, type_name: 'rainbow')
 
-      file = Pageflow.theme_customizations.upload_file(account: entry.account,
+      file = Pageflow.theme_customizations.upload_file(site: entry.site,
                                                        entry_type_name: 'rainbow',
                                                        type_name: 'logo',
                                                        attachment: fixture_file_upload('image.png'))
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'rainbow',
                                            file_ids: {inverted_logo: file.id})
 
@@ -346,7 +346,7 @@ module Pageflow
       entry = create(:published_entry, type_name: 'rainbow')
 
       expect {
-        Pageflow.theme_customizations.upload_file(account: entry.account,
+        Pageflow.theme_customizations.upload_file(site: entry.site,
                                                   entry_type_name: 'rainbow',
                                                   type_name: 'sound',
                                                   attachment: fixture_file_upload('image.png'))
@@ -372,11 +372,11 @@ module Pageflow
       end
       entry = create(:published_entry, type_name: 'rainbow')
 
-      file = Pageflow.theme_customizations.upload_file(account: entry.account,
+      file = Pageflow.theme_customizations.upload_file(site: entry.site,
                                                        entry_type_name: 'rainbow',
                                                        type_name: 'logo',
                                                        attachment: fixture_file_upload('image.png'))
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'rainbow',
                                            file_ids: {logo: file.id,
                                                       inverted_logo: file.id})
@@ -400,11 +400,11 @@ module Pageflow
       end
       entry = create(:published_entry, type_name: 'rainbow')
 
-      file = Pageflow.theme_customizations.upload_file(account: entry.account,
+      file = Pageflow.theme_customizations.upload_file(site: entry.site,
                                                        entry_type_name: 'rainbow',
                                                        type_name: 'logo',
                                                        attachment: fixture_file_upload('image.png'))
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'rainbow',
                                            file_ids: {inverted_logo: file.id})
 
@@ -433,7 +433,7 @@ module Pageflow
       end
       entry = create(:published_entry, type_name: 'rainbow')
 
-      file = Pageflow.theme_customizations.upload_file(account: entry.account,
+      file = Pageflow.theme_customizations.upload_file(site: entry.site,
                                                        entry_type_name: 'rainbow',
                                                        type_name: 'logo',
                                                        attachment: fixture_file_upload('image.png'))
@@ -455,14 +455,14 @@ module Pageflow
       end
       entry = create(:published_entry, type_name: 'rainbow')
 
-      file = Pageflow.theme_customizations.upload_file(account: entry.account,
+      file = Pageflow.theme_customizations.upload_file(site: entry.site,
                                                        entry_type_name: 'rainbow',
                                                        type_name: 'logo',
                                                        attachment: fixture_file_upload('image.png'))
-      Pageflow.theme_customizations.update(account: entry.account,
+      Pageflow.theme_customizations.update(site: entry.site,
                                            entry_type_name: 'rainbow',
                                            file_ids: {inverted_logo: file.id})
-      customization = Pageflow.theme_customizations.get(account: entry.account,
+      customization = Pageflow.theme_customizations.get(site: entry.site,
                                                         entry_type_name: 'rainbow')
 
       expect(customization.selected_files[:inverted_logo].file_name).to eq('image.png')

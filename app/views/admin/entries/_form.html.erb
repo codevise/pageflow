@@ -16,18 +16,9 @@
                   input_html: {class: 'entry_account_input'}) %>
     <%end %>
 
-    <% if authorized?(:update_site_on, resource) && !resource.new_record? %>
-      <%= f.input(:site,
-                  as: :searchable_select,
-                  ajax: {
-                    resource: Pageflow::Entry,
-                    collection_name: :eligible_sites,
-                    params: {
-                      entry_id: resource.id
-                    }
-                  },
-                  include_blank: false) %>
-    <% end %>
+    <%= render('admin/entries/site_input',
+               entry: resource,
+               form: f) %>
 
     <%= f.fields_for(:permalink, @entry.permalink || Pageflow::Permalink.new) do |permalink| %>
       <%= render('admin/entries/permalink_inputs',

@@ -174,22 +174,21 @@ module Rainbow
 end
 ```
 
-To display a tab on the account's page it needs to be registered for
-sites:
+To display a tab on the account's page:
 
 ```ruby
 # rainbow/lib/rainbow/plugin.rb
 module Rainbow
   class Plugin < Pageflow::Plugin
     def configure(config)
-      config.admin_resource_tabs.register(:site,
+      config.admin_resource_tabs.register(:account,
                                           name: :my_custom_tab,
                                           component: SomeTab)
     end
   end
 
   class SomeTab < Arbre::Component
-    def build(site)
+    def build(account)
       # Use site.account to access the account
     end
   end

@@ -55,7 +55,7 @@ module Pageflow
         selector '.attributes_table.pageflow_site'
 
         def self.url(site)
-          url_helpers.admin_account_path(site.account)
+          url_helpers.admin_account_site_path(site.account, site)
         end
         private_class_method :url
       end

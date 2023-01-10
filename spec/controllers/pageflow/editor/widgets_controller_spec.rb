@@ -55,7 +55,7 @@ module Pageflow
         it 'responds with widgets of entry template' do
           user = create(:user, :admin)
           account = create(:account)
-          entry_template = create(:entry_template, account: account)
+          entry_template = create(:entry_template, site: account.default_site)
           create(:widget, subject: entry_template, type_name: 'test_widget')
 
           sign_in(user, scope: :user)
@@ -70,7 +70,7 @@ module Pageflow
         it 'requires permission to index entry templates' do
           user = create(:user)
           account = create(:account, with_manager: user)
-          entry_template = create(:entry_template, account: account)
+          entry_template = create(:entry_template, site: account.default_site)
           create(:widget, subject: entry_template, type_name: 'test_widget')
 
           sign_in(user, scope: :user)
@@ -242,7 +242,7 @@ module Pageflow
         it 'allows account publisher to edit entry template of own account' do
           user = create(:user)
           account = create(:account, with_publisher: user)
-          entry_template = create(:entry_template, account: account)
+          entry_template = create(:entry_template, site: account.default_site)
 
           sign_in(user, scope: :user)
           patch(:batch,
@@ -261,7 +261,7 @@ module Pageflow
         it 'does not allow account editor to edit entry template' do
           user = create(:user)
           account = create(:account, with_editor: user)
-          entry_template = create(:entry_template, account: account)
+          entry_template = create(:entry_template, site: account.default_site)
           create(:widget, subject: entry_template, type_name: 'test_widget')
 
           sign_in(user, scope: :user)

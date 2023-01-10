@@ -68,17 +68,17 @@ module Pageflow
       #
       # @since 12.2
       class SiteEditForm < EditForm
-        selector '.edit.admin_accounts'
+        selector '.edit.admin_sites'
 
         def self.url(site)
-          url_helpers.edit_admin_account_path(site.account)
+          url_helpers.edit_admin_account_site_path(site.account, site)
         end
         private_class_method :url
 
         private
 
         def field_prefix
-          'account[default_site_attributes]'
+          'site'
         end
       end
     end

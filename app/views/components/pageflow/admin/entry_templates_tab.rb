@@ -2,8 +2,7 @@ module Pageflow
   module Admin
     class EntryTemplatesTab < ViewComponent
       def build(site)
-        account = site.account
-        table_subjects = account.existing_and_potential_entry_templates
+        table_subjects = site.existing_and_potential_entry_templates
 
         table_for(table_subjects, i18n: Pageflow::EntryTemplate) do
           column do |entry_template|
@@ -15,30 +14,30 @@ module Pageflow
           end
           column do |entry_template|
             if entry_template.id
-              edit_link(entry_template, account)
+              edit_link(entry_template, site)
             else
-              new_link(entry_template, account)
+              new_link(entry_template, site)
             end
           end
         end
       end
 
-      def new_link(entry_template, account)
+      def new_link(entry_template, site)
         link_to(
           I18n.t('active_admin.new'),
-          new_admin_account_entry_template_path(
-            account,
+          new_admin_site_entry_template_path(
+            site,
             entry_template,
             entry_type_name: entry_template.entry_type_name
           )
         )
       end
 
-      def edit_link(entry_template, account)
+      def edit_link(entry_template, site)
         link_to(
           I18n.t('active_admin.edit'),
-          edit_admin_account_entry_template_path(
-            account,
+          edit_admin_site_entry_template_path(
+            site,
             entry_template
           )
         )

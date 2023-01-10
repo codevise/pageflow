@@ -1,8 +1,49 @@
-# coding: utf-8
 require 'spec_helper'
 
 module Pageflow
   describe Site do
+    describe '#display_name' do
+      it 'uses placeholder' do
+        site = build(:site)
+
+        expect(site.display_name).to eq('(Default)')
+      end
+
+      it 'uses placeholder' do
+        site = build(:site, name: 'Some site')
+
+        expect(site.display_name).to eq('Some site')
+      end
+    end
+
+    describe '#name_with_account_prefix' do
+      it 'defaults to account name' do
+        account = build(:account, name: 'Some Account')
+        site = build(:site, account: account)
+
+        expect(site.name_with_account_prefix).to eq('Some Account')
+      end
+
+      it 'includes site name as suffix' do
+        account = build(:account, name: 'Some Account')
+        site = build(:site, account: account, name: 'Some Campaign')
+
+        expect(site.name_with_account_prefix).to eq('Some Account - Some Campaign')
+      end
+    end
+
+    describe '#host' do
+      it 'returns host based on public_entry_url_options' do
+        Pageflow.config.public_entry_url_options = lambda do |site|
+          {host: "#{site.name}.example.com"}
+        end
+
+        site = build(:site, name: 'some')
+
+        expect(site.host).to eq('some.example.com')
+      end
+    end
+
     describe '#cname_domain' do
       it 'removes subdomain' do
         site = build(:site, :cname => 'foo.bar.com')

@@ -446,12 +446,12 @@ module PageflowScrolled
       it 'allows overriding theme assets via theme customization files' do
         entry = create(:published_entry, type_name: 'scrolled')
         file = Pageflow.theme_customizations.upload_file(
-          account: entry.account,
+          site: entry.site,
           entry_type_name: 'scrolled',
           type_name: :logo_desktop,
           attachment: fixture_file_upload('image.svg')
         )
-        Pageflow.theme_customizations.update(account: entry.account,
+        Pageflow.theme_customizations.update(site: entry.site,
                                              entry_type_name: 'scrolled',
                                              file_ids: {logo_desktop: file.id})
 

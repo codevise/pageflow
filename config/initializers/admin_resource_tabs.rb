@@ -1,17 +1,34 @@
 Pageflow.configure do |config|
-  config.admin_resource_tabs.register(:entry, name: :members, component: Pageflow::Admin::MembersTab)
-  config.admin_resource_tabs.register(:entry, name: :revisions, component: Pageflow::Admin::RevisionsTab)
+  config.admin_resource_tabs.register(:entry,
+                                      name: :members,
+                                      component: Pageflow::Admin::MembersTab)
+  config.admin_resource_tabs.register(:entry,
+                                      name: :revisions,
+                                      component: Pageflow::Admin::RevisionsTab)
 
-  config.admin_resource_tabs.register(:user, name: :accounts, component: Pageflow::Admin::UserAccountsTab)
-  config.admin_resource_tabs.register(:user, name: :entries, component: Pageflow::Admin::UserEntriesTab)
+  config.admin_resource_tabs.register(:user,
+                                      name: :accounts,
+                                      component: Pageflow::Admin::UserAccountsTab)
+  config.admin_resource_tabs.register(:user,
+                                      name: :entries,
+                                      component: Pageflow::Admin::UserEntriesTab)
 
-  config.admin_resource_tabs.register(:site, name: :entries, component: Pageflow::Admin::EntriesTab)
-  config.admin_resource_tabs.register(:site, name: :users, component: Pageflow::Admin::UsersTab)
-  config.admin_resource_tabs.register(
-    :site,
-    name: :entry_templates,
-    component: Pageflow::Admin::EntryTemplatesTab
-  )
+  config.admin_resource_tabs.register(:account,
+                                      name: :entries,
+                                      component: Pageflow::Admin::EntriesTab)
+  config.admin_resource_tabs.register(:account,
+                                      name: :users,
+                                      component: Pageflow::Admin::UsersTab)
+  config.admin_resource_tabs.register(:account,
+                                      name: :sites,
+                                      component: Pageflow::Admin::SitesTab)
+
+  config.admin_resource_tabs.register(:site,
+                                      name: :entries,
+                                      component: Pageflow::Admin::EntriesTab)
+  config.admin_resource_tabs.register(:site,
+                                      name: :entry_templates,
+                                      component: Pageflow::Admin::EntryTemplatesTab)
 end
 
 Pageflow.after_configure do |config|
@@ -27,7 +44,7 @@ Pageflow.after_configure do |config|
                                       component: Pageflow::Admin::FeaturesTab,
                                       **features_tab_permissions)
 
-  config.admin_resource_tabs.register(:site,
+  config.admin_resource_tabs.register(:account,
                                       name: :features,
                                       component: Pageflow::Admin::FeaturesTab,
                                       **features_tab_permissions)

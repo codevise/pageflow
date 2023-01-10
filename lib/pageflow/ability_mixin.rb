@@ -99,6 +99,10 @@ module Pageflow
         Admin::AdminOnlyTabPolicy.new(user, tab).see?
       end
 
+      can :see_account_admin_tab, Admin::Tab do |tab|
+        Admin::AdminOnlyTabPolicy.new(user, tab).see?
+      end
+
       can :see_user_admin_tab, Admin::Tab do |tab|
         Admin::AdminOnlyTabPolicy.new(user, tab).see?
       end
@@ -222,8 +226,12 @@ module Pageflow
           EntryPolicy.new(user, storyline.revision.entry).edit?
         end
 
-        can :edit, Site do |site|
-          SitePolicy.new(user, site).edit?
+        can :read, Site do |site|
+          SitePolicy.new(user, site).read?
+        end
+
+        can :update, Site do |site|
+          SitePolicy.new(user, site).update?
         end
 
         can :create, EntryTemplate do |entry_template|

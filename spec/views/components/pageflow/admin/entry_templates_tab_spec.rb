@@ -57,16 +57,34 @@ module Pageflow
       end
 
       account = create(:account)
-      create(:entry_template, account: account, entry_type_name: 'rainbows')
+      create(:entry_template, site: account.default_site, entry_type_name: 'rainbows')
       account.update(features_configuration: {
                        'rainbows_entry_type' => false
                      })
-      create(:entry_template, account: account, entry_type_name: 'ponies')
+      create(:entry_template, site: account.default_site, entry_type_name: 'ponies')
 
       render(account.sites.first)
 
       expect(rendered).not_to have_text('rainbows')
       expect(rendered).to have_text('ponies')
+    end
+
+    it 'supports non-default sites' do
+      pageflow_configure do |config|
+        TestEntryType.register(config, name: 'rainbows')
+      end
+
+      account = create(:account)
+      site = create(:site, account: account)
+      create(:entry_template,
+             site: site,
+             entry_type_name: 'rainbows',
+             default_author: 'Some author')
+
+      render(site)
+
+      expect(rendered).to have_text('rainbows')
+      expect(rendered).to have_text('Some author')
     end
   end
 end

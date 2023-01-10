@@ -10,25 +10,11 @@
     <% end %>
   <% end %>
 
-  <%= f.semantic_fields_for :default_site do |site| %>
-    <%= f.inputs do %>
-      <%= site.input :cname, hint: t('pageflow.admin.sites.cname_hint') %>
-      <%= site.input :additional_cnames, hint: t('pageflow.admin.sites.additional_cnames_hint') %>
-      <%= site.input :home_url, hint: t('pageflow.admin.sites.home_url_hint') %>
+  <% if resource.new_record? %>
+    <%= f.semantic_fields_for :default_site do |site| %>
+      <%= render 'admin/sites/fields', f: site, account_config: account_config %>
     <% end %>
-
-    <%= f.inputs do %>
-      <%= site.input :imprint_link_label %>
-      <%= site.input :imprint_link_url %>
-      <%= site.input :copyright_link_label %>
-      <%= site.input :copyright_link_url %>
-      <%= site.input :privacy_link_url %>
-
-      <% account_config.admin_form_inputs.find_all_for(:site).each do |form_input| %>
-        <%= form_input.build(site) %>
-      <% end %>
-    <% end %>
-  <% end %>
+  <% end  %>
 
   <p>
       <%= t('pageflow.admin.accounts.entry_template_hint') %>
