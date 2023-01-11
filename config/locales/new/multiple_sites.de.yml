@@ -4,3 +4,5 @@ de:
       sites:
         add: "Site hinzufügen"
         default_name: "(Standard)"
+      accounts:
+        entry_template_hint: DELETED
