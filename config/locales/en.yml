@@ -161,6 +161,7 @@ en:
       pageflow/account:
         created_at: Created at
         default_file_rights: Default file credits
+        default_site: Default site
         entries_count: "# Stories"
         landing_page_name: Landing page
         name: Name
@@ -264,6 +265,16 @@ en:
         published_at: Published at
         published_until: Published until
         updated_at: Updated at
+      pageflow/site:
+        additional_cnames: Additional CNAMES
+        cname: CNAME
+        copyright_link_label: Copyright link Text
+        copyright_link_url: Copyright link URL
+        home_url: Redirect URL
+        imprint_link_label: Legal notice link label
+        imprint_link_url: Legal notice link URL
+        privacy_link_url: Privacy link URL
+        share_providers: Default Share Links
       pageflow/text_track_file:
         kind: Kind
         label: Label
@@ -395,6 +406,9 @@ en:
       pageflow/revision:
         one: Version
         other: Versions
+      pageflow/site:
+        one: Site
+        other: Sites
       pageflow/text_track_file:
         one: Text Track File
         other: Text Track Files
@@ -404,6 +418,9 @@ en:
       revision:
         one: Version
         other: Versions
+      site:
+        one: Site
+        other: Sites
       user:
         one: User
         other: Users
@@ -775,9 +792,9 @@ en:
         cannot_add: What you want to do is not possible at the moment.
         none_addable_tooltip: No account available
       accounts:
-        entry_template_hint: Some of the form fields can now be found in the story template tab on the info page for this account
         no_entries: No Stories
         no_members: No members
+        site_defaults_inline_help: The following settings will be used as defaults for new stories in this account. Changes do not affect existing stories.
       entries:
         add_folder: Add folder
         confirm_depublish: Depublish this story?
@@ -857,10 +874,24 @@ en:
         features: Features
         members: Members
         revisions: Versions
+        sites: Sites
         users: User
       revisions:
         published_until_hint: Leave blank to publish indefinitely.
         restored: Version restored
+      sites:
+        add: Add site
+        additional_cnames_hint: Comma separated list of additional CNAMES. Used only to select the correct redirect URL.
+        cname_hint: Used in public sharing URLs.
+        default_author_hint: Default 'author' meta field for stories
+        default_keywords_hint: Default 'keywords' meta field for stories
+        default_locale_hint: Default language for stories
+        default_name: "(Default)"
+        default_publisher_hint: Default 'publisher' meta field for stories
+        home_url_hint: Used for requests to the root path with one of the above CNAMES. Default target location for the home button.
+        name: "%{account_name}"
+        remove_logo: Remove logo
+        show: View
       user:
         cannot_add: What you want to do is not possible. You need to upgrade.
         none_addable_tooltip: No user available

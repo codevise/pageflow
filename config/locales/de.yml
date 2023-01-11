@@ -161,6 +161,7 @@ de:
       pageflow/account:
         created_at: Erstellt am
         default_file_rights: Standard Urheber
+        default_site: Standard-Site
         entries_count: "# Beiträge"
         landing_page_name: Einstiegsseite
         name: Name
@@ -264,6 +265,16 @@ de:
         published_at: Publiziert am
         published_until: Publiziert bis
         updated_at: Geändert am
+      pageflow/site:
+        additional_cnames: Zusätzliche CNAMES
+        cname: CNAME
+        copyright_link_label: Copyright-Link Text
+        copyright_link_url: Copyright-Link URL
+        home_url: Redirect URL
+        imprint_link_label: Impressum-Link Text
+        imprint_link_url: Impressum-Link URL
+        privacy_link_url: Datenschutz-Link URL
+        share_providers: Standard Share Links
       pageflow/text_track_file:
         kind: Art
         label: Label
@@ -395,6 +406,9 @@ de:
       pageflow/revision:
         one: Revision
         other: Revisionen
+      pageflow/site:
+        one: Site
+        other: Sites
       pageflow/text_track_file:
         one: Textspur-Datei
         other: Textspur-Dateien
@@ -404,6 +418,9 @@ de:
       revision:
         one: Revision
         other: Revisionen
+      site:
+        one: Site
+        other: Sites
       user:
         one: Nutzer
         other: Nutzer
@@ -781,9 +798,9 @@ de:
         cannot_add: Was Sie tun möchten, ist nicht möglich.
         none_addable_tooltip: Kein Konto verfügbar
       accounts:
-        entry_template_hint: Einige Formularfelder sind ab sofort im Beitragsvorlagen-Tab auf der Informations-Seite dieses Kontos zu finden.
         no_entries: Keine Beiträge
         no_members: Keine Benutzer
+        site_defaults_inline_help: Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
       entries:
         add_folder: Ordner hinzufügen
         confirm_depublish: Soll der Beitrag wirklich depubliziert werden?
@@ -863,10 +880,24 @@ de:
         features: Features
         members: Mitglieder
         revisions: Revisionen
+        sites: Sites
         users: Benutzer
       revisions:
         published_until_hint: Freilassen, um Beitrag unbegrenzt zu veröffentlichen.
         restored: Revision wiederhergestellt
+      sites:
+        add: Site hinzufügen
+        additional_cnames_hint: Kommaseparierte Liste von weiteren CNAMES. Ausschließlich zur Auswahl der Redirect URL genutzt.
+        cname_hint: Wird in Share Links verwendet.
+        default_author_hint: Voreinstellung 'author' Meta-Feld für Eintrage
+        default_keywords_hint: Voreinstellung 'keywords' Meta-Feld für Eintrage
+        default_locale_hint: Voreinstellung Sprache für Einträge
+        default_name: "(Standard)"
+        default_publisher_hint: Voreinstellung 'publisher' Meta-Feld für Eintrage
+        home_url_hint: Wird einer der obigen CNAMES ohne Pfad in der URL verwendet, wird zu dieser URL umgeleitet. Standard Link Ziel des Home Buttons.
+        name: "%{account_name}"
+        remove_logo: Logo entfernen
+        show: Anzeigen
       user:
         cannot_add: Was Sie tun möchten, ist nicht möglich. Sie müssen aktualisieren.
         none_addable_tooltip: Kein Benutzer verfügbar
