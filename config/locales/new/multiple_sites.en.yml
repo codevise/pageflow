@@ -4,3 +4,5 @@ en:
       sites:
         default_name: "(Default)"
         add: "Add site"
+      accounts:
+        entry_template_hint: DELETED
