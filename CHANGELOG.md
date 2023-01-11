@@ -7,7 +7,8 @@
 ##### Breaking Changes
 
 - The `Theming` model has been renamed to `Site`.
-  ([#1903](https://github.com/codevise/pageflow/pull/1903))
+  ([#1903](https://github.com/codevise/pageflow/pull/1903),
+   [#1914](https://github.com/codevise/pageflow/pull/1914))
 
   Related associations like `Entry#theming` or
   `Account#default_theming` have been renamed to `Entry#site` and
@@ -15,7 +16,8 @@
 
 - Entry templates and theme customizations now belong to sites instead
   of accounts.
-  ([#1904](https://github.com/codevise/pageflow/pull/1904))
+  ([#1904](https://github.com/codevise/pageflow/pull/1904),
+   [#1915](https://github.com/codevise/pageflow/pull/1915))
 
   Accounts can now contain multiple sites with their own set of
   templates and customized theme.
