@@ -101,7 +101,6 @@ var utils = (function () {
 	me.extend(me, {
 		hasTransform: _transform !== false,
 		hasPerspective: _prefixStyle('perspective') in _elementStyle,
-		hasTouch: 'ontouchstart' in window,
 		hasPointer: navigator.msPointerEnabled,
 		hasTransition: _prefixStyle('transition') in _elementStyle
 	});
@@ -862,12 +861,10 @@ IScroll.prototype = {
 			eventType(target, 'MSPointerUp', this);
 		}
 
-		if ( utils.hasTouch ) {
-			eventType(startEventTarget, 'touchstart', this);
-			eventType(target, 'touchmove', this);
-			eventType(target, 'touchcancel', this);
-			eventType(target, 'touchend', this);
-		}
+		eventType(startEventTarget, 'touchstart', this);
+		eventType(target, 'touchmove', this);
+		eventType(target, 'touchcancel', this);
+		eventType(target, 'touchend', this);
 
 		eventType(this.scroller, 'transitionend', this);
 		eventType(this.scroller, 'webkitTransitionEnd', this);
