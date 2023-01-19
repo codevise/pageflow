@@ -5,7 +5,7 @@ import styles from "./FullscreenImage.module.css"
 export function FullscreenImage({
   setIsFullscreen,
   isFullScreen,
-  imageFile
+  imageFile,
 }) {
   const imgRef = useRef();
   const wrapperRef = useRef();

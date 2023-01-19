@@ -2,10 +2,10 @@ import React, {useEffect, useRef, useState} from 'react';
 import classNames from 'classnames';
 import {PanoViewer} from '@egjs/view360';
 import screenfull from 'screenfull';
+import {ToggleFullscreenButton} from '../ToggleFullscreenButton';
 
 import {useBrowserFeature} from '../useBrowserFeature';
 import {usePhonePlatform} from '../usePhonePlatform';
-import {ToggleFullscreenButton} from './ToggleFullscreenButton';
 import {Fullscreen} from './Fullscreen';
 import {PanoramaIndicator} from './PanoramaIndicator';
 import {FullscreenIndicator} from './FullscreenIndicator';

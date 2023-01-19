@@ -43,6 +43,7 @@ export {VideoPlayerControls} from './VideoPlayerControls';
 export {AudioPlayerControls} from './AudioPlayerControls';
 export {PlayerControls, ClassicPlayerControls, WaveformPlayerControls} from './PlayerControls';
 export {PlayerEventContextDataProvider} from './useEventContextData';
+export {ToggleFullscreenButton} from "./ToggleFullscreenButton";
 
 export {Panorama} from './Panorama';
 

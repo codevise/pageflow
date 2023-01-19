@@ -1,5 +1,5 @@
 .button {
-  composes: unstyledButton from '../utils.module.css';
+  composes: unstyledButton from './utils.module.css';
   width: 40px;
   height: 40px;
   margin: 0 2px;
