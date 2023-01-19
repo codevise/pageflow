@@ -536,6 +536,11 @@ describe Admin::EntriesController do
         path: 'de/',
         site: account.default_site
       )
+      create(
+        :permalink_directory,
+        path: 'en/',
+        site: account.default_site
+      )
 
       sign_in(user, scope: :user)
       get :new
@@ -545,6 +550,21 @@ describe Admin::EntriesController do
                           "option[value='#{permalink_directory.id}']")
       expect(response.body)
         .to have_selector('input[name="entry[permalink_attributes][slug]"]')
+    end
+
+    it 'hides permalink directory input if site has only one permalink directory' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      create(
+        :permalink_directory,
+        path: 'de/',
+        site: account.default_site
+      )
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body).to have_selector('.pageflow_permalink.no_directories')
     end
 
     it 'does not display permalink inputs if site has no permalink directories' do
@@ -806,6 +826,9 @@ describe Admin::EntriesController do
           slug: 'my-slug'
         }
       )
+      create(:permalink_directory,
+             site: entry.site,
+             path: 'en/')
 
       sign_in(user, scope: :user)
       get :edit, params: {id: entry}
@@ -826,6 +849,11 @@ describe Admin::EntriesController do
         path: 'de/',
         site: account.default_site
       )
+      create(
+        :permalink_directory,
+        path: 'en/',
+        site: account.default_site
+      )
       entry = create(
         :entry,
         account: account
@@ -839,6 +867,25 @@ describe Admin::EntriesController do
                           "option[value='#{permalink_directory.id}']")
       expect(response.body)
         .to have_selector('input[name="entry[permalink_attributes][slug]"]')
+    end
+
+    it 'hides permalink directory input if site has only one permalink directories' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      create(
+        :permalink_directory,
+        path: 'de/',
+        site: account.default_site
+      )
+      entry = create(
+        :entry,
+        account: account
+      )
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body).to have_selector('.pageflow_permalink.no_directories')
     end
 
     it 'does not display permalink inputs if site has no permalink directories' do
@@ -1496,7 +1543,8 @@ describe Admin::EntriesController do
 
     it 'renders inputs without layout if site has permalink directories' do
       account = create(:account)
-      create(:permalink_directory, site: account.default_site)
+      create(:permalink_directory, site: account.default_site, path: 'en/')
+      create(:permalink_directory, site: account.default_site, path: 'de/')
 
       sign_in(create(:user, :publisher, on: account))
       get(:permalink_inputs, params: {entry: {account_id: account}})
@@ -1512,7 +1560,8 @@ describe Admin::EntriesController do
       user = create(:user)
       account = create(:account, with_publisher: user)
       other_account = create(:account, with_publisher: user)
-      create(:permalink_directory, site: other_account.default_site)
+      create(:permalink_directory, site: other_account.default_site, path: 'en/')
+      create(:permalink_directory, site: other_account.default_site, path: 'de/')
 
       sign_in(user)
       get(:permalink_inputs,

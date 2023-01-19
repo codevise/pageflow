@@ -204,7 +204,6 @@ module Pageflow
       helper Admin::FeaturesHelper
       helper Admin::FormHelper
       helper Admin::MembershipsHelper
-      helper Admin::PermalinksHelper
       helper Admin::RevisionsHelper
 
       helper_method :account_policy_scope
