@@ -1,6 +1,5 @@
 <%= form.input(:permalink,
                as: :pageflow_permalink,
                base_url: pretty_site_url(entry.site),
-               directory_collection: collection_for_permalink_directories(entry.site,
-                                                                          form.object),
+               site: entry.site,
                slug_placeholder: entry.default_permalink_slug) %>

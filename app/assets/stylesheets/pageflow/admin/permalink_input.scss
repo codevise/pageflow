@@ -62,4 +62,14 @@ $pageflow-permalink-input-directory-background-position: null !default;
     padding-left: 0;
     flex: 1;
   }
+
+  &.no_directories {
+    select {
+      display: none;
+    }
+
+    input {
+      padding-left: $pageflow-permalink-input-directory-padding-left;
+    }
+  }
 }

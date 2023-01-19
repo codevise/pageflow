@@ -27,9 +27,9 @@ class PageflowPermalinkInput
   end
 
   def permalink_inputs_html
-    return '' if options[:directory_collection].empty?
+    return '' if options[:site].permalink_directories.empty?
 
-    builder.select(:directory_id, options[:directory_collection]) <<
+    builder.select(:directory_id, directory_select_options) <<
       builder.text_field(:slug, placeholder: options[:slug_placeholder])
   end
 
@@ -38,10 +38,22 @@ class PageflowPermalinkInput
   end
 
   def wrapper_html_options
-    if options[:directory_collection].empty?
+    if options[:site].permalink_directories.empty?
       super.merge(style: 'display: none')
+    elsif options[:site].permalink_directories.one?
+      result = super
+      result.merge(class: "#{result[:class]} no_directories")
     else
       super
     end
+  end
+
+  def directory_select_options
+    template.options_from_collection_for_select(
+      options[:site].permalink_directories,
+      'id',
+      'path',
+      builder.object.directory_id
+    )
   end
 end
