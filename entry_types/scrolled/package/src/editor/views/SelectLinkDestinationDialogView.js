@@ -2,8 +2,9 @@ import I18n from 'i18n-js';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
-import {app} from 'pageflow/editor';
+import {app, editor} from 'pageflow/editor';
 import {cssModulesUtils, CheckBoxInputView, TextInputView} from 'pageflow/ui';
+import {utils} from 'pageflow-scrolled/frontend';
 
 import {SelectableEntryOutlineView} from './SelectableEntryOutlineView';
 import {dialogView} from './mixins/dialogView';
@@ -25,6 +26,27 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
         <div class="${styles.or}">
           ${I18n.t('pageflow_scrolled.editor.select_link_destination.or')}
         </div>
+
+        <div class="${styles.fileContainer}">
+          <div>
+            <label><span class="name">
+              ${I18n.t('pageflow_scrolled.editor.select_link_destination.select_file')}
+            </span></label>
+            <div>
+              ${I18n.t('pageflow_scrolled.editor.select_link_destination.select_file_description')}
+            </div>
+          </div>
+          <div>
+            <button class="${styles.selectFileButton}">
+              ${I18n.t('pageflow_scrolled.editor.select_link_destination.select_in_sidebar')}
+            </button>
+          </div>
+        </div>
+
+        <div class="${styles.or}">
+          ${I18n.t('pageflow_scrolled.editor.select_link_destination.or')}
+        </div>
+
         <label><span class="name">
           ${I18n.t('pageflow_scrolled.editor.select_link_destination.select_chapter_or_section')}
         </span></label>
@@ -47,6 +69,22 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
     'submit urlContainer': function(event) {
       event.preventDefault();
       this.createExternalLink();
+    },
+
+    'click selectFileButton': function() {
+      currentFileSelectionCallback = (file) => {
+        this.options.onSelect({
+          href: {
+            file: {
+              permaId: file.get('perma_id'),
+              collectionName: utils.camelize(file.fileType().collectionName)
+            }
+          }
+        });
+      };
+
+      editor.selectFile('image_files', 'linkDestination', {});
+      this.close();
     }
   }),
 
@@ -107,3 +145,20 @@ SelectLinkDestinationDialogView.show = function(options) {
   const view = new SelectLinkDestinationDialogView(options);
   app.dialogRegion.show(view.render());
 };
+
+let currentFileSelectionCallback;
+
+const FileSelectionHandler = function(options) {
+  this.call = function(file) {
+    currentFileSelectionCallback(file)
+  };
+
+  this.getReferer = function() {
+    return '/';
+  };
+};
+
+editor.registerFileSelectionHandler(
+  'linkDestination',
+  FileSelectionHandler
+);

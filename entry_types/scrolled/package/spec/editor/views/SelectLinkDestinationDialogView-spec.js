@@ -1,5 +1,6 @@
 import {SelectLinkDestinationDialogView} from 'editor/views/SelectLinkDestinationDialogView';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
+import {editor} from 'pageflow/editor';
 
 import {factories, normalizeSeed} from 'support';
 import {useFakeTranslations} from 'pageflow/testHelpers';
@@ -13,6 +14,7 @@ describe('SelectLinkDestinationDialogView', () => {
     'pageflow_scrolled.editor.select_link_destination.enter_url': 'Enter url',
     'pageflow_scrolled.editor.select_link_destination.open_in_new_tab': 'Open in new tab',
     'pageflow_scrolled.editor.select_link_destination.create': 'Create link',
+    'pageflow_scrolled.editor.select_link_destination.select_in_sidebar': 'Select file',
     'pageflow_scrolled.editor.select_link_destination.cancel': 'Cancel'
   });
 
@@ -101,6 +103,42 @@ describe('SelectLinkDestinationDialogView', () => {
     expect(listener).toHaveBeenCalledWith({
       href: 'https://example.com',
       openInNewTab: true
+    });
+  });
+
+  it('allows selecting file', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      fileTypes: factories.fileTypesWithImageFileType(),
+      filesAttributes: {
+        image_files: [
+          {
+            id: 1,
+            perma_id: 10
+          }
+        ]
+      }
+    });
+    const file = entry.getFileCollection('image_files').get(1);
+    const listener = jest.fn();
+    const view = new SelectLinkDestinationDialogView({
+      entry,
+      onSelect: listener
+    });
+    const navigate = jest.spyOn(editor, 'navigate').mockImplementation(() => {});
+
+    const user = userEvent.setup();
+    const {getByText} = within(view.render().el);
+    await user.click(getByText('Select file'));
+
+    expect(navigate).toHaveBeenCalledWith(
+      expect.stringContaining('/files/'),
+      {trigger: true}
+    );
+
+    editor.createFileSelectionHandler('linkDestination', '{}').call(file);
+
+    expect(listener).toHaveBeenCalledWith({
+      href: {file: {permaId: 10, collectionName: 'imageFiles'}}
     });
   });
 });

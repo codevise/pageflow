@@ -1,0 +1,11 @@
+en:
+  pageflow_scrolled:
+    editor:
+      select_link_destination:
+        select_file: "Select file download as destination"
+        select_file_description: "Let readers download a file when they click the link."
+        select_in_sidebar: "Select"
+    inline_editing:
+      link_tooltip:
+        deleted_file: "Deleted file"
+        deleted_chapter: "Deleted chapter"
