@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import {Range} from 'slate';
 
 import {useI18n} from '../../i18n';
-import {useChapter} from '../../../entryState';
+import {useChapter, useFile} from '../../../entryState';
 import {SectionThumbnail} from '../../SectionThumbnail';
 
 import styles from './index.module.css';
@@ -102,6 +102,11 @@ function LinkDestination({href, openInNewTab}) {
       <SectionLinkDestination permaId={href.section} />
     )
   }
+  else if (href?.file) {
+    return (
+      <FileLinkDestination fileOptions={href.file} />
+    )
+  }
   else {
     return (
       <ExternalLinkDestination href={href} openInNewTab={openInNewTab} />
@@ -114,7 +119,9 @@ function ChapterLinkDestination({permaId}) {
   const {t} = useI18n({locale: 'ui'});
 
   if (!chapter) {
-    return '(Deleted chapter)';
+    return (
+      <span>{t('pageflow_scrolled.inline_editing.link_tooltip.deleted_chapter')}</span>
+    );
   }
 
   return (
@@ -159,5 +166,27 @@ function ExternalLinkDestination({href, openInNewTab}) {
          t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_same_tab')}
       </div>
     </>
+  );
+}
+
+function FileLinkDestination({fileOptions}) {
+  const file = useFile(fileOptions);
+  const {t} = useI18n({locale: 'ui'});
+
+  if (!file) {
+    return (
+      <span>
+        {t('pageflow_scrolled.inline_editing.link_tooltip.deleted_file')}
+      </span>
+    );
+  }
+
+  return (
+    <a href={file.urls.original}
+       target="_blank"
+       rel="noopener noreferrer">
+      {file.urls.original.split('/').pop()}
+      <ExternalLinkIcon width={10} height={10} />
+    </a>
   );
 }
