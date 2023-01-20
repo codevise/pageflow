@@ -124,13 +124,6 @@ export const PreviewMessageController = Object.extend({
               type: 'LINK_DESTINATION_SELECTED',
               payload: result
             });
-          },
-
-          onAbort(result){
-            postMessage({
-              type: 'LINK_DESTINATION_SELECTION_ABORTED',
-              payload: result
-            });
           }
         });
       }

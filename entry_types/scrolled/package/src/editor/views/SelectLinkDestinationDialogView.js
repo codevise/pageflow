@@ -100,12 +100,6 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
         }
       })).el
     );
-  },
-
-  onClose() {
-    if (this.options.onAbort) {
-      this.options.onAbort();
-    }
   }
 });
 

@@ -305,28 +305,6 @@ describe('PreviewMessageController', () => {
     })).resolves.toEqual({url: 'https://example.com'});
   });
 
-  it('sends LINK_DESTINATION_SELECTION_ABORTED message when onAbort callback of dialog is invoked', () => {
-    const editor = factories.editorApi();
-    const entry = factories.entry(ScrolledEntry, {}, {
-      entryTypeSeed: normalizeSeed()
-    });
-    const iframeWindow = createIframeWindow();
-    controller = new PreviewMessageController({entry, iframeWindow, editor});
-
-    return expect(new Promise(resolve => {
-      iframeWindow.addEventListener('message', event => {
-        if (event.data.type === 'LINK_DESTINATION_SELECTION_ABORTED') {
-          resolve(event.data.payload);
-        }
-      });
-
-      jest.spyOn(SelectLinkDestinationDialogView, 'show').mockImplementation(
-        ({onAbort}) => onAbort()
-      );
-      postSelectLinkDestinationMessage();
-    })).resolves.toEqual(undefined);
-  });
-
   it('navigates to root on SELECTED message without type', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {

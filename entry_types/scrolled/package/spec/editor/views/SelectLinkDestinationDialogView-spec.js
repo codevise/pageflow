@@ -103,21 +103,4 @@ describe('SelectLinkDestinationDialogView', () => {
       openInNewTab: true
     });
   });
-
-  it('invokes onAbort callback on close', async () => {
-    const entry = factories.entry(ScrolledEntry, {}, {
-      entryTypeSeed: normalizeSeed()
-    });
-    const listener = jest.fn();
-    const view = new SelectLinkDestinationDialogView({
-      entry,
-      onAbort: listener
-    });
-
-    const user = userEvent.setup();
-    const {getByRole} = render(view);
-    await user.click(getByRole('button', {name: 'Cancel'}));
-
-    expect(listener).toHaveBeenCalled();
-  });
 });
