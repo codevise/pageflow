@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import QuickPinchZoom, { make3dTransformValue } from 'react-quick-pinch-zoom';
-import styles from "./FullscreenImage.module.css"
+import styles from "./FullscreenImage.module.css";
+import {usePhonePlatform} from '../../frontend/usePhonePlatform';
 
 export function FullscreenImage({
   setIsFullscreen,
@@ -9,9 +10,12 @@ export function FullscreenImage({
 }) {
   const imgRef = useRef();
   const wrapperRef = useRef();
-  const [resetScaleValue, setResetScaleValue] = useState(false)
+  const [resetScaleValue, setResetScaleValue] = useState(false);
+  const isPhonePlatform = usePhonePlatform();
   let lastScrollTop = 0;
   const url = imageFile.urls["large"];
+
+  const zoomFactor = isPhonePlatform ? 5 : 0
 
   useEffect(() => {
     const { current: img } = imgRef;
@@ -66,7 +70,6 @@ export function FullscreenImage({
     var currentScrollPos = event.offSetY || document.documentElement.scrollTop
     if ( currentScrollPos > lastScrollTop ) setIsFullscreen(false);
 
-    console.log(currentScrollPos, lastScrollTop)
     lastScrollTop = currentScrollPos <= 0 ? 0 : currentScrollPos;
   }
 
@@ -75,7 +78,7 @@ export function FullscreenImage({
       onClick={onClick}
       ref={wrapperRef}>
       <QuickPinchZoom onUpdate={onUpdate}
-                maxZoom={5}
+                maxZoom={zoomFactor}
                 wheelScaleFactor={500}
                 shouldInterceptWheel={onInterceptWheel}
                 verticalPadding={10}

@@ -2,14 +2,12 @@ import React, {useState} from 'react'
 import {
   Image
 } from 'pageflow-scrolled/frontend';
-import QuickPinchZoom, { make3dTransformValue } from "react-quick-pinch-zoom";
 import { Fullscreen } from './Fullscreen';
 import { canUseDOM } from './canUseDOM';
 import { FullscreenImage } from './FullscreenImage';
 import {usePhonePlatform} from '../../frontend/usePhonePlatform';
 import {ToggleFullscreenButton} from '../../frontend/ToggleFullscreenButton';
 import styles from "./Viewer.module.css";
-import screenfull from 'screenfull';
 
 export function Viewer({
   imageFile,
@@ -25,18 +23,10 @@ export function Viewer({
   }
 
   function enterFullscreen() {
-    if (screenfull.isEnabled) {
-      screenfull.request();
-    }
-
     setIsFullscreen(true);
   }
 
   function exitFullscreen() {
-    if (screenfull.isEnabled) {
-      screenfull.exit();
-    }
-
     setIsFullscreen(false);
   }
   console.log(isFullscreen, enableFullscreen, !isFullscreen, !enableFullscreen)
