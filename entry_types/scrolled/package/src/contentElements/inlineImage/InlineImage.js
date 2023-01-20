@@ -51,7 +51,8 @@ function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile, con
 
 function ImageWithCaption({imageFile, configuration}) {
   const {shouldLoad} = useContentElementLifecycle();
-  const {enableFullscreen} = configuration
+  const {enableFullscreen, position} = configuration;
+  const supportFullscreen = enableFullscreen && (position === "inline" || position === "sticky")
 
   return (
     <FitViewport file={imageFile}
@@ -60,7 +61,7 @@ function ImageWithCaption({imageFile, configuration}) {
       <ContentElementBox>
         <Figure caption={configuration.caption}>
           <FitViewport.Content>
-            {enableFullscreen ? 
+            {supportFullscreen ? 
               <Viewer imageFile={imageFile}
                     shouldLoad={shouldLoad}
                     configuration={configuration}/> :
