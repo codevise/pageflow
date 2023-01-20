@@ -18,6 +18,7 @@ export function Viewer({
 }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isPhonePlatform = usePhonePlatform();
+  const {enableFullscreen, position} = configuration
 
   function onClick() {
     setIsFullscreen(!isFullscreen)
@@ -38,26 +39,25 @@ export function Viewer({
 
     setIsFullscreen(false);
   }
+  console.log(isFullscreen, enableFullscreen, !isFullscreen, !enableFullscreen)
 
   if (canUseDOM()) {
     return (
       <Fullscreen isFullscreen={isFullscreen}>
-          {!isFullscreen &&
-            <div onClick={onClick}>
-              <Image imageFile={imageFile}
-                  load={shouldLoad}
-                  structuredData={true}
-                  variant={configuration.position === 'full' ? 'large' : 'medium'}
-                  preferSvg={true} />
-            </div>
-          }
-          {isFullscreen &&
+          <div onClick={onClick}>
+            <Image imageFile={imageFile}
+                load={shouldLoad}
+                structuredData={true}
+                variant={position === 'full' ? 'large' : 'medium'}
+                preferSvg={true} />
+          </div>
+          {(isFullscreen && enableFullscreen) &&
             <FullscreenImage isFullscreen={isFullscreen}
               setIsFullscreen={setIsFullscreen}
               imageFile={imageFile} />
 
           }
-          {(!isPhonePlatform || isFullscreen) &&
+          {(!isPhonePlatform && enableFullscreen) &&
           <div className={styles.controls}>
             <ToggleFullscreenButton isFullscreen={isFullscreen}
                                     onEnter={enterFullscreen}

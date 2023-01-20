@@ -274,6 +274,8 @@ de:
             portraitId:
               inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Bild konfiguriert werden, das ansonsten zu klein dargestellt würde.
               label: Bild (Hochkant)
+            enableFullscreen:
+              label: Vollbildmodus aktivieren
           description: Einbindung von Bildern
           name: Inline-Bild
           tabs:

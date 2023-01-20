@@ -1,5 +1,5 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {FileInputView} from 'pageflow/editor';
+import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 
 import pictogram from './pictogram.svg';
 
@@ -20,6 +20,7 @@ editor.contentElementTypes.register('inlineImage', {
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false
       });
+      this.input('enableFullscreen', CheckBoxInputView);
       this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });
