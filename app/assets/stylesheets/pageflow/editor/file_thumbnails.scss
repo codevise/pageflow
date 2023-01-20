@@ -15,6 +15,10 @@
       @include note-icon;
     }
 
+    &.other {
+      @include fa-cloud-download-icon;
+    }
+
     &.uploading {
       @include up-bold-icon;
     }

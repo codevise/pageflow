@@ -41,5 +41,12 @@ module Pageflow
                    collection_name: 'text_track_files',
                    url_templates: TextTrackFileUrlTemplates.new)
     end
+
+    def self.other
+      FileType.new(model: 'Pageflow::OtherFile',
+                   collection_name: 'other_files',
+                   url_templates: OtherFileUrlTemplates.new,
+                   top_level_type: true)
+    end
   end
 end

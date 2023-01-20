@@ -6,6 +6,7 @@ import {AudioFile} from '../models/AudioFile';
 import {ImageFile} from '../models/ImageFile';
 import {TextTrackFile} from '../models/TextTrackFile';
 import {VideoFile} from '../models/VideoFile';
+import {OtherFile} from '../models/OtherFile';
 import {app} from '../app';
 import {editor} from '../base';
 
@@ -162,6 +163,20 @@ app.addInitializer(function(options) {
       },
       binding: 'label'
     }
+  });
+
+  editor.fileTypes.register('other_files', {
+    model: OtherFile,
+    metaDataAttributes: [
+      altMetaDataAttribute
+    ],
+    matchUpload: () => true,
+    configurationEditorInputs: [
+      {
+        name: 'alt',
+        inputView: TextInputView
+      }
+    ]
   });
 
   editor.fileTypes.setup(options.config.fileTypes);
