@@ -62,5 +62,13 @@ module Pageflow
         .to include('pageflow/video_files/:id_partition/' \
                     ',:pageflow_hls_qualities,mp4.csmil/master.m3u8')
     end
+
+    it 'includes original URL with extname placeholder' do
+      result = VideoFileUrlTemplates.new.call
+
+      expect(result[:original])
+        .to include('pageflow/video_files/attachment_on_s3s/' \
+                    ':id_partition/original/:basename.:extension')
+    end
   end
 end

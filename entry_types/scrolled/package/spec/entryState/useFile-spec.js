@@ -112,6 +112,7 @@ describe('useFile', () => {
         seed: {
           fileUrlTemplates: {
             videoFiles: {
+              original: '/video_files/:id_partition/original.:extension',
               high: '/video_files/:id_partition/high.mp4',
               posterLarge: '/video_files/:id_partition/posterLarge.jpg',
             },
@@ -133,6 +134,7 @@ describe('useFile', () => {
                   id: 100,
                   perma_id: 1,
                   basename: 'video',
+                  extension: 'mov',
                   rights: 'author',
                   variants: ['high', 'poster_large'],
                   configuration: {
@@ -156,6 +158,7 @@ describe('useFile', () => {
         some: 'value'
       },
       urls: {
+        original: '/video_files/000/000/100/original.mov',
         high: '/video_files/000/000/100/high.mp4',
         posterLarge: '/video_files/000/000/100/posterLarge.jpg'
       }
