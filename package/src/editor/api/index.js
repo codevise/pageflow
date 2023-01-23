@@ -242,7 +242,8 @@ export const EditorApi = Object.extend(
    * @param {string|{name: string, filter: string}} fileType
    *   Either collection name of a file type or and object containing
    *   the collection name a file type and a the name of a file type
-   *   filter.
+   *   filter. Pass "any" as name to display selection buttons on alle
+   *   file type tabs.
    *
    * @param {string} handlerName
    *   The name of a handler registered via {@link
@@ -310,7 +311,7 @@ export const EditorApi = Object.extend(
   ensureBrowserSupport: function(start) {
     if (this.entryType.isBrowserSupported) {
       const isBrowserSupported = this.entryType.isBrowserSupported();
-  
+
       if (isBrowserSupported) {
           start();
       }

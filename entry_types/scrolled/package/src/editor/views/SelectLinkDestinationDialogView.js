@@ -83,7 +83,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
         });
       };
 
-      editor.selectFile('image_files', 'linkDestination', {});
+      editor.selectFile({name: 'any'}, 'linkDestination', {});
       this.close();
     }
   }),

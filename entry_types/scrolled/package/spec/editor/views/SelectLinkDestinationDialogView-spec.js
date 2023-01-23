@@ -131,7 +131,7 @@ describe('SelectLinkDestinationDialogView', () => {
     await user.click(getByText('Select file'));
 
     expect(navigate).toHaveBeenCalledWith(
-      expect.stringContaining('/files/'),
+      expect.stringContaining('/files/any'),
       {trigger: true}
     );
 
