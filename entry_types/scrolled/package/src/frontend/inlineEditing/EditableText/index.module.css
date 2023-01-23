@@ -63,8 +63,8 @@
   border-left: solid 4px transparent;
 }
 
-.linkTooltip a,
-.linkTooltip span {
+.linkTooltip > a,
+.linkTooltip > span {
   color: #fff;
   background-color: transparent;
   border: 0;
@@ -72,7 +72,7 @@
   padding: 10px 10px;
 }
 
-.linkTooltip svg {
+.linkTooltip > a svg {
   padding-left: 7px;
 }
 
