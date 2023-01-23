@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import {camelize} from './utils/camelize';
 import {withInlineEditingAlternative} from './inlineEditing';
-import {useChapter} from '../entryState';
+import {useChapter, useFile} from '../entryState';
 import {Text} from './Text';
 import textStyles from './Text.module.css';
 
@@ -82,6 +82,17 @@ function renderLink({attributes, children, element}) {
   else if (element?.href?.section) {
     return <a {...attributes} href={`#section-${element.href.section}`}>{children}</a>;
   }
+  if (element?.href?.file) {
+    const {key, ...otherAttributes} = attributes;
+
+    return (
+      <FileLink key={key}
+                attributes={otherAttributes}
+                fileOptions={element.href.file}>
+        {children}
+      </FileLink>
+    );
+  }
   else {
     const targetAttributes = element.openInNewTab ?
                              {target: '_blank', rel: 'noopener noreferrer'} :
@@ -95,6 +106,17 @@ function ChapterLink({attributes, children, chapterPermaId}) {
   const chapter = useChapter({permaId: chapterPermaId});
 
   return <a {...attributes} href={`#${chapter?.chapterSlug || ''}`}>{children}</a>;
+}
+
+function FileLink({attributes, children, fileOptions}) {
+  const file = useFile(fileOptions);
+
+  return <a {...attributes}
+            target="_blank"
+            rel="noopener noreferrer"
+            href={file?.urls.original || '#'}>
+    {children}
+  </a>;
 }
 
 export function renderLeaf({attributes, children, leaf}) {

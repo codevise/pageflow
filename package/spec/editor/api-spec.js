@@ -3,8 +3,6 @@ import Backbone from 'backbone';
 import {EditorApi} from 'pageflow/editor';
 import {state} from '$state';
 
-import sinon from 'sinon';
-
 describe('pageflow.EditorApi', () => {
   describe('#selectFile', () => {
     it('navigates to files route for file type given as string', () => {
@@ -14,7 +12,8 @@ describe('pageflow.EditorApi', () => {
       api.selectFile('image_files', 'some_handler');
 
       expect(router.navigate).toHaveBeenCalledWith(
-        sinon.match('/files/image_files').and(sinon.match('handler=some_handler'))
+        expect.stringContaining('/files/image_files?handler=some_handler'),
+        {trigger: true}
       );
     });
 
@@ -25,9 +24,20 @@ describe('pageflow.EditorApi', () => {
       api.selectFile({name: 'image_files', filter: 'large'}, 'some_handler');
 
       expect(router.navigate).toHaveBeenCalledWith(
-        sinon.match('/files/image_files')
-          .and(sinon.match('handler=some_handler'))
-          .and(sinon.match('filter=large'))
+        expect.stringMatching(new RegExp('/files/image_files\\?handler=some_handler.*filter=large')),
+        {trigger: true}
+      );
+    });
+
+    it('navigates to files route without collection name for file type given as empty object', () => {
+      var router = fakeRouter();
+      var api = new EditorApi({router: router});
+
+      api.selectFile({name: 'any'}, 'some_handler');
+
+      expect(router.navigate).toHaveBeenCalledWith(
+        expect.stringContaining('/files/any?handler=some_handler'),
+        {trigger: true}
       );
     });
 
@@ -38,12 +48,13 @@ describe('pageflow.EditorApi', () => {
       api.selectFile('image_files', 'some_handler', {some: 'payload'});
 
       expect(router.navigate).toHaveBeenCalledWith(
-        sinon.match('payload=%7B%22some%22%3A%22payload%22%7D')
+        expect.stringContaining('payload=%7B%22some%22%3A%22payload%22%7D'),
+        {trigger: true}
       );
     });
 
     function fakeRouter() {
-      return {navigate: sinon.spy()};
+      return {navigate: jest.fn()};
     }
   });
 

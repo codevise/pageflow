@@ -197,6 +197,37 @@ describe('EditableText', () => {
     expect(getByRole('link')).not.toHaveAttribute('rel')
   });
 
+  it('supports rendering file links', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Find more '},
+        {
+          type: 'link',
+          href: {file: {permaId: 100, collectionName: 'imageFiles'}},
+          children: [
+            {text: 'here'}
+          ]
+        },
+        {text: '.'}
+      ]
+    }];
+    const seed = {
+      imageFileUrlTemplates: {
+        original: ':id_partition/original/:basename.:extension'
+      },
+      sections: [{id: 1, permaId: 10}],
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+
+    const {getByRole} = renderInEntry(<EditableText value={value} />, {seed});
+
+    expect(getByRole('link')).toHaveTextContent('here')
+    expect(getByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg')
+    expect(getByRole('link')).toHaveAttribute('target', '_blank')
+    expect(getByRole('link')).toHaveAttribute('rel', 'noopener noreferrer')
+  });
+
   it('renders zero width no break space in empty leafs to prevent empty paragraphs from collapsing', () => {
     const value = [{
       type: 'paragraph',

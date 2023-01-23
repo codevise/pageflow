@@ -34,7 +34,8 @@ function expandUrls(collectionName, file, urlTemplates) {
     throw new Error(`No file url templates found for ${collectionName}`);
   }
 
-  const variants = file.variants ||
+  const variants = file.variants ?
+                   ['original', ...file.variants] :
                    Object.keys(urlTemplates[collectionName]);
 
   const urls = variants.reduce((result, variant) => {

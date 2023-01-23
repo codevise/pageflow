@@ -129,4 +129,30 @@ describe('LinkTooltip', () => {
 
     expect(queryByRole('link')).toHaveAttribute('href', '#section-5');
   });
+
+  it('displays tooltip for file link', async () => {
+    const editor = {};
+    const seed = {
+      imageFileUrlTemplates: {
+        original: ':id_partition/original/:basename.:extension'
+      },
+      imageFiles: [{id: 1, permaId: 100}],
+      sections: [
+        {permaId: 5}
+      ]
+    }
+    const {getByText, queryByRole} = renderInEntry(
+      <LinkTooltipProvider editor={editor}>
+        <LinkPreview href={{file: {permaId: 100, collectionName: 'imageFiles'}}}>
+          A link
+        </LinkPreview>
+      </LinkTooltipProvider>,
+      {seed}
+    );
+
+    const user = userEvent.setup();
+    await user.hover(getByText('A link'));
+
+    expect(queryByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg');
+  });
 });

@@ -27,3 +27,8 @@
   composes: primaryIconButton;
   composes: check from './icons.module.css';
 }
+
+.selectFileButton {
+  composes: primaryIconButton;
+  composes: rightBold from './icons.module.css';
+}

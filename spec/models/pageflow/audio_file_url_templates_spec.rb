@@ -14,5 +14,13 @@ module Pageflow
       expect(result[:peak_data])
         .to include('pageflow/audio_files/peak_data/:id_partition/original/audio.json')
     end
+
+    it 'includes original URL with extname placeholder' do
+      result = AudioFileUrlTemplates.new.call
+
+      expect(result[:original])
+        .to include('pageflow/audio_files/attachment_on_s3s/' \
+                    ':id_partition/original/:basename.:extension')
+    end
   end
 end

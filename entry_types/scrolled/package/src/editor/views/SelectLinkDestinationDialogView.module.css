@@ -57,3 +57,18 @@
   padding: space(2);
   overflow: auto;
 }
+
+.fileContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: space(4);
+}
+
+.fileContainer > :first-child {
+  flex: 1
+}
+
+.selectFileButton {
+  composes: selectFileButton from './buttons.module.css';
+}

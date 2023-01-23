@@ -10,7 +10,7 @@ describe('useSelectLinkDestination', () => {
 
     const {result} = renderHook(() => useSelectLinkDestination());
     const selectLinkDestination = result.current;
-    selectLinkDestination();
+    selectLinkDestination().catch(() => {});
 
     expect(window.parent.postMessage).toHaveBeenCalledWith(
       {type: 'SELECT_LINK_DESTINATION'},
@@ -34,18 +34,14 @@ describe('useSelectLinkDestination', () => {
     return expect(promise).resolves.toEqual({url: 'https://example.com'});
   });
 
-  it('rejects promise on LINK_DESTINATION_SELECTION_ABORTED message', () => {
+  it('rejects promise on when function is called again', () => {
     fakeParentWindow();
     window.parent.postMessage = jest.fn();
 
     const {result} = renderHook(() => useSelectLinkDestination());
     const selectLinkDestination = result.current;
     const promise = selectLinkDestination();
-
-    window.postMessage({
-      type: 'LINK_DESTINATION_SELECTION_ABORTED',
-      payload: {}
-    }, '*');
+    selectLinkDestination().catch(() => {});
 
     return expect(promise).rejects.toEqual(undefined);
   });

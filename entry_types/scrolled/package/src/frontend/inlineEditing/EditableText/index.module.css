@@ -63,7 +63,8 @@
   border-left: solid 4px transparent;
 }
 
-.linkTooltip a {
+.linkTooltip a,
+.linkTooltip span {
   color: #fff;
   background-color: transparent;
   border: 0;

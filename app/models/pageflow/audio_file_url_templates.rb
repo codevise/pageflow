@@ -2,6 +2,7 @@ module Pageflow
   class AudioFileUrlTemplates
     def call
       {
+        original: url_template(:attachment, :original),
         m4a: url_template(:m4a),
         mp3: url_template(:mp3),
         ogg: url_template(:ogg),
@@ -17,7 +18,7 @@ module Pageflow
 
     def example_file
       @example_file ||= AudioFile.new(id: 0,
-                                      file_name: ':basename.mp3',
+                                      file_name: ':basename.:extension',
                                       peak_data_file_name: 'audio.json')
     end
   end
