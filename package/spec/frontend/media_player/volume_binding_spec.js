@@ -74,6 +74,18 @@ describe('volumeBinding', function() {
       await expect(player.nextFadeDuration).resolves.toBe(500);
     });
 
+    it('fades to 1 if volume control is disabled', async () => {
+      var player = fakePlayer();
+      settings.set({volume: 0.9});
+      volumeBinding(player, settings, {ignoreVolumeSetting: true});
+
+      player.playAndFadeIn(500);
+
+      await expect(player.nextVolume).resolves.toBe(0);
+      await expect(player.nextFadeVolume).resolves.toBe(1);
+      await expect(player.nextFadeDuration).resolves.toBe(500);
+    });
+
     it('starts listenting to settings changes', async () => {
       var player = fakePlayer();
       settings.set({volume: 98});

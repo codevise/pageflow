@@ -58,7 +58,7 @@ export const volumeBinding = function(player, settings, options) {
   };
 
   player.targetVolume = function() {
-    return settings.get('volume') * volumeFactor;
+    return (options.ignoreVolumeSetting ? 1 : settings.get('volume')) * volumeFactor;
   };
 
   function listenToVolumeSetting() {
