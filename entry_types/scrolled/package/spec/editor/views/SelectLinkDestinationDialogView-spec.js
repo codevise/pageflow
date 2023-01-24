@@ -15,6 +15,7 @@ describe('SelectLinkDestinationDialogView', () => {
     'pageflow_scrolled.editor.select_link_destination.open_in_new_tab': 'Open in new tab',
     'pageflow_scrolled.editor.select_link_destination.create': 'Create link',
     'pageflow_scrolled.editor.select_link_destination.select_in_sidebar': 'Select file',
+    'pageflow.editor.file_types.image_files.name.one': 'Image files',
     'pageflow_scrolled.editor.select_link_destination.cancel': 'Cancel'
   });
 
@@ -23,6 +24,14 @@ describe('SelectLinkDestinationDialogView', () => {
     document.body.appendChild(view.el);
     return within(view.el);
   }
+
+  let fileTypes;
+
+  beforeEach(() => {
+    fileTypes = factories.fileTypes(f =>
+      f.withImageFileType()
+    );
+  });
 
   it('allows selecting chapter', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
@@ -35,6 +44,7 @@ describe('SelectLinkDestinationDialogView', () => {
     const listener = jest.fn();
     const view = new SelectLinkDestinationDialogView({
       entry,
+      fileTypes,
       onSelect: listener
     });
 
@@ -56,6 +66,7 @@ describe('SelectLinkDestinationDialogView', () => {
     const listener = jest.fn();
     const view = new SelectLinkDestinationDialogView({
       entry,
+      fileTypes,
       onSelect: listener
     });
 
@@ -73,6 +84,7 @@ describe('SelectLinkDestinationDialogView', () => {
     const listener = jest.fn();
     const view = new SelectLinkDestinationDialogView({
       entry,
+      fileTypes,
       onSelect: listener
     });
 
@@ -91,6 +103,7 @@ describe('SelectLinkDestinationDialogView', () => {
     const listener = jest.fn();
     const view = new SelectLinkDestinationDialogView({
       entry,
+      fileTypes,
       onSelect: listener
     });
 
@@ -122,16 +135,18 @@ describe('SelectLinkDestinationDialogView', () => {
     const listener = jest.fn();
     const view = new SelectLinkDestinationDialogView({
       entry,
+      fileTypes,
       onSelect: listener
     });
     const navigate = jest.spyOn(editor, 'navigate').mockImplementation(() => {});
 
     const user = userEvent.setup();
-    const {getByText} = within(view.render().el);
+    const {getByText, getByRole} = render(view);
     await user.click(getByText('Select file'));
+    await user.click(getByRole('link', {name: 'Image files'}));
 
     expect(navigate).toHaveBeenCalledWith(
-      expect.stringContaining('/files/any'),
+      expect.stringContaining('/files/image_files'),
       {trigger: true}
     );
 

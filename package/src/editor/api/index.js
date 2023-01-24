@@ -239,11 +239,12 @@ export const EditorApi = Object.extend(
    * Trigger selection of the given file type with the given
    * handler. Payload hash is passed to selection handler as options.
    *
-   * @param {string|{name: string, filter: string}} fileType
+   * @param {string|{name: string, filter: string}|{defaultTab: string, filter: string}} fileType
    *   Either collection name of a file type or and object containing
    *   the collection name a file type and a the name of a file type
-   *   filter. Pass "any" as name to display selection buttons on alle
-   *   file type tabs.
+   *   filter or an object containingn a defaultTab property that controls
+   *   which tab will visible initially, while allowing selecting files of
+   *   any type.
    *
    * @param {string} handlerName
    *   The name of a handler registered via {@link
@@ -269,7 +270,7 @@ export const EditorApi = Object.extend(
       };
     }
 
-    this.navigate('/files/' + fileType.name +
+    this.navigate('/files/' + (fileType.defaultTab ? `${fileType.defaultTab}:default` : fileType.name) +
                   '?handler=' + handlerName +
                   '&payload=' + encodeURIComponent(JSON.stringify(payload)) +
                   (fileType.filter ? '&filter=' + fileType.filter : ''),

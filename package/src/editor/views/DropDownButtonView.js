@@ -23,6 +23,13 @@ import template from '../templates/dropDownButton.jst';
  *   Require click to open menu. By default, menu opens on when the
  *   mouse enters the button.
  *
+ * @param {String} [options.alignMenu]
+ *   "right" to align menu on the right. Aligned on the left by
+ *   default.
+ *
+ * @param {String} [options.buttonClassName]
+ *   CSS class name for button element.
+ *
  * ## Item Models
  *
  * The following model attributes can be used to control the
@@ -70,6 +77,7 @@ export const DropDownButtonView = Marionette.ItemView.extend({
     this.ui.button.toggleClass('has_icon_only', !this.options.label);
 
     this.ui.button.text(this.options.label);
+    this.ui.button.addClass(this.options.buttonClassName);
 
     this.ui.menu.append(this.subview(new DropDownButtonItemListView({
       items: this.options.items
@@ -101,7 +109,9 @@ export const DropDownButtonView = Marionette.ItemView.extend({
 
     this.ui.menu.css({
       top: offset.top + this.$el.height(),
-      left: offset.left,
+      left: this.options.alignMenu === 'right' ?
+            offset.left + this.$el.width() - this.ui.menu.outerWidth() :
+            offset.left,
       width: this.options.fullWidth ? this.$el.width() : null
     });
   },

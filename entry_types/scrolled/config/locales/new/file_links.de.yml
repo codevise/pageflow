@@ -1,10 +1,29 @@
 de:
+  pageflow:
+    editor:
+      file_types:
+        image_files:
+          name:
+            one: "Bild"
+            other: "Bilder"
+        video_files:
+          name:
+            one: "Video"
+            other: "Videos"
+        audio_files:
+          name:
+            one: "Audio"
+            other: "Audios"
+        other_files:
+          name:
+            one: "Andere"
+            other: "Andere"
   pageflow_scrolled:
     editor:
       select_link_destination:
-        select_file: "Wähle eine Datei zum Download als Ziel aus"
+        select_file: "Biete eine Datei zum Download an"
         select_file_description: "Lasse Leser eine Datei herunterladen, wenn sie auf den Link klicken."
-        select_in_sidebar: "Auswählen"
+        select_in_sidebar: "Datei auswählen"
     inline_editing:
       link_tooltip:
         deleted_file: "Gelöschte Datei"

@@ -30,5 +30,5 @@
 
 .selectFileButton {
   composes: primaryIconButton;
-  composes: rightBold from './icons.module.css';
+  composes: rightOpen from './icons.module.css';
 }

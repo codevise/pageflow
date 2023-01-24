@@ -84,7 +84,7 @@ export const FilesView = Marionette.ItemView.extend({
   },
 
   tab: function(fileType) {
-    var selectionMode = this.options.tabName === 'any' ||
+    var selectionMode = this.options.allowSelectingAny ||
                         this.options.tabName === fileType.collectionName;
 
     this.tabsView.tab(fileType.collectionName, _.bind(function() {
