@@ -9,7 +9,7 @@ module Pageflow
       'processed_attachments'
     end
 
-    after_attachment_on_s3_post_process :save_image_dimensions
+    before_attachment_on_s3_post_process :save_image_dimensions
 
     def thumbnail_url(*args)
       unless ready?
@@ -49,10 +49,10 @@ module Pageflow
           ultra: {geometry: '3840x3840>',
                   format: :JPG,
                   convert_options: '-quality 90 -interlace Plane'},
-          panorama_medium: {geometry: '1024x1024^',
+          panorama_medium: {geometry: ImageFile.scale_down_to_cover(1024, 1024),
                             format: panorama_format,
                             convert_options: '-quality 90 -interlace Plane'},
-          panorama_large: {geometry: '1920x1080^',
+          panorama_large: {geometry: ImageFile.scale_down_to_cover(1920, 1080),
                            format: panorama_format,
                            convert_options: '-quality 90 -interlace Plane'}
         )
@@ -62,6 +62,17 @@ module Pageflow
       attachment.url(:large) if ready?
     end
     # <- UploadableFile-overrides
+
+    def self.scale_down_to_cover(width, height)
+      lambda do |image_file|
+        if image_file.width.present? && image_file.height.present? &&
+           (image_file.width <= width || image_file.height <= height)
+          '100%'
+        else
+          "#{width}x#{height}^"
+        end
+      end
+    end
 
     private
 
