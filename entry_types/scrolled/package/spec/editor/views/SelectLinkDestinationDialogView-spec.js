@@ -15,7 +15,7 @@ describe('SelectLinkDestinationDialogView', () => {
     'pageflow_scrolled.editor.select_link_destination.open_in_new_tab': 'Open in new tab',
     'pageflow_scrolled.editor.select_link_destination.create': 'Create link',
     'pageflow_scrolled.editor.select_link_destination.select_in_sidebar': 'Select file',
-    'pageflow.editor.files.tabs.image_files': 'Image files',
+    'pageflow.editor.file_types.image_files.name.one': 'Image files',
     'pageflow_scrolled.editor.select_link_destination.cancel': 'Cancel'
   });
 

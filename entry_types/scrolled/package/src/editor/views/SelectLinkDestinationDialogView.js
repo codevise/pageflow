@@ -115,8 +115,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
             .options.fileTypes
             .filter(fileType => fileType.topLevelType)
             .map(fileType => ({
-              label: I18n.t(fileType.collectionName,
-                            {scope: 'pageflow.editor.files.tabs'}),
+              label: I18n.t(`pageflow.editor.file_types.${fileType.collectionName}.name.one`),
               collectionName: fileType.collectionName
             })),
           {
