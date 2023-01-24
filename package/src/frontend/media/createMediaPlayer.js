@@ -23,6 +23,7 @@ export const createMediaPlayer = function (options) {
     bufferUnderrunWaiting: true,
     fallbackToMutedAutoplay: !isAudio,
 
+    ignoreVolumeSetting: true,
     volumeFading: true,
     hooks: {},
 
