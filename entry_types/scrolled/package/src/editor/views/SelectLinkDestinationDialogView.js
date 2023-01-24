@@ -132,7 +132,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
               })
             };
 
-            editor.selectFile({name: collectionName}, 'linkDestination', {});
+            editor.selectFile({defaultTab: collectionName}, 'linkDestination', {});
             this.close();
           }
         })

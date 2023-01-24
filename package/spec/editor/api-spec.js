@@ -33,10 +33,10 @@ describe('pageflow.EditorApi', () => {
       var router = fakeRouter();
       var api = new EditorApi({router: router});
 
-      api.selectFile({name: 'any'}, 'some_handler');
+      api.selectFile({defaultTab: 'image_files'}, 'some_handler');
 
       expect(router.navigate).toHaveBeenCalledWith(
-        expect.stringContaining('/files/any?handler=some_handler'),
+        expect.stringContaining('/files/image_files:default?handler=some_handler'),
         {trigger: true}
       );
     });
