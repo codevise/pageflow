@@ -69,6 +69,8 @@
   flex: 1
 }
 
-.selectFileButton {
+.fileTypeButtonContainer {}
+
+.fileTypeButton {
   composes: selectFileButton from './buttons.module.css';
 }
