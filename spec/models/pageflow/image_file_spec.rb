@@ -52,6 +52,22 @@ module Pageflow
 
         expect(styles[:panorama_large][:format]).to eq(:JPG)
       end
+
+      it 'resizes panorama if original is larger than target in both dimensions' do
+        image_file = build(:image_file, :uploading, width: 3000, height: 1500)
+        styles = image_file.attachment.styles
+
+        expect(styles[:panorama_large].processor_options[:geometry]).to eq('1920x1080^')
+        expect(styles[:panorama_medium].processor_options[:geometry]).to eq('1024x1024^')
+      end
+
+      it 'does not resize panorama if original is smaller than target in one dimensions' do
+        image_file = build(:image_file, :uploading, width: 2000, height: 1000)
+        styles = image_file.attachment.styles
+
+        expect(styles[:panorama_large].processor_options[:geometry]).to eq('100%')
+        expect(styles[:panorama_medium].processor_options[:geometry]).to eq('100%')
+      end
     end
 
     describe 'basename' do
