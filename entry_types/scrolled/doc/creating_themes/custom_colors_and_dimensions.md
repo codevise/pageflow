@@ -96,6 +96,9 @@ breakpoints. The following breakpoints are available:
 | `dark_content_text_color` | Color of text in inverted sections with light background. |
 | `light_content_surface_color` | Color of light surfaces like cards or figure captions. |
 | `dark_content_surface_color` | Color of dark surfaces like inverted cards or figure captions. |
+| `content_link_color` | Text color of inline links. |
+| `dark_content_link_color` | Text color of inline links on light backgrounds (e.g. cards or inverted sections). Takes precedence over `content_link_color`. |
+| `light_content_link_color` | Text color of inline links on dark backgrounds sections (e.g. inverted cards sections). Takes precedence over `content_link_color`. |
 
 ### Content Widths
 
@@ -164,9 +167,6 @@ elements etc.
 
 | Name | Description |
 | ---- | ----------- |
-| `text_block_link_color` | Text color of inline links. |
-| `text_block_dark_link_color` | Text color of inline links on light backgrounds (e.g. cards or inverted sections). Takes precedence over `text_block_link_color`. |
-| `text_block_light_link_color` | Text color of inline links on dark backgrounds sections (e.g. inverted cards sections). Takes precedence over `text_block_link_color`. |
 | `text_block_unordered_list_style_type` | Which icon to use for unordered lists. |
 
 ### Shared Widget Colors

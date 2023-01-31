@@ -1,6 +1,7 @@
 @value (
   darkContentSurfaceColor, lightContentSurfaceColor,
-  darkContentTextColor, lightContentTextColor
+  darkContentTextColor, lightContentTextColor,
+  darkContentLinkColor, lightContentLinkColor
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .card {
@@ -53,9 +54,11 @@
 
   .cardBgWhite {
     color: darkContentTextColor;
+    --content-link-color: darkContentLinkColor;
   }
 
   .cardBgBlack {
     color: lightContentTextColor;
+    --content-link-color: lightContentLinkColor;
   }
 }

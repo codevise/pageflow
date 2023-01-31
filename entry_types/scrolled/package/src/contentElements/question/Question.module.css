@@ -1,3 +1,5 @@
+@value contentLinkColor from "pageflow-scrolled/values/colors.module.css";
+
 .details {
   position: relative;
   padding-left: 22px;
@@ -28,8 +30,12 @@
   transform: rotate(90deg);
 }
 
-.details p {
+.answer p {
   margin: 1.375rem 0 0 0;
+}
+
+.answer a {
+  color: contentLinkColor;
 }
 
 .layout-centerRagged {
