@@ -1,6 +1,8 @@
 @value (
   darkContentTextColor,
-  lightContentTextColor
+  lightContentTextColor,
+  darkContentLinkColor,
+  lightContentLinkColor
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .Section {
@@ -50,11 +52,13 @@
 @media screen {
   .Section {
     color: lightContentTextColor;
+    --content-link-color: lightContentLinkColor;
     background-color: #000;
   }
 
   .invert {
     background-color: #fff;
     color: darkContentTextColor;
+    --content-link-color: darkContentLinkColor;
   }
 }

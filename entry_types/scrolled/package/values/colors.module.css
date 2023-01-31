@@ -3,3 +3,17 @@
 
 @value lightContentTextColor: var(--theme-light-content-text-color, #fff);
 @value darkContentTextColor: var(--theme-dark-content-text-color, #222);
+
+@value lightContentLinkColor: var(--theme-light-content-link-color, var(--theme-content-link-color, currentColor));
+@value darkContentLinkColor: var(--theme-dark-content-link-color, var(--theme-content-link-color, currentColor));
+
+@value contentLinkColor: var(--content-link-color);
+
+/* see src/frontend/global.module.css */
+
+.contentColorScope {
+  --theme-light-content-surface-color: var(--root-light-content-surface-color);
+  --theme-dark-content-surface-color: var(--root-dark-content-surface-color);
+  --theme-light-content-text-color: var(--root-light-content-text-color);
+  --theme-dark-content-text-color: var(--root-dark-content-text-color);
+}

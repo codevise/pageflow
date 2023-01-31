@@ -111,7 +111,7 @@ storiesOfContentElement(module, {
       configuration: linkExampleConfiguration,
       themeOptions: {
         properties: {
-          textBlockLinkColor: 'red'
+          contentLinkColor: 'red'
         }
       }
     },
@@ -120,8 +120,8 @@ storiesOfContentElement(module, {
       configuration: linkExampleConfiguration,
       themeOptions: {
         properties: {
-          textBlockLightLinkColor: 'yellow',
-          textBlockDarkLinkColor: 'green',
+          lightContentLinkColor: 'yellow',
+          darkContentLinkColor: 'green',
         }
       }
     },
@@ -133,8 +133,8 @@ storiesOfContentElement(module, {
       },
       themeOptions: {
         properties: {
-          textBlockLightLinkColor: 'yellow',
-          textBlockDarkLinkColor: 'green',
+          lightContentLinkColor: 'yellow',
+          darkContentLinkColor: 'green',
         }
       }
     }

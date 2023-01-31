@@ -34,6 +34,7 @@ export function Question({configuration, contentElementId, sectionProps}) {
       <div>
         <EditableText value={configuration.answer}
                       contentElementId={contentElementId}
+                      className={styles.answer}
                       onChange={answer => updateConfiguration({answer})}
                       onlyParagraphs={true}
                       hyphens="none"

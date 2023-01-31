@@ -1,3 +1,4 @@
+@value contentLinkColor from "pageflow-scrolled/values/colors.module.css";
 @value breakpoint-sm from 'pageflow-scrolled/values/breakpoints.module.css';
 
 .text li,
@@ -6,14 +7,8 @@
 }
 
 .text a {
-  color: var(--theme-text-block-dark-link-color,
-             var(--theme-text-block-link-color, currentColor));
+  color: contentLinkColor;
   word-wrap: break-word;
-}
-
-.darkBackground a {
-  color: var(--theme-text-block-light-link-color,
-             var(--theme-text-block-link-color, currentColor));
 }
 
 .text ol,

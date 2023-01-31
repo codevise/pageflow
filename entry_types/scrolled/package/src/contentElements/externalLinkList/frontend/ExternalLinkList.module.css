@@ -1,5 +1,8 @@
+@value contentColorScope from "pageflow-scrolled/values/colors.module.css";
+
 .ext_links_container{
   composes: scope-externalLinks from global;
+  composes: contentColorScope;
   display: flex;
   flex-wrap: wrap;
   border-collapse: separate;

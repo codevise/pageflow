@@ -1,11 +1,13 @@
 @value (
   darkContentSurfaceColor, lightContentSurfaceColor,
-  darkContentTextColor, lightContentTextColor
+  darkContentTextColor, lightContentTextColor,
+  darkContentLinkColor, lightContentLinkColor
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .card {
   --theme-first-heading-landscape-padding-top: 0;
 
+  composes: scope-cardsAppearance from global;
   position: relative;
   padding: 0 1.5em;
   margin-top: -1px;
@@ -43,18 +45,20 @@
 
 @media screen {
   .cardBgWhite::before {
-    background-color: var(--theme-cards-light-surface-color, lightContentSurfaceColor);
+    background-color: lightContentSurfaceColor;
   }
 
   .cardBgBlack::before {
-    background-color: var(--theme-cards-dark-surface-color, darkContentSurfaceColor);
+    background-color: darkContentSurfaceColor;
   }
 
   .cardBgWhite {
-    color: var(--theme-cards-on-light-surface-color, darkContentTextColor);
+    color: darkContentTextColor;
+    --content-link-color: darkContentLinkColor;
   }
 
   .cardBgBlack {
-    color: var(--theme-cards-on-dark-surface-color, lightContentTextColor);;
+    color: lightContentTextColor;
+    --content-link-color: lightContentLinkColor;
   }
 }

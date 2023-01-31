@@ -43,6 +43,9 @@ The following scopes are available:
 * `tooltip`: Override color options for the share and legal tooltips
   of the default navigation bar.
 
+* `cards_appearance`: Change content colors for sections using
+  appearance "Card".
+
 * `external_links`: Override content color options for external link
   cards.
 
@@ -93,6 +96,9 @@ breakpoints. The following breakpoints are available:
 | `dark_content_text_color` | Color of text in inverted sections with light background. |
 | `light_content_surface_color` | Color of light surfaces like cards or figure captions. |
 | `dark_content_surface_color` | Color of dark surfaces like inverted cards or figure captions. |
+| `content_link_color` | Text color of inline links. |
+| `dark_content_link_color` | Text color of inline links on light backgrounds (e.g. cards or inverted sections). Takes precedence over `content_link_color`. |
+| `light_content_link_color` | Text color of inline links on dark backgrounds sections (e.g. inverted cards sections). Takes precedence over `content_link_color`. |
 
 ### Content Widths
 
@@ -146,10 +152,6 @@ breakpoint below which sticky elements become inline:
 | Name | Description |
 | ---- | ----------- |
 | `cards_border_radius` | Change border radius of foreground boxes displayed when section appearance is set to "Card". |
-| `cards_light_surface_color` | Background color of boxes with section appearance "Card". |
-| `cards_dark_surface_color` | Background color of inverted boxes with section appearance "Card". |
-| `cards_on_light_surface_color` | Text color of boxes with section appearance "Card". |
-| `cards_on_dark_surface_color` | Text color of inverted boxes with section appearance "Card". |
 
 ### Shared Content Element Styles
 
@@ -165,9 +167,6 @@ elements etc.
 
 | Name | Description |
 | ---- | ----------- |
-| `text_block_link_color` | Text color of inline links. |
-| `text_block_dark_link_color` | Text color of inline links on light backgrounds (e.g. cards or inverted sections). Takes precedence over `text_block_link_color`. |
-| `text_block_light_link_color` | Text color of inline links on dark backgrounds sections (e.g. inverted cards sections). Takes precedence over `text_block_link_color`. |
 | `text_block_unordered_list_style_type` | Which icon to use for unordered lists. |
 
 ### Shared Widget Colors

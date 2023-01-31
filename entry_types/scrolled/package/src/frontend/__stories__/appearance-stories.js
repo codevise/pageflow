@@ -21,7 +21,9 @@ const positionOptions = {
 
 const customTextColorStyles = {
   '--theme-light-content-text-color': '#add1ff',
-  '--theme-dark-content-text-color': '#3e5d85'
+  '--theme-dark-content-text-color': '#3e5d85',
+  '--root-light-content-text-color': 'var(--theme-light-content-text-color)',
+  '--root-dark-content-text-color': 'var(--theme-dark-content-text-color)'
 };
 
 const customWidthStyles = {
