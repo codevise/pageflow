@@ -43,6 +43,9 @@ The following scopes are available:
 * `tooltip`: Override color options for the share and legal tooltips
   of the default navigation bar.
 
+* `cards_appearance`: Change content colors for sections using
+  appearance "Card".
+
 * `external_links`: Override content color options for external link
   cards.
 
@@ -146,10 +149,6 @@ breakpoint below which sticky elements become inline:
 | Name | Description |
 | ---- | ----------- |
 | `cards_border_radius` | Change border radius of foreground boxes displayed when section appearance is set to "Card". |
-| `cards_light_surface_color` | Background color of boxes with section appearance "Card". |
-| `cards_dark_surface_color` | Background color of inverted boxes with section appearance "Card". |
-| `cards_on_light_surface_color` | Text color of boxes with section appearance "Card". |
-| `cards_on_dark_surface_color` | Text color of inverted boxes with section appearance "Card". |
 
 ### Shared Content Element Styles
 

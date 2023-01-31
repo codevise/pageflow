@@ -1,6 +1,16 @@
+@value (
+  darkContentSurfaceColor, lightContentSurfaceColor,
+  darkContentTextColor, lightContentTextColor
+) from "pageflow-scrolled/values/colors.module.css";
+
 :root {
   --vw: 1vw;
   --vh: 1vh;
+
+  --root-light-content-surface-color: lightContentSurfaceColor;
+  --root-dark-content-surface-color: darkContentSurfaceColor;
+  --root-light-content-text-color: lightContentTextColor;
+  --root-dark-content-text-color: darkContentTextColor;
 }
 
 :global body {

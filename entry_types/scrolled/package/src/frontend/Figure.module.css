@@ -1,9 +1,11 @@
 @value (
   darkContentSurfaceColor, lightContentSurfaceColor,
-  darkContentTextColor, lightContentTextColor
+  darkContentTextColor, lightContentTextColor,
+  contentColorScope
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .root {
+  composes: contentColorScope;
   margin: 0;
 }
 
