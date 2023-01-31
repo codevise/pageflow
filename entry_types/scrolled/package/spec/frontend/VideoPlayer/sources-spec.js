@@ -1,6 +1,9 @@
 import {sources} from 'frontend/VideoPlayer/sources';
+import {features} from 'pageflow/frontend';
 
 describe('VideoPlayer sources', () => {
+  beforeEach(() => features.enable('frontend', []));
+
   it('includes hls variant by default', () => {
     const videoFile = {urls: {}};
 
@@ -32,6 +35,16 @@ describe('VideoPlayer sources', () => {
     const result = sources(videoFile);
 
     expect(result.map(s => s.type)).toContain('application/dash+xml');
+  });
+
+  it('skips dash if hls_instead_of_dash feature is enabled', () => {
+    const videoFile = {urls: {'dash-playlist': 'http://example.com/4/manifest.mpd'}};
+
+    features.enable('frontend', ['hls_instead_of_dash']);
+    const result = sources(videoFile);
+
+    expect(result.map(s => s.type)).not.toContain('application/dash+xml');
+    expect(result.map(s => s.type)).toContain('application/x-mpegURL');
   });
 
   it('uses medium quality if requested', () => {

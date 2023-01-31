@@ -1,4 +1,4 @@
-import {browser} from 'pageflow/frontend';
+import {browser, features} from 'pageflow/frontend';
 
 browser.feature('dash', () => true);
 browser.feature('video', () => true);
@@ -41,7 +41,7 @@ export function sources(videoFile, quality = 'auto') {
       }
     ];
 
-    if (videoFile.urls['dash-playlist']) {
+    if (videoFile.urls['dash-playlist'] && !features.isEnabled('hls_instead_of_dash')) {
       result = [
         {
           type: 'application/dash+xml',
