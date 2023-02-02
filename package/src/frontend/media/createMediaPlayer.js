@@ -17,7 +17,8 @@ export const createMediaPlayer = function (options) {
       nativeCaptions: !isAudio && browser.has('iphone platform'),
       // Only used by pageflow-scrolled
       vhs: {
-        useBandwidthFromLocalStorage: true
+        useBandwidthFromLocalStorage: true,
+        usePlayerObjectFit: true
       }
     },
     bufferUnderrunWaiting: true,
