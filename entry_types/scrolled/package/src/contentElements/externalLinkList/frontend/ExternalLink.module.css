@@ -3,6 +3,8 @@
   darkContentTextColor, lightContentTextColor
 ) from "pageflow-scrolled/values/colors.module.css";
 
+@value breakpoint-sm from "pageflow-scrolled/values/breakpoints.module.css";
+
 .hidden {
   display: none;
 }
@@ -55,13 +57,14 @@
 }
 
 .link_details > .link_title {
-  font-size: 1.2em;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-.link_details > .link_desc {
-
+@media screen and breakpoint-sm {
+  .link_details > .link_title {
+    font-size: 1.2em;
+  }
 }
 
 .link_details > p {
