@@ -29,7 +29,15 @@ export function sources(videoFile, quality = 'auto') {
     }
   }
 
-  if (quality === 'auto') {
+  if (features.isEnabled('force_fullhd_video_quality')) {
+    return [
+      {
+        type: 'video/mp4',
+        src: videoFile.urls.fullhd || videoFile.urls.high
+      }
+    ];
+  }
+  else if (quality === 'auto') {
     let result = [
       {
         type: 'application/x-mpegURL',
