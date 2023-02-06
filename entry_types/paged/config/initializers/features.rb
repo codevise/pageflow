@@ -2,7 +2,6 @@ Pageflow.configure do |config|
   config.for_entry_type(PageflowPaged.entry_type) do |entry_type_config|
     entry_type_config.features.register('highdef_background_images')
     entry_type_config.features.register('force_best_video_quality')
-    entry_type_config.features.register('force_fullhd_video_quality')
 
     entry_type_config.features.register('auto_change_page')
     entry_type_config.features.register('delayed_text_fade_in')
