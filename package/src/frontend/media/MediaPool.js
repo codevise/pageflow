@@ -139,7 +139,10 @@ export class MediaPool {
       mediaElement: mediaEl,
       tagName: type
     });
+
     mediaEl.setAttribute('src', blankSources[type].src);
+    player.muted(true);
+
     this.unAllocatedPlayers[type].push(player);
     return player;
   }
