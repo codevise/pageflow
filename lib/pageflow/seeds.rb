@@ -97,16 +97,18 @@ module Pageflow
       end
     end
 
-    # Create a sample {Entry} with some chapter and pages if no
-    # entry with that title exists in the given account.
+    # Create a sample {Entry} with some chapter, pages, and optional
+    # text if no entry with that title exists in the given account.
     #
     # @param [Hash] attributes  attributes to override defaults
     # @option attributes [Account] :account  required
-    # @option attributes [title] :title  required
+    # @option attributes [String] :title  required
+    # @option attributes [String] :text optional
     # @yield [entry] a block to be called before the entry is saved
     # @return [Entry] newly created entry
     def sample_entry(attributes)
       entry = Entry.where(attributes.slice(:account, :title)).first
+      page_text = attributes.delete(:text) { |_| '' }
 
       if entry.nil?
         entry = Entry.create!(attributes) do |created_entry|
@@ -117,13 +119,14 @@ module Pageflow
         end
 
         storyline = entry.draft.storylines.first
-
         chapter = storyline.chapters.create!(title: 'Chapter 1', position: 0)
-        chapter.pages.create!(template: 'background_image')
-        chapter.pages.create!(template: 'background_image')
+        chapter.pages.create!(template: 'background_image',
+                              configuration: {text: page_text})
+        chapter.pages.create!(template: 'background_image',
+                              configuration: {text: page_text})
 
         chapter = storyline.chapters.create!(title: 'Chapter 2', position: 1)
-        chapter.pages.create!(template: 'video')
+        chapter.pages.create!(template: 'video', configuration: {text: page_text})
       end
 
       entry

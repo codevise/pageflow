@@ -105,6 +105,21 @@ module Pageflow
         expect(entry.draft.chapters).not_to be_empty
       end
 
+      it 'creates pages without text' do
+        entry = SeedsDsl.sample_entry(account: create(:account), title: 'Example')
+
+        expect(entry.draft.chapters.first.pages.first['configuration']['text'])
+          .to be_empty
+      end
+
+      it 'allows creating pages with text' do
+        entry = SeedsDsl.sample_entry(account: create(:account), title: 'Example',
+                                      text: 'All is discovered')
+
+        expect(entry.draft.chapters.first.pages.first['configuration']['text'])
+          .to match('All is discovered')
+      end
+
       it 'allows overriding attributes in block' do
         account = create(:account)
         site = create(:site, account: account)
