@@ -282,7 +282,7 @@ describe('Backdrop', () => {
 
       simulateScrollPosition('near viewport');
 
-      expect(queryPlayerByFilePermaId(100)).toBeDefined();
+      expect(queryPlayerByFilePermaId(100)).not.toBeNull();
     });
 
     it('plays without volume when scrolled into viewport', () => {
@@ -365,13 +365,13 @@ describe('Backdrop', () => {
     it('invokes onMotifAreaUpdate callback', () => {
       const callback = jest.fn();
       renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} onMotifAreaUpdate={callback} />,
-          {
-            seed: {
-              videoFiles: [{permaId: 100}]
-            }
+        <Backdrop video={100} onMotifAreaUpdate={callback} />,
+        {
+          seed: {
+            videoFiles: [{permaId: 100}]
           }
-        );
+        }
+      );
 
       expect(callback).toHaveBeenCalled();
     });
@@ -392,6 +392,115 @@ describe('Backdrop', () => {
       expect(
         container.querySelector('[style*="filter"]').style.filter
       ).toEqual('blur(10px)');
+    });
+
+    it('supports rendering mobile video given by id in portrait orientation', () => {
+      usePortraitOrientation.mockReturnValue(true);
+
+      const {simulateScrollPosition, queryPlayerByFilePermaId} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100} videoMobile={200} />,
+          {
+            queries: fakeMediaRenderQueries,
+            seed: {
+              videoFiles: [
+                {permaId: 100},
+                {permaId: 200},
+              ]
+            }
+          }
+        )
+
+      simulateScrollPosition('near viewport');
+
+      expect(queryPlayerByFilePermaId(200)).not.toBeNull();
+    });
+
+    it('uses default video in landscape orientation even if mobile video is configured', () => {
+      usePortraitOrientation.mockReturnValue(false);
+
+      const {simulateScrollPosition, queryPlayerByFilePermaId} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100} videoMobile={200} />,
+          {
+            queries: fakeMediaRenderQueries,
+            seed: {
+              videoFiles: [
+                {permaId: 100},
+                {permaId: 200},
+              ]
+            }
+          }
+        )
+
+      simulateScrollPosition('near viewport');
+
+      expect(queryPlayerByFilePermaId(100)).not.toBeNull();
+    });
+
+    it('falls back to portrait video if default video is not defined', () => {
+      usePortraitOrientation.mockReturnValue(false);
+
+      const {simulateScrollPosition, queryPlayerByFilePermaId} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop videoMobile={200} />,
+          {
+            queries: fakeMediaRenderQueries,
+            seed: {
+              videoFiles: [
+                {permaId: 200},
+              ]
+            }
+          }
+        )
+
+      simulateScrollPosition('near viewport');
+
+      expect(queryPlayerByFilePermaId(200)).not.toBeNull();
+    });
+
+    it('supports applying effects to protrait video', () => {
+      usePortraitOrientation.mockReturnValue(true);
+
+      const {container} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100}
+                    videoMobile={200}
+                    effectsMobile={[{name: 'blur', value: 100}]} />,
+          {
+            seed: {
+              videoFiles: [
+                {permaId: 100},
+                {permaId: 200},
+              ]
+            }
+          }
+        )
+
+      expect(
+        container.querySelector('[style*="filter"]').style.filter
+      ).toEqual('blur(10px)');
+    });
+
+    it('does not apply portrait effects to landscape video', () => {
+      usePortraitOrientation.mockReturnValue(false);
+
+      const {container} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100}
+                    videoMobile={200}
+                    effectsMobile={[{name: 'blur', value: 100}]} />,
+          {
+            seed: {
+              videoFiles: [
+                {permaId: 100},
+                {permaId: 200},
+              ]
+            }
+          }
+        )
+
+      expect(container.querySelector('[style*="filter"]')).toBeNull();
     });
   });
 

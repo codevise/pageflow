@@ -69,11 +69,23 @@ export const EditSectionView = EditConfigurationView.extend({
         positioning: false,
         dropDownMenuItems: [editMotifAreaMenuItem]
       });
+      this.input('backdropVideoMobile', FileInputView, {
+        collection: 'video_files',
+        fileSelectionHandler: 'sectionConfiguration',
+        visibleBinding: 'backdropType',
+        visibleBindingValue: 'video',
+        positioning: false,
+        dropDownMenuItems: [editMotifAreaMenuItem]
+      });
       this.input('backdropEffectsMobile', EffectListInputView, {
         visibleBinding: ['backdropType', 'backdropImageMobile'],
         visible: ([backdropType]) =>
-          backdropType === 'image' && this.model.getReference('backdropImageMobile',
-                                                              'image_files')
+          (backdropType === 'image' &&
+           this.model.getReference('backdropImageMobile',
+                                   'image_files')) ||
+          (backdropType === 'video' &&
+           this.model.getReference('backdropVideoMobile',
+                                   'video_files'))
       });
       this.input('backdropColor', ColorInputView, {
         visibleBinding: 'backdropType',

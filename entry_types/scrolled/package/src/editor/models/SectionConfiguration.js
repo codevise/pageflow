@@ -72,7 +72,9 @@ export const SectionConfiguration = Configuration.extend({
     case 'video':
       return {
         video: nextAttributes.backdropVideo,
-        videoMotifArea: nextAttributes.backdropVideoMotifArea
+        videoMotifArea: nextAttributes.backdropVideoMotifArea,
+        videoMobile: nextAttributes.backdropVideoMobile,
+        videoMobileMotifArea: nextAttributes.backdropVideoMobileMotifArea
       };
     default:
       return {

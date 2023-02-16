@@ -7,6 +7,7 @@ import {useFile} from '../../../entryState';
 
 import {BackgroundVideo} from './BackgroundVideo';
 import {OrientationAwareBackgroundImage} from './OrientationAwareBackgroundImage';
+import {OrientationAwareBackgroundVideo} from './OrientationAwareBackgroundVideo';
 import {BackgroundImage} from './BackgroundImage';
 
 export function BackgroundAsset(props) {
@@ -15,6 +16,12 @@ export function BackgroundAsset(props) {
     motifArea: props.videoMotifArea,
     containerDimension: props.containerDimension,
     effects: props.effects
+  });
+  const videoMobile = useBackgroundFile({
+    file: useFile({collectionName: 'videoFiles', permaId: props.videoMobile}),
+    motifArea: props.videoMobileMotifArea,
+    containerDimension: props.containerDimension,
+    effects: props.effectsMobile
   });
   const image = useBackgroundFile({
     file: useFile({collectionName: 'imageFiles', permaId: props.image}),
@@ -29,12 +36,15 @@ export function BackgroundAsset(props) {
     effects: props.effectsMobile
   });
 
-  if (video) {
+  if (video || videoMobile) {
     return (
       <Fullscreen ref={props.setContainerRef}>
-        <BackgroundVideo video={video}
-                         onMotifAreaUpdate={props.onMotifAreaUpdate}
-                         containerDimension={props.containerDimension} />
+        {renderBackgroundVideo({
+          video,
+          videoMobile,
+          onMotifAreaUpdate: props.onMotifAreaUpdate,
+          containerDimension: props.containerDimension
+        })}
       </Fullscreen>
     );
   }
@@ -46,8 +56,32 @@ export function BackgroundAsset(props) {
   } else {
     return (
       <Fullscreen ref={props.setContainerRef}>
-        {renderBackgroundImage({image, imageMobile, onMotifAreaUpdate: props.onMotifAreaUpdate, containerDimension: props.containerDimension})}
+        {renderBackgroundImage({
+          image,
+          imageMobile,
+          onMotifAreaUpdate: props.onMotifAreaUpdate,
+          containerDimension: props.containerDimension
+        })}
       </Fullscreen>
+    );
+  }
+}
+
+function renderBackgroundVideo({video, videoMobile, onMotifAreaUpdate, containerDimension}) {
+  if (video && videoMobile) {
+    return (
+      <OrientationAwareBackgroundVideo video={video}
+                                       videoMobile={videoMobile}
+                                       onMotifAreaUpdate={onMotifAreaUpdate}
+                                       containerDimension={containerDimension} />
+    );
+  }
+  else {
+    return (
+      <BackgroundVideo
+        video={video || videoMobile}
+        onMotifAreaUpdate={onMotifAreaUpdate}
+        containerDimension={containerDimension} />
     );
   }
 }

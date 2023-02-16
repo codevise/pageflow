@@ -31,7 +31,7 @@ describe('SectionConfiguration', () => {
       expect(sectionConfiguration.get('backdropType')).toEqual('video');
     });
 
-    it('uses stores value once set', () => {
+    it('uses stored value once set', () => {
       const sectionConfiguration = new SectionConfiguration({backdrop: {video: 12}});
 
       sectionConfiguration.set('backdropType', 'color')
@@ -201,6 +201,19 @@ describe('SectionConfiguration', () => {
   });
 
   describe('set backdropVideo', () => {
+    it('does not override backdrop videoMobile if specified', () => {
+      const sectionConfiguration = new SectionConfiguration();
+
+      sectionConfiguration.set('backdropType', 'video');
+      sectionConfiguration.set('backdropVideoMobile', 2);
+      sectionConfiguration.set('backdropVideo', 1);
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        video: 1,
+        videoMobile: 2
+      });
+    });
+
     it('overrides backdrop image settings when setting backdrop video', () => {
       const sectionConfiguration = new SectionConfiguration();
 
@@ -228,6 +241,61 @@ describe('SectionConfiguration', () => {
       expect(sectionConfiguration.attributes.backdrop).toEqual({
         video: 1,
         videoMotifArea: motifArea
+      });
+    });
+  });
+
+  describe('set backdropVideoMobile', () => {
+    it('sets backdrop videoMobile to value', () => {
+      const sectionConfiguration = new SectionConfiguration();
+
+      sectionConfiguration.set('backdropType', 'video');
+      sectionConfiguration.set('backdropVideoMobile', 1);
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        videoMobile: 1
+      });
+    });
+
+    it('does not override backdrop video if specified', () => {
+      const sectionConfiguration = new SectionConfiguration();
+
+      sectionConfiguration.set('backdropType', 'video');
+      sectionConfiguration.set('backdropVideo', 2);
+      sectionConfiguration.set('backdropVideoMobile', 1);
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        video: 2,
+        videoMobile: 1
+      });
+    });
+
+    it('overrides backdrop video setting when setting backdrop VideoMobile', () => {
+      const sectionConfiguration = new SectionConfiguration();
+
+      sectionConfiguration.set('backdropType', 'image');
+      sectionConfiguration.set('backdropImage', 1);
+      sectionConfiguration.set('backdropType', 'video');
+      sectionConfiguration.set('backdropVideoMobile', 1);
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        videoMobile: 1
+      });
+    });
+  });
+
+  describe('set backdropVideoMobileMotifArea', () => {
+    it('sets backdrop videoMobileMotifArea to value', () => {
+      const sectionConfiguration = new SectionConfiguration();
+      const motifArea = {left: 1, top: 1, width: 10, height: 10};
+
+      sectionConfiguration.set('backdropType', 'video');
+      sectionConfiguration.set('backdropVideoMobile', 1);
+      sectionConfiguration.set('backdropVideoMobileMotifArea', motifArea);
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        videoMobile: 1,
+        videoMobileMotifArea: motifArea
       });
     });
   });

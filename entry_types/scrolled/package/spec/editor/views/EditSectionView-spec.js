@@ -120,7 +120,7 @@ describe('EditSectionView', () => {
       .toContain('backdropEffects');
   });
 
-  it('displays backdrop effects input if deleted video is referenced', () => {
+  it('does not display backdrop effects input if deleted video is referenced', () => {
     const entry = createEntry({
       videoFiles: [],
       sections: [{id: 1, configuration: {
@@ -198,6 +198,48 @@ describe('EditSectionView', () => {
       sections: [{id: 1, configuration: {
         backdropType: 'video',
         backdropImageMobile: 100
+      }}]
+    });
+
+    const view = new EditSectionView({
+      model: entry.sections.get(1),
+      entry
+    });
+
+    view.render();
+    const configurationEditor = ConfigurationEditor.find(view);
+
+    expect(configurationEditor.visibleInputPropertyNames())
+      .not.toContain('backdropEffectsMobile');
+  });
+
+  it('displays mobile backdrop effects input if mobile video is present', () => {
+    const entry = createEntry({
+      videoFiles: [{perma_id: 100}],
+      sections: [{id: 1, configuration: {
+        backdropType: 'video',
+        backdropVideoMobile: 100
+      }}]
+    });
+
+    const view = new EditSectionView({
+      model: entry.sections.get(1),
+      entry
+    });
+
+    view.render();
+    const configurationEditor = ConfigurationEditor.find(view);
+
+    expect(configurationEditor.visibleInputPropertyNames())
+      .toContain('backdropEffectsMobile');
+  });
+
+  it('does not display mobile backdrop effects input if deleted video is referenced', () => {
+    const entry = createEntry({
+      videoFiles: [],
+      sections: [{id: 1, configuration: {
+        backdropType: 'video',
+        backdropVideoMobile: 100
       }}]
     });
 
