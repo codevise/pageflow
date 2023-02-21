@@ -29,18 +29,18 @@ export function Viewer({
   function exitFullscreen() {
     setIsFullscreen(false);
   }
-  console.log(isFullscreen, enableFullscreen, !isFullscreen, !enableFullscreen)
 
   if (canUseDOM()) {
     return (
       <Fullscreen isFullscreen={isFullscreen}>
-          <div onClick={onClick}>
-            <Image imageFile={imageFile}
+          {!isFullscreen &&
+            <div onClick={onClick}>
+              <Image imageFile={imageFile}
                 load={shouldLoad}
                 structuredData={true}
                 variant={position === 'full' ? 'large' : 'medium'}
                 preferSvg={true} />
-          </div>
+            </div>}
           {(isFullscreen && enableFullscreen) &&
             <FullscreenImage isFullscreen={isFullscreen}
               setIsFullscreen={setIsFullscreen}
