@@ -1,12 +1,13 @@
 module Pageflow
   class EntryPublication
-    attr_reader :entry, :attributes, :quota, :user
+    attr_reader :entry, :attributes, :quota, :user, :pretty_url
 
-    def initialize(entry, attributes, published_entries_quota, user)
+    def initialize(entry, attributes, published_entries_quota, user, pretty_url)
       @entry = entry
       @attributes = attributes
       @quota = published_entries_quota
       @user = user
+      @pretty_url = pretty_url
     end
 
     def exceeding?
@@ -17,7 +18,7 @@ module Pageflow
       assumed_quota.verify_not_exceeded!
       entry.publish(attributes.merge(creator: user))
 
-      Pageflow.config.hooks.invoke(:entry_published, entry: entry)
+      Pageflow.config.hooks.invoke(:entry_published, entry: entry, pretty_url: pretty_url)
     end
 
     private
