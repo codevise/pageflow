@@ -108,4 +108,32 @@ describe('EditableText', () => {
 
     expect(queryByText('Some placeholder')).not.toBeInTheDocument()
   });
+
+  it('supports rendering custom placeholder class name', () => {
+    const {container} = render(
+      <EditableText placeholder="Some placeholder"
+                    placeholderClassName="custom-placeholder" />,
+      {wrapper}
+    );
+
+    expect(container.querySelector('.custom-placeholder')).toBeInTheDocument()
+  });
+
+  it('does not render custom placeholder class name when not blank', () => {
+    const value = [{
+      type: 'heading',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(
+      <EditableText value={value}
+                    placeholder="Some placeholder"
+                    placeholderClassName="custom-placeholder" />,
+      {wrapper}
+    );
+
+    expect(container.querySelector('.custom-placeholder')).not.toBeInTheDocument()
+  });
 });

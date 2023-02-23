@@ -35,7 +35,7 @@ import styles from './index.module.css';
 
 export const EditableText = React.memo(function EditableText({
   value, contentElementId, placeholder, onChange, selectionRect, className,
-  scaleCategory = 'body'
+  placeholderClassName, scaleCategory = 'body'
 }) {
   const editor = useMemo(
     () => withLinks(
@@ -95,6 +95,7 @@ export const EditableText = React.memo(function EditableText({
           </LinkTooltipProvider>
         </Slate>
         <TextPlaceholder text={placeholder}
+                         className={placeholderClassName}
                          visible={isBlank(cachedValue)} />
       </div>
     </Text>
