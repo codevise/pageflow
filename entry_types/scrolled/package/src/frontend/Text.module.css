@@ -56,6 +56,30 @@
   font-weight: 700;
 }
 
+.quoteText-lg {
+  composes: typography-quoteText from global;
+  font-size: text-2l;
+  line-height: 1.1;
+}
+
+.quoteText-md {
+  composes: typography-quoteText from global;
+  font-size: text-l;
+  line-height: 1.1;
+}
+
+.quoteText-sm {
+  composes: typography-quoteText from global;
+  font-size: text-md;
+  line-height: 1.2;
+}
+
+.quoteAttribution {
+  composes: typography-quoteAttribution from global;
+  font-size: text-base;
+  line-height: 1.4;
+}
+
 @media (max-width: 600px) {
   .heading-lg {
     font-size: text-xl;
@@ -69,5 +93,20 @@
 
   .heading-sm {
     font-size: text-l;
+  }
+
+  .quoteText-lg {
+    font-size: text-l;
+    line-height: 1.1;
+  }
+
+  .quoteText-md {
+    font-size: text-md;
+    line-height: 1.2;
+  }
+
+  .quoteText-sm {
+    font-size: text-base;
+    line-height: 1.4;
   }
 }
