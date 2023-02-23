@@ -9,10 +9,12 @@ import textStyles from './Text.module.css';
 
 import styles from './EditableText.module.css';
 
-export const EditableText = withInlineEditingAlternative('EditableText', function EditableText({value, className}) {
+export const EditableText = withInlineEditingAlternative('EditableText', function EditableText({
+  value, className, scaleCategory = 'body'
+}) {
   return (
     <div className={classNames(styles.root, className)}>
-      <Text scaleCategory="body">
+      <Text scaleCategory={scaleCategory}>
         {render(value)}
       </Text>
     </div>

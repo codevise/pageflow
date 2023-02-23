@@ -283,4 +283,30 @@ describe('EditableText', () => {
     expect(container.querySelector('blockquote'))
       .toHaveClass('typography-textBlock-blockQuote-huge');
   });
+
+  it('uses body scaleCategory by default', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('.typography-body')).toBeInTheDocument()
+  });
+
+  it('supports using different scaleCategory', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} scaleCategory="quoteText-lg" />);
+
+    expect(container.querySelector('.typography-quoteText')).toBeInTheDocument()
+  });
 });

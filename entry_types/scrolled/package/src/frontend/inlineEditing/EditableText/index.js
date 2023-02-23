@@ -34,7 +34,8 @@ import {
 import styles from './index.module.css';
 
 export const EditableText = React.memo(function EditableText({
-  value, contentElementId, placeholder, onChange, selectionRect, className
+  value, contentElementId, placeholder, onChange, selectionRect, className,
+  scaleCategory = 'body'
 }) {
   const editor = useMemo(
     () => withLinks(
@@ -77,7 +78,7 @@ export const EditableText = React.memo(function EditableText({
   const [dropTargetsActive, ref] = useDropTargetsActive();
 
   return (
-    <Text scaleCategory="body">
+    <Text scaleCategory={scaleCategory}>
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
            ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
