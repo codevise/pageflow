@@ -9,7 +9,8 @@ import styles from './Text.module.css';
  * @param {Object} props
  * @param {string} props.scaleCategory -
  *   One of the styles `'heading-lg'`, `'heading-md'`, `'heading-sm'`,
- *   `'heading-xs'`, `'body'`, `'caption'`, `'question'`.
+ *   `'heading-xs'`, `'body'`, `'caption'`, `'question'`,
+ *   `'quoteText-lg`', `'quoteText-md`', `'quoteText-sm`', `'quoteAttribution`'.
  * @param {string} [props.inline] - Render a span instread of a div.
  * @param {string} props.children - Nodes to render with specified typography.
  */
@@ -24,6 +25,7 @@ Text.propTypes = {
   inline: PropTypes.bool,
   scaleCategory: PropTypes.oneOf([
     'heading-lg', 'heading-md', 'heading-sm', 'heading-xs',
+    'quoteText-lg', 'quoteText-md', 'quoteText-sm', 'quoteAttribution',
     'body', 'caption', 'question'
   ]),
 }
