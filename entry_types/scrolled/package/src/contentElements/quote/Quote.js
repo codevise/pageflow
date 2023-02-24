@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import {
   EditableText,
   useContentElementConfigurationUpdate,
+  useContentElementEditorState,
   useI18n,
   useTheme
 } from 'pageflow-scrolled/frontend';
@@ -11,6 +12,7 @@ import styles from './Quote.module.css';
 
 export function Quote({configuration, contentElementId, sectionProps}) {
   const updateConfiguration = useContentElementConfigurationUpdate();
+  const {isSelected} = useContentElementEditorState();
   const theme = useTheme();
   const {t} = useI18n({locale: 'ui'});
 
@@ -25,14 +27,16 @@ export function Quote({configuration, contentElementId, sectionProps}) {
                       onlyParagraphs={true}
                       scaleCategory={getTextScaleCategory(configuration)} />
       </blockquote>
-      <figcaption className={styles.attribution}>
-        <EditableText value={configuration.attribution}
-                      contentElementId={contentElementId}
-                      onChange={attribution => updateConfiguration({attribution})}
-                      onlyParagraphs={true}
-                      scaleCategory="quoteAttribution"
-                      placeholder={t('pageflow_scrolled.inline_editing.type_attribution')} />
-      </figcaption>
+
+      {(isSelected || !isBlank(configuration.attribution || [])) &&
+       <figcaption className={styles.attribution}>
+         <EditableText value={configuration.attribution}
+                       contentElementId={contentElementId}
+                       onChange={attribution => updateConfiguration({attribution})}
+                       onlyParagraphs={true}
+                       scaleCategory="quoteAttribution"
+                       placeholder={t('pageflow_scrolled.inline_editing.type_attribution')} />
+       </figcaption>}
     </figure>
   );
 }
@@ -46,4 +50,10 @@ function getTextScaleCategory(configuration) {
     default:
       return 'quoteText-md';
   }
+}
+
+function isBlank(value) {
+  return value.length <= 1 &&
+         value[0]?.children.length <= 1 &&
+         !value[0]?.children[0]?.text;
 }

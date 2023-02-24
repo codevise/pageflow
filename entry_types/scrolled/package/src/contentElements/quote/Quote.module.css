@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  padding-bottom: 1.375rem;
 }
 
 .text {
@@ -82,10 +83,6 @@
   position: absolute;
   right: 100%;
   margin-right: 0.5em;
-}
-
-.attribution {
-  margin-bottom: 1.375rem;
 }
 
 .attribution p {
