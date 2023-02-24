@@ -142,3 +142,54 @@ The following prefixes are supported by built in content elements:
 | `text_block-heading-` | Variants for headings in text block elements. |
 | `text_block-numbered_list-` | Variants for numbered lists in text block elements. |
 | `text_block-paragraph-` | Variants for paragraphs in text block elements. |
+
+## Quotes
+
+The `quote_design` theme option can be used to control how quotation
+marks in text block blockquotes and stand-alone quotes are styled:
+
+``` ruby
+entry_type_config.themes.register(:my_custom_theme,
+                                  # ...
+                                  quote_design: 'hanging',
+```
+
+The following designs are available:
+
+* `'largeHanging'` (default): Display only a large opening quotation
+  mark.
+
+* `hanging'`: Display opening and closing quotation marks and indent
+  quote text.
+
+* `inline'`: Display opening and closing quotation marks and do not
+  indent quote text.
+
+In addition, the following theme properties can be used to further
+adjust the design:
+
+| Name | Description |
+| ---- | ----------- |
+| `quote_indent` | Length by which to indent the quote text. |
+| `quote_mark_left_mark` | Symbol to use for the left quotation mark. |
+| `quote_mark_right_mark` | Symbol to use for the left quotation mark. |
+| `quote_mark_font_weight` | Font weight of the quotation marks. |
+| `quote_mark_opacity` | Opacity of the quotation marks. |
+| `quote_large_mark_font_size` | Font size of the quotation mark in the `largeHanging` design. |
+| `quote_large_mark_top` | Length by which to translate the translation mark in the `largeHanging` design. |
+
+These properties need to be passed in the root scope:
+
+``` ruby
+entry_type_config.themes.register(:my_custom_theme,
+                                  # ...
+                                  quote_design: 'hanging',
+                                  properties: {
+                                    root: {
+                                      # ...
+                                      quote_left_mark: '"»"',
+                                      quote_right_mark: '"«"'
+                                    }
+                                  }
+
+```
