@@ -39,6 +39,35 @@ storiesOfContentElement(module, {
       configuration: {
         textSize: 'small'
       }
-    }
+    },
+    {
+      name: 'Hanging',
+      themeOptions: {
+        quoteDesign: 'hanging'
+      }
+    },
+    {
+      name: 'Inline',
+      themeOptions: {
+        quoteDesign: 'inline',
+        properties: {
+          quoteLeftMark: '"»"',
+          quoteRightMark: '"«"',
+          quoteMarkFontWeight: 'normal',
+          quoteIndent: 0,
+          quoteMarkOpacity: 1
+        }
+      }
+    },
+    {
+      name: 'Double angle',
+      themeOptions: {
+        properties: {
+          quoteLeftMark: '"»"',
+          quoteLeftMarkTop: '-0.35em'
+        }
+      }
+    },
+
   ]
 });
