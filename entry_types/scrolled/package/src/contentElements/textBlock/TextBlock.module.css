@@ -1,6 +1,18 @@
 @value contentLinkColor from "pageflow-scrolled/values/colors.module.css";
 @value breakpoint-sm from 'pageflow-scrolled/values/breakpoints.module.css';
 
+.text {
+  --blockquote-padding-left: 0;
+}
+
+.quoteDesign-hanging {
+  --blockquote-padding-left: 1em;
+}
+
+.quoteDesign-largeHanging {
+  --blockquote-padding-left: 1.6em;
+}
+
 .text li,
 .text p {
   margin: 1.375rem 0 0 0;
@@ -24,34 +36,64 @@
 }
 
 .text blockquote {
-  padding: 0.5em 0.5em 0.5em 1.6em;
+  padding: 0.5em 0.5em 0.5em var(--blockquote-padding-left);
   margin: 1.375rem 0 0 0;
   position: relative;
   /* Prevent block quote symbol from overlapping with floated elements. */
   overflow: hidden;
 }
 
+.text blockquote::before,
+.text blockquote::after {
+  font-weight: var(--theme-quote-mark-font-weight, bold);
+  opacity: var(--theme-quote-mark-opacity, 0.5);
+}
+
 .text blockquote::before {
-  content: "“";
-  font-size: 2.5em;
-  font-weight: bold;
+  content: var(--theme-quote-left-mark, "“");
+}
+
+.text blockquote::after {
+  content: var(--theme-quote-right-mark, "”");
+}
+
+.quoteDesign-largeHanging blockquote::before,
+.quoteDesign-hanging blockquote::before {
   position: absolute;
-  top: 0.1em;
-  left: 0;
+}
+
+.quoteDesign-largeHanging blockquote::before {
+  font-size: 2.5em;
   line-height: 1em;
-  opacity: 0.5;
+  top: calc(var(--theme-quote-large-mark-top, -0.2em));
+  padding-top: inherit;
+  left: 0;
+}
+
+.quoteDesign-largeHanging blockquote::after {
+  display: none;
+}
+
+.quoteDesign-hanging blockquote::before {
+  right: calc(100% - var(--blockquote-padding-left) + 0.05em);
+}
+
+.quoteDesign-hanging blockquote::after {
+  padding-left: 0.05em;
 }
 
 @media screen and breakpoint-sm {
+  .quoteDesign-largeHanging {
+    --blockquote-padding-left: 2em;
+  }
+
   .text blockquote {
     margin-left: 0.6875rem;
-    padding-left: 2em;
     padding-right: 1.375rem;
   }
 
-  .text blockquote::before {
+  .quoteDesign-largeHanging blockquote::before {
     font-size: 3em;
-    top: 0;
   }
 }
 
