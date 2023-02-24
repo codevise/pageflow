@@ -5,43 +5,73 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  padding-bottom: 1.375rem;
 }
 
 .text {
+  --quote-indent: var(--theme-quote-indent, 0);
+  --quote-large-mark-font-size: var(--theme-quote-large-mark-font-size, 2em);
+
   width: 100%;
   box-sizing: border-box;
   margin: 0;
-  padding: 1em 0.5em 0.5em 0;
-  --quote-margin-h: 1em;
+  padding: 1em 0 0.5em 0;
+}
+
+.design-largeHanging .text,
+.design-hanging .text {
+  --quote-indent: var(--theme-quote-indent, 1em);
 }
 
 .text p {
-  margin: 1.375rem 0 0 var(--quote-margin-h);
+  margin: 1.375rem 0 0 var(--quote-indent);
 }
 
-.textPlaceholder {
-  padding: 1.375rem 0 0 var(--quote-margin-h);
+.text br {
+  display: none;
 }
 
-.centerRagged .textPlaceholder,
 .centerRagged .text p {
   text-align: center;
-  margin-right: var(--quote-margin-h);
+  margin-right: var(--quote-indent);
 }
 
 .text p:first-child {
   position: relative;
 }
 
+.text p:first-child::before,
+.text p:last-child::after {
+  font-weight: var(--theme-quote-mark-font-weight, bold);
+  opacity: var(--theme-quote-mark-opacity, 0.5);
+}
+
 .text p:first-child::before {
-  content: "“";
+  content: var(--theme-quote-left-mark, "“");
+}
+
+.text p:last-child::after {
+  content: var(--theme-quote-right-mark, '”');
+}
+
+.design-largeHanging .text p:first-child::before,
+.design-hanging .text p:first-child::before {
   position: absolute;
   right: calc(100% + 0.05em);
-  top: -0.2em;
-  font-size: 2em;
-  font-weight: bold;
+}
+
+.design-largeHanging .text p:first-child::before {
+  font-size: var(--quote-large-mark-font-size);
   line-height: 1em;
-  opacity: 0.5;
+  top: var(--theme-quote-large-mark-top, -0.2em);
+}
+
+.design-largeHanging .text p:last-child::after {
+  display: none;
+}
+
+.design-hanging .text p:first-child::after {
+  padding-left: 0.05em;
 }
 
 .attribution p:first-child {
@@ -55,10 +85,6 @@
   margin-right: 0.5em;
 }
 
-.attribution {
-  margin-bottom: 1.375rem;
-}
-
 .attribution p {
   margin: 0;
 }
@@ -68,11 +94,8 @@
 }
 
 @media screen and breakpoint-sm {
-  .text {
-    --quote-margin-h: 1.6em;
-  }
-
-  .text p:first-child::before {
-    font-size: 2.5em;
+  .design-largeHanging .text {
+    --quote-indent: var(--theme-quote-indent, 1.5em);
+    --quote-large-mark-font-size: var(--theme-quote-large-mark-font-size, 2.5em);
   }
 }

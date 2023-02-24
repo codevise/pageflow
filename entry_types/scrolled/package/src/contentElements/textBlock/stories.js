@@ -137,6 +137,28 @@ storiesOfContentElement(module, {
           darkContentLinkColor: 'green',
         }
       }
+    },
+    {
+      name: 'With customiezed hanging quotes',
+      themeOptions: {
+        quoteDesign: 'hanging',
+        properties: {
+          quoteLeftMark: '"»"',
+          quoteRightMark: '"«"',
+          quoteMarkOpacity: 1,
+          quoteMarkFontWeight: 'normal'
+        }
+      }
+    },
+    {
+      name: 'With customiezed inline quotes',
+      themeOptions: {
+        quoteDesign: 'inline',
+        properties: {
+          quoteLeftMark: '"»"',
+          quoteRightMark: '"«"'
+        }
+      }
     }
   ]
 });
