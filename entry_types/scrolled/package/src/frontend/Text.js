@@ -10,7 +10,9 @@ import styles from './Text.module.css';
  * @param {string} props.scaleCategory -
  *   One of the styles `'heading-lg'`, `'heading-md'`, `'heading-sm'`,
  *   `'heading-xs'`, `'body'`, `'caption'`, `'question'`,
- *   `'quoteText-lg`', `'quoteText-md`', `'quoteText-sm`', `'quoteAttribution`'.
+ *   `'quoteText-lg`', `'quoteText-md`', `'quoteText-sm`', `'quoteAttribution`',
+ *   `'counterNumber-lg`', `'counterNumber-md`', `'counterNumber-sm`',
+ *   `'counterDescription`'.
  * @param {string} [props.inline] - Render a span instread of a div.
  * @param {string} props.children - Nodes to render with specified typography.
  */
@@ -26,6 +28,7 @@ Text.propTypes = {
   scaleCategory: PropTypes.oneOf([
     'heading-lg', 'heading-md', 'heading-sm', 'heading-xs',
     'quoteText-lg', 'quoteText-md', 'quoteText-sm', 'quoteAttribution',
+    'counterNumber-lg', 'counterNumber-md', 'counterNumber-sm', 'counterDescription',
     'body', 'caption', 'question'
   ]),
 }
