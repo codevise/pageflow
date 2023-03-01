@@ -6,6 +6,8 @@
 @value text-xl: 66px;
 @value text-2xl: 88px;
 @value text-3xl: 110px;
+@value text-4xl: 200px;
+@value text-5xl: 350px;
 
 .heading-lg {
   composes: typography-headingLg from global;
@@ -80,6 +82,33 @@
   line-height: 1.4;
 }
 
+.counterNumber-lg {
+  composes: typography-counterNumber from global;
+  font-size: text-5xl;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.counterNumber-md {
+  composes: typography-counterNumber from global;
+  font-size: text-4xl;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.counterNumber-sm {
+  composes: typography-counterNumber from global;
+  font-size: text-3xl;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.counterDescription {
+  composes: typography-counterDescription from global;
+  font-size: text-base;
+  line-height: 1.4;
+}
+
 @media (max-width: 600px) {
   .heading-lg {
     font-size: text-xl;
@@ -108,5 +137,20 @@
   .quoteText-sm {
     font-size: text-base;
     line-height: 1.4;
+  }
+
+  .counterNumber-lg {
+    font-size: text-4xl;
+    line-height: 1;
+  }
+
+  .counterNumber-md {
+    font-size: text-3xl;
+    line-height: 1;
+  }
+
+  .counterNumber-sm {
+    font-size: text-xl;
+    line-height: 1.1;
   }
 }

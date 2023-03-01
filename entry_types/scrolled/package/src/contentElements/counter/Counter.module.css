@@ -1,0 +1,61 @@
+.wrapper p {
+  margin: 0;
+}
+
+.number {
+  display: inline-block;
+  word-break: break-word;
+}
+
+.centerRagged {
+  text-align: center;
+}
+
+.wide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.animation-fadeIn {
+  opacity: 0;
+}
+
+.animation-fadeIn-active {
+  transition: opacity 1s linear;
+  opacity: 1;
+}
+
+.animation-fadeInFromBelow {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.animation-fadeInFromAbove {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.animation-fadeInFromAbove-active,
+.animation-fadeInFromBelow-active {
+  transition: opacity 1s linear, transform 1s ease-out;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.animation-fadeInScaleUp {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.animation-fadeInScaleDown {
+  opacity: 0;
+  transform: scale(1.2);
+}
+
+.animation-fadeInScaleUp-active,
+.animation-fadeInScaleDown-active {
+  transition: opacity 1s linear, transform var(--counting-duration) ease-out;
+  transform: scale(1);
+  opacity: 1;
+}

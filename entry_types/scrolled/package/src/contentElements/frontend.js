@@ -12,4 +12,5 @@ import './vrImage/frontend';
 import './iframeEmbed/frontend';
 import './twitterEmbed/frontend'
 import './question/frontend'
+import './counter/frontend'
 import './quote/frontend'

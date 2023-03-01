@@ -28,6 +28,7 @@ export * from './views/TooltipView';
 
 export * from './views/inputs/CheckBoxGroupInputView';
 export * from './views/inputs/UrlDisplayView';
+export * from './views/inputs/NumberInputView';
 export * from './views/inputs/TextInputView';
 export * from './views/inputs/ColorInputView';
 export * from './views/inputs/ExtendedSelectInputView';

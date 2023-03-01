@@ -12,4 +12,5 @@ import './vrImage/editor';
 import './iframeEmbed/editor';
 import './twitterEmbed/editor'
 import './question/editor'
+import './counter/editor'
 import './quote/editor'
