@@ -1,0 +1,58 @@
+de:
+  pageflow:
+    counter_content_element:
+      feature_name: "Counter Content Element"
+  pageflow_scrolled:
+    inline_editing:
+      type_description: Type description
+    editor:
+      content_elements:
+        counter:
+          description: Animierte Metriken
+          name: Counter
+          tabs:
+            general: Counter
+          attributes:
+            startValue:
+              label: "Startwert"
+              inline_help: "Bei diesem Wert beginnt die Zählanimation."
+            targetValue:
+              label: "Zielwert"
+              inline_help: "Zahlenwert, der angezeigt werden soll. Die Zählanimation endet bei diesem Wert."
+            unit:
+              label: "Einheit"
+              inline_help: "Text der vor oder hinter der Zahl gezeigt werden soll."
+            unitPlacement:
+              label: "Position der Einheit"
+              inline_help: "Bestimme, ob die Einheit vor oder hinter dem Betrag gezeigt werden soll."
+              values:
+                trailing: "Nach dem Betrag (100%)"
+                leading: "Vor dem Betrag ($100)"
+            decimalPlaces:
+              label: "Nachkommastellen"
+              inline_help: "Bestimme, wie wieviele Nachkommastellen gezeigt werden sollen."
+            entranceAnimation:
+              label: "Eingangsanimation"
+              inline_help: "Lege die Animation fest, mit der die Zahl eingeblendet werden soll, wenn das Element die Mitte des Viewports erreicht."
+              values:
+                none: "(Keine)"
+                fadeIn: "Einblenden"
+                fadeInFromBelow: "Von unten einblenden"
+                fadeInFromAbove: "Von oben einblenden"
+                fadeInScaleUp: "Einblenden und vergrößern"
+                fadeInScaleDown: "Einblenden und verkleinern"
+            countingSpeed:
+              label: "Zählanimation"
+              inline_help: "Lege fest, wie schnell die Zählanimation ablaufen soll."
+              values:
+                none: "(Keine)"
+                fast: "Schnell"
+                slow: "Langsam"
+                medium: "Mittel"
+            textSize:
+              label: Schriftgröße
+              inline_help: "Bestimme die Textgröße der Zahl."
+              values:
+                large: Groß
+                medium: Mittel
+                small: Klein
