@@ -1,6 +1,20 @@
 .clip {
   clip: rect(0, auto, auto, 0); /* IE 11 */
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+
+  /* When section height is a fractional value (e.g. 440.58px) Chrome
+     109 cuts off a pixel at the bottom of the element. This sometimes
+     leads to a visible line between sections.
+
+     This helper is used by reveal transitions to prevent the fixed
+     backdrop from hiding the backdrop of the previous section. Since
+     the backdrop of the following section comes later in DOM order it
+     is already placed on top. We, thus, do not depend on clip-path to
+     make exit transitions work.
+
+     We can, thus, increase the height of the clip-path polygon
+     generously to prevent those rounding errors.
+  */
+  clip-path: polygon(0% 0%, 100% 0%, 100% 110%, 0% 110%);
 }
 
 .unstyledButton {
