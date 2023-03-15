@@ -131,6 +131,26 @@ export const ScrolledEntry = Entry.extend({
     return [values, texts]
   },
 
+  getPaletteColors() {
+    const values = Object.keys(
+      this.scrolledSeed.config.theme.options.properties?.root || {}
+    ).filter(
+      key => key.indexOf('paletteColor') === 0
+    ).map(
+      key => dasherize(key.replace('paletteColor', ''))
+    );
+
+    const texts = values.map(underscore).map(name =>
+      I18n.t(
+        `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
+        `.palette_colors.${name}`,
+        {defaultValue: I18n.t(`pageflow_scrolled.editor.palette_colors.${name}`)}
+      )
+    );
+
+    return [values, texts];
+  },
+
   supportsSectionWidths() {
     const theme = this.scrolledSeed.config.theme;
 
@@ -139,3 +159,14 @@ export const ScrolledEntry = Entry.extend({
     );
   }
 });
+
+function dasherize(text) {
+  return (
+    text[0] +
+    text.slice(1).replace(/[A-Z]/g, match => `-${match}`)
+  ).toLowerCase();
+}
+
+function underscore(dasherizedWord) {
+  return dasherizedWord.replace(/-/g, '_')
+}

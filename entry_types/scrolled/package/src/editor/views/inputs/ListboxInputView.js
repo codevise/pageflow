@@ -47,6 +47,10 @@ export const ListboxInputView = Marionette.ItemView.extend({
     ];
   },
 
+  renderSelectedItem(item) {
+    return item.text;
+  },
+
   renderItem(item) {
     return item.text;
   },
@@ -67,6 +71,7 @@ export const ListboxInputView = Marionette.ItemView.extend({
           items: this.items,
           disabled: this.isDisabled(),
 
+          renderSelectedItem: item => this.renderSelectedItem(item),
           renderItem: item => this.renderItem(item),
 
           selectedItem: this.items.find(item =>
@@ -85,13 +90,13 @@ export const ListboxInputView = Marionette.ItemView.extend({
 
 function Dropdown({
   items, disabled,
-  renderItem,
+  renderItem, renderSelectedItem,
   selectedItem, onChange
 }) {
   return (
     <Listbox value={selectedItem.value} disabled={disabled} onChange={onChange}>
       <Listbox.Button className={styles.button}>
-        {selectedItem.text}
+        {renderSelectedItem(selectedItem)}
       </Listbox.Button>
       <Listbox.Options className={styles.options}>
         {items.map(item => (

@@ -1,0 +1,17 @@
+.item {
+  display: flex;
+  align-items: center;
+}
+
+.swatch {
+  background-color: var(--color);
+  width: space(4);
+  height: space(4);
+  border: solid 1px var(--ui-on-surface-color-lighter);
+  border-radius: rounded(sm);
+  margin-right: space(2);
+}
+
+.blank .swatch {
+  display: none;
+}

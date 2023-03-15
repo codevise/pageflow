@@ -5,6 +5,7 @@
 .number {
   display: inline-block;
   word-break: break-word;
+  color: var(--palette-color);
 }
 
 .centerRagged {

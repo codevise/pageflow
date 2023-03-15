@@ -6,6 +6,9 @@ de:
     inline_editing:
       type_description: Type description
     editor:
+      common_content_element_attributes:
+        palette_color:
+          blank: "(Automatisch)"
       content_elements:
         counter:
           description: Animierte Metriken
@@ -56,3 +59,5 @@ de:
                 large: Groß
                 medium: Mittel
                 small: Klein
+            numberColor:
+              label: "Farbe"

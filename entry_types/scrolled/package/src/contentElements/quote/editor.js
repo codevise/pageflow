@@ -1,3 +1,4 @@
+import I18n from 'i18n-js';
 import {editor} from 'pageflow-scrolled/editor';
 import {SelectInputView, SeparatorView} from 'pageflow/ui';
 import {InfoBoxView} from 'pageflow/editor';
@@ -16,6 +17,10 @@ editor.contentElementTypes.register('quote', {
         values: ['large', 'medium', 'small']
       });
       this.group('ContentElementPosition');
+      this.group('PaletteColor', {
+        propertyName: 'color',
+        entry
+      });
 
       this.view(SeparatorView);
 

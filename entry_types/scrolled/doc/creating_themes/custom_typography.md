@@ -127,7 +127,7 @@ en:
   pageflow_scrolled:
     editor:
       themes:
-        website:
+        my_custom_theme:
           typography_variants:
             "textBlock-blockQuote-red": "Red"
 ```

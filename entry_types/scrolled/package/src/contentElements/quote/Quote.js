@@ -5,7 +5,8 @@ import {
   useContentElementConfigurationUpdate,
   useContentElementEditorState,
   useI18n,
-  useTheme
+  useTheme,
+  paletteColor
 } from 'pageflow-scrolled/frontend';
 
 import styles from './Quote.module.css';
@@ -19,7 +20,8 @@ export function Quote({configuration, contentElementId, sectionProps}) {
   return (
     <figure className={classNames(styles.figure,
                                   styles[`design-${theme.options.quoteDesign || 'largeHanging'}`],
-                                  {[styles.centerRagged]: sectionProps.layout === 'centerRagged'})}>
+                                  {[styles.centerRagged]: sectionProps.layout === 'centerRagged'})}
+            style={{color: paletteColor(configuration.color)}}>
       <blockquote className={styles.text}>
         <EditableText value={configuration.text}
                       contentElementId={contentElementId}

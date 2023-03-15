@@ -113,4 +113,45 @@ describe('ListboxInputView', () => {
 
     expect(getByRole('button')).toBeDisabled();
   });
+
+  it('supports custom item rendering for options', async () => {
+    const model = new Backbone.Model({variant: 'large'});
+    const View = ListboxInputView.extend({
+      renderItem(item) {
+        return `Item: ${item.text}`;
+      }
+    })
+    const inputView = new View({
+      model: model,
+      propertyName: 'variant',
+      values: ['default', 'large'],
+      texts: ['Default', 'Large']
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = render(inputView);
+    await user.click(getByRole('button', {name: 'Large'}));
+
+    expect(getByRole('option', {name: 'Item: Default'})).not.toBeNull();
+    expect(getByRole('option', {name: 'Item: Large'})).not.toBeNull();
+  });
+
+  it('supports custom item rendering for selected item', async () => {
+    const model = new Backbone.Model({variant: 'large'});
+    const View = ListboxInputView.extend({
+      renderSelectedItem(item) {
+        return `Selected: ${item.text}`;
+      }
+    })
+    const inputView = new View({
+      model: model,
+      propertyName: 'variant',
+      values: ['default', 'large'],
+      texts: ['Default', 'Large']
+    });
+
+    const {getByRole} = render(inputView);
+
+    expect(getByRole('button', {name: 'Selected: Large'})).not.toBeNull();
+  });
 });

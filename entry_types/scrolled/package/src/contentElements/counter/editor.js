@@ -59,6 +59,10 @@ editor.contentElementTypes.register('counter', {
             position: 'inline'
           })
       });
+      this.group('PaletteColor', {
+        propertyName: 'numberColor',
+        entry
+      });
       this.group('ContentElementPosition');
     });
   }

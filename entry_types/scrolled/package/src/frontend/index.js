@@ -97,6 +97,7 @@ export {default as registerTemplateWidgetType} from './registerTemplateWidgetTyp
 export {Widget} from './Widget';
 
 export {utils} from './utils';
+export {paletteColor} from './paletteColor';
 
 global.pageflowScrolledRender = async function(seed) {
   setupI18n(seed.i18n);

@@ -7,7 +7,8 @@ import {
   useContentElementEditorState,
   useContentElementLifecycle,
   useI18n,
-  useLocale
+  useLocale,
+  paletteColor
 } from 'pageflow-scrolled/frontend';
 
 import styles from './Counter.module.css';
@@ -113,7 +114,8 @@ export function Counter({configuration, contentElementId, sectionProps}) {
               styles[`animation-${configuration.entranceAnimation}`],
               {[styles[`animation-${configuration.entranceAnimation}-active`]]: animated
             })}
-            style={{'--counting-duration': `${countingDuration || 1000}ms`}}
+            style={{'--counting-duration': `${countingDuration || 1000}ms`,
+                    '--palette-color': paletteColor(configuration.numberColor)}}
           >
             {format(currentValue)}
           </div>

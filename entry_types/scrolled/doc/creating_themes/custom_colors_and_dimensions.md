@@ -214,3 +214,44 @@ System](https://material.io/design/color/the-color-system.html#color-theme-creat
 | `default_navigation_progress_bar_background_color` | Background color of the progress bar. |
 | `default_navigation_progress_bar_indicator_color` | Color of the progress bar indicator. Defaults to `accent_color`. |
 | `default_navigation_separator_color` | Color of separator lines between chapters. |
+
+## Palette Colors
+
+Themes can supply so called palette colors that content elements can
+use to let the user choose from a predefined set of colors matching
+the CI. For example, the counter content element the lets users choose
+a palette color for the number.
+
+Palette colors need to supplied as root properties starting with the
+prefix `palette_color_`. Assume a custom theme implements a corporate
+identity that features a certain brand specific shade of blue. We want
+to make it easy for editors to apply this brand color to certain
+elements in their stories. We can freely choose a name and call the
+palette color "brand blue":
+
+``` ruby
+entry_type_config.themes.register(:my_custom_theme,
+                                  # ...
+                                  properties: {
+                                    root: {
+                                      # ...
+                                      palette_color_brand_blue: '#15103a'
+                                    }
+                                  }
+```
+
+The following translation defines how the color will be represented in
+the editor user interface:
+
+``` yaml
+en:
+  pageflow_scrolled:
+    editor:
+      themes:
+        my_custom_theme:
+          palette_colors:
+            brand_blue: "Brand Blue"
+```
+
+Users will now be able to select "Brand Blue" as a color for quotes,
+counters and text paragraphs.
