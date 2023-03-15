@@ -54,11 +54,13 @@
 
   .cardBgWhite {
     color: darkContentTextColor;
+    --content-text-color: darkContentTextColor;
     --content-link-color: darkContentLinkColor;
   }
 
   .cardBgBlack {
     color: lightContentTextColor;
+    --content-text-color: lightContentTextColor;
     --content-link-color: lightContentLinkColor;
   }
 }

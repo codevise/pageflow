@@ -52,6 +52,7 @@
 @media screen {
   .Section {
     color: lightContentTextColor;
+    --content-text-color: lightContentTextColor;
     --content-link-color: lightContentLinkColor;
     background-color: #000;
   }
@@ -59,6 +60,7 @@
   .invert {
     background-color: #fff;
     color: darkContentTextColor;
+    --content-text-color: darkContentTextColor;
     --content-link-color: darkContentLinkColor;
   }
 }
