@@ -8,6 +8,7 @@
 @value darkContentLinkColor: var(--theme-dark-content-link-color, var(--theme-content-link-color, currentColor));
 
 @value contentLinkColor: var(--content-link-color);
+@value contentTextColor: var(--content-text-color);
 
 /* see src/frontend/global.module.css */
 
