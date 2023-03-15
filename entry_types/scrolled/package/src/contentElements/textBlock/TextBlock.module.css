@@ -18,6 +18,10 @@
   margin: 1.375rem 0 0 0;
 }
 
+.text li + li {
+  margin-top: 0.6875rem;
+}
+
 .text a {
   color: contentLinkColor;
   word-wrap: break-word;
