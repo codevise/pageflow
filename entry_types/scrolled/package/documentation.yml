@@ -46,6 +46,11 @@ toc:
       - useShareProviders
       - useShareUrl
       - useTheme
+  - name: Frontend Helpers
+    description: |
+      Helper functions that can be used in content elements.
+    children:
+      - paletteColor
   - name: Spec Support
     description: |
       Helper functions to use in specs.

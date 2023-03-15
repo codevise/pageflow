@@ -17,3 +17,5 @@ de:
                 large: Groß
                 medium: Mittel
                 small: Klein
+            color:
+              label: Farbe

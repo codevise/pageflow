@@ -50,6 +50,17 @@ storiesOfContentElement(module, {
         unit: '$',
         unitPlacement: 'leading'
       }
+    },
+    {
+      name: 'Pallete number color',
+      themeOptions: {
+        properties: {
+          paletteColorAccent: '#04f'
+        }
+      },
+      configuration: {
+        numberColor: 'accent'
+      }
     }
   ]
 });

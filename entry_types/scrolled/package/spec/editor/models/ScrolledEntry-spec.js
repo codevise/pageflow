@@ -2721,4 +2721,119 @@ describe('ScrolledEntry', () => {
       expect(entry.supportsSectionWidths()).toEqual(true);
     });
   });
+
+  describe('getPaletteColors', () => {
+    it('returns empty arrays by default', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {entryTypeSeed: normalizeSeed()}
+      );
+
+      const [values, translationKeys] = entry.getPaletteColors();
+
+      expect(values).toEqual([]);
+      expect(translationKeys).toEqual([]);
+    });
+
+    it('extracts palette colors names from theme properties', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  paletteColorBrandBlue: '#00f',
+                  paletteColorBrandGreen: '#0f0'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const [values] = entry.getPaletteColors();
+
+      expect(values).toEqual(['brand-blue', 'brand-green']);
+    });
+
+    describe('with shared translations', () => {
+      const commonPrefix = 'pageflow_scrolled.editor.palette_colors'
+
+      useFakeTranslations({
+        [`${commonPrefix}.dark_content_text`]: 'Dark Text Color',
+        [`${commonPrefix}.light_content_text`]: 'Light Text Color'
+      });
+
+      it('returns translated display names', () => {
+        editor.contentElementTypes.register('someElement', {});
+
+        const entry = factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {theme_name: 'custom'}
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              themeOptions: {
+                properties: {
+                  root: {
+                    paletteColorDarkContentText: '#00f',
+                    paletteColorLightContentText: '#fff'
+                  }
+                }
+              }
+            })
+          }
+        );
+
+        const [, texts] = entry.getPaletteColors();
+
+        expect(texts).toEqual([
+          'Dark Text Color',
+          'Light Text Color'
+        ]);
+      });
+    });
+
+    describe('with theme specific translations', () => {
+      const commonPrefix = 'pageflow_scrolled.editor.palette_colors';
+      const themePrefix = `pageflow_scrolled.editor.themes.custom.palette_colors`;
+
+      useFakeTranslations({
+        [`${commonPrefix}.accent`]: 'Accent',
+        [`${themePrefix}.accent`]: 'Highlight'
+      });
+
+      it('prefers theme specific translations', () => {
+        editor.contentElementTypes.register('someElement', {});
+
+        const entry = factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {theme_name: 'custom'}
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              themeOptions: {
+                properties: {
+                  root: {
+                    paletteColorAccent: '#00f'
+                  }
+                }
+              }
+            })
+          }
+        );
+
+        const [, texts] = entry.getPaletteColors();
+
+        expect(texts).toEqual([
+          'Highlight'
+        ]);
+      });
+    });
+  });
 });

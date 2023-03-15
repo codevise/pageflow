@@ -2,7 +2,11 @@ import {ConfigurationEditorTabView, SelectInputView, TextInputView} from 'pagefl
 
 import {
   TypographyVariantSelectInputView
-} from '../../inputs/TypographyVariantSelectInputView'
+} from '../../inputs/TypographyVariantSelectInputView';
+
+import {
+  ColorSelectInputView
+} from '../../inputs/ColorSelectInputView';
 
 ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
   const contentElement = this.model.parent;
@@ -69,6 +73,23 @@ ConfigurationEditorTabView.groups.define(
                              'common_content_element_attributes.' +
                              'variant.blank',
         values: variants,
+        texts,
+      });
+    }
+  }
+);
+
+ConfigurationEditorTabView.groups.define(
+  'PaletteColor',
+  function({propertyName, entry}) {
+    const [values, texts] = entry.getPaletteColors();
+
+    if (values.length) {
+      this.input(propertyName, ColorSelectInputView, {
+        blankTranslationKey: 'pageflow_scrolled.editor.' +
+                             'common_content_element_attributes.' +
+                             'palette_color.blank',
+        values,
         texts,
       });
     }

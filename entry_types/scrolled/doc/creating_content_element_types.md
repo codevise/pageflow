@@ -303,6 +303,53 @@ pageflow_scrolled:
             inline_help: "..."
 ```
 
+## Using Palette Colors
+
+[Palette
+colors](./creating_themes/custom_colors_and_dimensions.md#palette-colors)
+let users pick colors for certain content element properties using a
+predefined, theme-specific selection of colors. To define a property
+based on palette colors, you can use the `PaletteColors` input group
+in your content element's configuration editor:
+
+```javascript
+import {editor} from 'pageflow-scrolled/editor';
+import {TextInputView} from 'pageflow/ui';
+
+editor.contentElementTypes.register('myContentElement', {
+  configurationEditor({entry}) {
+    this.tab('general', function() {
+      this.input('caption', TextInputView);
+      this.group('PaletteColor', {
+        entry,
+        propertyName: 'color'
+      });
+    });
+  }
+});
+```
+
+This will let the user choose a color from the palette defined by the
+current theme and assign it to the `color` property. Just like for a
+normal input, you need to define translations for the label and inline
+help text of the property.
+
+Inside your component, you can apply the palette using the
+`paletteColor` helper:
+
+```javascript
+import React from 'react';
+import {paletteColor} from 'pageflow-scrolled/frontend';
+
+export function MyContentElement({configuration}) {
+  return (
+    <div style={{color: paletteColor(configuration.color)}}>
+      ...
+    </div>
+  );
+}
+```
+
 ## Further Steps
 
 * [Additional Frontend Seed Data](./additional_frontend_seed_data.md)

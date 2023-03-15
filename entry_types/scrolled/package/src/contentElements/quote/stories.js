@@ -68,6 +68,16 @@ storiesOfContentElement(module, {
         }
       }
     },
-
+    {
+      name: 'Pallete color',
+      themeOptions: {
+        properties: {
+          paletteColorAccent: '#04f'
+        }
+      },
+      configuration: {
+        color: 'accent'
+      }
+    }
   ]
 });
