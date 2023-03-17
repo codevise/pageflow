@@ -80,10 +80,19 @@ module Pageflow
       Pageflow.config.public_entry_redirect.call(entry, request)
     end
 
+    def add_custom_response_headers(entry, headers)
+      custom_headers = Pageflow.config.custom_headers.call(entry)
+
+      custom_headers.each do |custom_header|
+        headers[custom_header[:name]] = custom_header[:value]
+      end
+    end
+
     def delegate_to_entry_type_frontend_app!(entry)
       EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry: entry, mode: :published)
 
       delegate_to_rack_app!(entry.entry_type.frontend_app) do |_status, headers, _body|
+        add_custom_response_headers(entry, headers)
         allow_iframe_for_embed(headers)
       end
     end

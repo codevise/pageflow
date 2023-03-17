@@ -359,6 +359,30 @@ module Pageflow
     # @since 12.2
     attr_accessor :news
 
+    # Custom headers to be added to HTTP responses. The headers are defined
+    # using a lambda function that takes an entity (either an entry or a site)
+    # and returns an array of hashes with `:name` and `:value` keys.
+    #
+    # @example
+    #   config.custom_headers = lambda do |entity|
+    #     if entity.respond_to?('site')
+    #       entry = entity
+    #
+    #       [{name: 'X-Entry-Id', value: entry.id.to_s},
+    #        {name: 'X-Site-Id', value: entry.site.id.to_s},
+    #        {name: 'X-Account-Id', value: entry.account.id.to_s}]
+    #     else
+    #       site = entity
+    #
+    #       [{name: 'X-Site-Id', value: site.id.to_s},
+    #        {name: 'X-Account-Id', value: site.account.id.to_s}]
+    #     end
+    #   end
+    #
+    # @return [Proc] A lambda function defining the custom headers.
+    # @since 16.1
+    attr_accessor :custom_headers
+
     def initialize(target_type_name = nil)
       @target_type_name = target_type_name
 
@@ -379,6 +403,12 @@ module Pageflow
           fields: presigned_post_config.fields
         }
       }
+
+      @custom_headers = lambda do |_entity|
+        [
+          # {name: 'X-Custom', value: 'Header'}
+        ]
+      end
 
       @zencoder_options = {}
 
