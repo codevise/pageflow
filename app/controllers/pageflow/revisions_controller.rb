@@ -28,6 +28,7 @@ module Pageflow
       authorize!(:publish, entry)
 
       entry.revisions.depublish_all
+      Pageflow.config.hooks.invoke(:entry_depublished, entry: entry)
       redirect_to(main_app.admin_entry_path(entry))
     end
 

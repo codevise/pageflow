@@ -13,6 +13,14 @@ module Pageflow
 
     delegate :enabled_feature_names, to: :account
 
+    after_update do |site|
+      Pageflow.config.hooks.invoke(:site_updated, site: site)
+    end
+
+    after_touch do |site|
+      Pageflow.config.hooks.invoke(:site_touched, site: site)
+    end
+
     def display_name
       name.presence || I18n.t('pageflow.admin.sites.default_name')
     end

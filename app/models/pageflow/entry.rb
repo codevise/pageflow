@@ -56,6 +56,14 @@ module Pageflow
       entry_template.copy_defaults_to(draft)
     end
 
+    after_update do |entry|
+      Pageflow.config.hooks.invoke(:entry_updated, entry: entry)
+    end
+
+    after_touch do |entry|
+      Pageflow.config.hooks.invoke(:entry_touched, entry: entry)
+    end
+
     def entry_template
       @entry_template ||= site.entry_templates.find_or_initialize_by(
         entry_type_name: type_name
