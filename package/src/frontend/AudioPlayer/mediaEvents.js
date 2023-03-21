@@ -1,4 +1,5 @@
 import {events} from '../events';
+import {throttle} from '../utils/throttle';
 
 export const mediaEvents = function(player, context) {
   function triggerMediaEvent(name) {
@@ -19,6 +20,10 @@ export const mediaEvents = function(player, context) {
   player.on('timeupdate', function() {
     triggerMediaEvent('timeupdate');
   });
+
+  player.on('timeupdate', throttle(function() {
+    triggerMediaEvent('timeupdate_throttled');
+  }, 5000));
 
   player.on('pause', function() {
     triggerMediaEvent('pause');
