@@ -1,4 +1,5 @@
 @value breakpoint-sm from 'pageflow-scrolled/values/breakpoints.module.css';
+@value contentLinkColor from "pageflow-scrolled/values/colors.module.css";
 
 .figure {
   margin: 0;
@@ -6,6 +7,11 @@
   flex-direction: column;
   align-items: flex-end;
   padding-bottom: 1.375rem;
+  color: var(--palette-color);
+}
+
+.figure a {
+  color: var(--palette-color, contentLinkColor);
 }
 
 .text {

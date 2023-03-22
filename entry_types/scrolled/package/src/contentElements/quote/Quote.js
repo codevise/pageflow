@@ -21,7 +21,7 @@ export function Quote({configuration, contentElementId, sectionProps}) {
     <figure className={classNames(styles.figure,
                                   styles[`design-${theme.options.quoteDesign || 'largeHanging'}`],
                                   {[styles.centerRagged]: sectionProps.layout === 'centerRagged'})}
-            style={{color: paletteColor(configuration.color)}}>
+            style={{'--palette-color': paletteColor(configuration.color)}}>
       <blockquote className={styles.text}>
         <EditableText value={configuration.text}
                       contentElementId={contentElementId}
