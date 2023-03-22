@@ -4,7 +4,6 @@ import {SelectInputView, TextInputView, NumberInputView, SeparatorView} from 'pa
 import pictogram from './pictogram.svg';
 
 editor.contentElementTypes.register('counter', {
-  featureName: 'counter_content_element',
   category: 'data',
   pictogram,
   supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide'],
