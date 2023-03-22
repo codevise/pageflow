@@ -1,5 +1,11 @@
+@value contentLinkColor from "pageflow-scrolled/values/colors.module.css";
+
 .wrapper p {
   margin: 0;
+}
+
+.wrapper a {
+  color: contentLinkColor;
 }
 
 .number {
