@@ -1,7 +1,4 @@
 de:
-  pageflow:
-    counter_content_element:
-      feature_name: "Counter Content Element"
   pageflow_scrolled:
     inline_editing:
       type_description: Type description
