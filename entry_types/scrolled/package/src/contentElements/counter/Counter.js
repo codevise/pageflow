@@ -18,7 +18,7 @@ export function Counter({configuration, contentElementId, sectionProps}) {
   const locale = useLocale();
   const {t} = useI18n({locale: 'ui'});
 
-  const targetValue = configuration.targetValue;
+  const targetValue = configuration.targetValue || 0;
   const decimalPlaces = configuration.decimalPlaces || 0;
   const startValue = configuration.startValue || 0;
   const countingDuration = countingDurations[configuration.countingSpeed];
