@@ -119,6 +119,15 @@ module PageflowScrolled
 
         expect(response.body).to have_json_ld('@type' => 'Article')
       end
+
+      it 'renders feed link' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry: entry)
+
+        expect(response.body).to have_selector('link[type="application/atom+xml"]',
+                                               visible: false)
+      end
     end
   end
 end

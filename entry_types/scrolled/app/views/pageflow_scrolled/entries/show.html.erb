@@ -9,6 +9,7 @@
 
     <%= social_share_meta_tags_for(@entry) %>
     <%= meta_tags_for_entry(@entry) %>
+    <%= feed_link_tags_for_entry(@entry) unless @skip_feed_link_tags%>
 
     <%= scrolled_favicons_for_entry(@entry, entry_mode: @widget_scope) %>
 
