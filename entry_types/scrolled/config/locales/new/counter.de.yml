@@ -1,7 +1,7 @@
 de:
   pageflow_scrolled:
     inline_editing:
-      type_description: Type description
+      type_description: Beschreibung eingeben
     editor:
       common_content_element_attributes:
         palette_color:
