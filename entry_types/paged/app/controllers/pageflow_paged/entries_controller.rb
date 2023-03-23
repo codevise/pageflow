@@ -4,6 +4,7 @@ module PageflowPaged
     include Pageflow::EntriesControllerEnvHelper
     include WithoutControllerNamespacePartialPathPrefix
 
+    helper Pageflow::FeedsHelper
     helper Pageflow::MetaTagsHelper
     helper Pageflow::StructuredDataHelper
     helper Pageflow::PublicI18nHelper

@@ -174,6 +174,15 @@ module PageflowPaged
         expect(response.body).not_to have_json_ld('@type' => 'Article')
       end
 
+      it 'renders feed link' do
+        entry = create(:entry, :published)
+
+        get_with_entry_env(:show, entry: entry)
+
+        expect(response.body).to have_selector('link[type="application/atom+xml"]',
+                                               visible: false)
+      end
+
       it 'uses locale of entry' do
         entry = create(:entry, :published, published_revision_attributes: {locale: 'de'})
 
