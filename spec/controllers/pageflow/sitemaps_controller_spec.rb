@@ -30,6 +30,8 @@ module Pageflow
         get(:index, format: 'xml')
 
         expect(response.status).to eq(200)
+        expect(response.body)
+          .to have_xpath('//urlset[@xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"]')
         expect(response.body).to have_xpath('//urlset/url/loc',
                                             text: 'http://pageflow.example.com/story-one')
         expect(response.body).to have_xpath('//urlset/url/lastmod',

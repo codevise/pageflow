@@ -70,6 +70,8 @@ module Pageflow
       end
 
       trait :published do
+        first_published_at { 1.month.ago }
+
         transient do
           published_revision_attributes { {} }
         end
@@ -81,6 +83,8 @@ module Pageflow
       end
 
       trait :published_with_password do
+        first_published_at { 1.month.ago }
+
         transient do
           published_revision_attributes { {} }
         end
