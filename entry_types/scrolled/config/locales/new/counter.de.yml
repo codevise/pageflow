@@ -56,5 +56,6 @@ de:
                 large: Groß
                 medium: Mittel
                 small: Klein
+                verySmall: Sehr klein
             numberColor:
               label: "Farbe"

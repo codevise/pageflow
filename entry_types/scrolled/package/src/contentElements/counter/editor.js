@@ -44,7 +44,7 @@ editor.contentElementTypes.register('counter', {
       });
       this.view(SeparatorView);
       this.input('textSize', SelectInputView, {
-        values: ['large', 'medium', 'small']
+        values: ['large', 'medium', 'small', 'verySmall']
       });
       this.group('ContentElementTypographyVariant', {
         entry,

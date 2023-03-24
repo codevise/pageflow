@@ -56,5 +56,6 @@ en:
                 large: Large
                 medium: Medium
                 small: Small
+                verySmall: Very small
             numberColor:
               label: Color
