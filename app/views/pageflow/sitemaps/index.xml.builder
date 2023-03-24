@@ -3,7 +3,7 @@ xml.urlset do
   @entries.each do |entry|
     xml.url do
       xml.loc(social_share_entry_url(entry))
-      xml.lastmod(entry.published_at.xmlschema)
+      xml.lastmod(entry.published_at.utc.xmlschema)
     end
   end
 end
