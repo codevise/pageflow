@@ -218,6 +218,8 @@ module Admin
                account_id: account,
                site: {
                  name: 'second',
+                 sitemap_enabled: true,
+                 feeds_enabled: true,
                  imprint_link_url: 'http://example.com/new'
                }
              })
@@ -225,6 +227,8 @@ module Admin
         site = account.sites.last
         expect(site.imprint_link_url).to eq('http://example.com/new')
         expect(site.name).to eq('second')
+        expect(site.sitemap_enabled?).to eq(true)
+        expect(site.feeds_enabled?).to eq(true)
       end
 
       it 'does not allow managers to create sites ' do
@@ -294,12 +298,16 @@ module Admin
               id: site.id,
               site: {
                 name: 'new name',
+                sitemap_enabled: true,
+                feeds_enabled: true,
                 imprint_link_url: 'http://example.com/new'
               }
             })
 
         expect(site.reload.imprint_link_url).to eq('http://example.com/new')
         expect(site.name).to eq('new name')
+        expect(site.sitemap_enabled?).to eq(true)
+        expect(site.feeds_enabled?).to eq(true)
       end
 
       it 'does not update sites with insufficient privileges ' do

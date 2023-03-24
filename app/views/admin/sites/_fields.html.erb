@@ -2,6 +2,10 @@
   <%= f.input :cname, hint: t('pageflow.admin.sites.cname_hint') %>
   <%= f.input :additional_cnames, hint: t('pageflow.admin.sites.additional_cnames_hint') %>
   <%= f.input :home_url, hint: t('pageflow.admin.sites.home_url_hint') %>
+  <%= f.input :feeds_enabled, hint: t('pageflow.admin.sites.feeds_hint',
+                                      site_host: @site&.persisted? ? @site.host : '<host>') %>
+  <%= f.input :sitemap_enabled, hint: t('pageflow.admin.sites.sitemap_hint',
+                                        site_host: @site&.persisted? ? @site.host : '<host>') %>
 <% end %>
 
 <%= f.inputs do %>

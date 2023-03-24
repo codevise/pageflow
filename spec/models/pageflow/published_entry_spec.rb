@@ -366,5 +366,21 @@ module Pageflow
         expect(result).to be_nil
       end
     end
+
+    describe '#wrap_all' do
+      it 'returns array of published entries for all entries in scope' do
+        create(:entry,
+               :published,
+               published_revision_attributes: {title: 'Story One'})
+        create(:entry,
+               :published,
+               published_revision_attributes: {title: 'Story Two'})
+        create(:entry)
+
+        result = PublishedEntry.wrap_all(Entry.published)
+
+        expect(result.map(&:title)).to eq(['Story One', 'Story Two'])
+      end
+    end
   end
 end

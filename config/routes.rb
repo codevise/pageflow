@@ -89,6 +89,7 @@ Pageflow::Engine.routes.draw do
   get '/auth/:provider/callback', to: 'users/omniauth_callbacks#auth_callback'
 
   get 'feeds/:locale', to: 'feeds#index', as: :feed
+  get 'sitemap', to: 'sitemaps#index', as: :sitemap
 
   get ':id/manifest', to: 'entries#manifest', as: :entry_manifest
   get ':id/embed', to: 'entries#show', defaults: {embed: '1'}, as: :entry_embed
