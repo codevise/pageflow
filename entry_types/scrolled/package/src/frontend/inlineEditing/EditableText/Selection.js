@@ -85,7 +85,8 @@ export function Selection(props) {
     setTransientState({
       editableTextIsSingleBlock: editor.children.length <= 1,
       exampleNode: getUniformSelectedNode(editor, 'type'),
-      typographyVariant: getUniformSelectedNode(editor, 'variant')?.variant
+      typographyVariant: getUniformSelectedNode(editor, 'variant')?.variant,
+      color: getUniformSelectedNode(editor, 'color')?.color
     });
 
     boundsRef.current = {start, end};

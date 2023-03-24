@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import {
   applyTypograpyhVariant,
+  applyColor,
   isBlockActive,
   toggleBlock,
   withBlockNormalization
@@ -182,6 +183,62 @@ describe('toggleBlock', () => {
     );
     expect(editor.children).toEqual(output.children);
   });
+
+  it('preserves color property when unwrapping list', () => {
+    const editor = (
+      <editor>
+        <bulletedList>
+          <listItem color="#444">
+            Item 1
+            <cursor />
+          </listItem>
+        </bulletedList>
+      </editor>
+    );
+
+    toggleBlock(editor, 'paragraph');
+
+    const output = (
+      <editor>
+        <paragraph color="#444">
+          Item 1
+          <cursor />
+        </paragraph>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
+
+  it('applies color of first selected node when wrapping lists', () => {
+    const editor = (
+      <editor>
+        <paragraph color="#444">
+          <anchor />
+          Item 1
+        </paragraph>
+        <paragraph>
+          Item 1
+          <focus />
+        </paragraph>
+      </editor>
+    );
+
+    toggleBlock(editor, 'bulleted-list');
+
+    const output = (
+      <editor>
+        <bulletedList color="#444">
+          <listItem color="#444">
+            Item 1
+          </listItem>
+          <listItem>
+            Item 1
+          </listItem>
+        </bulletedList>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
 });
 
 describe('applyTypograpyhVariant', () => {
@@ -263,6 +320,97 @@ describe('applyTypograpyhVariant', () => {
     );
 
     applyTypograpyhVariant(editor, undefined);
+
+    const output = (
+      <editor>
+        <paragraph>
+          Text
+        </paragraph>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
+});
+
+describe('applyColor', () => {
+  it('sets color property deeply in lists', () => {
+    const editor = (
+      <editor>
+        <bulletedList>
+          <listItem>
+            Item 1
+            <cursor />
+          </listItem>
+          <listItem>
+            Item 1
+          </listItem>
+        </bulletedList>
+      </editor>
+    );
+
+    applyColor(editor, '#444');
+
+    const output = (
+      <editor>
+        <bulletedList color="#444">
+          <listItem color="#444">
+            Item 1
+          </listItem>
+          <listItem color="#444">
+            Item 1
+          </listItem>
+        </bulletedList>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
+
+  it('sets color property of elements of same type', () => {
+    const editor = (
+      <editor>
+        <paragraph>
+          <anchor />
+          Text
+        </paragraph>
+        <paragraph>
+          More Text
+          <focus />
+        </paragraph>
+        <paragraph>
+          Other Text
+        </paragraph>
+      </editor>
+    );
+
+    applyColor(editor, '#444');
+
+    const output = (
+      <editor>
+        <paragraph color="#444">
+          Text
+        </paragraph>
+        <paragraph color="#444">
+          More Text
+        </paragraph>
+        <paragraph>
+          Other Text
+        </paragraph>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
+
+  it('unsets color property if blank', () => {
+    const editor = (
+      <editor>
+        <paragraph color="#444">
+          <cursor />
+          Text
+        </paragraph>
+      </editor>
+    );
+
+    applyColor(editor, undefined);
 
     const output = (
       <editor>

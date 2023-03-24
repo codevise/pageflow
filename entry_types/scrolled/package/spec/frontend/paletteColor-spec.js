@@ -8,4 +8,8 @@ describe('paletteColor', () => {
   it('returns undefined if name is undefined', () => {
     expect(paletteColor(undefined)).toBeUndefined();
   });
+
+  it('returns hard coded color if value start with #', () => {
+    expect(paletteColor('#454545')).toEqual('#454545');
+  });
 });

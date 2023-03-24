@@ -41,6 +41,11 @@ editor.contentElementTypes.register('textBlock', {
           } : configuration;
         }
       });
+      this.group('PaletteColor', {
+        entry,
+        model: contentElement.transientState,
+        propertyName: 'color'
+      });
 
       this.view(SeparatorView);
 

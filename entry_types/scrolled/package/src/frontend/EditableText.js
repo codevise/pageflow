@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {camelize} from './utils/camelize';
+import {paletteColor} from './paletteColor';
 import {withInlineEditingAlternative} from './inlineEditing';
 import {useChapter, useFile} from '../entryState';
 import {useDarkBackground} from './backgroundColor';
@@ -49,17 +50,34 @@ export function renderElement({attributes, children, element}) {
                             camelize(element.type),
                             element.variant].join('-');
 
+  const styles = element.color &&
+                 {color: paletteColor(element.color)};
+
   switch (element.type) {
   case 'block-quote':
     return (
-      <blockquote {...attributes} className={variantClassName}>
+      <blockquote {...attributes}
+                  className={variantClassName}
+                  style={styles}>
         {children}
       </blockquote>
     );
   case 'bulleted-list':
-    return <ul {...attributes} className={variantClassName}>{children}</ul>;
+    return (
+      <ul {...attributes}
+          className={variantClassName}
+          style={styles}>
+        {children}
+      </ul>
+    );
   case 'numbered-list':
-    return <ol {...attributes} className={variantClassName}>{children}</ol>;
+    return (
+      <ol {...attributes}
+          className={variantClassName}
+          style={styles}>
+        {children}
+      </ol>
+    );
   case 'list-item':
     return <li {...attributes}>{children}</li>;
   case 'heading':
@@ -68,18 +86,25 @@ export function renderElement({attributes, children, element}) {
     return (
       <Heading key={key}
                attributes={otherAttributes}
-               variantClassName={variantClassName}>
+               variantClassName={variantClassName}
+               styles={styles}>
         {children}
       </Heading>
     );
   case 'link':
     return renderLink({attributes, children, element});
   default:
-    return <p {...attributes} className={variantClassName}>{children}</p>;
+    return (
+      <p {...attributes}
+         className={variantClassName}
+         style={styles}>
+        {children}
+      </p>
+    );
   }
 }
 
-function Heading({attributes, variantClassName, children}) {
+function Heading({attributes, variantClassName, styles: inlineStyles, children}) {
   const darkBackground = useDarkBackground();
 
   return (
@@ -87,7 +112,8 @@ function Heading({attributes, variantClassName, children}) {
         className={classNames(variantClassName,
                               darkBackground ? styles.light : styles.dark,
                               'scope-headings',
-                              textStyles['heading-xs'])}>
+                              textStyles['heading-xs'])}
+        style={inlineStyles}>
       {children}
     </h2>
   );

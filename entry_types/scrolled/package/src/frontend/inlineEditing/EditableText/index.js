@@ -21,6 +21,7 @@ import {DropTargets} from './DropTargets';
 import {LinkTooltipProvider} from './LinkTooltip';
 import {
   applyTypograpyhVariant,
+  applyColor,
   withBlockNormalization
 } from './blocks';
 
@@ -76,9 +77,13 @@ export const EditableText = React.memo(function EditableText({
     if (command.type === 'REMOVE') {
       Transforms.removeNodes(editor, {mode: 'highest'});
     }
-    else if (command.type === 'TRANSIENT_STATE_UPDATE' &&
-             'typographyVariant' in command.payload) {
-      applyTypograpyhVariant(editor, command.payload.typographyVariant);
+    else if (command.type === 'TRANSIENT_STATE_UPDATE') {
+      if ('typographyVariant' in command.payload) {
+        applyTypograpyhVariant(editor, command.payload.typographyVariant);
+      }
+      if ('color' in command.payload) {
+        applyColor(editor, command.payload.color);
+      }
     }
   });
 
