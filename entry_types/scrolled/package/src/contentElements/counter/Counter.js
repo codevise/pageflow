@@ -133,6 +133,7 @@ export function Counter({configuration, contentElementId, sectionProps}) {
 }
 
 const numberScaleCategories = {
+  verySmall: 'counterNumber-xs',
   small: 'counterNumber-sm',
   medium: 'counterNumber-md',
   large: 'counterNumber-lg'

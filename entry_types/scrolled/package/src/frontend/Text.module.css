@@ -103,6 +103,13 @@
   font-weight: 700;
 }
 
+.counterNumber-xs {
+  composes: typography-counterNumber from global;
+  font-size: text-xl;
+  line-height: 1;
+  font-weight: 700;
+}
+
 .counterDescription {
   composes: typography-counterDescription from global;
   font-size: text-base;
@@ -151,6 +158,11 @@
 
   .counterNumber-sm {
     font-size: text-xl;
+    line-height: 1.1;
+  }
+
+  .counterNumber-xs {
+    font-size: text-l;
     line-height: 1.1;
   }
 }
