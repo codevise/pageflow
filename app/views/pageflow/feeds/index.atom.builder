@@ -1,6 +1,6 @@
 atom_feed language: @feed.locale do |feed|
   feed.title(@feed.title)
-  feed.updated(@feed.updated_at.utc)
+  feed.updated(@feed.updated_at&.utc)
 
   @feed.entries.each do |entry|
     feed.entry(entry,
