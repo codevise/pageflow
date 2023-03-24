@@ -6,3 +6,7 @@ en:
           attributes:
             color:
               label: Color
+        heading:
+          attributes:
+            color:
+              label: Color

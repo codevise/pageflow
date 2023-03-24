@@ -29,6 +29,11 @@ editor.contentElementTypes.register('heading', {
             typographyVariant
           })
       });
+      this.group('PaletteColor', {
+        entry,
+        propertyName: 'color'
+      });
+
       this.input('hyphens', SelectInputView, {
         values: ['auto', 'manual']
       });

@@ -6,3 +6,7 @@ de:
           attributes:
             color:
               label: Farbe
+        heading:
+          attributes:
+            color:
+              label: Farbe
