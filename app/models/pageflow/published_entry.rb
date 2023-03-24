@@ -55,6 +55,12 @@ module Pageflow
       )
     end
 
+    def self.wrap_all(scope)
+      scope
+        .includes(:published_revision)
+        .map { |entry| new(entry) }
+    end
+
     def cache_key
       [
         self.class.model_name.cache_key,

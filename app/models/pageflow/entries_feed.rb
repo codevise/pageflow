@@ -17,13 +17,13 @@ module Pageflow
       private
 
       def find_entries(site, locale)
-        site
-          .entries
-          .published_without_password_protection
-          .includes(:published_revision)
-          .where(pageflow_revisions: {locale: locale})
-          .order('first_published_at DESC')
-          .map { |entry| PublishedEntry.new(entry) }
+        PublishedEntry.wrap_all(
+          site
+            .entries
+            .published_without_password_protection
+            .where(pageflow_revisions: {locale: locale})
+            .order('first_published_at DESC')
+        )
       end
     end
   end

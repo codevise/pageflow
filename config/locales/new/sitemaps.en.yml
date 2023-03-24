@@ -1,0 +1,20 @@
+en:
+  activerecord:
+    attributes:
+      pageflow/site:
+        feeds_enabled: Atom feeds
+        sitemap_enabled: XML sitemap
+        account: Account
+  pageflow:
+    admin:
+      sites:
+        feeds_hint: |-
+          When enabled, feeds containing all published entries of the
+          site are available via URLs of the form
+          https://%{site_host}/feeds/en.atom where "en" can be
+          replaced with any locale you want to filter by.
+        sitemap_hint: |-
+          When enabled, a sitemap with all published entries of the
+          site is available at
+          https://%{site_host}/sitemap.xml. Register the URL in Google
+          Search Console or similar tools.

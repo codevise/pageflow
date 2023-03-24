@@ -6,4 +6,6 @@ extensible_attributes_table_for(site,
     link_to(site.account.name,
             admin_account_path(site.account, tab: 'sites'))
   end
+  row :feeds_enabled
+  row :sitemap_enabled
 end

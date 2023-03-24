@@ -21,6 +21,8 @@ module Pageflow
         :name,
         :cname,
         :additional_cnames,
+        :feeds_enabled,
+        :sitemap_enabled,
         :imprint_link_url,
         :imprint_link_label,
         :copyright_link_url,
