@@ -48,7 +48,7 @@ export function createScrollPositionLifecycleProvider(Context) {
     // being active (e.g. fade section) might still stay visible
     // during a short transition even after they are no longer active.
     // For example, this prevents background videos in fade sections
-    // from already being paused while the section is still fading out.x
+    // from already being paused while the section is still fading out.
     const isActiveWithDelay = useDelayedBoolean(isActive, {fromTrueToFalse: 1000});
     const isVisible = onlyVisibleWhileActive ? isActiveWithDelay : isOnScreen;
 
