@@ -141,6 +141,54 @@ describe('useSectionLifecycle', () => {
       expect(getByTestId('testElement')).toHaveTextContent('visible');
     });
 
+    it('stays false even if element is in viewport in fade section', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          sections: [{id: 10, configuration: {transition: 'fade'}}],
+          contentElements: [{sectionId: 10, typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(getByTestId('testElement'))
+      );
+
+      expect(getByTestId('testElement')).not.toHaveTextContent('visible');
+    });
+
+    it('is true if once section is active in fade section', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          sections: [{id: 10, configuration: {transition: 'fade'}}],
+          contentElements: [{sectionId: 10, typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('visible');
+    });
+
+    it('shortly stays true once fade section is no longer active', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          sections: [{id: 10, configuration: {transition: 'fade'}}],
+          contentElements: [{sectionId: 10, typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(getByTestId('testElement'))
+      );
+      act(() =>
+        simulateScrollingOutOfView(findIsActiveProbe(getByTestId('testElement')))
+      );
+
+      expect(getByTestId('testElement')).not.toHaveTextContent('visible');
+    });
+
     it('stays false even with element inside viewport when rendered inside StaticPreview', async () => {
       const {getByTestId} = renderInEntry(<StaticPreview><Entry /></StaticPreview>, {
         seed: {
