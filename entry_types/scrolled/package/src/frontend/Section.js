@@ -49,7 +49,8 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                                    {[styles.narrow]: section.width === 'narrow'},
                                    {[styles.invert]: section.invert})}
              style={useBackdropSectionCustomProperties(backdrop)}>
-      <SectionLifecycleProvider onActivate={onActivate} isLast={!section.nextSection}>
+      <SectionLifecycleProvider onActivate={onActivate}
+                                onlyVisibleWhileActive={section.transition.startsWith('fade')}>
         <SectionAtmo audioFilePermaId={section.atmoAudioFileId} />
 
         <SectionContents section={section}
