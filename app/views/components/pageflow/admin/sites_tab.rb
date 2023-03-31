@@ -9,6 +9,9 @@ module Pageflow
               link_to(site.display_name,
                       admin_account_site_path(site.account, site))
             end
+            column :title do |site|
+              site.title.presence || '-'
+            end
             column :host do |site|
               site.host.presence || '-'
             end
