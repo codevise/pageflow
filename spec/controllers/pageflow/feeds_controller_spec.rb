@@ -2,6 +2,8 @@ require 'spec_helper'
 
 module Pageflow
   describe FeedsController do
+    include UsedFileTestHelper
+
     routes { Engine.routes }
     render_views
 
@@ -67,6 +69,42 @@ module Pageflow
         expect(response.body).to have_xpath(
           '//entry/link[@rel="alternate"][@href="http://pageflow.example.com/custom-slug"]'
         )
+      end
+
+      it 'includes social share image in content' do
+        site = create(:site, cname: 'pageflow.example.com')
+        entry = create(:published_entry,
+                       site: site,
+                       revision_attributes: {
+                         locale: 'en'
+                       })
+        image_file = create_used_file(:image_file, entry: entry, file_name: 'share.jpg')
+        entry.revision.update(share_image_id: image_file.id)
+
+        request.env['HTTP_HOST'] = 'pageflow.example.com'
+        get(:index, params: {locale: 'en'}, format: 'atom')
+
+        expect(response.body)
+          .to have_xpath('//entry/content',
+                         text: %(<img src="#{image_file.thumbnail_url(:thumbnail_large)}"))
+      end
+
+      it 'includes link to entry in content' do
+        site = create(:site, cname: 'pageflow.example.com')
+        create(:entry,
+               :published,
+               title: 'Story One',
+               site: site,
+               published_revision_attributes: {
+                 locale: 'en'
+               })
+
+        request.env['HTTP_HOST'] = 'pageflow.example.com'
+        get(:index, params: {locale: 'en'}, format: 'atom')
+
+        expect(response.body)
+          .to have_xpath('//entry/content',
+                         text: %(<a href="http://pageflow.example.com/story-one"))
       end
 
       it 'includes publication dates' do

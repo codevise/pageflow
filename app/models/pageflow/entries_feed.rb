@@ -17,7 +17,7 @@ module Pageflow
       private
 
       def find_entries(site, locale)
-        PublishedEntry.wrap_all(
+        Pageflow::PublishedEntry.wrap_all(
           site
             .entries
             .published_without_password_protection

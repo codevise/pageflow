@@ -19,5 +19,44 @@ module Pageflow
           title: 'Feed',
           href: href)
     end
+
+    # @api private
+    def feed_entry_content(entry)
+      FeedContent.new(self, entry).build
+    end
+
+    # @api private
+    FeedContent = Struct.new(:template, :entry) do
+      def build
+        [image_html, summary_html, link_html].compact.join
+      end
+
+      private
+
+      def image_html
+        return if entry.thumbnail_file.blank?
+
+        template.content_tag(
+          :p,
+          template.tag(
+            :img,
+            src: entry.thumbnail_file.thumbnail_url(:thumbnail_large),
+            width: 560, height: 315
+          )
+        )
+      end
+
+      def summary_html
+        template.content_tag(:p, template.raw(entry.summary))
+      end
+
+      def link_html
+        template.content_tag(
+          :p,
+          template.link_to(template.t('pageflow.public.read_more'),
+                           template.social_share_entry_url(entry))
+        )
+      end
+    end
   end
 end
