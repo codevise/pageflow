@@ -79,7 +79,7 @@ module Pageflow
                          locale: 'en'
                        })
         image_file = create_used_file(:image_file, entry: entry, file_name: 'share.jpg')
-        entry.revision.update(share_image_id: image_file.id)
+        entry.revision.update(share_image_id: image_file.perma_id)
 
         request.env['HTTP_HOST'] = 'pageflow.example.com'
         get(:index, params: {locale: 'en'}, format: 'atom')
