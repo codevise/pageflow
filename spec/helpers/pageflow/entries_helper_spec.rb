@@ -12,6 +12,12 @@ module Pageflow
         expect(helper.pretty_entry_title(entry)).to eq('test')
       end
 
+      it 'includes the site title when present' do
+        site = build(:site, title: 'Example Blog', cname: 'www.example.com')
+        entry = PublishedEntry.new(build(:entry, title: 'test', site: site), build(:revision))
+        expect(helper.pretty_entry_title(entry)).to eq('test - Example Blog')
+      end
+
       it 'includes the cname domain when present' do
         site = build(:site, cname: 'www.example.com')
         entry = PublishedEntry.new(build(:entry, title: 'test', site: site), build(:revision))
