@@ -1,7 +1,8 @@
 module Pageflow
   module EntriesHelper
     def pretty_entry_title(entry)
-      [entry.title, entry.site.cname_domain.presence].compact.join(' - ')
+      [entry.title,
+       entry.site.title.presence || entry.site.cname_domain.presence].compact.join(' - ')
     end
 
     def pretty_entry_url(entry, options = {})

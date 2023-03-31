@@ -5,9 +5,13 @@ de:
         feeds_enabled: Atom-Feeds
         sitemap_enabled: XML-Sitemap
         account: Konto
+        title: Titel
   pageflow:
     admin:
       sites:
+        title_hint: |-
+          Wird in Titeln der Beiträge und als Titel für den Atom-Feed
+          verwendet.
         feeds_hint: |-
           Wenn diese Option aktiviert ist, stehen Feeds mit allen
           veröffentlichten Beiträgen der Site über URLs der Form

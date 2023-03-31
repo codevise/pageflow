@@ -8,7 +8,7 @@ module Pageflow
     class << self
       def for(site:, locale:)
         new(
-          site.host,
+          site.title.presence || site.host,
           locale,
           find_entries(site, locale)
         )
@@ -17,7 +17,7 @@ module Pageflow
       private
 
       def find_entries(site, locale)
-        PublishedEntry.wrap_all(
+        Pageflow::PublishedEntry.wrap_all(
           site
             .entries
             .published_without_password_protection

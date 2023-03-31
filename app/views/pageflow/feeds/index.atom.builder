@@ -8,7 +8,7 @@ atom_feed language: @feed.locale do |feed|
                published: entry.first_published_at.utc,
                updated: entry.published_at.utc) do |feed_entry|
       feed_entry.title(entry.title)
-      feed_entry.content(entry.summary, type: 'html')
+      feed_entry.content(feed_entry_content(entry), type: 'html')
 
       feed_entry.author do |author|
         author.name(entry.author)

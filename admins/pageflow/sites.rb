@@ -19,6 +19,7 @@ module Pageflow
     permit_params do
       [
         :name,
+        :title,
         :cname,
         :additional_cnames,
         :feeds_enabled,

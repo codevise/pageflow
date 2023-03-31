@@ -218,6 +218,7 @@ module Admin
                account_id: account,
                site: {
                  name: 'second',
+                 title: 'Second Site',
                  sitemap_enabled: true,
                  feeds_enabled: true,
                  imprint_link_url: 'http://example.com/new'
@@ -227,6 +228,7 @@ module Admin
         site = account.sites.last
         expect(site.imprint_link_url).to eq('http://example.com/new')
         expect(site.name).to eq('second')
+        expect(site.title).to eq('Second Site')
         expect(site.sitemap_enabled?).to eq(true)
         expect(site.feeds_enabled?).to eq(true)
       end
@@ -298,6 +300,7 @@ module Admin
               id: site.id,
               site: {
                 name: 'new name',
+                title: 'New Title',
                 sitemap_enabled: true,
                 feeds_enabled: true,
                 imprint_link_url: 'http://example.com/new'
@@ -306,6 +309,7 @@ module Admin
 
         expect(site.reload.imprint_link_url).to eq('http://example.com/new')
         expect(site.name).to eq('new name')
+        expect(site.title).to eq('New Title')
         expect(site.sitemap_enabled?).to eq(true)
         expect(site.feeds_enabled?).to eq(true)
       end

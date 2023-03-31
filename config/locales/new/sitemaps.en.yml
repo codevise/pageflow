@@ -5,9 +5,12 @@ en:
         feeds_enabled: Atom feeds
         sitemap_enabled: XML sitemap
         account: Account
+        title: Title
   pageflow:
     admin:
       sites:
+        title_hint: |-
+          Used in entry titles and as title for the atom feed.
         feeds_hint: |-
           When enabled, feeds containing all published entries of the
           site are available via URLs of the form

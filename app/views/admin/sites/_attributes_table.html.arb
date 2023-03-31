@@ -1,6 +1,7 @@
 extensible_attributes_table_for(site,
                                 Pageflow.config_for(site.account)
                                   .admin_attributes_table_rows.for(:site)) do
+  row :title
   row :host, class: 'host'
   row :account, class: 'account' do
     link_to(site.account.name,
