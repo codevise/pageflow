@@ -29,7 +29,7 @@ export function useIsStaticPreview() {
 
 export function createScrollPositionLifecycleProvider(Context) {
   return function ScrollPositionLifecycleProvider({
-    children, onActivate, onlyVisibleWhileActive
+    children, onActivate, entersWithFadeTransition
   }) {
     const ref = useRef();
     const isActiveProbeRef = useRef();
@@ -38,19 +38,46 @@ export function createScrollPositionLifecycleProvider(Context) {
 
     const shouldLoad = useOnScreen(ref, {rootMargin: '200% 0px 200% 0px'});
     const shouldPrepare = useOnScreen(ref, {rootMargin: '25% 0px 25% 0px'}) && !isStaticPreview;
-    const isOnScreen = useOnScreen(ref) && !isStaticPreview;
-    const isActive = useOnScreen(isActiveProbeRef, {
+
+    // Sections that enter with fade transition only become visible
+    // once they reach the center of the viewport. We want to reflect
+    // that in `isVisible`/`onVisible` to prevent background videos
+    // from starting too soon. Since fade section might still exit
+    // with a scroll transition, we want to keep `isVisible` true
+    // until the section has completely left the viewport. We do not
+    // care about when exactly a background video pauses.
+    //
+    // Note that with fade transitions sections actually stay visible
+    // a bit longer while they are still fading out. This is handled
+    // by `isVisibleWithDelay` below.
+    const shouldBeVisible = useOnScreen(ref, {
+      rootMargin: entersWithFadeTransition ?
+                  '0px 0px -50% 0px' :
+                  undefined
+    }) && !isStaticPreview;
+
+    const shouldBeActive = useOnScreen(isActiveProbeRef, {
       rootMargin: '-50% 0px -50% 0px',
       onIntersecting: onActivate
     }) && !isStaticPreview;
 
-    // Account for the fact that elements that are only visible while
-    // being active (e.g. fade section) might still stay visible
-    // during a short transition even after they are no longer active.
-    // For example, this prevents background videos in fade sections
-    // from already being paused while the section is still fading out.
-    const isActiveWithDelay = useDelayedBoolean(isActive, {fromTrueToFalse: 1000});
-    const isVisible = onlyVisibleWhileActive ? isActiveWithDelay : isOnScreen;
+    // useDelayedBoolean causes an extra render once the delay has
+    // elapsed. When entersWithFadeTransition is false,
+    // isVisibleWithDelay is never used, though. Since hooks can not
+    // be wrapped in conditionals, we ensure that the value passed to
+    // useDelayedBoolean is always false if entersWithFadeTransition
+    // is false. This prevents the extra render.
+    const isVisibleWithDelay = useDelayedBoolean(
+      shouldBeVisible && entersWithFadeTransition,
+      {fromTrueToFalse: 1000}
+    );
+
+    const isVisible = entersWithFadeTransition ? isVisibleWithDelay : shouldBeVisible;
+
+    // We want to make sure that `onActivate` is never called before
+    // `onVisible`, no matter in which order the intersection
+    // observers above fire.
+    const isActive = isVisible && shouldBeActive
 
     const value = useMemo(() => ({
       shouldLoad, shouldPrepare, isVisible, isActive}
