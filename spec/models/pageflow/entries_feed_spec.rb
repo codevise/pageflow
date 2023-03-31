@@ -2,6 +2,20 @@ require 'spec_helper'
 
 module Pageflow
   describe EntriesFeed do
+    it 'uses site title as feed title' do
+      site = create(:site, title: 'Example Blog', cname: 'pageflow.example.com')
+      feed = EntriesFeed.for(site: site, locale: 'en')
+
+      expect(feed.title).to eq('Example Blog')
+    end
+
+    it 'falls back to site host for feed title' do
+      site = create(:site, cname: 'pageflow.example.com')
+      feed = EntriesFeed.for(site: site, locale: 'en')
+
+      expect(feed.title).to eq('pageflow.example.com')
+    end
+
     it 'sorts entries by first publication date' do
       site = create(:site, cname: 'pageflow.example.com')
       create(:entry,

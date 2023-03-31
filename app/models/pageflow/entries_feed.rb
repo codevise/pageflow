@@ -8,7 +8,7 @@ module Pageflow
     class << self
       def for(site:, locale:)
         new(
-          site.host,
+          site.title.presence || site.host,
           locale,
           find_entries(site, locale)
         )
