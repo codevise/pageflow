@@ -24,6 +24,53 @@ module Pageflow
                             visible: false)
       end
 
+      it 'uses custom feed url of site' do
+        site = create(:site, custom_feed_url: 'https://example.com/custom.atom')
+        entry = create(:published_entry,
+                       site: site,
+                       revision_attributes: {
+                         locale: 'de'
+                       })
+
+        result = helper.feed_link_tags_for_entry(entry)
+
+        expect(result)
+          .to have_selector('link[href="https://example.com/custom.atom"]',
+                            visible: false)
+      end
+
+      it 'ignores emptry custom feed url' do
+        site = create(:site,
+                      cname: 'pageflow.example.com',
+                      custom_feed_url: '')
+        entry = create(:published_entry,
+                       site: site,
+                       revision_attributes: {
+                         locale: 'de'
+                       })
+
+        result = helper.feed_link_tags_for_entry(entry)
+
+        expect(result)
+          .to have_selector('link[href="http://pageflow.example.com/feeds/de.atom"]',
+                            visible: false)
+      end
+
+      it 'supports interpolating entry locale in custom feed url' do
+        site = create(:site, custom_feed_url: 'https://example.com/:locale/custom.atom')
+        entry = create(:published_entry,
+                       site: site,
+                       revision_attributes: {
+                         locale: 'de'
+                       })
+
+        result = helper.feed_link_tags_for_entry(entry)
+
+        expect(result)
+          .to have_selector('link[href="https://example.com/de/custom.atom"]',
+                            visible: false)
+      end
+
       it 'renders nothing when feeds are not enabled in site' do
         site = create(:site,
                       cname: 'pageflow.example.com',

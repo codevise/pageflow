@@ -8,10 +8,14 @@ module Pageflow
     def feed_link_tags_for_entry(entry)
       return '' unless entry.site.feeds_enabled?
 
-      href = pageflow.feed_url({
-        locale: entry.locale,
-        format: 'atom'
-      }.merge(Pageflow.config.site_url_options(entry.site) || {}))
+      href =
+        entry.site.custom_feed_url.presence&.gsub(':locale', entry.locale) ||
+        pageflow.feed_url(
+          {
+            locale: entry.locale,
+            format: 'atom'
+          }.merge(Pageflow.config.site_url_options(entry.site) || {})
+        )
 
       tag(:link,
           rel: 'alternate',
