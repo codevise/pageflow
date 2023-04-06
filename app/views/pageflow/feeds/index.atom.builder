@@ -1,4 +1,6 @@
-atom_feed language: @feed.locale do |feed|
+atom_feed language: @feed.locale,
+          root_url: @feed.root_url,
+          url: @feed.custom_url do |feed|
   feed.title(@feed.title)
   feed.updated(@feed.updated_at&.utc)
 

@@ -47,12 +47,42 @@ module Pageflow
         expect(without_namespaces(response.body)).to have_xpath('//feed[@lang="en"]')
         expect(response.body).to have_xpath('//feed/updated')
         expect(response.body).to have_xpath('//feed/title', text: 'pageflow.example.com')
+        expect(response.body).to have_xpath(
+          '//feed/link[@rel="alternate"][@href="http://pageflow.example.com"]'
+        )
+        expect(response.body).to have_xpath(
+          '//feed/link[@rel="self"][@href="http://pageflow.example.com/feeds/en.atom"]'
+        )
         expect(response.body).to have_xpath('//entry/title', text: 'Story One')
         expect(response.body).to have_xpath('//entry/title', text: 'Story Two')
         expect(response.body).to have_xpath('//entry/content', text: 'This is <b>the</b> story.')
         expect(response.body).to have_xpath(
           '//entry/link[@rel="alternate"][@href="http://pageflow.example.com/story-one"]'
         )
+      end
+
+      it 'uses custom feed url of site as self' do
+        create(:site,
+               cname: 'pageflow.example.com',
+               custom_feed_url: 'https://custom.example.com/:locale/feed.atom')
+
+        request.env['HTTP_HOST'] = 'pageflow.example.com'
+        get(:index, params: {locale: 'en'}, format: 'atom')
+
+        expect(response.body).to have_xpath('//feed/link[@rel="self"]' \
+                                            '[@href="https://custom.example.com/en/feed.atom"]')
+      end
+
+      it 'uses canonical_entry_url_prefix of site as alternate' do
+        create(:site,
+               cname: 'pageflow.example.com',
+               canonical_entry_url_prefix: 'https://example.com/:locale/')
+
+        request.env['HTTP_HOST'] = 'pageflow.example.com'
+        get(:index, params: {locale: 'en'}, format: 'atom')
+
+        expect(response.body).to have_xpath('//feed/link[@rel="alternate"]' \
+                                            '[@href="https://example.com/en/"]')
       end
 
       it 'uses permalinks in alternate url' do
