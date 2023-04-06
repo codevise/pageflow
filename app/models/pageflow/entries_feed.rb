@@ -1,6 +1,6 @@
 module Pageflow
   # @api private
-  EntriesFeed = Struct.new(:title, :locale, :entries) do
+  EntriesFeed = Struct.new(:title, :locale, :custom_url, :root_url, :entries) do
     def updated_at
       entries.map(&:published_at).max
     end
@@ -10,6 +10,8 @@ module Pageflow
         new(
           site.title.presence || site.host,
           locale,
+          site.custom_feed_url&.gsub(':locale', locale),
+          site.canonical_entry_url_prefix&.gsub(':locale', locale),
           find_entries(site, locale)
         )
       end
