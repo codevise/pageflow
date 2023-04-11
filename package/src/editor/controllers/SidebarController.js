@@ -68,7 +68,9 @@ export const SidebarController = Marionette.Controller.extend({
   publish: function() {
     this.region.show(PublishEntryView.create({
       model: this.entry,
-      entryPublication: new EntryPublication()
+      account: state.account,
+      entryPublication: new EntryPublication(),
+      config: state.config
     }));
 
     editor.setDefaultHelpEntry('pageflow.help_entries.publish');
