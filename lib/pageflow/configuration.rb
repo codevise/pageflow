@@ -232,6 +232,12 @@ module Pageflow
     # boolean. Defaults to false.
     attr_accessor :confirm_encoding_jobs
 
+    # Controls default value of "published until" date field in editor
+    # publish entry view.
+    #
+    # @since edge
+    attr_accessor :default_published_until_duration_in_months
+
     # Used by Pageflow extensions to provide new tabs to be displayed
     # in the admin.
     #
@@ -412,6 +418,7 @@ module Pageflow
       @transform_theme_customization_files = ->(files, _entry) { files }
 
       @confirm_encoding_jobs = false
+      @default_published_until_duration_in_months = 12
 
       @admin_resource_tabs = Pageflow::Admin::Tabs.new
       @admin_form_inputs = Pageflow::Admin::FormInputs.new
