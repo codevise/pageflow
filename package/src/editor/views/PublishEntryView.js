@@ -1,10 +1,9 @@
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
+import 'jquery-ui';
 
 import {BackButtonDecoratorView} from './BackButtonDecoratorView';
 import {EntryPublicationQuotaDecoratorView} from './EntryPublicationQuotaDecoratorView';
-
-import {state} from '$state';
 
 import template from '../templates/publishEntry.jst';
 
@@ -87,10 +86,10 @@ export const PublishEntryView = Marionette.ItemView.extend({
       this.ui.publishUntilTimeField.val(timeStr(publishedUntil));
     }
     else {
-      this.ui.publishUntilField.datepicker('setDate', oneYearFromNow());
+      this.ui.publishUntilField.datepicker('setDate', this.defaultPublishedUntilDate());
     }
 
-    this.ui.userNameField.val(state.account.get('name'));
+    this.ui.userNameField.val(this.options.account.get('name'));
 
     if (this.model.get('password_protected')) {
       this.ui.passwordProtectedCheckBox.prop('checked', true);
@@ -111,12 +110,6 @@ export const PublishEntryView = Marionette.ItemView.extend({
       function twoDigits(val) {
         return ("0" + val).slice(-2);
       }
-    }
-
-    function oneYearFromNow() {
-      var date = new Date();
-      date.setFullYear(date.getFullYear() + 1);
-      return date;
     }
   },
 
@@ -191,6 +184,13 @@ export const PublishEntryView = Marionette.ItemView.extend({
       }
       return false;
     }
+  },
+
+  defaultPublishedUntilDate: function() {
+    const date = new Date();
+    date.setMonth(date.getMonth() +
+                  this.options.config.defaultPublishedUntilDurationInMonths);
+    return date;
   },
 
   enableSave: function() {

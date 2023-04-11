@@ -1,6 +1,7 @@
 json.key_format!(camelize: :lower)
 json.call(Pageflow.config,
           :confirm_encoding_jobs,
+          :default_published_until_duration_in_months,
           :available_locales,
           :available_public_locales,
           :available_text_track_kinds,

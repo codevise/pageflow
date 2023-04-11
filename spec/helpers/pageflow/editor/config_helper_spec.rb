@@ -98,6 +98,20 @@ module Pageflow
         result = JSON.parse(helper.editor_config_seeds(create(:entry)))
         expect(result['fileImporters']).to be_empty
       end
+
+      it 'includes default published_until duration option' do
+        result = JSON.parse(helper.editor_config_seeds(create(:entry)))
+
+        expect(result['defaultPublishedUntilDurationInMonths']).to eq(12)
+      end
+
+      it 'allows overrriding default published_until duration in config' do
+        Pageflow.config.default_published_until_duration_in_months = 24
+
+        result = JSON.parse(helper.editor_config_seeds(create(:entry)))
+
+        expect(result['defaultPublishedUntilDurationInMonths']).to eq(24)
+      end
     end
   end
 end
