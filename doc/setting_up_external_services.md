@@ -73,20 +73,21 @@ trouble when using https.
     This is required for file uploads to work.
 
 ```
-<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-    <CORSRule>
-        <AllowedOrigin>*</AllowedOrigin>
-        <AllowedMethod>GET</AllowedMethod>
-        <MaxAgeSeconds>28800</MaxAgeSeconds>
-        <AllowedHeader>*</AllowedHeader>
-    </CORSRule>
-    <CORSRule>
-        <AllowedOrigin>{insert your origin here}</AllowedOrigin>
-        <AllowedMethod>POST</AllowedMethod>
-        <MaxAgeSeconds>3000</MaxAgeSeconds>
-        <AllowedHeader>*</AllowedHeader>
-    </CORSRule>
-</CORSConfiguration>
+[
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["GET"],
+    "AllowedOrigins": ["*"],
+    "MaxAgeSeconds": 28800
+  },
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["POST"],
+    "AllowedOrigins": ["{insert your origin here}"],
+    "MaxAgeSeconds": 3000
+  }
+]
+
 ```
 
 You will need to make sure that your production bucket has an appropriate origin set for _AllowedOrigin_.
