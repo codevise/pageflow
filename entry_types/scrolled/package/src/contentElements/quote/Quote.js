@@ -9,6 +9,8 @@ import {
   paletteColor
 } from 'pageflow-scrolled/frontend';
 
+import {isBlank} from './isBlank';
+
 import styles from './Quote.module.css';
 
 export function Quote({configuration, contentElementId, sectionProps}) {
@@ -52,10 +54,4 @@ function getTextScaleCategory(configuration) {
     default:
       return 'quoteText-md';
   }
-}
-
-function isBlank(value) {
-  return value.length <= 1 &&
-         value[0]?.children.length <= 1 &&
-         !value[0]?.children[0]?.text;
 }
