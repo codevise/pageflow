@@ -262,19 +262,27 @@ function getAttributes(model, {attributeNames, includeConfiguration}) {
 }
 
 export function getItems(state, collectionName) {
-  if (state[collectionName]) {
-    const items = state[collectionName].items;
-    return state[collectionName].order.map(key => items[key]);
-  }
-  else {
-    return [];
-  }
+  return toOrderedItems(state[collectionName]);
 }
 
 export function getItem(state, collectionName, key) {
   if (state[collectionName]) {
     return state[collectionName].items[key];
   }
+}
+
+export function createMultipleItemsSelector(collectionNames, filter) {
+  return createSelector(
+    ...collectionNames.map(collectionName =>
+      collections => collections[collectionName]
+    ),
+    (...collections) => {
+      return collectionNames.reduce((result, collectionName, index) => {
+        result[collectionName] = toOrderedItems(collections[index]);
+        return result;
+      }, {});
+    }
+  );
 }
 
 export function createItemsSelector(collectionName, filter) {
@@ -289,16 +297,18 @@ export function createItemsSelector(collectionName, filter) {
 
   return createSelector(
     collections => collections[collectionName],
-    collection => {
-      if (collection) {
-        const items = collection.items;
-        return collection.order.map(key => items[key]);
-      }
-      else {
-        return [];
-      }
-    }
+    toOrderedItems
   );
+}
+
+function toOrderedItems(collection) {
+  if (collection) {
+    const items = collection.items;
+    return collection.order.map(key => items[key]);
+  }
+  else {
+    return [];
+  }
 }
 
 const createShallowEqualArraysSelector = createSelectorCreator(
