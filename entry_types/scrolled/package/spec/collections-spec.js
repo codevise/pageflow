@@ -3,6 +3,7 @@ import {
   watchCollection,
   updateConfiguration,
   createItemsSelector,
+  createMultipleItemsSelector,
   getItems,
   getItem
 } from 'collections';
@@ -979,5 +980,38 @@ describe('createItemsSelector', () => {
     const items2 = selector(state);
 
     expect(items1).not.toBe(items2);
+  });
+});
+
+describe('createMultipleItemsSelector', () => {
+  it('returns function that returns multiple arrays of items in order', () => {
+    const {result} = renderHook(() => useCollections({
+      imageFiles: [{id: 10}, {id: 11}, {id: 12}],
+      videoFiles: [{id: 30}, {id: 31}]
+    }));
+
+    const [state,] = result.current;
+    const arraysOfItems = createMultipleItemsSelector(
+      ['imageFiles', 'videoFiles']
+    )(state);
+
+    expect(arraysOfItems).toEqual({
+      imageFiles: [{id: 10}, {id: 11}, {id: 12}],
+      videoFiles: [{id: 30}, {id: 31}]
+    });
+  });
+
+  it('returns referentially equal array if state is unchanged', () => {
+    const {result} = renderHook(() => useCollections({
+      imageFiles: [{id: 10}, {id: 11}, {id: 12}],
+      videoFiles: [{id: 30}, {id: 31}]
+    }));
+
+    const [state,] = result.current;
+    const selector = createMultipleItemsSelector(['imageFiles', 'videoFiles']);
+    const result1 = selector(state);
+    const result2 = selector(state);
+
+    expect(result1).toBe(result2);
   });
 });

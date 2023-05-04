@@ -1,27 +1,33 @@
 import {useEntryMetadata} from "./metadata";
-import {useEntryStateConfig, useEntryStateCollectionItems} from "./EntryStateProvider";
+import {
+  useEntryStateConfig,
+  useMultipleEntryStateCollectionItems
+} from "./EntryStateProvider";
 
 /**
  * Returns a string (comma-separated list) of copyrights of
- * all images used in the entry.
- * If none of the images has a rights attribute configured,
+ * all files used in the entry.
+ * If none of the files has a rights attribute configured,
  * it falls back to the default file rights of the entry's account,
  * otherwise returns an empty string
  *
  * @example
  *
  * const fileRights = useFileRights();
- * fileRights // => "author of image 1, author of image 2"
+ * fileRights // => "author of image 1, author of video 2"
  */
 export function useFileRights() {
   const config = useEntryStateConfig();
-  const imageFiles = useEntryStateCollectionItems('imageFiles');
+  const fileCollectionNames = Object.keys(config.fileModelTypes);
+  const files = useMultipleEntryStateCollectionItems(fileCollectionNames);
 
   const defaultFileRights = config.defaultFileRights?.trim();
 
-  return Array.from(new Set(imageFiles.map(function(imageFile) {
-    return imageFile.rights?.trim() || defaultFileRights;
-  }))).filter(Boolean).join(', ');
+  return Array.from(new Set(Object.keys(files).flatMap(key =>
+    files[key].map(file =>
+      file.rights?.trim() || defaultFileRights
+    )
+  ))).sort().filter(Boolean).join(', ');
 }
 
 /**

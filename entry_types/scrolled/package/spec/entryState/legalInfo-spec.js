@@ -89,14 +89,17 @@ describe('useFileRights', () => {
       () => useFileRights(), {
         seed: {
           imageFiles: [
-            {rights: 'author'}
+            {rights: 'author B'}
+          ],
+          videoFiles: [
+            {rights: 'author A'}
           ]
         }
       }
     );
 
     const fileRights = result.current;
-    expect(fileRights).toEqual('author');
+    expect(fileRights).toEqual('author A, author B');
   });
 
   it('returns comma separated list of file rights', () => {
@@ -140,13 +143,17 @@ describe('useFileRights', () => {
             {rights: 'author2'},
             {rights: 'author1'},
           ],
+          videoFiles: [
+            {rights: 'author2'},
+            {rights: 'author3'},
+          ],
           defaultFileRights: 'author1'
         }
       }
     );
 
     const fileRights = result.current;
-    expect(fileRights).toEqual('author1, author2');
+    expect(fileRights).toEqual('author1, author2, author3');
   });
 
   it('does not insert extra comma if a file has no rights and defaults are not configured', () => {
@@ -182,11 +189,10 @@ describe('useFileRights', () => {
     expect(fileRights).toEqual('');
   });
 
-  it('returns empty string if no image files are present', () => {
+  it('returns empty string if no files are present', () => {
     const {result} = renderHookInEntry(
       () => useFileRights(), {
         seed: {
-          imageFiles: [],
           defaultFileRights: 'default'
         }
       }
@@ -206,12 +212,22 @@ describe('useFileRights', () => {
         setup: (dispatch, entryTypeSeed) => {
           watchCollections(factories.entry(ScrolledEntry, {}, {
             entryTypeSeed,
-            fileTypes: factories.fileTypesWithImageFileType(),
+            fileTypes: factories.fileTypes(function() {
+              this.withImageFileType();
+              this.withVideoFileType();
+              this.withTextTrackFileType();
+            }),
             filesAttributes: {
               image_files: [
                 {
                   perma_id: 1,
-                  rights: 'author'
+                  rights: 'author 1'
+                }
+              ],
+              video_files: [
+                {
+                  perma_id: 1,
+                  rights: 'author 2'
                 }
               ]
             }
@@ -221,6 +237,6 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toEqual('author');
+    expect(fileRights).toEqual('author 1, author 2');
   });
 });
