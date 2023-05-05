@@ -37,9 +37,13 @@ module Pageflow
 
     describe '.resolve' do
       it 'adds default widgets for missing roles' do
-        widget_type = TestWidgetType.new(name: 'default_header', roles: ['header'])
+        default_widget_type = TestWidgetType.new(name: 'default_header',
+                                                 roles: ['header'])
+        custom_widget_type = TestWidgetType.new(name: 'custom_navigation',
+                                                roles: ['navigation'])
         config = Configuration.new
-        config.widget_types.register(widget_type, default: true)
+        config.widget_types.register(default_widget_type, default: true)
+        config.widget_types.register(custom_widget_type)
         revision = create(:revision)
         create(:widget, subject: revision, role: 'navigation', type_name: 'custom_navigation')
 
@@ -50,9 +54,13 @@ module Pageflow
       end
 
       it 'overrides defaults with subject widgets' do
-        widget_type = TestWidgetType.new(name: 'default_header', roles: ['header'])
+        default_widget_type = TestWidgetType.new(name: 'default_header',
+                                                 roles: ['header'])
+        custom_widget_type = TestWidgetType.new(name: 'custom_header',
+                                                roles: ['header'])
         config = Configuration.new
-        config.widget_types.register(widget_type, default: true)
+        config.widget_types.register(default_widget_type, default: true)
+        config.widget_types.register(custom_widget_type)
         revision = create(:revision)
         create(:widget, subject: revision, role: 'header', type_name: 'custom_header')
 
@@ -73,14 +81,14 @@ module Pageflow
         expect(widgets.first.widget_type).to be(widget_type)
       end
 
-      it 'sets widget type attribute to null widget type if type_name cannot be found' do
+      it 'filters out widgets with unknown widget type' do
         config = Configuration.new
         revision = create(:revision)
         create(:widget, subject: revision, role: 'header', type_name: 'unknown')
 
         widgets = revision.widgets.resolve(config)
 
-        expect(widgets.first.widget_type).to be_kind_of(WidgetType::Null)
+        expect(widgets).to eq([])
       end
 
       it 'assigns default configurations to widgets' do
@@ -154,6 +162,17 @@ module Pageflow
         widgets = revision.widgets.resolve(config, include_placeholders: true)
 
         expect(widgets).to include_record_with(type_name: nil, role: 'header')
+      end
+
+      it 'sets widget type attribute to null widget type for placeholders' do
+        widget_type = TestWidgetType.new(name: 'header', roles: ['header'])
+        config = Configuration.new
+        config.widget_types.register(widget_type)
+        revision = create(:revision)
+
+        widgets = revision.widgets.resolve(config, include_placeholders: true)
+
+        expect(widgets.first.widget_type).to be_kind_of(WidgetType::Null)
       end
 
       it 'does not filter widgets by insert point by default' do

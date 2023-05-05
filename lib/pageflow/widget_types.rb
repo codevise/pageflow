@@ -41,6 +41,10 @@ module Pageflow
       @widget_types.fetch(name, &block)
     end
 
+    def type_name?(name)
+      @widget_types.key?(name)
+    end
+
     def default_configuration(name)
       @default_configurations[name]
     end
