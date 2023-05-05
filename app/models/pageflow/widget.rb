@@ -72,7 +72,14 @@ module Pageflow
       end
 
       def from_db_by_role
-        Widget.all.index_by(&:role)
+        reject_unknown_widget_types(Widget.all)
+          .index_by(&:role)
+      end
+
+      def reject_unknown_widget_types(widgets)
+        widgets.select do |widget|
+          config.widget_types.type_name?(widget.type_name)
+        end
       end
 
       def defaults_by_role

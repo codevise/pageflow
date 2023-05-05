@@ -9,6 +9,9 @@ module Pageflow
       before do
         pageflow_configure do |config|
           config.widget_types.clear
+          config.widget_types.register(
+            TestWidgetType.new(name: 'test_widget')
+          )
         end
       end
 
