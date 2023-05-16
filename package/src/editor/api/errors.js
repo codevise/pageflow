@@ -1,6 +1,5 @@
 import Cocktail from 'cocktail';
 import I18n from 'i18n-js';
-import _ from 'underscore';
 
 import {Object} from 'pageflow/ui';
 
@@ -36,10 +35,9 @@ export const UnmatchedUploadError = UploadError.extend({
 
 export const validFileTypeTranslationList = {
   validFileTypeTranslations: function(validFileTypes) {
-    return _.map(validFileTypes,
-            function(validFileType) {
-              return I18n.t('activerecord.models.' + validFileType.i18nKey + '.other');
-            }).join(', ');
+    return validFileTypes.map(function(validFileType) {
+      return I18n.t('activerecord.models.' + validFileType.i18nKey + '.other');
+    }).join(', ');
   }
 };
 
@@ -71,7 +69,7 @@ export const InvalidNestedTypeError = UploadError.extend({
   initialize: function(upload, options) {
     var editor = options.editor;
     var fileType = options.fileType;
-    var validFileTypes = editor.nextUploadTargetFile.fileType().nestedFileTypes.fileTypes;
+    var validFileTypes = editor.nextUploadTargetFile.fileType().nestedFileTypes;
     var validFileTypeTranslations = this.validFileTypeTranslations(validFileTypes);
 
     var typeI18nKey = fileType.i18nKey;

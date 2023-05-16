@@ -4,3 +4,8 @@ en:
       files:
         tabs:
           other_files: Other
+  activerecord:
+    models:
+      pageflow/other_file:
+        one: "Unknown file"
+        many: "Unknown files"
