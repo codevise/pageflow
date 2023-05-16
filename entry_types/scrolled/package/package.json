@@ -21,7 +21,7 @@
     "react-draggable": "^4.4.2",
     "react-measure": "^2.3.0",
     "react-player": "^1.15.2",
-    "react-quick-pinch-zoom": "^4.5.0",
+    "react-quick-pinch-zoom": "^4.8.0",
     "react-tooltip": "^3.11.1",
     "react_ujs": "^2.6.1",
     "reselect": "^4.0.0",

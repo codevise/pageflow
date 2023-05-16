@@ -10373,10 +10373,10 @@ react-popper@^1.3.6:
     typed-styles "^0.0.7"
     warning "^4.0.2"
 
-react-quick-pinch-zoom@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/react-quick-pinch-zoom/-/react-quick-pinch-zoom-4.5.0.tgz#e50a40821eeb2c34025dc0503f836a2e44cd521a"
-  integrity sha512-VmfiGNinkvzr17HksxKk+UyLBUWLlbphWccd4CBiys3W3p8+d3BeT0AhJx4hm5EgKN+7plPwoIKw+hjBiiInug==
+react-quick-pinch-zoom@^4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/react-quick-pinch-zoom/-/react-quick-pinch-zoom-4.8.0.tgz#8bd630cc80d4cc1e836426f545d52e4346834a12"
+  integrity sha512-YfbSmDQ9RzLKueDqzi9hZKgjkqZxdCxnPg7dZAU42GXYHfyITy+YKa4Om2B9G8p9X0ZzmlYaYfVSuxDKj+aOCA==
 
 react-sizeme@^2.6.7:
   version "2.6.12"

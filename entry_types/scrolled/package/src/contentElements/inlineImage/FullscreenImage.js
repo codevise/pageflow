@@ -21,8 +21,12 @@ export function FullscreenImage({
     <div className={styles.full}>
       <QuickPinchZoom onUpdate={onUpdate}
                       isTouch={() => true}
+                      minZoom={0.8}
                       maxZoom={5}
-                      draggableUnZoomed={false}>
+                      tapZoomFactor={1.5}
+                      doubleTapToggleZoom
+                      enforceBoundsDuringZoom
+                      centerContained>
         <img src={imageFile.urls.large}
              alt="img"
              ref={imgRef}
