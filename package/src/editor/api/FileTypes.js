@@ -39,8 +39,8 @@ export const FileTypes = Object.extend({
     var clientSideConfigs = this.clientSideConfigs;
     this._setup = true;
 
-    this.collection =
-      new FileTypesCollection(_.map(serverSideConfigs, function(serverSideConfig) {
+    var configs =
+      _.chain(serverSideConfigs).map(serverSideConfig => {
         var clientSideConfig = clientSideConfigs[serverSideConfig.collectionName];
 
         if (!clientSideConfig) {
@@ -54,8 +54,10 @@ export const FileTypes = Object.extend({
             this.applyModification(clientSideConfig, modification);
           }, this);
 
-        return new FileType(_.extend({}, serverSideConfig, clientSideConfig));
-      }, this));
+        return _.extend({}, serverSideConfig, clientSideConfig);;
+      }).sortBy(config => config.priority || 10).value()
+
+    this.collection = new FileTypesCollection(_.map(configs, config => new FileType(config)));
     var those = this;
 
     _.map(serverSideConfigs, function(serverSideConfig) {

@@ -171,6 +171,7 @@ app.addInitializer(function(options) {
       altMetaDataAttribute
     ],
     matchUpload: () => true,
+    priority: 100,
     configurationEditorInputs: [
       {
         name: 'alt',

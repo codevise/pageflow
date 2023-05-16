@@ -1,4 +1,5 @@
 import {ImageFile, UnmatchedUploadError, VideoFile} from 'pageflow/editor';
+import {OtherFile} from 'pageflow/editor/models/OtherFile';
 import {FileTypes} from 'pageflow/editor/api/FileTypes';
 
 describe('FileTypesCollection', () => {
@@ -31,6 +32,33 @@ describe('FileTypesCollection', () => {
         expect(result.collectionName).toBe('video_files');
       }
     );
+
+    it('allows setting priority on file types', () => {
+      var fileTypes = new FileTypes();
+      var upload = {type: 'video/mp4'};
+
+      fileTypes.register('other_files', {
+        model: OtherFile,
+        matchUpload: function(upload) {
+          return true;
+        },
+        priority: 100
+      });
+      fileTypes.register('video_files', {
+        model: VideoFile,
+        matchUpload: function(upload) {
+          return upload.type.match(/^video/);
+        }
+      });
+      fileTypes.setup([
+        {collectionName: 'other_files'},
+        {collectionName: 'video_files'}
+      ]);
+
+      var result = fileTypes.findByUpload(upload);
+
+      expect(result.collectionName).toBe('video_files');
+    });
 
     it(
       'returns first FileType whose uploadType matches type of upload',
