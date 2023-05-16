@@ -53,6 +53,19 @@ module Pageflow
         expect(widgets).to include_record_with(type_name: 'custom_navigation', role: 'navigation')
       end
 
+      it 'allows turning default widget off' do
+        default_widget_type = TestWidgetType.new(name: 'default_navigation',
+                                                 roles: ['navigation'])
+        config = Configuration.new
+        config.widget_types.register(default_widget_type, default: true)
+        revision = create(:revision)
+        create(:widget, subject: revision, role: 'navigation', type_name: '')
+
+        widgets = revision.widgets.resolve(config)
+
+        expect(widgets).to include_record_with(type_name: '', role: 'navigation')
+      end
+
       it 'overrides defaults with subject widgets' do
         default_widget_type = TestWidgetType.new(name: 'default_header',
                                                  roles: ['header'])
