@@ -78,7 +78,8 @@ module Pageflow
 
       def reject_unknown_widget_types(widgets)
         widgets.select do |widget|
-          config.widget_types.type_name?(widget.type_name)
+          widget.type_name.blank? ||
+            config.widget_types.type_name?(widget.type_name)
         end
       end
 
