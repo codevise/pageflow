@@ -273,8 +273,6 @@ en:
             portraitId:
               inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to provide an alternative to a landscape image that would otherwise be displayed too small.
               label: Image (Portrait)
-            enableFullscreen:
-              label: Enable Fullscreen
           description: Display an image
           name: Inline Image
           tabs:

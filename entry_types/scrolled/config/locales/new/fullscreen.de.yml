@@ -1,0 +1,9 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        inlineImage:
+          attributes:
+            enableFullscreen:
+              label: Vollbildmodus aktivieren
+              inline_help: Bild per Klick bildschirmfüllend öffnen.
