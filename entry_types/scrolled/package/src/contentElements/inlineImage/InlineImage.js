@@ -65,14 +65,14 @@ function ImageWithCaption({imageFile, contentElementId, configuration}) {
       <ContentElementBox>
         <Figure caption={configuration.caption}>
           <FitViewport.Content>
-            <ExpandableImage enabled={supportFullscreen}
+            <ExpandableImage enabled={supportFullscreen && shouldLoad}
                              imageFile={imageFile}
                              contentElementId={contentElementId}>
               <Image imageFile={imageFile}
                      load={shouldLoad}
                      structuredData={true}
                      variant={configuration.position === 'full' ? 'large' : 'medium'}
-                     preferSvg={true} />}
+                     preferSvg={true} />
             </ExpandableImage>
           </FitViewport.Content>
         </Figure>

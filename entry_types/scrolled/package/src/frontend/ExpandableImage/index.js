@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 
-import {Viewer} from './Viewer';
+const Viewer = React.lazy(() => import('./Viewer'));
 
 export function ExpandableImage({enabled, ...props}) {
   if (!enabled) {
@@ -8,6 +8,8 @@ export function ExpandableImage({enabled, ...props}) {
   }
 
   return (
-    <Viewer {...props} />
+    <Suspense fallback={<div />}>
+      <Viewer {...props} />
+    </Suspense>
   );
 }

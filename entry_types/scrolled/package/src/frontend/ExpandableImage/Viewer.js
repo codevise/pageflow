@@ -7,7 +7,7 @@ import {ToggleFullscreenButton} from '../ToggleFullscreenButton';
 
 import styles from './Viewer.module.css';
 
-export function Viewer({
+export default function Viewer({
   imageFile,
   contentElementId,
   children
