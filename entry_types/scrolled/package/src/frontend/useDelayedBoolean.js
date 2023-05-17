@@ -1,23 +1,25 @@
 import {useState, useEffect, useRef} from 'react';
 
-export function useDelayedBoolean(value, {fromTrueToFalse}) {
+export function useDelayedBoolean(value, {fromFalseToTrue, fromTrueToFalse}) {
   const [, setFlag] = useState(false);
   const timeoutRef = useRef(null);
-  const ref = useRef(false);
+  const ref = useRef(value);
 
   useEffect(() => {
-    if (value) {
-      ref.current = true;
+    if ((value && !fromFalseToTrue) ||
+        (!value && !fromTrueToFalse)) {
+      ref.current = value;
     }
-    else if (ref.current) {
+    else if (ref.current !== value) {
       timeoutRef.current = setTimeout(() => {
-        ref.current = false;
-        setFlag(value => !value);
-      }, fromTrueToFalse);
+        ref.current = value;
+        setFlag(flag => !flag);
+      }, ref.current ? fromTrueToFalse : fromFalseToTrue);
 
       return () => clearTimeout(timeoutRef.current);
     }
-  }, [value, fromTrueToFalse]);
+  }, [value, fromTrueToFalse, fromFalseToTrue]);
 
-  return value || ref.current;
+  return (!fromFalseToTrue && value) ||
+         (ref.current && (!!fromTrueToFalse || value));
 };
