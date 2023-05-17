@@ -32,13 +32,16 @@ export default function Viewer({
 
   const enterFullscreen = useCallback(() => {
     setIsFullscreen(true);
-    window.history.pushState({fullscreenInlineImage: contentElementId}, '');
+
+    if (window.parent === window) {
+      window.history.pushState({fullscreenInlineImage: contentElementId}, '');
+    }
   }, [contentElementId]);
 
   const exitFullscreen = useCallback(() => {
     setIsFullscreen(false);
 
-    if (window.history.state?.fullscreenInlineImage) {
+    if (window.history.state?.fullscreenInlineImage && window.parent === window) {
       window.history.back();
     }
   }, []);
