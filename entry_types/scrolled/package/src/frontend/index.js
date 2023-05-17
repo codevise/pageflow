@@ -43,10 +43,9 @@ export {VideoPlayerControls} from './VideoPlayerControls';
 export {AudioPlayerControls} from './AudioPlayerControls';
 export {PlayerControls, ClassicPlayerControls, WaveformPlayerControls} from './PlayerControls';
 export {PlayerEventContextDataProvider} from './useEventContextData';
-export {SwipeToClose} from './SwipeToClose';
-export {ToggleFullscreenButton} from "./ToggleFullscreenButton";
 
 export {Panorama} from './Panorama';
+export {ExpandableImage} from './ExpandableImage';
 
 export * from './useOnScreen';
 export * from './i18n';
@@ -55,7 +54,6 @@ export * from './SectionThumbnail';
 export {Entry} from './Entry';
 export {useAudioFocus} from './useAudioFocus';
 export {useDarkBackground} from './backgroundColor';
-export {useDelayedBoolean} from './useDelayedBoolean';
 
 export {
   useAdditionalSeedData,

@@ -8,8 +8,8 @@ import {
   useContentElementLifecycle,
   useFile,
   usePortraitOrientation,
+  ExpandableImage
 } from 'pageflow-scrolled/frontend';
-import { Viewer } from './Viewer';
 
 export function InlineImage({contentElementId, configuration}) {
   const imageFile = useFile({
@@ -56,7 +56,7 @@ function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile,
 function ImageWithCaption({imageFile, contentElementId, configuration}) {
   const {shouldLoad} = useContentElementLifecycle();
   const {enableFullscreen, position} = configuration;
-  const supportFullscreen = enableFullscreen && (position === "inline" || position === "sticky")
+  const supportFullscreen = enableFullscreen && position !== "full";
 
   return (
     <FitViewport file={imageFile}
@@ -65,16 +65,15 @@ function ImageWithCaption({imageFile, contentElementId, configuration}) {
       <ContentElementBox>
         <Figure caption={configuration.caption}>
           <FitViewport.Content>
-            {supportFullscreen ?
-             <Viewer imageFile={imageFile}
-                     shouldLoad={shouldLoad}
-                     contentElementId={contentElementId}
-                     configuration={configuration}/> :
-             <Image imageFile={imageFile}
-                    load={shouldLoad}
-                    structuredData={true}
-                    variant={configuration.position === 'full' ? 'large' : 'medium'}
-                    preferSvg={true} />}
+            <ExpandableImage enabled={supportFullscreen}
+                             imageFile={imageFile}
+                             contentElementId={contentElementId}>
+              <Image imageFile={imageFile}
+                     load={shouldLoad}
+                     structuredData={true}
+                     variant={configuration.position === 'full' ? 'large' : 'medium'}
+                     preferSvg={true} />}
+            </ExpandableImage>
           </FitViewport.Content>
         </Figure>
       </ContentElementBox>

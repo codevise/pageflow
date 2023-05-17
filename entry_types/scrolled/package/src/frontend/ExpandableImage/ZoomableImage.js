@@ -1,11 +1,11 @@
 import React, {useState, useRef, useCallback} from 'react';
 import classNames from 'classnames';
 import QuickPinchZoom, {make3dTransformValue} from 'react-quick-pinch-zoom';
-import {SwipeToClose} from 'pageflow-scrolled/frontend';
+import {SwipeToClose} from '../SwipeToClose';
 
-import styles from "./FullscreenImage.module.css";
+import styles from './ZoomableImage.module.css';
 
-export function FullscreenImage({
+export function ZoomableImage({
   onClose,
   imageFile,
 }) {

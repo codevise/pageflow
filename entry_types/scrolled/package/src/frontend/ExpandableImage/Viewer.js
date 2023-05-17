@@ -1,22 +1,20 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import classNames from 'classnames';
-import {Image, useDelayedBoolean} from 'pageflow-scrolled/frontend';
+import {useDelayedBoolean} from '../useDelayedBoolean';
 import {Fullscreen} from './Fullscreen';
-import {FullscreenImage} from './FullscreenImage';
-import {ToggleFullscreenButton} from '../../frontend/ToggleFullscreenButton';
-import styles from "./Viewer.module.css";
+import {ZoomableImage} from './ZoomableImage';
+import {ToggleFullscreenButton} from '../ToggleFullscreenButton';
+
+import styles from './Viewer.module.css';
 
 export function Viewer({
   imageFile,
-  shouldLoad,
-  configuration,
-  contentElementId
+  contentElementId,
+  children
 }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isRendered = useDelayedBoolean(isFullscreen, {fromTrueToFalse: 200});
   const isVisible = useDelayedBoolean(isFullscreen, {fromFalseToTrue: 1});
-
-  const {position} = configuration
 
   useEffect(() => {
     function handlePopState() {
@@ -45,11 +43,7 @@ export function Viewer({
   return (
     <>
       <div onClick={enterFullscreen}>
-        <Image imageFile={imageFile}
-               load={shouldLoad}
-               structuredData={true}
-               variant={position === 'full' ? 'large' : 'medium'}
-               preferSvg={true} />
+        {children}
         <div className={styles.controls}>
           <ToggleFullscreenButton isFullscreen={false}
                                   onEnter={enterFullscreen}
@@ -59,8 +53,8 @@ export function Viewer({
       {isRendered &&
        <Fullscreen>
          <div className={classNames(styles.wrapper, {[styles.visible]: isVisible})}>
-           <FullscreenImage onClose={exitFullscreen}
-                            imageFile={imageFile} />
+           <ZoomableImage onClose={exitFullscreen}
+                          imageFile={imageFile} />
            <div className={styles.controls}>
              <ToggleFullscreenButton isFullscreen={true}
                                      onEnter={enterFullscreen}
