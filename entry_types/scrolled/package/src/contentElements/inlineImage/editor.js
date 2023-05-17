@@ -20,7 +20,11 @@ editor.contentElementTypes.register('inlineImage', {
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false
       });
-      this.input('enableFullscreen', CheckBoxInputView);
+      this.input('enableFullscreen', CheckBoxInputView, {
+        disabledBinding: 'position',
+        disabledBindingValue: 'full',
+        displayUncheckedIfDisabled: true
+      });
       this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });

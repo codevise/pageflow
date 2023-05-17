@@ -7,3 +7,5 @@ de:
             enableFullscreen:
               label: Vollbildmodus aktivieren
               inline_help: Bild per Klick bildschirmfüllend öffnen.
+              inline_help_disabled: |-
+                Steht nicht zur Verfügung, wenn Position "Volle Breite" ausgewählt wurde.

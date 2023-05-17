@@ -6,4 +6,6 @@ en:
           attributes:
             enableFullscreen:
               label: Enable Fullscreen
-              inline_help: Enlarge image on click.
+              inline_help: Enlarge image on click
+              inline_help_disabled: |-
+                Not available if position "Full width" has been selected.
