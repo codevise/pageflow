@@ -4,6 +4,7 @@ import {useDelayedBoolean} from '../useDelayedBoolean';
 import {Fullscreen} from './Fullscreen';
 import {ZoomableImage} from './ZoomableImage';
 import {ToggleFullscreenButton} from '../ToggleFullscreenButton';
+import {useContentElementEditorState} from '../useContentElementEditorState';
 
 import styles from './Viewer.module.css';
 
@@ -15,6 +16,8 @@ export default function Viewer({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isRendered = useDelayedBoolean(isFullscreen, {fromTrueToFalse: 200});
   const isVisible = useDelayedBoolean(isFullscreen, {fromFalseToTrue: 1});
+
+  const {isEditable, isSelected} = useContentElementEditorState();
 
   useEffect(() => {
     function handlePopState() {
@@ -42,7 +45,8 @@ export default function Viewer({
 
   return (
     <>
-      <div onClick={enterFullscreen}>
+      <div onClick={enterFullscreen}
+           style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
         {children}
         <div className={styles.controls}>
           <ToggleFullscreenButton isFullscreen={false}
