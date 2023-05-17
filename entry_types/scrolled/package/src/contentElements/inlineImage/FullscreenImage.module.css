@@ -10,4 +10,9 @@
 .img {
   max-width: 100%;
   height: auto;
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
 }

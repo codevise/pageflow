@@ -55,6 +55,7 @@ export * from './SectionThumbnail';
 export {Entry} from './Entry';
 export {useAudioFocus} from './useAudioFocus';
 export {useDarkBackground} from './backgroundColor';
+export {useDelayedBoolean} from './useDelayedBoolean';
 
 export {
   useAdditionalSeedData,

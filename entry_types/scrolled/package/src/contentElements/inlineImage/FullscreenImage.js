@@ -1,13 +1,16 @@
-import React, {useRef, useCallback} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
+import classNames from 'classnames';
 import QuickPinchZoom, {make3dTransformValue} from 'react-quick-pinch-zoom';
-import styles from "./FullscreenImage.module.css";
 import {SwipeToClose} from 'pageflow-scrolled/frontend';
+
+import styles from "./FullscreenImage.module.css";
 
 export function FullscreenImage({
   setIsFullscreen,
   imageFile,
 }) {
   const imgRef = useRef();
+  const [isVisible, setIsVisible] = useState(true);
 
   const onUpdate = useCallback(({ x, y, scale }) => {
     if (imgRef.current) {
@@ -20,6 +23,7 @@ export function FullscreenImage({
 
   const handleSwipe = useCallback(() => {
     setIsFullscreen(false);
+    setIsVisible(false);
   }, [setIsFullscreen]);
 
   return (
@@ -36,9 +40,11 @@ export function FullscreenImage({
                         enforceBoundsDuringZoom
                         centerContained>
           <img src={imageFile.urls.large}
+               width={imageFile.width}
+               height={imageFile.height}
                alt="img"
                ref={imgRef}
-               className={styles.img}/>
+               className={classNames(styles.img, {[styles.visible]: isVisible})}/>
         </QuickPinchZoom>
       </SwipeToClose>
     </div>

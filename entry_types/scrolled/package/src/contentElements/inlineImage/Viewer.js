@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
-import {Image} from 'pageflow-scrolled/frontend';
+import classNames from 'classnames';
+import {Image, useDelayedBoolean} from 'pageflow-scrolled/frontend';
 import {Fullscreen} from './Fullscreen';
 import {FullscreenImage} from './FullscreenImage';
 import {ToggleFullscreenButton} from '../../frontend/ToggleFullscreenButton';
@@ -11,6 +12,9 @@ export function Viewer({
   configuration
 }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const isRendered = useDelayedBoolean(isFullscreen, {fromTrueToFalse: 200});
+  const isVisible = useDelayedBoolean(isFullscreen, {fromFalseToTrue: 1});
+
   const {position} = configuration
 
   function enterFullscreen() {
@@ -35,9 +39,9 @@ export function Viewer({
                                   onExit={exitFullscreen} />
         </div>
       </div>
-      {isFullscreen &&
-       <Fullscreen isFullscreen={isFullscreen}>
-         <div className={styles.wrapper}>
+      {isRendered &&
+       <Fullscreen>
+         <div className={classNames(styles.wrapper, {[styles.visible]: isVisible})}>
            <FullscreenImage setIsFullscreen={setIsFullscreen}
                             imageFile={imageFile} />
            <div className={styles.controls}>
