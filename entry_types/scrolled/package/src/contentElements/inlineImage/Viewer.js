@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState, useEffect} from 'react'
 import classNames from 'classnames';
 import {Image, useDelayedBoolean} from 'pageflow-scrolled/frontend';
 import {Fullscreen} from './Fullscreen';
@@ -9,7 +9,8 @@ import styles from "./Viewer.module.css";
 export function Viewer({
   imageFile,
   shouldLoad,
-  configuration
+  configuration,
+  contentElementId
 }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isRendered = useDelayedBoolean(isFullscreen, {fromTrueToFalse: 200});
@@ -17,13 +18,29 @@ export function Viewer({
 
   const {position} = configuration
 
-  function enterFullscreen() {
-    setIsFullscreen(true);
-  }
+  useEffect(() => {
+    function handlePopState() {
+      setIsFullscreen(
+        window.history.state?.fullscreenInlineImage === contentElementId
+      );
+    }
 
-  function exitFullscreen() {
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  });
+
+  const enterFullscreen = useCallback(() => {
+    setIsFullscreen(true);
+    window.history.pushState({fullscreenInlineImage: contentElementId}, '');
+  }, [contentElementId]);
+
+  const exitFullscreen = useCallback(() => {
     setIsFullscreen(false);
-  }
+
+    if (window.history.state?.fullscreenInlineImage) {
+      window.history.back();
+    }
+  }, []);
 
   return (
     <>
@@ -42,7 +59,7 @@ export function Viewer({
       {isRendered &&
        <Fullscreen>
          <div className={classNames(styles.wrapper, {[styles.visible]: isVisible})}>
-           <FullscreenImage setIsFullscreen={setIsFullscreen}
+           <FullscreenImage onClose={exitFullscreen}
                             imageFile={imageFile} />
            <div className={styles.controls}>
              <ToggleFullscreenButton isFullscreen={true}

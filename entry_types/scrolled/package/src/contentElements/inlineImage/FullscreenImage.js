@@ -6,7 +6,7 @@ import {SwipeToClose} from 'pageflow-scrolled/frontend';
 import styles from "./FullscreenImage.module.css";
 
 export function FullscreenImage({
-  setIsFullscreen,
+  onClose,
   imageFile,
 }) {
   const imgRef = useRef();
@@ -22,9 +22,9 @@ export function FullscreenImage({
   }, []);
 
   const handleClose = useCallback(() => {
-    setIsFullscreen(false);
+    onClose();
     setIsVisible(false);
-  }, [setIsFullscreen]);
+  }, [onClose]);
 
   return (
     <div className={styles.full}>
