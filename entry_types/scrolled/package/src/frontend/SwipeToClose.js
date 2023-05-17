@@ -2,7 +2,7 @@ import React, {useRef, useCallback} from 'react';
 
 import styles from './SwipeToClose.module.css';
 
-export function SwipeToClose({onSwipe, children}) {
+export function SwipeToClose({onClose, children}) {
   const start = useRef();
   const inner = useRef();
   const ratio = useRef(0);
@@ -25,8 +25,10 @@ export function SwipeToClose({onSwipe, children}) {
   }, []);
 
   const handleTouchEnd = useCallback(event => {
+    event.preventDefault();
+
     if (ratio.current > 0.5) {
-      onSwipe();
+      onClose();
     }
 
     requestAnimationFrame(() => {
@@ -36,10 +38,11 @@ export function SwipeToClose({onSwipe, children}) {
         inner.current.style.setProperty('opacity', 1);
       }
     });
-  }, [onSwipe]);
+  }, [onClose]);
 
   return (
     <div className={styles.outer}
+         onClick={onClose}
          onTouchStart={handleTouchStart}
          onTouchMove={handleTouchMove}
          onTouchEnd={handleTouchEnd}>

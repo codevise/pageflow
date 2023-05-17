@@ -21,14 +21,14 @@ export function FullscreenImage({
     }
   }, []);
 
-  const handleSwipe = useCallback(() => {
+  const handleClose = useCallback(() => {
     setIsFullscreen(false);
     setIsVisible(false);
   }, [setIsFullscreen]);
 
   return (
     <div className={styles.full}>
-      <SwipeToClose onSwipe={handleSwipe}>
+      <SwipeToClose onClose={handleClose}>
         <QuickPinchZoom containerProps={{className: styles.container}}
                         onUpdate={onUpdate}
                         isTouch={() => true}
