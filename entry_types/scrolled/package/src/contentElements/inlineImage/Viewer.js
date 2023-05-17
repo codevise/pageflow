@@ -1,11 +1,7 @@
 import React, {useState} from 'react'
-import {
-  Image
-} from 'pageflow-scrolled/frontend';
-import { Fullscreen } from './Fullscreen';
-import { canUseDOM } from './canUseDOM';
-import { FullscreenImage } from './FullscreenImage';
-import {usePhonePlatform} from '../../frontend/usePhonePlatform';
+import {Image} from 'pageflow-scrolled/frontend';
+import {Fullscreen} from './Fullscreen';
+import {FullscreenImage} from './FullscreenImage';
 import {ToggleFullscreenButton} from '../../frontend/ToggleFullscreenButton';
 import styles from "./Viewer.module.css";
 
@@ -15,12 +11,7 @@ export function Viewer({
   configuration
 }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const isPhonePlatform = usePhonePlatform();
-  const {enableFullscreen, position} = configuration
-
-  function onClick() {
-    setIsFullscreen(!isFullscreen)
-  }
+  const {position} = configuration
 
   function enterFullscreen() {
     setIsFullscreen(true);
@@ -30,34 +21,32 @@ export function Viewer({
     setIsFullscreen(false);
   }
 
-  if (canUseDOM()) {
-    return (
-      <Fullscreen isFullscreen={isFullscreen}>
-          {!isFullscreen &&
-            <div onClick={onClick}>
-              <Image imageFile={imageFile}
-                load={shouldLoad}
-                structuredData={true}
-                variant={position === 'full' ? 'large' : 'medium'}
-                preferSvg={true} />
-            </div>}
-          {(isFullscreen && enableFullscreen) &&
-            <FullscreenImage isFullscreen={isFullscreen}
-              setIsFullscreen={setIsFullscreen}
-              imageFile={imageFile} />
-
-          }
-          {(!isPhonePlatform && enableFullscreen) &&
-          <div className={styles.controls}>
-            <ToggleFullscreenButton isFullscreen={isFullscreen}
-                                    onEnter={enterFullscreen}
-                                    onExit={exitFullscreen} />
-          </div>}      
-      </Fullscreen>
-    )
-  } else {
-    return (
-      <div></div>
-    )
-  }
+  return (
+    <>
+      <div onClick={enterFullscreen}>
+        <Image imageFile={imageFile}
+               load={shouldLoad}
+               structuredData={true}
+               variant={position === 'full' ? 'large' : 'medium'}
+               preferSvg={true} />
+        <div className={styles.controls}>
+          <ToggleFullscreenButton isFullscreen={false}
+                                  onEnter={enterFullscreen}
+                                  onExit={exitFullscreen} />
+        </div>
+      </div>
+      {isFullscreen &&
+       <Fullscreen isFullscreen={isFullscreen}>
+         <div className={styles.wrapper}>
+           <FullscreenImage setIsFullscreen={setIsFullscreen}
+                            imageFile={imageFile} />
+           <div className={styles.controls}>
+             <ToggleFullscreenButton isFullscreen={true}
+                                     onEnter={enterFullscreen}
+                                     onExit={exitFullscreen} />
+           </div>
+         </div>
+       </Fullscreen>}
+    </>
+  );
 }

@@ -19,7 +19,8 @@ export function FullscreenImage({
 
   return (
     <div className={styles.full}>
-      <QuickPinchZoom onUpdate={onUpdate}
+      <QuickPinchZoom containerProps={{className: styles.container}}
+                      onUpdate={onUpdate}
                       isTouch={() => true}
                       minZoom={0.8}
                       maxZoom={5}
