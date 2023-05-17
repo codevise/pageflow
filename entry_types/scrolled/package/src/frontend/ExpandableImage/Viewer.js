@@ -46,6 +46,17 @@ export default function Viewer({
     }
   }, []);
 
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        exitFullscreen();
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [exitFullscreen]);
+
   return (
     <>
       <div onClick={enterFullscreen}
