@@ -45,6 +45,7 @@ export {PlayerControls, ClassicPlayerControls, WaveformPlayerControls} from './P
 export {PlayerEventContextDataProvider} from './useEventContextData';
 
 export {Panorama} from './Panorama';
+export {ExpandableImage} from './ExpandableImage';
 
 export * from './useOnScreen';
 export * from './i18n';

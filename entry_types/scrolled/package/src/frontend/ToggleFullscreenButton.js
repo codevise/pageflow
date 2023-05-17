@@ -1,8 +1,8 @@
 import React from 'react';
 
-import EnterFullscreenIcon from "../icons/enterFullscreen.svg";
-import ExitFullscreenIcon from "../icons/exitFullscreen.svg";
-import {useI18n} from '../i18n';
+import EnterFullscreenIcon from "./icons/enterFullscreen.svg";
+import ExitFullscreenIcon from "./icons/exitFullscreen.svg";
+import {useI18n} from './i18n';
 
 import styles from './ToggleFullscreenButton.module.css';
 

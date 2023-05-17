@@ -1,0 +1,18 @@
+.full {
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  height: 100%;
+}
+
+.img {
+  max-width: 100%;
+  height: auto;
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
