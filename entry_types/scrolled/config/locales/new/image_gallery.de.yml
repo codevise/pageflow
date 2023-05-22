@@ -1,0 +1,9 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        imageGallery:
+          description: Eine Serie von Bildern zum Durchblättern
+          name: Bildergalerie
+          tabs:
+            general: Bildergalerie

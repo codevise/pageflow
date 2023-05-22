@@ -1,0 +1,9 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        imageGallery:
+          description: A series of images to flip through
+          name: Image Gallery
+          tabs:
+            general: Image Gallery
