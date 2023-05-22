@@ -1,4 +1,7 @@
 de:
+  pageflow:
+    image_gallery_content_element:
+      feature_name: Bildergalerie Inhaltselement
   pageflow_scrolled:
     editor:
       content_elements:
