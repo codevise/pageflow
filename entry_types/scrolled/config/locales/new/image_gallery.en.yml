@@ -10,3 +10,6 @@ en:
           name: Image Gallery
           tabs:
             general: Image Gallery
+          items:
+            add: Add
+            label: Items
