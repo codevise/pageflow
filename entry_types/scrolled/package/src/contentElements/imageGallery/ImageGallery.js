@@ -2,8 +2,10 @@ import React, {forwardRef} from 'react';
 import classNames from 'classnames';
 import {
   useContentElementConfigurationUpdate,
+  useContentElementEditorState,
   useFile,
   useI18n,
+  utils,
   EditableText,
   Image
 } from 'pageflow-scrolled/frontend';
@@ -54,7 +56,9 @@ export function ImageGallery({contentElementId, configuration}) {
 
 const Item = forwardRef(function({item, captions, contentElementId, current}, ref) {
   const updateConfiguration = useContentElementConfigurationUpdate();
+  const {isSelected} = useContentElementEditorState();
   const {t} = useI18n({locale: 'ui'});
+  const caption = captions[item.id];
 
   const imageFile = useFile({
     collectionName: 'imageFiles',
@@ -74,14 +78,15 @@ const Item = forwardRef(function({item, captions, contentElementId, current}, re
     <div className={classNames(styles.item, {[styles.current]: current})} ref={ref}>
       <figure className={styles.figure}>
         <Image imageFile={imageFile} load={true} fill={false} />
-        <figcaption>
-          <EditableText value={captions[item.id]}
-                        contentElementId={contentElementId}
-                        onChange={handleCaptionChange}
-                        onlyParagraphs={true}
-                        hyphens="none"
-                        placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
-        </figcaption>
+        {(isSelected || !utils.isBlankEditableTextValue(caption)) &&
+         <figcaption>
+           <EditableText value={caption}
+                         contentElementId={contentElementId}
+                         onChange={handleCaptionChange}
+                         onlyParagraphs={true}
+                         hyphens="none"
+                         placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
+         </figcaption>}
       </figure>
     </div>
   );
