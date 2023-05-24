@@ -16,6 +16,8 @@ import {useIntersectionObserver} from './useIntersectionObserver'
 import styles from './ImageGallery.module.css';
 
 export function ImageGallery({contentElementId, configuration}) {
+  const items = configuration.items || [];
+
   const {containerRef: scrollerRef, setChildRef, visibleIndex} = useIntersectionObserver({
     threshold: 0.5,
   });
@@ -33,15 +35,17 @@ export function ImageGallery({contentElementId, configuration}) {
     <div className={styles.wrapper}>
       <div className={styles.leftButton}>
         <ScrollButton direction="left"
+                      disabled={visibleIndex <= 0}
                       onClick={() => scrollBy(-1)} />
       </div>
       <div className={styles.rightButton}>
         <ScrollButton direction="right"
+                      disabled={visibleIndex >= items.length - 1}
                       onClick={() => scrollBy(1)}/>
       </div>
       <div className={styles.items}
            ref={scrollerRef}>
-        {(configuration.items || []).map((item, index) => (
+        {items.map((item, index) => (
           <Item key={item.id}
                 ref={setChildRef(index)}
                 item={item}

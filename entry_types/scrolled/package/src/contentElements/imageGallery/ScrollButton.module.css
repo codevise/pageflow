@@ -17,14 +17,19 @@
   transition: transform 0.2s ease;
 }
 
-.button:hover svg,
-.button:focus svg {
+.button:not(.disabled):hover svg,
+.button:not(.disabled):focus svg {
   transform: scale(1.2);
 }
 
 .icon {
   display: inline-block;
   position: relative;
+  transition: opacity 0.2s linear;
+}
+
+.disabled .icon {
+  opacity: 0.25;
 }
 
 .icon::before {
