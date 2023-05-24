@@ -1,4 +1,5 @@
 import React, {forwardRef} from 'react';
+import classNames from 'classnames';
 import {
   useContentElementConfigurationUpdate,
   useFile,
@@ -7,15 +8,42 @@ import {
   Image
 } from 'pageflow-scrolled/frontend';
 
+import {ScrollButton} from './ScrollButton';
+import {useIntersectionObserver} from './useIntersectionObserver'
+
 import styles from './ImageGallery.module.css';
 
 export function ImageGallery({contentElementId, configuration}) {
+  const {containerRef: scrollerRef, setChildRef, visibleIndex} = useIntersectionObserver({
+    threshold: 0.5,
+  });
+
+  function scrollBy(delta) {
+    const scroller = scrollerRef.current;
+    const child = scroller.children[visibleIndex + delta];
+
+    if (child) {
+      scrollerRef.current.scrollTo(child.offsetLeft - scroller.offsetLeft, 0);
+    }
+  }
+
   return (
     <div className={styles.wrapper}>
-      <div className={styles.items}>
+      <div className={styles.leftButton}>
+        <ScrollButton direction="left"
+                      onClick={() => scrollBy(-1)} />
+      </div>
+      <div className={styles.rightButton}>
+        <ScrollButton direction="right"
+                      onClick={() => scrollBy(1)}/>
+      </div>
+      <div className={styles.items}
+           ref={scrollerRef}>
         {(configuration.items || []).map((item, index) => (
           <Item key={item.id}
+                ref={setChildRef(index)}
                 item={item}
+                current={index === visibleIndex}
                 captions={configuration.captions || {}}
                 contentElementId={contentElementId} />
         ))}
@@ -43,7 +71,7 @@ const Item = forwardRef(function({item, captions, contentElementId, current}, re
   }
 
   return (
-    <div className={styles.item} ref={ref}>
+    <div className={classNames(styles.item, {[styles.current]: current})} ref={ref}>
       <figure className={styles.figure}>
         <Image imageFile={imageFile} load={true} fill={false} />
         <figcaption>
