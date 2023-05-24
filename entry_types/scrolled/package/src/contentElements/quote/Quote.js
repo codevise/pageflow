@@ -6,10 +6,9 @@ import {
   useContentElementEditorState,
   useI18n,
   useTheme,
+  utils,
   paletteColor
 } from 'pageflow-scrolled/frontend';
-
-import {isBlank} from './isBlank';
 
 import styles from './Quote.module.css';
 
@@ -32,7 +31,7 @@ export function Quote({configuration, contentElementId, sectionProps}) {
                       scaleCategory={getTextScaleCategory(configuration)} />
       </blockquote>
 
-      {(isSelected || !isBlank(configuration.attribution || [])) &&
+      {(isSelected || !utils.isBlankEditableTextValue(configuration.attribution || [])) &&
        <figcaption className={styles.attribution}>
          <EditableText value={configuration.attribution}
                        contentElementId={contentElementId}

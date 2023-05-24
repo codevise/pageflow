@@ -1,8 +1,13 @@
 import {camelize} from './camelize';
-import {isBlank, presence} from './blank';
+import {
+  isBlank,
+  isBlankEditableTextValue,
+  presence,
+} from './blank';
 
 export const utils = {
   camelize,
   isBlank,
+  isBlankEditableTextValue,
   presence
 }

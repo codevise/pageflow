@@ -1,0 +1,15 @@
+de:
+  pageflow:
+    image_gallery_content_element:
+      feature_name: Bildergalerie Inhaltselement
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        imageGallery:
+          description: Eine Serie von Bildern zum Durchblättern
+          name: Bildergalerie
+          tabs:
+            general: Bildergalerie
+          items:
+            add: Hinzufügen
+            label: Einträge

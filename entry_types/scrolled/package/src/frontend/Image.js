@@ -13,6 +13,7 @@ import {ImageStructuredData} from './ImageStructuredData';
  * @param {boolean} [props.load] - Whether to load the image. Can be used for lazy loading.
  * @param {boolean} [props.structuredData] - Whether to render a JSON+LD script tag.
  * @param {boolean} [props.preferSvg] - Use original if image is SVG.
+ * @param {boolean} [props.fill=true] - Position absolute and fill parent.
  */
 export function Image({imageFile, ...props}) {
   if (imageFile && imageFile.isReady && props.load) {
@@ -32,7 +33,7 @@ function renderImageTag(props, imageFile) {
   const cropPositionY = imageFile.cropPosition ? imageFile.cropPosition.y : 50;
 
   return (
-    <img className={classNames(styles.root)}
+    <img className={classNames({[styles.fill]: props.fill})}
          src={imageUrl(imageFile, props)}
          alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''}
          style={{
@@ -58,5 +59,6 @@ function renderStructuredData(props, file) {
 
 Image.defaultProps = {
   load: true,
-  variant: 'large'
+  variant: 'large',
+  fill: true
 };
