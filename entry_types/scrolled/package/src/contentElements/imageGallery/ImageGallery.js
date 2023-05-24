@@ -32,6 +32,17 @@ export function ImageGallery({contentElementId, configuration}) {
     }
   }
 
+  function handleClick(event) {
+    const rect = scrollerRef.current.getBoundingClientRect();
+
+    if ((event.pageX - rect.x) / rect.width < 0.5) {
+      scrollBy(-1);
+    }
+    else {
+      scrollBy(1);
+    }
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.leftButton}>
@@ -45,7 +56,8 @@ export function ImageGallery({contentElementId, configuration}) {
                       onClick={() => scrollBy(1)}/>
       </div>
       <div className={styles.items}
-           ref={scrollerRef}>
+           ref={scrollerRef}
+           onClick={handleClick}>
         {items.map((item, index) => (
           <Item key={item.id}
                 ref={setChildRef(index)}
