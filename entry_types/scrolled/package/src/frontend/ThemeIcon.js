@@ -1,22 +1,24 @@
 import React from 'react';
 
-import expand from './icons/arrowRight.svg';
 import information from './icons/information.svg';
 import muted from './icons/muted.svg';
 import share from './icons/share.svg';
 import unmuted from './icons/unmuted.svg';
 
-import email from '../frontend/icons/social/email.svg';
-import facebook from '../frontend/icons/social/facebook.svg';
-import linkedIn from '../frontend/icons/social/linkedIn.svg';
-import telegram from '../frontend/icons/social/telegram.svg';
-import twitter from '../frontend/icons/social/twitter.svg';
-import whatsApp from '../frontend/icons/social/whatsApp.svg';
+import email from './icons/social/email.svg';
+import facebook from './icons/social/facebook.svg';
+import linkedIn from './icons/social/linkedIn.svg';
+import telegram from './icons/social/telegram.svg';
+import twitter from './icons/social/twitter.svg';
+import whatsApp from './icons/social/whatsApp.svg';
+
+import arrowLeft from './icons/arrowLeft.svg';
+import arrowRight from './icons/arrowRight.svg';
 
 import {useTheme} from '../entryState';
 
 const icons = {
-  expand,
+  expand: arrowRight,
   information,
   muted,
   share,
@@ -27,7 +29,10 @@ const icons = {
   linkedIn,
   telegram,
   twitter,
-  whatsApp
+  whatsApp,
+
+  arrowLeft,
+  arrowRight
 };
 
 /**
@@ -36,7 +41,8 @@ const icons = {
  * @param {Object} props
  * @param {string} props.name -
  *   Either: expand, information, muted, share, unmuted,
- *   email, facebook, linkedIn, telegram, twitter, whatsApp.
+ *   email, facebook, linkedIn, telegram, twitter, whatsApp,
+ *   arrowLeft, arrowRight
  */
 export function ThemeIcon({name}) {
   const theme = useTheme();
