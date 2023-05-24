@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import {
   useContentElementConfigurationUpdate,
   useContentElementEditorState,
+  useContentElementLifecycle,
   useFile,
   useI18n,
   utils,
@@ -62,6 +63,8 @@ const Item = forwardRef(function({item, captions, contentElementId, current}, re
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {isSelected} = useContentElementEditorState();
   const {t} = useI18n({locale: 'ui'});
+  const {shouldLoad} = useContentElementLifecycle();
+
   const caption = captions[item.id];
 
   const imageFile = useFile({
@@ -81,7 +84,7 @@ const Item = forwardRef(function({item, captions, contentElementId, current}, re
   return (
     <div className={classNames(styles.item, {[styles.current]: current})} ref={ref}>
       <figure className={styles.figure}>
-        <Image imageFile={imageFile} load={true} fill={false} />
+        <Image imageFile={imageFile} load={shouldLoad} fill={false} />
         {(isSelected || !utils.isBlankEditableTextValue(caption)) &&
          <figcaption>
            <EditableText value={caption}
