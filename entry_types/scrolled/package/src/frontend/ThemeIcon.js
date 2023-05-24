@@ -43,8 +43,10 @@ const icons = {
  *   Either: expand, information, muted, share, unmuted,
  *   email, facebook, linkedIn, telegram, twitter, whatsApp,
  *   arrowLeft, arrowRight
+ * @params {number} [props.width] - Image width.
+ * @params {number} [props.height] - Image height.
  */
-export function ThemeIcon({name}) {
+export function ThemeIcon({name, width, height}) {
   const theme = useTheme();
   const FallbackIcon = icons[name];
   const themeAsset = theme.assets.icons[name];
@@ -56,11 +58,11 @@ export function ThemeIcon({name}) {
   }
 
   if (themeAsset) {
-    return <svg>
+    return <svg width={width} height={height}>
       <use xlinkHref={`${themeAsset}#icon`} />
     </svg>
   }
   else {
-    return <FallbackIcon />;
+    return <FallbackIcon width={width} height={height} />;
   }
 }
