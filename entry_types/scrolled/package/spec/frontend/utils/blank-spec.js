@@ -1,4 +1,8 @@
-import {isBlank, presence} from 'frontend/utils/blank';
+import {
+  isBlank,
+  isBlankEditableTextValue,
+  presence
+} from 'frontend/utils/blank';
 
 describe('isBlank', () => {
   it('returns true for empty string', () => {
@@ -67,5 +71,30 @@ describe('presence', () => {
     const result = presence('');
 
     expect(result).toBeNull();
+  });
+});
+
+describe('isBlankEditableTextValue', () => {
+  it('return true for null', () => {
+    expect(isBlankEditableTextValue(null)).toEqual(true);
+  });
+
+  it('return true for empty array', () => {
+    expect(isBlankEditableTextValue([])).toEqual(true);
+  });
+
+  it('returns true for node with single empty text child', () => {
+    expect(isBlankEditableTextValue([{children: [{text: ''}]}])).toEqual(true);
+  });
+
+  it('returns false for node with non-empty text child', () => {
+    expect(isBlankEditableTextValue([{children: [{text: 'some text'}]}])).toEqual(false);
+  });
+
+  it('returns false for multiple  nodes with empty text child', () => {
+    expect(isBlankEditableTextValue([
+      {children: [{text: ''}]},
+      {children: [{text: ''}]}
+    ])).toEqual(false);
   });
 });
