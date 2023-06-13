@@ -23,12 +23,15 @@
   opacity: 0.7;
 }
 
+.hoveringToolbarContainer {
+  position: relative;
+}
+
 .hoveringToolbar {
   position: absolute;
   z-index: 2;
   top: -10000px;
   left: -10000px;
-  margin-top: -6px;
   opacity: 0;
   white-space: nowrap;
 }
@@ -56,11 +59,17 @@
   display: block;
   position: absolute;
   left: 20px;
+  border: solid 4px transparent;
+}
+
+.linkTooltip-below::before {
   bottom: 100%;
-  border-top: solid 4px transparent;
-  border-right: solid 4px transparent;
   border-bottom: solid 4px #222;
-  border-left: solid 4px transparent;
+}
+
+.linkTooltip-above::before {
+  top: 100%;
+  border-top: solid 4px #222;
 }
 
 .linkTooltip > a,

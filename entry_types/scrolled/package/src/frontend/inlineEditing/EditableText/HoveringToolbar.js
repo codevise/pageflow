@@ -14,7 +14,7 @@ import ItalicIcon from '../images/italic.svg';
 import StrikethroughIcon from '../images/strikethrough.svg';
 import LinkIcon from '../images/link.svg';
 
-export function HoveringToolbar() {
+export function HoveringToolbar({position}) {
   const ref = useRef()
   const outerRef = useRef()
   const editor = useSlate()
@@ -43,13 +43,21 @@ export function HoveringToolbar() {
     const rect = domRange.getBoundingClientRect()
     const outerRect = outerRef.current.getBoundingClientRect()
 
-    el.style.opacity = 1
-    el.style.top = `${rect.bottom - outerRect.top + 10}px`
-    el.style.left = `${rect.left - outerRect.left}px`
+    el.style.opacity = 1;
+    el.style.left = `${rect.left - outerRect.left}px`;
+
+    if (position === 'above') {
+      el.style.top = 'auto';
+      el.style.bottom = `${outerRect.bottom - rect.top + 5}px`;
+    }
+    else {
+      el.style.bottom = 'auto';
+      el.style.top = `${rect.bottom - outerRect.top + 5}px`;
+    }
   })
 
   return (
-    <div ref={outerRef}>
+    <div ref={outerRef} className={styles.hoveringToolbarContainer}>
       <div ref={ref}
            className={styles.hoveringToolbar}>
         {renderToolbar(editor, t, selectLinkDestination)}

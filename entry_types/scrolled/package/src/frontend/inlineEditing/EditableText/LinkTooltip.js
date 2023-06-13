@@ -12,7 +12,7 @@ import ExternalLinkIcon from '../images/externalLink.svg';
 
 const UpdateContext = createContext();
 
-export function LinkTooltipProvider({editor, disabled, children}) {
+export function LinkTooltipProvider({editor, disabled, position, children}) {
   const [state, setState] = useState();
   const outerRef = useRef();
 
@@ -30,7 +30,8 @@ export function LinkTooltipProvider({editor, disabled, children}) {
         setState({
           href,
           openInNewTab,
-          top: linkRect.bottom - outerRect.top + 10,
+          top: position === 'below' ? linkRect.bottom - outerRect.top + 10 : 'auto',
+          bottom: position === 'above' ? outerRect.bottom - linkRect.top + 10 : 'auto',
           left: linkRect.left - outerRect.left
         });
       },
@@ -49,12 +50,12 @@ export function LinkTooltipProvider({editor, disabled, children}) {
         }
       }
     }
-  }, []);
+  }, [position]);
 
   return (
     <UpdateContext.Provider value={update}>
       <div ref={outerRef}>
-        <LinkTooltip editor={editor} state={state} disabled={disabled} />
+        <LinkTooltip editor={editor} state={state} disabled={disabled} position={position} />
         {children}
       </div>
     </UpdateContext.Provider>
@@ -74,7 +75,7 @@ export function LinkPreview({href, openInNewTab, children}) {
   );
 }
 
-export function LinkTooltip({editor, disabled, state}) {
+export function LinkTooltip({editor, disabled, position, state}) {
   const {keep, deactivate} = useContext(UpdateContext);
 
   if (disabled || !state || (editor.selection && !Range.isCollapsed(editor.selection))) {
@@ -82,10 +83,10 @@ export function LinkTooltip({editor, disabled, state}) {
   }
 
   return (
-    <div className={classNames(styles.linkTooltip, styles.hoveringToolbar)}
+    <div className={classNames(styles.linkTooltip, styles[`linkTooltip-${position}`], styles.hoveringToolbar)}
          onMouseEnter={keep}
          onMouseLeave={deactivate}
-         style={{top: state.top, left: state.left, opacity: 1}}>
+         style={{top: state.top, bottom: state.bottom, left: state.left, opacity: 1}}>
       <LinkDestination href={state.href} openInNewTab={state.openInNewTab} />
     </div>
   );

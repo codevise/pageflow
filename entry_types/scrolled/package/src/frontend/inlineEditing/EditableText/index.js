@@ -35,7 +35,8 @@ import styles from './index.module.css';
 
 export const EditableText = React.memo(function EditableText({
   value, contentElementId, placeholder, onChange, selectionRect, className,
-  placeholderClassName, scaleCategory = 'body', autoFocus
+  placeholderClassName, scaleCategory = 'body', autoFocus,
+  floatingControlsPosition = 'below'
 }) {
   const editor = useMemo(
     () => withLinks(
@@ -88,10 +89,10 @@ export const EditableText = React.memo(function EditableText({
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
            ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
-          <LinkTooltipProvider editor={editor}>
+          <LinkTooltipProvider editor={editor} position={floatingControlsPosition}>
             {selectionRect && <Selection contentElementId={contentElementId} />}
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
-            <HoveringToolbar />
+            <HoveringToolbar position={floatingControlsPosition} />
             <Editable
               className={className}
               decorate={decorateLineBreaks}
