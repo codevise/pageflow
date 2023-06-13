@@ -18,6 +18,7 @@ import styles from './ImageGallery.module.css';
 
 export function ImageGallery({contentElementId, configuration}) {
   const items = configuration.items || [];
+  const {isSelected, isEditable} = useContentElementEditorState();
 
   const {containerRef: scrollerRef, setChildRef, visibleIndex} = useIntersectionObserver({
     threshold: 0.5,
@@ -33,6 +34,10 @@ export function ImageGallery({contentElementId, configuration}) {
   }
 
   function handleClick(event) {
+    if (isEditable && !isSelected) {
+      return;
+    }
+
     const rect = scrollerRef.current.getBoundingClientRect();
 
     if ((event.pageX - rect.x) / rect.width < 0.5) {
