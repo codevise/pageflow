@@ -25,7 +25,6 @@ editor.contentElementTypes.register('vrImage', {
         minValue: -60,
         maxValue: 60
       });
-      this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });
   }

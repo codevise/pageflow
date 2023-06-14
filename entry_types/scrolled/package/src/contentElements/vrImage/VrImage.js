@@ -6,7 +6,7 @@ import {
   useContentElementLifecycle,
   useFile,
   ContentElementBox,
-  Figure,
+  ContentElementFigure,
   Panorama,
   FitViewport
 } from 'pageflow-scrolled/frontend';
@@ -22,11 +22,11 @@ export function VrImage({configuration}) {
       <FitViewport
         aspectRatio={configuration.position === 'full' ? 0.5 : 0.75}>
         <ContentElementBox>
-          <Figure caption={configuration.caption}>
+          <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
               {renderLazyPanorama(configuration, imageFile, shouldLoad)}
             </FitViewport.Content>
-          </Figure>
+          </ContentElementFigure>
         </ContentElementBox>
       </FitViewport>
     </div>

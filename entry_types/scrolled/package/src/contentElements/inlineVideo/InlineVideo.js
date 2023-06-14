@@ -4,7 +4,7 @@ import {media, documentHiddenState} from 'pageflow/frontend';
 import {
   VideoPlayer,
   ContentElementBox,
-  Figure,
+  ContentElementFigure,
   MediaInteractionTracking,
   VideoPlayerControls,
   FitViewport,
@@ -39,7 +39,7 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
                                 undefined : fallbackAspectRatio}
                    opaque={!videoFile}>
         <ContentElementBox>
-          <Figure caption={configuration.caption}>
+          <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
               <MutedIndicator visible={media.muted &&
                                        playerState.shouldPlay &&
@@ -53,7 +53,7 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
                       sectionProps={sectionProps}
                       configuration={configuration} />
             </FitViewport.Content>
-          </Figure>
+          </ContentElementFigure>
         </ContentElementBox>
       </FitViewport>
     </MediaInteractionTracking>

@@ -1,7 +1,7 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useEffect} from 'react';
 import classNames from 'classnames';
 import {createEditor, Transforms, Node, Text as SlateText} from 'slate';
-import {Slate, Editable, withReact} from 'slate-react';
+import {Slate, Editable, withReact, ReactEditor} from 'slate-react';
 
 import {Text} from '../../Text';
 import {useCachedValue} from '../useCachedValue';
@@ -35,7 +35,8 @@ import styles from './index.module.css';
 
 export const EditableText = React.memo(function EditableText({
   value, contentElementId, placeholder, onChange, selectionRect, className,
-  placeholderClassName, scaleCategory = 'body'
+  placeholderClassName, scaleCategory = 'body', autoFocus,
+  floatingControlsPosition = 'below'
 }) {
   const editor = useMemo(
     () => withLinks(
@@ -53,6 +54,12 @@ export const EditableText = React.memo(function EditableText({
     [selectionRect]
   );
   const handleLineBreaks = useLineBreakHandler(editor);
+
+  useEffect(() => {
+    if (autoFocus) {
+      ReactEditor.focus(editor);
+    }
+  }, [autoFocus, editor]);
 
   const [cachedValue, setCachedValue] = useCachedValue(value, {
     defaultValue: [{
@@ -82,10 +89,10 @@ export const EditableText = React.memo(function EditableText({
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
            ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
-          <LinkTooltipProvider editor={editor}>
+          <LinkTooltipProvider editor={editor} position={floatingControlsPosition}>
             {selectionRect && <Selection contentElementId={contentElementId} />}
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
-            <HoveringToolbar />
+            <HoveringToolbar position={floatingControlsPosition} />
             <Editable
               className={className}
               decorate={decorateLineBreaks}

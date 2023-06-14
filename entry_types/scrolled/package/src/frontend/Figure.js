@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useState, useMemo} from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
-import {Text} from './Text';
+import {ActionButton} from './ActionButton';
+import {EditableText} from './EditableText';
 import {useDarkBackground} from './backgroundColor';
+import {useContentElementEditorState} from './useContentElementEditorState';
+import {useI18n} from './i18n';
+import {isBlankEditableTextValue} from './utils/blank';
 
 import styles from './Figure.module.css';
 
@@ -12,29 +15,54 @@ import styles from './Figure.module.css';
  *
  * @param {Object} props
  * @param {string} props.children - Content of figure.
- * @param {string} props.text - The text to be displayed.
+ * @param {Object[]|string} props.caption - Formatted text data as provided by onCaptionChange.
+ * @param {Function} props.onCaptionChange - Receives updated value when it changes.
+ * @param {boolean} [props.addCaptionButtonVisible=true] - Control visiblility of action button.
+ * @param {string} [props.captionButtonPosition='outside'] - Position of action button.
  */
-export function Figure({children, caption}) {
+export function Figure({
+  children,
+  caption, onCaptionChange,
+  addCaptionButtonVisible = true, addCaptionButtonPosition = 'outside'
+}) {
   const darkBackground = useDarkBackground();
+  const {isSelected, isEditable} = useContentElementEditorState();
+  const [isEditingCaption, setIsEditingCaption] = useState(false);
+  const {t} = useI18n({locale: 'ui'});
 
-  if (caption) {
+  caption = useMemo(
+    () => typeof caption === 'string' ?
+         [{type: 'paragraph', children: [{ text: caption }]}] :
+         caption,
+    [caption]
+  );
+
+  if (!isBlankEditableTextValue(caption) || isEditable) {
     return (
       <figure className={classNames(styles.root, {[styles.invert]: !darkBackground})}>
         {children}
-        <figcaption>
-          <Text scaleCategory="caption">
-            {caption}
-          </Text>
-        </figcaption>
+
+        {isBlankEditableTextValue(caption) && isSelected && !isEditingCaption && addCaptionButtonVisible &&
+         <ActionButton position={addCaptionButtonPosition}
+                       icon="pencil"
+                       text={t('pageflow_scrolled.inline_editing.add_caption')}
+                       onClick={() => setIsEditingCaption(true)} />}
+
+        {(!isBlankEditableTextValue(caption) || isEditingCaption) &&
+         <figcaption onBlur={() => setIsEditingCaption(false)}>
+           <EditableText autoFocus={isEditingCaption}
+                         value={caption}
+                         scaleCategory="caption"
+                         onChange={onCaptionChange}
+                         onlyParagraphs={true}
+                         hyphens="none"
+                         floatingControlsPosition="above"
+                         placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
+         </figcaption>}
       </figure>
     );
   }
   else {
     return children;
   }
-}
-
-Figure.propTypes = {
-  caption: PropTypes.string,
-  children: PropTypes.node
 }

@@ -31,7 +31,6 @@ editor.contentElementTypes.register('dataWrapperChart', {
         defaultValue: '#323d4d'
       });
 
-      this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });
   }

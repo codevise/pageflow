@@ -6,7 +6,7 @@ import {
   AudioPlayer,
   AudioPlayerControls,
   ContentElementBox,
-  Figure,
+  ContentElementFigure,
   FitViewport,
   PlayerEventContextDataProvider,
   useContentElementEditorState,
@@ -60,7 +60,7 @@ export function InlineAudio({contentElementId, sectionProps, configuration}) {
   return (
     <FitViewport file={posterImageFile}>
       <ContentElementBox>
-        <Figure caption={configuration.caption}>
+        <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
             <AudioPlayerControls audioFile={audioFile}
                                  defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
@@ -87,7 +87,7 @@ export function InlineAudio({contentElementId, sectionProps, configuration}) {
               </PlayerEventContextDataProvider>
             </AudioPlayerControls>
           </FitViewport.Content>
-        </Figure>
+        </ContentElementFigure>
       </ContentElementBox>
     </FitViewport>
   )

@@ -212,6 +212,9 @@ export function playerStateReducer(state, action){
         userIdle: false
       };
     case USER_INTERACTION:
+      if (!state.userIdle) {
+        return state;
+      }
       return {
         ...state,
         userIdle: false,

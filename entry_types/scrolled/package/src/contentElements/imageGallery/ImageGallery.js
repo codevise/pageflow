@@ -5,9 +5,8 @@ import {
   useContentElementEditorState,
   useContentElementLifecycle,
   useFile,
-  useI18n,
-  utils,
-  EditableText,
+  Figure,
+  FitViewport,
   Image
 } from 'pageflow-scrolled/frontend';
 
@@ -16,8 +15,9 @@ import {useIntersectionObserver} from './useIntersectionObserver'
 
 import styles from './ImageGallery.module.css';
 
-export function ImageGallery({contentElementId, configuration}) {
+export function ImageGallery({configuration}) {
   const items = configuration.items || [];
+  const {isSelected, isEditable} = useContentElementEditorState();
 
   const {containerRef: scrollerRef, setChildRef, visibleIndex} = useIntersectionObserver({
     threshold: 0.5,
@@ -33,6 +33,10 @@ export function ImageGallery({contentElementId, configuration}) {
   }
 
   function handleClick(event) {
+    if (isEditable && !isSelected) {
+      return;
+    }
+
     const rect = scrollerRef.current.getBoundingClientRect();
 
     if ((event.pageX - rect.x) / rect.width < 0.5) {
@@ -56,25 +60,22 @@ export function ImageGallery({contentElementId, configuration}) {
                       onClick={() => scrollBy(1)}/>
       </div>
       <div className={styles.items}
-           ref={scrollerRef}
-           onClick={handleClick}>
+           ref={scrollerRef}>
         {items.map((item, index) => (
           <Item key={item.id}
                 ref={setChildRef(index)}
                 item={item}
                 current={index === visibleIndex}
                 captions={configuration.captions || {}}
-                contentElementId={contentElementId} />
+                onClick={handleClick}/>
         ))}
       </div>
     </div>
   );
 }
 
-const Item = forwardRef(function({item, captions, contentElementId, current}, ref) {
+const Item = forwardRef(function({item, captions, current, onClick}, ref) {
   const updateConfiguration = useContentElementConfigurationUpdate();
-  const {isSelected} = useContentElementEditorState();
-  const {t} = useI18n({locale: 'ui'});
   const {shouldLoad} = useContentElementLifecycle();
 
   const caption = captions[item.id];
@@ -95,18 +96,22 @@ const Item = forwardRef(function({item, captions, contentElementId, current}, re
 
   return (
     <div className={classNames(styles.item, {[styles.current]: current})} ref={ref}>
-      <figure className={styles.figure}>
-        <Image imageFile={imageFile} load={shouldLoad} fill={false} />
-        {(isSelected || !utils.isBlankEditableTextValue(caption)) &&
-         <figcaption>
-           <EditableText value={caption}
-                         contentElementId={contentElementId}
-                         onChange={handleCaptionChange}
-                         onlyParagraphs={true}
-                         hyphens="none"
-                         placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
-         </figcaption>}
-      </figure>
+      <div className={styles.figure}>
+        <FitViewport file={imageFile}
+                     aspectRatio={imageFile ? undefined : 0.75}
+                     opaque={!imageFile}>
+          <Figure caption={caption}
+                  onCaptionChange={handleCaptionChange}
+                  addCaptionButtonVisible={current}
+                  addCaptionButtonPosition="inside">
+            <FitViewport.Content>
+              <div onClick={onClick}>
+                <Image imageFile={imageFile} load={shouldLoad} />
+              </div>
+            </FitViewport.Content>
+          </Figure>
+        </FitViewport>
+      </div>
     </div>
   );
 });

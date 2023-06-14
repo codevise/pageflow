@@ -1,0 +1,38 @@
+.button {
+  position: absolute;
+  z-index: 10;
+  border: 0;
+  text-align: center;
+  padding: 8px;
+  color: rgba(0, 0, 0, 0.8);
+  background: #fff;
+  border-radius: 3px;
+  font-size: 13px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.button:hover,
+.button:focus {
+  color: #000;
+}
+
+.button svg {
+  fill: currentColor;
+  vertical-align: bottom;
+  margin-right: 8px;
+}
+
+.position-outside {
+  top: calc(100% + 0.3em);
+  right: -0.8em;
+}
+
+.position-outsideIndented {
+  top: calc(100% + 0.3em);
+  right: 0.5em;
+}
+
+.position-inside {
+  bottom: 0.5em;
+  right: 0.5em;
+}

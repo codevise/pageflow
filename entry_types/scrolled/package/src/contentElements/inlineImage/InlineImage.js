@@ -3,7 +3,7 @@ import React from 'react';
 import {
   ContentElementBox,
   Image,
-  Figure,
+  ContentElementFigure,
   FitViewport,
   useContentElementLifecycle,
   useFile,
@@ -63,7 +63,7 @@ function ImageWithCaption({imageFile, contentElementId, configuration}) {
                  aspectRatio={imageFile ? undefined : 0.75}
                  opaque={!imageFile}>
       <ContentElementBox>
-        <Figure caption={configuration.caption}>
+        <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
             <ExpandableImage enabled={supportFullscreen && shouldLoad}
                              imageFile={imageFile}
@@ -75,7 +75,7 @@ function ImageWithCaption({imageFile, contentElementId, configuration}) {
                      preferSvg={true} />
             </ExpandableImage>
           </FitViewport.Content>
-        </Figure>
+        </ContentElementFigure>
       </ContentElementBox>
     </FitViewport>
   );
