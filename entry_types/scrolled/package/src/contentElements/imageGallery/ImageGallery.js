@@ -6,6 +6,7 @@ import {
   useContentElementLifecycle,
   useFile,
   Figure,
+  FitViewport,
   Image
 } from 'pageflow-scrolled/frontend';
 
@@ -96,14 +97,20 @@ const Item = forwardRef(function({item, captions, current, onClick}, ref) {
   return (
     <div className={classNames(styles.item, {[styles.current]: current})} ref={ref}>
       <div className={styles.figure}>
-        <Figure caption={caption}
-                onCaptionChange={handleCaptionChange}
-                addCaptionButtonVisible={current}
-                addCaptionButtonPosition="inside">
-          <div onClick={onClick}>
-            <Image imageFile={imageFile} load={shouldLoad} fill={false} />
-          </div>
-        </Figure>
+        <FitViewport file={imageFile}
+                     aspectRatio={imageFile ? undefined : 0.75}
+                     opaque={!imageFile}>
+          <Figure caption={caption}
+                  onCaptionChange={handleCaptionChange}
+                  addCaptionButtonVisible={current}
+                  addCaptionButtonPosition="inside">
+            <FitViewport.Content>
+              <div onClick={onClick}>
+                <Image imageFile={imageFile} load={shouldLoad} />
+              </div>
+            </FitViewport.Content>
+          </Figure>
+        </FitViewport>
       </div>
     </div>
   );
