@@ -16,9 +16,23 @@ describe('Figure', () => {
     expect(queryByTestId('content')).not.toBeNull();
   });
 
-  it('renders caption given as prop', () => {
+  it('renders legacy plain text caption', () => {
     const {queryByRole, queryByTestId} =
       renderInEntry(<Figure caption={'Some caption text'}><div data-testid="content" /></Figure>, {
+        seed: {}
+      });
+
+    expect(queryByRole('figure')).toHaveTextContent('Some caption text');
+    expect(queryByTestId('content')).not.toBeNull();
+  });
+
+  it('renders formatted text caption', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [{ text: 'Some caption text' }],
+    }];
+    const {queryByRole, queryByTestId} =
+      renderInEntry(<Figure caption={value}><div data-testid="content" /></Figure>, {
         seed: {}
       });
 

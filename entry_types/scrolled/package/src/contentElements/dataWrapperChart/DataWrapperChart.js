@@ -7,7 +7,7 @@ import {
   useContentElementLifecycle,
   useContentElementEditorState,
   useI18n,
-  Figure,
+  ContentElementFigure,
   textColorForBackgroundColor
 } from 'pageflow-scrolled/frontend';
 import {features} from 'pageflow/frontend';
@@ -31,7 +31,7 @@ export function DataWrapperChart({configuration}) {
 
   return (
     <ContentElementBox>
-      <Figure caption={configuration.caption}>
+      <ContentElementFigure configuration={configuration}>
         <div className={styles.container}
              style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined,
                      backgroundColor,
@@ -46,7 +46,7 @@ export function DataWrapperChart({configuration}) {
           <DatawrapperOptOutInfo providerName="datawrapper"
                                  contentElementPosition={configuration.position} />
         </div>
-      </Figure>
+      </ContentElementFigure>
     </ContentElementBox>
   );
 }

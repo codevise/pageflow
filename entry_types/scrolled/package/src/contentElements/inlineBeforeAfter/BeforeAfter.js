@@ -8,7 +8,7 @@ import {
   useFile,
   useContentElementEditorState,
   ContentElementBox,
-  Figure,
+  ContentElementFigure,
   FitViewport
 } from 'pageflow-scrolled/frontend';
 
@@ -20,17 +20,17 @@ const placeholderFile = {
   height: 403
 };
 
-export function BeforeAfter({isActive,
-                             load,
-                             caption,
-                             position,
-                             before_id,
-                             before_label,
-                             after_id,
-                             after_label,
-                             initial_slider_position,
-                             slider_color
-                            }) {
+export function BeforeAfter(configuration) {
+  const {
+    isActive,
+    load,
+    before_id,
+    before_label,
+    after_id,
+    after_label,
+    initial_slider_position,
+    slider_color
+  } = configuration;
 
   const [wiggle, setWiggle] = useState(false);
   const [moved, setMoved] = useState(false);
@@ -54,7 +54,7 @@ export function BeforeAfter({isActive,
   return (
     <FitViewport file={beforeImage || afterImage || placeholderFile}>
       <ContentElementBox>
-        <Figure caption={caption}>
+        <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
             <Measure bounds>
               {({measureRef, contentRect}) => {
@@ -74,7 +74,7 @@ export function BeforeAfter({isActive,
               }}
             </Measure>
           </FitViewport.Content>
-        </Figure>
+        </ContentElementFigure>
       </ContentElementBox>
     </FitViewport>
   );

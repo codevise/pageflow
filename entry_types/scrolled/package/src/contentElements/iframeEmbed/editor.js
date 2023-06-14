@@ -28,7 +28,6 @@ editor.contentElementTypes.register('iframeEmbed', {
       this.input('scale', SelectInputView, {
         values: ['p100', 'p75', 'p50', 'p33']
       });
-      this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });
   }

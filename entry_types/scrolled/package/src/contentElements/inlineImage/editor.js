@@ -25,7 +25,6 @@ editor.contentElementTypes.register('inlineImage', {
         disabledBindingValue: 'full',
         displayUncheckedIfDisabled: true
       });
-      this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });
   }

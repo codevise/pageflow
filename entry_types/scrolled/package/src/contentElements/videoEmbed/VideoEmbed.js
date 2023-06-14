@@ -6,7 +6,7 @@ import styles from './VideoEmbed.module.css';
 
 import {
   ContentElementBox,
-  Figure,
+  ContentElementFigure,
   ThirdPartyOptIn,
   ThirdPartyOptOutInfo,
   FitViewport,
@@ -36,7 +36,7 @@ export function VideoEmbed({contentElementId, configuration}) {
       <FitViewport
         aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}>
         <ContentElementBox>
-          <Figure caption={configuration.caption}>
+          <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
               {shouldLoad && <PreparedPlayer playerState={playerState}
                                              setPlayerState={setPlayerState}
@@ -47,7 +47,7 @@ export function VideoEmbed({contentElementId, configuration}) {
             <ThirdPartyOptOutInfo providerName={providerName}
                                   hide={playerState === 'playing'}
                                   contentElementPosition={configuration.position} />
-          </Figure>
+          </ContentElementFigure>
         </ContentElementBox>
       </FitViewport>
     </div>

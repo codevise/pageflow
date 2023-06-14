@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import {
   ContentElementBox,
-  Figure,
+  ContentElementFigure,
   FitViewport,
   useContentElementEditorState,
   useContentElementLifecycle,
@@ -35,7 +35,7 @@ export function IframeEmbed({configuration}) {
       <FitViewport aspectRatio={aspectRatios[aspectRatio || 'wide']}
                    opaque={utils.isBlank(configuration.source)}>
         <ContentElementBox>
-          <Figure caption={configuration.caption}>
+          <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
               {shouldLoad &&
                <iframe className={classNames(styles.iframe,
@@ -43,7 +43,7 @@ export function IframeEmbed({configuration}) {
                        title={configuration.title}
                        src={configuration.source} />}
             </FitViewport.Content>
-          </Figure>
+          </ContentElementFigure>
         </ContentElementBox>
       </FitViewport>
     </div>

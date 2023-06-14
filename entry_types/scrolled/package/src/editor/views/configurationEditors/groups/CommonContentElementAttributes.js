@@ -17,12 +17,6 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
   });
 });
 
-ConfigurationEditorTabView.groups.define('ContentElementCaption', function() {
-  this.input('caption', TextInputView, {
-    attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes']
-  });
-});
-
 ConfigurationEditorTabView.groups.define(
   'ContentElementTypographyVariant',
   function({entry, model, prefix, getPreviewConfiguration}) {
