@@ -75,3 +75,7 @@ Style/SymbolArray:
 # extend self is fine
 Style/ModuleFunction:
   Enabled: false
+
+# Allow method names like has_text?
+Naming/PredicateName:
+  Enabled: false

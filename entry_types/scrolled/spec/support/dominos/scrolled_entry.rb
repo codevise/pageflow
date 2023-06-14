@@ -6,12 +6,12 @@ module Dom
       all('section').count
     end
 
-    def inline_image_content_element_caption
-      find('section figcaption')
+    def has_text?(text)
+      node.has_text?(text)
     end
 
-    def inline_image_content_element_selection_rect
-      find('section figure').find(:xpath, '..')
+    def content_element_selection_rect
+      find('[aria-label="Select element"]')
     end
   end
 end
