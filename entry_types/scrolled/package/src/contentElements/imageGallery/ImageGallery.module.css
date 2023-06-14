@@ -60,41 +60,19 @@
 }
 
 .figure {
-  display: grid;
-  grid: [stack] 100% / [stack] 100%;
-  align-items: end;
-  justify-items: stretch;
-  margin: 0;
   transform: scale(0.9);
-  transition: transform .2s ease, opacity .2s linear;
-  opacity: 0.3;
+  transition: transform .2s ease, filter .2s linear;
+  filter: brightness(0.5);
 }
 
 .current .figure {
   transform: scale(1);
-  opacity: 1;
+  filter: none;
 }
 
-.figure > * {
-  grid-area: stack;
-}
-
-.figure > img {
+.figure img {
+  display: block;
   max-width: 100%;
   max-height: 100vh;
   object-fit: contain;
-}
-
-.figure figcaption {
-  text-align: center;
-  padding: 20px 10px 5px;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), transparent);
-}
-
-.figure p {
-  margin: 5px 0 0;
-}
-
-.figure a {
-  color: contentLinkColor;
 }
