@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import classNames from 'classnames';
 import {PanoViewer} from '@egjs/view360';
 import screenfull from 'screenfull';
-import {ToggleFullscreenButton} from '../ToggleFullscreenButton';
+import {ToggleFullscreenCornerButton} from '../ToggleFullscreenCornerButton';
 
 import {useBrowserFeature} from '../useBrowserFeature';
 import {usePhonePlatform} from '../usePhonePlatform';
@@ -176,11 +176,9 @@ export default function Viewer({
       <SpinnerIcon className={classNames(styles.spinner, {[styles.isLoading]: isLoading})} />
 
       {(!isPhonePlatform || isFullscreen) &&
-       <div className={styles.controls}>
-         <ToggleFullscreenButton isFullscreen={isFullscreen}
-                                 onEnter={enterFullscreen}
-                                 onExit={exitFullscreen} />
-       </div>}
+       <ToggleFullscreenCornerButton isFullscreen={isFullscreen}
+                                     onEnter={enterFullscreen}
+                                     onExit={exitFullscreen} />}
       <PanoramaIndicator visible={!isLoading &&
                                   !isPhonePlatform &&
                                   !isFullscreen &&
