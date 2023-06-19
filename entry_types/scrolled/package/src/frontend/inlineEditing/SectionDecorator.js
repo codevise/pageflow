@@ -37,7 +37,8 @@ export function SectionDecorator({section, contentElements, children}) {
   });
 
   function selectIfOutsideContentItem(event) {
-    if (!event.target.closest(`.${contentElementStyles.wrapper}`)) {
+    if (!event.target.closest(`.${contentElementStyles.wrapper}`) &&
+        !event.target.closest('#fullscreenRoot')) {
       isSelected ? resetSelection() : select();
     }
   }
