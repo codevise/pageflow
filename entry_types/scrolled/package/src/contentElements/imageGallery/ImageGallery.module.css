@@ -10,6 +10,7 @@
   display: grid;
   grid-template-columns: var(--gutter) 1fr var(--gutter);
   align-items: center;
+  height: 100%;
   color: lightContentTextColor;
 }
 

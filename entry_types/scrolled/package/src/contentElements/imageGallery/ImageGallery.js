@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react';
+import React, {forwardRef, useState, useEffect, useRef} from 'react';
 import classNames from 'classnames';
 import {
   useContentElementConfigurationUpdate,
@@ -7,7 +7,10 @@ import {
   useFile,
   Figure,
   FitViewport,
-  Image
+  FullscreenViewer,
+  Image,
+  ToggleFullscreenCornerButton,
+  usePhonePlatform
 } from 'pageflow-scrolled/frontend';
 
 import {ScrollButton} from './ScrollButton';
@@ -15,13 +18,73 @@ import {useIntersectionObserver} from './useIntersectionObserver'
 
 import styles from './ImageGallery.module.css';
 
-export function ImageGallery({configuration}) {
+export function ImageGallery({configuration, contentElementId}) {
+  const [visibleIndex, setVisibleIndex] = useState(0);
+  const isPhonePlatform = usePhonePlatform();
+
+  return (
+    <FullscreenViewer
+      contentElementId={contentElementId}
+      renderChildren={({enterFullscreen, isFullscreen}) =>
+        <Scroller configuration={configuration}
+                  controlled={isFullscreen}
+                  displayFullscreenToggle={!isPhonePlatform &&
+                                           configuration.position !== 'full' &&
+                                           configuration.enableFullscreenOnDesktop}
+                  visibleIndex={visibleIndex}
+                  setVisibleIndex={setVisibleIndex}
+                  onFullscreenEnter={enterFullscreen} />
+      }
+      renderFullscreenChildren={({exitFullscreen}) => {
+        return (
+          <Scroller configuration={configuration}
+                    visibleIndex={visibleIndex}
+                    setVisibleIndex={setVisibleIndex}
+                    displayFullscreenToggle={false}
+                    onBump={exitFullscreen}
+                    onFullscreenExit={exitFullscreen} />
+        );
+      }} />
+  );
+}
+
+function Scroller({
+  visibleIndex, setVisibleIndex,
+  displayFullscreenToggle,
+  onFullscreenEnter, onFullscreenExit,
+  onBump,
+  configuration,
+  controlled
+}) {
+  const lastVisibleIndex = useRef(null);
   const items = configuration.items || [];
   const {isSelected, isEditable} = useContentElementEditorState();
 
-  const {containerRef: scrollerRef, setChildRef, visibleIndex} = useIntersectionObserver({
-    threshold: 0.5,
+  const {containerRef: scrollerRef, setChildRef} = useIntersectionObserver({
+    setVisibleIndex(index) {
+      if (!controlled) {
+        lastVisibleIndex.current = index;
+        setVisibleIndex(index);
+      }
+    },
+    threshold: 0.7
   });
+
+  useEffect(() => {
+    if (lastVisibleIndex.current !== visibleIndex &&
+        visibleIndex >= 0 &&
+        (controlled || lastVisibleIndex.current === null)) {
+
+      lastVisibleIndex.current = visibleIndex;
+
+      const scroller = scrollerRef.current;
+      const item = scroller.children[visibleIndex];
+
+      scroller.style.scrollBehavior = 'auto';
+      scroller.scrollTo(Math.abs(scroller.offsetLeft - item.offsetLeft), 0);
+      scroller.style.scrollBehavior = null;
+    }
+  }, [visibleIndex, scrollerRef, controlled]);
 
   function scrollBy(delta) {
     const scroller = scrollerRef.current;
@@ -40,10 +103,20 @@ export function ImageGallery({configuration}) {
     const rect = scrollerRef.current.getBoundingClientRect();
 
     if ((event.pageX - rect.x) / rect.width < 0.5) {
-      scrollBy(-1);
+      if (visibleIndex > 0) {
+        scrollBy(-1);
+      }
+      else if (onBump) {
+        onBump();
+      }
     }
     else {
-      scrollBy(1);
+      if (visibleIndex < items.length - 1) {
+        scrollBy(1);
+      }
+      else if (onBump) {
+        onBump();
+      }
     }
   }
 
@@ -67,14 +140,18 @@ export function ImageGallery({configuration}) {
                 item={item}
                 current={index === visibleIndex}
                 captions={configuration.captions || {}}
-                onClick={handleClick}/>
+                onClick={handleClick}>
+            {displayFullscreenToggle &&
+             <ToggleFullscreenCornerButton isFullscreen={false}
+                                           onEnter={onFullscreenEnter} />}
+          </Item>
         ))}
       </div>
     </div>
   );
 }
 
-const Item = forwardRef(function({item, captions, current, onClick}, ref) {
+const Item = forwardRef(function({item, captions, current, onClick, children}, ref) {
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {shouldLoad} = useContentElementLifecycle();
 
@@ -108,6 +185,7 @@ const Item = forwardRef(function({item, captions, current, onClick}, ref) {
               <div onClick={onClick}>
                 <Image imageFile={imageFile} load={shouldLoad} />
               </div>
+              {children}
             </FitViewport.Content>
           </Figure>
         </FitViewport>

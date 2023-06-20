@@ -47,6 +47,8 @@ export {PlayerEventContextDataProvider} from './useEventContextData';
 
 export {Panorama} from './Panorama';
 export {ExpandableImage} from './ExpandableImage';
+export {ToggleFullscreenCornerButton} from './ToggleFullscreenCornerButton';
+export {FullscreenViewer} from './FullscreenViewer';
 
 export * from './useOnScreen';
 export * from './i18n';

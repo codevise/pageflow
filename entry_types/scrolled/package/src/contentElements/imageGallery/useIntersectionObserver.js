@@ -1,8 +1,6 @@
-import {useRef, useState, useEffect} from 'react';
+import {useRef, useEffect} from 'react';
 
-export function useIntersectionObserver({threshold}) {
-  const [visibleIndex, setVisibleIndex] = useState(0);
-
+export function useIntersectionObserver({threshold, setVisibleIndex}) {
   const containerRef = useRef();
   const childRefs = useRef([]);
   const observerRef = useRef();
@@ -16,16 +14,9 @@ export function useIntersectionObserver({threshold}) {
             (child) => child === entry.target
           );
 
-          setVisibleIndex(index => {
-            if (entry.isIntersecting) {
-              return entryIndex;
-            }
-            else if (entryIndex === index) {
-              return -1;
-            }
-
-            return index;
-          });
+          if (entry.isIntersecting) {
+            setVisibleIndex(entryIndex);
+          }
         });
       },
       {
@@ -41,7 +32,7 @@ export function useIntersectionObserver({threshold}) {
     return () => {
       observer.disconnect();
     };
-  }, [threshold]);
+  }, [threshold, setVisibleIndex]);
 
   const setChildRef = (index) => (ref) => {
     if (observerRef.current) {
@@ -56,5 +47,5 @@ export function useIntersectionObserver({threshold}) {
     childRefs.current[index] = ref;
   };
 
-  return {containerRef, setChildRef, visibleIndex};
+  return {containerRef, setChildRef};
 };

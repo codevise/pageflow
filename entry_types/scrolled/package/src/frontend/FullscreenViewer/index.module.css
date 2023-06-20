@@ -10,15 +10,6 @@
   opacity: 1;
 }
 
-.controls {
-  position: absolute;
-  right: 0;
-  top: 0;
-  color: #fff;
-  background: linear-gradient(30deg, transparent, transparent 60%, #000000a6);
-  padding: 5px 5px 40px 70px;
-}
-
 /*
   On iOS, the fixed background sometimes does not cover the document
   while navigation bars are being hidden (e.g. iPhone X, iOS

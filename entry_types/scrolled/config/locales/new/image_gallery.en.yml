@@ -15,3 +15,12 @@ en:
           items:
             add: Add
             label: Items
+          attributes:
+            enableFullscreenOnDesktop:
+              label: Enable fullscreen on desktop
+              inline_help: |-
+                Allow expanding the gallery to fullscreen mode on
+                desktop browsers. On mobile devices images are already
+                displayed as large as possible by default.
+              inline_help_disabled: |-
+                Not available if position "Full width" has been selected.
