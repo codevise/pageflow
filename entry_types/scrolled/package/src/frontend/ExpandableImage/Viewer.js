@@ -16,12 +16,14 @@ export default function Viewer({
     <FullscreenViewer
       contentElementId={contentElementId}
       renderChildren={({enterFullscreen}) =>
-        <div onClick={enterFullscreen}
-             style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
-          {children}
+        <>
+          <div onClick={enterFullscreen}
+               style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
+            {children}
+          </div>
           <ToggleFullscreenCornerButton isFullscreen={false}
                                         onEnter={enterFullscreen} />
-        </div>
+        </>
       }
       renderFullscreenChildren={({exitFullscreen}) =>
         <ZoomableImage onClose={exitFullscreen}
