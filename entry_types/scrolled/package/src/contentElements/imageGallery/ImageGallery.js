@@ -56,7 +56,7 @@ function Scroller({
   configuration,
   controlled
 }) {
-  const lastVisibleIndex = useRef();
+  const lastVisibleIndex = useRef(null);
   const items = configuration.items || [];
   const {isSelected, isEditable} = useContentElementEditorState();
 
@@ -67,17 +67,22 @@ function Scroller({
         setVisibleIndex(index);
       }
     },
-    threshold: 0.5
+    threshold: 0.7
   });
 
   useEffect(() => {
-    if (lastVisibleIndex.current !== visibleIndex && visibleIndex >= 0) {
+    if (lastVisibleIndex.current !== visibleIndex &&
+        visibleIndex >= 0 &&
+        (controlled || lastVisibleIndex.current === null)) {
+
       lastVisibleIndex.current = visibleIndex;
 
       const scroller = scrollerRef.current;
       const item = scroller.children[visibleIndex];
 
+      scroller.style.scrollBehavior = 'auto';
       scroller.scrollTo(Math.abs(scroller.offsetLeft - item.offsetLeft), 0);
+      scroller.style.scrollBehavior = null;
     }
   }, [visibleIndex, scrollerRef, controlled]);
 
