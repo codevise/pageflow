@@ -9,7 +9,8 @@ import {
   FitViewport,
   FullscreenViewer,
   Image,
-  ToggleFullscreenCornerButton
+  ToggleFullscreenCornerButton,
+  usePhonePlatform
 } from 'pageflow-scrolled/frontend';
 
 import {ScrollButton} from './ScrollButton';
@@ -19,6 +20,7 @@ import styles from './ImageGallery.module.css';
 
 export function ImageGallery({configuration, contentElementId}) {
   const [visibleIndex, setVisibleIndex] = useState(0);
+  const isPhonePlatform = usePhonePlatform();
 
   return (
     <FullscreenViewer
@@ -26,17 +28,19 @@ export function ImageGallery({configuration, contentElementId}) {
       renderChildren={({enterFullscreen, isFullscreen}) =>
         <Scroller configuration={configuration}
                   controlled={isFullscreen}
-                  isFullscreen={false}
+                  displayFullscreenToggle={!isPhonePlatform &&
+                                           configuration.position !== 'full' &&
+                                           configuration.enableFullscreenOnDesktop}
                   visibleIndex={visibleIndex}
                   setVisibleIndex={setVisibleIndex}
                   onFullscreenEnter={enterFullscreen} />
       }
-    renderFullscreenChildren={({exitFullscreen}) => {
+      renderFullscreenChildren={({exitFullscreen}) => {
         return (
           <Scroller configuration={configuration}
                     visibleIndex={visibleIndex}
                     setVisibleIndex={setVisibleIndex}
-                    isFullscreen={true}
+                    displayFullscreenToggle={false}
                     onBump={exitFullscreen}
                     onFullscreenExit={exitFullscreen} />
         );
@@ -46,7 +50,7 @@ export function ImageGallery({configuration, contentElementId}) {
 
 function Scroller({
   visibleIndex, setVisibleIndex,
-  isFullscreen,
+  displayFullscreenToggle,
   onFullscreenEnter, onFullscreenExit,
   onBump,
   configuration,
@@ -132,7 +136,7 @@ function Scroller({
                 current={index === visibleIndex}
                 captions={configuration.captions || {}}
                 onClick={handleClick}>
-            {!isFullscreen &&
+            {displayFullscreenToggle &&
              <ToggleFullscreenCornerButton isFullscreen={false}
                                            onEnter={onFullscreenEnter} />}
           </Item>

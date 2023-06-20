@@ -15,3 +15,13 @@ de:
           items:
             add: Hinzufügen
             label: Einträge
+          attributes:
+            enableFullscreenOnDesktop:
+              label: Vollbildmodus auf Desktop erlauben
+              inline_help: |-
+                Ermögliche, die Galerie auf Desktop-Browsern in den
+                Vollbildmodus zu schalten. Auf mobilen Browsern werden
+                die Bilder bereits standardmäßig so groß wie möglich
+                angezeigt.
+              inline_help_disabled: |-
+                Steht nicht zur Verfügung, wenn Position "Volle Breite" ausgewählt wurde.
