@@ -37,10 +37,11 @@ export function FullscreenViewer({
   const exitFullscreen = useCallback(() => {
     setIsFullscreen(false);
 
-    if (window.history.state?.fullscreenContentElementId && window.parent === window) {
+    if (window.history.state?.fullscreenContentElementId === contentElementId &&
+        window.parent === window) {
       window.history.back();
     }
-  }, []);
+  }, [contentElementId]);
 
   useEffect(() => {
     function handleKeyDown(event) {
