@@ -1289,8 +1289,6 @@ de:
         help:
           close: Schließen
           title: Hilfe
-        help_button:
-          open_help: Hilfe anzeigen
         list_blank_slate:
           text: "(Keine Einträge)"
         list_item:

@@ -1284,8 +1284,6 @@ en:
         help:
           close: Close
           title: Help
-        help_button:
-          open_help: Open help
         list_blank_slate:
           text: "(No items)"
         list_item:
