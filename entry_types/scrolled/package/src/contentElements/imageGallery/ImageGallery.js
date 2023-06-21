@@ -1,4 +1,4 @@
-import React, {forwardRef, useState, useEffect, useRef} from 'react';
+import React, {forwardRef, useCallback, useState, useEffect, useRef} from 'react';
 import classNames from 'classnames';
 import {
   useContentElementConfigurationUpdate,
@@ -60,13 +60,15 @@ function Scroller({
   const items = configuration.items || [];
   const {isSelected, isEditable} = useContentElementEditorState();
 
+  const onVisibleIndexChange = useCallback(index => {
+    if (!controlled) {
+      lastVisibleIndex.current = index;
+      setVisibleIndex(index);
+    }
+  }, [controlled, setVisibleIndex]);
+
   const {containerRef: scrollerRef, setChildRef} = useIntersectionObserver({
-    setVisibleIndex(index) {
-      if (!controlled) {
-        lastVisibleIndex.current = index;
-        setVisibleIndex(index);
-      }
-    },
+    onVisibleIndexChange,
     threshold: 0.7
   });
 
