@@ -40,24 +40,21 @@ TwoColumn.GroupComponent = 'div';
 function renderItems(props, narrow) {
   return groupItemsByPosition(props.items, availablePositions(narrow)).map((group, index) =>
     <TwoColumn.GroupComponent key={index} className={classNames(styles.group, styles[`group-${group.position}`])}>
-      {renderItemGroup(props, group, 'sticky')}
-      {renderItemGroup(props, group, 'inline')}
-      {renderItemGroup(props, group, 'wide')}
-      {renderItemGroup(props, group, 'full')}
+      {group.boxes.map((box, index) => renderItemGroup(props, box, index))}
     </TwoColumn.GroupComponent>
   );
 }
 
-function renderItemGroup(props, group, position) {
-  if (group[position].length) {
+function renderItemGroup(props, box, key) {
+  if (box.items.length) {
     return (
-      <div className={styles[position]}>
+      <div key={key} className={classNames(styles[box.position])}>
         {props.children(
-          <ContentElements sectionProps={props.sectionProps} items={group[position]} />,
+          <ContentElements sectionProps={props.sectionProps} items={box.items} />,
           {
-            position,
-            openStart: position === 'inline' && group.openStart,
-            openEnd: position === 'inline' &&  group.openEnd
+            position: box.position,
+            openStart: box.openStart,
+            openEnd: box.openEnd
           }
         )}
       </div>
@@ -66,35 +63,51 @@ function renderItemGroup(props, group, position) {
 }
 
 function groupItemsByPosition(items, availablePositions) {
-  let groups = [];
-  let currentGroup;
+  const groups = [];
 
-  items.reduce((previousItemPosition, item, index) => {
+  let lastInlineBox = null;
+  let currentGroup, currentBox;
+
+  items.reduce((previousPosition, item, index) => {
     const position = availablePositions.indexOf(item.position) >= 0 ? item.position : 'inline';
 
-    if (!previousItemPosition || (previousItemPosition !== position &&
-                                  !(previousItemPosition === 'sticky' && position === 'inline'))) {
-      currentGroup = {
-        position,
-        sticky: [],
-        inline: [],
-        wide: [],
-        full: []
-      };
-      groups = [...groups, currentGroup];
+    if (!currentGroup || previousPosition !== position) {
+      currentBox = null;
+
+      if (!(previousPosition === 'sticky' && position === 'inline')) {
+        currentGroup = {
+          position,
+          boxes: []
+        };
+
+        groups.push(currentGroup);
+      }
     }
 
-    currentGroup[position].push(item);
+    if (!currentBox) {
+      currentBox = {
+        position,
+        items: []
+      };
+
+      if (lastInlineBox && position === 'inline') {
+        lastInlineBox.openEnd = true;
+        currentBox.openStart = true;
+      }
+
+      if (position === 'inline') {
+        lastInlineBox = currentBox;
+      }
+      else if (position !== 'sticky') {
+        lastInlineBox = null;
+      }
+
+      currentGroup.boxes.push(currentBox)
+    }
+
+    currentBox.items.push(item);
     return position;
   }, null);
-
-  groups.forEach((group, index) => {
-    const previous = groups[index - 1];
-    const next = groups[index + 1];
-
-    group.openStart = previous && !(previous.full.length || previous.wide.length);
-    group.openEnd = next && next.inline.length > 0;
-  })
 
   return groups;
 }
