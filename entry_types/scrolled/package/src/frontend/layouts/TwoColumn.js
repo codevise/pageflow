@@ -34,14 +34,17 @@ TwoColumn.defaultProps = {
   align: 'left'
 }
 
+// Used in tests to render markers around groups
+TwoColumn.GroupComponent = 'div';
+
 function renderItems(props, narrow) {
   return groupItemsByPosition(props.items, availablePositions(narrow)).map((group, index) =>
-    <div key={index} className={classNames(styles.group, styles[`group-${group.position}`])}>
+    <TwoColumn.GroupComponent key={index} className={classNames(styles.group, styles[`group-${group.position}`])}>
       {renderItemGroup(props, group, 'sticky')}
       {renderItemGroup(props, group, 'inline')}
       {renderItemGroup(props, group, 'wide')}
       {renderItemGroup(props, group, 'full')}
-    </div>
+    </TwoColumn.GroupComponent>
   );
 }
 

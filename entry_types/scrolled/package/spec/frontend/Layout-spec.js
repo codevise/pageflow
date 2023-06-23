@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {Layout} from 'frontend/layouts';
+import {TwoColumn} from 'frontend/layouts/TwoColumn';
 import {frontend} from 'pageflow-scrolled/frontend';
 
 import centerStyles from 'frontend/layouts/Center.module.css';
@@ -47,6 +48,9 @@ describe('Layout', () => {
     });
 
     // How to read these tests:
+    // - "[...]" represents a group. Inline and sticky boxes are
+    //    grouped together to allow displaying sticky elements next
+    //    to inline boxes.
     // - "( 1 2 3 )" is a box with three elements
     // - "( 1 2 3 |" is a box with an "open end".
     // - "| 1 2 3 )" is a box with an "open start".
@@ -59,7 +63,13 @@ describe('Layout', () => {
     }
 
     describe('in two column variant', () => {
-      it('is called for each group of consecutive items with same position passing position', () => {
+      TwoColumn.GroupComponent = function({children}) {
+        return (
+          <div>[{children}]</div>
+        );
+      }
+
+      it('is called for each sequence of consecutive items with same position passing position', () => {
         const items = [
           {id: 1, type: 'probe', position: 'wide'},
           {id: 2, type: 'probe', position: 'inline'},
@@ -76,10 +86,10 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('wide 1 inline 2 3 4 sticky 5 6 inline 7 full 8 ');
+        expect(container.textContent).toEqual('[wide 1 ][inline 2 3 4 ][sticky 5 6 inline 7 ][full 8 ]');
       });
 
-      it('continues inline group after being interrupted by sticky group', () => {
+      it('continues inline box after being interrupted by sticky box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'inline'},
@@ -93,10 +103,27 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('( 1 2 |( 3 4 )| 5 )');
+        expect(container.textContent).toEqual('[( 1 2 |][( 3 4 )| 5 )]');
       });
 
-      it('does not continue inline group after being interrupted by full group', () => {
+      it('continues inline box in new group after sticky box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'sticky'},
+          {id: 3, type: 'probe', position: 'inline'},
+          {id: 4, type: 'probe', position: 'sticky'},
+          {id: 5, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[( 1 |][( 2 )| 3 |][( 4 )| 5 )]');
+      });
+
+      it('does not continue inline box after being interrupted by full box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'inline'},
@@ -109,10 +136,10 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('( 1 2 )( 3 )( 4 )');
+        expect(container.textContent).toEqual('[( 1 2 )][( 3 )][( 4 )]');
       });
 
-      it('does not continue inline group after being interrupted by wide group', () => {
+      it('does not continue inline box after being interrupted by wide box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'inline'},
@@ -125,10 +152,10 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('( 1 2 )( 3 )( 4 )');
+        expect(container.textContent).toEqual('[( 1 2 )][( 3 )][( 4 )]');
       });
 
-      it('does not continue inline group after being interrupted by sticky and full group', () => {
+      it('does not continue inline box after being interrupted by sticky and full box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'sticky'},
@@ -141,10 +168,10 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('( 1 )( 2 )( 3 )( 4 )');
+        expect(container.textContent).toEqual('[( 1 )][( 2 )][( 3 )][( 4 )]');
       });
 
-      it('does not continue inline group after being interrupted by full and sticky group', () => {
+      it('does not continue inline box after being interrupted by full and sticky box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'full'},
@@ -157,7 +184,7 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('( 1 )( 2 )( 3 )( 4 )');
+        expect(container.textContent).toEqual('[( 1 )][( 2 )][( 3 )( 4 )]');
       });
 
       it('inlines sticky element for narrow viewport', () => {
@@ -174,7 +201,7 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('( 1 2 3 )');
+        expect(container.textContent).toEqual('[( 1 2 3 )]');
       });
     });
 
