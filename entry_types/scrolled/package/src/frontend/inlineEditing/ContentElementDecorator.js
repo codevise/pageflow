@@ -57,7 +57,7 @@ function DefaultSelectionRect(props) {
                    scrollPoint={isSelected}
                    drag={drag}
                    dragHandleTitle={t('pageflow_scrolled.inline_editing.drag_content_element')}
-                   full={props.position === 'full'}
+                   full={props.position === 'full' || props.customMargin}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
                    onClick={() => select()}
