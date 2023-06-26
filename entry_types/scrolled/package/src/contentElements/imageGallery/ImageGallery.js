@@ -5,6 +5,7 @@ import {
   useContentElementEditorState,
   useContentElementLifecycle,
   useFile,
+  ContentElementBox,
   Figure,
   FitViewport,
   FullscreenViewer,
@@ -184,17 +185,19 @@ const Item = forwardRef(function({item, captions, current, onClick, children}, r
                      aspectRatio={imageFile ? undefined : 0.75}
                      scale={0.8}
                      opaque={!imageFile}>
-          <Figure caption={caption}
-                  onCaptionChange={handleCaptionChange}
-                  addCaptionButtonVisible={current}
-                  addCaptionButtonPosition="inside">
-            <FitViewport.Content>
-              <div onClick={onClick}>
-                <Image imageFile={imageFile} load={shouldLoad} />
-              </div>
-              {children}
-            </FitViewport.Content>
-          </Figure>
+          <ContentElementBox>
+            <Figure caption={caption}
+                    onCaptionChange={handleCaptionChange}
+                    addCaptionButtonVisible={current && !item.placeholder}
+                    addCaptionButtonPosition="inside">
+              <FitViewport.Content>
+                <div onClick={onClick}>
+                  <Image imageFile={imageFile} load={shouldLoad} />
+                </div>
+                {children}
+              </FitViewport.Content>
+            </Figure>
+          </ContentElementBox>
         </FitViewport>
       </div>
     </div>
