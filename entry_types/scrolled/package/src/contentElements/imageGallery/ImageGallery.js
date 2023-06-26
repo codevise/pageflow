@@ -18,7 +18,7 @@ import {useIntersectionObserver} from './useIntersectionObserver'
 
 import styles from './ImageGallery.module.css';
 
-export function ImageGallery({configuration, contentElementId}) {
+export function ImageGallery({configuration, contentElementId, customMargin}) {
   const [visibleIndex, setVisibleIndex] = useState(0);
   const isPhonePlatform = usePhonePlatform();
 
@@ -26,7 +26,8 @@ export function ImageGallery({configuration, contentElementId}) {
     <FullscreenViewer
       contentElementId={contentElementId}
       renderChildren={({enterFullscreen, isFullscreen}) =>
-        <Scroller configuration={configuration}
+        <Scroller customMargin={customMargin}
+                  configuration={configuration}
                   controlled={isFullscreen}
                   displayFullscreenToggle={!isPhonePlatform &&
                                            configuration.position !== 'full' &&
@@ -51,6 +52,7 @@ export function ImageGallery({configuration, contentElementId}) {
 function Scroller({
   visibleIndex, setVisibleIndex,
   displayFullscreenToggle,
+  customMargin,
   onFullscreenEnter, onFullscreenExit,
   onBump,
   configuration,
@@ -123,7 +125,9 @@ function Scroller({
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={classNames(styles.wrapper,
+                               styles[configuration.position],
+                               {[styles.customMargin]: customMargin})}>
       <div className={styles.leftButton}>
         <ScrollButton direction="left"
                       disabled={visibleIndex <= 0}

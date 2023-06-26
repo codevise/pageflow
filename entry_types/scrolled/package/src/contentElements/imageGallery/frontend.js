@@ -3,5 +3,6 @@ import {ImageGallery} from './ImageGallery';
 
 frontend.contentElementTypes.register('imageGallery', {
   component: ImageGallery,
-  lifecycle: true
+  lifecycle: true,
+  customMargin: true
 });
