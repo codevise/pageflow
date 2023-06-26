@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Entry, RootProviders} from 'pageflow-scrolled/frontend';
+import {Entry, RootProviders, frontend} from 'pageflow-scrolled/frontend';
 
 import {
   normalizeAndMergeFixture,
@@ -12,11 +12,24 @@ import {
 import {storiesOf} from '@storybook/react';
 
 const appearanceOptions = ['shadow', 'transparent', 'cards'];
-const positionOptions = {
-  left: ['inline', 'sticky', 'full'],
-  right: ['inline', 'sticky', 'full'],
-  center: ['inline', 'left', 'right', 'full'],
-  centerRagged: ['inline', 'left', 'right', 'full'],
+
+function positionOptions({layout, includeWide}) {
+  const result = ['inline'];
+
+  if (includeWide) {
+    result.push('wide');
+  }
+
+  if (layout === 'left' || layout === 'right') {
+    result.push('sticky');
+  }
+  else {
+    result.push('left');
+    result.push('right');
+  }
+
+  result.push('full');
+  return result;
 }
 
 const customTextColorStyles = {
@@ -36,6 +49,32 @@ const customWidthStyles = {
   '--theme-narrow-section-two-column-inline-content-max-width': '380px',
   '--theme-narrow-section-centered-inline-content-max-width': '540px'
 }
+
+frontend.contentElementTypes.register('customMarginExample', {
+  component: function({customMargin}) {
+    const outer = {
+      background: 'blue',
+      padding: '0 max(var(--content-margin), calc((100% - var(--content-max-width)) / 2)'
+    };
+
+    const inner = {
+      background: 'green',
+      maxWidth: 'var(--content-max-width)',
+      padding: '200px 0',
+      textAlign: 'center'
+    };
+
+    return (
+      <div style={outer}>
+        <div style={inner}>
+          {customMargin ? 'Custom Margin' : 'Auto Margin'}
+        </div>
+      </div>
+    );
+  },
+  lifecycle: true,
+  customMargin: true
+});
 
 appearanceOptions.forEach(appearance => {
   storiesOf(`Frontend/Section Appearance/${appearance}`, module)
@@ -88,6 +127,13 @@ appearanceOptions.forEach(appearance => {
             <Entry />
           </div>
         </RootProviders>
+    )
+    .add(
+      'Custom Margin',
+      () =>
+        <RootProviders seed={exampleSeed(appearance, {positionedElementTypeName: 'customMarginExample'})}>
+          <Entry />
+        </RootProviders>
     );
 });
 
@@ -129,7 +175,7 @@ storiesOf(`Frontend/Section Appearance`, module)
     }
   )
 
-function exampleSeed(appearance, {short, invert, width, themeOptions} = {}) {
+function exampleSeed(appearance, {short, invert, width, themeOptions, positionedElementTypeName} = {}) {
   const sectionBaseConfiguration = {
     appearance,
     transition: 'reveal',
@@ -152,7 +198,7 @@ function exampleSeed(appearance, {short, invert, width, themeOptions} = {}) {
           }
         }
       ],
-      contentElements: exampleContentElements(1, 'left')
+      contentElements: exampleContentElements(1, 'left', positionedElementTypeName)
     });
   }
 
@@ -211,21 +257,24 @@ function exampleSeed(appearance, {short, invert, width, themeOptions} = {}) {
       }
     ],
     contentElements: [
-      ...exampleContentElements(1, 'left'),
-      ...exampleContentElements(2, 'center'),
-      ...exampleContentElements(3, 'centerRagged'),
-      ...exampleContentElements(4, 'right'),
-      examplePositionedElement({sectionId: 5, position: 'full'}),
+      ...exampleContentElements(1, 'left', positionedElementTypeName),
+      ...exampleContentElements(2, 'center', positionedElementTypeName),
+      ...exampleContentElements(3, 'centerRagged', positionedElementTypeName),
+      ...exampleContentElements(4, 'right', positionedElementTypeName),
+      examplePositionedElement({sectionId: 5, position: 'full', positionedElementTypeName}),
     ]
   });
 
-  function exampleContentElements(sectionId, layout) {
+  function exampleContentElements(sectionId, layout, positionedElementTypeName) {
     return [
       exampleHeading({sectionId, text: 'A Heading wider than the Section', position: 'wide'}),
       exampleHeading({sectionId, text: `${appearance} / ${layout}`}),
 
-      ...positionOptions[layout].map(position => [
-        examplePositionedElement({sectionId, position, caption: `Position ${position}`}),
+      ...positionOptions({layout, includeWide: !!positionedElementTypeName}).map(position => [
+        examplePositionedElement({sectionId,
+                                  typeName: positionedElementTypeName,
+                                  position,
+                                  caption: `Position ${position}`}),
         exampleTextBlock({sectionId}),
         exampleTextBlock({sectionId}),
       ]).flat()

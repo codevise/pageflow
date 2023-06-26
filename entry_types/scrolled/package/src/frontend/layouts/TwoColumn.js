@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {api} from '../api';
 import {ContentElements} from '../ContentElements';
 import {useNarrowViewport} from '../useNarrowViewport';
 
@@ -14,6 +15,8 @@ function availablePositions(narrow) {
     return ['inline', 'sticky', 'wide', 'full'];
   }
 }
+
+const positionsSupportingCustomMargin = ['inline', 'wide'];
 
 export function TwoColumn(props) {
   const narrow = useNarrowViewport();
@@ -48,18 +51,23 @@ function renderItems(props, narrow) {
 function renderItemGroup(props, box, key) {
   if (box.items.length) {
     return (
-      <div key={key} className={classNames(styles[box.position])}>
+      <div key={key} className={classNames(styles.box,
+                                           styles[box.position],
+                                           {[styles.customMargin]: box.customMargin})}>
         {props.children(
-          <ContentElements sectionProps={props.sectionProps} items={box.items} />,
+          <ContentElements sectionProps={props.sectionProps}
+                           customMargin={box.customMargin}
+                           items={box.items} />,
           {
             position: box.position,
+            customMargin: box.customMargin,
             openStart: box.openStart,
             openEnd: box.openEnd
           }
         )}
       </div>
     );
-  }
+      }
 }
 
 function groupItemsByPosition(items, availablePositions) {
@@ -69,7 +77,9 @@ function groupItemsByPosition(items, availablePositions) {
   let currentGroup, currentBox;
 
   items.reduce((previousPosition, item, index) => {
-    const position = availablePositions.indexOf(item.position) >= 0 ? item.position : 'inline';
+    const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
+    const position = availablePositions.includes(item.position) ? item.position : 'inline';
+    const customMargin = !!elementSupportsCustomMargin && positionsSupportingCustomMargin.includes(position);
 
     if (!currentGroup || previousPosition !== position) {
       currentBox = null;
@@ -84,21 +94,22 @@ function groupItemsByPosition(items, availablePositions) {
       }
     }
 
-    if (!currentBox) {
+    if (!currentBox || currentBox.customMargin !== customMargin) {
       currentBox = {
+        customMargin,
         position,
         items: []
       };
 
-      if (lastInlineBox && position === 'inline') {
+      if (lastInlineBox && position === 'inline' && !customMargin) {
         lastInlineBox.openEnd = true;
         currentBox.openStart = true;
       }
 
-      if (position === 'inline') {
+      if (position === 'inline' && !customMargin) {
         lastInlineBox = currentBox;
       }
-      else if (position !== 'sticky') {
+      else if (position === 'wide' || position === 'full' || customMargin) {
         lastInlineBox = null;
       }
 

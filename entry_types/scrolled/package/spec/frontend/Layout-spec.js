@@ -45,6 +45,26 @@ describe('Layout', () => {
           );
         }
       });
+
+      frontend.contentElementTypes.register('probeWithCustomMargin', {
+        customMargin: true,
+
+        component: function Probe({contentElementId}) {
+          return (
+            <div>{contentElementId} </div>
+          );
+        }
+      });
+
+      frontend.contentElementTypes.register('probeWithCustomMarginProp', {
+        customMargin: true,
+
+        component: function Probe({customMargin, contentElementId}) {
+          return (
+            <div>{customMargin ? 'custom' : 'normal'} {contentElementId} </div>
+          );
+        }
+      });
     });
 
     // How to read these tests:
@@ -87,6 +107,85 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual('[wide 1 ][inline 2 3 4 ][sticky 5 6 inline 7 ][full 8 ]');
+      });
+
+      it('places inline elements with custom margin in separate box in same group', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
+          {id: 3, type: 'probe', position: 'inline'}
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position, customMargin}) =>
+              <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
+            }
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[inline normal 1 inline custom 2 inline normal 3 ]');
+      });
+
+      it('places wide elements with custom margin in separate box in same group', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'wide'},
+          {id: 2, type: 'probeWithCustomMargin', position: 'wide'},
+          {id: 3, type: 'probe', position: 'wide'},
+          {id: 4, type: 'probeWithCustomMargin', position: 'wide'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position, customMargin}) =>
+              <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
+            }
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[wide normal 1 wide custom 2 wide normal 3 wide custom 4 ]');
+      });
+
+      it('does not apply custom margins for sticky elements', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'sticky'},
+          {id: 2, type: 'probeWithCustomMargin', position: 'sticky'}
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position, customMargin}) =>
+              <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
+            }
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[sticky normal 1 2 ]');
+      });
+
+      describe('customMargin prop passed to content element', () => {
+        it('is true if rendered with custom margin', () => {
+          const items = [
+            {id: 1, type: 'probeWithCustomMarginProp'}
+          ];
+          const {container} = render(
+            <Layout sectionProps={{layout: 'left'}} items={items}>
+              {children => children}
+            </Layout>
+          );
+
+          expect(container.textContent).toEqual('[custom 1 ]');
+        });
+
+        it('is false if rendered custom margin is not supported by position', () => {
+          const items = [
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'sticky'}
+          ];
+          const {container} = render(
+            <Layout sectionProps={{layout: 'left'}} items={items}>
+              {children => children}
+            </Layout>
+          );
+
+          expect(container.textContent).toEqual('[normal 1 ]');
+        });
       });
 
       it('continues inline box after being interrupted by sticky box', () => {
@@ -185,6 +284,21 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual('[( 1 )][( 2 )][( 3 )( 4 )]');
+      });
+
+      it('does not continue inline box after being interrupted by custom margin box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[( 1 )( 2 )( 3 )]');
       });
 
       it('inlines sticky element for narrow viewport', () => {
@@ -295,6 +409,79 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual('( 1 )( 2 )( 3 )');
+      });
+
+      it('renders inline items separated by custom margin item without open end/open start', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('( 1 )( 2 )( 3 )');
+      });
+
+      it('passes customMargin prop to box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
+          {id: 3, type: 'probe', position: 'inline'}
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, {customMargin}) =>
+              <div>{customMargin ? 'custom' : 'normal'} {children}</div>
+            }
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('normal 1 custom 2 normal 3 ');
+      });
+
+      describe('customMargin prop passed to content element', () => {
+        it('is true if rendered inline with custom margin', () => {
+          const items = [
+            {id: 1, type: 'probeWithCustomMarginProp'}
+          ];
+          const {container} = render(
+            <Layout sectionProps={{layout: 'center'}} items={items}>
+              {children => children}
+            </Layout>
+          );
+
+          expect(container.textContent).toEqual('custom 1 ');
+        });
+
+        it('is true if rendered wide with custom margin', () => {
+          const items = [
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'wide'}
+          ];
+          const {container} = render(
+            <Layout sectionProps={{layout: 'center'}} items={items}>
+              {children => children}
+            </Layout>
+          );
+
+          expect(container.textContent).toEqual('custom 1 ');
+        });
+
+        it('is false if rendered custom margin is not supported by position', () => {
+          const items = [
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'left'}
+          ];
+          const {container} = render(
+            <Layout sectionProps={{layout: 'center'}} items={items}>
+              {children => children}
+            </Layout>
+          );
+
+          expect(container.textContent).toEqual('normal 1 ');
+        });
       });
     });
 
