@@ -28,9 +28,10 @@ const AspectRatioContext = React.createContext();
  * @param {Object} props
  * @param {number} [props.aspectRatio] - Aspect ratio of div.
  * @param {Object} [props.file] - Use width/height of file to calculate aspect ratio.
+ * @param {number} [props.scale] - Only take up fraction of the viewport height supplied as value between 0 and 1.
  * @param {Object} [props.opaque] - Render black background behind content.
  */
-export function FitViewport({file, aspectRatio, opaque, children}) {
+export function FitViewport({file, aspectRatio, opaque, children, scale = 1}) {
   const {height} = useFullscreenDimensions();
 
   if (!file && !aspectRatio) return children;
@@ -41,10 +42,10 @@ export function FitViewport({file, aspectRatio, opaque, children}) {
 
   if (height) {
     // thumbnail view/fixed size: calculate absolute width in px
-    maxWidthCSS = (height / aspectRatio) + 'px';
+    maxWidthCSS = (height / aspectRatio * scale) + 'px';
   } else {
     // published view: set max width to specific aspect ratio depending on viewport height
-    maxWidthCSS = (100 / aspectRatio) + 'vh';
+    maxWidthCSS = (100 / aspectRatio * scale) + 'vh';
   }
 
   return (

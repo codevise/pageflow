@@ -182,6 +182,7 @@ const Item = forwardRef(function({item, captions, current, onClick, children}, r
       <div className={styles.figure}>
         <FitViewport file={imageFile}
                      aspectRatio={imageFile ? undefined : 0.75}
+                     scale={0.8}
                      opaque={!imageFile}>
           <Figure caption={caption}
                   onCaptionChange={handleCaptionChange}

@@ -53,6 +53,30 @@ describe('FitViewport', () => {
     expect(getOuter(container)).toHaveAttribute('style', 'max-width: 200vh;');
   });
 
+  it('supports scaling down', () => {
+    const file = {width: 200, height: 100};
+    const {container} = render(
+      <FitViewport file={file} scale={0.8}>
+        <FitViewport.Content />
+      </FitViewport>
+    );
+
+    expect(getOuter(container)).toHaveAttribute('style', 'max-width: 160vh;');
+  });
+
+  it('supports scaling down when height provided via FullscreenDimensionProvider', () => {
+    const file = {width: 200, height: 100};
+    const {container} = render(
+      <FullscreenDimensionProvider height={400}>
+        <FitViewport file={file} scale={0.9}>
+          <FitViewport.Content />
+        </FitViewport>
+      </FullscreenDimensionProvider>
+    );
+
+    expect(getOuter(container)).toHaveAttribute('style', 'max-width: 720px;');
+  });
+
   it('is not opaque by default', () => {
     const {container} = render(
       <FitViewport aspectRatio={0.5}>
