@@ -65,14 +65,19 @@
 }
 
 .wideViewport .sticky {
-  --content-max-width: var(--two-column-sticky-content-max-width, 600px);
+  --content-width: var(--theme-two-column-sticky-content-width, 25vw);
+  --content-max-width: min(var(--content-width), var(--two-column-sticky-content-max-width, 600px));
   position: sticky;
   float: right;
   clear: right;
   top: 33%;
-  width: var(--theme-two-column-sticky-content-width, 30%);
+  width: var(--content-width);
 }
 
 .wideViewport.right .sticky {
   float: left;
+}
+
+.wideViewport .sticky.customMargin {
+  width: 100%;
 }

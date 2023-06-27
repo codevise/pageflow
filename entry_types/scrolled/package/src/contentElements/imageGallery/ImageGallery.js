@@ -65,7 +65,7 @@ function Scroller({
   let items = configuration.items || [];
 
   if (!items.length && isEditable) {
-    items = [{placeholder: true}];
+    items = [{id: 1, placeholder: true}];
   }
 
   const onVisibleIndexChange = useCallback(index => {
