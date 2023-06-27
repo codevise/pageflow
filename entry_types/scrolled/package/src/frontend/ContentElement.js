@@ -21,6 +21,7 @@ export const ContentElement = withInlineEditingDecorator(
             <ContentElementMargin position={props.itemProps.position}>
               <ContentElementErrorBoundary type={props.type}>
                 <Component sectionProps={props.sectionProps}
+                           customMargin={props.customMargin}
                            configuration={props.itemProps}
                            contentElementId={props.id} />
               </ContentElementErrorBoundary>

@@ -2,8 +2,10 @@
 }
 
 .group {
-  padding-left: 8%;
-  padding-right: 8%;
+  --content-margin-fraction: 0.08;
+  --content-margin: calc(var(--content-margin-fraction) * 100%);
+  padding-left: var(--content-margin);
+  padding-right: var(--content-margin);
   margin-left: auto;
   margin-right: auto;
   max-width: var(--section-max-width, none);
@@ -16,13 +18,41 @@
   width: 100%;
 }
 
+.box {
+  max-width: var(--content-max-width);
+}
+
+.full {
+  --content-margin-fraction: 0;
+  --content-max-width: none;
+}
+
 .sticky,
 .inline {
-  max-width: var(--two-column-inline-content-max-width, 500px);
+  --content-max-width: var(--two-column-inline-content-max-width, 500px);
 }
 
 .wide {
-  max-width: var(--two-column-wide-content-max-width, 1200px);
+  --content-max-width: var(--two-column-wide-content-max-width, 1200px);
+}
+
+.customMargin {
+  /*
+    We want to undo the group padding by applying a negative margin to
+    the box.
+
+    Percentage margin and max-width of the box are calculated relative
+    to the inner width and height of the group, which does not include
+    the padding of the group. We apply a factor to express the group
+    width in terms of box width. Note that
+
+          box-width = group-width - 2 * group-width * content-margin-factor
+      <=> group-width = box-width / (1 - 2 * content-margin-factor)
+  */
+  --f: calc(1 / (1 - 2 * var(--content-margin-fraction)));
+  margin-left: calc(-100% * var(--content-margin-fraction) * var(--f));
+  margin-right: calc(-100% * var(--content-margin-fraction) * var(--f));
+  max-width: calc(var(--content-margin) * var(--f) * 2 + var(--content-max-width));
 }
 
 .right .inline,
@@ -35,11 +65,11 @@
 }
 
 .wideViewport .sticky {
+  --content-max-width: var(--two-column-sticky-content-max-width, 600px);
   position: sticky;
   float: right;
   clear: right;
   top: 33%;
-  max-width: var(--two-column-sticky-content-max-width, 600px);
   width: var(--theme-two-column-sticky-content-width, 30%);
 }
 

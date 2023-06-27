@@ -5,13 +5,28 @@
 
 .wrapper {
   --overlap: 20px;
-  --item-size: calc(80% - var(--overlap) * 2);
-  --gutter: calc((100% - var(--item-size)) / 2);
+  --gutter: 8%;
   display: grid;
-  grid-template-columns: var(--gutter) 1fr var(--gutter);
+  grid-template-columns: 1fr 84% 1fr;
   align-items: center;
   height: 100%;
+  margin: 0 auto;
   color: lightContentTextColor;
+}
+
+@media (min-width: 1000px) {
+  .wide {
+    --overlap: 40px;
+  }
+}
+
+.customMargin {
+  --gutter: max(var(--content-margin), (100% - var(--content-max-width)) / 2);
+  grid-template-columns:
+    var(--content-margin)
+    minmax(0, var(--content-max-width))
+    var(--content-margin);
+  justify-content: center;
 }
 
 .button {
@@ -19,6 +34,7 @@
   z-index: 2;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 }
 
 .leftButton {
@@ -42,8 +58,8 @@
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+  padding: 0 calc(var(--overlap) + var(--gutter));
   scrollbar-width: none;
-  padding: 0 var(--gutter);
 }
 
 .items::-webkit-scrollbar {
@@ -61,12 +77,16 @@
 }
 
 .figure {
-  transform: scale(0.9);
   transition: transform .2s ease, filter .2s linear;
+  transform: scale(0.9);
   filter: brightness(0.5);
 }
 
 .current .figure {
   transform: scale(1);
   filter: none;
+}
+
+.placeholder {
+  opacity: 0.2;
 }

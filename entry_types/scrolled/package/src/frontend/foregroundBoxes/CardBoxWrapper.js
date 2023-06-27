@@ -8,9 +8,13 @@ import styles from "./CardBoxWrapper.module.css";
 const positionOutsideBox = ['sticky', 'wide', 'full']
 
 export default function CardBoxWrapper(props) {
+  if (positionOutsideBox.includes(props.position) || props.customMargin) {
+    return props.children;
+  }
+
   return(
     <div className={className(props)}>
-      <BackgroundColorProvider invert={!positionOutsideBox.includes(props.position)}>
+      <BackgroundColorProvider invert>
         {props.children}
       </BackgroundColorProvider>
     </div>
@@ -18,10 +22,6 @@ export default function CardBoxWrapper(props) {
 }
 
 function className(props) {
-  if (positionOutsideBox.includes(props.position)) {
-    return undefined;
-  }
-
   return classNames(
     styles.card,
     props.inverted ? styles.cardBgBlack : styles.cardBgWhite,

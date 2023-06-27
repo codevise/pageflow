@@ -1,6 +1,6 @@
 import {useRef, useEffect} from 'react';
 
-export function useIntersectionObserver({threshold, setVisibleIndex}) {
+export function useIntersectionObserver({threshold, onVisibleIndexChange}) {
   const containerRef = useRef();
   const childRefs = useRef([]);
   const observerRef = useRef();
@@ -15,7 +15,7 @@ export function useIntersectionObserver({threshold, setVisibleIndex}) {
           );
 
           if (entry.isIntersecting) {
-            setVisibleIndex(entryIndex);
+            onVisibleIndexChange(entryIndex);
           }
         });
       },
@@ -32,7 +32,7 @@ export function useIntersectionObserver({threshold, setVisibleIndex}) {
     return () => {
       observer.disconnect();
     };
-  }, [threshold, setVisibleIndex]);
+  }, [threshold, onVisibleIndexChange]);
 
   const setChildRef = (index) => (ref) => {
     if (observerRef.current) {

@@ -1,10 +1,11 @@
-import React, {forwardRef, useState, useEffect, useRef} from 'react';
+import React, {forwardRef, useCallback, useState, useEffect, useRef} from 'react';
 import classNames from 'classnames';
 import {
   useContentElementConfigurationUpdate,
   useContentElementEditorState,
   useContentElementLifecycle,
   useFile,
+  ContentElementBox,
   Figure,
   FitViewport,
   FullscreenViewer,
@@ -18,15 +19,16 @@ import {useIntersectionObserver} from './useIntersectionObserver'
 
 import styles from './ImageGallery.module.css';
 
-export function ImageGallery({configuration, contentElementId}) {
-  const [visibleIndex, setVisibleIndex] = useState(0);
+export function ImageGallery({configuration, contentElementId, customMargin}) {
+  const [visibleIndex, setVisibleIndex] = useState(-1);
   const isPhonePlatform = usePhonePlatform();
 
   return (
     <FullscreenViewer
       contentElementId={contentElementId}
       renderChildren={({enterFullscreen, isFullscreen}) =>
-        <Scroller configuration={configuration}
+        <Scroller customMargin={customMargin}
+                  configuration={configuration}
                   controlled={isFullscreen}
                   displayFullscreenToggle={!isPhonePlatform &&
                                            configuration.position !== 'full' &&
@@ -51,22 +53,30 @@ export function ImageGallery({configuration, contentElementId}) {
 function Scroller({
   visibleIndex, setVisibleIndex,
   displayFullscreenToggle,
+  customMargin,
   onFullscreenEnter, onFullscreenExit,
   onBump,
   configuration,
   controlled
 }) {
   const lastVisibleIndex = useRef(null);
-  const items = configuration.items || [];
   const {isSelected, isEditable} = useContentElementEditorState();
 
+  let items = configuration.items || [];
+
+  if (!items.length && isEditable) {
+    items = [{placeholder: true}];
+  }
+
+  const onVisibleIndexChange = useCallback(index => {
+    if (!controlled) {
+      lastVisibleIndex.current = index;
+      setVisibleIndex(index);
+    }
+  }, [controlled, setVisibleIndex]);
+
   const {containerRef: scrollerRef, setChildRef} = useIntersectionObserver({
-    setVisibleIndex(index) {
-      if (!controlled) {
-        lastVisibleIndex.current = index;
-        setVisibleIndex(index);
-      }
-    },
+    onVisibleIndexChange,
     threshold: 0.7
   });
 
@@ -121,7 +131,9 @@ function Scroller({
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={classNames(styles.wrapper,
+                               styles[configuration.position],
+                               {[styles.customMargin]: customMargin})}>
       <div className={styles.leftButton}>
         <ScrollButton direction="left"
                       disabled={visibleIndex <= 0}
@@ -172,22 +184,27 @@ const Item = forwardRef(function({item, captions, current, onClick, children}, r
   }
 
   return (
-    <div className={classNames(styles.item, {[styles.current]: current})} ref={ref}>
+    <div className={classNames(styles.item, {[styles.current]: current,
+                                             [styles.placeholder]: item.placeholder})}
+         ref={ref}>
       <div className={styles.figure}>
         <FitViewport file={imageFile}
                      aspectRatio={imageFile ? undefined : 0.75}
+                     scale={0.8}
                      opaque={!imageFile}>
-          <Figure caption={caption}
-                  onCaptionChange={handleCaptionChange}
-                  addCaptionButtonVisible={current}
-                  addCaptionButtonPosition="inside">
-            <FitViewport.Content>
-              <div onClick={onClick}>
-                <Image imageFile={imageFile} load={shouldLoad} />
-              </div>
-              {children}
-            </FitViewport.Content>
-          </Figure>
+          <ContentElementBox>
+            <Figure caption={caption}
+                    onCaptionChange={handleCaptionChange}
+                    addCaptionButtonVisible={current && !item.placeholder}
+                    addCaptionButtonPosition="inside">
+              <FitViewport.Content>
+                <div onClick={onClick}>
+                  <Image imageFile={imageFile} load={shouldLoad} />
+                </div>
+                {children}
+              </FitViewport.Content>
+            </Figure>
+          </ContentElementBox>
         </FitViewport>
       </div>
     </div>

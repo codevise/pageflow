@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {api} from '../api';
 import {ContentElements} from '../ContentElements';
 import {useNarrowViewport} from '../useNarrowViewport';
 
@@ -14,6 +15,8 @@ function availablePositions(narrow) {
     return ['inline', 'sticky', 'wide', 'full'];
   }
 }
+
+const positionsSupportingCustomMargin = ['inline', 'wide'];
 
 export function TwoColumn(props) {
   const narrow = useNarrowViewport();
@@ -34,64 +37,88 @@ TwoColumn.defaultProps = {
   align: 'left'
 }
 
+// Used in tests to render markers around groups
+TwoColumn.GroupComponent = 'div';
+
 function renderItems(props, narrow) {
   return groupItemsByPosition(props.items, availablePositions(narrow)).map((group, index) =>
-    <div key={index} className={classNames(styles.group, styles[`group-${group.position}`])}>
-      {renderItemGroup(props, group, 'sticky')}
-      {renderItemGroup(props, group, 'inline')}
-      {renderItemGroup(props, group, 'wide')}
-      {renderItemGroup(props, group, 'full')}
-    </div>
+    <TwoColumn.GroupComponent key={index} className={classNames(styles.group, styles[`group-${group.position}`])}>
+      {group.boxes.map((box, index) => renderItemGroup(props, box, index))}
+    </TwoColumn.GroupComponent>
   );
 }
 
-function renderItemGroup(props, group, position) {
-  if (group[position].length) {
+function renderItemGroup(props, box, key) {
+  if (box.items.length) {
     return (
-      <div className={styles[position]}>
+      <div key={key} className={classNames(styles.box,
+                                           styles[box.position],
+                                           {[styles.customMargin]: box.customMargin})}>
         {props.children(
-          <ContentElements sectionProps={props.sectionProps} items={group[position]} />,
+          <ContentElements sectionProps={props.sectionProps}
+                           customMargin={box.customMargin}
+                           items={box.items} />,
           {
-            position,
-            openStart: position === 'inline' && group.openStart,
-            openEnd: position === 'inline' &&  group.openEnd
+            position: box.position,
+            customMargin: box.customMargin,
+            openStart: box.openStart,
+            openEnd: box.openEnd
           }
         )}
       </div>
     );
-  }
+      }
 }
 
 function groupItemsByPosition(items, availablePositions) {
-  let groups = [];
-  let currentGroup;
+  const groups = [];
 
-  items.reduce((previousItemPosition, item, index) => {
-    const position = availablePositions.indexOf(item.position) >= 0 ? item.position : 'inline';
+  let lastInlineBox = null;
+  let currentGroup, currentBox;
 
-    if (!previousItemPosition || (previousItemPosition !== position &&
-                                  !(previousItemPosition === 'sticky' && position === 'inline'))) {
-      currentGroup = {
-        position,
-        sticky: [],
-        inline: [],
-        wide: [],
-        full: []
-      };
-      groups = [...groups, currentGroup];
+  items.reduce((previousPosition, item, index) => {
+    const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
+    const position = availablePositions.includes(item.position) ? item.position : 'inline';
+    const customMargin = !!elementSupportsCustomMargin && positionsSupportingCustomMargin.includes(position);
+
+    if (!currentGroup || previousPosition !== position) {
+      currentBox = null;
+
+      if (!(previousPosition === 'sticky' && position === 'inline')) {
+        currentGroup = {
+          position,
+          boxes: []
+        };
+
+        groups.push(currentGroup);
+      }
     }
 
-    currentGroup[position].push(item);
+    if (!currentBox || currentBox.customMargin !== customMargin) {
+      currentBox = {
+        customMargin,
+        position,
+        items: []
+      };
+
+      if (lastInlineBox && position === 'inline' && !customMargin) {
+        lastInlineBox.openEnd = true;
+        currentBox.openStart = true;
+      }
+
+      if (position === 'inline' && !customMargin) {
+        lastInlineBox = currentBox;
+      }
+      else if (position === 'wide' || position === 'full' || customMargin) {
+        lastInlineBox = null;
+      }
+
+      currentGroup.boxes.push(currentBox)
+    }
+
+    currentBox.items.push(item);
     return position;
   }, null);
-
-  groups.forEach((group, index) => {
-    const previous = groups[index - 1];
-    const next = groups[index + 1];
-
-    group.openStart = previous && !(previous.full.length || previous.wide.length);
-    group.openEnd = next && next.inline.length > 0;
-  })
 
   return groups;
 }

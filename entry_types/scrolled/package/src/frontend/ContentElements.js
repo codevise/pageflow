@@ -14,6 +14,7 @@ export function ContentElements(props) {
                                                first={index === 0}
                                                position={item.position}
                                                itemProps={item.props}
+                                               customMargin={props.customMargin}
                                                sectionProps={props.sectionProps} />,
                        index)
        )}
@@ -29,6 +30,7 @@ const MemoizedContentElement = React.memo(
     prevProps.type === nextProps.type &&
     prevProps.position === nextProps.position &&
     prevProps.itemProps === nextProps.itemProps &&
+    prevProps.customMargin === nextProps.customMargin &&
     prevProps.sectionProps === nextProps.sectionProps
   )
 );
