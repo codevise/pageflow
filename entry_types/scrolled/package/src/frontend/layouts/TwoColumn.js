@@ -16,7 +16,7 @@ function availablePositions(narrow) {
   }
 }
 
-const positionsSupportingCustomMargin = ['inline', 'wide'];
+const positionsSupportingCustomMargin = ['inline', 'sticky', 'wide'];
 
 export function TwoColumn(props) {
   const narrow = useNarrowViewport();
@@ -109,7 +109,8 @@ function groupItemsByPosition(items, availablePositions) {
       if (position === 'inline' && !customMargin) {
         lastInlineBox = currentBox;
       }
-      else if (position === 'wide' || position === 'full' || customMargin) {
+      else if (position === 'wide' || position === 'full' ||
+               (customMargin && position !== 'sticky')) {
         lastInlineBox = null;
       }
 

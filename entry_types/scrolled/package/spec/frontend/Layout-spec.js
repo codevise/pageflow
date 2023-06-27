@@ -144,7 +144,7 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('[wide normal 1 wide custom 2 wide normal 3 wide custom 4 ]');
       });
 
-      it('does not apply custom margins for sticky elements', () => {
+      it('places sticky elements with custom margin in separate box in same group', () => {
         const items = [
           {id: 1, type: 'probe', position: 'sticky'},
           {id: 2, type: 'probeWithCustomMargin', position: 'sticky'}
@@ -157,7 +157,23 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('[sticky normal 1 2 ]');
+        expect(container.textContent).toEqual('[sticky normal 1 sticky custom 2 ]');
+      });
+
+      it('does not apply custom margins for full elements', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'full'},
+          {id: 2, type: 'probeWithCustomMargin', position: 'full'}
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position, customMargin}) =>
+              <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
+            }
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[full normal 1 2 ]');
       });
 
       describe('customMargin prop passed to content element', () => {
@@ -176,7 +192,7 @@ describe('Layout', () => {
 
         it('is false if rendered custom margin is not supported by position', () => {
           const items = [
-            {id: 1, type: 'probeWithCustomMarginProp', position: 'sticky'}
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'full'}
           ];
           const {container} = render(
             <Layout sectionProps={{layout: 'left'}} items={items}>
@@ -299,6 +315,21 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual('[( 1 )( 2 )( 3 )]');
+      });
+
+      it('continues inline box after being interrupted by sticky custom margin box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probeWithCustomMargin', position: 'sticky'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[( 1 |][( 2 )| 3 )]');
       });
 
       it('inlines sticky element for narrow viewport', () => {
