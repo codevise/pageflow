@@ -86,3 +86,7 @@
   transform: scale(1);
   filter: none;
 }
+
+.placeholder {
+  opacity: 0.2;
+}

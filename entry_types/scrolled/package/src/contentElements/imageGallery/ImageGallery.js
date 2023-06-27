@@ -60,8 +60,13 @@ function Scroller({
   controlled
 }) {
   const lastVisibleIndex = useRef(null);
-  const items = configuration.items || [];
   const {isSelected, isEditable} = useContentElementEditorState();
+
+  let items = configuration.items || [];
+
+  if (!items.length && isEditable) {
+    items = [{placeholder: true}];
+  }
 
   const onVisibleIndexChange = useCallback(index => {
     if (!controlled) {
@@ -179,7 +184,9 @@ const Item = forwardRef(function({item, captions, current, onClick, children}, r
   }
 
   return (
-    <div className={classNames(styles.item, {[styles.current]: current})} ref={ref}>
+    <div className={classNames(styles.item, {[styles.current]: current,
+                                             [styles.placeholder]: item.placeholder})}
+         ref={ref}>
       <div className={styles.figure}>
         <FitViewport file={imageFile}
                      aspectRatio={imageFile ? undefined : 0.75}
