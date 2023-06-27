@@ -20,7 +20,7 @@ import {useIntersectionObserver} from './useIntersectionObserver'
 import styles from './ImageGallery.module.css';
 
 export function ImageGallery({configuration, contentElementId, customMargin}) {
-  const [visibleIndex, setVisibleIndex] = useState(0);
+  const [visibleIndex, setVisibleIndex] = useState(-1);
   const isPhonePlatform = usePhonePlatform();
 
   return (
