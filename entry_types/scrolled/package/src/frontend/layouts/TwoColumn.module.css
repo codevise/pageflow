@@ -69,7 +69,7 @@
   --content-max-width: min(var(--content-width), var(--two-column-sticky-content-max-width, 600px));
   position: sticky;
   float: right;
-  clear: right;
+  clear: both;
   top: 33%;
   width: var(--content-width);
 }

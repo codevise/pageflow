@@ -81,7 +81,8 @@ function groupItemsByPosition(items, availablePositions) {
     const position = availablePositions.includes(item.position) ? item.position : 'inline';
     const customMargin = !!elementSupportsCustomMargin && positionsSupportingCustomMargin.includes(position);
 
-    if (!currentGroup || previousPosition !== position) {
+    if (!currentGroup || previousPosition !== position ||
+        (position === 'sticky' && currentBox.customMargin !== customMargin)) {
       currentBox = null;
 
       if (!(previousPosition === 'sticky' && position === 'inline')) {

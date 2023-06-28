@@ -144,7 +144,7 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('[wide normal 1 wide custom 2 wide normal 3 wide custom 4 ]');
       });
 
-      it('places sticky elements with custom margin in separate box in same group', () => {
+      it('places sticky elements with and without custom margin in separate groups', () => {
         const items = [
           {id: 1, type: 'probe', position: 'sticky'},
           {id: 2, type: 'probeWithCustomMargin', position: 'sticky'}
@@ -157,7 +157,7 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('[sticky normal 1 sticky custom 2 ]');
+        expect(container.textContent).toEqual('[sticky normal 1 ][sticky custom 2 ]');
       });
 
       it('does not apply custom margins for full elements', () => {
