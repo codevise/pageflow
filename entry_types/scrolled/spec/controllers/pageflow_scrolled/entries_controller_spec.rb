@@ -112,6 +112,28 @@ module PageflowScrolled
         expect(response.body).to have_selector('html[lang=de]')
       end
 
+      it 'uses ltr text direction for de entry loclae' do
+        entry = create(:entry,
+                       :published,
+                       type_name: 'scrolled',
+                       published_revision_attributes: {locale: 'de'})
+
+        get_with_entry_env(:show, entry: entry)
+
+        expect(response.body).to have_selector('html[dir=ltr]')
+      end
+
+      it 'uses rtl text direction for ar entry loclae' do
+        entry = create(:entry,
+                       :published,
+                       type_name: 'scrolled',
+                       published_revision_attributes: {locale: 'ar'})
+
+        get_with_entry_env(:show, entry: entry)
+
+        expect(response.body).to have_selector('html[dir=rtl]')
+      end
+
       it 'renders structured data' do
         entry = create(:entry, :published, type_name: 'scrolled')
 

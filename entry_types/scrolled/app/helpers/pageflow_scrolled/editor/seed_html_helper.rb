@@ -6,6 +6,7 @@ module PageflowScrolled
       include ReactServerSideRenderingHelper
       include Pageflow::WidgetsHelper
       include Pageflow::StructuredDataHelper
+      include Pageflow::TextDirectionHelper
       include FaviconHelper
       include PacksHelper
       include WebpackPublicPathHelper

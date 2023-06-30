@@ -9,6 +9,7 @@ module PageflowScrolled
     helper Pageflow::SocialShareHelper
     helper Pageflow::MetaTagsHelper
     helper Pageflow::StructuredDataHelper
+    helper Pageflow::TextDirectionHelper
     helper FaviconHelper
 
     def show
