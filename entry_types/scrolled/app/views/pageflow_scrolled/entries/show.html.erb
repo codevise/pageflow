@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%= content_tag(:html, lang: @entry.locale) do %>
+<%= content_tag(:html, lang: @entry.locale, dir: text_direction(@entry.locale)) do %>
   <head>
     <title><%= pretty_entry_title(@entry) %></title>
 
