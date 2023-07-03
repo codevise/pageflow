@@ -8,9 +8,10 @@ module PageflowScrolled
   #
   # @since 15.7
   class ReactWidgetType < Pageflow::WidgetType
-    def initialize(role:, name:)
+    def initialize(role:, name:, enabled_in_editor: true)
       @role = role
       @name = name
+      @enabled_in_editor = enabled_in_editor
     end
 
     attr_reader :name
@@ -21,6 +22,10 @@ module PageflowScrolled
 
     def roles
       [@role]
+    end
+
+    def enabled_in_editor?
+      @enabled_in_editor
     end
 
     def render(*)
