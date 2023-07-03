@@ -3,11 +3,11 @@ import {storiesOf} from '@storybook/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 import {normalizeAndMergeFixture} from 'pageflow-scrolled/spec/support/stories';
-import {ConsentBar} from '../thirdPartyConsent';
+import './index';
 import {Entry, RootProviders} from 'pageflow-scrolled/frontend';
 import {Consent} from 'pageflow/frontend';
 
-const stories = storiesOf('Frontend/Consent Bar', module);
+const stories = storiesOf('Widgets/Consent Bar', module);
 
 function createConsent() {
   const consent = Consent.create();
@@ -27,23 +27,29 @@ function createConsent() {
   return consent;
 }
 
+const seed = {
+  widgets: [{
+    role: 'consent',
+    typeName: 'consentBar'
+  }],
+  sections: [{}]
+};
+
 stories.add(
   'Desktop',
   () =>
-    <RootProviders seed={normalizeAndMergeFixture()}
+    <RootProviders seed={normalizeAndMergeFixture(seed)}
                    consent={createConsent()}>
-      <ConsentBar defaultExpanded={true} />
-      <Backdrop />
+      <Entry />
     </RootProviders>
 );
 
 stories.add(
   'Mobile',
   () =>
-    <RootProviders seed={normalizeAndMergeFixture()}
+    <RootProviders seed={normalizeAndMergeFixture(seed)}
                    consent={createConsent()}>
-      <ConsentBar defaultExpanded={true} />
-      <Backdrop />
+      <Entry />
     </RootProviders>,
   {
     percy: {
@@ -55,9 +61,3 @@ stories.add(
     }
   }
 );
-
-function Backdrop() {
-  return (
-    <div style={{background: '#aaa', height: '100vh'}} />
-  );
-}

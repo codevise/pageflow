@@ -1,8 +1,9 @@
 import React from 'react';
 
-import {VendorsBox} from 'frontend/thirdPartyConsent/VendorsBox';
+import {VendorsBox} from 'widgets/consentBar/VendorsBox';
 
-import {render, fireEvent} from '@testing-library/react';
+import {renderInEntry} from 'pageflow-scrolled/testHelpers';
+import {fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
@@ -25,7 +26,7 @@ describe('VendorsBox', () => {
       }
     ];
 
-    const {getByLabelText} = render(<VendorsBox vendors={vendors} />);
+    const {getByLabelText} = renderInEntry(<VendorsBox vendors={vendors} />);
 
     expect(getByLabelText('XY Analytics')).toBeChecked();
     expect(getByLabelText('YZ Analytics')).not.toBeChecked();
@@ -40,7 +41,7 @@ describe('VendorsBox', () => {
       }
     ];
 
-    const {getByLabelText} = render(<VendorsBox vendors={vendors} />);
+    const {getByLabelText} = renderInEntry(<VendorsBox vendors={vendors} />);
     fireEvent.click(getByLabelText('YZ Analytics'));
 
     expect(getByLabelText('YZ Analytics')).toBeChecked();
@@ -62,7 +63,7 @@ describe('VendorsBox', () => {
     const save = jest.fn();
 
     const {getByLabelText, getByRole} =
-      render(<VendorsBox vendors={vendors} save={save} />);
+      renderInEntry(<VendorsBox vendors={vendors} save={save} />);
     fireEvent.click(getByLabelText('YZ Analytics'));
     fireEvent.click(getByRole('button', {name: 'Save'}));
 

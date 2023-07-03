@@ -1,14 +1,14 @@
 import React from 'react';
 
-import {Bar} from 'frontend/thirdPartyConsent/Bar';
+import {ConsentBar} from 'widgets/consentBar/ConsentBar';
 import {Consent, cookies} from 'pageflow/frontend';
 
 import {fireEvent} from '@testing-library/react';
-import {renderInEntry} from 'support';
+import {renderInEntry} from 'pageflow-scrolled/testHelpers';
 import '@testing-library/jest-dom/extend-expect';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
-describe('Bar', () => {
+describe('ConsentBar', () => {
   beforeEach(() => {
     cookies.removeItem('pageflow_consent');
   });
@@ -24,7 +24,7 @@ describe('Bar', () => {
   it('renders nothing by default', async () => {
     const consent = Consent.create();
 
-    const {container} = renderInEntry(<Bar />, {consent});
+    const {container} = renderInEntry(<ConsentBar />, {consent});
 
     expect(container).toBeEmptyDOMElement();
   });
@@ -37,7 +37,7 @@ describe('Bar', () => {
     consent.closeVendorRegistration();
 
     const promise = consent.require('someService');
-    const {findByRole} = renderInEntry(<Bar />, {consent});
+    const {findByRole} = renderInEntry(<ConsentBar />, {consent});
     fireEvent.click(await findByRole('button', {name: 'Accept all'}));
 
     expect(await promise).toEqual('fulfilled');
@@ -51,7 +51,7 @@ describe('Bar', () => {
     consent.closeVendorRegistration();
 
     const promise = consent.require('someService');
-    const {findByRole} = renderInEntry(<Bar />, {consent});
+    const {findByRole} = renderInEntry(<ConsentBar />, {consent});
     fireEvent.click(await findByRole('button', {name: 'Deny all'}));
 
     expect(await promise).toEqual('failed');
@@ -66,7 +66,7 @@ describe('Bar', () => {
     consent.closeVendorRegistration();
 
     const promise = consent.require('someService');
-    const {findByRole, getByRole, getByLabelText} = renderInEntry(<Bar />, {consent});
+    const {findByRole, getByRole, getByLabelText} = renderInEntry(<ConsentBar />, {consent});
     fireEvent.click(await findByRole('button', {name: 'Configure'}));
     fireEvent.click(getByLabelText('Some Service'));
     fireEvent.click(getByRole('button', {name: 'Save'}));
@@ -81,7 +81,7 @@ describe('Bar', () => {
     });
     consent.closeVendorRegistration();
 
-    const {container, findByRole} = renderInEntry(<Bar />, {consent});
+    const {container, findByRole} = renderInEntry(<ConsentBar />, {consent});
     fireEvent.click(await findByRole('button', {name: 'Accept all'}))
 
     expect(container).toBeEmptyDOMElement();
@@ -94,7 +94,7 @@ describe('Bar', () => {
     consent.closeVendorRegistration();
 
     const {findByRole} = renderInEntry(
-      <Bar />,
+      <ConsentBar />,
       {
         consent,
         seed: {

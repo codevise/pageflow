@@ -1,16 +1,10 @@
 import React, {useState} from 'react';
-
+import {useConsentRequested, useI18n, useLegalInfo, useLocale, ThemeIcon} from 'pageflow-scrolled/frontend';
 import {VendorsBox} from './VendorsBox';
 
-import {useConsentRequested} from './hooks';
-import {useI18n, useLocale} from '../i18n';
-import {useLegalInfo} from '../../entryState';
+import styles from './ConsentBar.module.css';
 
-import GearIcon from '../icons/gear.svg';
-
-import styles from './Bar.module.css';
-
-export function Bar({defaultExpanded = false}) {
+export function ConsentBar({defaultExpanded = false}) {
   const {vendors, acceptAll, denyAll, save} = useConsentRequested();
   const [expanded, setExpanded] = useState(defaultExpanded);
   const {t} = useI18n();
@@ -24,7 +18,7 @@ export function Bar({defaultExpanded = false}) {
 
         {!expanded &&
          <button className={styles.configureButton} onClick={() => setExpanded(true)}>
-           <GearIcon width={15} height={15} />
+           <ThemeIcon name="gear" width={15} height={15} />
            {t('pageflow_scrolled.public.consent_configure')}
          </button>}
 

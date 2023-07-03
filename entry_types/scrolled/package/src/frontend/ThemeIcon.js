@@ -4,6 +4,7 @@ import information from './icons/information.svg';
 import muted from './icons/muted.svg';
 import share from './icons/share.svg';
 import unmuted from './icons/unmuted.svg';
+import gear from './icons/gear.svg';
 
 import email from './icons/social/email.svg';
 import facebook from './icons/social/facebook.svg';
@@ -23,6 +24,7 @@ const icons = {
   muted,
   share,
   unmuted,
+  gear,
 
   email,
   facebook,
@@ -40,9 +42,9 @@ const icons = {
  *
  * @param {Object} props
  * @param {string} props.name -
- *   Either: expand, information, muted, share, unmuted,
+ *   Either: expand, gear, information, muted, share, unmuted,
  *   email, facebook, linkedIn, telegram, twitter, whatsApp,
- *   arrowLeft, arrowRight
+ *   arrowLeft, arrowRight,
  * @params {number} [props.width] - Image width.
  * @params {number} [props.height] - Image height.
  */
