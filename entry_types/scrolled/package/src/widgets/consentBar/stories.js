@@ -30,7 +30,8 @@ function createConsent() {
 const seed = {
   widgets: [{
     role: 'consent',
-    typeName: 'consentBar'
+    typeName: 'consentBar',
+    configuration: {defaultExpanded: true}
   }],
   sections: [{}]
 };

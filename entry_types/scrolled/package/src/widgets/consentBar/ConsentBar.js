@@ -4,9 +4,9 @@ import {VendorsBox} from './VendorsBox';
 
 import styles from './ConsentBar.module.css';
 
-export function ConsentBar({defaultExpanded = false}) {
+export function ConsentBar({configuration = {}}) {
   const {vendors, acceptAll, denyAll, save} = useConsentRequested();
-  const [expanded, setExpanded] = useState(defaultExpanded);
+  const [expanded, setExpanded] = useState(configuration.defaultExpanded);
   const {t} = useI18n();
   const locale = useLocale();
   const privacyLinkUrl = useLegalInfo().privacy.url;
@@ -26,7 +26,7 @@ export function ConsentBar({defaultExpanded = false}) {
          <VendorsBox vendors={vendors}
                      save={save}
                      t={t}
-                     defaultExpanded={defaultExpanded} />}
+                     defaultExpanded={configuration.defaultExpanded} />}
 
         <div className={styles.decisionButtons}>
           <button className={styles.button} onClick={denyAll}>
