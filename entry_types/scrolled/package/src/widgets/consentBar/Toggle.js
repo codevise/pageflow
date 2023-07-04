@@ -2,8 +2,8 @@ import React from 'react';
 
 import styles from './Toggle.module.css';
 
-import ToggleOnIcon from '../icons/toggleOn.svg';
-import ToggleOffIcon from '../icons/toggleOff.svg';
+import ToggleOnIcon from './icons/toggleOn.svg';
+import ToggleOffIcon from './icons/toggleOff.svg';
 
 export function Toggle({id, checked, onChange}) {
   const Icon = checked ? ToggleOnIcon : ToggleOffIcon;

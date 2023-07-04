@@ -1,11 +1,10 @@
 import React, {useReducer, useState} from 'react';
 
-import {useI18n} from '../i18n';
+import {useI18n, ThemeIcon} from 'pageflow-scrolled/frontend';
 
 import {Toggle} from './Toggle';
 
-import InformationIcon from '../icons/information.svg';
-import styles from './Bar.module.css';
+import styles from './ConsentBar.module.css';
 
 function reducer(state, vendorName) {
   return {
@@ -80,7 +79,7 @@ function Vendor({vendor, state, onToggle, t, defaultExpanded}) {
       <button className={styles.expandVendor}
               title={t('pageflow_scrolled.public.consent_expand_vendor')}
               onClick={() => setExpanded(!expanded)}>
-        <InformationIcon width={30} height={34} />
+        <ThemeIcon name="information" width={30} height={34} />
       </button>
       {expanded &&
        <p dangerouslySetInnerHTML={{__html: vendor.description}} />}

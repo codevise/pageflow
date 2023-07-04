@@ -88,6 +88,7 @@ export {PhonePlatformProvider} from './PhonePlatformProvider';
 export {
   OptIn as ThirdPartyOptIn,
   OptOutInfo as ThirdPartyOptOutInfo,
+  useConsentRequested
 } from './thirdPartyConsent';
 export {FitViewport} from './FitViewport';
 export {Tooltip} from './Tooltip';

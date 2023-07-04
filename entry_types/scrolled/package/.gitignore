@@ -8,6 +8,8 @@
 /testHelpers.js
 /widgets/defaultNavigation.js
 /widgets/defaultNavigation.css
+/widgets/consentBar.js
+/widgets/consentBar.css
 /.storybook/out/
 /.storybook/seed.json
 /.storybook/preview-head.html

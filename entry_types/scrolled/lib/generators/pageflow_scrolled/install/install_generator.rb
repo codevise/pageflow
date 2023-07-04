@@ -96,6 +96,7 @@ module PageflowScrolled
           import 'pageflow-scrolled/frontend-server';
           import 'pageflow-scrolled/contentElements-frontend';
           import 'pageflow-scrolled/widgets/defaultNavigation';
+          import 'pageflow-scrolled/widgets/consentBar';
         JS
       end
 
@@ -105,6 +106,15 @@ module PageflowScrolled
         create_file File.join(widget_dir, 'defaultNavigation.js'), <<-JS
           import 'pageflow-scrolled/widgets/defaultNavigation';
           import 'pageflow-scrolled/widgets/defaultNavigation.css';
+        JS
+      end
+
+      def consent_bar_widget_packs
+        widget_dir = 'app/javascript/packs/pageflow-scrolled/widgets'
+
+        create_file File.join(widget_dir, 'consentBar.js'), <<-JS
+          import 'pageflow-scrolled/widgets/consentBar';
+          import 'pageflow-scrolled/widgets/consentBar.css';
         JS
       end
 

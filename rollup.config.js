@@ -266,6 +266,16 @@ const pageflowScrolled = [
     external,
     plugins: plugins({extractCss: true}),
     ...ignoreJSXWarning
+  },
+  {
+    input: pageflowScrolledPackageRoot + '/src/widgets/consentBar/index.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/widgets/consentBar.js',
+      format: 'esm',
+    },
+    external,
+    plugins: plugins({extractCss: true}),
+    ...ignoreJSXWarning
   }
 ];
 

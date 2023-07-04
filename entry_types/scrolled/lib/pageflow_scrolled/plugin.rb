@@ -17,6 +17,9 @@ module PageflowScrolled
         c.widget_types.register(ReactWidgetType.new(name: 'defaultNavigation',
                                                     role: 'header'),
                                 default: true)
+        c.widget_types.register(ReactWidgetType.new(name: 'consentBar',
+                                                    role: 'consent'),
+                                default: true)
 
         c.features.register('datawrapper_chart_embed_opt_in')
         c.features.enable_by_default('datawrapper_chart_embed_opt_in')
