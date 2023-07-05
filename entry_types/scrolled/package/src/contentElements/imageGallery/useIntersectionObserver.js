@@ -26,7 +26,9 @@ export function useIntersectionObserver({threshold, onVisibleIndexChange}) {
     );
 
     childRefs.current.forEach((child) => {
-      observer.observe(child);
+      if (child) {
+        observer.observe(child);
+      }
     });
 
     return () => {
