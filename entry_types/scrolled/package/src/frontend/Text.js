@@ -12,7 +12,7 @@ import styles from './Text.module.css';
  *   `'heading-xs'`, `'body'`, `'caption'`, `'question'`,
  *   `'quoteText-lg`', `'quoteText-md`', `'quoteText-sm`', `'quoteAttribution`',
  *   `'counterNumber-lg`', `'counterNumber-md`', `'counterNumber-sm`',
- *   `'counterDescription`'.
+ *   `'counterNumber-xs`', `'counterDescription`'.
  * @param {string} [props.inline] - Render a span instread of a div.
  * @param {string} props.children - Nodes to render with specified typography.
  */
@@ -28,7 +28,8 @@ Text.propTypes = {
   scaleCategory: PropTypes.oneOf([
     'heading-lg', 'heading-md', 'heading-sm', 'heading-xs',
     'quoteText-lg', 'quoteText-md', 'quoteText-sm', 'quoteAttribution',
-    'counterNumber-lg', 'counterNumber-md', 'counterNumber-sm', 'counterDescription',
+    'counterNumber-lg', 'counterNumber-md', 'counterNumber-sm', 'counterNumber-xs',
+    'counterDescription',
     'body', 'caption', 'question'
   ]),
 }
