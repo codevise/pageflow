@@ -48,8 +48,10 @@
 
 .text p:first-child::before,
 .text p:last-child::after {
+  font-family: var(--theme-quote-mark-font-family);
   font-weight: var(--theme-quote-mark-font-weight, bold);
   opacity: var(--theme-quote-mark-opacity, 0.5);
+  color: var(--theme-quote-mark-color);
 }
 
 .text p:first-child::before {
