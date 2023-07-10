@@ -30,9 +30,11 @@
 .text ol,
 .text ul {
   margin: 0;
-  padding-left: 20px;
   /* Prevent list markers from overlapping with floated elements. */
-  clear: both;
+  padding-left: 0;
+  padding-right: 25px;
+  position: relative;
+  left: 25px;
 }
 
 .text ul {
