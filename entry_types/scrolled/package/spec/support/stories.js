@@ -326,14 +326,15 @@ export function exampleTextBlock({sectionId, text = lorem}) {
   };
 }
 
-export function examplePositionedElement({sectionId, position, caption, typeName = 'inlineImage'}) {
+export function examplePositionedElement({sectionId, position, caption, configuration = {}, typeName = 'inlineImage'}) {
   return {
     sectionId,
     typeName,
     configuration: {
       position,
       id: null,
-      caption
+      caption,
+      ...configuration
     }
   }
 }

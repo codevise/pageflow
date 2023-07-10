@@ -25,6 +25,7 @@ function className(props) {
   return classNames(
     styles.card,
     props.inverted ? styles.cardBgBlack : styles.cardBgWhite,
+    styles[`selfClear-${props.selfClear}`],
     {[styles.cardStart]: !props.openStart},
     {[styles.cardEnd]: !props.openEnd}
   );
