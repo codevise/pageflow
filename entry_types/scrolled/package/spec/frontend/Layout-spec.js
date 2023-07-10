@@ -537,8 +537,9 @@ describe('Layout', () => {
   describe('floating items in centered variant', () => {
     beforeAll(() => {
       frontend.contentElementTypes.register('probe', {
-        component: function Probe() {
-          return <div data-testid="probe" />;
+        component: function Probe({configuration}) {
+          const testId = configuration?.testId || 'probe';
+          return <div data-testid={testId} />;
         }
       });
 
@@ -546,7 +547,7 @@ describe('Layout', () => {
         supportsWrappingAroundFloats: true,
 
         component: function WrappingProbe() {
-          return <div data-testid="probe" />;
+          return <div data-testid="wrappingProbe" />;
         }
       });
     });
@@ -574,7 +575,93 @@ describe('Layout', () => {
         </Layout>
       );
 
-      expect(findParentWithClass(getByTestId('probe'), centerStyles.clear)).toBeNull();
+      expect(findParentWithClass(getByTestId('wrappingProbe'), centerStyles.clear)).toBeNull();
+    });
+
+    it('does not clear right item after left item to allow-side-by-side', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left'},
+        {id: 2, type: 'probe', position: 'right', props: {testId: 'right'}},
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('right'), centerStyles.clear)).toBeNull();
+    });
+
+    it('does not clear left item after right item to allow-side-by-side', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'right'},
+        {id: 2, type: 'probe', position: 'left', props: {testId: 'left'}},
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('left'), centerStyles.clear)).toBeNull();
+    });
+
+    it('clears left item after left item to horizontal horizonal stacking of items on same side', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'right'},
+        {id: 2, type: 'probe', position: 'right', props: {testId: 'right-2'}},
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('right-2'), centerStyles.clear)).not.toBeNull();
+    });
+
+    it('clears floated item after inline item', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'inline'},
+        {id: 2, type: 'probe', position: 'left', props: {testId: 'left'}},
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('left'), centerStyles.clear)).not.toBeNull();
+    });
+
+    it('clears item that supports wrapping around floats after side-by-side floats', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left'},
+        {id: 2, type: 'probe', position: 'right'},
+        {id: 3, type: 'wrappingProbe', position: 'inline'},
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('wrappingProbe'), centerStyles.clear)).not.toBeNull();
+    });
+
+    it('does not clear item that supports wrapping after mutliple floats on same side', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'right'},
+        {id: 2, type: 'probe', position: 'right'},
+        {id: 3, type: 'wrappingProbe', position: 'inline'},
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('wrappingProbe'), centerStyles.clear)).toBeNull();
     });
 
     function findParentWithClass(element, className) {
