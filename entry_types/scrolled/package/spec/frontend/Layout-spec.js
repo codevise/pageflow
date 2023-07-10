@@ -676,4 +676,154 @@ describe('Layout', () => {
       return null;
     }
   });
+
+  describe('self clearing prop passed to box in centered layout', () => {
+    beforeAll(() => {
+      frontend.contentElementTypes.register('probe', {
+        component: function Probe({configuration}) {
+          return <div />;
+        }
+      });
+
+      frontend.contentElementTypes.register('wrappingProbe', {
+        supportsWrappingAroundFloats: true,
+
+        component: function WrappingProbe() {
+          return <div />;
+        }
+      });
+    });
+
+    it('self clears wrapping elements after left', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left'},
+        {id: 2, type: 'wrappingProbe', position: 'inline'},
+      ];
+      const {container} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {(children, {selfClear}) =>
+            <div>{selfClear} {children}</div>
+          }
+        </Layout>
+      );
+
+      expect(container.textContent).toEqual('right both ');
+    });
+
+    it('self clears wrapping elements after right', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'right'},
+        {id: 2, type: 'wrappingProbe', position: 'inline'},
+      ];
+      const {container} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {(children, {selfClear}) =>
+            <div>{selfClear} {children}</div>
+          }
+        </Layout>
+      );
+
+      expect(container.textContent).toEqual('left both ');
+    });
+
+    it('self clears left followed by left', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left'},
+        {id: 2, type: 'probe', position: 'left'},
+      ];
+      const {container} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {(children, {selfClear}) =>
+            <div>{selfClear} {children}</div>
+          }
+        </Layout>
+      );
+
+      expect(container.textContent).toEqual('both both ');
+    });
+
+    it('self clears right followed by right', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'right'},
+        {id: 2, type: 'probe', position: 'right'},
+      ];
+      const {container} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {(children, {selfClear}) =>
+            <div>{selfClear} {children}</div>
+          }
+        </Layout>
+      );
+
+      expect(container.textContent).toEqual('both both ');
+    });
+
+    it('self clears left before non-wrapping inline', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left'},
+        {id: 2, type: 'probe'},
+      ];
+      const {container} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {(children, {selfClear}) =>
+            <div>{selfClear} {children}</div>
+          }
+        </Layout>
+      );
+
+      expect(container.textContent).toEqual('both none ');
+    });
+
+    it('self clears right before non-wrapping inline', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'right'},
+        {id: 2, type: 'probe'},
+      ];
+      const {container} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {(children, {selfClear}) =>
+            <div>{selfClear} {children}</div>
+          }
+        </Layout>
+      );
+
+      expect(container.textContent).toEqual('both none ');
+    });
+
+    it('self clears last left on both sides in alternating cluster', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left'},
+        {id: 2, type: 'probe', position: 'right'},
+        {id: 3, type: 'probe', position: 'left'},
+        {id: 4, type: 'wrappingProbe'},
+      ];
+      const {container} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {(children, {selfClear}) =>
+            <div>{selfClear} {children}</div>
+          }
+        </Layout>
+      );
+
+      expect(container.textContent).toEqual('right left both both ');
+    });
+
+    it('self clears last right on both sides in alternating cluster', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'right'},
+        {id: 2, type: 'probe', position: 'left'},
+        {id: 3, type: 'probe', position: 'right'},
+        {id: 4, type: 'wrappingProbe'},
+      ];
+      const {container} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {(children, {selfClear}) =>
+            <div>{selfClear} {children}</div>
+          }
+        </Layout>
+      );
+
+      expect(container.textContent).toEqual('left right both both ');
+    });
+  });
 });

@@ -57,6 +57,7 @@ function boxProps(items, item, index) {
   return {
     position: item.position,
     customMargin,
+    selfClear: selfClear(items, index),
     openStart: previous &&
                !customMargin &&
                !hasCustomMargin(previous) &&
@@ -68,6 +69,21 @@ function boxProps(items, item, index) {
              item.position !== 'full' && next.position !== 'full' &&
              item.position !== 'wide' && next.position !== 'wide',
   }
+}
+
+function selfClear(items, index) {
+  const item = items[index];
+  const next = items[index + 1];
+
+  if (supportsWrappingAroundFloats(item) ||
+      (isFloated(item) && (!next || clearItem(items, index + 1)))) {
+    return 'both';
+  }
+  else if (isFloated(item)) {
+    return item.position === 'left' ? 'right' : 'left';
+  }
+
+  return 'none';
 }
 
 function clearItem(items, index) {

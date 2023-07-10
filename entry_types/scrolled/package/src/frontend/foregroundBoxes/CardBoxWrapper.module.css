@@ -24,6 +24,25 @@
   z-index: -1;
 }
 
+.selfClear-left::after,
+.selfClear-right::after,
+.selfClear-both::after {
+  content: '';
+  display: block;
+}
+
+.selfClear-left::after {
+  clear: left;
+}
+
+.selfClear-right::after {
+  clear: right;
+}
+
+.selfClear-both::after {
+  clear: both;
+}
+
 .cardStart {
   margin-top: 3em;
 }
