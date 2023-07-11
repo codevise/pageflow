@@ -143,6 +143,22 @@ The following prefixes are supported by built in content elements:
 | `text_block-numbered_list-` | Variants for numbered lists in text block elements. |
 | `text_block-paragraph-` | Variants for paragraphs in text block elements. |
 
+Typography variants can also assign [text block related theme
+properties](./custom_colors_and_dimensions.md#text-block-styles) by
+including the `--theme-` prefix:
+
+``` ruby
+entry_type_config.themes.register(:my_custom_theme,
+                                  # ...
+                                  typography: {
+                                    # ...
+                                    'text_block-bulleted_list-tight' => {
+                                       '--theme-text-block-list-item-margin-top' => 0
+                                    }
+                                  }
+
+```
+
 ## Quotes
 
 The `quote_design` theme option can be used to control how quotation
