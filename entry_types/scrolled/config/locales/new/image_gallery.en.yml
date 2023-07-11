@@ -1,7 +1,4 @@
 en:
-  pageflow:
-    image_gallery_content_element:
-      feature_name: Image gallery content element
   pageflow_scrolled:
     inline_editing:
       add_caption: Add caption

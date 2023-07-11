@@ -1,7 +1,4 @@
 de:
-  pageflow:
-    image_gallery_content_element:
-      feature_name: Bildergalerie Inhaltselement
   pageflow_scrolled:
     inline_editing:
       add_caption: Beschriftung hinzufügen
