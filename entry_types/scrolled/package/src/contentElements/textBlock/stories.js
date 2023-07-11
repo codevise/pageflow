@@ -159,6 +159,18 @@ storiesOfContentElement(module, {
           quoteRightMark: '"«"'
         }
       }
+    },
+    {
+      name: 'With custom lists',
+      themeOptions: {
+        properties: {
+          textBlockUnorderedListStyleType: '"-  "',
+          textBlockUnorderedListIndent: '15px',
+          textBlockOrderedListIndent: '60px',
+          textBlockFirstListItemMarginTop: '2rem',
+          textBlockListItemMarginTop: 0
+        }
+      }
     }
   ]
 });
