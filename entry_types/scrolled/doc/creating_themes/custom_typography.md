@@ -186,6 +186,7 @@ adjust the design:
 
 | Name | Description |
 | ---- | ----------- |
+| `quote_attribution_min_width` | Control horizontal position of attribute text. |
 | `quote_indent` | Length by which to indent the quote text. |
 | `quote_mark_left_mark` | Symbol to use for the left quotation mark. |
 | `quote_mark_right_mark` | Symbol to use for the left quotation mark. |

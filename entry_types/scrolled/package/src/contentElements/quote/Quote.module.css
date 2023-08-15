@@ -82,6 +82,10 @@
   padding-left: 0.05em;
 }
 
+.attribution {
+  min-width: var(--theme-quote-attribution-min-width);
+}
+
 .attribution p:first-child {
   position: relative;
 }

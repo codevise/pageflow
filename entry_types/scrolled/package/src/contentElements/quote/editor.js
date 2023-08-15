@@ -14,7 +14,7 @@ editor.contentElementTypes.register('quote', {
   configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('textSize', SelectInputView, {
-        values: ['large', 'medium', 'small']
+        values: ['large', 'medium', 'small', 'verySmall']
       });
       this.group('ContentElementPosition');
       this.group('PaletteColor', {

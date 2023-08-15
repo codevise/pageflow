@@ -50,6 +50,8 @@ function getTextScaleCategory(configuration) {
       return 'quoteText-lg';
     case 'small':
       return 'quoteText-sm';
+    case 'verySmall':
+      return 'quoteText-xs';
     default:
       return 'quoteText-md';
   }

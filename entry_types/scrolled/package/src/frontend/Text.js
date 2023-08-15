@@ -10,7 +10,7 @@ import styles from './Text.module.css';
  * @param {string} props.scaleCategory -
  *   One of the styles `'heading-lg'`, `'heading-md'`, `'heading-sm'`,
  *   `'heading-xs'`, `'body'`, `'caption'`, `'question'`,
- *   `'quoteText-lg`', `'quoteText-md`', `'quoteText-sm`', `'quoteAttribution`',
+ *   `'quoteText-lg`', `'quoteText-md`', `'quoteText-sm`', `'quoteText-xs`', `'quoteAttribution`',
  *   `'counterNumber-lg`', `'counterNumber-md`', `'counterNumber-sm`',
  *   `'counterNumber-xs`', `'counterDescription`'.
  * @param {string} [props.inline] - Render a span instread of a div.
@@ -27,7 +27,7 @@ Text.propTypes = {
   inline: PropTypes.bool,
   scaleCategory: PropTypes.oneOf([
     'heading-lg', 'heading-md', 'heading-sm', 'heading-xs',
-    'quoteText-lg', 'quoteText-md', 'quoteText-sm', 'quoteAttribution',
+    'quoteText-lg', 'quoteText-md', 'quoteText-sm', 'quoteText-xs', 'quoteAttribution',
     'counterNumber-lg', 'counterNumber-md', 'counterNumber-sm', 'counterNumber-xs',
     'counterDescription',
     'body', 'caption', 'question'

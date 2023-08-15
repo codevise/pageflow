@@ -41,9 +41,23 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'Very Small',
+      configuration: {
+        textSize: 'verySmall'
+      }
+    },
+    {
       name: 'Hanging',
       themeOptions: {
         quoteDesign: 'hanging'
+      }
+    },
+    {
+      name: 'Centered Attribution',
+      themeOptions: {
+        properties: {
+          quoteAttributionMinWidth: '50%'
+        }
       }
     },
     {
