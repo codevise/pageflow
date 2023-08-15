@@ -53,6 +53,14 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'Centered Attribution',
+      themeOptions: {
+        properties: {
+          quoteAttributionMinWidth: '50%'
+        }
+      }
+    },
+    {
       name: 'Inline',
       themeOptions: {
         quoteDesign: 'inline',
