@@ -30,4 +30,4 @@ gem 'activemodel-serializers-xml'
 gem 'webpacker'
 
 # Make tests fail on JS errors
-gem 'capybara-chromedriver-logger', git: 'https://github.com/codevise/capybara-chromedriver-logger', branch: 'do-not-raise-on-filtered-errors', require: false
+gem 'capybara-chromedriver-logger', git: 'https://github.com/codevise/capybara-chromedriver-logger', branch: 'fix-selenium-4-deprecation', require: false
