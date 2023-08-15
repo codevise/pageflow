@@ -76,6 +76,12 @@
   line-height: 1.2;
 }
 
+.quoteText-xs {
+  composes: typography-quoteText from global;
+  font-size: 26px;
+  line-height: 1.2;
+}
+
 .quoteAttribution {
   composes: typography-quoteAttribution from global;
   font-size: text-base;
@@ -141,7 +147,8 @@
     line-height: 1.2;
   }
 
-  .quoteText-sm {
+  .quoteText-sm,
+  .quoteText-xs {
     font-size: text-base;
     line-height: 1.4;
   }

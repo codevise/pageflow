@@ -41,6 +41,12 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'Very Small',
+      configuration: {
+        textSize: 'verySmall'
+      }
+    },
+    {
       name: 'Hanging',
       themeOptions: {
         quoteDesign: 'hanging'
