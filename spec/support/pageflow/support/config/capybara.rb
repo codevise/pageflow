@@ -11,19 +11,14 @@ Capybara.register_driver :selenium_chrome_headless_no_sandbox do |app|
   # (see https://docs.travis-ci.com/user/chrome)
   browser_options.args << '--no-sandbox'
 
-  capabilities = {
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
     # see https://github.com/SeleniumHQ/selenium/issues/3738
-    loggingPrefs: {browser: 'ALL'},
-    # see https://github.com/dbalatero/capybara-chromedriver-logger/issues/11
-    chromeOptions: {
-      w3c: false
-    }
-  }
+    'goog:loggingPrefs': {browser: 'ALL'}
+  )
 
   Capybara::Selenium::Driver.new(app,
                                  browser: :chrome,
-                                 options: browser_options,
-                                 desired_capabilities: capabilities)
+                                 capabilities: [browser_options, capabilities])
 end
 
 Capybara.javascript_driver = :selenium_chrome_headless_no_sandbox

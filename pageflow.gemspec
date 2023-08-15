@@ -171,8 +171,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'puma', '~> 3.12'
 
   # Chrome Headless browser testing
-  s.add_development_dependency 'selenium-webdriver', '~> 3.6.x'
-  s.add_development_dependency 'webdrivers', '~> 4.0'
+  s.add_development_dependency 'webdrivers', '= 5.3.0'
 
   # View abstraction fro integration testing
   s.add_development_dependency 'domino', '~> 0.7.0'
