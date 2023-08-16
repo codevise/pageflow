@@ -100,7 +100,7 @@ export function Counter({configuration, contentElementId, sectionProps}) {
 
   return (
     <div className={classNames(
-      {[styles.wide]: configuration.position === 'wide'}
+      {[styles.center]: configuration.position === 'wide' || configuration.position === 'full'}
     )}>
       <div className={classNames(
         styles.wrapper,

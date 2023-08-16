@@ -6,7 +6,7 @@ import pictogram from './pictogram.svg';
 editor.contentElementTypes.register('counter', {
   category: 'data',
   pictogram,
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
 
   defaultConfig: {
     targetValue: 100,
