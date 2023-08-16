@@ -169,6 +169,7 @@ elements etc.
 | ---- | ----------- |
 | `text_block_unordered_list_style_type` | Which icon to use for unordered lists. |
 | `text_block_unordered_list_indent` | Left padding of unordered lists. |
+| `text_block_unordered_list_marker_color` | Color of icon in unordered lists. |
 | `text_block_ordered_list_indent` | Left padding of ordered lists. |
 | `text_block_first_list_item_margin_top` | Space before first item of lists. |
 | `text_block_list_item_margin_top` | Space before second and following items of lists. |
