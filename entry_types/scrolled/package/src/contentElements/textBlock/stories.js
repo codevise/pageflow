@@ -165,6 +165,7 @@ storiesOfContentElement(module, {
       themeOptions: {
         properties: {
           textBlockUnorderedListStyleType: '"-  "',
+          textBlockUnorderedListMarkerColor: 'red',
           textBlockUnorderedListIndent: '15px',
           textBlockOrderedListIndent: '60px',
           textBlockFirstListItemMarginTop: '2rem',
