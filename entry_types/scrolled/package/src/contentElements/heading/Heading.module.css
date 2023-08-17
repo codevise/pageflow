@@ -1,3 +1,8 @@
+@value (
+  darkContentTextColor,
+  lightContentTextColor
+) from "pageflow-scrolled/values/colors.module.css";
+
 .root {
   margin-top: 0.2em;
   margin-bottom: 0;
@@ -8,6 +13,14 @@
   .right {
     text-align: right;
   }
+}
+
+.light {
+  color: lightContentTextColor;
+}
+
+.dark {
+  color: darkContentTextColor;
 }
 
 .centerRagged,

@@ -1,3 +1,16 @@
+@value (
+  darkContentTextColor,
+  lightContentTextColor
+) from "pageflow-scrolled/values/colors.module.css";
+
 .root {
   white-space: pre-line;
+}
+
+.light {
+  color: lightContentTextColor;
+}
+
+.dark {
+  color: darkContentTextColor;
 }
