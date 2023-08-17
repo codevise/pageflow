@@ -111,7 +111,9 @@ storiesOfContentElement(module, {
       configuration: linkExampleConfiguration,
       themeOptions: {
         properties: {
-          contentLinkColor: 'red'
+          root: {
+            contentLinkColor: 'red'
+          }
         }
       }
     },
@@ -120,8 +122,10 @@ storiesOfContentElement(module, {
       configuration: linkExampleConfiguration,
       themeOptions: {
         properties: {
-          lightContentLinkColor: 'yellow',
-          darkContentLinkColor: 'green',
+          root: {
+            lightContentLinkColor: 'yellow',
+            darkContentLinkColor: 'green',
+          }
         }
       }
     },
@@ -133,8 +137,10 @@ storiesOfContentElement(module, {
       },
       themeOptions: {
         properties: {
-          lightContentLinkColor: 'yellow',
-          darkContentLinkColor: 'green',
+          root: {
+            lightContentLinkColor: 'yellow',
+            darkContentLinkColor: 'green',
+          }
         }
       }
     },
@@ -143,10 +149,12 @@ storiesOfContentElement(module, {
       themeOptions: {
         quoteDesign: 'hanging',
         properties: {
-          quoteLeftMark: '"»"',
-          quoteRightMark: '"«"',
-          quoteMarkOpacity: 1,
-          quoteMarkFontWeight: 'normal'
+          root: {
+            quoteLeftMark: '"»"',
+            quoteRightMark: '"«"',
+            quoteMarkOpacity: 1,
+            quoteMarkFontWeight: 'normal'
+          }
         }
       }
     },
@@ -155,8 +163,10 @@ storiesOfContentElement(module, {
       themeOptions: {
         quoteDesign: 'inline',
         properties: {
-          quoteLeftMark: '"»"',
-          quoteRightMark: '"«"'
+          root: {
+            quoteLeftMark: '"»"',
+            quoteRightMark: '"«"'
+          }
         }
       }
     },
@@ -164,12 +174,14 @@ storiesOfContentElement(module, {
       name: 'With custom lists',
       themeOptions: {
         properties: {
-          textBlockUnorderedListStyleType: '"-  "',
-          textBlockUnorderedListMarkerColor: 'red',
-          textBlockUnorderedListIndent: '15px',
-          textBlockOrderedListIndent: '60px',
-          textBlockFirstListItemMarginTop: '2rem',
-          textBlockListItemMarginTop: 0
+          root: {
+            textBlockUnorderedListStyleType: '"-  "',
+            textBlockUnorderedListMarkerColor: 'red',
+            textBlockUnorderedListIndent: '15px',
+            textBlockOrderedListIndent: '60px',
+            textBlockFirstListItemMarginTop: '2rem',
+            textBlockListItemMarginTop: 0
+          }
         }
       }
     }

@@ -78,7 +78,9 @@ describe('exampleStories', () => {
         name: 'With Properties',
         themeOptions: {
           properties: {
-            accentColor: 'red'
+            root: {
+              accentColor: 'red'
+            }
           }
         }
       }]
@@ -91,13 +93,19 @@ describe('exampleStories', () => {
           theme: expect.objectContaining({
             options: expect.objectContaining({
               properties: expect.objectContaining({
-                accentColor: 'red'
+                root: {
+                  accentColor: 'red'
+                }
               })
             })
           })
         })
       }),
-      cssProperties: {'--theme-accent-color': 'red'}
+      cssRules: {
+        root: {
+          '--theme-accent-color': 'red'
+        }
+      }
     }));
   });
 
