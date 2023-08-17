@@ -46,8 +46,10 @@ The following scopes are available:
 * `cards_appearance`: Change content colors for sections using
   appearance "Card".
 
-* `external_links`: Override content color options for external link
-  cards.
+* `external_links`: Override content colors for external link cards.
+
+* `headings`: Override content text color for external link heading
+  elements and headings in text blocks.
 
 Custom widget and content element types can define additional scopes.
 

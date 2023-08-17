@@ -31,6 +31,29 @@ storiesOfContentElement(module, {
       configuration: {
         textSize: 'small'
       }
+    },
+    {
+      name: 'With custom content text colors',
+      themeOptions: {
+        properties: {
+          headings: {
+            lightContentTextColor: 'red'
+          }
+        }
+      }
+    },
+    {
+      name: 'With custom content text colors in inverted section',
+      sectionConfiguration: {
+        invert: true
+      },
+      themeOptions: {
+        properties: {
+          headings: {
+            darkContentTextColor: 'red'
+          }
+        }
+      }
     }
   ]
 });

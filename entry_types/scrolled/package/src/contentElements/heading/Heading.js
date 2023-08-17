@@ -5,6 +5,7 @@ import {
   Text,
   EditableInlineText,
   useContentElementConfigurationUpdate,
+  useDarkBackground,
   useI18n
 } from 'pageflow-scrolled/frontend';
 
@@ -15,6 +16,7 @@ export function Heading({configuration, sectionProps}) {
   const firstSectionInEntry = level === 0;
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {t} = useI18n({locale: 'ui'});
+  const darkBackground = useDarkBackground();
 
   const legacyValue = configuration.children;
   const Tag = firstSectionInEntry ? 'h1' : 'h2';
@@ -23,8 +25,10 @@ export function Heading({configuration, sectionProps}) {
 
   return (
     <Tag className={classNames(styles.root,
+                               'scope-headings',
                                configuration.typographyVariant &&
                                `typography-heading-${configuration.typographyVariant}`,
+                               darkBackground ? styles.light : styles.dark,
                                {[styles.forcePaddingTop]: forcePaddingTop},
                                {[styles[sectionProps.layout]]:
                                  configuration.position === 'wide' ||

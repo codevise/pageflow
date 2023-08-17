@@ -184,6 +184,35 @@ storiesOfContentElement(module, {
           }
         }
       }
+    },
+    {
+      name: 'With custom content text colors',
+      themeOptions: {
+        properties: {
+          root: {
+            lightContentTextColor: 'green',
+          },
+          headings: {
+            lightContentTextColor: 'red'
+          }
+        }
+      }
+    },
+    {
+      name: 'With custom content text colors in inverted section',
+      sectionConfiguration: {
+        invert: true
+      },
+      themeOptions: {
+        properties: {
+          root: {
+            darkContentTextColor: 'green',
+          },
+          headings: {
+            darkContentTextColor: 'red'
+          }
+        }
+      }
     }
   ]
 });

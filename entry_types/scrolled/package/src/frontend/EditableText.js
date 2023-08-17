@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import {camelize} from './utils/camelize';
 import {withInlineEditingAlternative} from './inlineEditing';
 import {useChapter, useFile} from '../entryState';
+import {useDarkBackground} from './backgroundColor';
 import {Text} from './Text';
 import textStyles from './Text.module.css';
 
@@ -56,17 +57,34 @@ export function renderElement({attributes, children, element}) {
   case 'list-item':
     return <li {...attributes}>{children}</li>;
   case 'heading':
+    const {key, ...otherAttributes} = attributes;
+
     return (
-      <h2 {...attributes}
-          className={classNames(variantClassName, textStyles['heading-xs'])}>
+      <Heading key={key}
+               attributes={otherAttributes}
+               variantClassName={variantClassName}>
         {children}
-      </h2>
+      </Heading>
     );
   case 'link':
     return renderLink({attributes, children, element});
   default:
     return <p {...attributes} className={variantClassName}>{children}</p>;
   }
+}
+
+function Heading({attributes, variantClassName, children}) {
+  const darkBackground = useDarkBackground();
+
+  return (
+    <h2 {...attributes}
+        className={classNames(variantClassName,
+                              darkBackground ? styles.light : styles.dark,
+                              'scope-headings',
+                              textStyles['heading-xs'])}>
+      {children}
+    </h2>
+  );
 }
 
 function renderLink({attributes, children, element}) {
