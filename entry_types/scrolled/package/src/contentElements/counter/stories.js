@@ -55,7 +55,9 @@ storiesOfContentElement(module, {
       name: 'Pallete number color',
       themeOptions: {
         properties: {
-          paletteColorAccent: '#04f'
+          root: {
+            paletteColorAccent: '#04f'
+          }
         }
       },
       configuration: {

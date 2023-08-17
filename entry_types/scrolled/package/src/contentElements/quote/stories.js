@@ -56,7 +56,9 @@ storiesOfContentElement(module, {
       name: 'Centered Attribution',
       themeOptions: {
         properties: {
-          quoteAttributionMinWidth: '50%'
+          root: {
+            quoteAttributionMinWidth: '50%'
+          }
         }
       }
     },
@@ -65,11 +67,13 @@ storiesOfContentElement(module, {
       themeOptions: {
         quoteDesign: 'inline',
         properties: {
-          quoteLeftMark: '"»"',
-          quoteRightMark: '"«"',
-          quoteMarkFontWeight: 'normal',
-          quoteIndent: 0,
-          quoteMarkOpacity: 1
+          root: {
+            quoteLeftMark: '"»"',
+            quoteRightMark: '"«"',
+            quoteMarkFontWeight: 'normal',
+            quoteIndent: 0,
+            quoteMarkOpacity: 1
+          }
         }
       }
     },
@@ -77,8 +81,10 @@ storiesOfContentElement(module, {
       name: 'Double angle',
       themeOptions: {
         properties: {
-          quoteLeftMark: '"»"',
-          quoteLeftMarkTop: '-0.35em'
+          root: {
+            quoteLeftMark: '"»"',
+            quoteLeftMarkTop: '-0.35em'
+          }
         }
       }
     },
@@ -86,7 +92,9 @@ storiesOfContentElement(module, {
       name: 'Pallete color',
       themeOptions: {
         properties: {
-          paletteColorAccent: '#04f'
+          root: {
+            paletteColorAccent: '#04f'
+          }
         }
       },
       configuration: {

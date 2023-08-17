@@ -54,7 +54,9 @@ let seedFixture = seedFixtureFromFile;
  *       configuration: {size: 'large'},
  *       themeOptions: {
  *         properties: {
- *           accentColor: '#0f0'
+ *           root: {
+ *             accentColor: '#0f0'
+ *           }
  *         }
  *       }
  *     }
@@ -69,7 +71,7 @@ export function storiesOfContentElement(module, options) {
   }
 
   exampleStories(options).forEach(({
-    title, seed, requireConsentOptIn, cssProperties, parameters = {}
+    title, seed, requireConsentOptIn, cssRules, parameters = {}
   }) => {
     const consent = Consent.create();
 
@@ -83,9 +85,10 @@ export function storiesOfContentElement(module, options) {
     stories.add(title,
                 () =>
                   <RootProviders seed={seed} consent={consent}>
-                    <div style={cssProperties}>
-                      <Entry />
-                    </div>
+                    <style>
+                      {renderCss(cssRules)}
+                    </style>
+                    <Entry />
                   </RootProviders>,
                 {
                   ...parameters,
@@ -95,6 +98,22 @@ export function storiesOfContentElement(module, options) {
                   }
                 })
   });
+}
+
+function renderCss(rules) {
+  return Object.entries(rules).map(([name, properties]) => {
+    const selector = (name === 'root' ? ':root' : `.scope-${name}`);
+
+    const declations = Object.entries(properties).map(([key, value]) =>
+      `${key}: ${value};`
+    ).join('\n');
+
+    return `
+      ${selector} {
+        ${declations}
+      }
+    `
+  }).join('\n');
 }
 
 /**
@@ -259,7 +278,13 @@ function exampleStoryGroup({name, typeName, examples, parameters, requireConsent
     }),
     requireConsentOptIn,
     parameters,
-    cssProperties: themeCssProperties(examples[index].themeOptions?.properties || {})
+    cssRules: Object.entries(examples[index].themeOptions?.properties || {}).reduce(
+      (result, [scope, properties]) => {
+        result[scope] = themeCssProperties(properties);
+        return result;
+      },
+      {}
+    )
   }));
 }
 
