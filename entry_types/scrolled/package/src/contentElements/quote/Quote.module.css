@@ -52,6 +52,7 @@
   font-weight: var(--theme-quote-mark-font-weight, bold);
   opacity: var(--theme-quote-mark-opacity, 0.5);
   color: var(--theme-quote-mark-color);
+  width: var(--theme-quote-mark-width);
 }
 
 .text p:first-child::before {
@@ -65,7 +66,7 @@
 .design-largeHanging .text p:first-child::before,
 .design-hanging .text p:first-child::before {
   position: absolute;
-  right: calc(100% + 0.05em);
+  right: calc(100% + var(--theme-quote-hanging-mark-spacing, 0.05em));
 }
 
 .design-largeHanging .text p:first-child::before {
@@ -79,7 +80,7 @@
 }
 
 .design-hanging .text p:first-child::after {
-  padding-left: 0.05em;
+  padding-left: var(--theme-quote-hanging-mark-spacing, 0.05em);
 }
 
 .attribution {

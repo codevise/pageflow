@@ -145,21 +145,23 @@ storiesOfContentElement(module, {
       }
     },
     {
-      name: 'With customiezed hanging quotes',
+      name: 'With customized hanging quotes',
       themeOptions: {
         quoteDesign: 'hanging',
         properties: {
           root: {
             quoteLeftMark: '"»"',
             quoteRightMark: '"«"',
+            quoteHangingMarkSpacing: '0.2em',
             quoteMarkOpacity: 1,
-            quoteMarkFontWeight: 'normal'
+            quoteMarkFontWeight: 'normal',
+            textBlockBlockQuoteHangingIndent: '2em'
           }
         }
       }
     },
     {
-      name: 'With customiezed inline quotes',
+      name: 'With customized inline quotes',
       themeOptions: {
         quoteDesign: 'inline',
         properties: {
