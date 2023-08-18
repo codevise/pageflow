@@ -187,13 +187,15 @@ adjust the design:
 | Name | Description |
 | ---- | ----------- |
 | `quote_attribution_min_width` | Control horizontal position of attribute text. |
+| `quote_hanging_mark_spacing` | Distance between quote marks and quote text in `hanging` or `largeHanging` design. |
 | `quote_indent` | Length by which to indent the quote text. |
-| `quote_mark_left_mark` | Symbol to use for the left quotation mark. |
-| `quote_mark_right_mark` | Symbol to use for the left quotation mark. |
+| `quote_left_mark` | Symbol to use for the left quotation mark. |
+| `quote_right_mark` | Symbol to use for the left quotation mark. |
 | `quote_mark_font_weight` | Font weight of the quotation marks. |
 | `quote_mark_opacity` | Opacity of the quotation marks. |
 | `quote_large_mark_font_size` | Font size of the quotation mark in the `largeHanging` design. |
 | `quote_large_mark_top` | Length by which to translate the translation mark in the `largeHanging` design. |
+| `quote_mark_width` | Can be used when `quote_left_mark` or `quote_right_mark` are SVG data URLs. |
 
 These properties need to be passed in the root scope:
 

@@ -2,15 +2,15 @@
 @value breakpoint-sm from 'pageflow-scrolled/values/breakpoints.module.css';
 
 .text {
-  --blockquote-padding-left: 0;
+  --block-quote-padding-left: 0;
 }
 
 .quoteDesign-hanging {
-  --blockquote-padding-left: 1em;
+  --block-quote-padding-left: var(--theme-text-block-block-quote-hanging-indent, 1em);
 }
 
 .quoteDesign-largeHanging {
-  --blockquote-padding-left: 1.6em;
+  --block-quote-padding-left: var(--theme-text-block-block-quote-hanging-indent, 1.6em);
 }
 
 .text p {
@@ -54,7 +54,7 @@
 }
 
 .text blockquote {
-  padding: 0.5em 0.5em 0.5em var(--blockquote-padding-left);
+  padding: 0.5em 0.5em 0.5em var(--block-quote-padding-left);
   margin: 1.375rem 0 0 0;
   position: relative;
   /* Prevent block quote symbol from overlapping with floated elements. */
@@ -65,6 +65,7 @@
 .text blockquote::after {
   font-weight: var(--theme-quote-mark-font-weight, bold);
   opacity: var(--theme-quote-mark-opacity, 0.5);
+  width: var(--theme-quote-mark-width);
 }
 
 .text blockquote::before {
@@ -81,7 +82,7 @@
 }
 
 .quoteDesign-largeHanging blockquote::before {
-  font-size: 2.5em;
+  font-size: var(--theme-quote-large-mark-font-size, 2.5em);
   line-height: 1em;
   top: calc(var(--theme-quote-large-mark-top, -0.2em));
   padding-top: inherit;
@@ -93,16 +94,16 @@
 }
 
 .quoteDesign-hanging blockquote::before {
-  right: calc(100% - var(--blockquote-padding-left) + 0.05em);
+  right: calc(100% - var(--block-quote-padding-left) + var(--theme-quote-hanging-mark-spacing, 0.05em));
 }
 
 .quoteDesign-hanging blockquote::after {
-  padding-left: 0.05em;
+  padding-left: var(--theme-quote-hanging-mark-spacing, 0.05em);
 }
 
 @media screen and breakpoint-sm {
   .quoteDesign-largeHanging {
-    --blockquote-padding-left: 2em;
+    --block-quote-padding-left: var(--theme-text-block-block-quote-hanging-indent, 2em);
   }
 
   .text blockquote {
@@ -111,7 +112,7 @@
   }
 
   .quoteDesign-largeHanging blockquote::before {
-    font-size: 3em;
+    font-size: var(--theme-quote-large-mark-font-size, 3em);;
   }
 }
 
