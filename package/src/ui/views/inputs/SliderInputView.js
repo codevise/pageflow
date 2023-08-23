@@ -1,4 +1,5 @@
 import Marionette from 'backbone.marionette';
+import 'jquery-ui';
 
 import {inputView} from '../mixins/inputView';
 
@@ -9,6 +10,25 @@ import template from '../../templates/inputs/sliderInput.jst';
  * See {@link inputView} for options
  *
  * @param {Object} [options]
+ *
+ * @param {number} [options.defaultValue]
+ *   Defaults value to display if property is not set.
+ *
+ * @param {number} [options.minValue=0]
+ *   Value when dragging slider to the very left.
+ *
+ * @param {number} [options.maxValue=100]
+ *   Value when dragging slider to the very right.
+ *
+ * @param {string} [options.unit="%"]
+ *   Unit to display after value.
+ *
+ * @param {function} [options.displayText]
+ *   Function that receives value and returns custom text to display as value.
+ *
+ * @param {boolean} [options.saveOnSlide]
+ *   Already update the model while dragging the handle - not only after
+ *   handle has been released.
  *
  * @class
  */
@@ -24,7 +44,8 @@ export const SliderInputView = Marionette.ItemView.extend({
   },
 
   events: {
-    'slidechange': 'save'
+    'slidechange': 'save',
+    'slide': 'handleSlide'
   },
 
   onRender: function() {
@@ -35,6 +56,7 @@ export const SliderInputView = Marionette.ItemView.extend({
     });
 
     this.load();
+    this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
   },
 
   updateDisabled: function(disabled) {
@@ -48,13 +70,16 @@ export const SliderInputView = Marionette.ItemView.extend({
     }
   },
 
-  save: function() {
-    var value = this.ui.widget.slider('option', 'value');
-    var unit = 'unit' in this.options ? this.options.unit : '%';
+  handleSlide(event, ui) {
+    this.updateText(ui.value);
 
-    this.ui.value.text(value + unit);
+    if (this.options.saveOnSlide) {
+      this.save(event, ui);
+    }
+  },
 
-    this.model.set(this.options.propertyName, value);
+  save: function(event, ui) {
+    this.model.set(this.options.propertyName, ui.value);
   },
 
   load: function() {
@@ -68,5 +93,15 @@ export const SliderInputView = Marionette.ItemView.extend({
     }
 
     this.ui.widget.slider('option', 'value', value);
+    this.updateText(value);
+  },
+
+  updateText: function(value) {
+    var unit = 'unit' in this.options ? this.options.unit : '%';
+    var text = 'displayText' in this.options ?
+               this.options.displayText(value) :
+               value + unit;
+
+    this.ui.value.text(text);
   }
 });
