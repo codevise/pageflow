@@ -147,6 +147,37 @@ describe('pageflow.SliderInputView', () => {
     expect(view.ui.widget.slider('option', 'min')).toEqual(10);
   });
 
+  it('supports reading min value from binding', () => {
+    var model = new Model({min: 10});
+    var view = new SliderInputView({
+      model: model,
+      propertyName: 'value',
+      minValueBinding: 'min'
+    });
+
+    view.render();
+    expect(view.ui.widget.slider('option', 'min')).toEqual(10);
+
+    model.set('min', 20);
+    expect(view.ui.widget.slider('option', 'min')).toEqual(20);
+  });
+
+  it('supports min value function for binding', () => {
+    var model = new Model({min: 1});
+    var view = new SliderInputView({
+      model: model,
+      propertyName: 'value',
+      minValue: bindingValue => bindingValue * 10,
+      minValueBinding: 'min'
+    });
+
+    view.render();
+    expect(view.ui.widget.slider('option', 'min')).toEqual(10);
+
+    model.set('min', 2);
+    expect(view.ui.widget.slider('option', 'min')).toEqual(20);
+  });
+
   it('supports maxValue option', () => {
     var model = new Model({});
     var view = new SliderInputView({
@@ -158,5 +189,64 @@ describe('pageflow.SliderInputView', () => {
     view.render();
 
     expect(view.ui.widget.slider('option', 'max')).toEqual(10);
+  });
+
+  it('supports reading max value from binding', () => {
+    var model = new Model({max: 10});
+    var view = new SliderInputView({
+      model: model,
+      propertyName: 'value',
+      maxValueBinding: 'max'
+    });
+
+    view.render();
+    expect(view.ui.widget.slider('option', 'max')).toEqual(10);
+
+    model.set('max', 20);
+    expect(view.ui.widget.slider('option', 'max')).toEqual(20);
+  });
+
+  it('supports max value function for binding', () => {
+    var model = new Model({max: 1});
+    var view = new SliderInputView({
+      model: model,
+      propertyName: 'value',
+      maxValue: bindingValue => bindingValue * 10,
+      maxValueBinding: 'max'
+    });
+
+    view.render();
+    expect(view.ui.widget.slider('option', 'max')).toEqual(10);
+
+    model.set('max', 2);
+    expect(view.ui.widget.slider('option', 'max')).toEqual(20);
+  });
+
+  it('changing bound min value above current value updates displayed value', () => {
+    var model = new Model({value: 10, min: 10});
+    var view = new SliderInputView({
+      model: model,
+      propertyName: 'value',
+      minValueBinding: 'min'
+    });
+
+    view.render();
+    model.set('min', 20);
+
+    expect(view.ui.value.text()).toEqual('20%');
+  });
+
+  it('changing bound min value above current value does not update model', () => {
+    var model = new Model({value: 10, min: 10});
+    var view = new SliderInputView({
+      model: model,
+      propertyName: 'value',
+      minValueBinding: 'min'
+    });
+
+    view.render();
+    model.set('min', 20);
+
+    expect(model.get('value')).toEqual(10);
   });
 });

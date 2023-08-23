@@ -183,8 +183,8 @@ export const inputView = {
     this.updateInlineHelp();
     this.setLabelFor();
 
-    this.setupAttributeBinding('disabled', this.updateDisabled);
-    this.setupAttributeBinding('visible', this.updateVisible);
+    this.setupBooleanAttributeBinding('disabled', this.updateDisabled);
+    this.setupBooleanAttributeBinding('visible', this.updateVisible);
   },
 
   /**
@@ -240,7 +240,7 @@ export const inputView = {
   },
 
   isDisabled: function() {
-    return this.getAttributeBoundOption('disabled');
+    return this.getBooleanAttributBoundOption('disabled');
   },
 
   updateDisabled: function() {
@@ -263,10 +263,18 @@ export const inputView = {
 
   updateVisible: function() {
     this.$el.toggleClass('input-hidden_via_binding',
-                         this.getAttributeBoundOption('visible') === false);
+                         this.getBooleanAttributBoundOption('visible') === false);
   },
 
-  setupAttributeBinding: function(optionName, updateMethod) {
+  setupBooleanAttributeBinding(optionName, updateMethod) {
+    this.setupAttributeBinding(optionName, updateMethod, Boolean);
+  },
+
+  getBooleanAttributBoundOption(optionName) {
+    return this.getAttributeBoundOption(optionName, Boolean);
+  },
+
+  setupAttributeBinding: function(optionName, updateMethod, normalize = value => value) {
     const binding = this.options[`${optionName}Binding`];
     const view = this;
 
@@ -279,11 +287,11 @@ export const inputView = {
     update();
 
     function update() {
-      updateMethod.call(view, view.getAttributeBoundOption(optionName));
+      updateMethod.call(view, view.getAttributeBoundOption(optionName, normalize));
     }
   },
 
-  getAttributeBoundOption: function(optionName) {
+  getAttributeBoundOption(optionName, normalize = value => value) {
     const binding = this.options[`${optionName}Binding`];
     const bindingValueOptionName = `${optionName}BindingValue`;
 
@@ -295,13 +303,13 @@ export const inputView = {
       return value === this.options[bindingValueOptionName];
     }
     else if (typeof this.options[optionName] === 'function') {
-      return !!this.options[optionName](value);
+      return normalize(this.options[optionName](value));
     }
     else if (optionName in this.options) {
-      return !!this.options[optionName];
+      return normalize(this.options[optionName]);
     }
     else if (binding) {
-      return !!value;
+      return normalize(value);
     }
   }
 };

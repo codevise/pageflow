@@ -50,13 +50,19 @@ export const SliderInputView = Marionette.ItemView.extend({
 
   onRender: function() {
     this.ui.widget.slider({
-      animate: 'fast',
-      min: 'minValue' in this.options ? this.options.minValue : 0,
-      max: 'maxValue' in this.options ? this.options.maxValue : 100
+      animate: 'fast'
     });
+
+    this.setupAttributeBinding('minValue', value => this.updateSliderOption('min', value || 0));
+    this.setupAttributeBinding('maxValue', value => this.updateSliderOption('max', value || 100));
 
     this.load();
     this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
+  },
+
+  updateSliderOption(name, value) {
+    this.ui.widget.slider('option', name, value)
+    this.updateText(this.ui.widget.slider('value'));
   },
 
   updateDisabled: function(disabled) {
