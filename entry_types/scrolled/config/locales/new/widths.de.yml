@@ -1,0 +1,6 @@
+de:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        width:
+          label: Breite

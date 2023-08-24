@@ -1,4 +1,4 @@
-import {ConfigurationEditorTabView, SelectInputView, TextInputView} from 'pageflow/ui';
+import {ConfigurationEditorTabView, SelectInputView, SliderInputView} from 'pageflow/ui';
 
 import {
   TypographyVariantSelectInputView
@@ -14,6 +14,18 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
   this.input('position', SelectInputView, {
     attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
     values: contentElement.getAvailablePositions()
+  });
+  this.input('width', SliderInputView, {
+    attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
+    displayText: value => [
+      'XXS', 'XS', 'S', 'Auto', 'L', 'XL', 'XXL'
+    ][value + 3],
+    saveOnSlide: true,
+    minValueBinding: 'position',
+    maxValueBinding: 'position',
+    minValue: () => contentElement.getAvailableMinWidth(),
+    maxValue: () => contentElement.getAvailableMaxWidth(),
+    visible: () => contentElement.getAvailableMinWidth() !== contentElement.getAvailableMaxWidth()
   });
 });
 
