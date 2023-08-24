@@ -7,7 +7,8 @@ import pictogram from './pictogram.svg';
 
 editor.contentElementTypes.register('quote', {
   pictogram,
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right'],
+  supportedWidthRange: ['xs', 'xl'],
 
   defaultConfig: {textSize: 'medium'},
 

@@ -8,6 +8,16 @@ import {
   delayedDestroying
 } from 'pageflow/editor';
 
+const widths = {
+  xxs: -3,
+  xs: -2,
+  s: -1,
+  auto: 0,
+  l: 1,
+  xl: 2,
+  xxl: 3
+};
+
 export const ContentElement = Backbone.Model.extend({
   paramRoot: 'content_element',
 
@@ -87,6 +97,27 @@ export const ContentElement = Backbone.Model.extend({
     }
     else {
       return supportedByLayout;
+    }
+  },
+
+  getAvailableMinWidth() {
+    return this.clampWidthByPosition(
+      widths[this.getType().supportedWidthRange?.[0] || 'auto']
+    );
+  },
+
+  getAvailableMaxWidth() {
+    return this.clampWidthByPosition(
+      widths[this.getType().supportedWidthRange?.[1] || 'auto']
+    );
+  },
+
+  clampWidthByPosition(width) {
+    if (['sticky', 'left', 'right'].includes(this.getPosition())) {
+      return Math.min(Math.max(width, -2), 2);
+    }
+    else {
+      return width;
     }
   },
 

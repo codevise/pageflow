@@ -110,6 +110,102 @@ describe('ContentElement', () => {
     });
   });
 
+  describe('getMinWidth/getMaxWidth', () => {
+    beforeEach(() => {
+      editor.contentElementTypes.register('heading', {
+        supportedWidthRange: ['auto', 'xl']
+      });
+      editor.contentElementTypes.register('soundDisclaimer', {});
+      editor.contentElementTypes.register('inlineImage', {
+        supportedWidthRange: ['xxs', 'xxl']
+      });
+    });
+
+    it('does not support different widths by default', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'soundDisclaimer'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getAvailableMinWidth()).toEqual(0);
+      expect(contentElement.getAvailableMaxWidth()).toEqual(0);
+    });
+
+    it('limits width according to element type support', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'heading'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getAvailableMinWidth()).toEqual(0);
+      expect(contentElement.getAvailableMaxWidth()).toEqual(2);
+    });
+
+    it('excludes xxs/xxl in sticky position', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage', configuration: {position: 'sticky'}}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getAvailableMinWidth()).toEqual(-2);
+      expect(contentElement.getAvailableMaxWidth()).toEqual(2);
+    });
+
+    it('excludes xxs/xxl in floated position', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage', configuration: {position: 'left'}}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getAvailableMinWidth()).toEqual(-2);
+      expect(contentElement.getAvailableMaxWidth()).toEqual(2);
+    });
+  });
+
   describe('transientState', () => {
     it('stays in sync with transientState attribute', () => {
       editor.contentElementTypes.register('someElement', {});

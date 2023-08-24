@@ -7,7 +7,8 @@ import pictogram from './pictogram.svg';
 editor.contentElementTypes.register('inlineAudio', {
   pictogram,
   category: 'media',
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'full'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right'],
+  supportedWidthRange: ['xxs', 'xxl'],
 
   defaultConfig: {playerControlVariant: 'waveformBars'},
 

@@ -6,7 +6,8 @@ import pictogram from './pictogram.svg';
 editor.contentElementTypes.register('inlineImage', {
   pictogram,
   category: 'media',
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right'],
+  supportedWidthRange: ['xxs', 'xxl'],
 
   configurationEditor() {
     this.tab('general', function() {
