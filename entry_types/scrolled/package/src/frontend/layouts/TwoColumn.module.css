@@ -60,11 +60,7 @@
   margin-left: auto;
 }
 
-.narrowViewport.right .sticky {
-  margin-left: auto;
-}
-
-.wideViewport .sticky {
+.sticky {
   --content-width: var(--theme-two-column-sticky-content-width, 25vw);
   --content-max-width: min(var(--content-width), var(--two-column-sticky-content-max-width, 600px));
   position: sticky;
@@ -74,10 +70,10 @@
   width: var(--content-width);
 }
 
-.wideViewport.right .sticky {
+.right .sticky {
   float: left;
 }
 
-.wideViewport .sticky.customMargin {
+.sticky.customMargin {
   width: 100%;
 }

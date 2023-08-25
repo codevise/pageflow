@@ -22,8 +22,7 @@ export function TwoColumn(props) {
   const narrow = useNarrowViewport();
 
   return (
-    <div className={classNames(styles.root, styles[props.align],
-                               narrow ? styles.narrowViewport : styles.wideViewport)}>
+    <div className={classNames(styles.root, styles[props.align])}>
       <div className={classNames(styles.group)} key={props.align}>
         <div className={classNames(styles.box, styles.inline)} ref={props.contentAreaRef} />
       </div>
