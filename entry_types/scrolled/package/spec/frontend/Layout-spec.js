@@ -5,6 +5,7 @@ import {TwoColumn} from 'frontend/layouts/TwoColumn';
 import {frontend} from 'pageflow-scrolled/frontend';
 
 import centerStyles from 'frontend/layouts/Center.module.css';
+import {widthName} from 'frontend/layouts/widthName';
 
 import {render} from '@testing-library/react';
 
@@ -351,20 +352,47 @@ describe('Layout', () => {
     });
 
     describe('in center variant', () => {
-      it('calls children for each item passing position', () => {
+      it('calls children for each item passing position and width', () => {
         const items = [
-          {id: 1, type: 'probe', position: 'wide'},
+          {id: 1, type: 'probe', position: 'inline', props: {width: 2}},
           {id: 2, type: 'probe', position: 'inline'},
-          {id: 3, type: 'probe', position: 'sticky'},
-          {id: 4, type: 'probe', position: 'full'},
+          {id: 3, type: 'probe', position: 'left'},
+          {id: 4, type: 'probe', position: 'inline', props: {width: 3}},
         ];
         const {container} = render(
           <Layout sectionProps={{layout: 'center'}} items={items}>
-            {(children, {position}) => <div>{position} {children}</div>}
+            {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
           </Layout>
         );
 
-        expect(container.textContent).toEqual('wide 1 inline 2 sticky 3 full 4 ');
+        expect(container.textContent).toEqual('inline xl 1 inline md 2 left md 3 inline full 4 ');
+      });
+
+      it('handles legacy positions that are now widths', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'wide'},
+          {id: 2, type: 'probe', position: 'full'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('inline xl 1 inline full 2 ');
+      });
+
+      it('rewrites unsupported positions', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'sticky'}
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('inline md 1 ');
       });
 
       it('renders consecutive inline items with open end/open start', () => {
@@ -412,7 +440,22 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('( 1 || 2 || 3 )');
       });
 
-      it('renders items separated by full item without open end/open start', () => {
+      it('renders items separated by full width item without open end/open start', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline', props: {width: 3}},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('( 1 )( 2 )( 3 )');
+      });
+
+      it('renders items separated by legacy full item without open end/open start', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'full'},
@@ -428,6 +471,21 @@ describe('Layout', () => {
       });
 
       it('renders items separated by wide item without open end/open start', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline', props: {width: 1}},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('( 1 )( 2 )( 3 )');
+      });
+
+      it('renders items separated by legacy wide item without open end/open start', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'wide'},
@@ -488,7 +546,7 @@ describe('Layout', () => {
           expect(container.textContent).toEqual('custom 1 ');
         });
 
-        it('is true if rendered wide with custom margin', () => {
+        it('is true if rendered with legacy wide position with custom margin', () => {
           const items = [
             {id: 1, type: 'probeWithCustomMarginProp', position: 'wide'}
           ];

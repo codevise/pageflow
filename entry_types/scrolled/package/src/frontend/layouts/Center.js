@@ -12,8 +12,8 @@ const availablePositions = ['inline', 'left', 'right'];
 const floatedPositions = ['left', 'right'];
 
 const legacyPositionWidths = {
-  wide: 'xl',
-  full: 'full'
+  wide: 2,
+  full: 3
 };
 
 export function Center(props) {
@@ -24,7 +24,7 @@ export function Center(props) {
       {props.items.map((item, index) => {
         const customMargin = hasCustomMargin(item);
         const position = getPosition(item);
-        const width = getWidth(item);
+        const width = widthName(getWidth(item));
 
         return (
           <ContentElements key={item.id} sectionProps={props.sectionProps} items={[item]} customMargin={customMargin}>
@@ -55,7 +55,7 @@ function outerClassName(items, index) {
 
   return classNames(
     styles.outer,
-    styles[`outer-${getWidth(item)}`],
+    styles[`outer-${widthName(getWidth(item))}`],
     {[styles.customMargin]: hasCustomMargin(item)},
     {[styles.clear]: clearItem(items, index)}
   );
@@ -65,22 +65,26 @@ function boxProps(items, item, index) {
   const previous = items[index - 1];
   const next = items[index + 1];
   const customMargin = hasCustomMargin(item);
+  const width = getWidth(item);
 
   return {
-    position: item.position,
+    position: getPosition(item),
+    width,
     customMargin,
     selfClear: selfClear(items, index),
     openStart: previous &&
                !customMargin &&
                !hasCustomMargin(previous) &&
-               item.position !== 'full' && previous.position !== 'full' &&
-               item.position !== 'wide' && previous.position !== 'wide',
+               !isWideOrFull(item) && !isWideOrFull(previous),
     openEnd: next &&
              !customMargin &&
              !hasCustomMargin(next) &&
-             item.position !== 'full' && next.position !== 'full' &&
-             item.position !== 'wide' && next.position !== 'wide',
+             !isWideOrFull(item) && !isWideOrFull(next)
   }
+}
+
+function isWideOrFull(item) {
+  return getPosition(item) === 'inline' && getWidth(item) > 0;
 }
 
 function selfClear(items, index) {
@@ -139,12 +143,12 @@ function getPosition(item) {
 
 function getWidth(item) {
   return legacyPositionWidths[item.position] ||
-         widthName(clampWidthByPosition(item));
+         clampWidthByPosition(item);
 }
 
 function clampWidthByPosition(item) {
   if (['left', 'right'].includes(item.position)) {
-    return Math.min(Math.max(item.props?.width, -2), 2);
+    return Math.min(Math.max(item.props?.width || 0, -2), 2);
   }
   else {
     return item.props?.width;
