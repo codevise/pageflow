@@ -967,6 +967,19 @@ describe('Layout', () => {
       expect(findParentWithClass(getByTestId('probe'), centerStyles['item-inline-xl'])).not.toBeNull();
     });
 
+    it('lets width take precedence for legacy wide item', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'wide', props: {width: 1}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['item-inline-lg'])).not.toBeNull();
+    });
+
     it('applies width class to legacy full items', () => {
       const items = [
         {id: 2, type: 'probe', position: 'full'}

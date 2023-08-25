@@ -155,8 +155,9 @@ function getPosition(item) {
 }
 
 function getWidth(item) {
-  return legacyPositionWidths[item.position] ||
-         clampWidthByPosition(item);
+  return (typeof item.props?.width === 'number') ?
+         clampWidthByPosition(item) :
+         legacyPositionWidths[item.position] || 0;
 }
 
 function clampWidthByPosition(item) {
