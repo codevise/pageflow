@@ -26,11 +26,15 @@
   max-width: calc(var(--content-margin) * 2 + var(--content-max-width));
 }
 
-.item-wide {
-  --content-max-width: var(--centered-wide-content-max-width, 1200px);
+.item-inline-lg {
+  --content-max-width: var(--centered-inline-lg-content-max-width, 950px);
 }
 
-.item-full {
+.item-inline-xl {
+  --content-max-width: var(--centered-inline-xl-content-max-width, 1200px);
+}
+
+.item-inline-full {
   --content-margin: 0;
   --content-max-width: none;
   margin-left: 0;
@@ -42,10 +46,31 @@
   clear: both;
 }
 
+.inner-xxs,
+.inner-xs,
+.inner-sm {
+  margin: 0 auto;
+}
+
+.inner-xxs {
+  width: 30%
+}
+
+.inner-xs {
+  width: 50%;
+}
+
+.inner-sm {
+  width: 70%;
+}
+
 @media (min-width: 950px) {
   .inner-left,
   .inner-right {
+    --floated-indent: -10%;
+    width: 60%;
     margin-top: 0.375em;
+    margin-bottom: 1em;
 
     /* Ensure element is positioned in front of text block wrapping around
        element and can be selected in editor. */
@@ -55,17 +80,35 @@
 
   .inner-left {
     float: left;
-    width: 60%;
-    margin-left: calc(-10% - 1em);
+    margin-left: calc(var(--floated-indent) - 1em);
     margin-right: 1em;
-    margin-bottom: 1em;
   }
 
   .inner-right {
     float: right;
-    width: 60%;
-    margin-right: calc(-10% - 1em);
+    margin-right: calc(var(--floated-indent) - 1em);
     margin-left: 1em;
-    margin-bottom: 1em;
+  }
+
+  .inner-xs.inner-left,
+  .inner-xs.inner-right {
+    width: 25%;
+  }
+
+  .inner-sm.inner-left,
+  .inner-sm.inner-right {
+    width: 40%;
+  }
+
+  .inner-lg.inner-left,
+  .inner-lg.inner-right {
+    width: 70%;
+    --floated-indent: -20%;
+  }
+
+  .inner-xl.inner-left,
+  .inner-xl.inner-right {
+    width: 80%;
+    --floated-indent: -30%;
   }
 }

@@ -663,18 +663,6 @@ describe('Layout', () => {
 
       expect(findParentWithClass(getByTestId('wrappingProbe'), centerStyles.clear)).toBeNull();
     });
-
-    function findParentWithClass(element, className) {
-      let currentElement = element;
-
-      while ((currentElement = currentElement.parentElement)) {
-        if (currentElement.classList.contains(className)) {
-          return currentElement;
-        }
-      }
-
-      return null;
-    }
   });
 
   describe('self clearing prop passed to box in centered layout', () => {
@@ -826,4 +814,156 @@ describe('Layout', () => {
       expect(container.textContent).toEqual('left right both both ');
     });
   });
+
+  describe('width classes in centered variant', () => {
+    beforeAll(() => {
+      frontend.contentElementTypes.register('probe', {
+        component: function Probe({configuration}) {
+          return <div data-testid="probe"/>;
+        }
+      });
+    });
+
+    it('applies width class to inline items', () => {
+      const items = [
+        {id: 2, type: 'probe', props: {width: 1}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['item-inline-lg'])).not.toBeNull();
+    });
+
+    it('does not appliy width class to floated items', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'left', props: {width: 2}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['item-inline-xl'])).toBeNull();
+    });
+
+    it('applies width class to legacy wide items', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'wide'}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['item-inline-xl'])).not.toBeNull();
+    });
+
+    it('applies width class to legacy full items', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'full'}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['item-inline-full'])).not.toBeNull();
+    });
+
+    it('applies width class to inner of inline item', () => {
+      const items = [
+        {id: 2, type: 'probe', props: {width: -3}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['inner-xxs'])).not.toBeNull();
+    });
+
+    it('applies width class to inner of floated item', () => {
+      const items = [
+        {id: 2, type: 'probe', props: {width: 2}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['inner-xl'])).not.toBeNull();
+    });
+
+    it('changes xxs to xs for floated item', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'left', props: {width: -3}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['inner-xs'])).not.toBeNull();
+    });
+
+    it('changes full to xl for floated item', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'left', props: {width: 3}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['inner-xl'])).not.toBeNull();
+    });
+
+    it('applies width class to outer of full width item', () => {
+      const items = [
+        {id: 2, type: 'probe', props: {width: 3}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['outer-full'])).not.toBeNull();
+    });
+
+    it('applies width class to outer of legacy full item', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'full'}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['outer-full'])).not.toBeNull();
+    });
+  });
+
+  function findParentWithClass(element, className) {
+    let currentElement = element;
+
+    while ((currentElement = currentElement.parentElement)) {
+      if (currentElement.classList.contains(className)) {
+        return currentElement;
+      }
+    }
+
+    return null;
+  }
 });

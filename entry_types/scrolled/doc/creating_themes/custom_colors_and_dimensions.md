@@ -132,7 +132,8 @@ with content alignment "center":
 | Name | Description |
 | ---- | ----------- |
 | `centered_inline_content_max_width` | Maximum width of inline content (e.g., text block paragraphs). |
-| `centered_wide_content_max_width` | Maximum width of wide content (e.g., headings using their default position). |
+| `centered_inline_lg_content_max_width` | Maximum width of inline content with width L. |
+| `centered_inline_xl_content_max_width` | Maximum width of inline content with width XL. |
 
 For all of these properties, also a variant using the prefix
 `narrow_section_` can be defined (e.g. `narrow_section_max_width` or

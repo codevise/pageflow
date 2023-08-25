@@ -20,8 +20,10 @@
 
   --centered-inline-content-max-width:
     var(--theme-centered-inline-content-max-width);
-  --centered-wide-content-max-width:
-    var(--theme-centered-wide-content-max-width);
+  --centered-inline-lg-content-max-width:
+    var(--theme-centered-inline-lg-content-max-width);
+  --centered-inline-xl-content-max-width:
+    var(--theme-centered-inline-xl-content-max-width);
 
   --foreground-padding-top: 0px;
 }
