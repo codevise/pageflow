@@ -191,7 +191,7 @@ describe('ContentElement', () => {
         {
           entryTypeSeed: normalizeSeed({
             sections: [
-              {id: 1}
+              {id: 1, configuration: {layout: 'center'}}
             ],
             contentElements: [
               {id: 5, sectionId: 1, typeName: 'inlineImage', configuration: {position: 'left'}}
@@ -203,6 +203,27 @@ describe('ContentElement', () => {
 
       expect(contentElement.getAvailableMinWidth()).toEqual(-2);
       expect(contentElement.getAvailableMaxWidth()).toEqual(2);
+    });
+
+    it('does not exclude xxs/xxl if position is not supported by layout', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1, configuration: {layout: 'center'}}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage', configuration: {position: 'sticky'}}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getAvailableMinWidth()).toEqual(-3);
+      expect(contentElement.getAvailableMaxWidth()).toEqual(3);
     });
   });
 

@@ -81,7 +81,12 @@ export const ContentElement = Backbone.Model.extend({
   },
 
   getPosition() {
-    return this.configuration.get('position') || 'inline';
+    return this.configuration.get('position');
+  },
+
+  getResolvedPosition() {
+    const position = this.getPosition();
+    return this.getAvailablePositions().includes(position) ? position : 'inline';
   },
 
   getAvailablePositions() {
@@ -113,7 +118,7 @@ export const ContentElement = Backbone.Model.extend({
   },
 
   clampWidthByPosition(width) {
-    if (['sticky', 'left', 'right'].includes(this.getPosition())) {
+    if (['sticky', 'left', 'right'].includes(this.getResolvedPosition())) {
       return Math.min(Math.max(width, -2), 2);
     }
     else {
