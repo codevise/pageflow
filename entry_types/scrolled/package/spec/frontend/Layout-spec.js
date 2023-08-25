@@ -721,6 +721,52 @@ describe('Layout', () => {
 
       expect(findParentWithClass(getByTestId('wrappingProbe'), centerStyles.clear)).toBeNull();
     });
+
+    it('sets sideBySide class on side-by-side floats', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left', props: {testId: 'left'}},
+        {id: 2, type: 'probe', position: 'right', props: {testId: 'right'}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('left'), centerStyles.sideBySide)).not.toBeNull();
+      expect(findParentWithClass(getByTestId('right'), centerStyles.sideBySide)).not.toBeNull();
+    });
+
+    it('does not set sideBySide class on consecutive float on the same side', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left', props: {testId: 'first'}},
+        {id: 2, type: 'probe', position: 'left', props: {testId: 'second'}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('first'), centerStyles.sideBySide)).toBeNull();
+      expect(findParentWithClass(getByTestId('second'), centerStyles.sideBySide)).toBeNull();
+    });
+
+    it('does not set sideBySide class on floats separated by text', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left', props: {testId: 'left'}},
+        {id: 2, type: 'wrappingProbe'},
+        {id: 3, type: 'probe', position: 'right', props: {testId: 'right'}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('left'), centerStyles.sideBySide)).toBeNull();
+      expect(findParentWithClass(getByTestId('right'), centerStyles.sideBySide)).toBeNull();
+    });
   });
 
   describe('self clearing prop passed to box in centered layout', () => {

@@ -95,9 +95,17 @@
     width: 25%;
   }
 
+  .inner-xs.sideBySide {
+    --floated-indent: 25%;
+  }
+
   .inner-sm.inner-left,
   .inner-sm.inner-right {
     width: 40%;
+  }
+
+  .inner-sm.sideBySide {
+    --floated-indent: 10%;
   }
 
   .inner-lg.inner-left,

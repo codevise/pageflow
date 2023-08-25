@@ -34,7 +34,8 @@ export function Center(props) {
                                            styles[`item-${position}-${width}`])}>
                   {props.children(
                     <div className={classNames(styles[`inner-${item.position}`],
-                                               styles[`inner-${width}`])}>
+                                               styles[`inner-${width}`],
+                                               {[styles[`sideBySide`]]: sideBySideFloat(props.items, index)})}>
                       {child}
                     </div>,
                     boxProps(props.items, item, index)
@@ -115,11 +116,23 @@ function followsSideBySideElements(items, index) {
   );
 }
 
+function sideBySideFloat(items, index) {
+  return isFloatedFollowingOppositeFloated(items, index) ||
+         isFloatedFollowedByOppositeFloated(items, index);
+}
+
 function isFloatedFollowingOppositeFloated(items, index) {
   return index > 0 &&
          isFloated(items[index]) &&
          isFloated(items[index - 1]) &&
          items[index].position !== items[index - 1].position;
+}
+
+function isFloatedFollowedByOppositeFloated(items, index) {
+  return index < items.length - 1 &&
+         isFloated(items[index]) &&
+         isFloated(items[index + 1]) &&
+         items[index].position !== items[index + 1].position;
 }
 
 function isFloated(item) {
