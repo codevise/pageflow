@@ -147,7 +147,7 @@ function supportsWrappingAroundFloats(item) {
 function hasCustomMargin(item) {
   const position = getPosition(item);
   const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
-  return !!elementSupportsCustomMargin && (position === 'inline' || position === 'wide');
+  return !!(elementSupportsCustomMargin && position === 'inline' && getWidth(item) < 3);
 }
 
 function getPosition(item) {

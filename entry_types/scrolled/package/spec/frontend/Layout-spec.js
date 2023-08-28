@@ -698,9 +698,48 @@ describe('Layout', () => {
           expect(container.textContent).toEqual('custom 1 ');
         });
 
-        it('is false if rendered custom margin is not supported by position', () => {
+        it('is true if rendered with xl width with custom margin', () => {
+          const items = [
+            {id: 1, type: 'probeWithCustomMarginProp', props: {width: 2}}
+          ];
+          const {container} = renderInEntry(
+            <Layout sectionProps={{layout: 'center'}} items={items}>
+              {children => children}
+            </Layout>
+          );
+
+          expect(container.textContent).toEqual('custom 1 ');
+        });
+
+        it('is false if rendered with floated position', () => {
           const items = [
             {id: 1, type: 'probeWithCustomMarginProp', position: 'left'}
+          ];
+          const {container} = renderInEntry(
+            <Layout sectionProps={{layout: 'center'}} items={items}>
+              {children => children}
+            </Layout>
+          );
+
+          expect(container.textContent).toEqual('normal 1 ');
+        });
+
+        it('is false if rendered with legacy full position with custom margin', () => {
+          const items = [
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'full'}
+          ];
+          const {container} = renderInEntry(
+            <Layout sectionProps={{layout: 'center'}} items={items}>
+              {children => children}
+            </Layout>
+          );
+
+          expect(container.textContent).toEqual('normal 1 ');
+        });
+
+        it('is false if rendered with full width with custom margin', () => {
+          const items = [
+            {id: 1, type: 'probeWithCustomMarginProp', props: {width: 3}}
           ];
           const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -1093,6 +1132,32 @@ describe('Layout', () => {
       expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['group-full'])).not.toBeNull();
     });
 
+    it('lets width take precedence for legacy wide item', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'wide', props: {width: 1}}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['width-lg'])).not.toBeNull();
+    });
+
+    it('applies width class to legacy full items', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'full'}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['width-full'])).not.toBeNull();
+    });
+
     it('applies restrict classes to inline box with negative width', () => {
       const items = [
         {id: 2, type: 'probe', props: {width: -2}}
@@ -1104,6 +1169,32 @@ describe('Layout', () => {
       );
 
       expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['restrict-xs'])).not.toBeNull();
+    });
+
+    it('changes xxs to xs for sticky item', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'sticky', props: {width: -3}}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['restrict-xs'])).not.toBeNull();
+    });
+
+    it('changes full to xl for sticky item', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'sticky', props: {width: 3}}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['width-xl'])).not.toBeNull();
     });
   });
 

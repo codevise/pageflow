@@ -178,6 +178,15 @@ const legacyPositionWidths = {
 
 function getWidth(item) {
   return (typeof item.props?.width === 'number') ?
-         item.props.width :
+         clampWidthByPosition(item) :
          legacyPositionWidths[item.position] || 0;
+}
+
+function clampWidthByPosition(item) {
+  if (item.position === 'sticky') {
+    return Math.min(Math.max(item.props?.width || 0, -2), 2);
+  }
+  else {
+    return item.props?.width;
+  }
 }
