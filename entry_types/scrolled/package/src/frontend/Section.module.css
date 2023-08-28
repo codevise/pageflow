@@ -13,10 +13,17 @@
 
   --two-column-inline-content-max-width:
     var(--theme-two-column-inline-content-max-width);
-  --two-column-wide-content-max-width:
-    var(--theme-two-column-wide-content-max-width);
+  --two-column-inline-lg-content-max-width:
+    var(--theme-two-column-inline-lg-content-max-width);
+  --two-column-inline-xl-content-max-width:
+    var(--theme-two-column-inline-xl-content-max-width);
+
   --two-column-sticky-content-max-width:
     var(--theme-two-column-sticky-content-max-width);
+  --two-column-sticky-lg-content-max-width:
+    var(--theme-two-column-sticky-lg-content-max-width);
+  --two-column-sticky-xl-content-max-width:
+    var(--theme-two-column-sticky-xl-content-max-width);
 
   --centered-inline-content-max-width:
     var(--theme-centered-inline-content-max-width);
@@ -40,10 +47,17 @@
 
   --two-column-inline-content-max-width:
     var(--theme-narrow-section-two-column-inline-content-max-width);
-  --two-column-wide-content-max-width:
-    var(--theme-narrow-section-two-column-wide-content-max-width);
+  --two-column-inline-lg-content-max-width:
+    var(--theme-narrow-section-two-column-inline-lg-content-max-width);
+  --two-column-inline-xl-content-max-width:
+    var(--theme-narrow-section-two-column-inline-xl-content-max-width);
+
   --two-column-sticky-content-max-width:
     var(--theme-narrow-section-two-column-sticky-content-max-width);
+  --two-column-sticky-lg-content-max-width:
+    var(--theme-narrow-section-two-column-sticky-lg-content-max-width);
+  --two-column-sticky-xl-content-max-width:
+    var(--theme-narrow-section-two-column-sticky-xl-content-max-width);
 
   --centered-inline-content-max-width:
     var(--theme-narrow-section-centered-inline-content-max-width);

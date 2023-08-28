@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import {api} from '../api';
 import {ContentElements} from '../ContentElements';
 import {useNarrowViewport} from '../useNarrowViewport';
+import {widthName} from './widthName';
 
 import styles from './TwoColumn.module.css';
 
@@ -39,7 +40,9 @@ TwoColumn.GroupComponent = 'div';
 
 function renderItems(props, narrow) {
   return groupItemsByPosition(props.items, availablePositions(narrow)).map((group, index) =>
-    <TwoColumn.GroupComponent key={index} className={classNames(styles.group, styles[`group-${group.position}`])}>
+    <TwoColumn.GroupComponent key={index}
+                              className={classNames(styles.group,
+                                                    styles[`group-${widthName(group.width)}`])}>
       {group.boxes.map((box, index) => renderItemGroup(props, box, index))}
     </TwoColumn.GroupComponent>
   );
@@ -47,9 +50,11 @@ function renderItems(props, narrow) {
 
 function renderItemGroup(props, box, key) {
   if (box.items.length) {
+
     return (
       <div key={key} className={classNames(styles.box,
                                            styles[box.position],
+                                           styles[`width-${widthName(box.width)}`],
                                            {[styles.customMargin]: box.customMargin})}>
         {props.children(
           <ContentElements sectionProps={props.sectionProps}
@@ -87,7 +92,7 @@ function groupItemsByPosition(items, availablePositions) {
 
       if (!(previousPosition === 'sticky' && position === 'inline' && width <= 0)) {
         currentGroup = {
-          position,
+          width,
           boxes: []
         };
 

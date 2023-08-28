@@ -5,6 +5,8 @@ import {TwoColumn} from 'frontend/layouts/TwoColumn';
 import {frontend} from 'pageflow-scrolled/frontend';
 
 import centerStyles from 'frontend/layouts/Center.module.css';
+import twoColumnStyles from 'frontend/layouts/TwoColumn.module.css';
+
 import {widthName} from 'frontend/layouts/widthName';
 
 import {render} from '@testing-library/react';
@@ -84,9 +86,9 @@ describe('Layout', () => {
     }
 
     describe('in two column variant', () => {
-      TwoColumn.GroupComponent = function({children}) {
+      TwoColumn.GroupComponent = function({children, ...props}) {
         return (
-          <div>[{children}]</div>
+          <div {...props}>[{children}]</div>
         );
       }
 
@@ -998,6 +1000,42 @@ describe('Layout', () => {
       );
 
       expect(container.textContent).toEqual('left right both both ');
+    });
+  });
+
+  describe('width classes in two-column variant', () => {
+    beforeAll(() => {
+      frontend.contentElementTypes.register('probe', {
+        component: function Probe({configuration}) {
+          return <div data-testid="probe"/>;
+        }
+      });
+    });
+
+    it('applies width class to inline items', () => {
+      const items = [
+        {id: 2, type: 'probe', props: {width: 1}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['width-lg'])).not.toBeNull();
+    });
+
+    it('applies full class to inline group with width 3', () => {
+      const items = [
+        {id: 2, type: 'probe', props: {width: 3}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['group-full'])).not.toBeNull();
     });
   });
 

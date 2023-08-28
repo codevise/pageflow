@@ -114,17 +114,22 @@ width:
 | ---- | ----------- |
 | `section_max_width` | Settings this property causes section content to be centered once the viewport becomes too wide. |
 
-Depending on their position, content elements have a maximum width by
-default to limit text line length. The following properties can be
-used to adjust these widths for sections using content alignment
-"left" or "right":
+Depending on their position and width, content elements have a maximum
+width to limit text line length. The following properties can be used
+to adjust these widths for sections using content alignment "left" or
+"right":
 
 | Name | Description |
 | ---- | ----------- |
-| `two_column_inline_content_max_width` | Maximum width of inline content (e.g., text block paragraphs) . |
+| `two_column_inline_content_max_width` | Maximum width of inline content (e.g., text block paragraphs). |
+| `two_column_inline_lg_content_max_width` | Maximum width of inline content with width L. |
+| `two_column_inline_xl_content_max_width` | Maximum width of inline content with width XL. |
 | `two_column_sticky_content_max_width` | Maximum width of sticky content (e.g., inline images using position "sticky"). |
-| `two_column_wide_content_max_width` | Maximum width of wide content (e.g., headings using their default position). |
-| `two_column_sticky_content_width` | Percentage width of sticky elements. |
+| `two_column_sticky_lg_content_max_width` | Maximum width of sticky content with width L. |
+| `two_column_sticky_xl_content_max_width` | Maximum width of sticky content with width XL. |
+| `two_column_sticky_content_width` | Width of sticky elements in `vw` units. |
+| `two_column_sticky_lg_content_width` | Width of sticky elements with width L in `vw` units. |
+| `two_column_sticky_xl_content_width` | Width of sticky elements with width XL in `vw` units. |
 
 The following properties control width of content elements in section
 with content alignment "center":
@@ -137,8 +142,8 @@ with content alignment "center":
 
 For all of these properties, also a variant using the prefix
 `narrow_section_` can be defined (e.g. `narrow_section_max_width` or
-`narrow_section_two_column_inline_content_max_width`. If one of these
-properties is defined for a theme, Pageflow offers an additional
+`narrow_section_two_column_inline_lg_content_max_width`. If one of
+these properties is defined for a theme, Pageflow offers an additional
 "Width" field in the section settings. The given values apply to a
 section once "Narrow" has been selected as width.
 
