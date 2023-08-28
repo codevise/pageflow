@@ -9,17 +9,25 @@ import twoColumnStyles from 'frontend/layouts/TwoColumn.module.css';
 
 import {widthName} from 'frontend/layouts/widthName';
 
-import {render} from '@testing-library/react';
+import {renderInEntry} from 'testHelpers';
 
-import {useNarrowViewport} from 'frontend/useNarrowViewport';
-jest.mock('frontend/useNarrowViewport');
+import useMediaQuery from 'frontend/useMediaQuery';
+
+jest.mock('frontend/useMediaQuery');
+
+let viewportWidth;
+
+useMediaQuery.mockImplementation(query => {
+  const match = query.match(/max-width: ([0-9]+)px/);
+  return viewportWidth <= parseInt(match[1], 10);
+})
 
 describe('Layout', () => {
-  beforeEach(() => useNarrowViewport.mockReturnValue(false));
+  beforeEach(() => { viewportWidth = 1920; });
 
   describe('placeholder', () => {
     it('renders in two column variant', () => {
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'left'}}
                 items={[]}
                 placeholder={<div data-testid="placeholder" />} />
@@ -29,7 +37,7 @@ describe('Layout', () => {
     });
 
     it('renders placeholder in center variant', () => {
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}}
                 items={[]}
                 placeholder={<div data-testid="placeholder" />} />
@@ -103,7 +111,7 @@ describe('Layout', () => {
           {id: 7, type: 'probe', position: 'inline'},
           {id: 8, type: 'probe', position: 'inline', props: {width: 3}},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
           </Layout>
@@ -120,7 +128,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'inline', props: {width: 2}},
           {id: 3, type: 'probe', position: 'full'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
           </Layout>
@@ -137,7 +145,7 @@ describe('Layout', () => {
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'}
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, customMargin}) =>
               <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
@@ -153,7 +161,7 @@ describe('Layout', () => {
           {id: 1, type: 'probe', position: 'sticky'},
           {id: 2, type: 'probeWithCustomMargin', position: 'sticky'}
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, customMargin}) =>
               <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
@@ -169,7 +177,7 @@ describe('Layout', () => {
           {id: 1, type: 'probe', position: 'inline', props: {width: 3}},
           {id: 2, type: 'probeWithCustomMargin', position: 'inline', props: {width: 3}}
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, customMargin}) =>
               <div>{customMargin ? 'custom' : 'normal'} {children}</div>
@@ -185,7 +193,7 @@ describe('Layout', () => {
           {id: 1, type: 'probe', position: 'full'},
           {id: 2, type: 'probeWithCustomMargin', position: 'full'}
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, customMargin}) =>
               <div>{customMargin ? 'custom' : 'normal'} {children}</div>
@@ -201,7 +209,7 @@ describe('Layout', () => {
           const items = [
             {id: 1, type: 'probeWithCustomMarginProp'}
           ];
-          const {container} = render(
+          const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'left'}} items={items}>
               {children => children}
             </Layout>
@@ -214,7 +222,7 @@ describe('Layout', () => {
           const items = [
             {id: 1, type: 'probeWithCustomMarginProp', props: {width: 3}}
           ];
-          const {container} = render(
+          const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'left'}} items={items}>
               {children => children}
             </Layout>
@@ -232,7 +240,7 @@ describe('Layout', () => {
           {id: 4, type: 'probe', position: 'sticky'},
           {id: 5, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -266,7 +274,7 @@ describe('Layout', () => {
           {id: 4, type: 'probe', position: 'sticky'},
           {id: 5, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -282,7 +290,7 @@ describe('Layout', () => {
           {id: 3, type: 'probe', position: 'inline', props: {width: 1}},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -298,7 +306,7 @@ describe('Layout', () => {
           {id: 3, type: 'probe', position: 'full'},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -314,7 +322,7 @@ describe('Layout', () => {
           {id: 3, type: 'probe', position: 'wide'},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -330,7 +338,7 @@ describe('Layout', () => {
           {id: 3, type: 'probe', position: 'inline', props: {width: 3}},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -346,7 +354,7 @@ describe('Layout', () => {
           {id: 3, type: 'probe', position: 'sticky'},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -362,7 +370,7 @@ describe('Layout', () => {
           {id: 3, type: 'probe', position: 'full'},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -378,7 +386,7 @@ describe('Layout', () => {
           {id: 3, type: 'probe', position: 'sticky'},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -393,7 +401,7 @@ describe('Layout', () => {
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -408,7 +416,7 @@ describe('Layout', () => {
           {id: 2, type: 'probeWithCustomMargin', position: 'sticky'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -417,21 +425,68 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('[( 1 |][( 2 )| 3 )]');
       });
 
-      it('inlines sticky element for narrow viewport', () => {
-        useNarrowViewport.mockReturnValue(true);
-
+      it('inlines sticky elements of different width at different breakpoints ', () => {
         const items = [
-          {id: 1, type: 'probe', position: 'inline'},
-          {id: 2, type: 'probe', position: 'sticky'},
-          {id: 3, type: 'probe', position: 'inline'},
+          {id: 1, type: 'probe', position: 'sticky'},
+          {id: 2, type: 'probe', position: 'sticky', props: {width: 1}},
+          {id: 3, type: 'probe', position: 'sticky', props: {width: 2}}
         ];
-        const {container} = render(
+        viewportWidth = 1000;
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
-            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
-          </Layout>
+            {(children, {position}) => <div>{position} {children}</div>}
+          </Layout>,
+          {
+            seed: {
+              themeOptions: {
+                properties: {
+                  root: {
+                    twoColumnStickyBreakpoint: '950px',
+                    twoColumnStickyLgBreakpoint: '1024px',
+                    twoColumnStickyXlBreakpoint: '1180px'
+                  }
+                }
+              }
+            }
+          }
         );
 
-        expect(container.textContent).toEqual('[( 1 2 3 )]');
+        expect(container.textContent).toEqual(
+          '[sticky 1 inline 2 ][inline 3 ]'
+        );
+      });
+
+      it('decreases size when inlining wide sticky elements', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'sticky', props: {width: -2}},
+          {id: 2, type: 'probe', position: 'sticky', props: {width: -1}},
+          {id: 3, type: 'probe', position: 'sticky'},
+          {id: 4, type: 'probe', position: 'sticky', props: {width: 1}},
+          {id: 5, type: 'probe', position: 'sticky', props: {width: 2}}
+        ];
+        viewportWidth = 500;
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
+          </Layout>,
+          {
+            seed: {
+              themeOptions: {
+                properties: {
+                  root: {
+                    twoColumnStickyBreakpoint: '950px',
+                    twoColumnStickyLgBreakpoint: '1024px',
+                    twoColumnStickyXlBreakpoint: '1180px'
+                  }
+                }
+              }
+            }
+          }
+        );
+
+        expect(container.textContent).toEqual(
+          '[inline xs 1 ][inline sm 2 ][inline md 3 4 ][inline lg 5 ]'
+        );
       });
     });
 
@@ -443,7 +498,7 @@ describe('Layout', () => {
           {id: 3, type: 'probe', position: 'left'},
           {id: 4, type: 'probe', position: 'inline', props: {width: 3}},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
           </Layout>
@@ -457,7 +512,7 @@ describe('Layout', () => {
           {id: 1, type: 'probe', position: 'wide'},
           {id: 2, type: 'probe', position: 'full'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
           </Layout>
@@ -470,7 +525,7 @@ describe('Layout', () => {
         const items = [
           {id: 1, type: 'probe', position: 'sticky'}
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
           </Layout>
@@ -485,7 +540,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -500,7 +555,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'sticky'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -515,7 +570,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'left'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -530,7 +585,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'inline', props: {width: 3}},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -545,7 +600,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'full'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -560,7 +615,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'inline', props: {width: 1}},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -575,7 +630,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'wide'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -590,7 +645,7 @@ describe('Layout', () => {
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -605,7 +660,7 @@ describe('Layout', () => {
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'}
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, {customMargin}) =>
               <div>{customMargin ? 'custom' : 'normal'} {children}</div>
@@ -621,7 +676,7 @@ describe('Layout', () => {
           const items = [
             {id: 1, type: 'probeWithCustomMarginProp'}
           ];
-          const {container} = render(
+          const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'center'}} items={items}>
               {children => children}
             </Layout>
@@ -634,7 +689,7 @@ describe('Layout', () => {
           const items = [
             {id: 1, type: 'probeWithCustomMarginProp', position: 'wide'}
           ];
-          const {container} = render(
+          const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'center'}} items={items}>
               {children => children}
             </Layout>
@@ -647,7 +702,7 @@ describe('Layout', () => {
           const items = [
             {id: 1, type: 'probeWithCustomMarginProp', position: 'left'}
           ];
-          const {container} = render(
+          const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'center'}} items={items}>
               {children => children}
             </Layout>
@@ -665,7 +720,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'sticky'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'centerRagged'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -698,7 +753,7 @@ describe('Layout', () => {
       const items = [
         {id: 1, type: 'probe', position: 'inline'}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -711,7 +766,7 @@ describe('Layout', () => {
       const items = [
         {id: 1, type: 'wrappingProbe', position: 'inline'}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -725,7 +780,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left'},
         {id: 2, type: 'probe', position: 'right', props: {testId: 'right'}},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -739,7 +794,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'probe', position: 'left', props: {testId: 'left'}},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -753,7 +808,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'probe', position: 'right', props: {testId: 'right-2'}},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -767,7 +822,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'inline'},
         {id: 2, type: 'probe', position: 'left', props: {testId: 'left'}},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -782,7 +837,7 @@ describe('Layout', () => {
         {id: 2, type: 'probe', position: 'right'},
         {id: 3, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -797,7 +852,7 @@ describe('Layout', () => {
         {id: 2, type: 'probe', position: 'right'},
         {id: 3, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -811,7 +866,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left', props: {testId: 'left'}},
         {id: 2, type: 'probe', position: 'right', props: {testId: 'right'}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -826,7 +881,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left', props: {testId: 'first'}},
         {id: 2, type: 'probe', position: 'left', props: {testId: 'second'}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -842,7 +897,7 @@ describe('Layout', () => {
         {id: 2, type: 'wrappingProbe'},
         {id: 3, type: 'probe', position: 'right', props: {testId: 'right'}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -875,7 +930,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left'},
         {id: 2, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -891,7 +946,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -907,7 +962,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left'},
         {id: 2, type: 'probe', position: 'left'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -923,7 +978,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'probe', position: 'right'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -939,7 +994,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left'},
         {id: 2, type: 'probe'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -955,7 +1010,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'probe'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -973,7 +1028,7 @@ describe('Layout', () => {
         {id: 3, type: 'probe', position: 'left'},
         {id: 4, type: 'wrappingProbe'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -991,7 +1046,7 @@ describe('Layout', () => {
         {id: 3, type: 'probe', position: 'right'},
         {id: 4, type: 'wrappingProbe'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -1016,7 +1071,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', props: {width: 1}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'left'}} items={items}>
           {children => children}
         </Layout>
@@ -1029,7 +1084,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', props: {width: 3}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'left'}} items={items}>
           {children => children}
         </Layout>
@@ -1042,7 +1097,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', props: {width: -2}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'left'}} items={items}>
           {children => children}
         </Layout>
@@ -1065,7 +1120,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', props: {width: 1}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -1078,7 +1133,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', position: 'left', props: {width: 2}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -1091,7 +1146,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', position: 'wide'}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -1104,7 +1159,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', position: 'wide', props: {width: 1}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -1117,7 +1172,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', position: 'full'}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -1130,7 +1185,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', props: {width: -3}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -1143,7 +1198,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', props: {width: 2}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -1156,7 +1211,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', position: 'left', props: {width: -3}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -1169,7 +1224,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', position: 'left', props: {width: 3}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -1182,7 +1237,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', props: {width: 3}}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -1195,7 +1250,7 @@ describe('Layout', () => {
       const items = [
         {id: 2, type: 'probe', position: 'full'}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>

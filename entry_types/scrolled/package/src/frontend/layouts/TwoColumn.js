@@ -3,29 +3,21 @@ import classNames from 'classnames';
 
 import {api} from '../api';
 import {ContentElements} from '../ContentElements';
-import {useNarrowViewport} from '../useNarrowViewport';
+import useMediaQuery from '../useMediaQuery';
+import {useTheme} from '../../entryState';
 import {widthName} from './widthName';
 
 import styles from './TwoColumn.module.css';
 
-function availablePositions(narrow) {
-  if (narrow) {
-    return ['inline'];
-  }
-  else {
-    return ['inline', 'sticky'];
-  }
-}
-
 export function TwoColumn(props) {
-  const narrow = useNarrowViewport();
+  const shouldInline = useShouldInlineSticky();
 
   return (
     <div className={classNames(styles.root, styles[props.align])}>
       <div className={classNames(styles.group)} key={props.align}>
         <div className={classNames(styles.box, styles.inline)} ref={props.contentAreaRef} />
       </div>
-      {renderItems(props, narrow)}
+      {renderItems(props, shouldInline)}
       {renderPlaceholder(props.placeholder)}
     </div>
   );
@@ -35,11 +27,26 @@ TwoColumn.defaultProps = {
   align: 'left'
 }
 
+function useShouldInlineSticky() {
+  const theme = useTheme();
+  const root = theme.options.properties?.root || {};
+
+  const shouldInline = {
+    0: useMediaQuery(`(max-width: ${root.twoColumnStickyBreakpoint || '950px'})`),
+    1: useMediaQuery(`(max-width: ${root.twoColumnStickyLgBreakpoint || '1200px'})`),
+    2: useMediaQuery(`(max-width: ${root.twoColumnStickyXlBreakpoint || '1400px'})`)
+  };
+
+  return function(width) {
+    return width <= 0 ? shouldInline[0] : shouldInline[width];
+  }
+}
+
 // Used in tests to render markers around groups
 TwoColumn.GroupComponent = 'div';
 
-function renderItems(props, narrow) {
-  return groupItemsByPosition(props.items, availablePositions(narrow)).map((group, index) =>
+function renderItems(props, shouldInline) {
+  return groupItemsByPosition(props.items, shouldInline).map((group, index) =>
     <TwoColumn.GroupComponent key={index}
                               className={classNames(styles.group,
                                                     styles[`group-${widthName(group.width)}`])}>
@@ -88,7 +95,7 @@ function RestrictWidth({width, children}) {
   }
 }
 
-function groupItemsByPosition(items, availablePositions) {
+function groupItemsByPosition(items, shouldInline) {
   const groups = [];
 
   let lastInlineBox = null;
@@ -96,9 +103,13 @@ function groupItemsByPosition(items, availablePositions) {
 
   items.reduce((previousPosition, item, index) => {
     const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
-    const position = availablePositions.includes(item.position) ? item.position : 'inline';
-    const width = getWidth(item);
+    let width = getWidth(item);
+    const position = item.position === 'sticky' && !shouldInline(width) ? 'sticky' : 'inline';
     const customMargin = !!elementSupportsCustomMargin && width < 3;
+
+    if (item.position === 'sticky' && position === 'inline' && width > 0) {
+      width -= 1;
+    }
 
     if (!currentGroup || previousPosition !== position ||
         (position === 'sticky' && currentBox.customMargin !== customMargin) ||

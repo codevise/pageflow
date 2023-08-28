@@ -148,12 +148,14 @@ these properties is defined for a theme, Pageflow offers an additional
 section once "Narrow" has been selected as width.
 
 To prevent sticky elements from overlapping inline elements on narrow
-viewports, the following property can be used to control the
-breakpoint below which sticky elements become inline:
+viewports, the following properties can be used to control the
+breakpoints below which sticky elements become inline:
 
 | Name | Description |
 | ---- | ----------- |
-| `narrow_viewport_breakpoint` | Minimum viewport width for sticky elements to be displayed in a second column. |
+| `two_column_sticky_breakpoint` | Minimum viewport width for sticky elements with M or smaller to be displayed in a second column. |
+| `two_column_sticky_lg_breakpoint` | Minimum viewport width for sticky elements with width LG to be displayed in a second column. |
+| `two_column_sticky_xl_breakpoint` | Minimum viewport width for sticky elements with width XL to be displayed in a second column. |
 
 ### Section Appearance
 
