@@ -39,6 +39,24 @@
   --content-max-width: none;
 }
 
+.restrict-xxs,
+.restrict-xs,
+.restrict-sm {
+  margin: 0 auto;
+}
+
+.restrict-xxs {
+  width: 30%;
+}
+
+.restrict-xs {
+  width: 50%;
+}
+
+.restrict-sm {
+  width: 70%;
+}
+
 .customMargin {
   /*
     We want to undo the group padding by applying a negative margin to

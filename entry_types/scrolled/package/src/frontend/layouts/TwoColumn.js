@@ -57,9 +57,11 @@ function renderItemGroup(props, box, key) {
                                            styles[`width-${widthName(box.width)}`],
                                            {[styles.customMargin]: box.customMargin})}>
         {props.children(
-          <ContentElements sectionProps={props.sectionProps}
-                           customMargin={box.customMargin}
-                           items={box.items} />,
+          <RestrictWidth width={box.width}>
+            <ContentElements sectionProps={props.sectionProps}
+                             customMargin={box.customMargin}
+                             items={box.items} />
+          </RestrictWidth>,
           {
             position: box.position,
             width: box.width,
@@ -68,6 +70,19 @@ function renderItemGroup(props, box, key) {
             openEnd: box.openEnd
           }
         )}
+      </div>
+    );
+  }
+}
+
+function RestrictWidth({width, children}) {
+  if (width >= 0) {
+    return children;
+  }
+  else {
+    return (
+      <div className={styles[`restrict-${widthName(width)}`]}>
+        {children}
       </div>
     );
   }

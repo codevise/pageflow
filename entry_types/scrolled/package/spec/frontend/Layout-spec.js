@@ -1037,6 +1037,19 @@ describe('Layout', () => {
 
       expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['group-full'])).not.toBeNull();
     });
+
+    it('applies restrict classes to inline box with negative width', () => {
+      const items = [
+        {id: 2, type: 'probe', props: {width: -2}}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['restrict-xs'])).not.toBeNull();
+    });
   });
 
   describe('width classes in centered variant', () => {
