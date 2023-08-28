@@ -5,7 +5,7 @@ import { SectionAtmo } from './SectionAtmo';
 
 import {useSectionContentElements, useAdditionalSeedData} from '../entryState';
 import Foreground from './Foreground';
-import {Layout} from './layouts';
+import {Layout, widths as contentElementWidths} from './layouts';
 import useScrollTarget from './useScrollTarget';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
 import {withInlineEditingDecorator} from './inlineEditing';
@@ -176,7 +176,9 @@ function heightMode(section) {
 
 function endsWithFullWidthElement(elements) {
   const lastElement = elements[elements.length - 1];
-  return lastElement && lastElement.position === 'full';
+  return lastElement &&
+         lastElement.position === 'inline' &&
+         lastElement.width === contentElementWidths.full;
 }
 
 function percentToFraction(value, {defaultValue}) {
