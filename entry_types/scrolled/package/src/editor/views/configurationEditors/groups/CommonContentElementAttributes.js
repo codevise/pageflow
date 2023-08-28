@@ -25,7 +25,12 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
     maxValueBinding: 'position',
     minValue: () => contentElement.getAvailableMinWidth(),
     maxValue: () => contentElement.getAvailableMaxWidth(),
-    visible: () => contentElement.getAvailableMinWidth() !== contentElement.getAvailableMaxWidth()
+    visible: () => contentElement.getAvailableMinWidth() !== contentElement.getAvailableMaxWidth(),
+
+    defaultValue:
+      this.model.get('position') === 'wide' ? 2 :
+      this.model.get('position') === 'full' ? 3 :
+      0
   });
 });
 
