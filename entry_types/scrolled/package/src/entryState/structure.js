@@ -143,16 +143,25 @@ function sectionData(section) {
   };
 }
 
+const legacyPositionWidths = {
+  wide: 2,
+  full: 3
+};
+
 export function useSectionContentElements({sectionId}) {
   const filterBySectionId = useCallback(contentElement => contentElement.sectionId === sectionId,
                                         [sectionId])
   const contentElements = useEntryStateCollectionItems('contentElements', filterBySectionId);
-
   return contentElements.map(item => ({
     id: item.id,
     permaId: item.permaId,
     type: item.typeName,
-    position: item.configuration.position,
+    position: legacyPositionWidths[item.configuration.position] ?
+              'inline' :
+              item.configuration.position || 'inline',
+    width: typeof item.configuration.width === 'number' ?
+           item.configuration.width :
+           legacyPositionWidths[item.configuration.position] || 0,
     props: item.configuration
   }));
 }

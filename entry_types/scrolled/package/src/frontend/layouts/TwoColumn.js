@@ -171,22 +171,11 @@ function renderPlaceholder(placeholder) {
   )
 }
 
-const legacyPositionWidths = {
-  wide: 2,
-  full: 3
-}
-
 function getWidth(item) {
-  return (typeof item.props?.width === 'number') ?
-         clampWidthByPosition(item) :
-         legacyPositionWidths[item.position] || 0;
-}
-
-function clampWidthByPosition(item) {
   if (item.position === 'sticky') {
-    return Math.min(Math.max(item.props?.width || 0, -2), 2);
+    return Math.min(Math.max(item.width || 0, -2), 2);
   }
   else {
-    return item.props?.width;
+    return item.width || 0;
   }
 }
