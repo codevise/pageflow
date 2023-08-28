@@ -1,14 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {widths} from '../layouts';
 import {BackgroundColorProvider} from '../backgroundColor';
 
 import styles from "./CardBoxWrapper.module.css";
 
-const positionOutsideBox = ['sticky', 'wide', 'full']
-
 export default function CardBoxWrapper(props) {
-  if (positionOutsideBox.includes(props.position) || props.customMargin) {
+  if (outsideBox(props)) {
     return props.children;
   }
 
@@ -19,6 +18,12 @@ export default function CardBoxWrapper(props) {
       </BackgroundColorProvider>
     </div>
   )
+}
+
+function outsideBox(props) {
+  return props.position === 'sticky' ||
+         (props.position === 'inline' && props.width > widths.md) ||
+         props.customMargin
 }
 
 function className(props) {
