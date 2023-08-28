@@ -9,14 +9,12 @@ import styles from './TwoColumn.module.css';
 
 function availablePositions(narrow) {
   if (narrow) {
-    return ['inline', 'wide', 'full'];
+    return ['inline'];
   }
   else {
-    return ['inline', 'sticky', 'wide', 'full'];
+    return ['inline', 'sticky'];
   }
 }
-
-const positionsSupportingCustomMargin = ['inline', 'sticky', 'wide'];
 
 export function TwoColumn(props) {
   const narrow = useNarrowViewport();
@@ -59,6 +57,7 @@ function renderItemGroup(props, box, key) {
                            items={box.items} />,
           {
             position: box.position,
+            width: box.width,
             customMargin: box.customMargin,
             openStart: box.openStart,
             openEnd: box.openEnd
@@ -66,7 +65,7 @@ function renderItemGroup(props, box, key) {
         )}
       </div>
     );
-      }
+  }
 }
 
 function groupItemsByPosition(items, availablePositions) {
@@ -78,13 +77,15 @@ function groupItemsByPosition(items, availablePositions) {
   items.reduce((previousPosition, item, index) => {
     const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
     const position = availablePositions.includes(item.position) ? item.position : 'inline';
-    const customMargin = !!elementSupportsCustomMargin && positionsSupportingCustomMargin.includes(position);
+    const width = getWidth(item);
+    const customMargin = !!elementSupportsCustomMargin && width < 3;
 
     if (!currentGroup || previousPosition !== position ||
-        (position === 'sticky' && currentBox.customMargin !== customMargin)) {
+        (position === 'sticky' && currentBox.customMargin !== customMargin) ||
+        currentBox.width !== width) {
       currentBox = null;
 
-      if (!(previousPosition === 'sticky' && position === 'inline')) {
+      if (!(previousPosition === 'sticky' && position === 'inline' && width <= 0)) {
         currentGroup = {
           position,
           boxes: []
@@ -98,18 +99,19 @@ function groupItemsByPosition(items, availablePositions) {
       currentBox = {
         customMargin,
         position,
+        width,
         items: []
       };
 
-      if (lastInlineBox && position === 'inline' && !customMargin) {
+      if (lastInlineBox && position === 'inline' && width <= 0 && !customMargin) {
         lastInlineBox.openEnd = true;
         currentBox.openStart = true;
       }
 
-      if (position === 'inline' && !customMargin) {
+      if (position === 'inline' && width <= 0 && !customMargin) {
         lastInlineBox = currentBox;
       }
-      else if (position === 'wide' || position === 'full' ||
+      else if ((position === 'inline' && width > 0) ||
                (customMargin && position !== 'sticky')) {
         lastInlineBox = null;
       }
@@ -136,4 +138,15 @@ function renderPlaceholder(placeholder) {
       </div>
     </div>
   )
+}
+
+const legacyPositionWidths = {
+  wide: 2,
+  full: 3
+}
+
+function getWidth(item) {
+  return (typeof item.props?.width === 'number') ?
+         item.props.width :
+         legacyPositionWidths[item.position] || 0;
 }
