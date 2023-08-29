@@ -980,32 +980,6 @@ describe('Layout', () => {
 
       expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['restrict-xs'])).not.toBeNull();
     });
-
-    it('changes xxs to xs for sticky item', () => {
-      const items = [
-        {id: 2, type: 'probe', position: 'sticky', width: -3}
-      ];
-      const {getByTestId} = renderInEntry(
-        <Layout sectionProps={{layout: 'left'}} items={items}>
-          {children => children}
-        </Layout>
-      );
-
-      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['restrict-xs'])).not.toBeNull();
-    });
-
-    it('changes full to xl for sticky item', () => {
-      const items = [
-        {id: 2, type: 'probe', position: 'sticky', width: 3}
-      ];
-      const {getByTestId} = renderInEntry(
-        <Layout sectionProps={{layout: 'left'}} items={items}>
-          {children => children}
-        </Layout>
-      );
-
-      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['width-xl'])).not.toBeNull();
-    });
   });
 
   describe('width classes in centered variant', () => {
@@ -1059,32 +1033,6 @@ describe('Layout', () => {
     it('applies width class to inner of floated item', () => {
       const items = [
         {id: 2, type: 'probe', position: 'inline', width: 2}
-      ];
-      const {getByTestId} = renderInEntry(
-        <Layout sectionProps={{layout: 'center'}} items={items}>
-          {children => children}
-        </Layout>
-      );
-
-      expect(findParentWithClass(getByTestId('probe'), centerStyles['inner-xl'])).not.toBeNull();
-    });
-
-    it('changes xxs to xs for floated item', () => {
-      const items = [
-        {id: 2, type: 'probe', position: 'left', width: -3}
-      ];
-      const {getByTestId} = renderInEntry(
-        <Layout sectionProps={{layout: 'center'}} items={items}>
-          {children => children}
-        </Layout>
-      );
-
-      expect(findParentWithClass(getByTestId('probe'), centerStyles['inner-xs'])).not.toBeNull();
-    });
-
-    it('changes full to xl for floated item', () => {
-      const items = [
-        {id: 2, type: 'probe', position: 'left', width: 3}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>

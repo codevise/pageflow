@@ -143,38 +143,57 @@ function sectionData(section) {
   };
 }
 
-const legacyPositionWidths = {
-  wide: 2,
-  full: 3
-};
-
-const supportedPositions = {
-  center: ['inline', 'left', 'right'],
-  left: ['inline', 'sticky'],
-  right: ['inline', 'sticky'],
-};
-
 export function useSectionContentElements({sectionId, layout}) {
   const filterBySectionId = useCallback(contentElement => contentElement.sectionId === sectionId,
                                         [sectionId])
   const contentElements = useEntryStateCollectionItems('contentElements', filterBySectionId);
 
-  return contentElements.map(item => {
-    const position = supportedPositions[layout || 'left'].includes(item.configuration.position) ?
-                     item.configuration.position :
-                     'inline';
+  return contentElements.map(contentElement => {
+    const position = getPosition(contentElement, layout);
 
     return {
-      id: item.id,
-      permaId: item.permaId,
-      type: item.typeName,
+      id: contentElement.id,
+      permaId: contentElement.permaId,
+      type: contentElement.typeName,
       position,
-      width: typeof item.configuration.width === 'number' ?
-             item.configuration.width :
-             legacyPositionWidths[item.configuration.position] || 0,
-      props: item.configuration
+      width: getWidth(contentElement, position),
+      props: contentElement.configuration
     };
   });
+}
+const supportedPositions = {
+  center: ['inline', 'left', 'right'],
+  centerRagged: ['inline', 'left', 'right'],
+  left: ['inline', 'sticky'],
+  right: ['inline', 'sticky'],
+};
+
+function getPosition(contentElement, layout) {
+  const position = contentElement.configuration.position;
+
+  return supportedPositions[layout || 'left'].includes(position) ?
+         position :
+         'inline';
+}
+
+const legacyPositionWidths = {
+  wide: 2,
+  full: 3
+};
+
+const clampedWidthPositions = ['sticky', 'left', 'right'];
+
+function getWidth(contentElement, position) {
+  const width = typeof contentElement.configuration.width === 'number' ?
+                contentElement.configuration.width :
+                legacyPositionWidths[contentElement.configuration.position] || 0;
+
+  if (clampedWidthPositions.includes(position)) {
+    return Math.min(Math.max(width || 0, -2), 2);
+  }
+  else {
+    return width;
+  }
 }
 
 export function useChapter({permaId}) {

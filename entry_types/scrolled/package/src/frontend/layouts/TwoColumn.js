@@ -103,7 +103,7 @@ function groupItemsByPosition(items, shouldInline) {
 
   items.reduce((previousPosition, item, index) => {
     const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
-    let width = getWidth(item);
+    let width = item.width || 0;
     const position = item.position === 'sticky' && !shouldInline(width) ? 'sticky' : 'inline';
     const customMargin = !!elementSupportsCustomMargin && width < 3;
 
@@ -169,13 +169,4 @@ function renderPlaceholder(placeholder) {
       </div>
     </div>
   )
-}
-
-function getWidth(item) {
-  if (item.position === 'sticky') {
-    return Math.min(Math.max(item.width || 0, -2), 2);
-  }
-  else {
-    return item.width || 0;
-  }
 }

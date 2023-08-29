@@ -145,12 +145,7 @@ function hasCustomMargin(item) {
 }
 
 function getWidth(item) {
-  if (['left', 'right'].includes(item.position)) {
-    return Math.min(Math.max(item.width || 0, -2), 2);
-  }
-  else {
-    return item.width || 0;
-  }
+  return item.width || 0;
 }
 
 function renderPlaceholder(placeholder) {
