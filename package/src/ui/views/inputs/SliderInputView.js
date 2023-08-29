@@ -98,8 +98,15 @@ export const SliderInputView = Marionette.ItemView.extend({
       value = 'defaultValue' in this.options ? this.options.defaultValue : 0
     }
 
-    this.ui.widget.slider('option', 'value', value);
+    this.ui.widget.slider('option', 'value', this.clampValue(value));
     this.updateText(value);
+  },
+
+  clampValue(value) {
+    const min = this.ui.widget.slider('option', 'min');
+    const max = this.ui.widget.slider('option', 'max');
+
+    return Math.min(max, Math.max(min, value));
   },
 
   updateText: function(value) {

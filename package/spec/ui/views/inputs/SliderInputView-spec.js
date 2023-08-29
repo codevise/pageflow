@@ -249,4 +249,18 @@ describe('pageflow.SliderInputView', () => {
 
     expect(model.get('value')).toEqual(10);
   });
+
+  it('clamps loaded value between min and max value', () => {
+    var model = new Model({value: 30});
+    var view = new SliderInputView({
+      model: model,
+      propertyName: 'value',
+      minValue: 10,
+      maxValue: 20
+    });
+
+    view.render();
+
+    expect(view.ui.widget.slider('option', 'value')).toEqual(20);
+  });
 });
