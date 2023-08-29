@@ -18,7 +18,7 @@ export const ContentElement = withInlineEditingDecorator(
       return (
         <ContentElementAttributesProvider id={props.id}>
           <ContentElementLifecycleProvider type={props.type}>
-            <ContentElementMargin position={props.itemProps.position}>
+            <ContentElementMargin width={props.width}>
               <ContentElementErrorBoundary type={props.type}>
                 <Component sectionProps={props.sectionProps}
                            customMargin={props.customMargin}

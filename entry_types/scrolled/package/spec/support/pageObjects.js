@@ -3,6 +3,7 @@ import React from 'react';
 import {renderInEntry} from './index';
 import {Entry} from 'frontend/Entry';
 import foregroundStyles from 'frontend/Foreground.module.css';
+import contentElementMarginStyles from 'frontend/ContentElementMargin.module.css';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 import {api} from 'frontend/api';
 
@@ -139,6 +140,10 @@ function createContentElementPageObject(el) {
   const selectionRect = el.closest('[aria-label="Select content element"]');
 
   return {
+    hasMargin() {
+      return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
+    },
+
     select() {
       fireEvent.click(selectionRect);
     },
