@@ -485,4 +485,141 @@ describe('useSectionContentElements', () => {
       }
     ]);
   });
+
+  it('turns floated positions into inline in left layout', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2, layout: 'left'}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'left'
+              }
+            },
+            {
+              id: 2,
+              permaId: 1002,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'right'
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      },
+      {
+        id: 2,
+        permaId: 1002,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      }
+    ]);
+  });
+
+  it('turns floated positions into inline in right layout', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2, layout: 'right'}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'left'
+              }
+            },
+            {
+              id: 2,
+              permaId: 1002,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'right'
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      },
+      {
+        id: 2,
+        permaId: 1002,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      }
+    ]);
+  });
+
+  it('turns sticky position into inline in centered layout', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2, layout: 'center'}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'sticky'
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      }
+    ]);
+  });
 });

@@ -153,7 +153,8 @@ function SectionContents({
 }
 
 function ConnectedSection(props) {
-  const contentElements = useSectionContentElements({sectionId: props.section.id});
+  const contentElements = useSectionContentElements({sectionId: props.section.id,
+                                                     layout: props.section.layout});
 
   return <Section {...props} contentElements={contentElements} />
 }

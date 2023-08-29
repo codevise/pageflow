@@ -8,7 +8,6 @@ import {widthName} from './widthName';
 
 import styles from './Center.module.css';
 
-const availablePositions = ['inline', 'left', 'right'];
 const floatedPositions = ['left', 'right'];
 
 export function Center(props) {
@@ -18,7 +17,7 @@ export function Center(props) {
       <div ref={props.contentAreaRef} />
       {props.items.map((item, index) => {
         const customMargin = hasCustomMargin(item);
-        const position = getPosition(item);
+        const position = item.position;
         const width = widthName(getWidth(item));
 
         return (
@@ -64,7 +63,7 @@ function boxProps(items, item, index) {
   const width = getWidth(item);
 
   return {
-    position: getPosition(item),
+    position: item.position,
     width,
     customMargin,
     selfClear: selfClear(items, index),
@@ -80,7 +79,7 @@ function boxProps(items, item, index) {
 }
 
 function isWideOrFull(item) {
-  return getPosition(item) === 'inline' && getWidth(item) > 0;
+  return item.position === 'inline' && getWidth(item) > 0;
 }
 
 function selfClear(items, index) {
@@ -140,13 +139,9 @@ function supportsWrappingAroundFloats(item) {
 }
 
 function hasCustomMargin(item) {
-  const position = getPosition(item);
+  const position = item.position;
   const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
   return !!(elementSupportsCustomMargin && position === 'inline' && getWidth(item) < 3);
-}
-
-function getPosition(item) {
-  return availablePositions.includes(item.position) ? item.position : 'inline';
 }
 
 function getWidth(item) {

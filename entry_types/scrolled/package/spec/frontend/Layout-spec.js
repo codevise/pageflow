@@ -174,7 +174,7 @@ describe('Layout', () => {
       describe('customMargin prop passed to content element', () => {
         it('is true if rendered with custom margin', () => {
           const items = [
-            {id: 1, type: 'probeWithCustomMarginProp'}
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'inline'}
           ];
           const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'left'}} items={items}>
@@ -187,7 +187,7 @@ describe('Layout', () => {
 
         it('is false if rendered custom margin is not supported by width', () => {
           const items = [
-            {id: 1, type: 'probeWithCustomMarginProp', width: 3}
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'inline', width: 3}
           ];
           const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'left'}} items={items}>
@@ -426,19 +426,6 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('inline xl 1 inline md 2 left md 3 inline full 4 ');
       });
 
-      it('rewrites unsupported positions', () => {
-        const items = [
-          {id: 1, type: 'probe', position: 'sticky'}
-        ];
-        const {container} = renderInEntry(
-          <Layout sectionProps={{layout: 'center'}} items={items}>
-            {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
-          </Layout>
-        );
-
-        expect(container.textContent).toEqual('inline md 1 ');
-      });
-
       it('renders consecutive inline items with open end/open start', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
@@ -549,7 +536,7 @@ describe('Layout', () => {
       describe('customMargin prop passed to content element', () => {
         it('is true if rendered inline with custom margin', () => {
           const items = [
-            {id: 1, type: 'probeWithCustomMarginProp'}
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'inline'}
           ];
           const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -562,7 +549,7 @@ describe('Layout', () => {
 
         it('is true if rendered with xl width with custom margin', () => {
           const items = [
-            {id: 1, type: 'probeWithCustomMarginProp', width: 2}
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'inline', width: 2}
           ];
           const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -588,7 +575,7 @@ describe('Layout', () => {
 
         it('is false if rendered with full width with custom margin', () => {
           const items = [
-            {id: 1, type: 'probeWithCustomMarginProp', width: 3}
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'inline', width: 3}
           ];
           const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -782,7 +769,7 @@ describe('Layout', () => {
     it('does not set sideBySide class on floats separated by text', () => {
       const items = [
         {id: 1, type: 'probe', position: 'left', props: {testId: 'left'}},
-        {id: 2, type: 'wrappingProbe'},
+        {id: 2, type: 'wrappingProbe', position: 'inline'},
         {id: 3, type: 'probe', position: 'right', props: {testId: 'right'}}
       ];
       const {getByTestId} = renderInEntry(
@@ -880,7 +867,7 @@ describe('Layout', () => {
     it('self clears left before non-wrapping inline', () => {
       const items = [
         {id: 1, type: 'probe', position: 'left'},
-        {id: 2, type: 'probe'},
+        {id: 2, type: 'probe', position: 'inline'},
       ];
       const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -896,7 +883,7 @@ describe('Layout', () => {
     it('self clears right before non-wrapping inline', () => {
       const items = [
         {id: 1, type: 'probe', position: 'right'},
-        {id: 2, type: 'probe'},
+        {id: 2, type: 'probe', position: 'inline'},
       ];
       const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -914,7 +901,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left'},
         {id: 2, type: 'probe', position: 'right'},
         {id: 3, type: 'probe', position: 'left'},
-        {id: 4, type: 'wrappingProbe'},
+        {id: 4, type: 'wrappingProbe', position: 'inline'},
       ];
       const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -932,7 +919,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'probe', position: 'left'},
         {id: 3, type: 'probe', position: 'right'},
-        {id: 4, type: 'wrappingProbe'},
+        {id: 4, type: 'wrappingProbe', position: 'inline'},
       ];
       const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -957,7 +944,7 @@ describe('Layout', () => {
 
     it('applies width class to inline items', () => {
       const items = [
-        {id: 2, type: 'probe', width: 1}
+        {id: 2, type: 'probe', position: 'inline', width: 1}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'left'}} items={items}>
@@ -970,7 +957,7 @@ describe('Layout', () => {
 
     it('applies full class to inline group with width 3', () => {
       const items = [
-        {id: 2, type: 'probe', width: 3}
+        {id: 2, type: 'probe', position: 'inline', width: 3}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'left'}} items={items}>
@@ -983,7 +970,7 @@ describe('Layout', () => {
 
     it('applies restrict classes to inline box with negative width', () => {
       const items = [
-        {id: 2, type: 'probe', width: -2}
+        {id: 2, type: 'probe', position: 'inline', width: -2}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'left'}} items={items}>
@@ -1032,7 +1019,7 @@ describe('Layout', () => {
 
     it('applies width class to inline items', () => {
       const items = [
-        {id: 2, type: 'probe', width: 1}
+        {id: 2, type: 'probe', position: 'inline', width: 1}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -1058,7 +1045,7 @@ describe('Layout', () => {
 
     it('applies width class to inner of inline item', () => {
       const items = [
-        {id: 2, type: 'probe', width: -3}
+        {id: 2, type: 'probe', position: 'inline', width: -3}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -1071,7 +1058,7 @@ describe('Layout', () => {
 
     it('applies width class to inner of floated item', () => {
       const items = [
-        {id: 2, type: 'probe', width: 2}
+        {id: 2, type: 'probe', position: 'inline', width: 2}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -1110,7 +1097,7 @@ describe('Layout', () => {
 
     it('applies width class to outer of full width item', () => {
       const items = [
-        {id: 2, type: 'probe', width: 3}
+        {id: 2, type: 'probe', position: 'inline', width: 3}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>

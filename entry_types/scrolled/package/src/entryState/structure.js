@@ -148,22 +148,33 @@ const legacyPositionWidths = {
   full: 3
 };
 
-export function useSectionContentElements({sectionId}) {
+const supportedPositions = {
+  center: ['inline', 'left', 'right'],
+  left: ['inline', 'sticky'],
+  right: ['inline', 'sticky'],
+};
+
+export function useSectionContentElements({sectionId, layout}) {
   const filterBySectionId = useCallback(contentElement => contentElement.sectionId === sectionId,
                                         [sectionId])
   const contentElements = useEntryStateCollectionItems('contentElements', filterBySectionId);
-  return contentElements.map(item => ({
-    id: item.id,
-    permaId: item.permaId,
-    type: item.typeName,
-    position: legacyPositionWidths[item.configuration.position] ?
-              'inline' :
-              item.configuration.position || 'inline',
-    width: typeof item.configuration.width === 'number' ?
-           item.configuration.width :
-           legacyPositionWidths[item.configuration.position] || 0,
-    props: item.configuration
-  }));
+
+  return contentElements.map(item => {
+    const position = supportedPositions[layout || 'left'].includes(item.configuration.position) ?
+                     item.configuration.position :
+                     'inline';
+
+    return {
+      id: item.id,
+      permaId: item.permaId,
+      type: item.typeName,
+      position,
+      width: typeof item.configuration.width === 'number' ?
+             item.configuration.width :
+             legacyPositionWidths[item.configuration.position] || 0,
+      props: item.configuration
+    };
+  });
 }
 
 export function useChapter({permaId}) {
