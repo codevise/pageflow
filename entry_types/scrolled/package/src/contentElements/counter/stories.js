@@ -1,5 +1,6 @@
 import '../frontend';
 import {storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
+import {contentElementWidths} from 'pageflow-scrolled/frontend';
 
 storiesOfContentElement(module, {
   typeName: 'counter',
@@ -39,9 +40,9 @@ storiesOfContentElement(module, {
       }
     },
     {
-      name: 'Position Wide',
+      name: 'XL Width',
       configuration: {
-        position: 'wide'
+        width: contentElementWidths.xl
       }
     },
     {

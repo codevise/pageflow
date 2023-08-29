@@ -1,5 +1,6 @@
 import I18n from 'i18n-js';
 import {editor} from 'pageflow-scrolled/editor';
+import {contentElementWidths} from 'pageflow-scrolled/frontend';
 import {SelectInputView, SeparatorView} from 'pageflow/ui';
 import {InfoBoxView} from 'pageflow/editor';
 
@@ -10,7 +11,7 @@ editor.contentElementTypes.register('heading', {
   supportedPositions: ['inline'],
   supportedWidthRange: ['auto', 'xl'],
 
-  defaultConfig: {position: 'wide', marginTop: 'none'},
+  defaultConfig: {width: contentElementWidths.xl, marginTop: 'none'},
 
   configurationEditor({entry}) {
     this.listenTo(this.model, 'change:hyphens', this.refresh);

@@ -11,7 +11,8 @@ import {
   FullscreenViewer,
   Image,
   ToggleFullscreenCornerButton,
-  usePhonePlatform
+  usePhonePlatform,
+  contentElementWidths
 } from 'pageflow-scrolled/frontend';
 
 import {ScrollButton} from './ScrollButton';
@@ -19,7 +20,7 @@ import {useIntersectionObserver} from './useIntersectionObserver'
 
 import styles from './ImageGallery.module.css';
 
-export function ImageGallery({configuration, contentElementId, customMargin}) {
+export function ImageGallery({configuration, contentElementId, contentElementWidth, customMargin}) {
   const [visibleIndex, setVisibleIndex] = useState(-1);
   const isPhonePlatform = usePhonePlatform();
 
@@ -29,9 +30,10 @@ export function ImageGallery({configuration, contentElementId, customMargin}) {
       renderChildren={({enterFullscreen, isFullscreen}) =>
         <Scroller customMargin={customMargin}
                   configuration={configuration}
+                  contentElementWidth={contentElementWidth}
                   controlled={isFullscreen}
                   displayFullscreenToggle={!isPhonePlatform &&
-                                           configuration.position !== 'full' &&
+                                           contentElementWidth !== contentElementWidths.full &&
                                            configuration.enableFullscreenOnDesktop}
                   visibleIndex={visibleIndex}
                   setVisibleIndex={setVisibleIndex}
@@ -40,6 +42,7 @@ export function ImageGallery({configuration, contentElementId, customMargin}) {
       renderFullscreenChildren={({exitFullscreen}) => {
         return (
           <Scroller configuration={configuration}
+                    contentElementWidth={contentElementWidth}
                     visibleIndex={visibleIndex}
                     setVisibleIndex={setVisibleIndex}
                     displayFullscreenToggle={false}
@@ -57,6 +60,7 @@ function Scroller({
   onFullscreenEnter, onFullscreenExit,
   onBump,
   configuration,
+  contentElementWidth,
   controlled
 }) {
   const lastVisibleIndex = useRef(null);
@@ -132,7 +136,9 @@ function Scroller({
 
   return (
     <div className={classNames(styles.wrapper,
-                               styles[configuration.position],
+                               {[styles.wide]:
+                                 contentElementWidth === contentElementWidths.lg ||
+                                 contentElementWidth === contentElementWidths.xl},
                                {[styles.customMargin]: customMargin})}>
       <div className={styles.leftButton}>
         <ScrollButton direction="left"

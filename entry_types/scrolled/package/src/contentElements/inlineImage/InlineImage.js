@@ -5,13 +5,14 @@ import {
   Image,
   ContentElementFigure,
   FitViewport,
+  contentElementWidths,
   useContentElementLifecycle,
   useFile,
   usePortraitOrientation,
   ExpandableImage
 } from 'pageflow-scrolled/frontend';
 
-export function InlineImage({contentElementId, configuration}) {
+export function InlineImage({contentElementId, contentElementWidth, configuration}) {
   const imageFile = useFile({
     collectionName: 'imageFiles', permaId: configuration.id
   });
@@ -28,6 +29,7 @@ export function InlineImage({contentElementId, configuration}) {
       <OrientationAwareInlineImage landscapeImageFile={imageFile}
                                    portraitImageFile={portraitImageFile}
                                    contentElementId={contentElementId}
+                                   contentElementWidth={contentElementWidth}
                                    configuration={configuration} />
     );
   }
@@ -35,13 +37,15 @@ export function InlineImage({contentElementId, configuration}) {
     return (
       <ImageWithCaption imageFile={imageFile}
                         contentElementId={contentElementId}
+                        contentElementWidth={contentElementWidth}
                         configuration={configuration} />
     )
   }
 }
 
 function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile,
-                                      contentElementId, configuration}) {
+                                      contentElementId, contentElementWidth,
+                                      configuration}) {
   const portraitOrientation = usePortraitOrientation();
   const imageFile = portraitOrientation && portraitImageFile ?
                     portraitImageFile : landscapeImageFile;
@@ -49,14 +53,16 @@ function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile,
   return (
     <ImageWithCaption imageFile={imageFile}
                       contentElementId={contentElementId}
+                      contentElementWidth={contentElementWidth}
                       configuration={configuration} />
   );
 }
 
-function ImageWithCaption({imageFile, contentElementId, configuration}) {
+function ImageWithCaption({imageFile, contentElementId, contentElementWidth, configuration}) {
   const {shouldLoad} = useContentElementLifecycle();
-  const {enableFullscreen, position} = configuration;
-  const supportFullscreen = enableFullscreen && position !== "full";
+  const {enableFullscreen} = configuration;
+  const supportFullscreen = enableFullscreen &&
+                            contentElementWidth < contentElementWidths.full;
 
   return (
     <FitViewport file={imageFile}
@@ -71,7 +77,8 @@ function ImageWithCaption({imageFile, contentElementId, configuration}) {
               <Image imageFile={imageFile}
                      load={shouldLoad}
                      structuredData={true}
-                     variant={configuration.position === 'full' ? 'large' : 'medium'}
+                     variant={contentElementWidth === contentElementWidths.full ?
+                              'large' : 'medium'}
                      preferSvg={true} />
             </ExpandableImage>
           </FitViewport.Content>

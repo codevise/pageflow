@@ -8,12 +8,13 @@ import {
   useContentElementLifecycle,
   useI18n,
   useLocale,
-  paletteColor
+  paletteColor,
+  contentElementWidths
 } from 'pageflow-scrolled/frontend';
 
 import styles from './Counter.module.css';
 
-export function Counter({configuration, contentElementId, sectionProps}) {
+export function Counter({configuration, contentElementId, contentElementWidth, sectionProps}) {
   const updateConfiguration = useContentElementConfigurationUpdate();
   const locale = useLocale();
   const {t} = useI18n({locale: 'ui'});
@@ -100,7 +101,7 @@ export function Counter({configuration, contentElementId, sectionProps}) {
 
   return (
     <div className={classNames(
-      {[styles.center]: configuration.position === 'wide' || configuration.position === 'full'}
+      {[styles.center]: contentElementWidth > contentElementWidths.md}
     )}>
       <div className={classNames(
         styles.wrapper,

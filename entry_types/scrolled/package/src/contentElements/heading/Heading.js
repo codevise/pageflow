@@ -6,12 +6,13 @@ import {
   EditableInlineText,
   useContentElementConfigurationUpdate,
   useDarkBackground,
-  useI18n
+  useI18n,
+  contentElementWidths
 } from 'pageflow-scrolled/frontend';
 
 import styles from './Heading.module.css';
 
-export function Heading({configuration, sectionProps}) {
+export function Heading({configuration, sectionProps, contentElementWidth}) {
   const level = configuration.level || sectionProps.sectionIndex;
   const firstSectionInEntry = level === 0;
   const updateConfiguration = useContentElementConfigurationUpdate();
@@ -31,7 +32,7 @@ export function Heading({configuration, sectionProps}) {
                                darkBackground ? styles.light : styles.dark,
                                {[styles.forcePaddingTop]: forcePaddingTop},
                                {[styles[sectionProps.layout]]:
-                                 configuration.position === 'wide' ||
+                                 contentElementWidth > contentElementWidths.md ||
                                  sectionProps.layout === 'centerRagged'},
                                {[withShadowClassName]: !sectionProps.invert})}>
       <Text scaleCategory={getScaleCategory(configuration, firstSectionInEntry)}
