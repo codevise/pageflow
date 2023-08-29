@@ -7,7 +7,7 @@ import {frontend} from 'pageflow-scrolled/frontend';
 import centerStyles from 'frontend/layouts/Center.module.css';
 import twoColumnStyles from 'frontend/layouts/TwoColumn.module.css';
 
-import {widthName} from 'frontend/layouts/widthName';
+import {widthName} from 'frontend/layouts/widths';
 
 import {renderInEntry} from 'testHelpers';
 

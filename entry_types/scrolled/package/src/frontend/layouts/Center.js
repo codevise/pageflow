@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import {api} from '../api';
 import {ContentElements} from '../ContentElements';
 
-import {widthName} from './widthName';
+import {widths, widthName} from './widths';
 
 import styles from './Center.module.css';
 
@@ -79,7 +79,7 @@ function boxProps(items, item, index) {
 }
 
 function isWideOrFull(item) {
-  return item.position === 'inline' && getWidth(item) > 0;
+  return item.position === 'inline' && getWidth(item) > widths.md;
 }
 
 function selfClear(items, index) {
@@ -140,12 +140,15 @@ function supportsWrappingAroundFloats(item) {
 
 function hasCustomMargin(item) {
   const position = item.position;
-  const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
-  return !!(elementSupportsCustomMargin && position === 'inline' && getWidth(item) < 3);
+  const {customMargin: elementSupportsCustomMargin} =
+    api.contentElementTypes.getOptions(item.type) || {};
+  return !!(elementSupportsCustomMargin &&
+            position === 'inline' &&
+            getWidth(item) < widths.full);
 }
 
 function getWidth(item) {
-  return item.width || 0;
+  return item.width || widths.md;
 }
 
 function renderPlaceholder(placeholder) {

@@ -5,7 +5,7 @@ import {api} from '../api';
 import {ContentElements} from '../ContentElements';
 import useMediaQuery from '../useMediaQuery';
 import {useTheme} from '../../entryState';
-import {widthName} from './widthName';
+import {widths, widthName} from './widths';
 
 import styles from './TwoColumn.module.css';
 
@@ -32,13 +32,13 @@ function useShouldInlineSticky() {
   const root = theme.options.properties?.root || {};
 
   const shouldInline = {
-    0: useMediaQuery(`(max-width: ${root.twoColumnStickyBreakpoint || '950px'})`),
-    1: useMediaQuery(`(max-width: ${root.twoColumnStickyLgBreakpoint || '1200px'})`),
-    2: useMediaQuery(`(max-width: ${root.twoColumnStickyXlBreakpoint || '1400px'})`)
+    [widths.md]: useMediaQuery(`(max-width: ${root.twoColumnStickyBreakpoint || '950px'})`),
+    [widths.lg]: useMediaQuery(`(max-width: ${root.twoColumnStickyLgBreakpoint || '1200px'})`),
+    [widths.xl]: useMediaQuery(`(max-width: ${root.twoColumnStickyXlBreakpoint || '1400px'})`)
   };
 
   return function(width) {
-    return width <= 0 ? shouldInline[0] : shouldInline[width];
+    return width <= widths.md ? shouldInline[widths.md] : shouldInline[width];
   }
 }
 
@@ -102,12 +102,13 @@ function groupItemsByPosition(items, shouldInline) {
   let currentGroup, currentBox;
 
   items.reduce((previousPosition, item, index) => {
-    const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
+    const {customMargin: elementSupportsCustomMargin} =
+      api.contentElementTypes.getOptions(item.type) || {};
     let width = item.width || 0;
     const position = item.position === 'sticky' && !shouldInline(width) ? 'sticky' : 'inline';
-    const customMargin = !!elementSupportsCustomMargin && width < 3;
+    const customMargin = !!elementSupportsCustomMargin && width < widths.full;
 
-    if (item.position === 'sticky' && position === 'inline' && width > 0) {
+    if (item.position === 'sticky' && position === 'inline' && width > widths.md) {
       width -= 1;
     }
 
@@ -116,7 +117,7 @@ function groupItemsByPosition(items, shouldInline) {
         currentBox.width !== width) {
       currentBox = null;
 
-      if (!(previousPosition === 'sticky' && position === 'inline' && width <= 0)) {
+      if (!(previousPosition === 'sticky' && position === 'inline' && width <= widths.md)) {
         currentGroup = {
           width,
           boxes: []
@@ -134,15 +135,15 @@ function groupItemsByPosition(items, shouldInline) {
         items: []
       };
 
-      if (lastInlineBox && position === 'inline' && width <= 0 && !customMargin) {
+      if (lastInlineBox && position === 'inline' && width <= widths.md && !customMargin) {
         lastInlineBox.openEnd = true;
         currentBox.openStart = true;
       }
 
-      if (position === 'inline' && width <= 0 && !customMargin) {
+      if (position === 'inline' && width <= widths.md && !customMargin) {
         lastInlineBox = currentBox;
       }
-      else if ((position === 'inline' && width > 0) ||
+      else if ((position === 'inline' && width > widths.md) ||
                (customMargin && position !== 'sticky')) {
         lastInlineBox = null;
       }
