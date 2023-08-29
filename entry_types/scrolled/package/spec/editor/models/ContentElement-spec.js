@@ -110,6 +110,132 @@ describe('ContentElement', () => {
     });
   });
 
+  describe('getWidth', () => {
+    beforeEach(() => {
+      editor.contentElementTypes.register('inlineImage', {
+        supportedWidthRange: ['xxs', 'xxl']
+      });
+    });
+
+    it('returns md by default', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getWidth()).toEqual(0);
+    });
+
+    it('returns current width', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage',
+               configuration: {
+                 width: 2
+               }
+              }
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getWidth()).toEqual(2);
+    });
+
+    it('excludes xxs/xxl in sticky position', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage', configuration: {
+                position: 'sticky',
+                width: -3
+
+              }}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getWidth()).toEqual(-2);
+    });
+
+    it('excludes xxs/xxl in floated position', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1, configuration: {layout: 'center'}}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage',
+               configuration: {
+                 position: 'left',
+                 width: 3
+               }
+              }
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getWidth()).toEqual(2);
+    });
+
+    it('does not exclude xxs/xxl if position is not supported by layout', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1, configuration: {layout: 'center'}}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage',
+               configuration: {
+                 position: 'sticky',
+                 width: 3
+               }
+              }
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getWidth()).toEqual(3);
+    });
+  });
+
   describe('getMinWidth/getMaxWidth', () => {
     beforeEach(() => {
       editor.contentElementTypes.register('heading', {

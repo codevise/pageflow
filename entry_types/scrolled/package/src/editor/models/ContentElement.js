@@ -105,6 +105,10 @@ export const ContentElement = Backbone.Model.extend({
     }
   },
 
+  getWidth() {
+    return this.clampWidthByPosition(this.configuration.get('width') || 0);
+  },
+
   getAvailableMinWidth() {
     return this.clampWidthByPosition(
       widths[this.getType().supportedWidthRange?.[0] || 'auto']

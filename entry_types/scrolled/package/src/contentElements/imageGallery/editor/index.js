@@ -1,4 +1,5 @@
 import {editor} from 'pageflow-scrolled/editor';
+import {contentElementWidths} from 'pageflow-scrolled/frontend';
 import {CheckBoxInputView} from 'pageflow/editor';
 
 import {ItemsListView} from './ItemsListView';
@@ -12,14 +13,14 @@ editor.contentElementTypes.register('imageGallery', {
   supportedPositions: ['inline', 'sticky', 'left', 'right'],
   supportedWidthRange: ['xxs', 'xxl'],
 
-  configurationEditor({entry}) {
+  configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
       this.view(ItemsListView, {
         collection: ItemsCollection.forContentElement(this.model.parent, entry)
       });
       this.input('enableFullscreenOnDesktop', CheckBoxInputView, {
-        disabledBinding: 'position',
-        disabledBindingValue: 'full',
+        disabledBinding: ['position', 'width'],
+        disabled: () => contentElement.getWidth() === contentElementWidths.full,
         displayUncheckedIfDisabled: true
       });
       this.group('ContentElementPosition');
