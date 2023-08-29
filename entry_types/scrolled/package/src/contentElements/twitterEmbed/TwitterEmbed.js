@@ -46,8 +46,7 @@ export function TwitterEmbed({configuration}) {
                   onLoad={onLoad} />
          </ThirdPartyOptIn> :
          <Placeholder minHeight={minHeight[key]} />}
-        <ThirdPartyOptOutInfo providerName="twitter"
-                              contentElementPosition={configuration.position} />
+        <ThirdPartyOptOutInfo providerName="twitter" />
       </div>
     </ContentElementBox>
   );

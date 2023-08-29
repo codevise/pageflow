@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import {useConsentGiven} from './hooks';
 import {useTheme} from '../../entryState';
 import {useI18n} from '../i18n';
+import {useContentElementAttributes} from '../useContentElementAttributes';
+import {widths} from '../layouts';
 
 import styles from './OptOutInfo.module.css';
 import InfoIcon from '../icons/information.svg'
@@ -15,9 +17,6 @@ import InfoIcon from '../icons/information.svg'
  * @param {Object} props
  * @param {string} props.providerName -
  *   Only display if user has given consent for this provider.
- * @param {string} props.contentElementPosition -
- *   Position setting of parent content element. Used to correctly place
- *   tooltip when content element uses full width.
  * @param {boolean} [hide] -
  *   Temporarily hide the tooltip, e.g. while the embed is playing
  *
@@ -25,13 +24,13 @@ import InfoIcon from '../icons/information.svg'
  */
 export function OptOutInfo({
   providerName,
-  hide,
-  contentElementPosition
+  hide
 }) {
   const {t} = useI18n();
   const theme = useTheme();
   const optOutUrl = theme.options.thirdPartyConsent?.optOutUrl;
   const [consentGiven] = useConsentGiven(providerName);
+  const {width} = useContentElementAttributes();
 
   if (!optOutUrl || !consentGiven) {
     return null;
@@ -42,7 +41,8 @@ export function OptOutInfo({
   const html = t('pageflow_scrolled.public.third_party_consent.opt_out.prompt', {link: linkHtml});
 
   return (
-    <div className={classNames(styles.optOut, styles[contentElementPosition])}
+    <div className={classNames(styles.optOut,
+                               {[styles.full]: width === widths.full})}
          style={hide ? {opacity: 0, visibility: 'hidden'} : undefined}>
       <button className={styles.icon}>
         <InfoIcon/>
