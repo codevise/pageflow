@@ -4,6 +4,7 @@ import {useDrag} from 'react-dnd';
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useI18n} from '../i18n';
 import {api} from '../api';
+import {widths} from '../layouts';
 import {SelectionRect} from './SelectionRect';
 import {DropTargets} from './DropTargets';
 import {
@@ -57,7 +58,7 @@ function DefaultSelectionRect(props) {
                    scrollPoint={isSelected}
                    drag={drag}
                    dragHandleTitle={t('pageflow_scrolled.inline_editing.drag_content_element')}
-                   full={props.position === 'full' || props.customMargin}
+                   full={props.width === widths.full || props.customMargin}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
                    onClick={() => select()}
