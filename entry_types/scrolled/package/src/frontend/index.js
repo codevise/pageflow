@@ -103,7 +103,10 @@ export {Widget} from './Widget';
 
 export {utils} from './utils';
 export {paletteColor} from './paletteColor';
-export {widths as contentElementWidths} from './layouts';
+export {
+  widths as contentElementWidths,
+  widthName as contentElementWidthName
+} from './layouts';
 
 global.pageflowScrolledRender = async function(seed) {
   setupI18n(seed.i18n);

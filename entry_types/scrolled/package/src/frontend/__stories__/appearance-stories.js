@@ -1,6 +1,10 @@
 import React from 'react';
 
-import {Entry, RootProviders, frontend} from 'pageflow-scrolled/frontend';
+import {
+  Entry, RootProviders,
+  contentElementWidths, contentElementWidthName,
+  frontend
+} from 'pageflow-scrolled/frontend';
 
 import {
   normalizeAndMergeFixture,
@@ -13,22 +17,24 @@ import {storiesOf} from '@storybook/react';
 
 const appearanceOptions = ['shadow', 'transparent', 'cards'];
 
-function positionOptions({layout, includeWide}) {
-  const result = ['inline'];
+function positionOptions({layout, includeWidths}) {
+  const result = [{position: 'inline'}];
 
-  if (includeWide) {
-    result.push('wide');
+  if (includeWidths) {
+    result.push({position: 'inline', width: contentElementWidths.sm});
+    result.push({position: 'inline', width: contentElementWidths.lg});
+    result.push({position: 'inline', width: contentElementWidths.xl});
   }
 
   if (layout === 'left' || layout === 'right') {
-    result.push('sticky');
+    result.push({position: 'sticky'});
   }
   else {
-    result.push('left');
-    result.push('right');
+    result.push({position: 'left'});
+    result.push({position: 'right'});
   }
 
-  result.push('full');
+  result.push({position: 'inline', width: contentElementWidths.full});
   return result;
 }
 
@@ -81,7 +87,7 @@ appearanceOptions.forEach(appearance => {
     .add(
       'Layout/Position',
       () =>
-        <RootProviders seed={exampleSeed(appearance)}>
+        <RootProviders seed={exampleSeed(appearance, {includeWidths: true})}>
           <Entry />
         </RootProviders>
     )
@@ -131,7 +137,8 @@ appearanceOptions.forEach(appearance => {
     .add(
       'Custom Margin',
       () =>
-        <RootProviders seed={exampleSeed(appearance, {positionedElementTypeName: 'customMarginExample'})}>
+        <RootProviders seed={exampleSeed(appearance, {positionedElementTypeName: 'customMarginExample',
+                                                      includeWidths: true})}>
           <Entry />
         </RootProviders>
     );
@@ -175,7 +182,9 @@ storiesOf(`Frontend/Section Appearance`, module)
     }
   )
 
-function exampleSeed(appearance, {short, invert, width, themeOptions, positionedElementTypeName} = {}) {
+function exampleSeed(
+  appearance, {short, invert, width, themeOptions, positionedElementTypeName, includeWidths} = {}
+) {
   const sectionBaseConfiguration = {
     appearance,
     transition: 'reveal',
@@ -267,17 +276,18 @@ function exampleSeed(appearance, {short, invert, width, themeOptions, positioned
 
   function exampleContentElements(sectionId, layout, positionedElementTypeName) {
     return [
-      exampleHeading({sectionId, text: 'A Heading wider than the Section', position: 'wide'}),
+      exampleHeading({sectionId, text: 'A Heading wider than the Section', width: contentElementWidths.xl}),
       exampleHeading({sectionId, text: `${appearance} / ${layout}`}),
 
-      ...positionOptions({layout, includeWide: !!positionedElementTypeName}).map(position => [
+      ...positionOptions({layout, includeWidths}).map(({position, width}) => [
         examplePositionedElement({sectionId,
                                   typeName: positionedElementTypeName,
                                   position,
-                                  caption: `Position ${position}`}),
+                                  width,
+                                  caption: `Position ${position}/Width ${contentElementWidthName(width)}`}),
         exampleTextBlock({sectionId}),
         exampleTextBlock({sectionId}),
       ]).flat()
-    ];
+    ];s
   }
 }

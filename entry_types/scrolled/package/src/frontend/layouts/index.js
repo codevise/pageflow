@@ -5,7 +5,7 @@ import {Center} from './Center';
 
 import {withInlineEditingAlternative} from '../inlineEditing';
 
-export {widths} from './widths';
+export {widths, widthName} from './widths';
 
 export const Layout = React.memo(
   withInlineEditingAlternative('LayoutWithPlaceholder', LayoutWithoutInlineEditing),
