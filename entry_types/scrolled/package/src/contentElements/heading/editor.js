@@ -9,7 +9,7 @@ import pictogram from './pictogram.svg';
 editor.contentElementTypes.register('heading', {
   pictogram,
   supportedPositions: ['inline'],
-  supportedWidthRange: ['auto', 'xl'],
+  supportedWidthRange: ['md', 'xl'],
 
   defaultConfig: {width: contentElementWidths.xl, marginTop: 'none'},
 

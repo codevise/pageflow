@@ -8,7 +8,7 @@ editor.contentElementTypes.register('videoEmbed', {
   pictogram,
   category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right'],
-  supportedWidthRange: ['xxs', 'xxl'],
+  supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor() {
     this.tab('general', function() {

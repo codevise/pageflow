@@ -12,10 +12,10 @@ const widths = {
   xxs: -3,
   xs: -2,
   s: -1,
-  auto: 0,
+  md: 0,
   l: 1,
   xl: 2,
-  xxl: 3
+  full: 3
 };
 
 export const ContentElement = Backbone.Model.extend({
@@ -111,13 +111,13 @@ export const ContentElement = Backbone.Model.extend({
 
   getAvailableMinWidth() {
     return this.clampWidthByPosition(
-      widths[this.getType().supportedWidthRange?.[0] || 'auto']
+      widths[this.getType().supportedWidthRange?.[0] || 'md']
     );
   },
 
   getAvailableMaxWidth() {
     return this.clampWidthByPosition(
-      widths[this.getType().supportedWidthRange?.[1] || 'auto']
+      widths[this.getType().supportedWidthRange?.[1] || 'md']
     );
   },
 

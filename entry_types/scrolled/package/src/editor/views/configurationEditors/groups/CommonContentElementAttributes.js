@@ -18,7 +18,7 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
   this.input('width', SliderInputView, {
     attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
     displayText: value => [
-      'XXS', 'XS', 'S', 'Auto', 'L', 'XL', 'XXL'
+      'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'
     ][value + 3],
     saveOnSlide: true,
     minValueBinding: 'position',

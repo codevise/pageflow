@@ -8,7 +8,7 @@ editor.contentElementTypes.register('inlineVideo', {
   pictogram,
   category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right'],
-  supportedWidthRange: ['xxs', 'xxl'],
+  supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor() {
     migrateLegacyAutoplay(this.model);

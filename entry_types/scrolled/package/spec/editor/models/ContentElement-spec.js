@@ -113,7 +113,7 @@ describe('ContentElement', () => {
   describe('getWidth', () => {
     beforeEach(() => {
       editor.contentElementTypes.register('inlineImage', {
-        supportedWidthRange: ['xxs', 'xxl']
+        supportedWidthRange: ['xxs', 'full']
       });
     });
 
@@ -161,7 +161,7 @@ describe('ContentElement', () => {
       expect(contentElement.getWidth()).toEqual(2);
     });
 
-    it('excludes xxs/xxl in sticky position', () => {
+    it('excludes xxs/full in sticky position', () => {
       const entry = factories.entry(
         ScrolledEntry,
         {},
@@ -185,7 +185,7 @@ describe('ContentElement', () => {
       expect(contentElement.getWidth()).toEqual(-2);
     });
 
-    it('excludes xxs/xxl in floated position', () => {
+    it('excludes xxs/full in floated position', () => {
       const entry = factories.entry(
         ScrolledEntry,
         {},
@@ -210,7 +210,7 @@ describe('ContentElement', () => {
       expect(contentElement.getWidth()).toEqual(2);
     });
 
-    it('does not exclude xxs/xxl if position is not supported by layout', () => {
+    it('does not exclude xxs/full if position is not supported by layout', () => {
       const entry = factories.entry(
         ScrolledEntry,
         {},
@@ -239,11 +239,11 @@ describe('ContentElement', () => {
   describe('getMinWidth/getMaxWidth', () => {
     beforeEach(() => {
       editor.contentElementTypes.register('heading', {
-        supportedWidthRange: ['auto', 'xl']
+        supportedWidthRange: ['md', 'xl']
       });
       editor.contentElementTypes.register('soundDisclaimer', {});
       editor.contentElementTypes.register('inlineImage', {
-        supportedWidthRange: ['xxs', 'xxl']
+        supportedWidthRange: ['xxs', 'full']
       });
     });
 
@@ -289,7 +289,7 @@ describe('ContentElement', () => {
       expect(contentElement.getAvailableMaxWidth()).toEqual(2);
     });
 
-    it('excludes xxs/xxl in sticky position', () => {
+    it('excludes xxs/full in sticky position', () => {
       const entry = factories.entry(
         ScrolledEntry,
         {},
@@ -310,7 +310,7 @@ describe('ContentElement', () => {
       expect(contentElement.getAvailableMaxWidth()).toEqual(2);
     });
 
-    it('excludes xxs/xxl in floated position', () => {
+    it('excludes xxs/full in floated position', () => {
       const entry = factories.entry(
         ScrolledEntry,
         {},
@@ -331,7 +331,7 @@ describe('ContentElement', () => {
       expect(contentElement.getAvailableMaxWidth()).toEqual(2);
     });
 
-    it('does not exclude xxs/xxl if position is not supported by layout', () => {
+    it('does not exclude xxs/full if position is not supported by layout', () => {
       const entry = factories.entry(
         ScrolledEntry,
         {},

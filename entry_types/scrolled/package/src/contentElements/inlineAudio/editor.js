@@ -8,7 +8,7 @@ editor.contentElementTypes.register('inlineAudio', {
   pictogram,
   category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right'],
-  supportedWidthRange: ['xxs', 'xxl'],
+  supportedWidthRange: ['xxs', 'full'],
 
   defaultConfig: {playerControlVariant: 'waveformBars'},
 

@@ -10,7 +10,7 @@ editor.contentElementTypes.register('iframeEmbed', {
   category: 'interactive',
   featureName: 'iframe_embed_content_element',
   supportedPositions: ['inline', 'sticky', 'left', 'right'],
-  supportedWidthRange: ['xxs', 'xxl'],
+  supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor() {
     this.tab('general', function() {

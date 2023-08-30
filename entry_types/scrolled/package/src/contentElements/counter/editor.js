@@ -7,7 +7,7 @@ editor.contentElementTypes.register('counter', {
   category: 'data',
   pictogram,
   supportedPositions: ['inline', 'sticky', 'left', 'right'],
-  supportedWidthRange: ['xxs', 'xxl'],
+  supportedWidthRange: ['xxs', 'full'],
 
   defaultConfig: {
     targetValue: 100,

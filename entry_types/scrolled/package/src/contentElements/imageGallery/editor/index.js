@@ -11,7 +11,7 @@ editor.contentElementTypes.register('imageGallery', {
   pictogram,
   category: 'media',
   supportedPositions: ['inline', 'sticky', 'left', 'right'],
-  supportedWidthRange: ['xxs', 'xxl'],
+  supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor({entry, contentElement}) {
     this.tab('general', function() {

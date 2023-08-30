@@ -8,7 +8,7 @@ editor.contentElementTypes.register('inlineBeforeAfter', {
   pictogram,
   category: 'interactive',
   supportedPositions: ['inline', 'sticky', 'left', 'right'],
-  supportedWidthRange: ['xxs', 'xxl'],
+  supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor() {
     this.tab('general', function() {
