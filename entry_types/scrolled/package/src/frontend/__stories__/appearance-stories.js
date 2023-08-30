@@ -144,7 +144,7 @@ storiesOf(`Frontend/Section Appearance`, module)
     () => {
       const themeOptions = {
         properties: {
-          root: {narrowViewportBreakpoint: '2000px'}
+          root: {twoColumnStickyBreakpoint: '2000px'}
         }
       };
 

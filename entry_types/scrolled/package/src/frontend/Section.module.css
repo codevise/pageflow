@@ -13,15 +13,24 @@
 
   --two-column-inline-content-max-width:
     var(--theme-two-column-inline-content-max-width);
-  --two-column-wide-content-max-width:
-    var(--theme-two-column-wide-content-max-width);
+  --two-column-inline-lg-content-max-width:
+    var(--theme-two-column-inline-lg-content-max-width);
+  --two-column-inline-xl-content-max-width:
+    var(--theme-two-column-inline-xl-content-max-width);
+
   --two-column-sticky-content-max-width:
     var(--theme-two-column-sticky-content-max-width);
+  --two-column-sticky-lg-content-max-width:
+    var(--theme-two-column-sticky-lg-content-max-width);
+  --two-column-sticky-xl-content-max-width:
+    var(--theme-two-column-sticky-xl-content-max-width);
 
   --centered-inline-content-max-width:
     var(--theme-centered-inline-content-max-width);
-  --centered-wide-content-max-width:
-    var(--theme-centered-wide-content-max-width);
+  --centered-inline-lg-content-max-width:
+    var(--theme-centered-inline-lg-content-max-width);
+  --centered-inline-xl-content-max-width:
+    var(--theme-centered-inline-xl-content-max-width);
 
   --foreground-padding-top: 0px;
 }
@@ -38,15 +47,24 @@
 
   --two-column-inline-content-max-width:
     var(--theme-narrow-section-two-column-inline-content-max-width);
-  --two-column-wide-content-max-width:
-    var(--theme-narrow-section-two-column-wide-content-max-width);
+  --two-column-inline-lg-content-max-width:
+    var(--theme-narrow-section-two-column-inline-lg-content-max-width);
+  --two-column-inline-xl-content-max-width:
+    var(--theme-narrow-section-two-column-inline-xl-content-max-width);
+
   --two-column-sticky-content-max-width:
     var(--theme-narrow-section-two-column-sticky-content-max-width);
+  --two-column-sticky-lg-content-max-width:
+    var(--theme-narrow-section-two-column-sticky-lg-content-max-width);
+  --two-column-sticky-xl-content-max-width:
+    var(--theme-narrow-section-two-column-sticky-xl-content-max-width);
 
   --centered-inline-content-max-width:
     var(--theme-narrow-section-centered-inline-content-max-width);
-  --centered-wide-content-max-width:
-    var(--theme-narrow-section-centered-wide-content-max-width);
+  --centered-inline-lg-content-max-width:
+    var(--theme-narrow-section-centered-inline-lg-content-max-width);
+  --centered-inline-xl-content-max-width:
+    var(--theme-narrow-section-centered-inline-xl-content-max-width);
 }
 
 @media screen {

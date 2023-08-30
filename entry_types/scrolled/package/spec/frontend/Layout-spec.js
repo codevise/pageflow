@@ -5,18 +5,29 @@ import {TwoColumn} from 'frontend/layouts/TwoColumn';
 import {frontend} from 'pageflow-scrolled/frontend';
 
 import centerStyles from 'frontend/layouts/Center.module.css';
+import twoColumnStyles from 'frontend/layouts/TwoColumn.module.css';
 
-import {render} from '@testing-library/react';
+import {widthName} from 'frontend/layouts/widths';
 
-import {useNarrowViewport} from 'frontend/useNarrowViewport';
-jest.mock('frontend/useNarrowViewport');
+import {renderInEntry} from 'testHelpers';
+
+import useMediaQuery from 'frontend/useMediaQuery';
+
+jest.mock('frontend/useMediaQuery');
+
+let viewportWidth;
+
+useMediaQuery.mockImplementation(query => {
+  const match = query.match(/max-width: ([0-9]+)px/);
+  return viewportWidth <= parseInt(match[1], 10);
+})
 
 describe('Layout', () => {
-  beforeEach(() => useNarrowViewport.mockReturnValue(false));
+  beforeEach(() => { viewportWidth = 1920; });
 
   describe('placeholder', () => {
     it('renders in two column variant', () => {
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'left'}}
                 items={[]}
                 placeholder={<div data-testid="placeholder" />} />
@@ -26,7 +37,7 @@ describe('Layout', () => {
     });
 
     it('renders placeholder in center variant', () => {
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}}
                 items={[]}
                 placeholder={<div data-testid="placeholder" />} />
@@ -83,30 +94,32 @@ describe('Layout', () => {
     }
 
     describe('in two column variant', () => {
-      TwoColumn.GroupComponent = function({children}) {
+      TwoColumn.GroupComponent = function({children, ...props}) {
         return (
-          <div>[{children}]</div>
+          <div {...props}>[{children}]</div>
         );
       }
 
-      it('is called for each sequence of consecutive items with same position passing position', () => {
+      it('is called for each sequence of consecutive items with same position and width', () => {
         const items = [
-          {id: 1, type: 'probe', position: 'wide'},
+          {id: 1, type: 'probe', position: 'inline', width: 2},
           {id: 2, type: 'probe', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'},
           {id: 4, type: 'probe', position: 'inline'},
           {id: 5, type: 'probe', position: 'sticky'},
           {id: 6, type: 'probe', position: 'sticky'},
           {id: 7, type: 'probe', position: 'inline'},
-          {id: 8, type: 'probe', position: 'full'},
+          {id: 8, type: 'probe', position: 'inline', width: 3},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
-            {(children, {position}) => <div>{position} {children}</div>}
+            {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
           </Layout>
         );
 
-        expect(container.textContent).toEqual('[wide 1 ][inline 2 3 4 ][sticky 5 6 inline 7 ][full 8 ]');
+        expect(container.textContent).toEqual(
+          '[inline xl 1 ][inline md 2 3 4 ][sticky md 5 6 inline md 7 ][inline full 8 ]'
+        );
       });
 
       it('places inline elements with custom margin in separate box in same group', () => {
@@ -115,7 +128,7 @@ describe('Layout', () => {
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'}
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, customMargin}) =>
               <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
@@ -126,30 +139,12 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('[inline normal 1 inline custom 2 inline normal 3 ]');
       });
 
-      it('places wide elements with custom margin in separate box in same group', () => {
-        const items = [
-          {id: 1, type: 'probe', position: 'wide'},
-          {id: 2, type: 'probeWithCustomMargin', position: 'wide'},
-          {id: 3, type: 'probe', position: 'wide'},
-          {id: 4, type: 'probeWithCustomMargin', position: 'wide'},
-        ];
-        const {container} = render(
-          <Layout sectionProps={{layout: 'left'}} items={items}>
-            {(children, {position, customMargin}) =>
-              <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
-            }
-          </Layout>
-        );
-
-        expect(container.textContent).toEqual('[wide normal 1 wide custom 2 wide normal 3 wide custom 4 ]');
-      });
-
       it('places sticky elements with and without custom margin in separate groups', () => {
         const items = [
           {id: 1, type: 'probe', position: 'sticky'},
           {id: 2, type: 'probeWithCustomMargin', position: 'sticky'}
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, customMargin}) =>
               <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
@@ -162,26 +157,26 @@ describe('Layout', () => {
 
       it('does not apply custom margins for full elements', () => {
         const items = [
-          {id: 1, type: 'probe', position: 'full'},
-          {id: 2, type: 'probeWithCustomMargin', position: 'full'}
+          {id: 1, type: 'probe', position: 'inline', width: 3},
+          {id: 2, type: 'probeWithCustomMargin', position: 'inline', width: 3}
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, customMargin}) =>
-              <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
+              <div>{customMargin ? 'custom' : 'normal'} {children}</div>
             }
           </Layout>
         );
 
-        expect(container.textContent).toEqual('[full normal 1 2 ]');
+        expect(container.textContent).toEqual('[normal 1 2 ]');
       });
 
       describe('customMargin prop passed to content element', () => {
         it('is true if rendered with custom margin', () => {
           const items = [
-            {id: 1, type: 'probeWithCustomMarginProp'}
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'inline'}
           ];
-          const {container} = render(
+          const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'left'}} items={items}>
               {children => children}
             </Layout>
@@ -190,11 +185,11 @@ describe('Layout', () => {
           expect(container.textContent).toEqual('[custom 1 ]');
         });
 
-        it('is false if rendered custom margin is not supported by position', () => {
+        it('is false if rendered custom margin is not supported by width', () => {
           const items = [
-            {id: 1, type: 'probeWithCustomMarginProp', position: 'full'}
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'inline', width: 3}
           ];
-          const {container} = render(
+          const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'left'}} items={items}>
               {children => children}
             </Layout>
@@ -212,7 +207,24 @@ describe('Layout', () => {
           {id: 4, type: 'probe', position: 'sticky'},
           {id: 5, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[( 1 2 |][( 3 4 )| 5 )]');
+      });
+
+      it('continues inline box after being interrupted by lg sticky box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline'},
+          {id: 3, type: 'probe', position: 'sticky', width: 1},
+          {id: 4, type: 'probe', position: 'sticky', width: 1},
+          {id: 5, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -229,7 +241,7 @@ describe('Layout', () => {
           {id: 4, type: 'probe', position: 'sticky'},
           {id: 5, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -238,14 +250,14 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('[( 1 |][( 2 )| 3 |][( 4 )| 5 )]');
       });
 
-      it('does not continue inline box after being interrupted by full box', () => {
+      it('does not continue inline box after being interrupted by lg box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'inline'},
-          {id: 3, type: 'probe', position: 'full'},
+          {id: 3, type: 'probe', position: 'inline', width: 1},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -254,14 +266,14 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('[( 1 2 )][( 3 )][( 4 )]');
       });
 
-      it('does not continue inline box after being interrupted by wide box', () => {
+      it('does not continue inline box after being interrupted by xl box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'inline'},
-          {id: 3, type: 'probe', position: 'wide'},
+          {id: 3, type: 'probe', position: 'inline', width: 3},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -274,10 +286,10 @@ describe('Layout', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'sticky'},
-          {id: 3, type: 'probe', position: 'full'},
+          {id: 3, type: 'probe', position: 'inline', width: 3},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -289,11 +301,11 @@ describe('Layout', () => {
       it('does not continue inline box after being interrupted by full and sticky box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
-          {id: 2, type: 'probe', position: 'full'},
+          {id: 2, type: 'probe', position: 'inline', width: 3},
           {id: 3, type: 'probe', position: 'sticky'},
           {id: 4, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -308,7 +320,7 @@ describe('Layout', () => {
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -323,7 +335,7 @@ describe('Layout', () => {
           {id: 2, type: 'probeWithCustomMargin', position: 'sticky'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -332,39 +344,86 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('[( 1 |][( 2 )| 3 )]');
       });
 
-      it('inlines sticky element for narrow viewport', () => {
-        useNarrowViewport.mockReturnValue(true);
-
+      it('inlines sticky elements of different width at different breakpoints ', () => {
         const items = [
-          {id: 1, type: 'probe', position: 'inline'},
-          {id: 2, type: 'probe', position: 'sticky'},
-          {id: 3, type: 'probe', position: 'inline'},
+          {id: 1, type: 'probe', position: 'sticky'},
+          {id: 2, type: 'probe', position: 'sticky', width: 1},
+          {id: 3, type: 'probe', position: 'sticky', width: 2}
         ];
-        const {container} = render(
+        viewportWidth = 1000;
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
-            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
-          </Layout>
+            {(children, {position}) => <div>{position} {children}</div>}
+          </Layout>,
+          {
+            seed: {
+              themeOptions: {
+                properties: {
+                  root: {
+                    twoColumnStickyBreakpoint: '950px',
+                    twoColumnStickyLgBreakpoint: '1024px',
+                    twoColumnStickyXlBreakpoint: '1180px'
+                  }
+                }
+              }
+            }
+          }
         );
 
-        expect(container.textContent).toEqual('[( 1 2 3 )]');
+        expect(container.textContent).toEqual(
+          '[sticky 1 inline 2 ][inline 3 ]'
+        );
+      });
+
+      it('decreases size when inlining wide sticky elements', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'sticky', width: -2},
+          {id: 2, type: 'probe', position: 'sticky', width: -1},
+          {id: 3, type: 'probe', position: 'sticky'},
+          {id: 4, type: 'probe', position: 'sticky', width: 1},
+          {id: 5, type: 'probe', position: 'sticky', width: 2}
+        ];
+        viewportWidth = 500;
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
+          </Layout>,
+          {
+            seed: {
+              themeOptions: {
+                properties: {
+                  root: {
+                    twoColumnStickyBreakpoint: '950px',
+                    twoColumnStickyLgBreakpoint: '1024px',
+                    twoColumnStickyXlBreakpoint: '1180px'
+                  }
+                }
+              }
+            }
+          }
+        );
+
+        expect(container.textContent).toEqual(
+          '[inline xs 1 ][inline sm 2 ][inline md 3 4 ][inline lg 5 ]'
+        );
       });
     });
 
     describe('in center variant', () => {
-      it('calls children for each item passing position', () => {
+      it('calls children for each item passing position and width', () => {
         const items = [
-          {id: 1, type: 'probe', position: 'wide'},
+          {id: 1, type: 'probe', position: 'inline', width: 2},
           {id: 2, type: 'probe', position: 'inline'},
-          {id: 3, type: 'probe', position: 'sticky'},
-          {id: 4, type: 'probe', position: 'full'},
+          {id: 3, type: 'probe', position: 'left'},
+          {id: 4, type: 'probe', position: 'inline', width: 3},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
-            {(children, {position}) => <div>{position} {children}</div>}
+            {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
           </Layout>
         );
 
-        expect(container.textContent).toEqual('wide 1 inline 2 sticky 3 full 4 ');
+        expect(container.textContent).toEqual('inline xl 1 inline md 2 left md 3 inline full 4 ');
       });
 
       it('renders consecutive inline items with open end/open start', () => {
@@ -373,7 +432,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -388,7 +447,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'sticky'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -403,7 +462,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'left'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -412,13 +471,13 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('( 1 || 2 || 3 )');
       });
 
-      it('renders items separated by full item without open end/open start', () => {
+      it('renders items separated by full width item without open end/open start', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
-          {id: 2, type: 'probe', position: 'full'},
+          {id: 2, type: 'probe', position: 'inline', width: 3},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -430,10 +489,10 @@ describe('Layout', () => {
       it('renders items separated by wide item without open end/open start', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
-          {id: 2, type: 'probe', position: 'wide'},
+          {id: 2, type: 'probe', position: 'inline', width: 1},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -448,7 +507,7 @@ describe('Layout', () => {
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -463,7 +522,7 @@ describe('Layout', () => {
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'}
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>
             {(children, {customMargin}) =>
               <div>{customMargin ? 'custom' : 'normal'} {children}</div>
@@ -477,9 +536,9 @@ describe('Layout', () => {
       describe('customMargin prop passed to content element', () => {
         it('is true if rendered inline with custom margin', () => {
           const items = [
-            {id: 1, type: 'probeWithCustomMarginProp'}
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'inline'}
           ];
-          const {container} = render(
+          const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'center'}} items={items}>
               {children => children}
             </Layout>
@@ -488,11 +547,11 @@ describe('Layout', () => {
           expect(container.textContent).toEqual('custom 1 ');
         });
 
-        it('is true if rendered wide with custom margin', () => {
+        it('is true if rendered with xl width with custom margin', () => {
           const items = [
-            {id: 1, type: 'probeWithCustomMarginProp', position: 'wide'}
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'inline', width: 2}
           ];
-          const {container} = render(
+          const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'center'}} items={items}>
               {children => children}
             </Layout>
@@ -501,11 +560,24 @@ describe('Layout', () => {
           expect(container.textContent).toEqual('custom 1 ');
         });
 
-        it('is false if rendered custom margin is not supported by position', () => {
+        it('is false if rendered with floated position', () => {
           const items = [
             {id: 1, type: 'probeWithCustomMarginProp', position: 'left'}
           ];
-          const {container} = render(
+          const {container} = renderInEntry(
+            <Layout sectionProps={{layout: 'center'}} items={items}>
+              {children => children}
+            </Layout>
+          );
+
+          expect(container.textContent).toEqual('normal 1 ');
+        });
+
+        it('is false if rendered with full width with custom margin', () => {
+          const items = [
+            {id: 1, type: 'probeWithCustomMarginProp', position: 'inline', width: 3}
+          ];
+          const {container} = renderInEntry(
             <Layout sectionProps={{layout: 'center'}} items={items}>
               {children => children}
             </Layout>
@@ -523,7 +595,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'sticky'},
           {id: 3, type: 'probe', position: 'inline'},
         ];
-        const {container} = render(
+        const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'centerRagged'}} items={items}>
             {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
           </Layout>
@@ -556,7 +628,7 @@ describe('Layout', () => {
       const items = [
         {id: 1, type: 'probe', position: 'inline'}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -569,7 +641,7 @@ describe('Layout', () => {
       const items = [
         {id: 1, type: 'wrappingProbe', position: 'inline'}
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -583,7 +655,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left'},
         {id: 2, type: 'probe', position: 'right', props: {testId: 'right'}},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -597,7 +669,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'probe', position: 'left', props: {testId: 'left'}},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -611,7 +683,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'probe', position: 'right', props: {testId: 'right-2'}},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -625,7 +697,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'inline'},
         {id: 2, type: 'probe', position: 'left', props: {testId: 'left'}},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -640,7 +712,7 @@ describe('Layout', () => {
         {id: 2, type: 'probe', position: 'right'},
         {id: 3, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -655,7 +727,7 @@ describe('Layout', () => {
         {id: 2, type: 'probe', position: 'right'},
         {id: 3, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {getByTestId} = render(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {children => children}
         </Layout>
@@ -664,17 +736,51 @@ describe('Layout', () => {
       expect(findParentWithClass(getByTestId('wrappingProbe'), centerStyles.clear)).toBeNull();
     });
 
-    function findParentWithClass(element, className) {
-      let currentElement = element;
+    it('sets sideBySide class on side-by-side floats', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left', props: {testId: 'left'}},
+        {id: 2, type: 'probe', position: 'right', props: {testId: 'right'}}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
 
-      while ((currentElement = currentElement.parentElement)) {
-        if (currentElement.classList.contains(className)) {
-          return currentElement;
-        }
-      }
+      expect(findParentWithClass(getByTestId('left'), centerStyles.sideBySide)).not.toBeNull();
+      expect(findParentWithClass(getByTestId('right'), centerStyles.sideBySide)).not.toBeNull();
+    });
 
-      return null;
-    }
+    it('does not set sideBySide class on consecutive float on the same side', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left', props: {testId: 'first'}},
+        {id: 2, type: 'probe', position: 'left', props: {testId: 'second'}}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('first'), centerStyles.sideBySide)).toBeNull();
+      expect(findParentWithClass(getByTestId('second'), centerStyles.sideBySide)).toBeNull();
+    });
+
+    it('does not set sideBySide class on floats separated by text', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'left', props: {testId: 'left'}},
+        {id: 2, type: 'wrappingProbe', position: 'inline'},
+        {id: 3, type: 'probe', position: 'right', props: {testId: 'right'}}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('left'), centerStyles.sideBySide)).toBeNull();
+      expect(findParentWithClass(getByTestId('right'), centerStyles.sideBySide)).toBeNull();
+    });
   });
 
   describe('self clearing prop passed to box in centered layout', () => {
@@ -699,7 +805,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left'},
         {id: 2, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -715,7 +821,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -731,7 +837,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left'},
         {id: 2, type: 'probe', position: 'left'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -747,7 +853,7 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'probe', position: 'right'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -761,9 +867,9 @@ describe('Layout', () => {
     it('self clears left before non-wrapping inline', () => {
       const items = [
         {id: 1, type: 'probe', position: 'left'},
-        {id: 2, type: 'probe'},
+        {id: 2, type: 'probe', position: 'inline'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -777,9 +883,9 @@ describe('Layout', () => {
     it('self clears right before non-wrapping inline', () => {
       const items = [
         {id: 1, type: 'probe', position: 'right'},
-        {id: 2, type: 'probe'},
+        {id: 2, type: 'probe', position: 'inline'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -795,9 +901,9 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'left'},
         {id: 2, type: 'probe', position: 'right'},
         {id: 3, type: 'probe', position: 'left'},
-        {id: 4, type: 'wrappingProbe'},
+        {id: 4, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -813,9 +919,9 @@ describe('Layout', () => {
         {id: 1, type: 'probe', position: 'right'},
         {id: 2, type: 'probe', position: 'left'},
         {id: 3, type: 'probe', position: 'right'},
-        {id: 4, type: 'wrappingProbe'},
+        {id: 4, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {container} = render(
+      const {container} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
           {(children, {selfClear}) =>
             <div>{selfClear} {children}</div>
@@ -826,4 +932,140 @@ describe('Layout', () => {
       expect(container.textContent).toEqual('left right both both ');
     });
   });
+
+  describe('width classes in two-column variant', () => {
+    beforeAll(() => {
+      frontend.contentElementTypes.register('probe', {
+        component: function Probe({configuration}) {
+          return <div data-testid="probe"/>;
+        }
+      });
+    });
+
+    it('applies width class to inline items', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'inline', width: 1}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['width-lg'])).not.toBeNull();
+    });
+
+    it('applies full class to inline group with width 3', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'inline', width: 3}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['group-full'])).not.toBeNull();
+    });
+
+    it('applies restrict classes to inline box with negative width', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'inline', width: -2}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['restrict-xs'])).not.toBeNull();
+    });
+  });
+
+  describe('width classes in centered variant', () => {
+    beforeAll(() => {
+      frontend.contentElementTypes.register('probe', {
+        component: function Probe({configuration}) {
+          return <div data-testid="probe"/>;
+        }
+      });
+    });
+
+    it('applies width class to inline items', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'inline', width: 1}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['item-inline-lg'])).not.toBeNull();
+    });
+
+    it('does not appliy width class to floated items', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'left', width: 2}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['item-inline-xl'])).toBeNull();
+    });
+
+    it('applies width class to inner of inline item', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'inline', width: -3}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['inner-xxs'])).not.toBeNull();
+    });
+
+    it('applies width class to inner of floated item', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'inline', width: 2}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['inner-xl'])).not.toBeNull();
+    });
+
+    it('applies width class to outer of full width item', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'inline', width: 3}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['outer-full'])).not.toBeNull();
+    });
+  });
+
+  function findParentWithClass(element, className) {
+    let currentElement = element;
+
+    while ((currentElement = currentElement.parentElement)) {
+      if (currentElement.classList.contains(className)) {
+        return currentElement;
+      }
+    }
+
+    return null;
+  }
 });

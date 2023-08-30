@@ -37,16 +37,19 @@ export class ContentElementTypeRegistry {
    *   type become adjacent because a common neighbor has been deleted.
    * @param {string[]} [options.supportedPositions] -
    *   Pass array containing a subset of the positions `left`, `right`,
-   *   `sticky`, `full` and `inline`. When inserting a content element
-   *   next to a `sticky`, `left` or `right` positioned sibling, only
-   *   types supporting this position will be offered in the type
-   *   selection dialog. By default all positions are supported.
+   *   `sticky` and `inline`. By default all positions are supported.
+   * @param {string[]} [options.supportedWidthRange] -
+   *   Pass array consisting of two widths of the form `xxs`, `xs`, `sm`,
+   *   `md`, `lg`, `xl` or `full` representing the smallest andlargest
+   *   supported width. By default only width `md` is supported.
    * @memberof editor_contentElementTypes
    *
    * @example
    *
    * // editor.js
    * editor.contentElementTypes.register('inlineImage', {
+   *   supportedWidthRange: ['xss', 'full'],
+   *
    *   configurationEditor() {
    *     this.tab('general', function() {
    *       this.input('caption', TextInputView);

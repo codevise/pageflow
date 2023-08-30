@@ -320,14 +320,15 @@ export function normalizeAndMergeFixture(options = {}) {
   };
 }
 
-export function exampleHeading({sectionId, text, position}) {
+export function exampleHeading({sectionId, text, position, width}) {
   return {
     sectionId,
     typeName: 'heading',
     configuration: {
       children: text,
       level: 1,
-      position
+      position,
+      width
     }
   }
 }
@@ -351,12 +352,13 @@ export function exampleTextBlock({sectionId, text = lorem}) {
   };
 }
 
-export function examplePositionedElement({sectionId, position, caption, configuration = {}, typeName = 'inlineImage'}) {
+export function examplePositionedElement({sectionId, position, width, caption, configuration = {}, typeName = 'inlineImage'}) {
   return {
     sectionId,
     typeName,
     configuration: {
       position,
+      width,
       id: null,
       caption,
       ...configuration

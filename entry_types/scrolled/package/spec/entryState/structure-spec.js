@@ -79,6 +79,7 @@ const contentElementsSeed = [
     typeName: 'image',
     configuration: {
       position: 'sticky',
+      width: 1,
       imageId: 4
     }
   },
@@ -345,6 +346,7 @@ describe('useSectionContentElements', () => {
       permaId: 1003,
       type: 'image',
       position: 'sticky',
+      width: 1,
       props: {
         imageId: 4
       }
@@ -353,6 +355,8 @@ describe('useSectionContentElements', () => {
       id: 4,
       permaId: 1004,
       type: 'textBlock',
+      position: 'inline',
+      width: 0,
       props: {
         children: 'Some more text'
       }
@@ -374,5 +378,419 @@ describe('useSectionContentElements', () => {
     const contentElements = result.current;
 
     expect(contentElements).toMatchObject(expectedContentElements);
+  });
+
+  it('rewrites legacy full positions to inline with width', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'full',
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        width: 3
+      }
+    ]);
+  });
+
+  it('rewrites legacy wide positions to inline with width', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'wide',
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        width: 2
+      }
+    ]);
+  });
+
+  it('prefers configured width over width based on legacy positions', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'wide',
+                width: 0
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      }
+    ]);
+  });
+
+  it('turns floated positions into inline in left layout', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2, layout: 'left'}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'left'
+              }
+            },
+            {
+              id: 2,
+              permaId: 1002,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'right'
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      },
+      {
+        id: 2,
+        permaId: 1002,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      }
+    ]);
+  });
+
+  it('turns floated positions into inline in right layout', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2, layout: 'right'}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'left'
+              }
+            },
+            {
+              id: 2,
+              permaId: 1002,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'right'
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      },
+      {
+        id: 2,
+        permaId: 1002,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      }
+    ]);
+  });
+
+  it('turns sticky position into inline in centered layout', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2, layout: 'center'}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'sticky'
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        width: 0
+      }
+    ]);
+  });
+
+  it('clamps widths of floated elements in center layout', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2, layout: 'center'}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                width: 3
+              }
+            },
+            {
+              id: 2,
+              permaId: 1002,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'left',
+                width: 2
+              }
+            },
+            {
+              id: 3,
+              permaId: 1003,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'left',
+                width: 3
+              }
+            },
+            {
+              id: 4,
+              permaId: 1004,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'right',
+                width: -3
+              }
+            },
+            {
+              id: 5,
+              permaId: 1005,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'sticky',
+                width: 3
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        position: 'inline',
+        width: 3
+      },
+      {
+        id: 2,
+        position: 'left',
+        width: 2
+      },
+      {
+        id: 3,
+        position: 'left',
+        width: 2
+      },
+      {
+        id: 4,
+        position: 'right',
+        width: -2
+      },
+      {
+        id: 5,
+        position: 'inline',
+        width: 3
+      }
+    ]);
+  });
+
+  it('clamps widths of sticky elements in two-column layout', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2, layout: 'right'}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                width: 3
+              }
+            },
+            {
+              id: 2,
+              permaId: 1002,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'sticky',
+                width: 2
+              }
+            },
+            {
+              id: 3,
+              permaId: 1003,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'sticky',
+                width: 3
+              }
+            },
+            {
+              id: 4,
+              permaId: 1004,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'right',
+                width: -3
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        position: 'inline',
+        width: 3
+      },
+      {
+        id: 2,
+        position: 'sticky',
+        width: 2
+      },
+      {
+        id: 3,
+        position: 'sticky',
+        width: 2
+      },
+      {
+        id: 4,
+        position: 'inline',
+        width: -3
+      }
+    ]);
   });
 });

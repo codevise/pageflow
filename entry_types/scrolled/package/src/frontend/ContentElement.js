@@ -16,13 +16,14 @@ export const ContentElement = withInlineEditingDecorator(
 
     if (Component) {
       return (
-        <ContentElementAttributesProvider id={props.id}>
+        <ContentElementAttributesProvider id={props.id} width={props.width}>
           <ContentElementLifecycleProvider type={props.type}>
-            <ContentElementMargin position={props.itemProps.position}>
+            <ContentElementMargin width={props.width}>
               <ContentElementErrorBoundary type={props.type}>
                 <Component sectionProps={props.sectionProps}
                            customMargin={props.customMargin}
                            configuration={props.itemProps}
+                           contentElementWidth={props.width}
                            contentElementId={props.id} />
               </ContentElementErrorBoundary>
             </ContentElementMargin>

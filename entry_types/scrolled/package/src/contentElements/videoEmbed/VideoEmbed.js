@@ -45,8 +45,7 @@ export function VideoEmbed({contentElementId, configuration}) {
                                              providerName={providerName} />}
             </FitViewport.Content>
             <ThirdPartyOptOutInfo providerName={providerName}
-                                  hide={playerState === 'playing'}
-                                  contentElementPosition={configuration.position} />
+                                  hide={playerState === 'playing'} />
           </ContentElementFigure>
         </ContentElementBox>
       </FitViewport>

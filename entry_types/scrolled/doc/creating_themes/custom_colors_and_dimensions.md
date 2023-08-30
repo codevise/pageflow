@@ -114,17 +114,22 @@ width:
 | ---- | ----------- |
 | `section_max_width` | Settings this property causes section content to be centered once the viewport becomes too wide. |
 
-Depending on their position, content elements have a maximum width by
-default to limit text line length. The following properties can be
-used to adjust these widths for sections using content alignment
-"left" or "right":
+Depending on their position and width, content elements have a maximum
+width to limit text line length. The following properties can be used
+to adjust these widths for sections using content alignment "left" or
+"right":
 
 | Name | Description |
 | ---- | ----------- |
-| `two_column_inline_content_max_width` | Maximum width of inline content (e.g., text block paragraphs) . |
+| `two_column_inline_content_max_width` | Maximum width of inline content (e.g., text block paragraphs). |
+| `two_column_inline_lg_content_max_width` | Maximum width of inline content with width L. |
+| `two_column_inline_xl_content_max_width` | Maximum width of inline content with width XL. |
 | `two_column_sticky_content_max_width` | Maximum width of sticky content (e.g., inline images using position "sticky"). |
-| `two_column_wide_content_max_width` | Maximum width of wide content (e.g., headings using their default position). |
-| `two_column_sticky_content_width` | Percentage width of sticky elements. |
+| `two_column_sticky_lg_content_max_width` | Maximum width of sticky content with width L. |
+| `two_column_sticky_xl_content_max_width` | Maximum width of sticky content with width XL. |
+| `two_column_sticky_content_width` | Width of sticky elements in `vw` units. |
+| `two_column_sticky_lg_content_width` | Width of sticky elements with width L in `vw` units. |
+| `two_column_sticky_xl_content_width` | Width of sticky elements with width XL in `vw` units. |
 
 The following properties control width of content elements in section
 with content alignment "center":
@@ -132,22 +137,25 @@ with content alignment "center":
 | Name | Description |
 | ---- | ----------- |
 | `centered_inline_content_max_width` | Maximum width of inline content (e.g., text block paragraphs). |
-| `centered_wide_content_max_width` | Maximum width of wide content (e.g., headings using their default position). |
+| `centered_inline_lg_content_max_width` | Maximum width of inline content with width L. |
+| `centered_inline_xl_content_max_width` | Maximum width of inline content with width XL. |
 
 For all of these properties, also a variant using the prefix
 `narrow_section_` can be defined (e.g. `narrow_section_max_width` or
-`narrow_section_two_column_inline_content_max_width`. If one of these
-properties is defined for a theme, Pageflow offers an additional
+`narrow_section_two_column_inline_lg_content_max_width`. If one of
+these properties is defined for a theme, Pageflow offers an additional
 "Width" field in the section settings. The given values apply to a
 section once "Narrow" has been selected as width.
 
 To prevent sticky elements from overlapping inline elements on narrow
-viewports, the following property can be used to control the
-breakpoint below which sticky elements become inline:
+viewports, the following properties can be used to control the
+breakpoints below which sticky elements become inline:
 
 | Name | Description |
 | ---- | ----------- |
-| `narrow_viewport_breakpoint` | Minimum viewport width for sticky elements to be displayed in a second column. |
+| `two_column_sticky_breakpoint` | Minimum viewport width for sticky elements with M or smaller to be displayed in a second column. |
+| `two_column_sticky_lg_breakpoint` | Minimum viewport width for sticky elements with width LG to be displayed in a second column. |
+| `two_column_sticky_xl_breakpoint` | Minimum viewport width for sticky elements with width XL to be displayed in a second column. |
 
 ### Section Appearance
 

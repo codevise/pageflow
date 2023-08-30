@@ -143,18 +143,57 @@ function sectionData(section) {
   };
 }
 
-export function useSectionContentElements({sectionId}) {
+export function useSectionContentElements({sectionId, layout}) {
   const filterBySectionId = useCallback(contentElement => contentElement.sectionId === sectionId,
                                         [sectionId])
   const contentElements = useEntryStateCollectionItems('contentElements', filterBySectionId);
 
-  return contentElements.map(item => ({
-    id: item.id,
-    permaId: item.permaId,
-    type: item.typeName,
-    position: item.configuration.position,
-    props: item.configuration
-  }));
+  return contentElements.map(contentElement => {
+    const position = getPosition(contentElement, layout);
+
+    return {
+      id: contentElement.id,
+      permaId: contentElement.permaId,
+      type: contentElement.typeName,
+      position,
+      width: getWidth(contentElement, position),
+      props: contentElement.configuration
+    };
+  });
+}
+const supportedPositions = {
+  center: ['inline', 'left', 'right'],
+  centerRagged: ['inline', 'left', 'right'],
+  left: ['inline', 'sticky'],
+  right: ['inline', 'sticky'],
+};
+
+function getPosition(contentElement, layout) {
+  const position = contentElement.configuration.position;
+
+  return supportedPositions[layout || 'left'].includes(position) ?
+         position :
+         'inline';
+}
+
+const legacyPositionWidths = {
+  wide: 2,
+  full: 3
+};
+
+const clampedWidthPositions = ['sticky', 'left', 'right'];
+
+function getWidth(contentElement, position) {
+  const width = typeof contentElement.configuration.width === 'number' ?
+                contentElement.configuration.width :
+                legacyPositionWidths[contentElement.configuration.position] || 0;
+
+  if (clampedWidthPositions.includes(position)) {
+    return Math.min(Math.max(width || 0, -2), 2);
+  }
+  else {
+    return width;
+  }
 }
 
 export function useChapter({permaId}) {

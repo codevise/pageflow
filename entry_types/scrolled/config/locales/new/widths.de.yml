@@ -1,0 +1,58 @@
+de:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        width:
+          label: Breite
+          inline_help: |-
+            Ziehe den Schieberegler, um die Breite des Elements
+            anzupassen. Breitere Elemente unterbrechen den Textfluss
+            und stehen prominent für sich alleine.
+        position:
+          inline_help: |-
+            Mit dieser Einstellung kannst du die Position des Elements
+            im Zusammenspiel mit Fließtext steuern: Das Element kann
+            im Text verankert werden ("Im Textfluss") oder beim
+            Scrollen begleitend neben dem Text stehenbleiben
+            ("Sticky"). Sticky-Elemente bleiben statisch in der Mitte
+            des Viewports neben dem Text stehen, bis entweder der
+            Abschnitt aus dem Viewport gescrollt wird oder sie vom
+            nächsten Sticky-Element des Abschnitts verdrängt
+            werden. In Mobil-Darstellung werden Sticky Elemente
+            automatisch im Text verankert. Sticky-Elemente
+            funktionieren besonders gut bei Desktop-Darstellung in
+            Kombination mit langen Textpassagen.
+    help_entries:
+      content_elements:
+        text: |
+          # Inhaltselemente
+
+          In jedem Abschnitt können beliebig viele Inhaltselemente
+          eingefügt werden.
+
+          Um ein neues Inhaltselement hinzuzufügen, klicke auf das
+          Plus-Zeichen ober- oder unterhalb eines bestehenden Elements
+          und füge dann Text-Blöcke, Medien, Embeds oder externe
+          Verweise ein.
+
+          Durch einen Klick auf ein Inhaltselement wird diese
+          ausgewählt. In der Seitenleiste erscheinen die verfügbaren
+          Konfigurationsoptionen. Hier kann unter anderem die
+          **Positionierung** und **Breite** der Inhaltselemente
+          festgelegt und weitere Optionen wie **Autoplay** für Audios
+          und Videos bearbeitet werden.
+
+          Für die Darstellung auf breiten
+          Bildschirm-Seitenverhältnissen (Desktop, Notebook, Tablet,
+          Smartphone quer) können einzelne Inhaltselemente, wie
+          Videos, Audios, Video Embeds, 360° Bilder auch als
+          **Sticky** angeordnet werden. Sticky-Elemente bleiben
+          statisch in der Mitte des Viewports neben dem Text stehen,
+          bis entweder der Abschnitt aus dem Viewport gescrollt wird
+          oder sie vom nächsten Sticky-Element des Abschnitts
+          verdrängt werden.
+
+          Wenn ein Abschnitt mittig ausgerichtet ist, können
+          Inhaltselemente zudem auch nach **links oder rechts
+          eingerückt** werden. Dabei wird das Inhaltselement soweit
+          verkleinert, dass der Text das Element umfließen kann.

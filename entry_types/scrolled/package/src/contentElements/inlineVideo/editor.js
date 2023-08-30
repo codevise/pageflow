@@ -7,7 +7,8 @@ import pictogram from './pictogram.svg';
 editor.contentElementTypes.register('inlineVideo', {
   pictogram,
   category: 'media',
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right'],
+  supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor() {
     migrateLegacyAutoplay(this.model);

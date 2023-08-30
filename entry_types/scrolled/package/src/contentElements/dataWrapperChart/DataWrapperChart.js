@@ -43,8 +43,7 @@ export function DataWrapperChart({configuration}) {
                                         configuration.title ||
                                         t('pageflow_scrolled.public.chart.default_title'))}
           </ThirdPartyOptIn>
-          <DatawrapperOptOutInfo providerName="datawrapper"
-                                 contentElementPosition={configuration.position} />
+          <DatawrapperOptOutInfo providerName="datawrapper" />
         </div>
       </ContentElementFigure>
     </ContentElementBox>

@@ -1,15 +1,17 @@
 import I18n from 'i18n-js';
 import {editor} from 'pageflow-scrolled/editor';
-import {SelectInputView} from 'pageflow/ui';
+import {contentElementWidths} from 'pageflow-scrolled/frontend';
+import {SelectInputView, SeparatorView} from 'pageflow/ui';
 import {InfoBoxView} from 'pageflow/editor';
 
 import pictogram from './pictogram.svg';
 
 editor.contentElementTypes.register('heading', {
   pictogram,
-  supportedPositions: ['inline', 'wide'],
+  supportedPositions: ['inline'],
+  supportedWidthRange: ['md', 'xl'],
 
-  defaultConfig: {position: 'wide', marginTop: 'none'},
+  defaultConfig: {width: contentElementWidths.xl, marginTop: 'none'},
 
   configurationEditor({entry}) {
     this.listenTo(this.model, 'change:hyphens', this.refresh);
@@ -27,7 +29,6 @@ editor.contentElementTypes.register('heading', {
             typographyVariant
           })
       });
-      this.group('ContentElementPosition');
       this.input('hyphens', SelectInputView, {
         values: ['auto', 'manual']
       });
@@ -37,6 +38,9 @@ editor.contentElementTypes.register('heading', {
           text: I18n.t('pageflow_scrolled.editor.content_elements.heading.help_texts.shortcuts'),
         });
       }
+
+      this.view(SeparatorView);
+      this.group('ContentElementPosition');
     });
   }
 });

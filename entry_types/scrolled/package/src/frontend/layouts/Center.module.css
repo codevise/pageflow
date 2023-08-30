@@ -26,11 +26,15 @@
   max-width: calc(var(--content-margin) * 2 + var(--content-max-width));
 }
 
-.item-wide {
-  --content-max-width: var(--centered-wide-content-max-width, 1200px);
+.item-inline-lg {
+  --content-max-width: var(--centered-inline-lg-content-max-width, 950px);
 }
 
-.item-full {
+.item-inline-xl {
+  --content-max-width: var(--centered-inline-xl-content-max-width, 1200px);
+}
+
+.item-inline-full {
   --content-margin: 0;
   --content-max-width: none;
   margin-left: 0;
@@ -42,30 +46,124 @@
   clear: both;
 }
 
+.inner-xxs,
+.inner-xs,
+.inner-sm {
+  margin: 0 auto;
+}
+
+.inner-xxs {
+  width: 30%;
+}
+
+.inner-xs {
+  width: 50%;
+}
+
+.inner-sm {
+  width: 70%;
+}
+
+.inner-left,
+.inner-right {
+  /* Setting the --inlined-* properties to intial causes the fallback
+   values below (e.g. float: var(--inlined-float, left)) to take
+   effect and thus switches to floated posiiton. */
+
+  --inlined-float: none;
+  --inlined-margin: 0;
+
+  margin-top: var(--inlined-margin, 0.375em);
+  margin-bottom: var(--inlined-margin, 1em);
+
+  /* Ensure element is positioned in front of text block wrapping around
+     element and can be selected in editor. */
+  position: relative;
+  z-index: 1;
+}
+
+.inner-xxs,
+.inner-xs,
+.inner-sm {
+  --inlined-margin: auto;
+}
+
+.inner-left {
+  float: var(--inlined-float, left);
+  margin-left: var(--inlined-margin, calc(var(--floated-indent) - 1em));
+  margin-right: var(--inlined-margin, 1em);
+}
+
+.inner-right {
+  float: var(--inlined-float, right);
+  margin-right: var(--inlined-margin, calc(var(--floated-indent) - 1em));
+  margin-left: var(--inlined-margin, 1em);
+}
+
+.inner-xs.sideBySide {
+  --inlined-float: initial;
+  --inlined-margin: initial;
+  --floated-indent: 25%;
+  width: 25%;
+}
+
 @media (min-width: 950px) {
-  .inner-left,
-  .inner-right {
-    margin-top: 0.375em;
-
-    /* Ensure element is positioned in front of text block wrapping around
-       element and can be selected in editor. */
-    position: relative;
-    z-index: 1;
+  .inner-xs.inner-left,
+  .inner-xs.inner-right,
+  .inner-sm.inner-left,
+  .inner-sm.inner-right,
+  .inner-md.inner-left,
+  .inner-md.inner-right {
+    --inlined-float: initial;
+    --inlined-margin: initial;
+    --floated-indent: -10%;
   }
 
-  .inner-left {
-    float: left;
-    width: 60%;
-    margin-left: calc(-10% - 1em);
-    margin-right: 1em;
-    margin-bottom: 1em;
+  .inner-xs.inner-left,
+  .inner-xs.inner-right {
+    width: 25%;
   }
 
-  .inner-right {
-    float: right;
+  .inner-xs.sideBySide {
+    --floated-indent: 25%;
+  }
+
+  .inner-sm.inner-left,
+  .inner-sm.inner-right {
+    width: 40%;
+  }
+
+  .inner-md.inner-left,
+  .inner-md.inner-right {
     width: 60%;
-    margin-right: calc(-10% - 1em);
-    margin-left: 1em;
-    margin-bottom: 1em;
+  }
+}
+
+@media (min-width: 700px) {
+  .inner-sm.sideBySide {
+    --inlined-float: initial;
+    --inlined-margin: initial;
+    width: 40%;
+    --floated-indent: 10%;
+  }
+}
+
+@media (min-width: 1100px) {
+  .inner-lg.inner-left,
+  .inner-lg.inner-right {
+    --inlined-float: initial;
+    --inlined-margin: initial;
+    width: 70%;
+    --floated-indent: -20%;
+  }
+}
+
+@media (min-width: 1300px) {
+  .inner-xl.inner-left,
+  .inner-xl.inner-right {
+    --inlined-float: initial;
+    --inlined-margin: initial;
+    width: 80%;
+    --floated-indent: -30%;
   }
 }

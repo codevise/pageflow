@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Entry, RootProviders, frontend} from 'pageflow-scrolled/frontend';
+import {Entry, RootProviders, contentElementWidths, frontend} from 'pageflow-scrolled/frontend';
 
 import {
   normalizeAndMergeFixture,
@@ -127,7 +127,7 @@ function exampleSeed(items) {
       }
     ],
     contentElements: [
-      exampleHeading({sectionId: 1, text: 'Self Clearing Boxes', position: 'wide'}),
+      exampleHeading({sectionId: 1, text: 'Self Clearing Boxes', width: contentElementWidths.xl}),
       ...items.map(([typeName, aspectRatio], index) => {
         if (typeName === 'short text') {
           return exampleTextBlock({sectionId: 1, text: 'Short Text'});

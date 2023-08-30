@@ -3,31 +3,21 @@ import classNames from 'classnames';
 
 import {api} from '../api';
 import {ContentElements} from '../ContentElements';
-import {useNarrowViewport} from '../useNarrowViewport';
+import useMediaQuery from '../useMediaQuery';
+import {useTheme} from '../../entryState';
+import {widths, widthName} from './widths';
 
 import styles from './TwoColumn.module.css';
 
-function availablePositions(narrow) {
-  if (narrow) {
-    return ['inline', 'wide', 'full'];
-  }
-  else {
-    return ['inline', 'sticky', 'wide', 'full'];
-  }
-}
-
-const positionsSupportingCustomMargin = ['inline', 'sticky', 'wide'];
-
 export function TwoColumn(props) {
-  const narrow = useNarrowViewport();
+  const shouldInline = useShouldInlineSticky();
 
   return (
-    <div className={classNames(styles.root, styles[props.align],
-                               narrow ? styles.narrowViewport : styles.wideViewport)}>
+    <div className={classNames(styles.root, styles[props.align])}>
       <div className={classNames(styles.group)} key={props.align}>
         <div className={classNames(styles.box, styles.inline)} ref={props.contentAreaRef} />
       </div>
-      {renderItems(props, narrow)}
+      {renderItems(props, shouldInline)}
       {renderPlaceholder(props.placeholder)}
     </div>
   );
@@ -37,12 +27,29 @@ TwoColumn.defaultProps = {
   align: 'left'
 }
 
+function useShouldInlineSticky() {
+  const theme = useTheme();
+  const root = theme.options.properties?.root || {};
+
+  const shouldInline = {
+    [widths.md]: useMediaQuery(`(max-width: ${root.twoColumnStickyBreakpoint || '950px'})`),
+    [widths.lg]: useMediaQuery(`(max-width: ${root.twoColumnStickyLgBreakpoint || '1200px'})`),
+    [widths.xl]: useMediaQuery(`(max-width: ${root.twoColumnStickyXlBreakpoint || '1400px'})`)
+  };
+
+  return function(width) {
+    return width <= widths.md ? shouldInline[widths.md] : shouldInline[width];
+  }
+}
+
 // Used in tests to render markers around groups
 TwoColumn.GroupComponent = 'div';
 
-function renderItems(props, narrow) {
-  return groupItemsByPosition(props.items, availablePositions(narrow)).map((group, index) =>
-    <TwoColumn.GroupComponent key={index} className={classNames(styles.group, styles[`group-${group.position}`])}>
+function renderItems(props, shouldInline) {
+  return groupItemsByPosition(props.items, shouldInline).map((group, index) =>
+    <TwoColumn.GroupComponent key={index}
+                              className={classNames(styles.group,
+                                                    styles[`group-${widthName(group.width)}`])}>
       {group.boxes.map((box, index) => renderItemGroup(props, box, index))}
     </TwoColumn.GroupComponent>
   );
@@ -50,16 +57,21 @@ function renderItems(props, narrow) {
 
 function renderItemGroup(props, box, key) {
   if (box.items.length) {
+
     return (
       <div key={key} className={classNames(styles.box,
                                            styles[box.position],
+                                           styles[`width-${widthName(box.width)}`],
                                            {[styles.customMargin]: box.customMargin})}>
         {props.children(
-          <ContentElements sectionProps={props.sectionProps}
-                           customMargin={box.customMargin}
-                           items={box.items} />,
+          <RestrictWidth width={box.width}>
+            <ContentElements sectionProps={props.sectionProps}
+                             customMargin={box.customMargin}
+                             items={box.items} />
+          </RestrictWidth>,
           {
             position: box.position,
+            width: box.width,
             customMargin: box.customMargin,
             openStart: box.openStart,
             openEnd: box.openEnd
@@ -67,27 +79,47 @@ function renderItemGroup(props, box, key) {
         )}
       </div>
     );
-      }
+  }
 }
 
-function groupItemsByPosition(items, availablePositions) {
+function RestrictWidth({width, children}) {
+  if (width >= 0) {
+    return children;
+  }
+  else {
+    return (
+      <div className={styles[`restrict-${widthName(width)}`]}>
+        {children}
+      </div>
+    );
+  }
+}
+
+function groupItemsByPosition(items, shouldInline) {
   const groups = [];
 
   let lastInlineBox = null;
   let currentGroup, currentBox;
 
   items.reduce((previousPosition, item, index) => {
-    const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
-    const position = availablePositions.includes(item.position) ? item.position : 'inline';
-    const customMargin = !!elementSupportsCustomMargin && positionsSupportingCustomMargin.includes(position);
+    const {customMargin: elementSupportsCustomMargin} =
+      api.contentElementTypes.getOptions(item.type) || {};
+    let width = item.width || 0;
+    const position = item.position === 'sticky' && !shouldInline(width) ? 'sticky' : 'inline';
+    const customMargin = !!elementSupportsCustomMargin && width < widths.full;
+
+    if (item.position === 'sticky' && position === 'inline' && width > widths.md) {
+      width -= 1;
+    }
 
     if (!currentGroup || previousPosition !== position ||
-        (position === 'sticky' && currentBox.customMargin !== customMargin)) {
+        (position === 'sticky' && currentBox.customMargin !== customMargin) ||
+        currentBox.width !== width) {
       currentBox = null;
 
-      if (!(previousPosition === 'sticky' && position === 'inline')) {
+      if (!(previousPosition === 'sticky' && position === 'inline' && width <= widths.md)) {
         currentGroup = {
-          position,
+          width,
           boxes: []
         };
 
@@ -99,18 +131,19 @@ function groupItemsByPosition(items, availablePositions) {
       currentBox = {
         customMargin,
         position,
+        width,
         items: []
       };
 
-      if (lastInlineBox && position === 'inline' && !customMargin) {
+      if (lastInlineBox && position === 'inline' && width <= widths.md && !customMargin) {
         lastInlineBox.openEnd = true;
         currentBox.openStart = true;
       }
 
-      if (position === 'inline' && !customMargin) {
+      if (position === 'inline' && width <= widths.md && !customMargin) {
         lastInlineBox = currentBox;
       }
-      else if (position === 'wide' || position === 'full' ||
+      else if ((position === 'inline' && width > widths.md) ||
                (customMargin && position !== 'sticky')) {
         lastInlineBox = null;
       }
@@ -132,7 +165,7 @@ function renderPlaceholder(placeholder) {
 
   return (
     <div className={classNames(styles.group)}>
-      <div className={styles.inline}>
+      <div className={classNames(styles.box, styles.inline)}>
         {placeholder}
       </div>
     </div>

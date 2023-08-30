@@ -18,7 +18,7 @@ describe('section padding', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: {
         sections: [{id: 5, permaId: 6}],
-        contentElements: [{sectionId: 5, configuration: {position: 'full'}}]
+        contentElements: [{sectionId: 5, configuration: {width: 3}}]
       }
     });
 

@@ -2,16 +2,17 @@ import React, {useRef, useState} from 'react';
 import {useAutoCruising} from './useAutoCruising';
 
 import {
+  contentElementWidths,
   useContentElementEditorState,
   useContentElementLifecycle,
   useFile,
   ContentElementBox,
   ContentElementFigure,
   Panorama,
-  FitViewport
+  FitViewport,
 } from 'pageflow-scrolled/frontend';
 
-export function VrImage({configuration}) {
+export function VrImage({configuration, contentElementWidth}) {
   const {shouldLoad} = useContentElementLifecycle();
   const {isEditable, isSelected} = useContentElementEditorState();
 
@@ -20,7 +21,7 @@ export function VrImage({configuration}) {
   return (
     <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <FitViewport
-        aspectRatio={configuration.position === 'full' ? 0.5 : 0.75}>
+        aspectRatio={contentElementWidth === contentElementWidths.full ? 0.5 : 0.75}>
         <ContentElementBox>
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>

@@ -8,6 +8,16 @@ import {
   delayedDestroying
 } from 'pageflow/editor';
 
+const widths = {
+  xxs: -3,
+  xs: -2,
+  s: -1,
+  md: 0,
+  l: 1,
+  xl: 2,
+  full: 3
+};
+
 export const ContentElement = Backbone.Model.extend({
   paramRoot: 'content_element',
 
@@ -58,8 +68,8 @@ export const ContentElement = Backbone.Model.extend({
 
   applyDefaultConfiguration(sibling) {
     const defaultConfig = {...this.getType().defaultConfig};
-    const defaultPosition = sibling?.getDefaultSiblingPosition();
-    const supportedPositions = this.getType().supportedPositions;
+    const defaultPosition = sibling?.getPosition();
+    const supportedPositions = this.getType().supportedPositions || [];
 
     if (defaultPosition &&
         defaultPosition !== 'inline' &&
@@ -71,15 +81,20 @@ export const ContentElement = Backbone.Model.extend({
   },
 
   getPosition() {
-    return this.configuration.get('position') || 'inline';
+    return this.configuration.get('position');
+  },
+
+  getResolvedPosition() {
+    const position = this.getPosition();
+    return this.getAvailablePositions().includes(position) ? position : 'inline';
   },
 
   getAvailablePositions() {
     const layout = this.section.configuration.get('layout');
     const supportedByLayout =
       layout === 'center' || layout === 'centerRagged' ?
-      ['inline', 'left', 'right', 'wide', 'full'] :
-      ['inline', 'sticky', 'wide', 'full'];
+      ['inline', 'left', 'right'] :
+      ['inline', 'sticky'];
     const supportedByType = this.getType().supportedPositions;
 
     if (supportedByType) {
@@ -90,13 +105,28 @@ export const ContentElement = Backbone.Model.extend({
     }
   },
 
-  getDefaultSiblingPosition() {
-    const position = this.getPosition();
+  getWidth() {
+    return this.clampWidthByPosition(this.configuration.get('width') || 0);
+  },
 
-    if (position === 'full') {
-      return 'inline';
+  getAvailableMinWidth() {
+    return this.clampWidthByPosition(
+      widths[this.getType().supportedWidthRange?.[0] || 'md']
+    );
+  },
+
+  getAvailableMaxWidth() {
+    return this.clampWidthByPosition(
+      widths[this.getType().supportedWidthRange?.[1] || 'md']
+    );
+  },
+
+  clampWidthByPosition(width) {
+    if (['sticky', 'left', 'right'].includes(this.getResolvedPosition())) {
+      return Math.min(Math.max(width, -2), 2);
     }
-
-    return position;
+    else {
+      return width;
+    }
   }
 });

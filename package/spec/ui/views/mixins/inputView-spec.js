@@ -285,6 +285,16 @@ describe('pageflow.inputView', () => {
   });
 
   describe('disabledBinding', () => {
+    it('does not disable input by default', () => {
+      var view = createInputViewWithInput({
+        model: new Backbone.Model()
+      });
+
+      view.render();
+
+      expect(view.ui.input).not.toHaveAttr('disabled');
+    });
+
     it('disables input when attribute is true', () => {
       var view = createInputViewWithInput({
         model: new Backbone.Model({disable: true}),
@@ -348,6 +358,18 @@ describe('pageflow.inputView', () => {
       expect(view.updateDisabled).toHaveBeenCalledWith(true);
     });
 
+    it('always passes boolean to updateDisabled even is attribute is not set ', () => {
+      var view = createInputViewWithInput({
+        model: new Backbone.Model(),
+        disabledBinding: 'disable'
+      });
+      view.updateDisabled = jest.fn();
+
+      view.render();
+
+      expect(view.updateDisabled).toHaveBeenCalledWith(false);
+    });
+
     describe('with disabledBindingValue option', () => {
       it('disables input when value of attribute match', () => {
         var view = createInputViewWithInput({
@@ -392,6 +414,18 @@ describe('pageflow.inputView', () => {
           model: new Backbone.Model({enabled: true}),
           disabledBinding: 'enabled',
           disabled: function(value) { return !value; }
+        });
+
+        view.render();
+
+        expect(view.ui.input).not.toHaveAttr('disabled');
+      });
+
+      it('does not disable input when function returns undefined', () => {
+        var view = createInputViewWithInput({
+          model: new Backbone.Model({enabled: true}),
+          disabledBinding: 'enabled',
+          disabled: function() { return undefined; }
         });
 
         view.render();
@@ -511,6 +545,32 @@ describe('pageflow.inputView', () => {
       view.model.set('active', false);
 
       expect(view.$el).toHaveClass('input-hidden_via_binding');
+    });
+
+    it('allows overriding updateVisible method for custom behavior', () => {
+      var view = createInputView({
+        model: new Backbone.Model({visible: false}),
+        visibleBinding: 'visible'
+      });
+      view.updateVisible = jest.fn();
+
+      view.render();
+      expect(view.updateVisible).toHaveBeenCalledWith(false);
+
+      view.model.set('visible', true);
+      expect(view.updateVisible).toHaveBeenCalledWith(true);
+    });
+
+    it('always passes boolean to updateVisible even is attribute is not set ', () => {
+      var view = createInputView({
+        model: new Backbone.Model(),
+        visibleBinding: 'visible'
+      });
+      view.updateVisible = jest.fn();
+
+      view.render();
+
+      expect(view.updateVisible).toHaveBeenCalledWith(false);
     });
 
     describe('with visibleBindingValue option', () => {

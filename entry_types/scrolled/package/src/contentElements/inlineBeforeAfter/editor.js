@@ -7,7 +7,8 @@ import pictogram from './pictogram.svg';
 editor.contentElementTypes.register('inlineBeforeAfter', {
   pictogram,
   category: 'interactive',
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right'],
+  supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor() {
     this.tab('general', function() {

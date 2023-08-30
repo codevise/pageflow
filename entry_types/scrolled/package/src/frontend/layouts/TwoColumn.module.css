@@ -22,18 +22,39 @@
   max-width: var(--content-max-width);
 }
 
-.full {
-  --content-margin-fraction: 0;
-  --content-max-width: none;
-}
-
-.sticky,
 .inline {
   --content-max-width: var(--two-column-inline-content-max-width, 500px);
 }
 
-.wide {
-  --content-max-width: var(--two-column-wide-content-max-width, 1200px);
+.inline.width-lg {
+  --content-max-width: var(--two-column-inline-lg-content-max-width, 700px);
+}
+
+.inline.width-xl {
+  --content-max-width: var(--two-column-inline-xl-content-max-width, 1200px);
+}
+
+.inline.width-full {
+  --content-margin-fraction: 0;
+  --content-max-width: none;
+}
+
+.restrict-xxs,
+.restrict-xs,
+.restrict-sm {
+  margin: 0 auto;
+}
+
+.restrict-xxs {
+  width: 30%;
+}
+
+.restrict-xs {
+  width: 50%;
+}
+
+.restrict-sm {
+  width: 70%;
 }
 
 .customMargin {
@@ -55,16 +76,11 @@
   max-width: calc(var(--content-margin) * var(--f) * 2 + var(--content-max-width));
 }
 
-.right .inline,
-.right .wide {
+.right .inline {
   margin-left: auto;
 }
 
-.narrowViewport.right .sticky {
-  margin-left: auto;
-}
-
-.wideViewport .sticky {
+.sticky {
   --content-width: var(--theme-two-column-sticky-content-width, 25vw);
   --content-max-width: min(var(--content-width), var(--two-column-sticky-content-max-width, 600px));
   position: sticky;
@@ -74,10 +90,22 @@
   width: var(--content-width);
 }
 
-.wideViewport.right .sticky {
+.right .sticky {
   float: left;
 }
 
-.wideViewport .sticky.customMargin {
+.sticky.width-lg {
+  --content-width: var(--theme-two-column-sticky-lg-content-width, 35vw);
+  --content-max-width: min(var(--content-width),
+                           var(--two-column-sticky-lg-content-max-width, 700px));
+}
+
+.sticky.width-xl {
+  --content-width: var(--theme-two-column-sticky-xl-content-width, 45vw);
+  --content-max-width: min(var(--content-width),
+                           var(--two-column-sticky-xl-content-max-width, 1000px));
+}
+
+.sticky.customMargin {
   width: 100%;
 }

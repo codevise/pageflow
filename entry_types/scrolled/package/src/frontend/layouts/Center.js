@@ -4,25 +4,32 @@ import classNames from 'classnames';
 import {api} from '../api';
 import {ContentElements} from '../ContentElements';
 
+import {widths, widthName} from './widths';
+
 import styles from './Center.module.css';
 
-const availablePositions = ['inline', 'left', 'right', 'wide', 'full'];
 const floatedPositions = ['left', 'right'];
 
 export function Center(props) {
+
   return (
     <div className={classNames(styles.root)}>
       <div ref={props.contentAreaRef} />
       {props.items.map((item, index) => {
         const customMargin = hasCustomMargin(item);
+        const position = item.position;
+        const width = widthName(getWidth(item));
 
         return (
           <ContentElements key={item.id} sectionProps={props.sectionProps} items={[item]} customMargin={customMargin}>
             {(item, child) =>
               <div key={item.id} className={outerClassName(props.items, index)}>
-                <div className={classNames(styles.item, styles[`item-${item.position}`])}>
+                <div className={classNames(styles.item,
+                                           styles[`item-${position}-${width}`])}>
                   {props.children(
-                    <div className={styles[`inner-${item.position}`]}>
+                    <div className={classNames(styles[`inner-${item.position}`],
+                                               styles[`inner-${width}`],
+                                               {[styles[`sideBySide`]]: sideBySideFloat(props.items, index)})}>
                       {child}
                     </div>,
                     boxProps(props.items, item, index)
@@ -43,7 +50,7 @@ function outerClassName(items, index) {
 
   return classNames(
     styles.outer,
-    styles[`outer-${item.position}`],
+    styles[`outer-${widthName(getWidth(item))}`],
     {[styles.customMargin]: hasCustomMargin(item)},
     {[styles.clear]: clearItem(items, index)}
   );
@@ -53,22 +60,26 @@ function boxProps(items, item, index) {
   const previous = items[index - 1];
   const next = items[index + 1];
   const customMargin = hasCustomMargin(item);
+  const width = getWidth(item);
 
   return {
     position: item.position,
+    width,
     customMargin,
     selfClear: selfClear(items, index),
     openStart: previous &&
                !customMargin &&
                !hasCustomMargin(previous) &&
-               item.position !== 'full' && previous.position !== 'full' &&
-               item.position !== 'wide' && previous.position !== 'wide',
+               !isWideOrFull(item) && !isWideOrFull(previous),
     openEnd: next &&
              !customMargin &&
              !hasCustomMargin(next) &&
-             item.position !== 'full' && next.position !== 'full' &&
-             item.position !== 'wide' && next.position !== 'wide',
+             !isWideOrFull(item) && !isWideOrFull(next)
   }
+}
+
+function isWideOrFull(item) {
+  return item.position === 'inline' && getWidth(item) > widths.md;
 }
 
 function selfClear(items, index) {
@@ -99,11 +110,23 @@ function followsSideBySideElements(items, index) {
   );
 }
 
+function sideBySideFloat(items, index) {
+  return isFloatedFollowingOppositeFloated(items, index) ||
+         isFloatedFollowedByOppositeFloated(items, index);
+}
+
 function isFloatedFollowingOppositeFloated(items, index) {
   return index > 0 &&
          isFloated(items[index]) &&
          isFloated(items[index - 1]) &&
          items[index].position !== items[index - 1].position;
+}
+
+function isFloatedFollowedByOppositeFloated(items, index) {
+  return index < items.length - 1 &&
+         isFloated(items[index]) &&
+         isFloated(items[index + 1]) &&
+         items[index].position !== items[index + 1].position;
 }
 
 function isFloated(item) {
@@ -116,9 +139,16 @@ function supportsWrappingAroundFloats(item) {
 }
 
 function hasCustomMargin(item) {
-  const position = availablePositions.includes(item.position) ? item.position : 'inline';
-  const {customMargin: elementSupportsCustomMargin} = api.contentElementTypes.getOptions(item.type) || {};
-  return !!elementSupportsCustomMargin && (position === 'inline' || position === 'wide');
+  const position = item.position;
+  const {customMargin: elementSupportsCustomMargin} =
+    api.contentElementTypes.getOptions(item.type) || {};
+  return !!(elementSupportsCustomMargin &&
+            position === 'inline' &&
+            getWidth(item) < widths.full);
+}
+
+function getWidth(item) {
+  return item.width || widths.md;
 }
 
 function renderPlaceholder(placeholder) {

@@ -9,7 +9,8 @@ editor.contentElementTypes.register('iframeEmbed', {
   pictogram,
   category: 'interactive',
   featureName: 'iframe_embed_content_element',
-  supportedPositions: ['inline', 'sticky', 'left', 'right', 'wide', 'full'],
+  supportedPositions: ['inline', 'sticky', 'left', 'right'],
+  supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor() {
     this.tab('general', function() {
