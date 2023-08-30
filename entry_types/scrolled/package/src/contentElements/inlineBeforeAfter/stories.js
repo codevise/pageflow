@@ -1,4 +1,5 @@
 import '../frontend';
+import {contentElementWidths} from 'pageflow-scrolled/frontend';
 import {filePermaId, storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
 
 storiesOfContentElement(module, {
@@ -19,7 +20,7 @@ storiesOfContentElement(module, {
         initial_slider_position: 50,
         before_label: '2010',
         after_label: '2020',
-        position: 'full',
+        width: contentElementWidths.full,
       }
     },
     {

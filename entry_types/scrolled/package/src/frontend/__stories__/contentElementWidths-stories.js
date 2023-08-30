@@ -1,7 +1,7 @@
 import React from 'react';
 import Measure from 'react-measure';
 
-import {Entry, RootProviders, ContentElementFigure, frontend} from 'pageflow-scrolled/frontend';
+import {Entry, RootProviders, ContentElementFigure, contentElementWidths, frontend} from 'pageflow-scrolled/frontend';
 
 import {
   normalizeAndMergeFixture,
@@ -131,7 +131,7 @@ function exampleSeed({layout}) {
   function exampleContentElements(sectionId) {
     if (layout === 'center') {
       return [
-        exampleHeading({sectionId, text: 'Content element widths center', position: 'wide'}),
+        exampleHeading({sectionId, text: 'Content element widths center', width: contentElementWidths.xl}),
         ...[3, 2, 1, 0, -1, -2, -3].flatMap(width => [
           examplePositionedElement({sectionId,
                                     typeName: 'measuringProbe',
@@ -165,7 +165,7 @@ function exampleSeed({layout}) {
     }
     else {
       return [
-        exampleHeading({sectionId, text: `Content element widths ${layout}`, position: 'wide'}),
+        exampleHeading({sectionId, text: `Content element widths ${layout}`, width: contentElementWidths.xl}),
         ...[3, 2, 1, 0, -1, -2, -3].flatMap(width => [
           examplePositionedElement({sectionId,
                                     typeName: 'measuringProbe',

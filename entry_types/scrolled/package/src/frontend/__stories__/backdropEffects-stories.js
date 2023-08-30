@@ -49,7 +49,7 @@ function exampleSeed({backdrop, effects}) {
 
   function exampleContentElements() {
     return [
-      exampleHeading({sectionId: 1, text: 'Backdrop effect', position: 'wide'}),
+      exampleHeading({sectionId: 1, text: 'Backdrop effect'}),
     ];
   }
 }
