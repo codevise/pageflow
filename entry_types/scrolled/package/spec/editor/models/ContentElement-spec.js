@@ -26,7 +26,7 @@ describe('ContentElement', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'sticky', 'wide', 'full']);
+      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'sticky']);
     });
 
     it('returns positions for left layout if parent section uses that', () => {
@@ -46,7 +46,7 @@ describe('ContentElement', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'sticky', 'wide', 'full']);
+      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'sticky']);
     });
 
     it('returns positions for center layout if parent section uses that', () => {
@@ -66,7 +66,7 @@ describe('ContentElement', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'left', 'right', 'wide', 'full']);
+      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'left', 'right']);
     });
 
     it('returns positions for centerRagged layout if parent section uses that', () => {
@@ -86,7 +86,7 @@ describe('ContentElement', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'left', 'right', 'wide', 'full']);
+      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'left', 'right']);
     });
 
     it('filters by positions supported by content element type', () => {

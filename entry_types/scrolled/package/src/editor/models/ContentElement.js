@@ -68,8 +68,8 @@ export const ContentElement = Backbone.Model.extend({
 
   applyDefaultConfiguration(sibling) {
     const defaultConfig = {...this.getType().defaultConfig};
-    const defaultPosition = sibling?.getDefaultSiblingPosition();
-    const supportedPositions = this.getType().supportedPositions;
+    const defaultPosition = sibling?.getPosition();
+    const supportedPositions = this.getType().supportedPositions || [];
 
     if (defaultPosition &&
         defaultPosition !== 'inline' &&
@@ -93,8 +93,8 @@ export const ContentElement = Backbone.Model.extend({
     const layout = this.section.configuration.get('layout');
     const supportedByLayout =
       layout === 'center' || layout === 'centerRagged' ?
-      ['inline', 'left', 'right', 'wide', 'full'] :
-      ['inline', 'sticky', 'wide', 'full'];
+      ['inline', 'left', 'right'] :
+      ['inline', 'sticky'];
     const supportedByType = this.getType().supportedPositions;
 
     if (supportedByType) {
@@ -128,15 +128,5 @@ export const ContentElement = Backbone.Model.extend({
     else {
       return width;
     }
-  },
-
-  getDefaultSiblingPosition() {
-    const position = this.getPosition();
-
-    if (position === 'full') {
-      return 'inline';
-    }
-
-    return position;
   }
 });
