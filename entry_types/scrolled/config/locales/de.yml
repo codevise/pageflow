@@ -62,7 +62,6 @@ de:
           inline_help: Die Beschriftung des Elements wird direkt unterhalb des Elements angezeigt.
           label: Beschriftung
         position:
-          inline_help: 'Mit dieser Einstellung kannst du die Position des Elements im Zusammenspiel mit Fließtext steuern: Das Element kann prominent für sich alleine stehen ("Volle Breite"), im Text verankert werden ("Im Textfluss") oder auch beim Scrollen begleitend neben dem Text stehenbleiben ("Sticky"). Sticky-Elemente bleiben statisch in der Mitte des Viewports neben dem Text stehen, bis entweder der Abschnitt aus dem Viewport gescrollt wird oder sie vom nächsten Sticky-Element des Abschnitts verdrängt werden. In Mobil-Darstellung werden Sticky Elemente automatisch im Text verankert. Sticky-Elemente funktionieren besonders gut bei Desktop-Darstellung in Kombination mit langen Textpassagen.'
           label: Position
           values:
             full: Volle Breite
@@ -547,34 +546,6 @@ de:
     help_entries:
       content_elements:
         menu_item: Inhaltselemente
-        text: |
-          # Inhaltselemente
-
-          In jedem Abschnitt können beliebig viele Inhaltselemente
-          eingefügt werden.
-
-          Um ein neues Inhaltselement hinzuzufügen, klicke auf das
-          Plus-Zeichen ober- oder unterhalb eines bestehenden Elements
-          und füge dann Text-Blöcke, Medien, Embeds oder externe
-          Verweise ein.
-
-          Durch einen Klick auf ein Inhaltselement wird diese
-          ausgewählt. In der Seitenleiste erscheinen die verfügbaren
-          Konfigurationsoptionen. Hier kann unter anderem die
-          **Positionierung** der Inhaltselemente festgelegt und weitere
-          Optionen wie **Autoplay** für Audios und Videos oder
-          **Bildunterschriften** bearbeitet werden.
-
-          Für die Darstellung auf breiten
-          Bildschirm-Seitenverhältnissen (Desktop, Notebook, Tablet,
-          Smartphone quer) können einzelne Inhaltselemente, wie
-          Videos, Audios, Video Embeds, 360° Bilder auch als
-          **Sticky** oder **Volle Breite** angeordnet werden.
-
-          Wenn ein Abschnitt mittig ausgerichtet ist, können
-          Inhaltselemente zudem auch nach links oder rechts eingerückt
-          werden. Dabei wird das Inhaltselement soweit verkleinert,
-          dass der Text das Element umfließen kann.
       meta_data:
         menu_item: Titel und Optionen
         text: |

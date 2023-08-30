@@ -62,7 +62,6 @@ en:
           inline_help: The caption of the element will be displayed directly underneath the element.
           label: Caption
         position:
-          inline_help: 'This setting allows you to control the position of the element in relation to surrounding text blocks: the element can prominently stand alone ("Full Width"), it can be anchored within the text ("Inline") or it can be positioned adjacent to the text ("Sticky"). Sticky elements remain static in the middle of the viewport alongside the text until either the section is scrolled out of the viewport or until they get pushed upwards by the next sticky element of the section. On mobile devices sticky elements automatically get positioned inline. Sticky elements work particularly well on desktop devices in combination with long texts.'
           label: Position
           values:
             full: Full Width
@@ -546,7 +545,6 @@ en:
     help_entries:
       content_elements:
         menu_item: Content Elements
-        text: "# Content Elements\nIn each section, any number of content elements can be inserted and positioned against a background. The position of the content elements on wide screen aspect ratios is determined by the foreground **positioning of the section** (left, right, centre). In portrait mode on smartphones (upright) the content elements are always displayed one below the other for space reasons.\n\n## Insert elements\nTo add a new content element, click on the **plus button** above or below an existing one and then insert text blocks, media, embeds or external links. \n\nBy clicking on the selected content element, a dialog box for **positioning the content elements** and other options, such as activating **autoplay for audio and video** or entering a caption, appears on the right-hand editing bar. \n\nFor display on wide screen aspect ratios (desktop, notebook, tablet, smartphone landscape), individual content elements such as videos, audios, video embeds, 360° images can also be arranged separately from the positioning in the text flow as **sticky** or **full width**. \n\nIf a section is aligned centrally, content elements can also be **indented to the left or right**. In this case, the content element is reduced in size so that the text can be displayed next to, instead of above the content element."
       meta_data:
         menu_item: Title and Options
         text: |

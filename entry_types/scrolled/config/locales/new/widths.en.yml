@@ -4,3 +4,54 @@ en:
       common_content_element_attributes:
         width:
           label: Width
+          inline_help: |-
+            Drag the slider to change the width of the element. Wider
+            elements interrupt the text flow and stand prominently on
+            their own.
+        position:
+          inline_help: |-
+            This setting allows you to control the position of the
+            element in relation to surrounding text blocks: it can be
+            anchored within the text ("Inline") or positioned adjacent
+            to the text ("Sticky"). Sticky elements remain static in
+            the middle of the viewport alongside the text until either
+            the section is scrolled out of the viewport or they get
+            pushed upwards by the next sticky element of the
+            section. On mobile devices sticky elements automatically
+            get positioned inline. Sticky elements work particularly
+            well on desktop devices in combination with long texts.
+    help_entries:
+      content_elements:
+        text: |
+          # Content Elements
+
+          In each section, any number of content elements can be
+          inserted and positioned against a background. The position
+          of the content elements on wide screen aspect ratios is
+          determined by the foreground **positioning of the section**
+          (left, right, center). In portrait mode on smartphones
+          (upright) the content elements are always displayed one
+          below the other for space reasons.
+
+          To add a new content element, click on the **plus button**
+          above or below an existing one and then insert text blocks,
+          media, embeds or external links.
+
+          Click on a content element to select it. The sidebar then
+          displays options for **positioning the content element** and
+          other options, such as activating **autoplay for audio and
+          video**.
+
+          For display on wide screen aspect ratios (desktop, notebook,
+          tablet, smartphone landscape), individual content elements
+          such as videos, audios, video embeds, 360° images can also
+          be arranged separately from the text flow as **sticky**
+          elements. Sticky elements remain static in the middle of the
+          viewport alongside the text until either the section is
+          scrolled out of the viewport or they get pushed upwards by
+          the next sticky element of the section.
+
+          If a section is aligned centrally, content elements can also
+          be **indented to the left or right**. In this case, the
+          content element is reduced in size so that the text can be
+          displayed next to, instead of below the content element."
