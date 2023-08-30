@@ -64,6 +64,45 @@ the [API reference of
 `pageflow-scrolled`](https://codevise.github.io/pageflow-docs/scrolled/js/master/index.html)
 for a complete list of available components and hooks.
 
+### Supported Positions and Widths
+
+By default, content elements can be placed in all positions:
+
+* `inline`: Default position.
+* `sticky`: Placed in second column next to inline elements in `left`
+  or `right` layout.
+* `left`: Floated to the left in `center` or `centerRagged` layout.
+* `right`: Floated to the right in `center` or `centerRagged` layout.
+
+Content element types can exclude some of these positions by
+explicitly declaring supported positions:
+
+```javascript
+frontend.contentElementTypes.register('inlineImage', {
+  component: InlineImage,
+  supportedPositions: ['inline']
+});
+```
+
+By default, content elements can only have the default width. To allow
+resizing the element with a slider, we can declare a range of
+additional supported widths:
+
+```javascript
+frontend.contentElementTypes.register('inlineImage', {
+  component: InlineImage,
+  supportedWidthRange: ['xxs', 'full']
+});
+```
+
+The following widths are available:
+
+* `xxs`, `xs`, `sm`: Elements are scaled down based on fixed
+  percentage values.
+* `md`: The default width based on the section line width.
+* `lg`, `xl`: Display elements outside section boxes to let them be wider.
+* `full`: Let element take full viewport width.
+
 ### Content Element Lifecycle
 
 The `useContentElementLifecycle` hook allows implementing scroll
@@ -273,9 +312,7 @@ editor.contentElementTypes.register('inlineImage', {
         fileSelectionHandler: 'contentElementConfiguration'
       });
       this.input('caption', TextInputView);
-      this.input('position', SelectInputView, {
-        values: ['inline', 'sticky', 'full']
-      });
+      this.group('ContentElementPosition');
     });
   },
   defaultConfig: {caption: 'Add caption here'},
