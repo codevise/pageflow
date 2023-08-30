@@ -25,7 +25,7 @@ export function TwoColumn(props) {
     <div className={classNames(styles.root, styles[props.align],
                                narrow ? styles.narrowViewport : styles.wideViewport)}>
       <div className={classNames(styles.group)} key={props.align}>
-        <div className={styles.inline} ref={props.contentAreaRef} />
+        <div className={classNames(styles.box, styles.inline)} ref={props.contentAreaRef} />
       </div>
       {renderItems(props, narrow)}
       {renderPlaceholder(props.placeholder)}
