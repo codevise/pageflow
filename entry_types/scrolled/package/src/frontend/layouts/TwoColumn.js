@@ -165,7 +165,7 @@ function renderPlaceholder(placeholder) {
 
   return (
     <div className={classNames(styles.group)}>
-      <div className={styles.inline}>
+      <div className={classNames(styles.box, styles.inline)}>
         {placeholder}
       </div>
     </div>
