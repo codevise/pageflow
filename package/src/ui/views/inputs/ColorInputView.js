@@ -49,12 +49,16 @@ export const ColorInputView = Marionette.ItemView.extend({
     this.ui.input.minicolors({
       changeDelay: 200,
       change: _.bind(function(color) {
+        this._saving = true;
+
         if (color === this.defaultValue()) {
           this.model.unset(this.options.propertyName);
         }
         else {
           this.model.set(this.options.propertyName, color);
         }
+
+        this._saving = false;
       }, this)
     });
 
@@ -89,8 +93,11 @@ export const ColorInputView = Marionette.ItemView.extend({
   },
 
   load: function() {
-    this.ui.input.minicolors('value',
-                             this.model.get(this.options.propertyName) || this.defaultValue());
+    if (!this._saving) {
+      this.ui.input.minicolors('value',
+                               this.model.get(this.options.propertyName) || this.defaultValue());
+    }
+
     this.$el.toggleClass('is_default', !this.model.has(this.options.propertyName));
   },
 

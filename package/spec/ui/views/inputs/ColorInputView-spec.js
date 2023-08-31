@@ -68,6 +68,24 @@ describe('pageflow.ColorInputView', () => {
     expect(model.get('color')).toBe('#bbbbbb');
   });
 
+  it('does not update color input with normalized value', () => {
+    var model = new Backbone.Model({
+      color: '#ababab'
+    });
+    var colorInputView = new ColorInputView({
+      model: model,
+      propertyName: 'color'
+    });
+
+    var colorInput = ColorInput.render(
+      colorInputView,
+      {appendTo: testContext.htmlSandbox}
+    );
+    colorInput.fillIn('#bbb', testContext.clock);
+
+    expect(colorInput.value()).toBe('#bbb');
+  });
+
   it('allows passing swatches', () => {
     var model = new Backbone.Model();
     var colorInputView = new ColorInputView({
