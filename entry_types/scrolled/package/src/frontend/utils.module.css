@@ -1,6 +1,4 @@
 .clip {
-  clip: rect(0, auto, auto, 0); /* IE 11 */
-
   /* When section height is a fractional value (e.g. 440.58px) Chrome
      109 cuts off a pixel at the bottom of the element. This sometimes
      leads to a visible line between sections.
