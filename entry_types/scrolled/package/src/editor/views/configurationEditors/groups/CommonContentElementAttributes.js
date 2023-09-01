@@ -11,10 +11,12 @@ import {
 ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
   const contentElement = this.model.parent;
 
-  this.input('position', SelectInputView, {
-    attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
-    values: contentElement.getAvailablePositions()
-  });
+  if (contentElement.getAvailablePositions().length > 1) {
+    this.input('position', SelectInputView, {
+      attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
+      values: contentElement.getAvailablePositions()
+    });
+  }
   this.input('width', SliderInputView, {
     attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
     displayText: value => [
