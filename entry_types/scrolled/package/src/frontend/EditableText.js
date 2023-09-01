@@ -36,7 +36,8 @@ function render(children) {
       return renderLeaf({
         attributes: {key: index},
         leaf: element,
-        children: element.text.trim() === '' ? '\uFEFF' : element.text
+        children: children.length === 1 &&
+                  element.text.trim() === '' ? '\uFEFF' : element.text
       });
     }
   });
