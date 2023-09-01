@@ -254,6 +254,27 @@ describe('EditableText', () => {
     expect(container.querySelector('p')).toHaveTextContent('\uFEFF', {normalizeWhitespace: false})
   });
 
+  it('does not render zero width no break space between two formatted words', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'One', bold: true},
+        {text: ' '},
+        {text: 'two', bold: true}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('p')).toHaveTextContent('One two', {normalizeWhitespace: false})
+  });
+
+  it('defaults to empty paragraph to prevent empty text blocks from collapsing', () => {
+    const {container} = render(<EditableText />);
+
+    expect(container.querySelector('p')).toHaveTextContent('\uFEFF', {normalizeWhitespace: false})
+  });
+
   it('renders typography variant class names for paragraphs', () => {
     const value = [{
       type: 'paragraph',

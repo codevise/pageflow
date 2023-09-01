@@ -36,7 +36,10 @@ storiesOfContentElement(module, {
       {
         type: 'paragraph',
         children: [
-          {text: 'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. '},
+          {text: 'At', bold: true},
+          {text: ' '},
+          {text: 'vero', underline: true},
+          {text: ' eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. '},
           {
             "text": "This is a "
           },
