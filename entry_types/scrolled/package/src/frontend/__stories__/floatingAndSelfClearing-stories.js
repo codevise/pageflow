@@ -31,86 +31,131 @@ frontend.contentElementTypes.register('probe', {
 });
 
 [
-  [
-    'Short Text Left',
-    ['left', '4 / 3'],
-    ['short text'],
-  ],
-  [
-    'Short Text Right',
-    ['right', '4 / 3'],
-    ['short text'],
-  ],
-  [
-    'Multiple Left',
-    ['left', '4 / 3'],
-    ['left', '4 / 3'],
-    ['left', '4 / 3']
-  ],
-  ,
-  [
-    'Left Before Non-Wrapping',
-    ['left', '4 / 3'],
-    ['inline', '4 / 3']
-  ],
-  [
-    'Left Short/Right Long',
-    ['left', '4 / 3'],
-    ['right', '3 / 4'],
-    ['text']
-  ],
-  [
-    'Left Long/Right Short',
-    ['left', '3 / 4'],
-    ['right', '4 / 3'],
-    ['text']
-  ],
-  [
-    'Left/Right/Left',
-    ['left', '4 / 3'],
-    ['right', '3 / 4'],
-    ['left', '4 / 3'],
-    ['text']
-  ],
-  [
-    'Left/Right/Right/Left',
-    ['left', '4 / 3'],
-    ['right', '3 / 4'],
-    ['right', '4 / 3'],
-    ['left', '4 / 8'],
-    ['text']
-  ],
-  [
-    'Right/Left/Right',
-    ['right', '4 / 3'],
-    ['left', '3 / 4'],
-    ['right', '4 / 3'],
-    ['text']
-  ],
-  [
-    'Left/Right/Left/Right',
-    ['left', '4 / 3'],
-    ['right', '3 / 4'],
-    ['left', '3 / 4'],
-    ['right', '4 / 3'],
-    ['text']
-  ]
-].forEach(([name, ...items]) =>
+  {
+    name: 'Short Text Left',
+    items: [
+      ['left', '4 / 3'],
+      ['short text'],
+    ]
+  },
+  {
+    name: 'Short Text Right',
+    items: [
+      ['right', '4 / 3'],
+      ['short text'],
+    ]
+  },
+  {
+    name: 'Multiple Left',
+    items: [
+      ['left', '4 / 3'],
+      ['left', '4 / 3'],
+      ['left', '4 / 3']
+    ]
+  },
+  {
+    name: 'Left Before Non-Wrapping',
+    items: [
+      ['left', '4 / 3'],
+      ['inline', '4 / 3']
+    ]
+  },
+  {
+    name: 'Left Short/Right Long',
+    items: [
+      ['left', '4 / 3'],
+      ['right', '3 / 4'],
+      ['text']
+    ]
+  },
+  {
+    name: 'Left Long/Right Short',
+    items: [
+      ['left', '3 / 4'],
+      ['right', '4 / 3'],
+      ['text']
+    ]
+  },
+  {
+    name: 'Left/Right/Left',
+    items: [
+      ['left', '4 / 3'],
+      ['right', '3 / 4'],
+      ['left', '4 / 3'],
+      ['text']
+    ]
+  },
+  {
+    name: 'Left/Right/Right/Left',
+    items: [
+      ['left', '4 / 3'],
+      ['right', '3 / 4'],
+      ['right', '4 / 3'],
+      ['left', '4 / 8'],
+      ['text']
+    ]
+  },
+  {
+    name: 'Right/Left/Right',
+    items: [
+      ['right', '4 / 3'],
+      ['left', '3 / 4'],
+      ['right', '4 / 3'],
+      ['text']
+    ]
+  },
+  {
+    name: 'Left/Right/Left/Right',
+    items: [
+      ['left', '4 / 3'],
+      ['right', '3 / 4'],
+      ['left', '3 / 4'],
+      ['right', '4 / 3'],
+      ['text']
+    ]
+  },
+  {
+    name: 'Single Inlined Element',
+    appearance: 'shadow',
+    viewportWidth: 1000,
+    items: [
+      ['left', '4 / 3'],
+      ['right', '4 / 3'],
+      ['left', '4 / 3', contentElementWidths.lg],
+    ]
+  }
+].forEach(({name, items, appearance, viewportWidth}) =>
   storiesOf(`Frontend/Floating and Self Clearing`, module)
     .add(
       name,
       () =>
-        <RootProviders seed={exampleSeed(items)}>
+        <RootProviders seed={exampleSeed({items, appearance})}>
           <Entry />
-        </RootProviders>
+        </RootProviders>,
+      viewportWidth ?
+        {
+          viewport: {
+            viewports: {
+              custom: {
+                name: 'Custom',
+                styles: {
+                  width: `${viewportWidth}px`,
+                  height: '1080px'
+                }
+              }
+            },
+            defaultViewport: 'custom'
+          },
+          percy: {widths: [viewportWidth]}
+        } : {}
     )
 );
 
-function exampleSeed(items) {
+function exampleSeed({items, appearance}) {
   const sectionBaseConfiguration = {
     transition: 'reveal',
-    appearance: 'cards',
     layout: 'center',
+    appearance: appearance || 'cards',
     fullHeight: true
   };
 
@@ -128,7 +173,7 @@ function exampleSeed(items) {
     ],
     contentElements: [
       exampleHeading({sectionId: 1, text: 'Self Clearing Boxes', width: contentElementWidths.xl}),
-      ...items.map(([typeName, aspectRatio], index) => {
+      ...items.map(([typeName, aspectRatio, width], index) => {
         if (typeName === 'short text') {
           return exampleTextBlock({sectionId: 1, text: 'Short Text'});
         }
@@ -140,6 +185,7 @@ function exampleSeed(items) {
             sectionId: 1,
             typeName: 'probe',
             position: typeName,
+            width,
             configuration: {
               aspectRatio,
               index
