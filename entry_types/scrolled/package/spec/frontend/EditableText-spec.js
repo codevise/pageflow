@@ -254,6 +254,12 @@ describe('EditableText', () => {
     expect(container.querySelector('p')).toHaveTextContent('\uFEFF', {normalizeWhitespace: false})
   });
 
+  it('defaults to empty paragraph to prevent empty text blocks from collapsing', () => {
+    const {container} = render(<EditableText />);
+
+    expect(container.querySelector('p')).toHaveTextContent('\uFEFF', {normalizeWhitespace: false})
+  });
+
   it('renders typography variant class names for paragraphs', () => {
     const value = [{
       type: 'paragraph',

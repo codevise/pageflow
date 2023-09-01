@@ -10,19 +10,24 @@ import textStyles from './Text.module.css';
 
 import styles from './EditableText.module.css';
 
+const defaultValue = [{
+  type: 'paragraph',
+  children: [{ text: '' }],
+}];
+
 export const EditableText = withInlineEditingAlternative('EditableText', function EditableText({
   value, className, scaleCategory = 'body'
 }) {
   return (
     <div className={classNames(styles.root, className)}>
       <Text scaleCategory={scaleCategory}>
-        {render(value)}
+        {render(value || defaultValue)}
       </Text>
     </div>
   );
 });
 
-function render(children = []) {
+function render(children) {
   return children.map((element, index) => {
     if (element.type) {
       return renderElement({attributes: {key: index}, element, children: render(element.children)});
