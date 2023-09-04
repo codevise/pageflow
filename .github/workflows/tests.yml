@@ -14,28 +14,43 @@ jobs:
       matrix:
         include:
           - engine-name: pageflow
+            ruby-version: 2.6
             engine-directory: .
             rspec-command: bin/rspec --tag ~js
             install-audiowaveform: true
 
           - engine-name: pageflow
+            ruby-version: 3.2
+            rails-version: "~> 6.1"
+            engine-directory: .
+            rspec-command: bin/rspec --tag ~js
+            install-audiowaveform: true
+
+          - engine-name: pageflow
+            ruby-version: 2.6
             engine-directory: .
             rspec-command: bin/rspec-with-retry --tag js
 
           - engine-name: pageflow_paged
+            ruby-version: 2.6
             engine-directory: entry_types/paged
             plugin-name: pageflow_paged
             rspec-command: bin/rspec
 
           - engine-name: pageflow_scrolled
+            ruby-version: 2.6
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
             rspec-command: bin/rspec --tag ~js
 
           - engine-name: pageflow_scrolled
+            ruby-version: 2.6
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
             rspec-command: bin/rspec-with-retry-on-timeout --tag js
+
+    env:
+      PAGEFLOW_RAILS_VERSION: ${{ matrix.rails-version }}
 
     services:
       mysql:
@@ -69,9 +84,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
+        key: ${{ runner.os }}-ruby-${{ matrix.ruby-version }}-gems-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
         restore-keys: |
-          ${{ runner.os }}-gems-
+          ${{ runner.os }}-ruby-${{ matrix.ruby-version }}-gems-
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
@@ -87,10 +102,10 @@ jobs:
 
     # Ruby/Node
 
-    - name: Set up Ruby 2.6
+    - name: Set up Ruby ${{ matrix.ruby-version }}
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6
+        ruby-version: ${{ matrix.ruby-version }}
 
     - name: Use Node.js 14
       uses: actions/setup-node@v1
@@ -136,8 +151,18 @@ jobs:
     # Test
 
     - name: Run tests
+      if: ${{ matrix.rails-version == '' }}
       working-directory: ${{ matrix.engine-directory }}
       run: ${{ matrix.rspec-command }}
+
+    - name: Run tests against experimental Rails version
+      if: ${{ matrix.rails-version != '' }}
+      working-directory: ${{ matrix.engine-directory }}
+      env:
+        PAGEFLOW_EXAMPLE_STATUS_PERSISTENCE_FILE_PATH: ./spec/support/experimental_rails_example_status
+      run: |
+        ${{ matrix.rspec-command }} -t last_run_status:failed --failure-exit-code 0
+        ${{ matrix.rspec-command }} -t ~last_run_status:failed
 
   jest:
     runs-on: ubuntu-latest

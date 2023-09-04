@@ -10,7 +10,7 @@ module Pageflow
         if File.exist?(directory)
           puts("Dummy directory #{directory} exists.")
         else
-          system("bundle exec rails new #{directory} " \
+          system("bundle exec rails new #{directory} --skip-spring " \
                  "--template #{template_path} #{rails_new_options}") ||
             raise('Error generating dummy app.')
         end

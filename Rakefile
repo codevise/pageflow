@@ -30,7 +30,7 @@ end
 require File.expand_path('spec/support/pageflow/dummy/app', File.dirname(__FILE__))
 APP_RAKEFILE = File.expand_path("../#{Pageflow::Dummy::App.new.directory}/Rakefile", __FILE__)
 
-load 'rails/tasks/engine.rake' if File.exists?(APP_RAKEFILE)
+load 'rails/tasks/engine.rake' if File.exist?(APP_RAKEFILE)
 load File.expand_path('lib/tasks/pageflow_tasks.rake', File.dirname(__FILE__))
 
 Bundler::GemHelper.install_tasks
