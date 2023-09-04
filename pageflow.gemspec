@@ -2,6 +2,7 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'pageflow/version'
+require File.expand_path('spec/support/pageflow/rails_version', File.dirname(__FILE__))
 
 Gem::Specification.new do |s|
   s.name        = 'pageflow'
@@ -24,10 +25,18 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
 
-  s.add_dependency 'rails', '~> 5.2.0'
+  if Pageflow::RailsVersion.experimental?
+    s.add_dependency 'rails', '~> 6.1.0'
+  else
+    s.add_dependency 'rails', '~> 5.2.0'
+  end
 
   # Framework for admin interface
-  s.add_dependency 'activeadmin', ['>= 1.3.0', '< 3']
+  if Pageflow::RailsVersion.experimental?
+    s.add_dependency 'activeadmin', '~> 3.0'
+  else
+    s.add_dependency 'activeadmin', ['>= 1.3.0', '< 3']
+  end
 
   # Searchable select boxes for filters and forms
   s.add_dependency 'activeadmin-searchable_select', '~> 1.0'
@@ -45,13 +54,21 @@ Gem::Specification.new do |s|
   s.add_dependency 'cancancan', '~> 1.10'
 
   # State machines for active record
-  s.add_dependency 'state_machines-activerecord', '~> 0.5.1'
+  if Pageflow::RailsVersion.experimental?
+    s.add_dependency 'state_machines-activerecord', '~> 0.9.0'
+  else
+    s.add_dependency 'state_machines-activerecord', '~> 0.5.1'
+  end
 
   # Trigger resque jobs with a state machine
   s.add_dependency 'state_machine_job', '~> 3.0'
 
   # File attachments
-  s.add_dependency 'paperclip', '~> 6.1'
+  if Pageflow::RailsVersion.experimental?
+    s.add_dependency 'kt-paperclip', '~> 7.2'
+  else
+    s.add_dependency 'paperclip', '~> 6.1'
+  end
 
   # MySQL/Postgres advisory locks
   s.add_dependency 'with_advisory_lock', '~> 4.6'
@@ -145,7 +162,13 @@ Gem::Specification.new do |s|
   # Resque as default Active Job backend
   s.add_development_dependency 'resque', '~> 1.25'
   s.add_development_dependency 'resque-scheduler', '~> 2.5'
-  s.add_development_dependency 'ar_after_transaction', '~> 0.5.0'
+
+  if Pageflow::RailsVersion.experimental?
+    s.add_development_dependency 'ar_after_transaction', '~> 0.8.0'
+  else
+    s.add_development_dependency 'ar_after_transaction', '~> 0.5.0'
+  end
+
   s.add_development_dependency 'redis', '~> 3.0'
   s.add_development_dependency 'redis-namespace', '~> 1.5'
 
@@ -204,7 +227,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop', '~> 0.54.0'
 
   # Scss code linter
-  s.add_development_dependency 'scss_lint', '~> 0.50.0'
+  s.add_development_dependency 'scss_lint', '~> 0.60.0'
   s.add_development_dependency 'scss_lint_reporter_checkstyle', '~> 0.2.0'
 
 

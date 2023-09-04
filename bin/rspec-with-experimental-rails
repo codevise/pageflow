@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export PAGEFLOW_RAILS_VERSION="~> 6.1"
+export PAGEFLOW_EXAMPLE_STATUS_PERSISTENCE_FILE_PATH="./spec/support/experimental_rails_example_status"
+
+bin/rspec $@;

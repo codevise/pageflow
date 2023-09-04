@@ -8,14 +8,18 @@ module Pageflow
       from_env || from_file || '5.2.0'
     end
 
+    def experimental?
+      detect != '5.2.0'
+    end
+
     private
 
     def from_env
-      ENV['PAGEFLOW_RAILS_VERSION']
+      ENV['PAGEFLOW_RAILS_VERSION'] if ENV['PAGEFLOW_RAILS_VERSION'] != ''
     end
 
     def from_file
-      if File.exists?(RAILS_VERSION_FILE)
+      if File.exist?(RAILS_VERSION_FILE)
         File.read(RAILS_VERSION_FILE).chomp.strip.presence
       end
     end
