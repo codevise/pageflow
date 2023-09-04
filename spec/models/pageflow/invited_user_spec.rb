@@ -54,7 +54,7 @@ module Pageflow
         user = create(:invited_user, password: nil)
 
         expect(UserMailer).not_to receive(:invitation)
-        user.update_attributes(first_name: 'new name')
+        user.update(first_name: 'new name')
       end
     end
   end
