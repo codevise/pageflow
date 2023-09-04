@@ -30,8 +30,10 @@ inject_into_file('config/application.rb',
                  "require 'pageflow'\n",
                  after: "Bundler.require(*Rails.groups)\n")
 
-# Remove requires to missing gems (i.e. turbolinks)
-gsub_file('app/assets/javascripts/application.js', %r'//=.*', '')
+if in_root { File.exist?('app/assets/javascripts/application.js') }
+  # Remove requires to missing gems (i.e. turbolinks)
+  gsub_file('app/assets/javascripts/application.js', %r'//=.*', '')
+end
 
 # Recreate db. Ignore if it does not exist.
 
