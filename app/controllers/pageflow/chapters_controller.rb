@@ -31,7 +31,7 @@ module Pageflow
 
       authorize!(:update, chapter)
       verify_edit_lock!(chapter.entry)
-      chapter.update_attributes(chapter_params)
+      chapter.update(chapter_params)
 
       respond_with(chapter)
     end

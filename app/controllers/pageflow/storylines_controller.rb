@@ -31,7 +31,7 @@ module Pageflow
 
       authorize!(:update, storyline)
       verify_edit_lock!(storyline.entry)
-      storyline.update_attributes(storyline_params)
+      storyline.update(storyline_params)
 
       respond_with(storyline)
     end

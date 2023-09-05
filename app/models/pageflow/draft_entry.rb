@@ -52,7 +52,7 @@ module Pageflow
     end
 
     def update_meta_data!(attributes)
-      draft.update_attributes!(attributes)
+      draft.update!(attributes)
     end
 
     def self.find(id)

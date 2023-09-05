@@ -20,7 +20,7 @@ module Pageflow
 
       authorize!(:update, page)
       verify_edit_lock!(page.chapter.entry)
-      page.update_attributes(page_params)
+      page.update(page_params)
 
       respond_with(page)
     end

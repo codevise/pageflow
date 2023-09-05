@@ -27,7 +27,7 @@ module PageflowScrolled
 
       def update
         content_element = ContentElement.all_for_revision(@entry.draft).find(params[:id])
-        content_element.update_attributes(content_element_params)
+        content_element.update(content_element_params)
 
         head :no_content
       rescue ActiveRecord::RecordNotFound

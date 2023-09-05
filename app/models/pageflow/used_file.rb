@@ -10,9 +10,9 @@ module Pageflow
       @usage.configuration
     end
 
-    def update_attributes!(attributes)
+    def update!(attributes)
       super(attributes.except(:configuration))
-      @usage.update_attributes!(attributes.slice(:configuration))
+      @usage.update!(attributes.slice(:configuration))
     end
 
     def usage_id

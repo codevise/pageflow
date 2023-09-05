@@ -15,7 +15,7 @@ module PageflowScrolled
 
       def update
         section = Section.all_for_revision(@entry.draft).find(params[:id])
-        section.update_attributes(section_params)
+        section.update(section_params)
 
         head :no_content
       rescue ActiveRecord::RecordNotFound

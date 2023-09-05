@@ -72,7 +72,7 @@ module Pageflow
         file = entry.find_file(file_type.model, params[:id])
 
         authorize!(:update, file.to_model)
-        file.update_attributes!(update_params)
+        file.update!(update_params)
 
         head(:no_content)
       end
