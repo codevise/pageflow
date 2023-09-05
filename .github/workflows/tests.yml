@@ -151,18 +151,8 @@ jobs:
     # Test
 
     - name: Run tests
-      if: ${{ matrix.rails-version == '' }}
       working-directory: ${{ matrix.engine-directory }}
       run: ${{ matrix.rspec-command }}
-
-    - name: Run tests against experimental Rails version
-      if: ${{ matrix.rails-version != '' }}
-      working-directory: ${{ matrix.engine-directory }}
-      env:
-        PAGEFLOW_EXAMPLE_STATUS_PERSISTENCE_FILE_PATH: ./spec/support/experimental_rails_example_status
-      run: |
-        ${{ matrix.rspec-command }} -t last_run_status:failed --failure-exit-code 0
-        ${{ matrix.rspec-command }} -t ~last_run_status:failed
 
   jest:
     runs-on: ubuntu-latest

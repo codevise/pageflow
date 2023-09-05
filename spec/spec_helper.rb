@@ -30,8 +30,7 @@ RSpec.configure do |config|
     c.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
-  config.example_status_persistence_file_path =
-    ENV.fetch('PAGEFLOW_EXAMPLE_STATUS_PERSISTENCE_FILE_PATH', './tmp/rspec_failures')
+  config.example_status_persistence_file_path = './tmp/rspec_failures'
 
   if Pageflow::RailsVersion.experimental?
     config.file_fixture_path = './spec/fixtures'
