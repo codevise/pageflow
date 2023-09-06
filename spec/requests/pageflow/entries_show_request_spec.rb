@@ -303,6 +303,87 @@ module Pageflow
           expect(response.status).to eq(200)
         end
       end
+
+      describe 'Cache-Control header' do
+        it 'prevents caching by default' do
+          entry = create(:entry, :published,
+                         type_name: 'test')
+
+          get(short_entry_url(entry))
+
+          expect(response.status).to eq(200)
+          expect(response.headers['Cache-Control']).to eq('no-cache')
+        end
+
+        it 'uses public_entry_cache_control_header config for published entry without password' do
+          pageflow_configure do |config|
+            config.public_entry_cache_control_header = 'public, max-age=600'
+          end
+
+          entry = create(:entry, :published,
+                         type_name: 'test')
+
+          get(short_entry_url(entry))
+
+          expect(response.status).to eq(200)
+          expect(response.headers['Cache-Control']).to eq('public, max-age=600')
+        end
+
+        it 'is not set for entry published with password' do
+          pageflow_configure do |config|
+            config.public_entry_cache_control_header = 'public, max-age=600'
+          end
+
+          entry = create(:entry, :published_with_password,
+                         type_name: 'test',
+                         password: 'abc123abc')
+
+          authorization =
+            ActionController::HttpAuthentication::Basic.encode_credentials('Pageflow', 'abc123abc')
+
+          get(short_entry_url(entry), headers: {'HTTP_AUTHORIZATION' => authorization})
+
+          expect(response.status).to eq(200)
+          expect(response.headers['Cache-Control']).to eq('no-cache')
+        end
+
+        it 'does not use config from feature flag by default' do
+          pageflow_configure do |config|
+            config.public_entry_cache_control_header = 'public, max-age=600'
+
+            config.features.register('long_cache') do |feature_config|
+              feature_config.public_entry_cache_control_header = 'public, max-age=3600'
+            end
+          end
+
+          entry = create(:entry, :published,
+                         type_name: 'test')
+
+          get(short_entry_url(entry))
+
+          expect(response.status).to eq(200)
+          expect(response.headers['Cache-Control']).to eq('public, max-age=600')
+        end
+
+        it 'uses config from feature flag if enabled' do
+          pageflow_configure do |config|
+            config.public_entry_cache_control_header = 'public, max-age=600'
+
+            config.features.register('long_cache') do |feature_config|
+              feature_config.public_entry_cache_control_header = 'public, max-age=3600'
+            end
+          end
+
+          entry = create(:entry, :published,
+                         type_name: 'test',
+                         with_feature: 'long_cache')
+
+          get(short_entry_url(entry))
+
+          expect(response.status).to eq(200)
+          expect(response.headers['Cache-Control']).to eq('public, max-age=3600')
+        end
+      end
     end
   end
 end
