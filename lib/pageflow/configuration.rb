@@ -195,6 +195,19 @@ module Pageflow
     # @since 12.4
     attr_accessor :public_entry_redirect
 
+    # Cache-Control header to set for published entries that have been
+    # published without a password. For password protected entries,
+    # cache control is always set to private to prevent caching
+    # authenticated responses in public caches like CDNs and serving
+    # them to unauthenticated users.
+    #
+    # Can be wrapped in a `features.register` block to use different
+    # caching strategies for different entries or accounts.
+    #
+    # @since edge
+    # @return [String]
+    attr_accessor :public_entry_cache_control_header
+
     # Either a lambda or an object with a `call` method taking a
     # {Site} as paramater and returing a hash of options used to
     # construct the url of a published entry.
@@ -548,6 +561,7 @@ module Pageflow
       delegate :page_types, to: :config
       delegate :themes, to: :config
       delegate :widget_types, to: :config
+      delegate :public_entry_cache_control_header=, to: :config
 
       delegate :for_entry_type, to: :config
     end

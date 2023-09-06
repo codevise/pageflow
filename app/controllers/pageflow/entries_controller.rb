@@ -85,11 +85,21 @@ module Pageflow
 
       delegate_to_rack_app!(entry.entry_type.frontend_app) do |_status, headers, _body|
         allow_iframe_for_embed(headers)
+        apply_cache_control(entry, headers)
       end
     end
 
     def allow_iframe_for_embed(headers)
       headers.except!('X-Frame-Options') if params[:embed]
+    end
+
+    def apply_cache_control(entry, headers)
+      config = Pageflow.config_for(entry)
+
+      return if config.public_entry_cache_control_header.blank?
+      return if entry.password_protected?
+
+      headers['Cache-Control'] = config.public_entry_cache_control_header
     end
   end
 end
