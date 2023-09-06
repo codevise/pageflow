@@ -1,59 +1,61 @@
-<!DOCTYPE html>
-<%= content_tag(:html, lang: @entry.locale, dir: text_direction(@entry.locale)) do %>
-  <head>
-    <title><%= pretty_entry_title(@entry) %></title>
+<%= cache_scrolled_entry(entry: @entry, widget_scope: @widget_scope) do %>
+  <!DOCTYPE html>
+  <%= content_tag(:html, lang: @entry.locale, dir: text_direction(@entry.locale)) do %>
+    <head>
+      <title><%= pretty_entry_title(@entry) %></title>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 
-    <%= social_share_meta_tags_for(@entry) %>
-    <%= meta_tags_for_entry(@entry) %>
-    <%= feed_link_tags_for_entry(@entry) unless @skip_feed_link_tags%>
+      <%= social_share_meta_tags_for(@entry) %>
+      <%= meta_tags_for_entry(@entry) %>
+      <%= feed_link_tags_for_entry(@entry) unless @skip_feed_link_tags%>
 
-    <%= scrolled_favicons_for_entry(@entry, entry_mode: @widget_scope) %>
+      <%= scrolled_favicons_for_entry(@entry, entry_mode: @widget_scope) %>
 
-    <%= javascript_include_tag 'pageflow_scrolled/legacy' %>
-    <%= scrolled_frontend_stylesheet_packs_tag(@entry, widget_scope: @widget_scope) %>
+      <%= javascript_include_tag 'pageflow_scrolled/legacy' %>
+      <%= scrolled_frontend_stylesheet_packs_tag(@entry, widget_scope: @widget_scope) %>
 
-    <%= scrolled_theme_properties_style_tag(@entry.theme) %>
-    <%= scrolled_theme_stylesheet_pack_tags(@entry.theme) %>
+      <%= scrolled_theme_properties_style_tag(@entry.theme) %>
+      <%= scrolled_theme_stylesheet_pack_tags(@entry.theme) %>
 
-    <%= render_widget_head_fragments(@entry, scope: @widget_scope) %>
+      <%= render_widget_head_fragments(@entry, scope: @widget_scope) %>
 
-    <% if Rails.env.development? %>
-      <script>
-        try {
-          if (window.top !== window) {
-            window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.top.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+      <% if Rails.env.development? %>
+        <script>
+          try {
+            if (window.top !== window) {
+              window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.top.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+            }
+          } catch (e) {
+            console.warn('unable to connect to top frame for connecting dev tools');
           }
-        } catch (e) {
-          console.warn('unable to connect to top frame for connecting dev tools');
-        }
-      </script>
-    <% end %>
+        </script>
+      <% end %>
 
-    <% ssr_html = @skip_ssr ? '' : render_scrolled_entry(@entry) %>
+      <% ssr_html = @skip_ssr ? '' : render_scrolled_entry(@entry) %>
 
-    <% if !@skip_ssr && (params[:frontend] == 'v2' || @entry.feature_state('frontend_v2')) %>
-      <%= generated_media_queries_tags_for(ssr_html) %>
-    <% end %>
-  </head>
-  <body>
-    <%= structured_data_for_entry(@entry) unless @skip_structured_data %>
+      <% if !@skip_ssr && (params[:frontend] == 'v2' || @entry.feature_state('frontend_v2')) %>
+        <%= generated_media_queries_tags_for(ssr_html) %>
+      <% end %>
+    </head>
+    <body>
+      <%= structured_data_for_entry(@entry) unless @skip_structured_data %>
 
-    <%= render 'pageflow_scrolled/entries/global_notices' %>
+      <%= render 'pageflow_scrolled/entries/global_notices' %>
 
-    <div id="fullscreenRoot"></div>
-    <div id="root"><%= ssr_html %></div>
+      <div id="fullscreenRoot"></div>
+      <div id="root"><%= ssr_html %></div>
 
-    <div id='template-widget-container'>
-      <%= render_widgets(@entry, scope: @widget_scope, insert_point: :bottom_of_entry) %>
-    </div>
+      <div id='template-widget-container'>
+        <%= render_widgets(@entry, scope: @widget_scope, insert_point: :bottom_of_entry) %>
+      </div>
 
-    <%= scrolled_webpack_public_path_script_tag %>
-    <%= scrolled_frontend_javascript_packs_tag(@entry, widget_scope: @widget_scope) %>
+      <%= scrolled_webpack_public_path_script_tag %>
+      <%= scrolled_frontend_javascript_packs_tag(@entry, widget_scope: @widget_scope) %>
 
-    <%= scrolled_entry_json_seed_script_tag(@entry, @seed_options || {}) %>
-  </body>
+      <%= scrolled_entry_json_seed_script_tag(@entry, @seed_options || {}) %>
+    </body>
+  <% end %>
 <% end %>
