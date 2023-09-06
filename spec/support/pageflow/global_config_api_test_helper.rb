@@ -24,7 +24,7 @@ module Pageflow
     #     # ...
     #   end
     def pageflow_configure(&block)
-      GlobalConfigApiTestHelper.custom_configure_block = block
+      GlobalConfigApiTestHelper.custom_configure_block << block
       Pageflow.configure!
     end
 
@@ -39,12 +39,14 @@ module Pageflow
 
         config.before(:suite) do
           Pageflow.configure do |pageflow_config|
-            GlobalConfigApiTestHelper.custom_configure_block&.call(pageflow_config)
+            GlobalConfigApiTestHelper.custom_configure_block.each do |block|
+              block.call(pageflow_config)
+            end
           end
         end
 
         config.before do
-          GlobalConfigApiTestHelper.custom_configure_block = nil
+          GlobalConfigApiTestHelper.custom_configure_block = []
           Pageflow.configure!
         end
       end
