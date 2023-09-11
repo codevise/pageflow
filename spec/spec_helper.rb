@@ -33,7 +33,11 @@ RSpec.configure do |config|
   config.example_status_persistence_file_path =
     ENV.fetch('PAGEFLOW_EXAMPLE_STATUS_PERSISTENCE_FILE_PATH', './tmp/rspec_failures')
 
-  config.fixture_path = './spec/fixtures'
+  if Pageflow::RailsVersion.experimental?
+    config.file_fixture_path = './spec/fixtures'
+  else
+    config.fixture_path = './spec/fixtures'
+  end
 
   config.order = "random"
 end

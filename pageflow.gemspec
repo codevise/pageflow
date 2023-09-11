@@ -180,7 +180,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sassc-rails', '~> 2.1'
 
   # Testing framework
-  s.add_development_dependency 'rspec-rails', '~> 3.4'
+  if Pageflow::RailsVersion.experimental?
+    s.add_development_dependency 'rspec-rails', '~> 6.0'
+  else
+    s.add_development_dependency 'rspec-rails', '~> 3.4'
+  end
 
   # Matchers like "to have(3).items"
   s.add_development_dependency 'rspec-collection_matchers', '~> 1.1'
