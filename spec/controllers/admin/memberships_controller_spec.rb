@@ -231,8 +231,8 @@ describe Admin::MembershipsController do
         sign_in(account_publisher, scope: :user)
 
         expect do
-          post :create, params: {user_id: user, membership: {account_id: account.id,
-                                                             account_type: 'Pageflow::Account',
+          post :create, params: {user_id: user, membership: {entity_id: account.id,
+                                                             entity_type: 'Pageflow::Account',
                                                              role: :manager}}
         end.not_to change { user.accounts.count }
       end
