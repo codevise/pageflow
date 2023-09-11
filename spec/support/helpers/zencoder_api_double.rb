@@ -1,3 +1,5 @@
+require 'rspec/mocks'
+
 module ZencoderApiDouble
   extend self
 
