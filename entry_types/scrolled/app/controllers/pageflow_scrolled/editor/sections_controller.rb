@@ -36,9 +36,8 @@ module PageflowScrolled
         storyline = chapter.storyline
 
         params.require(:ids).each_with_index do |id, index|
-          storyline.sections.update(id,
-                                    chapter_id: chapter.id,
-                                    position: index)
+          storyline.sections.find(id).update(chapter_id: chapter.id,
+                                             position: index)
         end
 
         head :no_content
