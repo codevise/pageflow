@@ -31,6 +31,12 @@ jobs:
             engine-directory: .
             rspec-command: bin/rspec-with-retry --tag js
 
+          - engine-name: pageflow
+            ruby-version: 3.2
+            rails-version: "~> 6.1"
+            engine-directory: .
+            rspec-command: bin/rspec-with-retry --tag js
+
           - engine-name: pageflow_paged
             ruby-version: 2.6
             engine-directory: entry_types/paged
