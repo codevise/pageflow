@@ -80,7 +80,7 @@ module Pageflow
                                                  quota,
                                                  user)
 
-        expect(entry).to receive(:publish).with(creator: user, published_until: 1.week.from_now)
+        expect(entry).to receive(:publish).with({creator: user, published_until: 1.week.from_now})
 
         entry_publication.save!
       end
