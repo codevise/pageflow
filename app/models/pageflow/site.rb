@@ -55,5 +55,13 @@ module Pageflow
     def theme_name
       first_paged_entry_template.theme_name
     end
+
+    def self.ransackable_attributes(_auth_object)
+      %w[name]
+    end
+
+    def self.ransackable_associations(_auth_object)
+      %w[account]
+    end
   end
 end
