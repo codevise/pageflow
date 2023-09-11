@@ -87,7 +87,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'kramdown', '~> 1.5'
 
   # Convert srt files to vtt
-  s.add_dependency 'webvtt-ruby', '~> 0.3.2'
+  s.add_dependency 'webvtt-ruby', '~> 0.4.0'
 
   # Decode strings with HTML entities
   s.add_dependency 'htmlentities', '~> 4.3'
