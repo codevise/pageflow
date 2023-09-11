@@ -29,7 +29,7 @@ Style/FrozenStringLiteralComment:
 Style/LambdaCall:
   Enabled: false
 
-  # Do not use %i for symbol arrays
+# Do not use %i for symbol arrays
 Style/SymbolArray:
   EnforcedStyle: brackets
 
@@ -78,4 +78,8 @@ Style/ModuleFunction:
 
 # Allow method names like has_text?
 Naming/PredicateName:
+  Enabled: false
+
+# Braces can have meaning in Ruby 3
+Style/BracesAroundHashParameters:
   Enabled: false

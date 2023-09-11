@@ -84,12 +84,6 @@ module Pageflow
     end
 
     describe '#page_type_templates' do
-      before do
-        controller.singleton_class.class_eval do
-          helper_method :render_to_string
-        end
-      end
-
       it 'renders page templates in script tags' do
         page_type = TestPageType.new(name: 'test',
                                      template_path: 'pageflow/test/page')

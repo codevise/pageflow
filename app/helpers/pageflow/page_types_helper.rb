@@ -17,16 +17,16 @@ module Pageflow
     def page_type_templates(entry)
       safe_join(Pageflow.config.page_types.map do |page_type|
         content_tag(:script,
-                    render_to_string(template: page_type.template_path,
-                                     locals: {
-                                       configuration: {},
-                                       page: Page.new,
-                                       entry: entry,
+                    render(template: page_type.template_path,
+                           locals: {
+                             configuration: {},
+                             page: Page.new,
+                             entry: entry,
 
-                                       # Required by RevisionFileHelper#find_file_in_entry
-                                       :@entry => entry
-                                     },
-                                     layout: false).to_str,
+                             # Required by RevisionFileHelper#find_file_in_entry
+                             :@entry => entry
+                           },
+                           layout: false).to_str,
                     type: 'text/html', data: {template: "#{page_type.name}_page"})
       end)
     end

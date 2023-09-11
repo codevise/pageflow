@@ -15,7 +15,7 @@ module PageflowScrolled
 
       def update
         section = Section.all_for_revision(@entry.draft).find(params[:id])
-        section.update_attributes(section_params)
+        section.update(section_params)
 
         head :no_content
       rescue ActiveRecord::RecordNotFound
@@ -36,9 +36,8 @@ module PageflowScrolled
         storyline = chapter.storyline
 
         params.require(:ids).each_with_index do |id, index|
-          storyline.sections.update(id,
-                                    chapter_id: chapter.id,
-                                    position: index)
+          storyline.sections.find(id).update(chapter_id: chapter.id,
+                                             position: index)
         end
 
         head :no_content

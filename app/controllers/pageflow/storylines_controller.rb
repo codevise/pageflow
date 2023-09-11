@@ -31,7 +31,7 @@ module Pageflow
 
       authorize!(:update, storyline)
       verify_edit_lock!(storyline.entry)
-      storyline.update_attributes(storyline_params)
+      storyline.update(storyline_params)
 
       respond_with(storyline)
     end
@@ -42,7 +42,7 @@ module Pageflow
       authorize!(:edit_outline, entry.to_model)
       verify_edit_lock!(entry)
       params.require(:ids).each_with_index do |id, index|
-        entry.storylines.update(id, position: index)
+        entry.storylines.find(id).update(position: index)
       end
 
       head :no_content

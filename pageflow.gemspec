@@ -51,7 +51,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'yajl-ruby', '~> 1.2'
 
   # Authorization
-  s.add_dependency 'cancancan', '~> 1.10'
+  if Pageflow::RailsVersion.experimental?
+    s.add_dependency 'cancancan', '~> 3.5'
+  else
+    s.add_dependency 'cancancan', '~> 1.10'
+  end
 
   # State machines for active record
   if Pageflow::RailsVersion.experimental?
@@ -83,7 +87,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'kramdown', '~> 1.5'
 
   # Convert srt files to vtt
-  s.add_dependency 'webvtt-ruby', '~> 0.3.2'
+  s.add_dependency 'webvtt-ruby', '~> 0.4.0'
 
   # Decode strings with HTML entities
   s.add_dependency 'htmlentities', '~> 4.3'
@@ -176,7 +180,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sassc-rails', '~> 2.1'
 
   # Testing framework
-  s.add_development_dependency 'rspec-rails', '~> 3.4'
+  if Pageflow::RailsVersion.experimental?
+    s.add_development_dependency 'rspec-rails', '~> 6.0'
+  else
+    s.add_development_dependency 'rspec-rails', '~> 3.4'
+  end
 
   # Matchers like "to have(3).items"
   s.add_development_dependency 'rspec-collection_matchers', '~> 1.1'

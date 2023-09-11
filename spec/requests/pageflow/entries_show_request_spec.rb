@@ -46,7 +46,7 @@ module Pageflow
       it 'responds with not found' do
         entry = create(:entry, :published, type_name: 'test')
 
-        get(short_entry_url(entry), headers: {'HTTP_ACCEPT' => 'not-known'})
+        get(short_entry_url(entry), headers: {'HTTP_ACCEPT' => 'application/pdf'})
 
         expect(response.status).to eq(404)
       end

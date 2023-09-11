@@ -17,13 +17,13 @@ module Pageflow
   #     :create, User  ->  :create_any, :users
   module ActiveAdminCanCanFix
     def can?(action, subject)
-      if [:read, :create].include?(action) &&
+      if [:read, :new, :create].include?(action) &&
          [Entry, Account, User].include?(subject)
         collection_name = subject.name.demodulize.underscore.pluralize.to_sym
 
         if action == :read
           super(:index, collection_name)
-        elsif action == :create
+        else
           super(:create_any, collection_name)
         end
       else

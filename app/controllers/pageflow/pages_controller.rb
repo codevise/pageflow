@@ -20,7 +20,7 @@ module Pageflow
 
       authorize!(:update, page)
       verify_edit_lock!(page.chapter.entry)
-      page.update_attributes(page_params)
+      page.update(page_params)
 
       respond_with(page)
     end
@@ -32,7 +32,7 @@ module Pageflow
       authorize!(:edit_outline, entry.to_model)
       verify_edit_lock!(chapter.entry)
       params.require(:ids).each_with_index do |id, index|
-        entry.pages.update(id, :chapter_id => chapter.id, :position => index)
+        entry.pages.find(id).update(chapter_id: chapter.id, position: index)
       end
 
       head :no_content

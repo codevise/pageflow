@@ -28,7 +28,7 @@ module Pageflow
       end
 
       def import(data, options)
-        Import.new(options).perform(data)
+        Import.new(**options).perform(data)
       end
 
       private

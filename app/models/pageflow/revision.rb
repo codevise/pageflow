@@ -232,5 +232,9 @@ module Pageflow
     def available_themes
       @available_themes ||= Pageflow.config_for(entry).themes
     end
+
+    def self.ransackable_attributes(_auth_object)
+      %w[published_at]
+    end
   end
 end

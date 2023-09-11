@@ -27,5 +27,13 @@ module Pageflow
     def blacklist_for_serialization
       [:features_configuration]
     end
+
+    def self.ransackable_attributes(_auth_object)
+      %w[id name]
+    end
+
+    def self.ransackable_associations(_auth_object)
+      []
+    end
   end
 end
