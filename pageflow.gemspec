@@ -51,7 +51,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'yajl-ruby', '~> 1.2'
 
   # Authorization
-  s.add_dependency 'cancancan', '~> 1.10'
+  if Pageflow::RailsVersion.experimental?
+    s.add_dependency 'cancancan', '~> 3.5'
+  else
+    s.add_dependency 'cancancan', '~> 1.10'
+  end
 
   # State machines for active record
   if Pageflow::RailsVersion.experimental?

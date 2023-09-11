@@ -31,7 +31,7 @@ module Pageflow
         AccountPolicy.new(user, account).see_badge_belonging_to?
       end
 
-      can :create, Membership do |membership|
+      can :create, Membership, Membership.all do |membership|
         membership.entity.nil? ||
           membership.user.nil? ||
           (!(membership.user.entries.include?(membership.entity) ||
@@ -120,7 +120,7 @@ module Pageflow
           AccountPolicy.new(user, account).update_site_on_entry_of?
         end
 
-        can :create, Entry do |entry|
+        can :create, Entry, Entry.all do |entry|
           EntryPolicy.new(user, entry).create?
         end
 
@@ -204,7 +204,7 @@ module Pageflow
           FilePolicy.new(user, record).use?
         end
 
-        can [:create, :update, :destroy], Folder do |folder|
+        can [:create, :update, :destroy], Folder, Folder.all do |folder|
           FolderPolicy.new(user, folder).manage?
         end
 
@@ -234,7 +234,7 @@ module Pageflow
           SitePolicy.new(user, site).update?
         end
 
-        can :create, EntryTemplate do |entry_template|
+        can :create, EntryTemplate, EntryTemplate.all do |entry_template|
           EntryTemplatePolicy.new(user, entry_template).create?
         end
 
@@ -242,7 +242,7 @@ module Pageflow
           EntryTemplatePolicy.new(user, entry_template).update?
         end
 
-        can :create, ::User do |managed_user|
+        can :create, ::User, ::User.all do |managed_user|
           UserPolicy.new(user, managed_user).create?
         end
 
