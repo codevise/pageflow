@@ -115,6 +115,43 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'SVG mask mark',
+      themeOptions: {
+        properties: {
+          root: {
+            quoteLeftMarkMaskImage: markSvg(),
+            quoteMarkColor: 'red',
+            quoteLargeMarkFontSize: '1.2em',
+            quoteMarkOpacity: '1',
+            quoteMarkWidth: '1.25em',
+            quoteHangingMarkSpacing: '0.3em',
+            quoteIndent: '1.8em',
+            quoteLeftMarkTop: '-0.35em'
+          }
+        }
+      }
+    },
+    {
+      name: 'SVG mask mark with palette color',
+      themeOptions: {
+        properties: {
+          root: {
+            paletteColorAccent: '#04f',
+            quoteLeftMarkMaskImage: markSvg(),
+            quoteLargeMarkFontSize: '1.2em',
+            quoteMarkOpacity: '1',
+            quoteMarkWidth: '1.25em',
+            quoteHangingMarkSpacing: '0.3em',
+            quoteIndent: '1.8em',
+            quoteLeftMarkTop: '-0.35em'
+          }
+        }
+      },
+      configuration: {
+        color: 'accent'
+      }
+    },
+    {
       name: 'Pallete color',
       themeOptions: {
         properties: {

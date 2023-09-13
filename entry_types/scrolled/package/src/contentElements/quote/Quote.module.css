@@ -59,6 +59,12 @@
   content: var(--theme-quote-left-mark, "“");
 }
 
+.maskedMark .text p:first-child::before {
+  mask: var(--theme-quote-left-mark-mask-image) 50% 50% no-repeat;
+  background-color: var(--palette-color, var(--theme-quote-mark-color));
+  color: transparent;
+}
+
 .text p:last-child::after {
   content: var(--theme-quote-right-mark, '”');
 }
