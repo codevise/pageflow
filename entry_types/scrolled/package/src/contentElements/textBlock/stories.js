@@ -110,6 +110,34 @@ storiesOfContentElement(module, {
   },
   variants: [
     {
+      name: 'Palette color',
+      themeOptions: {
+        properties: {
+          root: {
+            paletteColorAccent: '#04f'
+          }
+        }
+      },
+      configuration: {
+        value: [
+          {
+            type: 'heading',
+            color: 'accent',
+            children: [
+              {text: 'Heading'}
+            ]
+          },
+          {
+            type: 'paragraph',
+            color: 'accent',
+            children: [
+              {text: 'Some paragraph'},
+            ]
+          }
+        ]
+      }
+    },
+    {
       name: 'With theme link color',
       configuration: linkExampleConfiguration,
       themeOptions: {

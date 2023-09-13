@@ -1,0 +1,12 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        textBlock:
+          attributes:
+            color:
+              label: Farbe
+        heading:
+          attributes:
+            color:
+              label: Farbe

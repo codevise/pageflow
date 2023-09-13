@@ -94,11 +94,12 @@ ConfigurationEditorTabView.groups.define(
 
 ConfigurationEditorTabView.groups.define(
   'PaletteColor',
-  function({propertyName, entry}) {
+  function({propertyName, entry, model}) {
     const [values, texts] = entry.getPaletteColors();
 
     if (values.length) {
       this.input(propertyName, ColorSelectInputView, {
+        model: model || this.model,
         blankTranslationKey: 'pageflow_scrolled.editor.' +
                              'common_content_element_attributes.' +
                              'palette_color.blank',

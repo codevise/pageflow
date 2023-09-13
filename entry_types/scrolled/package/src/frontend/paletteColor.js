@@ -4,6 +4,8 @@
  * @example
  * <div style={{backgroundColor: paletteColor(configuration.backgroundColor)}}>
  */
-export function paletteColor(name) {
-  return name && `var(--theme-palette-color-${name})`;
+export function paletteColor(value) {
+  return !value || value[0] === '#' ?
+         value :
+         `var(--theme-palette-color-${value})`;
 }

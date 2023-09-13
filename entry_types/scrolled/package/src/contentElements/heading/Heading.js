@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import {
   withShadowClassName,
+  paletteColor,
   Text,
   EditableInlineText,
   useContentElementConfigurationUpdate,
@@ -34,7 +35,8 @@ export function Heading({configuration, sectionProps, contentElementWidth}) {
                                {[styles[sectionProps.layout]]:
                                  contentElementWidth > contentElementWidths.md ||
                                  sectionProps.layout === 'centerRagged'},
-                               {[withShadowClassName]: !sectionProps.invert})}>
+                               {[withShadowClassName]: !sectionProps.invert})}
+         style={{color: paletteColor(configuration.color)}}>
       <Text scaleCategory={getScaleCategory(configuration, firstSectionInEntry)}
             inline={true}>
         <EditableInlineText value={configuration.value}

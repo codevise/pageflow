@@ -84,15 +84,20 @@ export const ScrolledEntry = Entry.extend({
     const typographyRuleNames = Object.keys(
       this.scrolledSeed.config.theme.options.typography || {}
     );
+    const legacyTypographyVariants = this.scrolledSeed.legacyTypographyVariants || {}
 
     const rulePrefix = [
       ...[contentElement.get('typeName'), prefix].filter(Boolean),
       ''
     ].join('-')
 
-    const ruleNames = typographyRuleNames.filter(
-      name => name.indexOf(rulePrefix) === 0
-    );
+    const ruleNames = typographyRuleNames
+      .filter(
+        name => name.indexOf(rulePrefix) === 0
+      )
+      .filter(
+        name => !legacyTypographyVariants[name.split('-').pop()]
+      );
     const values = ruleNames.map(
       name => name.split('-').pop()
     );
@@ -104,7 +109,42 @@ export const ScrolledEntry = Entry.extend({
       )
     );
 
-    return [values, texts]
+    return [values, texts];
+  },
+
+  createLegacyTypographyVariantDelegator({
+    model, paletteColorPropertyName
+  }) {
+    const delegator = Object.create(model)
+    const mapping = this.scrolledSeed.legacyTypographyVariants;
+
+    delegator.get = function(name) {
+      const result = model.get(name);
+
+      if (name === 'typographyVariant') {
+        return mapping[result] ? mapping[result].variant : result;
+      }
+      else if (name === paletteColorPropertyName) {
+        return mapping[model.get('typographyVariant')]?.paletteColor || result;
+      }
+
+      return result;
+    };
+
+    delegator.set = function(name, value) {
+      if (name === paletteColorPropertyName &&
+          mapping[model.get('typographyVariant')]) {
+        model.set({
+          [paletteColorPropertyName]: value,
+          typographyVariant: mapping[model.get('typographyVariant')].variant
+        });
+      }
+      else {
+        model.set.apply(this, arguments);
+      }
+    };
+
+    return delegator;
   },
 
   getContentElementVariants({contentElement}) {

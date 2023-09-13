@@ -305,6 +305,21 @@ describe('EditableText', () => {
       .toHaveClass('typography-textBlock-blockQuote-huge');
   });
 
+  it('renders colors', () => {
+    const value = [{
+      type: 'paragraph',
+      color: '#000',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('p[style]')).toHaveAttribute('style',
+                                                                'color: rgb(0, 0, 0);');
+  });
+
   it('uses body scaleCategory by default', () => {
     const value = [{
       type: 'paragraph',

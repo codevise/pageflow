@@ -27,7 +27,7 @@ export function toggleBlock(editor, format) {
     const block = {
       type: format,
       children: [],
-      ...preserveTypograpyhVariant(editor)
+      ...preserveColorAndTypograpyhVariant(editor)
     };
 
     Transforms.wrapNodes(editor, block);
@@ -35,11 +35,19 @@ export function toggleBlock(editor, format) {
 }
 
 export function applyTypograpyhVariant(editor, variant) {
-  Transforms.setNodes(editor, {variant}, {mode: 'highest'});
-  applyTypograpyhVariantToListItems(editor, variant);
+  applyProperties(editor, {variant});
 }
 
-function applyTypograpyhVariantToListItems(editor, variant) {
+export function applyColor(editor, color) {
+  applyProperties(editor, {color});
+}
+
+function applyProperties(editor, properties) {
+  Transforms.setNodes(editor, properties, {mode: 'highest'});
+  applyPropertiesToListItems(editor, properties);
+}
+
+function applyPropertiesToListItems(editor, properties) {
   const lists = Editor.nodes(editor, {
     match: n => listTypes.includes(n.type)
   });
@@ -53,22 +61,30 @@ function applyTypograpyhVariantToListItems(editor, variant) {
     for (const [, itemPath] of items) {
       Transforms.setNodes(
         editor,
-        {variant: variant},
+        properties,
         {at: itemPath}
       )
     }
   }
 }
 
-function preserveTypograpyhVariant(editor) {
+function preserveColorAndTypograpyhVariant(editor) {
   const nodeEntry = Editor.above(editor, {
     at: Range.start(editor.selection),
     match: n => !!n.type
   });
 
-  return nodeEntry && nodeEntry[0].variant ?
-         {variant: nodeEntry[0].variant} :
-         {};
+  const result = {};
+
+  if (nodeEntry && nodeEntry[0].variant) {
+    result.variant = nodeEntry[0].variant;
+  }
+
+  if (nodeEntry && nodeEntry[0].color) {
+    result.color = nodeEntry[0].color;
+  }
+
+  return result;
 }
 
 export function withBlockNormalization({onlyParagraphs}, editor) {
