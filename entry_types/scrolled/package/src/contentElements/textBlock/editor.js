@@ -20,9 +20,14 @@ editor.contentElementTypes.register('textBlock', {
         contentElement.transientState.get('exampleNode')
       );
 
+      const modelDelegator = entry.createLegacyTypographyVariantDelegator({
+        model: contentElement.transientState,
+        paletteColorPropertyName: 'color'
+      })
+
       this.group('ContentElementTypographyVariant', {
         entry,
-        model: contentElement.transientState,
+        model: modelDelegator,
         prefix: exampleNode ? utils.camelize(exampleNode.type) : 'none',
 
         getPreviewConfiguration(configuration, variant) {
@@ -43,7 +48,7 @@ editor.contentElementTypes.register('textBlock', {
       });
       this.group('PaletteColor', {
         entry,
-        model: contentElement.transientState,
+        model: modelDelegator,
         propertyName: 'color'
       });
 

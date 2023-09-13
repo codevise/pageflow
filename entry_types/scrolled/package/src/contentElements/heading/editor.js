@@ -16,12 +16,18 @@ editor.contentElementTypes.register('heading', {
   configurationEditor({entry}) {
     this.listenTo(this.model, 'change:hyphens', this.refresh);
 
+    const modelDelegator = entry.createLegacyTypographyVariantDelegator({
+      model: this.model,
+      paletteColorPropertyName: 'color'
+    });
+
     this.tab('general', function() {
       this.input('textSize', SelectInputView, {
         values: ['auto', 'large', 'medium', 'small']
       });
       this.group('ContentElementTypographyVariant', {
         entry,
+        model: modelDelegator,
         getPreviewConfiguration: (configuration, typographyVariant) =>
           ({
             ...configuration,
@@ -31,6 +37,7 @@ editor.contentElementTypes.register('heading', {
       });
       this.group('PaletteColor', {
         entry,
+        model: modelDelegator,
         propertyName: 'color'
       });
 
