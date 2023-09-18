@@ -152,7 +152,7 @@ jobs:
     - name: Precompile
       working-directory: ${{ matrix.engine-directory }}
       run: |
-        WEBPACKER_PRECOMPILE=false bin/rake app:assets:precompile
+        WEBPACKER_PRECOMPILE=false SHAKAPACKER_PRECOMPILE=false bin/rake app:assets:precompile
 
     # Test
 

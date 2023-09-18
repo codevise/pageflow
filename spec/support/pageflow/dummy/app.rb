@@ -29,7 +29,9 @@ module Pageflow
       end
 
       def rails_new_options
-        '--skip-test-unit --skip-bundle --database=mysql'
+        result = '--skip-test-unit --skip-bundle --database=mysql'
+        result << ' --skip-javascript' if Pageflow::RailsVersion.experimental?
+        result
       end
     end
   end

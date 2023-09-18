@@ -2,22 +2,43 @@ module PageflowScrolled
   # @api private
   module PacksHelper
     def scrolled_frontend_javascript_packs_tag(entry, options)
-      javascript_packs_with_chunks_tag(
-        *scrolled_frontend_packs(entry, options)
-      )
+      if Pageflow::RailsVersion.experimental?
+        javascript_pack_tag(
+          *scrolled_frontend_packs(entry, **options),
+          defer: false
+        )
+      else
+        javascript_packs_with_chunks_tag(
+          *scrolled_frontend_packs(entry, **options)
+        )
+      end
     end
 
     def scrolled_frontend_stylesheet_packs_tag(entry, options)
-      stylesheet_packs_with_chunks_tag(
-        *scrolled_frontend_packs(entry, options),
-        media: 'all'
-      )
+      if Pageflow::RailsVersion.experimental?
+        stylesheet_pack_tag(
+          *scrolled_frontend_packs(entry, **options),
+          media: 'all'
+        )
+      else
+        stylesheet_packs_with_chunks_tag(
+          *scrolled_frontend_packs(entry, **options),
+          media: 'all'
+        )
+      end
     end
 
     def scrolled_editor_javascript_packs_tag(entry)
-      javascript_packs_with_chunks_tag(
-        *scrolled_editor_packs(entry)
-      )
+      if Pageflow::RailsVersion.experimental?
+        javascript_pack_tag(
+          *scrolled_editor_packs(entry),
+          defer: false
+        )
+      else
+        javascript_packs_with_chunks_tag(
+          *scrolled_editor_packs(entry)
+        )
+      end
     end
 
     def scrolled_frontend_packs(entry, widget_scope:)

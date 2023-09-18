@@ -30,10 +30,66 @@ module PageflowScrolled
       end
 
       def install_packages
-        run 'yarn add postcss-url@^8.0.0 @fontsource/source-sans-pro'
+        if Pageflow::RailsVersion.experimental?
+          run 'yarn add css-loader style-loader' \
+              ' mini-css-extract-plugin css-minimizer-webpack-plugin' \
+              ' postcss postcss-loader postcss-url' \
+              ' @fontsource/source-sans-pro'
+        else
+          run 'yarn add postcss-url@^8.0.0 @fontsource/source-sans-pro'
+        end
+      end
+
+      def webpack_config
+        return unless Pageflow::RailsVersion.experimental?
+
+        gsub_file(
+          'config/webpack/webpack.config.js',
+          "const { generateWebpackConfig } = require('shakapacker')",
+          "const { generateWebpackConfig, merge, mergeWithRules } = require('shakapacker')"
+        )
+
+        gsub_file(
+          'config/webpack/webpack.config.js',
+          'const webpackConfig = generateWebpackConfig()',
+          <<~JS
+            const webpackConfig = merge(
+              generateWebpackConfig(),
+              require('pageflow/config/webpack5'),
+              require('pageflow-scrolled/config/webpack')
+            )
+          JS
+        )
+
+        gsub_file(
+          'config/webpack/webpack.config.js',
+          'module.exports = webpackConfig',
+          <<~JS
+            // Extend file rule to include mp3 extension
+            module.exports = mergeWithRules({
+              module: {
+                rules: {
+                  test: 'replace',
+                  type: 'match'
+                },
+              },
+            })(webpackConfig, {
+              module: {
+                rules: [
+                  {
+                    test: /\.(bmp|gif|jpe?g|png|tiff|ico|avif|webp|eot|otf|ttf|woff|woff2|svg|mp3)$/,
+                    type: 'asset/resource'
+                  }
+                ]
+              }
+            })
+          JS
+        )
       end
 
       def webpack_environment
+        return if Pageflow::RailsVersion.experimental?
+
         inject_into_file('config/webpack/environment.js',
                          before: "module.exports = environment\n") do
           "environment.config.merge(require('pageflow/config/webpack'))\n" \
@@ -53,6 +109,8 @@ module PageflowScrolled
       end
 
       def webpacker_yml
+        return if Pageflow::RailsVersion.experimental?
+
         gsub_file('config/webpacker.yml',
                   'extract_css: false',
                   'extract_css: true')
@@ -64,6 +122,8 @@ module PageflowScrolled
       end
 
       def postcss_config
+        return if Pageflow::RailsVersion.experimental?
+
         inject_into_file('postcss.config.js',
                          after: "require('postcss-import'),\n") do
           "    // Make relative urls in fontsource packages work\n" \
