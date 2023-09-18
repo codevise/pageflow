@@ -22,7 +22,7 @@ module PageflowPaged
         entry = create(:entry)
 
         authorize_for_editor_controller(entry)
-        get(:partials, params: {entry_id: entry})
+        get(:partials, params: {entry_type: 'paged', entry_id: entry})
 
         expect(response.status).to eq(200)
       end
@@ -30,7 +30,7 @@ module PageflowPaged
       it 'requires authentication' do
         entry = create(:entry)
 
-        get(:partials, params: {entry_id: entry})
+        get(:partials, params: {entry_type: 'paged', entry_id: entry})
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end
@@ -55,7 +55,7 @@ module PageflowPaged
         create(:widget, subject: entry.draft, role: 'footer', type_name: 'non_editor_widget')
 
         authorize_for_editor_controller(entry)
-        get(:partials, params: {entry_id: entry})
+        get(:partials, params: {entry_type: 'paged', entry_id: entry})
 
         expect(response.body).to have_selector('div.test_widget')
         expect(response.body).not_to have_selector('div.non_editor_widget')
@@ -76,7 +76,7 @@ module PageflowPaged
         entry.draft.update(locale: 'de')
 
         authorize_for_editor_controller(entry)
-        get(:partials, params: {entry_id: entry})
+        get(:partials, params: {entry_type: 'paged', entry_id: entry})
 
         expect(response.body).to have_selector('div[lang=de]')
       end

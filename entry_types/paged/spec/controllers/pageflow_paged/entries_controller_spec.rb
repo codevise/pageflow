@@ -84,7 +84,7 @@ module PageflowPaged
         pageflow_configure do |config|
           config.for_entry_type(PageflowPaged.entry_type) do |c|
             c.page_types.register(Pageflow::TestPageType.new(name: 'test',
-                                                             template_path: 'test/page.html.erb'))
+                                                             template_path: 'test/page'))
           end
         end
 
