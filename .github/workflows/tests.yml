@@ -50,7 +50,21 @@ jobs:
             rspec-command: bin/rspec --tag ~js
 
           - engine-name: pageflow_scrolled
+            ruby-version: 3.2
+            rails-version: "~> 6.1"
+            engine-directory: entry_types/scrolled
+            plugin-name: pageflow_scrolled
+            rspec-command: bin/rspec --tag ~js
+
+          - engine-name: pageflow_scrolled
             ruby-version: 2.6
+            engine-directory: entry_types/scrolled
+            plugin-name: pageflow_scrolled
+            rspec-command: bin/rspec-with-retry-on-timeout --tag js
+
+          - engine-name: pageflow_scrolled
+            ruby-version: 3.2
+            rails-version: "~> 6.1"
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
             rspec-command: bin/rspec-with-retry-on-timeout --tag js
