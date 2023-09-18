@@ -43,6 +43,13 @@ jobs:
             plugin-name: pageflow_paged
             rspec-command: bin/rspec
 
+          - engine-name: pageflow_paged
+            ruby-version: 3.2
+            rails-version: "~> 6.1"
+            engine-directory: entry_types/paged
+            plugin-name: pageflow_paged
+            rspec-command: bin/rspec
+
           - engine-name: pageflow_scrolled
             ruby-version: 2.6
             engine-directory: entry_types/scrolled
