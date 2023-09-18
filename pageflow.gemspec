@@ -129,7 +129,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'sprockets', '< 4'
 
   # Used for Webpack build in host application
-  s.add_dependency 'webpacker', '~> 4.2'
+  if Pageflow::RailsVersion.experimental?
+    s.add_dependency 'shakapacker', '~> 7.0'
+  else
+    s.add_dependency 'webpacker', '~> 4.2'
+  end
 
   # Using translations from rails locales in javascript code.
   s.add_dependency 'i18n-js', '~> 2.1'

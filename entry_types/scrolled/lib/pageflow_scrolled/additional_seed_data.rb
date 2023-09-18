@@ -32,7 +32,7 @@ module PageflowScrolled
           entry.revision,
           content_element_type_names
         ),
-        options
+        **options
       )
     end
 
