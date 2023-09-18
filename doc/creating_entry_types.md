@@ -206,7 +206,7 @@ editor.registerEntryType('rainbow', {
 
   browserNotSupportedView: BrowserNotSupportedView
 });
-``` 
+```
 
 ### REST Controllers
 
@@ -287,10 +287,10 @@ module Rainbow
 
     describe '#create' do
       it 'succeeds' do
-        entry = create(:entry)
+        entry = create(:entry, entry_type: 'rainbow')
 
         authorize_for_editor_controller(entry)
-        post(:create, params: {entry_id: entry.id}, format: 'json')
+        post(:create, params: {entry_type: 'rainbow', entry_id: entry.id}, format: 'json')
 
         expect(response.status).to eq(204)
       end
