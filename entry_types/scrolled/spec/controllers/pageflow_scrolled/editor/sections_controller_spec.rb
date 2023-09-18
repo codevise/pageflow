@@ -9,11 +9,12 @@ module PageflowScrolled
 
     describe '#create' do
       it 'requires authentication' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
 
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                chapter_id: chapter,
                section: attributes_for(:section)
@@ -23,12 +24,13 @@ module PageflowScrolled
       end
 
       it 'succeeds for authorized user' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                chapter_id: chapter,
                section: attributes_for(:section)
@@ -38,12 +40,13 @@ module PageflowScrolled
       end
 
       it 'allows setting the sections configuration hash' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                chapter_id: chapter,
                section: {
@@ -55,12 +58,13 @@ module PageflowScrolled
       end
 
       it 'renders attributes as camel case' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                chapter_id: chapter,
                section: attributes_for(:section)
@@ -71,12 +75,13 @@ module PageflowScrolled
 
     describe '#update' do
       it 'allows updating the sections configuration hash' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
+                entry_type: 'scrolled',
                 entry_id: entry,
                 id: section,
                 section: {
@@ -89,14 +94,15 @@ module PageflowScrolled
       end
 
       it 'does not allow updating a section from a different entry' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         create(:section, revision: entry.draft)
-        other_entry = create(:entry)
+        other_entry = create(:entry, type_name: 'scrolled')
         section_in_other_entry = create(:section, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
+                entry_type: 'scrolled',
                 entry_id: entry,
                 id: section_in_other_entry,
                 chapter: {
@@ -110,13 +116,14 @@ module PageflowScrolled
 
     describe '#order' do
       it 'updates position of sections according to given params order' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
         sections = create_list(:section, 2, chapter: chapter)
 
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
+              entry_type: 'scrolled',
               entry_id: entry,
               chapter_id: chapter,
               ids: [sections.first.id, sections.last.id]
@@ -127,7 +134,7 @@ module PageflowScrolled
       end
 
       it 'allows moving a section from one chapter to another within the same entry' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         revision = entry.draft
         chapter = create(:scrolled_chapter, revision: revision)
         section = create(:section, chapter: chapter)
@@ -136,6 +143,7 @@ module PageflowScrolled
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
+              entry_type: 'scrolled',
               entry_id: entry,
               chapter_id: other_chapter,
               ids: [section.id]
@@ -145,15 +153,16 @@ module PageflowScrolled
       end
 
       it 'does not allow moving a section to a chapter of another entry' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
         section = create(:section, chapter: chapter)
-        other_entry = create(:entry)
+        other_entry = create(:entry, type_name: 'scrolled')
         chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
+              entry_type: 'scrolled',
               entry_id: entry,
               chapter_id: chapter_in_other_entry,
               ids: [section.id]
@@ -165,13 +174,14 @@ module PageflowScrolled
 
     describe '#destroy' do
       it 'deletes the section' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         chapter = section.chapter
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
                params: {
+                 entry_type: 'scrolled',
                  entry_id: entry,
                  id: section
                }, format: 'json')
@@ -181,14 +191,15 @@ module PageflowScrolled
       end
 
       it 'does not allow deleting a section from a different entry' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         create(:section, revision: entry.draft)
-        other_entry = create(:entry)
+        other_entry = create(:entry, type_name: 'scrolled')
         section_in_other_entry = create(:section, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
                params: {
+                 entry_type: 'scrolled',
                  entry_id: entry,
                  id: section_in_other_entry
                }, format: 'json')

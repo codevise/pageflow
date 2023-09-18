@@ -9,10 +9,11 @@ module PageflowScrolled
 
     describe '#create' do
       it 'requires authentication' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
 
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                chapter: attributes_for(:scrolled_chapter)
              }, format: 'json')
@@ -21,11 +22,12 @@ module PageflowScrolled
       end
 
       it 'succeeds for authorized user' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                chapter: attributes_for(:scrolled_chapter)
              }, format: 'json')
@@ -34,11 +36,12 @@ module PageflowScrolled
       end
 
       it 'allows setting the chapters configuration hash' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                chapter: {
                  configuration: {title: 'A chapter title'}
@@ -50,11 +53,15 @@ module PageflowScrolled
       end
 
       it 'renders attributes as camel case' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
 
         authorize_for_editor_controller(entry)
         post(:create,
-             params: {entry_id: entry, chapter: attributes_for(:scrolled_chapter)},
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry,
+               chapter: attributes_for(:scrolled_chapter)
+             },
              format: 'json')
         expect(json_response(path: [:permaId])).to be_present
       end
@@ -62,12 +69,13 @@ module PageflowScrolled
 
     describe '#update' do
       it 'allows updating the chapters configuration hash' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
+                entry_type: 'scrolled',
                 entry_id: entry,
                 id: chapter,
                 chapter: {
@@ -80,14 +88,15 @@ module PageflowScrolled
       end
 
       it 'does not allow updating a chapter from a different entry' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         create(:scrolled_chapter, revision: entry.draft)
-        other_entry = create(:entry)
+        other_entry = create(:entry, type_name: 'scrolled')
         chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
+                entry_type: 'scrolled',
                 entry_id: entry,
                 id: chapter_in_other_entry,
                 chapter: {
@@ -101,13 +110,14 @@ module PageflowScrolled
 
     describe '#order' do
       it 'updates position of chapters according to given params order' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapters = create_list(:scrolled_chapter, 2, revision: entry.draft)
         storyline = chapters.first.storyline
 
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
+              entry_type: 'scrolled',
               entry_id: entry,
               storyline_id: storyline,
               ids: [chapters.last.id, chapters.first.id]
@@ -118,12 +128,13 @@ module PageflowScrolled
       end
 
       it 'uses first storyline by default' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapters = create_list(:scrolled_chapter, 2, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
+              entry_type: 'scrolled',
               entry_id: entry,
               ids: [chapters.last.id, chapters.first.id]
             }, format: 'json')
@@ -133,13 +144,14 @@ module PageflowScrolled
       end
 
       it 'allows moving a chapter from one storyline to another within the same entry' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
         other_storyline = create(:scrolled_storyline, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
+              entry_type: 'scrolled',
               entry_id: entry,
               storyline_id: other_storyline,
               ids: [chapter.id]
@@ -149,14 +161,15 @@ module PageflowScrolled
       end
 
       it 'does not allow moving a chapter to a storyline of different entry' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
-        other_entry = create(:entry)
+        other_entry = create(:entry, type_name: 'scrolled')
         storyline_in_other_entry = create(:scrolled_storyline, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
+              entry_type: 'scrolled',
               entry_id: entry,
               storyline_id: storyline_in_other_entry,
               ids: [chapter.id]
@@ -168,13 +181,14 @@ module PageflowScrolled
 
     describe '#destroy' do
       it 'deletes the chapter' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
         storyline = chapter.storyline
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
                params: {
+                 entry_type: 'scrolled',
                  entry_id: entry,
                  id: chapter
                }, format: 'json')
@@ -184,14 +198,15 @@ module PageflowScrolled
       end
 
       it 'does not allow deleting a chapter from a different entry' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         create(:scrolled_chapter, revision: entry.draft)
-        other_entry = create(:entry)
+        other_entry = create(:entry, type_name: 'scrolled')
         chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
                params: {
+                 entry_type: 'scrolled',
                  entry_id: entry,
                  id: chapter_in_other_entry
                }, format: 'json')

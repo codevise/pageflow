@@ -9,11 +9,12 @@ module PageflowScrolled
 
     describe '#batch' do
       it 'requires authentication' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: section.id,
                content_elements: []
@@ -23,13 +24,14 @@ module PageflowScrolled
       end
 
       it 'allows ordering content elements referenced by id' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         content_elements = create_list(:content_element, 2, section: section)
 
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: section.id,
                content_elements: [
@@ -43,7 +45,7 @@ module PageflowScrolled
       end
 
       it 'allows moving content elements to different section' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         other_section = create(:section, revision: entry.draft)
         content_element = create(:content_element, :text_block, section: section)
@@ -51,6 +53,7 @@ module PageflowScrolled
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: other_section,
                content_elements: [
@@ -62,15 +65,16 @@ module PageflowScrolled
       end
 
       it 'does not allow moving content elements to different entry' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
-        other_entry = create(:entry)
+        other_entry = create(:entry, type_name: 'scrolled')
         other_section = create(:section, revision: other_entry.draft)
         content_element = create(:content_element, section: section)
 
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: other_section,
                content_elements: [
@@ -82,13 +86,14 @@ module PageflowScrolled
       end
 
       it 'allows setting content element configuration hashes' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         content_element = create(:content_element, section: section)
 
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: section.id,
                content_elements: [
@@ -100,7 +105,7 @@ module PageflowScrolled
       end
 
       it 'does not change configuration hash if not passed' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         content_element = create(:content_element,
                                  section: section,
@@ -109,6 +114,7 @@ module PageflowScrolled
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: section.id,
                content_elements: [
@@ -120,12 +126,13 @@ module PageflowScrolled
       end
 
       it 'allows creating content elements' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: section.id,
                content_elements: [
@@ -139,13 +146,14 @@ module PageflowScrolled
       end
 
       it 'deletes content elements marked by _delete flag' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         content_elements = create_list(:content_element, 2, section: section)
 
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: section.id,
                content_elements: [
@@ -158,12 +166,13 @@ module PageflowScrolled
       end
 
       it 'responds with array of objects containging content element ids and perma ids' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: section.id,
                content_elements: [
@@ -180,12 +189,13 @@ module PageflowScrolled
       end
 
       it 'does not create content elements if id is unknown' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: section.id,
                content_elements: [
@@ -197,12 +207,13 @@ module PageflowScrolled
       end
 
       it 'rolls back other changes if one id is unknown' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: section.id,
                content_elements: [
@@ -215,7 +226,7 @@ module PageflowScrolled
       end
 
       it 'allows performing a mix of update, create and delete operations' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         content_elements = create_list(:content_element,
                                        3,
@@ -225,6 +236,7 @@ module PageflowScrolled
         authorize_for_editor_controller(entry)
         post(:batch,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry.id,
                section_id: section.id,
                content_elements: [
@@ -263,11 +275,12 @@ module PageflowScrolled
 
     describe '#create' do
       it 'requires authentication' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                section_id: section,
                content_element: attributes_for(:content_element, :text_block)
@@ -277,12 +290,13 @@ module PageflowScrolled
       end
 
       it 'succeeds for authorized user' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                section_id: section,
                content_element: attributes_for(:content_element, :text_block)
@@ -292,12 +306,13 @@ module PageflowScrolled
       end
 
       it 'allows setting the content elements configuration hash' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                section_id: section,
                content_element: {
@@ -309,12 +324,13 @@ module PageflowScrolled
       end
 
       it 'allows setting the content elements type name' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                section_id: section,
                content_element: {
@@ -326,12 +342,13 @@ module PageflowScrolled
       end
 
       it 'can handle camel case attributes' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                section_id: section,
                content_element: {
@@ -343,12 +360,13 @@ module PageflowScrolled
       end
 
       it 'renders attributes as camel case' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
+               entry_type: 'scrolled',
                entry_id: entry,
                section_id: section,
                content_element: attributes_for(:content_element, :text_block)
@@ -359,12 +377,13 @@ module PageflowScrolled
 
     describe '#update' do
       it 'allows updating the content elements configuration hash' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         content_element = create(:content_element, :text_block, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
+                entry_type: 'scrolled',
                 entry_id: entry,
                 id: content_element,
                 content_element: {
@@ -377,14 +396,15 @@ module PageflowScrolled
       end
 
       it 'does not allow updating a content element from a different entry' do
-        entry = create(:entry)
-        other_entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
+        other_entry = create(:entry, type_name: 'scrolled')
         content_element_in_other_entry = create(:content_element, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
 
         patch(:update,
               params: {
+                entry_type: 'scrolled',
                 entry_id: entry,
                 id: content_element_in_other_entry,
                 content_element: {
@@ -398,7 +418,7 @@ module PageflowScrolled
 
     describe '#order' do
       it 'updates position of content elements according to given params order' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         content_elements = create_list(:content_element, 2, :text_block, section: section)
 
@@ -406,6 +426,7 @@ module PageflowScrolled
 
         put(:order,
             params: {
+              entry_type: 'scrolled',
               entry_id: entry,
               section_id: section,
               ids: [content_elements.first.id, content_elements.last.id]
@@ -416,14 +437,15 @@ module PageflowScrolled
       end
 
       it 'does not allow moving a content element to a section of a different entry' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         content_element = create(:content_element, revision: entry.draft)
-        other_entry = create(:entry)
+        other_entry = create(:entry, type_name: 'scrolled')
         section_in_other_entry = create(:section, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
+              entry_type: 'scrolled',
               entry_id: entry,
               section_id: section_in_other_entry,
               ids: [content_element.id]
@@ -435,13 +457,14 @@ module PageflowScrolled
 
     describe '#destroy' do
       it 'deletes the content element' do
-        entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         content_element = create(:content_element, :text_block, section: section)
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
                params: {
+                 entry_type: 'scrolled',
                  entry_id: entry,
                  id: content_element
                }, format: 'json')
@@ -451,13 +474,14 @@ module PageflowScrolled
       end
 
       it 'does not allow deleting a content element from a different entry' do
-        entry = create(:entry)
-        other_entry = create(:entry)
+        entry = create(:entry, type_name: 'scrolled')
+        other_entry = create(:entry, type_name: 'scrolled')
         content_element_in_other_entry = create(:content_element, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
                params: {
+                 entry_type: 'scrolled',
                  entry_id: entry,
                  id: content_element_in_other_entry
                }, format: 'json')
