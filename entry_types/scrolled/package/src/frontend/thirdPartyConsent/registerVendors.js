@@ -6,21 +6,22 @@ export function registerVendors({contentElementTypes, seed, consent, cookieName}
 
   cookieName = cookieName || options?.cookieName;
 
-  contentElementTypes
-    .consentVendors({
+  [
+    ...seed.config.consentVendors,
+    ...contentElementTypes.consentVendors({
       contentElements: seed.collections.contentElements,
       t(key, options) { return I18n.t(key, {...options, locale}); }
     })
-    .forEach(vendor => {
-      consent.registerVendor(vendor.name, {
-        displayName: vendor.displayName,
-        description: vendor.description,
-        paradigm: cookieName ? (vendor.paradigm || 'opt-in') : 'skip',
-        cookieName: cookieName,
-        cookieKey: options?.cookieProviderNameMapping?.[vendor.name],
-        cookieDomain: options?.cookieDomain
-      });
+  ].forEach(vendor => {
+    consent.registerVendor(vendor.name, {
+      displayName: vendor.displayName,
+      description: vendor.description,
+      paradigm: cookieName ? (vendor.paradigm || 'opt-in') : 'skip',
+      cookieName: cookieName,
+      cookieKey: options?.cookieProviderNameMapping?.[vendor.name],
+      cookieDomain: options?.cookieDomain
     });
+  });
 
   consent.closeVendorRegistration();
 }
