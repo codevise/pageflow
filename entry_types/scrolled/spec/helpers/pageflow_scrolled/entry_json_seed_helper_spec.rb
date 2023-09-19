@@ -650,6 +650,79 @@ module PageflowScrolled
                                          }
                                        })
       end
+
+      context 'consent vendors' do
+        include_context 'fake translations'
+
+        it 'renders consent vendors of used content elements' do
+          translation(:de, 'pageflow_scrolled.consent_vendors.someVendor.name',
+                      'Some Vendor')
+          translation(:de, 'pageflow_scrolled.consent_vendors.someVendor.description',
+                      'Some description')
+          translation(:de, 'pageflow_scrolled.consent_vendors.someVendor.opt_in_prompt',
+                      'See content from Some Vendor?')
+
+          pageflow_configure do |config|
+            config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+              entry_type_config.content_element_consent_vendors.register(
+                lambda do |configuration:|
+                  configuration['vendor']
+                end,
+                content_element_type_name: 'someEmbed'
+              )
+            end
+          end
+
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         revision_attributes: {locale: 'de'})
+          content_element = create(:content_element,
+                                   revision: entry.revision,
+                                   type_name: 'someEmbed',
+                                   configuration: {vendor: 'someVendor'})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(config: {
+                                           consentVendors: [
+                                             {
+                                               name: 'someVendor',
+                                               displayName: 'Some Vendor',
+                                               description: 'Some description',
+                                               optInPrompt: 'See content from Some Vendor?',
+                                               paradigm: 'lazy opt-in'
+                                             }
+                                           ],
+                                           contentElementConsentVendors: {
+                                             content_element.id => 'someVendor'
+                                           }
+                                         })
+        end
+
+        it 'does not render consent vendors of unused content elements' do
+          pageflow_configure do |config|
+            config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+              entry_type_config.content_element_consent_vendors.register(
+                lambda do |**|
+                  'someVendor'
+                end,
+                content_element_type_name: 'someEmbed'
+              )
+            end
+          end
+
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         revision_attributes: {locale: 'de'})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(config: {
+                                           consentVendors: be_empty,
+                                           contentElementConsentVendors: be_empty
+                                         })
+        end
+      end
     end
 
     describe '#scrolled_entry_json_seed_script_tag' do

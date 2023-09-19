@@ -39,6 +39,9 @@ json.config do
            self,
            include_unused: options[:include_unused_additional_seed_data])
   )
+
+  json.partial! 'pageflow_scrolled/entry_json_seed/consent_vendors',
+                entry: entry, entry_config: entry_config
 end
 
 unless options[:skip_i18n]

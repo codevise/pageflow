@@ -44,6 +44,31 @@ module PageflowScrolled
     # @since 15.7
     attr_reader :additional_frontend_seed_data
 
+    # Determine which vendors a content element will require consent
+    # for. Based on the vendor name returned here, the following
+    # translations will be used in consent UI components.
+    #
+    #     pageflow_scrolled.consent_vendors.#{name}.name
+    #     pageflow_scrolled.consent_vendors.#{name}.description
+    #     pageflow_scrolled.consent_vendors.#{name}.opt_in_prompt
+    #
+    # @example
+    #
+    #     config.content_element_consent_vendors.register(
+    #       lambda |configuration:| do
+    #         if configuration['provider'] == 'youtube'
+    #           'youtube'
+    #         else
+    #           'vimeo'
+    #         end
+    #       end,
+    #       content_element_type_name: 'videoEmbed'
+    #     )
+    #
+    # @return [ContentElementConsentVendors]
+    # @since edge
+    attr_reader :content_element_consent_vendors
+
     # Migrate typography variants to palette colors. Before palette
     # colors for text blocks and headings were introduced, it was
     # already possible to color text by defining typography variants
@@ -104,6 +129,7 @@ module PageflowScrolled
       @additional_editor_packs = AdditionalPacks.new
 
       @additional_frontend_seed_data = AdditionalSeedData.new
+      @content_element_consent_vendors = ContentElementConsentVendors.new
 
       @legacy_typography_variants = {}
     end
