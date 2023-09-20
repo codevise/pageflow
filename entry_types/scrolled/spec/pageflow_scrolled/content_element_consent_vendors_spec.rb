@@ -50,6 +50,25 @@ module PageflowScrolled
 
         expect(result).to eq(content_element.id => 'someVendor')
       end
+
+      it 'skips content elements that return nil vendor' do
+        content_element_consent_vendors = ContentElementConsentVendors.new
+        content_element_consent_vendors.register(
+          ->(**) { nil },
+          content_element_type_name: 'someEmbed'
+        )
+
+        published_entry = create(:published_entry)
+        create(:content_element,
+               revision: published_entry.revision,
+               type_name: 'someEmbed')
+
+        result = content_element_consent_vendors.by_content_element_id(
+          published_entry
+        )
+
+        expect(result).to be_empty
+      end
     end
   end
 end

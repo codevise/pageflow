@@ -19,14 +19,14 @@ module PageflowScrolled
 
     # @api private
     def by_content_element_id(entry)
-      content_elements_with_consent_vendor(entry).each_with_object({}) do |content_element, result|
+      content_elements_with_consent_vendor(entry).each_with_object({}) { |content_element, result|
         next unless @callables[content_element.type_name]
 
         result[content_element.id] = @callables[content_element.type_name].call(
           entry: entry,
           configuration: content_element.configuration
         )
-      end
+      }.compact
     end
 
     private
