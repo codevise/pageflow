@@ -665,7 +665,7 @@ module PageflowScrolled
           pageflow_configure do |config|
             config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
               entry_type_config.content_element_consent_vendors.register(
-                lambda do |configuration:|
+                lambda do |configuration:, **|
                   configuration['vendor']
                 end,
                 content_element_type_name: 'someEmbed'

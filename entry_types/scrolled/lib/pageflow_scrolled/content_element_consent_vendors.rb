@@ -23,6 +23,7 @@ module PageflowScrolled
         next unless @callables[content_element.type_name]
 
         result[content_element.id] = @callables[content_element.type_name].call(
+          entry: entry,
           configuration: content_element.configuration
         )
       end
