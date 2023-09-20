@@ -1,6 +1,7 @@
 import {Entry, editor} from 'pageflow/editor';
 import I18n from 'i18n-js';
 
+import {ConsentVendors} from '../ConsentVendors';
 import {ChaptersCollection, SectionsCollection, ContentElementsCollection} from '../../collections';
 import {ContentElement} from '../ContentElement';
 
@@ -10,6 +11,8 @@ import {deleteContentElement} from './deleteContentElement';
 
 export const ScrolledEntry = Entry.extend({
   setupFromEntryTypeSeed(seed) {
+    this.consentVendors = new ConsentVendors({hostMatchers: seed.consentVendorHostMatchers});
+
     this.contentElements = new ContentElementsCollection(seed.collections.contentElements);
     this.sections = new SectionsCollection(seed.collections.sections,
                                            {contentElements: this.contentElements});
