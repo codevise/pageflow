@@ -5,6 +5,8 @@ import {
   ContentElementBox,
   ContentElementFigure,
   FitViewport,
+  ThirdPartyOptIn,
+  ThirdPartyOptOutInfo,
   useContentElementEditorState,
   useContentElementLifecycle,
   usePortraitOrientation,
@@ -37,15 +39,28 @@ export function IframeEmbed({configuration}) {
         <ContentElementBox>
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
-              {shouldLoad &&
-               <iframe className={classNames(styles.iframe,
-                                             styles[`scale-${configuration.scale}`])}
-                       title={configuration.title}
-                       src={configuration.source} />}
+              <ThirdPartyOptIn>
+                {shouldLoad &&
+                 <iframe className={classNames(styles.iframe,
+                                               styles[`scale-${configuration.scale}`])}
+                         title={configuration.title}
+                         src={configuration.source} />}
+              </ThirdPartyOptIn>
             </FitViewport.Content>
+            <OptOutInfo configuration={configuration} />
           </ContentElementFigure>
         </ContentElementBox>
       </FitViewport>
     </div>
+  );
+}
+
+function OptOutInfo({configuration}) {
+  if (!configuration.requireConsent) {
+    return null;
+  }
+
+  return (
+    <ThirdPartyOptOutInfo />
   );
 }
