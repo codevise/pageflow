@@ -7,6 +7,7 @@ module PageflowScrolled
       include Pageflow::WidgetsHelper
       include Pageflow::StructuredDataHelper
       include Pageflow::TextDirectionHelper
+      include PageflowScrolled::CacheHelper
       include FaviconHelper
       include PacksHelper
       include WebpackPublicPathHelper
