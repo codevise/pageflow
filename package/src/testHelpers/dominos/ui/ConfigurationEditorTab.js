@@ -12,7 +12,7 @@ export const ConfigurationEditorTab = Base.extend({
   },
 
   visibleInputPropertyNames: function() {
-    return this.$el.find('.input:not(.input-hidden_via_binding)').map(function() {
+    return this.$el.find('.input:not(.hidden_via_binding)').map(function() {
       return $(this).data('inputPropertyName');
     }).get();
   },
