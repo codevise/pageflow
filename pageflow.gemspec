@@ -2,7 +2,7 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'pageflow/version'
-require File.expand_path('spec/support/pageflow/rails_version', File.dirname(__FILE__))
+require File.expand_path('lib/pageflow/rails_version', File.dirname(__FILE__))
 
 Gem::Specification.new do |s|
   s.name        = 'pageflow'

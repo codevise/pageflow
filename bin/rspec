@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 ENV['RAILS_ENV'] ||= 'test'
 
-require File.expand_path('../spec/support/pageflow/rails_version', File.dirname(__FILE__))
+require File.expand_path('../lib/pageflow/rails_version', File.dirname(__FILE__))
 dummy_root = File.expand_path("../spec/dummy/rails-#{Pageflow::RailsVersion.detect}", File.dirname(__FILE__))
 
 begin

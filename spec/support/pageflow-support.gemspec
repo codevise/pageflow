@@ -1,7 +1,7 @@
 $:.push File.expand_path('../../../lib', __FILE__)
 
 require 'pageflow/version'
-require File.expand_path('pageflow/rails_version', File.dirname(__FILE__))
+require 'pageflow/rails_version'
 
 Gem::Specification.new do |s|
   s.name        = 'pageflow-support'
