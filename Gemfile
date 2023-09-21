@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gemspec
 
-require File.expand_path('spec/support/pageflow/rails_version', File.dirname(__FILE__))
+require File.expand_path('lib/pageflow/rails_version', File.dirname(__FILE__))
 gem 'rails', Pageflow::RailsVersion.detect
 
 gem 'pageflow-support', path: 'spec/support'
