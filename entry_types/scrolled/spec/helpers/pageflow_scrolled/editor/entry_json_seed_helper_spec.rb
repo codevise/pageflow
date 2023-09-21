@@ -96,6 +96,24 @@ module PageflowScrolled
                                            }
                                          })
         end
+
+        it 'renders consent vendor host matchers' do
+          pageflow_configure do |config|
+            config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+              entry_type_config.consent_vendor_host_matchers = {
+                /\.some-vendor\.com$/ => 'someVendor'
+              }
+            end
+          end
+
+          entry = create(:draft_entry, type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(consentVendorHostMatchers: {
+                                           '\\.some-vendor\\.com$' => 'someVendor'
+                                         })
+        end
       end
     end
   end

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {useConsentGiven} from './hooks';
-import {useTheme} from '../../entryState';
+import {useTheme, useContentElementConsentVendor} from '../../entryState';
 import {useI18n} from '../i18n';
 import {useContentElementAttributes} from '../useContentElementAttributes';
 import {widths} from '../layouts';
@@ -29,8 +29,12 @@ export function OptOutInfo({
   const {t} = useI18n();
   const theme = useTheme();
   const optOutUrl = theme.options.thirdPartyConsent?.optOutUrl;
+
+  const {width, contentElementId} = useContentElementAttributes();
+  const contentElementConsentVendor = useContentElementConsentVendor({contentElementId});
+
+  providerName = providerName || contentElementConsentVendor?.name;
   const [consentGiven] = useConsentGiven(providerName);
-  const {width} = useContentElementAttributes();
 
   if (!optOutUrl || !consentGiven) {
     return null;

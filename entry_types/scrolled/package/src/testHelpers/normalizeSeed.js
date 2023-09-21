@@ -10,6 +10,9 @@
  * @param {Object} [options.legalInfo] - imprint, copyright and privacy information of entry.
  * @param {Object} [options.themeOptions] - Options set via theme registration.
  * @param {Object} [options.themeAssets] - Paths to theme assets.
+ * @param {Object} [options.additionalSeedData] - Seed data by name.
+ * @param {Array} [options.consentVendors] - Server rendered consent vendor data.
+ * @param {Object} [options.contentElementConsentVendors] - Consent vendor name by content element id.
  * @param {Object} [options.entry] - attributes of entry.
  * @param {Array} [options.imageFiles] - Array of objects with image file attributes of entry.
  * @param {Array} [options.videoFiles] - Array of objects with video file attributes of entry.
@@ -40,7 +43,9 @@ export function normalizeSeed({
   sections,
   contentElements,
   widgets,
-  additionalSeedData
+  additionalSeedData,
+  consentVendors,
+  contentElementConsentVendors
 } = {}) {
   const entries = entry ? [entry] : [{}];
   const normalizedEntries = normalizeCollection(entries);
@@ -78,7 +83,9 @@ export function normalizeSeed({
       theme: normalizeTheme({themeOptions, themeAssets}),
       additionalSeedData: additionalSeedData || {
         frontendVersion: 1
-      }
+      },
+      consentVendors: consentVendors || [],
+      contentElementConsentVendors: contentElementConsentVendors || {}
     },
     collections: {
       entries: normalizedEntries,

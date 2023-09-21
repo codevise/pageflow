@@ -129,7 +129,20 @@ describe('exampleStories', () => {
 
     expect(stories).toContainEqual(expect.objectContaining({
       title: 'Consent - Opt-In',
-      requireConsentOptIn: true
+      requireConsentOptIn: true,
+      seed: expect.objectContaining({
+        config: expect.objectContaining({
+          consentVendors: [
+            expect.objectContaining({name: 'test'})
+          ],
+          contentElementConsentVendors: {1000: 'test'}
+        }),
+        collections: expect.objectContaining({
+          contentElements: expect.arrayContaining([
+            expect.objectContaining({id: 1000})
+          ])
+        })
+      })
     }));
   });
 });

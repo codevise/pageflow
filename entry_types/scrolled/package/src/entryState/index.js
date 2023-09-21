@@ -1,4 +1,5 @@
 export {useAdditionalSeedData} from './additionalSeedData';
+export {useContentElementConsentVendor} from './consentVendors';
 export {useShareProviders, useShareUrl} from './sharing';
 export {useEntryMetadata} from './metadata';
 export {

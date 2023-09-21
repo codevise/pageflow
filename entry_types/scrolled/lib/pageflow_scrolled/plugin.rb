@@ -32,7 +32,25 @@ module PageflowScrolled
           'frontendVersion',
           FRONTEND_VERSION_SEED_DATA
         )
+
+        c.content_element_consent_vendors.register(
+          IFRAME_EMBED_CONSENT_VENDOR,
+          content_element_type_name: 'iframeEmbed'
+        )
       end
+    end
+
+    IFRAME_EMBED_CONSENT_VENDOR = lambda do |configuration:, entry:, **|
+      return unless configuration['requireConsent']
+
+      uri = URI.parse(configuration['source'])
+      host_matchers = Pageflow.config_for(entry).consent_vendor_host_matchers
+
+      host_matchers.detect do |matcher, _|
+        uri.host =~ matcher
+      end&.last
+    rescue URI::InvalidURIError
+      nil
     end
 
     FRONTEND_VERSION_SEED_DATA = lambda do |request:, entry:, **|

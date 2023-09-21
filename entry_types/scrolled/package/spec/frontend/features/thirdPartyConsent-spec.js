@@ -58,6 +58,33 @@ describe('Third party consent', () => {
   });
 
   describe('vendor registration', () => {
+    it('registers content element vendors from config seed', async () => {
+      const consent = Consent.create();
+      jest.spyOn(consent, 'registerVendor');
+
+      await renderEntry({
+        consent,
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          consentVendors: [
+            {
+              name: 'someVendor',
+              displayName: 'Some Vendor',
+              paradigm: 'lazy opt-in'
+            }
+          ]
+        }
+      });
+
+      expect(consent.registerVendor).toHaveBeenCalledWith(
+        'someVendor',
+        expect.objectContaining({
+          displayName: 'Some Vendor',
+          paradigm: 'lazy opt-in'
+        })
+      )
+    });
+
     it('relies on required vendors reported by content elements', async () => {
       const consent = Consent.create();
 
@@ -313,6 +340,76 @@ describe('Third party consent', () => {
     });
   });
 
+  describe('opt in with implicit provider name', () => {
+    beforeEach(() => {
+      frontend.contentElementTypes.register('test', {
+        component: function Component() {
+          return (
+            <div data-testid="test-content-element">
+              <ThirdPartyOptIn>
+                <div>Data from SomeService</div>
+              </ThirdPartyOptIn>
+            </div>
+          );
+        }
+      });
+    });
+
+    it('uses prompt from server rendered consent vendors', async () => {
+      const {getByTestId} = await renderEntry({
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{id: 10, typeName: 'test'}],
+          consentVendors: [{
+            name: 'someVendor',
+            optInPrompt: 'Enable Some Vendor?',
+            paradigm: 'lazy opt-in'
+          }],
+          contentElementConsentVendors: {10: 'someVendor'}
+        }
+      });
+
+      expect(getByTestId('test-content-element')).toHaveTextContent('Enable Some Vendor?');
+    });
+
+    it('is skipped if flag for provider is true in privacy cookie', async () => {
+      cookies.setItem('optIn', '{"someVendor": true}');
+
+      const {getByTestId} = await renderEntry({
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{id: 10, typeName: 'test'}],
+          consentVendors: [{
+            name: 'someVendor',
+            paradigm: 'lazy opt-in'
+          }],
+          contentElementConsentVendors: {10: 'someVendor'}
+        }
+      });
+
+      expect(getByTestId('test-content-element')).toHaveTextContent('Data from SomeService');
+    });
+
+    it('sets flag for provider in privacy cookie when consent is given', async () => {
+      const {getByTestId} = await renderEntry({
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{id: 10, typeName: 'test'}],
+          consentVendors: [{
+            name: 'someVendor',
+            paradigm: 'lazy opt-in'
+          }],
+          contentElementConsentVendors: {10: 'someVendor'}
+        }
+      });
+
+      const {getByText} = within(getByTestId('test-content-element'));
+      await click(getByText('Confirm'));
+
+      expect(JSON.parse(cookies.getItem('optIn'))).toMatchObject({'someVendor': true});
+    });
+  });
+
   describe('opt in with wrapper', () => {
     beforeEach(() => {
       frontend.contentElementTypes.register('test', {
@@ -500,6 +597,69 @@ describe('Third party consent', () => {
             }
           },
           contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      expect(getByTestId('test-content-element')).not.toHaveTextContent('Click here to opt out');
+    });
+  });
+
+  describe('opt out info with implicit provider name', () => {
+    beforeEach(() => {
+      frontend.contentElementTypes.register('test', {
+        component: function Component() {
+          return (
+            <div data-testid="test-content-element">
+              <ThirdPartyOptIn>
+                <ThirdPartyOptOutInfo />
+                <div>Data from SomeService</div>
+              </ThirdPartyOptIn>
+            </div>
+          );
+        }
+      });
+    });
+
+    it('is displayed when consent has been given and privacy link is set in theme options', async () => {
+      const {getByTestId} = await renderEntry({
+        seed: {
+          themeOptions: {
+            thirdPartyConsent: {
+              cookieName: 'optIn',
+              optOutUrl: 'https://example.com/privacy',
+            }
+          },
+          consentVendors: [{
+            name: 'someVendor',
+            paradigm: 'lazy opt-in'
+          }],
+          contentElementConsentVendors: {10: 'someVendor'},
+          contentElements: [{id: 10, typeName: 'test'}]
+        }
+      });
+
+      const {getByText} = within(getByTestId('test-content-element'));
+      await click(getByText('Confirm'));
+
+      expect(getByTestId('test-content-element')).toHaveTextContent('Click here to opt out');
+      expect(getByText('Click here')).toHaveAttribute('href', 'https://example.com/privacy');
+    });
+
+    it('is not displayed if consent has not been given', async () => {
+      const {getByTestId} = await renderEntry({
+        seed: {
+          themeOptions: {
+            thirdPartyConsent: {
+              cookieName: 'optIn',
+              optOutUrl: 'https://example.com/privacy',
+            }
+          },
+          consentVendors: [{
+            name: 'someVendor',
+            paradigm: 'lazy opt-in'
+          }],
+          contentElementConsentVendors: {10: 'someVendor'},
+          contentElements: [{id: 10, typeName: 'test'}]
         }
       });
 

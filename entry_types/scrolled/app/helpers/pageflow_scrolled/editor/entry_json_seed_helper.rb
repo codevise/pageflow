@@ -8,7 +8,10 @@ module PageflowScrolled
 
       def scrolled_entry_editor_json_seed(json, scrolled_entry)
         json.key_format!(camelize: :lower)
-        scrolled_entry_editor_legacy_typography_variants_seed(json, scrolled_entry)
+        entry_config = Pageflow.config_for(scrolled_entry)
+
+        scrolled_entry_editor_legacy_typography_variants_seed(json, entry_config)
+        scrolled_entry_editor_consent_vendor_host_matchers_seed(json, entry_config)
 
         scrolled_entry_json_seed(json,
                                  scrolled_entry,
@@ -19,12 +22,19 @@ module PageflowScrolled
 
       private
 
-      def scrolled_entry_editor_legacy_typography_variants_seed(json, scrolled_entry)
+      def scrolled_entry_editor_legacy_typography_variants_seed(json, entry_config)
         json.legacy_typography_variants(
-          Pageflow
-            .config_for(scrolled_entry)
+          entry_config
             .legacy_typography_variants
             .deep_transform_keys { |key| key.to_s.camelize(:lower) }
+        )
+      end
+
+      def scrolled_entry_editor_consent_vendor_host_matchers_seed(json, entry_config)
+        json.consent_vendor_host_matchers(
+          entry_config
+            .consent_vendor_host_matchers
+            .transform_keys { |regexp| regexp.inspect[1..-2] }
         )
       end
     end

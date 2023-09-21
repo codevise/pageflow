@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {useConsentGiven} from './hooks';
 import {useI18n} from '../i18n';
+import {useContentElementAttributes} from '../useContentElementAttributes';
+import {useContentElementConsentVendor} from '../../entryState';
 
 import styles from './OptIn.module.css';
 import OptInIcon from '../icons/media.svg';
@@ -25,7 +27,13 @@ import OptInIcon from '../icons/media.svg';
  */
 export function OptIn({children, providerName, wrapper, icon}) {
   const {t} = useI18n();
+  const {contentElementId} = useContentElementAttributes();
+  const contentElementConsentVendor = useContentElementConsentVendor({contentElementId});
+
+  providerName = providerName || contentElementConsentVendor?.name;
+
   const cookieMessage =
+    contentElementConsentVendor?.optInPrompt ||
     t(`pageflow_scrolled.public.third_party_consent.opt_in_prompt.${providerName}`);
   const [consentedHere, setConsentedHere] = useState(false);
   const [consentGiven, giveConsent] = useConsentGiven(providerName);

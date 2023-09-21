@@ -245,17 +245,25 @@ function consentOptInStories({typeName, consent, baseConfiguration}) {
   return exampleStoryGroup({
     typeName,
     name: 'Consent',
-    requireConsentOptIn: true,
+    consentVendors: [
+      {
+        name: 'test',
+        optInPrompt: 'I agree with being shown this content.'
+      }
+    ],
     examples: [
       {
         name: 'Opt-In',
-        contentElementConfiguration: baseConfiguration
+        contentElementConfiguration: {
+          ...baseConfiguration,
+          ...consent.configuration
+        }
       }
     ]
   });
 }
 
-function exampleStoryGroup({name, typeName, examples, parameters, requireConsentOptIn}) {
+function exampleStoryGroup({name, typeName, examples, parameters, consentVendors}) {
   const defaultSectionConfiguration = {transition: 'scroll', backdrop: {image: '#000'}, fullHeight: false};
 
   const sections = examples.map((example, index) => ({
@@ -266,7 +274,12 @@ function exampleStoryGroup({name, typeName, examples, parameters, requireConsent
   const contentElements = examples.reduce((memo, example, index) => [
     ...memo,
     exampleHeading({sectionId: index, text: `${name} - ${example.name}`}),
-    {sectionId: index, typeName, configuration: example.contentElementConfiguration}
+    {
+      id: 1000 + index,
+      sectionId: index,
+      typeName,
+      configuration: example.contentElementConfiguration
+    }
   ], []);
 
   return sections.map((section, index) => ({
@@ -274,9 +287,17 @@ function exampleStoryGroup({name, typeName, examples, parameters, requireConsent
     seed: normalizeAndMergeFixture({
       sections: [section],
       contentElements: contentElements,
-      themeOptions: examples[index].themeOptions
+      themeOptions: examples[index].themeOptions,
+      consentVendors,
+      contentElementConsentVendors: consentVendors &&
+                                    contentElements
+                                      .filter(({id}) => id)
+                                      .reduce(
+                                        (memo, {id}) => ({...memo, [id]: consentVendors[0].name}),
+                                        {}
+                                      )
     }),
-    requireConsentOptIn,
+    requireConsentOptIn: !!consentVendors,
     parameters,
     cssRules: Object.entries(examples[index].themeOptions?.properties || {}).reduce(
       (result, [scope, properties]) => {
@@ -308,7 +329,13 @@ export function normalizeAndMergeFixture(options = {}) {
     ...seedFixture,
     config: mergeDeep(
       seedFixture.config,
-      {theme: {options: options.themeOptions || {}}}
+      {
+        theme: {
+          options: options.themeOptions || {}
+        },
+        consentVendors: options.consentVendors || [],
+        contentElementConsentVendors: options.contentElementConsentVendors || {}
+      }
     ),
     collections: {
       ...seedFixture.collections,

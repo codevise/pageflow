@@ -1,5 +1,7 @@
+import I18n from 'i18n-js';
 import {editor} from 'pageflow-scrolled/editor';
-import {TextInputView, SelectInputView} from 'pageflow/ui';
+import {InfoBoxView} from 'pageflow/editor';
+import {TextInputView, SelectInputView, CheckBoxInputView} from 'pageflow/ui';
 
 import pictogram from './pictogram.svg';
 
@@ -12,9 +14,19 @@ editor.contentElementTypes.register('iframeEmbed', {
   supportedPositions: ['inline', 'sticky', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
 
-  configurationEditor() {
+  configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('source', TextInputView);
+      this.input('requireConsent', CheckBoxInputView);
+      this.view(InfoBoxView, {
+        level: 'error',
+        text: I18n.t(
+          'pageflow_scrolled.editor.content_elements.iframeEmbed.help_texts.missingConsentVendor'
+        ),
+        visibleBinding: ['source', 'requireConsent'],
+        visible: ([source, requireConsent]) =>
+          source && requireConsent && !entry.consentVendors.fromUrl(source),
+      });
       this.input('title', TextInputView);
       this.input('aspectRatio', SelectInputView, {
         values: aspectRatios

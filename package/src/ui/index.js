@@ -53,6 +53,7 @@ export * from './views/tableCells/PresenceTableCellView';
 export * from './views/tableCells/IconTableCellView';
 export * from './views/tableCells/TextTableCellView';
 
+export * from './views/mixins/attributeBinding';
 export * from './views/mixins/inputWithPlaceholderText';
 export * from './views/mixins/subviewContainer';
 export * from './views/mixins/tooltipContainer';
