@@ -38,11 +38,6 @@
   }
 
   .drop_down_button {
-    button {
-      @include fa-ellipsis-v-icon;
-      width: 31px;
-    }
-
     position: absolute;
     bottom: 0;
     left: 70px;
