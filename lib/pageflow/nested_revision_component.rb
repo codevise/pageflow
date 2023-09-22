@@ -14,10 +14,10 @@ module Pageflow
       end
 
       # @api private
-      def copy_nested_revision_component_to(record)
+      def copy_nested_revision_component_to(record, reset_perma_ids: false)
         nested_revision_component_collection_names.each do |collection_name|
           send(collection_name).each do |nested|
-            nested.copy_to(record.send(collection_name))
+            nested.copy_to(record.send(collection_name), reset_perma_ids: reset_perma_ids)
           end
         end
       end
@@ -38,12 +38,27 @@ module Pageflow
     extend ActiveSupport::Concern
     include Container
 
-    # @api private
-    def copy_to(collection)
-      record = dup
-      collection << record
+    def duplicate
+      copy_with(reset_perma_ids: true, &:save!)
+    end
 
-      copy_nested_revision_component_to(record)
+    # @api private
+    def copy_to(collection, reset_perma_ids: false)
+      copy_with(reset_perma_ids: reset_perma_ids) do |record|
+        collection << record
+      end
+    end
+
+    private
+
+    def copy_with(reset_perma_ids:)
+      record = dup
+      record.perma_id = nil if reset_perma_ids && record.respond_to?(:perma_id=)
+
+      yield record
+      copy_nested_revision_component_to(record, reset_perma_ids: reset_perma_ids)
+
+      record
     end
   end
 end
