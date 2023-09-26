@@ -1,6 +1,7 @@
 import I18n from 'i18n-js';
+import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import {modelLifecycleTrackingView} from 'pageflow/editor';
+import {modelLifecycleTrackingView, DropDownButtonView} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 
 import {SectionThumbnailView} from './SectionThumbnailView'
@@ -15,6 +16,7 @@ export const SectionItemView = Marionette.ItemView.extend({
 
   template: (data) => `
     <div class="${styles.thumbnailContainer}">
+      <div class="${styles.dropDownButton}"></div>
       <div class="${styles.thumbnail}"></div>
       <div class="${styles.clickMask}">
         <div class="${styles.dragHandle}"
@@ -27,7 +29,7 @@ export const SectionItemView = Marionette.ItemView.extend({
           title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
   `,
 
-  ui: cssModulesUtils.ui(styles, 'thumbnail'),
+  ui: cssModulesUtils.ui(styles, 'thumbnail', 'dropDownButton'),
 
   events: {
     [`click .${styles.clickMask}`]: function() {
@@ -63,6 +65,36 @@ export const SectionItemView = Marionette.ItemView.extend({
       model: this.model,
       entry: this.options.entry
     }));
+
+    const dropDownMenuItems = new Backbone.Collection();
+
+    dropDownMenuItems.add(new MenuItem({
+      label: I18n.t('pageflow_scrolled.editor.section_item.duplicate')
+    }, {
+      selected: () =>
+        this.model.chapter.duplicateSection(this.model)
+    }));
+
+    dropDownMenuItems.add(new MenuItem({
+      label: I18n.t('pageflow_scrolled.editor.section_item.insert_section_above')
+    }, {
+      selected: () =>
+        this.model.chapter.insertSection({before: this.model})
+    }));
+
+    dropDownMenuItems.add(new MenuItem({
+      label: I18n.t('pageflow_scrolled.editor.section_item.insert_section_below')
+    }, {
+      selected: () =>
+        this.model.chapter.insertSection({after: this.model})
+    }));
+
+    this.appendSubview(new DropDownButtonView({
+      items: dropDownMenuItems,
+      alignMenu: 'right',
+      ellipsisIcon: true,
+      openOnClick: true
+    }), {to: this.ui.dropDownButton});
   },
 
   updateActive() {
@@ -71,5 +103,15 @@ export const SectionItemView = Marionette.ItemView.extend({
 
     this.$el.toggleClass(styles.active, active);
     return active;
+  }
+});
+
+const MenuItem = Backbone.Model.extend({
+  initialize: function(attributes, options) {
+    this.options = options;
+  },
+
+  selected: function() {
+    this.options.selected();
   }
 });
