@@ -32,7 +32,7 @@ export const Chapter = Backbone.Model.extend({
     this.entry = options.entry;
   },
 
-  addSection(attributes, options) {
+  addSection(attributes, {select, ...options} = {}) {
     const section = this.sections.create(
       new Section(
         {
@@ -51,7 +51,9 @@ export const Chapter = Backbone.Model.extend({
     );
 
     section.once('sync', (model, response) => {
-      this.entry.trigger('selectSectionSettings', section);
+      if (select) {
+        this.entry.trigger('selectSectionSettings', section);
+      }
       this.entry.trigger('scrollToSection', section);
 
       section.configuration.set(response.configuration, {autoSave: false});

@@ -35,7 +35,7 @@ export const ChapterItemView = Marionette.Layout.extend({
 
   events: cssModulesUtils.events(styles, {
     'click addSection': function() {
-      this.model.addSection();
+      this.model.addSection({}, {select: true});
     },
 
     'click link': function() {
