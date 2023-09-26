@@ -39,7 +39,10 @@ module Pageflow
     include Container
 
     def duplicate
-      copy_with(reset_perma_ids: true, &:save!)
+      copy_with(reset_perma_ids: true) do |record|
+        yield record if block_given?
+        record.save!
+      end
     end
 
     # @api private

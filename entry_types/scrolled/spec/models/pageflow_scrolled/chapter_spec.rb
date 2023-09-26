@@ -27,5 +27,54 @@ module PageflowScrolled
         expect(result).to eq([chapter1, chapter2])
       end
     end
+
+    describe '.create_section' do
+      it 'inserts sections and updates positions' do
+        revision = create(:revision)
+        chapter = create(:scrolled_chapter, revision: revision)
+        section1 = create(:section, chapter: chapter, position: 0)
+        section2 = create(:section, chapter: chapter, position: 1)
+
+        new_section = chapter.create_section(position: 1,
+                                             configuration: {transition: 'fade'})
+
+        expect(chapter.sections).to eq([section1, new_section, section2])
+        expect(chapter.sections.map(&:position)).to eq([0, 1, 2])
+      end
+
+      it 'creates initial text block' do
+        revision = create(:revision)
+        chapter = create(:scrolled_chapter, revision: revision)
+
+        section = chapter.create_section
+
+        expect(section.content_elements.map(&:type_name)).to eq(['textBlock'])
+      end
+    end
+
+    describe '.duplicate_section' do
+      it 'creates section and content elements' do
+        revision = create(:revision)
+        chapter = create(:scrolled_chapter, revision: revision)
+        section = create(:section, chapter: chapter, position: 0)
+        create(:content_element, section: section, type_name: 'textBlock')
+
+        new_section = chapter.duplicate_section(section)
+
+        expect(chapter.sections).to eq([section, new_section])
+        expect(new_section.content_elements.map(&:type_name)).to eq(['textBlock'])
+        expect(chapter.sections.map(&:position)).to eq([0, 1])
+      end
+
+      it 'returns section with shifted position' do
+        revision = create(:revision)
+        chapter = create(:scrolled_chapter, revision: revision)
+        section = create(:section, chapter: chapter, position: 0)
+
+        new_section = chapter.duplicate_section(section)
+
+        expect(new_section.position).to eq(1)
+      end
+    end
   end
 end
