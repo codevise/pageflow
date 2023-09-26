@@ -6,10 +6,18 @@ module PageflowScrolled
 
       def create
         chapter = Chapter.all_for_revision(@entry.draft).find(params[:chapter_id])
-        section = chapter.sections.create(section_params)
+        section = chapter.create_section(section_params)
 
-        render partial: 'pageflow_scrolled/sections/section',
+        render partial: 'pageflow_scrolled/editor/sections/section_with_content_elements',
                locals: {section: section},
+               status: :created
+      end
+
+      def duplicate
+        section = Section.all_for_revision(@entry.draft).find(params[:id])
+
+        render partial: 'pageflow_scrolled/editor/sections/section_with_content_elements',
+               locals: {section: section.chapter.duplicate_section(section)},
                status: :created
       end
 

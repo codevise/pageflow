@@ -71,6 +71,124 @@ module PageflowScrolled
              }, format: 'json')
         expect(json_response(path: [:permaId])).to be_present
       end
+
+      it 'renders initial content element' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        post(:create,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry,
+               chapter_id: chapter,
+               section: attributes_for(:section)
+             }, format: 'json')
+
+        expect(response.body)
+          .to include_json(contentElements: [
+                             {typeName: 'textBlock'}
+                           ])
+      end
+    end
+
+    describe '#duplicate' do
+      it 'requires authentication' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+
+        post(:duplicate,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry,
+               id: section.id
+             }, format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+
+      it 'succeeds for authorized user' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        post(:duplicate,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry,
+               id: section.id
+             }, format: 'json')
+
+        expect(response.status).to eq(201)
+      end
+
+      it 'adds duplicate of section in same chapter' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft, configuration: {'transition' => 'fade'})
+
+        authorize_for_editor_controller(entry)
+        post(:duplicate,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry,
+               id: section.id
+             }, format: 'json')
+
+        expect(section.chapter.sections.map(&:configuration))
+          .to eq([{'transition' => 'fade'}, {'transition' => 'fade'}])
+      end
+
+      it 'assigns new perma id' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        post(:duplicate,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry,
+               id: section.id
+             }, format: 'json')
+
+        expect(section.chapter.sections.map(&:perma_id).uniq.size).to eq(2)
+      end
+
+      it 'renders attributes as camel case' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft, configuration: {'transition' => 'fade'})
+
+        authorize_for_editor_controller(entry)
+        post(:duplicate,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry,
+               id: section.id
+             }, format: 'json')
+
+        expect(response.body).to include_json(id: (be > 0),
+                                              permaId: (be > 0))
+      end
+
+      it 'renders attributes of duplicated content elements' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft, configuration: {'transition' => 'fade'})
+        create(:content_element, section: section, type_name: 'inlineImage')
+        create(:content_element, section: section, type_name: 'textBlock')
+
+        authorize_for_editor_controller(entry)
+        post(:duplicate,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry,
+               id: section.id
+             }, format: 'json')
+
+        expect(response.body)
+          .to include_json(contentElements: [
+                             {typeName: 'inlineImage'},
+                             {typeName: 'textBlock'}
+                           ])
+      end
     end
 
     describe '#update' do
