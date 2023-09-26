@@ -57,7 +57,10 @@ export const SectionItemView = Marionette.ItemView.extend({
   },
 
   onRender() {
-    this.updateActive();
+    if (this.updateActive()) {
+      setTimeout(() => this.$el[0].scrollIntoView({block: 'nearest'}), 10)
+    }
+
     this.$el.toggleClass(styles.invert, !!this.model.configuration.get('invert'));
 
     this.subview(new SectionThumbnailView({
