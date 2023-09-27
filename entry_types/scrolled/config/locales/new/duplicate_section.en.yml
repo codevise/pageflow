@@ -5,3 +5,10 @@ en:
         duplicate: Duplicate
         insert_section_above: Insert section above
         insert_section_below: Insert section below
+        transitions:
+          beforeAfter: Static Backgrounds
+          fade: Cross fade (incl. content)
+          fadeBg: Cross fade
+          reveal: Reveal
+          scroll: Scroll
+          scrollOver: Scroll over

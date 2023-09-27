@@ -6,42 +6,55 @@ import {cssModulesUtils} from 'pageflow/ui';
 
 import {SectionThumbnailView} from './SectionThumbnailView'
 
+import arrowsIcon from './images/arrows.svg';
+
 import styles from './SectionItemView.module.css';
 
 export const SectionItemView = Marionette.ItemView.extend({
   tagName: 'li',
-  className: styles.root,
+  className: `${styles.root} ${styles.withTransition}`,
 
   mixins: [modelLifecycleTrackingView({classNames: styles})],
 
   template: (data) => `
-    <div class="${styles.thumbnailContainer}">
-      <div class="${styles.dropDownButton}"></div>
-      <div class="${styles.thumbnail}"></div>
-      <div class="${styles.clickMask}">
-        <div class="${styles.dragHandle}"
-             title="${I18n.t('pageflow_scrolled.editor.section_item.drag_hint')}"></div>
+    <button class="${styles.editTransition}">
+      <img src="${arrowsIcon}" width="11" height="16">
+      <span class="${styles.transition}">Überblenden</span>
+    </button>
+    <div class="${styles.inner}">
+      <div class="${styles.thumbnailContainer}">
+        <div class="${styles.dropDownButton}"></div>
+        <div class="${styles.thumbnail}"></div>
+        <div class="${styles.clickMask}">
+          <div class="${styles.dragHandle}"
+               title="${I18n.t('pageflow_scrolled.editor.section_item.drag_hint')}"></div>
+        </div>
       </div>
+      <span class="${styles.creatingIndicator}" />
+      <span class="${styles.destroyingIndicator}" />
+      <span class="${styles.failedIndicator}"
+            title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
     </div>
-    <span class="${styles.creatingIndicator}" />
-    <span class="${styles.destroyingIndicator}" />
-    <span class="${styles.failedIndicator}"
-          title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
   `,
 
-  ui: cssModulesUtils.ui(styles, 'thumbnail', 'dropDownButton'),
+  ui: cssModulesUtils.ui(styles, 'thumbnail', 'dropDownButton', 'editTransition', 'transition'),
 
-  events: {
-    [`click .${styles.clickMask}`]: function() {
+  events: cssModulesUtils.events(styles, {
+    'click clickMask': function() {
       this.options.entry.trigger('selectSection', this.model);
       this.options.entry.trigger('scrollToSection', this.model);
     },
 
-    [`dblclick .${styles.clickMask}`]: function() {
+    'dblclick clickMask': function() {
       this.options.entry.trigger('selectSectionSettings', this.model);
       this.options.entry.trigger('scrollToSection', this.model);
+    },
+
+    'click editTransition': function() {
+      this.options.entry.trigger('selectSectionTransition', this.model);
+      this.options.entry.trigger('scrollToSection', this.model);
     }
-  },
+  }),
 
   initialize() {
     this.listenTo(this.options.entry, 'change:currentSectionIndex', () => {
@@ -62,6 +75,10 @@ export const SectionItemView = Marionette.ItemView.extend({
     }
 
     this.$el.toggleClass(styles.invert, !!this.model.configuration.get('invert'));
+    this.ui.transition.text(
+      I18n.t(this.model.configuration.get('transition'),
+             {scope: 'pageflow_scrolled.editor.section_item.transitions'})
+    );
 
     this.subview(new SectionThumbnailView({
       el: this.ui.thumbnail,

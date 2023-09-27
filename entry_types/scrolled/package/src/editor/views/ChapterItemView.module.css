@@ -1,6 +1,7 @@
 @value indicatorIconColor from './colors.module.css';
 
 .root {
+  composes: chapter from './outline.module.css';
   margin-bottom: 10px;
   padding: 0 10px 10px 10px;
   background-color: var(--ui-surface-color);
@@ -55,6 +56,14 @@
 .sections {
   margin: 10px 0 10px 0;
   min-height: 20px;
+}
+
+.withTransitions .sections {
+  margin-top: 20px;
+}
+
+.root:first-child .sections {
+  margin-top: 10px;
 }
 
 .creating .creatingIndicator     { display: block; }
