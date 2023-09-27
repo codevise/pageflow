@@ -43,7 +43,7 @@
   display: block;
 }
 
-.transitionSelected .editToolbar {
+.transitionSelected .transitionToolbar-after {
   visibility: hidden;
 }
 

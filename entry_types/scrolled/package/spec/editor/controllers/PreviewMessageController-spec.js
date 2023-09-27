@@ -163,6 +163,27 @@ describe('PreviewMessageController', () => {
     })).resolves.toMatchObject({type: 'SELECT', payload: {id: 1, type: 'sectionSettings'}});
   });
 
+  it('sends SELECT message to iframe on selectSectionTransition event on model', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('selectSectionTransition', entry.sections.first());
+    })).resolves.toMatchObject({type: 'SELECT', payload: {id: 1, type: 'sectionTransition'}});
+  });
+
   it('supports sending CONTENT_ELEMENT_EDITOR_COMMAND message to iframe', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({

@@ -69,6 +69,16 @@ export const PreviewMessageController = Object.extend({
           })
         );
 
+        this.listenTo(this.entry, 'selectSectionTransition', section =>
+          postMessage({
+            type: 'SELECT',
+            payload: {
+              id: section.id,
+              type: 'sectionTransition'
+            }
+          })
+        );
+
         this.listenTo(this.entry, 'selectContentElement', (contentElement, options) => {
           postMessage({
             type: 'SELECT',

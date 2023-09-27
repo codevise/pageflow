@@ -5,3 +5,10 @@ de:
         duplicate: Duplizieren
         insert_section_above: Abschnitt oberhalb einfügen
         insert_section_below: Abschnitt unterhalb einfügen
+        transitions:
+          beforeAfter: Statische Hintergründe
+          fade: Überblenden (inkl. Inhalt)
+          fadeBg: Überblenden
+          reveal: Freilegen
+          scroll: Aus-/Einscrollen
+          scrollOver: Überlagern
