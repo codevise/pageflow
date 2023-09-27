@@ -11,6 +11,10 @@ PageflowScrolled::Engine.routes.draw do
             put :order
           end
 
+          member do
+            post :duplicate
+          end
+
           resources :content_elements do
             collection do
               put :batch

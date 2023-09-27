@@ -46,6 +46,31 @@
   opacity: 1;
 }
 
+.dropDownButton {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  z-index: 1;
+}
+
+.dropDownButton button {
+  border: 0 !important;
+  color: var(--ui-on-primary-color) !important;
+  box-shadow: none !important;
+  opacity: 0.3;
+  transition: opacity 0.1s ease;
+  transition-delay: 0.2s;
+}
+
+.invert .dropDownButton button {
+  color: var(--ui-primary-color) !important;
+}
+
+.root:hover .dropDownButton button,
+.dropDownButton button:global(.hover) {
+  opacity: 1;
+}
+
 .creating .creatingIndicator     { display: block; }
 .destroying .destroyingIndicator { display: block; }
 .failed .failedIndicator         { display: block; }

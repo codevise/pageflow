@@ -10,6 +10,11 @@
     @include icon-only-button;
   }
 
+  > button.ellipsis_icon {
+    @include fa-ellipsis-v-icon;
+    width: 31px;
+  }
+
   &.full_width {
     width: 100%;
 

@@ -1,6 +1,6 @@
-a:focus,
-button:focus,
-[tabindex]:focus {
+body > :global(#root) a:focus,
+body > :global(#root) button:focus,
+body > :global(#root) [tabindex]:focus {
   outline: 3px solid #518ad2;
 }
 

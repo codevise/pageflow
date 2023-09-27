@@ -9,8 +9,8 @@ export const subviewContainer = {
     return view;
   },
 
-  appendSubview: function(view) {
-    return this.$el.append(this.subview(view).el);
+  appendSubview: function(view, {to} = {}) {
+    return (to || this.$el).append(this.subview(view).el);
   },
 
   onClose: function() {

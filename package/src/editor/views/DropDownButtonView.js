@@ -75,6 +75,7 @@ export const DropDownButtonView = Marionette.ItemView.extend({
 
     this.ui.button.toggleClass('has_icon_and_text', !!this.options.label);
     this.ui.button.toggleClass('has_icon_only', !this.options.label);
+    this.ui.button.toggleClass('ellipsis_icon', !!this.options.ellipsisIcon);
 
     this.ui.button.text(this.options.label);
     this.ui.button.addClass(this.options.buttonClassName);

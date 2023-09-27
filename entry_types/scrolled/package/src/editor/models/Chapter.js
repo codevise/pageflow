@@ -8,6 +8,8 @@ import {
   ForeignKeySubsetCollection
 } from 'pageflow/editor';
 
+import {Section} from './Section';
+
 export const Chapter = Backbone.Model.extend({
   mixins: [
     configurationContainer({
@@ -30,29 +32,57 @@ export const Chapter = Backbone.Model.extend({
     this.entry = options.entry;
   },
 
-  addSection(attributes) {
-    const section = this.sections.create({
-      position: this.sections.length,
-      chapterId: this.id,
-      configuration: {
-        transition: this.entry.metadata.configuration.get('defaultTransition')
-      },
-      ...attributes
-    }, {
-      contentElements: this.entry.contentElements
-    });
+  addSection(attributes, {select, ...options} = {}) {
+    const section = this.sections.create(
+      new Section(
+        {
+          position: this.sections.length,
+          chapterId: this.id,
+          configuration: {
+            transition: this.entry.metadata.configuration.get('defaultTransition')
+          },
+          ...attributes
+        },
+        {
+          contentElements: this.entry.contentElements
+        }
+      ),
+      options
+    );
 
-    section.once('sync', () => {
-      this.entry.trigger('selectSectionSettings', section);
+    section.once('sync', (model, response) => {
+      if (select) {
+        this.entry.trigger('selectSectionSettings', section);
+      }
       this.entry.trigger('scrollToSection', section);
 
-      section.contentElements.create({
-        typeName: 'textBlock',
-        configuration: {
-        }
-      });
+      section.configuration.set(response.configuration, {autoSave: false});
+      section.contentElements.add(response.contentElements);
     });
 
     return section;
+  },
+
+  insertSection({before, after}, options) {
+    const position = before ? before.get('position') : after.get('position') + 1;
+
+    this.sections.each((section) => {
+      if (section.get('position') >= position) {
+        section.set('position', section.get('position') + 1);
+      }
+    });
+
+    const newSection = this.addSection({position}, options);
+
+    this.sections.sort();
+    return newSection;
+  },
+
+  duplicateSection(section) {
+    const newSection = this.insertSection({after: section}, {
+      url: `${section.url()}/duplicate`,
+    });
+
+    return newSection;
   }
 });
