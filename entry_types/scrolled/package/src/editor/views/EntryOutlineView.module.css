@@ -2,9 +2,10 @@
 
 .chapters {}
 
-.chapters :global(.sortable-placeholder) {
-  margin-bottom: 10px;
+.chapters > :global(.sortable-placeholder) {
+  margin-bottom: 12px;
   padding: 0 10px 10px 10px;
+  border-radius: rounded(lg);
 }
 
 .addChapter {
