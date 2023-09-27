@@ -5,6 +5,7 @@ import {modelLifecycleTrackingView, DropDownButtonView} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 
 import {SectionThumbnailView} from './SectionThumbnailView'
+import {getAvailableTransitionNames} from 'pageflow-scrolled/frontend';
 
 import arrowsIcon from './images/arrows.svg';
 
@@ -76,7 +77,7 @@ export const SectionItemView = Marionette.ItemView.extend({
 
     this.$el.toggleClass(styles.invert, !!this.model.configuration.get('invert'));
     this.ui.transition.text(
-      I18n.t(this.model.configuration.get('transition'),
+      I18n.t(this.getTransition(),
              {scope: 'pageflow_scrolled.editor.section_item.transitions'})
     );
 
@@ -115,6 +116,28 @@ export const SectionItemView = Marionette.ItemView.extend({
       ellipsisIcon: true,
       openOnClick: true
     }), {to: this.ui.dropDownButton});
+  },
+
+  getTransition() {
+    const entry = this.options.entry;
+    const sectionIndex = entry.sections.indexOf(this.model);
+    const previousSection = entry.sections.at(sectionIndex - 1);
+
+    const availableTransitions =
+      previousSection ?
+      getAvailableTransitionNames(
+        this.model.configuration.attributes,
+        previousSection.configuration.attributes
+      ) : [];
+
+    const transition = this.model.configuration.get('transition');
+
+    if (availableTransitions.includes(transition)) {
+      return transition;
+    }
+    else {
+      return 'scroll';
+    }
   },
 
   updateActive() {
