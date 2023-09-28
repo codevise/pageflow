@@ -36,7 +36,7 @@ export const Chapter = Backbone.Model.extend({
     const section = this.sections.create(
       new Section(
         {
-          position: this.sections.length,
+          position: this.sections.length ? Math.max(...this.sections.pluck('position')) + 1 : 0,
           chapterId: this.id,
           configuration: {
             transition: this.entry.metadata.configuration.get('defaultTransition')
