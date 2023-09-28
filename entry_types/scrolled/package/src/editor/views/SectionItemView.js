@@ -68,6 +68,11 @@ export const SectionItemView = Marionette.ItemView.extend({
         });
       }
     });
+
+    this.listenTo(this.options.entry.sections, 'add', () => {
+      this.updateActive();
+      this.updateTransition();
+    });
   },
 
   onRender() {
@@ -78,10 +83,6 @@ export const SectionItemView = Marionette.ItemView.extend({
     }
 
     this.$el.toggleClass(styles.invert, !!this.model.configuration.get('invert'));
-    this.ui.transition.text(
-      I18n.t(this.getTransition(),
-             {scope: 'pageflow_scrolled.editor.section_item.transitions'})
-    );
 
     this.subview(new SectionThumbnailView({
       el: this.ui.thumbnail,
