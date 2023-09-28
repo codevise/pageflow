@@ -4,8 +4,8 @@ body > :global(#root) [tabindex]:focus {
   outline: 3px solid #518ad2;
 }
 
-.focusOutlineDisabled [tabindex]:focus,
-.focusOutlineDisabled button:focus,
-.focusOutlineDisabled a:focus {
+.focusOutlineDisabled > :global(#root) [tabindex]:focus,
+.focusOutlineDisabled > :global(#root) button:focus,
+.focusOutlineDisabled > :global(#root) a:focus {
   outline: none;
 }
