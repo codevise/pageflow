@@ -27,6 +27,14 @@ export const ForeignKeySubsetCollection = SubsetCollection.extend({
 
     this.autoConsolidatePositions = options.autoConsolidatePositions;
 
+    this.listenTo(this, 'add', function(model) {
+      if (options.parentReferenceAttribute) {
+        model[options.parentReferenceAttribute] = parentModel;
+      }
+
+      model.set(options.foreignKeyAttribute, parentModel.id);
+    });
+
     SubsetCollection.prototype.constructor.call(this, {
       parent,
       parentModel,
@@ -39,14 +47,6 @@ export const ForeignKeySubsetCollection = SubsetCollection.extend({
       comparator: function(item) {
         return item.get('position');
       }
-    });
-
-    this.listenTo(this, 'add', function(model) {
-      if (options.parentReferenceAttribute) {
-        model[options.parentReferenceAttribute] = parentModel;
-      }
-
-      model.set(options.foreignKeyAttribute, parentModel.id);
     });
 
     this.listenTo(parentModel, 'destroy dependentDestroy', function() {

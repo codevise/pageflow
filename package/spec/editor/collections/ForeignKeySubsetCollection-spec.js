@@ -180,6 +180,24 @@ describe('ForeignKeySubsetCollection', () => {
     expect(postComments.last().post).toBe(post);
   });
 
+  it('sets reference before intial sort of parent', () => {
+    const post = new Backbone.Model({id: 5});
+    const comments = new Backbone.Collection([
+    ], {comparator: 'position'});
+    const postComments = new ForeignKeySubsetCollection({
+      parentModel: post,
+      parent: comments,
+      foreignKeyAttribute: 'postId',
+      parentReferenceAttribute: 'post'
+    });
+    let referenceOnInitialSort;
+
+    comments.once('sort', () => referenceOnInitialSort = comments.first().post);
+    postComments.add({id: 2})
+
+    expect(referenceOnInitialSort).toBe(post);
+  });
+
   it('removes reference to parent model when model is removed from collection', () => {
     const post = new Backbone.Model({id: 5});
     const comments = new Backbone.Collection([
