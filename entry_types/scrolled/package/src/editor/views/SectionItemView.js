@@ -68,18 +68,21 @@ export const SectionItemView = Marionette.ItemView.extend({
         });
       }
     });
+
+    this.listenTo(this.options.entry.sections, 'add', () => {
+      this.updateActive();
+      this.updateTransition();
+    });
   },
 
   onRender() {
+    this.updateTransition();
+
     if (this.updateActive()) {
       setTimeout(() => this.$el[0].scrollIntoView({block: 'nearest'}), 10)
     }
 
     this.$el.toggleClass(styles.invert, !!this.model.configuration.get('invert'));
-    this.ui.transition.text(
-      I18n.t(this.getTransition(),
-             {scope: 'pageflow_scrolled.editor.section_item.transitions'})
-    );
 
     this.subview(new SectionThumbnailView({
       el: this.ui.thumbnail,
@@ -118,26 +121,11 @@ export const SectionItemView = Marionette.ItemView.extend({
     }), {to: this.ui.dropDownButton});
   },
 
-  getTransition() {
-    const entry = this.options.entry;
-    const sectionIndex = entry.sections.indexOf(this.model);
-    const previousSection = entry.sections.at(sectionIndex - 1);
-
-    const availableTransitions =
-      previousSection ?
-      getAvailableTransitionNames(
-        this.model.configuration.attributes,
-        previousSection.configuration.attributes
-      ) : [];
-
-    const transition = this.model.configuration.get('transition');
-
-    if (availableTransitions.includes(transition)) {
-      return transition;
-    }
-    else {
-      return 'scroll';
-    }
+  updateTransition() {
+    this.ui.transition.text(
+      I18n.t(this.model.getTransition(),
+             {scope: 'pageflow_scrolled.editor.section_item.transitions'})
+    );
   },
 
   updateActive() {

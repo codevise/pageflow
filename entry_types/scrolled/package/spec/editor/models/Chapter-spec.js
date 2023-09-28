@@ -31,6 +31,18 @@ describe('Chapter', () => {
 
       expect(section.configuration.get('transition')).toEqual('beforeAfter');
     });
+
+    it('handles sparse positions correctly', () => {
+      const {entry} = testContext;
+
+      const chapter = entry.chapters.first()
+      const firstSection = chapter.addSection();
+      chapter.addSection();
+      firstSection.destroy();
+      chapter.addSection();
+
+      expect(chapter.sections.pluck('position')).toEqual([1, 2]);
+    });
   });
 
   describe('#insertSection', () => {
