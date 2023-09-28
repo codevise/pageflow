@@ -71,6 +71,8 @@ export const SectionItemView = Marionette.ItemView.extend({
   },
 
   onRender() {
+    this.updateTransition();
+
     if (this.updateActive()) {
       setTimeout(() => this.$el[0].scrollIntoView({block: 'nearest'}), 10)
     }
@@ -118,26 +120,11 @@ export const SectionItemView = Marionette.ItemView.extend({
     }), {to: this.ui.dropDownButton});
   },
 
-  getTransition() {
-    const entry = this.options.entry;
-    const sectionIndex = entry.sections.indexOf(this.model);
-    const previousSection = entry.sections.at(sectionIndex - 1);
-
-    const availableTransitions =
-      previousSection ?
-      getAvailableTransitionNames(
-        this.model.configuration.attributes,
-        previousSection.configuration.attributes
-      ) : [];
-
-    const transition = this.model.configuration.get('transition');
-
-    if (availableTransitions.includes(transition)) {
-      return transition;
-    }
-    else {
-      return 'scroll';
-    }
+  updateTransition() {
+    this.ui.transition.text(
+      I18n.t(this.model.getTransition(),
+             {scope: 'pageflow_scrolled.editor.section_item.transitions'})
+    );
   },
 
   updateActive() {
