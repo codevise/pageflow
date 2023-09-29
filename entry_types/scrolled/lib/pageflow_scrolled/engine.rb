@@ -1,4 +1,5 @@
 require 'rails'
+require 'pageflow/rails_version'
 
 module PageflowScrolled
   # Rails integration

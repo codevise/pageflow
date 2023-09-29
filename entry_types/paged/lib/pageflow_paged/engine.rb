@@ -1,3 +1,5 @@
+require 'pageflow/rails_version'
+
 module PageflowPaged
   # Rails integration
   class Engine < ::Rails::Engine

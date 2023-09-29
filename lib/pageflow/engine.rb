@@ -31,6 +31,8 @@ require 'pageflow_paged'
 require 'pageflow_scrolled'
 require 'symmetric-encryption'
 
+require 'pageflow/rails_version'
+
 if Gem::Specification.find_all_by_name('pageflow-react', '>= 0.0').any?
   fail('The pageflow-react gem has been merged into the pageflow gem. ' \
        'See the pageflow changelog for update instructions.')
