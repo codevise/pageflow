@@ -14,6 +14,7 @@ module Pageflow
           config.features.register('some_stuff')
         end
         pageflow.finalize!
+        pageflow.configure!
 
         expect(pageflow.config.features.enabled?('some_stuff')).to eq(true)
       end
@@ -62,6 +63,7 @@ module Pageflow
           config.file_types.register(file_type3)
         end
         pageflow.finalize!
+        pageflow.configure!
 
         expect(pageflow.config.file_types.count).to eq 3
       end
@@ -88,6 +90,7 @@ module Pageflow
           config.file_types.register(file_type3)
         end
         pageflow.finalize!
+        pageflow.configure!
 
         expect(pageflow.config.file_types.count).to eq 2
       end
@@ -111,6 +114,7 @@ module Pageflow
           config.widget_types.register(widget_type3)
         end
         pageflow.finalize!
+        pageflow.configure!
 
         expect(pageflow.config.widget_types.count).to eq 3
       end
@@ -134,6 +138,7 @@ module Pageflow
           config.widget_types.register(widget_type3)
         end
         pageflow.finalize!
+        pageflow.configure!
 
         expect(pageflow.config.widget_types.count).to eq 2
       end
@@ -151,6 +156,7 @@ module Pageflow
           config.revision_components.register(:global)
         end
         pageflow.finalize!
+        pageflow.configure!
 
         expect(pageflow.config.revision_components.sort).to eq([:for_entry_type, :global])
       end
@@ -170,6 +176,7 @@ module Pageflow
           config.hooks.on(:some_event, global_subscriber)
         end
         pageflow.finalize!
+        pageflow.configure!
 
         pageflow.config.hooks.invoke(:some_event)
 
@@ -178,7 +185,7 @@ module Pageflow
       end
     end
 
-    describe '#finalize!' do
+    describe '#configure!' do
       it 'yields config to after_configure blocks' do
         result = false
         pageflow = PageflowModule.new
@@ -190,6 +197,7 @@ module Pageflow
           result = config.features.enabled?('some_stuff')
         end
         pageflow.finalize!
+        pageflow.configure!
 
         expect(result).to eq(true)
       end
@@ -205,6 +213,7 @@ module Pageflow
           result = config.features.enabled?('some_stuff')
         end
         pageflow.finalize!
+        pageflow.configure!
 
         expect(result).to eq(true)
       end
@@ -216,9 +225,10 @@ module Pageflow
           config.features.enable_by_default('unknown')
           config.features.register('other_stuff')
         end
+        pageflow.finalize!
 
         expect {
-          pageflow.finalize!
+          pageflow.configure!
         }.to raise_error(/unknown feature/)
       end
 

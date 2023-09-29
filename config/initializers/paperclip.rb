@@ -1,3 +1,7 @@
+require 'pageflow/paperclip_processors/vtt'
+require 'pageflow/paperclip_processors/audio_waveform'
+require 'pageflow/paperclip_processors/noop'
+
 Paperclip.interpolates(:pageflow_s3_root) do |_attachment, _style|
   Pageflow.config.paperclip_s3_root
 end
