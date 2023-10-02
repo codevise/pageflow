@@ -29,9 +29,9 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'resque-scheduler', '~> 2.5'
 
   if Pageflow::RailsVersion.experimental?
-    s.add_development_dependency 'ar_after_transaction', '~> 0.8.0'
+    s.add_runtime_dependency 'ar_after_transaction', '~> 0.8.0'
   else
-    s.add_development_dependency 'ar_after_transaction', '~> 0.5.0'
+    s.add_runtime_dependency 'ar_after_transaction', '~> 0.5.0'
   end
 
   s.add_runtime_dependency 'redis', '~> 3.0'

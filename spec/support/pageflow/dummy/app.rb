@@ -1,5 +1,6 @@
 require 'pageflow/version'
 require 'pageflow/dummy/exit_on_failure_patch'
+require 'pageflow/rails_version'
 
 module Pageflow
   module Dummy

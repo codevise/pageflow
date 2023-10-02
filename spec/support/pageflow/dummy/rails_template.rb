@@ -1,3 +1,5 @@
+require 'pageflow/rails_version'
+
 def source_paths
   [File.join(File.expand_path(File.dirname(__FILE__)), 'templates')]
 end

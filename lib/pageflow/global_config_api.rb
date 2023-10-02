@@ -87,8 +87,6 @@ module Pageflow
     # coniguration is now complete.
     def finalize!
       @finalized = true
-      configure!
-      @config.lint!
     end
 
     # @api private
@@ -103,6 +101,8 @@ module Pageflow
       @after_global_configure_blocks.each do |block|
         block.call(@config)
       end
+
+      @config.lint!
     end
 
     private

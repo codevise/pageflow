@@ -18,6 +18,7 @@ module Pageflow
           config.news = news
         end
         pageflow_module.finalize!
+        pageflow_module.configure!
 
         expect(news).to have_received(:item).with(:some_news_item, message: '')
       end

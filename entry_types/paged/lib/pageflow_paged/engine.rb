@@ -1,9 +1,25 @@
+require 'pageflow/rails_version'
+
 module PageflowPaged
   # Rails integration
   class Engine < ::Rails::Engine
     isolate_namespace PageflowPaged
 
-    config.paths.add('lib', eager_load: true)
+    if Pageflow::RailsVersion.experimental?
+      lib = root.join('lib')
+
+      config.autoload_paths << lib
+      config.eager_load_paths << lib
+
+      initializer 'pageflow_paged.autoloading' do
+        Rails.autoloaders.main.ignore(
+          lib.join('tasks')
+        )
+      end
+    else
+      config.paths.add('lib', eager_load: true)
+    end
+
     config.i18n.load_path += Dir[config.root.join('config', 'locales', '**', '*.yml').to_s]
 
     initializer 'pageflow_paged.assets.precompile' do |app|
