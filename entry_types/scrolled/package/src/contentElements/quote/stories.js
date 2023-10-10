@@ -47,6 +47,19 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'Large Centered',
+      configuration: {
+        variant: 'largeCentered-custom'
+      },
+      themeOptions: {
+        properties: {
+          'quote-largeCentered-custom': {
+            quoteLargeMarkFontSize: '3em'
+          }
+        }
+      }
+    },
+    {
       name: 'Hanging',
       themeOptions: {
         quoteDesign: 'hanging'

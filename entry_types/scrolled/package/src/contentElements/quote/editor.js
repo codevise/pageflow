@@ -14,6 +14,7 @@ editor.contentElementTypes.register('quote', {
 
   configurationEditor({entry}) {
     this.tab('general', function() {
+      this.group('ContentElementVariant', {entry});
       this.input('textSize', SelectInputView, {
         values: ['large', 'medium', 'small', 'verySmall']
       });

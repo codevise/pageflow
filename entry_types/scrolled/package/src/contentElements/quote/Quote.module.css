@@ -10,6 +10,11 @@
   color: var(--palette-color);
 }
 
+.design-largeCentered {
+  text-align: center;
+  align-items: center;
+}
+
 .figure a {
   color: var(--palette-color, contentLinkColor);
 }
@@ -21,7 +26,7 @@
   width: 100%;
   box-sizing: border-box;
   margin: 0;
-  padding: 1em 0 0.5em 0;
+  padding: 1em 0 var(--theme-quote-text-padding-bottom, 0.5em) 0;
 }
 
 .design-largeHanging .text,
@@ -75,12 +80,24 @@
   right: calc(100% + var(--theme-quote-hanging-mark-spacing, 0.05em));
 }
 
+.design-largeCentered .text p:first-child::before,
 .design-largeHanging .text p:first-child::before {
   font-size: var(--quote-large-mark-font-size);
   line-height: 1em;
+}
+
+.design-largeCentered .text p:first-child::before {
+  font-size: var(--quote-large-mark-font-size);
+  margin-top: var(--theme-quote-large-mark-margin-top, -0.1em);
+  margin-bottom: var(--theme-quote-large-mark-margin-bottom, -0.3em);
+  display: block;
+}
+
+.design-largeHanging .text p:first-child::before {
   top: var(--theme-quote-large-mark-top, -0.2em);
 }
 
+.design-largeCentered .text p:last-child::after,
 .design-largeHanging .text p:last-child::after {
   display: none;
 }
@@ -102,6 +119,10 @@
   position: absolute;
   right: 100%;
   margin-right: 0.5em;
+}
+
+.design-largeCentered .attribution p:first-child::before {
+  display: none;
 }
 
 .attribution p {
