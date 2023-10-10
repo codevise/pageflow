@@ -18,9 +18,12 @@ export function Quote({configuration, contentElementId, sectionProps}) {
   const theme = useTheme();
   const {t} = useI18n({locale: 'ui'});
 
+  const design = configuration.variant ? configuration.variant.split('-')[0] : theme.options.quoteDesign;
+
   return (
     <figure className={classNames(styles.figure,
-                                  styles[`design-${theme.options.quoteDesign || 'largeHanging'}`],
+                                  styles[`design-${design || 'largeHanging'}`],
+                                  `scope-quote-${configuration.variant}`,
                                   {[styles.maskedMark]: theme.options.properties?.root?.quoteLeftMarkMaskImage},
                                   {[styles.centerRagged]: sectionProps.layout === 'centerRagged'})}
             style={{'--palette-color': paletteColor(configuration.color)}}>
