@@ -1,8 +1,5 @@
 ENV['RAILS_ENV'] ||= 'test'
 
-require 'coveralls'
-Coveralls.wear!
-
 require 'rails-controller-testing'
 require 'rspec/rails'
 require 'rspec/collection_matchers'
