@@ -1,4 +1,4 @@
-unless Pageflow::RailsVersion.experimental?
+unless defined?(Shakapacker)
   # Make sure packs are recompiled for Capybara specs when Rollup
   # outputs change
 

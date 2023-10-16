@@ -6,7 +6,7 @@ module PageflowScrolled
                                   theme_file_role: nil,
                                   theme_file_style: :resized,
                                   relative_url: false)
-      prefix = Pageflow::RailsVersion.experimental? ? 'static' : 'media'
+      prefix = defined?(Shakapacker) ? 'static' : 'media'
 
       path =
         theme.files.dig(theme_file_role, theme_file_style) ||
