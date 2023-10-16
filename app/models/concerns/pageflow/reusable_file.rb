@@ -30,8 +30,8 @@ module Pageflow
         file_type_of_parent = Pageflow.config.file_types.find_by_model!(parent_class)
         models_of_nested_file_types = file_type_of_parent.nested_file_types.map(&:model)
         unless models_of_nested_file_types.include?(self.class)
-          errors[:base] << 'File type of provided parent file does not permit nesting files of '\
-                           "type #{self.class.name}"
+          errors.add(:base, 'File type of provided parent file does not permit nesting files of '\
+                            "type #{self.class.name}")
         end
       end
     end
@@ -39,7 +39,7 @@ module Pageflow
     def parent_belongs_to_same_entry
       if parent_file.present?
         unless parent_file.using_entries.include?(entry)
-          errors[:base] << 'Parent file does not belong to same entry as nested file'
+          errors.add(:base, 'Parent file does not belong to same entry as nested file')
         end
       end
     end
