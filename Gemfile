@@ -9,8 +9,6 @@ gem 'pageflow-support', path: 'spec/support'
 
 gem 'spring-commands-rspec', group: :development
 
-gem 'coveralls', require: false
-
 # Early failure output
 gem 'rspec-instafail', '~> 0.4.0', require: false
 
