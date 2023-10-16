@@ -38,8 +38,9 @@ module Pageflow
     private
 
     def account_membership_exists
-      errors[:base] << 'Entry Membership misses presupposed Membership on account of entry' if
-        user.present? && !user.accounts.include?(entity.account)
+      return if user.blank? || user.accounts.include?(entity.account)
+
+      errors.add(:base, 'Entry Membership misses presupposed Membership on account of entry')
     end
 
     def on_entry?
