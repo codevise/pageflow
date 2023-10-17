@@ -1,6 +1,6 @@
 <%= stylesheet_link_tag 'pageflow_paged/editor', media: 'all' %>
 
-<% if Pageflow::RailsVersion.experimental?  %>
+<% if defined?(Shakapacker)  %>
   <%= stylesheet_pack_tag 'pageflow-scrolled-frontend' %>
 <% else %>
   <%= stylesheet_packs_with_chunks_tag 'pageflow-scrolled-frontend' %>

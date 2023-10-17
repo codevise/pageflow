@@ -30,10 +30,11 @@ module PageflowScrolled
       end
 
       def install_packages
-        if Pageflow::RailsVersion.experimental?
+        if defined?(Shakapacker)
           run 'yarn add css-loader style-loader' \
               ' mini-css-extract-plugin css-minimizer-webpack-plugin' \
-              ' postcss postcss-loader postcss-url' \
+              ' postcss postcss-preset-env postcss-loader' \
+              ' postcss-import postcss-url postcss-flexbugs-fixes' \
               ' @fontsource/source-sans-pro'
         else
           run 'yarn add postcss-url@^8.0.0 @fontsource/source-sans-pro'
@@ -41,7 +42,7 @@ module PageflowScrolled
       end
 
       def webpack_config
-        return unless Pageflow::RailsVersion.experimental?
+        return unless defined?(Shakapacker)
 
         gsub_file(
           'config/webpack/webpack.config.js',
@@ -54,7 +55,11 @@ module PageflowScrolled
           'const webpackConfig = generateWebpackConfig()',
           <<~JS
             const webpackConfig = merge(
-              generateWebpackConfig(),
+              generateWebpackConfig({
+                resolve: {
+                  extensions: ['.css']
+                }
+              }),
               require('pageflow/config/webpack5'),
               require('pageflow-scrolled/config/webpack')
             )
@@ -88,7 +93,7 @@ module PageflowScrolled
       end
 
       def webpack_environment
-        return if Pageflow::RailsVersion.experimental?
+        return if defined?(Shakapacker)
 
         inject_into_file('config/webpack/environment.js',
                          before: "module.exports = environment\n") do
@@ -109,7 +114,7 @@ module PageflowScrolled
       end
 
       def webpacker_yml
-        return if Pageflow::RailsVersion.experimental?
+        return if defined?(Shakapacker)
 
         gsub_file('config/webpacker.yml',
                   'extract_css: false',
@@ -122,12 +127,29 @@ module PageflowScrolled
       end
 
       def postcss_config
-        return if Pageflow::RailsVersion.experimental?
-
-        inject_into_file('postcss.config.js',
-                         after: "require('postcss-import'),\n") do
-          "    // Make relative urls in fontsource packages work\n" \
-          "    require('postcss-url')({url: 'rebase'}),\n"
+        if defined?(Shakapacker)
+          create_file 'postcss.config.js', <<~JS
+            module.exports = {
+              plugins: [
+                require('postcss-import'),
+                // Make relative urls in fontsource packages work
+                require('postcss-url')({url: 'rebase'}),
+                require('postcss-flexbugs-fixes'),
+                require('postcss-preset-env')({
+                  autoprefixer: {
+                    flexbox: 'no-2009'
+                  },
+                  stage: 3
+                })
+              ]
+            }
+          JS
+        else
+          inject_into_file('postcss.config.js',
+                           after: "require('postcss-import'),\n") do
+            "    // Make relative urls in fontsource packages work\n" \
+            "    require('postcss-url')({url: 'rebase'}),\n"
+          end
         end
       end
 

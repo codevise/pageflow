@@ -128,13 +128,6 @@ Gem::Specification.new do |s|
   # which we currently depend on in pageflow/engine.rb
   s.add_dependency 'sprockets', '< 4'
 
-  # Used for Webpack build in host application
-  if Pageflow::RailsVersion.experimental?
-    s.add_dependency 'shakapacker', '~> 7.0'
-  else
-    s.add_dependency 'webpacker', '~> 4.2'
-  end
-
   # Using translations from rails locales in javascript code.
   s.add_dependency 'i18n-js', '~> 2.1'
 
@@ -163,6 +156,13 @@ Gem::Specification.new do |s|
 
   # string encryptor/decryptor
   s.add_dependency 'symmetric-encryption', '~> 4.3.1'
+
+  # Used for Webpack build in host application
+  if Pageflow::RailsVersion.experimental?
+    s.add_development_dependency 'shakapacker', '~> 7.0'
+  else
+    s.add_development_dependency 'webpacker', '~> 4.2'
+  end
 
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.5.2'

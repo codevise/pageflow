@@ -26,13 +26,13 @@ if Pageflow::RailsVersion.experimental?
   # use shakapacker need to add it to their Gemfile themselves. Requiring
   # shakapacker in an engine file (like we normally do) would force all
   # host application to install shakapacker.
-  gem 'shakapacker'
+  gem 'shakapacker', '~> 7.0'
 else
   # Make webpacker available in specs. Host applications that want to
   # use webpacker need to add it to their Gemfile themselves. Requiring
   # webpacker in an engine file (like we normally do) would force all
   # host application to install webpacker.
-  gem 'webpacker'
+  gem 'webpacker', '~> 4.2'
 end
 
 # Make tests fail on JS errors

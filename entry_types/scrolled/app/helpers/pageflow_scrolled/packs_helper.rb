@@ -2,7 +2,7 @@ module PageflowScrolled
   # @api private
   module PacksHelper
     def scrolled_frontend_javascript_packs_tag(entry, options)
-      if Pageflow::RailsVersion.experimental?
+      if defined?(Shakapacker)
         javascript_pack_tag(
           *scrolled_frontend_packs(entry, **options),
           defer: false
@@ -15,7 +15,7 @@ module PageflowScrolled
     end
 
     def scrolled_frontend_stylesheet_packs_tag(entry, options)
-      if Pageflow::RailsVersion.experimental?
+      if defined?(Shakapacker)
         stylesheet_pack_tag(
           *scrolled_frontend_packs(entry, **options),
           media: 'all'
@@ -29,7 +29,7 @@ module PageflowScrolled
     end
 
     def scrolled_editor_javascript_packs_tag(entry)
-      if Pageflow::RailsVersion.experimental?
+      if defined?(Shakapacker)
         javascript_pack_tag(
           *scrolled_editor_packs(entry),
           defer: false
