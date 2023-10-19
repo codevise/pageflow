@@ -24,7 +24,7 @@ import {
   getPlayerClickHandler
 } from './handlers';
 
-export function InlineVideo({contentElementId, sectionProps, configuration}) {
+export function InlineVideo({contentElementId, configuration}) {
   const videoFile = useFile({collectionName: 'videoFiles',
                              permaId: configuration.id});
   const posterImageFile = useFile({collectionName: 'imageFiles',
@@ -46,7 +46,6 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
                                    landscapePosterImageFile={posterImageFile}
                                    portraitPosterImageFile={portraitPosterImageFile}
                                    contentElementId={contentElementId}
-                                   sectionProps={sectionProps}
                                    configuration={configuration} />
     );
   }
@@ -55,7 +54,6 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
       <OrientationUnawareInlineVideo videoFile={videoFile}
                                      posterImageFile={posterImageFile}
                                      contentElementId={contentElementId}
-                                     sectionProps={sectionProps}
                                      configuration={configuration} />
     )
   }
@@ -64,7 +62,7 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
 function OrientationAwareInlineVideo({
   landscapeVideoFile, portraitVideoFile,
   landscapePosterImageFile, portraitPosterImageFile,
-  contentElementId, sectionProps, configuration
+  contentElementId, configuration
 }) {
   const portraitOrientation = usePortraitOrientation();
   const videoFile = portraitOrientation && portraitVideoFile ?
@@ -77,14 +75,13 @@ function OrientationAwareInlineVideo({
                                    videoFile={videoFile}
                                    posterImageFile={posterImageFile}
                                    contentElementId={contentElementId}
-                                   sectionProps={sectionProps}
                                    configuration={configuration} />
   );
 }
 
 function OrientationUnawareInlineVideo({
   videoFile, posterImageFile,
-  contentElementId, sectionProps, configuration
+  contentElementId, configuration
 }) {
   const [playerState, playerActions] = usePlayerState();
 
@@ -106,7 +103,6 @@ function OrientationUnawareInlineVideo({
                       playerState={playerState}
                       playerActions={playerActions}
                       contentElementId={contentElementId}
-                      sectionProps={sectionProps}
                       configuration={configuration} />
             </FitViewport.Content>
           </ContentElementFigure>
@@ -119,7 +115,7 @@ function OrientationUnawareInlineVideo({
 function Player({
   videoFile, posterImageFile,
   playerState, playerActions,
-  contentElementId, sectionProps, configuration
+  contentElementId, configuration
 }) {
   const {isEditable, isSelected} = useContentElementEditorState();
 
@@ -174,7 +170,6 @@ function Player({
                                          configuration.playbackMode === 'loop'}
                          hideBigPlayButton={configuration.playbackMode === 'loop'}
                          configuration={configuration}
-                         sectionProps={sectionProps}
                          onPlayerClick={onPlayerClick}>
       <PlayerEventContextDataProvider playerDescription="Inline Video"
                                       playbackMode={configuration.playbackMode ||
