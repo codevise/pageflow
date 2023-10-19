@@ -20,11 +20,24 @@ editor.contentElementTypes.register('inlineVideo', {
         positioning: false,
         defaultTextTrackFilePropertyName: 'defaultTextTrackFileId'
       });
-
       this.input('posterId', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false
+      });
+
+      this.input('portraitId', FileInputView, {
+        collection: 'video_files',
+        fileSelectionHandler: 'contentElementConfiguration',
+        positioning: false,
+        defaultTextTrackFilePropertyName: 'defaultTextTrackFileId'
+      });
+      this.input('portraitPosterId', FileInputView, {
+        collection: 'image_files',
+        fileSelectionHandler: 'contentElementConfiguration',
+        positioning: false,
+        visibleBinding: 'portraitId',
+        visible: () => this.model.getReference('portraitId', 'video_files')
       });
 
       this.view(SeparatorView);

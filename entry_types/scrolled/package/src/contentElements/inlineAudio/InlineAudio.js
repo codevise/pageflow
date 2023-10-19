@@ -16,7 +16,7 @@ import {
   useAudioFocus
 } from 'pageflow-scrolled/frontend';
 
-export function InlineAudio({contentElementId, sectionProps, configuration}) {
+export function InlineAudio({contentElementId, configuration}) {
   const audioFile = useFile({collectionName: 'audioFiles', permaId: configuration.id});
   const posterImageFile = useFile({collectionName: 'imageFiles', permaId: configuration.posterId});
 
@@ -68,7 +68,6 @@ export function InlineAudio({contentElementId, sectionProps, configuration}) {
                                  playerActions={playerActions}
                                  standAlone={!posterImageFile}
                                  configuration={configuration}
-                                 sectionProps={sectionProps}
                                  onPlayerClick={onPlayerClick}>
               <PlayerEventContextDataProvider playerDescription="Inline Audio"
                                               playbackMode={configuration.autoplay ? 'autoplay' : 'manual'}>

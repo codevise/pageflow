@@ -58,8 +58,7 @@ export function MediaPlayerControls(props) {
 };
 
 MediaPlayerControls.defaultProps = {
-  configuration: {},
-  sectionProps: {}
+  configuration: {}
 }
 
 function getTextTracksMenuItems(textTracks, t) {

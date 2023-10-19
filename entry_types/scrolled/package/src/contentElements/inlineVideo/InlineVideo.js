@@ -13,7 +13,8 @@ import {
   useFile,
   usePlayerState,
   useContentElementLifecycle,
-  useAudioFocus
+  useAudioFocus,
+  usePortraitOrientation
 } from 'pageflow-scrolled/frontend';
 
 import {MutedIndicator} from './MutedIndicator';
@@ -23,13 +24,65 @@ import {
   getPlayerClickHandler
 } from './handlers';
 
-export function InlineVideo({contentElementId, sectionProps, configuration}) {
+export function InlineVideo({contentElementId, configuration}) {
   const videoFile = useFile({collectionName: 'videoFiles',
                              permaId: configuration.id});
-
   const posterImageFile = useFile({collectionName: 'imageFiles',
                                    permaId: configuration.posterId});
 
+  const portraitVideoFile = useFile({collectionName: 'videoFiles',
+                                     permaId: configuration.portraitId});
+  const portraitPosterImageFile = useFile({collectionName: 'imageFiles',
+                                           permaId: configuration.portraitPosterId});
+
+  // Only render OrientationAwareInlineImage if a portrait image has
+  // been selected. This prevents having the component rerender on
+  // orientation changes even if it does not depend on orientation at
+  // all.
+  if (portraitVideoFile) {
+    return (
+      <OrientationAwareInlineVideo landscapeVideoFile={videoFile}
+                                   portraitVideoFile={portraitVideoFile}
+                                   landscapePosterImageFile={posterImageFile}
+                                   portraitPosterImageFile={portraitPosterImageFile}
+                                   contentElementId={contentElementId}
+                                   configuration={configuration} />
+    );
+  }
+  else {
+    return (
+      <OrientationUnawareInlineVideo videoFile={videoFile}
+                                     posterImageFile={posterImageFile}
+                                     contentElementId={contentElementId}
+                                     configuration={configuration} />
+    )
+  }
+}
+
+function OrientationAwareInlineVideo({
+  landscapeVideoFile, portraitVideoFile,
+  landscapePosterImageFile, portraitPosterImageFile,
+  contentElementId, configuration
+}) {
+  const portraitOrientation = usePortraitOrientation();
+  const videoFile = portraitOrientation && portraitVideoFile ?
+                    portraitVideoFile : landscapeVideoFile;
+  const posterImageFile = portraitOrientation && portraitPosterImageFile ?
+                          portraitPosterImageFile : landscapePosterImageFile;
+
+  return (
+    <OrientationUnawareInlineVideo key={portraitOrientation}
+                                   videoFile={videoFile}
+                                   posterImageFile={posterImageFile}
+                                   contentElementId={contentElementId}
+                                   configuration={configuration} />
+  );
+}
+
+function OrientationUnawareInlineVideo({
+  videoFile, posterImageFile,
+  contentElementId, configuration
+}) {
   const [playerState, playerActions] = usePlayerState();
 
   return (
@@ -50,7 +103,6 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
                       playerState={playerState}
                       playerActions={playerActions}
                       contentElementId={contentElementId}
-                      sectionProps={sectionProps}
                       configuration={configuration} />
             </FitViewport.Content>
           </ContentElementFigure>
@@ -63,7 +115,7 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
 function Player({
   videoFile, posterImageFile,
   playerState, playerActions,
-  contentElementId, sectionProps, configuration
+  contentElementId, configuration
 }) {
   const {isEditable, isSelected} = useContentElementEditorState();
 
@@ -118,7 +170,6 @@ function Player({
                                          configuration.playbackMode === 'loop'}
                          hideBigPlayButton={configuration.playbackMode === 'loop'}
                          configuration={configuration}
-                         sectionProps={sectionProps}
                          onPlayerClick={onPlayerClick}>
       <PlayerEventContextDataProvider playerDescription="Inline Video"
                                       playbackMode={configuration.playbackMode ||

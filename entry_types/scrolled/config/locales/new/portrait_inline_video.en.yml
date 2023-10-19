@@ -1,0 +1,19 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        inlineVideo:
+          attributes:
+            portraitId:
+              label: Video (Portrait)
+              inline_help: |
+                Displayed when the browser viewport is taller than
+                wide, for example on phones or tablets in portrait
+                orientation. Can be used to supply an alternative to a
+                landscape video that makes better use of the available
+                space.
+            portraitPosterId:
+              label: Poster (Portrait)
+              inline_help: |
+                Poster image displayed for the alternative portrait
+                video.
