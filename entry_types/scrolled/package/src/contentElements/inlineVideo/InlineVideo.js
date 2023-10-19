@@ -13,7 +13,8 @@ import {
   useFile,
   usePlayerState,
   useContentElementLifecycle,
-  useAudioFocus
+  useAudioFocus,
+  usePortraitOrientation
 } from 'pageflow-scrolled/frontend';
 
 import {MutedIndicator} from './MutedIndicator';
@@ -26,10 +27,65 @@ import {
 export function InlineVideo({contentElementId, sectionProps, configuration}) {
   const videoFile = useFile({collectionName: 'videoFiles',
                              permaId: configuration.id});
-
   const posterImageFile = useFile({collectionName: 'imageFiles',
                                    permaId: configuration.posterId});
 
+  const portraitVideoFile = useFile({collectionName: 'videoFiles',
+                                     permaId: configuration.portraitId});
+  const portraitPosterImageFile = useFile({collectionName: 'imageFiles',
+                                           permaId: configuration.portraitPosterId});
+
+  // Only render OrientationAwareInlineImage if a portrait image has
+  // been selected. This prevents having the component rerender on
+  // orientation changes even if it does not depend on orientation at
+  // all.
+  if (portraitVideoFile) {
+    return (
+      <OrientationAwareInlineVideo landscapeVideoFile={videoFile}
+                                   portraitVideoFile={portraitVideoFile}
+                                   landscapePosterImageFile={posterImageFile}
+                                   portraitPosterImageFile={portraitPosterImageFile}
+                                   contentElementId={contentElementId}
+                                   sectionProps={sectionProps}
+                                   configuration={configuration} />
+    );
+  }
+  else {
+    return (
+      <OrientationUnawareInlineVideo videoFile={videoFile}
+                                     posterImageFile={posterImageFile}
+                                     contentElementId={contentElementId}
+                                     sectionProps={sectionProps}
+                                     configuration={configuration} />
+    )
+  }
+}
+
+function OrientationAwareInlineVideo({
+  landscapeVideoFile, portraitVideoFile,
+  landscapePosterImageFile, portraitPosterImageFile,
+  contentElementId, sectionProps, configuration
+}) {
+  const portraitOrientation = usePortraitOrientation();
+  const videoFile = portraitOrientation && portraitVideoFile ?
+                    portraitVideoFile : landscapeVideoFile;
+  const posterImageFile = portraitOrientation && portraitPosterImageFile ?
+                          portraitPosterImageFile : landscapePosterImageFile;
+
+  return (
+    <OrientationUnawareInlineVideo key={portraitOrientation}
+                                   videoFile={videoFile}
+                                   posterImageFile={posterImageFile}
+                                   contentElementId={contentElementId}
+                                   sectionProps={sectionProps}
+                                   configuration={configuration} />
+  );
+}
+
+function OrientationUnawareInlineVideo({
+  videoFile, posterImageFile,
+  contentElementId, sectionProps, configuration
+}) {
   const [playerState, playerActions] = usePlayerState();
 
   return (

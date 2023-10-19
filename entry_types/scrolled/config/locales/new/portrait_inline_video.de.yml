@@ -1,0 +1,18 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        inlineVideo:
+          attributes:
+            portraitId:
+              label: Video (Hochkant)
+              inline_help: |
+                Wird gezeigt, wenn der Browser-Viewport höher als
+                breit ist - zum Beispiel auf Smartphones oder Tablets
+                in Portrait-Ausrichtung. Kann als Alternative zu einem
+                querformatigen Video konfiguriert werden, um den
+                verfügbaren Platz besser zu nutzen.
+            portraitPosterId:
+              label: Poster (Hochkant)
+              inline_help: |
+                Poster-Bild für das alternative Hochkant-Video.
