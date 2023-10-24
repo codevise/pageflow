@@ -1,5 +1,6 @@
 require 'pageflow/paperclip_processors/vtt'
 require 'pageflow/paperclip_processors/audio_waveform'
+require 'pageflow/paperclip_processors/webp'
 require 'pageflow/paperclip_processors/noop'
 
 Paperclip.interpolates(:pageflow_s3_root) do |_attachment, _style|
@@ -33,6 +34,9 @@ Paperclip.interpolates(:pageflow_hls_qualities) do |attachment, _style|
 end
 
 Paperclip.configure do |config|
+  config.register_processor(:pageflow_webp,
+                            Pageflow::PaperclipProcessors::Webp)
+
   config.register_processor(:pageflow_vtt,
                             Pageflow::PaperclipProcessors::Vtt)
 

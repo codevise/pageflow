@@ -74,6 +74,9 @@ Gem::Specification.new do |s|
     s.add_dependency 'paperclip', '~> 6.1'
   end
 
+  # Image processing
+  s.add_dependency 'ruby-vips', '~> 2.2'
+
   # MySQL/Postgres advisory locks
   s.add_dependency 'with_advisory_lock', '~> 4.6'
 
