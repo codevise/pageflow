@@ -68,6 +68,25 @@ module Pageflow
         expect(styles[:panorama_large].processor_options[:geometry]).to eq('100%')
         expect(styles[:panorama_medium].processor_options[:geometry]).to eq('100%')
       end
+
+      describe 'with webp outputs' do
+        it 'turns jpg file into webp' do
+          image_file = build(:image_file,
+                             :uploading,
+                             file_name: 'image.jpg',
+                             output_presences: {
+                               webp: true
+                             })
+
+          styles = image_file.attachment_styles(image_file.attachment)
+
+          expect(styles[:medium][:format]).to eq(:webp)
+          expect(styles[:large][:format]).to eq(:webp)
+          expect(styles[:ultra][:format]).to eq(:webp)
+
+          expect(styles[:medium][:processors]).to eq([:pageflow_webp])
+        end
+      end
     end
 
     describe 'basename' do
