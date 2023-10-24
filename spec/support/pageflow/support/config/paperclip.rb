@@ -13,7 +13,7 @@ RSpec.configure do |config|
 
   config.before(:each) do |example|
     unless example.metadata[:unstub_paperclip] || example.metadata[:js]
-      allow_any_instance_of(Paperclip::Attachment).to receive(:post_process)
+      allow_any_instance_of(Paperclip::Attachment).to receive(:post_process_styles)
       allow(Paperclip).to receive(:run).and_return('100x100')
     end
   end
