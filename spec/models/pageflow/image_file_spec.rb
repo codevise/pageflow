@@ -111,5 +111,33 @@ module Pageflow
         expect(image_file.thumbnail_url(:medium)).to match(/placeholder/)
       end
     end
+
+    describe '#reprocess!' do
+      it 'does not set output presences by default' do
+        entry = create(:entry)
+        image_file = create(:image_file, :uploaded, entry: entry)
+
+        image_file.attachment.reprocess!
+
+        expect(image_file.reload.present_outputs).to eq([])
+      end
+
+      it 'sets output presences based on entry feature flag' do
+        entry = create(:entry, with_feature: 'webp_images')
+        image_file = create(:image_file, :uploaded, entry: entry)
+
+        image_file.attachment.reprocess!
+
+        expect(image_file.reload.present_outputs).to eq([:webp])
+      end
+
+      it 'does not fail if entry is missing' do
+        image_file = create(:image_file, :uploaded, entry: nil)
+
+        image_file.attachment.reprocess!
+
+        expect(image_file.reload.present_outputs).to eq([])
+      end
+    end
   end
 end

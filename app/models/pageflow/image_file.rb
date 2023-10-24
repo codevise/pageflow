@@ -4,6 +4,8 @@ module Pageflow
     include ImageAndTextTrackProcessingStateMachine
     include OutputSource
 
+    before_post_process :set_output_presences
+
     # used in paperclip initializer to interpolate the storage path
     # needs to be "processed_attachments" for images for legacy reasons
     def attachments_path_name
@@ -90,6 +92,10 @@ module Pageflow
       else
         {format: :JPG}
       end
+    end
+
+    def set_output_presences
+      self.output_presences = {webp: true} if entry&.feature_state('webp_images')
     end
   end
 end
