@@ -51,6 +51,7 @@ export function watchCollections(entry, {dispatch}) {
       name: camelize(collectionName),
       attributes: ['id', {permaId: 'perma_id'}, 'width', 'height',
                    'basename', 'extension', 'rights',
+                   {processedExtension: 'processed_extension'},
                    {isReady: 'is_ready'},
                    {variants: variants => variants && variants.map(variant => camelize(variant))},
                    {durationInMs: 'duration_in_ms'},

@@ -13,7 +13,8 @@ describe('useFile', () => {
         seed: {
           fileUrlTemplates: {
             imageFiles: {
-              large: '/image_files/:id_partition/large.jpg'
+              original: '/image_files/:id_partition/original/:basename.:extension',
+              large: '/image_files/:id_partition/large/:basename.:processed_extension',
             }
           },
           fileModelTypes: {
@@ -24,7 +25,8 @@ describe('useFile', () => {
               id: 100,
               permaId: 1,
               basename: 'image',
-              extension: 'jpg',
+              extension: 'svg',
+              processedExtension: 'webp',
               rights: 'author',
               configuration: {
                 some: 'value'
@@ -41,12 +43,13 @@ describe('useFile', () => {
       id: 100,
       permaId: 1,
       modelType: 'Pageflow::ImageFile',
-      extension: 'jpg',
+      extension: 'svg',
       configuration: {
         some: 'value'
       },
       urls: {
-        large: '/image_files/000/000/100/large.jpg'
+        original: '/image_files/000/000/100/original/image.svg',
+        large: '/image_files/000/000/100/large/image.webp',
       }
     });
   });
@@ -58,7 +61,8 @@ describe('useFile', () => {
         seed: {
           fileUrlTemplates: {
             imageFiles: {
-              large: '/image_files/:id_partition/large.jpg'
+              original: '/image_files/:id_partition/original/:basename.:extension',
+              large: '/image_files/:id_partition/large/:basename.:processed_extension',
             }
           },
           fileModelTypes: {
@@ -75,7 +79,8 @@ describe('useFile', () => {
                   id: 100,
                   perma_id: 1,
                   basename: 'image',
-                  extension: 'jpg',
+                  extension: 'svg',
+                  processed_extension: 'webp',
                   rights: 'author',
                   configuration: {
                     some: 'value'
@@ -95,12 +100,13 @@ describe('useFile', () => {
       permaId: 1,
       modelType: 'Pageflow::ImageFile',
       basename: 'image',
-      extension: 'jpg',
+      extension: 'svg',
       configuration: {
         some: 'value'
       },
       urls: {
-        large: '/image_files/000/000/100/large.jpg'
+        original: '/image_files/000/000/100/original/image.svg',
+        large: '/image_files/000/000/100/large/image.webp',
       }
     });
   });
@@ -161,50 +167,6 @@ describe('useFile', () => {
         original: '/video_files/000/000/100/original.mov',
         high: '/video_files/000/000/100/high.mp4',
         posterLarge: '/video_files/000/000/100/posterLarge.jpg'
-      }
-    });
-  });
-
-  it('interpolates file basename and extension', () => {
-    const {result} = renderHookInEntry(
-      () => useFile({collectionName: 'imageFiles', permaId: 1}),
-      {
-        seed: {
-          fileUrlTemplates: {
-            imageFiles: {
-              original: '/image_files/:id_partition/:basename.:extension'
-            }
-          },
-          fileModelTypes: {
-            imageFiles: 'Pageflow::ImageFile'
-          },
-          imageFiles: [
-            {
-              id: 100,
-              permaId: 1,
-              basename: 'image',
-              extension: 'svg',
-              rights: 'author',
-              configuration: {
-                some: 'value'
-              }
-            }
-          ]
-        }
-      }
-    );
-
-    const file = result.current;
-
-    expect(file).toMatchObject({
-      id: 100,
-      permaId: 1,
-      modelType: 'Pageflow::ImageFile',
-      configuration: {
-        some: 'value'
-      },
-      urls: {
-        original: '/image_files/000/000/100/image.svg'
       }
     });
   });
