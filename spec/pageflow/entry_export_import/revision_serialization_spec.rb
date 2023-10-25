@@ -289,7 +289,8 @@ module Pageflow
                                                               'entry_id',
                                                               'uploader_id',
                                                               'state',
-                                                              'updated_at'))
+                                                              'updated_at',
+                                                              'output_presences'))
         expect(imported_revision.file_usages.first)
           .to have_attributes(exported_file_usage.attributes.except('id',
                                                                     'file_id',
