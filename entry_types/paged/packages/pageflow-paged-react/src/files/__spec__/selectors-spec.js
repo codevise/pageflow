@@ -79,6 +79,16 @@ describe('file', () => {
     expect(result).toHaveProperty('urls.high', 'http://example.com/my-video.mp4');
   });
 
+  it('interpolates processed extension into file url template', () => {
+    const files = {'image_files': [{id: 2004, perma_id: 31, processed_extension: 'webp', basename: 'image'}]};
+    const fileUrlTemplates = {'image_files': {'medium': 'http://example.com/:basename.:processed_extension'}};
+    const state = sample({files, fileUrlTemplates});
+
+    const result = file('imageFiles', {id: 31})(state);
+
+    expect(result).toHaveProperty('urls.medium', 'http://example.com/image.webp');
+  });
+
   it('interpolates hls qualities into video file url template', () => {
     const files = {'video_files': [{
       id: 2004,
@@ -231,10 +241,12 @@ describe('fileExists', () => {
 function sample({
   files,
   fileUrlTemplates = {
+    image_files: {},
     video_files: {},
     text_track_files: {},
   },
   modelTypes = {
+    image_files: 'Pageflow::ImageFile',
     video_files: 'Pageflow::VideoFile',
     text_track_files: 'Pageflow::TextTrackFile'
   }
