@@ -141,6 +141,10 @@ jobs:
 
     # Dependencies
 
+    - name: Install libvips package for image processing
+      run: |
+        sudo apt-get install libvips-dev
+
     - name: Install audiowaveform package
       if: ${{ matrix.install-audiowaveform == true}}
       run: |
