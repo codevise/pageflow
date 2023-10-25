@@ -36,7 +36,7 @@ module Pageflow
       panorama_format = File.extname(attachment.original_filename) == '.png' ? :PNG : :JPG
 
       Pageflow
-        .config.thumbnail_styles
+        .config.thumbnail_styles.transform_values { |options| options.merge(style_defaults) }
         .merge(
           print: {geometry: '300x300>',
                   **style_defaults,

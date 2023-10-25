@@ -17,12 +17,14 @@ module Pageflow
 
     describe 'attachment_styles' do
       it 'includes Pageflow.config.thumbnail_styles' do
-        Pageflow.config.thumbnail_styles[:square] = '100x100'
+        Pageflow.config.thumbnail_styles[:square] = {
+          geometry: '100x100', format: :JPG
+        }
 
         image_file = build(:image_file, :uploading, file_name: 'image.jpg')
         styles = image_file.attachment_styles(image_file.attachment)
 
-        expect(styles[:square]).to eq('100x100')
+        expect(styles[:square]).to eq(geometry: '100x100', format: :JPG)
       end
 
       it 'turns png file into jpg for non panorama styles' do
@@ -70,7 +72,11 @@ module Pageflow
       end
 
       describe 'with webp outputs' do
-        it 'turns jpg file into webp' do
+        it 'turns jpg file into webp files' do
+          Pageflow.config.thumbnail_styles[:square] = {
+            geometry: '100x100', format: :JPG
+          }
+
           image_file = build(:image_file,
                              :uploading,
                              file_name: 'image.jpg',
@@ -83,6 +89,7 @@ module Pageflow
           expect(styles[:medium][:format]).to eq(:webp)
           expect(styles[:large][:format]).to eq(:webp)
           expect(styles[:ultra][:format]).to eq(:webp)
+          expect(styles[:square][:format]).to eq(:webp)
 
           expect(styles[:medium][:processors]).to eq([:pageflow_webp])
         end
