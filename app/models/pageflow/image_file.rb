@@ -2,6 +2,9 @@ module Pageflow
   class ImageFile < ApplicationRecord
     include UploadableFile
     include ImageAndTextTrackProcessingStateMachine
+    include OutputSource
+
+    before_post_process :set_output_presences
 
     # used in paperclip initializer to interpolate the storage path
     # needs to be "processed_attachments" for images for legacy reasons
@@ -35,19 +38,19 @@ module Pageflow
       panorama_format = File.extname(attachment.original_filename) == '.png' ? :PNG : :JPG
 
       Pageflow
-        .config.thumbnail_styles
+        .config.thumbnail_styles.transform_values { |options| options.merge(style_defaults) }
         .merge(
           print: {geometry: '300x300>',
-                  format: :JPG,
+                  **style_defaults,
                   convert_options: '-quality 10 -interlace Plane'},
           medium: {geometry: '1024x1024>',
-                   format: :JPG,
+                   **style_defaults,
                    convert_options: '-quality 70 -interlace Plane'},
           large: {geometry: '1920x1920>',
-                  format: :JPG,
+                  **style_defaults,
                   convert_options: '-quality 70 -interlace Plane'},
           ultra: {geometry: '3840x3840>',
-                  format: :JPG,
+                  **style_defaults,
                   convert_options: '-quality 90 -interlace Plane'},
           panorama_medium: {geometry: ImageFile.scale_down_to_cover(1024, 1024),
                             format: panorama_format,
@@ -81,6 +84,18 @@ module Pageflow
       self.width = geo.width
       self.height = geo.height
     rescue Paperclip::Errors::NotIdentifiedByImageMagickError
+    end
+
+    def style_defaults
+      if output_present?(:webp)
+        {format: :webp, processors: [:pageflow_webp]}
+      else
+        {format: :JPG}
+      end
+    end
+
+    def set_output_presences
+      self.output_presences = {webp: true} if entry&.feature_state('webp_images')
     end
   end
 end

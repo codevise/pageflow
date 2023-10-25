@@ -66,6 +66,10 @@ jobs:
 
     # Dependencies
 
+    - name: Install libvips package for image processing
+      run: |
+        sudo apt-get install libvips-dev
+
     - name: Bundle install
       run: |
         bundle config path vendor/bundle

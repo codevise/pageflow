@@ -67,6 +67,7 @@ function getFileUrl(collectionName, file, quality, urlTemplates) {
       .replace(':id_partition', idPartition(file.id))
       .replace(':basename', file.basename)
       .replace(':extension', file.extension)
+      .replace(':processed_extension', file.processedExtension)
       .replace(':pageflow_hls_qualities', () => hlsQualities(file));
   }
 }

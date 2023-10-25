@@ -17,12 +17,14 @@ module Pageflow
 
     describe 'attachment_styles' do
       it 'includes Pageflow.config.thumbnail_styles' do
-        Pageflow.config.thumbnail_styles[:square] = '100x100'
+        Pageflow.config.thumbnail_styles[:square] = {
+          geometry: '100x100', format: :JPG
+        }
 
         image_file = build(:image_file, :uploading, file_name: 'image.jpg')
         styles = image_file.attachment_styles(image_file.attachment)
 
-        expect(styles[:square]).to eq('100x100')
+        expect(styles[:square]).to eq(geometry: '100x100', format: :JPG)
       end
 
       it 'turns png file into jpg for non panorama styles' do
@@ -68,6 +70,30 @@ module Pageflow
         expect(styles[:panorama_large].processor_options[:geometry]).to eq('100%')
         expect(styles[:panorama_medium].processor_options[:geometry]).to eq('100%')
       end
+
+      describe 'with webp outputs' do
+        it 'turns jpg file into webp files' do
+          Pageflow.config.thumbnail_styles[:square] = {
+            geometry: '100x100', format: :JPG
+          }
+
+          image_file = build(:image_file,
+                             :uploading,
+                             file_name: 'image.jpg',
+                             output_presences: {
+                               webp: true
+                             })
+
+          styles = image_file.attachment_styles(image_file.attachment)
+
+          expect(styles[:medium][:format]).to eq(:webp)
+          expect(styles[:large][:format]).to eq(:webp)
+          expect(styles[:ultra][:format]).to eq(:webp)
+          expect(styles[:square][:format]).to eq(:webp)
+
+          expect(styles[:medium][:processors]).to eq([:pageflow_webp])
+        end
+      end
     end
 
     describe 'basename' do
@@ -83,6 +109,34 @@ module Pageflow
         image_file = build(:image_file, :uploading, file_name: 'image.jpg')
 
         expect(image_file.thumbnail_url(:medium)).to match(/placeholder/)
+      end
+    end
+
+    describe '#reprocess!' do
+      it 'does not set output presences by default' do
+        entry = create(:entry)
+        image_file = create(:image_file, :uploaded, entry: entry)
+
+        image_file.attachment.reprocess!
+
+        expect(image_file.reload.present_outputs).to eq([])
+      end
+
+      it 'sets output presences based on entry feature flag' do
+        entry = create(:entry, with_feature: 'webp_images')
+        image_file = create(:image_file, :uploaded, entry: entry)
+
+        image_file.attachment.reprocess!
+
+        expect(image_file.reload.present_outputs).to eq([:webp])
+      end
+
+      it 'does not fail if entry is missing' do
+        image_file = create(:image_file, :uploaded, entry: nil)
+
+        image_file.attachment.reprocess!
+
+        expect(image_file.reload.present_outputs).to eq([])
       end
     end
   end

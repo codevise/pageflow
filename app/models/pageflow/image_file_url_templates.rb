@@ -2,11 +2,17 @@ module Pageflow
   class ImageFileUrlTemplates
     def call
       styles.each_with_object({}) do |style, result|
-        result[style] = UrlTemplate.from_attachment(example_file.attachment, style)
+        result[style] = replace_extension_with_placeholder(
+          UrlTemplate.from_attachment(example_file.attachment, style)
+        )
       end
     end
 
     private
+
+    def replace_extension_with_placeholder(url)
+      url.gsub(/.JPG$/, '.:processed_extension')
+    end
 
     def styles
       example_file.attachment_styles(example_file.attachment).keys + [:original]

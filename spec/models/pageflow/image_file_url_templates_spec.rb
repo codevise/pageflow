@@ -7,10 +7,10 @@ module Pageflow
 
       expect(result[:large])
         .to include('pageflow/image_files/attachment_on_s3s/' \
-                    ':id_partition/large/:basename.JPG')
+                    ':id_partition/large/:basename.:processed_extension')
     end
 
-    it 'includes original URL with extname placeholder' do
+    it 'includes original URL' do
       result = ImageFileUrlTemplates.new.call
 
       expect(result[:original])
