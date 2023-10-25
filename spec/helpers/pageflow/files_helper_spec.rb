@@ -157,6 +157,28 @@ module Pageflow
           expect(variants).to include('peakData')
         end
       end
+
+      describe 'for image files' do
+        it 'includes JPG processed extension' do
+          entry = create(:published_entry)
+          create(:image_file, used_in: entry.revision)
+
+          result = render(helper, entry)
+          processed_extension = json_get(result, path: ['image_files', 0, 'processed_extension'])
+
+          expect(processed_extension).to include('JPG')
+        end
+
+        it 'includes webp processed extension based based on output presence' do
+          entry = create(:published_entry)
+          create(:image_file, used_in: entry.revision, output_presences: {webp: true})
+
+          result = render(helper, entry)
+          processed_extension = json_get(result, path: ['image_files', 0, 'processed_extension'])
+
+          expect(processed_extension).to include('webp')
+        end
+      end
     end
   end
 end
