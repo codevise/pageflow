@@ -204,7 +204,7 @@ module Pageflow
     # Can be wrapped in a `features.register` block to use different
     # caching strategies for different entries or accounts.
     #
-    # @since edge
+    # @since 16.1
     # @return [String]
     attr_accessor :public_entry_cache_control_header
 
@@ -248,7 +248,7 @@ module Pageflow
     # Controls default value of "published until" date field in editor
     # publish entry view.
     #
-    # @since edge
+    # @since 16.1
     attr_accessor :default_published_until_duration_in_months
 
     # Used by Pageflow extensions to provide new tabs to be displayed

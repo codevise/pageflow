@@ -1,7 +1,7 @@
 module Pageflow
   # Helpers to render alternate links to atom feeds.
   #
-  # @since edge
+  # @since 16.1
   module FeedsHelper
     # Render alternate links to atom feed of entries in the same site
     # using the same locale.

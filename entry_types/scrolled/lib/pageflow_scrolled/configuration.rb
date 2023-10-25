@@ -66,7 +66,7 @@ module PageflowScrolled
     #     )
     #
     # @return [ContentElementConsentVendors]
-    # @since edge
+    # @since 16.1
     attr_reader :content_element_consent_vendors
 
     # Mapping from URL hosts to consent vendor names. Used for iframe
@@ -79,7 +79,7 @@ module PageflowScrolled
     #     }
     #
     # @return [Hash<RegExp, String>]
-    # @since edge
+    # @since 16.1
     attr_accessor :consent_vendor_host_matchers
 
     # Migrate typography variants to palette colors. Before palette
@@ -133,7 +133,7 @@ module PageflowScrolled
     #       }
     #     }
     #
-    # @since edge
+    # @since 16.1
     attr_accessor :legacy_typography_variants
 
     def initialize(*)
