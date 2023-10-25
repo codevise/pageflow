@@ -266,15 +266,19 @@ en:
         published_until: Published until
         updated_at: Updated at
       pageflow/site:
+        account: Account
         additional_cnames: Additional CNAMES
         cname: CNAME
         copyright_link_label: Copyright link Text
         copyright_link_url: Copyright link URL
+        feeds_enabled: Atom feeds
         home_url: Redirect URL
         imprint_link_label: Legal notice link label
         imprint_link_url: Legal notice link URL
         privacy_link_url: Privacy link URL
         share_providers: Default Share Links
+        sitemap_enabled: XML sitemap
+        title: Title
       pageflow/text_track_file:
         kind: Kind
         label: Label
@@ -403,6 +407,9 @@ en:
       pageflow/membership:
         one: Membership
         other: Memberships
+      pageflow/other_file:
+        many: Unknown files
+        one: Unknown file
       pageflow/revision:
         one: Version
         other: Versions
@@ -499,7 +506,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    -
+    - 
     - Jan
     - Feb
     - Mar
@@ -525,7 +532,7 @@ en:
       long: "%B %d, %Y"
       short: "%b %d"
     month_names:
-    -
+    - 
     - January
     - February
     - March
@@ -732,6 +739,12 @@ en:
       create: Create %{model}
       submit: Save %{model}
       update: Update %{model}
+  i18n:
+    transliterate:
+      rule:
+        ä: 
+        ö: 
+        ü: 
   language: English
   number:
     currency:
@@ -888,10 +901,21 @@ en:
         default_locale_hint: Default language for stories
         default_name: "(Default)"
         default_publisher_hint: Default 'publisher' meta field for stories
+        feeds_hint: |-
+          When enabled, feeds containing all published entries of the
+          site are available via URLs of the form
+          https://%{site_host}/feeds/en.atom where "en" can be
+          replaced with any locale you want to filter by.
         home_url_hint: Used for requests to the root path with one of the above CNAMES. Default target location for the home button.
         name: "%{account_name}"
         remove_logo: Remove logo
         show: View
+        sitemap_hint: |-
+          When enabled, a sitemap with all published entries of the
+          site is available at
+          https://%{site_host}/sitemap.xml. Register the URL in Google
+          Search Console or similar tools.
+        title_hint: Used in entry titles and as title for the atom feed.
       user:
         cannot_add: What you want to do is not possible. You need to upgrade.
         none_addable_tooltip: No user available
@@ -1143,6 +1167,7 @@ en:
         tabs:
           audio_files: Audios
           image_files: Images
+          other_files: Other
           video_files: Videos
       media_loading_spinner:
         widget_type_info_box_text: This is a preview of the 'Image' loading view. The animation runs while the page is loading.
@@ -1284,6 +1309,8 @@ en:
         help:
           close: Close
           title: Help
+        help_button:
+          open_help: Help
         list_blank_slate:
           text: "(No items)"
         list_item:
@@ -1814,7 +1841,7 @@ en:
             The text-block can be formatted with the buttons underneath the input field. [B= bold / I=italic / U=underlined / infinity symbol= Link/URL to an external website]
 
             All changes are visible in the left front-end-view as soon as you leave the appropriate input field in the editor.
-          thumbnail_image_id: 'The thumbnail replaces the automatically generated preview-picture in the navigation and overview.'
+          thumbnail_image_id: The thumbnail replaces the automatically generated preview-picture in the navigation and overview.
           transition: Choose the animation, that will be used when users scroll to this page.
       templates:
         inputs:
@@ -1894,6 +1921,7 @@ en:
       roles:
         analytics: Tracking
         background_media_control: Background media control
+        consent: Privacy settings
         cookie_notice: Privacy settings
         loading_spinner: Loading View
         mobile_navigation: Mobile navigation

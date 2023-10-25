@@ -1,8 +1,0 @@
-de:
-  pageflow_scrolled:
-    editor:
-      edit_section:
-        attributes:
-          backdropVideoMobile:
-            label: Hintergrund-Video (Hochkant)
-            inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Hintergrund-Video konfiguriert werden, von dem ansonsten wichtige Teile abgeschnitten würden.

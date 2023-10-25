@@ -5,6 +5,23 @@ de:
     defaultNavigation:
       widget_type_name: Standard Navigation
     editor:
+      file_types:
+        audio_files:
+          name:
+            one: Audio
+            other: Audios
+        image_files:
+          name:
+            one: Bild
+            other: Bilder
+        other_files:
+          name:
+            one: Andere
+            other: Andere
+        video_files:
+          name:
+            one: Video
+            other: Videos
       widgets:
         attributes:
           defaultNavigation:
@@ -22,8 +39,12 @@ de:
               label: "'Ton aktivieren'-Button ausblenden"
     frontend_v2:
       feature_name: Frontend v2
+    hls_instead_of_dash:
+      feature_name: HLS statt DASH für Videos verwenden
     iframe_embed_content_element:
       feature_name: iframe-Embed Inhaltselement
+    scrolled_entry_fragment_caching:
+      feature_name: Pageflow-Next-Fragment-Caching
     ui:
       configuration_editor:
         tabs:
@@ -61,7 +82,22 @@ de:
         caption:
           inline_help: Die Beschriftung des Elements wird direkt unterhalb des Elements angezeigt.
           label: Beschriftung
+        palette_color:
+          blank: "(Automatisch)"
         position:
+          inline_help: |-
+            Mit dieser Einstellung kannst du die Position des Elements
+            im Zusammenspiel mit Fließtext steuern: Das Element kann
+            im Text verankert werden ("Im Textfluss") oder beim
+            Scrollen begleitend neben dem Text stehenbleiben
+            ("Sticky"). Sticky-Elemente bleiben statisch in der Mitte
+            des Viewports neben dem Text stehen, bis entweder der
+            Abschnitt aus dem Viewport gescrollt wird oder sie vom
+            nächsten Sticky-Element des Abschnitts verdrängt
+            werden. In Mobil-Darstellung werden Sticky Elemente
+            automatisch im Text verankert. Sticky-Elemente
+            funktionieren besonders gut bei Desktop-Darstellung in
+            Kombination mit langen Textpassagen.
           label: Position
           values:
             full: Volle Breite
@@ -76,6 +112,12 @@ de:
         variant:
           blank: "(Standard)"
           label: Variante
+        width:
+          inline_help: |-
+            Ziehe den Schieberegler, um die Breite des Elements
+            anzupassen. Breitere Elemente unterbrechen den Textfluss
+            und stehen prominent für sich alleine.
+          label: Breite
       content_element_categories:
         basic:
           name: Basic
@@ -88,6 +130,58 @@ de:
         media:
           name: Media
       content_elements:
+        counter:
+          attributes:
+            countingSpeed:
+              inline_help: Lege fest, wie schnell die Zählanimation ablaufen soll.
+              label: Zählanimation
+              values:
+                fast: Schnell
+                medium: Mittel
+                none: "(Keine)"
+                slow: Langsam
+            decimalPlaces:
+              inline_help: Bestimme, wie wieviele Nachkommastellen gezeigt werden sollen.
+              label: Nachkommastellen
+            entranceAnimation:
+              inline_help: Lege die Animation fest, mit der die Zahl eingeblendet werden soll, wenn das Element die Mitte des Viewports erreicht.
+              label: Eingangsanimation
+              values:
+                fadeIn: Einblenden
+                fadeInFromAbove: Von oben einblenden
+                fadeInFromBelow: Von unten einblenden
+                fadeInScaleDown: Einblenden und verkleinern
+                fadeInScaleUp: Einblenden und vergrößern
+                none: "(Keine)"
+            numberColor:
+              label: Farbe
+            startValue:
+              inline_help: Bei diesem Wert beginnt die Zählanimation.
+              label: Startwert
+            targetValue:
+              inline_help: Zahlenwert, der angezeigt werden soll. Die Zählanimation endet bei diesem Wert.
+              label: Zielwert
+            textSize:
+              inline_help: Bestimme die Textgröße der Zahl.
+              label: Schriftgröße
+              values:
+                large: Groß
+                medium: Mittel
+                small: Klein
+                verySmall: Sehr klein
+            unit:
+              inline_help: Text der vor oder hinter der Zahl gezeigt werden soll.
+              label: Einheit
+            unitPlacement:
+              inline_help: Bestimme, ob die Einheit vor oder hinter dem Betrag gezeigt werden soll.
+              label: Position der Einheit
+              values:
+                leading: Vor dem Betrag ($100)
+                trailing: Nach dem Betrag (100%)
+          description: Animierte Metriken
+          name: Counter
+          tabs:
+            general: Counter
         dataWrapperChart:
           attributes:
             backgroundColor:
@@ -136,6 +230,8 @@ de:
           attributes:
             children:
               label: Text
+            color:
+              label: Farbe
             hyphens:
               inline_help: |
                 Bei manueller Silbentrennung werden Worte nur an
@@ -198,6 +294,12 @@ de:
                 portrait: Portrait (9:16)
                 square: Quadratisch (1:1)
                 wide: Landscape (16:9)
+            requireConsent:
+              inline_help: |-
+                iframe erst laden, nachdem Besucher der
+                Datenverarbeitung durch die eingebettete Seite
+                zugestimmt hat.
+              label: Datenschutz-Einwilligung aktivieren
             scale:
               label: Skalieren
               values:
@@ -211,9 +313,30 @@ de:
               inline_help: Dieser Titel wird von Screenreadern verwendet, um das iframe als Ganzes zu beschreiben.
               label: Titel
           description: Einbindung einer extern gehosteten Website
+          help_texts:
+            missingConsentVendor: |-
+              Für den Anbieter der angegeben URL stehen keine
+              Datenschutzangaben zur Verfügung.
           name: iframe-Embed
           tabs:
             general: iframe-Embed
+        imageGallery:
+          attributes:
+            enableFullscreenOnDesktop:
+              inline_help: |-
+                Ermögliche, die Galerie auf Desktop-Browsern in den
+                Vollbildmodus zu schalten. Auf mobilen Browsern werden
+                die Bilder bereits standardmäßig so groß wie möglich
+                angezeigt.
+              inline_help_disabled: Steht nicht zur Verfügung, wenn Position "Volle Breite" ausgewählt wurde.
+              label: Vollbildmodus auf Desktop erlauben
+          description: Eine Serie von Bildern zum Durchblättern
+          items:
+            add: Hinzufügen
+            label: Einträge
+          name: Bildergalerie
+          tabs:
+            general: Bildergalerie
         inlineAudio:
           attributes:
             atmoDuringPlayback:
@@ -268,6 +391,10 @@ de:
             general: Vorher/Nachher
         inlineImage:
           attributes:
+            enableFullscreen:
+              inline_help: Bild per Klick bildschirmfüllend öffnen.
+              inline_help_disabled: Steht nicht zur Verfügung, wenn Position "Volle Breite" ausgewählt wurde.
+              label: Vollbildmodus erlauben
             id:
               label: Bild
             portraitId:
@@ -299,6 +426,17 @@ de:
                 autoplay: Automatisch
                 loop: Loop
                 manual: Manuell
+            portraitId:
+              inline_help: |
+                Wird gezeigt, wenn der Browser-Viewport höher als
+                breit ist - zum Beispiel auf Smartphones oder Tablets
+                in Portrait-Ausrichtung. Kann als Alternative zu einem
+                querformatigen Video konfiguriert werden, um den
+                verfügbaren Platz besser zu nutzen.
+              label: Video (Hochkant)
+            portraitPosterId:
+              inline_help: Poster-Bild für das alternative Hochkant-Video.
+              label: Poster (Hochkant)
             posterId:
               label: Poster
             rewindOnUnmute:
@@ -323,12 +461,30 @@ de:
           name: Frage/Anwort
           tabs:
             general: Frage/Anwort
+        quote:
+          attributes:
+            color:
+              label: Farbe
+            textSize:
+              label: Schriftgröße
+              values:
+                large: Groß
+                medium: Mittel
+                small: Klein
+                verySmall: Sehr klein
+          description: Freigestelltes Zitat mit Zuschreibung
+          name: Zitat
+          tabs:
+            general: Zitat
         soundDisclaimer:
           description: Lass den Leser den Ton aktiveren
           name: Audio-Hinweis
           tabs:
             general: Audio-Hinweis
         textBlock:
+          attributes:
+            color:
+              label: Farbe
           description: Text mit Listen, Zitaten und Zwischenüberschriften
           help_texts:
             shortcuts: |
@@ -463,6 +619,9 @@ de:
               video: Video
           backdropVideo:
             label: Hintergrund-Video
+          backdropVideoMobile:
+            inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Hintergrund-Video konfiguriert werden, von dem ansonsten wichtige Teile abgeschnitten würden.
+            label: Hintergrund-Video (Hochkant)
           dynamicShadowOpacity:
             inline_help: Intensität der Abblendung, die - gesteuert durch die Scrollposition - hinter dem Text eingeblendet wird, sobald sich Motivbereich und Inhalt des Abschnitts zu überschneiden beginnen, um einen ausreichnenden Kontrast zu gewährleisten. Beachte, dass diese Abblendung nur sichtbar ist, wenn Motivbereich und Inhalt nicht nebeneinander dargestellt werden können. Wechsle am besten in die Phone-Vorschau, wenn du den eingestellten Wert veränderst.
             inline_help_disabled: Aktiviere "Motivbereich freilegen" weiter oben, um diese Einstellung zu verwenden.
@@ -530,7 +689,17 @@ de:
       no_options: Keine Optionen verfügbar
       section_item:
         drag_hint: Ziehen, um den Abschnitt zu verschieben
+        duplicate: Duplizieren
+        insert_section_above: Abschnitt oberhalb einfügen
+        insert_section_below: Abschnitt unterhalb einfügen
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
+        transitions:
+          beforeAfter: Statische Hintergründe
+          fade: Überblenden (inkl. Inhalt)
+          fadeBg: Überblenden
+          reveal: Freilegen
+          scroll: Aus-/Einscrollen
+          scrollOver: Überlagern
       select_link_destination:
         cancel: Abbrechen
         create: Erstellen
@@ -539,6 +708,9 @@ de:
         open_in_new_tab: In neuem Tab öffnen
         or: oder
         select_chapter_or_section: Wähle ein Kapitel oder einen Abschnitt als Ziel aus
+        select_file: Biete eine Datei zum Download an
+        select_file_description: Lasse Leser eine Datei herunterladen, wenn sie auf den Link klicken.
+        select_in_sidebar: Datei auswählen
       selectable_chapter_item:
         title: Kapitel auswählen
       selectable_section_item:
@@ -546,6 +718,38 @@ de:
     help_entries:
       content_elements:
         menu_item: Inhaltselemente
+        text: |
+          # Inhaltselemente
+
+          In jedem Abschnitt können beliebig viele Inhaltselemente
+          eingefügt werden.
+
+          Um ein neues Inhaltselement hinzuzufügen, klicke auf das
+          Plus-Zeichen ober- oder unterhalb eines bestehenden Elements
+          und füge dann Text-Blöcke, Medien, Embeds oder externe
+          Verweise ein.
+
+          Durch einen Klick auf ein Inhaltselement wird diese
+          ausgewählt. In der Seitenleiste erscheinen die verfügbaren
+          Konfigurationsoptionen. Hier kann unter anderem die
+          **Positionierung** und **Breite** der Inhaltselemente
+          festgelegt und weitere Optionen wie **Autoplay** für Audios
+          und Videos bearbeitet werden.
+
+          Für die Darstellung auf breiten
+          Bildschirm-Seitenverhältnissen (Desktop, Notebook, Tablet,
+          Smartphone quer) können einzelne Inhaltselemente, wie
+          Videos, Audios, Video Embeds, 360° Bilder auch als
+          **Sticky** angeordnet werden. Sticky-Elemente bleiben
+          statisch in der Mitte des Viewports neben dem Text stehen,
+          bis entweder der Abschnitt aus dem Viewport gescrollt wird
+          oder sie vom nächsten Sticky-Element des Abschnitts
+          verdrängt werden.
+
+          Wenn ein Abschnitt mittig ausgerichtet ist, können
+          Inhaltselemente zudem auch nach **links oder rechts
+          eingerückt** werden. Dabei wird das Inhaltselement soweit
+          verkleinert, dass der Text das Element umfließen kann.
       meta_data:
         menu_item: Titel und Optionen
         text: |
@@ -777,6 +981,7 @@ de:
           zur Verfügung, für die die Option **Volle Viewport-Höhe**
           aktiviert wurde.
     inline_editing:
+      add_caption: Beschriftung hinzufügen
       add_content_element: Neues Element hinzufügen
       cancel: Abbrechen
       drag_content_element: Ziehen, um Element zu verschieben
@@ -801,6 +1006,8 @@ de:
       insert_link: Link einfügen
       link_tooltip:
         chapter_number: Kapitel %{number}
+        deleted_chapter: Gelöschtes Kapitel
+        deleted_file: Gelöschte Datei
         opens_in_new_tab: Öffnet in neuem Tab
         opens_in_same_tab: Öffnet außerhalb des Editors im selben Tab
         visit_chapter: Gehe zu Kapitel
@@ -809,8 +1016,11 @@ de:
       select_content_element: Element auswählen
       select_section: Abschnitt auswählen
       type_answer: Antworttext eingeben
+      type_attribution: Namen eingeben
+      type_description: Beschreibung eingeben
       type_heading: Überschrift
       type_question: Fragetext eingeben
+      type_quote: Zitat eingeben
       type_text: Text eingeben
       type_title: Titel
       url_placeholder: URL eingeben oder einfügen

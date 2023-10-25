@@ -5,6 +5,23 @@ en:
     defaultNavigation:
       widget_type_name: Default navigation
     editor:
+      file_types:
+        audio_files:
+          name:
+            one: Audio
+            other: Audios
+        image_files:
+          name:
+            one: Image
+            other: Images
+        other_files:
+          name:
+            one: Other
+            other: Other
+        video_files:
+          name:
+            one: Video
+            other: Videos
       widgets:
         attributes:
           defaultNavigation:
@@ -22,8 +39,12 @@ en:
               label: Hide unmute button
     frontend_v2:
       feature_name: Frontend v2
+    hls_instead_of_dash:
+      feature_name: Use HLS instead of DASH for videos
     iframe_embed_content_element:
       feature_name: iframe embed content element
+    scrolled_entry_fragment_caching:
+      feature_name: Pageflow Next Fragment Caching
     ui:
       configuration_editor:
         tabs:
@@ -61,7 +82,20 @@ en:
         caption:
           inline_help: The caption of the element will be displayed directly underneath the element.
           label: Caption
+        palette_color:
+          blank: "(Auto)"
         position:
+          inline_help: |-
+            This setting allows you to control the position of the
+            element in relation to surrounding text blocks: it can be
+            anchored within the text ("Inline") or positioned adjacent
+            to the text ("Sticky"). Sticky elements remain static in
+            the middle of the viewport alongside the text until either
+            the section is scrolled out of the viewport or they get
+            pushed upwards by the next sticky element of the
+            section. On mobile devices sticky elements automatically
+            get positioned inline. Sticky elements work particularly
+            well on desktop devices in combination with long texts.
           label: Position
           values:
             full: Full Width
@@ -76,6 +110,12 @@ en:
         variant:
           blank: "(Default)"
           label: Variant
+        width:
+          inline_help: |-
+            Drag the slider to change the width of the element. Wider
+            elements interrupt the text flow and stand prominently on
+            their own.
+          label: Width
       content_element_categories:
         basic:
           name: Basic
@@ -88,6 +128,58 @@ en:
         media:
           name: Media
       content_elements:
+        counter:
+          attributes:
+            countingSpeed:
+              inline_help: Determine the speed of the counting animation.
+              label: Counting animation
+              values:
+                fast: Fast
+                medium: Medium
+                none: "(None)"
+                slow: Slow
+            decimalPlaces:
+              inline_help: Determine how many decimal places shall be visible.
+              label: Decimal places
+            entranceAnimation:
+              inline_help: Determine how the number becomes visible once it reaches the center of the viewport
+              label: Entrance Animation
+              values:
+                fadeIn: Fade in
+                fadeInFromAbove: Fade in from above
+                fadeInFromBelow: Fade in from below
+                fadeInScaleDown: Fade in and scale down
+                fadeInScaleUp: Fade in and scale up
+                none: "(None)"
+            numberColor:
+              label: Color
+            startValue:
+              inline_help: The counting animation starts with this value
+              label: Start value
+            targetValue:
+              inline_help: Value to display. Final value for counting animation.
+              label: Target value
+            textSize:
+              inline_help: Determine the font size of the number.
+              label: Text size
+              values:
+                large: Large
+                medium: Medium
+                small: Small
+                verySmall: Very small
+            unit:
+              inline_help: Display a text before or after the number.
+              label: Unit
+            unitPlacement:
+              inline_help: Place the unit before or after the text.
+              label: Unit placement
+              values:
+                leading: Leading ($100)
+                trailing: Trailing (100%)
+          description: Animated metrics
+          name: Counter
+          tabs:
+            general: Counter
         dataWrapperChart:
           attributes:
             backgroundColor:
@@ -136,6 +228,8 @@ en:
           attributes:
             children:
               label: Text
+            color:
+              label: Color
             hyphens:
               inline_help: |
                 With manual hyphenation, words are only ever separated
@@ -197,6 +291,11 @@ en:
                 portrait: Portrait (9:16)
                 square: Square (1:1)
                 wide: Landscape (16:9)
+            requireConsent:
+              inline_help: |
+                Only load iframe after the visitor has given
+                consent to the data processing by the embedded page.
+              label: Display privacy opt-in
             scale:
               label: Scale
               values:
@@ -210,9 +309,29 @@ en:
               inline_help: Used by screen readers to describe the chart as a whole.
               label: Title
           description: Embed externally hosted websites
+          help_texts:
+            missingConsentVendor: |-
+              No privacy policy information available for the provider
+              of the given URL.
           name: iframe Embed
           tabs:
             general: iframe Embed
+        imageGallery:
+          attributes:
+            enableFullscreenOnDesktop:
+              inline_help: |-
+                Allow expanding the gallery to fullscreen mode on
+                desktop browsers. On mobile devices images are already
+                displayed as large as possible by default.
+              inline_help_disabled: Not available if position "Full width" has been selected.
+              label: Enable fullscreen on desktop
+          description: A series of images to flip through
+          items:
+            add: Add
+            label: Items
+          name: Image Gallery
+          tabs:
+            general: Image Gallery
         inlineAudio:
           attributes:
             atmoDuringPlayback:
@@ -267,6 +386,10 @@ en:
             general: Before/After
         inlineImage:
           attributes:
+            enableFullscreen:
+              inline_help: Enlarge image on click
+              inline_help_disabled: Not available if position "Full width" has been selected.
+              label: Enable Fullscreen
             id:
               label: Image
             portraitId:
@@ -298,6 +421,17 @@ en:
                 autoplay: Autoplay
                 loop: Loop
                 manual: Manual
+            portraitId:
+              inline_help: |
+                Displayed when the browser viewport is taller than
+                wide, for example on phones or tablets in portrait
+                orientation. Can be used to supply an alternative to a
+                landscape video that makes better use of the available
+                space.
+              label: Video (Portrait)
+            portraitPosterId:
+              inline_help: Poster image displayed for the alternative portrait video.
+              label: Poster (Portrait)
             posterId:
               label: Poster
             rewindOnUnmute:
@@ -322,12 +456,30 @@ en:
           name: Question/Answer
           tabs:
             general: Question/Answer
+        quote:
+          attributes:
+            color:
+              label: Color
+            textSize:
+              label: Text size
+              values:
+                large: Large
+                medium: Medium
+                small: Small
+                verySmall: Very Small
+          description: Stand-alone quote with attribution
+          name: Quote
+          tabs:
+            general: Quote
         soundDisclaimer:
           description: Make sure users unmute before continuing
           name: Audio Notice
           tabs:
             general: Audio Notice
         textBlock:
+          attributes:
+            color:
+              label: Color
           description: Text with lists, block quotes and sub-headings
           help_texts:
             shortcuts: |
@@ -462,6 +614,9 @@ en:
               video: Video
           backdropVideo:
             label: Background-Video
+          backdropVideoMobile:
+            inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to supply an alternative to a landscape background video that would otherwise have important parts cropped off.
+            label: Background-Video (Portrait)
           dynamicShadowOpacity:
             inline_help: Intensity of the shadow which is faded in behind the text to ensure contrast when content is scrolled to intersect with the motif area. Note that this shadow is only visible if motif area and section content do not fit side by side. It's best to switch to phone preview when adjusting this value.
             inline_help_disabled: Activate "Expose motif area" above to use this setting.
@@ -529,7 +684,17 @@ en:
       no_options: No options available
       section_item:
         drag_hint: Drag to move section
+        duplicate: Duplicate
+        insert_section_above: Insert section above
+        insert_section_below: Insert section below
         save_error: There was an error while saving this section.
+        transitions:
+          beforeAfter: Static Backgrounds
+          fade: Cross fade (incl. content)
+          fadeBg: Cross fade
+          reveal: Reveal
+          scroll: Scroll
+          scrollOver: Scroll over
       select_link_destination:
         cancel: Cancel
         create: Create
@@ -538,6 +703,9 @@ en:
         open_in_new_tab: Open in new tab
         or: or
         select_chapter_or_section: Select chapter or section as destination
+        select_file: Provide file download
+        select_file_description: Let readers download a file when they click the link.
+        select_in_sidebar: Select file
       selectable_chapter_item:
         title: Select chapter
       selectable_section_item:
@@ -545,6 +713,39 @@ en:
     help_entries:
       content_elements:
         menu_item: Content Elements
+        text: |
+          # Content Elements
+
+          In each section, any number of content elements can be
+          inserted and positioned against a background. The position
+          of the content elements on wide screen aspect ratios is
+          determined by the foreground **positioning of the section**
+          (left, right, center). In portrait mode on smartphones
+          (upright) the content elements are always displayed one
+          below the other for space reasons.
+
+          To add a new content element, click on the **plus button**
+          above or below an existing one and then insert text blocks,
+          media, embeds or external links.
+
+          Click on a content element to select it. The sidebar then
+          displays options for **positioning the content element** and
+          other options, such as activating **autoplay for audio and
+          video**.
+
+          For display on wide screen aspect ratios (desktop, notebook,
+          tablet, smartphone landscape), individual content elements
+          such as videos, audios, video embeds, 360° images can also
+          be arranged separately from the text flow as **sticky**
+          elements. Sticky elements remain static in the middle of the
+          viewport alongside the text until either the section is
+          scrolled out of the viewport or they get pushed upwards by
+          the next sticky element of the section.
+
+          If a section is aligned centrally, content elements can also
+          be **indented to the left or right**. In this case, the
+          content element is reduced in size so that the text can be
+          displayed next to, instead of below the content element."
       meta_data:
         menu_item: Title and Options
         text: |
@@ -622,6 +823,7 @@ en:
         menu_item: Section Options
         text: "# Section Options\n\nA click in an empty area of a section will display a selection rectangle around the section. On the right side of the selection rectangle you will find a button with a pencil icon that allows you to edit the options of the section in the sidebar.\n\n## Layout\n\nThe **Foreground Positioning** option allows you to select how the contents of the section should be arranged horizontally. For example, if the background of the section is on the right side, text and content elements can be positioned on the left side and vice versa. For backgrounds in the total or a centred motif, the content elements can be positioned in the middle.\n\nBy selecting a **gradient function**, a sufficient contrast between text and background can be ensured. With the **shadow**, the background is darkened or lightened with a colour gradient. With the **Card** setting, the content elements are displayed on a surface with rounded corners.\n\n## Background\n\nEither an **image**, a **colour** or a **video loop** can be displayed in the background of the section. For background images and video, the important (to be emphasised, essential) part of the image can be marked. This motif area is then initially not covered by the scrolling foreground in both desktop and mobile device displays. Further information about the \"motif areas\" here.\n\nThe **Background image (portrait)** option can be used to optionally specify an alternative image to be used if the screen aspect ratio of a terminal device is higher than wide, for example on smartphones and tablets in portrait mode. The image can be configured as an alternative to the background image in landscape mode, from which otherwise important parts might be cut off.\n\n## Atmo Audio\n\nWith the **\"Atmo\"**, each section can play sound in the background, regardless of the content element. It can be determined whether a sound can only be heard in one section or continues over several sections without interruption. Simply select the same audio file for the following sections under **Options** as Atmo. In this way chapters can be acoustically separated from each other and coherent pages can be interwoven more strongly.\n\nWhen playing audio and video, you can also select whether the background sound should continue to play normally or more quietly during media playback, or whether it should fade out completely. The setting of the ambience sounds can be accessed on each page via the **Options** tab. If the atmosphere disturbs you while editing your entry in the editor, you can temporarily mute it with the key combination **Alt + a**. To reactivate the Atmo, simply press **Alt + a** again.\n\n\n## Transitions\n\nA **transition effect** can be selected between every two sections. \nClick in the background of a section to select it. On the right side \nof the selection rectangle, buttons with two interlocking arrows as \nsymbols appear at the borders of the neighbouring sections. \n\nClick on one of the buttons to select the transition effect for the section \nborder in the sidebar.\n\nThe **Fade** effect is only available between sections for which the \n**Full Viewport Height** option has been activated.\n"
     inline_editing:
+      add_caption: Add caption
       add_content_element: Add new element
       cancel: Cancel
       drag_content_element: Drag to move element
@@ -646,6 +848,8 @@ en:
       insert_link: Insert link
       link_tooltip:
         chapter_number: Chapter %{number}
+        deleted_chapter: Deleted chapter
+        deleted_file: Deleted file
         opens_in_new_tab: Opens in new tab
         opens_in_same_tab: Outside editor, will open in same tab
         visit_chapter: Go to chapter
@@ -654,8 +858,11 @@ en:
       select_content_element: Select element
       select_section: Select section
       type_answer: Type answer text
+      type_attribution: Type a name
+      type_description: Type description
       type_heading: Heading
       type_question: Type question text
+      type_quote: Type quote text
       type_text: Type some text
       type_title: Title
       url_placeholder: Type or paste URL

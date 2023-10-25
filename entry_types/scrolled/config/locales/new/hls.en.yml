@@ -1,4 +1,0 @@
-en:
-  pageflow:
-    hls_instead_of_dash:
-      feature_name: "Use HLS instead of DASH for videos"
