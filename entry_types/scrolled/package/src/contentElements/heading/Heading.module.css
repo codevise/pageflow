@@ -4,9 +4,32 @@
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .root {
-  margin-top: 0.2em;
+  margin-top: 0.3em;
   margin-bottom: 0;
-  padding-top: 0.3em;
+  padding-top: 0.45em;
+}
+
+.main {
+  margin: 0;
+}
+
+.tagline {
+  margin-bottom: 0.8em;
+}
+
+.subtitle {
+  margin-top: 0.6em;
+  margin-bottom: 2em;
+}
+
+@media (max-width: 600px) {
+  .tagline {
+    margin-bottom: 0.4em;
+  }
+
+  .subtitle {
+    margin-top: 0.4em;
+  }
 }
 
 @media (min-width: 951px) {
