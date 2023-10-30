@@ -87,7 +87,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'aws-sdk-s3', '~> 1.0'
 
   # Markdown parser
-  s.add_dependency 'kramdown', '~> 1.5'
+  s.add_dependency 'kramdown', ['>= 1.5', '< 3']
 
   # Convert srt files to vtt
   s.add_dependency 'webvtt-ruby', '~> 0.4.0'
