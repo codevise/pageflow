@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import classNames from 'classnames';
 import {
   withShadowClassName,
@@ -7,7 +7,9 @@ import {
   EditableInlineText,
   useContentElementConfigurationUpdate,
   useContentElementEditorState,
+  useContentElementLifecycle,
   useDarkBackground,
+  useIsStaticPreview,
   useI18n,
   contentElementWidths,
   utils
@@ -21,12 +23,47 @@ export function Heading({configuration, sectionProps, contentElementWidth}) {
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {t} = useI18n({locale: 'ui'});
   const darkBackground = useDarkBackground();
-  const {isSelected} = useContentElementEditorState();
+  const {isSelected, isEditable} = useContentElementEditorState();
 
   const legacyValue = configuration.children;
   const Tag = firstSectionInEntry ? 'h1' : 'h2';
 
   const forcePaddingTop = firstSectionInEntry && !('marginTop' in configuration);
+
+  const entranceAnimation = (!useIsStaticPreview() && configuration.entranceAnimation) || 'none';
+  const [animating, setAnimating] = useState(false);
+
+  useContentElementLifecycle({
+    onActivate() {
+      setAnimating(entranceAnimation !== 'none');
+    },
+
+    onInvisible() {
+      if (isEditable) {
+        setAnimating(false);
+      }
+    }
+  });
+
+  const previousAnimation = useRef(entranceAnimation);
+  const previouslySelected = useRef(isSelected);
+
+  useEffect(() => {
+    if (isEditable && previousAnimation.current !== entranceAnimation) {
+      previousAnimation.current = entranceAnimation;
+
+      setAnimating(false)
+      setTimeout(() => setAnimating(true), 100);
+    }
+  }, [entranceAnimation, isEditable]);
+
+  useEffect(() => {
+    if (!previouslySelected.current && isSelected) {
+      setAnimating(true)
+    }
+
+    previouslySelected.current = isSelected;
+  }, [isSelected]);
 
   function renderSubtitle(name) {
     const value = configuration[name];
@@ -50,6 +87,11 @@ export function Heading({configuration, sectionProps, contentElementWidth}) {
 
   return (
     <header className={classNames(styles.root,
+                                  styles[`animation-${entranceAnimation}`],
+                                  {[styles.animating]: animating},
+                                  {[styles.hasTagline]: !utils.isBlankEditableTextValue(
+                                    configuration.tagline
+                                  ) || isSelected},
                                   {[styles.forcePaddingTop]: forcePaddingTop},
                                   {[styles[sectionProps.layout]]:
                                     contentElementWidth > contentElementWidths.md ||

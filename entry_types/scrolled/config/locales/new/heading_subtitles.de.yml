@@ -3,3 +3,15 @@ de:
     inline_editing:
       type_subtitle: "Untertitel eingeben"
       type_tagline: "Tagline eingeben"
+    editor:
+      content_elements:
+        heading:
+          attributes:
+            entranceAnimation:
+              inline_help: Lege die Animation fest, mit der die Überschrift eingeblendet werden soll, wenn sie die Mitte des Viewports erreicht.
+              label: Eingangsanimation
+              values:
+                none: "(Keine)"
+                fadeIn: Einblenden
+                fadeInFast: Einblenden (Schnell)
+                fadeInSlow: Einblenden (Langsam)

@@ -40,6 +40,9 @@ editor.contentElementTypes.register('heading', {
         model: modelDelegator,
         propertyName: 'color'
       });
+      this.input('entranceAnimation', SelectInputView, {
+        values: ['none', 'fadeInSlow', 'fadeIn',  'fadeInFast'],
+      });
 
       this.input('hyphens', SelectInputView, {
         values: ['auto', 'manual']

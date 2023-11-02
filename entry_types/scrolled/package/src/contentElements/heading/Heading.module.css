@@ -9,6 +9,48 @@
   padding-top: 0.45em;
 }
 
+.animation-fadeIn {
+  --fade-in-duration: 2s;
+  --fade-in-delay: 0.4s;
+}
+
+.animation-fadeInFast {
+  composes: animation-fadeIn;
+  --fade-in-duration: 1s;
+  --fade-in-delay: 0.4s;
+}
+
+.animation-fadeInSlow {
+  composes: animation-fadeIn;
+  --fade-in-duration: 3s;
+  --fade-in-delay: 0.8s;
+}
+
+.animation-fadeIn .main,
+.animation-fadeIn .tagline,
+.animation-fadeIn .subtitle {
+  opacity: 0;
+}
+
+.animation-fadeIn.animating .main,
+.animation-fadeIn.animating .tagline,
+.animation-fadeIn.animating .subtitle {
+  transition: opacity var(--fade-in-duration) ease;
+  opacity: 1;
+}
+
+.animation-fadeIn.animating .subtitle {
+  transition-delay: var(--fade-in-delay);
+}
+
+.animation-fadeIn.hasTagline.animating .main {
+  transition-delay: var(--fade-in-delay);
+}
+
+.animation-fadeIn.hasTagline.animating .subtitle {
+  transition-delay: calc(var(--fade-in-delay) * 2);
+}
+
 .main {
   margin: 0;
 }
