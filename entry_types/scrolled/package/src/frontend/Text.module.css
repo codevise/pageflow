@@ -39,6 +39,45 @@
   margin-bottom: 0;
 }
 
+
+.headingTagline-lg {
+  composes: typography-headingTagline from global;
+  font-size: text-md;
+  line-height: 1.2;
+}
+
+.headingTagline-md {
+  composes: typography-headingTagline from global;
+  font-size: text-md;
+  line-height: 1.2;
+}
+
+.headingTagline-sm {
+  composes: typography-headingTagline from global;
+  font-size: text-base;
+  line-height: 1.4;
+}
+
+
+.headingSubtitle-lg {
+  composes: typography-headingSubtitle from global;
+  font-size: 44px;
+  line-height: 1.2;
+}
+
+.headingSubtitle-md {
+  composes: typography-headingSubtitle from global;
+  font-size: 44px;
+  line-height: 1.2;
+}
+
+.headingSubtitle-sm {
+  composes: typography-headingSubtitle from global;
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+
 .body {
   composes: typography-body from global;
   font-size: text-base;
@@ -136,6 +175,30 @@
   .heading-sm {
     font-size: text-l;
   }
+
+
+  .headingTagline-lg {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+
+  .headingTagline-md,
+  .headingTagline-sm {
+    font-size: text-base;
+    line-height: 1.4;
+  }
+
+  .headingSubtitle-lg {
+    font-size: text-md;
+    line-height: 1.2;
+  }
+
+  .headingSubtitle-md,
+  .headingSubtitle-sm {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+
 
   .quoteText-lg {
     font-size: text-l;

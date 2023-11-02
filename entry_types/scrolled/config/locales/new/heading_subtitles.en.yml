@@ -1,0 +1,17 @@
+en:
+  pageflow_scrolled:
+    inline_editing:
+      type_subtitle: "Type subtitle"
+      type_tagline: "Type tagline"
+    editor:
+      content_elements:
+        heading:
+          attributes:
+            entranceAnimation:
+              inline_help: Determine how the heading becomes visible once it reaches the center of the viewport
+              label: Entrance Animation
+              values:
+                fadeIn: Fade in
+                fadeInFast: Fade in (Fast)
+                fadeInSlow: Fade in (Slow)
+                none: "(None)"

@@ -1,5 +1,6 @@
 import '../frontend';
 import {storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
+import {contentElementWidths} from 'pageflow-scrolled/frontend';
 
 storiesOfContentElement(module, {
   typeName: 'heading',
@@ -27,9 +28,58 @@ storiesOfContentElement(module, {
       }
     },
     {
-      name: 'Small',
+      name: 'Small ',
       configuration: {
         textSize: 'small'
+      }
+    },
+    {
+      name: 'With subtitles - Large',
+      configuration: {
+        tagline: [{type: 'heading', children: [{text: 'Some Tagline'}]}],
+        subtitle: [{type: 'heading', children: [{text: 'Some Subtitle'}]}],
+        width: contentElementWidths.xl,
+        textSize: 'large'
+      }
+    },
+    {
+      name: 'With subtitles - Medium',
+      configuration: {
+        tagline: [{type: 'heading', children: [{text: 'Some Tagline'}]}],
+        subtitle: [{type: 'heading', children: [{text: 'Some Subtitle'}]}],
+        width: contentElementWidths.xl,
+        textSize: 'medium'
+      }
+    },
+    {
+      name: 'With subtitles - Small',
+      configuration: {
+        tagline: [{type: 'heading', children: [{text: 'Some Tagline'}]}],
+        subtitle: [{type: 'heading', children: [{text: 'Some Subtitle'}]}],
+        width: contentElementWidths.xl,
+        textSize: 'small'
+      }
+    },
+    {
+      name: 'With subtitles - Center',
+      sectionConfiguration: {
+        layout: 'center',
+      },
+      configuration: {
+        tagline: [{type: 'heading', children: [{text: 'Some Tagline'}]}],
+        subtitle: [{type: 'heading', children: [{text: 'Some Subtitle'}]}],
+        width: contentElementWidths.xl
+      }
+    },
+    {
+      name: 'With subtitles - Right',
+      sectionConfiguration: {
+        layout: 'right',
+      },
+      configuration: {
+        tagline: [{type: 'heading', children: [{text: 'Some Tagline'}]}],
+        subtitle: [{type: 'heading', children: [{text: 'Some Subtitle'}]}],
+        width: contentElementWidths.xl
       }
     },
     {
