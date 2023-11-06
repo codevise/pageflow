@@ -6,11 +6,9 @@ module PageflowScrolled
                                   theme_file_role: nil,
                                   theme_file_style: :resized,
                                   relative_url: false)
-      prefix = defined?(Shakapacker) ? 'static' : 'media'
-
       path =
         theme.files.dig(theme_file_role, theme_file_style) ||
-        asset_pack_path("#{prefix}/pageflow-scrolled/themes/#{theme.name}/#{path}")
+        asset_pack_path("static/pageflow-scrolled/themes/#{theme.name}/#{path}")
 
       if relative_url
         URI.parse(path).path

@@ -1,6 +1,6 @@
 ENV['RAILS_ENV'] ||= 'test'
 ENV['PAGEFLOW_PLUGIN_ENGINE'] = 'pageflow_scrolled'
-ENV['PAGEFLOW_INSTALL_WEBPACKER'] = 'true'
+ENV['PAGEFLOW_INSTALL_SHAKAPACKER'] = 'true'
 
 require 'pageflow/support'
 Pageflow::Dummy.setup
@@ -21,12 +21,7 @@ require 'pageflow_scrolled'
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
-
-  if Pageflow::RailsVersion.experimental?
-    config.file_fixture_path = './spec/fixtures'
-  else
-    config.fixture_path = './spec/fixtures'
-  end
+  config.file_fixture_path = './spec/fixtures'
 
   # Disable RSpec exposing methods globally on `Module` and `main`
   config.disable_monkey_patching!

@@ -79,13 +79,7 @@ module Pageflow
         # This is also the reason we can not use SimpleDelegator here
         # and also delegate_missing in Rails 5 would not work.
         def method_missing(method, *args, **kwargs, &block)
-          # Required for Ruby 2.6. Remove together with
-          # Pageflow::RailsVersion.experimental? conditionals.
-          if kwargs.present?
-            @context.public_send(method, *args, **kwargs, &block)
-          else
-            @context.public_send(method, *args, &block)
-          end
+          @context.public_send(method, *args, **kwargs, &block)
         end
         # rubocop:enable Style/MethodMissing
       end

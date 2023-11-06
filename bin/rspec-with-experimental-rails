@@ -1,5 +1,0 @@
-#!/bin/bash
-
-export PAGEFLOW_RAILS_VERSION="~> 6.1"
-
-bin/rspec $@;

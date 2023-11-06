@@ -2,43 +2,24 @@ module PageflowScrolled
   # @api private
   module PacksHelper
     def scrolled_frontend_javascript_packs_tag(entry, options)
-      if defined?(Shakapacker)
-        javascript_pack_tag(
-          *scrolled_frontend_packs(entry, **options),
-          defer: false
-        )
-      else
-        javascript_packs_with_chunks_tag(
-          *scrolled_frontend_packs(entry, **options)
-        )
-      end
+      javascript_pack_tag(
+        *scrolled_frontend_packs(entry, **options),
+        defer: false
+      )
     end
 
     def scrolled_frontend_stylesheet_packs_tag(entry, options)
-      if defined?(Shakapacker)
-        stylesheet_pack_tag(
-          *scrolled_frontend_packs(entry, **options),
-          media: 'all'
-        )
-      else
-        stylesheet_packs_with_chunks_tag(
-          *scrolled_frontend_packs(entry, **options),
-          media: 'all'
-        )
-      end
+      stylesheet_pack_tag(
+        *scrolled_frontend_packs(entry, **options),
+        media: 'all'
+      )
     end
 
     def scrolled_editor_javascript_packs_tag(entry)
-      if defined?(Shakapacker)
-        javascript_pack_tag(
-          *scrolled_editor_packs(entry),
-          defer: false
-        )
-      else
-        javascript_packs_with_chunks_tag(
-          *scrolled_editor_packs(entry)
-        )
-      end
+      javascript_pack_tag(
+        *scrolled_editor_packs(entry),
+        defer: false
+      )
     end
 
     def scrolled_frontend_packs(entry, widget_scope:)

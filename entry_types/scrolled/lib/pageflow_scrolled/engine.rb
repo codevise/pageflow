@@ -6,20 +6,16 @@ module PageflowScrolled
   class Engine < ::Rails::Engine
     isolate_namespace PageflowScrolled
 
-    if Pageflow::RailsVersion.experimental?
-      lib = root.join('lib')
+    lib = root.join('lib')
 
-      config.autoload_paths << lib
-      config.eager_load_paths << lib
+    config.autoload_paths << lib
+    config.eager_load_paths << lib
 
-      initializer 'pageflow_scrolled.autoloading' do
-        Rails.autoloaders.main.ignore(
-          lib.join('generators'),
-          lib.join('tasks')
-        )
-      end
-    else
-      config.paths.add('lib', eager_load: true)
+    initializer 'pageflow_scrolled.autoloading' do
+      Rails.autoloaders.main.ignore(
+        lib.join('generators'),
+        lib.join('tasks')
+      )
     end
 
     config.i18n.load_path += Dir[config.root.join('config', 'locales', '**', '*.yml').to_s]

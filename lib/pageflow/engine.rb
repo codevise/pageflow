@@ -43,64 +43,21 @@ module Pageflow
   class Engine < ::Rails::Engine
     isolate_namespace Pageflow
 
-    if Pageflow::RailsVersion.experimental?
-      config.autoload_paths << root.join('app/views/components')
-      config.eager_load_paths << root.join('app/views/components')
+    config.autoload_paths << root.join('app/views/components')
+    config.eager_load_paths << root.join('app/views/components')
 
-      lib = root.join('lib')
+    lib = root.join('lib')
 
-      config.autoload_paths << lib
-      config.eager_load_paths << lib
+    config.autoload_paths << lib
+    config.eager_load_paths << lib
 
-      initializer 'pageflow.autoloading' do
-        Rails.autoloaders.main.ignore(
-          lib.join('generators'),
-          lib.join('tasks'),
-          lib.join('pageflow/paperclip_processors'),
-          lib.join('pageflow/version.rb')
-        )
-      end
-    else
-      config.paths.add('app/views/components', autoload: true)
-      config.paths.add('lib', autoload: true)
-
-      def eager_load!
-        # Manually eager load `lib/pageflow` as the least bad option:
-        #
-        # - Autoload paths are not eager loaded in production.
-        #
-        # - `lib` cannot be an eager load path since otherwise templates
-        #   in `lib/generators` are also executed.
-        #
-        # - `lib/pageflow` cannot be an eager load path since eager load
-        #   paths are automatically used as autoload paths. That way
-        #   `lib/pageflow/admin/something.rb` could be autoloaded via
-        #   `Admin::Something`.
-        #
-        # - Using `require` in `lib/pageflow.rb` disables code
-        #   reloading.
-        #
-        # - Using `require_dependency` in `lib/pageflow.rb` does not
-        #   activate code reloading either since it requires the
-        #   autoload path to be set up correctly, which only happens
-        #   during initialization.
-        super
-
-        lib_path = config.root.join('lib')
-        matcher = %r{\A#{Regexp.escape(lib_path.to_s)}/(.*)\.rb\Z}
-
-        already_required_files = [
-          'pageflow/engine',
-          'pageflow/global_config_api',
-          'pageflow/news_item_api',
-          'pageflow/version'
-        ]
-
-        Dir.glob("#{lib_path}/pageflow/**/*.rb").sort.each do |file|
-          logical_path = file.sub(matcher, '\1')
-          require_dependency(logical_path) unless already_required_files.include?(logical_path)
-        end
-      end
+    initializer 'pageflow.autoloading' do
+      Rails.autoloaders.main.ignore(
+        lib.join('generators'),
+        lib.join('tasks'),
+        lib.join('pageflow/paperclip_processors'),
+        lib.join('pageflow/version.rb')
+      )
     end
 
     config.i18n.load_path += Dir[config.root.join('config', 'locales', '**', '*.yml').to_s]
