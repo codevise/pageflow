@@ -172,7 +172,7 @@ Gem::Specification.new do |s|
 
   # Resque as default Active Job backend
   s.add_development_dependency 'resque', '~> 1.25'
-  s.add_development_dependency 'resque-scheduler', '~> 2.5'
+  s.add_development_dependency 'resque-scheduler', '~> 4.10'
 
   if Pageflow::RailsVersion.experimental?
     s.add_development_dependency 'ar_after_transaction', '~> 0.8.0'

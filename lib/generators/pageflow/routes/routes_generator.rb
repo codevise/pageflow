@@ -18,7 +18,7 @@ module Pageflow
       end
 
       def require_resque_server
-        prepend_to_file 'config/routes.rb', "require 'resque/server'\nrequire 'resque_scheduler/server'\n\n"
+        prepend_to_file 'config/routes.rb', "require 'resque/server'\nrequire 'resque/scheduler/server'\n\n"
       end
     end
   end
