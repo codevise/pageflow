@@ -30,20 +30,14 @@ module PageflowScrolled
       end
 
       def install_packages
-        if defined?(Shakapacker)
-          run 'yarn add css-loader style-loader' \
-              ' mini-css-extract-plugin css-minimizer-webpack-plugin' \
-              ' postcss postcss-preset-env postcss-loader' \
-              ' postcss-import postcss-url postcss-flexbugs-fixes' \
-              ' @fontsource/source-sans-pro'
-        else
-          run 'yarn add postcss-url@^8.0.0 @fontsource/source-sans-pro'
-        end
+        run 'yarn add css-loader style-loader' \
+            ' mini-css-extract-plugin css-minimizer-webpack-plugin' \
+            ' postcss postcss-preset-env postcss-loader' \
+            ' postcss-import postcss-url postcss-flexbugs-fixes' \
+            ' @fontsource/source-sans-pro'
       end
 
       def webpack_config
-        return unless defined?(Shakapacker)
-
         gsub_file(
           'config/webpack/webpack.config.js',
           "const { generateWebpackConfig } = require('shakapacker')",
@@ -92,65 +86,23 @@ module PageflowScrolled
         )
       end
 
-      def webpack_environment
-        return if defined?(Shakapacker)
-
-        inject_into_file('config/webpack/environment.js',
-                         before: "module.exports = environment\n") do
-          "environment.config.merge(require('pageflow/config/webpack'))\n" \
-          "environment.config.merge(require('pageflow-scrolled/config/webpack'))\n\n" \
-          "// Allow loading only chunks of used widgets. runtimeChunk 'single'\n" \
-          "// ensures that modules are only evaluated once which is important\n" \
-          "// for modules with side effects.\n" \
-          "environment.splitChunks((config) =>\n" \
-          "  Object.assign({}, config, { optimization: { runtimeChunk: 'single' }})\n" \
-          ")\n\n" \
-          "// Opt into future default behavior of Webpacker [1] to work around\n" \
-          "// problems with Video.js DASH service worker.\n" \
-          "//\n" \
-          "// [1] https://github.com/rails/webpacker/pull/2624\n" \
-          "environment.loaders.delete('nodeModules')\n\n"
-        end
-      end
-
-      def webpacker_yml
-        return if defined?(Shakapacker)
-
-        gsub_file('config/webpacker.yml',
-                  'extract_css: false',
-                  'extract_css: true')
-
-        inject_into_file('config/webpacker.yml',
-                         after: "- .woff2\n") do
-          "    - .mp3\n    - .webmanifest\n    - .xml\n"
-        end
-      end
-
       def postcss_config
-        if defined?(Shakapacker)
-          create_file 'postcss.config.js', <<~JS
-            module.exports = {
-              plugins: [
-                require('postcss-import'),
-                // Make relative urls in fontsource packages work
-                require('postcss-url')({url: 'rebase'}),
-                require('postcss-flexbugs-fixes'),
-                require('postcss-preset-env')({
-                  autoprefixer: {
-                    flexbox: 'no-2009'
-                  },
-                  stage: 3
-                })
-              ]
-            }
-          JS
-        else
-          inject_into_file('postcss.config.js',
-                           after: "require('postcss-import'),\n") do
-            "    // Make relative urls in fontsource packages work\n" \
-            "    require('postcss-url')({url: 'rebase'}),\n"
-          end
-        end
+        create_file 'postcss.config.js', <<~JS
+          module.exports = {
+            plugins: [
+              require('postcss-import'),
+              // Make relative urls in fontsource packages work
+              require('postcss-url')({url: 'rebase'}),
+              require('postcss-flexbugs-fixes'),
+              require('postcss-preset-env')({
+                autoprefixer: {
+                  flexbox: 'no-2009'
+                },
+                stage: 3
+              })
+            ]
+          }
+        JS
       end
 
       def editor_pack

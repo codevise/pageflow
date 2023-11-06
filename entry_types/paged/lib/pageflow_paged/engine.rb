@@ -5,19 +5,15 @@ module PageflowPaged
   class Engine < ::Rails::Engine
     isolate_namespace PageflowPaged
 
-    if Pageflow::RailsVersion.experimental?
-      lib = root.join('lib')
+    lib = root.join('lib')
 
-      config.autoload_paths << lib
-      config.eager_load_paths << lib
+    config.autoload_paths << lib
+    config.eager_load_paths << lib
 
-      initializer 'pageflow_paged.autoloading' do
-        Rails.autoloaders.main.ignore(
-          lib.join('tasks')
-        )
-      end
-    else
-      config.paths.add('lib', eager_load: true)
+    initializer 'pageflow_paged.autoloading' do
+      Rails.autoloaders.main.ignore(
+        lib.join('tasks')
+      )
     end
 
     config.i18n.load_path += Dir[config.root.join('config', 'locales', '**', '*.yml').to_s]

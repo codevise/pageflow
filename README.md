@@ -49,12 +49,13 @@ Pageflow assumes the following choice of libraries:
 
 Pageflow runs in environments with:
 
-* Ruby >= 2.1 (see `.travis.yml` for supported versions)
-* Node >= 10.18
-* Rails 4.2
+* Ruby >= 3.2
+* Node >= 14
+* Rails 6.1
 * Redis server (for Resque)
 * A database server supported by Active Record (tested with MySQL)
 * ImageMagick
+* [libvips](https://github.com/libvips/ruby-vips)
 * [Audio Waveform Image Generator](https://github.com/bbc/audiowaveform#installation)
 
 Accounts of the following cloud services have to be registered:

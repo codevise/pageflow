@@ -14,70 +14,33 @@ jobs:
       matrix:
         include:
           - engine-name: pageflow
-            ruby-version: 2.6
+            ruby-version: 3.2
             engine-directory: .
             rspec-command: bin/rspec --tag ~js
             install-audiowaveform: true
 
           - engine-name: pageflow
             ruby-version: 3.2
-            rails-version: "~> 6.1"
-            engine-directory: .
-            rspec-command: bin/rspec --tag ~js
-            install-audiowaveform: true
-
-          - engine-name: pageflow
-            ruby-version: 2.6
-            engine-directory: .
-            rspec-command: bin/rspec-with-retry --tag js
-
-          - engine-name: pageflow
-            ruby-version: 3.2
-            rails-version: "~> 6.1"
             engine-directory: .
             rspec-command: bin/rspec-with-retry --tag js
 
           - engine-name: pageflow_paged
-            ruby-version: 2.6
-            engine-directory: entry_types/paged
-            plugin-name: pageflow_paged
-            rspec-command: bin/rspec
-
-          - engine-name: pageflow_paged
             ruby-version: 3.2
-            rails-version: "~> 6.1"
             engine-directory: entry_types/paged
             plugin-name: pageflow_paged
             rspec-command: bin/rspec
 
           - engine-name: pageflow_scrolled
-            ruby-version: 2.6
+            ruby-version: 3.2
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
             rspec-command: bin/rspec --tag ~js
 
           - engine-name: pageflow_scrolled
             ruby-version: 3.2
-            rails-version: "~> 6.1"
-            engine-directory: entry_types/scrolled
-            plugin-name: pageflow_scrolled
-            rspec-command: bin/rspec --tag ~js
-
-          - engine-name: pageflow_scrolled
-            ruby-version: 2.6
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
             rspec-command: bin/rspec-with-retry-on-timeout --tag js
-
-          - engine-name: pageflow_scrolled
-            ruby-version: 3.2
-            rails-version: "~> 6.1"
-            engine-directory: entry_types/scrolled
-            plugin-name: pageflow_scrolled
-            rspec-command: bin/rspec-with-retry-on-timeout --tag js
-
-    env:
-      PAGEFLOW_RAILS_VERSION: ${{ matrix.rails-version }}
 
     services:
       mysql:

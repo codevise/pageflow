@@ -3,11 +3,11 @@ module Pageflow
     extend self
 
     def detect
-      from_env || '5.2.0'
+      from_env || '~> 6.1.0'
     end
 
     def experimental?
-      detect != '5.2.0'
+      detect != '~> 6.1.0'
     end
 
     private

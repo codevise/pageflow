@@ -28,12 +28,7 @@ RSpec.configure do |config|
   end
 
   config.example_status_persistence_file_path = './tmp/rspec_failures'
-
-  if Pageflow::RailsVersion.experimental?
-    config.file_fixture_path = './spec/fixtures'
-  else
-    config.fixture_path = './spec/fixtures'
-  end
+  config.file_fixture_path = './spec/fixtures'
 
   config.order = "random"
 end

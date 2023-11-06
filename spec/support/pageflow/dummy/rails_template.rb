@@ -44,11 +44,7 @@ rake 'db:create:all'
 
 # Install Webpacker
 
-if Pageflow::RailsVersion.experimental?
-  rake 'shakapacker:install' if ENV['PAGEFLOW_INSTALL_WEBPACKER'] == 'true'
-else
-  rake 'webpacker:install' if ENV['PAGEFLOW_INSTALL_WEBPACKER'] == 'true'
-end
+rake 'shakapacker:install' if ENV['PAGEFLOW_INSTALL_SHAKAPACKER'] == 'true'
 
 # Install pageflow and the tested engine via their generators.
 

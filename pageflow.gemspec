@@ -25,18 +25,10 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
 
-  if Pageflow::RailsVersion.experimental?
-    s.add_dependency 'rails', '~> 6.1.0'
-  else
-    s.add_dependency 'rails', '~> 5.2.0'
-  end
+  s.add_dependency 'rails', '~> 6.1.0'
 
   # Framework for admin interface
-  if Pageflow::RailsVersion.experimental?
-    s.add_dependency 'activeadmin', '~> 3.0'
-  else
-    s.add_dependency 'activeadmin', ['>= 1.3.0', '< 3']
-  end
+  s.add_dependency 'activeadmin', '~> 3.0'
 
   # Searchable select boxes for filters and forms
   s.add_dependency 'activeadmin-searchable_select', '~> 1.0'
@@ -51,28 +43,16 @@ Gem::Specification.new do |s|
   s.add_dependency 'yajl-ruby', '~> 1.2'
 
   # Authorization
-  if Pageflow::RailsVersion.experimental?
-    s.add_dependency 'cancancan', '~> 3.5'
-  else
-    s.add_dependency 'cancancan', '~> 1.10'
-  end
+  s.add_dependency 'cancancan', '~> 3.5'
 
   # State machines for active record
-  if Pageflow::RailsVersion.experimental?
-    s.add_dependency 'state_machines-activerecord', '~> 0.9.0'
-  else
-    s.add_dependency 'state_machines-activerecord', '~> 0.5.1'
-  end
+  s.add_dependency 'state_machines-activerecord', '~> 0.9.0'
 
   # Trigger resque jobs with a state machine
   s.add_dependency 'state_machine_job', '~> 3.0'
 
   # File attachments
-  if Pageflow::RailsVersion.experimental?
-    s.add_dependency 'kt-paperclip', '~> 7.2'
-  else
-    s.add_dependency 'paperclip', '~> 6.1'
-  end
+  s.add_dependency 'kt-paperclip', '~> 7.2'
 
   # Image processing
   s.add_dependency 'ruby-vips', '~> 2.2'
@@ -161,11 +141,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'symmetric-encryption', '~> 4.3.1'
 
   # Used for Webpack build in host application
-  if Pageflow::RailsVersion.experimental?
-    s.add_development_dependency 'shakapacker', '~> 7.0'
-  else
-    s.add_development_dependency 'webpacker', '~> 4.2'
-  end
+  s.add_development_dependency 'shakapacker', '~> 7.0'
 
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.5.2'
@@ -174,11 +150,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'resque', '~> 1.25'
   s.add_development_dependency 'resque-scheduler', '~> 4.10'
 
-  if Pageflow::RailsVersion.experimental?
-    s.add_development_dependency 'ar_after_transaction', '~> 0.8.0'
-  else
-    s.add_development_dependency 'ar_after_transaction', '~> 0.5.0'
-  end
+  s.add_development_dependency 'ar_after_transaction', '~> 0.8.0'
 
   s.add_development_dependency 'redis', '~> 3.0'
   s.add_development_dependency 'redis-namespace', '~> 1.5'
@@ -187,11 +159,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sassc-rails', '~> 2.1'
 
   # Testing framework
-  if Pageflow::RailsVersion.experimental?
-    s.add_development_dependency 'rspec-rails', '~> 6.0'
-  else
-    s.add_development_dependency 'rspec-rails', '~> 3.4'
-  end
+  s.add_development_dependency 'rspec-rails', '~> 6.0'
 
   # Matchers like "to have(3).items"
   s.add_development_dependency 'rspec-collection_matchers', '~> 1.1'
