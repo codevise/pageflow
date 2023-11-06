@@ -1,5 +1,5 @@
 require 'resque/tasks'
-require 'resque_scheduler/tasks'
+require 'resque/scheduler/tasks'
 
 namespace :resque do
   # Tell resque to initialize the rails app in worker processes

@@ -32,10 +32,10 @@ module Pageflow
         expect(routes).to contain("require 'resque/server'")
       end
 
-      it 'requires resque_scheduler/server' do
+      it 'requires resque/scheduler/server' do
         run_generator
 
-        expect(routes).to contain("require 'resque_scheduler/server'")
+        expect(routes).to contain("require 'resque/scheduler/server'")
       end
     end
   end
