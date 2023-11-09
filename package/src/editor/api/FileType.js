@@ -21,6 +21,7 @@ export const FileType = Object.extend({
     this.nestedFilesOrder = options.nestedFilesOrder;
     this.skipUploadConfirmation = options.skipUploadConfirmation || false;
     this.filters = options.filters || [];
+    this.noExtendedFileRights = options.noExtendedFileRights;
 
     this.metaDataAttributes = [
       {

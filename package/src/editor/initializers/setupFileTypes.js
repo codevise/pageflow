@@ -107,6 +107,7 @@ app.addInitializer(function(options) {
         upload.name.match(/\.srt$/);
     },
     skipUploadConfirmation: true,
+    noExtendedFileRights: true,
     configurationEditorInputs: [
       {
         name: 'label',

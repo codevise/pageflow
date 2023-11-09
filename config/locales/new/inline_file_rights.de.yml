@@ -1,0 +1,38 @@
+de:
+  pageflow:
+    editor:
+      files:
+        common_attributes:
+          source_url:
+            label: "Quell-URL"
+            inline_help: |-
+              Rechteangabe mit einem Link zur ursprünglichen Quelle
+              oder zum Author der Datei versehen.
+          license:
+            label: "Lizenz"
+            blank: "(Nicht angegeben)"
+            inline_help: |-
+              Fügt der Rechteangabe im Beitrag einen Link zur Lizenz hinzu.
+          rights_display:
+            label: "Rechte anzeigen"
+            inline_help: |-
+              Lege fest, ob die Rechteangabe der Datei in der
+              zusammenfassenden Liste in der Info-Box angezeigt werden
+              soll oder unmittelbar an der Stelle im Beitrag, wo die
+              Datei verwendet wird.
+            values:
+              credits: "In der Info-Box"
+              inline: "Am verwendenden Element"
+    file_licenses:
+      cc_by_4:
+        name: "CC-BY 4.0"
+      cc_by_sa_4:
+        name: "CC-BY-SA 4.0"
+      cc_by_nc_4:
+        name: "CC-BY-NC 4.0"
+      cc_by_nc_sa_4:
+        name: "CC-BY-NC-SA 4.0"
+      cc_by_nd_4:
+        name: "CC-BY-ND 4.0"
+      cc_by_nc_nd_4:
+        name: "CC-BY-NC-ND 4.0"

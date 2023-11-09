@@ -27,6 +27,8 @@ editor.registerEntryType('scrolled', {
   appearanceInputs(tabView) {
   },
 
+  supportsExtendedFileRights: true,
+
   isBrowserSupported() {
     return (browser.agent.matchesDesktopChrome({minVersion: 20}) ||
             browser.agent.matchesDesktopFirefox({minVersion: 20}) ||

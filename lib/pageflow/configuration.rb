@@ -349,9 +349,12 @@ module Pageflow
     # @since 0.11
     attr_accessor :authorize_user_deletion
 
+    # Array of values that the `license` attribute on files can take.
+    attr_accessor :available_file_licenses
+
     # Array of values that the `kind` attribute on text tracks can
     # take. Defaults to `[:captions, :subtitles, :descriptions]`.
-    attr_reader :available_text_track_kinds
+    attr_accessor :available_text_track_kinds
 
     # Allow one user to be member of multiple accounts. Defaults to
     # true.
@@ -450,6 +453,10 @@ module Pageflow
       @default_share_providers = @available_share_providers
 
       @authorize_user_deletion = lambda { |_user| true }
+
+      @available_file_licenses = [
+        :cc_by_4, :cc_by_sa_4, :cc_by_nc_4, :cc_by_nc_sa_4, :cc_by_nd_4, :cc_by_nc_nd_4
+      ]
 
       @available_text_track_kinds = [:captions, :subtitles, :descriptions]
 
