@@ -7,3 +7,7 @@ editor.widgetTypes.registerRole('header', {
 editor.widgetTypes.registerRole('footer', {
   isOptional: true
 });
+
+editor.widgetTypes.registerRole('inlineFileRights', {
+  isOptional: false
+});

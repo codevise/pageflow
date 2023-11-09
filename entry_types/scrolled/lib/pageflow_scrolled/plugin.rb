@@ -21,6 +21,11 @@ module PageflowScrolled
                                                     role: 'consent'),
                                 default: true)
 
+        c.widget_types.register(ReactWidgetType.new(name: 'iconInlineFileRights',
+                                                    role: 'inlineFileRights'))
+        c.widget_types.register(ReactWidgetType.new(name: 'textInlineFileRights',
+                                                    role: 'inlineFileRights'))
+
         c.features.register('datawrapper_chart_embed_opt_in')
         c.features.enable_by_default('datawrapper_chart_embed_opt_in')
         c.features.register('iframe_embed_content_element')

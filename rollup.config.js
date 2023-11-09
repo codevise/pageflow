@@ -257,26 +257,18 @@ const pageflowScrolled = [
     ...ignoreJSXWarning
   },
 
-  {
-    input: pageflowScrolledPackageRoot + '/src/widgets/defaultNavigation/index.js',
-    output: {
-      file: pageflowScrolledPackageRoot + '/widgets/defaultNavigation.js',
-      format: 'esm',
-    },
-    external,
-    plugins: plugins({extractCss: true}),
-    ...ignoreJSXWarning
-  },
-  {
-    input: pageflowScrolledPackageRoot + '/src/widgets/consentBar/index.js',
-    output: {
-      file: pageflowScrolledPackageRoot + '/widgets/consentBar.js',
-      format: 'esm',
-    },
-    external,
-    plugins: plugins({extractCss: true}),
-    ...ignoreJSXWarning
-  }
+  ...(['defaultNavigation', 'consentBar', 'textInlineFileRights', 'iconInlineFileRights'].map(name => (
+    {
+      input: `${pageflowScrolledPackageRoot}/src/widgets/${name}/index.js`,
+      output: {
+        file: `${pageflowScrolledPackageRoot}/widgets/${name}.js`,
+        format: 'esm',
+      },
+      external,
+      plugins: plugins({extractCss: true}),
+      ...ignoreJSXWarning
+    }
+  )))
 ];
 
 export default [

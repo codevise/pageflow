@@ -1,0 +1,9 @@
+en:
+  pageflow:
+    iconInlineFileRights:
+      widget_type_name: Copyright icons
+    textInlineFileRights:
+      widget_type_name: Text at element
+    widgets:
+      roles:
+        inlineFileRights: Inline file rights
