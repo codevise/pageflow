@@ -46,6 +46,24 @@ describe('FileTypes', () => {
         fileTypes.setup([{collectionName: 'image_files'}]);
       }).toThrowError(/Missing client side config/);
     });
+
+    it('adds common settings dialog tabs', () => {
+      var fileTypes = new FileTypes();
+      fileTypes.commonSettingsDialogTabs = [{
+        name: 'general'
+      }];
+
+      fileTypes.register('image_files', {
+        model: ImageFile,
+        matchUpload: /^image/,
+        settingsDialogTabs: [{
+          name: 'extra'
+        }]
+      });
+      fileTypes.setup([{collectionName: 'image_files'}]);
+
+      expect(_.pluck(fileTypes.first().settingsDialogTabs, 'name')).toEqual(['general', 'extra']);
+    });
   });
 
   describe('#modify', () => {

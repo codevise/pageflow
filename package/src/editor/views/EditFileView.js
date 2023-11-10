@@ -3,7 +3,7 @@ import _ from 'underscore';
 import I18n from 'i18n-js';
 
 import {ConfigurationEditorTabView, SelectInputView, SeparatorView, TextInputView, UrlDisplayView} from 'pageflow/ui';
-import {editor} from 'pageflow/editor';
+import {editor} from '../base';
 
 import {state} from '$state';
 
