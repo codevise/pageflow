@@ -189,7 +189,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pundit-matchers', '~> 1.0'
 
   # Clean database in integration tests
-  s.add_development_dependency 'database_cleaner', '~> 1.2'
+  s.add_development_dependency 'database_cleaner-active_record', '~> 2.1'
 
   # Freeze time in tests
   s.add_development_dependency 'timecop', '~> 0.7.1'
