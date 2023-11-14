@@ -8,7 +8,7 @@ module Pageflow
     def index
       site = Site.for_request(request).with_home_url.first!
 
-      redirect_to(site.home_url)
+      redirect_to(site.home_url, allow_other_host: true)
     end
 
     def show
