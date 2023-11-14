@@ -21,6 +21,10 @@ gsub_file('config/database.yml',
           /^  database: /,
           "  database: #{database_prefix}-")
 
+gsub_file('config/environments/test.rb',
+          'config.eager_load = ENV["CI"].present?',
+          'config.eager_load = ENV["CI"].present? && !ENV["SKIP_EAGER_LOAD"]')
+
 append_to_file('config/application.rb', <<-END)
   if ENV['PAGEFLOW_DB_HOST'].present?
     ActiveRecord::Tasks::DatabaseTasks::LOCAL_HOSTS << ENV['PAGEFLOW_DB_HOST']
@@ -40,6 +44,8 @@ end
 # Recreate db. Ignore if it does not exist.
 
 in_root { run('rake db:environment:set db:drop:all', capture: true, abort_on_failure: false) }
+
+rake 'db:create' # workaround for https://github.com/rails/rails/issues/50038
 rake 'db:create:all'
 
 # Install Webpacker
@@ -62,6 +68,12 @@ inject_into_file('config/environments/test.rb',
 prepend_to_file('config/initializers/pageflow.rb', <<-END)
   ActiveAdmin.application.load_paths.unshift(Dir[Rails.root.join('app/admin')].first)\n
 END
+
+# Adapt default configuration
+
+inject_into_file('config/initializers/pageflow.rb',
+                 "require 'pageflow/dummy/config/pageflow'\n",
+                 after: "Pageflow.finalize!\n")
 
 # Add required files for test theme
 
@@ -91,4 +103,4 @@ copy_file('create_test_revision_components.rb',
 copy_file('add_custom_fields.rb',
           'db/migrate/99990000000000_add_custom_fields.rb')
 
-rake 'db:migrate db:test:load', env: 'development'
+rake 'db:migrate db:test:load_schema', env: 'development'

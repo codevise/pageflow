@@ -8,7 +8,7 @@ module Pageflow
       if target.is_a?(Page)
         render('pageflow/social_share/page_meta_tags', entry: @entry, page: @entry.share_target)
       else
-        render('pageflow/social_share/entry_meta_tags', entry: @entry)
+        render('pageflow/social_share/entry_meta_tags', entry: target)
       end
     end
 
@@ -55,7 +55,7 @@ module Pageflow
 
     def social_share_entry_image_tags(entry)
       share_images = []
-      image_file = find_file_in_entry(ImageFile, entry.share_image_id)
+      image_file = find_file_in_entry(ImageFile, entry.share_image_id, entry)
 
       if image_file
         image_url = image_file.thumbnail_url(:medium)

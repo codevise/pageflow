@@ -38,6 +38,11 @@ module Pageflow
       end
     end
 
+    # see https://github.com/rails/rails/issues/50048
+    def file_name
+      attachment_on_s3_file_name
+    end
+
     def attachment
       attachment_on_s3
     end

@@ -13,10 +13,16 @@ module PageflowScrolled
     helper FaviconHelper
 
     def show
-      @entry = get_published_entry_from_env
-      @widget_scope = get_entry_mode_from_env
+      entry = get_published_entry_from_env
 
-      I18n.locale = @entry.locale
+      I18n.locale = entry.locale
+
+      render(
+        locals: {
+          entry: entry,
+          widget_scope: get_entry_mode_from_env
+        }
+      )
     end
   end
 end

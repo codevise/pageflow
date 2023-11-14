@@ -19,9 +19,9 @@ module Pageflow
     #
     # @since 15.0
     # @returns UsedFile
-    def find_file_in_entry(file_type, file_perma_id)
-      raise 'No entry of type PublishedEntry or DraftEntry set.' unless @entry.present?
-      @entry.find_file_by_perma_id(file_type, file_perma_id)
+    def find_file_in_entry(file_type, file_perma_id, entry = @entry)
+      raise 'No entry of type PublishedEntry or DraftEntry set.' unless entry.present?
+      entry.find_file_by_perma_id(file_type, file_perma_id)
     end
   end
 end

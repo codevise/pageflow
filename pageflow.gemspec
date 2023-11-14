@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
 
-  s.add_dependency 'rails', '~> 6.1.0'
+  s.add_dependency 'rails', Pageflow::RailsVersion.detect
 
   # Framework for admin interface
   s.add_dependency 'activeadmin', '~> 3.0'
@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
   #
   # Pageflow::UserMixin depends on Devise internals. We therefore use
   # a conservative version constraint.
-  s.add_dependency 'devise', '~> 4.7.3'
+  s.add_dependency 'devise', '~> 4.9.3'
 
   # Faster JSON backend
   s.add_dependency 'yajl-ruby', '~> 1.2'
@@ -150,7 +150,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'resque', '~> 1.25'
   s.add_development_dependency 'resque-scheduler', '~> 4.10'
 
-  s.add_development_dependency 'ar_after_transaction', '~> 0.8.0'
+  s.add_development_dependency 'ar_after_transaction', '~> 0.10.0'
 
   s.add_development_dependency 'redis', '~> 3.0'
   s.add_development_dependency 'redis-namespace', '~> 1.5'
@@ -189,7 +189,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pundit-matchers', '~> 1.0'
 
   # Clean database in integration tests
-  s.add_development_dependency 'database_cleaner', '~> 1.2'
+  s.add_development_dependency 'database_cleaner-active_record', '~> 2.1'
 
   # Freeze time in tests
   s.add_development_dependency 'timecop', '~> 0.7.1'
