@@ -93,4 +93,4 @@ copy_file('create_test_revision_components.rb',
 copy_file('add_custom_fields.rb',
           'db/migrate/99990000000000_add_custom_fields.rb')
 
-rake 'db:migrate db:test:load', env: 'development'
+rake 'db:migrate db:test:load_schema', env: 'development'
