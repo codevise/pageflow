@@ -21,6 +21,10 @@ gsub_file('config/database.yml',
           /^  database: /,
           "  database: #{database_prefix}-")
 
+gsub_file('config/environments/test.rb',
+          'config.eager_load = ENV["CI"].present?',
+          'config.eager_load = ENV["CI"].present? && !ENV["SKIP_EAGER_LOAD"]')
+
 append_to_file('config/application.rb', <<-END)
   if ENV['PAGEFLOW_DB_HOST'].present?
     ActiveRecord::Tasks::DatabaseTasks::LOCAL_HOSTS << ENV['PAGEFLOW_DB_HOST']
