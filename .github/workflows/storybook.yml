@@ -77,10 +77,10 @@ jobs:
 
     # Ruby/Node
 
-    - name: Set up Ruby 2.6
+    - name: Set up Ruby 3.2
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6
+        ruby-version: 3.2
 
     - name: Set up Node.js 14
       uses: actions/setup-node@v1
