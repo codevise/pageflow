@@ -1,24 +1,19 @@
 require 'capybara/rspec'
 require 'selenium-webdriver'
 require 'capybara/chromedriver/logger'
-require 'webdrivers/chromedriver'
 
 Capybara.register_driver :selenium_chrome_headless_no_sandbox do |app|
-  browser_options = ::Selenium::WebDriver::Chrome::Options.new
-  browser_options.args << '--headless'
-  browser_options.args << '--disable-gpu'
-  # Required for chrome to work in container based Travis environment
-  # (see https://docs.travis-ci.com/user/chrome)
-  browser_options.args << '--no-sandbox'
-
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    # see https://github.com/SeleniumHQ/selenium/issues/3738
-    'goog:loggingPrefs': {browser: 'ALL'}
+  options = Selenium::WebDriver::Options.chrome(
+    logging_prefs: {browser: 'ALL'}
   )
+
+  options.add_argument('--headless')
+  options.add_argument('--no-sandbox')
+  options.add_argument('--disable-gpu') if Gem.win_platform?
 
   Capybara::Selenium::Driver.new(app,
                                  browser: :chrome,
-                                 capabilities: [browser_options, capabilities])
+                                 options: options)
 end
 
 Capybara.javascript_driver = :selenium_chrome_headless_no_sandbox
