@@ -14,6 +14,3 @@ Pageflow.configure do |config|
     }
   end
 end
-
-# Reconstruct current config to ensure config block above is used
-Pageflow.configure!

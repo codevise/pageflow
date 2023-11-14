@@ -18,7 +18,6 @@ module Pageflow
         end
 
         require(File.join(ENV['RAILS_ROOT'], 'config', 'environment'))
-        require('pageflow/dummy/config/pageflow')
       end
 
       def directory

@@ -69,6 +69,12 @@ prepend_to_file('config/initializers/pageflow.rb', <<-END)
   ActiveAdmin.application.load_paths.unshift(Dir[Rails.root.join('app/admin')].first)\n
 END
 
+# Adapt default configuration
+
+inject_into_file('config/initializers/pageflow.rb',
+                 "require 'pageflow/dummy/config/pageflow'\n",
+                 after: "Pageflow.finalize!\n")
+
 # Add required files for test theme
 
 copy_file('test_theme.scss',
