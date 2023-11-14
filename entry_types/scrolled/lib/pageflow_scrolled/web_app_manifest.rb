@@ -2,7 +2,7 @@ module PageflowScrolled
   WebAppManifest = lambda do |entry|
     EntriesController.renderer.render(
       partial: 'manifest',
-      formats: 'json',
+      format: 'json',
       locals: {
         theme: entry.theme
       }
