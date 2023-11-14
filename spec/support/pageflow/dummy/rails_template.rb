@@ -40,6 +40,8 @@ end
 # Recreate db. Ignore if it does not exist.
 
 in_root { run('rake db:environment:set db:drop:all', capture: true, abort_on_failure: false) }
+
+rake 'db:create' # workaround for https://github.com/rails/rails/issues/50038
 rake 'db:create:all'
 
 # Install Webpacker
