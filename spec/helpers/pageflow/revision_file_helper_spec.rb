@@ -49,6 +49,17 @@ module Pageflow
           expect(result).to eq(image_file)
         end
       end
+
+      it 'allows passing entry explicitly' do
+        entry = create(:entry)
+        revision = create(:revision, :published, entry: entry)
+        image_file = create(:image_file)
+        usage = create(:file_usage, revision: revision, file: image_file)
+        entry = PublishedEntry.new(entry)
+
+        result = helper.find_file_in_entry(ImageFile, usage.perma_id, entry)
+        expect(result).to eq(image_file)
+      end
     end
   end
 end

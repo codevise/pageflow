@@ -2,6 +2,17 @@ require 'spec_helper'
 
 module Pageflow
   describe SocialShareHelper do
+    describe '#social_share_meta_tags_for' do
+      it 'renders canonical url' do
+        entry = create(:entry, :published)
+        published_entry = PublishedEntry.new(entry)
+
+        result = helper.social_share_meta_tags_for(published_entry)
+
+        expect(result).to have_selector('link[rel=canonical]', visible: false)
+      end
+    end
+
     describe '#social_share_entry_url' do
       it 'returns share_url if present' do
         entry = create(:entry, :published, published_revision_attributes: {
