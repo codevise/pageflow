@@ -24,6 +24,12 @@ module Pageflow
         expect(helper.pretty_entry_title(entry)).to eq('test - example.com')
       end
 
+      it 'supports suppressing cname suffix via site title is single space character' do
+        site = build(:site, title: ' ', cname: 'www.example.com')
+        entry = PublishedEntry.new(build(:entry, title: 'test', site: site), build(:revision))
+        expect(helper.pretty_entry_title(entry)).to eq('test')
+      end
+
       it 'does not include empty cname domain' do
         site = build(:site, cname: '')
         entry = PublishedEntry.new(build(:entry, title: 'test', site: site), build(:revision))

@@ -1,6 +1,8 @@
 module Pageflow
   module EntriesHelper
     def pretty_entry_title(entry)
+      return entry.title if entry.site.title == ' '
+
       [entry.title,
        entry.site.title.presence || entry.site.cname_domain.presence].compact.join(' - ')
     end
