@@ -119,27 +119,3 @@ Sometimes, after updating the `pageflow` gem or installing a new page type, miss
 Sometimes in `development` environment, Sprockets does not pick up changes in asset files, even though the `require`s match. A quickfix is to change something, e.g. add logging, in the root js/stylesheet/whatever asset type within your app that uses the `pageflow` gem or directly within the gem. Then save root js (or whatever) file, reload page, and Sprockets should pick up changes. Make sure to *not* remove this cache-breaking change you just did, otherwise you just run into the same old cache again.
 
 In cases where this does not resolve the issue (e.g. due to caching multiple asset versions), you can delete the contents of `tmp/cache` in the app with which you are using `pageflow` or other `pageflow`-related gems. Caches will then be renewed on first request to app, which can take some time compared to the approach mentioned above -- but at least this is a surefire way that the assets you specified will be picked up.
-
-## Running specs
-
-#### This version of ChromeDriver only supports Chrome version XX
-
-This is not about any chromedriver that you might have installed systemwide. Pageflow uses the `webdrivers` gem, which per default installs its own drivers and keeps them updated. According to `webdrivers`' documentation, we could expect that as soon as Selenium launches a browser, `webdrivers` checks for driver updates. However, sometimes, it seems it doesn't.
-
-Solution -- update manually. Put the following content e.g. at the
-bottom of one of the files in `spec/support/pageflow/support/config`:
-
-``` ruby
-require 'webdrivers/chromedriver'
-
-RSpec.configure do |config|
-  config.before(:suite) do
-    Webdrivers::Chromedriver.update
-  end
-end
-```
-
-Depending on which file you put it in, the `require` might already be
-there.
-
-Having done that, run the test suite.
