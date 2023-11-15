@@ -28,7 +28,7 @@ module Pageflow
           thumbnail = Vips::Image.thumbnail(
             ANIMATED_FORMATS.include?(@current_format) ? "#{source.path}[n=-1]" : source.path,
             width,
-            size: :down,
+            size: @should_crop ? :both : :down,
             height: height,
             crop: crop
           )
