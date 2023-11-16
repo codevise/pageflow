@@ -632,9 +632,26 @@ module Pageflow
           config.themes.register(:named_theme)
         end
 
-        site = build(:revision, theme_name: 'named_theme')
+        revision = build(:revision, theme_name: 'named_theme')
 
-        expect(site.theme.name).to eq('named_theme')
+        expect(revision.theme.name).to eq('named_theme')
+      end
+
+      it 'honors feature flags of transiently set account' do
+        pageflow_configure do |config|
+          config.themes.register(:some_theme, some: :option)
+
+          config.features.register('override_theme') do |feature_config|
+            feature_config.themes.register(:some_theme, some: :override)
+          end
+        end
+
+        entry = create(:entry, draft_attributes: {theme_name: 'some_theme'})
+        account_with_feature_flag = create(:account, with_feature: 'override_theme')
+
+        entry = Entry.find(entry.id)
+        entry.account = account_with_feature_flag
+        expect(entry.draft.theme.options[:some]).to eq(:override)
       end
     end
 
