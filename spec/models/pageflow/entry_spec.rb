@@ -82,6 +82,22 @@ module Pageflow
       end
     end
 
+    describe '#draft' do
+      it 'sets inverse of association' do
+        entry = create(:entry)
+
+        expect(entry.draft.entry).to be(entry)
+      end
+    end
+
+    describe '#published_revision' do
+      it 'sets inverse of association' do
+        entry = create(:entry, :published)
+
+        expect(entry.published_revision.entry).to be(entry)
+      end
+    end
+
     describe '#entry_type' do
       it 'returns entry type' do
         pageflow_configure do |config|
