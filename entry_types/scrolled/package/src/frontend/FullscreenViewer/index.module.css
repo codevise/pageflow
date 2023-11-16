@@ -4,6 +4,7 @@
   background-color: rgba(0,0,0, 0.9);
   opacity: 0;
   transition: opacity 0.2s linear;
+  font-family: var(--theme-entry-font-family);
 }
 
 .visible {
