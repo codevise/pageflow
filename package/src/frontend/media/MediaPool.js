@@ -147,7 +147,11 @@ export class MediaPool {
     return player;
   }
   initializeMediaPool_(type, mediaElSeed){
-    while ( this.allPlayersForType(type).length<this.playerCount ) {
+    const playerCount = typeof this.playerCount === 'function' ?
+                        this.playerCount(type) :
+                        this.playerCount;
+
+    while (this.allPlayersForType(type).length < playerCount ) {
       this.createPlayer_(type, mediaElSeed.cloneNode(true));
     }
   }

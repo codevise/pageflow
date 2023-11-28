@@ -1,8 +1,11 @@
 import {MediaPool, MediaType} from './MediaPool';
 import BackboneEvents from 'backbone-events-standalone';
+import {features} from '../features';
 
 export const media = {
-  playerPool: new MediaPool(),
+  playerPool: new MediaPool({
+    playerCount: () => features.isEnabled('large_player_pool') ? 10 : 4
+  }),
   muteState: true,
   get muted(){ return this.muteState; },
   mute: function (value) {

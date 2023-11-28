@@ -80,6 +80,27 @@ describe('MediaPool', function() {
       expect(reusedPlayer).toBe(player);
       expect(player.textTracks().length).toEqual(0);
     });
+
+    it('supports supplying player count via function', () => {
+      const pool = new MediaPool({playerCount: playerType => {
+        if (playerType === MediaType.AUDIO) {
+          return 2;
+        }
+        else {
+          return 5;
+        }
+      }});
+
+      const audioPlayers = new Set(Array(10).fill().map(() =>
+        pool.allocatePlayer({playerType: MediaType.AUDIO})
+      ));
+      const videoPlayers = new Set(Array(10).fill().map(() =>
+        pool.allocatePlayer({playerType: MediaType.VIDEO})
+      ));
+
+      expect(audioPlayers.size).toEqual(2);
+      expect(videoPlayers.size).toEqual(5);
+    });
   });
 
   describe('#unallocatePlayer', function() {
