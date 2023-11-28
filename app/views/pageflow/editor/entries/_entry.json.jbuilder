@@ -6,6 +6,7 @@ json.default_file_rights entry.account.default_file_rights
 json.published(entry.published?)
 json.publishable(can?(:publish, entry.to_model))
 json.password_protected(entry.password_digest.present?)
+json.last_published_with_noindex(entry.last_published_with_noindex?)
 
 json.metadata do
   json.(entry,

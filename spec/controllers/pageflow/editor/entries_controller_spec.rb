@@ -189,6 +189,18 @@ module Pageflow
 
         expect(JSON.parse(response.body)).to include('entry_type' => {'some' => 'json'})
       end
+
+      it 'renders last_published_with_noindex' do
+        user = create(:user)
+        entry = create(:entry,
+                       :published_with_noindex,
+                       with_editor: user)
+
+        sign_in(user, scope: :user)
+        get(:seed, params: {id: entry}, format: 'json')
+
+        expect(response.body).to include_json(entry: {last_published_with_noindex: true})
+      end
     end
 
     describe '#update' do
