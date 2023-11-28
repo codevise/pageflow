@@ -76,6 +76,24 @@ module Pageflow
           expect(response.status).to eq(400)
         end
 
+        it 'allows to publish with noindex' do
+          user = create(:user)
+          entry = create(:entry, with_publisher: user)
+
+          sign_in(user, scope: :user)
+          acquire_edit_lock(user, entry)
+          post(:create,
+               params: {
+                 entry_id: entry,
+                 entry_publication: {
+                   noindex: true
+                 }
+               },
+               format: :json)
+
+          expect(entry.published_revision.noindex).to eq(true)
+        end
+
         it 'saves current user as creator' do
           user = create(:user)
           entry = create(:entry, with_publisher: user)
