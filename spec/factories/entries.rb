@@ -99,6 +99,23 @@ module Pageflow
         end
       end
 
+      trait :published_with_noindex do
+        first_published_at { 1.month.ago }
+
+        transient do
+          published_revision_attributes { {} }
+        end
+
+        after(:create) do |entry, evaluator|
+          create(:revision,
+                 :published,
+                 evaluator.published_revision_attributes.merge(
+                   entry: entry,
+                   noindex: true
+                 ))
+        end
+      end
+
       trait :with_highdef_video_encoding do
         feature_states { {'highdef_video_encoding' => true} }
       end

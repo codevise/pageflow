@@ -22,6 +22,34 @@ module Pageflow
       end
     end
 
+    describe '#last_published_with_noindex?' do
+      it 'returns false if entry has never been published' do
+        entry = create(:entry)
+
+        expect(entry.last_published_with_noindex?).to eq(false)
+      end
+
+      it 'returns true if entry is published with noindex' do
+        entry = create(:entry, :published_with_noindex)
+
+        expect(entry.last_published_with_noindex?).to eq(true)
+      end
+
+      it 'returns true if most recent publication with noindex' do
+        entry = create(:entry, :published_with_noindex)
+        entry.revisions.depublish_all
+
+        expect(entry.last_published_with_noindex?).to eq(true)
+      end
+
+      it 'returns false if most recent publication without noindex' do
+        entry = create(:entry, :published_with_noindex)
+        entry.publish(creator: create(:user), noindex: false)
+
+        expect(entry.last_published_with_noindex?).to eq(false)
+      end
+    end
+
     describe '.published' do
       it 'includes published entries without password protection' do
         entry = create(:entry, :published)

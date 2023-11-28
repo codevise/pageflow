@@ -45,6 +45,10 @@ module Pageflow
       published? ? published_revision.published_until : nil
     end
 
+    def last_published_with_noindex?
+      !!revisions.publications.first&.noindex
+    end
+
     module ClassMethods
       def with_publication_state(state)
         case state
