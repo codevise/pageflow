@@ -6,7 +6,7 @@ de:
           noindex: Suchmaschinen ausschließen
           noindex_help: |
             Ein Meta-Tag setzen, das Crawler von Suchmaschinen wie
-            Google oder Bing anweist, die den veröffentlichten Beitrag
+            Google oder Bing anweist, den veröffentlichten Beitrag
             nicht in den Index aufzunehmen. Der Beitrag erscheint
             daher nicht in Suchergebnissen.
     admin:
