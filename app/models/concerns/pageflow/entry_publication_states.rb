@@ -11,6 +11,9 @@ module Pageflow
       scope(:published_with_password_protection,
             -> { published.merge(Revision.with_password_protection) })
 
+      scope(:published_without_noindex,
+            -> { published.merge(Revision.without_noindex) })
+
       scope(:not_published,
             lambda do
               includes(:published_revision)

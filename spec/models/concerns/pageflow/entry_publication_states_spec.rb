@@ -134,6 +134,32 @@ module Pageflow
       end
     end
 
+    describe '.published_without_noindex' do
+      it 'includes published entries without noindex' do
+        entry = create(:entry, :published)
+
+        result = Entry.published_without_noindex
+
+        expect(result).to include(entry)
+      end
+
+      it 'does not include non published entries' do
+        entry = create(:entry)
+
+        result = Entry.published_without_noindex
+
+        expect(result).not_to include(entry)
+      end
+
+      it 'does not include published entries with noindex' do
+        entry = create(:entry, :published_with_noindex)
+
+        result = Entry.published_without_noindex
+
+        expect(result).not_to include(entry)
+      end
+    end
+
     describe '.not_published' do
       it 'does not include published entries without password protection' do
         entry = create(:entry, :published)
