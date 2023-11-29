@@ -7,10 +7,11 @@ en:
           noindex_help: |
             Set a meta tag that instructs crawlers of search engines
             like Google or Bing to not include the published entry in
-            the index.
+            the index. The entry will, thus, not show up in search
+            results.
     admin:
       entries:
-        noindex: Exclude from search engines
+        noindex: Excluded from search engines
   activerecord:
     values:
       pageflow/entry:
