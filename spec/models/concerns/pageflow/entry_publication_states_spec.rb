@@ -3,6 +3,12 @@ require 'spec_helper'
 module Pageflow
   describe 'EntryPublicationStates' do
     describe '#publication_state' do
+      it 'identifies entry published with noindex' do
+        entry = create(:entry, :published_with_noindex)
+
+        expect(entry.publication_state).to eq('published_with_noindex')
+      end
+
       it 'identifies entry published without password protection' do
         entry = create(:entry, :published)
 

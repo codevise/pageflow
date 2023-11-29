@@ -22,6 +22,8 @@ module Pageflow
     def publication_state
       if published_with_password_protection?
         'published_with_password_protection'
+      elsif published? && published_revision.noindex?
+        'published_with_noindex'
       elsif published?
         'published_without_password_protection'
       else
