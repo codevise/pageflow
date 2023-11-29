@@ -76,6 +76,24 @@ module Pageflow
           expect(response.status).to eq(400)
         end
 
+        it 'allows to publish with noindex' do
+          user = create(:user)
+          entry = create(:entry, with_publisher: user)
+
+          sign_in(user, scope: :user)
+          acquire_edit_lock(user, entry)
+          post(:create,
+               params: {
+                 entry_id: entry,
+                 entry_publication: {
+                   noindex: true
+                 }
+               },
+               format: :json)
+
+          expect(entry.published_revision.noindex).to eq(true)
+        end
+
         it 'saves current user as creator' do
           user = create(:user)
           entry = create(:entry, with_publisher: user)
@@ -188,6 +206,17 @@ module Pageflow
           post(:check, params: {entry_id: entry.id, entry_publication: {}}, format: 'json')
 
           expect(json_response(path: :exhausted_html)).to be_present
+        end
+
+        it 'renders last_published_with_noindex attribute' do
+          user = create(:user)
+          entry = create(:entry, :published_with_noindex, with_publisher: user)
+          Pageflow.config.quotas.register(:published_entries, QuotaDouble.available)
+
+          sign_in(user, scope: :user)
+          post(:check, params: {entry_id: entry.id, entry_publication: {}}, format: 'json')
+
+          expect(response.body).to include_json(entry: {last_published_with_noindex: true})
         end
 
         it 'is forbidden for entry the signed in user is not publisher of' do

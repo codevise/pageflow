@@ -3,6 +3,12 @@ require 'spec_helper'
 module Pageflow
   describe 'EntryPublicationStates' do
     describe '#publication_state' do
+      it 'identifies entry published with noindex' do
+        entry = create(:entry, :published_with_noindex)
+
+        expect(entry.publication_state).to eq('published_with_noindex')
+      end
+
       it 'identifies entry published without password protection' do
         entry = create(:entry, :published)
 
@@ -19,6 +25,34 @@ module Pageflow
         entry = create(:entry)
 
         expect(entry.publication_state).to eq('not_published')
+      end
+    end
+
+    describe '#last_published_with_noindex?' do
+      it 'returns false if entry has never been published' do
+        entry = create(:entry)
+
+        expect(entry.last_published_with_noindex?).to eq(false)
+      end
+
+      it 'returns true if entry is published with noindex' do
+        entry = create(:entry, :published_with_noindex)
+
+        expect(entry.last_published_with_noindex?).to eq(true)
+      end
+
+      it 'returns true if most recent publication with noindex' do
+        entry = create(:entry, :published_with_noindex)
+        entry.revisions.depublish_all
+
+        expect(entry.last_published_with_noindex?).to eq(true)
+      end
+
+      it 'returns false if most recent publication without noindex' do
+        entry = create(:entry, :published_with_noindex)
+        entry.publish(creator: create(:user), noindex: false)
+
+        expect(entry.last_published_with_noindex?).to eq(false)
       end
     end
 
@@ -97,6 +131,32 @@ module Pageflow
         result = Entry.published_with_password_protection
 
         expect(result).to include(entry)
+      end
+    end
+
+    describe '.published_without_noindex' do
+      it 'includes published entries without noindex' do
+        entry = create(:entry, :published)
+
+        result = Entry.published_without_noindex
+
+        expect(result).to include(entry)
+      end
+
+      it 'does not include non published entries' do
+        entry = create(:entry)
+
+        result = Entry.published_without_noindex
+
+        expect(result).not_to include(entry)
+      end
+
+      it 'does not include published entries with noindex' do
+        entry = create(:entry, :published_with_noindex)
+
+        result = Entry.published_without_noindex
+
+        expect(result).not_to include(entry)
       end
     end
 

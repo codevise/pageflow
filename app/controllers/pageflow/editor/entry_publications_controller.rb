@@ -39,7 +39,11 @@ module Pageflow
       end
 
       def entry_publication_params
-        params.fetch(:entry_publication, {}).permit(:published_until, :password, :password_protected)
+        params
+          .fetch(:entry_publication, {})
+          .permit(:published_until,
+                  :password, :password_protected,
+                  :noindex)
       end
 
       def published_entries_quota(entry)

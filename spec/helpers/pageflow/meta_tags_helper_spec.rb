@@ -98,5 +98,27 @@ module Pageflow
         )
       end
     end
+
+    describe 'robots' do
+      it 'does not set robots tag by default' do
+        published_entry = create(:published_entry)
+
+        html = helper.meta_tags_for_entry(published_entry)
+
+        expect(html)
+          .not_to have_css(%{meta[name="robots"]}, visible: false)
+      end
+
+      it 'sets robots tag for entry published with noindex' do
+        published_entry = create(:published_entry,
+                                 revision_attributes: {noindex: true})
+
+        html = helper.meta_tags_for_entry(published_entry)
+
+        expect(html)
+          .to have_css(%{meta[content="noindex"][name="robots"]},
+                       visible: false)
+      end
+    end
   end
 end

@@ -22,4 +22,8 @@ $pageflow-publication-state-indicator-size: 25px !default;
   &.published_with_password_protection {
     background-image: image-url("#{$dir}/published_with_password.svg");
   }
+
+  &.published_with_noindex {
+    background-image: image-url("#{$dir}/published_with_noindex.svg");
+  }
 }

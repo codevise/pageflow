@@ -9,7 +9,8 @@ module Pageflow
       {
         keywords: entry.keywords,
         author: entry.author,
-        publisher: entry.publisher
+        publisher: entry.publisher,
+        noindex: entry.noindex?
       }
     end
   end

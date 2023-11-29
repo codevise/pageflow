@@ -207,6 +207,15 @@ module Pageflow
         expect(entry.first_published_at).to eq(1.day.ago)
       end
 
+      it 'does not set noindex flag' do
+        creator = create(:user)
+        entry = create(:entry)
+
+        entry.publish(creator: creator)
+
+        expect(entry.published_revision.noindex).not_to eq(true)
+      end
+
       context 'with :published_until option' do
         it 'publishes entry directly' do
           creator = create(:user)
@@ -321,6 +330,18 @@ module Pageflow
           }.to raise_error(Entry::PasswordMissingError)
         end
       end
+
+      describe 'with :noindex options' do
+        it 'sets noindex flag on created revision' do
+          creator = create(:user)
+          entry = create(:entry)
+
+          entry.publish(creator: creator,
+                        noindex: true)
+
+          expect(entry.published_revision.noindex).to eq(true)
+        end
+      end
     end
 
     describe '#restore' do
@@ -379,6 +400,20 @@ module Pageflow
           entry.restore(revision: earlier_revision, creator: creator)
 
           expect(entry.reload_draft).not_to be_password_protected
+        end
+
+        it 'resets noindex flag' do
+          creator = create(:user)
+          entry = create(:entry)
+          earlier_revision = create(:revision,
+                                    :published,
+                                    title: 'the way it was',
+                                    entry: entry,
+                                    noindex: true)
+
+          entry.restore(revision: earlier_revision, creator: creator)
+
+          expect(entry.reload_draft.noindex).to be_nil
         end
       end
 

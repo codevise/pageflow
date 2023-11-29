@@ -6,6 +6,7 @@ module Pageflow
         site
           .entries
           .published_without_password_protection
+          .published_without_noindex
           .order('first_published_at DESC')
       )
     end

@@ -123,6 +123,16 @@ describe('Entry', () => {
 
       expect(entry.getFileCollection(testContext.imageFileType).first().get('state')).toBe('processed');
     });
+
+    it('updates last_published_with_noindex attribute', () => {
+      const entry = support.factories.entry();
+
+      entry.parse({
+        last_published_with_noindex: true
+      });
+
+      expect(entry.get('last_published_with_noindex')).toEqual(true);
+    })
   });
 
   describe('file collection count attribute', () => {

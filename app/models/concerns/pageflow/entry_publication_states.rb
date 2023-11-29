@@ -11,6 +11,9 @@ module Pageflow
       scope(:published_with_password_protection,
             -> { published.merge(Revision.with_password_protection) })
 
+      scope(:published_without_noindex,
+            -> { published.merge(Revision.without_noindex) })
+
       scope(:not_published,
             lambda do
               includes(:published_revision)
@@ -22,6 +25,8 @@ module Pageflow
     def publication_state
       if published_with_password_protection?
         'published_with_password_protection'
+      elsif published? && published_revision.noindex?
+        'published_with_noindex'
       elsif published?
         'published_without_password_protection'
       else
@@ -43,6 +48,10 @@ module Pageflow
 
     def published_until
       published? ? published_revision.published_until : nil
+    end
+
+    def last_published_with_noindex?
+      !!revisions.publications.first&.noindex
     end
 
     module ClassMethods

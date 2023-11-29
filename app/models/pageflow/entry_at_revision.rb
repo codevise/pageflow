@@ -22,6 +22,7 @@ module Pageflow
              :password_digest,
              :to_model, :to_key, :to_param, :persisted?, :to_json,
              :first_published_at, :published_until, :published?,
+             :last_published_with_noindex?,
              :type_name,
              to: :entry)
 
@@ -35,6 +36,7 @@ module Pageflow
              :locale,
              :author, :publisher, :keywords,
              :published_at,
+             :noindex?,
              :configuration,
              to: :revision)
 

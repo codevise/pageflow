@@ -39,6 +39,14 @@ module Pageflow
                 end
               end
 
+              if revision.noindex?
+                span(class: 'publication_state_indicator published_with_noindex') do
+                  span(class: 'tooltip_bubble') do
+                    t('pageflow.admin.entries.noindex')
+                  end
+                end
+              end
+
               if revision.password_protected?
                 span(class: 'publication_state_indicator published_with_password_protection') do
                   span(class: 'tooltip_bubble') do

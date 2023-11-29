@@ -143,7 +143,9 @@ export const Entry = Backbone.Model.extend({
 
   parse: function(response, options) {
     if (response) {
-      this.set(_.pick(response, 'published', 'published_until', 'password_protected'));
+      this.set(_.pick(response,
+                      'published', 'published_until',
+                      'password_protected', 'last_published_with_noindex'));
       this._setFiles(response, {
         add: false,
         remove: false,

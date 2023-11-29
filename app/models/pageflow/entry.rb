@@ -88,6 +88,7 @@ module Pageflow
           revision.published_at = Time.now
           revision.published_until = options[:published_until]
           revision.password_protected = options[:password_protected]
+          revision.noindex = !!options[:noindex]
         end
       end
     end
@@ -111,6 +112,7 @@ module Pageflow
         revision.published_at = nil
         revision.published_until = nil
         revision.password_protected = nil
+        revision.noindex = nil
       end
     end
 

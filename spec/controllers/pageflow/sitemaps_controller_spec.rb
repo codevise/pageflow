@@ -53,10 +53,11 @@ module Pageflow
         expect(response.body).not_to have_xpath('//url')
       end
 
-      it 'filters out unpublished or password protected entries' do
+      it 'filters out unpublished, noindex or password protected entries' do
         site = create(:site, cname: 'pageflow.example.com')
         create(:entry, site: site)
         create(:entry, :published_with_password, site: site)
+        create(:entry, :published_with_noindex, site: site)
 
         request.env['HTTP_HOST'] = 'pageflow.example.com'
         get(:index, format: 'xml')
