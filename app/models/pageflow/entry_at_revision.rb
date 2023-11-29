@@ -36,6 +36,7 @@ module Pageflow
              :locale,
              :author, :publisher, :keywords,
              :published_at,
+             :noindex?,
              :configuration,
              to: :revision)
 
