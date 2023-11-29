@@ -208,6 +208,17 @@ module Pageflow
           expect(json_response(path: :exhausted_html)).to be_present
         end
 
+        it 'renders last_published_with_noindex attribute' do
+          user = create(:user)
+          entry = create(:entry, :published_with_noindex, with_publisher: user)
+          Pageflow.config.quotas.register(:published_entries, QuotaDouble.available)
+
+          sign_in(user, scope: :user)
+          post(:check, params: {entry_id: entry.id, entry_publication: {}}, format: 'json')
+
+          expect(response.body).to include_json(entry: {last_published_with_noindex: true})
+        end
+
         it 'is forbidden for entry the signed in user is not publisher of' do
           user = create(:user)
           entry = create(:entry, with_editor: user)
