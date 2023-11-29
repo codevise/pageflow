@@ -40,6 +40,18 @@
   </div>
 
   <div class="check_box_input">
+    <input id="publish_with_noindex" type="checkbox" name="noindex" value="1">
+    <label for="publish_with_noindex">
+      <span class="name">
+        <%= I18n.t('pageflow.editor.templates.publish_entry.noindex') %>
+      </span>
+      <span class="inline_help">
+        <%= I18n.t('pageflow.editor.templates.publish_entry.noindex_help') %>
+      </span>
+    </label>
+  </div>
+
+  <div class="check_box_input">
     <input id="publish_password_protected" type="checkbox" name="password_protected" value="1">
     <label for="publish_password_protected">
       <span class="name">

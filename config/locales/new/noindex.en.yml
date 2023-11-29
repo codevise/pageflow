@@ -1,0 +1,10 @@
+en:
+  pageflow:
+    editor:
+      templates:
+        publish_entry:
+          noindex: Exclude from search engines
+          noindex_help: |
+            Set a meta tag that instructs crawlers of search engines
+            like Google or Bing to not include the published entry in
+            the index.

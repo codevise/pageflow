@@ -1,0 +1,10 @@
+de:
+  pageflow:
+    editor:
+      templates:
+        publish_entry:
+          noindex: Suchmaschinen ausschließen
+          noindex_help: |
+            Meta Tag setzen, dass Crawler von Suchmaschinen wie Google
+            oder Bing anweist, die URL des veröffentlichten Beitrags
+            nicht in den Index aufzunehmen.

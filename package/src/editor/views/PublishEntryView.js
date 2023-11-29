@@ -21,6 +21,7 @@ export const PublishEntryView = Marionette.ItemView.extend({
     passwordFields: '.password_fields',
     userNameField: 'input[name=user_name]',
     passwordField: 'input[name=password]',
+    noindexCheckBox: 'input[name=noindex]',
     alreadyPublishedWithPassword: '.already_published_with_password',
     previouslyPublishedWithPassword: '.previously_published_with_password',
     alreadyPublishedWithoutPassword: '.already_published_without_password',
@@ -99,6 +100,8 @@ export const PublishEntryView = Marionette.ItemView.extend({
       this.ui.passwordField.val(this.randomPassword());
     }
 
+    this.ui.noindexCheckBox.prop('checked', this.model.get('last_published_with_noindex'));
+
     this.ui.alreadyPublishedWithPassword.toggle(this.model.get('published') && this.model.get('password_protected'));
     this.ui.previouslyPublishedWithPassword.toggle(!this.model.get('published') && this.model.get('password_protected'));
     this.ui.alreadyPublishedWithoutPassword.toggle(this.model.get('published') && !this.model.get('password_protected'));
@@ -119,7 +122,6 @@ export const PublishEntryView = Marionette.ItemView.extend({
     if (this.$el.hasClass('publishing')) {
       return;
     }
-
     if (this.ui.publishUntilRadioBox.is(':checked')) {
       publishedUntil = this.ui.publishUntilField.datepicker('getDate');
       setTime(publishedUntil, this.ui.publishUntilTimeField.val());
@@ -142,7 +144,8 @@ export const PublishEntryView = Marionette.ItemView.extend({
     this.options.entryPublication.publish({
       published_until: publishedUntil,
       password_protected: this.ui.passwordProtectedCheckBox.is(':checked'),
-      password: this.ui.passwordField.val()
+      password: this.ui.passwordField.val(),
+      noindex: this.ui.noindexCheckBox.is(':checked')
     })
       .fail(function() {
         alert('Beim Veröffentlichen ist ein Fehler aufgetreten');
