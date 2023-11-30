@@ -6,6 +6,7 @@ import {
   SliderInputView
 } from 'pageflow/ui';
 import {EffectListInputView} from './inputs/EffectListInputView';
+import {InlineFileRightsMenuItem} from '../models/InlineFileRightsMenuItem'
 import I18n from 'i18n-js';
 
 import {EditMotifAreaDialogView} from './EditMotifAreaDialogView';
@@ -41,7 +42,7 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBinding: 'backdropType',
         visibleBindingValue: 'image',
         positioning: false,
-        dropDownMenuItems: [editMotifAreaMenuItem]
+        dropDownMenuItems: [editMotifAreaMenuItem, InlineFileRightsMenuItem]
       });
       this.input('backdropVideo', FileInputView, {
         collection: 'video_files',
@@ -49,7 +50,7 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBinding: 'backdropType',
         visibleBindingValue: 'video',
         positioning: false,
-        dropDownMenuItems: [editMotifAreaMenuItem]
+        dropDownMenuItems: [editMotifAreaMenuItem, InlineFileRightsMenuItem]
       });
       this.input('backdropEffects', EffectListInputView, {
         visibleBinding: ['backdropType', 'backdropImage'],
@@ -67,7 +68,7 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBinding: 'backdropType',
         visibleBindingValue: 'image',
         positioning: false,
-        dropDownMenuItems: [editMotifAreaMenuItem]
+        dropDownMenuItems: [editMotifAreaMenuItem, InlineFileRightsMenuItem]
       });
       this.input('backdropVideoMobile', FileInputView, {
         collection: 'video_files',
@@ -75,7 +76,7 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBinding: 'backdropType',
         visibleBindingValue: 'video',
         positioning: false,
-        dropDownMenuItems: [editMotifAreaMenuItem]
+        dropDownMenuItems: [editMotifAreaMenuItem, InlineFileRightsMenuItem]
       });
       this.input('backdropEffectsMobile', EffectListInputView, {
         visibleBinding: ['backdropType', 'backdropImageMobile'],
@@ -137,7 +138,8 @@ export const EditSectionView = EditConfigurationView.extend({
       this.input('atmoAudioFileId', FileInputView, {
         collection: 'audio_files',
         fileSelectionHandler: 'sectionConfiguration',
-        positioning: false
+        positioning: false,
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
     });
   }

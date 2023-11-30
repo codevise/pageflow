@@ -1,4 +1,4 @@
-import {editor} from 'pageflow-scrolled/editor';
+import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import {SelectInputView, FileInputView, EnumTableCellView, SliderInputView} from 'pageflow/editor';
 
 import pictogram from './pictogram.svg';
@@ -15,7 +15,8 @@ editor.contentElementTypes.register('vrImage', {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
         filter: 'with_projection',
-        positioning: false
+        positioning: false,
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
       this.input('initialYaw', SliderInputView, {
         unit: '°',
