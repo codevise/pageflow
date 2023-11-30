@@ -68,6 +68,10 @@
     font-weight: 500;
   }
 
+  &.is_hidden {
+    display: none;
+  }
+
   &.is_selectable {
     a {
       display: block;
