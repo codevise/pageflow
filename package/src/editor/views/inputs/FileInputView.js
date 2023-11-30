@@ -266,6 +266,7 @@ FileInputView.DefaultTextTrackFileMenuItem = Backbone.Model.extend({
   },
 
   update: function() {
+    this.set('kind', 'radio');
     this.set('checked', this.options.textTrackFile == this.getDefaultTextTrackFile());
     this.set('name', this.options.textTrackFile ? null : 'no_default_text_track');
     this.set('label', this.options.textTrackFile ?

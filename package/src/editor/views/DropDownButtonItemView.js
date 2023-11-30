@@ -19,6 +19,11 @@ export const DropDownButtonItemView = Marionette.ItemView.extend({
       }
 
       event.preventDefault();
+
+      if (this.model.get('kind') === 'checkBox' ||
+          this.model.get('kind') === 'radio') {
+        event.stopPropagation();
+      }
     }
   },
 
@@ -42,6 +47,8 @@ export const DropDownButtonItemView = Marionette.ItemView.extend({
 
     this.$el.toggleClass('is_selectable', !!this.model.selected);
     this.$el.toggleClass('is_disabled', !!this.model.get('disabled'));
+    this.$el.toggleClass('has_check_box', this.model.get('kind') === 'checkBox');
+    this.$el.toggleClass('has_radio', this.model.get('kind') === 'radio');
     this.$el.toggleClass('is_checked', !!this.model.get('checked'));
 
     this.$el.data('name', this.model.get('name'));
