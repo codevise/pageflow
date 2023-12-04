@@ -3,10 +3,6 @@
   height: 100%;
 }
 
-.transparent {
-  opacity: 0;
-}
-
 .lightBackground {
   background: rgba(255, 255, 255, 0.2);
 }
@@ -16,17 +12,43 @@
 }
 
 .controlBarContainer {
+  box-sizing: border-box;
   width: 100%;
   display: flex;
-  align-items: center;
-  transition: opacity 0.2s ease;
+  align-items: flex-end;
 }
 
 .inset {
   position: absolute;
   bottom: 0;
   color: #fff;
+  background: transparent;
+  z-index: 3;
+}
+
+.inset::before,
+.controlBarInner {
+  transition: opacity 0.2s ease;
+}
+
+.inset::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), transparent);
+  z-index: -1;
+}
+
+.controlBarInner {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.transparent .controlBarInner,
+.transparent.inset::before {
+  opacity: 0;
 }
 
 .button {
