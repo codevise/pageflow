@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { SectionAtmo } from './SectionAtmo';
 
-import {useSectionContentElements, useAdditionalSeedData} from '../entryState';
+import {useSectionContentElements, useAdditionalSeedData, useFileWithInlineRights} from '../entryState';
 import Foreground from './Foreground';
 import {Layout, widths as contentElementWidths} from './layouts';
 import useScrollTarget from './useScrollTarget';
@@ -39,6 +39,12 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
     empty: !contentElements.length,
   });
 
+  const atmoAudioFile = useFileWithInlineRights({
+    configuration: section,
+    collectionName: 'audioFiles',
+    propertyName: 'atmoAudioFileId'
+  });
+
   return (
     <section id={`${domIdPrefix}-${section.permaId}`}
              ref={ref}
@@ -51,7 +57,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
              style={useBackdropSectionCustomProperties(backdrop)}>
       <SectionLifecycleProvider onActivate={onActivate}
                                 entersWithFadeTransition={section.transition?.startsWith('fade')}>
-        <SectionAtmo audioFilePermaId={section.atmoAudioFileId} />
+        <SectionAtmo audioFile={atmoAudioFile} />
 
         <SectionContents section={section}
                          backdrop={backdrop}

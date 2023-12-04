@@ -1,13 +1,11 @@
 import {useEffect, useCallback} from 'react';
 
 import { useSectionLifecycle } from './useSectionLifecycle';
-import {useFile} from '../entryState';
 import {processSources} from './AudioPlayer';
 import { useAtmo } from './useAtmo';
 import { usePrevious } from './usePrevious';
 
-export function SectionAtmo(props) {
-  const audioFile = useFile({collectionName: 'audioFiles', permaId: props.audioFilePermaId});
+export function SectionAtmo({audioFile}) {
   const lastAudioFile = usePrevious(audioFile);
   let atmo = useAtmo();
 
@@ -19,10 +17,10 @@ export function SectionAtmo(props) {
     if (atmo) {
       atmo.updateAtmo({
         sources: sources,
-        audioFilePermaId: props.audioFilePermaId
+        audioFilePermaId: audioFile?.permaId
       });
     }
-  }, [atmo, audioFile, props.audioFilePermaId]);
+  }, [atmo, audioFile]);
 
 
   useSectionLifecycle({

@@ -2,6 +2,7 @@ import React from 'react';
 
 import {SectionAtmo} from 'frontend/SectionAtmo';
 import {AtmoContext} from 'frontend/useAtmo';
+import {useFile} from 'entryState';
 
 import {renderInEntry} from 'support';
 
@@ -20,8 +21,11 @@ describe('SectionAtmo', () => {
       audioFiles: [{permaId: 5}]
     };
 
-    const {rerender} = renderInEntry(<SectionAtmo audioFilePermaId={undefined} />, {seed, wrapper});
-    rerender(<SectionAtmo audioFilePermaId={5} />, {seed, wrapper});
+    const {rerender} = renderInEntry(() => <SectionAtmo audioFile={null} />, {seed, wrapper});
+    rerender(
+      () => <SectionAtmo audioFile={useFile({collectionName: 'audioFiles', permaId: 5})} />,
+      {seed, wrapper}
+    );
 
     expect(updateAtmo).toHaveBeenCalledWith(expect.objectContaining({audioFilePermaId: 5}));
   });
@@ -31,8 +35,14 @@ describe('SectionAtmo', () => {
       audioFiles: [{permaId: 5}, {permaId: 6}]
     };
 
-    const {rerender} = renderInEntry(<SectionAtmo audioFilePermaId={5} />, {seed, wrapper});
-    rerender(<SectionAtmo audioFilePermaId={6} />, {seed, wrapper});
+    const {rerender} = renderInEntry(
+      () => <SectionAtmo audioFile={useFile({collectionName: 'audioFiles', permaId: 5})} />,
+      {seed, wrapper}
+    );
+    rerender(
+      () => <SectionAtmo audioFile={useFile({collectionName: 'audioFiles', permaId: 6})} />,
+      {seed, wrapper}
+    );
 
     expect(updateAtmo).toHaveBeenCalledWith(expect.objectContaining({audioFilePermaId: 6}));
   });
@@ -42,8 +52,11 @@ describe('SectionAtmo', () => {
       audioFiles: [{permaId: 5}]
     };
 
-    const {rerender} = renderInEntry(<SectionAtmo audioFilePermaId={5} />, {seed, wrapper});
-    rerender(<SectionAtmo audioFilePermaId={undefined} />, {seed, wrapper});
+    const {rerender} = renderInEntry(
+      () => <SectionAtmo audioFile={useFile({collectionName: 'audioFiles', permaId: 5})} />,
+      {seed, wrapper}
+    );
+    rerender(() => <SectionAtmo audioFile={null} />, {seed, wrapper});
 
     expect(updateAtmo).toHaveBeenCalledWith(expect.objectContaining({audioFilePermaId: undefined}));
   });
@@ -53,7 +66,10 @@ describe('SectionAtmo', () => {
       audioFiles: [{permaId: 5}]
     };
 
-    renderInEntry(<SectionAtmo audioFilePermaId={5} />, {seed, wrapper});
+    renderInEntry(
+      () => <SectionAtmo audioFile={useFile({collectionName: 'audioFiles', permaId: 5})} />,
+      {seed, wrapper}
+    );
 
     expect(updateAtmo).not.toHaveBeenCalled();
   });
