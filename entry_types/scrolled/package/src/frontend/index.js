@@ -65,11 +65,12 @@ export {
   useEntryStateDispatch,
   useFile,
   useFileRights,
+  useFileWithInlineRights,
   useLegalInfo,
   useTheme,
   useShareProviders,
   useShareUrl
-} from '../entryState'
+} from '../entryState';
 
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
 export {useContentElementEditorCommandSubscription} from './useContentElementEditorCommandSubscription';
@@ -93,6 +94,7 @@ export {
 export {FitViewport} from './FitViewport';
 export {Tooltip} from './Tooltip';
 export {ThemeIcon} from './ThemeIcon';
+export {InlineFileRights} from './InlineFileRights';
 
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';

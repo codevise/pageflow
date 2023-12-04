@@ -7,3 +7,13 @@ de:
     widgets:
       roles:
         inlineFileRights: Inline-Datei-Rechte
+  pageflow_scrolled:
+    public:
+      inline_file_rights_labels:
+        video: Video
+        poster: Poster
+        atmo: Atmo
+        image: Bild
+        audio: Audio
+        after: Nachher-Bild
+        before: Vorher-Bild

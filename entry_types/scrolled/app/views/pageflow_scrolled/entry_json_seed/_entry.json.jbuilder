@@ -42,6 +42,10 @@ json.config do
 
   json.partial! 'pageflow_scrolled/entry_json_seed/consent_vendors',
                 entry: entry, entry_config: entry_config
+
+  json.file_licenses(
+    I18n.t('pageflow.file_licenses', default: {}).slice(*entry_config.available_file_licenses)
+  )
 end
 
 unless options[:skip_i18n]

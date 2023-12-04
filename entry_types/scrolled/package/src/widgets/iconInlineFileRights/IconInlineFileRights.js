@@ -12,7 +12,7 @@ export function IconInlineFileRights({
     <div className={classNames(styles.wrapper, {
       [styles.absolute]: context !== 'playerControls',
       [styles.transparent]: context !== 'playerControls' || playerControlsTransparent,
-      [styles.standAlone]: context !== 'playerControls' || playerControlsStandAlone
+      [styles.standAlone]: context !== 'playerControls'
     })}>
       <div className={styles.shadow}>
         <button className={styles.button}>

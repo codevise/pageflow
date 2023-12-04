@@ -83,6 +83,15 @@
   top: 100%;
 }
 
+.tooltip a {
+  color: #fff;
+  text-decoration-color: rgba(255, 255, 255, 0.3);
+}
+
+.tooltip span {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .wrapper:hover .shadow + .tooltip,
 .wrapper:focus-within .shadow + .tooltip {
   visibility: visible;
