@@ -4,12 +4,13 @@ import {
   useContentElementConfigurationUpdate,
   useContentElementEditorState,
   useContentElementLifecycle,
-  useFile,
+  useFileWithInlineRights,
   ContentElementBox,
   Figure,
   FitViewport,
   FullscreenViewer,
   Image,
+  InlineFileRights,
   ToggleFullscreenCornerButton,
   usePhonePlatform,
   contentElementWidths
@@ -175,9 +176,10 @@ const Item = forwardRef(function({item, captions, current, onClick, children}, r
 
   const caption = captions[item.id];
 
-  const imageFile = useFile({
+  const imageFile = useFileWithInlineRights({
+    configuration: item,
     collectionName: 'imageFiles',
-    permaId: item.image
+    propertyName: 'image'
   });
 
   const handleCaptionChange = function(caption) {
@@ -208,9 +210,11 @@ const Item = forwardRef(function({item, captions, current, onClick, children}, r
                   <Image imageFile={imageFile} load={shouldLoad} />
                 </div>
                 {children}
+                <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
               </FitViewport.Content>
             </Figure>
           </ContentElementBox>
+          <InlineFileRights context="afterElement" items={[{file: imageFile, label: 'image'}]} />
         </FitViewport>
       </div>
     </div>

@@ -8,6 +8,10 @@ import styles from './IconInlineFileRights.module.css';
 export function IconInlineFileRights({
   context, playerControlsStandAlone, playerControlsTransparent, children
 }) {
+  if (context === 'afterElement') {
+    return null;
+  }
+
   return (
     <div className={classNames(styles.wrapper, {
       [styles.absolute]: context !== 'playerControls',

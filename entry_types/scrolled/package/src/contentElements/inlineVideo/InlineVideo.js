@@ -7,10 +7,11 @@ import {
   ContentElementFigure,
   MediaInteractionTracking,
   VideoPlayerControls,
+  InlineFileRights,
   FitViewport,
   PlayerEventContextDataProvider,
   useContentElementEditorState,
-  useFile,
+  useFileWithInlineRights,
   usePlayerState,
   useContentElementLifecycle,
   useAudioFocus,
@@ -25,15 +26,27 @@ import {
 } from './handlers';
 
 export function InlineVideo({contentElementId, configuration}) {
-  const videoFile = useFile({collectionName: 'videoFiles',
-                             permaId: configuration.id});
-  const posterImageFile = useFile({collectionName: 'imageFiles',
-                                   permaId: configuration.posterId});
+  const videoFile = useFileWithInlineRights({
+    configuration,
+    collectionName: 'videoFiles',
+    propertyName: 'id'
+  });
+  const posterImageFile = useFileWithInlineRights({
+    configuration,
+    collectionName: 'imageFiles',
+    propertyName: 'posterId'
+  });
 
-  const portraitVideoFile = useFile({collectionName: 'videoFiles',
-                                     permaId: configuration.portraitId});
-  const portraitPosterImageFile = useFile({collectionName: 'imageFiles',
-                                           permaId: configuration.portraitPosterId});
+  const portraitVideoFile = useFileWithInlineRights({
+    configuration,
+    collectionName: 'videoFiles',
+    propertyName: 'portraitId'
+  });
+  const portraitPosterImageFile = useFileWithInlineRights({
+    configuration,
+    collectionName: 'imageFiles',
+    propertyName: 'portraitPosterId'
+  });
 
   // Only render OrientationAwareInlineImage if a portrait image has
   // been selected. This prevents having the component rerender on
@@ -84,6 +97,10 @@ function OrientationUnawareInlineVideo({
   contentElementId, configuration
 }) {
   const [playerState, playerActions] = usePlayerState();
+  const inlineFileRightsItems = [
+    {label: 'video', file: videoFile},
+    {label: 'poster', file: posterImageFile}
+  ];
 
   return (
     <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
@@ -100,6 +117,7 @@ function OrientationUnawareInlineVideo({
               <Player key={configuration.playbackMode === 'loop'}
                       videoFile={videoFile}
                       posterImageFile={posterImageFile}
+                      inlineFileRightsItems={inlineFileRightsItems}
                       playerState={playerState}
                       playerActions={playerActions}
                       contentElementId={contentElementId}
@@ -107,6 +125,7 @@ function OrientationUnawareInlineVideo({
             </FitViewport.Content>
           </ContentElementFigure>
         </ContentElementBox>
+        <InlineFileRights context="afterElement" items={inlineFileRightsItems} />
       </FitViewport>
     </MediaInteractionTracking>
   )
@@ -114,6 +133,7 @@ function OrientationUnawareInlineVideo({
 
 function Player({
   videoFile, posterImageFile,
+  inlineFileRightsItems,
   playerState, playerActions,
   contentElementId, configuration
 }) {
@@ -169,6 +189,7 @@ function Player({
                          hideControlBar={configuration.hideControlBar ||
                                          configuration.playbackMode === 'loop'}
                          hideBigPlayButton={configuration.playbackMode === 'loop'}
+                         inlineFileRightsItems={inlineFileRightsItems}
                          configuration={configuration}
                          onPlayerClick={onPlayerClick}>
       <PlayerEventContextDataProvider playerDescription="Inline Video"

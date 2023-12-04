@@ -7,17 +7,18 @@ import {
   FitViewport,
   contentElementWidths,
   useContentElementLifecycle,
-  useFile,
+  useFileWithInlineRights,
   usePortraitOrientation,
-  ExpandableImage
+  ExpandableImage,
+  InlineFileRights
 } from 'pageflow-scrolled/frontend';
 
 export function InlineImage({contentElementId, contentElementWidth, configuration}) {
-  const imageFile = useFile({
-    collectionName: 'imageFiles', permaId: configuration.id
+  const imageFile = useFileWithInlineRights({
+    configuration, collectionName: 'imageFiles', propertyName: 'id'
   });
-  const portraitImageFile = useFile({
-    collectionName: 'imageFiles', permaId: configuration.portraitId
+  const portraitImageFile = useFileWithInlineRights({
+    configuration, collectionName: 'imageFiles', propertyName: 'portraitId'
   });
 
   // Only render OrientationAwareInlineImage if a portrait image has
@@ -81,9 +82,11 @@ function ImageWithCaption({imageFile, contentElementId, contentElementWidth, con
                               'large' : 'medium'}
                      preferSvg={true} />
             </ExpandableImage>
+            <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
           </FitViewport.Content>
         </ContentElementFigure>
       </ContentElementBox>
+      <InlineFileRights context="afterElement" items={[{file: imageFile, label: 'image'}]} />
     </FitViewport>
   );
 }
