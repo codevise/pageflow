@@ -1,8 +1,5 @@
 .standAlone {
   color: #fff;
-}
-
-.absolute {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -92,8 +89,8 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.wrapper:hover .shadow + .tooltip,
-.wrapper:focus-within .shadow + .tooltip {
+.wrapper:hover .tooltip,
+.wrapper:focus-within .tooltip {
   visibility: visible;
   opacity: 1;
 }

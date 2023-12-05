@@ -5,6 +5,7 @@ import { SectionAtmo } from './SectionAtmo';
 
 import {useSectionContentElements, useAdditionalSeedData, useFileWithInlineRights} from '../entryState';
 import Foreground from './Foreground';
+import {SectionInlineFileRights} from './SectionInlineFileRights';
 import {Layout, widths as contentElementWidths} from './layouts';
 import useScrollTarget from './useScrollTarget';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
@@ -64,6 +65,11 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                          contentElements={contentElements}
                          state={state}
                          transitionStyles={transitionStyles} />
+
+        <SectionInlineFileRights section={section}
+                                 backdrop={backdrop}
+                                 atmoAudioFile={atmoAudioFile}
+                                 state={state} />
       </SectionLifecycleProvider>
     </section>
   );

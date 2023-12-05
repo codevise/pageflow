@@ -14,15 +14,12 @@ export function IconInlineFileRights({
 
   return (
     <div className={classNames(styles.wrapper, {
-      [styles.absolute]: context !== 'playerControls',
       [styles.transparent]: context !== 'playerControls' || playerControlsTransparent,
       [styles.standAlone]: context !== 'playerControls'
     })}>
-      <div className={styles.shadow}>
-        <button className={styles.button}>
-          <ThemeIcon name="copyright" />
-        </button>
-      </div>
+      <button className={styles.button}>
+        <ThemeIcon name="copyright" />
+      </button>
       <div className={styles.tooltip}>
         <div className={styles.scroller}>
           {children}

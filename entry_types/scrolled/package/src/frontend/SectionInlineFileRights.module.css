@@ -1,0 +1,15 @@
+@value fade-duration from './transitions/values.module.css';
+
+.wrapper {
+  z-index: 3;
+  position: relative;
+}
+
+.fade {
+  transition: opacity fade-duration ease, visibility fade-duration;
+}
+
+.fade.inactive {
+  opacity: 0;
+  visibility: hidden;
+}
