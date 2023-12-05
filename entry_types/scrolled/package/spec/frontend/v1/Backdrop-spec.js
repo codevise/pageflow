@@ -4,30 +4,12 @@ import '@testing-library/jest-dom/extend-expect'
 import {renderInEntryWithSectionLifecycle} from 'support';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
-import {Backdrop as BackdropTakingFiles} from 'frontend/v1/Backdrop';
+import {Backdrop} from 'frontend/v1/Backdrop';
 import {useBackdrop} from 'frontend/v1/useBackdrop';
 import styles from 'frontend/Backdrop.module.css';
 
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 jest.mock('frontend/usePortraitOrientation')
-
-function Backdrop({
-  color, image, imageMobile, video, videoMobile, effects, effectsMobile, ...props
-}) {
-  return (
-    <BackdropTakingFiles {...props} backdrop={useBackdrop({
-      backdrop: {
-        color,
-        image,
-        imageMobile,
-        video,
-        videoMobile
-      },
-      backdropEffects: effects,
-      backdropEffectsMobile: effectsMobile
-    })} />
-  )
-}
 
 describe('Backdrop', () => {
   useFakeMedia();
@@ -35,7 +17,7 @@ describe('Backdrop', () => {
   it('does not render image when outside viewport', () => {
     const {queryByRole} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100} />,
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -56,7 +38,7 @@ describe('Backdrop', () => {
   it('supports rendering image given by id', () => {
     const {simulateScrollPosition, getByRole} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100} />,
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -79,8 +61,10 @@ describe('Backdrop', () => {
   it('supports applying effects to image', () => {
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100}
-                  effects={[{name: 'blur', value: 100}]} />,
+        () => <Backdrop backdrop={useBackdrop({
+          backdrop: {image: 100},
+          backdropEffects: [{name: 'blur', value: 100}]
+        })} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -105,7 +89,7 @@ describe('Backdrop', () => {
 
     const {simulateScrollPosition, getByRole} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100} imageMobile={200} />,
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100, imageMobile: 200}})} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -131,7 +115,7 @@ describe('Backdrop', () => {
 
     const {simulateScrollPosition, getByRole} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100} imageMobile={200} />,
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100, imageMobile: 200}})} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -157,7 +141,7 @@ describe('Backdrop', () => {
 
     const {simulateScrollPosition, getByRole} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop imageMobile={200} />,
+        () => <Backdrop backdrop={useBackdrop({backdrop: {imageMobile: 200}})} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -182,9 +166,10 @@ describe('Backdrop', () => {
 
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100}
-                  imageMobile={200}
-                  effectsMobile={[{name: 'blur', value: 100}]} />,
+        () => <Backdrop backdrop={useBackdrop({
+          backdrop: {image: 100, imageMobile: 200},
+          backdropEffectsMobile: [{name: 'blur', value: 100}]
+        })} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -210,9 +195,10 @@ describe('Backdrop', () => {
 
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image={100}
-                  imageMobile={200}
-                  effectsMobile={[{name: 'blur', value: 100}]} />,
+        () => <Backdrop backdrop={useBackdrop({
+          backdrop: {image: 100, imageMobile: 200},
+          backdropEffectsMobile: [{name: 'blur', value: 100}]
+        })} />,
         {
           seed: {
             fileUrlTemplates: {
@@ -234,7 +220,7 @@ describe('Backdrop', () => {
   it('invokes onMotifAreaUpdate callback', () => {
     const callback = jest.fn();
     renderInEntryWithSectionLifecycle(
-      <Backdrop image={100} onMotifAreaUpdate={callback} />,
+      () => <Backdrop backdrop={useBackdrop({backdrop: {image: 100}})} onMotifAreaUpdate={callback} />,
       {
         seed: {
           imageFiles: [
@@ -252,7 +238,7 @@ describe('Backdrop', () => {
 
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop color="#f00" />
+        () => <Backdrop backdrop={useBackdrop({backdrop: {color: '#f00'}})} />
       )
 
     expect(container.querySelector('div[style]'))
@@ -264,7 +250,7 @@ describe('Backdrop', () => {
 
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop image="#f00" />
+        () => <Backdrop backdrop={useBackdrop({backdrop: {image: '#f00'}})} />
       )
 
     expect(container.querySelector('div[style]'))
@@ -275,7 +261,7 @@ describe('Backdrop', () => {
     it('does not render video when outside viewport', () => {
       const {queryPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -290,7 +276,7 @@ describe('Backdrop', () => {
     it('renders video when near viewport', () => {
       const {simulateScrollPosition, queryPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -307,7 +293,7 @@ describe('Backdrop', () => {
     it('plays without volume when scrolled into viewport', () => {
       const {simulateScrollPosition, getPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -326,7 +312,7 @@ describe('Backdrop', () => {
     it('fades in volume when section becomes active', () => {
       const {simulateScrollPosition, getPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -345,7 +331,7 @@ describe('Backdrop', () => {
     it('fades out volume when section becomes inactive', () => {
       const {simulateScrollPosition, getPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -365,7 +351,7 @@ describe('Backdrop', () => {
     it('pauses when scrolled outside viewport', () => {
       const {simulateScrollPosition, getPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -384,7 +370,8 @@ describe('Backdrop', () => {
     it('invokes onMotifAreaUpdate callback', () => {
       const callback = jest.fn();
       renderInEntryWithSectionLifecycle(
-        <Backdrop video={100} onMotifAreaUpdate={callback} />,
+        () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100}})}
+                        onMotifAreaUpdate={callback} />,
         {
           seed: {
             videoFiles: [{permaId: 100}]
@@ -398,8 +385,10 @@ describe('Backdrop', () => {
     it('supports applying effects', () => {
       const {container} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100}
-                    effects={[{name: 'blur', value: 100}]} />,
+          () => <Backdrop backdrop={useBackdrop({
+            backdrop: {video: 100},
+            backdropEffects: [{name: 'blur', value: 100}]
+          })} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -418,7 +407,7 @@ describe('Backdrop', () => {
 
       const {simulateScrollPosition, queryPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} videoMobile={200} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100, videoMobile: 200}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -440,7 +429,7 @@ describe('Backdrop', () => {
 
       const {simulateScrollPosition, queryPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100} videoMobile={200} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {video: 100, videoMobile: 200}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -462,7 +451,7 @@ describe('Backdrop', () => {
 
       const {simulateScrollPosition, queryPlayerByFilePermaId} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop videoMobile={200} />,
+          () => <Backdrop backdrop={useBackdrop({backdrop: {videoMobile: 200}})} />,
           {
             queries: fakeMediaRenderQueries,
             seed: {
@@ -483,9 +472,10 @@ describe('Backdrop', () => {
 
       const {container} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100}
-                    videoMobile={200}
-                    effectsMobile={[{name: 'blur', value: 100}]} />,
+          () => <Backdrop backdrop={useBackdrop({
+            backdrop: {video: 100, videoMobile: 200},
+            backdropEffectsMobile: [{name: 'blur', value: 100}],
+          })} />,
           {
             seed: {
               videoFiles: [
@@ -506,9 +496,10 @@ describe('Backdrop', () => {
 
       const {container} =
         renderInEntryWithSectionLifecycle(
-          <Backdrop video={100}
-                    videoMobile={200}
-                    effectsMobile={[{name: 'blur', value: 100}]} />,
+          () => <Backdrop backdrop={useBackdrop({
+            backdrop: {video: 100, videoMobile: 200},
+            backdropEffectsMobile: [{name: 'blur', value: 100}],
+          })} />,
           {
             seed: {
               videoFiles: [
@@ -526,7 +517,7 @@ describe('Backdrop', () => {
   it('hides element to unload compositor layer by default', () => {
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop />
+        () => <Backdrop backdrop={useBackdrop({})} />
       );
 
     expect(container.querySelector(`.${styles.noCompositionLayer}`)).not.toBeNull()
@@ -535,7 +526,7 @@ describe('Backdrop', () => {
   it('makes element visible when near viewport', () => {
     const {container, simulateScrollPosition} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop />
+        () => <Backdrop backdrop={useBackdrop({})} />
       );
 
     simulateScrollPosition('near viewport');
@@ -546,7 +537,7 @@ describe('Backdrop', () => {
   it('makes element visible when eagerLoad prop is set', () => {
     const {container} =
       renderInEntryWithSectionLifecycle(
-        <Backdrop eagerLoad={true} />
+        () => <Backdrop eagerLoad={true} backdrop={useBackdrop({})} />
       );
 
     expect(container.querySelector(`.${styles.noCompositionLayer}`)).toBeNull()
