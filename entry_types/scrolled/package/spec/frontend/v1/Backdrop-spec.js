@@ -4,11 +4,30 @@ import '@testing-library/jest-dom/extend-expect'
 import {renderInEntryWithSectionLifecycle} from 'support';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
-import {Backdrop} from 'frontend/v1/Backdrop';
+import {Backdrop as BackdropTakingFiles} from 'frontend/v1/Backdrop';
+import {useBackdrop} from 'frontend/v1/useBackdrop';
 import styles from 'frontend/Backdrop.module.css';
 
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 jest.mock('frontend/usePortraitOrientation')
+
+function Backdrop({
+  color, image, imageMobile, video, videoMobile, effects, effectsMobile, ...props
+}) {
+  return (
+    <BackdropTakingFiles {...props} backdrop={useBackdrop({
+      backdrop: {
+        color,
+        image,
+        imageMobile,
+        video,
+        videoMobile
+      },
+      backdropEffects: effects,
+      backdropEffectsMobile: effectsMobile
+    })} />
+  )
+}
 
 describe('Backdrop', () => {
   useFakeMedia();
