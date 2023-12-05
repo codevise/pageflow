@@ -112,11 +112,7 @@ function SectionContents({
 
   return (
     <>
-      <Backdrop {...section.backdrop}
-                effects={section.backdropEffects}
-                effectsMobile={section.backdropEffectsMobile}
-
-                backdrop={backdrop}
+      <Backdrop backdrop={backdrop}
                 eagerLoad={section.sectionIndex === 0}
 
                 onMotifAreaUpdate={setMotifAreaRef}
