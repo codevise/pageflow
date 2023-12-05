@@ -134,6 +134,21 @@ describe('SectionConfiguration', () => {
     });
   });
 
+  describe('set backdropImageInlineRightsHidden', () => {
+    it('sets backdrop imageInlineRightsHidden to value', () => {
+      const sectionConfiguration = new SectionConfiguration();
+
+      sectionConfiguration.set('backdropType', 'image');
+      sectionConfiguration.set('backdropImage', 1);
+      sectionConfiguration.set('backdropImageInlineRightsHidden', true);
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        image: 1,
+        imageInlineRightsHidden: true
+      });
+    });
+  });
+
   describe('set backdropImageMobile', () => {
     it('sets backdrop imageMobile to value', () => {
       const sectionConfiguration = new SectionConfiguration();
@@ -200,6 +215,21 @@ describe('SectionConfiguration', () => {
     });
   });
 
+  describe('set backdropImageMobileInlineRightsHidden', () => {
+    it('sets backdrop imageMobileInlineRightsHidden to value', () => {
+      const sectionConfiguration = new SectionConfiguration();
+
+      sectionConfiguration.set('backdropType', 'image');
+      sectionConfiguration.set('backdropImageMobile', 1);
+      sectionConfiguration.set('backdropImageMobileInlineRightsHidden', true);
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        imageMobile: 1,
+        imageMobileInlineRightsHidden: true
+      });
+    });
+  });
+
   describe('set backdropVideo', () => {
     it('does not override backdrop videoMobile if specified', () => {
       const sectionConfiguration = new SectionConfiguration();
@@ -241,6 +271,21 @@ describe('SectionConfiguration', () => {
       expect(sectionConfiguration.attributes.backdrop).toEqual({
         video: 1,
         videoMotifArea: motifArea
+      });
+    });
+  });
+
+  describe('set backdropVideoInlineRightsHidden', () => {
+    it('sets backdrop videoInlineRightsHidden to value', () => {
+      const sectionConfiguration = new SectionConfiguration();
+
+      sectionConfiguration.set('backdropType', 'video');
+      sectionConfiguration.set('backdropVideo', 1);
+      sectionConfiguration.set('backdropVideoInlineRightsHidden', true);
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        video: 1,
+        videoInlineRightsHidden: true
       });
     });
   });
@@ -296,6 +341,21 @@ describe('SectionConfiguration', () => {
       expect(sectionConfiguration.attributes.backdrop).toEqual({
         videoMobile: 1,
         videoMobileMotifArea: motifArea
+      });
+    });
+  });
+
+  describe('set backdropVideoMobileInlineRightsHidden', () => {
+    it('sets backdrop videoMobileInlineRightsHidden to value', () => {
+      const sectionConfiguration = new SectionConfiguration();
+
+      sectionConfiguration.set('backdropType', 'video');
+      sectionConfiguration.set('backdropVideoMobile', 1);
+      sectionConfiguration.set('backdropVideoMobileInlineRightsHidden', true);
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        videoMobile: 1,
+        videoMobileInlineRightsHidden: true
       });
     });
   });

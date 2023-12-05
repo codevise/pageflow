@@ -73,15 +73,19 @@ export const SectionConfiguration = Configuration.extend({
       return {
         video: nextAttributes.backdropVideo,
         videoMotifArea: nextAttributes.backdropVideoMotifArea,
+        videoInlineRightsHidden: nextAttributes.backdropVideoInlineRightsHidden,
         videoMobile: nextAttributes.backdropVideoMobile,
-        videoMobileMotifArea: nextAttributes.backdropVideoMobileMotifArea
+        videoMobileMotifArea: nextAttributes.backdropVideoMobileMotifArea,
+        videoMobileInlineRightsHidden: nextAttributes.backdropVideoMobileInlineRightsHidden
       };
     default:
       return {
         image: nextAttributes.backdropImage,
         imageMotifArea: nextAttributes.backdropImageMotifArea,
+        imageInlineRightsHidden: nextAttributes.backdropImageInlineRightsHidden,
         imageMobile: nextAttributes.backdropImageMobile,
-        imageMobileMotifArea: nextAttributes.backdropImageMobileMotifArea
+        imageMobileMotifArea: nextAttributes.backdropImageMobileMotifArea,
+        imageMobileInlineRightsHidden: nextAttributes.backdropImageMobileInlineRightsHidden
       };
     }
   }
