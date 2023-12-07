@@ -25,6 +25,8 @@ import template from '../templates/fileMetaDataItemValueView.jst';
 export const FileMetaDataItemValueView = Marionette.ItemView.extend({
   template,
 
+  className: 'value_wrapper',
+
   ui: {
     value: '.value',
     editLink: '.edit'

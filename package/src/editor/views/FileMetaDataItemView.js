@@ -15,11 +15,13 @@ export const FileMetaDataItemView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.subview(new this.options.valueView(_.extend({
-      el: this.ui.value,
-      model: this.model,
-      name: this.options.name
-    }, this.options.valueViewOptions || {})));
+    this.appendSubview(
+      new this.options.valueView(_.extend({
+        model: this.model,
+        name: this.options.name
+      }, this.options.valueViewOptions || {})),
+      {to: this.ui.value}
+    );
 
     this.ui.label.text(this.labelText());
   },
