@@ -53,12 +53,14 @@
 }
 
 .tooltip {
-  font-size: 14px;
+  font-size: 13.5555px;
+  font-family: sans-serif;
+  line-height: 1.4;
   position: absolute;
   bottom: 38px;
   right: 5px;
-  background-color: #111111dd;
-  border-radius: 5px;
+  background-color: rgba(17, 17, 17, 0.9);
+  border-radius: 3px;
   color: #fff;
   padding: 8px;
   visibility: hidden;
@@ -74,7 +76,7 @@
   content: "";
   display: block;
   border: solid 5px transparent;
-  border-top-color: #111111dd;
+  border-top-color: rgba(17, 17, 17, 0.9);
   position: absolute;
   right: 11px;
   top: 100%;
