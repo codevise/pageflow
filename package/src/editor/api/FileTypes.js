@@ -18,6 +18,7 @@ export const FileTypes = Object.extend({
     this.clientSideConfigModifications = {};
 
     this.commonSettingsDialogTabs = [];
+    this.commonMetaDataAttributes = [];
   },
 
   register: function(name, config) {
@@ -72,6 +73,10 @@ export const FileTypes = Object.extend({
   applyCommonConfig(clientSideConfig) {
     clientSideConfig.settingsDialogTabs = this.commonSettingsDialogTabs.concat(
       clientSideConfig.settingsDialogTabs || []
+    );
+
+    clientSideConfig.metaDataAttributes = this.commonMetaDataAttributes.concat(
+      clientSideConfig.metaDataAttributes || []
     );
   },
 

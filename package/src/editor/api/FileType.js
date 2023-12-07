@@ -22,17 +22,7 @@ export const FileType = Object.extend({
     this.skipUploadConfirmation = options.skipUploadConfirmation || false;
     this.filters = options.filters || [];
     this.noExtendedFileRights = options.noExtendedFileRights;
-
-    this.metaDataAttributes = [
-      {
-        name: 'rights',
-        valueView: TextFileMetaDataItemValueView,
-        valueViewOptions: {
-          settingsDialogTabLink: 'general'
-        }
-      },
-    ].concat(options.metaDataAttributes || []);
-
+    this.metaDataAttributes = options.metaDataAttributes || [];
 
     if (typeof options.matchUpload === 'function') {
       this.matchUpload = options.matchUpload;

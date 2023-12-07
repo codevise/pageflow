@@ -18,6 +18,32 @@ import {TextTracksView} from '../views/TextTracksView';
 import {state} from '$state';
 
 app.addInitializer(function(options) {
+  editor.fileTypes.commonMetaDataAttributes = [
+    {
+      name: 'rights',
+      valueView: TextFileMetaDataItemValueView,
+      valueViewOptions: {
+        settingsDialogTabLink: 'general'
+      }
+    },
+    {
+      name: 'source_url',
+      valueView: TextFileMetaDataItemValueView,
+      valueViewOptions: {
+        fromConfiguration: true,
+        settingsDialogTabLink: 'general'
+      }
+    },
+    {
+      name: 'license',
+      valueView: TextFileMetaDataItemValueView,
+      valueViewOptions: {
+        fromConfiguration: true,
+        formatValue: value => I18n.t(`pageflow.file_licenses.${value}.name`),
+        settingsDialogTabLink: 'general'
+      }
+    }
+  ];
   editor.fileTypes.commonSettingsDialogTabs = [
     {
       name: 'general',

@@ -11,6 +11,12 @@ export const TextFileMetaDataItemValueView = FileMetaDataItemValueView.extend({
       model = this.model;
     }
 
-    return model.get(this.options.name);
+    const value = model.get(this.options.name);
+
+    if (value && this.options.formatValue) {
+      return this.options.formatValue(value);
+    }
+
+    return value;
   }
 });

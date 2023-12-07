@@ -2,7 +2,7 @@ import _ from 'underscore';
 
 import {TextInputView, TextTableCellView} from 'pageflow/ui';
 
-import {ImageFile, TextTrackFile, VideoFile} from 'pageflow/editor';
+import {ImageFile, TextTrackFile, VideoFile, editor} from 'pageflow/editor';
 import {FileTypes} from 'pageflow/editor/api/FileTypes';
 
 describe('FileTypes', () => {
@@ -63,6 +63,25 @@ describe('FileTypes', () => {
       fileTypes.setup([{collectionName: 'image_files'}]);
 
       expect(_.pluck(fileTypes.first().settingsDialogTabs, 'name')).toEqual(['general', 'extra']);
+    });
+
+    it('includes common metadata attribute', () => {
+      var fileTypes = new FileTypes();
+      fileTypes.commonMetaDataAttributes = [
+        {name: 'rights'},
+        {name: 'source_url'}
+      ];
+
+      fileTypes.register('image_files', {
+        model: ImageFile,
+        matchUpload: /^image/,
+        metaDataAttributes: [{
+          name: 'alt'
+        }]
+      });
+      fileTypes.setup([{collectionName: 'image_files'}]);
+
+      expect(fileTypes.first().metaDataAttributes.map(attribute => attribute.name)).toEqual(['rights', 'source_url', 'alt']);
     });
   });
 
