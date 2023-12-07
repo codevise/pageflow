@@ -3,11 +3,8 @@
   right: 0;
   top: 0;
   color: #fff;
-  background: linear-gradient(30deg, transparent, transparent 60%, #000000a6);
-  padding: 5px 5px 40px 70px;
-  pointer-events: none;
 }
 
-.corner > * {
-  pointer-events: auto;
+.corner svg {
+  filter: drop-shadow(0 1px 4px #000);
 }
