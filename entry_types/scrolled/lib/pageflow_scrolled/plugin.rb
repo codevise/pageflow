@@ -22,7 +22,8 @@ module PageflowScrolled
                                 default: true)
 
         c.widget_types.register(ReactWidgetType.new(name: 'iconInlineFileRights',
-                                                    role: 'inlineFileRights'))
+                                                    role: 'inlineFileRights'),
+                                default: true)
         c.widget_types.register(ReactWidgetType.new(name: 'textInlineFileRights',
                                                     role: 'inlineFileRights'))
 
