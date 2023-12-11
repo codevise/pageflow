@@ -74,7 +74,10 @@ export const FilesImporterView = Marionette.ItemView.extend({
             content_type: file.type,
             file_size: -1,
             rights: file.rights,
-            source_url: file.url
+            source_url: file.url,
+            configuration: {
+              source_url: file.source_url
+            }
           }, {
             fileType: fileType
           });
