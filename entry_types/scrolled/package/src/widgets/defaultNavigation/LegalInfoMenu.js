@@ -28,14 +28,14 @@ export function LegalInfoMenu(props) {
             dangerouslySetInnerHTML={{__html: credits}}></p>
         }
 
-        {fileRights.length &&
+        {fileRights.length > 0 &&
          <div className={styles.section}>
            <strong>{t('pageflow_scrolled.public.media')}</strong> {renderFileRights(fileRights)}
          </div>
         }
       </div>
 
-      <div className={styles.links}>
+      <div className={classNames(styles.links, {[styles.separator]: credits || fileRights.length > 0})}>
         <LegalInfoLink {...legalInfo.imprint}/>
         <LegalInfoLink {...legalInfo.copyright}/>
         <LegalInfoLink {...legalInfo.privacy}/>
