@@ -7,6 +7,7 @@ import {ProgressIndicators} from './ProgressIndicators'
 import {TimeDisplay} from '../TimeDisplay'
 import {QualityMenu} from './QualityMenu';
 import {TextTracksMenu} from '../TextTracksMenu';
+import {InlineFileRights} from '../../InlineFileRights';
 import {useDarkBackground} from '../../backgroundColor';
 
 import styles from '../ControlBar.module.css';
@@ -43,21 +44,27 @@ function renderControlBar(props, darkBackground, transparent) {
                                  [styles.inset]: !props.standAlone,
                                  [styles.transparent]: transparent
          })}>
-      <PlayPauseButton isPlaying={props.isPlaying}
-                       play={props.play}
-                       pause={props.pause}/>
-      <ProgressIndicators currentTime={props.currentTime}
-                          duration={props.duration}
-                          bufferedEnd={props.bufferedEnd}
-                          scrubTo={props.scrubTo}
-                          seekTo={props.seekTo}/>
-      <TimeDisplay currentTime={props.currentTime}
-                   duration={props.duration}/>
-      <TextTracksMenu items={props.textTracksMenuItems}
-                      onItemClick={props.onTextTracksMenuItemClick} />
-      <QualityMenu items={props.qualityMenuItems}
-                   onItemClick={props.onQualityMenuItemClick}
-                   subMenuExpanded={props.qualityMenuExpanded} />
+      <div className={styles.controlBarInner}>
+        <PlayPauseButton isPlaying={props.isPlaying}
+                         play={props.play}
+                         pause={props.pause}/>
+        <ProgressIndicators currentTime={props.currentTime}
+                            duration={props.duration}
+                            bufferedEnd={props.bufferedEnd}
+                            scrubTo={props.scrubTo}
+                            seekTo={props.seekTo}/>
+        <TimeDisplay currentTime={props.currentTime}
+                     duration={props.duration}/>
+        <TextTracksMenu items={props.textTracksMenuItems}
+                        onItemClick={props.onTextTracksMenuItemClick} />
+        <QualityMenu items={props.qualityMenuItems}
+                     onItemClick={props.onQualityMenuItemClick}
+                     subMenuExpanded={props.qualityMenuExpanded} />
+      </div>
+      <InlineFileRights items={props.inlineFileRightsItems}
+                        context="playerControls"
+                        playerControlsTransparent={transparent}
+                        playerControlsStandAlone={props.standAlone} />
     </div>
   );
 }

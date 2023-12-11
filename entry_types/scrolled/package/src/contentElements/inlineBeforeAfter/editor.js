@@ -1,4 +1,4 @@
-import {editor} from 'pageflow-scrolled/editor';
+import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import {ColorInputView, FileInputView} from 'pageflow/editor';
 import {SliderInputView, TextInputView} from 'pageflow/ui';
 
@@ -16,12 +16,14 @@ editor.contentElementTypes.register('inlineBeforeAfter', {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false,
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
       this.input('before_label', TextInputView);
       this.input('after_id', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false,
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
       this.input('after_label', TextInputView);
       this.input('initial_slider_position', SliderInputView);

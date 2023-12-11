@@ -10,6 +10,7 @@ import {OtherFile} from '../models/OtherFile';
 import {app} from '../app';
 import {editor} from '../base';
 
+import {EditFileView} from '../views/EditFileView';
 import {TextFileMetaDataItemValueView} from '../views/TextFileMetaDataItemValueView';
 import {TextTracksFileMetaDataItemValueView} from '../views/TextTracksFileMetaDataItemValueView';
 import {TextTracksView} from '../views/TextTracksView';
@@ -17,6 +18,39 @@ import {TextTracksView} from '../views/TextTracksView';
 import {state} from '$state';
 
 app.addInitializer(function(options) {
+  editor.fileTypes.commonMetaDataAttributes = [
+    {
+      name: 'rights',
+      valueView: TextFileMetaDataItemValueView,
+      valueViewOptions: {
+        settingsDialogTabLink: 'general'
+      }
+    },
+    {
+      name: 'source_url',
+      valueView: TextFileMetaDataItemValueView,
+      valueViewOptions: {
+        fromConfiguration: true,
+        settingsDialogTabLink: 'general'
+      }
+    },
+    {
+      name: 'license',
+      valueView: TextFileMetaDataItemValueView,
+      valueViewOptions: {
+        fromConfiguration: true,
+        formatValue: value => I18n.t(`pageflow.file_licenses.${value}.name`),
+        settingsDialogTabLink: 'general'
+      }
+    }
+  ];
+  editor.fileTypes.commonSettingsDialogTabs = [
+    {
+      name: 'general',
+      view: EditFileView
+    }
+  ];
+
   var textTracksMetaDataAttribute = {
     name: 'text_tracks',
     valueView: TextTracksFileMetaDataItemValueView,
@@ -107,6 +141,7 @@ app.addInitializer(function(options) {
         upload.name.match(/\.srt$/);
     },
     skipUploadConfirmation: true,
+    noExtendedFileRights: true,
     configurationEditorInputs: [
       {
         name: 'label',

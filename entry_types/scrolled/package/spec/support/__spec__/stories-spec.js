@@ -145,6 +145,42 @@ describe('exampleStories', () => {
       })
     }));
   });
+
+  it('supports adding story for inline file rights', () => {
+    stubSeedFixture(normalizeSeed({
+      imageFiles: [
+        {id: 10, permaId: 1}
+      ]
+    }));
+
+    const stories = exampleStories({
+      typeName: 'test',
+      inlineFileRights: true,
+      baseConfiguration: {}
+    });
+
+    expect(stories).toContainEqual(expect.objectContaining({
+      title: 'Inline File Rights - Icon',
+      seed: expect.objectContaining({
+        collections: expect.objectContaining({
+          imageFiles: expect.arrayContaining([
+            expect.objectContaining({
+              configuration: expect.objectContaining({rights_display: 'inline'})
+            })
+          ]),
+          widgets: [
+            expect.objectContaining({
+              role: 'inlineFileRights',
+              typeName: 'iconInlineFileRights'
+            })
+          ],
+          contentElements: expect.arrayContaining([
+            expect.objectContaining({id: 1000})
+          ])
+        })
+      })
+    }));
+  });
 });
 
 describe('filePermaId', () => {
@@ -185,6 +221,24 @@ describe('normalizeAndMergeFixture', () => {
     expect(seed.config.theme.options.properties.root).toMatchObject({
       narrowViewportBreakpoint: '600px',
       widgetPrimaryColor: '#f00'
+    })
+  });
+
+  it('supports inline file rights', () => {
+    stubSeedFixture(normalizeSeed({
+      imageFiles: [
+        {id: 10, permaId: 1}
+      ]
+    }));
+
+    const seed = normalizeAndMergeFixture({inlineFileRightsFor: ['imageFiles']});
+
+    expect(seed.collections.imageFiles[0]).toMatchObject({
+      rights: 'Jane Doe',
+      configuration: {
+        rights_display: 'inline',
+        source_url: 'https://example.com/jane-doe/image'
+      }
     })
   });
 })

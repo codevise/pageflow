@@ -45,7 +45,8 @@ export function normalizeSeed({
   widgets,
   additionalSeedData,
   consentVendors,
-  contentElementConsentVendors
+  contentElementConsentVendors,
+  fileLicenses
 } = {}) {
   const entries = entry ? [entry] : [{}];
   const normalizedEntries = normalizeCollection(entries);
@@ -85,7 +86,8 @@ export function normalizeSeed({
         frontendVersion: 1
       },
       consentVendors: consentVendors || [],
-      contentElementConsentVendors: contentElementConsentVendors || {}
+      contentElementConsentVendors: contentElementConsentVendors || {},
+      fileLicenses: fileLicenses || {}
     },
     collections: {
       entries: normalizedEntries,

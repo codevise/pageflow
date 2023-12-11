@@ -48,6 +48,14 @@ module Pageflow
         expect(result['fileTypes'][3]['collectionName']).to eq('text_track_files')
       end
 
+      it 'includes file licenses' do
+        Pageflow.config.available_file_licenses = [:cc0, :cc_by]
+
+        result = JSON.parse(helper.editor_config_seeds(create(:entry)))
+
+        expect(result['availableFileLicenses']).to eq(['cc0', 'cc_by'])
+      end
+
       it 'includes available locales' do
         Pageflow.config.available_locales = [:de, :fr]
 

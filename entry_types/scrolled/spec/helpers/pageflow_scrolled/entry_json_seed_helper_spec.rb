@@ -722,6 +722,27 @@ module PageflowScrolled
                                            contentElementConsentVendors: be_empty
                                          })
         end
+
+        it 'renders file licenses' do
+          pageflow_configure do |config|
+            config.available_file_licenses = [:cc_by_4, :cc_by_sa_4]
+          end
+
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         revision_attributes: {locale: 'de'})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(config: {
+                                           fileLicenses: {
+                                             cc_by_4: {
+                                               name: 'CC-BY 4.0',
+                                               url: 'https://creativecommons.org/licenses/by/4.0/'
+                                             }
+                                           }
+                                         })
+        end
       end
     end
 

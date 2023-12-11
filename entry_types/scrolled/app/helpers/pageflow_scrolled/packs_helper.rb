@@ -23,16 +23,15 @@ module PageflowScrolled
     end
 
     def scrolled_frontend_packs(entry, widget_scope:)
-      widget_types = scrolled_frontend_pack_widget_types(entry, widget_scope)
-
       ['pageflow-scrolled-frontend'] +
         scrolled_frontend_content_element_packs(entry, widget_scope) +
-        widget_types.map(&:pack)
+        scrolled_frontend_widget_type_packs(entry, widget_scope)
     end
 
     def scrolled_editor_packs(entry)
       ['pageflow-scrolled-editor'] +
-        Pageflow.config_for(entry).additional_editor_packs.paths
+        Pageflow.config_for(entry).additional_editor_packs.paths +
+        scrolled_frontend_widget_type_packs(entry, :editor)
     end
 
     private
@@ -47,6 +46,10 @@ module PageflowScrolled
           additional_packs.content_element_type_names
         )
       )
+    end
+
+    def scrolled_frontend_widget_type_packs(entry, widget_scope)
+      scrolled_frontend_pack_widget_types(entry, widget_scope).map(&:pack)
     end
 
     def scrolled_frontend_pack_widget_types(entry, widget_scope)

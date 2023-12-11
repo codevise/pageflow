@@ -1,4 +1,4 @@
-import {editor} from 'pageflow-scrolled/editor';
+import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView, SeparatorView, LabelOnlyView} from 'pageflow/ui';
 
@@ -18,26 +18,30 @@ editor.contentElementTypes.register('inlineVideo', {
         collection: 'video_files',
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false,
-        defaultTextTrackFilePropertyName: 'defaultTextTrackFileId'
+        defaultTextTrackFilePropertyName: 'defaultTextTrackFileId',
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
       this.input('posterId', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
-        positioning: false
+        positioning: false,
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
 
       this.input('portraitId', FileInputView, {
         collection: 'video_files',
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false,
-        defaultTextTrackFilePropertyName: 'defaultTextTrackFileId'
+        defaultTextTrackFilePropertyName: 'defaultTextTrackFileId',
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
       this.input('portraitPosterId', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false,
         visibleBinding: 'portraitId',
-        visible: () => this.model.getReference('portraitId', 'video_files')
+        visible: () => this.model.getReference('portraitId', 'video_files'),
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
 
       this.view(SeparatorView);

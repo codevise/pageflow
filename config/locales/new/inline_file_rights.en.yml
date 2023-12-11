@@ -1,0 +1,43 @@
+en:
+  pageflow:
+    editor:
+      files:
+        common_attributes:
+          source_url:
+            label: "Source URL"
+            inline_help: |-
+              Turns the credit note into a link to the original source
+              or to the author of the file.
+          license:
+            label: "License"
+            blank: "(Not specified)"
+            inline_help: |-
+              Adds a link to the license in the credit note.
+          rights_display:
+            label: "Display rights"
+            inline_help: |-
+              Decide if the file's credit note should be displayed in
+              the summary list in the info box, or right at the place
+              in the entry where the file is used.
+            values:
+              credits: "In the info box"
+              inline: "At the element where it is used"
+    file_licenses:
+      cc_by_4:
+        name: "CC-BY 4.0"
+        url: "https://creativecommons.org/licenses/by/4.0/"
+      cc_by_sa_4:
+        name: "CC-BY-SA 4.0"
+        url: "https://creativecommons.org/licenses/by-sa/4.0/"
+      cc_by_nc_4:
+        name: "CC-BY-NC 4.0"
+        url: "https://creativecommons.org/licenses/by-nc/4.0/"
+      cc_by_nc_sa_4:
+        name: "CC-BY-NC-SA 4.0"
+        url: "https://creativecommons.org/licenses/by-sa-nc/4.0/"
+      cc_by_nd_4:
+        name: "CC-BY-ND 4.0"
+        url: "https://creativecommons.org/licenses/by-nd/4.0/"
+      cc_by_nc_nd_4:
+        name: "CC-BY-NC-ND 4.0"
+        url: "https://creativecommons.org/licenses/by-nc-nd/4.0/"

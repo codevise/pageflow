@@ -1,4 +1,5 @@
 import {Configuration, FileInputView} from 'pageflow/editor';
+import Backbone from 'backbone';
 
 import * as support from '$support';
 import {DropDownButton} from '$support/dominos/editor';
@@ -51,6 +52,89 @@ describe('FileInputView', () => {
           selected: handler
         }
       ]
+    });
+
+    fileInputView.render();
+    var dropDownButton = DropDownButton.find(fileInputView);
+    dropDownButton.selectMenuItemByLabel('Custom Item');
+
+    expect(handler).toHaveBeenCalledWith({
+      inputModel: model,
+      propertyName: 'file_id',
+      file: fixture.imageFile
+    });
+  });
+
+  it('supports nested items in additional drop down menu items', () => {
+    const fixture = support.factories.imageFilesFixture({
+      imageFileAttributes: {perma_id: 5}
+    });
+    const model = new Configuration({
+      file_id: 5,
+    });
+    const handler = jest.fn();
+
+    var fileInputView = new FileInputView({
+      collection: fixture.imageFiles,
+      model: model,
+      propertyName: 'file_id',
+      dropDownMenuItems: [
+        {
+          label: 'Group',
+          items: [
+            {
+              name: 'custom',
+              label: 'Custom Nested Item',
+              selected: handler
+            }
+          ]
+        }
+      ]
+    });
+
+    fileInputView.render();
+    var dropDownButton = DropDownButton.find(fileInputView);
+    dropDownButton.selectMenuItemByLabel('Custom Nested Item');
+
+    expect(handler).toHaveBeenCalledWith({
+      inputModel: model,
+      propertyName: 'file_id',
+      file: fixture.imageFile
+    });
+  });
+
+  it('supports Backbone model constructor as additional drop down menu items', () => {
+    const fixture = support.factories.imageFilesFixture({
+      imageFileAttributes: {perma_id: 5}
+    });
+    const model = new Configuration({
+      file_id: 5,
+    });
+    const handler = jest.fn();
+    const Item = Backbone.Model.extend({
+      defaults: {
+        name: 'custom',
+        label: 'Custom Item'
+      },
+
+      initialize: function(attributes, options) {
+        this.options = options;
+      },
+
+      selected() {
+        handler({
+          inputModel: this.options.inputModel,
+          propertyName: this.options.propertyName,
+          file: this.options.file
+        });
+      }
+    });
+
+    var fileInputView = new FileInputView({
+      collection: fixture.imageFiles,
+      model: model,
+      propertyName: 'file_id',
+      dropDownMenuItems: [Item]
     });
 
     fileInputView.render();

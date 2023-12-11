@@ -4,6 +4,7 @@ json.call(Pageflow.config,
           :default_published_until_duration_in_months,
           :available_locales,
           :available_public_locales,
+          :available_file_licenses,
           :available_text_track_kinds,
           :available_share_providers)
 json.file_types Pageflow.config_for(entry).file_types do |file_type|

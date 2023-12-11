@@ -1,0 +1,11 @@
+.list,
+.list > li {
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.list > li {
+  white-space: nowrap;
+}

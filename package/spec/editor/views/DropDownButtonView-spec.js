@@ -54,6 +54,38 @@ describe('DropDownButtonView', () => {
     expect(items.eq(1)).not.toHaveClass('is_disabled');
   });
 
+  it('supports hiding items', () => {
+    var dropDownButtonView = new DropDownButtonView({
+      items: new Backbone.Collection([
+        {label: 'Item 1', hidden: true},
+        {label: 'Item 2'}
+      ])
+    });
+
+    dropDownButtonView.render();
+    var renderedItems = dropDownButtonView.$el.find('ul li');
+
+    expect(renderedItems.eq(0)).toHaveClass('is_hidden');
+    expect(renderedItems.eq(1)).not.toHaveClass('is_hidden');
+  });
+
+  it('supports hiding items dynamically', () => {
+    const items = new Backbone.Collection([
+      {label: 'Item 1'},
+      {label: 'Item 2'}
+    ])
+    var dropDownButtonView = new DropDownButtonView({
+      items
+    });
+
+    dropDownButtonView.render();
+    items.first().set('hidden', true);
+    var renderedItems = dropDownButtonView.$el.find('ul li');
+
+    expect(renderedItems.eq(0)).toHaveClass('is_hidden');
+    expect(renderedItems.eq(1)).not.toHaveClass('is_hidden');
+  });
+
   it('supports checking items', () => {
     var dropDownButtonView = new DropDownButtonView({
       items: new Backbone.Collection([

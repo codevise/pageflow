@@ -8,17 +8,26 @@ import {
   ContentElementBox,
   ContentElementFigure,
   FitViewport,
+  InlineFileRights,
   PlayerEventContextDataProvider,
   useContentElementEditorState,
-  useFile,
+  useFileWithInlineRights,
   usePlayerState,
   useContentElementLifecycle,
   useAudioFocus
 } from 'pageflow-scrolled/frontend';
 
 export function InlineAudio({contentElementId, configuration}) {
-  const audioFile = useFile({collectionName: 'audioFiles', permaId: configuration.id});
-  const posterImageFile = useFile({collectionName: 'imageFiles', permaId: configuration.posterId});
+  const audioFile = useFileWithInlineRights({
+    configuration,
+    collectionName: 'audioFiles',
+    propertyName: 'id',
+  });
+  const posterImageFile = useFileWithInlineRights({
+    configuration,
+    collectionName: 'imageFiles',
+    propertyName: 'posterId'
+  });
 
   const [playerState, playerActions] = usePlayerState();
   const {isEditable, isSelected} = useContentElementEditorState();
@@ -57,6 +66,11 @@ export function InlineAudio({contentElementId, configuration}) {
     }
   };
 
+  const inlineFileRightsItems = [
+    {label: 'audio', file: audioFile},
+    {label: 'image', file: posterImageFile}
+  ];
+
   return (
     <FitViewport file={posterImageFile}>
       <ContentElementBox>
@@ -67,6 +81,7 @@ export function InlineAudio({contentElementId, configuration}) {
                                  playerState={playerState}
                                  playerActions={playerActions}
                                  standAlone={!posterImageFile}
+                                 inlineFileRightsItems={inlineFileRightsItems}
                                  configuration={configuration}
                                  onPlayerClick={onPlayerClick}>
               <PlayerEventContextDataProvider playerDescription="Inline Audio"
@@ -88,6 +103,7 @@ export function InlineAudio({contentElementId, configuration}) {
           </FitViewport.Content>
         </ContentElementFigure>
       </ContentElementBox>
+      <InlineFileRights context="afterElement" items={inlineFileRightsItems} />
     </FitViewport>
   )
 }

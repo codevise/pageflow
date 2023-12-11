@@ -1,3 +1,7 @@
+.wrapper {
+  position: relative;
+}
+
 .button {
   composes: button from './ControlBar.module.css';
 }
@@ -19,16 +23,26 @@
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s, visibility 0.5s;
+  transition: opacity 0.2s, visibility 0.2s;
 
   position: absolute;
-  right: 0;
-  bottom: 39px;
+  right: 5px;
+  bottom: 38px;
   margin: 0;
   padding: 5px;
 
   background-color: rgba(17, 17, 17, 0.9);
-  border-radius: 2px;
+  border-radius: 3px;
+}
+
+.subMenu::after {
+  content: "";
+  display: block;
+  border: solid 5px transparent;
+  border-top-color: rgba(17, 17, 17, 0.9);
+  position: absolute;
+  right: 11px;
+  top: 100%;
 }
 
 .subMenuExpanded .subMenu {

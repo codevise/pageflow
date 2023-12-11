@@ -142,15 +142,7 @@ export const FileInputView = Marionette.ItemView.extend({
 
     if (file) {
       _.each(this.options.dropDownMenuItems, item => {
-        items.add(new FileInputView.CustomMenuItem({
-          name: item.name,
-          label: item.label
-        }, {
-          inputModel: this.model,
-          propertyName: this.options.propertyName,
-          file,
-          selected: item.selected
-        }));
+        items.add(this._createCustomMenuItem(file, item));
       });
 
       items.add(new FileInputView.EditFileSettingsMenuItem({
@@ -162,6 +154,30 @@ export const FileInputView = Marionette.ItemView.extend({
     }
 
     return items;
+  },
+
+  _createCustomMenuItem(file, item) {
+    const options = {
+      inputModel: this.model,
+      propertyName: this.options.propertyName,
+      file
+    };
+
+    if (typeof item === 'function') {
+      return new item({}, options);
+    }
+    else {
+      return new FileInputView.CustomMenuItem({
+        name: item.name,
+        label: item.label,
+        checked: item.checked,
+        items: item.items && new Backbone.Collection(item.items.map(item => this._createCustomMenuItem(file, item)))
+      }, {
+        ...options,
+        selected: item.selected,
+        items: item.items
+      })
+    }
   },
 
   _listenToNestedTextTrackFiles: function(file) {
@@ -250,6 +266,7 @@ FileInputView.DefaultTextTrackFileMenuItem = Backbone.Model.extend({
   },
 
   update: function() {
+    this.set('kind', 'radio');
     this.set('checked', this.options.textTrackFile == this.getDefaultTextTrackFile());
     this.set('name', this.options.textTrackFile ? null : 'no_default_text_track');
     this.set('label', this.options.textTrackFile ?

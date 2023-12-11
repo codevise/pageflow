@@ -99,23 +99,8 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toEqual('author A, author B');
-  });
-
-  it('returns comma separated list of file rights', () => {
-    const {result} = renderHookInEntry(
-      () => useFileRights(), {
-        seed: {
-          imageFiles: [
-            {rights: 'author1'},
-            {rights: 'author2'}
-          ]
-        }
-      }
-    );
-
-    const fileRights = result.current;
-    expect(fileRights).toEqual('author1, author2');
+    expect(fileRights).toMatchObject([{text: 'author A'},
+                                      {text: 'author B'}]);
   });
 
   it('falls back to default file rights', () => {
@@ -131,7 +116,7 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toEqual('default');
+    expect(fileRights).toMatchObject([{text: 'default'}]);
   });
 
   it('deduplicates file rights', () => {
@@ -153,10 +138,12 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toEqual('author1, author2, author3');
+    expect(fileRights).toMatchObject([{text: 'author1'},
+                                      {text: 'author2'},
+                                      {text: 'author3'}]);
   });
 
-  it('does not insert extra comma if a file has no rights and defaults are not configured', () => {
+  it('skips files with empty rights if default file rights are not configured', () => {
     const {result} = renderHookInEntry(
       () => useFileRights(), {
         seed: {
@@ -170,10 +157,10 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toEqual('author2');
+    expect(fileRights).toMatchObject([{text: 'author2'}]);
   });
 
-  it('returns empty string if no rights are defined', () => {
+  it('returns empty array if no rights are defined', () => {
     const {result} = renderHookInEntry(
       () => useFileRights(), {
         seed: {
@@ -186,10 +173,10 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toEqual('');
+    expect(fileRights).toEqual([]);
   });
 
-  it('returns empty string if no files are present', () => {
+  it('returns empty array if no files are present', () => {
     const {result} = renderHookInEntry(
       () => useFileRights(), {
         seed: {
@@ -199,7 +186,94 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toEqual('');
+    expect(fileRights).toEqual([]);
+  });
+
+  it('filters file configured for inline display', () => {
+    const {result} = renderHookInEntry(
+      () => useFileRights(), {
+        seed: {
+          imageFiles: [
+            {rights: 'author1', configuration: {rights_display: 'inline'}},
+            {rights: 'author2'}
+          ]
+        }
+      }
+    );
+
+    const fileRights = result.current;
+    expect(fileRights).toMatchObject([{text: 'author2'}]);
+  });
+
+  it('includes source urls', () => {
+    const {result} = renderHookInEntry(
+      () => useFileRights(), {
+        seed: {
+          imageFiles: [
+            {rights: 'author1', configuration: {source_url: 'https://example.com/1'}},
+            {rights: 'author2', configuration: {source_url: 'https://example.com/2'}}
+          ]
+        }
+      }
+    );
+
+    const fileRights = result.current;
+    expect(fileRights).toMatchObject([{text: 'author1', urls: ['https://example.com/1']},
+                                      {text: 'author2', urls: ['https://example.com/2']}]);
+  });
+
+  it('ignores blank source_urls', () => {
+    const {result} = renderHookInEntry(
+      () => useFileRights(), {
+        seed: {
+          imageFiles: [
+            {rights: 'author1', configuration: {source_url: ''}},
+            {rights: 'author2', configuration: {source_url: ' '}},
+            {rights: 'author3'}
+          ]
+        }
+      }
+    );
+
+    const fileRights = result.current;
+    expect(fileRights).toMatchObject([{text: 'author1', urls: []},
+                                      {text: 'author2', urls: []},
+                                      {text: 'author3', urls: []}]);
+  });
+
+  it('combines files with same rights but different sourceurls', () => {
+    const {result} = renderHookInEntry(
+      () => useFileRights(), {
+        seed: {
+          imageFiles: [
+            {rights: 'author', configuration: {source_url: 'https://example.com/1'}},
+            {rights: 'author', configuration: {source_url: 'https://example.com/2'}}
+          ]
+        }
+      }
+    );
+
+    const fileRights = result.current;
+    expect(fileRights).toMatchObject([{text: 'author',
+                                       urls: ['https://example.com/1',
+                                              'https://example.com/2']}]);
+  });
+
+  it('deduplicates source urls', () => {
+    const {result} = renderHookInEntry(
+      () => useFileRights(), {
+        seed: {
+          imageFiles: [
+            {rights: 'author', configuration: {source_url: 'https://example.com/author'}},
+            {rights: 'author', configuration: {source_url: 'https://example.com/author'}}
+          ]
+        }
+      }
+    );
+
+    const fileRights = result.current;
+    expect(fileRights).toMatchObject([{text: 'author',
+                                       urls: ['https://example.com/author']}]);
   });
 
   it('reads data from watched collection', () => {
@@ -237,6 +311,7 @@ describe('useFileRights', () => {
     );
 
     const fileRights = result.current;
-    expect(fileRights).toEqual('author 1, author 2');
+    expect(fileRights).toMatchObject([{text: 'author 1'},
+                                      {text: 'author 2'}]);
   });
 });

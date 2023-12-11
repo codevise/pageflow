@@ -1,4 +1,4 @@
-import {editor} from 'pageflow-scrolled/editor';
+import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import {contentElementWidths} from 'pageflow-scrolled/frontend';
 import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 
@@ -15,7 +15,8 @@ editor.contentElementTypes.register('inlineImage', {
       this.input('id', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
-        positioning: false
+        positioning: false,
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
       this.input('portraitId', FileInputView, {
         collection: 'image_files',

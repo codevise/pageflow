@@ -26,6 +26,7 @@ export const EditorApi = Object.extend(
   initialize: function(options) {
     this.router = options && options.router;
 
+    this.entryType = {};
     this.sideBarRoutings = [];
     this.mainMenuItems = [];
     this.initializers = [];
@@ -96,6 +97,9 @@ export const EditorApi = Object.extend(
    *  Checks to see if the browser is supported.
    * @param {function} options.browserNotSupportedView
    *  Backbone view that will be rendered if the browser is not supported.
+   * @param {boolean} [options.supportsExtendedFileRights]
+   *  Offer additional inputs for files to specify source url, license and default
+   *  display location.
    */
   registerEntryType(name, options) {
     this.entryType = {name, ...options};

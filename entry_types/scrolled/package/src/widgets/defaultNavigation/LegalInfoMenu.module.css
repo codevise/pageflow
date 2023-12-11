@@ -1,5 +1,6 @@
 .legalInfoTooltip {
   text-align: left;
+  line-height: 1.4;
 }
 
 .scroller {
@@ -43,8 +44,8 @@
   left: 90% !important;
 }
 
-.legalInfoTooltip p {
-  margin: 0 0 0.5em;
+.legalInfoTooltip .section {
+  margin: 0 0 1.4em;
 }
 
 .legalInfoTooltip a {
@@ -54,4 +55,15 @@
 .legalInfoLink {
   display: block;
   margin-top: 5px;
+}
+
+.rights,
+.rights li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rights li {
+  display: inline;
 }

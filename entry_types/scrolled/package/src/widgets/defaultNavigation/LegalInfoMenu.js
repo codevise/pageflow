@@ -24,11 +24,14 @@ export function LegalInfoMenu(props) {
     <div className={styles.legalInfoTooltip}>
       <div className={styles.scroller}>
         {credits &&
-         <p dangerouslySetInnerHTML={{__html: credits}}></p>
+         <p className={styles.section}
+            dangerouslySetInnerHTML={{__html: credits}}></p>
         }
 
-        {fileRights &&
-         <p>{t('pageflow_scrolled.public.image_rights')}: {fileRights}</p>
+        {fileRights.length &&
+         <div className={styles.section}>
+           <strong>{t('pageflow_scrolled.public.media')}</strong> {renderFileRights(fileRights)}
+         </div>
         }
       </div>
 
@@ -53,4 +56,40 @@ export function LegalInfoMenu(props) {
       </button>
     </Tooltip>
   )
+}
+
+function renderFileRights(items) {
+  return (
+    <ul className={styles.rights}>
+      {items.map((item, index) =>
+        <li key={index}>
+          {index > 0 && <>&nbsp;| </>}{renderFileRightsText(item)}
+        </li>
+      )}
+    </ul>
+  );
+}
+
+function renderFileRightsText(item) {
+  if (item.urls.length > 1) {
+    return (
+      <>{item.text} ({item.urls.flatMap(
+          (url, index) => [
+            index > 0 && ', ',
+            <a href={url} target="_blank" rel="noopener noreferrer" key={index}>{index + 1}</a>
+          ]
+        )})
+      </>
+    );
+  }
+  else if (item.urls.length === 1) {
+    return (
+      <a href={item.urls[0]} target="_blank" rel="noopener noreferrer">
+        {item.text}
+      </a>
+    );
+  }
+  else {
+    return item.text
+  }
 }

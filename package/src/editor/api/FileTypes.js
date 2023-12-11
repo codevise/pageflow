@@ -16,6 +16,9 @@ export const FileTypes = Object.extend({
   initialize: function() {
     this.clientSideConfigs = [];
     this.clientSideConfigModifications = {};
+
+    this.commonSettingsDialogTabs = [];
+    this.commonMetaDataAttributes = [];
   },
 
   register: function(name, config) {
@@ -48,11 +51,8 @@ export const FileTypes = Object.extend({
             serverSideConfig.collectionName + '"';
         }
 
-        _(this.clientSideConfigModifications[serverSideConfig.collectionName])
-          .each(function(modification) {
-            this.lintModification(modification, serverSideConfig.collectionName);
-            this.applyModification(clientSideConfig, modification);
-          }, this);
+        this.applyCommonConfig(clientSideConfig);
+        this.applyModifications(serverSideConfig, clientSideConfig);
 
         return _.extend({}, serverSideConfig, clientSideConfig);;
       }).sortBy(config => config.priority || 10).value()
@@ -68,6 +68,24 @@ export const FileTypes = Object.extend({
         })
       ));
     });
+  },
+
+  applyCommonConfig(clientSideConfig) {
+    clientSideConfig.settingsDialogTabs = this.commonSettingsDialogTabs.concat(
+      clientSideConfig.settingsDialogTabs || []
+    );
+
+    clientSideConfig.metaDataAttributes = this.commonMetaDataAttributes.concat(
+      clientSideConfig.metaDataAttributes || []
+    );
+  },
+
+  applyModifications(serverSideConfig, clientSideConfig) {
+    _(this.clientSideConfigModifications[serverSideConfig.collectionName])
+      .each(function(modification) {
+        this.lintModification(modification, serverSideConfig.collectionName);
+        this.applyModification(clientSideConfig, modification);
+      }, this);
   },
 
   lintModification: function(modification, collectionName) {

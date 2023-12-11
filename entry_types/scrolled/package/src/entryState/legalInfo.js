@@ -5,16 +5,15 @@ import {
 } from "./EntryStateProvider";
 
 /**
- * Returns a string (comma-separated list) of copyrights of
- * all files used in the entry.
- * If none of the files has a rights attribute configured,
- * it falls back to the default file rights of the entry's account,
- * otherwise returns an empty string
+ * Returns a collection of rights and source urls of all files
+ * used in the entry. If none of the files has a rights attribute
+ * configured, it falls back to the default file rights of the
+ * entry's site, otherwise returns an empty array.
  *
  * @example
  *
  * const fileRights = useFileRights();
- * fileRights // => "author of image 1, author of video 2"
+ * fileRights // => [{text: 'author of image 1', urls: ['https://example.com/source-url']}]
  */
 export function useFileRights() {
   const config = useEntryStateConfig();
@@ -23,11 +22,27 @@ export function useFileRights() {
 
   const defaultFileRights = config.defaultFileRights?.trim();
 
-  return Array.from(new Set(Object.keys(files).flatMap(key =>
-    files[key].map(file =>
-      file.rights?.trim() || defaultFileRights
-    )
-  ))).sort().filter(Boolean).join(', ');
+  const items = {};
+
+  Object.keys(files).forEach(key =>
+    files[key]
+      .filter(file => file.configuration.rights_display !== 'inline')
+      .forEach(file => {
+        const text = file.rights?.trim() || defaultFileRights;
+
+        if (text) {
+          items[text] = items[text] || {text, urls: new Set()}
+
+          if (file.configuration.source_url?.trim()) {
+            items[text].urls.add(file.configuration.source_url);
+          }
+        }
+      })
+  );
+
+  return Object.values(items)
+               .map(item => ({...item, urls: Array.from(item.urls).sort()}))
+               .sort((a, b) => a.text.localeCompare(b.text));
 }
 
 /**

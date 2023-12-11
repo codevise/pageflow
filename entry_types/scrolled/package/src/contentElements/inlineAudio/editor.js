@@ -1,4 +1,4 @@
-import {editor} from 'pageflow-scrolled/editor';
+import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView, SeparatorView, ColorInputView} from 'pageflow/ui';
 
@@ -18,13 +18,15 @@ editor.contentElementTypes.register('inlineAudio', {
         collection: 'audio_files',
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false,
-        defaultTextTrackFilePropertyName: 'defaultTextTrackFileId'
+        defaultTextTrackFilePropertyName: 'defaultTextTrackFileId',
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
 
       this.input('posterId', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
-        positioning: false
+        positioning: false,
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
 
       this.view(SeparatorView);

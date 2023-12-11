@@ -1,0 +1,20 @@
+de:
+  pageflow:
+    iconInlineFileRights:
+      widget_type_name: Copyright-Icons
+    textInlineFileRights:
+      widget_type_name: Text am Element
+    widgets:
+      roles:
+        inlineFileRights: Inline-Datei-Rechte
+  pageflow_scrolled:
+    public:
+      inline_file_rights_labels:
+        video: Video
+        poster: Poster
+        atmo: Atmo
+        image: Bild
+        audio: Audio
+        after: Nachher-Bild
+        before: Vorher-Bild
+      media: Medien

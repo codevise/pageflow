@@ -59,7 +59,7 @@ module Pageflow
                           :content_type,
                           :file_size,
                           :url,
-                          configuration: :alt])
+                          configuration: [:alt, :source_url]])
           .require(:files)
       end
 

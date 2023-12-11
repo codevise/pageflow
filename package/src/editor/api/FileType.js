@@ -2,7 +2,6 @@ import _ from 'underscore';
 
 import {Object} from 'pageflow/ui';
 
-import {EditFileView} from '../views/EditFileView';
 import {TextFileMetaDataItemValueView} from '../views/TextFileMetaDataItemValueView';
 
 export const FileType = Object.extend({
@@ -14,6 +13,7 @@ export const FileType = Object.extend({
     this.paramKey = options.paramKey;
     this.i18nKey = options.i18nKey;
     this.nestedFileTypes = [];
+    this.settingsDialogTabs = options.settingsDialogTabs || [];
     this.confirmUploadTableColumns = options.confirmUploadTableColumns || [];
     this.configurationEditorInputs = [].concat(options.configurationEditorInputs || []);
     this.configurationUpdaters = options.configurationUpdaters || [];
@@ -21,23 +21,8 @@ export const FileType = Object.extend({
     this.nestedFilesOrder = options.nestedFilesOrder;
     this.skipUploadConfirmation = options.skipUploadConfirmation || false;
     this.filters = options.filters || [];
-
-    this.metaDataAttributes = [
-      {
-        name: 'rights',
-        valueView: TextFileMetaDataItemValueView,
-        valueViewOptions: {
-          settingsDialogTabLink: 'general'
-        }
-      },
-    ].concat(options.metaDataAttributes || []);
-
-    this.settingsDialogTabs = [
-      {
-        name: 'general',
-        view: EditFileView
-      }
-    ].concat(options.settingsDialogTabs || []);
+    this.noExtendedFileRights = options.noExtendedFileRights;
+    this.metaDataAttributes = options.metaDataAttributes || [];
 
     if (typeof options.matchUpload === 'function') {
       this.matchUpload = options.matchUpload;

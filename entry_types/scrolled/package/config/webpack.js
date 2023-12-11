@@ -20,6 +20,18 @@ module.exports = {
         'pageflow-scrolled/widgets/consentBar',
         'pageflow-scrolled/widgets/consentBar.css'
       ]
+    },
+    'pageflow-scrolled/widgets/iconInlineFileRights': {
+      import: [
+        'pageflow-scrolled/widgets/iconInlineFileRights',
+        'pageflow-scrolled/widgets/iconInlineFileRights.css'
+      ]
+    },
+    'pageflow-scrolled/widgets/textInlineFileRights': {
+      import: [
+        'pageflow-scrolled/widgets/textInlineFileRights',
+        'pageflow-scrolled/widgets/textInlineFileRights.css'
+      ]
     }
   }
 };

@@ -23,8 +23,15 @@
   height: 40px;
   z-index: 2;
   display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.menuBarInner {
+  display: flex;
   align-items: center;
   justify-content: flex-end;
+  height: 100%;
 }
 
 .timeDisplay {

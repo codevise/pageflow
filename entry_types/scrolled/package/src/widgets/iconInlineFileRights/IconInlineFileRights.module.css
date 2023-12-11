@@ -1,0 +1,114 @@
+.standAlone {
+  color: #fff;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.standAlone > * {
+  pointer-events: auto;
+}
+
+.button {
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  width: 44px;
+  height: 40px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  cursor: pointer;
+  position: relative;
+}
+
+.button,
+.tooltip {
+  transition: opacity .2s, visibility .2s;
+}
+
+.transparent .button {
+  opacity: 0.6;
+}
+
+.wrapper:hover .button,
+.wrapper:active .button,
+.wrapper:focus .button {
+  opacity: 1;
+}
+
+.button svg {
+  width: 23px;
+  height: 23px;
+}
+
+.standAlone .button svg {
+  filter: drop-shadow(0 1px 4px #000);
+}
+
+.tooltip {
+  font-size: 13.5555px;
+  font-family: sans-serif;
+  line-height: 1.4;
+  position: absolute;
+  bottom: 38px;
+  right: 5px;
+  background-color: rgba(17, 17, 17, 0.9);
+  border-radius: 3px;
+  color: #fff;
+  padding: 8px;
+  visibility: hidden;
+  opacity: 0;
+  text-align: right;
+  margin-left: 10px;
+  box-sizing: border-box;
+  max-width: 95%;
+  z-index: 1;
+}
+
+.tooltip::after {
+  content: "";
+  display: block;
+  border: solid 5px transparent;
+  border-top-color: rgba(17, 17, 17, 0.9);
+  position: absolute;
+  right: 11px;
+  top: 100%;
+}
+
+.tooltip a {
+  color: #fff;
+  text-decoration-color: rgba(255, 255, 255, 0.3);
+}
+
+.tooltip span {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.wrapper:hover .tooltip,
+.wrapper:focus-within .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.scroller {
+  overflow: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.scroller::-webkit-scrollbar {
+  height: 12px;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  border: 3px solid rgba(17, 17, 17, 0.9);
+}

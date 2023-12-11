@@ -5,18 +5,23 @@ import {
   contentElementWidths,
   useContentElementEditorState,
   useContentElementLifecycle,
-  useFile,
+  useFileWithInlineRights,
   ContentElementBox,
   ContentElementFigure,
   Panorama,
   FitViewport,
+  InlineFileRights
 } from 'pageflow-scrolled/frontend';
 
 export function VrImage({configuration, contentElementWidth}) {
   const {shouldLoad} = useContentElementLifecycle();
   const {isEditable, isSelected} = useContentElementEditorState();
 
-  const imageFile = useFile({collectionName: 'imageFiles', permaId: configuration.image});
+  const imageFile = useFileWithInlineRights({
+    configuration,
+    collectionName: 'imageFiles',
+    propertyName: 'image'
+  });
 
   return (
     <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
@@ -26,9 +31,11 @@ export function VrImage({configuration, contentElementWidth}) {
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
               {renderLazyPanorama(configuration, imageFile, shouldLoad)}
+              <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
             </FitViewport.Content>
           </ContentElementFigure>
         </ContentElementBox>
+        <InlineFileRights context="afterElement" items={[{file: imageFile, label: 'image'}]} />
       </FitViewport>
     </div>
   );

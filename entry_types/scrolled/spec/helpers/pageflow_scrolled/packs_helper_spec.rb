@@ -199,6 +199,19 @@ module PageflowScrolled
 
         expect(result).not_to include('pageflow-scrolled/contentElements/extra-editor')
       end
+
+      it 'includes all react widget type packs in editor' do
+        pageflow_configure do |config|
+          config.widget_types.register(ReactWidgetType.new(name: 'customNavigation',
+                                                           role: 'navigation'))
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_editor_packs(entry)
+
+        expect(result).to include('pageflow-scrolled/widgets/customNavigation')
+      end
     end
   end
 end
