@@ -35,5 +35,6 @@ storiesOfContentElement(module, {
         caption: 'Some text here'
       }
     },
-  ]
+  ],
+  inlineFileRights: true
 });

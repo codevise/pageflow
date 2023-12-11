@@ -11,5 +11,6 @@ storiesOfContentElement(module, {
       name: 'With Caption',
       configuration: {caption: 'Some text here'}
     }
-  ]
+  ],
+  inlineFileRights: true
 });

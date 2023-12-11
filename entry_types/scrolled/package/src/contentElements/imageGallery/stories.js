@@ -54,5 +54,6 @@ storiesOfContentElement(module, {
         image: filePermaId('imageFiles', 'churchAfter')
       }
     ]
-  }
+  },
+  inlineFileRights: true
 });

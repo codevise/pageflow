@@ -8,6 +8,9 @@ import {
 } from 'pageflow-scrolled/frontend';
 import {browser, Consent} from 'pageflow/frontend';
 
+import '../../src/widgets/iconInlineFileRights';
+import '../../src/widgets/textInlineFileRights';
+
 import {normalizeSeed} from 'pageflow-scrolled/testHelpers';
 import {storiesOf} from '@storybook/react';
 
@@ -164,7 +167,8 @@ export function exampleStories(options) {
     ...variantsExampleStories(options),
     ...layoutExampleStories(options),
     ...mobileExampleStories(options),
-    ...consentOptInStories(options)
+    ...consentOptInStories(options),
+    ...inlineFileRightsStories(options)
   ];
 }
 
@@ -263,7 +267,35 @@ function consentOptInStories({typeName, consent, baseConfiguration}) {
   });
 }
 
-function exampleStoryGroup({name, typeName, examples, parameters, consentVendors}) {
+function inlineFileRightsStories({typeName, inlineFileRights, baseConfiguration}) {
+  if (!inlineFileRights) {
+    return [];
+  }
+
+  return exampleStoryGroup({
+    typeName,
+    name: 'Inline File Rights',
+    inlineFileRightsFor: ['audioFiles', 'imageFiles', 'videoFiles'],
+    examples: [
+      ['Icon', 'iconInlineFileRights'], ['Text', 'textInlineFileRights']
+    ].map(([name, typeName]) => (
+      {
+        name,
+        widgets: [{
+          role: 'inlineFileRights',
+          typeName
+        }],
+        contentElementConfiguration: {
+          ...baseConfiguration
+        }
+      }
+    ))
+  });
+}
+
+function exampleStoryGroup({
+  name, typeName, examples, parameters, consentVendors, inlineFileRightsFor, widgets
+}) {
   const defaultSectionConfiguration = {transition: 'scroll', backdrop: {image: '#000'}, fullHeight: false};
 
   const sections = examples.map((example, index) => ({
@@ -287,8 +319,10 @@ function exampleStoryGroup({name, typeName, examples, parameters, consentVendors
     seed: normalizeAndMergeFixture({
       sections: [section],
       contentElements: contentElements,
+      widgets: examples[index].widgets,
       themeOptions: examples[index].themeOptions,
       consentVendors,
+      inlineFileRightsFor,
       contentElementConsentVendors: consentVendors &&
                                     contentElements
                                       .filter(({id}) => id)
@@ -322,7 +356,7 @@ function dasherize(text) {
   );
 }
 
-export function normalizeAndMergeFixture(options = {}) {
+export function normalizeAndMergeFixture({inlineFileRightsFor = [], ...options} = {}) {
   const seed = normalizeSeed(options);
 
   return {
@@ -339,12 +373,28 @@ export function normalizeAndMergeFixture(options = {}) {
     ),
     collections: {
       ...seedFixture.collections,
+      ...inlineFileRightsFor.reduce((memo, collectionName) => ({
+        ...memo,
+        [collectionName]: applyInlineFileRights(seedFixture.collections[collectionName])
+      }), {}),
       chapters: seed.collections.chapters,
       sections: seed.collections.sections,
       contentElements: seed.collections.contentElements,
       widgets: seed.collections.widgets
     }
   };
+}
+
+function applyInlineFileRights(files) {
+  return files.map(file => ({
+    ...file,
+    rights: 'Jane Doe',
+    configuration: {
+      ...file.configuration,
+      rights_display: 'inline',
+      source_url: 'https://example.com/jane-doe/image'
+    }
+  }));
 }
 
 export function exampleHeading({sectionId, text, position, width}) {

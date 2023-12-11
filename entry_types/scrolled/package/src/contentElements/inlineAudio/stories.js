@@ -63,5 +63,6 @@ storiesOfContentElement(module, {
         caption: 'Some caption'
       }
     }
-  ]
+  ],
+  inlineFileRights: true
 });

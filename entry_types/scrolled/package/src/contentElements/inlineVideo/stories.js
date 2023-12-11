@@ -15,5 +15,6 @@ storiesOfContentElement(module, {
         posterId: filePermaId('imageFiles', 'turtle')
       }
     }
-  ]
+  ],
+  inlineFileRights: true
 });
