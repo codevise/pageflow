@@ -7,5 +7,19 @@ module.exports = {
       // supported by the browser.
       'video.js$': 'video.js/core.es.js'
     },
+  },
+  entry: {
+    'pageflow-scrolled/widgets/defaultNavigation': {
+      import: [
+        'pageflow-scrolled/widgets/defaultNavigation',
+        'pageflow-scrolled/widgets/defaultNavigation.css'
+      ]
+    },
+    'pageflow-scrolled/widgets/consentBar': {
+      import: [
+        'pageflow-scrolled/widgets/consentBar',
+        'pageflow-scrolled/widgets/consentBar.css'
+      ]
+    }
   }
 };
