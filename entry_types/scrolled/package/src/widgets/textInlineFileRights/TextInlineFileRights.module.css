@@ -10,6 +10,12 @@
   padding-top: 0.2em;
 }
 
+.forSection {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
 .forSection li {
   padding: 0 0.4em 0.2em 0;
 }
