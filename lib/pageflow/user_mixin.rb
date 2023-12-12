@@ -71,7 +71,7 @@ module Pageflow
     end
 
     module ClassMethods
-      def ransackable_attributes(_auth_object)
+      def ransackable_attributes(_auth_object = nil)
         %w[first_name last_name email]
       end
     end

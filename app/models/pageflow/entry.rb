@@ -132,15 +132,15 @@ module Pageflow
       title.to_s.parameterize
     end
 
-    def self.ransackable_attributes(_auth_object)
+    def self.ransackable_attributes(_auth_object = nil)
       %w[title type_name created_at edited_at first_published_at]
     end
 
-    def self.ransackable_associations(_auth_object)
+    def self.ransackable_associations(_auth_object = nil)
       %w[account published_revision]
     end
 
-    def self.ransackable_scopes(_)
+    def self.ransackable_scopes(_auth_object = nil)
       [:with_publication_state, :published]
     end
 
