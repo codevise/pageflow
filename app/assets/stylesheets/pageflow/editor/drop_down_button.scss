@@ -96,6 +96,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: space(2);
 
       &:after {
         content: "";

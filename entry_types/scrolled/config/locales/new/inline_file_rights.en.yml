@@ -8,6 +8,9 @@ en:
       roles:
         inlineFileRights: Inline file rights
   pageflow_scrolled:
+    editor:
+      inline_file_rights_menu_item:
+        label: Hide rights information here
     public:
       inline_file_rights_labels:
         video: Video

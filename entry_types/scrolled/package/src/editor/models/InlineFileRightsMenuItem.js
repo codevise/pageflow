@@ -1,13 +1,15 @@
 import Backbone from 'backbone';
+import I18n from 'i18n-js';
 
 export const InlineFileRightsMenuItem = Backbone.Model.extend({
   defaults: {
     name: 'hideInlineFileRights',
-    label: 'Rechteangabe an dieser Stelle ausblenden',
     kind: 'checkBox'
   },
 
   initialize(attributes, {inputModel, propertyName, file}) {
+    this.set('label', I18n.t('pageflow_scrolled.editor.inline_file_rights_menu_item.label'));
+
     const flagPropertyName = propertyName === 'id' ?
                              'inlineRightsHidden' :
                              `${propertyName.replace('Id', '')}InlineRightsHidden`;
