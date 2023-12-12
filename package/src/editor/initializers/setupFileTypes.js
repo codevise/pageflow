@@ -25,25 +25,32 @@ app.addInitializer(function(options) {
       valueViewOptions: {
         settingsDialogTabLink: 'general'
       }
-    },
-    {
-      name: 'source_url',
-      valueView: TextFileMetaDataItemValueView,
-      valueViewOptions: {
-        fromConfiguration: true,
-        settingsDialogTabLink: 'general'
-      }
-    },
-    {
-      name: 'license',
-      valueView: TextFileMetaDataItemValueView,
-      valueViewOptions: {
-        fromConfiguration: true,
-        formatValue: value => I18n.t(`pageflow.file_licenses.${value}.name`),
-        settingsDialogTabLink: 'general'
-      }
     }
   ];
+
+  if (editor.entryType.supportsExtendedFileRights) {
+    editor.fileTypes.commonMetaDataAttributes = [
+      ...editor.fileTypes.commonMetaDataAttributes,
+      {
+        name: 'source_url',
+        valueView: TextFileMetaDataItemValueView,
+        valueViewOptions: {
+          fromConfiguration: true,
+          settingsDialogTabLink: 'general'
+        }
+      },
+      {
+        name: 'license',
+        valueView: TextFileMetaDataItemValueView,
+        valueViewOptions: {
+          fromConfiguration: true,
+          formatValue: value => I18n.t(`pageflow.file_licenses.${value}.name`),
+          settingsDialogTabLink: 'general'
+        }
+      }
+    ];
+  }
+
   editor.fileTypes.commonSettingsDialogTabs = [
     {
       name: 'general',
