@@ -7,7 +7,7 @@ Capybara.register_driver :selenium_chrome_headless_no_sandbox do |app|
     logging_prefs: {browser: 'ALL'}
   )
 
-  options.add_argument('--headless')
+  options.add_argument('--headless=new')
   options.add_argument('--no-sandbox')
   options.add_argument('--disable-gpu') if Gem.win_platform?
 
