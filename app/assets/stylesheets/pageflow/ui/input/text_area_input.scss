@@ -174,4 +174,16 @@
     border-bottom: solid 9px var(--ui-surface-color);
     border-left: solid 9px transparent;
   }
+
+  // Hide inline help text that only makes sense when editing a
+  // Pageflow entry outside the editor
+  .open_in_new_tab_section .inline_help {
+    display: none;
+  }
+}
+
+.editor .text_area_input {
+  .open_in_new_tab_section .inline_help {
+    display: block;
+  }
 }
