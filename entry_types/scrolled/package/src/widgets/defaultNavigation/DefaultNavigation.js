@@ -9,6 +9,7 @@ import {
   useOnUnmuteMedia,
   usePhonePlatform,
   useShareProviders,
+  useTheme,
   utils
 } from 'pageflow-scrolled/frontend';
 
@@ -31,6 +32,7 @@ export function DefaultNavigation({configuration}) {
   const currentChapter = useCurrentChapter();
   const isPhonePlatform = usePhonePlatform();
   const shareProviders = useShareProviders({isPhonePlatform});
+  const theme = useTheme();
 
   useScrollPosition(
     ({prevPos, currPos}) => {
@@ -134,7 +136,7 @@ export function DefaultNavigation({configuration}) {
 
         <div className={classNames(styles.contextIcons)}>
           {!configuration.hideToggleMuteButton && <ToggleMuteButton />}
-          <LegalInfoMenu tooltipOffset={hideSharingButton ? -40 : 0} />
+          {!theme.options.hideLegalInfoButton &&<LegalInfoMenu tooltipOffset={hideSharingButton ? -40 : 0} />}
           {!hideSharingButton && <SharingMenu shareProviders={shareProviders} />}
         </div>
       </div>
