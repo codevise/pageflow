@@ -36,6 +36,7 @@ export const TextAreaInputView = Marionette.ItemView.extend({
   mixins: [inputView, inputWithPlaceholderText],
 
   template,
+  className: 'text_area_input',
 
   ui: {
     input: 'textarea',
