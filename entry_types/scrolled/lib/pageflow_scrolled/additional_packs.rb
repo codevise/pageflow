@@ -27,7 +27,8 @@ module PageflowScrolled
     # @api private
     def paths_for_content_element_types(type_names)
       @packs.reject { |pack|
-        (pack.content_element_type_names & type_names).empty?
+        pack.content_element_type_names.present? &&
+          (pack.content_element_type_names & type_names).empty?
       }.map(&:path)
     end
 

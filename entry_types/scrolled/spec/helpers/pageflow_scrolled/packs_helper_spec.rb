@@ -18,6 +18,40 @@ module PageflowScrolled
         pageflow_configure do |config|
           config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
             entry_type_config.additional_frontend_packs.register(
+              'pageflow-scrolled/contentElements/extra'
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_frontend_packs(entry,
+                                                widget_scope: :editor)
+
+        expect(result).to include('pageflow-scrolled/contentElements/extra')
+      end
+
+      it 'includes additional frontend packs of used content elements outside of editor' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_packs.register(
+              'pageflow-scrolled/contentElements/extra'
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_frontend_packs(entry,
+                                                widget_scope: :published)
+
+        expect(result).to include('pageflow-scrolled/contentElements/extra')
+      end
+
+      it 'includes additional frontend packs of unused content elements in editor' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_packs.register(
               'pageflow-scrolled/contentElements/extra',
               content_element_type_names: ['extra']
             )
