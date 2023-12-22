@@ -4,8 +4,7 @@ import classNames from 'classnames';
 import {Listbox} from '@headlessui/react'
 import Marionette from 'backbone.marionette';
 import I18n from 'i18n-js';
-import {inputView, cssModulesUtils} from 'pageflow/ui';
-
+import {inputView, cssModulesUtils, i18nUtils} from 'pageflow/ui';
 import styles from './ListboxInputView.module.css';
 
 export const ListboxInputView = Marionette.ItemView.extend({
@@ -30,6 +29,15 @@ export const ListboxInputView = Marionette.ItemView.extend({
 
   initialize() {
     if (!this.options.texts) {
+      if (!this.options.translationKeys) {
+        var translationKeyPrefix =
+          i18nUtils.findKeyWithTranslation(this.attributeTranslationKeys('values'));
+
+        this.options.translationKeys = this.options.values.map(value =>
+          translationKeyPrefix + '.' + value
+        );
+      }
+
       this.options.texts = this.options.translationKeys.map(key =>
         I18n.t(key)
       );
