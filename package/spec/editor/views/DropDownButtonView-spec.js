@@ -153,6 +153,21 @@ describe('DropDownButtonView', () => {
     }
   );
 
+  it('supports displaying separator above item', () => {
+    var dropDownButtonView = new DropDownButtonView({
+      items: new Backbone.Collection([
+        {label: 'Item 1'},
+        {label: 'Item 2', separated: true}
+      ])
+    });
+
+    dropDownButtonView.render();
+    var items = dropDownButtonView.$el.find('ul li');
+
+    expect(items.eq(0)).not.toHaveClass('separated');
+    expect(items.eq(1)).toHaveClass('separated');
+  });
+
   function mapToText(el) {
     return el.map(function() {
       return $(this).text().trim();

@@ -90,6 +90,12 @@
     }
   }
 
+  &.separated {
+    border-top: solid 1px var(--ui-on-surface-color-lighter);
+    margin-top: 1px;
+    padding-top: 1px;
+  }
+
   &.has_radio,
   &.has_check_box {
     a {
