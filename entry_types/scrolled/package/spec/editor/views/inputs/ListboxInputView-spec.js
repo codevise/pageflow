@@ -105,6 +105,21 @@ describe('ListboxInputView', () => {
     expect(model.get('variant')).toEqual('large');
   });
 
+  it('does not include blank option by defauilt', () => {
+    const model = new Backbone.Model();
+    const inputView = new ListboxInputView({
+      model: model,
+      propertyName: 'variant',
+      values: ['default', 'large'],
+      texts: ['Default', 'Large'],
+      blankTranslationKey: 'some.key.blank'
+    });
+
+    const {queryByRole} = render(inputView);
+
+    expect(queryByRole('button', {name: 'Blank'})).toBeNull();
+  });
+
   it('includes blank option', () => {
     const model = new Backbone.Model();
     const inputView = new ListboxInputView({
@@ -112,6 +127,7 @@ describe('ListboxInputView', () => {
       propertyName: 'variant',
       values: ['default', 'large'],
       texts: ['Default', 'Large'],
+      includeBlank: true,
       blankTranslationKey: 'some.key.blank'
     });
 

@@ -44,15 +44,18 @@ export const ListboxInputView = Marionette.ItemView.extend({
     }
 
     this.items = [
-      {
-        name: '',
-        text: I18n.t(this.options.blankTranslationKey)
-      },
       ...this.options.values.map((value, i) => ({
         value,
         text: this.options.texts[i]
       }))
     ];
+
+    if (this.options.includeBlank) {
+      this.items.unshift({
+        name: '',
+        text: I18n.t(this.options.blankTranslationKey)
+      });
+    }
   },
 
   renderSelectedItem(item) {

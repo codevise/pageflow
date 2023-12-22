@@ -54,6 +54,7 @@ ConfigurationEditorTabView.groups.define(
         prefix,
         getPreviewConfiguration,
 
+        includeBlank: true,
         blankTranslationKey: 'pageflow_scrolled.editor.' +
                              'common_content_element_attributes.' +
                              'typographyVariant.blank',
@@ -100,6 +101,7 @@ ConfigurationEditorTabView.groups.define(
     if (values.length) {
       this.input(propertyName, ColorSelectInputView, {
         model: model || this.model,
+        includeBlank: true,
         blankTranslationKey: 'pageflow_scrolled.editor.' +
                              'common_content_element_attributes.' +
                              'palette_color.blank',
