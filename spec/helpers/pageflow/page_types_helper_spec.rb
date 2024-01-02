@@ -88,13 +88,36 @@ module Pageflow
         page_type = TestPageType.new(name: 'test',
                                      template_path: 'pageflow/test/page')
         Pageflow.config.page_types.register(page_type)
-        entry = build(:entry)
+        entry = build(:published_entry)
 
         stub_template('pageflow/test/page.html.erb' => 'template')
 
         result = helper.page_type_templates(entry)
 
         expect(result).to have_selector('script[data-template=test_page]', :text => 'template', :visible => false)
+      end
+
+      it 'supports template that uses RevisionFileHelper#find_file_in_entry' do
+        page_type = TestPageType.new(name: 'test',
+                                     template_path: 'pageflow/test/page')
+        Pageflow.config.page_types.register(page_type)
+        entry = create(:published_entry)
+        image_file = create(:image_file)
+        create(:file_usage,
+               file: image_file,
+               revision: entry.revision,
+               perma_id: 11,
+               configuration: {alt: 'Some image'})
+
+        helper.extend(RevisionFileHelper)
+        stub_template('pageflow/test/page.html.erb' =>
+                      '<%= find_file_in_entry(Pageflow::ImageFile, 11).configuration["alt"] %>')
+
+        result = helper.page_type_templates(entry)
+
+        expect(result).to have_selector('script[data-template=test_page]',
+                                        text: 'Some image',
+                                        visible: false)
       end
     end
   end
