@@ -202,7 +202,7 @@ module Pageflow
     #       name 'rainbow'
     #
     #       def json_seed_template
-    #         'pageflow/rainbow/page_type.json.jbuilder'
+    #         'pageflow/rainbow/page_type'
     #       end
     #     end
     #
