@@ -15,7 +15,7 @@ jobs:
         include:
           - ruby-version: 2.6
           - ruby-version: 3.2
-            rails-version: "~> 6.1"
+            rails-version: "~> 7.1"
 
     env:
       PAGEFLOW_RAILS_VERSION: ${{ matrix.rails-version }}
