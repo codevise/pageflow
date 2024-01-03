@@ -134,10 +134,10 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
 
-    - name: Use Node.js 14
+    - name: Use Node.js 18
       uses: actions/setup-node@v1
       with:
-        node-version: 14
+        node-version: 18
 
     # Dependencies
 
@@ -217,10 +217,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    - name: Set up Node.js 14
+    - name: Set up Node.js 18
       uses: actions/setup-node@v1
       with:
-        node-version: 14
+        node-version: 18
 
     - name: Yarn install
       run: |

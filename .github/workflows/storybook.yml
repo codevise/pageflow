@@ -82,10 +82,10 @@ jobs:
       with:
         ruby-version: 3.2
 
-    - name: Set up Node.js 14
+    - name: Set up Node.js 18
       uses: actions/setup-node@v1
       with:
-        node-version: 14
+        node-version: 18
 
     # Dependencies
 
