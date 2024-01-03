@@ -139,9 +139,6 @@ jobs:
 
     - name: Snapshot
       uses: percy/storybook-action@v0.1.6
-      env:
-        NODE_OPTIONS: >-
-          --openssl-legacy-provider
       with:
         working-directory: entry_types/scrolled/package
         custom-command: yarn run snapshot
