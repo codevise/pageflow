@@ -10,7 +10,7 @@
       display: inline;
     }
 
-    input[type="submit"] {
+    [type="submit"] {
       @include light-button;
       padding: 12px 17px 10px;
       margin: 0;
