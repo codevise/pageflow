@@ -8,13 +8,18 @@ import {
   ColorSelectInputView
 } from '../../inputs/ColorSelectInputView';
 
+import {
+  PositionSelectInputView
+} from '../../inputs/PositionSelectInputView';
+
 ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
   const contentElement = this.model.parent;
 
   if (contentElement.getAvailablePositions().length > 1) {
-    this.input('position', SelectInputView, {
+    this.input('position', PositionSelectInputView, {
       attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
-      values: contentElement.getAvailablePositions()
+      values: contentElement.getAvailablePositions(),
+      sectionLayout: this.model.parent.section.configuration.get('layout')
     });
   }
   this.input('width', SliderInputView, {
