@@ -93,8 +93,8 @@ export const ContentElement = Backbone.Model.extend({
     const layout = this.section.configuration.get('layout');
     const supportedByLayout =
       layout === 'center' || layout === 'centerRagged' ?
-      ['inline', 'left', 'right'] :
-      ['inline', 'sticky'];
+      ['inline', 'left', 'right', 'standAlone'] :
+      ['inline', 'sticky', 'standAlone'];
     const supportedByType = this.getType().supportedPositions;
 
     if (supportedByType) {

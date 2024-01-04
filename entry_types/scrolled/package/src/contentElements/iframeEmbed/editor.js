@@ -11,7 +11,7 @@ editor.contentElementTypes.register('iframeEmbed', {
   pictogram,
   category: 'interactive',
   featureName: 'iframe_embed_content_element',
-  supportedPositions: ['inline', 'sticky', 'left', 'right'],
+  supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor({entry}) {
