@@ -14,7 +14,7 @@ label {
 
 /** Make sure the label is on top when an inline help text is displayed */
 label:hover span.name {
-  z-index: 4;
+  z-index: 5;
   position: relative;
 }
 
@@ -91,7 +91,7 @@ textarea.short {
 
   // Make sure the input is on top when an inline help text is displayed
   &:hover input {
-    z-index: 4;
+    z-index: 5;
     position: relative;
   }
 
@@ -207,7 +207,7 @@ textarea.short {
     border-radius: rounded(sm);
     width: 100%;
     height: auto;
-    z-index: 3;
+    z-index: 4;
   }
 
   font-weight: normal;
