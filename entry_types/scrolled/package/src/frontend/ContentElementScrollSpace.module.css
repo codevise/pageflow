@@ -1,0 +1,8 @@
+.wrapper {
+  height: 130vh;
+}
+
+.inner {
+  position: sticky;
+  top: calc(50% - var(--height) * 1px);
+}

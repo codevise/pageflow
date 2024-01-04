@@ -4,6 +4,7 @@ import {renderInEntry} from './index';
 import {Entry} from 'frontend/Entry';
 import foregroundStyles from 'frontend/Foreground.module.css';
 import contentElementMarginStyles from 'frontend/ContentElementMargin.module.css';
+import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 import {api} from 'frontend/api';
 
@@ -142,6 +143,10 @@ function createContentElementPageObject(el) {
   return {
     hasMargin() {
       return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
+    },
+
+    hasScrollSpace() {
+      return !!el.closest(`.${contentElementScrollSpaceStyles.wrapper}`);
     },
 
     select() {
