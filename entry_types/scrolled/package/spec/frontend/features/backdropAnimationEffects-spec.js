@@ -171,7 +171,50 @@ describe('backdrop animation effects', () => {
     expect(viewTimelines.length).toEqual(0);
     expect(animateMock).toHaveBeenCalledWith(
       {
-        transform: ['scale(1)', 'scale(1.2)']
+        transform: [
+          'translate(0%, 0%) scale(1) translate(0%, 0%)',
+          'translate(0%, 0%) scale(1.2) translate(0%, 0%)'
+        ]
+      },
+      expect.objectContaining({
+        duration: 20500
+      })
+    );
+  });
+
+  it('uses motif area as transform prigin', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        imageFiles: [{permaId: 100}],
+        sections: [
+          {
+            permaId: 1,
+            configuration: {
+              backdrop: {
+                image: 100,
+                imageMotifArea: {left: 0, top: 80, width: 10, height: 20}
+              },
+              backdropEffects: [
+                {
+                  name: 'autoZoom',
+                  value: 50
+                }
+              ]
+            }
+          }
+        ]
+      }
+    });
+
+    getSectionByPermaId(1).simulateScrollingIntoView();
+
+    expect(viewTimelines.length).toEqual(0);
+    expect(animateMock).toHaveBeenCalledWith(
+      {
+        transform: [
+          'translate(-45%, 40%) scale(1) translate(45%, -40%)',
+          'translate(-45%, 40%) scale(1.2) translate(45%, -40%)'
+        ]
       },
       expect.objectContaining({
         duration: 20500
