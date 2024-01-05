@@ -202,6 +202,17 @@ module Pageflow
           expect(response).to redirect_to('http://www.example.com/some-entry')
         end
 
+        it 'allows redirecting to other host' do
+          entry = create(:entry, :published,
+                         type_name: 'test')
+
+          Pageflow.config.public_entry_redirect = ->(_, _) { 'http://www.example.com/' }
+
+          get(short_entry_url(entry), headers: {'HTTP_HOST' => 'pageflow.example.com'})
+
+          expect(response).to redirect_to('http://www.example.com/')
+        end
+
         it 'does not redirect if nil is returned' do
           entry = create(:entry, :published,
                          type_name: 'test')
