@@ -73,7 +73,7 @@ module Pageflow
     def redirect_according_to_entry_redirect(entry)
       return unless (redirect_location = entry_redirect(entry))
 
-      redirect_to(redirect_location, status: :moved_permanently)
+      redirect_to(redirect_location, status: :moved_permanently, allow_other_host: true)
     end
 
     def entry_redirect(entry)
