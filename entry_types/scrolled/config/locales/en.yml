@@ -85,17 +85,6 @@ en:
         palette_color:
           blank: "(Auto)"
         position:
-          inline_help: |-
-            This setting allows you to control the position of the
-            element in relation to surrounding text blocks: it can be
-            anchored within the text ("Inline") or positioned adjacent
-            to the text ("Sticky"). Sticky elements remain static in
-            the middle of the viewport alongside the text until either
-            the section is scrolled out of the viewport or they get
-            pushed upwards by the next sticky element of the
-            section. On mobile devices sticky elements automatically
-            get positioned inline. Sticky elements work particularly
-            well on desktop devices in combination with long texts.
           label: Position
           values:
             full: Full Width

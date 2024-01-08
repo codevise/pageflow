@@ -9,6 +9,7 @@ import {SectionInlineFileRights} from './SectionInlineFileRights';
 import {Layout, widths as contentElementWidths} from './layouts';
 import useScrollTarget from './useScrollTarget';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
+import {SectionViewTimelineProvider} from './SectionViewTimelineProvider';
 import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
 import * as v1 from './v1';
@@ -58,18 +59,20 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
              style={useBackdropSectionCustomProperties(backdrop)}>
       <SectionLifecycleProvider onActivate={onActivate}
                                 entersWithFadeTransition={section.transition?.startsWith('fade')}>
-        <SectionAtmo audioFile={atmoAudioFile} />
+        <SectionViewTimelineProvider backdrop={backdrop}>
+          <SectionAtmo audioFile={atmoAudioFile} />
 
-        <SectionContents section={section}
-                         backdrop={backdrop}
-                         contentElements={contentElements}
-                         state={state}
-                         transitionStyles={transitionStyles} />
+          <SectionContents section={section}
+                           backdrop={backdrop}
+                           contentElements={contentElements}
+                           state={state}
+                           transitionStyles={transitionStyles} />
 
-        <SectionInlineFileRights section={section}
-                                 backdrop={backdrop}
-                                 atmoAudioFile={atmoAudioFile}
-                                 state={state} />
+          <SectionInlineFileRights section={section}
+                                   backdrop={backdrop}
+                                   atmoAudioFile={atmoAudioFile}
+                                   state={state} />
+        </SectionViewTimelineProvider>
       </SectionLifecycleProvider>
     </section>
   );

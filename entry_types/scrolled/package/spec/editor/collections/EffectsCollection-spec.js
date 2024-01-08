@@ -51,5 +51,36 @@ describe('EffectsCollection', () => {
 
       expect(unusedEffects.pluck('name')).toContain('blur');
     });
+
+    it('separates first animation effect', () => {
+      const effects = new EffectsCollection();
+
+      const unusedEffects = effects.getUnusedEffects();
+
+      expect(unusedEffects.findWhere({name: 'sepia'}).get('separated')).toEqual(false);
+      expect(unusedEffects.findWhere({name: 'autoZoom'}).get('separated')).toEqual(true);
+      expect(unusedEffects.findWhere({name: 'scrollParallax'}).get('separated')).toEqual(false);
+    });
+
+    it('updates separation when effect is selected', () => {
+      const effects = new EffectsCollection();
+
+      const unusedEffects = effects.getUnusedEffects();
+      unusedEffects.findWhere({name: 'autoZoom'}).selected();
+
+      expect(unusedEffects.findWhere({name: 'sepia'}).get('separated')).toEqual(false);
+      expect(unusedEffects.findWhere({name: 'scrollParallax'}).get('separated')).toEqual(true);
+    });
+
+    it('updates separation when effect is removed', () => {
+      const effects = new EffectsCollection([{name: 'autoZoom', value: 50}]);
+
+      const unusedEffects = effects.getUnusedEffects();
+      effects.remove(effects.first());
+
+      expect(unusedEffects.findWhere({name: 'sepia'}).get('separated')).toEqual(false);
+      expect(unusedEffects.findWhere({name: 'autoZoom'}).get('separated')).toEqual(true);
+      expect(unusedEffects.findWhere({name: 'scrollParallax'}).get('separated')).toEqual(false);
+    });
   });
 });

@@ -13,7 +13,9 @@ describe('ListboxInputView', () => {
   useFakeTranslations({
     'some.key.blank': 'Blank',
     'some.key.default': 'Default',
-    'some.key.large': 'Large'
+    'some.key.large': 'Large',
+    'some_attributes.variant.values.default': 'Default',
+    'some_attributes.variant.values.large': 'Large'
   });
 
   const {render} = useReactBasedBackboneViews();
@@ -42,6 +44,25 @@ describe('ListboxInputView', () => {
       propertyName: 'variant',
       values: ['default', 'large'],
       translationKeys: ['some.key.default', 'some.key.large']
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = render(inputView);
+    await user.click(getByRole('button', {name: 'Large'}));
+
+    expect(getByRole('option', {name: 'Default'})).not.toBeNull();
+    expect(getByRole('option', {name: 'Large'})).not.toBeNull();
+  });
+
+  it('supports labels based on attribute translation key prefixes', async () => {
+    const model = new Backbone.Model({variant: 'large'});
+    const inputView = new ListboxInputView({
+      model: model,
+      propertyName: 'variant',
+      values: ['default', 'large'],
+      attributeTranslationKeyPrefixes: [
+        'some_attributes'
+      ],
     });
 
     const user = userEvent.setup();
@@ -84,6 +105,21 @@ describe('ListboxInputView', () => {
     expect(model.get('variant')).toEqual('large');
   });
 
+  it('does not include blank option by defauilt', () => {
+    const model = new Backbone.Model();
+    const inputView = new ListboxInputView({
+      model: model,
+      propertyName: 'variant',
+      values: ['default', 'large'],
+      texts: ['Default', 'Large'],
+      blankTranslationKey: 'some.key.blank'
+    });
+
+    const {queryByRole} = render(inputView);
+
+    expect(queryByRole('button', {name: 'Blank'})).toBeNull();
+  });
+
   it('includes blank option', () => {
     const model = new Backbone.Model();
     const inputView = new ListboxInputView({
@@ -91,6 +127,7 @@ describe('ListboxInputView', () => {
       propertyName: 'variant',
       values: ['default', 'large'],
       texts: ['Default', 'Large'],
+      includeBlank: true,
       blankTranslationKey: 'some.key.blank'
     });
 

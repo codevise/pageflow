@@ -85,19 +85,6 @@ de:
         palette_color:
           blank: "(Automatisch)"
         position:
-          inline_help: |-
-            Mit dieser Einstellung kannst du die Position des Elements
-            im Zusammenspiel mit Fließtext steuern: Das Element kann
-            im Text verankert werden ("Im Textfluss") oder beim
-            Scrollen begleitend neben dem Text stehenbleiben
-            ("Sticky"). Sticky-Elemente bleiben statisch in der Mitte
-            des Viewports neben dem Text stehen, bis entweder der
-            Abschnitt aus dem Viewport gescrollt wird oder sie vom
-            nächsten Sticky-Element des Abschnitts verdrängt
-            werden. In Mobil-Darstellung werden Sticky Elemente
-            automatisch im Text verankert. Sticky-Elemente
-            funktionieren besonders gut bei Desktop-Darstellung in
-            Kombination mit langen Textpassagen.
           label: Position
           values:
             full: Volle Breite

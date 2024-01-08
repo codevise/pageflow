@@ -157,10 +157,12 @@ export function useSectionContentElements({sectionId, layout}) {
       type: contentElement.typeName,
       position,
       width: getWidth(contentElement, position),
+      standAlone: contentElement.configuration.position === 'standAlone',
       props: contentElement.configuration
     };
   });
 }
+
 const supportedPositions = {
   center: ['inline', 'left', 'right'],
   centerRagged: ['inline', 'left', 'right'],

@@ -20,6 +20,7 @@ describe('ColorSelectInputView', () => {
 
     const inputView = new ColorSelectInputView({
       model,
+      includeBlank: true,
       blankTranslationKey: 'pageflow_scrolled.editor.blank',
       values: ['brand-red', 'brand-green'],
       texts: ['Red', 'Green'],

@@ -4,6 +4,8 @@ import {renderInEntry} from './index';
 import {Entry} from 'frontend/Entry';
 import foregroundStyles from 'frontend/Foreground.module.css';
 import contentElementMarginStyles from 'frontend/ContentElementMargin.module.css';
+import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
+import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 import {api} from 'frontend/api';
 
@@ -11,10 +13,11 @@ import {act, fireEvent, queryHelpers, queries, within} from '@testing-library/re
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {simulateScrollingIntoView} from './fakeIntersectionObserver';
 
-export function renderEntry({seed, consent} = {}) {
+export function renderEntry({seed, consent, isStaticPreview} = {}) {
   return renderInEntry(<Entry />, {
     seed,
     consent,
+    wrapper: isStaticPreview ? StaticPreview : null,
     queries: {...queries, ...pageObjectQueries}
   });
 }
@@ -142,6 +145,10 @@ function createContentElementPageObject(el) {
   return {
     hasMargin() {
       return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
+    },
+
+    hasScrollSpace() {
+      return !!el.closest(`.${contentElementScrollSpaceStyles.wrapper}`);
     },
 
     select() {

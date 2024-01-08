@@ -623,6 +623,73 @@ describe('useSectionContentElements', () => {
     ]);
   });
 
+  it('does not set standAlone flag by default', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2, layout: 'center'}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image'
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        standAlone: false
+      }
+    ]);
+  });
+
+  it('turns standAlone position into inline with standAlone flag', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2, layout: 'center'}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'standAlone'
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        permaId: 1001,
+        type: 'image',
+        position: 'inline',
+        standAlone: true
+      }
+    ]);
+  });
+
   it('clamps widths of floated elements in center layout', () => {
     const {result} = renderHookInEntry(
       () => useSectionContentElements({sectionId: 2, layout: 'center'}),

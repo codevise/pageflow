@@ -11,7 +11,7 @@ export const EffectsCollection = Backbone.Collection.extend({
         .filter(name => !this.findWhere({name}))
         .map(name => ({name})),
       {
-        comparator: 'name',
+        comparator: effect => Effect.names.indexOf(effect.get('name')),
 
         model: Backbone.Model.extend({
           initialize({name}) {
@@ -33,6 +33,21 @@ export const EffectsCollection = Backbone.Collection.extend({
       unusedEffects.add({name: effect.get('name')})
     );
 
+    this.listenTo(unusedEffects, 'add remove', () =>
+      updateSeparation(unusedEffects)
+    );
+
+    updateSeparation(unusedEffects);
+
     return unusedEffects;
   }
 });
+
+function updateSeparation(effects) {
+  effects.reduce((previous, effect) => {
+    effect.set('separated',
+               previous &&
+               Effect.getKind(effect.get('name')) !== Effect.getKind(previous.get('name')));
+    return effect;
+  }, null);
+}

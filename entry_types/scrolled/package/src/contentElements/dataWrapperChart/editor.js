@@ -8,7 +8,7 @@ import pictogram from './pictogram.svg';
 editor.contentElementTypes.register('dataWrapperChart', {
   category: 'data',
   pictogram,
-  supportedPositions: ['inline', 'sticky', 'left', 'right'],
+  supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor() {

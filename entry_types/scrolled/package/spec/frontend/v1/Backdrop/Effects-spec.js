@@ -27,4 +27,17 @@ describe('Backdrop Effects getFilter', () => {
 
     expect(result).toEqual('sepia(70%) grayscale(20%)');
   });
+
+  it('ignores animation effects', () => {
+    const result = getFilter([
+      {name: 'autoZoom', value: 70},
+      {name: 'grayscale', value: 20}
+    ]);
+
+    expect(result).toEqual('grayscale(20%)');
+  });
+
+  it('sets up scroll animation  ', () => {
+
+  });
 });

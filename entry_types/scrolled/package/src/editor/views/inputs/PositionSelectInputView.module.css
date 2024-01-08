@@ -1,0 +1,130 @@
+.preview {
+  aspect-ratio: 16 / 9;
+  border: solid 1px var(--ui-on-surface-color-lightest);
+  border-radius: rounded(sm);
+  margin-bottom: space(1);
+  background-color: var(--ui-primary-color);
+  color: var(--ui-on-primary-color-light);
+  padding: space(4) space(8);
+  overflow: hidden;
+  position: relative;
+  max-width: 260px;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.content {
+  width: 45%;
+}
+
+.centerLayout .content,
+.centerLayout .block,
+.centerRaggedLayout .content,
+.centerRaggedLayout .block {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rightLayout .content,
+.rightLayout .block {
+  margin-left: auto;
+}
+
+.textBlock {
+  display: block;
+  width: 100%;
+  margin-bottom: space(3);
+  line-height: space(3);
+}
+
+.centerRaggedLayout .textBlock {
+  text-align: center;
+}
+
+.textBlockWord {
+  display: inline-block;
+  border: solid 1px currentColor;
+  width: space(2);
+}
+
+.textBlockWord:nth-child(5n) {
+  width: space(3);
+}
+
+.textBlockWord:nth-child(2n) {
+  width: space(2.5);
+}
+
+.block {
+  width: 60%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--ui-selection-color);
+  border-radius: rounded();
+  margin-bottom: space(2);
+}
+
+.leftPosition .block,
+.rightPosition .block {
+  width: 40%;
+  margin: space(2) 0 0;
+}
+
+.leftPosition .block {
+  float: left;
+  margin-left: -5%;
+  margin-right: space(3);
+}
+
+.rightPosition .block {
+  float: right;
+  margin-right: -5%;
+  margin-left: space(3);
+}
+
+.stickyPosition .block {
+  width: 100%;
+}
+
+.stickyPosition .wrapper {
+  float: right;
+  width: 40%;
+  position: sticky;
+  top: 30%;
+}
+
+.rightLayout.stickyPosition .wrapper {
+  float: left;
+}
+
+.standAlonePosition .wrapper {
+  height: 170px;
+}
+
+.standAlonePosition .block {
+  position: sticky;
+  top: 10%;
+}
+
+.outer {
+  position: relative;
+}
+
+.outer .inlineHelp {
+  right: 0;
+  top: 0;
+  box-sizing: border-box;
+}
+
+.outer .inlineHelp:hover {
+  padding: 7px 30px 7px 5px;
+}
+
+.outer .inlineHelp::before {
+  color: var(--ui-on-primary-color);
+}
+
+.outer .inlineHelp:hover::before {
+  color: var(--ui-primary-color-lighter);
+}
