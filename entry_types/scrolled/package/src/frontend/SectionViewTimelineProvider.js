@@ -9,7 +9,7 @@ export function SectionViewTimelineProvider({backdrop, children}) {
   const isNeeded = backdrop?.effects?.some(effect => effect.name === 'scrollParallax');
 
   useEffect(() => {
-    if (!isNeeded) {
+    if (!isNeeded || !window.ViewTimeline) {
       return;
     }
 

@@ -25,4 +25,5 @@ require('intersection-observer');
 // This prevents `fetch()` from being imported in a Node test environment
 if (typeof window !== 'undefined') {
   require('whatwg-fetch');
+  require('scroll-timeline');
 }
