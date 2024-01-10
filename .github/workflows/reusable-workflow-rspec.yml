@@ -13,13 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby-version: 2.6
           - ruby-version: 3.2
-            rails-version: "~> 7.1"
-
-    env:
-      PAGEFLOW_RAILS_VERSION: ${{ matrix.rails-version }}
-      PAGEFLOW_DEPENDENCIES: ${{ matrix.rails-version && 'experimental' || 'default' }}
 
     services:
       mysql:
