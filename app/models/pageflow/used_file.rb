@@ -23,6 +23,14 @@ module Pageflow
       @usage.perma_id
     end
 
+    def cache_key
+      [@file.cache_key, @usage.cache_key].join('-')
+    end
+
+    def cache_key_with_version
+      [@file.cache_key_with_version, @usage.cache_key_with_version].join('-')
+    end
+
     # Not delegated by default. Required to allow using instances in
     # Active Record conditions.
 

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pageflow/caching_test_helpers'
 
 module PageflowScrolled
   RSpec.describe CacheHelper, type: :helper do

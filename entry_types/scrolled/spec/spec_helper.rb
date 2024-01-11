@@ -29,18 +29,4 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
-
-  # Inspired by https://gitlab.com/gitlab-org/gitlab-foss
-  config.around(:each, :use_clean_rails_memory_store_fragment_caching) do |example|
-    begin
-      caching_store = ActionController::Base.cache_store
-      ActionController::Base.cache_store = ActiveSupport::Cache::MemoryStore.new
-      ActionController::Base.perform_caching = true
-
-      example.run
-    ensure
-      ActionController::Base.perform_caching = false
-      ActionController::Base.cache_store = caching_store
-    end
-  end
 end
