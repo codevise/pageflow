@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pageflow/caching_test_helpers'
 
 module Pageflow
   describe Editor::EntriesController do
@@ -116,6 +117,21 @@ module Pageflow
           usage = create(:file_usage, file: file, revision: entry.draft)
 
           sign_in(user, scope: :user)
+          get(:show, params: {id: entry}, format: 'json')
+
+          expect(json_response(path: [:image_files, 0, :usage_id])).to eq(usage.id)
+        end
+
+        it 'does not cache files across entries', :use_clean_rails_memory_store_fragment_caching do
+          user = create(:user)
+          entry = create(:entry, with_editor: user)
+          other_entry = create(:entry, with_editor: user)
+          file = create(:image_file)
+          usage = create(:file_usage, file: file, revision: entry.draft)
+          create(:file_usage, file: file, revision: other_entry.draft)
+
+          sign_in(user, scope: :user)
+          get(:show, params: {id: other_entry}, format: 'json')
           get(:show, params: {id: entry}, format: 'json')
 
           expect(json_response(path: [:image_files, 0, :usage_id])).to eq(usage.id)
