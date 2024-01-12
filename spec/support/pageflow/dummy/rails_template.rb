@@ -55,7 +55,10 @@ rake 'shakapacker:install' if ENV['PAGEFLOW_INSTALL_SHAKAPACKER'] == 'true'
 # Install pageflow and the tested engine via their generators.
 
 generate 'pageflow:install', '--force'
-generate "#{ENV['PAGEFLOW_PLUGIN_ENGINE']}:install", '--force' if ENV['PAGEFLOW_PLUGIN_ENGINE']
+
+if ENV['PAGEFLOW_PLUGIN_ENGINE'].present?
+  generate "#{ENV['PAGEFLOW_PLUGIN_ENGINE']}:install", '--force'
+end
 
 # Devise needs default_url_options for generating mails.
 
