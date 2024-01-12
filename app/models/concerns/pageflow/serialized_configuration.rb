@@ -7,7 +7,7 @@ module Pageflow
     extend ActiveSupport::Concern
 
     included do
-      serialize :configuration, JSON
+      serialize :configuration, coder: JSON
     end
 
     def configuration

@@ -8,7 +8,7 @@ module Pageflow
     extend ActiveSupport::Concern
 
     included do
-      serialize :output_presences, JSON
+      serialize :output_presences, coder: JSON
     end
 
     def present_outputs

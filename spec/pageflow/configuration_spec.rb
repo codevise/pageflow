@@ -18,7 +18,7 @@ module Pageflow
         configuration = Configuration.new
         page_type = TestPageType.new(name: 'test')
 
-        ActiveSupport::Deprecation.silence do
+        Rails.application.deprecators.silence do
           configuration.register_page_type(page_type)
         end
 

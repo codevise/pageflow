@@ -15,7 +15,7 @@ module Pageflow
 
     include ThemeReferencer
 
-    serialize :share_providers, JSON
+    serialize :share_providers, coder: JSON
 
     belongs_to :entry, touch: :edited_at
     belongs_to :creator, class_name: 'User', optional: true

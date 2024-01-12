@@ -10,7 +10,7 @@ module Pageflow
     extend ActiveSupport::Concern
 
     included do
-      serialize :features_configuration, JSON
+      serialize :features_configuration, coder: JSON
     end
 
     def enabled_feature_names(config = Pageflow.config_for(self))

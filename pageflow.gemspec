@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
 
-  s.add_dependency 'rails', Pageflow::RailsVersion.detect
+  s.add_dependency 'rails', '~> 7.1.2'
 
   # Framework for admin interface
   s.add_dependency 'activeadmin', '~> 3.0'
