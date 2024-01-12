@@ -17,7 +17,7 @@ module PageflowPaged
 
       @entry.share_target =
         if params[:page].present?
-          @entry.pages.find_by_perma_id(params[:page])
+          @entry.pages.find_by_perma_id(params[:page]) || @entry
         else
           @entry
         end

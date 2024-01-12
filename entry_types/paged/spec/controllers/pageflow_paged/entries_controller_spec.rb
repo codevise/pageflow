@@ -204,6 +204,18 @@ module PageflowPaged
             .for_property('og:title')
             .with_content_including('Shared page')
         end
+
+        it 'falls back to entry meta tags when page is missing' do
+          entry = create(:entry,
+                         :published,
+                         published_revision_attributes: {title: 'Shared entry'})
+
+          get_with_entry_env(:show, entry: entry, params: {page: 1234})
+
+          expect(response.body).to have_meta_tag
+            .for_property('og:title')
+            .with_content_including('Shared entry')
+        end
       end
     end
   end
