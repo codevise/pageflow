@@ -2,9 +2,11 @@
 
 
 
-### Unreleased Changes
+### Version 17.0.0
 
-[Compare changes](https://github.com/codevise/pageflow/compare/16-x-stable...master)
+2024-01-12
+
+[Compare changes](https://github.com/codevise/pageflow/compare/16-x-stable...v17.0.0)
 
 #### Breaking Changes
 
