@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 17.0.2
+
+2024-01-12
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v17.0.1...v17.0.2)
+
+- Include vendored JS libraries in gem
+  (https://github.com/codevise/pageflow/pull/2052)
+
 ### Version 17.0.1
 
 2024-01-12
