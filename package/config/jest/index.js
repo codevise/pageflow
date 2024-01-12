@@ -11,15 +11,15 @@ module.exports = {
   },
 
   moduleNameMapper: {
-    '^jquery$': resolve('../../src/vendor/jquery'),
-    '^jquery-ui$': resolve('../../src/vendor/jquery-ui'),
-    '^jquery.minicolors$': resolve('../../src/vendor/jquery.minicolors'),
-    '^backbone.marionette$': resolve('../../src/vendor/backbone.marionette'),
-    '^backbone.babysitter$': resolve('../../src/vendor/backbone.babysitter'),
-    '^backbone$': resolve('../../src/vendor/backbone'),
-    '^underscore$': resolve('../../src/vendor/underscore'),
-    '^cocktail$': resolve('../../src/vendor/cocktail'),
-    '^iscroll$': resolve('../../src/vendor/iscroll'),
+    '^jquery$': resolve('../../vendor/jquery'),
+    '^jquery-ui$': resolve('../../vendor/jquery-ui'),
+    '^jquery.minicolors$': resolve('../../vendor/jquery.minicolors'),
+    '^backbone.marionette$': resolve('../../vendor/backbone.marionette'),
+    '^backbone.babysitter$': resolve('../../vendor/backbone.babysitter'),
+    '^backbone$': resolve('../../vendor/backbone'),
+    '^underscore$': resolve('../../vendor/underscore'),
+    '^cocktail$': resolve('../../vendor/cocktail'),
+    '^iscroll$': resolve('../../vendor/iscroll'),
     '^wysihtml5': resolve('../../spec/support/wysihtmlStub')
   },
 
