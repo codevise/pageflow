@@ -8,11 +8,12 @@ module Pageflow
       def add_route
         inject_into_file 'config/routes.rb', after: "  ActiveAdmin.routes(self)\n" do
           <<-HEREDOC
-  Pageflow.routes(self)
-
   authenticate :user, lambda { |user| user.admin? } do
     mount Resque::Server.new, at: "/background_jobs"
   end
+
+  # Needs to be last in file
+  Pageflow.routes(self)
           HEREDOC
         end
       end
