@@ -1,8 +1,0 @@
-en:
-  pageflow_scrolled:
-    editor:
-      backdrop_effects:
-        autoZoom:
-          label: Auto Zoom
-        scrollParallax:
-          label: Scroll Parallax

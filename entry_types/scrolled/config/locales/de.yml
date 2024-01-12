@@ -41,17 +41,26 @@ de:
       feature_name: Frontend v2
     hls_instead_of_dash:
       feature_name: HLS statt DASH für Videos verwenden
+    iconInlineFileRights:
+      widget_type_name: Copyright-Icons
     iframe_embed_content_element:
       feature_name: iframe-Embed Inhaltselement
     scrolled_entry_fragment_caching:
       feature_name: Pageflow-Next-Fragment-Caching
+    textInlineFileRights:
+      widget_type_name: Text am Element
     ui:
       configuration_editor:
         tabs:
           defaultNavigation: Standard Navigation
+    widgets:
+      roles:
+        inlineFileRights: Inline-Datei-Rechte
   pageflow_scrolled:
     editor:
       backdrop_effects:
+        autoZoom:
+          label: Auto-Zoom
         blur:
           label: Unschärfe
         brightness:
@@ -62,6 +71,8 @@ de:
           label: Graustufen
         saturate:
           label: Sättigung
+        scrollParallax:
+          label: Scroll-Parallax
         sepia:
           label: Sepia
       blank_entry:
@@ -85,12 +96,38 @@ de:
         palette_color:
           blank: "(Automatisch)"
         position:
+          inline_help: |-
+            Mit dieser Einstellung kannst du die Position des Elements
+            im Zusammenspiel mit Fließtext steuern.
+          item_inline_help_texts:
+            inline: |-
+              Im Text verankern und zusammen mit dem übrigen Inhalt
+              des Abschnitts scrollen.
+            left: |-
+              Element links einrücken und vom Text des Abschnitts
+              umfließen lassen.
+            right: |-
+              Element rechts einrücken und vom Text des Abschnitts
+              umfließen lassen.
+            standAlone: |-
+              Beim Scrollen kurz in der Mitte des Viewports
+              stehenbleiben. Dies gibt dem Leser eine stabile
+              Position, um das Element vollständig betrachten zu
+              können. Kleineren Elementen kann so mehr Gewicht
+              verliehen werden.
+            sticky: |-
+              Beim Scrollen begleitend neben dem Text
+              stehenbleiben. In der Mobil-Darstellung werden Sticky
+              Elemente automatisch im Text verankert. Sticky-Elemente
+              funktionieren besonders gut bei Desktop-Darstellung in
+              Kombination mit langen Textpassagen.
           label: Position
           values:
             full: Volle Breite
             inline: Im Textfluss
             left: Links eingerückt
             right: Rechts eingerückt
+            standAlone: Stand-Alone
             sticky: Sticky
             wide: Breit
         typographyVariant:
@@ -219,6 +256,14 @@ de:
               label: Text
             color:
               label: Farbe
+            entranceAnimation:
+              inline_help: Lege die Animation fest, mit der die Überschrift eingeblendet werden soll, wenn sie die Mitte des Viewports erreicht.
+              label: Eingangsanimation
+              values:
+                fadeIn: Einblenden
+                fadeInFast: Einblenden (Schnell)
+                fadeInSlow: Einblenden (Langsam)
+                none: "(Keine)"
             hyphens:
               inline_help: |
                 Bei manueller Silbentrennung werden Worte nur an
@@ -670,6 +715,8 @@ de:
       entry_outline:
         add_chapter: Neues Kapitel
         header: Gliederung
+      inline_file_rights_menu_item:
+        label: Rechteangabe an dieser Stelle ausblenden
       insert_content_element:
         cancel: Abbrechen
         header: Element einfügen
@@ -1008,6 +1055,8 @@ de:
       type_heading: Überschrift
       type_question: Fragetext eingeben
       type_quote: Zitat eingeben
+      type_subtitle: Untertitel eingeben
+      type_tagline: Tagline eingeben
       type_text: Text eingeben
       type_title: Titel
       url_placeholder: URL eingeben oder einfügen

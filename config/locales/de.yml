@@ -443,6 +443,7 @@ de:
       pageflow/entry:
         publication_states:
           not_published: Nicht veröffentlicht
+          published_with_noindex: Veröffentlicht aber aus Suchmaschinen ausgeschlossen
           published_with_password_protection: Mit Passwortschutz veröffentlicht
           published_without_password_protection: Ohne Passwortschutz veröffentlicht
         share_providers:
@@ -826,6 +827,7 @@ de:
         members: Mitglieder
         no_members: Es sind keine Redakteure zugeordnet.
         no_revisions: Bisher keine Revisionen
+        noindex: Aus Suchmaschinen ausgeschlossen
         not_allowed_to_see_entry_types: Sie sind nicht berechtigt, die verfügbaren Beitrags-Typen für dieses Konto abzurufen
         not_published: Nicht veröffentlicht
         password_protected: Mit Passwortschutz
@@ -1125,6 +1127,10 @@ de:
           file_name:
             column_header: Dateiname
             label: Dateiname
+          license:
+            blank: "(Nicht angegeben)"
+            inline_help: Fügt der Rechteangabe im Beitrag einen Link zur Lizenz hinzu.
+            label: Lizenz
           original_url:
             label: Original
           rights:
@@ -1134,6 +1140,21 @@ de:
             column_header: Rechte
             inline_help: Wird im Copyright-Bereich des Beitrags angezeigt.
             label: Rechte
+          rights_display:
+            inline_help: |-
+              Lege fest, ob die Rechteangabe der Datei in der
+              zusammenfassenden Liste in der Info-Box angezeigt werden
+              soll oder unmittelbar an der Stelle im Beitrag, wo die
+              Datei verwendet wird.
+            label: Rechte anzeigen
+            values:
+              credits: In der Info-Box
+              inline: Am verwendenden Element
+          source_url:
+            inline_help: |-
+              Rechteangabe mit einem Link zur ursprünglichen Quelle
+              oder zum Author der Datei versehen.
+            label: Quell-URL
           text_tracks:
             label: Untertitel
         settings_dialog_tabs:
@@ -1351,6 +1372,12 @@ de:
           already_published_without_password_help: Dieser Beitrag ist im Moment ohne Passwortschutz veröffentlicht. Nach Festlegen eines Passworts ist kein öffentlicher Zugriff mehr möglich.
           date: Datum
           files_pending_notice: Bitte warten Sie bis alle Dateien des Beitrags verarbeitet wurden und überprüfen Sie das Ergebnis. Der Beitrag kann dann veröffentlicht werden.
+          noindex: Suchmaschinen ausschließen
+          noindex_help: |
+            Ein Meta-Tag setzen, das Crawler von Suchmaschinen wie
+            Google oder Bing anweist, den veröffentlichten Beitrag
+            nicht in den Index aufzunehmen. Der Beitrag erscheint
+            daher nicht in Suchergebnissen.
           not_published_notice: Dieser Beitrag ist zur Zeit nicht veröffentlicht.
           password: Passwort
           password_help: Teilen Sie Ihren veröffentlichten Beitrag nur mit bestimmten Personen. Besucher benötigen dann das von Ihnen festgelegte Passwort, um den Beitrag ansehen zu können.
@@ -1513,6 +1540,25 @@ de:
               label: Übersicht-Button anzeigen
             overview_button_enabled_disabled:
               inline_help: Diese Funktion steht in diesem Theme nicht zur Verfügung.
+    file_licenses:
+      cc_by_4:
+        name: CC-BY 4.0
+        url: https://creativecommons.org/licenses/by/4.0/
+      cc_by_nc_4:
+        name: CC-BY-NC 4.0
+        url: https://creativecommons.org/licenses/by-nc/4.0/
+      cc_by_nc_nd_4:
+        name: CC-BY-NC-ND 4.0
+        url: https://creativecommons.org/licenses/by-nc-nd/4.0/
+      cc_by_nc_sa_4:
+        name: CC-BY-NC-SA 4.0
+        url: https://creativecommons.org/licenses/by-sa-nc/4.0/
+      cc_by_nd_4:
+        name: CC-BY-ND 4.0
+        url: https://creativecommons.org/licenses/by-nd/4.0/
+      cc_by_sa_4:
+        name: CC-BY-SA 4.0
+        url: https://creativecommons.org/licenses/by-sa/4.0/
     help_entries:
       files:
         menu_item: Dateien verwalten
@@ -1748,6 +1794,8 @@ de:
       tr: Türkisch
       unknown: "(Unbekannt)"
       zh: Chinesisch
+    large_player_pool:
+      feature_name: Vergrößerter Player-Pool
     media_loading_spinner:
       widget_type_name: Media
     page_transitions:
@@ -1920,6 +1968,8 @@ de:
       page_type_name: Video
     waveform_player_controls:
       feature_name: Waveform-Steuerlement-Variante für Audio-Seite
+    webp_images:
+      feature_name: webp Bilder
     widgets:
       none: "(Kein)"
       roles:

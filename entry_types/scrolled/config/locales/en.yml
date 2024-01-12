@@ -41,17 +41,26 @@ en:
       feature_name: Frontend v2
     hls_instead_of_dash:
       feature_name: Use HLS instead of DASH for videos
+    iconInlineFileRights:
+      widget_type_name: Copyright icons
     iframe_embed_content_element:
       feature_name: iframe embed content element
     scrolled_entry_fragment_caching:
       feature_name: Pageflow Next Fragment Caching
+    textInlineFileRights:
+      widget_type_name: Text at element
     ui:
       configuration_editor:
         tabs:
           defaultNavigation: Default navigation
+    widgets:
+      roles:
+        inlineFileRights: Inline file rights
   pageflow_scrolled:
     editor:
       backdrop_effects:
+        autoZoom:
+          label: Auto Zoom
         blur:
           label: Blur
         brightness:
@@ -62,6 +71,8 @@ en:
           label: Grayscale
         saturate:
           label: Saturate
+        scrollParallax:
+          label: Scroll Parallax
         sepia:
           label: Sepia
       blank_entry:
@@ -85,12 +96,32 @@ en:
         palette_color:
           blank: "(Auto)"
         position:
+          inline_help: |-
+            Control the position of the element in relation to
+            surrounding text blocks.
+          item_inline_help_texts:
+            inline: |-
+              Anchor in the text and scroll along with the rest of the
+              section's content.
+            left: Indent element on the left and let it be surrounded by the section's text.
+            right: Indent element on the right and let it be surrounded by the section's text.
+            standAlone: |-
+              Briefly stay in the middle of the viewport while
+              scrolling. This gives the reader a stable position to
+              fully view the element. Smaller elements can be given
+              more weight that way.
+            sticky: |-
+              Place beside the text while scrolling. In mobile view,
+              sticky elements are automatically turned into inline
+              elements. Sticky elements work particularly well in
+              desktop view in combination with long text passages.
           label: Position
           values:
             full: Full Width
             inline: Inline
             left: Floated left
             right: Floated right
+            standAlone: Stand alone
             sticky: Sticky
             wide: Wide
         typographyVariant:
@@ -219,6 +250,14 @@ en:
               label: Text
             color:
               label: Color
+            entranceAnimation:
+              inline_help: Determine how the heading becomes visible once it reaches the center of the viewport
+              label: Entrance Animation
+              values:
+                fadeIn: Fade in
+                fadeInFast: Fade in (Fast)
+                fadeInSlow: Fade in (Slow)
+                none: "(None)"
             hyphens:
               inline_help: |
                 With manual hyphenation, words are only ever separated
@@ -667,6 +706,8 @@ en:
       entry_outline:
         add_chapter: New chapter
         header: Outline
+      inline_file_rights_menu_item:
+        label: Hide rights information here
       insert_content_element:
         cancel: Cancel
         header: Insert element
@@ -852,6 +893,8 @@ en:
       type_heading: Heading
       type_question: Type question text
       type_quote: Type quote text
+      type_subtitle: Type subtitle
+      type_tagline: Type tagline
       type_text: Type some text
       type_title: Title
       url_placeholder: Type or paste URL

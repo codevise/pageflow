@@ -443,6 +443,7 @@ en:
       pageflow/entry:
         publication_states:
           not_published: Not published
+          published_with_noindex: Published but excluded from search engines
           published_with_password_protection: Published with password protection
           published_without_password_protection: Published without password protection
         share_providers:
@@ -826,6 +827,7 @@ en:
         members: Members
         no_members: No members assigned
         no_revisions: No versions yet
+        noindex: Excluded from search engines
         not_allowed_to_see_entry_types: You are not allowed to access the available story types for this account.
         not_published: Not yet published
         password_protected: Password protected
@@ -1123,6 +1125,10 @@ en:
           file_name:
             column_header: File name
             label: File name
+          license:
+            blank: "(Not specified)"
+            inline_help: Adds a link to the license in the credit note.
+            label: License
           original_url:
             label: Original
           rights:
@@ -1132,6 +1138,20 @@ en:
             column_header: Rights
             inline_help: Displayed in copyright area of story.
             label: Rights
+          rights_display:
+            inline_help: |-
+              Decide if the file's credit note should be displayed in
+              the summary list in the info box, or right at the place
+              in the entry where the file is used.
+            label: Display rights
+            values:
+              credits: In the info box
+              inline: At the element where it is used
+          source_url:
+            inline_help: |-
+              Turns the credit note into a link to the original source
+              or to the author of the file.
+            label: Source URL
           text_tracks:
             label: Subtitles
         settings_dialog_tabs:
@@ -1349,6 +1369,12 @@ en:
           already_published_without_password_help: This story is published without a password at the moment. Setting a password will prevent public access from now on.
           date: Date
           files_pending_notice: Please wait until all files have been processed and check the results. You may then publish your story.
+          noindex: Exclude from search engines
+          noindex_help: |
+            Set a meta tag that instructs crawlers of search engines
+            like Google or Bing to not include the published entry in
+            the index. The entry will, thus, not show up in search
+            results.
           not_published_notice: This story is currently not published.
           password: Password
           password_help: Restrict access to the published version of this story. Visitors will have to enter a password.
@@ -1511,6 +1537,25 @@ en:
               label: Show 'Overview' button
             overview_button_enabled_disabled:
               inline_help: This option is not available for your theme.
+    file_licenses:
+      cc_by_4:
+        name: CC-BY 4.0
+        url: https://creativecommons.org/licenses/by/4.0/
+      cc_by_nc_4:
+        name: CC-BY-NC 4.0
+        url: https://creativecommons.org/licenses/by-nc/4.0/
+      cc_by_nc_nd_4:
+        name: CC-BY-NC-ND 4.0
+        url: https://creativecommons.org/licenses/by-nc-nd/4.0/
+      cc_by_nc_sa_4:
+        name: CC-BY-NC-SA 4.0
+        url: https://creativecommons.org/licenses/by-sa-nc/4.0/
+      cc_by_nd_4:
+        name: CC-BY-ND 4.0
+        url: https://creativecommons.org/licenses/by-nd/4.0/
+      cc_by_sa_4:
+        name: CC-BY-SA 4.0
+        url: https://creativecommons.org/licenses/by-sa/4.0/
     help_entries:
       files:
         menu_item: Manage Files
@@ -1741,6 +1786,8 @@ en:
       tr: Turkish
       unknown: "(Unknown)"
       zh: Chinese
+    large_player_pool:
+      feature_name: Large Player-Pool
     media_loading_spinner:
       widget_type_name: Media
     page_transitions:
@@ -1916,6 +1963,8 @@ en:
       page_type_name: Video
     waveform_player_controls:
       feature_name: Waveform player controls variant for audio page
+    webp_images:
+      feature_name: webp images
     widgets:
       none: "(none)"
       roles:
