@@ -2,10 +2,10 @@
 
 ### Unreleased Changes
 
-[Compare changes](https://github.com/codevise/pageflow/compare/16-2-stable...master)
+[Compare changes](https://github.com/codevise/pageflow/compare/16-x-stable...master)
 
 None so far.
 
 See
-[16-2-stable branch](https://github.com/codevise/pageflow/blob/16-2-stable/CHANGELOG.md)
+[16-x-stable branch](https://github.com/codevise/pageflow/blob/16-x-stable/CHANGELOG.md)
 for previous changes.
