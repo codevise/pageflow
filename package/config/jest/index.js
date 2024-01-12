@@ -20,7 +20,7 @@ module.exports = {
     '^underscore$': resolve('../../vendor/underscore'),
     '^cocktail$': resolve('../../vendor/cocktail'),
     '^iscroll$': resolve('../../vendor/iscroll'),
-    '^wysihtml5': resolve('../../spec/support/wysihtmlStub')
+    '^wysihtml5': resolve('../../vendor/stubs/wysihtml5')
   },
 
   transform: {
