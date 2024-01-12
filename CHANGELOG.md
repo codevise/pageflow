@@ -1,8 +1,10 @@
 # CHANGELOG
 
-### Unreleased Changes
+### Version 16.2.0
 
-[Compare changes](https://github.com/codevise/pageflow/compare/16-1-stable...master)
+2024-01-12
+
+[Compare changes](https://github.com/codevise/pageflow/compare/16-1-stable...v16.2.0)
 
 #### Core
 
