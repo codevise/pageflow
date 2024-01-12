@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 17.0.3
+
+2024-01-12
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v17.0.2...v17.0.3)
+
+- Include wysihtml5 stub in gem
+  (https://github.com/codevise/pageflow/pull/2052)
+
 ### Version 17.0.2
 
 2024-01-12
