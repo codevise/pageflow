@@ -6,8 +6,8 @@ module Pageflow
   class ThemeCustomization < ApplicationRecord
     belongs_to :site
 
-    serialize :overrides, JSON
-    serialize :selected_file_ids, JSON
+    serialize :overrides, coder: JSON
+    serialize :selected_file_ids, coder: JSON
 
     has_many :uploaded_files, class_name: 'ThemeCustomizationFile'
 

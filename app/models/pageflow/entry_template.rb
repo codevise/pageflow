@@ -2,9 +2,12 @@ module Pageflow
   class EntryTemplate < ApplicationRecord
     include ThemeReferencer
     include SerializedConfiguration
-    serialize :default_share_providers, JSON
+
+    serialize :default_share_providers, coder: JSON
+
     belongs_to :site
     delegate :enabled_feature_names, to: :site
+
     has_many :widgets, as: :subject, dependent: :destroy
 
     validates :site, presence: true
