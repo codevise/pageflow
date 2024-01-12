@@ -2,17 +2,12 @@
 
 
 
-### Version 17.0.0
+### Unreleased Changes
 
-2024-01-12
+[Compare changes](https://github.com/codevise/pageflow/compare/17-0-stable...master)
 
-[Compare changes](https://github.com/codevise/pageflow/compare/16-x-stable...v17.0.0)
-
-#### Breaking Changes
-
-- Require Rails 7
-  ([#2051](https://github.com/codevise/pageflow/pull/2051))
+None so far.
 
 See
-[16-x-stable branch](https://github.com/codevise/pageflow/blob/16-x-stable/CHANGELOG.md)
+[17-0-stable branch](https://github.com/codevise/pageflow/blob/17-0-stable/CHANGELOG.md)
 for previous changes.
