@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{,entry_types/*/}' \
                 '{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*',
-                'package/{config/**/*,editor.js,frontend.js,ui.js,testHelpers.js,package.json}',
+                'package/{config/**/*,vendor/**/*.js,editor.js,frontend.js,ui.js,' \
+                'testHelpers.js,package.json}',
                 'entry_types/scrolled/package/' \
                 '{config/**/*,contentElements-frontend.{js,css},frontend-server.js,' \
                 'widgets/*.{css,js},' \
