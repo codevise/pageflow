@@ -1,6 +1,13 @@
 # CHANGELOG
 
+### Version 17.0.1
 
+2024-01-12
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v17.0.0...v17.0.1)
+
+- Explicitly require `sprockets/rails` to make it available
+  automatically for plugin dummy apps.
 
 ### Version 17.0.0
 
