@@ -17,6 +17,7 @@ Capybara.register_driver :selenium_chrome_headless_no_sandbox do |app|
 end
 
 Capybara.javascript_driver = :selenium_chrome_headless_no_sandbox
+Capybara.server = :puma, {Silent: true}
 
 Capybara::Chromedriver::Logger.raise_js_errors = true
 Capybara::Chromedriver::Logger.filters = [
