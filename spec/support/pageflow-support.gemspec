@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'listen', '~> 3.0'
   s.add_runtime_dependency 'bootsnap', '~> 1.0'
 
-  s.add_runtime_dependency 'resque', '~> 1.25'
+  s.add_runtime_dependency 'resque', '~> 2.6'
   s.add_runtime_dependency 'resque-scheduler', '~> 4.10'
 
   s.add_runtime_dependency 'ar_after_transaction', '~> 0.10.0'

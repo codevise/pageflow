@@ -147,7 +147,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mysql2', '~> 0.5.2'
 
   # Resque as default Active Job backend
-  s.add_development_dependency 'resque', '~> 1.25'
+  s.add_development_dependency 'resque', ['>= 1.25', '< 3']
   s.add_development_dependency 'resque-scheduler', '~> 4.10'
 
   s.add_development_dependency 'ar_after_transaction', '~> 0.10.0'
