@@ -175,7 +175,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara', '~> 3.9'
 
   # Server for Capybara
-  s.add_development_dependency 'puma', '~> 3.12'
+  s.add_development_dependency 'puma', '~> 6.0'
 
   # Chrome Headless browser testing
   s.add_development_dependency 'selenium-webdriver', '~> 4.15'
