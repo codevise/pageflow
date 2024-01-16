@@ -86,10 +86,22 @@ div:focus-within > .contextIcon,
 }
 
 .logo {
+  display: flex;
+  align-items: center;
   top: 0;
   left: 15px;
   height: 100%;
   max-width: 15%;
+}
+
+.logo picture {
+  height: var(--theme-default-navigation-mobile-logo-height, 100%);
+}
+
+@media (min-width: 781px) {
+  .logo picture {
+    height: var(--theme-default-navigation-desktop-logo-height, 100%);
+  }
 }
 
 .logo img {
