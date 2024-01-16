@@ -229,6 +229,8 @@ System](https://material.io/design/color/the-color-system.html#color-theme-creat
 | `default_navigation_progress_bar_background_color` | Background color of the progress bar. |
 | `default_navigation_progress_bar_indicator_color` | Color of the progress bar indicator. Defaults to `accent_color`. |
 | `default_navigation_separator_color` | Color of separator lines between chapters. |
+| `default_navigation_desktop_logo_height` | Height of the logo in the desktop layout. |
+| `default_navigation_mobile_logo_height` | Height of the logo in the mobile layout. |
 
 ## Palette Colors
 
