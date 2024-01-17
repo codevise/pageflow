@@ -25,8 +25,8 @@ export function Effects({file, children}) {
       const animation = ref.current.animate(
         {
           transform: [
-            `scale(${scale}%) translateY(${max}%)`,
-            `scale(${scale}%) translateY(${-max}%)`
+            `translateY(${max}%) scale(${scale}%)`,
+            `translateY(${-max}%) scale(${scale}%)`
           ],
         },
         {

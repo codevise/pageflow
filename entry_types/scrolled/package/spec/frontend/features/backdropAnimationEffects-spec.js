@@ -70,8 +70,8 @@ describe('backdrop animation effects', () => {
     expect(animateMock).toHaveBeenCalledWith(
       {
         transform: [
-          'scale(116%) translateY(8%)',
-          'scale(116%) translateY(-8%)'
+          'translateY(8%) scale(116%)',
+          'translateY(-8%) scale(116%)'
         ]
       },
       expect.objectContaining({timeline: viewTimelines[0]}
@@ -112,8 +112,8 @@ describe('backdrop animation effects', () => {
     expect(animateMock).toHaveBeenCalledWith(
       {
         transform: [
-          'scale(116%) translateY(8%)',
-          'scale(116%) translateY(-8%)'
+          'translateY(8%) scale(116%)',
+          'translateY(-8%) scale(116%)'
         ]
       },
       expect.objectContaining({timeline: viewTimelines[0]}
