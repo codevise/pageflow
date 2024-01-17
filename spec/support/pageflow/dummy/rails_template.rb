@@ -14,7 +14,7 @@ copy_file('database.yml', 'config/database.yml', force: true)
 
 rails_version_string = Rails::VERSION::STRING.tr!('.', '_')
 
-engine_name = ENV.fetch('PAGEFLOW_PLUGIN_ENGINE', 'pageflow')
+engine_name = ENV['PAGEFLOW_PLUGIN_ENGINE'].presence || 'pageflow'
 database_prefix = "#{engine_name}-rails-#{rails_version_string}"
 
 gsub_file('config/database.yml',
@@ -45,8 +45,7 @@ end
 
 in_root { run('rake db:environment:set db:drop:all', capture: true, abort_on_failure: false) }
 
-rake 'db:create' # workaround for https://github.com/rails/rails/issues/50038
-rake 'db:create:all'
+rake 'db:create'
 
 # Install Webpacker
 
@@ -106,4 +105,4 @@ copy_file('create_test_revision_components.rb',
 copy_file('add_custom_fields.rb',
           'db/migrate/99990000000000_add_custom_fields.rb')
 
-rake 'db:migrate db:test:load_schema', env: 'development'
+rake 'db:migrate'
