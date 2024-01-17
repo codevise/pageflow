@@ -80,6 +80,12 @@
   right: calc(100% + var(--theme-quote-hanging-mark-spacing, 0.05em));
 }
 
+.centerRagged.design-hanging .text p:first-child::before {
+  position: static;
+  padding-right: var(--theme-quote-hanging-mark-spacing, 0.05em);
+  margin-left: calc(-1ch - var(--theme-quote-hanging-mark-spacing, 0.05em));
+}
+
 .design-largeCentered .text p:first-child::before,
 .design-largeHanging .text p:first-child::before {
   font-size: var(--quote-large-mark-font-size);

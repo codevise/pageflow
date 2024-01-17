@@ -66,6 +66,23 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'Hanging Centered Ragged',
+      configuration: {
+        text: [
+          {
+            type: 'paragraph',
+            children: [{text: 'Be the change\n that you wish to see in the world'}]
+          }
+        ]
+      },
+      themeOptions: {
+        quoteDesign: 'hanging'
+      },
+      sectionConfiguration: {
+        layout: 'centerRagged'
+      }
+    },
+    {
       name: 'Hanging with custom spacing',
       themeOptions: {
         quoteDesign: 'hanging',
