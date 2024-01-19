@@ -156,6 +156,10 @@ module Pageflow
           EntryPolicy.new(user, entry).duplicate?
         end
 
+        can :manage_translations, Entry do |entry|
+          EntryPolicy.new(user, entry).manage_translations?
+        end
+
         can :edit_outline, Entry do |entry|
           EntryPolicy.new(user, entry).edit_outline?
         end

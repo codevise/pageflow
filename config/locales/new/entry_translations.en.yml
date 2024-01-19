@@ -1,0 +1,25 @@
+en:
+  pageflow:
+    admin:
+      resource_tabs:
+        translations: Translations
+      entry_translations:
+        add: Link translation
+        entry_id: Entry
+        id: Translation(s)
+        new_hint_html: |-
+          Associate entries that represent the same content in
+          different languages.
+        create_model: Link as translation
+        no_translations: No linked entries
+        delete_confirmation: |-
+          Are you sure you want to remove the entry from the list of translations?
+  activerecord:
+    models:
+      translation:
+        one: Translation
+        other: Translations
+  active_admin:
+    resources:
+      translations:
+        new_model: Link translation

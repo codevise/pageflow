@@ -1,0 +1,31 @@
+<%= admin_form_for resource, url: admin_entry_translations_path(parent) do |f| %>
+  <%= f.inputs do %>
+    <li class="side_hint">
+      <p>
+        <%= t('pageflow.admin.entry_translations.new_hint_html') %>
+      </p>
+    </li>
+    <%= f.input(:entry_id,
+                as: :searchable_select,
+                collection: [[parent.title, parent.id]],
+                label: t('pageflow.admin.entry_translations.entry_id'),
+                selected: parent.id,
+                input_html: {
+                  value: parent.id,
+                  disabled: true
+    }) %>
+    <%= f.input(:id,
+                as: :searchable_select,
+                label: t('pageflow.admin.entry_translations.id'),
+                ajax: {
+                  resource: 'Translations',
+                  collection_name: :potential_entry_translations,
+                  path_params: {entry_id: parent.id}
+                },
+                include_blank: false) %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action(:submit, label: t('pageflow.admin.entry_translations.create_model')) %>
+    <%= f.action(:cancel, :wrapper_html => {:class => 'cancel'}) %>
+  <% end %>
+<% end %>

@@ -58,6 +58,19 @@ module Pageflow
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
+                    allows: :publisher,
+                    but_forbids: :editor,
+                    of_account: ->(topic) { topic.account },
+                    to: :manage_translations,
+                    topic: -> { create(:entry) }
+
+    it_behaves_like 'a membership-based permission that',
+                    forbids: :manager,
+                    of_entry: ->(topic) { topic },
+                    to: :manage_translations,
+                    topic: -> { create(:entry) }
+
+    it_behaves_like 'a membership-based permission that',
                     allows: :editor,
                     but_forbids: :previewer,
                     of_entry_or_its_account: ->(topic) { topic },

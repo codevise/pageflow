@@ -48,6 +48,7 @@ Metrics/BlockLength:
 # In specs methods using RSpec DSL often become long
 Metrics/MethodLength:
   Exclude:
+    - '**/app/views/components/**/*'
     - '**/spec/**/*'
 
 # Long spec files are ok
@@ -61,6 +62,7 @@ Metricts/ParameterLists:
 # Do not require class documentation for specs and migrations
 Style/Documentation:
   Exclude:
+    - admins/**/*
     - '**/spec/**/*'
     - db/migrate/*
 

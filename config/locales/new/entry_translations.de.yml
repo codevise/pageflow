@@ -1,0 +1,25 @@
+de:
+  pageflow:
+    admin:
+      resource_tabs:
+        translations: Übersetzungen
+      entry_translations:
+        add: Übersetzung zuordnen
+        entry_id: Beitrag
+        id: Übersetzung(en)
+        new_hint_html: |-
+          Verknüpfe Beiträge, die denselben Inhalt in verschiedenen
+          Sprachen darstellen.
+        create_model: Als Übersetzung zuordnen
+        no_translations: Keine Beiträge zugeordnet
+        delete_confirmation: |-
+          Beitrag wirklich aus der Liste der Übersetzungen entfernen?
+  activerecord:
+    models:
+      translation:
+        one: Übersetzung
+        other: Übersetzungen
+  active_admin:
+    resources:
+      translations:
+        new_model: Übersetzung zuordnen
