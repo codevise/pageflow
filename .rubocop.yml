@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 3.2
 
 # Use double quotes only for interpolation.
 Style/StringLiterals:
@@ -14,7 +14,7 @@ Style/BlockDelimiters:
   EnforcedStyle: braces_for_chaining
 
 # The default of 80 characters is a little to narrow.
-Metrics/LineLength:
+Layout/LineLength:
   Max: 100
 
 # Only place spaces inside blocks written with braces.
@@ -56,7 +56,7 @@ Metrics/ModuleLength:
   Exclude:
     - '**/spec/**/*'
 
-Metricts/ParameterLists:
+Metrics/ParameterLists:
   CountKeywordArgs: false
 
 # Do not require class documentation for specs and migrations
@@ -80,8 +80,4 @@ Style/ModuleFunction:
 
 # Allow method names like has_text?
 Naming/PredicateName:
-  Enabled: false
-
-# Braces can have meaning in Ruby 3
-Style/BracesAroundHashParameters:
   Enabled: false
