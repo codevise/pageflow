@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### Version 17.0.4
+
+2024-01-22
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v17.0.3...v17.0.4)
+
+- Fix dummy app creation in Rails 7.1.3.
+
 ### Version 17.0.3
 
 2024-01-12
