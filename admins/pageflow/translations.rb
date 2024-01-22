@@ -26,6 +26,15 @@ module Pageflow
 
     form partial: 'form'
 
+    member_action :default, method: :put do
+      entry = Entry.find(params[:id])
+
+      authorize!(:manage_translations, entry)
+      entry.mark_as_default_translation
+
+      redirect_to(admin_entry_path(parent, tab: 'translations'))
+    end
+
     controller do
       helper Pageflow::Admin::FormHelper
 

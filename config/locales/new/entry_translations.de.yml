@@ -12,8 +12,17 @@ de:
           Sprachen darstellen.
         create_model: Als Übersetzung zuordnen
         no_translations: Keine Beiträge zugeordnet
-        delete_confirmation: |-
+        remove: Entfernen
+        remove_confirmation: |-
           Beitrag wirklich aus der Liste der Übersetzungen entfernen?
+        mark_as_default: Als Standard markieren
+        mark_as_default_confirmation: |-
+          Beitrag wirklich as Standardübersetzung markieren?
+        default_translation: "%{display_locale} (Standard)"
+        default_translation_hint: |-
+          Suchmaschinen verwenden den als Standard markierten Beitrag,
+          falls keine Übersetzung verfügbar ist, die den
+          Spracheinstellungen des Besuchers entspricht.
   activerecord:
     models:
       translation:

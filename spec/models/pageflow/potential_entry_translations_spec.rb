@@ -21,7 +21,7 @@ module Pageflow
 
       result = query.resolve.ransack(title_cont: 'story EN').result
 
-      expect(result).to eq([entry_en, other_entry_en])
+      expect(result).to eq([other_entry_en, entry_en])
     end
 
     it 'excludes entry itself' do

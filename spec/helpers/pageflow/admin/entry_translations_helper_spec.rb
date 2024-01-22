@@ -22,6 +22,20 @@ module Pageflow
 
           expect(result).to eq('English')
         end
+
+        it 'marks default translation' do
+          entry = create(:entry,
+                         :published,
+                         draft_attributes: {locale: 'de'},
+                         published_revision_attributes: {locale: 'en'})
+          translation = create(:entry)
+          entry.mark_as_translation_of(translation)
+          entry.mark_as_default_translation
+
+          result = helper.entry_translation_display_locale(entry)
+
+          expect(result).to eq('English (Standard)')
+        end
       end
     end
   end

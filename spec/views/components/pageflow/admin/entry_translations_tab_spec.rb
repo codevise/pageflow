@@ -22,6 +22,49 @@ module Pageflow
       expect(rendered).to have_selector('table td', text: 'English')
       expect(rendered).to have_selector('table td a', text: 'Remove')
       expect(rendered).to have_selector('a', text: 'Link translation')
+      expect(rendered).to have_selector('a', text: 'Mark as default')
+    end
+
+    it 'includes self in table without link' do
+      de_entry = create(:entry, title: 'My story DE', draft_attributes: {locale: 'de'})
+      en_entry = create(:entry, title: 'My story EN', draft_attributes: {locale: 'en'})
+      de_entry.mark_as_translation_of(en_entry)
+
+      allow(helper).to receive(:authorized?).and_return(true)
+
+      render(de_entry)
+
+      expect(rendered).to have_selector('table td', text: 'My story DE')
+      expect(rendered).not_to have_selector('table td a', text: 'My story DE')
+    end
+
+    it 'hides mark as default for default translation' do
+      de_entry = create(:entry, draft_attributes: {locale: 'de'})
+      en_entry = create(:entry, title: 'My story EN', draft_attributes: {locale: 'en'})
+      de_entry.mark_as_translation_of(en_entry)
+      en_entry.mark_as_default_translation
+
+      allow(helper).to receive(:authorized?).and_return(true)
+
+      render(de_entry)
+
+      expect(rendered).to have_selector('a', text: 'Mark as default').once
+    end
+
+    it 'renders table with translations of entry' do
+      de_entry = create(:entry, draft_attributes: {locale: 'de'})
+      en_entry = create(:entry, title: 'My story EN', draft_attributes: {locale: 'en'})
+      de_entry.mark_as_translation_of(en_entry)
+
+      allow(helper).to receive(:authorized?).and_return(true)
+
+      render(de_entry)
+
+      expect(rendered).to have_selector('table td a', text: 'My story EN')
+      expect(rendered).to have_selector('table td', text: 'English')
+      expect(rendered).to have_selector('table td a', text: 'Remove')
+      expect(rendered).to have_selector('a', text: 'Link translation')
+      expect(rendered).to have_selector('a', text: 'Mark as default')
     end
 
     it 'hides remove and add links if user cannot manage translations' do
@@ -36,6 +79,7 @@ module Pageflow
       render(de_entry)
 
       expect(rendered).not_to have_selector('table td a', text: 'Remove')
+      expect(rendered).not_to have_selector('table td a', text: 'Mark as default')
       expect(rendered).not_to have_selector('a', text: 'Link translation')
     end
 

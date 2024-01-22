@@ -84,6 +84,36 @@ describe Admin::TranslationsController do
     end
   end
 
+  describe '#default' do
+    it 'marks translation as default of group' do
+      entry = create(:entry)
+      translation = create(:entry, account: entry.account)
+      entry.mark_as_translation_of(translation)
+      user = create(:user, :publisher, on: entry.account)
+
+      sign_in(user, scope: :user)
+      put(:default, params: {entry_id: entry, id: translation})
+
+      expect(response)
+        .to redirect_to(admin_entry_path(id: entry, tab: 'translations'))
+      expect(entry.translation_group.reload.default_translation).to eq(translation)
+    end
+
+    it 'requires publisher role on account' do
+      entry = create(:entry)
+      translation = create(:entry, account: entry.account)
+      entry.mark_as_translation_of(translation)
+      user = create(:user, :editor, on: entry.account)
+
+      sign_in(user, scope: :user)
+      put(:default, params: {entry_id: entry, id: translation})
+
+      expect(flash[:error]).to be_present
+      expect(response).to redirect_to(admin_root_path)
+      expect(entry.translation_group.reload.default_translation).to eq(entry)
+    end
+  end
+
   describe '#destroy' do
     it 'lets account publisher remove entry from translation group' do
       entry = create(:entry)
