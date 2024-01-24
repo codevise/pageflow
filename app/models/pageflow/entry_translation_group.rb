@@ -6,6 +6,11 @@ module Pageflow
              foreign_key: 'translation_group_id',
              dependent: :nullify
 
+    has_many :publicly_visible_entries,
+             -> { published_without_password_protection.published_without_noindex },
+             foreign_key: 'translation_group_id',
+             class_name: 'Entry'
+
     belongs_to :default_translation,
                class_name: 'Entry',
                optional: true

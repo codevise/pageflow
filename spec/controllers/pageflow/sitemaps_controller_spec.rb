@@ -149,6 +149,56 @@ module Pageflow
                          text: 'http://pageflow.example.com/de/erster-beitrag')
       end
 
+      it 'does not render links to non-published entry translations' do
+        site = create(:site, cname: 'pageflow.example.com')
+        entry = create(
+          :entry,
+          :published,
+          site:,
+          published_revision_attributes: {
+            locale: 'en'
+          }
+        )
+        entry.mark_as_translation_of(
+          create(
+            :entry,
+            :published_with_password,
+            site:,
+            published_revision_attributes: {
+              locale: 'de'
+            }
+          )
+        )
+        entry.mark_as_translation_of(
+          create(
+            :entry,
+            :published_with_noindex,
+            site:,
+            published_revision_attributes: {
+              locale: 'es'
+            }
+          )
+        )
+        entry.mark_as_translation_of(
+          create(
+            :entry,
+            site:,
+            draft_attributes: {
+              locale: 'fr'
+            }
+          )
+        )
+
+        request.env['HTTP_HOST'] = 'pageflow.example.com'
+
+        get(:index, format: 'xml')
+
+        expect(response.status).to eq(200)
+        expect(response.body).not_to have_xpath('//*[@rel="alternate" and @hreflang="de"]')
+        expect(response.body).not_to have_xpath('//*[@rel="alternate" and @hreflang="es"]')
+        expect(response.body).not_to have_xpath('//*[@rel="alternate" and @hreflang="fr"]')
+      end
+
       it 'responds with 404 for unknown site' do
         site = create(:site, cname: 'pageflow.example.com')
         create(:entry, :published, site: site)

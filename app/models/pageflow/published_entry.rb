@@ -21,8 +21,10 @@ module Pageflow
     end
 
     def translations(scope = -> { self })
+      return [] unless entry.translation_group
+
       self.class.wrap_all(
-        entry.published_translations.instance_exec(&scope)
+        entry.translation_group.publicly_visible_entries.instance_exec(&scope)
       )
     end
 

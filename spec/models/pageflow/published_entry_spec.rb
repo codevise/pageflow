@@ -253,6 +253,18 @@ module Pageflow
         expect(result[0].title).to eq(entry.title)
       end
 
+      it 'filters out noindex entries' do
+        entry = create(:entry, :published)
+        translation = create(:entry, :published_with_noindex)
+        entry.mark_as_translation_of(translation)
+        published_entry = PublishedEntry.new(entry)
+
+        result = published_entry.translations
+
+        expect(result.length).to eq(1)
+        expect(result[0].title).to eq(entry.title)
+      end
+
       it 'allows modifying the entries scope' do
         entry = create(:entry, :published)
         translation = create(:entry, :published, permalink_attributes: {slug: 'some-slug'})
@@ -269,7 +281,7 @@ module Pageflow
         translation = create(:entry, :published, permalink_attributes: {slug: 'some-slug'})
         entry.mark_as_translation_of(translation)
         published_entry = PublishedEntry.new(
-          Entry.preload(published_translations: :permalink).find(entry.id)
+          Entry.preload(translation_group: {publicly_visible_entries: :permalink}).find(entry.id)
         )
 
         result = published_entry.translations
