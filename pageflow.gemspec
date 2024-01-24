@@ -171,6 +171,9 @@ Gem::Specification.new do |s|
   # Use assigns in controller specs
   s.add_development_dependency 'rails-controller-testing', '~> 1.0'
 
+  # Detect N+1 queries
+  s.add_development_dependency 'prosopite', '~> 1.4'
+
   # Browser like integration testing
   s.add_development_dependency 'capybara', '~> 3.9'
 
