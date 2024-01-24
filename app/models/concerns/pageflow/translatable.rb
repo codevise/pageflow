@@ -12,6 +12,11 @@ module Pageflow
                through: :translation_group,
                source: :entries)
 
+      has_many(:published_translations,
+               -> { published_without_password_protection },
+               through: :translation_group,
+               source: :entries)
+
       after_destroy do
         if translation_group&.single_item_or_empty?
           translation_group.destroy

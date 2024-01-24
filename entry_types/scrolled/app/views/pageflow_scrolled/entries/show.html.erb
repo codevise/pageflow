@@ -9,6 +9,7 @@
 
       <%= social_share_meta_tags_for(entry) %>
       <%= meta_tags_for_entry(entry) %>
+      <%= hreflang_link_tags_for_entry(entry) unless local_assigns[:skip_hreflang_link_tags] %>
       <%= feed_link_tags_for_entry(entry) unless local_assigns[:skip_feed_link_tags] %>
 
       <%= scrolled_favicons_for_entry(entry, entry_mode: widget_scope) %>

@@ -2,7 +2,7 @@ module Pageflow
   # @api private
   class EntryTranslationGroup < ApplicationRecord
     has_many :entries,
-             -> { order('title ASC') },
+             -> { order(title: :asc) },
              foreign_key: 'translation_group_id',
              dependent: :nullify
 

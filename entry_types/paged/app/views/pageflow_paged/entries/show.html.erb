@@ -12,6 +12,7 @@
 
     <%= tag :link, :rel => 'icon', :href => image_path("pageflow/themes/#{@entry.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
     <%= meta_tags_for_entry(@entry) %>
+    <%= hreflang_link_tags_for_entry(@entry) %>
     <%= feed_link_tags_for_entry(@entry) %>
   <% end %>
 <% end %>

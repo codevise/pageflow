@@ -5,7 +5,9 @@ module Pageflow
 
     attr_accessor :share_target
 
-    delegate(:authenticate, to: :entry)
+    delegate(:authenticate,
+             :default_translation?,
+             to: :entry)
 
     delegate(:password_protected?, to: :revision)
 
@@ -16,6 +18,12 @@ module Pageflow
 
     def title
       revision.title.presence || entry.title
+    end
+
+    def translations(scope = -> { self })
+      self.class.wrap_all(
+        entry.published_translations.instance_exec(&scope)
+      )
     end
 
     def stylesheet_model
@@ -55,10 +63,9 @@ module Pageflow
       )
     end
 
-    def self.wrap_all(scope)
-      scope
-        .includes(:published_revision)
-        .map { |entry| new(entry) }
+    def self.wrap_all(entries)
+      entries = entries.includes(:published_revision) unless entries.loaded?
+      entries.map { |entry| new(entry) }
     end
 
     def cache_key
