@@ -5,6 +5,9 @@ Pageflow.configure do |config|
   config.admin_resource_tabs.register(:entry,
                                       name: :revisions,
                                       component: Pageflow::Admin::RevisionsTab)
+  config.admin_resource_tabs.register(:entry,
+                                      name: :translations,
+                                      component: Pageflow::Admin::EntryTranslationsTab)
 
   config.admin_resource_tabs.register(:user,
                                       name: :accounts,

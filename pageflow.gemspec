@@ -171,6 +171,9 @@ Gem::Specification.new do |s|
   # Use assigns in controller specs
   s.add_development_dependency 'rails-controller-testing', '~> 1.0'
 
+  # Detect N+1 queries
+  s.add_development_dependency 'prosopite', '~> 1.4'
+
   # Browser like integration testing
   s.add_development_dependency 'capybara', '~> 3.9'
 
@@ -208,7 +211,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'ammeter', '~> 1.1'
 
   # Ruby code linter
-  s.add_development_dependency 'rubocop', '~> 0.54.0'
+  s.add_development_dependency 'rubocop', '~> 1.60'
 
   # Scss code linter
   s.add_development_dependency 'scss_lint', '~> 0.60.0'

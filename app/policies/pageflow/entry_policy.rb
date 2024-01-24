@@ -99,7 +99,11 @@ module Pageflow
     end
 
     def duplicate?
-      publish?
+      query.has_at_least_role?(:publisher)
+    end
+
+    def manage_translations?
+      query.has_at_least_account_role?(:publisher)
     end
 
     def manage?

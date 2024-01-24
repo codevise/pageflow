@@ -1,0 +1,34 @@
+en:
+  pageflow:
+    admin:
+      resource_tabs:
+        translations: Translations
+      entry_translations:
+        add: Link translation
+        entry_id: Entry
+        id: Translation(s)
+        new_hint_html: |-
+          Associate entries that represent the same content in
+          different languages.
+        create_model: Link as translation
+        no_translations: No linked entries
+        remove: Remove
+        remove_confirmation: |-
+          Are you sure you want to remove the entry from the list of translations?
+        mark_as_default: Mark as default
+        mark_as_default_confirmation: |-
+          Really mark this translation as default?
+        default_translation: "%{display_locale} (Standard)"
+        default_translation_hint: |-
+          Search engines fall back to the default language if no
+          translation is available that matches the user's language
+          settings.
+  activerecord:
+    models:
+      translation:
+        one: Translation
+        other: Translations
+  active_admin:
+    resources:
+      translations:
+        new_model: Link translation

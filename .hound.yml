@@ -1,5 +1,6 @@
 ruby:
   config_file: .rubocop.yml
+  enabled: false
 javascript:
   config_file: .jshintrc
   ignore_file: .jshintignore

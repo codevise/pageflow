@@ -213,6 +213,83 @@ module Pageflow
       end
     end
 
+    describe '#translations' do
+      it 'returns published entries for published translations of entry' do
+        entry = create(:entry, :published)
+        translation = create(:entry, :published)
+        entry.mark_as_translation_of(translation)
+        published_entry = PublishedEntry.new(entry)
+
+        result = published_entry.translations
+
+        expect(result.length).to eq(2)
+        expect(result[0]).to be_kind_of(PublishedEntry)
+        expect(result[0].title).to eq(entry.title)
+        expect(result[1]).to be_kind_of(PublishedEntry)
+        expect(result[1].title).to eq(translation.title)
+      end
+
+      it 'filters out non-published entries' do
+        entry = create(:entry, :published)
+        translation = create(:entry)
+        entry.mark_as_translation_of(translation)
+        published_entry = PublishedEntry.new(entry)
+
+        result = published_entry.translations
+
+        expect(result.length).to eq(1)
+        expect(result[0].title).to eq(entry.title)
+      end
+
+      it 'filters out password protected entries' do
+        entry = create(:entry, :published)
+        translation = create(:entry, :published_with_password)
+        entry.mark_as_translation_of(translation)
+        published_entry = PublishedEntry.new(entry)
+
+        result = published_entry.translations
+
+        expect(result.length).to eq(1)
+        expect(result[0].title).to eq(entry.title)
+      end
+
+      it 'filters out noindex entries' do
+        entry = create(:entry, :published)
+        translation = create(:entry, :published_with_noindex)
+        entry.mark_as_translation_of(translation)
+        published_entry = PublishedEntry.new(entry)
+
+        result = published_entry.translations
+
+        expect(result.length).to eq(1)
+        expect(result[0].title).to eq(entry.title)
+      end
+
+      it 'allows modifying the entries scope' do
+        entry = create(:entry, :published)
+        translation = create(:entry, :published, permalink_attributes: {slug: 'some-slug'})
+        entry.mark_as_translation_of(translation)
+        published_entry = PublishedEntry.new(entry)
+
+        result = published_entry.translations(-> { preload(:permalink) })
+
+        expect(result[0].entry.association(:permalink).loaded?).to eq(true)
+      end
+
+      it 'uses already preloaded published translations' do
+        entry = create(:entry, :published)
+        translation = create(:entry, :published, permalink_attributes: {slug: 'some-slug'})
+        entry.mark_as_translation_of(translation)
+        published_entry = PublishedEntry.new(
+          Entry.preload(translation_group: {publicly_visible_entries: :permalink}).find(entry.id)
+        )
+
+        result = published_entry.translations
+
+        expect(result[0].entry.association(:permalink).loaded?).to eq(true)
+      end
+    end
+
     describe '.find' do
       it 'finds published entry' do
         entry = create(:entry, :published)
@@ -377,7 +454,9 @@ module Pageflow
                published_revision_attributes: {title: 'Story Two'})
         create(:entry)
 
-        result = PublishedEntry.wrap_all(Entry.published)
+        result = detect_n_plus_one_queries do
+          PublishedEntry.wrap_all(Entry.published)
+        end
 
         expect(result.map(&:title)).to eq(['Story One', 'Story Two'])
       end

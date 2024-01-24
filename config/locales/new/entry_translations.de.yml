@@ -1,0 +1,34 @@
+de:
+  pageflow:
+    admin:
+      resource_tabs:
+        translations: Übersetzungen
+      entry_translations:
+        add: Übersetzung zuordnen
+        entry_id: Beitrag
+        id: Übersetzung(en)
+        new_hint_html: |-
+          Verknüpfe Beiträge, die denselben Inhalt in verschiedenen
+          Sprachen darstellen.
+        create_model: Als Übersetzung zuordnen
+        no_translations: Keine Beiträge zugeordnet
+        remove: Entfernen
+        remove_confirmation: |-
+          Beitrag wirklich aus der Liste der Übersetzungen entfernen?
+        mark_as_default: Als Standard markieren
+        mark_as_default_confirmation: |-
+          Beitrag wirklich as Standardübersetzung markieren?
+        default_translation: "%{display_locale} (Standard)"
+        default_translation_hint: |-
+          Suchmaschinen verwenden den als Standard markierten Beitrag,
+          falls keine Übersetzung verfügbar ist, die den
+          Spracheinstellungen des Besuchers entspricht.
+  activerecord:
+    models:
+      translation:
+        one: Übersetzung
+        other: Übersetzungen
+  active_admin:
+    resources:
+      translations:
+        new_model: Übersetzung zuordnen

@@ -205,6 +205,7 @@ module Pageflow
       helper Admin::FormHelper
       helper Admin::MembershipsHelper
       helper Admin::RevisionsHelper
+      helper Admin::EntryTranslationsHelper
 
       helper_method :account_policy_scope
       helper_method :site_policy_scope

@@ -7,6 +7,7 @@ module Pageflow
     include EntryPublicationStates
     include Permalinkable
     include SerializationBlacklist
+    include Translatable
 
     extend FriendlyId
     friendly_id :slug_candidates, :use => [:finders, :slugged]
