@@ -6,7 +6,3 @@ set -ex
 rm -f ./entry_types/scrolled/package/frontend/*
 
 yarn run build
-
-(cd ./entry_types/paged/packages/pageflow-paged-react;
- yarn install --frozen-lockfile;
- NODE_OPTIONS=--openssl-legacy-provider yarn run build)

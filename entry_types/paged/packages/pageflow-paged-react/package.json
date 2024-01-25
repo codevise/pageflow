@@ -4,9 +4,6 @@
   "description": "React/Redux based JavaScript.",
   "main": "src/index.js",
   "scripts": {
-    "start": "NODE_ENV=development webpack --watch --mode=development",
-    "build": "NODE_ENV=production webpack --production --mode=production",
-    "build-dev": "NODE_ENV=development webpack --mode=development",
     "test": "jest",
     "lint": "eslint src spec"
   },
