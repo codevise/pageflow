@@ -898,9 +898,3 @@ en:
       type_text: Type some text
       type_title: Title
       url_placeholder: Type or paste URL
-    public:
-      third_party_consent:
-        opt_in_prompt:
-          twitter: I agree with being shown content from Twitter.
-      twitter:
-        default_title: Tweet

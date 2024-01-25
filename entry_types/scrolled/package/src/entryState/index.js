@@ -1,6 +1,7 @@
 export {useAdditionalSeedData} from './additionalSeedData';
 export {useContentElementConsentVendor} from './consentVendors';
 export {useShareProviders, useShareUrl} from './sharing';
+export {useEntryTranslations} from './entryTranslations';
 export {useEntryMetadata} from './metadata';
 export {
   useEntryStructure,
