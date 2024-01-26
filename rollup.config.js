@@ -333,7 +333,7 @@ const pageflowScrolled = [
 
 export default [
   ...pageflow,
+  ...pageflowScrolled,
   ...pageflowPaged,
-  ...pageflowPagedReact,
-  ...pageflowScrolled
+  ...pageflowPagedReact
 ]
