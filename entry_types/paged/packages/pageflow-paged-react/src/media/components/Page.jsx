@@ -8,10 +8,7 @@ import {
   PageText
 } from 'components';
 
-import {
-  PagePrintImage
-} from 'media';
-
+import PagePrintImage from './PagePrintImage';
 import MediaPlayerControls from './PlayerControls';
 import NonJsLinks from './NonJsLinks';
 import playerStateClassNames from './playerStateClassNames';

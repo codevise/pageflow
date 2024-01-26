@@ -1,27 +1,35 @@
 {
   "private": true,
-  "workspaces": [
-    "package",
-    "entry_types/paged/packages/pageflow-paged",
-    "entry_types/scrolled/package"
-  ],
+  "workspaces": {
+    "packages": [
+      "package",
+      "entry_types/paged/packages/pageflow-paged",
+      "entry_types/paged/packages/pageflow-paged-react",
+      "entry_types/scrolled/package"
+    ],
+    "nohoist": ["**/pageflow-paged-react/**"]
+  },
   "devDependencies": {
     "@babel/core": "^7.8.3",
     "@rollup/plugin-alias": "^2.2.0",
     "@rollup/plugin-image": "^2.1.1",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "@rollup/plugin-replace": "^5.0.5",
     "autoprefixer": "^9.7.6",
     "babel-preset-react-app": "^9.1.2",
     "rollup": "^1.26.3",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-jst": "^1.2.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-postcss": "^2.0.3",
     "rollup-plugin-react-svg": "^3.0.3"
   },
   "scripts": {
     "start": "NODE_ENV=development rollup --config rollup.config.js --watch",
     "build": "NODE_ENV=production rollup --config rollup.config.js"
+  },
+  "resolutions": {
+    "jest-environment-jsdom": "27.0.6"
   },
   "dependencies": {}
 }

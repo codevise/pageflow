@@ -1,17 +1,20 @@
 import alias from '@rollup/plugin-alias';
 import jst from 'rollup-plugin-jst';
-import resolve from 'rollup-plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import replace from '@rollup/plugin-replace';
 import babel from 'rollup-plugin-babel';
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import reactSvg from "rollup-plugin-react-svg";
 import image from '@rollup/plugin-image';
 import scaleFunctions from 'pageflow/config/postcss/scaleFunctions';
+import path from 'path'
 
 const pageflowPackageRoot = 'package';
 const pageflowPagedEngineRoot = 'entry_types/paged';
 const pageflowPagedPackageRoot = pageflowPagedEngineRoot + '/packages/pageflow-paged';
+const pageflowPagedReactPackageRoot = pageflowPagedEngineRoot + '/packages/pageflow-paged-react';
 const pageflowScrolledPackageRoot = 'entry_types/scrolled/package';
 
 const frontendGlobals = {
@@ -42,7 +45,7 @@ function external(id) {
   return !['.', '/', '$'].includes(id[0]);
 }
 
-const plugins = ({extractCss} = {}) => [
+const plugins = ({extractCss, moduleDirectories} = {}) => [
   postcss({
     modules: true,
     extract: extractCss,
@@ -63,10 +66,17 @@ const plugins = ({extractCss} = {}) => [
     runtimeHelpers: true
   }),
   jst(),
-  resolve(),
+  resolve({
+    moduleDirectories: moduleDirectories || ['node_modules'],
+    extensions: ['.js', '.jsx']
+  }),
   commonjs({
+    exclude: ['**/node_modules/symbol-observable/es/*.js'],
     namedExports: {
-      'node_modules/esrever/esrever.js': ['reverse']
+      'node_modules/esrever/esrever.js': ['reverse'],
+      'node_modules/react-is/index.js': ['isValidElementType'],
+      'entry_types/paged/packages/pageflow-paged-react/node_modules/react-is/index.js': ['isValidElementType'],
+      'entry_types/paged/packages/pageflow-paged-react/node_modules/react-draggable/dist/react-draggable.js': ['DraggableCore']
     }
   }),
   reactSvg({
@@ -189,6 +199,56 @@ const pageflowPaged = [
   }
 ];
 
+const pageflowPagedReact = ['client', 'server'].map(target => {
+  var targetGlobals = {
+    client: {
+      'backbone': 'Backbone',
+      'react-dom': 'ReactDOM'
+    },
+    server: {
+      'backbone': '{}',
+      'react-dom': '{}',
+      'react-wavesurfer': '{}'
+    }
+  };
+
+  const globals = {
+    'pageflow': 'pageflow',
+    'react': 'React',
+    ...targetGlobals[target]
+  };
+
+  return {
+    input: `${pageflowPagedReactPackageRoot}/src/index.js`,
+    output: {
+      file: `${pageflowPagedEngineRoot}/app/assets/javascripts/pageflow_paged/dist/react-${target}.js`,
+      format: 'iife',
+      name: 'pageflow.react',
+      globals
+    },
+    external: Object.keys(globals),
+    plugins: [
+      alias({
+        entries: {
+          'redux-saga/effects': __dirname + '/entry_types/paged/packages/pageflow-paged-react/node_modules/redux-saga/es/effects',
+        }
+      }),
+      ...plugins({
+        moduleDirectories: [
+          'node_modules',
+          path.resolve(__dirname, `${pageflowPagedReactPackageRoot}/src`)
+        ]
+      }),
+      replace({
+        preventAssignment: true,
+        values: {
+          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        }
+      })
+    ]
+  };
+});
+
 // pageflow-scrolled
 
 const pageflowScrolled = [
@@ -273,6 +333,7 @@ const pageflowScrolled = [
 
 export default [
   ...pageflow,
+  ...pageflowScrolled,
   ...pageflowPaged,
-  ...pageflowScrolled
+  ...pageflowPagedReact
 ]
