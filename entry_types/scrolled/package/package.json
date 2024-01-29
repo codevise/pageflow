@@ -43,7 +43,8 @@
   },
   "devDependencies": {
     "@percy-io/in-percy": "^0.1.11",
-    "@percy/storybook": "^3.2.0",
+    "@percy/cli": "^1.27.7",
+    "@percy/storybook": "^5.0.1",
     "@storybook/addon-viewport": "^7.6.10",
     "@storybook/react": "^7.6.10",
     "@storybook/react-webpack5": "^7.6.10",
@@ -83,6 +84,6 @@
     "lint": "eslint .",
     "start-storybook": "storybook dev",
     "build-storybook": "storybook build -o .storybook/out",
-    "snapshot": "storybook build --quiet -o .storybook/out && PERCY_TOKEN=${PERCY_TOKEN:-$PT} percy-storybook --widths=1280 --build_dir=.storybook/out"
+    "snapshot": "storybook build --quiet -o .storybook/out && PERCY_TOKEN=${PERCY_TOKEN:-$PT} percy storybook .storybook/out"
   }
 }
