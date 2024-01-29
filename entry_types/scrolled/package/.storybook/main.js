@@ -23,8 +23,10 @@ module.exports = {
       module: {
         ...config.module,
         rules: [
-          ...removeSvgFromFileLoader(
-            config.module.rules
+          ...addPostCssLoader(
+            removeSvgFromFileLoader(
+              config.module.rules
+            )
           ),
           reactSvgLoader(),
         ]
@@ -67,6 +69,24 @@ function removeSvgFromFileLoader(rules) {
     return {
       ...rule,
       test: new RegExp(rule.test.toString().replace('svg|', ''))
+    };
+  });
+}
+
+function addPostCssLoader(rules) {
+  return rules.map(rule => {
+    if (!rule.test || rule.test.toString() !== '/\\.css$/') {
+      return rule;
+    }
+
+    return {
+      ...rule,
+      use: [
+        ...rule.use,
+        {
+          loader: 'postcss-loader'
+        }
+      ]
     };
   });
 }
