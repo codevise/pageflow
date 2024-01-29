@@ -5,10 +5,8 @@ import commonjs from 'rollup-plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import babel from 'rollup-plugin-babel';
 import postcss from 'rollup-plugin-postcss';
-import autoprefixer from 'autoprefixer';
 import reactSvg from "rollup-plugin-react-svg";
 import image from '@rollup/plugin-image';
-import scaleFunctions from 'pageflow/config/postcss/scaleFunctions';
 import path from 'path'
 
 const pageflowPackageRoot = 'package';
@@ -49,11 +47,7 @@ const plugins = ({extractCss, moduleDirectories} = {}) => [
   postcss({
     modules: true,
     extract: extractCss,
-    minimize: extractCss,
-    plugins: [
-      scaleFunctions,
-      autoprefixer
-    ]
+    minimize: extractCss
   }),
   babel({
     exclude: 'node_modules/**',
