@@ -2,7 +2,8 @@ module.exports = {
   "extends": [
     "react-app",
     "plugin:import/errors",
-    "plugin:import/warnings"
+    "plugin:import/warnings",
+    "plugin:storybook/recommended"
   ],
   "settings": {
     "import/resolver": {
