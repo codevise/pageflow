@@ -1,4 +1,4 @@
-export default function(player, actions) {
+export function watchPlayer(player, actions) {
   player.on('loadedmetadata', () => actions.metaDataLoaded(player.currentTime(), player.duration()));
   player.on('loadeddata', () => actions.dataLoaded());
 
@@ -13,33 +13,37 @@ export default function(player, actions) {
   player.on('bufferunderrun', actions.bufferUnderrun);
   player.on('bufferunderruncontinue', actions.bufferUnderrunContinue);
 
-  player.on('timeupdate', () => actions.timeUpdate(player.currentTime(), player.duration()));
+  player.on('timeupdate', handleTimeUpdate);
 
   player.on('ended', actions.ended);
 
   player.one('loadedmetadata', () => actions.saveMediaElementId(player.getMediaElement().id));
-}
 
-export function unwatchPlayer(player, actions) {
-  player.off('loadedmetadata');
-  player.off('loadeddata');
+  function handleTimeUpdate() {
+    actions.timeUpdate(player.currentTime(), player.duration());
+  }
 
-  player.off('progress');
+  return () => {
+    player.off('loadedmetadata');
+    player.off('loadeddata');
 
-  player.off('play', actions.playing);
-  player.off('playfailed', actions.playFailed);
-  player.off('pause', actions.paused);
-  player.off('waiting', actions.waiting);
-  player.off('seeking', actions.seeking);
-  player.off('seeked', actions.seeked);
-  player.off('bufferunderrun', actions.bufferUnderrun);
-  player.off('bufferunderruncontinue', actions.bufferUnderrunContinue);
+    player.off('progress');
 
-  player.off('timeupdate');
-  
-  player.off('canplay');
+    player.off('play', actions.playing);
+    player.off('playfailed', actions.playFailed);
+    player.off('pause', actions.paused);
+    player.off('waiting', actions.waiting);
+    player.off('seeking', actions.seeking);
+    player.off('seeked', actions.seeked);
+    player.off('bufferunderrun', actions.bufferUnderrun);
+    player.off('bufferunderruncontinue', actions.bufferUnderrunContinue);
 
-  player.off('ended', actions.ended);
+    player.off('timeupdate', handleTimeUpdate);
 
-  actions.discardMediaElementId();
+    player.off('canplay');
+
+    player.off('ended', actions.ended);
+
+    actions.discardMediaElementId();
+  };
 }

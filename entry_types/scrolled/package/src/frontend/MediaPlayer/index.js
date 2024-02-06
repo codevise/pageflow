@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import PlayerContainer from './PlayerContainer';
 import ScrollToSectionContext from "../ScrollToSectionContext";
-import watchPlayer, {unwatchPlayer} from './watchPlayer';
+import {watchPlayer} from './watchPlayer';
 import {applyPlayerState} from './applyPlayerState';
 import {updatePlayerState} from './updatePlayerState';
 import {updateObjectPosition} from './updateObjectPosition';
@@ -60,18 +60,19 @@ function PreparedMediaPlayer(props){
   let previousPlayerState = useRef(props.playerState);
   let scrollToSection = useContext(ScrollToSectionContext);
   let eventContextData = useEventContextData();
+  let unwatchPlayer;
 
   let onSetup = (newPlayer)=>{
     playerRef.current = newPlayer;
     newPlayer.on('ended', () => props.nextSectionOnEnd && scrollToSection('next'));
 
-    watchPlayer(newPlayer, props.playerActions);
+    unwatchPlayer = watchPlayer(newPlayer, props.playerActions);
     applyPlayerState(newPlayer, props.playerState, props.playerActions)
     updateObjectPosition(newPlayer, props.objectPosition.x, props.objectPosition.y)
   }
 
   let onDispose = ()=>{
-    unwatchPlayer(playerRef.current, props.playerActions);
+    unwatchPlayer();
     playerRef.current = undefined;
   }
 
