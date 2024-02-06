@@ -93,6 +93,8 @@ export class MediaPool {
         player.releaseCallback();
         player.releaseCallback = null;
       }
+
+      player.pause();
     }
   }
   blessAll(value){
