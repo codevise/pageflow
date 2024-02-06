@@ -222,7 +222,7 @@ describe('MediaPlayer', () => {
     expect(media.releasePlayer).toHaveBeenCalledWith(player);
   });
 
-  it('does release player on unmount if it has been released by pool already', () => {
+  it('does not release player on unmount if it has been released by pool already', () => {
     const {getPlayer, unmount} =
       render(<MediaPlayer {...requiredProps()}
                           sources={getVideoSources({basename: 'example'})} />);
@@ -510,5 +510,26 @@ describe('MediaPlayer', () => {
     player.trigger('loadeddata');
 
     expect(dataLoadedAction).toHaveBeenCalled();
+  });
+
+  it('does not remove other event listeners when component is unmounted', () => {
+    const saveMediaElementIdAction = jest.fn();
+    const actions = {
+      ...getPlayerActions(),
+      saveMediaElementId: saveMediaElementIdAction
+    };
+    const listener = jest.fn();
+
+    const {getPlayer, unmount} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          filePermaId={5}
+                          playerActions={actions} />);
+    const player = getPlayer();
+    player.on('timeupdate', listener);
+    unmount();
+    player.trigger('timeupdate');
+
+    expect(listener).toHaveBeenCalled();
   });
 });
