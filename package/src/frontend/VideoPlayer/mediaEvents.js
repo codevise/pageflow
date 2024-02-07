@@ -10,7 +10,7 @@ export const mediaEvents = function(player, context) {
   function triggerMediaEvent(name) {
     if (context) {
       events.trigger('media:' + name, {
-        fileName: player.currentSrc(),
+        fileName: player.previousSrc || player.currentSrc(),
         context: context,
         currentTime: player.currentTime(),
         duration: player.duration(),

@@ -64,6 +64,7 @@ export class MediaPool {
 
       player.playerId = playerId || this.allocatedPlayers[playerType].length
       player.releaseCallback = onRelease;
+      player.previousSrc = null;
 
       return player;
     }
@@ -78,6 +79,8 @@ export class MediaPool {
     if (player) {
       let type = this.getMediaTypeFromEl(player.el());
       this.allocatedPlayers[type] = this.allocatedPlayers[type].filter(p=>p!=player);
+
+      player.previousSrc = player.currentSrc();
 
       player.controls(false);
       player.getMediaElement().loop = false;

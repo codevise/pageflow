@@ -148,6 +148,19 @@ describe('MediaPool', function() {
 
       expect(callback).toHaveBeenCalled();
     });
+
+    it('stores previous src until reallocated', function () {
+      let pool = new MediaPool();
+      let player = pool.allocatePlayer({playerType: MediaType.VIDEO});
+      player.src('www.example.com/test.mp4');
+      expect(player.getMediaElement().hasAttribute('src')).toBe(true);
+
+      pool.unAllocatePlayer(player);
+      expect(player.previousSrc).toStrictEqual('www.example.com/test.mp4');
+
+      player = pool.allocatePlayer({playerType: MediaType.VIDEO});
+      expect(player.previousSrc).toBeNull();
+    });
   });
 
   describe('#blessAll', function() {
