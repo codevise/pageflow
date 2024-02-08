@@ -14,6 +14,14 @@ module Pageflow
       entry.title
     end
 
+    def translations(scope = -> { self })
+      return [] unless entry.translation_group
+
+      PublishedEntry.wrap_all_drafts(
+        entry.translation_group.entries.instance_exec(&scope)
+      )
+    end
+
     def create_file!(file_type, attributes)
       check_foreign_key_custom_attributes(file_type.custom_attributes, attributes)
 
@@ -75,6 +83,10 @@ module Pageflow
 
     def stylesheet_cache_key
       draft.cache_key
+    end
+
+    def published_revision?
+      false
     end
 
     private

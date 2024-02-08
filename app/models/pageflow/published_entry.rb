@@ -23,9 +23,15 @@ module Pageflow
     def translations(scope = -> { self })
       return [] unless entry.translation_group
 
-      self.class.wrap_all(
-        entry.translation_group.publicly_visible_entries.instance_exec(&scope)
-      )
+      if published_revision?
+        self.class.wrap_all(
+          entry.translation_group.publicly_visible_entries.instance_exec(&scope)
+        )
+      else
+        self.class.wrap_all_drafts(
+          entry.translation_group.entries.instance_exec(&scope)
+        )
+      end
     end
 
     def stylesheet_model
@@ -85,6 +91,10 @@ module Pageflow
         revision.cache_version,
         site.cache_version
       ].compact.join('-').presence
+    end
+
+    def published_revision?
+      !custom_revision?
     end
 
     private

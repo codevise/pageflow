@@ -11,6 +11,8 @@ module Pageflow
 
         with_feature { nil }
         without_feature { nil }
+
+        translation_of { nil }
       end
 
       initialize_with do
@@ -27,6 +29,12 @@ module Pageflow
       end
 
       to_create { |published_entry| published_entry.entry.save! }
+
+      after(:create) do |published_entry, evaluator|
+        if evaluator.translation_of
+          published_entry.entry.mark_as_translation_of(evaluator.translation_of.to_model)
+        end
+      end
     end
   end
 end

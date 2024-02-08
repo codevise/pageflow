@@ -744,6 +744,85 @@ module PageflowScrolled
                                          }
                                        })
       end
+
+      context 'entry translations' do
+        it 'renders links to published translations of published entry' do
+          de_entry = create(
+            :published_entry,
+            type_name: 'scrolled',
+            title: 'entry-de',
+            revision_attributes: {locale: 'de'}
+          )
+          en_entry = create(
+            :published_entry,
+            translation_of: de_entry,
+            type_name: 'scrolled',
+            title: 'entry-en',
+            revision_attributes: {locale: 'en'}
+          )
+          create(
+            :draft_entry,
+            translation_of: de_entry,
+            type_name: 'scrolled',
+            title: 'entry-fr',
+            revision_attributes: {locale: 'fr'}
+          )
+
+          result = detect_n_plus_one_queries do
+            render(helper, en_entry)
+          end
+
+          expect(result).to include_json(config: {
+                                           entryTranslations: [
+                                             {
+                                               id: de_entry.id,
+                                               locale: 'de',
+                                               displayLocale: 'Deutsch',
+                                               url: 'http://test.host/entry-de'
+                                             },
+                                             {
+                                               id: en_entry.id,
+                                               locale: 'en',
+                                               displayLocale: 'English',
+                                               url: 'http://test.host/entry-en'
+                                             }
+                                           ]
+                                         })
+        end
+
+        it 'renders links all translations of draft entry' do
+          de_entry = create(:draft_entry,
+                            type_name: 'scrolled',
+                            title: 'draft-entry-de',
+                            revision_attributes: {locale: 'de'})
+          en_entry = create(:draft_entry,
+                            translation_of: de_entry,
+                            type_name: 'scrolled',
+                            title: 'draft-entry-en',
+                            revision_attributes: {locale: 'en'})
+
+          result = detect_n_plus_one_queries do
+            render(helper, en_entry)
+          end
+
+          expect(result).to include_json(config: {
+                                           entryTranslations: [
+                                             {
+                                               id: de_entry.id,
+                                               locale: 'de',
+                                               displayLocale: 'Deutsch',
+                                               url: '/admin/entries/draft-entry-de/preview'
+                                             },
+                                             {
+                                               id: en_entry.id,
+                                               locale: 'en',
+                                               displayLocale: 'English',
+                                               url: '/admin/entries/draft-entry-en/preview'
+                                             }
+                                           ]
+                                         })
+        end
+      end
     end
 
     describe '#scrolled_entry_json_seed_script_tag' do
