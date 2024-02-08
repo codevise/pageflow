@@ -47,7 +47,16 @@
        * +---------------------------------------------------+
        */
       width: auto;
-      clip-path: polygon(20% 0, 79% 0, 79% var(--default-navigation-chapter-link-height), 100% var(--default-navigation-chapter-link-height), 100% 400%, 0 400%, 0 var(--default-navigation-chapter-link-height), 20% var(--default-navigation-chapter-link-height));
+      clip-path: polygon(
+        20% 0,
+        calc(100% - var(--default-navigation-scroller-right)) 0,
+        calc(100% - var(--default-navigation-scroller-right)) var(--default-navigation-chapter-link-height),
+        100% var(--default-navigation-chapter-link-height),
+        100% 400%,
+        0 400%,
+        0 var(--default-navigation-chapter-link-height),
+        20% var(--default-navigation-chapter-link-height)
+      );
 
       /* First gradient covers chapter list to soften clipping edge left and
        * right. Second gradient covers lower area to prevent tooltips
@@ -57,8 +66,8 @@
                             transparent 0%,
                             transparent 20%,
                             black 22%,
-                            black 77%,
-                            transparent 79%,
+                            black calc(100% - var(--default-navigation-scroller-right) - 2%),
+                            transparent calc(100% - var(--default-navigation-scroller-right)),
                             transparent 100%) top,
             linear-gradient(to right,
                             black 0%,
@@ -73,7 +82,7 @@
        * ensure first/last chapter is not hidden by logo/buttons.
        */
       display: inline-block;
-      margin: 0 22%;
+      margin: 0 calc(var(--default-navigation-scroller-right) + 1%) 0 22%;
     }
   }
 }

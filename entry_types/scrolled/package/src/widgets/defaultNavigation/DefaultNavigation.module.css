@@ -21,6 +21,8 @@
   --default-navigation-separator-color:
     var(--theme-default-navigation-separator-color, #e9e9e9);
 
+  --default-navigation-scroller-right: 21%;
+
   font-family: var(--theme-widget-font-family);
   position: fixed;
   top: calc(-1 * var(--default-navigation-bar-height));
@@ -30,6 +32,10 @@
   text-align: center;
   height: 0;
   user-select: none;
+}
+
+.navigationBar:has(.contextIcons > :nth-child(4)) {
+  --default-navigation-scroller-right: 26%;
 }
 
 .navigationBarExpanded {
