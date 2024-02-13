@@ -2,6 +2,34 @@ require 'spec_helper'
 
 module Pageflow
   describe DraftEntry do
+    describe '#translations' do
+      it 'returns published entries for translations of entry' do
+        entry = create(:entry)
+        translation = create(:entry)
+        entry.mark_as_translation_of(translation)
+        draft_entry = DraftEntry.new(entry)
+
+        result = draft_entry.translations
+
+        expect(result.length).to eq(2)
+        expect(result[0]).to be_kind_of(PublishedEntry)
+        expect(result[0].title).to eq(entry.title)
+        expect(result[1]).to be_kind_of(PublishedEntry)
+        expect(result[1].title).to eq(translation.title)
+      end
+
+      it 'allows modifying the entries scope' do
+        entry = create(:entry)
+        translation = create(:entry, permalink_attributes: {slug: 'some-slug'})
+        entry.mark_as_translation_of(translation)
+        draft_entry = DraftEntry.new(entry)
+
+        result = draft_entry.translations(-> { preload(:permalink) })
+
+        expect(result[0].entry.association(:permalink).loaded?).to eq(true)
+      end
+    end
+
     describe '#find_files' do
       it 'returns files of given type' do
         entry = create(:entry)

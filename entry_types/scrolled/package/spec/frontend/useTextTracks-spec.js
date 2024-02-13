@@ -20,6 +20,7 @@ describe('useTextTracks', () => {
   const videoFile2CaptionsDePermaId = 4100;
 
   const seed = {
+    entry: {locale: 'en'},
     videoFiles: [
       {id: videoFile1Id, permaId: videoFile1PermaId},
       {id: videoFile2Id, permaId: videoFile2PermaId}
@@ -108,7 +109,7 @@ describe('useTextTracks', () => {
     expect(result.current).toMatchObject({
       activeFileId: videoFile1CaptionsDeId,
       mode: 'user',
-      autoDisplayLabel: 'Auto (Off)'
+      autoDisplayLabel: 'Auto (English)'
     });
   });
 
@@ -122,7 +123,7 @@ describe('useTextTracks', () => {
     expect(result.current).toMatchObject({
       activeFileId: null,
       mode: 'off',
-      autoDisplayLabel: 'Auto (Off)'
+      autoDisplayLabel: 'Auto (English)'
     });
   });
 
@@ -155,12 +156,16 @@ describe('useTextTracks', () => {
     const {result} = renderHookInEntry(() => useTextTracks({
       file: useFile({collectionName: 'videoFiles', permaId: videoFile1PermaId}),
       captionsByDefault: true
-    }), {seed});
+    }), {
+      seed: {
+        ...seed,
+        entry: {locale: 'fr'}
+      }
+    });
 
     expect(result.current).toMatchObject({
       activeFileId: videoFile1CaptionsDeId,
-      mode: 'auto',
-      autoDisplayLabel: 'Auto (Unknown)'
+      mode: 'auto'
     });
   });
 
@@ -170,8 +175,8 @@ describe('useTextTracks', () => {
       captionsByDefault: true
     }), {
       seed: {
+        ...seed,
         entry: {locale: 'en'},
-        ...seed
       }
     });
 

@@ -28,5 +28,5 @@
 
 .end {
   composes: button;
-  left: 79%;
+  left: calc(100% - var(--default-navigation-scroller-right));
 }

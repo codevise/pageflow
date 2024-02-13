@@ -67,5 +67,9 @@ module Pageflow
     def emphasize_new_pages
       revision.configuration['emphasize_new_pages']
     end
+
+    def self.wrap_all_drafts(entries)
+      entries.includes(:draft).map { |entry| new(entry, entry.draft) }
+    end
   end
 end

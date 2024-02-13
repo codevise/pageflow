@@ -11,7 +11,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 describe('MediaPlayerControls', () => {
   useFakeTranslations({
-    'pageflow_scrolled.public.languages.en': 'English',
+    'pageflow_scrolled.public.languages.fr': 'French',
     'pageflow_scrolled.public.text_track_modes.none': 'Off',
     'pageflow_scrolled.public.text_track_modes.auto_off': 'Auto'
   });
@@ -26,8 +26,8 @@ describe('MediaPlayerControls', () => {
       parentFileModelType: 'Pageflow::AudioFile',
       configuration: {
         kind: 'subtitles',
-        srclang: 'en',
-        label: 'English'
+        srclang: 'fr',
+        label: 'French'
       }
     }]
   };
@@ -51,9 +51,9 @@ describe('MediaPlayerControls', () => {
       {seed}
     );
 
-    fireEvent.click(getByRole('menuitemradio', {name: 'English'}));
+    fireEvent.click(getByRole('menuitemradio', {name: 'French'}));
 
-    expect(getByRole('menuitemradio', {name: 'English'})).toHaveAttribute('aria-checked', 'true');
+    expect(getByRole('menuitemradio', {name: 'French'})).toHaveAttribute('aria-checked', 'true');
   });
 
   it('supports turning text tracks off', () => {

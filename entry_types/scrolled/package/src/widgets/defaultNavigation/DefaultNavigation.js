@@ -16,6 +16,7 @@ import {
 import {HamburgerIcon} from './HamburgerIcon'
 import {ChapterLink} from "./ChapterLink";
 import {LegalInfoMenu} from "./LegalInfoMenu";
+import {TranslationsMenu} from "./TranslationsMenu";
 import {SharingMenu} from "./SharingMenu";
 import {ToggleMuteButton} from './ToggleMuteButton';
 import {Logo} from './Logo';
@@ -136,6 +137,7 @@ export function DefaultNavigation({configuration}) {
 
         <div className={classNames(styles.contextIcons)}>
           {!configuration.hideToggleMuteButton && <ToggleMuteButton />}
+          <TranslationsMenu />
           {!theme.options.hideLegalInfoButton &&<LegalInfoMenu tooltipOffset={hideSharingButton ? -40 : 0} />}
           {!hideSharingButton && <SharingMenu shareProviders={shareProviders} />}
         </div>

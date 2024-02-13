@@ -1060,9 +1060,3 @@ de:
       type_text: Text eingeben
       type_title: Titel
       url_placeholder: URL eingeben oder einfügen
-    public:
-      third_party_consent:
-        opt_in_prompt:
-          twitter: Ich bin damit einverstanden, dass Inhalte von Twitter angezeigt werden.
-      twitter:
-        default_title: Tweet

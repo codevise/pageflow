@@ -40,8 +40,8 @@ json.config do
            include_unused: options[:include_unused_additional_seed_data])
   )
 
-  json.partial! 'pageflow_scrolled/entry_json_seed/consent_vendors',
-                entry: entry, entry_config: entry_config
+  json.partial!('pageflow_scrolled/entry_json_seed/consent_vendors', entry:, entry_config:)
+  json.partial!('pageflow_scrolled/entry_json_seed/entry_translations', entry:)
 
   json.file_licenses(
     I18n.t('pageflow.file_licenses', default: {}).slice(*entry_config.available_file_licenses)

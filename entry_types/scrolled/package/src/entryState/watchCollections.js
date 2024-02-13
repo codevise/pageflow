@@ -8,6 +8,7 @@ export function watchCollections(entry, {dispatch}) {
     name: 'entries',
     attributes: [
       'locale',
+      {id: () => entry.id},
       {permaId: () => entry.id}, // Make sure key attribute is present
       {shareProviders: 'share_providers'},
       {shareUrl: 'share_url'},

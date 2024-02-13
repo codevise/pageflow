@@ -722,25 +722,104 @@ module PageflowScrolled
                                            contentElementConsentVendors: be_empty
                                          })
         end
+      end
 
-        it 'renders file licenses' do
-          pageflow_configure do |config|
-            config.available_file_licenses = [:cc_by_4, :cc_by_sa_4]
+      it 'renders file licenses' do
+        pageflow_configure do |config|
+          config.available_file_licenses = [:cc_by_4, :cc_by_sa_4]
+        end
+
+        entry = create(:published_entry,
+                       type_name: 'scrolled',
+                       revision_attributes: {locale: 'de'})
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         fileLicenses: {
+                                           cc_by_4: {
+                                             name: 'CC-BY 4.0',
+                                             url: 'https://creativecommons.org/licenses/by/4.0/'
+                                           }
+                                         }
+                                       })
+      end
+
+      context 'entry translations' do
+        it 'renders links to published translations of published entry' do
+          de_entry = create(
+            :published_entry,
+            type_name: 'scrolled',
+            title: 'entry-de',
+            revision_attributes: {locale: 'de'}
+          )
+          en_entry = create(
+            :published_entry,
+            translation_of: de_entry,
+            type_name: 'scrolled',
+            title: 'entry-en',
+            revision_attributes: {locale: 'en'}
+          )
+          create(
+            :draft_entry,
+            translation_of: de_entry,
+            type_name: 'scrolled',
+            title: 'entry-fr',
+            revision_attributes: {locale: 'fr'}
+          )
+
+          result = detect_n_plus_one_queries do
+            render(helper, en_entry)
           end
 
-          entry = create(:published_entry,
-                         type_name: 'scrolled',
-                         revision_attributes: {locale: 'de'})
+          expect(result).to include_json(config: {
+                                           entryTranslations: [
+                                             {
+                                               id: de_entry.id,
+                                               locale: 'de',
+                                               displayLocale: 'Deutsch',
+                                               url: 'http://test.host/entry-de'
+                                             },
+                                             {
+                                               id: en_entry.id,
+                                               locale: 'en',
+                                               displayLocale: 'English',
+                                               url: 'http://test.host/entry-en'
+                                             }
+                                           ]
+                                         })
+        end
 
-          result = render(helper, entry)
+        it 'renders links all translations of draft entry' do
+          de_entry = create(:draft_entry,
+                            type_name: 'scrolled',
+                            title: 'draft-entry-de',
+                            revision_attributes: {locale: 'de'})
+          en_entry = create(:draft_entry,
+                            translation_of: de_entry,
+                            type_name: 'scrolled',
+                            title: 'draft-entry-en',
+                            revision_attributes: {locale: 'en'})
+
+          result = detect_n_plus_one_queries do
+            render(helper, en_entry)
+          end
 
           expect(result).to include_json(config: {
-                                           fileLicenses: {
-                                             cc_by_4: {
-                                               name: 'CC-BY 4.0',
-                                               url: 'https://creativecommons.org/licenses/by/4.0/'
+                                           entryTranslations: [
+                                             {
+                                               id: de_entry.id,
+                                               locale: 'de',
+                                               displayLocale: 'Deutsch',
+                                               url: '/admin/entries/draft-entry-de/preview'
+                                             },
+                                             {
+                                               id: en_entry.id,
+                                               locale: 'en',
+                                               displayLocale: 'English',
+                                               url: '/admin/entries/draft-entry-en/preview'
                                              }
-                                           }
+                                           ]
                                          })
         end
       end

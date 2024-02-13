@@ -46,10 +46,13 @@ export function normalizeSeed({
   additionalSeedData,
   consentVendors,
   contentElementConsentVendors,
-  fileLicenses
+  fileLicenses,
+  entryTranslations
 } = {}) {
   const entries = entry ? [entry] : [{}];
-  const normalizedEntries = normalizeCollection(entries);
+  const normalizedEntries = normalizeCollection(entries, {
+    locale: 'en'
+  });
 
   const normalizedContentElements = normalizeCollection(contentElements, {
     typeName: 'textBlock',
@@ -87,7 +90,8 @@ export function normalizeSeed({
       },
       consentVendors: consentVendors || [],
       contentElementConsentVendors: contentElementConsentVendors || {},
-      fileLicenses: fileLicenses || {}
+      fileLicenses: fileLicenses || {},
+      entryTranslations: entryTranslations || []
     },
     collections: {
       entries: normalizedEntries,

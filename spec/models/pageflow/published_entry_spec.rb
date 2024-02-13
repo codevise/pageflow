@@ -265,6 +265,25 @@ module Pageflow
         expect(result[0].title).to eq(entry.title)
       end
 
+      it 'supports using drafts' do
+        entry = create(:entry, :published)
+        published_translation = create(:entry, :published)
+        draft_translation = create(:entry)
+        entry.mark_as_translation_of(published_translation)
+        entry.mark_as_translation_of(draft_translation)
+        published_entry = PublishedEntry.new(entry, entry.draft)
+
+        result = published_entry.translations
+
+        expect(result.length).to eq(3)
+        expect(result[0]).to be_kind_of(PublishedEntry)
+        expect(result[0].title).to eq(entry.title)
+        expect(result[1]).to be_kind_of(PublishedEntry)
+        expect(result[1].title).to eq(published_translation.title)
+        expect(result[2]).to be_kind_of(PublishedEntry)
+        expect(result[2].title).to eq(draft_translation.title)
+      end
+
       it 'allows modifying the entries scope' do
         entry = create(:entry, :published)
         translation = create(:entry, :published, permalink_attributes: {slug: 'some-slug'})
