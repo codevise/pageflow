@@ -2,6 +2,7 @@
 import 'array-reverse-polyfill';
 
 import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 import * as actions from 'actions';
 import * as components from 'components';
