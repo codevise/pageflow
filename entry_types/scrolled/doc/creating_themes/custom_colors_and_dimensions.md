@@ -231,6 +231,7 @@ System](https://material.io/design/color/the-color-system.html#color-theme-creat
 | `default_navigation_separator_color` | Color of separator lines between chapters. |
 | `default_navigation_desktop_logo_height` | Height of the logo in the desktop layout. |
 | `default_navigation_mobile_logo_height` | Height of the logo in the mobile layout. |
+| `default_navigation_unmute_animation_color` | Color of the animated circle that is displayed when sound is unmuted. |
 
 The following theme options are supported:
 

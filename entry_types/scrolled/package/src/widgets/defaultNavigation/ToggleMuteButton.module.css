@@ -16,7 +16,7 @@
   z-index: -1;
   width: 10px;
   height: 10px;
-  background-color: #ddd;
+  background-color: var(--theme-default-navigation-unmute-animation-color, #ddd);
   border-radius: 5px;
   animation: pulse 0.5s ease 0.2s 1;
   animation-fill-mode: forwards;
