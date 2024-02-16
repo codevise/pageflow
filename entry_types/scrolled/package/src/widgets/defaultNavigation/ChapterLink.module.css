@@ -26,7 +26,12 @@
 }
 
 .summary {
+  composes: typography-defaultNavigationChapterSummary from global;
+}
+
+.inlineSummary {
   color: var(--theme-widget-on-background-color);
+  padding: 0 10px;
 }
 
 .tooltipBubble {
@@ -34,7 +39,7 @@
 }
 
 @media breakpoint-md {
-  .summary {
+  .inlineSummary {
     display: none;
   }
 

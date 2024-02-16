@@ -20,7 +20,7 @@ export function ChapterLink(props) {
          onClick={() => props.handleMenuClick(props.chapterLinkId)}>
         {presence(props.title) || t('pageflow_scrolled.public.navigation.chapter', {number: props.chapterIndex})}
       </a>
-      {!isBlank(props.summary) && <p className={styles.summary}
+      {!isBlank(props.summary) && <p className={classNames(styles.summary, styles.inlineSummary) }
                                      dangerouslySetInnerHTML={{__html: props.summary}} />}
     </div>
   );
@@ -30,7 +30,7 @@ export function ChapterLink(props) {
   }
 
   const content = (
-    <p dangerouslySetInnerHTML={{__html: props.summary}} />
+    <p className={styles.summary} dangerouslySetInnerHTML={{__html: props.summary}} />
   );
 
   return (

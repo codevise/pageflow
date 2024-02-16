@@ -1,6 +1,7 @@
 @value (
   darkContentTextColor,
-  lightContentTextColor
+  lightContentTextColor,
+  contentLinkColor
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .root {
@@ -13,4 +14,9 @@
 
 .dark {
   color: darkContentTextColor;
+}
+
+.link {
+  composes: typography-contentLink from global;
+  color: contentLinkColor;
 }
