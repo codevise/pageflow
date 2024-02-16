@@ -1,6 +1,5 @@
 @value (
-  lightContentTextColor,
-  contentLinkColor
+  lightContentTextColor
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .wrapper {

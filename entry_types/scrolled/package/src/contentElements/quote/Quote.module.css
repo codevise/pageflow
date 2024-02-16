@@ -1,5 +1,4 @@
 @value breakpoint-sm from 'pageflow-scrolled/values/breakpoints.module.css';
-@value contentLinkColor from "pageflow-scrolled/values/colors.module.css";
 
 .figure {
   margin: 0;
@@ -13,10 +12,6 @@
 .design-largeCentered {
   text-align: center;
   align-items: center;
-}
-
-.figure a {
-  color: var(--palette-color, contentLinkColor);
 }
 
 .text {

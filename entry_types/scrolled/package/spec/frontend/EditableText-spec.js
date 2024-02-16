@@ -115,6 +115,7 @@ describe('EditableText', () => {
 
     expect(getByRole('link')).toHaveTextContent('here')
     expect(getByRole('link')).toHaveAttribute('href', 'https://example.com')
+    expect(getByRole('link')).toHaveClass('typography-contentLink')
     expect(getByRole('link')).not.toHaveAttribute('target')
     expect(getByRole('link')).not.toHaveAttribute('rel')
   });
@@ -166,6 +167,7 @@ describe('EditableText', () => {
 
     expect(getByRole('link')).toHaveTextContent('here')
     expect(getByRole('link')).toHaveAttribute('href', '#the-intro')
+    expect(getByRole('link')).toHaveClass('typography-contentLink')
     expect(getByRole('link')).not.toHaveAttribute('target')
     expect(getByRole('link')).not.toHaveAttribute('rel')
   });
@@ -193,6 +195,7 @@ describe('EditableText', () => {
 
     expect(getByRole('link')).toHaveTextContent('here')
     expect(getByRole('link')).toHaveAttribute('href', '#section-10')
+    expect(getByRole('link')).toHaveClass('typography-contentLink')
     expect(getByRole('link')).not.toHaveAttribute('target')
     expect(getByRole('link')).not.toHaveAttribute('rel')
   });
@@ -224,6 +227,7 @@ describe('EditableText', () => {
 
     expect(getByRole('link')).toHaveTextContent('here')
     expect(getByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg')
+    expect(getByRole('link')).toHaveClass('typography-contentLink')
     expect(getByRole('link')).toHaveAttribute('target', '_blank')
     expect(getByRole('link')).toHaveAttribute('rel', 'noopener noreferrer')
   });

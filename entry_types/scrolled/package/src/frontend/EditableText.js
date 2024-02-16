@@ -132,7 +132,11 @@ function renderLink({attributes, children, element}) {
     );
   }
   else if (element?.href?.section) {
-    return <a {...attributes} href={`#section-${element.href.section}`}>{children}</a>;
+    return <a {...attributes}
+              className={styles.link}
+              href={`#section-${element.href.section}`}>
+      {children}
+    </a>;
   }
   if (element?.href?.file) {
     const {key, ...otherAttributes} = attributes;
@@ -150,20 +154,30 @@ function renderLink({attributes, children, element}) {
                              {target: '_blank', rel: 'noopener noreferrer'} :
                              {};
 
-    return <a {...attributes} {...targetAttributes} href={element.href}>{children}</a>;
+    return <a {...attributes}
+              {...targetAttributes}
+              className={styles.link}
+              href={element.href}>
+      {children}
+    </a>;
   }
 }
 
 function ChapterLink({attributes, children, chapterPermaId}) {
   const chapter = useChapter({permaId: chapterPermaId});
 
-  return <a {...attributes} href={`#${chapter?.chapterSlug || ''}`}>{children}</a>;
+  return <a {...attributes}
+            className={styles.link}
+            href={`#${chapter?.chapterSlug || ''}`}>
+    {children}
+  </a>;
 }
 
 function FileLink({attributes, children, fileOptions}) {
   const file = useFile(fileOptions);
 
   return <a {...attributes}
+            className={styles.link}
             target="_blank"
             rel="noopener noreferrer"
             href={file?.urls.original || '#'}>

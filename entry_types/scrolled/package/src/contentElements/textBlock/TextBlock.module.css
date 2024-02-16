@@ -1,4 +1,3 @@
-@value contentLinkColor from "pageflow-scrolled/values/colors.module.css";
 @value breakpoint-sm from 'pageflow-scrolled/values/breakpoints.module.css';
 
 .text {
@@ -26,7 +25,6 @@
 }
 
 .text a {
-  color: contentLinkColor;
   word-wrap: break-word;
 }
 

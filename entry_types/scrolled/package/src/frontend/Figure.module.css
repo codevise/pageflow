@@ -1,8 +1,7 @@
 @value (
   darkContentSurfaceColor, lightContentSurfaceColor,
   darkContentTextColor, lightContentTextColor,
-  contentColorScope,
-  contentLinkColor
+  contentColorScope
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .root {
@@ -18,10 +17,6 @@
 
 .root > figcaption p {
   margin: 0;
-}
-
-.root > figcaption a {
-  color: contentLinkColor;
 }
 
 .invert > figcaption {
