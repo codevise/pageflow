@@ -120,6 +120,23 @@ module PageflowScrolled
           }
         CSS
       end
+
+      it 'support pseudo classes' do
+        theme = Pageflow::Theme.new(:test,
+                                    typography: {
+                                      'contentLink:hover': {
+                                        color: 'blue'
+                                      }
+                                    })
+
+        css = helper.scrolled_theme_typography_rules(theme)
+
+        expect(css).to include(<<~CSS)
+          .typography-contentLink:hover {
+            color: blue;
+          }
+        CSS
+      end
     end
 
     describe '#scrolled_theme_properties_rules' do
