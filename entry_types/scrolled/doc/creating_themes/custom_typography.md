@@ -67,6 +67,7 @@ The following rule names are supported:
 | `caption` | Applies to captions of content elements like inline images or inline videos. |
 | `content_link` | Applies to text links in text blocks, figures, quotes and counters. |
 | `default_navigation_chapter_link` | Applies to chapter links in the default navigation. |
+| `default_navigation_chapter_summary` | Applies to chapter summary texts in the default navigation. |
 | `default_navigation_active_chapter_link` | Applies to the chapter link representing the current chapter. |
 
 ### Responsive Breakpoints
