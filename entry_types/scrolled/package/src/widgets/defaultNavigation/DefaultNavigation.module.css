@@ -171,6 +171,11 @@ div:focus-within > .contextIcon,
     left: 65px;
   }
 
+  .centerMobileLogo.logo {
+    left: 50%;
+    transform: translate(-50%);
+  }
+
   .navigationChapters {
     display: block;
     position: fixed;

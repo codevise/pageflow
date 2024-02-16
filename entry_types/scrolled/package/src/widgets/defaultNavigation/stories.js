@@ -80,3 +80,23 @@ stories.add(
     }
   }
 );
+
+stories.add(
+  'Mobile - Centered Logo',
+  () =>
+    <RootProviders seed={normalizeAndMergeFixture({
+      ...getSeed({chapterCount: 3}),
+      themeOptions: {defaultNavigationMobileLogoPosition: 'center'}
+    })}>
+      <Entry />
+    </RootProviders>,
+  {
+    percy: {
+      widths: [320]
+    },
+    viewport: {
+      viewports: INITIAL_VIEWPORTS,
+      defaultViewport: 'iphone6'
+    }
+  }
+);
