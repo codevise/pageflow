@@ -220,6 +220,10 @@ module Pageflow
         end
       end
 
+      after_create do |entry|
+        Pageflow.config.hooks.invoke(:entry_created, entry:) if entry.persisted?
+      end
+
       before_update do |entry|
         if entry.account_id_changed? && !authorized?(:update_site_on, resource)
           entry.site = entry.account.default_site

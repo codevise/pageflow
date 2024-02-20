@@ -724,6 +724,31 @@ describe Admin::EntriesController do
       expect(Pageflow::Entry.last.permalink).to have_attributes(slug: 'custom-slug')
     end
 
+    it 'invokes entry_creared hook' do
+      account = create(:account)
+      subscriber = double('subscriber', call: nil)
+      Pageflow.config.hooks.on(:entry_created, subscriber)
+
+      sign_in(create(:user, :manager, on: account))
+      post(:create, params: {entry: {title: 'some_title'}})
+
+      expect(subscriber).to have_received(:call).with(entry: kind_of(Pageflow::Entry))
+    end
+
+    it 'does not invoke entry_creared hook if validation fails' do
+      account = create(:account)
+      subscriber = double('subscriber', call: nil)
+      Pageflow.config.hooks.on(:entry_created, subscriber)
+
+      sign_in(create(:user, :manager, on: account))
+      expect {
+        post(:create, params: {entry: {title: ''}})
+      }.not_to(change { Pageflow::Entry.count })
+
+      expect(response.body).to have_selector('.error')
+      expect(subscriber).not_to have_received(:call)
+    end
+
     it 'renders validation error if permalink directory belongs to different site' do
       user = create(:user)
       account = create(:account, with_publisher: user)
