@@ -19,6 +19,11 @@ export function SectionDecorator({section, contentElements, children}) {
     type: 'sectionSettings'
   });
 
+  const {isSelected: isHighlighted} = useEditorSelection({
+    id: section.id,
+    type: 'section'
+  });
+
   const transitionSelection = useEditorSelection({
     id: section.id,
     type: 'sectionTransition'
@@ -45,7 +50,7 @@ export function SectionDecorator({section, contentElements, children}) {
 
   return (
     <div aria-label={t('pageflow_scrolled.inline_editing.select_section')}
-         className={className(isSelected, transitionSelection)}
+         className={className(isSelected, transitionSelection, isHighlighted)}
          onMouseDown={selectIfOutsideContentItem}>
       <div className={styles.controls}>
         {renderEditTransitionButton({id: section.previousSection && section.id,
@@ -64,9 +69,10 @@ export function SectionDecorator({section, contentElements, children}) {
   );
 }
 
-function className(isSectionSelected, transitionSelection) {
+function className(isSectionSelected, transitionSelection, isHighlighted) {
   return classNames(styles.wrapper, {
     [styles.selected]: isSectionSelected,
+    [styles.highlighted]: isHighlighted,
     [styles.transitionSelected]: transitionSelection.isSelected
   });
 }
