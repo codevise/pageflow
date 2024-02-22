@@ -247,5 +247,36 @@ module PageflowScrolled
         expect(result).to include('pageflow-scrolled/widgets/customNavigation')
       end
     end
+
+    describe 'scrolled_editor_stylesheet_packs' do
+      it 'empty by default' do
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_editor_stylesheet_packs(entry)
+
+        expect(result).to eq([])
+      end
+
+      it 'includes additional editor packs in editor with stylesheet option' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_editor_packs.register(
+              'pageflow-scrolled/only-js'
+            )
+
+            entry_type_config.additional_editor_packs.register(
+              'pageflow-scrolled/extra-editor',
+              stylesheet: true
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_editor_stylesheet_packs(entry)
+
+        expect(result).to eq(['pageflow-scrolled/extra-editor'])
+      end
+    end
   end
 end
