@@ -2,6 +2,7 @@
   position: relative;
 }
 
+.highlighted > section::before,
 .selected > section::before {
   content: "";
   display: block;
@@ -13,6 +14,10 @@
   bottom: 5px;
   z-index: 9;
   pointer-events: none;
+}
+
+.highlighted > section::before {
+  opacity: 0.3;
 }
 
 .transitionSelected > section:before {
