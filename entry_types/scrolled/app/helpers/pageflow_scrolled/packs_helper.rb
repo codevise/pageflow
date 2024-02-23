@@ -22,6 +22,13 @@ module PageflowScrolled
       )
     end
 
+    def scrolled_editor_stylesheet_packs_tag(entry)
+      stylesheet_pack_tag(
+        *scrolled_editor_stylesheet_packs(entry),
+        media: 'all'
+      )
+    end
+
     def scrolled_frontend_packs(entry, widget_scope:)
       ['pageflow-scrolled-frontend'] +
         scrolled_additional_frontend_packs(entry, widget_scope) +
@@ -32,6 +39,10 @@ module PageflowScrolled
       ['pageflow-scrolled-editor'] +
         Pageflow.config_for(entry).additional_editor_packs.paths +
         scrolled_frontend_widget_type_packs(entry, :editor)
+    end
+
+    def scrolled_editor_stylesheet_packs(entry)
+      Pageflow.config_for(entry).additional_editor_packs.stylesheet_paths
     end
 
     private

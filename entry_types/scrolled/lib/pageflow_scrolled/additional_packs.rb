@@ -8,8 +8,8 @@ module PageflowScrolled
 
     # content_element_type_names option only takes effect for frontend
     # packs.
-    def register(path, content_element_type_names: [])
-      @packs << AdditionalPack.new(path, content_element_type_names)
+    def register(path, content_element_type_names: [], stylesheet: false)
+      @packs << AdditionalPack.new(path, content_element_type_names, stylesheet)
     end
 
     # @api private
@@ -25,6 +25,11 @@ module PageflowScrolled
     end
 
     # @api private
+    def stylesheet_paths
+      @packs.select(&:stylesheet).map(&:path)
+    end
+
+    # @api private
     def paths_for_content_element_types(type_names)
       @packs.reject { |pack|
         pack.content_element_type_names.present? &&
@@ -33,6 +38,6 @@ module PageflowScrolled
     end
 
     # @api private
-    AdditionalPack = Struct.new(:path, :content_element_type_names)
+    AdditionalPack = Struct.new(:path, :content_element_type_names, :stylesheet)
   end
 end
