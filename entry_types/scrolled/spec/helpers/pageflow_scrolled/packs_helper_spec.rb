@@ -103,6 +103,76 @@ module PageflowScrolled
         expect(result).not_to include('pageflow-scrolled/contentElements/extra')
       end
 
+      it 'supports if and unless options for additional packs in editor' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_packs.register(
+              'some/script/if-true',
+              if: proc { true }
+            )
+
+            entry_type_config.additional_frontend_packs.register(
+              'some/script/if-false',
+              if: proc { false }
+            )
+
+            entry_type_config.additional_frontend_packs.register(
+              'some/script/unless-true',
+              unless: proc { true }
+            )
+
+            entry_type_config.additional_frontend_packs.register(
+              'some/script/unless-false',
+              unless: proc { false }
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_frontend_packs(entry, widget_scope: :editor)
+
+        expect(result).to include('some/script/if-true')
+        expect(result).to include('some/script/unless-false')
+        expect(result).not_to include('some/script/if-false')
+        expect(result).not_to include('some/script/unless-true')
+      end
+
+      it 'supports if and unless options for additional packs outside of editor' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_packs.register(
+              'some/script/if-true',
+              if: proc { true }
+            )
+
+            entry_type_config.additional_frontend_packs.register(
+              'some/script/if-false',
+              if: proc { false }
+            )
+
+            entry_type_config.additional_frontend_packs.register(
+              'some/script/unless-true',
+              unless: proc { true }
+            )
+
+            entry_type_config.additional_frontend_packs.register(
+              'some/script/unless-false',
+              unless: proc { false }
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_frontend_packs(entry, widget_scope: :published)
+
+        expect(result).to include('some/script/if-true')
+        expect(result).to include('some/script/unless-false')
+        expect(result).not_to include('some/script/if-false')
+        expect(result).not_to include('some/script/unless-true')
+      end
+
       it 'includes all react widget type packs in editor' do
         pageflow_configure do |config|
           config.widget_types.register(ReactWidgetType.new(name: 'customNavigation',
@@ -246,6 +316,59 @@ module PageflowScrolled
 
         expect(result).to include('pageflow-scrolled/widgets/customNavigation')
       end
+
+      it 'supports if and unless options for additional packs' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_editor_packs.register(
+              'some/script/if-true',
+              if: proc { true }
+            )
+
+            entry_type_config.additional_editor_packs.register(
+              'some/script/if-false',
+              if: proc { false }
+            )
+
+            entry_type_config.additional_editor_packs.register(
+              'some/script/unless-true',
+              unless: proc { true }
+            )
+
+            entry_type_config.additional_editor_packs.register(
+              'some/script/unless-false',
+              unless: proc { false }
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_editor_packs(entry)
+
+        expect(result).to include('some/script/if-true')
+        expect(result).to include('some/script/unless-false')
+        expect(result).not_to include('some/script/if-false')
+        expect(result).not_to include('some/script/unless-true')
+      end
+
+      it 'supports if and unless options for additional packs' do
+        condition = spy('callback', call: true)
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_editor_packs.register(
+              'some/script',
+              if: condition
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        helper.scrolled_editor_packs(entry)
+
+        expect(condition).to have_received(:call).with(entry:)
+      end
     end
 
     describe 'scrolled_editor_stylesheet_packs' do
@@ -276,6 +399,45 @@ module PageflowScrolled
         result = helper.scrolled_editor_stylesheet_packs(entry)
 
         expect(result).to eq(['pageflow-scrolled/extra-editor'])
+      end
+
+      it 'supports if and unless options for additional packs' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_editor_packs.register(
+              'some/script/if-true',
+              stylesheet: true,
+              if: proc { true }
+            )
+
+            entry_type_config.additional_editor_packs.register(
+              'some/script/if-false',
+              stylesheet: true,
+              if: proc { false }
+            )
+
+            entry_type_config.additional_editor_packs.register(
+              'some/script/unless-true',
+              stylesheet: true,
+              unless: proc { true }
+            )
+
+            entry_type_config.additional_editor_packs.register(
+              'some/script/unless-false',
+              stylesheet: true,
+              unless: proc { false }
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_editor_stylesheet_packs(entry)
+
+        expect(result).to include('some/script/if-true')
+        expect(result).to include('some/script/unless-false')
+        expect(result).not_to include('some/script/if-false')
+        expect(result).not_to include('some/script/unless-true')
       end
     end
   end

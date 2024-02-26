@@ -8,8 +8,14 @@ module PageflowScrolled
 
     # content_element_type_names option only takes effect for frontend
     # packs.
-    def register(path, content_element_type_names: [], stylesheet: false)
-      @packs << AdditionalPack.new(path, content_element_type_names, stylesheet)
+    def register(path, content_element_type_names: [], stylesheet: false, if: nil, unless: nil)
+      @packs << AdditionalPack.new(
+        path,
+        content_element_type_names,
+        stylesheet,
+        binding.local_variable_get(:if),
+        binding.local_variable_get(:unless)
+      )
     end
 
     # @api private
@@ -20,24 +26,32 @@ module PageflowScrolled
     end
 
     # @api private
-    def paths
-      @packs.map(&:path)
+    def paths(entry)
+      packs_matching_conditions(entry).map(&:path)
     end
 
     # @api private
-    def stylesheet_paths
-      @packs.select(&:stylesheet).map(&:path)
+    def stylesheet_paths(entry)
+      packs_matching_conditions(entry).select(&:stylesheet).map(&:path)
     end
 
     # @api private
-    def paths_for_content_element_types(type_names)
-      @packs.reject { |pack|
+    def paths_for_content_element_types(entry, type_names)
+      packs_matching_conditions(entry).reject { |pack|
         pack.content_element_type_names.present? &&
           (pack.content_element_type_names & type_names).empty?
       }.map(&:path)
     end
 
     # @api private
-    AdditionalPack = Struct.new(:path, :content_element_type_names, :stylesheet)
+    AdditionalPack = Struct.new(:path, :content_element_type_names, :stylesheet, :if, :unless)
+
+    private
+
+    def packs_matching_conditions(entry)
+      @packs
+        .select { |pack| !pack.if || pack.if.call(entry:) }
+        .select { |pack| !pack.unless || !pack.unless.call(entry:) }
+    end
   end
 end
