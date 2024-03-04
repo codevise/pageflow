@@ -57,14 +57,6 @@ module Pageflow
       @current_ability ||= Ability.new(current_user)
     end
 
-    def after_sign_in_path_for(resource_or_scope)
-      root_url(:protocol => 'http')
-    end
-
-    def after_sign_out_path_for(resource_or_scope)
-      root_url(:protocol => 'http')
-    end
-
     def locale_from_accept_language_header
       http_accept_language.compatible_language_from(I18n.available_locales)
     end
