@@ -776,6 +776,33 @@ describe Admin::EntriesController do
 
       expect(response.body).to have_selector('.pageflow_permalink.error')
     end
+
+    it 'redirects to entry admin page by default' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+
+      sign_in(user, scope: :user)
+
+      post :create, params: {entry: attributes_for(:entry, account:)}
+
+      expect(request).to redirect_to(admin_entry_path(Pageflow::Entry.last))
+    end
+
+    it 'redirects to editor if after_entry_create is set to editor' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      Pageflow.config.after_entry_create_redirect_to = :editor
+
+      sign_in(user, scope: :user)
+
+      post :create, params: {entry: attributes_for(:entry, account:)}
+
+      expect(request).to(
+        redirect_to(
+          Pageflow::Engine.routes.url_helpers.editor_entry_path(Pageflow::Entry.last)
+        )
+      )
+    end
   end
 
   describe '#edit' do
