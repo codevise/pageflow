@@ -239,6 +239,14 @@ module Pageflow
     # files based on feature flags and other entry or account traits.
     attr_accessor :transform_theme_customization_files
 
+    # Where to redirect after creating an entry.
+    #
+    # Possible values:
+    #
+    # `:admin`: Go to entry admin page (default)
+    # `:editor`: Open created entry in editor
+    attr_accessor :after_entry_create_redirect_to
+
     # Submit video/audio encoding jobs only after the user has
     # explicitly confirmed in the editor. Can either be set to a
     # boolean or a lambda that is passed the file and returns a
@@ -433,6 +441,7 @@ module Pageflow
       @transform_theme_customization_overrides = ->(overrides, _entry) { overrides }
       @transform_theme_customization_files = ->(files, _entry) { files }
 
+      @after_entry_create_redirect_to = :admin
       @confirm_encoding_jobs = false
       @default_published_until_duration_in_months = 12
 

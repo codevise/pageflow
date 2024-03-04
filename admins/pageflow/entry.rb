@@ -230,6 +230,19 @@ module Pageflow
         end
       end
 
+      def create
+        create! do |success, _|
+          success.html do
+            case Pageflow.config.after_entry_create_redirect_to
+            when :admin
+              redirect_to admin_entry_path(resource)
+            when :editor
+              redirect_to pageflow.editor_entry_path(resource)
+            end
+          end
+        end
+      end
+
       def update
         update! do |success, _|
           success.html { redirect_to(admin_entry_path(resource, params.permit(:tab))) }
