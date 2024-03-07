@@ -128,6 +128,22 @@ module Pageflow
           end
         end
       end
+
+      describe 'additional attributes table rows' do
+        it 'renders additional rows registered for user' do
+          user = create(:user)
+          create(:account, with_manager: user)
+
+          pageflow_configure do |config|
+            config.admin_attributes_table_rows.register(:user, :custom) { 'custom attribute' }
+          end
+
+          sign_in(user, scope: :user)
+          get(:show, params: {id: user.id})
+
+          expect(response.body).to have_text('custom attribute')
+        end
+      end
     end
 
     describe 'get #quota_state' do

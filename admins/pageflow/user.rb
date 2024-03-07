@@ -38,21 +38,7 @@ module Pageflow
 
     show do |user|
       div do
-        attributes_table_for user do
-          row :last_name, class: 'last_name'
-          row :first_name, class: 'first_name'
-          row :email, class: 'email'
-
-          row :created_at
-          row :last_sign_in_at
-          boolean_status_tag_row :suspended?
-          row :locale do
-            I18n.t('language', locale: user.locale)
-          end
-          if authorized?(:see_admin_status, user)
-            boolean_status_tag_row(:admin?, 'admin warning')
-          end
-        end
+        render('attributes_table', user:)
 
         para do
           link_to I18n.t('pageflow.admin.users.resend_invitation'),
