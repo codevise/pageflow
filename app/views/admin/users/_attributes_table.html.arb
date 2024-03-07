@@ -1,0 +1,13 @@
+extensible_attributes_table_for(user, Pageflow.config.admin_attributes_table_rows.for(:user)) do
+  row :last_name, class: 'last_name'
+  row :first_name, class: 'first_name'
+  row :email, class: 'email'
+
+  row :created_at
+  row :last_sign_in_at
+  boolean_status_tag_row :suspended?
+  row :locale do
+    I18n.t('language', locale: user.locale)
+  end
+  boolean_status_tag_row(:admin?, 'admin warning') if authorized?(:see_admin_status, user)
+end
