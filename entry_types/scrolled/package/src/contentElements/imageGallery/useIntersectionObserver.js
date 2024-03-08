@@ -14,7 +14,7 @@ export function useIntersectionObserver({threshold, onVisibleIndexChange}) {
             (child) => child === entry.target
           );
 
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && entry.intersectionRatio >= threshold) {
             onVisibleIndexChange(entryIndex);
           }
         });
