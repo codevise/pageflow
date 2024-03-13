@@ -55,5 +55,17 @@ storiesOfContentElement(module, {
       }
     ]
   },
-  inlineFileRights: true
+  inlineFileRights: true,
+  variants: [
+    {
+      name: 'Custom scroll button size',
+      themeOptions: {
+        properties: {
+          root: {
+            imageGalleryScrollButtonSize: '60px'
+          }
+        }
+      }
+    }
+  ]
 });

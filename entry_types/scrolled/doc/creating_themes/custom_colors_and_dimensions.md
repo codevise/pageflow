@@ -184,6 +184,12 @@ elements etc.
 | `text_block_first_list_item_margin_top` | Space before first item of lists. |
 | `text_block_list_item_margin_top` | Space before second and following items of lists. |
 
+### Image Gallery
+
+| Name | Description |
+| ---- | ----------- |
+| `image_gallery_scroll_button_size` | Size of the scroll buttons displayed on the left and right of the image gallery. |
+
 ### Shared Widget Colors
 
 Surfaces use colors from specific categories in your color palette,
