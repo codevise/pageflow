@@ -15,6 +15,9 @@
 
 .button svg {
   transition: transform 0.2s ease;
+  display: block;
+  width: var(--theme-image-gallery-scroll-button-size);
+  height: var(--theme-image-gallery-scroll-button-size);
 }
 
 .button:not(.disabled):hover svg,
@@ -23,7 +26,6 @@
 }
 
 .icon {
-  display: inline-block;
   position: relative;
   transition: opacity 0.2s linear;
 }
