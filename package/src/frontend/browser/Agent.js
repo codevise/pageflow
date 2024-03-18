@@ -60,14 +60,24 @@ export const Agent = function(userAgent) {
      * Returns true on iOS Safari.
      * @return {boolean}
      */
-    matchesMobileSafari: function() {
-      var matchers = [/iPod/i, /iPad/i, /iPhone/i];
+    matchesMobileSafari: function({osVersions} = {}) {
+      var deviceMatchers = [/iPod/i, /iPad/i, /iPhone/i];
 
-      return (matchers.some(function(matcher) {
-              return userAgent.match(matcher);
-             }) &&
-             !window.MSStream) || //IE exclusion from being detected as an iOS device;
-             matchesiPadSafari13AndAbove();
+      if (osVersions) {
+        return (
+          deviceMatchers.some(matcher => userAgent.match(matcher)) &&
+          osVersions.some(osVersion => userAgent.includes(osVersion.replace('.', '_')))
+        )
+      }
+      else {
+        return (
+          matchesiPadSafari13AndAbove() ||
+          (
+            deviceMatchers.some(matcher => userAgent.match(matcher)) &&
+            !window.MSStream // IE exclusion from being detected as an iOS device;
+          )
+        );
+      }
     },
 
     /**

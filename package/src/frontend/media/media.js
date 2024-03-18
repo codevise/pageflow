@@ -1,6 +1,7 @@
 import {MediaPool, MediaType} from './MediaPool';
 import BackboneEvents from 'backbone-events-standalone';
 import {features} from '../features';
+import {browser} from '../browser';
 
 export const media = {
   playerPool: new MediaPool({
@@ -23,6 +24,10 @@ export const media = {
 
       if (options.textTrackSources) {
         options.textTrackSources.forEach(track => player.addRemoteTextTrack(track, true));
+      }
+
+      if (browser.has('video scaling bug fixed by load')) {
+        player.load();
       }
 
       return player;
