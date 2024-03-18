@@ -37,3 +37,12 @@ browser.feature('mse and native hls support', function(has) {
 browser.feature('native video player', function(has) {
   return has('iphone platform');
 });
+
+browser.feature('video scaling bug fixed by load', function(has) {
+  // When reusing video elements for videos with different
+  // resolutions, Safari gets confused and scales videos incorrectly -
+  // drawing them to only cover a part of the element. This appears to
+  // not happen when the video is loaded or played immediately after
+  // changing the source. No longer reproducible in iOS 17.4.
+  return agent.matchesMobileSafari({osVersions: ['17.0', '17.1', '17.2', '17.3']});
+});

@@ -22,7 +22,7 @@ function Test() {
 
   function setup() {
     const audio = document.createElement('audio');
-    
+
     audio.setAttribute('controls', true);
     audio.setAttribute('crossorigin', 'anonymous');
 
@@ -90,4 +90,3 @@ async function run(commands) {
     await c;
   }
 }
-

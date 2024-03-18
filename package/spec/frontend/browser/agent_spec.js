@@ -231,4 +231,53 @@ describe('pageflow.browser.Agent', function() {
       expect(agent.matchesDesktopChrome({minVersion: 20})).toBe(false);
     });
   });
+
+  describe('#matchesMobileSafari', function() {
+    it('returns true for Safari on iPhone', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_1 like Mac OS X) '+
+        'AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Mobile/14A403 Safari/602.1'
+      );
+
+      expect(agent.matchesMobileSafari()).toBe(true);
+    });
+
+    it('returns false for desktop Safari', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14) ' +
+        'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Safari/605.1.15'
+      );
+
+      expect(agent.matchesMobileSafari()).toBe(false);
+    });
+
+    describe('with osVersions option', () => {
+      it('returns true for matching mobile Safari', () => {
+        var agent = new Agent(
+          'Mozilla/5.0 (iPhone; CPU iPhone OS 17_3 like Mac OS X) ' +
+          'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Mobile/15E148 Safari/604.1'
+        );
+
+        expect(agent.matchesMobileSafari({osVersions: ['17.1', '17.2', '17.3']})).toBe(true);
+      });
+
+      it('returns false for other mobile Safari', () => {
+        var agent = new Agent(
+          'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) ' +
+          'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1'
+        );
+
+        expect(agent.matchesMobileSafari({osVersions: ['17.1', '17.2', '17.3']})).toBe(false);
+      });
+
+      it('returns true for matching Chrome on iPhone', () => {
+        var agent = new Agent(
+          'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) ' +
+          'AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/123.0.6312.52 Mobile/15E148 Safari/604.1'
+        );
+
+        expect(agent.matchesMobileSafari({osVersions: ['17.4']})).toBe(true);
+      });
+    });
+  });
 });
