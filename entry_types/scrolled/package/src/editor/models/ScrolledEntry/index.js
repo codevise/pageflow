@@ -45,7 +45,22 @@ export const ScrolledEntry = Entry.extend({
   },
 
   insertContentElement(attributes, {id, at, splitPoint}) {
-    if (at === 'endOfSection') {
+    if (at === 'backdropOfSection') {
+      const section = this.sections.get(id)
+
+      this.insertContentElement(
+        {
+          ...attributes,
+          configuration: {
+            position: 'backdrop'
+          }
+        },
+        (section.contentElements.length > 0) ?
+        {id: section.contentElements.first(), at: 'before'} :
+        {id, at: 'endOfSection'}
+      );
+    }
+    else if (at === 'endOfSection') {
       const contentElement = new ContentElement({
         position: this.contentElements.length,
         ...attributes

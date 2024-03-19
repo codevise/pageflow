@@ -71,9 +71,12 @@ export const ContentElement = Backbone.Model.extend({
     const defaultPosition = sibling?.getPosition();
     const supportedPositions = this.getType().supportedPositions || [];
 
-    if (defaultPosition &&
-        defaultPosition !== 'inline' &&
-        supportedPositions.includes(defaultPosition)) {
+    if (this.configuration.has('position')) {
+      delete defaultConfig.position;
+    }
+    else if (defaultPosition &&
+             defaultPosition !== 'inline' &&
+             supportedPositions.includes(defaultPosition)) {
       defaultConfig.position = defaultPosition;
     }
 
