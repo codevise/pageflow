@@ -164,10 +164,10 @@ export function useSectionContentElements({sectionId, layout}) {
 }
 
 const supportedPositions = {
-  center: ['inline', 'left', 'right'],
-  centerRagged: ['inline', 'left', 'right'],
-  left: ['inline', 'sticky'],
-  right: ['inline', 'sticky'],
+  center: ['inline', 'left', 'right', 'backdrop'],
+  centerRagged: ['inline', 'left', 'right', 'backdrop'],
+  left: ['inline', 'sticky', 'backdrop'],
+  right: ['inline', 'sticky', 'backdrop'],
 };
 
 function getPosition(contentElement, layout) {

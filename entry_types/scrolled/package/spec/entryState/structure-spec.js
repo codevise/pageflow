@@ -91,6 +91,15 @@ const contentElementsSeed = [
     configuration: {
       children: 'Some more text'
     }
+  },
+  {
+    id: 5,
+    permaId: 1005,
+    sectionId: 2,
+    typeName: 'video',
+    configuration: {
+      position: 'backdrop'
+    }
   }
 ];
 
@@ -360,6 +369,12 @@ describe('useSectionContentElements', () => {
       props: {
         children: 'Some more text'
       }
+    },
+    {
+      id: 5,
+      permaId: 1005,
+      type: 'video',
+      position: 'backdrop',
     }
   ];
 
