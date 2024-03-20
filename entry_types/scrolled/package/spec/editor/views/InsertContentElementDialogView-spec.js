@@ -10,7 +10,8 @@ describe('InsertContentElementDialogView', () => {
   useFakeTranslations({
     'pageflow_scrolled.editor.content_element_categories.basic.name': 'Basic',
     'pageflow_scrolled.editor.content_elements.textBlock.name': 'Text block',
-    'pageflow_scrolled.editor.content_elements.inlineImage.name': 'Inline image'
+    'pageflow_scrolled.editor.content_elements.inlineImage.name': 'Image',
+    'pageflow_scrolled.editor.content_elements.inlineVideo.name': 'Video'
   });
 
   it('renders list of content element types', () => {
@@ -57,8 +58,35 @@ describe('InsertContentElementDialogView', () => {
     expect(availableCategories(view)).toContain('Basic');
   });
 
+  it('disables content element types that do backdrop position when inserting in backdrop', () => {
+    const editor = factories.editorApi();
+    editor.contentElementTypes.register('textBlock', {supportedPositions: ['inline']});
+    editor.contentElementTypes.register('inlineVideo', {supportedPositions: ['inline', 'backdrop']});
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [
+          {id: 1, configuration: {}}
+        ]
+      })
+    });
+    const view = new InsertContentElementDialogView({
+      entry,
+      editor,
+      insertOptions: {at: 'backdropOfSection', id: 1}
+    });
+
+    view.render();
+
+    expect(disabledTypeNames(view)).toContain('Text block');
+    expect(availableTypeNames(view)).toContain('Video');
+  });
+
+  function disabledTypeNames(view) {
+    return view.$el.find('li li button[disabled] span').map(function() { return $(this).text() }).get();
+  }
+
   function availableTypeNames(view) {
-    return view.$el.find('li li button span').map(function() { return $(this).text() }).get();
+    return view.$el.find('li li button:not([disabled]) span').map(function() { return $(this).text() }).get();
   }
 
   function availableCategories(view) {

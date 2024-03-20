@@ -44,9 +44,14 @@
   background-color: transparent;
 }
 
-.type:hover,
-.type:focus {
+.type:not([disabled]):hover,
+.type:not([disabled]):focus {
   background-color: var(--ui-on-primary-color-lightest);
+}
+
+.categories li:not(:has(.type:not([disabled]))) .categoryName,
+.type[disabled] {
+  opacity: 0.3;
 }
 
 .typePictogram {
@@ -56,8 +61,8 @@
   opacity: 0.8;
 }
 
-.type:hover .typePictogram,
-.type:focus .typePictogram {
+.type:not([disabled]):hover .typePictogram,
+.type:not([disabled]):focus .typePictogram {
   opacity: 1;
 }
 
