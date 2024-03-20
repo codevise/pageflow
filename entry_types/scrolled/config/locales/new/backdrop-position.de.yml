@@ -1,0 +1,9 @@
+de:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        position:
+          values:
+            backdrop: 'Als Hintergrund'
+          item_inline_help_texts:
+            backdrop: ''
