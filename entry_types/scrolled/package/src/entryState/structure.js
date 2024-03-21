@@ -143,31 +143,48 @@ function sectionData(section) {
   };
 }
 
-export function useSectionContentElements({sectionId, layout}) {
-  const filterBySectionId = useCallback(contentElement => contentElement.sectionId === sectionId,
-                                        [sectionId])
-  const contentElements = useEntryStateCollectionItems('contentElements', filterBySectionId);
+export function useSectionForegroundContentElements({sectionId, layout}) {
+  const filter = useCallback(contentElement => (
+    contentElement.sectionId === sectionId &&
+    contentElement.configuration.position !== 'backdrop'
+  ), [sectionId]);
+  const contentElements = useEntryStateCollectionItems('contentElements', filter);
 
-  return contentElements.map(contentElement => {
-    const position = getPosition(contentElement, layout);
+  return contentElements.map(contentElement =>
+    contentElementData(contentElement, layout)
+  );
+}
 
-    return {
-      id: contentElement.id,
-      permaId: contentElement.permaId,
-      type: contentElement.typeName,
-      position,
-      width: getWidth(contentElement, position),
-      standAlone: contentElement.configuration.position === 'standAlone',
-      props: contentElement.configuration
-    };
-  });
+export function useContentElement({permaId, layout}) {
+  const contentElement = useEntryStateCollectionItem('contentElements', permaId);
+
+  return useMemo(
+    () => contentElement && contentElementData(contentElement, layout),
+    [contentElement, layout]
+  );
+}
+
+function contentElementData(contentElement, layout) {
+  const position = getPosition(contentElement, layout);
+
+  return {
+    id: contentElement.id,
+    permaId: contentElement.permaId,
+    sectionId: contentElement.sectionId,
+    type: contentElement.typeName,
+    position,
+    width: getWidth(contentElement, position),
+    standAlone: contentElement.configuration.position === 'standAlone',
+    props: contentElement.configuration
+  };
 }
 
 const supportedPositions = {
-  center: ['inline', 'left', 'right', 'backdrop'],
-  centerRagged: ['inline', 'left', 'right', 'backdrop'],
-  left: ['inline', 'sticky', 'backdrop'],
-  right: ['inline', 'sticky', 'backdrop'],
+  center: ['inline', 'left', 'right'],
+  centerRagged: ['inline', 'left', 'right'],
+  left: ['inline', 'sticky'],
+  right: ['inline', 'sticky'],
+  backdrop: ['backdrop']
 };
 
 function getPosition(contentElement, layout) {

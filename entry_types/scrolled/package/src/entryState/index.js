@@ -9,7 +9,8 @@ export {
   useSection,
   useChapters,
   useChapter,
-  useSectionContentElements
+  useSectionForegroundContentElements,
+  useContentElement
 } from './structure';
 export {useFile} from './useFile';
 export {useFileWithInlineRights} from './useFileWithInlineRights';
