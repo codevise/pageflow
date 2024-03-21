@@ -7,3 +7,13 @@ en:
             backdrop: 'As Backdrop'
           item_inline_help_texts:
             backdrop: ''
+      edit_section:
+        attributes:
+          backdropType:
+            values:
+              contentElement: Interactive Element
+          backdropContentElement:
+            label: Element
+      backdrop_content_element_input:
+        add: New element
+        unset: No longer use as backdrop

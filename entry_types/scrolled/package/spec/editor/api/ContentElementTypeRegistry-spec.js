@@ -11,6 +11,25 @@ describe('ContentElementTypeRegistry', () => {
     'pageflow_scrolled.editor.content_elements.inlineImage.description': 'An image'
   });
 
+  describe('findByTypeName', () => {
+    it('includes translated display name and description', () => {
+      const registry = new ContentElementTypeRegistry({features: new Features()});
+      registry.register('inlineImage', {
+        category: 'media',
+        supportedPositions: ['inline', 'full']
+      });
+
+      const contentElementType = registry.findByTypeName('inlineImage');
+
+      expect(contentElementType).toMatchObject({
+        category: 'media',
+        supportedPositions: ['inline', 'full'],
+        displayName: 'Inline image',
+        description: 'An image'
+      });
+    });
+  });
+
   describe('groupedByCategory', () => {
     it('returns options passed to register grouped by category', () => {
       const registry = new ContentElementTypeRegistry({features: new Features()});
