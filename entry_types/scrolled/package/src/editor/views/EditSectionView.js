@@ -5,6 +5,7 @@ import {
   SeparatorView,
   SliderInputView
 } from 'pageflow/ui';
+import {BackdropContentElementInputView} from './inputs/BackdropContentElementInputView';
 import {EffectListInputView} from './inputs/EffectListInputView';
 import {InlineFileRightsMenuItem} from '../models/InlineFileRightsMenuItem'
 import I18n from 'i18n-js';
@@ -16,6 +17,7 @@ export const EditSectionView = EditConfigurationView.extend({
 
   configure: function(configurationEditor) {
     const entry = this.options.entry;
+    const editor = this.options.editor;
 
     const editMotifAreaMenuItem = {
       name: 'editMotifArea',
@@ -34,8 +36,9 @@ export const EditSectionView = EditConfigurationView.extend({
       this.input('fullHeight', CheckBoxInputView);
 
       this.input('backdropType', SelectInputView, {
-        values: ['image', 'video', 'color'],
+        values: ['image', 'video', 'color', 'contentElement'],
       });
+
       this.input('backdropImage', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'sectionConfiguration',
@@ -91,6 +94,13 @@ export const EditSectionView = EditConfigurationView.extend({
       this.input('backdropColor', ColorInputView, {
         visibleBinding: 'backdropType',
         visibleBindingValue: 'color'
+      });
+
+      this.input('backdropContentElement', BackdropContentElementInputView, {
+        editor,
+        entry,
+        visibleBinding: 'backdropType',
+        visibleBindingValue: 'contentElement'
       });
 
       this.view(SeparatorView);

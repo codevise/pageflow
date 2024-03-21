@@ -70,7 +70,13 @@ export class ContentElementTypeRegistry {
       throw new Error(`Unknown content element type ${typeName}`);
     }
 
-    return this.contentElementTypes[typeName];
+    return {
+      ...this.contentElementTypes[typeName],
+      displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`),
+      description: I18n.t(
+        `pageflow_scrolled.editor.content_elements.${typeName}.description`
+      )
+    };
   }
 
   groupedByCategory() {
@@ -102,12 +108,8 @@ export class ContentElementTypeRegistry {
     return Object
       .keys(this.contentElementTypes)
       .map(typeName => ({
-        ...this.contentElementTypes[typeName],
-        typeName,
-        displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`),
-        description: I18n.t(
-          `pageflow_scrolled.editor.content_elements.${typeName}.description`
-        )
+        ...this.findByTypeName(typeName),
+        typeName
       }))
       .filter(contentElement =>
         !contentElement.featureName || this.features.isEnabled(contentElement.featureName)

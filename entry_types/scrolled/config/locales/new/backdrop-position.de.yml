@@ -7,3 +7,13 @@ de:
             backdrop: 'Als Hintergrund'
           item_inline_help_texts:
             backdrop: ''
+      edit_section:
+        attributes:
+          backdropType:
+            values:
+              contentElement: Interaktives Element
+          backdropContentElement:
+            label: Element
+      backdrop_content_element_input:
+        add: Neues Element
+        unset: Nicht mehr als Hintergrund verwenden

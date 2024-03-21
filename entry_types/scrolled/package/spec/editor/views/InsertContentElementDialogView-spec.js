@@ -16,7 +16,7 @@ describe('InsertContentElementDialogView', () => {
 
   it('renders list of content element types', () => {
     const editor = factories.editorApi();
-    editor.contentElementTypes.register('textBlock');
+    editor.contentElementTypes.register('textBlock', {});
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
         contentElements: [

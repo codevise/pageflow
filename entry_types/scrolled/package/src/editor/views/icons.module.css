@@ -6,6 +6,7 @@
 .arrowsCcw,
 .attention,
 .cancel,
+.cancelCircled,
 .check,
 .drag,
 .helpCircled,
@@ -28,6 +29,10 @@
 
 .cancel::before {
   content: "\2715";
+}
+
+.cancelCircled::before {
+  content: "\2716";
 }
 
 .check::before {
