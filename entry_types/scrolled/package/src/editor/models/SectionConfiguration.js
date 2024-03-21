@@ -49,17 +49,37 @@ export const SectionConfiguration = Configuration.extend({
   },
 
   set: function(name, value) {
-    if (name !== 'backdrop' && name.startsWith && name.startsWith('backdrop')) {
+    let attrs;
+
+    if (typeof name === 'object') {
+      attrs = name;
+    }
+    else {
+      attrs = {[name]: value};
+    }
+
+    if (!attrs.backdrop && Object.keys(attrs).some(key => key.startsWith('backdrop'))) {
       Configuration.prototype.set.call(this, {
         backdrop: this.getBackdropAttribute({
           ...this.attributes,
-          [name]: value
+          ...attrs
         }),
-        [name]: value
+        ...attrs
       });
     }
     else {
       Configuration.prototype.set.apply(this, arguments);
+    }
+
+    if (attrs.backdropType) {
+      const backdropContentElement = this.parent?.getBackdropContentElement();
+
+      if (backdropContentElement) {
+        backdropContentElement.configuration.set(
+          'position',
+          attrs.backdropType === 'contentElement' ? 'backdrop' : 'inline'
+        );
+      }
     }
   },
 
@@ -77,6 +97,10 @@ export const SectionConfiguration = Configuration.extend({
         videoMobile: nextAttributes.backdropVideoMobile,
         videoMobileMotifArea: nextAttributes.backdropVideoMobileMotifArea,
         videoMobileInlineRightsHidden: nextAttributes.backdropVideoMobileInlineRightsHidden
+      };
+    case 'contentElement':
+      return {
+        contentElement: nextAttributes.backdropContentElement
       };
     default:
       return {

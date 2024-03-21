@@ -8,6 +8,8 @@ import {
   delayedDestroying
 } from 'pageflow/editor';
 
+import {ContentElementConfiguration} from './ContentElementConfiguration';
+
 const widths = {
   xxs: -3,
   xs: -2,
@@ -24,7 +26,8 @@ export const ContentElement = Backbone.Model.extend({
   mixins: [
     configurationContainer({
       autoSave: true,
-      includeAttributesInJSON: ['position', 'typeName']
+      includeAttributesInJSON: ['position', 'typeName'],
+      configurationModel: ContentElementConfiguration
     }),
     delayedDestroying,
     entryTypeEditorControllerUrls.forModel({resources: 'content_elements'}),

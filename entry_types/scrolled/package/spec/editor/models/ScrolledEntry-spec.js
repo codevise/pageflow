@@ -121,6 +121,23 @@ describe('ScrolledEntry', () => {
         });
       });
 
+      it('sets backdropContentElement of section', () => {
+        const {entry} = testContext;
+        const section = entry.sections.first();
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'backdropOfSection', id: section.id});
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 7, permaId: 70}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(section.configuration.get('backdropContentElement')).toEqual(70);
+      });
+
       it('ignores position from default config when inserting content element in backdrop', () => {
         const {entry, requests} = testContext;
 
@@ -222,6 +239,23 @@ describe('ScrolledEntry', () => {
             configuration: {position: 'backdrop'}
           }
         });
+      });
+
+      it('sets backdropContentElement of section', () => {
+        const {entry} = testContext;
+        const section = entry.sections.first();
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'backdropOfSection', id: section.id});
+
+        testContext.server.respond(
+          'POST', '/editor/entries/100/scrolled/sections/10/content_elements',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify({
+            id: 5, permaId: 50
+          })]
+        );
+
+        expect(section.configuration.get('backdropContentElement')).toEqual(50);
       });
 
       it('ignores position from default config when inserting content element in backdrop', () => {
