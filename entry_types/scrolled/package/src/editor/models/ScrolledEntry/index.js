@@ -48,7 +48,7 @@ export const ScrolledEntry = Entry.extend({
     if (at === 'backdropOfSection') {
       const section = this.sections.get(id)
 
-      this.insertContentElement(
+      const contentElement = this.insertContentElement(
         {
           ...attributes,
           configuration: {
@@ -59,6 +59,12 @@ export const ScrolledEntry = Entry.extend({
         {id: section.contentElements.first(), at: 'before'} :
         {id, at: 'endOfSection'}
       );
+
+      contentElement.once('change:id', () => {
+        section.configuration.set('backdropContentElement', contentElement.get('permaId'));
+      });
+
+      return contentElement;
     }
     else if (at === 'endOfSection') {
       const contentElement = new ContentElement({
@@ -73,12 +79,14 @@ export const ScrolledEntry = Entry.extend({
       contentElement.once('sync', () => {
         this.trigger('selectContentElement', contentElement);
       });
+
+      return contentElement;
     }
     else {
-      insertContentElement(this,
-                           this.contentElements.get(id),
-                           attributes,
-                           {at, splitPoint});
+      return insertContentElement(this,
+                                  this.contentElements.get(id),
+                                  attributes,
+                                  {at, splitPoint});
     }
   },
 
