@@ -3,7 +3,11 @@ import classNames from 'classnames';
 
 import { SectionAtmo } from './SectionAtmo';
 
-import {useSectionContentElements, useAdditionalSeedData, useFileWithInlineRights} from '../entryState';
+import {
+  useSectionForegroundContentElements,
+  useAdditionalSeedData,
+  useFileWithInlineRights
+} from '../entryState';
 import Foreground from './Foreground';
 import {SectionInlineFileRights} from './SectionInlineFileRights';
 import {Layout, widths as contentElementWidths} from './layouts';
@@ -163,8 +167,10 @@ function SectionContents({
 }
 
 function ConnectedSection(props) {
-  const contentElements = useSectionContentElements({sectionId: props.section.id,
-                                                     layout: props.section.layout});
+  const contentElements = useSectionForegroundContentElements({
+    sectionId: props.section.id,
+    layout: props.section.layout
+  });
 
   return <Section {...props} contentElements={contentElements} />
 }

@@ -1,4 +1,4 @@
-import {useFileWithInlineRights} from '../../entryState';
+import {useContentElement, useFileWithInlineRights} from '../../entryState';
 import {usePortraitOrientation} from '../usePortraitOrientation';
 
 export function useBackdrop(section) {
@@ -12,8 +12,17 @@ export function useBackdrop(section) {
     collectionName: 'imageFiles',
     propertyName: 'image'
   });
+  const contentElement = useContentElement({
+    permaId: section.backdrop?.contentElement,
+    layout: 'backdrop'
+  });
 
-  if (section.backdrop?.color ||
+  if (contentElement && contentElement.sectionId === section.id) {
+    return {
+      contentElement
+    };
+  }
+  else if (section.backdrop?.color ||
       (section.backdrop?.image && section.backdrop.image.toString().startsWith('#'))) {
     return {
       color: section.backdrop.color || section.backdrop.image

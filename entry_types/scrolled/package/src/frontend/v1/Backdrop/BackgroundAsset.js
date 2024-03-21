@@ -6,6 +6,7 @@ import {useBackgroundFile} from './../useBackgroundFile';
 
 import {BackgroundVideo} from './BackgroundVideo';
 import {BackgroundImage} from './BackgroundImage';
+import {BackgroundContentElement} from './BackgroundContentElement';
 
 export function BackgroundAsset(props) {
   const backgroundFile = useBackgroundFile({
@@ -15,7 +16,17 @@ export function BackgroundAsset(props) {
     containerDimension: props.containerDimension
   });
 
-  if (props.backdrop.video) {
+  if (props.backdrop.contentElement) {
+    return (
+      <Fullscreen ref={props.setContainerRef}>
+        <BackgroundContentElement
+          contentElement={props.backdrop.contentElement}
+          onMotifAreaUpdate={props.onMotifAreaUpdate}
+          isIntersecting={props.motifAreaState.isMotifIntersected} />
+      </Fullscreen>
+    );
+  }
+  else if (props.backdrop.video) {
     return (
       <Fullscreen ref={props.setContainerRef}>
         <BackgroundVideo
