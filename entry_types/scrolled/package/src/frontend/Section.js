@@ -105,11 +105,11 @@ function SectionContents({
   const [, exitTransition] = transitions;
 
   const [motifAreaState, setMotifAreaRef, setContentAreaRef] = useMotifAreaState({
+    backdropContentElement: 'contentElement' in backdrop,
     updateOnScrollAndResize: shouldPrepare,
     exposeMotifArea: section.exposeMotifArea,
     transitions,
     empty: !contentElements.length,
-    sectionTransition: section.transition,
     fullHeight: section.fullHeight
   });
 

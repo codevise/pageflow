@@ -12,9 +12,11 @@ describe('useMotifAreaState', () => {
     empty,
     transitions,
     updateOnScrollAndResize,
-    exposeMotifArea
+    exposeMotifArea,
+    backdropContentElement = false
   }) {
     const {result} = renderHook(() => useMotifAreaState({
+      backdropContentElement,
       fullHeight,
       empty,
       transitions,
@@ -30,16 +32,19 @@ describe('useMotifAreaState', () => {
       viewportLeft: contentArea.left,
       ...contentArea,
     });
-    const motifAreaEl = createElementWithDimension({
+    const motifAreaEl = motifArea && createElementWithDimension({
       offsetLeft: motifArea.left,
       viewportLeft: motifArea.left,
       ...motifArea
     });
 
-    const [, setMotifAreaRect, setContentAreaRef] = result.current;
+    const [, setMotifAreaRef, setContentAreaRef] = result.current;
 
     act(() => {
-      setMotifAreaRect(motifAreaEl);
+      if (motifAreaEl) {
+        setMotifAreaRef(motifAreaEl);
+      }
+
       setContentAreaRef(contentAreaEl);
     });
 
@@ -108,6 +113,20 @@ describe('useMotifAreaState', () => {
         }).current;
 
         expect(isContentPadded).toEqual(false);
+      });
+    });
+
+    describe('with backdrop content element', () => {
+      it('is always true', () => {
+        const [{isContentPadded}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 100, width: 300},
+          empty: true,
+          transitions: ['scrollIn', 'scrollOut'],
+          exposeMotifArea: false
+        }).current;
+
+        expect(isContentPadded).toEqual(true);
       });
     });
   });
@@ -189,6 +208,54 @@ describe('useMotifAreaState', () => {
             expect(paddingTop).toEqual(200);
           });
         });
+      });
+    });
+
+    describe('with backdrop content element', () => {
+      it('is based on viewport height', () => {
+        const [{paddingTop}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 0, width: 400},
+          transitions: ['scrollIn', 'scrollOut'],
+          exposeMotifArea: true
+        }).current;
+
+        expect(paddingTop).toEqual('110vh');
+      });
+
+      it('uses shorter height for fadeIn transition', () => {
+        const [{paddingTop}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 0, width: 400},
+          transitions: ['fadeIn', 'scrollOut'],
+          exposeMotifArea: true
+        }).current;
+
+        expect(paddingTop).toEqual('70vh');
+      });
+
+      it('uses shorter height for empty fadeOut transition', () => {
+        const [{paddingTop}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 0, width: 400},
+          transitions: ['scrollIn', 'fadeOut'],
+          exposeMotifArea: true,
+          empty: true
+        }).current;
+
+        expect(paddingTop).toEqual('70vh');
+      });
+
+      it('uses normal height for non-empty fadeOut transition', () => {
+        const [{paddingTop}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 0, width: 400},
+          transitions: ['scrollIn', 'fadeOut'],
+          exposeMotifArea: true,
+          empty: false
+        }).current;
+
+        expect(paddingTop).toEqual('110vh');
       });
     });
   });
@@ -388,6 +455,90 @@ describe('useMotifAreaState', () => {
 
         [{intersectionRatioY}] = result.current;
         expect(intersectionRatioY).toEqual(0);
+      });
+    });
+
+    describe('with backdrop content element', () => {
+      it('becomes positive if section has content', () => {
+        const [{intersectionRatioY}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 100, viewportTop: 400, width: 300},
+          motifArea: {left: 200, viewportTop: 100, width: 500, height: 400},
+          empty: false,
+          transitions: ['scrollIn', 'scrollOut'],
+          exposeMotifArea: true
+        }).current;
+
+        expect(intersectionRatioY).toEqual(0.25);
+      });
+
+      it('stays 0 if does not section have content', () => {
+        const [{intersectionRatioY}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 100, viewportTop: 400, width: 300},
+          motifArea: {left: 200, viewportTop: 100, width: 500, height: 400},
+          empty: true,
+          transitions: ['scrollIn', 'scrollOut'],
+          exposeMotifArea: true
+        }).current;
+
+        expect(intersectionRatioY).toEqual(0);
+      });
+    });
+  });
+
+  describe('isMotifIntersected', () => {
+    describe('with backdrop content element', () => {
+      it('is false if section content does not intersecte motif area', () => {
+        const [{isMotifIntersected}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 100, viewportTop: 600, width: 300},
+          motifArea: {left: 200, viewportTop: 100, width: 500, height: 400},
+          empty: false,
+          transitions: ['scrollIn', 'scrollOut'],
+          exposeMotifArea: true
+        }).current;
+
+        expect(isMotifIntersected).toEqual(false);
+      });
+
+      it('is true if section content intersectes motif area', () => {
+        const [{isMotifIntersected}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 100, viewportTop: 400, width: 300},
+          motifArea: {left: 200, viewportTop: 100, width: 500, height: 400},
+          empty: false,
+          transitions: ['scrollIn', 'scrollOut'],
+          exposeMotifArea: true
+        }).current;
+
+        expect(isMotifIntersected).toEqual(true);
+      });
+
+      it('is false when empty section gets scrolled out', () => {
+        const [{isMotifIntersected}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 100, viewportTop: 400, width: 300},
+          motifArea: {left: 200, viewportTop: 100, width: 500, height: 400},
+          empty: true,
+          transitions: ['scrollIn', 'scrollOut'],
+          exposeMotifArea: true
+        }).current;
+
+        expect(isMotifIntersected).toEqual(false);
+      });
+
+      it('is true when empty section get scrolled out with fadeOutBg ', () => {
+        const [{isMotifIntersected}] = getMotifAreaState({
+          backdropContentElement: true,
+          contentArea: {left: 100, viewportTop: 400, width: 300},
+          motifArea: {left: 200, viewportTop: 100, width: 500, height: 400},
+          empty: true,
+          transitions: ['scrollIn', 'fadeOutBg'],
+          exposeMotifArea: true
+        }).current;
+
+        expect(isMotifIntersected).toEqual(true);
       });
     });
   });
