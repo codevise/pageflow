@@ -127,7 +127,9 @@ function SectionContents({
       <Backdrop backdrop={backdrop}
                 eagerLoad={section.sectionIndex === 0}
 
+                motifAreaState={motifAreaState}
                 onMotifAreaUpdate={setMotifAreaRef}
+
                 state={state}
                 transitionStyles={transitionStyles}>
         {(children) =>

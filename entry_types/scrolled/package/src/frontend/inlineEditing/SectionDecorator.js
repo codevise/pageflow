@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './SectionDecorator.module.css';
+import backdropStyles from './BackdropDecorator.module.css';
 import contentElementStyles from './ContentElementDecorator.module.css';
 
 import {Toolbar} from './Toolbar';
@@ -43,6 +44,7 @@ export function SectionDecorator({section, contentElements, children}) {
 
   function selectIfOutsideContentItem(event) {
     if (!event.target.closest(`.${contentElementStyles.wrapper}`) &&
+        !event.target.closest(`.${backdropStyles.wrapper}`) &&
         !event.target.closest('#fullscreenRoot')) {
       isSelected ? resetSelection() : select();
     }
