@@ -11,6 +11,7 @@ import {MediaMutedProvider} from './useMediaMuted';
 import {AudioFocusProvider} from './useAudioFocus';
 import {ConsentProvider} from './thirdPartyConsent';
 import {CurrentSectionProvider} from './useCurrentChapter';
+import {ScrollTargetEmitterProvider} from './useScrollTarget';
 
 export function RootProviders({seed, consent = consentApi, children}) {
   return (
@@ -23,7 +24,9 @@ export function RootProviders({seed, consent = consentApi, children}) {
                 <CurrentSectionProvider>
                   <LocaleProvider>
                     <ConsentProvider consent={consent}>
-                      {children}
+                      <ScrollTargetEmitterProvider>
+                        {children}
+                      </ScrollTargetEmitterProvider>
                     </ConsentProvider>
                   </LocaleProvider>
                 </CurrentSectionProvider>
