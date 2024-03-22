@@ -85,6 +85,23 @@ const pageObjectQueries = {
     return createContentElementPageObject(el);
   },
 
+  fakeSectionBoundingClientRectsByPermaId(container, rectsByPermaId) {
+    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function() {
+      const idAttribute = this.getAttribute('id');
+      const permaId = idAttribute?.split('-')[1];
+
+      return {
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0,
+        bottom: 0,
+        right: 0,
+        ...(permaId ? rectsByPermaId[permaId] : {})
+      };
+    });
+  },
+
   fakeContentElementBoundingClientRectsByTestId(container, rectsByTestId) {
     jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function() {
       const testIdAttribute = this.querySelector('[data-testid]')?.getAttribute('data-testid');

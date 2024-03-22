@@ -1,12 +1,7 @@
-import React from 'react';
-import {frontend} from 'frontend';
-
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects';
 import {fakeParentWindow} from 'support';
 
 import {asyncHandlingOf} from 'support/asyncHandlingOf';
-
-jest.mock('frontend/useScrollTarget');
 
 describe('scroll point messages', () => {
   useInlineEditingPageObjects();

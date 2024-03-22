@@ -1,4 +1,4 @@
-import React, {useRef, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import classNames from 'classnames';
 
 import { SectionAtmo } from './SectionAtmo';
@@ -7,7 +7,7 @@ import {useSectionContentElements, useAdditionalSeedData, useFileWithInlineRight
 import Foreground from './Foreground';
 import {SectionInlineFileRights} from './SectionInlineFileRights';
 import {Layout, widths as contentElementWidths} from './layouts';
-import useScrollTarget from './useScrollTarget';
+import {useScrollTarget} from './useScrollTarget';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
 import {SectionViewTimelineProvider} from './SectionViewTimelineProvider';
 import {withInlineEditingDecorator} from './inlineEditing';
@@ -20,7 +20,7 @@ import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
 import {getAppearanceComponents} from './appearance';
 
 const Section = withInlineEditingDecorator('SectionDecorator', function Section({
-  section, contentElements, state, isScrollTarget, onActivate, domIdPrefix
+  section, contentElements, state, onActivate, domIdPrefix
 }) {
   const {
     useBackdrop,
@@ -30,8 +30,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
 
   const backdrop = useBackdrop(section);
 
-  const ref = useRef();
-  useScrollTarget(ref, isScrollTarget);
+  const ref = useScrollTarget(section.id);
 
   const transitionStyles = getTransitionStyles(section, section.previousSection, section.nextSection);
 

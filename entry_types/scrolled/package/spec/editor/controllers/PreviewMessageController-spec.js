@@ -71,8 +71,29 @@ describe('PreviewMessageController', () => {
           resolve(event.data);
         }
       });
-      entry.trigger('scrollToSection', entry.sections.at(2));
-    })).resolves.toMatchObject({type: 'SCROLL_TO_SECTION', payload: {index: 2}});
+      entry.trigger('scrollToSection', entry.sections.get(2));
+    })).resolves.toMatchObject({type: 'SCROLL_TO_SECTION', payload: {id: 2}});
+  });
+
+  it('supports sending SCROLL_TO_SECTION message with align property', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 1}, {id: 2}, {id: 3}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SCROLL_TO_SECTION') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('scrollToSection', entry.sections.get(2), {align: 'start'});
+    })).resolves.toMatchObject({type: 'SCROLL_TO_SECTION', payload: {id: 2, align: 'start'}});
   });
 
   it('sends SELECT message to iframe on selectContentElement event on model', async () => {

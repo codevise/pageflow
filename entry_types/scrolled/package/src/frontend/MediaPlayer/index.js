@@ -1,8 +1,7 @@
-import React, {useEffect, useContext, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import classNames from 'classnames';
 
 import PlayerContainer from './PlayerContainer';
-import ScrollToSectionContext from "../ScrollToSectionContext";
 import {watchPlayer} from './watchPlayer';
 import {applyPlayerState} from './applyPlayerState';
 import {updatePlayerState} from './updatePlayerState';
@@ -58,13 +57,11 @@ function Poster({imageUrl, objectPosition, hide}) {
 function PreparedMediaPlayer(props){
   let playerRef = useRef();
   let previousPlayerState = useRef(props.playerState);
-  let scrollToSection = useContext(ScrollToSectionContext);
   let eventContextData = useEventContextData();
   let unwatchPlayer;
 
   let onSetup = (newPlayer)=>{
     playerRef.current = newPlayer;
-    newPlayer.on('ended', () => props.nextSectionOnEnd && scrollToSection('next'));
 
     unwatchPlayer = watchPlayer(newPlayer, props.playerActions);
     applyPlayerState(newPlayer, props.playerState, props.playerActions)
