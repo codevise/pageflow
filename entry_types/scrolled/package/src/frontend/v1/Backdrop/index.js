@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {withInlineEditingDecorator} from '../../inlineEditing';
 import useDimension from './../../useDimension';
 import {useSectionLifecycle} from './../../useSectionLifecycle';
 
@@ -8,7 +9,7 @@ import {BackgroundAsset} from './BackgroundAsset';
 
 import styles from '../../Backdrop.module.css';
 
-export function Backdrop(props) {
+export const Backdrop = withInlineEditingDecorator('BackdropDecorator', function Backdrop(props) {
   const [containerDimension, setContainerRef] = useDimension();
   const {shouldLoad} = useSectionLifecycle();
 
@@ -29,7 +30,7 @@ export function Backdrop(props) {
       </div>
     </div>
   );
-}
+});
 
 Backdrop.defaultProps = {
   children: children => children,

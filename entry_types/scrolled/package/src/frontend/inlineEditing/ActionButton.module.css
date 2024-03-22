@@ -9,6 +9,15 @@
   border-radius: 3px;
   font-size: 13px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.size-lg {
+  padding: 10px;
 }
 
 .button:hover,
@@ -18,8 +27,6 @@
 
 .button svg {
   fill: currentColor;
-  vertical-align: bottom;
-  margin-right: 8px;
 }
 
 .position-outside {
@@ -35,4 +42,9 @@
 .position-inside {
   bottom: 0.5em;
   right: 0.5em;
+}
+
+.position-center {
+  left: 50%;
+  transform: translateX(-50%);
 }

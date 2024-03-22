@@ -17,3 +17,6 @@ de:
       backdrop_content_element_input:
         add: Neues Element
         unset: Nicht mehr als Hintergrund verwenden
+    inline_editing:
+      select_backdrop_content_element: Hintergrund bearbeiten
+      back_to_section: Zurück zum Abschnitt

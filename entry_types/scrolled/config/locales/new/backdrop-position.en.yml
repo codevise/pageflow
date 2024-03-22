@@ -17,3 +17,6 @@ en:
       backdrop_content_element_input:
         add: New element
         unset: No longer use as backdrop
+    inline_editing:
+      select_backdrop_content_element: Edit backdrop
+      back_to_section: Back to section
