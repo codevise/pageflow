@@ -1,5 +1,6 @@
 .content {
   position: relative;
+  pointer-events: auto;
 }
 
 @media print {
