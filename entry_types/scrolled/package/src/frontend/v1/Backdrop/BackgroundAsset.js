@@ -22,6 +22,7 @@ export function BackgroundAsset(props) {
         <BackgroundContentElement
           contentElement={props.backdrop.contentElement}
           onMotifAreaUpdate={props.onMotifAreaUpdate}
+          containerDimension={props.containerDimension}
           isIntersecting={props.motifAreaState.isMotifIntersected} />
       </Fullscreen>
     );
