@@ -30,6 +30,7 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
     saveOnSlide: true,
     minValueBinding: 'position',
     maxValueBinding: 'position',
+    visibleBinding: 'position',
     minValue: () => contentElement.getAvailableMinWidth(),
     maxValue: () => contentElement.getAvailableMaxWidth(),
     visible: () => contentElement.getAvailableMinWidth() !== contentElement.getAvailableMaxWidth(),
