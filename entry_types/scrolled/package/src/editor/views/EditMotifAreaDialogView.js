@@ -90,7 +90,9 @@ export const EditMotifAreaDialogView = Marionette.ItemView.extend({
   },
 
   getPropertyName() {
-    return `${this.options.propertyName}MotifArea`;
+    return this.options.propertyName === 'id' ?
+           'motifArea' :
+           `${this.options.propertyName.replace(/Id$/, '')}MotifArea`;
   },
 
   getMotifAreaWithRoundedValues() {

@@ -17,6 +17,8 @@ de:
               Interaktive Hintergrund-Elemente nutzen immer die volle Viewport-Höhe
           backdropContentElement:
             label: Element
+        edit_motif_area: DELETED
+      edit_motif_area_menu_item: Motivbereich markieren...
       backdrop_content_element_input:
         add: Neues Element
         unset: Nicht mehr als Hintergrund verwenden

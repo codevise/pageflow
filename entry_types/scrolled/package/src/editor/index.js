@@ -11,6 +11,7 @@ export {editor} from './api';
 
 export {default as buttonStyles} from './views/buttons.module.css';
 export {NoOptionsHintView} from './views/NoOptionsHintView';
+export {EditMotifAreaDialogView} from './views/EditMotifAreaDialogView';
 export {InlineFileRightsMenuItem} from './models/InlineFileRightsMenuItem';
 
 Object.assign(pageflow, globalInterop);
