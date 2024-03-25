@@ -125,7 +125,7 @@ export const EditSectionView = EditConfigurationView.extend({
         displayUncheckedIfDisabled: true,
         visibleBinding: ['backdropType'],
         visible: ([backdropType]) => {
-          return backdropType !== 'color';
+          return backdropType !== 'color' && backdropType !== 'contentElement';
         },
         disabledBinding: motifAreaDisabledBinding,
         disabled: motifAreaDisabled,
