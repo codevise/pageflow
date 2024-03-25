@@ -232,6 +232,72 @@ describe('useSection', () => {
 
     expect(section).toMatchObject(expectedSection);
   });
+
+  it('does not mark section as fullHeight by default', () => {
+    const {result} = renderHookInEntry(
+      () => useSection({sectionPermaId: 101}),
+      {
+        seed: {
+          sections: [{permaId: 101}]
+        }
+      }
+    );
+
+    const section = result.current;
+
+    expect(section.fullHeight).toBeUndefined()
+  });
+
+  it('marks sections with backdropType contentElement as fullHeight', () => {
+    const {result} = renderHookInEntry(
+      () => useSection({sectionPermaId: 101}),
+      {
+        seed: {
+          sections: [{permaId: 101, configuration: {backdropType: 'contentElement'}}],
+        }
+      }
+    );
+
+    const section = result.current;
+
+    expect(section.fullHeight).toEqual(true)
+  });
+
+  it('overrides fullHeight to true for backdropType contentElement', () => {
+    const {result} = renderHookInEntry(
+      () => useSection({sectionPermaId: 101}),
+      {
+        seed: {
+          sections: [{
+            permaId: 101,
+            configuration: {
+              fullHeight: false,
+              backdropType: 'contentElement'
+            }
+          }],
+        }
+      }
+    );
+
+    const section = result.current;
+
+    expect(section.fullHeight).toEqual(true)
+  });
+
+  it('supports marking sections as fullHeight', () => {
+    const {result} = renderHookInEntry(
+      () => useSection({sectionPermaId: 101}),
+      {
+        seed: {
+          sections: [{permaId: 101, configuration: {fullHeight: true}}],
+        }
+      }
+    );
+
+    const section = result.current;
+
+    expect(section.fullHeight).toEqual(true)
+  });
 });
 
 describe('useChapters', () => {

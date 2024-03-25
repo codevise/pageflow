@@ -139,7 +139,14 @@ function sectionData(section) {
     permaId: section.permaId,
     id: section.id,
     chapterId: section.chapterId,
-    ...section.configuration
+    ...normalizeSectionConfigurationData(section.configuration)
+  };
+}
+
+export function normalizeSectionConfigurationData(configuration) {
+  return {
+    ...configuration,
+    ...(configuration.backdropType === 'contentElement' ? {fullHeight: true} : {})
   };
 }
 

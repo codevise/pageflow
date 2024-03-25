@@ -33,10 +33,14 @@ export const EditSectionView = EditConfigurationView.extend({
     };
 
     configurationEditor.tab('section', function() {
-      this.input('fullHeight', CheckBoxInputView);
-
       this.input('backdropType', SelectInputView, {
         values: ['image', 'video', 'color', 'contentElement'],
+      });
+
+      this.input('fullHeight', CheckBoxInputView, {
+        disabledBinding: 'backdropType',
+        disabled: backdropType => backdropType === 'contentElement',
+        displayCheckedIfDisabled: true
       });
 
       this.input('backdropImage', FileInputView, {
