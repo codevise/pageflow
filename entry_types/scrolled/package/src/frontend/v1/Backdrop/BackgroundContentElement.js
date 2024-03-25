@@ -7,7 +7,7 @@ import {withInlineEditingDecorator} from '../../inlineEditing';
 export const BackgroundContentElement = withInlineEditingDecorator(
   'BackgroundContentElementDecorator',
   function BackgroundContentElement({
-    contentElement, isIntersecting, onMotifAreaUpdate
+    contentElement, isIntersecting, onMotifAreaUpdate, containerDimension
   }) {
     return (
       <div ref={onMotifAreaUpdate}>
@@ -17,7 +17,7 @@ export const BackgroundContentElement = withInlineEditingDecorator(
                         position={contentElement.position}
                         width={3}
                         itemProps={contentElement.props}
-                        sectionProps={{isIntersecting}} />
+                        sectionProps={{isIntersecting, containerDimension}} />
       </div>
     );
   }
