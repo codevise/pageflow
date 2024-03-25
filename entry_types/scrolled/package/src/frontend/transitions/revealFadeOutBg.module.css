@@ -26,4 +26,5 @@
 .boxShadow-above {
   /* Win against inline style on GradientBox */
   opacity: 0 !important;
+  pointer-events: none;
 }

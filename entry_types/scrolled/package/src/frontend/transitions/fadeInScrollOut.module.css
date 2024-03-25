@@ -37,4 +37,5 @@
 
 .backdrop-below {
   opacity: 0;
+  pointer-events: none;
 }
