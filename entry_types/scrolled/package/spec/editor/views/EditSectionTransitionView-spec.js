@@ -70,6 +70,27 @@ describe('EditSectionTransitionView', () => {
     expect(getByLabelText('Scroll')).toBeEnabled();
   });
 
+  it('offers fade transtions if adjacent sections use backdrop content elements', () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [
+          {id: 1, configuration: {fullHeight: false, backdropType: 'contentElement'}},
+          {id: 2, configuration: {fullHeight: false, backdropType: 'contentElement'}}
+        ]
+      })
+    });
+    const view = new EditSectionTransitionView({
+      model: entry.sections.get(2),
+      entry
+    });
+
+    const {getByLabelText} = within(view.render().el);
+
+    expect(getByLabelText('Fade background and contents')).toBeEnabled();
+    expect(getByLabelText('Fade background only')).toBeEnabled();
+    expect(getByLabelText('Scroll')).toBeEnabled();
+  });
+
   it('restores fade variant when toggling to other transition and back to fade', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({

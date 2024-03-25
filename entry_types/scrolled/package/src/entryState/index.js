@@ -4,6 +4,7 @@ export {useShareProviders, useShareUrl} from './sharing';
 export {useEntryTranslations} from './entryTranslations';
 export {useEntryMetadata} from './metadata';
 export {
+  normalizeSectionConfigurationData,
   useEntryStructure,
   useSectionsWithChapter,
   useSection,

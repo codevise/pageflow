@@ -12,6 +12,9 @@ de:
           backdropType:
             values:
               contentElement: Interaktives Element
+          fullHeight:
+            inline_help_disabled: |-
+              Interaktive Hintergrund-Elemente nutzen immer die volle Viewport-Höhe
           backdropContentElement:
             label: Element
       backdrop_content_element_input:
