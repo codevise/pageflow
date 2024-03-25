@@ -1,8 +1,8 @@
-.wrapper {
-}
+.wrapper {}
 
 .content {
   position: relative;
+  pointer-events: auto;
 }
 
 .shadow {
