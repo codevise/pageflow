@@ -674,7 +674,6 @@ en:
             values:
               narrow: Narrow
               wide: Wide
-        edit_motif_area: Select motif area...
         tabs:
           section: Section
       edit_section_transition:

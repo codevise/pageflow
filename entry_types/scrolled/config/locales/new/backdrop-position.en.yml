@@ -17,6 +17,8 @@ en:
               Interactive backdrop elements always take up full viewport height.
           backdropContentElement:
             label: Element
+        edit_motif_area: DELETED
+      edit_motif_area_menu_item: Select motif area...
       backdrop_content_element_input:
         add: New element
         unset: No longer use as backdrop

@@ -70,6 +70,58 @@ describe('EditMotifAreaDialogView', () => {
     });
   });
 
+  it('removes id suffix from property name', () => {
+    const model = new Backbone.Model();
+    const file = factories.imageFile({width: 200, height: 100});
+
+    const view = new EditMotifAreaDialogView({
+      model,
+      file,
+      propertyName: 'imageId'
+    });
+
+    const imgAreaSelect = fakeImgAreaSelect();
+
+    view.render();
+    view.onShow();
+
+    imgAreaSelect.select({x1: 10.01, y1: 10.02, x2: 60, y2: 60});
+    fireEvent.click(getByText(view.el, 'Save'));
+
+    expect(model.get('imageMotifArea')).toEqual({
+      left: 5,
+      top: 10,
+      width: 25,
+      height: 50
+    });
+  });
+
+  it('supports id property name', () => {
+    const model = new Backbone.Model();
+    const file = factories.imageFile({width: 200, height: 100});
+
+    const view = new EditMotifAreaDialogView({
+      model,
+      file,
+      propertyName: 'id'
+    });
+
+    const imgAreaSelect = fakeImgAreaSelect();
+
+    view.render();
+    view.onShow();
+
+    imgAreaSelect.select({x1: 10.01, y1: 10.02, x2: 60, y2: 60});
+    fireEvent.click(getByText(view.el, 'Save'));
+
+    expect(model.get('motifArea')).toEqual({
+      left: 5,
+      top: 10,
+      width: 25,
+      height: 50
+    });
+  });
+
   it('allows resetting the motif area property', () => {
     const model = new Backbone.Model({
       imageMotifArea: {

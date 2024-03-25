@@ -21,7 +21,7 @@ export const EditSectionView = EditConfigurationView.extend({
 
     const editMotifAreaMenuItem = {
       name: 'editMotifArea',
-      label: I18n.t('pageflow_scrolled.editor.edit_section.edit_motif_area'),
+      label: I18n.t('pageflow_scrolled.editor.edit_motif_area_menu_item'),
 
       selected({inputModel, propertyName, file}) {
         EditMotifAreaDialogView.show({

@@ -1,8 +1,36 @@
-import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
+import Backbone from 'backbone';
+import I18n from 'i18n-js';
+
+import {editor, InlineFileRightsMenuItem, EditMotifAreaDialogView} from 'pageflow-scrolled/editor';
 import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView, SeparatorView, LabelOnlyView} from 'pageflow/ui';
 
 import pictogram from './pictogram.svg';
+
+const EditMotifAreaMenuItem = Backbone.Model.extend({
+  defaults: {
+    name: 'editMotifArea'
+  },
+
+  initialize(attributes, {inputModel, propertyName, file}) {
+    this.set('label', I18n.t('pageflow_scrolled.editor.edit_motif_area_menu_item'));
+
+    const update = () => {
+      this.set('hidden', inputModel.get('position') !== 'backdrop');
+    }
+
+    this.listenTo(inputModel, `change:position`, update);
+    update();
+
+    this.selected = () => {
+      EditMotifAreaDialogView.show({
+        model: inputModel,
+        propertyName,
+        file
+      });
+    }
+  }
+})
 
 editor.contentElementTypes.register('inlineVideo', {
   pictogram,
@@ -19,7 +47,7 @@ editor.contentElementTypes.register('inlineVideo', {
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false,
         defaultTextTrackFilePropertyName: 'defaultTextTrackFileId',
-        dropDownMenuItems: [InlineFileRightsMenuItem]
+        dropDownMenuItems: [EditMotifAreaMenuItem, InlineFileRightsMenuItem]
       });
       this.input('posterId', FileInputView, {
         collection: 'image_files',
@@ -33,7 +61,7 @@ editor.contentElementTypes.register('inlineVideo', {
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false,
         defaultTextTrackFilePropertyName: 'defaultTextTrackFileId',
-        dropDownMenuItems: [InlineFileRightsMenuItem]
+        dropDownMenuItems: [EditMotifAreaMenuItem, InlineFileRightsMenuItem]
       });
       this.input('portraitPosterId', FileInputView, {
         collection: 'image_files',
