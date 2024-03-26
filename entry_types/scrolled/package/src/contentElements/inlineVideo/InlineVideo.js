@@ -125,6 +125,7 @@ function OrientationUnawareInlineVideo({
       <FitViewport file={videoFile}
                    aspectRatio={videoFile ?
                                 undefined : fallbackAspectRatio}
+                   fill={configuration.position === 'backdrop'}
                    opaque={!videoFile}>
         <ContentElementBox>
           <ContentElementFigure configuration={configuration}>
@@ -233,6 +234,7 @@ function PlayerWithControlBar({
                            shouldLoad ? 'poster' :
                            'none'}
                      loop={configuration.playbackMode === 'loop'}
+                     fit={configuration.position === 'backdrop' ? 'cover' : 'contain'}
                      playerState={playerState}
                      playerActions={playerActions}
                      videoFile={videoFile}

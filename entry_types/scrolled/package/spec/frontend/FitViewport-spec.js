@@ -1,6 +1,7 @@
 import {FitViewport} from 'pageflow-scrolled/frontend';
 import {FullscreenDimensionProvider} from 'frontend/Fullscreen';
 import styles from 'frontend/FitViewport.module.css';
+import fullscreenStyles from 'frontend/Fullscreen.module.css';
 
 import React from 'react';
 import {render} from '@testing-library/react';
@@ -97,11 +98,22 @@ describe('FitViewport', () => {
     expect(getOuter(container)).toHaveClass(styles.opaque);
   });
 
+  it('support covering full height', () => {
+    const {container} = render(
+      <FitViewport aspectRatio={0.5} fill>
+        <FitViewport.Content />
+      </FitViewport>
+    );
+
+    expect(getInner(container)).toBeNull();
+    expect(container.querySelector(`.${fullscreenStyles.root}`)).not.toBeNull();
+  });
+
   function getOuter(container) {
-    return container.querySelector('div[style]');
+    return container.querySelector(`.${styles.container}`);
   }
 
   function getInner(container) {
-    return container.querySelector('div[style] div[style]');
+    return container.querySelector(`.${styles.container} div[style]`);
   }
 });

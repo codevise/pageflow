@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import classNames from 'classnames';
 
 import styles from "./FitViewport.module.css";
-import {useFullscreenDimensions} from "./Fullscreen";
+import Fullscreen, {useFullscreenDimensions} from "./Fullscreen";
 
 const AspectRatioContext = React.createContext();
 
@@ -30,17 +30,21 @@ const AspectRatioContext = React.createContext();
  * @param {Object} [props.file] - Use width/height of file to calculate aspect ratio.
  * @param {number} [props.scale] - Only take up fraction of the viewport height supplied as value between 0 and 1.
  * @param {Object} [props.opaque] - Render black background behind content.
+ * @param {string} [props.fill] - Ignore aspect ration and fill viewport vertically.
  */
-export function FitViewport({file, aspectRatio, opaque, children, scale = 1}) {
+export function FitViewport({file, aspectRatio, opaque, children, fill, scale = 1}) {
   const {height} = useFullscreenDimensions();
 
   if (!file && !aspectRatio) return children;
 
-  aspectRatio = aspectRatio || (file.height / file.width);
+  aspectRatio = fill ? 'fill' : aspectRatio || (file.height / file.width);
 
   let maxWidthCSS;
 
-  if (height) {
+  if (fill) {
+    maxWidthCSS = null;
+  }
+  else if (height) {
     // thumbnail view/fixed size: calculate absolute width in px
     maxWidthCSS = (height / aspectRatio * scale) + 'px';
   } else {
@@ -60,7 +64,15 @@ export function FitViewport({file, aspectRatio, opaque, children, scale = 1}) {
 
 FitViewport.Content =
   function FitViewportContent({children}) {
-    const arPaddingTop = useContext(AspectRatioContext) * 100;
+    let arPaddingTop = useContext(AspectRatioContext);
+
+    if (arPaddingTop === 'fill') {
+      return (
+        <Fullscreen children={children} />
+      )
+    }
+
+    arPaddingTop = arPaddingTop * 100
 
     if (!arPaddingTop) {
       return children;
