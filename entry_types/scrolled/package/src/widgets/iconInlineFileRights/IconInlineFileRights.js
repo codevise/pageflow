@@ -6,7 +6,7 @@ import {ThemeIcon} from 'pageflow-scrolled/frontend';
 import styles from './IconInlineFileRights.module.css';
 
 export function IconInlineFileRights({
-  context, playerControlsStandAlone, playerControlsTransparent, children
+  context, playerControlsStandAlone, playerControlsFadedOut, children
 }) {
   if (context === 'afterElement') {
     return null;
@@ -14,7 +14,7 @@ export function IconInlineFileRights({
 
   return (
     <div className={classNames(styles.wrapper, {
-      [styles.transparent]: context !== 'playerControls' || playerControlsTransparent,
+      [styles.fadedOut]: context !== 'playerControls' || playerControlsFadedOut,
       [styles.standAlone]: context !== 'playerControls'
     })}>
       <button className={styles.button}>
