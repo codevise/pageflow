@@ -12,7 +12,11 @@ import {widths} from './layouts';
  */
 export function ContentElementFigure({configuration, children}) {
   const updateConfiguration = useContentElementConfigurationUpdate();
-  const {width} = useContentElementAttributes();
+  const {width, position} = useContentElementAttributes();
+
+  if (position === 'backdrop') {
+    return children;
+  }
 
   return (
     <Figure caption={configuration.caption}
