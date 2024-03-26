@@ -50,7 +50,7 @@ export function WaveformPlayerControls(props) {
         </div>
         <InlineFileRights items={props.inlineFileRightsItems}
                           context="playerControls"
-                          playerControlsTransparent={false}
+                          playerControlsFadedOut={false}
                           playerControlsStandAlone={props.standAlone} />
       </div>
     </div>

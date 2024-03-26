@@ -33,7 +33,7 @@
   transition: opacity .2s, visibility .2s;
 }
 
-.transparent .button {
+.fadedOut .button {
   opacity: 0.6;
 }
 

@@ -46,8 +46,8 @@
   flex: 1;
 }
 
-.transparent .controlBarInner,
-.transparent.inset::before {
+.fadedOut .controlBarInner,
+.fadedOut.inset::before {
   opacity: 0;
 }
 
