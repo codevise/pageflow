@@ -385,9 +385,6 @@ en:
               inline_help: Color of the waveform's parts that represents the already played part of the audio.
               label: Waveform Color
           description: Player or waveform with controls
-          name: Inline Audio
-          tabs:
-            general: Inline Audio
         inlineBeforeAfter:
           attributes:
             after_id:
@@ -424,9 +421,6 @@ en:
               inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to provide an alternative to a landscape image that would otherwise be displayed too small.
               label: Image (Portrait)
           description: Display an image
-          name: Inline Image
-          tabs:
-            general: Inline Image
         inlineVideo:
           attributes:
             atmoDuringPlayback:
@@ -472,9 +466,6 @@ en:
               inline_help_html: By default browsers only allow autoplaying videos with sound after a user interaction. To still be able to autoplay videos, entries therefore start muted.<br /><br />Sound can be activated using the speaker icon in the navigation bar or via an "Audio notice" element that has been placed in the entry.
               label: Unmute entry
           description: Player with controls
-          name: Inline Video
-          tabs:
-            general: Inline Video
         question:
           attributes:
             expandByDefault:
