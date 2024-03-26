@@ -3,6 +3,7 @@ import React from 'react';
 import {renderInEntry} from './index';
 import {Entry} from 'frontend/Entry';
 import foregroundStyles from 'frontend/Foreground.module.css';
+import contentElementBoxStyles from 'frontend/ContentElementBox.module.css';
 import contentElementMarginStyles from 'frontend/ContentElementMargin.module.css';
 import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
@@ -160,6 +161,10 @@ function createContentElementPageObject(el) {
   const selectionRect = el.closest('[aria-label="Select content element"]');
 
   return {
+    containsBox() {
+      return !!el.querySelector(`.${contentElementBoxStyles.wrapper}`);
+    },
+
     hasMargin() {
       return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
     },

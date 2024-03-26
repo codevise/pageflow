@@ -16,7 +16,7 @@ export const ContentElement = withInlineEditingDecorator(
 
     if (Component) {
       return (
-        <ContentElementAttributesProvider id={props.id} width={props.width}>
+        <ContentElementAttributesProvider id={props.id} width={props.width} position={props.position}>
           <ContentElementLifecycleProvider type={props.type}>
             <ContentElementMargin width={props.width}>
               <ContentElementErrorBoundary type={props.type}>
