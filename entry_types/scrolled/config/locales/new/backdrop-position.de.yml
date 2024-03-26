@@ -7,6 +7,19 @@ de:
             backdrop: 'Als Hintergrund'
           item_inline_help_texts:
             backdrop: ''
+      content_elements:
+        inlineVideo:
+          name: Video
+          tabs:
+            general: Video
+        inlineAudio:
+          name: Audio
+          tabs:
+            general: Audio
+        inlineImage:
+          name: Bild
+          tabs:
+            general: Bild
       edit_section:
         attributes:
           backdropType:
