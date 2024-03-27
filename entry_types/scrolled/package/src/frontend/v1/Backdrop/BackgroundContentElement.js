@@ -17,6 +17,10 @@ export const BackgroundContentElement = withInlineEditingDecorator(
       isActive: sectionLifecycle.isActive && !isIntersecting
     }), [sectionLifecycle, isIntersecting]);
 
+    const sectionProps = useMemo(() => ({
+      isIntersecting, containerDimension
+    }), [isIntersecting, containerDimension]);
+
     return (
       <div ref={onMotifAreaUpdate}>
         <ContentElement id={contentElement.id}
@@ -25,7 +29,7 @@ export const BackgroundContentElement = withInlineEditingDecorator(
                         position={contentElement.position}
                         width={3}
                         itemProps={contentElement.props}
-                        sectionProps={{isIntersecting, containerDimension}}
+                        sectionProps={sectionProps}
                         lifecycleOverride={lifecycleOverride} />
       </div>
     );

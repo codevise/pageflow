@@ -9,7 +9,7 @@ import {ContentElementErrorBoundary} from './ContentElementErrorBoundary';
 
 import styles from './ContentElement.module.css';
 
-export const ContentElement = withInlineEditingDecorator(
+export const ContentElement = React.memo(withInlineEditingDecorator(
   'ContentElementDecorator',
   function ContentElement(props) {
     const Component = api.contentElementTypes.getComponent(props.type);
@@ -36,9 +36,9 @@ export const ContentElement = withInlineEditingDecorator(
       return <div className={styles.missing}>Element of unknown type "{props.type}"</div>
     }
   }
-);
+), arePropsEqual);
 
-export function arePropsEqual(prevProps, nextProps) {
+function arePropsEqual(prevProps, nextProps) {
   return (
     prevProps.id === nextProps.id &&
     prevProps.permaId === nextProps.permaId &&
