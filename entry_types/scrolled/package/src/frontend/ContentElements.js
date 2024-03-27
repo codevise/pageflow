@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {ContentElement} from './ContentElement';
+import {ContentElement, arePropsEqual} from './ContentElement';
 import {ContentElementScrollSpace} from './ContentElementScrollSpace';
 
 export function ContentElements(props) {
@@ -29,19 +29,7 @@ export function ContentElements(props) {
   );
 }
 
-const MemoizedContentElement = React.memo(
-  ContentElement,
-  (prevProps, nextProps) => (
-    prevProps.id === nextProps.id &&
-    prevProps.permaId === nextProps.permaId &&
-    prevProps.type === nextProps.type &&
-    prevProps.position === nextProps.position &&
-    prevProps.width === nextProps.width &&
-    prevProps.itemProps === nextProps.itemProps &&
-    prevProps.customMargin === nextProps.customMargin &&
-    prevProps.sectionProps === nextProps.sectionProps
-  )
-);
+const MemoizedContentElement = React.memo(ContentElement, arePropsEqual);
 
 ContentElements.defaultProps = {
   children: (item, child) => child

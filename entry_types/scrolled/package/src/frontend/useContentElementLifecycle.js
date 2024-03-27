@@ -17,10 +17,15 @@ const useLifecycle = createScrollPositionLifecycleHook(
   ContentElementLifecycleContext
 );
 
-export function ContentElementLifecycleProvider({type, children}) {
+export function ContentElementLifecycleProvider({type, children, override}) {
   const {lifecycle} = api.contentElementTypes.getOptions(type);
 
-  if (lifecycle) {
+  if (override) {
+    return (
+      <ContentElementLifecycleContext.Provider value={override} children={children} />
+    );
+  }
+  else if (lifecycle) {
     return (
       <LifecycleProvider>
         {children}
