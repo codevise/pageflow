@@ -15,12 +15,19 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 import {simulateScrollingIntoView} from './fakeIntersectionObserver';
 
 export function renderEntry({seed, consent, isStaticPreview} = {}) {
-  return renderInEntry(<Entry />, {
+  const result = renderInEntry(<Entry />, {
     seed,
     consent,
     wrapper: isStaticPreview ? StaticPreview : null,
     queries: {...queries, ...pageObjectQueries}
   });
+
+  return {
+    ...result,
+    rerender() {
+      result.rerender(<Entry />);
+    }
+  }
 }
 
 export function useInlineEditingPageObjects() {
