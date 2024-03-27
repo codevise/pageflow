@@ -14,6 +14,19 @@ storiesOfContentElement(module, {
       configuration: {
         posterId: filePermaId('imageFiles', 'turtle')
       }
+    },
+    {
+      name: 'with position backdrop',
+      sectionConfiguration: {
+        backdropType: 'contentElement',
+        backdrop: {
+          contentElement: 1001
+        }
+      },
+      permaId: 1001,
+      configuration: {
+        position: 'backdrop'
+      }
     }
   ],
   inlineFileRights: true

@@ -181,9 +181,10 @@ function variantsExampleStories({typeName, baseConfiguration, variants}) {
     typeName,
     name: 'Variants',
     examples: variants.map(({
-      name, configuration, themeOptions, sectionConfiguration
+      name, permaId, configuration, themeOptions, sectionConfiguration
     }) => ({
       name: name,
+      permaId,
       contentElementConfiguration: {...baseConfiguration, ...configuration},
       themeOptions,
       sectionConfiguration
@@ -308,6 +309,7 @@ function exampleStoryGroup({
     exampleHeading({sectionId: index, text: `${name} - ${example.name}`}),
     {
       id: 1000 + index,
+      permaId: example.permaId || (2000 + index),
       sectionId: index,
       typeName,
       configuration: example.contentElementConfiguration
