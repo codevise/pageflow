@@ -12,12 +12,17 @@ import {useI18n} from '../i18n';
 
 import transitionIcon from './images/arrows.svg';
 
-export function SectionDecorator({section, contentElements, children}) {
+export function SectionDecorator({backdrop, section, contentElements, transitions, children}) {
   const {t} = useI18n({locale: 'ui'});
 
   const {isSelected, select, resetSelection} = useEditorSelection({
     id: section.id,
     type: 'sectionSettings'
+  });
+
+  const {isSelected: isBackdropElementSelected} = useEditorSelection({
+    id: backdrop.contentElement?.id,
+    type: 'contentElement'
   });
 
   const {isSelected: isHighlighted} = useEditorSelection({
@@ -52,7 +57,7 @@ export function SectionDecorator({section, contentElements, children}) {
 
   return (
     <div aria-label={t('pageflow_scrolled.inline_editing.select_section')}
-         className={className(isSelected, transitionSelection, isHighlighted)}
+         className={className(isSelected, transitionSelection, isHighlighted, isBackdropElementSelected, transitions)}
          onMouseDown={selectIfOutsideContentItem}>
       <div className={styles.controls}>
         {renderEditTransitionButton({id: section.previousSection && section.id,
@@ -71,10 +76,12 @@ export function SectionDecorator({section, contentElements, children}) {
   );
 }
 
-function className(isSectionSelected, transitionSelection, isHighlighted) {
+function className(isSectionSelected, transitionSelection, isHighlighted, isBackdropElementSelected, transitions) {
   return classNames(styles.wrapper, {
     [styles.selected]: isSectionSelected,
     [styles.highlighted]: isHighlighted,
+    [styles.lineAbove]: isBackdropElementSelected && transitions[0].startsWith('fade'),
+    [styles.lineBelow]: isBackdropElementSelected && transitions[1].startsWith('fade'),
     [styles.transitionSelected]: transitionSelection.isSelected
   });
 }
