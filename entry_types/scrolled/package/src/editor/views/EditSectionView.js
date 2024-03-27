@@ -142,9 +142,9 @@ export const EditSectionView = EditConfigurationView.extend({
           return backdropType !== 'color' &&
                  (!appearance || appearance === 'shadow');
         },
-        disabledBinding: ['exposeMotifArea', ...motifAreaDisabledBinding],
-        disabled: ([exposeMotifArea, ...motifAreaDisabledBindingValues]) =>
-          !exposeMotifArea || motifAreaDisabled(motifAreaDisabledBindingValues)
+        disabledBinding: ['backdropType', 'exposeMotifArea', ...motifAreaDisabledBinding],
+        disabled: ([backdropType, exposeMotifArea, ...motifAreaDisabledBindingValues]) =>
+          (!exposeMotifArea || motifAreaDisabled(motifAreaDisabledBindingValues)) && backdropType !== 'contentElement'
       });
 
       this.view(SeparatorView);
