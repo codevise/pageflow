@@ -1,13 +1,17 @@
-import React, {useRef, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import classNames from 'classnames';
 
 import { SectionAtmo } from './SectionAtmo';
 
-import {useSectionContentElements, useAdditionalSeedData, useFileWithInlineRights} from '../entryState';
+import {
+  useSectionForegroundContentElements,
+  useAdditionalSeedData,
+  useFileWithInlineRights
+} from '../entryState';
 import Foreground from './Foreground';
 import {SectionInlineFileRights} from './SectionInlineFileRights';
 import {Layout, widths as contentElementWidths} from './layouts';
-import useScrollTarget from './useScrollTarget';
+import {useScrollTarget} from './useScrollTarget';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
 import {SectionViewTimelineProvider} from './SectionViewTimelineProvider';
 import {withInlineEditingDecorator} from './inlineEditing';
@@ -20,18 +24,14 @@ import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
 import {getAppearanceComponents} from './appearance';
 
 const Section = withInlineEditingDecorator('SectionDecorator', function Section({
-  section, contentElements, state, isScrollTarget, onActivate, domIdPrefix
+  section, transitions, backdrop, contentElements, state, onActivate, domIdPrefix
 }) {
   const {
-    useBackdrop,
     useBackdropSectionClassNames,
     useBackdropSectionCustomProperties
   } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
 
-  const backdrop = useBackdrop(section);
-
-  const ref = useRef();
-  useScrollTarget(ref, isScrollTarget);
+  const ref = useScrollTarget(section.id);
 
   const transitionStyles = getTransitionStyles(section, section.previousSection, section.nextSection);
 
@@ -63,6 +63,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
           <SectionAtmo audioFile={atmoAudioFile} />
 
           <SectionContents section={section}
+                           transitions={transitions}
                            backdrop={backdrop}
                            contentElements={contentElements}
                            state={state}
@@ -83,7 +84,7 @@ Section.defaultProps = {
 };
 
 function SectionContents({
-  section, backdrop, contentElements, state, transitionStyles
+  section, backdrop, contentElements, state, transitions, transitionStyles
 }) {
   const {
     Backdrop,
@@ -98,19 +99,14 @@ function SectionContents({
     sectionIndex: section.sectionIndex
   }), [section.layout, section.invert, section.sectionIndex]);
 
-  const transitions = getEnterAndExitTransitions(
-    section,
-    section.previousSection,
-    section.nextSection
-  );
   const [, exitTransition] = transitions;
 
   const [motifAreaState, setMotifAreaRef, setContentAreaRef] = useMotifAreaState({
+    backdropContentElement: 'contentElement' in backdrop,
     updateOnScrollAndResize: shouldPrepare,
     exposeMotifArea: section.exposeMotifArea,
     transitions,
     empty: !contentElements.length,
-    sectionTransition: section.transition,
     fullHeight: section.fullHeight
   });
 
@@ -124,7 +120,9 @@ function SectionContents({
       <Backdrop backdrop={backdrop}
                 eagerLoad={section.sectionIndex === 0}
 
+                motifAreaState={motifAreaState}
                 onMotifAreaUpdate={setMotifAreaRef}
+
                 state={state}
                 transitionStyles={transitionStyles}>
         {(children) =>
@@ -164,10 +162,27 @@ function SectionContents({
 }
 
 function ConnectedSection(props) {
-  const contentElements = useSectionContentElements({sectionId: props.section.id,
-                                                     layout: props.section.layout});
+  const contentElements = useSectionForegroundContentElements({
+    sectionId: props.section.id,
+    layout: props.section.layout
+  });
 
-  return <Section {...props} contentElements={contentElements} />
+  const {
+    useBackdrop,
+  } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
+
+  const backdrop = useBackdrop(props.section);
+
+  const transitions = getEnterAndExitTransitions(
+    props.section,
+    props.section.previousSection,
+    props.section.nextSection
+  );
+
+  return <Section {...props}
+                  transitions={transitions}
+                  backdrop={backdrop}
+                  contentElements={contentElements} />
 }
 
 export { ConnectedSection as Section };

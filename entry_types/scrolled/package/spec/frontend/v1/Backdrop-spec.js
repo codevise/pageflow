@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect'
 import {renderInEntryWithSectionLifecycle} from 'support';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
+import {frontend} from 'pageflow-scrolled/frontend';
 import {Backdrop} from 'frontend/v1/Backdrop';
 import {useBackdrop} from 'frontend/v1/useBackdrop';
 import styles from 'frontend/Backdrop.module.css';
@@ -511,6 +512,88 @@ describe('Backdrop', () => {
         )
 
       expect(container.querySelector('[style*="filter"]')).toBeNull();
+    });
+  });
+
+  describe('with content element', () => {
+    beforeAll(() => {
+      frontend.contentElementTypes.register('test', {
+        component: function Probe({contentElementId, sectionProps}) {
+          return (
+            <div data-testid={`contentElement-${contentElementId}`}>
+              {sectionProps.isIntersecting ? 'Intersecting' : ''}
+              Container height: {sectionProps.containerDimension.height}
+            </div>
+          );
+        }
+      });
+    });
+
+    it('renders content element passing isIntersecting and containerDimension', () => {
+      const {queryByTestId} =
+        renderInEntryWithSectionLifecycle(
+          () => <Backdrop backdrop={useBackdrop({id: 1, backdrop: {contentElement: 100}})}
+                          motifAreaState={{isMotifIntersected: true}} />,
+          {
+            seed: {
+              sections: [{id: 1}],
+              contentElements: [
+                {
+                  id: 10,
+                  sectionId: 1,
+                  permaId: 100,
+                  typeName: 'test',
+                  configuration: {position: 'backdrop'}
+                }
+              ]
+            }
+          }
+        );
+
+      expect(queryByTestId('contentElement-10')).toHaveTextContent('Intersecting');
+      expect(queryByTestId('contentElement-10')).toHaveTextContent('Container height: 0');
+    });
+
+    it('renders nothing if content element has been deleted', () => {
+      const {container} =
+        renderInEntryWithSectionLifecycle(
+          () => <Backdrop backdrop={useBackdrop({backdrop: {contentElement: 100}})}
+                          motifAreaState={{}} />,
+          {
+            seed: {
+              contentElements: []
+            }
+          }
+        );
+
+      expect(container.textContent).toEqual('');
+    });
+
+    it('renders nothing if content element references element in other section', () => {
+      const {container} =
+        renderInEntryWithSectionLifecycle(
+          () => <Backdrop backdrop={useBackdrop({id: 1, backdrop: {contentElement: 100}})}
+                          motifAreaState={{}} />,
+          {
+            seed: {
+              sections: [
+                {id: 1},
+                {id: 2}
+              ],
+              contentElements: [
+                {
+                  id: 10,
+                  permaId: 100,
+                  sectionId: 2,
+                  typeName: 'test',
+                  configuration: {position: 'backdrop'}
+                }
+              ]
+            }
+          }
+        );
+
+      expect(container.textContent).toEqual('');
     });
   });
 

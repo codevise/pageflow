@@ -3,21 +3,37 @@
 }
 
 .highlighted > section::before,
+.lineAbove > section::before,
+.lineBelow > section::before,
 .selected > section::before {
   content: "";
   display: block;
   position: absolute;
-  border: solid 1px currentColor;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
   z-index: 9;
   pointer-events: none;
 }
 
+.highlighted > section::before,
+.selected > section::before {
+  border: solid 1px currentColor;
+}
+
+.lineAbove > section::before,
+.lineBelow > section::before,
 .highlighted > section::before {
   opacity: 0.3;
+}
+
+.lineAbove > section::before {
+  border-top: dotted 1px currentColor;
+}
+
+.lineBelow > section::before {
+  border-bottom: dotted 1px currentColor;
 }
 
 .transitionSelected > section:before {

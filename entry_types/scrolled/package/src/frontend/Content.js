@@ -1,7 +1,6 @@
-import React, {useState, useCallback} from 'react';
+import React, {useCallback} from 'react';
 
 import Chapter from "./Chapter";
-import ScrollToSectionContext from './ScrollToSectionContext';
 import {VhFix} from './VhFix';
 import {useCurrentSectionIndexState} from './useCurrentChapter';
 import {useEntryStructure} from '../entryState';
@@ -9,6 +8,7 @@ import {withInlineEditingDecorator} from './inlineEditing';
 import {usePostMessageListener} from './usePostMessageListener';
 import {useSectionChangeEvents} from './useSectionChangeEvents';
 import {sectionChangeMessagePoster} from './sectionChangeMessagePoster';
+import {useScrollToTarget} from './useScrollTarget';
 
 import { AtmoProvider } from './useAtmo';
 
@@ -16,8 +16,6 @@ import styles from './Content.module.css';
 
 export const Content = withInlineEditingDecorator('ContentDecorator', function Content(props) {
   const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
-
-  const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
 
   const entryStructure = useEntryStructure();
   useSectionChangeEvents(currentSectionIndex);
@@ -39,33 +37,23 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
     updateChapterSlug(section);
   }, [setCurrentSectionIndexState]);
 
+  const scrollToTarget = useScrollToTarget();
+
   const receiveMessage = useCallback(data => {
     if (data.type === 'SCROLL_TO_SECTION') {
-      setScrollTargetSectionIndex(data.payload.index)
+      scrollToTarget({id: data.payload.id, align: data.payload.align});
     }
-  }, []);
+  }, [scrollToTarget]);
 
   usePostMessageListener(receiveMessage);
-
-  function scrollToSection(index) {
-    if (index === 'next') {
-      index = currentSectionIndex + 1;
-    }
-
-    setScrollTargetSectionIndex(index);
-  }
 
   return (
     <div className={styles.Content} id='goToContent'>
       <VhFix>
         <AtmoProvider>
-          <ScrollToSectionContext.Provider value={scrollToSection}>
-            {renderChapters(entryStructure,
-                            currentSectionIndex,
-                            setCurrentSection,
-                            scrollTargetSectionIndex,
-                            setScrollTargetSectionIndex)}
-          </ScrollToSectionContext.Provider>
+          {renderChapters(entryStructure,
+                          currentSectionIndex,
+                          setCurrentSection)}
         </AtmoProvider>
       </VhFix>
     </div>

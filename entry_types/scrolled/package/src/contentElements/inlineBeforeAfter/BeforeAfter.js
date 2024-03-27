@@ -64,7 +64,8 @@ export function BeforeAfter(configuration) {
   ];
 
   return (
-    <FitViewport file={beforeImage || afterImage || placeholderFile}>
+    <FitViewport file={beforeImage || afterImage || placeholderFile}
+                 fill={configuration.position === 'backdrop'}>
       <ContentElementBox>
         <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>

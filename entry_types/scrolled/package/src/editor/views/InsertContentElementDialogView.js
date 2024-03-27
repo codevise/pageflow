@@ -83,8 +83,8 @@ const ItemView = Marionette.ItemView.extend({
   tagName: 'li',
   className: styles.item,
 
-  template: ({displayName, description, pictogram}) => `
-    <button class="${styles.type}">
+  template: ({displayName, description, pictogram, disabled}) => `
+    <button class="${styles.type}"${disabled ? ' disabled' : ''}>
       <img class="${styles.typePictogram}" src="${pictogram || defaultPictogram}" width="20" height="20" />
       <span class="${styles.typeName}">${displayName}</span>
       <span class="${styles.typeDescription}">${description}</span>
@@ -96,6 +96,14 @@ const ItemView = Marionette.ItemView.extend({
       this.options.entry.insertContentElement({typeName: this.model.get('typeName')},
                                               this.options.insertOptions);
     }
+  },
+
+  serializeData() {
+    return {
+      ...this.model.attributes,
+      disabled: this.options.insertOptions.at === 'backdropOfSection' &&
+                !this.model.get('supportedPositions').includes('backdrop')
+    };
   }
 });
 

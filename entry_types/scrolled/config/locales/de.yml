@@ -394,9 +394,6 @@ de:
               inline_help: Farbe des Bereichs der Waveform, der den bereits abgespielten Teil der Audio-Datei repräsentiert.
               label: Waveform Farbe
           description: Wiedergabe einer Audiodatei mit Steuerelementen
-          name: Inline-Audio
-          tabs:
-            general: Inline-Audio
         inlineBeforeAfter:
           attributes:
             after_id:
@@ -433,9 +430,6 @@ de:
               inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Bild konfiguriert werden, das ansonsten zu klein dargestellt würde.
               label: Bild (Hochkant)
           description: Einbindung von Bildern
-          name: Inline-Bild
-          tabs:
-            general: Inline-Bild
         inlineVideo:
           attributes:
             atmoDuringPlayback:
@@ -481,9 +475,6 @@ de:
               inline_help_html: Browser erlauben standardmäßig das Abspielen von Videos mit Ton nur nach einer Benutzer-Interaktion. Um Videos dennoch automatisch abspielen zu können, sind Beiträge zu Beginn stummgeschaltet.<br /><br />Die Stummschaltung kann z.B. über das Lautsprecher-Icon in der Navigationsleiste oder ein im Beitrag platziertes "Audio-Hinweis"-Element aufgehoben werden.
               label: Stummschaltung des Beitrags
           description: Wiedergabe einer Videodatei mit Steuerelementen
-          name: Inline-Video
-          tabs:
-            general: Inline-Video
         question:
           attributes:
             expandByDefault:
@@ -683,7 +674,6 @@ de:
             values:
               narrow: Schmal
               wide: Breit
-        edit_motif_area: Motivbereich markieren...
         tabs:
           section: Abschnitt
       edit_section_transition:

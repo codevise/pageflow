@@ -14,6 +14,14 @@
   margin-right: auto;
 }
 
+.backdropPosition {
+  background-color: var(--ui-selection-color);
+}
+
+.backdropPosition .section {
+  padding-top: 40%;
+}
+
 .content {
   width: 45%;
 }
@@ -105,6 +113,10 @@
 .standAlonePosition .block {
   position: sticky;
   top: 10%;
+}
+
+.backdropPosition .block {
+  display: none;
 }
 
 .outer {

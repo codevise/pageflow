@@ -139,28 +139,51 @@ function sectionData(section) {
     permaId: section.permaId,
     id: section.id,
     chapterId: section.chapterId,
-    ...section.configuration
+    ...normalizeSectionConfigurationData(section.configuration)
   };
 }
 
-export function useSectionContentElements({sectionId, layout}) {
-  const filterBySectionId = useCallback(contentElement => contentElement.sectionId === sectionId,
-                                        [sectionId])
-  const contentElements = useEntryStateCollectionItems('contentElements', filterBySectionId);
+export function normalizeSectionConfigurationData(configuration) {
+  return {
+    ...configuration,
+    ...(configuration.backdropType === 'contentElement' ? {fullHeight: true} : {})
+  };
+}
 
-  return contentElements.map(contentElement => {
-    const position = getPosition(contentElement, layout);
+export function useSectionForegroundContentElements({sectionId, layout}) {
+  const filter = useCallback(contentElement => (
+    contentElement.sectionId === sectionId &&
+    contentElement.configuration.position !== 'backdrop'
+  ), [sectionId]);
+  const contentElements = useEntryStateCollectionItems('contentElements', filter);
 
-    return {
-      id: contentElement.id,
-      permaId: contentElement.permaId,
-      type: contentElement.typeName,
-      position,
-      width: getWidth(contentElement, position),
-      standAlone: contentElement.configuration.position === 'standAlone',
-      props: contentElement.configuration
-    };
-  });
+  return contentElements.map(contentElement =>
+    contentElementData(contentElement, layout)
+  );
+}
+
+export function useContentElement({permaId, layout}) {
+  const contentElement = useEntryStateCollectionItem('contentElements', permaId);
+
+  return useMemo(
+    () => contentElement && contentElementData(contentElement, layout),
+    [contentElement, layout]
+  );
+}
+
+function contentElementData(contentElement, layout) {
+  const position = getPosition(contentElement, layout);
+
+  return {
+    id: contentElement.id,
+    permaId: contentElement.permaId,
+    sectionId: contentElement.sectionId,
+    type: contentElement.typeName,
+    position,
+    width: getWidth(contentElement, position),
+    standAlone: contentElement.configuration.position === 'standAlone',
+    props: contentElement.configuration
+  };
 }
 
 const supportedPositions = {
@@ -168,6 +191,7 @@ const supportedPositions = {
   centerRagged: ['inline', 'left', 'right'],
   left: ['inline', 'sticky'],
   right: ['inline', 'sticky'],
+  backdrop: ['backdrop']
 };
 
 function getPosition(contentElement, layout) {

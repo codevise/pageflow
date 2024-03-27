@@ -57,6 +57,7 @@ export * from './SectionThumbnail';
 export {Entry} from './Entry';
 export {useAudioFocus} from './useAudioFocus';
 export {useDarkBackground} from './backgroundColor';
+export {useBackgroundFile} from './v1/useBackgroundFile';
 
 export {
   useAdditionalSeedData,

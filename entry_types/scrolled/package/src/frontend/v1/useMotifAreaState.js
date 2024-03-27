@@ -13,9 +13,17 @@ import useDimension from '../useDimension';
  *        isContentPadded,    // true if motif and content will
  *                            // not fit side by side.
  *
+ *        isMotifIntersected, // true if either section content or
+ *                            // or content from the next section
+ *                            // entering with a fadeBg transition
+ *                            // overlaps the motif. Used to hide
+ *                            // interactive parts (e.g., player
+ *                            // controls) of backdrop content
+ *                            // elements.
+ *
  *        intersectionRatioY, // Ratio of the motif area that is
  *                            // covered by the content given the
- *                            // current scroll position if motif
+ *                            // current scroll position of motif
  *                            // is exposed.
  *
  *        paddingTop,         // Distance to shift down the content
@@ -33,6 +41,8 @@ import useDimension from '../useDimension';
  *     ]
  *
  * @param {Object} options
+ * @param {boolean} backdropContentElement - Whether the section has a
+ *   backdrop content element.
  * @param {string[]} transitions - Names of the section's enter and exit
  *   transitions.
  * @param {boolean} fullHeight - Whether the section has full or dynamic
@@ -45,7 +55,7 @@ import useDimension from '../useDimension';
  * @private
  */
 export function useMotifAreaState({
-  transitions, fullHeight, empty, exposeMotifArea, updateOnScrollAndResize
+  backdropContentElement, transitions, fullHeight, empty, exposeMotifArea, updateOnScrollAndResize
 } = {}) {
   const [motifAreaRect, setMotifAreaRectRef] = useBoundingClientRect({updateOnScrollAndResize});
   const [motifAreaDimension, setMotifAreaDimensionRef] = useDimension();
@@ -61,35 +71,55 @@ export function useMotifAreaState({
     dependencies: [isPadded]
   });
 
-  const isContentPadded = exposeMotifArea &&
-                          isIntersectingX(motifAreaRect, contentAreaRect) &&
-                          motifAreaRect.height > 0 &&
-                          !empty;
+  const contentRequiresPadding =
+    exposeMotifArea &&
+    isIntersectingX(motifAreaRect, contentAreaRect) &&
+    motifAreaRect.height > 0 &&
+    !empty;
 
-  const paddingTop = getMotifAreaPadding(isContentPadded, transitions, motifAreaDimension);
+  const paddingTop = getMotifAreaPadding(
+    contentRequiresPadding,
+    transitions,
+    motifAreaDimension,
+    backdropContentElement,
+    empty
+  );
 
   // Force measuring content area again since applying the padding
   // changes the intersection ratio.
-  const willBePadded = paddingTop > 0;
+  const willBePadded = !!paddingTop;
 
   useEffect(() => {
     setIsPadded(willBePadded);
   }, [willBePadded]);
 
+  const intersectionRatioY = getIntersectionRatioY(motifAreaRect, contentAreaRect);
+
   return [
     {
       paddingTop,
-      isContentPadded,
+      isContentPadded: contentRequiresPadding || backdropContentElement,
       minHeight: getMotifAreaMinHeight(fullHeight, transitions, motifAreaDimension),
-      intersectionRatioY: getIntersectionRatioY(isContentPadded, motifAreaRect, contentAreaRect)
+      intersectionRatioY: contentRequiresPadding ? intersectionRatioY : 0,
+      isMotifIntersected: getIsMotifIntersected(empty, transitions, intersectionRatioY)
     },
     setMotifAreaRef,
     setContentAreaRef
   ];
 }
 
-function getMotifAreaPadding(isContentPadded, transitions, motifAreaDimension) {
-  if (!isContentPadded) {
+function getMotifAreaPadding(
+  contentRequiresPadding, transitions, motifAreaDimension, backdropContentElement, empty
+) {
+  if (backdropContentElement) {
+    if (transitions[0] === 'fadeIn' || (empty && transitions[1] === 'fadeOut')) {
+      return '70vh';
+    }
+    else {
+      return '110vh';
+    }
+  }
+  else if (!contentRequiresPadding) {
     return;
   }
 
@@ -157,11 +187,20 @@ function getMotifAreaMinHeight(fullHeight, transitions, motifAreaDimension) {
   }
 }
 
-function getIntersectionRatioY(isContentPadded, motifAreaRect, contentAreaRect) {
+function getIntersectionRatioY(motifAreaRect, contentAreaRect) {
   const motifAreaOverlap = Math.max(
     0,
     Math.min(motifAreaRect.height,
              motifAreaRect.bottom - contentAreaRect.top)
   );
-  return isContentPadded ? motifAreaOverlap / motifAreaRect.height : 0;
+  return motifAreaRect.height > 0 ? motifAreaOverlap / motifAreaRect.height : 0;
+}
+
+function getIsMotifIntersected(empty, transitions, intersectionRatioY) {
+  // Hide interactive parts of backdrop content elements (e.g., player
+  // controls) if:
+  // - section has content and it has been scrolled to overlap or
+  // - next section enters with fadeOutBg making it contents potentially
+  //   overlap the motif area
+  return !empty || transitions[1] === 'fadeOutBg' ? intersectionRatioY > 0 : false
 }

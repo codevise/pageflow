@@ -376,6 +376,19 @@ describe('SectionConfiguration', () => {
     });
   });
 
+  describe('set backdropContentElement', () => {
+    it('sets backdrop contentElement to value', () => {
+      const sectionConfiguration = new SectionConfiguration();
+
+      sectionConfiguration.set('backdropType', 'contentElement');
+      sectionConfiguration.set('backdropContentElement', 5);
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        contentElement: 5
+      });
+    });
+  });
+
   describe('set backdropType', () => {
     it('restores previous settings', () => {
       const sectionConfiguration = new SectionConfiguration();
@@ -390,6 +403,20 @@ describe('SectionConfiguration', () => {
       expect(sectionConfiguration.attributes.backdrop).toEqual({
         image: 1,
         imageMobile: 2
+      });
+    });
+
+    it('supports object signature', () => {
+      const sectionConfiguration = new SectionConfiguration();
+
+      sectionConfiguration.set('backdropType', 'image');
+      sectionConfiguration.set('backdropImage', 1);
+      sectionConfiguration.set('backdropType', 'color');
+      sectionConfiguration.set('backdropColor', '#000');
+      sectionConfiguration.set({backdropType: 'image'});
+
+      expect(sectionConfiguration.attributes.backdrop).toEqual({
+        image: 1
       });
     });
 
@@ -409,6 +436,57 @@ describe('SectionConfiguration', () => {
       expect(sectionConfiguration.attributes.backdrop).toEqual({
         image: 1,
         imageMotifArea: motifAreaA
+      });
+    });
+
+    describe('backdropContentElement position', () => {
+      let testContext;
+
+      beforeEach(() => {
+        const entry = factories.entry(ScrolledEntry, {}, {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {
+                id: 10,
+                configuration: {backdropType: 'image'}
+              }
+            ],
+            contentElements: [
+              {
+                id: 5,
+                permaId: 50,
+                sectionId: 10
+              }
+            ]
+          })
+        });
+
+        testContext = {entry};
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      it('is reset to inline when changed from contentElement', () => {
+        const section = testContext.entry.sections.get(10);
+        const contentElement = testContext.entry.contentElements.get(5);
+
+        contentElement.configuration.set('position', 'backdrop');
+        section.configuration.set('backdropType', 'image');
+
+        expect(contentElement.configuration.get('position')).toEqual('inline');
+      });
+
+      it('is set to backdrop when reset to contentElement', () => {
+        const section = testContext.entry.sections.get(10);
+        const contentElement = testContext.entry.contentElements.get(5);
+
+        contentElement.configuration.set('position', 'backdrop');
+        section.configuration.set('backdropType', 'image');
+        section.configuration.set('backdropType', 'contentElement');
+
+        expect(contentElement.configuration.get('position')).toEqual('backdrop');
       });
     });
   });

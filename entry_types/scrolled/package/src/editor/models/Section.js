@@ -62,5 +62,11 @@ export const Section = Backbone.Model.extend({
     else {
       return 'scroll';
     }
+  },
+
+  getBackdropContentElement() {
+    return this.contentElements.findWhere({
+      permaId: this.configuration.get('backdropContentElement')
+    });
   }
 });
