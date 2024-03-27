@@ -53,6 +53,19 @@ storiesOfContentElement(module, {
         caption: 'Some text here'
       }
     },
+    {
+      name: 'With position backdrop',
+      sectionConfiguration: {
+        backdropType: 'contentElement',
+        backdrop: {
+          contentElement: 1001
+        }
+      },
+      permaId: 1001,
+      configuration: {
+        position: 'backdrop'
+      }
+    }
   ],
   inlineFileRights: true
 });
