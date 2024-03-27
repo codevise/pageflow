@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 
 import {ContentElement} from '../../ContentElement';
+import {useSectionLifecycle} from '../../useSectionLifecycle';
 
 import {withInlineEditingDecorator} from '../../inlineEditing';
 
@@ -9,6 +10,13 @@ export const BackgroundContentElement = withInlineEditingDecorator(
   function BackgroundContentElement({
     contentElement, isIntersecting, onMotifAreaUpdate, containerDimension
   }) {
+    const sectionLifecycle = useSectionLifecycle();
+
+    const lifecycleOverride = useMemo(() => ({
+      ...sectionLifecycle,
+      isActive: sectionLifecycle.isActive && !isIntersecting
+    }), [sectionLifecycle, isIntersecting]);
+
     return (
       <div ref={onMotifAreaUpdate}>
         <ContentElement id={contentElement.id}
@@ -17,7 +25,8 @@ export const BackgroundContentElement = withInlineEditingDecorator(
                         position={contentElement.position}
                         width={3}
                         itemProps={contentElement.props}
-                        sectionProps={{isIntersecting, containerDimension}} />
+                        sectionProps={{isIntersecting, containerDimension}}
+                        lifecycleOverride={lifecycleOverride} />
       </div>
     );
   }
