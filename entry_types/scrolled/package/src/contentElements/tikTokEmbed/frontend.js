@@ -4,6 +4,7 @@ import {TikTokEmbed} from './TikTokEmbed';
 frontend.contentElementTypes.register('tikTokEmbed', {
   component: TikTokEmbed,
   lifecycle: true,
+  customMargin: true,
 
   consentVendors({t}) {
     const prefix = 'pageflow_scrolled.public.tiktok';

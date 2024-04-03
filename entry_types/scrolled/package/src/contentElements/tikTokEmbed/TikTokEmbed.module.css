@@ -1,11 +1,17 @@
-.loadingContainer > div {
-  /* Twitter already inserts a div with margins while the tweet still
-     loads. Since the placeholder also has these margins, prevent
-     displaying extra space. */
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
+.wrapper {
+  margin: 0 auto;
+  max-width: 325px;
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.container > div {
-  margin: 0 auto;
+.inner {
+  background-color: #fff;
+  visibility: hidden;
+}
+
+.inner:has(iframe) {
+  visibility: visible;
 }

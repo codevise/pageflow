@@ -24,7 +24,8 @@ import InfoIcon from '../icons/information.svg'
  */
 export function OptOutInfo({
   providerName,
-  hide
+  hide,
+  inset
 }) {
   const {t} = useI18n();
   const theme = useTheme();
@@ -46,7 +47,7 @@ export function OptOutInfo({
 
   return (
     <div className={classNames(styles.optOut,
-                               {[styles.full]: width === widths.full})}
+                               {[styles.full]: width === widths.full || inset})}
          style={hide ? {opacity: 0, visibility: 'hidden'} : undefined}>
       <button className={styles.icon}>
         <InfoIcon/>

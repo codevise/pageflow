@@ -6,12 +6,13 @@ editor.contentElementTypes.register('tikTokEmbed', {
   pictogram,
   category: 'media',
   supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right'],
+  supportedWidthRange: ['md', 'full'],
 
   configurationEditor() {
     this.tab('general', function() {
       this.input('url', UrlInputView, {
         supportedHosts: [
-          'https://www.tiktok.com',
+          'https://www.tiktok.com'
         ],
         displayPropertyName: 'displayUrl',
         required: true,
