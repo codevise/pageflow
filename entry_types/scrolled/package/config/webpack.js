@@ -9,6 +9,12 @@ module.exports = {
     },
   },
   entry: {
+    'pageflow-scrolled/contentElements/tikTokEmbed-frontend': {
+      import: [
+        'pageflow-scrolled/contentElements/tikTokEmbed-frontend',
+        'pageflow-scrolled/contentElements/tikTokEmbed-frontend.css'
+      ]
+    },
     'pageflow-scrolled/widgets/defaultNavigation': {
       import: [
         'pageflow-scrolled/widgets/defaultNavigation',
