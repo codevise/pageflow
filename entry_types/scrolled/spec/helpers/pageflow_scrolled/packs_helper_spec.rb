@@ -304,6 +304,22 @@ module PageflowScrolled
         expect(result).not_to include('pageflow-scrolled/contentElements/extra-editor')
       end
 
+      it 'includes additional frontend packs in editor' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_packs.register(
+              'pageflow-scrolled/contentElements/extra'
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_editor_packs(entry)
+
+        expect(result).to include('pageflow-scrolled/contentElements/extra')
+      end
+
       it 'includes all react widget type packs in editor' do
         pageflow_configure do |config|
           config.widget_types.register(ReactWidgetType.new(name: 'customNavigation',
@@ -372,12 +388,20 @@ module PageflowScrolled
     end
 
     describe 'scrolled_editor_stylesheet_packs' do
-      it 'empty by default' do
+      it 'does not include editor packs without stylesheet option' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_editor_packs.register(
+              'pageflow-scrolled/only-js'
+            )
+          end
+        end
+
         entry = create(:published_entry, type_name: 'scrolled')
 
         result = helper.scrolled_editor_stylesheet_packs(entry)
 
-        expect(result).to eq([])
+        expect(result).not_to include('pageflow-scrolled/only-js')
       end
 
       it 'includes additional editor packs in editor with stylesheet option' do
@@ -398,7 +422,23 @@ module PageflowScrolled
 
         result = helper.scrolled_editor_stylesheet_packs(entry)
 
-        expect(result).to eq(['pageflow-scrolled/extra-editor'])
+        expect(result).to include('pageflow-scrolled/extra-editor')
+      end
+
+      it 'includes additional frontend packs in editor' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_packs.register(
+              'pageflow-scrolled/contentElements/extra'
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_editor_stylesheet_packs(entry)
+
+        expect(result).to include('pageflow-scrolled/contentElements/extra')
       end
 
       it 'supports if and unless options for additional packs' do

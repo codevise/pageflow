@@ -7,8 +7,18 @@ module.exports = {
       // supported by the browser.
       'video.js$': 'video.js/core.es.js'
     },
+    fallback: {
+      // Silently ignore minimatch trying to load Node built-in module.
+      'path': false
+    }
   },
   entry: {
+    'pageflow-scrolled/contentElements/tikTokEmbed-frontend': {
+      import: [
+        'pageflow-scrolled/contentElements/tikTokEmbed-frontend',
+        'pageflow-scrolled/contentElements/tikTokEmbed-frontend.css'
+      ]
+    },
     'pageflow-scrolled/widgets/defaultNavigation': {
       import: [
         'pageflow-scrolled/widgets/defaultNavigation',

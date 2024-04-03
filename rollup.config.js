@@ -322,6 +322,19 @@ const pageflowScrolled = [
       plugins: plugins({extractCss: true}),
       ...ignoreJSXWarning
     }
+  ))),
+
+  ...(['tikTokEmbed'].map(name => (
+    {
+      input: `${pageflowScrolledPackageRoot}/src/contentElements/${name}/frontend.js`,
+      output: {
+        file: `${pageflowScrolledPackageRoot}/contentElements/${name}-frontend.js`,
+        format: 'esm',
+      },
+      external,
+      plugins: plugins({extractCss: true}),
+      ...ignoreJSXWarning
+    }
   )))
 ];
 

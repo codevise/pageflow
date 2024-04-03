@@ -128,7 +128,7 @@ module PageflowScrolled
       def server_pack
         create_file 'app/javascript/packs/pageflow-scrolled-server.js', <<-JS
           import 'pageflow-scrolled/frontend-server';
-          import 'pageflow-scrolled/contentElements-frontend';
+          import 'pageflow-scrolled/contentElements-server';
           import 'pageflow-scrolled/widgets-server';
         JS
       end
