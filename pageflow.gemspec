@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
                 'testHelpers.js,package.json}',
                 'entry_types/scrolled/package/' \
                 '{config/**/*,contentElements-frontend.{js,css},frontend-server.js,' \
+                'contentElements/*.{css,js},' \
                 'widgets/*.{css,js},' \
                 'values/*,testHelpers.js,' \
                 'contentElements-editor.js,frontend/*.{js,css},editor.js,package.json}',
