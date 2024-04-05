@@ -17,7 +17,8 @@ export function ClassicPlayerControls(props) {
   const fadedOut = (!props.standAlone && props.unplayed) || (props.isPlaying && props.inactive) || props.fadedOut;
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container,
+                               {[styles.sticky]: props.sticky})}>
       {props.children}
       {!props.standAlone &&
        <BigPlayPauseButton unplayed={props.unplayed}

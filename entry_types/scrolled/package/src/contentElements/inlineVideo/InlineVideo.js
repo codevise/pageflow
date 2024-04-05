@@ -219,6 +219,7 @@ function PlayerWithControlBar({
   return (
     <VideoPlayerControls videoFile={videoFile}
                          fadedOut={sectionProps.isIntersecting}
+                         sticky={configuration.position === 'backdrop'}
                          defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                          playerState={playerState}
                          playerActions={playerActions}

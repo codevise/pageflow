@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.sticky {
+  overflow: clip;
+}
+
 .lightBackground {
   background: rgba(255, 255, 255, 0.2);
 }
@@ -24,6 +28,11 @@
   color: #fff;
   background: transparent;
   z-index: 3;
+}
+
+.sticky .inset {
+  position: sticky;
+  margin-top: -40px;
 }
 
 .inset::before,
