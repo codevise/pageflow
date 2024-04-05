@@ -1,0 +1,43 @@
+de:
+  pageflow:
+    backdrop_content_elements:
+      feature_name: "Inhaltselemente als Backdrop"
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        position:
+          values:
+            backdrop: 'Als Hintergrund'
+          item_inline_help_texts:
+            backdrop: ''
+      content_elements:
+        inlineVideo:
+          name: Video
+          tabs:
+            general: Video
+        inlineAudio:
+          name: Audio
+          tabs:
+            general: Audio
+        inlineImage:
+          name: Bild
+          tabs:
+            general: Bild
+      edit_section:
+        attributes:
+          backdropType:
+            values:
+              contentElement: Interaktives Element
+          fullHeight:
+            inline_help_disabled: |-
+              Interaktive Hintergrund-Elemente nutzen immer die volle Viewport-Höhe
+          backdropContentElement:
+            label: Element
+        edit_motif_area: DELETED
+      edit_motif_area_menu_item: Motivbereich markieren...
+      backdrop_content_element_input:
+        add: Neues Element
+        unset: Nicht mehr als Hintergrund verwenden
+    inline_editing:
+      select_backdrop_content_element: Hintergrund bearbeiten
+      back_to_section: Zurück zum Abschnitt

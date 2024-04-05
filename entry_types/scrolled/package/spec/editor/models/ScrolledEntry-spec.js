@@ -17,12 +17,14 @@ describe('ScrolledEntry', () => {
     describe('for sections', () => {
       beforeEach(() => {
         editor.contentElementTypes.register('inlineImage', {
+          supportedPositions: ['inline', 'wide', 'full', 'backdrop'],
           defaultConfig: {
             some: 'value'
           }
         });
 
-        editor.contentElementTypes.register('heading', {
+        editor.contentElementTypes.register('panorama', {
+          supportedPositions: ['inline', 'wide', 'full', 'backdrop'],
           defaultConfig: {
             position: 'wide'
           }
@@ -39,7 +41,7 @@ describe('ScrolledEntry', () => {
                 {id: 10}
               ],
               contentElements: [
-                {id: 5, sectionId: 10, position: 0},
+                {id: 5, sectionId: 10, position: 0, configuration: {position: 'full'}},
                 {id: 6, sectionId: 10, position: 1}
               ]
             })
@@ -69,13 +71,13 @@ describe('ScrolledEntry', () => {
       it('uses position from default config when adding content element at end', () => {
         const {entry, requests} = testContext;
 
-        entry.insertContentElement({typeName: 'heading'},
+        entry.insertContentElement({typeName: 'panorama'},
                                    {at: 'endOfSection', id: 10});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements');
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
           content_element: {
-            typeName: 'heading',
+            typeName: 'panorama',
             position: 2,
             configuration: {position: 'wide'}
           }
@@ -90,6 +92,195 @@ describe('ScrolledEntry', () => {
         entry.insertContentElement({typeName: 'inlineImage'},
                                    {at: 'endOfSection', id: 10});
 
+
+        expect(listener).not.toHaveBeenCalled();
+
+        testContext.server.respond(
+          'POST', '/editor/entries/100/scrolled/sections/10/content_elements',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify({
+            id: 5, permaId: 50
+          })]
+        );
+
+        expect(listener).toHaveBeenCalledWith(entry.contentElements.get(5));
+      });
+
+      it('supports adding content element in backdrop', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'backdropOfSection', id: 10});
+
+        expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {typeName: 'inlineImage', configuration: {position: 'backdrop', some: 'value'}},
+            {id: 5},
+            {id: 6}
+          ]
+        });
+      });
+
+      it('sets backdropContentElement of section', () => {
+        const {entry} = testContext;
+        const section = entry.sections.first();
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'backdropOfSection', id: section.id});
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 7, permaId: 70}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(section.configuration.get('backdropContentElement')).toEqual(70);
+      });
+
+      it('ignores position from default config when inserting content element in backdrop', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'panorama'},
+                                   {at: 'backdropOfSection', id: 10});
+
+        expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {typeName: 'panorama', configuration: {position: 'backdrop'}},
+            {id: 5},
+            {id: 6}
+          ]
+        });
+      });
+
+      it('ignores position of first element when inserting content element in backdrop', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'backdropOfSection', id: 10});
+
+        expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {typeName: 'inlineImage', configuration: {position: 'backdrop'}},
+            {id: 5},
+            {id: 6}
+          ]
+        });
+      });
+
+      it('triggers event on entry to select new backdrop content element', () => {
+        const {entry} = testContext;
+        const listener = jest.fn();
+        entry.on('selectContentElement', listener);
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'backdropOfSection', id: 10});
+
+        expect(listener).not.toHaveBeenCalled();
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 7, permaId: 70}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(listener).toHaveBeenCalledWith(entry.contentElements.get(7), expect.anything());
+      });
+    });
+
+    describe('for empty sections', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {
+          supportedPositions: ['inline', 'wide', 'backdrop'],
+          defaultConfig: {
+            some: 'value'
+          }
+        });
+
+        editor.contentElementTypes.register('panorama', {
+          supportedPositions: ['inline', 'wide', 'backdrop'],
+          defaultConfig: {
+            position: 'wide'
+          }
+        });
+
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {
+            id: 100
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              sections: [
+                {id: 10}
+              ]
+            })
+          });
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      it('supports adding content element in backdrop', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'backdropOfSection', id: 10});
+
+        expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements');
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_element: {
+            typeName: 'inlineImage',
+            position: 0,
+            configuration: {position: 'backdrop'}
+          }
+        });
+      });
+
+      it('sets backdropContentElement of section', () => {
+        const {entry} = testContext;
+        const section = entry.sections.first();
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'backdropOfSection', id: section.id});
+
+        testContext.server.respond(
+          'POST', '/editor/entries/100/scrolled/sections/10/content_elements',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify({
+            id: 5, permaId: 50
+          })]
+        );
+
+        expect(section.configuration.get('backdropContentElement')).toEqual(50);
+      });
+
+      it('ignores position from default config when inserting content element in backdrop', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'panorama'},
+                                   {at: 'backdropOfSection', id: 10});
+
+        expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements');
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_element: {
+            typeName: 'panorama',
+            position: 0,
+            configuration: {position: 'backdrop'}
+          }
+        });
+      });
+
+      it('triggers event on entry to select new backdrop content element', () => {
+        const {entry} = testContext;
+        const listener = jest.fn();
+        entry.on('selectContentElement', listener);
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'backdropOfSection', id: 10});
 
         expect(listener).not.toHaveBeenCalled();
 

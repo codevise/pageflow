@@ -10,3 +10,6 @@ export {EditableInlineText} from './EditableInlineText';
 export {ActionButton} from './ActionButton';
 
 export {PhonePlatformProvider} from './PhonePlatformProvider';
+
+export {BackdropDecorator} from './BackdropDecorator';
+export {BackgroundContentElementDecorator} from './BackgroundContentElementDecorator';

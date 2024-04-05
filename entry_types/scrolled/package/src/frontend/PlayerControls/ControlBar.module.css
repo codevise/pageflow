@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.sticky {
+  overflow: clip;
+}
+
 .lightBackground {
   background: rgba(255, 255, 255, 0.2);
 }
@@ -26,9 +30,14 @@
   z-index: 3;
 }
 
+.sticky .inset {
+  position: sticky;
+  margin-top: -40px;
+}
+
 .inset::before,
 .controlBarInner {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, visibility 0.2s;
 }
 
 .inset::before {
@@ -46,9 +55,10 @@
   flex: 1;
 }
 
-.transparent .controlBarInner,
-.transparent.inset::before {
+.fadedOut .controlBarInner,
+.fadedOut.inset::before {
   opacity: 0;
+  visibility: hidden;
 }
 
 .button {

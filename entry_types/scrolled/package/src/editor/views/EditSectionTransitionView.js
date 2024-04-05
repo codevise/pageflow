@@ -1,6 +1,7 @@
 import {EditConfigurationView} from 'pageflow/editor';
 import {EditSectionTransitionEffectView} from './EditSectionTransitionEffectView';
 import {getAvailableTransitionNames} from 'pageflow-scrolled/frontend';
+import {normalizeSectionConfigurationData} from '../../entryState';
 
 export const EditSectionTransitionView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_section_transition',
@@ -11,8 +12,8 @@ export const EditSectionTransitionView = EditConfigurationView.extend({
     const previousSection = entry.sections.at(sectionIndex - 1);
 
     const availableTransitions = getAvailableTransitionNames(
-      this.model.configuration.attributes,
-      previousSection.configuration.attributes
+      normalizeSectionConfigurationData(this.model.configuration.attributes),
+      normalizeSectionConfigurationData(previousSection.configuration.attributes)
     );
 
     configurationEditor.tab('transition', function() {

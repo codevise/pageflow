@@ -1,9 +1,11 @@
 import {frontend, Entry, useContentElementLifecycle} from 'pageflow-scrolled/frontend';
 
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
+import {TwoColumn} from 'frontend/layouts/TwoColumn';
 import {renderInEntry} from 'support';
 import {simulateScrollingIntoView, simulateScrollingOutOfView} from 'support/fakeIntersectionObserver';
 import {findIsActiveProbe, findIsPreparedProbe} from 'support/scrollPositionLifecycle';
+import {fakeBoundingClientRectsByTestId} from 'support/fakeBoundingClientRects';
 
 import React from 'react';
 import {act} from '@testing-library/react';
@@ -84,6 +86,62 @@ describe('useContentElementLifecycle', () => {
 
       expect(getByTestId('testElement')).toHaveTextContent('paused');
     });
+
+    it('stays false when parent section becomes active', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement').closest('section')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('paused');
+    });
+
+    it('is true for backdrop content element when parent section becomes active', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          sections: [{id: 1, configuration: {backdrop: {contentElement: 10}}}],
+          contentElements: [
+            {permaId: 10, sectionId: 1, typeName: 'test', configuration: {position: 'backdrop'}}
+          ]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement').closest('section')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('playing');
+    });
+
+    it('is false for backdrop content element when section content intersects', async () => {
+      TwoColumn.contentAreaProbeProps = {'data-testid': 'contentAreaProbe'};
+
+      fakeBoundingClientRectsByTestId({
+        testElement: {top: 300, height: 200, bottom: 500},
+        contentAreaProbe: {top: 400}
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          sections: [{id: 1, configuration: {backdrop: {contentElement: 10}}}],
+          contentElements: [
+            {permaId: 10, sectionId: 1, typeName: 'test', configuration: {position: 'backdrop'}},
+            {permaId: 11, sectionId: 1}
+          ]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement').closest('section')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('paused');
+    });
   });
 
   describe('shouldLoad', () => {
@@ -125,6 +183,62 @@ describe('useContentElementLifecycle', () => {
 
       expect(getByTestId('testElement')).toHaveTextContent('loaded');
     });
+
+    it('stays false when parent section becomes active', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement').closest('section')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('blank');
+    });
+
+    it('is true for backdrop content element when parent section becomes active', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          sections: [{id: 1, configuration: {backdrop: {contentElement: 10}}}],
+          contentElements: [
+            {permaId: 10, sectionId: 1, typeName: 'test', configuration: {position: 'backdrop'}}
+          ]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement').closest('section')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('loaded');
+    });
+
+    it('is true for backdrop content element even when section content intersects', async () => {
+      TwoColumn.contentAreaProbeProps = {'data-testid': 'contentAreaProbe'};
+
+      fakeBoundingClientRectsByTestId({
+        testElement: {top: 300, height: 200, bottom: 500},
+        contentAreaProbe: {top: 400}
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          sections: [{id: 1, configuration: {backdrop: {contentElement: 10}}}],
+          contentElements: [
+            {permaId: 10, sectionId: 1, typeName: 'test', configuration: {position: 'backdrop'}},
+            {permaId: 11, sectionId: 1}
+          ]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement').closest('section')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('loaded');
+    });
   });
 
   describe('shouldPrepare', () => {
@@ -162,6 +276,62 @@ describe('useContentElementLifecycle', () => {
 
       act(() =>
         simulateScrollingIntoView(findIsPreparedProbe(getByTestId('testElement')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('prepared');
+    });
+
+    it('stays false when parent section becomes active', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement').closest('section')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('blank');
+    });
+
+    it('is true for backdrop content element when parent section becomes active', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          sections: [{id: 1, configuration: {backdrop: {contentElement: 10}}}],
+          contentElements: [
+            {permaId: 10, sectionId: 1, typeName: 'test', configuration: {position: 'backdrop'}}
+          ]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement').closest('section')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('prepared');
+    });
+
+    it('is true for backdrop content element even when section content intersects', async () => {
+      TwoColumn.contentAreaProbeProps = {'data-testid': 'contentAreaProbe'};
+
+      fakeBoundingClientRectsByTestId({
+        testElement: {top: 300, height: 200, bottom: 500},
+        contentAreaProbe: {top: 400}
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          sections: [{id: 1, configuration: {backdrop: {contentElement: 10}}}],
+          contentElements: [
+            {permaId: 10, sectionId: 1, typeName: 'test', configuration: {position: 'backdrop'}},
+            {permaId: 11, sectionId: 1}
+          ]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement').closest('section')))
       );
 
       expect(getByTestId('testElement')).toHaveTextContent('prepared');

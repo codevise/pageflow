@@ -4,12 +4,14 @@ export {useShareProviders, useShareUrl} from './sharing';
 export {useEntryTranslations} from './entryTranslations';
 export {useEntryMetadata} from './metadata';
 export {
+  normalizeSectionConfigurationData,
   useEntryStructure,
   useSectionsWithChapter,
   useSection,
   useChapters,
   useChapter,
-  useSectionContentElements
+  useSectionForegroundContentElements,
+  useContentElement
 } from './structure';
 export {useFile} from './useFile';
 export {useFileWithInlineRights} from './useFileWithInlineRights';

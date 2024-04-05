@@ -8,7 +8,7 @@ import styles from './InlineFileRights.module.css';
 
 export function InlineFileRights({items = [],
                                   context = 'standAlone',
-                                  playerControlsTransparent,
+                                  playerControlsFadedOut,
                                   playerControlsStandAlone}) {
   const {t} = useI18n();
   const filteredItems = items.filter(item =>
@@ -21,7 +21,7 @@ export function InlineFileRights({items = [],
 
   return (
     <Widget role="inlineFileRights"
-            props={{context, playerControlsTransparent, playerControlsStandAlone}}>
+            props={{context, playerControlsFadedOut, playerControlsStandAlone}}>
       <ul className={styles.list}>
         {filteredItems.map(({label, file}) =>
           <li key={`${label}-${file.id}`}>

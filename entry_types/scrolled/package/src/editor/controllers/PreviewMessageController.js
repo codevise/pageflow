@@ -30,11 +30,12 @@ export const PreviewMessageController = Object.extend({
           }
         });
 
-        this.listenTo(this.entry, 'scrollToSection', section =>
+        this.listenTo(this.entry, 'scrollToSection', (section, options) =>
           postMessage({
             type: 'SCROLL_TO_SECTION',
             payload: {
-              index: this.entry.sections.indexOf(section)
+              id: section.id,
+              ...options
             }
           })
         );

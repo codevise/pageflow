@@ -1,4 +1,6 @@
 .Foreground {
+  pointer-events: none;
+
   position: relative;
   z-index: 3;
 

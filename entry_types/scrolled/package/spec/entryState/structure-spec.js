@@ -4,7 +4,8 @@ import {
   useChapter,
   useChapters,
   useSection,
-  useSectionContentElements,
+  useSectionForegroundContentElements,
+  useContentElement,
   watchCollections
 } from 'entryState';
 
@@ -231,6 +232,72 @@ describe('useSection', () => {
 
     expect(section).toMatchObject(expectedSection);
   });
+
+  it('does not mark section as fullHeight by default', () => {
+    const {result} = renderHookInEntry(
+      () => useSection({sectionPermaId: 101}),
+      {
+        seed: {
+          sections: [{permaId: 101}]
+        }
+      }
+    );
+
+    const section = result.current;
+
+    expect(section.fullHeight).toBeUndefined()
+  });
+
+  it('marks sections with backdropType contentElement as fullHeight', () => {
+    const {result} = renderHookInEntry(
+      () => useSection({sectionPermaId: 101}),
+      {
+        seed: {
+          sections: [{permaId: 101, configuration: {backdropType: 'contentElement'}}],
+        }
+      }
+    );
+
+    const section = result.current;
+
+    expect(section.fullHeight).toEqual(true)
+  });
+
+  it('overrides fullHeight to true for backdropType contentElement', () => {
+    const {result} = renderHookInEntry(
+      () => useSection({sectionPermaId: 101}),
+      {
+        seed: {
+          sections: [{
+            permaId: 101,
+            configuration: {
+              fullHeight: false,
+              backdropType: 'contentElement'
+            }
+          }],
+        }
+      }
+    );
+
+    const section = result.current;
+
+    expect(section.fullHeight).toEqual(true)
+  });
+
+  it('supports marking sections as fullHeight', () => {
+    const {result} = renderHookInEntry(
+      () => useSection({sectionPermaId: 101}),
+      {
+        seed: {
+          sections: [{permaId: 101, configuration: {fullHeight: true}}],
+        }
+      }
+    );
+
+    const section = result.current;
+
+    expect(section.fullHeight).toEqual(true)
+  });
 });
 
 describe('useChapters', () => {
@@ -339,33 +406,10 @@ describe('useChapter', () => {
   });
 });
 
-describe('useSectionContentElements', () => {
-  const expectedContentElements = [
-    {
-      id: 3,
-      permaId: 1003,
-      type: 'image',
-      position: 'sticky',
-      width: 1,
-      props: {
-        imageId: 4
-      }
-    },
-    {
-      id: 4,
-      permaId: 1004,
-      type: 'textBlock',
-      position: 'inline',
-      width: 0,
-      props: {
-        children: 'Some more text'
-      }
-    }
-  ];
-
+describe('useSectionForegroundContentElements', () => {
   it('returns list of content elements of section', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2}),
+      () => useSectionForegroundContentElements({sectionId: 2}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -377,12 +421,60 @@ describe('useSectionContentElements', () => {
 
     const contentElements = result.current;
 
-    expect(contentElements).toMatchObject(expectedContentElements);
+    expect(contentElements).toMatchObject([
+      {
+        id: 3,
+        permaId: 1003,
+        type: 'image',
+        position: 'sticky',
+        width: 1,
+        props: {
+          imageId: 4
+        }
+      },
+      {
+        id: 4,
+        permaId: 1004,
+        type: 'textBlock',
+        position: 'inline',
+        width: 0,
+        props: {
+          children: 'Some more text'
+        }
+      }
+    ]);
+  });
+
+  it('filters out content elements with position backdrop', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionForegroundContentElements({sectionId: 2}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'backdrop',
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([]);
   });
 
   it('rewrites legacy full positions to inline with width', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2}),
+      () => useSectionForegroundContentElements({sectionId: 2}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -417,7 +509,7 @@ describe('useSectionContentElements', () => {
 
   it('rewrites legacy wide positions to inline with width', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2}),
+      () => useSectionForegroundContentElements({sectionId: 2}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -452,7 +544,7 @@ describe('useSectionContentElements', () => {
 
   it('prefers configured width over width based on legacy positions', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2}),
+      () => useSectionForegroundContentElements({sectionId: 2}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -488,7 +580,7 @@ describe('useSectionContentElements', () => {
 
   it('turns floated positions into inline in left layout', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2, layout: 'left'}),
+      () => useSectionForegroundContentElements({sectionId: 2, layout: 'left'}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -539,7 +631,7 @@ describe('useSectionContentElements', () => {
 
   it('turns floated positions into inline in right layout', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2, layout: 'right'}),
+      () => useSectionForegroundContentElements({sectionId: 2, layout: 'right'}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -590,7 +682,7 @@ describe('useSectionContentElements', () => {
 
   it('turns sticky position into inline in centered layout', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2, layout: 'center'}),
+      () => useSectionForegroundContentElements({sectionId: 2, layout: 'center'}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -625,7 +717,7 @@ describe('useSectionContentElements', () => {
 
   it('does not set standAlone flag by default', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2, layout: 'center'}),
+      () => useSectionForegroundContentElements({sectionId: 2, layout: 'center'}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -657,7 +749,7 @@ describe('useSectionContentElements', () => {
 
   it('turns standAlone position into inline with standAlone flag', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2, layout: 'center'}),
+      () => useSectionForegroundContentElements({sectionId: 2, layout: 'center'}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -692,7 +784,7 @@ describe('useSectionContentElements', () => {
 
   it('clamps widths of floated elements in center layout', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2, layout: 'center'}),
+      () => useSectionForegroundContentElements({sectionId: 2, layout: 'center'}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -785,7 +877,7 @@ describe('useSectionContentElements', () => {
 
   it('clamps widths of sticky elements in two-column layout', () => {
     const {result} = renderHookInEntry(
-      () => useSectionContentElements({sectionId: 2, layout: 'right'}),
+      () => useSectionForegroundContentElements({sectionId: 2, layout: 'right'}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -859,5 +951,53 @@ describe('useSectionContentElements', () => {
         width: -3
       }
     ]);
+  });
+});
+
+describe('useContentElement', () => {
+  it('looks up content element by perma id', () => {
+    const {result} = renderHookInEntry(
+      () => useContentElement({permaId: 10}),
+      {
+        seed: {
+          contentElements: [
+            {
+              id: 4,
+              permaId: 10,
+              typeName: 'inlineVideo',
+              configuration: {video: 6}
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElement = result.current;
+
+    expect(contentElement).toMatchObject({
+      id: 4,
+      permaId: 10,
+      type: 'inlineVideo',
+      position: 'inline',
+      width: 0,
+      props: {
+        video: 6
+      }
+    });
+  });
+
+  it('returns undefined for unknown perma id', () => {
+    const {result} = renderHookInEntry(
+      () => useContentElement({permaId: 10}),
+      {
+        seed: {
+          contentElements: []
+        }
+      }
+    );
+
+    const contentElement = result.current;
+
+    expect(contentElement).toBeUndefined();
   });
 });

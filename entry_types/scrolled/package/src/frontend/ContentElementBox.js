@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {useContentElementAttributes} from './useContentElementAttributes';
+
 import styles from './ContentElementBox.module.css';
 
 /**
@@ -10,6 +12,12 @@ import styles from './ContentElementBox.module.css';
  * @param {string} props.children - Content of box.
  */
 export function ContentElementBox({children}) {
+  const {position} = useContentElementAttributes();
+
+  if (position === 'backdrop') {
+    return children;
+  }
+
   return (
     <div className={styles.wrapper}>
       {children}

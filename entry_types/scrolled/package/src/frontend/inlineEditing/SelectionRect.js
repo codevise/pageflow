@@ -12,6 +12,7 @@ export function SelectionRect(props) {
   return (
     <div className={classNames(styles.main,
                                {[styles.full]: props.full,
+                                [styles.inset]: props.inset,
                                 [styles.selected]: props.selected,
                                 [styles.draggable]: props.drag,
                                 [styles.start]: props.selected && props.start,

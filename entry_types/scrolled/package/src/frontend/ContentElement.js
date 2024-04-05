@@ -9,15 +9,16 @@ import {ContentElementErrorBoundary} from './ContentElementErrorBoundary';
 
 import styles from './ContentElement.module.css';
 
-export const ContentElement = withInlineEditingDecorator(
+export const ContentElement = React.memo(withInlineEditingDecorator(
   'ContentElementDecorator',
   function ContentElement(props) {
     const Component = api.contentElementTypes.getComponent(props.type);
 
     if (Component) {
       return (
-        <ContentElementAttributesProvider id={props.id} width={props.width}>
-          <ContentElementLifecycleProvider type={props.type}>
+        <ContentElementAttributesProvider id={props.id} width={props.width} position={props.position}>
+          <ContentElementLifecycleProvider type={props.type}
+                                           override={props.lifecycleOverride}>
             <ContentElementMargin width={props.width}>
               <ContentElementErrorBoundary type={props.type}>
                 <Component sectionProps={props.sectionProps}
@@ -35,7 +36,21 @@ export const ContentElement = withInlineEditingDecorator(
       return <div className={styles.missing}>Element of unknown type "{props.type}"</div>
     }
   }
-);
+), arePropsEqual);
+
+function arePropsEqual(prevProps, nextProps) {
+  return (
+    prevProps.id === nextProps.id &&
+    prevProps.permaId === nextProps.permaId &&
+    prevProps.type === nextProps.type &&
+    prevProps.position === nextProps.position &&
+    prevProps.width === nextProps.width &&
+    prevProps.itemProps === nextProps.itemProps &&
+    prevProps.customMargin === nextProps.customMargin &&
+    prevProps.sectionProps === nextProps.sectionProps &&
+    prevProps.lifecycleOverride === nextProps.lifecycleOverride
+  );
+}
 
 ContentElement.defaultProps = {
   itemProps: {}

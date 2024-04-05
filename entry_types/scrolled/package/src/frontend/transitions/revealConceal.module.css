@@ -5,11 +5,7 @@
 }
 
 .backdropInner {
-  position: fixed;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-
+  composes: fixed from './shared.module.css';
   transform: translateZ(0);
   backface-visibility: hidden;
 }

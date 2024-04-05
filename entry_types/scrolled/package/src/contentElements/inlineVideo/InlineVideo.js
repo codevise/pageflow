@@ -10,6 +10,7 @@ import {
   InlineFileRights,
   FitViewport,
   PlayerEventContextDataProvider,
+  useBackgroundFile,
   useContentElementEditorState,
   useFileWithInlineRights,
   usePlayerState,
@@ -25,7 +26,7 @@ import {
   getPlayerClickHandler
 } from './handlers';
 
-export function InlineVideo({contentElementId, configuration}) {
+export function InlineVideo({contentElementId, configuration, sectionProps}) {
   const videoFile = useFileWithInlineRights({
     configuration,
     collectionName: 'videoFiles',
@@ -56,17 +57,22 @@ export function InlineVideo({contentElementId, configuration}) {
     return (
       <OrientationAwareInlineVideo landscapeVideoFile={videoFile}
                                    portraitVideoFile={portraitVideoFile}
+                                   landscapeMotifArea={configuration.motifArea}
+                                   portraitMotifArea={configuration.portraitMotifArea}
                                    landscapePosterImageFile={posterImageFile}
                                    portraitPosterImageFile={portraitPosterImageFile}
                                    contentElementId={contentElementId}
+                                   sectionProps={sectionProps}
                                    configuration={configuration} />
     );
   }
   else {
     return (
       <OrientationUnawareInlineVideo videoFile={videoFile}
+                                     motifArea={configuration.motifArea}
                                      posterImageFile={posterImageFile}
                                      contentElementId={contentElementId}
+                                     sectionProps={sectionProps}
                                      configuration={configuration} />
     )
   }
@@ -75,26 +81,34 @@ export function InlineVideo({contentElementId, configuration}) {
 function OrientationAwareInlineVideo({
   landscapeVideoFile, portraitVideoFile,
   landscapePosterImageFile, portraitPosterImageFile,
-  contentElementId, configuration
+  landscapeMotifArea, portraitMotifArea,
+  contentElementId, configuration,
+  sectionProps
 }) {
   const portraitOrientation = usePortraitOrientation();
   const videoFile = portraitOrientation && portraitVideoFile ?
                     portraitVideoFile : landscapeVideoFile;
+  const motifArea = portraitOrientation && portraitVideoFile ?
+                    portraitMotifArea : landscapeMotifArea;
+
   const posterImageFile = portraitOrientation && portraitPosterImageFile ?
                           portraitPosterImageFile : landscapePosterImageFile;
 
   return (
     <OrientationUnawareInlineVideo key={portraitOrientation}
                                    videoFile={videoFile}
+                                   motifArea={motifArea}
                                    posterImageFile={posterImageFile}
                                    contentElementId={contentElementId}
+                                   sectionProps={sectionProps}
                                    configuration={configuration} />
   );
 }
 
 function OrientationUnawareInlineVideo({
   videoFile, posterImageFile,
-  contentElementId, configuration
+  contentElementId, configuration,
+  sectionProps, motifArea
 }) {
   const [playerState, playerActions] = usePlayerState();
   const inlineFileRightsItems = [
@@ -102,11 +116,16 @@ function OrientationUnawareInlineVideo({
     {label: 'poster', file: posterImageFile}
   ];
 
+  const Player = sectionProps?.containerDimension && motifArea ?
+                 CropPositionComputingPlayer :
+                 PlayerWithControlBar;
+
   return (
     <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
       <FitViewport file={videoFile}
                    aspectRatio={videoFile ?
                                 undefined : fallbackAspectRatio}
+                   fill={configuration.position === 'backdrop'}
                    opaque={!videoFile}>
         <ContentElementBox>
           <ContentElementFigure configuration={configuration}>
@@ -115,7 +134,9 @@ function OrientationUnawareInlineVideo({
                                        playerState.shouldPlay &&
                                        !configuration.keepMuted} />
               <Player key={configuration.playbackMode === 'loop'}
+                      sectionProps={sectionProps}
                       videoFile={videoFile}
+                      motifArea={motifArea}
                       posterImageFile={posterImageFile}
                       inlineFileRightsItems={inlineFileRightsItems}
                       playerState={playerState}
@@ -131,11 +152,25 @@ function OrientationUnawareInlineVideo({
   )
 }
 
-function Player({
+function CropPositionComputingPlayer({videoFile, motifArea, ...props}) {
+  const videoFileWithMotifArea = useBackgroundFile({
+    file: videoFile,
+    motifArea,
+    containerDimension: props.sectionProps.containerDimension
+  });
+
+  return (
+    <PlayerWithControlBar {...props}
+                          videoFile={videoFileWithMotifArea} />
+  );
+}
+
+function PlayerWithControlBar({
   videoFile, posterImageFile,
   inlineFileRightsItems,
   playerState, playerActions,
-  contentElementId, configuration
+  contentElementId, configuration,
+  sectionProps
 }) {
   const {isEditable, isSelected} = useContentElementEditorState();
 
@@ -183,6 +218,8 @@ function Player({
 
   return (
     <VideoPlayerControls videoFile={videoFile}
+                         fadedOut={sectionProps.isIntersecting}
+                         sticky={configuration.position === 'backdrop'}
                          defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                          playerState={playerState}
                          playerActions={playerActions}
@@ -199,6 +236,7 @@ function Player({
                            shouldLoad ? 'poster' :
                            'none'}
                      loop={configuration.playbackMode === 'loop'}
+                     fit={configuration.position === 'backdrop' ? 'cover' : 'contain'}
                      playerState={playerState}
                      playerActions={playerActions}
                      videoFile={videoFile}

@@ -1,0 +1,16 @@
+.fixed {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+/*
+  Used with backdrop content elements to prevent player controls from
+  being cropped on small viewports (i.e., when browser bars are
+  visible).
+*/
+.justifyBottom.fixed {
+  top: auto;
+  bottom: 0;
+}

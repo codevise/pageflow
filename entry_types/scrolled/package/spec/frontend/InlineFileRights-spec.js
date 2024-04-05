@@ -45,10 +45,10 @@ describe('InlineFileRights', () => {
 
   it('passes props to widget', () => {
     api.widgetTypes.register('inlineFileRightsWithProps', {
-      component: function ({children, context, playerControlsTransparent, playerControlsStandAlone}) {
+      component: function ({children, context, playerControlsFadedOut, playerControlsStandAlone}) {
         return (
           <div>
-            {context} {playerControlsTransparent.toString()} {playerControlsStandAlone.toString()}
+            {context} {playerControlsFadedOut.toString()} {playerControlsStandAlone.toString()}
           </div>
         )
       }
@@ -64,7 +64,7 @@ describe('InlineFileRights', () => {
     const {container} = renderInEntry(
       <InlineFileRights items={[{file}]}
                         context="playerControls"
-                        playerControlsTransparent={false}
+                        playerControlsFadedOut={false}
                         playerControlsStandAlone={true} />,
       {
         seed: {

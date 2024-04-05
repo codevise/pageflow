@@ -1,0 +1,75 @@
+.view {}
+
+.navigate,
+.unset,
+.present .add {
+  display: none;
+}
+
+.present .navigate,
+.present .unset {
+  display: flex;
+}
+
+.add {
+  composes: plusCircled from '../icons.module.css';
+  display: flex;
+  justify-content: center;
+  gap: space(2);
+  width: 100%;
+  padding: space(6) space(3);
+}
+
+.container {
+  border: solid 1px var(--ui-on-surface-color-lighter);
+  border-radius: rounded();
+  display: flex;
+}
+
+.add,
+.navigate,
+.unset {
+  background-color: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.navigate {
+  flex: 1;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M8 6l4 4 -4 4'/%3e%3c/svg%3e");
+  background-position: right space(2) center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  color-adjust: exact;
+}
+
+.unset {
+  composes: cancelCircled from '../icons.module.css';
+  padding: 4px space(3) 0;
+  border-left: solid 1px var(--ui-on-surface-color-lightest);
+  margin: space(2) 0;
+  align-items: center;
+  color: var(--ui-on-surface-color-light);
+}
+
+.unset:hover,
+.unset:active,
+.unset:focus {
+  color: var(--ui-on-surface-color);
+}
+
+.typePictogram {}
+
+.typePictogramBg {
+  background-color: var(--ui-on-surface-color-light-solid);
+  width: 60px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  padding: space(6) space(10) space(6) space(3);
+}

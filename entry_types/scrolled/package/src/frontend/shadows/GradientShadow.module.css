@@ -8,6 +8,7 @@
   transition: opacity 1s ease;
   /* Prevents shadow from flickering on iPhone 12/iOS 14 */
   will-change: opacity;
+  pointer-events: none;
 }
 
 .static {

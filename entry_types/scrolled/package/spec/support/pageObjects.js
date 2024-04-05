@@ -3,6 +3,7 @@ import React from 'react';
 import {renderInEntry} from './index';
 import {Entry} from 'frontend/Entry';
 import foregroundStyles from 'frontend/Foreground.module.css';
+import contentElementBoxStyles from 'frontend/ContentElementBox.module.css';
 import contentElementMarginStyles from 'frontend/ContentElementMargin.module.css';
 import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
@@ -14,12 +15,19 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 import {simulateScrollingIntoView} from './fakeIntersectionObserver';
 
 export function renderEntry({seed, consent, isStaticPreview} = {}) {
-  return renderInEntry(<Entry />, {
+  const result = renderInEntry(<Entry />, {
     seed,
     consent,
     wrapper: isStaticPreview ? StaticPreview : null,
     queries: {...queries, ...pageObjectQueries}
   });
+
+  return {
+    ...result,
+    rerender() {
+      result.rerender(<Entry />);
+    }
+  }
 }
 
 export function useInlineEditingPageObjects() {
@@ -85,6 +93,23 @@ const pageObjectQueries = {
     return createContentElementPageObject(el);
   },
 
+  fakeSectionBoundingClientRectsByPermaId(container, rectsByPermaId) {
+    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function() {
+      const idAttribute = this.getAttribute('id');
+      const permaId = idAttribute?.split('-')[1];
+
+      return {
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0,
+        bottom: 0,
+        right: 0,
+        ...(permaId ? rectsByPermaId[permaId] : {})
+      };
+    });
+  },
+
   fakeContentElementBoundingClientRectsByTestId(container, rectsByTestId) {
     jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function() {
       const testIdAttribute = this.querySelector('[data-testid]')?.getAttribute('data-testid');
@@ -143,6 +168,10 @@ function createContentElementPageObject(el) {
   const selectionRect = el.closest('[aria-label="Select content element"]');
 
   return {
+    containsBox() {
+      return !!el.querySelector(`.${contentElementBoxStyles.wrapper}`);
+    },
+
     hasMargin() {
       return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
     },

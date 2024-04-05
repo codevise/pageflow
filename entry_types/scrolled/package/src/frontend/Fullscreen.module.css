@@ -2,7 +2,7 @@
   width: 100%;
   height: calc(100 * var(--vh));
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 @media print {

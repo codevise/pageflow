@@ -8,6 +8,9 @@ import {
   delayedDestroying
 } from 'pageflow/editor';
 
+import {features} from 'pageflow/frontend';
+import {ContentElementConfiguration} from './ContentElementConfiguration';
+
 const widths = {
   xxs: -3,
   xs: -2,
@@ -24,7 +27,8 @@ export const ContentElement = Backbone.Model.extend({
   mixins: [
     configurationContainer({
       autoSave: true,
-      includeAttributesInJSON: ['position', 'typeName']
+      includeAttributesInJSON: ['position', 'typeName'],
+      configurationModel: ContentElementConfiguration
     }),
     delayedDestroying,
     entryTypeEditorControllerUrls.forModel({resources: 'content_elements'}),
@@ -71,9 +75,12 @@ export const ContentElement = Backbone.Model.extend({
     const defaultPosition = sibling?.getPosition();
     const supportedPositions = this.getType().supportedPositions || [];
 
-    if (defaultPosition &&
-        defaultPosition !== 'inline' &&
-        supportedPositions.includes(defaultPosition)) {
+    if (this.configuration.has('position')) {
+      delete defaultConfig.position;
+    }
+    else if (defaultPosition &&
+             defaultPosition !== 'inline' &&
+             supportedPositions.includes(defaultPosition)) {
       defaultConfig.position = defaultPosition;
     }
 
@@ -91,10 +98,11 @@ export const ContentElement = Backbone.Model.extend({
 
   getAvailablePositions() {
     const layout = this.section.configuration.get('layout');
+    const backdrop = features.isEnabled('backdrop_content_elements') ? 'backdrop' : null;
     const supportedByLayout =
       layout === 'center' || layout === 'centerRagged' ?
-      ['inline', 'left', 'right', 'standAlone'] :
-      ['inline', 'sticky', 'standAlone'];
+      ['inline', 'left', 'right', 'standAlone', backdrop] :
+      ['inline', 'sticky', 'standAlone', backdrop];
     const supportedByType = this.getType().supportedPositions;
 
     if (supportedByType) {
@@ -122,7 +130,10 @@ export const ContentElement = Backbone.Model.extend({
   },
 
   clampWidthByPosition(width) {
-    if (['sticky', 'left', 'right'].includes(this.getResolvedPosition())) {
+    if (this.getPosition() === 'backdrop') {
+      return 0;
+    }
+    else if (['sticky', 'left', 'right'].includes(this.getResolvedPosition())) {
       return Math.min(Math.max(width, -2), 2);
     }
     else {

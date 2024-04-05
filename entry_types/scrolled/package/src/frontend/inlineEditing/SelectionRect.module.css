@@ -28,8 +28,20 @@
   right: 0;
 }
 
+.inset:before {
+  top: 5px;
+  left: 4px;
+  bottom: 5px;
+  right: 4px;
+  z-index: 4;
+}
+
 .selected:before {
   border-left: solid 1px currentColor;
+}
+
+.inset.selected:before {
+  border: solid 1px currentColor;
 }
 
 .selected:after {
@@ -161,4 +173,10 @@
 
 .full .dragHandle svg {
   color: #fff;
+}
+
+.inset .dragHandle,
+.inset .insert,
+.inset:after {
+  display: none;
 }

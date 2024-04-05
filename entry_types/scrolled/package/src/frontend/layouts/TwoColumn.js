@@ -15,7 +15,9 @@ export function TwoColumn(props) {
   return (
     <div className={classNames(styles.root, styles[props.align])}>
       <div className={classNames(styles.group)} key={props.align}>
-        <div className={classNames(styles.box, styles.inline)} ref={props.contentAreaRef} />
+        <div className={classNames(styles.box, styles.inline)}
+             ref={props.contentAreaRef}
+             {...TwoColumn.contentAreaProbeProps} />
       </div>
       {renderItems(props, shouldInline)}
       {renderPlaceholder(props.placeholder)}
@@ -44,6 +46,9 @@ function useShouldInlineSticky() {
 
 // Used in tests to render markers around groups
 TwoColumn.GroupComponent = 'div';
+
+// Used to set data-testids on probe element
+TwoColumn.contentAreaProbeProps = {};
 
 function renderItems(props, shouldInline) {
   return groupItemsByPosition(props.items, shouldInline).map((group, index) =>

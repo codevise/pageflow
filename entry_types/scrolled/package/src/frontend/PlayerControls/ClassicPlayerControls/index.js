@@ -14,25 +14,27 @@ import styles from '../ControlBar.module.css';
 
 export function ClassicPlayerControls(props) {
   const darkBackground = useDarkBackground();
-  const transparent = (!props.standAlone && props.unplayed) || (props.isPlaying && props.inactive);
+  const fadedOut = (!props.standAlone && props.unplayed) || (props.isPlaying && props.inactive) || props.fadedOut;
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container,
+                               {[styles.sticky]: props.sticky})}>
       {props.children}
       {!props.standAlone &&
        <BigPlayPauseButton unplayed={props.unplayed}
                            isPlaying={props.isPlaying}
                            lastControlledVia={props.lastControlledVia}
                            hidden={props.hideBigPlayButton}
+                           fadedOut={props.fadedOut}
                            hideCursor={props.isPlaying && props.inactive}
                            onClick={props.onPlayerClick} />}
       {!props.hideControlBar &&
-       renderControlBar(props, darkBackground, transparent)}
+       renderControlBar(props, darkBackground, fadedOut)}
     </div>
   );
 }
 
-function renderControlBar(props, darkBackground, transparent) {
+function renderControlBar(props, darkBackground, fadedOut) {
   return (
     <div onFocus={props.onFocus}
          onBlur={props.onBlur}
@@ -42,7 +44,7 @@ function renderControlBar(props, darkBackground, transparent) {
                                darkBackground ? styles.darkBackground : styles.lightBackground,
                                {
                                  [styles.inset]: !props.standAlone,
-                                 [styles.transparent]: transparent
+                                 [styles.fadedOut]: fadedOut
          })}>
       <div className={styles.controlBarInner}>
         <PlayPauseButton isPlaying={props.isPlaying}
@@ -63,7 +65,7 @@ function renderControlBar(props, darkBackground, transparent) {
       </div>
       <InlineFileRights items={props.inlineFileRightsItems}
                         context="playerControls"
-                        playerControlsTransparent={transparent}
+                        playerControlsFadedOut={fadedOut}
                         playerControlsStandAlone={props.standAlone} />
     </div>
   );

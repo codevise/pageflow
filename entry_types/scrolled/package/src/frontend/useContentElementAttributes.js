@@ -2,11 +2,12 @@ import React, {createContext, useContext, useMemo} from 'react';
 
 const ContentElementAttributesContext = createContext({});
 
-export function ContentElementAttributesProvider({id, width, children}) {
+export function ContentElementAttributesProvider({id, width, position, children}) {
   const attributes = useMemo(() => ({
     contentElementId: id,
-    width
-  }), [id, width]);
+    width,
+    position
+  }), [id, width, position]);
 
   return (
     <ContentElementAttributesContext.Provider value={attributes}>

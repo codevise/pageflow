@@ -34,5 +34,7 @@ export function insertContentElement(entry, sibling, attributes, {at, splitPoint
         range: targetRange
       });
     }
-  })
+  });
+
+  return contentElement;
 }

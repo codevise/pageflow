@@ -1,10 +1,13 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories, normalizeSeed} from 'support';
+import {features} from 'pageflow/frontend';
 
 describe('ContentElement', () => {
   describe('getAvailablePositions', () => {
     beforeEach(() => {
+      features.enable('frontend', ['backdrop_content_elements']);
+
       editor.contentElementTypes.register('inlineImage', {});
       editor.contentElementTypes.register('soundDisclaimer', {supportedPositions: ['inline']});
     });
@@ -26,7 +29,9 @@ describe('ContentElement', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'sticky', 'standAlone']);
+      expect(contentElement.getAvailablePositions()).toEqual(
+        ['inline', 'sticky', 'standAlone', 'backdrop']
+      );
     });
 
     it('returns positions for left layout if parent section uses that', () => {
@@ -46,7 +51,9 @@ describe('ContentElement', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'sticky', 'standAlone']);
+      expect(contentElement.getAvailablePositions()).toEqual(
+        ['inline', 'sticky', 'standAlone', 'backdrop']
+      );
     });
 
     it('returns positions for center layout if parent section uses that', () => {
@@ -66,7 +73,9 @@ describe('ContentElement', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'left', 'right', 'standAlone']);
+      expect(contentElement.getAvailablePositions()).toEqual(
+        ['inline', 'left', 'right', 'standAlone', 'backdrop']
+      );
     });
 
     it('returns positions for centerRagged layout if parent section uses that', () => {
@@ -86,7 +95,9 @@ describe('ContentElement', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      expect(contentElement.getAvailablePositions()).toEqual(['inline', 'left', 'right', 'standAlone']);
+      expect(contentElement.getAvailablePositions()).toEqual(
+        ['inline', 'left', 'right', 'standAlone', 'backdrop']
+      );
     });
 
     it('filters by positions supported by content element type', () => {
@@ -329,6 +340,27 @@ describe('ContentElement', () => {
 
       expect(contentElement.getAvailableMinWidth()).toEqual(-2);
       expect(contentElement.getAvailableMaxWidth()).toEqual(2);
+    });
+
+    it('only offer md position in backdrop position', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage', configuration: {position: 'backdrop'}}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getAvailableMinWidth()).toEqual(0);
+      expect(contentElement.getAvailableMaxWidth()).toEqual(0);
     });
 
     it('does not exclude xxs/full if position is not supported by layout', () => {

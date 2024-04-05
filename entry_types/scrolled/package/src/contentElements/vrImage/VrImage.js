@@ -26,7 +26,8 @@ export function VrImage({configuration, contentElementWidth}) {
   return (
     <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <FitViewport
-        aspectRatio={contentElementWidth === contentElementWidths.full ? 0.5 : 0.75}>
+        aspectRatio={contentElementWidth === contentElementWidths.full ? 0.5 : 0.75}
+        fill={configuration.position === 'backdrop'}>
         <ContentElementBox>
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>

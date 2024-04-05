@@ -5,9 +5,11 @@ import {
   SeparatorView,
   SliderInputView
 } from 'pageflow/ui';
+import {BackdropContentElementInputView} from './inputs/BackdropContentElementInputView';
 import {EffectListInputView} from './inputs/EffectListInputView';
 import {InlineFileRightsMenuItem} from '../models/InlineFileRightsMenuItem'
 import I18n from 'i18n-js';
+import {features} from 'pageflow/frontend';
 
 import {EditMotifAreaDialogView} from './EditMotifAreaDialogView';
 
@@ -16,10 +18,11 @@ export const EditSectionView = EditConfigurationView.extend({
 
   configure: function(configurationEditor) {
     const entry = this.options.entry;
+    const editor = this.options.editor;
 
     const editMotifAreaMenuItem = {
       name: 'editMotifArea',
-      label: I18n.t('pageflow_scrolled.editor.edit_section.edit_motif_area'),
+      label: I18n.t('pageflow_scrolled.editor.edit_motif_area_menu_item'),
 
       selected({inputModel, propertyName, file}) {
         EditMotifAreaDialogView.show({
@@ -31,11 +34,18 @@ export const EditSectionView = EditConfigurationView.extend({
     };
 
     configurationEditor.tab('section', function() {
-      this.input('fullHeight', CheckBoxInputView);
-
       this.input('backdropType', SelectInputView, {
-        values: ['image', 'video', 'color'],
+        values: features.isEnabled('backdrop_content_elements') ?
+                ['image', 'video', 'color', 'contentElement'] :
+                ['image', 'video', 'color'],
       });
+
+      this.input('fullHeight', CheckBoxInputView, {
+        disabledBinding: 'backdropType',
+        disabled: backdropType => backdropType === 'contentElement',
+        displayCheckedIfDisabled: true
+      });
+
       this.input('backdropImage', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'sectionConfiguration',
@@ -93,6 +103,13 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBindingValue: 'color'
       });
 
+      this.input('backdropContentElement', BackdropContentElementInputView, {
+        editor,
+        entry,
+        visibleBinding: 'backdropType',
+        visibleBindingValue: 'contentElement'
+      });
+
       this.view(SeparatorView);
 
       this.input('layout', SelectInputView, {
@@ -111,7 +128,7 @@ export const EditSectionView = EditConfigurationView.extend({
         displayUncheckedIfDisabled: true,
         visibleBinding: ['backdropType'],
         visible: ([backdropType]) => {
-          return backdropType !== 'color';
+          return backdropType !== 'color' && backdropType !== 'contentElement';
         },
         disabledBinding: motifAreaDisabledBinding,
         disabled: motifAreaDisabled,
@@ -128,9 +145,9 @@ export const EditSectionView = EditConfigurationView.extend({
           return backdropType !== 'color' &&
                  (!appearance || appearance === 'shadow');
         },
-        disabledBinding: ['exposeMotifArea', ...motifAreaDisabledBinding],
-        disabled: ([exposeMotifArea, ...motifAreaDisabledBindingValues]) =>
-          !exposeMotifArea || motifAreaDisabled(motifAreaDisabledBindingValues)
+        disabledBinding: ['backdropType', 'exposeMotifArea', ...motifAreaDisabledBinding],
+        disabled: ([backdropType, exposeMotifArea, ...motifAreaDisabledBindingValues]) =>
+          (!exposeMotifArea || motifAreaDisabled(motifAreaDisabledBindingValues)) && backdropType !== 'contentElement'
       });
 
       this.view(SeparatorView);

@@ -10,11 +10,7 @@
 }
 
 .backdropInner {
-  position: fixed;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-
+  composes: fixed from './shared.module.css';
   transform: translateZ(0);
   backface-visibility: hidden;
 }
@@ -26,4 +22,5 @@
 .boxShadow-above {
   /* Win against inline style on GradientBox */
   opacity: 0 !important;
+  pointer-events: none;
 }
