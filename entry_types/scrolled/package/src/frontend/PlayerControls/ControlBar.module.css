@@ -28,7 +28,7 @@
 
 .inset::before,
 .controlBarInner {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, visibility 0.2s;
 }
 
 .inset::before {
@@ -49,6 +49,7 @@
 .fadedOut .controlBarInner,
 .fadedOut.inset::before {
   opacity: 0;
+  visibility: hidden;
 }
 
 .button {
