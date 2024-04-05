@@ -8,6 +8,7 @@ import {
   delayedDestroying
 } from 'pageflow/editor';
 
+import {features} from 'pageflow/frontend';
 import {ContentElementConfiguration} from './ContentElementConfiguration';
 
 const widths = {
@@ -97,10 +98,11 @@ export const ContentElement = Backbone.Model.extend({
 
   getAvailablePositions() {
     const layout = this.section.configuration.get('layout');
+    const backdrop = features.isEnabled('backdrop_content_elements') ? 'backdrop' : null;
     const supportedByLayout =
       layout === 'center' || layout === 'centerRagged' ?
-      ['inline', 'left', 'right', 'standAlone', 'backdrop'] :
-      ['inline', 'sticky', 'standAlone', 'backdrop'];
+      ['inline', 'left', 'right', 'standAlone', backdrop] :
+      ['inline', 'sticky', 'standAlone', backdrop];
     const supportedByType = this.getType().supportedPositions;
 
     if (supportedByType) {

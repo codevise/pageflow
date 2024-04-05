@@ -1,4 +1,7 @@
 de:
+  pageflow:
+    backdrop_content_elements:
+      feature_name: "Inhaltselemente als Backdrop"
   pageflow_scrolled:
     editor:
       common_content_element_attributes:

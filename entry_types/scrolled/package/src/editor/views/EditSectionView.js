@@ -9,6 +9,7 @@ import {BackdropContentElementInputView} from './inputs/BackdropContentElementIn
 import {EffectListInputView} from './inputs/EffectListInputView';
 import {InlineFileRightsMenuItem} from '../models/InlineFileRightsMenuItem'
 import I18n from 'i18n-js';
+import {features} from 'pageflow/frontend';
 
 import {EditMotifAreaDialogView} from './EditMotifAreaDialogView';
 
@@ -34,7 +35,9 @@ export const EditSectionView = EditConfigurationView.extend({
 
     configurationEditor.tab('section', function() {
       this.input('backdropType', SelectInputView, {
-        values: ['image', 'video', 'color', 'contentElement'],
+        values: features.isEnabled('backdrop_content_elements') ?
+                ['image', 'video', 'color', 'contentElement'] :
+                ['image', 'video', 'color'],
       });
 
       this.input('fullHeight', CheckBoxInputView, {
