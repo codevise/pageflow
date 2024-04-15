@@ -66,6 +66,16 @@ The following rule names are supported:
 | `body` | Applies to text blocks (paragraphs, lists, block quotes) in the entry content. |
 | `caption` | Applies to captions of content elements like inline images or inline videos. |
 | `content_link` | Applies to text links in text blocks, figures, quotes and counters. |
+| `quote_text` | Applies to the main text of quote content elements. |
+| `quote_text_lg` | Applies to the main text of quote content elements with size "large". |
+| `quote_text_md` | Applies to the main text of quote content elements with size "medium". |
+| `quote_text_sm` | Applies to the main text of quote content elements with size "small". |
+| `quote_text_xs` | Applies to the main text of quote content elements with size "very small". |
+| `quote_attribution` | Applies to the main text of quote content elements. |
+| `quote_attribution_lg` | Applies to the attribution line of quote content elements with size "large". |
+| `quote_attribution_md` | Applies to the attribution line of quote content elements with size "medium". |
+| `quote_attribution_sm` | Applies to the attribution line of quote content elements with size "small". |
+| `quote_attribution_xs` | Applies to the attribution line of quote content elements with size "very small". |
 | `default_navigation_chapter_link` | Applies to chapter links in the default navigation. |
 | `default_navigation_chapter_summary` | Applies to chapter summary texts in the default navigation. |
 | `default_navigation_active_chapter_link` | Applies to the chapter link representing the current chapter. |

@@ -32,7 +32,7 @@ export function Quote({configuration, contentElementId, sectionProps}) {
                       contentElementId={contentElementId}
                       onChange={text => updateConfiguration({text})}
                       onlyParagraphs={true}
-                      scaleCategory={getTextScaleCategory(configuration)} />
+                      scaleCategory={getTextScaleCategory(configuration, 'Text')} />
       </blockquote>
 
       {(isSelected || !utils.isBlankEditableTextValue(configuration.attribution || [])) &&
@@ -41,22 +41,24 @@ export function Quote({configuration, contentElementId, sectionProps}) {
                        contentElementId={contentElementId}
                        onChange={attribution => updateConfiguration({attribution})}
                        onlyParagraphs={true}
-                       scaleCategory="quoteAttribution"
+                       scaleCategory={getTextScaleCategory(configuration, 'Attribution')}
                        placeholder={t('pageflow_scrolled.inline_editing.type_attribution')} />
        </figcaption>}
     </figure>
   );
 }
 
-function getTextScaleCategory(configuration) {
+function getTextScaleCategory(configuration, suffix) {
+  const base = `quote${suffix}`;
+
   switch (configuration.textSize) {
     case 'large':
-      return 'quoteText-lg';
+      return `${base}-lg`;
     case 'small':
-      return 'quoteText-sm';
+      return `${base}-sm`;
     case 'verySmall':
-      return 'quoteText-xs';
+      return `${base}-xs`;
     default:
-      return 'quoteText-md';
+      return `${base}-md`;
   }
 }

@@ -99,24 +99,28 @@
 
 .quoteText-lg {
   composes: typography-quoteText from global;
+  composes: typography-quoteTextLg from global;
   font-size: text-2l;
   line-height: 1.1;
 }
 
 .quoteText-md {
   composes: typography-quoteText from global;
+  composes: typography-quoteTextMd from global;
   font-size: text-l;
   line-height: 1.1;
 }
 
 .quoteText-sm {
   composes: typography-quoteText from global;
+  composes: typography-quoteTextSm from global;
   font-size: text-md;
   line-height: 1.2;
 }
 
 .quoteText-xs {
   composes: typography-quoteText from global;
+  composes: typography-quoteTextXs from global;
   font-size: 26px;
   line-height: 1.2;
 }
@@ -125,6 +129,26 @@
   composes: typography-quoteAttribution from global;
   font-size: text-base;
   line-height: 1.4;
+}
+
+.quoteAttribution-lg {
+  composes: quoteAttribution;
+  composes: typography-quoteAttributionLg from global;
+}
+
+.quoteAttribution-md {
+  composes: quoteAttribution;
+  composes: typography-quoteAttributionMd from global;
+}
+
+.quoteAttribution-sm {
+  composes: quoteAttribution;
+  composes: typography-quoteAttributionSm from global;
+}
+
+.quoteAttribution-xs {
+  composes: quoteAttribution;
+  composes: typography-quoteAttributionXs from global;
 }
 
 .counterNumber-lg {
