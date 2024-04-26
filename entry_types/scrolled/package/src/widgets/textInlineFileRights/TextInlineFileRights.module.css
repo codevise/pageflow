@@ -1,3 +1,9 @@
+@value (
+  darkContentSurfaceColor, lightContentSurfaceColor,
+  darkContentTextColor, lightContentTextColor,
+  contentColorScope
+) from "pageflow-scrolled/values/colors.module.css";
+
 .text {
   font-size: 14px;
   position: relative;
@@ -10,6 +16,15 @@
   padding-top: 0.2em;
 }
 
+.text li::before {
+  content: "© ";
+  opacity: 0.7;
+}
+
+.text:not(:has(li:nth-child(2))) span {
+  display: none;
+}
+
 .forSection {
   position: absolute;
   bottom: 0;
@@ -17,7 +32,17 @@
 }
 
 .forSection li {
-  padding: 0 0.4em 0.2em 0;
+  padding: 0.1em 0.3em;
+  border-radius: 0.25rem;
+  margin: 0 0.2em 0.1em auto;
+  background-color: color-mix(in srgb, lightContentSurfaceColor, transparent);
+  color: darkContentTextColor;
+  width: fit-content;
+}
+
+.forSection.darkBackground li {
+  background-color: color-mix(in srgb, darkContentSurfaceColor, transparent);
+  color: lightContentTextColor;
 }
 
 .text a {
