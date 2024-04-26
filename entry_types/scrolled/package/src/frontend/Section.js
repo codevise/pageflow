@@ -60,19 +60,21 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
       <SectionLifecycleProvider onActivate={onActivate}
                                 entersWithFadeTransition={section.transition?.startsWith('fade')}>
         <SectionViewTimelineProvider backdrop={backdrop}>
-          <SectionAtmo audioFile={atmoAudioFile} />
+          <BackgroundColorProvider dark={!section.invert}>
+            <SectionAtmo audioFile={atmoAudioFile} />
 
-          <SectionContents section={section}
-                           transitions={transitions}
-                           backdrop={backdrop}
-                           contentElements={contentElements}
-                           state={state}
-                           transitionStyles={transitionStyles} />
+            <SectionContents section={section}
+                             transitions={transitions}
+                             backdrop={backdrop}
+                             contentElements={contentElements}
+                             state={state}
+                             transitionStyles={transitionStyles} />
 
-          <SectionInlineFileRights section={section}
-                                   backdrop={backdrop}
-                                   atmoAudioFile={atmoAudioFile}
-                                   state={state} />
+            <SectionInlineFileRights section={section}
+                                     backdrop={backdrop}
+                                     atmoAudioFile={atmoAudioFile}
+                                     state={state} />
+          </BackgroundColorProvider>
         </SectionViewTimelineProvider>
       </SectionLifecycleProvider>
     </section>
@@ -146,15 +148,13 @@ function SectionContents({
              state={state}
              motifAreaState={motifAreaState}
              staticShadowOpacity={staticShadowOpacity}>
-          <BackgroundColorProvider dark={!section.invert}>
-            <Layout sectionId={section.id}
-                    items={contentElements}
-                    appearance={section.appearance}
-                    contentAreaRef={setContentAreaRef}
-                    sectionProps={sectionProperties}>
-              {(children, boxProps) => <BoxWrapper {...boxProps} inverted={section.invert}>{children}</BoxWrapper>}
-            </Layout>
-          </BackgroundColorProvider>
+          <Layout sectionId={section.id}
+                  items={contentElements}
+                  appearance={section.appearance}
+                  contentAreaRef={setContentAreaRef}
+                  sectionProps={sectionProperties}>
+            {(children, boxProps) => <BoxWrapper {...boxProps} inverted={section.invert}>{children}</BoxWrapper>}
+          </Layout>
         </Box>
       </Foreground>
     </>
