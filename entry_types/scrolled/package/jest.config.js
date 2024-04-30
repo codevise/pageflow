@@ -27,6 +27,8 @@ module.exports = {
   },
   transform: {
     ...transform,
+    '^.+/editor/.+/images/.+\\.svg$': '<rootDir>/spec/support/jest/image-transform',
+    '^.+/pictogram\\.svg$': '<rootDir>/spec/support/jest/image-transform',
     '^.+\\.svg$': '<rootDir>/spec/support/jest/svg-transform'
   }
 };

@@ -296,7 +296,10 @@ const pageflowScrolled = [
     },
     external,
     plugins: [
-      image({include: '**/pictogram.svg'}),
+      image({include: [
+        '**/editor/**/images/*.svg',
+        '**/pictogram.svg'
+      ]}),
       ...plugins()
     ]
   },
