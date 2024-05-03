@@ -1,0 +1,18 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        hotspots:
+          edit_area_dialog:
+            header: Bereichsumriss und Indikatorposition
+            tabs:
+              default: Standard-Bild
+              portrait: Hochkant-Bild
+            modes:
+              rect: Rechteck
+              polygon: Polygon
+            hotspots_image: Hotspotbild
+            double_click_to_delete: Doppelklick, um Punkt zu entfernen
+            indicator_title: Ziehen um Indikator zu positionieren
+            save: Speichern
+            cancel: Abbrechen

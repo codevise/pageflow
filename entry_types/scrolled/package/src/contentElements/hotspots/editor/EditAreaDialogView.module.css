@@ -1,0 +1,9 @@
+.box {
+  width: min-content;
+  min-height: 310px;
+  min-width: 400px;
+}
+
+.wrapper {}
+
+.save {}

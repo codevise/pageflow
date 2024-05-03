@@ -1,0 +1,18 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        hotspots:
+          edit_area_dialog:
+            header: Area outline and indicator position
+            tabs:
+              default: Default image
+              portrait: Portrait image
+            modes:
+              rect: Rectangle
+              polygon: Polygon
+            hotspots_image: Hotspots image
+            double_click_to_delete: Double click to remove point
+            indicator_title: Drag to position indicator
+            save: Save
+            cancel: Cancel
