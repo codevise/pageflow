@@ -15,6 +15,7 @@
 .rightOpen,
 .star,
 .starOutlined,
+.target,
 .trash {
   composes: icon;
 }
@@ -77,6 +78,10 @@
 
 .starOutlined::before {
   content: "\2606";
+}
+
+.target::before {
+  content: "\1f3af";
 }
 
 .trash::before {

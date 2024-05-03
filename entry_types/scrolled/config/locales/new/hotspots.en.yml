@@ -3,6 +3,29 @@ en:
     editor:
       content_elements:
         hotspots:
+          edit_area:
+            tabs:
+              area: Hotspot Area
+              portrait: Portrait
+            attributes:
+              tooltipPosition:
+                label: Tooltip orientation
+                values:
+                  below: Below
+                  above: Above
+              activeImage:
+                label: Active image
+              area:
+                label: Area
+              portraitTooltipPosition:
+                label: Tooltip orientation  (Portrait)
+                values:
+                  below: Below
+                  above: Above
+              portraitActiveImage:
+                label: Active image (Portrait)
+              portraitArea:
+                label: Area (Portrait)
           edit_area_dialog:
             header: Area outline and indicator position
             tabs:
@@ -16,3 +39,29 @@ en:
             indicator_title: Drag to position indicator
             save: Save
             cancel: Cancel
+          areas:
+            add: Add
+            label: Areas
+            confirm_delete: Are you sure you want to delete this area?
+          area_input:
+            edit: Edit outline and indicator position
+          attributes:
+            image:
+              label: Image
+            portraitImage:
+              inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to provide an alternative to a landscape image that would otherwise be displayed too small.
+              label: Image (Portrait)
+            enablePanZoom:
+              label: Pan zoom
+              values:
+                phonePlatform: In phone layout
+                always: Always
+                never: Never
+            panZoomInitially:
+              label: Pan to first area initially
+            enableFullscreen:
+              label: Enable fullscreen
+          description: Image with clickable areas
+          name: Hotspots
+          tabs:
+            general: Hotspots

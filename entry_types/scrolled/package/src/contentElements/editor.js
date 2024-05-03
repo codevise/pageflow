@@ -8,6 +8,7 @@ import './soundDisclaimer/editor';
 import './dataWrapperChart/editor';
 import './inlineBeforeAfter/editor';
 import './externalLinkList/editor';
+import './hotspots/editor'
 import './vrImage/editor';
 import './iframeEmbed/editor';
 import './imageGallery/editor'

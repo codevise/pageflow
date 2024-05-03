@@ -23,6 +23,11 @@
   composes: cancel from './icons.module.css';
 }
 
+.targetButton {
+  composes: secondaryIconButton;
+  composes: target from './icons.module.css';
+}
+
 .saveButton {
   composes: primaryIconButton;
   composes: check from './icons.module.css';

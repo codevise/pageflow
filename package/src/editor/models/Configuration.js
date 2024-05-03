@@ -6,8 +6,6 @@ import {app} from '../app';
 
 import {transientReferences} from './mixins/transientReferences';
 
-import {state} from '$state';
-
 export const Configuration = Backbone.Model.extend({
   modelName: 'page',
   i18nKey: 'pageflow/page',
@@ -46,7 +44,7 @@ export const Configuration = Backbone.Model.extend({
   },
 
   getImageFile: function(attribute) {
-    return this.getReference(attribute, state.imageFiles);
+    return this.getReference(attribute, 'image_files');
   },
 
   getFilePosition: function(attribute, coord) {
@@ -83,7 +81,7 @@ export const Configuration = Backbone.Model.extend({
   },
 
   getVideoFile: function(attribute) {
-    return this.getReference(attribute, state.videoFiles);
+    return this.getReference(attribute, 'video_files');
   },
 
   getAudioFileSources: function(attribute) {
@@ -97,12 +95,12 @@ export const Configuration = Backbone.Model.extend({
   },
 
   getAudioFile: function(attribute) {
-    return this.getReference(attribute, state.audioFiles);
+    return this.getReference(attribute, 'audio_files');
   },
 
   getVideoPosterUrl: function() {
-    var posterFile = this.getReference('poster_image_id', state.imageFiles),
-        videoFile = this.getReference('video_file_id', state.videoFiles);
+    var posterFile = this.getReference('poster_image_id', 'image_files'),
+        videoFile = this.getReference('video_file_id', 'video_files');
 
     if (posterFile) {
       return posterFile.get('url');
