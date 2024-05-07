@@ -197,11 +197,15 @@ export const ScrolledEntry = Entry.extend({
     return [values, texts]
   },
 
-  getPaletteColors() {
-    const values = Object.keys(
-      this.scrolledSeed.config.theme.options.properties?.root || {}
-    ).filter(
-      key => key.indexOf('paletteColor') === 0
+  getPaletteColors({name} = {}) {
+    const themeOptions = this.scrolledSeed.config.theme.options
+
+    const values = (
+      name ?
+      (themeOptions.palettes?.[name] || []) :
+      Object.keys(themeOptions.properties?.root || {}).filter(
+        key => key.indexOf('paletteColor') === 0
+      )
     ).map(
       key => dasherize(key.replace('paletteColor', ''))
     );
@@ -229,7 +233,7 @@ export const ScrolledEntry = Entry.extend({
 function dasherize(text) {
   return (
     text[0] +
-    text.slice(1).replace(/[A-Z]/g, match => `-${match}`)
+    text.slice(1).replace('_', '-').replace(/[A-Z]/g, match => `-${match}`)
   ).toLowerCase();
 }
 

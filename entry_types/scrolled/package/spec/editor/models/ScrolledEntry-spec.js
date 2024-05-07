@@ -3114,6 +3114,57 @@ describe('ScrolledEntry', () => {
       expect(values).toEqual(['brand-blue', 'brand-green']);
     });
 
+    it('supports named palettes', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  paletteColorBrandBlue: '#00f',
+                  paletteColorBrandGreen: '#0f0',
+                  paletteColorAccentColor: '#123)'
+                }
+              },
+              palettes: {
+                brandColors: ['brandBlue', 'brand_green']
+              }
+            }
+          })
+        }
+      );
+
+      const [values] = entry.getPaletteColors({name: 'brandColors'});
+
+      expect(values).toEqual(['brand-blue', 'brand-green']);
+    });
+
+    it('returns empty array if named palette is missing', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  paletteColorBrandBlue: '#00f',
+                  paletteColorBrandGreen: '#0f0',
+                  paletteColorAccentColor: '#123)'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const [values] = entry.getPaletteColors({name: 'brandColors'});
+
+      expect(values).toEqual([]);
+    });
+
     describe('with shared translations', () => {
       const commonPrefix = 'pageflow_scrolled.editor.palette_colors'
 
