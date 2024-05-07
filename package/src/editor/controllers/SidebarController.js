@@ -78,6 +78,7 @@ export const SidebarController = Marionette.Controller.extend({
 
   widget: function(id) {
     this.region.show(new EditWidgetView({
+      entry: this.entry,
       model: this.entry.widgets.get(id)
     }));
   },

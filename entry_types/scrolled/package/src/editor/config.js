@@ -11,6 +11,7 @@ import {SideBarController} from './controllers/SideBarController';
 
 import {browser} from 'pageflow/frontend';
 import {CheckBoxInputView, ConfigurationEditorView} from 'pageflow/ui';
+import {ColorSelectInputView} from './views/inputs/ColorSelectInputView';
 import {BrowserNotSupportedView} from './views/BrowserNotSupportedView';
 
 editor.registerEntryType('scrolled', {
@@ -53,7 +54,20 @@ editor.widgetTypes.registerRole('header', {
 editor.widgetTypes.register('defaultNavigation', {
   configurationEditorView: ConfigurationEditorView.extend({
     configure: function() {
+      const [values, texts] = this.options.entry.getPaletteColors({name: 'accentColors'});
+
       this.tab('defaultNavigation', function() {
+        if (values.length) {
+          this.input('accentColor', ColorSelectInputView, {
+            includeBlank: true,
+            blankTranslationKey: 'pageflow_scrolled.editor.' +
+                                 'common_content_element_attributes.' +
+                                 'palette_color.blank',
+            values,
+            texts,
+          });
+        }
+
         this.input('hideToggleMuteButton', CheckBoxInputView);
         this.input('hideSharingButton', CheckBoxInputView);
         this.input('fixedOnDesktop', CheckBoxInputView);

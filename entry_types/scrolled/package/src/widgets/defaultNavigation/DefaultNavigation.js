@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import {
   Widget,
+  paletteColor,
   useScrollPosition,
   useChapters,
   useCurrentChapter,
@@ -125,7 +126,7 @@ export function DefaultNavigation({configuration}) {
         !mobileNavHidden
       ),
       [styles.hasChapters]: hasChapters
-    })}>
+    })} style={{'--theme-accent-color': paletteColor(configuration.accentColor)}}>
       <div className={styles.navigationBarContentWrapper}>
         {hasChapters && <HamburgerIcon onClick={handleBurgerMenuClick}
                                        mobileNavHidden={mobileNavHidden}/>}
