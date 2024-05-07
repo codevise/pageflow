@@ -26,6 +26,7 @@ export const EditWidgetView = Marionette.ItemView.extend({
   onRender: function() {
     var configurationEditor = this.model.widgetType().createConfigurationEditorView({
       model: this.model.configuration,
+      entry: this.options.entry,
       tab: this.options.tab
     });
 
