@@ -10,6 +10,8 @@ import {
   InlineFileRights
 } from 'pageflow-scrolled/frontend';
 
+import {Area} from './Area';
+
 import styles from './Hotspots.module.css';
 
 export function Hotspots({contentElementId, contentElementWidth, configuration}) {
@@ -18,6 +20,8 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
   });
 
   const {shouldLoad} = useContentElementLifecycle();
+
+  const areas = configuration.areas || [];
 
   return (
     <FitViewport file={imageFile}
@@ -34,6 +38,10 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
                      structuredData={true}
                      variant="large"
                      preferSvg={true} />
+              {areas.map((area, index) =>
+                <Area key={index}
+                      area={area}/>
+              )}
             </div>
             <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
           </FitViewport.Content>
