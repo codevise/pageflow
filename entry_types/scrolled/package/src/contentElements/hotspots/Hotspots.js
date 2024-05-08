@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
   ContentElementBox,
   Image,
   ContentElementFigure,
   FitViewport,
+  useContentElementEditorCommandSubscription,
   useContentElementLifecycle,
   useFileWithInlineRights,
   InlineFileRights
@@ -20,6 +21,17 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
   });
 
   const {shouldLoad} = useContentElementLifecycle();
+
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+
+  useContentElementEditorCommandSubscription(command => {
+    if (command.type === 'HIGHLIGHT_AREA') {
+      setHighlightedIndex(command.index);
+    }
+    else if (command.type === 'RESET_AREA_HIGHLIGHT') {
+      setHighlightedIndex(-1);
+    }
+  });
 
   const areas = configuration.areas || [];
 
@@ -40,6 +52,7 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
                      preferSvg={true} />
               {areas.map((area, index) =>
                 <Area key={index}
+                      highlighted={highlightedIndex === index}
                       area={area}/>
               )}
             </div>

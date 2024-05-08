@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import {
   useContentElementEditorState
@@ -6,11 +7,11 @@ import {
 
 import styles from './Area.module.css';
 
-export function Area({area}) {
+export function Area({area, highlighted}) {
   const {isEditable, isSelected} = useContentElementEditorState();
 
   return (
-    <div className={styles.area}>
+    <div className={classNames(styles.area, {[styles.highlighted]: highlighted})}>
       <button className={styles.clip}
               style={{clipPath: polygon(area.outline)}}/>
       {isEditable && isSelected && <Outline points={area.outline} />}

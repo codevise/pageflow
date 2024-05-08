@@ -37,6 +37,7 @@ export const AreasListView = Marionette.Layout.extend({
       label: I18n.t('pageflow_scrolled.editor.content_elements.hotspots.areas.label'),
       collection: this.collection,
       sortable: true,
+      highlight: true,
 
       onEdit: (model) => editor.navigate(
         `/scrolled/hotspots/${this.options.contentElement.id}/${model.id}`,

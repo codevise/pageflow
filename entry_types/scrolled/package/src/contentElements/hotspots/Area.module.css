@@ -27,6 +27,7 @@
   opacity: 0.5;
 }
 
+.area.highlighted .outline polygon,
 .area:hover .outline polygon {
   opacity: 1;
 }

@@ -50,4 +50,40 @@ describe('hotspots AreasCollection', () => {
       {id: 1, tooltipPosition: 'above'}
     ])
   });
+
+  it('posts content element command on highlight', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        areas: [
+          {id: 1},
+        ]
+      }
+    });
+    const areasCollection = AreasCollection.forContentElement(contentElement);
+    const listener = jest.fn();
+
+    contentElement.on('postCommand', listener);
+    areasCollection.get(1).highlight();
+
+    expect(listener).toHaveBeenCalledWith(10, {type: 'HIGHLIGHT_AREA', index: 0});
+  });
+
+  it('posts content element command on resetHighlight', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        areas: [
+          {id: 1},
+        ]
+      }
+    });
+    const areasCollection = AreasCollection.forContentElement(contentElement);
+    const listener = jest.fn();
+
+    contentElement.on('postCommand', listener);
+    areasCollection.get(1).resetHighlight();
+
+    expect(listener).toHaveBeenCalledWith(10, {type: 'RESET_AREA_HIGHLIGHT'});
+  });
 });
