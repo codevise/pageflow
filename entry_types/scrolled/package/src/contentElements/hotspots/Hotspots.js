@@ -5,6 +5,7 @@ import {
   Image,
   ContentElementFigure,
   FitViewport,
+  useContentElementLifecycle,
   useFileWithInlineRights,
   InlineFileRights
 } from 'pageflow-scrolled/frontend';
@@ -16,6 +17,8 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
     configuration, collectionName: 'imageFiles', propertyName: 'image'
   });
 
+  const {shouldLoad} = useContentElementLifecycle();
+
   return (
     <FitViewport file={imageFile}
                  aspectRatio={imageFile ? undefined : 0.75}
@@ -26,6 +29,7 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
           <FitViewport.Content>
             <div className={styles.wrapper}>
               <Image imageFile={imageFile}
+                     load={shouldLoad}
                      fill={false}
                      structuredData={true}
                      variant="large"
