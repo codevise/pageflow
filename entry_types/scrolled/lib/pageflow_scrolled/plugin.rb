@@ -14,10 +14,12 @@ module PageflowScrolled
 
         c.revision_components.register(Storyline)
 
-        c.additional_frontend_packs.register(
-          'pageflow-scrolled/contentElements/tikTokEmbed-frontend',
-          content_element_type_names: ['tikTokEmbed']
-        )
+        ['tikTokEmbed', 'hotspots'].each do |name|
+          c.additional_frontend_packs.register(
+            "pageflow-scrolled/contentElements/#{name}-frontend",
+            content_element_type_names: [name]
+          )
+        end
 
         c.widget_types.register(ReactWidgetType.new(name: 'defaultNavigation',
                                                     role: 'header'),

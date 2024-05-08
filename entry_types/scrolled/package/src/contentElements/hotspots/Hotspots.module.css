@@ -1,0 +1,8 @@
+.wrapper {
+  width: min-content;
+  height: 100%;
+}
+
+.wrapper > img {
+  height: 100%;
+}
