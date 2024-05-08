@@ -36,7 +36,7 @@ describe('Hotspots', () => {
     );
     simulateScrollPosition('near viewport');
 
-    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/image.webp')
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/image.webp');
   });
 
   it('renders areas with clip path based on area outline', () => {
@@ -57,6 +57,51 @@ describe('Hotspots', () => {
 
     expect(getByRole('button')).toHaveStyle(
       'clip-path: polygon(10% 20%, 10% 30%, 40% 30%, 40% 20%)'
+    );
+  });
+
+  it('does not render area outline as svg by default', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {outline: [[10, 20], [10, 30], [40, 30], [40, 20]]}
+      ]
+    };
+
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector('svg polygon')).toBeNull();
+  });
+
+  it('renders area outline as svg when selected in editor', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {outline: [[10, 20], [10, 30], [40, 30], [40, 20]]}
+      ]
+    };
+
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />,
+      {
+        seed,
+        editorState: {isSelected: true, isEditable: true}
+      }
+    );
+
+    expect(container.querySelector('svg polygon')).toHaveAttribute(
+      'points',
+      '10,20 10,30 40,30 40,20'
     )
   });
 })

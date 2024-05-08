@@ -1,5 +1,6 @@
 .area,
-.clip {
+.clip,
+.outline {
   position: absolute;
   top: 0;
   left: 0;
@@ -15,4 +16,17 @@
   pointer-events: auto;
   border: none;
   background-color: transparent;
+}
+
+.outline polygon {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1px;
+  stroke-linejoin: round;
+  stroke: #fff;
+  fill: transparent;
+  opacity: 0.5;
+}
+
+.area:hover .outline polygon {
+  opacity: 1;
 }
