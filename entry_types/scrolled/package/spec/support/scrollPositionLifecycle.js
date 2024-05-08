@@ -1,10 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import BackboneEvents from 'backbone-events-standalone';
-import {act} from '@testing-library/react'
-
-import {renderInEntry} from './index';
 import {SectionLifecycleContext} from 'frontend/useSectionLifecycle';
 import {isActiveProbe} from 'frontend/useScrollPositionLifecycle.module.css';
+
+import {renderInEntryWithScrollPositionLifecycle} from 'testHelpers/scrollPositionLifecycle';
 
 export function findIsActiveProbe(el) {
   return findProbe(el, isActiveProbe);
@@ -29,79 +26,9 @@ function findProbe(el, className) {
   }
 }
 
-export function renderInEntryWithSectionLifecycle(ui, {wrapper, ...options} = {}) {
-  const emitter = createEmitter();
-
-  return withSimulateScrollPositionHelper(
-    emitter,
-    renderInEntry(ui, {
-      wrapper: createScrollPositionProvider(SectionLifecycleContext,
-                                            emitter,
-                                            wrapper),
-      ...options
-    })
+export function renderInEntryWithSectionLifecycle(ui, options) {
+  return renderInEntryWithScrollPositionLifecycle(
+    ui,
+    {lifecycleContext: SectionLifecycleContext, ...options}
   );
-}
-
-function createScrollPositionProvider(Context, emitter, originalWrapper) {
-  const OriginalWrapper = originalWrapper ||
-                          function Noop({children}) { return children; };
-
-  return function ScrollPositionProvider({children}) {
-    const [value, setValue] = useState({shouldLoad: false, shouldPrepare: false, isVisible: false, isActive: false});
-
-    useEffect(() => {
-      function handle(scrollPosition) {
-        switch (scrollPosition) {
-        case 'near viewport':
-          setValue({shouldLoad: true, shouldPrepare: true, isVisible: false, isActive: false});
-          break;
-        case 'in viewport':
-          setValue({shouldLoad: true, shouldPrepare: true, isVisible: true, isActive: false});
-          break;
-        case 'center of viewport':
-          setValue({shouldLoad: true, shouldPrepare: true, isVisible: true, isActive: true});
-          break;
-        default:
-          setValue({isVisible: false, isActive: false});
-          break;
-        }
-      }
-
-      emitter.on('scroll', handle);
-
-      return () => emitter.off('scroll', handle);
-    })
-
-    return (
-      <OriginalWrapper>
-        <Context.Provider value={value}>
-          {children}
-        </Context.Provider>
-      </OriginalWrapper>
-    );
-  };
-}
-
-const allowedScrollPositions = ['outside viewport', 'near viewport', 'in viewport', 'center of viewport'];
-
-function withSimulateScrollPositionHelper(emitter, result) {
-  return {
-    ...result,
-
-    simulateScrollPosition(scrollPosition) {
-      if (!allowedScrollPositions.includes(scrollPosition)) {
-        throw new Error(`Invalid scrollPosition '${scrollPosition}'. ` +
-                        `Allowed values: ${allowedScrollPositions.join(', ')}`)
-      }
-
-      act(() => {
-        emitter.trigger('scroll', scrollPosition)
-      });
-    }
-  }
-}
-
-function createEmitter() {
-  return {...BackboneEvents};
 }

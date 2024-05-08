@@ -75,10 +75,20 @@ export {
   useShareUrl
 } from '../entryState';
 
+export {ContentElementAttributesProvider} from './useContentElementAttributes';
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
-export {useContentElementEditorCommandSubscription} from './useContentElementEditorCommandSubscription';
-export {useContentElementEditorState} from './useContentElementEditorState';
-export {useContentElementLifecycle} from './useContentElementLifecycle';
+export {
+  useContentElementEditorCommandSubscription,
+  ContentElementEditorCommandEmitterContext
+} from './useContentElementEditorCommandSubscription';
+export {
+  useContentElementEditorState,
+  ContentElementEditorStateContext
+} from './useContentElementEditorState';
+export {
+  useContentElementLifecycle,
+  ContentElementLifecycleContext
+} from './useContentElementLifecycle';
 export {useCurrentChapter} from './useCurrentChapter';
 export {useIsStaticPreview} from './useScrollPositionLifecycle';
 export {useMediaMuted, useOnUnmuteMedia} from './useMediaMuted';
