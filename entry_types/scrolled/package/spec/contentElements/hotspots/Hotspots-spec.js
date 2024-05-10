@@ -40,6 +40,25 @@ describe('Hotspots', () => {
     expect(getByRole('img')).toHaveAttribute('src', '000/000/001/image.webp');
   });
 
+  it('supports portrait image', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 101
+    };
+
+    window.matchMedia.mockPortrait();
+    const {getByRole, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/002/image.webp');
+  });
+
   it('renders areas with clip path based on area outline', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -52,6 +71,57 @@ describe('Hotspots', () => {
       ]
     };
 
+    const {getByRole} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(getByRole('button')).toHaveStyle(
+      'clip-path: polygon(10% 20%, 10% 30%, 40% 30%, 40% 20%)'
+    );
+  });
+
+  it('supports separate portrait area outline', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 101,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          portraitOutline: [[20, 20], [20, 30], [30, 30], [30, 20]]
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
+    const {getByRole} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(getByRole('button')).toHaveStyle(
+      'clip-path: polygon(20% 20%, 20% 30%, 30% 30%, 30% 20%)'
+    );
+  });
+
+  it('ignores portrait outline if portrait image is missing', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          portraitOutline: [[20, 20], [20, 30], [30, 30], [30, 20]]
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
     const {getByRole} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );

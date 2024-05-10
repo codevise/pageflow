@@ -8,6 +8,7 @@ import {
   useContentElementEditorCommandSubscription,
   useContentElementLifecycle,
   useFileWithInlineRights,
+  usePortraitOrientation,
   InlineFileRights
 } from 'pageflow-scrolled/frontend';
 
@@ -16,13 +17,20 @@ import {Area} from './Area';
 import styles from './Hotspots.module.css';
 
 export function Hotspots({contentElementId, contentElementWidth, configuration}) {
-  const imageFile = useFileWithInlineRights({
+  const defaultImageFile = useFileWithInlineRights({
     configuration, collectionName: 'imageFiles', propertyName: 'image'
   });
+  const portraitImageFile = useFileWithInlineRights({
+    configuration, collectionName: 'imageFiles', propertyName: 'portraitImage'
+  });
+  const portraitOrientation = usePortraitOrientation();
 
   const {shouldLoad} = useContentElementLifecycle();
 
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+
+  const portraitMode = portraitOrientation && portraitImageFile
+  const imageFile = portraitMode ? portraitImageFile : defaultImageFile;
 
   useContentElementEditorCommandSubscription(command => {
     if (command.type === 'HIGHLIGHT_AREA') {
@@ -52,8 +60,9 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
                      preferSvg={true} />
               {areas.map((area, index) =>
                 <Area key={index}
-                      highlighted={highlightedIndex === index}
-                      area={area}/>
+                      area={area}
+                      portraitMode={portraitMode}
+                      highlighted={highlightedIndex === index} />
               )}
             </div>
             <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />

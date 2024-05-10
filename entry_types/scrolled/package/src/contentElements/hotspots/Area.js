@@ -7,14 +7,16 @@ import {
 
 import styles from './Area.module.css';
 
-export function Area({area, highlighted}) {
+export function Area({area, portraitMode, highlighted}) {
   const {isEditable, isSelected} = useContentElementEditorState();
+
+  const outline = portraitMode ? area.portraitOutline : area.outline;
 
   return (
     <div className={classNames(styles.area, {[styles.highlighted]: highlighted})}>
       <button className={styles.clip}
-              style={{clipPath: polygon(area.outline)}}/>
-      {isEditable && isSelected && <Outline points={area.outline} />}
+              style={{clipPath: polygon(outline)}}/>
+      {isEditable && isSelected && <Outline points={outline} />}
     </div>
   );
 }
