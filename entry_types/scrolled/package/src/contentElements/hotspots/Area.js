@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {
+  paletteColor,
   useContentElementEditorState
 } from 'pageflow-scrolled/frontend';
 
@@ -18,7 +19,8 @@ export function Area({
   const outline = portraitMode ? area.portraitOutline : area.outline;
 
   return (
-    <div className={classNames(styles.area, {[styles.highlighted]: highlighted})}>
+    <div className={classNames(styles.area, {[styles.highlighted]: highlighted})}
+         style={{'--color': areaColor(area, portraitMode)}}>
       <button aria-labelledby={`hotspots-tooltip-title-${contentElementId}-${area.id}`}
               className={styles.clip}
               style={{clipPath: polygon(outline)}}
@@ -29,6 +31,10 @@ export function Area({
       {isEditable && isSelected && <Outline points={outline} />}
     </div>
   );
+}
+
+export function areaColor(area, portraitMode) {
+  return paletteColor(portraitMode ? (area.portraitColor || area.color) : area.color);
 }
 
 function Outline({points}) {

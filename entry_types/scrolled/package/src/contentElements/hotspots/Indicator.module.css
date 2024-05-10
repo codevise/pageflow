@@ -13,7 +13,7 @@
   width: var(--size);
   height: var(--size);
   border-radius: 100%;
-  background-color: #fff;
+  background-color: var(--color, #fff);
 }
 
 .indicator::before {

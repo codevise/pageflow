@@ -52,6 +52,10 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
         file,
         portraitFile
       });
+      this.group('PaletteColor', {
+        propertyName: 'color',
+        entry: options.entry
+      });
       this.input('tooltipPosition', SelectInputView, {
         values: ['below', 'above']
       });
@@ -76,6 +80,10 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
           file,
           portraitFile,
           defaultTab: 'portrait'
+        });
+        this.group('PaletteColor', {
+          propertyName: 'portraitColor',
+          entry: options.entry
         });
         this.input('portraitTooltipPosition', SelectInputView, {
           values: ['below', 'above']

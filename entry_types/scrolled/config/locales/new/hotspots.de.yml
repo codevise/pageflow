@@ -13,6 +13,8 @@ de:
                 values:
                   below: Unterhalb
                   above: Oberhalb
+              color:
+                label: Farbe
               activeImage:
                 label: Aktives Bild
               area:
@@ -22,6 +24,8 @@ de:
                 values:
                   below: Below
                   above: Above
+              portraitColor:
+                label: Farbe (Hochkant)
               portraitActiveImage:
                 label: Aktives Bild (Hochkant)
               portraitArea:

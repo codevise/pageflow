@@ -23,7 +23,7 @@
   vector-effect: non-scaling-stroke;
   stroke-width: 1px;
   stroke-linejoin: round;
-  stroke: #fff;
+  stroke: var(--color, #fff);
   fill: transparent;
   opacity: 0.5;
 }

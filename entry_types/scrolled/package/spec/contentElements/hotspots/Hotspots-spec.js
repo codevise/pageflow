@@ -209,6 +209,112 @@ describe('Hotspots', () => {
     });
   });
 
+  it('sets custom property for indicator color', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          indicatorPosition: [10, 20],
+          color: 'accent'
+        }
+      ]
+    };
+
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${areaStyles.area}`)).toHaveStyle({
+      '--color': 'var(--theme-palette-color-accent)',
+    });
+  });
+
+  it('supports separate color for portrait indicator', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 101,
+      areas: [
+        {
+          indicatorPosition: [10, 20],
+          portraitIndicatorPosition: [20, 30],
+          color: 'accent',
+          portraitColor: 'primary'
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${areaStyles.area}`)).toHaveStyle({
+      '--color': 'var(--theme-palette-color-primary)',
+    });
+  });
+
+  it('falls back to default indicator color  for portrait indicator', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 101,
+      areas: [
+        {
+          indicatorPosition: [10, 20],
+          portraitIndicatorPosition: [20, 30],
+          color: 'accent'
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${areaStyles.area}`)).toHaveStyle({
+      '--color': 'var(--theme-palette-color-accent)',
+    });
+  });
+
+  it('ignores portrait indicator color if portrait image is missing', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          indicatorPosition: [10, 20],
+          portraitIndicatorPosition: [20, 30],
+          color: 'accent',
+          portraitColor: 'primary'
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${areaStyles.area}`)).toHaveStyle({
+      '--color': 'var(--theme-palette-color-accent)',
+    });
+  });
+
   it('renders tooltip', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},

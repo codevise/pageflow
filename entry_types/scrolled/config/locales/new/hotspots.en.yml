@@ -13,6 +13,8 @@ en:
                 values:
                   below: Below
                   above: Above
+              color:
+                label: Color
               activeImage:
                 label: Active image
               area:
@@ -22,6 +24,8 @@ en:
                 values:
                   below: Below
                   above: Above
+              portraitColor:
+                label: Color (Portrait)
               portraitActiveImage:
                 label: Active image (Portrait)
               portraitArea:
