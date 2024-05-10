@@ -9,15 +9,22 @@ import {Indicator} from './Indicator';
 
 import styles from './Area.module.css';
 
-export function Area({area, portraitMode, highlighted}) {
+export function Area({
+  area, contentElementId, portraitMode, highlighted,
+  onMouseEnter, onMouseLeave, onClick
+}) {
   const {isEditable, isSelected} = useContentElementEditorState();
 
   const outline = portraitMode ? area.portraitOutline : area.outline;
 
   return (
     <div className={classNames(styles.area, {[styles.highlighted]: highlighted})}>
-      <button className={styles.clip}
-              style={{clipPath: polygon(outline)}}/>
+      <button aria-labelledby={`hotspots-tooltip-title-${contentElementId}-${area.id}`}
+              className={styles.clip}
+              style={{clipPath: polygon(outline)}}
+              onClick={onClick}
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave} />
       <Indicator area={area} portraitMode={portraitMode} />
       {isEditable && isSelected && <Outline points={outline} />}
     </div>

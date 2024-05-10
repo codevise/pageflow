@@ -7,6 +7,7 @@ import tooltipStyles from 'contentElements/hotspots/Tooltip.module.css';
 
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import '@testing-library/jest-dom/extend-expect'
+import userEvent from '@testing-library/user-event';
 
 describe('Hotspots', () => {
   it('does not render images by default', () => {
@@ -313,6 +314,218 @@ describe('Hotspots', () => {
       left: '10%',
       top: '20%'
     });
+  });
+
+  it('shows tooltip on area click', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {getByRole, container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+
+    await user.click(getByRole('button'));
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+  });
+
+  it('shows tooltip on area or toottip hover', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {getByRole, container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+
+    await user.hover(getByRole('button'));
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+
+    await user.unhover(getByRole('button'));
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+
+    await user.hover(container.querySelector(`.${tooltipStyles.tooltip}`));
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+
+    await user.unhover(container.querySelector(`.${tooltipStyles.tooltip}`));
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+  });
+
+  it('does not show other tooltip on hover after area has been clicked', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        },
+        {
+          id: 2,
+          outline: [[50, 20], [50, 30], [60, 30], [60, 20]],
+          indicatorPosition: [55, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Area 1'}]}],
+        },
+        2: {
+          title: [{type: 'heading', children: [{text: 'Area 2'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {getByRole, container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    await user.click(getByRole('button', {name: 'Area 1'}));
+    await user.hover(getByRole('button', {name: 'Area 2'}));
+
+    expect(container.querySelectorAll(`.${tooltipStyles.visible}`).length).toEqual(1);
+  });
+
+  it('hides tooltip when clicked outside area', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {getByRole, container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    await user.click(getByRole('button'));
+    await user.click(document.body);
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+  });
+
+  it('does not hide tooltip on click inside tooltip', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, getByRole, getByText} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    await user.click(getByRole('button'));
+    await user.click(getByText('Some title'));
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+  });
+
+  it('does not hide tooltip on unhover after click in tooltip', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, getByRole, getByText} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    await user.hover(getByRole('button'));
+    await user.click(getByText('Some title'));
+    await user.unhover(getByRole('button'));
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
   });
 
   it('does not render area outline as svg by default', () => {

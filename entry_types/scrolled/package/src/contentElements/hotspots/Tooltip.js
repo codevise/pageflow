@@ -10,7 +10,11 @@ import {
 
 import styles from './Tooltip.module.css';
 
-export function Tooltip({area, portraitMode, configuration}) {
+export function Tooltip({
+  area,
+  contentElementId, portraitMode, configuration, visible,
+  onMouseEnter, onMouseLeave, onClick
+}) {
   const {t} = useI18n();
   const updateConfiguration = useContentElementConfigurationUpdate();
 
@@ -34,11 +38,14 @@ export function Tooltip({area, portraitMode, configuration}) {
   }
 
   return (
-    <div className={classNames(styles.tooltip, styles.visible)}
+    <div className={classNames(styles.tooltip, {[styles.visible]: visible})}
          style={{left: `${indicatorPosition[0]}%`,
-                 top: `${indicatorPosition[1]}%`}}>
+                 top: `${indicatorPosition[1]}%`}}
+         onMouseEnter={onMouseEnter}
+         onMouseLeave={onMouseLeave}
+         onClick={onClick}>
       <div className={styles.box}>
-        <h3>
+        <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>
           <EditableInlineText value={tooltipTexts[area.id]?.title}
                               onChange={value => handleTextChange('title', value)}
                               placeholder={t('pageflow_scrolled.inline_editing.type_heading')} />
@@ -55,4 +62,8 @@ export function Tooltip({area, portraitMode, configuration}) {
       </div>
     </div>
   );
+}
+
+export function insideTooltip(element) {
+  return !!element.closest(`.${styles.tooltip}`);
 }

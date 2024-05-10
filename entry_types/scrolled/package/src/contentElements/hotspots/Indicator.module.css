@@ -2,6 +2,7 @@
   --size: 15px;
   margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
   animation: inner 2s infinite;
+  pointer-events: none;
 }
 
 .indicator,

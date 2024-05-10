@@ -16,6 +16,7 @@
   pointer-events: auto;
   border: none;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .outline polygon {
@@ -27,7 +28,6 @@
   opacity: 0.5;
 }
 
-.area.highlighted .outline polygon,
-.area:hover .outline polygon {
+.area.highlighted .outline polygon {
   opacity: 1;
 }
