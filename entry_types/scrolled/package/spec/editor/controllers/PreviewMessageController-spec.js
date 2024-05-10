@@ -1,4 +1,5 @@
 import 'editor/config';
+import {editor} from 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {PreviewMessageController} from 'editor/controllers/PreviewMessageController';
 import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView';
@@ -13,6 +14,8 @@ import {setupGlobals} from 'pageflow/testHelpers';
 import {useFakeXhr, normalizeSeed, factories, createIframeWindow} from 'support';
 
 describe('PreviewMessageController', () => {
+  beforeAll(() => editor.contentElementTypes.register('textBlock', {}));
+
   let controller, testContext;
 
   beforeEach(() => testContext = {});

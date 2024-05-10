@@ -114,7 +114,8 @@ export const PreviewMessageController = Object.extend({
         const {type, id} = message.data.payload;
 
         if (type === 'contentElement') {
-          this.editor.navigate(`/scrolled/content_elements/${id}`, {trigger: true})
+          const contentElement = this.entry.contentElements.get(id);
+          this.editor.navigate(contentElement.getEditorPath(), {trigger: true})
         }
         else if (type === 'sectionSettings') {
           this.editor.navigate(`/scrolled/sections/${id}`, {trigger: true})

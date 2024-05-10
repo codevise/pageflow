@@ -139,5 +139,10 @@ export const ContentElement = Backbone.Model.extend({
     else {
       return width;
     }
+  },
+
+  getEditorPath() {
+    return this.getType().editorPath?.call(null, this) ||
+           `/scrolled/content_elements/${this.id}`;
   }
 });

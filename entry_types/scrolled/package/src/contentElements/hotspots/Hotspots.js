@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 
 import {
   ContentElementBox,
   Image,
   ContentElementFigure,
   FitViewport,
+  useContentElementEditorState,
   useContentElementEditorCommandSubscription,
   useContentElementLifecycle,
   useFileWithInlineRights,
@@ -27,15 +28,22 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
   const portraitOrientation = usePortraitOrientation();
 
   const {shouldLoad} = useContentElementLifecycle();
+  const {setTransientState} = useContentElementEditorState();
 
-  const [activeIndex, setActiveIndex] = useState(-1);
+  const [activeIndex, setActiveIndexState] = useState(-1);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
   const portraitMode = portraitOrientation && portraitImageFile
   const imageFile = portraitMode ? portraitImageFile : defaultImageFile;
 
+  const areas = useMemo(() => configuration.areas || [], [configuration.areas]);
+
   const hasActiveArea = activeIndex >= 0;
+  const setActiveIndex = useCallback(index => {
+    setActiveIndexState(index);
+    setTransientState({activeAreaId: areas[index]?.id});
+  }, [setActiveIndexState, setTransientState, areas]);
 
   useEffect(() => {
     if (hasActiveArea) {
@@ -48,7 +56,7 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
         setActiveIndex(-1);
       }
     }
-  }, [hasActiveArea]);
+  }, [hasActiveArea, setActiveIndex]);
 
   useContentElementEditorCommandSubscription(command => {
     if (command.type === 'HIGHLIGHT_AREA') {
@@ -58,8 +66,6 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
       setHighlightedIndex(-1);
     }
   });
-
-  const areas = configuration.areas || [];
 
   return (
     <FitViewport file={imageFile}

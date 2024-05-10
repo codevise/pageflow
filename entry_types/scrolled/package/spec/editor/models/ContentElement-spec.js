@@ -453,6 +453,46 @@ describe('ContentElement', () => {
 
       expect(listener).not.toHaveBeenCalled();
     });
+  });
 
+  describe('#getEditorPath', () => {
+    it('returns content element path by default', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 5, typeName: 'inlineImage'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getEditorPath()).toEqual('/scrolled/content_elements/5');
+    });
+
+    it('can be overriden via content element type', () => {
+      editor.contentElementTypes.register('customElement', {
+        editorPath(contentElement) {
+          return `/scrolled/custom/${contentElement.id}`;
+        }
+      });
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 5, typeName: 'customElement'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getEditorPath()).toEqual('/scrolled/custom/5');
+    });
   });
 });

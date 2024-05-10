@@ -621,4 +621,33 @@ describe('Hotspots', () => {
 
     expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.highlighted);
   });
+
+  it('sets active area id in transient state in editor', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+        }
+      ]
+    };
+    const setTransientState = jest.fn();
+
+    const user = userEvent.setup();
+    const {getByRole} = renderInContentElement(
+      <Hotspots configuration={configuration} />,
+      {
+        seed,
+        editorState: {isEditable: true, setTransientState}
+      }
+    );
+    await user.click(getByRole('button'));
+
+    expect(setTransientState).toHaveBeenCalledWith({activeAreaId: 1})
+  });
 });

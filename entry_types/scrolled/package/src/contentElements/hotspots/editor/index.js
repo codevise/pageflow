@@ -21,6 +21,14 @@ editor.contentElementTypes.register('hotspots', {
   supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],
 
+  editorPath(contentElement) {
+    const activeAreaId = contentElement.transientState.get('activeAreaId');
+
+    if (activeAreaId) {
+      return `/scrolled/hotspots/${contentElement.id}/${activeAreaId}`;
+    }
+  },
+
   configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
       this.input('image', FileInputView, {
