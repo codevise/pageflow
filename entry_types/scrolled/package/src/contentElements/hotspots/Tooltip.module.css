@@ -1,9 +1,7 @@
 .tooltip {
   position: absolute;
-  transform: translateX(-50%);
   width: calc(100% - 2rem);
   max-width: 400px;
-  margin-top: 30px;
   transition: opacity 0.2s, visibility 0.2s;
   transition-delay: 0s;
   opacity: 0;
@@ -15,9 +13,25 @@
 .tooltip::after {
   content: "";
   position: absolute;
-  bottom: 99%;
   left: calc(50% - 15px);
   border: solid 15px transparent;
+}
+
+.position-above {
+  transform: translate(-50%, calc(-100% - 30px));
+}
+
+.position-above::after {
+  top: 99%;
+  border-top-color: #fff;
+}
+
+.position-below {
+  transform: translate(-50%, 30px);
+}
+
+.position-below::after {
+  bottom: 99%;
   border-bottom-color: #fff;
 }
 

@@ -41,7 +41,9 @@ export function Tooltip({
 
   return (
     <div ref={ref}
-         className={classNames(styles.tooltip, {[styles.visible]: visible})}
+         className={classNames(styles.tooltip,
+                               styles[`position-${area.tooltipPosition || 'below'}`],
+                               {[styles.visible]: visible})}
          style={{left: `${indicatorPosition[0]}%`,
                  top: `${indicatorPosition[1]}%`,
                  '--delta': `${delta}px`}}
