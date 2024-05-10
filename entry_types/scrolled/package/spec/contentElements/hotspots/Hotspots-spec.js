@@ -2,6 +2,7 @@ import React from 'react';
 
 import {Hotspots} from 'contentElements/hotspots/Hotspots';
 import areaStyles from 'contentElements/hotspots/Area.module.css';
+import indicatorStyles from 'contentElements/hotspots/Indicator.module.css';
 
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import '@testing-library/jest-dom/extend-expect'
@@ -129,6 +130,81 @@ describe('Hotspots', () => {
     expect(getByRole('button')).toHaveStyle(
       'clip-path: polygon(10% 20%, 10% 30%, 40% 30%, 40% 20%)'
     );
+  });
+
+  it('renders area indicators', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {indicatorPosition: [10, 20]}
+      ]
+    };
+
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${indicatorStyles.indicator}`)).toHaveStyle({
+      left: '10%',
+      top: '20%'
+    });
+  });
+
+  it('supports separate portrait indicator positon', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 101,
+      areas: [
+        {
+          indicatorPosition: [10, 20],
+          portraitIndicatorPosition: [20, 30]
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${indicatorStyles.indicator}`)).toHaveStyle({
+      left: '20%',
+      top: '30%'
+    });
+  });
+
+  it('ignores portrait indicator position if portrait image is missing', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          indicatorPosition: [10, 20],
+          portraitIndicatorPosition: [20, 30]
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${indicatorStyles.indicator}`)).toHaveStyle({
+      left: '10%',
+      top: '20%'
+    });
   });
 
   it('does not render area outline as svg by default', () => {

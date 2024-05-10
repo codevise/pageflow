@@ -5,6 +5,8 @@ import {
   useContentElementEditorState
 } from 'pageflow-scrolled/frontend';
 
+import {Indicator} from './Indicator';
+
 import styles from './Area.module.css';
 
 export function Area({area, portraitMode, highlighted}) {
@@ -16,6 +18,7 @@ export function Area({area, portraitMode, highlighted}) {
     <div className={classNames(styles.area, {[styles.highlighted]: highlighted})}>
       <button className={styles.clip}
               style={{clipPath: polygon(outline)}}/>
+      <Indicator area={area} portraitMode={portraitMode} />
       {isEditable && isSelected && <Outline points={outline} />}
     </div>
   );
