@@ -622,6 +622,33 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.highlighted);
   });
 
+  it('supports setting active area via command', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+        }
+      ]
+    };
+
+    const {container, triggerEditorCommand} = renderInContentElement(
+      <Hotspots configuration={configuration} contentElementId={1} />,
+      {
+        seed,
+        editorState: {isSelected: true, isEditable: true}
+      }
+    );
+    triggerEditorCommand({type: 'SET_ACTIVE_AREA', index: 0});
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+  });
+
   it('sets active area id in transient state in editor', async () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},

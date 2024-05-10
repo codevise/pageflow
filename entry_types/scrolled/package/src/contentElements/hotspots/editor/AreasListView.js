@@ -39,10 +39,14 @@ export const AreasListView = Marionette.Layout.extend({
       sortable: true,
       highlight: true,
 
-      onEdit: (model) => editor.navigate(
-        `/scrolled/hotspots/${this.options.contentElement.id}/${model.id}`,
-        {trigger: true}
-      ),
+      onEdit: (model) => {
+        this.options.contentElement.postCommand({type: 'SET_ACTIVE_AREA',
+                                                  index: this.collection.indexOf(model)})
+        editor.navigate(
+          `/scrolled/hotspots/${this.options.contentElement.id}/${model.id}`,
+          {trigger: true}
+        )
+      },
       onRemove: (model) => {
         if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.hotspots.areas.confirm_delete'))) {
           this.collection.remove(model);

@@ -65,6 +65,9 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
     else if (command.type === 'RESET_AREA_HIGHLIGHT') {
       setHighlightedIndex(-1);
     }
+    else if (command.type === 'SET_ACTIVE_AREA') {
+      setActiveIndex(command.index);
+    }
   });
 
   return (
