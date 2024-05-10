@@ -3,6 +3,7 @@ import React from 'react';
 import {Hotspots} from 'contentElements/hotspots/Hotspots';
 import areaStyles from 'contentElements/hotspots/Area.module.css';
 import indicatorStyles from 'contentElements/hotspots/Indicator.module.css';
+import tooltipStyles from 'contentElements/hotspots/Tooltip.module.css';
 
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import '@testing-library/jest-dom/extend-expect'
@@ -202,6 +203,113 @@ describe('Hotspots', () => {
     );
 
     expect(container.querySelector(`.${indicatorStyles.indicator}`)).toHaveStyle({
+      left: '10%',
+      top: '20%'
+    });
+  });
+
+  it('renders tooltip', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
+          link: [{type: 'paragraph', children: [{text: 'Some link'}]}]
+        }
+      }
+    };
+
+    const {queryByText} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(queryByText('Some title')).not.toBeNull();
+    expect(queryByText('Some description')).not.toBeNull();
+  });
+
+  it('positions tooltip based on indicator position', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          indicatorPosition: [10, 20],
+        }
+      ]
+    };
+
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveStyle({
+      left: '10%',
+      top: '20%'
+    });
+  });
+
+  it('uses separate portrait indicator positon for tooltips', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 101,
+      areas: [
+        {
+          indicatorPosition: [10, 20],
+          portraitIndicatorPosition: [20, 30]
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveStyle({
+      left: '20%',
+      top: '30%'
+    });
+  });
+
+  it('ignores portrait indicator position for tooltips if portrait image is missing', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          indicatorPosition: [10, 20],
+          portraitIndicatorPosition: [20, 30]
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveStyle({
       left: '10%',
       top: '20%'
     });

@@ -13,6 +13,7 @@ import {
 } from 'pageflow-scrolled/frontend';
 
 import {Area} from './Area';
+import {Tooltip} from './Tooltip';
 
 import styles from './Hotspots.module.css';
 
@@ -69,6 +70,12 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
           </FitViewport.Content>
         </ContentElementFigure>
       </ContentElementBox>
+      {areas.map((area, index) =>
+        <Tooltip key={index}
+                 area={area}
+                 portraitMode={portraitMode}
+                 configuration={configuration} />
+      )}
       <InlineFileRights context="afterElement" items={[{file: imageFile, label: 'image'}]} />
     </FitViewport>
   );
