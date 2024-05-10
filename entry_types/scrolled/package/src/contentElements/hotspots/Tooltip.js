@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useLayoutEffect, useRef, useState} from 'react';
 import classNames from 'classnames';
 
 import {
@@ -25,6 +25,8 @@ export function Tooltip({
   ) || [50, 50];
   const tooltipTexts = configuration.tooltipTexts || {};
 
+  const [ref, delta] = useKeepInViewport(visible);
+
   function handleTextChange(propertyName, value) {
     updateConfiguration({
       tooltipTexts: {
@@ -38,9 +40,11 @@ export function Tooltip({
   }
 
   return (
-    <div className={classNames(styles.tooltip, {[styles.visible]: visible})}
+    <div ref={ref}
+         className={classNames(styles.tooltip, {[styles.visible]: visible})}
          style={{left: `${indicatorPosition[0]}%`,
-                 top: `${indicatorPosition[1]}%`}}
+                 top: `${indicatorPosition[1]}%`,
+                 '--delta': `${delta}px`}}
          onMouseEnter={onMouseEnter}
          onMouseLeave={onMouseLeave}
          onClick={onClick}>
@@ -66,4 +70,44 @@ export function Tooltip({
 
 export function insideTooltip(element) {
   return !!element.closest(`.${styles.tooltip}`);
+}
+
+function useKeepInViewport(visible) {
+  const ref = useRef();
+  const [delta, setDelta] = useState(0);
+
+  useLayoutEffect(() => {
+    if (!visible) {
+      return;
+    }
+
+    const current = ref.current;
+
+    const intersectionObserver = new IntersectionObserver(
+      entries => {
+        if (entries[entries.length - 1].intersectionRatio < 1) {
+          const rect = current.getBoundingClientRect();
+
+          if (rect.left < 0) {
+            setDelta(-rect.left);
+          }
+          else if (rect.right > document.body.clientWidth) {
+            setDelta(document.body.clientWidth - rect.right);
+          }
+        }
+        else {
+          setDelta(0);
+        }
+      },
+      {
+        threshold: 1
+      }
+    );
+
+    intersectionObserver.observe(current);
+
+    return () => intersectionObserver.unobserve(current);
+  }, [visible]);
+
+  return [ref, delta];
 }
