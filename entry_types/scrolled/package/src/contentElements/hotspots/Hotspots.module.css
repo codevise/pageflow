@@ -1,3 +1,14 @@
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.outer {
+  position: relative;
+}
+
 .wrapper {
   width: min-content;
   height: 100%;
