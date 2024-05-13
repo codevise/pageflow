@@ -31,3 +31,12 @@
 .area.highlighted .outline polygon {
   opacity: 1;
 }
+
+.area img {
+  opacity: 0;
+  transition: opacity 0.2s linear;
+}
+
+.activeImageVisible img {
+  opacity: 1;
+}

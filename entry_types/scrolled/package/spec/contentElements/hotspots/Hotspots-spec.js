@@ -6,6 +6,7 @@ import indicatorStyles from 'contentElements/hotspots/Indicator.module.css';
 import tooltipStyles from 'contentElements/hotspots/Tooltip.module.css';
 
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
+import {within} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event';
 
@@ -454,7 +455,7 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
   });
 
-  it('shows tooltip on area or toottip hover', async () => {
+  it('shows tooltip on area or tooltip hover', async () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
       imageFiles: [{id: 1, permaId: 100}]
@@ -632,6 +633,208 @@ describe('Hotspots', () => {
     await user.unhover(getByRole('button'));
 
     expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+  });
+
+  it('supports active image rendered inside area', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+          activeImage: 101
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    const {getByRole} = within(container.querySelector(`.${areaStyles.area}`));
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/002/image.webp');
+  });
+
+  it('lazy loads active images', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+          activeImage: 101
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    const {queryByRole} = within(container.querySelector(`.${areaStyles.area}`));
+
+    expect(queryByRole('img')).toBeNull();
+  });
+
+  it('supports separate portrait active image', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}, {id: 3, permaId: 102}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 100,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+          activeImage: 101,
+          portraitActiveImage: 102
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    window.matchMedia.mockPortrait();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    const {getByRole} = within(container.querySelector(`.${areaStyles.area}`));
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/003/image.webp');
+  });
+
+  it('falls back to default active image in portrait mode', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 100,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+          activeImage: 101
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    window.matchMedia.mockPortrait();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    const {getByRole} = within(container.querySelector(`.${areaStyles.area}`));
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/002/image.webp');
+  });
+
+  it('shows active image on area click', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+          activeImage: 101
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {getByRole, container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
+
+    await user.click(getByRole('button'));
+
+    expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
+  });
+
+  it('shows active image on area or tooltip hover', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+          activeImage: 101
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {getByRole, container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
+
+    await user.hover(getByRole('button'));
+
+    expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
+
+    await user.unhover(getByRole('button'));
+
+    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
+
+    await user.hover(container.querySelector(`.${tooltipStyles.tooltip}`));
+
+    expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
+
+    await user.unhover(container.querySelector(`.${tooltipStyles.tooltip}`));
+
+    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
   });
 
   it('does not render area outline as svg by default', () => {

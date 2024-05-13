@@ -90,6 +90,8 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
                       area={area}
                       contentElementId={contentElementId}
                       portraitMode={portraitMode}
+                      activeImageVisible={activeIndex === index ||
+                                          (activeIndex < 0 && hoveredIndex === index)}
                       highlighted={hoveredIndex === index || highlightedIndex === index || activeIndex === index}
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(-1)}
