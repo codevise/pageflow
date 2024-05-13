@@ -29,6 +29,10 @@ module Pageflow
       cname.split('.').pop(2).join('.')
     end
 
+    def build_default_permalink_directory
+      permalink_directories.build(path: '')
+    end
+
     def first_paged_entry_template
       entry_templates.find_or_initialize_by(entry_type_name: 'paged')
     end

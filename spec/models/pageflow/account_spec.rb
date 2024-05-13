@@ -37,6 +37,15 @@ module Pageflow
         expect(site.account).to eq(account)
       end
 
+      it 'creates root permalink directory' do
+        account = build(:account)
+
+        site = account.build_default_site
+
+        expect(site.permalink_directories.size).to eq(1)
+        expect(site.permalink_directories.first.path).to eq('')
+      end
+
       it 'destroys default site when account is destroyed' do
         account = create(:account)
 

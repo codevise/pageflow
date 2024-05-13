@@ -223,7 +223,7 @@ module Admin
     describe '#create' do
       render_views
 
-      it 'creates nested default_site' do
+      it 'creates nested default_site with root permalink directory' do
         sign_in(create(:user, :admin), scope: :user)
         post(:create,
              params: {
@@ -233,9 +233,10 @@ module Admin
                  }
                }
              })
+        site = Pageflow::Site.last
 
-        expect(Pageflow::Site.last.imprint_link_url)
-          .to eq('http://example.com/new')
+        expect(site.imprint_link_url).to eq('http://example.com/new')
+        expect(site.permalink_directories.map(&:path)).to eq([''])
       end
 
       it 'creates no paged entry template' do

@@ -233,6 +233,22 @@ module Admin
         expect(site.feeds_enabled?).to eq(true)
       end
 
+      it 'creates root permalink directory' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create,
+             params: {
+               account_id: account,
+               site: {
+                 name: 'second',
+               }
+             })
+
+        site = account.sites.last
+        expect(site.permalink_directories.map(&:path)).to eq([''])
+      end
+
       it 'does not allow managers to create sites ' do
         account = create(:account)
 

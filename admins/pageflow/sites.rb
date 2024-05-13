@@ -36,6 +36,10 @@ module Pageflow
     controller do
       helper Pageflow::Admin::FormHelper
 
+      before_create do |site|
+        site.build_default_permalink_directory
+      end
+
       def index
         redirect_to admin_account_path(parent, tab: 'sites')
       end
