@@ -1,3 +1,4 @@
+@value text-xs: 18px;
 @value text-s: 20px;
 @value text-base: 22px;
 @value text-md: 33px;
@@ -183,6 +184,26 @@
   composes: typography-counterDescription from global;
   font-size: text-base;
   line-height: 1.4;
+}
+
+.hotspotsTooltipTitle {
+  composes: typography-hotspotTooltipTitle from global;
+  font-size: text-s;
+  line-height: 1.4;
+  font-weight: bold;
+}
+
+.hotspotsTooltipDescription {
+  composes: typography-hotspotTooltipDescription from global;
+  font-size: text-s;
+  line-height: 1.4;
+}
+
+.hotspotsTooltipLink {
+  composes: typography-hotspotTooltipLink from global;
+  font-size: text-xs;
+  line-height: 1.4;
+  font-weight: bold;
 }
 
 @media (max-width: 600px) {

@@ -47,12 +47,16 @@
 
 .tooltip h3,
 .tooltip p {
-  font-size: 20px;
   margin: 0;
 }
 
-.tooltip h3 {
+.box > h3,
+.box > div {
   margin-bottom: 0.5em;
+}
+
+.box > :last-child {
+  margin-bottom: 0;
 }
 
 .link {
@@ -67,6 +71,10 @@
   font-size: 18px;
   margin-top: 1rem;
   font-weight: bold;
+}
+
+.box > :first-child .link {
+  margin-top: 0;
 }
 
 .tooltip.visible {
