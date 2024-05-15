@@ -14,10 +14,12 @@ module PageflowScrolled
 
         c.revision_components.register(Storyline)
 
-        c.additional_frontend_packs.register(
-          'pageflow-scrolled/contentElements/tikTokEmbed-frontend',
-          content_element_type_names: ['tikTokEmbed']
-        )
+        ['tikTokEmbed', 'hotspots'].each do |name|
+          c.additional_frontend_packs.register(
+            "pageflow-scrolled/contentElements/#{name}-frontend",
+            content_element_type_names: [name]
+          )
+        end
 
         c.widget_types.register(ReactWidgetType.new(name: 'defaultNavigation',
                                                     role: 'header'),
@@ -35,6 +37,7 @@ module PageflowScrolled
         c.features.register('datawrapper_chart_embed_opt_in')
         c.features.enable_by_default('datawrapper_chart_embed_opt_in')
         c.features.register('iframe_embed_content_element')
+        c.features.register('hotspots_content_element')
         c.features.register('image_gallery_content_element')
         c.features.register('frontend_v2')
         c.features.register('scrolled_entry_fragment_caching')

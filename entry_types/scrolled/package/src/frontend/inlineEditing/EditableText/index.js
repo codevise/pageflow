@@ -1,6 +1,6 @@
 import React, {useMemo, useEffect} from 'react';
 import classNames from 'classnames';
-import {createEditor, Transforms, Node, Text as SlateText} from 'slate';
+import {createEditor, Transforms, Node, Text as SlateText, Range} from 'slate';
 import {Slate, Editable, withReact, ReactEditor} from 'slate-react';
 
 import {Text} from '../../Text';
@@ -18,7 +18,7 @@ import {useDropTargetsActive} from './useDropTargetsActive';
 import {HoveringToolbar} from './HoveringToolbar';
 import {Selection} from './Selection';
 import {DropTargets} from './DropTargets';
-import {LinkTooltipProvider} from './LinkTooltip';
+import {LinkTooltipProvider} from '../LinkTooltip';
 import {
   applyTypograpyhVariant,
   applyColor,
@@ -94,7 +94,8 @@ export const EditableText = React.memo(function EditableText({
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
            ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
-          <LinkTooltipProvider editor={editor} position={floatingControlsPosition}>
+          <LinkTooltipProvider disabled={editor.selection && !Range.isCollapsed(editor.selection)}
+                               position={floatingControlsPosition}>
             {selectionRect && <Selection contentElementId={contentElementId} />}
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
             <HoveringToolbar position={floatingControlsPosition} />

@@ -1,3 +1,4 @@
+import {capitalize} from './capitalize';
 import {camelize} from './camelize';
 import {
   isBlank,
@@ -6,6 +7,7 @@ import {
 } from './blank';
 
 export const utils = {
+  capitalize,
   camelize,
   isBlank,
   isBlankEditableTextValue,

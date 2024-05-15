@@ -19,6 +19,12 @@ module.exports = {
         'pageflow-scrolled/contentElements/tikTokEmbed-frontend.css'
       ]
     },
+    'pageflow-scrolled/contentElements/hotspots-frontend': {
+      import: [
+        'pageflow-scrolled/contentElements/hotspots-frontend',
+        'pageflow-scrolled/contentElements/hotspots-frontend.css'
+      ]
+    },
     'pageflow-scrolled/widgets/defaultNavigation': {
       import: [
         'pageflow-scrolled/widgets/defaultNavigation',

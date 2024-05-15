@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import {camelize} from './utils/camelize';
 import {paletteColor} from './paletteColor';
 import {withInlineEditingAlternative} from './inlineEditing';
-import {useChapter, useFile} from '../entryState';
 import {useDarkBackground} from './backgroundColor';
 import {Text} from './Text';
-import textStyles from './Text.module.css';
+import {Link} from './Link';
 
 import styles from './EditableText.module.css';
+import textStyles from './Text.module.css';
 
 const defaultValue = [{
   type: 'paragraph',
@@ -120,69 +120,15 @@ function Heading({attributes, variantClassName, styles: inlineStyles, children})
 }
 
 function renderLink({attributes, children, element}) {
-  if (element?.href?.chapter) {
-    const {key, ...otherAttributes} = attributes;
+  const {key, ...otherAttributes} = attributes;
 
-    return (
-      <ChapterLink key={key}
-                   attributes={otherAttributes}
-                   chapterPermaId={element.href.chapter}>
-        {children}
-      </ChapterLink>
-    );
-  }
-  else if (element?.href?.section) {
-    return <a {...attributes}
-              className={styles.link}
-              href={`#section-${element.href.section}`}>
-      {children}
-    </a>;
-  }
-  if (element?.href?.file) {
-    const {key, ...otherAttributes} = attributes;
-
-    return (
-      <FileLink key={key}
-                attributes={otherAttributes}
-                fileOptions={element.href.file}>
-        {children}
-      </FileLink>
-    );
-  }
-  else {
-    const targetAttributes = element.openInNewTab ?
-                             {target: '_blank', rel: 'noopener noreferrer'} :
-                             {};
-
-    return <a {...attributes}
-              {...targetAttributes}
-              className={styles.link}
-              href={element.href}>
-      {children}
-    </a>;
-  }
-}
-
-function ChapterLink({attributes, children, chapterPermaId}) {
-  const chapter = useChapter({permaId: chapterPermaId});
-
-  return <a {...attributes}
-            className={styles.link}
-            href={`#${chapter?.chapterSlug || ''}`}>
-    {children}
-  </a>;
-}
-
-function FileLink({attributes, children, fileOptions}) {
-  const file = useFile(fileOptions);
-
-  return <a {...attributes}
-            className={styles.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            href={file?.urls.original || '#'}>
-    {children}
-  </a>;
+  return (
+    <Link key={key}
+          attributes={{...otherAttributes, className: styles.link}}
+          href={element.href}
+          openInNewTab={element.openInNewTab}
+          children={children} />
+  );
 }
 
 export function renderLeaf({attributes, children, leaf}) {

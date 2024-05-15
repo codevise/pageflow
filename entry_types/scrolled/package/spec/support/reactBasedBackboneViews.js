@@ -7,7 +7,7 @@ export function useReactBasedBackboneViews(context) {
   let currentElement;
 
   afterEach(() => {
-    if (currentElement) {
+    if (currentElement && currentElement.parentNode) {
       document.body.removeChild(currentElement);
       currentElement = null;
     }

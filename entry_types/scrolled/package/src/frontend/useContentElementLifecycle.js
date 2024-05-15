@@ -7,7 +7,7 @@ import {
 
 import {api} from './api';
 
-const ContentElementLifecycleContext = createContext();
+export const ContentElementLifecycleContext = createContext();
 
 const LifecycleProvider = createScrollPositionLifecycleProvider(
   ContentElementLifecycleContext

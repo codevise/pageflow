@@ -1,0 +1,42 @@
+.area,
+.clip,
+.outline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.area {
+  pointer-events: none;
+}
+
+.clip {
+  pointer-events: auto;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.outline polygon {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1px;
+  stroke-linejoin: round;
+  stroke: var(--color, #fff);
+  fill: transparent;
+  opacity: 0.5;
+}
+
+.area.highlighted .outline polygon {
+  opacity: 1;
+}
+
+.area img {
+  opacity: 0;
+  transition: opacity 0.2s linear;
+}
+
+.activeImageVisible img {
+  opacity: 1;
+}

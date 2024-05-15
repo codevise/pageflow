@@ -296,7 +296,10 @@ const pageflowScrolled = [
     },
     external,
     plugins: [
-      image({include: '**/pictogram.svg'}),
+      image({include: [
+        '**/editor/**/images/*.svg',
+        '**/pictogram.svg'
+      ]}),
       ...plugins()
     ]
   },
@@ -324,7 +327,7 @@ const pageflowScrolled = [
     }
   ))),
 
-  ...(['tikTokEmbed'].map(name => (
+  ...(['tikTokEmbed', 'hotspots'].map(name => (
     {
       input: `${pageflowScrolledPackageRoot}/src/contentElements/${name}/frontend.js`,
       output: {

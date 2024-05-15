@@ -11,8 +11,10 @@ module.exports = {
   globals: {
     ...globals
   },
-  setupFiles: ['<rootDir>/spec/support/matchMediaStub.js'],
-  setupFilesAfterEnv: ['<rootDir>/spec/support/fakeBrowserFeatures.js'],
+  setupFilesAfterEnv: [
+    '<rootDir>/spec/support/matchMediaStub.js',
+    '<rootDir>/spec/support/fakeBrowserFeatures.js'
+  ],
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],
 
   testURL: 'https://story.example.com',
@@ -27,6 +29,8 @@ module.exports = {
   },
   transform: {
     ...transform,
+    '^.+/editor/.+/images/.+\\.svg$': '<rootDir>/spec/support/jest/image-transform',
+    '^.+/pictogram\\.svg$': '<rootDir>/spec/support/jest/image-transform',
     '^.+\\.svg$': '<rootDir>/spec/support/jest/svg-transform'
   }
 };

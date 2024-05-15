@@ -1,0 +1,151 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.buttons {
+  margin: 10px 0;
+  text-align: right;
+}
+
+.buttons button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.buttons button:last-child {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.buttons button[aria-pressed=true] {
+  background-color: var(--ui-selection-color-light);
+}
+
+.buttons button img {
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.image {
+  display: block;
+  height: calc(100vh - 250px);
+  max-height: 600px;
+  min-height: 200px;
+}
+
+.portraitImage {
+  max-height: 1200px;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.overlay svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay polygon {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1px;
+  stroke-linejoin: round;
+  stroke: #fff;
+  fill: transparent;
+  opacity: 0.9;
+  cursor: move;
+}
+
+.handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  transform: translate(-50%, -50%);
+  border: solid 1px var(--ui-primary-color);
+  border-radius: 2px;
+  opacity: 0.9;
+  z-index: 2;
+}
+
+.handle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  margin: -10px 0 0 -10px;
+  border-radius: 100%;
+  z-index: 1;
+}
+
+.circle {
+  border-radius: 100%;
+  cursor: move;
+}
+
+.potential {
+  opacity: 0;
+  z-index: 1;
+  cursor: default;
+}
+
+.handle:hover {
+  opacity: 1;
+}
+
+.indicator {
+  --size: 15px;
+  position: absolute;
+  left: var(--center-x);
+  top: var(--center-y);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  border-radius: 50%;
+  width: var(--size);
+  height: var(--size);
+  background-color: #fff;
+  transition: transform 0.2s ease;
+  cursor: move;
+  z-index: 3;
+}
+
+.indicator:hover {
+  transform: scale(1.2);
+}
+
+.indicator::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background-color: #fff;
+  animation: blink 1s infinite;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+@keyframes blink {
+  0% {
+    transform: scale(1.7);
+  }
+
+  50% {
+    transform: scale(2);
+  }
+
+  100% {
+    transform: scale(1.7);
+  }
+}

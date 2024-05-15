@@ -1,0 +1,79 @@
+de:
+  pageflow:
+    hotspots_content_element:
+      feature_name: Hotspots Inhaltselement
+  pageflow_scrolled:
+    public:
+      more: Mehr
+    inline_editing:
+      select_link_destination: "Link-Ziel auswählen"
+      change_link_destination: "Link-Ziel ändern"
+    editor:
+      content_elements:
+        hotspots:
+          edit_area:
+            tabs:
+              area: Hotspot-Breiech
+              portrait: Hochkant
+            attributes:
+              tooltipPosition:
+                label: Tooltip-Position
+                values:
+                  below: Unterhalb
+                  above: Oberhalb
+              color:
+                label: Farbe
+              activeImage:
+                label: Aktives Bild
+              area:
+                label: Bereich
+              portraitTooltipPosition:
+                label: Tooltip-Position (Hochkant)
+                values:
+                  below: Below
+                  above: Above
+              portraitColor:
+                label: Farbe (Hochkant)
+              portraitActiveImage:
+                label: Aktives Bild (Hochkant)
+              portraitArea:
+                label: Bereich (Hochkant)
+          edit_area_dialog:
+            header: Bereichsumriss und Indikatorposition
+            tabs:
+              default: Standard-Bild
+              portrait: Hochkant-Bild
+            modes:
+              rect: Rechteck
+              polygon: Polygon
+            hotspots_image: Hotspotbild
+            double_click_to_delete: Doppelklick, um Punkt zu entfernen
+            indicator_title: Ziehen um Indikator zu positionieren
+            save: Speichern
+            cancel: Abbrechen
+          areas:
+            add: Hinzufügen
+            label: Bereiche
+            confirm_delete: Soll der Bereich wirklich gelöscht werden?
+          area_input:
+            edit: Umriss und Indikatorposition bearbeiten
+          attributes:
+            image:
+              label: Bild
+            portraitImage:
+              inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Bild konfiguriert werden, das ansonsten zu klein dargestellt würde.
+              label: Bild (Hochkant)
+            enablePanZoom:
+              label: Pan & Zoom
+              values:
+                phonePlatform: Im Phone-Layout
+                always: Immer
+                never: Nie
+            panZoomInitially:
+              label: Pan & Zoom bei erstem Bereich starten
+            enableFullscreen:
+              label: Vollbildmodus erlauben
+          description: Bild mit anklickbaren Bereichen
+          name: Hotspots
+          tabs:
+            general: Hotspots

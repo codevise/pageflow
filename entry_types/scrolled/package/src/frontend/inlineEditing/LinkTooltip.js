@@ -1,18 +1,19 @@
 import React, {useContext, useState, createContext, useMemo, useRef} from 'react';
 import classNames from 'classnames';
-import {Range} from 'slate';
 
-import {useI18n} from '../../i18n';
-import {useChapter, useFile} from '../../../entryState';
-import {SectionThumbnail} from '../../SectionThumbnail';
+import {useI18n} from '../i18n';
+import {useChapter, useFile} from '../../entryState';
+import {SectionThumbnail} from '../SectionThumbnail';
 
-import styles from './index.module.css';
+import styles from './LinkTooltip.module.css';
 
-import ExternalLinkIcon from '../images/externalLink.svg';
+import ExternalLinkIcon from './images/externalLink.svg';
 
 const UpdateContext = createContext();
 
-export function LinkTooltipProvider({editor, disabled, position, children}) {
+export function LinkTooltipProvider({
+  disabled, position, children, align = 'left', gap = 10
+}) {
   const [state, setState] = useState();
   const outerRef = useRef();
 
@@ -30,9 +31,14 @@ export function LinkTooltipProvider({editor, disabled, position, children}) {
         setState({
           href,
           openInNewTab,
-          top: position === 'below' ? linkRect.bottom - outerRect.top + 10 : 'auto',
-          bottom: position === 'above' ? outerRect.bottom - linkRect.top + 10 : 'auto',
-          left: linkRect.left - outerRect.left
+          top: position === 'below' ?
+               linkRect.bottom - outerRect.top + gap :
+               'auto',
+          bottom: position === 'above' ?
+                  outerRect.bottom - linkRect.top + gap :
+                  'auto',
+          left: linkRect.left - outerRect.left +
+                (align === 'center' ? linkRect.width / 2 : 0)
         });
       },
 
@@ -50,12 +56,15 @@ export function LinkTooltipProvider({editor, disabled, position, children}) {
         }
       }
     }
-  }, [position]);
+  }, [position, align, gap]);
 
   return (
     <UpdateContext.Provider value={update}>
       <div ref={outerRef}>
-        <LinkTooltip editor={editor} state={state} disabled={disabled} position={position} />
+        <LinkTooltip state={state}
+                     disabled={disabled}
+                     position={position}
+                     align={align} />
         {children}
       </div>
     </UpdateContext.Provider>
@@ -75,18 +84,20 @@ export function LinkPreview({href, openInNewTab, children}) {
   );
 }
 
-export function LinkTooltip({editor, disabled, position, state}) {
+export function LinkTooltip({disabled, position, align, state}) {
   const {keep, deactivate} = useContext(UpdateContext);
 
-  if (disabled || !state || (editor.selection && !Range.isCollapsed(editor.selection))) {
+  if (disabled || !state || !state.href) {
     return null;
   }
 
   return (
-    <div className={classNames(styles.linkTooltip, styles[`linkTooltip-${position}`], styles.hoveringToolbar)}
+    <div className={classNames(styles.linkTooltip,
+                               styles[`position-${position}`],
+                               styles[`align-${align}`])}
          onMouseEnter={keep}
          onMouseLeave={deactivate}
-         style={{top: state.top, bottom: state.bottom, left: state.left, opacity: 1}}>
+         style={{top: state.top, bottom: state.bottom, left: state.left}}>
       <LinkDestination href={state.href} openInNewTab={state.openInNewTab} />
     </div>
   );
@@ -128,7 +139,7 @@ function ChapterLinkDestination({permaId}) {
   return (
     <a href={`#${chapter.chapterSlug}`}
        title={t('pageflow_scrolled.inline_editing.link_tooltip.visit_chapter')}>
-      <span className={styles.linkTooltipChapterNumber}>
+      <span className={styles.chapterNumber}>
         {t('pageflow_scrolled.inline_editing.link_tooltip.chapter_number',
            {number: chapter.index + 1})}
       </span> {chapter.title}
@@ -140,10 +151,10 @@ function SectionLinkDestination({permaId}) {
   const {t} = useI18n({locale: 'ui'});
 
   return (
-    <div className={styles.linkTooltipThumbnail}>
+    <div className={styles.thumbnail}>
       <SectionThumbnail sectionPermaId={permaId} />
       <a href={`#section-${permaId}`}
-         className={styles.linkTooltipThumbnailClickMask}
+         className={styles.thumbnailClickMask}
          title={t('pageflow_scrolled.inline_editing.link_tooltip.visit_section')}>
       </a>
     </div>
@@ -161,7 +172,7 @@ function ExternalLinkDestination({href, openInNewTab}) {
         {href}
         <ExternalLinkIcon width={10} height={10} />
       </a>
-      <div className={styles.linkTooltipNewTab}>
+      <div className={styles.newTab}>
         {openInNewTab ?
          t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_new_tab') :
          t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_same_tab')}

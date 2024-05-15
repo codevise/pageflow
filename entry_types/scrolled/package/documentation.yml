@@ -16,6 +16,7 @@ toc:
     children:
       - AudioPlayer
       - ContentElementBox
+      - ContentElementFigure
       - Figure
       - FitViewport
       - Image
@@ -57,6 +58,7 @@ toc:
     children:
       - normalizeSeed
       - renderInEntry
+      - renderInContentElement
       - renderHookInEntry
   - name: Storybook Support
     description: |
