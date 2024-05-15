@@ -1,5 +1,5 @@
 import React from 'react';
-import {LinkTooltipProvider, LinkPreview} from 'frontend/inlineEditing/EditableText/LinkTooltip';
+import {LinkTooltipProvider, LinkPreview} from 'frontend/inlineEditing/LinkTooltip';
 
 import {renderInEntry} from 'support';
 import {useFakeTranslations} from 'pageflow/testHelpers';
@@ -15,9 +15,8 @@ describe('LinkTooltip', () => {
   });
 
   it('displays tooltip for external link on hover', async () => {
-    const editor = {};
     const {getByText, queryByRole, queryByText} = render(
-      <LinkTooltipProvider editor={editor}>
+      <LinkTooltipProvider>
         <LinkPreview href="https://example.com">
           A link
         </LinkPreview>
@@ -32,30 +31,8 @@ describe('LinkTooltip', () => {
   });
 
   it('does not display tooltip when disabled', async () => {
-    const editor = {};
     const {getByText, queryByRole} = render(
-      <LinkTooltipProvider editor={editor} disabled={true}>
-        <LinkPreview href="https://example.com">
-          A link
-        </LinkPreview>
-      </LinkTooltipProvider>
-    );
-
-    const user = userEvent.setup();
-    await user.hover(getByText('A link'));
-
-    expect(queryByRole('link')).toBeNull();
-  });
-
-  it('does not display tooltip when editor has non-collapsed selection', async () => {
-    const editor = {
-      selection: {
-        anchor: {path: [0], offset: 0},
-        focus: {path: [0], offset: 10}
-      }
-    };
-    const {getByText, queryByRole} = render(
-      <LinkTooltipProvider editor={editor}>
+      <LinkTooltipProvider disabled={true}>
         <LinkPreview href="https://example.com">
           A link
         </LinkPreview>
@@ -69,9 +46,8 @@ describe('LinkTooltip', () => {
   });
 
   it('displays note about opening in new tab', async () => {
-    const editor = {};
     const {getByText, queryByRole, queryByText} = render(
-      <LinkTooltipProvider editor={editor}>
+      <LinkTooltipProvider>
         <LinkPreview href="https://example.com" openInNewTab={true}>
           A link
         </LinkPreview>
@@ -86,14 +62,13 @@ describe('LinkTooltip', () => {
   });
 
   it('displays tooltip for chapter link', async () => {
-    const editor = {};
     const seed = {
       chapters: [
         {permaId: 5, configuration: {title: 'The Intro'}}
       ]
     }
     const {getByText, queryByRole} = renderInEntry(
-      <LinkTooltipProvider editor={editor}>
+      <LinkTooltipProvider>
         <LinkPreview href={{chapter: 5}}>
           A link
         </LinkPreview>
@@ -109,14 +84,13 @@ describe('LinkTooltip', () => {
   });
 
   it('displays tooltip for section link', async () => {
-    const editor = {};
     const seed = {
       sections: [
         {permaId: 5}
       ]
     }
     const {getByText, queryByRole} = renderInEntry(
-      <LinkTooltipProvider editor={editor}>
+      <LinkTooltipProvider>
         <LinkPreview href={{section: 5}}>
           A link
         </LinkPreview>
@@ -131,7 +105,6 @@ describe('LinkTooltip', () => {
   });
 
   it('displays tooltip for file link', async () => {
-    const editor = {};
     const seed = {
       imageFileUrlTemplates: {
         original: ':id_partition/original/:basename.:extension'
@@ -142,7 +115,7 @@ describe('LinkTooltip', () => {
       ]
     }
     const {getByText, queryByRole} = renderInEntry(
-      <LinkTooltipProvider editor={editor}>
+      <LinkTooltipProvider>
         <LinkPreview href={{file: {permaId: 100, collectionName: 'imageFiles'}}}>
           A link
         </LinkPreview>

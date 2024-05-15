@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {renderElement} from '../../EditableText';
-import {LinkPreview} from './LinkTooltip';
+import {LinkPreview} from '../LinkTooltip';
 
 export function withLinks(editor) {
   const { isInline } = editor

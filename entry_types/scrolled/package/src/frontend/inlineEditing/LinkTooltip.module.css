@@ -1,0 +1,79 @@
+.linkTooltip {
+  position: absolute;
+  z-index: 2;
+  white-space: nowrap;
+  background-color: #222;
+  color: #fff;
+  border-radius: 4px;
+  font-family: Helvetica, Arial, "Sans-Serif";
+  font-size: 13px;
+  line-height: 1;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.align-center {
+  transform: translateX(-50%);
+}
+
+.linkTooltip::before {
+  content: "";
+  display: block;
+  position: absolute;
+  border: solid 4px transparent;
+}
+
+.position-below::before {
+  bottom: 100%;
+  border-bottom: solid 4px #222;
+}
+
+.position-above::before {
+  top: 100%;
+  border-top: solid 4px #222;
+}
+
+.align-left::before {
+  left: 20px;
+}
+
+.align-center::before {
+  left: calc(50% - 4px);
+}
+
+.linkTooltip > a,
+.linkTooltip > span {
+  color: #fff;
+  background-color: transparent;
+  border: 0;
+  display: inline-block;
+  padding: 10px 10px;
+}
+
+.linkTooltip > a svg {
+  padding-left: 7px;
+}
+
+.thumbnail {
+  width: 200px;
+  height: 120px;
+  position: relative;
+  margin: 5px;
+}
+
+.thumbnailClickMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.newTab {
+  opacity: 0.7;
+  padding: 0 10px 10px;
+  text-decoration: none;
+}
+
+.chapterNumber {
+  font-weight: bold;
+}
