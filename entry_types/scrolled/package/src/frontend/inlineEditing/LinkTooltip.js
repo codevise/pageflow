@@ -87,7 +87,7 @@ export function LinkPreview({href, openInNewTab, children}) {
 export function LinkTooltip({disabled, position, align, state}) {
   const {keep, deactivate} = useContext(UpdateContext);
 
-  if (disabled || !state) {
+  if (disabled || !state || !state.href) {
     return null;
   }
 

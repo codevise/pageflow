@@ -45,6 +45,21 @@ describe('LinkTooltip', () => {
     expect(queryByRole('link')).toBeNull();
   });
 
+  it('does not display tooltip when href is missing', async () => {
+    const {getByText, container} = render(
+      <LinkTooltipProvider>
+        <LinkPreview>
+          A link
+        </LinkPreview>
+      </LinkTooltipProvider>
+    );
+
+    const user = userEvent.setup();
+    await user.hover(getByText('A link'));
+
+    expect(container.querySelector('a')).toBeNull();
+  });
+
   it('displays note about opening in new tab', async () => {
     const {getByText, queryByRole, queryByText} = render(
       <LinkTooltipProvider>
