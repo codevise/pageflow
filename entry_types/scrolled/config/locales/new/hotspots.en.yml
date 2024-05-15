@@ -1,5 +1,8 @@
 en:
   pageflow_scrolled:
+    inline_editing:
+      select_link_destination: "Select link destination"
+      change_link_destination: "Change link destination"
     editor:
       content_elements:
         hotspots:

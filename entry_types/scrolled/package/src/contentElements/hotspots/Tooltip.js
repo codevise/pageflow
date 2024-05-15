@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import {
   EditableText,
   EditableInlineText,
+  EditableLink,
   useContentElementConfigurationUpdate,
   useI18n
 } from 'pageflow-scrolled/frontend';

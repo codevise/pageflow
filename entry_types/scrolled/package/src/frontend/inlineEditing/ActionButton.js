@@ -6,10 +6,12 @@ import styles from './ActionButton.module.css';
 import background from './images/background.svg';
 import foreground from './images/foreground.svg';
 import pencil from './images/pencil.svg';
+import link from './images/link.svg';
 
 const icons = {
   background,
   foreground,
+  link,
   pencil
 };
 

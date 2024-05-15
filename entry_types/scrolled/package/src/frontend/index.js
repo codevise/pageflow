@@ -98,6 +98,7 @@ export {usePhonePlatform} from './usePhonePlatform';
 
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
+export {EditableLink} from './EditableLink';
 export {PhonePlatformProvider} from './PhonePlatformProvider';
 export {
   OptIn as ThirdPartyOptIn,
