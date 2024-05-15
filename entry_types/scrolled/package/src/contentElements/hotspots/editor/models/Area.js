@@ -9,11 +9,12 @@ export const Area = Backbone.Model.extend({
   },
 
   title() {
-    return this.get('title');
+    const tooltipTexts = this.collection.contentElement.configuration.get('tooltipTexts');
+    return tooltipTexts?.[this.id]?.title?.[0]?.children?.[0]?.text;
   },
 
   imageFile() {
-    return this.collection.entry.imageFiles.getByPermaId(this.get('image'));
+    return this.collection.entry.imageFiles.getByPermaId(this.get('activeImage'));
   },
 
   highlight() {

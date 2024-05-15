@@ -86,4 +86,37 @@ describe('hotspots AreasCollection', () => {
 
     expect(listener).toHaveBeenCalledWith(10, {type: 'RESET_AREA_HIGHLIGHT'});
   });
+
+  it('return empty title by default', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        areas: [
+          {id: 1},
+        ]
+      }
+    });
+    const areasCollection = AreasCollection.forContentElement(contentElement);
+
+    expect(areasCollection.get(1).title()).toBeUndefined();
+  });
+
+  it('extracts title from tooltip texts', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        tooltipTexts: {
+          1: {
+            title: [{children: [{text: 'Some title'}]}]
+          }
+        },
+        areas: [
+          {id: 1},
+        ]
+      }
+    });
+    const areasCollection = AreasCollection.forContentElement(contentElement);
+
+    expect(areasCollection.get(1).title()).toEqual('Some title');
+  });
 });
