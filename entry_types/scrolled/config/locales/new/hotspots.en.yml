@@ -1,4 +1,7 @@
 en:
+  pageflow:
+    hotspots_content_element:
+      feature_name: Hotspots content element
   pageflow_scrolled:
     public:
       more: More
