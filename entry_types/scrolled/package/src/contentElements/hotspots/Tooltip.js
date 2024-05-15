@@ -15,7 +15,7 @@ import styles from './Tooltip.module.css';
 
 export function Tooltip({
   area,
-  contentElementId, portraitMode, configuration, visible,
+  contentElementId, portraitMode, configuration, visible, active,
   onMouseEnter, onMouseLeave, onClick
 }) {
   const {t} = useI18n();
@@ -60,6 +60,15 @@ export function Tooltip({
     });
   }
 
+  function presentOrEditing(propertyName) {
+    return !utils.isBlankEditableTextValue(tooltipTexts[area.id]?.[propertyName]) ||
+           (isEditable && active) ||
+           (isEditable &&
+            utils.isBlankEditableTextValue(tooltipTexts[area.id]?.title) &&
+            utils.isBlankEditableTextValue(tooltipTexts[area.id]?.description) &&
+            utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link));
+  }
+
   return (
     <div ref={ref}
          className={classNames(styles.tooltip,
@@ -73,24 +82,27 @@ export function Tooltip({
          onMouseLeave={onMouseLeave}
          onClick={onClick}>
       <div className={styles.box}>
-        <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>
-          <EditableInlineText value={tooltipTexts[area.id]?.title}
-                              onChange={value => handleTextChange('title', value)}
-                              placeholder={t('pageflow_scrolled.inline_editing.type_heading')} />
-        </h3>
-        <EditableText value={tooltipTexts[area.id]?.description}
-                      onChange={value => handleTextChange('description', value)}
-                      placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
-        <EditableLink href={tooltipLinks[area.id]?.href}
-                      openInNewTab={tooltipLinks[area.id]?.openInNewTab}
-                      linkPreviewDisabled={utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)}
-                      className={styles.link}
-                      onChange={value => handleLinkChange(value)}>
-          <EditableInlineText value={tooltipTexts[area.id]?.link}
-                              onChange={value => handleTextChange('link', value)}
-                              placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
-          ›
-        </EditableLink>
+        {presentOrEditing('title') &&
+         <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>
+           <EditableInlineText value={tooltipTexts[area.id]?.title}
+                               onChange={value => handleTextChange('title', value)}
+                               placeholder={t('pageflow_scrolled.inline_editing.type_heading')} />
+         </h3>}
+        {presentOrEditing('description') &&
+         <EditableText value={tooltipTexts[area.id]?.description}
+                       onChange={value => handleTextChange('description', value)}
+                       placeholder={t('pageflow_scrolled.inline_editing.type_text')} />}
+        {presentOrEditing('link') &&
+         <EditableLink href={tooltipLinks[area.id]?.href}
+                       openInNewTab={tooltipLinks[area.id]?.openInNewTab}
+                       linkPreviewDisabled={utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)}
+                       className={styles.link}
+                       onChange={value => handleLinkChange(value)}>
+           <EditableInlineText value={tooltipTexts[area.id]?.link}
+                               onChange={value => handleTextChange('link', value)}
+                               placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
+           ›
+         </EditableLink>}
       </div>
     </div>
   );

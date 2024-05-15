@@ -144,6 +144,7 @@ export function HotspotsImage({
                      configuration={configuration}
                      visible={activeIndex === index ||
                               (activeIndex < 0 && hoveredIndex === index)}
+                     active={activeIndex === index}
                      onMouseEnter={() => setHoveredIndex(index)}
                      onMouseLeave={() => setHoveredIndex(-1)}
                      onClick={() => setActiveIndex(index)} />

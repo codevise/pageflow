@@ -352,6 +352,38 @@ describe('Hotspots', () => {
     expect(getByRole('link')).toHaveAttribute('target', '_blank');
   });
 
+  it('does not render tooltip link if link text is blank', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
+          link: [{type: 'paragraph', children: [{text: ''}]}]
+        }
+      },
+      tooltipLinks: {
+        1: {href: 'https://example.com', openInNewTab: true}
+      }
+    };
+
+    const {queryByRole} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(queryByRole('link')).toBeNull();
+  });
+
   it('positions tooltip based on indicator position', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
