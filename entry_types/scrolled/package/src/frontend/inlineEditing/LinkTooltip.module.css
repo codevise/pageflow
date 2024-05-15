@@ -1,6 +1,6 @@
 .linkTooltip {
   position: absolute;
-  z-index: 2;
+  z-index: 11;
   white-space: nowrap;
   background-color: #222;
   color: #fff;

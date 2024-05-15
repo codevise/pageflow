@@ -17,18 +17,18 @@ export function EditableLink({className, href, openInNewTab, children, linkPrevi
 
   return (
     <div className={styles.wrapper}>
-      <LinkTooltipProvider disabled={linkPreviewDisabled} position="above" align="center" gap={5}>
+      <ActionButton text={href ?
+                          t('pageflow_scrolled.inline_editing.change_link_destination') :
+                          t('pageflow_scrolled.inline_editing.select_link_destination')}
+                    icon="link"
+                    position="outside"
+                    onClick={handleButtonClick} />
+      <LinkTooltipProvider disabled={linkPreviewDisabled} position="below" align="left" gap={5}>
         <LinkPreview href={href} openInNewTab={openInNewTab}>
           <span className={className}>
             {children}
           </span>
         </LinkPreview>
-        <ActionButton text={href ?
-                            t('pageflow_scrolled.inline_editing.change_link_destination') :
-                            t('pageflow_scrolled.inline_editing.select_link_destination')}
-                      icon="link"
-                      position="outside"
-                      onClick={handleButtonClick} />
       </LinkTooltipProvider>
     </div>
   );
