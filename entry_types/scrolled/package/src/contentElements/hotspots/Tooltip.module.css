@@ -55,7 +55,7 @@
   margin-bottom: 0.5em;
 }
 
-.tooltip a {
+.link {
   display: flex;
   justify-content: center;
   gap: 0.5em;

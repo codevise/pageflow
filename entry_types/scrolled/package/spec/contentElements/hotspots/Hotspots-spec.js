@@ -335,15 +335,21 @@ describe('Hotspots', () => {
           description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
           link: [{type: 'paragraph', children: [{text: 'Some link'}]}]
         }
+      },
+      tooltipLinks: {
+        1: {href: 'https://example.com', openInNewTab: true}
       }
     };
 
-    const {queryByText} = renderInContentElement(
+    const {queryByText, getByRole} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
     expect(queryByText('Some title')).not.toBeNull();
     expect(queryByText('Some description')).not.toBeNull();
+    expect(queryByText('Some link')).not.toBeNull();
+    expect(getByRole('link')).toHaveAttribute('href', 'https://example.com');
+    expect(getByRole('link')).toHaveAttribute('target', '_blank');
   });
 
   it('positions tooltip based on indicator position', () => {

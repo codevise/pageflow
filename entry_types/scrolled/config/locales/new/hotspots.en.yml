@@ -1,5 +1,7 @@
 en:
   pageflow_scrolled:
+    public:
+      more: More
     inline_editing:
       select_link_destination: "Select link destination"
       change_link_destination: "Change link destination"

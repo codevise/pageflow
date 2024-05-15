@@ -6,7 +6,8 @@ import {
   EditableInlineText,
   EditableLink,
   useContentElementConfigurationUpdate,
-  useI18n
+  useI18n,
+  utils
 } from 'pageflow-scrolled/frontend';
 
 import styles from './Tooltip.module.css';
@@ -25,6 +26,7 @@ export function Tooltip({
     area.indicatorPosition
   ) || [50, 50];
   const tooltipTexts = configuration.tooltipTexts || {};
+  const tooltipLinks = configuration.tooltipLinks || {};
 
   const [ref, delta] = useKeepInViewport(visible);
 
@@ -36,6 +38,22 @@ export function Tooltip({
           ...tooltipTexts[area.id],
           [propertyName]: value
         }
+      }
+    });
+  }
+
+  function handleLinkChange(value) {
+    if (utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)) {
+      handleTextChange('link', [{
+        type: 'heading',
+        children: [{text: t('pageflow_scrolled.public.more')}]
+      }]);
+    }
+
+    updateConfiguration({
+      tooltipLinks: {
+        ...tooltipLinks,
+        [area.id]: value
       }
     });
   }
@@ -60,12 +78,16 @@ export function Tooltip({
         <EditableText value={tooltipTexts[area.id]?.description}
                       onChange={value => handleTextChange('description', value)}
                       placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
-        <a href="#story">
+        <EditableLink href={tooltipLinks[area.id]?.href}
+                      openInNewTab={tooltipLinks[area.id]?.openInNewTab}
+                      linkPreviewDisabled={utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)}
+                      className={styles.link}
+                      onChange={value => handleLinkChange(value)}>
           <EditableInlineText value={tooltipTexts[area.id]?.link}
                               onChange={value => handleTextChange('link', value)}
                               placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
           ›
-        </a>
+        </EditableLink>
       </div>
     </div>
   );
