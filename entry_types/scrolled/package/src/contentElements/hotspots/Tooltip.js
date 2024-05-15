@@ -5,6 +5,7 @@ import {
   EditableText,
   EditableInlineText,
   EditableLink,
+  useContentElementEditorState,
   useContentElementConfigurationUpdate,
   useI18n,
   utils
@@ -19,6 +20,7 @@ export function Tooltip({
 }) {
   const {t} = useI18n();
   const updateConfiguration = useContentElementConfigurationUpdate();
+  const {isEditable} = useContentElementEditorState();
 
   const indicatorPosition = (
     portraitMode ?
@@ -62,7 +64,8 @@ export function Tooltip({
     <div ref={ref}
          className={classNames(styles.tooltip,
                                styles[`position-${area.tooltipPosition || 'below'}`],
-                               {[styles.visible]: visible})}
+                               {[styles.visible]: visible,
+                                [styles.editable]: isEditable})}
          style={{left: `${indicatorPosition[0]}%`,
                  top: `${indicatorPosition[1]}%`,
                  '--delta': `${delta}px`}}

@@ -74,3 +74,12 @@
   visibility: visible;
   transition-delay: 0.2s;
 }
+
+.editable .link {
+  opacity: 0.5;
+}
+
+.editable .link:has([data-slate-string]),
+.editable .link:focus-within {
+  opacity: 1;
+}
