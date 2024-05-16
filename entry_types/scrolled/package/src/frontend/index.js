@@ -96,6 +96,7 @@ export {useMediaMuted, useOnUnmuteMedia} from './useMediaMuted';
 export {usePortraitOrientation} from './usePortraitOrientation';
 export {useScrollPosition} from './useScrollPosition';
 export {usePhonePlatform} from './usePhonePlatform';
+export {useIsomorphicLayoutEffect} from './useIsomorphicLayoutEffect';
 
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';

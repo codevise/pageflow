@@ -4,6 +4,7 @@ import {Hotspots} from 'contentElements/hotspots/Hotspots';
 import areaStyles from 'contentElements/hotspots/Area.module.css';
 import indicatorStyles from 'contentElements/hotspots/Indicator.module.css';
 import tooltipStyles from 'contentElements/hotspots/Tooltip.module.css';
+import scrollerStyles from 'contentElements/hotspots/Scroller.module.css';
 
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import {within} from '@testing-library/react';
@@ -1023,5 +1024,80 @@ describe('Hotspots', () => {
     await user.click(getByRole('button'));
 
     expect(setTransientState).toHaveBeenCalledWith({activeAreaId: 1})
+  });
+
+  describe('pan and zoom', () => {
+    it('does not render invisible scroller when pan zoom is disabled', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'never',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      const {container} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+
+      expect(container.querySelector(`.${scrollerStyles.scroller}`)).toBeNull();
+    });
+
+    it('renders invisible scroller when pan zoom is enabled', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      const {container} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+
+      expect(container.querySelector(`.${scrollerStyles.scroller}`)).not.toBeNull();
+    });
+
+    it('scroller has one step per area plus two for overview states', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          },
+          {
+            id: 1,
+            outline: [[40, 20], [40, 30], [60, 30], [60, 20]]
+          }
+        ]
+      };
+
+      const {container} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+
+      expect(container.querySelectorAll(`.${scrollerStyles.step}`).length).toEqual(4);
+    });
   });
 });

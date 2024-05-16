@@ -1,3 +1,15 @@
+.stack {
+  display: grid;
+  grid-auto-columns: 100%;
+  grid-auto-rows: 100%;
+  height: 100%;
+}
+
+.stack > div {
+  grid-row: 1;
+  grid-column: 1;
+}
+
 .center {
   display: flex;
   flex-direction: column;

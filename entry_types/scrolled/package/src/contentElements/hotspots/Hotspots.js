@@ -16,6 +16,7 @@ import {
   contentElementWidths
 } from 'pageflow-scrolled/frontend';
 
+import {Scroller} from './Scroller';
 import {Area} from './Area';
 import {Tooltip, insideTooltip} from './Tooltip';
 
@@ -68,6 +69,8 @@ export function HotspotsImage({
   const portraitMode = portraitOrientation && portraitImageFile
   const imageFile = portraitMode ? portraitImageFile : defaultImageFile;
 
+  const panZoomEnabled = configuration.enablePanZoom === 'always';
+
   const areas = useMemo(() => configuration.areas || [], [configuration.areas]);
 
   const hasActiveArea = activeIndex >= 0;
@@ -111,25 +114,28 @@ export function HotspotsImage({
           <ContentElementBox>
             <ContentElementFigure configuration={configuration}>
               <FitViewport.Content>
-                <div className={styles.wrapper}>
-                  <Image imageFile={imageFile}
-                         load={shouldLoad}
-                         fill={false}
-                         structuredData={true}
-                         variant="large"
-                         preferSvg={true} />
-                  {areas.map((area, index) =>
-                    <Area key={index}
-                          area={area}
-                          contentElementId={contentElementId}
-                          portraitMode={portraitMode}
-                          activeImageVisible={activeIndex === index ||
-                                              (activeIndex < 0 && hoveredIndex === index)}
-                          highlighted={hoveredIndex === index || highlightedIndex === index || activeIndex === index}
-                          onMouseEnter={() => setHoveredIndex(index)}
-                          onMouseLeave={() => setHoveredIndex(-1)}
-                          onClick={() => setActiveIndex(index)} />
-                  )}
+                <div className={styles.stack}>
+                  <div className={styles.wrapper}>
+                    <Image imageFile={imageFile}
+                           load={shouldLoad}
+                           fill={false}
+                           structuredData={true}
+                           variant="large"
+                           preferSvg={true} />
+                    {areas.map((area, index) =>
+                      <Area key={index}
+                            area={area}
+                            contentElementId={contentElementId}
+                            portraitMode={portraitMode}
+                            activeImageVisible={activeIndex === index ||
+                                                (activeIndex < 0 && hoveredIndex === index)}
+                            highlighted={hoveredIndex === index || highlightedIndex === index || activeIndex === index}
+                            onMouseEnter={() => setHoveredIndex(index)}
+                            onMouseLeave={() => setHoveredIndex(-1)}
+                            onClick={() => setActiveIndex(index)} />
+                    )}
+                  </div>
+                  {panZoomEnabled && <Scroller areas={areas} />}
                 </div>
                 {displayFullscreenToggle &&
                  <ToggleFullscreenCornerButton isFullscreen={false}
