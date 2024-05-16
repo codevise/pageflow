@@ -20,6 +20,9 @@ import {Scroller} from './Scroller';
 import {Area} from './Area';
 import {Tooltip, insideTooltip} from './Tooltip';
 
+import {useContentRect} from './useContentRect';
+import {useScrollPanZoom} from './useScrollPanZoom';
+
 import styles from './Hotspots.module.css';
 
 export function Hotspots({contentElementId, contentElementWidth, configuration}) {
@@ -73,6 +76,16 @@ export function HotspotsImage({
 
   const areas = useMemo(() => configuration.areas || [], [configuration.areas]);
 
+  const [containerRect, contentRectRef] = useContentRect({
+    enabled: panZoomEnabled && shouldLoad
+  });
+  const [wrapperRef, scrollerRef] = useScrollPanZoom({
+    containerRect,
+    imageFile,
+    areas,
+    enabled: panZoomEnabled && shouldLoad
+  });
+
   const hasActiveArea = activeIndex >= 0;
   const setActiveIndex = useCallback(index => {
     setActiveIndexState(index);
@@ -114,8 +127,10 @@ export function HotspotsImage({
           <ContentElementBox>
             <ContentElementFigure configuration={configuration}>
               <FitViewport.Content>
-                <div className={styles.stack}>
-                  <div className={styles.wrapper}>
+                <div className={styles.stack}
+                     ref={contentRectRef}>
+                  <div className={styles.wrapper}
+                       ref={wrapperRef}>
                     <Image imageFile={imageFile}
                            load={shouldLoad}
                            fill={false}
@@ -135,7 +150,8 @@ export function HotspotsImage({
                             onClick={() => setActiveIndex(index)} />
                     )}
                   </div>
-                  {panZoomEnabled && <Scroller areas={areas} />}
+                  {panZoomEnabled && <Scroller areas={areas}
+                                               ref={scrollerRef} />}
                 </div>
                 {displayFullscreenToggle &&
                  <ToggleFullscreenCornerButton isFullscreen={false}

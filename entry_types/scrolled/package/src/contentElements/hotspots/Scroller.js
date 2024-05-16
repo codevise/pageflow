@@ -3,12 +3,13 @@ import classNames from 'classnames';
 
 import styles from './Scroller.module.css';
 
-export function Scroller({areas}) {
+export const Scroller = React.forwardRef(function Scroller({areas}, ref) {
   return (
-    <div className={classNames(styles.scroller, styles.overview)}>
+    <div ref={ref}
+         className={classNames(styles.scroller, styles.overview)}>
       {Array.from({length: areas.length + 2}, (_, index) =>
         <div key={index} className={styles.step} />
       )}
     </div>
   );
-}
+});

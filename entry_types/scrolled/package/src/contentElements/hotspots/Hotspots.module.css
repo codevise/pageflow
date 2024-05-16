@@ -22,6 +22,7 @@
 }
 
 .wrapper {
+  transform-origin: 0 0;
   width: min-content;
   height: 100%;
 }

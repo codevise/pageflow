@@ -11,6 +11,9 @@ import {within} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event';
 
+import {getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
+jest.mock('contentElements/hotspots/panZoom');
+
 describe('Hotspots', () => {
   it('does not render images by default', () => {
     const seed = {
@@ -1027,6 +1030,47 @@ describe('Hotspots', () => {
   });
 
   describe('pan and zoom', () => {
+    let animateMock;
+    let scrollTimelines;
+    let observeResizeMock;
+
+    beforeEach(() => {
+      animateMock = jest.fn(() => {
+        return {
+          cancel() {}
+        }
+      });
+      HTMLDivElement.prototype.animate = animateMock;
+
+      scrollTimelines = [];
+
+      window.ScrollTimeline = function(options) {
+        this.options = options;
+        scrollTimelines.push(this);
+      };
+
+      observeResizeMock = jest.fn(function() {
+        this.callback([
+          {
+            contentRect: observeResizeMock.mockContentRect || {width: 100, height: 100}
+          }
+        ]);
+      });
+
+      window.ResizeObserver = function(callback) {
+        this.callback = callback;
+        this.observe = observeResizeMock;
+        this.unobserve = function(element) {};
+      };
+
+      getPanZoomStepTransform.mockReset();
+      getPanZoomStepTransform.mockReturnValue({
+        x: 0,
+        y: 0,
+        scale: 1
+      })
+    });
+
     it('does not render invisible scroller when pan zoom is disabled', () => {
       const seed = {
         imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -1098,6 +1142,197 @@ describe('Hotspots', () => {
       );
 
       expect(container.querySelectorAll(`.${scrollerStyles.step}`).length).toEqual(4);
+    });
+
+    it('does not observe resize by default', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      const {simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      expect(observeResizeMock).not.toHaveBeenCalled();
+    });
+
+    it('observes resize if pan zoom is enabled', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      const {simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      expect(observeResizeMock).toHaveBeenCalledTimes(1);
+      expect(observeResizeMock).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+    });
+
+    it('neither calls animate nor sets up scroll timeline by default', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      const {simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      expect(scrollTimelines.length).toEqual(0);
+      expect(animateMock).not.toHaveBeenCalled();
+    });
+
+    it('calls animate with scroll timeline when near viewport and pan and zoom is enabled', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      const {simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      expect(scrollTimelines.length).toEqual(1);
+      expect(scrollTimelines[0].options).toEqual({
+        source: expect.any(HTMLDivElement),
+        axis: 'inline'
+      });
+      expect(animateMock).toHaveBeenCalledTimes(1);
+      expect(animateMock).toHaveBeenCalledWith(
+        Array.from({length: 3}, () => expect.objectContaining({
+          transform: expect.any(String),
+          easing: 'ease'
+        })),
+        expect.objectContaining({
+          timeline: scrollTimelines[0]
+        })
+      );
+    });
+
+    it('only sets up pan zoom scroll timeline when near viewport', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+
+      expect(scrollTimelines.length).toEqual(0);
+      expect(animateMock).not.toHaveBeenCalled();
+    });
+
+    it('calls getPanZoomStepTransform with relevant dimensions', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      observeResizeMock.mockContentRect = {width: 2000, height: 500};
+      const {simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      expect(getPanZoomStepTransform).toHaveBeenCalledTimes(1);
+      expect(getPanZoomStepTransform).toHaveBeenCalledWith({
+        areaOutline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+        areaZoom: 50,
+        imageFileWidth: 1920,
+        imageFileHeight: 1080,
+        containerWidth: 2000,
+        containerHeight: 500
+      });
+    });
+
+    it('only sets up resize observer when near viewport', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+
+      expect(observeResizeMock).not.toHaveBeenCalled();
     });
   });
 });
