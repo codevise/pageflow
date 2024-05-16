@@ -9,8 +9,8 @@ import styles from './SidebarEditAreaView.module.css';
 
 export const SidebarEditAreaView = Marionette.Layout.extend({
   template: (data) => `
-    <a class="back">${I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.back')}</a>
-    <a class="destroy">${I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.destroy')}</a>
+    <a class="back">${I18n.t('pageflow_scrolled.editor.content_elements.hotspots.edit_area.back')}</a>
+    <a class="destroy">${I18n.t('pageflow_scrolled.editor.content_elements.hotspots.edit_area.destroy')}</a>
 
     <div class='form_container'></div>
   `,
@@ -117,7 +117,7 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
   },
 
   destroyLink: function () {
-    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_link'))) {
+    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.hotspots.edit_area.confirm_delete_link'))) {
       this.options.collection.remove(this.model);
       this.goBack();
     }

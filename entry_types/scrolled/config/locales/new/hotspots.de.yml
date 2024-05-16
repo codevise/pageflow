@@ -12,6 +12,9 @@ de:
       content_elements:
         hotspots:
           edit_area:
+            back: Zurück
+            destroy: Löschen
+            confirm_delete_link: Soll der Bereich wirklich gelöscht werden?
             tabs:
               area: Hotspot-Breiech
               portrait: Hochkant

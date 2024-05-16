@@ -12,6 +12,9 @@ en:
       content_elements:
         hotspots:
           edit_area:
+            back: Back
+            destroy: Delete
+            confirm_delete_link: Are you sure you want to delete this area?
             tabs:
               area: Hotspot Area
               portrait: Portrait
