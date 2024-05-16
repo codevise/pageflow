@@ -59,7 +59,9 @@ export function HotspotsImage({
   const {shouldLoad} = useContentElementLifecycle();
   const {setTransientState} = useContentElementEditorState();
 
-  const [activeIndex, setActiveIndexState] = useState(-1);
+  const [activeIndex, setActiveIndexState] = useState(
+    'initialActiveArea' in configuration ? configuration.initialActiveArea : -1
+  );
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
