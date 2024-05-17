@@ -7,7 +7,7 @@ import tooltipStyles from 'contentElements/hotspots/Tooltip.module.css';
 import scrollerStyles from 'contentElements/hotspots/Scroller.module.css';
 
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
-import {within} from '@testing-library/react';
+import {within, act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event';
 
@@ -1034,6 +1034,14 @@ describe('Hotspots', () => {
     let scrollTimelines;
     let observeResizeMock;
 
+    let intersectionObservers;
+
+    function intersectionObserverByRoot(root) {
+      return intersectionObservers.find(intersectionObserver =>
+        intersectionObserver.root === root
+      );
+    }
+
     beforeEach(() => {
       animateMock = jest.fn(() => {
         return {
@@ -1061,6 +1069,40 @@ describe('Hotspots', () => {
         this.callback = callback;
         this.observe = observeResizeMock;
         this.unobserve = function(element) {};
+      };
+
+      intersectionObservers = [];
+
+      window.IntersectionObserver = function(callback, {threshold, root}) {
+        if (intersectionObserverByRoot(root)) {
+          console.log(intersectionObservers.map(i => i.root?.outerHTML))
+          throw new Error('Did not except more than one intersection observer per root');
+        }
+
+        intersectionObservers.push(this);
+
+        this.root = root;
+        this.targets = new Set();
+
+        this.observe = function(target) {
+          this.targets.add(target);
+        };
+
+        this.unobserve = function(target) {
+          this.targets.delete(target);
+        };
+
+        this.mockIntersecting = function(target) {
+          if (!this.targets.has(target)) {
+            throw new Error(`Intersection observer does not currently ${target}.`);
+          }
+
+          act(() =>
+            callback([{target, isIntersecting: true, intersectionRatio: threshold}])
+          );
+        };
+
+        this.disconnect = function() {}
       };
 
       getPanZoomStepTransform.mockReset();
@@ -1333,6 +1375,86 @@ describe('Hotspots', () => {
       );
 
       expect(observeResizeMock).not.toHaveBeenCalled();
+    });
+
+    it('observes intersection of scroller steps', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      expect(
+        intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`)).targets
+      ).toContain(container.querySelector(`.${scrollerStyles.step}`));
+    });
+
+    it('sets active section based on intersecting scroller step when pan zoom is enabled', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
+        .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
+      expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+    });
+
+    it('only sets up intersection observer when near viewport', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      const {container} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+
+      expect(
+        intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
+      ).toBeUndefined();
     });
   });
 });

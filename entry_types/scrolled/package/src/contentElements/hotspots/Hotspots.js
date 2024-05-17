@@ -76,21 +76,23 @@ export function HotspotsImage({
 
   const areas = useMemo(() => configuration.areas || [], [configuration.areas]);
 
-  const [containerRect, contentRectRef] = useContentRect({
-    enabled: panZoomEnabled && shouldLoad
-  });
-  const [wrapperRef, scrollerRef] = useScrollPanZoom({
-    containerRect,
-    imageFile,
-    areas,
-    enabled: panZoomEnabled && shouldLoad
-  });
-
   const hasActiveArea = activeIndex >= 0;
   const setActiveIndex = useCallback(index => {
     setActiveIndexState(index);
     setTransientState({activeAreaId: areas[index]?.id});
   }, [setActiveIndexState, setTransientState, areas]);
+
+  const [containerRect, contentRectRef] = useContentRect({
+    enabled: panZoomEnabled && shouldLoad
+  });
+
+  const [wrapperRef, scrollerRef, setScrollerStepRef] = useScrollPanZoom({
+    containerRect,
+    imageFile,
+    areas,
+    enabled: panZoomEnabled && shouldLoad,
+    onChange: setActiveIndex
+  });
 
   useEffect(() => {
     if (hasActiveArea) {
@@ -151,7 +153,8 @@ export function HotspotsImage({
                     )}
                   </div>
                   {panZoomEnabled && <Scroller areas={areas}
-                                               ref={scrollerRef} />}
+                                               ref={scrollerRef}
+                                               setStepRef={setScrollerStepRef} />}
                 </div>
                 {displayFullscreenToggle &&
                  <ToggleFullscreenCornerButton isFullscreen={false}

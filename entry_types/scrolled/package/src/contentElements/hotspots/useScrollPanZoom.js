@@ -1,11 +1,18 @@
-import {useRef} from 'react';
+import {useRef, useCallback} from 'react';
 import {useIsomorphicLayoutEffect} from 'pageflow-scrolled/frontend';
 
+import {useIntersectionObserver} from './useIntersectionObserver';
 import {getPanZoomStepTransform} from './panZoom';
 
-export function useScrollPanZoom({imageFile, containerRect, areas, enabled}) {
+export function useScrollPanZoom({imageFile, containerRect, areas, enabled, onChange}) {
   const wrapperRef = useRef();
-  const scrollerRef = useRef();
+
+  const onVisibleIndexChange = useCallback(index => onChange(index - 1), [onChange]);
+  const [scrollerRef, setStepRef] = useIntersectionObserver({
+    enabled,
+    threshold: 0.7,
+    onVisibleIndexChange
+  });
 
   const imageFileWidth = imageFile?.width;
   const imageFileHeight = imageFile?.height;
@@ -62,7 +69,7 @@ export function useScrollPanZoom({imageFile, containerRect, areas, enabled}) {
     containerHeight
   ]);
 
-  return [wrapperRef, scrollerRef];
+  return [wrapperRef, scrollerRef, setStepRef];
 }
 
 function keyframe(step) {
