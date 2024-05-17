@@ -12,22 +12,26 @@ import {
   utils
 } from 'pageflow-scrolled/frontend';
 
+import {getPanZoomStepTransform} from './panZoom';
+
 import styles from './Tooltip.module.css';
 
 export function Tooltip({
   area,
   contentElementId, portraitMode, configuration, visible, active,
+  panZoomEnabled, imageFile, containerRect,
   onMouseEnter, onMouseLeave, onClick
 }) {
   const {t} = useI18n();
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {isEditable} = useContentElementEditorState();
 
-  const indicatorPosition = (
-    portraitMode ?
-    area.portraitIndicatorPosition :
-    area.indicatorPosition
-  ) || [50, 50];
+  const indicatorPosition = getIndicatorPosition({
+    area,
+    contentElementId, portraitMode, configuration,
+    panZoomEnabled, imageFile, containerRect,
+  })
+
   const tooltipTexts = configuration.tooltipTexts || {};
   const tooltipLinks = configuration.tooltipLinks || {};
 
@@ -76,8 +80,8 @@ export function Tooltip({
                                styles[`position-${area.tooltipPosition || 'below'}`],
                                {[styles.visible]: visible,
                                 [styles.editable]: isEditable})}
-         style={{left: `${indicatorPosition[0]}%`,
-                 top: `${indicatorPosition[1]}%`,
+         style={{left: indicatorPosition[0],
+                 top: indicatorPosition[1],
                  '--delta': `${delta}px`}}
          onMouseEnter={onMouseEnter}
          onMouseLeave={onMouseLeave}
@@ -112,6 +116,39 @@ export function Tooltip({
       </div>
     </div>
   );
+}
+
+function getIndicatorPosition({
+  area,
+  portraitMode,
+  panZoomEnabled, imageFile, containerRect
+}) {
+  const indicatorPositionInPercent = (
+    portraitMode ?
+    area.portraitIndicatorPosition :
+    area.indicatorPosition
+  ) || [50, 50];
+
+  if (panZoomEnabled) {
+    const transform = getPanZoomStepTransform({
+      areaOutline: portraitMode ? area.portraitOutline : area.outline,
+      areaZoom: (portraitMode ? area.portraitZoom : area.zoom) || 0,
+      imageFileWidth: imageFile?.width,
+      imageFileHeight: imageFile?.height,
+      containerWidth: containerRect.width,
+      containerHeight: containerRect.height
+    });
+
+    const indicatorPositionInPixels = [
+      containerRect.width * transform.scale * indicatorPositionInPercent[0] / 100 + transform.x,
+      containerRect.height * transform.scale * indicatorPositionInPercent[1] / 100 + transform.y
+    ];
+
+    return indicatorPositionInPixels.map(coord => `${coord}px`);
+  }
+  else {
+    return indicatorPositionInPercent.map(coord => `${coord}%`);
+  }
 }
 
 export function insideTooltip(element) {

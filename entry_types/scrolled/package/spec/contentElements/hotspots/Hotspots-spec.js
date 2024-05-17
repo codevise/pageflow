@@ -1110,7 +1110,7 @@ describe('Hotspots', () => {
         x: 0,
         y: 0,
         scale: 1
-      })
+      });
     });
 
     it('does not render invisible scroller when pan zoom is disabled', () => {
@@ -1343,7 +1343,6 @@ describe('Hotspots', () => {
       );
       simulateScrollPosition('near viewport');
 
-      expect(getPanZoomStepTransform).toHaveBeenCalledTimes(1);
       expect(getPanZoomStepTransform).toHaveBeenCalledWith({
         areaOutline: [[10, 20], [10, 30], [40, 30], [40, 20]],
         areaZoom: 50,
@@ -1606,6 +1605,42 @@ describe('Hotspots', () => {
 
       expect(container.querySelector(`.${scrollerStyles.scroller}`))
         .not.toHaveClass(scrollerStyles.noPointerEvents);
+    });
+
+    it('accounts for pan zoom in tooltip position ', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 2000, height: 1000}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            outline: [[80, 45], [100, 45], [100, 55], [80, 55]],
+            zoom: 100,
+            indicatorPosition: [90, 50],
+          }
+        ]
+      };
+
+      observeResizeMock.mockContentRect = {width: 200, height: 100};
+      getPanZoomStepTransform.mockReturnValue({
+        x: -800,
+        y: -200,
+        scale: 5
+      })
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+      intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
+        .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
+
+      expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveStyle({
+        left: '100px',
+        top: '50px'
+      });
     });
   });
 });

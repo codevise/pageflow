@@ -175,6 +175,9 @@ export function HotspotsImage({
             <Tooltip key={index}
                      area={area}
                      contentElementId={contentElementId}
+                     containerRect={containerRect}
+                     imageFile={imageFile}
+                     panZoomEnabled={panZoomEnabled}
                      portraitMode={portraitMode}
                      configuration={configuration}
                      visible={activeIndex === index ||
