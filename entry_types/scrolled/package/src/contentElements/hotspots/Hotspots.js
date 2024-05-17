@@ -87,13 +87,17 @@ export function HotspotsImage({
     enabled: panZoomEnabled && shouldLoad
   });
 
-  const [wrapperRef, scrollerRef, setScrollerStepRef, scrollToArea] = useScrollPanZoom({
+  const [wrapperRef, scrollerRef, setScrollerStepRef, scrollFromToArea] = useScrollPanZoom({
     containerRect,
     imageFile,
     areas,
     enabled: panZoomEnabled && shouldLoad,
     onChange: setActiveIndex
   });
+
+  const scrollToArea = useCallback((index) => {
+    scrollFromToArea(activeIndex, index);
+  }, [scrollFromToArea, activeIndex]);
 
   const activateArea = panZoomEnabled ? scrollToArea : setActiveIndex;
 

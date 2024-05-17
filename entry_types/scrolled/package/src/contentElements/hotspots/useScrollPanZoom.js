@@ -1,4 +1,4 @@
-import {useRef, useCallback} from 'react';
+import {useRef, useCallback, useMemo} from 'react';
 import {useIsomorphicLayoutEffect} from 'pageflow-scrolled/frontend';
 
 import {useIntersectionObserver} from './useIntersectionObserver';
@@ -20,19 +20,12 @@ export function useScrollPanZoom({imageFile, containerRect, areas, enabled, onCh
   const containerWidth = containerRect.width;
   const containerHeight = containerRect.height;
 
-  const scrollToStep = useCallback(index => {
-    const scroller = scrollerRef.current;
-    const step = scroller.children[index + 1];
-
-    scroller.scrollTo(Math.abs(scroller.offsetLeft - step.offsetLeft), 0);
-  }, [scrollerRef]);
-
-  useIsomorphicLayoutEffect(() => {
+  const steps = useMemo(() => {
     if (!enabled || !containerWidth) {
       return;
     }
 
-    const steps = [
+    return [
       {
         x: 0,
         y: 0,
@@ -52,6 +45,36 @@ export function useScrollPanZoom({imageFile, containerRect, areas, enabled, onCh
         scale: 1
       }
     ];
+  }, [
+    areas,
+    enabled,
+    imageFileWidth,
+    imageFileHeight,
+    containerWidth,
+    containerHeight
+  ]);
+
+  const scrollFromTo = useCallback((from, to) => {
+    const scroller = scrollerRef.current;
+    const step = scroller.children[to + 1];
+
+    scroller.scrollTo(Math.abs(scroller.offsetLeft - step.offsetLeft), 0);
+
+    wrapperRef.current.animate(
+      [
+        keyframe(steps[from + 1]),
+        keyframe(steps[to + 1])
+      ],
+      {
+        duration: 200
+      }
+    );
+  }, [scrollerRef, steps]);
+
+  useIsomorphicLayoutEffect(() => {
+    if (!steps) {
+      return;
+    }
 
     const scrollTimeline = new window.ScrollTimeline({
       source: scrollerRef.current,
@@ -67,16 +90,9 @@ export function useScrollPanZoom({imageFile, containerRect, areas, enabled, onCh
     );
 
     return () => animation.cancel();
-  }, [
-    areas,
-    enabled,
-    imageFileWidth,
-    imageFileHeight,
-    containerWidth,
-    containerHeight
-  ]);
+  }, [steps]);
 
-  return [wrapperRef, scrollerRef, setStepRef, scrollToStep];
+  return [wrapperRef, scrollerRef, setStepRef, scrollFromTo];
 }
 
 function keyframe(step) {

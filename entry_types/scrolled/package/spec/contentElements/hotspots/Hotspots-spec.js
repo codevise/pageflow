@@ -1503,13 +1503,14 @@ describe('Hotspots', () => {
         ]
       };
 
-      const {container, triggerEditorCommand} = renderInContentElement(
+      const {container, simulateScrollPosition, triggerEditorCommand} = renderInContentElement(
         <Hotspots configuration={configuration} contentElementId={1} />,
         {
           seed,
           editorState: {isSelected: true, isEditable: true}
         }
       );
+      simulateScrollPosition('near viewport');
       const scroller = container.querySelector(`.${scrollerStyles.scroller}`);
       scroller.scrollTo = jest.fn();
       triggerEditorCommand({type: 'SET_ACTIVE_AREA', index: 0});
