@@ -30,6 +30,8 @@ en:
                 label: Active image
               area:
                 label: Area
+              zoom:
+                label: Zoom
               portraitTooltipPosition:
                 label: Tooltip orientation  (Portrait)
                 values:
@@ -41,6 +43,8 @@ en:
                 label: Active image (Portrait)
               portraitArea:
                 label: Area (Portrait)
+              portraitZoom:
+                label: Zoom (Portrait)
           edit_area_dialog:
             header: Area outline and indicator position
             tabs:

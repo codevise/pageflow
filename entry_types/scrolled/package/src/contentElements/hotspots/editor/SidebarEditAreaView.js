@@ -1,4 +1,4 @@
-import {ConfigurationEditorView, SelectInputView} from 'pageflow/ui';
+import {ConfigurationEditorView, SelectInputView, SliderInputView} from 'pageflow/ui';
 import {editor, FileInputView} from 'pageflow/editor';
 import Marionette from 'backbone.marionette';
 import I18n from 'i18n-js';
@@ -38,6 +38,7 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
 
     const file = options.contentElement.configuration.getImageFile('image');
     const portraitFile = options.contentElement.configuration.getImageFile('portraitImage');
+    const panZoomEnabled = options.contentElement.configuration.get('enablePanZoom') !== 'never';
 
     if (file && portraitFile) {
       this.previousEmulationMode = options.entry.get('emulation_mode') || 'desktop';
@@ -52,6 +53,11 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
         file,
         portraitFile
       });
+
+      if (panZoomEnabled) {
+        this.input('zoom', SliderInputView);
+      }
+
       this.group('PaletteColor', {
         propertyName: 'color',
         entry: options.entry
@@ -81,6 +87,11 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
           portraitFile,
           defaultTab: 'portrait'
         });
+
+        if (panZoomEnabled) {
+          this.input('portraitZoom', SliderInputView);
+        }
+
         this.group('PaletteColor', {
           propertyName: 'portraitColor',
           entry: options.entry

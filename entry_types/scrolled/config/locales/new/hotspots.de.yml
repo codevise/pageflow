@@ -30,6 +30,8 @@ de:
                 label: Aktives Bild
               area:
                 label: Bereich
+              zoom:
+                label: Zoom
               portraitTooltipPosition:
                 label: Tooltip-Position (Hochkant)
                 values:
@@ -41,6 +43,8 @@ de:
                 label: Aktives Bild (Hochkant)
               portraitArea:
                 label: Bereich (Hochkant)
+              portraitZoom:
+                label: Zoom (Hochkant)
           edit_area_dialog:
             header: Bereichsumriss und Indikatorposition
             tabs:
