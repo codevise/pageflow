@@ -82,17 +82,20 @@ export function HotspotsImage({
     setTransientState({activeAreaId: areas[index]?.id});
   }, [setActiveIndexState, setTransientState, areas]);
 
+
   const [containerRect, contentRectRef] = useContentRect({
     enabled: panZoomEnabled && shouldLoad
   });
 
-  const [wrapperRef, scrollerRef, setScrollerStepRef] = useScrollPanZoom({
+  const [wrapperRef, scrollerRef, setScrollerStepRef, scrollToArea] = useScrollPanZoom({
     containerRect,
     imageFile,
     areas,
     enabled: panZoomEnabled && shouldLoad,
     onChange: setActiveIndex
   });
+
+  const activateArea = panZoomEnabled ? scrollToArea : setActiveIndex;
 
   useEffect(() => {
     if (hasActiveArea) {
@@ -102,10 +105,10 @@ export function HotspotsImage({
 
     function handleClick(event) {
       if (!insideTooltip(event.target)) {
-        setActiveIndex(-1);
+        activateArea(-1);
       }
     }
-  }, [hasActiveArea, setActiveIndex]);
+  }, [hasActiveArea, activateArea]);
 
   useContentElementEditorCommandSubscription(command => {
     if (command.type === 'HIGHLIGHT_AREA') {
@@ -115,7 +118,7 @@ export function HotspotsImage({
       setHighlightedIndex(-1);
     }
     else if (command.type === 'SET_ACTIVE_AREA') {
-      setActiveIndex(command.index);
+      activateArea(command.index);
     }
   });
 
@@ -149,7 +152,7 @@ export function HotspotsImage({
                             highlighted={hoveredIndex === index || highlightedIndex === index || activeIndex === index}
                             onMouseEnter={() => setHoveredIndex(index)}
                             onMouseLeave={() => setHoveredIndex(-1)}
-                            onClick={() => setActiveIndex(index)} />
+                            onClick={() => activateArea(index)} />
                     )}
                   </div>
                   {panZoomEnabled && <Scroller areas={areas}
@@ -170,7 +173,7 @@ export function HotspotsImage({
                      portraitMode={portraitMode}
                      configuration={configuration}
                      visible={activeIndex === index ||
-                              (activeIndex < 0 && hoveredIndex === index)}
+                              (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
                      active={activeIndex === index}
                      onMouseEnter={() => setHoveredIndex(index)}
                      onMouseLeave={() => setHoveredIndex(-1)}

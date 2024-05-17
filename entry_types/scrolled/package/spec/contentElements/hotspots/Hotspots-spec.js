@@ -1456,5 +1456,103 @@ describe('Hotspots', () => {
         intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
       ).toBeUndefined();
     });
+
+    it('scrolls pan zoom scroller instead of setting active index directly when pan zoom is enabled', async () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      const user = userEvent.setup();
+      const {container, getByRole, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      const scroller = container.querySelector(`.${scrollerStyles.scroller}`);
+      scroller.scrollTo = jest.fn();
+      simulateScrollPosition('near viewport');
+      await user.click(getByRole('button'));
+
+      expect(scroller.scrollTo).toHaveBeenCalled();
+      expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+    });
+
+    it('scrolls pan zoom scroll when setting active area via command and pan zoom is enabled', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      const {container, triggerEditorCommand} = renderInContentElement(
+        <Hotspots configuration={configuration} contentElementId={1} />,
+        {
+          seed,
+          editorState: {isSelected: true, isEditable: true}
+        }
+      );
+      const scroller = container.querySelector(`.${scrollerStyles.scroller}`);
+      scroller.scrollTo = jest.fn();
+      triggerEditorCommand({type: 'SET_ACTIVE_AREA', index: 0});
+
+      expect(scroller.scrollTo).toHaveBeenCalled();
+      expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+    });
+
+    it('scrolls pan zoom scroller instead of resetting active area directly when pan zoom is enabled', async () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            indicatorPosition: [20, 25],
+          }
+        ],
+        tooltipTexts: {
+          1: {
+            title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          }
+        }
+      };
+
+      const user = userEvent.setup();
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
+        .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
+      const scroller = container.querySelector(`.${scrollerStyles.scroller}`);
+      scroller.scrollTo = jest.fn();
+      await user.click(document.body);
+
+      expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+      expect(scroller.scrollTo).toHaveBeenCalled();
+    });
   });
 });

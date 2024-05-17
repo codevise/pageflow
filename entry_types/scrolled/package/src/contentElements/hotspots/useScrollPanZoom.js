@@ -20,6 +20,13 @@ export function useScrollPanZoom({imageFile, containerRect, areas, enabled, onCh
   const containerWidth = containerRect.width;
   const containerHeight = containerRect.height;
 
+  const scrollToStep = useCallback(index => {
+    const scroller = scrollerRef.current;
+    const step = scroller.children[index + 1];
+
+    scroller.scrollTo(Math.abs(scroller.offsetLeft - step.offsetLeft), 0);
+  }, [scrollerRef]);
+
   useIsomorphicLayoutEffect(() => {
     if (!enabled || !containerWidth) {
       return;
@@ -69,7 +76,7 @@ export function useScrollPanZoom({imageFile, containerRect, areas, enabled, onCh
     containerHeight
   ]);
 
-  return [wrapperRef, scrollerRef, setStepRef];
+  return [wrapperRef, scrollerRef, setStepRef, scrollToStep];
 }
 
 function keyframe(step) {
