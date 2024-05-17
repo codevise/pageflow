@@ -13,7 +13,7 @@
   display: none;
 }
 
-.overview {
+.noPointerEvents {
   pointer-events: none;
 }
 

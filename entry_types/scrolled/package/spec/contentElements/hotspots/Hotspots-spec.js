@@ -1555,5 +1555,57 @@ describe('Hotspots', () => {
       expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
       expect(scroller.scrollTo).toHaveBeenCalled();
     });
+
+    it('scroller lets pointer events pass when no area is active', async () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            indicatorPosition: [20, 25],
+          }
+        ]
+      };
+
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      expect(container.querySelector(`.${scrollerStyles.scroller}`))
+        .toHaveClass(scrollerStyles.noPointerEvents);
+    });
+
+    it('scroller has pointer events once area is active', async () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            indicatorPosition: [20, 25],
+          }
+        ]
+      };
+
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+      intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
+        .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
+
+      expect(container.querySelector(`.${scrollerStyles.scroller}`))
+        .not.toHaveClass(scrollerStyles.noPointerEvents);
+    });
   });
 });

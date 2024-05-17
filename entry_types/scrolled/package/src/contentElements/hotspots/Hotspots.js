@@ -161,7 +161,8 @@ export function HotspotsImage({
                   </div>
                   {panZoomEnabled && <Scroller areas={areas}
                                                ref={scrollerRef}
-                                               setStepRef={setScrollerStepRef} />}
+                                               setStepRef={setScrollerStepRef}
+                                               noPointerEvents={activeIndex < 0} />}
                 </div>
                 {displayFullscreenToggle &&
                  <ToggleFullscreenCornerButton isFullscreen={false}
