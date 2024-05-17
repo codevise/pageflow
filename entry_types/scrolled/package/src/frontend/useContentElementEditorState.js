@@ -3,7 +3,8 @@ import {useContext, createContext} from 'react';
 export const ContentElementEditorStateContext = createContext({
   isSelected: false,
   isEditable: false,
-  setTransientState() {}
+  setTransientState() {},
+  select() {}
 });
 
 /**

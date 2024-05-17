@@ -1021,7 +1021,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />,
       {
         seed,
-        editorState: {isEditable: true, setTransientState}
+        editorState: {isEditable: true, isSelected: true, setTransientState}
       }
     );
     await user.click(getByRole('button'));

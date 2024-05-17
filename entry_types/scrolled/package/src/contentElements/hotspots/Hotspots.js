@@ -61,7 +61,7 @@ export function HotspotsImage({
   const portraitOrientation = usePortraitOrientation();
 
   const {shouldLoad} = useContentElementLifecycle();
-  const {setTransientState} = useContentElementEditorState();
+  const {setTransientState, select, isEditable, isSelected} = useContentElementEditorState();
 
   const [activeIndex, setActiveIndexState] = useState(
     'initialActiveArea' in configuration ? configuration.initialActiveArea : -1
@@ -78,10 +78,15 @@ export function HotspotsImage({
 
   const hasActiveArea = activeIndex >= 0;
   const setActiveIndex = useCallback(index => {
-    setActiveIndexState(index);
     setTransientState({activeAreaId: areas[index]?.id});
-  }, [setActiveIndexState, setTransientState, areas]);
 
+    setActiveIndexState(activeIndex => {
+      if (activeIndex !== index && index >= 0 && isSelected) {
+        select();
+      }
+      return index;
+    });
+  }, [setActiveIndexState, setTransientState, areas, select, isSelected]);
 
   const [containerRect, contentRectRef] = useContentRect({
     enabled: panZoomEnabled && shouldLoad
@@ -156,7 +161,11 @@ export function HotspotsImage({
                             highlighted={hoveredIndex === index || highlightedIndex === index || activeIndex === index}
                             onMouseEnter={() => setHoveredIndex(index)}
                             onMouseLeave={() => setHoveredIndex(-1)}
-                            onClick={() => activateArea(index)} />
+                            onClick={() => {
+                              if (!isEditable || isSelected) {
+                                activateArea(index)
+                              }
+                            }} />
                     )}
                   </div>
                   {panZoomEnabled && <Scroller areas={areas}
