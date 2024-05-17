@@ -22,7 +22,7 @@ export function Tooltip({
   panZoomEnabled, imageFile, containerRect,
   onMouseEnter, onMouseLeave, onClick
 }) {
-  const {t} = useI18n();
+  const {t} = useI18n({locale: 'ui'});
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {isEditable} = useContentElementEditorState();
 
