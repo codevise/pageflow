@@ -33,7 +33,7 @@ module PageflowScrolled
                     sections: main_storyline.sections,
                     content_elements: main_storyline.content_elements,
                     widgets: scrolled_entry.resolve_widgets(insert_point: :react),
-                    options: options)
+                    options:)
     end
   end
 end

@@ -20,12 +20,12 @@ module Pageflow
       revision.title.presence || entry.title
     end
 
-    def translations(scope = -> { self })
+    def translations(scope = -> { self }, include_noindex: false)
       return [] unless entry.translation_group
 
       if published_revision?
         self.class.wrap_all(
-          entry.translation_group.publicly_visible_entries.instance_exec(&scope)
+          published_translation_entries(include_noindex:).instance_exec(&scope)
         )
       else
         self.class.wrap_all_drafts(
@@ -98,6 +98,20 @@ module Pageflow
     end
 
     private
+
+    def published_translation_entries(include_noindex:)
+      translation_group = entry.translation_group
+
+      if password_protected? && include_noindex
+        translation_group.published_entries
+      elsif password_protected?
+        translation_group.entries_published_without_noindex
+      elsif include_noindex
+        translation_group.entries_published_without_password_protection
+      else
+        translation_group.publicly_visible_entries
+      end
+    end
 
     def custom_revision?
       @custom_revision

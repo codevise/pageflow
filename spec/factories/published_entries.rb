@@ -13,19 +13,29 @@ module Pageflow
         without_feature { nil }
 
         translation_of { nil }
+
+        entry_trait { :published }
+      end
+
+      trait :published_with_password do
+        entry_trait { :published_with_password }
+      end
+
+      trait :published_with_noindex do
+        entry_trait { :published_with_noindex }
       end
 
       initialize_with do
         PublishedEntry.new(create(:entry,
-                                  :published,
-                                  title: title,
-                                  account: account,
-                                  site: site,
-                                  type_name: type_name,
+                                  entry_trait,
+                                  title:,
+                                  account:,
+                                  site:,
+                                  type_name:,
                                   published_revision_attributes: revision_attributes,
-                                  permalink_attributes: permalink_attributes,
-                                  with_feature: with_feature,
-                                  without_feature: without_feature))
+                                  permalink_attributes:,
+                                  with_feature:,
+                                  without_feature:))
       end
 
       to_create { |published_entry| published_entry.entry.save! }

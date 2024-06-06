@@ -28,6 +28,19 @@ module Pageflow
 
         expect(result[0].entry.association(:permalink).loaded?).to eq(true)
       end
+
+      it 'ignores include_noindex argument' do
+        entry = create(:entry)
+        translation = create(:entry)
+        entry.mark_as_translation_of(translation)
+        draft_entry = DraftEntry.new(entry)
+
+        result = draft_entry.translations(include_noindex: true)
+
+        expect(result.length).to eq(2)
+        expect(result[0].title).to eq(entry.title)
+        expect(result[1].title).to eq(translation.title)
+      end
     end
 
     describe '#find_files' do
