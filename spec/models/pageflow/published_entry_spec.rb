@@ -253,6 +253,31 @@ module Pageflow
         expect(result[0].title).to eq(entry.title)
       end
 
+      it 'does not filter out password protected entries if entry is published with password' do
+        entry = create(:entry, :published_with_password)
+        translation = create(:entry, :published_with_password)
+        entry.mark_as_translation_of(translation)
+        published_entry = PublishedEntry.new(entry)
+
+        result = published_entry.translations
+
+        expect(result.length).to eq(2)
+        expect(result[0].title).to eq(entry.title)
+        expect(result[1].title).to eq(translation.title)
+      end
+
+      it 'filters out non-published entries if entry is published with password' do
+        entry = create(:entry, :published_with_password)
+        translation = create(:entry)
+        entry.mark_as_translation_of(translation)
+        published_entry = PublishedEntry.new(entry)
+
+        result = published_entry.translations
+
+        expect(result.length).to eq(1)
+        expect(result[0].title).to eq(entry.title)
+      end
+
       it 'filters out noindex entries' do
         entry = create(:entry, :published)
         translation = create(:entry, :published_with_noindex)
@@ -263,6 +288,82 @@ module Pageflow
 
         expect(result.length).to eq(1)
         expect(result[0].title).to eq(entry.title)
+      end
+
+      it 'filters out noindex entries if entry is published with password' do
+        entry = create(:entry, :published_with_password)
+        translation = create(:entry, :published_with_noindex)
+        entry.mark_as_translation_of(translation)
+        published_entry = PublishedEntry.new(entry)
+
+        result = published_entry.translations
+
+        expect(result.length).to eq(1)
+        expect(result[0].title).to eq(entry.title)
+      end
+
+      describe 'with include_noindex' do
+        it 'includes noindex entries' do
+          entry = create(:entry, :published)
+          translation = create(:entry, :published_with_noindex)
+          entry.mark_as_translation_of(translation)
+          published_entry = PublishedEntry.new(entry)
+
+          result = published_entry.translations(include_noindex: true)
+
+          expect(result.length).to eq(2)
+          expect(result[0].title).to eq(entry.title)
+          expect(result[1].title).to eq(translation.title)
+        end
+
+        it 'filters out non-published entries' do
+          entry = create(:entry, :published)
+          translation = create(:entry)
+          entry.mark_as_translation_of(translation)
+          published_entry = PublishedEntry.new(entry)
+
+          result = published_entry.translations(include_noindex: true)
+
+          expect(result.length).to eq(1)
+          expect(result[0].title).to eq(entry.title)
+        end
+
+        it 'filters out password protected entries' do
+          entry = create(:entry, :published)
+          translation = create(:entry, :published_with_password)
+          entry.mark_as_translation_of(translation)
+          published_entry = PublishedEntry.new(entry)
+
+          result = published_entry.translations(include_noindex: true)
+
+          expect(result.length).to eq(1)
+          expect(result[0].title).to eq(entry.title)
+        end
+
+        it 'does not filter out password protected entries if entry is published with password' do
+          entry = create(:entry, :published_with_password)
+          translation = create(:entry, :published_with_password)
+          entry.mark_as_translation_of(translation)
+          published_entry = PublishedEntry.new(entry)
+
+          result = published_entry.translations(include_noindex: true)
+
+          expect(result.length).to eq(2)
+          expect(result[0].title).to eq(entry.title)
+          expect(result[1].title).to eq(translation.title)
+        end
+
+        it 'filters out non-published entries for password protected entry' do
+          entry = create(:entry, :published_with_password)
+          translation = create(:entry)
+          entry.mark_as_translation_of(translation)
+          published_entry = PublishedEntry.new(entry)
+
+          result = published_entry.translations(include_noindex: true)
+
+          expect(result.length).to eq(1)
+          expect(result[0].title).to eq(entry.title)
+        end
       end
 
       it 'supports using drafts' do

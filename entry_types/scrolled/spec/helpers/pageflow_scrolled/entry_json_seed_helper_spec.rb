@@ -746,7 +746,7 @@ module PageflowScrolled
       end
 
       context 'entry translations' do
-        it 'renders links to published translations of published entry' do
+        it 'renders links to published translations of published entry including noindex entries' do
           de_entry = create(
             :published_entry,
             type_name: 'scrolled',
@@ -755,6 +755,7 @@ module PageflowScrolled
           )
           en_entry = create(
             :published_entry,
+            :published_with_noindex,
             translation_of: de_entry,
             type_name: 'scrolled',
             title: 'entry-en',

@@ -14,7 +14,7 @@ module Pageflow
       entry.title
     end
 
-    def translations(scope = -> { self })
+    def translations(scope = -> { self }, **)
       return [] unless entry.translation_group
 
       PublishedEntry.wrap_all_drafts(
