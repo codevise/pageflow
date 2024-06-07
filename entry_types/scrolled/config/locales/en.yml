@@ -536,12 +536,6 @@ en:
               label: Hide Conversation
             hideMedia:
               label: Hide Media
-            url:
-              label: Tweet URL
-          description: Embed content from Twitter
-          name: Tweet
-          tabs:
-            general: Twitter Embed
         videoEmbed:
           attributes:
             aspectRatio:

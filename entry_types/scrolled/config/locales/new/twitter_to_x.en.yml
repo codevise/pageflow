@@ -1,0 +1,12 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        twitterEmbed:
+          attributes:
+            url:
+              label: Post URL
+          description: Embed content from X
+          name: X Post
+          tabs:
+            general: X Embed

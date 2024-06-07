@@ -181,7 +181,7 @@ function normalizeShareUrlTemplates(shareUrlTemplates) {
       google: 'https://plus.google.com/share?url=%{url}',
       linked_in: 'https://www.linkedin.com/shareArticle?mini=true&url=%{url}',
       telegram: 'tg://msg?text=%{url}',
-      twitter: 'https://twitter.com/intent/tweet?url=%{url}',
+      twitter: 'https://x.com/intent/post?url=%{url}',
       whats_app: 'WhatsApp://send?text=%{url}'
     }
   }
