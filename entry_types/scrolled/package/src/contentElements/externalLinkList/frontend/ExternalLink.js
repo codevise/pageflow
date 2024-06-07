@@ -1,14 +1,24 @@
 import React, {useState} from 'react';
 import classNames from 'classnames';
 import styles from './ExternalLink.module.css';
-import {Image, useFile, useI18n, useContentElementEditorState} from 'pageflow-scrolled/frontend';
+import {
+  Image,
+  InlineFileRights,
+  useFileWithInlineRights,
+  useI18n,
+  useContentElementEditorState
+} from 'pageflow-scrolled/frontend';
 
 export function ExternalLink(props) {
   const [hideTooltip, setHideTooltip] = useState(true);
   var {layout} = props.sectionProps;
   const {t} = useI18n({locale: 'ui'});
   const {isEditable, isSelected} = useContentElementEditorState();
-  const thumbnailImageFile = useFile({collectionName: 'imageFiles', permaId: props.thumbnail});
+  const thumbnailImageFile = useFileWithInlineRights({
+    configuration: props,
+    collectionName: 'imageFiles',
+    propertyName: 'thumbnail'
+  });
   const url = ensureAbsolute(props.url);
 
   const onClick = function (event) {
@@ -60,13 +70,15 @@ export function ExternalLink(props) {
         <Image imageFile={thumbnailImageFile}
                load={props.loadImages}
                variant="linkThumbnailLarge" />
+        <InlineFileRights context="insideElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
       </div>
-
-      <div className={styles.link_details}>
-        <p className={styles.link_title}>{props.title}</p>
-        <p className={styles.link_desc}>{props.description}</p>
+      <div className={styles.background}>
+        <InlineFileRights context="afterElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
+        <div className={styles.details}>
+          <p className={styles.link_title}>{props.title}</p>
+          <p className={styles.link_desc}>{props.description}</p>
+        </div>
       </div>
-
       {renderNewTabTooltip()}
     </a>
   );

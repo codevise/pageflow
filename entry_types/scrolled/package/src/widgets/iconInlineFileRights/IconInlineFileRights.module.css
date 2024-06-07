@@ -87,6 +87,10 @@
   text-decoration-color: rgba(255, 255, 255, 0.3);
 }
 
+.tooltip li {
+  white-space: nowrap;
+}
+
 .tooltip span {
   color: rgba(255, 255, 255, 0.7);
 }

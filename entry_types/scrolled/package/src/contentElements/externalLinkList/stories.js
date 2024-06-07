@@ -38,5 +38,45 @@ storiesOfContentElement(module, {
         open_in_new_tab: '0'
       }
     ]
-  }
+  },
+  variants: [
+    {
+      name: 'With inverted content colors',
+      configuration: {
+        variant: 'cards-inverted'
+      },
+      themeOptions: {
+        properties: {
+          'externalLinkList-cards-inverted': {
+            darkContentSurfaceColor: 'var(--root-light-content-surface-color)',
+            lightContentSurfaceColor: 'var(--root-dark-content-surface-color)',
+            darkContentTextColor: 'var(--root-light-content-text-color)',
+            lightContentTextColor: 'var(--root-dark-content-text-color)'
+          }
+        }
+      }
+    },
+    {
+      name: 'With transparent background',
+      configuration: {
+        variant: 'cards-inverted'
+      },
+      sectionConfiguration: {
+        backdrop: {
+          image: filePermaId('imageFiles', 'turtle')
+        }
+      },
+      inlineFileRightsWidgetTypeName: 'textInlineFileRights',
+      themeOptions: {
+        properties: {
+          'externalLinkList-cards-inverted': {
+            externalLinksCardSurfaceColor: 'transparent',
+            externalLinksCardTextColor: 'var(--content-text-color)',
+            externalLinksCardPaddingInline: '0'
+          }
+        }
+      }
+    }
+  ],
+  inlineFileRights: true
 });

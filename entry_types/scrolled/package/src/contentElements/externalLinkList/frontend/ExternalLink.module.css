@@ -27,7 +27,7 @@
 }
 
 .link_item:hover {
-  transform: scale(1.05);
+  transform: scale(var(--theme-external-links-card-hover-scale, 1.05));
 }
 
 .link_item:hover .link_title {
@@ -42,30 +42,45 @@
   position: relative;
 }
 
-.link_details {
+.background {
+  --padding-inline: var(--theme-external-links-card-padding-inline, 15px);
   flex: 1;
-  padding: 20px;
-  color: darkContentTextColor;
-  background-color: lightContentSurfaceColor;
+  color: var(--theme-external-links-card-text-color, darkContentTextColor);
+  --content-text-color: var(--theme-external-links-card-text-color, darkContentTextColor);
+  background-color: var(--theme-external-links-card-surface-color, lightContentSurfaceColor);
+  padding-left: min(var(--padding-inline), 5px);
+  padding-right: min(var(--padding-inline), 5px);
 }
 
-.invert > .link_details {
-  background-color: darkContentSurfaceColor;
-  color: lightContentTextColor;
+.details {
+  padding-top: 15px;
+  padding-bottom: 20px;
+  padding-left: calc(var(--padding-inline) - 5px);
+  padding-right: calc(var(--padding-inline) - 5px);
 }
 
-.link_details > .link_title {
+.details:first-child {
+  padding-top: 20px;
+}
+
+.invert > .background {
+  background-color: var(--theme-external-links-card-surface-color, darkContentSurfaceColor);
+  color: var(--theme-external-links-card-text-color, lightContentTextColor);
+  --content-text-color: var(--theme-external-links-card-text-color, lightContentTextColor);
+}
+
+.details > .link_title {
   font-weight: bold;
   margin: 0 0 20px;
 }
 
 @media screen and breakpoint-sm {
-  .link_details > .link_title {
+  .details > .link_title {
     font-size: 1.2em;
   }
 }
 
-.link_details > p {
+.details > p {
   width: 100%;
   white-space: normal;
   line-height: 1.3em;

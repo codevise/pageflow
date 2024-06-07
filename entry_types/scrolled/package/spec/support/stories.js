@@ -181,13 +181,18 @@ function variantsExampleStories({typeName, baseConfiguration, variants}) {
     typeName,
     name: 'Variants',
     examples: variants.map(({
-      name, permaId, configuration, themeOptions, sectionConfiguration
+      name, permaId, configuration, themeOptions, sectionConfiguration, inlineFileRightsWidgetTypeName
     }) => ({
       name: name,
       permaId,
       contentElementConfiguration: {...baseConfiguration, ...configuration},
       themeOptions,
-      sectionConfiguration
+      sectionConfiguration,
+      inlineFileRightsFor: inlineFileRightsWidgetTypeName ? ['audioFiles', 'imageFiles', 'videoFiles'] : [],
+      widgets: inlineFileRightsWidgetTypeName ? [{
+        role: 'inlineFileRights',
+        typeName: inlineFileRightsWidgetTypeName
+      }] : []
     }))
   });
 }
@@ -324,7 +329,7 @@ function exampleStoryGroup({
       widgets: examples[index].widgets,
       themeOptions: examples[index].themeOptions,
       consentVendors,
-      inlineFileRightsFor,
+      inlineFileRightsFor: inlineFileRightsFor || examples[index].inlineFileRightsFor,
       contentElementConsentVendors: consentVendors &&
                                     contentElements
                                       .filter(({id}) => id)

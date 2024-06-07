@@ -5,7 +5,3 @@
   margin: 0;
   list-style: none;
 }
-
-.list > li {
-  white-space: nowrap;
-}
