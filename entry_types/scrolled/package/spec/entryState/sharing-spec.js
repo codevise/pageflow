@@ -61,8 +61,8 @@ describe('useShareProviders', () => {
         iconName: 'facebook'
       },
       {
-        name: 'Twitter',
-        url: 'https://twitter.com/intent/tweet?url=%{url}',
+        name: 'X',
+        url: 'https://x.com/intent/post?url=%{url}',
         iconName: 'twitter'
       }
     ];
@@ -93,8 +93,8 @@ describe('useShareProviders', () => {
         iconName: 'facebook'
       },
       {
-        name: 'Twitter',
-        url: 'https://twitter.com/intent/tweet?url=%{url}',
+        name: 'X',
+        url: 'https://x.com/intent/post?url=%{url}',
         iconName: 'twitter'
       },
       {

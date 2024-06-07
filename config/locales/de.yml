@@ -451,7 +451,6 @@ de:
           facebook: Facebook
           linked_in: LinkedIn
           telegram: Telegram (nur Mobilgeräte)
-          twitter: Twitter
           whats_app: WhatsApp (nur Mobilgeräte)
         type_names:
           paged: Seitenbasiert / klassisch

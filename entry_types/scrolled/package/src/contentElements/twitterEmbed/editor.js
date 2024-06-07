@@ -13,6 +13,8 @@ editor.contentElementTypes.register('twitterEmbed', {
         supportedHosts: [
           'http://twitter.com',
           'https://twitter.com',
+          'http://x.com',
+          'https://x.com'
         ],
         displayPropertyName: 'displayTweetId',
         required: true,

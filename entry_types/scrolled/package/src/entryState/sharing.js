@@ -22,7 +22,7 @@ import {useEntryMetadata} from "./metadata";
  *     {
  *       iconName: 'twitter',
  *       name: 'Twitter',
- *       url: https://twitter.com/intent/tweet?url=%{url}
+ *       url: https://x.com/intent/post?url=%{url}
  *     }
  *   ]
  */
@@ -56,7 +56,7 @@ export function useShareProviders({isPhonePlatform}) {
       },
       twitter: {
         iconName: 'twitter',
-        name: 'Twitter',
+        name: 'X',
         url: urlTemplates.twitter
       },
       whats_app: {
