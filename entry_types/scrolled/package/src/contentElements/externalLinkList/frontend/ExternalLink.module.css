@@ -27,7 +27,7 @@
 }
 
 .link_item:hover {
-  transform: scale(1.05);
+  transform: scale(var(--theme-external-links-card-hover-scale, 1.05));
 }
 
 .link_item:hover .link_title {
@@ -43,16 +43,20 @@
 }
 
 .background {
+  --padding-inline: var(--theme-external-links-card-padding-inline, 15px);
   flex: 1;
-  color: darkContentTextColor;
-  --content-text-color: darkContentTextColor;
-  background-color: lightContentSurfaceColor;
-  padding-left: 5px;
-  padding-right: 5px;
+  color: var(--theme-external-links-card-text-color, darkContentTextColor);
+  --content-text-color: var(--theme-external-links-card-text-color, darkContentTextColor);
+  background-color: var(--theme-external-links-card-surface-color, lightContentSurfaceColor);
+  padding-left: min(var(--padding-inline), 5px);
+  padding-right: min(var(--padding-inline), 5px);
 }
 
 .details {
-  padding: 15px 15px 20px;
+  padding-top: 15px;
+  padding-bottom: 20px;
+  padding-left: calc(var(--padding-inline) - 5px);
+  padding-right: calc(var(--padding-inline) - 5px);
 }
 
 .details:first-child {
@@ -60,9 +64,9 @@
 }
 
 .invert > .background {
-  background-color: darkContentSurfaceColor;
-  color: lightContentTextColor;
-  --content-text-color: lightContentTextColor;
+  background-color: var(--theme-external-links-card-surface-color, darkContentSurfaceColor);
+  color: var(--theme-external-links-card-text-color, lightContentTextColor);
+  --content-text-color: var(--theme-external-links-card-text-color, lightContentTextColor);
 }
 
 .details > .link_title {
