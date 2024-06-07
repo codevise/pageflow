@@ -1,0 +1,6 @@
+en:
+  activerecord:
+    values:
+      pageflow/entry:
+        share_providers:
+          twitter: X

@@ -344,7 +344,7 @@ module PageflowScrolled
                                          prettyUrl: 'http://test.host/test',
                                          shareUrlTemplates: {
                                            email: 'mailto:?body=%{url}',
-                                           twitter: 'https://twitter.com/intent/tweet?url=%{url}',
+                                           twitter: 'https://x.com/intent/post?url=%{url}',
                                            whats_app: 'WhatsApp://send?text=%{url}'
                                          }
                                        })

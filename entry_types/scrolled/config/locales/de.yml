@@ -545,12 +545,6 @@ de:
               label: Konversation ausblenden
             hideMedia:
               label: Medien ausblenden
-            url:
-              label: Tweet-URL
-          description: Bettet Inhalte von Twitter ein
-          name: Tweet
-          tabs:
-            general: Twitter-Embed
         videoEmbed:
           attributes:
             aspectRatio:
