@@ -42,30 +42,41 @@
   position: relative;
 }
 
-.link_details {
+.background {
   flex: 1;
-  padding: 20px;
   color: darkContentTextColor;
+  --content-text-color: darkContentTextColor;
   background-color: lightContentSurfaceColor;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-.invert > .link_details {
+.details {
+  padding: 15px 15px 20px;
+}
+
+.details:first-child {
+  padding-top: 20px;
+}
+
+.invert > .background {
   background-color: darkContentSurfaceColor;
   color: lightContentTextColor;
+  --content-text-color: lightContentTextColor;
 }
 
-.link_details > .link_title {
+.details > .link_title {
   font-weight: bold;
   margin: 0 0 20px;
 }
 
 @media screen and breakpoint-sm {
-  .link_details > .link_title {
+  .details > .link_title {
     font-size: 1.2em;
   }
 }
 
-.link_details > p {
+.details > p {
   width: 100%;
   white-space: normal;
   line-height: 1.3em;

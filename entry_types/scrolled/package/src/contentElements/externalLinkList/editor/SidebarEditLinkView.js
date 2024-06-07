@@ -1,5 +1,6 @@
 import {ConfigurationEditorView, TextInputView, CheckBoxInputView} from 'pageflow/ui';
 import {editor, FileInputView} from 'pageflow/editor';
+import {InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import Marionette from 'backbone.marionette';
 import I18n from 'i18n-js';
 
@@ -37,7 +38,8 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
         fileSelectionHandlerOptions: {
           contentElementId: self.options.contentElement.get('id')
         },
-        positioning: false
+        positioning: false,
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
       this.input('title', TextInputView, {
         required: true
