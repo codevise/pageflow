@@ -84,8 +84,11 @@ module Pageflow
       EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry: entry, mode: :published)
 
       delegate_to_rack_app!(entry.entry_type.frontend_app) do |_status, headers, _body|
+        config = Pageflow.config_for(entry)
+
         allow_iframe_for_embed(headers)
-        apply_cache_control(entry, headers)
+        apply_additional_headers(entry, config, headers)
+        apply_cache_control(entry, config, headers)
       end
     end
 
@@ -93,13 +96,17 @@ module Pageflow
       headers.except!('X-Frame-Options') if params[:embed]
     end
 
-    def apply_cache_control(entry, headers)
-      config = Pageflow.config_for(entry)
-
+    def apply_cache_control(entry, config, headers)
       return if config.public_entry_cache_control_header.blank?
       return if entry.password_protected?
 
       headers['Cache-Control'] = config.public_entry_cache_control_header
+    end
+
+    def apply_additional_headers(entry, config, headers)
+      headers.merge!(
+        config.additional_public_entry_headers.for(entry, request)
+      )
     end
   end
 end

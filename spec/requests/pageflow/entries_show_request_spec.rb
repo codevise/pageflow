@@ -395,6 +395,77 @@ module Pageflow
           expect(response.headers['Cache-Control']).to eq('public, max-age=3600')
         end
       end
+
+      describe 'with additional headers' do
+        it 'adds headers to responds' do
+          pageflow_configure do |config|
+            config.additional_public_entry_headers.register('X-Some' => 'value')
+          end
+
+          entry = create(:entry, :published,
+                         type_name: 'test')
+
+          get(short_entry_url(entry))
+
+          expect(response.status).to eq(200)
+          expect(response.headers['X-Some']).to eq('value')
+        end
+
+        it 'passes entry and request to callable' do
+          pageflow_configure do |config|
+            config.additional_public_entry_headers.register(
+              lambda do |entry, request|
+                {
+                  'X-From-Entry' => entry.type_name,
+                  'X-From-Request' => request.subdomain
+                }
+              end
+            )
+          end
+
+          entry = create(:entry, :published,
+                         type_name: 'test')
+
+          get(short_entry_url(entry), headers: {'HTTP_HOST' => 'news.example.com'})
+
+          expect(response.status).to eq(200)
+          expect(response.headers['X-From-Entry']).to eq('test')
+          expect(response.headers['X-From-Request']).to eq('news')
+        end
+
+        it 'does not use headers registered in feature flag by default' do
+          pageflow_configure do |config|
+            config.features.register('some_header') do |feature_config|
+              feature_config.additional_public_entry_headers.register('X-Some' => 'value')
+            end
+          end
+
+          entry = create(:entry, :published,
+                         type_name: 'test')
+
+          get(short_entry_url(entry))
+
+          expect(response.status).to eq(200)
+          expect(response.headers).not_to have_key('X-Some')
+        end
+
+        it 'uses headers registered in enabled feature flag' do
+          pageflow_configure do |config|
+            config.features.register('some_header') do |feature_config|
+              feature_config.additional_public_entry_headers.register('X-Some' => 'value')
+            end
+          end
+
+          entry = create(:entry, :published,
+                         type_name: 'test',
+                         with_feature: 'some_header')
+
+          get(short_entry_url(entry))
+
+          expect(response.status).to eq(200)
+          expect(response.headers['X-Some']).to eq('value')
+        end
+      end
     end
   end
 end

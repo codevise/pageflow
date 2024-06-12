@@ -187,8 +187,8 @@ module Pageflow
     attr_accessor :public_entry_request_scope
 
     # Either a lambda or an object with a `call` method taking an
-    # {Entry} record and an {ActionDispatch::Request} object and
-    # returning `nil` or a path to redirect to. Can be used in
+    # {PublishedEntry} record and an {ActionDispatch::Request} object
+    # and returning `nil` or a path to redirect to. Can be used in
     # conjuction with {PrimaryDomainEntryRedirect} to make sure
     # entries are accessed via their account's configured cname.
     #
@@ -207,6 +207,24 @@ module Pageflow
     # @since 16.1
     # @return [String]
     attr_accessor :public_entry_cache_control_header
+
+    # Provide additional response headers for published entries.
+    #
+    # @example
+    #
+    #     config.additional_public_entry_headers.register(
+    #       {'Some' => 'value'}
+    #     )
+    #
+    #     config.additional_public_entry_headers.register(
+    #       lambda do |_entry, request|
+    #         {'Some' => request.headers['Other']}
+    #       end
+    #     )
+    #
+    # @return [AdditionalHeaders]
+    # @since edge
+    attr_reader :additional_public_entry_headers
 
     # Either a lambda or an object with a `call` method taking a
     # {Site} as paramater and returing a hash of options used to
@@ -435,6 +453,7 @@ module Pageflow
       @site_request_scope = CnameSiteRequestScope.new
       @public_entry_request_scope = lambda { |entries, request| entries }
       @public_entry_redirect = ->(_entry, _request) { nil }
+      @additional_public_entry_headers = AdditionalHeaders.new
       @public_entry_url_options = Pageflow::SitesHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
       @entry_embed_url_options = {protocol: 'https'}
 
@@ -578,6 +597,7 @@ module Pageflow
       delegate :themes, to: :config
       delegate :widget_types, to: :config
       delegate :public_entry_cache_control_header=, to: :config
+      delegate :additional_public_entry_headers, to: :config
 
       delegate :for_entry_type, to: :config
     end

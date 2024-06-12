@@ -10,7 +10,7 @@ module PageflowScrolled
     # @example
     #
     #     config.additional_frontend_packs.register(
-    #       pageflow-scrolled/contentElements/some-pack',
+    #       'pageflow-scrolled/contentElements/some-pack',
     #       content_element_type_names: ['someType']
     #     )
     #
@@ -23,7 +23,7 @@ module PageflowScrolled
     # @example
     #
     #     config.additional_editor_packs.register(
-    #       pageflow-scrolled/contentElements/some-pack'
+    #       'pageflow-scrolled/contentElements/some-pack'
     #     )
     #
     # @return [AdditionalPacks]
@@ -36,8 +36,8 @@ module PageflowScrolled
     # @example
     #
     #     config.additional_frontend_seed_data.register(
-    #       pageflow-scrolled/contentElements/some-pack',
-    #       ->(entry, request) { {some: 'data'}}
+    #       'someData',
+    #       ->(entry:, request:, **) { {some: 'data'}}
     #     )
     #
     # @return [AdditionalSeedData]
