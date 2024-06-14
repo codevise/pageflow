@@ -81,6 +81,8 @@ module Pageflow
 
     def save_image_dimensions
       geo = Paperclip::Geometry.from_file(attachment.queued_for_write[:original])
+      geo.auto_orient
+
       self.width = geo.width
       self.height = geo.height
     rescue Paperclip::Errors::NotIdentifiedByImageMagickError

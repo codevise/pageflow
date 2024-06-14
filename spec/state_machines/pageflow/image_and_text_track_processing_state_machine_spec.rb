@@ -37,6 +37,15 @@ module Pageflow
           expect(file.reload.height).to eq(15)
         end
 
+        it 'auto orients image when saving width and heigh' do
+          file = create(:image_file, :uploaded, file_name: '7x15_rotated.jpg')
+
+          file.process
+
+          expect(file.reload.width).to eq(15)
+          expect(file.reload.height).to eq(7)
+        end
+
         it 'sets width and height to nil if image cannot be identified' do
           file = create(:image_file, :uploaded, file_name: 'broken.jpg')
 
