@@ -266,7 +266,7 @@ describe('Hotspots', () => {
     });
   });
 
-  it('falls back to default indicator color  for portrait indicator', () => {
+  it('falls back to default indicator color for portrait indicator', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
       imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
@@ -1348,6 +1348,46 @@ describe('Hotspots', () => {
         areaZoom: 50,
         imageFileWidth: 1920,
         imageFileHeight: 1080,
+        containerWidth: 2000,
+        containerHeight: 500
+      });
+    });
+
+    it('passes portrait outlines to getPanZoomStepTransform in portrait mode', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [
+          {id: 1, permaId: 100, width: 1920, height: 1080},
+          {id: 2, permaId: 101, width: 1080, height: 1920}
+        ]
+      };
+      const configuration = {
+        image: 100,
+        portraitImage: 101,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            portraitOutline: [[20, 20], [20, 30], [30, 30], [30, 20]],
+            zoom: 50,
+            portraitZoom: 40
+          }
+        ]
+      };
+
+      window.matchMedia.mockPortrait();
+      observeResizeMock.mockContentRect = {width: 2000, height: 500};
+      const {simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      expect(getPanZoomStepTransform).toHaveBeenCalledWith({
+        areaOutline: [[20, 20], [20, 30], [30, 30], [30, 20]],
+        areaZoom: 40,
+        imageFileWidth: 1080,
+        imageFileHeight: 1920,
         containerWidth: 2000,
         containerHeight: 500
       });

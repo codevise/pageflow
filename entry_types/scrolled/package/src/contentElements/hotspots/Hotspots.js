@@ -97,6 +97,7 @@ export function HotspotsImage({
     imageFile,
     areas,
     enabled: panZoomEnabled && shouldLoad,
+    portraitMode,
     onChange: setActiveIndex
   });
 

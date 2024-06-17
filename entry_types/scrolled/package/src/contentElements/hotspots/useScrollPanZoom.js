@@ -4,7 +4,11 @@ import {useIsomorphicLayoutEffect} from 'pageflow-scrolled/frontend';
 import {useIntersectionObserver} from './useIntersectionObserver';
 import {getPanZoomStepTransform} from './panZoom';
 
-export function useScrollPanZoom({imageFile, containerRect, areas, enabled, onChange}) {
+export function useScrollPanZoom({
+  imageFile, containerRect, areas,
+  enabled, portraitMode,
+  onChange
+}) {
   const wrapperRef = useRef();
 
   const onVisibleIndexChange = useCallback(index => onChange(index - 1), [onChange]);
@@ -32,8 +36,8 @@ export function useScrollPanZoom({imageFile, containerRect, areas, enabled, onCh
         scale: 1
       },
       ...areas.map(area => getPanZoomStepTransform({
-        areaOutline: area.outline,
-        areaZoom: area.zoom || 0,
+        areaOutline: portraitMode ? area.portraitOutline : area.outline,
+        areaZoom: (portraitMode ? area.portraitZoom : area.zoom) || 0,
         imageFileWidth,
         imageFileHeight,
         containerWidth,
@@ -51,7 +55,8 @@ export function useScrollPanZoom({imageFile, containerRect, areas, enabled, onCh
     imageFileWidth,
     imageFileHeight,
     containerWidth,
-    containerHeight
+    containerHeight,
+    portraitMode
   ]);
 
   const scrollFromTo = useCallback((from, to) => {
