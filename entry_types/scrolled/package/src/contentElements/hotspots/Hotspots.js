@@ -12,6 +12,7 @@ import {
   useContentElementLifecycle,
   useFileWithInlineRights,
   usePortraitOrientation,
+  usePhonePlatform,
   InlineFileRights,
   contentElementWidths
 } from 'pageflow-scrolled/frontend';
@@ -59,6 +60,7 @@ export function HotspotsImage({
     configuration, collectionName: 'imageFiles', propertyName: 'portraitImage'
   });
   const portraitOrientation = usePortraitOrientation();
+  const isPhonePlatform = usePhonePlatform();
 
   const {shouldLoad} = useContentElementLifecycle();
   const {setTransientState, select, isEditable, isSelected} = useContentElementEditorState();
@@ -72,7 +74,8 @@ export function HotspotsImage({
   const portraitMode = portraitOrientation && portraitImageFile
   const imageFile = portraitMode ? portraitImageFile : defaultImageFile;
 
-  const panZoomEnabled = configuration.enablePanZoom === 'always';
+  const panZoomEnabled = configuration.enablePanZoom === 'always' ||
+                         (configuration.enablePanZoom === 'phonePlatform' && isPhonePlatform);
 
   const areas = useMemo(() => configuration.areas || [], [configuration.areas]);
 

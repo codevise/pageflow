@@ -1159,6 +1159,52 @@ describe('Hotspots', () => {
       expect(container.querySelector(`.${scrollerStyles.scroller}`)).not.toBeNull();
     });
 
+    it('does not render invisible scroller if pan zoom enabled on phone platform', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'phonePlatform',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      const {container} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+
+      expect(container.querySelector(`.${scrollerStyles.scroller}`)).toBeNull();
+    });
+
+    it('renders invisible scroller on phone platform if pan zoom enabled on phone platform', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'phonePlatform',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+          }
+        ]
+      };
+
+      const {container} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed, phonePlatform: true}
+      );
+
+      expect(container.querySelector(`.${scrollerStyles.scroller}`)).not.toBeNull();
+    });
+
     it('scroller has one step per area plus two for overview states', () => {
       const seed = {
         imageFileUrlTemplates: {large: ':id_partition/image.webp'},
