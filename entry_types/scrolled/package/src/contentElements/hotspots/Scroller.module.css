@@ -21,3 +21,17 @@
   scroll-snap-align: start;
   scroll-snap-stop: always;
 }
+
+.leftButton,
+.rightButton {
+  z-index: 2;
+}
+
+
+.leftButton {
+  justify-self: start;
+}
+
+.rightButton {
+  justify-self: end;
+}

@@ -7,6 +7,7 @@ import tooltipStyles from 'contentElements/hotspots/Tooltip.module.css';
 import scrollerStyles from 'contentElements/hotspots/Scroller.module.css';
 
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
+import {useFakeTranslations} from 'pageflow/testHelpers';
 import {within, act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event';
@@ -15,6 +16,10 @@ import {getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
 jest.mock('contentElements/hotspots/panZoom');
 
 describe('Hotspots', () => {
+  useFakeTranslations({
+    'pageflow_scrolled.public.next': 'Next'
+  });
+
   it('does not render images by default', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -1556,7 +1561,12 @@ describe('Hotspots', () => {
             outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
             zoom: 50
           }
-        ]
+        ],
+        tooltipTexts: {
+          1: {
+            title: [{type: 'heading', children: [{text: 'Area 1'}]}],
+          }
+        }
       };
 
       const user = userEvent.setup();
@@ -1566,7 +1576,7 @@ describe('Hotspots', () => {
       const scroller = container.querySelector(`.${scrollerStyles.scroller}`);
       scroller.scrollTo = jest.fn();
       simulateScrollPosition('near viewport');
-      await user.click(getByRole('button'));
+      await user.click(getByRole('button', {name: 'Area 1'}));
 
       expect(scroller.scrollTo).toHaveBeenCalled();
       expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
@@ -1693,7 +1703,7 @@ describe('Hotspots', () => {
         .not.toHaveClass(scrollerStyles.noPointerEvents);
     });
 
-    it('accounts for pan zoom in tooltip position ', () => {
+    it('accounts for pan zoom in tooltip position', () => {
       const seed = {
         imageFileUrlTemplates: {large: ':id_partition/image.webp'},
         imageFiles: [{id: 1, permaId: 100, width: 2000, height: 1000}]
@@ -1727,6 +1737,40 @@ describe('Hotspots', () => {
         left: '100px',
         top: '50px'
       });
+    });
+
+    it('allows changing active area via scroll button', async () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 2000, height: 1000}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            outline: [[80, 45], [100, 45], [100, 55], [80, 55]],
+            indicatorPosition: [90, 50],
+          },
+          {
+            outline: [[20, 45], [30, 45], [30, 55], [20, 55]],
+            indicatorPosition: [25, 50],
+          }
+        ]
+      };
+
+      const user = userEvent.setup();
+      const {container, getByRole, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+      const scroller = container.querySelector(`.${scrollerStyles.scroller}`);
+      scroller.scrollTo = jest.fn();
+      intersectionObserverByRoot(scroller)
+        .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
+      await user.click(getByRole('button', {name: 'Next'}));
+
+      expect(scroller.scrollTo).toHaveBeenCalled();
     });
   });
 });

@@ -3,6 +3,7 @@
   grid-auto-columns: 100%;
   grid-auto-rows: 100%;
   height: 100%;
+  isolation: isolate;
 }
 
 .stack > div {
