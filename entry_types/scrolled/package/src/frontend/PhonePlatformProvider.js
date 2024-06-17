@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PhonePlatformContext from './PhonePlatformContext';
+import {PhonePlatformContext} from './PhonePlatformContext';
 import {useBrowserFeature} from './useBrowserFeature';
 
 import {withInlineEditingAlternative} from './inlineEditing';

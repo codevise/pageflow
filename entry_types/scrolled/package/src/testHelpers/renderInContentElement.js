@@ -6,7 +6,8 @@ import {
   ContentElementAttributesProvider,
   ContentElementEditorCommandEmitterContext,
   ContentElementEditorStateContext,
-  ContentElementLifecycleContext
+  ContentElementLifecycleContext,
+  PhonePlatformContext
 } from 'pageflow-scrolled/frontend';
 
 import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycle';
@@ -20,6 +21,7 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
  * @param {Function} callback - React component or function returning a React component.
  * @param {Object} [options] - Supports all options supported by {@link `renderInEntry`}.
  * @param {Object} [options.editorState] - Fake result of `useContentElementEditorState`.
+ * @param {Object} [options.phonePlatform] - Fake result of `usePhonePlatform`.
  *
  * @example
  *
@@ -30,22 +32,27 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
  * simulateScrollPosition('near viewport');
  * triggerEditorCommand({type: 'HIGHLIGHT'});
  */
-export function renderInContentElement(ui, {editorState, wrapper, ...options}) {
+export function renderInContentElement(ui, {editorState,
+                                            phonePlatform = false,
+                                            wrapper: OriginalWrapper,
+                                            ...options}) {
   const emitter = Object.assign({}, BackboneEvents);
 
   function Wrapper({children}) {
     const defaultEditorState = useContext(ContentElementEditorStateContext);
 
     return (
-      <ContentElementAttributesProvider id={42}>
-        <ContentElementEditorCommandEmitterContext.Provider
-          value={emitter}>
-          <ContentElementEditorStateContext.Provider
-            value={{...defaultEditorState, ...editorState}}>
-            {wrapper ? <Wrapper children={children} /> : children}
-          </ContentElementEditorStateContext.Provider>
-        </ContentElementEditorCommandEmitterContext.Provider>
-      </ContentElementAttributesProvider>
+      <PhonePlatformContext.Provider value={phonePlatform}>
+        <ContentElementAttributesProvider id={42}>
+          <ContentElementEditorCommandEmitterContext.Provider
+            value={emitter}>
+            <ContentElementEditorStateContext.Provider
+              value={{...defaultEditorState, ...editorState}}>
+              {OriginalWrapper ? <OriginalWrapper children={children} /> : children}
+            </ContentElementEditorStateContext.Provider>
+          </ContentElementEditorCommandEmitterContext.Provider>
+        </ContentElementAttributesProvider>
+      </PhonePlatformContext.Provider>
     );
   }
 
