@@ -34,6 +34,10 @@ module Pageflow
       end
     end
 
+    def cutoff_mode_enabled_for?(request)
+      Pageflow.config.cutoff_modes.enabled_for?(self, request)
+    end
+
     def stylesheet_model
       custom_revision? ? revision : entry
     end

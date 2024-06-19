@@ -22,6 +22,10 @@ module Pageflow
       )
     end
 
+    def cutoff_mode_enabled_for?(_request)
+      false
+    end
+
     def create_file!(file_type, attributes)
       check_foreign_key_custom_attributes(file_type.custom_attributes, attributes)
 
