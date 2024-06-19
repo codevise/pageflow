@@ -29,6 +29,11 @@ module Pageflow
     end
 
     # @api private
+    def names
+      @modes.keys
+    end
+
+    # @api private
     Mode = Struct.new(:name, :enabled)
   end
 end

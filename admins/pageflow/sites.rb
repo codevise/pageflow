@@ -29,11 +29,13 @@ module Pageflow
         :copyright_link_url,
         :copyright_link_label,
         :privacy_link_url,
-        :home_url
+        :home_url,
+        :cutoff_mode_name
       ] + permitted_admin_form_input_params
     end
 
     controller do
+      helper Pageflow::Admin::CutoffModesHelper
       helper Pageflow::Admin::FormHelper
 
       before_create do |site|

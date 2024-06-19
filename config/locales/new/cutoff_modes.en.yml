@@ -1,0 +1,8 @@
+en:
+  pageflow:
+    cutoff_modes:
+      none: "(None)"
+  activerecord:
+    attributes:
+      pageflow/site:
+        cutoff_mode_name: "Cutoff mode"

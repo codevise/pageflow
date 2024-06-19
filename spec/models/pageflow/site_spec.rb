@@ -76,6 +76,53 @@ module Pageflow
       end
     end
 
+    describe '#cutoff_mode_name' do
+      it 'is invalid if cutoff mode not registered' do
+        site = build(:site, cutoff_mode_name: 'unknown')
+
+        site.valid?
+
+        expect(site.errors).to include(:cutoff_mode_name)
+      end
+
+      it 'is invalid if cutoff mode disabled for account' do
+        pageflow_configure do |config|
+          config.features.register('some_cutoff_mode') do |feature_config|
+            feature_config.cutoff_modes.register(:some, proc { true })
+          end
+        end
+
+        account = create(:account)
+        site = build(:site, account:, cutoff_mode_name: 'some')
+
+        site.valid?
+        expect(site.errors).to include(:cutoff_mode_name)
+      end
+
+      it 'is valid if cutoff mode registered' do
+        pageflow_configure do |config|
+          config.cutoff_modes.register(:some, proc { true })
+        end
+
+        site = build(:site, cutoff_mode_name: 'some')
+
+        expect(site).to be_valid
+      end
+
+      it 'is valid if cutoff mode enabled for account' do
+        pageflow_configure do |config|
+          config.features.register('some_cutoff_mode') do |feature_config|
+            feature_config.cutoff_modes.register(:some, proc { true })
+          end
+        end
+
+        account = create(:account, with_feature: 'some_cutoff_mode')
+        site = build(:site, account:, cutoff_mode_name: 'some')
+
+        expect(site).to be_valid
+      end
+    end
+
     describe '.with_home_url' do
       it 'includes site with home_url' do
         site = create(:site, home_url: 'http://home.example.com')

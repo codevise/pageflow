@@ -617,6 +617,7 @@ module Pageflow
       delegate :widget_types, to: :config
       delegate :public_entry_cache_control_header=, to: :config
       delegate :additional_public_entry_headers, to: :config
+      delegate :cutoff_modes, to: :config
 
       delegate :for_entry_type, to: :config
     end
