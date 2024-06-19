@@ -3,21 +3,34 @@
 
 .root {
   position: relative;
+}
+
+.outline {
   border: solid selectionWidth transparent;
   border-radius: rounded();
   padding: 1px;
   margin-left: -6px;
   margin-right: -6px;
-  text-align: right;
 }
 
-.withTransition {
-  composes: sectionWithTransition from './outline.module.css';
-}
-
-.selectable:hover,
-.active {
+.selectable:hover .outline,
+.active .outline {
   border: solid selectionWidth selectionColor;
+}
+
+.cutoffIndicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 0;
+}
+
+.cutoffIndicator::before,
+.cutoffIndicator::after {
+  content: "";
+  flex: 1;
+  border-top: solid 1px var(--ui-error-color);
 }
 
 .thumbnailContainer {
@@ -85,10 +98,6 @@
 
 .editTransition {
   composes: transition from './outline.module.css';
-  position: absolute;
-  bottom: 100%;
-  left: 1px;
-  width: 100%;
   border: 0;
   background: transparent;
   padding: 5px 5px 5px 2px;

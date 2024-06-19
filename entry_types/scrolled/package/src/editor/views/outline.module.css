@@ -1,13 +1,5 @@
 @value indicatorIconColor, errorIconColor from './colors.module.css';
 
-.sectionWithTransition {
-  margin-top: 20px;
-}
-
-.chapter:first-child .sectionWithTransition:first-child {
-  margin-top: 0;
-}
-
 .chapter:first-child .sectionWithTransition:first-child .transition {
   display: none;
 }

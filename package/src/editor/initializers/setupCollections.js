@@ -33,8 +33,8 @@ app.addInitializer(function(options) {
   state.pages = new PagesCollection(options.pages);
   state.chapters = new ChaptersCollection(options.chapters);
   state.storylines = new StorylinesCollection(options.storylines);
-  state.entry = editor.createEntryModel(options, {widgets: widgets});
   state.site = new Site(options.site);
+  state.entry = editor.createEntryModel(options, {widgets: widgets});
   state.account = new Backbone.Model(options.account);
 
   widgets.subject = state.entry;

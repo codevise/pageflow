@@ -4,6 +4,7 @@ import I18n from 'i18n-js';
 import {ConsentVendors} from '../ConsentVendors';
 import {ChaptersCollection, SectionsCollection, ContentElementsCollection} from '../../collections';
 import {ContentElement} from '../ContentElement';
+import {Cutoff} from '../Cutoff';
 
 import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
@@ -12,6 +13,7 @@ import {deleteContentElement} from './deleteContentElement';
 export const ScrolledEntry = Entry.extend({
   setupFromEntryTypeSeed(seed) {
     this.consentVendors = new ConsentVendors({hostMatchers: seed.consentVendorHostMatchers});
+    this.cutoff = new Cutoff({entry: this});
 
     this.contentElements = new ContentElementsCollection(seed.collections.contentElements);
     this.sections = new SectionsCollection(seed.collections.sections,

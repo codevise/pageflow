@@ -1,4 +1,4 @@
-import {editor, FilesCollection} from 'pageflow/editor';
+import {editor, FilesCollection, Site} from 'pageflow/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 
 import {setupGlobals} from 'pageflow/testHelpers';
@@ -23,12 +23,15 @@ export function useEditorGlobals() {
   return {
     createEntry(options) {
       const {
+        metadata,
         imageFiles, videoFiles, audioFiles, textTrackFiles,
+        site,
         ...seedOptions
       } = options;
 
       const {entry} = setGlobals({
-        entry: factories.entry(ScrolledEntry, {}, {
+        entry: factories.entry(ScrolledEntry, {metadata}, {
+          site: new Site(site),
           files: FilesCollection.createForFileTypes(
             [
               editor.fileTypes.findByCollectionName('image_files'),

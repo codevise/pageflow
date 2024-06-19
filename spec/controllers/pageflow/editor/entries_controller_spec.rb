@@ -217,6 +217,22 @@ module Pageflow
 
         expect(response.body).to include_json(entry: {last_published_with_noindex: true})
       end
+
+      it 'renders site cutoff mode' do
+        pageflow_configure do |config|
+          config.cutoff_modes.register('subscription_header', proc { true })
+        end
+        user = create(:user)
+        site = create(:site, cutoff_mode_name: 'subscription_header')
+        entry = create(:entry,
+                       site:,
+                       with_editor: user)
+
+        sign_in(user, scope: :user)
+        get(:seed, params: {id: entry}, format: 'json')
+
+        expect(response.body).to include_json(site: {cutoff_mode_name: 'subscription_header'})
+      end
     end
 
     describe '#update' do
