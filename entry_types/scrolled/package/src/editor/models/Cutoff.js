@@ -7,6 +7,12 @@ export const Cutoff = Object.extend({
     this.listenTo(this.entry.metadata.configuration,
                   'change:cutoff_section_perma_id',
                   () => this.trigger('change'));
+
+    this.listenTo(this.entry.sections, 'destroy', (section) => {
+      if (this.isAtSection(section)) {
+        this.reset();
+      }
+    });
   },
 
   isEnabled() {

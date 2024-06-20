@@ -13,7 +13,6 @@ import {deleteContentElement} from './deleteContentElement';
 export const ScrolledEntry = Entry.extend({
   setupFromEntryTypeSeed(seed) {
     this.consentVendors = new ConsentVendors({hostMatchers: seed.consentVendorHostMatchers});
-    this.cutoff = new Cutoff({entry: this});
 
     this.contentElements = new ContentElementsCollection(seed.collections.contentElements);
     this.sections = new SectionsCollection(seed.collections.sections,
@@ -24,6 +23,8 @@ export const ScrolledEntry = Entry.extend({
     this.chapters.parentModel = this;
 
     this.sections.sort();
+
+    this.cutoff = new Cutoff({entry: this});
 
     editor.failures.watch(this.contentElements);
     editor.failures.watch(this.sections);
