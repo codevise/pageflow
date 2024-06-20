@@ -245,6 +245,24 @@ module Pageflow
     # construct the embed url of a published entry.
     attr_accessor :entry_embed_url_options
 
+
+    # Define strategies to determine whether entries should be cut off
+    # (e.g., to preview paywalled premium content).
+    #
+    # @example
+    #
+    #     config.cutoff_modes.register(
+    #       'subscription_header',
+    #       lambda do |_entry, request|
+    #         # Set by some proxy handling user authentication
+    #         request.headers['X-Subscription'] != 'Premium'
+    #       end
+    #     )
+    #
+    # @return [CutoffModes]
+    # @since edge
+    attr_reader :cutoff_modes
+
     # Either a lambda or an object with a `call` method taking a hash
     # of theme option overrides and an {EntryAtRevision} and returning
     # a transformed hash of overrides. Can be used to filter overrides
@@ -456,6 +474,7 @@ module Pageflow
       @additional_public_entry_headers = AdditionalHeaders.new
       @public_entry_url_options = Pageflow::SitesHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
       @entry_embed_url_options = {protocol: 'https'}
+      @cutoff_modes = CutoffModes.new
 
       @transform_theme_customization_overrides = ->(overrides, _entry) { overrides }
       @transform_theme_customization_files = ->(files, _entry) { files }
@@ -598,6 +617,7 @@ module Pageflow
       delegate :widget_types, to: :config
       delegate :public_entry_cache_control_header=, to: :config
       delegate :additional_public_entry_headers, to: :config
+      delegate :cutoff_modes, to: :config
 
       delegate :for_entry_type, to: :config
     end

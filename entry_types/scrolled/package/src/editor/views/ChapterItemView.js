@@ -10,7 +10,7 @@ import styles from './ChapterItemView.module.css';
 
 export const ChapterItemView = Marionette.Layout.extend({
   tagName: 'li',
-  className: `${styles.root} ${styles.withTransitions}`,
+  className: `${styles.root}`,
 
   mixins: [modelLifecycleTrackingView({classNames: styles})],
 

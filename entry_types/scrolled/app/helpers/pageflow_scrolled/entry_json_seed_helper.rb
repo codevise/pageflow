@@ -23,17 +23,27 @@ module PageflowScrolled
     end
 
     def scrolled_entry_json_seed(json, scrolled_entry, options = {})
-      main_storyline = Storyline.all_for_revision(scrolled_entry.revision).first
-      main_storyline ||= Storyline.new
+      main_storyline = Storyline.all_for_revision(scrolled_entry.revision).first || Storyline.new
+      sections = scrolled_entry_json_seed_sections(scrolled_entry, main_storyline)
 
       json.partial!('pageflow_scrolled/entry_json_seed/entry',
-                    chapters: main_storyline.chapters,
                     entry: scrolled_entry,
                     entry_config: Pageflow.config_for(scrolled_entry),
-                    sections: main_storyline.sections,
-                    content_elements: main_storyline.content_elements,
+                    chapters: main_storyline.chapters,
+                    sections:,
+                    content_elements: main_storyline.content_elements.where(section: sections),
                     widgets: scrolled_entry.resolve_widgets(insert_point: :react),
                     options:)
+    end
+
+    private
+
+    def scrolled_entry_json_seed_sections(scrolled_entry, main_storyline)
+      if scrolled_entry.cutoff_mode_enabled_for?(request)
+        main_storyline.sections_before_cutoff_section
+      else
+        main_storyline.sections
+      end
     end
   end
 end

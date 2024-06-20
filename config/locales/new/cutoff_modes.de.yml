@@ -1,0 +1,14 @@
+de:
+  pageflow:
+    cutoff_modes:
+      none: "(Kein)"
+  pageflow_scrolled:
+    editor:
+      section_item:
+        set_cutoff: "Paywall Grenze oberhalb setzen"
+        reset_cutoff: "Paywall Grenze entfernen"
+        cutoff: "Paywall Grenze"
+  activerecord:
+    attributes:
+      pageflow/site:
+        cutoff_mode_name: "Cutoff-Modus"

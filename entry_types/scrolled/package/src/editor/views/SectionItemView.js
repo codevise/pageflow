@@ -5,7 +5,6 @@ import {modelLifecycleTrackingView, DropDownButtonView} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 
 import {SectionThumbnailView} from './SectionThumbnailView'
-import {getAvailableTransitionNames} from 'pageflow-scrolled/frontend';
 
 import arrowsIcon from './images/arrows.svg';
 
@@ -13,32 +12,39 @@ import styles from './SectionItemView.module.css';
 
 export const SectionItemView = Marionette.ItemView.extend({
   tagName: 'li',
-  className: `${styles.root} ${styles.withTransition}`,
+  className: `${styles.root}`,
 
   mixins: [modelLifecycleTrackingView({classNames: styles})],
 
   template: (data) => `
+    <div class="${styles.cutoffIndicator}">
+      ${I18n.t('pageflow_scrolled.editor.section_item.cutoff')}
+    </div>
     <button class="${styles.editTransition}">
       <img src="${arrowsIcon}" width="11" height="16">
       <span class="${styles.transition}">Überblenden</span>
     </button>
-    <div class="${styles.inner}">
-      <div class="${styles.thumbnailContainer}">
-        <div class="${styles.dropDownButton}"></div>
-        <div class="${styles.thumbnail}"></div>
-        <div class="${styles.clickMask}">
-          <div class="${styles.dragHandle}"
-               title="${I18n.t('pageflow_scrolled.editor.section_item.drag_hint')}"></div>
+    <div class="${styles.outline}">
+      <div class="${styles.inner}">
+        <div class="${styles.thumbnailContainer}">
+          <div class="${styles.dropDownButton}"></div>
+          <div class="${styles.thumbnail}"></div>
+          <div class="${styles.clickMask}">
+            <div class="${styles.dragHandle}"
+                 title="${I18n.t('pageflow_scrolled.editor.section_item.drag_hint')}"></div>
+          </div>
         </div>
+        <span class="${styles.creatingIndicator}" />
+        <span class="${styles.destroyingIndicator}" />
+        <span class="${styles.failedIndicator}"
+              title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
       </div>
-      <span class="${styles.creatingIndicator}" />
-      <span class="${styles.destroyingIndicator}" />
-      <span class="${styles.failedIndicator}"
-            title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
     </div>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'thumbnail', 'dropDownButton', 'editTransition', 'transition'),
+  ui: cssModulesUtils.ui(styles,
+                         'thumbnail', 'dropDownButton', 'editTransition',
+                         'transition', 'cutoffIndicator'),
 
   events: cssModulesUtils.events(styles, {
     'click clickMask': function() {
@@ -73,10 +79,15 @@ export const SectionItemView = Marionette.ItemView.extend({
       this.updateActive();
       this.updateTransition();
     });
+
+    this.listenTo(this.options.entry.cutoff, 'change', () => {
+      this.updateCutoffIndicator();
+    });
   },
 
   onRender() {
     this.updateTransition();
+    this.updateCutoffIndicator();
 
     if (this.updateActive()) {
       setTimeout(() => this.$el[0].scrollIntoView({block: 'nearest'}), 10)
@@ -113,6 +124,13 @@ export const SectionItemView = Marionette.ItemView.extend({
         this.model.chapter.insertSection({after: this.model})
     }));
 
+    if (this.options.entry.cutoff.isEnabled()) {
+      dropDownMenuItems.add(new CutoffMenuItem({}, {
+        cutoff: this.options.entry.cutoff,
+        section: this.model
+      }));
+    }
+
     this.appendSubview(new DropDownButtonView({
       items: dropDownMenuItems,
       alignMenu: 'right',
@@ -126,6 +144,19 @@ export const SectionItemView = Marionette.ItemView.extend({
       I18n.t(this.model.getTransition(),
              {scope: 'pageflow_scrolled.editor.section_item.transitions'})
     );
+  },
+
+  updateCutoffIndicator() {
+    this.ui.cutoffIndicator.css(
+      'display',
+      this.options.entry.cutoff.isEnabled() &&
+      this.options.entry.cutoff.isAtSection(this.model)
+      ?  '' : 'none'
+    );
+  },
+
+  cutoffModeEnabled() {
+    return !!this.options.entry.site.get('cutoff_mode_name');
   },
 
   updateActive() {
@@ -144,5 +175,32 @@ const MenuItem = Backbone.Model.extend({
 
   selected: function() {
     this.options.selected();
+  }
+});
+
+const CutoffMenuItem = Backbone.Model.extend({
+  initialize: function(attributes, {cutoff, section}) {
+    this.cutoff = cutoff;
+    this.section = section;
+
+    this.listenTo(cutoff, 'change', this.update);
+    this.update();
+  },
+
+  selected() {
+    if (this.cutoff.isAtSection(this.section)) {
+      this.cutoff.reset();
+    }
+    else {
+      this.cutoff.setSection(this.section);
+    }
+  },
+
+  update() {
+    this.set('label', I18n.t(
+      this.cutoff.isAtSection(this.section) ?
+      'pageflow_scrolled.editor.section_item.reset_cutoff' :
+      'pageflow_scrolled.editor.section_item.set_cutoff'
+    ));
   }
 });

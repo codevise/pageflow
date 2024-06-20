@@ -58,23 +58,6 @@
   min-height: 20px;
 }
 
-.withTransitions .sections {
-  margin-top: 20px;
-}
-
-.root:first-child .sections {
-  margin-top: 10px;
-}
-
-.sections > :global(.sortable-placeholder) {
-  margin-top: 25px;
-  margin-bottom: 22px;
-}
-
-.root:first-child .sections > li:first-child + :global(.sortable-placeholder) {
-  margin-top: 16px;
-}
-
 .creating .creatingIndicator     { display: block; }
 .destroying .destroyingIndicator { display: block; }
 .failed .failedIndicator         { display: block; }

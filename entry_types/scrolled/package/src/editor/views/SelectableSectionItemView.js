@@ -11,14 +11,16 @@ export const SelectableSectionItemView = Marionette.ItemView.extend({
   className: `${styles.root} ${styles.selectable}`,
 
   template: (data) => `
-  <div class="${styles.thumbnailContainer}">
-    <div class="${styles.thumbnail}"></div>
-    <a class="${styles.clickMask}"
-       href=""
-       title="${I18n.t(`pageflow_scrolled.editor.selectable_section_item.title`)}">
-    </a>
-  </div>
-  `,
+    <div class="${styles.outline}">
+      <div class="${styles.thumbnailContainer}">
+        <div class="${styles.thumbnail}"></div>
+        <a class="${styles.clickMask}"
+           href=""
+           title="${I18n.t(`pageflow_scrolled.editor.selectable_section_item.title`)}">
+        </a>
+      </div>
+    </div>
+       `,
 
   ui: cssModulesUtils.ui(styles, 'thumbnail'),
 

@@ -4,6 +4,7 @@ import I18n from 'i18n-js';
 import {ConsentVendors} from '../ConsentVendors';
 import {ChaptersCollection, SectionsCollection, ContentElementsCollection} from '../../collections';
 import {ContentElement} from '../ContentElement';
+import {Cutoff} from '../Cutoff';
 
 import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
@@ -22,6 +23,8 @@ export const ScrolledEntry = Entry.extend({
     this.chapters.parentModel = this;
 
     this.sections.sort();
+
+    this.cutoff = new Cutoff({entry: this});
 
     editor.failures.watch(this.contentElements);
     editor.failures.watch(this.sections);

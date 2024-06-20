@@ -9,7 +9,8 @@ module Pageflow
     scope :with_home_url, -> { where.not(home_url: '') }
     scope :for_request, ->(request) { Pageflow.config.site_request_scope.call(all, request) }
 
-    validates :account, :presence => true
+    validates :account, presence: true
+    validates_inclusion_of :cutoff_mode_name, in: :available_cutoff_mode_names, allow_blank: true
 
     delegate :enabled_feature_names, to: :account
 
@@ -66,6 +67,12 @@ module Pageflow
 
     def self.ransackable_associations(_auth_object = nil)
       %w[account]
+    end
+
+    private
+
+    def available_cutoff_mode_names
+      Pageflow.config_for(account).cutoff_modes.names
     end
   end
 end

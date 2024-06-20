@@ -81,6 +81,34 @@ module PageflowScrolled
                                ]
                              })
         end
+
+        it 'renders all chapter even when cutoff mode is enabled' do
+          pageflow_configure do |config|
+            config.cutoff_modes.register(
+              :test,
+              proc { true }
+            )
+          end
+
+          site = create(:site, cutoff_mode_name: 'test')
+          entry = create(:published_entry,
+                         site:,
+                         type_name: 'scrolled',
+                         revision_attributes: {
+                           configuration: {
+                             cutoff_section_perma_id: 100
+                           }
+                         })
+          chapter1 = create(:scrolled_chapter, revision: entry.revision, position: 1)
+          create(:section, chapter: chapter1, perma_id: 100)
+          chapter2 = create(:scrolled_chapter, revision: entry.revision, position: 2)
+
+          result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'chapters').map { |chapter| chapter['id'] }
+          ).to eq([chapter1.id, chapter2.id])
+        end
       end
 
       context 'sections' do
@@ -130,6 +158,152 @@ module PageflowScrolled
                                  {id: section22.id}
                                ]
                              })
+        end
+
+        it 'supports filtering sections based on cutoff section when cutoff mode is enabled' do
+          pageflow_configure do |config|
+            config.cutoff_modes.register(
+              :test,
+              proc { true }
+            )
+          end
+
+          site = create(:site, cutoff_mode_name: 'test')
+          entry = create(:published_entry,
+                         site:,
+                         type_name: 'scrolled',
+                         revision_attributes: {
+                           configuration: {
+                             cutoff_section_perma_id: 100
+                           }
+                         })
+
+          chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
+          section11 = create(:section, chapter: chapter1, position: 1)
+          section12 = create(:section, chapter: chapter1, position: 2)
+          chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
+          section21 = create(:section, chapter: chapter2, position: 1)
+          create(:section, chapter: chapter2, position: 2, perma_id: 100)
+          create(:section, chapter: chapter2, position: 3)
+
+          result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'sections').map { |s| s['id'] }
+          ).to eq([section11.id, section12.id, section21.id])
+        end
+
+        it 'does not filter sections when no cutoff section is configured' do
+          pageflow_configure do |config|
+            config.cutoff_modes.register(
+              :test,
+              proc { true }
+            )
+          end
+
+          site = create(:site, cutoff_mode_name: 'test')
+          entry = create(:published_entry,
+                         site:,
+                         type_name: 'scrolled')
+          chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
+          section11 = create(:section, chapter: chapter1, position: 1)
+          section12 = create(:section, chapter: chapter1, position: 2)
+          chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
+          section21 = create(:section, chapter: chapter2, position: 1)
+          section22 = create(:section, chapter: chapter2, position: 2)
+
+          result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'sections').map { |s| s['id'] }
+          ).to eq([section11.id, section12.id, section21.id, section22.id])
+        end
+
+        it 'does not filter sections when configured cutoff mode is disabled' do
+          pageflow_configure do |config|
+            config.cutoff_modes.register(
+              :test,
+              proc { false }
+            )
+          end
+
+          site = create(:site, cutoff_mode_name: 'test')
+          entry = create(:published_entry,
+                         site:,
+                         type_name: 'scrolled',
+                         revision_attributes: {
+                           configuration: {
+                             cutoff_section_perma_id: 100
+                           }
+                         })
+          chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
+          section11 = create(:section, chapter: chapter1, position: 1)
+          section12 = create(:section, chapter: chapter1, position: 2)
+          chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
+          section21 = create(:section, chapter: chapter2, position: 1, perma_id: 100)
+          section22 = create(:section, chapter: chapter2, position: 2)
+
+          result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'sections').map { |s| s['id'] }
+          ).to eq([section11.id, section12.id, section21.id, section22.id])
+        end
+
+        it 'does not filter sections when no cutoff mode is configured' do
+          site = create(:site)
+          entry = create(:published_entry,
+                         site:,
+                         type_name: 'scrolled',
+                         revision_attributes: {
+                           configuration: {
+                             cutoff_section_perma_id: 100
+                           }
+                         })
+          chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
+          section11 = create(:section, chapter: chapter1, position: 1)
+          section12 = create(:section, chapter: chapter1, position: 2)
+          chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
+          section21 = create(:section, chapter: chapter2, position: 1, perma_id: 100)
+          section22 = create(:section, chapter: chapter2, position: 2)
+
+          result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'sections').map { |s| s['id'] }
+          ).to eq([section11.id, section12.id, section21.id, section22.id])
+        end
+
+        it 'does not filter sections based on cutoff for draft entry' do
+          pageflow_configure do |config|
+            config.cutoff_modes.register(
+              :test,
+              proc { true }
+            )
+          end
+
+          site = create(:site, cutoff_mode_name: 'test')
+          entry = create(:draft_entry,
+                         site:,
+                         type_name: 'scrolled',
+                         revision_attributes: {
+                           configuration: {
+                             cutoff_section_perma_id: 100
+                           }
+                         })
+
+          chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
+          section11 = create(:section, chapter: chapter1, position: 1)
+          section12 = create(:section, chapter: chapter1, position: 2)
+          chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
+          section21 = create(:section, chapter: chapter2, position: 1)
+          section22 = create(:section, chapter: chapter2, position: 2, perma_id: 100)
+
+          result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'sections').map { |s| s['id'] }
+          ).to eq([section11.id, section12.id, section21.id, section22.id])
         end
       end
 
@@ -198,6 +372,42 @@ module PageflowScrolled
                                  {id: content_element222.id}
                                ]
                              })
+        end
+
+        it 'supports filtering content elements based on cutoff section when cutoff mode is enabled' do
+          pageflow_configure do |config|
+            config.cutoff_modes.register(
+              :test,
+              proc { true }
+            )
+          end
+
+          site = create(:site, cutoff_mode_name: 'test')
+          entry = create(:published_entry,
+                         site:,
+                         type_name: 'scrolled',
+                         revision_attributes: {
+                           configuration: {
+                             cutoff_section_perma_id: 100
+                           }
+                         })
+
+          chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
+          section11 = create(:section, chapter: chapter1, position: 1)
+          content_element11 = create(:content_element, section: section11)
+          section12 = create(:section, chapter: chapter1, position: 2)
+          content_element12 = create(:content_element, section: section12)
+          chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
+          section21 = create(:section, chapter: chapter2, position: 1, perma_id: 100)
+          create(:content_element, section: section21)
+          section22 = create(:section, chapter: chapter2, position: 2)
+          create(:content_element, section: section22)
+
+          result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'contentElements').map { |c| c['id'] }
+          ).to eq([content_element11.id, content_element12.id])
         end
       end
 

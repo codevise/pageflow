@@ -27,5 +27,19 @@ module PageflowScrolled
              through: :sections
 
     nested_revision_components :chapters
+
+    def sections_before_cutoff_section
+      sections_before(cutoff_section)
+    end
+
+    private
+
+    def sections_before(section)
+      section ? sections[0...sections.index(section)] : sections
+    end
+
+    def cutoff_section
+      sections.find_by_perma_id(revision.configuration['cutoff_section_perma_id'])
+    end
   end
 end

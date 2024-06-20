@@ -12,6 +12,12 @@
   <%= f.input :copyright_link_url %>
   <%= f.input :privacy_link_url %>
 
+  <% if cutoff_modes_collection(account_config).present? %>
+    <%= f.input(:cutoff_mode_name,
+                collection: cutoff_modes_collection(account_config),
+                include_blank: t('pageflow.cutoff_modes.none')) %>
+  <% end %>
+
   <%= f.input :feeds_enabled, hint: t('pageflow.admin.sites.feeds_hint',
                                       site_host: @site&.persisted? ? @site.host : '<host>') %>
   <%= f.input :sitemap_enabled, hint: t('pageflow.admin.sites.sitemap_hint',

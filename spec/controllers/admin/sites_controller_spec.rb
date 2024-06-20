@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pageflow/shared_contexts/fake_translations'
 
 module Admin
   describe SitesController do
@@ -161,6 +162,8 @@ module Admin
     end
 
     describe '#new' do
+      include_context 'fake translations'
+
       it 'displays name input' do
         account = create(:account)
 
@@ -181,6 +184,37 @@ module Admin
         get(:new, params: {account_id: account})
 
         expect(response.body).to have_selector('[name="site[custom_field]"]')
+      end
+
+      it 'does not display cutoff mode select by default' do
+        pageflow_configure do |config|
+          config.features.register('test_cutoff_mode') do |entry_type_config|
+            entry_type_config.cutoff_modes.register(:some_cutoff, proc { true })
+          end
+        end
+        account = create(:account)
+
+        sign_in(create(:user, :admin), scope: :user)
+        get(:new, params: {account_id: account})
+
+        expect(response.body).not_to have_select('Cutoff mode')
+      end
+
+      it 'displays cutoff modes enabled for account' do
+        translation(I18n.locale,
+                    'pageflow.cutoff_modes.some_cutoff',
+                    'Some Cutoff Mode')
+        pageflow_configure do |config|
+          config.features.register('test_cutoff_mode') do |entry_type_config|
+            entry_type_config.cutoff_modes.register(:some_cutoff, proc { true })
+          end
+        end
+        account = create(:account, with_feature: 'test_cutoff_mode')
+
+        sign_in(create(:user, :admin), scope: :user)
+        get(:new, params: {account_id: account})
+
+        expect(response.body).to have_select('Cutoff mode', options: ['(None)', 'Some Cutoff Mode'])
       end
     end
 
@@ -210,6 +244,9 @@ module Admin
 
     describe '#create' do
       it 'sets attributes' do
+        pageflow_configure do |config|
+          config.cutoff_modes.register(:some_cutoff, proc { true })
+        end
         account = create(:account)
 
         sign_in(create(:user, :admin), scope: :user)
@@ -221,7 +258,8 @@ module Admin
                  title: 'Second Site',
                  sitemap_enabled: true,
                  feeds_enabled: true,
-                 imprint_link_url: 'http://example.com/new'
+                 imprint_link_url: 'http://example.com/new',
+                 cutoff_mode_name: 'some_cutoff'
                }
              })
 
@@ -231,6 +269,7 @@ module Admin
         expect(site.title).to eq('Second Site')
         expect(site.sitemap_enabled?).to eq(true)
         expect(site.feeds_enabled?).to eq(true)
+        expect(site.cutoff_mode_name).to eq('some_cutoff')
       end
 
       it 'creates root permalink directory' do

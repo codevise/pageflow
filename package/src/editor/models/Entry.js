@@ -39,6 +39,7 @@ export const Entry = Backbone.Model.extend({
     this.configuration = this.metadata;
 
     this.themes = options.themes || state.themes;
+    this.site = options.site || state.site;
     this.files = options.files || state.files;
     this.fileTypes = options.fileTypes || editor.fileTypes;
     this.storylines = options.storylines || state.storylines;
