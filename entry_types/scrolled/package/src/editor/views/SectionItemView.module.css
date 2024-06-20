@@ -5,7 +5,12 @@
   position: relative;
 }
 
+.withTransition {
+  composes: sectionWithTransition from './outline.module.css';
+}
+
 .outline {
+  position: relative;
   border: solid selectionWidth transparent;
   border-radius: rounded();
   padding: 1px;

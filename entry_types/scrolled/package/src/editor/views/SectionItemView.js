@@ -12,7 +12,7 @@ import styles from './SectionItemView.module.css';
 
 export const SectionItemView = Marionette.ItemView.extend({
   tagName: 'li',
-  className: `${styles.root}`,
+  className: `${styles.root} ${styles.withTransition}`,
 
   mixins: [modelLifecycleTrackingView({classNames: styles})],
 
