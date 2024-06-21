@@ -1,0 +1,7 @@
+en:
+  pageflow_scrolled:
+    editor:
+      section_item:
+        hide: Hide outside of the editor
+        show: Show outside of the editor
+        hidden: Only visible in editor

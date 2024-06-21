@@ -109,6 +109,39 @@ module PageflowScrolled
             JSON.parse(result).dig('collections', 'chapters').map { |chapter| chapter['id'] }
           ).to eq([chapter1.id, chapter2.id])
         end
+
+        it 'filters out chapters with only hidden sections' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          chapter1 = create(:scrolled_chapter, revision: entry.revision)
+          create(:section, chapter: chapter1)
+          create(:section, chapter: chapter1, configuration: {hidden: true})
+          chapter2 = create(:scrolled_chapter, revision: entry.revision)
+          create(:section, chapter: chapter2, configuration: {hidden: true})
+          create(:section, chapter: chapter2, configuration: {hidden: true})
+          chapter3 = create(:scrolled_chapter, revision: entry.revision)
+
+          result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'chapters').map { |chapter| chapter['id'] }
+          ).to eq([chapter1.id, chapter3.id])
+        end
+
+        it 'supports including chapters with only hidden sections' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          chapter1 = create(:scrolled_chapter, revision: entry.revision)
+          create(:section, chapter: chapter1)
+          create(:section, chapter: chapter1, configuration: {hidden: true})
+          chapter2 = create(:scrolled_chapter, revision: entry.revision)
+          create(:section, chapter: chapter2, configuration: {hidden: true})
+          create(:section, chapter: chapter2, configuration: {hidden: true})
+
+          result = render(helper, entry, include_hidden_sections: true)
+
+          expect(
+            JSON.parse(result).dig('collections', 'chapters').map { |chapter| chapter['id'] }
+          ).to eq([chapter1.id, chapter2.id])
+        end
       end
 
       context 'sections' do
@@ -305,6 +338,34 @@ module PageflowScrolled
             JSON.parse(result).dig('collections', 'sections').map { |s| s['id'] }
           ).to eq([section11.id, section12.id, section21.id, section22.id])
         end
+
+        it 'filters out hidden sections' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
+          section11 = create(:section, chapter: chapter1, position: 1)
+          create(:section, chapter: chapter1, position: 2, configuration: {hidden: true})
+
+          result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'sections').map { |s| s['id'] }
+          ).to eq([section11.id])
+        end
+
+        it 'supports including hidden sections' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
+          section11 = create(:section, chapter: chapter1, position: 1)
+          section12 = create(:section, chapter: chapter1, position: 2, configuration: {hidden: true})
+
+          result = render(helper, entry, include_hidden_sections: true)
+
+          expect(
+            JSON.parse(result).dig('collections', 'sections').map { |s| s['id'] }
+          ).to eq([section11.id, section12.id])
+        end
       end
 
       context 'content_elements' do
@@ -404,6 +465,38 @@ module PageflowScrolled
           create(:content_element, section: section22)
 
           result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'contentElements').map { |c| c['id'] }
+          ).to eq([content_element11.id, content_element12.id])
+        end
+
+        it 'supports filtering content elements of hidden sections' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          chapter1 = create(:scrolled_chapter, revision: entry.revision)
+          section11 = create(:section, chapter: chapter1, configuration: {hidden: true})
+          create(:content_element, section: section11)
+          section12 = create(:section, chapter: chapter1)
+          content_element12 = create(:content_element, section: section12)
+
+          result = render(helper, entry)
+
+          expect(
+            JSON.parse(result).dig('collections', 'contentElements').map { |c| c['id'] }
+          ).to eq([content_element12.id])
+        end
+
+        it 'supports including content elements of hidden sections' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          chapter1 = create(:scrolled_chapter, revision: entry.revision)
+          section11 = create(:section, chapter: chapter1, configuration: {hidden: true})
+          content_element11 = create(:content_element, section: section11)
+          section12 = create(:section, chapter: chapter1)
+          content_element12 = create(:content_element, section: section12)
+
+          result = render(helper, entry, include_hidden_sections: true)
 
           expect(
             JSON.parse(result).dig('collections', 'contentElements').map { |c| c['id'] }
