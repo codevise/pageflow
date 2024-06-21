@@ -58,8 +58,11 @@ module Pageflow
       image_file = find_file_in_entry(ImageFile, entry.share_image_id, entry)
 
       if image_file
-        image_url = image_file.thumbnail_url(:medium)
-        share_images.push(image_url: image_url, width: image_file.width, height: image_file.height)
+        image_url = image_file.thumbnail_url(
+          image_file.output_present?(:social) ? :social : :medium
+        )
+
+        share_images.push(image_url:, width: image_file.width, height: image_file.height)
       else
         entry.pages.each do |page|
           break if share_images.size >= 4

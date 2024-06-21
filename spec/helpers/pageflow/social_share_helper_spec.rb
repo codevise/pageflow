@@ -158,6 +158,31 @@ module Pageflow
         expect(html).to have_css("meta[content=\"#{image_file.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false, count: 1)
       end
 
+      it 'uses jpg image if available' do
+        entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create_used_file(
+          :image_file,
+          entry:,
+          width: 1200,
+          height: 600,
+          output_presences: {webp: true, social: true}
+        )
+        entry.revision.share_image_id = image_file.perma_id
+
+        html = helper.social_share_entry_image_tags(entry)
+
+        expect(html).to have_css(
+          "meta[content=\"#{image_file.thumbnail_url(:social)}\"][property=\"og:image\"]",
+          visible: false,
+          count: 1
+        )
+        expect(html).to have_css(
+          "meta[content=\"#{image_file.thumbnail_url(:social)}\"][name=\"twitter:image:src\"]",
+          visible: false,
+          count: 1
+        )
+      end
+
       it 'renders up to three open graph image meta tags for page thumbnails' do
         entry = PublishedEntry.new(create(:entry, :published))
         image_file1 = create_used_file(:image_file, entry: entry, width: 1200, height: 600)
