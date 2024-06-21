@@ -7,6 +7,7 @@ import {cssModulesUtils} from 'pageflow/ui';
 import {SectionThumbnailView} from './SectionThumbnailView'
 
 import arrowsIcon from './images/arrows.svg';
+import hiddenIcon from './images/hidden.svg';
 
 import styles from './SectionItemView.module.css';
 
@@ -38,6 +39,11 @@ export const SectionItemView = Marionette.ItemView.extend({
         <span class="${styles.destroyingIndicator}" />
         <span class="${styles.failedIndicator}"
               title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
+        <img class="${styles.hiddenIndicator}"
+             title="${I18n.t('pageflow_scrolled.editor.section_item.hidden')}"
+             src="${hiddenIcon}"
+             width="30"
+             height="30">
       </div>
     </div>
   `,
@@ -83,11 +89,16 @@ export const SectionItemView = Marionette.ItemView.extend({
     this.listenTo(this.options.entry.cutoff, 'change', () => {
       this.updateCutoffIndicator();
     });
+
+    this.listenTo(this.model.configuration, 'change:hidden', () => {
+      this.updateHidden();
+    });
   },
 
   onRender() {
     this.updateTransition();
     this.updateCutoffIndicator();
+    this.updateHidden();
 
     if (this.updateActive()) {
       setTimeout(() => this.$el[0].scrollIntoView({block: 'nearest'}), 10)
@@ -124,6 +135,10 @@ export const SectionItemView = Marionette.ItemView.extend({
         this.model.chapter.insertSection({after: this.model})
     }));
 
+    dropDownMenuItems.add(new HideShowMenuItem({}, {
+      section: this.model
+    }));
+
     if (this.options.entry.cutoff.isEnabled()) {
       dropDownMenuItems.add(new CutoffMenuItem({}, {
         cutoff: this.options.entry.cutoff,
@@ -155,16 +170,16 @@ export const SectionItemView = Marionette.ItemView.extend({
     );
   },
 
-  cutoffModeEnabled() {
-    return !!this.options.entry.site.get('cutoff_mode_name');
-  },
-
   updateActive() {
     const active =
       this.options.entry.sections.indexOf(this.model) === this.options.entry.get('currentSectionIndex');
 
     this.$el.toggleClass(styles.active, active);
     return active;
+  },
+
+  updateHidden() {
+    this.$el.toggleClass(styles.hidden, !!this.model.configuration.get('hidden'));
   }
 });
 
@@ -201,6 +216,32 @@ const CutoffMenuItem = Backbone.Model.extend({
       this.cutoff.isAtSection(this.section) ?
       'pageflow_scrolled.editor.section_item.reset_cutoff' :
       'pageflow_scrolled.editor.section_item.set_cutoff'
+    ));
+  }
+});
+
+const HideShowMenuItem = Backbone.Model.extend({
+  initialize: function(attributes, {section}) {
+    this.section = section;
+
+    this.listenTo(section.configuration, 'change:hidden', this.update);
+    this.update();
+  },
+
+  selected() {
+    if (this.section.configuration.get('hidden')) {
+      this.section.configuration.unset('hidden')
+    }
+    else {
+      this.section.configuration.set('hidden', true)
+    }
+  },
+
+  update() {
+    this.set('label', I18n.t(
+      this.section.configuration.get('hidden') ?
+      'pageflow_scrolled.editor.section_item.show' :
+      'pageflow_scrolled.editor.section_item.hide'
     ));
   }
 });

@@ -31,6 +31,23 @@ module PageflowScrolled
                              })
         end
 
+        it 'renders hidden chapters and sections' do
+          entry = create(:draft_entry, type_name: 'scrolled')
+          chapter = create(:scrolled_chapter, revision: entry.revision)
+          section = create(:section, chapter:, configuration: {hidden: true})
+          content_element = create(:content_element, section:)
+
+          result = render(helper, entry)
+
+          expect(result)
+            .to include_json(collections: {
+                               entries: [],
+                               chapters: [{id: chapter.id}],
+                               sections: [{id: section.id}],
+                               contentElements: [{id: content_element.id}],
+                             })
+        end
+
         it 'does not render files' do
           entry = create(:draft_entry, type_name: 'scrolled')
           create_used_file(:image_file, entry: entry)

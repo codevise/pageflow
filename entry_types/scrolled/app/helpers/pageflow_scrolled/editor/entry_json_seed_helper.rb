@@ -17,6 +17,7 @@ module PageflowScrolled
                                  scrolled_entry,
                                  skip_files: true,
                                  skip_i18n: true,
+                                 include_hidden_sections: true,
                                  include_unused_additional_seed_data: true)
       end
 

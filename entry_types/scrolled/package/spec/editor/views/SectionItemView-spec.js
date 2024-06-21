@@ -9,6 +9,8 @@ describe('SectionItemView', () => {
   useFakeXhr();
 
   useFakeTranslations({
+    'pageflow_scrolled.editor.section_item.hide': 'Hide',
+    'pageflow_scrolled.editor.section_item.show': 'Show',
     'pageflow_scrolled.editor.section_item.set_cutoff': 'Set cutoff point',
     'pageflow_scrolled.editor.section_item.reset_cutoff': 'Remove cutoff point',
     'pageflow_scrolled.editor.section_item.cutoff': 'Cutoff point',
@@ -16,6 +18,29 @@ describe('SectionItemView', () => {
 
   const {createEntry} = useEditorGlobals();
   const {render} = useReactBasedBackboneViews();
+
+  it('offer menu item to hide and show section', async () => {
+    const entry = createEntry({
+      sections: [
+        {id: 1, permaId: 100}
+      ]
+    });
+    const section = entry.sections.get(1)
+    const view = new SectionItemView({
+      entry,
+      model: section
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = render(view);
+    await user.click(getByRole('link', {name: 'Hide'}));
+
+    expect(section.configuration.get('hidden')).toEqual(true);
+
+    await user.click(getByRole('link', {name: 'Show'}));
+
+    expect(section.configuration.get('hidden')).toBeUndefined();
+  });
 
   it('does not offer menu item to set cutoff section by default', () => {
     const entry = createEntry({

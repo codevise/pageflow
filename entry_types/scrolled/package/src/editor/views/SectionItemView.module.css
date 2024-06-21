@@ -9,6 +9,18 @@
   composes: sectionWithTransition from './outline.module.css';
 }
 
+.hiddenIndicator {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hidden .hiddenIndicator {
+  display: block;
+}
+
 .outline {
   position: relative;
   border: solid selectionWidth transparent;
@@ -29,6 +41,8 @@
   align-items: center;
   gap: 5px;
   padding: 5px 0;
+  font-weight: 500;
+  color: var(--ui-error-color);
 }
 
 .cutoffIndicator::before,
@@ -40,9 +54,12 @@
 
 .thumbnailContainer {
   position: relative;
+  background-color: var(--ui-surface-color);
 }
 
-.thumbnail {}
+.hidden .thumbnail > * > * {
+  opacity: 0.3;
+}
 
 .clickMask {
   position: absolute;
