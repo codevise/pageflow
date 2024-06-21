@@ -46,6 +46,8 @@ json.config do
   json.file_licenses(
     I18n.t('pageflow.file_licenses', default: {}).slice(*entry_config.available_file_licenses)
   )
+
+  json.cut_off entry.cutoff_mode_enabled_for?(request)
 end
 
 unless options[:skip_i18n]

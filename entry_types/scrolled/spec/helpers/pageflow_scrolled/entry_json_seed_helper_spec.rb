@@ -1127,6 +1127,67 @@ module PageflowScrolled
                                          })
         end
       end
+
+      context 'cutoff' do
+        it 'renders false by default' do
+          entry = create(:published_entry,
+                         type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(config: {cutOff: false})
+        end
+
+        it 'renders cutoff mode result' do
+          pageflow_configure do |config|
+            config.cutoff_modes.register(
+              :test,
+              proc { true }
+            )
+          end
+
+          site = create(:site, cutoff_mode_name: 'test')
+          entry = create(:published_entry,
+                         site:,
+                         type_name: 'scrolled',
+                         revision_attributes: {
+                           configuration: {
+                             cutoff_section_perma_id: 100
+                           }
+                         })
+          chapter = create(:scrolled_chapter, position: 2, revision: entry.revision)
+          create(:section, chapter:, position: 2, perma_id: 100)
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(config: {cutOff: true})
+        end
+
+        it 'renders false for draft entry' do
+          pageflow_configure do |config|
+            config.cutoff_modes.register(
+              :test,
+              proc { true }
+            )
+          end
+
+          site = create(:site, cutoff_mode_name: 'test')
+          entry = create(:draft_entry,
+                         site:,
+                         type_name: 'scrolled',
+                         revision_attributes: {
+                           configuration: {
+                             cutoff_section_perma_id: 100
+                           }
+                         })
+          chapter = create(:scrolled_chapter, position: 2, revision: entry.revision)
+          create(:section, chapter:, position: 2, perma_id: 100)
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(config: {cutOff: false})
+        end
+      end
     end
 
     describe '#scrolled_entry_json_seed_script_tag' do

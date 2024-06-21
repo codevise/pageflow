@@ -1,5 +1,6 @@
 export {useAdditionalSeedData} from './additionalSeedData';
 export {useContentElementConsentVendor} from './consentVendors';
+export {useCutOff} from './cutoff';
 export {useShareProviders, useShareUrl} from './sharing';
 export {useEntryTranslations} from './entryTranslations';
 export {useEntryMetadata} from './metadata';
