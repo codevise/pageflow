@@ -59,6 +59,7 @@ module Pageflow
                            format: panorama_format,
                            convert_options: '-quality 90 -interlace Plane'}
         )
+        .merge(social_image_styles)
     end
 
     def url
@@ -88,6 +89,16 @@ module Pageflow
     rescue Paperclip::Errors::NotIdentifiedByImageMagickError
     end
 
+    def social_image_styles
+      if output_present?(:social)
+        {social: {geometry: '1024x1024>',
+                  format: :jpg,
+                  convert_options: '-quality 70 -interlace Plane'}}
+      else
+        {}
+      end
+    end
+
     def style_defaults
       if output_present?(:webp)
         {format: :webp, processors: [:pageflow_webp]}
@@ -97,7 +108,7 @@ module Pageflow
     end
 
     def set_output_presences
-      self.output_presences = {webp: true} if entry&.feature_state('webp_images')
+      self.output_presences = {webp: true, social: true} if entry&.feature_state('webp_images')
     end
   end
 end

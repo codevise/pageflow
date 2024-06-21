@@ -71,6 +71,13 @@ module Pageflow
         expect(styles[:panorama_medium].processor_options[:geometry]).to eq('100%')
       end
 
+      it 'does generate social style by default' do
+        image_file = build(:image_file, :uploading, width: 2000, height: 1000)
+        styles = image_file.attachment.styles
+
+        expect(styles).not_to have_key(:social)
+      end
+
       describe 'with webp outputs' do
         it 'turns jpg file into webp files' do
           Pageflow.config.thumbnail_styles[:square] = {
@@ -92,6 +99,21 @@ module Pageflow
           expect(styles[:square][:format]).to eq(:webp)
 
           expect(styles[:medium][:processors]).to eq([:pageflow_webp])
+        end
+      end
+
+      describe 'with social output' do
+        it 'keeps social image as jpg for compatibility reasons' do
+          image_file = build(:image_file,
+                             :uploading,
+                             file_name: 'image.jpg',
+                             output_presences: {
+                               social: true
+                             })
+
+          styles = image_file.attachment_styles(image_file.attachment)
+
+          expect(styles[:social][:format]).to eq(:jpg)
         end
       end
     end
@@ -128,7 +150,7 @@ module Pageflow
 
         image_file.attachment.reprocess!
 
-        expect(image_file.reload.present_outputs).to eq([:webp])
+        expect(image_file.reload.present_outputs).to eq([:webp, :social])
       end
 
       it 'does not fail if entry is missing' do
