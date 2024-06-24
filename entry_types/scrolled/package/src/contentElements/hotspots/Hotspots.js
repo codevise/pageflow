@@ -37,7 +37,17 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
           configuration={configuration}
           displayFullscreenToggle={contentElementWidth !== contentElementWidths.full &&
                                    configuration.enableFullscreen}
-          onFullscreenEnter={enterFullscreen} />
+          onFullscreenEnter={enterFullscreen}>
+          {children =>
+            <ContentElementBox>
+              <ContentElementFigure configuration={configuration}>
+                <div className={styles.clip}>
+                  {children}
+                </div>
+              </ContentElementFigure>
+            </ContentElementBox>
+          }
+        </HotspotsImage>
       }
       renderFullscreenChildren={() =>
         <HotspotsImage
@@ -51,7 +61,8 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
 
 export function HotspotsImage({
   contentElementId, contentElementWidth, configuration,
-  displayFullscreenToggle, onFullscreenEnter
+  displayFullscreenToggle, onFullscreenEnter,
+  children = children => children
 }) {
   const defaultImageFile = useFileWithInlineRights({
     configuration, collectionName: 'imageFiles', propertyName: 'image'
@@ -142,49 +153,47 @@ export function HotspotsImage({
                    fill={configuration.position === 'backdrop'}
                    opaque={!imageFile}>
         <div className={styles.outer}>
-          <ContentElementBox>
-            <ContentElementFigure configuration={configuration}>
-              <FitViewport.Content>
-                <div className={styles.stack}
-                     ref={contentRectRef}>
-                  <div className={styles.wrapper}
-                       ref={wrapperRef}>
-                    <Image imageFile={imageFile}
-                           load={shouldLoad}
-                           fill={false}
-                           structuredData={true}
-                           variant="large"
-                           preferSvg={true} />
-                    {areas.map((area, index) =>
-                      <Area key={index}
-                            area={area}
-                            contentElementId={contentElementId}
-                            portraitMode={portraitMode}
-                            activeImageVisible={activeIndex === index ||
-                                                (activeIndex < 0 && hoveredIndex === index)}
-                            highlighted={hoveredIndex === index || highlightedIndex === index || activeIndex === index}
-                            onMouseEnter={() => setHoveredIndex(index)}
-                            onMouseLeave={() => setHoveredIndex(-1)}
-                            onClick={() => {
-                              if (!isEditable || isSelected) {
-                                activateArea(index)
-                              }
-                            }} />
-                    )}
-                  </div>
-                  {panZoomEnabled && <Scroller areas={areas}
-                                               ref={scrollerRef}
-                                               setStepRef={setScrollerStepRef}
-                                               activeIndex={activeIndex}
-                                               onScrollButtonClick={index => activateArea(index)} />}
+          {children(
+            <FitViewport.Content>
+              <div className={styles.stack}
+                   ref={contentRectRef}>
+                <div className={styles.wrapper}
+                     ref={wrapperRef}>
+                  <Image imageFile={imageFile}
+                         load={shouldLoad}
+                         fill={false}
+                         structuredData={true}
+                         variant="large"
+                         preferSvg={true} />
+                  {areas.map((area, index) =>
+                    <Area key={index}
+                          area={area}
+                          contentElementId={contentElementId}
+                          portraitMode={portraitMode}
+                          activeImageVisible={activeIndex === index ||
+                                              (activeIndex < 0 && hoveredIndex === index)}
+                          highlighted={hoveredIndex === index || highlightedIndex === index || activeIndex === index}
+                          onMouseEnter={() => setHoveredIndex(index)}
+                          onMouseLeave={() => setHoveredIndex(-1)}
+                          onClick={() => {
+                            if (!isEditable || isSelected) {
+                              activateArea(index)
+                            }
+                          }} />
+                  )}
                 </div>
-                {displayFullscreenToggle &&
-                 <ToggleFullscreenCornerButton isFullscreen={false}
-                                               onEnter={onFullscreenEnter} />}
-                <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
-              </FitViewport.Content>
-            </ContentElementFigure>
-          </ContentElementBox>
+                {panZoomEnabled && <Scroller areas={areas}
+                                             ref={scrollerRef}
+                                             setStepRef={setScrollerStepRef}
+                                             activeIndex={activeIndex}
+                                             onScrollButtonClick={index => activateArea(index)} />}
+              </div>
+              {displayFullscreenToggle &&
+               <ToggleFullscreenCornerButton isFullscreen={false}
+                                             onEnter={onFullscreenEnter} />}
+              <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
+            </FitViewport.Content>
+          )}
           {areas.map((area, index) =>
             <Tooltip key={index}
                      area={area}

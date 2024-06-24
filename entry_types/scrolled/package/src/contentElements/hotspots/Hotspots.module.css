@@ -1,3 +1,18 @@
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.outer {
+  position: relative;
+}
+
+.clip {
+  overflow: hidden;
+}
+
 .stack {
   display: grid;
   grid-auto-columns: 100%;
@@ -9,17 +24,6 @@
 .stack > div {
   grid-row: 1;
   grid-column: 1;
-}
-
-.center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-}
-
-.outer {
-  position: relative;
 }
 
 .wrapper {
