@@ -51,11 +51,6 @@ editor.contentElementTypes.register('hotspots', {
       this.input('enablePanZoom', SelectInputView, {
         values: ['phonePlatform', 'always', 'never']
       });
-      this.input('panZoomInitially', CheckBoxInputView, {
-        disabledBinding: 'enablePanZoom',
-        disabled: enablePanZoom => enablePanZoom !== 'always',
-        displayUncheckedIfDisabled: true
-      });
       this.view(SeparatorView);
       this.input('enableFullscreen', CheckBoxInputView, {
         disabledBinding: ['position', 'width'],
