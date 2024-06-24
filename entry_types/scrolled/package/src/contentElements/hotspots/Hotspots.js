@@ -82,7 +82,7 @@ export function HotspotsImage({
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
-  const portraitMode = portraitOrientation && portraitImageFile
+  const portraitMode = !!(portraitOrientation && portraitImageFile);
   const imageFile = portraitMode ? portraitImageFile : defaultImageFile;
 
   const panZoomEnabled = configuration.enablePanZoom === 'always' ||
