@@ -178,10 +178,10 @@ module Pageflow
     describe '#entry_privacy_link_url' do
       it 'uses configured url and locale' do
         site = create(:site,
-                         privacy_link_url: 'https://example.com/privacy')
+                      privacy_link_url: 'https://example.com/privacy')
         entry = PublishedEntry.new(create(:entry,
                                           :published,
-                                          site: site,
+                                          site:,
                                           published_revision_attributes: {
                                             locale: 'de'
                                           }))
@@ -200,6 +200,16 @@ module Pageflow
         result = helper.entry_privacy_link_url(entry)
 
         expect(result).to be_nil
+      end
+
+      it 'supports javascript scheme' do
+        site = create(:site,
+                      privacy_link_url: 'javascript:triggerConsentLayer()')
+        entry = PublishedEntry.new(create(:entry, :published, site:))
+
+        result = helper.entry_privacy_link_url(entry)
+
+        expect(result).to eq('javascript:triggerConsentLayer()')
       end
     end
 
@@ -368,17 +378,29 @@ module Pageflow
 
       it 'includes privacy link if configured' do
         site = create(:site,
-                         privacy_link_url: 'https://example.com/privacy')
+                      privacy_link_url: 'https://example.com/privacy')
         entry = PublishedEntry.new(create(:entry,
                                           :published,
-                                          site: site,
+                                          site:,
                                           published_revision_attributes: {
                                             locale: 'de'
                                           }))
 
         result = helper.entry_global_links(entry)
 
-        expect(result).to have_selector('a[href="https://example.com/privacy?lang=de"]')
+        expect(result)
+          .to have_selector('a[target="_blank"][href="https://example.com/privacy?lang=de"]')
+      end
+
+      it 'supports javascript scheme for privacy link' do
+        site = create(:site,
+                      privacy_link_url: 'javascript:triggerConsentLayer()')
+        entry = PublishedEntry.new(create(:entry, :published, site:))
+
+        result = helper.entry_global_links(entry)
+
+        expect(result)
+          .to have_selector('a:not([target])[href="javascript:triggerConsentLayer()"]')
       end
     end
   end

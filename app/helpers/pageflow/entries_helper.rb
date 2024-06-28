@@ -61,6 +61,8 @@ module Pageflow
 
     def entry_privacy_link_url(entry)
       return unless entry.site.privacy_link_url.present?
+      return entry.site.privacy_link_url if entry.site.privacy_link_url.start_with?('javascript:')
+
       "#{entry.site.privacy_link_url}?lang=#{entry.locale}"
     end
 
@@ -102,7 +104,8 @@ module Pageflow
       if entry.site.privacy_link_url.present?
         links << link_to(I18n.t('pageflow.public.privacy_notice'),
                          entry_privacy_link_url(entry),
-                         target: '_blank',
+                         target:
+                           entry.site.privacy_link_url.start_with?('javascript:') ? nil : '_blank',
                          tabindex: 2,
                          class: 'privacy')
       end
