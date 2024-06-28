@@ -1,5 +1,5 @@
 export function getPanZoomStepTransform({
-  imageFileWidth, imageFileHeight, areaOutline, areaZoom, containerWidth, containerHeight
+  imageFileWidth, imageFileHeight, areaOutline, areaZoom, containerWidth, containerHeight, indicatorPositions = []
 }) {
   const rect = getBoundingRect(areaOutline || []);
 
@@ -11,14 +11,21 @@ export function getPanZoomStepTransform({
   const displayAreaHeight = rect.height / 100 * displayImageHeight;
   const displayAreaTop = rect.top / 100 * displayImageHeight;
 
-  const scale = (100 - areaZoom) / 100 + (areaZoom / 100) * containerHeight / displayAreaHeight;
+  const scale = (100 - areaZoom) / 100 + (areaZoom / 100) * containerHeight / (displayAreaHeight + 0);
 
-  const translateX = (containerWidth - displayAreaWidth * scale) / 2 - displayAreaLeft * scale;
-  const translateY = (containerHeight - displayAreaHeight * scale) / 2 - displayAreaTop * scale;
+  let translateX = (containerWidth - displayAreaWidth * scale) / 2 - displayAreaLeft * scale;
+  let translateY = (containerHeight - displayAreaHeight * scale - 0) / 2 - displayAreaTop * scale;
+
+  translateX = Math.min(0, Math.max(containerWidth - displayImageWidth * scale, translateX));
+  translateY = Math.min(0, Math.max(containerHeight - displayImageHeight * scale, translateY));
 
   return {
     x: translateX,
     y: translateY,
+    indicators: indicatorPositions.map(indicatorPosition => ({
+      x: translateX + displayImageWidth * indicatorPosition[0] / 100 * (scale - 1),
+      y: translateY + displayImageHeight * indicatorPosition[1] / 100 * (scale - 1)
+    })),
     scale
   };
 }

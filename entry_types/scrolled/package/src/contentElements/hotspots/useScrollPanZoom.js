@@ -10,6 +10,7 @@ export function useScrollPanZoom({
   onChange
 }) {
   const wrapperRef = useRef();
+  const indicatorRefs = useRef([]);
 
   const onVisibleIndexChange = useCallback(index => onChange(index - 1), [onChange]);
   const [scrollerRef, setStepRef] = useIntersectionObserver({
@@ -33,11 +34,13 @@ export function useScrollPanZoom({
       {
         x: 0,
         y: 0,
-        scale: 1
+        scale: 1,
+        indicators: []
       },
       ...areas.map(area => getPanZoomStepTransform({
         areaOutline: portraitMode ? area.portraitOutline : area.outline,
         areaZoom: (portraitMode ? area.portraitZoom : area.zoom) || 0,
+        indicatorPositions: areas.map(area => (portraitMode ? area.portraitIndicatorPosition : area.indicatorPosition) || [50, 50]),
         imageFileWidth,
         imageFileHeight,
         containerWidth,
@@ -46,7 +49,8 @@ export function useScrollPanZoom({
       {
         x: 0,
         y: 0,
-        scale: 1
+        scale: 1,
+        indicators: []
       }
     ];
   }, [
@@ -74,7 +78,19 @@ export function useScrollPanZoom({
         duration: 200
       }
     );
-  }, [scrollerRef, steps]);
+
+    areas.forEach((area, index) => {
+      indicatorRefs.current[index].animate(
+        [
+          keyframe(steps[from + 1].indicators?.[index] || {x: 0, y: 0}),
+          keyframe(steps[to + 1].indicators?.[index] || {x: 0, y: 0})
+        ],
+        {
+          duration: 200
+        }
+      );
+    });
+  }, [scrollerRef, steps, areas]);
 
   useIsomorphicLayoutEffect(() => {
     if (!steps) {
@@ -86,23 +102,39 @@ export function useScrollPanZoom({
       axis: 'inline'
     });
 
-    const animation = wrapperRef.current.animate(
+    const animations = []
+
+    animations.push(wrapperRef.current.animate(
       steps.map(keyframe),
       {
         fill: 'both',
         timeline: scrollTimeline
       }
-    );
+    ));
 
-    return () => animation.cancel();
-  }, [steps]);
+    areas.forEach((area, index) => {
+      animations.push(indicatorRefs.current[index].animate(
+        steps.map(step => keyframe(step.indicators?.[index] || {x: 0, y: 0})),
+        {
+          fill: 'both',
+          timeline: scrollTimeline
+        }
+      ));
+    });
 
-  return [wrapperRef, scrollerRef, setStepRef, scrollFromTo];
+    return () => animations.forEach(animation => animation.cancel());
+  }, [areas, steps]);
+
+  const setIndicatorRef = index => ref => {
+    indicatorRefs.current[index] = ref;
+  }
+
+  return [wrapperRef, scrollerRef, setStepRef, setIndicatorRef, scrollFromTo];
 }
 
 function keyframe(step) {
   return {
-    transform: `translate(${step.x}px, ${step.y}px) scale(${step.scale})`,
+    transform: `translate(${step.x}px, ${step.y}px) scale(${step.scale || 1})`,
     easing: 'ease',
   };
 }

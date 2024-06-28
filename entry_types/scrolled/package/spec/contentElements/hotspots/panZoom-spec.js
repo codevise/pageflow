@@ -14,7 +14,7 @@ describe('getPanZoomStepTransform', () => {
     expect(result).toMatchObject({
       scale: 1,
       x: -300,
-      y: -100
+      y: 0
     });
   });
 

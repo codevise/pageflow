@@ -9,8 +9,6 @@ import {
   useFile
 } from 'pageflow-scrolled/frontend';
 
-import {Indicator} from './Indicator';
-
 import styles from './Area.module.css';
 
 export function Area({
@@ -44,7 +42,6 @@ export function Area({
              load={shouldLoad}
              variant={'large'}
              preferSvg={true} />
-      <Indicator area={area} portraitMode={portraitMode} />
       {isEditable && isSelected && <Outline points={outline} />}
     </div>
   );

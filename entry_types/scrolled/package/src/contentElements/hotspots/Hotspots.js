@@ -19,6 +19,7 @@ import {
 
 import {Scroller} from './Scroller';
 import {Area} from './Area';
+import {Indicator} from './Indicator';
 import {Tooltip, insideTooltip} from './Tooltip';
 
 import {useContentRect} from './useContentRect';
@@ -106,7 +107,7 @@ export function HotspotsImage({
     enabled: panZoomEnabled && shouldLoad
   });
 
-  const [wrapperRef, scrollerRef, setScrollerStepRef, scrollFromToArea] = useScrollPanZoom({
+  const [wrapperRef, scrollerRef, setScrollerStepRef, setIndicatorRef, scrollFromToArea] = useScrollPanZoom({
     containerRect,
     imageFile,
     areas,
@@ -182,6 +183,13 @@ export function HotspotsImage({
                           }} />
                   )}
                 </div>
+                {areas.map((area, index) =>
+                  <Indicator key={index}
+                             area={area}
+                             outerRef={setIndicatorRef(index)}
+                             portraitMode={portraitMode}
+                             hidden={panZoomEnabled && activeIndex >= 0 && activeIndex !== index} />
+                )}
                 {panZoomEnabled && <Scroller areas={areas}
                                              ref={scrollerRef}
                                              setStepRef={setScrollerStepRef}
