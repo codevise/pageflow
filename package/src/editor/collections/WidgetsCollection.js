@@ -2,6 +2,7 @@ import Backbone from 'backbone';
 import _ from 'underscore';
 
 import {Widget} from '../models/Widget';
+import {SubsetCollection} from './SubsetCollection';
 
 export const WidgetsCollection = Backbone.Collection.extend({
   model: Widget,
@@ -32,5 +33,13 @@ export const WidgetsCollection = Backbone.Collection.extend({
         subject.trigger('sync:widgets', subject, response, {});
       }
     }));
+  },
+
+  withInsertPoint(insertPoint) {
+    return new SubsetCollection({
+      parent: this,
+      watchAttribute: 'type_name',
+      filter: widget => widget.widgetType().insertPoint === insertPoint
+    });
   }
 });

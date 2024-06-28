@@ -42,7 +42,8 @@ describe('WidgetTypes', () => {
         navigation: [
           {
             name: 'fancy_bar',
-            translationKey: 'pageflow.fancy_bar.widget_type_name'
+            translationKey: 'pageflow.fancy_bar.widget_type_name',
+            insertPoint: 'bottom_of_entry'
           }
         ]
       });
@@ -50,6 +51,7 @@ describe('WidgetTypes', () => {
       var widgetType = widgetTypes.findByName('fancy_bar');
 
       expect(widgetType.name).toBe('fancy_bar');
+      expect(widgetType.insertPoint).toBe('bottom_of_entry');
     });
   });
 

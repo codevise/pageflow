@@ -39,7 +39,7 @@ export function watchCollections(entry, {dispatch}) {
     dispatch
   }));
 
-  teardownFns.push(watchCollection(widgets, {
+  teardownFns.push(watchCollection(widgets.withInsertPoint('react'), {
     name: 'widgets',
     attributes: [{typeName: 'type_name'}, 'role', {permaId: 'role'}],
     keyAttribute: 'permaId',

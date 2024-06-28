@@ -14,6 +14,9 @@ describe('useWidget', () => {
       setup: dispatch =>
         watchCollections(
           factories.entry(ScrolledEntry, {}, {
+            widgetTypes: factories.widgetTypes([{
+              role: 'navigation', name: 'customNavigation', insertPoint: 'react'
+            }]),
             widgetsAttributes: [{
               type_name: 'customNavigation',
               role: 'navigation',
@@ -31,6 +34,28 @@ describe('useWidget', () => {
       role: 'navigation',
       configuration: {text: 'some Text'}
     });
+  });
+
+  it('filters out non react widgets in editor', () => {
+    const {result} = renderHookInEntry(() => useWidget({role: 'consent'}), {
+      setup: dispatch =>
+        watchCollections(
+          factories.entry(ScrolledEntry, {}, {
+            widgetTypes: factories.widgetTypes([{
+              role: 'consent', name: 'some_consent_provider', insertPoint: 'bottom_of_entry'
+            }]),
+            widgetsAttributes: [{
+              type_name: 'some_consent_provider',
+              role: 'consent'
+            }],
+            entryTypeSeed: normalizeSeed()
+          }),
+          {dispatch}
+        )
+    });
+    const widget = result.current;
+
+    expect(widget).toBeUndefined();
   });
 
   it('reads data from seed', () => {
