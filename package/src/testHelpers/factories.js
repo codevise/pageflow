@@ -351,6 +351,7 @@ function ensureFilesCollections(options) {
 
 function ensureWidgetsCollections(options) {
   if (!options.widgets) {
-    options.widgets = new WidgetsCollection(options.widgetsAttributes);
+    options.widgets = new WidgetsCollection(options.widgetsAttributes,
+                                            {widgetTypes: options.widgetTypes});
   }
 }

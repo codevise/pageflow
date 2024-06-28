@@ -6,6 +6,7 @@ export const WidgetType = Object.extend({
   initialize: function(serverSideConfig, clientSideConfig) {
     this.name = serverSideConfig.name;
     this.translationKey = serverSideConfig.translationKey;
+    this.insertPoint = serverSideConfig.insertPoint;
     this.configurationEditorView = clientSideConfig.configurationEditorView;
     this.isOptional = clientSideConfig.isOptional;
   },

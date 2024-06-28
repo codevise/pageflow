@@ -213,10 +213,29 @@ module Pageflow
       end
     end
 
+    describe '#widget_types_json_seeds' do
+      it 'renders name, translationKey and insertPoint by role' do
+        widget_type = TestWidgetType.new(name: 'fancy_bar',
+                                         roles: ['navigation'],
+                                         insert_point: :react)
+        pageflow_configure do |config|
+          config.widget_types.clear
+          config.widget_types.register(widget_type)
+        end
+
+        result = JSON.parse(helper.widget_types_json_seeds(Pageflow.config))
+
+        expect(result['navigation'][0]['name']).to eq('fancy_bar')
+        expect(result['navigation'][0]['translationKey'])
+          .to eq('pageflow.fancy_bar.widget_type_name')
+        expect(result['navigation'][0]['insertPoint']).to eq('react')
+      end
+    end
+
     describe '#widgets_json_seeds' do
       it 'includes role as id, type_name, configuration' do
         entry = DraftEntry.new(create(:entry))
-        widget_type = TestWidgetType.new(name: 'fancy_bar', roles: 'navigation')
+        widget_type = TestWidgetType.new(name: 'fancy_bar', roles: ['navigation'])
         create(:widget,
                subject: entry.draft,
                type_name: 'fancy_bar',
@@ -237,7 +256,7 @@ module Pageflow
 
       it 'includes placeholders for roles without width' do
         entry = DraftEntry.new(create(:entry))
-        widget_type = TestWidgetType.new(name: 'test', roles: 'foo')
+        widget_type = TestWidgetType.new(name: 'test', roles: ['foo'])
 
         pageflow_configure do |config|
           config.widget_types.clear

@@ -32,7 +32,8 @@ module Pageflow
           result[role] ||= []
           result[role] << {
             name: widget_type.name,
-            translationKey: widget_type.translation_key
+            translationKey: widget_type.translation_key,
+            insertPoint: widget_type.insert_point
           }
         end
       end.to_json.html_safe
