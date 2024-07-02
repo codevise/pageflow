@@ -32,4 +32,19 @@ describe('WidgetsCollection', () => {
 
     expect(subsetCollection.pluck('type_name')).toEqual(['consent_bar']);
   });
+
+  it('ignores null widgets', () => {
+    const widgetTypes = factories.widgetTypes([
+      {role: 'consent', name: 'consent_bar', insertPoint: 'react'}
+    ]);
+    const widgets = new WidgetsCollection([
+      {type_name: 'consent_bar', role: 'consent'},
+      {type_name: null, role: 'other'},
+    ], {widgetTypes});
+    widgets.subject = factories.entry();
+
+    const subsetCollection = widgets.withInsertPoint('react');
+
+    expect(subsetCollection.pluck('type_name')).toEqual(['consent_bar']);
+  });
 });

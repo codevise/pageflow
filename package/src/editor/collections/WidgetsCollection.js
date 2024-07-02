@@ -39,7 +39,9 @@ export const WidgetsCollection = Backbone.Collection.extend({
     return new SubsetCollection({
       parent: this,
       watchAttribute: 'type_name',
-      filter: widget => widget.widgetType().insertPoint === insertPoint
+      filter: widget => (
+        widget.widgetType() && widget.widgetType().insertPoint === insertPoint
+      )
     });
   }
 });
