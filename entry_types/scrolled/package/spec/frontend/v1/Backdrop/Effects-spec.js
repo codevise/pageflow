@@ -36,8 +36,4 @@ describe('Backdrop Effects getFilter', () => {
 
     expect(result).toEqual('grayscale(20%)');
   });
-
-  it('sets up scroll animation  ', () => {
-
-  });
 });

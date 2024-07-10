@@ -145,6 +145,33 @@ describe('backdrop animation effects', () => {
     expect(animateMock).not.toHaveBeenCalled();
   });
 
+  it('neither calls animate nor sets up view timeline when reduced motion is preferred', () => {
+    window.matchMedia.mockPrefersReducedMotion();
+
+    renderEntry({
+      seed: {
+        imageFiles: [{permaId: 100}],
+        sections: [
+          {
+            permaId: 1,
+            configuration: {
+              backdrop: {image: 100},
+              backdropEffects: [
+                {
+                  name: 'scrollParallax',
+                  value: 40
+                }
+              ]
+            }
+          }
+        ]
+      }
+    });
+
+    expect(viewTimelines.length).toEqual(0);
+    expect(animateMock).not.toHaveBeenCalled();
+  });
+
   it('supports auto zoom', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: {
@@ -242,6 +269,34 @@ describe('backdrop animation effects', () => {
         ]
       }
     });
+
+    expect(animateMock).not.toHaveBeenCalled();
+  });
+
+  it('does not autozoom if reduced motion is preferred', () => {
+    window.matchMedia.mockPrefersReducedMotion();
+
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        imageFiles: [{permaId: 100}],
+        sections: [
+          {
+            permaId: 1,
+            configuration: {
+              backdrop: {image: 100},
+              backdropEffects: [
+                {
+                  name: 'autoZoom',
+                  value: 50
+                }
+              ]
+            }
+          }
+        ]
+      }
+    });
+
+    getSectionByPermaId(1).simulateScrollingIntoView();
 
     expect(animateMock).not.toHaveBeenCalled();
   });

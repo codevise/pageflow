@@ -1,4 +1,5 @@
 let mockOrientation;
+let mockPrefersReducedMotion;
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -17,6 +18,13 @@ Object.defineProperty(window, 'matchMedia', {
         matches: mockOrientation !== 'portrait'
       };
     }
+    else if (query === '(prefers-reduced-motion)') {
+      return {
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        matches: mockPrefersReducedMotion
+      };
+    }
     else {
       return {
         addEventListener: jest.fn(),
@@ -27,6 +35,10 @@ Object.defineProperty(window, 'matchMedia', {
   })
 });
 
-beforeEach(() => mockOrientation = 'landscape');
+beforeEach(() => {
+  mockOrientation = 'landscape';
+  mockPrefersReducedMotion = false;
+});
 
 window.matchMedia.mockPortrait = () => mockOrientation = 'portrait';
+window.matchMedia.mockPrefersReducedMotion = () => mockPrefersReducedMotion = true;
