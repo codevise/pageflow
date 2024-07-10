@@ -2,8 +2,9 @@
 
 @media screen and breakpoint-md {
   .scroller {
-    overflow: hidden;
+    overflow: scroll;
     scroll-behavior: smooth;
+    scrollbar-width: none;
 
     /* Prevent clipping chapter tooltips vertically. */
     padding-bottom: 90vh;
@@ -12,6 +13,10 @@
     /* For browsers that do not support clip-path (e.g. IE11). */
     margin: 0 auto;
     width: 58%;
+  }
+
+  .scroller::-webkit-scrollbar {
+    display: none;
   }
 
   .scroller > * {
