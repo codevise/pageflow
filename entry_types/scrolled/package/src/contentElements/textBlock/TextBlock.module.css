@@ -61,7 +61,9 @@
 
 .text blockquote::before,
 .text blockquote::after {
+  font-family: var(--theme-quote-mark-font-family);
   font-weight: var(--theme-quote-mark-font-weight, bold);
+  color: var(--theme-quote-mark-color);
   opacity: var(--theme-quote-mark-opacity, 0.5);
   width: var(--theme-quote-mark-width);
 }
