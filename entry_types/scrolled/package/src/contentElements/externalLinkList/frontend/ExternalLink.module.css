@@ -69,22 +69,28 @@
   --content-text-color: var(--theme-external-links-card-text-color, lightContentTextColor);
 }
 
-.details > .link_title {
-  font-weight: bold;
-  margin: 0 0 20px;
-}
-
-@media screen and breakpoint-sm {
-  .details > .link_title {
-    font-size: 1.2em;
-  }
-}
-
-.details > p {
+.link_title,
+.link_desc {
   width: 100%;
   white-space: normal;
   line-height: 1.3em;
   margin-bottom: 0;
+}
+
+.link_title {
+  composes: typography-externalLinkTitle from global;
+  font-weight: bold;
+  margin: 0 0 20px;
+}
+
+.link_desc {
+  composes: typography-externalLinkDescription from global;
+}
+
+@media screen and breakpoint-sm {
+  .link_title {
+    font-size: 1.2em;
+  }
 }
 
 .tooltip {
