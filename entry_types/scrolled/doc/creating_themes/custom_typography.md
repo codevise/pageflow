@@ -79,6 +79,8 @@ The following rule names are supported:
 | `default_navigation_chapter_link` | Applies to chapter links in the default navigation. |
 | `default_navigation_chapter_summary` | Applies to chapter summary texts in the default navigation. |
 | `default_navigation_active_chapter_link` | Applies to the chapter link representing the current chapter. |
+| `external_link_title` | Applies to titles of external links. |
+| `external_link_description` | Applies to descriptions of external links. |
 
 ### Responsive Breakpoints
 
