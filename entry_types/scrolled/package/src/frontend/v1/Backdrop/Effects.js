@@ -6,6 +6,7 @@ import styles from '../../Backdrop.module.css';
 import {useSectionViewTimeline} from '../../SectionViewTimelineProvider';
 import {useSectionLifecycle} from '../../useSectionLifecycle';
 import {useIsStaticPreview} from '../../useScrollPositionLifecycle';
+import {prefersReducedMotion} from '../../prefersReducedMotion';
 
 export function Effects({file, children}) {
   const ref = useRef();
@@ -45,7 +46,7 @@ export function Effects({file, children}) {
   const y = file?.motifArea ? 50 - (file.motifArea.top + file.motifArea.height / 2) : 0;
 
   useIsomorphicLayoutEffect(() => {
-    if (autoZoomValue && isVisible) {
+    if (autoZoomValue && isVisible && !prefersReducedMotion()) {
       const animation = ref.current.animate(
         {
           transform: [

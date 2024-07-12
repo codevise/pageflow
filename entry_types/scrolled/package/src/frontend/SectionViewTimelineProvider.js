@@ -1,5 +1,7 @@
 import React, {useContext, useEffect, useState, useRef} from 'react';
 
+import {prefersReducedMotion} from './prefersReducedMotion';
+
 const SectionViewTimelineContext = React.createContext();
 
 export function SectionViewTimelineProvider({backdrop, children}) {
@@ -9,7 +11,7 @@ export function SectionViewTimelineProvider({backdrop, children}) {
   const isNeeded = backdrop?.effects?.some(effect => effect.name === 'scrollParallax');
 
   useEffect(() => {
-    if (!isNeeded || !window.ViewTimeline) {
+    if (!isNeeded || !window.ViewTimeline || prefersReducedMotion()) {
       return;
     }
 
