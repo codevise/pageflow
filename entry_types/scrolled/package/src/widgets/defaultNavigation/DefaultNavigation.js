@@ -26,7 +26,7 @@ import {Scroller} from './Scroller';
 
 import styles from './DefaultNavigation.module.css';
 
-export function DefaultNavigation({configuration}) {
+export function DefaultNavigation({configuration, ExtraButtons, MobileMenu}) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);
@@ -104,8 +104,8 @@ export function DefaultNavigation({configuration}) {
 
     return (
       <Scroller>
-        <nav className={classNames(styles.navigationChapters, {[styles.navigationChaptersHidden]: mobileNavHidden})}
-             role="navigation">
+        <nav className={classNames(styles.navigationChapters,
+                                   {[styles.navigationChaptersHidden]: mobileNavHidden || MobileMenu})}>
           <ul className={styles.chapterList}>
             {renderChapterLinks(chapters)}
           </ul>
@@ -119,38 +119,42 @@ export function DefaultNavigation({configuration}) {
 
   return (
     <>
-    <header className={classNames(styles.navigationBar, {
-      [styles.navigationBarExpanded]: (
-        navExpanded ||
-        (!isPhonePlatform && configuration.fixedOnDesktop) ||
-        !mobileNavHidden
-      ),
-      [styles.hasChapters]: hasChapters
-    })} style={{'--theme-accent-color': paletteColor(configuration.accentColor)}}>
-      <div className={styles.navigationBarContentWrapper}>
-        {hasChapters && <HamburgerIcon onClick={handleBurgerMenuClick}
-                                       mobileNavHidden={mobileNavHidden}/>}
+      <header className={classNames(styles.navigationBar, {
+        [styles.navigationBarExpanded]: (
+          navExpanded ||
+          (!isPhonePlatform && configuration.fixedOnDesktop) ||
+          !mobileNavHidden
+        ),
+        [styles.hasChapters]: hasChapters
+      })} style={{'--theme-accent-color': paletteColor(configuration.accentColor)}}>
+        <div className={styles.navigationBarContentWrapper}>
+          {(hasChapters || MobileMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}
+                                                         mobileNavHidden={mobileNavHidden}/>}
 
-        <SkipLinks />
-        <Logo />
+          <SkipLinks />
+          <Logo />
 
-        {renderNav()}
+          {renderNav()}
+          {MobileMenu && <MobileMenu configuration={configuration}
+                                     open={!mobileNavHidden}
+                                     close={() => setMobileNavHidden(true)} />}
 
-        <div className={classNames(styles.contextIcons)}>
-          {!configuration.hideToggleMuteButton && <ToggleMuteButton />}
-          <TranslationsMenu />
-          {!theme.options.hideLegalInfoButton &&<LegalInfoMenu tooltipOffset={hideSharingButton ? -40 : 0} />}
-          {!hideSharingButton && <SharingMenu shareProviders={shareProviders} />}
+          <div className={classNames(styles.contextIcons)}>
+            {!configuration.hideToggleMuteButton && <ToggleMuteButton />}
+            <TranslationsMenu />
+            {!theme.options.hideLegalInfoButton &&<LegalInfoMenu tooltipOffset={hideSharingButton ? -40 : 0} />}
+            {!hideSharingButton && <SharingMenu shareProviders={shareProviders} />}
+            {ExtraButtons && <ExtraButtons />}
+          </div>
         </div>
-      </div>
 
-      <div className={styles.progressBar} onMouseEnter={handleProgressBarMouseEnter}>
-        <span className={styles.progressIndicator} style={{width: readingProgress + '%'}}/>
-      </div>
-    </header>
-    <Widget role="defaultNavigationExtra"
-            props={{navigationExpanded: navExpanded,
-                    mobileNavigationVisible: !mobileNavHidden}} />
+        <div className={styles.progressBar} onMouseEnter={handleProgressBarMouseEnter}>
+          <span className={styles.progressIndicator} style={{width: readingProgress + '%'}}/>
+        </div>
+      </header>
+      <Widget role="defaultNavigationExtra"
+              props={{navigationExpanded: navExpanded,
+                      mobileNavigationVisible: !mobileNavHidden}} />
     </>
   );
 }
