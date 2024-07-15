@@ -7,6 +7,7 @@ import unmuted from './icons/unmuted.svg';
 import gear from './icons/gear.svg';
 import copyright from './icons/copyright.svg';
 import world from './icons/world.svg';
+import close from './icons/close.svg';
 
 import email from './icons/social/email.svg';
 import facebook from './icons/social/facebook.svg';
@@ -29,6 +30,7 @@ const icons = {
   gear,
   copyright,
   world,
+  close,
 
   email,
   facebook,
@@ -46,7 +48,7 @@ const icons = {
  *
  * @param {Object} props
  * @param {string} props.name -
- *   Either: copyright, expand, gear, information, muted, share, unmuted,
+ *   Either: copyright, expand, gear, information, muted, share, unmuted, close,
  *   email, facebook, linkedIn, telegram, twitter, whatsApp,
  *   arrowLeft, arrowRight, world
  * @params {number} [props.width] - Image width.
