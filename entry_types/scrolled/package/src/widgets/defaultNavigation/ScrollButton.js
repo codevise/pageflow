@@ -1,8 +1,7 @@
 import React, {useRef} from 'react';
 import classNames from 'classnames';
 
-import ChevronLeftIcon from './icons/chevronLeft.svg';
-import ChevronRightIcon from './icons/chevronRight.svg';
+import {ThemeIcon} from 'pageflow-scrolled/frontend';
 
 import styles from './ScrollButton.module.css';
 
@@ -19,7 +18,7 @@ export function ScrollButton({type, contentRect, onStep}) {
                                    [styles.visible]: visible})}
             onMouseDown={handleMouseDown}
             onKeyPress={handleKeyPress}>
-      {type === 'start' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+      <ThemeIcon name={type === 'start' ? 'arrowLeft' : 'arrowRight'} />
     </button>
   );
 

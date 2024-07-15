@@ -8,12 +8,16 @@
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease;
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .button svg {
-  width: 18px;
-  height: 18px;
+  width: 30px;
+  height: 30px;
   color: var(--theme-widget-primary-color);
+  flex-shrink: 0;
 }
 
 .visible {
