@@ -36,7 +36,7 @@ json.config do
     entry_config
       .additional_frontend_seed_data
       .for(entry,
-           self,
+           request,
            include_unused: options[:include_unused_additional_seed_data])
   )
 

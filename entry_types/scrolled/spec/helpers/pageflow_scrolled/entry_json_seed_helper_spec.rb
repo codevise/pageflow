@@ -954,6 +954,29 @@ module PageflowScrolled
                                        })
       end
 
+      it 'passes request to seed callable' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_frontend_seed_data.register(
+              'someSeed',
+              proc { |request:, **| {some: request.original_url} }
+            )
+          end
+        end
+
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         additionalSeedData: {
+                                           someSeed: {
+                                             some: 'http://test.host'
+                                           }
+                                         }
+                                       })
+      end
+
       context 'consent vendors' do
         include_context 'fake translations'
 
