@@ -71,11 +71,12 @@ export function LinkTooltipProvider({
   );
 }
 
-export function LinkPreview({href, openInNewTab, children}) {
+export function LinkPreview({href, openInNewTab, children, className}) {
   const {activate, deactivate} = useContext(UpdateContext);
   const ref = useRef();
   return (
     <span ref={ref}
+          className={className}
           onMouseEnter={() => activate(href, openInNewTab, ref)}
           onMouseLeave={deactivate}
           onMouseDown={deactivate}>
