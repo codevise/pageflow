@@ -2,14 +2,21 @@ import React from 'react';
 
 import {LinkTooltipProvider, LinkPreview} from './LinkTooltip';
 import {ActionButton} from './ActionButton'
+import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useSelectLinkDestination} from './useSelectLinkDestination';
 import {useI18n} from '../i18n';
 
 import styles from './EditableLink.module.css';
 
-export function EditableLink({className, href, openInNewTab, children, linkPreviewDisabled, onChange}) {
+export function EditableLink({
+  className, href, openInNewTab, children, linkPreviewDisabled,
+  onChange,
+  linkPreviewPosition = 'below',
+  actionButtonPosition = 'outside'
+}) {
   const selectLinkDestination = useSelectLinkDestination();
   const {t} = useI18n({locale: 'ui'});
+  const {isSelected} = useContentElementEditorState();
 
   function handleButtonClick() {
     selectLinkDestination().then(onChange, () => {});
@@ -17,17 +24,19 @@ export function EditableLink({className, href, openInNewTab, children, linkPrevi
 
   return (
     <div className={styles.wrapper}>
-      <ActionButton text={href ?
-                          t('pageflow_scrolled.inline_editing.change_link_destination') :
-                          t('pageflow_scrolled.inline_editing.select_link_destination')}
-                    icon="link"
-                    position="outside"
-                    onClick={handleButtonClick} />
-      <LinkTooltipProvider disabled={linkPreviewDisabled} position="below" align="left" gap={5}>
-        <LinkPreview href={href} openInNewTab={openInNewTab}>
-          <span className={className}>
-            {children}
-          </span>
+      {isSelected &&
+       <ActionButton text={href ?
+                           t('pageflow_scrolled.inline_editing.change_link_destination') :
+                           t('pageflow_scrolled.inline_editing.select_link_destination')}
+                     icon="link"
+                     position={actionButtonPosition}
+                     onClick={handleButtonClick} />}
+      <LinkTooltipProvider disabled={linkPreviewDisabled}
+                           position={linkPreviewPosition}
+                           align="left"
+                           gap={5}>
+        <LinkPreview href={href} openInNewTab={openInNewTab} className={className}>
+          {children}
         </LinkPreview>
       </LinkTooltipProvider>
     </div>

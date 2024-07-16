@@ -34,6 +34,11 @@
   right: -0.8em;
 }
 
+.position-outsideLeft {
+  top: calc(100% + 0.3em);
+  left: 0;
+}
+
 .position-outsideIndented {
   top: calc(100% + 0.3em);
   right: 0.5em;
