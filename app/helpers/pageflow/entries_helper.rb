@@ -86,28 +86,33 @@ module Pageflow
       links = []
 
       if entry.site.imprint_link_label.present? && entry.site.imprint_link_url.present?
-        links << link_to(raw(entry.site.imprint_link_label),
-                         entry.site.imprint_link_url,
-                         target: '_blank',
-                         tabindex: 2,
-                         class: 'legal')
+        links << link_to(
+          raw(entry.site.imprint_link_label),
+          entry.site.imprint_link_url,
+          target: entry.site.imprint_link_url.start_with?('javascript:') ? nil : '_blank',
+          tabindex: 2,
+          class: 'legal'
+        )
       end
 
       if entry.site.copyright_link_label.present? && entry.site.copyright_link_url.present?
-        links << link_to(raw(entry.site.copyright_link_label),
-                         entry.site.copyright_link_url,
-                         target: '_blank',
-                         tabindex: 2,
-                         class: 'copy')
+        links << link_to(
+          raw(entry.site.copyright_link_label),
+          entry.site.copyright_link_url,
+          target: entry.site.copyright_link_url.start_with?('javascript:') ? nil : '_blank',
+          tabindex: 2,
+          class: 'copy'
+        )
       end
 
       if entry.site.privacy_link_url.present?
-        links << link_to(I18n.t('pageflow.public.privacy_notice'),
-                         entry_privacy_link_url(entry),
-                         target:
-                           entry.site.privacy_link_url.start_with?('javascript:') ? nil : '_blank',
-                         tabindex: 2,
-                         class: 'privacy')
+        links << link_to(
+          I18n.t('pageflow.public.privacy_notice'),
+          entry_privacy_link_url(entry),
+          target: entry.site.privacy_link_url.start_with?('javascript:') ? nil : '_blank',
+          tabindex: 2,
+          class: 'privacy'
+        )
       end
 
       if links.any?
