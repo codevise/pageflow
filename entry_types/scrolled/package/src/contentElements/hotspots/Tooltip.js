@@ -1,5 +1,17 @@
-import React, {useLayoutEffect, useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import classNames from 'classnames';
+
+import {
+  useFloating, useDismiss, useInteractions, useRole,
+  CompositeItem,
+  FloatingArrow, FloatingFocusManager,
+  arrow, shift, offset, flip,
+  autoUpdate
+} from '@floating-ui/react';
+
+import {TooltipPortal} from './TooltipPortal';
+import {useTooltipTransitionStyles} from './useTooltipTransitionStyles';
+import {insideScrollButton} from './ScrollButton';
 
 import {
   EditableText,
@@ -19,8 +31,8 @@ import styles from './Tooltip.module.css';
 export function Tooltip({
   area,
   contentElementId, portraitMode, configuration, visible, active,
-  panZoomEnabled, imageFile, containerRect,
-  onMouseEnter, onMouseLeave, onClick
+  panZoomEnabled, imageFile, containerRect, flip: shouldFlip,
+  onMouseEnter, onMouseLeave, onClick, onDismiss,
 }) {
   const {t} = useI18n({locale: 'ui'});
   const updateConfiguration = useContentElementConfigurationUpdate();
@@ -35,7 +47,39 @@ export function Tooltip({
   const tooltipTexts = configuration.tooltipTexts || {};
   const tooltipLinks = configuration.tooltipLinks || {};
 
-  const [ref, delta] = useKeepInViewport(visible);
+  const arrowRef = useRef();
+  const {refs, floatingStyles, context} = useFloating({
+    open: visible,
+    onOpenChange: open => !open && onDismiss(),
+    placement: area.tooltipPosition === 'above' ? 'top' : 'bottom',
+    middleware: [
+      offset(20),
+      shift(),
+      shouldFlip && flip(),
+      arrow({
+        element: arrowRef
+      })
+    ],
+    whileElementsMounted(referenceEl, floatingEl, update) {
+      return autoUpdate(referenceEl, floatingEl, update, {
+        elementResize: false,
+        layoutShift: false,
+      });
+    }
+  });
+
+  const role = useRole(context, {role: 'label'});
+
+  const dismiss = useDismiss(context, {
+    outsidePressEvent: 'mousedown',
+    outsidePress: event => !insideScrollButton(event.target)
+  });
+
+  const {getReferenceProps, getFloatingProps} = useInteractions([
+    role,
+    dismiss,
+  ]);
+  const {isMounted, styles: transitionStyles} = useTooltipTransitionStyles(context);
 
   function handleTextChange(propertyName, value) {
     updateConfiguration({
@@ -75,47 +119,59 @@ export function Tooltip({
   }
 
   return (
-    <div ref={ref}
-         className={classNames(styles.tooltip,
-                               styles[`position-${area.tooltipPosition || 'below'}`],
-                               {[styles.visible]: visible,
-                                [styles.editable]: isEditable})}
-         style={{left: indicatorPosition[0],
-                 top: indicatorPosition[1],
-                 '--delta': `${delta}px`}}
-         onMouseEnter={onMouseEnter}
-         onMouseLeave={onMouseLeave}
-         onClick={onClick}>
-      <div className={styles.box}>
-        {presentOrEditing('title') &&
-         <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>
-           <Text inline scaleCategory="hotspotsTooltipTitle">
-             <EditableInlineText value={tooltipTexts[area.id]?.title}
-                                 onChange={value => handleTextChange('title', value)}
-                                 placeholder={t('pageflow_scrolled.inline_editing.type_heading')} />
-           </Text>
-         </h3>}
-        {presentOrEditing('description') &&
-         <EditableText value={tooltipTexts[area.id]?.description}
-                       onChange={value => handleTextChange('description', value)}
-                       scaleCategory="hotspotsTooltipDescription"
-                       placeholder={t('pageflow_scrolled.inline_editing.type_text')} />}
-        {presentOrEditing('link') &&
-         <Text inline scaleCategory="hotspotsTooltipLink">
-           <EditableLink href={tooltipLinks[area.id]?.href}
-                         openInNewTab={tooltipLinks[area.id]?.openInNewTab}
-                         linkPreviewDisabled={utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)}
-                         className={styles.link}
-                         onChange={value => handleLinkChange(value)}>
-             <EditableInlineText value={tooltipTexts[area.id]?.link}
-                                 onChange={value => handleTextChange('link', value)}
-                                 placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
-             ›
-           </EditableLink>
-         </Text>}
-      </div>
-    </div>
-  );
+    <>
+      <CompositeItem render={<div className={styles.compositeItem} />}>
+        <div ref={refs.setReference}
+             className={styles.reference}
+             style={{left: indicatorPosition[0],
+                     top: indicatorPosition[1]}}
+             {...getReferenceProps()} />
+      </CompositeItem>
+      {isMounted &&
+       <TooltipPortal>
+         <FloatingFocusManager context={context} modal={false} initialFocus={-1} returnFocus={false}>
+           <div style={transitionStyles}>
+             <div ref={refs.setFloating}
+                  style={floatingStyles}
+                  className={classNames(styles.box,
+                                        {[styles.editable]: isEditable})}
+                  onMouseEnter={onMouseEnter}
+                  onMouseLeave={onMouseLeave}
+                  onClick={onClick}
+                  {...getFloatingProps()}>
+               <FloatingArrow ref={arrowRef} context={context} />
+               {presentOrEditing('title') &&
+                <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>
+                  <Text inline scaleCategory="hotspotsTooltipTitle">
+                    <EditableInlineText value={tooltipTexts[area.id]?.title}
+                                        onChange={value => handleTextChange('title', value)}
+                                        placeholder={t('pageflow_scrolled.inline_editing.type_heading')} />
+                  </Text>
+                </h3>}
+               {presentOrEditing('description') &&
+                <EditableText value={tooltipTexts[area.id]?.description}
+                              onChange={value => handleTextChange('description', value)}
+                              scaleCategory="hotspotsTooltipDescription"
+                              placeholder={t('pageflow_scrolled.inline_editing.type_text')} />}
+               {presentOrEditing('link') &&
+                <Text inline scaleCategory="hotspotsTooltipLink">
+                  <EditableLink href={tooltipLinks[area.id]?.href}
+                                openInNewTab={tooltipLinks[area.id]?.openInNewTab}
+                                linkPreviewDisabled={utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)}
+                                className={styles.link}
+                                onChange={value => handleLinkChange(value)}>
+                    <EditableInlineText value={tooltipTexts[area.id]?.link}
+                                        onChange={value => handleTextChange('link', value)}
+                                        placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
+                    ›
+                  </EditableLink>
+                </Text>}
+             </div>
+           </div>
+         </FloatingFocusManager>
+       </TooltipPortal>}
+    </>
+);
 }
 
 function getIndicatorPosition({
@@ -149,48 +205,4 @@ function getIndicatorPosition({
   else {
     return indicatorPositionInPercent.map(coord => `${coord}%`);
   }
-}
-
-export function insideTooltip(element) {
-  return !!element.closest(`.${styles.tooltip}`);
-}
-
-function useKeepInViewport(visible) {
-  const ref = useRef();
-  const [delta, setDelta] = useState(0);
-
-  useLayoutEffect(() => {
-    if (!visible) {
-      return;
-    }
-
-    const current = ref.current;
-
-    const intersectionObserver = new IntersectionObserver(
-      entries => {
-        if (entries[entries.length - 1].intersectionRatio < 1) {
-          const rect = current.getBoundingClientRect();
-
-          if (rect.left < 0) {
-            setDelta(-rect.left);
-          }
-          else if (rect.right > document.body.clientWidth) {
-            setDelta(document.body.clientWidth - rect.right);
-          }
-        }
-        else {
-          setDelta(0);
-        }
-      },
-      {
-        threshold: 1
-      }
-    );
-
-    intersectionObserver.observe(current);
-
-    return () => intersectionObserver.unobserve(current);
-  }, [visible]);
-
-  return [ref, delta];
 }

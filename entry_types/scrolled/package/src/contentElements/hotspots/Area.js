@@ -32,12 +32,12 @@ export function Area({
     <div className={classNames(styles.area, {[styles.highlighted]: highlighted,
                                              [styles.activeImageVisible]: activeImageVisible})}
          style={{'--color': areaColor(area, portraitMode)}}>
-      <button aria-labelledby={`hotspots-tooltip-title-${contentElementId}-${area.id}`}
-              className={styles.clip}
-              style={{clipPath: polygon(outline)}}
-              onClick={onClick}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave} />
+      <div className={styles.clip}
+           style={{clipPath: polygon(outline)}}
+           tabIndex="-1"
+           onClick={onClick}
+           onMouseEnter={onMouseEnter}
+           onMouseLeave={onMouseLeave} />
       <Image imageFile={imageFile}
              load={shouldLoad}
              variant={'large'}

@@ -13,6 +13,7 @@ export function ScrollButton({direction, disabled, onClick}) {
     <button className={classNames(styles.button,
                                   styles[direction],
                                   {[styles.disabled]: disabled})}
+            tabIndex="-1"
             onClick={onClick}>
       <div className={styles.icon}>
         <ThemeIcon name={direction === 'left' ? 'arrowLeft' : 'arrowRight'}
@@ -26,4 +27,8 @@ export function ScrollButton({direction, disabled, onClick}) {
       </div>
     </button>
   );
+}
+
+export function insideScrollButton(element) {
+  return !!element.closest(`.${styles.button}`);
 }

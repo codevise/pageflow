@@ -15,6 +15,9 @@ import userEvent from '@testing-library/user-event';
 import {getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
 jest.mock('contentElements/hotspots/panZoom');
 
+jest.mock('contentElements/hotspots/TooltipPortal');
+jest.mock('contentElements/hotspots/useTooltipTransitionStyles');
+
 describe('Hotspots', () => {
   useFakeTranslations({
     'pageflow_scrolled.public.next': 'Next'
@@ -84,11 +87,11 @@ describe('Hotspots', () => {
       ]
     };
 
-    const {getByRole} = renderInContentElement(
+    const {container} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(getByRole('button')).toHaveStyle(
+    expect(container.querySelector(`.${areaStyles.clip}`)).toHaveStyle(
       'clip-path: polygon(10% 20%, 10% 30%, 40% 30%, 40% 20%)'
     );
   });
@@ -110,11 +113,11 @@ describe('Hotspots', () => {
     };
 
     window.matchMedia.mockPortrait();
-    const {getByRole} = renderInContentElement(
+    const {container} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(getByRole('button')).toHaveStyle(
+    expect(container.querySelector(`.${areaStyles.clip}`)).toHaveStyle(
       'clip-path: polygon(20% 20%, 20% 30%, 30% 30%, 30% 20%)'
     );
   });
@@ -135,14 +138,14 @@ describe('Hotspots', () => {
     };
 
     window.matchMedia.mockPortrait();
-    const {getByRole} = renderInContentElement(
+    const {container} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(getByRole('button')).toHaveStyle(
+    expect(container.querySelector(`.${areaStyles.clip}`)).toHaveStyle(
       'clip-path: polygon(10% 20%, 10% 30%, 40% 30%, 40% 20%)'
     );
-  });
+    });
 
   it('renders area indicators', () => {
     const seed = {
@@ -325,7 +328,7 @@ describe('Hotspots', () => {
     });
   });
 
-  it('renders tooltip', () => {
+  it('renders tooltip texts and links', async () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
       imageFiles: [{id: 1, permaId: 100}]
@@ -350,10 +353,11 @@ describe('Hotspots', () => {
       }
     };
 
-    const {queryByText, getByRole} = renderInContentElement(
+    const user = userEvent.setup();
+    const {container, queryByText, getByRole} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
-
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
     expect(queryByText('Some title')).not.toBeNull();
     expect(queryByText('Some description')).not.toBeNull();
     expect(queryByText('Some link')).not.toBeNull();
@@ -361,7 +365,7 @@ describe('Hotspots', () => {
     expect(getByRole('link')).toHaveAttribute('target', '_blank');
   });
 
-  it('does not render tooltip link if link text is blank', () => {
+  it('does not render tooltip link if link text is blank', async () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
       imageFiles: [{id: 1, permaId: 100}]
@@ -386,14 +390,16 @@ describe('Hotspots', () => {
       }
     };
 
-    const {queryByRole} = renderInContentElement(
+    const user = userEvent.setup();
+    const {container, queryByRole} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
 
     expect(queryByRole('link')).toBeNull();
   });
 
-  it('positions tooltip based on indicator position', () => {
+  it('positions tooltip reference based on indicator position', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
       imageFiles: [{id: 1, permaId: 100}]
@@ -411,7 +417,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveStyle({
+    expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
       left: '10%',
       top: '20%'
     });
@@ -438,7 +444,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveStyle({
+    expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
       left: '20%',
       top: '30%'
     });
@@ -464,13 +470,13 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveStyle({
+    expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
       left: '10%',
       top: '20%'
     });
   });
 
-  it('shows tooltip on area click', async () => {
+  it('shows tooltip on area hover', async () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
       imageFiles: [{id: 1, permaId: 100}]
@@ -479,6 +485,7 @@ describe('Hotspots', () => {
       image: 100,
       areas: [
         {
+          id: 1,
           outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
           indicatorPosition: [20, 25],
         }
@@ -491,59 +498,15 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {getByRole, container} = renderInContentElement(
+    const {queryByText, container} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+    expect(queryByText('Some title')).toBeNull();
 
-    await user.click(getByRole('button'));
+    await user.hover(container.querySelector(`.${areaStyles.clip}`));
 
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
-  });
-
-  it('shows tooltip on area or tooltip hover', async () => {
-    const seed = {
-      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
-      imageFiles: [{id: 1, permaId: 100}]
-    };
-    const configuration = {
-      image: 100,
-      areas: [
-        {
-          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
-          indicatorPosition: [20, 25],
-        }
-      ],
-      tooltipTexts: {
-        1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
-        }
-      }
-    };
-
-    const user = userEvent.setup();
-    const {getByRole, container} = renderInContentElement(
-      <Hotspots configuration={configuration} />, {seed}
-    );
-
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
-
-    await user.hover(getByRole('button'));
-
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
-
-    await user.unhover(getByRole('button'));
-
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
-
-    await user.hover(container.querySelector(`.${tooltipStyles.tooltip}`));
-
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
-
-    await user.unhover(container.querySelector(`.${tooltipStyles.tooltip}`));
-
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+    expect(queryByText('Some title')).not.toBeNull();
   });
 
   it('does not show other tooltip on hover after area has been clicked', async () => {
@@ -576,14 +539,14 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {getByRole, container} = renderInContentElement(
+    const {container, queryByText} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    await user.click(getByRole('button', {name: 'Area 1'}));
-    await user.hover(getByRole('button', {name: 'Area 2'}));
+    await user.click(container.querySelectorAll(`.${areaStyles.clip}`)[0]);
+    await user.hover(container.querySelectorAll(`.${areaStyles.clip}`)[1]);
 
-    expect(container.querySelectorAll(`.${tooltipStyles.visible}`).length).toEqual(1);
+    expect(queryByText('Area 1')).not.toBeNull();
   });
 
   it('hides tooltip when clicked outside area', async () => {
@@ -595,6 +558,7 @@ describe('Hotspots', () => {
       image: 100,
       areas: [
         {
+          id: 1,
           outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
           indicatorPosition: [20, 25],
         }
@@ -607,14 +571,14 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {getByRole, container} = renderInContentElement(
+    const {container, queryByText} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    await user.click(getByRole('button'));
+    await user.click(container.querySelector(`.${areaStyles.clip}`));
     await user.click(document.body);
 
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull();
   });
 
   it('does not hide tooltip on click inside tooltip', async () => {
@@ -639,14 +603,14 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, getByRole, getByText} = renderInContentElement(
+    const {container, getByText} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    await user.click(getByRole('button'));
+    await user.click(container.querySelector(`.${areaStyles.clip}`));
     await user.click(getByText('Some title'));
 
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+    expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
   });
 
   it('does not hide tooltip on unhover after click in tooltip', async () => {
@@ -671,15 +635,15 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, getByRole, getByText} = renderInContentElement(
+    const {container, getByText} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    await user.hover(getByRole('button'));
+    await user.hover(container.querySelector(`.${areaStyles.clip}`));
     await user.click(getByText('Some title'));
-    await user.unhover(getByRole('button'));
+    await user.unhover(container.querySelector(`.${areaStyles.clip}`));
 
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+    expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
   });
 
   it('supports active image rendered inside area', async () => {
@@ -828,18 +792,18 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {getByRole, container} = renderInContentElement(
+    const {container} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
     expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
 
-    await user.click(getByRole('button'));
+    await user.click(container.querySelector(`.${areaStyles.clip}`));
 
     expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
   });
 
-  it('shows active image on area or tooltip hover', async () => {
+  it('shows active image on area hover', async () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
       imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
@@ -861,25 +825,17 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {getByRole, container} = renderInContentElement(
+    const {container} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
     expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
 
-    await user.hover(getByRole('button'));
+    await user.hover(container.querySelector(`.${areaStyles.clip}`));
 
     expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
 
-    await user.unhover(getByRole('button'));
-
-    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
-
-    await user.hover(container.querySelector(`.${tooltipStyles.tooltip}`));
-
-    expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
-
-    await user.unhover(container.querySelector(`.${tooltipStyles.tooltip}`));
+    await user.unhover(container.querySelector(`.${areaStyles.clip}`));
 
     expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
   });
@@ -1002,7 +958,7 @@ describe('Hotspots', () => {
     );
     triggerEditorCommand({type: 'SET_ACTIVE_AREA', index: 0});
 
-    expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+    expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
   });
 
   it('sets active area id in transient state in editor', async () => {
@@ -1022,14 +978,14 @@ describe('Hotspots', () => {
     const setTransientState = jest.fn();
 
     const user = userEvent.setup();
-    const {getByRole} = renderInContentElement(
+    const {container} = renderInContentElement(
       <Hotspots configuration={configuration} />,
       {
         seed,
         editorState: {isEditable: true, isSelected: true, setTransientState}
       }
     );
-    await user.click(getByRole('button'));
+    await user.click(container.querySelector(`.${areaStyles.clip}`));
 
     expect(setTransientState).toHaveBeenCalledWith({activeAreaId: 1})
   });
@@ -1335,7 +1291,7 @@ describe('Hotspots', () => {
         source: expect.any(HTMLDivElement),
         axis: 'inline'
       });
-      expect(animateMock).toHaveBeenCalledTimes(1);
+      expect(animateMock).toHaveBeenCalledTimes(2);
       expect(animateMock).toHaveBeenCalledWith(
         Array.from({length: 3}, () => expect.objectContaining({
           transform: expect.any(String),
@@ -1515,10 +1471,10 @@ describe('Hotspots', () => {
         <Hotspots configuration={configuration} />, {seed}
       );
       simulateScrollPosition('near viewport');
-
       intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
         .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
-      expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
+
+      expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
     });
 
     it('only sets up intersection observer when near viewport', () => {
@@ -1570,16 +1526,16 @@ describe('Hotspots', () => {
       };
 
       const user = userEvent.setup();
-      const {container, getByRole, simulateScrollPosition} = renderInContentElement(
+      const {container, simulateScrollPosition} = renderInContentElement(
         <Hotspots configuration={configuration} />, {seed}
       );
       const scroller = container.querySelector(`.${scrollerStyles.scroller}`);
       scroller.scrollTo = jest.fn();
       simulateScrollPosition('near viewport');
-      await user.click(getByRole('button', {name: 'Area 1'}));
+      await user.click(container.querySelector(`.${areaStyles.clip}`));
 
       expect(scroller.scrollTo).toHaveBeenCalled();
-      expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+      expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull();
     });
 
     it('scrolls pan zoom scroll when setting active area via command and pan zoom is enabled', () => {
@@ -1611,7 +1567,7 @@ describe('Hotspots', () => {
       triggerEditorCommand({type: 'SET_ACTIVE_AREA', index: 0});
 
       expect(scroller.scrollTo).toHaveBeenCalled();
-      expect(container.querySelector(`.${tooltipStyles.tooltip}`)).not.toHaveClass(tooltipStyles.visible);
+      expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull();
     });
 
     it('scrolls pan zoom scroller instead of resetting active area directly when pan zoom is enabled', async () => {
@@ -1647,8 +1603,8 @@ describe('Hotspots', () => {
       scroller.scrollTo = jest.fn();
       await user.click(document.body);
 
-      expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveClass(tooltipStyles.visible);
       expect(scroller.scrollTo).toHaveBeenCalled();
+      expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
     });
 
     it('scroller lets pointer events pass when no area is active', async () => {
@@ -1733,7 +1689,7 @@ describe('Hotspots', () => {
       intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
         .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
 
-      expect(container.querySelector(`.${tooltipStyles.tooltip}`)).toHaveStyle({
+      expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
         left: '100px',
         top: '50px'
       });
