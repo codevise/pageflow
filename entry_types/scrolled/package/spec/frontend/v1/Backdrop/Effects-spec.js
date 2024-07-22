@@ -36,4 +36,18 @@ describe('Backdrop Effects getFilter', () => {
 
     expect(result).toEqual('grayscale(20%)');
   });
+
+  it('returns null by default', () => {
+    const result = getFilter([]);
+
+    expect(result).toBeNull();
+  });
+
+  it('returns null for animation effects', () => {
+    const result = getFilter([
+      {name: 'autoZoom', value: 70}
+    ]);
+
+    expect(result).toBeNull();
+  });
 });

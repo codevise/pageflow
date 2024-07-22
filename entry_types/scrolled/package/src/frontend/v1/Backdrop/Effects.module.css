@@ -1,0 +1,21 @@
+.effects {
+  height: 100%;
+}
+
+.autoZoom {
+  animation: autoZoom var(--auto-zoom-duration) 1 ease;
+  animation-fill-mode: forwards;
+}
+
+@keyframes autoZoom {
+  from {
+    transform: translate(calc(-1 * var(--auto-zoom-origin-x)), calc(-1 * var(--auto-zoom-origin-y)))
+               scale(1)
+               translate(var(--auto-zoom-origin-x), var(--auto-zoom-origin-y));
+  }
+  to {
+    transform: translate(calc(-1 * var(--auto-zoom-origin-x)), calc(-1 * var(--auto-zoom-origin-y)))
+               scale(1.2)
+               translate(var(--auto-zoom-origin-x), var(--auto-zoom-origin-y));
+  }
+}

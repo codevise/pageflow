@@ -1,7 +1,8 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
+import classNames from 'classnames';
 import {useIsomorphicLayoutEffect} from '../../useIsomorphicLayoutEffect';
 
-import styles from '../../Backdrop.module.css';
+import styles from './Effects.module.css';
 
 import {useSectionViewTimeline} from '../../SectionViewTimelineProvider';
 import {useSectionLifecycle} from '../../useSectionLifecycle';
@@ -17,6 +18,8 @@ export function Effects({file, children}) {
 
   const scrollParallaxValue = getEffectValue(file, 'scrollParallax');
   const autoZoomValue = getEffectValue(file, 'autoZoom');
+
+  const [autoZoomRunning, setAutoZoomRunning] = useState(false);
 
   useIsomorphicLayoutEffect(() => {
     if (scrollParallaxValue && !isStaticPreview && sectionViewTimeline) {
@@ -34,6 +37,7 @@ export function Effects({file, children}) {
           fill: 'forwards',
           timeline: sectionViewTimeline,
           rangeStart: 'cover 0%',
+          composite: 'add',
           rangeEnd: 'cover 100%'
         }
       );
@@ -42,35 +46,18 @@ export function Effects({file, children}) {
     }
   }, [sectionViewTimeline, scrollParallaxValue, isStaticPreview]);
 
-  const x = file?.motifArea ? 50 - (file.motifArea.left + file.motifArea.width / 2) : 0;
-  const y = file?.motifArea ? 50 - (file.motifArea.top + file.motifArea.height / 2) : 0;
+
 
   useIsomorphicLayoutEffect(() => {
-    if (autoZoomValue && isVisible && !prefersReducedMotion()) {
-      const animation = ref.current.animate(
-        {
-          transform: [
-            `translate(${-x}%, ${-y}%) scale(1) translate(${x}%, ${y}%)`,
-            `translate(${-x}%, ${-y}%) scale(1.2) translate(${x}%, ${y}%)`,
-          ]
-        },
-        {
-          iterations: 1,
-          fill: 'forwards',
-          duration: 1000 * (autoZoomValue / 100) + 40000 * (1 - autoZoomValue / 100),
-          composite: 'add',
-          easing: 'ease'
-        }
-      );
-
-      return () => animation.cancel();
-    }
-  }, [autoZoomValue, isVisible, x, y]);
+    setAutoZoomRunning(autoZoomValue && isVisible && !prefersReducedMotion());
+  }, [autoZoomValue, isVisible]);
 
   return (
     <div ref={ref}
-         className={styles.effects}
-         style={{filter: getFilter(file?.effects || [])}}>
+         className={classNames(styles.effects,
+                               {[styles.autoZoom]: autoZoomRunning})}
+         style={{filter: getFilter(file?.effects || []),
+                 ...getAutoZoomProperties(autoZoomValue, file)}}>
       {children}
     </div>
   );
@@ -81,7 +68,7 @@ function getEffectValue(file, name) {
 }
 
 export function getFilter(effects) {
-  return effects.map(effect => {
+  const components = effects.map(effect => {
     if (effect.name === 'blur') {
       return `blur(${effect.value / 100 * 10}px)`;
     }
@@ -94,5 +81,22 @@ export function getFilter(effects) {
     else if (['grayscale', 'sepia'].includes(effect.name)) {
       return `${effect.name}(${effect.value}%)`;
     }
-  }).filter(Boolean).join(' ');
+  }).filter(Boolean);
+
+  return components.length ? components.join(' ') : null;
+}
+
+function getAutoZoomProperties(autoZoomValue, file) {
+  if (!autoZoomValue) {
+    return null;
+  }
+
+  const x = file?.motifArea ? 50 - (file.motifArea.left + file.motifArea.width / 2) : 0;
+  const y = file?.motifArea ? 50 - (file.motifArea.top + file.motifArea.height / 2) : 0;
+
+  return {
+    '--auto-zoom-origin-x': `${x}%`,
+    '--auto-zoom-origin-y': `${y}%`,
+    '--auto-zoom-duration': `${1000 * (autoZoomValue / 100) + 40000 * (1 - autoZoomValue / 100)}ms`
+  };
 }
