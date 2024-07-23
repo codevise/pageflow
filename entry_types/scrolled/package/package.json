@@ -8,7 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "@egjs/view360": "^3.4.3",
-    "@floating-ui/react": "^0.26.19",
+    "@floating-ui/react": "https://github.com/tf/floating-ui-react#react-16-focus-fix",
     "@headlessui/react": "^1.6.6",
     "core-js": "^3.6.5",
     "debounce": "^1.2.0",
