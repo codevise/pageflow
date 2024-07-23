@@ -1,8 +1,10 @@
 import {renderEntry, usePageObjects} from 'support/pageObjects';
 import '@testing-library/jest-dom/extend-expect'
 
+import effectsStyles from 'frontend/v1/Backdrop/Effects.module.css';
+
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
-jest.mock('frontend/usePortraitOrientation')
+jest.mock('frontend/usePortraitOrientation');
 
 describe('backdrop animation effects', () => {
   usePageObjects();
@@ -173,44 +175,7 @@ describe('backdrop animation effects', () => {
   });
 
   it('supports auto zoom', () => {
-    const {getSectionByPermaId} = renderEntry({
-      seed: {
-        imageFiles: [{permaId: 100}],
-        sections: [
-          {
-            permaId: 1,
-            configuration: {
-              backdrop: {image: 100},
-              backdropEffects: [
-                {
-                  name: 'autoZoom',
-                  value: 50
-                }
-              ]
-            }
-          }
-        ]
-      }
-    });
-
-    getSectionByPermaId(1).simulateScrollingIntoView();
-
-    expect(viewTimelines.length).toEqual(0);
-    expect(animateMock).toHaveBeenCalledWith(
-      {
-        transform: [
-          'translate(0%, 0%) scale(1) translate(0%, 0%)',
-          'translate(0%, 0%) scale(1.2) translate(0%, 0%)'
-        ]
-      },
-      expect.objectContaining({
-        duration: 20500
-      })
-    );
-  });
-
-  it('uses motif area as transform prigin', () => {
-    const {getSectionByPermaId} = renderEntry({
+    const {getSectionByPermaId, container} = renderEntry({
       seed: {
         imageFiles: [{permaId: 100}],
         sections: [
@@ -234,23 +199,37 @@ describe('backdrop animation effects', () => {
     });
 
     getSectionByPermaId(1).simulateScrollingIntoView();
+    const autoZoomElement = container.querySelector(`.${effectsStyles.autoZoom}`);
 
     expect(viewTimelines.length).toEqual(0);
-    expect(animateMock).toHaveBeenCalledWith(
-      {
-        transform: [
-          'translate(-45%, 40%) scale(1) translate(45%, -40%)',
-          'translate(-45%, 40%) scale(1.2) translate(45%, -40%)'
+    expect(autoZoomElement).not.toBeNull();
+    expect(autoZoomElement).toHaveStyle('--auto-zoom-duration: 20500ms;');
+    expect(autoZoomElement).toHaveStyle('--auto-zoom-origin-x: 45%;');
+    expect(autoZoomElement).toHaveStyle('--auto-zoom-origin-y: -40%;');
+  });
+
+  it('does not set auto zoom custom properties by default', () => {
+    const {container} = renderEntry({
+      seed: {
+        imageFiles: [{permaId: 100}],
+        sections: [
+          {
+            permaId: 1,
+            configuration: {
+              backdrop: {
+                image: 100
+              }
+            }
+          }
         ]
-      },
-      expect.objectContaining({
-        duration: 20500
-      })
-    );
+      }
+    });
+
+    expect(container.querySelector('[style*="--auto-zoom"]')).toBeNull();
   });
 
   it('only triggers auto zoom once visible', () => {
-    renderEntry({
+    const {container} = renderEntry({
       seed: {
         imageFiles: [{permaId: 100}],
         sections: [
@@ -270,13 +249,13 @@ describe('backdrop animation effects', () => {
       }
     });
 
-    expect(animateMock).not.toHaveBeenCalled();
+    expect(container.querySelector(`.${effectsStyles.autoZoom}`)).toBeNull();
   });
 
   it('does not autozoom if reduced motion is preferred', () => {
     window.matchMedia.mockPrefersReducedMotion();
 
-    const {getSectionByPermaId} = renderEntry({
+    const {getSectionByPermaId, container} = renderEntry({
       seed: {
         imageFiles: [{permaId: 100}],
         sections: [
@@ -298,6 +277,6 @@ describe('backdrop animation effects', () => {
 
     getSectionByPermaId(1).simulateScrollingIntoView();
 
-    expect(animateMock).not.toHaveBeenCalled();
+    expect(container.querySelector(`.${effectsStyles.autoZoom}`)).toBeNull();
   });
 });
