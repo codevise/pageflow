@@ -1,10 +1,13 @@
 import {SidebarEditAreaView} from 'contentElements/hotspots/editor/SidebarEditAreaView';
 import {AreasCollection} from 'contentElements/hotspots/editor/models/AreasCollection';
 
-import {Tabs, useFakeTranslations} from 'pageflow/testHelpers';
-import {useEditorGlobals} from 'support';
+import {ConfigurationEditor, Tabs, useFakeTranslations} from 'pageflow/testHelpers';
+import {useEditorGlobals, useFakeXhr} from 'support';
+import {within} from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 
 describe('SidebarEditAreaView', () => {
+  useFakeXhr();
   const {createEntry} = useEditorGlobals();
 
   useFakeTranslations({
@@ -74,5 +77,85 @@ describe('SidebarEditAreaView', () => {
     const tabs = Tabs.find(view);
 
     expect(tabs.tabLabels()).toEqual(['Area']);
+  });
+
+  it('renders zoom inputs if pan zoom is enabled', async () => {
+    const entry = createEntry({
+      imageFiles: [
+        {perma_id: 10},
+        {perma_id: 11}
+      ],
+      contentElements: [
+        {
+          id: 1,
+          typeName: 'hotspots',
+          configuration: {
+            image: 10,
+            portraitImage: 11,
+            enablePanZoom: 'always',
+            areas: [{id: 1, zoom: 0}]
+          }
+        }
+      ]
+    });
+    const contentElement = entry.contentElements.get(1);
+    const areas = AreasCollection.forContentElement(contentElement);
+    const view = new SidebarEditAreaView({
+      model: areas.get(1),
+      collection: areas,
+      entry,
+      contentElement
+    });
+
+    const user = userEvent.setup();
+    const {getByText} = within(view.render().el);
+
+    let configurationEditor = ConfigurationEditor.find(view);
+    expect(configurationEditor.inputPropertyNames()).toContain('zoom');
+
+    await user.click(getByText('Portrait'));
+    configurationEditor = ConfigurationEditor.find(view);
+
+    expect(configurationEditor.inputPropertyNames()).toContain('portraitZoom');
+  });
+
+  it('does not render zoom inputs if pan zoom is disabled', async () => {
+    const entry = createEntry({
+      imageFiles: [
+        {perma_id: 10},
+        {perma_id: 11},
+      ],
+      contentElements: [
+        {
+          id: 1,
+          typeName: 'hotspots',
+          configuration: {
+            image: 10,
+            portraitImage: 11,
+            enablePanZoom: 'never',
+            areas: [{id: 1}]
+          }
+        }
+      ]
+    });
+    const contentElement = entry.contentElements.get(1);
+    const areas = AreasCollection.forContentElement(contentElement);
+    const view = new SidebarEditAreaView({
+      model: areas.get(1),
+      collection: areas,
+      entry,
+      contentElement
+    });
+
+    const user = userEvent.setup();
+    const {getByText} = within(view.render().el);
+
+    let configurationEditor = ConfigurationEditor.find(view);
+    expect(configurationEditor.inputPropertyNames()).not.toContain('zoom');
+
+    await user.click(getByText('Portrait'));
+    configurationEditor = ConfigurationEditor.find(view);
+
+    expect(configurationEditor.inputPropertyNames()).not.toContain('portraitZoom');
   });
 });

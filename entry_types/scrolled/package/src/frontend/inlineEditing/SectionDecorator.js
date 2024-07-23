@@ -50,7 +50,8 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   function selectIfOutsideContentItem(event) {
     if (!event.target.closest(`.${contentElementStyles.wrapper}`) &&
         !event.target.closest(`.${backdropStyles.wrapper}`) &&
-        !event.target.closest('#fullscreenRoot')) {
+        !event.target.closest('#fullscreenRoot') &&
+        !event.target.closest('[data-floating-ui-portal]')) {
       isSelected ? resetSelection() : select();
     }
   }

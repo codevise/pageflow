@@ -9,8 +9,6 @@ import {
   useFile
 } from 'pageflow-scrolled/frontend';
 
-import {Indicator} from './Indicator';
-
 import styles from './Area.module.css';
 
 export function Area({
@@ -34,17 +32,16 @@ export function Area({
     <div className={classNames(styles.area, {[styles.highlighted]: highlighted,
                                              [styles.activeImageVisible]: activeImageVisible})}
          style={{'--color': areaColor(area, portraitMode)}}>
-      <button aria-labelledby={`hotspots-tooltip-title-${contentElementId}-${area.id}`}
-              className={styles.clip}
-              style={{clipPath: polygon(outline)}}
-              onClick={onClick}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave} />
+      <div className={styles.clip}
+           style={{clipPath: polygon(outline)}}
+           tabIndex="-1"
+           onClick={onClick}
+           onMouseEnter={onMouseEnter}
+           onMouseLeave={onMouseLeave} />
       <Image imageFile={imageFile}
              load={shouldLoad}
              variant={'large'}
              preferSvg={true} />
-      <Indicator area={area} portraitMode={portraitMode} />
       {isEditable && isSelected && <Outline points={outline} />}
     </div>
   );

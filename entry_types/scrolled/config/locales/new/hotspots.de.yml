@@ -5,6 +5,8 @@ de:
   pageflow_scrolled:
     public:
       more: Mehr
+      next: Nächster
+      previous: Vorheriger
     inline_editing:
       select_link_destination: "Link-Ziel auswählen"
       change_link_destination: "Link-Ziel ändern"
@@ -12,6 +14,9 @@ de:
       content_elements:
         hotspots:
           edit_area:
+            back: Zurück
+            destroy: Löschen
+            confirm_delete_link: Soll der Bereich wirklich gelöscht werden?
             tabs:
               area: Hotspot-Breiech
               portrait: Hochkant
@@ -27,6 +32,8 @@ de:
                 label: Aktives Bild
               area:
                 label: Bereich
+              zoom:
+                label: Zoom
               portraitTooltipPosition:
                 label: Tooltip-Position (Hochkant)
                 values:
@@ -38,6 +45,8 @@ de:
                 label: Aktives Bild (Hochkant)
               portraitArea:
                 label: Bereich (Hochkant)
+              portraitZoom:
+                label: Zoom (Hochkant)
           edit_area_dialog:
             header: Bereichsumriss und Indikatorposition
             tabs:

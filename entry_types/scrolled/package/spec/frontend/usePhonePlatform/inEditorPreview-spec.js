@@ -1,19 +1,16 @@
-
-import {PhonePlatformProvider} from 'frontend';
 import {usePhonePlatform} from 'frontend/usePhonePlatform';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 
-import {renderHook} from '@testing-library/react-hooks';
-import {asyncHandlingOf} from 'support/asyncHandlingOf/forHooks';
+import {renderHookInEntry} from 'support';
+import {asyncHandlingOf} from 'support/asyncHandlingOf';
 
 import '@testing-library/jest-dom/extend-expect'
-
 
 describe('usePhonePlatform', () => {
   beforeAll(loadInlineEditingComponents);
 
   it('sets value when emulation mode is mobile', async () => {
-    const {result} = renderHook(() => usePhonePlatform(), {wrapper: PhonePlatformProvider});
+    const {result} = renderHookInEntry(() => usePhonePlatform());
 
     await asyncHandlingOf(() => {
       window.postMessage({
@@ -26,7 +23,7 @@ describe('usePhonePlatform', () => {
   });
 
   it('sets value when emulation mode is desktop', async () => {
-    const {result} = renderHook(() => usePhonePlatform(), {wrapper: PhonePlatformProvider});
+    const {result} = renderHookInEntry(() => usePhonePlatform());
 
     await asyncHandlingOf(() => {
       window.postMessage({

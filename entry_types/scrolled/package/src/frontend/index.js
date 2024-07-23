@@ -96,11 +96,12 @@ export {useMediaMuted, useOnUnmuteMedia} from './useMediaMuted';
 export {usePortraitOrientation} from './usePortraitOrientation';
 export {useScrollPosition} from './useScrollPosition';
 export {usePhonePlatform} from './usePhonePlatform';
+export {useIsomorphicLayoutEffect} from './useIsomorphicLayoutEffect';
 
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
 export {EditableLink} from './EditableLink';
-export {PhonePlatformProvider} from './PhonePlatformProvider';
+export {PhonePlatformContext} from './PhonePlatformContext';
 export {
   OptIn as ThirdPartyOptIn,
   OptOutInfo as ThirdPartyOptOutInfo,

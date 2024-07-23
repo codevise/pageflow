@@ -51,6 +51,38 @@ describe('hotspots AreasCollection', () => {
     ])
   });
 
+  it('prunes tooltip texts and link when removing an element with single change event', () => {
+    const contentElement = factories.contentElement({
+      configuration: {
+        areas: [
+          {id: 1},
+          {id: 2},
+        ],
+        tooltipTexts: {
+          1: {title: [{children: [{text: 'Title for item 1'}]}]},
+          2: {title: [{children: [{text: 'Title for item 2'}]}]},
+        },
+        tooltipLinks: {
+          1: {href: 'https://example.com'},
+          2: {href: 'https://other.example.com'},
+        }
+      }
+    });
+    const itemsCollection = AreasCollection.forContentElement(contentElement);
+    const listener = jest.fn();
+
+    contentElement.on('change:configuration', listener);
+    itemsCollection.remove(1);
+
+    expect(contentElement.configuration.get('tooltipTexts')).toEqual({
+      2: {title: [{children: [{text: 'Title for item 2'}]}]}
+    });
+    expect(contentElement.configuration.get('tooltipLinks')).toEqual({
+      2: {href: 'https://other.example.com'},
+    });
+    expect(listener).toHaveBeenCalledTimes(1);
+  });
+
   it('posts content element command on highlight', () => {
     const contentElement = factories.contentElement({
       id: 10,

@@ -1,3 +1,12 @@
+.compositeItem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .center {
   display: flex;
   flex-direction: column;
@@ -9,8 +18,26 @@
   position: relative;
 }
 
+.clip {
+  overflow: hidden;
+}
+
+.stack {
+  display: grid;
+  grid-auto-columns: 100%;
+  grid-auto-rows: 100%;
+  height: 100%;
+  isolation: isolate;
+}
+
+.stack > div {
+  grid-row: 1;
+  grid-column: 1;
+}
+
 .wrapper {
-  width: min-content;
+  transform-origin: 0 0;
+  width: 100%;
   height: 100%;
 }
 

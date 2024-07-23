@@ -1,4 +1,4 @@
-import {ConfigurationEditorView, SelectInputView} from 'pageflow/ui';
+import {ConfigurationEditorView, SelectInputView, SliderInputView} from 'pageflow/ui';
 import {editor, FileInputView} from 'pageflow/editor';
 import Marionette from 'backbone.marionette';
 import I18n from 'i18n-js';
@@ -9,8 +9,8 @@ import styles from './SidebarEditAreaView.module.css';
 
 export const SidebarEditAreaView = Marionette.Layout.extend({
   template: (data) => `
-    <a class="back">${I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.back')}</a>
-    <a class="destroy">${I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.destroy')}</a>
+    <a class="back">${I18n.t('pageflow_scrolled.editor.content_elements.hotspots.edit_area.back')}</a>
+    <a class="destroy">${I18n.t('pageflow_scrolled.editor.content_elements.hotspots.edit_area.destroy')}</a>
 
     <div class='form_container'></div>
   `,
@@ -38,6 +38,7 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
 
     const file = options.contentElement.configuration.getImageFile('image');
     const portraitFile = options.contentElement.configuration.getImageFile('portraitImage');
+    const panZoomEnabled = options.contentElement.configuration.get('enablePanZoom') !== 'never';
 
     if (file && portraitFile) {
       this.previousEmulationMode = options.entry.get('emulation_mode') || 'desktop';
@@ -52,6 +53,11 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
         file,
         portraitFile
       });
+
+      if (panZoomEnabled) {
+        this.input('zoom', SliderInputView);
+      }
+
       this.group('PaletteColor', {
         propertyName: 'color',
         entry: options.entry
@@ -81,6 +87,11 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
           portraitFile,
           defaultTab: 'portrait'
         });
+
+        if (panZoomEnabled) {
+          this.input('portraitZoom', SliderInputView);
+        }
+
         this.group('PaletteColor', {
           propertyName: 'portraitColor',
           entry: options.entry
@@ -117,7 +128,7 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
   },
 
   destroyLink: function () {
-    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_link'))) {
+    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.hotspots.edit_area.confirm_delete_link'))) {
       this.options.collection.remove(this.model);
       this.goBack();
     }

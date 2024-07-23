@@ -1,0 +1,37 @@
+.scroller {
+  overflow: hidden;
+  overflow-x: auto;
+  display: grid;
+  grid-auto-columns: 100%;
+  grid-auto-flow: column;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  z-index: 1;
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.noPointerEvents {
+  pointer-events: none;
+}
+
+.step {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.leftButton,
+.rightButton {
+  z-index: 2;
+}
+
+
+.leftButton {
+  justify-self: start;
+}
+
+.rightButton {
+  justify-self: end;
+}

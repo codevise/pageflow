@@ -1,0 +1,60 @@
+.button {
+  height: 100%;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  color: #fff;
+  transition: opacity 0.2s linear, visibility 0.2s;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+.disabled {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.button svg {
+  transition: transform 0.2s ease;
+  display: block;
+  width: var(--theme-hotspts-scroll-button-size);
+  height: var(--theme-hotspots-scroll-button-size);
+}
+
+.button:not(.disabled):hover svg,
+.button:not(.disabled):focus svg {
+  transform: scale(1.2);
+}
+
+.icon {
+  position: relative;
+}
+
+.icon::before {
+  content: ' ';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 60%);
+  z-index: -1;
+}
+
+.visuallyHidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import PhonePlatformContext from '../PhonePlatformContext';
+import {PhonePlatformContext} from '../PhonePlatformContext';
 
 export function PhonePlatformProvider({children}) {
 

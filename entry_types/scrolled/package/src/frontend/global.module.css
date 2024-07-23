@@ -19,3 +19,8 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
 }
+
+:global [data-floating-ui-portal] {
+  position: relative;
+  z-index: 30000;
+}
