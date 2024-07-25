@@ -244,6 +244,9 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${areaStyles.area}`)).toHaveStyle({
       '--color': 'var(--theme-palette-color-accent)',
     });
+    expect(container.querySelector(`.${indicatorStyles.indicator}`)).toHaveStyle({
+      '--color': 'var(--theme-palette-color-accent)',
+    });
   });
 
   it('supports separate color for portrait indicator', () => {
