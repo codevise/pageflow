@@ -1477,6 +1477,33 @@ describe('Hotspots', () => {
       expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
     });
 
+    it('displays active image based on intersecting scroller step when pan zoom is enabled', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+      intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
+        .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
+
+      expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
+    });
+
     it('only sets up intersection observer when near viewport', () => {
       const seed = {
         imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -1605,6 +1632,38 @@ describe('Hotspots', () => {
 
       expect(scroller.scrollTo).toHaveBeenCalled();
       expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
+    });
+
+    it('doed not show active image on area hover', async () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            indicatorPosition: [20, 25],
+            activeImage: 101
+          }
+        ],
+        tooltipTexts: {
+          1: {
+            title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          }
+        }
+      };
+
+      const user = userEvent.setup();
+      const {container} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+
+      await user.hover(container.querySelector(`.${areaStyles.clip}`));
+
+      expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
     });
 
     it('scroller lets pointer events pass when no area is active', async () => {
