@@ -17,9 +17,11 @@ import {
   EditableText,
   EditableInlineText,
   EditableLink,
+  Image,
   Text,
   useContentElementEditorState,
   useContentElementConfigurationUpdate,
+  useFile,
   useI18n,
   utils
 } from 'pageflow-scrolled/frontend';
@@ -37,6 +39,10 @@ export function Tooltip({
   const {t} = useI18n({locale: 'ui'});
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {isEditable} = useContentElementEditorState();
+
+  const tooltipImageFile = useFile({
+    collectionName: 'imageFiles', permaId: area.tooltipImage
+  });
 
   const indicatorPosition = getIndicatorPosition({
     area,
@@ -140,6 +146,12 @@ export function Tooltip({
                   onClick={onClick}
                   {...getFloatingProps()}>
                <FloatingArrow ref={arrowRef} context={context} />
+               <Image imageFile={tooltipImageFile}
+                      variant={'linkThumbnailLarge'}
+                      fill={false}
+                      width={394}
+                      height={226}
+                      preferSvg={true} />
                {presentOrEditing('title') &&
                 <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>
                   <Text inline scaleCategory="hotspotsTooltipTitle">
@@ -171,7 +183,7 @@ export function Tooltip({
          </FloatingFocusManager>
        </TooltipPortal>}
     </>
-);
+  );
 }
 
 function getIndicatorPosition({

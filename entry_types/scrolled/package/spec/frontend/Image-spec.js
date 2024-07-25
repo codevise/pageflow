@@ -318,4 +318,25 @@ describe('Image', () => {
 
     expect(getByRole('img').hasAttribute('alt')).toBe(true);
   });
+
+  it('supports width and height attributes', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   width={100}
+                   height={50} />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            large: ':id_partition/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('width', '100');
+    expect(getByRole('img')).toHaveAttribute('height', '50');
+  });
 });

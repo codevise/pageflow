@@ -331,10 +331,13 @@ describe('Hotspots', () => {
     });
   });
 
-  it('renders tooltip texts and links', async () => {
+  it('renders tooltip texts, image and links', async () => {
     const seed = {
-      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
-      imageFiles: [{id: 1, permaId: 100}]
+      imageFileUrlTemplates: {
+        large: 'large/:id_partition/image.webp',
+        linkThumbnailLarge: 'linkThumbnailLarge/:id_partition/image.webp'
+      },
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
     };
     const configuration = {
       image: 100,
@@ -342,6 +345,7 @@ describe('Hotspots', () => {
         {
           id: 1,
           indicatorPosition: [10, 20],
+          tooltipImage: 101
         }
       ],
       tooltipTexts: {
@@ -366,6 +370,7 @@ describe('Hotspots', () => {
     expect(queryByText('Some link')).not.toBeNull();
     expect(getByRole('link')).toHaveAttribute('href', 'https://example.com');
     expect(getByRole('link')).toHaveAttribute('target', '_blank');
+    expect(getByRole('img')).toHaveAttribute('src', 'linkThumbnailLarge/000/000/002/image.webp');
   });
 
   it('does not render tooltip link if link text is blank', async () => {

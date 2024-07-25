@@ -53,6 +53,15 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
         file,
         portraitFile
       });
+      this.input('activeImage', FileInputView, {
+        collection: 'image_files',
+        fileSelectionHandler: 'hotspotsArea',
+        fileSelectionHandlerOptions: {
+          contentElementId: options.contentElement.get('id'),
+          tab: 'area'
+        },
+        positioning: false
+      });
 
       if (panZoomEnabled) {
         this.input('zoom', SliderInputView);
@@ -65,7 +74,7 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
       this.input('tooltipPosition', SelectInputView, {
         values: ['below', 'above']
       });
-      this.input('activeImage', FileInputView, {
+      this.input('tooltipImage', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'hotspotsArea',
         fileSelectionHandlerOptions: {
@@ -87,6 +96,15 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
           portraitFile,
           defaultTab: 'portrait'
         });
+        this.input('portraitActiveImage', FileInputView, {
+          collection: 'image_files',
+          fileSelectionHandler: 'hotspotsArea',
+          fileSelectionHandlerOptions: {
+            contentElementId: options.contentElement.get('id'),
+            tab: 'portrait'
+          },
+          positioning: false
+        });
 
         if (panZoomEnabled) {
           this.input('portraitZoom', SliderInputView);
@@ -98,15 +116,6 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
         });
         this.input('portraitTooltipPosition', SelectInputView, {
           values: ['below', 'above']
-        });
-        this.input('portraitActiveImage', FileInputView, {
-          collection: 'image_files',
-          fileSelectionHandler: 'hotspotsArea',
-          fileSelectionHandlerOptions: {
-            contentElementId: options.contentElement.get('id'),
-            tab: 'portrait'
-          },
-          positioning: false
         });
       });
     }

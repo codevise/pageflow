@@ -36,6 +36,8 @@ function renderImageTag(props, imageFile) {
     <img className={classNames({[styles.fill]: props.fill})}
          src={imageUrl(imageFile, props)}
          alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''}
+         width={props.width}
+         height={props.height}
          style={{
            objectPosition: `${cropPositionX}% ${cropPositionY}%`
          }} />

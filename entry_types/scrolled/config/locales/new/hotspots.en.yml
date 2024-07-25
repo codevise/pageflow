@@ -30,6 +30,8 @@ en:
                 label: Color
               activeImage:
                 label: Active image
+              tooltipImage:
+                label: Image in tooltip
               area:
                 label: Area
               zoom:
