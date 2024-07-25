@@ -33,7 +33,7 @@ import styles from './Tooltip.module.css';
 export function Tooltip({
   area,
   contentElementId, portraitMode, configuration, visible, active,
-  panZoomEnabled, imageFile, containerRect, flip: shouldFlip,
+  panZoomEnabled, imageFile, containerRect, flip: shouldFlip, floatingStrategy,
   onMouseEnter, onMouseLeave, onClick, onDismiss,
 }) {
   const {t} = useI18n({locale: 'ui'});
@@ -57,6 +57,7 @@ export function Tooltip({
   const {refs, floatingStyles, context} = useFloating({
     open: visible,
     onOpenChange: open => !open && onDismiss(),
+    strategy: floatingStrategy || 'absolute',
     placement: area.tooltipPosition === 'above' ? 'top' : 'bottom',
     middleware: [
       offset(20),

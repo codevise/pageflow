@@ -39,7 +39,8 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
           configuration={configuration}
           displayFullscreenToggle={contentElementWidth !== contentElementWidths.full &&
                                    configuration.enableFullscreen}
-          onFullscreenEnter={enterFullscreen}>
+          onFullscreenEnter={enterFullscreen}
+          floatingStrategy={configuration.position === 'standAlone' ? 'fixed' : 'absolute'}>
           {children =>
             <ContentElementBox>
               <ContentElementFigure configuration={configuration}>
@@ -64,7 +65,7 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
 
 export function HotspotsImage({
   contentElementId, contentElementWidth, configuration,
-  flipTooltips,
+  flipTooltips, floatingStrategy,
   displayFullscreenToggle, onFullscreenEnter,
   children = children => children
 }) {
@@ -205,6 +206,7 @@ export function HotspotsImage({
                                 (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
                        active={activeIndex === index}
                        flip={flipTooltips}
+                       floatingStrategy={floatingStrategy}
                        onMouseEnter={() => setHoveredIndex(index)}
                        onMouseLeave={() => setHoveredIndex(-1)}
                        onClick={() => setActiveIndex(index)}
