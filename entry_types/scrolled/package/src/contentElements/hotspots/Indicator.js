@@ -1,10 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import styles from './Indicator.module.css';
 
 import {areaColor} from './Area';
 
-export function Indicator({area, portraitMode, outerRef}) {
+export function Indicator({area, portraitMode, hidden, outerRef}) {
   const indicatorPosition = (
     portraitMode ?
     area.portraitIndicatorPosition :
@@ -13,7 +14,7 @@ export function Indicator({area, portraitMode, outerRef}) {
 
   return (
     <div className={styles.wrapper} ref={outerRef}>
-      <div className={styles.indicator}
+      <div className={classNames(styles.indicator, {[styles.hidden]: hidden})}
            style={{'--color': areaColor(area, portraitMode),
                    left: `${indicatorPosition[0]}%`,
                    top: `${indicatorPosition[1]}%`}} />

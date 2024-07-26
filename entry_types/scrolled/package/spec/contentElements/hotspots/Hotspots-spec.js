@@ -979,6 +979,36 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
   });
 
+  it('does not hide other indicators when area is activated', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+        },
+        {
+          id: 1,
+          outline: [[60, 20], [60, 30], [80, 30], [80, 20]]
+        }
+      ]
+    };
+
+    const user = userEvent.setup();
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    await user.click(container.querySelector(`.${areaStyles.clip}`));
+
+    expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[0]).not.toHaveClass(indicatorStyles.hidden);
+    expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[1]).not.toHaveClass(indicatorStyles.hidden);
+  });
+
   it('shows active image on area hover', async () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -1617,6 +1647,39 @@ describe('Hotspots', () => {
       expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
     });
 
+    it('hides other indicators when area is active', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          },
+          {
+            id: 1,
+            outline: [[60, 20], [60, 30], [80, 30], [80, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+      intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
+        .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
+
+      expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[0]).not.toHaveClass(indicatorStyles.hidden);
+      expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[1]).toHaveClass(indicatorStyles.hidden);
+    });
+
     it('only sets up intersection observer when near viewport', () => {
       const seed = {
         imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -1747,7 +1810,7 @@ describe('Hotspots', () => {
       expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
     });
 
-    it('doed not show active image on area hover', async () => {
+    it('does not show active image on area hover', async () => {
       const seed = {
         imageFileUrlTemplates: {large: ':id_partition/image.webp'},
         imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]

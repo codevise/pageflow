@@ -177,6 +177,7 @@ export function HotspotsImage({
                   {areas.map((area, index) =>
                     <Indicator key={index}
                                area={area}
+                               hidden={panZoomEnabled && activeIndex >= 0 && activeIndex !== index}
                                outerRef={setIndicatorRef(index)}
                                portraitMode={portraitMode} />
                   )}
