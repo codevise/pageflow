@@ -382,10 +382,14 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, queryByText, getByRole} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
-    await user.click(container.querySelector(`.${areaStyles.clip}`))
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`));
+    const {queryByText, getByRole} = within(container.querySelector(`.${tooltipStyles.box}`));
+
     expect(queryByText('Some title')).not.toBeNull();
     expect(queryByText('Some description')).not.toBeNull();
     expect(queryByText('Some link')).not.toBeNull();
@@ -677,9 +681,11 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {queryByText, container} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {queryByText, container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     expect(queryByText('Some title')).toBeNull();
 
@@ -718,9 +724,11 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, queryByText} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {container, queryByText, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     await user.click(container.querySelectorAll(`.${areaStyles.clip}`)[0]);
     await user.hover(container.querySelectorAll(`.${areaStyles.clip}`)[1]);
@@ -750,7 +758,7 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, queryByText} = renderInContentElement(
+    const {container} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
@@ -782,9 +790,11 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, getByText} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {container, getByText, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     await user.click(container.querySelector(`.${areaStyles.clip}`));
     await user.click(getByText('Some title'));
@@ -814,9 +824,11 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, getByText} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {container, getByText, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     await user.hover(container.querySelector(`.${areaStyles.clip}`));
     await user.click(getByText('Some title'));
@@ -1161,13 +1173,15 @@ describe('Hotspots', () => {
       ]
     };
 
-    const {container, triggerEditorCommand} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {container, triggerEditorCommand, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} contentElementId={1} />,
       {
         seed,
         editorState: {isSelected: true, isEditable: true}
       }
     );
+    simulateScrollPosition('near viewport');
     triggerEditorCommand({type: 'SET_ACTIVE_AREA', index: 0});
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();

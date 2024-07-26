@@ -58,7 +58,7 @@ export function Tooltip({
 
   const arrowRef = useRef();
   const {refs, floatingStyles, context} = useFloating({
-    open: visible,
+    open: containerRect.width > 0 && visible,
     onOpenChange: open => !open && onDismiss(),
     strategy: floatingStrategy || 'absolute',
     placement: position === 'above' ? 'top' : 'bottom',
