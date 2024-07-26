@@ -12,7 +12,7 @@ import {
 import styles from './Area.module.css';
 
 export function Area({
-  area, contentElementId, portraitMode, highlighted, activeImageVisible,
+  area, contentElementId, portraitMode, panZoomEnabled, highlighted, activeImageVisible,
   onMouseEnter, onMouseLeave, onClick
 }) {
   const {isEditable, isSelected} = useContentElementEditorState();
@@ -40,7 +40,7 @@ export function Area({
            onMouseLeave={onMouseLeave} />
       <Image imageFile={imageFile}
              load={shouldLoad}
-             variant={'large'}
+             variant={panZoomEnabled ? 'ultra' : 'large'}
              preferSvg={true} />
       {isEditable && isSelected && <Outline points={outline} />}
     </div>

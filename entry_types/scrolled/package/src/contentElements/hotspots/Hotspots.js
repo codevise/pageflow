@@ -155,12 +155,13 @@ export function HotspotsImage({
                            load={shouldLoad}
                            fill={false}
                            structuredData={true}
-                           variant="large"
+                           variant={panZoomEnabled ? 'ultra' : 'large'}
                            preferSvg={true} />
                     {areas.map((area, index) =>
                       <Area key={index}
                             area={area}
                             contentElementId={contentElementId}
+                            panZoomEnabled={panZoomEnabled}
                             portraitMode={portraitMode}
                             activeImageVisible={activeIndex === index ||
                                                 (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}

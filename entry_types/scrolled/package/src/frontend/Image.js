@@ -45,6 +45,10 @@ function renderImageTag(props, imageFile) {
 }
 
 function imageUrl(imageFile, {variant, preferSvg}) {
+  if (variant === 'ultra' && !imageFile.urls.ultra) {
+    variant = 'large';
+  }
+
   if (preferSvg && imageFile.extension.toLowerCase() === 'svg') {
     return imageFile.urls.original;
   }

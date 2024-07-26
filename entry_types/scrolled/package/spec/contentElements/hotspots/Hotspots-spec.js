@@ -59,7 +59,10 @@ describe('Hotspots', () => {
 
   it('renders image when element should load', () => {
     const seed = {
-      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFileUrlTemplates: {
+        large: ':id_partition/large/image.webp',
+        ultra: ':id_partition/ultra/image.webp'
+      },
       imageFiles: [{id: 1, permaId: 100}]
     };
     const configuration = {
@@ -71,7 +74,7 @@ describe('Hotspots', () => {
     );
     simulateScrollPosition('near viewport');
 
-    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/image.webp');
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/large/image.webp');
   });
 
   it('supports portrait image', () => {
@@ -824,7 +827,10 @@ describe('Hotspots', () => {
 
   it('supports active image rendered inside area', async () => {
     const seed = {
-      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFileUrlTemplates: {
+        large: ':id_partition/large/image.webp',
+        ultra: ':id_partition/ultra/image.webp'
+      },
       imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
     };
     const configuration = {
@@ -849,7 +855,7 @@ describe('Hotspots', () => {
     simulateScrollPosition('near viewport');
     const {getByRole} = within(container.querySelector(`.${areaStyles.area}`));
 
-    expect(getByRole('img')).toHaveAttribute('src', '000/000/002/image.webp');
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/002/large/image.webp');
   });
 
   it('lazy loads active images', async () => {
@@ -1265,6 +1271,27 @@ describe('Hotspots', () => {
       });
     });
 
+    it('renders ultra image when element should load', () => {
+      const seed = {
+        imageFileUrlTemplates: {
+          large: ':id_partition/large/image.webp',
+          ultra: ':id_partition/ultra/image.webp'
+        },
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always'
+      };
+
+      const {getByRole, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      expect(getByRole('img')).toHaveAttribute('src', '000/000/001/ultra/image.webp');
+    });
+
     it('does not render invisible scroller when pan zoom is disabled', () => {
       const seed = {
         imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -1622,7 +1649,7 @@ describe('Hotspots', () => {
 
     it('displays active image based on intersecting scroller step when pan zoom is enabled', () => {
       const seed = {
-        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFileUrlTemplates: {large: ':id_partition/large/image.webp'},
         imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
       };
       const configuration = {
@@ -1645,6 +1672,41 @@ describe('Hotspots', () => {
         .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
 
       expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
+
+    });
+
+    it('uses ultra variant of active image', () => {
+      const seed = {
+        imageFileUrlTemplates: {
+          large: ':id_partition/large/image.webp',
+          ultra: ':id_partition/ultra/image.webp'
+        },
+        imageFiles: [
+          {id: 1, permaId: 100, width: 1920, height: 1080},
+          {id: 2, permaId: 101, width: 1920, height: 1080}
+        ]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            activeImage: 101,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      const {getByRole} = within(container.querySelector(`.${areaStyles.area}`));
+
+      expect(getByRole('img')).toHaveAttribute('src', '000/000/002/ultra/image.webp');
     });
 
     it('hides other indicators when area is active', () => {
