@@ -36,6 +36,8 @@ function renderImageTag(props, imageFile) {
     <img className={classNames({[styles.fill]: props.fill})}
          src={imageUrl(imageFile, props)}
          alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''}
+         width={props.width}
+         height={props.height}
          style={{
            objectPosition: `${cropPositionX}% ${cropPositionY}%`
          }} />
@@ -43,6 +45,10 @@ function renderImageTag(props, imageFile) {
 }
 
 function imageUrl(imageFile, {variant, preferSvg}) {
+  if (variant === 'ultra' && !imageFile.urls.ultra) {
+    variant = 'large';
+  }
+
   if (preferSvg && imageFile.extension.toLowerCase() === 'svg') {
     return imageFile.urls.original;
   }

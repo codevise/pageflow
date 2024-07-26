@@ -26,19 +26,31 @@ en:
                 values:
                   below: Below
                   above: Above
+              tooltipReference:
+                label: Tooltip position
+                values:
+                  indicator: At indicator
+                  area: At area
               color:
                 label: Color
               activeImage:
                 label: Active image
+              tooltipImage:
+                label: Image in tooltip
               area:
                 label: Area
               zoom:
                 label: Zoom
               portraitTooltipPosition:
-                label: Tooltip orientation  (Portrait)
+                label: Tooltip orientation (Portrait)
                 values:
                   below: Below
                   above: Above
+              portraitTooltipReference:
+                label: Tooltip position (Portrait)
+                values:
+                  indicator: At indicator
+                  area: At area
               portraitColor:
                 label: Color (Portrait)
               portraitActiveImage:

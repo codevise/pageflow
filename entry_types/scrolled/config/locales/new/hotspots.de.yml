@@ -22,14 +22,21 @@ de:
               portrait: Hochkant
             attributes:
               tooltipPosition:
-                label: Tooltip-Position
+                label: Tooltip-Ausrichtung
                 values:
                   below: Unterhalb
                   above: Oberhalb
+              tooltipReference:
+                label: Tooltip-Position
+                values:
+                  indicator: Am Indikator
+                  area: Am Bereich
               color:
                 label: Farbe
               activeImage:
                 label: Aktives Bild
+              tooltipImage:
+                label: Bild in Tooltip
               area:
                 label: Bereich
               zoom:
@@ -39,6 +46,11 @@ de:
                 values:
                   below: Below
                   above: Above
+              portraitTooltipReference:
+                label: Tooltip-Position (Hochkant)
+                values:
+                  indicator: Am Indikator
+                  area: Am Bereich
               portraitColor:
                 label: Farbe (Hochkant)
               portraitActiveImage:

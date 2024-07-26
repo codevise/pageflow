@@ -35,6 +35,11 @@
   fill: #fff;
 }
 
+.box img {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
 .box h3,
 .box p {
   margin: 0;

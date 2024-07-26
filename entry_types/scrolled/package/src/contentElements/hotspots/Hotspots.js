@@ -39,7 +39,8 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
           configuration={configuration}
           displayFullscreenToggle={contentElementWidth !== contentElementWidths.full &&
                                    configuration.enableFullscreen}
-          onFullscreenEnter={enterFullscreen}>
+          onFullscreenEnter={enterFullscreen}
+          floatingStrategy={configuration.position === 'standAlone' ? 'fixed' : 'absolute'}>
           {children =>
             <ContentElementBox>
               <ContentElementFigure configuration={configuration}>
@@ -57,14 +58,14 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
           contentElementWidth={contentElementWidth}
           configuration={configuration}
           displayFullscreenToggle={false}
-          flipTooltips={true} />
+          keepTooltipsInViewport={true} />
       } />
   );
 }
 
 export function HotspotsImage({
   contentElementId, contentElementWidth, configuration,
-  flipTooltips,
+  keepTooltipsInViewport, floatingStrategy,
   displayFullscreenToggle, onFullscreenEnter,
   children = children => children
 }) {
@@ -106,7 +107,7 @@ export function HotspotsImage({
   }, [setActiveIndexState, setTransientState, areas, select, isSelected]);
 
   const [containerRect, contentRectRef] = useContentRect({
-    enabled: panZoomEnabled && shouldLoad
+    enabled: shouldLoad
   });
 
   const [wrapperRef, scrollerRef, setScrollerStepRef, setIndicatorRef, scrollFromToArea] = useScrollPanZoom({
@@ -154,15 +155,16 @@ export function HotspotsImage({
                            load={shouldLoad}
                            fill={false}
                            structuredData={true}
-                           variant="large"
+                           variant={panZoomEnabled ? 'ultra' : 'large'}
                            preferSvg={true} />
                     {areas.map((area, index) =>
                       <Area key={index}
                             area={area}
                             contentElementId={contentElementId}
+                            panZoomEnabled={panZoomEnabled}
                             portraitMode={portraitMode}
                             activeImageVisible={activeIndex === index ||
-                                                (activeIndex < 0 && hoveredIndex === index)}
+                                                (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
                             highlighted={hoveredIndex === index || highlightedIndex === index || activeIndex === index}
                             onMouseEnter={() => setHoveredIndex(index)}
                             onMouseLeave={() => setHoveredIndex(-1)}
@@ -176,6 +178,7 @@ export function HotspotsImage({
                   {areas.map((area, index) =>
                     <Indicator key={index}
                                area={area}
+                               hidden={panZoomEnabled && activeIndex >= 0 && activeIndex !== index}
                                outerRef={setIndicatorRef(index)}
                                portraitMode={portraitMode} />
                   )}
@@ -204,7 +207,8 @@ export function HotspotsImage({
                        visible={activeIndex === index ||
                                 (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
                        active={activeIndex === index}
-                       flip={flipTooltips}
+                       keepInViewport={keepTooltipsInViewport}
+                       floatingStrategy={floatingStrategy}
                        onMouseEnter={() => setHoveredIndex(index)}
                        onMouseLeave={() => setHoveredIndex(-1)}
                        onClick={() => setActiveIndex(index)}

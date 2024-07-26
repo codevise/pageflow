@@ -19,6 +19,24 @@ jest.mock('contentElements/hotspots/TooltipPortal');
 jest.mock('contentElements/hotspots/useTooltipTransitionStyles');
 
 describe('Hotspots', () => {
+  let observeResizeMock;
+
+  beforeEach(() => {
+    observeResizeMock = jest.fn(function() {
+      this.callback([
+        {
+          contentRect: observeResizeMock.mockContentRect || {width: 100, height: 100}
+        }
+      ]);
+    });
+
+    window.ResizeObserver = function(callback) {
+      this.callback = callback;
+      this.observe = observeResizeMock;
+      this.unobserve = function(element) {};
+    };
+  });
+
   useFakeTranslations({
     'pageflow_scrolled.public.next': 'Next'
   });
@@ -41,7 +59,10 @@ describe('Hotspots', () => {
 
   it('renders image when element should load', () => {
     const seed = {
-      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFileUrlTemplates: {
+        large: ':id_partition/large/image.webp',
+        ultra: ':id_partition/ultra/image.webp'
+      },
       imageFiles: [{id: 1, permaId: 100}]
     };
     const configuration = {
@@ -53,7 +74,7 @@ describe('Hotspots', () => {
     );
     simulateScrollPosition('near viewport');
 
-    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/image.webp');
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/large/image.webp');
   });
 
   it('supports portrait image', () => {
@@ -145,7 +166,7 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${areaStyles.clip}`)).toHaveStyle(
       'clip-path: polygon(10% 20%, 10% 30%, 40% 30%, 40% 20%)'
     );
-    });
+  });
 
   it('renders area indicators', () => {
     const seed = {
@@ -244,6 +265,9 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${areaStyles.area}`)).toHaveStyle({
       '--color': 'var(--theme-palette-color-accent)',
     });
+    expect(container.querySelector(`.${indicatorStyles.indicator}`)).toHaveStyle({
+      '--color': 'var(--theme-palette-color-accent)',
+    });
   });
 
   it('supports separate color for portrait indicator', () => {
@@ -328,10 +352,13 @@ describe('Hotspots', () => {
     });
   });
 
-  it('renders tooltip texts and links', async () => {
+  it('renders tooltip texts, image and links', async () => {
     const seed = {
-      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
-      imageFiles: [{id: 1, permaId: 100}]
+      imageFileUrlTemplates: {
+        large: 'large/:id_partition/image.webp',
+        linkThumbnailLarge: 'linkThumbnailLarge/:id_partition/image.webp'
+      },
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
     };
     const configuration = {
       image: 100,
@@ -339,6 +366,7 @@ describe('Hotspots', () => {
         {
           id: 1,
           indicatorPosition: [10, 20],
+          tooltipImage: 101
         }
       ],
       tooltipTexts: {
@@ -354,15 +382,20 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, queryByText, getByRole} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
-    await user.click(container.querySelector(`.${areaStyles.clip}`))
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`));
+    const {queryByText, getByRole} = within(container.querySelector(`.${tooltipStyles.box}`));
+
     expect(queryByText('Some title')).not.toBeNull();
     expect(queryByText('Some description')).not.toBeNull();
     expect(queryByText('Some link')).not.toBeNull();
     expect(getByRole('link')).toHaveAttribute('href', 'https://example.com');
     expect(getByRole('link')).toHaveAttribute('target', '_blank');
+    expect(getByRole('img')).toHaveAttribute('src', 'linkThumbnailLarge/000/000/002/image.webp');
   });
 
   it('does not render tooltip link if link text is blank', async () => {
@@ -399,6 +432,52 @@ describe('Hotspots', () => {
     expect(queryByRole('link')).toBeNull();
   });
 
+  it('does not observe resize by default', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+        }
+      ]
+    };
+
+    renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(observeResizeMock).not.toHaveBeenCalled();
+  });
+
+  it('observes resize when near viewport', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+        }
+      ]
+    };
+
+    const {simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    expect(observeResizeMock).toHaveBeenCalledTimes(1);
+    expect(observeResizeMock).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+  });
+
   it('positions tooltip reference based on indicator position', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -413,17 +492,19 @@ describe('Hotspots', () => {
       ]
     };
 
-    const {container} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 300, height: 100};
+    const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '10%',
-      top: '20%'
+      left: '30px',
+      top: '20px'
     });
   });
 
-  it('uses separate portrait indicator positon for tooltips', () => {
+  it('uses separate portrait indicator positon for tooltip reference', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
       imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
@@ -440,17 +521,19 @@ describe('Hotspots', () => {
     };
 
     window.matchMedia.mockPortrait();
-    const {container} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 300, height: 100};
+    const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '20%',
-      top: '30%'
+      left: '60px',
+      top: '30px'
     });
   });
 
-  it('ignores portrait indicator position for tooltips if portrait image is missing', () => {
+  it('ignores portrait indicator position for tooltip reference if portrait image is missing', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
       imageFiles: [{id: 1, permaId: 100}]
@@ -466,13 +549,113 @@ describe('Hotspots', () => {
     };
 
     window.matchMedia.mockPortrait();
-    const {container} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 300, height: 100};
+    const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '10%',
-      top: '20%'
+      left: '30px',
+      top: '20px'
+    });
+  });
+
+  it('supports using area bounding box as tooltip reference', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          indicatorPosition: [10, 20],
+          outline: [[10, 20], [10, 30], [40, 30], [40, 15]],
+          tooltipReference: 'area'
+        }
+      ]
+    };
+
+    observeResizeMock.mockContentRect = {width: 100, height: 100};
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
+      left: '10px',
+      top: '15px',
+      width: '30px',
+      height: '15px'
+    });
+  });
+
+  it('uses separate portrait outline positon for tooltip reference', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 101,
+      areas: [
+        {
+          portraitTooltipReference: 'area',
+          outline: [[20, 20], [20, 30], [50, 30], [45, 15]],
+          indicatorPosition: [10, 20],
+          portraitOutline: [[10, 20], [10, 30], [40, 30], [40, 15]],
+          portraitIndicatorPosition: [20, 30]
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
+    observeResizeMock.mockContentRect = {width: 100, height: 100};
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
+      left: '10px',
+      top: '15px',
+      width: '30px',
+      height: '15px'
+    });
+  });
+
+  it('ignores portrait outline position for tooltip reference if portrait image is missing', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          tooltipReference: 'area',
+          portraitTooltipReference: 'area',
+          outline: [[10, 20], [10, 30], [40, 30], [40, 15]],
+          indicatorPosition: [10, 20],
+          portraitOutline: [[2, 2], [2, 3], [5, 3], [4, 1]],
+          portraitIndicatorPosition: [2, 3]
+        }
+      ]
+    };
+
+    window.matchMedia.mockPortrait();
+    observeResizeMock.mockContentRect = {width: 100, height: 100};
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
+      left: '10px',
+      top: '15px',
+      width: '30px',
+      height: '15px'
     });
   });
 
@@ -498,9 +681,11 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {queryByText, container} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {queryByText, container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     expect(queryByText('Some title')).toBeNull();
 
@@ -539,9 +724,11 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, queryByText} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {container, queryByText, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     await user.click(container.querySelectorAll(`.${areaStyles.clip}`)[0]);
     await user.hover(container.querySelectorAll(`.${areaStyles.clip}`)[1]);
@@ -571,7 +758,7 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, queryByText} = renderInContentElement(
+    const {container} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
 
@@ -603,9 +790,11 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, getByText} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {container, getByText, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     await user.click(container.querySelector(`.${areaStyles.clip}`));
     await user.click(getByText('Some title'));
@@ -635,9 +824,11 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, getByText} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {container, getByText, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     await user.hover(container.querySelector(`.${areaStyles.clip}`));
     await user.click(getByText('Some title'));
@@ -648,7 +839,10 @@ describe('Hotspots', () => {
 
   it('supports active image rendered inside area', async () => {
     const seed = {
-      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFileUrlTemplates: {
+        large: ':id_partition/large/image.webp',
+        ultra: ':id_partition/ultra/image.webp'
+      },
       imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
     };
     const configuration = {
@@ -673,7 +867,7 @@ describe('Hotspots', () => {
     simulateScrollPosition('near viewport');
     const {getByRole} = within(container.querySelector(`.${areaStyles.area}`));
 
-    expect(getByRole('img')).toHaveAttribute('src', '000/000/002/image.webp');
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/002/large/image.webp');
   });
 
   it('lazy loads active images', async () => {
@@ -801,6 +995,36 @@ describe('Hotspots', () => {
     await user.click(container.querySelector(`.${areaStyles.clip}`));
 
     expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
+  });
+
+  it('does not hide other indicators when area is activated', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
+        },
+        {
+          id: 1,
+          outline: [[60, 20], [60, 30], [80, 30], [80, 20]]
+        }
+      ]
+    };
+
+    const user = userEvent.setup();
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    await user.click(container.querySelector(`.${areaStyles.clip}`));
+
+    expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[0]).not.toHaveClass(indicatorStyles.hidden);
+    expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[1]).not.toHaveClass(indicatorStyles.hidden);
   });
 
   it('shows active image on area hover', async () => {
@@ -949,13 +1173,15 @@ describe('Hotspots', () => {
       ]
     };
 
-    const {container, triggerEditorCommand} = renderInContentElement(
+    observeResizeMock.mockContentRect = {width: 200, height: 100};
+    const {container, triggerEditorCommand, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} contentElementId={1} />,
       {
         seed,
         editorState: {isSelected: true, isEditable: true}
       }
     );
+    simulateScrollPosition('near viewport');
     triggerEditorCommand({type: 'SET_ACTIVE_AREA', index: 0});
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
@@ -993,7 +1219,6 @@ describe('Hotspots', () => {
   describe('pan and zoom', () => {
     let animateMock;
     let scrollTimelines;
-    let observeResizeMock;
 
     let intersectionObservers;
 
@@ -1016,20 +1241,6 @@ describe('Hotspots', () => {
       window.ScrollTimeline = function(options) {
         this.options = options;
         scrollTimelines.push(this);
-      };
-
-      observeResizeMock = jest.fn(function() {
-        this.callback([
-          {
-            contentRect: observeResizeMock.mockContentRect || {width: 100, height: 100}
-          }
-        ]);
-      });
-
-      window.ResizeObserver = function(callback) {
-        this.callback = callback;
-        this.observe = observeResizeMock;
-        this.unobserve = function(element) {};
       };
 
       intersectionObservers = [];
@@ -1072,6 +1283,27 @@ describe('Hotspots', () => {
         y: 0,
         scale: 1
       });
+    });
+
+    it('renders ultra image when element should load', () => {
+      const seed = {
+        imageFileUrlTemplates: {
+          large: ':id_partition/large/image.webp',
+          ultra: ':id_partition/ultra/image.webp'
+        },
+        imageFiles: [{id: 1, permaId: 100}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always'
+      };
+
+      const {getByRole, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      expect(getByRole('img')).toHaveAttribute('src', '000/000/001/ultra/image.webp');
     });
 
     it('does not render invisible scroller when pan zoom is disabled', () => {
@@ -1191,54 +1423,6 @@ describe('Hotspots', () => {
       );
 
       expect(container.querySelectorAll(`.${scrollerStyles.step}`).length).toEqual(4);
-    });
-
-    it('does not observe resize by default', () => {
-      const seed = {
-        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
-        imageFiles: [{id: 1, permaId: 100}]
-      };
-      const configuration = {
-        image: 100,
-        areas: [
-          {
-            id: 1,
-            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
-          }
-        ]
-      };
-
-      const {simulateScrollPosition} = renderInContentElement(
-        <Hotspots configuration={configuration} />, {seed}
-      );
-      simulateScrollPosition('near viewport');
-
-      expect(observeResizeMock).not.toHaveBeenCalled();
-    });
-
-    it('observes resize if pan zoom is enabled', () => {
-      const seed = {
-        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
-        imageFiles: [{id: 1, permaId: 100}]
-      };
-      const configuration = {
-        image: 100,
-        enablePanZoom: 'always',
-        areas: [
-          {
-            id: 1,
-            outline: [[10, 20], [10, 30], [40, 30], [40, 20]]
-          }
-        ]
-      };
-
-      const {simulateScrollPosition} = renderInContentElement(
-        <Hotspots configuration={configuration} />, {seed}
-      );
-      simulateScrollPosition('near viewport');
-
-      expect(observeResizeMock).toHaveBeenCalledTimes(1);
-      expect(observeResizeMock).toHaveBeenCalledWith(expect.any(HTMLDivElement));
     });
 
     it('neither calls animate nor sets up scroll timeline by default', () => {
@@ -1477,6 +1661,101 @@ describe('Hotspots', () => {
       expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
     });
 
+    it('displays active image based on intersecting scroller step when pan zoom is enabled', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/large/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+      intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
+        .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
+
+      expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
+
+    });
+
+    it('uses ultra variant of active image', () => {
+      const seed = {
+        imageFileUrlTemplates: {
+          large: ':id_partition/large/image.webp',
+          ultra: ':id_partition/ultra/image.webp'
+        },
+        imageFiles: [
+          {id: 1, permaId: 100, width: 1920, height: 1080},
+          {id: 2, permaId: 101, width: 1920, height: 1080}
+        ]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            activeImage: 101,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+
+      const {getByRole} = within(container.querySelector(`.${areaStyles.area}`));
+
+      expect(getByRole('img')).toHaveAttribute('src', '000/000/002/ultra/image.webp');
+    });
+
+    it('hides other indicators when area is active', () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100, width: 1920, height: 1080}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            id: 1,
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            zoom: 50
+          },
+          {
+            id: 1,
+            outline: [[60, 20], [60, 30], [80, 30], [80, 20]],
+            zoom: 50
+          }
+        ]
+      };
+
+      const {container, simulateScrollPosition} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+      simulateScrollPosition('near viewport');
+      intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
+        .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
+
+      expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[0]).not.toHaveClass(indicatorStyles.hidden);
+      expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[1]).toHaveClass(indicatorStyles.hidden);
+    });
+
     it('only sets up intersection observer when near viewport', () => {
       const seed = {
         imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -1605,6 +1884,38 @@ describe('Hotspots', () => {
 
       expect(scroller.scrollTo).toHaveBeenCalled();
       expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
+    });
+
+    it('does not show active image on area hover', async () => {
+      const seed = {
+        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+        imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
+      };
+      const configuration = {
+        image: 100,
+        enablePanZoom: 'always',
+        areas: [
+          {
+            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+            indicatorPosition: [20, 25],
+            activeImage: 101
+          }
+        ],
+        tooltipTexts: {
+          1: {
+            title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          }
+        }
+      };
+
+      const user = userEvent.setup();
+      const {container} = renderInContentElement(
+        <Hotspots configuration={configuration} />, {seed}
+      );
+
+      await user.hover(container.querySelector(`.${areaStyles.clip}`));
+
+      expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
     });
 
     it('scroller lets pointer events pass when no area is active', async () => {

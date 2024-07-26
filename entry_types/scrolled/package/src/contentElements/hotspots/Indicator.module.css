@@ -14,7 +14,11 @@
   animation: inner 2s infinite;
   pointer-events: none;
   z-index: 1;
-  transition: opacity 0.2s ease;
+  transition: opacity 1s ease;
+}
+
+.hidden {
+  opacity: 0;
 }
 
 .indicator,

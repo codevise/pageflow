@@ -54,12 +54,52 @@ describe('Image', () => {
     expect(getByRole('img')).toHaveAttribute('src', '000/000/001/medium/image.jpg');
   });
 
+  it('supports using ultra variant of image given by id', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant="ultra" />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            ultra: ':id_partition/ultra/image.jpg',
+            large: ':id_partition/large/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/ultra/image.jpg');
+  });
+
+  it('falls back to large variant of image given by id if ultra variant is missing ', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant="ultra" />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            ultra: ':id_partition/ultra/image.jpg',
+            large: ':id_partition/large/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100, variants: ['large']}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/large/image.jpg');
+  });
+
   it('uses original URL of svg image if preferSvg is true', () => {
     const {getByRole} =
       renderInEntry(
         () => <Image imageFile={useFile({collectionName: 'imageFiles',
                                          permaId: 100})}
-                       preferSvg={true} />,
+                     preferSvg={true} />,
         {
           seed: {
             imageFileUrlTemplates: {
@@ -317,5 +357,26 @@ describe('Image', () => {
     );
 
     expect(getByRole('img').hasAttribute('alt')).toBe(true);
+  });
+
+  it('supports width and height attributes', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   width={100}
+                   height={50} />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            large: ':id_partition/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('width', '100');
+    expect(getByRole('img')).toHaveAttribute('height', '50');
   });
 });
