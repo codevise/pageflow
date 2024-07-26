@@ -26,7 +26,7 @@ import {
   utils
 } from 'pageflow-scrolled/frontend';
 
-import {getPanZoomStepTransform} from './panZoom';
+import {getTooltipReferencePosition} from './getTooltipReferencePosition';
 
 import styles from './Tooltip.module.css';
 
@@ -44,7 +44,7 @@ export function Tooltip({
     collectionName: 'imageFiles', permaId: area.tooltipImage
   });
 
-  const indicatorPosition = getIndicatorPosition({
+  const referencePosition = getTooltipReferencePosition({
     area,
     contentElementId, portraitMode, configuration,
     panZoomEnabled, imageFile, containerRect,
@@ -53,14 +53,17 @@ export function Tooltip({
   const tooltipTexts = configuration.tooltipTexts || {};
   const tooltipLinks = configuration.tooltipLinks || {};
 
+  const referenceType = portraitMode ? area.portraitTooltipReference : area.tooltipReference;
+  const position = portraitMode ? area.portraitTooltipPosition : area.tooltipPosition;
+
   const arrowRef = useRef();
   const {refs, floatingStyles, context} = useFloating({
     open: visible,
     onOpenChange: open => !open && onDismiss(),
     strategy: floatingStrategy || 'absolute',
-    placement: area.tooltipPosition === 'above' ? 'top' : 'bottom',
+    placement: position === 'above' ? 'top' : 'bottom',
     middleware: [
-      offset(20),
+      offset(referenceType === 'area' ? 7 : 20),
       shift(),
       shouldFlip && flip(),
       arrow({
@@ -130,8 +133,7 @@ export function Tooltip({
       <CompositeItem render={<div className={styles.compositeItem} />}>
         <div ref={refs.setReference}
              className={styles.reference}
-             style={{left: indicatorPosition[0],
-                     top: indicatorPosition[1]}}
+             style={referencePosition}
              {...getReferenceProps()} />
       </CompositeItem>
       {isMounted &&
@@ -185,37 +187,4 @@ export function Tooltip({
        </TooltipPortal>}
     </>
   );
-}
-
-function getIndicatorPosition({
-  area,
-  portraitMode,
-  panZoomEnabled, imageFile, containerRect
-}) {
-  const indicatorPositionInPercent = (
-    portraitMode ?
-    area.portraitIndicatorPosition :
-    area.indicatorPosition
-  ) || [50, 50];
-
-  if (panZoomEnabled) {
-    const transform = getPanZoomStepTransform({
-      areaOutline: portraitMode ? area.portraitOutline : area.outline,
-      areaZoom: (portraitMode ? area.portraitZoom : area.zoom) || 0,
-      imageFileWidth: imageFile?.width,
-      imageFileHeight: imageFile?.height,
-      containerWidth: containerRect.width,
-      containerHeight: containerRect.height
-    });
-
-    const indicatorPositionInPixels = [
-      containerRect.width * transform.scale * indicatorPositionInPercent[0] / 100 + transform.x,
-      containerRect.height * transform.scale * indicatorPositionInPercent[1] / 100 + transform.y
-    ];
-
-    return indicatorPositionInPixels.map(coord => `${coord}px`);
-  }
-  else {
-    return indicatorPositionInPercent.map(coord => `${coord}%`);
-  }
 }

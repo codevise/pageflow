@@ -1,6 +1,15 @@
+import {getBoundingRect} from './getBoundingRect';
+
 export function getPanZoomStepTransform({
   imageFileWidth, imageFileHeight, areaOutline, areaZoom, containerWidth, containerHeight, indicatorPositions = []
 }) {
+  if (!containerWidth ||
+      !containerHeight ||
+      !imageFileWidth ||
+      !imageFileHeight) {
+    return {x: 0, y: 0, scale: 1};
+  }
+
   const rect = getBoundingRect(areaOutline || []);
 
   const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
@@ -27,22 +36,5 @@ export function getPanZoomStepTransform({
       y: translateY + displayImageHeight * indicatorPosition[1] / 100 * (scale - 1)
     })),
     scale
-  };
-}
-
-function getBoundingRect(area) {
-  const xCoords = area.map(point => point[0]);
-  const yCoords = area.map(point => point[1]);
-
-  const minX = Math.min(...xCoords);
-  const maxX = Math.max(...xCoords);
-  const minY = Math.min(...yCoords);
-  const maxY = Math.max(...yCoords);
-
-  return {
-    left: minX,
-    top: minY,
-    width: maxX - minX,
-    height: maxY - minY
   };
 }

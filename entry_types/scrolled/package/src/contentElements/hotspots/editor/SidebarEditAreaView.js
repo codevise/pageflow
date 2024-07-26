@@ -1,4 +1,4 @@
-import {ConfigurationEditorView, SelectInputView, SliderInputView} from 'pageflow/ui';
+import {ConfigurationEditorView, SelectInputView, SliderInputView, SeparatorView} from 'pageflow/ui';
 import {editor, FileInputView} from 'pageflow/editor';
 import Marionette from 'backbone.marionette';
 import I18n from 'i18n-js';
@@ -71,9 +71,13 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
         propertyName: 'color',
         entry: options.entry
       });
+      this.input('tooltipReference', SelectInputView, {
+        values: ['indicator', 'area']
+      });
       this.input('tooltipPosition', SelectInputView, {
         values: ['below', 'above']
       });
+      this.view(SeparatorView);
       this.input('tooltipImage', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'hotspotsArea',
@@ -113,6 +117,9 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
         this.group('PaletteColor', {
           propertyName: 'portraitColor',
           entry: options.entry
+        });
+        this.input('portraitTooltipReference', SelectInputView, {
+          values: ['indicator', 'area']
         });
         this.input('portraitTooltipPosition', SelectInputView, {
           values: ['below', 'above']
