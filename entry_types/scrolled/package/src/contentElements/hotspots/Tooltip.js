@@ -33,7 +33,7 @@ import styles from './Tooltip.module.css';
 export function Tooltip({
   area,
   contentElementId, portraitMode, configuration, visible, active,
-  panZoomEnabled, imageFile, containerRect, flip: shouldFlip, floatingStrategy,
+  panZoomEnabled, imageFile, containerRect, keepInViewport, floatingStrategy,
   onMouseEnter, onMouseLeave, onClick, onDismiss,
 }) {
   const {t} = useI18n({locale: 'ui'});
@@ -64,8 +64,8 @@ export function Tooltip({
     placement: position === 'above' ? 'top' : 'bottom',
     middleware: [
       offset(referenceType === 'area' ? 7 : 20),
-      shift(),
-      shouldFlip && flip(),
+      shift({crossAxis: keepInViewport}),
+      keepInViewport && flip(),
       arrow({
         element: arrowRef
       })
