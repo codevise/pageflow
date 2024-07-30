@@ -6,6 +6,9 @@
   --default-navigation-bar-height:
     var(--theme-default-navigation-bar-height, 50px);
 
+  --default-navigation-padding-inline:
+    var(--theme-default-navigation-padding-inline, 12px);
+
   --default-navigation-scroller-top:
     var(--theme-default-navigation-scroller-top, 0);
 
@@ -52,17 +55,32 @@
   padding-top: var(--default-navigation-scroller-top);
 }
 
+.button {
+  composes: unstyledButton from '../../frontend/utils.module.css';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--theme-default-navigation-button-width, 40px);
+  height: var(--default-navigation-bar-height);
+  cursor: pointer;
+}
+
+.button svg {
+  width: var(--theme-default-navigation-button-icon-size, 35px);
+  height: var(--theme-default-navigation-button-icon-size, 35px);
+}
+
 .menuIcon {
+  composes: button;
   position: absolute;
   top: 0;
-  left: 12px;
-  height: var(--default-navigation-bar-height);
+  left: var(--default-navigation-padding-inline);
 }
 
 .contextIcons {
   position: absolute;
   top: 0px;
-  right: 12px;
+  right: var(--default-navigation-padding-inline);
   display: flex;
 }
 
@@ -71,19 +89,10 @@
 }
 
 .contextIcon {
-  composes: unstyledButton from '../../frontend/utils.module.css';
-  cursor: pointer;
-  width: 40px;
-  height: var(--default-navigation-bar-height);
+  composes: button;
   color: var(--theme-widget-secondary-color);
   fill: currentcolor;
   stroke: currentColor;
-}
-
-.contextIcon svg {
-  width: 35px;
-  height: 35px;
-  margin: 7px 2px;
 }
 
 div:focus-within > .contextIcon,
@@ -94,6 +103,7 @@ div:focus-within > .contextIcon,
 .logo {
   display: flex;
   align-items: center;
+  position: absolute;
   top: 0;
   left: 15px;
   height: 100%;

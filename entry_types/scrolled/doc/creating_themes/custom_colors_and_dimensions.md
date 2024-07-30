@@ -228,6 +228,9 @@ System](https://material.io/design/color/the-color-system.html#color-theme-creat
 | Name | Description |
 | ---- | ----------- |
 | `default_navigation_bar_height` | Height of the navigation bar excluding the progress bar. |
+| `default_navigation_padding_inline` | Space on the left and right inside the navigation bar. |
+| `default_navigation_button_width` | Width of buttons like the mobile menu, share or unmute. |
+| `default_navigation_button_icon_size` | Size of SVG icons inside buttons. |
 | `default_navigation_scroller_top` | Position of the horizontal scroller containing the chapter list. |
 | `default_navigation_scroll_button_top` | Position of the left/right scroll buttons visible when the chapter list overflows horizontally. |
 | `default_navigation_chapter_link_height` | Height of the links inside the horizontal chapter list. |
