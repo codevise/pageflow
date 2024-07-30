@@ -48,18 +48,19 @@ const icons = {
  *
  * @param {Object} props
  * @param {string} props.name -
- *   Either: copyright, expand, gear, information, muted, share, unmuted, close,
- *   email, facebook, linkedIn, telegram, twitter, whatsApp,
+ *   Either: arrowLeft, arrowRight, copyright, close, email, expand, facebook,
+ *   gear, information, linkedIn, menu, muted, share, telegram, twitter,
+ *   unmuted, world, whatsApp,
  *   arrowLeft, arrowRight, world
  * @params {number} [props.width] - Image width.
  * @params {number} [props.height] - Image height.
  */
-export function ThemeIcon({name, width, height}) {
+export function ThemeIcon({name, width, height, renderFallback}) {
   const theme = useTheme();
   const FallbackIcon = icons[name];
   const themeAsset = theme.assets.icons[name];
 
-  if (!FallbackIcon) {
+  if (!FallbackIcon && !renderFallback) {
     throw(new Error(
       `Unknown icon '${name}'. Available options: ${Object.keys(icons).join(', ')}.`
     ));
@@ -69,6 +70,9 @@ export function ThemeIcon({name, width, height}) {
     return <svg width={width} height={height}>
       <use xlinkHref={`${themeAsset}#icon`} />
     </svg>
+  }
+  else if (renderFallback) {
+    return renderFallback();
   }
   else {
     return <FallbackIcon width={width} height={height} />;

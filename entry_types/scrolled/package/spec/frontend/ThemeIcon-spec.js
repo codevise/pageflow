@@ -33,4 +33,32 @@ describe("ThemeIcon", () => {
 
     expect(svg).toHaveAttribute('xlink:href', '/path/to/custom-share.svg#icon')
   });
+
+  it('supports fallback render prop', () => {
+    const {queryByText} = renderInEntry(
+      <ThemeIcon name="menu"
+                 renderFallback={() => <div>Menu</div> } />
+    );
+
+    expect(queryByText('Menu')).not.toBeNull();
+  });
+
+  it('prefers custom theme icon over fallback render prop', () => {
+    const {queryByText, container} = renderInEntry(
+      <ThemeIcon name="menu"
+                 renderFallback={() => <div>Menu</div> } />,
+      {
+        seed: {
+          themeAssets: {
+            icons: {menu: '/path/to/custom-menu.svg'}
+          }
+        }
+      }
+    );
+
+    const svg = container.querySelector('svg use');
+
+    expect(svg).toHaveAttribute('xlink:href', '/path/to/custom-menu.svg#icon')
+    expect(queryByText('Menu')).toBeNull();
+  });
 });

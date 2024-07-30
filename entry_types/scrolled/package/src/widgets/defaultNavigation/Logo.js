@@ -12,7 +12,6 @@ export function Logo() {
        rel="noopener noreferrer"
        href={theme.options.logoUrl}
        className={classNames(
-         styles.menuIcon,
          styles.logo,
          {[styles.centerMobileLogo]:
            theme.options.defaultNavigationMobileLogoPosition === 'center'}
