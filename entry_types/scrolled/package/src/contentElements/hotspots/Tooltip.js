@@ -36,6 +36,7 @@ export function Tooltip({
   panZoomEnabled, imageFile, containerRect, keepInViewport, floatingStrategy,
   onMouseEnter, onMouseLeave, onClick, onDismiss,
 }) {
+  const {t: translateWithEntryLocale} = useI18n();
   const {t} = useI18n({locale: 'ui'});
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {isEditable} = useContentElementEditorState();
@@ -107,7 +108,7 @@ export function Tooltip({
     if (utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)) {
       handleTextChange('link', [{
         type: 'heading',
-        children: [{text: t('pageflow_scrolled.public.more')}]
+        children: [{text: translateWithEntryLocale('pageflow_scrolled.public.more')}]
       }]);
     }
 
