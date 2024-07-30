@@ -570,7 +570,7 @@ describe('Hotspots', () => {
       image: 100,
       areas: [
         {
-          indicatorPosition: [10, 20],
+          indicatorPosition: [15, 20],
           outline: [[10, 20], [10, 30], [40, 30], [40, 15]],
           tooltipReference: 'area'
         }
@@ -584,9 +584,8 @@ describe('Hotspots', () => {
     simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '10px',
+      left: '15px',
       top: '15px',
-      width: '30px',
       height: '15px'
     });
   });
@@ -618,9 +617,8 @@ describe('Hotspots', () => {
     simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '10px',
+      left: '20px',
       top: '15px',
-      width: '30px',
       height: '15px'
     });
   });
@@ -654,7 +652,6 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
       left: '10px',
       top: '15px',
-      width: '30px',
       height: '15px'
     });
   });
