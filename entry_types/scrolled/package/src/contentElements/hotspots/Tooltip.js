@@ -17,12 +17,13 @@ import {
   EditableText,
   EditableInlineText,
   EditableLink,
+  InlineFileRights,
   Image,
   Text,
   useContentElementEditorState,
   useContentElementConfigurationUpdate,
   useDarkBackground,
-  useFile,
+  useFileWithInlineRights,
   useI18n,
   utils
 } from 'pageflow-scrolled/frontend';
@@ -45,8 +46,10 @@ export function Tooltip({
   const darkBackground = useDarkBackground();
   const light = configuration.invertTooltips ? !darkBackground : darkBackground;
 
-  const tooltipImageFile = useFile({
-    collectionName: 'imageFiles', permaId: area.tooltipImage
+  const tooltipImageFile = useFileWithInlineRights({
+    configuration: area,
+    collectionName: 'imageFiles',
+    propertyName: 'tooltipImage'
   });
 
   const referencePosition = getTooltipReferencePosition({
@@ -155,12 +158,19 @@ export function Tooltip({
                   onClick={onClick}
                   {...getFloatingProps()}>
                <FloatingArrow ref={arrowRef} context={context} strokeWidth={1} />
-               <Image imageFile={tooltipImageFile}
-                      variant={'medium'}
-                      fill={false}
-                      width={tooltipImageFile?.width}
-                      height={tooltipImageFile?.height}
-                      preferSvg={true} />
+               {tooltipImageFile &&
+                <>
+                  <div className={styles.imageWrapper}>
+                    <Image imageFile={tooltipImageFile}
+                           variant={'medium'}
+                           fill={false}
+                           width={tooltipImageFile.width}
+                           height={tooltipImageFile.height}
+                           preferSvg={true} />
+                    <InlineFileRights context="insideElement" items={[{file: tooltipImageFile, label: 'image'}]} />
+                    <InlineFileRights context="afterElement" items={[{file: tooltipImageFile, label: 'image'}]} />
+                  </div>
+                </>}
                {presentOrEditing('title') &&
                 <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>
                   <Text inline scaleCategory="hotspotsTooltipTitle">

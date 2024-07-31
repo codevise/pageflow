@@ -86,11 +86,15 @@
   min-width: 200px;
 }
 
-
-.box img {
-  width: 100%;
-  height: auto;
+.box .imageWrapper {
+  position: relative;
   margin-bottom: 1rem;
+}
+
+.imageWrapper img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .box h3,
