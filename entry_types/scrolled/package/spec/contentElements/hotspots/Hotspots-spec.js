@@ -34,6 +34,7 @@ describe('Hotspots', () => {
       this.callback = callback;
       this.observe = observeResizeMock;
       this.unobserve = function(element) {};
+      this.disconnect = function() {};
     };
   });
 

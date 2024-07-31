@@ -66,18 +66,14 @@ export function Tooltip({
     placement: position === 'above' ? 'top' : 'bottom',
     middleware: [
       offset(referenceType === 'area' ? 7 : 20),
-      shift({crossAxis: keepInViewport}),
+      shift({crossAxis: keepInViewport, padding: {left: 16, right: 16}}),
       keepInViewport && flip(),
       arrow({
-        element: arrowRef
+        element: arrowRef,
+        padding: 5
       })
     ],
-    whileElementsMounted(referenceEl, floatingEl, update) {
-      return autoUpdate(referenceEl, floatingEl, update, {
-        elementResize: false,
-        layoutShift: false,
-      });
-    }
+    whileElementsMounted: autoUpdate
   });
 
   const role = useRole(context, {role: 'label'});
