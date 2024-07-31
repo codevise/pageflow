@@ -151,10 +151,10 @@ export function Tooltip({
                   {...getFloatingProps()}>
                <FloatingArrow ref={arrowRef} context={context} />
                <Image imageFile={tooltipImageFile}
-                      variant={'linkThumbnailLarge'}
+                      variant={'medium'}
                       fill={false}
-                      width={394}
-                      height={226}
+                      width={tooltipImageFile?.width}
+                      height={tooltipImageFile?.height}
                       preferSvg={true} />
                {presentOrEditing('title') &&
                 <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>
