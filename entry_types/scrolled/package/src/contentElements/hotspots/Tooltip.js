@@ -56,6 +56,7 @@ export function Tooltip({
 
   const referenceType = portraitMode ? area.portraitTooltipReference : area.tooltipReference;
   const position = portraitMode ? area.portraitTooltipPosition : area.tooltipPosition;
+  const maxWidth = portraitMode ? area.portraitTooltipMaxWidth : area.tooltipMaxWidth;
 
   const arrowRef = useRef();
   const {refs, floatingStyles, context} = useFloating({
@@ -144,6 +145,7 @@ export function Tooltip({
              <div ref={refs.setFloating}
                   style={floatingStyles}
                   className={classNames(styles.box,
+                                        styles[`maxWidth-${maxWidth}`],
                                         {[styles.editable]: isEditable,
                                          [styles.minWidth]: presentOrEditing('link')})}
                   onMouseEnter={onMouseEnter}

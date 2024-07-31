@@ -503,6 +503,73 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles.minWidth);
   });
 
+  it('applies max width to tooltip', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+          tooltipMaxWidth: 'narrow'
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}]
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles['maxWidth-narrow']);
+  });
+
+  it('supports separate max width for portrait mode', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+          tooltipMaxWidth: 'narrow',
+          portraitTooltipMaxWidth: 'veryNarrow'
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}]
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    window.matchMedia.mockPortrait();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles['maxWidth-veryNarrow']);
+  });
+
   it('does not observe resize by default', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},

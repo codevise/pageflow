@@ -31,6 +31,13 @@ en:
                 values:
                   indicator: At indicator
                   area: At area
+              tooltipMaxWidth:
+                label: Tooltip maximum width
+                values:
+                  medium: Medium
+                  narrow: Narrow
+                  veryNarrow: Very Narrow
+                  wide: Wide
               color:
                 label: Color
               activeImage:
@@ -51,6 +58,13 @@ en:
                 values:
                   indicator: At indicator
                   area: At area
+              portraitTooltipMaxWidth:
+                label: Tooltip maximum width (Portrait)
+                values:
+                  medium: Medium
+                  narrow: Narrow
+                  veryNarrow: Very Narrow
+                  wide: Wide
               portraitColor:
                 label: Color (Portrait)
               portraitActiveImage:

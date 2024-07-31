@@ -31,6 +31,13 @@ de:
                 values:
                   indicator: Am Indikator
                   area: Am Bereich
+              tooltipMaxWidth:
+                label: Tooltip-Maximalbreite
+                values:
+                  medium: "Mittel"
+                  veryNarrow: Sehr schmal
+                  narrow: Schmal
+                  wide: Breit
               color:
                 label: Farbe
               activeImage:
@@ -51,6 +58,13 @@ de:
                 values:
                   indicator: Am Indikator
                   area: Am Bereich
+              portraitTooltipMaxWidth:
+                label: Tooltip-Maximalbreite (Hochkant)
+                values:
+                  medium: "Mittel"
+                  narrow: Schmal
+                  veryNarrow: Sehr schmal
+                  wide: Breit
               portraitColor:
                 label: Farbe (Hochkant)
               portraitActiveImage:

@@ -23,6 +23,21 @@ describe('pageflow.SelectInputView', () => {
     expect($('select', selectInputView.el).val()).toEqual('second');
   });
 
+  it('saves value on change', () => {
+    var model = new Model();
+    var selectInputView = new SelectInputView({
+      model: model,
+      propertyName: 'value',
+      values: ['first', 'second']
+    });
+
+    selectInputView.render();
+    selectInputView.ui.select.val('second');
+    selectInputView.ui.select.trigger('change');
+
+    expect(model.get('value')).toEqual('second');
+  });
+
   it('selects first option if value is not among values', () => {
     var model = new Model({value: 'not there'});
     var selectInputView = new SelectInputView({
@@ -237,6 +252,68 @@ describe('pageflow.SelectInputView', () => {
       selectInputView.render();
 
       expect($('select', selectInputView.el).val()).toEqual('available');
+    });
+  });
+
+  describe('with defaultValue', () => {
+    it('selects default value if property is not set', () => {
+      var model = new Model();
+      var selectInputView = new SelectInputView({
+        model: model,
+        propertyName: 'value',
+        values: ['small', 'medium', 'large'],
+        defaultValue: 'medium'
+      });
+
+      selectInputView.render();
+
+      expect($('select', selectInputView.el).val()).toEqual('medium');
+    });
+
+    it('selects current value if property is set', () => {
+      var model = new Model({value: 'small'});
+      var selectInputView = new SelectInputView({
+        model: model,
+        propertyName: 'value',
+        values: ['small', 'medium', 'large'],
+        defaultValue: 'medium'
+      });
+
+      selectInputView.render();
+
+      expect($('select', selectInputView.el).val()).toEqual('small');
+    });
+
+    it('does not save default value', () => {
+      var model = new Model({value: 'small'});
+      var selectInputView = new SelectInputView({
+        model: model,
+        propertyName: 'value',
+        values: ['small', 'medium', 'large'],
+        defaultValue: 'medium'
+      });
+
+      selectInputView.render();
+      selectInputView.ui.select.val('medium');
+      selectInputView.ui.select.trigger('change');
+
+      expect(model.has('value')).toEqual(false);
+    });
+
+    it('saves other values on change', () => {
+      var model = new Model({value: 'small'});
+      var selectInputView = new SelectInputView({
+        model: model,
+        propertyName: 'value',
+        values: ['small', 'medium', 'large'],
+        defaultValue: 'medium'
+      });
+
+      selectInputView.render();
+      selectInputView.ui.select.val('large');
+      selectInputView.ui.select.trigger('change');
+
+      expect(model.get('value')).toEqual('large');
     });
   });
 

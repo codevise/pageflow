@@ -12,7 +12,7 @@ import template from '../../templates/inputs/sliderInput.jst';
  * @param {Object} [options]
  *
  * @param {number} [options.defaultValue]
- *   Defaults value to display if property is not set.
+ *   Default value to display if property is not set.
  *
  * @param {number} [options.minValue=0]
  *   Value when dragging slider to the very left.

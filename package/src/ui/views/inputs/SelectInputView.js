@@ -17,6 +17,9 @@ import template from '../../templates/inputs/selectInput.jst';
  * @param {string[]} [options.values]
  *   List of possible values to persist in the attribute.
  *
+ * @param {number} [options.defaultValue]
+ *   Default value to display if property is not set.
+ *
  * @param {string[]} [options.texts]
  *   List of display texts for drop down items.
  *
@@ -226,7 +229,14 @@ export const SelectInputView = Marionette.ItemView.extend({
   },
 
   save: function() {
-    this.model.set(this.options.propertyName, this.ui.select.val());
+    const value = this.ui.select.val();
+
+    if ('defaultValue' in this.options && value === this.options.defaultValue) {
+      this.model.unset(this.options.propertyName);
+    }
+    else {
+      this.model.set(this.options.propertyName, value);
+    }
   },
 
   load: function() {
@@ -236,7 +246,9 @@ export const SelectInputView = Marionette.ItemView.extend({
       if (this.model.has(this.options.propertyName) &&
           this.ui.select.find('option[value="' + value +'"]:not([disabled])').length) {
         this.ui.select.val(value);
-
+      }
+      else if ('defaultValue' in this.options) {
+        this.ui.select.val(this.options.defaultValue);
       }
       else {
         this.ui.select.val(this.ui.select.find('option:not([disabled]):first').val());
