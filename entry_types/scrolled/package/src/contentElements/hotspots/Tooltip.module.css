@@ -31,6 +31,10 @@
   max-width: 400px;
 }
 
+.minWidth {
+  min-width: 200px;
+}
+
 .box svg {
   fill: #fff;
 }

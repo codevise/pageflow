@@ -144,7 +144,8 @@ export function Tooltip({
              <div ref={refs.setFloating}
                   style={floatingStyles}
                   className={classNames(styles.box,
-                                        {[styles.editable]: isEditable})}
+                                        {[styles.editable]: isEditable,
+                                         [styles.minWidth]: presentOrEditing('link')})}
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
                   onClick={onClick}

@@ -424,12 +424,83 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, queryByRole} = renderInContentElement(
+    const {container, queryByRole, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
     await user.click(container.querySelector(`.${areaStyles.clip}`))
 
     expect(queryByRole('link')).toBeNull();
+  });
+
+  it('does not apply min width to tooltip without link', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
+          link: [{type: 'paragraph', children: [{text: ''}]}]
+        }
+      },
+      tooltipLinks: {
+        1: {href: 'https://example.com', openInNewTab: true}
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).not.toHaveClass(tooltipStyles.minWidth);
+  });
+
+  it('applies min width to tooltip with link', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
+          link: [{type: 'paragraph', children: [{text: 'Some link'}]}]
+        }
+      },
+      tooltipLinks: {
+        1: {href: 'https://example.com', openInNewTab: true}
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles.minWidth);
   });
 
   it('does not observe resize by default', () => {
