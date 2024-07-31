@@ -18,7 +18,7 @@ de:
             destroy: Löschen
             confirm_delete_link: Soll der Bereich wirklich gelöscht werden?
             tabs:
-              area: Hotspot-Breiech
+              area: Hotspot-Bereich
               portrait: Hochkant
             attributes:
               tooltipPosition:
@@ -114,6 +114,8 @@ de:
               label: Pan & Zoom bei erstem Bereich starten
             enableFullscreen:
               label: Vollbildmodus erlauben
+            invertTooltips:
+              label: Tooltip-Farben invertieren
           description: Bild mit anklickbaren Bereichen
           name: Hotspots
           tabs:

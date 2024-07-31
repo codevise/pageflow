@@ -21,6 +21,7 @@ import {
   Text,
   useContentElementEditorState,
   useContentElementConfigurationUpdate,
+  useDarkBackground,
   useFile,
   useI18n,
   utils
@@ -40,6 +41,9 @@ export function Tooltip({
   const {t} = useI18n({locale: 'ui'});
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {isEditable} = useContentElementEditorState();
+
+  const darkBackground = useDarkBackground();
+  const light = configuration.invertTooltips ? !darkBackground : darkBackground;
 
   const tooltipImageFile = useFile({
     collectionName: 'imageFiles', permaId: area.tooltipImage
@@ -143,13 +147,14 @@ export function Tooltip({
                   className={classNames(styles.box,
                                         styles[`maxWidth-${maxWidth}`],
                                         styles[`align-${area.tooltipTextAlign}`],
+                                        light ? styles.light : styles.dark,
                                         {[styles.editable]: isEditable,
                                          [styles.minWidth]: presentOrEditing('link')})}
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
                   onClick={onClick}
                   {...getFloatingProps()}>
-               <FloatingArrow ref={arrowRef} context={context} />
+               <FloatingArrow ref={arrowRef} context={context} strokeWidth={1} />
                <Image imageFile={tooltipImageFile}
                       variant={'medium'}
                       fill={false}

@@ -48,6 +48,7 @@ editor.contentElementTypes.register('hotspots', {
         contentElement,
         collection: AreasCollection.forContentElement(contentElement, entry)
       });
+      this.input('invertTooltips', CheckBoxInputView);
       this.input('enablePanZoom', SelectInputView, {
         values: ['phonePlatform', 'always', 'never']
       });
