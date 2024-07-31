@@ -43,6 +43,14 @@
   --max-width: 200px;
 }
 
+.align-center {
+  text-align: center;
+}
+
+.align-right {
+  text-align: right;
+}
+
 .minWidth {
   min-width: 200px;
 }

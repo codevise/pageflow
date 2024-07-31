@@ -146,6 +146,7 @@ export function Tooltip({
                   style={floatingStyles}
                   className={classNames(styles.box,
                                         styles[`maxWidth-${maxWidth}`],
+                                        styles[`align-${area.tooltipTextAlign}`],
                                         {[styles.editable]: isEditable,
                                          [styles.minWidth]: presentOrEditing('link')})}
                   onMouseEnter={onMouseEnter}

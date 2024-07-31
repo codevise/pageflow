@@ -91,6 +91,9 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
         },
         positioning: false
       });
+      this.input('tooltipTextAlign', SelectInputView, {
+        values: ['left', 'right', 'center']
+      });
     });
 
     if (portraitFile) {

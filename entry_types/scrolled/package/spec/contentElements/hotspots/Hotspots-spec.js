@@ -570,6 +570,38 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles['maxWidth-veryNarrow']);
   });
 
+  it('supports setting tooltip text align', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+          tooltipTextAlign: 'center'
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}]
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles['align-center']);
+  });
+
   it('does not observe resize by default', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},

@@ -38,6 +38,12 @@ de:
                   veryNarrow: Sehr schmal
                   narrow: Schmal
                   wide: Breit
+              tooltipTextAlign:
+                label: Textausrichtung in Tooltip
+                values:
+                  left: Links
+                  center: Zentriert
+                  right: Rechts
               color:
                 label: Farbe
               activeImage:

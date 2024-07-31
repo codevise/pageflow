@@ -38,6 +38,12 @@ en:
                   narrow: Narrow
                   veryNarrow: Very Narrow
                   wide: Wide
+              tooltipTextAlign:
+                label: Text alignment in tooltip
+                values:
+                  left: Left
+                  center: Center
+                  right: Right
               color:
                 label: Color
               activeImage:
