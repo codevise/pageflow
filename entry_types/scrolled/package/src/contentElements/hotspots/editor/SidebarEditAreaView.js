@@ -77,6 +77,10 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
       this.input('tooltipPosition', SelectInputView, {
         values: ['below', 'above']
       });
+      this.input('tooltipMaxWidth', SelectInputView, {
+        defaultValue: 'medium',
+        values: ['wide', 'medium', 'narrow', 'veryNarrow']
+      });
       this.view(SeparatorView);
       this.input('tooltipImage', FileInputView, {
         collection: 'image_files',
@@ -86,6 +90,9 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
           tab: 'area'
         },
         positioning: false
+      });
+      this.input('tooltipTextAlign', SelectInputView, {
+        values: ['left', 'right', 'center']
       });
     });
 
@@ -123,6 +130,10 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
         });
         this.input('portraitTooltipPosition', SelectInputView, {
           values: ['below', 'above']
+        });
+        this.input('portraitTooltipMaxWidth', SelectInputView, {
+          defaultValue: 'medium',
+          values: ['wide', 'medium', 'narrow', 'veryNarrow']
         });
       });
     }

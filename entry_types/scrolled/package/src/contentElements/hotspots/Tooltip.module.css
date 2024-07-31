@@ -24,11 +24,35 @@
   background-color: #fff;
   color: #000;
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 0.75rem;
   box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
   border-radius: 5px;
-  width: calc(100% - 2rem);
-  max-width: 400px;
+  --max-width: 400px;
+  max-width: min(100% - 2rem, var(--max-width));
+}
+
+.maxWidth-wide {
+  --max-width: 600px;
+}
+
+.maxWidth-narrow {
+  --max-width: 300px;
+}
+
+.maxWidth-veryNarrow {
+  --max-width: 200px;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.minWidth {
+  min-width: 200px;
 }
 
 .box svg {
@@ -37,6 +61,7 @@
 
 .box img {
   width: 100%;
+  height: auto;
   margin-bottom: 1rem;
 }
 
@@ -47,7 +72,7 @@
 
 .box > h3,
 .box > div {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.5rem;
 }
 
 .box > :last-child {
@@ -60,10 +85,9 @@
   gap: 0.5em;
   border-radius: 5px;
   text-decoration: none;
-  padding: 0.75rem;
+  padding: 0.5rem;
   background-color: var(--theme-widget-primary-color);
   color: var(--theme-widget-on-primary-color);
-  font-size: 18px;
   margin-top: 1rem;
   font-weight: bold;
 }

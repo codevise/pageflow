@@ -17,7 +17,7 @@ editor.registerSideBarRouting({
 
 editor.contentElementTypes.register('hotspots', {
   pictogram,
-  category: 'links',
+  category: 'interactive',
   featureName: 'hotspots_content_element',
   supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],

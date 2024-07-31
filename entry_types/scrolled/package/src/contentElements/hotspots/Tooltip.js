@@ -36,6 +36,7 @@ export function Tooltip({
   panZoomEnabled, imageFile, containerRect, keepInViewport, floatingStrategy,
   onMouseEnter, onMouseLeave, onClick, onDismiss,
 }) {
+  const {t: translateWithEntryLocale} = useI18n();
   const {t} = useI18n({locale: 'ui'});
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {isEditable} = useContentElementEditorState();
@@ -55,6 +56,7 @@ export function Tooltip({
 
   const referenceType = portraitMode ? area.portraitTooltipReference : area.tooltipReference;
   const position = portraitMode ? area.portraitTooltipPosition : area.tooltipPosition;
+  const maxWidth = portraitMode ? area.portraitTooltipMaxWidth : area.tooltipMaxWidth;
 
   const arrowRef = useRef();
   const {refs, floatingStyles, context} = useFloating({
@@ -64,18 +66,14 @@ export function Tooltip({
     placement: position === 'above' ? 'top' : 'bottom',
     middleware: [
       offset(referenceType === 'area' ? 7 : 20),
-      shift({crossAxis: keepInViewport}),
+      shift({crossAxis: keepInViewport, padding: {left: 16, right: 16}}),
       keepInViewport && flip(),
       arrow({
-        element: arrowRef
+        element: arrowRef,
+        padding: 5
       })
     ],
-    whileElementsMounted(referenceEl, floatingEl, update) {
-      return autoUpdate(referenceEl, floatingEl, update, {
-        elementResize: false,
-        layoutShift: false,
-      });
-    }
+    whileElementsMounted: autoUpdate
   });
 
   const role = useRole(context, {role: 'label'});
@@ -107,7 +105,7 @@ export function Tooltip({
     if (utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)) {
       handleTextChange('link', [{
         type: 'heading',
-        children: [{text: t('pageflow_scrolled.public.more')}]
+        children: [{text: translateWithEntryLocale('pageflow_scrolled.public.more')}]
       }]);
     }
 
@@ -143,17 +141,20 @@ export function Tooltip({
              <div ref={refs.setFloating}
                   style={floatingStyles}
                   className={classNames(styles.box,
-                                        {[styles.editable]: isEditable})}
+                                        styles[`maxWidth-${maxWidth}`],
+                                        styles[`align-${area.tooltipTextAlign}`],
+                                        {[styles.editable]: isEditable,
+                                         [styles.minWidth]: presentOrEditing('link')})}
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
                   onClick={onClick}
                   {...getFloatingProps()}>
                <FloatingArrow ref={arrowRef} context={context} />
                <Image imageFile={tooltipImageFile}
-                      variant={'linkThumbnailLarge'}
+                      variant={'medium'}
                       fill={false}
-                      width={394}
-                      height={226}
+                      width={tooltipImageFile?.width}
+                      height={tooltipImageFile?.height}
                       preferSvg={true} />
                {presentOrEditing('title') &&
                 <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>

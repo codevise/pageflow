@@ -34,6 +34,7 @@ describe('Hotspots', () => {
       this.callback = callback;
       this.observe = observeResizeMock;
       this.unobserve = function(element) {};
+      this.disconnect = function() {};
     };
   });
 
@@ -356,7 +357,7 @@ describe('Hotspots', () => {
     const seed = {
       imageFileUrlTemplates: {
         large: 'large/:id_partition/image.webp',
-        linkThumbnailLarge: 'linkThumbnailLarge/:id_partition/image.webp'
+        medium: 'medium/:id_partition/image.webp'
       },
       imageFiles: [{id: 1, permaId: 100}, {id: 2, permaId: 101}]
     };
@@ -395,7 +396,7 @@ describe('Hotspots', () => {
     expect(queryByText('Some link')).not.toBeNull();
     expect(getByRole('link')).toHaveAttribute('href', 'https://example.com');
     expect(getByRole('link')).toHaveAttribute('target', '_blank');
-    expect(getByRole('img')).toHaveAttribute('src', 'linkThumbnailLarge/000/000/002/image.webp');
+    expect(getByRole('img')).toHaveAttribute('src', 'medium/000/000/002/image.webp');
   });
 
   it('does not render tooltip link if link text is blank', async () => {
@@ -424,12 +425,182 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container, queryByRole} = renderInContentElement(
+    const {container, queryByRole, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
     await user.click(container.querySelector(`.${areaStyles.clip}`))
 
     expect(queryByRole('link')).toBeNull();
+  });
+
+  it('does not apply min width to tooltip without link', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
+          link: [{type: 'paragraph', children: [{text: ''}]}]
+        }
+      },
+      tooltipLinks: {
+        1: {href: 'https://example.com', openInNewTab: true}
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).not.toHaveClass(tooltipStyles.minWidth);
+  });
+
+  it('applies min width to tooltip with link', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
+          link: [{type: 'paragraph', children: [{text: 'Some link'}]}]
+        }
+      },
+      tooltipLinks: {
+        1: {href: 'https://example.com', openInNewTab: true}
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles.minWidth);
+  });
+
+  it('applies max width to tooltip', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+          tooltipMaxWidth: 'narrow'
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}]
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles['maxWidth-narrow']);
+  });
+
+  it('supports separate max width for portrait mode', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      portraitImage: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+          tooltipMaxWidth: 'narrow',
+          portraitTooltipMaxWidth: 'veryNarrow'
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}]
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    window.matchMedia.mockPortrait();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles['maxWidth-veryNarrow']);
+  });
+
+  it('supports setting tooltip text align', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          indicatorPosition: [10, 20],
+          tooltipTextAlign: 'center'
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          description: [{type: 'paragraph', children: [{text: 'Some description'}]}]
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+    await user.click(container.querySelector(`.${areaStyles.clip}`))
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles['align-center']);
   });
 
   it('does not observe resize by default', () => {
@@ -570,7 +741,7 @@ describe('Hotspots', () => {
       image: 100,
       areas: [
         {
-          indicatorPosition: [10, 20],
+          indicatorPosition: [15, 20],
           outline: [[10, 20], [10, 30], [40, 30], [40, 15]],
           tooltipReference: 'area'
         }
@@ -584,9 +755,8 @@ describe('Hotspots', () => {
     simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '10px',
+      left: '15px',
       top: '15px',
-      width: '30px',
       height: '15px'
     });
   });
@@ -618,9 +788,8 @@ describe('Hotspots', () => {
     simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '10px',
+      left: '20px',
       top: '15px',
-      width: '30px',
       height: '15px'
     });
   });
@@ -654,7 +823,6 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
       left: '10px',
       top: '15px',
-      width: '30px',
       height: '15px'
     });
   });
