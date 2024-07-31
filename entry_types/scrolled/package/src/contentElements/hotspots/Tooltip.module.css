@@ -1,3 +1,9 @@
+@value (
+  darkContentSurfaceColor, lightContentSurfaceColor,
+  darkContentTextColor, lightContentTextColor,
+  darkContentLinkColor, lightContentLinkColor
+) from "pageflow-scrolled/values/colors.module.css";
+
 .compositeItem {
   position: absolute;
   top: 0;
@@ -21,14 +27,39 @@
 
 .box {
   font-family: var(--theme-entry-font-family);
-  background-color: #fff;
-  color: #000;
   box-sizing: border-box;
   padding: 0.75rem;
-  box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
   border-radius: 5px;
   --max-width: 400px;
   max-width: min(100% - 2rem, var(--max-width));
+}
+
+.light {
+  background-color: lightContentSurfaceColor;
+  color: darkContentTextColor;
+  --content-text-color: darkContentTextColor;
+  --content-link-color: darkContentLinkColor;
+  box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
+}
+
+.dark {
+  background-color: darkContentSurfaceColor;
+  color: lightContentTextColor;
+  --content-text-color: lightContentTextColor;
+  --content-link-color: lightContentLinkColor;
+  border: solid 1px rgba(255 255 255 / 5%);
+}
+
+.light > svg {
+  fill: lightContentSurfaceColor;
+}
+
+.dark > svg {
+  fill: darkContentSurfaceColor;
+}
+
+.dark > svg path:first-of-type {
+  stroke: rgba(255 255 255 / 5%);
 }
 
 .maxWidth-wide {
@@ -55,14 +86,15 @@
   min-width: 200px;
 }
 
-.box svg {
-  fill: #fff;
+.box .imageWrapper {
+  position: relative;
+  margin-bottom: 1rem;
 }
 
-.box img {
-  width: 100%;
+.imageWrapper img {
+  display: block;
+  max-width: 100%;
   height: auto;
-  margin-bottom: 1rem;
 }
 
 .box h3,
@@ -90,6 +122,10 @@
   color: var(--theme-widget-on-primary-color);
   margin-top: 1rem;
   font-weight: bold;
+}
+
+.dark .link {
+  border: solid 1px rgb(255 255 255 / 5%);
 }
 
 .box > :first-child .link {

@@ -114,6 +114,8 @@ en:
               label: Pan to first area initially
             enableFullscreen:
               label: Enable fullscreen
+            invertTooltips:
+              label: Invert tooltip colors
           description: Image with clickable areas
           name: Hotspots
           tabs:

@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import {DraggableCore} from 'react-draggable';
 
-import {utils} from 'pageflow-scrolled/frontend'
+import {utils, paletteColor} from 'pageflow-scrolled/frontend'
 import {buttonStyles} from 'pageflow-scrolled/editor'
 
 import {
@@ -36,6 +36,7 @@ export const DraggableEditorView = Marionette.View.extend({
       <DraggableEditor
         imageSrc={this.options.file.getBackgroundPositioningImageUrl()}
         portrait={this.options.file.get('width') < this.options.file.get('height')}
+        indicatorColor={paletteColor(this.model.get(this.getPropertyName('color')) || this.model.get('color'))}
         initialMode={this.model.get(this.getPropertyName('mode'))}
         initialPoints={this.model.get(this.getPropertyName('outline'))}
         initialIndicatorPosition={this.model.get(this.getPropertyName('indicatorPosition'))}
@@ -70,7 +71,7 @@ export const DraggableEditorView = Marionette.View.extend({
 });
 
 function DraggableEditor({
-  imageSrc, portrait,
+  imageSrc, portrait, indicatorColor,
   initialMode, initialPoints, initialIndicatorPosition,
   onModeChange, onPointsChange, onIndicatorPositionChange
 }) {
@@ -173,6 +174,7 @@ function DraggableEditor({
                                      })} />}
 
           <Indicator position={indicatorPosition}
+                     color={indicatorColor}
                      onDrag={event => dispatch({
                        type: DRAG_INDICATOR,
                        cursor: clientToPercent(event)
@@ -220,11 +222,15 @@ function Handle({point, circle, potential, title, cursor, onDrag, onDragStop, on
   );
 }
 
-function Indicator({position, onDrag}) {
+function Indicator({position, color, onDrag}) {
   return (
     <DraggableCore onDrag={onDrag}>
       <div className={styles.indicator}
-           style={{left: `${position[0]}%`, top: `${position[1]}%`}}
+           style={{
+             left: `${position[0]}%`,
+             top: `${position[1]}%`,
+             '--color': color
+           }}
            title={I18n.t(`${i18nPrefix}.indicator_title`)} />
     </DraggableCore>
   );

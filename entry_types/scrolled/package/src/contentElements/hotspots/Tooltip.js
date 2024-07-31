@@ -17,11 +17,13 @@ import {
   EditableText,
   EditableInlineText,
   EditableLink,
+  InlineFileRights,
   Image,
   Text,
   useContentElementEditorState,
   useContentElementConfigurationUpdate,
-  useFile,
+  useDarkBackground,
+  useFileWithInlineRights,
   useI18n,
   utils
 } from 'pageflow-scrolled/frontend';
@@ -41,8 +43,13 @@ export function Tooltip({
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {isEditable} = useContentElementEditorState();
 
-  const tooltipImageFile = useFile({
-    collectionName: 'imageFiles', permaId: area.tooltipImage
+  const darkBackground = useDarkBackground();
+  const light = configuration.invertTooltips ? !darkBackground : darkBackground;
+
+  const tooltipImageFile = useFileWithInlineRights({
+    configuration: area,
+    collectionName: 'imageFiles',
+    propertyName: 'tooltipImage'
   });
 
   const referencePosition = getTooltipReferencePosition({
@@ -143,19 +150,27 @@ export function Tooltip({
                   className={classNames(styles.box,
                                         styles[`maxWidth-${maxWidth}`],
                                         styles[`align-${area.tooltipTextAlign}`],
+                                        light ? styles.light : styles.dark,
                                         {[styles.editable]: isEditable,
                                          [styles.minWidth]: presentOrEditing('link')})}
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
                   onClick={onClick}
                   {...getFloatingProps()}>
-               <FloatingArrow ref={arrowRef} context={context} />
-               <Image imageFile={tooltipImageFile}
-                      variant={'medium'}
-                      fill={false}
-                      width={tooltipImageFile?.width}
-                      height={tooltipImageFile?.height}
-                      preferSvg={true} />
+               <FloatingArrow ref={arrowRef} context={context} strokeWidth={1} />
+               {tooltipImageFile &&
+                <>
+                  <div className={styles.imageWrapper}>
+                    <Image imageFile={tooltipImageFile}
+                           variant={'medium'}
+                           fill={false}
+                           width={tooltipImageFile.width}
+                           height={tooltipImageFile.height}
+                           preferSvg={true} />
+                    <InlineFileRights context="insideElement" items={[{file: tooltipImageFile, label: 'image'}]} />
+                    <InlineFileRights context="afterElement" items={[{file: tooltipImageFile, label: 'image'}]} />
+                  </div>
+                </>}
                {presentOrEditing('title') &&
                 <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>
                   <Text inline scaleCategory="hotspotsTooltipTitle">

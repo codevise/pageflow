@@ -2,6 +2,14 @@
   position: relative;
   display: inline-block;
   overflow: hidden;
+
+  background-image:
+    linear-gradient(45deg, var(--ui-on-surface-color-lighter) 25%, transparent 25%),
+    linear-gradient(135deg, var(--ui-on-surface-color-lighter) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--ui-on-surface-color-lighter) 75%),
+    linear-gradient(135deg, transparent 75%, var(--ui-on-surface-color-lighter) 75%);
+  background-size: 16px 16px;
+  background-position:0 0, 8px 0, 8px -8px, 0px 8px;
 }
 
 .buttons {
@@ -112,7 +120,7 @@
   border-radius: 50%;
   width: var(--size);
   height: var(--size);
-  background-color: #fff;
+  background-color: var(--color, #fff);
   transition: transform 0.2s ease;
   cursor: move;
   z-index: 3;
