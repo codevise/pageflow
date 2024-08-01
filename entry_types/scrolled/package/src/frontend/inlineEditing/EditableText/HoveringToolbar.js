@@ -43,7 +43,7 @@ export function HoveringToolbar({position}) {
     const rect = domRange.getBoundingClientRect()
     const outerRect = outerRef.current.getBoundingClientRect()
 
-    el.style.opacity = 1;
+    el.style.visibility = 'visible';
     el.style.left = `${rect.left - outerRect.left}px`;
 
     if (position === 'above') {
