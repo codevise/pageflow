@@ -102,12 +102,11 @@
   margin: 0;
 }
 
-.box > h3,
-.box > div {
+.box h3 {
   margin-bottom: 0.5rem;
 }
 
-.box > :last-child {
+.box h3:last-child {
   margin-bottom: 0;
 }
 

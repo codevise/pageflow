@@ -24,13 +24,6 @@ export function EditableLink({
 
   return (
     <div className={styles.wrapper}>
-      {isSelected &&
-       <ActionButton text={href ?
-                           t('pageflow_scrolled.inline_editing.change_link_destination') :
-                           t('pageflow_scrolled.inline_editing.select_link_destination')}
-                     icon="link"
-                     position={actionButtonPosition}
-                     onClick={handleButtonClick} />}
       <LinkTooltipProvider disabled={linkPreviewDisabled}
                            position={linkPreviewPosition}
                            align="left"
@@ -39,6 +32,13 @@ export function EditableLink({
           {children}
         </LinkPreview>
       </LinkTooltipProvider>
+      {isSelected &&
+       <ActionButton text={href ?
+                           t('pageflow_scrolled.inline_editing.change_link_destination') :
+                           t('pageflow_scrolled.inline_editing.select_link_destination')}
+                     icon="link"
+                     position={actionButtonPosition}
+                     onClick={handleButtonClick} />}
     </div>
   );
 }

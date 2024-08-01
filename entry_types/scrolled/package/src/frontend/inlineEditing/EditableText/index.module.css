@@ -32,7 +32,7 @@
   z-index: 2;
   top: -10000px;
   left: -10000px;
-  opacity: 0;
+  visibility: hidden;
   white-space: nowrap;
 }
 
