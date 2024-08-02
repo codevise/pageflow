@@ -13,26 +13,46 @@
 }
 
 .buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 10px 0;
-  text-align: right;
 }
 
-.buttons button:first-child {
+.coordinates,
+.coordinates label {
+  display: flex;
+  align-items: center;
+}
+
+.coordinates {
+  gap: 10px;
+}
+
+.coordinates label {
+  gap: 5px;
+}
+
+.coordinates input[disabled] {
+  background-color: var(--ui-on-surface-color-lightest);
+}
+
+.modeButtons button:first-child {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.buttons button:last-child {
+.modeButtons button:last-child {
   margin-left: -1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.buttons button[aria-pressed=true] {
+.modeButtons button[aria-pressed=true] {
   background-color: var(--ui-selection-color-light);
 }
 
-.buttons button img {
+.modeButtons button img {
   vertical-align: middle;
   margin-right: 6px;
 }
@@ -142,6 +162,11 @@
   animation: blink 1s infinite;
   opacity: 0.3;
   z-index: -1;
+}
+
+.selected {
+  box-shadow: 0 0 0 3px var(--ui-selection-color),
+              0 0 0 4px var(--ui-primary-color-light);
 }
 
 @keyframes blink {
