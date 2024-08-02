@@ -87,6 +87,7 @@ de:
             modes:
               rect: Rechteck
               polygon: Polygon
+            centerIndicator: Indikator zentrieren
             hotspots_image: Hotspotbild
             double_click_to_delete: Doppelklick, um Punkt zu entfernen
             indicator_title: Ziehen um Indikator zu positionieren

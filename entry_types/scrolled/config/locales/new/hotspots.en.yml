@@ -87,6 +87,7 @@ en:
             modes:
               rect: Rectangle
               polygon: Polygon
+            centerIndicator: Center indicator
             hotspots_image: Hotspots image
             double_click_to_delete: Double click to remove point
             indicator_title: Drag to position indicator

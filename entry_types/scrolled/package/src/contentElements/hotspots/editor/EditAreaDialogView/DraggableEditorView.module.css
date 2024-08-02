@@ -17,12 +17,23 @@
   justify-content: space-between;
   align-items: center;
   margin: 10px 0;
+  gap: 15px;
+}
+
+.buttons button {
+  white-space: nowrap;
 }
 
 .coordinates,
 .coordinates label {
   display: flex;
   align-items: center;
+  margin: 0;
+}
+
+.coordinates {
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .coordinates {
@@ -35,6 +46,11 @@
 
 .coordinates input[disabled] {
   background-color: var(--ui-on-surface-color-lightest);
+}
+
+.modeButtons {
+  flex: 1;
+  white-space: nowrap;
 }
 
 .modeButtons button:first-child {
@@ -52,7 +68,7 @@
   background-color: var(--ui-selection-color-light);
 }
 
-.modeButtons button img {
+.buttons img {
   vertical-align: middle;
   margin-right: 6px;
 }

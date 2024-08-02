@@ -9,6 +9,7 @@ export const DRAG_POTENTIAL_POINT = 'DRAG_POTENTIAL_POINT';
 export const DRAG_POTENTIAL_POINT_STOP = 'DRAG_POTENTIAL_POINT_STOP';
 export const CLICK_INDICATOR = 'CLICK_INDICATOR';
 export const DRAG_INDICATOR = 'DRAG_INDICATOR';
+export const CENTER_INDICATOR = 'CENTER_INDICATOR';
 export const UPDATE_SELECTION_POSITION = 'UPDATE_SELECTION_POSITION';
 export const BLUR_SELECTION_POSITION = 'BLUR_SELECTION_POSITION';
 
@@ -173,6 +174,11 @@ export function reducer(state, action) {
           position: round(indicatorPosition)
         }
       }
+    case CENTER_INDICATOR:
+      return {
+        ...state,
+        indicatorPosition: polygonCentroid(state.points)
+      };
     case UPDATE_SELECTION_POSITION:
       if (state.selection?.type === 'indicator') {
         return {
@@ -456,6 +462,43 @@ function closestPointOnPolygon(polygon, c, maxDistance = 5) {
   }
 
   return closest;
+}
+
+function polygonCentroid(points) {
+  let centroidX = 0;
+  let centroidY = 0;
+  let signedArea = 0;
+  let x0 = 0;
+  let y0 = 0;
+  let x1 = 0;
+  let y1 = 0;
+  let a = 0;
+
+  for (let i = 0; i < points.length - 1; i++) {
+    x0 = points[i][0];
+    y0 = points[i][1];
+    x1 = points[i + 1][0];
+    y1 = points[i + 1][1];
+    a = x0 * y1 - x1 * y0;
+    signedArea += a;
+    centroidX += (x0 + x1) * a;
+    centroidY += (y0 + y1) * a;
+  }
+
+  x0 = points[points.length - 1][0];
+  y0 = points[points.length - 1][1];
+  x1 = points[0][0];
+  y1 = points[0][1];
+  a = x0 * y1 - x1 * y0;
+  signedArea += a;
+  centroidX += (x0 + x1) * a;
+  centroidY += (y0 + y1) * a;
+
+  signedArea *= 0.5;
+  centroidX /= (6 * signedArea);
+  centroidY /= (6 * signedArea);
+
+  return [centroidX, centroidY];
 }
 
 function round(point) {

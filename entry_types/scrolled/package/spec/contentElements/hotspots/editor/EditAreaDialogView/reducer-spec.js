@@ -13,6 +13,7 @@ import {
   DRAG_POTENTIAL_POINT_STOP,
   CLICK_INDICATOR,
   DRAG_INDICATOR,
+  CENTER_INDICATOR,
   UPDATE_SELECTION_POSITION,
   BLUR_SELECTION_POSITION
 } from 'contentElements/hotspots/editor/EditAreaDialogView/reducer';
@@ -663,6 +664,20 @@ describe('reducer', () => {
         type: 'indicator',
         position: [15, 11.1]
       });
+    });
+  });
+
+  describe('CENTER_INDICATOR', () => {
+    it('centers indicator position', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 10], [20, 10], [20, 50], [10, 50]],
+        indicatorPosition: [11, 11]
+      };
+      state = reducer(state, {type: CENTER_INDICATOR});
+
+      expect(state.indicatorPosition).toEqual([15, 30]);
     });
   });
 

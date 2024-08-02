@@ -23,6 +23,7 @@ import {
   DRAG_POTENTIAL_POINT_STOP,
   CLICK_INDICATOR,
   DRAG_INDICATOR,
+  CENTER_INDICATOR,
   UPDATE_SELECTION_POSITION,
   BLUR_SELECTION_POSITION
 } from './reducer';
@@ -31,6 +32,7 @@ import styles from './DraggableEditorView.module.css';
 
 import squareIcon from './images/square.svg';
 import polygonIcon from './images/polygon.svg';
+import centerIcon from './images/center.svg';
 
 const i18nPrefix = 'pageflow_scrolled.editor.content_elements.hotspots.edit_area_dialog';
 
@@ -120,13 +122,16 @@ function DraggableEditor({
       <div className={styles.buttons}>
         <ModeButtons mode={mode} dispatch={dispatch} />
         <Coordinates selection={selection}
-                     onChange={position => dispatch(l({
+                     onChange={position => dispatch({
                        type: UPDATE_SELECTION_POSITION,
                        position
-                     }))}
-                     onBlur={() => dispatch(l({
+                     })}
+                     onBlur={() => dispatch({
                        type: BLUR_SELECTION_POSITION
-                     }))} />
+                     })}/>
+        <CenterIndicatorButton onClick={() => dispatch({
+          type: CENTER_INDICATOR
+        })} />
       </div>
 
       <div className={styles.wrapper}>
@@ -264,6 +269,17 @@ function Indicator({position, selected, color, onClick, onDrag}) {
   );
 }
 
+function CenterIndicatorButton({onClick}) {
+  return (
+    <button type="button"
+            className={buttonStyles.secondaryIconButton}
+            onClick={onClick}>
+      <img src={centerIcon} alt="" width="20" height="20" />
+      {I18n.t(`${i18nPrefix}.centerIndicator`)}
+    </button>
+  );
+}
+
 function Coordinates({selection, onChange, onBlur}) {
   if (!selection) {
     return null;
@@ -303,7 +319,4 @@ function CoordinateInput({disabled, label, value, onChange, onBlur}) {
       </label>
     </div>
   );
-}
-function l(v) {
-  return v;
 }
