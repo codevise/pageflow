@@ -117,14 +117,20 @@
   border-radius: 5px;
   text-decoration: none;
   padding: 0.5rem;
-  background-color: var(--theme-widget-primary-color);
-  color: var(--theme-widget-on-primary-color);
+  background-color: transparent;
+  color: inherit;
   margin-top: 1rem;
   font-weight: bold;
+  border: solid 1px color-mix(in srgb, currentColor, transparent);
 }
 
-.dark .link {
-  border: solid 1px rgb(255 255 255 / 5%);
+.link:hover,
+.link:active {
+  border: solid 1px currentColor;
+}
+
+.light .link {
+  color: var(--theme-widget-primary-color);
 }
 
 .box > :first-child .link {
