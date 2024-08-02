@@ -22,5 +22,5 @@
 
 :global [data-floating-ui-portal] {
   position: relative;
-  z-index: 30000;
+  z-index: 1000;
 }
