@@ -73,6 +73,11 @@
   margin-right: 6px;
 }
 
+.placeholderImage {
+  aspect-ratio: 16 / 9;
+  background-color: #000;
+}
+
 .image {
   display: block;
   height: calc(100vh - 250px);

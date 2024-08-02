@@ -40,8 +40,8 @@ export const DraggableEditorView = Marionette.View.extend({
   render() {
     ReactDOM.render(
       <DraggableEditor
-        imageSrc={this.options.file.getBackgroundPositioningImageUrl()}
-        portrait={this.options.file.get('width') < this.options.file.get('height')}
+        imageSrc={this.options.file?.getBackgroundPositioningImageUrl()}
+        portrait={this.options.file && this.options.file.get('width') < this.options.file.get('height')}
         indicatorColor={paletteColor(this.model.get(this.getPropertyName('color')) || this.model.get('color'))}
         initialMode={this.model.get(this.getPropertyName('mode'))}
         initialPoints={this.model.get(this.getPropertyName('outline'))}
@@ -135,9 +135,11 @@ function DraggableEditor({
       </div>
 
       <div className={styles.wrapper}>
-        <img className={classNames(styles.image, {[styles.portraitImage]: portrait})}
-             src={imageSrc}
-             alt={I18n.t(`${i18nPrefix}.hotspots_image`)} />
+        {imageSrc ?
+         <img className={classNames(styles.image, {[styles.portraitImage]: portrait})}
+              src={imageSrc}
+              alt={I18n.t(`${i18nPrefix}.hotspots_image`)} /> :
+         <div className={classNames(styles.image, styles.placeholderImage)} />}
         <div ref={ref}
              className={styles.overlay}
              onMouseMove={event => dispatch({type: MOUSE_MOVE, cursor: clientToPercent(event)})}>
