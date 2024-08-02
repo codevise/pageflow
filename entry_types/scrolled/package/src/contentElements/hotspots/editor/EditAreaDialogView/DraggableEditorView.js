@@ -297,6 +297,7 @@ function CoordinateInput({disabled, label, value, onChange, onBlur}) {
                max="100"
                disabled={disabled}
                value={value}
+               onClick={event => event.target.focus()}
                onChange={onChange}
                onBlur={onBlur} />%
       </label>
