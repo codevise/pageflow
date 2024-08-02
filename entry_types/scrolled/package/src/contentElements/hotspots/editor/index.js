@@ -50,7 +50,7 @@ editor.contentElementTypes.register('hotspots', {
       });
       this.input('invertTooltips', CheckBoxInputView);
       this.input('enablePanZoom', SelectInputView, {
-        values: ['phonePlatform', 'always', 'never']
+        values: ['never', 'phonePlatform', 'always']
       });
       this.view(SeparatorView);
       this.input('enableFullscreen', CheckBoxInputView, {
@@ -60,10 +60,6 @@ editor.contentElementTypes.register('hotspots', {
       });
       this.group('ContentElementPosition');
     });
-  },
-
-  defaultConfig: {
-    enablePanZoom: 'phonePlatform'
   }
 });
 
