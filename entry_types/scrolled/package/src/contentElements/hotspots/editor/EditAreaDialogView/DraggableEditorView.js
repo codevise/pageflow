@@ -14,19 +14,25 @@ import {
   handles,
   SET_MODE,
   DRAG,
+  CLICK_HANDLE,
   DRAG_HANDLE,
   DRAG_HANDLE_STOP,
   DOUBLE_CLICK_HANDLE,
   MOUSE_MOVE,
   DRAG_POTENTIAL_POINT,
   DRAG_POTENTIAL_POINT_STOP,
-  DRAG_INDICATOR
+  CLICK_INDICATOR,
+  DRAG_INDICATOR,
+  CENTER_INDICATOR,
+  UPDATE_SELECTION_POSITION,
+  BLUR_SELECTION_POSITION
 } from './reducer';
 
 import styles from './DraggableEditorView.module.css';
 
 import squareIcon from './images/square.svg';
 import polygonIcon from './images/polygon.svg';
+import centerIcon from './images/center.svg';
 
 const i18nPrefix = 'pageflow_scrolled.editor.content_elements.hotspots.edit_area_dialog';
 
@@ -82,7 +88,7 @@ function DraggableEditor({
   });
 
   const {
-    mode, points, potentialPoint, indicatorPosition
+    mode, points, potentialPoint, indicatorPosition, selection
   } = state;
 
   useEffect(
@@ -113,7 +119,20 @@ function DraggableEditor({
 
   return (
     <div>
-      <ModeButtons mode={mode} dispatch={dispatch} />
+      <div className={styles.buttons}>
+        <ModeButtons mode={mode} dispatch={dispatch} />
+        <Coordinates selection={selection}
+                     onChange={position => dispatch({
+                       type: UPDATE_SELECTION_POSITION,
+                       position
+                     })}
+                     onBlur={() => dispatch({
+                       type: BLUR_SELECTION_POSITION
+                     })}/>
+        <CenterIndicatorButton onClick={() => dispatch({
+          type: CENTER_INDICATOR
+        })} />
+      </div>
 
       <div className={styles.wrapper}>
         <img className={classNames(styles.image, {[styles.portraitImage]: portrait})}
@@ -143,11 +162,16 @@ function DraggableEditor({
           {handles(state).map((handle, index) =>
             <Handle key={index}
                     point={handle.point}
+                    selected={state.selection?.index === index}
                     axis={handle.axis}
                     cursor={handle.cursor}
                     circle={handle.circle}
                     title={handle.deletable ?
                            I18n.t(`${i18nPrefix}.double_click_to_delete`) : null}
+                    onClick={event => dispatch({
+                      type: CLICK_HANDLE,
+                      index
+                    })}
                     onDoubleClick={event => dispatch({
                       type: DOUBLE_CLICK_HANDLE,
                       index
@@ -165,6 +189,7 @@ function DraggableEditor({
           {potentialPoint && <Handle point={potentialPoint}
                                      circle={true}
                                      potential={true}
+                                     selected={state.selection?.type === 'potentialPoint'}
                                      onDrag={event => dispatch({
                                        type: DRAG_POTENTIAL_POINT,
                                        cursor: clientToPercent(event)
@@ -174,7 +199,11 @@ function DraggableEditor({
                                      })} />}
 
           <Indicator position={indicatorPosition}
+                     selected={state.selection?.type === 'indicator'}
                      color={indicatorColor}
+                     onClick={event => dispatch({
+                       type: CLICK_INDICATOR
+                     })}
                      onDrag={event => dispatch({
                        type: DRAG_INDICATOR,
                        cursor: clientToPercent(event)
@@ -192,7 +221,7 @@ const modeIcons = {
 
 function ModeButtons({mode, dispatch}) {
   return (
-    <div className={styles.buttons}>
+    <div className={styles.modeButtons}>
       {['rect', 'polygon'].map(availableMode =>
         <button key={availableMode}
                 type="button"
@@ -207,14 +236,17 @@ function ModeButtons({mode, dispatch}) {
   );
 }
 
-function Handle({point, circle, potential, title, cursor, onDrag, onDragStop, onDoubleClick}) {
+function Handle({point, selected, circle, potential, title, cursor,
+                 onDrag, onDragStop, onClick, onDoubleClick}) {
   return (
     <DraggableCore onDrag={onDrag}
                    onStop={onDragStop}>
       <div className={classNames(styles.handle,
                                  {[styles.circle]: circle,
+                                  [styles.selected]: selected,
                                   [styles.potential]: potential})}
            tabIndex="0"
+           onClick={onClick}
            onDoubleClick={onDoubleClick}
            title={title}
            style={{left: `${point[0]}%`, top: `${point[1]}%`, cursor}} />
@@ -222,10 +254,11 @@ function Handle({point, circle, potential, title, cursor, onDrag, onDragStop, on
   );
 }
 
-function Indicator({position, color, onDrag}) {
+function Indicator({position, selected, color, onClick, onDrag}) {
   return (
     <DraggableCore onDrag={onDrag}>
-      <div className={styles.indicator}
+      <div className={classNames(styles.indicator, {[styles.selected]: selected})}
+           onClick={onClick}
            style={{
              left: `${position[0]}%`,
              top: `${position[1]}%`,
@@ -233,5 +266,57 @@ function Indicator({position, color, onDrag}) {
            }}
            title={I18n.t(`${i18nPrefix}.indicator_title`)} />
     </DraggableCore>
+  );
+}
+
+function CenterIndicatorButton({onClick}) {
+  return (
+    <button type="button"
+            className={buttonStyles.secondaryIconButton}
+            onClick={onClick}>
+      <img src={centerIcon} alt="" width="20" height="20" />
+      {I18n.t(`${i18nPrefix}.centerIndicator`)}
+    </button>
+  );
+}
+
+function Coordinates({selection, onChange, onBlur}) {
+  if (!selection) {
+    return null;
+  }
+
+  const position = selection.position;
+
+  return (
+    <div className={styles.coordinates}>
+      <CoordinateInput label="X"
+                       disabled={selection.axis === 'y'}
+                       value={position[0]}
+                       onChange={event => onChange([parseFloat(event.target.value || 0), position[1]])}
+                       onBlur={onBlur} />
+      <CoordinateInput label="Y"
+                       disabled={selection.axis === 'x'}
+                       value={position[1]}
+                       onChange={event => onChange([position[0], parseFloat(event.target.value || 0)])}
+                       onBlur={onBlur} />
+    </div>
+  );
+}
+
+function CoordinateInput({disabled, label, value, onChange, onBlur}) {
+  return (
+    <div className={classNames({'input-disabled': disabled})}>
+      <label>
+        {label}:
+        <input type="number"
+               min="0"
+               max="100"
+               disabled={disabled}
+               value={value}
+               onClick={event => event.target.focus()}
+               onChange={onChange}
+               onBlur={onBlur} />%
+      </label>
+    </div>
   );
 }

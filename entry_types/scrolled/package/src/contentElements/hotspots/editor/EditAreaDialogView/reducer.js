@@ -1,12 +1,17 @@
 export const SET_MODE = 'SET_MODE';
 export const DRAG = 'DRAG';
+export const CLICK_HANDLE = 'CLICK_HANDLE';
 export const DRAG_HANDLE = 'DRAG_HANDLE';
 export const DRAG_HANDLE_STOP = 'DRAG_HANDLE_STOP';
 export const DOUBLE_CLICK_HANDLE = 'DOUBLE_CLICK_HANDLE';
 export const MOUSE_MOVE = 'MOUSE_MOVE';
 export const DRAG_POTENTIAL_POINT = 'DRAG_POTENTIAL_POINT';
 export const DRAG_POTENTIAL_POINT_STOP = 'DRAG_POTENTIAL_POINT_STOP';
+export const CLICK_INDICATOR = 'CLICK_INDICATOR';
 export const DRAG_INDICATOR = 'DRAG_INDICATOR';
+export const CENTER_INDICATOR = 'CENTER_INDICATOR';
+export const UPDATE_SELECTION_POSITION = 'UPDATE_SELECTION_POSITION';
+export const BLUR_SELECTION_POSITION = 'BLUR_SELECTION_POSITION';
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -19,14 +24,16 @@ export function reducer(state, action) {
           ...state,
           mode: 'rect',
           previousPolygonPoints: state.points,
-          points: getBoundingBox(state.points)
+          points: getBoundingBox(state.points),
+          selection: null
         };
       }
       else {
         return {
           ...state,
           mode: 'polygon',
-          points: state.previousPolygonPoints || state.points
+          points: state.previousPolygonPoints || state.points,
+          selection: null
         };
       }
     case DRAG:
@@ -62,41 +69,34 @@ export function reducer(state, action) {
           state.indicatorPosition[1] + deltaY
         ]
       };
-    case DRAG_HANDLE:
+    case CLICK_HANDLE:
       if (state.mode === 'polygon') {
-        state = {
+        return {
           ...state,
-          points: [
-            ...state.points.slice(0, action.index),
-            action.cursor,
-            ...state.points.slice(action.index + 1)
-          ]
+          selection: {
+            type: 'handle',
+            index: action.index,
+            position: round(state.points[action.index])
+          }
         };
       }
       else {
-        const startPoints =
-          state.startPoints ||
-          (action.index % 2 === 0 ?
-           [state.points[(action.index / 2 + 2) % 4]] :
-           [state.points[((action.index + 3) / 2) % 4],
-            state.points[((action.index + 5) / 2) % 4]]);
-
-        state = {
+        return {
           ...state,
-          startPoints,
-          previousPolygonPoints: null,
-          points: getBoundingBox([
-            action.cursor,
-            ...startPoints
-          ])
+          selection: rectHandleSelection(action.index, state.points)
         };
       }
+    case DRAG_HANDLE:
+      state = updatePoints(
+        state,
+        action.index,
+        action.cursor
+      );
 
       return {
         ...state,
         indicatorPosition: ensureInPolygon(state.points, state.indicatorPosition)
       };
-
     case DRAG_HANDLE_STOP:
       return {
         ...state,
@@ -116,7 +116,8 @@ export function reducer(state, action) {
         ...state,
         points,
         potentialPoint: null,
-        indicatorPosition: ensureInPolygon(points, state.indicatorPosition)
+        indicatorPosition: ensureInPolygon(points, state.indicatorPosition),
+        selection: null
       };
     case MOUSE_MOVE:
       if (state.mode !== 'polygon' || state.draggingPotentialPoint) {
@@ -134,19 +135,95 @@ export function reducer(state, action) {
       return {
         ...state,
         draggingPotentialPoint: true,
-        potentialPoint: action.cursor
+        potentialPoint: action.cursor,
+        selection: {
+          type: 'potentialPoint',
+          position: round(action.cursor)
+        }
       };
     case DRAG_POTENTIAL_POINT_STOP:
+      const newPoints = withPotentialPoint(state);
+
       return {
         ...state,
-        points: withPotentialPoint(state),
+        points: newPoints,
         draggingPotentialPoint: false,
-        potentialPoint: null
+        potentialPoint: null,
+        selection: {
+          type: 'handle',
+          index: state.potentialPointInsertIndex,
+          position: round(newPoints[state.potentialPointInsertIndex])
+        }
       };
-    case DRAG_INDICATOR:
+    case CLICK_INDICATOR:
       return {
         ...state,
-        indicatorPosition: ensureInPolygon(state.points, action.cursor)
+        selection: {
+          type: 'indicator',
+          position: round(state.indicatorPosition)
+        }
+      }
+    case DRAG_INDICATOR:
+      const indicatorPosition = ensureInPolygon(state.points, action.cursor);
+
+      return {
+        ...state,
+        indicatorPosition,
+        selection: {
+          type: 'indicator',
+          position: round(indicatorPosition)
+        }
+      }
+    case CENTER_INDICATOR:
+      return {
+        ...state,
+        indicatorPosition: polygonCentroid(state.points)
+      };
+    case UPDATE_SELECTION_POSITION:
+      if (state.selection?.type === 'indicator') {
+        return {
+          ...state,
+          indicatorPosition: ensureInPolygon(state.points, action.position),
+          selection: {
+            ...state.selection,
+            position: action.position
+          }
+        }
+      }
+      else if (state.selection?.type === 'handle') {
+        return updatePoints(
+          state,
+          state.selection.index,
+          ensureInBounds(action.position),
+          action.position
+        );
+      }
+      else {
+        return state;
+      }
+    case BLUR_SELECTION_POSITION:
+      if (state.selection?.type === 'indicator') {
+        return {
+          ...state,
+          selection: {
+            ...state.selection,
+            position: state.indicatorPosition
+          }
+        }
+      }
+      else if (state.selection) {
+        return {
+          ...state,
+          startPoints: null,
+          selection: {
+            ...state.selection,
+            position: handles(state)[state.selection.index].point
+          },
+          indicatorPosition: ensureInPolygon(state.points, state.indicatorPosition)
+        };
+      }
+      else {
+        return state;
       }
     default:
       throw new Error(`Unknown action ${action.type}.`);
@@ -189,6 +266,100 @@ export function handles(state) {
   }
 }
 
+function updatePoints(state, index, position, selectionPosition) {
+  if (state.mode === 'polygon') {
+    return {
+      ...state,
+      points: [
+        ...state.points.slice(0, index),
+        position,
+        ...state.points.slice(index + 1)
+      ],
+      selection: {
+        type: 'handle',
+        index: index,
+        position: selectionPosition || round(position)
+      }
+    };
+  }
+  else {
+    const startPoints =
+      state.startPoints ||
+      (rectHandleAxis(index) === 'both' ?
+       [state.points[(index / 2 + 2) % 4]] :
+       [state.points[((index + 3) / 2) % 4],
+        state.points[((index + 5) / 2) % 4]]);
+
+    position = constrainToAxis(index, position, state.points);
+
+    const points = getBoundingBox([
+      position,
+      ...startPoints
+    ]);
+
+    return {
+      ...state,
+      startPoints,
+      previousPolygonPoints: null,
+      points,
+      selection: rectHandleSelection(
+        mapIndexOfRectHandleCrossingOver(index, position, startPoints),
+        points,
+        selectionPosition
+      )
+    };
+  }
+}
+
+function rectHandleSelection(index, points, selectionPosition) {
+  return {
+    type: 'handle',
+    index: index,
+    axis: rectHandleAxis(index),
+    position: selectionPosition || round(
+      index % 2 === 0 ?
+      points[index / 2] :
+      midpoint(points[(index - 1) / 2], points[(index + 1) / 2 % 4])
+    )
+  };
+}
+
+function constrainToAxis(index, cursor, points) {
+  const axis = rectHandleAxis(index);
+
+  if (axis === 'x') {
+    return [cursor[0], points[(index - 1) / 2][1]];
+  }
+  else if (axis === 'y') {
+    return [points[(index - 1) / 2][0], cursor[1]];
+  }
+  else {
+    return cursor;
+  }
+}
+
+function rectHandleAxis(index) {
+  return index % 2 === 0 ?
+         'both' :
+         (index - 1) / 2 % 2 === 0 ?
+         'y' :
+         'x';
+}
+
+function mapIndexOfRectHandleCrossingOver(index, position, startPoints) {
+  if ((index >= 0 && index <= 3 && position[1] > startPoints[0][1]) ||
+      (index >= 4 && index <= 6 && position[1] < startPoints[0][1])){
+    index = 6 - index;
+  }
+
+  if (((index === 0 || index >= 6) && position[0] > startPoints[0][0]) ||
+      (index >= 2 && index <= 4 && position[0] < startPoints[0][0])) {
+    index = (10 - index) % 8;
+  }
+
+  return index;
+}
+
 function withPotentialPoint(state) {
   return [
     ...state.points.slice(0, state.potentialPointInsertIndex),
@@ -225,6 +396,12 @@ function getBoundingBox(polygon) {
     [maxX, maxY],
     [minX, maxY]
   ];
+}
+
+function ensureInBounds(point) {
+  return point.map(coord =>
+    Math.min(100, Math.max(0, coord))
+  );
 }
 
 function ensureInPolygon(polygon, point) {
@@ -285,4 +462,45 @@ function closestPointOnPolygon(polygon, c, maxDistance = 5) {
   }
 
   return closest;
+}
+
+function polygonCentroid(points) {
+  let centroidX = 0;
+  let centroidY = 0;
+  let signedArea = 0;
+  let x0 = 0;
+  let y0 = 0;
+  let x1 = 0;
+  let y1 = 0;
+  let a = 0;
+
+  for (let i = 0; i < points.length - 1; i++) {
+    x0 = points[i][0];
+    y0 = points[i][1];
+    x1 = points[i + 1][0];
+    y1 = points[i + 1][1];
+    a = x0 * y1 - x1 * y0;
+    signedArea += a;
+    centroidX += (x0 + x1) * a;
+    centroidY += (y0 + y1) * a;
+  }
+
+  x0 = points[points.length - 1][0];
+  y0 = points[points.length - 1][1];
+  x1 = points[0][0];
+  y1 = points[0][1];
+  a = x0 * y1 - x1 * y0;
+  signedArea += a;
+  centroidX += (x0 + x1) * a;
+  centroidY += (y0 + y1) * a;
+
+  signedArea *= 0.5;
+  centroidX /= (6 * signedArea);
+  centroidY /= (6 * signedArea);
+
+  return [centroidX, centroidY];
+}
+
+function round(point) {
+  return point.map(coord => Math.round(coord * 10) / 10);
 }

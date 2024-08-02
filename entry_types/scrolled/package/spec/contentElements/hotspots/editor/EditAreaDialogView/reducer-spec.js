@@ -4,13 +4,18 @@ import {
   handles,
   SET_MODE,
   DRAG,
+  CLICK_HANDLE,
   DRAG_HANDLE,
   DRAG_HANDLE_STOP,
   DOUBLE_CLICK_HANDLE,
   MOUSE_MOVE,
   DRAG_POTENTIAL_POINT,
   DRAG_POTENTIAL_POINT_STOP,
-  DRAG_INDICATOR
+  CLICK_INDICATOR,
+  DRAG_INDICATOR,
+  CENTER_INDICATOR,
+  UPDATE_SELECTION_POSITION,
+  BLUR_SELECTION_POSITION
 } from 'contentElements/hotspots/editor/EditAreaDialogView/reducer';
 
 const initialState = {
@@ -90,6 +95,18 @@ describe('reducer', () => {
         points: [[10, 10], [60, 10], [60, 50], [10, 50]]
       });
     });
+
+    it('resets selection', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 20], [20, 20], [50, 10], [50, 50], [10, 50]]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 2});
+      state = reducer(state, {type: SET_MODE, value: 'rect'});
+
+      expect(state.selection).toBeNull();
+    });
   });
 
   describe('DRAG', () => {
@@ -139,6 +156,75 @@ describe('reducer', () => {
     });
   });
 
+  describe('CLICK_HANDLE', () => {
+    describe('in polygon mode', () => {
+      it('sets selection for handle', () => {
+        let state = {
+          ...initialState,
+          mode: 'polygon',
+          points: [[10, 20], [20, 20.123], [50, 10], [50, 50], [10, 50]]
+        };
+        state = reducer(state, {type: CLICK_HANDLE, index: 1});
+
+        expect(state.selection).toEqual({
+          type: 'handle',
+          index: 1,
+          position: [20, 20.1]
+        });
+      });
+    });
+
+    describe('in rect mode', () => {
+      it('sets selection for top mid point handle', () => {
+        let state = {
+          ...initialState,
+          mode: 'rect',
+          points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+        };
+        state = reducer(state, {type: CLICK_HANDLE, index: 1});
+
+        expect(state.selection).toEqual({
+          type: 'handle',
+          axis: 'y',
+          index: 1,
+          position: [15, 20]
+        });
+      });
+
+      it('sets selection for left mid point handle', () => {
+        let state = {
+          ...initialState,
+          mode: 'rect',
+          points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+        };
+        state = reducer(state, {type: CLICK_HANDLE, index: 7});
+
+        expect(state.selection).toEqual({
+          type: 'handle',
+          axis: 'x',
+          index: 7,
+          position: [10, 30]
+        });
+      });
+
+      it('sets selection for corner handle', () => {
+        let state = {
+          ...initialState,
+          mode: 'rect',
+          points: [[10, 20], [20.543, 20], [20, 40], [10, 40]]
+        };
+        state = reducer(state, {type: CLICK_HANDLE, index: 2});
+
+        expect(state.selection).toEqual({
+          type: 'handle',
+          axis: 'both',
+          index: 2,
+          position: [20.5, 20]
+        });
+      });
+    });
+  });
+
   describe('DRAG_HANDLE', () => {
     describe('in polygon mode', () => {
       it('updates points', () => {
@@ -177,6 +263,21 @@ describe('reducer', () => {
 
         expect(state.indicatorPosition).toEqual([15, 23]);
       });
+
+      it('sets selection for handle', () => {
+        let state = {
+          ...initialState,
+          mode: 'polygon',
+          points: [[10, 20], [20, 20], [50, 10], [50, 50], [10, 50]]
+        };
+        state = reducer(state, {type: DRAG_HANDLE, index: 1, cursor: [30.42, 25]});
+
+        expect(state.selection).toEqual({
+          type: 'handle',
+          index: 1,
+          position: [30.4, 25]
+        });
+      });
     });
 
     describe('in rect mode', () => {
@@ -187,6 +288,19 @@ describe('reducer', () => {
           points: [[10, 20], [20, 20], [20, 40], [10, 40]]
         };
         state = reducer(state, {type: DRAG_HANDLE, index: 1, cursor: [15, 10]});
+
+        expect(state.points).toEqual(
+          [[10, 10], [20, 10], [20, 40], [10, 40]]
+        );
+      });
+
+      it('ignores cross-axis coordinate of mid point handle', () => {
+        let state = {
+          ...initialState,
+          mode: 'rect',
+          points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+        };
+        state = reducer(state, {type: DRAG_HANDLE, index: 1, cursor: [25, 10]});
 
         expect(state.points).toEqual(
           [[10, 10], [20, 10], [20, 40], [10, 40]]
@@ -243,6 +357,66 @@ describe('reducer', () => {
         state = reducer(state, {type: DRAG_HANDLE, index: 0, cursor: [15, 25]});
 
         expect(state.indicatorPosition).toEqual([15, 30]);
+      });
+
+      it('sets selection for top mid point handle', () => {
+        let state = {
+          ...initialState,
+          mode: 'rect',
+          points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+        };
+        state = reducer(state, {type: DRAG_HANDLE, index: 1, cursor: [14, 10]});
+
+        expect(state.selection).toEqual({
+          type: 'handle',
+          axis: 'y',
+          index: 1,
+          position: [15, 10]
+        });
+      });
+
+      it('sets selection for left mid point handle', () => {
+        let state = {
+          ...initialState,
+          mode: 'rect',
+          points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+        };
+        state = reducer(state, {type: DRAG_HANDLE, index: 7, cursor: [8, 28]});
+
+        expect(state.selection).toEqual({
+          type: 'handle',
+          axis: 'x',
+          index: 7,
+          position: [8, 30]
+        });
+      });
+
+      it('sets selection for corner handle', () => {
+        let state = {
+          ...initialState,
+          mode: 'rect',
+          points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+        };
+        state = reducer(state, {type: DRAG_HANDLE, index: 2, cursor: [22.45, 19]});
+
+        expect(state.selection).toEqual({
+          type: 'handle',
+          axis: 'both',
+          index: 2,
+          position: [22.5, 19]
+        });
+      });
+
+      it('changes selected handle when moving top left corner handle past bottom right boundary', () => {
+        let state = {
+          ...initialState,
+          mode: 'rect',
+          points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+        };
+        state = reducer(state, {type: DRAG_HANDLE, index: 0, cursor: [10, 20]});
+        state = reducer(state, {type: DRAG_HANDLE, index: 0, cursor: [30, 50]});
+
+        expect(state.selection.index).toEqual(4);
       });
     });
   });
@@ -308,6 +482,18 @@ describe('reducer', () => {
 
       expect(state.indicatorPosition).toEqual([14, 24]);
     });
+
+    it('resets selection', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 20], [20, 20], [50, 10], [50, 50], [10, 50]]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 1});
+      state = reducer(state, {type: DOUBLE_CLICK_HANDLE, index: 1});
+
+      expect(state.selection).toBeNull();
+    });
   });
 
   describe('MOUSE_MOVE', () => {
@@ -358,6 +544,20 @@ describe('reducer', () => {
 
       expect(state.potentialPoint).toEqual([20, 10]);
     });
+
+    it('sets selection to potential point', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 10], [20, 20], [50, 10], [50, 50], [10, 50]]
+      };
+      state = reducer(state, {type: DRAG_POTENTIAL_POINT, cursor: [20.1234, 10]});
+
+      expect(state.selection).toEqual({
+        type: 'potentialPoint',
+        position: [20.1, 10]
+      });
+    });
   });
 
   describe('DRAG_POTENTIAL_POINT_STOP', () => {
@@ -390,6 +590,40 @@ describe('reducer', () => {
 
       expect(state.potentialPoint).toEqual([15, 10]);
     });
+
+    it('selected handle of new point', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 10], [20, 20], [50, 10], [50, 50], [10, 50]]
+      };
+      state = reducer(state, {type: MOUSE_MOVE, cursor: [20, 10]});
+      state = reducer(state, {type: DRAG_POTENTIAL_POINT, cursor: [20.123, 10]});
+      state = reducer(state, {type: DRAG_POTENTIAL_POINT_STOP});
+
+      expect(state.selection).toEqual({
+        type: 'handle',
+        index: 1,
+        position: [20.1, 10]
+      });
+    });
+  });
+
+  describe('CLICK_INDICATOR', () => {
+    it('sets selection', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 10], [20, 10], [20, 50]],
+        indicatorPosition: [11, 11.123]
+      };
+      state = reducer(state, {type: CLICK_INDICATOR});
+
+      expect(state.selection).toEqual({
+        type: 'indicator',
+        position: [11, 11.1]
+      });
+    });
   });
 
   describe('DRAG_INDICATOR', () => {
@@ -415,6 +649,287 @@ describe('reducer', () => {
       state = reducer(state, {type: DRAG_INDICATOR, cursor: [5, 5]});
 
       expect(state.indicatorPosition).toEqual([10, 10]);
+    });
+
+    it('sets selection', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 10], [20, 10], [20, 50]],
+        indicatorPosition: [11, 11]
+      };
+      state = reducer(state, {type: DRAG_INDICATOR, cursor: [15, 11.123]});
+
+      expect(state.selection).toEqual({
+        type: 'indicator',
+        position: [15, 11.1]
+      });
+    });
+  });
+
+  describe('CENTER_INDICATOR', () => {
+    it('centers indicator position', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 10], [20, 10], [20, 50], [10, 50]],
+        indicatorPosition: [11, 11]
+      };
+      state = reducer(state, {type: CENTER_INDICATOR});
+
+      expect(state.indicatorPosition).toEqual([15, 30]);
+    });
+  });
+
+  describe('UPDATE_SELECTION_POSITION', () => {
+    it('updates indicator position', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 10], [20, 10], [20, 50]],
+        indicatorPosition: [11, 11]
+      };
+      state = reducer(state, {type: CLICK_INDICATOR});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [12, 11]});
+
+      expect(state.indicatorPosition).toEqual([12, 11]);
+      expect(state.selection.position).toEqual([12, 11]);
+    });
+
+    it('allows invalid indicator position in selection', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 10], [20, 10], [20, 50]],
+        indicatorPosition: [11, 11]
+      };
+      state = reducer(state, {type: CLICK_INDICATOR});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [0, 0]});
+
+      expect(state.indicatorPosition).toEqual([10, 10]);
+      expect(state.selection.position).toEqual([0, 0]);
+    });
+
+    it('allows invalid handle position in selection', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 10], [20, 10], [20, 50]],
+        indicatorPosition: [11, 11]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 1});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [-10, 120]});
+
+      expect(state.points[1]).toEqual([0, 100]);
+      expect(state.selection.position).toEqual([-10, 120]);
+    });
+
+    it('updates polygon handle position', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 10], [20, 10], [20, 50]],
+        indicatorPosition: [11, 11]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 1});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [12, 11]});
+
+      expect(state.points[1]).toEqual([12, 11]);
+      expect(state.selection.position).toEqual([12, 11]);
+    });
+
+    it('updates rect corner handle position', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 2});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [22, 22]});
+
+      expect(state.points).toEqual(
+        [[10, 22], [22, 22], [22, 40], [10, 40]]
+      );
+    });
+
+    it('updates rect top mid point handle position', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 1});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [15, 10]});
+
+      expect(state.points).toEqual(
+        [[10, 10], [20, 10], [20, 40], [10, 40]]
+      );
+    });
+
+    it('changes selected handle when moving right mid point handle past left boundary', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 3});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [20, 30]});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [5, 30]});
+
+      expect(state.selection.index).toEqual(7);
+    });
+
+    it('changes selected handle when moving left mid point handle past right boundary', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 7});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [10, 30]});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [25, 30]});
+
+      expect(state.selection.index).toEqual(3);
+    });
+
+    it('changes selected handle when moving top mid point handle past bottom boundary', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 1});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [15, 20]});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [15, 50]});
+
+      expect(state.selection.index).toEqual(5);
+    });
+
+    it('changes selected handle when moving bottom mid point handle past top boundary', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 5});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [15, 40]});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [15, 10]});
+
+      expect(state.selection.index).toEqual(1);
+    });
+
+    it('changes selected handle when moving top right corner handle past left boundary', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 2});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [20, 20]});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [5, 20]});
+
+      expect(state.selection.index).toEqual(0);
+    });
+
+    it('changes selected handle when moving top left corner handle past bottom boundary', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 20], [20, 20], [20, 40], [10, 40]]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 0});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [10, 20]});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [10, 50]});
+
+      expect(state.selection.index).toEqual(6);
+    });
+  });
+
+  describe('BLUR_SELECTION_POSITION', () => {
+    it('sanitizes indicator position in selection', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 10], [20, 10], [20, 50]],
+        indicatorPosition: [11, 11]
+      };
+      state = reducer(state, {type: CLICK_INDICATOR});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [0, 0]});
+      state = reducer(state, {type: BLUR_SELECTION_POSITION});
+
+      expect(state.indicatorPosition).toEqual([10, 10]);
+      expect(state.selection.position).toEqual([10, 10]);
+    });
+
+    it('keeps handle selection unchanged', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 10], [20, 10], [20, 50]],
+        indicatorPosition: [12, 12]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 0});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [10, 11]});
+      state = reducer(state, {type: BLUR_SELECTION_POSITION});
+
+      expect(state.selection.position).toEqual([10, 11]);
+    });
+
+    it('sanitizes polygon handle position in selection', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 20], [20, 20], [50, 10], [50, 50], [15, 50]],
+        indicatorPosition: [10, 20]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 0});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [-10, 120]});
+      state = reducer(state, {type: BLUR_SELECTION_POSITION});
+
+      expect(state.selection.position).toEqual([0, 100]);
+    });
+
+    it('sanitizes rect handle position in selection', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 20], [20, 20], [20, 40], [10, 40]],
+        indicatorPosition: [10, 20]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 2});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [120, -10]});
+      state = reducer(state, {type: BLUR_SELECTION_POSITION});
+
+      expect(state.selection.position).toEqual([100, 0]);
+    });
+
+    it('moves indicator inside area', () => {
+      let state = {
+        ...initialState,
+        mode: 'polygon',
+        points: [[10, 20], [20, 20], [50, 10], [50, 50], [15, 50]],
+        indicatorPosition: [10, 20]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 0});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [15, 20]});
+      state = reducer(state, {type: BLUR_SELECTION_POSITION});
+
+      expect(state.indicatorPosition).toEqual([15, 20]);
+    });
+
+    it('resets start points for next drag handle', () => {
+      let state = {
+        ...initialState,
+        mode: 'rect',
+        points: [[10, 20], [20, 20], [20, 40], [10, 40]],
+        indicatorPosition: [10, 20]
+      };
+      state = reducer(state, {type: CLICK_HANDLE, index: 3});
+      state = reducer(state, {type: UPDATE_SELECTION_POSITION, position: [19, 30]});
+      state = reducer(state, {type: BLUR_SELECTION_POSITION});
+      state = reducer(state, {type: DRAG_HANDLE, index: 7, cursor: [11, 30]});
+
+      expect(state.points).toEqual([[11, 20], [19, 20], [19, 40], [11, 40]]);
     });
   });
 });
