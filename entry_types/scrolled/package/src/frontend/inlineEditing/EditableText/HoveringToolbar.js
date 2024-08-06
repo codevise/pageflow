@@ -5,6 +5,7 @@ import {ReactEditor, useSlate} from 'slate-react';
 import {Toolbar} from '../Toolbar';
 import {useI18n} from '../../i18n';
 import {useSelectLinkDestination} from '../useSelectLinkDestination';
+import {isMarkActive, toggleMark} from './marks';
 
 import styles from './index.module.css';
 
@@ -12,6 +13,8 @@ import BoldIcon from '../images/bold.svg';
 import UnderlineIcon from '../images/underline.svg';
 import ItalicIcon from '../images/italic.svg';
 import StrikethroughIcon from '../images/strikethrough.svg';
+import SubIcon from '../images/sub.svg';
+import SupIcon from '../images/sup.svg';
 import LinkIcon from '../images/link.svg';
 
 export function HoveringToolbar({position}) {
@@ -89,6 +92,16 @@ function renderToolbar(editor, t, selectLinkDestination) {
       icon: StrikethroughIcon
     },
     {
+      name: 'sub',
+      text: t('pageflow_scrolled.inline_editing.formats.sub'),
+      icon: SubIcon
+    },
+    {
+      name: 'sup',
+      text: t('pageflow_scrolled.inline_editing.formats.sup'),
+      icon: SupIcon
+    },
+    {
       name: 'link',
       text: isButtonActive(editor, 'link') ?
             t('pageflow_scrolled.inline_editing.remove_link') :
@@ -147,19 +160,4 @@ function wrapLink(editor, href, openInNewTab) {
 function isLinkActive(editor) {
   const [link] = Editor.nodes(editor, {match: n => n.type === 'link'});
   return !!link;
-}
-
-function toggleMark(editor, format) {
-  const isActive = isMarkActive(editor, format)
-
-  if (isActive) {
-    Editor.removeMark(editor, format)
-  } else {
-    Editor.addMark(editor, format, true)
-  }
-}
-
-function isMarkActive(editor, format) {
-  const marks = Editor.marks(editor)
-  return marks ? marks[format] === true : false
 }

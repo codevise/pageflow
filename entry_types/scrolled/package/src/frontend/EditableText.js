@@ -148,5 +148,13 @@ export function renderLeaf({attributes, children, leaf}) {
     children = <s>{children}</s>
   }
 
+  if (leaf.sub) {
+    children = <sub>{children}</sub>
+  }
+
+  if (leaf.sup) {
+    children = <sup>{children}</sup>
+  }
+
   return <span {...attributes}>{children}</span>
 }
