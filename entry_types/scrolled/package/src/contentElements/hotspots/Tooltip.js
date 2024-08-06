@@ -185,7 +185,8 @@ export function Tooltip({
                     <InlineFileRights context="afterElement" items={[{file: tooltipImageFile, label: 'image'}]} />
                   </div>
                 </>}
-               <div onKeyDown={handleKeyDown}>
+               <div className={styles.textWrapper}
+                    onKeyDown={handleKeyDown}>
                  {presentOrEditing('title') &&
                   <h3 id={`hotspots-tooltip-title-${contentElementId}-${area.id}`}>
                     <Text inline scaleCategory="hotspotsTooltipTitle">

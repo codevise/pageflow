@@ -124,6 +124,10 @@
   border: solid 1px color-mix(in srgb, currentColor, transparent);
 }
 
+.textWrapper > :first-child .link {
+  margin-top: 0;
+}
+
 .link:hover,
 .link:active {
   border: solid 1px currentColor;
