@@ -1,0 +1,10 @@
+de:
+  pageflow_scrolled:
+    inline_editing:
+      formats:
+        bold: Fett (Strg+B)
+        italic: Kursiv (Strg+I)
+        strikethrough: Durchgestrichen (Strg+Umschalten+S)
+        underline: Unterstrichen (Strg+U)
+        sub: Tiefgestellt (Strg+;)
+        sup: Hochgestellt (Strg+,)

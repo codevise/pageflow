@@ -1,0 +1,10 @@
+en:
+  pageflow_scrolled:
+    inline_editing:
+      formats:
+        bold: Bold (Ctrl+B)
+        italic: Italic (Ctrl+I)
+        strikethrough: Strikethrough (Ctrl+Shift+S)
+        underline: Underline (Ctrl+U)
+        sub: Subscript (Ctrl+;)
+        sup: Superscript (Ctrl+,)

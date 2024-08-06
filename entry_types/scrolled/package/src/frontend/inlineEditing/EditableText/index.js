@@ -1,4 +1,4 @@
-import React, {useMemo, useEffect} from 'react';
+import React, {useCallback, useMemo, useEffect} from 'react';
 import classNames from 'classnames';
 import {createEditor, Transforms, Node, Text as SlateText, Range} from 'slate';
 import {Slate, Editable, withReact, ReactEditor} from 'slate-react';
@@ -32,6 +32,8 @@ import {
   renderLeafWithLineBreakDecoration
 } from './lineBreaks';
 
+import {useShortcutHandler} from './shortcuts';
+
 import styles from './index.module.css';
 
 export const EditableText = React.memo(function EditableText({
@@ -54,7 +56,14 @@ export const EditableText = React.memo(function EditableText({
     ),
     [selectionRect]
   );
+
   const handleLineBreaks = useLineBreakHandler(editor);
+  const handleShortcuts = useShortcutHandler(editor);
+
+  const handleKeyDown = useCallback(event => {
+    handleLineBreaks(event);
+    handleShortcuts(event);
+  }, [handleLineBreaks, handleShortcuts]);
 
   useEffect(() => {
     if (autoFocus) {
@@ -102,7 +111,7 @@ export const EditableText = React.memo(function EditableText({
             <Editable
               className={className}
               decorate={decorateLineBreaks}
-              onKeyDown={handleLineBreaks}
+              onKeyDown={handleKeyDown}
               renderElement={renderElementWithLinkPreview}
               renderLeaf={renderLeafWithLineBreakDecoration} />
           </LinkTooltipProvider>

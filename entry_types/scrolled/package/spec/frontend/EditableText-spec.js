@@ -258,6 +258,24 @@ describe('EditableText', () => {
     expect(container.querySelector('p')).toHaveTextContent('\uFEFF', {normalizeWhitespace: false})
   });
 
+  it('renders sub and sup text', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'x'},
+        {text: '3', sup: true},
+        {text: ' and '},
+        {text: 'CO'},
+        {text: '2', sub: true}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('sup')).toHaveTextContent('3')
+    expect(container.querySelector('sub')).toHaveTextContent('2')
+  });
+
   it('does not render zero width no break space between two formatted words', () => {
     const value = [{
       type: 'paragraph',

@@ -848,14 +848,10 @@ en:
         open_in_new_tab_message: Opening in same tab is disabled inside the editor
       formats:
         block_quote: Block quote
-        bold: Bold
         bulleted_list: Bulleted list
         heading: Heading
-        italic: Italic
         ordered_list: Ordered list
         paragraph: Paragraph
-        strikethrough: Strikethrough
-        underline: Underline
       insert_content_element:
         after: Insert new element below
         before: Insert new element above

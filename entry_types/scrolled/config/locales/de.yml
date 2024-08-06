@@ -1010,14 +1010,10 @@ de:
         open_in_new_tab_message: Öffnen im selben Tab ist im Editor deaktiviert.
       formats:
         block_quote: Blockzitat
-        bold: Fett
         bulleted_list: Auflistung
         heading: Überschrift
-        italic: Kursiv
         ordered_list: Aufzählung
         paragraph: Absatz
-        strikethrough: Durchgestrichen
-        underline: Unterstrichen
       insert_content_element:
         after: Neues Element unterhalb einfügen
         before: Neues Element oberhalb einfügen
