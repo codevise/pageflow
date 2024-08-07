@@ -7,19 +7,25 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   z-index: 1;
+  grid-template-rows: 0px 100%;
 }
 
 .scroller::-webkit-scrollbar {
   display: none;
 }
 
-.noPointerEvents {
-  pointer-events: none;
+.sticky {
+  position: sticky;
+  top: 0;
+  left: 0;
+  grid-column: 1;
+  grid-row: 1;
 }
 
 .step {
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  grid-row: 2;
 }
 
 .leftButton,

@@ -1,12 +1,11 @@
 import React from 'react';
-import classNames from 'classnames';
 
 import {ScrollButton} from './ScrollButton';
 
 import styles from './Scroller.module.css';
 
 export const Scroller = React.forwardRef(function Scroller(
-  {areas, activeIndex, onScrollButtonClick, noPointerEvents, setStepRef}, ref
+  {areas, activeIndex, onScrollButtonClick, setStepRef, containerRect, children}, ref
 ) {
   return (
     <>
@@ -23,12 +22,17 @@ export const Scroller = React.forwardRef(function Scroller(
                       )}/>
       </div>
       <div ref={ref}
-           className={classNames(styles.scroller, {[styles.noPointerEvents]: activeIndex < 0})}>
+           className={styles.scroller}>
         {Array.from({length: areas.length + 2}, (_, index) =>
           <div key={index}
                ref={setStepRef(index)}
                className={styles.step} />
         )}
+        <div className={styles.sticky}>
+          <div style={{height: containerRect.height}}>
+            {children}
+          </div>
+        </div>
       </div>
     </>
   );

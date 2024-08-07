@@ -20,6 +20,7 @@ import {
 
 import {Scroller} from './Scroller';
 import {Area} from './Area';
+import {ImageArea} from './ImageArea';
 import {Indicator} from './Indicator';
 import {Tooltip} from './Tooltip';
 
@@ -110,7 +111,7 @@ export function HotspotsImage({
     enabled: shouldLoad
   });
 
-  const [wrapperRef, scrollerRef, setScrollerStepRef, setIndicatorRef, scrollFromToArea] = useScrollPanZoom({
+  const [wrapperRef, scrollerRef, scrollerAreasRef, setScrollerStepRef, setIndicatorRef, scrollFromToArea] = useScrollPanZoom({
     containerRect,
     imageFile,
     areas,
@@ -158,21 +159,25 @@ export function HotspotsImage({
                            variant={panZoomEnabled ? 'ultra' : 'large'}
                            preferSvg={true} />
                     {areas.map((area, index) =>
-                      <Area key={index}
-                            area={area}
-                            contentElementId={contentElementId}
-                            panZoomEnabled={panZoomEnabled}
-                            portraitMode={portraitMode}
-                            activeImageVisible={activeIndex === index ||
-                                                (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
-                            highlighted={hoveredIndex === index || highlightedIndex === index || activeIndex === index}
-                            onMouseEnter={() => setHoveredIndex(index)}
-                            onMouseLeave={() => setHoveredIndex(-1)}
-                            onClick={() => {
-                              if (!isEditable || isSelected) {
-                                activateArea(index)
-                              }
-                            }} />
+                      <ImageArea key={index}
+                                 area={area}
+                                 panZoomEnabled={panZoomEnabled}
+                                 portraitMode={portraitMode}
+                                 activeImageVisible={activeIndex === index ||
+                                                     (!panZoomEnabled &&
+                                                      activeIndex < 0 &&
+                                                      hoveredIndex === index)}
+                                 outlined={isEditable && isSelected}
+                                 highlighted={hoveredIndex === index ||
+                                              highlightedIndex === index ||
+                                              activeIndex === index}
+                                 onMouseEnter={() => setHoveredIndex(index)}
+                                 onMouseLeave={() => setHoveredIndex(-1)}
+                                 onClick={() => {
+                                   if (!isEditable || isSelected) {
+                                     activateArea(index)
+                                   }
+                                 }} />
                     )}
                   </div>
                   {areas.map((area, index) =>
@@ -182,11 +187,29 @@ export function HotspotsImage({
                                outerRef={setIndicatorRef(index)}
                                portraitMode={portraitMode} />
                   )}
-                  {panZoomEnabled && <Scroller areas={areas}
-                                               ref={scrollerRef}
-                                               setStepRef={setScrollerStepRef}
-                                               activeIndex={activeIndex}
-                                               onScrollButtonClick={index => activateArea(index)} />}
+                  {panZoomEnabled &&
+                   <Scroller areas={areas}
+                             ref={scrollerRef}
+                             setStepRef={setScrollerStepRef}
+                             activeIndex={activeIndex}
+                             onScrollButtonClick={index => activateArea(index)}
+                             containerRect={containerRect}>
+                     <div className={styles.wrapper}
+                          ref={scrollerAreasRef}>
+                       {areas.map((area, index) =>
+                         <Area key={index}
+                               area={area}
+                               portraitMode={portraitMode}
+                               onMouseEnter={() => setHoveredIndex(index)}
+                               onMouseLeave={() => setHoveredIndex(-1)}
+                               onClick={() => {
+                                 if (!isEditable || isSelected) {
+                                   activateArea(index)
+                                 }
+                               }} />
+                       )}
+                     </div>
+                   </Scroller>}
                 </div>
                 {displayFullscreenToggle &&
                  <ToggleFullscreenCornerButton isFullscreen={false}
