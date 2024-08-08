@@ -62,14 +62,15 @@ export function Hotspots({contentElementId, contentElementWidth, customMargin, c
           contentElementWidth={contentElementWidth}
           configuration={configuration}
           displayFullscreenToggle={false}
-          keepTooltipsInViewport={true} />
+          keepTooltipsInViewport={true}
+          tooltipsAboveNavigationWidgets={true} />
       } />
   );
 }
 
 export function HotspotsImage({
   contentElementId, contentElementWidth, customMargin, configuration,
-  keepTooltipsInViewport, floatingStrategy,
+  keepTooltipsInViewport, floatingStrategy, tooltipsAboveNavigationWidgets,
   displayFullscreenToggle, onFullscreenEnter,
   children = children => children
 }) {
@@ -219,6 +220,7 @@ export function HotspotsImage({
                         (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
                active={activeIndex === index}
                keepInViewport={keepTooltipsInViewport}
+               aboveNavigationWidgets={tooltipsAboveNavigationWidgets}
                wrapperRef={contentRectRef}
                floatingStrategy={floatingStrategy}
                onMouseEnter={() => setHoveredIndex(index)}

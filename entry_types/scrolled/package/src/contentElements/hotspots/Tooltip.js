@@ -43,6 +43,7 @@ export function Tooltip({
   area,
   contentElementId, portraitMode, configuration, visible, active,
   panZoomEnabled, imageFile, containerRect, keepInViewport, floatingStrategy,
+  aboveNavigationWidgets,
   wrapperRef,
   onMouseEnter, onMouseLeave, onClick, onDismiss,
 }) {
@@ -161,7 +162,7 @@ export function Tooltip({
              {...getReferenceProps()} />
       </CompositeItem>
       {isMounted &&
-       <TooltipPortal>
+       <TooltipPortal id={aboveNavigationWidgets && 'floating-ui-above-navigation-widgets'}>
          <FloatingFocusManager context={context} modal={false} initialFocus={-1} returnFocus={false}>
            <div style={transitionStyles}>
              <div ref={refs.setFloating}
