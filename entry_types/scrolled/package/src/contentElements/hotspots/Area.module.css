@@ -19,24 +19,19 @@
   cursor: pointer;
 }
 
+.noPointerEvents .clip {
+  pointer-events: none;
+}
+
 .outline polygon {
   vector-effect: non-scaling-stroke;
   stroke-width: 1px;
   stroke-linejoin: round;
-  stroke: var(--color, #fff);
+  stroke: #fff;
   fill: transparent;
   opacity: 0.5;
 }
 
 .area.highlighted .outline polygon {
-  opacity: 1;
-}
-
-.area img {
-  opacity: 0;
-  transition: opacity 0.2s linear;
-}
-
-.activeImageVisible img {
   opacity: 1;
 }

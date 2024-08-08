@@ -10,6 +10,7 @@ export function useScrollPanZoom({
   onChange
 }) {
   const wrapperRef = useRef();
+  const scrollerAreasRef = useRef();
   const indicatorRefs = useRef([]);
 
   const onVisibleIndexChange = useCallback(index => onChange(index - 1), [onChange]);
@@ -102,15 +103,17 @@ export function useScrollPanZoom({
       axis: 'inline'
     });
 
-    const animations = []
+    const animations = [];
 
-    animations.push(wrapperRef.current.animate(
-      steps.map(keyframe),
-      {
-        fill: 'both',
-        timeline: scrollTimeline
-      }
-    ));
+    [wrapperRef.current, scrollerAreasRef.current].forEach(element =>
+      animations.push(element.animate(
+        steps.map(keyframe),
+        {
+          fill: 'both',
+          timeline: scrollTimeline
+        }
+      ))
+    );
 
     areas.forEach((area, index) => {
       animations.push(indicatorRefs.current[index].animate(
@@ -129,7 +132,7 @@ export function useScrollPanZoom({
     indicatorRefs.current[index] = ref;
   }
 
-  return [wrapperRef, scrollerRef, setStepRef, setIndicatorRef, scrollFromTo];
+  return [wrapperRef, scrollerRef, scrollerAreasRef, setStepRef, setIndicatorRef, scrollFromTo];
 }
 
 function keyframe(step) {

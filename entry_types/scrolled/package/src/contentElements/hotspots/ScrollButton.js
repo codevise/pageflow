@@ -4,7 +4,7 @@ import {ThemeIcon, useI18n} from 'pageflow-scrolled/frontend';
 
 import styles from './ScrollButton.module.css';
 
-const size = 60;
+const size = 40;
 
 export function ScrollButton({direction, disabled, onClick}) {
   const {t} = useI18n();

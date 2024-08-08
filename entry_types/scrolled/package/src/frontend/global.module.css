@@ -24,3 +24,8 @@
   position: relative;
   z-index: 1000;
 }
+
+:global #floating-ui-above-navigation-widgets {
+  position: relative;
+  z-index: 20000;
+}

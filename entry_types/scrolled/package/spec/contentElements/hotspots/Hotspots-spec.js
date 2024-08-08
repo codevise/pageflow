@@ -2,6 +2,7 @@ import React from 'react';
 
 import {Hotspots} from 'contentElements/hotspots/Hotspots';
 import areaStyles from 'contentElements/hotspots/Area.module.css';
+import imageAreaStyles from 'contentElements/hotspots/ImageArea.module.css';
 import indicatorStyles from 'contentElements/hotspots/Indicator.module.css';
 import tooltipStyles from 'contentElements/hotspots/Tooltip.module.css';
 import scrollerStyles from 'contentElements/hotspots/Scroller.module.css';
@@ -260,11 +261,14 @@ describe('Hotspots', () => {
     };
 
     const {container} = renderInContentElement(
-      <Hotspots configuration={configuration} />, {seed}
+      <Hotspots configuration={configuration} />, {
+        seed,
+        editorState: {isSelected: true, isEditable: true}
+      }
     );
 
-    expect(container.querySelector(`.${areaStyles.area}`)).toHaveStyle({
-      '--color': 'var(--theme-palette-color-accent)',
+    expect(container.querySelector(`.${areaStyles.area} svg polygon`)).toHaveStyle({
+      'stroke': 'var(--theme-palette-color-accent)',
     });
     expect(container.querySelector(`.${indicatorStyles.indicator}`)).toHaveStyle({
       '--color': 'var(--theme-palette-color-accent)',
@@ -294,7 +298,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${areaStyles.area}`)).toHaveStyle({
+    expect(container.querySelector(`.${indicatorStyles.indicator}`)).toHaveStyle({
       '--color': 'var(--theme-palette-color-primary)',
     });
   });
@@ -321,7 +325,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${areaStyles.area}`)).toHaveStyle({
+    expect(container.querySelector(`.${indicatorStyles.indicator}`)).toHaveStyle({
       '--color': 'var(--theme-palette-color-accent)',
     });
   });
@@ -348,7 +352,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${areaStyles.area}`)).toHaveStyle({
+    expect(container.querySelector(`.${indicatorStyles.indicator}`)).toHaveStyle({
       '--color': 'var(--theme-palette-color-accent)',
     });
   });
@@ -384,11 +388,13 @@ describe('Hotspots', () => {
 
     const user = userEvent.setup();
     observeResizeMock.mockContentRect = {width: 200, height: 100};
-    const {container, simulateScrollPosition} = renderInContentElement(
+    const {container, simulateScrollPosition, getByText} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
-    await user.click(container.querySelector(`.${areaStyles.clip}`));
+    await user.click(clickableArea(container));
+
+    getByText('Some title')
     const {queryByText, getByRole} = within(container.querySelector(`.${tooltipStyles.box}`));
 
     expect(queryByText('Some title')).not.toBeNull();
@@ -429,7 +435,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
-    await user.click(container.querySelector(`.${areaStyles.clip}`))
+    await user.click(clickableArea(container))
 
     expect(queryByRole('link')).toBeNull();
   });
@@ -464,7 +470,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
-    await user.click(container.querySelector(`.${areaStyles.clip}`))
+    await user.click(clickableArea(container))
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).not.toHaveClass(tooltipStyles.minWidth);
   });
@@ -499,7 +505,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
-    await user.click(container.querySelector(`.${areaStyles.clip}`))
+    await user.click(clickableArea(container))
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles.minWidth);
   });
@@ -531,7 +537,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
-    await user.click(container.querySelector(`.${areaStyles.clip}`))
+    await user.click(clickableArea(container))
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles['maxWidth-narrow']);
   });
@@ -566,7 +572,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
-    await user.click(container.querySelector(`.${areaStyles.clip}`))
+    await user.click(clickableArea(container))
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles['maxWidth-veryNarrow']);
   });
@@ -598,7 +604,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
-    await user.click(container.querySelector(`.${areaStyles.clip}`))
+    await user.click(clickableArea(container))
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).toHaveClass(tooltipStyles['align-center']);
   });
@@ -857,7 +863,7 @@ describe('Hotspots', () => {
 
     expect(queryByText('Some title')).toBeNull();
 
-    await user.hover(container.querySelector(`.${areaStyles.clip}`));
+    await user.hover(clickableArea(container));
 
     expect(queryByText('Some title')).not.toBeNull();
   });
@@ -898,8 +904,8 @@ describe('Hotspots', () => {
     );
     simulateScrollPosition('near viewport');
 
-    await user.click(container.querySelectorAll(`.${areaStyles.clip}`)[0]);
-    await user.hover(container.querySelectorAll(`.${areaStyles.clip}`)[1]);
+    await user.click(clickableAreas(container)[0]);
+    await user.hover(clickableAreas(container)[1]);
 
     expect(queryByText('Area 1')).not.toBeNull();
   });
@@ -930,7 +936,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    await user.click(container.querySelector(`.${areaStyles.clip}`));
+    await user.click(clickableArea(container));
     await user.click(document.body);
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull();
@@ -964,7 +970,7 @@ describe('Hotspots', () => {
     );
     simulateScrollPosition('near viewport');
 
-    await user.click(container.querySelector(`.${areaStyles.clip}`));
+    await user.click(clickableArea(container));
     await user.click(getByText('Some title'));
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
@@ -998,9 +1004,9 @@ describe('Hotspots', () => {
     );
     simulateScrollPosition('near viewport');
 
-    await user.hover(container.querySelector(`.${areaStyles.clip}`));
+    await user.hover(clickableArea(container));
     await user.click(getByText('Some title'));
-    await user.unhover(container.querySelector(`.${areaStyles.clip}`));
+    await user.unhover(clickableArea(container));
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
   });
@@ -1158,11 +1164,11 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
+    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(imageAreaStyles.activeImageVisible);
 
-    await user.click(container.querySelector(`.${areaStyles.clip}`));
+    await user.click(clickableArea(container));
 
-    expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
+    expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(imageAreaStyles.activeImageVisible);
   });
 
   it('does not hide other indicators when area is activated', async () => {
@@ -1189,7 +1195,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    await user.click(container.querySelector(`.${areaStyles.clip}`));
+    await user.click(clickableArea(container));
 
     expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[0]).not.toHaveClass(indicatorStyles.hidden);
     expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[1]).not.toHaveClass(indicatorStyles.hidden);
@@ -1221,15 +1227,15 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
+    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(imageAreaStyles.activeImageVisible);
 
-    await user.hover(container.querySelector(`.${areaStyles.clip}`));
+    await user.hover(clickableArea(container));
 
-    expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
+    expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(imageAreaStyles.activeImageVisible);
 
-    await user.unhover(container.querySelector(`.${areaStyles.clip}`));
+    await user.unhover(clickableArea(container));
 
-    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
+    expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(imageAreaStyles.activeImageVisible);
   });
 
   it('does not render area outline as svg by default', () => {
@@ -1379,7 +1385,7 @@ describe('Hotspots', () => {
         editorState: {isEditable: true, isSelected: true, setTransientState}
       }
     );
-    await user.click(container.querySelector(`.${areaStyles.clip}`));
+    await user.click(clickableArea(container));
 
     expect(setTransientState).toHaveBeenCalledWith({activeAreaId: 1})
   });
@@ -1643,7 +1649,7 @@ describe('Hotspots', () => {
         source: expect.any(HTMLDivElement),
         axis: 'inline'
       });
-      expect(animateMock).toHaveBeenCalledTimes(2);
+      expect(animateMock).toHaveBeenCalledTimes(3);
       expect(animateMock).toHaveBeenCalledWith(
         Array.from({length: 3}, () => expect.objectContaining({
           transform: expect.any(String),
@@ -1853,7 +1859,7 @@ describe('Hotspots', () => {
       intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
         .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
 
-      expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(areaStyles.activeImageVisible);
+      expect(container.querySelector(`.${areaStyles.area}`)).toHaveClass(imageAreaStyles.activeImageVisible);
 
     });
 
@@ -1979,7 +1985,7 @@ describe('Hotspots', () => {
       const scroller = container.querySelector(`.${scrollerStyles.scroller}`);
       scroller.scrollTo = jest.fn();
       simulateScrollPosition('near viewport');
-      await user.click(container.querySelector(`.${areaStyles.clip}`));
+      await user.click(clickableArea(container));
 
       expect(scroller.scrollTo).toHaveBeenCalled();
       expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull();
@@ -2081,61 +2087,9 @@ describe('Hotspots', () => {
         <Hotspots configuration={configuration} />, {seed}
       );
 
-      await user.hover(container.querySelector(`.${areaStyles.clip}`));
+      await user.hover(clickableArea(container));
 
-      expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(areaStyles.activeImageVisible);
-    });
-
-    it('scroller lets pointer events pass when no area is active', async () => {
-      const seed = {
-        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
-        imageFiles: [{id: 1, permaId: 100}]
-      };
-      const configuration = {
-        image: 100,
-        enablePanZoom: 'always',
-        areas: [
-          {
-            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
-            indicatorPosition: [20, 25],
-          }
-        ]
-      };
-
-      const {container, simulateScrollPosition} = renderInContentElement(
-        <Hotspots configuration={configuration} />, {seed}
-      );
-      simulateScrollPosition('near viewport');
-
-      expect(container.querySelector(`.${scrollerStyles.scroller}`))
-        .toHaveClass(scrollerStyles.noPointerEvents);
-    });
-
-    it('scroller has pointer events once area is active', async () => {
-      const seed = {
-        imageFileUrlTemplates: {large: ':id_partition/image.webp'},
-        imageFiles: [{id: 1, permaId: 100}]
-      };
-      const configuration = {
-        image: 100,
-        enablePanZoom: 'always',
-        areas: [
-          {
-            outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
-            indicatorPosition: [20, 25],
-          }
-        ]
-      };
-
-      const {container, simulateScrollPosition} = renderInContentElement(
-        <Hotspots configuration={configuration} />, {seed}
-      );
-      simulateScrollPosition('near viewport');
-      intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
-        .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
-
-      expect(container.querySelector(`.${scrollerStyles.scroller}`))
-        .not.toHaveClass(scrollerStyles.noPointerEvents);
+      expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(imageAreaStyles.activeImageVisible);
     });
 
     it('accounts for pan zoom in tooltip position', () => {
@@ -2209,3 +2163,11 @@ describe('Hotspots', () => {
     });
   });
 });
+
+function clickableArea(container) {
+  return clickableAreas(container)[0];
+}
+
+function clickableAreas(container) {
+  return container.querySelectorAll(`div:not(.${imageAreaStyles.area}) > .${areaStyles.clip}`);
+}

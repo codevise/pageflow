@@ -1,10 +1,11 @@
 .button {
-  height: 100%;
-  padding: 0;
+  height: var(--hotspots-scroll-button-height);
+  padding: 1rem;
   background-color: transparent;
   border: 0;
   color: #fff;
   transition: opacity 0.2s linear, visibility 0.2s;
+  pointer-events: auto;
 }
 
 .left {
@@ -28,7 +29,7 @@
 }
 
 .button:not(.disabled):hover svg,
-.button:not(.disabled):focus svg {
+.button:not(.disabled):active svg {
   transform: scale(1.2);
 }
 

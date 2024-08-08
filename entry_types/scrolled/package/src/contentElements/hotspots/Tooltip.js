@@ -43,6 +43,8 @@ export function Tooltip({
   area,
   contentElementId, portraitMode, configuration, visible, active,
   panZoomEnabled, imageFile, containerRect, keepInViewport, floatingStrategy,
+  aboveNavigationWidgets,
+  wrapperRef,
   onMouseEnter, onMouseLeave, onClick, onDismiss,
 }) {
   const {t: translateWithEntryLocale} = useI18n();
@@ -80,7 +82,11 @@ export function Tooltip({
     placement: position === 'above' ? 'top' : 'bottom',
     middleware: [
       offset(referenceType === 'area' ? 7 : 20),
-      shift({crossAxis: keepInViewport, padding: {left: 16, right: 16}}),
+      shift({
+        crossAxis: keepInViewport,
+        padding: {left: -5, right: -5},
+        boundary: wrapperRef.current,
+      }),
       keepInViewport && flip(),
       arrow({
         element: arrowRef,
@@ -156,7 +162,7 @@ export function Tooltip({
              {...getReferenceProps()} />
       </CompositeItem>
       {isMounted &&
-       <TooltipPortal>
+       <TooltipPortal id={aboveNavigationWidgets && 'floating-ui-above-navigation-widgets'}>
          <FloatingFocusManager context={context} modal={false} initialFocus={-1} returnFocus={false}>
            <div style={transitionStyles}>
              <div ref={refs.setFloating}

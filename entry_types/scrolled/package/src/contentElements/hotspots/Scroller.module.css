@@ -4,34 +4,26 @@
   display: grid;
   grid-auto-columns: 100%;
   grid-auto-flow: column;
+  grid-template-rows: 0px 100%;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  z-index: 1;
 }
 
 .scroller::-webkit-scrollbar {
   display: none;
 }
 
-.noPointerEvents {
-  pointer-events: none;
+.sticky {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  grid-column: 1;
+  grid-row: 1;
 }
 
 .step {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-}
-
-.leftButton,
-.rightButton {
-  z-index: 2;
-}
-
-
-.leftButton {
-  justify-self: start;
-}
-
-.rightButton {
-  justify-self: end;
+  grid-row: 2;
 }

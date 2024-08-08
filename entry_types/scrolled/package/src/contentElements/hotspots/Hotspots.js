@@ -1,4 +1,5 @@
 import React, {useCallback, useMemo, useState} from 'react';
+import classNames from 'classnames';
 import {Composite, CompositeItem} from '@floating-ui/react';
 
 import {
@@ -18,8 +19,10 @@ import {
   contentElementWidths
 } from 'pageflow-scrolled/frontend';
 
+import {ScrollButton} from './ScrollButton';
 import {Scroller} from './Scroller';
 import {Area} from './Area';
+import {ImageArea} from './ImageArea';
 import {Indicator} from './Indicator';
 import {Tooltip} from './Tooltip';
 
@@ -28,7 +31,7 @@ import {useScrollPanZoom} from './useScrollPanZoom';
 
 import styles from './Hotspots.module.css';
 
-export function Hotspots({contentElementId, contentElementWidth, configuration}) {
+export function Hotspots({contentElementId, contentElementWidth, customMargin, configuration}) {
   return (
     <FullscreenViewer
       contentElementId={contentElementId}
@@ -36,6 +39,7 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
         <HotspotsImage
           contentElementId={contentElementId}
           contentElementWidth={contentElementWidth}
+          customMargin={customMargin}
           configuration={configuration}
           displayFullscreenToggle={contentElementWidth !== contentElementWidths.full &&
                                    configuration.enableFullscreen}
@@ -58,14 +62,15 @@ export function Hotspots({contentElementId, contentElementWidth, configuration})
           contentElementWidth={contentElementWidth}
           configuration={configuration}
           displayFullscreenToggle={false}
-          keepTooltipsInViewport={true} />
+          keepTooltipsInViewport={true}
+          tooltipsAboveNavigationWidgets={true} />
       } />
   );
 }
 
 export function HotspotsImage({
-  contentElementId, contentElementWidth, configuration,
-  keepTooltipsInViewport, floatingStrategy,
+  contentElementId, contentElementWidth, customMargin, configuration,
+  keepTooltipsInViewport, floatingStrategy, tooltipsAboveNavigationWidgets,
   displayFullscreenToggle, onFullscreenEnter,
   children = children => children
 }) {
@@ -110,7 +115,7 @@ export function HotspotsImage({
     enabled: shouldLoad
   });
 
-  const [wrapperRef, scrollerRef, setScrollerStepRef, setIndicatorRef, scrollFromToArea] = useScrollPanZoom({
+  const [wrapperRef, scrollerRef, scrollerAreasRef, setScrollerStepRef, setIndicatorRef, scrollFromToArea] = useScrollPanZoom({
     containerRect,
     imageFile,
     areas,
@@ -137,87 +142,155 @@ export function HotspotsImage({
     }
   });
 
+  function renderScrollButtons() {
+    if (!panZoomEnabled) {
+      return null;
+    }
+
+    return (
+      <>
+        <div className={styles.left}>
+          <ScrollButton direction="left"
+                        disabled={activeIndex === -1}
+                        onClick={() => activateArea(activeIndex - 1)} />
+        </div>
+        <div className={styles.right}>
+          <ScrollButton direction="right"
+                        disabled={activeIndex >= areas.length}
+                        onClick={() => activateArea(activeIndex + 1)}/>
+        </div>
+      </>
+    );
+  }
+
+  function renderVisibleAreas() {
+    return areas.map((area, index) =>
+      <ImageArea key={index}
+                 area={area}
+                 panZoomEnabled={panZoomEnabled}
+                 portraitMode={portraitMode}
+                 activeImageVisible={activeIndex === index ||
+                                     (!panZoomEnabled &&
+                                      activeIndex < 0 &&
+                                      hoveredIndex === index)}
+                 outlined={isEditable && isSelected}
+                 highlighted={hoveredIndex === index ||
+                              highlightedIndex === index ||
+                              activeIndex === index} />
+    );
+  }
+
+  function renderClickableAreas() {
+    return areas.map((area, index) =>
+      <Area key={index}
+            area={area}
+            portraitMode={portraitMode}
+            noPointerEvents={panZoomEnabled && activeIndex >= 0}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(-1)}
+            onClick={() => {
+              if (!isEditable || isSelected) {
+                activateArea(index)
+              }
+            }} />
+    );
+  }
+
+  function renderIndicators() {
+    return areas.map((area, index) =>
+      <Indicator key={index}
+                 area={area}
+                 hidden={panZoomEnabled && activeIndex >= 0 && activeIndex !== index}
+                 outerRef={setIndicatorRef(index)}
+                 portraitMode={portraitMode} />
+    );
+  }
+
+  function renderTooltips() {
+    return areas.map((area, index) =>
+      <Tooltip key={index}
+               area={area}
+               contentElementId={contentElementId}
+               containerRect={containerRect}
+               imageFile={imageFile}
+               panZoomEnabled={panZoomEnabled}
+               portraitMode={portraitMode}
+               configuration={configuration}
+               visible={activeIndex === index ||
+                        (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
+               active={activeIndex === index}
+               keepInViewport={keepTooltipsInViewport}
+               aboveNavigationWidgets={tooltipsAboveNavigationWidgets}
+               wrapperRef={contentRectRef}
+               floatingStrategy={floatingStrategy}
+               onMouseEnter={() => setHoveredIndex(index)}
+               onMouseLeave={() => setHoveredIndex(-1)}
+               onClick={() => setActiveIndex(index)}
+               onDismiss={() => activateArea(-1)} />
+    );
+  }
+
+  function renderFullscreenToggle() {
+    if (!displayFullscreenToggle) {
+      return null;
+    }
+
+    return (
+      <ToggleFullscreenCornerButton isFullscreen={false}
+                                    onEnter={onFullscreenEnter} />
+    );
+  }
+
   return (
-    <div className={styles.center}>
-      <FitViewport file={imageFile}
-                   aspectRatio={imageFile ? undefined : 0.75}
-                   fill={configuration.position === 'backdrop'}
-                   opaque={!imageFile}>
-        <Composite activeIndex={activeIndex + 1} onNavigate={index => activateArea(index - 1)}>
-          <div className={styles.outer}>
-            {children(
-              <FitViewport.Content>
-                <div className={styles.stack}
-                     ref={contentRectRef}>
-                  <div className={styles.wrapper}
-                       ref={wrapperRef}>
-                    <Image imageFile={imageFile}
-                           load={shouldLoad}
-                           fill={false}
-                           structuredData={true}
-                           variant={panZoomEnabled ? 'ultra' : 'large'}
-                           preferSvg={true} />
-                    {areas.map((area, index) =>
-                      <Area key={index}
-                            area={area}
-                            contentElementId={contentElementId}
-                            panZoomEnabled={panZoomEnabled}
-                            portraitMode={portraitMode}
-                            activeImageVisible={activeIndex === index ||
-                                                (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
-                            highlighted={hoveredIndex === index || highlightedIndex === index || activeIndex === index}
-                            onMouseEnter={() => setHoveredIndex(index)}
-                            onMouseLeave={() => setHoveredIndex(-1)}
-                            onClick={() => {
-                              if (!isEditable || isSelected) {
-                                activateArea(index)
-                              }
-                            }} />
-                    )}
+    <div className={classNames(styles.outer, {[styles.customMargin]: customMargin})}>
+      {renderScrollButtons()}
+      <div className={styles.center}>
+        <FitViewport file={imageFile}
+                     aspectRatio={imageFile ? undefined : 0.75}
+                     fill={configuration.position === 'backdrop'}
+                     opaque={!imageFile}>
+          <Composite activeIndex={activeIndex + 1}
+                     loop={false}
+                     onNavigate={index => activateArea(index - 1)}>
+            <div className={styles.tooltipsWrapper}>
+              {children(
+                <FitViewport.Content>
+                  <div className={styles.stack}
+                       ref={contentRectRef}>
+                    <div className={styles.wrapper}
+                         ref={wrapperRef}>
+                      <Image imageFile={imageFile}
+                             load={shouldLoad}
+                             fill={false}
+                             structuredData={true}
+                             variant={panZoomEnabled ? 'ultra' : 'large'}
+                             preferSvg={true} />
+                      {renderVisibleAreas()}
+                    </div>
+                    <Scroller disabled={!panZoomEnabled}
+                              areas={areas}
+                              ref={scrollerRef}
+                              setStepRef={setScrollerStepRef}
+                              containerRect={containerRect}>
+                      <div className={styles.wrapper}
+                           ref={scrollerAreasRef}>
+                        {renderClickableAreas()}
+                      </div>
+                    </Scroller>
+                    {renderIndicators()}
                   </div>
-                  {areas.map((area, index) =>
-                    <Indicator key={index}
-                               area={area}
-                               hidden={panZoomEnabled && activeIndex >= 0 && activeIndex !== index}
-                               outerRef={setIndicatorRef(index)}
-                               portraitMode={portraitMode} />
-                  )}
-                  {panZoomEnabled && <Scroller areas={areas}
-                                               ref={scrollerRef}
-                                               setStepRef={setScrollerStepRef}
-                                               activeIndex={activeIndex}
-                                               onScrollButtonClick={index => activateArea(index)} />}
-                </div>
-                {displayFullscreenToggle &&
-                 <ToggleFullscreenCornerButton isFullscreen={false}
-                                               onEnter={onFullscreenEnter} />}
-                <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
-              </FitViewport.Content>
-            )}
-            <CompositeItem render={<div className={styles.compositeItem} />} />
-            {areas.map((area, index) =>
-              <Tooltip key={index}
-                       area={area}
-                       contentElementId={contentElementId}
-                       containerRect={containerRect}
-                       imageFile={imageFile}
-                       panZoomEnabled={panZoomEnabled}
-                       portraitMode={portraitMode}
-                       configuration={configuration}
-                       visible={activeIndex === index ||
-                                (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
-                       active={activeIndex === index}
-                       keepInViewport={keepTooltipsInViewport}
-                       floatingStrategy={floatingStrategy}
-                       onMouseEnter={() => setHoveredIndex(index)}
-                       onMouseLeave={() => setHoveredIndex(-1)}
-                       onClick={() => setActiveIndex(index)}
-                       onDismiss={() => activateArea(-1)} />
-            )}
-          </div>
-        </Composite>
-        <InlineFileRights context="afterElement" items={[{file: imageFile, label: 'image'}]} />
-      </FitViewport>
+                  {renderFullscreenToggle()}
+                  <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
+                </FitViewport.Content>
+              )}
+              <CompositeItem render={<div className={styles.compositeItem} />} />
+              {renderTooltips()}
+              <CompositeItem render={<div className={styles.compositeItem} />} />
+            </div>
+          </Composite>
+          <InlineFileRights context="afterElement" items={[{file: imageFile, label: 'image'}]} />
+        </FitViewport>
+      </div>
     </div>
   );
 }
