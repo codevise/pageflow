@@ -14,6 +14,10 @@ export function useIntersectionObserver({threshold, onVisibleIndexChange, enable
       (entries) => {
         const containerElement = containerRef.current;
 
+        if (!containerElement) {
+          return;
+        }
+
         let found = false;
 
         entries.forEach((entry) => {

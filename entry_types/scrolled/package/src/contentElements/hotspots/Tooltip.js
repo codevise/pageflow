@@ -43,6 +43,7 @@ export function Tooltip({
   area,
   contentElementId, portraitMode, configuration, visible, active,
   panZoomEnabled, imageFile, containerRect, keepInViewport, floatingStrategy,
+  wrapperRef,
   onMouseEnter, onMouseLeave, onClick, onDismiss,
 }) {
   const {t: translateWithEntryLocale} = useI18n();
@@ -80,7 +81,11 @@ export function Tooltip({
     placement: position === 'above' ? 'top' : 'bottom',
     middleware: [
       offset(referenceType === 'area' ? 7 : 20),
-      shift({crossAxis: keepInViewport, padding: {left: 16, right: 16}}),
+      shift({
+        crossAxis: keepInViewport,
+        padding: {left: -5, right: -5},
+        boundary: wrapperRef.current,
+      }),
       keepInViewport && flip(),
       arrow({
         element: arrowRef,

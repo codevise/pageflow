@@ -31,7 +31,7 @@
   padding: 0.75rem;
   border-radius: 5px;
   --max-width: 400px;
-  max-width: min(100% - 2rem, var(--max-width));
+  max-width: min(100% - 16% + 10px, var(--max-width));
 }
 
 .light {

@@ -4,10 +4,9 @@
   display: grid;
   grid-auto-columns: 100%;
   grid-auto-flow: column;
+  grid-template-rows: 0px 100%;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  z-index: 1;
-  grid-template-rows: 0px 100%;
 }
 
 .scroller::-webkit-scrollbar {
@@ -18,6 +17,7 @@
   position: sticky;
   top: 0;
   left: 0;
+  width: 100%;
   grid-column: 1;
   grid-row: 1;
 }
@@ -26,18 +26,4 @@
   scroll-snap-align: start;
   scroll-snap-stop: always;
   grid-row: 2;
-}
-
-.leftButton,
-.rightButton {
-  z-index: 2;
-}
-
-
-.leftButton {
-  justify-self: start;
-}
-
-.rightButton {
-  justify-self: end;
 }

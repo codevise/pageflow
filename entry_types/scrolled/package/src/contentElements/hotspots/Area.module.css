@@ -19,6 +19,10 @@
   cursor: pointer;
 }
 
+.noPointerEvents .clip {
+  pointer-events: none;
+}
+
 .outline polygon {
   vector-effect: non-scaling-stroke;
   stroke-width: 1px;

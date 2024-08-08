@@ -3,5 +3,6 @@ import {Hotspots} from './Hotspots';
 
 frontend.contentElementTypes.register('hotspots', {
   component: Hotspots,
-  lifecycle: true
+  lifecycle: true,
+  customMargin: true
 });

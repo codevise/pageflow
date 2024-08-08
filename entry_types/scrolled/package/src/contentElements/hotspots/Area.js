@@ -6,7 +6,7 @@ import {paletteColor} from 'pageflow-scrolled/frontend';
 import styles from './Area.module.css';
 
 export function Area({
-  area, portraitMode,
+  area, portraitMode, noPointerEvents,
   highlighted, outlined,
   className, children,
   onMouseEnter, onMouseLeave, onClick
@@ -16,7 +16,8 @@ export function Area({
   return (
     <div className={classNames(styles.area,
                                className,
-                               {[styles.highlighted]: highlighted})}>
+                               {[styles.highlighted]: highlighted,
+                                [styles.noPointerEvents]: noPointerEvents})}>
       <div className={styles.clip}
            style={{clipPath: polygon(outline)}}
            tabIndex="-1"
