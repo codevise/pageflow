@@ -82,11 +82,17 @@ export function Tooltip({
     placement: position === 'above' ? 'top' : 'bottom',
     middleware: [
       offset(referenceType === 'area' ? 7 : 20),
-      shift({
-        crossAxis: keepInViewport,
-        padding: {left: -5, right: -5},
-        boundary: wrapperRef.current,
-      }),
+      shift(
+        keepInViewport ?
+        {
+          crossAxis: true,
+          padding: {left: 40, right: 40}
+        } :
+        {
+          padding: {left: -5, right: -5},
+          boundary: wrapperRef.current
+        }
+      ),
       keepInViewport && flip(),
       arrow({
         element: arrowRef,
@@ -172,6 +178,7 @@ export function Tooltip({
                                         styles[`align-${area.tooltipTextAlign}`],
                                         light ? styles.light : styles.dark,
                                         {[styles.editable]: isEditable,
+                                         [styles.paddingForScrollButtons]: keepInViewport,
                                          [styles.minWidth]: presentOrEditing('link')})}
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}

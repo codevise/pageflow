@@ -31,7 +31,12 @@
   padding: 0.75rem;
   border-radius: 5px;
   --max-width: 400px;
-  max-width: min(100% - 16% + 10px, var(--max-width));
+  --floating-padding: 8% - 5px;
+  max-width: min(100% - 2 * var(--floating-padding), var(--max-width));
+}
+
+.paddingForScrollButtons {
+  --floating-padding: 40px;
 }
 
 .light {
