@@ -28,7 +28,7 @@
     "react_ujs": "^2.6.1",
     "reselect": "^4.0.0",
     "screenfull": "^5.1.0",
-    "scroll-timeline": "https://github.com/tf/scroll-timeline#pageflow-scrolled-1",
+    "scroll-timeline": "https://github.com/tf/scroll-timeline#pageflow-scrolled-2",
     "slate": "^0.57.3",
     "slate-react": "^0.57.3",
     "slugify": "^1.4.6",
