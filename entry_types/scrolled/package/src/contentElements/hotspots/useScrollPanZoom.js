@@ -70,6 +70,10 @@ export function useScrollPanZoom({
 
     scroller.scrollTo(Math.abs(scroller.offsetLeft - step.offsetLeft), 0);
 
+    if (!steps) {
+      return;
+    }
+
     wrapperRef.current.animate(
       [
         keyframe(steps[from + 1]),
