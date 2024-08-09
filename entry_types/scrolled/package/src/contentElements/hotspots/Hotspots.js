@@ -152,12 +152,20 @@ export function HotspotsImage({
         <div className={styles.left}>
           <ScrollButton direction="left"
                         disabled={activeIndex === -1}
-                        onClick={() => activateArea(activeIndex - 1)} />
+                        onClick={() => {
+                          if (activeIndex >= 0) {
+                            activateArea(activeIndex - 1)
+                          }
+                        }} />
         </div>
         <div className={styles.right}>
           <ScrollButton direction="right"
                         disabled={activeIndex >= areas.length}
-                        onClick={() => activateArea(activeIndex + 1)}/>
+                        onClick={() => {
+                          if (activeIndex < areas.length) {
+                            activateArea(activeIndex + 1)
+                          }
+                        }}/>
         </div>
       </>
     );
@@ -185,7 +193,9 @@ export function HotspotsImage({
       <Area key={index}
             area={area}
             portraitMode={portraitMode}
-            noPointerEvents={panZoomEnabled && activeIndex >= 0}
+            noPointerEvents={panZoomEnabled &&
+                             activeIndex >= 0 &&
+                             activeIndex < areas.length}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(-1)}
             onClick={() => {
@@ -200,7 +210,10 @@ export function HotspotsImage({
     return areas.map((area, index) =>
       <Indicator key={index}
                  area={area}
-                 hidden={panZoomEnabled && activeIndex >= 0 && activeIndex !== index}
+                 hidden={panZoomEnabled &&
+                         activeIndex >= 0 &&
+                         activeIndex < areas.length &&
+                         activeIndex !== index}
                  outerRef={setIndicatorRef(index)}
                  portraitMode={portraitMode} />
     );
