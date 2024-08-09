@@ -152,12 +152,20 @@ export function HotspotsImage({
         <div className={styles.left}>
           <ScrollButton direction="left"
                         disabled={activeIndex === -1}
-                        onClick={() => activateArea(activeIndex - 1)} />
+                        onClick={() => {
+                          if (activeIndex >= 0) {
+                            activateArea(activeIndex - 1)
+                          }
+                        }} />
         </div>
         <div className={styles.right}>
           <ScrollButton direction="right"
                         disabled={activeIndex >= areas.length}
-                        onClick={() => activateArea(activeIndex + 1)}/>
+                        onClick={() => {
+                          if (activeIndex < areas.length) {
+                            activateArea(activeIndex + 1)
+                          }
+                        }}/>
         </div>
       </>
     );
