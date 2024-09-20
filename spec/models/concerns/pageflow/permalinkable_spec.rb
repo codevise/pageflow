@@ -158,5 +158,131 @@ module Pageflow
 
       expect(entry).to have(1).error_on('permalink.slug')
     end
+
+    it 'creates permalink redirect when slug changes' do
+      entry = create(
+        :entry,
+        :published,
+        permalink_attributes: {
+          slug: 'old-slug'
+        }
+      )
+
+      entry.update(
+        permalink_attributes: {
+          slug: 'new-slug'
+        }
+      )
+
+      expect(entry.permalink_redirects)
+        .to include(an_object_having_attributes(slug: 'old-slug',
+                                                directory: entry.permalink.directory))
+    end
+
+    it 'creates permalink redirect when directory changes' do
+      site = create(:site)
+      old_directory = create(:permalink_directory, site:, path: 'de/')
+      new_directory = create(:permalink_directory, site:, path: 'en/')
+      entry = create(
+        :entry,
+        :published,
+        site:,
+        permalink_attributes: {
+          slug: 'some-slug',
+          directory: old_directory
+        }
+      )
+
+      entry.update(
+        permalink_attributes: {
+          directory: new_directory
+        }
+      )
+
+      expect(entry.permalink_redirects)
+        .to include(an_object_having_attributes(slug: 'some-slug',
+                                                directory: old_directory))
+    end
+
+    it 'does not create permalink redirect when directory and slug are unchanged' do
+      entry = create(
+        :entry,
+        :published,
+        permalink_attributes: {
+          slug: 'some-slug'
+        }
+      )
+
+      entry.update(
+        permalink_attributes: {
+          updated_at: 1.day.ago
+        }
+      )
+
+      expect(entry.permalink_redirects).to be_empty
+    end
+
+    it 'does not create permalink redirect for unpublished entries' do
+      site = create(:site)
+      old_directory = create(:permalink_directory, site:, path: 'de/')
+      new_directory = create(:permalink_directory, site:, path: 'en/')
+      entry = create(
+        :entry,
+        site:,
+        permalink_attributes: {
+          slug: 'some-slug',
+          directory: old_directory
+        }
+      )
+
+      entry.update(
+        permalink_attributes: {
+          slug: 'new-slug',
+          directory: new_directory
+        }
+      )
+
+      expect(entry.permalink_redirects).to be_empty
+    end
+
+    it 'removes old redirect when new is created' do
+      directory = create(:permalink_directory)
+      entry = create(
+        :entry,
+        :published,
+        site: directory.site,
+        permalink_attributes: {
+          directory:,
+          slug: 'old-slug'
+        }
+      )
+      other_entry = create(
+        :entry,
+        :published,
+        site: directory.site,
+        permalink_attributes: {
+          directory:,
+          slug: 'other-slug'
+        }
+      )
+
+      entry.update(
+        permalink_attributes: {
+          slug: 'new-slug'
+        }
+      )
+      other_entry.update(
+        permalink_attributes: {
+          slug: 'old-slug'
+        }
+      )
+      other_entry.update(
+        permalink_attributes: {
+          slug: 'other-new-slug'
+        }
+      )
+
+      expect(entry.permalink_redirects.reload).to be_empty
+    end
   end
 end

@@ -40,7 +40,7 @@ module Pageflow
     describe '#pretty_entry_url' do
       it 'uses default host' do
         site = create(:site, cname: '')
-        entry = PublishedEntry.new(create(:entry, title: 'test', site: site),
+        entry = PublishedEntry.new(create(:entry, title: 'test', site:),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry)).to eq('http://test.host/test')
@@ -48,7 +48,7 @@ module Pageflow
 
       it 'supports custom params' do
         site = create(:site, cname: '')
-        entry = PublishedEntry.new(create(:entry, title: 'test', site: site),
+        entry = PublishedEntry.new(create(:entry, title: 'test', site:),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry, page: 4)).to eq('http://test.host/test?page=4')
@@ -56,7 +56,7 @@ module Pageflow
 
       it 'uses site cname if present' do
         site = create(:site, cname: 'my.example.com')
-        entry = PublishedEntry.new(create(:entry, title: 'test', site: site),
+        entry = PublishedEntry.new(create(:entry, title: 'test', site:),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry)).to eq('http://my.example.com/test')
@@ -64,9 +64,9 @@ module Pageflow
 
       it 'uses permalink if present' do
         site = create(:site,
-                         cname: 'my.example.com')
+                      cname: 'my.example.com')
         entry = create(:published_entry,
-                       site: site,
+                       site:,
                        permalink_attributes: {
                          slug: 'custom',
                          directory_path: 'de/'
@@ -77,27 +77,27 @@ module Pageflow
 
       it 'uses site canonical entry url prefix if present' do
         site = create(:site,
-                         canonical_entry_url_prefix: 'https://example.com/blog/')
-        entry = create(:published_entry, title: 'test', site: site)
+                      canonical_entry_url_prefix: 'https://example.com/blog/')
+        entry = create(:published_entry, title: 'test', site:)
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/blog/test')
       end
 
       it 'prefers canonical entry url prefix over cname' do
         site = create(:site,
-                         cname: 'my.example.com',
-                         canonical_entry_url_prefix: 'https://example.com/blog/')
-        entry = create(:published_entry, title: 'test', site: site)
+                      cname: 'my.example.com',
+                      canonical_entry_url_prefix: 'https://example.com/blog/')
+        entry = create(:published_entry, title: 'test', site:)
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/blog/test')
       end
 
       it 'supports interpolating entry locale in canonical entry url prefix' do
         site = create(:site,
-                         canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
+                      canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
         entry = create(:published_entry,
                        title: 'test',
-                       site: site,
+                       site:,
                        revision_attributes: {locale: 'fr'})
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
@@ -105,10 +105,10 @@ module Pageflow
 
       it 'supports reading locale from draft entry' do
         site = create(:site,
-                         canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
+                      canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
         entry = create(:draft_entry,
                        title: 'test',
-                       site: site,
+                       site:,
                        revision_attributes: {locale: 'fr'})
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
@@ -116,11 +116,11 @@ module Pageflow
 
       it 'uses locale of published revision if entry model is passed' do
         site = create(:site,
-                         canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
+                      canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
         entry = create(:entry,
                        :published,
                        title: 'test',
-                       site: site,
+                       site:,
                        published_revision_attributes: {locale: 'fr'})
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
@@ -128,7 +128,7 @@ module Pageflow
 
       it 'falls back to draft locale if unpublished entry is passed' do
         site = create(:site,
-                         canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
+                      canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
         entry = create(:entry,
                        title: 'test',
                        site: site)
@@ -137,11 +137,24 @@ module Pageflow
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
       end
 
+      it 'combines canonical entry url preifx with permalink if present' do
+        site = create(:site,
+                      canonical_entry_url_prefix: 'https://example.com/blog/')
+        entry = create(:published_entry,
+                       site:,
+                       permalink_attributes: {
+                         slug: 'custom',
+                         directory_path: 'de/'
+                       })
+
+        expect(helper.pretty_entry_url(entry)).to eq('https://example.com/blog/de/custom')
+      end
+
       it 'supports adding trailing slash' do
         site = create(:site,
-                         cname: 'my.example.com',
-                         trailing_slash_in_canonical_urls: true)
-        entry = PublishedEntry.new(create(:entry, title: 'test', site: site),
+                      cname: 'my.example.com',
+                      trailing_slash_in_canonical_urls: true)
+        entry = PublishedEntry.new(create(:entry, title: 'test', site:),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry)).to eq('http://my.example.com/test/')
@@ -149,9 +162,9 @@ module Pageflow
 
       it 'supports adding trailing slash to url with custom prefix' do
         site = create(:site,
-                         canonical_entry_url_prefix: 'https://example.com/blog/',
-                         trailing_slash_in_canonical_urls: true)
-        entry = PublishedEntry.new(create(:entry, title: 'test', site: site),
+                      canonical_entry_url_prefix: 'https://example.com/blog/',
+                      trailing_slash_in_canonical_urls: true)
+        entry = PublishedEntry.new(create(:entry, title: 'test', site:),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/blog/test/')
@@ -166,7 +179,9 @@ module Pageflow
       end
 
       it 'can be configured via lambda in public_entry_url_options' do
-        Pageflow.config.public_entry_url_options = lambda { |site| {host: "#{site.account.name}.example.com" } }
+        Pageflow.config.public_entry_url_options = lambda do |site|
+          {host: "#{site.account.name}.example.com"}
+        end
         account = create(:account, name: 'myaccount')
         entry = PublishedEntry.new(create(:entry, title: 'test', account: account),
                                    create(:revision))

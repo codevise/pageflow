@@ -1,0 +1,8 @@
+de:
+  pageflow:
+    admin:
+      entries:
+        permalink_hint: |-
+          Wenn der Permalink geändert wird, nachdem der Beitrag
+          bereits veröffentlicht wurde, wird automatisch eine
+          Weiterleitung von der alten URL zur neuen URL eingerichtet.

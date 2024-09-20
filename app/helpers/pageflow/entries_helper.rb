@@ -15,7 +15,7 @@ module Pageflow
     module PrettyUrl
       extend self
 
-      def build(routes, entry, options)
+      def build(routes, entry, options = {})
         with_custom_canonical_url_prefix(entry) ||
           default(routes, entry, options)
       end
@@ -24,13 +24,22 @@ module Pageflow
 
       def with_custom_canonical_url_prefix(entry)
         return if entry.site.canonical_entry_url_prefix.blank?
+
         entry = ensure_entry_with_revision(entry)
 
         [
           entry.site.canonical_entry_url_prefix.gsub(':locale', entry.locale),
-          entry.to_param,
+          entry_suffix(entry),
           entry.site.trailing_slash_in_canonical_urls ? '/' : ''
         ].join
+      end
+
+      def entry_suffix(entry)
+        if entry.permalink.present?
+          entry_permalink_parts(entry).join
+        else
+          entry.to_param
+        end
       end
 
       def default(routes, entry, options)
@@ -40,14 +49,17 @@ module Pageflow
           .reverse_merge(Pageflow.config.site_url_options(entry.site) || {})
 
         if entry.permalink.present?
-          routes.permalink_url(
-            entry.permalink.directory&.path || '',
-            entry.permalink.slug,
-            params
-          )
+          routes.permalink_url(*entry_permalink_parts(entry), params)
         else
           routes.short_entry_url(entry.to_model, params)
         end
+      end
+
+      def entry_permalink_parts(entry)
+        [
+          entry.permalink.directory&.path || '',
+          entry.permalink.slug
+        ]
       end
 
       def ensure_entry_with_revision(entry)

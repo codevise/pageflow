@@ -103,6 +103,110 @@ module Pageflow
           .to include('some-entry published rendered by entry type frontend app')
       end
 
+      it 'redirects to renamed permalink' do
+        site = create(:site, cname: 'my.example.com')
+        entry = create(
+          :entry,
+          :published,
+          title: 'some-entry',
+          type_name: 'test',
+          site:,
+          permalink_attributes: {
+            slug: 'old-slug',
+            directory_path: 'en/'
+          }
+        )
+
+        entry.permalink.update!(slug: 'new-slug')
+        get('http://my.example.com/en/old-slug')
+
+        expect(response).to redirect_to('http://my.example.com/en/new-slug')
+      end
+
+      it 'redirects even when new entry with same permalink is created but not yet published' do
+        site = create(:site, cname: 'my.example.com')
+        directory = create(:permalink_directory, site:)
+        entry = create(
+          :entry,
+          :published,
+          title: 'some-entry',
+          type_name: 'test',
+          site:,
+          permalink_attributes: {
+            slug: 'old-slug',
+            directory:
+          }
+        )
+
+        entry.permalink.update!(slug: 'new-slug')
+        create(
+          :entry,
+          title: 'new-entry',
+          type_name: 'test',
+          site:,
+          permalink_attributes: {
+            slug: 'old-slug',
+            directory:
+          }
+        )
+        get('http://my.example.com/old-slug')
+
+        expect(response).to redirect_to('http://my.example.com/new-slug')
+      end
+
+      it 'no longer redirects when new entry with same permalink is published' do
+        site = create(:site, cname: 'my.example.com')
+        directory = create(:permalink_directory, site:)
+        entry = create(
+          :entry,
+          :published,
+          title: 'some-entry',
+          type_name: 'test',
+          site:,
+          permalink_attributes: {
+            slug: 'old-slug',
+            directory:
+          }
+        )
+
+        entry.permalink.update!(slug: 'new-slug')
+        create(
+          :entry,
+          :published,
+          title: 'new-entry',
+          type_name: 'test',
+          site:,
+          permalink_attributes: {
+            slug: 'old-slug',
+            directory:
+          }
+        )
+        get('http://my.example.com/old-slug')
+
+        expect(response.body).to include('new-entry')
+      end
+
+      it 'redirects to permalink that moved to different site' do
+        site = create(:site, cname: 'my.example.com')
+        entry = create(
+          :entry,
+          :published,
+          type_name: 'test',
+          site:,
+          permalink_attributes: {
+            slug: 'some-slug',
+            directory_path: 'en/'
+          }
+        )
+        other_site = create(:site, cname: 'other.example.com')
+        directory_of_other_site = create(:permalink_directory, site: other_site)
+
+        entry.update!(site: other_site, permalink_attributes: {directory: directory_of_other_site})
+        get('http://my.example.com/en/some-slug')
+
+        expect(response).to redirect_to('http://other.example.com/some-slug')
+      end
+
       it 'responds with not found for non-published entry' do
         entry = create(:entry, type_name: 'test')
 
