@@ -1,6 +1,7 @@
 <%= form.input(:permalink,
                as: :pageflow_permalink,
-               base_url: pretty_site_url(entry.site),
+               base_url: entry.site.canonical_entry_url_prefix.presence ||
+                         pretty_site_url(entry.site),
                site: entry.site,
                slug_placeholder: entry.default_permalink_slug,
                hint: entry.new_record? ? nil : t('pageflow.admin.entries.permalink_hint'))%>

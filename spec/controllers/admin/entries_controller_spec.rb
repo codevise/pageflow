@@ -579,6 +579,40 @@ describe Admin::EntriesController do
       expect(response.body)
         .not_to have_selector('input[name="entry[permalink_attributes][slug]"]')
     end
+
+    it 'displays host of site in permalink input' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      account.default_site.update(cname: 'some.example.com')
+      create(
+        :permalink_directory,
+        path: '',
+        site: account.default_site
+      )
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body)
+        .to have_selector('.permalink_base_url', text: 'some.example.com/')
+    end
+
+    it 'prefers cononical entry url prefix in permalink input' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      account.default_site.update(canonical_entry_url_prefix: 'https://some.example.com/foo/')
+      create(
+        :permalink_directory,
+        path: '',
+        site: account.default_site
+      )
+
+      sign_in(user, scope: :user)
+      get :new
+
+      expect(response.body)
+        .to have_selector('.permalink_base_url', text: 'some.example.com/foo/')
+    end
   end
 
   describe '#create' do
