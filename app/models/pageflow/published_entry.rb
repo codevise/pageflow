@@ -66,12 +66,24 @@ module Pageflow
       PublishedEntry.new(scope.published.find(id))
     end
 
-    def self.find_by_permalink(directory: nil, slug:, scope:)
+    def self.find_by_permalink(slug:, scope:, directory: nil)
       wrap(
         scope.published.includes(permalink: :directory).where(
           pageflow_permalink_directories: {path: directory || ''},
           pageflow_permalinks: {slug: slug}
         ).first
+      )
+    end
+
+    def self.find_by_permalink_redirect(site:, slug:, directory: nil)
+      wrap(
+        PermalinkRedirect.joins(:entry, :directory).merge(Entry.published).where(
+          slug:,
+          pageflow_permalink_directories: {
+            path: directory || '',
+            site:
+          }
+        ).first&.entry
       )
     end
 

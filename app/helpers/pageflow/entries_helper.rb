@@ -15,7 +15,7 @@ module Pageflow
     module PrettyUrl
       extend self
 
-      def build(routes, entry, options)
+      def build(routes, entry, options = {})
         with_custom_canonical_url_prefix(entry) ||
           default(routes, entry, options)
       end

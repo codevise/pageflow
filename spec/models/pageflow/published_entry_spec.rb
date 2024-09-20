@@ -564,6 +564,78 @@ module Pageflow
       end
     end
 
+    describe '.find_by_permalink_redirect' do
+      it 'finds entry based on permalink slug in root directory' do
+        entry = create(
+          :entry,
+          :published,
+          permalink_attributes: {
+            slug: 'old-slug'
+          }
+        )
+        entry.update(
+          permalink_attributes: {
+            slug: 'new-slug'
+          }
+        )
+
+        result = PublishedEntry.find_by_permalink_redirect(
+          site: entry.site,
+          slug: 'old-slug'
+        )
+
+        expect(result).to be_kind_of(PublishedEntry)
+        expect(result.id).to eq(entry.id)
+      end
+
+      it 'finds entry based on permalink slug and directory' do
+        entry = create(
+          :entry,
+          :published,
+          permalink_attributes: {
+            slug: 'old-slug',
+            directory_path: 'en/'
+          }
+        )
+        entry.update(
+          permalink_attributes: {
+            slug: 'new-slug'
+          }
+        )
+
+        result = PublishedEntry.find_by_permalink_redirect(
+          site: entry.site,
+          directory: 'en/',
+          slug: 'old-slug'
+        )
+
+        expect(result.id).to eq(entry.id)
+      end
+
+      it 'does not find not published entries' do
+        entry = create(
+          :entry,
+          permalink_attributes: {
+            slug: 'old-slug',
+            directory_path: 'en/'
+          }
+        )
+        entry.update(
+          permalink_attributes: {
+            slug: 'new-slug'
+          }
+        )
+
+        result = PublishedEntry.find_by_permalink_redirect(
+          site: entry.site,
+          directory: 'en/',
+          slug: 'old-slug'
+        )
+
+        expect(result).to be_nil
+      end
+    end
+
     describe '#wrap_all' do
       it 'returns array of published entries for all entries in scope' do
         create(:entry,

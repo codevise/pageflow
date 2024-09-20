@@ -16,6 +16,9 @@ module Pageflow
 
     validate :belongs_to_same_site_as_entry
 
+    before_update(:create_redirect,
+                  if: -> { entry.first_published_at.present? && (slug_changed? || directory_changed?) })
+
     private
 
     def set_default_slug
@@ -34,6 +37,12 @@ module Pageflow
       return if !directory || !entry || entry.site_id == directory.site_id
 
       errors.add(:directory, :invalid)
+    end
+
+    def create_redirect
+      directory.redirects.where(slug:).delete_all
+      entry.permalink_redirects.create!(slug: slug_was,
+                                        directory_id: directory_id_was)
     end
   end
 end

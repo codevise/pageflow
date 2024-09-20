@@ -14,7 +14,11 @@ module Pageflow
     def show
       respond_to do |format|
         format.html do
-          entry = find_by_permalink || find_by_slug
+          entry = find_by_permalink
+
+          return if !entry && redirect_according_to_permalink_redirect
+
+          entry ||= find_by_slug!
 
           return if redirect_according_to_entry_redirect(entry)
           return if redirect_according_to_public_https_mode
@@ -62,7 +66,7 @@ module Pageflow
       )
     end
 
-    def find_by_slug
+    def find_by_slug!
       PublishedEntry.find(params[:id], entry_request_scope)
     end
 
@@ -70,10 +74,26 @@ module Pageflow
       Pageflow.config.public_entry_request_scope.call(Entry, request)
     end
 
+    def redirect_according_to_permalink_redirect
+      entry = PublishedEntry.find_by_permalink_redirect(
+        directory: params[:directory],
+        slug: params[:id],
+        site: Site.for_request(request)
+      )
+
+      return false unless entry
+
+      redirect_to(EntriesHelper::PrettyUrl.build(pageflow, entry),
+                  status: :moved_permanently,
+                  allow_other_host: true)
+      true
+    end
+
     def redirect_according_to_entry_redirect(entry)
-      return unless (redirect_location = entry_redirect(entry))
+      return false unless (redirect_location = entry_redirect(entry))
 
       redirect_to(redirect_location, status: :moved_permanently, allow_other_host: true)
+      true
     end
 
     def entry_redirect(entry)
