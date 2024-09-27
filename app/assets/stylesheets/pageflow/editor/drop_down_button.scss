@@ -12,7 +12,13 @@
 
   > button.ellipsis_icon {
     @include fa-ellipsis-v-icon;
-    width: 31px;
+    width: var(--drop-down-button-width, 31px);
+  }
+
+  > button.borderless {
+    --ui-button-border-color: transparent;
+    --ui-button-hover-border-color: transparent;
+    --ui-button-focus-ring-color: transparent;
   }
 
   &.full_width {

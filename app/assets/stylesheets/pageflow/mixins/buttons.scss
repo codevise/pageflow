@@ -49,8 +49,8 @@
     }
   } @else {
     background-color: transparent;
-    border: solid 1px var(--ui-primary-color-light);
-    color: var(--ui-primary-color);
+    border: solid 1px var(--ui-button-border-color);
+    color: var(--ui-on-button-color);
 
     @if $type == "destructive" {
       &:hover:not(:disabled):not(.disabled) {
@@ -61,7 +61,7 @@
     } @else {
       &.hover:not(:disabled):not(.disabled),
       &:hover:not(:disabled):not(.disabled) {
-        border: 1px solid var(--ui-primary-color);
+        border-color: var(--ui-button-hover-border-color);
       }
     }
 
@@ -78,6 +78,6 @@
 
   &:active:not(:disabled):not(.disabled),
   &:focus:not(:disabled):not(.disabled) {
-    box-shadow: 0 0 0 2px var(--ui-primary-color-lighter);
+    box-shadow: 0 0 0 2px var(--ui-button-focus-ring-color);
   }
 }
