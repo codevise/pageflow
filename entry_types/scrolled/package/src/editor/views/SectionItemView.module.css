@@ -72,6 +72,7 @@
 
 .dragHandle {
   composes: dragHandle from './outline.module.css';
+  --outline-drag-handle-transition-delay: 0.2s;
   color: var(--ui-on-primary-color);
   text-shadow: 0 0 2px #000;
 }

@@ -39,6 +39,14 @@ export const SortableCollectionView = CollectionView.extend({
     return this;
   },
 
+  disableSorting() {
+    this.$el.sortable('disable');
+  },
+
+  enableSorting() {
+    this.$el.sortable('enable');
+  },
+
   addItem: function(item) {
     if (!this.itemViews.findByModel(item)) {
       CollectionView.prototype.addItem.call(this, item);
