@@ -17,7 +17,7 @@
     "@rollup/plugin-replace": "^5.0.5",
     "autoprefixer": "^9.7.6",
     "babel-preset-react-app": "^9.1.2",
-    "rollup": "^1.26.3",
+    "rollup": "^2.79.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-jst": "^1.2.0",
