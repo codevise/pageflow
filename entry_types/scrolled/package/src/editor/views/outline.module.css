@@ -1,6 +1,33 @@
 @value indicatorIconColor, errorIconColor from './colors.module.css';
 
+.chapter {
+  padding: 0 10px 10px 10px;
+}
+
+.chapterLink {
+  composes: rightOpen from './icons.module.css';
+}
+
+.collapsed .chapter {
+  padding-bottom: 0;
+  cursor: move;
+}
+
+.collapsed .chapterLink {
+  padding-left: 30px;
+  pointer-events: none;
+}
+
+.collapsed .chapterLink::before {
+  display: none;
+}
+
 .chapter:first-child .sectionWithTransition:first-child .transition {
+  display: none;
+}
+
+.collapsed .sections,
+.collapsed .button {
   display: none;
 }
 
@@ -43,5 +70,9 @@
   height: 100%;
   width: 30px;
   transition: opacity 0.1s ease;
-  transition-delay: 0.2s;
+  transition-delay: var(--outline-drag-handle-transition-delay);
+}
+
+.outline:not(.collapsed) .chapterLink .dragHandle {
+  display: none;
 }

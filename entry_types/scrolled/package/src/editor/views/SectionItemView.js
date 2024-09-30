@@ -150,6 +150,7 @@ export const SectionItemView = Marionette.ItemView.extend({
       items: dropDownMenuItems,
       alignMenu: 'right',
       ellipsisIcon: true,
+      borderless: true,
       openOnClick: true
     }), {to: this.ui.dropDownButton});
   },

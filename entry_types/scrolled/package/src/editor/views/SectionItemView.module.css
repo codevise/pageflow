@@ -72,6 +72,7 @@
 
 .dragHandle {
   composes: dragHandle from './outline.module.css';
+  --outline-drag-handle-transition-delay: 0.2s;
   color: var(--ui-on-primary-color);
   text-shadow: 0 0 2px #000;
 }
@@ -93,8 +94,7 @@
 }
 
 .dropDownButton button {
-  border: 0 !important;
-  color: var(--ui-on-primary-color) !important;
+  --ui-on-button-color: var(--ui-on-primary-color);
   text-shadow: 0 0 2px #000;
   box-shadow: none !important;
   opacity: 0.3;
@@ -103,7 +103,7 @@
 }
 
 .invert .dropDownButton button {
-  color: var(--ui-primary-color) !important;
+  --ui-on-button-color: var(--ui-primary-color);
   text-shadow: 0 0 2px #fff;
 }
 

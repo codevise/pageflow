@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
+import Sortable from 'sortablejs';
 
 import {CollectionView} from './CollectionView';
 
@@ -7,36 +8,50 @@ export const SortableCollectionView = CollectionView.extend({
   render: function() {
     CollectionView.prototype.render.call(this);
 
-    this.$el.sortable({
-      connectWith: this.options.connectWith,
-      placeholder: 'sortable-placeholder',
-      forcePlaceholderSize: true,
-      delay: 200,
+    this.sortable = Sortable.create(this.el, {
+      group: this.options.connectWith,
+      animation: 150,
 
-      update: _.bind(function(event, ui) {
-        if (ui.item.parent().is(this.el)) {
+      ghostClass: 'sortable-placeholder',
+
+      onEnd: event => {
+        const item = $(event.item);
+
+        if (item.parent().is(this.el)) {
           this.updateOrder();
         }
-      }, this),
+      },
 
-      receive: _.bind(function(event, ui) {
-        var view = ui.item.data('view');
-
-        this.reindexPositions();
-
-        this.itemViews.add(view);
-        this.collection.add(view.model);
-      }, this),
-
-      remove: _.bind(function(event, ui) {
-        var view = ui.item.data('view');
+      onRemove: event => {
+        const view = $(event.item).data('view');
 
         this.itemViews.remove(view);
         this.collection.remove(view.model);
-      }, this)
+      },
+
+      onSort: event => {
+        if (event.from !== event.to && event.to === this.el) {
+          const view = $(event.item).data('view');
+
+          this.reindexPositions();
+
+          this.itemViews.add(view);
+          this.collection.add(view.model);
+
+          this.collection.saveOrder();
+        }
+      }
     });
 
     return this;
+  },
+
+  disableSorting() {
+    this.sortable.option('disabled', true);
+  },
+
+  enableSorting() {
+    this.sortable.option('disabled', false);
   },
 
   addItem: function(item) {

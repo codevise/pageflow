@@ -9,10 +9,6 @@
   border-radius: rounded(lg);
 }
 
-.root:global(.ui-sortable-helper) {
-  box-shadow: var(--ui-box-shadow-xl);
-}
-
 .selectableHover {
   background-color: var(--ui-selection-color-lighter);
 }
@@ -24,10 +20,9 @@
 }
 
 .outlineLink {
-  composes: rightOpen from './icons.module.css';
+  composes: chapterLink from './outline.module.css';
   composes: link;
   position: relative;
-  padding-left: 30px;
 }
 
 .link::before {
@@ -40,11 +35,7 @@
 
 .dragHandle {
   composes: dragHandle from './outline.module.css';
-  color: var(--ui-on-surface-color-light);
-}
-
-.link:hover .dragHandle {
-  opacity: 1;
+  color: var(--ui-on-surface-color);
 }
 
 .number {
@@ -54,6 +45,7 @@
 .title {}
 
 .sections {
+  composes: sections from './outline.module.css';
   margin: 10px 0 10px 0;
   min-height: 20px;
 }
@@ -69,4 +61,5 @@
 
 .addSection {
   composes: addButton from './buttons.module.css';
+  composes: button from './outline.module.css';
 }
