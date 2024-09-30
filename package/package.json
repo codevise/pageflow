@@ -27,6 +27,7 @@
     "backbone-events-standalone": "^0.2.7",
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.4.1",
+    "sortablejs": "^1.15.3",
     "i18n-js": "^3.5.1",
     "postcss-functions": "^3.0.0"
   }

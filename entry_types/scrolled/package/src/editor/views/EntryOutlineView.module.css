@@ -1,5 +1,6 @@
 .root {
   position: relative;
+  user-select: none;
   composes: outline from './outline.module.css';
 }
 
@@ -43,12 +44,6 @@
 }
 
 .chapters {}
-
-.chapters > :global(.sortable-placeholder) {
-  margin-bottom: 12px;
-  padding: 0 10px 0px 10px;
-  border-radius: rounded(lg);
-}
 
 .addChapter {
   composes: addButton from './buttons.module.css';

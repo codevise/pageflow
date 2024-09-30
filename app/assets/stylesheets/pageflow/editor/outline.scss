@@ -99,10 +99,6 @@ ul.outline {
     &.hide_in_navigation a {
       color: var(--ui-on-surface-color-light);
     }
-
-    &.ui-sortable-helper {
-      box-shadow: var(--ui-box-shadow-xl);
-    }
   }
 }
 
@@ -122,10 +118,6 @@ ul.chapters {
       font-weight: bold;
     }
   }
-
-  > .sortable-placeholder {
-    border: 0;
-  }
 }
 
 ul.pages {
@@ -144,9 +136,4 @@ ul.pages {
 ul.dragged {
   margin: 0;
   padding: 0;
-}
-
-.sortable-placeholder {
-  outline: 1px dotted var(--ui-on-surface-color-lighter);
-  border-radius: rounded();
 }

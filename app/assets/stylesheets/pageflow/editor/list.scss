@@ -1,6 +1,7 @@
 .list {
   .list_items {
     margin-bottom: 10px;
+    user-select: none;
   }
 
   .list_blank_slate {
@@ -103,9 +104,5 @@
   .list_item_remove_button {
     @include icon-only-button("destructive");
     @include trash-icon;
-  }
-
-  .sortable-placeholder {
-    height: 35px;
   }
 }

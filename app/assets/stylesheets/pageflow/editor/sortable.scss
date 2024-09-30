@@ -1,0 +1,12 @@
+.sortable-placeholder {
+  outline: 1px dotted var(--ui-on-surface-color-lighter);
+
+  // scss-lint:disable ImportantRule
+  border-color: transparent !important;
+  background-color: transparent !important;
+  // scss-lint:enable ImportantRule
+
+  * {
+    visibility: hidden;
+  }
+}

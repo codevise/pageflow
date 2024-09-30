@@ -9,10 +9,6 @@
   border-radius: rounded(lg);
 }
 
-.root:global(.ui-sortable-helper) {
-  box-shadow: var(--ui-box-shadow-xl);
-}
-
 .selectableHover {
   background-color: var(--ui-selection-color-lighter);
 }
@@ -39,11 +35,7 @@
 
 .dragHandle {
   composes: dragHandle from './outline.module.css';
-  color: var(--ui-on-surface-color-light);
-}
-
-.root:hover .dragHandle {
-  opacity: 1;
+  color: var(--ui-on-surface-color);
 }
 
 .number {
