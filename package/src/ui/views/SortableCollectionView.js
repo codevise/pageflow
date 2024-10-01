@@ -46,6 +46,11 @@ export const SortableCollectionView = CollectionView.extend({
     return this;
   },
 
+  onClose() {
+    CollectionView.prototype.onClose.call(this);
+    this.sortable.destroy();
+  },
+
   disableSorting() {
     this.sortable.option('disabled', true);
   },
