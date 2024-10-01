@@ -425,6 +425,8 @@ module Pageflow
     # @since 12.2
     attr_accessor :news
 
+    attr_accessor :entry_translator_url
+
     def initialize(target_type_name = nil)
       @target_type_name = target_type_name
 
@@ -618,6 +620,7 @@ module Pageflow
       delegate :public_entry_cache_control_header=, to: :config
       delegate :additional_public_entry_headers, to: :config
       delegate :cutoff_modes, to: :config
+      delegate :entry_translator_url=, to: :config
 
       delegate :for_entry_type, to: :config
     end

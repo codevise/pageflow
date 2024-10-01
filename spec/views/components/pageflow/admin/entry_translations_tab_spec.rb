@@ -25,6 +25,23 @@ module Pageflow
       expect(rendered).to have_selector('a', text: 'Mark as default')
     end
 
+    it 'renders a link to entry translator url' do
+      pageflow_configure do |config|
+        config.entry_translator_url = lambda do |entry|
+          "http://example.com?entry_id=#{entry.id}"
+        end
+      end
+
+      de_entry = create(:entry, draft_attributes: {locale: 'de'})
+
+      allow(helper).to receive(:authorized?).and_return(true)
+
+      render(de_entry)
+
+      expect(rendered).to have_selector('a', text: 'Generate translation')
+      expect(rendered).to have_selector("a[href='http://example.com?entry_id=#{de_entry.id}']")
+    end
+
     it 'includes self in table without link' do
       de_entry = create(:entry, title: 'My story DE', draft_attributes: {locale: 'de'})
       en_entry = create(:entry, title: 'My story EN', draft_attributes: {locale: 'en'})
@@ -65,6 +82,28 @@ module Pageflow
       expect(rendered).to have_selector('table td a', text: 'Remove')
       expect(rendered).to have_selector('a', text: 'Link translation')
       expect(rendered).to have_selector('a', text: 'Mark as default')
+    end
+
+    it 'hides generate link by default' do
+      de_entry = create(:entry, draft_attributes: {locale: 'de'})
+
+      allow(helper).to receive(:authorized?).and_return(true)
+
+      render(de_entry)
+
+      expect(rendered).not_to have_selector('a', text: 'Generate translation')
+    end
+
+    it 'hides generate link if user cannot manage translations' do
+      de_entry = create(:entry, draft_attributes: {locale: 'de'})
+
+      allow(helper).to receive(:authorized?).and_return(true)
+      allow(helper)
+        .to receive(:authorized?).with(:manage_translations, de_entry).and_return(false)
+
+      render(de_entry)
+
+      expect(rendered).not_to have_selector('a', text: 'Generate translation')
     end
 
     it 'hides remove and add links if user cannot manage translations' do

@@ -29,6 +29,7 @@ module Pageflow
         end
 
         add_link(entry)
+        generate_link(entry)
       end
 
       private
@@ -83,6 +84,17 @@ module Pageflow
         text_node(link_to(t('pageflow.admin.entry_translations.add'),
                           new_admin_entry_translation_path(entry),
                           class: 'button'))
+      end
+
+      def generate_link(entry)
+        return unless authorized?(:manage_translations, entry)
+        entry_translator_url = Pageflow.config_for(entry).entry_translator_url
+        return if entry_translator_url.blank?
+
+        text_node(link_to(t('pageflow.admin.entry_translations.generate'),
+                          entry_translator_url.call(entry),
+                          class: 'button',
+                          style: "margin-left: 8px"))
       end
     end
   end
