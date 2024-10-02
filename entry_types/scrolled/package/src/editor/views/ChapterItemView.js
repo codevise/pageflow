@@ -3,6 +3,7 @@ import Marionette from 'backbone.marionette';
 
 import {editor, modelLifecycleTrackingView} from 'pageflow/editor';
 import {cssModulesUtils, SortableCollectionView} from 'pageflow/ui';
+import {browser} from 'pageflow/frontend';
 
 import {SectionItemView} from './SectionItemView';
 
@@ -58,7 +59,8 @@ export const ChapterItemView = Marionette.Layout.extend({
       itemViewOptions: {
         entry: this.options.entry
       },
-      connectWith: cssModulesUtils.selector(styles, 'sections')
+      connectWith: cssModulesUtils.selector(styles, 'sections'),
+      forceDraggableFallback: browser.agent.matchesDesktopSafari()
     }));
 
     this.update();
