@@ -14,6 +14,9 @@ export const SortableCollectionView = CollectionView.extend({
 
       ghostClass: 'sortable-placeholder',
 
+      forceFallback: this.options.forceDraggableFallback,
+      fallbackTolerance: 3,
+
       onEnd: event => {
         const item = $(event.item);
 
