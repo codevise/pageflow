@@ -429,10 +429,8 @@ module Pageflow
     #
     # @example
     #
-    #     config.features.register 'ai_translator' do |feature_config|
-    #       feature_config.entry_translator_url = lambda do |entry|
-    #         Rails.application.routes.url_helpers.new_admin_entry_ai_translation_path(entry)
-    #       end
+    #     config.entry_translator_url = lambda do |entry|
+    #       Rails.application.routes.url_helpers.some_custom_route(entry)
     #     end
     # @since edge
     attr_accessor :entry_translator_url
