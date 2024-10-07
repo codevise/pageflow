@@ -40,13 +40,22 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
     const portraitFile = options.contentElement.configuration.getImageFile('portraitImage');
     const panZoomEnabled = options.contentElement.configuration.get('enablePanZoom') !== 'never';
 
+    const preserveActiveArea = () => setTimeout(
+      () => options.contentElement.postCommand({
+        type: 'SET_ACTIVE_AREA',
+        index: options.collection.indexOf(this.model)
+      }),
+      200
+    );
+
     if (file && portraitFile) {
       this.previousEmulationMode = options.entry.get('emulation_mode') || 'desktop';
     }
 
     configurationEditor.tab('area', function() {
-      if (file && portraitFile) {
+      if (file && portraitFile && options.entry.has('emulation_mode')) {
         options.entry.unset('emulation_mode');
+        preserveActiveArea();
       }
 
       this.input('area', AreaInputView, {
@@ -98,8 +107,9 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
 
     if (portraitFile) {
       configurationEditor.tab('portrait', function() {
-        if (file && portraitFile) {
+        if (file && portraitFile && !options.entry.has('emulation_mode')) {
           options.entry.set('emulation_mode', 'phone');
+          preserveActiveArea();
         }
 
         this.input('portraitArea', AreaInputView, {
@@ -139,15 +149,6 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
     }
 
     this.formContainer.show(configurationEditor);
-  },
-
-  onClose() {
-    if (this.previousEmulationMode === 'phone') {
-      this.options.entry.set('emulation_mode', 'phone');
-    }
-    else if (this.previousEmulationMode === 'desktop') {
-      this.options.entry.unset('emulation_mode');
-    }
   },
 
   goBack: function() {
