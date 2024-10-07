@@ -425,6 +425,16 @@ module Pageflow
     # @since 12.2
     attr_accessor :news
 
+    # URL to a form that is used to translate an entry via an external service.
+    #
+    # @example
+    #
+    #     config.entry_translator_url = lambda do |entry|
+    #       Rails.application.routes.url_helpers.some_custom_route(entry)
+    #     end
+    # @since edge
+    attr_accessor :entry_translator_url
+
     def initialize(target_type_name = nil)
       @target_type_name = target_type_name
 
@@ -618,6 +628,7 @@ module Pageflow
       delegate :public_entry_cache_control_header=, to: :config
       delegate :additional_public_entry_headers, to: :config
       delegate :cutoff_modes, to: :config
+      delegate :entry_translator_url=, to: :config
 
       delegate :for_entry_type, to: :config
     end

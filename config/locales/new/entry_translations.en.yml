@@ -5,6 +5,7 @@ en:
         translations: Translations
       entry_translations:
         add: Link translation
+        generate: Generate translation
         entry_id: Entry
         id: Translation(s)
         new_hint_html: |-

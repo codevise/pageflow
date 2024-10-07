@@ -5,6 +5,7 @@ de:
         translations: Übersetzungen
       entry_translations:
         add: Übersetzung zuordnen
+        generate: Übersetzung generieren
         entry_id: Beitrag
         id: Übersetzung(en)
         new_hint_html: |-
