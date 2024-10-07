@@ -3,10 +3,6 @@ en:
     hotspots_content_element:
       feature_name: Hotspots content element
   pageflow_scrolled:
-    public:
-      more: More
-      next: Next
-      previous: Previous
     inline_editing:
       select_link_destination: "Select link destination"
       change_link_destination: "Change link destination"
