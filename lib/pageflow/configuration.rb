@@ -425,6 +425,16 @@ module Pageflow
     # @since 12.2
     attr_accessor :news
 
+    # URL to a form that is used to translate an entry via an external service.
+    #
+    # @example
+    #
+    #     config.features.register 'ai_translator' do |feature_config|
+    #       feature_config.entry_translator_url = lambda do |entry|
+    #         Rails.application.routes.url_helpers.new_admin_entry_ai_translation_path(entry)
+    #       end
+    #     end
+    # @since edge
     attr_accessor :entry_translator_url
 
     def initialize(target_type_name = nil)
