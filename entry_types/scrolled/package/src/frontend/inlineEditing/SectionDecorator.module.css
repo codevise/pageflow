@@ -2,10 +2,7 @@
   position: relative;
 }
 
-.highlighted > section::before,
-.lineAbove > section::before,
-.lineBelow > section::before,
-.selected > section::before {
+section::before {
   content: "";
   display: block;
   position: absolute;
@@ -15,6 +12,14 @@
   bottom: 6px;
   z-index: 9;
   pointer-events: none;
+  visibility: hidden;
+}
+
+.highlighted > section::before,
+.lineAbove > section::before,
+.lineBelow > section::before,
+.selected > section::before {
+  visibility: visible;
 }
 
 .highlighted > section::before,
