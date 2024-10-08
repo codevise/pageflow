@@ -3,10 +3,6 @@ en:
     hotspots_content_element:
       feature_name: Hotspots content element
   pageflow_scrolled:
-    public:
-      more: More
-      next: Next
-      previous: Previous
     inline_editing:
       select_link_destination: "Select link destination"
       change_link_destination: "Change link destination"
@@ -23,16 +19,19 @@ en:
             attributes:
               tooltipPosition:
                 label: Tooltip orientation
+                inline_help: Prevent the tooltip from covering the parts of the image it is meant to label.
                 values:
                   below: Below
                   above: Above
               tooltipReference:
                 label: Tooltip position
+                inline_help: Show the tooltip at the indicator point or outside the hotspot area.
                 values:
                   indicator: At indicator
                   area: At area
               tooltipMaxWidth:
                 label: Tooltip maximum width
+                inline_help: Set how wide the tooltip should be displayed.
                 values:
                   medium: Medium
                   narrow: Narrow
@@ -40,32 +39,44 @@ en:
                   wide: Wide
               tooltipTextAlign:
                 label: Text alignment in tooltip
+                inline_help: Align the text inside the tooltip.
                 values:
                   left: Left
                   center: Center
                   right: Right
               color:
+                inline_help: Used for the indicator point.
                 label: Color
               activeImage:
                 label: Active image
+                inline_help: |-
+                  Display an alternative image when the hotspot area
+                  is active. Use an image where the area is visually
+                  highlighted.
               tooltipImage:
                 label: Image in tooltip
+                inline_help: Display an image inside the tooltip.
               area:
                 label: Area
+                inline_help: Adjust the size and position of the hotspot area.
               zoom:
                 label: Zoom
+                inline_help: Set how much the image should be zoomed in when the area is active.
               portraitTooltipPosition:
                 label: Tooltip orientation (Portrait)
+                inline_help: Prevent the tooltip from covering the parts of the image it is meant to label.
                 values:
                   below: Below
                   above: Above
               portraitTooltipReference:
                 label: Tooltip position (Portrait)
+                inline_help: Show the tooltip at the indicator point or outside the hotspot area.
                 values:
                   indicator: At indicator
                   area: At area
               portraitTooltipMaxWidth:
                 label: Tooltip maximum width (Portrait)
+                inline_help: Set how wide the tooltip should be displayed.
                 values:
                   medium: Medium
                   narrow: Narrow
@@ -73,12 +84,19 @@ en:
                   wide: Wide
               portraitColor:
                 label: Color (Portrait)
+                inline_help: Used for the indicator point.
               portraitActiveImage:
                 label: Active image (Portrait)
+                inline_help: |-
+                  Display an alternative image when the hotspot area
+                  is active. Use an image where the area is visually
+                  highlighted.
               portraitArea:
                 label: Area (Portrait)
+                inline_help: Adjust the size and position of the hotspot area.
               portraitZoom:
                 label: Zoom (Portrait)
+                inline_help: Set how much the portrait image should be zoomed in when the area is selected.
           edit_area_dialog:
             header: Area outline and indicator position
             tabs:
@@ -89,7 +107,7 @@ en:
               polygon: Polygon
             centerIndicator: Center indicator
             hotspots_image: Hotspots image
-            double_click_to_delete: Double click to remove point
+            double_click_to_delete: Double-click to remove point
             indicator_title: Drag to position indicator
             save: Save
             cancel: Cancel
@@ -102,21 +120,31 @@ en:
           attributes:
             image:
               label: Image
+              inline_help: Image on which the hotspot areas should be placed.
             portraitImage:
               inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to provide an alternative to a landscape image that would otherwise be displayed too small.
               label: Image (Portrait)
             enablePanZoom:
-              label: Pan zoom
+              label: Pan & Zoom
+              inline_help_html: |-
+                Animates the image to zoom in on a hotspot when it
+                is selected, making details easier to see.<br/><br/>If
+                all details are clearly visible without zooming on
+                desktop, this effect can optionally be enabled only
+                for portrait mode.
               values:
                 phonePlatform: In phone layout
                 always: Always
                 never: Never
             panZoomInitially:
               label: Pan to first area initially
+              inline_help: Starts the Pan & Zoom effect on the first hotspot area when it becomes active.
             enableFullscreen:
               label: Enable fullscreen
+              inline_help: Display a button to open the element in fullscreen mode.
             invertTooltips:
               label: Invert tooltip colors
+              inline_help: Use dark tooltips with light text.
           description: Image with clickable areas
           name: Hotspots
           tabs:
