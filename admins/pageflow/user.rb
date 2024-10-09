@@ -161,12 +161,12 @@ module Pageflow
     end
 
     controller do
-      include Pageflow::QuotaVerification
-      helper Pageflow::Admin::FormHelper
-      helper Pageflow::Admin::LocalesHelper
-      helper Pageflow::Admin::MembershipsHelper
-      helper Pageflow::Admin::UsersHelper
-      helper Pageflow::QuotaHelper
+      include QuotaVerification
+      helper Admin::FormHelper
+      helper Admin::LocalesHelper
+      helper Admin::MembershipsHelper
+      helper Admin::UsersHelper
+      helper QuotaHelper
 
       def scoped_collection
         super.includes(account_memberships: :entity)

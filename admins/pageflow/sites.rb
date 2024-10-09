@@ -35,8 +35,8 @@ module Pageflow
     end
 
     controller do
-      helper Pageflow::Admin::CutoffModesHelper
-      helper Pageflow::Admin::FormHelper
+      helper Admin::CutoffModesHelper
+      helper Admin::FormHelper
 
       before_create do |site|
         site.build_default_permalink_directory
