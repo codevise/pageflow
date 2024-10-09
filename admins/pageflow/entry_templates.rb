@@ -14,6 +14,7 @@ module Pageflow
     controller do
       helper Pageflow::Admin::FormHelper
       helper Pageflow::Admin::WidgetsHelper
+      helper Pageflow::Admin::LocalesHelper
 
       def index
         redirect_to redirect_path

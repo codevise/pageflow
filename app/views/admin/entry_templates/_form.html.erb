@@ -9,9 +9,7 @@
       <%= f.input :default_locale,
                         as: :select,
                         include_blank: false,
-                        collection: Pageflow.config.available_public_locales.map{ |locale|
-                          [t('pageflow.public._language', locale: locale), locale.to_s]
-                        },
+                        collection: available_public_locales_collection,
                         hint: t('pageflow.admin.sites.default_locale_hint') %>
       <%= f.input :default_author,
         hint: t('pageflow.admin.sites.default_author_hint'),
