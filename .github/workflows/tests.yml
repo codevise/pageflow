@@ -104,6 +104,11 @@ jobs:
 
     # Dependencies
 
+    - name: Install imagemagick package for image processing
+      run: |
+        sudo apt-get update
+        sudo apt-get install imagemagick
+
     - name: Install libvips package for image processing
       run: |
         sudo apt-get update
