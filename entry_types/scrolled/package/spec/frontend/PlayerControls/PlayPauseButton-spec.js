@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
-import {render} from '@testing-library/react'
+import {renderInEntry} from 'support'
 
 import {PlayPauseButton} from 'frontend/PlayerControls/PlayPauseButton';
 import {useFakeTranslations} from 'pageflow/testHelpers';
@@ -12,12 +12,12 @@ describe('PlayPauseButton', () => {
   });
 
   it('shows pause button when playing', () => {
-    const {getByLabelText} = render(<PlayPauseButton isPlaying={true}/>);
+    const {getByLabelText} = renderInEntry(<PlayPauseButton isPlaying={true}/>);
     expect(getByLabelText('Pause')).toBeVisible();
   });
 
   it('shows play button when paused', () => {
-    const {getByLabelText} = render(<PlayPauseButton isPlaying={false}/>);
+    const {getByLabelText} = renderInEntry(<PlayPauseButton isPlaying={false}/>);
     expect(getByLabelText('Play')).toBeVisible();
   });
 });

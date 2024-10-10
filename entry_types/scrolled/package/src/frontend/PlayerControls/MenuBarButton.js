@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 
 import classNames from 'classnames';
 
+import {ThemeIcon} from '../ThemeIcon';
+
 import styles from './MenuBarButton.module.css';
-import CheckIcon from './images/check.svg';
 
 export function MenuBarButton(props) {
   const {subMenuItems, onClick} = props;
@@ -58,7 +59,7 @@ export function MenuBarButton(props) {
       <button className={styles.button}
               title={props.title}
               onClick={onButtonClick}>
-        {React.createElement(props.icon, {className: styles.icon})}
+        <ThemeIcon name={props.icon} />
       </button>
       {renderSubMenu(props, closeMenu)}
     </div>
@@ -67,7 +68,7 @@ export function MenuBarButton(props) {
 
 MenuBarButton.propTypes = {
   title: PropTypes.string,
-  icon: PropTypes.elementType,
+  icon: PropTypes.string,
   subMenuItems: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -118,7 +119,7 @@ function renderSubMenuItems(props, closeMenu) {
 function renderSubMenuItemIcon(item) {
   if (item.active) {
     return (
-      <CheckIcon className={styles.subMenuItemIcon} />
+      <ThemeIcon name="checked" />
     );
   }
 }

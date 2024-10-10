@@ -6,9 +6,9 @@ import {useTheme, useContentElementConsentVendor} from '../../entryState';
 import {useI18n} from '../i18n';
 import {useContentElementAttributes} from '../useContentElementAttributes';
 import {widths} from '../layouts';
+import {ThemeIcon} from '../ThemeIcon';
 
 import styles from './OptOutInfo.module.css';
-import InfoIcon from '../icons/information.svg'
 
 /**
  * Display info tooltip with a link to opt out of third party
@@ -50,7 +50,7 @@ export function OptOutInfo({
                                {[styles.full]: width === widths.full || inset})}
          style={hide ? {opacity: 0, visibility: 'hidden'} : undefined}>
       <button className={styles.icon}>
-        <InfoIcon/>
+        <ThemeIcon name="information" />
       </button>
       <div className={styles.tooltip}>
         <div dangerouslySetInnerHTML={{__html: html}} />

@@ -1,7 +1,6 @@
 import React from 'react';
 import controlBarStyles from "./ControlBar.module.css";
-import PlayIcon from "./images/play.svg";
-import PauseIcon from "./images/pause.svg";
+import {ThemeIcon} from '../ThemeIcon';
 
 import {useI18n} from '../i18n';
 
@@ -21,8 +20,8 @@ export function PlayPauseButton(props) {
 
 function pausePlayIcon(props) {
   if (props.isPlaying) {
-    return <PauseIcon className={controlBarStyles.controlsIcon} />
+    return <ThemeIcon name="pause" />
   } else {
-    return <PlayIcon className={controlBarStyles.controlsIcon} />
+    return <ThemeIcon name="play" />
   }
 }

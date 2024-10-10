@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import {MenuBarButton} from './MenuBarButton';
 import {useI18n} from '../i18n';
 
-import TextTracksIcon from './images/textTracks.svg';
-
 export function TextTracksMenu(props) {
   const {t} = useI18n();
 
@@ -15,7 +13,7 @@ export function TextTracksMenu(props) {
 
   return (
     <MenuBarButton title={t('pageflow_scrolled.public.player_controls.text_tracks')}
-                   icon={TextTracksIcon}
+                   icon="textTracks"
                    subMenuItems={props.items}
                    onSubMenuItemClick={props.onItemClick} />
   );
