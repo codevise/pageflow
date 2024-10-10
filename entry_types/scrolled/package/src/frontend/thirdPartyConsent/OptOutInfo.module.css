@@ -31,7 +31,8 @@
 }
 
 .icon svg {
-  fill: #c2c2c2;
+  color: #c2c2c2;
+  fill: currentColor;
   width: 26px;
   height: 26px;
   margin: 7px 7px 5px;

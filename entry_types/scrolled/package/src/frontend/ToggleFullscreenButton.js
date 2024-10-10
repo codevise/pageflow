@@ -1,7 +1,6 @@
 import React from 'react';
 
-import EnterFullscreenIcon from "./icons/enterFullscreen.svg";
-import ExitFullscreenIcon from "./icons/exitFullscreen.svg";
+import {ThemeIcon} from './ThemeIcon';
 import {useI18n} from './i18n';
 
 import styles from './ToggleFullscreenButton.module.css';
@@ -22,8 +21,8 @@ export function ToggleFullscreenButton(props) {
 
 function icon(props) {
   if (props.isFullscreen) {
-    return <ExitFullscreenIcon />
+    return <ThemeIcon name="exitFullscreen"/>;
   } else {
-    return <EnterFullscreenIcon />
+    return <ThemeIcon name="enterFullscreen" />;
   }
 }

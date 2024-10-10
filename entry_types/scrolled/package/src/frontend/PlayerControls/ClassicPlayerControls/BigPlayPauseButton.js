@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './BigPlayPauseButton.module.css'
-import PlayIcon from '../images/play.svg';
-import PauseIcon from '../images/pause.svg';
+import {ThemeIcon} from '../../ThemeIcon';
 
 export function BigPlayPauseButton(props) {
   const c = classNames(styles.button, {
@@ -27,9 +26,9 @@ export function BigPlayPauseButton(props) {
 
 function pausePlayIcon(props) {
   if (props.unplayed || props.isPlaying) {
-    return <PlayIcon />;
+    return <ThemeIcon name="play" />;
   }
   else {
-    return <PauseIcon />
+    return <ThemeIcon name="pause" />;
   }
 }
