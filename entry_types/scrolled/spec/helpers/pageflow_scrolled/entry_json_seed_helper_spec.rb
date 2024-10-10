@@ -698,6 +698,7 @@ module PageflowScrolled
           config.themes.register(:default, custom_icons: [:share])
         end
         entry = create(:published_entry, type_name: 'scrolled')
+
         result = render(helper, entry)
 
         expect(result).to include_json(config: {
@@ -705,6 +706,31 @@ module PageflowScrolled
                                            assets: {
                                              icons: {
                                                share: %r{themes/default/icons/share.*svg$}
+                                             }
+                                           }
+                                         }
+                                       })
+      end
+
+      it 'supports custom icons directories' do
+        pageflow_configure do |config|
+          config.themes.register(:default,
+                                 custom_icons: [:share],
+                                 custom_icons_directory: 'icons/someSet')
+        end
+        entry = create(:published_entry, type_name: 'scrolled')
+        theme_directory = Rails.root.join('app/javascript/pageflow-scrolled/themes/default')
+        FileUtils.mkdir_p(theme_directory.join('icons/someSet'))
+        FileUtils.cp(theme_directory.join('icons/share.svg'),
+                     theme_directory.join('icons/someSet/share.svg'))
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         theme: {
+                                           assets: {
+                                             icons: {
+                                               share: %r{themes/default/icons/someSet/share.*svg$}
                                              }
                                            }
                                          }

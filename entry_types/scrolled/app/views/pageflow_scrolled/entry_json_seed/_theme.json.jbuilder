@@ -8,9 +8,11 @@ json.theme do
 
     json.icons({})
     json.icons do
+      icons_directory = theme.options.fetch(:custom_icons_directory, 'icons')
+
       theme.options.fetch(:custom_icons, []).each do |icon_name|
         json.set!(icon_name,
-                  scrolled_theme_asset_path(theme, "icons/#{icon_name}.svg",
+                  scrolled_theme_asset_path(theme, File.join(icons_directory, "#{icon_name}.svg"),
                                             relative_url: true))
       end
     end
