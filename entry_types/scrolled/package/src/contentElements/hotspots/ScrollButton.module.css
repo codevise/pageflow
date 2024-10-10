@@ -26,27 +26,12 @@
   display: block;
   width: var(--theme-hotspts-scroll-button-size);
   height: var(--theme-hotspots-scroll-button-size);
+  filter: drop-shadow(0 1px 4px #000);
 }
 
 .button:not(.disabled):hover svg,
 .button:not(.disabled):active svg {
   transform: scale(1.2);
-}
-
-.icon {
-  position: relative;
-}
-
-.icon::before {
-  content: ' ';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 50px;
-  height: 50px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 60%);
-  z-index: -1;
 }
 
 .visuallyHidden {

@@ -18,6 +18,7 @@
   display: block;
   width: var(--theme-image-gallery-scroll-button-size);
   height: var(--theme-image-gallery-scroll-button-size);
+  filter: drop-shadow(0 1px 4px #000);
 }
 
 .button:not(.disabled):hover svg,
@@ -26,22 +27,9 @@
 }
 
 .icon {
-  position: relative;
   transition: opacity 0.2s linear;
 }
 
 .disabled .icon {
   opacity: 0;
-}
-
-.icon::before {
-  content: ' ';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 50px;
-  height: 50px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 60%);
-  z-index: -1;
 }
