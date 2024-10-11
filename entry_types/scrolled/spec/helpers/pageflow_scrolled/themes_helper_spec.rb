@@ -2,6 +2,42 @@ require 'spec_helper'
 
 module PageflowScrolled
   RSpec.describe ThemesHelper, type: :helper do
+    describe '#scrolled_theme_asset_path' do
+      it 'retrieves asset pack path from theme directory' do
+        entry = create(:entry)
+        theme = Pageflow::Theme.new(:test)
+        customized_theme = Pageflow::CustomizedTheme.find(entry: , theme:)
+
+        expect(helper).to receive(:asset_pack_path).with(
+          'static/pageflow-scrolled/themes/test/icons/muted.svg'
+        )
+
+        helper.scrolled_theme_asset_path(customized_theme, 'icons/muted.svg')
+      end
+
+      it 'expands relative path to shared theme directory' do
+        entry = create(:entry)
+        theme = Pageflow::Theme.new(:test)
+        customized_theme = Pageflow::CustomizedTheme.find(entry: , theme:)
+
+        expect(helper).to receive(:asset_pack_path).with(
+          'static/pageflow-scrolled/themes/shared/icons/muted.svg'
+        )
+
+        helper.scrolled_theme_asset_path(customized_theme, '../shared/icons/muted.svg')
+      end
+
+      it 'raises helpful error for relative paths to other sibling or parent directory' do
+        entry = create(:entry)
+        theme = Pageflow::Theme.new(:test)
+        customized_theme = Pageflow::CustomizedTheme.find(entry: , theme:)
+
+        expect {
+          helper.scrolled_theme_asset_path(customized_theme, '../other/icons/muted.svg')
+        }.to raise_error(/not allowed in theme asset path/)
+      end
+    end
+
     describe '#scrolled_theme_stylesheet_pack_tags' do
       it 'renders stylesheet pack tags for theme' do
         theme = Pageflow::Theme.new(:test, stylesheet_packs: ['fonts/sourceSansPro'])

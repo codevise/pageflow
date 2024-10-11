@@ -737,6 +737,34 @@ module PageflowScrolled
                                        })
       end
 
+      it 'supports shared theme directory in custom icons directories' do
+        pageflow_configure do |config|
+          config.themes.register(:default,
+                                 custom_icons: [:share],
+                                 custom_icons_directory: '../shared/icons')
+        end
+        entry = create(:published_entry, type_name: 'scrolled')
+        default_theme_directory = Rails.root.join('app/javascript/pageflow-scrolled/themes/default')
+        shared_theme_directory = Rails.root.join('app/javascript/pageflow-scrolled/themes/shared')
+        FileUtils.mkdir_p(shared_theme_directory.join('icons'))
+        FileUtils.cp(
+          default_theme_directory.join('icons/share.svg'),
+          shared_theme_directory.join('icons/share.svg')
+        )
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         theme: {
+                                           assets: {
+                                             icons: {
+                                               share: %r{themes/shared/icons/share.*svg$}
+                                             }
+                                           }
+                                         }
+                                       })
+      end
+
       it 'does not use asset host in icon paths to allow xlink:href usage' do
         controller.config.asset_host = 'some-asset-host'
         pageflow_configure do |config|

@@ -6,9 +6,11 @@ module PageflowScrolled
                                   theme_file_role: nil,
                                   theme_file_style: :resized,
                                   relative_url: false)
+      theme_directory, path = extract_theme_directory_from_scrolled_theme_asset_path(theme, path)
+
       path =
         theme.files.dig(theme_file_role, theme_file_style) ||
-        asset_pack_path("static/pageflow-scrolled/themes/#{theme.name}/#{path}")
+        asset_pack_path("static/pageflow-scrolled/themes/#{theme_directory}/#{path}")
 
       if relative_url
         URI.parse(path).path
@@ -120,6 +122,18 @@ module PageflowScrolled
           name = [*prefix, key, suffix].compact.join('_')
           "--theme-#{name.dasherize}: #{value};"
         end
+      end
+    end
+
+    def extract_theme_directory_from_scrolled_theme_asset_path(theme, path)
+      if path.starts_with?('../shared/')
+        ['shared', path.gsub!('../shared/', '')]
+      elsif path.starts_with?('../')
+        raise(ArgumentError,
+              'Upward navigation to other directory than the shared ' \
+              'theme directory not allowed in theme asset path.')
+      else
+        [theme.name, path]
       end
     end
   end
