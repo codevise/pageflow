@@ -2,6 +2,7 @@ import React, {useCallback, useMemo, useEffect} from 'react';
 import classNames from 'classnames';
 import {createEditor, Transforms, Node, Text as SlateText, Range} from 'slate';
 import {Slate, Editable, withReact, ReactEditor} from 'slate-react';
+import {withHistory} from 'slate-history';
 
 import {Text} from '../../Text';
 import {useCachedValue} from '../useCachedValue';
@@ -48,7 +49,9 @@ export const EditableText = React.memo(function EditableText({
           {onlyParagraphs: !selectionRect},
           withLineBreakNormalization(
             withReact(
-              createEditor()
+              withHistory(
+                createEditor()
+              )
             )
           )
         )
@@ -77,7 +80,10 @@ export const EditableText = React.memo(function EditableText({
       children: [{ text: '' }],
     }],
     onDebouncedChange: onChange,
-    onReset: nextValue => resetSelectionIfOutsideNextValue(editor, nextValue)
+    onReset: nextValue => {
+      resetSelectionIfOutsideNextValue(editor, nextValue);
+      resetHistory(editor);
+    }
   });
 
   const {isSelected} = useContentElementEditorState();
@@ -147,4 +153,9 @@ function hasTextAtPoint(editor, point) {
 
   const node = Node.get(editor, point.path);
   return SlateText.isText(node) && point.offset <= node.text.length;
+}
+
+function resetHistory(editor) {
+  editor.history.undos = [];
+  editor.history.redos = [];
 }

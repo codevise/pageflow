@@ -30,6 +30,7 @@
     "screenfull": "^5.1.0",
     "scroll-timeline": "https://github.com/tf/scroll-timeline#pageflow-scrolled-2",
     "slate": "^0.57.3",
+    "slate-history": "^0.57.3",
     "slate-react": "^0.57.3",
     "slugify": "^1.4.6",
     "striptags": "^3.2.0",
