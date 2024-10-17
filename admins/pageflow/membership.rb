@@ -80,8 +80,8 @@ module Pageflow
       belongs_to :account, parent_class: Pageflow::Account, polymorphic: true
       belongs_to :user, parent_class: User, polymorphic: true
 
-      helper Pageflow::Admin::MembershipsHelper
-      helper Pageflow::Admin::FormHelper
+      helper Admin::MembershipsHelper
+      helper Admin::FormHelper
 
       def index
         if params[:user_id].present?

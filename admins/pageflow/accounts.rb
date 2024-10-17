@@ -67,11 +67,11 @@ module Pageflow
     end
 
     controller do
-      helper Pageflow::Admin::CutoffModesHelper
-      helper Pageflow::Admin::FeaturesHelper
-      helper Pageflow::Admin::FormHelper
-      helper Pageflow::Admin::LocalesHelper
-      helper Pageflow::Admin::MembershipsHelper
+      helper Admin::CutoffModesHelper
+      helper Admin::FeaturesHelper
+      helper Admin::FormHelper
+      helper Admin::LocalesHelper
+      helper Admin::MembershipsHelper
       helper ThemesHelper
 
       def new

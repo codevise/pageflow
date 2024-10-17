@@ -12,9 +12,9 @@ module Pageflow
     end
 
     controller do
-      helper Pageflow::Admin::FormHelper
-      helper Pageflow::Admin::WidgetsHelper
-      helper Pageflow::Admin::LocalesHelper
+      helper Admin::FormHelper
+      helper Admin::WidgetsHelper
+      helper Admin::LocalesHelper
 
       def index
         redirect_to redirect_path

@@ -36,7 +36,7 @@ module Pageflow
     end
 
     controller do
-      helper Pageflow::Admin::FormHelper
+      helper Admin::FormHelper
 
       def index
         redirect_to admin_entry_path(parent, tab: 'translations')
