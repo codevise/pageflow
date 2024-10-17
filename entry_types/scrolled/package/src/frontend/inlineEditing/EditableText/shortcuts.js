@@ -7,7 +7,15 @@ export function useShortcutHandler(editor) {
       return;
     }
 
-    if (event.key === 'b') {
+    if (event.key === 'z') {
+      event.preventDefault()
+      editor.undo();
+    }
+    else if (event.key === 'y') {
+      event.preventDefault()
+      editor.redo();
+    }
+    else if (event.key === 'b') {
       event.preventDefault()
       toggleMark(editor, 'bold');
     }
