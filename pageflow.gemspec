@@ -116,9 +116,6 @@ Gem::Specification.new do |s|
   # Using translations from rails locales in javascript code.
   s.add_dependency 'i18n-js', '~> 2.1'
 
-  # WYSIWYG editor
-  s.add_dependency 'wysihtml-rails', '0.5.5'
-
   s.add_dependency 'bourbon', '~> 3.1.8'
 
   # Pretty URLs
