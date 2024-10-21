@@ -17808,13 +17808,6 @@ wysihtml5.views.View = Base.extend(
     composer.commands.exec("insertHTML", "&emsp;");
   };
 
-  var handleDomNodeRemoved = function(event) {
-      if (this.domNodeRemovedInterval) {
-        clearInterval(domNodeRemovedInterval);
-      }
-      this.parent.fire("destroy:composer");
-  };
-
   // Listens to "drop", "paste", "mouseup", "focus", "keyup" events and fires
   var handleUserInteraction = function (event) {
     this.parent.fire("beforeinteraction", event).fire("beforeinteraction:composer", event);
@@ -18008,19 +18001,6 @@ wysihtml5.views.View = Base.extend(
         focusBlurElement    = (browser.supportsEventsInIframeCorrectly() || this.sandbox.getContentEditable) ? this.element : this.sandbox.getWindow();
 
     this.focusState = this.getValue(false, false);
-
-    // --------- destroy:composer event ---------
-    container.addEventListener(["DOMNodeRemoved"], handleDomNodeRemoved.bind(this), false);
-
-    // DOMNodeRemoved event is not supported in IE 8
-    // TODO: try to figure out a polyfill style fix, so it could be transferred to polyfills and removed if ie8 is not needed
-    if (!browser.supportsMutationEvents()) {
-      this.domNodeRemovedInterval = setInterval(function() {
-        if (!dom.contains(document.documentElement, container)) {
-          handleDomNodeRemoved.call(this);
-        }
-      }, 250);
-    }
 
     // --------- User interactions --
     if (this.config.handleTables) {
