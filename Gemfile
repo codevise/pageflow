@@ -34,3 +34,6 @@ gem 'capybara-chromedriver-logger', git: 'https://github.com/codevise/capybara-c
 
 # See https://github.com/charkost/prosopite/pull/79
 gem 'prosopite', git: 'https://github.com/tf/prosopite', branch: 'location-backtrace-cleaner'
+
+# Fixes for Chrome that removed DOMNodeRemoved event
+gem 'wysihtml-rails', git: 'https://github.com/codevise/wysihtml-rails', branch: '0-5-5-dom-node-removed-fix'
