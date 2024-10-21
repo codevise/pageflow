@@ -28,6 +28,7 @@
   position: relative;
   padding-top: 5px;
   padding-bottom: 5px;
+  margin-top: -5px;
 }
 
 .separator::before {
@@ -36,6 +37,7 @@
   top: 0;
   left: -5px;
   right: -5px;
+  margin-top: 0;
   border-top: solid 1px var(--theme-widget-primary-color);
   opacity: 0.1;
 }
