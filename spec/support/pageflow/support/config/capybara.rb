@@ -37,6 +37,9 @@ Capybara::Chromedriver::Logger.filters = [
   # page sections.
   /Target node has markup rendered by React/i,
 
+  # Caused by wysihtml5 editor using legacy event
+  /Listener added for a 'DOMNodeRemoved' mutation event/,
+
   # Ignore failure of debounced request to save order of storylines
   %r{storylines/order - Failed to load resource: the server responded with a status of 401},
 
