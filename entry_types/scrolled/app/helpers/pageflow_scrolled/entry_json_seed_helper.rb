@@ -9,6 +9,7 @@ module PageflowScrolled
     include Pageflow::EntriesHelper
     include Pageflow::MetaTagsHelper
     include Pageflow::SocialShareLinksHelper
+    include Pageflow::PublicI18n::LocalesHelper
     include PageflowScrolled::I18nHelper
     include PageflowScrolled::ThemesHelper
 

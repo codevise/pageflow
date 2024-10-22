@@ -1,7 +1,7 @@
 json.entry_translations do
   json.array!(entry.translations(-> { preload(:site) }, include_noindex: true)) do |translation|
     json.(translation, :id, :locale)
-    json.display_locale t('pageflow.public._language', locale: translation.locale)
+    json.display_locale public_locale_name_for(translation.locale)
 
     if translation.published_revision?
       json.url social_share_entry_url(translation)
