@@ -113,6 +113,9 @@ import {attributeBinding} from './attributeBinding';
  *   Input will be disabled whenever the value of the `disabledBinding`
  *   attribute equals the value of this option.
  *
+ * @param {Backbone.Model} [options.disabledBindingModel]
+ *   Alternative model to bind to.
+ *
  * @param {string|string[]} [options.visibleBinding]
  *   Name of an attribute to control whether the input is visible. If
  *   the `visible` and `visibleBindingValue` options are not set,
@@ -128,6 +131,9 @@ import {attributeBinding} from './attributeBinding';
  * @param {any} [options.visibleBindingValue]
  *   Input will be visible whenever the value of the `visibleBinding`
  *   attribute equals the value of this option.
+ *
+ * @param {Backbone.Model} [options.visibleBindingModel]
+ *   Alternative model to bind to.
  *
  * @mixin
  */
