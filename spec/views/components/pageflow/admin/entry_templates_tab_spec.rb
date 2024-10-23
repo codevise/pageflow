@@ -4,6 +4,7 @@ module Pageflow
   describe Admin::EntryTemplatesTab, type: :view_component do
     before do
       helper.extend(ActiveAdmin::ViewHelpers)
+      helper.extend(Pageflow::PublicI18n::LocalesHelper)
     end
 
     it "has entries even if corresponding entry templates aren't created yet" do
