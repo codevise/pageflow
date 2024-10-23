@@ -37,6 +37,7 @@ module Pageflow
     controller do
       helper Admin::CutoffModesHelper
       helper Admin::FormHelper
+      helper Pageflow::PublicI18n::LocalesHelper
 
       before_create do |site|
         site.build_default_permalink_directory
