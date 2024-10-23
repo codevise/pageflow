@@ -1,4 +1,5 @@
 import {WidgetsCollection} from 'editor/collections/WidgetsCollection';
+import {CheckBoxInputView, ConfigurationEditorTabView} from 'pageflow/ui';
 import {factories} from '$support';
 
 describe('WidgetsCollection', () => {
@@ -46,5 +47,130 @@ describe('WidgetsCollection', () => {
     const subsetCollection = widgets.withInsertPoint('react');
 
     expect(subsetCollection.pluck('type_name')).toEqual(['consent_bar']);
+  });
+
+  it('can define configuration editor tab view groups of widget types', () => {
+    const widgetTypes = factories.widgetTypes(
+      [
+        {
+          role: 'inlineFileRights',
+          name: 'textInlineFileRights',
+          insertPoint: 'react'
+        }
+      ],
+      w => {
+        w.register('textInlineFileRights', {
+          configurationEditorTabViewGroups: {
+            ContentElementInlineFileRightsSettings() {
+              this.input('showBackdrop', CheckBoxInputView);
+            }
+          }
+        });
+      }
+    );
+    const widgets = new WidgetsCollection([
+      {type_name: 'textInlineFileRights', role: 'inlineFileRights'},
+    ], {widgetTypes});
+    const groups = new ConfigurationEditorTabView.Groups();
+    widgets.subject = factories.entry();
+
+    widgets.setupConfigurationEditorTabViewGroups(groups);
+    const context = {
+      input: jest.fn()
+    };
+    groups.apply(
+      'ContentElementInlineFileRightsSettings',
+      context
+    );
+
+    expect(context.input).toHaveBeenCalledWith('showBackdrop', CheckBoxInputView);
+  });
+
+  it('defines stub configuration editor tab view groups for unused widget types', () => {
+    const widgetTypes = factories.widgetTypes(
+      [
+        {
+          role: 'inlineFileRights',
+          name: 'iconInlineFileRights',
+          insertPoint: 'react'
+        },
+        {
+          role: 'inlineFileRights',
+          name: 'textInlineFileRights',
+          insertPoint: 'react'
+        }
+      ],
+      w => {
+        w.register('textInlineFileRights', {
+          configurationEditorTabViewGroups: {
+            ContentElementInlineFileRightsSettings() {
+              this.input('showBackdrop', CheckBoxInputView);
+            }
+          }
+        });
+      }
+    );
+    const widgets = new WidgetsCollection([
+      {type_name: 'iconInlineFileRights', role: 'inlineFileRights'},
+    ], {widgetTypes});
+    const groups = new ConfigurationEditorTabView.Groups();
+    widgets.subject = factories.entry();
+
+    widgets.setupConfigurationEditorTabViewGroups(groups);
+    const context = {
+      input: jest.fn()
+    };
+
+    expect(() => {
+      groups.apply(
+        'ContentElementInlineFileRightsSettings',
+        context
+      );
+    }).not.toThrowError();
+
+    expect(context.input).not.toHaveBeenCalled();
+  });
+
+  it('redefines configuration editor tab view groups on type change', () => {
+    const widgetTypes = factories.widgetTypes(
+      [
+        {
+          role: 'inlineFileRights',
+          name: 'iconInlineFileRights',
+          insertPoint: 'react'
+        },
+        {
+          role: 'inlineFileRights',
+          name: 'textInlineFileRights',
+          insertPoint: 'react'
+        }
+      ],
+      w => {
+        w.register('textInlineFileRights', {
+          configurationEditorTabViewGroups: {
+            ContentElementInlineFileRightsSettings() {
+              this.input('showBackdrop', CheckBoxInputView);
+            }
+          }
+        });
+      }
+    );
+    const widgets = new WidgetsCollection([
+      {type_name: 'iconInlineFileRights', role: 'inlineFileRights'},
+    ], {widgetTypes});
+    const groups = new ConfigurationEditorTabView.Groups();
+    widgets.subject = factories.entry();
+
+    widgets.setupConfigurationEditorTabViewGroups(groups);
+    widgets.first().set('type_name', 'textInlineFileRights');
+    const context = {
+      input: jest.fn()
+    };
+    groups.apply(
+      'ContentElementInlineFileRightsSettings',
+      context
+    );
+
+    expect(context.input).toHaveBeenCalled();
   });
 });

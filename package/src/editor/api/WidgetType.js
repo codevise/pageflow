@@ -1,5 +1,4 @@
 import _ from 'underscore';
-
 import {Object} from 'pageflow/ui';
 
 export const WidgetType = Object.extend({
@@ -8,6 +7,7 @@ export const WidgetType = Object.extend({
     this.translationKey = serverSideConfig.translationKey;
     this.insertPoint = serverSideConfig.insertPoint;
     this.configurationEditorView = clientSideConfig.configurationEditorView;
+    this.configurationEditorTabViewGroups = clientSideConfig.configurationEditorTabViewGroups || {};
     this.isOptional = clientSideConfig.isOptional;
   },
 
@@ -23,5 +23,17 @@ export const WidgetType = Object.extend({
         'pageflow.editor.widgets.common_attributes'
       ]
     }, options));
+  },
+
+  defineStubConfigurationEditorTabViewGroups(groups) {
+    _.each(this.configurationEditorTabViewGroups, (fn, name) =>
+      groups.define(name, () => {})
+    );
+  },
+
+  defineConfigurationEditorTabViewGroups(groups) {
+    _.each(this.configurationEditorTabViewGroups, (fn, name) =>
+      groups.define(name, fn)
+    );
   }
 });

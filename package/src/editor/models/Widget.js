@@ -23,6 +23,11 @@ export const Widget = Backbone.Model.extend({
     return this.get('type_name') && this.widgetTypes.findByName(this.get('type_name'));
   },
 
+  defineConfigurationEditorTabViewGroups(groups) {
+    this.widgetType() &&
+    this.widgetType().defineConfigurationEditorTabViewGroups(groups);
+  },
+
   hasConfiguration: function() {
     return !!(this.widgetType() && this.widgetType().hasConfiguration());
   },
