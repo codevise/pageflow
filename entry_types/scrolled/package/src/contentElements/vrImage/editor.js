@@ -31,6 +31,7 @@ editor.contentElementTypes.register('vrImage', {
       this.group('ContentElementPosition');
       this.view(SeparatorView);
       this.group('ContentElementCaption', {entry});
+      this.group('ContentElementInlineFileRightsSettings');
     });
   }
 });

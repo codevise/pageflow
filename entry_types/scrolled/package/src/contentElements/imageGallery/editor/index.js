@@ -26,6 +26,7 @@ editor.contentElementTypes.register('imageGallery', {
       this.group('ContentElementPosition');
       this.view(SeparatorView);
       this.group('ContentElementCaption', {entry, disableWhenNoCaption: false});
+      this.group('ContentElementInlineFileRightsSettings', {entry, disableWhenNoFileRights: false});
     });
   }
 });

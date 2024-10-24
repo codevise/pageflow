@@ -103,7 +103,9 @@ export function InlineAudio({contentElementId, configuration}) {
           </FitViewport.Content>
         </ContentElementFigure>
       </ContentElementBox>
-      <InlineFileRights context="afterElement" items={inlineFileRightsItems} />
+      <InlineFileRights configuration={configuration}
+                        context="afterElement"
+                        items={inlineFileRightsItems} />
     </FitViewport>
   )
 }

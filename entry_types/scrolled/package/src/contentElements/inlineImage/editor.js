@@ -34,6 +34,7 @@ editor.contentElementTypes.register('inlineImage', {
       this.view(SeparatorView);
 
       this.group('ContentElementCaption', {entry});
+      this.group('ContentElementInlineFileRightsSettings');
     });
   }
 });

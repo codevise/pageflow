@@ -1,6 +1,11 @@
 en:
   pageflow_scrolled:
     editor:
+      content_element_text_inline_file_rights_attributes:
+        showTextInlineFileRightsBackdrop:
+          label: "Backdrop behind inline file rights"
+          inline_help: "Improve readability on busy backgrounds."
+          inline_help_disabled: "Only available when rights texts are displayed at the element."
       common_content_element_attributes:
         captionVariant:
           label: Caption Variant

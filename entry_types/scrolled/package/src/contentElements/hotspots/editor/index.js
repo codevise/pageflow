@@ -61,6 +61,7 @@ editor.contentElementTypes.register('hotspots', {
       this.group('ContentElementPosition');
       this.view(SeparatorView);
       this.group('ContentElementCaption', {entry});
+      this.group('ContentElementInlineFileRightsSettings');
     });
   }
 });

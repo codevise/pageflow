@@ -57,6 +57,7 @@ editor.contentElementTypes.register('inlineAudio', {
       this.view(SeparatorView);
 
       this.group('ContentElementCaption', {entry});
+      this.group('ContentElementInlineFileRightsSettings');
     });
   }
 });

@@ -86,11 +86,15 @@ export function BeforeAfter(configuration) {
                 );
               }}
             </Measure>
-            <InlineFileRights context="insideElement" items={inlineFileRightsItems} />
+            <InlineFileRights configuration={configuration}
+                              context="insideElement"
+                              items={inlineFileRightsItems} />
           </FitViewport.Content>
         </ContentElementFigure>
       </ContentElementBox>
-      <InlineFileRights context="afterElement" items={inlineFileRightsItems} />
+      <InlineFileRights configuration={configuration}
+                        context="afterElement"
+                        items={inlineFileRightsItems} />
     </FitViewport>
   );
 

@@ -1,6 +1,11 @@
 de:
   pageflow_scrolled:
     editor:
+      content_element_text_inline_file_rights_attributes:
+        showTextInlineFileRightsBackdrop:
+          label: "Abblendung hinter Rechteangabe"
+          inline_help: "Lesbarkeit des Texts auf unruhigen Hintergründen sicherstellen."
+          inline_help_disabled: "Steht nur zur Verfügung, wenn Rechteangaben am Element angezeigt werden."
       common_content_element_attributes:
         captionVariant:
           label: Beschriftungsvariante

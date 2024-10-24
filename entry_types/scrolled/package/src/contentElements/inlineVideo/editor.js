@@ -108,6 +108,7 @@ editor.contentElementTypes.register('inlineVideo', {
       this.view(SeparatorView);
 
       this.group('ContentElementCaption', {entry});
+      this.group('ContentElementInlineFileRightsSettings');
     });
   }
 });

@@ -293,7 +293,9 @@ export function HotspotsImage({
                     {renderIndicators()}
                   </div>
                   {renderFullscreenToggle()}
-                  <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
+                  <InlineFileRights configuration={configuration}
+                                    context="insideElement"
+                                    items={[{file: imageFile, label: 'image'}]} />
                 </FitViewport.Content>
               )}
               <CompositeItem render={<div className={styles.compositeItem} />} />
@@ -301,7 +303,9 @@ export function HotspotsImage({
               <CompositeItem render={<div className={styles.compositeItem} />} />
             </div>
           </Composite>
-          <InlineFileRights context="afterElement" items={[{file: imageFile, label: 'image'}]} />
+          <InlineFileRights configuration={configuration}
+                            context="afterElement"
+                            items={[{file: imageFile, label: 'image'}]} />
         </FitViewport>
       </div>
     </div>

@@ -25,6 +25,20 @@
   display: none;
 }
 
+.withBackdrop li {
+  padding: 0.1em 0.3em;
+  border-radius: 0.25rem;
+  margin: 0.2em 0 0 auto;
+  background-color: color-mix(in srgb, lightContentSurfaceColor, transparent);
+  color: darkContentTextColor;
+  width: fit-content;
+}
+
+.withBackdrop.darkBackground li {
+  background-color: color-mix(in srgb, darkContentSurfaceColor, transparent);
+  color: lightContentTextColor;
+}
+
 .forSection {
   position: absolute;
   bottom: 0;
@@ -32,17 +46,7 @@
 }
 
 .forSection li {
-  padding: 0.1em 0.3em;
-  border-radius: 0.25rem;
   margin: 0 0.2em 0.1em auto;
-  background-color: color-mix(in srgb, lightContentSurfaceColor, transparent);
-  color: darkContentTextColor;
-  width: fit-content;
-}
-
-.forSection.darkBackground li {
-  background-color: color-mix(in srgb, darkContentSurfaceColor, transparent);
-  color: lightContentTextColor;
 }
 
 .text a {

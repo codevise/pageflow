@@ -158,8 +158,7 @@ function Scroller({
                 ref={setChildRef(index)}
                 item={item}
                 current={index === visibleIndex}
-                captions={configuration.captions || {}}
-                captionVariant={configuration.captionVariant}
+                configuration={configuration}
                 onClick={handleClick}>
             {displayFullscreenToggle &&
              <ToggleFullscreenCornerButton isFullscreen={false}
@@ -171,10 +170,11 @@ function Scroller({
   );
 }
 
-const Item = forwardRef(function({item, captions, captionVariant, current, onClick, children}, ref) {
+const Item = forwardRef(function({item, configuration, current, onClick, children}, ref) {
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {shouldLoad} = useContentElementLifecycle();
 
+  const captions = configuration.captions || {};
   const caption = captions[item.id];
 
   const imageFile = useFileWithInlineRights({
@@ -203,7 +203,7 @@ const Item = forwardRef(function({item, captions, captionVariant, current, onCli
                      opaque={!imageFile}>
           <ContentElementBox>
             <Figure caption={caption}
-                    variant={captionVariant}
+                    variant={configuration.captionVariant}
                     onCaptionChange={handleCaptionChange}
                     addCaptionButtonVisible={current && !item.placeholder}
                     addCaptionButtonPosition="inside">
@@ -212,11 +212,15 @@ const Item = forwardRef(function({item, captions, captionVariant, current, onCli
                   <Image imageFile={imageFile} load={shouldLoad} />
                 </div>
                 {children}
-                <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
+                <InlineFileRights configuration={configuration}
+                                  context="insideElement"
+                                  items={[{file: imageFile, label: 'image'}]} />
               </FitViewport.Content>
             </Figure>
           </ContentElementBox>
-          <InlineFileRights context="afterElement" items={[{file: imageFile, label: 'image'}]} />
+          <InlineFileRights configuration={configuration}
+                            context="afterElement"
+                            items={[{file: imageFile, label: 'image'}]} />
         </FitViewport>
       </div>
     </div>
