@@ -1,0 +1,9 @@
+en:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        captionVariant:
+          label: Caption Variant
+          inline_help: Switch between different looks of the caption below the element.
+          inline_help_disabled: Add a caption below the element to switch between different looks.
+          blank: "(Default)"

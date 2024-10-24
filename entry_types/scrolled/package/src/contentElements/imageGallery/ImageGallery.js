@@ -159,6 +159,7 @@ function Scroller({
                 item={item}
                 current={index === visibleIndex}
                 captions={configuration.captions || {}}
+                captionVariant={configuration.captionVariant}
                 onClick={handleClick}>
             {displayFullscreenToggle &&
              <ToggleFullscreenCornerButton isFullscreen={false}
@@ -170,7 +171,7 @@ function Scroller({
   );
 }
 
-const Item = forwardRef(function({item, captions, current, onClick, children}, ref) {
+const Item = forwardRef(function({item, captions, captionVariant, current, onClick, children}, ref) {
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {shouldLoad} = useContentElementLifecycle();
 
@@ -202,6 +203,7 @@ const Item = forwardRef(function({item, captions, current, onClick, children}, r
                      opaque={!imageFile}>
           <ContentElementBox>
             <Figure caption={caption}
+                    variant={captionVariant}
                     onCaptionChange={handleCaptionChange}
                     addCaptionButtonVisible={current && !item.placeholder}
                     addCaptionButtonPosition="inside">

@@ -1,0 +1,9 @@
+de:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        captionVariant:
+          label: Beschriftungsvariante
+          inline_help: Ändere die Darstellung der Beschriftung unterhalb des Element.
+          inline_help_disabled: Füge eine Beschriftung unterhalb des Elements hinzu, um zwischen Varianten zu wählen.
+          blank: "(Standard)"

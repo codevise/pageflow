@@ -39,4 +39,17 @@ describe('Figure', () => {
     expect(queryByRole('figure')).toHaveTextContent('Some caption text');
     expect(queryByTestId('content')).not.toBeNull();
   });
+
+  it('applies variant scope', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [{ text: 'Some caption text' }],
+    }];
+    const {container} =
+      renderInEntry(<Figure caption={value} variant="invert"><div data-testid="content" /></Figure>, {
+        seed: {}
+      });
+
+    expect(container.querySelector('figcaption')).toHaveClass('scope-figureCaption-invert');
+  });
 });

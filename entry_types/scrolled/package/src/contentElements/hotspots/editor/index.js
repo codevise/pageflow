@@ -59,6 +59,8 @@ editor.contentElementTypes.register('hotspots', {
         displayUncheckedIfDisabled: true
       });
       this.group('ContentElementPosition');
+      this.view(SeparatorView);
+      this.group('ContentElementCaption', {entry});
     });
   }
 });

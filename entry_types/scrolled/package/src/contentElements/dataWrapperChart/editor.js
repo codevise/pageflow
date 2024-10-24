@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 import {editor} from 'pageflow-scrolled/editor';
-import {UrlInputView, TextInputView, ColorInputView} from 'pageflow/ui';
+import {SeparatorView, UrlInputView, TextInputView, ColorInputView} from 'pageflow/ui';
 import {DatawrapperAdView} from './editor/DataWrapperAdView';
 
 import pictogram from './pictogram.svg';
@@ -11,7 +11,7 @@ editor.contentElementTypes.register('dataWrapperChart', {
   supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
 
-  configurationEditor() {
+  configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('url', UrlInputView, {
          supportedHosts: [
@@ -33,6 +33,8 @@ editor.contentElementTypes.register('dataWrapperChart', {
       });
 
       this.group('ContentElementPosition');
+      this.view(SeparatorView);
+      this.group('ContentElementCaption', {entry});
     });
   }
 });

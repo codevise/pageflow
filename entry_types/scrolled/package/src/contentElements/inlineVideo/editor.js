@@ -38,7 +38,7 @@ editor.contentElementTypes.register('inlineVideo', {
   supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],
 
-  configurationEditor() {
+  configurationEditor({entry}) {
     migrateLegacyAutoplay(this.model);
 
     this.tab('general', function() {
@@ -104,6 +104,10 @@ editor.contentElementTypes.register('inlineVideo', {
       this.view(SeparatorView);
 
       this.group('ContentElementPosition');
+
+      this.view(SeparatorView);
+
+      this.group('ContentElementCaption', {entry});
     });
   }
 });

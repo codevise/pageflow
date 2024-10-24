@@ -10,9 +10,9 @@
 }
 
 .root > figcaption {
-  padding: 3px 10px 5px;
-  background-color: lightContentSurfaceColor;
-  color: darkContentTextColor;
+  padding: 3px var(--theme-figure-caption-padding-inline, 10px) 5px;
+  background-color: var(--theme-figure-caption-surface-color, lightContentSurfaceColor);
+  color: var(--theme-figure-caption-text-color, darkContentTextColor);
 }
 
 .root > figcaption p {
@@ -20,6 +20,6 @@
 }
 
 .invert > figcaption {
-  background-color: darkContentSurfaceColor;
-  color: lightContentTextColor;
+  background-color: var(--theme-figure-caption-surface-color, darkContentSurfaceColor);
+  color: var(--theme-figure-caption-text-color, lightContentTextColor);
 }

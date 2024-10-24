@@ -117,3 +117,27 @@ ConfigurationEditorTabView.groups.define(
     }
   }
 );
+
+ConfigurationEditorTabView.groups.define(
+  'ContentElementCaption',
+  function({entry, disableWhenNoCaption = true}) {
+    const [variants, texts] = entry.getComponentVariants({
+      name: 'figureCaption'
+    });
+
+    this.input('captionVariant', SelectInputView, {
+      attributeTranslationKeyPrefixes: [
+        'pageflow_scrolled.editor.common_content_element_attributes'
+      ],
+      includeBlank: true,
+      blankTranslationKey: 'pageflow_scrolled.editor.' +
+                           'common_content_element_attributes.' +
+                           'captionVariant.blank',
+      values: variants,
+      texts,
+      disabledBindingModel: this.model.parent.transientState,
+      disabledBinding: 'hasCaption',
+      disabled: hasCaption => disableWhenNoCaption && !hasCaption
+    });
+  }
+);

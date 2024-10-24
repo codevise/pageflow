@@ -1,5 +1,5 @@
 import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
-import {SelectInputView, FileInputView, EnumTableCellView, SliderInputView} from 'pageflow/editor';
+import {SelectInputView, FileInputView, EnumTableCellView, SliderInputView, SeparatorView} from 'pageflow/editor';
 
 import pictogram from './pictogram.svg';
 
@@ -10,7 +10,7 @@ editor.contentElementTypes.register('vrImage', {
   supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor() {
-    this.tab('general', function() {
+    this.tab('general', function({entry}) {
       this.input('image', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
@@ -29,6 +29,8 @@ editor.contentElementTypes.register('vrImage', {
         maxValue: 60
       });
       this.group('ContentElementPosition');
+      this.view(SeparatorView);
+      this.group('ContentElementCaption', {entry});
     });
   }
 });

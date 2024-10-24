@@ -53,6 +53,10 @@ editor.contentElementTypes.register('inlineAudio', {
       this.view(SeparatorView);
 
       this.group('ContentElementPosition');
+
+      this.view(SeparatorView);
+
+      this.group('ContentElementCaption', {entry});
     });
   }
 });

@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import {editor} from 'pageflow-scrolled/editor';
 import {InfoBoxView} from 'pageflow/editor';
-import {TextInputView, SelectInputView, CheckBoxInputView} from 'pageflow/ui';
+import {TextInputView, SelectInputView, CheckBoxInputView, SeparatorView} from 'pageflow/ui';
 
 import pictogram from './pictogram.svg';
 
@@ -42,6 +42,8 @@ editor.contentElementTypes.register('iframeEmbed', {
         values: ['p100', 'p75', 'p50', 'p33']
       });
       this.group('ContentElementPosition');
+      this.view(SeparatorView);
+      this.group('ContentElementCaption', {entry});
     });
   }
 });
