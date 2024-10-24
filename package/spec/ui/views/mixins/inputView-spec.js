@@ -396,6 +396,23 @@ describe('pageflow.inputView', () => {
       });
     });
 
+    describe('with disabledBindingModel option', () => {
+      it('adds listener to passed model instead', () => {
+        const otherModel = new Backbone.Model();
+        var view = createInputViewWithInput({
+          model: new Backbone.Model(),
+          disabledBinding: 'disable',
+          disabledBindingModel: otherModel,
+          disabledBindingValue: true
+        });
+
+        view.render();
+        otherModel.set({disable: true});
+
+        expect(view.ui.input).toHaveAttr('disabled');
+      });
+    });
+
     describe('with function for disabled option', () => {
       it('disables input when function returns true', () => {
         var view = createInputViewWithInput({
@@ -433,6 +450,21 @@ describe('pageflow.inputView', () => {
         expect(view.ui.input).not.toHaveAttr('disabled');
       });
 
+      describe('with disabledBindingModel', () => {
+        it('passes value from binding model to function', () => {
+          var otherModel = new Backbone.Model({state: 'disabled'})
+          var view = createInputViewWithInput({
+            model: new Backbone.Model({}),
+            disabledBindingModel: otherModel,
+            disabledBinding: 'state',
+            disabled: function(value) { return value === 'disabled'; }
+          });
+
+          view.render();
+
+          expect(view.ui.input).toHaveAttr('disabled');
+        });
+      });
       describe('with multiple binding attributes', () => {
         it('passes array of values to function', () => {
           const disabledFunction = jest.fn();

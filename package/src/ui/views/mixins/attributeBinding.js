@@ -11,11 +11,12 @@ export const attributeBinding = {
 
   setupAttributeBinding: function(optionName, updateMethod, normalize = value => value) {
     const binding = this.options[`${optionName}Binding`];
+    const model = this.options[`${optionName}BindingModel`] || this.model;
     const view = this;
 
     if (binding) {
       _.flatten([binding]).forEach(attribute => {
-        this.listenTo(this.model, 'change:' + attribute, update);
+        this.listenTo(model, 'change:' + attribute, update);
       });
     }
 
@@ -28,11 +29,12 @@ export const attributeBinding = {
 
   getAttributeBoundOption(optionName, normalize = value => value) {
     const binding = this.options[`${optionName}Binding`];
+    const model = this.options[`${optionName}BindingModel`] || this.model;
     const bindingValueOptionName = `${optionName}BindingValue`;
 
     const value = Array.isArray(binding) ?
-                  binding.map(attribute => this.model.get(attribute)) :
-                  this.model.get(binding);
+                  binding.map(attribute => model.get(attribute)) :
+                  model.get(binding);
 
     if (bindingValueOptionName in this.options) {
       return value === this.options[bindingValueOptionName];

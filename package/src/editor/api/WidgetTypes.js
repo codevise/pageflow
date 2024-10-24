@@ -55,5 +55,11 @@ export const WidgetTypes = Object.extend({
 
   isOptional: function(role) {
     return !!this._optionalRoles[role];
+  },
+
+  defineStubConfigurationEditorTabViewGroups(groups) {
+    _.each(this._widgetTypesByName, widgetType =>
+      widgetType.defineStubConfigurationEditorTabViewGroups(groups)
+    );
   }
 });

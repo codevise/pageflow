@@ -10,7 +10,7 @@ editor.contentElementTypes.register('videoEmbed', {
   supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
 
-  configurationEditor() {
+  configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('videoSource', UrlInputView, {
         supportedHosts: [
@@ -47,6 +47,10 @@ editor.contentElementTypes.register('videoEmbed', {
       this.view(SeparatorView);
 
       this.group('ContentElementPosition');
+
+      this.view(SeparatorView);
+
+      this.group('ContentElementCaption', {entry});
     });
   }
 });

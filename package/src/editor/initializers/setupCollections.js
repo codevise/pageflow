@@ -2,6 +2,7 @@ import Backbone from 'backbone';
 import _ from 'underscore';
 
 import {events} from 'pageflow/frontend';
+import {ConfigurationEditorTabView} from 'pageflow/ui';
 
 import {ChaptersCollection} from '../collections/ChaptersCollection';
 import {FilesCollection} from '../collections/FilesCollection';
@@ -38,6 +39,7 @@ app.addInitializer(function(options) {
   state.account = new Backbone.Model(options.account);
 
   widgets.subject = state.entry;
+  widgets.setupConfigurationEditorTabViewGroups(ConfigurationEditorTabView.groups);
 
   state.storylineOrdering = new StorylineOrdering(state.storylines, state.pages);
   state.storylineOrdering.sort({silent: true});

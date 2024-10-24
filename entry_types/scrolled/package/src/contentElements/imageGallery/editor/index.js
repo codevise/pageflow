@@ -1,6 +1,6 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {contentElementWidths} from 'pageflow-scrolled/frontend';
-import {CheckBoxInputView} from 'pageflow/editor';
+import {CheckBoxInputView, SeparatorView} from 'pageflow/editor';
 
 import {ItemsListView} from './ItemsListView';
 import {ItemsCollection} from './models/ItemsCollection';
@@ -24,6 +24,9 @@ editor.contentElementTypes.register('imageGallery', {
         displayUncheckedIfDisabled: true
       });
       this.group('ContentElementPosition');
+      this.view(SeparatorView);
+      this.group('ContentElementCaption', {entry, disableWhenNoCaption: false});
+      this.group('ContentElementInlineFileRightsSettings', {entry, disableWhenNoFileRights: false});
     });
   }
 });

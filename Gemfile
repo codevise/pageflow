@@ -34,3 +34,7 @@ gem 'capybara-chromedriver-logger', git: 'https://github.com/codevise/capybara-c
 
 # See https://github.com/charkost/prosopite/pull/79
 gem 'prosopite', git: 'https://github.com/tf/prosopite', branch: 'location-backtrace-cleaner'
+
+# See https://github.com/rack/rackup/issues/22
+# Remove once https://github.com/puma/puma/pull/3532 is merged
+gem 'rackup', '1.0.0', require: false

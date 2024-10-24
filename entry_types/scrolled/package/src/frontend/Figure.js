@@ -16,14 +16,17 @@ import styles from './Figure.module.css';
  * @param {Object} props
  * @param {string} props.children - Content of figure.
  * @param {Object[]|string} props.caption - Formatted text data as provided by onCaptionChange.
+ * @param {string} [props.variant] - Name of figureCaption property scope to apply.
  * @param {Function} props.onCaptionChange - Receives updated value when it changes.
  * @param {boolean} [props.addCaptionButtonVisible=true] - Control visiblility of action button.
  * @param {string} [props.captionButtonPosition='outside'] - Position of action button.
  */
 export function Figure({
   children,
+  variant,
   caption, onCaptionChange,
-  addCaptionButtonVisible = true, addCaptionButtonPosition = 'outside'
+  addCaptionButtonVisible = true, addCaptionButtonPosition = 'outside',
+  renderInsideCaption
 }) {
   const darkBackground = useDarkBackground();
   const {isSelected, isEditable} = useContentElementEditorState();
@@ -49,7 +52,9 @@ export function Figure({
                        onClick={() => setIsEditingCaption(true)} />}
 
         {(!isBlankEditableTextValue(caption) || isEditingCaption) &&
-         <figcaption onBlur={() => setIsEditingCaption(false)}>
+         <figcaption className={classNames(variant && `scope-figureCaption-${variant}`)}
+                     onBlur={() => setIsEditingCaption(false)}>
+           {renderInsideCaption?.()}
            <EditableText autoFocus={isEditingCaption}
                          value={caption}
                          scaleCategory="caption"

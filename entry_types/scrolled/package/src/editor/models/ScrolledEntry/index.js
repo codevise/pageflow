@@ -177,23 +177,30 @@ export const ScrolledEntry = Entry.extend({
   },
 
   getContentElementVariants({contentElement}) {
+    return this.getComponentVariants({
+      name: contentElement.get('typeName'),
+      translationKeysScope: 'content_element_variants'
+    });
+  },
+
+  getComponentVariants({name, translationKeysScope = 'component_variants'}) {
     const scopeNames = Object.keys(
       this.scrolledSeed.config.theme.options.properties || {}
     );
 
-    const scopeNamePrefix = `${contentElement.get('typeName')}-`;
-
+    const scopeNamePrefix = `${name}-`;
     const matchingScopeNames = scopeNames.filter(
       name => name.indexOf(scopeNamePrefix) === 0
     );
+
     const values = matchingScopeNames.map(
       name => name.replace(scopeNamePrefix, '')
     );
     const texts = matchingScopeNames.map(name =>
       I18n.t(
         `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
-        `.content_element_variants.${name}`,
-        {defaultValue: I18n.t(`pageflow_scrolled.editor.content_element_variants.${name}`)}
+        `.${translationKeysScope}.${name}`,
+        {defaultValue: I18n.t(`pageflow_scrolled.editor.${translationKeysScope}.${name}`)}
       )
     );
 

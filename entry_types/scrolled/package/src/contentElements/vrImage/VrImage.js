@@ -32,11 +32,15 @@ export function VrImage({configuration, contentElementWidth}) {
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
               {renderLazyPanorama(configuration, imageFile, shouldLoad)}
-              <InlineFileRights context="insideElement" items={[{file: imageFile, label: 'image'}]} />
+              <InlineFileRights configuration={configuration}
+                                context="insideElement"
+                                items={[{file: imageFile, label: 'image'}]} />
             </FitViewport.Content>
           </ContentElementFigure>
         </ContentElementBox>
-        <InlineFileRights context="afterElement" items={[{file: imageFile, label: 'image'}]} />
+        <InlineFileRights configuration={configuration}
+                          context="afterElement"
+                          items={[{file: imageFile, label: 'image'}]} />
       </FitViewport>
     </div>
   );

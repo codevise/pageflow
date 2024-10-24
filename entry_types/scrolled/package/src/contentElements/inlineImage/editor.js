@@ -1,6 +1,7 @@
 import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import {contentElementWidths} from 'pageflow-scrolled/frontend';
-import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
+import {FileInputView} from 'pageflow/editor';
+import {SeparatorView, CheckBoxInputView} from 'pageflow/ui';
 
 import pictogram from './pictogram.svg';
 
@@ -10,7 +11,7 @@ editor.contentElementTypes.register('inlineImage', {
   supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
 
-  configurationEditor({contentElement}) {
+  configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
       this.input('id', FileInputView, {
         collection: 'image_files',
@@ -29,6 +30,11 @@ editor.contentElementTypes.register('inlineImage', {
         displayUncheckedIfDisabled: true
       });
       this.group('ContentElementPosition');
+
+      this.view(SeparatorView);
+
+      this.group('ContentElementCaption', {entry});
+      this.group('ContentElementInlineFileRightsSettings');
     });
   }
 });

@@ -1,6 +1,6 @@
 import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import {ColorInputView, FileInputView} from 'pageflow/editor';
-import {SliderInputView, TextInputView} from 'pageflow/ui';
+import {SliderInputView, TextInputView, SeparatorView} from 'pageflow/ui';
 
 import pictogram from './pictogram.svg';
 
@@ -10,7 +10,7 @@ editor.contentElementTypes.register('inlineBeforeAfter', {
   supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],
 
-  configurationEditor() {
+  configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('before_id', FileInputView, {
         collection: 'image_files',
@@ -30,6 +30,11 @@ editor.contentElementTypes.register('inlineBeforeAfter', {
       this.input('slider_color', ColorInputView);
 
       this.group('ContentElementPosition');
+
+      this.view(SeparatorView);
+
+      this.group('ContentElementCaption', {entry});
+      this.group('ContentElementInlineFileRightsSettings');
     });
   },
 

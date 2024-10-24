@@ -7,7 +7,9 @@ import {SubsetCollection} from './SubsetCollection';
 export const WidgetsCollection = Backbone.Collection.extend({
   model: Widget,
 
-  initialize: function() {
+  initialize: function(widgets, options) {
+    this.widgetTypes = options.widgetTypes;
+
     this.listenTo(this, 'change:type_name change:configuration', function() {
       this.batchSave();
     });
@@ -33,6 +35,18 @@ export const WidgetsCollection = Backbone.Collection.extend({
         subject.trigger('sync:widgets', subject, response, {});
       }
     }));
+  },
+
+  setupConfigurationEditorTabViewGroups(groups) {
+    this.defineConfigurationEditorTabViewGroups(groups);
+    this.listenTo(this, 'change:type_name', () =>
+      this.defineConfigurationEditorTabViewGroups(groups)
+    );
+  },
+
+  defineConfigurationEditorTabViewGroups(groups) {
+    this.widgetTypes.defineStubConfigurationEditorTabViewGroups(groups);
+    this.each(widget => widget.defineConfigurationEditorTabViewGroups(groups));
   },
 
   withInsertPoint(insertPoint) {

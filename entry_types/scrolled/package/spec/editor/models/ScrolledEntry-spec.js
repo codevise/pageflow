@@ -2915,13 +2915,13 @@ describe('ScrolledEntry', () => {
       );
       const contentElement = entry.contentElements.get(5);
 
-      const [values, translationKeys] = entry.getContentElementVariants({contentElement});
+      const [values, texts] = entry.getContentElementVariants({contentElement});
 
       expect(values).toEqual([]);
-      expect(translationKeys).toEqual([]);
+      expect(texts).toEqual([]);
     });
 
-    it('selects typography rules based on content element type name', () => {
+    it('selects property scopes based on content element type name', () => {
       editor.contentElementTypes.register('someElement', {});
 
       const entry = factories.entry(
@@ -3037,6 +3037,129 @@ describe('ScrolledEntry', () => {
         const contentElement = entry.contentElements.get(5);
 
         const [, texts] = entry.getContentElementVariants({contentElement});
+
+        expect(texts).toEqual([
+          'Custom Blue',
+          'Custom Green'
+        ]);
+      });
+    });
+  });
+
+  describe('getComponentVariants', () => {
+    it('returns empty arrays by default', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed()
+        }
+      );
+
+      const [values, texts] = entry.getComponentVariants({name: 'figureCaption'});
+
+      expect(values).toEqual([]);
+      expect(texts).toEqual([]);
+    });
+
+    it('selects property scopes based on name', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                'figureCaption-blue': {
+                  surface_color: 'blue'
+                },
+                'figureCaption-green': {
+                  surface_color: 'green'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const [values] = entry.getComponentVariants({name: 'figureCaption'});
+
+      expect(values).toEqual(['blue', 'green']);
+    });
+
+    describe('with shared translations', () => {
+      const commonPrefix = 'pageflow_scrolled.editor.component_variants'
+
+      useFakeTranslations({
+        [`${commonPrefix}.figureCaption-blue`]: 'Blue',
+        [`${commonPrefix}.figureCaption-green`]: 'Green'
+      });
+
+      it('returns translated display names', () => {
+        const entry = factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {theme_name: 'custom'}
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              themeOptions: {
+                properties: {
+                  'figureCaption-blue': {
+                    surface_color: 'blue'
+                  },
+                  'figureCaption-green': {
+                    surface_color: 'green'
+                  }
+                }
+              }
+            })
+          }
+        );
+
+        const [, texts] = entry.getComponentVariants({name: 'figureCaption'});
+
+        expect(texts).toEqual([
+          'Blue',
+          'Green'
+        ]);
+      });
+    });
+
+    describe('with theme specific translations', () => {
+      const commonPrefix = 'pageflow_scrolled.editor.component_variants'
+      const themePrefix = `pageflow_scrolled.editor.themes.custom`
+
+      useFakeTranslations({
+        [`${commonPrefix}.figureCaption-blue`]: 'Blue',
+        [`${commonPrefix}.figureCaption-green`]: 'Green',
+        [`${themePrefix}.component_variants.figureCaption-blue`]: 'Custom Blue',
+        [`${themePrefix}.component_variants.figureCaption-green`]: 'Custom Green'
+      });
+
+      it('prefers theme specific translations', () => {
+        const entry = factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {theme_name: 'custom'}
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              themeOptions: {
+                properties: {
+                  'figureCaption-blue': {
+                    surface_color: 'blue'
+                  },
+                  'figureCaption-green': {
+                    surface_color: 'green'
+                  }
+                }
+              }
+            })
+          }
+        );
+
+        const [, texts] = entry.getComponentVariants({name: 'figureCaption'});
 
         expect(texts).toEqual([
           'Custom Blue',
