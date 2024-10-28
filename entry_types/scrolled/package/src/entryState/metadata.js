@@ -14,7 +14,8 @@ import {useEntryStateCollectionItems} from './EntryStateProvider';
  *     locale: 'en',
  *     shareProviders: {email: false, facebook: true},
  *     share_url: 'http://test.host/test',
- *     credits: 'Credits: Pageflow'
+ *     credits: 'Credits: Pageflow',
+ *     configuration: {darkWidgets: true}
  *   }
  */
 export function useEntryMetadata() {
@@ -23,4 +24,12 @@ export function useEntryMetadata() {
   return useMemo(() => {
     return entries[0];
   }, [entries]);
+}
+
+/**
+ * Returns boolean indicating whether dark variant has been activated for
+ * the widgets of the entry.
+ */
+export function useDarkWidgets() {
+  return useEntryMetadata().configuration.darkWidgets;
 }

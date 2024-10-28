@@ -26,6 +26,7 @@ editor.registerEntryType('scrolled', {
   outlineView: EntryOutlineView,
 
   appearanceInputs(tabView) {
+    tabView.input('darkWidgets', CheckBoxInputView);
   },
 
   supportsExtendedFileRights: true,

@@ -3,7 +3,10 @@ export {useContentElementConsentVendor} from './consentVendors';
 export {useCutOff} from './cutoff';
 export {useShareProviders, useShareUrl} from './sharing';
 export {useEntryTranslations} from './entryTranslations';
-export {useEntryMetadata} from './metadata';
+export {
+  useDarkWidgets,
+  useEntryMetadata
+} from './metadata';
 export {
   normalizeSectionConfigurationData,
   useEntryStructure,

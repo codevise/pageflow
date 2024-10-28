@@ -15,6 +15,7 @@ export const EntryMetadata = Configuration.extend({
 
     this.listenTo(this.configuration, 'change', function(model, options) {
       this.trigger('change', model, options);
+      this.trigger('change:configuration', this, undefined, options);
       this.parent.save();
     });
   },
