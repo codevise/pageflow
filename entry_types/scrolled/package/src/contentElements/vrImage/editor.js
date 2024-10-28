@@ -9,8 +9,8 @@ editor.contentElementTypes.register('vrImage', {
   supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],
 
-  configurationEditor() {
-    this.tab('general', function({entry}) {
+  configurationEditor({entry}) {
+    this.tab('general', function() {
       this.input('image', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
