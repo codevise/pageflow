@@ -1,12 +1,22 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {useTheme} from 'pageflow-scrolled/frontend';
+import {useDarkWidgets, useTheme} from 'pageflow-scrolled/frontend';
 
 import styles from './DefaultNavigation.module.css';
 
 export function Logo({srcMobile, srcDesktop, url, altText}) {
   const theme = useTheme();
+  const darkWidgets = useDarkWidgets();
+
+  srcDesktop =
+    srcDesktop ||
+    (darkWidgets ? theme.assets.logoDarkVariantDesktop : theme.assets.logoDesktop);
+
+  srcMobile =
+    srcMobile ||
+    (darkWidgets ? theme.assets.logoDarkVariantMobile : theme.assets.logoMobile);
+
   return (
     <a target="_blank"
        rel="noopener noreferrer"
@@ -17,9 +27,9 @@ export function Logo({srcMobile, srcDesktop, url, altText}) {
            theme.options.defaultNavigationMobileLogoPosition === 'center'}
        )}>
       <picture>
-        <source media="(max-width: 780px)" srcSet={srcMobile || theme.assets.logoMobile} />
-        <source media="(min-width: 781px)" srcSet={srcDesktop || theme.assets.logoDesktop} />
-        <img src={srcDesktop || theme.assets.logoDesktop}
+        <source media="(max-width: 780px)" srcSet={srcMobile} />
+        <source media="(min-width: 781px)" srcSet={srcDesktop} />
+        <img src={srcDesktop}
              alt={altText || theme.options.logoAltText} />
       </picture>
     </a>

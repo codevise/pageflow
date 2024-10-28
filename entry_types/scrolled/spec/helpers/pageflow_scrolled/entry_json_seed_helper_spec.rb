@@ -690,13 +690,15 @@ module PageflowScrolled
 
         result = render(helper, entry)
 
-        expect(result).to include_json(config: {
-                                         theme: {
-                                           assets: {
-                                             logoDesktop: %r{themes/default/logoDesktop.*svg$}
-                                           }
-                                         }
-                                       })
+        expect(result)
+          .to include_json(config: {
+                             theme: {
+                               assets: {
+                                 logoDesktop: %r{themes/default/logoDesktop.*svg$},
+                                 logoDarkVariantDesktop: %r{themes/default/logoDarkVariantDesktop.*svg$}
+                               }
+                             }
+                           })
       end
 
       it 'renders theme assets for custom icons' do
