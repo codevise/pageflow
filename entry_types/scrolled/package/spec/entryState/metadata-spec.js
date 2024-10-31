@@ -75,6 +75,16 @@ describe('useEntryMetadata', () => {
 });
 
 describe('useDarkWidgets', () => {
+  it('is falsy by default', () => {
+    const {result} = renderHookInEntry(
+      () => useDarkWidgets()
+    );
+
+    const darkWidgets = result.current;
+
+    expect(darkWidgets).toBeUndefined()
+  });
+
   it('reads data from seed', () => {
     const {result} = renderHookInEntry(
       () => useDarkWidgets(),
@@ -110,6 +120,23 @@ describe('useDarkWidgets', () => {
             }),
             {dispatch})
     });
+    const darkWidgets = result.current;
+
+    expect(darkWidgets).toEqual(true);
+  });
+
+  it('can be enabled via theme option', () => {
+    const {result} = renderHookInEntry(
+      () => useDarkWidgets(),
+      {
+        seed: {
+          themeOptions: {
+            darkWidgets: true
+          }
+        }
+      }
+    );
+
     const darkWidgets = result.current;
 
     expect(darkWidgets).toEqual(true);

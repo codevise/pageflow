@@ -1,6 +1,7 @@
 import {useMemo} from 'react';
 
 import {useEntryStateCollectionItems} from './EntryStateProvider';
+import {useTheme} from './theme';
 
 /**
  * Returns a nested data structure representing the metadata of the entry.
@@ -31,5 +32,6 @@ export function useEntryMetadata() {
  * the widgets of the entry.
  */
 export function useDarkWidgets() {
-  return useEntryMetadata().configuration.darkWidgets;
+  const theme = useTheme();
+  return useEntryMetadata().configuration.darkWidgets || theme.options.darkWidgets;
 }
