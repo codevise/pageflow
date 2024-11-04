@@ -33,7 +33,7 @@ export function DefaultNavigation({
   logo
 }) {
   const [navExpanded, setNavExpanded] = useState(true);
-  const [mobileNavHidden, setMobileNavHidden] = useState(true);
+  const [mobileNavHidden, setMobileNavHidden] = useState(!configuration.defaultMobileNavVisible);
   const [readingProgress, setReadingProgress] = useState(0);
   const chapters = useChapters();
   const currentChapter = useCurrentChapter();

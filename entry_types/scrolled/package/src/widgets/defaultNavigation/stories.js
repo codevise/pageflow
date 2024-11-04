@@ -23,7 +23,8 @@ let getSeed = function({chapterCount, darkWidgets}){
     },
     widgets: [{
       role: 'header',
-      typeName: 'defaultNavigation'
+      typeName: 'defaultNavigation',
+      configuration: {defaultMobileNavVisible: true}
     }],
     chapters: Array(chapterCount).fill().map((_, index) => (
       {
