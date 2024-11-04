@@ -1,0 +1,18 @@
+.translucentWidgetSurface {
+  color: var(--theme-widget-on-surface-color);
+}
+
+.translucentWidgetSurface::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  --translucent-widget-surface-color:
+    color-mix(in srgb,
+              var(--theme-widget-surface-color) var(--theme-widget-surface-opacity), transparent);
+  background-color: var(--translucent-widget-surface-color, var(--theme-widget-surface-color));
+  backdrop-filter: blur(var(--theme-widget-surface-backdrop-blur));
+}

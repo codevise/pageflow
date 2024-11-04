@@ -7,6 +7,7 @@ import {
   useScrollPosition,
   useChapters,
   useCurrentChapter,
+  useDarkWidgets,
   useOnUnmuteMedia,
   usePhonePlatform,
   useShareProviders,
@@ -69,6 +70,8 @@ export function DefaultNavigation({
 
   useOnUnmuteMedia(useCallback(() => setNavExpanded(true), []));
 
+  const darkWidgets = useDarkWidgets();
+
   const hasChapters = chapters.length > 1 ||
                       !utils.isBlank(chapters[0]?.title) ||
                       !utils.isBlank(chapters[0]?.summary);
@@ -124,6 +127,7 @@ export function DefaultNavigation({
   return (
     <>
       <header className={classNames(styles.navigationBar, {
+        'scope-dark': darkWidgets,
         [styles.navigationBarExpanded]: (
           navExpanded ||
           (!isPhonePlatform && configuration.fixedOnDesktop) ||
