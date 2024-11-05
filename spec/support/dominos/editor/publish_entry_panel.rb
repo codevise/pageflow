@@ -20,7 +20,7 @@ module Dom
         node.find('input[name=publish_until_time]').set(time)
 
         # capybara doesn't hide the datepicker overlay properly
-        blur_input_fields
+        blur_date_field
       end
 
       def save
@@ -53,10 +53,8 @@ module Dom
         node.has_selector?('.publish_entry.published')
       end
 
-      def blur_input_fields
-        node.find('h2').click
-        # Wait for date drop down to fade out
-        sleep 1
+      def blur_date_field
+        node.find('input[name=publish_until]').native.send_keys(:tab)
       end
     end
   end
