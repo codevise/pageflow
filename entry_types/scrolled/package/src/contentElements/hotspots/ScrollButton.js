@@ -11,7 +11,6 @@ export function ScrollButton({direction, disabled, onClick}) {
 
   return (
     <button className={classNames(styles.button,
-                                  styles[direction],
                                   {[styles.disabled]: disabled})}
             tabIndex="-1"
             onClick={onClick}>
