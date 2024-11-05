@@ -6,14 +6,13 @@
   color: #fff;
   transition: opacity 0.2s linear, visibility 0.2s;
   pointer-events: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.left {
-  text-align: left;
-}
-
-.right {
-  text-align: right;
+.icon {
+  display: flex;
+  justify-content: center;;
 }
 
 .disabled {
@@ -27,6 +26,7 @@
   width: var(--theme-hotspts-scroll-button-size);
   height: var(--theme-hotspots-scroll-button-size);
   filter: drop-shadow(0 1px 4px #000);
+  flex-shrink: 0;
 }
 
 .button:not(.disabled):hover svg,
