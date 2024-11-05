@@ -76,6 +76,11 @@
     padding-right: 30px;
   }
 
+  .list_item:has(.list_item_edit_button.is_available):has(.list_item_remove_button.is_available)
+    .list_item_title {
+    padding-right: 62px;
+  }
+
   .list_item_description {
     margin-top: 10px;
     color: var(--ui-on-surface-color-light);
