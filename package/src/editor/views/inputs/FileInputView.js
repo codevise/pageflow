@@ -136,7 +136,8 @@ export const FileInputView = Marionette.ItemView.extend({
       }, {
         inputModel: this.model,
         propertyName: this.options.propertyName,
-        filesCollection: this.options.collection
+        filesCollection: this.options.collection,
+        positioningOptions: this.options.positioningOptions
       }));
     }
 
@@ -221,7 +222,8 @@ FileInputView.EditBackgroundPositioningMenuItem = Backbone.Model.extend({
     BackgroundPositioningView.open({
       model: this.options.inputModel,
       propertyName: this.options.propertyName,
-      filesCollection: this.options.filesCollection
+      filesCollection: this.options.filesCollection,
+      ...this.options.positioningOptions
     });
   }
 });

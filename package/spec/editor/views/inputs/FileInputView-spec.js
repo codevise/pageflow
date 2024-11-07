@@ -1,4 +1,4 @@
-import {Configuration, FileInputView} from 'pageflow/editor';
+import {Configuration, FileInputView, BackgroundPositioningView} from 'pageflow/editor';
 import Backbone from 'backbone';
 
 import * as support from '$support';
@@ -30,6 +30,37 @@ describe('FileInputView', () => {
     var dropDownButton = DropDownButton.find(fileInputView);
 
     expect(dropDownButton.menuItemNames()).toEqual(expect.arrayContaining(['edit_background_positioning']));
+  });
+
+  it('can pass additional options to positioning dialog', () => {
+    var fixture = support.factories.videoFileWithTextTrackFiles({
+      videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'}
+    });
+    var model = new Configuration({
+      file_id: 5,
+    });
+    jest.spyOn(BackgroundPositioningView, 'open');
+
+    var fileInputView = new FileInputView({
+      collection: fixture.videoFiles,
+      model: model,
+      propertyName: 'file_id',
+      positioning: true,
+      positioningOptions: {
+        previewAspectRatio: 0.5625
+      }
+    });
+
+    fileInputView.render();
+    var dropDownButton = DropDownButton.find(fileInputView);
+    dropDownButton.selectMenuItemByName('edit_background_positioning');
+
+    expect(BackgroundPositioningView.open).toHaveBeenCalledWith(
+      expect.objectContaining({
+        propertyName: 'file_id',
+        previewAspectRatio: 0.5625
+      })
+    );
   });
 
   it('can render additional drop down menu item', () => {

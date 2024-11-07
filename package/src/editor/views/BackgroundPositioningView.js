@@ -60,15 +60,18 @@ export const BackgroundPositioningView = Marionette.ItemView.extend({
 
   createPreviews: function() {
     var view = this;
-
-    _.each(view.previews, function(ratio, name) {
+    var previews = this.options.preview ?
+                   {preview: this.options.preview} :
+                   this.previews;
+    _.each(previews, function(ratio, name) {
       view.ui.previews.append(view.subview(new BackgroundPositioningPreviewView({
         model: view.transientModel,
         propertyName: view.options.propertyName,
         filesCollection: view.options.filesCollection,
         ratio: ratio,
         maxSize: 200,
-        label: I18n.t('pageflow.editor.templates.background_positioning.previews.' + name)
+        label: I18n.t('pageflow.editor.templates.background_positioning.previews.' + name,
+                      {defaultValue: ''})
       })).el);
     });
   }
