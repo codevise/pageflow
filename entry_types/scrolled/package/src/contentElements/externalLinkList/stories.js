@@ -11,7 +11,8 @@ storiesOfContentElement(module, {
         url: 'https://www.pageflow.io/',
         thumbnail: filePermaId('imageFiles', 'turtle'),
         description: 'This is description',
-        open_in_new_tab: '0'
+        open_in_new_tab: '0',
+        thumbnailCropPosition: {x: 0, y: 50}
       },
       {
         id: '2',
@@ -40,6 +41,12 @@ storiesOfContentElement(module, {
     ]
   },
   variants: [
+    {
+      name: 'With thumbnail aspect ratio',
+      configuration: {
+        thumbnailAspectRatio: 'square',
+      }
+    },
     {
       name: 'With inverted content colors',
       configuration: {

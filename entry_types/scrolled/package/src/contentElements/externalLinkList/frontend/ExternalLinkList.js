@@ -16,7 +16,9 @@ export function ExternalLinkList(props) {
       `scope-externalLinkList-${props.configuration.variant}`
     )}>
       {linkList.map((link, index) =>
-        <ExternalLink {...link} key={link.id}
+        <ExternalLink {...link}
+                      key={link.id}
+                      thumbnailAspectRatio={props.configuration.thumbnailAspectRatio}
                       invert={!darkBackground}
                       sectionProps={props.sectionProps}
                       loadImages={shouldLoad} />

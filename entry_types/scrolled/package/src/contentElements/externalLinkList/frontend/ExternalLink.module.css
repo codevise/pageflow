@@ -34,14 +34,6 @@
   text-decoration: underline;
 }
 
-.link_thumbnail {
-  width: auto;
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding-top: 56.25%;
-  position: relative;
-}
-
 .background {
   --padding-inline: var(--theme-external-links-card-padding-inline, 15px);
   flex: 1;

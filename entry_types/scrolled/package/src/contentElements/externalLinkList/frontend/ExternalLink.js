@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import classNames from 'classnames';
 import styles from './ExternalLink.module.css';
 import {
-  Image,
   InlineFileRights,
   useFileWithInlineRights,
   useI18n,
   useContentElementEditorState
 } from 'pageflow-scrolled/frontend';
+
+import {Thumbnail} from './Thumbnail';
 
 export function ExternalLink(props) {
   const [hideTooltip, setHideTooltip] = useState(true);
@@ -66,12 +67,12 @@ export function ExternalLink(props) {
        onMouseLeave={onMouseLeave}
        target={props.open_in_new_tab ? '_blank' : '_self'}
        rel={props.open_in_new_tab ? 'noopen noreferrer' : undefined}>
-      <div className={styles.link_thumbnail}>
-        <Image imageFile={thumbnailImageFile}
-               load={props.loadImages}
-               variant="linkThumbnailLarge" />
+      <Thumbnail imageFile={thumbnailImageFile}
+                 aspectRatio={props.thumbnailAspectRatio}
+                 cropPosition={props.thumbnailCropPosition}
+                 load={props.loadImages}>
         <InlineFileRights context="insideElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
-      </div>
+      </Thumbnail>
       <div className={styles.background}>
         <InlineFileRights context="afterElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
         <div className={styles.details}>

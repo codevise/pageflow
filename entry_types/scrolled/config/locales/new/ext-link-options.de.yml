@@ -1,0 +1,14 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        externalLinkList:
+          attributes:
+            thumbnailAspectRatio:
+              label: "Thumbnail Seitenverhältnis"
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (3:4)
+                square: Quadratisch (1:1)
+                wide: Landscape (16:9)
+                original: Original

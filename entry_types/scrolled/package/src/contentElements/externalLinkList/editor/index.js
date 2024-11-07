@@ -1,4 +1,5 @@
 import {editor} from 'pageflow-scrolled/editor';
+import {SelectInputView} from 'pageflow/ui';
 
 import {SidebarRouter} from './SidebarRouter';
 import {SidebarController} from './SidebarController';
@@ -28,6 +29,10 @@ editor.contentElementTypes.register('externalLinkList', {
         contentElement: this.model.parent,
         collection: ExternalLinkCollection.forContentElement(this.model.parent, entry)
       });
+
+      this.input('thumbnailAspectRatio', SelectInputView, {
+        values: ['wide', 'narrow', 'square', 'portrait', 'original']
+      })
     });
   }
 });
