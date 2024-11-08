@@ -20,7 +20,10 @@ export const Cutoff = Object.extend({
   },
 
   isAtSection(section) {
-    return this.entry.metadata.configuration.get('cutoff_section_perma_id') === section.get('permaId');
+    const cutoffSectionPermaId =
+      this.entry.metadata.configuration.get('cutoff_section_perma_id');
+
+    return !!cutoffSectionPermaId && cutoffSectionPermaId === section.get('permaId');
   },
 
   reset() {
