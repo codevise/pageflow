@@ -63,15 +63,17 @@ The following rule names are supported:
 | `heading_md` | Applies to heading content element with size "medium". |
 | `heading_sm` | Applies to heading content element with size "small". |
 | `heading_xs` | Applies to headings in text block content elements. |
+| `heading_tagline` | Applies to taglines in heading content elements. |
+| `heading_subtitle` | Applies to subtitles in heading content elements. |
 | `body` | Applies to text blocks (paragraphs, lists, block quotes) in the entry content. |
 | `caption` | Applies to captions of content elements like inline images or inline videos. |
-| `content_link` | Applies to text links in text blocks, figures, quotes and counters. |
+| `content_link` | Applies to text links in text blocks, figures, quotes, and counters. |
 | `quote_text` | Applies to the main text of quote content elements. |
 | `quote_text_lg` | Applies to the main text of quote content elements with size "large". |
 | `quote_text_md` | Applies to the main text of quote content elements with size "medium". |
 | `quote_text_sm` | Applies to the main text of quote content elements with size "small". |
 | `quote_text_xs` | Applies to the main text of quote content elements with size "very small". |
-| `quote_attribution` | Applies to the main text of quote content elements. |
+| `quote_attribution` | Applies to the attribution line in quote content elements. |
 | `quote_attribution_lg` | Applies to the attribution line of quote content elements with size "large". |
 | `quote_attribution_md` | Applies to the attribution line of quote content elements with size "medium". |
 | `quote_attribution_sm` | Applies to the attribution line of quote content elements with size "small". |
@@ -81,6 +83,11 @@ The following rule names are supported:
 | `default_navigation_active_chapter_link` | Applies to the chapter link representing the current chapter. |
 | `external_link_title` | Applies to titles of external links. |
 | `external_link_description` | Applies to descriptions of external links. |
+| `counter_number` | Applies to the number in counter elements. |
+| `counter_description` | Applies to the description text in counter elements. |
+| `hotspot_tooltip_title` | Applies to the title in hotspot tooltips. |
+| `hotspot_tooltip_description` | Applies to the description text in hotspot tooltips. |
+| `hotspot_tooltip_link` | Applies to link buttons in hotspot tooltips. |
 
 ### Responsive Breakpoints
 
