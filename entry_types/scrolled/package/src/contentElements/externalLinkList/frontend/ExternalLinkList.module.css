@@ -1,20 +1,14 @@
 @value contentColorScope from "pageflow-scrolled/values/colors.module.css";
 
-.ext_links_container{
+.container {
+  container-type: inline-size;
+}
+
+.list {
   composes: scope-externalLinks from global;
   composes: contentColorScope;
-  display: flex;
-  flex-wrap: wrap;
-  border-collapse: separate;
-  border-spacing: 10px;
+}
+
+.textPosition-below {
   min-height: 240px;
-  width: auto;
-  height: auto;
-  pointer-events: auto;
-  position: relative;
-  -webkit-transition: opacity 0.5s;
-  -moz-transition: opacity 0.5s;
-  transition: opacity 0.5s;
-  transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);
-  transition-duration: 0ms;
 }

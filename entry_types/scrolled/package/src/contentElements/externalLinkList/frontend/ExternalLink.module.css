@@ -9,12 +9,9 @@
   display: none;
 }
 
-.link_item {
+.item {
   display: flex;
-  flex-direction: column;
-  width: 45%;
   vertical-align: top;
-  margin: 2% auto;
   text-decoration: none;
   transition: transform 0.3s;
   border-radius: var(--theme-content-element-box-border-radius);
@@ -22,16 +19,36 @@
   will-change: transform;
 }
 
-.link_item.layout_center {
-  width: 29%;
+.textPosition-below {
+  flex-direction: column;
 }
 
-.link_item:hover {
+.textPosition-title {
+  composes: textPosition-below;
+}
+
+.textPosition-below:hover {
   transform: scale(var(--theme-external-links-card-hover-scale, 1.05));
 }
 
-.link_item:hover .link_title {
+.textPosition-right:hover {
+  transform: scale(var(--theme-external-links-card-hover-scale, 1.02));
+}
+
+.item:hover .link_title {
   text-decoration: underline;
+}
+
+.textPosition-right .thumbnail {
+  width: 33%;
+}
+
+.textPosition-right.thumbnailSize-medium .thumbnail {
+  width: 50%;
+}
+
+.textPosition-right.thumbnailSize-large .thumbnail {
+  width: 66%;
 }
 
 .background {
@@ -44,15 +61,23 @@
   padding-right: min(var(--padding-inline), 5px);
 }
 
-.details {
+.textPosition-title .background {
+  display: none;
+}
+
+.textPosition-below .details {
   padding-top: 15px;
   padding-bottom: 20px;
   padding-left: calc(var(--padding-inline) - 5px);
   padding-right: calc(var(--padding-inline) - 5px);
 }
 
-.details:first-child {
+.textPosition-below .details:first-child {
   padding-top: 20px;
+}
+
+.textPosition-right .details {
+  padding: 10px 10px 10px 15px;
 }
 
 .invert > .background {
@@ -66,22 +91,34 @@
   width: 100%;
   white-space: normal;
   line-height: 1.3em;
-  margin-bottom: 0;
 }
 
 .link_title {
   composes: typography-externalLinkTitle from global;
   font-weight: bold;
-  margin: 0 0 20px;
+  margin: 0 0 1rem;
 }
 
 .link_desc {
   composes: typography-externalLinkDescription from global;
+  margin: 0;
+}
+
+.textSize-medium {
+  font-size: 18px;
+}
+
+.textSize-large {
+  font-size: 20px;
 }
 
 @media screen and breakpoint-sm {
-  .link_title {
+  .textSize-small .link_title {
     font-size: 1.2em;
+  }
+
+  .textSize-medium .link_title {
+    font-size: 1.1em;
   }
 }
 
@@ -104,19 +141,4 @@
   display: block;
   color: #fff;
   text-decoration: underline;
-}
-
-@media only screen and (max-width: 600px) {
-  .link_item.layout_center {
-    width: 45%;
-  }
-}
-
-@media only screen and (max-width: 350px) {
-  .link_item {
-    width: 85%;
-  }
-  .link_item.layout_center {
-    width: 85%;
-  }
 }

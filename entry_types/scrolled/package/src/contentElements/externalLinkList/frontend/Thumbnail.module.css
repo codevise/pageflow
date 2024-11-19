@@ -2,4 +2,6 @@
   width: auto;
   padding-top: 56.25%;
   position: relative;
+  height: 100%;
+  box-sizing: border-box;;
 }

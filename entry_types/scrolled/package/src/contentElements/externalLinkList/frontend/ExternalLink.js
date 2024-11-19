@@ -12,7 +12,6 @@ import {Thumbnail} from './Thumbnail';
 
 export function ExternalLink(props) {
   const [hideTooltip, setHideTooltip] = useState(true);
-  var {layout} = props.sectionProps;
   const {t} = useI18n({locale: 'ui'});
   const {isEditable, isSelected} = useContentElementEditorState();
   const thumbnailImageFile = useFileWithInlineRights({
@@ -56,23 +55,27 @@ export function ExternalLink(props) {
   }
 
   return (
-    <a className={classNames(styles.link_item,
-                             {
-                               [styles.invert]: props.invert,
-                               [styles.layout_center]:
-                                 layout === 'center' || layout === 'centerRagged'
-                             })}
+    <a className={classNames(styles.item,
+                             styles[`textPosition-${props.textPosition}`],
+                             styles[`thumbnailSize-${props.thumbnailSize}`],
+                             styles[`textSize-${props.textSize}`],
+                             {[styles.invert]: props.invert})}
        href={url || 'about:blank'}
+       title={props.textPosition === 'title' ?
+              [props.title, props.description].filter(Boolean).join("\n") :
+              null}
        onClick={onClick}
        onMouseLeave={onMouseLeave}
        target={props.open_in_new_tab ? '_blank' : '_self'}
        rel={props.open_in_new_tab ? 'noopen noreferrer' : undefined}>
-      <Thumbnail imageFile={thumbnailImageFile}
-                 aspectRatio={props.thumbnailAspectRatio}
-                 cropPosition={props.thumbnailCropPosition}
-                 load={props.loadImages}>
-        <InlineFileRights context="insideElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
-      </Thumbnail>
+      <div className={styles.thumbnail}>
+        <Thumbnail imageFile={thumbnailImageFile}
+                   aspectRatio={props.thumbnailAspectRatio}
+                   cropPosition={props.thumbnailCropPosition}
+                   load={props.loadImages}>
+          <InlineFileRights context="insideElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
+        </Thumbnail>
+      </div>
       <div className={styles.background}>
         <InlineFileRights context="afterElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
         <div className={styles.details}>
@@ -84,10 +87,6 @@ export function ExternalLink(props) {
     </a>
   );
 }
-
-ExternalLink.defaultProps = {
-  sectionProps: {}
-};
 
 function ensureAbsolute(url) {
   if (url.match(/^(https?:)?\/\//)) {

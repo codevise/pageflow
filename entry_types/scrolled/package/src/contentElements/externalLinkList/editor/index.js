@@ -1,10 +1,12 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {SelectInputView} from 'pageflow/ui';
+import {features} from 'pageflow/frontend';
+import {SelectInputView, SliderInputView, SeparatorView} from 'pageflow/ui';
 
 import {SidebarRouter} from './SidebarRouter';
 import {SidebarController} from './SidebarController';
 import {SidebarListView} from './SidebarListView';
 import {ExternalLinkCollection} from './models/ExternalLinkCollection';
+import {maxLinkWidth} from '../linkWidths';
 
 import pictogram from './pictogram.svg';
 
@@ -19,20 +21,57 @@ editor.registerSideBarRouting({
 editor.contentElementTypes.register('externalLinkList', {
   pictogram,
   category: 'links',
-  supportedPositions: ['inline'],
+  supportedPositions: ['inline', 'standAlone'],
+  supportedWidthRange: ['m', 'xl'],
 
-  configurationEditor({entry}) {
+  configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
-      this.group('ContentElementVariant', {entry});
+      const layout = contentElement.section.configuration.get('layout');
+
+      if (!features.isEnabled('external_links_options')) {
+        this.group('ContentElementVariant', {entry});
+      }
 
       this.view(SidebarListView, {
         contentElement: this.model.parent,
         collection: ExternalLinkCollection.forContentElement(this.model.parent, entry)
       });
 
-      this.input('thumbnailAspectRatio', SelectInputView, {
-        values: ['wide', 'narrow', 'square', 'portrait', 'original']
-      })
+      if (features.isEnabled('external_links_options')) {
+        this.input('textPosition', SelectInputView, {
+          values: ['below', 'right', 'title']
+        });
+        this.group('ContentElementVariant', {entry});
+        this.view(SeparatorView);
+        this.group('ContentElementPosition');
+        this.view(SeparatorView);
+        this.input('linkWidth', SliderInputView, {
+          displayText: value => [
+            'XS', 'S', 'M', 'L', 'XL', 'XXL'
+          ][value + 2],
+          saveOnSlide: true,
+          minValue: -2,
+          maxValueBinding: ['width', 'textPosition'],
+          maxValue: ([width, textPosition]) => maxLinkWidth({width, layout, textPosition}),
+          defaultValue: -1
+        });
+        this.input('linkAlignment', SelectInputView, {
+          values: ['spaceEvenly', 'left', 'right', 'center'],
+          visibleBinding: 'textPosition',
+          visible: textPosition => textPosition !== 'right'
+        });
+        this.input('thumbnailSize', SelectInputView, {
+          values: ['small', 'medium', 'large'],
+          visibleBinding: 'textPosition',
+          visibleBindingValue: 'right'
+        });
+        this.input('thumbnailAspectRatio', SelectInputView, {
+          values: ['wide', 'narrow', 'square', 'portrait', 'original']
+        });
+        this.input('textSize', SelectInputView, {
+          values: ['small', 'medium', 'large']
+        });
+      }
     });
   }
 });

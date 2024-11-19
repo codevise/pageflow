@@ -1,5 +1,22 @@
-import '../frontend';
-import {storiesOfContentElement, filePermaId} from 'pageflow-scrolled/spec/support/stories';
+import React from 'react';
+
+import {
+  Entry, RootProviders,
+  contentElementWidths
+} from 'pageflow-scrolled/frontend';
+
+import {
+  linkWidths,
+  maxLinkWidth
+} from './linkWidths';
+
+import {
+  exampleHeading,
+  filePermaId,
+  normalizeAndMergeFixture,
+  storiesOfContentElement
+} from 'pageflow-scrolled/spec/support/stories';
+import {storiesOf} from '@storybook/react';
 
 storiesOfContentElement(module, {
   typeName: 'externalLinkList',
@@ -48,6 +65,19 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'With thumbnail size',
+      configuration: {
+        textPosition: 'right',
+        thumbnailSize: 'large',
+      }
+    },
+    {
+      name: 'With text size',
+      configuration: {
+        textSize: 'large',
+      }
+    },
+    {
       name: 'With inverted content colors',
       configuration: {
         variant: 'cards-inverted'
@@ -87,3 +117,122 @@ storiesOfContentElement(module, {
   ],
   inlineFileRights: true
 });
+
+[['below', 6], ['right', 3]].forEach(([textPosition, linkCount]) =>
+  storiesOf(`Content Elements/externalLinkList`, module)
+    .add(
+      `Text Position - ${textPosition}`,
+    () => (
+      <RootProviders seed={exampleSeed({textPosition, linkCount})}>
+        <Entry />
+      </RootProviders>
+    )
+  )
+);
+
+function exampleSeed({textPosition, linkCount}) {
+  const sectionConfiguration = {
+    transition: 'scroll'
+  };
+
+  return normalizeAndMergeFixture({
+    sections: [
+      {
+        id: 1,
+        configuration: {
+          ...sectionConfiguration,
+          layout: 'left',
+          backdrop: {
+            color: '#cad2c5'
+          },
+        }
+      },
+      {
+        id: 2,
+        configuration: {
+          ...sectionConfiguration,
+          layout: 'center',
+          backdrop: {
+            color: '#84a98c'
+          },
+        }
+      },
+      {
+        id: 3,
+        configuration: {
+          ...sectionConfiguration,
+          layout: 'right',
+          backdrop: {
+            color: '#52796f'
+          },
+        }
+      }
+    ],
+    contentElements: [
+      ...exampleContentElements(1, 'left', textPosition, linkCount),
+      ...exampleContentElements(2, 'center', textPosition, linkCount),
+      ...exampleContentElements(3, 'right', textPosition, linkCount),
+    ]
+  });
+}
+
+function linkCount({layout, textPosition, width, linkWidth}) {
+  if (textPosition === 'right') {
+    return 3;
+  }
+  else {
+    return range(
+      linkWidths.xs,
+      maxLinkWidth({width, layout, textPosition})
+    ).reverse().indexOf(linkWidth) + 1;
+  }
+}
+
+function exampleContentElements(sectionId, layout, textPosition) {
+  return [
+    exampleHeading({sectionId, text: `Layout ${layout}`}),
+    ...([
+      contentElementWidths.md,
+      contentElementWidths.lg,
+      contentElementWidths.xl
+    ].flatMap(width =>
+      range(
+        linkWidths.xs,
+        maxLinkWidth({width, layout, textPosition})
+      ).map(linkWidth => (
+        {
+          sectionId,
+          typeName: 'externalLinkList',
+          configuration: {
+            textPosition,
+            width,
+            linkWidth,
+            links: links({
+              count: linkCount({layout, textPosition, width, linkWidth})
+            })
+          }
+        }
+      ))
+    ))
+  ];
+}
+
+function range(start, end) {
+  const result = [];
+  for (let i = start; i <= end; i++) {
+    result.push(i);
+  }
+  return result;
+}
+
+function links({count}) {
+  return Array.from({length: count}, (_, index) => (
+    {
+      id: `${index + 1}`,
+      title: `Link ${index + 1}`,
+      url: 'https://www.pageflow.io/',
+      thumbnail: filePermaId('imageFiles', 'turtle'),
+      description: 'This is the description'
+    }
+  ));
+}
