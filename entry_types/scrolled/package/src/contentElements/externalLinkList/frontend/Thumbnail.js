@@ -23,6 +23,7 @@ export function Thumbnail({imageFile, aspectRatio, cropPosition, load, children}
          style={{paddingTop: aspectRatioPadding}}>
       <Image imageFile={imageFile}
              load={load}
+             preferSvg={true}
              variant={(aspectRatioPadding || cropPosition) ? 'medium' : 'linkThumbnailLarge'}  />
       {children}
     </div>
