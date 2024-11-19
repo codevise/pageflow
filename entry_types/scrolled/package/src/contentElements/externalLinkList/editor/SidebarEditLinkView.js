@@ -56,7 +56,9 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
       this.input('title', TextInputView, {
         required: true
       });
-      this.input('description', TextInputView);
+      this.input('description', TextInputView, {
+        maxLength: 10000
+      });
     });
     this.formContainer.show(configurationEditor);
   },
