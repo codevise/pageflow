@@ -1,0 +1,88 @@
+.list {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--columns, 1),
+    minmax(0px, var(--column-max-width, 1fr))
+  );
+  column-gap: 1rem;
+  justify-content: center;
+}
+
+.list > a {
+  width: 100%;
+  margin: 2% 0;
+}
+
+@container (max-width: 700px) {
+  .linkWidth-xs {
+    --column-max-width: 350px;
+  }
+}
+
+.linkWidth-s {
+  --column-max-width: 500px;
+}
+
+.linkWidth-l {
+  --column-max-width: 950px;
+}
+
+.linkWidth-s.width-xl.layout-left {
+  justify-content: start;
+}
+
+.linkWidth-s.width-xl.layout-right {
+  justify-content: end;
+}
+
+@container (min-width: 501px) {
+  .linkWidth-xs {
+    --columns: 2;
+  }
+
+  @container (max-width: 749px) {
+    .linkWidth-xs.layout-right:has(> :nth-child(2n + 1):last-child) > :last-child {
+      grid-column-start: 2;
+    }
+  }
+}
+
+@container (min-width: 750px) {
+  .linkWidth-xs {
+    --columns: 3;
+  }
+
+  .linkWidth-xs.layout-right:has(> :nth-child(3n + 1):last-child) > :last-child,
+  .linkWidth-xs.layout-right:has(> :nth-child(3n + 2):last-child) > :last-child {
+    grid-column-start: 3;
+  }
+
+  .linkWidth-xs.layout-right:has(> :nth-child(3n + 2):last-child) > :nth-last-child(2) {
+    grid-column-start: 2;
+  }
+
+  .linkWidth-m {
+    --columns: 2;
+  }
+
+  .linkWidth-m.layout-right:has(> :nth-child(2n + 1):last-child) > :last-child {
+    grid-column-start: 2;
+  }
+
+  @container (max-width: 1000px) {
+    .linkWidth-m.layout-center {
+      --columns: 1;
+      --column-max-width: 700px;
+    }
+  }
+}
+
+@container (min-width: 950px) {
+  .linkWidth-s {
+    --columns: 2;
+  }
+
+  .linkWidth-s.layout-right:has(> :nth-child(2n + 1):last-child) > :last-child {
+    grid-column-start: 2;
+  }
+}

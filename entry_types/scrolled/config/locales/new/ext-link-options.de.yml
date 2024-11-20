@@ -1,0 +1,63 @@
+de:
+  pageflow:
+    external_links_options:
+      feature_name: "External Links Optionen"
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        externalLinkList:
+          attributes:
+            thumbnailAspectRatio:
+              label: "Thumbnail Seitenverhältnis"
+              inline_help: |-
+                Bestimme die Proportion der Thumbnails. Wird der Text
+                neben dem Bild gezeigt, kann längerer Text dazu
+                führen, dass ein hochformatigeres Seitenverähltnis
+                gewählt wird, damit das Thumbnail die gesamte Höhe des
+                Links überdeckt.
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (3:4)
+                square: Quadratisch (1:1)
+                wide: Landscape (16:9)
+                original: Original
+            textPosition:
+              label: "Textposition"
+              inline_help: |-
+                Anordnung von Bild und Text innerhalb von Links.
+              values:
+                below: "Unter dem Bild"
+                right: "Rechts neben dem Bild"
+                title: "Nur Bild"
+            thumbnailSize:
+              label: "Thumbnail-Breite"
+              inline_help: |-
+                Anteil der Thumbnail-Breite im Verhältnis zur
+                Gesamtbreite des Links.
+              values:
+                small: "Klein"
+                medium: "Mittel"
+                large: "Groß"
+            linkWidth:
+              label: "Link-Breite"
+              inline_help: |-
+                Wähle eine schmalere Breite, um mehr Links
+                nebeneinander anzuordnen.
+            linkAlignment:
+              label: "Link-Ausrichtung"
+              inline_help: |-
+                Bestimmt die Ausrichtung in Zeilen, die nicht
+                vollständig mit Links gefüllt sind.
+              values:
+                spaceEvenly: Gleichmäßig verteilt
+                left: Links
+                right: Rechts
+                center: Mittig
+            textSize:
+              label: "Schriftgröße"
+              inline_help: |
+                Legt die Schriftgröße für Titel und Beschreibung der Links fest.
+              values:
+                small: Klein
+                medium: Mittel
+                large: Groß

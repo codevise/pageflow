@@ -1,0 +1,62 @@
+en:
+  pageflow:
+    external_links_options:
+      feature_name: "External Links Options"
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        externalLinkList:
+          attributes:
+            thumbnailAspectRatio:
+              label: "Thumbnail aspect ratio"
+              inline_help: |-
+                Determine the proportions of the thumbnails. If the
+                text is displayed next to the image, longer text may
+                result in a more portrait-like aspect ratio so that
+                the thumbnail covers the entire height of the link.
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (3:4)
+                square: Square (1:1)
+                wide: Landscape (16:9)
+                original: Original
+            textPosition:
+              label: "Text position"
+              inline_help: |-
+                Arrangement of image and text within links.
+              values:
+                below: "Below image"
+                right: "Right from image"
+                title: "Image only"
+            thumbnailSize:
+              label: "Thumbnail width"
+              inline_help: |-
+                Proportion of the thumbnail width relative to the
+                overall width of the link.
+              values:
+                small: "Small"
+                medium: "Medium"
+                large: "Large"
+            linkWidth:
+              label: "Link width"
+              inline_help: |-
+                Choose a narrower width to arrange more links
+                side by side.
+            linkAlignment:
+              label: "Link alignment"
+              inline_help: |-
+                Determines the alignment in rows that are not
+                completely filled with links.
+              values:
+                spaceEvenly: Space evenly
+                left: Left
+                right: Right
+                center: Center
+            textSize:
+              label: "Text size"
+              inline_help: |-
+                Defines the font size for the title and description of the links.
+              values:
+                small: Small
+                medium: Medium
+                large: Large

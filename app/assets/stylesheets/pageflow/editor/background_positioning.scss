@@ -18,6 +18,11 @@
     margin: 35px;
   }
 
+  h3 {
+    border-bottom: solid 1px var(--ui-on-surface-color-lightest);
+    margin: 40px 0;
+  }
+
   .previews {
     overflow: scroll;
     overflow-x: auto;
@@ -27,6 +32,7 @@
     > div {
       height: 100%;
       white-space: nowrap;
+      text-align: center;
     }
   }
 

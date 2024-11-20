@@ -288,6 +288,6 @@ function exampleSeed(
         exampleTextBlock({sectionId}),
         exampleTextBlock({sectionId}),
       ]).flat()
-    ];s
+    ];
   }
 }

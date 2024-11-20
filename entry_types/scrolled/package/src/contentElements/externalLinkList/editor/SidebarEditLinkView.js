@@ -4,6 +4,13 @@ import {InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import Marionette from 'backbone.marionette';
 import I18n from 'i18n-js';
 
+const previewAspectRatios = {
+  wide: 16 / 9,
+  narrow: 4 / 3,
+  square: 1,
+  portrait: 3 / 4
+};
+
 export const SidebarEditLinkView = Marionette.Layout.extend({
   template: (data) => `
     <a class="back">${I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.back')}</a>
@@ -27,6 +34,8 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
       tabTranslationKeyPrefix: 'pageflow_scrolled.editor.content_elements.externalLinkList.tabs'
     });
     var self = this;
+    var thumbnailAspectRatio = this.options.contentElement.configuration.get('thumbnailAspectRatio');
+
     configurationEditor.tab('edit_link', function () {
       this.input('url', TextInputView, {
         required: true
@@ -38,13 +47,18 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
         fileSelectionHandlerOptions: {
           contentElementId: self.options.contentElement.get('id')
         },
-        positioning: false,
+        positioning: !!previewAspectRatios[thumbnailAspectRatio],
+        positioningOptions: {
+          preview: previewAspectRatios[thumbnailAspectRatio]
+        },
         dropDownMenuItems: [InlineFileRightsMenuItem]
       });
       this.input('title', TextInputView, {
         required: true
       });
-      this.input('description', TextInputView);
+      this.input('description', TextInputView, {
+        maxLength: 10000
+      });
     });
     this.formContainer.show(configurationEditor);
   },
