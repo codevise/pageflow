@@ -32,6 +32,53 @@ describe('DefaultNavigation', () => {
     });
   });
 
+  it('uses theme logo by default', () => {
+    const {getByRole} = renderInEntry(
+      <DefaultNavigation configuration={{}} />,
+      {
+        seed: {
+          themeAssets: {
+            logoDesktop: 'logo-desktop.png'
+          },
+          themeOptions: {
+            logoUrl: 'https://example.com',
+            logoAltText: 'My logo'
+          }
+        }
+      }
+    );
+
+    expect(getByRole('link', {name: 'My logo'})).toBeInTheDocument();
+    expect(getByRole('link', {name: 'My logo'})).toHaveAttribute('href', 'https://example.com');
+    expect(getByRole('img', {name: 'My logo'})).toHaveAttribute('src', 'logo-desktop.png');
+  });
+
+  it('takes logo props', () => {
+    const {getByRole} = renderInEntry(
+      <DefaultNavigation configuration={{}}
+                         logo={{
+                           srcDesktop: "other-logo.png",
+                           url: "https://other.example.com",
+                           altText: "Other logo"
+                         }} />,
+      {
+        seed: {
+          themeAssets: {
+            logoDesktop: 'logo.png'
+          },
+          themeOptions: {
+            logoUrl: 'https://exmaple.com',
+            logoAltText: 'My logo'
+          }
+        }
+      }
+    );
+
+    expect(getByRole('link', {name: 'Other logo'})).toBeInTheDocument();
+    expect(getByRole('link', {name: 'Other logo'})).toHaveAttribute('href', 'https://other.example.com');
+    expect(getByRole('img', {name: 'Other logo'})).toHaveAttribute('src', 'other-logo.png');
+  });
+
   it('supports extra buttons component', () => {
     const ExtraButtons = () => <button>Extra</button>;
     const {queryByRole} = renderInEntry(

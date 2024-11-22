@@ -26,7 +26,11 @@ import {Scroller} from './Scroller';
 
 import styles from './DefaultNavigation.module.css';
 
-export function DefaultNavigation({configuration, ExtraButtons, MobileMenu}) {
+export function DefaultNavigation({
+  configuration,
+  ExtraButtons, MobileMenu,
+  logo
+}) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);
@@ -132,7 +136,7 @@ export function DefaultNavigation({configuration, ExtraButtons, MobileMenu}) {
                                                          mobileNavHidden={mobileNavHidden}/>}
 
           <SkipLinks />
-          <Logo />
+          <Logo {...logo} />
 
           {renderNav()}
           {MobileMenu && <MobileMenu configuration={configuration}
