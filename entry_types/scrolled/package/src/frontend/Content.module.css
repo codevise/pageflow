@@ -1,5 +1,6 @@
 .Content {
   font-family: var(--theme-entry-font-family);
+  overflow: clip;
 }
 
 @media screen {
