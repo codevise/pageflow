@@ -13,6 +13,8 @@ editor.contentElementTypes.register('inlineAudio', {
   defaultConfig: {playerControlVariant: 'waveformBars'},
 
   configurationEditor({entry}) {
+    const themeOptions = entry.getTheme().get('options');
+
     this.tab('general', function() {
       this.input('id', FileInputView, {
         collection: 'audio_files',
@@ -47,7 +49,8 @@ editor.contentElementTypes.register('inlineAudio', {
       this.input('waveformColor', ColorInputView, {
         visibleBinding: 'playerControlVariant',
         visible: variant => variant?.startsWith('waveform'),
-        defaultValue: entry.getTheme().get('options').colors.accent
+        defaultValue: themeOptions.properties?.root?.accent_color ||
+                      themeOptions.colors?.accent
       });
 
       this.view(SeparatorView);

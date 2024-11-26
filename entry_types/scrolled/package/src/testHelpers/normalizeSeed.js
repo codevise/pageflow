@@ -52,7 +52,8 @@ export function normalizeSeed({
 } = {}) {
   const entries = entry ? [entry] : [{}];
   const normalizedEntries = normalizeCollection(entries, {
-    locale: 'en'
+    locale: 'en',
+    configuration: {}
   });
 
   const normalizedContentElements = normalizeCollection(contentElements, {

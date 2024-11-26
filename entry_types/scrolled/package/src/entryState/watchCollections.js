@@ -15,6 +15,7 @@ export function watchCollections(entry, {dispatch}) {
       'credits'
     ],
     keyAttribute: 'permaId',
+    includeConfiguration: true,
     dispatch
   }));
   teardownFns.push(watchCollection(chapters, {

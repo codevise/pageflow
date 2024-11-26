@@ -22,7 +22,10 @@ module PageflowScrolled
                            published_at: '2020-08-11 10:00'.in_time_zone('UTC'),
                            locale: 'fr',
                            share_providers: {facebook: true},
-                           credits: 'Test Credits'
+                           credits: 'Test Credits',
+                           configuration: {
+                             darkWidgets: true
+                           }
                          })
 
           result = render(helper, entry)
@@ -36,7 +39,10 @@ module PageflowScrolled
                                    publishedAt: '2020-08-11T10:00:00Z',
                                    locale: 'fr',
                                    shareProviders: {facebook: true},
-                                   credits: 'Test Credits'
+                                   credits: 'Test Credits',
+                                   configuration: {
+                                     darkWidgets: true
+                                   }
                                  }
                                ]
                              })
@@ -684,13 +690,15 @@ module PageflowScrolled
 
         result = render(helper, entry)
 
-        expect(result).to include_json(config: {
-                                         theme: {
-                                           assets: {
-                                             logoDesktop: %r{themes/default/logoDesktop.*svg$}
-                                           }
-                                         }
-                                       })
+        expect(result)
+          .to include_json(config: {
+                             theme: {
+                               assets: {
+                                 logoDesktop: %r{themes/default/logoDesktop.*svg$},
+                                 logoDarkVariantDesktop: %r{themes/default/logoDarkVariantDesktop.*svg$}
+                               }
+                             }
+                           })
       end
 
       it 'renders theme assets for custom icons' do

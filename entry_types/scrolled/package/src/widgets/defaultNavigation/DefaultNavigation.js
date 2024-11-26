@@ -7,6 +7,7 @@ import {
   useScrollPosition,
   useChapters,
   useCurrentChapter,
+  useDarkWidgets,
   useOnUnmuteMedia,
   usePhonePlatform,
   useShareProviders,
@@ -32,7 +33,7 @@ export function DefaultNavigation({
   logo
 }) {
   const [navExpanded, setNavExpanded] = useState(true);
-  const [mobileNavHidden, setMobileNavHidden] = useState(true);
+  const [mobileNavHidden, setMobileNavHidden] = useState(!configuration.defaultMobileNavVisible);
   const [readingProgress, setReadingProgress] = useState(0);
   const chapters = useChapters();
   const currentChapter = useCurrentChapter();
@@ -68,6 +69,8 @@ export function DefaultNavigation({
     1);
 
   useOnUnmuteMedia(useCallback(() => setNavExpanded(true), []));
+
+  const darkWidgets = useDarkWidgets();
 
   const hasChapters = chapters.length > 1 ||
                       !utils.isBlank(chapters[0]?.title) ||
@@ -124,6 +127,7 @@ export function DefaultNavigation({
   return (
     <>
       <header className={classNames(styles.navigationBar, {
+        'scope-dark': darkWidgets,
         [styles.navigationBarExpanded]: (
           navExpanded ||
           (!isPhonePlatform && configuration.fixedOnDesktop) ||

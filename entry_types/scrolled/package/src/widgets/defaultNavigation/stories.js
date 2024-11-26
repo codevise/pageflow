@@ -2,22 +2,29 @@ import React from 'react';
 import {storiesOf} from '@storybook/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
-import {normalizeAndMergeFixture} from 'pageflow-scrolled/spec/support/stories';
+import {
+  normalizeAndMergeFixture,
+  filePermaId
+} from 'pageflow-scrolled/spec/support/stories';
 import '../../widgets/defaultNavigation';
 import {Entry, RootProviders} from 'pageflow-scrolled/frontend';
 
 const stories = storiesOf('Widgets/Default Navigation', module);
 
-let getSeed = function({chapterCount}){
+let getSeed = function({chapterCount, darkWidgets}){
   const summaries = [
     'An introductory chapter',
     'Second Chapter',
     'The Third Chapter'
   ]
   return {
+    themeOptions: {
+      darkWidgets
+    },
     widgets: [{
       role: 'header',
-      typeName: 'defaultNavigation'
+      typeName: 'defaultNavigation',
+      configuration: {defaultMobileNavVisible: true}
     }],
     chapters: Array(chapterCount).fill().map((_, index) => (
       {
@@ -34,7 +41,10 @@ let getSeed = function({chapterCount}){
       {
         chapterId: 1,
         configuration: {
-          backdrop: {color: '#fff'},
+          backdrop: {
+            image: filePermaId('imageFiles', 'turtle')
+          },
+          fullHeight: true,
           invert: true
         }
       }
@@ -65,9 +75,34 @@ stories.add(
 );
 
 stories.add(
+  'Desktop - Dark',
+  () =>
+    <RootProviders seed={normalizeAndMergeFixture(getSeed({chapterCount: 3, darkWidgets: true}))}>
+      <Entry />
+    </RootProviders>
+);
+
+stories.add(
   'Mobile',
   () =>
     <RootProviders seed={normalizeAndMergeFixture(getSeed({chapterCount: 3}))}>
+      <Entry />
+    </RootProviders>,
+  {
+    percy: {
+      widths: [320]
+    },
+    viewport: {
+      viewports: INITIAL_VIEWPORTS,
+      defaultViewport: 'iphone6'
+    }
+  }
+);
+
+stories.add(
+  'Mobile - Dark',
+  () =>
+    <RootProviders seed={normalizeAndMergeFixture(getSeed({chapterCount: 3, darkWidgets: true}))}>
       <Entry />
     </RootProviders>,
   {

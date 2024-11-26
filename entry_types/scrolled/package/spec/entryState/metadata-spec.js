@@ -1,4 +1,4 @@
-import {useEntryMetadata, watchCollections} from 'entryState';
+import {useEntryMetadata, useDarkWidgets, watchCollections} from 'entryState';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 
 import {factories} from 'pageflow/testHelpers';
@@ -12,7 +12,10 @@ describe('useEntryMetadata', () => {
       twitter: false
     },
     shareUrl: 'http://test.host/test',
-    credits: 'Credits'
+    credits: 'Credits',
+    configuration: {
+      darkWidgets: true
+    }
   };
 
   it('reads data from seed', () => {
@@ -28,7 +31,10 @@ describe('useEntryMetadata', () => {
               twitter: false
             },
             shareUrl: 'http://test.host/test',
-            credits: 'Credits'
+            credits: 'Credits',
+            configuration: {
+              darkWidgets: true
+            }
           }
         }
       }
@@ -52,7 +58,10 @@ describe('useEntryMetadata', () => {
                   twitter: false
                 },
                 share_url: 'http://test.host/test',
-                credits: 'Credits'
+                credits: 'Credits',
+                configuration: {
+                  darkWidgets: true
+                }
               }
             }, {
               entryTypeSeed: normalizeSeed()
@@ -62,5 +71,74 @@ describe('useEntryMetadata', () => {
     const entryMetadata = result.current;
 
     expect(entryMetadata).toMatchObject(expectedEntryMetadata);
+  });
+});
+
+describe('useDarkWidgets', () => {
+  it('is falsy by default', () => {
+    const {result} = renderHookInEntry(
+      () => useDarkWidgets()
+    );
+
+    const darkWidgets = result.current;
+
+    expect(darkWidgets).toBeUndefined()
+  });
+
+  it('reads data from seed', () => {
+    const {result} = renderHookInEntry(
+      () => useDarkWidgets(),
+      {
+        seed: {
+          entry: {
+            configuration: {
+              darkWidgets: true
+            }
+          }
+        }
+      }
+    );
+
+    const darkWidgets = result.current;
+
+    expect(darkWidgets).toEqual(true);
+  });
+
+  it('reads data from watched collections', () => {
+    const {result} = renderHookInEntry(
+      () => useDarkWidgets(), {
+        setup: dispatch =>
+          watchCollections(
+            factories.entry(ScrolledEntry, {
+              metadata: {
+                configuration: {
+                  darkWidgets: true
+                }
+              }
+            }, {
+              entryTypeSeed: normalizeSeed()
+            }),
+            {dispatch})
+    });
+    const darkWidgets = result.current;
+
+    expect(darkWidgets).toEqual(true);
+  });
+
+  it('can be enabled via theme option', () => {
+    const {result} = renderHookInEntry(
+      () => useDarkWidgets(),
+      {
+        seed: {
+          themeOptions: {
+            darkWidgets: true
+          }
+        }
+      }
+    );
+
+    const darkWidgets = result.current;
+
+    expect(darkWidgets).toEqual(true);
   });
 });

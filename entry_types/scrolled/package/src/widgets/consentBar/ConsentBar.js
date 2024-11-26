@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {useConsentRequested, useI18n, useLegalInfo, useLocale, ThemeIcon} from 'pageflow-scrolled/frontend';
+import classNames from 'classnames';
+import {
+  useConsentRequested,
+  useDarkWidgets,
+  useI18n,
+  useLegalInfo,
+  useLocale,
+  ThemeIcon
+} from 'pageflow-scrolled/frontend';
 import {VendorsBox} from './VendorsBox';
 
 import styles from './ConsentBar.module.css';
@@ -10,10 +18,14 @@ export function ConsentBar({configuration = {}}) {
   const {t} = useI18n();
   const locale = useLocale();
   const privacyLinkUrl = useLegalInfo().privacy.url;
+  const darkWidgets = useDarkWidgets();
 
   if (vendors) {
     return (
-      <div className={styles.bar}>
+
+      <div className={classNames(styles.bar, {
+        'scope-dark': darkWidgets,
+      })}>
         {renderText({privacyLinkUrl, t, locale, vendors})}
 
         {!expanded &&

@@ -64,6 +64,7 @@ export {
   useChapters,
   useCredits,
   useCutOff,
+  useDarkWidgets,
   useEntryMetadata,
   useEntryStateDispatch,
   useEntryTranslations,
