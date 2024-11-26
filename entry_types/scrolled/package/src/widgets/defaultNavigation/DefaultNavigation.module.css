@@ -155,7 +155,8 @@ div:focus-within > .contextIcon,
                         rgba(194,194,194,0.8));
   height: var(--default-navigation-progress-bar-height);
   width: 100%;
-  backdrop-filter: blur(var(--theme-widget-surface-backdrop-blur));
+  backdrop-filter: blur(var(--theme-default-navigation-progress-bar-backdrop-blur,
+                            var(--theme-widget-surface-backdrop-blur)));
 }
 
 .progressIndicator {
