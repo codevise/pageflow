@@ -95,7 +95,8 @@
 }
 
 div:focus-within > .contextIcon,
-.contextIcon:hover {
+.contextIcon:hover,
+.menuIcon {
   color: var(--theme-widget-primary-color);
 }
 
