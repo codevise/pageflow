@@ -30,7 +30,8 @@ export function WaveformPlayerControls(props) {
                 inverted={!darkBackground}
                 variant={props.variant}
                 waveformColor={props.waveformColor}
-                mainColor={theme.options.colors.accent}
+                mainColor={theme.options.properties?.root?.accentColor ||
+                           theme.options.colors?.accent}
                 play={props.play}
                 pause={props.pause}
                 mediaElementId={props.mediaElementId} />
