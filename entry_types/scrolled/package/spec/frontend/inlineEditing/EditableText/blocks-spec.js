@@ -2,6 +2,7 @@
 import {
   applyTypograpyhVariant,
   applyColor,
+  applyTextAlign,
   isBlockActive,
   toggleBlock,
   withBlockNormalization
@@ -411,6 +412,119 @@ describe('applyColor', () => {
     );
 
     applyColor(editor, undefined);
+
+    const output = (
+      <editor>
+        <paragraph>
+          Text
+        </paragraph>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
+});
+
+describe('applyTextAlign', () => {
+  it('sets color property deeply in lists', () => {
+    const editor = (
+      <editor>
+        <bulletedList>
+          <listItem>
+            Item 1
+            <cursor />
+          </listItem>
+          <listItem>
+            Item 1
+          </listItem>
+        </bulletedList>
+      </editor>
+    );
+
+    applyTextAlign(editor, 'justify');
+
+    const output = (
+      <editor>
+        <bulletedList textAlign="justify">
+          <listItem textAlign="justify">
+            Item 1
+          </listItem>
+          <listItem textAlign="justify">
+            Item 1
+          </listItem>
+        </bulletedList>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
+
+  it('sets textAlign property of multiple elements', () => {
+    const editor = (
+      <editor>
+        <paragraph>
+          <anchor />
+          Text
+        </paragraph>
+        <paragraph>
+          More Text
+          <focus />
+        </paragraph>
+        <paragraph>
+          Other Text
+        </paragraph>
+      </editor>
+    );
+
+    applyTextAlign(editor, 'justify');
+
+    const output = (
+      <editor>
+        <paragraph textAlign="justify">
+          Text
+        </paragraph>
+        <paragraph textAlign="justify">
+          More Text
+        </paragraph>
+        <paragraph>
+          Other Text
+        </paragraph>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
+
+  it('unsets textAlign property if set to ragged', () => {
+    const editor = (
+      <editor>
+        <paragraph textAlign="justify">
+          <cursor />
+          Text
+        </paragraph>
+      </editor>
+    );
+
+    applyTextAlign(editor, 'ragged');
+
+    const output = (
+      <editor>
+        <paragraph>
+          Text
+        </paragraph>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
+
+  it('unsets textAlign property if blank', () => {
+    const editor = (
+      <editor>
+        <paragraph textAlign="justify">
+          <cursor />
+          Text
+        </paragraph>
+      </editor>
+    );
+
+    applyTextAlign(editor, undefined);
 
     const output = (
       <editor>

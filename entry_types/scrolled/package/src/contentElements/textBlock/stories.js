@@ -138,6 +138,27 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'Text align justify',
+      configuration: {
+        value: [
+          {
+            type: 'heading',
+            textAlign: 'justify',
+            children: [
+              {text: 'Heading'}
+            ]
+          },
+          {
+            type: 'paragraph',
+            textAlign: 'justify',
+            children: [
+              {text: 'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'},
+            ]
+          }
+        ]
+      }
+    },
+    {
       name: 'With theme link color',
       configuration: linkExampleConfiguration,
       themeOptions: {
