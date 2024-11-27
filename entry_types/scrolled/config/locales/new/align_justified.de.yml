@@ -1,0 +1,11 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        textBlock:
+          attributes:
+            textAlign:
+              label: "Textausrichtung"
+              values:
+                ragged: "Flattersatz"
+                justify: "Blocksatz"

@@ -49,9 +49,10 @@ export function renderElement({attributes, children, element}) {
                            ['typography-textBlock',
                             camelize(element.type),
                             element.variant].join('-');
-
-  const styles = element.color &&
-                 {color: paletteColor(element.color)};
+  const styles = {
+    ...(element.color && {color: paletteColor(element.color)}),
+    ...(element.textAlign && {textAlign: element.textAlign})
+  };
 
   switch (element.type) {
   case 'block-quote':

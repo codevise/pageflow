@@ -1,0 +1,11 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        textBlock:
+          attributes:
+            textAlign:
+              label: "Text align"
+              values:
+                ragged: "Ragged"
+                justify: "Justified"

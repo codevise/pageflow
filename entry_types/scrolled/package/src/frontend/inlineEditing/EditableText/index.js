@@ -21,6 +21,7 @@ import {Selection} from './Selection';
 import {DropTargets} from './DropTargets';
 import {LinkTooltipProvider} from '../LinkTooltip';
 import {
+  applyTextAlign,
   applyTypograpyhVariant,
   applyColor,
   withBlockNormalization
@@ -98,6 +99,9 @@ export const EditableText = React.memo(function EditableText({
       }
       if ('color' in command.payload) {
         applyColor(editor, command.payload.color);
+      }
+      if ('textAlign' in command.payload) {
+        applyTextAlign(editor, command.payload.textAlign);
       }
     }
   });

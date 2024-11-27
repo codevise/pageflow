@@ -342,6 +342,36 @@ describe('EditableText', () => {
                                                                 'color: rgb(0, 0, 0);');
   });
 
+  it('renders text align', () => {
+    const value = [{
+      type: 'paragraph',
+      textAlign: 'justify',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('p[style]')).toHaveStyle('text-align: justify;');
+  });
+
+  it('can render both color and text align', () => {
+    const value = [{
+      type: 'paragraph',
+      textAlign: 'justify',
+      color: '#000',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('p[style]')).toHaveStyle('text-align: justify;');
+    expect(container.querySelector('p[style]')).toHaveStyle('color: rgb(0, 0, 0);');
+  });
+
   it('uses body scaleCategory by default', () => {
     const value = [{
       type: 'paragraph',

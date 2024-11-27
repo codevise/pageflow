@@ -42,6 +42,10 @@ export function applyColor(editor, color) {
   applyProperties(editor, {color});
 }
 
+export function applyTextAlign(editor, textAlign) {
+  applyProperties(editor, {textAlign: textAlign === 'justify' ? 'justify' : undefined});
+}
+
 function applyProperties(editor, properties) {
   Transforms.setNodes(editor, properties, {mode: 'highest'});
   applyPropertiesToListItems(editor, properties);

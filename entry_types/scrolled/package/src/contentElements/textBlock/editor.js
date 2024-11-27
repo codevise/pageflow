@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import {utils} from 'pageflow-scrolled/frontend';
 import {editor} from 'pageflow-scrolled/editor';
 import {InfoBoxView} from 'pageflow/editor';
-import {SeparatorView} from 'pageflow/ui'
+import {SeparatorView, SelectInputView} from 'pageflow/ui'
 
 import pictogram from './pictogram.svg';
 
@@ -50,6 +50,10 @@ editor.contentElementTypes.register('textBlock', {
         entry,
         model: modelDelegator,
         propertyName: 'color'
+      });
+      this.input('textAlign', SelectInputView, {
+        model: contentElement.transientState,
+        values: ['ragged', 'justify']
       });
 
       this.view(SeparatorView);
