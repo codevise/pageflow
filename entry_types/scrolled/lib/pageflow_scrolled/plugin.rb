@@ -37,8 +37,6 @@ module PageflowScrolled
         c.features.register('datawrapper_chart_embed_opt_in')
         c.features.enable_by_default('datawrapper_chart_embed_opt_in')
         c.features.register('iframe_embed_content_element')
-        c.features.register('hotspots_content_element')
-        c.features.register('image_gallery_content_element')
         c.features.register('frontend_v2')
         c.features.register('scrolled_entry_fragment_caching')
         c.features.register('backdrop_content_elements')

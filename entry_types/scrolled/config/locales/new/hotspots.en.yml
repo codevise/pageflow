@@ -1,7 +1,4 @@
 en:
-  pageflow:
-    hotspots_content_element:
-      feature_name: Hotspots content element
   pageflow_scrolled:
     inline_editing:
       select_link_destination: "Select link destination"
