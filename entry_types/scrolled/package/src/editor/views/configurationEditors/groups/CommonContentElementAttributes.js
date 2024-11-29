@@ -125,19 +125,21 @@ ConfigurationEditorTabView.groups.define(
       name: 'figureCaption'
     });
 
-    this.input('captionVariant', SelectInputView, {
-      attributeTranslationKeyPrefixes: [
-        'pageflow_scrolled.editor.common_content_element_attributes'
-      ],
-      includeBlank: true,
-      blankTranslationKey: 'pageflow_scrolled.editor.' +
-                           'common_content_element_attributes.' +
-                           'captionVariant.blank',
-      values: variants,
-      texts,
-      disabledBindingModel: this.model.parent.transientState,
-      disabledBinding: 'hasCaption',
-      disabled: hasCaption => disableWhenNoCaption && !hasCaption
-    });
+    if (variants.length) {
+      this.input('captionVariant', SelectInputView, {
+        attributeTranslationKeyPrefixes: [
+          'pageflow_scrolled.editor.common_content_element_attributes'
+        ],
+        includeBlank: true,
+        blankTranslationKey: 'pageflow_scrolled.editor.' +
+                             'common_content_element_attributes.' +
+                             'captionVariant.blank',
+        values: variants,
+        texts,
+        disabledBindingModel: this.model.parent.transientState,
+        disabledBinding: 'hasCaption',
+        disabled: hasCaption => disableWhenNoCaption && !hasCaption
+      });
+    }
   }
 );

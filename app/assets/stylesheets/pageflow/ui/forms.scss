@@ -121,6 +121,10 @@ textarea.short {
   .separator {
     border-top: solid 1px var(--ui-on-surface-color-lightest);
     margin: space(4) 0;
+
+    &:last-child {
+      display: none;
+    }
   }
 }
 
