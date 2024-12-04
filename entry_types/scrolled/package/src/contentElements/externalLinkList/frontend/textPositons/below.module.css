@@ -19,7 +19,7 @@
   justify-content: center;
 }
 
-.list > a {
+.list > * {
   margin: 2% 0;
   width: calc((100% - var(--gap) * (var(--columns) - 1)) / var(--columns));
 }
@@ -45,7 +45,7 @@
 }
 
 @container (max-width: 699px) {
-  .linkWidth-m > a {
+  .linkWidth-m > * {
     max-width: 300px;
   }
 }

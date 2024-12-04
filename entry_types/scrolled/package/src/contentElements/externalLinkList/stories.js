@@ -113,6 +113,24 @@ storiesOfContentElement(module, {
           }
         }
       }
+    },
+    {
+      name: 'Without link urls',
+      configuration: {
+        links: [
+          {
+            id: '1',
+            title: 'Static Teaser',
+            thumbnail: filePermaId('imageFiles', 'turtle'),
+            description: 'This is description'
+          },
+          {
+            id: '2',
+            title: 'Other item',
+            description: 'This is pageflowio link'
+          }
+        ]
+      },
     }
   ],
   inlineFileRights: true

@@ -27,15 +27,15 @@
   composes: textPosition-below;
 }
 
-.textPosition-below:hover {
+a.textPosition-below:hover {
   transform: scale(var(--theme-external-links-card-hover-scale, 1.05));
 }
 
-.textPosition-right:hover {
+a.textPosition-right:hover {
   transform: scale(var(--theme-external-links-card-hover-scale, 1.02));
 }
 
-.item:hover .link_title {
+a.item:hover .link_title {
   text-decoration: underline;
 }
 
