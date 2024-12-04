@@ -120,7 +120,7 @@ function Heading({attributes, variantClassName, styles: inlineStyles, children})
   );
 }
 
-function renderLink({attributes, children, element}) {
+export function renderLink({attributes, children, element}) {
   const {key, ...otherAttributes} = attributes;
 
   return (

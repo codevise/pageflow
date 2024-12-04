@@ -99,6 +99,7 @@ export {useScrollPosition} from './useScrollPosition';
 export {usePhonePlatform} from './usePhonePlatform';
 export {useIsomorphicLayoutEffect} from './useIsomorphicLayoutEffect';
 
+export {EditableTable} from './EditableTable';
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
 export {EditableLink} from './EditableLink';

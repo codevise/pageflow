@@ -1,0 +1,38 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  --table-border-color: transparent;
+}
+
+.table td {
+  min-width: 50px;
+  vertical-align: top;
+}
+
+.table td:first-child {
+  border-right: solid 1px var(--table-border-color);
+  padding: 0.5rem 0.5rem 0.5rem 0;
+  white-space: pre;
+}
+
+.table td:last-child {
+  width: 100%;
+  padding: 0.5rem 0 0.5rem 0.5rem;
+}
+
+.center td {
+  width: 50%;
+}
+
+.center td:first-child {
+  text-align: right;
+}
+
+.table tr:nth-child(n + 2) td {
+  border-top: solid 1px var(--table-border-color);
+}
+
+.selected {
+  --table-border-color: color-mix(in srgb, transparent, currentColor);
+}

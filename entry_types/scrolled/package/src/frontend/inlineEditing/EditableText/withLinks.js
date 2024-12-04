@@ -13,17 +13,21 @@ export function withLinks(editor) {
   return editor
 }
 
-export function renderElementWithLinkPreview(options) {
-  if (options.element.type === 'link') {
-    return (
+export const renderElementWithLinkPreview =
+  wrapRenderElementWithLinkPreview(renderElement);
 
-      <LinkPreview href={options.element.href}
-                   openInNewTab={options.element.openInNewTab}>
-        {renderElement(options)}
-      </LinkPreview>
-    )
-  }
-  else {
-    return renderElement(options);
+export function wrapRenderElementWithLinkPreview(renderElement) {
+  return function(options) {
+    if (options.element.type === 'link') {
+      return (
+        <LinkPreview href={options.element.href}
+                     openInNewTab={options.element.openInNewTab}>
+          {renderElement(options)}
+        </LinkPreview>
+      )
+    }
+    else {
+      return renderElement(options);
+    }
   }
 }

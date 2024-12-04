@@ -207,6 +207,19 @@
   font-weight: bold;
 }
 
+.infoTableLabel {
+  composes: typography-infoTableLabel from global;
+  font-size: text-s;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.infoTableValue {
+  composes: typography-infoTableValue from global;
+  font-size: text-s;
+  line-height: 1.4;
+}
+
 @media (max-width: 600px) {
   .heading-lg {
     font-size: text-xl;

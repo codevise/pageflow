@@ -38,6 +38,23 @@ import {useShortcutHandler} from './shortcuts';
 
 import styles from './index.module.css';
 
+export {
+  wrapRenderElementWithLinkPreview
+} from './withLinks';
+
+export {
+  decorateLineBreaks,
+  useLineBreakHandler,
+  useShortcutHandler,
+  renderLeafWithLineBreakDecoration,
+  withLinks,
+  withLineBreakNormalization,
+  LinkTooltipProvider,
+  HoveringToolbar
+};
+
+export const selectedClassName = styles.selected;
+
 export const EditableText = React.memo(function EditableText({
   value, contentElementId, placeholder, onChange, selectionRect, className,
   placeholderClassName, scaleCategory = 'body', autoFocus,
