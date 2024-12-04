@@ -1,0 +1,13 @@
+.placeholder {
+  pointer-events: none;
+  opacity: 0.5;
+  font-weight: normal;
+}
+
+.placeholder::before {
+  content: attr(data-text);
+  display: block;
+  height: 0;
+  position: relative;
+  top: -1lh;
+}

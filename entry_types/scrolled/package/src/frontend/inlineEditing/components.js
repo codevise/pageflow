@@ -6,6 +6,7 @@ export {LayoutWithPlaceholder} from './LayoutWithPlaceholder';
 
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
+export {EditableTable} from './EditableTable';
 export {EditableLink} from './EditableLink';
 
 export {ActionButton} from './ActionButton';

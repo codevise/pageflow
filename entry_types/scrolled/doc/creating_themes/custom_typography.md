@@ -88,6 +88,9 @@ The following rule names are supported:
 | `hotspot_tooltip_title` | Applies to the title in hotspot tooltips. |
 | `hotspot_tooltip_description` | Applies to the description text in hotspot tooltips. |
 | `hotspot_tooltip_link` | Applies to link buttons in hotspot tooltips. |
+| `info_table_label` | Applies to first column of info tables. |
+| `info_table_value` | Applies to second column of info tables. |
+
 
 ### Responsive Breakpoints
 

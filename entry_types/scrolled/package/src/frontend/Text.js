@@ -15,6 +15,7 @@ import styles from './Text.module.css';
  *   `'quoteText-lg'`, `'quoteText-md'`, `'quoteText-sm'`, `'quoteText-xs'`, `'quoteAttribution'`,
  *   `'counterNumber-lg'`, `'counterNumber-md'`, `'counterNumber-sm'`,
  *   `'counterNumber-xs'`, `'counterDescription`'.
+ *   `'infoTableLabel'`, `'infoTableValue`'.
  *   `'hotspotsTooltipTitle'`, `'hotspotsTooltipDescription`', `'hotspotsTooltipLink`'.
  * @param {string} [props.inline] - Render a span instread of a div.
  * @param {string} props.children - Nodes to render with specified typography.
@@ -37,6 +38,7 @@ Text.propTypes = {
     'hotspotsTooltipTitle', 'hotspotsTooltipDescription', 'hotspotsTooltipLink',
     'counterNumber-lg', 'counterNumber-md', 'counterNumber-sm', 'counterNumber-xs',
     'counterDescription',
+    'infoTableLabel', 'infoTableValue',
     'body', 'caption', 'question'
   ]),
 }
