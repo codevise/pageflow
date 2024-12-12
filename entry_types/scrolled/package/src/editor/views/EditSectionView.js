@@ -52,7 +52,8 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBinding: 'backdropType',
         visibleBindingValue: 'image',
         positioning: false,
-        dropDownMenuItems: [editMotifAreaMenuItem, InlineFileRightsMenuItem]
+        dropDownMenuItems: [editMotifAreaMenuItem, InlineFileRightsMenuItem],
+        dropDownMenuName: 'backdropImageFileInput'
       });
       this.input('backdropVideo', FileInputView, {
         collection: 'video_files',
