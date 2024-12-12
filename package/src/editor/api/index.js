@@ -3,6 +3,7 @@ import _ from 'underscore';
 import {Object} from 'pageflow/ui';
 
 import {CommonPageConfigurationTabs} from './CommonPageConfigurationTabs';
+import {DropDownMenuItems} from './DropDownMenuItems';
 import {FailuresAPI} from './Failures';
 import {FileTypes} from './FileTypes';
 import {FileImporters} from './FileImporters'
@@ -79,6 +80,12 @@ export const EditorApi = Object.extend(
      * @memberof editor
      */
     this.fileImporters = new FileImporters();
+
+    /**
+     * List of additional menu items for dropdown menus
+     * @memberof editor
+     */
+    this.dropDownMenuItems = new DropDownMenuItems();
   },
 
   /**

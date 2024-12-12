@@ -3,6 +3,7 @@ import Backbone from 'backbone';
 
 import * as support from '$support';
 import {DropDownButton} from '$support/dominos/editor';
+import {editor} from 'pageflow/editor';
 
 describe('FileInputView', () => {
   let testContext;
@@ -88,6 +89,42 @@ describe('FileInputView', () => {
     fileInputView.render();
     var dropDownButton = DropDownButton.find(fileInputView);
     dropDownButton.selectMenuItemByLabel('Custom Item');
+
+    expect(handler).toHaveBeenCalledWith({
+      inputModel: model,
+      propertyName: 'file_id',
+      file: fixture.imageFile
+    });
+  });
+
+  it('can render additional drop down menu item registered via editor API', () => {
+    const fixture = support.factories.imageFilesFixture({
+      imageFileAttributes: {perma_id: 5}
+    });
+    const model = new Configuration({
+      file_id: 5,
+    });
+    const handler = jest.fn();
+
+    editor.dropDownMenuItems.register({
+        name: 'api_custom',
+        label: 'Custom Item added via editor API',
+        selected: handler
+      }, {
+        menuName: 'backdropImageFileInput',
+      }
+    )
+
+    var fileInputView = new FileInputView({
+      collection: fixture.imageFiles,
+      model: model,
+      propertyName: 'file_id',
+      dropDownMenuName: 'backdropImageFileInput'
+    });
+
+    fileInputView.render();
+    var dropDownButton = DropDownButton.find(fileInputView);
+    dropDownButton.selectMenuItemByLabel('Custom Item added via editor API');
 
     expect(handler).toHaveBeenCalledWith({
       inputModel: model,
