@@ -55,19 +55,20 @@ export function ExternalLink(props) {
   }
 
   return (
-    <a className={classNames(styles.item,
-                             styles[`textPosition-${props.textPosition}`],
-                             styles[`thumbnailSize-${props.thumbnailSize}`],
-                             styles[`textSize-${props.textSize}`],
-                             {[styles.invert]: props.invert})}
-       href={url || 'about:blank'}
-       title={props.textPosition === 'title' ?
-              [props.title, props.description].filter(Boolean).join("\n") :
-              null}
-       onClick={onClick}
-       onMouseLeave={onMouseLeave}
-       target={props.open_in_new_tab ? '_blank' : '_self'}
-       rel={props.open_in_new_tab ? 'noopen noreferrer' : undefined}>
+    <LinkOrDiv
+      className={classNames(styles.item,
+                            styles[`textPosition-${props.textPosition}`],
+                            styles[`thumbnailSize-${props.thumbnailSize}`],
+                            styles[`textSize-${props.textSize}`],
+                            {[styles.invert]: props.invert})}
+      href={url}
+      title={props.textPosition === 'title' ?
+             [props.title, props.description].filter(Boolean).join("\n") :
+             null}
+      onClick={onClick}
+      onMouseLeave={onMouseLeave}
+      target={props.open_in_new_tab ? '_blank' : '_self'}
+      rel={props.open_in_new_tab ? 'noopen noreferrer' : undefined}>
       <div className={styles.thumbnail}>
         <Thumbnail imageFile={thumbnailImageFile}
                    aspectRatio={props.thumbnailAspectRatio}
@@ -84,12 +85,29 @@ export function ExternalLink(props) {
         </div>
       </div>
       {renderNewTabTooltip()}
-    </a>
+    </LinkOrDiv>
   );
 }
 
+function LinkOrDiv({children, ...props}) {
+  if (props.href) {
+    return (
+      <a {...props}>
+        {children}
+      </a>
+    );
+  }
+  else {
+    return (
+      <div className={props.className}
+           title={props.title}>
+        {children}
+      </div>
+    );
+  }
+}
 function ensureAbsolute(url) {
-  if (url.match(/^(https?:)?\/\//)) {
+  if (!url || url.match(/^(https?:)?\/\//)) {
     return url;
   }
   else {

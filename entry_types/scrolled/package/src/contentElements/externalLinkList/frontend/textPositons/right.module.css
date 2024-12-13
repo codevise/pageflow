@@ -8,7 +8,7 @@
   justify-content: center;
 }
 
-.list > a {
+.list > * {
   width: 100%;
   margin: 2% 0;
 }

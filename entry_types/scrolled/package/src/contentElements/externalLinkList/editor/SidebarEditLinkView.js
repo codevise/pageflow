@@ -37,9 +37,7 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
     var thumbnailAspectRatio = this.options.contentElement.configuration.get('thumbnailAspectRatio');
 
     configurationEditor.tab('edit_link', function () {
-      this.input('url', TextInputView, {
-        required: true
-      });
+      this.input('url', TextInputView);
       this.input('open_in_new_tab', CheckBoxInputView);
       this.input('thumbnail', FileInputView, {
         collection: 'image_files',
