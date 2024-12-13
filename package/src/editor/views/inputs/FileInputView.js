@@ -146,6 +146,13 @@ export const FileInputView = Marionette.ItemView.extend({
         items.add(this._createCustomMenuItem(file, item));
       });
 
+      if (this.options.dropDownMenuName) {
+        const customItems = editor.dropDownMenuItems.findAllByMenuName(this.options.dropDownMenuName);
+        _.each(customItems, item => {
+          items.add(this._createCustomMenuItem(file, item));
+        });
+      }
+
       items.add(new FileInputView.EditFileSettingsMenuItem({
         name: 'edit_file_settings',
         label: I18n.t('pageflow.editor.views.inputs.file_input.edit_file_settings')
