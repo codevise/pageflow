@@ -4,7 +4,7 @@ export function withFixedColumns(editor) {
   const {insertBreak, deleteBackward, deleteForward, deleteFragment} = editor;
 
   editor.insertBreak = () => {
-    const cellMatch = matchCurrentCell(editor);
+    const cellMatch = matchCell(editor);
 
     if (cellMatch) {
       const [cellNode, cellPath] = cellMatch;
@@ -73,7 +73,7 @@ export function withFixedColumns(editor) {
     const {selection} = editor;
 
     if (selection && Range.isCollapsed(selection)) {
-      const cellMatch = matchCurrentCell(editor);
+      const cellMatch = matchCell(editor);
 
       if (cellMatch) {
         const [, cellPath] = cellMatch;
@@ -117,7 +117,7 @@ export function withFixedColumns(editor) {
     const {selection} = editor;
 
     if (selection && Range.isCollapsed(selection)) {
-      const cellMatch = matchCurrentCell(editor);
+      const cellMatch = matchCell(editor);
 
       if (cellMatch) {
         const [, cellPath] = cellMatch;
@@ -178,67 +178,130 @@ export function withFixedColumns(editor) {
   };
 
   editor.deleteFragment = () => {
-    const { selection } = editor;
+    if (editor.selection && Range.isExpanded(editor.selection)) {
+      const [startPoint, endPoint] = Range.edges(editor.selection);
 
-    if (selection && Range.isExpanded(selection)) {
-      const [startCellMatch] = Editor.nodes(editor, {
-        match: (n) => n.type === 'label' || n.type === 'value',
-        at: selection.anchor.path,
-      });
-
-      const [endCellMatch] = Editor.nodes(editor, {
-        match: (n) => n.type === 'label' || n.type === 'value',
-        at: selection.focus.path,
-      });
+      const startCellMatch = matchCell(editor, {at: startPoint.path});
+      const endCellMatch = matchCell(editor, {at: endPoint.path});
 
       if (startCellMatch && endCellMatch) {
         const [, startCellPath] = startCellMatch;
-        const [, startRowSecondCellPath] = Editor.next(editor, {at: startCellPath});
         const [, endCellPath] = endCellMatch;
 
-        // Collect all rows in the selection range
-        const rows = Array.from(Editor.nodes(editor, {
-          match: (n) => n.type === 'row',
-          at: { anchor: selection.anchor, focus: selection.focus },
-        }));
+        if (!Path.equals(startCellPath, endCellPath)) {
+          const rewrittenCellPath = getRewrittenCellPath(startCellPath, endCellPath);
 
-        // Delete text in the end cell from the start of the cell to the selection focus
-        const endCellText = Editor.string(editor, {
-          focus: selection.focus,
-          anchor: Editor.end(editor, endCellPath),
-        });
-        Transforms.insertText(editor, endCellText, {at: startRowSecondCellPath})
+          const rows = Array.from(Editor.nodes(editor, {
+            match: (n) => n.type === 'row',
+            at: { anchor: startPoint, focus: endPoint },
+          }));
 
-        // Delete text in the start cell from the selection anchor to the end of the cell
-        Transforms.delete(editor, {
-          at: {
-            anchor: selection.anchor,
-            focus: Editor.end(editor, startCellPath),
-          },
-        });
+          CellTransforms.deleteContentFrom(editor, {
+            cellPath: startCellPath,
+            point: startPoint
+          });
 
-        // Remove all middle rows between start and end rows
-        const middleRows = rows.slice(1); // Exclude the first and last rows
-        middleRows.reverse().forEach(([_, rowPath]) => {
-          Transforms.removeNodes(editor, { at: rowPath });
-        });
+          if (rewrittenCellPath) {
+            const startCellText =
+              CellPath.columnIndex(startCellPath) === CellPath.columnIndex(endCellPath) ?
+              Editor.string(editor, {
+                anchor: Editor.start(editor, startCellPath),
+                focus: startPoint
+              }) :
+              '';
 
-        return;
+            const endCellText = Editor.string(editor, {
+              focus: endPoint,
+              anchor: Editor.end(editor, endCellPath),
+            });
+            Transforms.insertText(editor, startCellText + endCellText, {at: rewrittenCellPath})
+            Transforms.select(editor, {...Editor.start(editor, rewrittenCellPath), offset: startCellText.length});
+
+            rows.reverse().forEach(([_, rowPath]) => {
+              if (rowPath[rowPath.length - 1] !== CellPath.rowIndex(rewrittenCellPath)) {
+                Transforms.removeNodes(editor, {at: rowPath});
+              }
+            });
+          }
+          else {
+            CellTransforms.deleteContentUntil(editor, {
+              cellPath: endCellPath,
+              point: endPoint
+            });
+
+            rows.slice(1, -1).reverse().forEach(([_, rowPath]) => {
+              Transforms.removeNodes(editor, {at: rowPath});
+            });
+
+            Transforms.select(editor, startPoint);
+          }
+
+          return;
+        }
       }
     }
 
-    // Default delete behavior for non-table cases
     deleteFragment();
+
+    function getRewrittenCellPath(startCellPath, endCellPath) {
+      if (CellPath.columnIndex(startCellPath) < CellPath.columnIndex(endCellPath)) {
+        const [, rewrittenCellPath] = Editor.next(editor, {at: startCellPath});
+        return rewrittenCellPath;
+      }
+      else if (CellPath.columnIndex(startCellPath) > CellPath.columnIndex(endCellPath)) {
+        return null;
+      }
+      else if (CellPath.columnIndex(startCellPath) === 0) {
+        return endCellPath;
+      }
+      else {
+        return startCellPath;
+      }
+    }
   };
 
   return editor;
+}
+
+const CellTransforms = {
+  deleteContentUntil(editor, {cellPath, point}) {
+    if (!Editor.isStart(editor, point, cellPath)) {
+      Transforms.delete(editor, {
+        at: {
+          anchor: Editor.start(editor, cellPath),
+          focus: point,
+        },
+      });
+    }
+  },
+
+  deleteContentFrom(editor, {cellPath, point}) {
+    if (!Editor.isEnd(editor, point, cellPath)) {
+      Transforms.delete(editor, {
+        at: {
+          anchor: point,
+          focus: Editor.end(editor, cellPath),
+        },
+      });
+    }
+  }
+}
+
+const CellPath = {
+  columnIndex(path) {
+    return path[path.length - 1];
+  },
+
+  rowIndex(path) {
+    return path[path.length - 2];
+  }
 }
 
 export function handleTableNavigation(editor, event) {
   const {selection} = editor;
 
   if (selection && Range.isCollapsed(selection)) {
-    const cellMatch = matchCurrentCell(editor);
+    const cellMatch = matchCell(editor);
 
     if (cellMatch) {
       const [, cellPath] = cellMatch;
@@ -267,9 +330,10 @@ export function handleTableNavigation(editor, event) {
   }
 }
 
-function matchCurrentCell(editor) {
+function matchCell(editor, {at} = {}) {
   const [cellMatch] = Editor.nodes(editor, {
-    match: n => n.type === 'label' || n.type === 'value'
+    match: n => n.type === 'label' || n.type === 'value',
+    at
   });
 
   return cellMatch;

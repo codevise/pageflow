@@ -462,7 +462,7 @@ describe('withFixedColumns', () => {
       );
     });
 
-    it('can delete forward in at start of first column', () => {
+    it('can delete forward at start of first column', () => {
       const editor = withFixedColumns(
         <editor>
           <row>
@@ -848,35 +848,351 @@ describe('withFixedColumns', () => {
       );
     });
 
-    it('does not remove cells when deleting selection across rows', () => {
+    it('can delete from end of first column ', () => {
       const editor = withFixedColumns(
         <editor>
           <row>
             <label>
-              Name<anchor />Some
+              Name<anchor />
+            </label>
+            <value>
+              Jane <focus />Doe
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.deleteFragment();
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              Doe
+            </value>
+          </row>
+        </editor>).children
+      );
+    });
+
+    it('can delete until start of first column ', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              A<anchor /> Foo
+            </value>
+          </row>
+          <row>
+            <label>
+              <focus />Name
             </label>
             <value>
               Jane Doe
             </value>
           </row>
+        </editor>
+      );
+
+      editor.deleteFragment();
+
+      expect(editor.children).toEqual((
+        <editor>
           <row>
             <label>
-              A
+              Name
             </label>
             <value>
-              B
+              A
             </value>
           </row>
           <row>
             <label>
-              Other
+              Name
             </label>
             <value>
-              Foo <focus />Content
+              Jane Doe
+            </value>
+          </row>
+        </editor>).children
+      );
+    });
+
+    it('can delete inside second column ', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              <anchor />Jane <focus />Doe
             </value>
           </row>
         </editor>
       );
+
+      editor.deleteFragment();
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              Doe
+            </value>
+          </row>
+        </editor>).children
+      );
+    });
+
+    describe('keeps two column structure when deleting selection across rows', () => {
+      it('from label to value cell', () => {
+        const editor = withFixedColumns(
+          <editor>
+            <row>
+              <label>
+                Name<anchor />Some
+              </label>
+              <value>
+                Jane Doe
+              </value>
+            </row>
+            <row>
+              <label>
+                A
+              </label>
+              <value>
+                B
+              </value>
+            </row>
+            <row>
+              <label>
+                Other
+              </label>
+              <value>
+                Foo <focus />Content
+              </value>
+            </row>
+          </editor>
+        );
+
+        editor.deleteFragment();
+
+        expect(editor.children).toEqual((
+          <editor>
+            <row>
+              <label>
+                Name
+              </label>
+              <value>
+                Content
+              </value>
+            </row>
+          </editor>).children
+        );
+        expect(editor.selection).toEqual({
+          anchor: {path: [0, 1, 0], offset: 0},
+          focus: {path: [0, 1, 0], offset: 0},
+        });
+      });
+
+      it('from value to value cell', () => {
+        const editor = withFixedColumns(
+          <editor>
+            <row>
+              <label>
+                Name
+              </label>
+              <value>
+                Jane <anchor />Doe
+              </value>
+            </row>
+            <row>
+              <label>
+                A
+              </label>
+              <value>
+                B
+              </value>
+            </row>
+            <row>
+              <label>
+                Other
+              </label>
+              <value>
+                Foo <focus />Content
+              </value>
+            </row>
+          </editor>
+        );
+
+        editor.deleteFragment();
+
+        expect(editor.children).toEqual((
+          <editor>
+            <row>
+              <label>
+                Name
+              </label>
+              <value>
+                Jane Content
+              </value>
+            </row>
+          </editor>).children
+        );
+        expect(editor.selection).toEqual({
+          anchor: {path: [0, 1, 0], offset: 5},
+          focus: {path: [0, 1, 0], offset: 5},
+        });
+      });
+
+      it('from label to label cell', () => {
+        const editor = withFixedColumns(
+          <editor>
+            <row>
+              <label>
+                Name<anchor /> Foo
+              </label>
+              <value>
+                Jane Doe
+              </value>
+            </row>
+            <row>
+              <label>
+                A
+              </label>
+              <value>
+                B
+              </value>
+            </row>
+            <row>
+              <label>
+                Other<focus /> Thing
+              </label>
+              <value>
+                Content
+              </value>
+            </row>
+          </editor>
+        );
+
+        editor.deleteFragment();
+
+        expect(editor.children).toEqual((
+          <editor>
+            <row>
+              <label>
+                Name Thing
+              </label>
+              <value>
+                Content
+              </value>
+            </row>
+          </editor>).children
+        );
+        expect(editor.selection).toEqual({
+          anchor: {path: [0, 0, 0], offset: 4},
+          focus: {path: [0, 0, 0], offset: 4},
+        });
+      });
+
+      it('from value to label cell', () => {
+        const editor = withFixedColumns(
+          <editor>
+            <row>
+              <label>
+                Name
+              </label>
+              <value>
+                Jane<anchor /> Foo
+              </value>
+            </row>
+            <row>
+              <label>
+                A
+              </label>
+              <value>
+                B
+              </value>
+            </row>
+            <row>
+              <label>
+                Other <focus />Thing
+              </label>
+              <value>
+                Content
+              </value>
+            </row>
+          </editor>
+        );
+
+        editor.deleteFragment();
+
+        expect(editor.children).toEqual((
+          <editor>
+            <row>
+              <label>
+                Name
+              </label>
+              <value>
+                Jane
+              </value>
+            </row>
+            <row>
+              <label>
+                Thing
+              </label>
+              <value>
+                Content
+              </value>
+            </row>
+          </editor>).children
+        );
+        expect(editor.selection).toEqual({
+          anchor: {path: [0, 1, 0], offset: 4},
+          focus: {path: [0, 1, 0], offset: 4},
+        });
+      });
+    });
+
+    it('does not care about the order of anchor and focus when deleting across rows', () => {
+        const editor = withFixedColumns(
+          <editor>
+            <row>
+              <label>
+                Name<focus />Some
+              </label>
+              <value>
+                Jane Doe
+              </value>
+            </row>
+            <row>
+              <label>
+                A
+              </label>
+              <value>
+                B
+              </value>
+            </row>
+            <row>
+              <label>
+                Other
+              </label>
+              <value>
+                Foo <anchor />Content
+              </value>
+            </row>
+          </editor>
+        );
 
       editor.deleteFragment();
 
@@ -892,11 +1208,15 @@ describe('withFixedColumns', () => {
           </row>
         </editor>).children
       );
+      expect(editor.selection).toEqual({
+        anchor: {path: [0, 1, 0], offset: 0},
+        focus: {path: [0, 1, 0], offset: 0},
+      });
     });
   });
 });
 
-  describe('handleTableNavigation', () => {
+describe('handleTableNavigation', () => {
   it('moves the cursor to the cell above when pressing ArrowUp', () => {
     const editor = withFixedColumns(
       <editor>
