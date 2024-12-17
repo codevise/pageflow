@@ -264,6 +264,58 @@ export function withFixedColumns(editor) {
     }
   };
 
+  editor.insertData = function(data) {
+    const fragment = data.getData('application/x-slate-fragment')
+
+    if (fragment) {
+      const decoded = decodeURIComponent(window.atob(fragment))
+      const parsed = JSON.parse(decoded);
+
+      if (parsed.every(element => element['type'] === 'row')) {
+        editor.insertFragment(parsed);
+      }
+      else {
+        const text = data.getData('text/plain');
+
+        if (text) {
+          editor.insertText(text);
+        }
+      }
+
+      return;
+    }
+  };
+
+  editor.insertFragment = function(fragment) {
+    if (fragment.length === 1 &&
+        fragment[0].children.length === 1) {
+      Transforms.insertFragment(editor, fragment[0].children[0].children);
+    }
+    else {
+      const rowMatch = matchCurrentRow(editor);
+
+      if (rowMatch) {
+        if (fragment[0].children.length === 1) {
+          fragment[0].children.unshift({type: 'label', children: [{text: ''}]});
+        }
+
+        if (fragment[fragment.length - 1].children.length === 1) {
+          fragment[fragment.length - 1].children.push({type: 'value', children: [{text: ''}]});
+        }
+
+        const [, rowPath] = rowMatch;
+        const nextRowPath = Path.next(rowPath);
+        const pathRef = Editor.pathRef(editor, nextRowPath);
+
+        Transforms.insertNodes(editor, fragment, {
+          at: nextRowPath
+        });
+
+        Transforms.select(editor, Editor.end(editor, Path.previous(pathRef.unref())));
+      }
+    }
+  };
+
   return editor;
 }
 

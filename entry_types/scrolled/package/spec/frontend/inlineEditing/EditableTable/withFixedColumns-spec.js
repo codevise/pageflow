@@ -1328,6 +1328,302 @@ describe('withFixedColumns', () => {
       });
     });
   });
+
+  describe('insertFragment', () => {
+    it('inserts text if single cell', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              Some <cursor />
+            </label>
+            <value>
+              Other
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.insertFragment([
+        {
+          "type": "row",
+          "children": [
+            {
+              "type": "value",
+              "children": [
+                {
+                  "text": "Text"
+                }
+              ]
+            }
+          ]
+        }
+      ]);
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              Some Text
+            </label>
+            <value>
+              Other
+            </value>
+          </row>
+        </editor>).children
+      );
+      expect(editor.selection).toEqual({
+        anchor: {path: [0, 0, 0], offset: 9},
+        focus: {path: [0, 0, 0], offset: 9},
+      });
+    });
+
+    it('inserts new rows if multiple cells', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              Some<cursor />
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+          <row>
+            <label>
+              Other
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.insertFragment([
+        {
+          "type": "row",
+          "children": [
+            {
+              "type": "label",
+              "children": [
+                {
+                  "text": "Inserted"
+                }
+              ]
+            },
+            {
+              "type": "value",
+              "children": [
+                {
+                  "text": "row"
+                }
+              ]
+            }
+          ]
+        }
+      ]);
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              Some
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+          <row>
+            <label>
+              Inserted
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+          <row>
+            <label>
+              Other
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+        </editor>).children
+      );
+      expect(editor.selection).toEqual({
+        anchor: {path: [1, 1, 0], offset: 3},
+        focus: {path: [1, 1, 0], offset: 3},
+      });
+    });
+
+    it('can insert multiple rows', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              Some<cursor />
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.insertFragment([
+        {
+          "type": "row",
+          "children": [
+            {
+              "type": "label",
+              "children": [
+                {
+                  "text": "Inserted"
+                }
+              ]
+            },
+            {
+              "type": "value",
+              "children": [
+                {
+                  "text": "row"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "row",
+          "children": [
+            {
+              "type": "label",
+              "children": [
+                {
+                  "text": "Other"
+                }
+              ]
+            },
+            {
+              "type": "value",
+              "children": [
+                {
+                  "text": "row"
+                }
+              ]
+            }
+          ]
+        }
+      ]);
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              Some
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+          <row>
+            <label>
+              Inserted
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+          <row>
+            <label>
+              Other
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+        </editor>).children
+      );
+      expect(editor.selection).toEqual({
+        anchor: {path: [2, 1, 0], offset: 3},
+        focus: {path: [2, 1, 0], offset: 3},
+      });
+    });
+
+    it('adds missing cells to fragment', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              Some<cursor />
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.insertFragment([
+        {
+          "type": "row",
+          "children": [
+            {
+              "type": "value",
+              "children": [
+                {
+                  "text": "Only value"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "row",
+          "children": [
+            {
+              "type": "label",
+              "children": [
+                {
+                  "text": "Only label"
+                }
+              ]
+            }
+          ]
+        }
+      ]);
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              Some
+            </label>
+            <value>
+              row
+            </value>
+          </row>
+          <row>
+            <label>
+              <text />
+            </label>
+            <value>
+              Only value
+            </value>
+          </row>
+          <row>
+            <label>
+              Only label
+            </label>
+            <value>
+              <text />
+            </value>
+          </row>
+        </editor>).children
+      );
+    });
+  });
 });
 
 describe('handleTableNavigation', () => {
