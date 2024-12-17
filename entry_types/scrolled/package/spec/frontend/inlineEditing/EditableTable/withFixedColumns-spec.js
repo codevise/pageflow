@@ -149,6 +149,90 @@ describe('withFixedColumns', () => {
         focus: {path: [1, 1, 0], offset: 0},
       });
     });
+
+    it('preserves formatting in first cell', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              <text bold>First</text> Name<cursor />Last <text bold>Name</text>
+            </label>
+            <value>
+              Jane
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.insertBreak();
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              <text bold>First</text> Name
+            </label>
+            <value>
+              <text />
+            </value>
+          </row>
+          <row>
+            <label>
+              Last <text bold>Name</text>
+            </label>
+            <value>
+              Jane
+            </value>
+          </row>
+        </editor>).children
+      );
+      expect(editor.selection).toEqual({
+        anchor: {path: [1, 0, 0], offset: 0},
+        focus: {path: [1, 0, 0], offset: 0},
+      });
+    });
+
+    it('preserves formatting in second cell', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              <text bold>Jane</text> Doe<cursor />Joe <text bold>Shmoe</text>
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.insertBreak();
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              <text bold>Jane</text> Doe
+            </value>
+          </row>
+          <row>
+            <label>
+              <text />
+            </label>
+            <value>
+              Joe <text bold>Shmoe</text>
+            </value>
+          </row>
+        </editor>).children
+      );
+      expect(editor.selection).toEqual({
+        anchor: {path: [1, 1, 0], offset: 0},
+        focus: {path: [1, 1, 0], offset: 0},
+      });
+    });
   });
 
   describe('deleteBackwards', () => {
@@ -948,6 +1032,36 @@ describe('withFixedColumns', () => {
             </label>
             <value>
               Doe
+            </value>
+          </row>
+        </editor>).children
+      );
+    });
+
+    it('preserves formatting', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              <text bold>Name</text> More<anchor />Some
+            </label>
+            <value>
+              Jane <focus />Doe <text bold>Foo</text>
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.deleteFragment();
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              <text bold>Name</text> More
+            </label>
+            <value>
+              Doe <text bold>Foo</text>
             </value>
           </row>
         </editor>).children

@@ -10,50 +10,49 @@ export function withFixedColumns(editor) {
       const [cellNode, cellPath] = cellMatch;
 
       const [rowMatch] = Editor.nodes(editor, {
-        match: (n) => n.type === 'row',
+        match: (n) => n.type === 'row'
       });
 
       if (rowMatch) {
         const [, rowPath] = rowMatch;
 
         const columnIndex = cellPath[cellPath.length - 1];
-
-        const cursorOffset = editor.selection.anchor.offset;
-        const text = Node.string(cellNode);
-        const beforeText = text.slice(0, cursorOffset);
-        const afterText = text.slice(cursorOffset);
-
         const newRowPath = Path.next(rowPath);
 
+        const [beforeNodes, afterNodes] = Cell.splitChildren(editor, {
+          cellNode,
+          point: editor.selection.anchor
+        });
+
+
         if (columnIndex === 0) {
-          Transforms.insertText(editor, afterText, {at: cellPath });
+          CellTransforms.replaceContent(editor, afterNodes, {cellPath});
 
           const newRow = {
             type: 'row',
             children: [
-              { type: 'label', children: [{text: beforeText}] },
-              { type: 'value', children: [{text: ''}]}
-            ]
+              {type: 'label', children: beforeNodes},
+              {type: 'value', children: [{text: ''}]},
+            ],
           };
 
-          Transforms.insertNodes(editor, newRow, { at: rowPath});
-        }
-        else {
-          Transforms.insertText(editor, beforeText, { at: cellPath });
+          Transforms.insertNodes(editor, newRow, {at: rowPath});
+        } else {
+          CellTransforms.replaceContent(editor, beforeNodes, {cellPath});
 
           const newRow = {
             type: 'row',
             children: [
-              { type: 'label', children: [{text: ''}] },
-              { type: 'value', children: [{text: afterText}]}
-            ]
+              {type: 'label', children: [{text: ''}]},
+              {type: 'value', children: afterNodes},
+            ],
           };
 
-          Transforms.insertNodes(editor, newRow, { at: newRowPath });
+          Transforms.insertNodes(editor, newRow, {at: newRowPath});
         }
 
         const cursor = {
-          path: [...newRowPath, afterText.length ? columnIndex : 0, 0],
+          path: [...newRowPath, afterNodes.length ? columnIndex : 0, 0],
           offset: 0
         };
 
@@ -185,8 +184,8 @@ export function withFixedColumns(editor) {
       const endCellMatch = matchCell(editor, {at: endPoint.path});
 
       if (startCellMatch && endCellMatch) {
-        const [, startCellPath] = startCellMatch;
-        const [, endCellPath] = endCellMatch;
+        const [startCellNode, startCellPath] = startCellMatch;
+        const [endCellNode, endCellPath] = endCellMatch;
 
         if (!Path.equals(startCellPath, endCellPath)) {
           const rewrittenCellPath = getRewrittenCellPath(startCellPath, endCellPath);
@@ -202,20 +201,25 @@ export function withFixedColumns(editor) {
           });
 
           if (rewrittenCellPath) {
-            const startCellText =
+            const beforeNodes =
               CellPath.columnIndex(startCellPath) === CellPath.columnIndex(endCellPath) ?
-              Editor.string(editor, {
-                anchor: Editor.start(editor, startCellPath),
-                focus: startPoint
-              }) :
-              '';
+              Cell.splitChildren(editor, {
+                cellNode: startCellNode,
+                point: startPoint
+              })[0] :
+              [];
 
-            const endCellText = Editor.string(editor, {
-              focus: endPoint,
-              anchor: Editor.end(editor, endCellPath),
+            const [, afterNodes] = Cell.splitChildren(editor, {
+              cellNode: endCellNode,
+              point: endPoint
             });
-            Transforms.insertText(editor, startCellText + endCellText, {at: rewrittenCellPath})
-            Transforms.select(editor, {...Editor.start(editor, rewrittenCellPath), offset: startCellText.length});
+            CellTransforms.replaceContent(editor, beforeNodes.concat(afterNodes), {
+              cellPath: rewrittenCellPath
+            })
+            Transforms.select(editor, {
+              ...Editor.start(editor, rewrittenCellPath),
+              offset: beforeNodes[beforeNodes.length - 1]?.text.length || 0
+            });
 
             rows.reverse().forEach(([_, rowPath]) => {
               if (rowPath[rowPath.length - 1] !== CellPath.rowIndex(rewrittenCellPath)) {
@@ -264,6 +268,14 @@ export function withFixedColumns(editor) {
 }
 
 const CellTransforms = {
+  replaceContent(editor, nodes, {cellPath}) {
+    Transforms.insertText(editor, '', {at: cellPath});
+
+    if (nodes.length > 0) {
+      Transforms.insertNodes(editor, nodes, {at: [...cellPath, 0]});
+    }
+  },
+
   deleteContentUntil(editor, {cellPath, point}) {
     if (!Editor.isStart(editor, point, cellPath)) {
       Transforms.delete(editor, {
@@ -285,6 +297,39 @@ const CellTransforms = {
       });
     }
   }
+};
+
+const Cell = {
+  splitChildren(editor, {cellNode, point}) {
+    const [leafNode, leafPath] = Editor.leaf(editor, point.path);
+
+    const cursorOffset = point.offset;
+    const text = leafNode.text || '';
+    const beforeText = text.slice(0, cursorOffset);
+    const afterText = text.slice(cursorOffset);
+
+    const splitIndex = leafPath[leafPath.length - 1];
+
+    const beforeNodes = [];
+    const afterNodes = [];
+
+    cellNode.children.forEach((node, index) => {
+      if (index < splitIndex) {
+        beforeNodes.push(node);
+      } else if (index === splitIndex) {
+        if (beforeText) {
+          beforeNodes.push({ ...node, text: beforeText });
+        }
+        if (afterText) {
+          afterNodes.push({ ...node, text: afterText });
+        }
+      } else {
+        afterNodes.push(node);
+      }
+    });
+
+    return [beforeNodes, afterNodes];
+  }
 }
 
 const CellPath = {
@@ -295,7 +340,7 @@ const CellPath = {
   rowIndex(path) {
     return path[path.length - 2];
   }
-}
+};
 
 export function handleTableNavigation(editor, event) {
   const {selection} = editor;
