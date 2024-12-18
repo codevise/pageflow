@@ -330,6 +330,90 @@ describe('withFixedColumns', () => {
       });
     });
 
+    it('allows undoing insert break in second column', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              Jane
+            </value>
+          </row>
+          <row>
+            <label>
+              <text />
+            </label>
+            <value>
+              <cursor /> Doe
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.deleteBackward();
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              Jane Doe
+            </value>
+          </row>
+        </editor>).children
+      );
+      expect(editor.selection).toEqual({
+        anchor: {path: [0, 1, 0], offset: 4},
+        focus: {path: [0, 1, 0], offset: 4},
+      });
+    });
+
+    it('allows undoing insert break in first column', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              First
+            </label>
+            <value>
+              <text />
+            </value>
+          </row>
+          <row>
+            <label>
+              <cursor /> name
+            </label>
+            <value>
+              Jane
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.deleteBackward();
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              First name
+            </label>
+            <value>
+              Jane
+            </value>
+          </row>
+        </editor>).children
+      );
+      expect(editor.selection).toEqual({
+        anchor: {path: [0, 0, 0], offset: 5},
+        focus: {path: [0, 0, 0], offset: 5},
+      });
+    });
+
     it('moves cursor to end of previous row when deleting backwards from first cell', () => {
       const editor = withFixedColumns(
         <editor>
@@ -637,6 +721,90 @@ describe('withFixedColumns', () => {
       expect(editor.selection).toEqual({
         anchor: {path: [0, 1, 0], offset: 0},
         focus: {path: [0, 1, 0], offset: 0},
+      });
+    });
+
+    it('allows undoing insert break in second column', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              Jane <cursor />
+            </value>
+          </row>
+          <row>
+            <label>
+              <text />
+            </label>
+            <value>
+              Doe
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.deleteForward();
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              Jane Doe
+            </value>
+          </row>
+        </editor>).children
+      );
+      expect(editor.selection).toEqual({
+        anchor: {path: [0, 1, 0], offset: 5},
+        focus: {path: [0, 1, 0], offset: 5},
+      });
+    });
+
+    it('allows undoing insert break in first column', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              First <cursor />
+            </label>
+            <value>
+              <text />
+            </value>
+          </row>
+          <row>
+            <label>
+              name
+            </label>
+            <value>
+              Jane
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.deleteForward();
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              First name
+            </label>
+            <value>
+              Jane
+            </value>
+          </row>
+        </editor>).children
+      );
+      expect(editor.selection).toEqual({
+        anchor: {path: [0, 0, 0], offset: 6},
+        focus: {path: [0, 0, 0], offset: 6},
       });
     });
 

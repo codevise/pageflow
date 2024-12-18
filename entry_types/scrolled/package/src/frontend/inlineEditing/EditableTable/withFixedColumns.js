@@ -75,16 +75,16 @@ export function withFixedColumns(editor) {
       const cellMatch = matchCell(editor);
 
       if (cellMatch) {
-        const [, cellPath] = cellMatch;
+        const [cell, cellPath] = cellMatch;
         const start = Editor.start(editor, cellPath);
 
         if (Point.equals(selection.anchor, start)) {
           const columnIndex = cellPath[cellPath.length - 1];
 
-          if (columnIndex === 0) {
-            const rowMatch = matchCurrentRow(editor);
-            const previousRowMatch = matchPreviousRow(editor);
+          const rowMatch = matchCurrentRow(editor);
+          const previousRowMatch = matchPreviousRow(editor);
 
+          if (columnIndex === 0) {
             if (previousRowMatch) {
               const [row, rowPath] = rowMatch;
               const [previousRow, previousRowPath] = previousRowMatch;
@@ -96,11 +96,44 @@ export function withFixedColumns(editor) {
                 Transforms.delete(editor, {at: rowPath});
               }
               else {
+                const previousRowSecondCell = Node.child(previousRow, 1);
+
+                if (Node.string(previousRowSecondCell) === '') {
+                  const insertPoint = Editor.end(editor, [...previousRowPath, 0]);
+                  Transforms.insertNodes(editor, cell.children, {at: insertPoint});
+
+                  Transforms.delete(editor, {at: [...previousRowPath, 1]});
+                  Transforms.insertNodes(editor, Node.child(row, 1), {at: Editor.end(editor, previousRowPath)});
+                  Transforms.delete(editor, {at: rowPath});
+
+                  Transforms.select(editor, insertPoint);
+
+                  return;
+                }
+
                 Transforms.select(editor, Editor.end(editor, previousRowPath));
               }
             }
           }
           else {
+            const previousCellMatch = matchCell(editor, {at: Path.previous(cellPath)});
+
+            if (previousCellMatch && previousRowMatch) {
+              const [, rowPath] = rowMatch;
+              const [previousCell] = previousCellMatch;
+              const [, previousRowPath] = previousRowMatch;
+
+              if (Node.string(previousCell) === '') {
+                const insertPoint = Editor.end(editor, previousRowPath);
+
+                Transforms.insertNodes(editor, cell.children, {at: insertPoint});
+                Transforms.delete(editor, {at: rowPath});
+                Transforms.select(editor, insertPoint);
+
+                return;
+              }
+            }
+
             Transforms.select(editor, Editor.end(editor, Path.previous(cellPath)));
           }
 
@@ -125,13 +158,13 @@ export function withFixedColumns(editor) {
         if (Point.equals(selection.anchor, Editor.end(editor, cellPath))) {
           if (columnIndex === 0) {
             const rowMatch = matchCurrentRow(editor);
+            const nextRowMatch = matchNextRow(editor);
 
             if (rowMatch) {
               const [row, rowPath] = rowMatch;
 
               if (Node.string(row) === '') {
                 const previousRowMatch = matchPreviousRow(editor);
-                const nextRowMatch = matchNextRow(editor);
 
                 if (previousRowMatch || nextRowMatch) {
                   Transforms.delete(editor, {at: rowPath});
@@ -146,6 +179,24 @@ export function withFixedColumns(editor) {
                 }
               }
               else {
+                const nextCellMatch = matchCell(editor, {at: Path.next(cellPath)});
+
+                if (nextCellMatch && nextRowMatch) {
+                  const [nextCell] = nextCellMatch;
+                  const [nextRow, nextRowPath] = nextRowMatch;
+
+                  if (Node.string(nextCell) === '') {
+                    Transforms.insertNodes(editor, Node.child(nextRow, 0).children, {
+                      at: Editor.end(editor, cellPath)
+                    });
+                    Transforms.delete(editor, {at: [...rowPath, 1]});
+                    Transforms.insertNodes(editor, Node.child(nextRow, 1), {at: Editor.end(editor, rowPath)});
+                    Transforms.delete(editor, {at: nextRowPath});
+
+                    return;
+                  }
+                }
+
                 Transforms.select(editor, Editor.start(editor, Path.next(cellPath)));
               }
 
@@ -163,6 +214,18 @@ export function withFixedColumns(editor) {
                 Transforms.delete(editor, {at: nextRowPath});
               }
               else {
+                if (nextRowMatch) {
+                  const nextRowFirstCell = Node.child(nextRow, 0);
+
+                  if (Node.string(nextRowFirstCell) === '') {
+                    Transforms.insertNodes(editor, Node.child(nextRow, 1).children, {
+                      at: Editor.end(editor, cellPath)
+                    });
+                    Transforms.delete(editor, {at: nextRowPath});
+                    return;
+                  }
+                }
+
                 Transforms.select(editor, Editor.start(editor, nextRowPath));
               }
             }
