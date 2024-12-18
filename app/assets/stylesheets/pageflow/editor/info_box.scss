@@ -35,7 +35,7 @@
 
   // Make sure the label is on top when an inline help text is displayed
   dt:hover .shortcut {
-    z-index: 4;
+    z-index: 5;
     position: relative;
   }
 }
