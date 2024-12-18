@@ -1,242 +1,219 @@
-import {Editor, Node, Path, Point, Range, Transforms} from 'slate';
+import {Editor, Node, Path, Range, Transforms} from 'slate';
 
 export function withFixedColumns(editor) {
-  const {insertBreak, deleteBackward, deleteForward, deleteFragment} = editor;
+  const {deleteBackward, deleteForward, deleteFragment} = editor;
 
   editor.insertBreak = () => {
     const cellMatch = matchCell(editor);
 
-    if (cellMatch) {
-      const [cellNode, cellPath] = cellMatch;
+    if (!cellMatch) {
+      return;
+    }
 
-      const [rowMatch] = Editor.nodes(editor, {
-        match: (n) => n.type === 'row'
-      });
+    const [cellNode, cellPath] = cellMatch;
+    const [, rowPath] = Editor.parent(editor, cellPath);
 
-      if (rowMatch) {
-        const [, rowPath] = rowMatch;
+    const columnIndex = cellPath[cellPath.length - 1];
+    const newRowPath = Path.next(rowPath);
 
-        const columnIndex = cellPath[cellPath.length - 1];
-        const newRowPath = Path.next(rowPath);
+    const [beforeNodes, afterNodes] = Cell.splitChildren(editor, {
+      cellNode,
+      point: editor.selection.anchor
+    });
 
-        const [beforeNodes, afterNodes] = Cell.splitChildren(editor, {
-          cellNode,
-          point: editor.selection.anchor
-        });
+    if (columnIndex === 0) {
+      CellTransforms.replaceContent(editor, afterNodes, {cellPath});
 
+      const newRow = {
+        type: 'row',
+        children: [
+          {type: 'label', children: beforeNodes},
+          {type: 'value', children: [{text: ''}]},
+        ],
+      };
 
-        if (columnIndex === 0) {
-          CellTransforms.replaceContent(editor, afterNodes, {cellPath});
+      Transforms.insertNodes(editor, newRow, {at: rowPath});
+    } else {
+      CellTransforms.replaceContent(editor, beforeNodes, {cellPath});
 
-          const newRow = {
-            type: 'row',
-            children: [
-              {type: 'label', children: beforeNodes},
-              {type: 'value', children: [{text: ''}]},
-            ],
-          };
+      const newRow = {
+        type: 'row',
+        children: [
+          {type: 'label', children: [{text: ''}]},
+          {type: 'value', children: afterNodes},
+        ],
+      };
 
-          Transforms.insertNodes(editor, newRow, {at: rowPath});
-        } else {
-          CellTransforms.replaceContent(editor, beforeNodes, {cellPath});
+      Transforms.insertNodes(editor, newRow, {at: newRowPath});
+    }
 
-          const newRow = {
-            type: 'row',
-            children: [
-              {type: 'label', children: [{text: ''}]},
-              {type: 'value', children: afterNodes},
-            ],
-          };
-
-          Transforms.insertNodes(editor, newRow, {at: newRowPath});
-        }
-
-        const cursor = {
-          path: [...newRowPath, afterNodes.length ? columnIndex : 0, 0],
-          offset: 0
-        };
-
-        Transforms.select(editor, {
-          anchor: cursor,
-          focus: cursor,
-        });
-
-        return;
-      }
+    const cursor = {
+      path: [...newRowPath, afterNodes.length ? columnIndex : 0, 0],
+      offset: 0
     };
 
-    insertBreak();
+    Transforms.select(editor, {
+      anchor: cursor,
+      focus: cursor,
+    });
   };
 
   editor.deleteBackward = function() {
-    const {selection} = editor;
+    if (!editor.selection || !Range.isCollapsed(editor.selection)) {
+      return;
+    }
 
-    if (selection && Range.isCollapsed(selection)) {
-      const cellMatch = matchCell(editor);
+    const cellMatch = matchCell(editor);
 
-      if (cellMatch) {
-        const [cell, cellPath] = cellMatch;
-        const start = Editor.start(editor, cellPath);
+    if (!cellMatch) {
+      return;
+    }
 
-        if (Point.equals(selection.anchor, start)) {
-          const columnIndex = cellPath[cellPath.length - 1];
+    const [cell, cellPath] = cellMatch;
 
-          const rowMatch = matchCurrentRow(editor);
-          const previousRowMatch = matchPreviousRow(editor);
+    if (!Editor.isStart(editor, editor.selection.anchor, cellPath)) {
+      deleteBackward.apply(this, arguments);
+      return;
+    }
 
-          if (columnIndex === 0) {
-            if (previousRowMatch) {
-              const [row, rowPath] = rowMatch;
-              const [previousRow, previousRowPath] = previousRowMatch;
+    const columnIndex = cellPath[cellPath.length - 1];
+    const [row, rowPath] = Editor.parent(editor, cellPath);
+    const previousRowMatch = Editor.previous(editor, {at: rowPath});
 
-              if (Node.string(previousRow) === '') {
-                Transforms.delete(editor, {at: previousRowPath});
-              }
-              else if (Node.string(row) === '') {
-                Transforms.delete(editor, {at: rowPath});
-              }
-              else {
-                const previousRowSecondCell = Node.child(previousRow, 1);
+    if (columnIndex === 0) {
+      if (previousRowMatch) {
+        const [previousRow, previousRowPath] = previousRowMatch;
 
-                if (Node.string(previousRowSecondCell) === '') {
-                  const insertPoint = Editor.end(editor, [...previousRowPath, 0]);
-                  Transforms.insertNodes(editor, cell.children, {at: insertPoint});
+        if (Node.string(previousRow) === '') {
+          Transforms.delete(editor, {at: previousRowPath});
+        }
+        else if (Node.string(row) === '') {
+          Transforms.delete(editor, {at: rowPath});
+        }
+        else {
+          const previousRowSecondCell = Node.child(previousRow, 1);
 
-                  Transforms.delete(editor, {at: [...previousRowPath, 1]});
-                  Transforms.insertNodes(editor, Node.child(row, 1), {at: Editor.end(editor, previousRowPath)});
-                  Transforms.delete(editor, {at: rowPath});
+          if (Node.string(previousRowSecondCell) === '') {
+            const insertPoint = Editor.end(editor, [...previousRowPath, 0]);
+            Transforms.insertNodes(editor, cell.children, {at: insertPoint});
 
-                  Transforms.select(editor, insertPoint);
+            Transforms.delete(editor, {at: [...previousRowPath, 1]});
+            Transforms.insertNodes(editor, Node.child(row, 1), {at: Editor.end(editor, previousRowPath)});
+            Transforms.delete(editor, {at: rowPath});
 
-                  return;
-                }
+            Transforms.select(editor, insertPoint);
 
-                Transforms.select(editor, Editor.end(editor, previousRowPath));
-              }
-            }
+            return;
           }
-          else {
-            const previousCellMatch = matchCell(editor, {at: Path.previous(cellPath)});
 
-            if (previousCellMatch && previousRowMatch) {
-              const [, rowPath] = rowMatch;
-              const [previousCell] = previousCellMatch;
-              const [, previousRowPath] = previousRowMatch;
+          Transforms.select(editor, Editor.end(editor, previousRowPath));
+        }
+      }
+    }
+    else {
+      const previousCellMatch = Editor.previous(editor, {at: cellPath});
 
-              if (Node.string(previousCell) === '') {
-                const insertPoint = Editor.end(editor, previousRowPath);
+      if (previousRowMatch) {
+        const [previousCell] = previousCellMatch;
+        const [, previousRowPath] = previousRowMatch;
 
-                Transforms.insertNodes(editor, cell.children, {at: insertPoint});
-                Transforms.delete(editor, {at: rowPath});
-                Transforms.select(editor, insertPoint);
+        if (Node.string(previousCell) === '') {
+          const insertPoint = Editor.end(editor, previousRowPath);
 
-                return;
-              }
-            }
-
-            Transforms.select(editor, Editor.end(editor, Path.previous(cellPath)));
-          }
+          Transforms.insertNodes(editor, cell.children, {at: insertPoint});
+          Transforms.delete(editor, {at: rowPath});
+          Transforms.select(editor, insertPoint);
 
           return;
         }
       }
-    }
 
-    deleteBackward.apply(this, arguments);
+      Transforms.select(editor, Editor.end(editor, Path.previous(cellPath)));
+    }
   };
 
   editor.deleteForward = () => {
-    const {selection} = editor;
+    if (!editor.selection || !Range.isCollapsed(editor.selection)) {
+      return;
+    }
 
-    if (selection && Range.isCollapsed(selection)) {
-      const cellMatch = matchCell(editor);
+    const cellMatch = matchCell(editor);
 
-      if (cellMatch) {
-        const [, cellPath] = cellMatch;
-        const columnIndex = cellPath[cellPath.length - 1];
+    if (!cellMatch) {
+      return;
+    }
 
-        if (Point.equals(selection.anchor, Editor.end(editor, cellPath))) {
-          if (columnIndex === 0) {
-            const rowMatch = matchCurrentRow(editor);
-            const nextRowMatch = matchNextRow(editor);
+    const [, cellPath] = cellMatch;
 
-            if (rowMatch) {
-              const [row, rowPath] = rowMatch;
+    if (!Editor.isEnd(editor, editor.selection.anchor, cellPath)) {
+      deleteForward();
+      return;
+    }
 
-              if (Node.string(row) === '') {
-                const previousRowMatch = matchPreviousRow(editor);
+    const columnIndex = cellPath[cellPath.length - 1];
+    const [row, rowPath] = Editor.parent(editor, cellPath);
+    const nextRowMatch = Editor.next(editor, {at: rowPath});
 
-                if (previousRowMatch || nextRowMatch) {
-                  Transforms.delete(editor, {at: rowPath});
+    if (columnIndex === 0) {
+      if (Node.string(row) === '') {
+        const previousRowMatch = Editor.previous(editor, {at: rowPath});
 
-                  if (Node.has(editor, rowPath)) {
-                    Transforms.select(editor, Editor.start(editor, rowPath));
-                  }
-                  else {
-                    const [, previousRowPath] = previousRowMatch;
-                    Transforms.select(editor, Editor.start(editor, previousRowPath));
-                  }
-                }
-              }
-              else {
-                const nextCellMatch = matchCell(editor, {at: Path.next(cellPath)});
+        if (previousRowMatch || nextRowMatch) {
+          Transforms.delete(editor, {at: rowPath});
 
-                if (nextCellMatch && nextRowMatch) {
-                  const [nextCell] = nextCellMatch;
-                  const [nextRow, nextRowPath] = nextRowMatch;
+          if (Node.has(editor, rowPath)) {
+            Transforms.select(editor, Editor.start(editor, rowPath));
+          }
+          else {
+            const [, previousRowPath] = previousRowMatch;
+            Transforms.select(editor, Editor.start(editor, previousRowPath));
+          }
+        }
+      }
+      else {
+        const nextCellMatch = matchCell(editor, {at: Path.next(cellPath)});
 
-                  if (Node.string(nextCell) === '') {
-                    Transforms.insertNodes(editor, Node.child(nextRow, 0).children, {
-                      at: Editor.end(editor, cellPath)
-                    });
-                    Transforms.delete(editor, {at: [...rowPath, 1]});
-                    Transforms.insertNodes(editor, Node.child(nextRow, 1), {at: Editor.end(editor, rowPath)});
-                    Transforms.delete(editor, {at: nextRowPath});
+        if (nextCellMatch && nextRowMatch) {
+          const [nextCell] = nextCellMatch;
+          const [nextRow, nextRowPath] = nextRowMatch;
 
-                    return;
-                  }
-                }
+          if (Node.string(nextCell) === '') {
+            Transforms.insertNodes(editor, Node.child(nextRow, 0).children, {
+              at: Editor.end(editor, cellPath)
+            });
+            Transforms.delete(editor, {at: [...rowPath, 1]});
+            Transforms.insertNodes(editor, Node.child(nextRow, 1), {at: Editor.end(editor, rowPath)});
+            Transforms.delete(editor, {at: nextRowPath});
 
-                Transforms.select(editor, Editor.start(editor, Path.next(cellPath)));
-              }
+            return;
+          }
+        }
 
-              return;
-            }
+        Transforms.select(editor, Editor.start(editor, Path.next(cellPath)));
+      }
+    }
+    else {
+      if (nextRowMatch) {
+        const [nextRow, nextRowPath] = nextRowMatch;
+
+        if (Node.string(nextRow) === '') {
+          Transforms.delete(editor, {at: nextRowPath});
+        }
+        else {
+          const nextRowFirstCell = Node.child(nextRow, 0);
+
+          if (Node.string(nextRowFirstCell) === '') {
+            Transforms.insertNodes(editor, Node.child(nextRow, 1).children, {
+              at: Editor.end(editor, cellPath)
+            });
+            Transforms.delete(editor, {at: nextRowPath});
+            return;
           }
 
-          if (columnIndex === 1) {
-            const nextRowMatch = matchNextRow(editor);
-
-            if (nextRowMatch) {
-              const [nextRow, nextRowPath] = nextRowMatch;
-
-              if (Node.string(nextRow) === '') {
-                Transforms.delete(editor, {at: nextRowPath});
-              }
-              else {
-                if (nextRowMatch) {
-                  const nextRowFirstCell = Node.child(nextRow, 0);
-
-                  if (Node.string(nextRowFirstCell) === '') {
-                    Transforms.insertNodes(editor, Node.child(nextRow, 1).children, {
-                      at: Editor.end(editor, cellPath)
-                    });
-                    Transforms.delete(editor, {at: nextRowPath});
-                    return;
-                  }
-                }
-
-                Transforms.select(editor, Editor.start(editor, nextRowPath));
-              }
-            }
-          }
-
-          return;
+          Transforms.select(editor, Editor.start(editor, nextRowPath));
         }
       }
     }
-
-    deleteForward();
   };
 
   editor.deleteFragment = () => {
@@ -505,22 +482,4 @@ function matchCurrentRow(editor) {
   });
 
   return rowMatch;
-}
-
-function matchPreviousRow(editor) {
-  const rowMatch = matchCurrentRow(editor);
-
-  if (rowMatch) {
-    const [, rowPath] = rowMatch;
-    return Editor.previous(editor, {at: rowPath});
-  }
-}
-
-function matchNextRow(editor) {
-  const rowMatch = matchCurrentRow(editor);
-
-  if (rowMatch) {
-    const [, rowPath] = rowMatch;
-    return Editor.next(editor, {at: rowPath});
-  }
 }
