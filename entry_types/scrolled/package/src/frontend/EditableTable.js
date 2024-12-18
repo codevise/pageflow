@@ -91,7 +91,6 @@ export function createRenderElement({labelScaleCategory, valueScaleCategory}) {
           <Text scaleCategory={valueScaleCategory}>
             {children}
           </Text>
-
         </td>
       );
     }
