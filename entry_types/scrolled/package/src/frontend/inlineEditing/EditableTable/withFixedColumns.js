@@ -91,18 +91,11 @@ export function withFixedColumns(editor) {
           Transforms.delete(editor, {at: rowPath});
         }
         else {
-          const previousRowSecondCell = Node.child(previousRow, 1);
-
-          if (Node.string(previousRowSecondCell) === '') {
-            const insertPoint = Editor.end(editor, [...previousRowPath, 0]);
-            Transforms.insertNodes(editor, cell.children, {at: insertPoint});
-
-            Transforms.delete(editor, {at: [...previousRowPath, 1]});
-            Transforms.insertNodes(editor, Node.child(row, 1), {at: Editor.end(editor, previousRowPath)});
-            Transforms.delete(editor, {at: rowPath});
-
-            Transforms.select(editor, insertPoint);
-
+          if (Node.string(Node.child(previousRow, 1)) === '') {
+            TableTransforms.deleteRange(editor, [
+              Editor.end(editor, [...previousRowPath, 0]),
+              editor.selection.anchor
+            ]);
             return;
           }
 
@@ -118,12 +111,10 @@ export function withFixedColumns(editor) {
         const [, previousRowPath] = previousRowMatch;
 
         if (Node.string(previousCell) === '') {
-          const insertPoint = Editor.end(editor, previousRowPath);
-
-          Transforms.insertNodes(editor, cell.children, {at: insertPoint});
-          Transforms.delete(editor, {at: rowPath});
-          Transforms.select(editor, insertPoint);
-
+          TableTransforms.deleteRange(editor, [
+            Editor.end(editor, previousRowPath),
+            editor.selection.anchor
+          ]);
           return;
         }
       }
@@ -171,20 +162,14 @@ export function withFixedColumns(editor) {
         }
       }
       else {
-        const nextCellMatch = matchCell(editor, {at: Path.next(cellPath)});
+        if (nextRowMatch) {
+          const [, nextRowPath] = nextRowMatch;
 
-        if (nextCellMatch && nextRowMatch) {
-          const [nextCell] = nextCellMatch;
-          const [nextRow, nextRowPath] = nextRowMatch;
-
-          if (Node.string(nextCell) === '') {
-            Transforms.insertNodes(editor, Node.child(nextRow, 0).children, {
-              at: Editor.end(editor, cellPath)
-            });
-            Transforms.delete(editor, {at: [...rowPath, 1]});
-            Transforms.insertNodes(editor, Node.child(nextRow, 1), {at: Editor.end(editor, rowPath)});
-            Transforms.delete(editor, {at: nextRowPath});
-
+          if (Node.string(Node.child(row, 1)) === '') {
+            TableTransforms.deleteRange(editor, [
+              editor.selection.anchor,
+              Editor.start(editor, nextRowPath)
+            ]);
             return;
           }
         }
@@ -200,13 +185,11 @@ export function withFixedColumns(editor) {
           Transforms.delete(editor, {at: nextRowPath});
         }
         else {
-          const nextRowFirstCell = Node.child(nextRow, 0);
-
-          if (Node.string(nextRowFirstCell) === '') {
-            Transforms.insertNodes(editor, Node.child(nextRow, 1).children, {
-              at: Editor.end(editor, cellPath)
-            });
-            Transforms.delete(editor, {at: nextRowPath});
+          if (Node.string(Node.child(nextRow, 0)) === '') {
+            TableTransforms.deleteRange(editor, [
+              editor.selection.anchor,
+              Editor.start(editor, [...nextRowPath, 1])
+            ]);
             return;
           }
 
@@ -218,90 +201,12 @@ export function withFixedColumns(editor) {
 
   editor.deleteFragment = () => {
     if (editor.selection && Range.isExpanded(editor.selection)) {
-      const [startPoint, endPoint] = Range.edges(editor.selection);
-
-      const startCellMatch = matchCell(editor, {at: startPoint.path});
-      const endCellMatch = matchCell(editor, {at: endPoint.path});
-
-      if (startCellMatch && endCellMatch) {
-        const [startCellNode, startCellPath] = startCellMatch;
-        const [endCellNode, endCellPath] = endCellMatch;
-
-        if (!Path.equals(startCellPath, endCellPath)) {
-          const rewrittenCellPath = getRewrittenCellPath(startCellPath, endCellPath);
-
-          const rows = Array.from(Editor.nodes(editor, {
-            match: (n) => n.type === 'row',
-            at: { anchor: startPoint, focus: endPoint },
-          }));
-
-          CellTransforms.deleteContentFrom(editor, {
-            cellPath: startCellPath,
-            point: startPoint
-          });
-
-          if (rewrittenCellPath) {
-            const beforeNodes =
-              CellPath.columnIndex(startCellPath) === CellPath.columnIndex(endCellPath) ?
-              Cell.splitChildren(editor, {
-                cellNode: startCellNode,
-                point: startPoint
-              })[0] :
-              [];
-
-            const [, afterNodes] = Cell.splitChildren(editor, {
-              cellNode: endCellNode,
-              point: endPoint
-            });
-            CellTransforms.replaceContent(editor, beforeNodes.concat(afterNodes), {
-              cellPath: rewrittenCellPath
-            })
-            Transforms.select(editor, {
-              ...Editor.start(editor, rewrittenCellPath),
-              offset: beforeNodes[beforeNodes.length - 1]?.text.length || 0
-            });
-
-            rows.reverse().forEach(([_, rowPath]) => {
-              if (rowPath[rowPath.length - 1] !== CellPath.rowIndex(rewrittenCellPath)) {
-                Transforms.removeNodes(editor, {at: rowPath});
-              }
-            });
-          }
-          else {
-            CellTransforms.deleteContentUntil(editor, {
-              cellPath: endCellPath,
-              point: endPoint
-            });
-
-            rows.slice(1, -1).reverse().forEach(([_, rowPath]) => {
-              Transforms.removeNodes(editor, {at: rowPath});
-            });
-
-            Transforms.select(editor, startPoint);
-          }
-
-          return;
-        }
+      if (TableTransforms.deleteRange(editor, Range.edges(editor.selection))) {
+        return;
       }
     }
 
     deleteFragment();
-
-    function getRewrittenCellPath(startCellPath, endCellPath) {
-      if (CellPath.columnIndex(startCellPath) < CellPath.columnIndex(endCellPath)) {
-        const [, rewrittenCellPath] = Editor.next(editor, {at: startCellPath});
-        return rewrittenCellPath;
-      }
-      else if (CellPath.columnIndex(startCellPath) > CellPath.columnIndex(endCellPath)) {
-        return null;
-      }
-      else if (CellPath.columnIndex(startCellPath) === 0) {
-        return endCellPath;
-      }
-      else {
-        return startCellPath;
-      }
-    }
   };
 
   editor.insertData = function(data) {
@@ -387,6 +292,90 @@ const CellTransforms = {
           focus: Editor.end(editor, cellPath),
         },
       });
+    }
+  }
+};
+
+const TableTransforms = {
+  deleteRange(editor, [startPoint, endPoint]) {
+    const startCellMatch = matchCell(editor, {at: startPoint.path});
+    const endCellMatch = matchCell(editor, {at: endPoint.path});
+
+    if (startCellMatch && endCellMatch) {
+      const [startCellNode, startCellPath] = startCellMatch;
+      const [endCellNode, endCellPath] = endCellMatch;
+
+      if (!Path.equals(startCellPath, endCellPath)) {
+        const rewrittenCellPath = getRewrittenCellPath(startCellPath, endCellPath);
+
+        const rows = Array.from(Editor.nodes(editor, {
+          match: (n) => n.type === 'row',
+          at: { anchor: startPoint, focus: endPoint },
+        }));
+
+        CellTransforms.deleteContentFrom(editor, {
+          cellPath: startCellPath,
+          point: startPoint
+        });
+
+        if (rewrittenCellPath) {
+          const beforeNodes =
+            CellPath.columnIndex(startCellPath) === CellPath.columnIndex(endCellPath) ?
+            Cell.splitChildren(editor, {
+              cellNode: startCellNode,
+              point: startPoint
+            })[0] :
+            [];
+
+          const [, afterNodes] = Cell.splitChildren(editor, {
+            cellNode: endCellNode,
+            point: endPoint
+          });
+          CellTransforms.replaceContent(editor, beforeNodes.concat(afterNodes), {
+            cellPath: rewrittenCellPath
+          })
+          Transforms.select(editor, {
+            ...Editor.start(editor, rewrittenCellPath),
+            offset: beforeNodes[beforeNodes.length - 1]?.text.length || 0
+          });
+
+          rows.reverse().forEach(([_, rowPath]) => {
+            if (rowPath[rowPath.length - 1] !== CellPath.rowIndex(rewrittenCellPath)) {
+              Transforms.removeNodes(editor, {at: rowPath});
+            }
+          });
+        }
+        else {
+          CellTransforms.deleteContentUntil(editor, {
+            cellPath: endCellPath,
+            point: endPoint
+          });
+
+          rows.slice(1, -1).reverse().forEach(([_, rowPath]) => {
+            Transforms.removeNodes(editor, {at: rowPath});
+          });
+
+          Transforms.select(editor, startPoint);
+        }
+
+        return;
+      }
+    }
+
+    function getRewrittenCellPath(startCellPath, endCellPath) {
+      if (CellPath.columnIndex(startCellPath) < CellPath.columnIndex(endCellPath)) {
+        const [, rewrittenCellPath] = Editor.next(editor, {at: startCellPath});
+        return rewrittenCellPath;
+      }
+      else if (CellPath.columnIndex(startCellPath) > CellPath.columnIndex(endCellPath)) {
+        return null;
+      }
+      else if (CellPath.columnIndex(startCellPath) === 0) {
+        return endCellPath;
+      }
+      else {
+        return startCellPath;
+      }
     }
   }
 };
