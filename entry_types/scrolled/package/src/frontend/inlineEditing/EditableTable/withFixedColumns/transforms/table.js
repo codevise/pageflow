@@ -40,9 +40,9 @@ export const TableTransforms = {
           });
           CellTransforms.replaceContent(editor, beforeNodes.concat(afterNodes), {
             cellPath: rewrittenCellPath
-          })
+          });
           Transforms.select(editor, {
-            ...Editor.start(editor, rewrittenCellPath),
+            path: [...rewrittenCellPath, beforeNodes.length ? beforeNodes.length - 1 : 0],
             offset: beforeNodes[beforeNodes.length - 1]?.text.length || 0
           });
 

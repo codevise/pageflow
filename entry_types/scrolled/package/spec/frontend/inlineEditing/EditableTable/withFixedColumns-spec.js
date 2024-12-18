@@ -1236,6 +1236,48 @@ describe('withFixedColumns', () => {
       );
     });
 
+    it('can handle cursor inside formatted text node', () => {
+      const editor = withFixedColumns(
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              Jane <text bold>Mill<anchor />er</text>
+            </value>
+          </row>
+          <row>
+            <label>
+              Last Name
+            </label>
+            <value>
+              Miller <text bold>D<focus />oe</text>
+            </value>
+          </row>
+        </editor>
+      );
+
+      editor.deleteFragment();
+
+      expect(editor.children).toEqual((
+        <editor>
+          <row>
+            <label>
+              Name
+            </label>
+            <value>
+              Jane <text bold>Milloe</text>
+            </value>
+          </row>
+        </editor>).children
+      );
+      expect(editor.selection).toEqual({
+        anchor: {path: [0, 1, 1], offset: 4},
+        focus: {path: [0, 1, 1], offset: 4},
+      });
+    });
+
     describe('keeps two column structure when deleting selection across rows', () => {
       it('from label to value cell', () => {
         const editor = withFixedColumns(
