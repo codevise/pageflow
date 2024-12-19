@@ -837,9 +837,6 @@ en:
       drag_content_element: Drag to move element
       edit_section_transition_after: Edit section transition
       edit_section_transition_before: Edit section transition
-      external_links:
-        open_in_new_tab: Open in new tab
-        open_in_new_tab_message: Opening in same tab is disabled inside the editor
       formats:
         block_quote: Block quote
         bulleted_list: Bulleted list

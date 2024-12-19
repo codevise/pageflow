@@ -5,10 +5,6 @@
 
 @value breakpoint-sm from "pageflow-scrolled/values/breakpoints.module.css";
 
-.hidden {
-  display: none;
-}
-
 .item {
   display: flex;
   vertical-align: top;
@@ -120,25 +116,4 @@ a.item:hover .link_title {
   .textSize-medium .link_title {
     font-size: 1.1em;
   }
-}
-
-.tooltip {
-  position: absolute;
-  left: 50%;
-  top: 80px;
-  width: 180px;
-  padding: 5px;
-  margin-left: -95px;
-  background-color: #444;
-  color: #fff;
-  opacity: 0.9;
-  font-size: 13px;
-  text-align: center;
-  white-space: normal;
-}
-
-.tooltip > span {
-  display: block;
-  color: #fff;
-  text-decoration: underline;
 }

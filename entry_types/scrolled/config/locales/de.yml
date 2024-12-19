@@ -998,9 +998,6 @@ de:
       drag_content_element: Ziehen, um Element zu verschieben
       edit_section_transition_after: Übergangseffekt bearbeiten
       edit_section_transition_before: Übergangseffekt bearbeiten
-      external_links:
-        open_in_new_tab: Seite in neuem Tab ansehen
-        open_in_new_tab_message: Öffnen im selben Tab ist im Editor deaktiviert.
       formats:
         block_quote: Blockzitat
         bulleted_list: Auflistung
