@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import classNames from 'classnames';
 import {
+  useContentElementEditorState,
   useContentElementLifecycle,
   useDarkBackground,
   contentElementWidthName
@@ -24,6 +25,20 @@ export function ExternalLinkList(props) {
   const linkList = props.configuration.links || [];
   const {shouldLoad} = useContentElementLifecycle();
   const darkBackground = useDarkBackground();
+
+  const {setTransientState, isSelected} = useContentElementEditorState();
+  const [selectedItemId, setSelectedItemId] = useState();
+
+  function handleItemClick(id) {
+    if (isSelected) {
+      setTransientState({selectedItemId: id});
+      setSelectedItemId(id);
+    }
+    else {
+      setTransientState({selectedItemId: null});
+      setSelectedItemId(null);
+    }
+  }
 
   const layout = props.sectionProps.layout === 'centerRagged' ?
                  'center' :
@@ -62,7 +77,10 @@ export function ExternalLinkList(props) {
                         textPosition={props.configuration.textPosition || 'below'}
                         textSize={props.configuration.textSize || 'small'}
                         invert={!darkBackground}
-                        loadImages={shouldLoad} />
+                        loadImages={shouldLoad}
+                        outlined={isSelected}
+                        selected={link.id === selectedItemId && isSelected}
+                        onClick={() => handleItemClick(link.id)} />
         )}
       </div>
     </div>

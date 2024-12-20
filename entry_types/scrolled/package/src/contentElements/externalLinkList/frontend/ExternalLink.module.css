@@ -5,6 +5,27 @@
 
 @value breakpoint-sm from "pageflow-scrolled/values/breakpoints.module.css";
 
+.wrapper {
+  position: relative;
+}
+
+.outlined::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: -4px;
+  border: solid 1px currentColor;
+  opacity: 0;
+}
+
+.wrapper:where(:hover)::before {
+  opacity: 0.5;
+}
+
+.selected::before {
+  opacity: 1;
+}
+
 .item {
   display: flex;
   vertical-align: top;
@@ -13,6 +34,7 @@
   border-radius: var(--theme-content-element-box-border-radius);
   overflow: hidden;
   will-change: transform;
+  height: 100%;
 }
 
 .textPosition-below {

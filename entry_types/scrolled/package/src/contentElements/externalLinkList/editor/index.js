@@ -24,6 +24,14 @@ editor.contentElementTypes.register('externalLinkList', {
   supportedPositions: ['inline', 'standAlone'],
   supportedWidthRange: ['m', 'xl'],
 
+  editorPath(contentElement) {
+    const selectedItemId = contentElement.transientState.get('selectedItemId');
+
+    if (selectedItemId) {
+      return `/scrolled/external_links/${contentElement.id}/${selectedItemId}`;
+    }
+  },
+
   configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
       const layout = contentElement.section.configuration.get('layout');

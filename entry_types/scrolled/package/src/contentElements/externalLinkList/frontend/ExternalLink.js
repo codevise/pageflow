@@ -24,38 +24,46 @@ export function ExternalLink(props) {
         event.preventDefault();
       }
     }
+
+    if (props.onClick) {
+      props.onClick();
+    }
   };
 
   return (
-    <LinkOrDiv
-      className={classNames(styles.item,
-                            styles[`textPosition-${props.textPosition}`],
-                            styles[`thumbnailSize-${props.thumbnailSize}`],
-                            styles[`textSize-${props.textSize}`],
-                            {[styles.invert]: props.invert})}
-      href={url}
-      title={props.textPosition === 'title' ?
-             [props.title, props.description].filter(Boolean).join("\n") :
-             null}
-      onClick={onClick}
-      target={props.open_in_new_tab ? '_blank' : '_self'}
-      rel={props.open_in_new_tab ? 'noopen noreferrer' : undefined}>
-      <div className={styles.thumbnail}>
-        <Thumbnail imageFile={thumbnailImageFile}
-                   aspectRatio={props.thumbnailAspectRatio}
-                   cropPosition={props.thumbnailCropPosition}
-                   load={props.loadImages}>
-          <InlineFileRights context="insideElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
-        </Thumbnail>
-      </div>
-      <div className={styles.background}>
-        <InlineFileRights context="afterElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
-        <div className={styles.details}>
-          <p className={styles.link_title}>{props.title}</p>
-          <p className={styles.link_desc}>{props.description}</p>
+    <div className={classNames(styles.wrapper,
+                               {[styles.outlined]: props.outlined},
+                               {[styles.selected]: props.selected})}>
+      <LinkOrDiv
+        className={classNames(styles.item,
+                              styles[`textPosition-${props.textPosition}`],
+                              styles[`thumbnailSize-${props.thumbnailSize}`],
+                              styles[`textSize-${props.textSize}`],
+                              {[styles.invert]: props.invert})}
+        href={url}
+        title={props.textPosition === 'title' ?
+               [props.title, props.description].filter(Boolean).join("\n") :
+               null}
+        onClick={onClick}
+        target={props.open_in_new_tab ? '_blank' : '_self'}
+        rel={props.open_in_new_tab ? 'noopen noreferrer' : undefined}>
+        <div className={styles.thumbnail}>
+          <Thumbnail imageFile={thumbnailImageFile}
+                     aspectRatio={props.thumbnailAspectRatio}
+                     cropPosition={props.thumbnailCropPosition}
+                     load={props.loadImages}>
+            <InlineFileRights context="insideElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
+          </Thumbnail>
         </div>
-      </div>
-    </LinkOrDiv>
+        <div className={styles.background}>
+          <InlineFileRights context="afterElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
+          <div className={styles.details}>
+            <p className={styles.link_title}>{props.title}</p>
+            <p className={styles.link_desc}>{props.description}</p>
+          </div>
+        </div>
+      </LinkOrDiv>
+    </div>
   );
 }
 
@@ -70,7 +78,8 @@ function LinkOrDiv({children, ...props}) {
   else {
     return (
       <div className={props.className}
-           title={props.title}>
+           title={props.title}
+           onClick={props.onClick}>
         {children}
       </div>
     );
