@@ -5,8 +5,10 @@
 
 @value breakpoint-sm from "pageflow-scrolled/values/breakpoints.module.css";
 
-.wrapper {
+.item {
   position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 .outlined::before {
@@ -18,7 +20,7 @@
   opacity: 0;
 }
 
-.wrapper:where(:hover)::before {
+.item:where(:hover)::before {
   opacity: 0.5;
 }
 
@@ -26,7 +28,7 @@
   opacity: 1;
 }
 
-.item {
+.card {
   display: flex;
   vertical-align: top;
   text-decoration: none;
@@ -53,7 +55,7 @@ a.textPosition-right:hover {
   transform: scale(var(--theme-external-links-card-hover-scale, 1.02));
 }
 
-a.item:hover .link_title {
+a.card:hover .link_title {
   text-decoration: underline;
 }
 

@@ -55,7 +55,7 @@ export function ExternalLinkList(props) {
 
   return (
     <div className={styles.container}>
-      <div className={classNames(
+      <ul className={classNames(
         styles.list,
         styles[`textPosition-${textPosition}`],
 
@@ -82,7 +82,7 @@ export function ExternalLinkList(props) {
                         selected={link.id === selectedItemId && isSelected}
                         onClick={() => handleItemClick(link.id)} />
         )}
-      </div>
+      </ul>
     </div>
   );
 }

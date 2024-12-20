@@ -53,13 +53,11 @@ describe('ExternalLinkList', () => {
         }
       ]
     };
-    const setTransientState = jest.fn();
-
     const user = userEvent.setup();
     const {container} = renderInContentElement(
       <ExternalLinkList configuration={configuration} sectionProps={{}} />,
       {
-        editorState: {isEditable: true, isSelected: true, setTransientState}
+        editorState: {isEditable: true, isSelected: true}
       }
     );
     await user.click(screen.getByRole('link', {name: 'Some link'}));
@@ -82,13 +80,12 @@ describe('ExternalLinkList', () => {
         }
       ]
     };
-    const setTransientState = jest.fn();
 
     const user = userEvent.setup();
     const {container} = renderInContentElement(
       <ExternalLinkList configuration={configuration} sectionProps={{}} />,
       {
-        editorState: {isEditable: true, setTransientState}
+        editorState: {isEditable: true}
       }
     );
     await user.click(screen.getByRole('link', {name: 'Some link'}));

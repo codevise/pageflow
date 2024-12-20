@@ -31,11 +31,11 @@ export function ExternalLink(props) {
   };
 
   return (
-    <div className={classNames(styles.wrapper,
+    <li className={classNames(styles.item,
                                {[styles.outlined]: props.outlined},
                                {[styles.selected]: props.selected})}>
       <LinkOrDiv
-        className={classNames(styles.item,
+        className={classNames(styles.card,
                               styles[`textPosition-${props.textPosition}`],
                               styles[`thumbnailSize-${props.thumbnailSize}`],
                               styles[`textSize-${props.textSize}`],
@@ -63,7 +63,7 @@ export function ExternalLink(props) {
           </div>
         </div>
       </LinkOrDiv>
-    </div>
+    </li>
   );
 }
 
