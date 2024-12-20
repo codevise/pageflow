@@ -26,7 +26,7 @@ export function ExternalLink(props) {
     }
 
     if (props.onClick) {
-      props.onClick();
+      props.onClick(event);
     }
   };
 

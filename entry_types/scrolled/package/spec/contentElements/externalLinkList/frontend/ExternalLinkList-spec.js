@@ -92,4 +92,36 @@ describe('ExternalLinkList', () => {
 
     expect(container.querySelector(`.${linkStyles.selected}`)).toBeNull();
   });
+
+  it('resets selected item when clicking outside items', async () => {
+    const configuration = {
+      links: [
+        {
+          id: 1,
+          title: 'Some link',
+          url: 'https://example.com/'
+        },
+        {
+          id: 2,
+          title: 'Other link',
+          url: 'https://example.com/other'
+        }
+      ]
+    };
+    const setTransientState = jest.fn();
+
+    const user = userEvent.setup();
+    const {container} = renderInContentElement(
+      <ExternalLinkList configuration={configuration} sectionProps={{}} />,
+      {
+        editorState: {isEditable: true, isSelected: true, setTransientState}
+      }
+    );
+    const link = screen.getByRole('link', {name: 'Some link'});
+    await user.click(link);
+    await user.click(link.closest('ul'));
+
+    expect(container.querySelector(`.${linkStyles.selected}`)).toBeNull();
+    expect(setTransientState).toHaveBeenCalledWith({selectedItemId: null})
+  });
 });

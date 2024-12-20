@@ -29,12 +29,17 @@ export function ExternalLinkList(props) {
   const {setTransientState, isSelected} = useContentElementEditorState();
   const [selectedItemId, setSelectedItemId] = useState();
 
-  function handleItemClick(id) {
+  function handleItemClick(event, id) {
     if (isSelected) {
       setTransientState({selectedItemId: id});
       setSelectedItemId(id);
+
+      event.preventDefault();
     }
-    else {
+  }
+
+  function handleListClick(event) {
+    if (!event.defaultPrevented) {
       setTransientState({selectedItemId: null});
       setSelectedItemId(null);
     }
@@ -56,19 +61,20 @@ export function ExternalLinkList(props) {
   return (
     <div className={styles.container}>
       <ul className={classNames(
-        styles.list,
-        styles[`textPosition-${textPosition}`],
+            styles.list,
+            styles[`textPosition-${textPosition}`],
 
-        props.configuration.variant &&
-        `scope-externalLinkList-${props.configuration.variant}`,
+            props.configuration.variant &&
+            `scope-externalLinkList-${props.configuration.variant}`,
 
-        textPositionStyles.list,
-        textPositionStyles[`layout-${layout}`],
-        textPositionStyles[`width-${contentElementWidthName(props.configuration.width)}`],
-        textPositionStyles[`linkWidth-${linkWidth}`],
-        textPositionStyles[`linkAlignment-${props.configuration.linkAlignment}`],
-        textPositionStyles[`textPosition-${textPosition}`]
-      )}>
+            textPositionStyles.list,
+            textPositionStyles[`layout-${layout}`],
+            textPositionStyles[`width-${contentElementWidthName(props.configuration.width)}`],
+            textPositionStyles[`linkWidth-${linkWidth}`],
+            textPositionStyles[`linkAlignment-${props.configuration.linkAlignment}`],
+            textPositionStyles[`textPosition-${textPosition}`]
+          )}
+          onClick={handleListClick}>
         {linkList.map((link, index) =>
           <ExternalLink {...link}
                         key={link.id}
@@ -80,7 +86,7 @@ export function ExternalLinkList(props) {
                         loadImages={shouldLoad}
                         outlined={isSelected}
                         selected={link.id === selectedItemId && isSelected}
-                        onClick={() => handleItemClick(link.id)} />
+                        onClick={event => handleItemClick(event, link.id)} />
         )}
       </ul>
     </div>
