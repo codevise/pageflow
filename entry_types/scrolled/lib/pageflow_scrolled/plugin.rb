@@ -41,7 +41,6 @@ module PageflowScrolled
         c.features.register('scrolled_entry_fragment_caching')
         c.features.register('backdrop_content_elements')
         c.features.register('external_links_options')
-        c.features.register('info_table_content_element')
 
         c.additional_frontend_seed_data.register(
           'frontendVersion',

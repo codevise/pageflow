@@ -1,7 +1,4 @@
 en:
-  pageflow:
-    info_table_content_element:
-      feature_name: Info table element
   pageflow_scrolled:
     editor:
       content_elements:
