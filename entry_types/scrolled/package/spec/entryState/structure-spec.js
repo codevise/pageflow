@@ -88,6 +88,16 @@ const contentElementsSeed = [
     id: 4,
     permaId: 1004,
     sectionId: 2,
+    typeName: 'image',
+    configuration: {
+      position: 'side',
+      imageId: 4
+    }
+  },
+  {
+    id: 5,
+    permaId: 1005,
+    sectionId: 2,
     typeName: 'textBlock',
     configuration: {
       children: 'Some more text'
@@ -435,6 +445,16 @@ describe('useSectionForegroundContentElements', () => {
       {
         id: 4,
         permaId: 1004,
+        type: 'image',
+        position: 'side',
+        width: 0,
+        props: {
+          imageId: 4
+        }
+      },
+      {
+        id: 5,
+        permaId: 1005,
         type: 'textBlock',
         position: 'inline',
         width: 0,
