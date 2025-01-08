@@ -30,7 +30,7 @@ describe('ContentElement', () => {
       const contentElement = entry.contentElements.get(5);
 
       expect(contentElement.getAvailablePositions()).toEqual(
-        ['inline', 'sticky', 'standAlone', 'backdrop']
+        ['inline', 'side', 'sticky', 'standAlone', 'backdrop']
       );
     });
 
@@ -52,7 +52,7 @@ describe('ContentElement', () => {
       const contentElement = entry.contentElements.get(5);
 
       expect(contentElement.getAvailablePositions()).toEqual(
-        ['inline', 'sticky', 'standAlone', 'backdrop']
+        ['inline', 'side', 'sticky', 'standAlone', 'backdrop']
       );
     });
 
