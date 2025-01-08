@@ -6,7 +6,6 @@ import {SeparatorView} from 'pageflow/ui'
 import pictogram from './pictogram.svg';
 
 editor.contentElementTypes.register('infoTable', {
-  featureName: 'info_table_content_element',
   pictogram,
   supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['s', 'xl'],
