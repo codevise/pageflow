@@ -8,7 +8,7 @@ import pictogram from './pictogram.svg';
 editor.contentElementTypes.register('infoTable', {
   featureName: 'info_table_content_element',
   pictogram,
-  supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right'],
+  supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['s', 'xl'],
 
   configurationEditor({entry, contentElement}) {

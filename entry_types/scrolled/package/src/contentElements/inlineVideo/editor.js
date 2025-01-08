@@ -35,7 +35,7 @@ const EditMotifAreaMenuItem = Backbone.Model.extend({
 editor.contentElementTypes.register('inlineVideo', {
   pictogram,
   category: 'media',
-  supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
+  supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor({entry}) {

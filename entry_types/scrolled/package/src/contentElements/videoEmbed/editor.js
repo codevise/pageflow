@@ -7,7 +7,7 @@ import pictogram from './pictogram.svg';
 editor.contentElementTypes.register('videoEmbed', {
   pictogram,
   category: 'media',
-  supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right'],
+  supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
 
   configurationEditor({entry}) {
