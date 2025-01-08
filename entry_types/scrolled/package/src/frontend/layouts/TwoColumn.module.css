@@ -80,32 +80,36 @@
   margin-left: auto;
 }
 
-.sticky {
+.side {
   --content-width: var(--theme-two-column-sticky-content-width, 25vw);
   --content-max-width: min(var(--content-width), var(--two-column-sticky-content-max-width, 600px));
-  position: sticky;
   float: right;
   clear: both;
   top: 33%;
   width: var(--content-width);
 }
 
-.right .sticky {
+.sticky {
+  composes: side;
+  position: sticky;
+}
+
+.right .side {
   float: left;
 }
 
-.sticky.width-lg {
+.side.width-lg {
   --content-width: var(--theme-two-column-sticky-lg-content-width, 35vw);
   --content-max-width: min(var(--content-width),
                            var(--two-column-sticky-lg-content-max-width, 700px));
 }
 
-.sticky.width-xl {
+.side.width-xl {
   --content-width: var(--theme-two-column-sticky-xl-content-width, 45vw);
   --content-max-width: min(var(--content-width),
                            var(--two-column-sticky-xl-content-max-width, 1000px));
 }
 
-.sticky.customMargin {
+.side.customMargin {
   width: 100%;
 }
