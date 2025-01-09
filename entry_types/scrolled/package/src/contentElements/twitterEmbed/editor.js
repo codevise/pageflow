@@ -5,7 +5,7 @@ import pictogram from './pictogram.svg'
 editor.contentElementTypes.register('twitterEmbed', {
   pictogram,
   category: 'media',
-  supportedPositions: ['inline', 'sticky', 'standAlone', 'left', 'right'],
+  supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
 
   configurationEditor() {
     this.tab('general', function() {

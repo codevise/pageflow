@@ -115,12 +115,6 @@ de:
               Position, um das Element vollständig betrachten zu
               können. Kleineren Elementen kann so mehr Gewicht
               verliehen werden.
-            sticky: |-
-              Beim Scrollen begleitend neben dem Text
-              stehenbleiben. In der Mobil-Darstellung werden Sticky
-              Elemente automatisch im Text verankert. Sticky-Elemente
-              funktionieren besonders gut bei Desktop-Darstellung in
-              Kombination mit langen Textpassagen.
           label: Position
           values:
             full: Volle Breite
@@ -128,7 +122,6 @@ de:
             left: Links eingerückt
             right: Rechts eingerückt
             standAlone: Stand-Alone
-            sticky: Sticky
             wide: Breit
         typographyVariant:
           blank: "(Standard)"

@@ -110,19 +110,19 @@ function groupItemsByPosition(items, shouldInline) {
     const {customMargin: elementSupportsCustomMargin} =
       api.contentElementTypes.getOptions(item.type) || {};
     let width = item.width || 0;
-    const position = item.position === 'sticky' && !shouldInline(width) ? 'sticky' : 'inline';
+    const position = onTheSide(item.position) && !shouldInline(width) ? item.position : 'inline';
     const customMargin = !!elementSupportsCustomMargin && width < widths.full;
 
-    if (item.position === 'sticky' && position === 'inline' && width > widths.md) {
+    if (onTheSide(item.position) && position === 'inline' && width > widths.md) {
       width -= 1;
     }
 
     if (!currentGroup || previousPosition !== position ||
-        (position === 'sticky' && currentBox.customMargin !== customMargin) ||
+        (onTheSide(position) && currentBox.customMargin !== customMargin) ||
         currentBox.width !== width) {
       currentBox = null;
 
-      if (!(previousPosition === 'sticky' && position === 'inline' && width <= widths.md)) {
+      if (!(onTheSide(previousPosition) && position === 'inline' && width <= widths.md)) {
         currentGroup = {
           width,
           boxes: []
@@ -149,7 +149,7 @@ function groupItemsByPosition(items, shouldInline) {
         lastInlineBox = currentBox;
       }
       else if ((position === 'inline' && width > widths.md) ||
-               (customMargin && position !== 'sticky')) {
+               (customMargin && !onTheSide(position))) {
         lastInlineBox = null;
       }
 
@@ -161,6 +161,10 @@ function groupItemsByPosition(items, shouldInline) {
   }, null);
 
   return groups;
+}
+
+function onTheSide(position) {
+  return position === 'side' || position === 'sticky';
 }
 
 function renderPlaceholder(placeholder) {

@@ -189,8 +189,8 @@ function contentElementData(contentElement, layout) {
 const supportedPositions = {
   center: ['inline', 'left', 'right'],
   centerRagged: ['inline', 'left', 'right'],
-  left: ['inline', 'sticky'],
-  right: ['inline', 'sticky'],
+  left: ['inline', 'side', 'sticky'],
+  right: ['inline', 'side', 'sticky'],
   backdrop: ['backdrop']
 };
 

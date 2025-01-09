@@ -122,6 +122,24 @@ describe('Layout', () => {
         );
       });
 
+      it('creates new group for side elements', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'side'},
+          {id: 3, type: 'probe', position: 'side'},
+          {id: 4, type: 'probe', position: 'inline'}
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position}) => <div>{position} {children}</div>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual(
+          '[inline 1 ][side 2 3 inline 4 ]'
+        );
+      });
+
       it('places inline elements with custom margin in separate box in same group', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
@@ -137,6 +155,22 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual('[inline normal 1 inline custom 2 inline normal 3 ]');
+      });
+
+      it('places side elements with and without custom margin in separate groups', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'side'},
+          {id: 2, type: 'probeWithCustomMargin', position: 'side'}
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position, customMargin}) =>
+              <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
+            }
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[side normal 1 ][side custom 2 ]');
       });
 
       it('places sticky elements with and without custom margin in separate groups', () => {
@@ -199,6 +233,23 @@ describe('Layout', () => {
         });
       });
 
+      it('continues inline box after being interrupted by side box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline'},
+          {id: 3, type: 'probe', position: 'side'},
+          {id: 4, type: 'probe', position: 'side'},
+          {id: 5, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[( 1 2 |][( 3 4 )| 5 )]');
+      });
+
       it('continues inline box after being interrupted by sticky box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
@@ -231,6 +282,23 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual('[( 1 2 |][( 3 4 )| 5 )]');
+      });
+
+      it('continues inline box in new group after side box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'side'},
+          {id: 3, type: 'probe', position: 'inline'},
+          {id: 4, type: 'probe', position: 'side'},
+          {id: 5, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[( 1 |][( 2 )| 3 |][( 4 )| 5 )]');
       });
 
       it('continues inline box in new group after sticky box', () => {
@@ -282,6 +350,22 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('[( 1 2 )][( 3 )][( 4 )]');
       });
 
+      it('does not continue inline box after being interrupted by side and full box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'side'},
+          {id: 3, type: 'probe', position: 'inline', width: 3},
+          {id: 4, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[( 1 )][( 2 )][( 3 )][( 4 )]');
+      });
+
       it('does not continue inline box after being interrupted by sticky and full box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
@@ -296,6 +380,22 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual('[( 1 )][( 2 )][( 3 )][( 4 )]');
+      });
+
+      it('does not continue inline box after being interrupted by full and side box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline', width: 3},
+          {id: 3, type: 'probe', position: 'side'},
+          {id: 4, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[( 1 )][( 2 )][( 3 )( 4 )]');
       });
 
       it('does not continue inline box after being interrupted by full and sticky box', () => {
@@ -329,6 +429,21 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('[( 1 )( 2 )( 3 )]');
       });
 
+      it('continues inline box after being interrupted by side custom margin box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probeWithCustomMargin', position: 'side'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[( 1 |][( 2 )| 3 )]');
+      });
+
       it('continues inline box after being interrupted by sticky custom margin box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
@@ -342,6 +457,37 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual('[( 1 |][( 2 )| 3 )]');
+      });
+
+      it('inlines side elements of different width at different breakpoints ', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'side'},
+          {id: 2, type: 'probe', position: 'side', width: 1},
+          {id: 3, type: 'probe', position: 'side', width: 2}
+        ];
+        viewportWidth = 1000;
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position}) => <div>{position} {children}</div>}
+          </Layout>,
+          {
+            seed: {
+              themeOptions: {
+                properties: {
+                  root: {
+                    twoColumnStickyBreakpoint: '950px',
+                    twoColumnStickyLgBreakpoint: '1024px',
+                    twoColumnStickyXlBreakpoint: '1180px'
+                  }
+                }
+              }
+            }
+          }
+        );
+
+        expect(container.textContent).toEqual(
+          '[side 1 inline 2 ][inline 3 ]'
+        );
       });
 
       it('inlines sticky elements of different width at different breakpoints ', () => {
@@ -372,6 +518,39 @@ describe('Layout', () => {
 
         expect(container.textContent).toEqual(
           '[sticky 1 inline 2 ][inline 3 ]'
+        );
+      });
+
+      it('decreases size when inlining wide side elements', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'side', width: -2},
+          {id: 2, type: 'probe', position: 'side', width: -1},
+          {id: 3, type: 'probe', position: 'side'},
+          {id: 4, type: 'probe', position: 'side', width: 1},
+          {id: 5, type: 'probe', position: 'side', width: 2}
+        ];
+        viewportWidth = 500;
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
+          </Layout>,
+          {
+            seed: {
+              themeOptions: {
+                properties: {
+                  root: {
+                    twoColumnStickyBreakpoint: '950px',
+                    twoColumnStickyLgBreakpoint: '1024px',
+                    twoColumnStickyXlBreakpoint: '1180px'
+                  }
+                }
+              }
+            }
+          }
+        );
+
+        expect(container.textContent).toEqual(
+          '[inline xs 1 ][inline sm 2 ][inline md 3 4 ][inline lg 5 ]'
         );
       });
 

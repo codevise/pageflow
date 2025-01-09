@@ -1,0 +1,18 @@
+en:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        position:
+          values:
+            sticky: Alongside (sticky)
+            side: Alongside
+          item_inline_help_texts:
+            sticky: |-
+              Place alongside the text and keep in a fixed posiiton while
+              scrolling. In mobile view, elements are automatically
+              turned into inline elements. Sticky elements work
+              particularly well in desktop view in combination with
+              long text passages.
+            side: |-
+              Place alongside the text. In mobile view, elements are
+              automatically turned into inline elements.

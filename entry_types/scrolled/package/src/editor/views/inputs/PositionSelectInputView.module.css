@@ -91,19 +91,26 @@
   margin-left: space(3);
 }
 
-.stickyPosition .block {
+.sidePosition .block {
   width: 100%;
 }
 
-.stickyPosition .wrapper {
+.sidePosition .wrapper {
   float: right;
   width: 40%;
-  position: sticky;
   top: 30%;
 }
 
-.rightLayout.stickyPosition .wrapper {
+.rightLayout.sidePosition .wrapper {
   float: left;
+}
+
+.stickyPosition {
+  composes: sidePosition;
+}
+
+.stickyPosition .wrapper {
+  position: sticky;
 }
 
 .standAlonePosition .wrapper {

@@ -1,0 +1,19 @@
+de:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        position:
+          values:
+            sticky: Neben dem Text (Sticky)
+            side: Neben dem Text
+          item_inline_help_texts:
+            sticky: |-
+              Beim Scrollen begleitend neben dem Text
+              stehenbleiben. In der Mobil-Darstellung werden Elemente
+              automatisch im Text verankert. Sticky-Elemente
+              funktionieren besonders gut bei Desktop-Darstellung in
+              Kombination mit langen Textpassagen.
+            side: |-
+              In einer zweiten Spalte neben dem Text positionieren. In
+              der Mobil-Darstellung werden Elemente automatisch im
+              Text verankert.
