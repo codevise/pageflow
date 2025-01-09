@@ -78,6 +78,7 @@ export function ExternalLinkList(props) {
         {linkList.map((link, index) =>
           <ExternalLink {...link}
                         key={link.id}
+                        configuration={props.configuration}
                         thumbnailAspectRatio={props.configuration.thumbnailAspectRatio}
                         thumbnailSize={props.configuration.thumbnailSize || 'small'}
                         textPosition={props.configuration.textPosition || 'below'}

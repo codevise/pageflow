@@ -9,6 +9,16 @@
   position: relative;
   margin: 0;
   padding: 0;
+  transition: transform 0.3s;
+}
+
+.item > div,
+.item > div > div {
+  height: 100%;
+}
+
+.item:not(.selected) button {
+  display: none;
 }
 
 .outlined::before {
@@ -32,14 +42,13 @@
   display: flex;
   vertical-align: top;
   text-decoration: none;
-  transition: transform 0.3s;
   border-radius: var(--theme-content-element-box-border-radius);
   overflow: hidden;
   will-change: transform;
   height: 100%;
 }
 
-.textPosition-below {
+.textPosition-below .card {
   flex-direction: column;
 }
 
@@ -47,15 +56,15 @@
   composes: textPosition-below;
 }
 
-a.textPosition-below:hover {
+.link.textPosition-below:not(.outlined):hover {
   transform: scale(var(--theme-external-links-card-hover-scale, 1.05));
 }
 
-a.textPosition-right:hover {
+.link.textPosition-right:not(.outlined):hover {
   transform: scale(var(--theme-external-links-card-hover-scale, 1.02));
 }
 
-a.card:hover .link_title {
+.link .card:hover .link_title {
   text-decoration: underline;
 }
 
@@ -63,11 +72,11 @@ a.card:hover .link_title {
   width: 33%;
 }
 
-.textPosition-right.thumbnailSize-medium .thumbnail {
+.textPosition-right .thumbnailSize-medium .thumbnail {
   width: 50%;
 }
 
-.textPosition-right.thumbnailSize-large .thumbnail {
+.textPosition-right .thumbnailSize-large .thumbnail {
   width: 66%;
 }
 
