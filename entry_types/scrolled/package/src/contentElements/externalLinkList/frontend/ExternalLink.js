@@ -1,20 +1,26 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import classNames from 'classnames';
 import styles from './ExternalLink.module.css';
 import {
   EditableLink,
+  EditableInlineText,
+  EditableText,
   InlineFileRights,
   useFileWithInlineRights,
   useContentElementConfigurationUpdate,
-  useContentElementEditorState
+  useContentElementEditorState,
+  useI18n,
+  utils
 } from 'pageflow-scrolled/frontend';
 
 import {Thumbnail} from './Thumbnail';
 
 export function ExternalLink({id, configuration, ...props}) {
-  const {isEditable} = useContentElementEditorState();
+  const {isEditable, isSelected} = useContentElementEditorState();
   const updateConfiguration = useContentElementConfigurationUpdate();
+  const {t} = useI18n({locale: 'ui'});
 
+  const itemTexts = configuration.itemTexts || {};
   const itemLinks = configuration.itemLinks || {};
 
   const thumbnailImageFile = useFileWithInlineRights({
@@ -23,11 +29,17 @@ export function ExternalLink({id, configuration, ...props}) {
     propertyName: 'thumbnail'
   });
 
-  const onClick = function (event) {
-    if (props.onClick) {
-      props.onClick(event);
-    }
-  };
+  function handleTextChange(propertyName, value) {
+    updateConfiguration({
+      itemTexts: {
+        ...itemTexts,
+        [id]: {
+          ...itemTexts[id],
+          [propertyName]: value
+        }
+      }
+    });
+  }
 
   function handleLinkChange(value) {
     updateConfiguration({
@@ -38,16 +50,43 @@ export function ExternalLink({id, configuration, ...props}) {
     });
   }
 
+  const legacyTexts = useMemo(
+    () => ({
+      title: [{
+        type: 'heading',
+        children: [{text: props.title || ''}],
+      }],
+      description: [{
+        type: 'paragraph',
+        children: [{text: props.description || ''}],
+      }]
+    }),
+    [props.title, props.description]
+  );
+
+  function presentOrEditing(propertyName) {
+    return !utils.isBlankEditableTextValue(itemTexts[id]?.[propertyName] ||
+                                           legacyTexts[propertyName]) ||
+           (isEditable && props.selected) ||
+           (isEditable &&
+            utils.isBlankEditableTextValue(itemTexts[id]?.tagline) &&
+            utils.isBlankEditableTextValue(itemTexts[id]?.title || legacyTexts.title) &&
+            utils.isBlankEditableTextValue(itemTexts[id]?.description || legacyTexts.description));
+  }
+
+  const href = itemLinks[id] ? itemLinks[id]?.href : ensureAbsolute(props.url);
+  const openInNewTab = itemLinks[id] ? itemLinks[id]?.openInNewTab : props.open_in_new_tab;
+
   return (
     <li className={classNames(styles.item,
                               styles[`textPosition-${props.textPosition}`],
-                              {[styles.link]: !!itemLinks[id]?.href},
+                              {[styles.link]: !!href},
                               {[styles.outlined]: props.outlined},
                               {[styles.selected]: props.selected})}
-        onClick={onClick}>
+        onClick={props.onClick}>
       <Link isEditable={isEditable}
-            href={itemLinks[id]?.href}
-            openInNewTab={itemLinks[id]?.openInNewTab}
+            href={href}
+            openInNewTab={openInNewTab}
             onChange={handleLinkChange}>
         <div className={classNames(
           styles.card,
@@ -63,11 +102,28 @@ export function ExternalLink({id, configuration, ...props}) {
               <InlineFileRights context="insideElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
             </Thumbnail>
           </div>
-          <div className={styles.background}>
+          <div className={styles.background}
+               inert={!isEditable || isSelected ? undefined : 'true'}>
             <InlineFileRights context="afterElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
             <div className={styles.details}>
-              <p className={styles.link_title}>{props.title}</p>
-              <p className={styles.link_desc}>{props.description}</p>
+              {presentOrEditing('tagline') &&
+               <div className={styles.tagline}>
+                 <EditableInlineText value={itemTexts[id]?.tagline}
+                                     placeholder={t('pageflow_scrolled.inline_editing.type_tagline')}
+                                     onChange={value => handleTextChange('tagline', value)} />
+               </div>}
+              <div className={styles.title}>
+                <EditableInlineText value={itemTexts[id]?.title || legacyTexts.title}
+                                    placeholder={t('pageflow_scrolled.inline_editing.type_heading')}
+                                    onChange={value => handleTextChange('title', value)} />
+              </div>
+              {presentOrEditing('description') &&
+               <div className={styles.link_desc}>
+                 <EditableText value={itemTexts[id]?.description || legacyTexts.description}
+                               scaleCategory="teaserDescription"
+                               placeholder={t('pageflow_scrolled.inline_editing.type_text')}
+                               onChange={value => handleTextChange('description', value)} />
+               </div>}
             </div>
           </div>
         </div>
@@ -85,5 +141,15 @@ function Link(props) {
   }
   else {
     return props.children;
+  }
+}
+
+
+function ensureAbsolute(url) {
+  if (!url || url.match(/^(https?:)?\/\//)) {
+    return url;
+  }
+  else {
+    return `http://${url}`;
   }
 }

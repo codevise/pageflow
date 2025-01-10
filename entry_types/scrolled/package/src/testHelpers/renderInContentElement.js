@@ -1,4 +1,6 @@
 import React, {useContext} from 'react';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 import BackboneEvents from 'backbone-events-standalone';
 import {act} from '@testing-library/react'
 
@@ -43,15 +45,17 @@ export function renderInContentElement(ui, {editorState,
 
     return (
       <PhonePlatformContext.Provider value={phonePlatform}>
-        <ContentElementAttributesProvider id={42}>
-          <ContentElementEditorCommandEmitterContext.Provider
-            value={emitter}>
-            <ContentElementEditorStateContext.Provider
-              value={{...defaultEditorState, ...editorState}}>
-              {OriginalWrapper ? <OriginalWrapper children={children} /> : children}
-            </ContentElementEditorStateContext.Provider>
-          </ContentElementEditorCommandEmitterContext.Provider>
-        </ContentElementAttributesProvider>
+        <DndProvider backend={HTML5Backend}>
+          <ContentElementAttributesProvider id={42}>
+            <ContentElementEditorCommandEmitterContext.Provider
+              value={emitter}>
+              <ContentElementEditorStateContext.Provider
+                value={{...defaultEditorState, ...editorState}}>
+                {OriginalWrapper ? <OriginalWrapper children={children} /> : children}
+              </ContentElementEditorStateContext.Provider>
+            </ContentElementEditorCommandEmitterContext.Provider>
+          </ContentElementAttributesProvider>
+        </DndProvider>
       </PhonePlatformContext.Provider>
     );
   }
