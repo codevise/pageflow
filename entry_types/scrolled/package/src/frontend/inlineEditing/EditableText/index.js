@@ -136,13 +136,14 @@ export const EditableText = React.memo(function EditableText({
                                position={floatingControlsPosition}>
             {selectionRect && <Selection contentElementId={contentElementId} />}
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
-            <HoveringToolbar position={floatingControlsPosition} />
-            <Editable
-              className={className}
-              decorate={decorateLineBreaks}
-              onKeyDown={handleKeyDown}
-              renderElement={renderElementWithLinkPreview}
-              renderLeaf={renderLeafWithLineBreakDecoration} />
+            <HoveringToolbar>
+              <Editable
+                className={className}
+                decorate={decorateLineBreaks}
+                onKeyDown={handleKeyDown}
+                renderElement={renderElementWithLinkPreview}
+                renderLeaf={renderLeafWithLineBreakDecoration} />
+            </HoveringToolbar>
           </LinkTooltipProvider>
         </Slate>
         <TextPlaceholder text={placeholder}

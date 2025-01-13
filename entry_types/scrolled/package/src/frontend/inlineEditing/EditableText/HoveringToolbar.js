@@ -1,13 +1,13 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Editor, Range, Transforms} from 'slate';
 import {ReactEditor, useSlate} from 'slate-react';
+
+import {useFloating, FloatingPortal, shift, offset} from '@floating-ui/react';
 
 import {Toolbar} from '../Toolbar';
 import {useI18n} from '../../i18n';
 import {useSelectLinkDestination} from '../useSelectLinkDestination';
 import {isMarkActive, toggleMark} from './marks';
-
-import styles from './index.module.css';
 
 import BoldIcon from '../images/bold.svg';
 import UnderlineIcon from '../images/underline.svg';
@@ -17,54 +17,81 @@ import SubIcon from '../images/sub.svg';
 import SupIcon from '../images/sup.svg';
 import LinkIcon from '../images/link.svg';
 
-export function HoveringToolbar({position}) {
-  const ref = useRef()
-  const outerRef = useRef()
+export function HoveringToolbar({children}) {
   const editor = useSlate()
   const {t} = useI18n({locale: 'ui'});
   const selectLinkDestination = useSelectLinkDestination();
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const {refs, floatingStyles} = useFloating({
+    placement: 'bottom-start',
+    middleware: [
+      offset(5),
+      shift(
+        {
+          crossAxis: true,
+          padding: {left: 10, right: 10}
+        }
+      )
+    ]
+  });
+
   useEffect(() => {
-    const el = ref.current
     const {selection} = editor
 
-    if (!el || !outerRef.current) {
-      return;
-    }
-
     if (
+      isDragging ||
       !selection ||
       !ReactEditor.isFocused(editor) ||
       Range.isCollapsed(selection) ||
       Editor.string(editor, selection) === ''
     ) {
-      el.removeAttribute('style')
+      setIsOpen(false);
       return
     }
 
     const domRange = ReactEditor.toDOMRange(editor, editor.selection);
-    const rect = domRange.getBoundingClientRect()
-    const outerRect = outerRef.current.getBoundingClientRect()
 
-    el.style.visibility = 'visible';
-    el.style.left = `${rect.left - outerRect.left}px`;
+    refs.setPositionReference({
+      getBoundingClientRect: () => domRange.getBoundingClientRect(),
+      getClientRects: () => domRange.getClientRects()
+    });
 
-    if (position === 'above') {
-      el.style.top = 'auto';
-      el.style.bottom = `${outerRect.bottom - rect.top + 5}px`;
+    setIsOpen(true);
+  }, [refs, editor, editor.selection, isDragging]);
+
+  const handleMouseDown = useCallback(() => {
+    setIsDragging(true);
+
+    function handleMouseUp() {
+      // When clicking inside a selection, the selection sometimes
+      // only resets after mouseup has fired. Prevent toolbar from
+      // shortly being hidden and shown again before finally being
+      // hidden when the selection resets.
+      setTimeout(() => {
+        setIsDragging(false);
+      }, 10)
     }
-    else {
-      el.style.bottom = 'auto';
-      el.style.top = `${rect.bottom - outerRect.top + 5}px`;
+
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp);
     }
-  })
+  }, []);
 
   return (
-    <div ref={outerRef} className={styles.hoveringToolbarContainer}>
-      <div ref={ref}
-           className={styles.hoveringToolbar}>
-        {renderToolbar(editor, t, selectLinkDestination)}
-      </div>
+    <div onMouseDown={handleMouseDown}>
+      {isOpen &&
+       <FloatingPortal>
+         <div ref={refs.setFloating}
+              style={floatingStyles}>
+           {renderToolbar(editor, t, selectLinkDestination)}
+         </div>
+       </FloatingPortal>}
+      {children}
     </div>
   );
 }
