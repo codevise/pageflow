@@ -16,16 +16,6 @@
   text-decoration: none;
 }
 
-/*
-  Ensure divs rendered by EditableLink in editor span full height. In
-  published entry, items without link directly render the card inside
-  the item.
-*/
-.item > div:not(.card),
-.item > div:not(.card) > div {
-  height: 100%;
-}
-
 .outlined::before {
   content: "";
   display: block;
