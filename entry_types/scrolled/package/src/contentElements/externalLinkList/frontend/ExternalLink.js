@@ -85,6 +85,7 @@ export function ExternalLink({id, configuration, ...props}) {
                               {[styles.selected]: props.selected})}
         onClick={props.onClick}>
       <Link isEditable={isEditable}
+            actionButtonVisible={props.selected}
             href={href}
             openInNewTab={openInNewTab}
             onChange={handleLinkChange}>
@@ -136,6 +137,7 @@ function Link(props) {
   if (props.href || props.isEditable) {
     return (
       <EditableLink {...props}
+                    actionButtonVisible={props.actionButtonVisible}
                     linkPreviewPosition="above" />
     );
   }

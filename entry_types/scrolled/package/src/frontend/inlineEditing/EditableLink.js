@@ -12,11 +12,16 @@ export function EditableLink({
   className, href, openInNewTab, children, linkPreviewDisabled,
   onChange,
   linkPreviewPosition = 'below',
-  actionButtonPosition = 'outside'
+  actionButtonPosition = 'outside',
+  actionButtonVisible = 'whenSelected'
 }) {
   const selectLinkDestination = useSelectLinkDestination();
   const {t} = useI18n({locale: 'ui'});
   const {isSelected} = useContentElementEditorState();
+
+  if (actionButtonVisible === 'whenSelected') {
+    actionButtonVisible = isSelected;
+  }
 
   function handleButtonClick() {
     selectLinkDestination().then(onChange, () => {});
@@ -32,7 +37,7 @@ export function EditableLink({
           {children}
         </LinkPreview>
       </LinkTooltipProvider>
-      {isSelected &&
+      {actionButtonVisible &&
        <ActionButton text={href ?
                            t('pageflow_scrolled.inline_editing.change_link_destination') :
                            t('pageflow_scrolled.inline_editing.select_link_destination')}
