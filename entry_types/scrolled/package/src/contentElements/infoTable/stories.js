@@ -49,5 +49,14 @@ storiesOfContentElement(module, {
         ]
       }
     ]
-  }
+  },
+  variants: [
+    {
+      name: 'With custom column alignment',
+      configuration: {
+        labelColumnAlign: 'right',
+        valueColumnAlign: 'center'
+      }
+    }
+  ]
 });

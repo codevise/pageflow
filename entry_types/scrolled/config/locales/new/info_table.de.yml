@@ -7,6 +7,21 @@ de:
           name: Info-Tabelle
           tabs:
             general: Info-Tabelle
+          attributes:
+            labelColumnAlign:
+              label: "Text-Ausrichtung (Erste Spalte) "
+              values:
+                auto: "(Automatisch)"
+                left: Linksbündig
+                center: Zentriert
+                right: Rechtsbündig
+            valueColumnAlign:
+              label: "Text-Ausrichtung (Zweite Spalte)"
+              values:
+                auto: "(Automatisch)"
+                left: Linksbündig
+                center: Zentriert
+                right: Rechtsbündig
           help_texts:
             shortcuts: |-
               <dl class="shortcuts">

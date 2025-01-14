@@ -29,6 +29,21 @@
   text-align: right;
 }
 
+.labelColumnAlign-left td:first-child,
+.valueColumnAlign-left td:last-child {
+  text-align: left;
+}
+
+.labelColumnAlign-center td:first-child,
+.valueColumnAlign-center td:last-child {
+  text-align: center;
+}
+
+.labelColumnAlign-right td:first-child,
+.valueColumnAlign-right td:last-child {
+  text-align: right;
+}
+
 .table tr:nth-child(n + 2) td {
   border-top: solid 1px var(--table-border-color);
 }

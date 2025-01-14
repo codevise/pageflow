@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import {editor} from 'pageflow-scrolled/editor';
 import {InfoBoxView} from 'pageflow/editor';
-import {SeparatorView} from 'pageflow/ui'
+import {SeparatorView, SelectInputView} from 'pageflow/ui'
 
 import pictogram from './pictogram.svg';
 
@@ -12,6 +12,15 @@ editor.contentElementTypes.register('infoTable', {
 
   configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
+      this.input('labelColumnAlign', SelectInputView, {
+        values: ['auto', 'left', 'center', 'right']
+      });
+      this.input('valueColumnAlign', SelectInputView, {
+        values: ['auto', 'left', 'center', 'right']
+      });
+
+      this.view(SeparatorView);
+
       this.group('ContentElementPosition');
 
       this.view(SeparatorView);
