@@ -51,3 +51,18 @@
 .selected {
   --table-border-color: color-mix(in srgb, transparent, currentColor);
 }
+
+/*
+  Hide first column if:
+  - the table is not selected and
+  - the first column is blank (= the table does not have a first
+    column cell that is not blank) and
+  - the table is not completely blank (= has a non blank cell)
+*/
+.table:not(.selected):not(:has(td:not([data-blank]):first-child)):has(td:not([data-blank])) td:first-child {
+  display: none;
+}
+
+.table:not(.selected):not(:has(td:not([data-blank]):first-child)):has(td:not([data-blank])) td:last-child {
+  padding-left: 0;
+}

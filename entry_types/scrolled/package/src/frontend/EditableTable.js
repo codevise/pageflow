@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import {withInlineEditingAlternative} from './inlineEditing';
 import {Text} from './Text';
+import {utils} from './utils';
 
 import {
   renderLink,
@@ -79,7 +80,7 @@ export function createRenderElement({labelScaleCategory, valueScaleCategory}) {
       return renderLink({attributes, children, element});
     case 'label':
       return (
-        <td {...attributes}>
+        <td {...attributes} {...cellAttributes(element)}>
           <Text scaleCategory={labelScaleCategory}>
             {children}
           </Text>
@@ -87,7 +88,7 @@ export function createRenderElement({labelScaleCategory, valueScaleCategory}) {
       );
     default:
       return (
-        <td {...attributes}>
+        <td {...attributes} {...cellAttributes(element)}>
           <Text scaleCategory={valueScaleCategory}>
             {children}
           </Text>
@@ -95,4 +96,8 @@ export function createRenderElement({labelScaleCategory, valueScaleCategory}) {
       );
     }
   }
+}
+
+function cellAttributes(element) {
+  return utils.isBlankEditableTextValue([element]) ? {'data-blank': ''} : {};
 }

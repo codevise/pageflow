@@ -146,4 +146,49 @@ describe('EditableTable', () => {
     expect(container.querySelector('sup')).toHaveTextContent('3')
     expect(container.querySelector('sub')).toHaveTextContent('2')
   });
+
+  it('renders blank class on blank cells', () => {
+    const value = [
+      {
+        type: 'row',
+        children: [
+          {
+            type: 'label',
+            children: [
+              {text: ''}
+            ]
+          },
+          {
+            type: 'value',
+            children: [
+              {text: 'Value'}
+            ]
+          }
+        ]
+      },
+      {
+        type: 'row',
+        children: [
+          {
+            type: 'label',
+            children: [
+              {text: 'Label'}
+            ]
+          },
+          {
+            type: 'value',
+            children: [
+              {text: ''}
+            ]
+          }
+        ]
+      }
+    ];
+
+    render(<EditableTable value={value} />);
+
+    expect(
+      screen.queryAllByRole('cell').map(cell => cell.getAttribute('data-blank'))
+    ).toEqual(['', null, null, '']);
+  });
 });
