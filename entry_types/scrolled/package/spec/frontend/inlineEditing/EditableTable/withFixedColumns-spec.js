@@ -1862,6 +1862,61 @@ describe('handleTableNavigation', () => {
     });
   });
 
+  it('allows moving the cursor up inside multi line cell', () => {
+    const editor = withFixedColumns(
+      <editor>
+        <row>
+          <label>Row 1, Col 1</label>
+          <value>Row 1, Col 2</value>
+        </row>
+        <row>
+          <label>Row 2, Col 1</label>
+          <value>
+            A{'\n'}
+            B<cursor />
+          </value>
+        </row>
+      </editor>
+    );
+
+    const event = new KeyboardEvent('keydown', {key: 'ArrowUp'});
+    handleTableNavigation(editor, event);
+
+    expect(editor.selection).toEqual({
+      anchor: {path: [1, 1, 0], offset: 3},
+      focus: {path: [1, 1, 0], offset: 3}
+    });
+  });
+
+  it('moves the cursor up to the last line of a multi line cell', () => {
+    const editor = withFixedColumns(
+      <editor>
+        <row>
+          <label>Row 1, Col 1</label>
+          <value>
+            A{'\n'}
+            B{'\n'}
+            C
+          </value>
+        </row>
+        <row>
+          <label>Row 2, Col 1</label>
+          <value>
+            Row 2, Col 2<cursor />
+          </value>
+        </row>
+      </editor>
+    );
+
+    const event = new KeyboardEvent('keydown', {key: 'ArrowUp'});
+    handleTableNavigation(editor, event);
+
+    expect(editor.selection).toEqual({
+      anchor: {path: [0, 1, 0], offset: 4},
+      focus: {path: [0, 1, 0], offset: 4}
+    });
+  });
+
   it('moves the cursor to the cell below when pressing ArrowDown', () => {
     const editor = withFixedColumns(
       <editor>
@@ -1884,6 +1939,32 @@ describe('handleTableNavigation', () => {
     expect(editor.selection).toEqual({
       anchor: {path: [1, 1, 0], offset: 0},
       focus: {path: [1, 1, 0], offset: 0}
+    });
+  });
+
+  it('allows moving the cursor down inside multi line cell', () => {
+    const editor = withFixedColumns(
+      <editor>
+        <row>
+          <label>Row 1, Col 1</label>
+          <value>
+            A<cursor />{'\n'}
+            B
+          </value>
+        </row>
+        <row>
+          <label>Row 2, Col 1</label>
+          <value>Row 2, Col 2</value>
+        </row>
+      </editor>
+    );
+
+    const event = new KeyboardEvent('keydown', {key: 'ArrowDown'});
+    handleTableNavigation(editor, event);
+
+    expect(editor.selection).toEqual({
+      anchor: {path: [0, 1, 0], offset: 1},
+      focus: {path: [0, 1, 0], offset: 1}
     });
   });
 });

@@ -1,4 +1,4 @@
-import {Editor} from 'slate';
+import {Editor, Node} from 'slate';
 
 export const Row = {
   match(editor) {
@@ -49,6 +49,34 @@ export const Cell = {
     });
 
     return cellMatch;
+  },
+
+  inFirstLine(editor, point) {
+    const [node] = Editor.node(editor, point.path);
+    const text = Node.string(node);
+
+    const firstLineBreak = text.indexOf('\n');
+
+    return firstLineBreak === -1 || point.offset <= firstLineBreak;
+  },
+
+  inLastLine(editor, point) {
+    const [node] = Editor.node(editor, point.path);
+    const text = Node.string(node);
+
+    const lastLineBreak = text.lastIndexOf('\n');
+
+    return lastLineBreak === -1 || point.offset > lastLineBreak;
+  },
+
+  getPointAtStartOfLastLine(editor, cellPath) {
+    const [node] = Editor.node(editor, cellPath);
+    const text = Node.string(node);
+
+    const lastLineBreak = text.lastIndexOf('\n');
+    const offset = lastLineBreak === -1 ? 0 : lastLineBreak + 1;
+
+    return {path: cellPath, offset};
   }
 }
 
