@@ -450,6 +450,17 @@ export function examplePositionedElement({sectionId, position, width, caption, c
   }
 }
 
+export function editableTextValue(text) {
+  return [
+    {
+      type: 'paragraph',
+      children: [
+        {text}
+      ]
+    }
+  ];
+}
+
 // This method is only used in specs of this file. I could not find
 // anouth way to stub the missing seed.json file.
 export function stubSeedFixture(seed) {

@@ -11,6 +11,7 @@ import {
 } from './linkWidths';
 
 import {
+  editableTextValue,
   exampleHeading,
   filePermaId,
   normalizeAndMergeFixture,
@@ -21,39 +22,59 @@ import {storiesOf} from '@storybook/react';
 storiesOfContentElement(module, {
   typeName: 'externalLinkList',
   baseConfiguration: {
+    itemTexts: {
+      1: {
+        title: editableTextValue('PageflowIO'),
+        description: editableTextValue('This is description')
+      },
+      2: {
+        title: editableTextValue('pageflowio'),
+        description: editableTextValue('This is pageflowio link')
+      },
+      3: {
+        title: editableTextValue('PageflowIo'),
+        description: editableTextValue('This is another pageflowio link')
+      },
+      4: {
+        title: editableTextValue('PageflowIo'),
+        description: editableTextValue('This is another pageflowio link')
+      },
+    },
+    itemLinks: {
+      1: {
+        href: 'https://www.pageflow.io/',
+        openInNewTab: false
+      },
+      2: {
+        href: 'https://www.pageflow.io/',
+        openInNewTab: true
+      },
+      3: {
+        href: 'https://www.pageflow.io/',
+        openInNewTab: false
+      },
+      4: {
+        href: 'https://www.pageflow.io/',
+        openInNewTab: false
+      }
+    },
     links: [
       {
         id: '1',
-        title: 'PageflowIO',
-        url: 'https://www.pageflow.io/',
-        thumbnail: filePermaId('imageFiles', 'turtle'),
-        description: 'This is description',
-        open_in_new_tab: '0',
-        thumbnailCropPosition: {x: 0, y: 50}
+        thumbnailCropPosition: {x: 0, y: 50},
+        thumbnail: filePermaId('imageFiles', 'turtle')
       },
       {
         id: '2',
-        title: 'pageflowio',
-        url: 'https://www.pageflow.io/',
-        thumbnail: '',
-        description: 'This is pageflowio link',
-        open_in_new_tab: '1'
+        thumbnail: ''
       },
       {
         id: '3',
-        title: 'PageflowIo',
-        url: 'https://www.pageflow.io/',
-        thumbnail: filePermaId('imageFiles', 'turtle'),
-        description: 'This is another pageflowio link',
-        open_in_new_tab: '0'
+        thumbnail: filePermaId('imageFiles', 'turtle')
       },
       {
         id: '4',
-        title: 'PageflowIo',
-        url: 'https://www.pageflow.io/',
-        thumbnail: filePermaId('imageFiles', 'turtle'),
-        description: 'This is another pageflowio link',
-        open_in_new_tab: '0'
+        thumbnail: filePermaId('imageFiles', 'turtle')
       }
     ]
   },
@@ -117,20 +138,67 @@ storiesOfContentElement(module, {
     {
       name: 'Without link urls',
       configuration: {
+        itemTexts: {
+          1: {
+            title: editableTextValue('Static Teaser'),
+            description: editableTextValue('This is description')
+          },
+          2: {
+            title: editableTextValue('Other item'),
+            description: editableTextValue('This is other description')
+          }
+        },
+        itemLinks: {},
         links: [
           {
             id: '1',
-            title: 'Static Teaser',
             thumbnail: filePermaId('imageFiles', 'turtle'),
-            description: 'This is description'
           },
           {
-            id: '2',
-            title: 'Other item',
-            description: 'This is pageflowio link'
+            id: '2'
           }
         ]
       },
+    },
+    {
+      name: 'With legacy external links',
+      configuration: {
+        links: [
+          {
+            id: '1',
+            title: 'PageflowIO',
+            url: 'https://www.pageflow.io/',
+            thumbnail: filePermaId('imageFiles', 'turtle'),
+            description: 'This is description',
+            open_in_new_tab: '0',
+            thumbnailCropPosition: {x: 0, y: 50}
+          },
+          {
+            id: '2',
+            title: 'pageflowio',
+            url: 'https://www.pageflow.io/',
+            thumbnail: '',
+            description: 'This is pageflowio link',
+            open_in_new_tab: '1'
+          },
+          {
+            id: '3',
+            title: 'PageflowIo',
+            url: 'https://www.pageflow.io/',
+            thumbnail: filePermaId('imageFiles', 'turtle'),
+            description: 'This is another pageflowio link',
+            open_in_new_tab: '0'
+          },
+          {
+            id: '4',
+            title: 'PageflowIo',
+            url: 'https://www.pageflow.io/',
+            thumbnail: filePermaId('imageFiles', 'turtle'),
+            description: 'This is another pageflowio link',
+            open_in_new_tab: '0'
+          }
+        ]
+      }
     }
   ],
   inlineFileRights: true
@@ -225,7 +293,7 @@ function exampleContentElements(sectionId, layout, textPosition) {
             textPosition,
             width,
             linkWidth,
-            links: links({
+            ...links({
               count: linkCount({layout, textPosition, width, linkWidth})
             })
           }
@@ -244,13 +312,29 @@ function range(start, end) {
 }
 
 function links({count}) {
-  return Array.from({length: count}, (_, index) => (
-    {
-      id: `${index + 1}`,
-      title: `Link ${index + 1}`,
-      url: 'https://www.pageflow.io/',
-      thumbnail: filePermaId('imageFiles', 'turtle'),
-      description: 'This is the description'
-    }
-  ));
+  return {
+    itemTexts: Object.fromEntries(Array.from({length: count}, (_, index) =>
+      [
+        index + 1,
+        {
+          title: editableTextValue(`Link ${index + 1}`),
+          description: editableTextValue('This is the description')
+        }
+      ]
+    )),
+    itemLinks: Object.fromEntries(Array.from({length: count}, (_, index) =>
+      [
+        index + 1,
+        {
+          href: 'https://www.pageflow.io/',
+        }
+      ]
+    )),
+    links: Array.from({length: count}, (_, index) => (
+      {
+        id: `${index + 1}`,
+        thumbnail: filePermaId('imageFiles', 'turtle'),
+      }
+    ))
+  };
 }
