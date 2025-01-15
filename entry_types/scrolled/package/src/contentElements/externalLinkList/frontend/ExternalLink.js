@@ -104,7 +104,7 @@ export function ExternalLink({id, configuration, ...props}) {
             </Thumbnail>
           </div>
           <div className={styles.background}
-               inert={!isEditable || isSelected ? undefined : 'true'}>
+               style={{pointerEvents: !isEditable || isSelected ? undefined : 'none'}}>
             <InlineFileRights context="afterElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
             <div className={styles.details}>
               {presentOrEditing('tagline') &&
