@@ -31,8 +31,7 @@ export const SidebarListView = Marionette.Layout.extend({
   },
 
   addElement: function () {
-    var newModel = this.collection.addNewLink();
-    this.onEdit(newModel);
+    this.collection.addNewLink();
   },
 
   onEdit: function (linkModel) {
