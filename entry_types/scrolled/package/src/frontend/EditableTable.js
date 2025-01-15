@@ -10,6 +10,8 @@ import {
   renderLeaf
 } from './EditableText';
 
+import styles from './EditableTable.module.css';
+
 const defaultValue = [{
   type: 'row',
   children: [
@@ -34,7 +36,7 @@ export const EditableTable = withInlineEditingAlternative('EditableTable', funct
   valueScaleCategory = 'body'
 }) {
   return (
-    <table className={classNames(className)}>
+    <table className={classNames(className, styles.table)}>
       <tbody>
         {render(value || defaultValue, {
           labelScaleCategory,
