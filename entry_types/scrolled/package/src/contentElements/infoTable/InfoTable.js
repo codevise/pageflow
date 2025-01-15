@@ -18,6 +18,8 @@ export function InfoTable({configuration, sectionProps}) {
 
   return (
     <EditableTable className={classNames(styles.table,
+                                         styles[`labelColumnAlign-${configuration.labelColumnAlign}`],
+                                         styles[`valueColumnAlign-${configuration.valueColumnAlign}`],
                                          {[styles.selected]: isSelected,
                                           [styles.center]: sectionProps.layout === 'centerRagged'})}
                    labelScaleCategory="infoTableLabel"

@@ -7,6 +7,21 @@ en:
           name: Info Table
           tabs:
             general: Info Table
+          attributes:
+            labelColumnAlign:
+              label: "Text align (First column)"
+              values:
+                auto: "(Auto)"
+                left: Left
+                center: Center
+                right: Right
+            valueColumnAlign:
+              label: "Text align (Second column)"
+              values:
+                auto: "(Auto)"
+                left: Left
+                center: Center
+                right: Right
           help_texts:
             shortcuts: |-
               <dl class="shortcuts">

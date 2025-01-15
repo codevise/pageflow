@@ -49,5 +49,55 @@ storiesOfContentElement(module, {
         ]
       }
     ]
-  }
+  },
+  variants: [
+    {
+      name: 'With empty first columns',
+      configuration: {
+        value: [
+          {
+            type: 'row',
+            children: [
+              {
+                type: 'label',
+                children: [
+                  {text: ''}
+                ]
+              },
+              {
+                type: 'value',
+                children: [
+                  {text: 'First column hidden'},
+                ]
+              }
+            ]
+          },
+          {
+            type: 'row',
+            children: [
+              {
+                type: 'label',
+                children: [
+                  {text: ''}
+                ]
+              },
+              {
+                type: 'value',
+                children: [
+                  {text: 'No padding left in second column'}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      name: 'With custom column alignment',
+      configuration: {
+        labelColumnAlign: 'right',
+        valueColumnAlign: 'center'
+      }
+    }
+  ]
 });
