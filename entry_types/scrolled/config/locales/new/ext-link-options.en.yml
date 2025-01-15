@@ -21,13 +21,13 @@ en:
                 wide: Landscape (16:9)
                 original: Original
             textPosition:
-              label: "Text position"
+              label: "Caption"
               inline_help: |-
                 Arrangement of image and text within links.
               values:
                 below: "Below image"
                 right: "Right from image"
-                title: "Image only"
+                title: "None"
             thumbnailSize:
               label: "Thumbnail width"
               inline_help: |-

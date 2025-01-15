@@ -22,13 +22,13 @@ de:
                 wide: Landscape (16:9)
                 original: Original
             textPosition:
-              label: "Textposition"
+              label: "Beschriftung"
               inline_help: |-
                 Anordnung von Bild und Text innerhalb von Links.
               values:
                 below: "Unter dem Bild"
                 right: "Rechts neben dem Bild"
-                title: "Nur Bild"
+                title: "Keine"
             thumbnailSize:
               label: "Thumbnail-Breite"
               inline_help: |-

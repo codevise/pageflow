@@ -8,7 +8,7 @@ import I18n from 'i18n-js';
 
 export const SidebarListView = Marionette.Layout.extend({
   template: (data) => `
-    <label>Links</label>
+    <label>${I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.items')}</label>
     <div class='${styles.linksContainer}'></div>
     <button class="${buttonStyles.addButton}">
       ${I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.add')}
@@ -39,7 +39,7 @@ export const SidebarListView = Marionette.Layout.extend({
   },
 
   onRemove: function (linkModel) {
-    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_link'))) {
+    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_item'))) {
       this.collection.remove(linkModel);
     }
   }

@@ -137,8 +137,6 @@ en:
           name: Data and Diagrams
         interactive:
           name: Interactive
-        links:
-          name: Links
         media:
           name: Media
       content_elements:
@@ -214,30 +212,11 @@ en:
         externalLinkList:
           add: Add
           attributes:
-            description:
-              inline_help: Link-description for display in entry.
-              label: Description
-            open_in_new_tab:
-              label: Open in new tab
             thumbnail:
               inline_help: Link thumbnail image for display in entry.
               label: Thumbnail
-            title:
-              inline_help: Link-title for display in entry.
-              label: Title
-            url:
-              inline_help: Absolute URL (inkluding http:// oder https://) of Link.
-              label: URL
           back: Back
-          confirm_delete: Are you sure you want to delete this element?
-          confirm_delete_link: Are you sure you want to delete this link?
-          description: A collection of links to external websites
           destroy: Delete
-          name: External links
-          outline: Outline
-          tabs:
-            edit_link: Edit Link
-            general: External Links
         heading:
           attributes:
             children:

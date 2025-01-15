@@ -20,7 +20,7 @@ editor.registerSideBarRouting({
 // register external link list content element configuration editor for sidebar
 editor.contentElementTypes.register('externalLinkList', {
   pictogram,
-  category: 'links',
+  category: 'tilesAndLinks',
   supportedPositions: ['inline', 'standAlone'],
   supportedWidthRange: ['m', 'xl'],
 
