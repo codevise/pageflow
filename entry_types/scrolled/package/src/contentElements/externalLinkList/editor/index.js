@@ -36,50 +36,46 @@ editor.contentElementTypes.register('externalLinkList', {
     this.tab('general', function() {
       const layout = contentElement.section.configuration.get('layout');
 
-      if (!features.isEnabled('external_links_options')) {
-        this.group('ContentElementVariant', {entry});
-      }
-
       this.view(SidebarListView, {
         contentElement: this.model.parent,
         collection: ExternalLinkCollection.forContentElement(this.model.parent, entry)
       });
 
-      if (features.isEnabled('external_links_options')) {
-        this.input('textPosition', SelectInputView, {
-          values: ['below', 'right', 'title']
-        });
-        this.group('ContentElementVariant', {entry});
-        this.view(SeparatorView);
-        this.group('ContentElementPosition');
-        this.view(SeparatorView);
-        this.input('linkWidth', SliderInputView, {
-          displayText: value => [
-            'XS', 'S', 'M', 'L', 'XL', 'XXL'
-          ][value + 2],
-          saveOnSlide: true,
-          minValue: -2,
-          maxValueBinding: ['width', 'textPosition'],
-          maxValue: ([width, textPosition]) => maxLinkWidth({width, layout, textPosition}),
-          defaultValue: -1
-        });
-        this.input('linkAlignment', SelectInputView, {
-          values: ['spaceEvenly', 'left', 'right', 'center'],
-          visibleBinding: 'textPosition',
-          visible: textPosition => textPosition !== 'right'
-        });
-        this.input('thumbnailSize', SelectInputView, {
-          values: ['small', 'medium', 'large'],
-          visibleBinding: 'textPosition',
-          visibleBindingValue: 'right'
-        });
-        this.input('thumbnailAspectRatio', SelectInputView, {
-          values: ['wide', 'narrow', 'square', 'portrait', 'original']
-        });
-        this.input('textSize', SelectInputView, {
-          values: ['small', 'medium', 'large']
-        });
-      }
+      this.input('textPosition', SelectInputView, {
+        values: features.isEnabled('external_links_options') ?
+                ['below', 'right', 'title'] :
+                ['below', 'title']
+      });
+      this.group('ContentElementVariant', {entry});
+      this.view(SeparatorView);
+      this.group('ContentElementPosition');
+      this.view(SeparatorView);
+      this.input('linkWidth', SliderInputView, {
+        displayText: value => [
+          'XS', 'S', 'M', 'L', 'XL', 'XXL'
+        ][value + 2],
+        saveOnSlide: true,
+        minValue: -2,
+        maxValueBinding: ['width', 'textPosition'],
+        maxValue: ([width, textPosition]) => maxLinkWidth({width, layout, textPosition}),
+        defaultValue: -1
+      });
+      this.input('linkAlignment', SelectInputView, {
+        values: ['spaceEvenly', 'left', 'right', 'center'],
+        visibleBinding: 'textPosition',
+        visible: textPosition => textPosition !== 'right'
+      });
+      this.input('thumbnailSize', SelectInputView, {
+        values: ['small', 'medium', 'large'],
+        visibleBinding: 'textPosition',
+        visibleBindingValue: 'right'
+      });
+      this.input('thumbnailAspectRatio', SelectInputView, {
+        values: ['wide', 'narrow', 'square', 'portrait', 'original']
+      });
+      this.input('textSize', SelectInputView, {
+        values: ['small', 'medium', 'large']
+      });
     });
   }
 });
