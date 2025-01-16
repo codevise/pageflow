@@ -28,7 +28,7 @@ de:
               values:
                 below: "Unter dem Bild"
                 right: "Rechts neben dem Bild"
-                title: "Keine"
+                none: "Keine"
             thumbnailSize:
               label: "Thumbnail-Breite"
               inline_help: |-

@@ -43,8 +43,8 @@ editor.contentElementTypes.register('externalLinkList', {
 
       this.input('textPosition', SelectInputView, {
         values: features.isEnabled('external_links_options') ?
-                ['below', 'right', 'title'] :
-                ['below', 'title']
+                ['below', 'right', 'none'] :
+                ['below', 'none']
       });
       this.group('ContentElementVariant', {entry});
       this.view(SeparatorView);

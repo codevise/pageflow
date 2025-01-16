@@ -46,8 +46,12 @@
   flex-direction: column;
 }
 
-.textPosition-title {
+.textPosition-none {
   composes: textPosition-below;
+}
+
+.textPosition-title {
+  composes: textPosition-none;
 }
 
 .link.textPosition-below:not(.outlined):hover {
@@ -84,7 +88,7 @@
   padding-right: min(var(--padding-inline), 5px);
 }
 
-.textPosition-title .background {
+.textPosition-none .background {
   display: none;
 }
 

@@ -27,7 +27,7 @@ en:
               values:
                 below: "Below image"
                 right: "Right from image"
-                title: "None"
+                none: "None"
             thumbnailSize:
               label: "Thumbnail width"
               inline_help: |-
