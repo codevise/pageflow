@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import classNames from 'classnames';
 import {
+  useContentElementEditorCommandSubscription,
   useContentElementEditorState,
   useContentElementLifecycle,
   useDarkBackground,
@@ -28,6 +29,19 @@ export function ExternalLinkList(props) {
 
   const {setTransientState, isSelected} = useContentElementEditorState();
   const [selectedItemId, setSelectedItemId] = useState();
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+
+  useContentElementEditorCommandSubscription(command => {
+    if (command.type === 'HIGHLIGHT_ITEM') {
+      setHighlightedIndex(command.index);
+    }
+    else if (command.type === 'RESET_ITEM_HIGHLIGHT') {
+      setHighlightedIndex(-1);
+    }
+    else if (command.type === 'SET_SELECTED_ITEM') {
+      setSelectedItemId(linkList[command.index]?.id);
+    }
+  });
 
   function handleItemClick(event, id) {
     if (isSelected) {
@@ -86,6 +100,7 @@ export function ExternalLinkList(props) {
                         invert={!darkBackground}
                         loadImages={shouldLoad}
                         outlined={isSelected}
+                        highlighted={highlightedIndex === index}
                         selected={link.id === selectedItemId && isSelected}
                         onClick={event => handleItemClick(event, link.id)} />
         )}

@@ -30,6 +30,8 @@ export const SidebarListView = Marionette.Layout.extend({
     this.linksContainer.show(new ListView({
       collection: this.collection,
       sortable: true,
+      highlight: true,
+
       onEdit: _.bind(this.onEdit, this),
       onRemove: _.bind(this.onRemove, this)
     }));
@@ -40,6 +42,9 @@ export const SidebarListView = Marionette.Layout.extend({
   },
 
   onEdit: function (linkModel) {
+    this.options.contentElement.postCommand({type: 'SET_SELECTED_ITEM',
+                                             index: this.collection.indexOf(linkModel)});
+
     editor.navigate(`/scrolled/external_links/${this.options.contentElement.id}/${linkModel.id}`, {trigger: true});
   },
 

@@ -128,6 +128,62 @@ describe('ExternalLinkList', () => {
     expect(container.querySelector(`.${linkStyles.selected}`)).toBeNull();
     expect(setTransientState).toHaveBeenCalledWith({selectedItemId: null})
   });
+
+  it('supports highlighting item via command', () => {
+    const configuration = {
+      links: [
+        {id: 1}
+      ]
+    };
+
+    const {container, triggerEditorCommand} = renderInContentElement(
+      <ExternalLinkList configuration={configuration} sectionProps={{}} />,
+      {
+        editorState: {isSelected: true, isEditable: true}
+      }
+    );
+    triggerEditorCommand({type: 'HIGHLIGHT_ITEM', index: 0});
+
+    expect(container.querySelector(`.${linkStyles.highlighted}`)).not.toBeNull();
+  });
+
+  it('supports resetting item highlight via command', () => {
+    const configuration = {
+      links: [
+        {id: 1}
+      ]
+    };
+
+    const {container, triggerEditorCommand} = renderInContentElement(
+      <ExternalLinkList configuration={configuration} sectionProps={{}} />,
+      {
+        editorState: {isSelected: true, isEditable: true}
+      }
+    );
+
+    triggerEditorCommand({type: 'HIGHLIGHT_ITEM', index: 0});
+    triggerEditorCommand({type: 'RESET_ITEM_HIGHLIGHT'});
+
+    expect(container.querySelector(`.${linkStyles.highlighted}`)).toBeNull();
+  });
+
+  it('supports setting selected item via command', () => {
+    const configuration = {
+      links: [
+        {id: 1}
+      ]
+    };
+
+    const {container, triggerEditorCommand} = renderInContentElement(
+      <ExternalLinkList configuration={configuration} sectionProps={{}} />,
+      {
+        editorState: {isSelected: true, isEditable: true}
+      }
+    );
+    triggerEditorCommand({type: 'SET_SELECTED_ITEM', index: 0});
+
+    expect(container.querySelector(`.${linkStyles.selected}`)).not.toBeNull();
+  });
 });
 
 function value(text) {

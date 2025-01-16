@@ -25,6 +25,7 @@
   opacity: 0;
 }
 
+.highlighted::before,
 .item:where(:hover)::before {
   opacity: 0.5;
 }

@@ -44,4 +44,17 @@ export const ExternalLinkModel = Backbone.Model.extend({
   setFilePositions: function(attribute, x, y) {
     this.set('thumbnailCropPosition', {x, y});
   },
+
+  highlight() {
+    this.collection.contentElement.postCommand({
+      type: 'HIGHLIGHT_ITEM',
+      index: this.collection.indexOf(this)
+    });
+  },
+
+  resetHighlight() {
+    this.collection.contentElement.postCommand({
+      type: 'RESET_ITEM_HIGHLIGHT'
+    });
+  }
 });

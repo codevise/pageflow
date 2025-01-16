@@ -82,6 +82,7 @@ export function ExternalLink({id, configuration, ...props}) {
                               styles[`textPosition-${props.textPosition}`],
                               {[styles.link]: !!href},
                               {[styles.outlined]: props.outlined},
+                              {[styles.highlighted]: props.highlighted},
                               {[styles.selected]: props.selected})}
         onClick={props.onClick}>
       <Link isEditable={isEditable}

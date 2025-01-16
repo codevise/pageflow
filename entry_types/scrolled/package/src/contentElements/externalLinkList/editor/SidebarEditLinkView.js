@@ -61,6 +61,9 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
     this.formContainer.show(configurationEditor);
   },
   goBack: function() {
+    this.options.contentElement.postCommand({type: 'SET_SELECTED_ITEM',
+                                             index: -1});
+
     editor.navigate(`/scrolled/content_elements/${this.options.contentElement.get('id')}`, {trigger: true});
   },
   destroyLink: function () {

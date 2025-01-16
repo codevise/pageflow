@@ -116,6 +116,42 @@ describe('ExternalLinkCollection', () => {
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
+  it('posts content element command on highlight', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        links: [
+          {id: 1},
+        ]
+      }
+    });
+    const itemsCollection = ExternalLinkCollection.forContentElement(contentElement);
+    const listener = jest.fn();
+
+    contentElement.on('postCommand', listener);
+    itemsCollection.get(1).highlight();
+
+    expect(listener).toHaveBeenCalledWith(10, {type: 'HIGHLIGHT_ITEM', index: 0});
+  });
+
+  it('posts content element command on resetHighlight', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        links: [
+          {id: 1},
+        ]
+      }
+    });
+    const itemsCollection = ExternalLinkCollection.forContentElement(contentElement);
+    const listener = jest.fn();
+
+    contentElement.on('postCommand', listener);
+    itemsCollection.get(1).resetHighlight();
+
+    expect(listener).toHaveBeenCalledWith(10, {type: 'RESET_ITEM_HIGHLIGHT'});
+  });
+
   it('return empty title by default', () => {
     const contentElement = factories.contentElement({
       id: 10,
