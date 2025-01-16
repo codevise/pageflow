@@ -22,6 +22,11 @@ export const SidebarListView = Marionette.Layout.extend({
   }),
 
   onRender: function () {
+    this.listenTo(this.options.contentElement.configuration, 'change:textPosition', this.renderListView);
+    this.renderListView();
+  },
+
+  renderListView() {
     this.linksContainer.show(new ListView({
       collection: this.collection,
       sortable: true,

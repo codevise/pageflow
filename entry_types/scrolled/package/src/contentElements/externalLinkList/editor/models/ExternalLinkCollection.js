@@ -9,7 +9,7 @@ export const ExternalLinkCollection = Backbone.Collection.extend({
 
   initialize: function (models, options) {
     this.entry = options.entry;
-    this.configuration = options.configuration;
+    this.contentElement = options.contentElement;
     this.listenTo(this, 'add sort change', this.updateConfiguration);
     this.listenTo(this, 'remove', () => this.updateConfiguration({prune: true}));
   },
@@ -29,13 +29,13 @@ export const ExternalLinkCollection = Backbone.Collection.extend({
       };
     }
 
-    this.configuration.set(updatedAttributes);
+    this.contentElement.configuration.set(updatedAttributes);
   },
 
   getPrunedProperty(propertyName) {
     return {
       [propertyName]: _.pick(
-        this.configuration.get(propertyName) || {},
+        this.contentElement.configuration.get(propertyName) || {},
         ...this.pluck('id')
       )
     };
@@ -54,7 +54,7 @@ export const ExternalLinkCollection = Backbone.Collection.extend({
 
 ExternalLinkCollection.forContentElement = function(contentElement, entry) {
   return new ExternalLinkCollection(contentElement.configuration.get('links') || [], {
-    entry: entry,
-    configuration: contentElement.configuration
+    entry,
+    contentElement
   });
 };

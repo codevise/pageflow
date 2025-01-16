@@ -4,42 +4,44 @@ import {
   ExternalLinkCollection
 } from 'contentElements/externalLinkList/editor/models/ExternalLinkCollection';
 
-import {factories} from 'support';
+import {factories, useEditorGlobals} from 'support';
 
 describe('ExternalLinkCollection', () => {
+  const {createEntry} = useEditorGlobals();
+
   describe('.addNewLink', () => {
     it('returns link for empty collection', () => {
-      const collection = new ExternalLinkCollection([], {
-        entry: {},
-        configuration: new Backbone.Model()
-      });
+      const contentElement = factories.contentElement();
+      const itemsCollection = ExternalLinkCollection.forContentElement(contentElement);
 
-      const link = collection.addNewLink();
+      const item = itemsCollection.addNewLink();
 
-      expect(link.id).toEqual(1);
+      expect(item.id).toEqual(1);
     });
 
     it('generates uniq ids', () => {
-      const collection = new ExternalLinkCollection([
-        {id: 1},
-        {id: 3}
-      ], {
-        entry: {},
-        configuration: new Backbone.Model()
+      const contentElement = factories.contentElement({
+        configuration: {
+          links: [
+            {id: 1},
+            {id: 3},
+          ]
+        }
       });
+      const itemsCollection = ExternalLinkCollection.forContentElement(contentElement);
 
-      const link = collection.addNewLink();
+      const item = itemsCollection.addNewLink();
 
-      expect(link.id).toEqual(4);
+      expect(item.id).toEqual(4);
     });
   });
 
   it('updates content element configuration when item is added', () => {
     const contentElement = factories.contentElement();
-    const areasCollection = ExternalLinkCollection.forContentElement(contentElement);
+    const itemsCollection = ExternalLinkCollection.forContentElement(contentElement);
 
-    areasCollection.addNewLink();
-    areasCollection.addNewLink();
+    itemsCollection.addNewLink();
+    itemsCollection.addNewLink();
 
     expect(contentElement.configuration.get('links')).toEqual([
       {id: 1},
@@ -112,5 +114,136 @@ describe('ExternalLinkCollection', () => {
       2: {href: 'https://other.example.com'},
     });
     expect(listener).toHaveBeenCalledTimes(1);
+  });
+
+  it('return empty title by default', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        links: [
+          {id: 1},
+        ]
+      }
+    });
+    const itemsCollection = ExternalLinkCollection.forContentElement(contentElement);
+
+    expect(itemsCollection.get(1).title()).toBeUndefined();
+  });
+
+  it('extracts title from tooltip texts', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        itemTexts: {
+          1: {
+            title: [{children: [{text: 'Some title'}]}]
+          }
+        },
+        links: [
+          {id: 1},
+        ]
+      }
+    });
+    const itemsCollection = ExternalLinkCollection.forContentElement(contentElement);
+
+    expect(itemsCollection.get(1).title()).toEqual('Some title');
+  });
+
+  it('falls back to legacy title', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        links: [
+          {
+            id: 1,
+            title: 'Some title'
+          },
+        ]
+      }
+    });
+    const itemsCollection = ExternalLinkCollection.forContentElement(contentElement);
+
+    expect(itemsCollection.get(1).title()).toEqual('Some title');
+  });
+
+  it('falls back to legacy title even if other items already use editble text', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        itemTexts: {
+          2: {
+            title: [{children: [{text: 'Other title'}]}]
+          }
+        },
+        links: [
+          {
+            id: 1,
+            title: 'Some title'
+          },
+          {
+            id: 2
+          }
+        ]
+      }
+    });
+    const itemsCollection = ExternalLinkCollection.forContentElement(contentElement);
+
+    expect(itemsCollection.get(1).title()).toEqual('Some title');
+  });
+
+  it('prefers empty title over legacy title', () => {
+    const contentElement = factories.contentElement({
+      id: 10,
+      configuration: {
+        itemTexts: {
+          1: {
+            title: [{children: [{text: ''}]}]
+          }
+        },
+        links: [
+          {
+            id: 1,
+            title: 'Some title'
+          },
+        ]
+      }
+    });
+    const itemsCollection = ExternalLinkCollection.forContentElement(contentElement);
+
+    expect(itemsCollection.get(1).title()).toEqual('');
+  });
+
+  it('returns thumbnail alt text if text position is none', () => {
+    const entry = createEntry({
+      imageFiles: [
+        {perma_id: 10, configuration: {alt: 'Some Logo'}},
+      ],
+      contentElements: [
+        {
+          id: 1,
+          typeName: 'externalLinkList',
+          configuration: {
+            textPosition: 'none',
+            itemTexts: {
+              1: {
+                title: [{children: [{text: 'Some invisible text'}]}]
+              }
+            },
+            links: [
+              {
+                id: 1,
+                thumbnail: 10
+              },
+            ]
+          }
+        }
+      ]
+    });
+    const itemsCollection = ExternalLinkCollection.forContentElement(
+      entry.contentElements.get(1),
+      entry
+    );
+
+    expect(itemsCollection.get(1).title()).toEqual('Some Logo');
   });
 });
