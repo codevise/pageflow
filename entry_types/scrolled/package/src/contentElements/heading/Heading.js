@@ -73,7 +73,8 @@ export function Heading({configuration, sectionProps, contentElementWidth}) {
     }
 
     return (
-      <Text scaleCategory={getScaleCategory(configuration, firstSectionInEntry, name)}>
+      <Text scaleCategory={getScaleCategory(configuration, firstSectionInEntry, name)}
+            typographyVariant={configuration.typographyVariant}>
         <div className={styles[name]}
              role="doc-subtitle">
           <EditableInlineText value={value}

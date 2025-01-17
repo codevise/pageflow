@@ -64,7 +64,13 @@ The following rule names are supported:
 | `heading_sm` | Applies to heading content element with size "small". |
 | `heading_xs` | Applies to headings in text block content elements. |
 | `heading_tagline` | Applies to taglines in heading content elements. |
+| `heading_tagline_lg` | Applies to taglines in heading content element with size "large". |
+| `heading_tagline_md` | Applies to taglines in heading content element with size "medium". |
+| `heading_tagline_sm` | Applies to taglines in heading content element with size "small". |
 | `heading_subtitle` | Applies to subtitles in heading content elements. |
+| `heading_subtitle_lg` | Applies to subtitles in heading content element with size "large". |
+| `heading_subtitle_md` | Applies to subtitles in heading content element with size "medium". |
+| `heading_subtitle_sm` | Applies to subtitles in heading content element with size "small". |
 | `body` | Applies to text blocks (paragraphs, lists, block quotes) in the entry content. |
 | `caption` | Applies to captions of content elements like inline images or inline videos. |
 | `content_link` | Applies to text links in text blocks, figures, quotes, and counters. |
@@ -161,6 +167,8 @@ The following prefixes are supported by built in content elements:
 | Typography Rule Prefix | Description |
 | ---------------------- | ----------- |
 | `heading-` | Variants for the heading content element. |
+| `heading_tagline-` | Variants for tagline in heading content element. |
+| `heading_subtitle-` | Variants for subtitle in heading content element. |
 | `text_block-block_quote-` | Variants for block quotes in text block elements. |
 | `text_block-bulleted_list-` | Variants for bulleted lists in text block elements. |
 | `text_block-heading-` | Variants for headings in text block elements. |
