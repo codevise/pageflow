@@ -166,6 +166,8 @@ The following prefixes are supported by built in content elements:
 | `text_block-heading-` | Variants for headings in text block elements. |
 | `text_block-numbered_list-` | Variants for numbered lists in text block elements. |
 | `text_block-paragraph-` | Variants for paragraphs in text block elements. |
+| `question-` | Variants for question text in question elements. |
+| `question_answer-` | Variants for answer text in question elements. |
 
 Typography variants can also assign [text block related theme
 properties](./custom_colors_and_dimensions.md#text-block-styles) by

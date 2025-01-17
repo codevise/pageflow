@@ -79,7 +79,6 @@
   line-height: 1.2;
 }
 
-
 .body {
   composes: typography-body from global;
   font-size: text-base;
@@ -97,6 +96,12 @@
   font-size: text-base;
   line-height: 1.4;
   font-weight: 700;
+}
+
+.questionAnswer {
+  composes: typography-questionAnswer from global;
+  font-size: text-base;
+  line-height: 1.4;
 }
 
 .quoteText-lg {
