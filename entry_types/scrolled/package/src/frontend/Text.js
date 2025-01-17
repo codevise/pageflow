@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import styles from './Text.module.css';
@@ -16,13 +17,19 @@ import styles from './Text.module.css';
  *   `'counterNumber-lg'`, `'counterNumber-md'`, `'counterNumber-sm'`,
  *   `'counterNumber-xs'`, `'counterDescription`'.
  *   `'infoTableLabel'`, `'infoTableValue`'.
- *   `'hotspotsTooltipTitle'`, `'hotspotsTooltipDescription`', `'hotspotsTooltipLink`'.
+ *   `'hotspotsTooltipTitle'`, `'hotspotsTooltipDescription`', `'hotspotsTooltipLink`'
+ * @param {string} [props.typographyVariant] - Suffix for variant class name.
  * @param {string} [props.inline] - Render a span instread of a div.
  * @param {string} props.children - Nodes to render with specified typography.
  */
-export function Text({inline, scaleCategory, children}) {
+export function Text({inline, scaleCategory, typographyVariant, children}) {
+  const variantClassName =
+    typographyVariant &&
+    `typography-${scaleCategory.split('-')[0]}-${typographyVariant}`;
+
   return React.createElement(inline ? 'span' : 'div',
-                             {className: styles[scaleCategory]},
+                             {className: classNames(styles[scaleCategory],
+                                                    variantClassName)},
                              children);
 }
 
