@@ -57,7 +57,8 @@ export const selectedClassName = styles.selected;
 
 export const EditableText = React.memo(function EditableText({
   value, contentElementId, placeholder, onChange, selectionRect, className,
-  placeholderClassName, scaleCategory = 'body', autoFocus,
+  placeholderClassName, scaleCategory = 'body', typographyVariant,
+  autoFocus,
   floatingControlsPosition = 'below'
 }) {
   const editor = useMemo(
@@ -126,7 +127,8 @@ export const EditableText = React.memo(function EditableText({
   const [dropTargetsActive, ref] = useDropTargetsActive();
 
   return (
-    <Text scaleCategory={scaleCategory}>
+    <Text scaleCategory={scaleCategory}
+          typographyVariant={typographyVariant}>
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
            ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>

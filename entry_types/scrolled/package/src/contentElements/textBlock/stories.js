@@ -267,6 +267,16 @@ storiesOfContentElement(module, {
           }
         }
       }
-    }
+    },
+    {
+      name: 'With custom bold font weight',
+      themeOptions: {
+        properties: {
+          root: {
+            editableTextBoldFontWeight: 600
+          }
+        }
+      }
+    },
   ]
 });

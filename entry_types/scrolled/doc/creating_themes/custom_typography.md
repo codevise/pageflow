@@ -64,7 +64,13 @@ The following rule names are supported:
 | `heading_sm` | Applies to heading content element with size "small". |
 | `heading_xs` | Applies to headings in text block content elements. |
 | `heading_tagline` | Applies to taglines in heading content elements. |
+| `heading_tagline_lg` | Applies to taglines in heading content element with size "large". |
+| `heading_tagline_md` | Applies to taglines in heading content element with size "medium". |
+| `heading_tagline_sm` | Applies to taglines in heading content element with size "small". |
 | `heading_subtitle` | Applies to subtitles in heading content elements. |
+| `heading_subtitle_lg` | Applies to subtitles in heading content element with size "large". |
+| `heading_subtitle_md` | Applies to subtitles in heading content element with size "medium". |
+| `heading_subtitle_sm` | Applies to subtitles in heading content element with size "small". |
 | `body` | Applies to text blocks (paragraphs, lists, block quotes) in the entry content. |
 | `caption` | Applies to captions of content elements like inline images or inline videos. |
 | `content_link` | Applies to text links in text blocks, figures, quotes, and counters. |
@@ -161,11 +167,15 @@ The following prefixes are supported by built in content elements:
 | Typography Rule Prefix | Description |
 | ---------------------- | ----------- |
 | `heading-` | Variants for the heading content element. |
+| `heading_tagline-` | Variants for tagline in heading content element. |
+| `heading_subtitle-` | Variants for subtitle in heading content element. |
 | `text_block-block_quote-` | Variants for block quotes in text block elements. |
 | `text_block-bulleted_list-` | Variants for bulleted lists in text block elements. |
 | `text_block-heading-` | Variants for headings in text block elements. |
 | `text_block-numbered_list-` | Variants for numbered lists in text block elements. |
 | `text_block-paragraph-` | Variants for paragraphs in text block elements. |
+| `question-` | Variants for question text in question elements. |
+| `question_answer-` | Variants for answer text in question elements. |
 
 Typography variants can also assign [text block related theme
 properties](./custom_colors_and_dimensions.md#text-block-styles) by
@@ -182,6 +192,15 @@ entry_type_config.themes.register(:my_custom_theme,
                                   }
 
 ```
+
+## Editable Text Inline Text Styles
+
+The following properties apply to editable text that has been
+formatted via the hovering toolbar:
+
+| Name | Description |
+| ---- | ----------- |
+| `editable_text_bold_font_weight` | Font weight to apply to bold formatted text. |
 
 ## Quotes
 
@@ -210,6 +229,7 @@ adjust the design:
 
 | Name | Description |
 | ---- | ----------- |
+| `quote_attribution_first_line_font_weight` | Font weight of the quote attribution's first line. Bold by default. |
 | `quote_attribution_min_width` | Control horizontal position of attribute text. |
 | `quote_hanging_mark_spacing` | Distance between quote marks and quote text in `hanging` or `largeHanging` design. |
 | `quote_indent` | Length by which to indent the quote text. |

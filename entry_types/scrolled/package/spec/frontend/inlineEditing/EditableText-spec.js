@@ -73,6 +73,24 @@ describe('EditableText', () => {
     expect(container.querySelector('.typography-quoteText')).toBeInTheDocument()
   });
 
+  it('supports typography variant', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(
+      <EditableText value={value}
+                    scaleCategory="quoteText-lg"
+                    typographyVariant="highlight" />,
+      {wrapper}
+    );
+
+    expect(container.querySelector('.typography-quoteText-highlight')).toBeInTheDocument()
+  });
+
   it('renders placeholder if value is undefined', () => {
     const {queryByText} = render(<EditableText placeholder="Some placeholder" />, {wrapper});
 

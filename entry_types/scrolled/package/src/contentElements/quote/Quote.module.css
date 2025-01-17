@@ -131,7 +131,7 @@
 }
 
 .attribution p:first-child {
-  font-weight: bold;
+  font-weight: var(--theme-quote-attribution-first-line-font-weight, bold);
 }
 
 @media screen and breakpoint-sm {
