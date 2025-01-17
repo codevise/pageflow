@@ -193,6 +193,16 @@ storiesOfContentElement(module, {
       configuration: {
         color: 'accent'
       }
+    },
+    {
+      name: 'Custom attribution font weight',
+      themeOptions: {
+        properties: {
+          root: {
+            quoteAttributionFirstLineFontWeight: 'normal'
+          }
+        }
+      }
     }
   ]
 });

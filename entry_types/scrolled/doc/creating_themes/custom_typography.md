@@ -219,6 +219,7 @@ adjust the design:
 
 | Name | Description |
 | ---- | ----------- |
+| `quote_attribution_first_line_font_weight` | Font weight of the quote attribution's first line. Bold by default. |
 | `quote_attribution_min_width` | Control horizontal position of attribute text. |
 | `quote_hanging_mark_spacing` | Distance between quote marks and quote text in `hanging` or `largeHanging` design. |
 | `quote_indent` | Length by which to indent the quote text. |
