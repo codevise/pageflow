@@ -134,7 +134,7 @@ export function renderLink({attributes, children, element}) {
 
 export function renderLeaf({attributes, children, leaf}) {
   if (leaf.bold) {
-    children = <strong>{children}</strong>
+    children = <strong className={styles.bold}>{children}</strong>
   }
 
   if (leaf.italic) {

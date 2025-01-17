@@ -20,3 +20,7 @@
   composes: typography-contentLink from global;
   color: contentLinkColor;
 }
+
+.bold {
+  font-weight: var(--theme-editable-text-bold-font-weight, bold);
+}

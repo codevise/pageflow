@@ -183,6 +183,15 @@ entry_type_config.themes.register(:my_custom_theme,
 
 ```
 
+## Editable Text Inline Text Styles
+
+The following properties apply to editable text that has been
+formatted via the hovering toolbar:
+
+| Name | Description |
+| ---- | ----------- |
+| `editable_text_bold_font_weight` | Font weight to apply to bold formatted text. |
+
 ## Quotes
 
 The `quote_design` theme option can be used to control how quotation
