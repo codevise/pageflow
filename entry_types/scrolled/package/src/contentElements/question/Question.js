@@ -25,7 +25,7 @@ export function Question({configuration, contentElementId, sectionProps}) {
       <summary onClick={isEditable ? event => event.preventDefault() : undefined}>
         <ThemeIcon name="expand" />
         <Text scaleCategory="question"
-              variant={configuration.typographyVariant}>
+              typographyVariant={configuration.typographyVariant}>
           <EditableInlineText value={configuration.question}
                               onChange={question => updateConfiguration({question})}
                               hyphens="none"
