@@ -5,37 +5,65 @@
 
 @value breakpoint-sm from "pageflow-scrolled/values/breakpoints.module.css";
 
-.hidden {
-  display: none;
+.item {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  transition: transform 0.3s;
 }
 
-.item {
+.item > a {
+  text-decoration: none;
+}
+
+.outlined::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: -4px;
+  border: solid 1px currentColor;
+  opacity: 0;
+}
+
+.highlighted::before,
+.item:where(:hover)::before {
+  opacity: 0.5;
+}
+
+.selected::before {
+  opacity: 1;
+}
+
+.card {
   display: flex;
   vertical-align: top;
-  text-decoration: none;
-  transition: transform 0.3s;
   border-radius: var(--theme-content-element-box-border-radius);
   overflow: hidden;
   will-change: transform;
+  height: 100%;
 }
 
-.textPosition-below {
+.textPosition-below .card {
   flex-direction: column;
 }
 
-.textPosition-title {
+.textPosition-none {
   composes: textPosition-below;
 }
 
-a.textPosition-below:hover {
+.textPosition-title {
+  composes: textPosition-none;
+}
+
+.link.textPosition-below:not(.outlined):hover {
   transform: scale(var(--theme-external-links-card-hover-scale, 1.05));
 }
 
-a.textPosition-right:hover {
+.link.textPosition-right:not(.outlined):hover {
   transform: scale(var(--theme-external-links-card-hover-scale, 1.02));
 }
 
-a.item:hover .link_title {
+.link .card:hover .title {
   text-decoration: underline;
 }
 
@@ -43,11 +71,11 @@ a.item:hover .link_title {
   width: 33%;
 }
 
-.textPosition-right.thumbnailSize-medium .thumbnail {
+.textPosition-right .thumbnailSize-medium .thumbnail {
   width: 50%;
 }
 
-.textPosition-right.thumbnailSize-large .thumbnail {
+.textPosition-right .thumbnailSize-large .thumbnail {
   width: 66%;
 }
 
@@ -61,7 +89,7 @@ a.item:hover .link_title {
   padding-right: min(var(--padding-inline), 5px);
 }
 
-.textPosition-title .background {
+.textPosition-none .background {
   display: none;
 }
 
@@ -86,22 +114,21 @@ a.item:hover .link_title {
   --content-text-color: var(--theme-external-links-card-text-color, lightContentTextColor);
 }
 
-.link_title,
-.link_desc {
-  width: 100%;
-  white-space: normal;
-  line-height: 1.3em;
+.tagline {
+  composes: typography-externalLinkTagline from global;
+  line-height: 1.3;
+  margin: 0 0 0.25rem;
 }
 
-.link_title {
+.title {
   composes: typography-externalLinkTitle from global;
+  line-height: 1.3;
   font-weight: bold;
   margin: 0 0 1rem;
 }
 
-.link_desc {
-  composes: typography-externalLinkDescription from global;
-  margin: 0;
+.details p {
+  margin-bottom: 0;
 }
 
 .textSize-medium {
@@ -113,32 +140,11 @@ a.item:hover .link_title {
 }
 
 @media screen and breakpoint-sm {
-  .textSize-small .link_title {
+  .textSize-small .title {
     font-size: 1.2em;
   }
 
-  .textSize-medium .link_title {
+  .textSize-medium .title {
     font-size: 1.1em;
   }
-}
-
-.tooltip {
-  position: absolute;
-  left: 50%;
-  top: 80px;
-  width: 180px;
-  padding: 5px;
-  margin-left: -95px;
-  background-color: #444;
-  color: #fff;
-  opacity: 0.9;
-  font-size: 13px;
-  text-align: center;
-  white-space: normal;
-}
-
-.tooltip > span {
-  display: block;
-  color: #fff;
-  text-decoration: underline;
 }

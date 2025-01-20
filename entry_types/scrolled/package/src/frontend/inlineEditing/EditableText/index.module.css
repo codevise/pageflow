@@ -23,19 +23,6 @@
   opacity: 0.7;
 }
 
-.hoveringToolbarContainer {
-  position: relative;
-}
-
-.hoveringToolbar {
-  position: absolute;
-  z-index: 2;
-  top: -10000px;
-  left: -10000px;
-  visibility: hidden;
-  white-space: nowrap;
-}
-
 .selection {
   display: none;
   position: absolute;

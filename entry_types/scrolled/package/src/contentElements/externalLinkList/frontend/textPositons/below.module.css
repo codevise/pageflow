@@ -24,7 +24,7 @@
   width: calc((100% - var(--gap) * (var(--columns) - 1)) / var(--columns));
 }
 
-@container (min-width: 320px) {
+@container (min-width: 315px) {
   .linkWidth-xs,
   .linkWidth-s {
     --columns: 2

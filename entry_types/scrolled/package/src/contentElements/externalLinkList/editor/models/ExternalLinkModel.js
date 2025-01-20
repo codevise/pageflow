@@ -7,12 +7,26 @@ export const ExternalLinkModel = Backbone.Model.extend({
   mixins: [transientReferences],
 
   thumbnailUrl: function () {
-    const image = this.collection.entry.imageFiles.getByPermaId(this.get('thumbnail'));
-    return image ? image.get('thumbnail_url') : '';
+    return this.thumbnail()?.get('thumbnail_url') || '';
+  },
+
+  thumbnail: function () {
+    return this.collection.entry.getFileCollection('image_files').getByPermaId(this.get('thumbnail'));
   },
 
   title: function() {
-    return this.get('title');
+    const configuration = this.collection.contentElement.configuration;
+
+    if (configuration.get('textPosition') === 'none' ) {
+      return this.thumbnail()?.configuration.get('alt');
+    }
+    else {
+      const itemTexts = configuration.get('itemTexts');
+
+      return itemTexts?.[this.id]?.title ?
+             itemTexts?.[this.id]?.title[0]?.children?.[0]?.text :
+             this.get('title');
+    }
   },
 
   getFilePosition: function(attribute, coord) {
@@ -30,4 +44,17 @@ export const ExternalLinkModel = Backbone.Model.extend({
   setFilePositions: function(attribute, x, y) {
     this.set('thumbnailCropPosition', {x, y});
   },
+
+  highlight() {
+    this.collection.contentElement.postCommand({
+      type: 'HIGHLIGHT_ITEM',
+      index: this.collection.indexOf(this)
+    });
+  },
+
+  resetHighlight() {
+    this.collection.contentElement.postCommand({
+      type: 'RESET_ITEM_HIGHLIGHT'
+    });
+  }
 });

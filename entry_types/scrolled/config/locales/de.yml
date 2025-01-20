@@ -142,8 +142,6 @@ de:
           name: Daten und Diagramme
         interactive:
           name: Interaktiv
-        links:
-          name: Verweise
         media:
           name: Media
       content_elements:
@@ -219,30 +217,11 @@ de:
         externalLinkList:
           add: Hinzufügen
           attributes:
-            description:
-              inline_help: Link-Beschreibung für die Darstellung im Beitrag.
-              label: Beschreibung
-            open_in_new_tab:
-              label: In neuem Tab öffnen
             thumbnail:
               inline_help: Dem Link zugeordnertes Bild für die Darstellung im Beitrag.
               label: Miniaturansicht
-            title:
-              inline_help: Link-Überschrift für die Darstellung im Beitrag.
-              label: Titel
-            url:
-              inline_help: Absolute URL (inklusive http:// oder https://) des Links.
-              label: URL
           back: Zurück
-          confirm_delete: Soll das Element wirklich gelöscht werden?
-          confirm_delete_link: Soll der Link wirklich gelöscht werden?
-          description: Sammlung von Verweisen zu Webseiten außerhalb des Beitrags
           destroy: Löschen
-          name: Externe Verweise
-          outline: Gliederung
-          tabs:
-            edit_link: Link bearbeiten
-            general: Externe Verweise
         heading:
           attributes:
             children:
@@ -998,9 +977,6 @@ de:
       drag_content_element: Ziehen, um Element zu verschieben
       edit_section_transition_after: Übergangseffekt bearbeiten
       edit_section_transition_before: Übergangseffekt bearbeiten
-      external_links:
-        open_in_new_tab: Seite in neuem Tab ansehen
-        open_in_new_tab_message: Öffnen im selben Tab ist im Editor deaktiviert.
       formats:
         block_quote: Blockzitat
         bulleted_list: Auflistung

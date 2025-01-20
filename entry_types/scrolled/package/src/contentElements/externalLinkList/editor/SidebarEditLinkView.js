@@ -1,5 +1,5 @@
-import {ConfigurationEditorView, TextInputView, CheckBoxInputView} from 'pageflow/ui';
-import {editor, FileInputView} from 'pageflow/editor';
+import {ConfigurationEditorView, SeparatorView} from 'pageflow/ui';
+import {editor, FileInputView, InfoBoxView} from 'pageflow/editor';
 import {InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import Marionette from 'backbone.marionette';
 import I18n from 'i18n-js';
@@ -37,8 +37,6 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
     var thumbnailAspectRatio = this.options.contentElement.configuration.get('thumbnailAspectRatio');
 
     configurationEditor.tab('edit_link', function () {
-      this.input('url', TextInputView);
-      this.input('open_in_new_tab', CheckBoxInputView);
       this.input('thumbnail', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElement.externalLinks.link',
@@ -51,20 +49,25 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
         },
         dropDownMenuItems: [InlineFileRightsMenuItem]
       });
-      this.input('title', TextInputView, {
-        required: true
-      });
-      this.input('description', TextInputView, {
-        maxLength: 10000
+
+      this.view(SeparatorView);
+
+      this.view(InfoBoxView, {
+        text: I18n.t(
+          'pageflow_scrolled.editor.content_elements.textBlock.help_texts.shortcuts'
+        ),
       });
     });
     this.formContainer.show(configurationEditor);
   },
   goBack: function() {
+    this.options.contentElement.postCommand({type: 'SET_SELECTED_ITEM',
+                                             index: -1});
+
     editor.navigate(`/scrolled/content_elements/${this.options.contentElement.get('id')}`, {trigger: true});
   },
   destroyLink: function () {
-    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_link'))) {
+    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_item'))) {
       this.options.collection.remove(this.model);
       this.goBack();
     }

@@ -17,7 +17,8 @@ import styles from './Text.module.css';
  *   `'counterNumber-lg'`, `'counterNumber-md'`, `'counterNumber-sm'`,
  *   `'counterNumber-xs'`, `'counterDescription`'.
  *   `'infoTableLabel'`, `'infoTableValue`'.
- *   `'hotspotsTooltipTitle'`, `'hotspotsTooltipDescription`', `'hotspotsTooltipLink`'
+ *   `'hotspotsTooltipTitle'`, `'hotspotsTooltipDescription`', `'hotspotsTooltipLink`',
+ *   `'teaserDescription'`.
  * @param {string} [props.typographyVariant] - Suffix for variant class name.
  * @param {string} [props.inline] - Render a span instread of a div.
  * @param {string} props.children - Nodes to render with specified typography.
@@ -43,6 +44,7 @@ Text.propTypes = {
     'quoteText-lg', 'quoteText-md', 'quoteText-sm', 'quoteText-xs',
     'quoteAttribution-lg', 'quoteAttribution-md', 'quoteAttribution-sm', 'quoteAttribution-xs',
     'hotspotsTooltipTitle', 'hotspotsTooltipDescription', 'hotspotsTooltipLink',
+    'teaserDescription',
     'counterNumber-lg', 'counterNumber-md', 'counterNumber-sm', 'counterNumber-xs',
     'counterDescription',
     'infoTableLabel', 'infoTableValue',

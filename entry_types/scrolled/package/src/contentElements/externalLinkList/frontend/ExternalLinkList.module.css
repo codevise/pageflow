@@ -7,6 +7,9 @@
 .list {
   composes: scope-externalLinks from global;
   composes: contentColorScope;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 .textPosition-below {

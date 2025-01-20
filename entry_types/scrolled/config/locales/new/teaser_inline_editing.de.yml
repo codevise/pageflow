@@ -1,0 +1,25 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_element_categories:
+        links: DELETED
+        tilesAndLinks:
+          name: Verweise und Kacheln
+      content_elements:
+        externalLinkList:
+          attributes:
+            description: DELETED
+            open_in_new_tab: DELETED
+            title: DELETED
+            url: DELETED
+          description: Liste von Kacheln mit Bild und Beschriftung
+          confirm_delete_item: Soll der Teaser wirklich gelöscht werden?
+          confirm_delete: DELETED
+          outline: DELETED
+          items: Einträge
+          name: Teaser-Liste
+          tabs:
+            general: Teaser-Liste
+            edit_link: Teaser
+    inline_editing:
+      external_links: DELETED
