@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import {
   EditableTable,
+  paletteColor,
   useContentElementConfigurationUpdate,
   useContentElementEditorState,
   useI18n
@@ -17,16 +18,19 @@ export function InfoTable({configuration, sectionProps}) {
   const {t} = useI18n({locale: 'ui'});
 
   return (
-    <EditableTable className={classNames(styles.table,
-                                         styles[`labelColumnAlign-${configuration.labelColumnAlign}`],
-                                         styles[`valueColumnAlign-${configuration.valueColumnAlign}`],
-                                         {[styles.selected]: isSelected,
-                                          [styles.center]: sectionProps.layout === 'centerRagged'})}
-                   labelScaleCategory="infoTableLabel"
-                   valueScaleCategory="infoTableValue"
-                   labelPlaceholder={t('pageflow_scrolled.inline_editing.type_text')}
-                   valuePlaceholder={t('pageflow_scrolled.inline_editing.type_text')}
-                   value={configuration.value}
-                   onChange={value => updateConfiguration({value})} />
+    <div style={{'--label-color': paletteColor(configuration.labelColor),
+                 '--value-color': paletteColor(configuration.valueColor)}}>
+      <EditableTable className={classNames(styles.table,
+                                           styles[`labelColumnAlign-${configuration.labelColumnAlign}`],
+                                           styles[`valueColumnAlign-${configuration.valueColumnAlign}`],
+                                           {[styles.selected]: isSelected,
+                                            [styles.center]: sectionProps.layout === 'centerRagged'})}
+                     labelScaleCategory="infoTableLabel"
+                     valueScaleCategory="infoTableValue"
+                     labelPlaceholder={t('pageflow_scrolled.inline_editing.type_text')}
+                     valuePlaceholder={t('pageflow_scrolled.inline_editing.type_text')}
+                     value={configuration.value}
+                     onChange={value => updateConfiguration({value})} />
+    </div>
   );
 }

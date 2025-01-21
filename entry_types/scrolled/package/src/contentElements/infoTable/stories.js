@@ -93,6 +93,21 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'Pallete colors',
+      themeOptions: {
+        properties: {
+          root: {
+            paletteColorAccent: '#04f',
+            paletteColorPrimary: '#0f4'
+          }
+        }
+      },
+      configuration: {
+        labelColor: 'accent',
+        valueColor: 'primary'
+      }
+    },
+    {
       name: 'With custom column alignment',
       configuration: {
         labelColumnAlign: 'right',

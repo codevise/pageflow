@@ -18,6 +18,14 @@ editor.contentElementTypes.register('infoTable', {
       this.input('valueColumnAlign', SelectInputView, {
         values: ['auto', 'left', 'center', 'right']
       });
+      this.group('PaletteColor', {
+        propertyName: 'labelColor',
+        entry
+      });
+      this.group('PaletteColor', {
+        propertyName: 'valueColor',
+        entry
+      });
 
       this.view(SeparatorView);
 

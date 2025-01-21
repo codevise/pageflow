@@ -9,7 +9,7 @@ de:
             general: Info-Tabelle
           attributes:
             labelColumnAlign:
-              label: "Text-Ausrichtung (Erste Spalte) "
+              label: "Text-Ausrichtung (Erste Spalte)"
               values:
                 auto: "(Automatisch)"
                 left: Linksbündig
@@ -22,6 +22,10 @@ de:
                 left: Linksbündig
                 center: Zentriert
                 right: Rechtsbündig
+            labelColor:
+              label: "Text-Farbe (Erste Spalte)"
+            valueColor:
+              label: "Text-Farbe (Zweite Spalte)"
           help_texts:
             shortcuts: |-
               <dl class="shortcuts">
