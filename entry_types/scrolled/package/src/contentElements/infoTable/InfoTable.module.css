@@ -16,9 +16,17 @@
   white-space: pre;
 }
 
+.table td:first-child div {
+  color: var(--label-color);
+}
+
 .table td:last-child {
   width: 100%;
   padding: 0.5rem 0 0.5rem 0.5rem;
+}
+
+.table td:last-child div {
+  color: var(--value-color);
 }
 
 .center td {

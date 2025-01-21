@@ -22,6 +22,10 @@ en:
                 left: Left
                 center: Center
                 right: Right
+            labelColor:
+              label: "Text color (First column)"
+            valueColor:
+              label: "Text align (Second column)"
           help_texts:
             shortcuts: |-
               <dl class="shortcuts">
