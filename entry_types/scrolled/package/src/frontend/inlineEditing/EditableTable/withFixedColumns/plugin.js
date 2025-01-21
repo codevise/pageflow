@@ -208,16 +208,14 @@ export function withFixedColumns(editor) {
 
       if (parsed.every(element => element['type'] === 'row')) {
         editor.insertFragment(parsed);
+        return
       }
-      else {
-        const text = data.getData('text/plain');
+    }
 
-        if (text) {
-          editor.insertText(text);
-        }
-      }
+    const text = data.getData('text/plain');
 
-      return;
+    if (text) {
+      editor.insertText(text);
     }
   };
 
