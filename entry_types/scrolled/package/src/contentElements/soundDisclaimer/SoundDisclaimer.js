@@ -7,7 +7,7 @@ import styles from './SoundDisclaimer.module.css';
 import MutedIcon from './muted.svg';
 import UnmutedIcon from './unmuted.svg';
 
-export function SoundDisclaimer() {
+export function SoundDisclaimer({configuration}) {
   const {isEditable, isSelected} = useContentElementEditorState();
   const {t} = useI18n();
   const muted = useMediaMuted();
@@ -18,11 +18,17 @@ export function SoundDisclaimer() {
       <button className={classNames(styles.unmute, {[styles.active]: muted})}
               onClick={() => media.mute(false)}>
         <MutedIcon />
-        <p dangerouslySetInnerHTML={{__html: t('pageflow_scrolled.public.sound_disclaimer.help_muted')}} />
+        <p>
+          {configuration.mutedText ||
+           t('pageflow_scrolled.public.sound_disclaimer.help_muted')}
+        </p>
       </button>
       <div className={classNames(styles.unmuted, {[styles.active]: !muted})}>
         <UnmutedIcon />
-        <p dangerouslySetInnerHTML={{__html: t('pageflow_scrolled.public.sound_disclaimer.help_unmuted')}} />
+        <p>
+          {configuration.unmutedText ||
+           t('pageflow_scrolled.public.sound_disclaimer.help_unmuted')}
+        </p>
       </div>
     </div>
   );
