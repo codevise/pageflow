@@ -453,6 +453,20 @@ describe('PreviewMessageController', () => {
     })).resolves.toEqual({some: 'state'});
   });
 
+  it('ignores transient state updates of content element that has just been removed', () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: []
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    return expect(() => {
+      postUpdateTransientContentElementStateMessage({id: 5, state: {some: 'state'}});
+    }).not.toThrowError();
+  });
+
   it('sends CHANGE_EMULATION_MODE message to iframe on change:emulation_mode event on model', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
