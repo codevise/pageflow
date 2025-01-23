@@ -1,0 +1,9 @@
+en:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        fullWidthInPhoneLayout:
+          label: "Full width in phone layout"
+          inline_help: |-
+            Allow the element to span the full width of the viewport
+            on smaller screens, maximizing use of available space.

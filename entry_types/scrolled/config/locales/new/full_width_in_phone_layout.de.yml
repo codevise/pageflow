@@ -1,0 +1,10 @@
+de:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        fullWidthInPhoneLayout:
+          label: "Volle Breite im Phone-Layout"
+          inline_help: |-
+            Ermöglicht dem Element, auf kleineren Bildschirmen die
+            volle Breite des Viewports einzunehmen, um den verfügbaren
+            Platz optimal zu nutzen.

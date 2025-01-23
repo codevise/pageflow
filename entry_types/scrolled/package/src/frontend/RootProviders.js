@@ -7,6 +7,7 @@ import {EntryStateProvider} from '../entryState';
 import {FocusOutlineProvider} from './focusOutline';
 import {LocaleProvider} from './i18n';
 import {PhonePlatformProvider} from './PhonePlatformProvider';
+import {PhoneLayoutProvider} from './usePhoneLayout';
 import {MediaMutedProvider} from './useMediaMuted';
 import {AudioFocusProvider} from './useAudioFocus';
 import {ConsentProvider} from './thirdPartyConsent';
@@ -18,21 +19,23 @@ export function RootProviders({seed, consent = consentApi, children}) {
     <FocusOutlineProvider>
       <BrowserFeaturesProvider>
         <PhonePlatformProvider>
-          <MediaMutedProvider>
-            <AudioFocusProvider>
-              <EntryStateProvider seed={seed}>
-                <CurrentSectionProvider>
-                  <LocaleProvider>
-                    <ConsentProvider consent={consent}>
-                      <ScrollTargetEmitterProvider>
-                        {children}
-                      </ScrollTargetEmitterProvider>
-                    </ConsentProvider>
-                  </LocaleProvider>
-                </CurrentSectionProvider>
-              </EntryStateProvider>
-            </AudioFocusProvider>
-          </MediaMutedProvider>
+          <PhoneLayoutProvider>
+            <MediaMutedProvider>
+              <AudioFocusProvider>
+                <EntryStateProvider seed={seed}>
+                  <CurrentSectionProvider>
+                    <LocaleProvider>
+                      <ConsentProvider consent={consent}>
+                        <ScrollTargetEmitterProvider>
+                          {children}
+                        </ScrollTargetEmitterProvider>
+                      </ConsentProvider>
+                    </LocaleProvider>
+                  </CurrentSectionProvider>
+                </EntryStateProvider>
+              </AudioFocusProvider>
+            </MediaMutedProvider>
+          </PhoneLayoutProvider>
         </PhonePlatformProvider>
       </BrowserFeaturesProvider>
     </FocusOutlineProvider>

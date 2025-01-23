@@ -972,6 +972,120 @@ describe('useSectionForegroundContentElements', () => {
       }
     ]);
   });
+
+  it('does not make fullWidthInPhoneLayout elements full width in desktop layout', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionForegroundContentElements({sectionId: 2, layout: 'right', phoneLayout: false}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                width: 2,
+                fullWidthInPhoneLayout: true
+              }
+            },
+            {
+              id: 2,
+              permaId: 1002,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'sticky',
+                width: 1,
+                fullWidthInPhoneLayout: true
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        position: 'inline',
+        width: 2
+      },
+      {
+        id: 2,
+        position: 'sticky',
+        width: 1
+      }
+    ]);
+  });
+
+  it('makes fullWidthInPhoneLayout elements full width in phone layout', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionForegroundContentElements({sectionId: 2, layout: 'right', phoneLayout: true}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            {
+              id: 1,
+              permaId: 1001,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                width: 2,
+                fullWidthInPhoneLayout: true
+              }
+            },
+            {
+              id: 2,
+              permaId: 1002,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                position: 'sticky',
+                width: 1,
+                fullWidthInPhoneLayout: true
+              }
+            },
+            {
+              id: 3,
+              permaId: 1003,
+              sectionId: 2,
+              typeName: 'image',
+              configuration: {
+                width: 1
+              }
+            }
+          ]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject([
+      {
+        id: 1,
+        position: 'inline',
+        width: 3
+      },
+      {
+        id: 2,
+        position: 'inline',
+        width: 3
+      },
+      {
+        id: 3,
+        position: 'inline',
+        width: 1
+      }
+    ]);
+  });
 });
 
 describe('useContentElement', () => {

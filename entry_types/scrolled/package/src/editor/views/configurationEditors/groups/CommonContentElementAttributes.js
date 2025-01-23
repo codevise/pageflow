@@ -1,4 +1,4 @@
-import {ConfigurationEditorTabView, SelectInputView, SliderInputView} from 'pageflow/ui';
+import {ConfigurationEditorTabView, CheckBoxInputView, SelectInputView, SliderInputView} from 'pageflow/ui';
 
 import {
   TypographyVariantSelectInputView
@@ -22,6 +22,7 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
       sectionLayout: this.model.parent.section.configuration.get('layout')
     });
   }
+
   this.input('width', SliderInputView, {
     attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
     displayText: value => [
@@ -40,6 +41,15 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
       this.model.get('position') === 'full' ? 3 :
       0
   });
+
+  if (contentElement.supportsFullWidthInPhoneLayout()) {
+    this.input('fullWidthInPhoneLayout', CheckBoxInputView, {
+      attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
+      disabledBinding: 'width',
+      disabled: () => contentElement.getWidth() === 3,
+      displayCheckedIfDisabled: true
+    });
+  }
 });
 
 ConfigurationEditorTabView.groups.define(

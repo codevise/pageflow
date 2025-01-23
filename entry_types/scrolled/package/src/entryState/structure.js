@@ -150,7 +150,7 @@ export function normalizeSectionConfigurationData(configuration) {
   };
 }
 
-export function useSectionForegroundContentElements({sectionId, layout}) {
+export function useSectionForegroundContentElements({sectionId, layout, phoneLayout}) {
   const filter = useCallback(contentElement => (
     contentElement.sectionId === sectionId &&
     contentElement.configuration.position !== 'backdrop'
@@ -158,7 +158,7 @@ export function useSectionForegroundContentElements({sectionId, layout}) {
   const contentElements = useEntryStateCollectionItems('contentElements', filter);
 
   return contentElements.map(contentElement =>
-    contentElementData(contentElement, layout)
+    contentElementData(contentElement, layout, phoneLayout)
   );
 }
 
@@ -171,8 +171,8 @@ export function useContentElement({permaId, layout}) {
   );
 }
 
-function contentElementData(contentElement, layout) {
-  const position = getPosition(contentElement, layout);
+function contentElementData(contentElement, layout, phoneLayout) {
+  const position = getPosition(contentElement, layout, phoneLayout);
 
   return {
     id: contentElement.id,
@@ -180,7 +180,7 @@ function contentElementData(contentElement, layout) {
     sectionId: contentElement.sectionId,
     type: contentElement.typeName,
     position,
-    width: getWidth(contentElement, position),
+    width: getWidth(contentElement, position, phoneLayout),
     standAlone: contentElement.configuration.position === 'standAlone',
     props: contentElement.configuration
   };
@@ -194,8 +194,12 @@ const supportedPositions = {
   backdrop: ['backdrop']
 };
 
-function getPosition(contentElement, layout) {
+function getPosition(contentElement, layout, phoneLayout) {
   const position = contentElement.configuration.position;
+
+  if (contentElement.configuration.fullWidthInPhoneLayout && phoneLayout) {
+    return 'inline';
+  }
 
   return supportedPositions[layout || 'left'].includes(position) ?
          position :
@@ -209,12 +213,15 @@ const legacyPositionWidths = {
 
 const clampedWidthPositions = ['sticky', 'left', 'right'];
 
-function getWidth(contentElement, position) {
+function getWidth(contentElement, position, phoneLayout) {
   const width = typeof contentElement.configuration.width === 'number' ?
                 contentElement.configuration.width :
                 legacyPositionWidths[contentElement.configuration.position] || 0;
 
-  if (clampedWidthPositions.includes(position)) {
+  if (contentElement.configuration.fullWidthInPhoneLayout && phoneLayout) {
+    return 3;
+  }
+  else if (clampedWidthPositions.includes(position)) {
     return Math.min(Math.max(width || 0, -2), 2);
   }
   else {

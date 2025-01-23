@@ -385,6 +385,42 @@ describe('ContentElement', () => {
     });
   });
 
+  describe('supportsFullWidthInPhoneLayout', () => {
+    beforeEach(() => {
+      editor.contentElementTypes.register('headisng', {
+        supportedWidthRange: ['md', 'xl'],
+        customMargin: true
+      });
+      editor.contentElementTypes.register('imageGallery', {
+        supportedWidthRange: ['md', 'full'],
+        customMargin: true
+      });
+      editor.contentElementTypes.register('inlineImage', {
+        supportedWidthRange: ['xxs', 'full']
+      });
+    });
+
+    it('returns true for types that support full but do not have custom margin', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 4, typeName: 'heading'},
+              {id: 5, typeName: 'imageGallery'},
+              {id: 6, typeName: 'inlineImage'}
+            ]
+          })
+        }
+      );
+
+      expect(entry.contentElements.get(4).supportsFullWidthInPhoneLayout()).toEqual(false);
+      expect(entry.contentElements.get(5).supportsFullWidthInPhoneLayout()).toEqual(false);
+      expect(entry.contentElements.get(6).supportsFullWidthInPhoneLayout()).toEqual(true);
+    });
+  });
+
   describe('transientState', () => {
     it('stays in sync with transientState attribute', () => {
       editor.contentElementTypes.register('someElement', {});

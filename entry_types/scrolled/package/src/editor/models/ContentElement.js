@@ -141,6 +141,11 @@ export const ContentElement = Backbone.Model.extend({
     }
   },
 
+  supportsFullWidthInPhoneLayout() {
+    return !this.getType().customMargin &&
+           this.getType().supportedWidthRange?.[1] === 'full';
+  },
+
   getEditorPath() {
     return this.getType().editorPath?.call(null, this) ||
            `/scrolled/content_elements/${this.id}`;

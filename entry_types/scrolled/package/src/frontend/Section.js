@@ -12,6 +12,7 @@ import Foreground from './Foreground';
 import {SectionInlineFileRights} from './SectionInlineFileRights';
 import {Layout, widths as contentElementWidths} from './layouts';
 import {useScrollTarget} from './useScrollTarget';
+import {usePhoneLayout} from './usePhoneLayout';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
 import {SectionViewTimelineProvider} from './SectionViewTimelineProvider';
 import {withInlineEditingDecorator} from './inlineEditing';
@@ -164,7 +165,8 @@ function SectionContents({
 function ConnectedSection(props) {
   const contentElements = useSectionForegroundContentElements({
     sectionId: props.section.id,
-    layout: props.section.layout
+    layout: props.section.layout,
+    phoneLayout: usePhoneLayout()
   });
 
   const {
