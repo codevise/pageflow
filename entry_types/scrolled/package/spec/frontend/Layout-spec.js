@@ -11,20 +11,7 @@ import {widthName} from 'frontend/layouts/widths';
 
 import {renderInEntry} from 'testHelpers';
 
-import useMediaQuery from 'frontend/useMediaQuery';
-
-jest.mock('frontend/useMediaQuery');
-
-let viewportWidth;
-
-useMediaQuery.mockImplementation(query => {
-  const match = query.match(/max-width: ([0-9]+)px/);
-  return viewportWidth <= parseInt(match[1], 10);
-})
-
 describe('Layout', () => {
-  beforeEach(() => { viewportWidth = 1920; });
-
   describe('placeholder', () => {
     it('renders in two column variant', () => {
       const {getByTestId} = renderInEntry(
@@ -465,7 +452,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'side', width: 1},
           {id: 3, type: 'probe', position: 'side', width: 2}
         ];
-        viewportWidth = 1000;
+        window.matchMedia.mockViewportWidth(1000);
         const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position}) => <div>{position} {children}</div>}
@@ -496,7 +483,7 @@ describe('Layout', () => {
           {id: 2, type: 'probe', position: 'sticky', width: 1},
           {id: 3, type: 'probe', position: 'sticky', width: 2}
         ];
-        viewportWidth = 1000;
+        window.matchMedia.mockViewportWidth(1000);
         const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position}) => <div>{position} {children}</div>}
@@ -529,7 +516,7 @@ describe('Layout', () => {
           {id: 4, type: 'probe', position: 'side', width: 1},
           {id: 5, type: 'probe', position: 'side', width: 2}
         ];
-        viewportWidth = 500;
+        window.matchMedia.mockViewportWidth(500);
         const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
@@ -562,7 +549,7 @@ describe('Layout', () => {
           {id: 4, type: 'probe', position: 'sticky', width: 1},
           {id: 5, type: 'probe', position: 'sticky', width: 2}
         ];
-        viewportWidth = 500;
+        window.matchMedia.mockViewportWidth(500);
         const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
             {(children, {position, width}) => <div>{position} {widthName(width)} {children}</div>}
