@@ -1,0 +1,10 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        soundDisclaimer:
+          attributes:
+            mutedText:
+              label: "'Ton aktivieren' Text"
+            unmutedText:
+              label: "'Ton aktiviert' Text"

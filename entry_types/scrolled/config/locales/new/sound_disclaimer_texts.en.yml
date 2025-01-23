@@ -1,0 +1,10 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        soundDisclaimer:
+          attributes:
+            mutedText:
+              label: "Muted Text"
+            unmutedText:
+              label: "Unmuted Text"
