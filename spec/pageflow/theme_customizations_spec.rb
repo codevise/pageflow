@@ -195,7 +195,7 @@ module Pageflow
 
       expect(transform)
         .to have_received(:call).with({colors: {accent: '#0f0'}},
-                                      entry: entry.to_model,
+                                      entry:,
                                       theme: entry.revision.theme)
     end
 
@@ -219,7 +219,7 @@ module Pageflow
 
       expect(transform)
         .to have_received(:call).with({colors: {accent: '#0f0'}},
-                                      entry: entry.to_model,
+                                      entry: kind_of(PublishedEntry),
                                       theme: entry.draft.theme)
     end
 
@@ -416,7 +416,7 @@ module Pageflow
                                           small: %r{small/image.png}
                                         }
                                       },
-                                      entry: entry.to_model,
+                                      entry:,
                                       theme: entry.revision.theme)
     end
 
