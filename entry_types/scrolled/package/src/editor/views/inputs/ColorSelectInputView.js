@@ -11,11 +11,20 @@ export const ColorSelectInputView = ListboxInputView.extend({
 });
 
 function renderItem(item) {
+  const swatches =
+    this.options.swatches ||
+    [{cssColorPropertyPrefix: '--theme-palette-color'}];
+
   return (
     <div className={classNames(styles.item, {[styles.blank]: !item.value})}>
-      <div className={styles.swatch}
-           style={{'--color': `var(--theme-palette-color-${item.value})`}} />
-      {item.text}
+      {swatches.map((swatch, index) =>
+        <div key={index}
+             className={styles.swatch}
+             style={{'--color': `var(${swatch.cssColorPropertyPrefix}-${item.value})`}} />
+      )}
+      <span className={styles.text}>
+        {item.text}
+      </span>
     </div>
   );
 }

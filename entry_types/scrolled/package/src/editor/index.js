@@ -13,6 +13,7 @@ export {default as buttonStyles} from './views/buttons.module.css';
 export {default as dialogViewStyles} from './views/mixins/dialogView.module.css';
 export {dialogView} from './views/mixins/dialogView';
 
+export {ColorSelectInputView} from './views/inputs/ColorSelectInputView';
 export {NoOptionsHintView} from './views/NoOptionsHintView';
 export {EditMotifAreaDialogView} from './views/EditMotifAreaDialogView';
 export {InlineFileRightsMenuItem} from './models/InlineFileRightsMenuItem';
