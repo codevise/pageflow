@@ -77,6 +77,11 @@ export const EditMetaDataView = Marionette.Layout.extend({
           entry,
           site: state.site
         });
+
+      editor.appearanceInputsCallbacks.forEach(callback => {
+        callback(this, {entry})
+      });
+
       entry.widgets && this.view(EditWidgetsView, {
         model: entry,
         widgetTypes: editor.widgetTypes
