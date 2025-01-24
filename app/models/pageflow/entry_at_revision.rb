@@ -45,7 +45,7 @@ module Pageflow
     end
 
     def theme
-      @theme ||= CustomizedTheme.find(entry: entry, theme: revision.theme)
+      @theme ||= CustomizedTheme.find(entry: self, theme: revision.theme)
     end
 
     def home_button

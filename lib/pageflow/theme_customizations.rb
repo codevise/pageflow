@@ -23,7 +23,7 @@ module Pageflow
 
       theme_customization.assign_attributes(overrides: overrides, selected_file_ids: file_ids)
 
-      theme = CustomizedTheme.build(entry: entry,
+      theme = CustomizedTheme.build(entry: PublishedEntry.new(entry, entry.draft),
                                     theme: entry.draft.theme,
                                     theme_customization: theme_customization)
 
