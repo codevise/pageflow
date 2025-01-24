@@ -1,6 +1,7 @@
 .item {
   display: flex;
   align-items: center;
+  gap: space(1);
 }
 
 .swatch {
@@ -9,7 +10,10 @@
   height: space(4);
   border: solid 1px var(--ui-on-surface-color-lighter);
   border-radius: rounded(sm);
-  margin-right: space(2);
+}
+
+.text {
+  margin-left: space(1);
 }
 
 .blank .swatch {
