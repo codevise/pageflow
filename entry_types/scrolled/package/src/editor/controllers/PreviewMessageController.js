@@ -158,7 +158,9 @@ export const PreviewMessageController = Object.extend({
       }
       else if (message.data.type === 'UPDATE_TRANSIENT_CONTENT_ELEMENT_STATE') {
         const {id, state} = message.data.payload;
-        this.entry.contentElements.get(id).set('transientState', state);
+        const contentElement = this.entry.contentElements.get(id);
+
+        contentElement && contentElement.set('transientState', state);
       }
       else if (message.data.type === 'SAVED_SCROLL_POINT' && this.currentScrollPointCallback) {
         this.currentScrollPointCallback();
