@@ -56,7 +56,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                                    backdropSectionClassNames,
                                    {[styles.first]: section.sectionIndex === 0},
                                    {[styles.narrow]: section.width === 'narrow'},
-                                   {[styles.invert]: section.invert})}
+                                   section.invert ? styles.darkContent : styles.lightContent)}
              style={useBackdropSectionCustomProperties(backdrop)}>
       <SectionLifecycleProvider onActivate={onActivate}
                                 entersWithFadeTransition={section.transition?.startsWith('fade')}>

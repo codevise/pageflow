@@ -67,15 +67,23 @@
     var(--theme-narrow-section-centered-inline-xl-content-max-width);
 }
 
+.lightContent {
+  composes: scope-lightContent from global;
+}
+
+.darkContent {
+  composes: scope-darkContent from global;
+}
+
 @media screen {
-  .Section {
+  .lightContent {
     color: lightContentTextColor;
     --content-text-color: lightContentTextColor;
     --content-link-color: lightContentLinkColor;
     background-color: #000;
   }
 
-  .invert {
+  .darkContent {
     background-color: #fff;
     color: darkContentTextColor;
     --content-text-color: darkContentTextColor;

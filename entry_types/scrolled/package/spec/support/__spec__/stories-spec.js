@@ -80,6 +80,14 @@ describe('exampleStories', () => {
           properties: {
             root: {
               accentColor: 'red'
+            },
+            dark: {
+              accentColor: 'green'
+            }
+          },
+          typography: {
+            heading: {
+              fontWeight: 'bold'
             }
           }
         }
@@ -102,9 +110,17 @@ describe('exampleStories', () => {
         })
       }),
       cssRules: {
-        root: {
+        ':root': {
           '--theme-accent-color': 'red'
-        }
+        },
+
+        '.scope-dark': {
+          '--theme-accent-color': 'green'
+        },
+
+        '.typography-heading': {
+          'font-weight': 'bold'
+        },
       }
     }));
   });
