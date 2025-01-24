@@ -52,6 +52,27 @@ describe('EditMetaDataView', () => {
     ]));
   });
 
+  it('renders additional appearance inputs on widgets tab', () => {
+    const entry = factories.entry();
+    const editor = factories.editorApi();
+    editor.registerAppearanceInputs(tabView => {
+      tabView.input('cheese', CheckBoxInputView);
+    });
+    const view = new EditMetaDataView({
+      model: entry,
+      tab: 'widgets',
+      editor
+    });
+
+    view.render();
+    var configurationEditor = ConfigurationEditor.find(view);
+
+    expect(configurationEditor.tabNames()).toEqual(expect.arrayContaining(['widgets']));
+    expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining([
+      'cheese'
+    ]));
+  });
+
   support.useFakeTranslations({
     'pageflow.entry_types.strange.editor.entry_metadata_configuration_attributes.quark.label': 'Up',
     'pageflow.entry_types.strange.editor.entry_metadata_configuration_attributes.quark.inline_help': 'Help yourself!'

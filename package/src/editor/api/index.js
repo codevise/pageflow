@@ -32,6 +32,7 @@ export const EditorApi = Object.extend(
     this.mainMenuItems = [];
     this.initializers = [];
     this.fileSelectionHandlers = {};
+    this.appearanceInputsCallbacks = [];
 
     /**
      * Failures API
@@ -182,6 +183,17 @@ export const EditorApi = Object.extend(
    */
   registerMainMenuItem: function(options) {
     this.mainMenuItems.push(options);
+  },
+
+  /**
+   * Register additional inputs to show in the appearance tab under
+   * title and options. Passed callback receives tabView and options
+   * with entry.
+   *
+   * @since edge
+   */
+  registerAppearanceInputs(callback) {
+    this.appearanceInputsCallbacks.push(callback);
   },
 
   /**
