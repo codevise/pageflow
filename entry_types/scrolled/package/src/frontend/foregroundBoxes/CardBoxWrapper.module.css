@@ -62,6 +62,14 @@
   border-bottom-right-radius: var(--theme-cards-border-radius, 15px);
 }
 
+.cardBgWhite {
+  composes: scope-darkContent from global;
+}
+
+.cardBgBlack {
+  composes: scope-lightContent from global;
+}
+
 @media screen {
   .cardBgWhite::before {
     background-color: lightContentSurfaceColor;

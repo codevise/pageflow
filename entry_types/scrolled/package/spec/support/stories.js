@@ -103,10 +103,18 @@ export function storiesOfContentElement(module, options) {
   });
 }
 
+export function ExampleEntry({seed}) {
+  return (
+    <RootProviders seed={seed}>
+      <style>
+        {renderCss(themeOptionsCssRules(seed.config.theme.options))}
+      </style>
+      <Entry />
+    </RootProviders>
+  );
+}
 function renderCss(rules) {
-  return Object.entries(rules).map(([name, properties]) => {
-    const selector = (name === 'root' ? ':root' : `.scope-${name}`);
-
+  return Object.entries(rules).map(([selector, properties]) => {
     const declations = Object.entries(properties).map(([key, value]) =>
       `${key}: ${value};`
     ).join('\n');
@@ -340,19 +348,32 @@ function exampleStoryGroup({
     }),
     requireConsentOptIn: !!consentVendors,
     parameters,
-    cssRules: Object.entries(examples[index].themeOptions?.properties || {}).reduce(
+    cssRules: themeOptionsCssRules(examples[index].themeOptions)
+  }));
+}
+
+function themeOptionsCssRules(themeOptions) {
+  return {
+    ...Object.entries(themeOptions?.typography || {}).reduce(
       (result, [scope, properties]) => {
-        result[scope] = themeCssProperties(properties);
+        result[`.typography-${scope}`] = cssProperties(properties);
+        return result;
+      },
+      {}
+    ),
+    ...Object.entries(themeOptions?.properties || {}).reduce(
+      (result, [scope, properties]) => {
+        result[scope === 'root' ? ':root' : `.scope-${scope}`] = cssProperties(properties, '--theme-');
         return result;
       },
       {}
     )
-  }));
+  }
 }
 
-function themeCssProperties(properties) {
+function cssProperties(properties, prefix = '') {
   return Object.keys(properties).reduce((result, key) => {
-    result[`--theme-${dasherize(key)}`] = properties[key];
+    result[`${prefix}${dasherize(key)}`] = properties[key];
     return result;
   }, {});
 }
