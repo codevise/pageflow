@@ -17,8 +17,10 @@ export function Logo({srcMobile, srcDesktop, url, altText}) {
     srcMobile ||
     (darkWidgets ? theme.assets.logoDarkVariantMobile : theme.assets.logoMobile);
 
+  const inIframe = typeof window !== 'undefined' && window.parent !== window;
+
   return (
-    <a target="_blank"
+    <a target={inIframe || !theme.options.logoOpenInSameTab ? "_blank" : null}
        rel="noopener noreferrer"
        href={url || theme.options.logoUrl}
        className={classNames(
