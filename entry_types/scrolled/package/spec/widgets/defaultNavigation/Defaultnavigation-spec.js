@@ -50,7 +50,30 @@ describe('DefaultNavigation', () => {
 
     expect(getByRole('link', {name: 'My logo'})).toBeInTheDocument();
     expect(getByRole('link', {name: 'My logo'})).toHaveAttribute('href', 'https://example.com');
+    expect(getByRole('link', {name: 'My logo'})).toHaveAttribute('target', '_blank');
     expect(getByRole('img', {name: 'My logo'})).toHaveAttribute('src', 'logo-desktop.png');
+  });
+
+  it('supports opening logo link in same tab', () => {
+    const {getByRole} = renderInEntry(
+      <DefaultNavigation configuration={{}} />,
+      {
+        seed: {
+          themeAssets: {
+            logoDesktop: 'logo-desktop.png'
+          },
+          themeOptions: {
+            logoUrl: 'https://example.com',
+            logoAltText: 'My logo',
+            logoOpenInSameTab: true
+          }
+        }
+      }
+    );
+
+    expect(getByRole('link', {name: 'My logo'})).toBeInTheDocument();
+    expect(getByRole('link', {name: 'My logo'})).toHaveAttribute('href', 'https://example.com');
+    expect(getByRole('link', {name: 'My logo'})).not.toHaveAttribute('target');
   });
 
   it('takes logo props', () => {
