@@ -91,6 +91,16 @@ export const PreviewMessageController = Object.extend({
           })
         });
 
+        this.listenTo(this.entry, 'selectWidget', widget => {
+          postMessage({
+            type: 'SELECT',
+            payload: {
+              id: widget.get('role'),
+              type: 'widget'
+            }
+          })
+        });
+
         this.listenTo(this.entry, 'resetSelection', contentElement =>
           postMessage({
             type: 'SELECT',
@@ -122,6 +132,9 @@ export const PreviewMessageController = Object.extend({
         }
         else if (type === 'sectionTransition') {
           this.editor.navigate(`/scrolled/sections/${id}/transition`, {trigger: true})
+        }
+        else if (type === 'widget') {
+          this.editor.navigate(`/widgets/${id}`, {trigger: true})
         }
         else {
           this.editor.navigate('/', {trigger: true})

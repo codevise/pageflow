@@ -8,6 +8,7 @@ import {
   useAdditionalSeedData,
   useFileWithInlineRights
 } from '../entryState';
+
 import Foreground from './Foreground';
 import {SectionInlineFileRights} from './SectionInlineFileRights';
 import {Layout, widths as contentElementWidths} from './layouts';
@@ -17,6 +18,8 @@ import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecyc
 import {SectionViewTimelineProvider} from './SectionViewTimelineProvider';
 import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
+import {SelectableWidget} from './SelectableWidget';
+
 import * as v1 from './v1';
 import * as v2 from './v2';
 
@@ -75,6 +78,10 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                                      backdrop={backdrop}
                                      atmoAudioFile={atmoAudioFile}
                                      state={state} />
+
+            {section.sectionIndex === 0 &&
+             <SelectableWidget role="scrollIndicator"
+                               props={{sectionLayout: section.layout}} />}
           </BackgroundColorProvider>
         </SectionViewTimelineProvider>
       </SectionLifecycleProvider>

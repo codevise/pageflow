@@ -1,0 +1,62 @@
+.indicator {
+  --size: 40px;
+  --animation-dist: -5px;
+
+  position: fixed;
+  bottom: 1.3rem;
+  z-index: 10;
+  filter: drop-shadow(0 0 3px #000);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.indicator > * {
+  display: inline-block;
+}
+
+.size-large {
+  --size: 60px;
+}
+
+.align-center {
+  left: 0;
+  width: 100%;
+}
+
+.align-left,
+.align-right {
+  width: 84%;
+  max-width: var(--two-column-inline-content-max-width, 500px);
+}
+
+.align-right {
+  right: 8%;
+}
+
+.align-left {
+  left: 8%;
+}
+
+.indicator svg {
+  display: block;
+  fill: #fff;
+  width: var(--size);
+  height: var(--size);
+  opacity: 0.9;
+}
+
+.animation-smallBounce,
+.animation-largeBounce {
+  animation: bounce 1s infinite;
+}
+
+.animation-largeBounce {
+  --animation-dist: -15px;
+}
+
+@keyframes bounce {
+  30% {
+    transform: translateY(var(--animation-dist));
+  }
+}

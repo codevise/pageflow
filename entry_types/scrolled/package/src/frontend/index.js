@@ -120,6 +120,8 @@ export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 export {RootProviders, registerConsentVendors};
 export {default as registerTemplateWidgetType} from './registerTemplateWidgetType';
 export {Widget} from './Widget';
+export {SelectableWidget} from './SelectableWidget';
+export {WidgetSelectionRect} from './WidgetSelectionRect';
 
 export {utils} from './utils';
 export {paletteColor} from './paletteColor';

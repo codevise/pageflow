@@ -314,7 +314,11 @@ const pageflowScrolled = [
     ...ignoreJSXWarning
   },
 
-  ...(['defaultNavigation', 'consentBar', 'textInlineFileRights', 'iconInlineFileRights'].map(name => (
+  ...([
+    'defaultNavigation', 'consentBar',
+    'textInlineFileRights', 'iconInlineFileRights',
+    'iconScrollIndicator'
+  ].map(name => (
     {
       input: `${pageflowScrolledPackageRoot}/src/widgets/${name}/index.js`,
       output: {

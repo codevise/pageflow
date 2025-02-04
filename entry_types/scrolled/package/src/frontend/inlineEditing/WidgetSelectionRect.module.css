@@ -1,0 +1,9 @@
+.wrapper {
+  pointer-events: auto;
+  cursor: default;
+  outline-offset: 2px;
+}
+
+.selected {
+  outline: solid 1px #fff;
+}

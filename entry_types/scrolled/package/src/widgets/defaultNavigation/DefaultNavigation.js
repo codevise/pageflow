@@ -2,7 +2,8 @@ import React, {useState, useCallback} from 'react';
 import classNames from 'classnames';
 
 import {
-  Widget,
+  SelectableWidget,
+  WidgetSelectionRect,
   paletteColor,
   useScrollPosition,
   useChapters,
@@ -135,34 +136,36 @@ export function DefaultNavigation({
         ),
         [styles.hasChapters]: hasChapters
       })} style={{'--theme-accent-color': paletteColor(configuration.accentColor)}}>
-        <div className={styles.navigationBarContentWrapper}>
-          {(hasChapters || MobileMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}
-                                                         mobileNavHidden={mobileNavHidden}/>}
+        <WidgetSelectionRect>
+          <div className={styles.navigationBarContentWrapper}>
+            {(hasChapters || MobileMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}
+                                                           mobileNavHidden={mobileNavHidden}/>}
 
-          <SkipLinks />
-          <Logo {...logo} />
+            <SkipLinks />
+            <Logo {...logo} />
 
-          {renderNav()}
-          {MobileMenu && <MobileMenu configuration={configuration}
-                                     open={!mobileNavHidden}
-                                     close={() => setMobileNavHidden(true)} />}
+            {renderNav()}
+            {MobileMenu && <MobileMenu configuration={configuration}
+                                       open={!mobileNavHidden}
+                                       close={() => setMobileNavHidden(true)} />}
 
-          <div className={classNames(styles.contextIcons)}>
-            {!configuration.hideToggleMuteButton && <ToggleMuteButton />}
-            <TranslationsMenu />
-            {!theme.options.hideLegalInfoButton &&<LegalInfoMenu tooltipOffset={hideSharingButton ? -40 : 0} />}
-            {!hideSharingButton && <SharingMenu shareProviders={shareProviders} />}
-            {ExtraButtons && <ExtraButtons />}
+            <div className={classNames(styles.contextIcons)}>
+              {!configuration.hideToggleMuteButton && <ToggleMuteButton />}
+              <TranslationsMenu />
+              {!theme.options.hideLegalInfoButton &&<LegalInfoMenu tooltipOffset={hideSharingButton ? -40 : 0} />}
+              {!hideSharingButton && <SharingMenu shareProviders={shareProviders} />}
+              {ExtraButtons && <ExtraButtons />}
+            </div>
           </div>
-        </div>
 
-        <div className={styles.progressBar} onMouseEnter={handleProgressBarMouseEnter}>
-          <span className={styles.progressIndicator} style={{width: readingProgress + '%'}}/>
-        </div>
+          <div className={styles.progressBar} onMouseEnter={handleProgressBarMouseEnter}>
+            <span className={styles.progressIndicator} style={{width: readingProgress + '%'}}/>
+          </div>
+        </WidgetSelectionRect>
       </header>
-      <Widget role="defaultNavigationExtra"
-              props={{navigationExpanded: navExpanded,
-                      mobileNavigationVisible: !mobileNavHidden}} />
+      <SelectableWidget role="defaultNavigationExtra"
+                        props={{navigationExpanded: navExpanded,
+                                mobileNavigationVisible: !mobileNavHidden}} />
     </>
   );
 }
