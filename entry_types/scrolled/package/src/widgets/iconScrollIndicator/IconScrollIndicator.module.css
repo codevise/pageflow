@@ -11,6 +11,10 @@
   pointer-events: none;
 }
 
+.indicator > * {
+  display: inline-block;
+}
+
 .size-large {
   --size: 60px;
 }

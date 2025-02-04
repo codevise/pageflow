@@ -1,7 +1,10 @@
 import React, {useEffect, useRef} from 'react';
 import classNames from 'classnames';
 
-import {ThemeIcon} from 'pageflow-scrolled/frontend';
+import {
+  ThemeIcon,
+  WidgetSelectionRect
+} from 'pageflow-scrolled/frontend';
 
 import styles from './IconScrollIndicator.module.css';
 
@@ -33,7 +36,9 @@ export function IconScrollIndicator({configuration, sectionLayout}) {
                                styles[`size-${configuration.size}`],
                                styles[`align-${getAlignment(configuration, sectionLayout)}`])}
          ref={ref}>
-      <ThemeIcon name="scrollDown" width={30} height={30} />
+      <WidgetSelectionRect>
+        <ThemeIcon name="scrollDown" width={30} height={30} />
+      </WidgetSelectionRect>
     </div>
   );
 }

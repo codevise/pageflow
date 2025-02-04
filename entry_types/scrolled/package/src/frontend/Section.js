@@ -18,7 +18,7 @@ import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecyc
 import {SectionViewTimelineProvider} from './SectionViewTimelineProvider';
 import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
-import {Widget} from './Widget';
+import {SelectableWidget} from './SelectableWidget';
 
 import * as v1 from './v1';
 import * as v2 from './v2';
@@ -80,8 +80,8 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                                      state={state} />
 
             {section.sectionIndex === 0 &&
-             <Widget role="scrollIndicator"
-                     props={{sectionLayout: section.layout}} />}
+             <SelectableWidget role="scrollIndicator"
+                               props={{sectionLayout: section.layout}} />}
           </BackgroundColorProvider>
         </SectionViewTimelineProvider>
       </SectionLifecycleProvider>
