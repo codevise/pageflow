@@ -91,6 +91,16 @@ export const PreviewMessageController = Object.extend({
           })
         });
 
+        this.listenTo(this.entry, 'selectWidget', widget => {
+          postMessage({
+            type: 'SELECT',
+            payload: {
+              id: widget.get('role'),
+              type: 'widget'
+            }
+          })
+        });
+
         this.listenTo(this.entry, 'resetSelection', contentElement =>
           postMessage({
             type: 'SELECT',

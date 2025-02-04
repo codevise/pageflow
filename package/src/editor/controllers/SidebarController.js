@@ -77,9 +77,13 @@ export const SidebarController = Marionette.Controller.extend({
   },
 
   widget: function(id) {
+    const model = this.entry.widgets.get(id);
+
     this.region.show(new EditWidgetView({
       entry: this.entry,
-      model: this.entry.widgets.get(id)
+      model
     }));
+
+    this.entry.trigger('selectWidget', model);
   },
 });
