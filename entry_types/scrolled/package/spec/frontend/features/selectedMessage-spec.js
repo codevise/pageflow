@@ -1,4 +1,5 @@
-import {frontend} from 'frontend';
+import React from 'react';
+import {frontend, WidgetSelectionRect} from 'frontend';
 
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
 import {fakeParentWindow} from 'support';
@@ -119,6 +120,33 @@ describe('SELECTED message', () => {
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
       payload: {id: 2, type: 'sectionTransition'}
+    }, expect.anything());
+  });
+
+  it('is posted when widget selection rect is clicked', () => {
+    frontend.widgetTypes.register('customNavigation', {
+      component: function ({children}) {
+        return (
+          <div>
+            <WidgetSelectionRect>
+              Custom navigation
+            </WidgetSelectionRect>
+          </div>
+        )
+      }
+    });
+
+    const {getByText} = renderEntry({
+      seed: {
+        widgets: [{typeName: 'customNavigation', role: 'header'}]
+      }
+    });
+
+    fireEvent.click(getByText('Custom navigation'));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 'header', type: 'widget'}
     }, expect.anything());
   });
 });

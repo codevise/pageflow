@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import styles from './SectionDecorator.module.css';
 import backdropStyles from './BackdropDecorator.module.css';
 import contentElementStyles from './ContentElementDecorator.module.css';
+import widgetSelectionRectStyles from './WidgetSelectionRect.module.css';
 
 import {Toolbar} from './Toolbar';
 import {ForcePaddingContext} from '../Foreground';
@@ -50,6 +51,7 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   function selectIfOutsideContentItem(event) {
     if (!event.target.closest(`.${contentElementStyles.wrapper}`) &&
         !event.target.closest(`.${backdropStyles.wrapper}`) &&
+        !event.target.closest(`.${widgetSelectionRectStyles.wrapper}`) &&
         !event.target.closest('#fullscreenRoot') &&
         !event.target.closest('[data-floating-ui-portal]')) {
       isSelected ? resetSelection() : select();

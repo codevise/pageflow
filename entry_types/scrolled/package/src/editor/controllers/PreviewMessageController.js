@@ -123,6 +123,9 @@ export const PreviewMessageController = Object.extend({
         else if (type === 'sectionTransition') {
           this.editor.navigate(`/scrolled/sections/${id}/transition`, {trigger: true})
         }
+        else if (type === 'widget') {
+          this.editor.navigate(`/widgets/${id}`, {trigger: true})
+        }
         else {
           this.editor.navigate('/', {trigger: true})
         }

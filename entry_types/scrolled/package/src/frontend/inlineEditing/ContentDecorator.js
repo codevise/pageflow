@@ -4,7 +4,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend';
 
 import {useEntryStateDispatch} from '../../entryState';
 import {usePostMessageListener} from '../usePostMessageListener';
-import {EditorStateProvider, useEditorSelection} from './EditorState';
+import {useEditorSelection} from './EditorState';
 import {
   useContentElementEditorCommandEmitter,
   ContentElementEditorCommandSubscriptionProvider
@@ -15,7 +15,7 @@ export function ContentDecorator(props) {
   const contentElementEditorCommandEmitter = useContentElementEditorCommandEmitter();
 
   return (
-    <EditorStateProvider>
+    <>
       <MessageHandler contentElementEditorCommandEmitter={contentElementEditorCommandEmitter} />
       <ScrollPointMessageHandler />
       <ContentElementEditorCommandSubscriptionProvider emitter={contentElementEditorCommandEmitter}>
@@ -23,7 +23,7 @@ export function ContentDecorator(props) {
           {props.children}
         </DndProvider>
       </ContentElementEditorCommandSubscriptionProvider>
-    </EditorStateProvider>
+    </>
   );
 }
 

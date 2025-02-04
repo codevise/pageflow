@@ -298,6 +298,18 @@ describe('PreviewMessageController', () => {
     })).resolves.toBe('/scrolled/sections/1/transition');
   });
 
+  it('navigates to edit widget route on SELECTED message for widget role', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry);
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 'header', type: 'widget'}}, '*');
+    })).resolves.toBe('/widgets/header');
+  });
+
   it('displays insert dialog on INSERT_CONTENT_ELEMENT message', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {

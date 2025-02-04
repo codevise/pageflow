@@ -1,3 +1,4 @@
+export {EntryDecorator} from './EntryDecorator';
 export {ContentDecorator} from './ContentDecorator';
 export {SectionDecorator} from './SectionDecorator';
 export {ContentElementDecorator} from './ContentElementDecorator';
@@ -8,6 +9,9 @@ export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
 export {EditableTable} from './EditableTable';
 export {EditableLink} from './EditableLink';
+
+export {SelectableWidgetDecorator} from './SelectableWidgetDecorator';
+export {WidgetSelectionRect} from './WidgetSelectionRect';
 
 export {ActionButton} from './ActionButton';
 
