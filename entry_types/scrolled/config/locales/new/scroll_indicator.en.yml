@@ -1,0 +1,33 @@
+en:
+  pageflow:
+    icon_scroll_indicator:
+      feature_name: Icon Scroll Indicator
+    iconScrollIndicator:
+      widget_type_name: Icon at bottom of viewport
+    editor:
+      widgets:
+        attributes:
+          iconScrollIndicator:
+            animation:
+              label: Animation
+              values:
+                none: None
+                smallBounce: Subtle
+                largeBounce: Obvious
+            alignment:
+              label: Alignment
+              values:
+                centerContent: Center with content
+                centerViewport: Center with viewport
+            size:
+              label: Size
+              values:
+                large: Large
+                small: Small
+    ui:
+      configuration_editor:
+        tabs:
+          iconScrollIndicator: Icon Scroll Indicator
+    widgets:
+      roles:
+        scrollIndicator: Scroll indicator

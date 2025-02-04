@@ -10,7 +10,13 @@ import {SideBarRouter} from './routers/SideBarRouter';
 import {SideBarController} from './controllers/SideBarController';
 
 import {browser} from 'pageflow/frontend';
-import {CheckBoxInputView, ConfigurationEditorView} from 'pageflow/ui';
+
+import {
+  CheckBoxInputView,
+  ConfigurationEditorView,
+  SelectInputView
+} from 'pageflow/ui';
+
 import {ColorSelectInputView} from './views/inputs/ColorSelectInputView';
 import {BrowserNotSupportedView} from './views/BrowserNotSupportedView';
 
@@ -49,6 +55,10 @@ editor.registerFileSelectionHandler('contentElementConfiguration',
                                     ContentElementFileSelectionHandler);
 
 editor.widgetTypes.registerRole('header', {
+  isOptional: true
+});
+
+editor.widgetTypes.registerRole('scrollIndicator', {
   isOptional: true
 });
 
@@ -91,4 +101,31 @@ editor.widgetTypes.register('textInlineFileRights', {
       });
     }
   }
+});
+
+editor.widgetTypes.register('iconScrollIndicator', {
+  configurationEditorView: ConfigurationEditorView.extend({
+    configure: function() {
+      const firstSection = this.options.entry.sections.first();
+
+      if (firstSection) {
+        this.options.entry.trigger('scrollToSection', firstSection);
+      }
+
+      this.tab('iconScrollIndicator', function() {
+        this.input('alignment', SelectInputView, {
+          values: ['centerContent', 'centerViewport']
+        });
+        this.input('size', SelectInputView, {
+          defaultValue: 'small',
+          values: ['large', 'small']
+        });
+        this.input('animation', SelectInputView, {
+          defaultValue: 'smallBounce',
+          values: ['none', 'smallBounce', 'largeBounce']
+        });
+
+      });
+    }
+  })
 });

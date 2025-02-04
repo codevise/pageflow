@@ -20,6 +20,7 @@ import whatsApp from './icons/social/whatsApp.svg';
 
 import arrowLeft from './icons/arrowLeft.svg';
 import arrowRight from './icons/arrowRight.svg';
+import scrollDown from './icons/scrollDown.svg';
 
 import enterFullscreen from './icons/enterFullscreen.svg';
 import exitFullscreen from './icons/exitFullscreen.svg';
@@ -51,6 +52,7 @@ const icons = {
 
   arrowLeft,
   arrowRight,
+  scrollDown,
 
   enterFullscreen,
   exitFullscreen,
@@ -68,7 +70,7 @@ const icons = {
  *   enterFullscreen, exitFullscreen, expand, facebook, gear, information,
  *   linkedIn, menu, muted, pause, play, share, telegram,
  *   textTracks, twitter, unmuted, world, whatsApp,
- *   arrowLeft, arrowRight, world
+ *   arrowLeft, arrowRight, scrollDown, world
  * @params {number} [props.width] - Image width.
  * @params {number} [props.height] - Image height.
  */

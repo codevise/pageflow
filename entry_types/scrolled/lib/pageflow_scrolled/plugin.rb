@@ -34,6 +34,14 @@ module PageflowScrolled
         c.widget_types.register(ReactWidgetType.new(name: 'textInlineFileRights',
                                                     role: 'inlineFileRights'))
 
+        c.features.register('icon_scroll_indicator') do |feature_config|
+          feature_config.widget_types.register(
+            ReactWidgetType.new(name: 'iconScrollIndicator',
+                                role: 'scrollIndicator'),
+            default: true
+          )
+        end
+
         c.features.register('datawrapper_chart_embed_opt_in')
         c.features.enable_by_default('datawrapper_chart_embed_opt_in')
         c.features.register('iframe_embed_content_element')

@@ -48,6 +48,12 @@ module.exports = {
         'pageflow-scrolled/widgets/textInlineFileRights',
         'pageflow-scrolled/widgets/textInlineFileRights.css'
       ]
+    },
+    'pageflow-scrolled/widgets/iconScrollIndicator': {
+      import: [
+        'pageflow-scrolled/widgets/iconScrollIndicator',
+        'pageflow-scrolled/widgets/iconScrollIndicator.css'
+      ]
     }
   }
 };
