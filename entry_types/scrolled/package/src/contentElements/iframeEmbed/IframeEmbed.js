@@ -13,6 +13,8 @@ import {
   utils
 } from 'pageflow-scrolled/frontend';
 
+import {useIframeHeight} from './useIframeHeight';
+
 import styles from './IframeEmbed.module.css';
 
 const aspectRatios = {
@@ -26,10 +28,29 @@ export function IframeEmbed({configuration}) {
   const {shouldLoad} = useContentElementLifecycle();
   const {isEditable, isSelected} = useContentElementEditorState();
   const portraitOrientation = usePortraitOrientation();
+  const height = useIframeHeight({src: configuration.source,
+                                  active: configuration.autoResize})
 
   const aspectRatio = portraitOrientation && configuration.portraitAspectRatio ?
                       configuration.portraitAspectRatio :
                       configuration.aspectRatio;
+
+  function renderSpanningWrapper(children) {
+    if (configuration.autoResize) {
+      return (
+        <div style={{height}}>
+          {children}
+        </div>
+      );
+    }
+    else {
+      return (
+        <FitViewport.Content>
+          {children}
+        </FitViewport.Content>
+      )
+    }
+  }
 
   return (
     <div className={styles.wrapper}
@@ -38,7 +59,7 @@ export function IframeEmbed({configuration}) {
                    opaque={utils.isBlank(configuration.source)}>
         <ContentElementBox>
           <ContentElementFigure configuration={configuration}>
-            <FitViewport.Content>
+            {renderSpanningWrapper(
               <ThirdPartyOptIn>
                 {shouldLoad &&
                  <iframe className={classNames(styles.iframe,
@@ -46,7 +67,7 @@ export function IframeEmbed({configuration}) {
                          title={configuration.title}
                          src={configuration.source} />}
               </ThirdPartyOptIn>
-            </FitViewport.Content>
+            )}
             <OptOutInfo configuration={configuration} />
           </ContentElementFigure>
         </ContentElementBox>

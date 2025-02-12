@@ -1,0 +1,15 @@
+de:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        iframeEmbed:
+          attributes:
+            autoResize:
+              label: Dynamische Höhenanpassungen
+              inline_help: Höhe automatisch an den Inhalt des Elements anpassen.
+          help_texts:
+            autoResize: |-
+                Diese Option erfordert die Integration eines
+                Skripts in die eingebettete Seite. Weitere
+                Informationen findest du in diesem <a target="_blank" rel="noopener noreferrer"
+                href="https://pageflow.freshdesk.com/de/support/solutions/articles/11000130710-wie-passe-ich-die-gr%C3%B6%C3%9Fe-von-iframe-embeds-automatisch-an-den-inhalt-an-">Hilfeartikel</a>.

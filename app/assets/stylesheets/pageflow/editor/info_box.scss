@@ -3,11 +3,19 @@
     margin-bottom: 1em;
   }
 
+  &.info,
+  &.error {
+    border-radius: rounded();
+    padding: space(3);
+  }
+
+  &.info {
+    background-color: var(--ui-selection-color-lighter);
+  }
+
   &.error {
     color: var(--ui-on-error-surface-color);
     background-color: var(--ui-error-surface-color);
-    border-radius: rounded();
-    padding: space(3);
   }
 
   .shortcuts {
