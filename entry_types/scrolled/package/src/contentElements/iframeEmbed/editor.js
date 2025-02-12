@@ -29,14 +29,24 @@ editor.contentElementTypes.register('iframeEmbed', {
       });
       this.input('title', TextInputView);
       this.input('aspectRatio', SelectInputView, {
-        values: aspectRatios
+        values: aspectRatios,
+        disabledBinding: 'autoResize'
       });
       this.input('portraitAspectRatio', SelectInputView, {
         includeBlank: true,
         blankTranslationKey: 'pageflow_scrolled.editor.' +
                              'content_elements.iframeEmbed.' +
                              'attributes.portraitAspectRatio.blank',
-        values: aspectRatios
+        values: aspectRatios,
+        disabledBinding: 'autoResize'
+      });
+      this.input('autoResize', CheckBoxInputView);
+      this.view(InfoBoxView, {
+        level: 'info',
+        text: I18n.t(
+          'pageflow_scrolled.editor.content_elements.iframeEmbed.help_texts.autoResize'
+        ),
+        visibleBinding: 'autoResize'
       });
       this.input('scale', SelectInputView, {
         values: ['p100', 'p75', 'p50', 'p33']
