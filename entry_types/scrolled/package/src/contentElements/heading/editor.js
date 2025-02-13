@@ -22,9 +22,6 @@ editor.contentElementTypes.register('heading', {
     });
 
     this.tab('general', function() {
-      this.input('textSize', SelectInputView, {
-        values: ['auto', 'large', 'medium', 'small']
-      });
       this.group('ContentElementTypographyVariant', {
         entry,
         model: modelDelegator,
@@ -34,6 +31,9 @@ editor.contentElementTypes.register('heading', {
             textSize: 'small',
             typographyVariant
           })
+      });
+      this.input('textSize', SelectInputView, {
+        values: ['auto', 'large', 'medium', 'small']
       });
       this.group('PaletteColor', {
         entry,
