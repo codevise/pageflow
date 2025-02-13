@@ -171,13 +171,16 @@ export const ScrolledEntry = Entry.extend({
     model, paletteColorPropertyName
   }) {
     const delegator = Object.create(model)
-    const mapping = this.scrolledSeed.legacyTypographyVariants;
+    const mapping = this.scrolledSeed.legacyTypographyVariants || {};
 
     delegator.get = function(name) {
       const result = model.get(name);
 
       if (name === 'typographyVariant') {
         return mapping[result] ? mapping[result].variant : result;
+      }
+      else if (name === 'typographySize') {
+        return mapping[model.get('typographyVariant')]?.size || result;
       }
       else if (name === paletteColorPropertyName) {
         return mapping[model.get('typographyVariant')]?.paletteColor || result;
@@ -187,12 +190,25 @@ export const ScrolledEntry = Entry.extend({
     };
 
     delegator.set = function(name, value) {
-      if (name === paletteColorPropertyName &&
-          mapping[model.get('typographyVariant')]) {
-        model.set({
-          [paletteColorPropertyName]: value,
+      const mappedProperties = mapping[model.get('typographyVariant')];
+
+      if ((name === paletteColorPropertyName || name === 'typographySize') &&
+          mappedProperties) {
+        const changes = {
           typographyVariant: mapping[model.get('typographyVariant')].variant
-        });
+        };
+
+        if (!model.has('typographySize')) {
+          changes.typographySize = mappedProperties.size;
+        }
+
+        if (!model.has(paletteColorPropertyName)) {
+          changes[paletteColorPropertyName] = mappedProperties.paletteColor;
+        }
+
+        changes[name] = value;
+
+        model.set(changes);
       }
       else {
         model.set.apply(this, arguments);

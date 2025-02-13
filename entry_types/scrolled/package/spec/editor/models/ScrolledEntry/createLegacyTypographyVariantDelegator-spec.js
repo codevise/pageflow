@@ -35,7 +35,7 @@ describe('ScrolledEntry', () => {
           entryTypeSeed: {
             legacyTypographyVariants: {
               lgAccent: {
-                variant: 'lg',
+                size: 'lg',
                 paletteColor: 'accent'
               }
             },
@@ -44,7 +44,7 @@ describe('ScrolledEntry', () => {
         }
       );
       const model = new Model({
-        typographyVariant: 'sm',
+        typographyVariant: 'highlight',
         paletteColor: 'primary'
       });
 
@@ -53,7 +53,7 @@ describe('ScrolledEntry', () => {
         paletteColorPropertyName: 'paletteColor'
       });
 
-      expect(delegator.get('typographyVariant')).toEqual('sm');
+      expect(delegator.get('typographyVariant')).toEqual('highlight');
       expect(delegator.get('paletteColor')).toEqual('primary');
     });
 
@@ -64,8 +64,8 @@ describe('ScrolledEntry', () => {
         {
           entryTypeSeed: {
             legacyTypographyVariants: {
-              lgAccent: {
-                variant: 'lg',
+              highlightAccent: {
+                variant: 'highlight',
                 paletteColor: 'accent'
               }
             },
@@ -74,7 +74,7 @@ describe('ScrolledEntry', () => {
         }
       );
       const model = new Model({
-        typographyVariant: 'lgAccent'
+        typographyVariant: 'highlightAccent'
       });
 
       const delegator = entry.createLegacyTypographyVariantDelegator({
@@ -82,8 +82,36 @@ describe('ScrolledEntry', () => {
         paletteColorPropertyName: 'paletteColor',
       });
 
-      expect(delegator.get('typographyVariant')).toEqual('lg');
+      expect(delegator.get('typographyVariant')).toEqual('highlight');
       expect(delegator.get('paletteColor')).toEqual('accent');
+    });
+
+    it('rewrites legacy typographyVariant to typographySize', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: {
+            legacyTypographyVariants: {
+              lg: {
+                size: 'lg'
+              }
+            },
+            ...normalizeSeed()
+          }
+        }
+      );
+      const model = new Model({
+        typographyVariant: 'lg'
+      });
+
+      const delegator = entry.createLegacyTypographyVariantDelegator({
+        model,
+        paletteColorPropertyName: 'paletteColor',
+      });
+
+      expect(delegator.get('typographyVariant')).toBeUndefined();
+      expect(delegator.get('typographySize')).toEqual('lg');
     });
 
     it('supports rewriting to default variant', () => {
@@ -122,7 +150,7 @@ describe('ScrolledEntry', () => {
           entryTypeSeed: {
             legacyTypographyVariants: {
               lgAccent: {
-                variant: 'lg',
+                size: 'lg',
                 paletteColor: 'accent'
               }
             },
@@ -140,7 +168,7 @@ describe('ScrolledEntry', () => {
       });
       delegator.set('paletteColor', 'primary')
 
-      expect(delegator.get('typographyVariant')).toEqual('lg');
+      expect(delegator.get('typographySize')).toEqual('lg');
       expect(delegator.get('paletteColor')).toEqual('primary');
     });
 
@@ -152,7 +180,7 @@ describe('ScrolledEntry', () => {
           entryTypeSeed: {
             legacyTypographyVariants: {
               lgAccent: {
-                variant: 'lg',
+                size: 'lg',
                 paletteColor: 'accent'
               }
             },
@@ -170,7 +198,7 @@ describe('ScrolledEntry', () => {
       });
       delegator.set('paletteColor', undefined)
 
-      expect(delegator.get('typographyVariant')).toEqual('lg');
+      expect(delegator.get('typographySize')).toEqual('lg');
       expect(delegator.get('paletteColor')).toBeUndefined();
     });
 
@@ -182,7 +210,7 @@ describe('ScrolledEntry', () => {
           entryTypeSeed: {
             legacyTypographyVariants: {
               lgAccent: {
-                variant: 'lg',
+                size: 'lg',
                 paletteColor: 'accent'
               }
             },
@@ -200,8 +228,104 @@ describe('ScrolledEntry', () => {
         paletteColorPropertyName: 'paletteColor'
       });
 
-      expect(delegator.get('typographyVariant')).toEqual('lg');
+      expect(delegator.get('typographySize')).toEqual('lg');
       expect(delegator.get('paletteColor')).toEqual('accent');
+    });
+
+    it('allows overriding legacy typographyVariant size', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: {
+            legacyTypographyVariants: {
+              lgAccent: {
+                size: 'lg',
+                paletteColor: 'accent'
+              }
+            },
+            ...normalizeSeed()
+          }
+        }
+      );
+      const model = new Model({
+        typographyVariant: 'lgAccent'
+      });
+
+      const delegator = entry.createLegacyTypographyVariantDelegator({
+        model,
+        paletteColorPropertyName: 'color'
+      });
+      delegator.set('typographySize', 'sm')
+
+      expect(delegator.get('typographyVariant')).toBeUndefined();
+      expect(delegator.get('color')).toEqual('accent');
+      expect(delegator.get('typographySize')).toEqual('sm');
+    });
+
+    it('preserves already overriden size when overriding palette color', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: {
+            legacyTypographyVariants: {
+              highlightAccent: {
+                variant: 'highlight',
+                paletteColor: 'accent'
+              }
+            },
+            ...normalizeSeed()
+          }
+        }
+      );
+      const model = new Model({
+        typographyVariant: 'highlightAccent',
+        typographySize: 'sm'
+      });
+
+      const delegator = entry.createLegacyTypographyVariantDelegator({
+        model,
+        paletteColorPropertyName: 'paletteColor'
+      });
+      delegator.set('paletteColor', 'primary')
+
+      expect(delegator.get('typographyVariant')).toEqual('highlight');
+      expect(delegator.get('typographySize')).toEqual('sm');
+      expect(delegator.get('paletteColor')).toEqual('primary');
+    });
+
+    it('preserves already overriden palette color when overriding size', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: {
+            legacyTypographyVariants: {
+              highlightLg: {
+                variant: 'highlight',
+                paletteColor: 'accent',
+                size: 'lg'
+              }
+            },
+            ...normalizeSeed()
+          }
+        }
+      );
+      const model = new Model({
+        typographyVariant: 'highlightLg',
+        paletteColor: 'primary'
+      });
+
+      const delegator = entry.createLegacyTypographyVariantDelegator({
+        model,
+        paletteColorPropertyName: 'paletteColor'
+      });
+      delegator.set('typographySize', 'sm')
+
+      expect(delegator.get('typographyVariant')).toEqual('highlight');
+      expect(delegator.get('typographySize')).toEqual('sm');
+      expect(delegator.get('paletteColor')).toEqual('primary');
     });
   });
 });
