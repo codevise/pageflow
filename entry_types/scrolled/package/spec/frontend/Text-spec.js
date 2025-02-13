@@ -36,4 +36,14 @@ describe('Text', () => {
 
     expect(container.firstChild).toHaveClass('typography-heading-highlight');
   });
+
+  it('supports rendering typography size class name', () => {
+    const {container} = render(
+      <Text scaleCategory="question" typographySize="lg">
+        Some text
+      </Text>
+    );
+
+    expect(container.firstChild).toHaveClass('typography-question-lg');
+  });
 });

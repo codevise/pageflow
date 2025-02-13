@@ -17,11 +17,11 @@ const defaultValue = [{
 }];
 
 export const EditableText = withInlineEditingAlternative('EditableText', function EditableText({
-  value, className, scaleCategory = 'body', typographyVariant
+  value, className, scaleCategory = 'body', typographyVariant, typographySize
 }) {
   return (
     <div className={classNames(styles.root, className)}>
-      <Text scaleCategory={scaleCategory} typographyVariant={typographyVariant}>
+      <Text scaleCategory={scaleCategory} typographyVariant={typographyVariant} typographySize={typographySize}>
         {render(value || defaultValue)}
       </Text>
     </div>

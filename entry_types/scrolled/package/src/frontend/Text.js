@@ -2,6 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
+import {camelize} from './utils/camelize';
+
 import styles from './Text.module.css';
 
 /**
@@ -20,23 +22,31 @@ import styles from './Text.module.css';
  *   `'hotspotsTooltipTitle'`, `'hotspotsTooltipDescription`', `'hotspotsTooltipLink`',
  *   `'teaserDescription'`.
  * @param {string} [props.typographyVariant] - Suffix for variant class name.
+ * @param {string} [props.typographySize] - Suffix for size class name.
  * @param {string} [props.inline] - Render a span instread of a div.
  * @param {string} props.children - Nodes to render with specified typography.
  */
-export function Text({inline, scaleCategory, typographyVariant, children}) {
+export function Text({inline, scaleCategory, typographyVariant, typographySize, children}) {
   const variantClassName =
     typographyVariant &&
     `typography-${scaleCategory.split('-')[0]}-${typographyVariant}`;
 
+  const sizeClassName =
+    typographySize &&
+    `typography-${scaleCategory}-${typographySize}`;
+
   return React.createElement(inline ? 'span' : 'div',
                              {className: classNames(styles[scaleCategory],
-                                                    variantClassName)},
+                                                    variantClassName,
+                                                    sizeClassName)},
                              children);
 }
 
 Text.propTypes = {
   children: PropTypes.node.isRequired,
   inline: PropTypes.bool,
+  typographyVariant: PropTypes.string,
+  typographySize: PropTypes.string,
   scaleCategory: PropTypes.oneOf([
     'heading-lg', 'heading-md', 'heading-sm', 'heading-xs',
     'headingTagline-lg', 'headingTagline-md', 'headingTagline-sm',

@@ -73,7 +73,7 @@ describe('EditableText', () => {
     expect(container.querySelector('.typography-quoteText')).toBeInTheDocument()
   });
 
-  it('supports typography variant', () => {
+  it('supports typography variant prop', () => {
     const value = [{
       type: 'paragraph',
       children: [
@@ -89,6 +89,24 @@ describe('EditableText', () => {
     );
 
     expect(container.querySelector('.typography-quoteText-highlight')).toBeInTheDocument()
+  });
+
+  it('supports typography size prop', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(
+      <EditableText value={value}
+                    scaleCategory="question"
+                    typographySize="lg" />,
+      {wrapper}
+    );
+
+    expect(container.querySelector('.typography-question-lg')).toBeInTheDocument()
   });
 
   it('renders placeholder if value is undefined', () => {

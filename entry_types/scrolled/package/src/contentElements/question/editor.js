@@ -9,13 +9,31 @@ editor.contentElementTypes.register('question', {
 
   configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
+      const modelDelegator = entry.createLegacyTypographyVariantDelegator({
+        model: this.model,
+        paletteColorPropertyName: 'paletteColor'
+      });
+
       this.group('ContentElementTypographyVariant', {
         entry,
+        model: modelDelegator,
         getPreviewConfiguration: (configuration, typographyVariant) =>
           ({
             ...configuration,
             expandByDefault: true,
             typographyVariant
+          })
+      });
+      this.group('ContentElementTypographySize', {
+        entry,
+        model: modelDelegator,
+        getPreviewConfiguration: (configuration, typographySize) =>
+          ({
+            ...configuration,
+            expandByDefault: true,
+            // Ensure size in preview is not overridden by legacy variant
+            typographyVariant: modelDelegator.get('typographyVariant'),
+            typographySize
           })
       });
       this.input('expandByDefault', CheckBoxInputView);

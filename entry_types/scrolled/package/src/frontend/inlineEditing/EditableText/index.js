@@ -58,7 +58,7 @@ export const selectedClassName = styles.selected;
 
 export const EditableText = React.memo(function EditableText({
   value, contentElementId, placeholder, onChange, selectionRect, className,
-  placeholderClassName, scaleCategory = 'body', typographyVariant,
+  placeholderClassName, scaleCategory = 'body', typographyVariant, typographySize,
   autoFocus,
   floatingControlsPosition = 'below'
 }) {
@@ -132,7 +132,8 @@ export const EditableText = React.memo(function EditableText({
 
   return (
     <Text scaleCategory={scaleCategory}
-          typographyVariant={typographyVariant}>
+          typographyVariant={typographyVariant}
+          typographySize={typographySize}>
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
            ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
