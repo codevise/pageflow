@@ -10,6 +10,8 @@ import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
 
+const typographySizeSuffixes = ['xl', 'lg', 'md', 'sm', 'xs'];
+
 export const ScrolledEntry = Entry.extend({
   setupFromEntryTypeSeed(seed) {
     this.consentVendors = new ConsentVendors({hostMatchers: seed.consentVendorHostMatchers});
@@ -135,6 +137,30 @@ export const ScrolledEntry = Entry.extend({
         `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
         `.typography_variants.${name}`,
         {defaultValue: I18n.t(`pageflow_scrolled.editor.typography_variants.${name}`)}
+      )
+    );
+
+    return [values, texts];
+  },
+
+  getTypographySizes({contentElement, prefix}) {
+    const typographyRules = this.scrolledSeed.config.theme.options.typography || {};
+
+    const rulePrefix = [
+      contentElement.get('typeName'),
+      prefix
+    ].filter(Boolean).join('-')
+
+    const values = typographySizeSuffixes
+      .filter(sizeSuffix =>
+        typographyRules[`${rulePrefix}-${sizeSuffix}`] || sizeSuffix === 'md'
+      )
+
+    const texts = values.map(name =>
+      I18n.t(
+        `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
+        `.typography_sizes.${name}`,
+        {defaultValue: I18n.t(`pageflow_scrolled.editor.typography_sizes.${name}`)}
       )
     );
 
