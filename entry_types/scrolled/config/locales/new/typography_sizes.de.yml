@@ -1,0 +1,12 @@
+de:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        typographySize:
+          label: "Schriftgröße"
+      typography_sizes:
+        xl: Sehr groß
+        lg: Groß
+        md: Mittel
+        sm: Klein
+        xs: Sehr klein

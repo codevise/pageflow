@@ -86,6 +86,7 @@ export function Selection(props) {
       editableTextIsSingleBlock: editor.children.length <= 1,
       exampleNode: getUniformSelectedNode(editor, 'type'),
       typographyVariant: getUniformSelectedNode(editor, 'variant')?.variant,
+      typographySize: getUniformSelectedNode(editor, 'size')?.size,
       color: getUniformSelectedNode(editor, 'color')?.color,
       textAlign: getUniformSelectedNode(editor, 'textAlign')?.textAlign,
     });

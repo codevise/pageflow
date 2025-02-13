@@ -22,7 +22,8 @@ import {DropTargets} from './DropTargets';
 import {LinkTooltipProvider} from '../LinkTooltip';
 import {
   applyTextAlign,
-  applyTypograpyhVariant,
+  applyTypographyVariant,
+  applyTypographySize,
   applyColor,
   withBlockNormalization
 } from './blocks';
@@ -113,7 +114,10 @@ export const EditableText = React.memo(function EditableText({
     }
     else if (command.type === 'TRANSIENT_STATE_UPDATE') {
       if ('typographyVariant' in command.payload) {
-        applyTypograpyhVariant(editor, command.payload.typographyVariant);
+        applyTypographyVariant(editor, command.payload.typographyVariant);
+      }
+      if ('typographySize' in command.payload) {
+        applyTypographySize(editor, command.payload.typographySize);
       }
       if ('color' in command.payload) {
         applyColor(editor, command.payload.color);

@@ -25,27 +25,41 @@ editor.contentElementTypes.register('textBlock', {
         paletteColorPropertyName: 'color'
       })
 
+      const getPreviewConfiguration = (configuration, properties) => {
+        return exampleNode ? {
+          ...configuration,
+          value: [
+            {
+              ...exampleNode,
+              // Ensure size in preview is not overridden by legacy variant
+              variant: modelDelegator.get('typographyVariant'),
+              ...properties
+            },
+            // Ensure content spans whole preview viewport if
+            // section uses "cards" appearance.
+            {type: 'paragraph', children: [{text: ''}]},
+            {type: 'paragraph', children: [{text: ''}]}
+          ]
+        } : configuration;
+      };
+
       this.group('ContentElementTypographyVariant', {
         entry,
         model: modelDelegator,
         prefix: exampleNode ? utils.camelize(exampleNode.type) : 'none',
-
         getPreviewConfiguration(configuration, variant) {
-          return exampleNode ? {
-            ...configuration,
-            value: [
-              {
-                ...exampleNode,
-                variant
-              },
-              // Ensure content spans whole preview viewport if
-              // section uses "cards" appearance.
-              {type: 'paragraph', children: [{text: ''}]},
-              {type: 'paragraph', children: [{text: ''}]}
-            ]
-          } : configuration;
+          return getPreviewConfiguration(configuration, {variant})
         }
       });
+      this.group('ContentElementTypographySize', {
+        entry,
+        model: modelDelegator,
+        prefix: exampleNode ? utils.camelize(exampleNode.type) : 'none',
+        getPreviewConfiguration(configuration, size) {
+          return getPreviewConfiguration(configuration, {size})
+        }
+      });
+
       this.group('PaletteColor', {
         entry,
         model: modelDelegator,

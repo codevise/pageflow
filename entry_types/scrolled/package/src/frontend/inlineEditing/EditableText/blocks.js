@@ -27,15 +27,19 @@ export function toggleBlock(editor, format) {
     const block = {
       type: format,
       children: [],
-      ...preserveColorAndTypograpyhVariant(editor)
+      ...preserveColorAndTypographyVariant(editor)
     };
 
     Transforms.wrapNodes(editor, block);
   }
 }
 
-export function applyTypograpyhVariant(editor, variant) {
+export function applyTypographyVariant(editor, variant) {
   applyProperties(editor, {variant});
+}
+
+export function applyTypographySize(editor, size) {
+  applyProperties(editor, {size});
 }
 
 export function applyColor(editor, color) {
@@ -72,7 +76,7 @@ function applyPropertiesToListItems(editor, properties) {
   }
 }
 
-function preserveColorAndTypograpyhVariant(editor) {
+function preserveColorAndTypographyVariant(editor) {
   const nodeEntry = Editor.above(editor, {
     at: Range.start(editor.selection),
     match: n => !!n.type

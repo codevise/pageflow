@@ -87,6 +87,35 @@ ConfigurationEditorTabView.groups.define(
 );
 
 ConfigurationEditorTabView.groups.define(
+  'ContentElementTypographySize',
+  function({entry, model, prefix, getPreviewConfiguration}) {
+    const contentElement = this.model.parent;
+
+    const [sizes, texts] = entry.getTypographySizes({
+      contentElement,
+      prefix
+    });
+
+    this.input('typographySize', TypographyVariantSelectInputView, {
+      entry,
+      model: model || this.model,
+      contentElement,
+      prefix,
+      getPreviewConfiguration,
+
+      attributeTranslationKeyPrefixes: [
+        'pageflow_scrolled.editor.common_content_element_attributes'
+      ],
+      disabled: sizes.length <= 1,
+
+      defaultValue: 'md',
+      values: sizes,
+      texts,
+    });
+  }
+);
+
+ConfigurationEditorTabView.groups.define(
   'ContentElementVariant',
   function({entry}) {
     const [variants, texts] = entry.getContentElementVariants({

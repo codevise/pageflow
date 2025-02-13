@@ -327,6 +327,51 @@ describe('EditableText', () => {
       .toHaveClass('typography-textBlock-blockQuote-huge');
   });
 
+  it('renders typography size class names for paragraphs', () => {
+    const value = [{
+      type: 'paragraph',
+      size: 'sm',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('p'))
+      .toHaveClass('typography-textBlock-paragraph-sm');
+  });
+
+  it('renders typography size class names for headings', () => {
+    const value = [{
+      type: 'heading',
+      size: 'sm',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {getByRole} = render(<EditableText value={value} />);
+
+    expect(getByRole('heading'))
+      .toHaveClass('typography-textBlock-heading-sm');
+  });
+
+  it('renders typography size class names for block quotes', () => {
+    const value = [{
+      type: 'block-quote',
+      size: 'lg',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('blockquote'))
+      .toHaveClass('typography-textBlock-blockQuote-lg');
+  });
+
   it('renders colors', () => {
     const value = [{
       type: 'paragraph',

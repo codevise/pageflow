@@ -49,6 +49,14 @@ export function renderElement({attributes, children, element}) {
                            ['typography-textBlock',
                             camelize(element.type),
                             element.variant].join('-');
+
+  const sizeClassName = element.size &&
+                        ['typography-textBlock',
+                         camelize(element.type),
+                         element.size].join('-');
+
+  const className = classNames(variantClassName, sizeClassName);
+
   const styles = {
     ...(element.color && {color: paletteColor(element.color)}),
     ...(element.textAlign && {textAlign: element.textAlign})
@@ -58,7 +66,7 @@ export function renderElement({attributes, children, element}) {
   case 'block-quote':
     return (
       <blockquote {...attributes}
-                  className={variantClassName}
+                  className={className}
                   style={styles}>
         {children}
       </blockquote>
@@ -66,7 +74,7 @@ export function renderElement({attributes, children, element}) {
   case 'bulleted-list':
     return (
       <ul {...attributes}
-          className={variantClassName}
+          className={className}
           style={styles}>
         {children}
       </ul>
@@ -74,7 +82,7 @@ export function renderElement({attributes, children, element}) {
   case 'numbered-list':
     return (
       <ol {...attributes}
-          className={variantClassName}
+          className={className}
           style={styles}>
         {children}
       </ol>
@@ -87,7 +95,7 @@ export function renderElement({attributes, children, element}) {
     return (
       <Heading key={key}
                attributes={otherAttributes}
-               variantClassName={variantClassName}
+               className={className}
                styles={styles}>
         {children}
       </Heading>
@@ -97,7 +105,7 @@ export function renderElement({attributes, children, element}) {
   default:
     return (
       <p {...attributes}
-         className={variantClassName}
+         className={className}
          style={styles}>
         {children}
       </p>
@@ -105,12 +113,12 @@ export function renderElement({attributes, children, element}) {
   }
 }
 
-function Heading({attributes, variantClassName, styles: inlineStyles, children}) {
+function Heading({attributes, className, styles: inlineStyles, children}) {
   const darkBackground = useDarkBackground();
 
   return (
     <h2 {...attributes}
-        className={classNames(variantClassName,
+        className={classNames(className,
                               darkBackground ? styles.light : styles.dark,
                               'scope-headings',
                               textStyles['heading-xs'])}
