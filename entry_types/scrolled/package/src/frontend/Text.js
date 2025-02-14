@@ -14,7 +14,7 @@ import styles from './Text.module.css';
  *   One of the styles `'heading-lg'`, `'heading-md'`, `'heading-sm'`,`'heading-xs'`,
  *   `'headingTagline-lg'`, `'headingTagline-md'`, `'headingTagline-sm'`,
  *   `'headingSubtitle-lg'`, `'headingSubtitle-md'`, `'headingSubtitle-sm'`,
- *   `'body'`, `'caption'`, `'question'`,
+ *   `'body'`, `'caption'`, `'question'`, `'questionAnswer'`,
  *   `'quoteText-lg'`, `'quoteText-md'`, `'quoteText-sm'`, `'quoteText-xs'`, `'quoteAttribution'`,
  *   `'counterNumber-lg'`, `'counterNumber-md'`, `'counterNumber-sm'`,
  *   `'counterNumber-xs'`, `'counterDescription`'.
@@ -58,6 +58,6 @@ Text.propTypes = {
     'counterNumber-lg', 'counterNumber-md', 'counterNumber-sm', 'counterNumber-xs',
     'counterDescription',
     'infoTableLabel', 'infoTableValue',
-    'body', 'caption', 'question'
+    'body', 'caption', 'question', 'questionAnswer'
   ]),
 }
