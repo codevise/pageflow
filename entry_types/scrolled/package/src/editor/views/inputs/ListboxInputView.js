@@ -86,11 +86,17 @@ export const ListboxInputView = Marionette.ItemView.extend({
           renderItem: item => this.renderItem(item),
 
           selectedItem: this.items.find(item =>
-            item.value === this.model.get(this.options.propertyName)
+            item.value === (this.model.get(this.options.propertyName) ||
+                            this.options.defaultValue)
           ) || this.items[0],
 
           onChange: value => {
-            this.model.set(this.options.propertyName, value);
+            if (this.options.defaultValue && value === this.options.defaultValue) {
+              this.model.unset(this.options.propertyName);
+            }
+            else {
+              this.model.set(this.options.propertyName, value);
+            }
           }
         }
       ),

@@ -327,6 +327,51 @@ describe('EditableText', () => {
       .toHaveClass('typography-textBlock-blockQuote-huge');
   });
 
+  it('renders typography size class names for paragraphs', () => {
+    const value = [{
+      type: 'paragraph',
+      size: 'sm',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('p'))
+      .toHaveClass('typography-textBlock-paragraph-sm');
+  });
+
+  it('renders typography size class names for headings', () => {
+    const value = [{
+      type: 'heading',
+      size: 'sm',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {getByRole} = render(<EditableText value={value} />);
+
+    expect(getByRole('heading'))
+      .toHaveClass('typography-textBlock-heading-sm');
+  });
+
+  it('renders typography size class names for block quotes', () => {
+    const value = [{
+      type: 'block-quote',
+      size: 'lg',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('blockquote'))
+      .toHaveClass('typography-textBlock-blockQuote-lg');
+  });
+
   it('renders colors', () => {
     const value = [{
       type: 'paragraph',
@@ -398,7 +443,7 @@ describe('EditableText', () => {
     expect(container.querySelector('.typography-quoteText')).toBeInTheDocument()
   });
 
-  it('supports typography variant', () => {
+  it('supports typography variant prop', () => {
     const value = [{
       type: 'paragraph',
       children: [
@@ -411,5 +456,20 @@ describe('EditableText', () => {
                                              typographyVariant="highlight" />);
 
     expect(container.querySelector('.typography-quoteText-highlight')).toBeInTheDocument()
+  });
+
+  it('supports typography size prop', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value}
+                                             scaleCategory="question"
+                                             typographySize="lg" />);
+
+    expect(container.querySelector('.typography-question-lg')).toBeInTheDocument()
   });
 });

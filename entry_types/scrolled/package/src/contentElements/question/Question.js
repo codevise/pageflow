@@ -5,6 +5,7 @@ import {
   EditableText,
   Text,
   ThemeIcon,
+  paletteColor,
   useContentElementConfigurationUpdate,
   useContentElementEditorState,
   useI18n
@@ -22,21 +23,24 @@ export function Question({configuration, contentElementId, sectionProps}) {
     <details open={configuration.expandByDefault || (isEditable && isSelected)}
              className={classNames(styles.details,
                                    styles[`layout-${sectionProps.layout}`])}>
-      <summary onClick={isEditable ? event => event.preventDefault() : undefined}>
+      <summary onClick={isEditable ? event => event.preventDefault() : undefined}
+               style={{color: paletteColor(configuration.color)}}>
         <ThemeIcon name="expand" />
         <Text scaleCategory="question"
-              typographyVariant={configuration.typographyVariant}>
+              typographyVariant={configuration.typographyVariant}
+              typographySize={configuration.typographySize}>
           <EditableInlineText value={configuration.question}
                               onChange={question => updateConfiguration({question})}
                               hyphens="none"
                               placeholder={t('pageflow_scrolled.inline_editing.type_question')} />
         </Text>
       </summary>
-      <div>
+      <div style={{color: paletteColor(configuration.answerColor)}}>
         <EditableText value={configuration.answer}
                       contentElementId={contentElementId}
                       scaleCategory="questionAnswer"
                       typographyVariant={configuration.typographyVariant}
+                      typographySize={configuration.typographySize}
                       className={styles.answer}
                       onChange={answer => updateConfiguration({answer})}
                       onlyParagraphs={true}

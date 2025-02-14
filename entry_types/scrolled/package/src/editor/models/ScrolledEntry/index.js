@@ -10,6 +10,8 @@ import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
 
+const typographySizeSuffixes = ['xl', 'lg', 'md', 'sm', 'xs'];
+
 export const ScrolledEntry = Entry.extend({
   setupFromEntryTypeSeed(seed) {
     this.consentVendors = new ConsentVendors({hostMatchers: seed.consentVendorHostMatchers});
@@ -126,6 +128,9 @@ export const ScrolledEntry = Entry.extend({
       )
       .filter(
         name => !legacyTypographyVariants[name.split('-').pop()]
+      )
+      .filter(
+        name => !typographySizeSuffixes.includes(name.split('-').pop())
       );
     const values = ruleNames.map(
       name => name.split('-').pop()
@@ -141,17 +146,44 @@ export const ScrolledEntry = Entry.extend({
     return [values, texts];
   },
 
+  getTypographySizes({contentElement, prefix}) {
+    const typographyRules = this.scrolledSeed.config.theme.options.typography || {};
+
+    const rulePrefix = [
+      contentElement.get('typeName'),
+      prefix
+    ].filter(Boolean).join('-')
+
+    const values = typographySizeSuffixes
+      .filter(sizeSuffix =>
+        typographyRules[`${rulePrefix}-${sizeSuffix}`] || sizeSuffix === 'md'
+      )
+
+    const texts = values.map(name =>
+      I18n.t(
+        `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
+        `.typography_sizes.${name}`,
+        {defaultValue: I18n.t(`pageflow_scrolled.editor.typography_sizes.${name}`)}
+      )
+    );
+
+    return [values, texts];
+  },
+
   createLegacyTypographyVariantDelegator({
     model, paletteColorPropertyName
   }) {
     const delegator = Object.create(model)
-    const mapping = this.scrolledSeed.legacyTypographyVariants;
+    const mapping = this.scrolledSeed.legacyTypographyVariants || {};
 
     delegator.get = function(name) {
       const result = model.get(name);
 
       if (name === 'typographyVariant') {
         return mapping[result] ? mapping[result].variant : result;
+      }
+      else if (name === 'typographySize') {
+        return mapping[model.get('typographyVariant')]?.size || result;
       }
       else if (name === paletteColorPropertyName) {
         return mapping[model.get('typographyVariant')]?.paletteColor || result;
@@ -161,12 +193,25 @@ export const ScrolledEntry = Entry.extend({
     };
 
     delegator.set = function(name, value) {
-      if (name === paletteColorPropertyName &&
-          mapping[model.get('typographyVariant')]) {
-        model.set({
-          [paletteColorPropertyName]: value,
+      const mappedProperties = mapping[model.get('typographyVariant')];
+
+      if ((name === paletteColorPropertyName || name === 'typographySize') &&
+          mappedProperties) {
+        const changes = {
           typographyVariant: mapping[model.get('typographyVariant')].variant
-        });
+        };
+
+        if (!model.has('typographySize')) {
+          changes.typographySize = mappedProperties.size;
+        }
+
+        if (!model.has(paletteColorPropertyName)) {
+          changes[paletteColorPropertyName] = mappedProperties.paletteColor;
+        }
+
+        changes[name] = value;
+
+        model.set(changes);
       }
       else {
         model.set.apply(this, arguments);

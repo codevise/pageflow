@@ -34,6 +34,21 @@ storiesOfContentElement(module, {
       configuration: {
         expandByDefault: false
       }
+    },
+    {
+      name: 'Palette Colors',
+      themeOptions: {
+        properties: {
+          root: {
+            paletteColorAccent: '#04f',
+            paletteColorPrimary: '#0d3',
+          }
+        }
+      },
+      configuration: {
+        color: 'accent',
+        answerColor: 'primary'
+      }
     }
   ]
 });

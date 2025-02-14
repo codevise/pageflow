@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import {
-  applyTypograpyhVariant,
+  applyTypographyVariant,
+  applyTypographySize,
   applyColor,
   applyTextAlign,
   isBlockActive,
@@ -242,7 +243,7 @@ describe('toggleBlock', () => {
   });
 });
 
-describe('applyTypograpyhVariant', () => {
+describe('applyTypographyVariant', () => {
   it('sets variant property deeply in lists', () => {
     const editor = (
       <editor>
@@ -258,15 +259,15 @@ describe('applyTypograpyhVariant', () => {
       </editor>
     );
 
-    applyTypograpyhVariant(editor, 'sm');
+    applyTypographyVariant(editor, 'highlight');
 
     const output = (
       <editor>
-        <bulletedList variant="sm">
-          <listItem variant="sm">
+        <bulletedList variant="highlight">
+          <listItem variant="highlight">
             Item 1
           </listItem>
-          <listItem variant="sm">
+          <listItem variant="highlight">
             Item 1
           </listItem>
         </bulletedList>
@@ -292,14 +293,14 @@ describe('applyTypograpyhVariant', () => {
       </editor>
     );
 
-    applyTypograpyhVariant(editor, 'sm');
+    applyTypographyVariant(editor, 'highlight');
 
     const output = (
       <editor>
-        <paragraph variant="sm">
+        <paragraph variant="highlight">
           Text
         </paragraph>
-        <paragraph variant="sm">
+        <paragraph variant="highlight">
           More Text
         </paragraph>
         <paragraph>
@@ -313,14 +314,73 @@ describe('applyTypograpyhVariant', () => {
   it('unsets variant property if blank', () => {
     const editor = (
       <editor>
-        <paragraph variant="sm">
+        <paragraph variant="highlight">
           <cursor />
           Text
         </paragraph>
       </editor>
     );
 
-    applyTypograpyhVariant(editor, undefined);
+    applyTypographyVariant(editor, undefined);
+
+    const output = (
+      <editor>
+        <paragraph>
+          Text
+        </paragraph>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
+});
+
+describe('applyTypographySize', () => {
+  it('sets size property of elements of same type', () => {
+    const editor = (
+      <editor>
+        <paragraph>
+          <anchor />
+          Text
+        </paragraph>
+        <paragraph>
+          More Text
+          <focus />
+        </paragraph>
+        <paragraph>
+          Other Text
+        </paragraph>
+      </editor>
+    );
+
+    applyTypographySize(editor, 'sm');
+
+    const output = (
+      <editor>
+        <paragraph size="sm">
+          Text
+        </paragraph>
+        <paragraph size="sm">
+          More Text
+        </paragraph>
+        <paragraph>
+          Other Text
+        </paragraph>
+      </editor>
+    );
+    expect(editor.children).toEqual(output.children);
+  });
+
+  it('unsets variant property if blank', () => {
+    const editor = (
+      <editor>
+        <paragraph size="sm">
+          <cursor />
+          Text
+        </paragraph>
+      </editor>
+    );
+
+    applyTypographySize(editor, undefined);
 
     const output = (
       <editor>

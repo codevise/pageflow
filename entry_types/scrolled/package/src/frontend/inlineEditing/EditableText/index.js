@@ -22,7 +22,8 @@ import {DropTargets} from './DropTargets';
 import {LinkTooltipProvider} from '../LinkTooltip';
 import {
   applyTextAlign,
-  applyTypograpyhVariant,
+  applyTypographyVariant,
+  applyTypographySize,
   applyColor,
   withBlockNormalization
 } from './blocks';
@@ -57,7 +58,7 @@ export const selectedClassName = styles.selected;
 
 export const EditableText = React.memo(function EditableText({
   value, contentElementId, placeholder, onChange, selectionRect, className,
-  placeholderClassName, scaleCategory = 'body', typographyVariant,
+  placeholderClassName, scaleCategory = 'body', typographyVariant, typographySize,
   autoFocus,
   floatingControlsPosition = 'below'
 }) {
@@ -113,7 +114,10 @@ export const EditableText = React.memo(function EditableText({
     }
     else if (command.type === 'TRANSIENT_STATE_UPDATE') {
       if ('typographyVariant' in command.payload) {
-        applyTypograpyhVariant(editor, command.payload.typographyVariant);
+        applyTypographyVariant(editor, command.payload.typographyVariant);
+      }
+      if ('typographySize' in command.payload) {
+        applyTypographySize(editor, command.payload.typographySize);
       }
       if ('color' in command.payload) {
         applyColor(editor, command.payload.color);
@@ -128,7 +132,8 @@ export const EditableText = React.memo(function EditableText({
 
   return (
     <Text scaleCategory={scaleCategory}
-          typographyVariant={typographyVariant}>
+          typographyVariant={typographyVariant}
+          typographySize={typographySize}>
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
            ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>

@@ -191,4 +191,72 @@ describe('ListboxInputView', () => {
 
     expect(getByRole('button', {name: 'Selected: Large'})).not.toBeNull();
   });
+
+  describe('with defaultValue', () => {
+    it('selects default value if property is not set', () => {
+      const model = new Backbone.Model();
+      const inputView = new ListboxInputView({
+        model: model,
+        propertyName: 'size',
+        values: ['large', 'medium', 'small'],
+        texts: ['Large', 'Medium', 'Small'],
+        defaultValue: 'medium'
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Medium'})).not.toBeNull();
+    });
+
+    it('selects current value if property is set', () => {
+      const model = new Backbone.Model({size: 'large'});
+      const inputView = new ListboxInputView({
+        model: model,
+        propertyName: 'size',
+        values: ['large', 'medium', 'small'],
+        texts: ['Large', 'Medium', 'Small'],
+        defaultValue: 'medium'
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Large'})).not.toBeNull();
+    });
+
+    it('does not set default value on change', async () => {
+      const model = new Backbone.Model({size: 'small'});
+      const inputView = new ListboxInputView({
+        model: model,
+        propertyName: 'size',
+        values: ['large', 'medium', 'small'],
+        texts: ['Large', 'Medium', 'Small'],
+        defaultValue: 'medium'
+      });
+
+      const user = userEvent.setup();
+      const {getByRole} = render(inputView);
+      await user.click(getByRole('button', {name: 'Small'}));
+      await user.click(getByRole('option', {name: 'Medium'}));
+
+      expect(model.has('size')).toEqual(false);
+    });
+
+    it('sets other value on change', async () => {
+      const model = new Backbone.Model({size: 'small'});
+      const inputView = new ListboxInputView({
+        model: model,
+        propertyName: 'size',
+        values: ['large', 'medium', 'small'],
+        texts: ['Large', 'Medium', 'Small'],
+        defaultValue: 'medium'
+      });
+
+      const user = userEvent.setup();
+      const {getByRole} = render(inputView);
+      await user.click(getByRole('button', {name: 'Small'}));
+      await user.click(getByRole('option', {name: 'Large'}));
+
+      expect(model.get('size')).toEqual('large');
+    });
+  });
 });
