@@ -37,11 +37,11 @@ describe('ScrolledEntry', () => {
           entryTypeSeed: normalizeSeed({
             themeOptions: {
               typography: {
-                'someElement-large': {
-                  fontSize: '3rem'
+                'someElement-highlight': {
+                  textTransform: 'uppercase'
                 },
-                'someElement-small': {
-                  fontSize: '2rem'
+                'someElement-alternative': {
+                  fontFamily: 'Other'
                 }
               }
             },
@@ -55,15 +55,15 @@ describe('ScrolledEntry', () => {
 
       const [values] = entry.getTypographyVariants({contentElement});
 
-      expect(values).toEqual(['large', 'small']);
+      expect(values).toEqual(['highlight', 'alternative']);
     });
 
     describe('with shared translations', () => {
       const commonPrefix = 'pageflow_scrolled.editor.typography_variants'
 
       useFakeTranslations({
-        [`${commonPrefix}.someElement-large`]: 'Large',
-        [`${commonPrefix}.someElement-small`]: 'Small'
+        [`${commonPrefix}.someElement-highlight`]: 'Highlight',
+        [`${commonPrefix}.someElement-alternative`]: 'Alternative'
       });
 
       it('returns translated display names', () => {
@@ -78,11 +78,11 @@ describe('ScrolledEntry', () => {
             entryTypeSeed: normalizeSeed({
               themeOptions: {
                 typography: {
-                  'someElement-large': {
-                    fontSize: '3rem'
+                  'someElement-highlight': {
+                    textTransform: 'uppercase'
                   },
-                  'someElement-small': {
-                    fontSize: '2rem'
+                  'someElement-alternative': {
+                    fontFamily: 'Other'
                   }
                 }
               },
@@ -97,8 +97,8 @@ describe('ScrolledEntry', () => {
         const [, texts] = entry.getTypographyVariants({contentElement});
 
         expect(texts).toEqual([
-          'Large',
-          'Small'
+          'Highlight',
+          'Alternative'
         ]);
       });
     });
@@ -108,10 +108,10 @@ describe('ScrolledEntry', () => {
       const themePrefix = `pageflow_scrolled.editor.themes.custom`
 
       useFakeTranslations({
-        [`${commonPrefix}.someElement-large`]: 'Large',
-        [`${commonPrefix}.someElement-small`]: 'Small',
-        [`${themePrefix}.typography_variants.someElement-large`]: 'Custom Large',
-        [`${themePrefix}.typography_variants.someElement-small`]: 'Custom Small'
+        [`${commonPrefix}.someElement-highlight`]: 'Highlight',
+        [`${commonPrefix}.someElement-alternative`]: 'Alternative',
+        [`${themePrefix}.typography_variants.someElement-highlight`]: 'Custom Highlight',
+        [`${themePrefix}.typography_variants.someElement-alternative`]: 'Custom Alternative'
       });
 
       it('prefers theme specific translations', () => {
@@ -126,11 +126,11 @@ describe('ScrolledEntry', () => {
             entryTypeSeed: normalizeSeed({
               themeOptions: {
                 typography: {
-                  'someElement-large': {
-                    fontSize: '3rem'
+                  'someElement-highlight': {
+                    textTransform: 'uppercase'
                   },
-                  'someElement-small': {
-                    fontSize: '2rem'
+                  'someElement-alternative': {
+                    fontFamily: 'Other'
                   }
                 }
               },
@@ -145,8 +145,8 @@ describe('ScrolledEntry', () => {
         const [, texts] = entry.getTypographyVariants({contentElement});
 
         expect(texts).toEqual([
-          'Custom Large',
-          'Custom Small'
+          'Custom Highlight',
+          'Custom Alternative'
         ]);
       });
     });
@@ -161,11 +161,11 @@ describe('ScrolledEntry', () => {
           entryTypeSeed: normalizeSeed({
             themeOptions: {
               typography: {
-                'someElement-heading-large': {
-                  fontSize: '3rem'
+                'someElement-heading-highlight': {
+                  textTransform: 'uppercase'
                 },
-                'someElement-heading-small': {
-                  fontSize: '2rem'
+                'someElement-heading-alternative': {
+                  fontFamily: 'Other'
                 },
                 'someElement-body-highlight': {
                   fontSize: '1rem'
@@ -182,7 +182,7 @@ describe('ScrolledEntry', () => {
 
       const [values] = entry.getTypographyVariants({contentElement, prefix: 'heading'});
 
-      expect(values).toEqual(['large', 'small']);
+      expect(values).toEqual(['highlight', 'alternative']);
     });
 
     it('filters out legacy variants', () => {
@@ -196,11 +196,11 @@ describe('ScrolledEntry', () => {
             ...normalizeSeed({
               themeOptions: {
                 typography: {
-                  'someElement-large': {
-                    fontSize: '3rem'
+                  'someElement-highlight': {
+                    textTransform: 'uppercase'
                   },
-                  'someElement-largeAccent': {
-                    fontSize: '2rem',
+                  'someElement-highlightAccent': {
+                    textTransform: 'uppercase',
                     color: 'var(--theme-accent-color)'
                   }
                 }
@@ -210,8 +210,8 @@ describe('ScrolledEntry', () => {
               ]
             }),
             legacyTypographyVariants: {
-              largeAccent: {
-                variant: 'large',
+              highlightAccent: {
+                variant: 'highlight',
                 paletteColor: 'accent'
               }
             }
@@ -222,7 +222,7 @@ describe('ScrolledEntry', () => {
 
       const [values] = entry.getTypographyVariants({contentElement});
 
-      expect(values).toEqual(['large']);
+      expect(values).toEqual(['highlight']);
     });
   });
 });
