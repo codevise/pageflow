@@ -1,3 +1,5 @@
+@value breakpoint-md from 'pageflow-scrolled/values/breakpoints.module.css';
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -13,7 +15,12 @@
 .table td:first-child {
   border-right: solid 1px var(--table-border-color);
   padding: 0.5rem 0.5rem 0.5rem 0;
-  white-space: pre;
+}
+
+@media breakpoint-md {
+  .table td:first-child {
+    white-space: pre;
+  }
 }
 
 .table td:first-child div {
