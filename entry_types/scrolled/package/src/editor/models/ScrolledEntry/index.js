@@ -128,6 +128,9 @@ export const ScrolledEntry = Entry.extend({
       )
       .filter(
         name => !legacyTypographyVariants[name.split('-').pop()]
+      )
+      .filter(
+        name => !typographySizeSuffixes.includes(name.split('-').pop())
       );
     const values = ruleNames.map(
       name => name.split('-').pop()

@@ -224,5 +224,42 @@ describe('ScrolledEntry', () => {
 
       expect(values).toEqual(['highlight']);
     });
+
+    it('filters out size rules', () => {
+      editor.contentElementTypes.register('someElement', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: {
+            ...normalizeSeed({
+              themeOptions: {
+                typography: {
+                  'someElement-lg': {
+                    fontSize: '3em'
+                  },
+                  'someElement-sm': {
+                    fontSize: '1em'
+                  },
+                  'someElement-highlight': {
+                    textTransform: 'uppercase',
+                    color: 'var(--theme-accent-color)'
+                  }
+                }
+              },
+              contentElements: [
+                {id: 5, typeName: 'someElement'}
+              ]
+            })
+          }
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      const [values] = entry.getTypographyVariants({contentElement});
+
+      expect(values).toEqual(['highlight']);
+    });
   });
 });
