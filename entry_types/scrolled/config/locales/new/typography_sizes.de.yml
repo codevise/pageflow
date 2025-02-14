@@ -10,3 +10,10 @@ de:
         md: Mittel
         sm: Klein
         xs: Sehr klein
+      content_elements:
+        question:
+          attributes:
+            color:
+              label: "Farbe (Frage)"
+            answerColor:
+              label: "Farbe (Antwort)"

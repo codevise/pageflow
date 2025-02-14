@@ -10,3 +10,10 @@ en:
         md: Medium
         sm: Small
         xs: Very small
+      content_elements:
+        question:
+          attributes:
+            color:
+              label: "Color (Question)"
+            answerColor:
+              label: "Color (Answer)"

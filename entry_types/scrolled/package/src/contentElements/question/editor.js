@@ -11,7 +11,7 @@ editor.contentElementTypes.register('question', {
     this.tab('general', function() {
       const modelDelegator = entry.createLegacyTypographyVariantDelegator({
         model: this.model,
-        paletteColorPropertyName: 'paletteColor'
+        paletteColorPropertyName: 'color'
       });
 
       this.group('ContentElementTypographyVariant', {
@@ -35,6 +35,14 @@ editor.contentElementTypes.register('question', {
             typographyVariant: modelDelegator.get('typographyVariant'),
             typographySize
           })
+      });
+      this.group('PaletteColor', {
+        entry,
+        propertyName: 'color'
+      });
+      this.group('PaletteColor', {
+        entry,
+        propertyName: 'answerColor'
       });
       this.input('expandByDefault', CheckBoxInputView);
     });
