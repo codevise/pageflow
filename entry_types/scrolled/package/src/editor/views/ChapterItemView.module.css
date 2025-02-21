@@ -42,7 +42,21 @@
   font-weight: bold;
 }
 
-.title {}
+.root:first-child:last-child .title.blank {
+  display: none;
+}
+
+.hiddenInNavigation {
+  opacity: 0.7;
+}
+
+.hiddenInNavigation::before {
+  content: "(";
+}
+
+.hiddenInNavigation::after {
+  content: ")";
+}
 
 .sections {
   composes: sections from './outline.module.css';

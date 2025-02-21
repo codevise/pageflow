@@ -1,5 +1,5 @@
 import {EditConfigurationView} from 'pageflow/editor';
-import {TextInputView, TextAreaInputView} from 'pageflow/ui';
+import {CheckBoxInputView, TextInputView, TextAreaInputView} from 'pageflow/ui';
 
 export const EditChapterView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_chapter',
@@ -7,6 +7,7 @@ export const EditChapterView = EditConfigurationView.extend({
   configure: function(configurationEditor) {
     configurationEditor.tab('chapter', function() {
       this.input('title', TextInputView);
+      this.input('hideInNavigation', CheckBoxInputView);
       this.input('summary', TextAreaInputView, {
         disableLinks: true
       });

@@ -552,10 +552,8 @@ en:
       edit_chapter:
         attributes:
           summary:
-            inline_help: Summary of the chapter for display in the navigation bar. Only chapters with both title and summary set will get added as menu items to the navigation.
             label: Summary
           title:
-            inline_help: The chapter title will be displayed in the editor overview and the navigation bar of the entry. Only chapters with both title and summary set will get added as menu items to the navigation.
             label: Title
         confirm_destroy: |-
           Really delete this chapter including ALL its sections?

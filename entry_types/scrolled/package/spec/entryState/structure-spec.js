@@ -30,7 +30,8 @@ const chaptersSeed = [
     position: 2,
     configuration: {
       title: 'Chapter 2',
-      summary: 'A great chapter'
+      summary: 'A great chapter',
+      hideInNavigation: true
     }
   }
 ];
@@ -336,7 +337,8 @@ describe('useChapters', () => {
         chapterSlug: 'chapter-2',
         index: 1,
         title: 'Chapter 2',
-        summary: 'A great chapter'
+        summary: 'A great chapter',
+        hideInNavigation: true
       }
     ]);
   });

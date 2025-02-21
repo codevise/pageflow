@@ -102,6 +102,25 @@ describe('DefaultNavigation', () => {
     expect(getByRole('img', {name: 'Other logo'})).toHaveAttribute('src', 'other-logo.png');
   });
 
+  it('does not render chapters that have hide in navigation flag', () => {
+    const {queryByRole} = renderInEntry(
+      <DefaultNavigation configuration={{}} />,
+      {
+        seed: {
+          chapters: [
+            {configuration: {title: 'First chapter'}},
+            {configuration: {title: 'Hidden chapter', hideInNavigation: true}},
+            {configuration: {title: 'Second chapter'}}
+          ]
+        }
+      }
+    );
+
+    expect(queryByRole('link', {name: 'First chapter'})).not.toBeNull();
+    expect(queryByRole('link', {name: 'Second chapter'})).not.toBeNull();
+    expect(queryByRole('link', {name: 'Hidden chapter'})).toBeNull();
+  });
+
   it('supports extra buttons component', () => {
     const ExtraButtons = () => <button>Extra</button>;
     const {queryByRole} = renderInEntry(
@@ -141,6 +160,22 @@ describe('DefaultNavigation', () => {
     );
 
     expect(queryByRole('button', {name: 'Open mobile menu'})).not.toBeNull();
+  });
+
+  it('does not render mobile menu button if all chapters are hidden', () => {
+    const {queryByRole} = renderInEntry(
+      <DefaultNavigation configuration={{}} />,
+      {
+        seed: {
+          chapters: [
+            {configuration: {hideInNavigation: true}},
+            {configuration: {hideInNavigation: true}}
+          ]
+        }
+      }
+    );
+
+    expect(queryByRole('button', {name: 'Open mobile menu'})).toBeNull();
   });
 
   it('toggles class to show and hide mobile menu', async () => {

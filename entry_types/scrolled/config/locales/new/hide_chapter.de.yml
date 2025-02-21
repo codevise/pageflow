@@ -1,0 +1,27 @@
+de:
+  pageflow_scrolled:
+    editor:
+      chapter_item:
+        chapter: Kapitel
+        unnamed: Unbenannt
+        hidden_in_navigation: In der Navigationsleiste ausgeblendet
+      edit_chapter:
+        attributes:
+          hideInNavigation:
+            label: In der Navigationsleiste ausblenden
+            inline_help: |-
+              Kapitel kann als Link-Ziel verwendet werden, erscheint
+              allerdings nicht in der Navigationsleiste.
+          summary:
+            inline_help: Zusammenfassung des Kapitels für die Darstellung in der Navigationsleiste.
+          title:
+            inline_help: |-
+              Der Titel des Kapitels erscheint in der
+              Navigationsleiste. Er wird außerdem verwendet, um den
+              Teil der Webadresse zu erstellen, der es ermöglicht,
+              direkt zu diesem Kapitel zu springen.<br><br>
+
+              Zum Beispiel: Wenn dein Kapitel 'Unsere Mission' heißt,
+              kann man über eine Webadresse der Form
+              <code>yourwebsite.com/story#unsere-mission</code> direkt
+              zu diesem Kapitel springen.
