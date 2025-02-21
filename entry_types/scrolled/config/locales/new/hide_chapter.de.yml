@@ -15,7 +15,7 @@ de:
           summary:
             inline_help: Zusammenfassung des Kapitels für die Darstellung in der Navigationsleiste.
           title:
-            inline_help: |-
+            inline_help_html: |-
               Der Titel des Kapitels erscheint in der
               Navigationsleiste. Er wird außerdem verwendet, um den
               Teil der Webadresse zu erstellen, der es ermöglicht,
@@ -23,5 +23,5 @@ de:
 
               Zum Beispiel: Wenn dein Kapitel 'Unsere Mission' heißt,
               kann man über eine Webadresse der Form
-              <code>yourwebsite.com/story#unsere-mission</code> direkt
-              zu diesem Kapitel springen.
+              yourwebsite.com/story#unsere-mission direkt zu diesem
+              Kapitel springen.
