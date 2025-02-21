@@ -1,5 +1,5 @@
 .wrapper {
-  height: 130vh;
+  min-height: 130vh;
 }
 
 .inner {
@@ -9,7 +9,7 @@
 
 @supports (height: 100lvh) {
   .wrapper {
-    height: 130lvh;
+    min-height: 130lvh;
   }
 
   .inner {
