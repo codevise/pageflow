@@ -269,7 +269,8 @@ export function useChapters() {
         index,
         title: chapter.configuration.title,
         summary: chapter.configuration.summary,
-        chapterSlug: chapterSlug
+        chapterSlug: chapterSlug,
+        hideInNavigation: chapter.configuration.hideInNavigation
       });
     });
   }, [chapters]);

@@ -36,8 +36,10 @@ export function DefaultNavigation({
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(!configuration.defaultMobileNavVisible);
   const [readingProgress, setReadingProgress] = useState(0);
-  const chapters = useChapters();
+
+  const chapters = useChapters().filter(chapter => !chapter.hideInNavigation);
   const currentChapter = useCurrentChapter();
+
   const isPhonePlatform = usePhonePlatform();
   const shareProviders = useShareProviders({isPhonePlatform});
   const theme = useTheme();

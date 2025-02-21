@@ -560,10 +560,8 @@ de:
       edit_chapter:
         attributes:
           summary:
-            inline_help: Zusammenfassung des Kapitels für die Darstellung in der Navigationsleiste. Nur Kapitel die sowohl Titel als auch Zusammenfassung gesetzt haben werden als Menüpunkt zur Navigation hinzugefügt.
             label: Zusammenfassung
           title:
-            inline_help: Wird in der Editor-Übersicht und der Navigationsleiste des Beitrags angezeigt. Nur Kapitel die sowohl Titel als auch Zusammenfassung gesetzt haben werden als Menüpunkt zur Navigation hinzugefügt.
             label: Titel
         confirm_destroy: |-
           Kapitel einschließlich ALLER enthaltener Abschnitte wirklich löschen?
