@@ -85,6 +85,14 @@ app.addInitializer(function(options) {
     }
   };
 
+  var altConfigurationEditorInput = {
+    name: 'alt',
+    inputView: TextInputView,
+    inputViewOptions: {
+      maxLength: 5000
+    }
+  };
+
   editor.fileTypes.register('image_files', {
     model: ImageFile,
     metaDataAttributes: [
@@ -93,10 +101,7 @@ app.addInitializer(function(options) {
     ],
     matchUpload: /^image/,
     configurationEditorInputs: [
-      {
-        name: 'alt',
-        inputView: TextInputView
-      }
+      altConfigurationEditorInput
     ]
   });
 
@@ -111,10 +116,7 @@ app.addInitializer(function(options) {
     ],
     matchUpload: /^video/,
     configurationEditorInputs: [
-      {
-        name: 'alt',
-        inputView: TextInputView
-      }
+      altConfigurationEditorInput
     ],
     settingsDialogTabs: [
       textTracksSettingsDialogTab
@@ -131,10 +133,7 @@ app.addInitializer(function(options) {
     ],
     matchUpload: /^audio/,
     configurationEditorInputs: [
-      {
-        name: 'alt',
-        inputView: TextInputView
-      }
+      altConfigurationEditorInput
     ],
     settingsDialogTabs: [
       textTracksSettingsDialogTab
