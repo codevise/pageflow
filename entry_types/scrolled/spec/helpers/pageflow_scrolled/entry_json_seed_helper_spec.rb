@@ -701,6 +701,34 @@ module PageflowScrolled
                            })
       end
 
+      it 'renders theme assets for additional theme customization files' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.additional_theme_assets.register(theme_file_role: :footer_logo)
+          end
+        end
+        entry = create(:published_entry, type_name: 'scrolled')
+        file = Pageflow.theme_customizations.upload_file(
+          site: entry.site,
+          entry_type_name: 'scrolled',
+          type_name: :logo_desktop,
+          attachment: fixture_file_upload('image.svg')
+        )
+        Pageflow.theme_customizations.update(site: entry.site,
+                                             entry_type_name: 'scrolled',
+                                             file_ids: {footer_logo: file.id})
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         theme: {
+                                           assets: {
+                                             footerLogo: %r{resized/image.svg}
+                                           }
+                                         }
+                                       })
+      end
+
       it 'renders theme assets for custom icons' do
         pageflow_configure do |config|
           config.themes.register(:default, custom_icons: [:share])

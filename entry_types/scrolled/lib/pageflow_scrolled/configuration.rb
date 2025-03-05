@@ -44,6 +44,17 @@ module PageflowScrolled
     # @since 15.7
     attr_reader :additional_frontend_seed_data
 
+    # Include paths of additional theme customization files in theme
+    # assets seed data.
+    #
+    # @example
+    #
+    #     config.additional_theme_assets.register(theme_file_role: :footer_logo)
+    #
+    # @return [AdditionalThemeAssets]
+    # @since edge
+    attr_reader :additional_theme_assets
+
     # Determine which vendors a content element will require consent
     # for. Based on the vendor name returned here, the following
     # translations will be used in consent UI components.
@@ -142,6 +153,7 @@ module PageflowScrolled
       @additional_editor_packs = AdditionalPacks.new
 
       @additional_frontend_seed_data = AdditionalSeedData.new
+      @additional_theme_assets = AdditionalThemeAssets.new
       @content_element_consent_vendors = ContentElementConsentVendors.new
       @consent_vendor_host_matchers = {}
 

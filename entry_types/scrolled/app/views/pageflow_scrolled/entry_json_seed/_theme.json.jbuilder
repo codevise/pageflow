@@ -29,6 +29,11 @@ json.theme do
                                             relative_url: true))
       end
     end
+
+    entry_config.additional_theme_assets.each do |asset|
+      json.set!(asset.theme_file_role, theme.files.dig(asset.theme_file_role,
+                                                       asset.theme_file_style))
+    end
   end
   json.options(theme.options.deep_transform_keys { |key| key.to_s.camelize(:lower) })
 end
