@@ -71,7 +71,7 @@ jobs:
     # Caching
 
     - name: Set up cache for Bundler
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: vendor/bundle
         key: ${{ runner.os }}-ruby-${{ matrix.ruby-version }}-gems-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
@@ -83,7 +83,7 @@ jobs:
       run: echo "::set-output name=dir::$(yarn cache dir)"
 
     - name: Set up cache for Yarn
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -178,7 +178,7 @@ jobs:
       run: echo "::set-output name=dir::$(yarn cache dir)"
 
     - name: Set up cache for Yarn
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
