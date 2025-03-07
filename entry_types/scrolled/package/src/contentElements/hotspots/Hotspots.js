@@ -111,7 +111,7 @@ export function HotspotsImage({
     });
   }, [setActiveIndexState, setTransientState, areas, select, isSelected]);
 
-  const [containerRect, contentRectRef] = useContentRect({
+  const [containerRect, containerRef] = useContentRect({
     enabled: shouldLoad
   });
 
@@ -234,7 +234,7 @@ export function HotspotsImage({
                active={activeIndex === index}
                keepInViewport={keepTooltipsInViewport}
                aboveNavigationWidgets={tooltipsAboveNavigationWidgets}
-               wrapperRef={contentRectRef}
+               wrapperRef={containerRef}
                floatingStrategy={floatingStrategy}
                onMouseEnter={() => setHoveredIndex(index)}
                onMouseLeave={() => setHoveredIndex(-1)}
@@ -269,7 +269,7 @@ export function HotspotsImage({
               {children(
                 <FitViewport.Content>
                   <div className={styles.stack}
-                       ref={contentRectRef}>
+                       ref={containerRef}>
                     <div className={styles.wrapper}
                          ref={wrapperRef}>
                       <Image imageFile={imageFile}
