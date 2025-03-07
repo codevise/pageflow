@@ -1,7 +1,7 @@
 import {getPanZoomStepTransform} from './panZoom';
 import {getBoundingRect} from './getBoundingRect';
 
-export function getTooltipReferencePosition({
+export function getTooltipInlineStyles({
   area,
   portraitMode,
   panZoomEnabled, imageFile, containerRect
@@ -21,9 +21,14 @@ export function getTooltipReferencePosition({
       {x: 0, y: 0, scale: 1};
 
   return {
-    left: containerRect.width * transform.scale * referencePositionInPercent.left / 100 + transform.x,
-    top: containerRect.height * transform.scale * referencePositionInPercent.top / 100 + transform.y,
-    height: containerRect.height * transform.scale * referencePositionInPercent.height / 100
+    reference: {
+      left: `${referencePositionInPercent.left}%`,
+      top: `${referencePositionInPercent.top}%`,
+      height: `${referencePositionInPercent.height}%`
+    },
+    wrapper: {
+      transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale || 1})`,
+    }
   };
 }
 

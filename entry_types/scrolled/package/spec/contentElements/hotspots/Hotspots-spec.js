@@ -669,15 +669,14 @@ describe('Hotspots', () => {
       ]
     };
 
-    observeResizeMock.mockContentRect = {width: 300, height: 100};
     const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '30px',
-      top: '20px'
+      left: '10%',
+      top: '20%'
     });
   });
 
@@ -698,15 +697,14 @@ describe('Hotspots', () => {
     };
 
     window.matchMedia.mockPortrait();
-    observeResizeMock.mockContentRect = {width: 300, height: 100};
     const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '60px',
-      top: '30px'
+      left: '20%',
+      top: '30%'
     });
   });
 
@@ -726,15 +724,14 @@ describe('Hotspots', () => {
     };
 
     window.matchMedia.mockPortrait();
-    observeResizeMock.mockContentRect = {width: 300, height: 100};
     const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '30px',
-      top: '20px'
+      left: '10%',
+      top: '20%'
     });
   });
 
@@ -754,16 +751,15 @@ describe('Hotspots', () => {
       ]
     };
 
-    observeResizeMock.mockContentRect = {width: 100, height: 100};
     const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '15px',
-      top: '15px',
-      height: '15px'
+      left: '15%',
+      top: '15%',
+      height: '15%'
     });
   });
 
@@ -787,16 +783,15 @@ describe('Hotspots', () => {
     };
 
     window.matchMedia.mockPortrait();
-    observeResizeMock.mockContentRect = {width: 100, height: 100};
     const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '20px',
-      top: '15px',
-      height: '15px'
+      left: '20%',
+      top: '15%',
+      height: '15%'
     });
   });
 
@@ -820,16 +815,15 @@ describe('Hotspots', () => {
     };
 
     window.matchMedia.mockPortrait();
-    observeResizeMock.mockContentRect = {width: 100, height: 100};
     const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
     simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-      left: '10px',
-      top: '15px',
-      height: '15px'
+      left: '10%',
+      top: '15%',
+      height: '15%'
     });
   });
 
@@ -855,7 +849,6 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    observeResizeMock.mockContentRect = {width: 200, height: 100};
     const {queryByText, container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
@@ -2092,7 +2085,7 @@ describe('Hotspots', () => {
       expect(container.querySelector(`.${areaStyles.area}`)).not.toHaveClass(imageAreaStyles.activeImageVisible);
     });
 
-    it('accounts for pan zoom in tooltip position', () => {
+    it('applies pan zoom transform to parent of tooltip reference', () => {
       const seed = {
         imageFileUrlTemplates: {large: ':id_partition/image.webp'},
         imageFiles: [{id: 1, permaId: 100, width: 2000, height: 1000}]
@@ -2122,9 +2115,8 @@ describe('Hotspots', () => {
       intersectionObserverByRoot(container.querySelector(`.${scrollerStyles.scroller}`))
         .mockIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
 
-      expect(container.querySelector(`.${tooltipStyles.reference}`)).toHaveStyle({
-        left: '100px',
-        top: '50px'
+      expect(container.querySelector(`.${tooltipStyles.reference}`).parentElement).toHaveStyle({
+        transform: 'translate(-800px, -200px) scale(5)'
       });
     });
 
