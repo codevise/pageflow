@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import classNames from 'classnames';
 import {Composite, CompositeItem} from '@floating-ui/react';
 
@@ -12,9 +12,6 @@ import {
   useContentElementEditorState,
   useContentElementEditorCommandSubscription,
   useContentElementLifecycle,
-  useFileWithInlineRights,
-  usePortraitOrientation,
-  usePhonePlatform,
   InlineFileRights,
   contentElementWidths
 } from 'pageflow-scrolled/frontend';
@@ -26,6 +23,7 @@ import {ImageArea} from './ImageArea';
 import {Indicator} from './Indicator';
 import {Tooltip} from './Tooltip';
 
+import {useHotspotsConfiguration} from './useHotspotsConfiguration';
 import {useContentRect} from './useContentRect';
 import {useScrollPanZoom} from './useScrollPanZoom';
 
@@ -74,14 +72,7 @@ export function HotspotsImage({
   displayFullscreenToggle, onFullscreenEnter,
   children = children => children
 }) {
-  const defaultImageFile = useFileWithInlineRights({
-    configuration, collectionName: 'imageFiles', propertyName: 'image'
-  });
-  const portraitImageFile = useFileWithInlineRights({
-    configuration, collectionName: 'imageFiles', propertyName: 'portraitImage'
-  });
-  const portraitOrientation = usePortraitOrientation();
-  const isPhonePlatform = usePhonePlatform();
+  const {imageFile, areas, portraitMode, panZoomEnabled} = useHotspotsConfiguration(configuration);
 
   const {shouldLoad} = useContentElementLifecycle();
   const {setTransientState, select, isEditable, isSelected} = useContentElementEditorState();
@@ -92,14 +83,7 @@ export function HotspotsImage({
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
-  const portraitMode = !!(portraitOrientation && portraitImageFile);
-  const imageFile = portraitMode ? portraitImageFile : defaultImageFile;
   const aspectRatio = imageFile ? `${imageFile.width} / ${imageFile.height}` : '3 / 4';
-
-  const panZoomEnabled = configuration.enablePanZoom === 'always' ||
-                         (configuration.enablePanZoom === 'phonePlatform' && isPhonePlatform);
-
-  const areas = useMemo(() => configuration.areas || [], [configuration.areas]);
 
   const setActiveIndex = useCallback(index => {
     setTransientState({activeAreaId: areas[index]?.id});
