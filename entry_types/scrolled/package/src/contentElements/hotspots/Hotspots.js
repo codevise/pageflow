@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import classNames from 'classnames';
 import {Composite, CompositeItem} from '@floating-ui/react';
 
@@ -10,7 +10,6 @@ import {
   FullscreenViewer,
   ToggleFullscreenCornerButton,
   useContentElementEditorState,
-  useContentElementEditorCommandSubscription,
   useContentElementLifecycle,
   InlineFileRights,
   contentElementWidths
@@ -24,6 +23,8 @@ import {Indicator} from './Indicator';
 import {Tooltip} from './Tooltip';
 
 import {useHotspotsConfiguration} from './useHotspotsConfiguration';
+import {useHotspotsEditorCommandSubscriptions} from './useHotspotsEditorCommandSubscriptions';
+import {useHotspotsState} from './useHotspotsState';
 import {useContentRect} from './useContentRect';
 import {useScrollPanZoom} from './useScrollPanZoom';
 
@@ -72,29 +73,25 @@ export function HotspotsImage({
   displayFullscreenToggle, onFullscreenEnter,
   children = children => children
 }) {
-  const {imageFile, areas, panZoomEnabled} = useHotspotsConfiguration(configuration);
+  const {
+    imageFile,
+    areas,
+    panZoomEnabled
+  } = useHotspotsConfiguration(configuration);
+
+  const {
+    activeIndex,
+    hoveredIndex,
+    highlightedIndex,
+    setActiveIndex,
+    setHoveredIndex,
+    setHighlightedIndex
+  } = useHotspotsState({areas, initialActiveArea: configuration.initialActiveArea});
 
   const {shouldLoad} = useContentElementLifecycle();
-  const {setTransientState, select, isEditable, isSelected} = useContentElementEditorState();
-
-  const [activeIndex, setActiveIndexState] = useState(
-    'initialActiveArea' in configuration ? configuration.initialActiveArea : -1
-  );
-  const [hoveredIndex, setHoveredIndex] = useState(-1);
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const {isEditable, isSelected} = useContentElementEditorState();
 
   const aspectRatio = imageFile ? `${imageFile.width} / ${imageFile.height}` : '3 / 4';
-
-  const setActiveIndex = useCallback(index => {
-    setTransientState({activeAreaId: areas[index]?.id});
-
-    setActiveIndexState(activeIndex => {
-      if (activeIndex !== index && index >= 0 && isSelected) {
-        select();
-      }
-      return index;
-    });
-  }, [setActiveIndexState, setTransientState, areas, select, isSelected]);
 
   const [containerRect, containerRef] = useContentRect({
     enabled: shouldLoad
@@ -114,17 +111,7 @@ export function HotspotsImage({
 
   const activateArea = panZoomEnabled ? scrollToArea : setActiveIndex;
 
-  useContentElementEditorCommandSubscription(command => {
-    if (command.type === 'HIGHLIGHT_AREA') {
-      setHighlightedIndex(command.index);
-    }
-    else if (command.type === 'RESET_AREA_HIGHLIGHT') {
-      setHighlightedIndex(-1);
-    }
-    else if (command.type === 'SET_ACTIVE_AREA') {
-      activateArea(command.index);
-    }
-  });
+  useHotspotsEditorCommandSubscriptions({setHighlightedIndex, activateArea});
 
   function renderScrollButtons() {
     if (!panZoomEnabled) {
