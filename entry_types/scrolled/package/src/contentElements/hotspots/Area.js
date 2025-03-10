@@ -6,33 +6,31 @@ import {paletteColor} from 'pageflow-scrolled/frontend';
 import styles from './Area.module.css';
 
 export function Area({
-  area, portraitMode, noPointerEvents,
+  area, noPointerEvents,
   highlighted, outlined,
   className, children,
   onMouseEnter, onMouseLeave, onClick
 }) {
-  const outline = portraitMode ? area.portraitOutline : area.outline;
-
   return (
     <div className={classNames(styles.area,
                                className,
                                {[styles.highlighted]: highlighted,
                                 [styles.noPointerEvents]: noPointerEvents})}>
       <div className={styles.clip}
-           style={{clipPath: polygon(outline)}}
+           style={{clipPath: polygon(area.outline)}}
            tabIndex="-1"
            onClick={onClick}
            onMouseEnter={onMouseEnter}
            onMouseLeave={onMouseLeave} />
       {children}
-      {outlined && <Outline points={outline}
-                            color={areaColor(area, portraitMode)} />}
+      {outlined && <Outline points={area.outline}
+                            color={areaColor(area)} />}
     </div>
   );
 }
 
-export function areaColor(area, portraitMode) {
-  return paletteColor(portraitMode ? (area.portraitColor || area.color) : area.color);
+export function areaColor(area) {
+  return paletteColor(area.color);
 }
 
 function Outline({points, color}) {

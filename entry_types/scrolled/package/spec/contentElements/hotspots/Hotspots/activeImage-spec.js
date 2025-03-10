@@ -15,6 +15,7 @@ import 'support/animateStub';
 import 'support/fakeResizeObserver';
 import {simulateIntersecting} from 'support/fakeIntersectionObserver';
 import 'support/scrollTimelineStub';
+import 'support/requestAnimationFrameStub';
 
 describe('Hotspots', () => {
   useFakeTranslations({

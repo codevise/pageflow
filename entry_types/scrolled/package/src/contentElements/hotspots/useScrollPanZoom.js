@@ -6,7 +6,7 @@ import {getPanZoomStepTransform} from './panZoom';
 
 export function useScrollPanZoom({
   imageFile, containerRect, areas,
-  enabled, portraitMode,
+  enabled,
   onChange
 }) {
   const wrapperRef = useRef();
@@ -39,9 +39,9 @@ export function useScrollPanZoom({
         indicators: []
       },
       ...areas.map(area => getPanZoomStepTransform({
-        areaOutline: portraitMode ? area.portraitOutline : area.outline,
-        areaZoom: (portraitMode ? area.portraitZoom : area.zoom) || 0,
-        indicatorPositions: areas.map(area => (portraitMode ? area.portraitIndicatorPosition : area.indicatorPosition) || [50, 50]),
+        areaOutline: area.outline,
+        areaZoom: area.zoom || 0,
+        indicatorPositions: areas.map(area => area.indicatorPosition || [50, 50]),
         imageFileWidth,
         imageFileHeight,
         containerWidth,
@@ -60,8 +60,7 @@ export function useScrollPanZoom({
     imageFileWidth,
     imageFileHeight,
     containerWidth,
-    containerHeight,
-    portraitMode
+    containerHeight
   ]);
 
   const scrollFromToArea = useCallback((from, to) => {

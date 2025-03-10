@@ -72,7 +72,7 @@ export function HotspotsImage({
   displayFullscreenToggle, onFullscreenEnter,
   children = children => children
 }) {
-  const {imageFile, areas, portraitMode, panZoomEnabled} = useHotspotsConfiguration(configuration);
+  const {imageFile, areas, panZoomEnabled} = useHotspotsConfiguration(configuration);
 
   const {shouldLoad} = useContentElementLifecycle();
   const {setTransientState, select, isEditable, isSelected} = useContentElementEditorState();
@@ -105,7 +105,6 @@ export function HotspotsImage({
     imageFile,
     areas,
     enabled: panZoomEnabled && shouldLoad,
-    portraitMode,
     onChange: setActiveIndex
   });
 
@@ -161,7 +160,6 @@ export function HotspotsImage({
       <ImageArea key={index}
                  area={area}
                  panZoomEnabled={panZoomEnabled}
-                 portraitMode={portraitMode}
                  activeImageVisible={activeIndex === index ||
                                      (!panZoomEnabled &&
                                       activeIndex < 0 &&
@@ -177,7 +175,6 @@ export function HotspotsImage({
     return areas.map((area, index) =>
       <Area key={index}
             area={area}
-            portraitMode={portraitMode}
             noPointerEvents={panZoomEnabled &&
                              activeIndex >= 0 &&
                              activeIndex < areas.length}
@@ -199,8 +196,7 @@ export function HotspotsImage({
                          activeIndex >= 0 &&
                          activeIndex < areas.length &&
                          activeIndex !== index}
-                 outerRef={panZoomRefs.setIndicator(index)}
-                 portraitMode={portraitMode} />
+                 outerRef={panZoomRefs.setIndicator(index)} />
     );
   }
 
@@ -212,7 +208,6 @@ export function HotspotsImage({
                containerRect={containerRect}
                imageFile={imageFile}
                panZoomEnabled={panZoomEnabled}
-               portraitMode={portraitMode}
                configuration={configuration}
                visible={activeIndex === index ||
                         (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}

@@ -3,16 +3,15 @@ import {getBoundingRect} from './getBoundingRect';
 
 export function getTooltipInlineStyles({
   area,
-  portraitMode,
   panZoomEnabled, imageFile, containerRect
 }) {
-  const referencePositionInPercent = getReferencePositionInPercent({area, portraitMode});
+  const referencePositionInPercent = getReferencePositionInPercent({area});
 
   const transform =
     panZoomEnabled ?
     getPanZoomStepTransform({
-        areaOutline: portraitMode ? area.portraitOutline : area.outline,
-        areaZoom: (portraitMode ? area.portraitZoom : area.zoom) || 0,
+        areaOutline: area.outline,
+        areaZoom: area.zoom || 0,
         imageFileWidth: imageFile?.width,
         imageFileHeight: imageFile?.height,
         containerWidth: containerRect.width,
@@ -32,12 +31,12 @@ export function getTooltipInlineStyles({
   };
 }
 
-function getReferencePositionInPercent({area, portraitMode}) {
-  const referenceType = portraitMode ? area.portraitTooltipReference : area.tooltipReference;
-  const indicatorRect = getIndicatorRect(portraitMode ? area.portraitIndicatorPosition : area.indicatorPosition);
+function getReferencePositionInPercent({area}) {
+  const referenceType = area.tooltipReference;
+  const indicatorRect = getIndicatorRect(area.indicatorPosition);
 
   if (referenceType === 'area') {
-    const boundingRect = getBoundingRect(portraitMode ? area.portraitOutline : area.outline);
+    const boundingRect = getBoundingRect(area.outline);
 
     return {
       top: boundingRect.top,

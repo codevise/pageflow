@@ -41,7 +41,7 @@ const arrowKeys = [
 
 export function Tooltip({
   area,
-  contentElementId, portraitMode, configuration, visible, active,
+  contentElementId, configuration, visible, active,
   panZoomEnabled, imageFile, containerRect, keepInViewport, floatingStrategy,
   aboveNavigationWidgets,
   wrapperRef,
@@ -63,16 +63,16 @@ export function Tooltip({
 
   const inlineStyles = getTooltipInlineStyles({
     area,
-    contentElementId, portraitMode, configuration,
+    contentElementId, configuration,
     panZoomEnabled, imageFile, containerRect,
   })
 
   const tooltipTexts = configuration.tooltipTexts || {};
   const tooltipLinks = configuration.tooltipLinks || {};
 
-  const referenceType = portraitMode ? area.portraitTooltipReference : area.tooltipReference;
-  const position = portraitMode ? area.portraitTooltipPosition : area.tooltipPosition;
-  const maxWidth = portraitMode ? area.portraitTooltipMaxWidth : area.tooltipMaxWidth;
+  const referenceType = area.tooltipReference;
+  const position = area.tooltipPosition;
+  const maxWidth = area.tooltipMaxWidth;
 
   const arrowRef = useRef();
   const {refs, floatingStyles, context} = useFloating({
