@@ -9,7 +9,6 @@ import '@testing-library/jest-dom/extend-expect'
 import 'support/animateStub';
 import {fakeResizeObserver} from 'support/fakeResizeObserver';
 import 'support/scrollTimelineStub';
-import 'support/requestAnimationFrameStub';
 
 describe('Hotspots', () => {
   it('sets custom property with container height', () => {

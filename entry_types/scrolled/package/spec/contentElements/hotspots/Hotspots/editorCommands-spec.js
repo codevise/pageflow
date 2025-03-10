@@ -7,7 +7,6 @@ import tooltipStyles from 'contentElements/hotspots/Tooltip.module.css';
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import '@testing-library/jest-dom/extend-expect'
 import 'support/fakeResizeObserver';
-import 'support/requestAnimationFrameStub';
 
 jest.mock('contentElements/hotspots/TooltipPortal');
 jest.mock('contentElements/hotspots/useTooltipTransitionStyles');
