@@ -116,7 +116,7 @@ export function HotspotsImage({
     enabled: shouldLoad
   });
 
-  const [wrapperRef, scrollerRef, scrollerAreasRef, setScrollerStepRef, setIndicatorRef, scrollFromToArea] = useScrollPanZoom({
+  const {panZoomRefs, scrollFromToArea} = useScrollPanZoom({
     containerRect,
     imageFile,
     areas,
@@ -215,7 +215,7 @@ export function HotspotsImage({
                          activeIndex >= 0 &&
                          activeIndex < areas.length &&
                          activeIndex !== index}
-                 outerRef={setIndicatorRef(index)}
+                 outerRef={panZoomRefs.setIndicator(index)}
                  portraitMode={portraitMode} />
     );
   }
@@ -274,7 +274,7 @@ export function HotspotsImage({
                   <div className={styles.stack}
                        ref={containerRef}>
                     <div className={styles.wrapper}
-                         ref={wrapperRef}>
+                         ref={panZoomRefs.wrapper}>
                       <Image imageFile={imageFile}
                              load={shouldLoad}
                              fill={false}
@@ -285,10 +285,10 @@ export function HotspotsImage({
                     </div>
                     <Scroller disabled={!panZoomEnabled}
                               areas={areas}
-                              ref={scrollerRef}
-                              setStepRef={setScrollerStepRef}>
+                              ref={panZoomRefs.scroller}
+                              setStepRef={panZoomRefs.setStep}>
                       <div className={styles.wrapper}
-                           ref={scrollerAreasRef}>
+                           ref={panZoomRefs.scrollerAreas}>
                         {renderClickableAreas()}
                       </div>
                     </Scroller>

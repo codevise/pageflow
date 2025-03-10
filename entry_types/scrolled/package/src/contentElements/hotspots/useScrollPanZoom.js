@@ -64,7 +64,7 @@ export function useScrollPanZoom({
     portraitMode
   ]);
 
-  const scrollFromTo = useCallback((from, to) => {
+  const scrollFromToArea = useCallback((from, to) => {
     const scroller = scrollerRef.current;
     const step = scroller.children[to + 1];
 
@@ -136,7 +136,16 @@ export function useScrollPanZoom({
     indicatorRefs.current[index] = ref;
   }
 
-  return [wrapperRef, scrollerRef, scrollerAreasRef, setStepRef, setIndicatorRef, scrollFromTo];
+  return {
+    panZoomRefs: {
+      wrapper: wrapperRef,
+      scroller: scrollerRef,
+      scrollerAreas: scrollerAreasRef,
+      setStep: setStepRef,
+      setIndicator: setIndicatorRef
+    },
+    scrollFromToArea
+  };
 }
 
 function keyframe(step) {
