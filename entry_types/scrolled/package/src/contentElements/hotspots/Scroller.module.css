@@ -22,6 +22,10 @@
   grid-row: 1;
 }
 
+.inner {
+  height: var(--hotspots-container-height);
+}
+
 .step {
   scroll-snap-align: start;
   scroll-snap-stop: always;

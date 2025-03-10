@@ -37,7 +37,7 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
 export function renderInContentElement(ui, {editorState,
                                             phonePlatform = false,
                                             wrapper: OriginalWrapper,
-                                            ...options}) {
+                                            ...options} = {}) {
   const emitter = Object.assign({}, BackboneEvents);
 
   function Wrapper({children}) {

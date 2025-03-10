@@ -67,8 +67,9 @@
 
 .wrapper {
   transform-origin: 0 0;
-  width: 100%;
+  position: relative;
   height: 100%;
+  aspect-ratio: var(--hotspots-image-aspect-ratio);
 }
 
 .wrapper > img {

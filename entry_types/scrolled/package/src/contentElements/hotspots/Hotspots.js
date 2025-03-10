@@ -94,6 +94,7 @@ export function HotspotsImage({
 
   const portraitMode = !!(portraitOrientation && portraitImageFile);
   const imageFile = portraitMode ? portraitImageFile : defaultImageFile;
+  const aspectRatio = imageFile ? `${imageFile.width} / ${imageFile.height}` : '3 / 4';
 
   const panZoomEnabled = configuration.enablePanZoom === 'always' ||
                          (configuration.enablePanZoom === 'phonePlatform' && isPhonePlatform);
@@ -255,7 +256,9 @@ export function HotspotsImage({
   }
 
   return (
-    <div className={classNames(styles.outer, {[styles.customMargin]: customMargin})}>
+    <div className={classNames(styles.outer, {[styles.customMargin]: customMargin})}
+         style={{'--hotspots-image-aspect-ratio': aspectRatio,
+                 '--hotspots-container-height': `${containerRect.height}px`}}>
       {renderScrollButtons()}
       <div className={styles.center}>
         <FitViewport file={imageFile}
@@ -283,8 +286,7 @@ export function HotspotsImage({
                     <Scroller disabled={!panZoomEnabled}
                               areas={areas}
                               ref={scrollerRef}
-                              setStepRef={setScrollerStepRef}
-                              containerRect={containerRect}>
+                              setStepRef={setScrollerStepRef}>
                       <div className={styles.wrapper}
                            ref={scrollerAreasRef}>
                         {renderClickableAreas()}

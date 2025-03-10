@@ -13,6 +13,13 @@
   pointer-events: none;
 }
 
+.wrapper {
+  height: var(--hotspots-container-height);
+  aspect-ratio: var(--hotspots-image-aspect-ratio);
+  transform-origin: 0 0;
+  position: relative;
+}
+
 .reference {
   position: absolute;
   border: 0;
