@@ -15,6 +15,7 @@ import {fakeResizeObserver} from 'support/fakeResizeObserver';
 import {fakeIntersectionObserver, simulateIntersecting} from 'support/fakeIntersectionObserver';
 import {animateStub} from 'support/animateStub';
 import {scrollTimelineStub} from 'support/scrollTimelineStub';
+import 'support/requestAnimationFrameStub';
 
 import {getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
 jest.mock('contentElements/hotspots/panZoom');
