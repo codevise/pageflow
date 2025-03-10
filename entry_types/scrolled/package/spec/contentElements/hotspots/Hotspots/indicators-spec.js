@@ -12,10 +12,17 @@ import userEvent from '@testing-library/user-event';
 
 import 'support/animateStub';
 import {simulateIntersecting} from 'support/fakeIntersectionObserver';
-import 'support/fakeResizeObserver';
+import {fakeResizeObserver} from 'support/fakeResizeObserver';
 import 'support/scrollTimelineStub';
 
+import {getInitialTransform} from 'contentElements/hotspots/panZoom';
+jest.mock('contentElements/hotspots/panZoom');
+
 describe('Hotspots', () => {
+  beforeEach(() => {
+    getInitialTransform.restoreMockImplementation();
+  });
+
   it('renders area indicators', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -231,6 +238,39 @@ describe('Hotspots', () => {
 
     expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[0]).not.toHaveClass(indicatorStyles.hidden);
     expect(container.querySelectorAll(`.${indicatorStyles.indicator}`)[1]).not.toHaveClass(indicatorStyles.hidden);
+  });
+
+  it('applies initial transform to parent element to cover backdrop content element', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100, width: 2000, height: 1000}]
+    };
+    const configuration = {
+      image: 100,
+      position: 'backdrop',
+      areas: [
+        {
+          outline: [[80, 45], [100, 45], [100, 55], [80, 55]],
+          zoom: 100,
+          indicatorPosition: [90, 50],
+        }
+      ]
+    };
+
+    fakeResizeObserver.contentRect = {width: 300, height: 100};
+    getInitialTransform.mockReturnValue({
+      x: -700,
+      y: -100,
+      scale: 5,
+      indicators: [{x: -800, y: -200}]
+    });
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${indicatorStyles.indicator}`).parentElement).toHaveStyle({
+      transform: 'translate(-800px, -200px) scale(1)'
+    });
   });
 
   describe('with pan zoom', () => {

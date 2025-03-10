@@ -16,7 +16,7 @@ import {fakeIntersectionObserver, simulateIntersecting} from 'support/fakeInters
 import {animateStub} from 'support/animateStub';
 import {scrollTimelineStub} from 'support/scrollTimelineStub';
 
-import {getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
+import {getInitialTransform, getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
 jest.mock('contentElements/hotspots/panZoom');
 
 jest.mock('contentElements/hotspots/TooltipPortal');
@@ -28,12 +28,8 @@ describe('Hotspots', () => {
   });
 
   beforeEach(() => {
-    getPanZoomStepTransform.mockReset();
-    getPanZoomStepTransform.mockReturnValue({
-      x: 0,
-      y: 0,
-      scale: 1
-    });
+    getInitialTransform.restoreMockImplementation();
+    getPanZoomStepTransform.restoreMockImplementation();
   });
 
   it('does not render invisible scroller when pan zoom is disabled', () => {

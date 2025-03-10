@@ -10,10 +10,15 @@ import 'support/animateStub';
 import {fakeResizeObserver} from 'support/fakeResizeObserver';
 import 'support/scrollTimelineStub';
 
-import {getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
+import {getInitialTransform, getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
 jest.mock('contentElements/hotspots/panZoom');
 
 describe('Hotspots', () => {
+  beforeEach(() => {
+    getInitialTransform.restoreMockImplementation();
+    getPanZoomStepTransform.restoreMockImplementation();
+  });
+
   it('positions tooltip reference based on indicator position', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -183,6 +188,39 @@ describe('Hotspots', () => {
       left: '10%',
       top: '15%',
       height: '15%'
+    });
+  });
+
+  it('applies initial transform to cover backdrop content element', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100, width: 2000, height: 1000}]
+    };
+    const configuration = {
+      image: 100,
+      position: 'backdrop',
+      areas: [
+        {
+          outline: [[80, 45], [100, 45], [100, 55], [80, 55]],
+          zoom: 100,
+          indicatorPosition: [90, 50],
+        }
+      ]
+    };
+
+    fakeResizeObserver.contentRect = {width: 300, height: 100};
+    getInitialTransform.mockReturnValue({
+      x: -800,
+      y: -200,
+      scale: 5,
+      indicators: [{x: 0, y: 0}]
+    })
+    const {container} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+
+    expect(container.querySelector(`.${tooltipStyles.reference}`).parentElement).toHaveStyle({
+      transform: 'translate(-800px, -200px) scale(5)'
     });
   });
 

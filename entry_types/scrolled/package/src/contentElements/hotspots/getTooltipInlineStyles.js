@@ -1,23 +1,9 @@
-import {getPanZoomStepTransform} from './panZoom';
 import {getBoundingRect} from './getBoundingRect';
 
 export function getTooltipInlineStyles({
-  area,
-  panZoomEnabled, imageFile, containerRect
+  area, panZoomTransform
 }) {
   const referencePositionInPercent = getReferencePositionInPercent({area});
-
-  const transform =
-    panZoomEnabled ?
-    getPanZoomStepTransform({
-        areaOutline: area.outline,
-        areaZoom: area.zoom || 0,
-        imageFileWidth: imageFile?.width,
-        imageFileHeight: imageFile?.height,
-        containerWidth: containerRect.width,
-        containerHeight: containerRect.height
-      }) :
-      {x: 0, y: 0, scale: 1};
 
   return {
     reference: {
@@ -26,7 +12,7 @@ export function getTooltipInlineStyles({
       height: `${referencePositionInPercent.height}%`
     },
     wrapper: {
-      transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale || 1})`,
+      transform: panZoomTransform
     }
   };
 }

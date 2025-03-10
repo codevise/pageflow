@@ -26,6 +26,7 @@ import {useHotspotsConfiguration} from './useHotspotsConfiguration';
 import {useHotspotsEditorCommandSubscriptions} from './useHotspotsEditorCommandSubscriptions';
 import {useHotspotsState} from './useHotspotsState';
 import {useContentRect} from './useContentRect';
+import {usePanZoomTransforms} from './usePanZoomTransforms';
 import {useScrollPanZoom} from './useScrollPanZoom';
 
 import styles from './Hotspots.module.css';
@@ -95,6 +96,13 @@ export function HotspotsImage({
 
   const [containerRect, containerRef] = useContentRect({
     enabled: shouldLoad
+  });
+
+  const panZoomTransforms = usePanZoomTransforms({
+    containerRect,
+    imageFile,
+    areas,
+    panZoomEnabled
   });
 
   const {panZoomRefs, scrollFromToArea} = useScrollPanZoom({
@@ -183,6 +191,7 @@ export function HotspotsImage({
                          activeIndex >= 0 &&
                          activeIndex < areas.length &&
                          activeIndex !== index}
+                 panZoomTransform={panZoomTransforms.areas[index].indicator}
                  outerRef={panZoomRefs.setIndicator(index)} />
     );
   }
@@ -194,7 +203,7 @@ export function HotspotsImage({
                contentElementId={contentElementId}
                containerRect={containerRect}
                imageFile={imageFile}
-               panZoomEnabled={panZoomEnabled}
+               panZoomTransform={panZoomTransforms.areas[index].tooltip}
                configuration={configuration}
                visible={activeIndex === index ||
                         (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
@@ -240,7 +249,8 @@ export function HotspotsImage({
                   <div className={styles.stack}
                        ref={containerRef}>
                     <div className={styles.wrapper}
-                         ref={panZoomRefs.wrapper}>
+                         ref={panZoomRefs.wrapper}
+                         style={{transform: panZoomTransforms.wrapper}}>
                       <Image imageFile={imageFile}
                              load={shouldLoad}
                              fill={false}
@@ -254,7 +264,8 @@ export function HotspotsImage({
                               ref={panZoomRefs.scroller}
                               setStepRef={panZoomRefs.setStep}>
                       <div className={styles.wrapper}
-                           ref={panZoomRefs.scrollerAreas}>
+                           ref={panZoomRefs.scrollerAreas}
+                           style={{transform: panZoomTransforms.wrapper}}>
                         {renderClickableAreas()}
                       </div>
                     </Scroller>

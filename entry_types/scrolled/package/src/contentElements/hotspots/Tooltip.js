@@ -40,9 +40,9 @@ const arrowKeys = [
 ];
 
 export function Tooltip({
-  area,
+  area, panZoomTransform,
   contentElementId, configuration, visible, active,
-  panZoomEnabled, imageFile, containerRect, keepInViewport, floatingStrategy,
+  imageFile, containerRect, keepInViewport, floatingStrategy,
   aboveNavigationWidgets,
   wrapperRef,
   onMouseEnter, onMouseLeave, onClick, onDismiss,
@@ -62,9 +62,7 @@ export function Tooltip({
   });
 
   const inlineStyles = getTooltipInlineStyles({
-    area,
-    contentElementId, configuration,
-    panZoomEnabled, imageFile, containerRect,
+    area, panZoomTransform
   })
 
   const tooltipTexts = configuration.tooltipTexts || {};

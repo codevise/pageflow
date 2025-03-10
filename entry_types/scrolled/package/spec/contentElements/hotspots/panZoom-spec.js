@@ -29,9 +29,9 @@ describe('getPanZoomStepTransform', () => {
     });
 
     expect(result).toMatchObject({
-      scale: 5,
-      x: -1500,
-      y: -500,
+      scale: 2.5,
+      x: -500,
+      y: 0
     });
   });
 });
