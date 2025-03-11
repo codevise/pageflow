@@ -88,6 +88,7 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
 
   function format(value) {
     const localeString = value.toLocaleString(locale, {
+      useGrouping: !configuration.hideThousandsSeparators,
       minimumFractionDigits: decimalPlaces,
       maximumFractionDigits: decimalPlaces
     });

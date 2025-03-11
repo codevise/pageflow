@@ -1,5 +1,7 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {SelectInputView, TextInputView, NumberInputView, SeparatorView} from 'pageflow/ui';
+import {
+  CheckBoxInputView, SelectInputView, TextInputView, NumberInputView, SeparatorView
+} from 'pageflow/ui';
 
 import pictogram from './pictogram.svg';
 
@@ -24,6 +26,9 @@ editor.contentElementTypes.register('counter', {
         texts: [0, 1, 2, 3].map(i =>
           (0).toLocaleString(locale, {minimumFractionDigits: i})
         )
+      });
+      this.input('thousandsSeparators', CheckBoxInputView, {
+        storeInverted: 'hideThousandsSeparators'
       });
       this.input('unit', TextInputView);
       this.input('unitPlacement', SelectInputView, {
