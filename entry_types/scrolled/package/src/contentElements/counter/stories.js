@@ -53,6 +53,26 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'With Default Grouping',
+      configuration: {
+        targetValue: 2000,
+        startValue: 1000,
+        unit: 'kg',
+        description: [],
+        textSize: 'small'
+      }
+    },
+    {
+      name: 'Without Grouping',
+      configuration: {
+        targetValue: 2025,
+        startValue: 2020,
+        hideThousandsSeparators: true,
+        unit: '',
+        description: []
+      }
+    },
+    {
       name: 'Pallete number color',
       themeOptions: {
         properties: {
