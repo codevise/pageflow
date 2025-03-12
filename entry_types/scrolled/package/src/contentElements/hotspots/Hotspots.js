@@ -133,6 +133,7 @@ export function HotspotsImage({
                                       activeIndex < 0 &&
                                       hoveredIndex === index)}
                  outlined={isEditable && isSelected}
+                 outlineHidden={isIntersecting}
                  highlighted={hoveredIndex === index ||
                               highlightedIndex === index ||
                               activeIndex === index} />

@@ -7,7 +7,7 @@ import styles from './Area.module.css';
 
 export function Area({
   area, noPointerEvents,
-  highlighted, outlined,
+  highlighted, outlined, outlineHidden,
   className, children,
   onMouseEnter, onMouseLeave, onClick
 }) {
@@ -24,7 +24,8 @@ export function Area({
            onMouseLeave={onMouseLeave} />
       {children}
       {outlined && <Outline points={area.outline}
-                            color={areaColor(area)} />}
+                            color={areaColor(area)}
+                            hidden={outlineHidden} />}
     </div>
   );
 }
@@ -33,9 +34,11 @@ export function areaColor(area) {
   return paletteColor(area.color);
 }
 
-function Outline({points, color}) {
+function Outline({points, color, hidden}) {
   return (
-    <svg className={styles.outline} xmlns="http://www.w3.org/2000/svg"
+    <svg className={classNames(styles.outline,
+                               {[styles.hidden]: hidden})}
+         xmlns="http://www.w3.org/2000/svg"
          viewBox="0 0 100 100"
          preserveAspectRatio="none">
       <polygon points={(points).map(coords => coords.map(coord => coord).join(',')).join(' ')}
