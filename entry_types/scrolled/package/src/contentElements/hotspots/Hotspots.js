@@ -102,6 +102,7 @@ export function HotspotsImage({
     containerRect,
     imageFile,
     areas,
+    enabled: panZoomEnabled || configuration.position === 'backdrop',
     panZoomEnabled
   });
 
@@ -189,7 +190,7 @@ export function HotspotsImage({
                          activeIndex >= 0 &&
                          activeIndex < areas.length &&
                          activeIndex !== index}
-                 panZoomTransform={panZoomTransforms.initial.indicators[index].wrapper}
+                 panZoomTransform={panZoomTransforms.initial.indicators[index]}
                  outerRef={panZoomRefs.setIndicator(index)} />
     );
   }

@@ -3,13 +3,6 @@ import {getBoundingRect} from './getBoundingRect';
 export function getPanZoomStepTransform({
   imageFileWidth, imageFileHeight, areaOutline, areaZoom, containerWidth, containerHeight, indicatorPositions = []
 }) {
-  if (!containerWidth ||
-      !containerHeight ||
-      !imageFileWidth ||
-      !imageFileHeight) {
-    return {x: 0, y: 0, scale: 1, indicators: indicatorPositions.map(() => ({x: 0, y: 0}))};
-  }
-
   const rect = getBoundingRect(areaOutline);
 
   const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
@@ -43,13 +36,6 @@ export function getPanZoomStepTransform({
 export function getInitialTransform({
   imageFileWidth, imageFileHeight, containerWidth, containerHeight, motifArea, indicatorPositions = []
 }) {
-  if (!containerWidth ||
-      !containerHeight ||
-      !imageFileWidth ||
-      !imageFileHeight) {
-    return {x: 0, y: 0, scale: 1, indicators: indicatorPositions.map(() => ({x: 0, y: 0}))};
-  }
-
   const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
   const displayImageHeight = containerHeight;
 

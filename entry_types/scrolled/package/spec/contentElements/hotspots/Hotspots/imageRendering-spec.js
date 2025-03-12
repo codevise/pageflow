@@ -87,6 +87,31 @@ describe('Hotspots', () => {
     expect(getByRole('img')).toHaveAttribute('src', '000/000/001/ultra/image.webp');
   });
 
+  it('does not apply initial transform to wrapper element by default', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100, width: 2000, height: 1000}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          outline: [[80, 45], [100, 45], [100, 55], [80, 55]],
+          zoom: 100,
+          indicatorPosition: [90, 50],
+        }
+      ]
+    };
+
+    fakeResizeObserver.contentRect = {width: 200, height: 100};
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    expect(container.querySelector(`.${styles.wrapper}`)).not.toHaveAttribute('style');
+  });
+
   it('applies initial transform to wrapper element to cover backdrop content element', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},

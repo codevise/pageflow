@@ -44,8 +44,8 @@ export function useScrollPanZoom({
 
     wrapperRef.current.animate(
       [
-        keyframe(steps[from + 1]),
-        keyframe(steps[to + 1])
+        keyframe(steps[from + 1].wrapper),
+        keyframe(steps[to + 1].wrapper)
       ],
       {
         duration: 200
@@ -79,7 +79,7 @@ export function useScrollPanZoom({
 
     [wrapperRef.current, scrollerAreasRef.current].forEach(element =>
       animations.push(element.animate(
-        steps.map(keyframe),
+        steps.map(step => keyframe(step.wrapper)),
         {
           fill: 'both',
           timeline: scrollTimeline
@@ -116,9 +116,9 @@ export function useScrollPanZoom({
   };
 }
 
-function keyframe(step) {
+function keyframe(transform) {
   return {
-    transform: step.wrapper,
+    transform,
     easing: 'ease',
   };
 }

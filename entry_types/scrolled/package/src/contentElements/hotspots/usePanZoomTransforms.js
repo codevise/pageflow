@@ -7,7 +7,15 @@ import {
 
 import {getBoundingRect} from './getBoundingRect';
 
-export function usePanZoomTransforms({containerRect, imageFile, areas, panZoomEnabled}) {
+const nullTransforms = {
+  initial: {
+    indicators: [],
+    tooltips: []
+  },
+  areas: []
+};
+
+export function usePanZoomTransforms({containerRect, imageFile, areas, enabled, panZoomEnabled}) {
   const imageFileWidth = imageFile?.width;
   const imageFileHeight = imageFile?.height;
 
@@ -15,6 +23,14 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, panZoomEn
   const containerHeight = containerRect.height;
 
   return useMemo(() => {
+    if (!enabled ||
+        !containerWidth ||
+        !containerHeight ||
+        !imageFileWidth ||
+        !imageFileHeight) {
+      return nullTransforms;
+    }
+
     const indicatorPositions = areas.map(area => area.indicatorPosition);
 
     const initialTransform = getInitialTransform({
@@ -28,11 +44,11 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, panZoomEn
 
     const initialTransformString = toString(initialTransform)
 
-    const areaTransforms = [];
-    const tooltipTransforms = [];
+    const areaTransformStrings = [];
+    const tooltipTransformStrings = [];
 
     areas.forEach((area, index) => {
-      if (panZoomEnabled && containerWidth) {
+      if (panZoomEnabled) {
         const transform = getPanZoomStepTransform({
           areaOutline: area.outline,
           areaZoom: area.zoom,
@@ -45,25 +61,25 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, panZoomEn
 
         const transformString = toString(transform);
 
-        areaTransforms.push({
+        areaTransformStrings.push({
           wrapper: transformString,
-          indicators: toWrapperTransformStrings(transform.indicators)
+          indicators: transform.indicators.map(toString)
         });
 
-        tooltipTransforms.push(transformString);
+        tooltipTransformStrings.push(transformString);
       }
       else {
-        tooltipTransforms.push(initialTransformString);
+        tooltipTransformStrings.push(initialTransformString);
       }
     });
 
     return {
       initial: {
         wrapper: initialTransformString,
-        indicators: toWrapperTransformStrings(initialTransform.indicators),
-        tooltips: tooltipTransforms
+        indicators: initialTransform.indicators.map(toString),
+        tooltips: tooltipTransformStrings
       },
-      areas: areaTransforms
+      areas: areaTransformStrings
     };
   }, [
     panZoomEnabled,
@@ -73,12 +89,6 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, panZoomEn
     containerWidth,
     containerHeight
   ]);
-}
-
-function toWrapperTransformStrings(transforms) {
-  return transforms.map(transform => ({
-    wrapper: toString(transform)
-  }));
 }
 
 function toString(transform) {
