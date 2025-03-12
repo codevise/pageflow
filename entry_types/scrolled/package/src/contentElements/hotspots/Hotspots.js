@@ -160,10 +160,11 @@ export function HotspotsImage({
     return areas.map((area, index) =>
       <Indicator key={index}
                  area={area}
-                 hidden={panZoomEnabled &&
-                         activeIndex >= 0 &&
-                         activeIndex < areas.length &&
-                         activeIndex !== index}
+                 hidden={isIntersecting ||
+                         (panZoomEnabled &&
+                          activeIndex >= 0 &&
+                          activeIndex < areas.length &&
+                          activeIndex !== index)}
                  panZoomTransform={panZoomTransforms.initial.indicators[index]}
                  outerRef={panZoomRefs.setIndicator(index)} />
     );
@@ -208,6 +209,7 @@ export function HotspotsImage({
     <Pager areas={areas}
            customMargin={customMargin}
            panZoomEnabled={panZoomEnabled}
+           hideButtons={isIntersecting}
            activeIndex={activeIndex}
            activateArea={activateArea}>
       <FitViewport file={imageFile}
