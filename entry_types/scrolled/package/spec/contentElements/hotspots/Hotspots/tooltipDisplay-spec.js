@@ -6,6 +6,7 @@ import imageAreaStyles from 'contentElements/hotspots/ImageArea.module.css';
 import tooltipStyles from 'contentElements/hotspots/Tooltip.module.css';
 
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
+import {asyncHandlingOf} from 'support/asyncHandlingOf'
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event';
 import 'support/fakeResizeObserver';
@@ -111,9 +112,10 @@ describe('Hotspots', () => {
     };
 
     const user = userEvent.setup();
-    const {container} = renderInContentElement(
+    const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     await user.click(clickableArea(container));
     await user.click(document.body);
@@ -186,6 +188,43 @@ describe('Hotspots', () => {
     await user.unhover(clickableArea(container));
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
+  });
+
+  it('hides when backdrop element is intersecting content', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, rerender, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    await user.click(clickableArea(container));
+    await asyncHandlingOf(() =>
+      rerender(
+        <Hotspots configuration={configuration} sectionProps={{isIntersecting: true}} />
+      )
+    );;
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull();
   });
 });
 

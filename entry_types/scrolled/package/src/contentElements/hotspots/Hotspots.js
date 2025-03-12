@@ -31,7 +31,9 @@ import {useScrollPanZoom} from './useScrollPanZoom';
 
 import styles from './Hotspots.module.css';
 
-export function Hotspots({contentElementId, contentElementWidth, customMargin, configuration}) {
+export function Hotspots({
+  contentElementId, contentElementWidth, customMargin, configuration, sectionProps = {}
+}) {
   return (
     <FullscreenViewer
       contentElementId={contentElementId}
@@ -41,6 +43,7 @@ export function Hotspots({contentElementId, contentElementWidth, customMargin, c
           contentElementWidth={contentElementWidth}
           customMargin={customMargin}
           configuration={configuration}
+          isIntersecting={sectionProps.isIntersecting}
           displayFullscreenToggle={contentElementWidth !== contentElementWidths.full &&
                                    configuration.enableFullscreen}
           onFullscreenEnter={enterFullscreen}
@@ -71,6 +74,7 @@ export function Hotspots({contentElementId, contentElementWidth, customMargin, c
 export function HotspotsImage({
   contentElementId, contentElementWidth, customMargin, configuration,
   keepTooltipsInViewport, floatingStrategy, tooltipsAboveNavigationWidgets,
+  isIntersecting,
   displayFullscreenToggle, onFullscreenEnter,
   children = children => children
 }) {
@@ -204,8 +208,9 @@ export function HotspotsImage({
                imageFile={imageFile}
                panZoomTransform={panZoomTransforms.initial.tooltips[index]}
                configuration={configuration}
-               visible={activeIndex === index ||
-                        (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
+               visible={!isIntersecting &&
+                        (activeIndex === index ||
+                         (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index))}
                active={activeIndex === index}
                keepInViewport={keepTooltipsInViewport}
                aboveNavigationWidgets={tooltipsAboveNavigationWidgets}
