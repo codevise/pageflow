@@ -10,15 +10,7 @@ import 'support/animateStub';
 import {fakeResizeObserver} from 'support/fakeResizeObserver';
 import 'support/scrollTimelineStub';
 
-import {getInitialTransform, getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
-jest.mock('contentElements/hotspots/panZoom');
-
 describe('Hotspots', () => {
-  beforeEach(() => {
-    getInitialTransform.restoreMockImplementation();
-    getPanZoomStepTransform.restoreMockImplementation();
-  });
-
   it('positions tooltip reference based on indicator position', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -209,18 +201,13 @@ describe('Hotspots', () => {
     };
 
     fakeResizeObserver.contentRect = {width: 300, height: 100};
-    getInitialTransform.mockReturnValue({
-      x: -800,
-      y: -200,
-      scale: 5,
-      indicators: [{x: 0, y: 0}]
-    })
-    const {container} = renderInContentElement(
+    const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${tooltipStyles.reference}`).parentElement).toHaveStyle({
-      transform: 'translate(-800px, -200px) scale(5)'
+      transform: 'translate(0px, -25px) scale(1.5)'
     });
   });
 
@@ -243,19 +230,13 @@ describe('Hotspots', () => {
       };
 
       fakeResizeObserver.contentRect = {width: 200, height: 100};
-      getPanZoomStepTransform.mockReturnValue({
-        x: -400,
-        y: -100,
-        scale: 2,
-        indicators: [{x: -800, y: -200}]
-      })
       const {container, simulateScrollPosition} = renderInContentElement(
         <Hotspots configuration={configuration} />, {seed}
       );
       simulateScrollPosition('near viewport');
 
       expect(container.querySelector(`.${tooltipStyles.reference}`).parentElement).toHaveStyle({
-        transform: 'translate(-400px, -100px) scale(2)'
+        transform: 'translate(-800px, -200px) scale(5)'
       });
     });
   });

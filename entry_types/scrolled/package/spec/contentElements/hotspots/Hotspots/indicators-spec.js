@@ -15,14 +15,7 @@ import {simulateIntersecting} from 'support/fakeIntersectionObserver';
 import {fakeResizeObserver} from 'support/fakeResizeObserver';
 import 'support/scrollTimelineStub';
 
-import {getInitialTransform} from 'contentElements/hotspots/panZoom';
-jest.mock('contentElements/hotspots/panZoom');
-
 describe('Hotspots', () => {
-  beforeEach(() => {
-    getInitialTransform.restoreMockImplementation();
-  });
-
   it('renders area indicators', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -258,18 +251,13 @@ describe('Hotspots', () => {
     };
 
     fakeResizeObserver.contentRect = {width: 300, height: 100};
-    getInitialTransform.mockReturnValue({
-      x: -700,
-      y: -100,
-      scale: 5,
-      indicators: [{x: -800, y: -200}]
-    });
-    const {container} = renderInContentElement(
+    const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${indicatorStyles.indicator}`).parentElement).toHaveStyle({
-      transform: 'translate(-800px, -200px) scale(1)'
+      transform: 'translate(90px, 0px) scale(1)'
     });
   });
 

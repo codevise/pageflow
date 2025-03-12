@@ -10,14 +10,7 @@ import 'support/animateStub';
 import {fakeResizeObserver} from 'support/fakeResizeObserver';
 import 'support/scrollTimelineStub';
 
-import {getInitialTransform} from 'contentElements/hotspots/panZoom';
-jest.mock('contentElements/hotspots/panZoom');
-
 describe('Hotspots', () => {
-  beforeEach(() => {
-    getInitialTransform.restoreMockImplementation();
-  });
-
   it('does not render images by default', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -112,18 +105,13 @@ describe('Hotspots', () => {
     };
 
     fakeResizeObserver.contentRect = {width: 300, height: 100};
-    getInitialTransform.mockReturnValue({
-      x: -700,
-      y: -100,
-      scale: 5,
-      indicators: [{x: -800, y: -200}]
-    });
-    const {container} = renderInContentElement(
+    const {container, simulateScrollPosition} = renderInContentElement(
       <Hotspots configuration={configuration} />, {seed}
     );
+    simulateScrollPosition('near viewport');
 
     expect(container.querySelector(`.${styles.wrapper}`)).toHaveStyle({
-      transform: 'translate(-700px, -100px) scale(5)'
+      transform: 'translate(0px, -25px) scale(1.5)'
     });
   });
 });
