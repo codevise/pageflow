@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import {ThemeIcon, useI18n} from 'pageflow-scrolled/frontend';
 
-import styles from './ScrollButton.module.css';
+import styles from './PagerButton.module.css';
 
 const size = 40;
 
-export function ScrollButton({direction, disabled, onClick}) {
+export function PagerButton({direction, disabled, onClick}) {
   const {t} = useI18n();
 
   return (
@@ -28,6 +28,6 @@ export function ScrollButton({direction, disabled, onClick}) {
   );
 }
 
-export function insideScrollButton(element) {
+export function insidePagerButton(element) {
   return !!element.closest(`.${styles.button}`);
 }

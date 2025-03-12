@@ -1,0 +1,46 @@
+.outer {
+  display: grid;
+  grid-template-columns: [left-start center-start] 1fr
+                         [left-end] 84%
+                         [right-start] 1fr
+                         [right-end center-end];
+  justify-content: center;
+  height: 100%;
+}
+
+.customMargin {
+  grid-template-columns: [left-start] var(--content-margin)
+                         [left-end center-start] minmax(0, var(--content-max-width))
+                         [right-start center-end] var(--content-margin)
+                         [right-end];
+  --hotspots-scroll-button-height: 100%;
+}
+
+.left,
+.right {
+  grid-row: 1;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.left {
+  grid-column: left-start / left-end;
+}
+
+.right {
+  grid-column: right-start / right-end;
+}
+
+.center {
+  grid-column: center-start / center-end;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}

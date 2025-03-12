@@ -20,7 +20,7 @@ describe('Hotspots', () => {
     );
     simulateScrollPosition('near viewport');
 
-    expect(container.querySelector(`.${styles.outer}`)).toHaveStyle({
+    expect(container.querySelector(`.${styles.tooltipsWrapper}`)).toHaveStyle({
       '--hotspots-container-height': '100px'
     });
   });
@@ -38,7 +38,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${styles.outer}`)).toHaveStyle({
+    expect(container.querySelector(`.${styles.tooltipsWrapper}`)).toHaveStyle({
       '--hotspots-image-aspect-ratio': '2000 / 1000'
     });
   });
@@ -61,7 +61,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />, {seed}
     );
 
-    expect(container.querySelector(`.${styles.outer}`)).toHaveStyle({
+    expect(container.querySelector(`.${styles.tooltipsWrapper}`)).toHaveStyle({
       '--hotspots-image-aspect-ratio': '1000 / 2000'
     });
   });

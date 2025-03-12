@@ -11,7 +11,7 @@ import {
 
 import {TooltipPortal} from './TooltipPortal';
 import {useTooltipTransitionStyles} from './useTooltipTransitionStyles';
-import {insideScrollButton} from './ScrollButton';
+import {insidePagerButton} from './PagerButton';
 
 import {
   EditableText,
@@ -104,7 +104,7 @@ export function Tooltip({
 
   const dismiss = useDismiss(context, {
     outsidePressEvent: 'mousedown',
-    outsidePress: event => !insideScrollButton(event.target)
+    outsidePress: event => !insidePagerButton(event.target)
   });
 
   const {getReferenceProps, getFloatingProps} = useInteractions([

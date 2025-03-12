@@ -1,5 +1,4 @@
 import React, {useCallback} from 'react';
-import classNames from 'classnames';
 import {Composite, CompositeItem} from '@floating-ui/react';
 
 import {
@@ -15,7 +14,7 @@ import {
   contentElementWidths
 } from 'pageflow-scrolled/frontend';
 
-import {ScrollButton} from './ScrollButton';
+import {Pager} from './Pager';
 import {Scroller} from './Scroller';
 import {Area} from './Area';
 import {ImageArea} from './ImageArea';
@@ -124,35 +123,6 @@ export function HotspotsImage({
 
   useHotspotsEditorCommandSubscriptions({setHighlightedIndex, activateArea});
 
-  function renderScrollButtons() {
-    if (!panZoomEnabled) {
-      return null;
-    }
-
-    return (
-      <>
-        <div className={styles.left}>
-          <ScrollButton direction="left"
-                        disabled={activeIndex === -1}
-                        onClick={() => {
-                          if (activeIndex >= 0) {
-                            activateArea(activeIndex - 1)
-                          }
-                        }} />
-        </div>
-        <div className={styles.right}>
-          <ScrollButton direction="right"
-                        disabled={activeIndex >= areas.length}
-                        onClick={() => {
-                          if (activeIndex < areas.length) {
-                            activateArea(activeIndex + 1)
-                          }
-                        }}/>
-        </div>
-      </>
-    );
-  }
-
   function renderVisibleAreas() {
     return areas.map((area, index) =>
       <ImageArea key={index}
@@ -235,62 +205,63 @@ export function HotspotsImage({
   }
 
   return (
-    <div className={classNames(styles.outer, {[styles.customMargin]: customMargin})}
-         style={{'--hotspots-image-aspect-ratio': aspectRatio,
-                 '--hotspots-container-height': `${containerRect.height}px`}}>
-      {renderScrollButtons()}
-      <div className={styles.center}>
-        <FitViewport file={imageFile}
-                     aspectRatio={imageFile ? undefined : 0.75}
-                     fill={configuration.position === 'backdrop'}
-                     opaque={!imageFile}>
-          <Composite activeIndex={activeIndex + 1}
-                     loop={false}
-                     onNavigate={index => activateArea(index - 1)}>
-            <div className={styles.tooltipsWrapper}>
-              {children(
-                <FitViewport.Content>
-                  <div className={styles.stack}
-                       ref={containerRef}>
-                    <div className={styles.wrapper}
-                         ref={panZoomRefs.wrapper}
-                         style={{transform: panZoomTransforms.initial.wrapper}}>
-                      <Image imageFile={imageFile}
-                             load={shouldLoad}
-                             fill={false}
-                             structuredData={true}
-                             variant={panZoomEnabled ? 'ultra' : 'large'}
-                             preferSvg={true} />
-                      {renderVisibleAreas()}
-                    </div>
-                    <Scroller disabled={!panZoomEnabled}
-                              areas={areas}
-                              ref={panZoomRefs.scroller}
-                              setStepRef={panZoomRefs.setStep}>
-                      <div className={styles.wrapper}
-                           ref={panZoomRefs.scrollerAreas}
-                           style={{transform: panZoomTransforms.initial.wrapper}}>
-                        {renderClickableAreas()}
-                      </div>
-                    </Scroller>
-                    {renderIndicators()}
+    <Pager areas={areas}
+           customMargin={customMargin}
+           panZoomEnabled={panZoomEnabled}
+           activeIndex={activeIndex}
+           activateArea={activateArea}>
+      <FitViewport file={imageFile}
+                   aspectRatio={imageFile ? undefined : 0.75}
+                   fill={configuration.position === 'backdrop'}
+                   opaque={!imageFile}>
+        <Composite activeIndex={activeIndex + 1}
+                   loop={false}
+                   onNavigate={index => activateArea(index - 1)}>
+          <div className={styles.tooltipsWrapper}
+               style={{'--hotspots-image-aspect-ratio': aspectRatio,
+                       '--hotspots-container-height': `${containerRect.height}px`}}>
+            {children(
+              <FitViewport.Content>
+                <div className={styles.stack}
+                     ref={containerRef}>
+                  <div className={styles.wrapper}
+                       ref={panZoomRefs.wrapper}
+                       style={{transform: panZoomTransforms.initial.wrapper}}>
+                    <Image imageFile={imageFile}
+                           load={shouldLoad}
+                           fill={false}
+                           structuredData={true}
+                           variant={panZoomEnabled ? 'ultra' : 'large'}
+                           preferSvg={true} />
+                    {renderVisibleAreas()}
                   </div>
-                  {renderFullscreenToggle()}
-                  <InlineFileRights configuration={configuration}
-                                    context="insideElement"
-                                    items={[{file: imageFile, label: 'image'}]} />
-                </FitViewport.Content>
-              )}
-              <CompositeItem render={<div className={styles.compositeItem} />} />
-              {renderTooltips()}
-              <CompositeItem render={<div className={styles.compositeItem} />} />
-            </div>
-          </Composite>
-          <InlineFileRights configuration={configuration}
-                            context="afterElement"
-                            items={[{file: imageFile, label: 'image'}]} />
-        </FitViewport>
-      </div>
-    </div>
+                  <Scroller disabled={!panZoomEnabled}
+                            areas={areas}
+                            ref={panZoomRefs.scroller}
+                            setStepRef={panZoomRefs.setStep}>
+                    <div className={styles.wrapper}
+                         ref={panZoomRefs.scrollerAreas}
+                         style={{transform: panZoomTransforms.initial.wrapper}}>
+                      {renderClickableAreas()}
+                    </div>
+                  </Scroller>
+                  {renderIndicators()}
+                </div>
+                {renderFullscreenToggle()}
+                <InlineFileRights configuration={configuration}
+                                  context="insideElement"
+                                  items={[{file: imageFile, label: 'image'}]} />
+              </FitViewport.Content>
+            )}
+            <CompositeItem render={<div className={styles.compositeItem} />} />
+            {renderTooltips()}
+            <CompositeItem render={<div className={styles.compositeItem} />} />
+          </div>
+        </Composite>
+        <InlineFileRights configuration={configuration}
+                          context="afterElement"
+                          items={[{file: imageFile, label: 'image'}]} />
+      </FitViewport>
+    </Pager>
   );
 }
