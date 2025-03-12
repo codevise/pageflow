@@ -244,9 +244,10 @@ describe('Hotspots', () => {
 
       fakeResizeObserver.contentRect = {width: 200, height: 100};
       getPanZoomStepTransform.mockReturnValue({
-        x: -800,
-        y: -200,
-        scale: 5
+        x: -400,
+        y: -100,
+        scale: 2,
+        indicators: [{x: -800, y: -200}]
       })
       const {container, simulateScrollPosition} = renderInContentElement(
         <Hotspots configuration={configuration} />, {seed}
@@ -254,7 +255,7 @@ describe('Hotspots', () => {
       simulateScrollPosition('near viewport');
 
       expect(container.querySelector(`.${tooltipStyles.reference}`).parentElement).toHaveStyle({
-        transform: 'translate(-800px, -200px) scale(5)'
+        transform: 'translate(-400px, -100px) scale(2)'
       });
     });
   });

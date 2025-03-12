@@ -106,10 +106,8 @@ export function HotspotsImage({
   });
 
   const {panZoomRefs, scrollFromToArea} = useScrollPanZoom({
-    containerRect,
-    imageFile,
-    areas,
-    enabled: panZoomEnabled && shouldLoad,
+    panZoomTransforms,
+    enabled: shouldLoad,
     onChange: setActiveIndex
   });
 
@@ -191,7 +189,7 @@ export function HotspotsImage({
                          activeIndex >= 0 &&
                          activeIndex < areas.length &&
                          activeIndex !== index}
-                 panZoomTransform={panZoomTransforms.areas[index].indicator}
+                 panZoomTransform={panZoomTransforms.initial.indicators[index].wrapper}
                  outerRef={panZoomRefs.setIndicator(index)} />
     );
   }
@@ -203,7 +201,7 @@ export function HotspotsImage({
                contentElementId={contentElementId}
                containerRect={containerRect}
                imageFile={imageFile}
-               panZoomTransform={panZoomTransforms.areas[index].tooltip}
+               panZoomTransform={panZoomTransforms.initial.tooltips[index]}
                configuration={configuration}
                visible={activeIndex === index ||
                         (!panZoomEnabled && activeIndex < 0 && hoveredIndex === index)}
@@ -250,7 +248,7 @@ export function HotspotsImage({
                        ref={containerRef}>
                     <div className={styles.wrapper}
                          ref={panZoomRefs.wrapper}
-                         style={{transform: panZoomTransforms.wrapper}}>
+                         style={{transform: panZoomTransforms.initial.wrapper}}>
                       <Image imageFile={imageFile}
                              load={shouldLoad}
                              fill={false}
@@ -265,7 +263,7 @@ export function HotspotsImage({
                               setStepRef={panZoomRefs.setStep}>
                       <div className={styles.wrapper}
                            ref={panZoomRefs.scrollerAreas}
-                           style={{transform: panZoomTransforms.wrapper}}>
+                           style={{transform: panZoomTransforms.initial.wrapper}}>
                         {renderClickableAreas()}
                       </div>
                     </Scroller>

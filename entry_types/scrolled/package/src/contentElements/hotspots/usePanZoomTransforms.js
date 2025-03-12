@@ -1,3 +1,5 @@
+import {useMemo} from 'react';
+
 import {
   getInitialTransform,
   getPanZoomStepTransform
@@ -6,33 +8,77 @@ import {
 import {getBoundingRect} from './getBoundingRect';
 
 export function usePanZoomTransforms({containerRect, imageFile, areas, panZoomEnabled}) {
-  const initialTransform = getInitialTransform({
-    motifArea: getBoundingRect(areas.flatMap(area => area.outline || [])),
-    imageFileWidth: imageFile?.width,
-    imageFileHeight: imageFile?.height,
-    containerWidth: containerRect.width,
-    containerHeight: containerRect.height,
-    indicatorPositions: areas.map(area => area.indicatorPosition || [50, 50])
-  });
+  const imageFileWidth = imageFile?.width;
+  const imageFileHeight = imageFile?.height;
 
-  return {
-    wrapper: toString(initialTransform),
-    areas: areas.map((area, index) => ({
-      tooltip: toString(
-        panZoomEnabled ?
-        getPanZoomStepTransform({
+  const containerWidth = containerRect.width;
+  const containerHeight = containerRect.height;
+
+  return useMemo(() => {
+    const indicatorPositions = areas.map(area => area.indicatorPosition || [50, 50]);
+
+    const initialTransform = getInitialTransform({
+      motifArea: getBoundingRect(areas.flatMap(area => area.outline || [])),
+      imageFileWidth,
+      imageFileHeight,
+      containerWidth,
+      containerHeight,
+      indicatorPositions
+    });
+
+    const initialTransformString = toString(initialTransform)
+
+    const areaTransforms = [];
+    const tooltipTransforms = [];
+
+    areas.forEach((area, index) => {
+      if (panZoomEnabled && containerWidth) {
+        const transform = getPanZoomStepTransform({
           areaOutline: area.outline,
           areaZoom: area.zoom || 0,
-          imageFileWidth: imageFile?.width,
-          imageFileHeight: imageFile?.height,
-          containerWidth: containerRect.width,
-          containerHeight: containerRect.height
-        }) :
-        initialTransform
-      ),
-      indicator: toString(initialTransform.indicators[index])
-    }))
-  };
+          imageFileWidth,
+          imageFileHeight,
+          containerWidth,
+          containerHeight,
+          indicatorPositions
+        });
+
+        const transformString = toString(transform);
+
+        areaTransforms.push({
+          wrapper: transformString,
+          indicators: toWrapperTransformStrings(transform.indicators)
+        });
+
+        tooltipTransforms.push(transformString);
+      }
+      else {
+        tooltipTransforms.push(initialTransformString);
+      }
+    });
+
+    return {
+      initial: {
+        wrapper: initialTransformString,
+        indicators: toWrapperTransformStrings(initialTransform.indicators),
+        tooltips: tooltipTransforms
+      },
+      areas: areaTransforms
+    };
+  }, [
+    panZoomEnabled,
+    areas,
+    imageFileWidth,
+    imageFileHeight,
+    containerWidth,
+    containerHeight
+  ]);
+}
+
+function toWrapperTransformStrings(transforms) {
+  return transforms.map(transform => ({
+    wrapper: toString(transform)
+  }));
 }
 
 function toString(transform) {

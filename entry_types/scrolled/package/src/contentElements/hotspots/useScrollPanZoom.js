@@ -2,12 +2,9 @@ import {useRef, useCallback, useMemo} from 'react';
 import {useIsomorphicLayoutEffect} from 'pageflow-scrolled/frontend';
 
 import {useIntersectionObserver} from './useIntersectionObserver';
-import {getPanZoomStepTransform} from './panZoom';
 
 export function useScrollPanZoom({
-  imageFile, containerRect, areas,
-  enabled,
-  onChange
+  panZoomTransforms, enabled, onChange
 }) {
   const wrapperRef = useRef();
   const scrollerAreasRef = useRef();
@@ -20,47 +17,19 @@ export function useScrollPanZoom({
     onVisibleIndexChange
   });
 
-  const imageFileWidth = imageFile?.width;
-  const imageFileHeight = imageFile?.height;
-
-  const containerWidth = containerRect.width;
-  const containerHeight = containerRect.height;
-
   const steps = useMemo(() => {
-    if (!enabled || !containerWidth) {
+    if (!enabled || !panZoomTransforms.areas.length) {
       return;
     }
 
     return [
-      {
-        x: 0,
-        y: 0,
-        scale: 1,
-        indicators: []
-      },
-      ...areas.map(area => getPanZoomStepTransform({
-        areaOutline: area.outline,
-        areaZoom: area.zoom || 0,
-        indicatorPositions: areas.map(area => area.indicatorPosition || [50, 50]),
-        imageFileWidth,
-        imageFileHeight,
-        containerWidth,
-        containerHeight
-      })),
-      {
-        x: 0,
-        y: 0,
-        scale: 1,
-        indicators: []
-      }
+      panZoomTransforms.initial,
+      ...panZoomTransforms.areas,
+      panZoomTransforms.initial
     ];
   }, [
-    areas,
-    enabled,
-    imageFileWidth,
-    imageFileHeight,
-    containerWidth,
-    containerHeight
+    panZoomTransforms,
+    enabled
   ]);
 
   const scrollFromToArea = useCallback((from, to) => {
@@ -83,7 +52,7 @@ export function useScrollPanZoom({
       }
     );
 
-    areas.forEach((area, index) => {
+    panZoomTransforms.areas.forEach((_, index) => {
       indicatorRefs.current[index].animate(
         [
           keyframe(steps[from + 1].indicators?.[index] || {x: 0, y: 0}),
@@ -94,7 +63,7 @@ export function useScrollPanZoom({
         }
       );
     });
-  }, [scrollerRef, steps, areas]);
+  }, [scrollerRef, steps, panZoomTransforms]);
 
   useIsomorphicLayoutEffect(() => {
     if (!steps) {
@@ -118,7 +87,7 @@ export function useScrollPanZoom({
       ))
     );
 
-    areas.forEach((area, index) => {
+    panZoomTransforms.areas.forEach((_, index) => {
       animations.push(indicatorRefs.current[index].animate(
         steps.map(step => keyframe(step.indicators?.[index] || {x: 0, y: 0})),
         {
@@ -129,7 +98,7 @@ export function useScrollPanZoom({
     });
 
     return () => animations.forEach(animation => animation.cancel());
-  }, [areas, steps]);
+  }, [panZoomTransforms, steps]);
 
   const setIndicatorRef = index => ref => {
     indicatorRefs.current[index] = ref;
@@ -149,7 +118,7 @@ export function useScrollPanZoom({
 
 function keyframe(step) {
   return {
-    transform: `translate(${step.x}px, ${step.y}px) scale(${step.scale || 1})`,
+    transform: step.wrapper,
     easing: 'ease',
   };
 }
