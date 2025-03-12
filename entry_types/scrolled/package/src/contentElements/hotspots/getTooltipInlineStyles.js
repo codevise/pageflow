@@ -35,7 +35,7 @@ function getReferencePositionInPercent({area}) {
   }
 }
 
-function getIndicatorRect(indicatorPosition = [50, 50]) {
+function getIndicatorRect(indicatorPosition) {
   return {
     left: indicatorPosition[0],
     top: indicatorPosition[1],

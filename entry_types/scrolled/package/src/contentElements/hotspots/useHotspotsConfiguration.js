@@ -30,7 +30,7 @@ function useAreas(configuration, portraitMode) {
   return useMemo(() => {
     return (configuration.areas || []).map(area => {
       if (portraitMode) {
-        return {
+        return applyAreaDefaults({
           ...area,
           outline: area.portraitOutline,
           zoom: area.portraitZoom,
@@ -41,13 +41,22 @@ function useAreas(configuration, portraitMode) {
           tooltipReference: area.portraitTooltipReference,
           tooltipPosition: area.portraitTooltipPosition,
           tooltipMaxWidth: area.portraitTooltipMaxWidth
-        };
+        });
       }
       else {
-        return area;
+        return applyAreaDefaults(area);
       }
     });
   }, [configuration.areas, portraitMode]);
+}
+
+function applyAreaDefaults(area) {
+  return {
+    ...area,
+    outline: area.outline?.length ? area.outline : [[50, 50]],
+    zoom: area.zoom || 0,
+    indicatorPosition: area.indicatorPosition || [50, 50],
+  };
 }
 
 function usePanZoomEnabled(configuration) {

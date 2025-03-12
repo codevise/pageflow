@@ -10,7 +10,7 @@ export function getPanZoomStepTransform({
     return {x: 0, y: 0, scale: 1, indicators: indicatorPositions.map(() => ({x: 0, y: 0}))};
   }
 
-  const rect = getBoundingRect(areaOutline || []);
+  const rect = getBoundingRect(areaOutline);
 
   const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
   const displayImageHeight = containerHeight;

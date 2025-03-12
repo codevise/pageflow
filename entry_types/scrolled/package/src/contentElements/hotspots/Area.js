@@ -38,12 +38,12 @@ function Outline({points, color}) {
     <svg className={styles.outline} xmlns="http://www.w3.org/2000/svg"
          viewBox="0 0 100 100"
          preserveAspectRatio="none">
-      <polygon points={(points || []).map(coords => coords.map(coord => coord).join(',')).join(' ')}
+      <polygon points={(points).map(coords => coords.map(coord => coord).join(',')).join(' ')}
                style={{stroke: color}} />
     </svg>
   );
 }
 
 function polygon(points) {
-  return `polygon(${(points || []).map(coords => coords.map(coord => `${coord}%`).join(' ')).join(', ')})`;
+  return `polygon(${(points).map(coords => coords.map(coord => `${coord}%`).join(' ')).join(', ')})`;
 }

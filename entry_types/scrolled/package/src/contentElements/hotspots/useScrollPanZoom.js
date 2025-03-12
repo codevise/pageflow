@@ -55,8 +55,8 @@ export function useScrollPanZoom({
     panZoomTransforms.areas.forEach((_, index) => {
       indicatorRefs.current[index].animate(
         [
-          keyframe(steps[from + 1].indicators?.[index] || {x: 0, y: 0}),
-          keyframe(steps[to + 1].indicators?.[index] || {x: 0, y: 0})
+          keyframe(steps[from + 1].indicators[index]),
+          keyframe(steps[to + 1].indicators[index])
         ],
         {
           duration: 200
@@ -89,7 +89,7 @@ export function useScrollPanZoom({
 
     panZoomTransforms.areas.forEach((_, index) => {
       animations.push(indicatorRefs.current[index].animate(
-        steps.map(step => keyframe(step.indicators?.[index] || {x: 0, y: 0})),
+        steps.map(step => keyframe(step.indicators[index])),
         {
           fill: 'both',
           timeline: scrollTimeline

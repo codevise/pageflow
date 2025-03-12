@@ -15,10 +15,10 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, panZoomEn
   const containerHeight = containerRect.height;
 
   return useMemo(() => {
-    const indicatorPositions = areas.map(area => area.indicatorPosition || [50, 50]);
+    const indicatorPositions = areas.map(area => area.indicatorPosition);
 
     const initialTransform = getInitialTransform({
-      motifArea: getBoundingRect(areas.flatMap(area => area.outline || [])),
+      motifArea: getBoundingRect(areas.flatMap(area => area.outline)),
       imageFileWidth,
       imageFileHeight,
       containerWidth,
@@ -35,7 +35,7 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, panZoomEn
       if (panZoomEnabled && containerWidth) {
         const transform = getPanZoomStepTransform({
           areaOutline: area.outline,
-          areaZoom: area.zoom || 0,
+          areaZoom: area.zoom,
           imageFileWidth,
           imageFileHeight,
           containerWidth,
