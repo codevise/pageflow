@@ -45,6 +45,7 @@ export function Hotspots({
           isIntersecting={sectionProps.isIntersecting}
           displayFullscreenToggle={contentElementWidth !== contentElementWidths.full &&
                                    configuration.enableFullscreen}
+          keepTooltipsInViewport={configuration.position === 'backdrop'}
           onFullscreenEnter={enterFullscreen}
           floatingStrategy={configuration.position === 'standAlone' ? 'fixed' : 'absolute'}>
           {children =>
