@@ -18,6 +18,10 @@
   grid-column: 1;
 }
 
+.letterboxBackground {
+  filter: blur(20px) brightness(0.7);
+}
+
 .wrapper {
   transform-origin: 0 0;
   position: relative;

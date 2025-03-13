@@ -206,6 +206,20 @@ export function HotspotsImage({
     );
   }
 
+  function renderLetterboxBackground() {
+    if (configuration.position !== 'backdrop') {
+      return null;
+    }
+
+    return (
+      <div className={styles.letterboxBackground}>
+        <Image imageFile={imageFile}
+               load={shouldLoad}
+               variant={'medium'} />
+      </div>
+    );
+  }
+
   return (
     <Pager areas={areas}
            customMargin={customMargin}
@@ -227,6 +241,7 @@ export function HotspotsImage({
               <FitViewport.Content>
                 <div className={styles.stack}
                      ref={containerRef}>
+                  {renderLetterboxBackground()}
                   <div className={styles.wrapper}
                        ref={panZoomRefs.wrapper}
                        style={{transform: panZoomTransforms.initial.wrapper}}>
