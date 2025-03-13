@@ -24,6 +24,7 @@
 
 .inner {
   height: var(--hotspots-container-height);
+  position: relative;
 }
 
 .step {

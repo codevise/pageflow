@@ -24,7 +24,9 @@
 
 .wrapper {
   transform-origin: 0 0;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   aspect-ratio: var(--hotspots-image-aspect-ratio);
 }
