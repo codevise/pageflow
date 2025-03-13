@@ -54,7 +54,10 @@ editor.contentElementTypes.register('hotspots', {
       this.view(SeparatorView);
       this.input('enableFullscreen', CheckBoxInputView, {
         disabledBinding: ['position', 'width'],
-        disabled: () => contentElement.getWidth() === contentElementWidths.full,
+        disabled: () => (
+          contentElement.getWidth() === contentElementWidths.full ||
+          contentElement.getPosition() === 'backdrop'
+        ),
         displayUncheckedIfDisabled: true
       });
       this.group('ContentElementPosition');
