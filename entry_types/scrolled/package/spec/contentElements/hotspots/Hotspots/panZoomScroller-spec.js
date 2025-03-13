@@ -319,7 +319,8 @@ describe('Hotspots', () => {
       imageFileHeight: 1080,
       containerWidth: 2000,
       containerHeight: 500,
-      indicatorPositions: [[50, 50]]
+      indicatorPositions: [[50, 50]],
+      initialScale: 1
     });
   });
 
@@ -360,7 +361,8 @@ describe('Hotspots', () => {
       imageFileHeight: 1920,
       containerWidth: 2000,
       containerHeight: 500,
-      indicatorPositions: [[50, 50]]
+      indicatorPositions: [[50, 50]],
+      initialScale: 1
     });
   });
 

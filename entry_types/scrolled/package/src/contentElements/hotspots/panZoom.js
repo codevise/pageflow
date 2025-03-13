@@ -1,7 +1,13 @@
 import {getBoundingRect} from './getBoundingRect';
 
+const fullRect = {left: 0, top: 0, width: 100, height: 100};
+
 export function getPanZoomStepTransform({
-  imageFileWidth, imageFileHeight, areaOutline, areaZoom, containerWidth, containerHeight, indicatorPositions = []
+  containerWidth, containerHeight,
+  imageFileWidth, imageFileHeight,
+  areaOutline, areaZoom,
+  indicatorPositions = [],
+  initialScale
 }) {
   const rect = getBoundingRect(areaOutline);
 
@@ -9,14 +15,23 @@ export function getPanZoomStepTransform({
   const displayImageHeight = containerHeight;
 
   const scale = getScale({
-    imageFileWidth, imageFileHeight, zoom: areaZoom, containerWidth, containerHeight,
+    imageFileWidth,
+    imageFileHeight,
+    containerWidth,
+    containerHeight,
+    zoom: areaZoom,
+    initialScale,
     rect
-  })
+  });
 
   const {translateX, translateY} = center({
-    imageFileWidth, imageFileHeight, containerWidth, containerHeight,
-    rect, scale
-  })
+    imageFileWidth,
+    imageFileHeight,
+    containerWidth,
+    containerHeight,
+    rect,
+    scale
+  });
 
   return {
     x: translateX,
@@ -34,12 +49,13 @@ export function getPanZoomStepTransform({
 }
 
 export function getInitialTransform({
-  imageFileWidth, imageFileHeight, containerWidth, containerHeight, motifArea, indicatorPositions = []
+  containerWidth, containerHeight,
+  imageFileWidth, imageFileHeight,
+  motifArea,
+  indicatorPositions = []
 }) {
   const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
   const displayImageHeight = containerHeight;
-
-  const fullRect = {left: 0, top: 0, width: 100, height: 100};
 
   const scaleCover = getScale({
     imageFileWidth,
@@ -49,18 +65,18 @@ export function getInitialTransform({
     zoom: 100,
     rect: fullRect,
     cover: true
-  })
+  });
 
-  const scaleContainMofif = getScale({
+  const scaleContainMotif = getScale({
     imageFileWidth,
     imageFileHeight,
     containerWidth,
     containerHeight,
     zoom: 100,
     rect: motifArea
-  })
+  });
 
-  const scale = Math.min(scaleCover, scaleContainMofif);
+  const scale = Math.min(scaleCover, scaleContainMotif);
 
   const {translateX, translateY} = center({
     imageFileWidth,
@@ -68,9 +84,9 @@ export function getInitialTransform({
     containerWidth,
     containerHeight,
     scale,
-    unbounded: scaleContainMofif < scaleCover,
+    unbounded: scaleContainMotif < scaleCover,
     rect: motifArea
-  })
+  });
 
   return {
     x: translateX,
@@ -95,7 +111,9 @@ function transformIndicators({indicatorPositions, displayImageWidth, displayImag
 }
 
 export function center({
-  imageFileWidth, imageFileHeight, containerWidth, containerHeight, unbounded,
+  imageFileWidth, imageFileHeight,
+  containerWidth, containerHeight,
+  unbounded,
   rect, scale
 }) {
   const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
@@ -135,8 +153,12 @@ export function center({
 }
 
 function getScale({
-  imageFileWidth, imageFileHeight, zoom, containerWidth, containerHeight,
-  rect, cover
+  containerWidth, containerHeight,
+  imageFileWidth, imageFileHeight,
+  rect,
+  zoom,
+  cover,
+  initialScale = 1
 }) {
   if (!containerWidth ||
       !containerHeight ||
@@ -151,8 +173,13 @@ function getScale({
   const displayAreaWidth = rect.width / 100 * displayImageWidth;
   const displayAreaHeight = rect.height / 100 * displayImageHeight;
 
-  const scaleX = (100 - zoom) / 100 + (zoom / 100) * containerWidth / displayAreaWidth;
-  const scaleY = (100 - zoom) / 100 + (zoom / 100) * containerHeight / displayAreaHeight;
+  const scaleX =
+    (100 - zoom) / 100 * initialScale +
+    (zoom / 100) * containerWidth / displayAreaWidth;
+
+  const scaleY =
+    (100 - zoom) / 100 * initialScale +
+    (zoom / 100) * containerHeight / displayAreaHeight;
 
   return cover ? Math.max(scaleX, scaleY) : Math.min(scaleX, scaleY);
 }

@@ -52,6 +52,7 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, enabled, 
         const transform = getPanZoomStepTransform({
           areaOutline: area.outline,
           areaZoom: area.zoom,
+          initialScale: initialTransform.scale,
           imageFileWidth,
           imageFileHeight,
           containerWidth,
