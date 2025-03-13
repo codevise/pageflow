@@ -26,16 +26,21 @@ export function usePanZoomTransforms({
     }
 
     const indicatorPositions = areas.map(area => area.indicatorPosition);
+    const areasBoundingRect = getBoundingRect(areas.flatMap(area => area.outline));
 
     const initialTransform =
       initialTransformEnabled ?
       getInitialTransform({
-        motifArea: getBoundingRect(areas.flatMap(area => area.outline)),
+        areasBoundingRect,
         imageFileWidth,
         imageFileHeight,
         containerWidth,
         containerHeight,
-        indicatorPositions
+        indicatorPositions,
+        containerSafeAreaMargin: getContainerSafeAreaMargin({
+          panZoomEnabled,
+          areasBoundingRect
+        })
       }) :
       nullTransform;
 
@@ -87,6 +92,16 @@ export function usePanZoomTransforms({
     containerWidth,
     containerHeight
   ]);
+}
+
+const pagerButtonsMargin = 8;
+
+function getContainerSafeAreaMargin({panZoomEnabled, areasBoundingRect}) {
+  return panZoomEnabled && insideSafeArea(areasBoundingRect) ? pagerButtonsMargin : 0;
+}
+
+function insideSafeArea(rect) {
+  return rect.left >= pagerButtonsMargin && rect.left + rect.width <= 100 - pagerButtonsMargin;
 }
 
 function toString(transform) {

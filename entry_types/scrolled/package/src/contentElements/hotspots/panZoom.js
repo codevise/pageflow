@@ -5,8 +5,9 @@ const fullRect = {left: 0, top: 0, width: 100, height: 100};
 export function getInitialTransform({
   containerWidth, containerHeight,
   imageFileWidth, imageFileHeight,
-  motifArea,
-  indicatorPositions = []
+  areasBoundingRect,
+  indicatorPositions = [],
+  containerSafeAreaMargin = 0
 }) {
   const baseImageWidth = imageFileWidth * containerHeight / imageFileHeight;
   const baseImageHeight = containerHeight;
@@ -22,9 +23,9 @@ export function getInitialTransform({
   const scaleContainMotif = getScaleToContainRectInContainer({
     baseImageWidth,
     baseImageHeight,
-    containerWidth,
+    containerWidth: containerWidth * (1 - 2 * containerSafeAreaMargin / 100),
     containerHeight,
-    rect: motifArea
+    rect: areasBoundingRect
   });
 
   const scale = Math.min(scaleCover, scaleContainMotif);
@@ -36,7 +37,7 @@ export function getInitialTransform({
     containerHeight,
     scale,
     unbounded: scaleContainMotif < scaleCover,
-    rect: motifArea
+    rect: areasBoundingRect
   });
 
   return {
