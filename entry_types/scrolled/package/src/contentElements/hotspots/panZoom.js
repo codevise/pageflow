@@ -11,28 +11,25 @@ export function getInitialTransform({
   const baseImageWidth = imageFileWidth * containerHeight / imageFileHeight;
   const baseImageHeight = containerHeight;
 
-  const scaleCover = getScale({
+  const scaleCover = getScaleToCoverContainerWithRect({
     baseImageWidth,
     baseImageHeight,
     containerWidth,
     containerHeight,
-    zoom: 100,
-    rect: fullRect,
-    cover: true
+    rect: fullRect
   });
 
-  const scaleContainMotif = getScale({
+  const scaleContainMotif = getScaleToContainRectInContainer({
     baseImageWidth,
     baseImageHeight,
     containerWidth,
     containerHeight,
-    zoom: 100,
     rect: motifArea
   });
 
   const scale = Math.min(scaleCover, scaleContainMotif);
 
-  const {translateX, translateY} = center({
+  const [translateX, translateY] = center({
     baseImageWidth,
     baseImageHeight,
     containerWidth,
@@ -66,27 +63,27 @@ export function getPanZoomStepTransform({
   indicatorPositions = [],
   initialScale
 }) {
-  const rect = getBoundingRect(areaOutline);
+  const areaRect = getBoundingRect(areaOutline);
 
   const baseImageWidth = imageFileWidth * containerHeight / imageFileHeight;
   const baseImageHeight = containerHeight;
 
-  const scale = getScale({
+  const scale = getAreaScale({
     baseImageWidth,
     baseImageHeight,
     containerWidth,
     containerHeight,
-    zoom: areaZoom,
-    initialScale,
-    rect
+    areaRect,
+    areaZoom,
+    initialScale
   });
 
-  const {translateX, translateY} = center({
+  const [translateX, translateY] = center({
     baseImageWidth,
     baseImageHeight,
     containerWidth,
     containerHeight,
-    rect,
+    rect: areaRect,
     scale
   });
 
@@ -118,26 +115,63 @@ function transformIndicators({
   }));
 }
 
-function getScale({
+function getAreaScale({
   containerWidth, containerHeight,
   baseImageWidth, baseImageHeight,
-  rect,
-  zoom,
-  cover,
+  areaRect,
+  areaZoom,
   initialScale = 1
+}) {
+  const scale = getScaleToContainRectInContainer({
+    containerWidth, containerHeight,
+    baseImageWidth, baseImageHeight,
+    rect: areaRect
+  });
+
+  return (100 - areaZoom) / 100 * initialScale +
+         (areaZoom / 100) * scale;
+}
+
+function getScaleToCoverContainerWithRect({
+  containerWidth, containerHeight,
+  baseImageWidth, baseImageHeight,
+  rect
+}) {
+  const [scaleX, scaleY] = getScalesToFit({
+    containerWidth, containerHeight,
+    baseImageWidth, baseImageHeight,
+    rect
+  });
+
+  return Math.max(scaleX, scaleY)
+};
+
+function getScaleToContainRectInContainer({
+  containerWidth, containerHeight,
+  baseImageWidth, baseImageHeight,
+  rect
+}) {
+  const [scaleX, scaleY] = getScalesToFit({
+    containerWidth, containerHeight,
+    baseImageWidth, baseImageHeight,
+    rect
+  });
+
+  return Math.min(scaleX, scaleY)
+};
+
+function getScalesToFit({
+  containerWidth, containerHeight,
+  baseImageWidth, baseImageHeight,
+  rect
 }) {
   const baseRectWidth = rect.width / 100 * baseImageWidth;
   const baseRectHeight = rect.height / 100 * baseImageHeight;
 
-  const scaleX =
-    (100 - zoom) / 100 * initialScale +
-     (zoom / 100) * containerWidth / baseRectWidth;
-
-  const scaleY =
-    (100 - zoom) / 100 * initialScale +
-      (zoom / 100) * containerHeight / baseRectHeight;
-
-  return cover ? Math.max(scaleX, scaleY) : Math.min(scaleX, scaleY);
+  return [
+    containerWidth / baseRectWidth,
+    containerHeight / baseRectHeight
+  ];
 }
 
 export function center({
@@ -179,5 +213,5 @@ export function center({
     }
   }
 
-  return {translateX, translateY};
+  return [translateX, translateY];
 }
