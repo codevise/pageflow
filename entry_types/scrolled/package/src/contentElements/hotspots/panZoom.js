@@ -8,12 +8,12 @@ export function getInitialTransform({
   motifArea,
   indicatorPositions = []
 }) {
-  const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
-  const displayImageHeight = containerHeight;
+  const baseImageWidth = imageFileWidth * containerHeight / imageFileHeight;
+  const baseImageHeight = containerHeight;
 
   const scaleCover = getScale({
-    imageFileWidth,
-    imageFileHeight,
+    baseImageWidth,
+    baseImageHeight,
     containerWidth,
     containerHeight,
     zoom: 100,
@@ -22,8 +22,8 @@ export function getInitialTransform({
   });
 
   const scaleContainMotif = getScale({
-    imageFileWidth,
-    imageFileHeight,
+    baseImageWidth,
+    baseImageHeight,
     containerWidth,
     containerHeight,
     zoom: 100,
@@ -33,8 +33,8 @@ export function getInitialTransform({
   const scale = Math.min(scaleCover, scaleContainMotif);
 
   const {translateX, translateY} = center({
-    imageFileWidth,
-    imageFileHeight,
+    baseImageWidth,
+    baseImageHeight,
     containerWidth,
     containerHeight,
     scale,
@@ -50,8 +50,8 @@ export function getInitialTransform({
     },
     indicators: transformIndicators({
       indicatorPositions,
-      displayImageWidth,
-      displayImageHeight,
+      baseImageWidth,
+      baseImageHeight,
       translateX,
       translateY,
       scale
@@ -68,12 +68,12 @@ export function getPanZoomStepTransform({
 }) {
   const rect = getBoundingRect(areaOutline);
 
-  const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
-  const displayImageHeight = containerHeight;
+  const baseImageWidth = imageFileWidth * containerHeight / imageFileHeight;
+  const baseImageHeight = containerHeight;
 
   const scale = getScale({
-    imageFileWidth,
-    imageFileHeight,
+    baseImageWidth,
+    baseImageHeight,
     containerWidth,
     containerHeight,
     zoom: areaZoom,
@@ -82,8 +82,8 @@ export function getPanZoomStepTransform({
   });
 
   const {translateX, translateY} = center({
-    imageFileWidth,
-    imageFileHeight,
+    baseImageWidth,
+    baseImageHeight,
     containerWidth,
     containerHeight,
     rect,
@@ -98,8 +98,8 @@ export function getPanZoomStepTransform({
     },
     indicators: transformIndicators({
       indicatorPositions,
-      displayImageWidth,
-      displayImageHeight,
+      baseImageWidth,
+      baseImageHeight,
       translateX,
       translateY,
       scale
@@ -107,74 +107,75 @@ export function getPanZoomStepTransform({
   };
 }
 
-function transformIndicators({indicatorPositions, displayImageWidth, displayImageHeight, translateX, translateY, scale}) {
+function transformIndicators({
+  indicatorPositions,
+  baseImageWidth, baseImageHeight,
+  translateX, translateY, scale
+}) {
   return indicatorPositions.map(indicatorPosition => ({
-    x: translateX + displayImageWidth * indicatorPosition[0] / 100 * (scale - 1),
-    y: translateY + displayImageHeight * indicatorPosition[1] / 100 * (scale - 1)
+    x: translateX + baseImageWidth * indicatorPosition[0] / 100 * (scale - 1),
+    y: translateY + baseImageHeight * indicatorPosition[1] / 100 * (scale - 1)
   }));
 }
 
 function getScale({
   containerWidth, containerHeight,
-  imageFileWidth, imageFileHeight,
+  baseImageWidth, baseImageHeight,
   rect,
   zoom,
   cover,
   initialScale = 1
 }) {
-  const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
-  const displayImageHeight = containerHeight;
-
-  const displayAreaWidth = rect.width / 100 * displayImageWidth;
-  const displayAreaHeight = rect.height / 100 * displayImageHeight;
+  const baseRectWidth = rect.width / 100 * baseImageWidth;
+  const baseRectHeight = rect.height / 100 * baseImageHeight;
 
   const scaleX =
     (100 - zoom) / 100 * initialScale +
-     (zoom / 100) * containerWidth / displayAreaWidth;
+     (zoom / 100) * containerWidth / baseRectWidth;
 
   const scaleY =
     (100 - zoom) / 100 * initialScale +
-      (zoom / 100) * containerHeight / displayAreaHeight;
+      (zoom / 100) * containerHeight / baseRectHeight;
 
   return cover ? Math.max(scaleX, scaleY) : Math.min(scaleX, scaleY);
 }
 
 export function center({
-  imageFileWidth, imageFileHeight,
+  baseImageWidth, baseImageHeight,
   containerWidth, containerHeight,
   unbounded,
   rect, scale
 }) {
-  const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
-  const displayImageHeight = containerHeight;
+  const displayImageWidth = baseImageWidth * scale;
+  const displayImageHeight = baseImageHeight * scale;
 
-  const displayAreaWidth = rect.width / 100 * displayImageWidth;
-  const displayAreaLeft = rect.left / 100 * displayImageWidth;
-  const displayAreaHeight = rect.height / 100 * displayImageHeight;
-  const displayAreaTop = rect.top / 100 * displayImageHeight;
+  const displayRectWidth = rect.width / 100 * displayImageWidth;
+  const displayRectLeft = rect.left / 100 * displayImageWidth;
+  const displayRectHeight = rect.height / 100 * displayImageHeight;
+  const displayRectTop = rect.top / 100 * displayImageHeight;
 
   let translateX;
   let translateY;
 
-  if (displayImageWidth * scale < containerWidth) {
-    translateX = (containerWidth - displayImageWidth * scale) / 2;
+  if (displayImageWidth < containerWidth) {
+    translateX = (containerWidth - displayImageWidth) / 2;
   }
   else {
-    translateX = (containerWidth - displayAreaWidth * scale) / 2 - displayAreaLeft * scale;
+    translateX = (containerWidth - displayRectWidth) / 2 - displayRectLeft;
 
     if (!unbounded) {
-      translateX = Math.min(0, Math.max(containerWidth - displayImageWidth * scale, translateX));
+      translateX = Math.min(0, Math.max(containerWidth - displayImageWidth, translateX));
     }
   }
 
-  if (displayImageHeight * scale < containerHeight) {
-    translateY = (containerHeight - displayImageHeight * scale) / 2;
+  if (displayImageHeight < containerHeight) {
+    translateY = (containerHeight - displayImageHeight) / 2;
   }
   else {
-    translateY = (containerHeight - displayAreaHeight * scale) / 2 - displayAreaTop * scale;
+    translateY = (containerHeight - displayRectHeight) / 2 - displayRectTop;
 
     if (!unbounded) {
-      translateY = Math.min(0, Math.max(containerHeight - displayImageHeight * scale, translateY));
+      translateY = Math.min(0, Math.max(containerHeight - displayImageHeight, translateY));
     }
   }
 
