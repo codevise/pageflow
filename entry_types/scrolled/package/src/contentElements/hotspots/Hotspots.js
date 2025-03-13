@@ -105,7 +105,7 @@ export function HotspotsImage({
     containerRect,
     imageFile,
     areas,
-    enabled: panZoomEnabled || configuration.position === 'backdrop',
+    initialTransformEnabled: configuration.position === 'backdrop',
     panZoomEnabled
   });
 

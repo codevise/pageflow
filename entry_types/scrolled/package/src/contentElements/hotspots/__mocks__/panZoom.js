@@ -5,9 +5,11 @@ getInitialTransform.restoreMockImplementation = function() {
   this.mockRestore();
   this.mockImplementation(({indicatorPositions = []}) => {
     return {
-      x: 0,
-      y: 0,
-      scale: 1,
+      wrapper: {
+        x: 0,
+        y: 0,
+        scale: 1
+      },
       indicators: indicatorPositions.map(() => ({
         x: 0,
         y: 0,
@@ -21,9 +23,11 @@ getPanZoomStepTransform.restoreMockImplementation = function() {
   this.mockRestore();
   this.mockImplementation(({indicatorPositions = []}) => {
     return {
-      x: 0,
-      y: 0,
-      scale: 1,
+      wrapper: {
+        x: 0,
+        y: 0,
+        scale: 1
+      },
       indicators: indicatorPositions.map(() => ({
         x: 0,
         y: 0,

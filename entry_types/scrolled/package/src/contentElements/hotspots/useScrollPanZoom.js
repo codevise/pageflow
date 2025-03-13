@@ -118,7 +118,7 @@ export function useScrollPanZoom({
 
 function keyframe(transform) {
   return {
-    transform,
+    transform: transform || 'translate(0px, 0px)',
     easing: 'ease',
   };
 }

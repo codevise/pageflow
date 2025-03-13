@@ -34,8 +34,11 @@ export function getPanZoomStepTransform({
   });
 
   return {
-    x: translateX,
-    y: translateY,
+    wrapper: {
+      x: translateX,
+      y: translateY,
+      scale
+    },
     indicators: transformIndicators({
       indicatorPositions,
       displayImageWidth,
@@ -44,7 +47,6 @@ export function getPanZoomStepTransform({
       translateY,
       scale
     }),
-    scale
   };
 }
 
@@ -89,9 +91,11 @@ export function getInitialTransform({
   });
 
   return {
-    x: translateX,
-    y: translateY,
-    scale,
+    wrapper: {
+      x: translateX,
+      y: translateY,
+      scale
+    },
     indicators: transformIndicators({
       indicatorPositions,
       displayImageWidth,
@@ -160,13 +164,6 @@ function getScale({
   cover,
   initialScale = 1
 }) {
-  if (!containerWidth ||
-      !containerHeight ||
-      !imageFileWidth ||
-      !imageFileHeight) {
-    return {x: 0, y: 0, scale: 1};
-  }
-
   const displayImageWidth = imageFileWidth * containerHeight / imageFileHeight;
   const displayImageHeight = containerHeight;
 

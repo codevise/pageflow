@@ -7,15 +7,9 @@ import {
 
 import {getBoundingRect} from './getBoundingRect';
 
-const nullTransforms = {
-  initial: {
-    indicators: [],
-    tooltips: []
-  },
-  areas: []
-};
-
-export function usePanZoomTransforms({containerRect, imageFile, areas, enabled, panZoomEnabled}) {
+export function usePanZoomTransforms({
+  containerRect, imageFile, areas, initialTransformEnabled, panZoomEnabled
+}) {
   const imageFileWidth = imageFile?.width;
   const imageFileHeight = imageFile?.height;
 
@@ -23,7 +17,7 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, enabled, 
   const containerHeight = containerRect.height;
 
   return useMemo(() => {
-    if (!enabled ||
+    if ((!panZoomEnabled && !initialTransformEnabled) ||
         !containerWidth ||
         !containerHeight ||
         !imageFileWidth ||
@@ -33,16 +27,19 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, enabled, 
 
     const indicatorPositions = areas.map(area => area.indicatorPosition);
 
-    const initialTransform = getInitialTransform({
-      motifArea: getBoundingRect(areas.flatMap(area => area.outline)),
-      imageFileWidth,
-      imageFileHeight,
-      containerWidth,
-      containerHeight,
-      indicatorPositions
-    });
+    const initialTransform =
+      initialTransformEnabled ?
+      getInitialTransform({
+        motifArea: getBoundingRect(areas.flatMap(area => area.outline)),
+        imageFileWidth,
+        imageFileHeight,
+        containerWidth,
+        containerHeight,
+        indicatorPositions
+      }) :
+      nullTransform;
 
-    const initialTransformString = toString(initialTransform)
+    const initialTransformString = toString(initialTransform.wrapper);
 
     const areaTransformStrings = [];
     const tooltipTransformStrings = [];
@@ -52,7 +49,7 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, enabled, 
         const transform = getPanZoomStepTransform({
           areaOutline: area.outline,
           areaZoom: area.zoom,
-          initialScale: initialTransform.scale,
+          initialScale: initialTransform.wrapper?.scale || 1,
           imageFileWidth,
           imageFileHeight,
           containerWidth,
@@ -60,7 +57,7 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, enabled, 
           indicatorPositions
         });
 
-        const transformString = toString(transform);
+        const transformString = toString(transform.wrapper);
 
         areaTransformStrings.push({
           wrapper: transformString,
@@ -93,5 +90,18 @@ export function usePanZoomTransforms({containerRect, imageFile, areas, enabled, 
 }
 
 function toString(transform) {
-  return `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale || 1})`;
+  return transform &&
+         `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale || 1})`;
 }
+
+const nullTransforms = {
+  initial: {
+    indicators: [],
+    tooltips: []
+  },
+  areas: []
+};
+
+const nullTransform = {
+  indicators: []
+};

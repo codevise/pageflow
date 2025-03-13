@@ -112,6 +112,32 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${styles.wrapper}`)).not.toHaveAttribute('style');
   });
 
+  it('does not apply initial transform to wrapper element even when pan zoom is enabled', () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100, width: 2000, height: 1000}]
+    };
+    const configuration = {
+      image: 100,
+      enablePanZoom: 'always',
+      areas: [
+        {
+          outline: [[80, 45], [100, 45], [100, 55], [80, 55]],
+          zoom: 100,
+          indicatorPosition: [90, 50],
+        }
+      ]
+    };
+
+    fakeResizeObserver.contentRect = {width: 200, height: 100};
+    const {container, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    expect(container.querySelector(`.${styles.wrapper}`)).not.toHaveAttribute('style');
+  });
+
   it('applies initial transform to wrapper element to cover backdrop content element', () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},

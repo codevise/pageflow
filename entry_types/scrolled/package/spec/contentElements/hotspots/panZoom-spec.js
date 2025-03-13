@@ -12,9 +12,11 @@ describe('getPanZoomStepTransform', () => {
     });
 
     expect(result).toMatchObject({
-      scale: 1,
-      x: -300,
-      y: 0
+      wrapper: {
+        scale: 1,
+        x: -300,
+        y: 0
+      }
     });
   });
 
@@ -29,9 +31,11 @@ describe('getPanZoomStepTransform', () => {
     });
 
     expect(result).toMatchObject({
-      scale: 2.5,
-      x: -500,
-      y: 0
+      wrapper: {
+        scale: 2.5,
+        x: -500,
+        y: 0
+      }
     });
   });
 });
