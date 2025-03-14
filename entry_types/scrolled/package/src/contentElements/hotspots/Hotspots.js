@@ -47,7 +47,8 @@ export function Hotspots({
                                    configuration.enableFullscreen}
           keepTooltipsInViewport={configuration.position === 'backdrop'}
           onFullscreenEnter={enterFullscreen}
-          floatingStrategy={configuration.position === 'standAlone' ? 'fixed' : 'absolute'}>
+          floatingStrategy={(configuration.position === 'standAlone' ||
+                             configuration.position === 'backdrop') ? 'fixed' : 'absolute'}>
           {children =>
             <ContentElementBox>
               <ContentElementFigure configuration={configuration}>
