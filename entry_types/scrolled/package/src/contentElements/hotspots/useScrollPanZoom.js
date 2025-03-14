@@ -2,12 +2,9 @@ import {useRef, useCallback, useMemo} from 'react';
 import {useIsomorphicLayoutEffect} from 'pageflow-scrolled/frontend';
 
 import {useIntersectionObserver} from './useIntersectionObserver';
-import {getPanZoomStepTransform} from './panZoom';
 
 export function useScrollPanZoom({
-  imageFile, containerRect, areas,
-  enabled, portraitMode,
-  onChange
+  panZoomTransforms, enabled, onChange
 }) {
   const wrapperRef = useRef();
   const scrollerAreasRef = useRef();
@@ -20,51 +17,22 @@ export function useScrollPanZoom({
     onVisibleIndexChange
   });
 
-  const imageFileWidth = imageFile?.width;
-  const imageFileHeight = imageFile?.height;
-
-  const containerWidth = containerRect.width;
-  const containerHeight = containerRect.height;
-
   const steps = useMemo(() => {
-    if (!enabled || !containerWidth) {
+    if (!enabled || !panZoomTransforms.areas.length) {
       return;
     }
 
     return [
-      {
-        x: 0,
-        y: 0,
-        scale: 1,
-        indicators: []
-      },
-      ...areas.map(area => getPanZoomStepTransform({
-        areaOutline: portraitMode ? area.portraitOutline : area.outline,
-        areaZoom: (portraitMode ? area.portraitZoom : area.zoom) || 0,
-        indicatorPositions: areas.map(area => (portraitMode ? area.portraitIndicatorPosition : area.indicatorPosition) || [50, 50]),
-        imageFileWidth,
-        imageFileHeight,
-        containerWidth,
-        containerHeight
-      })),
-      {
-        x: 0,
-        y: 0,
-        scale: 1,
-        indicators: []
-      }
+      panZoomTransforms.initial,
+      ...panZoomTransforms.areas,
+      panZoomTransforms.initial
     ];
   }, [
-    areas,
-    enabled,
-    imageFileWidth,
-    imageFileHeight,
-    containerWidth,
-    containerHeight,
-    portraitMode
+    panZoomTransforms,
+    enabled
   ]);
 
-  const scrollFromTo = useCallback((from, to) => {
+  const scrollFromToArea = useCallback((from, to) => {
     const scroller = scrollerRef.current;
     const step = scroller.children[to + 1];
 
@@ -76,26 +44,26 @@ export function useScrollPanZoom({
 
     wrapperRef.current.animate(
       [
-        keyframe(steps[from + 1]),
-        keyframe(steps[to + 1])
+        keyframe(steps[from + 1].wrapper),
+        keyframe(steps[to + 1].wrapper)
       ],
       {
         duration: 200
       }
     );
 
-    areas.forEach((area, index) => {
+    panZoomTransforms.areas.forEach((_, index) => {
       indicatorRefs.current[index].animate(
         [
-          keyframe(steps[from + 1].indicators?.[index] || {x: 0, y: 0}),
-          keyframe(steps[to + 1].indicators?.[index] || {x: 0, y: 0})
+          keyframe(steps[from + 1].indicators[index]),
+          keyframe(steps[to + 1].indicators[index])
         ],
         {
           duration: 200
         }
       );
     });
-  }, [scrollerRef, steps, areas]);
+  }, [scrollerRef, steps, panZoomTransforms]);
 
   useIsomorphicLayoutEffect(() => {
     if (!steps) {
@@ -111,7 +79,7 @@ export function useScrollPanZoom({
 
     [wrapperRef.current, scrollerAreasRef.current].forEach(element =>
       animations.push(element.animate(
-        steps.map(keyframe),
+        steps.map(step => keyframe(step.wrapper)),
         {
           fill: 'both',
           timeline: scrollTimeline
@@ -119,9 +87,9 @@ export function useScrollPanZoom({
       ))
     );
 
-    areas.forEach((area, index) => {
+    panZoomTransforms.areas.forEach((_, index) => {
       animations.push(indicatorRefs.current[index].animate(
-        steps.map(step => keyframe(step.indicators?.[index] || {x: 0, y: 0})),
+        steps.map(step => keyframe(step.indicators[index])),
         {
           fill: 'both',
           timeline: scrollTimeline
@@ -130,18 +98,27 @@ export function useScrollPanZoom({
     });
 
     return () => animations.forEach(animation => animation.cancel());
-  }, [areas, steps]);
+  }, [panZoomTransforms, steps]);
 
   const setIndicatorRef = index => ref => {
     indicatorRefs.current[index] = ref;
   }
 
-  return [wrapperRef, scrollerRef, scrollerAreasRef, setStepRef, setIndicatorRef, scrollFromTo];
+  return {
+    panZoomRefs: {
+      wrapper: wrapperRef,
+      scroller: scrollerRef,
+      scrollerAreas: scrollerAreasRef,
+      setStep: setStepRef,
+      setIndicator: setIndicatorRef
+    },
+    scrollFromToArea
+  };
 }
 
-function keyframe(step) {
+function keyframe(transform) {
   return {
-    transform: `translate(${step.x}px, ${step.y}px) scale(${step.scale || 1})`,
+    transform: transform || 'translate(0px, 0px)',
     easing: 'ease',
   };
 }

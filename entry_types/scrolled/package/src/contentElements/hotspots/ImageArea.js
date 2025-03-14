@@ -21,19 +21,15 @@ export function ImageArea({
   const activeImageFile = useFile({
     collectionName: 'imageFiles', permaId: props.area.activeImage
   });
-  const portraitActiveImageFile = useFile({
-    collectionName: 'imageFiles', permaId: props.area.portraitActiveImage
+  const fallbackActiveImageFile = useFile({
+    collectionName: 'imageFiles', permaId: props.area.fallbackActiveImage
   });
-
-  const imageFile = props.portraitMode && portraitActiveImageFile ?
-                    portraitActiveImageFile :
-                    activeImageFile
 
   return (
     <Area {...props}
           className={classNames(styles.area,
                                 {[styles.activeImageVisible]: activeImageVisible})}>
-      <Image imageFile={imageFile}
+      <Image imageFile={activeImageFile || fallbackActiveImageFile}
              load={shouldLoad}
              variant={panZoomEnabled ? 'ultra' : 'large'}
              preferSvg={true} />

@@ -1,4 +1,27 @@
-import {getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
+import {
+  getInitialTransform,
+  getPanZoomStepTransform
+} from 'contentElements/hotspots/panZoom';
+
+import {panZoomExamples} from './panZoomExamples';
+
+describe('getInitialTransform', () => {
+  panZoomExamples.forEach(example => {
+    it(`matches snapshot for ${example.name}`, () => {
+      const result = getInitialTransform({
+        containerWidth: example.container.width,
+        containerHeight: example.container.height,
+        imageFileWidth: example.imageFile.width,
+        imageFileHeight: example.imageFile.height,
+        areasBoundingRect: example.areasBoundingRect,
+        indicatorPositions: [example.indicatorPosition]
+      });
+
+      expect(result).toMatchSnapshot();
+    });
+  });
+});
+
 
 describe('getPanZoomStepTransform', () => {
   it('covers container such that area is centered', () => {
@@ -12,9 +35,11 @@ describe('getPanZoomStepTransform', () => {
     });
 
     expect(result).toMatchObject({
-      scale: 1,
-      x: -300,
-      y: 0
+      wrapper: {
+        scale: 1,
+        x: -300,
+        y: 0
+      }
     });
   });
 
@@ -29,9 +54,27 @@ describe('getPanZoomStepTransform', () => {
     });
 
     expect(result).toMatchObject({
-      scale: 5,
-      x: -1500,
-      y: -500,
+      wrapper: {
+        scale: 2.5,
+        x: -500,
+        y: 0
+      }
+    });
+  });
+
+  panZoomExamples.forEach(example => {
+    it(`matches snapshot for ${example.name}`, () => {
+      const result = getPanZoomStepTransform({
+        containerWidth: example.container.width,
+        containerHeight: example.container.height,
+        imageFileWidth: example.imageFile.width,
+        imageFileHeight: example.imageFile.height,
+        areaOutline: example.area.outline,
+        areaZoom: example.area.zoom,
+        indicatorPositions: [example.indicatorPosition]
+      });
+
+      expect(result).toMatchSnapshot();
     });
   });
 });

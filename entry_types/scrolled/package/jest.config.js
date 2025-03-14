@@ -13,6 +13,7 @@ module.exports = {
   },
   setupFilesAfterEnv: [
     '<rootDir>/spec/support/matchMediaStub.js',
+    '<rootDir>/spec/support/requestAnimationFrameStub.js',
     '<rootDir>/spec/support/fakeBrowserFeatures.js'
   ],
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],

@@ -6,46 +6,47 @@ import {paletteColor} from 'pageflow-scrolled/frontend';
 import styles from './Area.module.css';
 
 export function Area({
-  area, portraitMode, noPointerEvents,
-  highlighted, outlined,
+  area, noPointerEvents,
+  highlighted, outlined, outlineHidden,
   className, children,
   onMouseEnter, onMouseLeave, onClick
 }) {
-  const outline = portraitMode ? area.portraitOutline : area.outline;
-
   return (
     <div className={classNames(styles.area,
                                className,
                                {[styles.highlighted]: highlighted,
                                 [styles.noPointerEvents]: noPointerEvents})}>
       <div className={styles.clip}
-           style={{clipPath: polygon(outline)}}
+           style={{clipPath: polygon(area.outline)}}
            tabIndex="-1"
            onClick={onClick}
            onMouseEnter={onMouseEnter}
            onMouseLeave={onMouseLeave} />
       {children}
-      {outlined && <Outline points={outline}
-                            color={areaColor(area, portraitMode)} />}
+      {outlined && <Outline points={area.outline}
+                            color={areaColor(area)}
+                            hidden={outlineHidden} />}
     </div>
   );
 }
 
-export function areaColor(area, portraitMode) {
-  return paletteColor(portraitMode ? (area.portraitColor || area.color) : area.color);
+export function areaColor(area) {
+  return paletteColor(area.color);
 }
 
-function Outline({points, color}) {
+function Outline({points, color, hidden}) {
   return (
-    <svg className={styles.outline} xmlns="http://www.w3.org/2000/svg"
+    <svg className={classNames(styles.outline,
+                               {[styles.hidden]: hidden})}
+         xmlns="http://www.w3.org/2000/svg"
          viewBox="0 0 100 100"
          preserveAspectRatio="none">
-      <polygon points={(points || []).map(coords => coords.map(coord => coord).join(',')).join(' ')}
+      <polygon points={(points).map(coords => coords.map(coord => coord).join(',')).join(' ')}
                style={{stroke: color}} />
     </svg>
   );
 }
 
 function polygon(points) {
-  return `polygon(${(points || []).map(coords => coords.map(coord => `${coord}%`).join(' ')).join(', ')})`;
+  return `polygon(${(points).map(coords => coords.map(coord => `${coord}%`).join(' ')).join(', ')})`;
 }

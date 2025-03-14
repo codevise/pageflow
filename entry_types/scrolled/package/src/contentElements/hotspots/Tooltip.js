@@ -11,7 +11,7 @@ import {
 
 import {TooltipPortal} from './TooltipPortal';
 import {useTooltipTransitionStyles} from './useTooltipTransitionStyles';
-import {insideScrollButton} from './ScrollButton';
+import {insidePagerButton} from './PagerButton';
 
 import {
   EditableText,
@@ -28,7 +28,7 @@ import {
   utils
 } from 'pageflow-scrolled/frontend';
 
-import {getTooltipReferencePosition} from './getTooltipReferencePosition';
+import {getTooltipInlineStyles} from './getTooltipInlineStyles';
 
 import styles from './Tooltip.module.css';
 
@@ -40,9 +40,9 @@ const arrowKeys = [
 ];
 
 export function Tooltip({
-  area,
-  contentElementId, portraitMode, configuration, visible, active,
-  panZoomEnabled, imageFile, containerRect, keepInViewport, floatingStrategy,
+  area, panZoomTransform,
+  contentElementId, configuration, visible, active,
+  imageFile, containerRect, keepInViewport, floatingStrategy,
   aboveNavigationWidgets,
   wrapperRef,
   onMouseEnter, onMouseLeave, onClick, onDismiss,
@@ -61,18 +61,16 @@ export function Tooltip({
     propertyName: 'tooltipImage'
   });
 
-  const referencePosition = getTooltipReferencePosition({
-    area,
-    contentElementId, portraitMode, configuration,
-    panZoomEnabled, imageFile, containerRect,
+  const inlineStyles = getTooltipInlineStyles({
+    area, panZoomTransform
   })
 
   const tooltipTexts = configuration.tooltipTexts || {};
   const tooltipLinks = configuration.tooltipLinks || {};
 
-  const referenceType = portraitMode ? area.portraitTooltipReference : area.tooltipReference;
-  const position = portraitMode ? area.portraitTooltipPosition : area.tooltipPosition;
-  const maxWidth = portraitMode ? area.portraitTooltipMaxWidth : area.tooltipMaxWidth;
+  const referenceType = area.tooltipReference;
+  const position = area.tooltipPosition;
+  const maxWidth = area.tooltipMaxWidth;
 
   const arrowRef = useRef();
   const {refs, floatingStyles, context} = useFloating({
@@ -106,7 +104,7 @@ export function Tooltip({
 
   const dismiss = useDismiss(context, {
     outsidePressEvent: 'mousedown',
-    outsidePress: event => !insideScrollButton(event.target)
+    outsidePress: event => !insidePagerButton(event.target)
   });
 
   const {getReferenceProps, getFloatingProps} = useInteractions([
@@ -162,10 +160,12 @@ export function Tooltip({
   return (
     <>
       <CompositeItem render={<div className={styles.compositeItem} />}>
-        <div ref={refs.setReference}
-             className={styles.reference}
-             style={referencePosition}
-             {...getReferenceProps()} />
+        <div className={styles.wrapper} style={inlineStyles.wrapper}>
+          <div ref={refs.setReference}
+               className={styles.reference}
+               style={inlineStyles.reference}
+               {...getReferenceProps()} />
+        </div>
       </CompositeItem>
       {isMounted &&
        <TooltipPortal id={aboveNavigationWidgets && 'floating-ui-above-navigation-widgets'}>

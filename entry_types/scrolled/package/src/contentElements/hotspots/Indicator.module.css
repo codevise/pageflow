@@ -2,8 +2,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  height: var(--hotspots-container-height);
+  aspect-ratio: var(--hotspots-image-aspect-ratio);
   pointer-events: none;
   transform-origin: 0 0;
 }

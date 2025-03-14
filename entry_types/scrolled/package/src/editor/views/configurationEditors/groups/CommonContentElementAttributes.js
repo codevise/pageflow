@@ -47,7 +47,9 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
       attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
       disabledBinding: 'width',
       disabled: () => contentElement.getWidth() === 3,
-      displayCheckedIfDisabled: true
+      displayCheckedIfDisabled: true,
+      visibleBinding: 'position',
+      visible: () => contentElement.getPosition() !== 'backdrop'
     });
   }
 });

@@ -23,6 +23,14 @@
   pointer-events: none;
 }
 
+.outline {
+  transition: opacity 0.25s;
+}
+
+.hidden {
+  opacity: 0;
+}
+
 .outline polygon {
   vector-effect: non-scaling-stroke;
   stroke-width: 1px;

@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './Scroller.module.css';
 
 export const Scroller = React.forwardRef(function Scroller(
-  {areas, disabled, setStepRef, containerRect, children}, ref
+  {areas, disabled, setStepRef, children}, ref
 ) {
   if (disabled) {
     return children;
@@ -19,7 +19,7 @@ export const Scroller = React.forwardRef(function Scroller(
                className={styles.step} />
         )}
         <div className={styles.sticky}>
-          <div style={{height: containerRect.height}}>
+          <div className={styles.inner}>
             {children}
           </div>
         </div>

@@ -13,7 +13,9 @@ export function useContentRect({enabled}) {
 
     const resizeObserver = new ResizeObserver(
       entries => {
-        setContentRect(entries[entries.length - 1].contentRect);
+        requestAnimationFrame(() => {
+          setContentRect(entries[entries.length - 1].contentRect);
+        });
       }
     );
 

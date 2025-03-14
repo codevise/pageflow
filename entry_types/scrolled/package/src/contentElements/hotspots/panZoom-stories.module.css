@@ -1,0 +1,60 @@
+.examples {
+  padding: 0 20px;
+}
+
+.example {
+  margin: 20px 0 40px;
+}
+
+.columns {
+  display: flex;
+  margin: 10px 0;
+  gap: 10px;
+}
+
+.container {
+  border: solid 1px #000;
+  overflow: hidden;
+  position: relative;
+}
+
+.wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  aspect-ratio: var(--image-aspect-ratio);
+  transform-origin: 0 0;
+}
+
+.image {
+  background: #eee;
+  position: relative;
+  height: 100%;
+
+  background:
+    linear-gradient(45deg, #444 25.5%, transparent 25%, transparent 75%, #444 75%, #444),
+    linear-gradient(45deg, #444 25.5%, transparent 25%, transparent 75%, #444 75%, #444);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+}
+
+.area {
+  position: absolute;
+  background: red;
+  opacity: 0.7;
+}
+
+.areasBoundingRect {
+  position: absolute;
+  background: blue;
+  opacity: 0.3;
+}
+
+.indicator {
+  border: solid 4px yellow;
+  border-radius: 100%;
+  position: relative;
+  width: 0;
+  transform: translate(-50%, -50%);
+}
