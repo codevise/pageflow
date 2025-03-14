@@ -104,7 +104,7 @@ function insideSafeArea(rect) {
   return rect.left >= pagerButtonsMargin && rect.left + rect.width <= 100 - pagerButtonsMargin;
 }
 
-function toString(transform) {
+export function toString(transform) {
   return transform &&
          `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale || 1})`;
 }

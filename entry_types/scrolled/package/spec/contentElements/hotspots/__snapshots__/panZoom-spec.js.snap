@@ -1,0 +1,577 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getInitialTransform matches snapshot for Narrow container, Fits area horizontally 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -2.5,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": -2.5,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Narrow container, Fits area vertically 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 0,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Narrow container, Full height motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -40,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": -40,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Narrow container, Full width motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -27.499999999999993,
+      "y": -3.3333333333333393,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 0.8333333333333334,
+    "x": 0,
+    "y": 16.666666666666657,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Narrow container, Prevents moving beyond bottom right bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -50,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": -50,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Narrow container, Prevents moving beyond top left bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 0,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Spanned container, Fits area horizontally 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 0,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Spanned container, Fits area vertically 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 0,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Spanned container, Full height motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 0,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Spanned container, Full width motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 0,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Spanned container, Prevents moving beyond bottom right bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 0,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Spanned container, Prevents moving beyond top left bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 0,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Wide container, Fits area horizontally 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 59.999999999999986,
+      "y": 30.000000000000007,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1.3333333333333333,
+    "x": 0,
+    "y": -6.66666666666665,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Wide container, Fits area vertically 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 54.999999999999986,
+      "y": 20.000000000000014,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1.3333333333333333,
+    "x": 0,
+    "y": -19.99999999999998,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Wide container, Full height motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 50,
+      "y": 0,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1,
+    "x": 50,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Wide container, Full width motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 54.999999999999986,
+      "y": 20.000000000000014,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1.3333333333333333,
+    "x": 0,
+    "y": -19.99999999999998,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Wide container, Prevents moving beyond bottom right bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 82.49999999999999,
+      "y": -4.999999999999979,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1.3333333333333333,
+    "x": 0,
+    "y": -66.66666666666663,
+  },
+}
+`;
+
+exports[`getInitialTransform matches snapshot for Wide container, Prevents moving beyond top left bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 19.999999999999996,
+      "y": 4.999999999999999,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1.3333333333333333,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Narrow container, Fits area horizontally 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -55,
+      "y": -10,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 3.8500000000000005,
+    "x": -568.0000000000001,
+    "y": -323.50000000000006,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Narrow container, Fits area vertically 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -40.000000000000114,
+      "y": -20,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 4.6,
+    "x": -634,
+    "y": -451.99999999999994,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Narrow container, Full height motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -40.000000000000114,
+      "y": -20,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 4.6,
+    "x": -634,
+    "y": -451.99999999999994,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Narrow container, Full width motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -40.000000000000114,
+      "y": -20,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 4.6,
+    "x": -634,
+    "y": -451.99999999999994,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Narrow container, Prevents moving beyond bottom right bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -111.25000000000006,
+      "y": -17.49999999999997,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 2.166666666666667,
+    "x": -400.0000000000001,
+    "y": -233.33333333333337,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Narrow container, Prevents moving beyond top left bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 53.33333333333333,
+      "y": 13.333333333333332,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 1.8888888888888888,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Spanned container, Fits area horizontally 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -30.000000000000114,
+      "y": -10,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 4.6,
+    "x": -678,
+    "y": -405.99999999999994,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Spanned container, Fits area vertically 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -15.000000000000114,
+      "y": -20,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 4.6,
+    "x": -609,
+    "y": -451.99999999999994,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Spanned container, Full height motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -15.000000000000114,
+      "y": -20,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 4.6,
+    "x": -609,
+    "y": -451.99999999999994,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Spanned container, Full width motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -15.000000000000114,
+      "y": -20,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 4.6,
+    "x": -609,
+    "y": -451.99999999999994,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Spanned container, Prevents moving beyond bottom right bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -78.75,
+      "y": -22.5,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 2.5,
+    "x": -450,
+    "y": -300,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Spanned container, Prevents moving beyond top left bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 70.00000000000001,
+      "y": 17.500000000000004,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 2.166666666666667,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Wide container, Fits area horizontally 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 19.999999999999886,
+      "y": -10,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 6.1,
+    "x": -898,
+    "y": -571,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Wide container, Fits area vertically 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 34.999999999999886,
+      "y": -20,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 4.6,
+    "x": -559,
+    "y": -451.99999999999994,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Wide container, Full height motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 34.999999999999886,
+      "y": -20,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 4.6,
+    "x": -559,
+    "y": -451.99999999999994,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Wide container, Full width motif 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 34.999999999999886,
+      "y": -20,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 4.6,
+    "x": -559,
+    "y": -451.99999999999994,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Wide container, Prevents moving beyond bottom right bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": -13.75,
+      "y": -32.49999999999994,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 3.1666666666666665,
+    "x": -550,
+    "y": -433.33333333333326,
+  },
+}
+`;
+
+exports[`getPanZoomStepTransform matches snapshot for Wide container, Prevents moving beyond top left bounds 1`] = `
+Object {
+  "indicators": Array [
+    Object {
+      "x": 103.33333333333334,
+      "y": 25.833333333333336,
+    },
+  ],
+  "wrapper": Object {
+    "scale": 2.7222222222222223,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
