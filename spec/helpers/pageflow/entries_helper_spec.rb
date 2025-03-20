@@ -171,7 +171,9 @@ module Pageflow
       end
 
       it 'can be configured via hash in public_entry_url_options' do
-        Pageflow.config.public_entry_url_options = {host: 'public.example.com'}
+        pageflow_configure do |config|
+          config.public_entry_url_options = {host: 'public.example.com'}
+        end
         entry = PublishedEntry.new(create(:entry, title: 'test'),
                                    create(:revision))
 
@@ -179,14 +181,98 @@ module Pageflow
       end
 
       it 'can be configured via lambda in public_entry_url_options' do
-        Pageflow.config.public_entry_url_options = lambda do |site|
-          {host: "#{site.account.name}.example.com"}
+        pageflow_configure do |config|
+          config.public_entry_url_options = lambda do |site|
+            {host: "#{site.account.name}.example.com"}
+          end
         end
         account = create(:account, name: 'myaccount')
-        entry = PublishedEntry.new(create(:entry, title: 'test', account: account),
+        entry = PublishedEntry.new(create(:entry, title: 'test', account:),
                                    create(:revision))
 
         expect(helper.pretty_entry_url(entry)).to eq('http://myaccount.example.com/test')
+      end
+
+      it 'can be configured via hash in site_url_options' do
+        pageflow_configure do |config|
+          config.site_url_options = {host: 'public.example.com'}
+        end
+        entry = PublishedEntry.new(create(:entry, title: 'test'),
+                                   create(:revision))
+
+        expect(helper.pretty_entry_url(entry)).to eq('http://public.example.com/test')
+      end
+
+      it 'can be configured via lambda in site_url_options' do
+        pageflow_configure do |config|
+          config.site_url_options = lambda do |site|
+            {host: "#{site.account.name}.example.com"}
+          end
+        end
+        account = create(:account, name: 'myaccount')
+        entry = PublishedEntry.new(create(:entry, title: 'test', account:),
+                                   create(:revision))
+
+        expect(helper.pretty_entry_url(entry)).to eq('http://myaccount.example.com/test')
+      end
+
+      it 'passes entry to public_entry_url_options lambda if site_url_options present' do
+        pageflow_configure do |config|
+          config.site_url_options = lambda do |_site|
+            raise 'Should not be used in this case'
+          end
+          config.public_entry_url_options = lambda do |entry|
+            {host: "#{entry.site.account.name}.example.com"}
+          end
+        end
+        account = create(:account, name: 'myaccount')
+        entry = PublishedEntry.new(create(:entry, title: 'test', account:),
+                                   create(:revision))
+
+        expect(helper.pretty_entry_url(entry)).to eq('http://myaccount.example.com/test')
+      end
+
+      it 'does not apply public_entry_url_options from feature block by default' do
+        pageflow_configure do |config|
+          config.site_url_options = lambda do |site|
+            {host: "#{site.account.name}.example.com"}
+          end
+
+          config.features.register('custom_permalink_param') do |feature_config|
+            feature_config.public_entry_url_options = lambda do |entry|
+              {host: "#{entry.site.account.name}.example.com", custom: 'param'}
+            end
+          end
+        end
+        account = create(:account, name: 'myaccount')
+        entry = PublishedEntry.new(create(:entry,
+                                          title: 'test',
+                                          account:),
+                                   create(:revision))
+
+        expect(helper.pretty_entry_url(entry)).to eq('http://myaccount.example.com/test')
+      end
+
+      it 'supports wrapping public_entry_url_options in feature block' do
+        pageflow_configure do |config|
+          config.site_url_options = lambda do |_site|
+            raise 'Should not be used in this case'
+          end
+
+          config.features.register('custom_permalink_param') do |feature_config|
+            feature_config.public_entry_url_options = lambda do |entry|
+              {host: "#{entry.site.account.name}.example.com", custom: 'param'}
+            end
+          end
+        end
+        account = create(:account, name: 'myaccount')
+        entry = PublishedEntry.new(create(:entry,
+                                          title: 'test',
+                                          account:,
+                                          with_feature: 'custom_permalink_param'),
+                                   create(:revision))
+
+        expect(helper.pretty_entry_url(entry)).to eq('http://myaccount.example.com/test?custom=param')
       end
     end
 

@@ -14,7 +14,7 @@ module Pageflow
           {
             locale: entry.locale,
             format: 'atom'
-          }.merge(Pageflow.config.site_url_options(entry.site) || {})
+          }.merge(Pageflow.config.site_url_options_for(entry.site) || {})
         )
 
       tag(:link,

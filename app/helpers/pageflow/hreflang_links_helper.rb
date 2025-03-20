@@ -8,11 +8,8 @@ module Pageflow
     # Render alternate links to all published entries that have been
     # marked as translations of the given entry.
     def hreflang_link_tags_for_entry(entry)
-      translations =
-        entry.translations(-> { preload(:site, :translation_group, permalink: :directory) })
-
       safe_join(
-        translations.each_with_object([]) do |translation, links|
+        translations_for_hreflang_links(entry).each_with_object([]) do |translation, links|
           links << hreflang_link_tag(translation)
 
           if translation.default_translation?
@@ -23,6 +20,12 @@ module Pageflow
     end
 
     private
+
+    def translations_for_hreflang_links(entry)
+      entry.translations(
+        -> { preload(:site, :account, :translation_group, permalink: :directory) }
+      )
+    end
 
     def hreflang_link_tag(entry, hreflang: entry.locale)
       tag('link',

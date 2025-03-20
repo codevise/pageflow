@@ -33,7 +33,17 @@ module Pageflow
     end
 
     describe '#host' do
-      it 'returns host based on public_entry_url_options' do
+      it 'returns host based on site_url_options' do
+        Pageflow.config.site_url_options = lambda do |site|
+          {host: "#{site.name}.example.com"}
+        end
+
+        site = build(:site, name: 'some')
+
+        expect(site.host).to eq('some.example.com')
+      end
+
+      it 'returns host based on legacy public_entry_url_options' do
         Pageflow.config.public_entry_url_options = lambda do |site|
           {host: "#{site.name}.example.com"}
         end
