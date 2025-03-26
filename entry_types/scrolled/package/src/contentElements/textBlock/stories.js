@@ -153,6 +153,53 @@ storiesOfContentElement(module, {
             textAlign: 'justify',
             children: [
               {text: 'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'},
+              {
+                type: 'bulleted-list',
+                children: [
+                  {
+                    type: 'list-item',
+                    children: [
+                      {text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'}
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      name: 'Text align justify - Center Ragged',
+      sectionConfiguration: {
+        layout: 'centerRagged'
+      },
+      configuration: {
+        value: [
+          {
+            type: 'heading',
+            textAlign: 'justify',
+            children: [
+              {text: 'Heading'}
+            ]
+          },
+          {
+            type: 'paragraph',
+            textAlign: 'justify',
+            children: [
+              {text: 'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'}
+            ]
+          },
+          {
+            type: 'bulleted-list',
+            textAlign: 'justify',
+            children: [
+              {
+                type: 'list-item',
+                children: [
+                  {text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'}
+                ]
+              }
             ]
           }
         ]

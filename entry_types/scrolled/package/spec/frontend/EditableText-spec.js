@@ -2,6 +2,8 @@ import React from 'react';
 
 import {EditableText} from 'frontend';
 
+import styles from 'frontend/EditableText.module.css';
+
 import {render} from '@testing-library/react';
 import {renderInEntry} from 'support';
 import '@testing-library/jest-dom/extend-expect'
@@ -398,23 +400,7 @@ describe('EditableText', () => {
 
     const {container} = render(<EditableText value={value} />);
 
-    expect(container.querySelector('p[style]')).toHaveStyle('text-align: justify;');
-  });
-
-  it('can render both color and text align', () => {
-    const value = [{
-      type: 'paragraph',
-      textAlign: 'justify',
-      color: '#000',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
-
-    const {container} = render(<EditableText value={value} />);
-
-    expect(container.querySelector('p[style]')).toHaveStyle('text-align: justify;');
-    expect(container.querySelector('p[style]')).toHaveStyle('color: rgb(0, 0, 0);');
+    expect(container.querySelector('p')).toHaveClass(styles.justify);
   });
 
   it('uses body scaleCategory by default', () => {
