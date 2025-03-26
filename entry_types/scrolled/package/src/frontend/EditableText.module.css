@@ -8,6 +8,20 @@
   white-space: pre-line;
 }
 
+.root ul,
+.root ol {
+  list-style-position: var(--editable-text-list-style-position);
+}
+
+.justify {
+  text-align: justify;
+}
+
+ul.justify,
+ol.justify {
+  list-style-position: outside;
+}
+
 .light {
   color: lightContentTextColor;
 }

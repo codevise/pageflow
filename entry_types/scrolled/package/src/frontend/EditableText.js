@@ -55,11 +55,14 @@ export function renderElement({attributes, children, element}) {
                          camelize(element.type),
                          element.size].join('-');
 
-  const className = classNames(variantClassName, sizeClassName);
+  const className = classNames(
+    variantClassName,
+    sizeClassName,
+    {[styles.justify]: element.textAlign === 'justify'}
+  );
 
-  const styles = {
-    ...(element.color && {color: paletteColor(element.color)}),
-    ...(element.textAlign && {textAlign: element.textAlign})
+  const inlineStyles = {
+    ...(element.color && {color: paletteColor(element.color)})
   };
 
   switch (element.type) {
@@ -67,7 +70,7 @@ export function renderElement({attributes, children, element}) {
     return (
       <blockquote {...attributes}
                   className={className}
-                  style={styles}>
+                  style={inlineStyles}>
         {children}
       </blockquote>
     );
@@ -75,7 +78,7 @@ export function renderElement({attributes, children, element}) {
     return (
       <ul {...attributes}
           className={className}
-          style={styles}>
+          style={inlineStyles}>
         {children}
       </ul>
     );
@@ -83,7 +86,7 @@ export function renderElement({attributes, children, element}) {
     return (
       <ol {...attributes}
           className={className}
-          style={styles}>
+          style={inlineStyles}>
         {children}
       </ol>
     );
@@ -96,7 +99,7 @@ export function renderElement({attributes, children, element}) {
       <Heading key={key}
                attributes={otherAttributes}
                className={className}
-               styles={styles}>
+               inlineStyles={inlineStyles}>
         {children}
       </Heading>
     );
@@ -106,14 +109,14 @@ export function renderElement({attributes, children, element}) {
     return (
       <p {...attributes}
          className={className}
-         style={styles}>
+         style={inlineStyles}>
         {children}
       </p>
     );
   }
 }
 
-function Heading({attributes, className, styles: inlineStyles, children}) {
+function Heading({attributes, className, inlineStyles, children}) {
   const darkBackground = useDarkBackground();
 
   return (

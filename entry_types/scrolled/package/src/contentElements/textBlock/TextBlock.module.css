@@ -120,8 +120,6 @@
   text-align: center;
 }
 
-.layout-centerRagged ol,
-.layout-centerRagged ul {
-  padding-left: 0;
-  list-style-position: inside;
+.layout-centerRagged {
+  --editable-text-list-style-position: inside;
 }
