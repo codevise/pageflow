@@ -5,9 +5,11 @@ module Pageflow
       PublishedEntry.wrap_all(
         site
           .entries
-          .preload(permalink: :directory,
+          .preload(:account,
+                   permalink: :directory,
                    translation_group: {
                      publicly_visible_entries: [
+                       :account,
                        :published_revision,
                        {permalink: :directory}
                      ]

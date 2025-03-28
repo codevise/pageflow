@@ -228,23 +228,62 @@ module Pageflow
 
     # Either a lambda or an object with a `call` method taking a
     # {Site} as paramater and returing a hash of options used to
-    # construct the url of a published entry.
+    # construct the url of a site.
+    #
+    # Can be used to change the host of the url under which entries
+    # and feeds are available.
+    #
+    # If the option is not set, public_entry_url_options is used as a
+    # fallback.
+    #
+    # Example:
+    #
+    #     config.site_url_options = lambda do |site|
+    #       {host: "#{site.account.name}.example.com"}
+    #     end
+    attr_accessor :site_url_options
+
+    # Either a hash, a lambda or an object with a `call` method
+    # returing a hash of options used to construct the url of a
+    # published entry.
     #
     # Can be used to change the host of the url under which entries
     # are available.
+    #
+    # If site_url_options is blank, the lambda receives a {Site} as
+    # parameter. This case is only supported for legacy reasons.
+    # Prefer setting site_url_options instead.
     #
     # Example:
     #
     #     config.public_entry_url_options = lambda do |site|
     #       {host: "#{site.account.name}.example.com"}
     #     end
+    #
+    # If both site_url_options and public_entry_url_options are
+    # present, public_entry_url_options is called exclusively to
+    # construct url options for public entries. The lambda then
+    # receives a {PublishedEntry} to allow for entry specific url
+    # options.
+    #
+    # Example:
+    #
+    #   config.site_url_options = lambda do |site|
+    #     {host: "#{site.account.name}.example.com"}
+    #   end
+    #
+    #   config.public_entry_url_options = lambda do |entry|
+    #     {
+    #       host: "#{entry.site.account.name}.example.com",
+    #       some_entry_specific_param: entry.id
+    #     }
+    #   end
     attr_accessor :public_entry_url_options
 
     # Either a lambda or an object with a `call` method taking a
     # {Site} as paramater and returing a hash of options used to
     # construct the embed url of a published entry.
     attr_accessor :entry_embed_url_options
-
 
     # Define strategies to determine whether entries should be cut off
     # (e.g., to preview paywalled premium content).
@@ -482,7 +521,6 @@ module Pageflow
       @public_entry_request_scope = lambda { |entries, request| entries }
       @public_entry_redirect = ->(_entry, _request) { nil }
       @additional_public_entry_headers = AdditionalHeaders.new
-      @public_entry_url_options = Pageflow::SitesHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
       @entry_embed_url_options = {protocol: 'https'}
       @cutoff_modes = CutoffModes.new
 
@@ -599,9 +637,25 @@ module Pageflow
     end
 
     # @api private
-    def site_url_options(site)
-      options = public_entry_url_options
+    def site_url_options_for(site)
+      options = site_url_options ||
+                public_entry_url_options ||
+                Pageflow::SitesHelper::DEFAULT_SITE_URL_OPTIONS
+
       options.respond_to?(:call) ? options.call(site) : options
+    end
+
+    # @api private
+    def public_entry_url_options_for(entry)
+      return site_url_options_for(entry.site) unless public_entry_url_options
+
+      options = public_entry_url_options
+
+      if options.respond_to?(:call)
+        options.call(site_url_options ? entry : entry.site)
+      else
+        options
+      end
     end
 
     # @api private
@@ -629,6 +683,7 @@ module Pageflow
       delegate :additional_public_entry_headers, to: :config
       delegate :cutoff_modes, to: :config
       delegate :entry_translator_url=, to: :config
+      delegate :public_entry_url_options=, to: :config
 
       delegate :for_entry_type, to: :config
     end

@@ -23,7 +23,7 @@ module Pageflow
     end
 
     def host
-      Pageflow.config.site_url_options(self)&.dig(:host)
+      Pageflow.config.site_url_options_for(self)&.dig(:host)
     end
 
     def cname_domain

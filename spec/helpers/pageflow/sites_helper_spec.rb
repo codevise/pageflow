@@ -26,8 +26,26 @@ module Pageflow
         expect(helper.pretty_site_url(site)).to eq('http://public.example.com/')
       end
 
-      it 'can be configured via lambda in public_entry_url_options' do
-        Pageflow.config.public_entry_url_options = lambda { |site| {host: "#{site.account.name}.example.com" } }
+      it 'can be configured via legacy lambda in public_entry_url_options' do
+        Pageflow.config.public_entry_url_options = lambda do |site|
+          {host: "#{site.account.name}.example.com"}
+        end
+        account = create(:account, name: 'myaccount')
+
+        expect(helper.pretty_site_url(account.default_site)).to eq('http://myaccount.example.com/')
+      end
+
+      it 'can be configured via hash in site_url_options' do
+        Pageflow.config.site_url_options = {host: 'some.example.com'}
+        account = create(:account)
+
+        expect(helper.pretty_site_url(account.default_site)).to eq('http://some.example.com/')
+      end
+
+      it 'can be configured via lambda in site_url_options' do
+        Pageflow.config.site_url_options = lambda do |site|
+          {host: "#{site.account.name}.example.com"}
+        end
         account = create(:account, name: 'myaccount')
 
         expect(helper.pretty_site_url(account.default_site)).to eq('http://myaccount.example.com/')

@@ -46,7 +46,7 @@ module Pageflow
         params =
           options
           .reverse_merge(trailing_slash: entry.site.trailing_slash_in_canonical_urls)
-          .reverse_merge(Pageflow.config.site_url_options(entry.site) || {})
+          .reverse_merge(Pageflow.config_for(entry).public_entry_url_options_for(entry) || {})
 
         if entry.permalink.present?
           routes.permalink_url(*entry_permalink_parts(entry), params)
