@@ -74,7 +74,7 @@ export function storiesOfContentElement(module, options) {
   }
 
   exampleStories(options).forEach(({
-    title, seed, requireConsentOptIn, cssRules, parameters = {}
+    title, seed, requireConsentOptIn, cssRules, parameters
   }) => {
     const consent = Consent.create();
 
@@ -189,13 +189,15 @@ function variantsExampleStories({typeName, baseConfiguration, variants}) {
     typeName,
     name: 'Variants',
     examples: variants.map(({
-      name, permaId, configuration, themeOptions, sectionConfiguration, inlineFileRightsWidgetTypeName
+      name, permaId, configuration, themeOptions, sectionConfiguration, viewport,
+      inlineFileRightsWidgetTypeName
     }) => ({
       name: name,
       permaId,
       contentElementConfiguration: {...baseConfiguration, ...configuration},
       themeOptions,
       sectionConfiguration,
+      viewport,
       inlineFileRightsFor: inlineFileRightsWidgetTypeName ? ['audioFiles', 'imageFiles', 'videoFiles'] : [],
       widgets: inlineFileRightsWidgetTypeName ? [{
         role: 'inlineFileRights',
@@ -242,16 +244,9 @@ function mobileExampleStories({typeName, baseConfiguration}) {
       {
         name: 'Default',
         contentElementConfiguration: baseConfiguration,
+        viewport: 'phone'
       }
-    ],
-    parameters: {
-      viewport: {
-        defaultViewport: 'iphone6'
-      },
-      percy: {
-        widths: [320]
-      }
-    }
+    ]
   });
 }
 
@@ -308,7 +303,7 @@ function inlineFileRightsStories({typeName, inlineFileRights, baseConfiguration}
 }
 
 function exampleStoryGroup({
-  name, typeName, examples, parameters, consentVendors, inlineFileRightsFor, widgets
+  name, typeName, examples, viewport, consentVendors, inlineFileRightsFor, widgets
 }) {
   const defaultSectionConfiguration = {transition: 'scroll', backdrop: {image: '#000'}, fullHeight: false};
 
@@ -347,7 +342,14 @@ function exampleStoryGroup({
                                       )
     }),
     requireConsentOptIn: !!consentVendors,
-    parameters,
+    parameters: examples[index].viewport === 'phone' ? {
+      viewport: {
+        defaultViewport: 'iphone6'
+      },
+      percy: {
+        widths: [320]
+      }
+    } : {},
     cssRules: themeOptionsCssRules(examples[index].themeOptions)
   }));
 }

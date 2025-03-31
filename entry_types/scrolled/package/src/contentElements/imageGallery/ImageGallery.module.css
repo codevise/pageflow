@@ -28,6 +28,14 @@
   justify-content: center;
 }
 
+.clip {
+  --overlap: 0px;
+}
+
+.full.clip {
+  --gutter: 0px;
+}
+
 .button {
   grid-row: 1;
   z-index: 2;
@@ -59,6 +67,10 @@
   scroll-behavior: smooth;
   padding: 0 calc(var(--overlap) + var(--gutter));
   scrollbar-width: none;
+}
+
+.clip .items {
+  clip-path: content-box;
 }
 
 .items::-webkit-scrollbar {

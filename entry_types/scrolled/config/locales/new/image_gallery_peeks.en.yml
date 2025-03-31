@@ -1,0 +1,9 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        imageGallery:
+          attributes:
+            displayPeeks:
+              label: "Display peeks of neighboring images"
+              inline_help: "Show partial adjacent image previews as navigation cues."

@@ -140,6 +140,9 @@ function Scroller({
                                {[styles.wide]:
                                  contentElementWidth === contentElementWidths.lg ||
                                  contentElementWidth === contentElementWidths.xl},
+                               {[styles.full]:
+                                contentElementWidth === contentElementWidths.full},
+                               {[styles.clip]: configuration.hidePeeks},
                                {[styles.customMargin]: customMargin})}>
       <div className={styles.leftButton}>
         <ScrollButton direction="left"
