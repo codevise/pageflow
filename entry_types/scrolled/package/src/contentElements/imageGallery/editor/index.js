@@ -18,6 +18,9 @@ editor.contentElementTypes.register('imageGallery', {
       this.view(ItemsListView, {
         collection: ItemsCollection.forContentElement(this.model.parent, entry)
       });
+      this.input('displayPeeks', CheckBoxInputView, {
+        storeInverted: 'hidePeeks'
+      });
       this.input('enableFullscreenOnDesktop', CheckBoxInputView, {
         disabledBinding: ['position', 'width'],
         disabled: () => contentElement.getWidth() === contentElementWidths.full,

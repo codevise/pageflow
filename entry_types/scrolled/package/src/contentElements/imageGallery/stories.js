@@ -1,4 +1,5 @@
 import './frontend';
+import {contentElementWidths} from 'pageflow-scrolled/frontend';
 import {storiesOfContentElement, filePermaId} from 'pageflow-scrolled/spec/support/stories';
 
 storiesOfContentElement(module, {
@@ -42,6 +43,27 @@ storiesOfContentElement(module, {
           }
         }
       }
+    },
+    {
+      name: 'Full width',
+      configuration: {
+        width: contentElementWidths.full
+      },
+      viewport: 'phone'
+    },
+    {
+      name: 'Hide peeks',
+      configuration: {
+        hidePeeks: true
+      }
+    },
+    {
+      name: 'Full widths, Hide peeks',
+      configuration: {
+        width: contentElementWidths.full,
+        hidePeeks: true
+      },
+      viewport: 'phone'
     },
     {
       name: 'With Captions',
