@@ -13,6 +13,23 @@ en:
                 Displays the current image position and the total
                 number of images to make navigating the gallery
                 easier.
+          edit_item:
+            back: Back
+            destroy: Delete
+            confirm_delete_link: Are you sure you want to delete this image gallery item?
+            attributes:
+              image:
+                label: Image
+              portraitImage:
+                inline_help: |-
+                  Displayed when the browser viewport is taller than
+                  wide, for example on phones or tablets in portrait
+                  orientation. Can be used to provide an alternative
+                  to a landscape image that would otherwise be
+                  displayed too small.
+                label: Image (Portrait)
+            tabs:
+              item: Image Gallery Item
     public:
       image_gallery_pagination: "Image gallery pagination"
       go_to_image_gallery_item: "Go to image %{index}"

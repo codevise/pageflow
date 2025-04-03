@@ -35,6 +35,19 @@ storiesOfContentElement(module, {
   inlineFileRights: true,
   variants: [
     {
+      name: 'Portrait image',
+      configuration: {
+        items: [
+          {
+            id: 1,
+            image: filePermaId('imageFiles', 'turtle'),
+            portraitImage: filePermaId('imageFiles', 'churchBefore')
+          }
+        ]
+      },
+      viewport: 'phone'
+    },
+    {
       name: 'Custom scroll button size',
       themeOptions: {
         properties: {

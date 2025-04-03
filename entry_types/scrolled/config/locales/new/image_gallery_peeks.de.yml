@@ -13,6 +13,24 @@ de:
                 Zeigt die aktuelle Bildposition und die Gesamtzahl der
                 Bilder an, um die Navigation durch die Galerie zu
                 erleichtern.
+          edit_item:
+            back: Zurück
+            destroy: Löschen
+            confirm_delete_link: Soll der Bildergalerie-Eintrag wirklich gelöscht werden?
+            attributes:
+              image:
+                label: Bild
+              portraitImage:
+                inline_help: |-
+                  Wird verwendet, wenn der Browser-Viewport höher als
+                  breit ist - zum Beispiel auf Smartphones oder
+                  Tablets in Portrait-Ausrichtung. Kann als
+                  Alternative zu einem querformatigen Bild
+                  konfiguriert werden, das ansonsten zu klein
+                  dargestellt würde.
+                label: Bild (Hochkant)
+            tabs:
+              item: Bildergalerie-Eintrag
     public:
       image_gallery_pagination: "Bildergalerie-Paginierung"
       go_to_image_gallery_item: "Gehe zu Bild %{index}"

@@ -11,7 +11,7 @@ export const ItemsCollection = Backbone.Collection.extend({
   initialize(models, options) {
     this.entry = options.entry;
     this.contentElement = options.contentElement;
-    this.listenTo(this, 'add remove sort', this.updateConfiguration);
+    this.listenTo(this, 'add change remove sort', this.updateConfiguration);
     this.listenTo(this, 'remove', this.pruneCaptions);
   },
 
