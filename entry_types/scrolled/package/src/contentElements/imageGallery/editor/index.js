@@ -21,6 +21,7 @@ editor.contentElementTypes.register('imageGallery', {
       this.input('displayPeeks', CheckBoxInputView, {
         storeInverted: 'hidePeeks'
       });
+      this.input('displayPaginationIndicator', CheckBoxInputView);
       this.input('enableFullscreenOnDesktop', CheckBoxInputView, {
         disabledBinding: ['position', 'width'],
         disabled: () => contentElement.getWidth() === contentElementWidths.full,
@@ -31,5 +32,7 @@ editor.contentElementTypes.register('imageGallery', {
       this.group('ContentElementCaption', {entry, disableWhenNoCaption: false});
       this.group('ContentElementInlineFileRightsSettings', {entry, disableWhenNoFileRights: false});
     });
-  }
+  },
+
+  defaultConfig: {displayPaginationIndicator: true}
 });

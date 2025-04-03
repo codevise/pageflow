@@ -105,6 +105,12 @@ storiesOfContentElement(module, {
           }
         }
       }
+    },
+    {
+      name: 'With pagination indicator',
+      configuration: {
+        displayPaginationIndicator: true
+      }
     }
   ]
 });

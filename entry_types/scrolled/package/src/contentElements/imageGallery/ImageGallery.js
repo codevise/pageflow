@@ -12,6 +12,7 @@ import {
   Image,
   InlineFileRights,
   ToggleFullscreenCornerButton,
+  PaginationIndicator,
   usePhonePlatform,
   contentElementWidths
 } from 'pageflow-scrolled/frontend';
@@ -102,8 +103,12 @@ function Scroller({
   }, [visibleIndex, scrollerRef, controlled]);
 
   function scrollBy(delta) {
+    scrollTo(visibleIndex + delta);
+  }
+
+  function scrollTo(index) {
     const scroller = scrollerRef.current;
-    const child = scroller.children[visibleIndex + delta];
+    const child = scroller.children[index];
 
     if (child) {
       scrollerRef.current.scrollTo(child.offsetLeft - scroller.offsetLeft, 0);
@@ -139,9 +144,9 @@ function Scroller({
     <div className={classNames(styles.wrapper,
                                {[styles.wide]:
                                  contentElementWidth === contentElementWidths.lg ||
-                                 contentElementWidth === contentElementWidths.xl},
+                                contentElementWidth === contentElementWidths.xl},
                                {[styles.full]:
-                                contentElementWidth === contentElementWidths.full},
+                                 contentElementWidth === contentElementWidths.full},
                                {[styles.clip]: configuration.hidePeeks},
                                {[styles.customMargin]: customMargin})}>
       <div className={styles.leftButton}>
@@ -169,6 +174,16 @@ function Scroller({
           </Item>
         ))}
       </div>
+      {configuration.displayPaginationIndicator &&
+       <div className={styles.paginationIndicator}>
+         <PaginationIndicator
+           itemCount={items.length}
+           currentIndex={visibleIndex}
+           scrollerRef={scrollerRef}
+           navAriaLabelTranslationKey="pageflow_scrolled.public.image_gallery_pagination"
+           itemAriaLabelTranslationKey="pageflow_scrolled.public.go_to_image_gallery_item"
+           onItemClick={index => scrollTo(index)} />
+       </div>}
     </div>
   );
 }

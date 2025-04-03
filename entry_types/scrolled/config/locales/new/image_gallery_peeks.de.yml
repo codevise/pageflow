@@ -7,3 +7,12 @@ de:
             displayPeeks:
               label: "Anrisse benachbarter Bilder zeigen"
               inline_help: "Teile der benachbarten Bilder als Hinweis auf weitere Inhalte anzeigen."
+            displayPaginationIndicator:
+              label: "Paginierung anzeigen"
+              inline_help: |-
+                Zeigt die aktuelle Bildposition und die Gesamtzahl der
+                Bilder an, um die Navigation durch die Galerie zu
+                erleichtern.
+    public:
+      image_gallery_pagination: "Bildergalerie-Paginierung"
+      go_to_image_gallery_item: "Gehe zu Bild %{index}"

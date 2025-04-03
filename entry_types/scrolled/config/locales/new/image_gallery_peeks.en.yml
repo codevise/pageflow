@@ -7,3 +7,12 @@ en:
             displayPeeks:
               label: "Display peeks of neighboring images"
               inline_help: "Show partial adjacent image previews as navigation cues."
+            displayPaginationIndicator:
+              label: "Display pagination"
+              inline_help: |-
+                Displays the current image position and the total
+                number of images to make navigating the gallery
+                easier.
+    public:
+      image_gallery_pagination: "Image gallery pagination"
+      go_to_image_gallery_item: "Go to image %{index}"

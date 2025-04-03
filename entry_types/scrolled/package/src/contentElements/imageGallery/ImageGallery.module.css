@@ -54,6 +54,15 @@
   grid-column: 3;
 }
 
+.paginationIndicator {
+  grid-column: 1 / -1;
+  align-self: end;
+  justify-self: center;
+  z-index: 3;
+  margin-top: var(--theme-image-gallery-pagination-margin-top, 10px);
+  margin-bottom: var(--theme-image-gallery-pagination-margin-bottom, 10px);
+}
+
 .items {
   grid-row: 1;
   grid-column: 1/-1;
@@ -89,7 +98,7 @@
 
 .figure {
   transition: transform .2s ease, filter .2s linear;
-  transform: scale(0.9);
+  transform: scale(var(--theme-image-gallery-item-scale, 0.9));
   filter: brightness(0.5);
 }
 
