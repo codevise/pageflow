@@ -28,6 +28,6 @@
 }
 
 .hyphens-none {
-  hypens: none;
+  hyphens: none;
   word-wrap: normal;
 }
