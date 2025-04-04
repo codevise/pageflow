@@ -12,7 +12,9 @@ import {
   Image,
   InlineFileRights,
   ToggleFullscreenCornerButton,
+  PaginationIndicator,
   usePhonePlatform,
+  usePortraitOrientation,
   contentElementWidths
 } from 'pageflow-scrolled/frontend';
 
@@ -102,8 +104,12 @@ function Scroller({
   }, [visibleIndex, scrollerRef, controlled]);
 
   function scrollBy(delta) {
+    scrollTo(visibleIndex + delta);
+  }
+
+  function scrollTo(index) {
     const scroller = scrollerRef.current;
-    const child = scroller.children[visibleIndex + delta];
+    const child = scroller.children[index];
 
     if (child) {
       scrollerRef.current.scrollTo(child.offsetLeft - scroller.offsetLeft, 0);
@@ -139,9 +145,9 @@ function Scroller({
     <div className={classNames(styles.wrapper,
                                {[styles.wide]:
                                  contentElementWidth === contentElementWidths.lg ||
-                                 contentElementWidth === contentElementWidths.xl},
+                                contentElementWidth === contentElementWidths.xl},
                                {[styles.full]:
-                                contentElementWidth === contentElementWidths.full},
+                                 contentElementWidth === contentElementWidths.full},
                                {[styles.clip]: configuration.hidePeeks},
                                {[styles.customMargin]: customMargin})}>
       <div className={styles.leftButton}>
@@ -169,22 +175,69 @@ function Scroller({
           </Item>
         ))}
       </div>
+      {configuration.displayPaginationIndicator &&
+       <div className={styles.paginationIndicator}>
+         <PaginationIndicator
+           itemCount={items.length}
+           currentIndex={visibleIndex}
+           scrollerRef={scrollerRef}
+           navAriaLabelTranslationKey="pageflow_scrolled.public.image_gallery_pagination"
+           itemAriaLabelTranslationKey="pageflow_scrolled.public.go_to_image_gallery_item"
+           onItemClick={index => scrollTo(index)} />
+       </div>}
     </div>
   );
 }
 
 const Item = forwardRef(function({item, configuration, current, onClick, children}, ref) {
-  const updateConfiguration = useContentElementConfigurationUpdate();
-  const {shouldLoad} = useContentElementLifecycle();
-
-  const captions = configuration.captions || {};
-  const caption = captions[item.id];
-
   const imageFile = useFileWithInlineRights({
     configuration: item,
     collectionName: 'imageFiles',
     propertyName: 'image'
   });
+
+  const portraitImageFile = useFileWithInlineRights({
+    configuration: item,
+    collectionName: 'imageFiles',
+    propertyName: 'portraitImage'
+  });
+
+  const ItemImageComponent = portraitImageFile ? OrientationAwareItemImage : ItemImageWithCaption;
+
+  return (
+    <div className={classNames(styles.item, {[styles.current]: current,
+                                             [styles.placeholder]: item.placeholder})}
+         ref={ref}>
+      <div className={styles.figure}>
+        <ItemImageComponent item={item}
+                            imageFile={imageFile}
+                            portraitImageFile={portraitImageFile}
+                            configuration={configuration}
+                            current={current}
+                            onClick={onClick}
+                            children={children} />
+      </div>
+    </div>
+  );
+});
+
+function OrientationAwareItemImage({imageFile, portraitImageFile, ...props}) {
+  const portraitOrientation = usePortraitOrientation();
+
+  imageFile = portraitOrientation && portraitImageFile ?
+              portraitImageFile : imageFile;
+  return (
+    <ItemImageWithCaption imageFile={imageFile} {...props} />
+  );
+}
+
+function ItemImageWithCaption({item, imageFile, configuration, current, onClick, children}) {
+  const {shouldLoad} = useContentElementLifecycle();
+
+  const updateConfiguration = useContentElementConfigurationUpdate();
+
+  const captions = configuration.captions || {};
+  const caption = captions[item.id];
 
   const handleCaptionChange = function(caption) {
     updateConfiguration({
@@ -196,36 +249,30 @@ const Item = forwardRef(function({item, configuration, current, onClick, childre
   }
 
   return (
-    <div className={classNames(styles.item, {[styles.current]: current,
-                                             [styles.placeholder]: item.placeholder})}
-         ref={ref}>
-      <div className={styles.figure}>
-        <FitViewport file={imageFile}
-                     aspectRatio={imageFile ? undefined : 0.75}
-                     scale={0.8}
-                     opaque={!imageFile}>
-          <ContentElementBox>
-            <Figure caption={caption}
-                    variant={configuration.captionVariant}
-                    onCaptionChange={handleCaptionChange}
-                    addCaptionButtonVisible={current && !item.placeholder}
-                    addCaptionButtonPosition="inside">
-              <FitViewport.Content>
-                <div onClick={onClick}>
-                  <Image imageFile={imageFile} load={shouldLoad} />
-                </div>
-                {children}
-                <InlineFileRights configuration={configuration}
-                                  context="insideElement"
-                                  items={[{file: imageFile, label: 'image'}]} />
-              </FitViewport.Content>
-            </Figure>
-          </ContentElementBox>
-          <InlineFileRights configuration={configuration}
-                            context="afterElement"
-                            items={[{file: imageFile, label: 'image'}]} />
-        </FitViewport>
-      </div>
-    </div>
+    <FitViewport file={imageFile}
+                 aspectRatio={imageFile ? undefined : 0.75}
+                 scale={0.8}
+                 opaque={!imageFile}>
+      <ContentElementBox>
+        <Figure caption={caption}
+                variant={configuration.captionVariant}
+                onCaptionChange={handleCaptionChange}
+                addCaptionButtonVisible={current && !item.placeholder}
+                addCaptionButtonPosition="inside">
+          <FitViewport.Content>
+            <div onClick={onClick}>
+              <Image imageFile={imageFile} load={shouldLoad} />
+            </div>
+            {children}
+            <InlineFileRights configuration={configuration}
+                              context="insideElement"
+                              items={[{file: imageFile, label: 'image'}]} />
+          </FitViewport.Content>
+        </Figure>
+      </ContentElementBox>
+      <InlineFileRights configuration={configuration}
+                        context="afterElement"
+                        items={[{file: imageFile, label: 'image'}]} />
+    </FitViewport>
   );
-});
+}

@@ -1,5 +1,5 @@
 import Marionette from 'backbone.marionette';
-import {buttonStyles} from 'pageflow-scrolled/editor';
+import {editor, buttonStyles} from 'pageflow-scrolled/editor';
 import {ListView} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 import I18n from 'i18n-js';
@@ -28,6 +28,12 @@ export const ItemsListView = Marionette.Layout.extend({
       collection: this.collection,
       sortable: true,
 
+      onEdit: (model) => {
+        editor.navigate(
+          `/scrolled/imageGalleries/${this.options.contentElement.id}/${model.id}`,
+          {trigger: true}
+        )
+      },
       onRemove: (model) => this.collection.remove(model)
     }));
   }

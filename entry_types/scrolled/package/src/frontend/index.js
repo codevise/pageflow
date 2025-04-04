@@ -49,6 +49,7 @@ export {Panorama} from './Panorama';
 export {ExpandableImage} from './ExpandableImage';
 export {ToggleFullscreenCornerButton} from './ToggleFullscreenCornerButton';
 export {FullscreenViewer} from './FullscreenViewer';
+export {PaginationIndicator} from './PaginationIndicator';
 
 export * from './useOnScreen';
 export * from './i18n';
