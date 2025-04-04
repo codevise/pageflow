@@ -9,9 +9,11 @@ import {useI18n} from '../i18n';
 import styles from './EditableLink.module.css';
 
 export function EditableLink({
-  className, href, openInNewTab, children, linkPreviewDisabled,
+  className, href, openInNewTab, children,
   onChange,
+  linkPreviewDisabled,
   linkPreviewPosition = 'below',
+  linkPreviewAlign = 'left',
   actionButtonPosition = 'outside',
   actionButtonVisible = 'whenSelected'
 }) {
@@ -31,7 +33,7 @@ export function EditableLink({
     <div className={styles.wrapper}>
       <LinkTooltipProvider disabled={linkPreviewDisabled}
                            position={linkPreviewPosition}
-                           align="left"
+                           align={linkPreviewAlign}
                            gap={5}>
         <LinkPreview href={href} openInNewTab={openInNewTab} className={className}>
           {children}
