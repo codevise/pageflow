@@ -79,39 +79,66 @@
   width: 66%;
 }
 
+.textPosition-overlay .thumbnail {
+  width: 100%;
+}
+
 .background {
   --padding-inline: var(--theme-external-links-card-padding-inline, 15px);
-  flex: 1;
-  color: var(--theme-external-links-card-text-color, darkContentTextColor);
   --content-text-color: var(--theme-external-links-card-text-color, darkContentTextColor);
-  background-color: var(--theme-external-links-card-surface-color, lightContentSurfaceColor);
+  --card-surface-color: var(--theme-external-links-card-surface-color, lightContentSurfaceColor);
+  color: var(--content-text-color);
+  background-color: var(--card-surface-color);
+  flex: 1;
   padding-left: min(var(--padding-inline), 5px);
   padding-right: min(var(--padding-inline), 5px);
 }
+
+.invert > .background {
+  --card-surface-color: var(--theme-external-links-card-surface-color, darkContentSurfaceColor);
+  --content-text-color: var(--theme-external-links-card-text-color, lightContentTextColor);
+}
+
+.textPosition-overlay .background {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: transparent;
+  z-index: 1;
+}
+
+.textPosition-overlay .background::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -2rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(0deg, var(--card-surface-color), transparent);
+  opacity: calc(0.9 * var(--overlay-opacity, 0.7));
+}
+
 
 .textPosition-none .background {
   display: none;
 }
 
-.textPosition-below .details {
+.textPosition-below .details,
+.textPosition-overlay .details {
   padding-top: 15px;
   padding-bottom: 20px;
   padding-left: calc(var(--padding-inline) - 5px);
   padding-right: calc(var(--padding-inline) - 5px);
 }
 
-.textPosition-below .details:first-child {
+.textPosition-below .details:first-child,
+.textPosition-overlay .details:first-child {
   padding-top: 20px;
 }
 
 .textPosition-right .details {
   padding: 10px 10px 10px 15px;
-}
-
-.invert > .background {
-  background-color: var(--theme-external-links-card-surface-color, darkContentSurfaceColor);
-  color: var(--theme-external-links-card-text-color, lightContentTextColor);
-  --content-text-color: var(--theme-external-links-card-text-color, lightContentTextColor);
 }
 
 .tagline {
@@ -125,6 +152,10 @@
   line-height: 1.3;
   font-weight: bold;
   margin: 0 0 1rem;
+}
+
+.textPosition-overlay .title:last-child {
+  margin-bottom: 0;
 }
 
 .details p {
