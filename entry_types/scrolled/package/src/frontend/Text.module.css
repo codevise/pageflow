@@ -218,9 +218,73 @@
   font-weight: bold;
 }
 
-.teaserDescription {
+.teaserTitle-lg {
+  composes: typography-externalLinkTitle from global;
+  composes: typography-externalLinkTitleLg from global;
+  line-height: 1.3;
+  font-weight: bold;
+  font-size: text-s;
+  margin-bottom: 1rem;
+}
+
+.teaserTitle-md {
+  composes: typography-externalLinkTitle from global;
+  composes: typography-externalLinkTitleMd from global;
+  line-height: 1.3;
+  font-weight: bold;
+  font-size: 19.8px;
+  margin-bottom: 1rem;
+}
+
+.teaserTitle-sm {
+  composes: typography-externalLinkTitle from global;
+  composes: typography-externalLinkTitleSm from global;
+  line-height: 1.3;
+  font-weight: bold;
+  font-size: 19.2px;
+  margin-bottom: 1rem;
+}
+
+.teaserTagline-lg {
+  composes: typography-externalLinkTagline from global;
+  composes: typography-externalLinkTaglineLg from global;
+  line-height: 1.3;
+  font-size: text-s;
+  margin-bottom: 0.25rem;
+}
+
+.teaserTagline-md {
+  composes: typography-externalLinkTagline from global;
+  composes: typography-externalLinkTaglineMd from global;
+  line-height: 1.3;
+  font-size: text-xs;
+  margin-bottom: 0.25rem;
+}
+
+.teaserTagline-sm {
+  composes: typography-externalLinkTagline from global;
+  composes: typography-externalLinkTaglineSm from global;
+  line-height: 1.3;
+  font-size: text-2xs;
+  margin-bottom: 0.25rem;
+}
+
+.teaserDescription-lg {
   composes: typography-externalLinkDescription from global;
   line-height: 1.3;
+  font-size: text-s;
+}
+
+.teaserDescription-md {
+  composes: typography-externalLinkDescription from global;
+  line-height: 1.3;
+  font-size: text-xs;
+}
+
+.teaserDescription-sm {
+  composes: typography-externalLinkDescription from global;
+  line-height: 1.3;
+  font-size: text-2xs;
 }
 
 .infoTableLabel {
@@ -250,7 +314,6 @@
   .heading-sm {
     font-size: text-l;
   }
-
 
   .headingTagline-lg {
     font-size: 26px;
@@ -309,5 +372,13 @@
   .counterNumber-xs {
     font-size: text-l;
     line-height: 1.1;
+  }
+
+  .teaserTitle-md {
+    font-size: text-xs;
+  }
+
+  .teaserTitle-sm {
+    font-size: text-2xs;
   }
 }

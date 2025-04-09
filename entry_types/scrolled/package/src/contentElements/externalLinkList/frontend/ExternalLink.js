@@ -6,6 +6,7 @@ import {
   EditableInlineText,
   EditableText,
   InlineFileRights,
+  Text,
   useFileWithInlineRights,
   useContentElementConfigurationUpdate,
   useContentElementEditorState,
@@ -14,6 +15,12 @@ import {
 } from 'pageflow-scrolled/frontend';
 
 import {Thumbnail} from './Thumbnail';
+
+const scaleCategorySuffixes = {
+  small: 'sm',
+  medium: 'md',
+  large: 'lg'
+};
 
 export function ExternalLink({id, configuration, ...props}) {
   const {isEditable, isSelected} = useContentElementEditorState();
@@ -77,6 +84,8 @@ export function ExternalLink({id, configuration, ...props}) {
   const href = itemLinks[id] ? itemLinks[id]?.href : ensureAbsolute(props.url);
   const openInNewTab = itemLinks[id] ? itemLinks[id]?.openInNewTab : props.open_in_new_tab;
 
+  const scaleCategorySuffix = scaleCategorySuffixes[props.textSize || 'small'];
+
   return (
     <li className={classNames(styles.item,
                               styles[`textPosition-${props.textPosition}`],
@@ -93,7 +102,6 @@ export function ExternalLink({id, configuration, ...props}) {
         <div className={classNames(
           styles.card,
           styles[`thumbnailSize-${props.thumbnailSize}`],
-          styles[`textSize-${props.textSize}`],
           {[styles.invert]: props.invert
         })}>
           <div className={styles.thumbnail}>
@@ -109,20 +117,20 @@ export function ExternalLink({id, configuration, ...props}) {
             <InlineFileRights context="afterElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
             <div className={styles.details}>
               {presentOrEditing('tagline') &&
-               <div className={styles.tagline}>
+               <Text scaleCategory={`teaserTagline-${scaleCategorySuffix}`}>
                  <EditableInlineText value={itemTexts[id]?.tagline}
                                      placeholder={t('pageflow_scrolled.inline_editing.type_tagline')}
                                      onChange={value => handleTextChange('tagline', value)} />
-               </div>}
-              <div className={styles.title}>
+               </Text>}
+              <Text scaleCategory={`teaserTitle-${scaleCategorySuffix}`}>
                 <EditableInlineText value={itemTexts[id]?.title || legacyTexts.title}
                                     placeholder={t('pageflow_scrolled.inline_editing.type_heading')}
                                     onChange={value => handleTextChange('title', value)} />
-              </div>
+              </Text>
               {presentOrEditing('description') &&
                <div className={styles.link_desc}>
                  <EditableText value={itemTexts[id]?.description || legacyTexts.description}
-                               scaleCategory="teaserDescription"
+                               scaleCategory={`teaserDescription-${scaleCategorySuffix}`}
                                placeholder={t('pageflow_scrolled.inline_editing.type_text')}
                                onChange={value => handleTextChange('description', value)} />
                </div>}

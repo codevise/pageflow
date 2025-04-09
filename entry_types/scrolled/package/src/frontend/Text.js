@@ -20,7 +20,9 @@ import styles from './Text.module.css';
  *   `'counterNumber-xs'`, `'counterDescription`'.
  *   `'infoTableLabel'`, `'infoTableValue`'.
  *   `'hotspotsTooltipTitle'`, `'hotspotsTooltipDescription`', `'hotspotsTooltipLink`',
- *   `'teaserDescription'`.
+ *   `'teaserTitle-lg'`, `'teaserTitle-md'`, `'teaserTitle-sm'`,
+ *   `'teaserTagline-lg'`, `'teaserTagline-md'`, `'teaserTagline-sm'`,
+ *   `'teaserDescription-lg'`, `'teaserDescription-md'`, `'teaserDescription-sm'`.
  * @param {string} [props.typographyVariant] - Suffix for variant class name.
  * @param {string} [props.typographySize] - Suffix for size class name.
  * @param {string} [props.inline] - Render a span instread of a div.
@@ -54,7 +56,9 @@ Text.propTypes = {
     'quoteText-lg', 'quoteText-md', 'quoteText-sm', 'quoteText-xs',
     'quoteAttribution-lg', 'quoteAttribution-md', 'quoteAttribution-sm', 'quoteAttribution-xs',
     'hotspotsTooltipTitle', 'hotspotsTooltipDescription', 'hotspotsTooltipLink',
-    'teaserDescription',
+    'teaserTitle-lg', 'teaserTitle-md', 'teaserTitle-sm',
+    'teaserTagline-lg', 'teaserTagline-md', 'teaserTagline-sm',
+    'teaserDescription-lg', 'teaserDescription-md', 'teaserDescription-sm',
     'counterNumber-lg', 'counterNumber-md', 'counterNumber-sm', 'counterNumber-xs',
     'counterDescription',
     'infoTableLabel', 'infoTableValue',
