@@ -43,10 +43,15 @@ editor.contentElementTypes.register('externalLinkList', {
 
       this.input('textPosition', SelectInputView, {
         values: features.isEnabled('external_links_options') ?
-                ['below', 'right', 'none'] :
+                ['below', 'right', 'overlay', 'none'] :
                 ['below', 'none']
       });
       this.group('ContentElementVariant', {entry});
+      this.input('overlayOpacity', SliderInputView, {
+        defaultValue: 70,
+        visibleBinding: 'textPosition',
+        visibleBindingValue: 'overlay'
+      });
       this.view(SeparatorView);
       this.group('ContentElementPosition');
       this.view(SeparatorView);

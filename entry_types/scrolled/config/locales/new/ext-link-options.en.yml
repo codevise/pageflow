@@ -27,7 +27,13 @@ en:
               values:
                 below: "Below image"
                 right: "Right from image"
+                overlay: "On Image"
                 none: "None"
+            overlayOpacity:
+              label: Shadow opacity
+              inline_help: |-
+                Intensity of the color gradient that is placed behind
+                the text to improve contrast on busy backgrounds
             thumbnailSize:
               label: "Thumbnail width"
               inline_help: |-

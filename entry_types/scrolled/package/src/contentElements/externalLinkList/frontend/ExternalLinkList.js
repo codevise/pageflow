@@ -88,6 +88,7 @@ export function ExternalLinkList(props) {
             textPositionStyles[`linkAlignment-${props.configuration.linkAlignment}`],
             textPositionStyles[`textPosition-${textPosition}`]
           )}
+          style={{'--overlay-opacity': (props.configuration.overlayOpacity || 70) / 100}}
           onClick={handleListClick}>
         {linkList.map((link, index) =>
           <ExternalLink {...link}

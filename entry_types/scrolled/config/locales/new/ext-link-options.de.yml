@@ -28,7 +28,14 @@ de:
               values:
                 below: "Unter dem Bild"
                 right: "Rechts neben dem Bild"
+                overlay: "Auf dem Bild"
                 none: "Keine"
+            overlayOpacity:
+              label: Abblendung
+              inline_help: |-
+                Intensität des Farbverlaufs, der hinter den Text
+                gelegt wird, um den Kontrast auf unruhigen
+                Hintergründen zu verbessern.
             thumbnailSize:
               label: "Thumbnail-Breite"
               inline_help: |-

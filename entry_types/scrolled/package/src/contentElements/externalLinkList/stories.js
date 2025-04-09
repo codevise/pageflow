@@ -204,19 +204,19 @@ storiesOfContentElement(module, {
   inlineFileRights: true
 });
 
-[['below', 6], ['right', 3]].forEach(([textPosition, linkCount]) =>
+[['below'], ['right'], ['overlay', 'square']].forEach(([textPosition, thumbnailAspectRatio]) =>
   storiesOf(`Content Elements/externalLinkList`, module)
     .add(
       `Text Position - ${textPosition}`,
-    () => (
-      <RootProviders seed={exampleSeed({textPosition, linkCount})}>
-        <Entry />
-      </RootProviders>
-    )
+      () => (
+        <RootProviders seed={exampleSeed({textPosition, thumbnailAspectRatio})}>
+          <Entry />
+        </RootProviders>
+      )
   )
 );
 
-function exampleSeed({textPosition, linkCount}) {
+function exampleSeed({textPosition, thumbnailAspectRatio}) {
   const sectionConfiguration = {
     transition: 'scroll'
   };
@@ -255,9 +255,9 @@ function exampleSeed({textPosition, linkCount}) {
       }
     ],
     contentElements: [
-      ...exampleContentElements(1, 'left', textPosition, linkCount),
-      ...exampleContentElements(2, 'center', textPosition, linkCount),
-      ...exampleContentElements(3, 'right', textPosition, linkCount),
+      ...exampleContentElements(1, 'left', textPosition, thumbnailAspectRatio),
+      ...exampleContentElements(2, 'center', textPosition, thumbnailAspectRatio),
+      ...exampleContentElements(3, 'right', textPosition, thumbnailAspectRatio),
     ]
   });
 }
@@ -274,7 +274,7 @@ function linkCount({layout, textPosition, width, linkWidth}) {
   }
 }
 
-function exampleContentElements(sectionId, layout, textPosition) {
+function exampleContentElements(sectionId, layout, textPosition, thumbnailAspectRatio) {
   return [
     exampleHeading({sectionId, text: `Layout ${layout}`}),
     ...([
@@ -293,6 +293,7 @@ function exampleContentElements(sectionId, layout, textPosition) {
             textPosition,
             width,
             linkWidth,
+            thumbnailAspectRatio,
             ...links({
               count: linkCount({layout, textPosition, width, linkWidth})
             })
