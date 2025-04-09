@@ -119,7 +119,6 @@
   opacity: calc(0.9 * var(--overlay-opacity, 0.7));
 }
 
-
 .textPosition-none .background {
   display: none;
 }
@@ -141,41 +140,7 @@
   padding: 10px 10px 10px 15px;
 }
 
-.tagline {
-  composes: typography-externalLinkTagline from global;
-  line-height: 1.3;
-  margin: 0 0 0.25rem;
-}
-
-.title {
-  composes: typography-externalLinkTitle from global;
-  line-height: 1.3;
-  font-weight: bold;
-  margin: 0 0 1rem;
-}
-
+.details p,
 .textPosition-overlay .title:last-child {
   margin-bottom: 0;
-}
-
-.details p {
-  margin-bottom: 0;
-}
-
-.textSize-medium {
-  font-size: 18px;
-}
-
-.textSize-large {
-  font-size: 20px;
-}
-
-@media screen and breakpoint-sm {
-  .textSize-small .title {
-    font-size: 1.2em;
-  }
-
-  .textSize-medium .title {
-    font-size: 1.1em;
-  }
 }
