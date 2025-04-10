@@ -66,6 +66,13 @@ en:
                 small: Small
                 medium: Medium
                 large: Large
+            textAlign:
+              label: Text alignment
+              inline_help: Align the text in the links.
+              values:
+                left: Left
+                center: Center
+                right: Right
             displayButtons:
               label: "Display buttons"
               inline_help: |-

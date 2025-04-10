@@ -114,6 +114,7 @@ export function ExternalLink({id, configuration, ...props}) {
             </Thumbnail>
           </div>
           <div className={classNames(styles.background,
+                                     styles[`align-${configuration.textAlign}`],
                                      props.darkBackground ? styles.light : styles.dark)}
                style={{pointerEvents: !isEditable || isSelected ? undefined : 'none'}}>
             <InlineFileRights context="afterElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
@@ -137,7 +138,8 @@ export function ExternalLink({id, configuration, ...props}) {
                                onChange={value => handleTextChange('description', value)} />
                </div>}
               {configuration.displayButtons && presentOrEditing('link') &&
-               <LinkButton href={href}
+               <LinkButton className={styles.link}
+                           href={href}
                            openInNewTab={openInNewTab}
                            value={itemTexts[id]?.link}
                            linkPreviewDisabled={true}

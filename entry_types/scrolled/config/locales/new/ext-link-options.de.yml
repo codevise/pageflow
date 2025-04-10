@@ -68,6 +68,13 @@ de:
                 small: Klein
                 medium: Mittel
                 large: Groß
+            textAlign:
+                label: Textausrichtung
+                inline_help: Ausrichtung des Texts innerhalb der Links.
+                values:
+                  left: Links
+                  center: Zentriert
+                  right: Rechts
             displayButtons:
               label: "Buttons anzeigen"
               inline_help: |-

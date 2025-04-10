@@ -81,6 +81,9 @@ editor.contentElementTypes.register('externalLinkList', {
       this.input('textSize', SelectInputView, {
         values: ['small', 'medium', 'large']
       });
+      this.input('textAlign', SelectInputView, {
+        values: ['left', 'right', 'center']
+      });
       this.input('displayButtons', CheckBoxInputView);
     });
   }
