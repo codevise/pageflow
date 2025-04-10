@@ -11,8 +11,9 @@
 }
 
 .button {
-  display: flex;
-  width: var(--theme-link-button-width);
+  display: inline-flex;
+  min-width: var(--theme-link-button-width, 100%);
+  box-sizing: border-box;
   justify-content: center;
   gap: 0.5em;
   border-radius: var(--theme-link-button-border-radius, 5px);

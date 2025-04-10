@@ -99,6 +99,12 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'With text alignment',
+      configuration: {
+        textAlign: 'center',
+      }
+    },
+    {
       name: 'With inverted content colors',
       configuration: {
         variant: 'cards-inverted'

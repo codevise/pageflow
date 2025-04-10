@@ -108,6 +108,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
+  box-sizing: border-box;
   background: transparent;
   z-index: 1;
 }
@@ -148,4 +149,16 @@
 .details p,
 .textPosition-overlay .title:last-child {
   margin-bottom: 0;
+}
+
+.link {
+  margin-bottom: -5px;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.align-right {
+  text-align: right;
 }
