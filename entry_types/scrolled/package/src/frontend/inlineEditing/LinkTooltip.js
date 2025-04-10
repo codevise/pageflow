@@ -78,8 +78,7 @@ export function LinkPreview({href, openInNewTab, children, className}) {
     <span ref={ref}
           className={className}
           onMouseEnter={() => activate(href, openInNewTab, ref)}
-          onMouseLeave={deactivate}
-          onMouseDown={deactivate}>
+          onMouseLeave={deactivate}>
       {children}
     </span>
   );

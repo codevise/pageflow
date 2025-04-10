@@ -61,7 +61,6 @@ export function Figure({
                          onChange={onCaptionChange}
                          onlyParagraphs={true}
                          hyphens="none"
-                         floatingControlsPosition="above"
                          placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
          </figcaption>}
       </figure>

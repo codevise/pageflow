@@ -60,7 +60,7 @@ export const EditableText = React.memo(function EditableText({
   value, contentElementId, placeholder, onChange, selectionRect, className,
   placeholderClassName, scaleCategory = 'body', typographyVariant, typographySize,
   autoFocus,
-  floatingControlsPosition = 'below'
+  floatingControlsPosition = 'above'
 }) {
   const editor = useMemo(
     () => withLinks(
