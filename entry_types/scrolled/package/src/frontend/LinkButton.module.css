@@ -1,0 +1,48 @@
+:global .scope-lightContent {
+  --link-button-on-surface-color: var(--theme-light-content-link-button-on-surface-color,
+                                      currentColor);
+  --link-button-surface-color: var(--theme-light-content-link-button-surface-color);
+}
+
+:global .scope-darkContent {
+  --link-button-on-surface-color: var(--theme-dark-content-link-button-on-surface-color,
+                                      var(--theme-widget-primary-color));
+  --link-button-surface-color: var(--theme-dark-content-link-button-surface-color);
+}
+
+.button {
+  display: flex;
+  width: var(--theme-link-button-width);
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: var(--theme-link-button-border-radius, 5px);
+  text-decoration: none;
+  padding: var(--theme-link-button-padding, 0.5rem);
+  background-color: var(--link-button-surface-color, transparent);
+  color: var(--link-button-on-surface-color);
+  margin-top: 1rem;
+  font-weight: bold;
+  border: solid 1px var(--link-button-surface-color,
+                        color-mix(in srgb,
+                                  var(--link-button-on-surface-color),
+                                  transparent));
+  cursor: pointer;
+}
+
+.button::after {
+  content: var(--theme-link-button-symbol, "›");
+}
+
+.button:hover,
+.button:active {
+  border: solid 1px var(--link-button-surface-color, var(--link-button-on-surface-color));
+}
+
+.editable {
+  opacity: 0.5;
+}
+
+.editable:has([data-slate-string]),
+.editable:focus-within {
+  opacity: 1;
+}

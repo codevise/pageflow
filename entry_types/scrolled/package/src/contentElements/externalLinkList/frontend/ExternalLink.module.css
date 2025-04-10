@@ -83,20 +83,25 @@
   width: 100%;
 }
 
-.background {
-  --padding-inline: var(--theme-external-links-card-padding-inline, 15px);
+.light {
+  composes: scope-darkContent from global;
   --content-text-color: var(--theme-external-links-card-text-color, darkContentTextColor);
   --card-surface-color: var(--theme-external-links-card-surface-color, lightContentSurfaceColor);
+}
+
+.dark {
+  composes: scope-lightContent from global;
+  --content-text-color: var(--theme-external-links-card-text-color, lightContentTextColor);
+  --card-surface-color: var(--theme-external-links-card-surface-color, darkContentSurfaceColor);
+}
+
+.background {
+  --padding-inline: var(--theme-external-links-card-padding-inline, 15px);
   color: var(--content-text-color);
   background-color: var(--card-surface-color);
   flex: 1;
   padding-left: min(var(--padding-inline), 5px);
   padding-right: min(var(--padding-inline), 5px);
-}
-
-.invert > .background {
-  --card-surface-color: var(--theme-external-links-card-surface-color, darkContentSurfaceColor);
-  --content-text-color: var(--theme-external-links-card-text-color, lightContentTextColor);
 }
 
 .textPosition-overlay .background {

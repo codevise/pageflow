@@ -98,7 +98,7 @@ export function ExternalLinkList(props) {
                         thumbnailSize={props.configuration.thumbnailSize || 'small'}
                         textPosition={props.configuration.textPosition || 'below'}
                         textSize={props.configuration.textSize || 'small'}
-                        invert={!darkBackground}
+                        darkBackground={darkBackground}
                         loadImages={shouldLoad}
                         outlined={isSelected}
                         highlighted={highlightedIndex === index}

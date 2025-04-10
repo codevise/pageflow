@@ -1,6 +1,6 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {features} from 'pageflow/frontend';
-import {SelectInputView, SliderInputView, SeparatorView} from 'pageflow/ui';
+import {SelectInputView, SliderInputView, SeparatorView, CheckBoxInputView} from 'pageflow/ui';
 
 import {SidebarRouter} from './SidebarRouter';
 import {SidebarController} from './SidebarController';
@@ -81,6 +81,7 @@ editor.contentElementTypes.register('externalLinkList', {
       this.input('textSize', SelectInputView, {
         values: ['small', 'medium', 'large']
       });
+      this.input('displayButtons', CheckBoxInputView);
     });
   }
 });

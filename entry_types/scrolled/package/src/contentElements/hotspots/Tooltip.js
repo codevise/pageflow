@@ -25,7 +25,8 @@ import {
   useDarkBackground,
   useFileWithInlineRights,
   useI18n,
-  utils
+  utils,
+  LinkButton
 } from 'pageflow-scrolled/frontend';
 
 import {getTooltipInlineStyles} from './getTooltipInlineStyles';
@@ -177,8 +178,7 @@ export function Tooltip({
                                         styles[`maxWidth-${maxWidth}`],
                                         styles[`align-${area.tooltipTextAlign}`],
                                         light ? styles.light : styles.dark,
-                                        {[styles.editable]: isEditable,
-                                         [styles.paddingForScrollButtons]: keepInViewport,
+                                        {[styles.paddingForScrollButtons]: keepInViewport,
                                          [styles.minWidth]: presentOrEditing('link')})}
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
@@ -214,18 +214,13 @@ export function Tooltip({
                                 scaleCategory="hotspotsTooltipDescription"
                                 placeholder={t('pageflow_scrolled.inline_editing.type_text')} />}
                  {presentOrEditing('link') &&
-                  <Text inline scaleCategory="hotspotsTooltipLink">
-                    <EditableLink href={tooltipLinks[area.id]?.href}
-                                  openInNewTab={tooltipLinks[area.id]?.openInNewTab}
-                                  linkPreviewDisabled={utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)}
-                                  className={styles.link}
-                                  onChange={value => handleLinkChange(value)}>
-                      <EditableInlineText value={tooltipTexts[area.id]?.link}
-                                          onChange={value => handleTextChange('link', value)}
-                                          placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
-                      ›
-                    </EditableLink>
-                  </Text>}
+                  <LinkButton className={styles.link}
+                              scaleCategory="hotspotsTooltipLink"
+                              href={tooltipLinks[area.id]?.href}
+                              openInNewTab={tooltipLinks[area.id]?.openInNewTab}
+                              value={tooltipTexts[area.id]?.link}
+                              onTextChange={value => handleTextChange('link', value)}
+                              onLinkChange={value => handleLinkChange(value)} />}
                </div>
              </div>
            </div>

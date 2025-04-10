@@ -131,6 +131,8 @@ export {
   widthName as contentElementWidthName
 } from './layouts';
 
+export {LinkButton} from './LinkButton';
+
 global.pageflowScrolledRender = async function(seed) {
   setupI18n(seed.i18n);
 
