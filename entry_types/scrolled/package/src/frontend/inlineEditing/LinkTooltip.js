@@ -78,8 +78,7 @@ export function LinkPreview({href, openInNewTab, children, className}) {
     <span ref={ref}
           className={className}
           onMouseEnter={() => activate(href, openInNewTab, ref)}
-          onMouseLeave={deactivate}
-          onMouseDown={deactivate}>
+          onMouseLeave={deactivate}>
       {children}
     </span>
   );
@@ -96,6 +95,7 @@ export function LinkTooltip({disabled, position, align, state}) {
     <div className={classNames(styles.linkTooltip,
                                styles[`position-${position}`],
                                styles[`align-${align}`])}
+         onClick={e => e.stopPropagation()}
          onMouseEnter={keep}
          onMouseLeave={deactivate}
          style={{top: state.top, bottom: state.bottom, left: state.left}}>
