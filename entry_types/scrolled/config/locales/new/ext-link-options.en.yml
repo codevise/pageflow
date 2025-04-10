@@ -66,3 +66,7 @@ en:
                 small: Small
                 medium: Medium
                 large: Large
+            displayButtons:
+              label: "Display buttons"
+              inline_help: |-
+                Display buttons to open the links.

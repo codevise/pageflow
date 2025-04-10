@@ -68,3 +68,7 @@ de:
                 small: Klein
                 medium: Mittel
                 large: Groß
+            displayButtons:
+              label: "Buttons anzeigen"
+              inline_help: |-
+                Zeige Buttons an, um die Links zu öffnen.

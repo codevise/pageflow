@@ -11,7 +11,8 @@ import {
   useContentElementConfigurationUpdate,
   useContentElementEditorState,
   useI18n,
-  utils
+  utils,
+  LinkButton
 } from 'pageflow-scrolled/frontend';
 
 import {Thumbnail} from './Thumbnail';
@@ -89,21 +90,21 @@ export function ExternalLink({id, configuration, ...props}) {
   return (
     <li className={classNames(styles.item,
                               styles[`textPosition-${props.textPosition}`],
-                              {[styles.link]: !!href},
+                              {[styles.link]: !!href && !configuration.displayButtons},
                               {[styles.outlined]: props.outlined},
                               {[styles.highlighted]: props.highlighted},
                               {[styles.selected]: props.selected})}
         onClick={props.onClick}>
-      <Link isEditable={isEditable}
+      <Link isEnabled={!configuration.displayButtons}
+            isEditable={isEditable}
             actionButtonVisible={props.selected}
             href={href}
             openInNewTab={openInNewTab}
             onChange={handleLinkChange}>
         <div className={classNames(
           styles.card,
-          styles[`thumbnailSize-${props.thumbnailSize}`],
-          {[styles.invert]: props.invert
-        })}>
+          styles[`thumbnailSize-${props.thumbnailSize}`]
+        )}>
           <div className={styles.thumbnail}>
             <Thumbnail imageFile={thumbnailImageFile}
                        aspectRatio={props.thumbnailAspectRatio}
@@ -112,7 +113,8 @@ export function ExternalLink({id, configuration, ...props}) {
               <InlineFileRights context="insideElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
             </Thumbnail>
           </div>
-          <div className={styles.background}
+          <div className={classNames(styles.background,
+                                     props.darkBackground ? styles.light : styles.dark)}
                style={{pointerEvents: !isEditable || isSelected ? undefined : 'none'}}>
             <InlineFileRights context="afterElement" items={[{file: thumbnailImageFile, label: 'image'}]} />
             <div className={styles.details}>
@@ -134,6 +136,14 @@ export function ExternalLink({id, configuration, ...props}) {
                                placeholder={t('pageflow_scrolled.inline_editing.type_text')}
                                onChange={value => handleTextChange('description', value)} />
                </div>}
+              {configuration.displayButtons && presentOrEditing('link') &&
+               <LinkButton href={href}
+                           openInNewTab={openInNewTab}
+                           value={itemTexts[id]?.link}
+                           linkPreviewDisabled={true}
+                           actionButtonVisible={false}
+                           onTextChange={value => handleTextChange('link', value)}
+                           onLinkChange={value => handleLinkChange(value)} />}
             </div>
           </div>
         </div>
@@ -142,8 +152,8 @@ export function ExternalLink({id, configuration, ...props}) {
   );
 }
 
-function Link(props) {
-  if (props.href || props.isEditable) {
+function Link({isEnabled, isEditable, ...props}) {
+  if ((isEnabled && props.href) || isEditable) {
     return (
       <EditableLink {...props}
                     actionButtonVisible={props.actionButtonVisible}
