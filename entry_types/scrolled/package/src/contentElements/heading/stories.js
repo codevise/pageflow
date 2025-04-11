@@ -117,6 +117,29 @@ storiesOfContentElement(module, {
       configuration: {
         color: 'accent'
       }
-    }
+    },
+    {
+      name: 'With text effects',
+      configuration: {
+        typographyVariant: 'highlight',
+        children: 'Some Heading\nText',
+      },
+      themeOptions: {
+        typography: {
+          'heading-highlight': {
+            transform: 'rotate(-2.7deg)',
+            'font-style': 'italic',
+            '--text-highlight-padding': '0 0.2em',
+            '--text-highlight-background-color': '#fff',
+            '--text-highlight-line-height': '1.5',
+            '--background-clip-text-fallback-color': '#000',
+            '--background-clip-text-background': 'linear-gradient(90deg, red 0%, #ff00ff 100%)',
+            '--background-clip-text-background-clip': 'text',
+            '--background-clip-text-color': 'transparent',
+            '--background-clip-text-padding': '0 0.2em 0 0'
+          }
+        }
+      }
+    },
   ]
 });

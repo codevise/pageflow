@@ -31,3 +31,28 @@
   hyphens: none;
   word-wrap: normal;
 }
+
+.textEffects {
+  padding: var(--text-highlight-padding);
+  line-height: var(--text-highlight-line-height);
+  box-decoration-break: clone;
+}
+
+.textEffects:not(:has([data-slate-zero-width="n"])) {
+  background-color: var(--text-highlight-background-color);
+}
+
+.textEffects > span {
+  color: var(--background-clip-text-fallback-color);
+  padding: var(--background-clip-text-padding);
+  box-decoration-break: clone;
+}
+
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .textEffects > span {
+    background: var(--background-clip-text-background);
+    background-clip: var(--background-clip-text-background-clip);
+    color: var(--background-clip-text-color);
+    caret-color: var(--background-clip-text-fallback-color);
+  }
+}

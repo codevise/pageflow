@@ -16,7 +16,6 @@ import {insidePagerButton} from './PagerButton';
 import {
   EditableText,
   EditableInlineText,
-  EditableLink,
   InlineFileRights,
   Image,
   Text,
