@@ -49,6 +49,7 @@ export const EditableInlineText = memo(function EditableInlineText({
       <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
         <Editable decorate={decorateLineBreaks}
                   onKeyDown={handleKeyDown}
+                  renderElement={props => <Element {...props} />}
                   renderLeaf={renderLeaf} />
       </Slate>
       <TextPlaceholder text={placeholder}
@@ -56,6 +57,16 @@ export const EditableInlineText = memo(function EditableInlineText({
     </div>
   );
 });
+
+function Element({attributes, children, element}) {
+  return (
+    <div {...attributes} style={{position: 'relative'}}>
+      <span className={frontendStyles.textEffects}>
+        {children}
+      </span>
+    </div>
+  );
+}
 
 function renderLeaf({attributes, children, leaf}) {
   if (leaf.shy) {

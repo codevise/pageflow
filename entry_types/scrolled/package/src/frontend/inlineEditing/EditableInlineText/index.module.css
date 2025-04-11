@@ -1,6 +1,7 @@
 .shy [data-slate-string],
 .newLine {
   position: relative;
+  color: var(--background-clip-text-fallback-color);
 }
 
 .selected.manualHyphens .shy [data-slate-string]::before {

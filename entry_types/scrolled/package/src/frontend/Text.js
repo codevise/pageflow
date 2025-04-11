@@ -2,8 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import {camelize} from './utils/camelize';
-
 import styles from './Text.module.css';
 
 /**
