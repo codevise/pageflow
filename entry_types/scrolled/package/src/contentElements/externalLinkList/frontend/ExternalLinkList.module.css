@@ -15,3 +15,7 @@
 .textPosition-below {
   min-height: 240px;
 }
+
+.textPosition-overlay {
+  --link-width-s-phone-columns: 1;
+}
