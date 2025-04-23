@@ -42,9 +42,7 @@ editor.contentElementTypes.register('externalLinkList', {
       });
 
       this.input('textPosition', SelectInputView, {
-        values: features.isEnabled('external_links_options') ?
-                ['below', 'right', 'overlay', 'none'] :
-                ['below', 'none']
+        values: ['below', 'right', 'overlay', 'none']
       });
       this.group('ContentElementVariant', {entry});
       this.input('overlayOpacity', SliderInputView, {
@@ -85,6 +83,7 @@ editor.contentElementTypes.register('externalLinkList', {
         values: ['left', 'right', 'center']
       });
       this.input('displayButtons', CheckBoxInputView);
+      this.group('ContentElementInlineFileRightsSettings');
     });
   }
 });

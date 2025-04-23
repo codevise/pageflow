@@ -1,7 +1,4 @@
 de:
-  pageflow:
-    external_links_options:
-      feature_name: "External Links Optionen"
   pageflow_scrolled:
     editor:
       content_elements:

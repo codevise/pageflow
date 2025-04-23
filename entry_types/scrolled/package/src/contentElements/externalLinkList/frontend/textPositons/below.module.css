@@ -24,10 +24,23 @@
   width: calc((100% - var(--gap) * (var(--columns) - 1)) / var(--columns));
 }
 
+.linkWidth-s > * {
+  max-width: 240px;
+}
+
 @container (min-width: 315px) {
-  .linkWidth-xs,
-  .linkWidth-s {
+  .linkWidth-xs {
     --columns: 2
+  }
+
+  .linkWidth-s {
+    --columns: var(--link-width-s-phone-columns, 2)
+  }
+}
+
+@container (min-width: 400px) {
+  .linkWidth-s {
+    --columns: 2;
   }
 }
 
