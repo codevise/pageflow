@@ -2,11 +2,19 @@
   color: #fff;
   position: absolute;
   right: 0;
-  bottom: 0;
   left: 0;
   display: flex;
   justify-content: flex-end;
   pointer-events: none;
+  z-index: 2;
+}
+
+.position-top {
+  top: 0;
+}
+
+.position-bottom {
+  bottom: 0;
 }
 
 .standAlone > * {
@@ -57,7 +65,6 @@
   font-family: sans-serif;
   line-height: 1.4;
   position: absolute;
-  bottom: 38px;
   right: 5px;
   background-color: rgba(17, 17, 17, 0.9);
   border-radius: 3px;
@@ -72,14 +79,30 @@
   z-index: 1;
 }
 
+.position-bottom .tooltip {
+  bottom: 38px;
+}
+
+.position-top .tooltip {
+  top: 38px;
+}
+
 .tooltip::after {
   content: "";
   display: block;
   border: solid 5px transparent;
-  border-top-color: rgba(17, 17, 17, 0.9);
   position: absolute;
   right: 11px;
+}
+
+.position-bottom .tooltip::after {
+  border-top-color: rgba(17, 17, 17, 0.9);
   top: 100%;
+}
+
+.position-top .tooltip::after {
+  border-bottom-color: rgba(17, 17, 17, 0.9);
+  bottom: 100%;
 }
 
 .tooltip a {

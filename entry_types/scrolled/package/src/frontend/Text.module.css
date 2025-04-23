@@ -224,7 +224,6 @@
   line-height: 1.3;
   font-weight: bold;
   font-size: text-s;
-  margin-bottom: 1rem;
 }
 
 .teaserTitle-md {
@@ -233,7 +232,6 @@
   line-height: 1.3;
   font-weight: bold;
   font-size: 19.8px;
-  margin-bottom: 1rem;
 }
 
 .teaserTitle-sm {
@@ -242,7 +240,6 @@
   line-height: 1.3;
   font-weight: bold;
   font-size: 19.2px;
-  margin-bottom: 1rem;
 }
 
 .teaserTagline-lg {

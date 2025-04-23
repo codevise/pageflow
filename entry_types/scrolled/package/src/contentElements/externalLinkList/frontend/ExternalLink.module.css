@@ -34,17 +34,32 @@
   opacity: 1;
 }
 
+.textPosition-below .cardWrapper,
+.textPosition-right .cardWrapper{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .card {
   display: flex;
-  vertical-align: top;
   border-radius: var(--theme-content-element-box-border-radius);
   overflow: hidden;
   will-change: transform;
-  height: 100%;
+  flex: 1;
 }
 
 .textPosition-below .card {
   flex-direction: column;
+}
+
+.textPosition-overlay .card {
+  display: grid;
+}
+
+.textPosition-overlay .card > * {
+  grid-row: 1;
+  grid-column: 1;
 }
 
 .textPosition-none {
@@ -96,19 +111,23 @@
 }
 
 .background {
-  --padding-inline: var(--theme-external-links-card-padding-inline, 15px);
   color: var(--content-text-color);
   background-color: var(--card-surface-color);
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.textPosition-below .background,
+.textPosition-overlay .background {
+  --padding-inline: var(--theme-external-links-card-padding-inline, 15px);
   padding-left: min(var(--padding-inline), 5px);
   padding-right: min(var(--padding-inline), 5px);
 }
 
 .textPosition-overlay .background {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  box-sizing: border-box;
+  position: relative;
+  align-self: end;
   background: transparent;
   z-index: 1;
 }
@@ -123,10 +142,17 @@
   bottom: 0;
   background: linear-gradient(0deg, var(--card-surface-color), transparent);
   opacity: calc(0.9 * var(--overlay-opacity, 0.7));
+  pointer-events: none;
 }
 
 .textPosition-none .background {
   display: none;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .textPosition-below .details,
@@ -143,7 +169,8 @@
 }
 
 .textPosition-right .details {
-  padding: 10px 10px 10px 15px;
+  justify-content: center;
+  padding: max(10px, 10%) max(20px, 3%);
 }
 
 .details p,
@@ -151,7 +178,19 @@
   margin-bottom: 0;
 }
 
-.link {
+.details p {
+  margin-top: 1rem;
+}
+
+.button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.textPosition-below .button,
+.textPosition-overlay .button {
   margin-bottom: -5px;
 }
 
@@ -161,4 +200,8 @@
 
 .align-right {
   text-align: right;
+}
+
+.textPosition-right .inlineFileRightsAfterCard {
+  display: flex;
 }

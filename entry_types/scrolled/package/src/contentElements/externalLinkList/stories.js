@@ -167,9 +167,67 @@ storiesOfContentElement(module, {
       },
     },
     {
+      name: 'Text inline file rights, text position right',
+      configuration: {
+        textPosition: 'right'
+      },
+      inlineFileRightsWidgetTypeName: 'textInlineFileRights',
+    },
+    {
+      name: 'Text inline file rights, text position overlay',
+      configuration: {
+        textPosition: 'overlay'
+      },
+      inlineFileRightsWidgetTypeName: 'textInlineFileRights',
+    },
+    {
+      name: 'Icon inline file rights, text position overlay',
+      configuration: {
+        textPosition: 'overlay'
+      },
+      inlineFileRightsWidgetTypeName: 'iconInlineFileRights',
+    },
+    {
       name: 'With buttons',
       configuration: {
         displayButtons: true,
+        itemTexts: {
+          1: {
+            title: editableTextValue('Item 1'),
+            description: editableTextValue('This is description'),
+            link: editableTextValue('Read more')
+          },
+          2: {
+            title: editableTextValue('Item 2'),
+            description: editableTextValue('This is another description'),
+            link: editableTextValue('Read more')
+          }
+        },
+        itemLinks: {
+          1: {
+            href: 'https://www.pageflow.io/'
+          },
+          2: {
+            href: 'https://www.pageflow.io/'
+          }
+        },
+        links: [
+          {
+            id: '1',
+            thumbnail: filePermaId('imageFiles', 'turtle')
+          },
+          {
+            id: '2',
+            thumbnail: filePermaId('imageFiles', 'turtle')
+          }
+        ]
+      }
+    },
+    {
+      name: 'With buttons, text position right',
+      configuration: {
+        displayButtons: true,
+        textPosition: 'right',
         itemTexts: {
           1: {
             title: editableTextValue('Item 1'),

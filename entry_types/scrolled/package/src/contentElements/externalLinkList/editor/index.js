@@ -85,6 +85,7 @@ editor.contentElementTypes.register('externalLinkList', {
         values: ['left', 'right', 'center']
       });
       this.input('displayButtons', CheckBoxInputView);
+      this.group('ContentElementInlineFileRightsSettings');
     });
   }
 });

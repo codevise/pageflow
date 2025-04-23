@@ -8,6 +8,7 @@ import styles from './InlineFileRights.module.css';
 
 export function InlineFileRights({items = [],
                                   context = 'standAlone',
+                                  position,
                                   playerControlsFadedOut,
                                   playerControlsStandAlone,
                                   configuration = {}}) {
@@ -22,7 +23,9 @@ export function InlineFileRights({items = [],
 
   return (
     <Widget role="inlineFileRights"
-            props={{context, playerControlsFadedOut, playerControlsStandAlone, configuration}}>
+            props={{context, position,
+                    playerControlsFadedOut, playerControlsStandAlone,
+                    configuration}}>
       <ul className={styles.list}>
         {filteredItems.map(({label, file}) =>
           <li key={`${label}-${file.id}`}>

@@ -6,14 +6,14 @@ import {ThemeIcon} from 'pageflow-scrolled/frontend';
 import styles from './IconInlineFileRights.module.css';
 
 export function IconInlineFileRights({
-  context, playerControlsStandAlone, playerControlsFadedOut, children
+  context, position, playerControlsStandAlone, playerControlsFadedOut, children
 }) {
   if (context === 'afterElement') {
     return null;
   }
 
   return (
-    <div className={classNames(styles.wrapper, {
+    <div className={classNames(styles.wrapper, styles[`position-${position || 'bottom'}`], {
       [styles.fadedOut]: context !== 'playerControls' || playerControlsFadedOut,
       [styles.standAlone]: context !== 'playerControls'
     })}>
