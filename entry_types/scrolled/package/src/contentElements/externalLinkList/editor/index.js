@@ -24,6 +24,10 @@ editor.contentElementTypes.register('externalLinkList', {
   supportedPositions: ['inline', 'standAlone'],
   supportedWidthRange: ['m', 'xl'],
 
+  defaultConfig: {
+    thumbnailAspectRatio: 'square'
+  },
+
   editorPath(contentElement) {
     const selectedItemId = contentElement.transientState.get('selectedItemId');
 
