@@ -1,5 +1,4 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {features} from 'pageflow/frontend';
 import {SelectInputView, SliderInputView, SeparatorView, CheckBoxInputView} from 'pageflow/ui';
 
 import {SidebarRouter} from './SidebarRouter';
