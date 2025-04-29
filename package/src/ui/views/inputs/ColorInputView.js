@@ -3,12 +3,15 @@ import _ from 'underscore';
 import 'jquery.minicolors';
 
 import {inputView} from '../mixins/inputView';
+import {inputWithPlaceholderText} from '../mixins/inputWithPlaceholderText';
 
-import template from '../../templates/inputs/textInput.jst';
+import template from '../../templates/inputs/colorInput.jst';
 
 /**
  * Input view for a color value in hex representation.
- * See {@link inputView} for further options
+ *
+ * See {@link inputWithPlaceholderText} for placeholder related
+ * further options.  See {@link inputView} for further options.
  *
  * @param {Object} [options]
  *
@@ -24,6 +27,14 @@ import template from '../../templates/inputs/textInput.jst';
  *   defaultValue option is set, the value of the defaultValueBinding
  *   attribute will be used as default value.
  *
+ * @param {string|function} [options.placeholderColor]
+ *   Color to display in swatch by default.
+ *
+ * @param {string} [options.placeholderColorBinding]
+ *   Name of an attribute the placeholder color depends on. If a function
+ *   is used as placeholderColor option, it will be passed the value of the
+ *   placeholderColorBinding attribute each time it changes.
+ *
  * @param {string[]} [options.swatches]
  *   Preset color values to be displayed inside the picker drop
  *   down. The default value, if present, is always used as the
@@ -32,7 +43,7 @@ import template from '../../templates/inputs/textInput.jst';
  * @class
  */
 export const ColorInputView = Marionette.ItemView.extend({
-  mixins: [inputView],
+  mixins: [inputView, inputWithPlaceholderText],
 
   template,
   className: 'color_input',
@@ -46,6 +57,8 @@ export const ColorInputView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    this.setupAttributeBinding('placeholderColor', this.updatePlaceholderColor);
+
     this.ui.input.minicolors({
       changeDelay: 200,
       change: _.bind(function(color) {
@@ -69,6 +82,10 @@ export const ColorInputView = Marionette.ItemView.extend({
     }
 
     this.updateSettings();
+  },
+
+  updatePlaceholderColor(value) {
+    this.el.style.setProperty('--placeholder-color', value);
   },
 
   updateSettings: function() {

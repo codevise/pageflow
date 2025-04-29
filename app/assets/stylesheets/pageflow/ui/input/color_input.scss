@@ -13,6 +13,10 @@
   .minicolors-input-swatch {
     top: 5px;
     left: 5px;
+
+    .minicolors-swatch-color {
+      background-color: var(--placeholder-color);
+    }
   }
 
   &.is_default input {
