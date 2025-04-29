@@ -26,4 +26,8 @@
   .minicolors-focus input {
     color: var(--ui-on-surface-color);
   }
+
+  .minicolors-swatches .minicolors-swatch {
+    margin: 2px;
+  }
 }

@@ -101,7 +101,8 @@ export const EditSectionView = EditConfigurationView.extend({
       });
       this.input('backdropColor', ColorInputView, {
         visibleBinding: 'backdropType',
-        visibleBindingValue: 'color'
+        visibleBindingValue: 'color',
+        swatches: entry.getUsedSectionBackgroundColors()
       });
 
       this.input('backdropContentElement', BackdropContentElementInputView, {
