@@ -152,6 +152,15 @@ export const EditSectionView = EditConfigurationView.extend({
           (!exposeMotifArea || motifAreaDisabled(motifAreaDisabledBindingValues)) && backdropType !== 'contentElement'
       });
 
+      this.input('cardSurfaceColor', ColorInputView, {
+        visibleBinding: 'appearance',
+        visibleBindingValue: 'cards',
+        placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto'),
+        placeholderColorBinding: 'invert',
+        placeholderColor: invert => invert ? '#101010' : '#ffffff',
+        swatches: entry.getUsedSectionBackgroundColors()
+      });
+
       this.view(SeparatorView);
 
       this.input('atmoAudioFileId', FileInputView, {

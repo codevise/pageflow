@@ -182,13 +182,28 @@ storiesOf(`Frontend/Section Appearance`, module)
     }
   )
 
+storiesOf(`Frontend/Section Appearance`, module)
+  .add(
+    'Custom Card Surface Color',
+    () => {
+      return (
+        <RootProviders seed={exampleSeed('cards', {cardSurfaceColor: '#d00', short: true})}>
+          <Entry />
+        </RootProviders>
+      );
+    }
+  )
+
 function exampleSeed(
-  appearance, {short, invert, width, themeOptions, positionedElementTypeName, includeWidths} = {}
+  appearance,
+  {short, invert, width, cardSurfaceColor,
+   themeOptions, positionedElementTypeName, includeWidths} = {}
 ) {
   const sectionBaseConfiguration = {
     appearance,
     transition: 'reveal',
     fullHeight: true,
+    cardSurfaceColor,
     invert,
     width
   };
