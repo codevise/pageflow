@@ -161,7 +161,12 @@ function SectionContents({
                   appearance={section.appearance}
                   contentAreaRef={setContentAreaRef}
                   sectionProps={sectionProperties}>
-            {(children, boxProps) => <BoxWrapper {...boxProps} inverted={section.invert}>{children}</BoxWrapper>}
+            {(children, boxProps) =>
+              <BoxWrapper {...boxProps}
+                          cardSurfaceColor={section.cardSurfaceColor}
+                          inverted={section.invert}>
+                {children}
+              </BoxWrapper>}
           </Layout>
         </Box>
       </Foreground>

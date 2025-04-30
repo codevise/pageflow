@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
 import sinon from 'sinon';
+import '@testing-library/jest-dom/extend-expect';
 
 import {ColorInputView} from 'pageflow/ui';
 
@@ -495,6 +496,61 @@ describe('pageflow.ColorInputView', () => {
       colorInput.fillIn('#010101', testContext.clock);
 
       expect(model.has('color')).toBe(false);
+    });
+  });
+
+  describe('with placeholderColor option', () => {
+    it('sets custom property', () => {
+      var colorInputView = new ColorInputView({
+        model: new Backbone.Model(),
+        propertyName: 'color',
+        placeholderColor: '#fff'
+      });
+
+      var colorInput = ColorInput.render(
+        colorInputView,
+        {appendTo: testContext.htmlSandbox}
+      );
+
+      expect(colorInput.$el[0]).toHaveStyle('--placeholder-color: #fff');
+    });
+  });
+
+  describe('with function as placeholderColor and placeholderColorBinding option', () => {
+    it('sets custom property', () => {
+      var model = new Backbone.Model();
+      var colorInputView = new ColorInputView({
+        model,
+        propertyName: 'color',
+        placeholderColorBinding: 'invert',
+        placeholderColor: invert => invert ? '#000' : '#fff'
+      });
+
+      var colorInput = ColorInput.render(
+        colorInputView,
+        {appendTo: testContext.htmlSandbox}
+      );
+
+      expect(colorInput.$el[0]).toHaveStyle('--placeholder-color: #fff');
+    });
+
+    it('updates custom property', () => {
+      var model = new Backbone.Model();
+      var colorInputView = new ColorInputView({
+        model,
+        propertyName: 'color',
+        placeholderColorBinding: 'invert',
+        placeholderColor: invert => invert ? '#000' : '#fff'
+      });
+
+      var colorInput = ColorInput.render(
+        colorInputView,
+        {appendTo: testContext.htmlSandbox}
+      );
+
+      model.set('invert', true);
+
+      expect(colorInput.$el[0]).toHaveStyle('--placeholder-color: #000');
     });
   });
 });

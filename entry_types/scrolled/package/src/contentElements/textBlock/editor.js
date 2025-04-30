@@ -11,9 +11,35 @@ editor.contentElementTypes.register('textBlock', {
   supportedPositions: ['inline'],
 
   configurationEditor({entry, contentElement}) {
-    this.listenTo(contentElement.transientState,
-                  'change:exampleNode',
-                  () => this.refresh());
+    let pendingRefresh;
+
+    this.listenTo(
+      contentElement.transientState,
+      'change:exampleNode',
+      () => {
+        // This is a terrible hack to prevent closing the minicolors
+        // dropdown while adjusting colors. Calling refresh is needed
+        // to update typography drop downs. Delay until color picker
+        // is closed.
+        if (document.activeElement &&
+            document.activeElement.tagName === 'INPUT' &&
+            document.activeElement.className === 'minicolors-input') {
+
+          if (!pendingRefresh) {
+            document.activeElement.addEventListener('blur', () => {
+              pendingRefresh = false;
+              this.refresh()
+            }, {once: true});
+
+            pendingRefresh = true;
+          }
+
+          return;
+        }
+
+        this.refresh()
+      }
+    );
 
     this.tab('general', function() {
       const exampleNode = ensureTextContent(

@@ -11,8 +11,9 @@ export default function CardBoxWrapper(props) {
     return props.children;
   }
 
-  return(
-    <div className={className(props)}>
+  return (
+    <div className={className(props)}
+         style={{'--card-surface-color': props.cardSurfaceColor}}>
       <BackgroundColorProvider invert>
         {props.children}
       </BackgroundColorProvider>
@@ -31,6 +32,7 @@ function className(props) {
     styles.card,
     props.inverted ? styles.cardBgBlack : styles.cardBgWhite,
     styles[`selfClear-${props.selfClear}`],
+    {[styles.blur]: props.cardSurfaceTransparency > 0},
     {[styles.cardStart]: !props.openStart},
     {[styles.cardEnd]: !props.openEnd}
   );

@@ -1,0 +1,7 @@
+.container :global(.color_input) {
+  margin-top: space(2);
+}
+
+.container :global(.color_input) label {
+  display: none;
+}

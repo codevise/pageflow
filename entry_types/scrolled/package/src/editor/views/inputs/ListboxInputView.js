@@ -52,7 +52,7 @@ export const ListboxInputView = Marionette.ItemView.extend({
 
     if (this.options.includeBlank) {
       this.items.unshift({
-        name: '',
+        value: '',
         text: I18n.t(this.options.blankTranslationKey)
       });
     }

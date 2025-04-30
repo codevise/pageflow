@@ -101,7 +101,8 @@ export const EditSectionView = EditConfigurationView.extend({
       });
       this.input('backdropColor', ColorInputView, {
         visibleBinding: 'backdropType',
-        visibleBindingValue: 'color'
+        visibleBindingValue: 'color',
+        swatches: entry.getUsedSectionBackgroundColors()
       });
 
       this.input('backdropContentElement', BackdropContentElementInputView, {
@@ -150,6 +151,17 @@ export const EditSectionView = EditConfigurationView.extend({
         disabled: ([backdropType, exposeMotifArea, ...motifAreaDisabledBindingValues]) =>
           (!exposeMotifArea || motifAreaDisabled(motifAreaDisabledBindingValues)) && backdropType !== 'contentElement'
       });
+
+      if (features.isEnabled('custom_palette_colors')) {
+        this.input('cardSurfaceColor', ColorInputView, {
+          visibleBinding: 'appearance',
+          visibleBindingValue: 'cards',
+          placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto'),
+          placeholderColorBinding: 'invert',
+          placeholderColor: invert => invert ? '#101010' : '#ffffff',
+          swatches: entry.getUsedSectionBackgroundColors()
+        });
+      }
 
       this.view(SeparatorView);
 

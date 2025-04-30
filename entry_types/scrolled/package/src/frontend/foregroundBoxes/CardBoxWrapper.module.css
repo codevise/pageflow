@@ -72,11 +72,11 @@
 
 @media screen {
   .cardBgWhite::before {
-    background-color: lightContentSurfaceColor;
+    background-color: var(--card-surface-color, lightContentSurfaceColor);
   }
 
   .cardBgBlack::before {
-    background-color: darkContentSurfaceColor;
+    background-color: var(--card-surface-color, darkContentSurfaceColor);
   }
 
   .cardBgWhite {

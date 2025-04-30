@@ -10,6 +10,8 @@ import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
 
+import {sortColors} from './sortColors';
+
 const typographySizeSuffixes = ['xl', 'lg', 'md', 'sm', 'xs'];
 
 export const ScrolledEntry = Entry.extend({
@@ -274,6 +276,22 @@ export const ScrolledEntry = Entry.extend({
     );
 
     return [values, texts];
+  },
+
+  getUsedSectionBackgroundColors() {
+    const colors = new Set();
+
+    this.sections.map(section => {
+      if (section.configuration.get('backdropType') === 'color') {
+        colors.add(section.configuration.get('backdropColor'));
+      }
+
+      if (section.configuration.get('appearance') === 'cards') {
+        colors.add(section.configuration.get('cardSurfaceColor'));
+      }
+    });
+
+    return sortColors([...colors].filter(Boolean));
   },
 
   supportsSectionWidths() {

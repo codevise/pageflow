@@ -1,0 +1,8 @@
+en:
+  pageflow_scrolled:
+    editor:
+      edit_section:
+        attributes:
+          cardSurfaceColor:
+            label: Cards background color
+            auto: "(Auto)"

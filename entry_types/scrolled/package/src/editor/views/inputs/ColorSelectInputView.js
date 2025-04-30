@@ -16,7 +16,7 @@ function renderItem(item) {
     [{cssColorPropertyPrefix: '--theme-palette-color'}];
 
   return (
-    <div className={classNames(styles.item, {[styles.blank]: !item.value})}>
+    <div className={classNames(styles.item, {[styles.blank]: !item.value || item.value === 'custom'})}>
       {swatches.map((swatch, index) =>
         <div key={index}
              className={styles.swatch}
