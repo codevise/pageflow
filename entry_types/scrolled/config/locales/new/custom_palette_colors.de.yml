@@ -1,0 +1,9 @@
+de:
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        palette_color:
+          custom: Benutzerdefiniert
+  pageflow:
+    custom_palette_colors:
+      feature_name: "Freie Palettenfarben"
