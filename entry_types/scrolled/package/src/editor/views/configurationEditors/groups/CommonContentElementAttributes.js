@@ -1,8 +1,19 @@
-import {ConfigurationEditorTabView, CheckBoxInputView, SelectInputView, SliderInputView} from 'pageflow/ui';
+import {features} from 'pageflow/frontend';
+
+import {
+  ConfigurationEditorTabView,
+  CheckBoxInputView,
+  SelectInputView,
+  SliderInputView
+} from 'pageflow/ui';
 
 import {
   TypographyVariantSelectInputView
 } from '../../inputs/TypographyVariantSelectInputView';
+
+import {
+  ColorSelectOrCustomColorInputView
+} from '../../inputs/ColorSelectOrCustomColorInputView';
 
 import {
   ColorSelectInputView
@@ -144,14 +155,20 @@ ConfigurationEditorTabView.groups.define(
   'PaletteColor',
   function({propertyName, entry, model}) {
     const [values, texts] = entry.getPaletteColors();
+    const inputView = features.isEnabled('custom_palette_colors') ?
+                      ColorSelectOrCustomColorInputView :
+                      ColorSelectInputView;
 
     if (values.length) {
-      this.input(propertyName, ColorSelectInputView, {
+      this.input(propertyName, inputView, {
         model: model || this.model,
         includeBlank: true,
         blankTranslationKey: 'pageflow_scrolled.editor.' +
                              'common_content_element_attributes.' +
                              'palette_color.blank',
+        customColorTranslationKey: 'pageflow_scrolled.editor.' +
+                                   'common_content_element_attributes.' +
+                                   'palette_color.custom',
         values,
         texts,
       });
