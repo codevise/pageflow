@@ -1,4 +1,5 @@
 import {editor} from 'pageflow-scrolled/editor';
+import {features} from 'pageflow/frontend';
 import {SelectInputView, SliderInputView, SeparatorView, CheckBoxInputView} from 'pageflow/ui';
 
 import {SidebarRouter} from './SidebarRouter';
@@ -56,6 +57,13 @@ editor.contentElementTypes.register('externalLinkList', {
       this.view(SeparatorView);
       this.group('ContentElementPosition', {entry});
       this.view(SeparatorView);
+
+      if (features.isEnabled('teaser_list_scroller')) {
+        this.input('enableScroller', SelectInputView, {
+          values: ['never', 'always']
+        });
+      }
+
       this.input('linkWidth', SliderInputView, {
         displayText: value => [
           'XS', 'S', 'M', 'L', 'XL', 'XXL'
@@ -68,8 +76,16 @@ editor.contentElementTypes.register('externalLinkList', {
       });
       this.input('linkAlignment', SelectInputView, {
         values: ['spaceEvenly', 'left', 'right', 'center'],
-        visibleBinding: 'textPosition',
-        visible: textPosition => textPosition !== 'right'
+        visibleBinding: ['textPosition', 'enableScroller'],
+        visible: ([textPosition, enableScroller]) =>
+          textPosition !== 'right' && enableScroller !== 'always',
+      });
+      this.input('linkAlignment', SelectInputView, {
+        values: ['left'],
+        disabled: true,
+        visibleBinding: ['textPosition', 'enableScroller'],
+        visible: ([textPosition, enableScroller]) =>
+          textPosition !== 'right' && enableScroller === 'always',
       });
       this.input('thumbnailSize', SelectInputView, {
         values: ['small', 'medium', 'large'],
