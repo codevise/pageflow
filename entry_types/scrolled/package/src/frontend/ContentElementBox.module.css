@@ -2,3 +2,8 @@
   overflow: hidden;
   border-radius: var(--theme-content-element-box-border-radius);
 }
+
+.full {
+  border-radius: var(--theme-content-element-full-box-border-radius,
+                     var(--theme-content-element-box-border-radius));
+}

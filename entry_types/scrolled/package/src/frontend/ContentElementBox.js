@@ -1,6 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import {useContentElementAttributes} from './useContentElementAttributes';
+import {widths} from './layouts/widths';
 
 import styles from './ContentElementBox.module.css';
 
@@ -12,14 +14,14 @@ import styles from './ContentElementBox.module.css';
  * @param {string} props.children - Content of box.
  */
 export function ContentElementBox({children}) {
-  const {position} = useContentElementAttributes();
+  const {position, width} = useContentElementAttributes();
 
   if (position === 'backdrop') {
     return children;
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={classNames(styles.wrapper, {[styles.full]: width === widths.full})}>
       {children}
     </div>
   );
