@@ -172,6 +172,7 @@ elements etc.
 | Name | Description |
 | ---- | ----------- |
 | `content_element_box_border_radius` | Display content element boxes with rounded corners. |
+| `content_element_full_box_border_radius` | Set to control rounded corners of elements with full width. Defaults to `content_element_box_border_radius`. |
 
 ### Text Block Styles
 

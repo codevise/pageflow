@@ -181,6 +181,24 @@ storiesOf(`Frontend/Section Appearance`, module)
       );
     }
   )
+  .add(
+    'Custom Border Radiuses expect full width',
+    () => {
+      const customBorderRadiusStyles = {
+        '--theme-cards-border-radius': '0',
+        '--theme-content-element-box-border-radius': '10px',
+        '--theme-content-element-full-box-border-radius': '0'
+      };
+
+      return (
+        <RootProviders seed={exampleSeed('cards')}>
+          <div style={customBorderRadiusStyles}>
+            <Entry />
+          </div>
+        </RootProviders>
+      );
+    }
+  )
 
 storiesOf(`Frontend/Section Appearance`, module)
   .add(
