@@ -51,7 +51,7 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
     <div className={styles.Content} id='goToContent'>
       <VhFix>
         <AtmoProvider>
-          {renderChapters(entryStructure,
+          {renderChapters(entryStructure.main,
                           currentSectionIndex,
                           setCurrentSection)}
         </AtmoProvider>
@@ -60,12 +60,12 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
   );
 })
 
-function renderChapters(entryStructure,
+function renderChapters(chapters,
                         currentSectionIndex,
                         setCurrentSection,
                         scrollTargetSectionIndex,
                         setScrollTargetSectionIndex) {
-  return entryStructure.map((chapter, index) => {
+  return chapters.map((chapter, index) => {
     return(
       <Chapter key={index}
                chapterSlug={chapter.chapterSlug}

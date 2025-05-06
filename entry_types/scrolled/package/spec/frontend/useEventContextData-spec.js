@@ -26,7 +26,7 @@ describe('useEventContextData', () => {
         ]
       },
       wrapper: function Wrapper({children}) {
-        const chapters = useEntryStructure();
+        const chapters = useEntryStructure().main;
 
         return (
           <EventContextDataProvider section={chapters[1].sections[2]}
@@ -61,7 +61,7 @@ describe('useEventContextData', () => {
         sections: [{}]
       },
       wrapper: function Wrapper({children}) {
-        const chapters = useEntryStructure();
+        const chapters = useEntryStructure().main;
 
         return (
           <EventContextDataProvider section={chapters[0].sections[0]}

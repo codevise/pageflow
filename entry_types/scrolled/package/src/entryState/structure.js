@@ -37,6 +37,7 @@ import slugify from 'slugify';
  *   ]
  */
 export function useEntryStructure() {
+  const mainStoryline = useMainStoryline();
   const chapters = useChapters();
   const sections = useEntryStateCollectionItems('sections');
 
@@ -48,7 +49,11 @@ export function useEntryStructure() {
       section.previousSection = linkedSections[index - 1];
       section.nextSection = linkedSections[index + 1];
     });
-    return chapters.map(chapter => {
+
+    const main = [];
+    const excursions = [];
+
+    chapters.forEach(chapter => {
       const chapterSections = linkedSections.filter(
         item => item.chapterId === chapter.id
       );
@@ -57,12 +62,24 @@ export function useEntryStructure() {
         section.chapter = chapter
       );
 
-      return {
+      chapter = {
         ...chapter,
         sections: chapterSections
       };
+
+      if (chapter.storylineId === mainStoryline.id) {
+        main.push(chapter);
+      }
+      else {
+        excursions.push(chapter);
+      }
     });
-  }, [chapters, sections]);
+
+    return {
+      main,
+      excursions
+    }
+  }, [mainStoryline, chapters, sections]);
 };
 
 /**
@@ -266,6 +283,7 @@ export function useChapters() {
       return ({
         id: chapter.id,
         permaId: chapter.permaId,
+        storylineId: chapter.storylineId,
         index,
         title: chapter.configuration.title,
         summary: chapter.configuration.summary,
@@ -274,4 +292,13 @@ export function useChapters() {
       });
     });
   }, [chapters]);
+}
+
+function useMainStoryline() {
+  const storylines = useEntryStateCollectionItems('storylines');
+
+  return useMemo(
+    () => storylines.find(storyline => storyline.configuration.main),
+    [storylines]
+  );
 }
