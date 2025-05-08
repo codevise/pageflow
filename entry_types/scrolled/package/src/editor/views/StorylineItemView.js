@@ -55,7 +55,7 @@ export const StorylineItemView = Marionette.Layout.extend({
       collection: this.model.chapters,
       itemViewConstructor: ChapterItemView,
       itemViewOptions: {
-        entry: this.model
+        entry: this.options.entry
       }
     });
 

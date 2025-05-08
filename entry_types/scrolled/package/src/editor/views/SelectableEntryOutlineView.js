@@ -19,7 +19,8 @@ export const SelectableEntryOutlineView = Marionette.Layout.extend({
     });
 
     tabsView.tab('main', () => new SelectableStorylineItemView({
-      model: this.options.entry,
+      model: this.options.entry.storylines.main(),
+      entry: this.options.entry,
       onSelectChapter: this.options.onSelectChapter,
       onSelectSection: this.options.onSelectSection
     }));

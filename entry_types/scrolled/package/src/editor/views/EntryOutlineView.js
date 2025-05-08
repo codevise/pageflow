@@ -46,7 +46,8 @@ export const EntryOutlineView = Marionette.Layout.extend({
 
     tabsView.tab('main', () => {
       this.storylineItemView = new StorylineItemView({
-        model: this.options.entry,
+        model: this.options.entry.storylines.main(),
+        entry: this.options.entry,
         viewModel
       });
 
