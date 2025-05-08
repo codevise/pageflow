@@ -158,6 +158,24 @@ describe('normalizeSeed', () => {
     });
   });
 
+  it('ensures required storyline properties are present', () => {
+    const result = normalizeSeed({
+      storylines: [{}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        storylines: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            configuration: {}
+          }
+        ]
+      }
+    });
+  });
+
   it('ensures required chapter properties are present', () => {
     const result = normalizeSeed({
       chapters: [{}]
@@ -176,13 +194,59 @@ describe('normalizeSeed', () => {
     });
   });
 
-  it('ensures a chapter is present if sections are present', () => {
+  it('ensures main storyline is present if chapters are present', () => {
+    const result = normalizeSeed({
+      chapters: [{}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        storylines: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            configuration: {
+              main: true
+            }
+          }
+        ]
+      }
+    });
+    expect(result.collections.chapters[0].storylineId).toBe(result.collections.storylines[0].id);
+  });
+
+  it('ensures main storyline is present even if chapters are blank', () => {
+    const result = normalizeSeed();
+
+    expect(result).toMatchObject({
+      collections: {
+        storylines: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            configuration: {
+              main: true
+            }
+          }
+        ]
+      }
+    });
+  });
+
+  it('ensures chapter and storyline are present if sections are present', () => {
     const result = normalizeSeed({
       sections: [{}]
     });
 
     expect(result).toMatchObject({
       collections: {
+        storylines: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            configuration: {}
+          }
+        ],
         chapters: [
           {
             id: expect.any(Number),
@@ -192,16 +256,24 @@ describe('normalizeSeed', () => {
         ]
       }
     });
+    expect(result.collections.chapters[0].storylineId).toBe(result.collections.storylines[0].id);
     expect(result.collections.sections[0].chapterId).toBe(result.collections.chapters[0].id);
   });
 
-  it('ensures a section and a chapter is present if contentElements are present', () => {
+  it('ensures section, chapter and storyline are present if contentElements are present', () => {
     const result = normalizeSeed({
       contentElements: [{}]
     });
 
     expect(result).toMatchObject({
       collections: {
+        storylines: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            configuration: {}
+          }
+        ],
         chapters: [
           {
             id: expect.any(Number),
@@ -218,6 +290,7 @@ describe('normalizeSeed', () => {
         ]
       }
     });
+    expect(result.collections.chapters[0].storylineId).toBe(result.collections.storylines[0].id);
     expect(result.collections.sections[0].chapterId).toBe(result.collections.chapters[0].id);
     expect(result.collections.contentElements[0].sectionId).toBe(result.collections.sections[0].id);
   });
