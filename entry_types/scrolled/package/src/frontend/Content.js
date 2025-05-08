@@ -10,7 +10,8 @@ import {useSectionChangeEvents} from './useSectionChangeEvents';
 import {sectionChangeMessagePoster} from './sectionChangeMessagePoster';
 import {useScrollToTarget} from './useScrollTarget';
 
-import { AtmoProvider } from './useAtmo';
+import {AtmoProvider} from './useAtmo';
+import {Widget} from './Widget';
 
 import styles from './Content.module.css';
 
@@ -54,17 +55,31 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
           {renderChapters(entryStructure.main,
                           currentSectionIndex,
                           setCurrentSection)}
+          {renderExcursions(entryStructure.excursions,
+                            currentSectionIndex,
+                            setCurrentSection)}
         </AtmoProvider>
       </VhFix>
     </div>
   );
 })
 
+function renderExcursions(excursions,
+                          currentSectionIndex,
+                          setCurrentSection) {
+  return excursions.map(excursion =>
+    <Widget key={excursion.id}
+            role="excursion">
+      {renderChapters([excursion],
+                      currentSectionIndex,
+                      setCurrentSection)}
+    </Widget>
+  );
+}
+
 function renderChapters(chapters,
                         currentSectionIndex,
-                        setCurrentSection,
-                        scrollTargetSectionIndex,
-                        setScrollTargetSectionIndex) {
+                        setCurrentSection) {
   return chapters.map((chapter, index) => {
     return(
       <Chapter key={index}
@@ -72,10 +87,7 @@ function renderChapters(chapters,
                permaId={chapter.permaId}
                sections={chapter.sections}
                currentSectionIndex={currentSectionIndex}
-               setCurrentSection={setCurrentSection}
-               scrollTargetSectionIndex={scrollTargetSectionIndex}
-               setScrollTargetSectionIndex={setScrollTargetSectionIndex}
-      />
+               setCurrentSection={setCurrentSection} />
     );
   });
 }
