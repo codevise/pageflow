@@ -58,7 +58,7 @@ export const SelectableChapterItemView = Marionette.ItemView.extend({
   },
 
   update() {
-    this.ui.title.text(this.model.configuration.get('title') || I18n.t('pageflow.editor.views.chapter_item_view.unnamed'));
-    this.ui.number.text(I18n.t('pageflow.editor.views.chapter_item_view.chapter') + ' ' + (this.model.get('position') + 1));
+    this.ui.title.text(this.model.getDisplayTitle());
+    this.ui.number.text(this.model.getDisplayNumber());
   }
 });

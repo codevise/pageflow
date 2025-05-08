@@ -23,11 +23,10 @@ export const StorylineItemView = Marionette.Layout.extend({
     <ul class="${styles.chapters}"></ul>
 
     <a class="${styles.addChapter}" href="">
-      ${I18n.t('pageflow_scrolled.editor.storyline_item.add_chapter')}
     </a>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'chapters'),
+  ui: cssModulesUtils.ui(styles, 'chapters', 'addChapter'),
 
   events: {
     ...cssModulesUtils.events(styles, {
@@ -50,6 +49,12 @@ export const StorylineItemView = Marionette.Layout.extend({
   },
 
   onRender() {
+    this.ui.addChapter.text(I18n.t(
+      this.model.isMain() ?
+      'pageflow_scrolled.editor.storyline_item.add_chapter' :
+      'pageflow_scrolled.editor.storyline_item.add_excursion'
+    ));
+
     this.sortableCollectionView = new SortableCollectionView({
       el: this.ui.chapters,
       collection: this.model.chapters,

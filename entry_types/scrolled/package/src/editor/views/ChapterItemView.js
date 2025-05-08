@@ -67,14 +67,10 @@ export const ChapterItemView = Marionette.Layout.extend({
   },
 
   update() {
-    this.ui.title.text(
-      this.model.configuration.get('title') || I18n.t('pageflow_scrolled.editor.chapter_item.unnamed')
-    );
     this.ui.title.toggleClass(styles.blank, !this.model.configuration.get('title'));
 
-    this.ui.number.text(
-      I18n.t('pageflow_scrolled.editor.chapter_item.chapter') + ' ' + (this.model.get('position') + 1)
-    );
+    this.ui.title.text(this.model.getDisplayTitle());
+    this.ui.number.text(this.model.getDisplayNumber());
 
     if (this.model.configuration.get('hideInNavigation')) {
       this.ui.title.attr('title', I18n.t('pageflow_scrolled.editor.chapter_item.hidden_in_navigation'));

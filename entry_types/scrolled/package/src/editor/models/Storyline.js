@@ -1,10 +1,17 @@
 import Backbone from 'backbone';
 
 import {
+  configurationContainer,
   ForeignKeySubsetCollection
 } from 'pageflow/editor';
 
 export const Storyline = Backbone.Model.extend({
+  mixins: [
+    configurationContainer({
+      includeAttributesInJSON: ['position']
+    })
+  ],
+
   initialize(attributes, options) {
     this.chapters = new ForeignKeySubsetCollection({
       parent: options.chapters,
@@ -25,5 +32,9 @@ export const Storyline = Backbone.Model.extend({
       entry: this.entry,
       sections: this.entry.sections
     });
+  },
+
+  isMain() {
+    return !!this.configuration.get('main');
   }
 });
