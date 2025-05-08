@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 import {cssModulesUtils} from 'pageflow/ui';
-import {TabsView} from 'pageflow/editor';
 
+import {StorylinesTabsView} from './StorylinesTabsView';
 import {SelectableStorylineItemView} from './SelectableStorylineItemView';
 
 import styles from './SelectableEntryOutlineView.module.css';
@@ -14,20 +14,17 @@ export const SelectableEntryOutlineView = Marionette.Layout.extend({
   ui: cssModulesUtils.ui(styles, 'tabs'),
 
   onRender() {
-    const tabsView = new TabsView({
-      i18n: 'pageflow_scrolled.editor.entry_outline.tabs',
-    });
-
-    tabsView.tab('main', () => new SelectableStorylineItemView({
-      model: this.options.entry.storylines.main(),
-      entry: this.options.entry,
-      onSelectChapter: this.options.onSelectChapter,
-      onSelectSection: this.options.onSelectSection
-    }));
-
     this.appendSubview(
-      tabsView,
+      new StorylinesTabsView({
+        entry: this.options.entry,
+        itemViewContstuctor: SelectableStorylineItemView,
+        itemViewOptions: {
+          entry: this.options.entry,
+          onSelectChapter: this.options.onSelectChapter,
+          onSelectSection: this.options.onSelectSection
+        }
+      }),
       {to: this.ui.tabs}
     );
-  },
+  }
 });

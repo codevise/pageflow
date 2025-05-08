@@ -3,10 +3,12 @@ de:
     editor:
       entry_outline:
         tabs:
-          main: Gliederung
         finish_reorder_chapters: Umsortieren beenden
         add_chapter: DELETED
         header: DELETED
+      storylines_tabs:
+        main: Gliederung
+        excursions: Exkurse
       storyline_item:
         reorder_chapters:
           Die Kapitel wurden zusammengeklappt, um das Umsortieren zu erleichtern.

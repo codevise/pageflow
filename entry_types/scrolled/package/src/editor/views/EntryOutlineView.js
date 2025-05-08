@@ -2,8 +2,9 @@ import Marionette from 'backbone.marionette';
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import {cssModulesUtils} from 'pageflow/ui';
-import {DropDownButtonView, TabsView} from 'pageflow/editor';
+import {DropDownButtonView} from 'pageflow/editor';
 
+import {StorylinesTabsView} from './StorylinesTabsView';
 import {StorylineItemView} from './StorylineItemView';
 
 import styles from './EntryOutlineView.module.css';
@@ -40,25 +41,18 @@ export const EntryOutlineView = Marionette.Layout.extend({
       openOnClick: true
     }), {to: this.ui.dropDownButton});
 
-    const tabsView = new TabsView({
-      i18n: 'pageflow_scrolled.editor.entry_outline.tabs',
-    });
-
-    tabsView.tab('main', () => {
-      this.storylineItemView = new StorylineItemView({
-        model: this.options.entry.storylines.main(),
-        entry: this.options.entry,
-        viewModel
-      });
-
-      return this.storylineItemView;
-    })
-
     this.appendSubview(
-      tabsView,
+      new StorylinesTabsView({
+        entry: this.options.entry,
+        itemViewContstuctor: StorylineItemView,
+        itemViewOptions: {
+          entry: this.options.entry,
+          viewModel
+        }
+      }),
       {to: this.ui.tabs}
     );
-  },
+  }
 });
 
 const MenuItem = Backbone.Model.extend({
