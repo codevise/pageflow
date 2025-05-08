@@ -1,0 +1,14 @@
+de:
+  pageflow_scrolled:
+    editor:
+      entry_outline:
+        tabs:
+          main: Gliederung
+        finish_reorder_chapters: Umsortieren beenden
+        add_chapter: DELETED
+        header: DELETED
+      storyline_item:
+        reorder_chapters:
+          Die Kapitel wurden zusammengeklappt, um das Umsortieren zu erleichtern.
+        done: Fertig
+        add_chapter: Neues Kapitel

@@ -3,5 +3,3 @@ de:
     editor:
       entry_outline:
         reorder_chapters: "Kapitel umsortieren..."
-        reorder_chapters_header: "Kapitel umsortieren"
-        done: Fertig
