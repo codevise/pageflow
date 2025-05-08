@@ -4,7 +4,7 @@ module Dom
       selector 'sidebar nav[class^=EntryOutlineView]'
 
       def add_chapter_button
-        node.find('[class^=EntryOutlineView-module_addChapter]')
+        node.find('[class^=StorylineItemView-module_addChapter]')
       end
 
       def chapter_items

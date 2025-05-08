@@ -18,10 +18,6 @@ module PageflowScrolled
 
     nested_revision_components :sections
 
-    attr_accessor :revision # used on :create to lazily create storyline
-
-    before_validation :ensure_storyline, on: :create
-
     def create_section(attributes = {})
       shift_section_positions(from: attributes[:position])
 
@@ -51,14 +47,6 @@ module PageflowScrolled
       sections
         .where('position >= ?', from)
         .update_all('position = position + 1')
-    end
-
-    def ensure_storyline
-      return if storyline.present?
-      unless Storyline.all_for_revision(revision).exists?
-        Storyline.create!(revision: revision, configuration: {main: true})
-      end
-      self.storyline = Storyline.all_for_revision(revision).first
     end
   end
 end

@@ -7,6 +7,10 @@ module PageflowPaged
       end
 
       config.features.enable_by_default('paged_entry_type')
+
+      config.for_entry_type(PageflowPaged.entry_type) do |c|
+        c.revision_components.register(Pageflow::Storyline, create_defaults: true)
+      end
     end
   end
 end
