@@ -14,6 +14,44 @@ module PageflowScrolled
         end
       end
 
+      context 'storylines' do
+        it 'renders storylines with id, perma_id, position and configuration' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          main_storyline = create(
+            :scrolled_storyline,
+            revision: entry.revision,
+            position: 0,
+            configuration: {main: true}
+          )
+          excursion_storyline = create(
+            :scrolled_storyline,
+            revision: entry.revision,
+            position: 1
+          )
+
+          result = render(helper, entry)
+
+          expect(result)
+            .to include_json(collections: {
+                               storylines: [
+                                 {
+                                   id: main_storyline.id,
+                                   permaId: main_storyline.perma_id,
+                                   position: 0,
+                                   configuration: {
+                                     main: true
+                                   }
+                                 },
+                                 {
+                                   id: excursion_storyline.id,
+                                   permaId: excursion_storyline.perma_id,
+                                   position: 1
+                                 }
+                               ]
+                             })
+        end
+      end
+
       context 'entries' do
         it 'renders single-element entry array' do
           entry = create(:published_entry,
@@ -84,6 +122,51 @@ module PageflowScrolled
                                chapters: [
                                  {id: chapter2.id},
                                  {id: chapter1.id}
+                               ]
+                             })
+        end
+
+        it 'renders chapters from excursions storyline' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          main_storyline = create(
+            :scrolled_storyline,
+            revision: entry.revision,
+            position: 0,
+            configuration: {main: true}
+          )
+          excursions_storyline = create(
+            :scrolled_storyline,
+            revision: entry.revision,
+            position: 1
+          )
+          chapter = create(
+            :scrolled_chapter,
+            storyline: main_storyline,
+            position: 3
+          )
+          excursion_chapter = create(
+            :scrolled_chapter,
+            storyline: excursions_storyline,
+            position: 1
+          )
+
+          result = render(helper, entry)
+
+          expect(result)
+            .to include_json(collections: {
+                               chapters: [
+                                 {
+                                   id: chapter.id,
+                                   permaId: chapter.perma_id,
+                                   storylineId: main_storyline.id,
+                                   position: 3
+                                 },
+                                 {
+                                   id: excursion_chapter.id,
+                                   permaId: excursion_chapter.perma_id,
+                                   storylineId: excursions_storyline.id,
+                                   position: 1
+                                 }
                                ]
                              })
         end
@@ -185,6 +268,39 @@ module PageflowScrolled
           chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
           section12 = create(:section, chapter: chapter1, position: 2)
           section11 = create(:section, chapter: chapter1, position: 1)
+
+          result = render(helper, entry)
+
+          expect(result)
+            .to include_json(collections: {
+                               sections: [
+                                 {id: section11.id},
+                                 {id: section12.id},
+                                 {id: section21.id},
+                                 {id: section22.id}
+                               ]
+                             })
+        end
+
+        it 'renders sections from excursions storyline' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          main_storyline = create(
+            :scrolled_storyline,
+            revision: entry.revision,
+            position: 0,
+            configuration: {main: true}
+          )
+          excursions_storyline = create(
+            :scrolled_storyline,
+            revision: entry.revision,
+            position: 1
+          )
+          chapter1 = create(:scrolled_chapter, position: 2, storyline: main_storyline)
+          section12 = create(:section, chapter: chapter1, position: 2)
+          section11 = create(:section, chapter: chapter1, position: 1)
+          chapter2 = create(:scrolled_chapter, position: 1, storyline: excursions_storyline)
+          section22 = create(:section, chapter: chapter2, position: 2)
+          section21 = create(:section, chapter: chapter2, position: 1)
 
           result = render(helper, entry)
 
@@ -423,6 +539,52 @@ module PageflowScrolled
           section11 = create(:section, chapter: chapter1, position: 1)
           content_element112 = create(:content_element, section: section11, position: 2)
           content_element111 = create(:content_element, section: section11, position: 1)
+
+          result = render(helper, entry)
+
+          expect(result)
+            .to include_json(collections: {
+                               contentElements: [
+                                 {id: content_element111.id},
+                                 {id: content_element112.id},
+                                 {id: content_element121.id},
+                                 {id: content_element122.id},
+                                 {id: content_element211.id},
+                                 {id: content_element212.id},
+                                 {id: content_element221.id},
+                                 {id: content_element222.id}
+                               ]
+                             })
+        end
+
+        it 'renders content elements of excursions storyline' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          main_storyline = create(
+            :scrolled_storyline,
+            revision: entry.revision,
+            position: 0,
+            configuration: {main: true}
+          )
+          excursions_storyline = create(
+            :scrolled_storyline,
+            revision: entry.revision,
+            position: 1
+          )
+          chapter1 = create(:scrolled_chapter, position: 2, storyline: main_storyline)
+          section12 = create(:section, chapter: chapter1, position: 2)
+          content_element122 = create(:content_element, section: section12, position: 2)
+          content_element121 = create(:content_element, section: section12, position: 1)
+          section11 = create(:section, chapter: chapter1, position: 1)
+          content_element112 = create(:content_element, section: section11, position: 2)
+          content_element111 = create(:content_element, section: section11, position: 1)
+
+          chapter2 = create(:scrolled_chapter, position: 1, storyline: excursions_storyline)
+          section22 = create(:section, chapter: chapter2, position: 2)
+          content_element222 = create(:content_element, section: section22, position: 2)
+          content_element221 = create(:content_element, section: section22, position: 1)
+          section21 = create(:section, chapter: chapter2, position: 1)
+          content_element212 = create(:content_element, section: section21, position: 2)
+          content_element211 = create(:content_element, section: section21, position: 1)
 
           result = render(helper, entry)
 

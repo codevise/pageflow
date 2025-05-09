@@ -10,11 +10,13 @@ module PageflowScrolled
     describe '#create' do
       it 'requires authentication' do
         entry = create(:entry, type_name: 'scrolled')
+        storyline = create(:scrolled_storyline, revision: entry.draft)
 
         post(:create,
              params: {
                entry_type: 'scrolled',
                entry_id: entry,
+               storyline_id: storyline,
                chapter: attributes_for(:scrolled_chapter)
              }, format: 'json')
 
@@ -23,26 +25,52 @@ module PageflowScrolled
 
       it 'succeeds for authorized user' do
         entry = create(:entry, type_name: 'scrolled')
+        create(:scrolled_storyline, revision: entry.draft)
+        storyline = create(:scrolled_storyline, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
-        post(:create,
-             params: {
-               entry_type: 'scrolled',
-               entry_id: entry,
-               chapter: attributes_for(:scrolled_chapter)
-             }, format: 'json')
+        expect {
+          post(:create,
+               params: {
+                 entry_type: 'scrolled',
+                 entry_id: entry,
+                 storyline_id: storyline,
+                 chapter: attributes_for(:scrolled_chapter)
+               }, format: 'json')
+        }.to(change { storyline.chapters.count })
 
         expect(response.status).to eq(201)
       end
 
+      it 'does not allow creating chapter in other entry' do
+        entry = create(:entry, type_name: 'scrolled')
+        other_entry = create(:entry, type_name: 'scrolled')
+        storyline = create(:scrolled_storyline, revision: other_entry.draft)
+
+        authorize_for_editor_controller(entry)
+        expect {
+          post(:create,
+               params: {
+                 entry_type: 'scrolled',
+                 entry_id: entry,
+                 storyline_id: storyline,
+                 chapter: attributes_for(:scrolled_chapter)
+               }, format: 'json')
+        }.not_to(change { storyline.chapters.count })
+
+        expect(response.status).to eq(404)
+      end
+
       it 'allows setting the chapters configuration hash' do
         entry = create(:entry, type_name: 'scrolled')
+        storyline = create(:scrolled_storyline, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
                entry_type: 'scrolled',
                entry_id: entry,
+               storyline_id: storyline,
                chapter: {
                  configuration: {title: 'A chapter title'}
                }
@@ -54,12 +82,14 @@ module PageflowScrolled
 
       it 'renders attributes as camel case' do
         entry = create(:entry, type_name: 'scrolled')
+        storyline = create(:scrolled_storyline, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
                entry_type: 'scrolled',
                entry_id: entry,
+               storyline_id: storyline,
                chapter: attributes_for(:scrolled_chapter)
              },
              format: 'json')
@@ -120,22 +150,6 @@ module PageflowScrolled
               entry_type: 'scrolled',
               entry_id: entry,
               storyline_id: storyline,
-              ids: [chapters.last.id, chapters.first.id]
-            }, format: 'json')
-
-        expect(chapters.last.reload.position).to eq(0)
-        expect(chapters.first.reload.position).to eq(1)
-      end
-
-      it 'uses first storyline by default' do
-        entry = create(:entry, type_name: 'scrolled')
-        chapters = create_list(:scrolled_chapter, 2, revision: entry.draft)
-
-        authorize_for_editor_controller(entry)
-        put(:order,
-            params: {
-              entry_type: 'scrolled',
-              entry_id: entry,
               ids: [chapters.last.id, chapters.first.id]
             }, format: 'json')
 

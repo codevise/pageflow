@@ -1,0 +1,35 @@
+.root {
+  composes: storyline from './outline.module.css';
+}
+
+.collapsed {
+  composes: collapsed from './outline.module.css';
+}
+
+.expandChapters {
+  display: none !important;
+  line-height: 1.5;
+}
+
+.expandChapters {
+  margin-top: space(2);
+}
+
+.expandChaptersButton {
+  composes: saveButton from './buttons.module.css';
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+}
+
+.collapsed .expandChapters {
+  display: block !important;
+}
+
+.chapters {
+  margin-top: space(3);
+}
+
+.addChapter {
+  composes: addButton from './buttons.module.css';
+  composes: button from './outline.module.css';
+}

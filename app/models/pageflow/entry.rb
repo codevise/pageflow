@@ -53,7 +53,7 @@ module Pageflow
 
     after_create unless: :skip_draft_creation do
       create_draft!
-      draft.storylines.create!(configuration: {main: true})
+      create_default_revision_components
       entry_template.copy_defaults_to(draft)
     end
 
@@ -159,6 +159,10 @@ module Pageflow
       return if Pageflow.config_for(account).entry_types.map(&:name).include?(type_name)
 
       errors.add(:type_name, :must_be_available_for_account, type_name: type_name)
+    end
+
+    def create_default_revision_components
+      Pageflow.config_for(self).revision_components.create_defaults(draft)
     end
 
     def update_password!(options)

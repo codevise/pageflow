@@ -12,6 +12,7 @@ export {
   useEntryStructure,
   useSectionsWithChapter,
   useSection,
+  useMainChapters,
   useChapters,
   useChapter,
   useSectionForegroundContentElements,

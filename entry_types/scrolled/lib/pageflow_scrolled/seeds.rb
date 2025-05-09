@@ -134,7 +134,7 @@ module PageflowScrolled
     def create_chapter(entry, chapter_config, position, files_by_name)
       section_configs = chapter_config.delete('sections') || []
       chapter = Chapter.create!(
-        revision: entry.draft,
+        storyline: Storyline.all_for_revision(entry.draft).first,
         configuration: {
           title: chapter_config['title'],
           summary: chapter_config['summary']

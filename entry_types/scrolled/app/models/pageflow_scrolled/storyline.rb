@@ -32,6 +32,10 @@ module PageflowScrolled
       sections_before(cutoff_section)
     end
 
+    def self.create_defaults(draft)
+      create!(revision: draft, configuration: {main: true})
+    end
+
     private
 
     def sections_before(section)

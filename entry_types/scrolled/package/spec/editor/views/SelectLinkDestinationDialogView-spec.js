@@ -121,6 +121,7 @@ describe('SelectLinkDestinationDialogView', () => {
 
   it('allows selecting file', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed(),
       fileTypes: factories.fileTypesWithImageFileType(),
       filesAttributes: {
         image_files: [

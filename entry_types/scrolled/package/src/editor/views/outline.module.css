@@ -73,6 +73,6 @@
   transition-delay: var(--outline-drag-handle-transition-delay);
 }
 
-.outline:not(.collapsed) .chapterLink .dragHandle {
+.storyline:not(.collapsed) .chapterLink .dragHandle {
   display: none;
 }

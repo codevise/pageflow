@@ -6,7 +6,7 @@ import {
   WidgetSelectionRect,
   paletteColor,
   useScrollPosition,
-  useChapters,
+  useMainChapters,
   useCurrentChapter,
   useDarkWidgets,
   useOnUnmuteMedia,
@@ -37,7 +37,7 @@ export function DefaultNavigation({
   const [mobileNavHidden, setMobileNavHidden] = useState(!configuration.defaultMobileNavVisible);
   const [readingProgress, setReadingProgress] = useState(0);
 
-  const chapters = useChapters().filter(chapter => !chapter.hideInNavigation);
+  const chapters = useMainChapters().filter(chapter => !chapter.hideInNavigation);
   const currentChapter = useCurrentChapter();
 
   const isPhonePlatform = usePhonePlatform();

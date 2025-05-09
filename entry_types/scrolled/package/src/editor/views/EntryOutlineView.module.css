@@ -4,17 +4,11 @@
   composes: outline from './outline.module.css';
 }
 
-.collapsed {
-  composes: collapsed from './outline.module.css';
-}
-
-.root .header {
-  margin-bottom: 10px;
-}
+.tabs {}
 
 .toolbar {
   position: absolute;
-  top: -6px;
+  top: 3px;
   right: -1px;
 }
 
@@ -26,26 +20,4 @@
   button:hover {
     --ui-on-button-color: var(--ui-primary-color);
   }
-}
-
-.collapsed .dropDownButton,
-.expandChapters {
-  display: none !important;
-}
-
-.expandChapters {
-  composes: saveButton from './buttons.module.css';
-  padding-top: 3px !important;
-  padding-bottom: 3px !important;
-}
-
-.collapsed .expandChapters {
-  display: block !important;
-}
-
-.chapters {}
-
-.addChapter {
-  composes: addButton from './buttons.module.css';
-  composes: button from './outline.module.css';
 }

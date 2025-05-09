@@ -3,5 +3,3 @@ en:
     editor:
       entry_outline:
         reorder_chapters: "Reorder chapters..."
-        reorder_chapters_header: "Reorder chapters"
-        done: Done

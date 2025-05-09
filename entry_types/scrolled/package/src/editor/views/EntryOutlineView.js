@@ -1,10 +1,11 @@
 import Marionette from 'backbone.marionette';
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
-import {cssModulesUtils, SortableCollectionView} from 'pageflow/ui';
+import {cssModulesUtils} from 'pageflow/ui';
 import {DropDownButtonView} from 'pageflow/editor';
 
-import {ChapterItemView} from './ChapterItemView';
+import {StorylinesTabsView} from './StorylinesTabsView';
+import {StorylineItemView} from './StorylineItemView';
 
 import styles from './EntryOutlineView.module.css';
 
@@ -13,47 +14,22 @@ export const EntryOutlineView = Marionette.Layout.extend({
   className: styles.root,
 
   template: () => `
-    <h2 class="sidebar-header ${styles.header}">
-      ${I18n.t('pageflow_scrolled.editor.entry_outline.header')}
-    </h2>
+    <div class="${styles.tabs}"></div>
     <div class="${styles.toolbar}">
       <div class="${styles.dropDownButton}"></div>
-      <button class="${styles.expandChapters}">
-        ${I18n.t('pageflow_scrolled.editor.entry_outline.done')}
-      </button>
     </div>
-    <ul class="${styles.chapters}"></ul>
-
-    <a class="${styles.addChapter}" href="">
-      ${I18n.t('pageflow_scrolled.editor.entry_outline.add_chapter')}
-    </a>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'header', 'dropDownButton', 'chapters'),
-
-  events: cssModulesUtils.events(styles, {
-    'click addChapter': function() {
-      this.options.entry.addChapter();
-    },
-
-    'click expandChapters': function() {
-      this.toggleCollapsed();
-    }
-  }),
-
-  initialize() {
-    this.collapsed = false;
-  },
+  ui: cssModulesUtils.ui(styles, 'tabs', 'dropDownButton'),
 
   onRender() {
+    const viewModel = new Backbone.Model({collapsed: false});
     const dropDownMenuItems = new Backbone.Collection();
 
-    this.reorderChaptersMenutItem = new MenuItem({
-      label: I18n.t('pageflow_scrolled.editor.entry_outline.reorder_chapters')
-    }, {
-      selected: () =>
-        this.toggleCollapsed()
-    })
+    this.reorderChaptersMenutItem = new MenuItem({}, {
+      viewModel,
+      selected: () => viewModel.set('collapsed', !viewModel.get('collapsed'))
+    });
 
     dropDownMenuItems.add(this.reorderChaptersMenutItem);
 
@@ -65,48 +41,38 @@ export const EntryOutlineView = Marionette.Layout.extend({
       openOnClick: true
     }), {to: this.ui.dropDownButton});
 
-    this.sortableCollectionView = new SortableCollectionView({
-      el: this.ui.chapters,
-      collection: this.options.entry.chapters,
-      itemViewConstructor: ChapterItemView,
-      itemViewOptions: {
-        entry: this.options.entry
-      }
-    });
-
-    this.subview(this.sortableCollectionView);
-    this.sortableCollectionView.disableSorting();
-  },
-
-  toggleCollapsed() {
-    this.collapsed = !this.collapsed;
-
-    this.$el.toggleClass(styles.collapsed, this.collapsed);
-
-    if (this.collapsed) {
-      this.ui.header.text(
-        I18n.t('pageflow_scrolled.editor.entry_outline.reorder_chapters_header')
-      );
-
-      this.sortableCollectionView.enableSorting();
-    }
-    else {
-      this.ui.header.text(
-        I18n.t('pageflow_scrolled.editor.entry_outline.header')
-      );
-
-      this.sortableCollectionView.disableSorting();
-
-    }
+    this.appendSubview(
+      new StorylinesTabsView({
+        entry: this.options.entry,
+        itemViewContstuctor: StorylineItemView,
+        itemViewOptions: {
+          entry: this.options.entry,
+          viewModel
+        }
+      }),
+      {to: this.ui.tabs}
+    );
   }
 });
 
 const MenuItem = Backbone.Model.extend({
-  initialize: function(attributes, options) {
+  initialize(attributes, options) {
     this.options = options;
+
+    this.listenTo(this.options.viewModel, 'change:collapsed', this.updateLabel);
+    this.updateLabel();
   },
 
-  selected: function() {
+  selected() {
     this.options.selected();
+  },
+
+  updateLabel() {
+    this.set(
+      'label',
+      this.options.viewModel.get('collapsed') ?
+      I18n.t('pageflow_scrolled.editor.entry_outline.finish_reorder_chapters') :
+      I18n.t('pageflow_scrolled.editor.entry_outline.reorder_chapters'),
+    );
   }
 });
