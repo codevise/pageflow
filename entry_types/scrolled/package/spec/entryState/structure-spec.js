@@ -82,6 +82,15 @@ const sectionsSeed = [
     configuration: {
       transition: 'fade'
     }
+  },
+  {
+    id: 3,
+    permaId: 103,
+    chapterId: 3,
+    position: 1,
+    configuration: {
+      transition: 'scroll'
+    }
   }
 ];
 const contentElementsSeed = [
@@ -178,7 +187,17 @@ describe('useEntryStructure', () => {
         permaId: 12,
         title: 'Some excursion',
         chapterSlug: 'some-excursion',
-        sections: []
+        sections: [
+          {
+            permaId: 103,
+            chapter: {permaId: 12},
+            previousSection: undefined,
+            nextSection: undefined,
+            sectionIndex: 0,
+
+            transition: 'scroll'
+          }
+        ]
       }
     ]
   };
@@ -258,6 +277,16 @@ describe('useSectionsWithChapter', () => {
           summary: 'A great chapter'
         },
         transition: 'fade'
+      },
+      {
+        permaId: 103,
+        sectionIndex: 2,
+        chapter: {
+          permaId: 12,
+          chapterSlug: 'some-excursion',
+          title: 'Some excursion'
+        },
+        transition: 'scroll'
       }
     ]);
   });

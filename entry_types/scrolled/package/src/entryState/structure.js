@@ -42,19 +42,13 @@ export function useEntryStructure() {
   const sections = useEntryStateCollectionItems('sections');
 
   return useMemo(() => {
-    const linkedSections = sections.map(section => sectionData(section));
-
-    linkedSections.forEach((section, index) => {
-      section.sectionIndex = index;
-      section.previousSection = linkedSections[index - 1];
-      section.nextSection = linkedSections[index + 1];
-    });
+    const enrichedSections = sections.map(section => sectionData(section));
 
     const main = [];
     const excursions = [];
 
     chapters.forEach(chapter => {
-      const chapterSections = linkedSections.filter(
+      const chapterSections = enrichedSections.filter(
         item => item.chapterId === chapter.id
       );
 
@@ -75,12 +69,23 @@ export function useEntryStructure() {
       }
     });
 
+    linkAndIndexSections(main.flatMap(chapter => chapter.sections));
+    excursions.forEach(excursion => linkAndIndexSections(excursion.sections));
+
     return {
       main,
       excursions
     }
   }, [mainStoryline, chapters, sections]);
 };
+
+function linkAndIndexSections(sections) {
+  sections.forEach((section, index) => {
+    section.sectionIndex = index;
+    section.previousSection = sections[index - 1];
+    section.nextSection = sections[index + 1];
+  });
+}
 
 /**
  * Returns an array of sections each with a chapter property containing
