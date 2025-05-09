@@ -115,6 +115,7 @@ export {FitViewport} from './FitViewport';
 export {Tooltip} from './Tooltip';
 export {ThemeIcon} from './ThemeIcon';
 export {InlineFileRights} from './InlineFileRights';
+export {useFloatingPortalRoot, FloatingPortalRootProvider} from './FloatingPortalRootProvider';
 
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
