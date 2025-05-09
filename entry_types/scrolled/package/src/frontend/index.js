@@ -73,6 +73,7 @@ export {
   useFileRights,
   useFileWithInlineRights,
   useLegalInfo,
+  useMainChapters,
   useTheme,
   useShareProviders,
   useShareUrl

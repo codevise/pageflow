@@ -294,6 +294,16 @@ export function useChapters() {
   }, [chapters]);
 }
 
+export function useMainChapters() {
+  const chapters = useChapters();
+  const mainStoryline = useMainStoryline();
+
+  return useMemo(
+    () => chapters.filter(chapter => chapter.storylineId === mainStoryline.id),
+    [chapters, mainStoryline]
+  );
+};
+
 function useMainStoryline() {
   const storylines = useEntryStateCollectionItems('storylines');
 

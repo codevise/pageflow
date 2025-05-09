@@ -3,6 +3,7 @@ import {
   useSectionsWithChapter,
   useChapter,
   useChapters,
+  useMainChapters,
   useSection,
   useSectionForegroundContentElements,
   useContentElement,
@@ -435,6 +436,33 @@ describe('useChapters', () => {
       },
       {
         chapterSlug: 'removespecialdollarcharacter',
+      }
+    ]);
+  });
+});
+
+describe('useMainChapters', () => {
+  it('returns data for all chapters of main storyline', () => {
+    const {result} = renderHookInEntry(
+      () => useMainChapters(),
+      {
+        seed: {
+          storylines: storylinesSeed,
+          chapters: chaptersSeed
+        }
+      }
+    );
+
+    const chapters = result.current;
+
+    expect(chapters).toMatchObject([
+      {
+        permaId: 10,
+        chapterSlug: 'chapter-1',
+      },
+      {
+        permaId: 11,
+        chapterSlug: 'chapter-2',
       }
     ]);
   });
