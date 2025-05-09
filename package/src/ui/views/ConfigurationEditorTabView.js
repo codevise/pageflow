@@ -55,8 +55,12 @@ ConfigurationEditorTabView.Groups = function() {
     groups[name] = fn;
   };
 
-  this.apply = function(name, context, options) {
+  this.apply = function(name, context, {ignoreUndefined, ...options} = {}) {
     if (!(name in groups)) {
+      if (ignoreUndefined) {
+        return;
+      }
+
       throw 'Undefined group named "' + name + '".';
     }
 

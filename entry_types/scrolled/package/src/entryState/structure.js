@@ -289,11 +289,9 @@ export function useChapters() {
         id: chapter.id,
         permaId: chapter.permaId,
         storylineId: chapter.storylineId,
+        chapterSlug,
         index,
-        title: chapter.configuration.title,
-        summary: chapter.configuration.summary,
-        chapterSlug: chapterSlug,
-        hideInNavigation: chapter.configuration.hideInNavigation
+        ...chapter.configuration
       });
     });
   }, [chapters]);

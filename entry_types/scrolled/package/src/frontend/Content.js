@@ -77,7 +77,7 @@ function renderExcursion(excursion, {onClose}) {
   if (excursion) {
     return (
       <Widget role="excursion"
-              props={{onClose}}>
+              props={{excursion, onClose}}>
         {renderChapters([excursion], 0, () => {})}
       </Widget>
     );

@@ -7,10 +7,16 @@ export const EditChapterView = EditConfigurationView.extend({
   configure: function(configurationEditor) {
     configurationEditor.tab('chapter', function() {
       this.input('title', TextInputView);
-      this.input('hideInNavigation', CheckBoxInputView);
-      this.input('summary', TextAreaInputView, {
-        disableLinks: true
-      });
+
+      if (this.model.parent.storyline.isMain()) {
+        this.input('hideInNavigation', CheckBoxInputView);
+        this.input('summary', TextAreaInputView, {
+          disableLinks: true
+        });
+      }
+      else {
+        this.group('ChapterExcursionSettings', {ignoreUndefined: true});
+      }
     });
   }
 });

@@ -55,9 +55,12 @@ describe('rendering excursions', () => {
 
   it('wraps excursion in widget', () => {
     frontend.widgetTypes.register('excursionOverlay', {
-      component: function ({children}) {
+      component: function ({excursion, children}) {
         return (
-          <div data-testid="test-overlay">{children}</div>
+          <div data-testid="test-overlay">
+            <h3>{excursion.customTitle}</h3>
+            {children}
+          </div>
         )
       }
     });
@@ -86,7 +89,14 @@ describe('rendering excursions', () => {
           }
         ],
         chapters: [
-          {id: 1, storylineId: 2, configuration: {title: 'some-excursion'}}
+          {
+            id: 1,
+            storylineId: 2,
+            configuration: {
+              title: 'some-excursion',
+              customTitle: 'Some title'
+            }
+          }
         ],
         sections: [
           {id: 1, chapterId: 1}
@@ -104,6 +114,7 @@ describe('rendering excursions', () => {
     });
     act(() => changeLocationHash('#some-excursion'));
 
+    expect(getByTestId('test-overlay')).toHaveTextContent('Some title');
     expect(getByTestId('test-overlay')).toHaveTextContent('Some text');
   });
 

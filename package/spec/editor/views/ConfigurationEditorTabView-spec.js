@@ -52,6 +52,15 @@ describe('ConfigurationEditorTabView', () => {
           groups.apply('undefinedGroup', context);
         }).toThrowError(/undefined group/i);
       });
+
+      it('supports silently skipping undefined groups', () => {
+        var groups = new ConfigurationEditorTabView.Groups();
+        var context = {};
+
+        expect(function() {
+          groups.apply('undefinedGroup', context, {ignoreUndefined: true});
+        }).not.toThrowError();
+      });
     });
   });
 });
