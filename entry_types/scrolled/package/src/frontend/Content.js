@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 
 import Chapter from "./Chapter";
 import {VhFix} from './VhFix';
+import {useActiveExcursion} from './useActiveExcursion';
 import {useCurrentSectionIndexState} from './useCurrentChapter';
 import {useEntryStructure} from '../entryState';
 import {withInlineEditingDecorator} from './inlineEditing';
@@ -16,9 +17,16 @@ import {Widget} from './Widget';
 import styles from './Content.module.css';
 
 export const Content = withInlineEditingDecorator('ContentDecorator', function Content(props) {
+  const entryStructure = useEntryStructure();
+
+  const {
+    activeExcursion,
+    activateExcursionOfSection,
+    returnFromExcursion
+  } = useActiveExcursion(entryStructure);
+
   const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
 
-  const entryStructure = useEntryStructure();
   useSectionChangeEvents(currentSectionIndex);
 
   let updateChapterSlug = (section) => {
@@ -42,9 +50,10 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
 
   const receiveMessage = useCallback(data => {
     if (data.type === 'SCROLL_TO_SECTION') {
+      activateExcursionOfSection({id: data.payload.id});
       scrollToTarget({id: data.payload.id, align: data.payload.align});
     }
-  }, [scrollToTarget]);
+  }, [scrollToTarget, activateExcursionOfSection]);
 
   usePostMessageListener(receiveMessage);
 
@@ -55,26 +64,24 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
           {renderChapters(entryStructure.main,
                           currentSectionIndex,
                           setCurrentSection)}
-          {renderExcursions(entryStructure.excursions,
-                            currentSectionIndex,
-                            setCurrentSection)}
+          {renderExcursion(activeExcursion, {
+            onClose: () => returnFromExcursion()
+          })}
         </AtmoProvider>
       </VhFix>
     </div>
   );
 })
 
-function renderExcursions(excursions,
-                          currentSectionIndex,
-                          setCurrentSection) {
-  return excursions.map(excursion =>
-    <Widget key={excursion.id}
-            role="excursion">
-      {renderChapters([excursion],
-                      currentSectionIndex,
-                      setCurrentSection)}
-    </Widget>
-  );
+function renderExcursion(excursion, {onClose}) {
+  if (excursion) {
+    return (
+      <Widget role="excursion"
+              props={{onClose}}>
+        {renderChapters([excursion], 0, () => {})}
+      </Widget>
+    );
+  }
 }
 
 function renderChapters(chapters,
