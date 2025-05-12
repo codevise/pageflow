@@ -2,8 +2,8 @@
 }
 
 .group {
-  --content-margin-fraction: 0.08;
-  --content-margin: calc(var(--content-margin-fraction) * 100%);
+  --content-margin-fraction: var(--theme-content-margin-fraction, 0.08);
+  --content-margin: var(--theme-content-margin, calc(var(--content-margin-fraction) * 100%));
   padding-left: var(--content-margin);
   padding-right: var(--content-margin);
   margin-left: auto;
@@ -36,6 +36,7 @@
 
 .inline.width-full {
   --content-margin-fraction: 0;
+  --content-margin: 0;
   --content-max-width: none;
 }
 
@@ -71,9 +72,11 @@
       <=> group-width = box-width / (1 - 2 * content-margin-factor)
   */
   --f: calc(1 / (1 - 2 * var(--content-margin-fraction)));
-  margin-left: calc(-100% * var(--content-margin-fraction) * var(--f));
-  margin-right: calc(-100% * var(--content-margin-fraction) * var(--f));
-  max-width: calc(var(--content-margin) * var(--f) * 2 + var(--content-max-width));
+  --margin-to-undo: var(--theme-content-margin,
+                        calc(100% * var(--content-margin-fraction) * var(--f)));
+  margin-left: calc(-1 * var(--margin-to-undo));
+  margin-right: calc(-1 * var(--margin-to-undo));
+  max-width: calc(var(--margin-to-undo) * 2 + var(--content-max-width));
 }
 
 .right .inline {
