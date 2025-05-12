@@ -407,6 +407,7 @@ export function normalizeAndMergeFixture({inlineFileRightsFor = [], ...options} 
         ...memo,
         [collectionName]: applyInlineFileRights(seedFixture.collections[collectionName])
       }), {}),
+      storylines: seed.collections.storylines,
       chapters: seed.collections.chapters,
       sections: seed.collections.sections,
       contentElements: seed.collections.contentElements,
