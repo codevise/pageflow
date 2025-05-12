@@ -141,6 +141,25 @@ appearanceOptions.forEach(appearance => {
                                                       includeWidths: true})}>
           <Entry />
         </RootProviders>
+    )
+    .add(
+      'Custom Margin - Custom content margin fraction',
+      () =>
+        <RootProviders seed={exampleSeed(appearance, {positionedElementTypeName: 'customMarginExample',
+                                                      includeWidths: true})}>
+          <div style={{'--theme-content-margin-fraction': '0.04'}}>
+            <Entry />
+          </div>
+        </RootProviders>
+    ).add(
+      'Custom Margin - Custom content margin',
+      () =>
+        <RootProviders seed={exampleSeed(appearance, {positionedElementTypeName: 'customMarginExample',
+                                                      includeWidths: true})}>
+          <div style={{'--theme-content-margin': '3rem'}}>
+            <Entry />
+          </div>
+        </RootProviders>
     );
 });
 
