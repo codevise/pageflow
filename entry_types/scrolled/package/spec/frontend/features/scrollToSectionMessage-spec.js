@@ -9,6 +9,7 @@ describe('SCROLL_TO_SECTION message', () => {
   beforeEach(() => {
     fakeParentWindow()
     window.scrollTo = jest.fn();
+    window.location.hash = '#initial';
   });
 
   it('scrolls to section with given id', async () => {
@@ -63,5 +64,35 @@ describe('SCROLL_TO_SECTION message', () => {
       top: -100 + 1000,
       behavior: 'smooth'
     });
+  });
+
+  it('activates excursion of section', async () => {
+    const {fakeSectionBoundingClientRectsByPermaId} = renderEntry({
+      seed: {
+        storylines: [
+          {
+            id: 1,
+            configuration: {main: true}
+          },
+          {
+            id: 2
+          }
+        ],
+        chapters: [
+          {id: 1, storylineId: 1},
+          {id: 2, storylineId: 2, configuration: {title: 'some-excursion'}}
+        ],
+        sections: [
+          {id: 100, permaId: 10, chapterId: 1},
+          {id: 101, permaId: 11, chapterId: 2}
+        ]
+      }
+    });
+
+    await asyncHandlingOf(() => {
+      window.postMessage({type: 'SCROLL_TO_SECTION', payload: {id: 101}}, '*');
+    });
+
+    expect(window.location.hash).toEqual('#some-excursion');
   });
 });

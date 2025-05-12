@@ -1,27 +1,30 @@
 import Marionette from 'backbone.marionette';
-import {cssModulesUtils, CollectionView} from 'pageflow/ui';
+import {cssModulesUtils} from 'pageflow/ui';
 
-import {SelectableChapterItemView} from './SelectableChapterItemView';
+import {StorylinesTabsView} from './StorylinesTabsView';
+import {SelectableStorylineItemView} from './SelectableStorylineItemView';
 
 import styles from './SelectableEntryOutlineView.module.css';
 
-export const SelectableEntryOutlineView = Marionette.ItemView.extend({
+export const SelectableEntryOutlineView = Marionette.Layout.extend({
   template: () => `
-    <ul class="${styles.chapters}"></ul>
+    <div class="${styles.tabs}"></div>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'chapters'),
+  ui: cssModulesUtils.ui(styles, 'tabs'),
 
   onRender() {
-    this.subview(new CollectionView({
-      el: this.ui.chapters,
-      collection: this.options.entry.chapters,
-      itemViewConstructor: SelectableChapterItemView,
-      itemViewOptions: {
+    this.appendSubview(
+      new StorylinesTabsView({
         entry: this.options.entry,
-        onSelectChapter: this.options.onSelectChapter,
-        onSelectSection: this.options.onSelectSection
-      }
-    }));
+        itemViewContstuctor: SelectableStorylineItemView,
+        itemViewOptions: {
+          entry: this.options.entry,
+          onSelectChapter: this.options.onSelectChapter,
+          onSelectSection: this.options.onSelectSection
+        }
+      }),
+      {to: this.ui.tabs}
+    );
   }
 });

@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 
 import Chapter from "./Chapter";
 import {VhFix} from './VhFix';
+import {useActiveExcursion} from './useActiveExcursion';
 import {useCurrentSectionIndexState} from './useCurrentChapter';
 import {useEntryStructure} from '../entryState';
 import {withInlineEditingDecorator} from './inlineEditing';
@@ -10,14 +11,22 @@ import {useSectionChangeEvents} from './useSectionChangeEvents';
 import {sectionChangeMessagePoster} from './sectionChangeMessagePoster';
 import {useScrollToTarget} from './useScrollTarget';
 
-import { AtmoProvider } from './useAtmo';
+import {AtmoProvider} from './useAtmo';
+import {Widget} from './Widget';
 
 import styles from './Content.module.css';
 
 export const Content = withInlineEditingDecorator('ContentDecorator', function Content(props) {
+  const entryStructure = useEntryStructure();
+
+  const {
+    activeExcursion,
+    activateExcursionOfSection,
+    returnFromExcursion
+  } = useActiveExcursion(entryStructure);
+
   const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
 
-  const entryStructure = useEntryStructure();
   useSectionChangeEvents(currentSectionIndex);
 
   let updateChapterSlug = (section) => {
@@ -41,9 +50,10 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
 
   const receiveMessage = useCallback(data => {
     if (data.type === 'SCROLL_TO_SECTION') {
+      activateExcursionOfSection({id: data.payload.id});
       scrollToTarget({id: data.payload.id, align: data.payload.align});
     }
-  }, [scrollToTarget]);
+  }, [scrollToTarget, activateExcursionOfSection]);
 
   usePostMessageListener(receiveMessage);
 
@@ -51,31 +61,40 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
     <div className={styles.Content} id='goToContent'>
       <VhFix>
         <AtmoProvider>
-          {renderChapters(entryStructure,
+          {renderChapters(entryStructure.main,
                           currentSectionIndex,
                           setCurrentSection)}
+          {renderExcursion(activeExcursion, {
+            onClose: () => returnFromExcursion()
+          })}
         </AtmoProvider>
       </VhFix>
     </div>
   );
 })
 
-function renderChapters(entryStructure,
+function renderExcursion(excursion, {onClose}) {
+  if (excursion) {
+    return (
+      <Widget role="excursion"
+              props={{excursion, onClose}}>
+        {renderChapters([excursion], 0, () => {})}
+      </Widget>
+    );
+  }
+}
+
+function renderChapters(chapters,
                         currentSectionIndex,
-                        setCurrentSection,
-                        scrollTargetSectionIndex,
-                        setScrollTargetSectionIndex) {
-  return entryStructure.map((chapter, index) => {
+                        setCurrentSection) {
+  return chapters.map((chapter, index) => {
     return(
       <Chapter key={index}
                chapterSlug={chapter.chapterSlug}
                permaId={chapter.permaId}
                sections={chapter.sections}
                currentSectionIndex={currentSectionIndex}
-               setCurrentSection={setCurrentSection}
-               scrollTargetSectionIndex={scrollTargetSectionIndex}
-               setScrollTargetSectionIndex={setScrollTargetSectionIndex}
-      />
+               setCurrentSection={setCurrentSection} />
     );
   });
 }

@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import I18n from 'i18n-js';
 
 import {
   configurationContainer,
@@ -30,6 +31,17 @@ export const Chapter = Backbone.Model.extend({
       autoConsolidatePositions: false
     });
     this.entry = options.entry;
+  },
+
+  getDisplayTitle() {
+    return this.configuration.get('title') ||
+           I18n.t('pageflow_scrolled.editor.chapter_item.unnamed')
+  },
+
+  getDisplayNumber() {
+    if (this.storyline.isMain()) {
+      return I18n.t('pageflow_scrolled.editor.chapter_item.chapter') + ' ' + (this.get('position') + 1);
+    }
   },
 
   addSection(attributes, options) {

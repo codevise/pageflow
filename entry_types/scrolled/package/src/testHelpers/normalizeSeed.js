@@ -18,6 +18,7 @@
  * @param {Array} [options.videoFiles] - Array of objects with video file attributes of entry.
  * @param {Array} [options.audioFiles] - Array of objects with audio file attributes of entry.
  * @param {Array} [options.textTrackFiles] - Array of objects with text track file attributes of entry.
+ * @param {Array} [options.storylines] - Array of objects with storyline attributes of entry.
  * @param {Array} [options.chapters] - Array of objects with chapter attributes of entry.
  * @param {Array} [options.sections] - Array of objects with section attributes of entry.
  * @param {Array} [options.contentElements] - Array of objects with content element attributes of entry.
@@ -39,6 +40,7 @@ export function normalizeSeed({
   videoFiles,
   audioFiles,
   textTrackFiles,
+  storylines,
   chapters,
   sections,
   contentElements,
@@ -63,6 +65,7 @@ export function normalizeSeed({
 
   const normalizedSections = normalizeSections(sections, normalizedContentElements);
   const normalizedChapters = normalizeChapters(chapters, normalizedSections);
+  const normalizedStorylines = normalizeStorylines(storylines, normalizedChapters);
 
   return {
     config: {
@@ -121,6 +124,7 @@ export function normalizeSeed({
         parentFileType: null,
         configuration: {}
       }),
+      storylines: normalizedStorylines,
       chapters: normalizedChapters,
       sections: normalizedSections,
       contentElements: normalizedContentElements,
@@ -172,6 +176,23 @@ function normalizeChapters(chapters = [], sections) {
   }
 
   return normalizeCollection(chapters, chapterDefaults);
+}
+
+function normalizeStorylines(storylines = [], chapters) {
+  if (!storylines.length) {
+    chapters.forEach(chapter => chapter.storylineId = 1000);
+    return [
+      {
+        id: 1000,
+        permaId: 100,
+        configuration: {
+          main: true
+        }
+      }
+    ]
+  }
+
+  return normalizeCollection(storylines, {configuration: {}});
 }
 
 function normalizeShareUrlTemplates(shareUrlTemplates) {

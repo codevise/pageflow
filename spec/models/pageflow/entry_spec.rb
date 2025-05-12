@@ -46,10 +46,59 @@ module Pageflow
         expect(entry.draft.widgets).to include_record_with(role: 'header', type_name: 'site_header')
       end
 
-      it 'creates a first storyline in the draft' do
+      it 'creates initial revision components in draft' do
+        revision_component = Class.new(TestRevisionComponent) do
+          def self.create_defaults(draft)
+            create!(revision: draft, text: 'Default')
+          end
+        end
+
+        pageflow_configure do |config|
+          config.revision_components.register(revision_component, create_defaults: true)
+        end
+
+        entry = create(:entry)
+        default_component = TestRevisionComponent.all_for_revision(entry.draft).first
+
+        expect(default_component).to have_attributes(text: 'Default')
+      end
+
+      it 'does not create initial components if create_defaults option is not set' do
+        revision_component = Class.new(TestRevisionComponent) do
+          def self.create_defaults(draft)
+            create!(revision: draft, text: 'Default')
+          end
+        end
+
+        pageflow_configure do |config|
+          config.revision_components.register(revision_component)
+        end
+
         entry = create(:entry)
 
-        expect(entry.draft.storylines).not_to be_empty
+        expect(TestRevisionComponent.all_for_revision(entry.draft)).to be_empty
+      end
+
+      it 'supports entry type specific initial revision components' do
+        revision_component = Class.new(TestRevisionComponent) do
+          def self.create_defaults(draft)
+            create!(revision: draft, text: 'Default')
+          end
+        end
+
+        pageflow_configure do |config|
+          rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+          config.for_entry_type(rainbow_entry_type) do |c|
+            c.revision_components.register(revision_component, create_defaults: true)
+          end
+        end
+
+        rainbow_entry = create(:entry, type_name: 'rainbow')
+        other_entry = create(:entry)
+
+        expect(TestRevisionComponent.all_for_revision(rainbow_entry.draft)).not_to be_empty
+        expect(TestRevisionComponent.all_for_revision(other_entry.draft)).to be_empty
       end
 
       it 'copies meta defaults from entry template' do

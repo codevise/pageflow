@@ -7,6 +7,7 @@ import {useFloating, FloatingPortal, shift, offset} from '@floating-ui/react';
 import {Toolbar} from '../Toolbar';
 import {useI18n} from '../../i18n';
 import {useSelectLinkDestination} from '../useSelectLinkDestination';
+import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {isMarkActive, toggleMark} from './marks';
 
 import BoldIcon from '../images/bold.svg';
@@ -82,10 +83,12 @@ export function HoveringToolbar({children}) {
     }
   }, []);
 
+  const floatingPortalRoot = useFloatingPortalRoot();
+
   return (
     <div onMouseDown={handleMouseDown}>
       {isOpen &&
-       <FloatingPortal>
+       <FloatingPortal root={floatingPortalRoot}>
          <div ref={refs.setFloating}
               style={floatingStyles}>
            {renderToolbar(editor, t, selectLinkDestination)}

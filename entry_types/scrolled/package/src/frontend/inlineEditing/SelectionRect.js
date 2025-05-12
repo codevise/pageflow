@@ -41,6 +41,7 @@ function InsertButton(props) {
          contentEditable={false}>
       <button className={styles.insertButton}
               title={props.insertButtonTitles && props.insertButtonTitles[props.at]}
+              onMouseDown={event => event.preventDefault()}
               onClick={() => props.onInsertButtonClick(props.at)}
               onMouseEnter={() => setInsertHovered(true)}
               onMouseLeave={() => setInsertHovered(false)}>

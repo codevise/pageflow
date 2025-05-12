@@ -2,7 +2,14 @@ import {Entry, editor} from 'pageflow/editor';
 import I18n from 'i18n-js';
 
 import {ConsentVendors} from '../ConsentVendors';
-import {ChaptersCollection, SectionsCollection, ContentElementsCollection} from '../../collections';
+
+import {
+  StorylinesCollection,
+  ChaptersCollection,
+  SectionsCollection,
+  ContentElementsCollection
+} from '../../collections';
+
 import {ContentElement} from '../ContentElement';
 import {Cutoff} from '../Cutoff';
 
@@ -26,6 +33,10 @@ export const ScrolledEntry = Entry.extend({
                                             entry: this});
     this.chapters.parentModel = this;
 
+    this.storylines = new StorylinesCollection(seed.collections.storylines,
+                                               {chapters: this.chapters,
+                                                entry: this});
+
     this.sections.sort();
 
     this.cutoff = new Cutoff({entry: this});
@@ -39,16 +50,6 @@ export const ScrolledEntry = Entry.extend({
     editor.savingRecords.watch(this.chapters);
 
     this.scrolledSeed = seed;
-  },
-
-  addChapter(attributes) {
-    this.chapters.create({
-      position: this.chapters.length,
-      ...attributes
-    }, {
-      entry: this,
-      sections: this.sections
-    });
   },
 
   insertContentElement(attributes, {id, at, splitPoint}) {

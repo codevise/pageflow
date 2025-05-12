@@ -5,11 +5,13 @@ module PageflowScrolled
       include Pageflow::EditorController
 
       def create
-        chapter = Chapter.create(chapter_params.merge(revision: @entry.draft))
+        chapter = find_storyline.chapters.create(chapter_params)
 
         render partial: 'pageflow_scrolled/chapters/chapter',
-               locals: {chapter: chapter},
+               locals: {chapter:},
                status: :created
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       def update
@@ -53,11 +55,7 @@ module PageflowScrolled
       end
 
       def find_storyline
-        if params[:storyline_id]
-          Storyline.all_for_revision(@entry.draft).find(params[:storyline_id])
-        else
-          Storyline.all_for_revision(@entry.draft).first
-        end
+        Storyline.all_for_revision(@entry.draft).find(params[:storyline_id])
       end
     end
   end

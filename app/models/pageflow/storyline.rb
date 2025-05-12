@@ -13,5 +13,9 @@ module Pageflow
     nested_revision_components :chapters
 
     delegate :entry, to: :revision
+
+    def self.create_defaults(draft)
+      create!(revision: draft, configuration: {main: true})
+    end
   end
 end

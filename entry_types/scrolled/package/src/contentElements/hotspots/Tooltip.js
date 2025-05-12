@@ -23,6 +23,7 @@ import {
   useContentElementConfigurationUpdate,
   useDarkBackground,
   useFileWithInlineRights,
+  useFloatingPortalRoot,
   useI18n,
   utils,
   LinkButton
@@ -113,6 +114,8 @@ export function Tooltip({
   ]);
   const {isMounted, styles: transitionStyles} = useTooltipTransitionStyles(context);
 
+  const floatingPortalRoot = useFloatingPortalRoot();
+
   function handleTextChange(propertyName, value) {
     updateConfiguration({
       tooltipTexts: {
@@ -168,7 +171,8 @@ export function Tooltip({
         </div>
       </CompositeItem>
       {isMounted &&
-       <TooltipPortal id={aboveNavigationWidgets && 'floating-ui-above-navigation-widgets'}>
+       <TooltipPortal id={aboveNavigationWidgets && 'floating-ui-above-navigation-widgets'}
+                      root={floatingPortalRoot}>
          <FloatingFocusManager context={context} modal={false} initialFocus={-1} returnFocus={false}>
            <div style={transitionStyles}>
              <div ref={refs.setFloating}

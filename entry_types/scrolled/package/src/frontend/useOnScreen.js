@@ -1,8 +1,14 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect, useRef, useContext, createContext} from 'react';
+
+const OnScreenObserverRootContext = createContext();
+
+export const OnScreenObserverRootProvider = OnScreenObserverRootContext.Provider;
 
 export function useOnScreen(ref, {rootMargin, onIntersecting, skipIframeFix} = {}) {
   const [isIntersecting, setIntersecting] = useState(false);
   const onIntersectingRef = useRef();
+
+  const root = useContext(OnScreenObserverRootContext)?.current;
 
   useEffect(() => {
     onIntersectingRef.current = onIntersecting
@@ -29,7 +35,8 @@ export function useOnScreen(ref, {rootMargin, onIntersecting, skipIframeFix} = {
         }
       },
       {
-        rootMargin
+        rootMargin,
+        root
       },
       skipIframeFix
     );
@@ -41,13 +48,13 @@ export function useOnScreen(ref, {rootMargin, onIntersecting, skipIframeFix} = {
     return () => {
       observer.unobserve(current);
     };
-  }, [ref, rootMargin, skipIframeFix]);
+  }, [ref, rootMargin, root, skipIframeFix]);
 
   return isIntersecting;
 }
 
 function createIntersectionObserver(callback, options, skipIframeFix) {
-  if (skipIframeFix) {
+  if (skipIframeFix || options.root) {
     return new IntersectionObserver(callback, options);
   }
 

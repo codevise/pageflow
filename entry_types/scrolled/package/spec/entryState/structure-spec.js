@@ -3,6 +3,7 @@ import {
   useSectionsWithChapter,
   useChapter,
   useChapters,
+  useMainChapters,
   useSection,
   useSectionForegroundContentElements,
   useContentElement,
@@ -14,10 +15,28 @@ import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories} from 'pageflow/testHelpers';
 import {renderHookInEntry, normalizeSeed} from 'support';
 
+
+const storylinesSeed = [
+  {
+    id: 1,
+    permaId: 10,
+    position: 1,
+    configuration: {
+      main: true
+    }
+  },
+  {
+    id: 2,
+    permaId: 11,
+    position: 2,
+    configuration: {}
+  }
+];
 const chaptersSeed = [
   {
     id: 1,
     permaId: 10,
+    storylineId: 1,
     position: 1,
     configuration: {
       title: 'Chapter 1',
@@ -27,11 +46,21 @@ const chaptersSeed = [
   {
     id: 2,
     permaId: 11,
+    storylineId: 1,
     position: 2,
     configuration: {
       title: 'Chapter 2',
       summary: 'A great chapter',
       hideInNavigation: true
+    }
+  },
+  {
+    id: 3,
+    permaId: 12,
+    storylineId: 2,
+    position: 1,
+    configuration: {
+      title: 'Some excursion'
     }
   }
 ];
@@ -52,6 +81,15 @@ const sectionsSeed = [
     position: 2,
     configuration: {
       transition: 'fade'
+    }
+  },
+  {
+    id: 3,
+    permaId: 103,
+    chapterId: 3,
+    position: 1,
+    configuration: {
+      transition: 'scroll'
     }
   }
 ];
@@ -107,42 +145,62 @@ const contentElementsSeed = [
 ];
 
 describe('useEntryStructure', () => {
-  const expectedEntryStructure = [
-    {
-      permaId: 10,
-      title: 'Chapter 1',
-      chapterSlug: 'chapter-1',
-      summary: 'An introductory chapter',
-      sections: [
-        {
-          permaId: 101,
-          chapter: {permaId: 10},
-          previousSection: undefined,
-          nextSection: {permaId: 102},
-          sectionIndex: 0,
+  const expectedEntryStructure = {
+    main: [
+      {
+        permaId: 10,
+        title: 'Chapter 1',
+        chapterSlug: 'chapter-1',
+        summary: 'An introductory chapter',
+        sections: [
+          {
+            permaId: 101,
+            chapter: {permaId: 10},
+            previousSection: undefined,
+            nextSection: {permaId: 102},
+            sectionIndex: 0,
 
-          transition: 'scroll'
-        }
-      ],
-    },
-    {
-      permaId: 11,
-      title: 'Chapter 2',
-      chapterSlug: 'chapter-2',
-      summary: 'A great chapter',
-      sections: [
-        {
-          permaId: 102,
-          chapter: {permaId: 11},
-          previousSection: {permaId: 101},
-          nextSection: undefined,
-          sectionIndex: 1,
+            transition: 'scroll'
+          }
+        ],
+      },
+      {
+        permaId: 11,
+        title: 'Chapter 2',
+        chapterSlug: 'chapter-2',
+        summary: 'A great chapter',
+        sections: [
+          {
+            permaId: 102,
+            chapter: {permaId: 11},
+            previousSection: {permaId: 101},
+            nextSection: undefined,
+            sectionIndex: 1,
 
-          transition: 'fade'
-        }
-      ]
-    }
-  ];
+            transition: 'fade'
+          }
+        ]
+      }
+    ],
+    excursions: [
+      {
+        permaId: 12,
+        title: 'Some excursion',
+        chapterSlug: 'some-excursion',
+        sections: [
+          {
+            permaId: 103,
+            chapter: {permaId: 12},
+            previousSection: undefined,
+            nextSection: undefined,
+            sectionIndex: 0,
+
+            transition: 'scroll'
+          }
+        ]
+      }
+    ]
+  };
 
   it('reads data from watched collections', () => {
     const {result} = renderHookInEntry(() => useEntryStructure(), {
@@ -150,6 +208,7 @@ describe('useEntryStructure', () => {
         watchCollections(
           factories.entry(ScrolledEntry, {}, {
             entryTypeSeed: normalizeSeed({
+              storylines: storylinesSeed,
               chapters: chaptersSeed,
               sections: sectionsSeed,
               contentElements: contentElementsSeed
@@ -168,6 +227,7 @@ describe('useEntryStructure', () => {
       () => useEntryStructure(),
       {
         seed: {
+          storylines: storylinesSeed,
           chapters: chaptersSeed,
           sections: sectionsSeed,
           contentElements: contentElementsSeed
@@ -217,6 +277,16 @@ describe('useSectionsWithChapter', () => {
           summary: 'A great chapter'
         },
         transition: 'fade'
+      },
+      {
+        permaId: 103,
+        sectionIndex: 2,
+        chapter: {
+          permaId: 12,
+          chapterSlug: 'some-excursion',
+          title: 'Some excursion'
+        },
+        transition: 'scroll'
       }
     ]);
   });
@@ -339,6 +409,12 @@ describe('useChapters', () => {
         title: 'Chapter 2',
         summary: 'A great chapter',
         hideInNavigation: true
+      },
+      {
+        permaId: 12,
+        chapterSlug: 'some-excursion',
+        index: 2,
+        title: 'Some excursion'
       }
     ]);
   });
@@ -389,6 +465,33 @@ describe('useChapters', () => {
       },
       {
         chapterSlug: 'removespecialdollarcharacter',
+      }
+    ]);
+  });
+});
+
+describe('useMainChapters', () => {
+  it('returns data for all chapters of main storyline', () => {
+    const {result} = renderHookInEntry(
+      () => useMainChapters(),
+      {
+        seed: {
+          storylines: storylinesSeed,
+          chapters: chaptersSeed
+        }
+      }
+    );
+
+    const chapters = result.current;
+
+    expect(chapters).toMatchObject([
+      {
+        permaId: 10,
+        chapterSlug: 'chapter-1',
+      },
+      {
+        permaId: 11,
+        chapterSlug: 'chapter-2',
       }
     ]);
   });

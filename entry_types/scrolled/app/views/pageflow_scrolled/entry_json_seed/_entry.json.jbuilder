@@ -69,6 +69,12 @@ unless options[:skip_collections]
       end
     end
 
+    json.storylines do
+      json.array!(storylines) do |storyline|
+        json.partial! 'pageflow_scrolled/storylines/storyline', storyline:
+      end
+    end
+
     json.chapters do
       json.array!(chapters) do |chapter|
         json.partial! 'pageflow_scrolled/chapters/chapter', chapter: chapter

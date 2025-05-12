@@ -1,0 +1,17 @@
+de:
+  pageflow_scrolled:
+    editor:
+      entry_outline:
+        tabs:
+        finish_reorder_chapters: Umsortieren beenden
+        add_chapter: DELETED
+        header: DELETED
+      storylines_tabs:
+        main: Gliederung
+        excursions: Exkurse
+      storyline_item:
+        reorder_chapters:
+          Die Kapitel wurden zusammengeklappt, um das Umsortieren zu erleichtern.
+        done: Fertig
+        add_chapter: Neues Kapitel
+        add_excursion: Neuer Exkurs

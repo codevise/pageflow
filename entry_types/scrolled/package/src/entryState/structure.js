@@ -37,19 +37,18 @@ import slugify from 'slugify';
  *   ]
  */
 export function useEntryStructure() {
+  const mainStoryline = useMainStoryline();
   const chapters = useChapters();
   const sections = useEntryStateCollectionItems('sections');
 
   return useMemo(() => {
-    const linkedSections = sections.map(section => sectionData(section));
+    const enrichedSections = sections.map(section => sectionData(section));
 
-    linkedSections.forEach((section, index) => {
-      section.sectionIndex = index;
-      section.previousSection = linkedSections[index - 1];
-      section.nextSection = linkedSections[index + 1];
-    });
-    return chapters.map(chapter => {
-      const chapterSections = linkedSections.filter(
+    const main = [];
+    const excursions = [];
+
+    chapters.forEach(chapter => {
+      const chapterSections = enrichedSections.filter(
         item => item.chapterId === chapter.id
       );
 
@@ -57,13 +56,36 @@ export function useEntryStructure() {
         section.chapter = chapter
       );
 
-      return {
+      chapter = {
         ...chapter,
         sections: chapterSections
       };
+
+      if (chapter.storylineId === mainStoryline.id) {
+        main.push(chapter);
+      }
+      else {
+        excursions.push(chapter);
+      }
     });
-  }, [chapters, sections]);
+
+    linkAndIndexSections(main.flatMap(chapter => chapter.sections));
+    excursions.forEach(excursion => linkAndIndexSections(excursion.sections));
+
+    return {
+      main,
+      excursions
+    }
+  }, [mainStoryline, chapters, sections]);
 };
+
+function linkAndIndexSections(sections) {
+  sections.forEach((section, index) => {
+    section.sectionIndex = index;
+    section.previousSection = sections[index - 1];
+    section.nextSection = sections[index + 1];
+  });
+}
 
 /**
  * Returns an array of sections each with a chapter property containing
@@ -266,12 +288,30 @@ export function useChapters() {
       return ({
         id: chapter.id,
         permaId: chapter.permaId,
+        storylineId: chapter.storylineId,
+        chapterSlug,
         index,
-        title: chapter.configuration.title,
-        summary: chapter.configuration.summary,
-        chapterSlug: chapterSlug,
-        hideInNavigation: chapter.configuration.hideInNavigation
+        ...chapter.configuration
       });
     });
   }, [chapters]);
+}
+
+export function useMainChapters() {
+  const chapters = useChapters();
+  const mainStoryline = useMainStoryline();
+
+  return useMemo(
+    () => chapters.filter(chapter => chapter.storylineId === mainStoryline.id),
+    [chapters, mainStoryline]
+  );
+};
+
+function useMainStoryline() {
+  const storylines = useEntryStateCollectionItems('storylines');
+
+  return useMemo(
+    () => storylines.find(storyline => storyline.configuration.main),
+    [storylines]
+  );
 }

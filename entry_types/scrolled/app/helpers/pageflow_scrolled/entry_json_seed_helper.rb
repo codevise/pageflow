@@ -24,27 +24,34 @@ module PageflowScrolled
     end
 
     def scrolled_entry_json_seed(json, scrolled_entry, options = {})
-      main_storyline = Storyline.all_for_revision(scrolled_entry.revision).first || Storyline.new
-      sections = scrolled_entry_json_seed_sections(scrolled_entry, main_storyline, options)
+      revision = scrolled_entry.revision
+      sections = scrolled_entry_json_seed_sections(scrolled_entry, options)
 
       json.partial!('pageflow_scrolled/entry_json_seed/entry',
                     entry: scrolled_entry,
                     entry_config: Pageflow.config_for(scrolled_entry),
-                    chapters: scrolled_entry_json_seed_chapters(main_storyline, options),
+                    storylines: scrolled_entry_json_seed_storylines(revision),
+                    chapters: scrolled_entry_json_seed_chapters(revision, options),
                     sections:,
-                    content_elements: main_storyline.content_elements.where(section: sections),
+                    content_elements: scrolled_entry_json_seed_content_elements(revision, sections),
                     widgets: scrolled_entry.resolve_widgets(insert_point: :react),
                     options:)
     end
 
     private
 
-    def scrolled_entry_json_seed_sections(scrolled_entry, main_storyline, options)
+    def scrolled_entry_json_seed_storylines(revision)
+      Storyline.all_for_revision(revision)
+    end
+
+    def scrolled_entry_json_seed_sections(scrolled_entry, options)
+      main_storyline = Storyline.all_for_revision(scrolled_entry.revision).first || Storyline.new
+
       sections =
         if scrolled_entry.cutoff_mode_enabled_for?(request)
           main_storyline.sections_before_cutoff_section
         else
-          main_storyline.sections
+          Section.all_for_revision(scrolled_entry.revision)
         end
 
       return sections if options[:include_hidden_sections]
@@ -52,22 +59,23 @@ module PageflowScrolled
       sections.reject { |section| section.configuration['hidden'] }
     end
 
-    def scrolled_entry_json_seed_chapters(main_storyline, options)
-      return main_storyline.chapters if options[:include_hidden_sections]
+    def scrolled_entry_json_seed_chapters(revision, options)
+      chapters = Chapter.all_for_revision(revision)
+      return chapters if options[:include_hidden_sections]
 
       has_visible_sections, has_hidden_sections =
-        scrolled_entry_json_seed_chapter_section_visibilites(main_storyline)
+        scrolled_entry_json_seed_chapter_section_visibilites(revision)
 
-      main_storyline.chapters.reject do |chapter|
+      chapters.reject do |chapter|
         has_hidden_sections[chapter.id] && !has_visible_sections[chapter.id]
       end
     end
 
-    def scrolled_entry_json_seed_chapter_section_visibilites(main_storyline)
-      has_visible_sections = []
-      has_hidden_sections = []
+    def scrolled_entry_json_seed_chapter_section_visibilites(revision)
+      has_visible_sections = {}
+      has_hidden_sections = {}
 
-      main_storyline.sections.each do |section|
+      Section.all_for_revision(revision).each do |section|
         if section.configuration['hidden']
           has_hidden_sections[section.chapter_id] = true
         else
@@ -76,6 +84,10 @@ module PageflowScrolled
       end
 
       [has_visible_sections, has_hidden_sections]
+    end
+
+    def scrolled_entry_json_seed_content_elements(revision, sections)
+      ContentElement.all_for_revision(revision).where(section: sections)
     end
   end
 end

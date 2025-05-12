@@ -1,0 +1,16 @@
+en:
+  pageflow_scrolled:
+    editor:
+      entry_outline:
+        finish_reorder_chapters: Finish reordering
+        add_chapter: DELETED
+        header: DELETED
+      storylines_tabs:
+        main: Outline
+        excursions: Excursions
+      storyline_item:
+        reorder_chapters:
+          To ease reordering, chapters have been collapsed.
+        done: Done
+        add_chapter: New chapter
+        add_excursion: New excursion
