@@ -34,6 +34,11 @@ export function useShareProviders({isPhonePlatform}) {
 
   return useMemo(() => {
     const sharing = {
+      bluesky: {
+        iconName: 'bluesky',
+        name: 'Bluesky',
+        url: urlTemplates.bluesky
+      },
       email: {
         iconName: 'email',
         name: 'Mail',
@@ -53,6 +58,11 @@ export function useShareProviders({isPhonePlatform}) {
         iconName: 'telegram',
         name: 'Telegram',
         url: urlTemplates.telegram
+      },
+      threads: {
+        iconName: 'threads',
+        name: 'threads',
+        url: urlTemplates.threads
       },
       twitter: {
         iconName: 'twitter',

@@ -143,6 +143,8 @@ module Pageflow
           'facebook' => true,
           'linked_in' => true,
           'telegram' => true,
+          'bluesky' => true,
+          'threads' => true,
           'twitter' => true,
           'whats_app' => true
         )

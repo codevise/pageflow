@@ -11,10 +11,12 @@ import world from './icons/world.svg';
 import close from './icons/close.svg';
 import checked from './icons/checked.svg';
 
+import bluesky from './icons/social/bluesky.svg';
 import email from './icons/social/email.svg';
 import facebook from './icons/social/facebook.svg';
 import linkedIn from './icons/social/linkedIn.svg';
 import telegram from './icons/social/telegram.svg';
+import threads from './icons/social/threads.svg';
 import twitter from './icons/social/twitter.svg';
 import whatsApp from './icons/social/whatsApp.svg';
 
@@ -43,10 +45,12 @@ const icons = {
   close,
   checked,
 
+  bluesky,
   email,
   facebook,
   linkedIn,
   telegram,
+  threads,
   twitter,
   whatsApp,
 

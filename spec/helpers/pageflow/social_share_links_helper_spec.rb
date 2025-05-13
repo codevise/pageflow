@@ -40,6 +40,8 @@ module Pageflow
         expect(provider_url_templates).to have_key(:facebook)
         expect(provider_url_templates[:facebook])
           .to eq('http://www.facebook.com/sharer/sharer.php?u=%{url}')
+        expect(provider_url_templates[:bluesky])
+          .to eq('https://bsky.app/intent/compose?text=%{url}')
       end
     end
   end

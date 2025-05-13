@@ -1,0 +1,11 @@
+de:
+  activerecord:
+    values:
+      pageflow/entry:
+        share_providers:
+          bluesky: Bluesky
+          threads: Threads
+  pageflow:
+    public:
+      share_on_bluesky: Auf Bluesky teilen
+      share_on_threads: Auf Threads teilen
