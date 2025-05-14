@@ -2,8 +2,6 @@
 }
 
 .group {
-  --content-margin-fraction: var(--theme-content-margin-fraction, 0.08);
-  --content-margin: var(--theme-content-margin, calc(var(--content-margin-fraction) * 100%));
   padding-left: var(--content-margin);
   padding-right: var(--content-margin);
   margin-left: auto;
