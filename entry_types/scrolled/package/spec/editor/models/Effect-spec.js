@@ -25,4 +25,16 @@ describe('Effect', () => {
 
     expect(effect.get('value')).toEqual(50);
   });
+
+  it('defaults to slider inputType', () => {
+    const effect = new Effect({name: 'blur'});
+
+    expect(effect.inputType()).toEqual('slider');
+  });
+
+  it('supports colors inputType', () => {
+    const effect = new Effect({name: 'frame'});
+
+    expect(effect.inputType()).toEqual('color');
+  });
 });

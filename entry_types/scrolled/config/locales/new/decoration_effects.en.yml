@@ -1,0 +1,6 @@
+en:
+  pageflow_scrolled:
+    editor:
+      backdrop_effects:
+        frame:
+          label: 'Frame'

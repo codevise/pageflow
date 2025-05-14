@@ -49,18 +49,27 @@ const TYPES = {
     maxValue: 100,
     defaultValue: 50,
     kind: 'animation'
+  },
+  frame: {
+    kind: 'decoration',
+    inputType: 'color',
+    defaultValue: '#ffffff'
   }
 }
 
 export const Effect = Backbone.Model.extend({
   initialize({name}) {
     if (!this.has('value')) {
-      this.set('value', TYPES[name].defaultValue);
+      this.set('value', this.defaultValue());
     }
   },
 
   label() {
     return Effect.getLabel(this.get('name'));
+  },
+
+  defaultValue() {
+    return TYPES[this.get('name')].defaultValue;
   },
 
   minValue() {
@@ -69,6 +78,10 @@ export const Effect = Backbone.Model.extend({
 
   maxValue() {
     return TYPES[this.get('name')].maxValue;
+  },
+
+  inputType() {
+    return TYPES[this.get('name')].inputType || 'slider';
   }
 });
 

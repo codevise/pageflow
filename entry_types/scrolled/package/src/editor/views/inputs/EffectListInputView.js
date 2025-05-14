@@ -54,8 +54,7 @@ const EffectListItemView = Marionette.ItemView.extend({
 
   template: (data) => `
     <div class="${styles.label}">${data.label}</div>
-    <div class="${styles.value}"></div>
-    <div class="${styles.widget}"></div>
+    ${renderInput(data.inputType)}
     <button class="${styles.remove}"
             title="${I18n.t('pageflow_scrolled.editor.effect_list_input.remove')}">
     </button>
@@ -63,11 +62,12 @@ const EffectListItemView = Marionette.ItemView.extend({
 
   serializeData() {
     return {
-      label: this.model.label()
+      label: this.model.label(),
+      inputType: this.model.inputType()
     };
   },
 
-  ui: cssModulesUtils.ui(styles, 'widget', 'value'),
+  ui: cssModulesUtils.ui(styles, 'widget', 'value', 'colorInput'),
 
   events: cssModulesUtils.events(styles, {
     'click remove': function() {
@@ -92,5 +92,25 @@ const EffectListItemView = Marionette.ItemView.extend({
     });
 
     this.ui.widget.slider('option', 'value', this.model.get('value') || 50);
+
+    this.ui.colorInput.minicolors({
+      defaultValue: this.model.defaultValue(),
+      position: 'bottom right',
+      changeDelay: 200,
+      change: color => {
+        this.model.set('value', color);
+      }
+    });
+
+    this.ui.colorInput.minicolors('value', this.model.get('value'));
   }
 });
+
+function renderInput(inputType) {
+  if (inputType === 'color') {
+    return `<input class="${styles.colorInput}" />`;
+  } else {
+    return `<div class="${styles.value}"></div>
+            <div class="${styles.widget}"></div>`;
+  }
+}

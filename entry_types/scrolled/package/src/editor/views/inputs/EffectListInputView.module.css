@@ -86,6 +86,32 @@
   outline-width: 2px;
 }
 
+.item :global(.minicolors) {
+  flex: 1;
+  margin: -4px 0 -4px 2.6rem;
+}
+
+.colorInput {
+  border: 0;
+  width: 100% !important;
+  height: 22px !important;
+  box-sizing: border-box;
+  font-size: 12px;
+  padding-right: 0 !important;
+  padding-left: 20px !important;
+}
+
+.colorInput:focus {
+  outline: solid 1px transparent;
+}
+
+.item :global(.minicolors-input-swatch) {
+  top: 3px !important;
+  left: 0px !important;
+  width: 14px;
+  height: 14px;
+}
+
 .remove {
   composes: cancel from '../icons.module.css';
   padding: 0 space(2);
