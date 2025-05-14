@@ -537,7 +537,7 @@ module Pageflow
 
       @available_locales = [:en, :de]
       @available_public_locales = PublicI18n.available_locales
-      @available_share_providers = [:email, :facebook, :linked_in, :twitter, :telegram, :whats_app]
+      @available_share_providers = [:email, :facebook, :linked_in, :bluesky, :threads, :twitter, :telegram, :whats_app]
 
       @public_https_mode = :prevent
 
