@@ -3,7 +3,7 @@
 .outer {
   --frame-width: 1rem;
   --frame-radius: 0.625rem;
-  z-index: 4;
+  z-index: 3;
   position: absolute;
   inset: 0;
   box-shadow: inset var(--frame-color) 0 0 0 var(--frame-width);
