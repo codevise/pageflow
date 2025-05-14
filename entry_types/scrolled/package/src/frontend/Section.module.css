@@ -11,6 +11,9 @@
   --section-max-width:
     var(--theme-section-max-width);
 
+  --content-margin-fraction: var(--theme-content-margin-fraction, 0.08);
+  --content-margin: var(--theme-content-margin, calc(var(--content-margin-fraction) * 100%));
+
   --two-column-inline-content-max-width:
     var(--theme-two-column-inline-content-max-width);
   --two-column-inline-lg-content-max-width:
@@ -44,6 +47,11 @@
 .narrow {
   --section-max-width:
     var(--theme-narrow-section-max-width);
+
+  --content-margin-fraction:
+    var(--theme-narrow-section-content-margin-fraction, var(--theme-content-margin-fraction, 0.08));
+  --content-margin:
+    var(--theme-narrow-section-content-margin, calc(var(--content-margin-fraction) * 100%));
 
   --two-column-inline-content-max-width:
     var(--theme-narrow-section-two-column-inline-content-max-width);
