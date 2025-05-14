@@ -10,6 +10,7 @@ import {
 } from '../entryState';
 
 import Foreground from './Foreground';
+import {BackdropFrameEffect} from './BackdropFrameEffect';
 import {SectionInlineFileRights} from './SectionInlineFileRights';
 import {Layout, widths as contentElementWidths} from './layouts';
 import {useScrollTarget} from './useScrollTarget';
@@ -144,7 +145,7 @@ function SectionContents({
             {children}
           </Shadow>}
       </Backdrop>
-
+      <BackdropFrameEffect backdrop={backdrop} />
       <Foreground transitionStyles={transitionStyles}
                   state={state}
                   minHeight={motifAreaState.minHeight}

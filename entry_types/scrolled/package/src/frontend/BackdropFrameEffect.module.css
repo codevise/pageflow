@@ -1,0 +1,23 @@
+@value breakpoint-md from 'pageflow-scrolled/values/breakpoints.module.css';
+
+.outer {
+  --frame-width: 1rem;
+  --frame-radius: 0.625rem;
+  z-index: 3;
+  position: absolute;
+  inset: 0;
+  box-shadow: inset var(--frame-color) 0 0 0 var(--frame-width);
+}
+
+.inner {
+  height: 100%;
+  border-radius: calc(var(--frame-width) + var(--frame-radius));
+  box-shadow: inset var(--frame-color) 0 0 0 var(--frame-width);
+}
+
+@media breakpoint-md {
+  .outer {
+    --frame-width: 2.5rem;
+    --frame-radius: 1.25rem;
+  }
+}

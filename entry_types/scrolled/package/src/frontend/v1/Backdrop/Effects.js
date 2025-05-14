@@ -8,6 +8,7 @@ import {useSectionViewTimeline} from '../../SectionViewTimelineProvider';
 import {useSectionLifecycle} from '../../useSectionLifecycle';
 import {useIsStaticPreview} from '../../useScrollPositionLifecycle';
 import {prefersReducedMotion} from '../../prefersReducedMotion';
+import {getEffectValue} from '../../getEffectValue';
 
 export function Effects({file, children}) {
   const ref = useRef();
@@ -46,8 +47,6 @@ export function Effects({file, children}) {
     }
   }, [sectionViewTimeline, scrollParallaxValue, isStaticPreview]);
 
-
-
   useIsomorphicLayoutEffect(() => {
     setAutoZoomRunning(autoZoomValue && isVisible && !prefersReducedMotion());
   }, [autoZoomValue, isVisible]);
@@ -61,10 +60,6 @@ export function Effects({file, children}) {
       {children}
     </div>
   );
-}
-
-function getEffectValue(file, name) {
-  return (file?.effects || []).find(effect => effect.name === name)?.value;
 }
 
 export function getFilter(effects) {
