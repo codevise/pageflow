@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import {features} from 'pageflow/frontend';
 import {Effect} from '../models/Effect';
 
 export const EffectsCollection = Backbone.Collection.extend({
@@ -8,6 +9,8 @@ export const EffectsCollection = Backbone.Collection.extend({
     const effects = this;
     const unusedEffects = new Backbone.Collection(
       Effect.names
+        .filter(name => features.isEnabled('decoration_effects') ||
+                        Effect.getKind(name) !== 'decoration')
         .filter(name => !this.findWhere({name}))
         .map(name => ({name})),
       {

@@ -1,8 +1,11 @@
 import {EffectsCollection} from 'editor/collections/EffectsCollection';
 
 import {useFakeTranslations} from 'pageflow/testHelpers';
+import {features} from 'pageflow/frontend';
 
 describe('EffectsCollection', () => {
+  beforeEach(() => features.enabledFeatureNames = []);
+
   describe('#getUnusedEffects', () => {
     useFakeTranslations({
       'pageflow_scrolled.editor.backdrop_effects.blur.label': 'Blur'
@@ -23,6 +26,23 @@ describe('EffectsCollection', () => {
 
       expect(unusedEffects.pluck('name')).toContain('blur');
       expect(unusedEffects.pluck('name')).not.toContain('brightness');
+    });
+
+    it('does not include decoration effects by default', () => {
+      const effects = new EffectsCollection();
+
+      const unusedEffects = effects.getUnusedEffects();
+
+      expect(unusedEffects.pluck('name')).not.toContain('frame');
+    });
+
+    it('includes decoration effects if feature is enabled', () => {
+      const effects = new EffectsCollection();
+      features.enable('frontend', ['decoration_effects']);
+
+      const unusedEffects = effects.getUnusedEffects();
+
+      expect(unusedEffects.pluck('name')).toContain('frame');
     });
 
     it('selecting an unused effects adds it to the collection', () => {
