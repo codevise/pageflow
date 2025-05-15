@@ -1,4 +1,4 @@
-import {ConfigurationEditorView, SeparatorView} from 'pageflow/ui';
+import {ConfigurationEditorView, ColorInputView, SeparatorView} from 'pageflow/ui';
 import {editor, FileInputView, InfoBoxView} from 'pageflow/editor';
 import {InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import Marionette from 'backbone.marionette';
@@ -35,6 +35,7 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
     });
     var self = this;
     var thumbnailAspectRatio = this.options.contentElement.configuration.get('thumbnailAspectRatio');
+    var thumbnailFit = this.options.contentElement.configuration.get('thumbnailFit');
 
     configurationEditor.tab('edit_link', function () {
       this.input('thumbnail', FileInputView, {
@@ -43,12 +44,15 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
         fileSelectionHandlerOptions: {
           contentElementId: self.options.contentElement.get('id')
         },
-        positioning: !!previewAspectRatios[thumbnailAspectRatio],
+        positioning: previewAspectRatios[thumbnailAspectRatio] &&
+                     thumbnailFit !== 'contain',
         positioningOptions: {
           preview: previewAspectRatios[thumbnailAspectRatio]
         },
         dropDownMenuItems: [InlineFileRightsMenuItem]
       });
+
+      this.input('thumbnailBackgroundColor', ColorInputView);
 
       this.view(SeparatorView);
 

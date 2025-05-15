@@ -79,6 +79,9 @@ editor.contentElementTypes.register('externalLinkList', {
       this.input('thumbnailAspectRatio', SelectInputView, {
         values: ['wide', 'narrow', 'square', 'portrait', 'original']
       });
+      this.input('thumbnailFit', SelectInputView, {
+        values: ['cover', 'contain']
+      });
       this.input('textSize', SelectInputView, {
         values: ['small', 'medium', 'large']
       });

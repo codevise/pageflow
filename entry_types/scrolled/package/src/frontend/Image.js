@@ -14,6 +14,7 @@ import {ImageStructuredData} from './ImageStructuredData';
  * @param {boolean} [props.structuredData] - Whether to render a JSON+LD script tag.
  * @param {boolean} [props.preferSvg] - Use original if image is SVG.
  * @param {boolean} [props.fill=true] - Position absolute and fill parent.
+ * @param {boolean} [props.fit=cover] - `"contain"` or `"cover"`.
  */
 export function Image({imageFile, ...props}) {
   if (imageFile && imageFile.isReady && props.load) {
@@ -33,7 +34,8 @@ function renderImageTag(props, imageFile) {
   const cropPositionY = imageFile.cropPosition ? imageFile.cropPosition.y : 50;
 
   return (
-    <img className={classNames({[styles.fill]: props.fill})}
+    <img className={classNames({[styles.fill]: props.fill,
+                                [styles.contain]: props.fit === 'contain'})}
          src={imageUrl(imageFile, props)}
          alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''}
          width={props.width}

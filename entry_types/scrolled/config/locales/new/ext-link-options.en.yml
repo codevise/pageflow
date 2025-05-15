@@ -40,6 +40,17 @@ en:
                 small: "Small"
                 medium: "Medium"
                 large: "Large"
+            thumbnailFit:
+              label: "Thumbnail fit mode"
+              inline_help: |-
+                If the image's aspect ratio doesn't match the selected
+                thumbnail ratio, you can either zoom the image to fill
+                the card completely (which may crop it), or scale it
+                down to fit within the card entirely (which may leave
+                empty space).
+              values:
+                cover: Cover
+                contain: Contain
             linkWidth:
               label: "Link width"
               inline_help: |-
@@ -74,3 +85,9 @@ en:
               label: "Display buttons"
               inline_help: |-
                 Display buttons to open the links.
+            thumbnailBackgroundColor:
+              label: Thumbnail background color
+              inline_help: |-
+                Visible when thumbnail fit mode has been set to
+                "contain" or when the thumbnail image contains
+                transparent areas.
