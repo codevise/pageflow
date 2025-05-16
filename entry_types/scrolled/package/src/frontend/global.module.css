@@ -11,6 +11,11 @@
   --root-dark-content-surface-color: darkContentSurfaceColor;
   --root-light-content-text-color: lightContentTextColor;
   --root-dark-content-text-color: darkContentTextColor;
+
+  --theme-aspect-ratio-wide: 0.5625;
+  --theme-aspect-ratio-narrow: 0.75;
+  --theme-aspect-ratio-square: 1;
+  --theme-aspect-ratio-portrait: 1.33;
 }
 
 :global body {

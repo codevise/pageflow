@@ -1,6 +1,12 @@
 en:
   pageflow_scrolled:
     editor:
+      aspect_ratios:
+        narrow: Landscape (4:3)
+        portrait: Portrait (3:4)
+        square: Square (1:1)
+        wide: Landscape (16:9)
+        original: Original
       content_elements:
         externalLinkList:
           attributes:
@@ -11,12 +17,6 @@ en:
                 text is displayed next to the image, longer text may
                 result in a more portrait-like aspect ratio so that
                 the thumbnail covers the entire height of the link.
-              values:
-                narrow: Landscape (4:3)
-                portrait: Portrait (3:4)
-                square: Square (1:1)
-                wide: Landscape (16:9)
-                original: Original
             textPosition:
               label: "Caption"
               inline_help: |-

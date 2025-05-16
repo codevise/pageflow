@@ -1,6 +1,12 @@
 de:
   pageflow_scrolled:
     editor:
+      aspect_ratios:
+        narrow: Landscape (4:3)
+        portrait: Portrait (3:4)
+        square: Quadratisch (1:1)
+        wide: Landscape (16:9)
+        original: Original
       content_elements:
         externalLinkList:
           attributes:
@@ -12,12 +18,6 @@ de:
                 führen, dass ein hochformatigeres Seitenverähltnis
                 gewählt wird, damit das Thumbnail die gesamte Höhe des
                 Links überdeckt.
-              values:
-                narrow: Landscape (4:3)
-                portrait: Portrait (3:4)
-                square: Quadratisch (1:1)
-                wide: Landscape (16:9)
-                original: Original
             textPosition:
               label: "Beschriftung"
               inline_help: |-

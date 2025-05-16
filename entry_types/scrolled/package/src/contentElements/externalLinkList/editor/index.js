@@ -76,8 +76,12 @@ editor.contentElementTypes.register('externalLinkList', {
         visibleBinding: 'textPosition',
         visibleBindingValue: 'right'
       });
+
+      const [aspectRatios, aspectRatiosTexts] = entry.getAspectRatios({includeOriginal: true});
+
       this.input('thumbnailAspectRatio', SelectInputView, {
-        values: ['wide', 'narrow', 'square', 'portrait', 'original']
+        values: aspectRatios,
+        texts: aspectRatiosTexts
       });
       this.input('thumbnailFit', SelectInputView, {
         values: ['cover', 'contain']

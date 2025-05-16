@@ -192,7 +192,6 @@ describe('ExternalLink', () => {
     )
 
     expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('medium'));
-    expect(getByRole('img').parentNode).toHaveStyle('paddingTop: 100%');
   });
 
   it('uses medium image as thumbnail with alternative crop position', () => {
@@ -236,7 +235,6 @@ describe('ExternalLink', () => {
     )
 
     expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('medium'));
-    expect(getByRole('img').parentNode).toHaveStyle('paddingTop: 50%');
   });
 
   it('uses medium image as thumbnail with thumbnail fit contain', () => {

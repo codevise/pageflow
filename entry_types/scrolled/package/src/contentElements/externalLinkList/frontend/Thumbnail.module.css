@@ -1,8 +1,8 @@
 .thumbnail {
   width: auto;
-  padding-top: 56.25%;
   position: relative;
-  box-sizing: border-box;;
+  padding-top: calc(var(--thumbnail-aspect-ratio) * 100%);
+  box-sizing: border-box;
 }
 
 .cover {
