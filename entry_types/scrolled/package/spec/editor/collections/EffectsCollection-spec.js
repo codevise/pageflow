@@ -4,6 +4,38 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 import {features} from 'pageflow/frontend';
 
 describe('EffectsCollection', () => {
+  const exampleTypes = {
+    blur: {
+      minValue: 0,
+      maxValue: 100,
+      defaultValue: 50,
+      kind: 'filter'
+    },
+    brightness: {
+      minValue: -100,
+      maxValue: 100,
+      defaultValue: -20,
+      kind: 'filter'
+    },
+    frame: {
+      kind: 'decoration',
+      inputType: 'color',
+      defaultValue: '#ffffff'
+    },
+    autoZoom: {
+      minValue: 1,
+      maxValue: 100,
+      defaultValue: 50,
+      kind: 'animation'
+    },
+    scrollParallax: {
+      minValue: 0,
+      maxValue: 100,
+      defaultValue: 50,
+      kind: 'animation'
+    }
+  };
+
   beforeEach(() => features.enabledFeatureNames = []);
 
   describe('#getUnusedEffects', () => {
@@ -12,7 +44,7 @@ describe('EffectsCollection', () => {
     });
 
     it('sets label based on translation', () => {
-      const effects = new EffectsCollection();
+      const effects = new EffectsCollection([], {types: exampleTypes});
 
       const unusedEffects = effects.getUnusedEffects();
 
@@ -20,7 +52,7 @@ describe('EffectsCollection', () => {
     });
 
     it('allows getting unused effects', () => {
-      const effects = new EffectsCollection([{name: 'brightness', value: 50}]);
+      const effects = new EffectsCollection([{name: 'brightness', value: 50}], {types: exampleTypes});
 
       const unusedEffects = effects.getUnusedEffects();
 
@@ -29,7 +61,7 @@ describe('EffectsCollection', () => {
     });
 
     it('does not include decoration effects by default', () => {
-      const effects = new EffectsCollection();
+      const effects = new EffectsCollection([], {types: exampleTypes});
 
       const unusedEffects = effects.getUnusedEffects();
 
@@ -37,7 +69,7 @@ describe('EffectsCollection', () => {
     });
 
     it('includes decoration effects if feature is enabled', () => {
-      const effects = new EffectsCollection();
+      const effects = new EffectsCollection([], {types: exampleTypes});
       features.enable('frontend', ['decoration_effects']);
 
       const unusedEffects = effects.getUnusedEffects();
@@ -46,7 +78,7 @@ describe('EffectsCollection', () => {
     });
 
     it('selecting an unused effects adds it to the collection', () => {
-      const effects = new EffectsCollection();
+      const effects = new EffectsCollection([], {types: exampleTypes});
 
       const unusedEffects = effects.getUnusedEffects();
       unusedEffects.first().selected();
@@ -55,7 +87,7 @@ describe('EffectsCollection', () => {
     });
 
     it('removes effect when added to collection', () => {
-      const effects = new EffectsCollection();
+      const effects = new EffectsCollection([], {types: exampleTypes});
 
       const unusedEffects = effects.getUnusedEffects();
       unusedEffects.findWhere({name: 'brightness'}).selected();
@@ -64,7 +96,7 @@ describe('EffectsCollection', () => {
     });
 
     it('restores effect once removed from collection', () => {
-      const effects = new EffectsCollection([{name: 'blur', value: 50}]);
+      const effects = new EffectsCollection([{name: 'blur', value: 50}], {types: exampleTypes});
 
       const unusedEffects = effects.getUnusedEffects();
       effects.remove(effects.first());
@@ -73,32 +105,32 @@ describe('EffectsCollection', () => {
     });
 
     it('separates first animation effect', () => {
-      const effects = new EffectsCollection();
+      const effects = new EffectsCollection([], {types: exampleTypes});
 
       const unusedEffects = effects.getUnusedEffects();
 
-      expect(unusedEffects.findWhere({name: 'sepia'}).get('separated')).toEqual(false);
+      expect(unusedEffects.findWhere({name: 'brightness'}).get('separated')).toEqual(false);
       expect(unusedEffects.findWhere({name: 'autoZoom'}).get('separated')).toEqual(true);
       expect(unusedEffects.findWhere({name: 'scrollParallax'}).get('separated')).toEqual(false);
     });
 
     it('updates separation when effect is selected', () => {
-      const effects = new EffectsCollection();
+      const effects = new EffectsCollection([], {types: exampleTypes});
 
       const unusedEffects = effects.getUnusedEffects();
       unusedEffects.findWhere({name: 'autoZoom'}).selected();
 
-      expect(unusedEffects.findWhere({name: 'sepia'}).get('separated')).toEqual(false);
+      expect(unusedEffects.findWhere({name: 'brightness'}).get('separated')).toEqual(false);
       expect(unusedEffects.findWhere({name: 'scrollParallax'}).get('separated')).toEqual(true);
     });
 
     it('updates separation when effect is removed', () => {
-      const effects = new EffectsCollection([{name: 'autoZoom', value: 50}]);
+      const effects = new EffectsCollection([{name: 'autoZoom', value: 50}], {types: exampleTypes});
 
       const unusedEffects = effects.getUnusedEffects();
       effects.remove(effects.first());
 
-      expect(unusedEffects.findWhere({name: 'sepia'}).get('separated')).toEqual(false);
+      expect(unusedEffects.findWhere({name: 'brightness'}).get('separated')).toEqual(false);
       expect(unusedEffects.findWhere({name: 'autoZoom'}).get('separated')).toEqual(true);
       expect(unusedEffects.findWhere({name: 'scrollParallax'}).get('separated')).toEqual(false);
     });

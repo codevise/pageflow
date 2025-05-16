@@ -16,7 +16,7 @@ export const EffectListInputView = Marionette.ItemView.extend({
   mixins: [inputView],
 
   initialize() {
-    this.effects = new EffectsCollection(
+    this.effects = EffectsCollection.withDefaultTypes(
       this.model.get(this.options.propertyName)
     );
 
