@@ -1,7 +1,8 @@
 .thumbnail {
   width: auto;
   position: relative;
-  padding-top: calc(var(--thumbnail-aspect-ratio) * 100%);
+  padding-top: var(--theme-external-links-thumbnail-height,
+                   calc(var(--thumbnail-aspect-ratio) * 100%));
   box-sizing: border-box;
 }
 
