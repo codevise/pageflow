@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import classNames from 'classnames';
 
 import styles from "./FitViewport.module.css";
-import Fullscreen, {useFullscreenDimensions} from "./Fullscreen";
+import Fullscreen from "./Fullscreen";
 
 const AspectRatioContext = React.createContext();
 
@@ -32,29 +32,19 @@ const AspectRatioContext = React.createContext();
  * @param {Object} [props.opaque] - Render black background behind content.
  * @param {string} [props.fill] - Ignore aspect ration and fill viewport vertically.
  */
-export function FitViewport({file, aspectRatio, opaque, children, fill, scale = 1}) {
-  const {height} = useFullscreenDimensions();
-
+export function FitViewport({file, aspectRatio, opaque, children, fill, scale}) {
   if (!file && !aspectRatio) return children;
+
+  if (typeof aspectRatio === 'string') {
+    aspectRatio = `var(--theme-aspect-ratio-${aspectRatio})`;
+  }
 
   aspectRatio = fill ? 'fill' : aspectRatio || (file.height / file.width);
 
-  let maxWidthCSS;
-
-  if (fill) {
-    maxWidthCSS = null;
-  }
-  else if (height) {
-    // thumbnail view/fixed size: calculate absolute width in px
-    maxWidthCSS = (height / aspectRatio * scale) + 'px';
-  } else {
-    // published view: set max width to specific aspect ratio depending on viewport height
-    maxWidthCSS = (100 / aspectRatio * scale) + 'vh';
-  }
-
   return (
     <div className={classNames(styles.container, {[styles.opaque]: opaque})}
-         style={{maxWidth: maxWidthCSS}}>
+         style={{'--fit-viewport-aspect-ratio': fill ? undefined : aspectRatio,
+                 '--fit-viewport-scale': scale}}>
       <AspectRatioContext.Provider value={aspectRatio}>
         {children}
       </AspectRatioContext.Provider>
@@ -64,24 +54,20 @@ export function FitViewport({file, aspectRatio, opaque, children, fill, scale = 
 
 FitViewport.Content =
   function FitViewportContent({children}) {
-    let arPaddingTop = useContext(AspectRatioContext);
+    let aspectRatio = useContext(AspectRatioContext);
 
-    if (arPaddingTop === 'fill') {
+    if (aspectRatio === 'fill') {
       return (
         <Fullscreen children={children} />
       )
     }
-
-    arPaddingTop = arPaddingTop * 100
-
-    if (!arPaddingTop) {
+    else if (!aspectRatio) {
       return children;
     }
 
     return (
       <div className={styles.content}>
-        <div style={{paddingTop: arPaddingTop + '%'}}>
-        </div>
+        <div />
         <div className={styles.inner}>
           {children}
         </div>
