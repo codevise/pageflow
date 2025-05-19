@@ -1,3 +1,4 @@
+import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import I18n from 'i18n-js';
 import 'jquery-ui';
@@ -88,6 +89,7 @@ const StyleListItemView = Marionette.ItemView.extend({
   }),
 
   onRender() {
+    this.$el.addClass(styles[`input-${this.model.inputType()}`]);
     this.ui.widget.toggleClass(styles.centerZero, this.model.minValue() < 0);
 
     this.ui.widget.slider({
@@ -114,8 +116,12 @@ const StyleListItemView = Marionette.ItemView.extend({
 function renderInput(inputType) {
   if (inputType === 'color') {
     return `<input class="${styles.colorInput}" />`;
-  } else {
+  }
+  else if (inputType === 'slider') {
     return `<div class="${styles.value}"></div>
             <div class="${styles.widget}"></div>`;
+  }
+  else {
+    return '';
   }
 }

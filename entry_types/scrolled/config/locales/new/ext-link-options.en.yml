@@ -7,6 +7,9 @@ en:
         square: Square (1:1)
         wide: Landscape (16:9)
         original: Original
+      backdrop_effects:
+        crop:
+          label: Crop
       content_elements:
         externalLinkList:
           attributes:
@@ -91,3 +94,6 @@ en:
                 Visible when thumbnail fit mode has been set to
                 "contain" or when the thumbnail image contains
                 transparent areas.
+      image_modifier_list_input:
+        add: "Add style..."
+        remove: "Remove style"

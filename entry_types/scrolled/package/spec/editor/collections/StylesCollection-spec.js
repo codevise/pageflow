@@ -41,7 +41,8 @@ describe('StylesCollection', () => {
 
   describe('#getUnusedStyles', () => {
     useFakeTranslations({
-      'pageflow_scrolled.editor.backdrop_effects.blur.label': 'Blur'
+      'pageflow_scrolled.editor.backdrop_effects.blur.label': 'Blur',
+      'pageflow_scrolled.editor.backdrop_effects.aspectRatio.label': 'Aspect Ratio'
     });
 
     it('sets label based on translation', () => {
@@ -58,7 +59,7 @@ describe('StylesCollection', () => {
       const unusedStyles = styles.getUnusedStyles();
 
       expect(unusedStyles.pluck('name')).toContain('blur');
-      expect(unusedStyles.pluck('name')).not.toContain('brightness');
+      expect(unusedStyles.findWhere({name: 'brightness'}).get('hidden')).toEqual(true);
     });
 
     it('does not include decoration styles by default', () => {
@@ -87,13 +88,13 @@ describe('StylesCollection', () => {
       expect(styles.pluck('name')).toEqual(['blur']);
     });
 
-    it('removes style when added to collection', () => {
+    it('hides style when added to collection', () => {
       const styles = new StylesCollection([], {types: exampleTypes});
 
       const unusedStyles = styles.getUnusedStyles();
       unusedStyles.findWhere({name: 'brightness'}).selected();
 
-      expect(unusedStyles.pluck('name')).not.toContain('brightness');
+      expect(unusedStyles.findWhere({name: 'brightness'}).get('hidden')).toEqual(true);
     });
 
     it('restores style once removed from collection', () => {
@@ -102,7 +103,7 @@ describe('StylesCollection', () => {
       const unusedStyles = styles.getUnusedStyles();
       styles.remove(styles.first());
 
-      expect(unusedStyles.pluck('name')).toContain('blur');
+      expect(unusedStyles.findWhere({name: 'blur'}).get('hidden')).toBeFalsy();
     });
 
     it('separates first animation style', () => {
@@ -134,6 +135,138 @@ describe('StylesCollection', () => {
       expect(unusedStyles.findWhere({name: 'brightness'}).get('separated')).toEqual(false);
       expect(unusedStyles.findWhere({name: 'autoZoom'}).get('separated')).toEqual(true);
       expect(unusedStyles.findWhere({name: 'scrollParallax'}).get('separated')).toEqual(false);
+    });
+
+    describe('with nested items', () => {
+      it('sets items property on unused style', () => {
+        const styles = new StylesCollection([], {
+          types: {
+            aspectRatio: {
+              items: [
+                {
+                  label: 'Square',
+                  value: 'square'
+                },
+                {
+                  label: 'Landscape',
+                  value: 'landscape'
+                }
+              ]
+            }
+          }
+        });
+
+        const unusedStyles = styles.getUnusedStyles();
+
+        expect(unusedStyles.pluck('label')).toEqual(['Aspect Ratio']);
+        expect(unusedStyles.first().selected).toBeUndefined();
+        expect(unusedStyles.first().get('items').pluck('label')).toEqual(['Square', 'Landscape']);
+      });
+
+      it('selecting an item adds a style to the collection', () => {
+        const styles = new StylesCollection([], {
+          types: {
+            aspectRatio: {
+              items: [
+                {
+                  label: 'Square',
+                  value: 'square'
+                },
+                {
+                  label: 'Landscape',
+                  value: 'landscape'
+                }
+              ]
+            }
+          }
+        });
+
+        const unusedStyles = styles.getUnusedStyles();
+        unusedStyles.first().get('items').first().selected();
+
+        expect(styles.pluck('name')).toEqual(['aspectRatio']);
+        expect(styles.first().label()).toEqual('Aspect Ratio: Square');
+        expect(styles.first().get('value')).toEqual('square');
+      });
+
+      it('selecting an item removes previously selected item', () => {
+        const styles = new StylesCollection([], {
+          types: {
+            aspectRatio: {
+              items: [
+                {
+                  label: 'Square',
+                  value: 'square'
+                },
+                {
+                  label: 'Landscape',
+                  value: 'landscape'
+                }
+              ]
+            }
+          }
+        });
+
+        const unusedStyles = styles.getUnusedStyles();
+        unusedStyles.first().get('items').first().selected();
+        unusedStyles.first().get('items').last().selected();
+
+        expect(styles.pluck('name')).toEqual(['aspectRatio']);
+        expect(styles.first().get('value')).toEqual('landscape');
+      });
+
+      it('selecting an item disables it instead of removing it', () => {
+        const styles = new StylesCollection([], {
+          types: {
+            aspectRatio: {
+              items: [
+                {
+                  label: 'Square',
+                  value: 'square'
+                },
+                {
+                  label: 'Landscape',
+                  value: 'landscape'
+                }
+              ]
+            }
+          }
+        });
+
+        const unusedStyles = styles.getUnusedStyles();
+        unusedStyles.first().get('items').first().selected();
+
+        expect(unusedStyles.pluck('name')).toEqual(['aspectRatio']);
+        expect(unusedStyles.first().get('items').first().get('disabled')).toEqual(true);
+        expect(unusedStyles.first().get('items').last().get('disabled')).toEqual(false);
+      });
+
+      it('removing a style enabled the item', () => {
+        const styles = new StylesCollection([], {
+          types: {
+            aspectRatio: {
+              items: [
+                {
+                  label: 'Square',
+                  value: 'square'
+                },
+                {
+                  label: 'Landscape',
+                  value: 'landscape'
+                }
+              ]
+            }
+          }
+        });
+
+        const unusedStyles = styles.getUnusedStyles();
+        unusedStyles.first().get('items').first().selected();
+        styles.remove(styles.first());
+
+        expect(unusedStyles.pluck('name')).toEqual(['aspectRatio']);
+        expect(unusedStyles.first().get('items').first().get('disabled')).toEqual(false);
+        expect(unusedStyles.last().get('items').first().get('disabled')).toEqual(false);
+      });
     });
   });
 

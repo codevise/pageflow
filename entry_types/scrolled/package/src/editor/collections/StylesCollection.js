@@ -10,37 +10,24 @@ export const StylesCollection = Backbone.Collection.extend({
   },
 
   getUnusedStyles() {
-    const styles = this;
     const unusedStyles = new Backbone.Collection(
-      Object.keys(this.types)
-        .filter(name => features.isEnabled('decoration_effects') ||
-                        Style.getKind(name, this.types) !== 'decoration')
-        .filter(name => !this.findWhere({name}))
-        .map(name => ({name})),
+      Object
+        .entries(this.types)
+        .filter(
+          ([name, styleType]) => (
+            features.isEnabled('decoration_effects') ||
+            Style.getKind(name, this.types) !== 'decoration'
+          )
+        )
+        .map(([name]) => ({name})),
       {
         comparator: style => Object.keys(this.types).indexOf(style.get('name')),
-
-        model: Backbone.Model.extend({
-          initialize({name}) {
-            this.set('label', Style.getLabel(name, styles.types));
-          },
-
-          selected() {
-            styles.add({name: this.get('name')}, {types: styles.types});
-          }
-        })
+        styles: this,
+        model: UnusedStyle
       }
     );
 
-    this.listenTo(this, 'add', style =>
-      unusedStyles.remove(unusedStyles.findWhere({name: style.get('name')}))
-    );
-
-    this.listenTo(this, 'remove', style =>
-      unusedStyles.add({name: style.get('name')})
-    );
-
-    this.listenTo(unusedStyles, 'add remove', () =>
+    this.listenTo(unusedStyles, 'change:hidden', () =>
       updateSeparation(unusedStyles, this.types)
     );
 
@@ -51,10 +38,61 @@ export const StylesCollection = Backbone.Collection.extend({
 });
 
 function updateSeparation(styles, types) {
-  styles.reduce((previous, style) => {
+  styles.where({hidden: false}).reduce((previous, style) => {
     style.set('separated',
                previous &&
                Style.getKind(style.get('name'), types) !== Style.getKind(previous.get('name'), types));
     return style;
   }, null);
 }
+
+const UnusedStyle = Backbone.Model.extend({
+  initialize({name}, {styles}) {
+    const {items} = styles.types[name];
+
+    this.set('label', Style.getLabel(name, styles.types));
+
+    if (items) {
+      this.set('items', new Backbone.Collection(items, {
+        model: UnusedStyleItem,
+        styles,
+        styleName: name,
+      }));
+    }
+    else {
+      this.selected = () => {
+        styles.add({name: this.get('name')}, {types: styles.types});
+      }
+    }
+
+    const update = () => {
+      this.set({
+        hidden: !!styles.findWhere({name: this.get('name')}) && !items
+      });
+    };
+
+    this.listenTo(styles, 'add remove', update);
+    update();
+  }
+});
+
+const UnusedStyleItem = Backbone.Model.extend({
+  initialize(attributes, {styles, styleName}) {
+    this.styles = styles;
+    this.styleName = styleName;
+
+    const update = () => {
+      this.set({
+        disabled: styles.findWhere({name: styleName})?.get('value') === this.get('value')
+      });
+    };
+
+    this.listenTo(styles, 'add remove', update);
+    update();
+  },
+
+  selected() {
+    this.styles.remove(this.styles.findWhere({name: this.styleName}));
+    this.styles.add({name: this.styleName, value: this.get(('value'))}, {types: this.styles.types});
+  }
+});

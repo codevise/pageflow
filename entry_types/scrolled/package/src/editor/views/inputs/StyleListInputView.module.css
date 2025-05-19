@@ -34,6 +34,7 @@
   padding: space(1) 0 space(1) space(1);
   border-radius: rounded();
   align-items: center;
+  justify-content: space-between;
   border: solid 1px var(--ui-on-surface-color-lightest);
   margin-bottom: space(1);
 }
@@ -46,6 +47,11 @@
 .label {
   margin-right: space(2);
   width: 33%;
+}
+
+.input-none .label {
+  width: auto;
+  flex: 1;
 }
 
 .value {

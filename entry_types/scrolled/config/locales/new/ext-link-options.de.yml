@@ -7,6 +7,9 @@ de:
         square: Quadratisch (1:1)
         wide: Landscape (16:9)
         original: Original
+      backdrop_effects:
+        crop:
+          label: Zuschneiden
       content_elements:
         externalLinkList:
           attributes:
@@ -93,3 +96,6 @@ de:
                 Sichtbar wenn "Einpassen" als Thumbnail-Anpassung
                 ausgewählt wurde sowie für Thumbnail-Bilder mit
                 transparenten Bereichen.
+      image_modifier_list_input:
+        add: "Stil hinzufügen..."
+        remove: "Stil entfernen"

@@ -1,4 +1,4 @@
-import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
+import {editor, InlineFileRightsMenuItem, ImageModifierListInputView} from 'pageflow-scrolled/editor';
 import {contentElementWidths} from 'pageflow-scrolled/frontend';
 import {FileInputView} from 'pageflow/editor';
 import {SeparatorView, CheckBoxInputView} from 'pageflow/ui';
@@ -19,10 +19,20 @@ editor.contentElementTypes.register('inlineImage', {
         positioning: false,
         dropDownMenuItems: [InlineFileRightsMenuItem]
       });
+      this.input('imageModifiers', ImageModifierListInputView, {
+        entry,
+        visibleBinding: 'id',
+        visible: () => this.model.getReference('id', 'image_files')
+      });
       this.input('portraitId', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false
+      });
+      this.input('portraitImageModifiers', ImageModifierListInputView, {
+        entry,
+        visibleBinding: 'portraitId',
+        visible: () => this.model.getReference('portraitId', 'image_files')
       });
       this.input('enableFullscreen', CheckBoxInputView, {
         disabledBinding: ['position', 'width'],
