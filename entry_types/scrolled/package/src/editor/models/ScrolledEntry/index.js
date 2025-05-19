@@ -294,18 +294,7 @@ export const ScrolledEntry = Entry.extend({
   },
 
   getAspectRatios(options = {}) {
-    const themeOptions = this.scrolledSeed.config.theme.options;
-    const root = themeOptions.properties?.root || {};
-
-    const customRatios = Object.entries(root)
-      .filter(([key]) => key.indexOf('aspectRatio') === 0)
-      .map(([key, value]) => ({
-        name: dasherize(key.replace('aspectRatio', '')),
-        ratio: parseFloat(value)
-      }));
-
-    const sortedValues = defaultAspectRatios
-      .concat(customRatios)
+    const sortedValues = this._getDefinedAspectRatios()
       .sort((a, b) => a.ratio - b.ratio)
       .map(({name}) => name);
 
@@ -322,6 +311,25 @@ export const ScrolledEntry = Entry.extend({
     );
 
     return [sortedValues, texts];
+  },
+
+  getAspectRatio(name) {
+    return this._getDefinedAspectRatios()
+      .find(aspectRatio => aspectRatio.name === name)?.ratio;
+  },
+
+  _getDefinedAspectRatios() {
+    const themeOptions = this.scrolledSeed.config.theme.options;
+    const root = themeOptions.properties?.root || {};
+
+    const customRatios = Object.entries(root)
+                               .filter(([key]) => key.indexOf('aspectRatio') === 0)
+                               .map(([key, value]) => ({
+                                 name: dasherize(key.replace('aspectRatio', '')),
+                                 ratio: parseFloat(value)
+                               }));
+
+    return defaultAspectRatios.concat(customRatios);
   },
 
   getUsedSectionBackgroundColors() {

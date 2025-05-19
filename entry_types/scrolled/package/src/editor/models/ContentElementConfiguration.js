@@ -35,5 +35,30 @@ export const ContentElementConfiguration = Configuration.extend({
         });
       }
     }
-  }
+  },
+
+  getFilePosition: function(attribute, coord) {
+    const cropPosition = this.get(this.filePositionProperty(attribute));
+    return cropPosition ? cropPosition[coord] : 50;
+  },
+
+  setFilePosition: function(attribute, coord, value) {
+    this.set(this.filePositionProperty(attribute), {
+      ...this.get(this.filePositionProperty(attribute)),
+      [coord]: value
+    });
+  },
+
+  setFilePositions: function(attribute, x, y) {
+    this.set(this.filePositionProperty(attribute), {x, y});
+  },
+
+  filePositionProperty: function(attribute) {
+    if (attribute === 'id') {
+      return 'cropPosition';
+    }
+    else {
+      return attribute.replace(/Id$/, 'CropPosition');
+    }
+  },
 });

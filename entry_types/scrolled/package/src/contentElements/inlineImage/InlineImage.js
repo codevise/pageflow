@@ -15,12 +15,18 @@ import {
 
 export function InlineImage({contentElementId, contentElementWidth, configuration}) {
 
-  const imageFile = useFileWithInlineRights({
-    configuration, collectionName: 'imageFiles', propertyName: 'id'
-  });
-  const portraitImageFile = useFileWithInlineRights({
-    configuration, collectionName: 'imageFiles', propertyName: 'portraitId'
-  });
+  const imageFile = useFileWithCropPosition(
+    useFileWithInlineRights({
+      configuration, collectionName: 'imageFiles', propertyName: 'id'
+    }),
+    configuration.cropPosition
+  );
+  const portraitImageFile = useFileWithCropPosition(
+    useFileWithInlineRights({
+      configuration, collectionName: 'imageFiles', propertyName: 'portraitId'
+    }),
+    configuration.portraitCropPosition
+  );
 
   const aspectRatio = getModiferValue(
     configuration.imageModifiers, 'crop'
@@ -117,4 +123,8 @@ function ImageWithCaption({
 
 function getModiferValue(imageModifiers, name) {
   return (imageModifiers || []).find(imageModifier => imageModifier.name === name)?.value;
+}
+
+function useFileWithCropPosition(file, cropPosition) {
+  return file && {...file, cropPosition};
 }

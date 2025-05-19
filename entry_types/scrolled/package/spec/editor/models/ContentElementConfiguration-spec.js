@@ -139,4 +139,44 @@ describe('ContentElementConfiguration', () => {
       expect(section.configuration.get('backdropContentElement')).toBeNull();
     });
   });
+
+  describe('#setFilePosition', () => {
+    it('uses property without id suffix', () => {
+      const contentElement = testContext.entry.contentElements.get(5);
+
+      contentElement.configuration.setFilePosition('portraitId', 'x', 40);
+      contentElement.configuration.setFilePosition('portraitId', 'y', 50);
+
+      expect(contentElement.configuration.get('portraitCropPosition')).toEqual({x: 40, y: 50});
+    });
+
+    it('can handle id property', () => {
+      const contentElement = testContext.entry.contentElements.get(5);
+
+      contentElement.configuration.setFilePosition('id', 'x', 40);
+      contentElement.configuration.setFilePosition('id', 'y', 50);
+
+      expect(contentElement.configuration.get('cropPosition')).toEqual({x: 40, y: 50});
+    });
+  });
+
+  describe('#setFilePositions', () => {
+    it('uses property without id suffix', () => {
+      const contentElement = testContext.entry.contentElements.get(5);
+
+      contentElement.configuration.setFilePositions('portraitId', 40, 50);
+
+      expect(contentElement.configuration.get('portraitCropPosition')).toEqual({x: 40, y: 50});
+    });
+  });
+
+  describe('#getFilePositions', () => {
+    it('uses property without id suffix', () => {
+      const contentElement = testContext.entry.contentElements.get(5);
+
+      contentElement.configuration.setFilePositions('portraitId', 40, 50);
+
+      expect(contentElement.configuration.getFilePosition('portraitId', 'x')).toEqual(40);
+    });
+  });
 });

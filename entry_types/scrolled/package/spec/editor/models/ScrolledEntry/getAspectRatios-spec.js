@@ -1,4 +1,3 @@
-import {editor} from 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories, useFakeTranslations} from 'pageflow/testHelpers';
 import {normalizeSeed} from 'support';

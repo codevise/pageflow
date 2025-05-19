@@ -6,19 +6,19 @@ export const DropDownButton = Base.extend({
   selector: '.drop_down_button',
 
   menuItemNames: function() {
-    return this.$el.find('li').map(function() {
+    return this.$el.find('li:not(.is_hidden)').map(function() {
       return $(this).data('name');
     }).get();
   },
 
   menuItemLabels: function() {
-    return this.$el.find('li a').map(function() {
+    return this.$el.find('li:not(.is_hidden) a').map(function() {
       return $(this).text();
     }).get();
   },
 
   selectMenuItemByName: function(name) {
-    var menuItem = this.$el.find('li').filter(function() {
+    var menuItem = this.$el.find('li:not(.is_hidden)').filter(function() {
       return $(this).data('name') == name;
     });
 
@@ -30,7 +30,7 @@ export const DropDownButton = Base.extend({
   },
 
   selectMenuItemByLabel: function(label) {
-    var menuItemLink = this.$el.find('li a').filter(function() {
+    var menuItemLink = this.$el.find('li:not(.is_hidden) a').filter(function() {
       return $(this).text() == label;
     });
 
