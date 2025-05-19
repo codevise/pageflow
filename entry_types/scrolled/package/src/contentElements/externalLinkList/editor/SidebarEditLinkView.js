@@ -35,6 +35,7 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
     });
     var self = this;
     var thumbnailAspectRatio = this.options.contentElement.configuration.get('thumbnailAspectRatio');
+    var previewAspectRatio = this.options.entry.getAspectRatio(thumbnailAspectRatio)
     var thumbnailFit = this.options.contentElement.configuration.get('thumbnailFit');
 
     configurationEditor.tab('edit_link', function () {
@@ -44,10 +45,9 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
         fileSelectionHandlerOptions: {
           contentElementId: self.options.contentElement.get('id')
         },
-        positioning: previewAspectRatios[thumbnailAspectRatio] &&
-                     thumbnailFit !== 'contain',
+        positioning: previewAspectRatio && thumbnailFit !== 'contain',
         positioningOptions: {
-          preview: previewAspectRatios[thumbnailAspectRatio]
+          preview: previewAspectRatio && (1 / previewAspectRatio)
         },
         dropDownMenuItems: [InlineFileRightsMenuItem]
       });

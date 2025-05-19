@@ -18,10 +18,13 @@ editor.contentElementTypes.register('inlineImage', {
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: imageModifiers => imageModifiers?.length,
         positioningBinding: 'imageModifiers',
-        positioningOptions: () => ({
-          preview: entry.getAspectRatio(this.model.get('imageModifiers')?.[0]?.value)
-        }),
-        dropDownMenuItems: [InlineFileRightsMenuItem],
+        positioningOptions: () => {
+          const aspectRatio = entry.getAspectRatio(this.model.get('imageModifiers')?.[0]?.value);
+          return {
+            preview: aspectRatio && (1 / aspectRatio)
+          };
+        },
+        dropDownMenuItems: [InlineFileRightsMenuItem]
       });
       this.input('imageModifiers', ImageModifierListInputView, {
         entry,
@@ -33,9 +36,12 @@ editor.contentElementTypes.register('inlineImage', {
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: imageModifiers => imageModifiers?.length,
         positioningBinding: 'portraitImageModifiers',
-        positioningOptions: () => ({
-          preview: entry.getAspectRatio(this.model.get('portraitImageModifiers')?.[0]?.value)
-        }),
+        positioningOptions: () => {
+          const aspectRatio =  entry.getAspectRatio(this.model.get('portraitImageModifiers')?.[0]?.value);
+          return {
+            preview: aspectRatio && (1 / aspectRatio)
+          }
+        }
       });
       this.input('portraitImageModifiers', ImageModifierListInputView, {
         entry,

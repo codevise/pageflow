@@ -15,6 +15,7 @@ export const SidebarController = Marionette.Controller.extend({
     this.region.show(new SidebarEditLinkView({
       model: linksCollection.get(linkId),
       collection: linksCollection,
+      entry: this.entry,
       contentElement
     }));
   }
