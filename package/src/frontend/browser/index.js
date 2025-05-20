@@ -1,7 +1,7 @@
-
 import {agent, Agent} from './Agent';
 import {browser} from './browser';
 
+import './audio';
 import './autoplaySupport';
 import './cssAnimations';
 import './facebook';
