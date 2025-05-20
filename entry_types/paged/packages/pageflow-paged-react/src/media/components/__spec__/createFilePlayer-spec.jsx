@@ -93,6 +93,20 @@ describe('createFilePlayer', () => {
       expect(wrapper.render()).toHaveDescendant('source[src="high.mp4"]');
     });
 
+    it('passes hasBrokenOggSupport option to sources', () => {
+      const {FilePlayer} = setup({
+        sources: (file, quality, {hasBrokenOggSupport}) => [
+          hasBrokenOggSupport ?
+          {type: 'audio/mp3', src: 'audio.mp3'} :
+          {type: 'audio/ogg', src: 'audio.ogg'}
+        ]
+      });
+
+      const wrapper = mount(<FilePlayer {...requiredProps} hasBrokenOggSupport={true} />);
+
+      expect(wrapper.render()).toHaveDescendant('source[src="audio.mp3"]');
+    });
+
     it('passes forceBestQuality option to sources', () => {
       const {FilePlayer} = setup({
         sources: (file, quality, {forceBestQuality}) => [

@@ -123,6 +123,7 @@ export default function({
                   sources={sources(this.props.file,
                                    this.props.quality,
                                    {hasHighBandwidth: this.props.hasHighBandwidth,
+                                    hasBrokenOggSupport: this.props.hasBrokenOggSupport,
                                     forceBestQuality: this.props.forceBestQuality,
                                     forceFullhdQuality: this.props.forceFullhdQuality})}
                   tracks={textTracksFromFiles(this.props.textTracks.files,
@@ -163,6 +164,7 @@ export default function({
       quality: setting({property: 'videoQuality'}),
       hasNativeVideoPlayer: has('native video player'),
       hasHighBandwidth: has('high bandwidth'),
+      hasBrokenOggSupport: has('broken ogg support'),
       forceBestQuality: isFeatureEnabled('force_best_video_quality'),
       forceFullhdQuality: isFeatureEnabled('force_fullhd_video_quality'),
       textTrackPosition

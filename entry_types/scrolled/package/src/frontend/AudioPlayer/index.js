@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import {browser} from 'pageflow/frontend';
 
 import {MediaPlayer} from '../MediaPlayer';
 import {useTextTracks} from '../useTextTracks';
@@ -52,7 +53,7 @@ AudioPlayer.defaultProps = {
 
 export function processSources(audioFile){
   var sources = [];
-  if (audioFile.urls['ogg']) {
+  if (audioFile.urls['ogg'] && !has('broken ogg support')) {
     sources.push({type: 'audio/ogg', src: `${audioFile.urls['ogg']}?u=1`});
   }
   if (audioFile.urls['mp3']) {
@@ -62,4 +63,8 @@ export function processSources(audioFile){
     sources.push({type: 'audio/m4a', src: `${audioFile.urls['m4a']}?u=1`});
   }
   return sources;
+}
+
+function has(featureName) {
+  return typeof window !== 'undefined' && browser.has(featureName);
 }
