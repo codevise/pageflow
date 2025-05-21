@@ -1,0 +1,13 @@
+de:
+  pageflow:
+    backdrop_size:
+      feature_name: Hintergrundgröße-Option
+  pageflow_scrolled:
+    editor:
+      edit_section:
+        attributes:
+          backdropSize:
+            label: Hintergrund-Skalierung
+            values:
+              coverViewport: Viewport überdecken
+              coverSection: Abschnitt überdecken

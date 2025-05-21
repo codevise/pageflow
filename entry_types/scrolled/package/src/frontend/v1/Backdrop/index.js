@@ -17,6 +17,7 @@ export const Backdrop = withInlineEditingDecorator('BackdropDecorator', function
   return (
     <div className={classNames(styles.Backdrop,
                                {[styles.noCompositionLayer]: !shouldLoad && !props.eagerLoad},
+                               {[styles.coverSection]: props.size === 'coverSection'},
                                props.transitionStyles.backdrop,
                                props.transitionStyles[`backdrop-${props.state}`])}>
       <div className={classNames(props.transitionStyles.backdropInner,

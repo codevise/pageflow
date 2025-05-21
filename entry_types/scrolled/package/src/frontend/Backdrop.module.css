@@ -7,6 +7,11 @@
   visibility: hidden;
 }
 
+.coverSection {
+  container-type: size;
+  --vh: 1cqh;
+}
+
 .defaultBackground {
   background-color: #333;
 }
