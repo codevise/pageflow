@@ -130,6 +130,7 @@ function SectionContents({
     <>
       <Backdrop backdrop={backdrop}
                 eagerLoad={section.sectionIndex === 0}
+                size={section.backdropSize}
 
                 motifAreaState={motifAreaState}
                 onMotifAreaUpdate={setMotifAreaRef}

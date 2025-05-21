@@ -1,9 +1,11 @@
 .backdrop {
-  position: sticky;
+  position: absolute;
   top: 0;
-  height: 100vh;
+  bottom: 0;
 }
 
-.foreground {
-  margin-top: -100vh;
+.backdropInner {
+  position: sticky;
+  top: 0;
+  height: calc(100 * var(--vh));
 }

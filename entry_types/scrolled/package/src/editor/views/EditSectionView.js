@@ -46,6 +46,15 @@ export const EditSectionView = EditConfigurationView.extend({
         displayCheckedIfDisabled: true
       });
 
+      if (features.isEnabled('backdrop_size')) {
+        this.input('backdropSize', SelectInputView, {
+          visibleBinding: 'backdropType',
+          visible: backdropType => backdropType === 'image' ||
+                                 backdropType === 'video',
+          values: ['coverViewport', 'coverSection']
+        });
+      }
+
       this.input('backdropImage', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'sectionConfiguration',
