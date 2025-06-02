@@ -111,10 +111,12 @@ export function ExternalLink({id, configuration, ...props}) {
             styles.card,
             styles[`thumbnailSize-${props.thumbnailSize}`]
           )}>
-            <div className={styles.thumbnail}>
+            <div className={styles.thumbnail}
+                 style={{backgroundColor: props.thumbnailBackgroundColor}}>
               <Thumbnail imageFile={thumbnailImageFile}
                          aspectRatio={props.thumbnailAspectRatio}
                          cropPosition={props.thumbnailCropPosition}
+                         fit={props.thumbnailFit}
                          load={props.loadImages}>
                 <InlineFileRights configuration={configuration}
                                   context="insideElement"

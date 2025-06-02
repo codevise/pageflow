@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import {Image} from 'pageflow-scrolled/frontend';
 
@@ -10,7 +11,7 @@ const aspectRatioPaddings = {
   portrait: '133%'
 };
 
-export function Thumbnail({imageFile, aspectRatio, cropPosition, load, children}) {
+export function Thumbnail({imageFile, aspectRatio, cropPosition, fit, load, children}) {
   imageFile = {
     ...imageFile,
     cropPosition
@@ -19,12 +20,14 @@ export function Thumbnail({imageFile, aspectRatio, cropPosition, load, children}
   const aspectRatioPadding = getAspectRatioPadding(aspectRatio, imageFile);
 
   return (
-    <div className={styles.thumbnail}
+    <div className={classNames(styles.thumbnail,
+                               {[styles.cover]: fit === 'cover'})}
          style={{paddingTop: aspectRatioPadding}}>
       <Image imageFile={imageFile}
              load={load}
              preferSvg={true}
-             variant={(aspectRatioPadding || cropPosition) ? 'medium' : 'linkThumbnailLarge'}  />
+             variant={(aspectRatioPadding || cropPosition || fit === 'contain') ? 'medium' : 'linkThumbnailLarge'}
+             fit={fit} />
       {children}
     </div>
   );

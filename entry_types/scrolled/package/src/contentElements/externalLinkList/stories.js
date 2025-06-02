@@ -86,6 +86,37 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'With thumbnail aspect ratio, contain',
+      configuration: {
+        thumbnailAspectRatio: 'portrait',
+        thumbnailFit: 'contain',
+        links: [
+          {
+            id: '1',
+            thumbnailCropPosition: {x: 0, y: 50},
+            thumbnail: filePermaId('imageFiles', 'turtle'),
+            thumbnailBackgroundColor: '#888'
+          }
+        ]
+      }
+    },
+    {
+      name: 'With thumbnail aspect ratio, contain, text position righ',
+      configuration: {
+        thumbnailAspectRatio: 'portrait',
+        thumbnailFit: 'contain',
+        textPosition: 'right',
+        links: [
+          {
+            id: '1',
+            thumbnailCropPosition: {x: 0, y: 50},
+            thumbnail: filePermaId('imageFiles', 'turtle'),
+            thumbnailBackgroundColor: '#888'
+          }
+        ]
+      }
+    },
+    {
       name: 'With thumbnail size',
       configuration: {
         textPosition: 'right',

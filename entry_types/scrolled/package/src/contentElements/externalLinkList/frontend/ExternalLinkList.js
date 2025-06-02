@@ -96,6 +96,7 @@ export function ExternalLinkList(props) {
                         configuration={props.configuration}
                         thumbnailAspectRatio={props.configuration.thumbnailAspectRatio}
                         thumbnailSize={props.configuration.thumbnailSize || 'small'}
+                        thumbnailFit={props.configuration.thumbnailFit || 'cover'}
                         textPosition={props.configuration.textPosition || 'below'}
                         textSize={props.configuration.textSize || 'small'}
                         darkBackground={darkBackground}

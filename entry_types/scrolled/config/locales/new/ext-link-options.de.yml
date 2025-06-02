@@ -42,6 +42,17 @@ de:
                 small: "Klein"
                 medium: "Mittel"
                 large: "Groß"
+            thumbnailFit:
+              label: "Thumbnail-Anpassung"
+              inline_help: |-
+                Wenn das Seitenverhältnis des Bildes nicht mit dem
+                ausgewählten Seitenverhältnis der Miniatur übereinstimmt,
+                kann entweder das Bild vergrößert werden, um die Karte
+                vollständig auszufüllen, oder das Bild wird so angepasst,
+                dass es vollständig innerhalb der Karte sichtbar bleibt.
+              values:
+                cover: Füllen
+                contain: Einpassen
             linkWidth:
               label: "Link-Breite"
               inline_help: |-
@@ -76,3 +87,9 @@ de:
               label: "Buttons anzeigen"
               inline_help: |-
                 Zeige Buttons an, um die Links zu öffnen.
+            thumbnailBackgroundColor:
+              label: Thumbnail-Hintergrundfarbe
+              inline_help: |-
+                Sichtbar wenn "Einpassen" als Thumbnail-Anpassung
+                ausgewählt wurde sowie für Thumbnail-Bilder mit
+                transparenten Bereichen.

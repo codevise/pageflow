@@ -5,3 +5,7 @@
   height: 100%;
   object-fit: cover;
 }
+
+.contain {
+  object-fit: contain;
+}

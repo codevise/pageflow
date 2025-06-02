@@ -238,6 +238,27 @@ describe('ExternalLink', () => {
     expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('medium'));
     expect(getByRole('img').parentNode).toHaveStyle('paddingTop: 50%');
   });
+
+  it('uses medium image as thumbnail with thumbnail fit contain', () => {
+    const {getByRole} = renderInEntry(
+      <ExternalLink configuration={{}}
+                    url=""
+                    loadImages={true}
+                    thumbnail={5}
+                    thumbnailFit="contain" />,
+      {
+        seed: {
+          imageFiles: [{permaId: 5}],
+          imageFileUrlTemplates: {
+            linkThumbnailLarge: ':id_partition/linkThumbnailLarge/image.jpg',
+            medium: ':id_partition/medium/image.jpg'
+          },
+        }
+      }
+    )
+
+    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('medium'));
+  });
 });
 
 function value(text) {
