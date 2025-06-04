@@ -1,10 +1,15 @@
 .container {
   width: 100%;
   margin: 0 auto;
+  max-width: calc(100 * var(--vh) / var(--fit-viewport-aspect-ratio) * var(--fit-viewport-scale, 1));
 }
 
 .content {
   position: relative;
+}
+
+.content > div:first-child {
+  padding-top: calc(100% * var(--fit-viewport-aspect-ratio));
 }
 
 .inner {

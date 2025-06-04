@@ -16,6 +16,7 @@ export {dialogView} from './views/mixins/dialogView';
 export {ColorSelectInputView} from './views/inputs/ColorSelectInputView';
 export {NoOptionsHintView} from './views/NoOptionsHintView';
 export {EditMotifAreaDialogView} from './views/EditMotifAreaDialogView';
+export {ImageModifierListInputView} from './views/inputs/ImageModifierListInputView';
 export {InlineFileRightsMenuItem} from './models/InlineFileRightsMenuItem';
 
 Object.assign(pageflow, globalInterop);

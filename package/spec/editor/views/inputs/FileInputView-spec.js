@@ -1,9 +1,8 @@
-import {Configuration, FileInputView, BackgroundPositioningView} from 'pageflow/editor';
+import {Configuration, FileInputView, BackgroundPositioningView, editor} from 'pageflow/editor';
 import Backbone from 'backbone';
 
 import * as support from '$support';
 import {DropDownButton} from '$support/dominos/editor';
-import {editor} from 'pageflow/editor';
 
 describe('FileInputView', () => {
   let testContext;
@@ -33,6 +32,53 @@ describe('FileInputView', () => {
     expect(dropDownButton.menuItemNames()).toEqual(expect.arrayContaining(['edit_background_positioning']));
   });
 
+  it('can hide button to edit crop position', () => {
+    var fixture = support.factories.videoFileWithTextTrackFiles({
+      videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'}
+    });
+    var model = new Configuration({
+      file_id: 5,
+    });
+
+    var fileInputView = new FileInputView({
+      collection: fixture.videoFiles,
+      model: model,
+      propertyName: 'file_id',
+      positioning: false
+    });
+
+    fileInputView.render();
+    var dropDownButton = DropDownButton.find(fileInputView);
+
+    expect(dropDownButton.menuItemNames()).not.toContain('edit_background_positioning');
+  });
+
+  it('can show button to edit crop position dynamically', () => {
+    var fixture = support.factories.videoFileWithTextTrackFiles({
+      videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'}
+    });
+    var model = new Configuration({
+      file_id: 5,
+    });
+
+    var fileInputView = new FileInputView({
+      collection: fixture.videoFiles,
+      model: model,
+      propertyName: 'file_id',
+      positioning: crop => crop,
+      positioningBinding: 'crop'
+    });
+
+    fileInputView.render();
+    var dropDownButton = DropDownButton.find(fileInputView);
+
+    expect(dropDownButton.menuItemNames()).not.toContain('edit_background_positioning');
+
+    model.set('crop', true);
+
+    expect(dropDownButton.menuItemNames()).toContain('edit_background_positioning');
+  });
+
   it('can pass additional options to positioning dialog', () => {
     var fixture = support.factories.videoFileWithTextTrackFiles({
       videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'}
@@ -60,6 +106,39 @@ describe('FileInputView', () => {
       expect.objectContaining({
         propertyName: 'file_id',
         previewAspectRatio: 0.5625
+      })
+    );
+  });
+
+  it('can pass additional options to positioning dialog via callback', () => {
+    var fixture = support.factories.videoFileWithTextTrackFiles({
+      videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'}
+    });
+    var model = new Configuration({
+      file_id: 5,
+    });
+    jest.spyOn(BackgroundPositioningView, 'open');
+
+    var previewAspectRatio = 1;
+    var fileInputView = new FileInputView({
+      collection: fixture.videoFiles,
+      model: model,
+      propertyName: 'file_id',
+      positioning: true,
+      positioningOptions: () => ({
+        previewAspectRatio
+      })
+    });
+
+    fileInputView.render();
+    var dropDownButton = DropDownButton.find(fileInputView);
+    previewAspectRatio = 0.5;
+    dropDownButton.selectMenuItemByName('edit_background_positioning');
+
+    expect(BackgroundPositioningView.open).toHaveBeenCalledWith(
+      expect.objectContaining({
+        propertyName: 'file_id',
+        previewAspectRatio: 0.5
       })
     );
   });

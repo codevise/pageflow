@@ -21,6 +21,20 @@ import {sortColors} from './sortColors';
 
 const typographySizeSuffixes = ['xl', 'lg', 'md', 'sm', 'xs'];
 
+const defaultAspectRatios = [{
+  name: 'wide',
+  ratio: 9 / 16
+}, {
+  name: 'narrow',
+  ratio: 3 / 4
+}, {
+  name: 'square',
+  ratio: 1
+}, {
+  name: 'portrait',
+  ratio: 4 / 3
+}];
+
 export const ScrolledEntry = Entry.extend({
   setupFromEntryTypeSeed(seed) {
     this.consentVendors = new ConsentVendors({hostMatchers: seed.consentVendorHostMatchers});
@@ -277,6 +291,45 @@ export const ScrolledEntry = Entry.extend({
     );
 
     return [values, texts];
+  },
+
+  getAspectRatios(options = {}) {
+    const sortedValues = this._getDefinedAspectRatios()
+      .sort((a, b) => a.ratio - b.ratio)
+      .map(({name}) => name);
+
+    if (options.includeOriginal) {
+      sortedValues.push('original');
+    }
+
+    const texts = sortedValues.map(name =>
+      I18n.t(
+        `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
+        `.aspect_ratios.${name}`,
+        {defaultValue: I18n.t(`pageflow_scrolled.editor.aspect_ratios.${name}`)}
+      )
+    );
+
+    return [sortedValues, texts];
+  },
+
+  getAspectRatio(name) {
+    return this._getDefinedAspectRatios()
+      .find(aspectRatio => aspectRatio.name === name)?.ratio;
+  },
+
+  _getDefinedAspectRatios() {
+    const themeOptions = this.scrolledSeed.config.theme.options;
+    const root = themeOptions.properties?.root || {};
+
+    const customRatios = Object.entries(root)
+                               .filter(([key]) => key.indexOf('aspectRatio') === 0)
+                               .map(([key, value]) => ({
+                                 name: dasherize(key.replace('aspectRatio', '')),
+                                 ratio: parseFloat(value)
+                               }));
+
+    return defaultAspectRatios.concat(customRatios);
   },
 
   getUsedSectionBackgroundColors() {

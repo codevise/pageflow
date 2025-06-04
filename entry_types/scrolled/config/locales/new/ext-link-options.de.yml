@@ -1,6 +1,15 @@
 de:
   pageflow_scrolled:
     editor:
+      aspect_ratios:
+        narrow: Landscape (4:3)
+        portrait: Portrait (3:4)
+        square: Quadratisch (1:1)
+        wide: Landscape (16:9)
+        original: Original
+      backdrop_effects:
+        crop:
+          label: Zuschneiden
       content_elements:
         externalLinkList:
           attributes:
@@ -12,12 +21,6 @@ de:
                 führen, dass ein hochformatigeres Seitenverähltnis
                 gewählt wird, damit das Thumbnail die gesamte Höhe des
                 Links überdeckt.
-              values:
-                narrow: Landscape (4:3)
-                portrait: Portrait (3:4)
-                square: Quadratisch (1:1)
-                wide: Landscape (16:9)
-                original: Original
             textPosition:
               label: "Beschriftung"
               inline_help: |-
@@ -93,3 +96,6 @@ de:
                 Sichtbar wenn "Einpassen" als Thumbnail-Anpassung
                 ausgewählt wurde sowie für Thumbnail-Bilder mit
                 transparenten Bereichen.
+      image_modifier_list_input:
+        add: "Stil hinzufügen..."
+        remove: "Stil entfernen"

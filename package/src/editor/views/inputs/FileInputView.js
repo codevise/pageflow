@@ -99,6 +99,8 @@ export const FileInputView = Marionette.ItemView.extend({
         openOnClick: true
       }));
     }
+
+    this.setupBooleanAttributeBinding('positioning', this._updatePositioning);
   },
 
   update: function() {
@@ -117,6 +119,12 @@ export const FileInputView = Marionette.ItemView.extend({
     }));
   },
 
+  _updatePositioning(positioning) {
+    if (this.positioningMenuItem) {
+      this.positioningMenuItem.set('hidden', !positioning);
+    }
+  },
+
   _dropDownMenuItems: function() {
     var file = this._getFile(file);
     var items = new Backbone.Collection();
@@ -129,8 +137,8 @@ export const FileInputView = Marionette.ItemView.extend({
       });
     }
 
-    if (this.options.positioning && file && file.isPositionable()) {
-      items.add(new FileInputView.EditBackgroundPositioningMenuItem({
+    if (file && file.isPositionable()) {
+      this.positioningMenuItem = new FileInputView.EditBackgroundPositioningMenuItem({
         name: 'edit_background_positioning',
         label: I18n.t('pageflow.editor.views.inputs.file_input.edit_background_positioning')
       }, {
@@ -138,7 +146,9 @@ export const FileInputView = Marionette.ItemView.extend({
         propertyName: this.options.propertyName,
         filesCollection: this.options.collection,
         positioningOptions: this.options.positioningOptions
-      }));
+      });
+
+      items.add(this.positioningMenuItem);
     }
 
     if (file) {
@@ -226,11 +236,17 @@ FileInputView.EditBackgroundPositioningMenuItem = Backbone.Model.extend({
   },
 
   selected: function() {
+    let positioningOptions = this.options.positioningOptions;
+
+    if (typeof positioningOptions === 'function') {
+      positioningOptions = positioningOptions();
+    }
+
     BackgroundPositioningView.open({
       model: this.options.inputModel,
       propertyName: this.options.propertyName,
       filesCollection: this.options.filesCollection,
-      ...this.options.positioningOptions
+      ...positioningOptions
     });
   }
 });

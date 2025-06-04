@@ -88,7 +88,8 @@ export function ExternalLinkList(props) {
             textPositionStyles[`linkAlignment-${props.configuration.linkAlignment}`],
             textPositionStyles[`textPosition-${textPosition}`]
           )}
-          style={{'--overlay-opacity': (props.configuration.overlayOpacity || 70) / 100}}
+          style={{'--overlay-opacity': (props.configuration.overlayOpacity || 70) / 100,
+                  '--thumbnail-aspect-ratio': `var(--theme-aspect-ratio-${props.configuration.thumbnailAspectRatio || 'wide'})`}}
           onClick={handleListClick}>
         {linkList.map((link, index) =>
           <ExternalLink {...link}

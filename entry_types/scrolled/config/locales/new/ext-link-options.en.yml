@@ -1,6 +1,15 @@
 en:
   pageflow_scrolled:
     editor:
+      aspect_ratios:
+        narrow: Landscape (4:3)
+        portrait: Portrait (3:4)
+        square: Square (1:1)
+        wide: Landscape (16:9)
+        original: Original
+      backdrop_effects:
+        crop:
+          label: Crop
       content_elements:
         externalLinkList:
           attributes:
@@ -11,12 +20,6 @@ en:
                 text is displayed next to the image, longer text may
                 result in a more portrait-like aspect ratio so that
                 the thumbnail covers the entire height of the link.
-              values:
-                narrow: Landscape (4:3)
-                portrait: Portrait (3:4)
-                square: Square (1:1)
-                wide: Landscape (16:9)
-                original: Original
             textPosition:
               label: "Caption"
               inline_help: |-
@@ -91,3 +94,6 @@ en:
                 Visible when thumbnail fit mode has been set to
                 "contain" or when the thumbnail image contains
                 transparent areas.
+      image_modifier_list_input:
+        add: "Add style..."
+        remove: "Remove style"
