@@ -79,10 +79,10 @@ export function ExternalLinkList(props) {
   const linkAlignment = scrollerEnabled ? 'left' : props.configuration.linkAlignment;
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <Scroller enabled={scrollerEnabled}>
-          {({scrollerRef, handleScroll}) =>
+    <div className={styles.wrapper}>
+      <Scroller enabled={scrollerEnabled}>
+        {({scrollerRef, handleScroll}) =>
+          <div className={styles.container}>
             <ul ref={scrollerRef}
                 className={classNames(
                   styles.list,
@@ -123,9 +123,9 @@ export function ExternalLinkList(props) {
                               onClick={event => handleItemClick(event, link.id)} />
               )}
             </ul>
-          }
-        </Scroller>
-      </div>
+          </div>
+        }
+      </Scroller>
     </div>
   );
 }

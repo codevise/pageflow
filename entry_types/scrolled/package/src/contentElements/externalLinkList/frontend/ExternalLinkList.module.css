@@ -1,6 +1,7 @@
 @value contentColorScope from "pageflow-scrolled/values/colors.module.css";
 
 .container {
+  grid-column: 2;
   container-type: inline-size;
 }
 
@@ -25,7 +26,6 @@
 }
 
 .list {
-  grid-column: 2;
   composes: scope-externalLinks from global;
   composes: contentColorScope;
   padding: 0;

@@ -1,7 +1,7 @@
 .list {
   --columns: 1;
   --gap: 1rem;
-  --reference-width: min(var(--reference-max-width), 100cqw - 2 * var(--content-margin));
+  --reference-width: min(var(--reference-max-width), 100%);
 
   display: flex;
   flex-wrap: wrap;
@@ -92,6 +92,11 @@
     --gap: 1.5rem;
   }
 
+  .linkWidth-xs,
+  .linkWidth-full-xs {
+    --gap: 1rem;
+  }
+
   .linkWidth-xs {
     --columns: 3;
   }
@@ -112,6 +117,11 @@
 @container (min-width: 700px) {
   .list {
     --gap: 2rem;
+  }
+
+  .linkWidth-xs,
+  .linkWidth-full-xs {
+    --gap: 1rem;
   }
 
   .linkWidth-xs {
