@@ -1,0 +1,42 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: var(--content-margin) minmax(0, var(--content-max-width)) var(--content-margin);
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.full {
+  grid-template-columns: var(--content-margin) 1fr var(--content-margin);
+}
+
+.wrapper > * {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.scroller {
+  grid-column: 1 / -1;
+  overflow: visible;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.full .scroller {
+  margin: 0 var(--full-width-padding);
+  scroll-padding-left: var(--full-width-padding);
+}
+
+.customMargin .scroller {
+  grid-column: 2;
+}
+
+.wrapper button {
+  grid-column: 3;
+  z-index: 1;
+}
+
+.wrapper button:first-child {
+  grid-column: 1;
+}

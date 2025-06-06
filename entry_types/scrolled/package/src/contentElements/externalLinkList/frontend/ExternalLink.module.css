@@ -14,6 +14,7 @@
 
 .item > a {
   text-decoration: none;
+  display: block;
 }
 
 .outlined::before {
