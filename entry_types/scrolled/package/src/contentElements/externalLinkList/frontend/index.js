@@ -3,6 +3,10 @@ import {ExternalLinkList} from './ExternalLinkList';
 
 frontend.contentElementTypes.register('externalLinkList', {
   component: ExternalLinkList,
-  customMargin: true,
+
+  customMargin({configuration}) {
+    return configuration.enableScroller === 'always'
+  },
+
   lifecycle: true
 });

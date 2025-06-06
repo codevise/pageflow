@@ -79,7 +79,7 @@ export function ExternalLinkList(props) {
   const linkAlignment = scrollerEnabled ? 'left' : props.configuration.linkAlignment;
 
   return (
-    <div className={styles.wrapper}>
+    <div className={classNames({[styles.wrapper]: props.customMargin || fullWidth})}>
       <Scroller enabled={scrollerEnabled}>
         {({scrollerRef, handleScroll}) =>
           <div className={styles.container}>
