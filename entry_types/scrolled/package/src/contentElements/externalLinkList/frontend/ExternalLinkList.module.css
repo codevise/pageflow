@@ -1,10 +1,5 @@
 @value contentColorScope from "pageflow-scrolled/values/colors.module.css";
 
-.container {
-  grid-column: 2;
-  container-type: inline-size;
-}
-
 .wrapper {
   display: grid;
   grid-template-columns: var(--content-margin) minmax(0, var(--content-max-width, 1fr)) var(--content-margin);
@@ -25,6 +20,15 @@
   grid-column: 1;
 }
 
+.container {
+  grid-column: 2;
+  container-type: inline-size;
+}
+
+.fullContainer {
+  grid-column: 1 / -1;
+}
+
 .list {
   composes: scope-externalLinks from global;
   composes: contentColorScope;
@@ -34,7 +38,6 @@
 }
 
 .full {
-  grid-column: 1 / -1;
   --max-width: var(--section-max-width);
   --max-width-padding: calc((100cqw - var(--max-width)) / 2);
   --full-width-padding: max(var(--content-margin), var(--max-width-padding, 0px));

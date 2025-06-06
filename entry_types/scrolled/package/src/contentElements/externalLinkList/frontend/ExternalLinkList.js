@@ -82,7 +82,7 @@ export function ExternalLinkList(props) {
     <div className={classNames({[styles.wrapper]: props.customMargin || fullWidth})}>
       <Scroller enabled={scrollerEnabled}>
         {({scrollerRef, handleScroll}) =>
-          <div className={styles.container}>
+          <div className={classNames(styles.container, {[styles.fullContainer]: fullWidth})}>
             <ul ref={scrollerRef}
                 className={classNames(
                   styles.list,
