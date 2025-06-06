@@ -1,7 +1,32 @@
 @value contentColorScope from "pageflow-scrolled/values/colors.module.css";
 
+.wrapper {
+  display: grid;
+  grid-template-columns: var(--content-margin) minmax(0, var(--content-max-width, 1fr)) var(--content-margin);
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.wrapper > * {
+  grid-row: 1;
+}
+
+.wrapper > button {
+  grid-column: 3;
+  z-index: 1;
+}
+
+.wrapper > button:first-child {
+  grid-column: 1;
+}
+
 .container {
+  grid-column: 2;
   container-type: inline-size;
+}
+
+.fullContainer {
+  grid-column: 1 / -1;
 }
 
 .list {
@@ -12,10 +37,47 @@
   list-style: none;
 }
 
+.full {
+  --max-width: var(--section-max-width);
+  --max-width-padding: calc((100cqw - var(--max-width)) / 2);
+  --full-width-padding: max(var(--content-margin), var(--max-width-padding, 0px));
+  padding: 0 var(--full-width-padding);
+}
+
 .textPosition-below {
   min-height: 240px;
 }
 
 .textPosition-overlay {
   --link-width-s-phone-columns: 1;
+}
+
+.scroller {
+  overflow: visible;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.scroller > li {
+  scroll-snap-align: start;
+}
+
+.full.scroller {
+  padding: 0;
+  scroll-padding-left: var(--full-width-padding);
+}
+
+.full.scroller > li:first-child {
+  margin-left: var(--full-width-padding);
+}
+
+.full.scroller > li:last-child {
+  margin-right: var(--full-width-padding);
+}
+
+.full.scroller.layout-center {
+  --max-width: max(var(--layout-inline-content-max-width),
+                   var(--reference-max-width, 0) / var(--columns));
 }
