@@ -116,6 +116,7 @@ export {Tooltip} from './Tooltip';
 export {ThemeIcon} from './ThemeIcon';
 export {InlineFileRights} from './InlineFileRights';
 export {useFloatingPortalRoot, FloatingPortalRootProvider} from './FloatingPortalRootProvider';
+export {ScrollButton} from './ScrollButton';
 
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
