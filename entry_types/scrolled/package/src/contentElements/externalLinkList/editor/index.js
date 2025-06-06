@@ -22,7 +22,7 @@ editor.contentElementTypes.register('externalLinkList', {
   pictogram,
   category: 'tilesAndLinks',
   supportedPositions: ['inline', 'standAlone'],
-  supportedWidthRange: ['m', 'xl'],
+  supportedWidthRange: ['m', 'full'],
 
   defaultConfig: {
     thumbnailAspectRatio: 'square'
