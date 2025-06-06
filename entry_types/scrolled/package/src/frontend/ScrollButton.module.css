@@ -1,0 +1,50 @@
+.button {
+  padding: 1rem;
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  color: #fff;
+  transition: opacity 0.2s linear, visibility 0.2s;
+  pointer-events: auto;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  padding: space(2);
+}
+
+.disabled {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.button svg {
+  transition: transform 0.2s ease;
+  display: block;
+  width: var(--theme-scroll-button-size);
+  height: var(--theme-scroll-button-size);
+  filter: drop-shadow(var(--theme-scroll-button-drop-shadow, 0 1px 4px #000));
+  flex-shrink: 0;
+}
+
+.button:not(.disabled):hover svg,
+.button:not(.disabled):active svg {
+  transform: scale(var(--theme-scroll-button-hover-scale, 1.2));
+}
+
+.visuallyHidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
