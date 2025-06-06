@@ -1,4 +1,7 @@
 .root {
+  --layout-inline-content-max-width: var(--two-column-inline-content-max-width, 500px);
+  --layout-inline-lg-content-max-width: var(--two-column-inline-lg-content-max-width, 700px);
+  --layout-inline-xl-content-max-width: var(--two-column-inline-xl-content-max-width, 1200px);
 }
 
 .group {
@@ -21,21 +24,19 @@
 }
 
 .inline {
-  --content-max-width: var(--two-column-inline-content-max-width, 500px);
+  --content-max-width: var(--layout-inline-content-max-width);
 }
 
 .inline.width-lg {
-  --content-max-width: var(--two-column-inline-lg-content-max-width, 700px);
+  --content-max-width: var(--layout-inline-lg-content-max-width);
 }
 
 .inline.width-xl {
-  --content-max-width: var(--two-column-inline-xl-content-max-width, 1200px);
+  --content-max-width: var(--layout-inline-xl-content-max-width);
 }
 
 .inline.width-full {
-  --content-margin-fraction: 0;
-  --content-margin: 0;
-  --content-max-width: none;
+  --content-max-width: unset;
 }
 
 .restrict-xxs,
