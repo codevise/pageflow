@@ -21,6 +21,18 @@
   grid-column: 1;
 }
 
+.scrollButtons-below > button:first-child,
+.scrollButtons-below > button {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+  width: auto;
+}
+
+.scrollButtons-below > button:first-child {
+  justify-self: start;
+}
+
 .container {
   grid-column: 2;
   container-type: inline-size;
