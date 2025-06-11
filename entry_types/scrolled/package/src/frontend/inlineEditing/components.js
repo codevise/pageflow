@@ -10,6 +10,8 @@ export {EditableInlineText} from './EditableInlineText';
 export {EditableTable} from './EditableTable';
 export {EditableLink} from './EditableLink';
 
+export {LinkTooltipProvider} from './LinkTooltip';
+
 export {SelectableWidgetDecorator} from './SelectableWidgetDecorator';
 export {WidgetSelectionRect} from './WidgetSelectionRect';
 

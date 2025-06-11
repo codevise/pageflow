@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import classNames from 'classnames';
 import {
+  LinkTooltipProvider,
   useContentElementEditorCommandSubscription,
   useContentElementEditorState,
   useContentElementLifecycle,
@@ -83,46 +84,48 @@ export function ExternalLinkList(props) {
       <Scroller enabled={scrollerEnabled}>
         {({scrollerRef, handleScroll}) =>
           <div className={classNames(styles.container, {[styles.fullContainer]: fullWidth})}>
-            <ul ref={scrollerRef}
-                className={classNames(
-                  styles.list,
-                  styles[`textPosition-${textPosition}`],
-                  styles[`layout-${layout}`],
-                  {[styles.full]: fullWidth},
-                  {[styles.scroller]: scrollerEnabled},
+            <LinkTooltipProvider align="center">
+              <ul ref={scrollerRef}
+                  className={classNames(
+                    styles.list,
+                    styles[`textPosition-${textPosition}`],
+                    styles[`layout-${layout}`],
+                    {[styles.full]: fullWidth},
+                    {[styles.scroller]: scrollerEnabled},
 
-                  props.configuration.variant &&
-                  `scope-externalLinkList-${props.configuration.variant}`,
+                    props.configuration.variant &&
+                    `scope-externalLinkList-${props.configuration.variant}`,
 
-                  textPositionStyles.list,
-                  textPositionStyles[`layout-${layout}`],
-                  textPositionStyles[`width-${contentElementWidthName(props.contentElementWidth)}`],
-                  textPositionStyles[`linkWidth-${fullWidth ? 'full-' : ''}${linkWidth}`],
-                  textPositionStyles[`linkAlignment-${linkAlignment}`],
-                  textPositionStyles[`textPosition-${textPosition}`],
-                  {[textPositionStyles.scroller]: scrollerEnabled}
+                    textPositionStyles.list,
+                    textPositionStyles[`layout-${layout}`],
+                    textPositionStyles[`width-${contentElementWidthName(props.contentElementWidth)}`],
+                    textPositionStyles[`linkWidth-${fullWidth ? 'full-' : ''}${linkWidth}`],
+                    textPositionStyles[`linkAlignment-${linkAlignment}`],
+                    textPositionStyles[`textPosition-${textPosition}`],
+                    {[textPositionStyles.scroller]: scrollerEnabled}
+                  )}
+                  style={{'--overlay-opacity': (props.configuration.overlayOpacity || 70) / 100,
+                          '--thumbnail-aspect-ratio': `var(--theme-aspect-ratio-${props.configuration.thumbnailAspectRatio || 'wide'})`}}
+                  onScroll={handleScroll}
+                  onClick={handleListClick}>
+                {linkList.map((link, index) =>
+                  <ExternalLink {...link}
+                                key={link.id}
+                                configuration={props.configuration}
+                                thumbnailAspectRatio={props.configuration.thumbnailAspectRatio}
+                                thumbnailSize={props.configuration.thumbnailSize || 'small'}
+                                thumbnailFit={props.configuration.thumbnailFit || 'cover'}
+                                textPosition={props.configuration.textPosition || 'below'}
+                                textSize={props.configuration.textSize || 'small'}
+                                darkBackground={darkBackground}
+                                loadImages={shouldLoad}
+                                outlined={isSelected}
+                                highlighted={highlightedIndex === index}
+                                selected={link.id === selectedItemId && isSelected}
+                                onClick={event => handleItemClick(event, link.id)} />
                 )}
-                style={{'--overlay-opacity': (props.configuration.overlayOpacity || 70) / 100,
-                        '--thumbnail-aspect-ratio': `var(--theme-aspect-ratio-${props.configuration.thumbnailAspectRatio || 'wide'})`}}
-                onScroll={handleScroll}
-                onClick={handleListClick}>
-              {linkList.map((link, index) =>
-                <ExternalLink {...link}
-                              key={link.id}
-                              configuration={props.configuration}
-                              thumbnailAspectRatio={props.configuration.thumbnailAspectRatio}
-                              thumbnailSize={props.configuration.thumbnailSize || 'small'}
-                              thumbnailFit={props.configuration.thumbnailFit || 'cover'}
-                              textPosition={props.configuration.textPosition || 'below'}
-                              textSize={props.configuration.textSize || 'small'}
-                              darkBackground={darkBackground}
-                              loadImages={shouldLoad}
-                              outlined={isSelected}
-                              highlighted={highlightedIndex === index}
-                              selected={link.id === selectedItemId && isSelected}
-                              onClick={event => handleItemClick(event, link.id)} />
-              )}
-            </ul>
+              </ul>
+            </LinkTooltipProvider>
           </div>
         }
       </Scroller>
