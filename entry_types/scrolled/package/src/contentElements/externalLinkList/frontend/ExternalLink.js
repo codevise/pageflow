@@ -103,6 +103,7 @@ export function ExternalLink({id, configuration, ...props}) {
       <Link isEnabled={!configuration.displayButtons}
             isEditable={isEditable}
             actionButtonVisible={props.selected}
+            actionButtonPortal={true}
             href={href}
             openInNewTab={openInNewTab}
             onChange={handleLinkChange}>
