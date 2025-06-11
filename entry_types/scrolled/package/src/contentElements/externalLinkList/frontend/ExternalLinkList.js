@@ -6,6 +6,7 @@ import {
   useContentElementEditorState,
   useContentElementLifecycle,
   useDarkBackground,
+  useTheme,
   contentElementWidthName,
   contentElementWidths
 } from 'pageflow-scrolled/frontend';
@@ -29,6 +30,7 @@ export function ExternalLinkList(props) {
   const linkList = props.configuration.links || [];
   const {shouldLoad} = useContentElementLifecycle();
   const darkBackground = useDarkBackground();
+  const theme = useTheme();
 
   const {setTransientState, isSelected} = useContentElementEditorState();
   const [selectedItemId, setSelectedItemId] = useState();
@@ -80,7 +82,8 @@ export function ExternalLinkList(props) {
   const linkAlignment = scrollerEnabled ? 'left' : props.configuration.linkAlignment;
 
   return (
-    <div className={classNames({[styles.contentMargin]: props.customMargin || fullWidth})}>
+    <div className={classNames({[styles.contentMargin]: props.customMargin || fullWidth},
+                               styles[`scrollButtons-${theme.options.teasersScrollButtons}`])}>
       <Scroller enabled={scrollerEnabled}>
         {({scrollerRef, handleScroll}) =>
           <div className={classNames(styles.container, {[styles.fullContainer]: fullWidth})}>
