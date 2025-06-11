@@ -179,8 +179,7 @@ function Link({isEnabled, isEditable, ...props}) {
   if ((isEnabled && props.href) || isEditable) {
     return (
       <EditableLink {...props}
-                    actionButtonVisible={props.actionButtonVisible}
-                    linkPreviewPosition="above" />
+                    actionButtonVisible={props.actionButtonVisible} />
     );
   }
   else {

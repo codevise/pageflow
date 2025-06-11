@@ -13,7 +13,7 @@ export function EditableLink({
   onChange,
   linkPreviewDisabled,
   linkPreviewPosition = 'below',
-  linkPreviewAlign = 'left',
+  linkPreviewAlign = 'center',
   actionButtonPosition = 'outside',
   actionButtonVisible = 'whenSelected',
   actionButtonPortal
