@@ -60,6 +60,19 @@
   --reference-max-width: var(--layout-inline-xl-content-max-width);
 }
 
+.list:where(:not(.width-full)) > * {
+  max-width: calc((var(--content-max-width) - var(--gap) * (var(--max-columns) - 1)) / var(--max-columns));
+}
+
+.width-lg.layout-center.linkWidth-l,
+.width-xl.linkWidth-xl {
+  --max-columns: 2;
+}
+
+.width-xl.linkWidth-l {
+  --max-columns: 3;
+}
+
 .linkWidth-s > * {
   max-width: 240px;
 }
