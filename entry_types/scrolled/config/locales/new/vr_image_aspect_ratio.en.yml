@@ -1,0 +1,24 @@
+en:
+  pageflow_scrolled:
+    editor:
+      content_elements:
+        vrImage:
+          attributes:
+            aspectRatio:
+              blank: "(Auto)"
+              inline_help: Control the shape of the VR panorama viewport. Auto uses optimized ratios based on element width.
+              label: Aspect Ratio
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Square (1:1)
+                wide: Landscape (16:9)
+            portraitAspectRatio:
+              blank: "(Default)"
+              inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to provide a different aspect ratio optimized for mobile viewing.
+              label: Aspect Ratio (Portrait)
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Square (1:1)
+                wide: Landscape (16:9)

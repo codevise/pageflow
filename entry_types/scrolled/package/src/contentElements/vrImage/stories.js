@@ -24,6 +24,12 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'With custom aspect ratio',
+      configuration: {
+        aspectRatio: 'square'
+      }
+    },
+    {
       name: 'Stereo image',
       configuration: {
         image: filePermaId('imageFiles', 'equirectangularStereo')
