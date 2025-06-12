@@ -1,9 +1,20 @@
 import React, {useContext, useState, createContext, useMemo, useRef} from 'react';
 import classNames from 'classnames';
+import {
+  useFloating,
+  FloatingPortal,
+  FloatingArrow,
+  arrow,
+  shift,
+  offset,
+  inline,
+  autoUpdate
+} from '@floating-ui/react';
 
 import {useI18n} from '../i18n';
 import {useChapter, useFile} from '../../entryState';
 import {SectionThumbnail} from '../SectionThumbnail';
+import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
 
 import styles from './LinkTooltip.module.css';
 
@@ -11,11 +22,36 @@ import ExternalLinkIcon from './images/externalLink.svg';
 
 const UpdateContext = createContext();
 
-export function LinkTooltipProvider({
+export function LinkTooltipProvider(props) {
+  const update = useContext(UpdateContext);
+
+  if (update) {
+    return props.children;
+  }
+  else {
+    return (
+      <LinkTooltipProviderInner {...props} />
+    );
+  }
+}
+
+export function LinkTooltipProviderInner({
   disabled, position, children, align = 'left', gap = 10
 }) {
   const [state, setState] = useState();
-  const outerRef = useRef();
+
+  const arrowRef = useRef();
+
+  const {refs, floatingStyles, context: floatingContext} = useFloating({
+    placement: `${position === 'below' ? 'bottom' : 'top'}${align === 'left' ? '-start' : ''}`,
+    middleware: [
+      offset(gap),
+      shift(),
+      arrow({element: arrowRef, padding: 10}),
+      inline()
+    ],
+    whileElementsMounted: autoUpdate
+  });
 
   const update = useMemo(() => {
     let timeout;
@@ -25,20 +61,11 @@ export function LinkTooltipProvider({
         clearTimeout(timeout);
         timeout = null;
 
-        const outerRect = outerRef.current.getBoundingClientRect();
-        const linkRect = linkRef.current.getBoundingClientRect();
+        refs.setReference(linkRef.current);
 
         setState({
           href,
-          openInNewTab,
-          top: position === 'below' ?
-               linkRect.bottom - outerRect.top + gap :
-               'auto',
-          bottom: position === 'above' ?
-                  outerRect.bottom - linkRect.top + gap :
-                  'auto',
-          left: linkRect.left - outerRect.left +
-                (align === 'center' ? linkRect.width / 2 : 0)
+          openInNewTab
         });
       },
 
@@ -56,17 +83,19 @@ export function LinkTooltipProvider({
         }
       }
     }
-  }, [position, align, gap]);
+  }, [refs]);
 
   return (
     <UpdateContext.Provider value={update}>
-      <div ref={outerRef}>
+      <FloatingPortal root={useFloatingPortalRoot()}>
         <LinkTooltip state={state}
-                     disabled={disabled}
-                     position={position}
-                     align={align} />
-        {children}
-      </div>
+                     setFloating={refs.setFloating}
+                     floatingStyles={floatingStyles}
+                     floatingContext={floatingContext}
+                     arrowRef={arrowRef}
+                     disabled={disabled} />
+      </FloatingPortal>
+      {children}
     </UpdateContext.Provider>
   );
 }
@@ -84,7 +113,7 @@ export function LinkPreview({href, openInNewTab, children, className}) {
   );
 }
 
-export function LinkTooltip({disabled, position, align, state}) {
+export function LinkTooltip({disabled, setFloating, floatingStyles, floatingContext, arrowRef, state}) {
   const {keep, deactivate} = useContext(UpdateContext);
 
   if (disabled || !state || !state.href) {
@@ -92,13 +121,14 @@ export function LinkTooltip({disabled, position, align, state}) {
   }
 
   return (
-    <div className={classNames(styles.linkTooltip,
-                               styles[`position-${position}`],
-                               styles[`align-${align}`])}
+    <div ref={setFloating}
+         className={classNames(styles.linkTooltip)}
          onClick={e => e.stopPropagation()}
          onMouseEnter={keep}
          onMouseLeave={deactivate}
-         style={{top: state.top, bottom: state.bottom, left: state.left}}>
+         style={floatingStyles}>
+      <FloatingArrow ref={arrowRef}
+                     context={floatingContext} />
       <LinkDestination href={state.href} openInNewTab={state.openInNewTab} />
     </div>
   );

@@ -1,6 +1,9 @@
-.button {
+.reference {
   position: absolute;
   z-index: 10;
+}
+
+.button {
   border: 0;
   text-align: center;
   padding: 8px;
@@ -14,6 +17,15 @@
   gap: 8px;
   white-space: nowrap;
   cursor: pointer;
+}
+
+.floating {
+  transition: opacity .2s, visibility .2s;
+}
+
+.escaped {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .size-lg {

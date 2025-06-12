@@ -13,9 +13,10 @@ export function EditableLink({
   onChange,
   linkPreviewDisabled,
   linkPreviewPosition = 'below',
-  linkPreviewAlign = 'left',
+  linkPreviewAlign = 'center',
   actionButtonPosition = 'outside',
-  actionButtonVisible = 'whenSelected'
+  actionButtonVisible = 'whenSelected',
+  actionButtonPortal
 }) {
   const selectLinkDestination = useSelectLinkDestination();
   const {t} = useI18n({locale: 'ui'});
@@ -45,6 +46,7 @@ export function EditableLink({
                            t('pageflow_scrolled.inline_editing.select_link_destination')}
                      icon="link"
                      position={actionButtonPosition}
+                     portal={actionButtonPortal}
                      onClick={handleButtonClick} />}
     </div>
   );
