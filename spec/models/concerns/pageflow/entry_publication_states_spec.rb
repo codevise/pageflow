@@ -249,5 +249,45 @@ module Pageflow
         end
       end
     end
+
+    describe '#published_with_password_protection?' do
+      it 'returns true for entry published with password protection' do
+        entry = create(:entry, :published_with_password)
+
+        expect(entry.published_with_password_protection?).to eq(true)
+      end
+
+      it 'returns false for entry published without password protection' do
+        entry = create(:entry, :published)
+
+        expect(entry.published_with_password_protection?).to eq(false)
+      end
+
+      it 'returns false for non-published entry' do
+        entry = create(:entry)
+
+        expect(entry.published_with_password_protection?).to eq(false)
+      end
+    end
+
+    describe '#published_without_password_protection?' do
+      it 'returns true for entry published without password protection' do
+        entry = create(:entry, :published)
+
+        expect(entry.published_without_password_protection?).to eq(true)
+      end
+
+      it 'returns false for entry published with password protection' do
+        entry = create(:entry, :published_with_password)
+
+        expect(entry.published_without_password_protection?).to eq(false)
+      end
+
+      it 'returns false for non-published entry' do
+        entry = create(:entry)
+
+        expect(entry.published_without_password_protection?).to eq(false)
+      end
+    end
   end
 end

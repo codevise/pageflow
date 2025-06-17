@@ -1,6 +1,7 @@
 module Pageflow
   class Site < ApplicationRecord
     belongs_to :account
+    belongs_to :custom_404_entry, class_name: 'Entry', optional: true
 
     has_many :entry_templates, dependent: :destroy
     has_many :entries
@@ -11,6 +12,7 @@ module Pageflow
 
     validates :account, presence: true
     validates_inclusion_of :cutoff_mode_name, in: :available_cutoff_mode_names, allow_blank: true
+    validate :custom_404_entry_belongs_to_same_site
 
     delegate :enabled_feature_names, to: :account
 
@@ -73,6 +75,12 @@ module Pageflow
 
     def available_cutoff_mode_names
       Pageflow.config_for(account).cutoff_modes.names
+    end
+
+    def custom_404_entry_belongs_to_same_site
+      return unless custom_404_entry.present?
+
+      errors.add(:custom_404_entry, :must_belong_to_same_site) if custom_404_entry.site_id != id
     end
   end
 end

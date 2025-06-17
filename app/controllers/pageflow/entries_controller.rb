@@ -25,6 +25,8 @@ module Pageflow
           return unless check_entry_password_protection(entry)
 
           delegate_to_entry_type_frontend_app!(entry)
+        rescue ActiveRecord::RecordNotFound
+          render_custom_or_static_404_error_page
         end
       end
     end
@@ -100,15 +102,18 @@ module Pageflow
       Pageflow.config.public_entry_redirect.call(entry, request)
     end
 
-    def delegate_to_entry_type_frontend_app!(entry)
+    def delegate_to_entry_type_frontend_app!(entry, override_status: nil)
       EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry: entry, mode: :published)
 
-      delegate_to_rack_app!(entry.entry_type.frontend_app) do |_status, headers, _body|
+      delegate_to_rack_app!(entry.entry_type.frontend_app) do |result|
+        status, headers, body = result
         config = Pageflow.config_for(entry)
 
         allow_iframe_for_embed(headers)
         apply_additional_headers(entry, config, headers)
         apply_cache_control(entry, config, headers)
+
+        [override_status || status, headers, body]
       end
     end
 
@@ -127,6 +132,18 @@ module Pageflow
       headers.merge!(
         config.additional_public_entry_headers.for(entry, request)
       )
+    end
+
+    def render_custom_or_static_404_error_page
+      site = Site.for_request(request).first
+
+      if site&.custom_404_entry&.published_without_password_protection?
+        entry = PublishedEntry.new(site.custom_404_entry)
+        delegate_to_entry_type_frontend_app!(entry, override_status: 404)
+      else
+        # Fallback to ApplicationController's handler method
+        render_static_404_error_page
+      end
     end
   end
 end

@@ -22,15 +22,9 @@ module Pageflow
 
     rescue_from ActiveRecord::RecordNotFound do |exception|
       debug_log_with_backtrace(exception)
+
       respond_to do |format|
-        format.html do
-          begin
-            render file: Rails.public_path.join('pageflow', 'error_pages', '404.html'), status: :not_found
-          rescue ActionView::MissingTemplate => exception
-            debug_log_with_backtrace(exception)
-            head :not_found
-          end
-        end
+        format.html { render_static_404_error_page }
         format.any { head :not_found }
       end
     end
@@ -59,6 +53,14 @@ module Pageflow
 
     def locale_from_accept_language_header
       http_accept_language.compatible_language_from(I18n.available_locales)
+    end
+
+    def render_static_404_error_page
+      render file: Rails.public_path.join('pageflow', 'error_pages', '404.html'),
+             status: :not_found
+    rescue ActionView::MissingTemplate => e
+      debug_log_with_backtrace(e)
+      head :not_found
     end
 
     def debug_log_with_backtrace(exception)

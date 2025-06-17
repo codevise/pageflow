@@ -216,6 +216,79 @@ module Pageflow
         expect(response.body).to include('Not Found')
       end
 
+      it 'renders custom 404 entry when site has custom_404_entry configured' do
+        site = create(:site, cname: 'my.example.com')
+        custom_404_entry = create(:entry, :published,
+                                  type_name: 'test',
+                                  title: 'Custom 404',
+                                  site:)
+        site.update!(custom_404_entry:)
+
+        get('http://my.example.com/non-existent-entry')
+
+        expect(response.status).to eq(404)
+        expect(response.body).to include('Custom 404 published rendered by entry type frontend app')
+      end
+
+      it 'falls back to default 404 when site has no custom_404_entry' do
+        create(:site, cname: 'my.example.com')
+
+        get('http://my.example.com/non-existent-entry')
+
+        expect(response.status).to eq(404)
+        expect(response.body).to include("The page you've requested cannot be found.")
+      end
+
+      it 'renders site-specific custom 404 entry' do
+        site1 = create(:site, cname: 'site1.example.com')
+        site2 = create(:site, cname: 'site2.example.com')
+
+        custom_404_entry1 = create(:entry, :published,
+                                    type_name: 'test',
+                                    title: 'Site 1 Not Found',
+                                    site: site1)
+        custom_404_entry2 = create(:entry, :published,
+                                    type_name: 'test',
+                                    title: 'Site 2 Not Found',
+                                    site: site2)
+
+        site1.update!(custom_404_entry: custom_404_entry1)
+        site2.update!(custom_404_entry: custom_404_entry2)
+
+        get('http://site1.example.com/non-existent')
+        expect(response.status).to eq(404)
+        expect(response.body).to include('Site 1 Not Found')
+
+        get('http://site2.example.com/non-existent')
+        expect(response.status).to eq(404)
+        expect(response.body).to include('Site 2 Not Found')
+      end
+
+      it 'falls back to default 404 when custom_404_entry is not published' do
+        site = create(:site, cname: 'my.example.com')
+        unpublished_404_entry = create(:entry, type_name: 'test', site:)
+        site.update!(custom_404_entry: unpublished_404_entry)
+
+        get('http://my.example.com/non-existent-entry')
+
+        expect(response.status).to eq(404)
+        expect(response.body).to include("The page you've requested cannot be found.")
+      end
+
+      it 'falls back to default 404 when custom_404_entry is password protected' do
+        site = create(:site, cname: 'my.example.com')
+        password_protected_404_entry = create(:entry, :published_with_password,
+                                              type_name: 'test',
+                                              password: 'secret123',
+                                              site:)
+        site.update!(custom_404_entry: password_protected_404_entry)
+
+        get('http://my.example.com/non-existent-entry')
+
+        expect(response.status).to eq(404)
+        expect(response.body).to include("The page you've requested cannot be found.")
+      end
+
       it 'responds with forbidden for entry published with password' do
         entry = create(:entry, :published_with_password,
                        password: 'abc123abc',
