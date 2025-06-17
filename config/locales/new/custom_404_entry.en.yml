@@ -1,0 +1,11 @@
+en:
+  pageflow:
+    admin:
+      sites:
+        custom_404_entry:
+          none: "(Use default 404 page)"
+          hint: "Select an entry to display as the custom 404 page. Only published entries without password protection are available."
+  activerecord:
+    attributes:
+      pageflow/site:
+        custom_404_entry_id: "Custom 404 page"

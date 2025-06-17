@@ -23,6 +23,12 @@
   <%= f.input :sitemap_enabled, hint: t('pageflow.admin.sites.sitemap_hint',
                                         site_host: @site&.persisted? ? @site.host : '<host>') %>
 
+  <%= f.input :custom_404_entry_id,
+              as: :select,
+              collection: @site&.persisted? ? @site.entries.published_without_password_protection.pluck(:title, :id) : [],
+              include_blank: t('pageflow.admin.sites.custom_404_entry.none'),
+              hint: t('pageflow.admin.sites.custom_404_entry.hint') %>
+
   <% account_config.admin_form_inputs.find_all_for(:site).each do |form_input| %>
     <%= form_input.build(f) %>
   <% end %>
