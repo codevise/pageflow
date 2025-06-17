@@ -272,4 +272,83 @@ describe('EditConfigurationView', () => {
       expect(view.$el.find('.back').text()).toBe('Back');
     });
   });
+
+  describe('hideDestroyButton', () => {
+    it('shows destroy button by default', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.destroy')).toHaveLength(1);
+    });
+
+    it('hides destroy button when hideDestroyButton is true', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        hideDestroyButton: true,
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.destroy')).toHaveLength(0);
+    });
+
+    it('supports hideDestroyButton as function', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        hideDestroyButton() {
+          return this.model.get('preventDestroy');
+        },
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const viewWithDestroy = new View({model: new Model({preventDestroy: false})}).render();
+      const viewWithoutDestroy = new View({model: new Model({preventDestroy: true})}).render();
+
+      expect(viewWithDestroy.$el.find('.destroy')).toHaveLength(1);
+      expect(viewWithoutDestroy.$el.find('.destroy')).toHaveLength(0);
+    });
+
+    it('does not prevent destroy event handler when button is shown', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking],
+        destroyWithDelay: jest.fn()
+      });
+      const View = EditConfigurationView.extend({
+        hideDestroyButton: false,
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+      window.confirm = () => true;
+      view.$el.find('.destroy').click();
+
+      expect(view.model.destroyWithDelay).toHaveBeenCalled();
+    });
+  });
 });

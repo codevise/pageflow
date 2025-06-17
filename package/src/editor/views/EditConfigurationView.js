@@ -42,6 +42,9 @@ import {editor} from '../base';
  * Override the `goBackPath` property or method to customize the path
  * that the back button navigates to. Defaults to `/`.
  *
+ * Set the `hideDestroyButton` property to `true` to hide the destroy
+ * button.
+ *
  * @param {Object} options
  * @param {Backbone.Model} options.model -
  *   Model including the {@link configurationContainer},
@@ -52,9 +55,9 @@ import {editor} from '../base';
 export const EditConfigurationView = Marionette.Layout.extend({
   className: 'edit_configuration_view',
 
-  template: ({t, backLabel}) => `
+  template: ({t, backLabel, hideDestroyButton}) => `
     <a class="back">${backLabel}</a>
-    <a class="destroy">${t('destroy')}</a>
+    ${hideDestroyButton ? '' : `<a class="destroy">${t('destroy')}</a>`}
 
     <div class="failure">
       <p>${t('save_error')}</p>
@@ -68,7 +71,8 @@ export const EditConfigurationView = Marionette.Layout.extend({
   serializeData() {
     return {
       t: key => this.t(key),
-      backLabel: this.getBackLabel()
+      backLabel: this.getBackLabel(),
+      hideDestroyButton: _.result(this, 'hideDestroyButton')
     };
   },
 
