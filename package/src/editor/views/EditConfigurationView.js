@@ -52,8 +52,8 @@ import {editor} from '../base';
 export const EditConfigurationView = Marionette.Layout.extend({
   className: 'edit_configuration_view',
 
-  template: ({t}) => `
-    <a class="back">${t('back')}</a>
+  template: ({t, backLabel}) => `
+    <a class="back">${backLabel}</a>
     <a class="destroy">${t('destroy')}</a>
 
     <div class="failure">
@@ -67,7 +67,8 @@ export const EditConfigurationView = Marionette.Layout.extend({
 
   serializeData() {
     return {
-      t: key => this.t(key)
+      t: key => this.t(key),
+      backLabel: this.getBackLabel()
     };
   },
 
@@ -114,6 +115,10 @@ export const EditConfigurationView = Marionette.Layout.extend({
   goBack: function() {
     const path = _.result(this, 'goBackPath') || '/';
     editor.navigate(path, {trigger: true});
+  },
+
+  getBackLabel() {
+    return this.t(_.result(this, 'goBackPath') ? 'back' : 'outline');
   },
 
   t(suffix) {

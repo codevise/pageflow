@@ -45,6 +45,16 @@ describe('EditConfigurationView', () => {
         tabs: {
           general: 'Section'
         }
+      },
+      pageflow: {
+        editor: {
+          views: {
+            edit_configuration: {
+              back: 'Back',
+              outline: 'Outline'
+            }
+          }
+        }
       }
     });
 
@@ -191,6 +201,75 @@ describe('EditConfigurationView', () => {
       view.goBack();
 
       expect(editor.router.navigate).toHaveBeenCalledWith('/dynamic/123', {trigger: true});
+    });
+  });
+
+  describe('back button translation', () => {
+    support.useFakeTranslations({
+      pageflow: {
+        editor: {
+          views: {
+            edit_configuration: {
+              back: 'Back',
+              outline: 'Outline'
+            }
+          }
+        }
+      }
+    });
+
+    it('uses "outline" translation by default', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.back').text()).toBe('Outline');
+    });
+
+    it('uses "back" translation when custom goBackPath is provided', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        goBackPath: '/custom/path',
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.back').text()).toBe('Back');
+    });
+
+    it('uses "back" translation when goBackPath is a function', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        goBackPath() {
+          return '/dynamic/path';
+        },
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.back').text()).toBe('Back');
     });
   });
 });

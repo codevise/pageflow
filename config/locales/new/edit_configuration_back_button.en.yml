@@ -1,0 +1,7 @@
+en:
+  pageflow:
+    editor:
+      views:
+        edit_configuration:
+          back: "Back"
+          outline: "Outline"
