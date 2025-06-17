@@ -39,6 +39,9 @@ import {editor} from '../base';
  * Override the `destroyModel` method to customize destroy behavior.
  * Calls `destroyWithDelay` by default.
  *
+ * Override the `goBackPath` property or method to customize the path
+ * that the back button navigates to. Defaults to `/`.
+ *
  * @param {Object} options
  * @param {Backbone.Model} options.model -
  *   Model including the {@link configurationContainer},
@@ -109,7 +112,8 @@ export const EditConfigurationView = Marionette.Layout.extend({
   },
 
   goBack: function() {
-    editor.navigate('/', {trigger: true});
+    const path = _.result(this, 'goBackPath') || '/';
+    editor.navigate(path, {trigger: true});
   },
 
   t(suffix) {

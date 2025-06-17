@@ -134,4 +134,63 @@ describe('EditConfigurationView', () => {
 
     expect(editor.router.navigate).not.toHaveBeenCalled();
   });
+
+  describe('goBack navigation', () => {
+    it('navigates to / by default', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+      view.goBack();
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/', {trigger: true});
+    });
+
+    it('uses custom goBackPath when provided', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        goBackPath: '/custom/path',
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+      view.goBack();
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/custom/path', {trigger: true});
+    });
+
+    it('supports goBackPath as function', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        goBackPath() {
+          return `/dynamic/${this.model.get('id')}`;
+        },
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model({id: 123})}).render();
+      view.goBack();
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/dynamic/123', {trigger: true});
+    });
+  });
 });
