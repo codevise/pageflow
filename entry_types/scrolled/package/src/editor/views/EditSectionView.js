@@ -7,6 +7,7 @@ import {
 } from 'pageflow/ui';
 import {BackdropContentElementInputView} from './inputs/BackdropContentElementInputView';
 import {EffectListInputView} from './inputs/EffectListInputView';
+import {SectionPaddingsInputView} from './inputs/SectionPaddingsInputView';
 import {InlineFileRightsMenuItem} from '../models/InlineFileRightsMenuItem'
 import I18n from 'i18n-js';
 import {features} from 'pageflow/frontend';
@@ -126,6 +127,13 @@ export const EditSectionView = EditConfigurationView.extend({
       this.input('layout', SelectInputView, {
         values: ['left', 'right', 'center', 'centerRagged']
       });
+
+      if (features.isEnabled('section_paddings')) {
+        this.input('sectionPaddings', SectionPaddingsInputView, {
+          entry
+        });
+      }
+
       if (entry.supportsSectionWidths()) {
         this.input('width', SelectInputView, {
           values: ['wide', 'narrow']

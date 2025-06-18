@@ -51,6 +51,7 @@ module PageflowScrolled
         c.features.register('custom_palette_colors')
         c.features.register('decoration_effects')
         c.features.register('backdrop_size')
+        c.features.register('section_paddings')
 
         c.additional_frontend_seed_data.register(
           'frontendVersion',

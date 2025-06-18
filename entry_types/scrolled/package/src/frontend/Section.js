@@ -20,6 +20,7 @@ import {SectionViewTimelineProvider} from './SectionViewTimelineProvider';
 import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
 import {SelectableWidget} from './SelectableWidget';
+import {useSectionPaddingCustomProperties} from './useSectionPaddingCustomProperties';
 
 import * as v1 from './v1';
 import * as v2 from './v2';
@@ -61,7 +62,10 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                                    {[styles.first]: section.sectionIndex === 0},
                                    {[styles.narrow]: section.width === 'narrow'},
                                    section.invert ? styles.darkContent : styles.lightContent)}
-             style={useBackdropSectionCustomProperties(backdrop)}>
+             style={{
+               ...useBackdropSectionCustomProperties(backdrop),
+               ...useSectionPaddingCustomProperties(section)
+             }}>
       <SectionLifecycleProvider onActivate={onActivate}
                                 entersWithFadeTransition={section.transition?.startsWith('fade')}>
         <SectionViewTimelineProvider backdrop={backdrop}>

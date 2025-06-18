@@ -5,6 +5,7 @@ import {editor} from 'pageflow-scrolled/editor';
 import {EditChapterView} from '../views/EditChapterView';
 import {EditSectionView} from '../views/EditSectionView';
 import {EditSectionTransitionView} from '../views/EditSectionTransitionView';
+import {EditSectionPaddingsView} from '../views/EditSectionPaddingsView';
 import {EditContentElementView} from '../views/EditContentElementView';
 
 export const SideBarController = Marionette.Controller.extend({
@@ -31,6 +32,14 @@ export const SideBarController = Marionette.Controller.extend({
 
   sectionTransition: function(id, tab) {
     this.region.show(new EditSectionTransitionView({
+      entry: this.entry,
+      model: this.entry.sections.get(id),
+      editor
+    }));
+  },
+
+  sectionPaddings: function(id, tab) {
+    this.region.show(new EditSectionPaddingsView({
       entry: this.entry,
       model: this.entry.sections.get(id),
       editor
