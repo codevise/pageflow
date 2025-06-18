@@ -19,7 +19,9 @@ export const ContentElement = React.memo(withInlineEditingDecorator(
         <ContentElementAttributesProvider id={props.id} width={props.width} position={props.position}>
           <ContentElementLifecycleProvider type={props.type}
                                            override={props.lifecycleOverride}>
-            <ContentElementMargin width={props.width}>
+            <ContentElementMargin width={props.width}
+                                  top={props.itemProps.marginTop}
+                                  bottom={props.itemProps.marginBottom}>
               <ContentElementErrorBoundary type={props.type}>
                 <Component sectionProps={props.sectionProps}
                            customMargin={props.customMargin}
