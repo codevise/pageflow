@@ -18,7 +18,7 @@ editor.contentElementTypes.register('quote', {
       this.input('textSize', SelectInputView, {
         values: ['large', 'medium', 'small', 'verySmall']
       });
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
       this.group('PaletteColor', {
         propertyName: 'color',
         entry

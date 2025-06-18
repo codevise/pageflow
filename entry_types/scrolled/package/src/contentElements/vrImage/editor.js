@@ -45,7 +45,7 @@ editor.contentElementTypes.register('vrImage', {
         values: aspectRatios
       });
       this.view(SeparatorView);
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
       this.view(SeparatorView);
       this.group('ContentElementCaption', {entry});
       this.group('ContentElementInlineFileRightsSettings');

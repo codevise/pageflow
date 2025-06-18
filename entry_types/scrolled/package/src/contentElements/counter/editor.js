@@ -68,7 +68,7 @@ editor.contentElementTypes.register('counter', {
         propertyName: 'numberColor',
         entry
       });
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
     });
   }
 });
