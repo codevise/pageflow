@@ -3,7 +3,7 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {findKeyWithTranslation} from '../../utils/i18nUtils';
+import {findKeyWithTranslation, findTranslation} from '../../utils/i18nUtils';
 import {inputView} from '../mixins/inputView';
 
 import template from '../../templates/inputs/selectInput.jst';
@@ -67,7 +67,10 @@ import template from '../../templates/inputs/selectInput.jst';
  *   Display text for the blank item.
  *
  * @param {string} [options.blankTranslationKey]
- *   Translation key to obtain display text for blank item.
+ *   Translation key to obtain display text for blank item. If neither
+ *   `blankText` nor `blankTranslationKey` are provided, the blank text
+ *   will be determined using `attributeTranslationKeyPrefixes` with
+ *   the suffix `blank`, similar to how labels are determined.
  *
  * @param {string} [options.placeholderValue]
  *   Include an item that sets the value of the attribute to a blank
@@ -166,14 +169,21 @@ export const SelectInputView = Marionette.ItemView.extend({
       return;
     }
 
+    var blankText = this.options.blankText;
+
     if (this.options.blankTranslationKey) {
-      this.options.blankText = I18n.t(this.options.blankTranslationKey);
+      blankText = I18n.t(this.options.blankTranslationKey);
+    }
+    else if (!blankText) {
+      blankText = findTranslation(this.attributeTranslationKeys('blank'), {
+        defaultValue: I18n.t('pageflow.ui.views.inputs.select_input_view.none')
+      });
     }
 
     var option = document.createElement('option');
 
     option.value = '';
-    option.text = this.options.blankText || I18n.t('pageflow.ui.views.inputs.select_input_view.none');
+    option.text = blankText;
 
     this.ui.select.append(option);
   },
