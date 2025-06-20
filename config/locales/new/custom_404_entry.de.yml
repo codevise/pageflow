@@ -1,0 +1,11 @@
+de:
+  pageflow:
+    admin:
+      sites:
+        custom_404_entry:
+          none: "(Standard 404-Seite verwenden)"
+          hint: "Wählen Sie einen Eintrag aus, der als benutzerdefinierte 404-Seite angezeigt werden soll. Nur veröffentlichte Einträge ohne Passwortschutz sind verfügbar."
+  activerecord:
+    attributes:
+      pageflow/site:
+        custom_404_entry_id: "Benutzerdefinierte 404-Seite"

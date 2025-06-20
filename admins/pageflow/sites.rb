@@ -30,7 +30,8 @@ module Pageflow
         :copyright_link_label,
         :privacy_link_url,
         :home_url,
-        :cutoff_mode_name
+        :cutoff_mode_name,
+        :custom_404_entry_id
       ] + permitted_admin_form_input_params
     end
 

@@ -161,5 +161,31 @@ module Pageflow
         expect(result).to eq([matching_site])
       end
     end
+
+    describe 'custom_404_entry validation' do
+      it 'is valid when custom_404_entry belongs to same site' do
+        site = create(:site)
+        entry = create(:entry, site: site)
+        site.custom_404_entry = entry
+
+        expect(site).to be_valid
+      end
+
+      it 'is invalid when custom_404_entry belongs to different site' do
+        site1 = create(:site)
+        site2 = create(:site)
+        entry = create(:entry, site: site2)
+        site1.custom_404_entry = entry
+
+        site1.valid?
+        expect(site1.errors).to include(:custom_404_entry)
+      end
+
+      it 'is valid when custom_404_entry is nil' do
+        site = build(:site)
+
+        expect(site).to be_valid
+      end
+    end
   end
 end

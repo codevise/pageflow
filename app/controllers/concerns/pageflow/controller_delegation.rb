@@ -8,7 +8,7 @@ module Pageflow
     # the response.
     def delegate_to_rack_app!(app)
       result = app.call(request.env)
-      yield(*result) if block_given?
+      result = yield(result) if block_given?
 
       throw(:delegate, result)
     end

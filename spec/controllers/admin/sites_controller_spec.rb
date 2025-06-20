@@ -216,6 +216,15 @@ module Admin
 
         expect(response.body).to have_select('Cutoff mode', options: ['(None)', 'Some Cutoff Mode'])
       end
+
+      it 'displays empty custom 404 entry select for new sites' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin), scope: :user)
+        get(:new, params: {account_id: account})
+
+        expect(response.body).to have_select('Custom 404 page', options: ['(Use default 404 page)'])
+      end
     end
 
     describe '#edit' do
@@ -239,6 +248,28 @@ module Admin
         get(:edit, params: {account_id: site.account, id: site})
 
         expect(response.body).to have_selector('[name="site[custom_field]"]')
+      end
+
+      it 'displays custom 404 entry select for existing sites' do
+        site = create(:site)
+        entry = create(:entry, :published, site: site)
+
+        sign_in(create(:user, :admin), scope: :user)
+        get(:edit, params: {account_id: site.account, id: site})
+
+        expect(response.body).to have_select('Custom 404 page')
+      end
+
+      it 'displays only published entries without password protection in custom 404 entry select' do
+        site = create(:site)
+        published_entry = create(:entry, :published, site: site, title: 'Published Entry')
+        unpublished_entry = create(:entry, site: site, title: 'Unpublished Entry')
+        password_protected_entry = create(:entry, :published_with_password, site: site, password: 'secret', title: 'Protected Entry')
+
+        sign_in(create(:user, :admin), scope: :user)
+        get(:edit, params: {account_id: site.account, id: site})
+
+        expect(response.body).to have_select('Custom 404 page', options: ['(Use default 404 page)', 'Published Entry'])
       end
     end
 
@@ -342,6 +373,40 @@ module Admin
 
         expect(account.sites.last.custom_field).to eq(nil)
       end
+
+      it 'sets custom_404_entry_id when provided' do
+        site = create(:site)
+        entry = create(:entry, :published, site: site)
+
+        sign_in(create(:user, :admin), scope: :user)
+        patch(:update,
+              params: {
+                account_id: site.account,
+                id: site,
+                site: {
+                  custom_404_entry_id: entry.id
+                }
+              })
+
+        expect(site.reload.custom_404_entry_id).to eq(entry.id)
+      end
+
+      it 'allows nil custom_404_entry_id' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create,
+             params: {
+               account_id: account,
+               site: {
+                 name: 'test site',
+                 custom_404_entry_id: ''
+               }
+             })
+
+        site = account.sites.last
+        expect(site.custom_404_entry_id).to be_nil
+      end
     end
 
     describe '#update' do
@@ -437,6 +502,41 @@ module Admin
               })
 
         expect(site.reload.custom_field).to eq(nil)
+      end
+
+      it 'updates custom_404_entry_id when provided' do
+        site = create(:site)
+        entry = create(:entry, :published, site: site)
+
+        sign_in(create(:user, :admin), scope: :user)
+        patch(:update,
+              params: {
+                account_id: site.account,
+                id: site,
+                site: {
+                  custom_404_entry_id: entry.id
+                }
+              })
+
+        expect(site.reload.custom_404_entry_id).to eq(entry.id)
+      end
+
+      it 'clears custom_404_entry_id when set to blank' do
+        site = create(:site)
+        entry = create(:entry, :published, site: site)
+        site.update!(custom_404_entry: entry)
+
+        sign_in(create(:user, :admin), scope: :user)
+        patch(:update,
+              params: {
+                account_id: site.account,
+                id: site,
+                site: {
+                  custom_404_entry_id: ''
+                }
+              })
+
+        expect(site.reload.custom_404_entry_id).to be_nil
       end
     end
   end
