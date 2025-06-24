@@ -1,11 +1,12 @@
 import React, {useRef, useState} from 'react';
 import {useAutoCruising} from './useAutoCruising';
+import {getAspectRatio} from './getAspectRatio';
 
 import {
-  contentElementWidths,
   useContentElementEditorState,
   useContentElementLifecycle,
   useFileWithInlineRights,
+  usePortraitOrientation,
   ContentElementBox,
   ContentElementFigure,
   Panorama,
@@ -16,6 +17,7 @@ import {
 export function VrImage({configuration, contentElementWidth}) {
   const {shouldLoad} = useContentElementLifecycle();
   const {isEditable, isSelected} = useContentElementEditorState();
+  const portraitOrientation = usePortraitOrientation();
 
   const imageFile = useFileWithInlineRights({
     configuration,
@@ -23,15 +25,17 @@ export function VrImage({configuration, contentElementWidth}) {
     propertyName: 'image'
   });
 
+  const aspectRatio = getAspectRatio({configuration, contentElementWidth, portraitOrientation});
+
   return (
     <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <FitViewport
-        aspectRatio={contentElementWidth === contentElementWidths.full ? 0.5 : 0.75}
+        aspectRatio={aspectRatio}
         fill={configuration.position === 'backdrop'}>
         <ContentElementBox>
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
-              {renderLazyPanorama(configuration, imageFile, shouldLoad)}
+              {renderLazyPanorama(configuration, imageFile, shouldLoad, aspectRatio)}
               <InlineFileRights configuration={configuration}
                                 context="insideElement"
                                 items={[{file: imageFile, label: 'image'}]} />
@@ -46,9 +50,10 @@ export function VrImage({configuration, contentElementWidth}) {
   );
 }
 
-function renderLazyPanorama(configuration, imageFile, shouldLoad) {
+function renderLazyPanorama(configuration, imageFile, shouldLoad, aspectRatio) {
   if (shouldLoad && imageFile && imageFile.isReady) {
     return (<AutoCruisingPanorama imageFile={imageFile}
+                                  key={aspectRatio}
                                   initialYaw={configuration.initialYaw}
                                   initialPitch={configuration.initialPitch} />)
   }

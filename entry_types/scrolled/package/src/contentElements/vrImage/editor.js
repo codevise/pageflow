@@ -3,6 +3,8 @@ import {SelectInputView, FileInputView, EnumTableCellView, SliderInputView, Sepa
 
 import pictogram from './pictogram.svg';
 
+const aspectRatios = ['wide', 'narrow', 'square', 'portrait'];
+
 editor.contentElementTypes.register('vrImage', {
   pictogram,
   category: 'interactive',
@@ -28,6 +30,21 @@ editor.contentElementTypes.register('vrImage', {
         minValue: -60,
         maxValue: 60
       });
+      this.input('aspectRatio', SelectInputView, {
+        includeBlank: true,
+        blankTranslationKey: 'pageflow_scrolled.editor.' +
+                             'content_elements.vrImage.' +
+                             'attributes.aspectRatio.blank',
+        values: aspectRatios
+      });
+      this.input('portraitAspectRatio', SelectInputView, {
+        includeBlank: true,
+        blankTranslationKey: 'pageflow_scrolled.editor.' +
+                             'content_elements.vrImage.' +
+                             'attributes.portraitAspectRatio.blank',
+        values: aspectRatios
+      });
+      this.view(SeparatorView);
       this.group('ContentElementPosition');
       this.view(SeparatorView);
       this.group('ContentElementCaption', {entry});
