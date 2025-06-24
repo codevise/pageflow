@@ -38,6 +38,10 @@ module Pageflow
       published? && published_revision.password_protected?
     end
 
+    def published_without_password_protection?
+      published? && !published_revision.password_protected?
+    end
+
     def published?
       published_revision.present?
     end
