@@ -22,7 +22,7 @@
 }
 
 .paddingBottom {
-  padding-bottom: 3em;
+  padding-bottom: var(--foreground-padding-bottom, 3em);
 }
 
 @media print {

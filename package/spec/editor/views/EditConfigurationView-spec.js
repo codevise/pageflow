@@ -45,6 +45,16 @@ describe('EditConfigurationView', () => {
         tabs: {
           general: 'Section'
         }
+      },
+      pageflow: {
+        editor: {
+          views: {
+            edit_configuration: {
+              back: 'Back',
+              outline: 'Outline'
+            }
+          }
+        }
       }
     });
 
@@ -133,5 +143,212 @@ describe('EditConfigurationView', () => {
     view.$el.find('.destroy').click();
 
     expect(editor.router.navigate).not.toHaveBeenCalled();
+  });
+
+  describe('goBack navigation', () => {
+    it('navigates to / by default', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+      view.goBack();
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/', {trigger: true});
+    });
+
+    it('uses custom goBackPath when provided', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        goBackPath: '/custom/path',
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+      view.goBack();
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/custom/path', {trigger: true});
+    });
+
+    it('supports goBackPath as function', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        goBackPath() {
+          return `/dynamic/${this.model.get('id')}`;
+        },
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model({id: 123})}).render();
+      view.goBack();
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/dynamic/123', {trigger: true});
+    });
+  });
+
+  describe('back button translation', () => {
+    support.useFakeTranslations({
+      pageflow: {
+        editor: {
+          views: {
+            edit_configuration: {
+              back: 'Back',
+              outline: 'Outline'
+            }
+          }
+        }
+      }
+    });
+
+    it('uses "outline" translation by default', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.back').text()).toBe('Outline');
+    });
+
+    it('uses "back" translation when custom goBackPath is provided', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        goBackPath: '/custom/path',
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.back').text()).toBe('Back');
+    });
+
+    it('uses "back" translation when goBackPath is a function', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        goBackPath() {
+          return '/dynamic/path';
+        },
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.back').text()).toBe('Back');
+    });
+  });
+
+  describe('hideDestroyButton', () => {
+    it('shows destroy button by default', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.destroy')).toHaveLength(1);
+    });
+
+    it('hides destroy button when hideDestroyButton is true', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        hideDestroyButton: true,
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.destroy')).toHaveLength(0);
+    });
+
+    it('supports hideDestroyButton as function', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        hideDestroyButton() {
+          return this.model.get('preventDestroy');
+        },
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const viewWithDestroy = new View({model: new Model({preventDestroy: false})}).render();
+      const viewWithoutDestroy = new View({model: new Model({preventDestroy: true})}).render();
+
+      expect(viewWithDestroy.$el.find('.destroy')).toHaveLength(1);
+      expect(viewWithoutDestroy.$el.find('.destroy')).toHaveLength(0);
+    });
+
+    it('does not prevent destroy event handler when button is shown', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking],
+        destroyWithDelay: jest.fn()
+      });
+      const View = EditConfigurationView.extend({
+        hideDestroyButton: false,
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+      window.confirm = () => true;
+      view.$el.find('.destroy').click();
+
+      expect(view.model.destroyWithDelay).toHaveBeenCalled();
+    });
   });
 });

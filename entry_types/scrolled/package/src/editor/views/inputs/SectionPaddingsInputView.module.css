@@ -1,0 +1,37 @@
+.button {
+  width: 100%;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M8 6l4 4 -4 4'/%3e%3c/svg%3e");
+  background-position: right space(1) center;
+  background-repeat: no-repeat;
+  background-size: 1.5rem 1.5rem;
+  color-adjust: exact;
+}
+
+.button {
+  border-color: var(--ui-on-surface-color-lighter) !important;
+}
+
+.button:hover,
+.button:active,
+.button:focus {
+  border-color: var(--ui-on-surface-color-light) !important;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: space(4) auto auto;
+  column-gap: space(4);
+  row-gap: space(2);
+  align-items: center;
+  justify-items: start;
+  font-weight: normal;
+}
+
+.grid svg {
+  grid-column: 1;
+}
+
+.paddingTop {}
+.paddingBottom {}
+.portraitPaddingTop {}
+.portraitPaddingBottom {}

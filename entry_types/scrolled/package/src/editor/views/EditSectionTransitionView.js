@@ -5,6 +5,7 @@ import {normalizeSectionConfigurationData} from '../../entryState';
 
 export const EditSectionTransitionView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_section_transition',
+  hideDestroyButton: true,
 
   configure: function(configurationEditor) {
     const entry = this.options.entry;

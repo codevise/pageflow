@@ -1,0 +1,7 @@
+de:
+  pageflow:
+    editor:
+      views:
+        edit_configuration:
+          back: "Zurück"
+          outline: "Gliederung"

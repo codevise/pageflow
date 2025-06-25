@@ -1,0 +1,29 @@
+de:
+  pageflow:
+    section_paddings:
+      feature_name: "Abschnittsinnenabstände"
+  pageflow_scrolled:
+    editor:
+      section_paddings_input:
+        auto: (Automatisch)
+      edit_section:
+        attributes:
+          sectionPaddings:
+            label: Innenabstände oben/unten
+      edit_section_paddings:
+        tabs:
+          sectionPaddings: Innenabstände
+          portrait: Hochkant
+        attributes:
+          paddingTop:
+            blank: (Standard)
+            label: Oben
+          paddingBottom:
+            blank: (Standard)
+            label: Unten
+          portraitPaddingTop:
+            blank: (Standard)
+            label: Oben (Hochkant)
+          portraitPaddingBottom:
+            blank: (Standard)
+            label: Unten (Hochkant)

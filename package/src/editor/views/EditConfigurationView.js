@@ -39,6 +39,12 @@ import {editor} from '../base';
  * Override the `destroyModel` method to customize destroy behavior.
  * Calls `destroyWithDelay` by default.
  *
+ * Override the `goBackPath` property or method to customize the path
+ * that the back button navigates to. Defaults to `/`.
+ *
+ * Set the `hideDestroyButton` property to `true` to hide the destroy
+ * button.
+ *
  * @param {Object} options
  * @param {Backbone.Model} options.model -
  *   Model including the {@link configurationContainer},
@@ -49,9 +55,9 @@ import {editor} from '../base';
 export const EditConfigurationView = Marionette.Layout.extend({
   className: 'edit_configuration_view',
 
-  template: ({t}) => `
-    <a class="back">${t('back')}</a>
-    <a class="destroy">${t('destroy')}</a>
+  template: ({t, backLabel, hideDestroyButton}) => `
+    <a class="back">${backLabel}</a>
+    ${hideDestroyButton ? '' : `<a class="destroy">${t('destroy')}</a>`}
 
     <div class="failure">
       <p>${t('save_error')}</p>
@@ -64,7 +70,9 @@ export const EditConfigurationView = Marionette.Layout.extend({
 
   serializeData() {
     return {
-      t: key => this.t(key)
+      t: key => this.t(key),
+      backLabel: this.getBackLabel(),
+      hideDestroyButton: _.result(this, 'hideDestroyButton')
     };
   },
 
@@ -109,7 +117,12 @@ export const EditConfigurationView = Marionette.Layout.extend({
   },
 
   goBack: function() {
-    editor.navigate('/', {trigger: true});
+    const path = _.result(this, 'goBackPath') || '/';
+    editor.navigate(path, {trigger: true});
+  },
+
+  getBackLabel() {
+    return this.t(_.result(this, 'goBackPath') ? 'back' : 'outline');
   },
 
   t(suffix) {
