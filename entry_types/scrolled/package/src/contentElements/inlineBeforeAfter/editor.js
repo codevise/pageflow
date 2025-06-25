@@ -29,7 +29,7 @@ editor.contentElementTypes.register('inlineBeforeAfter', {
       this.input('initial_slider_position', SliderInputView);
       this.input('slider_color', ColorInputView);
 
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
 
       this.view(SeparatorView);
 

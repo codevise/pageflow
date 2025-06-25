@@ -36,7 +36,7 @@ editor.contentElementTypes.register('imageGallery', {
         disabled: () => contentElement.getWidth() === contentElementWidths.full,
         displayUncheckedIfDisabled: true
       });
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
       this.view(SeparatorView);
       this.group('ContentElementCaption', {entry, disableWhenNoCaption: false});
       this.group('ContentElementInlineFileRightsSettings', {entry, disableWhenNoFileRights: false});

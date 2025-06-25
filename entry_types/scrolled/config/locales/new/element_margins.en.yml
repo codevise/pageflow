@@ -1,0 +1,13 @@
+en:
+  pageflow:
+    content_element_margins:
+      feature_name: "Element Margins"
+  pageflow_scrolled:
+    editor:
+      common_content_element_attributes:
+        marginTop:
+          label: "Margin top"
+          blank: "(Auto)"
+        marginBottom:
+          label: "Margin bottom"
+          blank: "(Auto)"

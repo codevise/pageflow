@@ -332,6 +332,25 @@ export const ScrolledEntry = Entry.extend({
     return defaultAspectRatios.concat(customRatios);
   },
 
+  getScale(scaleName) {
+    const themeOptions = this.scrolledSeed.config.theme.options;
+    const root = themeOptions.properties?.root || {};
+
+
+    const values = Object.keys(root)
+                         .filter(name => name.indexOf(scaleName) === 0)
+                         .map(name => name.split('-').pop());
+    const texts = values.map(value =>
+      I18n.t(
+        `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
+        `.scales.${scaleName}.${value}`,
+        {defaultValue: I18n.t(`pageflow_scrolled.editor.scales.${scaleName}.${value}`)}
+      )
+    );
+
+    return [values, texts];
+  },
+
   getUsedSectionBackgroundColors() {
     const colors = new Set();
 

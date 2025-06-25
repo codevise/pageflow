@@ -32,7 +32,7 @@ editor.contentElementTypes.register('dataWrapperChart', {
         defaultValue: '#323d4d'
       });
 
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
       this.view(SeparatorView);
       this.group('ContentElementCaption', {entry});
     });

@@ -55,7 +55,7 @@ editor.contentElementTypes.register('heading', {
       }
 
       this.view(SeparatorView);
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
     });
   }
 });

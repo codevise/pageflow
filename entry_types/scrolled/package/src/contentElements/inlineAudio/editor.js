@@ -55,7 +55,7 @@ editor.contentElementTypes.register('inlineAudio', {
 
       this.view(SeparatorView);
 
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
 
       this.view(SeparatorView);
 

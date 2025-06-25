@@ -23,7 +23,7 @@ import {
   PositionSelectInputView
 } from '../../inputs/PositionSelectInputView';
 
-ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
+ConfigurationEditorTabView.groups.define('ContentElementPosition', function({entry}) {
   const contentElement = this.model.parent;
 
   if (contentElement.getAvailablePositions().length > 1) {
@@ -61,6 +61,23 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
       displayCheckedIfDisabled: true,
       visibleBinding: 'position',
       visible: () => contentElement.getPosition() !== 'backdrop'
+    });
+  }
+
+  if (features.isEnabled('content_element_margins')) {
+    const [values, texts] = entry.getScale('contentElementMargin');
+
+    this.input('marginTop', SelectInputView, {
+      attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
+      includeBlank: true,
+      values,
+      texts
+    });
+    this.input('marginBottom', SelectInputView, {
+      attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
+      includeBlank: true,
+      values,
+      texts
     });
   }
 });

@@ -53,7 +53,7 @@ editor.contentElementTypes.register('inlineImage', {
         disabled: () => contentElement.getWidth() === contentElementWidths.full,
         displayUncheckedIfDisabled: true
       });
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
 
       this.view(SeparatorView);
 

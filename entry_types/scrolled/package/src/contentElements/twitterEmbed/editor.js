@@ -7,7 +7,7 @@ editor.contentElementTypes.register('twitterEmbed', {
   category: 'media',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
 
-  configurationEditor() {
+  configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('url', UrlInputView, {
         supportedHosts: [
@@ -20,7 +20,7 @@ editor.contentElementTypes.register('twitterEmbed', {
         required: true,
         permitHttps: true
       });
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
       this.input('hideConversation', CheckBoxInputView);
       this.input('hideMedia', CheckBoxInputView);
     });

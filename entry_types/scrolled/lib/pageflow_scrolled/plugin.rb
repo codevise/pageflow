@@ -50,6 +50,7 @@ module PageflowScrolled
         c.features.register('backdrop_content_elements')
         c.features.register('custom_palette_colors')
         c.features.register('decoration_effects')
+        c.features.register('content_element_margins')
         c.features.register('backdrop_size')
 
         c.additional_frontend_seed_data.register(

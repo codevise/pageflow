@@ -317,6 +317,100 @@ describe('pageflow.SelectInputView', () => {
     });
   });
 
+  describe('with includeBlank option', () => {
+    describe('with attributeTranslationKeyPrefixes option', () => {
+      support.useFakeTranslations({
+        'some.attributes.modes.blank': 'Custom None',
+        'fallback.attributes.modes.blank': 'Fallback None',
+        'pageflow.ui.views.inputs.select_input_view.none': 'Default None'
+      });
+
+      it('uses blank translation from attribute translation key prefixes', () => {
+        var selectInputView = new SelectInputView({
+          model: new Model(),
+          propertyName: 'modes',
+          values: ['one', 'two'],
+          includeBlank: true,
+          attributeTranslationKeyPrefixes: ['some.attributes']
+        });
+
+        selectInputView.render();
+        var blankOptionText = $('option[value=""]', selectInputView.el).text();
+
+        expect(blankOptionText).toEqual('Custom None');
+      });
+
+      it('falls back to second attribute translation key prefix for blank', () => {
+        var selectInputView = new SelectInputView({
+          model: new Model(),
+          propertyName: 'modes',
+          values: ['one', 'two'],
+          includeBlank: true,
+          attributeTranslationKeyPrefixes: ['missing.attributes', 'fallback.attributes']
+        });
+
+        selectInputView.render();
+        var blankOptionText = $('option[value=""]', selectInputView.el).text();
+
+        expect(blankOptionText).toEqual('Fallback None');
+      });
+
+      it('falls back to default translation when no attribute blank key exists', () => {
+        var selectInputView = new SelectInputView({
+          model: new Model(),
+          propertyName: 'nonexistent',
+          values: ['one', 'two'],
+          includeBlank: true,
+          attributeTranslationKeyPrefixes: ['some.attributes']
+        });
+
+        selectInputView.render();
+        var blankOptionText = $('option[value=""]', selectInputView.el).text();
+
+        expect(blankOptionText).toEqual('Default None');
+      });
+
+      it('prefers explicit blankText over attribute translation key prefixes', () => {
+        var selectInputView = new SelectInputView({
+          model: new Model(),
+          propertyName: 'modes',
+          values: ['one', 'two'],
+          includeBlank: true,
+          blankText: 'Explicit None',
+          attributeTranslationKeyPrefixes: ['some.attributes']
+        });
+
+        selectInputView.render();
+        var blankOptionText = $('option[value=""]', selectInputView.el).text();
+
+        expect(blankOptionText).toEqual('Explicit None');
+      });
+
+      describe('with explicit blankTranslationKey', () => {
+        support.useFakeTranslations({
+          'explicit.blank': 'Explicit Translation None',
+          'some.attributes.modes.blank': 'Custom None'
+        });
+
+        it('prefers explicit blankTranslationKey over attribute translation key prefixes', () => {
+          var selectInputView = new SelectInputView({
+            model: new Model(),
+            propertyName: 'modes',
+            values: ['one', 'two'],
+            includeBlank: true,
+            blankTranslationKey: 'explicit.blank',
+            attributeTranslationKeyPrefixes: ['some.attributes']
+          });
+
+          selectInputView.render();
+          var blankOptionText = $('option[value=""]', selectInputView.el).text();
+
+          expect(blankOptionText).toEqual('Explicit Translation None');
+        });
+      });
+    });
+  });
+
   function optionTexts(view) {
     view.render();
 

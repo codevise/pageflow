@@ -54,7 +54,7 @@ editor.contentElementTypes.register('externalLinkList', {
         visibleBindingValue: 'overlay'
       });
       this.view(SeparatorView);
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
       this.view(SeparatorView);
       this.input('linkWidth', SliderInputView, {
         displayText: value => [

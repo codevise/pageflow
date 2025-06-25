@@ -8,7 +8,7 @@ editor.contentElementTypes.register('tikTokEmbed', {
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['md', 'full'],
 
-  configurationEditor() {
+  configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('url', UrlInputView, {
         supportedHosts: [
@@ -18,7 +18,7 @@ editor.contentElementTypes.register('tikTokEmbed', {
         required: true,
         permitHttps: true
       });
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
     });
   },
   defaultConfig: {},

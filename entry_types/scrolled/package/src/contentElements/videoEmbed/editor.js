@@ -46,7 +46,7 @@ editor.contentElementTypes.register('videoEmbed', {
 
       this.view(SeparatorView);
 
-      this.group('ContentElementPosition');
+      this.group('ContentElementPosition', {entry});
 
       this.view(SeparatorView);
 
