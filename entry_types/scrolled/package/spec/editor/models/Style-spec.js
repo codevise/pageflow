@@ -85,8 +85,11 @@ describe('Style', () => {
       [`${commonPrefix}.square`]: 'Square (1:1)',
       [`${themePrefix}.4to5`]: 'Custom (4:5)',
       'pageflow_scrolled.editor.backdrop_effects.rounded.label': 'Rounded corners',
+      'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.none': 'None',
       'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.sm': 'Small',
-      'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.md': 'Medium'
+      'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.md': 'Medium',
+      'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.lg': 'Large',
+      'pageflow_scrolled.editor.common.default_suffix': ' (Default)'
     });
 
     it('includes styles for theme aspect ratios', () => {
@@ -162,6 +165,55 @@ describe('Style', () => {
           ])
         }
       })
+    });
+
+    it('includes none option and disables matching item when theme has default border radius', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {
+          metadata: {theme_name: 'custom'}
+        },
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementBoxBorderRadius': '8px',
+                  'contentElementBoxBorderRadius-sm': '4px',
+                  'contentElementBoxBorderRadius-md': '8px',
+                  'contentElementBoxBorderRadius-lg': '16px'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const result = Style.getImageModifierTypes({entry});
+
+      expect(result).toMatchObject({
+        'rounded': {
+          items: [
+            {
+              value: 'none',
+              label: 'None'
+            },
+            {
+              value: 'sm',
+              label: 'Small'
+            },
+            {
+              value: 'md',
+              label: 'Medium',
+              default: true
+            },
+            {
+              value: 'lg',
+              label: 'Large'
+            }
+          ]
+        }
+      });
     });
   });
 });

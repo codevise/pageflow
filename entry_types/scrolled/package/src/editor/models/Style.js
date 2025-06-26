@@ -129,14 +129,37 @@ Style.getImageModifierTypes = function({entry}) {
   };
 
   if (borderRadiusValues.length > 0) {
-    result.rounded = {
-      items: borderRadiusValues.map((value, index) => (
-        {
-          label: borderRadiusLabels[index],
-          value
-        }
-      ))
-    };
+    const themeProperties = entry.scrolledSeed.config.theme.options.properties.root;
+    const defaultBorderRadius = themeProperties['contentElementBoxBorderRadius'];
+
+    const items = borderRadiusValues.map((value, index) => {
+      const scaleProperty = `contentElementBoxBorderRadius-${value}`;
+      const scaleValue = themeProperties[scaleProperty];
+      const isDefault = !!(defaultBorderRadius && scaleValue === defaultBorderRadius);
+
+      const item = {
+        label: borderRadiusLabels[index],
+        value
+      };
+
+      if (isDefault) {
+        item.default = true;
+      }
+
+      return item;
+    });
+
+    if (defaultBorderRadius) {
+      const noneLabel = I18n.t('pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.none');
+
+      items.unshift({
+        label: noneLabel,
+        value: 'none',
+        disabled: false
+      });
+    }
+
+    result.rounded = { items };
   }
 
   return result;

@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import I18n from 'i18n-js';
 import {features} from 'pageflow/frontend';
 import {Style} from '../models/Style';
 
@@ -80,19 +81,62 @@ const UnusedStyleItem = Backbone.Model.extend({
   initialize(attributes, {styles, styleName}) {
     this.styles = styles;
     this.styleName = styleName;
+    this.isDefault = !!attributes.default;
 
+    this._setLabelWithSuffix(attributes);
+    this._setupDisabledStateTracking();
+  },
+
+  _setLabelWithSuffix(attributes) {
+    let label = attributes.label;
+    if (this.isDefault) {
+      const defaultSuffix = I18n.t('pageflow_scrolled.editor.common.default_suffix');
+      label = label + defaultSuffix;
+    }
+    this.set('label', label);
+  },
+
+  _setupDisabledStateTracking() {
     const update = () => {
-      this.set({
-        disabled: styles.findWhere({name: styleName})?.get('value') === this.get('value')
-      });
+      const disabled = this._calculateDisabledState();
+      this.set({ disabled });
     };
 
-    this.listenTo(styles, 'add remove', update);
+    this.listenTo(this.styles, 'add remove', update);
     update();
   },
 
+  _calculateDisabledState() {
+    const currentStyle = this.styles.findWhere({name: this.styleName});
+    const isCurrentlySelected = currentStyle?.get('value') === this.get('value');
+
+    if (this.isDefault) {
+      return !currentStyle;
+    } else {
+      return isCurrentlySelected;
+    }
+  },
+
   selected() {
-    this.styles.remove(this.styles.findWhere({name: this.styleName}));
+    const currentStyle = this.styles.findWhere({name: this.styleName});
+
+    if (this._shouldResetToDefault(currentStyle)) {
+      this._resetToDefault(currentStyle);
+    } else {
+      this._applyStyle(currentStyle);
+    }
+  },
+
+  _shouldResetToDefault(currentStyle) {
+    return this.isDefault && currentStyle;
+  },
+
+  _resetToDefault(currentStyle) {
+    this.styles.remove(currentStyle);
+  },
+
+  _applyStyle(currentStyle) {
+    this.styles.remove(currentStyle);
     this.styles.add({name: this.styleName, value: this.get(('value'))}, {types: this.styles.types});
   }
 });

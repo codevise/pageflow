@@ -338,7 +338,7 @@ export const ScrolledEntry = Entry.extend({
 
 
     const values = Object.keys(root)
-                         .filter(name => name.indexOf(scaleName) === 0)
+                         .filter(name => name.indexOf(`${scaleName}-`) === 0)
                          .map(name => name.split('-').pop());
     const texts = values.map(value =>
       I18n.t(
