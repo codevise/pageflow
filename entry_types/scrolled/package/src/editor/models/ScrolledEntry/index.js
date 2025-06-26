@@ -336,10 +336,10 @@ export const ScrolledEntry = Entry.extend({
     const themeOptions = this.scrolledSeed.config.theme.options;
     const root = themeOptions.properties?.root || {};
 
+    const scaleProperties = Object.keys(root)
+                                  .filter(name => name.indexOf(`${scaleName}-`) === 0);
 
-    const values = Object.keys(root)
-                         .filter(name => name.indexOf(`${scaleName}-`) === 0)
-                         .map(name => name.split('-').pop());
+    const values = scaleProperties.map(name => name.split('-').pop());
     const texts = values.map(value =>
       I18n.t(
         `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
@@ -347,8 +347,9 @@ export const ScrolledEntry = Entry.extend({
         {defaultValue: I18n.t(`pageflow_scrolled.editor.scales.${scaleName}.${value}`)}
       )
     );
+    const cssValues = scaleProperties.map(propertyName => root[propertyName]);
 
-    return [values, texts];
+    return [values, texts, cssValues];
   },
 
   getUsedSectionBackgroundColors() {
@@ -367,10 +368,14 @@ export const ScrolledEntry = Entry.extend({
     return sortColors([...colors].filter(Boolean));
   },
 
-  supportsSectionWidths() {
-    const theme = this.scrolledSeed.config.theme;
+  getThemeProperties() {
+    return this.scrolledSeed.config.theme.options.properties || {};
+  },
 
-    return Object.keys(theme.options.properties?.root || {}).some(key =>
+  supportsSectionWidths() {
+    const properties = this.getThemeProperties();
+
+    return Object.keys(properties.root || {}).some(key =>
       key.startsWith('narrowSection')
     );
   }

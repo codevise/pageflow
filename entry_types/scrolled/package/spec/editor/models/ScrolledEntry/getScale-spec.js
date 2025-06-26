@@ -14,7 +14,7 @@ describe('ScrolledEntry', () => {
       [`${themePrefix}.sm`]: 'Tiny'
     });
 
-    it('returns empty array by default', () => {
+    it('returns empty arrays by default', () => {
       const entry = factories.entry(
         ScrolledEntry,
         {},
@@ -23,13 +23,14 @@ describe('ScrolledEntry', () => {
         }
       );
 
-      const [values, texts] = entry.getScale('contentElementMargin');
+      const [values, texts, cssValues] = entry.getScale('contentElementMargin');
 
       expect(values).toEqual([]);
       expect(texts).toEqual([]);
+      expect(cssValues).toEqual([]);
     });
 
-    it('returns values and texts based on theme custom properties', () => {
+    it('returns values, texts, and cssValues based on theme custom properties', () => {
       const entry = factories.entry(
         ScrolledEntry,
         {
@@ -50,7 +51,7 @@ describe('ScrolledEntry', () => {
         }
       );
 
-      const [values, texts] = entry.getScale('contentElementMargin');
+      const [values, texts, cssValues] = entry.getScale('contentElementMargin');
 
       expect(values).toEqual(['sm', 'md', 'lg']);
       expect(texts).toEqual([
@@ -58,6 +59,7 @@ describe('ScrolledEntry', () => {
         'Medium',
         'Large'
       ]);
+      expect(cssValues).toEqual(['0.5rem', '1rem', '1.5rem']);
     });
   });
 });

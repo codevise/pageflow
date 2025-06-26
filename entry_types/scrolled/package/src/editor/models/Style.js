@@ -115,7 +115,7 @@ Style.effectTypes = {
 
 Style.getImageModifierTypes = function({entry}) {
   const [values, labels] = entry.getAspectRatios();
-  const [borderRadiusValues, borderRadiusLabels] = entry.getScale('contentElementBoxBorderRadius');
+  const [borderRadiusValues, borderRadiusLabels, borderRadiusCssValues] = entry.getScale('contentElementBoxBorderRadius');
 
   const result = {
     crop: {
@@ -129,13 +129,12 @@ Style.getImageModifierTypes = function({entry}) {
   };
 
   if (borderRadiusValues.length > 0) {
-    const themeProperties = entry.scrolledSeed.config.theme.options.properties.root;
-    const defaultBorderRadius = themeProperties['contentElementBoxBorderRadius'];
+    const themeProperties = entry.getThemeProperties();
+    const defaultBorderRadius = themeProperties.root?.contentElementBoxBorderRadius;
 
     const items = borderRadiusValues.map((value, index) => {
-      const scaleProperty = `contentElementBoxBorderRadius-${value}`;
-      const scaleValue = themeProperties[scaleProperty];
-      const isDefault = !!(defaultBorderRadius && scaleValue === defaultBorderRadius);
+      const cssValue = borderRadiusCssValues[index];
+      const isDefault = !!(defaultBorderRadius && cssValue === defaultBorderRadius);
 
       const item = {
         label: borderRadiusLabels[index],
