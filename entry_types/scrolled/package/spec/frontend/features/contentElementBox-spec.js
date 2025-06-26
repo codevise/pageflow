@@ -32,6 +32,18 @@ describe('content element box', () => {
         )
       }
     });
+
+    frontend.contentElementTypes.register('testNone', {
+      component: function Component() {
+        return (
+          <div data-testid="contentElement-testNone">
+            <ContentElementBox borderRadius="none">
+              Some content with no box wrapper
+            </ContentElementBox>
+          </div>
+        )
+      }
+    });
   });
 
   it('renders box', () => {
@@ -80,5 +92,17 @@ describe('content element box', () => {
 
     const contentElement = getContentElementByTestId('testRounded');
     expect(contentElement.hasBoxBorderRadius('md')).toBe(true);
+  });
+
+  it('does not render box when borderRadius is "none"', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        contentElements: [{
+          typeName: 'testNone'
+        }]
+      }
+    });
+
+    expect(getContentElementByTestId('testNone').containsBox()).toEqual(false);
   });
 });

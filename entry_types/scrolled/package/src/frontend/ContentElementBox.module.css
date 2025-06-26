@@ -9,3 +9,8 @@
                      var(--theme-content-element-full-box-border-radius,
                      var(--theme-content-element-box-border-radius)));
 }
+
+.positioned {
+  position: relative;
+  height: 100%;
+}

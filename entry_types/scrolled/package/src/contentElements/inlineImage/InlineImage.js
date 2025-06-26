@@ -85,24 +85,28 @@ function ImageWithCaption({
                             contentElementWidth < contentElementWidths.full;
 
   const {aspectRatio, rounded} = processImageModifiers(imageModifiers);
+  const isCircleCrop = rounded === 'circle';
 
   return (
     <FitViewport file={imageFile}
                  aspectRatio={aspectRatio || (imageFile ? undefined : 0.75)}
                  opaque={!imageFile}>
-      <ContentElementBox borderRadius={rounded}>
+      <ContentElementBox borderRadius={isCircleCrop ? 'none' : rounded}>
         <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
-            <ExpandableImage enabled={supportFullscreen && shouldLoad}
-                             imageFile={imageFile}
-                             contentElementId={contentElementId}>
-              <Image imageFile={imageFile}
-                     load={shouldLoad}
-                     structuredData={true}
-                     variant={contentElementWidth === contentElementWidths.full ?
-                              'large' : 'medium'}
-                     preferSvg={true} />
-            </ExpandableImage>
+            <ContentElementBox borderRadius={isCircleCrop ? 'circle' : 'none'}
+                               positioned={isCircleCrop}>
+              <ExpandableImage enabled={supportFullscreen && shouldLoad}
+                               imageFile={imageFile}
+                               contentElementId={contentElementId}>
+                <Image imageFile={imageFile}
+                       load={shouldLoad}
+                       structuredData={true}
+                       variant={contentElementWidth === contentElementWidths.full ?
+                                'large' : 'medium'}
+                       preferSvg={true} />
+              </ExpandableImage>
+            </ContentElementBox>
             <InlineFileRights configuration={configuration}
                               context="insideElement"
                               items={[{file: imageFile, label: 'image'}]} />
