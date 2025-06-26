@@ -83,7 +83,10 @@ describe('Style', () => {
 
     useFakeTranslations({
       [`${commonPrefix}.square`]: 'Square (1:1)',
-      [`${themePrefix}.4to5`]: 'Custom (4:5)'
+      [`${themePrefix}.4to5`]: 'Custom (4:5)',
+      'pageflow_scrolled.editor.backdrop_effects.rounded.label': 'Rounded corners',
+      'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.sm': 'Small',
+      'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.md': 'Medium'
     });
 
     it('includes styles for theme aspect ratios', () => {
@@ -117,6 +120,44 @@ describe('Style', () => {
             {
               value: 'square',
               label: 'Square (1:1)'
+            }
+          ])
+        }
+      })
+    });
+
+    it('includes rounded modifier with theme border radius scale', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {
+          metadata: {theme_name: 'custom'}
+        },
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementBoxBorderRadius-sm': '4px',
+                  'contentElementBoxBorderRadius-md': '8px'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const result = Style.getImageModifierTypes({entry});
+
+      expect(result).toMatchObject({
+        'rounded': {
+          items: expect.arrayContaining([
+            {
+              value: 'sm',
+              label: 'Small'
+            },
+            {
+              value: 'md',
+              label: 'Medium'
             }
           ])
         }

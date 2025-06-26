@@ -10,6 +10,8 @@ de:
       backdrop_effects:
         crop:
           label: Zuschneiden
+        rounded:
+          label: Runde Ecken
       content_elements:
         externalLinkList:
           attributes:

@@ -174,6 +174,62 @@ elements etc.
 | `content_element_box_border_radius` | Display content element boxes with rounded corners. |
 | `content_element_full_box_border_radius` | Set to control rounded corners of elements with full width. Defaults to `content_element_box_border_radius`. |
 
+#### Content Element Border Radius Scales
+
+Content elements like inline images can use the "rounded" image modifier
+to let editors choose from predefined border radius values. Define these
+as scale properties with the `content_element_box_border_radius_` prefix:
+
+``` ruby
+entry_type_config.themes.register(:my_custom_theme,
+                                  # ...
+                                  properties: {
+                                    root: {
+                                      # ...
+                                      'content_element_box_border_radius-none' =>  '0px',
+                                      'content_element_box_border_radius-sm' =>  '8px',
+                                      'content_element_box_border_radius-md' =>  '16px',
+                                      'content_element_box_border_radius-lg' =>  '24px'
+                                    }
+                                  }
+```
+
+The corresponding translations define how the options appear in the
+editor:
+
+``` yaml
+en:
+  pageflow_scrolled:
+    editor:
+      themes:
+        my_custom_theme:
+          scales:
+            contentElementBoxBorderRadius:
+              none: "None"
+              sm: "Small"
+              md: "Medium"
+              lg: "Large"
+```
+
+Alternatively, you can define global fallback translations that apply
+across all themes:
+
+``` yaml
+en:
+  pageflow_scrolled:
+    editor:
+      scales:
+        contentElementBoxBorderRadius:
+          none: "None"
+          sm: "Small"
+          md: "Medium"
+          lg: "Large"
+```
+
+When editors select the "rounded" modifier for an image, they can
+choose from these predefined values, ensuring consistent styling across
+the story.
+
 ### Text Block Styles
 
 | Name | Description |

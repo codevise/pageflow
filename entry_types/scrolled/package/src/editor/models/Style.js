@@ -115,8 +115,9 @@ Style.effectTypes = {
 
 Style.getImageModifierTypes = function({entry}) {
   const [values, labels] = entry.getAspectRatios();
+  const [borderRadiusValues, borderRadiusLabels] = entry.getScale('contentElementBoxBorderRadius');
 
-  return {
+  const result = {
     crop: {
       items: values.map((value, index) => (
         {
@@ -126,4 +127,17 @@ Style.getImageModifierTypes = function({entry}) {
       ))
     }
   };
+
+  if (borderRadiusValues.length > 0) {
+    result.rounded = {
+      items: borderRadiusValues.map((value, index) => (
+        {
+          label: borderRadiusLabels[index],
+          value
+        }
+      ))
+    };
+  }
+
+  return result;
 }

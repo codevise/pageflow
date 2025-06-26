@@ -35,6 +35,13 @@ export function InlineImage({contentElementId, contentElementWidth, configuratio
     configuration.portraitImageModifiers, 'crop'
   );
 
+  const rounded = getModiferValue(
+    configuration.imageModifiers, 'rounded'
+  );
+  const portraitRounded = getModiferValue(
+    configuration.portraitImageModifiers, 'rounded'
+  );
+
   // Only render OrientationAwareInlineImage if a portrait image has
   // been selected. This prevents having the component rerender on
   // orientation changes even if it does not depend on orientation at
@@ -45,6 +52,8 @@ export function InlineImage({contentElementId, contentElementWidth, configuratio
                                    portraitImageFile={portraitImageFile}
                                    landscapeAspectRatio={aspectRatio}
                                    portraitAspectRatio={portraitAspectRatio}
+                                   landscapeRounded={rounded}
+                                   portraitRounded={portraitRounded}
                                    contentElementId={contentElementId}
                                    contentElementWidth={contentElementWidth}
                                    configuration={configuration} />
@@ -54,6 +63,7 @@ export function InlineImage({contentElementId, contentElementWidth, configuratio
     return (
       <ImageWithCaption imageFile={imageFile}
                         aspectRatio={aspectRatio}
+                        rounded={rounded}
                         contentElementId={contentElementId}
                         contentElementWidth={contentElementWidth}
                         configuration={configuration} />
@@ -63,6 +73,7 @@ export function InlineImage({contentElementId, contentElementWidth, configuratio
 
 function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile,
                                       landscapeAspectRatio, portraitAspectRatio,
+                                      landscapeRounded, portraitRounded,
                                       contentElementId, contentElementWidth,
                                       configuration}) {
   const portraitOrientation = usePortraitOrientation();
@@ -73,9 +84,13 @@ function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile,
   const aspectRatio = portraitOrientation && portraitImageFile ?
                       portraitAspectRatio : landscapeAspectRatio;
 
+  const rounded = portraitOrientation && portraitImageFile ?
+                  portraitRounded : landscapeRounded;
+
   return (
     <ImageWithCaption imageFile={imageFile}
                       aspectRatio={aspectRatio}
+                      rounded={rounded}
                       contentElementId={contentElementId}
                       contentElementWidth={contentElementWidth}
                       configuration={configuration} />
@@ -83,7 +98,7 @@ function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile,
 }
 
 function ImageWithCaption({
-  imageFile, aspectRatio,
+  imageFile, aspectRatio, rounded,
   contentElementId, contentElementWidth, configuration
 }) {
   const {shouldLoad} = useContentElementLifecycle();
@@ -95,7 +110,7 @@ function ImageWithCaption({
     <FitViewport file={imageFile}
                  aspectRatio={aspectRatio || (imageFile ? undefined : 0.75)}
                  opaque={!imageFile}>
-      <ContentElementBox>
+      <ContentElementBox borderRadius={rounded}>
         <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
             <ExpandableImage enabled={supportFullscreen && shouldLoad}

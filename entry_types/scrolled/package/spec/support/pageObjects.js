@@ -172,6 +172,11 @@ function createContentElementPageObject(el) {
       return !!el.querySelector(`.${contentElementBoxStyles.wrapper}`);
     },
 
+    hasBoxBorderRadius(value) {
+      const wrapper = el.querySelector(`.${contentElementBoxStyles.wrapper}`);
+      return wrapper && wrapper.style.getPropertyValue('--content-element-box-border-radius') === `var(--theme-content-element-box-border-radius-${value})`;
+    },
+
     hasMargin() {
       return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
     },
