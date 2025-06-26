@@ -128,7 +128,8 @@ Style.getImageModifierTypes = function({entry}) {
         )),
         {
           label: I18n.t('pageflow_scrolled.editor.crop_types.circle'),
-          value: 'circle'
+          value: 'circle',
+          incompatibleWith: ['rounded']
         }
       ]
     }

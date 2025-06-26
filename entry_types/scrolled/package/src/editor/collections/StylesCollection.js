@@ -137,6 +137,32 @@ const UnusedStyleItem = Backbone.Model.extend({
 
   _applyStyle(currentStyle) {
     this.styles.remove(currentStyle);
+    this._removeIncompatibleStyles();
     this.styles.add({name: this.styleName, value: this.get(('value'))}, {types: this.styles.types});
+  },
+
+  _removeIncompatibleStyles() {
+    const incompatibleWith = this.get('incompatibleWith') ;
+
+    if (incompatibleWith) {
+      incompatibleWith.forEach(incompatibleStyleName => {
+        const incompatibleStyle = this.styles.findWhere({name: incompatibleStyleName});
+        if (incompatibleStyle) {
+          this.styles.remove(incompatibleStyle);
+        }
+      });
+    }
+
+    this.styles.each(style => {
+      const styleType = this.styles.types[style.get('name')];
+
+      if (styleType?.items) {
+        const currentItem = styleType.items.find(item => item.value === style.get('value'));
+
+        if (currentItem?.incompatibleWith?.includes(this.styleName)) {
+          this.styles.remove(style);
+        }
+      }
+    });
   }
 });

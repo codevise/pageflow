@@ -337,6 +337,89 @@ describe('StylesCollection', () => {
         expect(styles.length).toEqual(0);
       });
     });
+
+    describe('incompatible styles', () => {
+      it('circle crop item includes incompatibleWith property', () => {
+        const imageModifierTypes = {
+          crop: {
+            items: [
+              { label: 'Square', value: 'square' },
+              { label: 'Circle', value: 'circle', incompatibleWith: ['rounded'] }
+            ]
+          },
+          rounded: {
+            items: [
+              { label: 'Small', value: 'sm' },
+              { label: 'Medium', value: 'md' }
+            ]
+          }
+        };
+
+        const styles = new StylesCollection([], { types: imageModifierTypes });
+        const unusedStyles = styles.getUnusedStyles();
+        const cropStyle = unusedStyles.findWhere({name: 'crop'});
+        const items = cropStyle.get('items');
+        const circleItem = items.findWhere({value: 'circle'});
+
+        expect(circleItem.get('incompatibleWith')).toEqual(['rounded']);
+      });
+
+      it('removes rounded styles when circle crop is added', () => {
+        const imageModifierTypes = {
+          crop: {
+            items: [
+              { label: 'Square', value: 'square' },
+              { label: 'Circle', value: 'circle', incompatibleWith: ['rounded'] }
+            ]
+          },
+          rounded: {
+            items: [
+              { label: 'Small', value: 'sm' },
+              { label: 'Medium', value: 'md' }
+            ]
+          }
+        };
+
+        const styles = new StylesCollection([{name: 'rounded', value: 'sm'}], { types: imageModifierTypes });
+        const unusedStyles = styles.getUnusedStyles();
+        const cropStyle = unusedStyles.findWhere({name: 'crop'});
+        const circleItem = cropStyle.get('items').findWhere({value: 'circle'});
+
+        circleItem.selected();
+
+        expect(styles.pluck('name')).toEqual(['crop']);
+        expect(styles.first().get('value')).toEqual('circle');
+        expect(styles.findWhere({name: 'rounded'})).toBeUndefined();
+      });
+
+      it('removes circle crop when rounded style is added', () => {
+        const imageModifierTypes = {
+          crop: {
+            items: [
+              { label: 'Square', value: 'square' },
+              { label: 'Circle', value: 'circle', incompatibleWith: ['rounded'] }
+            ]
+          },
+          rounded: {
+            items: [
+              { label: 'Small', value: 'sm' },
+              { label: 'Medium', value: 'md' }
+            ]
+          }
+        };
+
+        const styles = new StylesCollection([{name: 'crop', value: 'circle'}], { types: imageModifierTypes });
+        const unusedStyles = styles.getUnusedStyles();
+        const roundedStyle = unusedStyles.findWhere({name: 'rounded'});
+        const smallItem = roundedStyle.get('items').findWhere({value: 'sm'});
+
+        smallItem.selected();
+
+        expect(styles.pluck('name')).toEqual(['rounded']);
+        expect(styles.first().get('value')).toEqual('sm');
+        expect(styles.findWhere({name: 'crop'})).toBeUndefined();
+      });
+    });
   });
 
   describe('with effect types', () => {

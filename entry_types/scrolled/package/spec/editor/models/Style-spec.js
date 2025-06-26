@@ -240,7 +240,7 @@ describe('Style', () => {
       const cropItems = result.crop.items;
       const lastItem = cropItems[cropItems.length - 1];
 
-      expect(lastItem).toEqual({
+      expect(lastItem).toMatchObject({
         value: 'circle',
         label: 'Circle'
       });
