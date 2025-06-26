@@ -6,6 +6,7 @@ import foregroundStyles from 'frontend/Foreground.module.css';
 import contentElementBoxStyles from 'frontend/ContentElementBox.module.css';
 import contentElementMarginStyles from 'frontend/ContentElementMargin.module.css';
 import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
+import fitViewportStyles from 'frontend/FitViewport.module.css';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 import {api} from 'frontend/api';
@@ -28,6 +29,35 @@ export function renderEntry({seed, consent, isStaticPreview} = {}) {
       result.rerender(<Entry />);
     }
   }
+}
+
+export function renderContentElement({typeName, configuration = {}, ...seedOptions} = {}) {
+  const seed = {
+    contentElements: [{
+      permaId: 10,
+      typeName,
+      configuration
+    }],
+    ...seedOptions
+  };
+
+  const result = renderEntry({seed});
+
+  return {
+    ...result,
+    getContentElement() {
+      const el = result.container.querySelector('[class*="ContentElementMargin_module__wrapper"]');
+      
+      if (!el) {
+        throw queryHelpers.getElementError(
+          `Unable to find content element with type ${typeName}.`,
+          result.container
+        );
+      }
+
+      return createContentElementPageObject(el);
+    }
+  };
 }
 
 export function useInlineEditingPageObjects() {
@@ -92,6 +122,7 @@ const pageObjectQueries = {
 
     return createContentElementPageObject(el);
   },
+
 
   fakeSectionBoundingClientRectsByPermaId(container, rectsByPermaId) {
     jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function() {
@@ -177,12 +208,41 @@ function createContentElementPageObject(el) {
       return wrapper && wrapper.style.getPropertyValue('--content-element-box-border-radius') === `var(--theme-content-element-box-border-radius-${value})`;
     },
 
+    getBoxBorderRadius() {
+      const wrapper = el.querySelector(`.${contentElementBoxStyles.wrapper}`);
+      if (!wrapper) return null;
+      
+      const cssValue = wrapper.style.getPropertyValue('--content-element-box-border-radius');
+      // Extract the value from var(--theme-content-element-box-border-radius-VALUE)
+      const match = cssValue.match(/var\(--theme-content-element-box-border-radius-(.+)\)/);
+      return match ? match[1] : cssValue;
+    },
+
     hasMargin() {
       return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
     },
 
     hasScrollSpace() {
       return !!el.closest(`.${contentElementScrollSpaceStyles.wrapper}`);
+    },
+
+    hasFitViewport() {
+      return !!el.querySelector(`.${fitViewportStyles.container}`);
+    },
+
+    getFitViewportAspectRatio() {
+      const container = el.querySelector(`.${fitViewportStyles.container}`);
+      if (!container) return null;
+      
+      const cssValue = container.style.getPropertyValue('--fit-viewport-aspect-ratio');
+      // Extract the value from var(--theme-aspect-ratio-VALUE) or return the raw value
+      const match = cssValue.match(/var\(--theme-aspect-ratio-(.+)\)/);
+      return match ? match[1] : cssValue;
+    },
+
+    isFitViewportOpaque() {
+      const container = el.querySelector(`.${fitViewportStyles.container}`);
+      return container?.classList.contains(fitViewportStyles.opaque);
     },
 
     select() {

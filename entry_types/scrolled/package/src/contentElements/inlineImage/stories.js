@@ -45,6 +45,15 @@ storiesOfContentElement(module, {
           }
         }
       }
+    },
+    {
+      name: 'With Circle Crop',
+      configuration: {
+        caption: 'Image with circle crop',
+        imageModifiers: [
+          {name: 'crop', value: 'circle'}
+        ]
+      }
     }
   ],
   inlineFileRights: true

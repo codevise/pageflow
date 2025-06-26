@@ -119,12 +119,18 @@ Style.getImageModifierTypes = function({entry}) {
 
   const result = {
     crop: {
-      items: values.map((value, index) => (
+      items: [
+        ...values.map((value, index) => (
+          {
+            label: labels[index],
+            value
+          }
+        )),
         {
-          label: labels[index],
-          value
+          label: I18n.t('pageflow_scrolled.editor.crop_types.circle'),
+          value: 'circle'
         }
-      ))
+      ]
     }
   };
 

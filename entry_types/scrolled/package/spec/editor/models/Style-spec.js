@@ -89,7 +89,8 @@ describe('Style', () => {
       'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.sm': 'Small',
       'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.md': 'Medium',
       'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.lg': 'Large',
-      'pageflow_scrolled.editor.common.default_suffix': ' (Default)'
+      'pageflow_scrolled.editor.common.default_suffix': ' (Default)',
+      'pageflow_scrolled.editor.crop_types.circle': 'Circle'
     });
 
     it('includes styles for theme aspect ratios', () => {
@@ -213,6 +214,35 @@ describe('Style', () => {
             }
           ]
         }
+      });
+    });
+
+    it('includes circle crop option as last item', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {
+          metadata: {theme_name: 'custom'}
+        },
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  aspectRatioSquare: '1'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const result = Style.getImageModifierTypes({entry});
+      const cropItems = result.crop.items;
+      const lastItem = cropItems[cropItems.length - 1];
+
+      expect(lastItem).toEqual({
+        value: 'circle',
+        label: 'Circle'
       });
     });
   });
