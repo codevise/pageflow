@@ -1,6 +1,14 @@
 PageflowScrolled::Engine.routes.draw do
   scope module: 'editor' do
     shallow do
+      # Legacy path to support editor sessions that span the deploy that
+      # introduces the storylines resource above.
+      resources :chapters, only: [:create] do
+        collection do
+          put :order
+        end
+      end
+
       resources :storylines, only: [] do
         resources :chapters, only: [:create, :update, :destroy] do
           collection do
@@ -23,14 +31,6 @@ PageflowScrolled::Engine.routes.draw do
               end
             end
           end
-        end
-      end
-
-      # Legacy path to support editor sessions that span the deploy that
-      # introduces the storylines resource above.
-      resources :chapters, only: [:create] do
-        collection do
-          put :order
         end
       end
     end
