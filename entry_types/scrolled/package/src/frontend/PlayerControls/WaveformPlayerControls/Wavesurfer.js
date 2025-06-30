@@ -150,7 +150,7 @@ class Wavesurfer extends Component {
   // update wavesurfer rendering manually
   componentDidUpdate(prevProps) {
     // update audioFile
-    if (this.props.audioFile !== this.props.audioFile) {
+    if (prevProps.audioFile !== this.props.audioFile) {
       this._loadAudio(this.props.audioFile, this.props.audioPeaks);
     }
 

@@ -47,7 +47,7 @@ export function renderContentElement({typeName, configuration = {}, ...seedOptio
     ...result,
     getContentElement() {
       const el = result.container.querySelector('[class*="ContentElementMargin_module__wrapper"]');
-      
+
       if (!el) {
         throw queryHelpers.getElementError(
           `Unable to find content element with type ${typeName}.`,
@@ -211,7 +211,7 @@ function createContentElementPageObject(el) {
     getBoxBorderRadius() {
       const wrapper = el.querySelector(`.${contentElementBoxStyles.wrapper}`);
       if (!wrapper) return null;
-      
+
       const cssValue = wrapper.style.getPropertyValue('--content-element-box-border-radius');
       // Extract the value from var(--theme-content-element-box-border-radius-VALUE)
       const match = cssValue.match(/var\(--theme-content-element-box-border-radius-(.+)\)/);
@@ -233,7 +233,7 @@ function createContentElementPageObject(el) {
     getFitViewportAspectRatio() {
       const container = el.querySelector(`.${fitViewportStyles.container}`);
       if (!container) return null;
-      
+
       const cssValue = container.style.getPropertyValue('--fit-viewport-aspect-ratio');
       // Extract the value from var(--theme-aspect-ratio-VALUE) or return the raw value
       const match = cssValue.match(/var\(--theme-aspect-ratio-(.+)\)/);

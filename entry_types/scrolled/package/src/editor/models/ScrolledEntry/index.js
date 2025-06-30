@@ -355,7 +355,7 @@ export const ScrolledEntry = Entry.extend({
   getUsedSectionBackgroundColors() {
     const colors = new Set();
 
-    this.sections.map(section => {
+    this.sections.forEach(section => {
       if (section.configuration.get('backdropType') === 'color') {
         colors.add(section.configuration.get('backdropColor'));
       }

@@ -76,7 +76,7 @@ describe('media', function() {
       let player = media.getPlayer(fileSources, {
         tagName: 'audio',
         mediaEventsContextData:  context
-      });      
+      });
       player.trigger('play');
 
       expect(events.trigger).toHaveBeenCalledWith(
@@ -92,7 +92,7 @@ describe('media', function() {
       let player = media.getPlayer(fileSources, {
         tagName: 'audio',
         mediaEventsContextData:  undefined
-      });      
+      });
       player.trigger('play');
 
       expect(events.trigger).not.toHaveBeenCalled();

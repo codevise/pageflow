@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
-import _ from 'underscore';
 
 import {app} from '../app';
 

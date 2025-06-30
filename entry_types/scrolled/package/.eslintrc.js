@@ -5,6 +5,9 @@ module.exports = {
     "plugin:import/warnings",
     "plugin:storybook/recommended"
   ],
+  "rules": {
+    "no-trailing-spaces": "error"
+  },
   "settings": {
     "import/resolver": {
       "jest": {

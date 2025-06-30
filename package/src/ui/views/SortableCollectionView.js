@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import _ from 'underscore';
 import Sortable from 'sortablejs';
 
 import {CollectionView} from './CollectionView';

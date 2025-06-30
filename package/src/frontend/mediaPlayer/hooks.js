@@ -4,7 +4,7 @@ export const hooks = function(player, hooks) {
   player.updateHooks = (newHooks) => {
     hooks = newHooks;
   }
-  
+
   player.play = function(/* args */) {
     var args = arguments;
 

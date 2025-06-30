@@ -4,12 +4,6 @@ import {InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import Marionette from 'backbone.marionette';
 import I18n from 'i18n-js';
 
-const previewAspectRatios = {
-  wide: 16 / 9,
-  narrow: 4 / 3,
-  square: 1,
-  portrait: 3 / 4
-};
 
 export const SidebarEditLinkView = Marionette.Layout.extend({
   template: (data) => `

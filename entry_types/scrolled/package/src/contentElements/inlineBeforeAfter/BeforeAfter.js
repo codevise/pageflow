@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactCompareImage from 'react-compare-image';
 import Measure from 'react-measure';
 

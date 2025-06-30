@@ -1,7 +1,5 @@
 import {DropDownMenuItems} from 'pageflow/editor/api/DropDownMenuItems';
 
-import sinon from 'sinon';
-
 describe('DropDownMenuItems', () => {
   describe('#register/#findAllByMenuName', () => {
     it(

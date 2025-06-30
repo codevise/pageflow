@@ -1,4 +1,3 @@
-import Backbone from 'backbone';
 
 import {
   ExternalLinkCollection

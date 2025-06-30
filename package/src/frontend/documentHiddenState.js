@@ -2,8 +2,8 @@
 let isEventAdded = false;
 let callbacks = [];
 
-let muteInBackground = () => {  
-  callbacks.forEach((cb)=>{    
+let muteInBackground = () => {
+  callbacks.forEach((cb)=>{
     cb(document.visibilityState);
   })
 };

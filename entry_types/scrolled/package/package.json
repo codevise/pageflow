@@ -85,7 +85,7 @@
   },
   "scripts": {
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "eslint",
     "start-storybook": "storybook dev --port 8001",
     "build-storybook": "storybook build -o .storybook/out",
     "snapshot": "storybook build --quiet -o .storybook/out && PERCY_TOKEN=${PERCY_TOKEN:-$PT} percy storybook .storybook/out"

@@ -86,11 +86,12 @@ export function usePanZoomTransforms({
     };
   }, [
     panZoomEnabled,
-    areas,
+    initialTransformEnabled,
+    containerWidth,
+    containerHeight,
     imageFileWidth,
     imageFileHeight,
-    containerWidth,
-    containerHeight
+    areas
   ]);
 }
 

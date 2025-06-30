@@ -151,7 +151,7 @@ describe('pageflow.EditorApi', () => {
         browserNotSupportedView: BrowserNotSupportedView
       });
 
-      var entry = api.ensureBrowserSupport(start);
+      api.ensureBrowserSupport(start);
 
       expect(start).toBeCalled();
     });
@@ -170,7 +170,7 @@ describe('pageflow.EditorApi', () => {
         browserNotSupportedView: BrowserNotSupportedView
       });
 
-      var entry = api.ensureBrowserSupport(start);
+      api.ensureBrowserSupport(start);
 
       expect(start).not.toBeCalled();
     });
