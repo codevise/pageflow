@@ -1,3 +1,15 @@
-node_modules
+/src/editor/vendor
+
+/node_modules
+/contentElements
 /editor.js
 /frontend
+/frontend-server.js
+/contentElements-editor.js
+/contentElements-frontend.js
+/contentElements-frontend.css
+/testHelpers.js
+/widgets
+/.storybook/out/
+/.storybook/seed.json
+/.storybook/preview-head.html

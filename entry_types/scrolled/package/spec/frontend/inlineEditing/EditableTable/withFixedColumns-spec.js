@@ -6,7 +6,7 @@ import {
 
 import {createHyperscript} from 'slate-hyperscript';
 
-export const h = createHyperscript({
+const h = createHyperscript({
   elements: {
     row: {type: 'row'},
     label: {type: 'label'},

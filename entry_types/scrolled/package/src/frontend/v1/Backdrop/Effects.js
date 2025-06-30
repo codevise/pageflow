@@ -76,6 +76,8 @@ export function getFilter(effects) {
     else if (['grayscale', 'sepia'].includes(effect.name)) {
       return `${effect.name}(${effect.value}%)`;
     }
+
+    return null;
   }).filter(Boolean);
 
   return components.length ? components.join(' ') : null;

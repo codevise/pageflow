@@ -2,8 +2,6 @@ import _ from 'underscore';
 
 import {Object} from 'pageflow/ui';
 
-import {TextFileMetaDataItemValueView} from '../views/TextFileMetaDataItemValueView';
-
 export const FileType = Object.extend({
   initialize: function(options) {
     this.model = options.model;

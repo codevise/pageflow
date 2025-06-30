@@ -4,7 +4,7 @@ export function watchCollections(entry, {dispatch}) {
   const {storylines, chapters, sections, contentElements, widgets, files} = entry;
   const teardownFns = [];
 
-  teardownFns.push(watchCollection(new Backbone.Collection([entry.metadata]), {
+  teardownFns.push(watchCollection(new window.Backbone.Collection([entry.metadata]), {
     name: 'entries',
     attributes: [
       'locale',

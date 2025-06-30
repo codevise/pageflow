@@ -7,7 +7,7 @@ import sinon from 'sinon';
 
 describe('pageflow.mediaPlayer.handleFailedPlay', function() {
   var handleFailedPlay = mediaPlayer.handleFailedPlay;
-  
+
   it('triggers playfailed event when play returns rejected promise', function() {
     var player = fakePlayer();
     player.originalPlay.returns(rejectedAutoplayPromise());

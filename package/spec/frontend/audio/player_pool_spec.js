@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 describe('PlayerPool', function() {
   var PlayerPool = Audio.PlayerPool;
-  
+
   describe('#get', function() {
     it('creates player for new audio file id', function() {
       var audio = {createPlayer: sinon.stub()};

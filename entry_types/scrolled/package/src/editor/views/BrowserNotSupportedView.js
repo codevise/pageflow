@@ -13,13 +13,13 @@ export const BrowserNotSupportedView = Marionette.ItemView.extend({
   className: styles.main,
 
   ui: cssModulesUtils.ui(styles, 'main'),
-  
+
   onShow() {
     this.appendOptions();
   },
 
   appendOptions() {
-    
+
     var container = `<div class='${styles.container}'>
                         <div class='${styles.texts}'>
                           <h2>${I18n.t('pageflow_scrolled.editor.browser_not_supported.heading')}</h2>
@@ -32,7 +32,7 @@ export const BrowserNotSupportedView = Marionette.ItemView.extend({
                           <div class='${styles.edge} ${styles.child}'></div>
                         </div>
                     </div>`;
-          
+
     this.ui.main.append($(container));
   }
 });

@@ -86,7 +86,7 @@ export function createActions(dispatch){
     },
     progress(bufferedEnd){
       dispatch({type: PROGRESS, payload: {
-       bufferedEnd: bufferedEnd 
+       bufferedEnd: bufferedEnd
       }});
     },
     timeUpdate(currentTime, duration){
@@ -100,12 +100,12 @@ export function createActions(dispatch){
     },
     scrubTo(time){
       dispatch({type: SCRUB_TO, payload: {
-       time: time 
+       time: time
       }});
     },
     seekTo(time){
       dispatch({type: SEEK_TO, payload: {
-       time: time 
+       time: time
       }});
     },
     seeking(){
@@ -155,7 +155,7 @@ export function createActions(dispatch){
     },
     saveMediaElementId(id){
       dispatch({type: SAVE_MEDIA_ELEMENT_ID, payload: {
-       id: id 
+       id: id
       }});
     },
     discardMediaElementId(){

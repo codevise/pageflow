@@ -54,7 +54,7 @@ export const FileTypes = Object.extend({
         this.applyCommonConfig(clientSideConfig);
         this.applyModifications(serverSideConfig, clientSideConfig);
 
-        return _.extend({}, serverSideConfig, clientSideConfig);;
+        return _.extend({}, serverSideConfig, clientSideConfig);
       }).sortBy(config => config.priority || 10).value()
 
     this.collection = new FileTypesCollection(_.map(configs, config => new FileType(config)));

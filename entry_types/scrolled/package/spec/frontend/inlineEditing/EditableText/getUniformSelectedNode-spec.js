@@ -5,7 +5,7 @@ import {
 
 import {createHyperscript} from 'slate-hyperscript';
 
-export const jsx = createHyperscript({
+const jsx = createHyperscript({
   elements: {
     textBlock: {type: 'textBlock'},
     inlineImage: {type: 'inlineImage'},

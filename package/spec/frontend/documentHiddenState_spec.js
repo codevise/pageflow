@@ -2,7 +2,7 @@
 import {documentHiddenState} from 'pageflow/frontend';
 
 describe('#documentHiddenState', function(){
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
   })
@@ -11,7 +11,7 @@ describe('#documentHiddenState', function(){
     let callback = jest.fn();
     documentHiddenState(callback);
     document.dispatchEvent(new Event('visibilitychange'));
-    
+
     expect(callback).toHaveBeenCalled();
   });
 

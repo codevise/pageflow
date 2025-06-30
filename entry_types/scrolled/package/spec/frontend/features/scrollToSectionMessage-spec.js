@@ -67,7 +67,7 @@ describe('SCROLL_TO_SECTION message', () => {
   });
 
   it('activates excursion of section', async () => {
-    const {fakeSectionBoundingClientRectsByPermaId} = renderEntry({
+    renderEntry({
       seed: {
         storylines: [
           {

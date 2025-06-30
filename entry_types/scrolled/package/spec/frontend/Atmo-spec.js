@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import {media, PlayerSourceIDMap, MultiPlayer} from 'pageflow/frontend';
 import {Atmo} from 'frontend/Atmo';
 
@@ -11,12 +10,12 @@ describe('Atmo', function() {
     {type: 'audio/m4a', src: 'http://example.com/example.m4a'},
     {type: 'audio/mp3', src: 'http://example.com/example.ogg'}
   ];
-  
+
   let updateAtmo = (config, pool, atmo) => {
     if (config.sources) {
       pool.mapSources(config.atmoAudioFileId, config.sources);
     }
-    
+
     atmo.atmoSourceId = config.atmoAudioFileId;
     atmo.update();
   }
@@ -25,8 +24,8 @@ describe('Atmo', function() {
     it('fades to atmo audio file', function() {
       let {pool, atmo, multiPlayer} = buildAtmo({});
       let multiPlayerSpy = jest.spyOn(multiPlayer, 'fadeTo');
-      
-      media.mute(false);    
+
+      media.mute(false);
       updateAtmo({
         sources: fileSources,
         atmoAudioFileId: 5
@@ -39,27 +38,27 @@ describe('Atmo', function() {
     it('does not fade to audio file if atmo is disabled', function() {
       let {pool, atmo, multiPlayer} = buildAtmo({});
       let multiPlayerSpy = jest.spyOn(multiPlayer, 'fadeTo');
-      
+
       media.mute(false);
       atmo.disable();
       updateAtmo({
         sources: fileSources,
         atmoAudioFileId: 5
       }, pool, atmo);
-      
+
       expect(multiPlayerSpy).not.toHaveBeenCalledWith(5);
     });
 
     it('pauses multiPlayer if backgroundMedia is muted', function() {
       let {pool, atmo, multiPlayer} = buildAtmo({});
       let multiPlayerSpy = jest.spyOn(multiPlayer, 'fadeOutAndPause');
-      
+
       media.mute(true);
       updateAtmo({
         sources: fileSources,
         atmoAudioFileId: 5
       }, pool, atmo);
-      
+
       expect(multiPlayerSpy).toHaveBeenCalled();
     });
 
@@ -78,7 +77,7 @@ describe('Atmo', function() {
     });
 
     it('updates atmo on documment visible state', function() {
-      let {pool, atmo, multiPlayer} = buildAtmo({});
+      let {pool, atmo} = buildAtmo({});
       let atmoSpy = jest.spyOn(atmo, 'update');
 
       updateAtmo({
@@ -106,7 +105,7 @@ describe('Atmo', function() {
       }, pool, atmo);
 
       multiPlayer.trigger('playfailed');
-      
+
       expect(mediaSpy).toHaveBeenCalled();
     });
   });
@@ -122,7 +121,7 @@ describe('Atmo', function() {
       }, pool, atmo);
 
       atmo.pause();
-      
+
       expect(multiPlayerSpy).toHaveBeenCalled();
     });
   });
@@ -140,7 +139,7 @@ describe('Atmo', function() {
 
         media.mute(false);
         atmo.resume();
-        
+
         expect(multiPlayerSpy).toHaveBeenCalled();
       });
 
@@ -156,7 +155,7 @@ describe('Atmo', function() {
         media.mute(false);
         atmo.disable();
         atmo.resume();
-        
+
         expect(multiPlayerSpy).not.toHaveBeenCalled();
       });
 
@@ -171,7 +170,7 @@ describe('Atmo', function() {
 
         media.mute(true);
         atmo.resume();
-        
+
         expect(multiPlayerSpy).not.toHaveBeenCalled();
       });
     });

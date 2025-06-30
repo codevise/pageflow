@@ -27,7 +27,7 @@ export class Atmo {
   disable() {
     this.disabled = true;
     this.multiPlayer.fadeOutAndPause();
-    
+
     events.trigger('atmo:disabled');
   }
   enable() {
