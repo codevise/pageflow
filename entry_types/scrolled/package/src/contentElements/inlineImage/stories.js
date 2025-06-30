@@ -27,6 +27,33 @@ storiesOfContentElement(module, {
           }
         }
       }
+    },
+    {
+      name: 'With Rounded Corners',
+      configuration: {
+        caption: 'Image with rounded corners',
+        imageModifiers: [
+          {name: 'rounded', value: 'md'}
+        ]
+      },
+      themeOptions: {
+        properties: {
+          root: {
+            'contentElementBoxBorderRadius-sm': '8px',
+            'contentElementBoxBorderRadius-md': '16px',
+            'contentElementBoxBorderRadius-lg': '24px'
+          }
+        }
+      }
+    },
+    {
+      name: 'With Circle Crop',
+      configuration: {
+        caption: 'Image with circle crop',
+        imageModifiers: [
+          {name: 'crop', value: 'circle'}
+        ]
+      }
     }
   ],
   inlineFileRights: true

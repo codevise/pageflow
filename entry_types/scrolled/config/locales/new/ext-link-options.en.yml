@@ -10,6 +10,8 @@ en:
       backdrop_effects:
         crop:
           label: Crop
+        rounded:
+          label: Rounded corners
       content_elements:
         externalLinkList:
           attributes:

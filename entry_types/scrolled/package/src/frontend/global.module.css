@@ -16,6 +16,9 @@
   --theme-aspect-ratio-narrow: 0.75;
   --theme-aspect-ratio-square: 1;
   --theme-aspect-ratio-portrait: 1.33;
+
+  --theme-content-element-box-border-radius-none: 0px;
+  --theme-content-element-box-border-radius-circle: 50%;
 }
 
 :global body {

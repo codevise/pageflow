@@ -115,15 +115,58 @@ Style.effectTypes = {
 
 Style.getImageModifierTypes = function({entry}) {
   const [values, labels] = entry.getAspectRatios();
+  const [borderRadiusValues, borderRadiusLabels, borderRadiusCssValues] = entry.getScale('contentElementBoxBorderRadius');
 
-  return {
+  const result = {
     crop: {
-      items: values.map((value, index) => (
+      items: [
+        ...values.map((value, index) => (
+          {
+            label: labels[index],
+            value
+          }
+        )),
         {
-          label: labels[index],
-          value
+          label: I18n.t('pageflow_scrolled.editor.crop_types.circle'),
+          value: 'circle',
+          incompatibleWith: ['rounded']
         }
-      ))
+      ]
     }
   };
+
+  if (borderRadiusValues.length > 0) {
+    const themeProperties = entry.getThemeProperties();
+    const defaultBorderRadius = themeProperties.root?.contentElementBoxBorderRadius;
+
+    const items = borderRadiusValues.map((value, index) => {
+      const cssValue = borderRadiusCssValues[index];
+      const isDefault = !!(defaultBorderRadius && cssValue === defaultBorderRadius);
+
+      const item = {
+        label: borderRadiusLabels[index],
+        value
+      };
+
+      if (isDefault) {
+        item.default = true;
+      }
+
+      return item;
+    });
+
+    if (defaultBorderRadius) {
+      const noneLabel = I18n.t('pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.none');
+
+      items.unshift({
+        label: noneLabel,
+        value: 'none',
+        disabled: false
+      });
+    }
+
+    result.rounded = { items };
+  }
+
+  return result;
 }

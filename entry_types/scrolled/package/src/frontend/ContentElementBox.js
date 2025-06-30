@@ -12,16 +12,26 @@ import styles from './ContentElementBox.module.css';
  *
  * @param {Object} props
  * @param {string} props.children - Content of box.
+ * @param {string} props.borderRadius - Border radius value from theme scale, or "none" to render no wrapper.
  */
-export function ContentElementBox({children}) {
+export function ContentElementBox({children, borderRadius, positioned}) {
   const {position, width} = useContentElementAttributes();
 
-  if (position === 'backdrop') {
+  if (position === 'backdrop' || borderRadius === 'none') {
     return children;
   }
 
+  const style = borderRadius ? {
+    '--content-element-box-border-radius': `var(--theme-content-element-box-border-radius-${borderRadius})`
+  } : {};
+
   return (
-    <div className={classNames(styles.wrapper, {[styles.full]: width === widths.full})}>
+    <div className={classNames(
+           styles.wrapper,
+           {[styles.full]: width === widths.full,
+            [styles.positioned]: positioned}
+         )}
+         style={style}>
       {children}
     </div>
   );

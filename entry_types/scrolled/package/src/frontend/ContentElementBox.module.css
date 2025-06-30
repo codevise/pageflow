@@ -1,9 +1,16 @@
 .wrapper {
   overflow: hidden;
-  border-radius: var(--theme-content-element-box-border-radius);
+  border-radius: var(--content-element-box-border-radius,
+                     var(--theme-content-element-box-border-radius));
 }
 
 .full {
-  border-radius: var(--theme-content-element-full-box-border-radius,
-                     var(--theme-content-element-box-border-radius));
+  border-radius: var(--content-element-box-border-radius,
+                     var(--theme-content-element-full-box-border-radius,
+                     var(--theme-content-element-box-border-radius)));
+}
+
+.positioned {
+  position: relative;
+  height: 100%;
 }

@@ -83,7 +83,14 @@ describe('Style', () => {
 
     useFakeTranslations({
       [`${commonPrefix}.square`]: 'Square (1:1)',
-      [`${themePrefix}.4to5`]: 'Custom (4:5)'
+      [`${themePrefix}.4to5`]: 'Custom (4:5)',
+      'pageflow_scrolled.editor.backdrop_effects.rounded.label': 'Rounded corners',
+      'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.none': 'None',
+      'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.sm': 'Small',
+      'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.md': 'Medium',
+      'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.lg': 'Large',
+      'pageflow_scrolled.editor.common.default_suffix': ' (Default)',
+      'pageflow_scrolled.editor.crop_types.circle': 'Circle'
     });
 
     it('includes styles for theme aspect ratios', () => {
@@ -121,6 +128,122 @@ describe('Style', () => {
           ])
         }
       })
+    });
+
+    it('includes rounded modifier with theme border radius scale', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {
+          metadata: {theme_name: 'custom'}
+        },
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementBoxBorderRadius-sm': '4px',
+                  'contentElementBoxBorderRadius-md': '8px'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const result = Style.getImageModifierTypes({entry});
+
+      expect(result).toMatchObject({
+        'rounded': {
+          items: expect.arrayContaining([
+            {
+              value: 'sm',
+              label: 'Small'
+            },
+            {
+              value: 'md',
+              label: 'Medium'
+            }
+          ])
+        }
+      })
+    });
+
+    it('includes none option and disables matching item when theme has default border radius', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {
+          metadata: {theme_name: 'custom'}
+        },
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementBoxBorderRadius': '8px',
+                  'contentElementBoxBorderRadius-sm': '4px',
+                  'contentElementBoxBorderRadius-md': '8px',
+                  'contentElementBoxBorderRadius-lg': '16px'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const result = Style.getImageModifierTypes({entry});
+
+      expect(result).toMatchObject({
+        'rounded': {
+          items: [
+            {
+              value: 'none',
+              label: 'None'
+            },
+            {
+              value: 'sm',
+              label: 'Small'
+            },
+            {
+              value: 'md',
+              label: 'Medium',
+              default: true
+            },
+            {
+              value: 'lg',
+              label: 'Large'
+            }
+          ]
+        }
+      });
+    });
+
+    it('includes circle crop option as last item', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {
+          metadata: {theme_name: 'custom'}
+        },
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  aspectRatioSquare: '1'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const result = Style.getImageModifierTypes({entry});
+      const cropItems = result.crop.items;
+      const lastItem = cropItems[cropItems.length - 1];
+
+      expect(lastItem).toMatchObject({
+        value: 'circle',
+        label: 'Circle'
+      });
     });
   });
 });

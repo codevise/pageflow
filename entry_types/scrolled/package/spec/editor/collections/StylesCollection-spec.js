@@ -42,7 +42,8 @@ describe('StylesCollection', () => {
   describe('#getUnusedStyles', () => {
     useFakeTranslations({
       'pageflow_scrolled.editor.backdrop_effects.blur.label': 'Blur',
-      'pageflow_scrolled.editor.backdrop_effects.aspectRatio.label': 'Aspect Ratio'
+      'pageflow_scrolled.editor.backdrop_effects.aspectRatio.label': 'Aspect Ratio',
+      'pageflow_scrolled.editor.common.default_suffix': ' (Default)'
     });
 
     it('sets label based on translation', () => {
@@ -266,6 +267,157 @@ describe('StylesCollection', () => {
         expect(unusedStyles.pluck('name')).toEqual(['aspectRatio']);
         expect(unusedStyles.first().get('items').first().get('disabled')).toEqual(false);
         expect(unusedStyles.last().get('items').first().get('disabled')).toEqual(false);
+      });
+
+      it('disables default item with suffix when no style is applied ', () => {
+        const imageModifierTypes = {
+          rounded: {
+            items: [
+              { label: 'None', value: 'none' },
+              { label: 'Small', value: 'sm' },
+              { label: 'Medium', value: 'md', default: true },
+              { label: 'Large', value: 'lg' }
+            ]
+          }
+        };
+
+        const styles = new StylesCollection([], { types: imageModifierTypes });
+        const unusedStyles = styles.getUnusedStyles();
+        const roundedStyle = unusedStyles.findWhere({name: 'rounded'});
+        const items = roundedStyle.get('items');
+
+        const defaultItem = items.findWhere({value: 'md'});
+        expect(defaultItem.get('disabled')).toEqual(true);
+        expect(defaultItem.get('label')).toEqual('Medium (Default)');
+        expect(items.findWhere({value: 'sm'}).get('disabled')).toEqual(false);
+        expect(items.findWhere({value: 'lg'}).get('disabled')).toEqual(false);
+      });
+
+      it('enables default item when another style is applied', () => {
+        const imageModifierTypes = {
+          rounded: {
+            items: [
+              { label: 'Small', value: 'sm' },
+              { label: 'Medium', value: 'md', default: true },
+              { label: 'Large', value: 'lg' }
+            ]
+          }
+        };
+
+        const styles = new StylesCollection([{name: 'rounded', value: 'lg'}], { types: imageModifierTypes });
+        const unusedStyles = styles.getUnusedStyles();
+        const roundedStyle = unusedStyles.findWhere({name: 'rounded'});
+        const items = roundedStyle.get('items');
+
+        const defaultItem = items.findWhere({value: 'md'});
+        expect(defaultItem.get('disabled')).toEqual(false);
+        expect(defaultItem.get('label')).toEqual('Medium (Default)');
+        expect(items.findWhere({value: 'sm'}).get('disabled')).toEqual(false);
+        expect(items.findWhere({value: 'lg'}).get('disabled')).toEqual(true);
+      });
+
+      it('removes style when default item is selected while another style is applied', () => {
+        const imageModifierTypes = {
+          rounded: {
+            items: [
+              { label: 'Small', value: 'sm' },
+              { label: 'Medium', value: 'md', default: true },
+              { label: 'Large', value: 'lg' }
+            ]
+          }
+        };
+
+        const styles = new StylesCollection([{name: 'rounded', value: 'lg'}], { types: imageModifierTypes });
+        const unusedStyles = styles.getUnusedStyles();
+        const roundedStyle = unusedStyles.findWhere({name: 'rounded'});
+        const items = roundedStyle.get('items');
+        const defaultItem = items.findWhere({value: 'md'});
+        defaultItem.selected();
+
+        expect(styles.length).toEqual(0);
+      });
+    });
+
+    describe('incompatible styles', () => {
+      it('circle crop item includes incompatibleWith property', () => {
+        const imageModifierTypes = {
+          crop: {
+            items: [
+              { label: 'Square', value: 'square' },
+              { label: 'Circle', value: 'circle', incompatibleWith: ['rounded'] }
+            ]
+          },
+          rounded: {
+            items: [
+              { label: 'Small', value: 'sm' },
+              { label: 'Medium', value: 'md' }
+            ]
+          }
+        };
+
+        const styles = new StylesCollection([], { types: imageModifierTypes });
+        const unusedStyles = styles.getUnusedStyles();
+        const cropStyle = unusedStyles.findWhere({name: 'crop'});
+        const items = cropStyle.get('items');
+        const circleItem = items.findWhere({value: 'circle'});
+
+        expect(circleItem.get('incompatibleWith')).toEqual(['rounded']);
+      });
+
+      it('removes rounded styles when circle crop is added', () => {
+        const imageModifierTypes = {
+          crop: {
+            items: [
+              { label: 'Square', value: 'square' },
+              { label: 'Circle', value: 'circle', incompatibleWith: ['rounded'] }
+            ]
+          },
+          rounded: {
+            items: [
+              { label: 'Small', value: 'sm' },
+              { label: 'Medium', value: 'md' }
+            ]
+          }
+        };
+
+        const styles = new StylesCollection([{name: 'rounded', value: 'sm'}], { types: imageModifierTypes });
+        const unusedStyles = styles.getUnusedStyles();
+        const cropStyle = unusedStyles.findWhere({name: 'crop'});
+        const circleItem = cropStyle.get('items').findWhere({value: 'circle'});
+
+        circleItem.selected();
+
+        expect(styles.pluck('name')).toEqual(['crop']);
+        expect(styles.first().get('value')).toEqual('circle');
+        expect(styles.findWhere({name: 'rounded'})).toBeUndefined();
+      });
+
+      it('removes circle crop when rounded style is added', () => {
+        const imageModifierTypes = {
+          crop: {
+            items: [
+              { label: 'Square', value: 'square' },
+              { label: 'Circle', value: 'circle', incompatibleWith: ['rounded'] }
+            ]
+          },
+          rounded: {
+            items: [
+              { label: 'Small', value: 'sm' },
+              { label: 'Medium', value: 'md' }
+            ]
+          }
+        };
+
+        const styles = new StylesCollection([{name: 'crop', value: 'circle'}], { types: imageModifierTypes });
+        const unusedStyles = styles.getUnusedStyles();
+        const roundedStyle = unusedStyles.findWhere({name: 'rounded'});
+        const smallItem = roundedStyle.get('items').findWhere({value: 'sm'});
+
+        smallItem.selected();
+
+        expect(styles.pluck('name')).toEqual(['rounded']);
+        expect(styles.first().get('value')).toEqual('sm');
+        expect(styles.findWhere({name: 'crop'})).toBeUndefined();
       });
     });
   });

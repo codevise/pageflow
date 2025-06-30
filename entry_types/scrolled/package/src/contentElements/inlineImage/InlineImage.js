@@ -28,13 +28,6 @@ export function InlineImage({contentElementId, contentElementWidth, configuratio
     configuration.portraitCropPosition
   );
 
-  const aspectRatio = getModiferValue(
-    configuration.imageModifiers, 'crop'
-  );
-  const portraitAspectRatio = getModiferValue(
-    configuration.portraitImageModifiers, 'crop'
-  );
-
   // Only render OrientationAwareInlineImage if a portrait image has
   // been selected. This prevents having the component rerender on
   // orientation changes even if it does not depend on orientation at
@@ -43,8 +36,8 @@ export function InlineImage({contentElementId, contentElementWidth, configuratio
     return (
       <OrientationAwareInlineImage landscapeImageFile={imageFile}
                                    portraitImageFile={portraitImageFile}
-                                   landscapeAspectRatio={aspectRatio}
-                                   portraitAspectRatio={portraitAspectRatio}
+                                   landscapeImageModifiers={configuration.imageModifiers}
+                                   portraitImageModifiers={configuration.portraitImageModifiers}
                                    contentElementId={contentElementId}
                                    contentElementWidth={contentElementWidth}
                                    configuration={configuration} />
@@ -53,7 +46,7 @@ export function InlineImage({contentElementId, contentElementWidth, configuratio
   else {
     return (
       <ImageWithCaption imageFile={imageFile}
-                        aspectRatio={aspectRatio}
+                        imageModifiers={configuration.imageModifiers}
                         contentElementId={contentElementId}
                         contentElementWidth={contentElementWidth}
                         configuration={configuration} />
@@ -62,7 +55,7 @@ export function InlineImage({contentElementId, contentElementWidth, configuratio
 }
 
 function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile,
-                                      landscapeAspectRatio, portraitAspectRatio,
+                                      landscapeImageModifiers, portraitImageModifiers,
                                       contentElementId, contentElementWidth,
                                       configuration}) {
   const portraitOrientation = usePortraitOrientation();
@@ -70,12 +63,12 @@ function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile,
   const imageFile = portraitOrientation && portraitImageFile ?
                     portraitImageFile : landscapeImageFile;
 
-  const aspectRatio = portraitOrientation && portraitImageFile ?
-                      portraitAspectRatio : landscapeAspectRatio;
+  const imageModifiers = portraitOrientation && portraitImageFile ?
+                         portraitImageModifiers : landscapeImageModifiers;
 
   return (
     <ImageWithCaption imageFile={imageFile}
-                      aspectRatio={aspectRatio}
+                      imageModifiers={imageModifiers}
                       contentElementId={contentElementId}
                       contentElementWidth={contentElementWidth}
                       configuration={configuration} />
@@ -83,7 +76,7 @@ function OrientationAwareInlineImage({landscapeImageFile, portraitImageFile,
 }
 
 function ImageWithCaption({
-  imageFile, aspectRatio,
+  imageFile, imageModifiers,
   contentElementId, contentElementWidth, configuration
 }) {
   const {shouldLoad} = useContentElementLifecycle();
@@ -91,23 +84,29 @@ function ImageWithCaption({
   const supportFullscreen = enableFullscreen &&
                             contentElementWidth < contentElementWidths.full;
 
+  const {aspectRatio, rounded} = processImageModifiers(imageModifiers);
+  const isCircleCrop = rounded === 'circle';
+
   return (
     <FitViewport file={imageFile}
                  aspectRatio={aspectRatio || (imageFile ? undefined : 0.75)}
                  opaque={!imageFile}>
-      <ContentElementBox>
+      <ContentElementBox borderRadius={isCircleCrop ? 'none' : rounded}>
         <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
-            <ExpandableImage enabled={supportFullscreen && shouldLoad}
-                             imageFile={imageFile}
-                             contentElementId={contentElementId}>
-              <Image imageFile={imageFile}
-                     load={shouldLoad}
-                     structuredData={true}
-                     variant={contentElementWidth === contentElementWidths.full ?
-                              'large' : 'medium'}
-                     preferSvg={true} />
-            </ExpandableImage>
+            <ContentElementBox borderRadius={isCircleCrop ? 'circle' : 'none'}
+                               positioned={isCircleCrop}>
+              <ExpandableImage enabled={supportFullscreen && shouldLoad}
+                               imageFile={imageFile}
+                               contentElementId={contentElementId}>
+                <Image imageFile={imageFile}
+                       load={shouldLoad}
+                       structuredData={true}
+                       variant={contentElementWidth === contentElementWidths.full ?
+                                'large' : 'medium'}
+                       preferSvg={true} />
+              </ExpandableImage>
+            </ContentElementBox>
             <InlineFileRights configuration={configuration}
                               context="insideElement"
                               items={[{file: imageFile, label: 'image'}]} />
@@ -119,6 +118,16 @@ function ImageWithCaption({
                         items={[{file: imageFile, label: 'image'}]} />
     </FitViewport>
   );
+}
+
+function processImageModifiers(imageModifiers) {
+  const cropValue = getModiferValue(imageModifiers, 'crop');
+  const isCircleCrop = cropValue === 'circle';
+
+  return {
+    aspectRatio: isCircleCrop ? 1 : cropValue,
+    rounded: isCircleCrop ? 'circle' : getModiferValue(imageModifiers, 'rounded')
+  };
 }
 
 function getModiferValue(imageModifiers, name) {
