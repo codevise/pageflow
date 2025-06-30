@@ -42,6 +42,22 @@ module PageflowScrolled
         expect(response.status).to eq(201)
       end
 
+      it 'uses first storyline by default' do
+        entry = create(:entry, type_name: 'scrolled')
+
+        authorize_for_editor_controller(entry)
+        expect {
+          post(:create,
+               params: {
+                 entry_type: 'scrolled',
+                 entry_id: entry,
+                 chapter: attributes_for(:scrolled_chapter)
+               }, format: 'json')
+        }.to(change { Chapter.all_for_revision(entry.draft).count })
+
+        expect(response.status).to eq(201)
+      end
+
       it 'does not allow creating chapter in other entry' do
         entry = create(:entry, type_name: 'scrolled')
         other_entry = create(:entry, type_name: 'scrolled')
@@ -150,6 +166,22 @@ module PageflowScrolled
               entry_type: 'scrolled',
               entry_id: entry,
               storyline_id: storyline,
+              ids: [chapters.last.id, chapters.first.id]
+            }, format: 'json')
+
+        expect(chapters.last.reload.position).to eq(0)
+        expect(chapters.first.reload.position).to eq(1)
+      end
+
+      it 'uses first storyline by default' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapters = create_list(:scrolled_chapter, 2, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        put(:order,
+            params: {
+              entry_type: 'scrolled',
+              entry_id: entry,
               ids: [chapters.last.id, chapters.first.id]
             }, format: 'json')
 

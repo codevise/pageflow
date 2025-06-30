@@ -55,7 +55,11 @@ module PageflowScrolled
       end
 
       def find_storyline
-        Storyline.all_for_revision(@entry.draft).find(params[:storyline_id])
+        if params[:storyline_id]
+          Storyline.all_for_revision(@entry.draft).find(params[:storyline_id])
+        else
+          Storyline.all_for_revision(@entry.draft).first
+        end
       end
     end
   end
