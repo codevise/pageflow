@@ -48,7 +48,7 @@ module Pageflow
         decoder_bitrate_cap: 24420,
         decoder_buffer_size: 36631,
         audio_bitrate: 320,
-        size: '3839x2160',
+        size: size(3839, 2160),
         skip: {
           min_size: MIN_SIZE_FOR_4K
         },
@@ -65,7 +65,7 @@ module Pageflow
         decoder_bitrate_cap: 6660,
         decoder_buffer_size: 9990,
         audio_bitrate: 192,
-        size: '1919x1080',
+        size: size(1919, 1080),
         skip: {
           min_size: MIN_SIZE_FOR_FULLHD
         },
@@ -82,7 +82,7 @@ module Pageflow
         decoder_bitrate_cap: 3410,
         decoder_buffer_size: 7326,
         audio_bitrate: 128,
-        size: '1280x720',
+        size: size(1280, 720),
         public: 1,
       }
     end
@@ -97,7 +97,7 @@ module Pageflow
         decoder_buffer_size: 2557,
         audio_bitrate: 64,
         audio_channels: 1,
-        size: '853x480',
+        size: size(853, 480),
         public: 1
       }
     end
@@ -112,7 +112,7 @@ module Pageflow
         decoder_buffer_size: 924,
         audio_bitrate: 64,
         audio_channels: 1,
-        size: '640x360',
+        size: size(640, 360),
         public: 1,
         h264_profile: 'baseline'
       }
@@ -471,6 +471,15 @@ module Pageflow
         result << thumbnails_definition(method(:sftp_url)) if sftp_configured?
       end
       result
+    end
+
+    def size(max, min)
+      if video_file.width && video_file.height &&
+         video_file.width < video_file.height
+        "#{min}x#{max}"
+      else
+        "#{max}x#{min}"
+      end
     end
 
     def thumbnails_definition(url_helper)

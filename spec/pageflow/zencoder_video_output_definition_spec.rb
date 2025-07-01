@@ -28,7 +28,6 @@ module Pageflow
         expect(definition).not_to have_output.to_s3(video_file.hls_4k.path)
         expect(definition).to have_output.to_s3(video_file.hls_playlist.path)
         expect(definition).to have_output.to_s3(video_file.hls_playlist_high_and_up.path)
-        expect(definition).not_to have_output.to_s3(video_file.hls_playlist_fullhd_and_up.path)
         expect(definition).to have_output.to_s3(video_file.smil.path)
       end
 
@@ -114,6 +113,28 @@ module Pageflow
         expect(definition).to have_output.to_s3(video_file.hls_playlist.path)
         expect(definition).to have_output.to_s3(video_file.hls_playlist_high_and_up.path)
         expect(definition).to have_output.to_s3(video_file.smil.path)
+      end
+
+      it 'uses landscape sizes for landscape videos' do
+        video_file = build(:video_file, :with_highdef_encoding, width: 1920, height: 1080)
+        definition = ZencoderVideoOutputDefinition.new(video_file)
+
+        expect(definition).to have_output.with_label('4k').with_size('3839x2160')
+        expect(definition).to have_output.with_label('fullhd').with_size('1919x1080')
+        expect(definition).to have_output.with_label('high').with_size('1280x720')
+        expect(definition).to have_output.with_label('medium').with_size('853x480')
+        expect(definition).to have_output.with_label('low').with_size('640x360')
+      end
+
+      it 'uses portrait sizes for protrait videos' do
+        video_file = build(:video_file, :with_highdef_encoding, width: 1080, height: 1920)
+        definition = ZencoderVideoOutputDefinition.new(video_file)
+
+        expect(definition).to have_output.with_label('4k').with_size('2160x3839')
+        expect(definition).to have_output.with_label('fullhd').with_size('1080x1919')
+        expect(definition).to have_output.with_label('high').with_size('720x1280')
+        expect(definition).to have_output.with_label('medium').with_size('480x853')
+        expect(definition).to have_output.with_label('low').with_size('360x640')
       end
 
       it 'uses relative urls in dash playlist' do
