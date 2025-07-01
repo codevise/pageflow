@@ -24,7 +24,9 @@ describe('VideoPlayer', () => {
       fileUrlTemplates: {
         videoFiles: {
           medium: ':id_partition/medium/:basename.mp4',
-          high: ':id_partition/high/:basename.mp4'
+          high: ':id_partition/high/:basename.mp4',
+          'hls-playlist': ':id_partition/hls-playlist.m3u8',
+          'hls-playlist-high-and-up': ':id_partition/hls-playlist-high-and-up.m3u8'
         }
       },
       videoFiles: [
@@ -70,6 +72,53 @@ describe('VideoPlayer', () => {
   });
 
   it('passes sources according to setting to media API', () => {
+    const spyMedia = jest.spyOn(media, 'getPlayer');
+    settings.set('videoQuality', 'auto');
+
+    renderInEntry(
+      () => <VideoPlayer {...requiredProps()}
+                         videoFile={useFile({collectionName: 'videoFiles', permaId: 100})} />,
+      {
+        seed: getVideoFileSeed({
+          basename: 'video',
+          id: 1,
+          permaId: 100
+        })
+      }
+    );
+
+    expect(spyMedia).toHaveBeenCalledWith(
+      [{type: 'application/x-mpegURL', src: '000/000/001/hls-playlist.m3u8'},
+       {type: 'video/mp4', src: '000/000/001/high/video.mp4'}],
+      expect.anything()
+    );
+  });
+
+  it('support adaptiveMinQuality prop', () => {
+    const spyMedia = jest.spyOn(media, 'getPlayer');
+    settings.set('videoQuality', 'auto');
+
+    renderInEntry(
+      () => <VideoPlayer {...requiredProps()}
+                         videoFile={useFile({collectionName: 'videoFiles', permaId: 100})}
+                         adaptiveMinQuality="high" />,
+      {
+        seed: getVideoFileSeed({
+          basename: 'video',
+          id: 1,
+          permaId: 100
+        })
+      }
+    );
+
+    expect(spyMedia).toHaveBeenCalledWith(
+      [{type: 'application/x-mpegURL', src: '000/000/001/hls-playlist-high-and-up.m3u8'},
+       {type: 'video/mp4', src: '000/000/001/high/video.mp4'}],
+      expect.anything()
+    );
+  });
+
+  it('uses quality from settings', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
     settings.set('videoQuality', 'medium');
 

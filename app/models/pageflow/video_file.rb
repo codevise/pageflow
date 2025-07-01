@@ -9,8 +9,8 @@ module Pageflow
     has_attached_file(:poster, Pageflow.config.paperclip_s3_default_options
                         .merge(default_url: ':pageflow_placeholder',
                                styles: Pageflow.config.thumbnail_styles
-                                 .merge(medium: ['1920x1920>', :JPG],
-                                        large: ['1024x1024>', :JPG],
+                                 .merge(medium: ['1024x1024>', :JPG],
+                                        large: ['1920x1920>', :JPG],
                                         ultra: ['3840x3840>', :JPG],
                                         print: ['300x300>', :JPG]),
                                convert_options: {
@@ -24,8 +24,8 @@ module Pageflow
                         .merge(:default_url => ':pageflow_placeholder',
                                :default_style => :thumbnail,
                                :styles => Pageflow.config.thumbnail_styles
-                                 .merge(:medium => ['1920x1920>', :JPG],
-                                        :large => ['1024x1024>', :JPG]),
+                                  .merge(medium: ['1024x1024>', :JPG],
+                                         large: ['1920x1920>', :JPG]),
                                :convert_options => {
                                  :medium => "-quality 60 -interlace Plane",
                                  :large => "-quality 60 -interlace Plane"
@@ -111,6 +111,10 @@ module Pageflow
       ZencoderAttachment.new(self, 'dash/manifest.mpd')
     end
 
+    def dash_playlist_high_and_up
+      ZencoderAttachment.new(self, 'dash/manifest-high-and-up.mpd')
+    end
+
     def hls_playlist
       if Pageflow.config.zencoder_options[:hls_smil_suffix].present?
         ZencoderAttachment.new(self,
@@ -123,6 +127,10 @@ module Pageflow
       else
         ZencoderAttachment.new(self, 'hls-playlist.m3u8', host: :hls)
       end
+    end
+
+    def hls_playlist_high_and_up
+      ZencoderAttachment.new(self, 'hls-playlist-high-and-up.m3u8', host: :hls)
     end
 
     def smil

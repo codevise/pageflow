@@ -45,14 +45,14 @@ module Pageflow
                               url_options)
     end
 
-    def url_relative_to(attachment)
-      dir_path = File.dirname(URI.parse(attachment.url).path)
+    def relative_path_to(other_path)
+      dir_path = File.dirname(path)
 
-      unless URI.parse(url).path.start_with?(dir_path)
-        raise("Could not generate relative url for #{url} based on #{attachment.url}.")
+      unless URI.parse(other_path).path.start_with?(dir_path)
+        raise("Could not generate relative path for #{other_path} based on #{url}.")
       end
 
-      url.split("#{dir_path}/", 2).last
+      other_path.split("#{dir_path}/", 2).last
     end
 
     private

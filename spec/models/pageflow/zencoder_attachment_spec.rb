@@ -186,13 +186,13 @@ module Pageflow
       end
     end
 
-    describe '#url_relative_to' do
-      it 'returns url which is relative to given other ZencoderAttachment' do
+    describe '#relative_path_to' do
+      it 'returns path which is relative to own path' do
         file = file_double(id: 5)
         manifest = ZencoderAttachment.new(file, 'manifest.mpd')
         attachment = ZencoderAttachment.new(file, 'high/rendition.mpd')
 
-        result = attachment.url_relative_to(manifest)
+        result = manifest.relative_path_to(attachment.path)
 
         expect(result).to eq('high/rendition.mpd')
       end
@@ -202,30 +202,19 @@ module Pageflow
         manifest = ZencoderAttachment.new(file, 'dash/manifest.mpd')
         attachment = ZencoderAttachment.new(file, 'dash/high/rendition.mpd')
 
-        result = attachment.url_relative_to(manifest)
+        result = manifest.relative_path_to(attachment.path)
 
         expect(result).to eq('high/rendition.mpd')
       end
 
-      it 'handles protocol relative urls correctly' do
-        Pageflow.config.zencoder_options[:s3_protocol] = ''
-        file = file_double(id: 5)
-        manifest = ZencoderAttachment.new(file, 'dash/manifest.mpd')
-        attachment = ZencoderAttachment.new(file, 'dash/high/rendition.mpd')
-
-        result = attachment.url_relative_to(manifest)
-
-        expect(result).to eq('high/rendition.mpd')
-      end
-
-      it 'fails if other attachment is in other directory' do
+      it 'fails if path is in other directory' do
         file = file_double(id: 5)
         manifest = ZencoderAttachment.new(file, 'other/manifest.mpd')
         attachment = ZencoderAttachment.new(file, 'dash/high/rendition.mpd')
 
         expect {
-          attachment.url_relative_to(manifest)
-        }.to raise_error(/Could not generate relative url/)
+          manifest.relative_path_to(attachment.path)
+        }.to raise_error(/Could not generate relative path/)
       end
     end
 
