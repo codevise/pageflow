@@ -29,6 +29,20 @@ module Pageflow
         .to include('pageflow/video_files/:id_partition/hls-playlist.m3u8')
     end
 
+    it 'returns template for hls playlist high and up' do
+      result = VideoFileUrlTemplates.new.call
+
+      expect(result[:'hls-playlist-high-and-up'])
+        .to include('pageflow/video_files/:id_partition/hls-playlist-high-and-up.m3u8')
+    end
+
+    it 'returns template for dash playlist high and up' do
+      result = VideoFileUrlTemplates.new.call
+
+      expect(result[:'dash-playlist-high-and-up'])
+        .to include('pageflow/video_files/:id_partition/dash/manifest-high-and-up.mpd')
+    end
+
     it 'returns template for hls playlist with smil suffix' do
       Pageflow.config.zencoder_options[:hls_smil_suffix] = '/master.m3u8'
 

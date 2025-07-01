@@ -55,6 +55,7 @@ export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) 
                        playerActions={playerActions}
                        videoFile={video}
                        textTracksDisabled={true}
+                       adaptiveMinQuality="high"
                        fit="cover"
                        loop={true}
                        playsInline={true} />

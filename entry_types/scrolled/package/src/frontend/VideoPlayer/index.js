@@ -16,8 +16,10 @@ import {VideoStructuredData} from './VideoStructuredData';
  * @param {number} [props.defaultTextTrackFileId] - Perma id of default text track file.
  * @param {string} [props.load] - Control lazy loading. `"auto"` (default), `"poster"` or `"none"`.
  * @param {String} [props.fit] - `"contain"` (default) or `"cover"`.
+ * @param {String} [props.adaptiveMinQuality] - Pass "high" or "fullhd" to use HLS/Dash playlists
+ *   with at least given quality.
  */
-export function VideoPlayer({videoFile, posterImageFile, ...props}) {
+export function VideoPlayer({videoFile, posterImageFile, adaptiveMinQuality, ...props}) {
   const [activeQuality] = useVideoQualitySetting();
   const textTracks = useTextTracks({
     file: videoFile,
@@ -32,7 +34,7 @@ export function VideoPlayer({videoFile, posterImageFile, ...props}) {
                      fit={props.fit}
                      textTracks={textTracks}
                      filePermaId={videoFile.permaId}
-                     sources={sources(videoFile, activeQuality)}
+                     sources={sources(videoFile, {quality: activeQuality, adaptiveMinQuality})}
                      textTracksInset={true}
                      posterImageUrl={posterImageFile && posterImageFile.isReady ?
                                      posterImageFile.urls.large : videoFile.urls.posterLarge}

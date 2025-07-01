@@ -4,7 +4,7 @@ browser.feature('dash', () => true);
 browser.feature('video', () => true);
 browser.feature('highdef', () => true);
 
-export function sources(videoFile, quality = 'auto') {
+export function sources(videoFile, {quality = 'auto', adaptiveMinQuality} = {}) {
   if (typeof window !== 'undefined') {
     if (!browser.has('video')) {
       return [];
@@ -41,7 +41,7 @@ export function sources(videoFile, quality = 'auto') {
     let result = [
       {
         type: 'application/x-mpegURL',
-        src: videoFile.urls['hls-playlist']
+        src: getPlaylistSrc(videoFile, 'hls', adaptiveMinQuality)
       },
       {
         type: 'video/mp4',
@@ -53,7 +53,7 @@ export function sources(videoFile, quality = 'auto') {
       result = [
         {
           type: 'application/dash+xml',
-          src: videoFile.urls['dash-playlist']
+          src: getPlaylistSrc(videoFile, 'dash', adaptiveMinQuality)
         }
       ].concat(result);
     }
@@ -72,4 +72,15 @@ export function sources(videoFile, quality = 'auto') {
       }
     ];
   }
+}
+
+function getPlaylistSrc(videoFile, format, adaptiveMinQuality) {
+  const key = adaptiveMinQuality ? `${format}-playlist-${adaptiveMinQuality}-and-up` : `${format}-playlist`;
+  const result = videoFile.urls[key];
+
+  if (!result && adaptiveMinQuality) {
+    return getPlaylistSrc(videoFile, format);
+  }
+
+  return result;
 }

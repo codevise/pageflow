@@ -111,6 +111,10 @@ module Pageflow
       ZencoderAttachment.new(self, 'dash/manifest.mpd')
     end
 
+    def dash_playlist_high_and_up
+      ZencoderAttachment.new(self, 'dash/manifest-high-and-up.mpd')
+    end
+
     def hls_playlist
       if Pageflow.config.zencoder_options[:hls_smil_suffix].present?
         ZencoderAttachment.new(self,
@@ -123,6 +127,10 @@ module Pageflow
       else
         ZencoderAttachment.new(self, 'hls-playlist.m3u8', host: :hls)
       end
+    end
+
+    def hls_playlist_high_and_up
+      ZencoderAttachment.new(self, 'hls-playlist-high-and-up.m3u8', host: :hls)
     end
 
     def smil

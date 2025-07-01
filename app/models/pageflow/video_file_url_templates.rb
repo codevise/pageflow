@@ -10,7 +10,9 @@ module Pageflow
         :'4k' => url_template(:mp4_4k),
 
         :'hls-playlist' => url_template(:hls_playlist),
+        :'hls-playlist-high-and-up' => url_template(:hls_playlist_high_and_up),
         :'dash-playlist' => url_template(:dash_playlist),
+        :'dash-playlist-high-and-up' => url_template(:dash_playlist_high_and_up),
 
         poster_medium: url_template(:poster, :medium),
         poster_large: url_template(:poster, :large),

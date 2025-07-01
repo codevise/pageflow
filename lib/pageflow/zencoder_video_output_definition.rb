@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class ZencoderVideoOutputDefinition < ZencoderOutputDefinition
     cattr_accessor :skip_hls, :skip_smil
 
@@ -123,7 +124,8 @@ module Pageflow
           non_transferable(dash_high_definition),
           non_transferable(dash_medium_definition),
           non_transferable(dash_low_definition),
-          non_transferable(dash_playlist_definition)
+          non_transferable(dash_playlist_definition),
+          non_transferable(dash_playlist_high_and_up_definition)
         ]
     end
 
@@ -144,7 +146,8 @@ module Pageflow
           non_transferable(hls_high_definition),
           non_transferable(hls_medium_definition),
           non_transferable(hls_low_definition),
-          non_transferable(hls_playlist_definition)
+          non_transferable(hls_playlist_definition),
+          non_transferable(hls_playlist_high_and_up_definition)
         ]
     end
 
@@ -228,46 +231,47 @@ module Pageflow
     end
 
     def dash_playlist_definition
-      {
+      Playlist.build(
         label: 'dash-playlist',
-        streams: dash_stream_definitions,
-        allow_skipped_sources: true,
-        type: 'playlist',
-        streaming_delivery_format: 'dash',
-        path: video_file.dash_playlist.path,
-        public: 1
-      }
+        attachment: video_file.dash_playlist,
+        format: 'dash'
+      ) do |streams|
+        streams.from(dash_low_definition)
+        streams.from(dash_medium_definition)
+        streams.from(dash_high_definition)
+
+        if video_file.encode_highdef?
+          streams.from(dash_fullhd_definition)
+          streams.from(dash_4k_definition)
+        end
+      end
     end
 
-    def dash_stream_definitions
-      [
-        {
-          source: 'dash-low',
-          path: video_file.dash_low.url_relative_to(video_file.dash_playlist)
-        },
-        {
-          source: 'dash-medium',
-          path: video_file.dash_medium.url_relative_to(video_file.dash_playlist)
-        },
-        {
-          source: 'dash-high',
-          path: video_file.dash_high.url_relative_to(video_file.dash_playlist)
-        }
-      ] + dash_highdef_stream_definitions
+    def dash_playlist_high_and_up_definition
+      Playlist.build(
+        label: 'dash-playlist-high-and-up',
+        attachment: video_file.dash_playlist_high_and_up,
+        format: 'dash'
+      ) do |streams|
+        streams.from(dash_high_definition)
+
+        if video_file.encode_highdef?
+          streams.from(dash_fullhd_definition)
+          streams.from(dash_4k_definition)
+        end
+      end
     end
 
-    def dash_highdef_stream_definitions
-      return [] unless video_file.encode_highdef?
-      [
-        {
-          source: 'dash-fullhd',
-          path: video_file.dash_fullhd.url_relative_to(video_file.dash_playlist)
-        },
-        {
-          source: 'dash-4k',
-          path: video_file.dash_4k.url_relative_to(video_file.dash_playlist)
-        }
-      ]
+    def dash_playlist_fullhd_and_up_definition
+      Playlist.build(
+        label: 'dash-playlist-fullhd-and-up',
+        attachment: video_file.dash_playlist_fullhd_and_up,
+        format: 'dash',
+        min_size: MIN_SIZE_FOR_FULLHD
+      ) do |streams|
+        streams.from(dash_fullhd_definition)
+        streams.from(dash_4k_definition)
+      end
     end
 
     def hls_low_definition
@@ -336,50 +340,47 @@ module Pageflow
     end
 
     def hls_playlist_definition
-      {
+      Playlist.build(
         label: 'hls-playlist',
-        streams: hls_stream_definitions,
-        allow_skipped_sources: true,
-        type: 'playlist',
-        path: video_file.hls_playlist.path,
-        public: 1
-      }
+        attachment: video_file.hls_playlist,
+        format: 'hls'
+      ) do |streams|
+        streams.from(hls_medium_definition, bandwidth: 1769)
+        streams.from(hls_low_definition, bandwidth: 619)
+        streams.from(hls_high_definition, bandwidth: 3538)
+
+        if video_file.encode_highdef?
+          streams.from(hls_fullhd_definition, bandwidth: 8575)
+          streams.from(hls_4k_definition, bandwidth: 32_000)
+        end
+      end
     end
 
-    def hls_stream_definitions
-      [
-        {
-          source: 'hls-medium',
-          path: video_file.hls_medium.url_relative_to(video_file.hls_playlist),
-          bandwidth: 1769
-        },
-        {
-          source: 'hls-low',
-          path: video_file.hls_low.url_relative_to(video_file.hls_playlist),
-          bandwidth: 619
-        },
-        {
-          source: 'hls-high',
-          path: video_file.hls_high.url_relative_to(video_file.hls_playlist),
-          bandwidth: 3538
-        }
-      ] + hls_highdef_stream_definitions
+    def hls_playlist_high_and_up_definition
+      Playlist.build(
+        label: 'hls-playlist-high-and-up',
+        attachment: video_file.hls_playlist_high_and_up,
+        format: 'hls'
+      ) do |streams|
+        streams.from(hls_high_definition, bandwidth: 3538)
+
+        if video_file.encode_highdef?
+          streams.from(hls_fullhd_definition, bandwidth: 8575)
+          streams.from(hls_4k_definition, bandwidth: 32_000)
+        end
+      end
     end
 
-    def hls_highdef_stream_definitions
-      return [] unless video_file.encode_highdef?
-      [
-        {
-          source: 'hls-fullhd',
-          path: video_file.hls_fullhd.url_relative_to(video_file.hls_playlist),
-          bandwidth: 8575
-        },
-        {
-          source: 'hls-4k',
-          path: video_file.hls_4k.url_relative_to(video_file.hls_playlist),
-          bandwidth: 32000
-        }
-      ]
+    def hls_playlist_fullhd_and_up_definition
+      Playlist.build(
+        label: 'hls-playlist-fullhd-and-up',
+        attachment: video_file.hls_playlist_fullhd_and_up,
+        format: 'hls',
+        min_size: MIN_SIZE_FOR_FULLHD
+      ) do |streams|
+        streams.from(hls_fullhd_definition, bandwidth: 8575)
+        streams.from(hls_4k_definition, bandwidth: 32_000)
+      end
     end
 
     def smil_definitions
@@ -490,6 +491,46 @@ module Pageflow
                            public: 1)
         ]
       }
+    end
+
+    class Playlist
+      def self.build(**args)
+        builder = new(**args)
+        yield builder
+        builder.build_definition
+      end
+
+      def initialize(label:, attachment:, format:, min_size: nil)
+        @label = label
+        @attachment = attachment
+        @format = format
+        @min_size = min_size
+        @streams = []
+      end
+
+      def from(source_definition, bandwidth: nil)
+        @streams << {
+          source: source_definition[:label],
+          path: @attachment.relative_path_to(source_definition[:path]),
+          bandwidth:
+        }.compact
+      end
+
+      def build_definition
+        definition = {
+          label: @label,
+          streams: @streams,
+          allow_skipped_sources: true,
+          type: 'playlist',
+          path: @attachment.path,
+          public: 1
+        }
+
+        definition[:streaming_delivery_format] = @format if @format == 'dash'
+        definition[:skip] = {min_size: @min_size} if @min_size
+
+        definition
+      end
     end
   end
 end

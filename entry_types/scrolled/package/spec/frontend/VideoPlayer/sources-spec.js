@@ -47,10 +47,54 @@ describe('VideoPlayer sources', () => {
     expect(result.map(s => s.type)).toContain('application/x-mpegURL');
   });
 
+  it('ignores high playlist by default', () => {
+    const videoFile = {urls: {
+      'hls-playlist': 'http://example.com/4/hls-playlist.m3u8',
+      'hls-playlist-high-and-up': 'http://example.com/4/hls-playlist-high-and-up.m3u8',
+      'dash-playlist': 'http://example.com/4/dash-playlist.m3u8',
+      'dash-playlist-high-and-up': 'http://example.com/4/dash-playlist-high-and-up.m3u8'
+    }};
+
+    const result = sources(videoFile);
+
+    expect(result.map(s => s.src)).toContain('http://example.com/4/hls-playlist.m3u8');
+    expect(result.map(s => s.src)).not.toContain('http://example.com/4/hls-playlist-high-and-up.m3u8');
+    expect(result.map(s => s.src)).toContain('http://example.com/4/dash-playlist.m3u8');
+    expect(result.map(s => s.src)).not.toContain('http://example.com/4/dash-playlist-high-and-up.m3u8');
+  });
+
+  it('supports ensuring adaptive min quality high', () => {
+    const videoFile = {urls: {
+      'hls-playlist': 'http://example.com/4/hls-playlist.m3u8',
+      'hls-playlist-high-and-up': 'http://example.com/4/hls-playlist-high-and-up.m3u8',
+      'dash-playlist': 'http://example.com/4/dash-playlist.m3u8',
+      'dash-playlist-high-and-up': 'http://example.com/4/dash-playlist-high-and-up.m3u8'
+    }};
+
+    const result = sources(videoFile, {adaptiveMinQuality: 'high'});
+
+    expect(result.map(s => s.src)).not.toContain('http://example.com/4/hls-playlist.m3u8');
+    expect(result.map(s => s.src)).toContain('http://example.com/4/hls-playlist-high-and-up.m3u8');
+    expect(result.map(s => s.src)).not.toContain('http://example.com/4/dash-playlist.m3u8');
+    expect(result.map(s => s.src)).toContain('http://example.com/4/dash-playlist-high-and-up.m3u8');
+  });
+
+  it('falls back to default playlist if high-and-up playlist is not present', () => {
+    const videoFile = {urls: {
+      'hls-playlist': 'http://example.com/4/hls-playlist.m3u8',
+      'dash-playlist': 'http://example.com/4/dash-playlist.m3u8',
+    }};
+
+    const result = sources(videoFile, {adaptiveMinQuality: 'high'});
+
+    expect(result.map(s => s.src)).toContain('http://example.com/4/hls-playlist.m3u8');
+    expect(result.map(s => s.src)).toContain('http://example.com/4/dash-playlist.m3u8');
+  });
+
   it('uses medium quality if requested', () => {
     const videoFile = {urls: {'medium': 'http://example.com/4/medium.mp4'}};
 
-    const result = sources(videoFile, 'medium');
+    const result = sources(videoFile, {quality: 'medium'});
 
     expect(result.length).toBe(1);
     expect(result[0].src).toContain('medium.mp4');
@@ -62,7 +106,7 @@ describe('VideoPlayer sources', () => {
       'fullhd': 'http://example.com/4/fullhd.mp4'
     }};
 
-    const result = sources(videoFile, 'fullhd');
+    const result = sources(videoFile, {quality: 'fullhd'});
 
     expect(result.length).toBe(1);
     expect(result[0].src).toContain('fullhd.mp4');
@@ -75,7 +119,7 @@ describe('VideoPlayer sources', () => {
         'high': 'http://example.com/4/high.mp4'
       }};
 
-      const result = sources(videoFile, 'fullhd');
+      const result = sources(videoFile, {quality: 'fullhd'});
 
       expect(result.length).toBe(1);
       expect(result[0].src).toContain('high.mp4');
@@ -113,7 +157,7 @@ describe('VideoPlayer sources', () => {
       '4k': 'http://example.com/4/4k.mp4'
     }};
 
-    const result = sources(videoFile, '4k');
+    const result = sources(videoFile, {quality: '4k'});
 
     expect(result.length).toBe(1);
     expect(result[0].src).toContain('4k.mp4');
@@ -124,7 +168,7 @@ describe('VideoPlayer sources', () => {
       'high': 'http://example.com/4/high.mp4'
     }};
 
-    const result = sources(videoFile, '4k');
+    const result = sources(videoFile, {quality: '4k'});
 
     expect(result.length).toBe(1);
     expect(result[0].src).toContain('high.mp4');
