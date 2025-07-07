@@ -29,6 +29,15 @@ storiesOfContentElement(module, {
       }
     },
     {
+      name: 'With Caption Above',
+      configuration: {
+        caption: 'Some text here'
+      },
+      themeOptions: {
+        figureCaptionPosition: 'above'
+      }
+    },
+    {
       name: 'With Rounded Corners',
       configuration: {
         caption: 'Image with rounded corners',

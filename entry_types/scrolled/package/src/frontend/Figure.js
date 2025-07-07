@@ -6,6 +6,7 @@ import {EditableText} from './EditableText';
 import {useDarkBackground} from './backgroundColor';
 import {useContentElementEditorState} from './useContentElementEditorState';
 import {useI18n} from './i18n';
+import {useTheme} from '../entryState';
 import {isBlankEditableTextValue} from './utils/blank';
 
 import styles from './Figure.module.css';
@@ -32,6 +33,9 @@ export function Figure({
   const {isSelected, isEditable} = useContentElementEditorState();
   const [isEditingCaption, setIsEditingCaption] = useState(false);
   const {t} = useI18n({locale: 'ui'});
+  const theme = useTheme();
+
+  const captionAbove = (theme.options.figureCaptionPosition === 'above');
 
   caption = useMemo(
     () => typeof caption === 'string' ?
@@ -43,7 +47,7 @@ export function Figure({
   if (!isBlankEditableTextValue(caption) || isEditable) {
     return (
       <figure className={classNames(styles.root, {[styles.invert]: !darkBackground})}>
-        {children}
+        {!captionAbove && children}
 
         {isBlankEditableTextValue(caption) && isSelected && !isEditingCaption && addCaptionButtonVisible &&
          <ActionButton position={addCaptionButtonPosition}
@@ -63,6 +67,8 @@ export function Figure({
                          hyphens="none"
                          placeholder={t('pageflow_scrolled.inline_editing.type_text')} />
          </figcaption>}
+
+        {captionAbove && children}
       </figure>
     );
   }
