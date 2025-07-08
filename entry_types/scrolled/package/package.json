@@ -46,8 +46,8 @@
   },
   "devDependencies": {
     "@percy-io/in-percy": "^0.1.11",
-    "@percy/cli": "^1.27.7",
-    "@percy/storybook": "^5.0.1",
+    "@percy/cli": "^1.31.0",
+    "@percy/storybook": "^6.0.4",
     "@storybook/addon-viewport": "^7.6.10",
     "@storybook/react": "^7.6.10",
     "@storybook/react-webpack5": "^7.6.10",
