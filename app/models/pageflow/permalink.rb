@@ -11,7 +11,7 @@ module Pageflow
     belongs_to :directory, class_name: 'PermalinkDirectory'
 
     validates(:slug,
-              format: /\A[0-9a-zA-Z_-]+\z/,
+              format: {with: /\A[0-9a-zA-Z_-]+\z/, allow_blank: true},
               uniqueness: {scope: :directory})
 
     validate :belongs_to_same_site_as_entry
@@ -19,10 +19,19 @@ module Pageflow
     before_update(:create_redirect,
                   if: -> { entry.first_published_at.present? && (slug_changed? || directory_changed?) })
 
+    attr_accessor :allow_root_path
+
     private
 
     def set_default_slug
-      self.slug = entry.default_permalink_slug if slug == ''
+      return unless slug == ''
+      return if allow_emtpy_slug?
+
+      self.slug = entry.default_permalink_slug
+    end
+
+    def allow_emtpy_slug?
+      allow_root_path && directory&.path&.blank?
     end
 
     def slug_candidates
