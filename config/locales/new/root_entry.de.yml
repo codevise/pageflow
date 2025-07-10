@@ -1,0 +1,28 @@
+de:
+  activemodel:
+    attributes:
+      pageflow/site_root_entry_form:
+        entry: Beitrag
+        entry_id: Beitrag
+    errors:
+      models:
+        pageflow/site_root_entry_form:
+          attributes:
+            entry:
+              blank: nicht gefunden
+  pageflow:
+    admin:
+      site_root_entry:
+        title: Einstiegsseite festlegen
+        intro_html: |
+          <p>Wähle den Beitrag aus, der als Einstiegsseite unter der
+          folgenden URL gezeigt werden soll:
+          <strong>https://%{site_host}/</strong><br>Dieser Inhalt
+          wird gezeigt, wenn die Domain der Site ohne weiteren Pfad
+          aufgerufen wird.</p>
+
+        hint: |
+          Der Permalink des Beitrags wird automatisch angepasst. Falls
+          der Beitrag bereits veröffentlicht wurde, wird eine
+          Weiterleitung von der alten URL zur neuen URL eingerichtet.
+        submit: Als Einstiegsseite festlegen

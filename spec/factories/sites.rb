@@ -7,6 +7,12 @@ module Pageflow
       after(:build) do |site|
         site.account ||= build(:account, default_site: site)
       end
+
+      trait(:with_root_permalink_directory) do
+        after(:build) do |site|
+          site.permalink_directories.build(path: '')
+        end
+      end
     end
   end
 end

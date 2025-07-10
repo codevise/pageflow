@@ -41,7 +41,7 @@ module Pageflow
       helper Pageflow::PublicI18n::LocalesHelper
 
       before_create do |site|
-        site.build_default_permalink_directory
+        site.build_root_permalink_directory
       end
 
       def index

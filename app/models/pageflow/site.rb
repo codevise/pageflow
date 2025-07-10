@@ -32,8 +32,16 @@ module Pageflow
       cname.split('.').pop(2).join('.')
     end
 
-    def build_default_permalink_directory
+    def build_root_permalink_directory
       permalink_directories.build(path: '')
+    end
+
+    def root_entry
+      root_permalink_directory&.permalinks&.find_by_slug('')&.entry
+    end
+
+    def root_permalink_directory
+      permalink_directories.find_by_path('')
     end
 
     def first_paged_entry_template

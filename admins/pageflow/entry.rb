@@ -90,6 +90,13 @@ module Pageflow
                           grouped_by_accounts: authorized?(:see, :accounts))
     end
 
+    searchable_select_options(text_attribute: :title,
+                              scope: lambda do |params|
+                                scope = EntryPolicy::Scope.new(current_user, Entry).resolve
+                                scope = scope.where(site_id: params[:site_id]) if params[:site_id]
+                                scope
+                              end)
+
     searchable_select_options(name: :eligible_accounts,
                               text_attribute: :name,
                               scope: lambda do

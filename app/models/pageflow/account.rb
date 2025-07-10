@@ -21,7 +21,7 @@ module Pageflow
     def build_default_site(*args)
       super.tap do |site|
         site.account = self
-        site.build_default_permalink_directory
+        site.build_root_permalink_directory
       end
     end
 

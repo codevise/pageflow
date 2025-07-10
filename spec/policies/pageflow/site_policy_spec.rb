@@ -22,6 +22,18 @@ module Pageflow
                       of_account: ->(topic) { topic.account },
                       to: :update,
                       topic: -> { create(:site) }
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: :manager,
+                      but_forbids: :publisher,
+                      of_account: ->(topic) { topic.account },
+                      to: :manage_root_entry,
+                      topic: -> { create(:site) }
+
+      it_behaves_like 'an admin permission that',
+                      of_account: ->(topic) { topic.account },
+                      to: :manage_root_entry,
+                      topic: -> { create(:site) }
     end
 
     context 'without allow_multiaccount_users' do
@@ -41,6 +53,18 @@ module Pageflow
                       allows_admins_but_forbids_even_managers: true,
                       of_account: ->(topic) { topic.account },
                       to: :update,
+                      topic: -> { create(:site) }
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: :manager,
+                      but_forbids: :publisher,
+                      of_account: ->(topic) { topic.account },
+                      to: :manage_root_entry,
+                      topic: -> { create(:site) }
+
+      it_behaves_like 'an admin permission that',
+                      of_account: ->(topic) { topic.account },
+                      to: :manage_root_entry,
                       topic: -> { create(:site) }
     end
 

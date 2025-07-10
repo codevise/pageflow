@@ -92,6 +92,36 @@ describe Admin::EntriesController do
     end
   end
 
+  describe '#all_option' do
+    it 'includes only entries visible to user' do
+      account = create(:account)
+      entry = create(:entry, account:)
+      create(:entry, account:)
+      create(:entry)
+      current_user = create(:user, :previewer, on: entry)
+
+      sign_in(current_user)
+      get(:all_options)
+      option_texts = json_response(path: ['results', '*', 'text'])
+
+      expect(option_texts).to eq([entry.title])
+    end
+
+    it 'allows filtering by site' do
+      account = create(:account)
+      site = create(:site, account:)
+      entry = create(:entry, account:, site:)
+      create(:entry, account:)
+      current_user = create(:user, :manager, on: account)
+
+      sign_in(current_user)
+      get(:all_options, params: {site_id: site})
+      option_texts = json_response(path: ['results', '*', 'text'])
+
+      expect(option_texts).to eq([entry.title])
+    end
+  end
+
   describe '#eligible_sites_options' do
     it 'can be filtered by account name' do
       current_user = create(:user, :admin)

@@ -1,0 +1,27 @@
+en:
+  activemodel:
+    attributes:
+      pageflow/site_root_entry_form:
+        entry: Story
+        entry_id: Story
+    errors:
+      models:
+        pageflow/site_root_entry_form:
+          attributes:
+            entry:
+              blank: not found
+  pageflow:
+    admin:
+      site_root_entry:
+        title: Set Homepage
+        intro_html: |
+          <p>Select the story that should appear as the homepage at:<br>
+          <strong>https://%{site_host}/</strong><br>This content will
+          be shown when someone visits your site without entering a
+          specific path.</p>
+
+        hint: |
+          The stories's permalink will be updated automatically. If
+          the story is already published, a redirect from the old URL
+          to the new ULR will be created.
+        submit: Set as Homepage
