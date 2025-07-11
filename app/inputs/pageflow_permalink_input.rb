@@ -30,7 +30,7 @@ class PageflowPermalinkInput
     return '' if options[:site].permalink_directories.empty? || options[:only_root]
 
     builder.select(:directory_id, directory_select_options) <<
-      builder.text_field(:slug, placeholder: options[:slug_placeholder])
+      builder.text_field(:slug, data: {placeholder: options[:slug_placeholder]})
   end
 
   def error_keys

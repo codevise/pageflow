@@ -1102,6 +1102,59 @@ describe Admin::EntriesController do
       expect(response.body)
         .not_to have_selector('input[name="entry[permalink_attributes][slug]"]')
     end
+
+    it 'sets data-root-permalink to false by default' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(
+        :entry,
+        account:
+      )
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body)
+        .to have_selector('form[data-root-permalink=false]')
+    end
+
+    it 'sets data-root-permalink to false if entry has slug' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(
+        :entry,
+        account:,
+        permalink_attributes: {
+          slug: 'slug'
+        }
+      )
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body)
+        .to have_selector('form[data-root-permalink=false]')
+    end
+
+    it 'sets data-root-permalink to true if entry is site root' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(
+        :entry,
+        account:,
+        permalink_attributes: {
+          directory_path: '',
+          slug: '',
+          allow_root_path: true
+        }
+      )
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body)
+        .to have_selector('form[data-root-permalink=true]')
+    end
   end
 
   describe '#update' do
@@ -1792,7 +1845,7 @@ describe Admin::EntriesController do
 
       expect(response.body)
         .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
-                         '[placeholder="some-title"]')
+                         '[data-placeholder="some-title"]')
     end
 
     it 'renders hidden permalink field without inputs if no permalink directories' do
