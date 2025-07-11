@@ -4,7 +4,11 @@ FactoryBot.define do
 
     after(:build) do |account, evaluator|
       account.default_site ||=
-        build(:site, account: account, **evaluator.default_site_attributes)
+        build(:site, *evaluator.default_site_traits, account:, **evaluator.default_site_attributes)
+    end
+
+    trait :with_permalinks do
+      default_site_traits { [:with_root_permalink_directory] }
     end
 
     trait(:with_first_paged_entry_template) do
@@ -24,6 +28,7 @@ FactoryBot.define do
       without_feature { nil }
 
       default_site_attributes { {} }
+      default_site_traits { [] }
     end
 
     after(:create) do |account, evaluator|

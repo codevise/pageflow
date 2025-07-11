@@ -3,5 +3,10 @@
                base_url: entry.site.canonical_entry_url_prefix.presence ||
                          pretty_site_url(entry.site),
                site: entry.site,
+               only_root: entry.permalink&.allow_root_path,
                slug_placeholder: entry.default_permalink_slug,
                hint: entry.new_record? ? nil : t('pageflow.admin.entries.permalink_hint'))%>
+
+<% if entry.permalink&.allow_root_path %>
+  <%= hidden_field_tag(:at, 'root') %>
+<% end %>

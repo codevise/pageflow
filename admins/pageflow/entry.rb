@@ -218,7 +218,9 @@ module Pageflow
       helper_method :site_policy_scope
 
       after_build do |entry|
+        handle_site_param(entry)
         apply_entry_defaults(entry)
+        handle_root_permalink(entry)
 
         if action_name == 'new' &&
            (default_entry_type = Pageflow.config.default_entry_type&.call(entry.account))
@@ -281,9 +283,32 @@ module Pageflow
 
       private
 
+      def handle_site_param(entry)
+        return unless params[:site_id]
+
+        site = site_policy_scope.sites_allowed_for(
+          account_policy_scope.entry_creatable
+        ).find(params[:site_id])
+
+        entry.site = site
+        entry.account = site.account
+      end
+
       def apply_entry_defaults(entry)
         entry.account ||= account_policy_scope.entry_creatable.first || Account.first
         entry.site ||= entry.account.default_site
+      end
+
+      def handle_root_permalink(entry)
+        return unless params[:at] == 'root'
+        return unless authorized?(:manage_root_entry, entry.site)
+
+        entry.build_permalink unless entry.permalink
+        entry.permalink.assign_attributes(
+          directory: entry.site.root_permalink_directory,
+          slug: '',
+          allow_root_path: '1'
+        )
       end
 
       def account_policy_scope
