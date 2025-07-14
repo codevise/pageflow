@@ -38,6 +38,7 @@ module Pageflow
     controller do
       helper Admin::CutoffModesHelper
       helper Admin::FormHelper
+      helper Admin::SitesHelper
       helper Pageflow::PublicI18n::LocalesHelper
 
       before_create do |site|

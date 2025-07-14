@@ -72,6 +72,7 @@ module Pageflow
       helper Admin::FormHelper
       helper Admin::LocalesHelper
       helper Admin::MembershipsHelper
+      helper Admin::SitesHelper
       helper ThemesHelper
 
       def new
