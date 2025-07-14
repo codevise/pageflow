@@ -4,7 +4,7 @@ module Pageflow
   describe Page do
     describe '#configuration=' do
       it 'assigns display_in_navigation' do
-        page = build(:page, :display_in_navigation => true)
+        page = build(:page, display_in_navigation: true)
 
         page.configuration = {'display_in_navigation' => false}
 

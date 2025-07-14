@@ -88,13 +88,14 @@ module Pageflow
 
       def generate_link(entry)
         return unless authorized?(:manage_translations, entry)
+
         entry_translator_url = Pageflow.config_for(entry).entry_translator_url
         return if entry_translator_url.blank?
 
         text_node(link_to(t('pageflow.admin.entry_translations.generate'),
                           entry_translator_url.call(entry),
                           class: 'button',
-                          style: "margin-left: 8px"))
+                          style: 'margin-left: 8px'))
       end
     end
   end

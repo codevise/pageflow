@@ -16,7 +16,7 @@ module PageflowScrolled
       it 'renders script tag for frontend js' do
         entry = create(:entry, :published, type_name: 'scrolled')
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('script[src*=pageflow-scrolled-frontend]',
                                                visible: false)
@@ -25,14 +25,14 @@ module PageflowScrolled
       it 'server side renders entry' do
         entry = create(:entry, :published, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.published_revision)
-        section = create(:section, chapter: chapter)
+        section = create(:section, chapter:)
         create(:content_element,
-               section: section,
+               section:,
                position: 4,
                type_name: 'inlineImage',
                configuration: {caption: 'Some caption'})
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('figcaption', text: 'Some caption')
       end
@@ -40,7 +40,7 @@ module PageflowScrolled
       it 'renders generated media queries if frontend v2' do
         entry = create(:entry, :published, type_name: 'scrolled')
 
-        get_with_entry_env(:show, entry: entry, params: {frontend: 'v2'})
+        get_with_entry_env(:show, entry:, params: {frontend: 'v2'})
 
         expect(response.body)
           .to have_selector('script',
@@ -60,7 +60,7 @@ module PageflowScrolled
         entry = create(:entry, :published, type_name: 'scrolled')
         create(:widget, subject: entry.published_revision, type_name: 'test_widget')
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_meta_tag.with_name('some_test')
       end
@@ -76,7 +76,7 @@ module PageflowScrolled
         entry = create(:entry, :published, type_name: 'scrolled')
         create(:widget, subject: entry.published_revision, type_name: 'test_widget')
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('div.test_widget')
       end
@@ -95,7 +95,7 @@ module PageflowScrolled
         entry = create(:entry, :published, type_name: 'scrolled')
         create(:widget, subject: entry.draft, type_name: 'test_widget')
 
-        get_with_entry_env(:show, entry: entry, mode: :preview)
+        get_with_entry_env(:show, entry:, mode: :preview)
 
         expect(response.body).not_to have_selector('div.test_widget')
         expect(response.body).not_to have_meta_tag.with_name('some_test')
@@ -107,7 +107,7 @@ module PageflowScrolled
                        type_name: 'scrolled',
                        published_revision_attributes: {locale: 'de'})
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('html[lang=de]')
       end
@@ -118,7 +118,7 @@ module PageflowScrolled
                        type_name: 'scrolled',
                        published_revision_attributes: {locale: 'de'})
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('html[dir=ltr]')
       end
@@ -129,7 +129,7 @@ module PageflowScrolled
                        type_name: 'scrolled',
                        published_revision_attributes: {locale: 'ar'})
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('html[dir=rtl]')
       end
@@ -137,7 +137,7 @@ module PageflowScrolled
       it 'renders structured data' do
         entry = create(:entry, :published, type_name: 'scrolled')
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_json_ld('@type' => 'Article')
       end
@@ -145,7 +145,7 @@ module PageflowScrolled
       it 'renders feed link' do
         entry = create(:entry, :published, type_name: 'scrolled')
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('link[type="application/atom+xml"]',
                                                visible: false)

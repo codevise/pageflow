@@ -44,9 +44,9 @@ module Pageflow
       def from_perma_ids(revision, perma_ids)
         return [] if revision.blank? || perma_ids.blank?
 
-        perma_ids.map do |perma_id|
+        perma_ids.map { |perma_id|
           find_by_revision_id_and_perma_id(revision.id, perma_id)
-        end.compact
+        }.compact
       end
 
       private

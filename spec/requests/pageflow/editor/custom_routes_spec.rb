@@ -32,7 +32,7 @@ module Pageflow
       pageflow_configure do |config|
         TestEntryType.register(config,
                                name: 'test',
-                               editor_app: editor_app)
+                               editor_app:)
       end
       Rails.application.reload_routes!
 

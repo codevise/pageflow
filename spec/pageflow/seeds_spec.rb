@@ -86,9 +86,9 @@ module Pageflow
 
       it 'does not create entry if entry with same title exists for account' do
         account = create(:account)
-        entry = create(:entry, account: account, title: 'Example')
+        entry = create(:entry, account:, title: 'Example')
 
-        result = SeedsDsl.sample_entry(account: account, title: 'Example')
+        result = SeedsDsl.sample_entry(account:, title: 'Example')
 
         expect(result).to eq(entry)
       end
@@ -122,9 +122,9 @@ module Pageflow
 
       it 'allows overriding attributes in block' do
         account = create(:account)
-        site = create(:site, account: account)
+        site = create(:site, account:)
 
-        entry = SeedsDsl.sample_entry(account: account, title: 'Example') do |created_entry|
+        entry = SeedsDsl.sample_entry(account:, title: 'Example') do |created_entry|
           created_entry.site = site
         end
 
@@ -137,7 +137,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry)
 
-        SeedsDsl.membership(user: user, entity: entry, role: :previewer)
+        SeedsDsl.membership(user:, entity: entry, role: :previewer)
 
         expect(entry.users).to include(user)
         expect(user.entries).to include(entry)
@@ -147,7 +147,7 @@ module Pageflow
         user = create(:user)
         account = create(:account)
 
-        SeedsDsl.membership(user: user, entity: account, role: :member)
+        SeedsDsl.membership(user:, entity: account, role: :member)
 
         expect(account.users).to include(user)
         expect(user.accounts).to include(account)

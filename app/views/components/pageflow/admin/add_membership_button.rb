@@ -30,26 +30,26 @@ module Pageflow
         end
 
         if parent.is_a?(Entry) && parent.account.users.length < 2
-          render 'pageflow/admin/entries/cannot_add_user',
-                 user: user,
-                 parent: parent,
-                 entity_type: entity_type,
-                 quota: quota
+          render('pageflow/admin/entries/cannot_add_user',
+                 user:,
+                 parent:,
+                 entity_type:,
+                 quota:)
         elsif membership_possible_for(user, parent, entity_type)
           para do
-            link_to(button_label, path, class: 'button', data: {rel: rel})
+            link_to(button_label, path, class: 'button', data: {rel:})
           end
         else
           para(content_tag('a',
                            button_label,
                            class: 'button disabled',
-                           data: {rel: rel}),
+                           data: {rel:}),
                'data-tooltip' => data_tooltip)
           render 'pageflow/admin/users/cannot_add',
-                 user: user,
-                 parent: parent,
-                 entity_type: entity_type,
-                 quota: quota
+                 user:,
+                 parent:,
+                 entity_type:,
+                 quota:
         end
       end
 

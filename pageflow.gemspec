@@ -1,4 +1,4 @@
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'pageflow/version'
@@ -214,7 +214,6 @@ Gem::Specification.new do |s|
   # Scss code linter
   s.add_development_dependency 'scss_lint', '~> 0.60.0'
   s.add_development_dependency 'scss_lint_reporter_checkstyle', '~> 0.2.0'
-
 
   # For oauth authentication
   s.add_development_dependency 'omniauth', '~> 1.9'

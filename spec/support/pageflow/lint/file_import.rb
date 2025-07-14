@@ -18,9 +18,7 @@ module Pageflow
           def file_importer_credentials(authentication_provider)
             token = AuthenticationToken.where(provider: authentication_provider) if
               authentication_provider.present?
-            unless token.nil?
-              token = nil if token.empty?
-            end
+            token = nil if !token.nil? && token.empty?
             token
           end
 

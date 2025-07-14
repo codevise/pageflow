@@ -83,7 +83,7 @@ module Pageflow
 
         it 'includes image rules for image files' do
           entry = PublishedEntry.new(create(:entry, :published))
-          image_file = create_used_file(:image_file, entry: entry)
+          image_file = create_used_file(:image_file, entry:)
 
           get(:stylesheet, params: {id: entry}, format: 'css')
 
@@ -93,7 +93,7 @@ module Pageflow
 
         it 'includes poster image rules for video files' do
           entry = PublishedEntry.new(create(:entry, :published))
-          video_file = create_used_file(:video_file, entry: entry)
+          video_file = create_used_file(:video_file, entry:)
 
           get(:stylesheet, params: {id: entry}, format: 'css')
 
@@ -103,7 +103,7 @@ module Pageflow
 
         it 'includes panorama style group rules for image files' do
           entry = PublishedEntry.new(create(:entry, :published))
-          image_file = create_used_file(:image_file, entry: entry)
+          image_file = create_used_file(:image_file, entry:)
 
           get(:stylesheet, params: {id: entry}, format: 'css')
 
@@ -117,8 +117,8 @@ module Pageflow
       it 'redirects to entry path with page perma id anchor' do
         entry = create(:entry, :published, title: 'report')
         storyline = create(:storyline, revision: entry.published_revision)
-        chapter = create(:chapter, storyline: storyline)
-        page = create(:page, chapter: chapter)
+        chapter = create(:chapter, storyline:)
+        page = create(:page, chapter:)
 
         get(:page, params: {id: entry, page_index: 0})
 
@@ -128,8 +128,8 @@ module Pageflow
       it 'removes suffix appended with slash' do
         entry = create(:entry, :published, title: 'report')
         storyline = create(:storyline, revision: entry.published_revision)
-        chapter = create(:chapter, storyline: storyline)
-        page = create(:page, chapter: chapter)
+        chapter = create(:chapter, storyline:)
+        page = create(:page, chapter:)
 
         get(:page, params: {id: entry, page_index: '0-some-title'})
 
@@ -139,8 +139,8 @@ module Pageflow
       it 'skips hash if page index is invalid' do
         entry = create(:entry, :published, title: 'report')
         storyline = create(:storyline, revision: entry.published_revision)
-        chapter = create(:chapter, storyline: storyline)
-        create(:page, chapter: chapter)
+        chapter = create(:chapter, storyline:)
+        create(:page, chapter:)
 
         get(:page, params: {id: entry, page_index: '100-not-there'})
 
@@ -156,10 +156,10 @@ module Pageflow
 
         it 'responds with redirect for matching entry' do
           account = create(:account, name: 'news')
-          entry = create(:entry, :published, account: account, title: 'report')
+          entry = create(:entry, :published, account:, title: 'report')
           storyline = create(:storyline, revision: entry.published_revision)
-          chapter = create(:chapter, storyline: storyline)
-          page = create(:page, chapter: chapter)
+          chapter = create(:chapter, storyline:)
+          page = create(:page, chapter:)
 
           request.host = 'news.example.com'
           get(:page, params: {id: entry, page_index: 0})

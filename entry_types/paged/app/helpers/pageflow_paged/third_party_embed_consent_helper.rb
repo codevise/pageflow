@@ -5,24 +5,24 @@ module PageflowPaged
 
     def third_party_embed_opt_in(entry:, vendor_name:, message:)
       link_html = third_party_embed_privacy_link(
-        entry: entry,
+        entry:,
         text: t('pageflow.public.third_party_embed_consent.opt_in.more_information'),
-        vendor_name: vendor_name
+        vendor_name:
       )
 
       render('pageflow_paged/third_party_embed_consent/opt_in',
-             message: message,
-             vendor_name: vendor_name,
-             link_html: link_html)
+             message:,
+             vendor_name:,
+             link_html:)
     end
 
     def third_party_embed_opt_out_info(entry)
       link_html = third_party_embed_privacy_link(
-        entry: entry,
+        entry:,
         text: t('pageflow.public.third_party_embed_consent.opt_out_info.prompt_link')
       )
 
-      render('pageflow_paged/third_party_embed_consent/opt_out_info', link_html: link_html)
+      render('pageflow_paged/third_party_embed_consent/opt_out_info', link_html:)
     end
 
     def third_party_embed_privacy_link(entry:, text:, vendor_name: nil)

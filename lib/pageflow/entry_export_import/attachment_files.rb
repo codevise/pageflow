@@ -36,7 +36,7 @@ module Pageflow
 
       def each_reusable_file(entry, &block)
         Pageflow.config.file_types.each do |file_type|
-          file_type.model.where(entry: entry).each(&block)
+          file_type.model.where(entry:).each(&block)
         end
       end
 

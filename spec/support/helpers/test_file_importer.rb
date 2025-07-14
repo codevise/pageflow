@@ -24,20 +24,20 @@ module Pageflow
           'photographer' => 'someone',
           'url' => 'https://www.example.com/photos/0.png'
         },
-        {
-          'id' => '1',
-          'width' => '2265',
-          'height' => '3532',
-          'photographer' => 'someone',
-          'url' => 'https://www.example.com/photos/1.png'
-        },
-        {
-          'id' => '2',
-          'width' => '2265',
-          'height' => '3532',
-          'photographer' => 'someone',
-          'url' => 'https://www.example.com/photos/2.png'
-        }]
+                     {
+                       'id' => '1',
+                       'width' => '2265',
+                       'height' => '3532',
+                       'photographer' => 'someone',
+                       'url' => 'https://www.example.com/photos/1.png'
+                     },
+                     {
+                       'id' => '2',
+                       'width' => '2265',
+                       'height' => '3532',
+                       'photographer' => 'someone',
+                       'url' => 'https://www.example.com/photos/2.png'
+                     }]
       }
     end
 
@@ -58,7 +58,7 @@ module Pageflow
         'id' => file['id'],
         'rights' => "#{file['photographer']}",
         'url' => file['url'],
-        'content_type' => "image/png"
+        'content_type' => 'image/png'
       }
     end
 

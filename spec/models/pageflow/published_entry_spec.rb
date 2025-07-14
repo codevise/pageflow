@@ -10,12 +10,12 @@ module Pageflow
       let(:published_entry) { PublishedEntry.new(entry) }
 
       it 'is fetched from the revision when present' do
-        create(:revision, :published, entry: entry, title: 'Blade Runner')
+        create(:revision, :published, entry:, title: 'Blade Runner')
         expect(published_entry.title).to eq('Blade Runner')
       end
 
       it 'is fetched from the entry when absent from the revision' do
-        create(:revision, :published, entry: entry, title: '')
+        create(:revision, :published, entry:, title: '')
         expect(published_entry.title).to eq('Metropolis')
       end
     end
@@ -23,7 +23,7 @@ module Pageflow
     describe '#thumbnail_file' do
       it 'returns positioned share image of published revision' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         entry.revision.share_image_id = image_file.perma_id
         entry.revision.share_image_x = 10
         entry.revision.share_image_y = 30
@@ -35,14 +35,14 @@ module Pageflow
 
       it 'returns positioned thumbnail file of first page of published revision' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         storyline = create(:storyline, revision: entry.revision)
-        chapter = create(:chapter, storyline: storyline)
-        create(:page, chapter: chapter, configuration: {
-          'background_image_id' => image_file.perma_id,
-          'background_image_x' => 20,
-          'background_image_y' => 40
-        })
+        chapter = create(:chapter, storyline:)
+        create(:page, chapter:, configuration: {
+                 'background_image_id' => image_file.perma_id,
+                 'background_image_x' => 20,
+                 'background_image_y' => 40
+               })
 
         expect(entry.thumbnail_file).to eq(image_file)
         expect(entry.thumbnail_file.position_x).to eq(20)
@@ -61,14 +61,15 @@ module Pageflow
     describe '#thumbnail_url' do
       it 'returns thumbnail of first page of published revision' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         storyline = create(:storyline, revision: entry.revision)
-        chapter = create(:chapter, storyline: storyline)
-        page = create(:page, chapter: chapter, configuration: {
+        chapter = create(:chapter, storyline:)
+        page = create(:page, chapter:, configuration: {
                         'background_image_id' => image_file.perma_id
                       })
 
-        page_thumbnail = ThumbnailFileResolver.new(entry, page.page_type.thumbnail_candidates, page.configuration)
+        page_thumbnail = ThumbnailFileResolver.new(entry, page.page_type.thumbnail_candidates,
+                                                   page.configuration)
                                               .find_thumbnail
 
         expect(entry.thumbnail_url).to eq(page_thumbnail.thumbnail_url)
@@ -76,7 +77,7 @@ module Pageflow
 
       it 'returns blank attachment for published revision without pages' do
         entry = create(:entry)
-        revision = create(:revision, :published, :entry => entry)
+        revision = create(:revision, :published, entry:)
         published_entry = PublishedEntry.new(entry)
 
         expect(published_entry.thumbnail_url).to eq(ImageFile.new.attachment.url)
@@ -91,8 +92,8 @@ module Pageflow
 
         it 'is different for different revisions' do
           entry = create(:entry)
-          create(:revision, :published, entry: entry)
-          other_revision = create(:revision, entry: entry)
+          create(:revision, :published, entry:)
+          other_revision = create(:revision, entry:)
           published_entry = PublishedEntry.new(entry)
           other_published_entry = PublishedEntry.new(entry, other_revision)
 
@@ -101,7 +102,7 @@ module Pageflow
 
         it 'changes when different site is used' do
           entry = create(:entry)
-          create(:revision, :published, entry: entry)
+          create(:revision, :published, entry:)
           published_entry = PublishedEntry.new(entry)
 
           expect {
@@ -115,7 +116,7 @@ module Pageflow
 
         it 'changes when entry changes' do
           entry = create(:entry)
-          create(:revision, :published, entry: entry)
+          create(:revision, :published, entry:)
           published_entry = PublishedEntry.new(entry)
 
           expect {
@@ -125,7 +126,7 @@ module Pageflow
 
         it 'changes when revision changes' do
           entry = create(:entry)
-          revision = create(:revision, :published, entry: entry)
+          revision = create(:revision, :published, entry:)
           published_entry = PublishedEntry.new(entry)
 
           expect {
@@ -135,7 +136,7 @@ module Pageflow
 
         it 'changes when site changes' do
           entry = create(:entry)
-          create(:revision, :published, entry: entry)
+          create(:revision, :published, entry:)
           published_entry = PublishedEntry.new(entry)
 
           expect {
@@ -153,7 +154,7 @@ module Pageflow
 
         it 'changes when entry changes' do
           entry = create(:entry)
-          create(:revision, :published, entry: entry)
+          create(:revision, :published, entry:)
           published_entry = PublishedEntry.new(entry)
 
           expect {
@@ -163,7 +164,7 @@ module Pageflow
 
         it 'changes when revision changes' do
           entry = create(:entry)
-          revision = create(:revision, :published, entry: entry)
+          revision = create(:revision, :published, entry:)
           published_entry = PublishedEntry.new(entry)
 
           expect {
@@ -173,7 +174,7 @@ module Pageflow
 
         it 'changes when site changes' do
           entry = create(:entry)
-          create(:revision, :published, entry: entry)
+          create(:revision, :published, entry:)
           published_entry = PublishedEntry.new(entry)
 
           expect {
@@ -187,7 +188,7 @@ module Pageflow
 
         it 'returns nil' do
           entry = create(:entry)
-          create(:revision, :published, entry: entry)
+          create(:revision, :published, entry:)
           published_entry = PublishedEntry.new(entry)
 
           expect(published_entry.cache_version).to eq(nil)
@@ -198,7 +199,7 @@ module Pageflow
     describe '#stylesheet_model' do
       it 'returns entry if no revision was passed to constructor' do
         entry = create(:entry)
-        revision = create(:revision, :entry => entry)
+        revision = create(:revision, entry:)
         published_entry = PublishedEntry.new(entry)
 
         expect(published_entry.stylesheet_model).to be(entry)
@@ -206,7 +207,7 @@ module Pageflow
 
       it 'returns revision if custom revision was passed to constructor' do
         entry = create(:entry)
-        revision = create(:revision, :entry => entry)
+        revision = create(:revision, entry:)
         published_entry = PublishedEntry.new(entry, revision)
 
         expect(published_entry.stylesheet_model).to be(revision)
@@ -419,7 +420,7 @@ module Pageflow
 
       it 'finds entry in scope' do
         account = create(:account)
-        entry = create(:entry, :published, account: account)
+        entry = create(:entry, :published, account:)
 
         expect(PublishedEntry.find(entry.id, account.entries).to_model).to eq(entry)
       end
@@ -518,7 +519,7 @@ module Pageflow
         entry = create(
           :entry,
           :published,
-          account: account,
+          account:,
           permalink_attributes: {
             slug: 'permalink-slug'
           }

@@ -148,7 +148,7 @@ module Pageflow
 
     collection_action :entry_site_and_type_name_input do
       account = Pageflow::Account.find(params[:account_id])
-      @entry = Pageflow::Entry.new(account: account,
+      @entry = Pageflow::Entry.new(account:,
                                    type_name: params[:entry_type_name])
 
       apply_entry_defaults(@entry)
@@ -193,8 +193,8 @@ module Pageflow
     end
 
     show title: :title do |entry|
-      render 'attributes_table', entry: entry
-      render 'links', entry: entry
+      render('attributes_table', entry:)
+      render('links', entry:)
 
       tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(entry),
                 i18n: 'pageflow.admin.resource_tabs',
@@ -274,9 +274,7 @@ module Pageflow
       def permitted_params
         result = params.permit(entry: permitted_attributes)
 
-        if result[:entry]
-          permit_feature_states(result[:entry])
-        end
+        permit_feature_states(result[:entry]) if result[:entry]
 
         result
       end
@@ -331,15 +329,13 @@ module Pageflow
         result += Pageflow.config_for(target).admin_form_inputs.permitted_attributes_for(:entry)
         result += permitted_account_attributes
 
-        if params[:id]
-          result << :folder_id if authorized?(:configure_folder_for, resource)
-        end
+        result << :folder_id if params[:id] && authorized?(:configure_folder_for, resource)
 
-        if params[:id]
-          accounts = resource.account
-        else
-          accounts = account_policy_scope.sites_accessible
-        end
+        accounts = if params[:id]
+                     resource.account
+                   else
+                     account_policy_scope.sites_accessible
+                   end
 
         result += permitted_site_attributes(accounts)
 
@@ -347,10 +343,10 @@ module Pageflow
       end
 
       def permit_feature_states(attributes)
-        if params[:id] && authorized?(:update_feature_configuration_on, resource)
-          feature_states = params[:entry][:feature_states].try(:permit!)
-          attributes.merge!(feature_states: feature_states || {})
-        end
+        return unless params[:id] && authorized?(:update_feature_configuration_on, resource)
+
+        feature_states = params[:entry][:feature_states].try(:permit!)
+        attributes.merge!(feature_states: feature_states || {})
       end
 
       def permitted_site_attributes(accounts)
@@ -372,7 +368,7 @@ module Pageflow
 
       def site_in_allowed_sites_for?(accounts)
         site_policy_scope.sites_allowed_for(accounts)
-          .include?(Site.find(params[:entry][:site_id]))
+                         .include?(Site.find(params[:entry][:site_id]))
       end
 
       def permitted_account_attributes

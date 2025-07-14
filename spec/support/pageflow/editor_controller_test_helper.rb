@@ -15,7 +15,7 @@ module Pageflow
     # acquire an edit lock.
     def authorize_for_editor_controller(entry)
       user = FactoryBot.create(:user)
-      FactoryBot.create(:membership, user: user, entity: entry, role: :editor)
+      FactoryBot.create(:membership, user:, entity: entry, role: :editor)
 
       sign_in(user, scope: :user)
       acquire_edit_lock(user, entry)

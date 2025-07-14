@@ -3,14 +3,17 @@ module Pageflow
   module RenderJsonHelper
     # Renders `image_files/_image_file.json.jbuilder` when given a
     # collection of `ImageFile` records.
-    def render_json_seed(records, options = {})
+    def render_json_seed(records, _options = {})
       if records.respond_to?(:to_model)
         name = records.to_model.class.model_name.to_s.split('::').last.underscore.downcase
-        render_json_partial(['pageflow/editor', name.pluralize, name.singularize] * '/', name.singularize.to_sym => records)
+        render_json_partial(['pageflow/editor', name.pluralize, name.singularize].join('/'),
+                            name.singularize.to_sym => records)
       else
         return '[]'.html_safe if records.empty?
+
         name = records.first.to_model.class.model_name.to_s.split('::').last.underscore.downcase
-        render_json_partial(['pageflow/editor', name.pluralize, name.singularize] * '/', :collection => records, :as => name.singularize.to_sym)
+        render_json_partial(['pageflow/editor', name.pluralize, name.singularize].join('/'),
+                            collection: records, as: name.singularize.to_sym)
       end
     end
 

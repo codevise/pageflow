@@ -9,16 +9,16 @@ module PageflowScrolled
 
     it 'is attached to the main storyline for subsequent chapters in the same revision' do
       revision = create(:revision)
-      chapter1 = create(:scrolled_chapter, revision: revision)
-      chapter2 = create(:scrolled_chapter, revision: revision)
+      chapter1 = create(:scrolled_chapter, revision:)
+      chapter2 = create(:scrolled_chapter, revision:)
       expect(chapter1.storyline).to eq(chapter2.storyline)
     end
 
     describe '.all_for_revision' do
       it 'returns all chapters in revision' do
         revision = create(:revision)
-        chapter1 = create(:scrolled_chapter, revision: revision)
-        chapter2 = create(:scrolled_chapter, revision: revision)
+        chapter1 = create(:scrolled_chapter, revision:)
+        chapter2 = create(:scrolled_chapter, revision:)
         other_revision = create(:revision)
         create(:scrolled_chapter, revision: other_revision)
 
@@ -31,9 +31,9 @@ module PageflowScrolled
     describe '.create_section' do
       it 'inserts sections and updates positions' do
         revision = create(:revision)
-        chapter = create(:scrolled_chapter, revision: revision)
-        section1 = create(:section, chapter: chapter, position: 0)
-        section2 = create(:section, chapter: chapter, position: 1)
+        chapter = create(:scrolled_chapter, revision:)
+        section1 = create(:section, chapter:, position: 0)
+        section2 = create(:section, chapter:, position: 1)
 
         new_section = chapter.create_section(position: 1,
                                              configuration: {transition: 'fade'})
@@ -44,7 +44,7 @@ module PageflowScrolled
 
       it 'creates initial text block' do
         revision = create(:revision)
-        chapter = create(:scrolled_chapter, revision: revision)
+        chapter = create(:scrolled_chapter, revision:)
 
         section = chapter.create_section
 
@@ -55,9 +55,9 @@ module PageflowScrolled
     describe '.duplicate_section' do
       it 'creates section and content elements' do
         revision = create(:revision)
-        chapter = create(:scrolled_chapter, revision: revision)
-        section = create(:section, chapter: chapter, position: 0)
-        create(:content_element, section: section, type_name: 'textBlock')
+        chapter = create(:scrolled_chapter, revision:)
+        section = create(:section, chapter:, position: 0)
+        create(:content_element, section:, type_name: 'textBlock')
 
         new_section = chapter.duplicate_section(section)
 
@@ -68,8 +68,8 @@ module PageflowScrolled
 
       it 'returns section with shifted position' do
         revision = create(:revision)
-        chapter = create(:scrolled_chapter, revision: revision)
-        section = create(:section, chapter: chapter, position: 0)
+        chapter = create(:scrolled_chapter, revision:)
+        section = create(:section, chapter:, position: 0)
 
         new_section = chapter.duplicate_section(section)
 

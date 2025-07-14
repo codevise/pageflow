@@ -40,7 +40,7 @@ module Pageflow
             revision_attributes['theme_name'] = 'default'
           end
 
-          entry.revisions.create!(revision_attributes.merge(creator: creator)) do |revision|
+          entry.revisions.create!(revision_attributes.merge(creator:)) do |revision|
             revision.published_until = Time.now if revision.published?
           end
         end

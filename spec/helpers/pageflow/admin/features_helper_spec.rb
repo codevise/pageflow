@@ -30,7 +30,7 @@ module Pageflow
 
         it 'sets value to default if feature state is inherited' do
           account = build(:account, features_configuration: {'fancy_page_type' => true})
-          target = build(:entry, account: account)
+          target = build(:entry, account:)
 
           html = feature_state_select_tag(target, 'fancy_page_type')
 
@@ -39,7 +39,7 @@ module Pageflow
 
         it 'displays inherited feature state' do
           account = build(:account, features_configuration: {'fancy_page_type' => true})
-          target = build(:entry, account: account)
+          target = build(:entry, account:)
           enabled_display_text = I18n.t('pageflow.admin.features.states.enabled')
 
           html = feature_state_select_tag(target, 'fancy_page_type')

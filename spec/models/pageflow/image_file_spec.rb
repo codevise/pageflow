@@ -137,7 +137,7 @@ module Pageflow
     describe '#reprocess!' do
       it 'does not set output presences by default' do
         entry = create(:entry)
-        image_file = create(:image_file, :uploaded, entry: entry)
+        image_file = create(:image_file, :uploaded, entry:)
 
         image_file.attachment.reprocess!
 
@@ -146,7 +146,7 @@ module Pageflow
 
       it 'sets output presences based on entry feature flag' do
         entry = create(:entry, with_feature: 'webp_images')
-        image_file = create(:image_file, :uploaded, entry: entry)
+        image_file = create(:image_file, :uploaded, entry:)
 
         image_file.attachment.reprocess!
 

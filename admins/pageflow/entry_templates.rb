@@ -80,8 +80,8 @@ module Pageflow
           :default_publisher,
           :default_keywords,
           :default_locale,
-          share_providers: {},
-          configuration: {}
+          {share_providers: {},
+           configuration: {}}
         ]
       end
 
@@ -131,7 +131,7 @@ module Pageflow
 
       def widgets_params
         (params[:widgets].try(:permit!).to_h || {}).map do |role, type_name|
-          {role: role, type_name: type_name}
+          {role:, type_name:}
         end
       end
     end

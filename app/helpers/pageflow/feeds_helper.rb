@@ -21,7 +21,7 @@ module Pageflow
           rel: 'alternate',
           type: 'application/atom+xml',
           title: 'Feed',
-          href: href)
+          href:)
     end
 
     # @api private

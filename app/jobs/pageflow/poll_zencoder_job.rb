@@ -23,7 +23,7 @@ module Pageflow
     def poll_zencoder(file, api)
       info = api.get_info(file.job_id)
 
-      file.encoding_progress = info[:finished] ? 100 : info[:progress];
+      file.encoding_progress = info[:finished] ? 100 : info[:progress]
       file.encoding_error_message = nil
 
       if info[:state] === 'failed'

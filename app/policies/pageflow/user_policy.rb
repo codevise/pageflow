@@ -16,8 +16,8 @@ module Pageflow
                                  .new(@user, Account).member_addable.map(&:id)
 
           scope.joins(:memberships)
-            .where('pageflow_memberships.entity_type = \'Pageflow::Account\'')
-            .where(membership_in_managed_account(manager_accounts_ids)).distinct
+               .where('pageflow_memberships.entity_type = \'Pageflow::Account\'')
+               .where(membership_in_managed_account(manager_accounts_ids)).distinct
         end
       end
 
@@ -25,7 +25,7 @@ module Pageflow
 
       def membership_in_managed_account(accounts_ids)
         sanitize_sql_array(['pageflow_memberships.entity_id IN (:accounts_ids)',
-                            accounts_ids: accounts_ids])
+                            {accounts_ids:}])
       end
     end
 

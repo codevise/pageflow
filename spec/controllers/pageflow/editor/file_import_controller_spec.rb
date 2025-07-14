@@ -62,7 +62,7 @@ module Pageflow
           end
         end
 
-        token = create(:authentication_token, user: user)
+        token = create(:authentication_token, user:)
 
         expect(file_importer).to receive(:search).with(token.auth_token, 'test')
         get(:search, params: {query: 'test', file_import_name: file_importer.name, entry_id: entry})
@@ -104,7 +104,7 @@ module Pageflow
           end
         end
 
-        token = create(:authentication_token, user: user)
+        token = create(:authentication_token, user:)
         selected_file = file_importer.search(nil, nil)['photos'].first
         selected_files = {'0' => selected_file}
 
@@ -227,7 +227,7 @@ module Pageflow
           end
         end
 
-        token = create(:authentication_token, user: user)
+        token = create(:authentication_token, user:)
 
         selected_file = file_importer.search(nil, nil)['photos'].first
         selected_files = {'0' => selected_file}

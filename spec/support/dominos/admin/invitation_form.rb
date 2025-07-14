@@ -5,9 +5,7 @@ module Dom
 
       def submit_with(options)
         within(node) do
-          if options[:email]
-            fill_in('invitation_form_user_email', with: options[:email])
-          end
+          fill_in('invitation_form_user_email', with: options[:email]) if options[:email]
 
           if options[:first_name]
             fill_in('invitation_form_user_first_name', with: options[:first_name])

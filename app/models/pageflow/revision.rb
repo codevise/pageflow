@@ -30,11 +30,11 @@ module Pageflow
     has_many :file_usages, dependent: :destroy
 
     has_many :image_files, -> { extending WithFileUsageExtension },
-    :through => :file_usages, :source => :file, :source_type => 'Pageflow::ImageFile'
+             through: :file_usages, source: :file, source_type: 'Pageflow::ImageFile'
     has_many :video_files, -> { extending WithFileUsageExtension },
-    :through => :file_usages, :source => :file, :source_type => 'Pageflow::VideoFile'
+             through: :file_usages, source: :file, source_type: 'Pageflow::VideoFile'
     has_many :audio_files, -> { extending WithFileUsageExtension },
-    :through => :file_usages, :source => :file, :source_type => 'Pageflow::AudioFile'
+             through: :file_usages, source: :file, source_type: 'Pageflow::AudioFile'
 
     scope(:published,
           lambda do
@@ -71,7 +71,9 @@ module Pageflow
     scope :frozen, -> { where('frozen_at IS NOT NULL') }
 
     scope :publications, -> { where('published_at IS NOT NULL') }
-    scope :publications_and_user_snapshots, -> { where('published_at IS NOT NULL OR snapshot_type = "user"') }
+    scope :publications_and_user_snapshots, lambda {
+                                              where('published_at IS NOT NULL OR snapshot_type = "user"')
+                                            }
     scope :user_snapshots, -> { where(snapshot_type: 'user') }
     scope :auto_snapshots, -> { where(snapshot_type: 'auto') }
 
@@ -100,6 +102,7 @@ module Pageflow
     def find_file_by_perma_id(model, perma_id)
       file = files(model).find_by(pageflow_file_usages: {file_perma_id: perma_id})
       return unless file
+
       UsedFile.new(file)
     end
 
@@ -163,7 +166,7 @@ module Pageflow
     # Public interface for copying a revision
     #
     # @since 15.1
-    def copy(&block)
+    def copy
       revision = dup
 
       yield(revision) if block_given?
@@ -191,7 +194,7 @@ module Pageflow
     end
 
     def self.depublish_all
-      published.update_all(:published_until => Time.now)
+      published.update_all(published_until: Time.now)
     end
 
     def configuration

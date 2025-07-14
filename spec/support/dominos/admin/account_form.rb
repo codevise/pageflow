@@ -5,11 +5,15 @@ module Dom
 
       def submit_with(options)
         within(node) do
-          fill_in('account_name',
-                  with: options[:name]) if options[:name]
+          if options[:name]
+            fill_in('account_name',
+                    with: options[:name])
+          end
 
-          fill_in('account_default_site_attributes_cname',
-                  with: options[:cname]) if options[:cname]
+          if options[:cname]
+            fill_in('account_default_site_attributes_cname',
+                    with: options[:cname])
+          end
 
           if options[:default_author]
             fill_in('account_paged_entry_template_attributes_default_author',
@@ -26,8 +30,10 @@ module Dom
                     with: options[:default_keywords])
           end
 
-          select(options[:theme_name],
-                 from: 'account_paged_entry_template_attributes_theme_name') if options[:theme_name]
+          if options[:theme_name]
+            select(options[:theme_name],
+                   from: 'account_paged_entry_template_attributes_theme_name')
+          end
 
           find('[name="commit"]').click
         end

@@ -169,7 +169,8 @@ module Pageflow
           entry = create(:entry, with_previewer: user)
 
           sign_in(user, scope: :user)
-          put(:update, params: {entry_id: entry, edit_lock: {id: 'not_there_anymore'}}, format: :json)
+          put(:update, params: {entry_id: entry, edit_lock: {id: 'not_there_anymore'}},
+                       format: :json)
 
           expect(response.status).to eq(403)
         end
@@ -177,7 +178,8 @@ module Pageflow
         it 'requires authentication' do
           entry = create(:entry)
 
-          put(:update, params: {entry_id: entry, edit_lock: {id: 'not_there_anymore'}}, format: :json)
+          put(:update, params: {entry_id: entry, edit_lock: {id: 'not_there_anymore'}},
+                       format: :json)
 
           expect(response.status).to eq(401)
         end
@@ -234,7 +236,8 @@ module Pageflow
           entry.edit_lock.acquire(create(:user))
 
           sign_in(user, scope: :user)
-          put(:update, params: {entry_id: entry, edit_lock: {id: 'not_there_anymore'}}, format: :json)
+          put(:update, params: {entry_id: entry, edit_lock: {id: 'not_there_anymore'}},
+                       format: :json)
 
           expect(response.status).to eq(409)
         end
@@ -246,7 +249,8 @@ module Pageflow
           entry.edit_lock.acquire(other_user)
 
           sign_in(user, scope: :user)
-          put(:update, params: {entry_id: entry, edit_lock: {id: 'not_there_anymore'}}, format: :json)
+          put(:update, params: {entry_id: entry, edit_lock: {id: 'not_there_anymore'}},
+                       format: :json)
 
           expect(entry.edit_lock).to be_held_by(other_user)
         end

@@ -13,11 +13,11 @@ member_account = account(name: 'Stagg Enterprises')
 account(name: 'Waterloo Road Comprehensive')
 
 account(name: 'Pageflow') do |account|
-  politics_entry = sample_entry(account: account, title: 'Story in Politics')
-  sports_entry = sample_entry(account: account, title: 'Story in Sports')
-  finance_entry = sample_entry(account: account, title: 'Story in Finance')
-  entertainment_entry = sample_entry(account: account, title: 'Story in Entertainment')
-  sample_entry(account: account, title: 'Story in Science')
+  politics_entry = sample_entry(account:, title: 'Story in Politics')
+  sports_entry = sample_entry(account:, title: 'Story in Sports')
+  finance_entry = sample_entry(account:, title: 'Story in Finance')
+  entertainment_entry = sample_entry(account:, title: 'Story in Entertainment')
+  sample_entry(account:, title: 'Story in Science')
 
   user(email: 'admin@example.com',
        first_name: 'Alice',

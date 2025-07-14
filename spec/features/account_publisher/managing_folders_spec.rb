@@ -5,7 +5,7 @@ feature 'as account publisher, managing folders' do
     account = create(:account, name: 'New Folder Account')
     other_account = create(:account, name: 'Other')
     user = Dom::Admin::Page.sign_in_as(:publisher, on: account)
-    create(:membership, user: user, entity: other_account, role: :publisher)
+    create(:membership, user:, entity: other_account, role: :publisher)
     new_folder_account = create(:account, with_publisher: user, name: 'New Folder Account')
 
     visit(admin_entries_path)

@@ -5,7 +5,7 @@ module Pageflow
 
       def available_locales_collection
         Pageflow.config.available_locales.map do |locale|
-          [I18n.t('language', locale: locale), locale.to_s]
+          [I18n.t('language', locale:), locale.to_s]
         end
       end
 

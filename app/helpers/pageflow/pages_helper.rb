@@ -4,7 +4,7 @@ module Pageflow
       page_type = Pageflow.config.page_types.find_by_name!(page.template)
 
       render(template: page_type.template_path,
-             locals: locals.merge(page: page,
+             locals: locals.merge(page:,
                                   configuration: page.configuration))
     end
 
@@ -12,13 +12,21 @@ module Pageflow
       classes = ['page']
       classes << 'invert' if page.configuration['invert']
       classes << 'hide_title' if page.configuration['hide_title']
-      classes << "text_position_#{page.configuration['text_position']}" if page.configuration['text_position'].present?
-      classes << "scroll_indicator_mode_#{page.configuration['scroll_indicator_mode']}" if page.configuration['scroll_indicator_mode'].present?
-      classes << "scroll_indicator_orientation_#{page.configuration['scroll_indicator_orientation']}" if page.configuration['scroll_indicator_orientation'].present?
-      classes << "delayed_text_fade_in_#{page.configuration['delayed_text_fade_in']}" if page.configuration['delayed_text_fade_in'].present?
+      if page.configuration['text_position'].present?
+        classes << "text_position_#{page.configuration['text_position']}"
+      end
+      if page.configuration['scroll_indicator_mode'].present?
+        classes << "scroll_indicator_mode_#{page.configuration['scroll_indicator_mode']}"
+      end
+      if page.configuration['scroll_indicator_orientation'].present?
+        classes << "scroll_indicator_orientation_#{page.configuration['scroll_indicator_orientation']}"
+      end
+      if page.configuration['delayed_text_fade_in'].present?
+        classes << "delayed_text_fade_in_#{page.configuration['delayed_text_fade_in']}"
+      end
       classes << 'chapter_beginning' if page.position == 0
       classes << 'first_page' if page.is_first
-      classes << 'no_text_content' if !page_has_content(page)
+      classes << 'no_text_content' unless page_has_content(page)
       classes << 'hide_logo' if page.configuration['hide_logo']
       classes.join(' ')
     end
@@ -56,7 +64,7 @@ module Pageflow
 
     # @api private
     def page_has_content(page)
-      has_title = ['title','subtitle','tagline'].any? do |attribute|
+      has_title = ['title', 'subtitle', 'tagline'].any? do |attribute|
         page.configuration[attribute].present?
       end
 
@@ -70,14 +78,14 @@ module Pageflow
       classes << 'chapter_beginning' if page.position == 0
       classes << 'emphasized' if page.configuration['emphasize_in_navigation']
       classes << "chapter_#{page.chapter.position}"
-      page.chapter.position % 2 == 0 ? classes << 'chapter_even' : classes << 'chapter_odd'
+      classes << (page.chapter.position.even? ? 'chapter_even' : 'chapter_odd')
       classes.join(' ')
     end
 
     def shadow_div(options = {})
       style = options[:opacity] ? "opacity: #{options[:opacity] / 100.0};" : nil
-      content_tag(:div, '', :class => 'shadow_wrapper') do
-        content_tag(:div, '', :class => 'shadow', :style => style)
+      content_tag(:div, '', class: 'shadow_wrapper') do
+        content_tag(:div, '', class: 'shadow', style:)
       end
     end
 
@@ -89,7 +97,8 @@ module Pageflow
     end
 
     def page_thumbnail_image_class(page, hero)
-      file_thumbnail_css_class(page_thumbnail_file(page), hero ? :link_thumbnail_large : :link_thumbnail)
+      file_thumbnail_css_class(page_thumbnail_file(page),
+                               hero ? :link_thumbnail_large : :link_thumbnail)
     end
 
     def page_thumbnail_url(page, *args)

@@ -7,7 +7,9 @@ module Dom
       attribute :creator, 'td.col-creator'
 
       attribute :published_until, 'td.col-published_until' do |text|
-        Date.parse(text) rescue :invalid_date
+        Date.parse(text)
+      rescue StandardError
+        :invalid_date
       end
 
       attribute(:published?, 'td.col-frozen_at', &:present?)

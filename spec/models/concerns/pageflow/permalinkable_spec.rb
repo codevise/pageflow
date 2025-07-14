@@ -38,10 +38,10 @@ module Pageflow
 
     it 'is invalid if slug is already taken in permalink directory of site' do
       site = create(:site)
-      permalink_directory = create(:permalink_directory, site: site)
+      permalink_directory = create(:permalink_directory, site:)
       create(
         :entry,
-        site: site,
+        site:,
         permalink_attributes: {
           slug: 'slug',
           directory: permalink_directory
@@ -49,7 +49,7 @@ module Pageflow
       )
       entry = build(
         :entry,
-        site: site,
+        site:,
         permalink_attributes: {
           slug: 'slug',
           directory: permalink_directory
@@ -63,7 +63,7 @@ module Pageflow
       site = create(:site)
       create(
         :entry,
-        site: site,
+        site:,
         permalink_attributes: {
           slug: 'slug',
           directory_path: 'en/'
@@ -71,7 +71,7 @@ module Pageflow
       )
       entry = build(
         :entry,
-        site: site,
+        site:,
         permalink_attributes: {
           slug: 'slug',
           directory_path: 'de/'
@@ -181,7 +181,7 @@ module Pageflow
       )
       create(
         :entry,
-        account: account,
+        account:,
         permalink_attributes: {
           slug: 'my-example',
           directory: permalink_directory
@@ -189,7 +189,7 @@ module Pageflow
       )
       entry = build(
         :entry,
-        account: account,
+        account:,
         title: 'My Example',
         permalink_attributes: {
           slug: '',

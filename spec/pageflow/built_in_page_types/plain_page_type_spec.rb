@@ -29,7 +29,7 @@ module Pageflow
 
       page = create(:page,
                     template: 'background_image',
-                    revision: revision,
+                    revision:,
                     configuration: {
                       video_file_id: file_usage.perma_id,
                       background_type: 'video'
@@ -71,7 +71,7 @@ module Pageflow
 
       page = create(:page,
                     template: 'background_image',
-                    revision: revision,
+                    revision:,
                     configuration: {background_image_id: file_usage.perma_id})
 
       html = render_page(page)

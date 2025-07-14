@@ -37,7 +37,7 @@ module Pageflow
 
       describe '#delete_own_user_section' do
         it 'renders may_delete if authorize_user_deletion gives true' do
-          Pageflow.config.authorize_user_deletion = lambda { |_user| true }
+          Pageflow.config.authorize_user_deletion = ->(_user) { true }
 
           allow(helper).to receive(:current_user).and_return(create(:user))
 
@@ -49,7 +49,7 @@ module Pageflow
 
         it 'renders cannot_delete if authorize_user_deletion gives any string' do
           Pageflow.config.authorize_user_deletion =
-            lambda { |user| "#{user.full_name} is indestructible" }
+            ->(user) { "#{user.full_name} is indestructible" }
 
           allow(helper).to receive(:current_user).and_return(create(:user,
                                                                     first_name: 'Chuck',

@@ -11,7 +11,7 @@ module Pageflow
       end
 
       def call
-        %'<iframe src="#{url(entry)}" allowfullscreen></iframe>'
+        %(<iframe src="#{url(entry)}" allowfullscreen></iframe>)
       end
 
       private

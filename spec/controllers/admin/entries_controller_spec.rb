@@ -18,7 +18,7 @@ describe Admin::EntriesController do
       it 'is not displayed for account publishers and entry managers' do
         underprivileged_user = create(:user)
         account = create(:account, with_publisher: underprivileged_user)
-        create(:entry, with_manager: underprivileged_user, account: account)
+        create(:entry, with_manager: underprivileged_user, account:)
 
         sign_in(underprivileged_user, scope: :user)
         get :index
@@ -76,14 +76,14 @@ describe Admin::EntriesController do
     end
 
     describe 'downloads' do
-      %w(csv json xml).each do |format|
+      %w[csv json xml].each do |format|
         describe "with #{format} format" do
           it 'does not include sensitive data' do
             user = create(:user, :admin)
             create(:entry, password_digest: 'secret')
 
             sign_in(user, scope: :user)
-            get(:index, format: format)
+            get(:index, format:)
 
             expect(response.body).not_to include('secret')
           end
@@ -142,7 +142,7 @@ describe Admin::EntriesController do
       it 'entry editor sees members and revisions tabs' do
         account = create(:account)
         user = create(:user)
-        entry = create(:entry, account: account, with_editor: user, title: 'example')
+        entry = create(:entry, account:, with_editor: user, title: 'example')
 
         sign_in(user, scope: :user)
         get(:show, params: {id: entry.id})
@@ -154,7 +154,7 @@ describe Admin::EntriesController do
       it 'account manager sees features tab' do
         user = create(:user)
         account = create(:account, with_manager: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         sign_in(user, scope: :user)
         get(:show, params: {id: entry.id})
@@ -170,7 +170,7 @@ describe Admin::EntriesController do
 
           user = create(:user)
           account = create(:account, with_manager: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           sign_in(user, scope: :user)
           get(:show, params: {id: entry.id})
@@ -196,7 +196,7 @@ describe Admin::EntriesController do
       it 'account publisher does not see features tab' do
         user = create(:user)
         account = create(:account, with_publisher: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         sign_in(user, scope: :user)
         get(:show, params: {id: entry.id})
@@ -278,7 +278,7 @@ describe Admin::EntriesController do
         it 'is visible if user has required account role' do
           user = create(:user)
           account = create(:account, with_manager: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           Pageflow.config.admin_resource_tabs.register(:entry,
                                                        name: :some_tab,
@@ -307,7 +307,7 @@ describe Admin::EntriesController do
         it 'is not visible if user does not have required account role' do
           user = create(:user)
           account = create(:account, with_publisher: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           Pageflow.config.admin_resource_tabs.register(:entry,
                                                        name: :some_tab,
@@ -352,7 +352,7 @@ describe Admin::EntriesController do
         it 'is not visible for non admins' do
           user = create(:user)
           account = create(:account, with_manager: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           Pageflow.config.admin_resource_tabs.register(:entry,
                                                        name: :some_tab,
@@ -461,7 +461,7 @@ describe Admin::EntriesController do
     it 'renders site select if multiple sites are available for account' do
       user = create(:user)
       account = create(:account, with_publisher: user)
-      create(:site, account: account)
+      create(:site, account:)
 
       sign_in(user, scope: :user)
       get :new
@@ -698,9 +698,9 @@ describe Admin::EntriesController do
 
       sign_in(user, scope: :user)
 
-      expect do
+      expect {
         post :create, params: {entry: attributes_for(:entry, account_id: other_account)}
-      end.not_to change { other_account.entries.count }
+      }.not_to(change { other_account.entries.count })
     end
 
     it 'does not allow account manager to create entries with custom site' do
@@ -722,9 +722,9 @@ describe Admin::EntriesController do
 
       sign_in(user, scope: :user)
 
-      expect do
-        post :create, params: {entry: attributes_for(:entry, account: account)}
-      end.to change { account.entries.count }
+      expect {
+        post :create, params: {entry: attributes_for(:entry, account:)}
+      }.to(change { account.entries.count })
     end
 
     it 'allows admin to set entry account' do
@@ -732,9 +732,9 @@ describe Admin::EntriesController do
 
       sign_in(create(:user, :admin), scope: :user)
 
-      expect do
+      expect {
         post :create, params: {entry: attributes_for(:entry, account_id: account)}
-      end.to change { account.entries.count }
+      }.to(change { account.entries.count })
     end
 
     it 'allows admin to create entries with custom site' do
@@ -843,7 +843,7 @@ describe Admin::EntriesController do
         params: {
           at: 'root',
           entry: {
-            title: 'Overview',
+            title: 'Overview'
           }
         }
       )
@@ -1021,7 +1021,7 @@ describe Admin::EntriesController do
       account = create(:account, with_publisher: user)
       entry = create(
         :entry,
-        account: account,
+        account:,
         permalink_attributes: {
           directory_path: 'de/',
           slug: 'my-slug'
@@ -1057,7 +1057,7 @@ describe Admin::EntriesController do
       )
       entry = create(
         :entry,
-        account: account
+        account:
       )
 
       sign_in(user, scope: :user)
@@ -1080,7 +1080,7 @@ describe Admin::EntriesController do
       )
       entry = create(
         :entry,
-        account: account
+        account:
       )
 
       sign_in(user, scope: :user)
@@ -1092,7 +1092,7 @@ describe Admin::EntriesController do
     it 'does not display permalink inputs if site has no permalink directories' do
       user = create(:user)
       account = create(:account, with_publisher: user)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       get :edit, params: {id: entry}
@@ -1162,7 +1162,7 @@ describe Admin::EntriesController do
       user = create(:user)
       account = create(:account, with_editor: user)
       other_account = create(:account, with_editor: user)
-      entry = create(:entry, account: account, with_manager: user)
+      entry = create(:entry, account:, with_manager: user)
 
       sign_in(user, scope: :user)
       patch :update, params: {id: entry, entry: {account_id: other_account}}
@@ -1174,7 +1174,7 @@ describe Admin::EntriesController do
       user = create(:user)
       account = create(:account, with_publisher: user)
       other_account = create(:account)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       patch :update, params: {id: entry, entry: {account_id: other_account}}
@@ -1186,7 +1186,7 @@ describe Admin::EntriesController do
       user = create(:user)
       account = create(:account, with_publisher: user)
       other_account = create(:account, with_publisher: user)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       patch :update, params: {id: entry, entry: {account_id: other_account}}
@@ -1203,7 +1203,7 @@ describe Admin::EntriesController do
         user = create(:user)
         account = create(:account, with_publisher: user)
         other_account = create(:account, with_publisher: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         sign_in(user, scope: :user)
         patch :update, params: {id: entry, entry: {account_id: other_account}}
@@ -1222,7 +1222,7 @@ describe Admin::EntriesController do
         user = create(:user)
         account = create(:account, with_publisher: user)
         other_account = create(:account, with_publisher: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         sign_in(user, scope: :user)
         patch :update, params: {id: entry, entry: {account_id: other_account}}
@@ -1239,7 +1239,7 @@ describe Admin::EntriesController do
         user = create(:user)
         account = create(:account, with_publisher: user)
         custom_site = create(:site)
-        entry = create(:entry, account: account, site: custom_site)
+        entry = create(:entry, account:, site: custom_site)
 
         sign_in(user, scope: :user)
         patch :update, params: {id: entry, entry: {title: 'Some new title'}}
@@ -1255,7 +1255,7 @@ describe Admin::EntriesController do
         user = create(:user, :admin)
         account = create(:account)
         other_account = create(:account)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         sign_in(user, scope: :user)
         patch :update, params: {id: entry, entry: {account_id: other_account}}
@@ -1268,7 +1268,7 @@ describe Admin::EntriesController do
       account = create(:account)
       other_account = create(:account)
 
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
       sign_in(create(:user, :admin), scope: :user)
       patch :update, params: {id: entry, entry: {account_id: other_account}}
 
@@ -1278,9 +1278,9 @@ describe Admin::EntriesController do
     it 'does not allow entry manager and account editor to change site' do
       user = create(:user)
       account = create(:account, with_editor: user)
-      site = create(:site, account: account)
-      other_site = create(:site, account: account)
-      entry = create(:entry, site: site, account: account, with_manager: user)
+      site = create(:site, account:)
+      other_site = create(:site, account:)
+      entry = create(:entry, site:, account:, with_manager: user)
 
       sign_in(user, scope: :user)
       patch :update, params: {id: entry, entry: {site_id: other_site}}
@@ -1291,9 +1291,9 @@ describe Admin::EntriesController do
     it 'allows account publisher to change site' do
       user = create(:user)
       account = create(:account, with_publisher: user)
-      site = create(:site, account: account)
-      other_site = create(:site, account: account)
-      entry = create(:entry, site: site, account: account)
+      site = create(:site, account:)
+      other_site = create(:site, account:)
+      entry = create(:entry, site:, account:)
 
       sign_in(user, scope: :user)
       patch :update, params: {id: entry, entry: {site_id: other_site}}
@@ -1305,9 +1305,9 @@ describe Admin::EntriesController do
       user = create(:user)
       account = create(:account, with_publisher: user)
       other_account = create(:account, with_manager: user)
-      site = create(:site, account: account)
+      site = create(:site, account:)
       other_site = create(:site, account: other_account)
-      entry = create(:entry, site: site, account: account)
+      entry = create(:entry, site:, account:)
 
       sign_in(user, scope: :user)
       patch :update, params: {id: entry, entry: {site_id: other_site}}
@@ -1318,7 +1318,7 @@ describe Admin::EntriesController do
     it 'allows admin to change site' do
       site = create(:site)
       other_site = create(:site)
-      entry = create(:entry, site: site)
+      entry = create(:entry, site:)
 
       sign_in(create(:user, :admin), scope: :user)
       patch :update, params: {id: entry, entry: {site_id: other_site}}
@@ -1329,8 +1329,8 @@ describe Admin::EntriesController do
     it 'does not allow entry manager and account editor to change folder' do
       user = create(:user)
       account = create(:account, with_editor: user)
-      folder = create(:folder, account: account)
-      entry = create(:entry, account: account, with_manager: user)
+      folder = create(:folder, account:)
+      entry = create(:entry, account:, with_manager: user)
 
       sign_in(user, scope: :user)
       patch :update, params: {id: entry, entry: {folder_id: folder}}
@@ -1341,8 +1341,8 @@ describe Admin::EntriesController do
     it 'allows account publisher to change folder of entry of account they publish on' do
       user = create(:user)
       account = create(:account, with_publisher: user)
-      folder = create(:folder, account: account)
-      entry = create(:entry, account: account)
+      folder = create(:folder, account:)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       patch :update, params: {id: entry, entry: {folder_id: folder}}
@@ -1394,7 +1394,7 @@ describe Admin::EntriesController do
     it 'allows account manager to update feature_configuration through feature_states param' do
       user = create(:user)
       account = create(:account, with_manager: user)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       patch(:update,
@@ -1440,7 +1440,7 @@ describe Admin::EntriesController do
 
         user = create(:user)
         account = create(:account, with_manager: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         sign_in(user, scope: :user)
         patch(:update,
@@ -1460,7 +1460,7 @@ describe Admin::EntriesController do
     it 'does not allow account publisher and entry manager to update feature_configuration' do
       user = create(:user)
       account = create(:account, with_publisher: user)
-      entry = create(:entry, account: account, with_manager: user)
+      entry = create(:entry, account:, with_manager: user)
 
       sign_in(user, scope: :user)
       patch(:update,
@@ -1509,7 +1509,7 @@ describe Admin::EntriesController do
       )
       entry = create(
         :entry,
-        account: account,
+        account:,
         permalink_attributes: {slug: 'old-slug'}
       )
 
@@ -1570,26 +1570,26 @@ describe Admin::EntriesController do
   describe '#snapshot' do
     it 'does not allow user to snapshot entry they are not member of' do
       account = create(:account)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(create(:user))
 
-      expect do
+      expect {
         post(:snapshot, params: {id: entry.id})
-      end.not_to change { entry.revisions.count }
+      }.not_to(change { entry.revisions.count })
     end
 
     it 'allows account editor to snapshot entries of own account' do
       user = create(:user)
       account = create(:account, with_editor: user)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       post(:snapshot, params: {id: entry.id})
 
-      expect do
+      expect {
         post(:snapshot, params: {id: entry.id})
-      end.to change { entry.revisions.count }
+      }.to(change { entry.revisions.count })
     end
 
     it 'allows admin to snapshot entries of other accounts' do
@@ -1598,9 +1598,9 @@ describe Admin::EntriesController do
       sign_in(create(:user, :admin), scope: :user)
       post(:snapshot, params: {id: entry.id})
 
-      expect do
+      expect {
         post(:snapshot, params: {id: entry.id})
-      end.to change { entry.revisions.count }
+      }.to(change { entry.revisions.count })
     end
 
     it 'allows editor to snapshot their entries' do
@@ -1610,9 +1610,9 @@ describe Admin::EntriesController do
       sign_in(user, scope: :user)
       post(:snapshot, params: {id: entry.id})
 
-      expect do
+      expect {
         post(:snapshot, params: {id: entry.id})
-      end.to change { entry.revisions.count }
+      }.to(change { entry.revisions.count })
     end
   end
 
@@ -1620,13 +1620,13 @@ describe Admin::EntriesController do
     it 'does not allow account editor to duplicate own entries of own account' do
       user = create(:user)
       account = create(:account, with_editor: user)
-      entry = create(:entry, account: account, with_editor: user)
+      entry = create(:entry, account:, with_editor: user)
 
       sign_in(user, scope: :user)
 
-      expect do
+      expect {
         post(:duplicate, params: {id: entry.id})
-      end.not_to change { Pageflow::Entry.count }
+      }.not_to(change { Pageflow::Entry.count })
     end
 
     it 'allows entry publisher to duplicate entry' do
@@ -1635,9 +1635,9 @@ describe Admin::EntriesController do
 
       sign_in(user, scope: :user)
 
-      expect do
+      expect {
         post(:duplicate, params: {id: entry.id})
-      end.to change { Pageflow::Entry.count }
+      }.to(change { Pageflow::Entry.count })
     end
 
     it 'allows admin to duplicate entries of other accounts' do
@@ -1646,9 +1646,9 @@ describe Admin::EntriesController do
 
       sign_in(create(:user, :admin), scope: :user)
 
-      expect do
+      expect {
         post(:duplicate, params: {id: entry.id})
-      end.to change { Pageflow::Entry.count }
+      }.to(change { Pageflow::Entry.count })
     end
   end
 
@@ -1656,21 +1656,21 @@ describe Admin::EntriesController do
     it 'allows account manager to destroy entry' do
       user = create(:user)
       account = create(:account, with_manager: user)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
 
-      expect { delete(:destroy, params: {id: entry}) }.to change { Pageflow::Entry.count }
+      expect { delete(:destroy, params: {id: entry}) }.to(change { Pageflow::Entry.count })
     end
 
     it 'does not allow account publisher and entry manager to destroy entry' do
       user = create(:user)
       account = create(:account, with_publisher: user)
-      entry = create(:entry, with_manager: user, account: account)
+      entry = create(:entry, with_manager: user, account:)
 
       sign_in(user, scope: :user)
 
-      expect { delete(:destroy, params: {id: entry}) }.not_to change { Pageflow::Entry.count }
+      expect { delete(:destroy, params: {id: entry}) }.not_to(change { Pageflow::Entry.count })
     end
 
     it 'allows admin to destroy entry' do
@@ -1679,7 +1679,7 @@ describe Admin::EntriesController do
 
       sign_in(user, scope: :user)
 
-      expect { delete(:destroy, params: {id: entry}) }.to change { Pageflow::Entry.count }
+      expect { delete(:destroy, params: {id: entry}) }.to(change { Pageflow::Entry.count })
     end
   end
 
@@ -1697,7 +1697,7 @@ describe Admin::EntriesController do
 
     it 'renders site select if multiple sites are available' do
       account = create(:account)
-      create(:site, account: account)
+      create(:site, account:)
 
       sign_in(create(:user, :manager, on: account))
       get(:entry_site_and_type_name_input, params: {account_id: account})
@@ -1708,7 +1708,7 @@ describe Admin::EntriesController do
 
     it 'selects default site of account' do
       account = create(:account)
-      create(:site, account: account)
+      create(:site, account:)
 
       sign_in(create(:user, :manager, on: account))
       get(:entry_site_and_type_name_input, params: {account_id: account})

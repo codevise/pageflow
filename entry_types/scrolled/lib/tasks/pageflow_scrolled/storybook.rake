@@ -39,7 +39,7 @@ namespace :pageflow_scrolled do
         seeds.sample_scrolled_entry(
           attributes: {
             title: 'Storybook seed',
-            account: account,
+            account:,
             chapters: [],
             image_files: {
               turtle: {

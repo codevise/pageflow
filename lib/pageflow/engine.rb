@@ -34,7 +34,7 @@ require 'symmetric-encryption'
 require 'pageflow/rails_version'
 
 if Gem::Specification.find_all_by_name('pageflow-react', '>= 0.0').any?
-  fail('The pageflow-react gem has been merged into the pageflow gem. ' \
+  raise('The pageflow-react gem has been merged into the pageflow gem. ' \
        'See the pageflow changelog for update instructions.')
 end
 
@@ -91,14 +91,14 @@ module Pageflow
 
     # Precompile additional assets.
     initializer 'pageflow.assets.precompile' do |app|
-      app.config.assets.precompile += %w(
+      app.config.assets.precompile += %w[
         pageflow/application_with_simulated_media_queries.css
         pageflow/print_view.css
         pageflow/lt_ie9.js pageflow/lt_ie9.css pageflow/ie9.js pageflow/ie9.css
         pageflow/vendor.js
         pageflow/editor/vendor.js
         video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff
-      )
+      ]
 
       app.config.assets.precompile << lambda do |path, _filename|
         Pageflow.config.themes.any? do |theme|

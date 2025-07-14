@@ -22,6 +22,7 @@ module Pageflow
 
     def save
       return false unless valid?
+
       Pageflow.config.quotas.get(:users, initial_account).verify_available!
 
       membership.save!

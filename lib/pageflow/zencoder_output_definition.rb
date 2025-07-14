@@ -1,6 +1,7 @@
 module Pageflow
   class ZencoderOutputDefinition
-    cattr_accessor :default_output_bucket_name, :default_sftp_host, :default_akamai_host, :default_akamai_credentials
+    cattr_accessor :default_output_bucket_name, :default_sftp_host, :default_akamai_host,
+                   :default_akamai_credentials
 
     attr_accessor :options
 
@@ -9,11 +10,11 @@ module Pageflow
     end
 
     def input_s3_url
-      raise "Not implemented"
+      raise 'Not implemented'
     end
 
     def outputs
-      raise "Not implemented"
+      raise 'Not implemented'
     end
 
     def ==(other)
@@ -21,9 +22,9 @@ module Pageflow
         other.input_s3_url == input_s3_url &&
         other.outputs == outputs
     end
-    alias_method :eql?, :==
+    alias eql? ==
 
-      protected
+    protected
 
     def transferable(definition)
       if akamai_configured?
@@ -42,9 +43,7 @@ module Pageflow
     end
 
     def with_credentials(definition)
-      if akamai_configured?
-        definition[:credentials] = akamai_credentials
-      end
+      definition[:credentials] = akamai_credentials if akamai_configured?
 
       definition
     end
@@ -89,11 +88,12 @@ module Pageflow
 
     def sftp_transfer_definition(definition)
       return unless sftp_configured?
+
       {
-        :label => "sftp_transfer_#{definition[:label]}",
-        :source => definition[:label],
-        :type => 'transfer-only',
-        :url => sftp_url(definition[:path])
+        label: "sftp_transfer_#{definition[:label]}",
+        source: definition[:label],
+        type: 'transfer-only',
+        url: sftp_url(definition[:path])
       }
     end
 
@@ -105,6 +105,7 @@ module Pageflow
 
     def sftp_definition(source_defintion)
       return unless sftp_configured?
+
       source_defintion.dup.tap do |definiton|
         definiton[:label] = "sftp_#{definiton[:label]}"
         definiton[:url] = sftp_url(definiton.delete(:path))

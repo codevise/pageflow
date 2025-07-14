@@ -7,9 +7,9 @@ module Pageflow
     describe '#entry_json_seed' do
       it 'escapes illegal characters' do
         revision = create(:revision, :published)
-        storyline = create(:storyline, revision: revision)
-        chapter = create(:chapter, storyline: storyline)
-        create(:page, chapter: chapter, configuration: {text: "some\u2028text"})
+        storyline = create(:storyline, revision:)
+        chapter = create(:chapter, storyline:)
+        create(:page, chapter:, configuration: {text: "some\u2028text"})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
 
         result = helper.entry_json_seed(entry)
@@ -19,9 +19,9 @@ module Pageflow
 
       it 'escapes closing tags' do
         revision = create(:revision, :published)
-        storyline = create(:storyline, revision: revision)
-        chapter = create(:chapter, storyline: storyline)
-        create(:page, chapter: chapter, configuration: {text: '</script>'})
+        storyline = create(:storyline, revision:)
+        chapter = create(:chapter, storyline:)
+        create(:page, chapter:, configuration: {text: '</script>'})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
 
         result = helper.entry_json_seed(entry)
@@ -37,7 +37,7 @@ module Pageflow
 
         result = helper.entry_json_seed(entry)
 
-        expect(json_get(result, path: %w(entry slug))).to eq('my-entry')
+        expect(json_get(result, path: %w[entry slug])).to eq('my-entry')
       end
 
       it 'contains entry title' do
@@ -47,7 +47,7 @@ module Pageflow
 
         result = helper.entry_json_seed(entry)
 
-        expect(json_get(result, path: %w(entry title))).to eq('My Entry')
+        expect(json_get(result, path: %w[entry title])).to eq('My Entry')
       end
 
       it 'renders files' do
@@ -81,7 +81,7 @@ module Pageflow
     describe '#entry_storylines_seed' do
       it 'includes id and configuration' do
         revision = create(:revision, :published)
-        storyline = create(:storyline, revision: revision, configuration: {text: 'some text'})
+        storyline = create(:storyline, revision:, configuration: {text: 'some text'})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
 
         result = helper.entry_storylines_seed(entry)
@@ -94,9 +94,9 @@ module Pageflow
     describe '#entry_chapters_seed' do
       it 'includes id and configuration' do
         revision = create(:revision, :published)
-        storyline = create(:storyline, revision: revision)
+        storyline = create(:storyline, revision:)
         chapter = create(:chapter,
-                         storyline: storyline,
+                         storyline:,
                          title: 'Chapter 1',
                          configuration: {text: 'some text'})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
@@ -113,9 +113,9 @@ module Pageflow
     describe '#entry_pages_seed' do
       it 'includes id, perma_id and configuration' do
         revision = create(:revision, :published)
-        storyline = create(:storyline, revision: revision)
-        chapter = create(:chapter, storyline: storyline)
-        page = create(:page, chapter: chapter, configuration: {text: 'some text'})
+        storyline = create(:storyline, revision:)
+        chapter = create(:chapter, storyline:)
+        page = create(:page, chapter:, configuration: {text: 'some text'})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
 
         result = helper.entry_pages_seed(entry)
@@ -153,7 +153,7 @@ module Pageflow
     describe '#entry_file_ids_seed' do
       it 'indexes list of ids by collection name' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
 
         result = helper.entry_file_ids_seed(entry)
 
@@ -166,7 +166,7 @@ module Pageflow
 
       it 'indexes sources of entries audio files by id' do
         entry = PublishedEntry.new(create(:entry, :published))
-        audio_file = create_used_file(:audio_file, entry: entry)
+        audio_file = create_used_file(:audio_file, entry:)
 
         result = JSON.parse(helper.entry_audio_files_json_seed(entry))
 

@@ -20,7 +20,7 @@ module Pageflow
 
     it 'includes entry with account name containing all words in term' do
       account = create(:account, name: 'Business Today Journal')
-      entry = create(:entry, account: account, title: 'International news overview')
+      entry = create(:entry, account:, title: 'International news overview')
 
       result = EntryTitleOrAccountNameQuery::Scope.new('Business Journal', Entry).resolve
 
@@ -29,7 +29,7 @@ module Pageflow
 
     it 'includes entry with account name and title containing all words in term' do
       account = create(:account, name: 'Business Today Journal')
-      entry = create(:entry, account: account, title: 'International news overview')
+      entry = create(:entry, account:, title: 'International news overview')
 
       result = EntryTitleOrAccountNameQuery::Scope.new('Business overview', Entry).resolve
 

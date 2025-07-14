@@ -20,7 +20,7 @@ module Pageflow
                           ))
 
       validates_attachment_presence :attachment_on_s3
-      validates_attachment_file_name :attachment_on_s3, matches: %r{^[^\/\\]+\.[\w]{3,4}$}
+      validates_attachment_file_name :attachment_on_s3, matches: %r{^[^/\\]+\.\w{3,4}$}
       do_not_validate_attachment_file_type :attachment_on_s3
 
       state_machine initial: 'uploading' do
@@ -76,9 +76,9 @@ module Pageflow
     end
 
     def url
-      if attachment.present?
-        attachment.url
-      end
+      return unless attachment.present?
+
+      attachment.url
     end
 
     def basename

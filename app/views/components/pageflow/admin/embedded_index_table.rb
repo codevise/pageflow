@@ -23,9 +23,7 @@ module Pageflow
       end
 
       def table_for_collection(options = {}, &block)
-        if scopes.any?
-          custom_scopes_renderer(scopes, default_scope: scopes.first.id)
-        end
+        custom_scopes_renderer(scopes, default_scope: scopes.first.id) if scopes.any?
 
         record_sort_columns(&block) if options[:sortable]
 
@@ -113,8 +111,7 @@ module Pageflow
           end
         end
 
-        def row_attributes
-        end
+        def row_attributes; end
       end
     end
   end

@@ -43,7 +43,7 @@ module Pageflow
       published_entry = PublishedEntry.new(entry, revision)
       EntriesControllerEnvHelper.add_entry_info_to_env(request.env,
                                                        entry: published_entry,
-                                                       mode: mode)
+                                                       mode:)
       get(action, params: {**params})
     end
   end

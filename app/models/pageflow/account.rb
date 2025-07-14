@@ -10,13 +10,13 @@ module Pageflow
     has_many :entry_memberships, through: :entries, source: :memberships
 
     has_many :sites, dependent: :destroy
-    belongs_to :default_site, :class_name => 'Site'
+    belongs_to :default_site, class_name: 'Site'
 
-    validates :default_site, :presence => true
+    validates :default_site, presence: true
 
-    accepts_nested_attributes_for :default_site, :update_only => true
+    accepts_nested_attributes_for :default_site, update_only: true
 
-    scope :with_landing_page, -> { where.not(:landing_page_name => '') }
+    scope :with_landing_page, -> { where.not(landing_page_name: '') }
 
     def build_default_site(*args)
       super.tap do |site|

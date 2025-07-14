@@ -69,7 +69,7 @@ module Pageflow
           :published,
           title: 'some-entry',
           type_name: 'test',
-          site: site,
+          site:,
           permalink_attributes: {
             slug: 'custom-slug'
           }
@@ -89,7 +89,7 @@ module Pageflow
           :published,
           title: 'some-entry',
           type_name: 'test',
-          site: site,
+          site:,
           permalink_attributes: {
             slug: 'custom-slug',
             directory_path: 'en/'
@@ -244,13 +244,13 @@ module Pageflow
         site2 = create(:site, cname: 'site2.example.com')
 
         custom_404_entry1 = create(:entry, :published,
-                                    type_name: 'test',
-                                    title: 'Site 1 Not Found',
-                                    site: site1)
+                                   type_name: 'test',
+                                   title: 'Site 1 Not Found',
+                                   site: site1)
         custom_404_entry2 = create(:entry, :published,
-                                    type_name: 'test',
-                                    title: 'Site 2 Not Found',
-                                    site: site2)
+                                   type_name: 'test',
+                                   title: 'Site 2 Not Found',
+                                   site: site2)
 
         site1.update!(custom_404_entry: custom_404_entry1)
         site2.update!(custom_404_entry: custom_404_entry2)
@@ -324,7 +324,7 @@ module Pageflow
           account = create(:account, name: 'news')
           entry = create(:entry, :published,
                          type_name: 'test',
-                         account: account)
+                         account:)
 
           get(short_entry_url(entry), headers: {'HTTP_HOST' => 'news.example.com'})
 

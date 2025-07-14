@@ -17,7 +17,8 @@ class CreateOtherFiles < ActiveRecord::Migration[5.2]
 
       t.timestamps
 
-      t.index ['parent_file_id', 'parent_file_model_type'], name: 'index_other_files_on_parent_id_and_parent_model_type'
+      t.index ['parent_file_id', 'parent_file_model_type'],
+              name: 'index_other_files_on_parent_id_and_parent_model_type'
     end
   end
 end

@@ -92,9 +92,9 @@ module Pageflow
 
       def create_params
         file_params.permit(:file_name, :content_type, :file_size)
-          .merge(file_configuration_params)
-          .merge(file_parent_file_params)
-          .merge(file_custom_params)
+                   .merge(file_configuration_params)
+                   .merge(file_parent_file_params)
+                   .merge(file_custom_params)
       end
 
       def file_reuse_params
@@ -110,7 +110,7 @@ module Pageflow
 
         file_params
           .permit(:rights)
-          .merge(configuration: configuration)
+          .merge(configuration:)
       end
 
       def file_parent_file_params

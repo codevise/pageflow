@@ -14,7 +14,7 @@ module Pageflow
         else
           accounts_ids = accounts.try(:id) || accounts.try(:length) && accounts.map(&:id)
           scope.joins(publisher_memberships_for_accounts(user, accounts_ids))
-            .where(membership_is_present)
+               .where(membership_is_present)
         end
       end
 
@@ -27,7 +27,7 @@ module Pageflow
                             'pageflow_memberships.entity_id IN (:accounts_ids) AND ' \
                             'pageflow_memberships.entity_type = \'Pageflow::Account\' AND ' \
                             'pageflow_memberships.role IN (\'publisher\', \'manager\')',
-                            user_id: user.id, accounts_ids: accounts_ids])
+                            {user_id: user.id, accounts_ids:}])
       end
 
       def membership_is_present

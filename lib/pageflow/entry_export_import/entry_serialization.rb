@@ -50,18 +50,18 @@ module Pageflow
 
       def import_draft(entry_data, options, entry, file_mappings)
         RevisionSerialization.import(entry_data['draft'],
-                                     entry: entry,
+                                     entry:,
                                      creator: options[:creator],
-                                     file_mappings: file_mappings)
+                                     file_mappings:)
       end
 
       def import_last_publication(entry_data, options, entry, file_mappings)
         return unless entry_data['last_publication']
 
         RevisionSerialization.import(entry_data['last_publication'],
-                                     entry: entry,
+                                     entry:,
                                      creator: options[:creator],
-                                     file_mappings: file_mappings)
+                                     file_mappings:)
       end
     end
   end

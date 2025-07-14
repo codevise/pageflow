@@ -29,7 +29,10 @@ module Pageflow
 
     def poster_image_tag(video_file_perma_id, poster_image_perma_id = nil, options = {})
       video_file = find_file_in_entry(VideoFile, video_file_perma_id)
-      poster = poster_image_perma_id.present? ? find_file_in_entry(ImageFile, poster_image_perma_id) : nil
+      poster = if poster_image_perma_id.present?
+                 find_file_in_entry(ImageFile,
+                                    poster_image_perma_id)
+               end
 
       if poster&.ready?
         options = options.merge('data-src' => poster.attachment.url(:medium))
@@ -49,7 +52,7 @@ module Pageflow
           'player video-js video-viewport vjs-default-skin',
           options.delete(:class)
         ].compact * ' ',
-        preload:  options.delete(:preload) ? 'metadata' : 'none'
+        preload: options.delete(:preload) ? 'metadata' : 'none'
       }
 
       options.reverse_merge! defaults
@@ -58,7 +61,10 @@ module Pageflow
       poster_image_id = options.delete(:poster_image_id)
       poster = poster_image_id.present? ? find_file_in_entry(ImageFile, poster_image_id) : nil
       mobile_poster_image_id = options.delete(:mobile_poster_image_id)
-      mobile_poster = mobile_poster_image_id.present? ? find_file_in_entry(ImageFile, mobile_poster_image_id) : nil
+      mobile_poster = if mobile_poster_image_id.present?
+                        find_file_in_entry(ImageFile,
+                                           mobile_poster_image_id)
+                      end
 
       options[:data] = {}
 
@@ -81,14 +87,14 @@ module Pageflow
       end
 
       render('pageflow/video_files/video_tag',
-             video_file: video_file,
-             options: options,
-             url_options: url_options)
+             video_file:,
+             options:,
+             url_options:)
     end
 
     # @deprecated
     def lookup_video_tag(video_id, poster_image_id, options = {})
-      video_file_script_tag(video_id, options.merge(poster_image_id: poster_image_id))
+      video_file_script_tag(video_id, options.merge(poster_image_id:))
     end
 
     def video_file_script_tag(video_file_perma_id, options = {})
@@ -102,9 +108,9 @@ module Pageflow
       end
 
       render('pageflow/video_files/script_tag',
-             script_tag_data: script_tag_data,
-             video_file: video_file,
-             options: options)
+             script_tag_data:,
+             video_file:,
+             options:)
     end
 
     def video_file_non_js_link(entry, video_file_perma_id)

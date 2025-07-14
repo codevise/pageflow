@@ -10,10 +10,10 @@ module Pageflow
 
     def register(widget_type, options = {})
       @widget_types[widget_type.name] = widget_type
-      if options[:default]
-        widget_type.roles.each do |role|
-          defaults_by_role[role] = widget_type
-        end
+      return unless options[:default]
+
+      widget_type.roles.each do |role|
+        defaults_by_role[role] = widget_type
       end
     end
 

@@ -59,7 +59,7 @@ module Pageflow
         f.input(name,
                 as: :searchable_select,
                 ajax: {resource: Membership,
-                       collection_name: collection_name,
+                       collection_name:,
                        params: {parent_id: parent.id}},
                 include_blank: false)
       end

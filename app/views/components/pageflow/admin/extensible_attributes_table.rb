@@ -71,7 +71,6 @@ module Pageflow
           @context.respond_to?(name)
         end
 
-        # rubocop:disable Style/MethodMissing
         # Normally we would delegate to super if context does not
         # respond_to? method. But Arbre appears to report not to
         # repond to helpers like authorized? even if it does.
@@ -81,7 +80,6 @@ module Pageflow
         def method_missing(method, *args, **kwargs, &block)
           @context.public_send(method, *args, **kwargs, &block)
         end
-        # rubocop:enable Style/MethodMissing
       end
     end
   end

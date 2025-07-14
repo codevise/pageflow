@@ -172,8 +172,8 @@ module PageflowScrolled
       it 'renders attributes of duplicated content elements' do
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft, configuration: {'transition' => 'fade'})
-        create(:content_element, section: section, type_name: 'inlineImage')
-        create(:content_element, section: section, type_name: 'textBlock')
+        create(:content_element, section:, type_name: 'inlineImage')
+        create(:content_element, section:, type_name: 'textBlock')
 
         authorize_for_editor_controller(entry)
         post(:duplicate,
@@ -236,7 +236,7 @@ module PageflowScrolled
       it 'updates position of sections according to given params order' do
         entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
-        sections = create_list(:section, 2, chapter: chapter)
+        sections = create_list(:section, 2, chapter:)
 
         authorize_for_editor_controller(entry)
         put(:order,
@@ -254,9 +254,9 @@ module PageflowScrolled
       it 'allows moving a section from one chapter to another within the same entry' do
         entry = create(:entry, type_name: 'scrolled')
         revision = entry.draft
-        chapter = create(:scrolled_chapter, revision: revision)
-        section = create(:section, chapter: chapter)
-        other_chapter = create(:scrolled_chapter, revision: revision)
+        chapter = create(:scrolled_chapter, revision:)
+        section = create(:section, chapter:)
+        other_chapter = create(:scrolled_chapter, revision:)
 
         authorize_for_editor_controller(entry)
         put(:order,
@@ -273,7 +273,7 @@ module PageflowScrolled
       it 'does not allow moving a section to a chapter of another entry' do
         entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
-        section = create(:section, chapter: chapter)
+        section = create(:section, chapter:)
         other_entry = create(:entry, type_name: 'scrolled')
         chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
 

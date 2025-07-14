@@ -200,7 +200,7 @@ module Pageflow
 
       it 'does not remove file from other revisions ' do
         entry = create(:entry)
-        other_revision = create(:revision, :published, :entry => entry)
+        other_revision = create(:revision, :published, entry:)
         image_file = create(:image_file)
         other_revision.image_files << image_file
         entry.draft.image_files << image_file
@@ -237,7 +237,7 @@ module Pageflow
 
       it 'decorates entries with DraftEntry' do
         draft = build_stubbed(:revision)
-        entry = build_stubbed(:entry, :draft => draft)
+        entry = build_stubbed(:entry, draft:)
 
         allow(Entry).to receive(:accessible_by).and_return([entry])
 

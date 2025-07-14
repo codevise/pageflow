@@ -12,7 +12,7 @@ module PageflowPaged
                               frontend_app: PageflowPaged::EntriesController.action(:show),
                               configuration: PageflowPaged::Configuration,
                               editor_app: PageflowPaged::Engine,
-                              editor_fragment_renderer: editor_fragment_renderer)
+                              editor_fragment_renderer:)
     end
 
     private

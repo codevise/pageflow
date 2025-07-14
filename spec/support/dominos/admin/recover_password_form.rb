@@ -4,7 +4,7 @@ module Dom
       selector '#login'
 
       def submit_with(options)
-        fill_in 'user_email', :with => options[:email]
+        fill_in 'user_email', with: options[:email]
         find('[name="commit"]').click
       end
     end

@@ -65,7 +65,7 @@ module Pageflow
     context 'with grouped_by_accounts option' do
       it 'renders list of folders grouped by accounts' do
         account = build_stubbed(:account)
-        folder = build_stubbed(:folder, name: 'title', account: account)
+        folder = build_stubbed(:folder, name: 'title', account:)
         allow(helper).to receive(:authorized?) { true }
         render([folder], grouped_by_accounts: true)
 
@@ -74,7 +74,7 @@ module Pageflow
 
       it 'renders account headers' do
         account = build_stubbed(:account, name: 'Codevise')
-        folder = build_stubbed(:folder, name: 'title', account: account)
+        folder = build_stubbed(:folder, name: 'title', account:)
         allow(helper).to receive(:authorized?) { true }
         render([folder], grouped_by_accounts: true)
 

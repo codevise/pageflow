@@ -20,9 +20,9 @@ module Pageflow
 
     def file_double(id:, output_presences: [])
       double('File',
-             id: id,
+             id:,
              class: double(name: 'File'),
-             output_presences: output_presences)
+             output_presences:)
     end
 
     describe '#original_filename' do

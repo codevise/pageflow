@@ -6,11 +6,7 @@ module Pageflow
     end
 
     def manage?
-      if @file.parent_file
-        can_edit_any_entry_using_file?(@file.parent_file)
-      else
-        can_edit_any_entry_using_file?(@file)
-      end
+      can_edit_any_entry_using_file?(@file.parent_file || @file)
     end
 
     def use?

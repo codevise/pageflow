@@ -2,14 +2,15 @@ module Pageflow
   module Admin
     class RevisionsTab < ViewComponent
       def build(entry)
-        embedded_index_table entry.revisions, :blank_slate_text => I18n.t('pageflow.admin.entries.no_revisions') do
+        embedded_index_table entry.revisions,
+                             blank_slate_text: I18n.t('pageflow.admin.entries.no_revisions') do
           scope(:publications)
           scope(:publications_and_user_snapshots)
           scope(:frozen)
 
-          table_for_collection :class => 'revisions', :i18n => Pageflow::Revision do
+          table_for_collection class: 'revisions', i18n: Pageflow::Revision do
             row_attributes do |revision|
-              {:class => revision_css_class(revision)}
+              {class: revision_css_class(revision)}
             end
 
             column :frozen_at
@@ -56,7 +57,8 @@ module Pageflow
               end
             end
             column do |revision|
-              text_node(link_to(t('pageflow.admin.entries.show'), pageflow.revision_path(revision), :class => 'show'))
+              text_node(link_to(t('pageflow.admin.entries.show'), pageflow.revision_path(revision),
+                                class: 'show'))
               if authorized?(:restore, entry)
                 text_node(link_to(t('pageflow.admin.entries.restore'),
                                   restore_admin_revision_path(revision, params.permit(:tab)),
@@ -72,13 +74,14 @@ module Pageflow
           end
         end
 
-        para(I18n.t('pageflow.admin.entries.published_revision_legend'), :class => 'legend published')
+        para(I18n.t('pageflow.admin.entries.published_revision_legend'),
+             class: 'legend published')
 
-        if authorized?(:snapshot, entry)
-          text_node(button_to(t('pageflow.admin.entries.snapshot'),
-                              snapshot_admin_entry_path(entry, params.permit(:tab)),
-                              method: :post))
-        end
+        return unless authorized?(:snapshot, entry)
+
+        text_node(button_to(t('pageflow.admin.entries.snapshot'),
+                            snapshot_admin_entry_path(entry, params.permit(:tab)),
+                            method: :post))
       end
     end
   end

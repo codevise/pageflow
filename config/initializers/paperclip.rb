@@ -14,6 +14,7 @@ end
 Paperclip.interpolates(:attachments_path_name) do |attachment, style|
   record = attachment.instance
   return record.attachments_path_name if record.respond_to?(:attachments_path_name)
+
   self.attachment(attachment, style)
 end
 

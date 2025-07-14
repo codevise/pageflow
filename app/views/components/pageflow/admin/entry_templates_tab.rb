@@ -7,7 +7,7 @@ module Pageflow
         table_for(table_subjects, i18n: Pageflow::EntryTemplate) do
           column do |entry_template|
             if entry_template.id
-              render 'admin/accounts/entry_template_details', entry_template: entry_template
+              render('admin/accounts/entry_template_details', entry_template:)
             else
               h5(entry_template.translated_entry_type_name)
             end

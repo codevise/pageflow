@@ -3,7 +3,7 @@ Pageflow.config.file_types.each do |file_type|
     json.cache!(file) do
       json.partial!(object: file,
                     partial: 'pageflow/editor/files/file',
-                    locals: {file_type: file_type},
+                    locals: {file_type:},
                     as: :file)
     end
   end

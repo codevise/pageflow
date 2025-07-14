@@ -3,7 +3,7 @@ require 'rails/generators'
 module Pageflow
   module Generators
     class RoutesGenerator < Rails::Generators::Base
-      desc "Injects the pageflow mount call into config/routes.rb"
+      desc 'Injects the pageflow mount call into config/routes.rb'
 
       def add_route
         inject_into_file 'config/routes.rb', after: "  ActiveAdmin.routes(self)\n" do
@@ -19,7 +19,8 @@ module Pageflow
       end
 
       def require_resque_server
-        prepend_to_file 'config/routes.rb', "require 'resque/server'\nrequire 'resque/scheduler/server'\n\n"
+        prepend_to_file 'config/routes.rb',
+                        "require 'resque/server'\nrequire 'resque/scheduler/server'\n\n"
       end
     end
   end

@@ -119,23 +119,19 @@ module Pageflow
     collection_action 'me', title: I18n.t('pageflow.admin.users.account'), method: [:get, :patch] do
       @user = User.find(current_user.id)
 
-      if request.patch?
-        if @user.update_with_password(user_profile_params)
-          Pageflow.config.hooks.invoke(:user_changed, @user)
+      if request.patch? && @user.update_with_password(user_profile_params)
+        Pageflow.config.hooks.invoke(:user_changed, @user)
 
-          bypass_sign_in @user, scope: :user
-          redirect_to admin_root_path, notice: I18n.t('pageflow.admin.users.me.updated')
-        end
+        bypass_sign_in @user, scope: :user
+        redirect_to admin_root_path, notice: I18n.t('pageflow.admin.users.me.updated')
       end
     end
 
     collection_action 'delete_me',
                       title: I18n.t('pageflow.admin.users.account'), method: [:get, :delete] do
-      if request.delete?
-        if authorized?(:delete_own_user, current_user) &&
-           current_user.destroy_with_password(params.require(:user)[:current_password])
-          redirect_to admin_root_path, notice: I18n.t('pageflow.admin.users.me.updated')
-        end
+      if request.delete? && (authorized?(:delete_own_user, current_user) &&
+           current_user.destroy_with_password(params.require(:user)[:current_password]))
+        redirect_to admin_root_path, notice: I18n.t('pageflow.admin.users.me.updated')
       end
     end
 
@@ -143,21 +139,24 @@ module Pageflow
       user = InvitedUser.find(params[:id])
       authorize!(:read, user)
       user.send_invitation!
-      redirect_back fallback_location: admin_user_path(user), notice: I18n.t('pageflow.admin.users.resent_invitation')
+      redirect_back fallback_location: admin_user_path(user),
+                    notice: I18n.t('pageflow.admin.users.resent_invitation')
     end
 
     member_action :suspend, method: :post do
       user = User.find(params[:id])
       authorize!(:suspend, user)
       user.suspend!
-      redirect_back fallback_location: admin_user_path(user), notice: I18n.t('pageflow.admin.users.suspended')
+      redirect_back fallback_location: admin_user_path(user),
+                    notice: I18n.t('pageflow.admin.users.suspended')
     end
 
     member_action :unsuspend, method: :post do
       user = User.find(params[:id])
       authorize!(:suspend, user)
       user.unsuspend!
-      redirect_back fallback_location: admin_user_path(user), notice: I18n.t('pageflow.admin.users.unsuspended')
+      redirect_back fallback_location: admin_user_path(user),
+                    notice: I18n.t('pageflow.admin.users.unsuspended')
     end
 
     controller do

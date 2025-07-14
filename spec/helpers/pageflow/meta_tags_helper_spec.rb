@@ -12,7 +12,7 @@ module Pageflow
     describe 'keywords' do
       it 'has default value from configuration' do
         expect(html).to have_css(
-          %{meta[content="pageflow, multimedia, reportage"][name="keywords"]},
+          %(meta[content="pageflow, multimedia, reportage"][name="keywords"]),
           visible: false,
           count: 1
         )
@@ -22,7 +22,7 @@ module Pageflow
         pageflow_configure { |config| config.default_keywords_meta_tag = 'story, environment' }
 
         expect(html).to have_css(
-          %{meta[content="story, environment"][name="keywords"]},
+          %(meta[content="story, environment"][name="keywords"]),
           visible: false,
           count: 1
         )
@@ -32,7 +32,7 @@ module Pageflow
         entry.published_revision.update! keywords: 'longform, journalism'
 
         expect(html).to have_css(
-          %{meta[content="longform, journalism"][name="keywords"]},
+          %(meta[content="longform, journalism"][name="keywords"]),
           visible: false,
           count: 1
         )
@@ -42,7 +42,7 @@ module Pageflow
     describe 'author' do
       it 'has default value from configuration' do
         expect(html).to have_css(
-          %{meta[content="Pageflow"][name="author"]},
+          %(meta[content="Pageflow"][name="author"]),
           visible: false,
           count: 1
         )
@@ -52,7 +52,7 @@ module Pageflow
         pageflow_configure { |config| config.default_author_meta_tag = 'Prof. Dr. Sahra Isak' }
 
         expect(html).to have_css(
-          %{meta[content="Prof. Dr. Sahra Isak"][name="author"]},
+          %(meta[content="Prof. Dr. Sahra Isak"][name="author"]),
           visible: false,
           count: 1
         )
@@ -62,7 +62,7 @@ module Pageflow
         entry.published_revision.update! author: 'Henri zu Walter'
 
         expect(html).to have_css(
-          %{meta[content="Henri zu Walter"][name="author"]},
+          %(meta[content="Henri zu Walter"][name="author"]),
           visible: false,
           count: 1
         )
@@ -72,7 +72,7 @@ module Pageflow
     describe 'publisher' do
       it 'has default value from configuration' do
         expect(html).to have_css(
-          %{meta[content="Pageflow"][name="publisher"]},
+          %(meta[content="Pageflow"][name="publisher"]),
           visible: false,
           count: 1
         )
@@ -82,7 +82,7 @@ module Pageflow
         pageflow_configure { |config| config.default_publisher_meta_tag = 'Kempe-Heuck' }
 
         expect(html).to have_css(
-          %{meta[content="Kempe-Heuck"][name="publisher"]},
+          %(meta[content="Kempe-Heuck"][name="publisher"]),
           visible: false,
           count: 1
         )
@@ -92,7 +92,7 @@ module Pageflow
         entry.published_revision.update! publisher: 'Adams, Kähler und Tafelmeier'
 
         expect(html).to have_css(
-          %{meta[content="Adams, Kähler und Tafelmeier"][name="publisher"]},
+          %(meta[content="Adams, Kähler und Tafelmeier"][name="publisher"]),
           visible: false,
           count: 1
         )
@@ -106,7 +106,7 @@ module Pageflow
         html = helper.meta_tags_for_entry(published_entry)
 
         expect(html)
-          .not_to have_css(%{meta[name="robots"]}, visible: false)
+          .not_to have_css(%(meta[name="robots"]), visible: false)
       end
 
       it 'sets robots tag for entry published with noindex' do
@@ -116,7 +116,7 @@ module Pageflow
         html = helper.meta_tags_for_entry(published_entry)
 
         expect(html)
-          .to have_css(%{meta[content="noindex"][name="robots"]},
+          .to have_css(%(meta[content="noindex"][name="robots"]),
                        visible: false)
       end
     end

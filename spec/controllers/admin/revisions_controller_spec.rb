@@ -6,20 +6,20 @@ describe Admin::RevisionsController do
       user = create(:user)
       create(:account, with_editor: user)
       entry = create(:entry)
-      earlier_revision = create(:revision, :frozen, entry: entry)
+      earlier_revision = create(:revision, :frozen, entry:)
 
       sign_in(user, scope: :user)
 
-      expect do
+      expect {
         post(:restore, params: {id: earlier_revision.id})
-      end.not_to change { entry.revisions.count }
+      }.not_to(change { entry.revisions.count })
     end
 
     it 'allows account editor to restore revisions for own account' do
       user = create(:user)
       account = create(:account, with_editor: user)
-      entry = create(:entry, account: account)
-      earlier_revision = create(:revision, :frozen, entry: entry, title: 'the way it used to be')
+      entry = create(:entry, account:)
+      earlier_revision = create(:revision, :frozen, entry:, title: 'the way it used to be')
 
       sign_in(user, scope: :user)
       post(:restore, params: {id: earlier_revision.id})
@@ -29,7 +29,7 @@ describe Admin::RevisionsController do
 
     it 'allows admin to restore revisions for other accounts' do
       entry = create(:entry)
-      earlier_revision = create(:revision, :frozen, entry: entry, title: 'the way it used to be')
+      earlier_revision = create(:revision, :frozen, entry:, title: 'the way it used to be')
 
       sign_in(create(:user, :admin), scope: :user)
       post(:restore, params: {id: earlier_revision.id})
@@ -40,7 +40,7 @@ describe Admin::RevisionsController do
     it 'allows editor to restore revisions for their entries' do
       user = create(:user)
       entry = create(:entry, with_editor: user)
-      earlier_revision = create(:revision, :frozen, entry: entry, title: 'the way it used to be')
+      earlier_revision = create(:revision, :frozen, entry:, title: 'the way it used to be')
 
       sign_in(user, scope: :user)
       post(:restore, params: {id: earlier_revision.id})
@@ -51,28 +51,28 @@ describe Admin::RevisionsController do
     it 'does not allow user to restore revisions for entries they are not editor of' do
       user = create(:user)
       entry = create(:entry, with_previewer: user)
-      earlier_revision = create(:revision, :frozen, entry: entry)
+      earlier_revision = create(:revision, :frozen, entry:)
 
       sign_in(user, scope: :user)
       post(:restore, params: {id: earlier_revision.id})
 
-      expect do
+      expect {
         post(:restore, params: {id: earlier_revision.id})
-      end.not_to change { entry.revisions.count }
+      }.not_to(change { entry.revisions.count })
     end
 
     it 'needs to be able to acquire an edit lock' do
       user = create(:user)
       entry = create(:entry, with_editor: user)
-      earlier_revision = create(:revision, :frozen, entry: entry)
+      earlier_revision = create(:revision, :frozen, entry:)
 
       acquire_edit_lock(create(:user), entry)
       sign_in(user, scope: :user)
       request.env['HTTP_REFERER'] = admin_entry_path(entry)
 
-      expect do
+      expect {
         post(:restore, params: {id: earlier_revision.id})
-      end.not_to change { entry.revisions.count }
+      }.not_to(change { entry.revisions.count })
     end
   end
 end

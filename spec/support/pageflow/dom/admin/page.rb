@@ -23,17 +23,17 @@ module Pageflow
         def self.sign_in_as(role, options = {})
           email = "#{role}@example.com"
           password = '!Pass123'
-          user = FactoryBot.create(:user, options.reverse_merge(email: email, password: password))
+          user = FactoryBot.create(:user, options.reverse_merge(email:, password:))
 
           if role.to_sym == :admin
             user.admin = true
             user.save
           else
-            FactoryBot.create(:membership, user: user, role: role, entity: options[:on])
+            FactoryBot.create(:membership, user:, role:, entity: options[:on])
           end
 
           visit '/admin/login'
-          SignInForm.find!.submit_with(email: email, password: password)
+          SignInForm.find!.submit_with(email:, password:)
 
           unless page.has_content?(I18n.t('devise.sessions.signed_in'))
             raise 'Expected to find sign in flash message.'

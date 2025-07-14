@@ -6,8 +6,8 @@ module Pageflow
       @template = template
     end
 
-    def method_missing(name, *args)
-      template.tag(:span, :data => {:property => name})
+    def method_missing(name, *_args)
+      template.tag(:span, data: {property: name})
     end
   end
 end

@@ -5,7 +5,7 @@ module Pageflow
     describe '#help_entry_sections' do
       it 'renders sections for registered help entries' do
         config = Configuration.new
-        config.help_entries.register('some');
+        config.help_entries.register('some')
 
         html = help_entry_sections(config)
 
@@ -14,8 +14,8 @@ module Pageflow
 
       it 'renders nested sections' do
         config = Configuration.new
-        config.help_entries.register('parent');
-        config.help_entries.register('child', parent: 'parent');
+        config.help_entries.register('parent')
+        config.help_entries.register('child', parent: 'parent')
 
         html = help_entry_sections(config)
 
@@ -26,7 +26,7 @@ module Pageflow
     describe '#help_entries_menu' do
       it 'renders items for registered help entries' do
         config = Configuration.new
-        config.help_entries.register('some');
+        config.help_entries.register('some')
 
         html = help_entries_menu(config)
 
@@ -35,8 +35,8 @@ module Pageflow
 
       it 'renders expandable nested items' do
         config = Configuration.new
-        config.help_entries.register('parent');
-        config.help_entries.register('child', parent: 'parent');
+        config.help_entries.register('parent')
+        config.help_entries.register('child', parent: 'parent')
 
         html = help_entries_menu(config)
 

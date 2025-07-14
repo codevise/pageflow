@@ -15,17 +15,17 @@ module Pageflow
     validates :user_id, uniqueness: {scope: [:entity_type, :entity_id]}
     validate :account_membership_exists, if: :on_entry?
     validates :role,
-              inclusion: {in: %w(previewer editor publisher manager)},
+              inclusion: {in: %w[previewer editor publisher manager]},
               if: :on_entry?
     validates :role,
-              inclusion: {in: %w(member previewer editor publisher manager)},
+              inclusion: {in: %w[member previewer editor publisher manager]},
               if: :on_account?
 
     scope :on_entries, -> { where(entity_type: 'Pageflow::Entry') }
     scope :on_accounts, -> { where(entity_type: 'Pageflow::Account') }
     scope :as_manager, -> { where(role: :manager) }
-    scope :as_publisher_or_above, -> { where(role: %w(publisher manager)) }
-    scope :as_previewer_or_above, -> { where(role: %w(previewer editor publisher manager)) }
+    scope :as_publisher_or_above, -> { where(role: %w[publisher manager]) }
+    scope :as_previewer_or_above, -> { where(role: %w[previewer editor publisher manager]) }
 
     after_create do
       entity.increment!(:users_count)

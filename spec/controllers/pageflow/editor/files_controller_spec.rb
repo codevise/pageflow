@@ -10,7 +10,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_previewer: user)
         file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
 
         sign_in(user, scope: :user)
         get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
@@ -21,9 +21,9 @@ module Pageflow
       it 'returns list of files of account' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
 
         sign_in(user, scope: :user)
         get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
@@ -35,7 +35,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry)
         file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
 
         sign_in(user, scope: :user)
         get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
@@ -46,9 +46,9 @@ module Pageflow
       it 'omits direct upload config for uploaded files' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
 
         sign_in(user, scope: :user)
         get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
@@ -427,7 +427,7 @@ module Pageflow
       it 'does not allow to create file with associated parent file of non-permitted type' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
-        parent_file = create(:image_file, entry: entry)
+        parent_file = create(:image_file, entry:)
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)

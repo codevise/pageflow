@@ -32,7 +32,7 @@ module Pageflow
     rescue_from CanCan::AccessDenied do |exception|
       debug_log_with_backtrace(exception)
       respond_to do |format|
-        format.html { redirect_to main_app.admin_root_path, :alert => t('pageflow.unauthorized') }
+        format.html { redirect_to main_app.admin_root_path, alert: t('pageflow.unauthorized') }
         format.any(:json, :css) { head :forbidden }
       end
     end
@@ -40,7 +40,9 @@ module Pageflow
     rescue_from StateMachines::InvalidTransition do |exception|
       debug_log_with_backtrace(exception)
       respond_to do |format|
-        format.html { redirect_to main_app.admin_root_path, :alert => t('pageflow.invalid_transition') }
+        format.html do
+          redirect_to main_app.admin_root_path, alert: t('pageflow.invalid_transition')
+        end
         format.json { head :bad_request }
       end
     end

@@ -207,7 +207,8 @@ module Pageflow
 
         html = helper.video_file_script_tag(video_file.perma_id)
 
-        expect(html).to have_selector('script[data-video-width="100"][data-video-height="50"]', visible: false)
+        expect(html).to have_selector('script[data-video-width="100"][data-video-height="50"]',
+                                      visible: false)
       end
 
       it 'passes options to video tag helper' do

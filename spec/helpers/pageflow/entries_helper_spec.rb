@@ -14,25 +14,25 @@ module Pageflow
 
       it 'includes the site title when present' do
         site = build(:site, title: 'Example Blog', cname: 'www.example.com')
-        entry = PublishedEntry.new(build(:entry, title: 'test', site: site), build(:revision))
+        entry = PublishedEntry.new(build(:entry, title: 'test', site:), build(:revision))
         expect(helper.pretty_entry_title(entry)).to eq('test - Example Blog')
       end
 
       it 'includes the cname domain when present' do
         site = build(:site, cname: 'www.example.com')
-        entry = PublishedEntry.new(build(:entry, title: 'test', site: site), build(:revision))
+        entry = PublishedEntry.new(build(:entry, title: 'test', site:), build(:revision))
         expect(helper.pretty_entry_title(entry)).to eq('test - example.com')
       end
 
       it 'supports suppressing cname suffix via site title is single space character' do
         site = build(:site, title: ' ', cname: 'www.example.com')
-        entry = PublishedEntry.new(build(:entry, title: 'test', site: site), build(:revision))
+        entry = PublishedEntry.new(build(:entry, title: 'test', site:), build(:revision))
         expect(helper.pretty_entry_title(entry)).to eq('test')
       end
 
       it 'does not include empty cname domain' do
         site = build(:site, cname: '')
-        entry = PublishedEntry.new(build(:entry, title: 'test', site: site), build(:revision))
+        entry = PublishedEntry.new(build(:entry, title: 'test', site:), build(:revision))
         expect(helper.pretty_entry_title(entry)).to eq('test')
       end
     end
@@ -131,7 +131,7 @@ module Pageflow
                       canonical_entry_url_prefix: 'https://example.com/:locale/blog/')
         entry = create(:entry,
                        title: 'test',
-                       site: site)
+                       site:)
         entry.draft.update(locale: 'fr')
 
         expect(helper.pretty_entry_url(entry)).to eq('https://example.com/fr/blog/test')
@@ -330,7 +330,7 @@ module Pageflow
         revision = create(:revision)
         image_file = create(:image_file, used_in: revision)
         account = create(:account, default_file_rights: 'My Account')
-        entry = PublishedEntry.new(create(:entry, account: account), revision)
+        entry = PublishedEntry.new(create(:entry, account:), revision)
 
         result = helper.entry_file_rights(entry)
 
@@ -446,7 +446,7 @@ module Pageflow
     describe '#entry_global_links' do
       it 'does not output links by default' do
         site = create(:site)
-        entry = PublishedEntry.new(create(:entry, site: site))
+        entry = PublishedEntry.new(create(:entry, site:))
 
         result = helper.entry_global_links(entry)
 
@@ -455,9 +455,9 @@ module Pageflow
 
       it 'includes imprint link if configured' do
         site = create(:site,
-                         imprint_link_label: 'Imprint',
-                         imprint_link_url: 'https://example.com/legal')
-        entry = PublishedEntry.new(create(:entry, site: site))
+                      imprint_link_label: 'Imprint',
+                      imprint_link_url: 'https://example.com/legal')
+        entry = PublishedEntry.new(create(:entry, site:))
 
         result = helper.entry_global_links(entry)
 
@@ -467,9 +467,9 @@ module Pageflow
 
       it 'includes copyright link if configured' do
         site = create(:site,
-                         copyright_link_label: 'Copyright',
-                         copyright_link_url: 'https://example.com/copyright')
-        entry = PublishedEntry.new(create(:entry, site: site))
+                      copyright_link_label: 'Copyright',
+                      copyright_link_url: 'https://example.com/copyright')
+        entry = PublishedEntry.new(create(:entry, site:))
 
         result = helper.entry_global_links(entry)
 

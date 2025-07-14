@@ -11,11 +11,10 @@ module Pageflow
     # @return [Configuration]
     def config(options = {})
       unless @config
-        if options[:ignore_not_configured]
-          return Configuration.new
-        else
-          raise('Pageflow has not been configured yet')
-        end
+        return Configuration.new if options[:ignore_not_configured]
+
+        raise('Pageflow has not been configured yet')
+
       end
       @config
     end

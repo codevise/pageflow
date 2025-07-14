@@ -8,7 +8,7 @@ module Pageflow
         if page_type_or_page.is_a?(Page)
           [page_type_or_page, page_type_or_page.page_type]
         else
-          [FactoryBot.create(:page, template: page_type_or_page.name, configuration: configuration),
+          [FactoryBot.create(:page, template: page_type_or_page.name, configuration:),
            page_type_or_page]
         end
 
@@ -29,7 +29,7 @@ module Pageflow
 
       assign(:entry, entry)
 
-      helper.render_page_template(page, entry: entry)
+      helper.render_page_template(page, entry:)
     end
   end
 end

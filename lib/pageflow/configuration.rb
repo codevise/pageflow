@@ -407,8 +407,7 @@ module Pageflow
     # If you set these to <tt>nil</tt> or <tt>""</tt> the meta tag won't be included.
     # @since 0.10
     attr_accessor :default_keywords_meta_tag
-    attr_accessor :default_author_meta_tag
-    attr_accessor :default_publisher_meta_tag
+    attr_accessor :default_author_meta_tag, :default_publisher_meta_tag
 
     # Share provider defaults.
     #
@@ -518,7 +517,7 @@ module Pageflow
       @css_rendered_thumbnail_styles = Defaults::CSS_RENDERED_THUMBNAIL_STYLES.dup
 
       @site_request_scope = CnameSiteRequestScope.new
-      @public_entry_request_scope = lambda { |entries, request| entries }
+      @public_entry_request_scope = ->(entries, _request) { entries }
       @public_entry_redirect = ->(_entry, _request) { nil }
       @additional_public_entry_headers = AdditionalHeaders.new
       @entry_embed_url_options = {protocol: 'https'}
@@ -537,7 +536,8 @@ module Pageflow
 
       @available_locales = [:en, :de]
       @available_public_locales = PublicI18n.available_locales
-      @available_share_providers = [:email, :facebook, :linked_in, :bluesky, :threads, :twitter, :telegram, :whats_app]
+      @available_share_providers = [:email, :facebook, :linked_in, :bluesky, :threads, :twitter,
+                                    :telegram, :whats_app]
 
       @public_https_mode = :prevent
 
@@ -547,7 +547,7 @@ module Pageflow
 
       @default_share_providers = @available_share_providers
 
-      @authorize_user_deletion = lambda { |_user| true }
+      @authorize_user_deletion = ->(_user) { true }
 
       @available_file_licenses = [
         :cc_by_4, :cc_by_sa_4, :cc_by_nc_4, :cc_by_nc_sa_4, :cc_by_nd_4, :cc_by_nc_nd_4
@@ -584,18 +584,24 @@ module Pageflow
 
     # @deprecated Use `config.page_types.register` instead.
     def register_page_type(page_type)
-      ActiveSupport::Deprecation.warn('Pageflow::Configuration#register_page_type is deprecated. Use config.page_types.register instead.', caller)
+      ActiveSupport::Deprecation.warn(
+        'Pageflow::Configuration#register_page_type is deprecated. Use config.page_types.register instead.', caller
+      )
       page_types.register(page_type)
     end
 
     # @deprecated Pageflow now supports direct uploads to S3 via signed post requests.
     # Please change your forms accordingly.
     def paperclip_filesystem_root
-      ActiveSupport::Deprecation.warn('Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller)
+      ActiveSupport::Deprecation.warn(
+        'Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller
+      )
     end
 
     def paperclip_filesystem_root=(_val)
-      ActiveSupport::Deprecation.warn('Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller)
+      ActiveSupport::Deprecation.warn(
+        'Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller
+      )
     end
 
     # Scope configuration to entries of a certain entry type or access

@@ -9,7 +9,7 @@ module Pageflow
 
     def entry_json_seed(entry)
       sanitize_json(render_json_partial('pageflow/entry_json_seed/entry',
-                                        entry: entry)).html_safe
+                                        entry:)).html_safe
     end
 
     def entry_attributes_seed(entry)

@@ -30,9 +30,9 @@ module Pageflow
     def extract_entry(archive, creator, file_mappings)
       archive.extract_to_tempfile('entry.json') do |tempfile|
         EntrySerialization.import(JSON.parse(tempfile.read),
-                                  creator: creator,
+                                  creator:,
                                   account: creator.accounts.first,
-                                  file_mappings: file_mappings)
+                                  file_mappings:)
       end
     end
 

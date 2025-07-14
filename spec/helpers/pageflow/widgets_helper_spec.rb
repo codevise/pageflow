@@ -173,7 +173,6 @@ module Pageflow
 
       it 'passes template, entry and widget configuration to ' \
          'render_head_fragment_with_configuration method' do
-
         pageflow_configure do |config|
           config.widget_types.clear
           config.widget_types.register(widget_type)

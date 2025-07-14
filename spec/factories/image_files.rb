@@ -1,6 +1,6 @@
 module Pageflow
   FactoryBot.define do
-    factory :image_file, :class => ImageFile do
+    factory :image_file, class: ImageFile do
       entry
       uploader { create(:user) }
       attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.jpg')) }
@@ -18,7 +18,7 @@ module Pageflow
       after(:create) do |file, evaluator|
         if evaluator.used_in
           create(:file_usage,
-                 file: file,
+                 file:,
                  revision: evaluator.used_in,
                  configuration: evaluator.with_configuration)
         end

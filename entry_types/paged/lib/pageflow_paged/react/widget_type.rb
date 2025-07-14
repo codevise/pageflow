@@ -19,8 +19,8 @@ module PageflowPaged
 
       def render(template, entry)
         template.render(File.join('pageflow_paged', 'react', 'widget'),
-                        entry: entry,
-                        name: name,
+                        entry:,
+                        name:,
                         server_rendering: options[:server_rendering])
       end
     end

@@ -13,5 +13,5 @@ json.exhausted_html(render_html_partial('pageflow/editor/quotas/published_entrie
                                         quota: @entry_publication.quota,
                                         account: @entry_publication.quota.account))
 json.published_message_html(render_html_partial('published_message',
-                                                 entry: @entry_publication.entry,
-                                                 account: @entry_publication.quota.account))
+                                                entry: @entry_publication.entry,
+                                                account: @entry_publication.quota.account))

@@ -109,7 +109,7 @@ module Pageflow
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
-                 site: site,
+                 site:,
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
 
@@ -124,7 +124,7 @@ module Pageflow
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
-                 site: site,
+                 site:,
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
 
@@ -141,7 +141,7 @@ module Pageflow
           entry = create(
             :entry,
             :published,
-            site: site,
+            site:,
             title: 'root',
             type_name: 'test',
             permalink_attributes: {slug: '', allow_root_path: true}
@@ -160,7 +160,7 @@ module Pageflow
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
-                 site: site,
+                 site:,
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
 
@@ -175,7 +175,7 @@ module Pageflow
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
-                 site: site,
+                 site:,
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
 
@@ -192,7 +192,7 @@ module Pageflow
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
-                 site: site,
+                 site:,
                  type_name: 'test',
                  title: 'root',
                  permalink_attributes: {slug: '', allow_root_path: true})
@@ -208,7 +208,7 @@ module Pageflow
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
-                 site: site,
+                 site:,
                  type_name: 'test',
                  title: 'root',
                  permalink_attributes: {slug: '', allow_root_path: true})
@@ -224,7 +224,7 @@ module Pageflow
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
-                 site: site,
+                 site:,
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
 
@@ -239,7 +239,7 @@ module Pageflow
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
-                 site: site,
+                 site:,
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
 
@@ -256,7 +256,7 @@ module Pageflow
         create(
           :entry,
           :published_with_password,
-          site: site,
+          site:,
           type_name: 'test',
           password: 'abc123abc',
           permalink_attributes: {slug: '', allow_root_path: true}
@@ -272,7 +272,7 @@ module Pageflow
         create(
           :entry,
           :published_with_password,
-          site: site,
+          site:,
           type_name: 'test',
           password: 'abc123abc',
           permalink_attributes: {slug: '', allow_root_path: true}

@@ -9,7 +9,7 @@ shared_examples 'media encoding state machine' do |model|
     context 'with disabled confirm_encoding_jobs option' do
       before do
         stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
-          .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
+          .to_return(status: 200, body: File.read('spec/fixtures/image.jpg'))
       end
 
       it 'creates zencoder job for file' do
@@ -52,32 +52,32 @@ shared_examples 'media encoding state machine' do |model|
         Pageflow.config.hooks.on(:file_encoding, subscriber)
         file.publish!
 
-        expect(subscriber).to have_received(:call).with(file: file)
+        expect(subscriber).to have_received(:call).with(file:)
       end
 
       it 'invokes file_encoded hook' do
         file = create(model, :uploading)
-        subscriber = double('subscriber', :call => nil)
+        subscriber = double('subscriber', call: nil)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
         Pageflow.config.hooks.on(:file_encoded, subscriber)
         file.publish!
 
-        expect(subscriber).to have_received(:call).with({file: file})
+        expect(subscriber).to have_received(:call).with({file:})
       end
 
       context 'when encoding fails' do
         it 'invokes file_encoding_failed hook' do
           file = create(model, :uploading)
-          subscriber = double('subscriber', :call => nil)
+          subscriber = double('subscriber', call: nil)
 
           allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished_but_failed)
 
           Pageflow.config.hooks.on(:file_encoding_failed, subscriber)
           file.publish!
 
-          expect(subscriber).to have_received(:call).with({file: file})
+          expect(subscriber).to have_received(:call).with({file:})
         end
       end
     end
@@ -197,7 +197,7 @@ shared_examples 'media encoding state machine' do |model|
         Pageflow.config.hooks.on(:file_encoding, subscriber)
         file.publish!
 
-        expect(subscriber).to have_received(:call).with(file: file)
+        expect(subscriber).to have_received(:call).with(file:)
       end
     end
   end
@@ -205,7 +205,7 @@ shared_examples 'media encoding state machine' do |model|
   describe '#confirm_encoding event', perform_jobs: true do
     before do
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
-        .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
+        .to_return(status: 200, body: File.read('spec/fixtures/image.jpg'))
     end
 
     context 'when waiting for confirmation' do
@@ -221,14 +221,14 @@ shared_examples 'media encoding state machine' do |model|
 
       it 'invokes file_encoding_confirmed hook' do
         file = create(model, :waiting_for_confirmation)
-        subscriber = double('subscriber', :call => nil)
+        subscriber = double('subscriber', call: nil)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
         Pageflow.config.hooks.on(:file_encoding_confirmed, subscriber)
         file.confirm_encoding!
 
-        expect(subscriber).to have_received(:call).with({file: file})
+        expect(subscriber).to have_received(:call).with({file:})
       end
 
       it 'invokes file_encoding hook' do
@@ -241,7 +241,7 @@ shared_examples 'media encoding state machine' do |model|
         Pageflow.config.hooks.on(:file_encoding, subscriber)
         file.confirm_encoding!
 
-        expect(subscriber).to have_received(:call).with(file: file)
+        expect(subscriber).to have_received(:call).with(file:)
       end
     end
   end
@@ -249,7 +249,7 @@ shared_examples 'media encoding state machine' do |model|
   describe '#retry_encoding event', perform_jobs: true do
     before do
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
-        .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
+        .to_return(status: 200, body: File.read('spec/fixtures/image.jpg'))
     end
 
     context 'when encoding failed' do

@@ -1,6 +1,6 @@
 module Pageflow
   FactoryBot.define do
-    factory :audio_file, :class => AudioFile do
+    factory :audio_file, class: AudioFile do
       entry
       uploader { create(:user) }
 
@@ -19,7 +19,7 @@ module Pageflow
       after(:create) do |file, evaluator|
         if evaluator.used_in
           create(:file_usage,
-                 file: file,
+                 file:,
                  revision: evaluator.used_in,
                  configuration: evaluator.with_configuration)
         end

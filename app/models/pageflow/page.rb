@@ -8,9 +8,9 @@ module Pageflow
 
     attr_accessor :is_first
 
-    validates_inclusion_of :template, :in => ->(_) { Pageflow.config.page_types.names }
+    validates_inclusion_of :template, in: ->(_) { Pageflow.config.page_types.names }
 
-    scope :displayed_in_navigation, -> { where(:display_in_navigation => true) }
+    scope :displayed_in_navigation, -> { where(display_in_navigation: true) }
 
     def title
       configuration['title'].presence || configuration['additional_title']

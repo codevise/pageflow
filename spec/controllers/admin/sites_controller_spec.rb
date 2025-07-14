@@ -123,7 +123,7 @@ module Admin
           account = create(:account,
                            with_manager: user,
                            with_feature: :custom_site_attribute)
-          site = create(:site, account: account)
+          site = create(:site, account:)
 
           pageflow_configure do |config|
             config.features.register('custom_site_attribute') do |feature_config|
@@ -143,7 +143,7 @@ module Admin
           user = create(:user)
           account = create(:account,
                            with_manager: user)
-          site = create(:site, account: account)
+          site = create(:site, account:)
 
           pageflow_configure do |config|
             config.features.register('custom_site_attribute') do |feature_config|
@@ -292,7 +292,7 @@ module Admin
 
       it 'displays custom 404 entry select for existing sites' do
         site = create(:site)
-        entry = create(:entry, :published, site: site)
+        entry = create(:entry, :published, site:)
 
         sign_in(create(:user, :admin), scope: :user)
         get(:edit, params: {account_id: site.account, id: site})
@@ -302,14 +302,16 @@ module Admin
 
       it 'displays only published entries without password protection in custom 404 entry select' do
         site = create(:site)
-        published_entry = create(:entry, :published, site: site, title: 'Published Entry')
-        unpublished_entry = create(:entry, site: site, title: 'Unpublished Entry')
-        password_protected_entry = create(:entry, :published_with_password, site: site, password: 'secret', title: 'Protected Entry')
+        published_entry = create(:entry, :published, site:, title: 'Published Entry')
+        unpublished_entry = create(:entry, site:, title: 'Unpublished Entry')
+        password_protected_entry = create(:entry, :published_with_password, site:,
+                                                                            password: 'secret', title: 'Protected Entry')
 
         sign_in(create(:user, :admin), scope: :user)
         get(:edit, params: {account_id: site.account, id: site})
 
-        expect(response.body).to have_select('Custom 404 page', options: ['(Use default 404 page)', 'Published Entry'])
+        expect(response.body).to have_select('Custom 404 page',
+                                             options: ['(Use default 404 page)', 'Published Entry'])
       end
     end
 
@@ -351,7 +353,7 @@ module Admin
              params: {
                account_id: account,
                site: {
-                 name: 'second',
+                 name: 'second'
                }
              })
 
@@ -416,7 +418,7 @@ module Admin
 
       it 'sets custom_404_entry_id when provided' do
         site = create(:site)
-        entry = create(:entry, :published, site: site)
+        entry = create(:entry, :published, site:)
 
         sign_in(create(:user, :admin), scope: :user)
         patch(:update,
@@ -546,7 +548,7 @@ module Admin
 
       it 'updates custom_404_entry_id when provided' do
         site = create(:site)
-        entry = create(:entry, :published, site: site)
+        entry = create(:entry, :published, site:)
 
         sign_in(create(:user, :admin), scope: :user)
         patch(:update,
@@ -563,7 +565,7 @@ module Admin
 
       it 'clears custom_404_entry_id when set to blank' do
         site = create(:site)
-        entry = create(:entry, :published, site: site)
+        entry = create(:entry, :published, site:)
         site.update!(custom_404_entry: entry)
 
         sign_in(create(:user, :admin), scope: :user)

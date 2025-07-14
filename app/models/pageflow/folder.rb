@@ -3,6 +3,6 @@ module Pageflow
     belongs_to :account
     has_many :entries
 
-    validates :account, :name, :presence => true
+    validates :account, :name, presence: true
   end
 end

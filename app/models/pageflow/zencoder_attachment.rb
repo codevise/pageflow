@@ -58,7 +58,7 @@ module Pageflow
     private
 
     def ensure_default_protocol(url, url_options)
-      url =~ %r'^//' ? [url_options[:default_protocol], url].compact.join(':') : url
+      url =~ %r{^//} ? [url_options[:default_protocol], url].compact.join(':') : url
     end
 
     def url_pattern(url_options)
@@ -66,7 +66,7 @@ module Pageflow
     end
 
     def base_url(url_options)
-      case (url_options[:host] || options[:host])
+      case url_options[:host] || options[:host]
       when :hls
         options[:hls_url]
       when :hls_origin

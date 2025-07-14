@@ -29,9 +29,9 @@ module Pageflow
 
     # @api private
     def flat
-      map do |help_entry|
+      map { |help_entry|
         [help_entry, help_entry.children]
-      end.flatten
+      }.flatten
     end
 
     def each(&block)

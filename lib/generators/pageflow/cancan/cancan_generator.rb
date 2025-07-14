@@ -5,7 +5,7 @@ module Pageflow
     class CancanGenerator < Rails::Generators::Base
       desc 'Setup ability class.'
 
-      source_root File.expand_path('../templates', __FILE__)
+      source_root File.expand_path('templates', __dir__)
 
       def create_ability
         template 'ability.rb', 'app/models/ability.rb'

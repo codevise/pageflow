@@ -39,7 +39,7 @@ module Pageflow
         user = create(:user, :member, on: account)
         other_account = create(:account)
         create(:membership, user: current_user, entity: other_account, role: 'manager')
-        create(:membership, user: user, entity: other_account, role: 'member')
+        create(:membership, user:, entity: other_account, role: 'member')
 
         result = ManagedUserQuery::Scope.new(current_user, User).resolve
 

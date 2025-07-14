@@ -137,7 +137,7 @@ module Pageflow
     end
 
     # @api private
-    alias_method :short_name, :param_key
+    alias short_name param_key
 
     # @api private
     def type_name

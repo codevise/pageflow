@@ -222,7 +222,7 @@ module Pageflow
       it 'renders intro partial' do
         user = create(:user)
         account = create(:account, name: 'some-account', with_member: user)
-        entry = create(:entry, with_editor: user, account: account)
+        entry = create(:entry, with_editor: user, account:)
         video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
         stub_template('pageflow/editor/encoding_confirmations/_intro.html.erb' => <<-ERB)

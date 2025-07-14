@@ -12,6 +12,6 @@ module Pageflow
       end
     end
 
-    alias_method :check_public_https_mode, :redirect_according_to_public_https_mode
+    alias check_public_https_mode redirect_according_to_public_https_mode
   end
 end

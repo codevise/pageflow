@@ -5,35 +5,35 @@ module Pageflow
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_entry: -> (topic) { topic.entity },
+                    of_entry: ->(topic) { topic.entity },
                     to: :create,
                     topic: -> { create(:entry_membership) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_account: -> (topic) { topic.entity },
+                    of_account: ->(topic) { topic.entity },
                     to: :create,
                     topic: -> { create(:account_membership) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_entry: -> (topic) { topic.entity },
+                    of_entry: ->(topic) { topic.entity },
                     to: :edit_role,
                     topic: -> { create(:entry_membership) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_account: -> (topic) { topic.entity },
+                    of_account: ->(topic) { topic.entity },
                     to: :edit_role,
                     topic: -> { create(:account_membership) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_entry: -> (topic) { topic.entity },
+                    of_entry: ->(topic) { topic.entity },
                     to: :destroy,
                     topic: -> { create(:entry_membership) }
 
@@ -79,7 +79,7 @@ module Pageflow
       it 'includes memberships with correct user and correct entry' do
         user = create(:user)
         entry = create(:entry)
-        membership = create(:membership, role: :previewer, entity: entry, user: user)
+        membership = create(:membership, role: :previewer, entity: entry, user:)
         entry_previewer = create(:user, :previewer, on: entry)
 
         expect(MembershipPolicy::Scope
@@ -89,7 +89,7 @@ module Pageflow
       it 'includes memberships with correct user and correct account' do
         user = create(:user)
         account = create(:account)
-        membership = create(:membership, role: :previewer, entity: account, user: user)
+        membership = create(:membership, role: :previewer, entity: account, user:)
         account_manager = create(:user, :manager, on: account)
 
         expect(MembershipPolicy::Scope
@@ -99,7 +99,7 @@ module Pageflow
       it 'does not include memberships for entry non-member in spite of correct entry' do
         user = create(:user)
         entry = create(:entry)
-        membership = create(:membership, role: :previewer, entity: entry, user: user)
+        membership = create(:membership, role: :previewer, entity: entry, user:)
         entry_publisher = create(:user)
 
         expect(MembershipPolicy::Scope
@@ -111,8 +111,8 @@ module Pageflow
         user = create(:user)
         account = create(:account)
         account_publisher = create(:user, :publisher, on: account)
-        entry = create(:entry, account: account, with_manager: account_publisher)
-        membership = create(:membership, role: :member, entity: account, user: user)
+        entry = create(:entry, account:, with_manager: account_publisher)
+        membership = create(:membership, role: :member, entity: account, user:)
 
         expect(MembershipPolicy::Scope
                 .new(account_publisher, Membership).indexable).not_to include(membership)
@@ -135,7 +135,7 @@ module Pageflow
       it 'does not include memberships with wrong user and correct entry' do
         user = create(:user)
         entry = create(:entry)
-        membership = create(:membership, role: :previewer, entity: entry, user: user)
+        membership = create(:membership, role: :previewer, entity: entry, user:)
         create(:user, :manager, on: entry)
         entry_manager = create(:user, :manager, on: create(:entry))
 
@@ -155,7 +155,7 @@ module Pageflow
       it 'does not include memberships with account publisher on correct account' do
         user = create(:user)
         account = create(:account)
-        membership = create(:membership, role: :previewer, entity: account, user: user)
+        membership = create(:membership, role: :previewer, entity: account, user:)
         account_manager = create(:user, :publisher, on: account)
 
         expect(MembershipPolicy::Scope
@@ -165,8 +165,8 @@ module Pageflow
       it 'does not include memberships with entry manager on correct account' do
         user = create(:user)
         account = create(:account)
-        entry = create(:entry, account: account)
-        membership = create(:membership, role: :previewer, entity: account, user: user)
+        entry = create(:entry, account:)
+        membership = create(:membership, role: :previewer, entity: account, user:)
         account_manager = create(:user, :manager, on: entry)
 
         expect(MembershipPolicy::Scope
@@ -176,11 +176,11 @@ module Pageflow
       it 'includes own memberships' do
         user = create(:user)
         entry_membership = create(:membership,
-                                  user: user,
+                                  user:,
                                   role: :previewer,
                                   entity: create(:entry))
         account_membership = create(:membership,
-                                    user: user,
+                                    user:,
                                     role: :member,
                                     entity: create(:account))
 

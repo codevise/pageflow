@@ -12,8 +12,11 @@ require 'pageflow/test_entry_type'
 require 'pageflow/test_widget_type'
 require 'pageflow/used_file_test_helper'
 
-Dir[File.join(File.dirname(__FILE__), 'support/{config,dominos,helpers,matchers}/**/*.rb')].each { |file| require(file) }
-Dir[Pageflow::Engine.root.join("spec/**/*_examples.rb")].each { |file| require(file) }
+Dir[File.join(File.dirname(__FILE__),
+              'support/{config,dominos,helpers,matchers}/**/*.rb')].each do |file|
+  require(file)
+end
+Dir[Pageflow::Engine.root.join('spec/**/*_examples.rb')].each { |file| require(file) }
 
 RSpec.configure do |config|
   # Use DatabaseCleaner to handle transactions.
@@ -30,5 +33,5 @@ RSpec.configure do |config|
   config.example_status_persistence_file_path = './tmp/rspec_failures'
   config.file_fixture_path = './spec/fixtures'
 
-  config.order = "random"
+  config.order = 'random'
 end

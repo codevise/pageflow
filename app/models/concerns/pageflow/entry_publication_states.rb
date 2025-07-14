@@ -68,7 +68,7 @@ module Pageflow
         when 'not_published'
           not_published
         else
-          fail(ArgumentError, "Unknown publication state #{state}")
+          raise(ArgumentError, "Unknown publication state #{state}")
         end
       end
     end

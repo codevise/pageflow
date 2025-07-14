@@ -5,8 +5,8 @@ module PageflowScrolled
     describe '.all_for_revision' do
       it 'returns all sections in revision' do
         revision = create(:revision)
-        section1 = create(:section, revision: revision)
-        section2 = create(:section, revision: revision)
+        section1 = create(:section, revision:)
+        section2 = create(:section, revision:)
         other_revision = create(:revision)
         create(:section, revision: other_revision)
 

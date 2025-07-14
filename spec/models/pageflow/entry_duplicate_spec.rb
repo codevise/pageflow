@@ -76,7 +76,7 @@ module Pageflow
         )
         create(
           :entry,
-          account: account,
+          account:,
           permalink_attributes: {
             slug: 'copy-of-my-entry',
             directory: permalink_directory
@@ -84,7 +84,7 @@ module Pageflow
         )
         entry = create(
           :entry,
-          account: account,
+          account:,
           title: 'My entry',
           permalink_attributes: {
             slug: 'slug',

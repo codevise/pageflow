@@ -11,14 +11,14 @@ module Pageflow
         create(:entry,
                :published,
                title: 'Story One',
-               site: site,
+               site:,
                published_revision_attributes: {
                  published_at: 3.days.ago
                })
         create(:entry,
                :published,
                title: 'Story Two',
-               site: site,
+               site:,
                permalink_attributes: {
                  slug: 'custom-slug'
                },
@@ -55,9 +55,9 @@ module Pageflow
 
       it 'filters out unpublished, noindex or password protected entries' do
         site = create(:site, cname: 'pageflow.example.com')
-        create(:entry, site: site)
-        create(:entry, :published_with_password, site: site)
-        create(:entry, :published_with_noindex, site: site)
+        create(:entry, site:)
+        create(:entry, :published_with_password, site:)
+        create(:entry, :published_with_noindex, site:)
 
         request.env['HTTP_HOST'] = 'pageflow.example.com'
         get(:index, format: 'xml')
@@ -201,7 +201,7 @@ module Pageflow
 
       it 'responds with 404 for unknown site' do
         site = create(:site, cname: 'pageflow.example.com')
-        create(:entry, :published, site: site)
+        create(:entry, :published, site:)
 
         request.env['HTTP_HOST'] = 'unknown.example.com'
         get(:index, format: 'xml')
@@ -213,7 +213,7 @@ module Pageflow
         site = create(:site,
                       cname: 'pageflow.example.com',
                       sitemap_enabled: false)
-        create(:entry, :published, site: site)
+        create(:entry, :published, site:)
 
         request.env['HTTP_HOST'] = 'pageflow.example.com'
         get(:index, format: 'xml')

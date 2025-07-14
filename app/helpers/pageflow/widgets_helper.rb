@@ -21,13 +21,13 @@ module Pageflow
     end
 
     def present_widgets_css_class(entry)
-      entry.resolve_widgets.map do |widget|
+      entry.resolve_widgets.map { |widget|
         "widget_#{widget.widget_type.name}_present"
-      end.push('widgets_present').join(' ')
+      }.push('widgets_present').join(' ')
     end
 
     def widget_types_json_seeds(config)
-      config.widget_types.each_with_object({}) do |widget_type, result|
+      config.widget_types.each_with_object({}) { |widget_type, result|
         widget_type.roles.each do |role|
           result[role] ||= []
           result[role] << {
@@ -36,7 +36,7 @@ module Pageflow
             insertPoint: widget_type.insert_point
           }
         end
-      end.to_json.html_safe
+      }.to_json.html_safe
     end
 
     def widgets_json_seeds(entry)

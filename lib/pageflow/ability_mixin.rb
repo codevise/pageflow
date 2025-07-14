@@ -34,8 +34,8 @@ module Pageflow
       can :create, Membership, Membership.all do |membership|
         membership.entity.nil? ||
           membership.user.nil? ||
-          (!(membership.user.entries.include?(membership.entity) ||
-             membership.user.accounts.include?(membership.entity))) &&
+          !(membership.user.entries.include?(membership.entity) ||
+             membership.user.accounts.include?(membership.entity)) &&
             MembershipPolicy.new(user, membership).create?
       end
 
@@ -283,20 +283,20 @@ module Pageflow
         UserPolicy.new(user, user_to_delete).delete_own_user?
       end
 
-      if user.admin?
-        can [:create, :configure_folder_on], Account
-        can :create_any, :accounts
-        can :destroy, Account do |account|
-          account.users.empty? && account.entries.empty?
-        end
-        can :manage, [Storyline, Chapter, Page]
-        can :manage, [Entry, Revision]
-        can :manage, Pageflow.config.file_types.map(&:model)
-        can :manage, Folder
-        can :manage, Site
-        can :manage, EntryTemplate
-        can :manage, ::User
+      return unless user.admin?
+
+      can [:create, :configure_folder_on], Account
+      can :create_any, :accounts
+      can :destroy, Account do |account|
+        account.users.empty? && account.entries.empty?
       end
+      can :manage, [Storyline, Chapter, Page]
+      can :manage, [Entry, Revision]
+      can :manage, Pageflow.config.file_types.map(&:model)
+      can :manage, Folder
+      can :manage, Site
+      can :manage, EntryTemplate
+      can :manage, ::User
     end
   end
 end

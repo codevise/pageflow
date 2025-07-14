@@ -14,6 +14,6 @@ extensible_attributes_table_for(entry_template,
   row :default_keywords, class: 'default_keywords'
   row :default_share_providers, class: 'default_share_providers' do
     entry_template.default_share_providers
-           .select { |_k, v| v == true }.keys.map(&:camelize).join(', ')
+                  .select { |_k, v| v == true }.keys.map(&:camelize).join(', ')
   end
 end

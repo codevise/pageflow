@@ -14,8 +14,8 @@ module Pageflow
     def outputs
       [
         {
-          :label => 'stub',
-          :clip_length => 1
+          label: 'stub',
+          clip_length: 1
         }
       ]
     end

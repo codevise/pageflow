@@ -9,7 +9,7 @@ module Pageflow
     it 'renders table with sites of account' do
       account = create(:account,
                        default_site_attributes: {cname: 'my.example.com'})
-      create(:site, account: account, name: 'Second', cname: 'second.example.com')
+      create(:site, account:, name: 'Second', cname: 'second.example.com')
       create(:site, cname: 'other-acount.example.com')
 
       allow(helper).to receive(:authorized?).and_return(true)

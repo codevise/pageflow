@@ -18,6 +18,7 @@ module Pageflow
       unless ready?
         return Pageflow::PaperclipInterpolations::Support.pageflow_placeholder(attachment, *args)
       end
+
       attachment.url(*args)
     end
 

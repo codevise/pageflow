@@ -10,7 +10,7 @@ module Pageflow
       it 'renders alternate link tag based on entry locale' do
         site = create(:site, cname: 'pageflow.example.com')
         entry = create(:published_entry,
-                       site: site,
+                       site:,
                        revision_attributes: {
                          locale: 'de'
                        })
@@ -27,7 +27,7 @@ module Pageflow
       it 'uses custom feed url of site' do
         site = create(:site, custom_feed_url: 'https://example.com/custom.atom')
         entry = create(:published_entry,
-                       site: site,
+                       site:,
                        revision_attributes: {
                          locale: 'de'
                        })
@@ -44,7 +44,7 @@ module Pageflow
                       cname: 'pageflow.example.com',
                       custom_feed_url: '')
         entry = create(:published_entry,
-                       site: site,
+                       site:,
                        revision_attributes: {
                          locale: 'de'
                        })
@@ -59,7 +59,7 @@ module Pageflow
       it 'supports interpolating entry locale in custom feed url' do
         site = create(:site, custom_feed_url: 'https://example.com/:locale/custom.atom')
         entry = create(:published_entry,
-                       site: site,
+                       site:,
                        revision_attributes: {
                          locale: 'de'
                        })
@@ -76,7 +76,7 @@ module Pageflow
                       cname: 'pageflow.example.com',
                       feeds_enabled: false)
         entry = create(:published_entry,
-                       site: site,
+                       site:,
                        revision_attributes: {
                          locale: 'de'
                        })

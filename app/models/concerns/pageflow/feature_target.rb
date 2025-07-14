@@ -21,7 +21,7 @@ module Pageflow
 
     def feature_state(name)
       state = own_feature_state(name)
-      state == nil ? inherited_feature_state(name) : state
+      state.nil? ? inherited_feature_state(name) : state
     end
 
     def own_feature_state(name)
@@ -44,8 +44,8 @@ module Pageflow
       end
 
       self.features_configuration = features_configuration
-        .merge(boolean_states)
-        .reject { |_, value| value.nil? }
+                                    .merge(boolean_states)
+                                    .reject { |_, value| value.nil? }
     end
 
     def features_configuration

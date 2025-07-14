@@ -283,7 +283,7 @@ module Pageflow
       it 'yields config to entry type specific configure blocks, then after_configure blocks' do
         pageflow = PageflowModule.new
         entry_type = TestEntryType.new(name: 'skulled')
-        entry = double('entry', entry_type: entry_type, enabled_feature_names: [])
+        entry = double('entry', entry_type:, enabled_feature_names: [])
         calls = []
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
@@ -319,7 +319,7 @@ module Pageflow
           end
         end
 
-        entry = double('entry', entry_type: entry_type, enabled_feature_names: [])
+        entry = double('entry', entry_type:, enabled_feature_names: [])
         config_for_target = pageflow.config_for(entry)
 
         expect(config_for_target.phage_types.names).to include('Rainbow')
@@ -367,7 +367,7 @@ module Pageflow
           end
         end
         entry_type = TestEntryType.new(name: 'skulled', configuration: skulled_config)
-        entry = double('entry', entry_type: entry_type, enabled_feature_names: [])
+        entry = double('entry', entry_type:, enabled_feature_names: [])
         pageflow = PageflowModule.new
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
@@ -395,7 +395,7 @@ module Pageflow
           end
         end
         entry_type = TestEntryType.new(name: 'skulled', configuration: skulled_config)
-        entry = double('entry', entry_type: entry_type, enabled_feature_names: [])
+        entry = double('entry', entry_type:, enabled_feature_names: [])
         pageflow = PageflowModule.new
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
@@ -415,7 +415,7 @@ module Pageflow
       it "doesn't make available all config options inside for_entry_blocks" do
         entry_type = TestEntryType.new(name: 'skulled')
         pageflow = PageflowModule.new
-        entry = double('entry', entry_type: entry_type, enabled_feature_names: [])
+        entry = double('entry', entry_type:, enabled_feature_names: [])
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
           config.for_entry_type(entry_type) do |c|
@@ -429,7 +429,7 @@ module Pageflow
       it 'allows registering a file type for an entry type' do
         entry_type = TestEntryType.new(name: 'skulled')
         pageflow = PageflowModule.new
-        entry = double('entry', entry_type: entry_type, enabled_feature_names: [])
+        entry = double('entry', entry_type:, enabled_feature_names: [])
         file_type = FileType.new(model: 'Pageflow::ImageFile',
                                  collection_name: 'image_files')
         pageflow.configure do |config|
@@ -467,7 +467,7 @@ module Pageflow
       it 'allows registering a widget type for an entry type' do
         entry_type = TestEntryType.new(name: 'skulled')
         pageflow = PageflowModule.new
-        entry = double('entry', entry_type: entry_type, enabled_feature_names: [])
+        entry = double('entry', entry_type:, enabled_feature_names: [])
         widget_type = TestWidgetType.new(name: 'test_widget')
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
@@ -506,10 +506,10 @@ module Pageflow
         entry_type = TestEntryType.new(name: 'skulled')
         other_entry_type = TestEntryType.new(name: 'phaged')
         entry_with_feature = double('entry',
-                                    entry_type: entry_type,
+                                    entry_type:,
                                     enabled_feature_names: ['some-feature'])
         entry_without_feature = double('entry',
-                                       entry_type: entry_type,
+                                       entry_type:,
                                        enabled_feature_names: [])
         entry_with_feature_of_other_type = double('entry',
                                                   entry_type: other_entry_type,
@@ -539,10 +539,10 @@ module Pageflow
         widget_type = TestWidgetType.new(name: 'test_widget')
         entry_type = TestEntryType.new(name: 'skulled')
         entry_with_feature = double('entry',
-                                    entry_type: entry_type,
+                                    entry_type:,
                                     enabled_feature_names: ['some-feature'])
         entry_without_feature = double('entry',
-                                       entry_type: entry_type,
+                                       entry_type:,
                                        enabled_feature_names: [])
 
         pageflow.configure do |config|
@@ -570,10 +570,10 @@ module Pageflow
         entry_type = TestEntryType.new(name: 'skulled',
                                        configuration: skulled_config)
         entry_with_feature = double('entry',
-                                    entry_type: entry_type,
+                                    entry_type:,
                                     enabled_feature_names: ['some-feature'])
         entry_without_feature = double('entry',
-                                       entry_type: entry_type,
+                                       entry_type:,
                                        enabled_feature_names: [])
 
         pageflow.configure do |config|
@@ -600,10 +600,10 @@ module Pageflow
         entry_type = TestEntryType.new(name: 'skulled',
                                        configuration: skulled_config)
         entry_with_feature = double('entry',
-                                    entry_type: entry_type,
+                                    entry_type:,
                                     enabled_feature_names: ['some-feature'])
         entry_without_feature = double('entry',
-                                       entry_type: entry_type,
+                                       entry_type:,
                                        enabled_feature_names: [])
 
         pageflow.configure do |config|
@@ -623,7 +623,7 @@ module Pageflow
         pageflow = PageflowModule.new
         entry_type = TestEntryType.new(name: 'skulled')
         entry = double('entry',
-                       entry_type: entry_type,
+                       entry_type:,
                        enabled_feature_names: ['some-feature'])
         feature = Feature.new('some-feature', name_translation_key: 'something_else')
         pageflow.configure do |config|
@@ -719,7 +719,7 @@ module Pageflow
             c.plugin(plugin)
           end
         end
-        entry = double('entry', entry_type: entry_type, enabled_feature_names: [])
+        entry = double('entry', entry_type:, enabled_feature_names: [])
 
         help_entry_names = pageflow.config_for(entry).help_entries.map(&:name)
 

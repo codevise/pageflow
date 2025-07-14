@@ -2,8 +2,8 @@ module Pageflow
   module FoldersHelper
     def collection_for_folders(current_account, current_folder = nil)
       accounts = AccountPolicy::Scope.new(current_user, Pageflow::Account)
-                 .entry_creatable.includes(:folders).where('pageflow_folders.id IS NOT NULL')
-                 .order(:name, 'pageflow_folders.name')
+                                     .entry_creatable.includes(:folders).where('pageflow_folders.id IS NOT NULL')
+                                     .order(:name, 'pageflow_folders.name')
 
       option_groups_from_collection_for_select(accounts,
                                                :folders,
@@ -23,9 +23,9 @@ module Pageflow
         account_folders[0][:account_id] == current_account.id
       end
 
-      folders_array.map(&:to_a).map do |account_folders|
+      folders_array.map(&:to_a).map { |account_folders|
         account_folders.map(&:id)
-      end.flatten
+      }.flatten
     end
   end
 end

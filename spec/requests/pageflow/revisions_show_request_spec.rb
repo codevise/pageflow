@@ -28,7 +28,7 @@ module Pageflow
                        with_previewer: user,
                        type_name: 'test',
                        title: 'some-entry')
-        revision = create(:revision, entry: entry)
+        revision = create(:revision, entry:)
 
         sign_in(user, scope: :user)
         get(revision_url(revision))
@@ -40,7 +40,7 @@ module Pageflow
       it 'responds with success for previewers' do
         user = create(:user)
         entry = create(:entry, with_previewer: user, type_name: 'test')
-        revision = create(:revision, entry: entry)
+        revision = create(:revision, entry:)
 
         sign_in(user, scope: :user)
         get(revision_url(revision))
@@ -51,7 +51,7 @@ module Pageflow
       it 'responds with failure for less-than-previewers' do
         user = create(:user)
         entry = create(:entry, type_name: 'test')
-        revision = create(:revision, entry: entry)
+        revision = create(:revision, entry:)
 
         sign_in(user, scope: :user)
         get(revision_url(revision))
@@ -62,7 +62,7 @@ module Pageflow
       it 'requires the signed in user to be previewer of the parent entry' do
         user = create(:user)
         entry = create(:entry, type_name: 'test')
-        revision = create(:revision, entry: entry)
+        revision = create(:revision, entry:)
 
         sign_in(user, scope: :user)
         get(revision_url(revision))
@@ -72,7 +72,7 @@ module Pageflow
 
       it 'requires authentication' do
         entry = create(:entry, type_name: 'test')
-        revision = create(:revision, entry: entry)
+        revision = create(:revision, entry:)
 
         get(revision_url(revision))
 

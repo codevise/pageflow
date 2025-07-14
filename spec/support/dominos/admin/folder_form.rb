@@ -5,8 +5,11 @@ module Dom
 
       def submit_with(options)
         within(node) do
-          select(Pageflow::Account.find(options[:account_id]).name, :from => 'folder_account_id') if options[:account_id]
-          fill_in('folder_name', :with => options[:name]) if options[:name]
+          if options[:account_id]
+            select(Pageflow::Account.find(options[:account_id]).name,
+                   from: 'folder_account_id')
+          end
+          fill_in('folder_name', with: options[:name]) if options[:name]
           find('[name="commit"]').click
         end
       end

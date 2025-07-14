@@ -11,13 +11,15 @@ module Pageflow
         }
 
         render('pageflow/admin/users/quota_state',
-               account: account,
-               quota: quota,
-               data_attributes: data_attributes)
+               account:,
+               quota:,
+               data_attributes:)
       end
 
       def collection_for_user_roles
-        User.roles_accessible_by(current_ability).index_by { |role| t(role, :scope => 'pageflow.admin.users.roles') }
+        User.roles_accessible_by(current_ability).index_by do |role|
+          t(role, scope: 'pageflow.admin.users.roles')
+        end
       end
 
       def delete_own_user_section

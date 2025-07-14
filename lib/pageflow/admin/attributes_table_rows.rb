@@ -31,8 +31,8 @@ module Pageflow
       def register(resource_name, name, options = {}, &block)
         @rows[resource_name] ||= []
         @rows[resource_name] << {
-          name: name,
-          block: block,
+          name:,
+          block:,
           options: options.except(:before, :after),
           **options.slice(:before, :after)
         }

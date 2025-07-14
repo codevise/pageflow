@@ -23,7 +23,7 @@ module Pageflow
           site
             .entries
             .published_without_password_protection
-            .where(pageflow_revisions: {locale: locale})
+            .where(pageflow_revisions: {locale:})
             .order('first_published_at DESC')
         )
       end

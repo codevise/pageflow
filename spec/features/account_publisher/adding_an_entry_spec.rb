@@ -11,7 +11,7 @@ feature 'as account publisher, adding an entry' do
     expect(Dom::Admin::EntryInIndexTable.find_by_title('Test Entry')).not_to be_present
 
     Dom::Admin::EntriesPage.first.add_entry_link.click
-    Dom::Admin::EntryForm.first.submit_with(title: 'Test Entry', account: account)
+    Dom::Admin::EntryForm.first.submit_with(title: 'Test Entry', account:)
 
     visit(admin_entries_path)
     expect(Dom::Admin::EntryInIndexTable.find_by_title('Test Entry')).to be_present

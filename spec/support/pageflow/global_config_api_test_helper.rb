@@ -32,6 +32,7 @@ module Pageflow
     # helper available and RSpec hooks to apply configuration changes.
     def self.setup
       return if @setup
+
       @setup = true
 
       RSpec.configure do |config|

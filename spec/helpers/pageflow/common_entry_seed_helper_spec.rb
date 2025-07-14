@@ -29,7 +29,7 @@ module Pageflow
 
           pageflow_configure do |config|
             config.page_types.register(TestPageType.new(name: 'test_page_type',
-                                                        thumbnail_candidates: thumbnail_candidates))
+                                                        thumbnail_candidates:))
           end
 
           revision = create(:revision, :published)
@@ -92,7 +92,7 @@ module Pageflow
           url_template = 'files/:id_partition/video.mp4'
           file_type = FileType.new(model: 'Pageflow::VideoFile',
                                    collection_name: 'test_files',
-                                   url_templates: ->() { {original: url_template} })
+                                   url_templates: -> { {original: url_template} })
 
           pageflow_configure do |config|
             config.page_types.clear
@@ -140,8 +140,8 @@ module Pageflow
       describe '["site"]' do
         it 'contains privacy link url and label' do
           site = create(:site,
-                           privacy_link_url: 'https://example.com/privacy')
-          entry = PublishedEntry.new(create(:entry, :published, site: site))
+                        privacy_link_url: 'https://example.com/privacy')
+          entry = PublishedEntry.new(create(:entry, :published, site:))
 
           result = helper.render_json { |json| helper.common_entry_seed(json, entry) }
 

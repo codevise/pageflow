@@ -4,7 +4,7 @@ feature 'as account previewer, filtering entries by folder' do
   scenario 'listing entries in a folder' do
     folder = create(:folder)
     user = Dom::Admin::Page.sign_in_as(:previewer, on: folder.account)
-    entry_in_folder = create(:entry, account: folder.account, folder: folder, with_previewer: user)
+    entry_in_folder = create(:entry, account: folder.account, folder:, with_previewer: user)
     entry_not_in_folder = create(:entry, account: folder.account, with_previewer: user)
 
     visit(admin_entries_path)

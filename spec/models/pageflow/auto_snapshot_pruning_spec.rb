@@ -87,7 +87,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry)
         chapter = create(:chapter, storyline: entry.draft.storylines.first)
-        create(:page, chapter: chapter)
+        create(:page, chapter:)
 
         Timecop.freeze(2.month.ago) do
           3.times { entry.snapshot(creator: user) }
@@ -95,7 +95,7 @@ module Pageflow
 
         expect {
           AutoSnapshotPruning.prune(entry, keep_count: 2, created_before: 1.month.ago)
-        }.to change { Pageflow::Page.count }
+        }.to(change { Pageflow::Page.count })
       end
 
       it 'destroys oldest auto snapshots first' do

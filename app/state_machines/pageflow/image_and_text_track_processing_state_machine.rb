@@ -17,8 +17,8 @@ module Pageflow
 
         job ProcessImageOrTextTrackJob do
           on_enter 'processing'
-          result :ok => 'processed'
-          result :error => 'processing_failed'
+          result ok: 'processed'
+          result error: 'processing_failed'
         end
       end
     end

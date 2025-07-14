@@ -5,7 +5,7 @@ module Pageflow
       include RenderJsonHelper
 
       def editor_config_seeds(entry)
-        render_json_partial('pageflow/editor/config/seeds', entry: entry)
+        render_json_partial('pageflow/editor/config/seeds', entry:)
       end
     end
   end

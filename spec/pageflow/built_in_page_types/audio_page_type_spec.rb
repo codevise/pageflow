@@ -25,7 +25,7 @@ module Pageflow
 
       page = create(:page,
                     template: 'audio',
-                    revision: revision,
+                    revision:,
                     configuration: {audio_file_id: file_usage.perma_id})
 
       html = render_page(page)

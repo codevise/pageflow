@@ -68,14 +68,14 @@ module Pageflow
       def entry_account_membership_has_at_least_role(role)
         membership_has_at_least_role(
           table_alias: table_alias_for('entry_account'),
-          role: role
+          role:
         )
       end
 
       def entry_membership_has_at_least_role(role)
         membership_has_at_least_role(
           table_alias: table_alias_for('entry'),
-          role: role
+          role:
         )
       end
 

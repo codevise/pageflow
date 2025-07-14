@@ -30,7 +30,7 @@ module Pageflow
 
       page = create(:page,
                     template: 'video',
-                    revision: revision,
+                    revision:,
                     configuration: {video_file_id: file_usage.perma_id})
 
       html = render_page(page)

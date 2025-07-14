@@ -238,7 +238,7 @@ module PageflowScrolled
           entry = create(:published_entry, type_name: 'scrolled')
           chapter = create(:scrolled_chapter, revision: entry.revision)
           section = create(:section,
-                           chapter: chapter,
+                           chapter:,
                            position: 4,
                            configuration: {transition: 'scroll'})
 
@@ -480,7 +480,8 @@ module PageflowScrolled
 
           chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
           section11 = create(:section, chapter: chapter1, position: 1)
-          section12 = create(:section, chapter: chapter1, position: 2, configuration: {hidden: true})
+          section12 = create(:section, chapter: chapter1, position: 2,
+                                       configuration: {hidden: true})
 
           result = render(helper, entry, include_hidden_sections: true)
 
@@ -495,10 +496,10 @@ module PageflowScrolled
          'and configuration' do
           entry = create(:published_entry, type_name: 'scrolled')
           chapter = create(:scrolled_chapter, revision: entry.revision)
-          section = create(:section, chapter: chapter)
+          section = create(:section, chapter:)
           content_element = create(:content_element,
                                    :heading,
-                                   section: section,
+                                   section:,
                                    position: 4,
                                    configuration: {text: 'Heading'})
 
@@ -733,7 +734,7 @@ module PageflowScrolled
 
       it 'renders files' do
         entry = create(:published_entry, type_name: 'scrolled')
-        image_file = create_used_file(:video_file, entry: entry, output_presences: {'high': true})
+        image_file = create_used_file(:video_file, entry:, output_presences: {'high': true})
 
         result = render(helper, entry)
 
@@ -750,7 +751,7 @@ module PageflowScrolled
 
       it 'supports skipping files' do
         entry = create(:published_entry, type_name: 'scrolled')
-        create_used_file(:image_file, entry: entry)
+        create_used_file(:image_file, entry:)
 
         result = render(helper, entry, skip_files: true)
 
@@ -807,16 +808,16 @@ module PageflowScrolled
         entry = create(:published_entry,
                        type_name: 'scrolled',
                        title: 'test',
-                       site: site)
+                       site:)
 
         result = render(helper, entry)
 
         expect(result).to include_json(config: {
                                          prettyUrl: 'http://test.host/test',
                                          shareUrlTemplates: {
-                                           email: 'mailto:?body=%{url}',
-                                           twitter: 'https://x.com/intent/post?url=%{url}',
-                                           whats_app: 'WhatsApp://send?text=%{url}'
+                                           email: 'mailto:?body=%<url>s',
+                                           twitter: 'https://x.com/intent/post?url=%<url>s',
+                                           whats_app: 'WhatsApp://send?text=%<url>s'
                                          }
                                        })
       end
@@ -826,7 +827,7 @@ module PageflowScrolled
         entry = create(:published_entry,
                        type_name: 'scrolled',
                        title: 'test',
-                       account: account)
+                       account:)
 
         result = render(helper, entry)
 
@@ -1469,7 +1470,7 @@ module PageflowScrolled
       it 'renders script tag which assigns seed global variable' do
         entry = create(:published_entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.revision)
-        create(:section, chapter: chapter)
+        create(:section, chapter:)
 
         result = helper.scrolled_entry_json_seed_script_tag(entry)
 
@@ -1479,10 +1480,10 @@ module PageflowScrolled
       it 'escapes illegal characters' do
         entry = create(:published_entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.revision)
-        section = create(:section, chapter: chapter)
+        section = create(:section, chapter:)
         create(:content_element,
                :text_block,
-               section: section,
+               section:,
                configuration: {text: "some\u2028text"})
 
         result = helper.scrolled_entry_json_seed_script_tag(entry)

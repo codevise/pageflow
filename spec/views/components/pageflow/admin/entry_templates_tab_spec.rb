@@ -76,9 +76,9 @@ module Pageflow
       end
 
       account = create(:account)
-      site = create(:site, account: account)
+      site = create(:site, account:)
       create(:entry_template,
-             site: site,
+             site:,
              entry_type_name: 'rainbows',
              default_author: 'Some author')
 

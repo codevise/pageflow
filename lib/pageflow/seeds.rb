@@ -26,7 +26,7 @@ module Pageflow
     # @option attributes [String] :name  required
     # @yield [account] a block to be called before the account is saved
     # @return [Account] newly created account
-    def account(attributes, &block)
+    def account(attributes)
       Account.find_or_create_by!(attributes.slice(:name)) do |account|
         account.attributes = attributes.reverse_merge(name: 'Pageflow')
 
@@ -69,7 +69,7 @@ module Pageflow
     # @option attributes [String] :email  required
     # @yield [user] a block to be called before the user is saved
     # @return [User] newly created user
-    def user(attributes, &block)
+    def user(attributes)
       default_attributes = {
         password: default_user_password,
         first_name: 'Elliot',
@@ -146,9 +146,7 @@ module Pageflow
          (attributes[:account].present? && attributes[:entity].present?)
         say_attribute_precedence(':entity', ':entry and :account')
       end
-      unless attributes[:entity].present?
-        entry_or_account_attributes_specified attributes
-      end
+      entry_or_account_attributes_specified attributes unless attributes[:entity].present?
 
       if attributes[:entity].is_a?(Entry) || attributes[:entry].present?
         entry = attributes[:entity] || attributes[:entry]
@@ -180,7 +178,7 @@ module Pageflow
    email:     #{user.email}
    password:  #{user.password}
 
-END
+      END
     end
 
     def say_creating_entry(entry)
@@ -190,11 +188,11 @@ END
     def say_creating_membership(membership)
       say("   -- '#{membership.role}' membership for user '#{membership.user.email}' on " +
           "#{membership.entity_type == 'Pageflow::Entry' ? 'entry' : 'account'} " +
-          %|'#{if membership.entity_type == "Pageflow::Entry"
+          %('#{if membership.entity_type == 'Pageflow::Entry'
                  membership.entity.title
                else
                  membership.entity.name
-               end}'\n|)
+               end}'\n))
     end
 
     def say_attribute_precedence(subject, object)
@@ -208,9 +206,7 @@ END
     def entry_or_account_attributes_specified(attributes)
       if attributes[:entry].present? || attributes[:account].present?
         attributes[:entity] = attributes[:entry]
-        if attributes[:account].present?
-          say_attribute_precedence(':entry', ':account')
-        end
+        say_attribute_precedence(':entry', ':account') if attributes[:account].present?
       else
         attributes[:entity] = attributes[:account]
       end

@@ -63,7 +63,7 @@ module Pageflow
       entry = PublishedEntry.find(params[:id], entry_request_scope)
       index = params[:page_index].split('-').first.to_i
 
-      redirect_to(short_entry_path(entry.to_model, :anchor => entry.pages[index].try(:perma_id)))
+      redirect_to(short_entry_path(entry.to_model, anchor: entry.pages[index].try(:perma_id)))
     end
 
     protected
@@ -119,7 +119,7 @@ module Pageflow
     end
 
     def delegate_to_entry_type_frontend_app!(entry, override_status: nil)
-      EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry: entry, mode: :published)
+      EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry:, mode: :published)
 
       delegate_to_rack_app!(entry.entry_type.frontend_app) do |result|
         status, headers, body = result

@@ -130,7 +130,7 @@ module Pageflow
         EntrySerialization.import(data,
                                   account: create(:account),
                                   creator: create(:user),
-                                  file_mappings: file_mappings)
+                                  file_mappings:)
 
         expect(file_mappings.imported_id_for(exported_image_file.class.name,
                                              exported_image_file.id)).to be_positive

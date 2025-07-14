@@ -80,7 +80,7 @@ module Pageflow
       it 'includes sites for one account' do
         user = create(:user)
         account = create(:account, with_publisher: user)
-        site = create(:site, account: account)
+        site = create(:site, account:)
 
         expect(SitePolicy::Scope
                 .new(user, Site).sites_allowed_for(account)).to include(site)
@@ -90,8 +90,8 @@ module Pageflow
         user = create(:user)
 
         account = create(:account, with_editor: user)
-        site = create(:site, account: account)
-        create(:entry, account: account, site: site, with_manager: user)
+        site = create(:site, account:)
+        create(:entry, account:, site:, with_manager: user)
 
         account_policy_scope = AccountPolicy::Scope.new(user, Account)
         accounts = account_policy_scope.sites_accessible

@@ -7,7 +7,7 @@ module PageflowPaged
     def page_background_asset(page)
       render('pageflow_paged/page_background_asset/element',
              entry: @entry,
-             page: page)
+             page:)
     end
   end
 end

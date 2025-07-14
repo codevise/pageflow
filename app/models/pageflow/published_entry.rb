@@ -12,7 +12,7 @@ module Pageflow
     delegate(:password_protected?, to: :revision)
 
     def initialize(entry, revision = nil, theme: nil)
-      super(entry, revision || entry.published_revision, theme: theme)
+      super(entry, revision || entry.published_revision, theme:)
       @custom_revision = revision
     end
 
@@ -58,6 +58,7 @@ module Pageflow
 
     def page_thumbnail_file(page)
       return unless page.present?
+
       ThumbnailFileResolver.new(self, page.page_type.thumbnail_candidates, page.configuration)
                            .find_thumbnail
     end
@@ -70,7 +71,7 @@ module Pageflow
       wrap(
         scope.published.includes(permalink: :directory).where(
           pageflow_permalink_directories: {path: directory || ''},
-          pageflow_permalinks: {slug: slug}
+          pageflow_permalinks: {slug:}
         ).first
       )
     end
@@ -134,7 +135,8 @@ module Pageflow
     end
 
     def share_image_file
-      PositionedFile.wrap(find_file_by_perma_id(ImageFile, share_image_id), share_image_x, share_image_y)
+      PositionedFile.wrap(find_file_by_perma_id(ImageFile, share_image_id), share_image_x,
+                          share_image_y)
     end
 
     class << self

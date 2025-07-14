@@ -9,7 +9,7 @@ module Pageflow
         FileUtils.mkdir_p "#{destination_root}/config"
 
         File.write "#{destination_root}/config/routes.rb",
-          "Rails.application.routes.draw do\n  ActiveAdmin.routes(self)\nend"
+                   "Rails.application.routes.draw do\n  ActiveAdmin.routes(self)\nend"
       end
 
       let(:routes) { file('config/routes.rb') }
@@ -23,7 +23,7 @@ module Pageflow
       it 'adds Resque::Server' do
         run_generator
 
-        expect(routes).to contain("Resque::Server")
+        expect(routes).to contain('Resque::Server')
       end
 
       it 'requires resque/server' do

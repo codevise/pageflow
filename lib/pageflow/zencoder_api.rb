@@ -6,13 +6,11 @@ module Pageflow
 
     def create_job(definition)
       with_exception_translation do
-        response = Zencoder::Job.create(:input => definition.input_s3_url,
-                                        :outputs => definition.outputs)
-        if response.success?
-          response.body['id']
-        else
-          raise translate_zencoder_errors(response.errors)
-        end
+        response = Zencoder::Job.create(input: definition.input_s3_url,
+                                        outputs: definition.outputs)
+        raise translate_zencoder_errors(response.errors) unless response.success?
+
+        response.body['id']
       end
     end
 
@@ -20,15 +18,13 @@ module Pageflow
       with_exception_translation do
         response = Zencoder::Job.progress(job_id)
 
-        if response.success?
-          {
-            :state => response.body["state"],
-            :progress => response.body["progress"],
-            :finished => response.body["state"] == 'finished'
-          }
-        else
-          raise translate_zencoder_errors(response.errors)
-        end
+        raise translate_zencoder_errors(response.errors) unless response.success?
+
+        {
+          state: response.body['state'],
+          progress: response.body['progress'],
+          finished: response.body['state'] == 'finished'
+        }
       end
     end
 
@@ -41,27 +37,22 @@ module Pageflow
       with_exception_translation do
         response = Zencoder::Job.details(job_id)
 
-        if response.success?
-          input_details = response.body['job']['input_media_file']
-          outputs_details = response.body['job']['output_media_files']
+        raise translate_zencoder_errors(response.errors) unless response.success?
 
-          output_presences = outputs_details.inject({}) do |presences, output|
-            if output['label'].present?
-              presences[output['label'].to_sym] = output['state']
-            end
-            presences
-          end
+        input_details = response.body['job']['input_media_file']
+        outputs_details = response.body['job']['output_media_files']
 
-          {
-            format: input_details['format'],
-            duration_in_ms: input_details['duration_in_ms'],
-            width: input_details['width'],
-            height: input_details['height'],
-            output_presences: output_presences
-          }
-        else
-          raise translate_zencoder_errors(response.errors)
+        output_presences = outputs_details.each_with_object({}) do |output, presences|
+          presences[output['label'].to_sym] = output['state'] if output['label'].present?
         end
+
+        {
+          format: input_details['format'],
+          duration_in_ms: input_details['duration_in_ms'],
+          width: input_details['width'],
+          height: input_details['height'],
+          output_presences:
+        }
       end
     end
 
@@ -72,13 +63,11 @@ module Pageflow
     private
 
     def with_exception_translation
-      begin
-        yield
-      rescue Timeout::Error
-        raise RecoverableError, 'Zencoder timed out.'
-      rescue Zencoder::HTTPError => e
-        raise RecoverableError, e.message
-      end
+      yield
+    rescue Timeout::Error
+      raise RecoverableError, 'Zencoder timed out.'
+    rescue Zencoder::HTTPError => e
+      raise RecoverableError, e.message
     end
 
     def translate_zencoder_errors(errors)

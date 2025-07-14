@@ -29,9 +29,9 @@ module Pageflow
     private
 
     def render(partial, entry, format: :html)
-      @renderer.render(partial: partial,
+      @renderer.render(partial:,
                        formats: format,
-                       locals: {entry: entry})
+                       locals: {entry:})
     end
   end
 end

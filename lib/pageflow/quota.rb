@@ -18,7 +18,8 @@ module Pageflow
     end
 
     def state
-      raise(NotImplementedError, 'Quota#state must be implemented and return either "available", "exhausted" or "exceeded".')
+      raise(NotImplementedError,
+            'Quota#state must be implemented and return either "available", "exhausted" or "exceeded".')
     end
 
     def state_description
@@ -45,7 +46,7 @@ module Pageflow
       raise(ExceededError.new(self), "Quota '#{name}' exceeded.") if exceeded?
     end
 
-    def assume(assumptions)
+    def assume(_assumptions)
       self
     end
 

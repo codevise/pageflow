@@ -9,10 +9,10 @@ module Pageflow
             redirect_back fallback_location: admin_root_path, alert: t('pageflow.quotas.exhausted')
           end
           format.json do
-            render(:status => :forbidden,
-                   :json => {
-                     :error_message => exception.message,
-                     :quota_name => exception.quota.name
+            render(status: :forbidden,
+                   json: {
+                     error_message: exception.message,
+                     quota_name: exception.quota.name
                    })
           end
         end

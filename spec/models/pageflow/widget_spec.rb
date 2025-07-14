@@ -144,7 +144,8 @@ module Pageflow
         config.widget_types.register(non_preview_widget_type)
         revision = create(:revision)
         create(:widget, subject: revision, role: 'header', type_name: 'non_editor')
-        non_preview_widget = create(:widget, subject: revision, role: 'footer', type_name: 'non_preview')
+        non_preview_widget = create(:widget, subject: revision, role: 'footer',
+                                             type_name: 'non_preview')
 
         widgets = revision.widgets.resolve(config, scope: :editor)
 
@@ -158,7 +159,8 @@ module Pageflow
         config.widget_types.register(non_editor_widget_type)
         config.widget_types.register(non_preview_widget_type)
         revision = create(:revision)
-        non_editor_widget = create(:widget, subject: revision, role: 'header', type_name: 'non_editor')
+        non_editor_widget = create(:widget, subject: revision, role: 'header',
+                                            type_name: 'non_editor')
         create(:widget, subject: revision, role: 'footer', type_name: 'non_preview')
 
         widgets = revision.widgets.resolve(config, scope: :preview)
@@ -237,7 +239,7 @@ module Pageflow
     describe '.batch_update!' do
       it 'updates existing widgets by role' do
         subject = create(:revision)
-        widget = create(:widget, subject: subject, role: 'header', type_name: 'old_widget')
+        widget = create(:widget, subject:, role: 'header', type_name: 'old_widget')
 
         subject.widgets.batch_update!([{role: 'header', type_name: 'new_widget'}])
 

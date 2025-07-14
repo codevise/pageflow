@@ -50,9 +50,9 @@ module Pageflow
           para text_node I18n.t('pageflow.admin.resource_tabs.account_editor_hint')
         end
 
-        if authorized?(:add_member_to, entry)
-          add_membership_button(current_user, entry, 'entry')
-        end
+        return unless authorized?(:add_member_to, entry)
+
+        add_membership_button(current_user, entry, 'entry')
       end
     end
   end

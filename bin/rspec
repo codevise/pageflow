@@ -2,10 +2,11 @@
 ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path('../lib/pageflow/rails_version', File.dirname(__FILE__))
-dummy_root = File.expand_path("../spec/dummy/rails-#{Pageflow::RailsVersion.detect}", File.dirname(__FILE__))
+dummy_root = File.expand_path("../spec/dummy/rails-#{Pageflow::RailsVersion.detect}",
+                              File.dirname(__FILE__))
 
 begin
-  load File.expand_path("../spring", __FILE__) if File.exist?(dummy_root)
+  load File.expand_path('spring', __dir__) if File.exist?(dummy_root)
 rescue LoadError
 end
 require 'bundler/setup'

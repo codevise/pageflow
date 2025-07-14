@@ -23,7 +23,7 @@ module Pageflow
     class NotHeldError < Error; end
 
     belongs_to :user
-    belongs_to :entry, :inverse_of => :edit_lock
+    belongs_to :entry, inverse_of: :edit_lock
 
     def self.time_to_live
       timer_tolerance = 2.3
@@ -45,22 +45,21 @@ module Pageflow
     def acquire(current_user, options = {})
       verify!(current_user, options)
     rescue Error
-      if options[:force] || timed_out?
-        entry.create_edit_lock(:user => current_user)
-      else
-        raise
-      end
+      raise unless options[:force] || timed_out?
+
+      entry.create_edit_lock(user: current_user)
     end
 
     def release(current_user)
-      if user == current_user
-        destroy
-      end
+      return unless user == current_user
+
+      destroy
     end
 
     def verify!(current_user, options)
-      raise HeldByOtherUserError.new(user) unless held_by?(current_user)
+      raise HeldByOtherUserError, user unless held_by?(current_user)
       raise HeldByOtherSessionError unless matches?(options[:id])
+
       touch
     end
 
@@ -71,7 +70,7 @@ module Pageflow
         @entry = entry
       end
 
-      def held_by?(user)
+      def held_by?(_user)
         false
       end
 
@@ -79,15 +78,14 @@ module Pageflow
         true
       end
 
-      def acquire(user, options = {})
-        entry.create_edit_lock!(:user => user)
+      def acquire(user, _options = {})
+        entry.create_edit_lock!(user:)
       end
 
-      def release(user)
-      end
+      def release(user); end
 
-      def verify!(user, options = {})
-        raise NotHeldError.new
+      def verify!(_user, _options = {})
+        raise NotHeldError
       end
     end
   end

@@ -154,7 +154,7 @@ module Pageflow
         exported_revision = create(:revision)
         storyline = create(:storyline, revision: exported_revision)
         exported_chapter = create(:chapter,
-                                  storyline: storyline,
+                                  storyline:,
                                   configuration: {'some' => 'value'},
                                   created_at: 2.month.ago,
                                   updated_at: 1.month.ago)
@@ -173,9 +173,9 @@ module Pageflow
       it 'preserves page attributes' do
         exported_revision = create(:revision)
         storyline = create(:storyline, revision: exported_revision)
-        chapter = create(:chapter, storyline: storyline)
+        chapter = create(:chapter, storyline:)
         exported_page = create(:page,
-                               chapter: chapter,
+                               chapter:,
                                configuration: {'some' => 'value'},
                                created_at: 2.month.ago,
                                updated_at: 1.month.ago)
@@ -341,12 +341,12 @@ module Pageflow
         previously_imported_revision = RevisionSerialization.import(data.deep_dup,
                                                                     entry: create(:entry),
                                                                     creator: user,
-                                                                    file_mappings: file_mappings)
+                                                                    file_mappings:)
 
         imported_revision = RevisionSerialization.import(data,
                                                          entry: create(:entry),
                                                          creator: user,
-                                                         file_mappings: file_mappings)
+                                                         file_mappings:)
 
         expect(imported_revision.image_files.first)
           .to eq(previously_imported_revision.image_files.first)

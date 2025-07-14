@@ -8,9 +8,7 @@ module Pageflow
         @state = state
       end
 
-      def state
-        @state
-      end
+      attr_reader :state
 
       def state_description
         nil

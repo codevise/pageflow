@@ -109,18 +109,18 @@ module PageflowScrolled
             file.update!(state: 'encoded')
             if file_type.eql?(:video)
               file.update!(output_presences: {
-                "dash-playlist" => true,
-                "hls-playlist" => true,
-                "dash-medium"=> true,
-                "hls-medium" => true,
-                "dash-high" => true,
-                "hls-high" => true,
-                "dash-low" => true,
-                "hls-low" => true,
-                "medium" => true,
-                "high" => true,
-                "low" => true
-              })
+                             'dash-playlist' => true,
+                             'hls-playlist' => true,
+                             'dash-medium' => true,
+                             'hls-medium' => true,
+                             'dash-high' => true,
+                             'hls-high' => true,
+                             'dash-low' => true,
+                             'hls-low' => true,
+                             'medium' => true,
+                             'high' => true,
+                             'low' => true
+                           })
             end
           else
             file.publish!
@@ -139,7 +139,7 @@ module PageflowScrolled
           title: chapter_config['title'],
           summary: chapter_config['summary']
         },
-        position: position
+        position:
       )
 
       section_configs.each_with_index do |section_config, i|
@@ -154,9 +154,9 @@ module PageflowScrolled
                                %w[image imageMobile video],
                                files_by_name)
 
-      section = Section.create!(chapter: chapter,
+      section = Section.create!(chapter:,
                                 configuration: section_config,
-                                position: position)
+                                position:)
 
       content_element_configs.each_with_index do |content_element_config, i|
         create_content_element(section, content_element_config, i, files_by_name)
@@ -176,7 +176,7 @@ module PageflowScrolled
       section.content_elements.create!(
         type_name: content_element_config['type'],
         configuration: content_element_config['props'],
-        position: position
+        position:
       )
     end
 

@@ -24,9 +24,9 @@ module Pageflow
                             'pageflow_memberships.entity_type = \'Pageflow::Entry\' AND ' \
                             'pageflow_memberships.entity_id IN (:common_entry_ids) OR '\
                             'pageflow_memberships.user_id = :user_id',
-                            managed_account_ids: managed_account_ids,
-                            common_entry_ids: common_entry_ids,
-                            user_id: @user.id])
+                            {managed_account_ids:,
+                             common_entry_ids:,
+                             user_id: @user.id}])
       end
 
       def managed_account_ids

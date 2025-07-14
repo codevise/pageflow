@@ -4,8 +4,8 @@ module Pageflow
       def admin_widgets_fields(form, config)
         render('pageflow/admin/widgets/fields',
                widgets: form.object.widgets.resolve(config, include_placeholders: true),
-               form: form,
-               config: config)
+               form:,
+               config:)
       end
 
       def admin_widget_types_collection_for_role(config, role)

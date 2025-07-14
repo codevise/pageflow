@@ -55,8 +55,8 @@ module Pageflow
         publisher: default_publisher.presence || Pageflow.config.default_publisher_meta_tag,
         keywords: default_keywords.presence || Pageflow.config.default_keywords_meta_tag,
         share_providers: default_share_providers,
-        theme_name: theme_name,
-        configuration: configuration,
+        theme_name:,
+        configuration:,
         locale: default_locale
       )
     end

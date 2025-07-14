@@ -1,7 +1,7 @@
 Pageflow::Engine.routes.draw do
-  constraints Pageflow.config(:ignore_not_configured => true).editor_route_constraint do
+  constraints Pageflow.config(ignore_not_configured: true).editor_route_constraint do
     resources :entries, only: [], shallow: true do
-      get :partials, :on => :member
+      get :partials, on: :member
 
       resources :revisions, only: [:show] do
         get :stylesheet, on: :member
@@ -39,16 +39,16 @@ Pageflow::Engine.routes.draw do
 
     namespace :editor do
       resources :entries, only: [:index, :show, :update], shallow: true do
-        get :seed, :on => :member
+        get :seed, on: :member
 
-        resources :file_usages, :only => [:create, :destroy]
+        resources :file_usages, only: [:create, :destroy]
 
-        resources :encoding_confirmations, :only => [:create] do
-          post :check, :on => :collection
+        resources :encoding_confirmations, only: [:create] do
+          post :check, on: :collection
         end
 
-        resources :entry_publications, :only => [:create] do
-          post :check, :on => :collection
+        resources :entry_publications, only: [:create] do
+          post :check, on: :collection
         end
 
         Pageflow.config(ignore_not_configured: true).entry_types.routes(self)
@@ -69,17 +69,19 @@ Pageflow::Engine.routes.draw do
       end
 
       resources :subjects, path: '/subjects/:collection_name', only: [] do
-        resources :widgets, :only => [:index] do
-          patch :batch, :on => :collection
+        resources :widgets, only: [:index] do
+          patch :batch, on: :collection
         end
       end
     end
 
-    root :to => redirect('/admin')
+    root to: redirect('/admin')
   end
 
-  get ':entry_id/videos/:id', :to => 'files#show', :as => :short_video_file, :defaults => {:collection_name => 'video_files'}
-  get ':entry_id/audio/:id', :to => 'files#show', :as => :short_audio_file, :defaults => {:collection_name => 'audio_files'}
+  get ':entry_id/videos/:id', to: 'files#show', as: :short_video_file,
+                              defaults: {collection_name: 'video_files'}
+  get ':entry_id/audio/:id', to: 'files#show', as: :short_audio_file,
+                             defaults: {collection_name: 'audio_files'}
 
   resources :entries, only: [:show] do
     get :stylesheet, on: :member

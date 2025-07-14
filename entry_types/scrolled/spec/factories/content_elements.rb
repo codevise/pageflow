@@ -10,7 +10,7 @@ module PageflowScrolled
       before(:create) do |content_element, evaluator|
         if evaluator.revision
           chapter = create(:scrolled_chapter, revision: evaluator.revision)
-          content_element.section = create(:section, chapter: chapter)
+          content_element.section = create(:section, chapter:)
         end
       end
     end

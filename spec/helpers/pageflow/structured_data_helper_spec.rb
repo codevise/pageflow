@@ -10,9 +10,9 @@ module Pageflow
       first_publication_date = 1.month.ago
       last_publication_date = 3.days.ago
 
-
-      entry = PublishedEntry.new(create(:entry, :published, first_published_at: first_publication_date))
-      image_file = create_used_file(:image_file, entry: entry, file_name: 'share.jpg')
+      entry = PublishedEntry.new(create(:entry, :published,
+                                        first_published_at: first_publication_date))
+      image_file = create_used_file(:image_file, entry:, file_name: 'share.jpg')
       entry.revision.update(title: 'Some entry',
                             summary: 'Summary text',
                             author: 'Some author',

@@ -11,7 +11,7 @@ module Pageflow
 
       entry.snapshot(creator: current_user) unless entry.feature_state('no_edit_lock_snapshot')
 
-      respond_with(entry.reload.edit_lock, :location => entry_edit_lock_url(entry))
+      respond_with(entry.reload.edit_lock, location: entry_edit_lock_url(entry))
     end
 
     def update
@@ -30,7 +30,7 @@ module Pageflow
     protected
 
     def edit_lock_params
-      params.permit(:edit_lock => [:force, :id]).fetch(:edit_lock, {})
+      params.permit(edit_lock: [:force, :id]).fetch(:edit_lock, {})
     end
   end
 end

@@ -77,27 +77,27 @@ unless options[:skip_collections]
 
     json.chapters do
       json.array!(chapters) do |chapter|
-        json.partial! 'pageflow_scrolled/chapters/chapter', chapter: chapter
+        json.partial! 'pageflow_scrolled/chapters/chapter', chapter:
       end
     end
 
     json.sections do
       json.array!(sections) do |section|
-        json.partial! 'pageflow_scrolled/sections/section', section: section
+        json.partial! 'pageflow_scrolled/sections/section', section:
       end
     end
 
     json.content_elements do
       json.array!(content_elements) do |content_element|
         json.partial! 'pageflow_scrolled/content_elements/content_element',
-                      content_element: content_element
+                      content_element:
       end
     end
 
     json.widgets do
       json.array!(widgets) do |widget|
         json.partial! 'pageflow_scrolled/entry_json_seed/widget',
-                      widget: widget
+                      widget:
       end
     end
 

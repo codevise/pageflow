@@ -21,16 +21,15 @@ module Pageflow
                                }))
 
     has_attached_file(:thumbnail, Pageflow.config.paperclip_s3_default_options
-                        .merge(:default_url => ':pageflow_placeholder',
-                               :default_style => :thumbnail,
-                               :styles => Pageflow.config.thumbnail_styles
+                        .merge(default_url: ':pageflow_placeholder',
+                               default_style: :thumbnail,
+                               styles: Pageflow.config.thumbnail_styles
                                   .merge(medium: ['1024x1024>', :JPG],
                                          large: ['1920x1920>', :JPG]),
-                               :convert_options => {
-                                 :medium => "-quality 60 -interlace Plane",
-                                 :large => "-quality 60 -interlace Plane"
+                               convert_options: {
+                                 medium: '-quality 60 -interlace Plane',
+                                 large: '-quality 60 -interlace Plane'
                                }))
-
 
     do_not_validate_attachment_file_type(:poster)
     do_not_validate_attachment_file_type(:thumbnail)
@@ -151,7 +150,7 @@ module Pageflow
 
     def externally_generated_outputs
       if Pageflow.config.zencoder_options[:hls_smil_suffix].present?
-        %w(hls-playlist)
+        %w[hls-playlist]
       else
         []
       end

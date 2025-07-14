@@ -7,11 +7,11 @@ module Pageflow
         file = create(:image_file)
         used_file = UsedFile.new(
           file,
-          create(:file_usage, file: file, revision: create(:revision))
+          create(:file_usage, file:, revision: create(:revision))
         )
         used_file_for_other_usage = UsedFile.new(
           file,
-          create(:file_usage, file: file, revision: create(:revision))
+          create(:file_usage, file:, revision: create(:revision))
         )
 
         expect(used_file.cache_key).not_to eq(used_file_for_other_usage.cache_key)
@@ -23,11 +23,11 @@ module Pageflow
         file = create(:image_file)
         used_file = UsedFile.new(
           file,
-          create(:file_usage, file: file, revision: create(:revision))
+          create(:file_usage, file:, revision: create(:revision))
         )
         used_file_for_other_usage = UsedFile.new(
           file,
-          create(:file_usage, file: file, revision: create(:revision))
+          create(:file_usage, file:, revision: create(:revision))
         )
 
         expect(used_file.cache_key_with_version)

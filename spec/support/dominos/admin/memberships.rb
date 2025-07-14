@@ -5,7 +5,6 @@ module Dom
 
       attribute :entry_title, 'td.col-entry'
       attribute :user_full_name, 'td.name'
-
     end
   end
 end

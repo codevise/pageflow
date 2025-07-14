@@ -9,9 +9,9 @@ module Pageflow
     end
 
     def page_type_json_seed(json, page_type)
-      if page_type.json_seed_template
-        json.partial!(template: page_type.json_seed_template, locals: {page_type: page_type})
-      end
+      return unless page_type.json_seed_template
+
+      json.partial!(template: page_type.json_seed_template, locals: {page_type:})
     end
 
     def page_type_templates(entry)
@@ -24,7 +24,7 @@ module Pageflow
                            locals: {
                              configuration: {},
                              page: Page.new,
-                             entry: entry
+                             entry:
                            },
                            layout: false).to_str,
                     type: 'text/html', data: {template: "#{page_type.name}_page"})

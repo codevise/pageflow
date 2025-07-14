@@ -8,8 +8,8 @@ module Pageflow
     # a specific site.
     def update(site:, entry_type_name:, overrides: {}, file_ids: {})
       ThemeCustomization
-        .find_or_initialize_by(site: site, entry_type_name: entry_type_name)
-        .update!(overrides: overrides, selected_file_ids: file_ids)
+        .find_or_initialize_by(site:, entry_type_name:)
+        .update!(overrides:, selected_file_ids: file_ids)
     end
 
     # Construct an entry that uses the given overrides and files in
@@ -19,15 +19,15 @@ module Pageflow
     def preview(site:, entry:, overrides: {}, file_ids: {})
       theme_customization =
         ThemeCustomization
-        .find_or_initialize_by(site: site, entry_type_name: entry.type_name)
+        .find_or_initialize_by(site:, entry_type_name: entry.type_name)
 
-      theme_customization.assign_attributes(overrides: overrides, selected_file_ids: file_ids)
+      theme_customization.assign_attributes(overrides:, selected_file_ids: file_ids)
 
       theme = CustomizedTheme.build(entry: PublishedEntry.new(entry, entry.draft),
                                     theme: entry.draft.theme,
-                                    theme_customization: theme_customization)
+                                    theme_customization:)
 
-      PublishedEntry.new(entry, entry.draft, theme: theme)
+      PublishedEntry.new(entry, entry.draft, theme:)
     end
 
     # Get customization for entry type and site.
@@ -35,7 +35,7 @@ module Pageflow
     # @return [ThemeCustomization]
     def get(site:, entry_type_name:)
       ThemeCustomization
-        .find_or_initialize_by(site: site, entry_type_name: entry_type_name)
+        .find_or_initialize_by(site:, entry_type_name:)
     end
 
     # Upload a file that shall be used to customize a theme. Uploading
@@ -46,9 +46,9 @@ module Pageflow
     def upload_file(site:, entry_type_name:, type_name:, attachment:)
       theme_customization_file =
         ThemeCustomization
-        .find_or_create_by(site: site, entry_type_name: entry_type_name)
+        .find_or_create_by(site:, entry_type_name:)
         .uploaded_files
-        .build(type_name: type_name)
+        .build(type_name:)
 
       # Assign attachment in separate step to make sure theme
       # customization association (which is used to look up Paperclip

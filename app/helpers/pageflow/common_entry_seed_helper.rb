@@ -58,9 +58,7 @@ module Pageflow
       def condition(candidate)
         result = candidate[:unless] || candidate[:if]
 
-        if result
-          result[:negated] = !!candidate[:unless]
-        end
+        result[:negated] = !!candidate[:unless] if result
 
         result
       end

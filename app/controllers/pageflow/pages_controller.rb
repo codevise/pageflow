@@ -43,7 +43,7 @@ module Pageflow
 
       authorize!(:destroy, page)
       verify_edit_lock!(page.chapter.entry)
-      page.chapter.entry.snapshot(:creator => current_user)
+      page.chapter.entry.snapshot(creator: current_user)
 
       page.destroy
 
@@ -54,7 +54,8 @@ module Pageflow
 
     def page_params
       configuration = params.require(:page)[:configuration].try(:permit!) || {}
-      params.require(:page).permit(:template, :position, :title).merge(:configuration => configuration)
+      params.require(:page).permit(:template, :position,
+                                   :title).merge(configuration:)
     end
   end
 end

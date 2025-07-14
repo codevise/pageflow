@@ -19,14 +19,14 @@ module Pageflow
     describe '#name_with_account_prefix' do
       it 'defaults to account name' do
         account = build(:account, name: 'Some Account')
-        site = build(:site, account: account)
+        site = build(:site, account:)
 
         expect(site.name_with_account_prefix).to eq('Some Account')
       end
 
       it 'includes site name as suffix' do
         account = build(:account, name: 'Some Account')
-        site = build(:site, account: account, name: 'Some Campaign')
+        site = build(:site, account:, name: 'Some Campaign')
 
         expect(site.name_with_account_prefix).to eq('Some Account - Some Campaign')
       end
@@ -56,31 +56,31 @@ module Pageflow
 
     describe '#cname_domain' do
       it 'removes subdomain' do
-        site = build(:site, :cname => 'foo.bar.com')
+        site = build(:site, cname: 'foo.bar.com')
 
         expect(site.cname_domain).to eq('bar.com')
       end
 
       it 'removes multiple subdomain' do
-        site = build(:site, :cname => 'foo.bar.baz.com')
+        site = build(:site, cname: 'foo.bar.baz.com')
 
         expect(site.cname_domain).to eq('baz.com')
       end
 
       it 'does not change anything if no subdomain is present' do
-        site = build(:site, :cname => 'foo.org')
+        site = build(:site, cname: 'foo.org')
 
         expect(site.cname_domain).to eq('foo.org')
       end
 
       it 'does not change bogus' do
-        site = build(:site, :cname => 'localhost')
+        site = build(:site, cname: 'localhost')
 
         expect(site.cname_domain).to eq('localhost')
       end
 
       it 'is empty if cname is empty' do
-        site = build(:site, :cname => '')
+        site = build(:site, cname: '')
 
         expect(site.cname_domain).to eq('')
       end
@@ -220,7 +220,7 @@ module Pageflow
     describe 'custom_404_entry validation' do
       it 'is valid when custom_404_entry belongs to same site' do
         site = create(:site)
-        entry = create(:entry, site: site)
+        entry = create(:entry, site:)
         site.custom_404_entry = entry
 
         expect(site).to be_valid

@@ -10,7 +10,7 @@ module Pageflow
                default: 'custom',
                desc: 'The name of the new theme'
 
-      source_root File.expand_path('../templates', __FILE__)
+      source_root File.expand_path('templates', __dir__)
 
       def copy_template
         directory('themes', File.join('app', 'assets', 'stylesheets', 'pageflow', 'themes'))

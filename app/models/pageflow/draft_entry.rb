@@ -33,13 +33,13 @@ module Pageflow
         f.entry = entry
       end
 
-      usage = revision.file_usages.create_with_lock!(file: file,
+      usage = revision.file_usages.create_with_lock!(file:,
                                                      configuration: attributes[:configuration])
       UsedFile.new(file, usage)
     end
 
     def remove_file(file)
-      draft.file_usages.where(file: file).destroy_all
+      draft.file_usages.where(file:).destroy_all
 
       file.file_type.nested_file_types.each do |nested_file_type|
         nested_file_ids = file.nested_files(nested_file_type.model).map(&:id)
@@ -110,7 +110,7 @@ module Pageflow
     end
 
     def file_is_used(file_type, file_id)
-      draft.file_usages.where(file_type: file_type, file_id: file_id).exists?
+      draft.file_usages.where(file_type:, file_id:).exists?
     end
   end
 end

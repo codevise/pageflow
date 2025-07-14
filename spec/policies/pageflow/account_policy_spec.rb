@@ -5,35 +5,35 @@ module Pageflow
     it_behaves_like 'a membership-based permission that',
                     allows: :publisher,
                     but_forbids: :editor,
-                    of_account: -> (topic) { topic },
+                    of_account: ->(topic) { topic },
                     to: :publish,
                     topic: -> { create(:account) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :publisher,
                     but_forbids: :editor,
-                    of_account: -> (topic) { topic },
+                    of_account: ->(topic) { topic },
                     to: :configure_folder_on,
                     topic: -> { create(:account) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :publisher,
                     but_forbids: :editor,
-                    of_account: -> (topic) { topic },
+                    of_account: ->(topic) { topic },
                     to: :update_site_on_entry_of,
                     topic: -> { create(:account) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_account: -> (topic) { topic },
+                    of_account: ->(topic) { topic },
                     to: :read,
                     topic: -> { create(:account) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_account: -> (topic) { topic },
+                    of_account: ->(topic) { topic },
                     to: :update,
                     topic: -> { create(:account) }
 
@@ -115,7 +115,7 @@ module Pageflow
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_account: -> (topic) { topic },
+                    of_account: ->(topic) { topic },
                     to: :edit_role_on,
                     topic: -> { create(:account) }
 
@@ -135,7 +135,7 @@ module Pageflow
 
     it_behaves_like 'an admin permission that',
                     allows_admins_but_forbids_even_managers: true,
-                    of_account: -> (topic) { topic },
+                    of_account: ->(topic) { topic },
                     to: :admin,
                     topic: -> { create(:account) }
   end
@@ -144,13 +144,14 @@ module Pageflow
     it 'is permitted when user and account have an entry in common' do
       account = create(:account)
       user = create(:user)
-      create(:entry, account: account, with_previewer: user)
+      create(:entry, account:, with_previewer: user)
 
       expect(AccountPolicy.new(user, account)).to permit_action(:see_badge_belonging_to)
     end
 
     it 'is not permitted when user and account have no entry in common' do
-      expect(AccountPolicy.new(create(:user), create(:account))).not_to permit_action(:see_badge_belonging_to)
+      expect(AccountPolicy.new(create(:user),
+                               create(:account))).not_to permit_action(:see_badge_belonging_to)
     end
 
     it 'is permitted when user is at least previewer on account' do

@@ -10,7 +10,7 @@ module Pageflow
     include Translatable
 
     extend FriendlyId
-    friendly_id :slug_candidates, :use => [:finders, :slugged]
+    friendly_id :slug_candidates, use: [:finders, :slugged]
 
     belongs_to :account, counter_cache: true
     belongs_to :folder, optional: true
@@ -18,11 +18,13 @@ module Pageflow
 
     has_many :revisions, -> { order('frozen_at DESC') }
 
-    has_many :chapters, -> { order('pageflow_chapters.position ASC') }, :through => :revisions
-    has_many :pages, -> { order('pageflow_chapters.position ASC, pageflow_pages.position ASC') }, :through => :chapters
+    has_many :chapters, -> { order('pageflow_chapters.position ASC') }, through: :revisions
+    has_many :pages, lambda {
+                       order('pageflow_chapters.position ASC, pageflow_pages.position ASC')
+                     }, through: :chapters
 
     has_many :memberships, as: :entity, dependent: :destroy
-    has_many :users, :through => :memberships, :class_name => '::User'
+    has_many :users, through: :memberships, class_name: '::User'
 
     has_many :image_files
     has_many :video_files
@@ -33,11 +35,11 @@ module Pageflow
     has_one :draft, -> { editable }, class_name: 'Revision', inverse_of: :entry
     has_one :published_revision, -> { published }, class_name: 'Revision', inverse_of: :entry
 
-    has_one :edit_lock, :dependent => :destroy
+    has_one :edit_lock, dependent: :destroy
 
     has_secure_password validations: false
 
-    validates :account, :site, :presence => true
+    validates :account, :site, presence: true
     validates :title, presence: true
     validate :entry_type_is_available_for_account
     validate :folder_belongs_to_same_account
@@ -104,7 +106,8 @@ module Pageflow
 
     def restore(options)
       restored_revision = options.fetch(:revision)
-      draft.update!(:frozen_at => Time.now, :creator => options[:creator], :snapshot_type => 'before_restore')
+      draft.update!(frozen_at: Time.now, creator: options[:creator],
+                    snapshot_type: 'before_restore')
 
       restored_revision.copy do |revision|
         revision.restored_from = restored_revision
@@ -152,13 +155,16 @@ module Pageflow
     private
 
     def folder_belongs_to_same_account
-      errors.add(:folder, :must_be_same_account) if folder.present? && folder.account_id != account_id
+      return unless folder.present? && folder.account_id != account_id
+
+      errors.add(:folder,
+                 :must_be_same_account)
     end
 
     def entry_type_is_available_for_account
       return if Pageflow.config_for(account).entry_types.map(&:name).include?(type_name)
 
-      errors.add(:type_name, :must_be_available_for_account, type_name: type_name)
+      errors.add(:type_name, :must_be_available_for_account, type_name:)
     end
 
     def create_default_revision_components
@@ -166,9 +172,7 @@ module Pageflow
     end
 
     def update_password!(options)
-      if options[:password].present?
-        self.password = options[:password]
-      end
+      self.password = options[:password] if options[:password].present?
 
       if options[:password_protected]
         raise PasswordMissingError if password_digest.blank?

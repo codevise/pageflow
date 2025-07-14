@@ -20,7 +20,7 @@ module PageflowScrolled
 
       render(
         locals: {
-          entry: entry,
+          entry:,
           widget_scope: get_entry_mode_from_env
         }
       )

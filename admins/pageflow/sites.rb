@@ -6,7 +6,7 @@ module Pageflow
     actions :index, :show, :new, :edit, :create, :update
 
     show do
-      render 'attributes_table', site: site
+      render('attributes_table', site:)
 
       tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(site),
                 i18n: 'pageflow.admin.resource_tabs',

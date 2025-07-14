@@ -7,7 +7,7 @@ module Pageflow
     end
 
     it 'passes job id of file to zencoder api' do
-      video_file = build(:video_file, :job_id => 43)
+      video_file = build(:video_file, job_id: 43)
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.pending)
 
@@ -29,7 +29,7 @@ module Pageflow
     it 'assigns zencoder progress' do
       video_file = build(:video_file)
 
-      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.pending(:progress => 30))
+      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.pending(progress: 30))
 
       PollZencoderJob.new.perform_with_result(video_file, {})
 
@@ -63,7 +63,7 @@ module Pageflow
 
       begin
         PollZencoderJob.new.perform_with_result(video_file, {})
-      rescue ZencoderApi::UnrecoverableError # rubocop:disable Lint/HandleExceptions
+      rescue ZencoderApi::UnrecoverableError
       end
 
       expect(video_file.reload.encoding_error_message).to be_present
@@ -73,7 +73,7 @@ module Pageflow
       video_file = build(:video_file)
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
-      stub_request(:get, /.*amazonaws\.com/).to_return(:status => 404)
+      stub_request(:get, /.*amazonaws\.com/).to_return(status: 404)
 
       result = PollZencoderJob.new.perform_with_result(video_file, {})
 
@@ -84,7 +84,7 @@ module Pageflow
       video_file = build(:video_file)
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
-      stub_request(:get, /.*amazonaws\.com/).to_return(:status => 404)
+      stub_request(:get, /.*amazonaws\.com/).to_return(status: 404)
 
       result = PollZencoderJob.new.perform_with_result(video_file, skip_post_processing: true)
 
@@ -96,7 +96,7 @@ module Pageflow
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
       stub_request(:any, /#{zencoder_options[:s3_host_alias]}/)
-        .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
+        .to_return(status: 200, body: File.read('spec/fixtures/image.jpg'))
 
       result = PollZencoderJob.new.perform_with_result(video_file, {})
 
@@ -127,11 +127,11 @@ module Pageflow
     end
 
     it 'passes job id of file to get_details method of zencoder api' do
-      video_file = build(:video_file, :job_id => 43)
+      video_file = build(:video_file, job_id: 43)
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}.*/)
-        .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
+        .to_return(status: 200, body: File.read('spec/fixtures/image.jpg'))
 
       PollZencoderJob.new.perform_with_result(video_file, {})
 
@@ -139,14 +139,14 @@ module Pageflow
     end
 
     it 'assigns meta data' do
-      video_file = build(:video_file, :job_id => 43)
+      video_file = build(:video_file, job_id: 43)
       zencoder_api = ZencoderApiDouble.finished
       meta_data = {}
 
       allow(ZencoderApi).to receive(:instance).and_return(zencoder_api)
       allow(zencoder_api).to receive(:get_details).and_return(meta_data)
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
-        .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
+        .to_return(status: 200, body: File.read('spec/fixtures/image.jpg'))
       allow(video_file).to receive(:meta_data_attributes=)
 
       PollZencoderJob.new.perform_with_result(video_file, {})

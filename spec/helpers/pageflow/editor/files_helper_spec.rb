@@ -20,7 +20,7 @@ module Pageflow
         entry = create(:entry, published_revision: revision)
         published_entry = PublishedEntry.new(entry)
         video_file = create(:video_file)
-        create(:file_usage, revision: revision, file: video_file)
+        create(:file_usage, revision:, file: video_file)
 
         files_seed = JSON.parse(helper.editor_files_json_seed(published_entry))
         video_file_seed = files_seed['video_files'].first

@@ -1,7 +1,7 @@
 require 'pageflow/rails_version'
 
 def source_paths
-  [File.join(File.expand_path(File.dirname(__FILE__)), 'templates')]
+  [File.join(__dir__, 'templates')]
 end
 
 # The Gemfile is not required. We'll use the one from the project root instead.
@@ -38,7 +38,7 @@ inject_into_file('config/application.rb',
 
 if in_root { File.exist?('app/assets/javascripts/application.js') }
   # Remove requires to missing gems (i.e. turbolinks)
-  gsub_file('app/assets/javascripts/application.js', %r'//=.*', '')
+  gsub_file('app/assets/javascripts/application.js', %r{//=.*}, '')
 end
 
 # Recreate db. Ignore if it does not exist.

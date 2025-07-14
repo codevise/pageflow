@@ -122,7 +122,7 @@ module Pageflow
       def redirect_path
         if params[:user_id].present? && authorized?(:redirect_to_user, resource.user)
           tab = resource.entity_type == 'Pageflow::Account' ? 'accounts' : 'entries'
-          admin_user_path(params[:user_id], tab: tab)
+          admin_user_path(params[:user_id], tab:)
         elsif params[:user_id].present? && authorized?(:index, resource.user)
           admin_users_path
         elsif params[:account_id].present? && authorized?(:read, resource.entity)

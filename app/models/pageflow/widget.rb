@@ -85,7 +85,7 @@ module Pageflow
 
       def defaults_by_role
         config.widget_types.defaults_by_role.each_with_object({}) do |(role, widget_type), result|
-          result[role] = Widget.new(role: role, type_name: widget_type.name,
+          result[role] = Widget.new(role:, type_name: widget_type.name,
                                     subject: nil,
                                     configuration:
                                       config.widget_types.default_configuration(role))
@@ -94,8 +94,9 @@ module Pageflow
 
       def placeholders_by_role
         return {} unless options[:include_placeholders]
+
         config.widget_types.roles.each_with_object({}) do |role, result|
-          result[role] = Widget.new(role: role, type_name: nil, subject: nil)
+          result[role] = Widget.new(role:, type_name: nil, subject: nil)
         end
       end
 

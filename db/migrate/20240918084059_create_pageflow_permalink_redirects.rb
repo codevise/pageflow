@@ -7,7 +7,8 @@ class CreatePageflowPermalinkRedirects < ActiveRecord::Migration[5.2]
 
       t.timestamps
 
-      t.index ['slug', 'directory_id'], name: 'index_pageflow_permalink_redirects_on_slug_and_dir', unique: true
+      t.index ['slug', 'directory_id'], name: 'index_pageflow_permalink_redirects_on_slug_and_dir',
+                                        unique: true
     end
   end
 end

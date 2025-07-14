@@ -29,7 +29,7 @@ module Pageflow
     end
 
     def assumed_quota
-      @assumed_quota ||= encoding_quota.assume(files: files)
+      @assumed_quota ||= encoding_quota.assume(files:)
     end
 
     def files

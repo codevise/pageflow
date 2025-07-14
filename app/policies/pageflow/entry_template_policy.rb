@@ -10,7 +10,7 @@ module Pageflow
     end
 
     def update?
-      allows?(%w(publisher manager))
+      allows?(%w[publisher manager])
     end
 
     private

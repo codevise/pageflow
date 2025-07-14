@@ -71,7 +71,7 @@ module Pageflow
 
       def background_position(coord)
         property_name = "#{property_base_name}_#{coord}"
-        configuration.key?(property_name) ? "#{configuration[property_name]}%" : "50%"
+        configuration.key?(property_name) ? "#{configuration[property_name]}%" : '50%'
       end
 
       def file_type
@@ -110,7 +110,7 @@ module Pageflow
       end
 
       def file
-        @file ||= (find_file || :none)
+        @file ||= find_file || :none
         @file == :none ? nil : @file
       end
 

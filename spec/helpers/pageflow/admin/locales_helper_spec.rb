@@ -19,7 +19,7 @@ module Pageflow
 
           pairs = available_public_locales_collection
 
-          expect(pairs).to eq([['Deutsch', 'de'], ['English', 'en'], ["Français", "fr"]])
+          expect(pairs).to eq([['Deutsch', 'de'], ['English', 'en'], ['Français', 'fr']])
         end
       end
     end

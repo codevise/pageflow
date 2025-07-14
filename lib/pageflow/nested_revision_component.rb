@@ -17,7 +17,7 @@ module Pageflow
       def copy_nested_revision_component_to(record, reset_perma_ids: false)
         nested_revision_component_collection_names.each do |collection_name|
           send(collection_name).each do |nested|
-            nested.copy_to(record.send(collection_name), reset_perma_ids: reset_perma_ids)
+            nested.copy_to(record.send(collection_name), reset_perma_ids:)
           end
         end
       end
@@ -47,7 +47,7 @@ module Pageflow
 
     # @api private
     def copy_to(collection, reset_perma_ids: false)
-      copy_with(reset_perma_ids: reset_perma_ids) do |record|
+      copy_with(reset_perma_ids:) do |record|
         collection << record
       end
     end
@@ -59,7 +59,7 @@ module Pageflow
       record.perma_id = nil if reset_perma_ids && record.respond_to?(:perma_id=)
 
       yield record
-      copy_nested_revision_component_to(record, reset_perma_ids: reset_perma_ids)
+      copy_nested_revision_component_to(record, reset_perma_ids:)
 
       record
     end

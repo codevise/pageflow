@@ -8,7 +8,8 @@ module Pageflow
           config.features.register('sitemap')
           config.features.register('fancy_page_type')
         end
-        target = build(:feature_target, features_configuration: {'sitemap' => true, 'other' => false})
+        target = build(:feature_target,
+                       features_configuration: {'sitemap' => true, 'other' => false})
 
         result = target.enabled_feature_names
 
@@ -84,7 +85,7 @@ module Pageflow
             config.features.register('some_page_type')
           end
           account = build(:account, features_configuration: {'some_page_type' => true})
-          entry = build(:entry, account: account)
+          entry = build(:entry, account:)
 
           expect(entry.enabled_feature_names).to include('some_page_type')
         end
@@ -104,7 +105,7 @@ module Pageflow
             config.features.register('some')
           end
           account = build(:account, features_configuration: {'some' => true})
-          entry = build(:entry, account: account, features_configuration: {'some' => false})
+          entry = build(:entry, account:, features_configuration: {'some' => false})
 
           expect(entry.enabled_feature_names).not_to include('some')
         end
@@ -125,7 +126,7 @@ module Pageflow
             config.features.enable_by_default('some_page_type')
           end
           account = build(:account, features_configuration: {'some_page_type' => false})
-          entry = build(:entry, account: account)
+          entry = build(:entry, account:)
 
           expect(entry.enabled_feature_names).not_to include('some_page_type')
         end
