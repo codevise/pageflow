@@ -1,0 +1,3 @@
+files:
+  - source: '**/config/locales/**/en.yml'
+    translation: '%original_path%/%two_letters_code%.yml'
