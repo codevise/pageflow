@@ -21,10 +21,13 @@ en:
           specific path.</p>
 
         hint: |
-          The stories's permalink will be updated automatically. If
+          The story's permalink will be updated automatically. If
           the story is already published, a redirect from the old URL
           to the new ULR will be created.
         submit: Set as Homepage
+        chosen: The story has been chosen as homepage.
+        root_permalink_directory_required: No permalink directory exists for this site.
+        root_entry_exists: Another story is already being used as homepage.
       sites:
         home_url_new_site_hint: |
           Used for requests to the root path with one of the above

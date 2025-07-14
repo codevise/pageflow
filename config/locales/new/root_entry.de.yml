@@ -26,6 +26,9 @@ de:
           der Beitrag bereits veröffentlicht wurde, wird eine
           Weiterleitung von der alten URL zur neuen URL eingerichtet.
         submit: Als Einstiegsseite festlegen
+        chosen: Der Beitrag wurde als Einstiegsseite festgelegt.
+        root_permalink_directory_required: Für diese Seite wurde noch kein Permalink-Verzeichnis angelegt.
+        root_entry_exists: Es existiert bereits ein Beitrag, der als Einstiegsseite verwendet wird.
       sites:
         home_url_new_site_hint: |
           Wird einer der obigen CNAMES ohne Pfad in der URL verwendet,
