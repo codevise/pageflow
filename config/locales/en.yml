@@ -907,7 +907,6 @@ en:
           site are available via URLs of the form
           https://%{site_host}/feeds/en.atom where "en" can be
           replaced with any locale you want to filter by.
-        home_url_hint: Used for requests to the root path with one of the above CNAMES. Default target location for the home button.
         name: "%{account_name}"
         remove_logo: Remove logo
         show: View

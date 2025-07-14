@@ -63,6 +63,7 @@ module Pageflow
             )
 
           entry.build_permalink(
+            allow_root_path: evaluator.permalink_attributes[:allow_root_path],
             directory: permalink_directory,
             slug: evaluator.permalink_attributes.fetch(:slug)
           )

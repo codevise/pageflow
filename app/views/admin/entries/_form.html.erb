@@ -1,4 +1,5 @@
-<%= admin_form_for([:admin, resource]) do |f| %>
+<%= admin_form_for([:admin, resource],
+                   data: {root_permalink: @entry.persisted? && @entry&.permalink&.slug == ''}) do |f| %>
   <%= f.inputs do %>
     <%= f.input(:title,
                 hint: @entry.site.permalink_directories.blank? &&

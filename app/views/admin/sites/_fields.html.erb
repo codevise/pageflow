@@ -2,7 +2,8 @@
   <%= f.input :title, hint: t('pageflow.admin.sites.title_hint') %>
   <%= f.input :cname, hint: t('pageflow.admin.sites.cname_hint') %>
   <%= f.input :additional_cnames, hint: t('pageflow.admin.sites.additional_cnames_hint') %>
-  <%= f.input :home_url, hint: t('pageflow.admin.sites.home_url_hint') %>
+
+  <%= f.input(:home_url, hint: site_home_url_hint(@site)) %>
 <% end %>
 
 <%= f.inputs do %>

@@ -47,6 +47,8 @@ Metrics/BlockLength:
 
 # In specs methods using RSpec DSL often become long
 Metrics/MethodLength:
+  CountAsOne:
+    - method_call
   Exclude:
     - '**/app/views/components/**/*'
     - '**/spec/**/*'

@@ -92,6 +92,36 @@ describe Admin::EntriesController do
     end
   end
 
+  describe '#all_option' do
+    it 'includes only entries visible to user' do
+      account = create(:account)
+      entry = create(:entry, account:)
+      create(:entry, account:)
+      create(:entry)
+      current_user = create(:user, :previewer, on: entry)
+
+      sign_in(current_user)
+      get(:all_options)
+      option_texts = json_response(path: ['results', '*', 'text'])
+
+      expect(option_texts).to eq([entry.title])
+    end
+
+    it 'allows filtering by site' do
+      account = create(:account)
+      site = create(:site, account:)
+      entry = create(:entry, account:, site:)
+      create(:entry, account:)
+      current_user = create(:user, :manager, on: account)
+
+      sign_in(current_user)
+      get(:all_options, params: {site_id: site})
+      option_texts = json_response(path: ['results', '*', 'text'])
+
+      expect(option_texts).to eq([entry.title])
+    end
+  end
+
   describe '#eligible_sites_options' do
     it 'can be filtered by account name' do
       current_user = create(:user, :admin)
@@ -613,6 +643,51 @@ describe Admin::EntriesController do
       expect(response.body)
         .to have_selector('.permalink_base_url', text: 'some.example.com/foo/')
     end
+
+    it 'lets account manager create root entry' do
+      user = create(:user)
+      account = create(:account, with_manager: user)
+      site = create(:site, account:)
+      create(:permalink_directory, site:, path: '')
+      create(:permalink_directory, site:, path: 'other/')
+
+      sign_in(user, scope: :user)
+      get :new, params: {site_id: site, at: 'root'}
+
+      expect(response.body)
+        .not_to have_selector('input[name="entry[permalink_attributes][slug]"]')
+      expect(response.body)
+        .not_to have_selector('select[name="entry[permalink_attributes][directory_id]"]')
+      expect(response.body)
+        .to have_selector('input[type=hidden][name=at][value=root]', visible: false)
+    end
+
+    it 'ignores at root param if not account manger' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      create(:permalink_directory, site: account.default_site, path: '')
+      create(:permalink_directory, site: account.default_site, path: 'other/')
+
+      sign_in(user, scope: :user)
+      get :new, params: {site_id: account.default_site, at: 'root'}
+
+      expect(response.body)
+        .to have_selector('input[type=text][name="entry[permalink_attributes][slug]"]')
+      expect(response.body)
+        .to have_selector('select[name="entry[permalink_attributes][directory_id]"]')
+    end
+
+    it 'does not allow passing sites of other account' do
+      user = create(:user)
+      create(:account, :with_permalinks, with_manager: user)
+      site_of_other_account = create(:site, :with_root_permalink_directory)
+
+      sign_in(user, scope: :user)
+
+      expect {
+        get :new, params: {site_id: site_of_other_account, at: 'root'}
+      }.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 
   describe '#create' do
@@ -756,6 +831,46 @@ describe Admin::EntriesController do
       )
 
       expect(Pageflow::Entry.last.permalink).to have_attributes(slug: 'custom-slug')
+    end
+
+    it 'lets account manager create root entry' do
+      user = create(:user)
+      account = create(:account, :with_permalinks, with_manager: user)
+
+      sign_in(user, scope: :user)
+      post(
+        :create,
+        params: {
+          at: 'root',
+          entry: {
+            title: 'Overview',
+          }
+        }
+      )
+
+      expect(account.default_site.entries.last.permalink).to have_attributes(slug: '')
+    end
+
+    it 'does not let account publisher create root entry' do
+      user = create(:user)
+      account = create(:account, :with_permalinks, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      post(
+        :create,
+        params: {
+          entry: {
+            at: 'root',
+            title: 'Overview',
+            permalink_attributes: {
+              slug: '',
+              directory_id: account.default_site.root_permalink_directory
+            }
+          }
+        }
+      )
+
+      expect(account.default_site.entries.last.permalink).to have_attributes(slug: 'overview')
     end
 
     it 'invokes entry_creared hook' do
@@ -986,6 +1101,59 @@ describe Admin::EntriesController do
         .not_to have_selector('select[name="entry[permalink_attributes][directory_id]"]')
       expect(response.body)
         .not_to have_selector('input[name="entry[permalink_attributes][slug]"]')
+    end
+
+    it 'sets data-root-permalink to false by default' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(
+        :entry,
+        account:
+      )
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body)
+        .to have_selector('form[data-root-permalink=false]')
+    end
+
+    it 'sets data-root-permalink to false if entry has slug' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(
+        :entry,
+        account:,
+        permalink_attributes: {
+          slug: 'slug'
+        }
+      )
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body)
+        .to have_selector('form[data-root-permalink=false]')
+    end
+
+    it 'sets data-root-permalink to true if entry is site root' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(
+        :entry,
+        account:,
+        permalink_attributes: {
+          directory_path: '',
+          slug: '',
+          allow_root_path: true
+        }
+      )
+
+      sign_in(user, scope: :user)
+      get :edit, params: {id: entry}
+
+      expect(response.body)
+        .to have_selector('form[data-root-permalink=true]')
     end
   end
 
@@ -1677,7 +1845,7 @@ describe Admin::EntriesController do
 
       expect(response.body)
         .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
-                         '[placeholder="some-title"]')
+                         '[data-placeholder="some-title"]')
     end
 
     it 'renders hidden permalink field without inputs if no permalink directories' do

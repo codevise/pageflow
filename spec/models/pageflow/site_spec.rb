@@ -86,6 +86,47 @@ module Pageflow
       end
     end
 
+    describe '#root_permalink_directory' do
+      it 'is nil by default' do
+        site = create(:site)
+
+        expect(site.root_permalink_directory).to be_nil
+      end
+
+      it 'returns directory with empty path' do
+        site = create(:site)
+        create(:permalink_directory, site:, path: 'en/')
+        create(:permalink_directory, site:, path: 'de/')
+        root_permalink_directory = create(:permalink_directory, site:, path: '')
+
+        expect(site.root_permalink_directory).to eq(root_permalink_directory)
+      end
+    end
+
+    describe '#root_entry' do
+      it 'is nil by default' do
+        site = create(:site)
+
+        expect(site.root_entry).to be_nil
+      end
+
+      it 'returns entry with empty slug in root directory' do
+        site = create(:site)
+        directory = site.build_root_permalink_directory
+        entry = create(
+          :entry,
+          site:,
+          permalink_attributes: {
+            allow_root_path: true,
+            directory:,
+            slug: ''
+          }
+        )
+
+        expect(site.root_entry).to eq(entry)
+      end
+    end
+
     describe '#cutoff_mode_name' do
       it 'is invalid if cutoff mode not registered' do
         site = build(:site, cutoff_mode_name: 'unknown')

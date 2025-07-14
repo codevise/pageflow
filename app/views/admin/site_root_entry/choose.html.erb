@@ -1,0 +1,19 @@
+<%= admin_form_for(@site_root_entry_form,
+                   url: admin_site_root_entry_choose_path(site_id: @site)) do |f| %>
+  <%= t('pageflow.admin.site_root_entry.intro_html', site_host: @site.host) %>
+
+  <%= f.semantic_errors :entry %>
+
+  <%= f.inputs do %>
+    <%= f.input(:entry_id,
+                as: :searchable_select,
+                ajax: {
+                  resource: Pageflow::Entry,
+                  params: {site_id: @site.id}
+                },
+                hint: t('pageflow.admin.site_root_entry.hint')) %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action(:submit, label: t('pageflow.admin.site_root_entry.submit')) %>
+  <% end %>
+<% end %>

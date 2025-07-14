@@ -51,5 +51,10 @@ module Pageflow
     def update?
       read?
     end
+
+    def manage_root_entry?
+      @user.admin? ||
+        @account_role_query.has_at_least_role?(:manager)
+    end
   end
 end

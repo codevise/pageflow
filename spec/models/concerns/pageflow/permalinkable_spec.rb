@@ -132,6 +132,47 @@ module Pageflow
       expect(entry.permalink).to have_attributes(slug: 'my-example')
     end
 
+    it 'has flag attribute to allow root path' do
+      entry = create(
+        :entry,
+        title: 'My Example',
+        permalink_attributes: {
+          allow_root_path: true,
+          slug: ''
+        }
+      )
+
+      expect(entry.permalink).to have_attributes(slug: '')
+    end
+
+    it 'ignores root path flag in directory' do
+      entry = create(
+        :entry,
+        title: 'My Example',
+        permalink_attributes: {
+          allow_root_path: true,
+          directory_path: 'en/',
+          slug: ''
+        }
+      )
+
+      expect(entry.permalink).to have_attributes(slug: 'my-example')
+    end
+
+    it 'sets default slug on update' do
+      entry = create(
+        :entry,
+        title: 'My Example',
+        permalink_attributes: {
+          slug: 'some-slug'
+        }
+      )
+
+      entry.update(permalink_attributes: {slug: ''})
+
+      expect(entry.permalink).to have_attributes(slug: 'my-example')
+    end
+
     it 'does not enforce uniqueness when generating default slug' do
       account = create(:account)
       permalink_directory = create(

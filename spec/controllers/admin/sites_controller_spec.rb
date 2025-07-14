@@ -217,6 +217,15 @@ module Admin
         expect(response.body).to have_select('Cutoff mode', options: ['(None)', 'Some Cutoff Mode'])
       end
 
+      it 'does not render root entry hint' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin), scope: :user)
+        get(:new, params: {account_id: account})
+
+        expect(response.body).not_to have_selector('a[href*="/admin/site_root_entry/choose"]')
+      end
+
       it 'displays empty custom 404 entry select for new sites' do
         account = create(:account)
 
@@ -248,6 +257,37 @@ module Admin
         get(:edit, params: {account_id: site.account, id: site})
 
         expect(response.body).to have_selector('[name="site[custom_field]"]')
+      end
+
+      it 'renders root entry hint if site does not have root entry' do
+        site = create(:site)
+
+        sign_in(create(:user, :admin), scope: :user)
+        get(:edit, params: {account_id: site.account, id: site})
+
+        expect(response.body)
+          .to have_selector("a[href='/admin/site_root_entry/choose?site_id=#{site.id}']")
+        expect(response.body)
+          .to have_selector("a[href='/admin/entries/new?at=root&site_id=#{site.id}']")
+      end
+
+      it 'disabled home url field and renders link to root entry if present' do
+        site = create(:site)
+        entry = create(
+          :entry,
+          site:,
+          account: site.account,
+          permalink_attributes: {
+            slug: '',
+            allow_root_path: true
+          }
+        )
+
+        sign_in(create(:user, :admin), scope: :user)
+        get(:edit, params: {account_id: site.account, id: site})
+
+        expect(response.body)
+          .to have_selector("a[href='#{admin_entry_path(entry)}']")
       end
 
       it 'displays custom 404 entry select for existing sites' do

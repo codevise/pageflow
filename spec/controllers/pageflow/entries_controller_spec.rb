@@ -9,71 +9,8 @@ module Pageflow
       Rails.application.class.routes.url_helpers
     end
 
-    describe '#index' do
-      it 'redirects to home url of site with matching cname' do
-        create(:site, cname: 'pageflow.example.com', home_url: 'http://example.com/overview')
-
-        request.env['HTTP_HOST'] = 'pageflow.example.com'
-        get(:index)
-
-        expect(response).to redirect_to('http://example.com/overview')
-      end
-
-      it 'responds with not found if no site matches cname' do
-        request.env['HTTP_HOST'] = 'unknown.example.com'
-        get(:index)
-
-        expect(response.status).to eq(404)
-      end
-
-      it 'responds with not found if site with matching cname does not have home_url' do
-        create(:site, cname: 'pageflow.example.com')
-
-        request.env['HTTP_HOST'] = 'pageflow.example.com'
-        get(:index)
-
-        expect(response.status).to eq(404)
-      end
-
-      it 'uses configures site_request_scope' do
-        Pageflow.config.site_request_scope = lambda do |sites, request|
-          sites.where(id: Account.find_by_name!(request.subdomain).default_site_id)
-        end
-        site = create(:site, home_url: 'http://example.com')
-        create(:account, name: 'some-example', default_site: site)
-
-        request.env['HTTP_HOST'] = 'some-example.pageflow.io'
-        get(:index)
-
-        expect(response).to redirect_to('http://example.com')
-      end
-
-      it 'responds with not found if site_request_scope raises RecordNotFound' do
-        Pageflow.config.site_request_scope = lambda do |sites, request|
-          sites.where(id: Account.find_by_name!(request.subdomain).default_site_id)
-        end
-
-        request.env['HTTP_HOST'] = 'none.pageflow.io'
-        get(:index)
-
-        expect(response.status).to eq(404)
-      end
-
-      it 'responds with not found if site_request_scope returns site with blank home_url' do
-        Pageflow.config.site_request_scope = lambda do |sites, request|
-          sites.where(id: Account.find_by_name!(request.subdomain).default_site_id)
-        end
-        site = create(:site)
-        create(:account, name: 'some-example', default_site: site)
-
-        request.env['HTTP_HOST'] = 'some-example.pageflow.io'
-        get(:index)
-
-        expect(response.status).to eq(404)
-      end
-    end
-
-    # Specs for #show can be found in
+    # Specs for #index and #show can be found in
+    # spec/requests/entries_index_request_spec.rb and
     # spec/requests/entries_show_request_spec.rb
 
     describe '#manifest' do

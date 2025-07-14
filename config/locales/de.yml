@@ -908,7 +908,6 @@ de:
           https://%{site_host}/feeds/de.atom zu Verfügung, wobei "en"
           durch ein beliebiges Sprachkürzel ersetzt werden kann, nach
           dem gefiltert werden soll.
-        home_url_hint: Wird einer der obigen CNAMES ohne Pfad in der URL verwendet, wird zu dieser URL umgeleitet. Standard Link Ziel des Home Buttons.
         name: "%{account_name}"
         remove_logo: Logo entfernen
         show: Anzeigen

@@ -1,0 +1,41 @@
+en:
+  activemodel:
+    attributes:
+      pageflow/site_root_entry_form:
+        entry: Story
+        entry_id: Story
+    errors:
+      models:
+        pageflow/site_root_entry_form:
+          attributes:
+            entry:
+              blank: not found
+  pageflow:
+    admin:
+      site_root_entry:
+        title: Set Homepage
+        intro_html: |
+          <p>Select the story that should appear as the homepage at:<br>
+          <strong>https://%{site_host}/</strong><br>This content will
+          be shown when someone visits your site without entering a
+          specific path.</p>
+
+        hint: |
+          The stories's permalink will be updated automatically. If
+          the story is already published, a redirect from the old URL
+          to the new ULR will be created.
+        submit: Set as Homepage
+      sites:
+        home_url_new_site_hint: |
+          Used for requests to the root path with one of the above
+          CNAMES. Once the site has been created you can also
+          configure an entry as homepage.
+        home_url_hint_html: |
+          Used for requests to the root path with one of the above
+          CNAMES. Alternatively, you can also use an entry as homepage.
+          <a href="%{choose_url}">Select existing entry</a> or <a
+          href="%{new_url}">create a new one</a>.
+        home_url_with_root_entry_hint_html: |
+          At the moment, the site uses the entry <a
+          href="%{entry_url}">%{entry_title}</a> as homepage. Change
+          the permalink of the entry to instead use the redirect URL.

@@ -1,0 +1,45 @@
+de:
+  activemodel:
+    attributes:
+      pageflow/site_root_entry_form:
+        entry: Beitrag
+        entry_id: Beitrag
+    errors:
+      models:
+        pageflow/site_root_entry_form:
+          attributes:
+            entry:
+              blank: nicht gefunden
+  pageflow:
+    admin:
+      site_root_entry:
+        title: Einstiegsseite festlegen
+        intro_html: |
+          <p>Wähle den Beitrag aus, der als Einstiegsseite unter der
+          folgenden URL gezeigt werden soll:
+          <strong>https://%{site_host}/</strong><br>Dieser Inhalt
+          wird gezeigt, wenn die Domain der Site ohne weiteren Pfad
+          aufgerufen wird.</p>
+
+        hint: |
+          Der Permalink des Beitrags wird automatisch angepasst. Falls
+          der Beitrag bereits veröffentlicht wurde, wird eine
+          Weiterleitung von der alten URL zur neuen URL eingerichtet.
+        submit: Als Einstiegsseite festlegen
+      sites:
+        home_url_new_site_hint: |
+          Wird einer der obigen CNAMES ohne Pfad in der URL verwendet,
+          wird zu dieser URL umgeleitet. Nachdem die Site erstellt
+          wurde kann auch ein Beitrag als Einstiegsseite konfiguriert
+          werden.
+        home_url_hint_html: |
+          Wird einer der obigen CNAMES ohne Pfad in der URL verwendet,
+          wird zu dieser URL umgeleitet.
+          Alternativ kannst du auch einen Beitrag als Einstiegsseite
+          verwenden. <a href="%{choose_url}">Bestehenden Beitrag auswählen</a>
+          oder <a href="%{new_url}">neuen Beitrag erstellen</a>.
+        home_url_with_root_entry_hint_html: |
+          Im Moment wird der Beitrag <a
+          href="%{entry_url}">%{entry_title}</a> als Einstiegsseite
+          verwendet. Ändere den Permalink des Beitrags, um stattdessen
+          die Redirect URL zu verwenden.

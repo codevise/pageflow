@@ -37,6 +37,7 @@ $pageflow-permalink-input-directory-background-position: null !default;
     line-height: $pageflow-permalink-input-line-height;
     background-color: $pageflow-permalink-input-base-url-background-color;
     color: $pageflow-permalink-input-base-url-color;
+    flex: 1;
   }
 
   select,
@@ -60,7 +61,7 @@ $pageflow-permalink-input-directory-background-position: null !default;
 
   input {
     padding-left: 0;
-    flex: 1;
+    flex: 2;
   }
 
   &.no_directories {

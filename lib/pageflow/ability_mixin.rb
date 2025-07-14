@@ -111,6 +111,12 @@ module Pageflow
         AccountPolicy.new(user, account).see_entry_types?
       end
 
+      can :manage, ActiveAdmin::Page, name: 'Site Root Entry'
+
+      can :manage_root_entry, Site do |site|
+        SitePolicy.new(user, site).manage_root_entry?
+      end
+
       unless user.admin?
         can :configure_folder_on, Account do |account|
           AccountPolicy.new(user, account).configure_folder_on?
