@@ -1,5 +1,7 @@
 AllCops:
   TargetRubyVersion: 3.2
+  Exclude:
+    - '**/spec/dummy/**/*'
 
 # Use double quotes only for interpolation.
 Style/StringLiterals:
@@ -29,10 +31,6 @@ Style/FrozenStringLiteralComment:
 Style/LambdaCall:
   Enabled: false
 
-# Do not use %i for symbol arrays
-Style/SymbolArray:
-  EnforcedStyle: brackets
-
 # In specs methods using RSpec DSL often become complex
 Metrics/AbcSize:
   Exclude:
@@ -40,7 +38,7 @@ Metrics/AbcSize:
 
 # Ignore long RSpec and ActiveAdmin blocks
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'feature', 'it', 'namespace']
+  AllowedMethods: ['describe', 'context', 'feature', 'it', 'namespace']
   Exclude:
     - '**/spec/factories/*.rb'
     - '**/admins/pageflow/*.rb'
