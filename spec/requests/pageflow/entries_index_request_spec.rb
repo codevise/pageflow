@@ -12,6 +12,25 @@ module Pageflow
       Rails.application.reload_routes!
     end
 
+    let(:entry_type_app) do
+      lambda do |env|
+        entry = EntriesControllerEnvHelper.get_published_entry_from_env(env)
+        mode = EntriesControllerEnvHelper.get_entry_mode_from_env(env)
+
+        ['200',
+         {'Content-Type' => 'text/html'},
+         ["#{entry.title} #{mode} rendered by entry type frontend app."]]
+      end
+    end
+
+    before do
+      pageflow_configure do |config|
+        TestEntryType.register(config,
+                               name: 'test',
+                               frontend_app: entry_type_app)
+      end
+    end
+
     describe '#index' do
       it 'redirects to home url of site with matching cname' do
         create(:site, cname: 'pageflow.example.com', home_url: 'http://example.com/overview')
@@ -19,6 +38,22 @@ module Pageflow
         get('/', params: {}, headers: {'HTTP_HOST' => 'pageflow.example.com'})
 
         expect(response).to redirect_to('http://example.com/overview')
+      end
+
+      it 'renders site root entry if present' do
+        site = create(:site, cname: 'pageflow.example.com')
+        create(:entry,
+               :published,
+               site:,
+               type_name: 'test',
+               title: 'Root Story',
+               permalink_attributes: {slug: '', allow_root_path: true})
+
+        get('/', params: {}, headers: {'HTTP_HOST' => 'pageflow.example.com'})
+
+        expect(response.status).to eq(200)
+        expect(response.body)
+          .to include('Root Story published rendered by entry type frontend app')
       end
 
       it 'responds with not found if no site matches cname' do

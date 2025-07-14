@@ -6,9 +6,21 @@ module Pageflow
     include EntryPasswordProtection
 
     def index
-      site = Site.for_request(request).with_home_url.first!
+      site = Site.for_request(request).first!
 
-      redirect_to(site.home_url, allow_other_host: true)
+      entry = PublishedEntry.find_by_permalink(
+        directory: '',
+        slug: '',
+        scope: site.entries
+      )
+
+      if entry
+        delegate_to_entry_type_frontend_app!(entry)
+      elsif site.home_url.present?
+        redirect_to(site.home_url, allow_other_host: true)
+      else
+        raise ActiveRecord::RecordNotFound
+      end
     end
 
     def show
