@@ -325,5 +325,38 @@ module Pageflow
 
       expect(entry.permalink_redirects.reload).to be_empty
     end
+
+    it 'destroys permalink when entry is destroyed' do
+      entry = create(
+        :entry,
+        permalink_attributes: {
+          slug: 'some-slug'
+        }
+      )
+
+      expect do
+        entry.destroy
+      end.to change(Permalink, :count).by(-1)
+    end
+
+    it 'destroys permalink redirects when entry is destroyed' do
+      entry = create(
+        :entry,
+        :published,
+        permalink_attributes: {
+          slug: 'old-slug'
+        }
+      )
+
+      entry.update(
+        permalink_attributes: {
+          slug: 'new-slug'
+        }
+      )
+
+      expect do
+        entry.destroy
+      end.to change(PermalinkRedirect, :count).by(-1)
+    end
   end
 end
