@@ -11,6 +11,28 @@ module Pageflow
 
         expect(result).to have_selector('link[rel=canonical]', visible: false)
       end
+
+      it 'renders site title as og:site_name' do
+        site = create(:site, title: 'Example Blog', cname: 'blog.example.com')
+        entry = create(:entry, :published, site:)
+        published_entry = PublishedEntry.new(entry)
+
+        result = helper.social_share_meta_tags_for(published_entry)
+
+        expect(result).to have_css('meta[property="og:site_name"][content="Example Blog"]',
+                                   visible: false)
+      end
+
+      it 'falls back to cname domain for og:site_name' do
+        site = create(:site, title: '', cname: 'blog.example.com')
+        entry = create(:entry, :published, site:)
+        published_entry = PublishedEntry.new(entry)
+
+        result = helper.social_share_meta_tags_for(published_entry)
+
+        expect(result).to have_css('meta[property="og:site_name"][content="example.com"]',
+                                   visible: false)
+      end
     end
 
     describe '#social_share_entry_url' do

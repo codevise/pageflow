@@ -4,7 +4,7 @@ module Pageflow
       return entry.title if entry.site.title == ' '
 
       [entry.title,
-       entry.site.title.presence || entry.site.cname_domain.presence].compact.join(' - ')
+       entry.site.display_title].compact.join(' - ')
     end
 
     def pretty_entry_url(entry, options = {})

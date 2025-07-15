@@ -127,6 +127,20 @@ module Pageflow
       end
     end
 
+    describe '#display_title' do
+      it 'returns title if present' do
+        site = build(:site, title: 'Example Blog', cname: 'www.example.com')
+
+        expect(site.display_title).to eq('Example Blog')
+      end
+
+      it 'falls back to cname domain' do
+        site = build(:site, title: '', cname: 'www.example.com')
+
+        expect(site.display_title).to eq('example.com')
+      end
+    end
+
     describe '#cutoff_mode_name' do
       it 'is invalid if cutoff mode not registered' do
         site = build(:site, cutoff_mode_name: 'unknown')
