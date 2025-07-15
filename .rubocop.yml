@@ -2,6 +2,7 @@ AllCops:
   TargetRubyVersion: 3.2
   Exclude:
     - '**/spec/dummy/**/*'
+    - '**/node_modules/**/*'
 
 # Use double quotes only for interpolation.
 Style/StringLiterals:
