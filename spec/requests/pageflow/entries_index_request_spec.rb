@@ -103,6 +103,188 @@ module Pageflow
 
         expect(response.status).to eq(404)
       end
+
+      describe 'with configured public_entry_redirect' do
+        it 'redirects to returned location' do
+          site = create(:site, cname: 'pageflow.example.com')
+          create(:entry,
+                 :published,
+                 site: site,
+                 type_name: 'test',
+                 permalink_attributes: {slug: '', allow_root_path: true})
+
+          Pageflow.config.public_entry_redirect = ->(_, _) { '/some_location' }
+
+          get('http://pageflow.example.com/')
+
+          expect(response).to redirect_to('/some_location')
+        end
+
+        it 'redirects even before https redirect takes place' do
+          site = create(:site, cname: 'pageflow.example.com')
+          create(:entry,
+                 :published,
+                 site: site,
+                 type_name: 'test',
+                 permalink_attributes: {slug: '', allow_root_path: true})
+
+          Pageflow.config.public_https_mode = :enforce
+          Pageflow.config.public_entry_redirect = ->(_, _) { '/some_location' }
+
+          get('http://pageflow.example.com/')
+
+          expect(response).to redirect_to('/some_location')
+        end
+
+        it 'passes entry and request' do
+          site = create(:site, cname: 'pageflow.example.com')
+          entry = create(
+            :entry,
+            :published,
+            site: site,
+            title: 'root',
+            type_name: 'test',
+            permalink_attributes: {slug: '', allow_root_path: true}
+          )
+
+          Pageflow.config.public_entry_redirect = lambda do |passed_entry, request|
+            "#{request.protocol}#{request.host}/#{passed_entry.slug}"
+          end
+
+          get('http://pageflow.example.com/')
+
+          expect(response).to redirect_to("http://pageflow.example.com/#{entry.slug}")
+        end
+
+        it 'allows redirecting to other host' do
+          site = create(:site, cname: 'pageflow.example.com')
+          create(:entry,
+                 :published,
+                 site: site,
+                 type_name: 'test',
+                 permalink_attributes: {slug: '', allow_root_path: true})
+
+          Pageflow.config.public_entry_redirect = ->(_, _) { 'http://www.example.com/' }
+
+          get('http://pageflow.example.com/')
+
+          expect(response).to redirect_to('http://www.example.com/')
+        end
+
+        it 'does not redirect if nil is returned' do
+          site = create(:site, cname: 'pageflow.example.com')
+          create(:entry,
+                 :published,
+                 site: site,
+                 type_name: 'test',
+                 permalink_attributes: {slug: '', allow_root_path: true})
+
+          Pageflow.config.public_entry_redirect = ->(_, _) { nil }
+
+          get('http://pageflow.example.com/')
+
+          expect(response.status).to eq(200)
+        end
+      end
+
+      context 'https mode' do
+        it 'redirects to https when https is enforced' do
+          site = create(:site, cname: 'pageflow.example.com')
+          create(:entry,
+                 :published,
+                 site: site,
+                 type_name: 'test',
+                 title: 'root',
+                 permalink_attributes: {slug: '', allow_root_path: true})
+
+          Pageflow.config.public_https_mode = :enforce
+
+          get('http://pageflow.example.com/')
+
+          expect(response).to redirect_to('https://pageflow.example.com/')
+        end
+
+        it 'redirects to http when https is prevented' do
+          site = create(:site, cname: 'pageflow.example.com')
+          create(:entry,
+                 :published,
+                 site: site,
+                 type_name: 'test',
+                 title: 'root',
+                 permalink_attributes: {slug: '', allow_root_path: true})
+
+          Pageflow.config.public_https_mode = :prevent
+
+          get('https://pageflow.example.com/')
+
+          expect(response).to redirect_to('http://pageflow.example.com/')
+        end
+
+        it 'stays on https when https mode is ignored' do
+          site = create(:site, cname: 'pageflow.example.com')
+          create(:entry,
+                 :published,
+                 site: site,
+                 type_name: 'test',
+                 permalink_attributes: {slug: '', allow_root_path: true})
+
+          Pageflow.config.public_https_mode = :ignore
+
+          get('https://pageflow.example.com/')
+
+          expect(response.status).to eq(200)
+        end
+
+        it 'stays on http when https mode is ignored' do
+          site = create(:site, cname: 'pageflow.example.com')
+          create(:entry,
+                 :published,
+                 site: site,
+                 type_name: 'test',
+                 permalink_attributes: {slug: '', allow_root_path: true})
+
+          Pageflow.config.public_https_mode = :ignore
+
+          get('http://pageflow.example.com/')
+
+          expect(response.status).to eq(200)
+        end
+      end
+
+      it 'responds with forbidden for entry published with password' do
+        site = create(:site, cname: 'pageflow.example.com')
+        create(
+          :entry,
+          :published_with_password,
+          site: site,
+          type_name: 'test',
+          password: 'abc123abc',
+          permalink_attributes: {slug: '', allow_root_path: true}
+        )
+
+        get('http://pageflow.example.com/')
+
+        expect(response.status).to eq(401)
+      end
+
+      it 'responds with success for entry published with password when correct password is supplied' do
+        site = create(:site, cname: 'pageflow.example.com')
+        create(
+          :entry,
+          :published_with_password,
+          site: site,
+          type_name: 'test',
+          password: 'abc123abc',
+          permalink_attributes: {slug: '', allow_root_path: true}
+        )
+
+        authorization =
+          ActionController::HttpAuthentication::Basic.encode_credentials('Pageflow', 'abc123abc')
+
+        get('http://pageflow.example.com/', headers: {'HTTP_AUTHORIZATION' => authorization})
+
+        expect(response.status).to eq(200)
+      end
     end
   end
 end

@@ -15,7 +15,7 @@ module Pageflow
       )
 
       if entry
-        delegate_to_entry_type_frontend_app!(entry)
+        handle_public_entry_request(entry)
       elsif site.home_url.present?
         redirect_to(site.home_url, allow_other_host: true)
       else
@@ -32,11 +32,7 @@ module Pageflow
 
           entry ||= find_by_slug!
 
-          return if redirect_according_to_entry_redirect(entry)
-          return if redirect_according_to_public_https_mode
-          return unless check_entry_password_protection(entry)
-
-          delegate_to_entry_type_frontend_app!(entry)
+          handle_public_entry_request(entry)
         rescue ActiveRecord::RecordNotFound
           render_custom_or_static_404_error_page
         end
@@ -86,6 +82,14 @@ module Pageflow
 
     def entry_request_scope
       Pageflow.config.public_entry_request_scope.call(Entry, request)
+    end
+
+    def handle_public_entry_request(entry)
+      return if redirect_according_to_entry_redirect(entry)
+      return if redirect_according_to_public_https_mode
+      return unless check_entry_password_protection(entry)
+
+      delegate_to_entry_type_frontend_app!(entry)
     end
 
     def redirect_according_to_permalink_redirect
