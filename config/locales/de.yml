@@ -827,7 +827,7 @@ de:
         no_members: Es sind keine Redakteure zugeordnet.
         no_revisions: Bisher keine Revisionen
         noindex: Aus Suchmaschinen ausgeschlossen
-        not_allowed_to_see_entry_types: Sie sind nicht berechtigt, die verfügbaren Beitrags-Typen für dieses Konto abzurufen
+        not_allowed_to_see_entry_types: Du bist nicht berechtigt, die verfügbaren Beitrags-Typen für dieses Konto abzurufen.
         not_published: Nicht veröffentlicht
         password_protected: Mit Passwortschutz
         preview: Vorschau
@@ -953,7 +953,7 @@ de:
         no_accounts: Keine Konten
         no_entries: Keine Beiträge
         none: Sie haben keine Beiträge.
-        not_allowed_to_see_user_quota: Sie sind nicht berechtigt, die Nutzer-Quota für dieses Konto abzurufen.
+        not_allowed_to_see_user_quota: Du bist nicht berechtigt, die Nutzer-Quota für dieses Konto abzurufen.
         resend_invitation: Einladung erneut verschicken
         resent_invitation: Der Benutzer wurde erneut per E-Mail eingeladen.
         roles:
