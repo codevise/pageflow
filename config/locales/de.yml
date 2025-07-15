@@ -4,7 +4,7 @@ de:
       message: Sie sind nicht berechtigt diese Seite anzuzeigen.
     any: Alle
     batch_actions:
-      action_label: Ausgewählte %{title}
+      action_label: "Ausgewählte %{title}"
       button_label: Massenoperationen
       default_confirmation: Bist Du sicher?
       delete_confirmation: Bist Du sicher, dass Du diese %{plural_model} löschen willst?
@@ -14,7 +14,7 @@ de:
       selection_toggle_explanation: "(Auswahl)"
       succesfully_destroyed:
         one: 1 %{model} erfolgreich gelöscht
-        other: "%{count} %{plural_model} erfolgreich gelöscht"
+        other: '%{count} %{plural_model} erfolgreich gelöscht'
     blank_slate:
       content: Es gibt noch keine %{resource_name}.
       link: Erstellen
@@ -33,14 +33,14 @@ de:
       resource_type: Ressource
       title: Kommentar
       title_content: Kommentare (%{count})
-    create_model: "%{model} erstellen"
+    create_model: '%{model} erstellen'
     dashboard: Übersicht
     dashboard_welcome:
       call_to_action: Siehe 'app/admin/dashboards.rb', um Übersichts-Bereiche hinzuzufügen.
       welcome: Willkommen in Active Admin. Dies ist die Standard-Übersichtsseite.
     delete: Löschen
     delete_confirmation: Wollen Sie dieses Element wirklich löschen?
-    delete_model: "%{model} löschen"
+    delete_model: '%{model} löschen'
     details: "%{model} Details"
     devise:
       change_password:
@@ -81,7 +81,7 @@ de:
     dropdown_actions:
       button_label: Aktionen
     edit: Bearbeiten
-    edit_model: "%{model} bearbeiten"
+    edit_model: '%{model} bearbeiten'
     empty: Leer
     equal_to: Gleich
     filter: Filtern
@@ -102,7 +102,7 @@ de:
         to: Bis
     greater_than: Größer als
     has_many_delete: Löschen
-    has_many_new: "%{model} hinzufügen"
+    has_many_new: '%{model} hinzufügen'
     has_many_remove: Entfernen
     index_list:
       block: Liste
@@ -111,9 +111,9 @@ de:
       table: Tabelle
     less_than: Kleiner als
     logout: Abmelden
-    main_content: Bitte implementieren Sie %{model}#main_content, um Inhalte anzuzeigen.
+    main_content: 'Bitte implementieren Sie %{model}#main_content, um Inhalte anzuzeigen.'
     new: Neu erstellen
-    new_model: "%{model} erstellen"
+    new_model: '%{model} erstellen'
     next: Weiter
     pagination:
       empty: Keine %{model} gefunden
@@ -129,13 +129,13 @@ de:
       frozen: Alle
       publications: Nur Veröffentlichungen
       publications_and_user_snapshots: Nur Veröffentlichungen/Sicherungen
-    search_field: Durchsuche %{field}
+    search_field: 'Durchsuche %{field}'
     sidebars:
       filters: Filter
       folders: Ordner
     status_tag:
-      'no': Nein
-      'yes': Ja
+      'no': 'Nein'
+      'yes': 'Ja'
     undelete: Wiederherstellen
     unsupported_browser:
       headline: Internet Explorer Version 9 und niedriger sind nicht unterstützt.
@@ -171,7 +171,7 @@ de:
         duration: Länge
         format: Format
       pageflow/chapter:
-        display_parent_page_button: "'Übergeordnete Seite'-Button anzeigen"
+        display_parent_page_button: '''Übergeordnete Seite''-Button anzeigen'
         navigation_bar_mode: Navigationsleiste
         parent_page_perma_id: Übergeordnete Seite
         title: Titel
@@ -203,7 +203,7 @@ de:
       pageflow/entry_template:
         configuration:
           group_label: Konfiguration
-          home_button_enabled: Home-Button in neuen Beiträgen anzeigen
+          home_button_enabled: "Home-Button in neuen Beiträgen anzeigen"
         default_author: Standard-Autor
         default_keywords: Standard-Schlüsselwörter
         default_locale: Standard-Sprache
@@ -506,7 +506,7 @@ de:
     - Fr
     - Sa
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mär
@@ -532,7 +532,7 @@ de:
       long: "%e. %B %Y"
       short: "%e. %b"
     month_names:
-    - 
+    -
     - Januar
     - Februar
     - März
@@ -706,8 +706,8 @@ de:
       readonly: ist schreibgeschützt
       record_invalid: 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
       restrict_dependent_destroy:
-        one: Der Datensatz kann nicht gelöscht werden, da  %{record} von ihm abhängt.
-        other: Der Datensatz kann nicht gelöscht werden, da %{record} von ihm abhängen.
+        many: Cannot delete record because dependent %{record} exist
+        one: Cannot delete record because a dependent %{record} exists
       taken: ist bereits vergeben
       too_long:
         one: ist zu lang (nicht mehr als 1 Zeichen)
@@ -722,29 +722,29 @@ de:
       body: 'Bitte überprüfen Sie die folgenden Felder:'
       header:
         one: 'Konnte %{model} nicht speichern: ein Fehler.'
-        other: 'Konnte %{model} nicht speichern: %{count} Fehler.'
+        other: "Konnte %{model} nicht speichern: %{count} Fehler."
   formtastic:
     cancel: Abbrechen
-    create: "%{model} speichern"
-    'no': Nein
+    create: '%{model} speichern'
+    'no': 'Nein'
     required: erforderlich
-    reset: "%{model} zurücksetzen"
-    submit: "%{model} speichern"
-    update: "%{model} speichern"
-    'yes': Ja
+    reset: '%{model} zurücksetzen'
+    submit: '%{model} speichern'
+    update: '%{model} speichern'
+    'yes': 'Ja'
   helpers:
     select:
       prompt: Bitte wählen
     submit:
-      create: "%{model} erstellen"
-      submit: "%{model} speichern"
-      update: "%{model} aktualisieren"
+      create: '%{model} erstellen'
+      submit: '%{model} speichern'
+      update: '%{model} aktualisieren'
   i18n:
     transliterate:
       rule:
-        ä: ae
-        ö: oe
-        ü: ue
+        ä:
+        ö:
+        ü:
   language: Deutsch
   number:
     currency:
@@ -855,7 +855,7 @@ de:
         title_hint: Dieses Feld bestimmt die URL, unter der der Beitrag öffentlich erreichbar ist.
       entry:
         add: Beitrag hinzufügen
-        entry_membership_hint: Laden Sie Benutzer in Ihr Konto ein, um sie als Mitglieder dieser Story zuzuweisen.
+        entry_membership_hint: Lade Benutzer ins Konto ein, um sie als Mitglieder diesem Beitrag zuzuweisen.
         none_addable_tooltip: Kein Beitrag verfügbar
         user_quota_exhausted: Ihr Benutzerkontingent ist erschöpft.
       entry_templates:
@@ -870,7 +870,7 @@ de:
           undefined: "(Standard)"
       folders:
         all: Alle
-        confirm_destroy: Ordner wirklick löschen? Beiträge bleiben erhalten.
+        confirm_destroy: 'Ordner wirklick löschen? Beiträge bleiben erhalten.'
         destroy: Löschen
         edit: Bearbeiten
       memberships:
@@ -916,9 +916,7 @@ de:
           allen veröffentlichten Einträgen der Site unter
           https://%{site_host}/sitemap.xml zur Verfügung. Registriere
           die URL in Google Search Console oder ähnlichen Tools.
-        title_hint: |-
-          Wird in Titeln der Beiträge und als Titel für den Atom-Feed
-          verwendet.
+        title_hint: "Wird in Titeln der Beiträge und als Titel für den Atom-Feed\nverwendet."
       user:
         cannot_add: Was Sie tun möchten, ist nicht möglich. Sie müssen aktualisieren.
         none_addable_tooltip: Kein Benutzer verfügbar
@@ -942,7 +940,7 @@ de:
         edit: Bearbeiten
         edit_role: Rolle ändern
         email_invitation_hint: Dem Benutzer wird eine E-Mail mit Anweisungen zum Festelegen eines Passworts gesendet.
-        empty: Keine Beiträge assoziiert. Fügen Sie dem ausgewählten Benutzer Beiträge hinzu.
+        empty: 'Keine Beiträge assoziiert. Fügen Sie dem ausgewählten Benutzer Beiträge hinzu.'
         invite_user: Benutzer einladen
         me:
           change_password_hint: Freilassen um bisheriges Passwort beizubehalten.
@@ -993,7 +991,7 @@ de:
           previewer: Prüfer
           publisher: Veröffentlicher
         suspend: Sperren
-        suspended: Der Benutzer wurde gesperrt. Er kann sich nun nicht mehr anmelden.
+        suspended: 'Der Benutzer wurde gesperrt. Er kann sich nun nicht mehr anmelden.'
         unsuspend: Entsperren
         unsuspended: Der Benutzer wurde entsperrt. Er kann sich nun wieder anmelden.
     audio:
@@ -1076,7 +1074,8 @@ de:
       errors:
         held_by_other_session_error:
           acquire_html: "<p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet.</p>"
-          other_html: "<p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet. Laden Sie die Seite neu und klicken Sie auf 'Stattdessen hier bearbeiten', um den akutellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen verloren.</p>"
+          other_html: |-
+            <p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet. Laden Sie die Seite neu und klicken Sie auf 'Stattdessen hier bearbeiten', um den akutellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen verloren.</p>
         held_by_other_user_error:
           acquire_html: "<p>Dieser Beitrag wird im Moment von <strong>%{user_name}</strong> bearbeitet. Klicken Sie auf 'Stattdessen hier bearbeiten', um die Bearbeitung durch den anderen Benutzers abzubrechen.</p>"
           other_html: "<p><strong>%{user_name}</strong> hat ihre Bearbeitung abgebrochen. Laden Sie die Seite neu und klicken Sie auf 'Stattdessen hier bearbeiten', um den aktuellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen des anderen Benutzers verloren.</p>"
@@ -1134,7 +1133,7 @@ de:
           rights:
             cell_title:
               blank: Noch nicht ausgefüllt
-              present: 'Ausgefüllt: %{value}'
+              present: 'Present: %v{value}'
             column_header: Rechte
             inline_help: Wird im Copyright-Bereich des Beitrags angezeigt.
             label: Rechte
@@ -1249,7 +1248,7 @@ de:
           new_page: Neue Seite
           save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
         confirm_encoding:
-          all_released: Alle Dateien wurden zur Transcodierung freigegeben.
+          all_released: 'Alle Dateien wurden zur Transcodierung freigegeben.'
           audios_tab: Audios
           confirm_button: Ausgewählte Dateien transcodieren
           link_to_progress: Auf der %{link} Seite wird der Fortschritt der Verarbeitung angezeigt.
@@ -1527,7 +1526,7 @@ de:
               inline_help: Diese Funktion steht in diesem Theme nicht zur Verfügung.
             home_url:
               inline_help: URL der Übersichtseite. Leer lassen, um Standard zu übernehmen.
-              label: Home-Button-URL
+              label: "Home-Button-URL"
             home_url_disabled:
               inline_help: Diese Funktion steht in diesem Theme nicht zur Verfügung.
             manual_start:
@@ -1623,7 +1622,28 @@ de:
       meta_data:
         general:
           menu_item: Allgemein
-          text: "# Allgemein\n\n## Titel des Pageflows\n\nHier kannst Du Deinem Pageflow einen Titel geben, der in der\nTitelleiste des Browserfensters angezeigt wird. Unter diesem\nTitel wird Dein Pageflow nach der Veröffentlichung auch in\nSuchmaschinen indiziert werden.\n\n## Sprache\n\nWähle hier, in welcher Sprache Dein Pageflow ausgespielt\nwird. Hierbei geht es um die Frontend-Elemente wie das \nImpressum und die Datenschutz-Einstellung.\n\n## Credits\n\nHier kannst Du Deine Impressums-Information im Freitext\neingeben. Zudem können für alle Dateien unter „Dateien\nverwalten“ auch Bildrechte vergeben werden, die dann\nautomatisch im Impressum angezeigt werden."
+          text: |-
+            # Allgemein
+
+            ## Titel des Pageflows
+
+            Hier kannst Du Deinem Pageflow einen Titel geben, der in der
+            Titelleiste des Browserfensters angezeigt wird. Unter diesem
+            Titel wird Dein Pageflow nach der Veröffentlichung auch in
+            Suchmaschinen indiziert werden.
+
+            ## Sprache
+
+            Wähle hier, in welcher Sprache Dein Pageflow ausgespielt
+            wird. Hierbei geht es um die Frontend-Elemente wie das 
+            Impressum und die Datenschutz-Einstellung.
+
+            ## Credits
+
+            Hier kannst Du Deine Impressums-Information im Freitext
+            eingeben. Zudem können für alle Dateien unter „Dateien
+            verwalten“ auch Bildrechte vergeben werden, die dann
+            automatisch im Impressum angezeigt werden.
         menu_item: Titel und Optionen
         social:
           menu_item: Social
@@ -1658,7 +1678,7 @@ de:
           Unterpunkt auf der linken Seite auswählen.
       outline:
         menu_item: Kapitel und Seiten
-        text: |
+        text: |-
           # Kapitel und Seiten
 
           Ein Pageflow besteht aus mindestens einem Kapitel mit
@@ -1728,17 +1748,17 @@ de:
           werden dann unter folgenden Bedingungen automatisch angezeigt:
 
           * Besitzt die Datei eine Übersetzungstextspur in der Sprache
-            des Beitrags, wird diese automatisch angezeigt. Dies hilft
-            Benutzern, die zwar die Sprache des Beitrags, nicht aber
-            die Sprache der Tonspur der Datei verstehen können.
+          des Beitrags, wird diese automatisch angezeigt. Dies hilft
+          Benutzern, die zwar die Sprache des Beitrags, nicht aber
+          die Sprache der Tonspur der Datei verstehen können.
 
           * Besitzt die Datei stattdessen eine Ton-Ersatz-Spur, wird
-            diese angezeigt, falls die Lautstärke über die Controls in
-            der Navigationsleiste auf stumm geregelt wurde. Bitte
-            beachte, dass aus technischen Gründen nicht erkannt werden
-            kann, ob die Lautstärke außerhalb des Browsers auf stumm
-            geregelt wurde. Ebenfalls ist diese Erkennung nicht auf
-            mobilen Geräten möglich.
+          diese angezeigt, falls die Lautstärke über die Controls in
+          der Navigationsleiste auf stumm geregelt wurde. Bitte
+          beachte, dass aus technischen Gründen nicht erkannt werden
+          kann, ob die Lautstärke außerhalb des Browsers auf stumm
+          geregelt wurde. Ebenfalls ist diese Erkennung nicht auf
+          mobilen Geräten möglich.
 
           ## Standard Textspur
 
@@ -1885,7 +1905,10 @@ de:
 
             Durch den Schieberegler kann der Bildhintergrund so stark abgedunkelt bzw. aufgehellt werden, bis der Kontrast zwischen Bild und Text ausreichend ist.
           hide_logo: Logo auf dieser Seite ausblenden
-          invert: "Beim Invertieren werden „hell“ und „dunkel“ vertauscht, die sonst weiße Schrift ändert sich dabei automatisch in schwarz. \n\nGrundsätzlich gilt: Helle Schrift für dunkle Bilder, dunkle Schrift für helle Bilder."
+          invert: |-
+            Beim Invertieren werden „hell“ und „dunkel“ vertauscht, die sonst weiße Schrift ändert sich dabei automatisch in schwarz. 
+
+            Grundsätzlich gilt: Helle Schrift für dunkle Bilder, dunkle Schrift für helle Bilder.
           mobile_poster_image_id: Dieses Bild wird in der Mobilvariante der Seite als Posterbild gezeigt.
           text: |-
             Der Textblock kann mit den Buttons unterhalb des Eingabefeldes formatiert werden. [ B=Fett / I=kursiv / U=unterstrichen „gekippte acht“=Link/URL auf fremde Seite einfügen].
@@ -1941,16 +1964,16 @@ de:
           url_input_view:
             required_field: Muss ausgefüllt werden
             supported_vendors: 'Es werden nur die folgenden Anbieter unterstützt:'
-            url_hint: URL muss mit http:// beginnen.
+            url_hint: 'URL muss mit http:// beginnen.'
             url_hint_https: URL muss mit http:// oder https:// beginnen.
     unauthorized: Sie sind nicht berechtigt diese Seite anzuzeigen.
     unmute_button:
-      widget_type_name: "'Ton ein'-Button"
+      widget_type_name: '''Ton ein''-Button'
     user_mailer:
       invitation:
         ending: Dankeschön und viel Spaß,
         greeting: Dein Pageflow-Team
-        instruction: Willkommen bei Pageflow. Bitte lege über den folgenden Link ein Kennwort fest. In Zukunft kannst Du Dich dann mit Deiner E-Mail-Adresse anmelden.
+        instruction: 'Willkommen bei Pageflow. Bitte lege über den folgenden Link ein Kennwort fest. In Zukunft kannst Du Dich dann mit Deiner E-Mail-Adresse anmelden.'
         salutation: Hallo %{first_name}
         subject: Ihre Pageflow Einladung
     video:
