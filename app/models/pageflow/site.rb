@@ -28,6 +28,10 @@ module Pageflow
       Pageflow.config.site_url_options_for(self)&.dig(:host)
     end
 
+    def display_title
+      title.presence || cname_domain.presence
+    end
+
     def cname_domain
       cname.split('.').pop(2).join('.')
     end
