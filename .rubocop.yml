@@ -1,3 +1,5 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   TargetRubyVersion: 3.2
   Exclude:
@@ -81,4 +83,12 @@ Style/ModuleFunction:
 
 # Allow method names like has_text?
 Naming/PredicateName:
+  Enabled: false
+
+
+# Temp
+Style/IfUnlessModifier:
+  Enabled: false
+
+Lint/RedundantCopDisableDirective:
   Enabled: false
