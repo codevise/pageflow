@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['.']
 
+  s.required_ruby_version = '>= 3.2'
+
   s.add_runtime_dependency 'mysql2', '~> 0.5.2'
   s.add_runtime_dependency 'pageflow', Pageflow::VERSION
 

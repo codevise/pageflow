@@ -27,6 +27,8 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
 
+  s.required_ruby_version = '>= 3.2'
+
   s.add_dependency 'rails', '~> 7.1.2'
 
   # Framework for admin interface
