@@ -90,7 +90,7 @@ de:
           Unterpunkt auf der linken Seite auswählen.
       outline:
         menu_item: Kapitel und Seiten
-        text: |
+        text: |-
           # Kapitel und Seiten
 
           Ein Pageflow besteht aus mindestens einem Kapitel mit
@@ -116,7 +116,7 @@ de:
           in der Übersicht bzw. Navigation dargestellt).
       overview:
         menu_item: Übersicht
-        text: |
+        text: |-
           # Übersicht
 
           Dies ist der Editor zum Bearbeiten eines Pageflows. Mit
