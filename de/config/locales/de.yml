@@ -1,0 +1,2033 @@
+de:
+  active_admin:
+    access_denied:
+      message: Sie sind nicht berechtigt diese Seite anzuzeigen.
+    any: Alle
+    batch_actions:
+      action_label: "Ausgewählte %{title}"
+      button_label: Massenoperationen
+      default_confirmation: Bist Du sicher?
+      delete_confirmation: Bist Du sicher, dass Du diese %{plural_model} löschen willst?
+      labels:
+        destroy: Löschen
+      link: Erstellen
+      selection_toggle_explanation: "(Auswahl)"
+      succesfully_destroyed:
+        one: 1 %{model} erfolgreich gelöscht
+        other: '%{count} %{plural_model} erfolgreich gelöscht'
+    blank_slate:
+      content: Es gibt noch keine %{resource_name}.
+      link: Erstellen
+    cancel: Abbrechen
+    clear_filters: Filter entfernen
+    comments:
+      add: Kommentar hinzufügen
+      author: Autor
+      author_missing: Anonym
+      author_type: Autor
+      body: Inhalt
+      errors:
+        empty_text: Der Kommentar wurde nicht gespeichert, da der Text fehlt.
+      no_comments_yet: Es gibt noch keine Kommentare.
+      resource: Resource
+      resource_type: Ressource
+      title: Kommentar
+      title_content: Kommentare (%{count})
+    create_model: '%{model} erstellen'
+    dashboard: Übersicht
+    dashboard_welcome:
+      call_to_action: Siehe 'app/admin/dashboards.rb', um Übersichts-Bereiche hinzuzufügen.
+      welcome: Willkommen in Active Admin. Dies ist die Standard-Übersichtsseite.
+    delete: Löschen
+    delete_confirmation: Wollen Sie dieses Element wirklich löschen?
+    delete_model: '%{model} löschen'
+    details: "%{model} Details"
+    devise:
+      change_password:
+        submit: Mein Passwort ändern
+        title: Ändern Sie Ihr Passwort
+      email:
+        title: Email
+      links:
+        forgot_your_password: Passwort vergessen?
+        resend_confirmation_instructions: Bestätigungsmail erneut versenden
+        resend_unlock_instructions: Entsperrungsmail erneut versenden
+        sign_in: Anmeldung
+        sign_in_with_omniauth_provider: Mit %{provider} anmelden
+        sign_up: Registrieren
+      login:
+        remember_me: Erinnere dich an mich
+        submit: Login
+        title: Login
+      password:
+        title: Passwort
+      resend_confirmation_instructions:
+        submit: Senden
+        title: Bestätigungsmail erneut versenden
+      reset_password:
+        submit: Mein Passwort zurücksetzen
+        title: Passwort vergessen?
+      sign_up:
+        submit: Registrieren
+        title: Registrieren
+      subdomain:
+        title: Subdomain
+      unlock:
+        submit: Senden
+        title: Entsperrinformationen senden
+      username:
+        title: Benutzername
+    download: 'Herunterladen:'
+    dropdown_actions:
+      button_label: Aktionen
+    edit: Bearbeiten
+    edit_model: '%{model} bearbeiten'
+    empty: Leer
+    equal_to: Gleich
+    filter: Filtern
+    filters:
+      buttons:
+        clear: Filter zurücksetzen
+        filter: Filter
+      predicates:
+        contains: Enthält
+        ends_with: Endet mit
+        equals: Ist gleich
+        from: Von
+        greater_than: Größer als
+        gteq_datetime: Größer gleich
+        less_than: Kleiner als
+        lteq_datetime: Kleiner gleich
+        starts_with: Beginnt mit
+        to: Bis
+    greater_than: Größer als
+    has_many_delete: Löschen
+    has_many_new: '%{model} hinzufügen'
+    has_many_remove: Entfernen
+    index_list:
+      block: Liste
+      blog: Blog
+      grid: Grid
+      table: Tabelle
+    less_than: Kleiner als
+    logout: Abmelden
+    main_content: 'Bitte implementieren Sie %{model}#main_content, um Inhalte anzuzeigen.'
+    new: Neu erstellen
+    new_model: '%{model} erstellen'
+    next: Weiter
+    pagination:
+      empty: Keine %{model} gefunden
+      entry:
+        one: Eintrag
+        other: Einträge
+      multiple: Zeige %{model} <b>%{from}&nbsp;–&nbsp;%{to}</b> von <b>%{total}</b>
+      multiple_without_total: Zeige %{model} <b> %{from}&nbsp;-&nbsp;%{to}</b>
+      one_page: Zeige <b>alle %{n}</b> %{model}
+    powered_by: " "
+    previous: Zurück
+    scopes:
+      frozen: Alle
+      publications: Nur Veröffentlichungen
+      publications_and_user_snapshots: Nur Veröffentlichungen/Sicherungen
+    search_field: 'Durchsuche %{field}'
+    sidebars:
+      filters: Filter
+      folders: Ordner
+    status_tag:
+      'no': 'Nein'
+      'yes': 'Ja'
+    undelete: Wiederherstellen
+    unsupported_browser:
+      headline: Internet Explorer Version 9 und niedriger sind nicht unterstützt.
+      recommendation: Wir empfehlen ein Update des Browsers auf eine aktuelle Version von <a href="http://windows.microsoft.com/ie">Internet Explorer</a>, <a href="https://chrome.google.com/">Google Chrome</a>, oder <a href="https://mozilla.org/firefox/">Firefox</a>.
+      turn_off_compatibility_view: Internet Explorer Version 9 und niedriger sind nicht unterstützt.
+    view: Anzeigen
+  activerecord:
+    attributes:
+      admin_user:
+        created_at: Erstellt am
+        current_sign_in_at: Aktuell angemeldet seit
+        current_sign_in_ip: Aktuelle IP-Adresse
+        email: E-Mail
+        encrypted_Password: Verschlüsseltes Passwort
+        id: ID
+        last_sign_in_at: Letzter Login am
+        last_sign_in_ip: Letzte IP-Adresse
+        remember_created_at: Passwort merken seit
+        reset_password_sent_at: Passwort Reset Anweisungen gesendet am
+        reset_password_token: Passwort Reset Token
+        sign_in_count: Anzahl Logins
+        updated_at: Aktualisiert am
+      pageflow/account:
+        created_at: Erstellt am
+        default_file_rights: Standard Urheber
+        default_site: Standard-Site
+        entries_count: "# Beiträge"
+        landing_page_name: Einstiegsseite
+        name: Name
+        own_role: Eigene Rolle
+        users_count: "# Benutzer"
+      pageflow/audio_file:
+        duration: Länge
+        format: Format
+      pageflow/chapter:
+        display_parent_page_button: '''Übergeordnete Seite''-Button anzeigen'
+        navigation_bar_mode: Navigationsleiste
+        parent_page_perma_id: Übergeordnete Seite
+        title: Titel
+      pageflow/entry:
+        account: Konto
+        author: Autor
+        created_at: Erstellt
+        credits: Credits
+        edited_at: Geändert
+        embed_code: Einbetten
+        first_published_at: Erstmals veröffentlicht am
+        keywords: Schlüsselwörter
+        locale: Sprache
+        own_role: Rolle
+        published?: Veröffentlichungstatus
+        published_at: Veröffentlicht
+        published_revision_published_at: Veröffentlicht am
+        publisher: Herausgeber
+        share_image_id: Social Sharing Bild
+        share_providers: Social Share Links
+        share_url: Social Sharing URL
+        summary: Zusammenfassung
+        theme_name: Theme
+        title: Titel
+        type_name: Beitrags-Typ
+        updated_at: Geändert am
+        url: Permalink
+        with_publication_state: Veröffentlichungsstatus
+      pageflow/entry_template:
+        configuration:
+          group_label: Konfiguration
+          home_button_enabled: "Home-Button in neuen Beiträgen anzeigen"
+        default_author: Standard-Autor
+        default_keywords: Standard-Schlüsselwörter
+        default_locale: Standard-Sprache
+        default_publisher: Standard-Herausgeber
+        default_share_providers: Standard-Share-Links
+        entry_type_name: Beitrags-Typ
+        theme_name: Theme
+      pageflow/folder:
+        account: Konto
+        name: Name
+      pageflow/image_file:
+        dimensions: Maße
+      pageflow/membership:
+        account: Konto
+        created_at: Mitglied seit
+        entity: Entität
+        entry: Beitrag
+        role: Rolle
+        user: Redakteur
+      pageflow/page:
+        additional_description: Beschreibung für Infobox
+        additional_title: Titel für Infobox
+        allow_full_screen: Vollbild Anzeige erlauben
+        atmo_audio_file_id: Atmo-Audio
+        atmo_during_playback: Atmo während Medien-Wiedergabe
+        audio_file_id: Audio
+        auto_change_page_on_ended: Am Ende weiterblättern
+        autoplay: Automatische Wiedergabe
+        background_image_id: Hintergrundbild
+        background_video_id: Hintergrundvideo
+        delayed_text_fade_in: Text verzögert einblenden
+        description: Beschreibung für Übersicht
+        display_in_navigation: In Navigationsleiste anzeigen
+        emphasize_in_navigation: In Navigationsleiste hervorheben
+        gradient_opacity: Intensität der Abblendung
+        hide_logo: Logo ausblenden
+        hide_title: Titel ausblenden
+        invert: Farben invertieren
+        linked_page_ids: Seiten verknüpfen
+        linked_pages_layout: Hervorgehobenes Element
+        mobile_poster_image_id: Posterbild (mobil)
+        poster_image_id: Posterbild
+        scroll_indicator_mode: Sichtbare Scroll Indikatoren
+        scroll_indicator_orientation: Scroll Indikator Ausrichtung
+        subtitle: Untertitel
+        tagline: Tagline
+        template: Seitentyp
+        text: Text
+        text_position: Textposition
+        thumbnail_image_id: Thumbnail
+        title: Titel
+        transition: Übergangseffekt
+        video_file_id: Video
+      pageflow/revision:
+        created_at: Erstellt am
+        created_with: Erstellt durch
+        creator: Erstellt von
+        frozen_at: Stand vom
+        published_at: Publiziert am
+        published_until: Publiziert bis
+        updated_at: Geändert am
+      pageflow/site:
+        account: Konto
+        additional_cnames: Zusätzliche CNAMES
+        cname: CNAME
+        copyright_link_label: Copyright-Link Text
+        copyright_link_url: Copyright-Link URL
+        feeds_enabled: Atom-Feeds
+        home_url: Redirect URL
+        imprint_link_label: Impressum-Link Text
+        imprint_link_url: Impressum-Link URL
+        privacy_link_url: Datenschutz-Link URL
+        share_providers: Standard Share Links
+        sitemap_enabled: XML-Sitemap
+        title: Titel
+      pageflow/text_track_file:
+        kind: Art
+        label: Label
+        srclang: Sprache
+      pageflow/video_file:
+        dimensions: Maße
+        duration: Länge
+        format: Format
+      pageflow/widget:
+        blur_strength: Unschärfe
+        invert: Farben invertieren
+        remove_logo: Logo entfernen
+      user:
+        account: Konto
+        admin: System-Administrator
+        admin?: System-Administrator
+        created_at: Registriert seit
+        current_password: Aktuelles Passwort
+        current_sign_in_at: Aktuell angemeldet seit
+        email: E-Mail-Adresse
+        entry: Beitrag
+        first_name: Vorname
+        full_name: Name
+        initial_account: Konto
+        initial_role: Rolle
+        last_name: Nachname
+        last_sign_in_at: Zuletzt angemeldet am
+        locale: Sprache
+        membership: Mitgliedschaft
+        password: Passwort
+        password_confirmation: Passwort wiederholen
+        role: Rolle
+        sign_in_count: "# Anmeldungen"
+        suspended?: Gesperrt
+        unconfirmed_email: Noch nicht bestätigte E-Mail-Adresse
+    errors:
+      messages:
+        accepted: muss akzeptiert werden
+        blank: muss ausgefüllt werden
+        confirmation: stimmt nicht mit der Bestätigung überein
+        empty: muss ausgefüllt werden
+        equal_to:
+          one: muss genau %{count} sein
+          other: muss genau %{count} sein
+        even: muss gerade sein
+        exclusion: ist nicht verfügbar
+        greater_than:
+          one: muss größer als %{count} sein
+          other: muss größer als %{count} sein
+        greater_than_or_equal_to:
+          one: muss größer oder gleich %{count} sein
+          other: muss größer oder gleich %{count} sein
+        inclusion: ist kein gültiger Wert
+        invalid: ist nicht gültig
+        invalid_date: ist kein gültiges Datum
+        less_than:
+          one: muss kleiner als %{count} sein
+          other: muss kleiner als %{count} sein
+        less_than_or_equal_to:
+          one: muss kleiner oder gleich %{count} sein
+          other: muss kleiner oder gleich %{count} sein
+        not_a_number: ist keine Zahl
+        not_an_integer: muss ganzzahlig sein
+        odd: muss ungerade sein
+        record_invalid: 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
+        taken: ist bereits vergeben
+        too_long:
+          one: ist zu lang (nicht mehr als %{count} Zeichen)
+          other: ist zu lang (nicht mehr als %{count} Zeichen)
+        too_short:
+          one: ist zu kurz (nicht weniger als %{count} Zeichen)
+          other: ist zu kurz (nicht weniger als %{count} Zeichen)
+        validation: muss mindestens 5 Zeichen lang sein und eine Ziffer beinhalten.
+        wrong_length:
+          one: hat die falsche Länge (muss genau %{count} Zeichen haben)
+          other: hat die falsche Länge (muss genau %{count} Zeichen haben)
+      models:
+        pageflow/entry:
+          attributes:
+            folder:
+              must_be_same_account: Ordner muss zu gleichem Konto gehören wie Beitrag
+            type_name:
+              must_be_available_for_account: "'%{type_name}' ist für dieses Konto nicht verfügbar"
+        pageflow/entry_template:
+          attributes:
+            entry_type_name:
+              taken: bereits konfiguriert. Es existiert bereits eine Beitragsvorlage für den Beitrags-Typ in diesem Konto. Kehre zum Beitragsvorlagen-Tab zurück und bearbeite die existierende Beitragsvorlage anstatt eine neue anzulegen.
+        pageflow/membership:
+          attributes:
+            user:
+              required: Benutzer muss ausgewählt sein
+    models:
+      account:
+        one: Konto
+        other: Konten
+      admin_user:
+        one: System-Administrator
+        other: System-Administratoren
+      entry:
+        one: Beitrag
+        other: Beiträge
+      folder:
+        one: Ordner
+        other: Ordner
+      membership:
+        one: Mitgliedschaft
+        other: Mitgliedschaften
+      pageflow/account:
+        one: Konto
+        other: Konten
+      pageflow/audio_file:
+        one: Audiodatei
+        other: Audiodateien
+      pageflow/entry:
+        one: Beitrag
+        other: Beiträge
+      pageflow/entry_template:
+        one: Beitragsvorlage
+        other: Beitragsvorlagen
+      pageflow/folder:
+        one: Ordner
+        other: Ordner
+      pageflow/image_file:
+        one: Bilddatei
+        other: Bilddateien
+      pageflow/membership:
+        one: Mitgliedschaft
+        other: Mitgliedschaften
+      pageflow/other_file:
+        many: Unbekannte Dateien
+        one: Unbekannte Datei
+      pageflow/revision:
+        one: Revision
+        other: Revisionen
+      pageflow/site:
+        one: Site
+        other: Sites
+      pageflow/text_track_file:
+        one: Textspur-Datei
+        other: Textspur-Dateien
+      pageflow/video_file:
+        one: Videodatei
+        other: Videodateien
+      revision:
+        one: Revision
+        other: Revisionen
+      site:
+        one: Site
+        other: Sites
+      user:
+        one: Nutzer
+        other: Nutzer
+    values:
+      pageflow/chapter:
+        navigation_bar_mode:
+          all: Alle Seiten zeigen
+          current_chapter: Nur aktuelles Kapitel
+          inherit_from_parent: Von übergeordnetem Kapitel erben
+          non: Ausblenden
+          same_parent_chapter: Nur Kapitel mit gleichem übergeordneten Kapitel
+          same_parent_page: Nur Kapitel mit gleicher übergeordneter Seite
+      pageflow/entry:
+        publication_states:
+          not_published: Nicht veröffentlicht
+          published_with_noindex: Veröffentlicht aber aus Suchmaschinen ausgeschlossen
+          published_with_password_protection: Mit Passwortschutz veröffentlicht
+          published_without_password_protection: Ohne Passwortschutz veröffentlicht
+        share_providers:
+          email: Email
+          facebook: Facebook
+          linked_in: LinkedIn
+          telegram: Telegram (nur Mobilgeräte)
+          whats_app: WhatsApp (nur Mobilgeräte)
+        type_names:
+          paged: Seitenbasiert / klassisch
+          scrolled: Kontinuierlich scrollend / Pageflow Next
+      pageflow/membership:
+        role:
+          editor: Redakteur
+          manager: Administrator
+          member: Mitglied
+          previewer: Prüfer
+          publisher: Veröffentlicher
+      pageflow/page:
+        atmo_during_playback:
+          mute: Ausblenden
+          play: Weiterspielen
+          turn_down: Leiser weiterspielen
+        delayed_text_fade_in:
+          long: Lange Verzögerung
+          medium: Mittlere Verzögerung
+          no_fade: Nicht verzögert einblenden
+          short: Kurze Verzögerung
+        linked_pages_layout:
+          default: "(Kein)"
+          hero_top_left: Links oben
+          hero_top_right: Rechts oben
+        scroll_indicator_mode:
+          all: Vorwärts und zurück
+          non: Keine
+          only_back: Nur zurück
+          only_next: Nur vorwärts
+        scroll_indicator_orientation:
+          horizontal: Horizontal
+          vertical: Vertikal
+        template:
+          audio: Audio
+          background_image: Hintergrund-Bild
+          internal_links: Seiten-Verweise
+          video: Video
+        text_position:
+          center: Mittig
+          left: Links
+          right: Rechts
+        transition:
+          fade: Überblenden
+          scroll: Scrollen
+  date:
+    abbr_day_names:
+    - So
+    - Mo
+    - Di
+    - Mi
+    - Do
+    - Fr
+    - Sa
+    abbr_month_names:
+    -
+    - Jan
+    - Feb
+    - Mär
+    - Apr
+    - Mai
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Okt
+    - Nov
+    - Dez
+    day_names:
+    - Sonntag
+    - Montag
+    - Dienstag
+    - Mittwoch
+    - Donnerstag
+    - Freitag
+    - Samstag
+    formats:
+      default: "%d.%m.%Y"
+      long: "%e. %B %Y"
+      short: "%e. %b"
+    month_names:
+    -
+    - Januar
+    - Februar
+    - März
+    - April
+    - Mai
+    - Juni
+    - Juli
+    - August
+    - September
+    - Oktober
+    - November
+    - Dezember
+    order:
+    - :day
+    - :month
+    - :year
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: etwa eine Stunde
+        other: etwa %{count} Stunden
+      about_x_months:
+        one: etwa ein Monat
+        other: etwa %{count} Monate
+      about_x_years:
+        one: etwa ein Jahr
+        other: etwa %{count} Jahre
+      almost_x_years:
+        one: fast ein Jahr
+        other: fast %{count} Jahre
+      half_a_minute: eine halbe Minute
+      less_than_x_minutes:
+        one: weniger als eine Minute
+        other: weniger als %{count} Minuten
+      less_than_x_seconds:
+        one: weniger als eine Sekunde
+        other: weniger als %{count} Sekunden
+      over_x_years:
+        one: mehr als ein Jahr
+        other: mehr als %{count} Jahre
+      x_days:
+        one: ein Tag
+        other: "%{count} Tage"
+      x_minutes:
+        one: eine Minute
+        other: "%{count} Minuten"
+      x_months:
+        one: ein Monat
+        other: "%{count} Monate"
+      x_seconds:
+        one: eine Sekunde
+        other: "%{count} Sekunden"
+    prompts:
+      day: Tag
+      hour: Stunden
+      minute: Minuten
+      month: Monat
+      second: Sekunden
+      year: Jahr
+  devise:
+    confirmations:
+      confirmed: Vielen Dank für die Bestätigung deiner E-Mail-Adresse.
+      send_instructions: Du erhältst in wenigen Minuten eine E-Mail, mit der du deine Registrierung bestätigen kannst.
+      send_paranoid_instructions: Falls deine E-Mail-Adresse in unserer Datenbank existiert, erhältst du in Kürze eine E-Mail mit der du die Registrierung bestätigen kannst.
+    failure:
+      admin_user:
+        invalid: Benutzername oder Kennwort nicht korrekt.
+        unauthenticated: Bitte melden Sie sich als System-Administrator an.
+      already_authenticated: Du bist bereits angemeldet.
+      inactive: Dein Account ist nicht aktiv.
+      invalid: Ungültige Anmeldedaten. Bitte überprüfe, ob du dich beim Passwort oder Benutzernamen vertippt hast.
+      invalid_token: Der Anmelde-Token ist ungültig.
+      locked: Dein Account ist für einige Minuten gesperrt, da das Passwort zu oft falsch eingegeben wurde.
+      not_found_in_database: Es wurde kein Benutzer mit diesen Anmeldedaten gefunden.
+      timeout: Deine Sitzung ist abgelaufen, bitte melde Dich erneut an.
+      unauthenticated: Du musst dich anmelden oder registrieren, bevor du fortfahren kannst.
+      unconfirmed: Du musst deinen Account bestätigen, bevor du fortfahren kannst.
+    mailer:
+      confirmation_instructions:
+        subject: Bestätigung
+      reset_password_instructions:
+        subject: Anleitung um dein Passwort zurückzusetzen
+      unlock_instructions:
+        subject: Anleitung um deinen Account freizuschalten
+    oauth_providers:
+      facebook: Facebook
+      google_oauth2: Google
+    omniauth_callbacks:
+      failure: Du kannst nicht mit deinem %{kind}-Account angemeldet werden, weil "%{reason}".
+      success: Du hast dich erfolgreich mit deinem %{kind}-Account angemeldet.
+    passwords:
+      no_token: Du musst diese Seite von einem Link aus der "Passwort zurücksetzen" E-Mail aufrufen. Achte dabei darauf, dass der Link die vollständige URL enthält.
+      send_instructions: Du erhältst in Kürze eine E-Mail mit der Anleitung, wie das Passwort zurückgesetzt werden kann.
+      send_paranoid_instructions: Wenn Deine E-Mail-Adresse in unserer Datenbank existiert, erhältst du in Kürze eine E-Mail mit der Anleitung, wie das Passwort zurückgesetzt werden kann.
+      updated: Dein Passwort wurde geändert. Du bist jetzt angemeldet.
+      updated_not_active: Dein Passwort wurde geändert.
+    registrations:
+      destroyed: Dein Account wurde gelöscht.
+      edit:
+        are_you_sure: Bist du sicher?
+        change_password: Passwort ändern
+        delete_account: Account löschen
+        submit: Daten speichern
+        userdata: Benutzerdaten
+      new:
+        cancel_oauth_sign_up: Abbrechen
+        registration: Registrierung
+        sign_up_with_facebook: Mit Facebook anmelden
+        sign_up_with_google: Mit Google anmelden
+        submit: Daten speichern
+      signed_up: Du hast dich erfolgreich registriert und bist nun angemeldet.
+      signed_up_but_inactive: Du hast dich erfolgreich registriert. Wir konnten dich aber noch nicht anmelden, da dein Account inaktiv ist.
+      signed_up_but_locked: Du hast dich erfolgreich registriert. Wir konnten dich aber noch nicht anmelden, da dein Account gesperrt ist.
+      signed_up_but_unconfirmed: Du hast dich erfolgreich registriert. Wir konnten dich aber noch nicht anmelden, da dein Account noch nicht bestätigt ist. Du erhältst in Kürze eine E-Mail mit der Anleitung, wie du deinen Account freischalten kannst.
+      update_needs_confirmation: Deine Daten wurden aktualisiert, aber du musst deine neue E-Mail-Adresse bestätigen. Du erhältst in wenigen Minuten eine E-Mail, mit der du die Änderung deiner E-Mail-Adresse abschließen kannst.
+      updated: Deine Daten wurden aktualisiert.
+    sessions:
+      admin_user:
+        signed_in: Erfolgreich als System-Administrator angemeldet.
+      new:
+        sign_in_with_facebook: Mit Facebook anmelden
+        sign_in_with_google: Mit Google anmelden
+      signed_in: Erfolgreich angemeldet.
+      signed_out: Erfolgreich abgemeldet.
+    unlocks:
+      send_instructions: Du erhältst in Kürze eine E-Mail mit der Anleitung, wie du deinen Account entsperren kannst.
+      send_paranoid_instructions: Falls deine E-Mail-Adresse in unserer Datenbank existiert, erhältst du in wenigen Minuten eine E-Mail mit der Anleitung, wie du deinen Account entsperren kannst.
+      unlocked: Dein Account wurde entsperrt. Du bist jetzt angemeldet.
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: muss akzeptiert werden
+      already_confirmed: wurde bereits bestätigt
+      blank: muss ausgefüllt werden
+      confirmation: stimmt nicht mit der Bestätigung überein
+      confirmation_period_expired: muss innherhalb von %{period} bestätigt werden, bitte einen neuen Link anfordern
+      empty: muss ausgefüllt werden
+      equal_to:
+        one: muss genau %{count} sein
+        other: muss genau %{count} sein
+      even: muss gerade sein
+      exclusion: ist nicht verfügbar
+      expired: ist abgelaufen, bitte neu anfordern
+      greater_than:
+        one: muss größer als %{count} sein
+        other: muss größer als %{count} sein
+      greater_than_or_equal_to:
+        one: muss größer oder gleich %{count} sein
+        other: muss größer oder gleich %{count} sein
+      inclusion: ist kein gültiger Wert
+      invalid: ist nicht gültig
+      invalid_date: ist kein gültiges Datum
+      less_than:
+        one: muss kleiner als %{count} sein
+        other: muss kleiner als %{count} sein
+      less_than_or_equal_to:
+        one: muss kleiner oder gleich %{count} sein
+        other: muss kleiner oder gleich %{count} sein
+      not_a_number: ist keine Zahl
+      not_an_integer: muss ganzzahlig sein
+      not_found: nicht gefunden
+      not_locked: ist nicht gesperrt
+      not_saved:
+        one: Registrierung kann nicht abgeschlossen werden. Ein Fehler.
+        other: Registrierung kann nicht abgeschlossen werden. %{count} Fehler.
+      odd: muss ungerade sein
+      other_than:
+        one: muss ungleich %{count} sein
+        other: muss ungleich %{count} sein
+      present: muss leer sein
+      readonly: ist schreibgeschützt
+      record_invalid: 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
+      restrict_dependent_destroy:
+        many: Cannot delete record because dependent %{record} exist
+        one: Cannot delete record because a dependent %{record} exists
+      taken: ist bereits vergeben
+      too_long:
+        one: ist zu lang (nicht mehr als 1 Zeichen)
+        other: ist zu lang (nicht mehr als %{count} Zeichen)
+      too_short:
+        one: ist zu kurz (nicht weniger als 1 Zeichen)
+        other: ist zu kurz (nicht weniger als %{count} Zeichen)
+      wrong_length:
+        one: hat die falsche Länge (muss genau 1 Zeichen haben)
+        other: hat die falsche Länge (muss genau %{count} Zeichen haben)
+    template:
+      body: 'Bitte überprüfen Sie die folgenden Felder:'
+      header:
+        one: 'Konnte %{model} nicht speichern: ein Fehler.'
+        other: "Konnte %{model} nicht speichern: %{count} Fehler."
+  formtastic:
+    cancel: Abbrechen
+    create: '%{model} speichern'
+    'no': 'Nein'
+    required: erforderlich
+    reset: '%{model} zurücksetzen'
+    submit: '%{model} speichern'
+    update: '%{model} speichern'
+    'yes': 'Ja'
+  helpers:
+    select:
+      prompt: Bitte wählen
+    submit:
+      create: '%{model} erstellen'
+      submit: '%{model} speichern'
+      update: '%{model} aktualisieren'
+  i18n:
+    transliterate:
+      rule:
+        ä:
+        ö:
+        ü:
+  language: Deutsch
+  number:
+    currency:
+      format:
+        delimiter: "."
+        format: "%n %u"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "€"
+    format:
+      delimiter: "."
+      precision: 2
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion:
+            one: Milliarde
+            other: Milliarden
+          million: Millionen
+          quadrillion:
+            one: Billiarde
+            other: Billiarden
+          thousand: Tausend
+          trillion: Billionen
+          unit: Einheit
+      format:
+        delimiter: "."
+        precision: 1
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: "."
+        format: "%n%"
+    precision:
+      format:
+        delimiter: "."
+  pageflow:
+    admin:
+      account:
+        add: Konto hinzufügen
+        cannot_add: Was Sie tun möchten, ist nicht möglich.
+        none_addable_tooltip: Kein Konto verfügbar
+      accounts:
+        no_entries: Keine Beiträge
+        no_members: Keine Benutzer
+        site_defaults_inline_help: Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
+      entries:
+        add_folder: Ordner hinzufügen
+        confirm_depublish: Soll der Beitrag wirklich depubliziert werden?
+        confirm_duplicate: Beitrag wirklich duplizieren?
+        confirm_restore: Soll der Beitrag wirklich auf den Stand dieser Revision zurückgesetzt werden? Vor dem Zurücksetzen wird eine automatische Sicherung des aktuellen Standes erstellt.
+        depublish: Beitrag depublizieren
+        duplicate: Beitrag kopieren
+        edit: Bearbeiten
+        edit_config: Konfiguration ändern
+        edit_revision: Ändern
+        editor: Editor
+        editor_hint: Editor öffnen
+        embed_code_hint: Bette den veröffentlichten Pageflow auf einer Website ein.
+        entries: Beiträge
+        forever: "(unbegrenzt)"
+        members: Mitglieder
+        no_members: Es sind keine Redakteure zugeordnet.
+        no_revisions: Bisher keine Revisionen
+        noindex: Aus Suchmaschinen ausgeschlossen
+        not_allowed_to_see_entry_types: Sie sind nicht berechtigt, die verfügbaren Beitrags-Typen für dieses Konto abzurufen
+        not_published: Nicht veröffentlicht
+        password_protected: Mit Passwortschutz
+        preview: Vorschau
+        preview_hint: Vorschau anzeigen
+        published_forever: Veröffentlicht
+        published_revision_legend: Aktuell Veröffentlichter Stand
+        published_until: Veröffentlicht bis %{published_until}
+        remove: Entfernen
+        remove_logo: Logo löschen
+        restore: Wiederherstellen
+        revision_created_with:
+          auto: Auto-Sicherung
+          publish: Veröffentlichung
+          restore: Auto-Sicherung
+          user: Sicherung
+        revision_created_with_hint:
+          auto: Dieser Stand wurde automatisch gesichert
+          publish: Dieser Stand des Beitrags wurde veröffentlicht
+          restore: Dieser Stand wurde gesichert bevor eine älteren Revision des Beitrags wiederhergestellt wurde
+          user: Dieser Stand wurde durch einen Benutzer gesichert
+        show: Anzeigen
+        show_public: Öffentlich
+        show_public_hint: Öffentliche Seite anzeigen
+        snapshot: Aktuellen Stand sichern
+        title_hint: Dieses Feld bestimmt die URL, unter der der Beitrag öffentlich erreichbar ist.
+      entry:
+        add: Beitrag hinzufügen
+        entry_membership_hint: Laden Sie Benutzer in Ihr Konto ein, um sie als Mitglieder dieser Story zuzuweisen.
+        none_addable_tooltip: Kein Beitrag verfügbar
+        user_quota_exhausted: Ihr Benutzerkontingent ist erschöpft.
+      entry_templates:
+        page_title:
+          edit: Beitragsvorlage bearbeiten für Beitrags-Typ
+          new: Beitragsvorlage erstellen für Beitrags-Typ
+      features:
+        states:
+          default: Standard (%{inherited})
+          disabled: Deaktiviert
+          enabled: Aktiviert
+          undefined: "(Standard)"
+      folders:
+        all: Alle
+        confirm_destroy: 'Ordner wirklick löschen? Beiträge bleiben erhalten.'
+        destroy: Löschen
+        edit: Bearbeiten
+      memberships:
+        on_account:
+          role:
+            hint_html: Dem <strong>Mitglied</strong> können Sie Rollen auf einzelnen Beiträgen dieses Kontos zuweisen.<br>Der <strong>Prüfer</strong> kann zusätzlich dazu alle Beiträge dieses Kontos anschauen, auch bevor sie veröffentlicht sind.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu alle Beiträge dieses Kontos bearbeiten.<br>Der <strong>Veröffentlicher</strong> kann zusätzlich dazu alle Beiträge dieses Kontos veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf allen Beiträgen dieses Kontos setzen und bearbeiten.
+        on_entry:
+          role:
+            hint_html: Der <strong>Prüfer</strong> kann diesen Beitrag anschauen, auch bevor er veröffentlicht ist.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu den Beitrag bearbeiten.<br>Der <strong>Veröffentlicher</strong> kann zusätzlich dazu den Beitrag veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf diesem Beitrag setzen und bearbeiten.
+      resource_tabs:
+        account_editor_hint: Auf Kontoebene zugeordnete Benutzer sind hier nicht aufgeführt
+        accounts: Konten
+        entries: Beiträge
+        entry_templates: Beitragsvorlagen
+        features: Features
+        members: Mitglieder
+        revisions: Revisionen
+        sites: Sites
+        users: Benutzer
+      revisions:
+        published_until_hint: Freilassen, um Beitrag unbegrenzt zu veröffentlichen.
+        restored: Revision wiederhergestellt
+      sites:
+        add: Site hinzufügen
+        additional_cnames_hint: Kommaseparierte Liste von weiteren CNAMES. Ausschließlich zur Auswahl der Redirect URL genutzt.
+        cname_hint: Wird in Share Links verwendet.
+        default_author_hint: Voreinstellung 'author' Meta-Feld für Eintrage
+        default_keywords_hint: Voreinstellung 'keywords' Meta-Feld für Eintrage
+        default_locale_hint: Voreinstellung Sprache für Einträge
+        default_name: "(Standard)"
+        default_publisher_hint: Voreinstellung 'publisher' Meta-Feld für Eintrage
+        feeds_hint: |-
+          Wenn diese Option aktiviert ist, stehen Feeds mit allen
+          veröffentlichten Beiträgen der Site über URLs der Form
+          https://%{site_host}/feeds/de.atom zu Verfügung, wobei "en"
+          durch ein beliebiges Sprachkürzel ersetzt werden kann, nach
+          dem gefiltert werden soll.
+        name: "%{account_name}"
+        remove_logo: Logo entfernen
+        show: Anzeigen
+        sitemap_hint: |-
+          Wenn diese Option aktiviert ist, steht eine Sitemap mit
+          allen veröffentlichten Einträgen der Site unter
+          https://%{site_host}/sitemap.xml zur Verfügung. Registriere
+          die URL in Google Search Console oder ähnlichen Tools.
+        title_hint: "Wird in Titeln der Beiträge und als Titel für den Atom-Feed\nverwendet."
+      user:
+        cannot_add: Was Sie tun möchten, ist nicht möglich. Sie müssen aktualisieren.
+        none_addable_tooltip: Kein Benutzer verfügbar
+      users:
+        account: Profil
+        accounts: Konten
+        add: Benutzer hinzufügen
+        add_entry: Beitrag hinzufügen
+        confirm_delete: Soll der Benutzer wirklich gelöscht werden. Alle persönlichen Daten des Benutzers gehen verloren. Dieser Vorgang kann nicht rückgangig gemacht werden.
+        delete: Löschen
+        delete_account_membership_confirmation: |-
+          Soll die Kontomitgliedschaft des Benutzers wirklich gelöscht werden?
+
+          ACHTUNG: Alle Beitragsmitgliedschaften des Benutzers in diesem Konto werden ebenfalls gelöscht.
+        delete_entry_membership_confirmation: Soll die Beitragsmitgliedschaft wirklich gelöscht werden?
+        delete_me:
+          cancel_label: Nein, mein Benutzerkonto nicht löschen
+          delete_label: Benutzerkonto löschen
+          warning_html: Gib Dein aktuelles Passwort ein, um zu bestätigen, dass Du Dein Benutzerkonto wirklich löschen möchtest. <b>Alle Deine Daten gehen dabei verloren. Der Vorgang kann nicht rückgangig gemacht werden.</b>
+        deleted: Der Benutzer wurde gelöscht.
+        edit: Bearbeiten
+        edit_role: Rolle ändern
+        email_invitation_hint: Dem Benutzer wird eine E-Mail mit Anweisungen zum Festelegen eines Passworts gesendet.
+        empty: 'Keine Beiträge assoziiert. Fügen Sie dem ausgewählten Benutzer Beiträge hinzu.'
+        invite_user: Benutzer einladen
+        me:
+          change_password_hint: Freilassen um bisheriges Passwort beizubehalten.
+          delete_account: Benutzerkonto löschen
+          delete_account_hint: Du möchtest die Anwendung nicht mehr nutzen?
+          deleted: Dein Benutzerkonto wurde gelöscht.
+          updated: Dein Profil wurde aktualisiert.
+        member_exists: Ein Benutzer mit der angegebenen E-Mail-Adresse ist bereits Mitglied des Kontos.
+        member_exists_link: Benutzer anzeigen
+        no_accounts: Keine Konten
+        no_entries: Keine Beiträge
+        none: Sie haben keine Beiträge.
+        not_allowed_to_see_user_quota: Sie sind nicht berechtigt, die Nutzer-Quota für dieses Konto abzurufen.
+        resend_invitation: Einladung erneut verschicken
+        resent_invitation: Der Benutzer wurde erneut per E-Mail eingeladen.
+        roles:
+          account_manager: Account Administrator
+          accounts:
+            tooltip:
+              editor: Kann Beiträge dieses Kontos editieren
+              manager: Kann Konto-Rollen setzen
+              member: Kann Beitrags-Rollen auf diesem Konto innehaben
+              previewer: Kann unveröffentlichte Beiträge dieses Kontos betrachten
+              publisher: Kann Beiträge dieses Kontos veröffentlichen
+          admin: System Administrator
+          editor: Redakteur
+          entries:
+            tooltip:
+              editor: Kann Beitrag editieren
+              manager: Kann Beitrags-Rollen setzen
+              previewer: Kann Beitrag unveröffentlicht betrachten
+              publisher: Kann Beitrag veröffentlichen
+          manager: Administrator
+          member: Mitglied
+          own_account_role:
+            tooltip:
+              editor: Du kannst Beiträge in diesem Konto editieren
+              manager: Du kannst Benutzer und Beiträge in diesem Konto verwalten
+              member: Du kannst Beitrags-Rollen auf diesem Konto innehaben
+              previewer: Du kannst Beiträge in diesem Konto unveröffentlicht betrachten
+              publisher: Du kannst Beiträge in diesem Konto veröffentlichen
+          own_entry_role:
+            tooltip:
+              editor: Du kannst diesen Beitrag editieren
+              manager: Du kannst Beitrags-Rollen setzen
+              previewer: Du kannst diesen Beitrag unveröffentlicht betrachten
+              publisher: Du kannst diesen Beitrag veröffentlichen
+          previewer: Prüfer
+          publisher: Veröffentlicher
+        suspend: Sperren
+        suspended: 'Der Benutzer wurde gesperrt. Er kann sich nun nicht mehr anmelden.'
+        unsuspend: Entsperren
+        unsuspended: Der Benutzer wurde entsperrt. Er kann sich nun wieder anmelden.
+    audio:
+      help_entries:
+        page_type:
+          menu_item: Audio
+          text: "# Audio\n\n*Wiedergabe von Audiodatei mit Steuerelementen* \n    \nHiermit kannst Du Audiodateien mit Hintergrund-Bild oder Hintergrund-Video und Textinhalten\nkombinieren. Wie beim Seitentyp „Video“ werden\nSteuerelemente angezeigt, und ebenso kann eine zusätzliche\nInfobox mit Text befüllt werden.\n\nUnter „Optionen“ kann das Erscheinungsbild des Players auf die Visualisierung der Waveform eines Audio-Files gewechselt werden.\n\nTypische Anwendungsbeispiele: Interview, O-Töne,\nMusikstücke"
+      open: Audio anhören
+      page_attributes:
+        audio_player_controls_variant:
+          inline_help: Die Audio-Seite unterstützt alternative Darstellunsvarianten der Player-Controls.
+          label: Player Controls Variante
+          values:
+            default: Standard
+            waveform: Waveform
+        waveform_color:
+          inline_help: Farbe des Bereichs der Waveform, der den bereits abgespielten Teil der Audio-Datei repräsentiert.
+          label: Waveform Farbe
+      page_type_category_name: Media
+      page_type_description: Wiedergabe von Audiodatei mit Steuerelementen
+      page_type_name: Audio
+    auto_change_page:
+      feature_name: Automatischer Seitenwechsel
+    background_image:
+      help_entries:
+        page_type:
+          menu_item: Hintergrund-Bild/-Video
+          text: "# Hintergrund-Bild/-Video\n\n*Bildschirmfüllendes Bild und Text*\n\nMit dem Seitentyp „Hintergrund-Bild/-Video“ werden großformatige Bilder oder Videos mit Text überlagert und zur optimalen Lesbarkeit mit einem manuell einstellbaren Farbverlauf gepaart. Über die Auswahl des Bildausschnitts stellst Du sicher, dass Dein Bild auch auf mobilen Endgeräten im Portrait-Modus den relevanten Ausschnitt deines Motivs zeigt. \n\nWahlweise kann der Text für einen ausreichenden\nKontrast auch invertiert - also von hell in dunkel -\nvertauscht werden. Das bietet sich bei hellen\nHintergrund-Bildern an.\n\nUser haben übrigens die Möglichkeit Farbverlauf und Text\nim Front-End auszublenden, sofern Sie sich speziell für\ndas Hintergrund-Bild oder - Video interessieren.\n\nTypische Anwendungsbeispiele: Präsentation, Teil einer\nBildergalerie, Portrait\n\n**Hinweis zum Ton bei Hintergrund-Videos:** Aufgrund technischer Einschränkungen, basierend auf der „Autoplay Policy“ der Browser-Hersteller, können Videos mit Ton nicht auf allen Geräten/Browsern automatisch abgespielt werden. \n\nUm die Wiedergabe von Videoloops auf mobilen Geräten und bei Safari auf Desktop und Tablets zu ermöglichen wird der Ton daher unterdrückt. Bei Chrome wird diese Einschränkung durch einen Unmute-Button umgangen, bei Firefox entscheiden Nutzer selbst, ob die automatische Wiedergabe von Audios zugelassen wird."
+      page_type_category_name: Basic
+      page_type_description: Bildschirmfüllendes Bild oder Video-Loop mit Text
+      page_type_name: Hintergrund Bild/Video
+    chapter_hierachy:
+      feature_name: Kapitel Hierachie
+    classic_loading_spinner:
+      widget_type_name: Klassisch
+    common_page_attributes:
+      background_type:
+        inline_help: Im Hintergund der Seite kann entweder ein Bild oder ein Video-Loop angezeigt werden.
+        label: Hintergrund-Typ
+        values:
+          image: Hintergrund-Bild
+          video: Hintergrund-Video (Loop)
+      mobile_poster_image_id:
+        inline_help: Bild, das in der Mobilvariante der Seite an Stelle des Hintergrund-Videos gezeigt werden soll.
+      poster_image_id:
+        inline_help: Wird angezeigt, bevor das Video startet.
+    common_page_link_attributes:
+      label:
+        inline_help: Gib hier eine Bezeichnung ein, um später bei in der Verweis-Übersicht direkt zu erkennen, um welchen Verweis es sich handelt. Die Bezeichnung ist für die Leser nicht sichtbar.
+        label: Bezeichnung
+      page_transition:
+        inline_help: Wähle hier den Effekt, der beim Übergang zur Zielseite des Verweises benutzt werden soll.
+        label: Seitenübergangseffekt
+      target_page_id:
+        inline_help: Auf diese Seite kommt der Leser beim Klick auf den Verweis.
+        label: Zielseite
+    config:
+      text_track_kind:
+        captions: Ton-Ersatz-Textspur
+        descriptions: Bild-Ersatz-Textspur
+        subtitles: Übersetzungs-Textspur
+    consent_bar:
+      feature_name: Consent-Leiste
+      widget_type_name: Consent-Leiste
+    cookie_notice_bar:
+      widget_type_name: Cookie-Hinweis
+    default_theme:
+      name: Standard
+    delayed_text_fade_in:
+      feature_name: Text verzögert einblenden
+    devise:
+      mailer:
+        reset_password_instructions:
+          ignore_hint: Falls Du diese Anfrage zur Passwortänderung gar nicht selbst gestartet hast, ignorier diese Mail einfach. Dein Passwort wird nicht geändert, bevor du den oben stehenden Link nicht bestätigt hast und im Anschluss ein neues Passwort anlegst.
+          instruction: für dein persönliches Pageflow-Benutzerkonto wurde ein Link zur Passwortänderung angefordert. Du kannst diese Aktion durchführen, indem du folgenden Link anklickst.
+          salutation: Hallo %{first_name}
+    edit_locks:
+      break_action:
+        acquire: Stattdessen hier bearbeiten
+      errors:
+        held_by_other_session_error:
+          acquire_html: "<p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet.</p>"
+          other_html: |-
+            <p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet. Laden Sie die Seite neu und klicken Sie auf 'Stattdessen hier bearbeiten', um den akutellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen verloren.</p>
+        held_by_other_user_error:
+          acquire_html: "<p>Dieser Beitrag wird im Moment von <strong>%{user_name}</strong> bearbeitet. Klicken Sie auf 'Stattdessen hier bearbeiten', um die Bearbeitung durch den anderen Benutzers abzubrechen.</p>"
+          other_html: "<p><strong>%{user_name}</strong> hat ihre Bearbeitung abgebrochen. Laden Sie die Seite neu und klicken Sie auf 'Stattdessen hier bearbeiten', um den aktuellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen des anderen Benutzers verloren.</p>"
+        not_held_error:
+          other_html: "<p>Die Bearbeitung des Beitrags wurde außerhalb dieses Editor beendet. Laden Sie die Seite neu, um den akutellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen verloren.</p>"
+      required: Die Aktion kann nicht durchgeführt werden, da der Beitrag gerade in einem Editor geöffnet ist.
+      required_but_held_by_other_user: Die Aktion kann nicht durchgeführt werden, da der Beitrag gerade von einem anderen Benutzer bearbeitet wird.
+    editor:
+      atmo:
+        disabled: Atmo deaktiviert
+      blank_entry:
+        create_chapter: Klicke jetzt auf <em>Neues Kapitel</em>, um ein erstes Kapitel zu erstellen.
+        create_page: Klicke dann auf <em>Neue Seite</em>, um dem Kapitel eine erste Seite hinzuzufügen.
+        edit_page: Klicke auf eine Seite, um ihren Inhalt zu bearbeiten.
+        header: Dies ist ein leerer Pageflow
+        intro: Pageflows bestehen aus Kapiteln und Seiten. In der Seitenleiste rechts findest Du die Gliederung.
+        outro: Hier siehst Du dann eine Vorschau deines Pageflows.
+      classic_loading_spinner:
+        widget_type_info_box_text: Dies ist eine Vorschau der klassischen Lade-Ansicht. Wird angezeigt, während der Beitrag lädt.
+      consent_bar:
+        widget_type_info_box_text: |-
+          Die Leiste wird beim ersten Öffnen von Beiträgen angezeigt,
+          wenn Integrationen von Drittanbietern (z.B. Website Tracking
+          oder Embeds) verwendet werden.
+      cookie_notice_bar:
+        widget_type_info_box_text: Der Hinweis wird beim ersten Öffnen von Beiträgen, die Cookies verwenden, am unteren Seitenrand angezeigt. Cookies werden gesetzt, falls ein Dienst zur Erhebnung von Nutzungsdaten (z.B. Google Analytics) verwendet wird oder wenn die Funktion 'Neue Seiten hervorheben' aktiv ist.
+      entries:
+        unsupported_browser_hint:
+          message: Die Version Ihres Browsers wird vom Pageflow Editor nicht unterstützt. Bitte benutzen Sie einen aktuellen Browser.
+      errors:
+        UnmatchedUploadError: Der Dateityp wird nicht unterstützt.
+        invalid_nested_type_error: 'Fehler: Upload-Datei ''%{name}'' ist eine %{type}. Es sind nur folgende Arten von Dateien erlaubt: %{validList}'
+        nested_type_error: 'Fehler beim Upload von ''%{name}'': %{type} können nicht als unabhängige Dateien hochgeladen werden. Verwende das Einstellungen-Menü einer Datei des folgenden Typs: %{validList}'
+        unknown: Ein unbekannter Fehler ist aufgetreten.
+        unmatched_upload_error: Kein passender Verwendungszweck gefunden für Upload '%{name}' vom Typ '%{type}'.
+        upload:
+          type_empty: kein
+      file_settings_dialog:
+        tabs:
+          video_settings_tab: Video-Details
+      files:
+        common_attributes:
+          alt:
+            inline_help: Ein Hinweis darauf, was in dem dargestellten Element zum Ausdruck kommt. Der Text ist im Beitrag nicht sichtbar, kann aber von Screen-Readern verarbeitet werden und trägt somit zur barrierearmen Gestaltung der Inhalte bei.
+            label: Alt-Text
+          file_name:
+            column_header: Dateiname
+            label: Dateiname
+          license:
+            blank: "(Nicht angegeben)"
+            inline_help: Fügt der Rechteangabe im Beitrag einen Link zur Lizenz hinzu.
+            label: Lizenz
+          original_url:
+            label: Original
+          rights:
+            cell_title:
+              blank: Noch nicht ausgefüllt
+              present: 'Present: %v{value}'
+            column_header: Rechte
+            inline_help: Wird im Copyright-Bereich des Beitrags angezeigt.
+            label: Rechte
+          rights_display:
+            inline_help: |-
+              Lege fest, ob die Rechteangabe der Datei in der
+              zusammenfassenden Liste in der Info-Box angezeigt werden
+              soll oder unmittelbar an der Stelle im Beitrag, wo die
+              Datei verwendet wird.
+            label: Rechte anzeigen
+            values:
+              credits: In der Info-Box
+              inline: Am verwendenden Element
+          source_url:
+            inline_help: |-
+              Rechteangabe mit einem Link zur ursprünglichen Quelle
+              oder zum Author der Datei versehen.
+            label: Quell-URL
+          text_tracks:
+            label: Untertitel
+        settings_dialog_tabs:
+          general: Metadata
+          text_tracks: Textspuren
+        stages:
+          encoding:
+            action_required: Bestätigung erforderlich.
+            active: Encoding läuft.
+            failed: Fehler beim Encoding.
+            finished: Erfolgreich encodiert.
+            pending: Noch nicht encodiert.
+          fetching_meta_data:
+            active: Metadaten werden abgerufen.
+            failed: Fehler beim Abrufen der Metadaten.
+            finished: Metadaten erfolgreich abgerufen.
+            pending: Metadaten noch nicht abgerufen.
+          processing:
+            active: Verarbeitung läuft.
+            failed: Fehler beim Verarbeiten.
+            finished: Erfolgreich verarbeitet.
+            pending: Noch nicht verarbeitet.
+          uploading:
+            active: Wird hochgeladen.
+            failed: Fehler beim hochladen.
+            finished: Erfolgreich hochgeladen.
+            pending: Noch nicht hochgeladen.
+          uploading_to_s3:
+            active: Wird zu S3 übertragen.
+            failed: Fehler beim übertragen zu S3.
+            finished: Erfolgreich zu S3 übertragen.
+            pending: Noch nicht zu S3 übertragen.
+        tabs:
+          audio_files: Audios
+          image_files: Bilder
+          other_files: Andere
+          video_files: Videos
+      media_loading_spinner:
+        widget_type_info_box_text: Dies ist eine Vorschau der Lade-Ansicht von 'Bild'. Die Animation wird ausgeführt, während die Seite geladen wird.
+      nested_files:
+        text_track_files:
+          delete:
+            cell_title: Textspur löschen
+            column_header: " "
+          file_name:
+            inline_help_html: "<ul><li>Wenn der Dateiname dem Schema <strong>dateiname.wx_YZ.vtt</strong> folgt, findet Pageflow automatisch den Sprachcode, in diesem Fall <strong>wx</strong>.</li><li>Ein <strong>Beispiel-Dateiname</strong> für Deutsch (de) ist <strong>untertitel.de_DE.vtt</strong>.</li></ul>"
+          kind:
+            cell_title:
+              captions: Ton-Ersatz-Textspur
+              descriptions: Bild-Ersatz-Textspur
+              subtitles: Übersetzungs-Textspur
+            column_header: Art
+            inline_help_html: "<ul><li><strong>Ton-Ersatz-Textspuren</strong> richten sich an Nutzer, welche eine Textspur besser verstehen als eine Tonspur.</li><li><strong>Übersetzungs-Textspuren</strong> richten sich an Nutzer, welche eine andere Sprache besser verstehen als die Sprache der Tonspur.</li><li><strong>Bild-Ersatz-Textspuren</strong> richten sich an Nutzer, welche eine Textspur besser verstehen als eine Bildspur. Bild-Ersatz-Textspuren werden in der Regel von Screenreadern o.ä. vorgelesen, welche die Nutzer bereithalten.</li></ul>"
+            label: Art
+          label:
+            column_header: Label
+            inline_help: Wird im Textspuren-Auswahlmenü des Media Players angezeigt.
+            label: Label
+          no_files_blank_slate: Für diese Datei gibt es momentan keine Textspuren.
+          srclang:
+            cell_title:
+              blank: Noch nicht ausgefüllt
+              present: 'Ausgefüllt: %{value}'
+            column_header: Sprache
+            inline_help_html: "<ul><li>Die Sprache einer Textspur wird als Zwei-Buchstaben-Code nach ISO 639.1 angegeben.</li> <li><strong>Beispiele:</strong> 'de' für Deutsch oder 'en' für Englisch.</li> <li>Den Sprachcode findet man meist auf der Wikipedia-Seite zur jeweiligen Sprache.</li></ul>"
+            label: Sprache
+      phone_horizontal_slideshow_mode:
+        page_transitions_inline_help: "<br /><br />Unter 'Titel und Optionen > Erscheinungsbild' sind horizontale Steuerungsgesten für Smartphones aktiviert. Vertikale Seitenübergänge (z.B. von unten nach oben) ändern sich im Phone-Layout automatisch in horizontale Übergangseffekte (z.B. von rechts nach links) und umgekehrt."
+        widget_type_info_box_text: "<p>Auf Smartphones mit horizontalen Wisch-Gesten zwischen Seiten wechseln.</p><p>Vertikale Seitenübergänge (z.B. von unten nach oben) ändern sich in horizontale Übergangseffekte (z.B. von rechts nach links) und umgekehrt.</p><p>Im Desktop-Layout und auf Tablets hat die Einstellung keine Auswirkung.</p>"
+      quotas:
+        loading: Quotas überprüfen...
+      templates:
+        back_button_decorator:
+          outline: Gliederung
+        background_positioning:
+          cancel: Abbrechen
+          close: Schließen
+          help: Über die Auswahl des Bildausschnitts stellst Du sicher, dass Dein Bild auch auf mobilen Endgeräten optimal dargestellt wird.
+          preview_title: Vorschau
+          previews:
+            banner: Banner
+            ratio16to9: 16:9 Landscape
+            ratio16to9Portrait: 16:9 Portrait
+            ratio4to3: 4:3 Landscape
+            ratio4to3Portrait: 4:3 Portrait
+          save: Speichern
+          title: Bildausschnitt anpassen
+        change_theme_dialog:
+          close: Schließen
+          header: Themes
+          preview_header_prefix: Vorschau
+          preview_header_suffix: "-Theme"
+        chapter_item:
+          new_page: Neue Seite
+          save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
+        confirm_encoding:
+          all_released: 'Alle Dateien wurden zur Transcodierung freigegeben.'
+          audios_tab: Audios
+          confirm_button: Ausgewählte Dateien transcodieren
+          link_to_progress: Auf der %{link} Seite wird der Fortschritt der Verarbeitung angezeigt.
+          manage_files: Dateien verwalten
+          videos_tab: Videos
+        confirm_upload:
+          close: Abbrechen
+          edit_file_header: Metadaten
+          header: Dateien hinzufügen
+          hint: Bearbeite die Metadaten der Dateien und starte dann den Upload.
+          upload: Upload starten
+        confirmable_file_item:
+          remove: Löschen
+        edit_chapter:
+          destroy: Löschen
+          outline: Gliederung
+          retry: Erneut versuchen
+          save_error: Beim Speichern des Kapitels ist ein Problem aufgetreten.
+        edit_entry:
+          close: Schließen
+          manage_files: Dateien verwalten
+          metadata: Titel und Optionen
+          publish: Veröffentlichen...
+          save_error: Beim Speichern der Metadaten ist ein Fehler aufgetreten.
+        edit_meta_data:
+          outline: Gliederung
+          retry: Erneut versuchen
+          save_error: Beim Speichern der Metadaten ist ein Problem aufgetreten.
+        edit_page:
+          destroy: Löschen
+          outline: Gliederung
+          retry: Erneut versuchen
+          save_error: Beim Speichern der Seite ist ein Problem aufgetreten.
+        edit_page_link:
+          back: Zurück
+          destroy: Löschen
+        edit_storyline:
+          destroy: Löschen
+          outline: Gliederung
+          retry: Erneut versuchen
+          save_error: Beim Speichern des Erzählstrangs ist ein Problem aufgetreten.
+        edit_widget:
+          back: Erscheinungsbild
+        embedded:
+          page_link:
+            reset: Zurücksetzen
+        emulation_mode_button:
+          disabled_hint: Von diesem Seitentyp nicht unterstützt
+          tooltip: Desktop/ Phone Vorschau
+        entry_preview:
+          navigation_disabled_hint: Seitenwechsel sind innerhalb der Phone Vorschau nicht möglich.
+        file_item:
+          cancel: Abbrechen
+          confirm: Überprüfen und bestätigen
+          credits: Rechte
+          destroy: Löschen
+          download: Herunterladen
+          retry: Erneut versuchen
+          select: Auswählen
+          settings: Einstellungen
+          source: Original
+        file_meta_data_item_value_view:
+          edit: Bearbeiten
+        file_settings_dialog:
+          close: Schließen
+        files:
+          back: Zurück
+        files_blank_slate:
+          no_files: Es wurden noch keine Dateien dieses Typs hochgeladen.
+        files_explorer:
+          cancel: Abbrechen
+          ok: Ok
+          reuse_files: Dateien wiederverwenden
+        files_explorer_blank_slate:
+          choose_hint: Bitte wählen Sie einen Beitrag aus.
+        files_gallery_blank_slate:
+          no_files: In diesem Beitrag gibt es keine Dateien dieses Typs.
+        help:
+          close: Schließen
+          title: Hilfe
+        help_button:
+          open_help: Hilfe
+        list_blank_slate:
+          text: "(Keine Einträge)"
+        list_item:
+          edit: Bearbeiten
+          remove: Löschen
+        loading:
+          loading: Daten werden geladen.
+        locked:
+          close: Editor schließen
+          loading: Der Beitrag wird zur Bearbeitung geöffnet. Bitte warten...
+          open_here: Stattdessen hier öffnen
+        notification:
+          approve_files: "%{num_files} Dateien müssen für die Transcodierung freigeben werden."
+          retry: Erneut versuchen
+          save_error: Datensätze konnten nicht gespeichert werden.
+          saved: Alle Änderungen wurden gespeichert.
+          saving: Änderungen werden gespeichert...
+          show: Anzeigen
+          upload_pending: Dateien werden gerade hochgeladen.
+        other_entries_blank_slate:
+          none_available: Keine anderen Beiträge verfügbar
+        page_item:
+          save_error: Beim Speichern der Seite ist ein Fehler aufgetreten.
+        page_link_item:
+          edit: Bearbeiten
+          remove: Löschen
+        page_links:
+          add: Hinzufügen
+          label: Verlinkte Seiten
+        page_selection:
+          cancel: Abbrechen
+          ok: OK
+          title: Zielseite auswählen
+        publish_entry:
+          already_published_with_password_help: Dieser Beitrag ist im Moment mit Passwortschutz veröffentlicht. Lassen Sie das Passwort-Feld frei, um das bisherige Passwort beizubehalten.
+          already_published_without_password_help: Dieser Beitrag ist im Moment ohne Passwortschutz veröffentlicht. Nach Festlegen eines Passworts ist kein öffentlicher Zugriff mehr möglich.
+          date: Datum
+          files_pending_notice: Bitte warten Sie bis alle Dateien des Beitrags verarbeitet wurden und überprüfen Sie das Ergebnis. Der Beitrag kann dann veröffentlicht werden.
+          noindex: Suchmaschinen ausschließen
+          noindex_help: |
+            Ein Meta-Tag setzen, das Crawler von Suchmaschinen wie
+            Google oder Bing anweist, den veröffentlichten Beitrag
+            nicht in den Index aufzunehmen. Der Beitrag erscheint
+            daher nicht in Suchergebnissen.
+          not_published_notice: Dieser Beitrag ist zur Zeit nicht veröffentlicht.
+          password: Passwort
+          password_help: Teilen Sie Ihren veröffentlichten Beitrag nur mit bestimmten Personen. Besucher benötigen dann das von Ihnen festgelegte Passwort, um den Beitrag ansehen zu können.
+          password_protected: Mit Passwort schützen
+          previously_published_with_password_help: Dieser Beitrag war zuletzt mit Passwortschutz veröffentlicht. Lassen Sie das Passwort-Feld frei, um das bisherige Passwort beizubehalten.
+          publish: Veröffentlichen
+          publish_current: Akuellen Stand veröffentlichen
+          publish_success: Der Beitrag wurde erfolgreich veröffentlicht.
+          published_notice: Eine Revision dieses Beitrags ist zur Zeit veröffentlicht.
+          published_url_hint: 'Er kann nun unter folgender URL erreicht werden:'
+          show_files: Dateien anzeigen
+          time: Uhrzeit
+          unlimited: Unbegrenzt
+          until_including: Bis einschließlich
+          user_name: Benutzername
+          view_revisions: Revisionen ansehen
+        select_button:
+          select: Auswählen
+        storyline_outline:
+          header: Gliederung
+          new_chapter: Neues Kapitel
+        storyline_picker:
+          add: Hinzufügen
+          edit: Einstellungen bearbeiten
+        text_tracks:
+          edit_file_header: Metadaten
+          upload: Hinzufügen
+        theme:
+          use: Verwenden
+        widget_item:
+          settings: Einstellungen
+      text_track_files:
+        label_missing: "(Label fehlt)"
+        srclang_missing: "(Fehlt)"
+      themes:
+        header: Themes
+      title_loading_spinner:
+        widget_type_info_box_text: Dies ist eine Vorschau der 'Titel und Bild'-Lade-Ansicht. Die Animation läuft ab, während der Beitrag lädt.
+      views:
+        chapter_item_view:
+          chapter: Kapitel
+          unnamed: "(Unbenannt)"
+        edit_chapter_view:
+          confirm_destroy: |-
+            Kapitel einschließlich ALLER enthaltener Seiten wirklich löschen?
+
+            Dieser Schritt kann nicht rückgängig gemacht werden.
+        edit_configuration:
+          back: Gliederung
+          confirm_destroy: Wirklich löschen?
+          destroy: Löschen
+          retry: Erneut versuchen
+          save_error: Fehler beim Speichern
+        edit_entry_view:
+          cannot_publish: Sie sind nicht berechtigt diesen Beitrag zu veröffentlichen.
+        edit_page_view:
+          confirm_destroy: Seite wirklich löschen?
+        edit_storyline_view:
+          cannot_destroy: Nur leere Erzählstränge können gelöscht werden.
+          confirm_destroy: Erzählstrang wirklich löschen?
+        editor_views:
+          files_pending_warning: Es werden noch Dateien hochgeladen. Wenn Sie die Seite verlassen werden die Uploads abgebrochen.
+          hide_editor: Editorleiste ausblenden
+          resize_editor: Größe der Editorleiste ändern
+          show_editor: Editorleiste einblenden
+        entry_preview_view:
+          scroll_hint: Scrollen, um weiterzulesen
+        file_meta_data_item_value_view:
+          blank: "-"
+        files_view:
+          add: Hinzufügen
+          authenticating: Authentifizieren
+          import: Importieren
+          importer:
+            heading: Dateien importieren von
+          reuse: Wiederverwenden
+          upload: Hochladen
+        filtered_files_view:
+          banner_prefix: 'Aktiver Filter:'
+        inputs:
+          file_input:
+            auto_default_text_track: "(Automatisch)"
+            default_text_track: 'Standard Textspur:'
+            edit_background_positioning: Bildausschnitt anpassen...
+            edit_file_settings: Datei-Einstellungen...
+            no_default_text_track: "(Kein)"
+          reference_input_view:
+            choose: Verknüpfung ändern
+            none: "(Kein)"
+            unset: Verknüpfung entfernen
+          theme_input_view:
+            choose: Theme ändern
+        page_item_view:
+          unnamed: "(Unbenannt)"
+        page_link_item_view:
+          no_page: "(Keine Seite)"
+          unnamed: "(Unbenannt)"
+        storylines_picker_view:
+          label: Erzählstrang
+          without_parent_page: Ohne übergeordnete Seite
+      widgets:
+        attributes:
+          media_loading_spinner:
+            animation_duration:
+              inline_help: Steuert die Animationsdauer beim Laden des Spinners
+              label: Animationsdauer
+            blur_strength:
+              inline_help: Steuern Sie die Unschärfe des Hintergrundbilds.
+              label: Unschärfe
+            custom_background_image_id:
+              inline_help: Standardmäßig wird das Hintergrundbild der ersten Seite verwendet.
+              label: Hintegrundbild
+            remove_logo:
+              label: Logo entfernen
+          title_loading_spinner:
+            animation_duration:
+              inline_help: Steuert die Animationsdauer beim Laden des Spinners
+              label: Animationsdauer
+            blur_strength:
+              inline_help: Steuern Sie die Unschärfe des Hintergrundbilds.
+              label: Unschärfe
+            custom_background_image_id:
+              inline_help: Standardmäßig wird das Hintergrundbild der ersten Seite verwendet.
+              label: Hintegrundbild
+            subtitle:
+              inline_help: Untertitel, der in der Lade-Ansicht gezeigt werden soll.
+              label: Untertitel
+            title:
+              inline_help: Titel, der in der Lade-Ansicht gezeigt werden soll. Standardmäßig wird der Beitragstitel verwendet.
+              label: Titel
+    editor_emulation_mode:
+      feature_name: Editor Phone Emulationsmodus
+    entry:
+      duplicated_title: Kopie von %{title}
+    entry_types:
+      paged:
+        editor:
+          entry_metadata_configuration_attributes:
+            emphasize_chapter_beginning:
+              inline_help: Mit dieser Option wird der Titel der jeweils ersten Seite eines Kapitels größer dargestellt.
+              label: Kapitelanfang hervorheben
+            emphasize_new_pages:
+              inline_help: Zeigt zum Start des Pageflows in einer Info-Box die seit dem letzten Besuch neu erstellten Seiten an.
+              label: Neue Seiten hervorheben
+            home_button_enabled:
+              inline_help: Es gibt die Möglichkeit, in der Navigation einen Button anzuzeigen, der auf eine externe Seite verlinkt, z.B. zurück auf die Homepage, von der aus Du den Pageflow verlinkt hast.
+              label: Home-Button anzeigen
+            home_button_enabled_disabled:
+              inline_help: Diese Funktion steht in diesem Theme nicht zur Verfügung.
+            home_url:
+              inline_help: URL der Übersichtseite. Leer lassen, um Standard zu übernehmen.
+              label: "Home-Button-URL"
+            home_url_disabled:
+              inline_help: Diese Funktion steht in diesem Theme nicht zur Verfügung.
+            manual_start:
+              inline_help: Entscheide, ob zu Beginn Deines Pageflows ein Hinweis angezeigt wird.
+              label: Multimedia-Hinweis vor dem Start anzeigen
+            overview_button_enabled:
+              inline_help: In der Übersicht werden die Kapitel und Seiten des Haupterzählstrangs angezeigt.
+              label: Übersicht-Button anzeigen
+            overview_button_enabled_disabled:
+              inline_help: Diese Funktion steht in diesem Theme nicht zur Verfügung.
+    file_licenses:
+      cc_by_4:
+        name: CC-BY 4.0
+        url: https://creativecommons.org/licenses/by/4.0/
+      cc_by_nc_4:
+        name: CC-BY-NC 4.0
+        url: https://creativecommons.org/licenses/by-nc/4.0/
+      cc_by_nc_nd_4:
+        name: CC-BY-NC-ND 4.0
+        url: https://creativecommons.org/licenses/by-nc-nd/4.0/
+      cc_by_nc_sa_4:
+        name: CC-BY-NC-SA 4.0
+        url: https://creativecommons.org/licenses/by-sa-nc/4.0/
+      cc_by_nd_4:
+        name: CC-BY-ND 4.0
+        url: https://creativecommons.org/licenses/by-nd/4.0/
+      cc_by_sa_4:
+        name: CC-BY-SA 4.0
+        url: https://creativecommons.org/licenses/by-sa/4.0/
+    help_entries:
+      files:
+        menu_item: Dateien verwalten
+        text: |-
+          # Dateien verwalten
+
+          Pageflow verarbeitet alle gängigen Medien-Formate (Bild,
+          Audio, Video) und rechnet diese in unterschiedliche Formate
+          und Qualitäten um. Das System passt dann automatisch die
+          Ausgabequalität der Medien an die jeweilige
+          Internetverbindung und das Endgerät des Users
+          an. Prinzipiell sollten Dateien in der bestmöglichen
+          Auflösung verwendet werden und vor dem Upload nicht
+          komprimiert sein. Zudem ist es für ein strukturiertes
+          Arbeiten enorm hilfreich, sämtliche Audios,
+          Hintergrund-Video-Loops, Filme, Bilder und Texte bereits im
+          Vorfeld in der gewünschten Version in einem separaten Ordner
+          auf dem eigenen Rechner abzulegen.
+
+          ## Dateien hochladen & verwalten
+
+          Von der Gliederung führt der Menüpunkt "Dateien verwalten"
+          zur Liste der bereits hochgeladenen Dateien. Über die
+          Schaltfläche "Hinzufügen -> Hochladen" fügst Du weitere
+          Dateien hinzu.
+
+          Vor dem Upload wird ein Dialog angezeigt, in dem Du die
+          Liste der ausgewählten Dateien noch einmal prüfen
+          kannst. Nach einem Klick auf eine Datei in der Tabelle,
+          kannst Du im Formular in der rechten Spalte Metadaten für
+          die ausgewählte Datei eingeben. Hier gibt es z.B die
+          Möglichkeit, Angaben zu den Urheberrechten zu machen, die
+          dann automatisch im „Impressum“ angezeigt werden.
+
+          Nach dem Hochladen werden die Dateien zunächst auf dem
+          Server verarbeitet. Dies kann bei längeren Videos einige
+          Minuten in Anspruch nehmen. Klicke auf das Thumbnail einer
+          Datei, um den aktuellen Verarbeitungsstatus
+          einzublenden. Hier lassen sich auch die allgemeinen
+          Eigenschaften, wie Bildgröße oder Audiolänge einsehen und
+          die Originaldatei herunterladen.
+
+          Dateien können bereits in Seiten verwendet werden, auch wenn
+          die Verarbeitung noch nicht abgeschlossen ist. Während des
+          Ladevorgangs kann also problemlos weiter gearbeitet werden.
+
+
+          ## Dateien wiederverwenden
+
+          Videos, Audios und Bilder können in mehr als einem Beitrag
+          verwendet werden. So müssen z.B. Videos nicht mehrfach
+          hochgeladen und verarbeitet werden. Klicke hierfür unter
+          "Dateien verwalten“ auf "Hinzufügen -> Wiederverwenden", um
+          andere Beiträge nach Dateien zu durchsuchen und sie in den
+          bearbeiteten Beitrag zu übernehmen.
+
+          ## Datei-Einstellungen bearbeiten
+
+          Für jede Datei kann über die Schaltfläche "Einstellungen
+          bearbeiten" ein Dialog mit weiteren Optionen angezeigt
+          werden. Hier können z.B. die beim Upload eingegebenen
+          Metadaten (wie die Angaben zum Urheberrecht) noch einmal
+          bearbeiten werden.
+      meta_data:
+        general:
+          menu_item: Allgemein
+          text: |-
+            # Allgemein
+
+            ## Titel des Pageflows
+
+            Hier kannst Du Deinem Pageflow einen Titel geben, der in der
+            Titelleiste des Browserfensters angezeigt wird. Unter diesem
+            Titel wird Dein Pageflow nach der Veröffentlichung auch in
+            Suchmaschinen indiziert werden.
+
+            ## Sprache
+
+            Wähle hier, in welcher Sprache Dein Pageflow ausgespielt
+            wird. Hierbei geht es um die Frontend-Elemente wie das 
+            Impressum und die Datenschutz-Einstellung.
+
+            ## Credits
+
+            Hier kannst Du Deine Impressums-Information im Freitext
+            eingeben. Zudem können für alle Dateien unter „Dateien
+            verwalten“ auch Bildrechte vergeben werden, die dann
+            automatisch im Impressum angezeigt werden.
+        menu_item: Titel und Optionen
+        social:
+          menu_item: Social
+          text: |
+            # Social
+
+            ## Social Sharing Bild
+
+            Wähle hier das Bild aus, das beim Teilen des Pageflows in
+            sozialen Netzwerken erscheinen soll.
+
+            ## Zusammenfassung
+
+            Trage hier ein, welcher Beschreibungstext beim Teilen in
+            sozialen Netzwerken angezeigt wird.
+
+            ## Social Sharing URL
+
+            Wenn Beiträge in eigene Webseiten (mit abweichender URL)
+            eingebettet werden kann hier eine individuelle URL
+            festgelegt werden, die beim Teilen des Beitrags verwendet
+            werden soll.
+
+            ## Social Share Links
+
+            Bestimme, welche Share-Buttons beim Klick auf die
+            „Share-Funktion“ angezeigt werden soll.
+        text: |
+          # Titel und Optionen
+
+          Allgemeine Einstellungen für den Beitrag. Bitte einen
+          Unterpunkt auf der linken Seite auswählen.
+      outline:
+        menu_item: Kapitel und Seiten
+        text: |-
+          # Kapitel und Seiten
+
+          Ein Pageflow besteht aus mindestens einem Kapitel mit
+          mindestens einer Seite. Es können beliebig viele Kapitel mit
+          beliebig vielen Seiten erstellt werden. Um Inhalte zu
+          erstellen, klicke
+
+          1. auf Neues Kaptitel, um eine erstes Kapitel zu erstellen
+          2. auf Neue Seite, um dem Kapitel eine Seite hinzuzufügen, und
+          3. auf diese Seite, um den Inhalt zu bearbeiten.
+
+          ## Aufbau eines Kapitels
+
+          Mit den „Kapiteln" strukturierst Du den Aufbau Deiner
+          Reportage - beispielsweise nach Themenschwerpunkten oder
+          Zeiträumen. Die Kapitel werden in der „Übersicht“ angezeigt
+          und dienen dem User als Orientierungshilfe. Deshalb ist es
+          ratsam die jeweiligen Kapitel mit Titeln zu versehen.
+
+          Wenn nur ein unbenanntes Kapitel angelegt wird, so verhält
+          sich Pageflow, als ob keine Kapitelstruktur vorhanden
+          ist. (Kapitel und Kapiteltitel werden in diesem Falle nicht
+          in der Übersicht bzw. Navigation dargestellt).
+      page_types:
+        menu_item: Seitentypen
+        text: |
+          # Seitentypen
+
+          Durch die Auswahl des Seitentyps legst Du fest, welche
+          Medien in der jeweiligen Seite verwendet werden. Je nach
+          Seitentyp stehen verschiedene Einstellungen zur Verfügung.
+          Für weitere Informationen klicke bitte auf einen Seitentyp
+          in der linken Spalte.
+      publishing:
+        menu_item: Veröffentlichen
+        text: "# Veröffentlichen\n\nKlicke in der Gliederung auf die Schaltfläche\n„Veröffentlichen“ um Deinen Pageflow zu publizieren. Eine\nReportage kann entweder zeitlich unbegrenzt oder bis zu\neinem bestimmten Stichtag veröffentlicht\nwerden. \n\n### Passwortschutz\n\nAußerdem gibt es die Möglichkeit, Pageflows mit einem Passwort zu schützen. \nHierzu muss einfach das entsprechende Häkchen bei „Mit Passwort schützen\" gesetzt werden. \nDas System verwendet als Benutzernamen den Namen des Kontos und generiert ein Passwort, \nwelches auch manuell geändert werden kann. \n\nBeiträge, die bereits veröffentlicht sind, können nachträglich mit einem Passwort geschützt werden - und andersherum können auch geschützte Beiträge anschließend mit erneutem Klick auf „Veröffentlichen“ vom Passwortschutz befreit werden. Bei der Veröffentlichung werden die auszuführenden Schritte im Dialogfenster angezeigt und erklärt.\n\n### Änderungen nach der Veröffentlichung\n\nVeröffentlichte Pageflows können jederzeit manuell depubliziert werden. Sollte eine Reportage bereits veröffentlicht sein, werden nachträgliche Änderungen erst öffentlich sichtbar, sobald die Reportage erneut veröffentlicht wird. \n\n\n### Einbettung als iframe\n\nVeröffentlichte Beiträge können auch in die eigene Webseite eingebettet werden. Weitere Informationen findest Du in diesem [Artikel](https://pageflow.freshdesk.com/support/solutions/articles/11000002742-wie-kann-ich-einen-beitrag-in-eine-webseite-einbetten)\n\n### Einbettung iframe-Teaser \n\nVorschaubild zum Einbetten in Externe Webseiten Nach der Veröffentlichung erstellt das System ein Vorschaubild, das als iframe zur Verlinkung in eine externe Seite eingebunden werden kann.  Anhand des ausgespielten Codes lässt sich die\nGröße des iframes frei einstellen. Hierbei ist jedoch eine Mindesthöhe von 150px und und eine Mindestbreite von 220px zu beachten."
+      text_tracks:
+        menu_item: Textspuren
+        text: |-
+          # Textspuren
+
+          Audio- und Video-Dateien können Textspuren hinzugefügt
+          werden.  Öffne dazu unter "Dateien verwalten" über die
+          Schaltfläche "Einstellungen bearbeiten" den
+          Einstellungen-Dialog der Audio- oder Video-Datei, für die Du
+          Textspuren verwalten willst und wähle das Tab "Textspuren".
+
+          Hier können Textspuren im SRT- oder VTT-Format hochgeladen
+          werden. Je Textspur kann Sprache, Typ und die Bezeichnung,
+          die dem Benutzer im Untertitel-Menüs angezeigt werden soll,
+          festgelegt werden.
+
+          Verfügt ein Video oder Audio über Textspuren, werden diese
+          dem Benutzer auf Video- oder Audio-Seiten zur Auswahl
+          gestellt. Bitte beachte, dass Untertitel nicht angezeigt
+          werden, wenn ein Video als Hintergrund-Video verwendet oder
+          eine Audio-Datei als Atmo wiedergegeben wird.
+
+          ## Automatische Untertitel
+
+          Der Benutzer kann auf Video- und Audio-Seiten jederzeit eine
+          der Textspuren als Untertitel anzeigen lassen. Die Auswahl
+          des Benutzers wird dauerhaft gespeichert.
+
+          Standardmäßig ist im Untertitel-Menü auf Video oder
+          Audio-Seiten die Option "Automatisch" ausgewählt. Untertitel
+          werden dann unter folgenden Bedingungen automatisch angezeigt:
+
+          * Besitzt die Datei eine Übersetzungstextspur in der Sprache
+          des Beitrags, wird diese automatisch angezeigt. Dies hilft
+          Benutzern, die zwar die Sprache des Beitrags, nicht aber
+          die Sprache der Tonspur der Datei verstehen können.
+
+          * Besitzt die Datei stattdessen eine Ton-Ersatz-Spur, wird
+          diese angezeigt, falls die Lautstärke über die Controls in
+          der Navigationsleiste auf stumm geregelt wurde. Bitte
+          beachte, dass aus technischen Gründen nicht erkannt werden
+          kann, ob die Lautstärke außerhalb des Browsers auf stumm
+          geregelt wurde. Ebenfalls ist diese Erkennung nicht auf
+          mobilen Geräten möglich.
+
+          ## Standard Textspur
+
+          Sollte die automatische Auswahl der Textspur nicht zum
+          gewünschten Verhalten führen, kannst Du je Audio- oder
+          Video-Seite selbst eine Standard-Textspur festlegen. Diese
+          wird dann angezeigt, soweit der Benutzer im Untertitel-Menü
+          nicht eine andere Option wählt.
+
+          Gehe dazu auf das "Dateien"-Tab der jeweiligen Seite und
+          wähle im Video- oder Audio-Feld über die Schaltfäche mit dem
+          Menü-Symbol eine Textspur als Standard aus.
+    helpers:
+      entries:
+        global_links: Globale Links
+        image_rights: Bildrechte
+    highdef_background_images:
+      feature_name: Hochaufgelöste Hintergrundbilder
+    highdef_video_encoding:
+      feature_name: Full HD und 4K Videos
+    initial_password:
+      submit: Speichern und anmelden
+      title: Passwort festlegen
+    invalid_transition: Der gewünschte Statuswechsel ist nicht erlaubt.
+    languages:
+      ar: Arabisch
+      cs: Tschechisch
+      de: Deutsch
+      dk: Dänisch
+      el: Griechisch
+      en: Englisch
+      es: Spanisch
+      fi: Finnisch
+      fr: Französisch
+      fy: Friesisch
+      hi: Hindi
+      it: Italienisch
+      ja: Japanisch
+      lb: Luxemburgisch
+      nb: Bokmål
+      nl: Holländisch
+      nn: Nynorsk
+      'no': Norwegisch
+      pl: Polnisch
+      pt: Portugiesisch
+      rm: Rätoromanisch
+      ru: Russisch
+      se: Nordsamisch
+      sr: Serbisch
+      sv: Schwedisch
+      tr: Türkisch
+      unknown: "(Unbekannt)"
+      zh: Chinesisch
+    large_player_pool:
+      feature_name: Vergrößerter Player-Pool
+    media_loading_spinner:
+      widget_type_name: Media
+    page_transitions:
+      crossfade: Überblenden
+      cut: Harter Schnitt
+      default: "(Standard)"
+      fade: Hintergrund Blenden/Vordergrund Scrollen
+      fade_to_black: Schwarzblende
+      scroll: Scrollen
+      scroll_left: Scrollen (von links)
+      scroll_over_from_left: Überlagern (von links)
+      scroll_over_from_right: Überlagern (von rechts)
+      scroll_right: Scrollen (von rechts)
+    paged_entry_type:
+      feature_name: Beitragstyp Seitenbasiert/Klassisch
+    phone_horizontal_slideshow_mode:
+      feature_name: Horizontales Wischen auf Phones
+    quotas:
+      exhausted: Quota verbraucht.
+    scrolled_entry_type:
+      feature_name: Beitragstyp Kontinuierlich Scrollend/Pageflow Next
+    selectable_themes:
+      feature_name: Editor-Theme-Auswahl
+    storyline_attributes:
+      main:
+        inline_help: Macht die erste Seite dieses Erzählstrangs zur Startseite des Beitrags.
+        inline_help_disabled: Die erste Seite dieses Erzählstrangs ist die Startseite des Beitrags.
+        label: Haupterzählstrang
+      navigation_bar_mode:
+        label: Navigationsleiste
+        values:
+          current_storyline: Aktueller Erzählstrang
+          inherit_from_parent: Von übergeordnetem Kapitel erben
+          non: Ausblenden
+      page_transition:
+        inline_help: Standardmäßig wird beim Erreichen des Erzählstrangs von der übergeordneten Seite die erste Seite des Erzählstrangs von rechts hineingeschoben. Bei Klick auf den Zurück-Button fährt die Seite wieder nach rechts hinaus. Hier kannst Du einen alternativen Effekt wählen.
+        label: Seitenübergangseffekt
+      parent_page_perma_id:
+        inline_help: Die Auswahl einer übergeordneten Seite bestimmt, auf welcher Seite der User am Ende eines untergeordneten Erzählstrangs oder bei Klick auf den Zurück-Button landet. Mit einer solchen Seite kann die Kapitelhierarchie bestimmt werden, falls mehr als zwei Erzählstränge benutzt werden. Mehr Informationen zur Kapitelhierachie findest Du im Hilfethema 'Erzählstränge'.
+        label: Übergeordnete Seite
+      scroll_successor_id:
+        inline_help: Seite, die beim Weiterscrollen am Ende des Erzählstrangs erreicht werden soll. Standardmäßig gelangt der Leser zur übergeordneten Seite zurück.
+        label: Scroll Nachfolger
+      title:
+        label: Titel
+    storylines:
+      feature_name: Erzählstränge
+      main: Hauptstrang
+      untitled: Unbenannter Erzählstrang
+    structured_data:
+      feature_name: Eingebettete strukturierte Daten
+    title_loading_spinner:
+      feature_name: "'Titel und Bild'-Lade-Ansicht"
+      widget_type_name: Titel und Bild
+    ui:
+      configuration_editor:
+        tabs:
+          consent_bar: Consent-Leiste
+          cookie_notice_bar: Cookie Hinweis
+          files: Dateien
+          general: Allgemein
+          links: Verweise
+          loading_spinner: Lade-Ansicht
+          options: Optionen
+          phone_horizontal_slideshow_mode: Horizontales Wischen auf Phones
+          social: Social
+          widgets: Erscheinungsbild
+      inline_help:
+        pageflow/chapter:
+          title: Wird auf der Übersichtsseite angezeigt.
+        pageflow/entry:
+          author: Name des Autors.
+          credits: Text wird zusammen mit dem Impressumsverweis angezeigt.
+          keywords: Schlüsselwörter als Vorschlag für Suchmaschinen.
+          locale: Sprache der Beschriftungen in Navigationsleisten und Steuerelementen des Beitrags.
+          publisher: Name oder Firmenname des Herausgeber.
+          share_providers: Social Media Plattformen, die unter dem Menüpunkt "Teilen" des Beitrags angezeigt werden sollen
+          share_url: URL, die geteilt werden soll, wenn der Benutzer auf einen der Social Media Buttons klickt. Feld frei lassen, um URL des veröffentlichten Beitrags zu verwenden.
+          summary: Trage hier ein, welcher Beschreibungstext beim Teilen in sozialen Netzwerken angezeigt wird.
+          title: Hier kannst Du Deinem Pageflow einen Titel geben, der in der Titelleiste des Browserfensters angezeigt wird. Unter diesem Titel wird Dein Pageflow nach der Veröffentlichung auch in Suchmaschinen indiziert werden
+        pageflow/page:
+          additional_title: Die Infobox wird über den Steuerelementen zum Starten und Stoppen der Wiedegabe angezeigt.
+          atmo_audio_file_id: Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch auf Folgeseiten nahtlos weiterspielen soll, wähle auf diesen Seiten die selbe Datei aus. Diese Funktionalität steht im Moment nicht auf mobilen Geräten zur Verfügung.
+          atmo_during_playback: Wähle wie sich die Atmo während der Wiedergabe des Hauptmediums dieser Seite verhalten soll.
+          delayed_text_fade_in: Blendet die Textinhalte der Seite sowie die Abblendung zeitverzögert ein, nachdem man auf die Seite geblättert hat. So wird für eine gewisse Zeit der Blick auf den Hintergrund freigegeben.
+          description: Hier kann der Text eingegeben werden, der angezeigt wird, wenn der User in der Übersicht mit der Mouse über die jeweilige Seite fährt. Außerdem entspricht der hier eingegebene Text auch dem Mouse-Over-Text beim Seitentyp „Seiten-Verweise“, sowie dem Text zum Teilen in sozialen Netzwerken.
+          gradient_opacity: |-
+            Die Intensität des Farbverlaufs dient der Lesbarkeit von Texten auf Videos oder Bildern.
+
+            Durch den Schieberegler kann der Bildhintergrund so stark abgedunkelt bzw. aufgehellt werden, bis der Kontrast zwischen Bild und Text ausreichend ist.
+          hide_logo: Logo auf dieser Seite ausblenden
+          invert: |-
+            Beim Invertieren werden „hell“ und „dunkel“ vertauscht, die sonst weiße Schrift ändert sich dabei automatisch in schwarz. 
+
+            Grundsätzlich gilt: Helle Schrift für dunkle Bilder, dunkle Schrift für helle Bilder.
+          mobile_poster_image_id: Dieses Bild wird in der Mobilvariante der Seite als Posterbild gezeigt.
+          text: |-
+            Der Textblock kann mit den Buttons unterhalb des Eingabefeldes formatiert werden. [ B=Fett / I=kursiv / U=unterstrichen „gekippte acht“=Link/URL auf fremde Seite einfügen].
+
+            Alle Änderungen sind in der linken Frontend-Ansicht sichtbar, sobald das entsprechende Texteingabefeld im Editierbereich verlassen wurde.
+          thumbnail_image_id: Das Thumbnail ersetzt das ansonsten automatisch generierte Vorschaubild in der Navigation und in der Übersicht.
+          transition: Wähle hier den Effekt, der beim Erreichen dieser Seite benutzt werden soll.
+      templates:
+        inputs:
+          file_input:
+            edit: Ändern
+            reset: Zurücksetzen
+          page_reference:
+            drag_hint: Ziehen Sie Seiten per Drag &amp; Drop in die Seite um Verweise zu erstellen.
+          text_area_input:
+            bold: Fett
+            cancel: Abbrechen
+            create_link: Link einfügen
+            insert_ordered_list: Nummerierte Liste einfügen
+            insert_unordered_list: Aufzählungsliste einfügen
+            italic: Kursiv
+            link_type:
+              page_link: Seite
+              url: URL
+            open_in_new_tab: In neuem Tab öffnen
+            open_in_new_tab_help: Empfohlen, damit der Beitrag nach Betrachten des Links nicht erneut geladen werden muss. Bitte beachte, dass Links in der Editor-Vorschau immer in einem neuen Tab geöffnet werden.
+            remove_link: Link entfernen
+            save: Speichern
+            target: Ziel
+            underline: Unterstrichen
+            url: URL
+          url_display:
+            link_text: Herunterladen
+      text_table_cell_view:
+        empty: "(leer)"
+      views:
+        extended_select_input_view:
+          display_help: Hilfe anzeigen
+        inputs:
+          file_input_view:
+            none: "(Kein)"
+          json_input_view:
+            invalid: Ungültige JSON Daten.
+          proxy_url_input_view:
+            http_error: Die URL konnte nicht erfolgreich abgerufen werden (Der Server antwortete mit HTTP Status Code ' %{status}')
+            url_validation: Prüfe Erreichbarkeit der URL...
+          select_input_view:
+            none: "(Kein)"
+            placeholder: Standard (%{text})
+          text_input_view:
+            max_characters_exceeded: Maximale Zeichenanzahl überschritten (%{max_length})
+            required_field: Muss ausgefüllt werden
+          url_input_view:
+            required_field: Muss ausgefüllt werden
+            supported_vendors: 'Es werden nur die folgenden Anbieter unterstützt:'
+            url_hint: 'URL muss mit http:// beginnen.'
+            url_hint_https: URL muss mit http:// oder https:// beginnen.
+    unauthorized: Sie sind nicht berechtigt diese Seite anzuzeigen.
+    unmute_button:
+      widget_type_name: '''Ton ein''-Button'
+    user_mailer:
+      invitation:
+        ending: Dankeschön und viel Spaß,
+        greeting: Dein Pageflow-Team
+        instruction: 'Willkommen bei Pageflow. Bitte lege über den folgenden Link ein Kennwort fest. In Zukunft kannst Du Dich dann mit Deiner E-Mail-Adresse anmelden.'
+        salutation: Hallo %{first_name}
+        subject: Ihre Pageflow Einladung
+    video:
+      help_entries:
+        page_type:
+          menu_item: Video
+          text: "# Video\n\n*Wiedergabe einer Videodatei mit Steuerelementen* \n   \nAnders als bei „Hintergrund-Videos“ werden hier Textelemente nach ein\npaar Sekunden automatisch ausgeblendet, um die\nAufmerksamkeit auf das Bewegtbild zu lenken. Mit\nSteuerelementen kann der Nutzer das Video jederzeit\nstarten und pausieren, vor- oder zurückspulen. Ein\nweiterer Unterschied ist, dass Du wählen kannst, ob ein\nVideo automatisch* gestartet wird, sobald die Seite\nangezeigt wird.  Als dezente Alternative oder Ergänzung zu\nden normalen Texteingabemöglichkeiten, kann eine\nsogenannte „Infobox“ mit Text befüllt werden.\n\nUnter Optionen lässt sich ein automatisches Weiterscrollen am Ende des Videos aktivieren. \nDas kann nützlich sein, um einen nahtlosen Übergang zur nächsten Seite herzustellen.\n\nTypische Anwendungsbeispiele: Filme aller Art, Interviews,\nPortrait\n\n*Hinweis zum Autoplay bei Videos: Aufgrund technischer Einschränkungen, basierend auf der „Autoplay Policy“ der Browser-Hersteller, können Videos mit Ton nicht auf allem Geräten/Browsern automatisch abgespielt werden. Bei Safari  und auf mobilen Geräten können Videos nur manuell gestartet werden. "
+      page_attributes:
+        mobile_poster_image_id:
+          inline_help: Wird in der Mobilvariante gezeigt, bevor das Video startet.
+      page_type_category_name: Media
+      page_type_description: Wiedergabe einer Videodatei mit Steuerelementen
+      page_type_name: Video
+    waveform_player_controls:
+      feature_name: Waveform-Steuerlement-Variante für Audio-Seite
+    webp_images:
+      feature_name: webp Bilder
+    widgets:
+      none: "(Kein)"
+      roles:
+        analytics: Zählpixel
+        background_media_control: Hintergrund-Media-Control
+        consent: Privatsphäre-Einstellungen
+        cookie_notice: Privatsphäre-Einstellungen
+        loading_spinner: Lade-Ansicht
+        mobile_navigation: Mobile Navigation
+        navigation: Navigationsleiste
+        player_controls: Player Controls
+        slideshow_mode: Steuerungsgesten
+      type_names:
+        classic_player_controls: Klassisch
+        default_mobile_navigation: Navigationsmenü mit Thumbnails
+        default_navigation: Navigationsleiste mit Thumbnails
+        default_slideshow_mode: Vertikales Scrollen/Wischen
+        phone_horizontal_slideshow_mode: Horizontales Wischen auf Phones
+        slim_player_controls: Minimalistisch
+  support:
+    array:
+      last_word_connector: " und "
+      two_words_connector: " und "
+      words_connector: ", "
+  time:
+    am: vormittags
+    formats:
+      date: "%d.%m.%Y"
+      default: "%d.%m.%Y, %H:%M"
+      long: "%d.%m.%Y, %H:%M"
+      short: "%d. %B %Y, %H:%M Uhr"
+      time_today: Heute, %H:%M
+    pm: nachmittags
+  views:
+    pagination:
+      first: "|<"
+      last: ">|"
+      next: ">>"
+      previous: !!str '<<'
+      truncate: "..."
