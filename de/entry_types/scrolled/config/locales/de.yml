@@ -1,0 +1,875 @@
+de:
+  pageflow:
+    datawrapper_chart_embed_opt_in:
+      feature_name: Opt-in für Datawrapper Embeds
+    defaultNavigation:
+      widget_type_name: Standard Navigation
+    editor:
+      file_types:
+        audio_files:
+          name:
+            one: Audio
+            other: Audios
+        image_files:
+          name:
+            one: Bild
+            other: Bilder
+        other_files:
+          name:
+            one: Andere
+            other: Andere
+        video_files:
+          name:
+            one: Video
+            other: Videos
+      widgets:
+        attributes:
+          defaultNavigation:
+            fixedOnDesktop:
+              inline_help: |
+                Standardmäßig wird die Navigation beim Scrollen
+                ausgeblendet. Verwende diese Option, um die Navigation
+                im Desktop-Layout nie auszublenden. Um Platz zu
+                sparen, wird die Navigation im Phone-Layout beim
+                Scrollen dennoch immer ausgeblendet.
+              label: Im Desktop-Layout fixieren
+            hideSharingButton:
+              label: Share-Button ausblenden
+            hideToggleMuteButton:
+              label: '''Ton aktivieren''-Button ausblenden'
+    frontend_v2:
+      feature_name: Frontend v2
+    hls_instead_of_dash:
+      feature_name: HLS statt DASH für Videos verwenden
+    iconInlineFileRights:
+      widget_type_name: Copyright-Icons
+    iframe_embed_content_element:
+      feature_name: iframe-Embed Inhaltselement
+    scrolled_entry_fragment_caching:
+      feature_name: Pageflow-Next-Fragment-Caching
+    textInlineFileRights:
+      widget_type_name: Text am Element
+    ui:
+      configuration_editor:
+        tabs:
+          defaultNavigation: Standard Navigation
+    widgets:
+      roles:
+        inlineFileRights: Inline-Datei-Rechte
+  pageflow_scrolled:
+    editor:
+      backdrop_effects:
+        autoZoom:
+          label: Auto-Zoom
+        blur:
+          label: Unschärfe
+        brightness:
+          label: Helligkeit
+        contrast:
+          label: Kontrast
+        grayscale:
+          label: Graustufen
+        saturate:
+          label: Sättigung
+        scrollParallax:
+          label: Scroll-Parallax
+        sepia:
+          label: Sepia
+      blank_entry:
+        create_chapter: Klicke jetzt auf <em>Neues Kapitel</em>, um ein erstes Kapitel zu erstellen.
+        create_content_element: Über die <em>Plus-Buttons</em> in der Vorschau kannst du Elemente hinzufügen.
+        create_section: Klicke dann auf <em>Neuer Abschnitt</em>, um dem Kapitel einen ersten Abschnitt hinzuzufügen.
+        header: Dies ist ein leerer Pageflow.
+        intro: Pageflows bestehen aus Kapiteln und Abschnitten. In der Seitenleiste rechts findest du die Gliederung.
+        outro: Hier siehst du dann die Vorschau deines Pageflows.
+      browser_not_supported:
+        heading: Der Browser oder das Gerät, das du verwendest, wird nicht unterstützt
+        text: Während Pageflow stories auf allen modernen Browsern und Geräten funktionieren, benötigt der Pageflow Editor einen Desktop-Computer mit einer aktuellen Version von Chrome, Firefox, Safari oder Edge.
+      chapter_item:
+        add_section: Neuer Abschnitt
+        drag_hint: Ziehen, um das Kapitel zu verschieben
+        save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
+      common_content_element_attributes:
+        caption:
+          inline_help: Die Beschriftung des Elements wird direkt unterhalb des Elements angezeigt.
+          label: Beschriftung
+        palette_color:
+          blank: "(Automatisch)"
+        position:
+          inline_help: |-
+            Mit dieser Einstellung kannst du die Position des Elements
+            im Zusammenspiel mit Fließtext steuern.
+          item_inline_help_texts:
+            inline: |-
+              Im Text verankern und zusammen mit dem übrigen Inhalt
+              des Abschnitts scrollen.
+            left: "Element links einrücken und vom Text des Abschnitts\numfließen lassen."
+            right: "Element rechts einrücken und vom Text des Abschnitts\numfließen lassen."
+            standAlone: |-
+              Beim Scrollen kurz in der Mitte des Viewports
+              stehenbleiben. Dies gibt dem Leser eine stabile
+              Position, um das Element vollständig betrachten zu
+              können. Kleineren Elementen kann so mehr Gewicht
+              verliehen werden.
+          label: Position
+          values:
+            full: Volle Breite
+            inline: Im Textfluss
+            left: Links eingerückt
+            right: Rechts eingerückt
+            standAlone: Stand-Alone
+            wide: Breit
+        typographyVariant:
+          blank: "(Standard)"
+          label: Variante
+        variant:
+          blank: "(Standard)"
+          label: Variante
+        width:
+          inline_help: |-
+            Ziehe den Schieberegler, um die Breite des Elements
+            anzupassen. Breitere Elemente unterbrechen den Textfluss
+            und stehen prominent für sich alleine.
+          label: Breite
+      content_element_categories:
+        basic:
+          name: Basic
+        data:
+          name: Daten und Diagramme
+        interactive:
+          name: Interaktiv
+        media:
+          name: Media
+      content_elements:
+        counter:
+          attributes:
+            countingSpeed:
+              inline_help: Lege fest, wie schnell die Zählanimation ablaufen soll.
+              label: Zählanimation
+              values:
+                fast: Schnell
+                medium: Mittel
+                none: "(Keine)"
+                slow: Langsam
+            decimalPlaces:
+              inline_help: Bestimme, wie wieviele Nachkommastellen gezeigt werden sollen.
+              label: Nachkommastellen
+            entranceAnimation:
+              inline_help: Lege die Animation fest, mit der die Zahl eingeblendet werden soll, wenn das Element die Mitte des Viewports erreicht.
+              label: Eingangsanimation
+              values:
+                fadeIn: Einblenden
+                fadeInFromAbove: Von oben einblenden
+                fadeInFromBelow: Von unten einblenden
+                fadeInScaleDown: Einblenden und verkleinern
+                fadeInScaleUp: Einblenden und vergrößern
+                none: "(Keine)"
+            numberColor:
+              label: Farbe
+            startValue:
+              inline_help: Bei diesem Wert beginnt die Zählanimation.
+              label: Startwert
+            targetValue:
+              inline_help: Zahlenwert, der angezeigt werden soll. Die Zählanimation endet bei diesem Wert.
+              label: Zielwert
+            textSize:
+              inline_help: Bestimme die Textgröße der Zahl.
+              label: Schriftgröße
+              values:
+                large: Groß
+                medium: Mittel
+                small: Klein
+                verySmall: Sehr klein
+            unit:
+              inline_help: Text der vor oder hinter der Zahl gezeigt werden soll.
+              label: Einheit
+            unitPlacement:
+              inline_help: Bestimme, ob die Einheit vor oder hinter dem Betrag gezeigt werden soll.
+              label: Position der Einheit
+              values:
+                leading: Vor dem Betrag ($100)
+                trailing: Nach dem Betrag (100%)
+          description: Animierte Metriken
+          name: Counter
+          tabs:
+            general: Counter
+        dataWrapperChart:
+          attributes:
+            backgroundColor:
+              inline_help: Farbe der Box, die das Diagramm enthält. Insbesondere für Diagramme mit transparentem Hintergrund kann über die Lesbarkeit durch Wahl einer passenden Hintergrundfarbe verbessert werden.
+              label: Hintegrund-Farbe
+            create_chart:
+              label: Neues Datawrapper Diagramm erstellen
+            title:
+              inline_help: Dieser Titel wird von Screenreadern verwendet, um das Diagramm als Ganzes zu beschreiben.
+              label: Titel
+            url:
+              inline_help: URL zu einem bei Datawrapper publizierten Diagramm. Datawrapper bietet in den Diagramm Optionen ein spezielles "Pageflow"-Design für eine optimale Darstellung innerhalb des Beitrags.
+              label: Diagramm URL
+          description: Einbindung von Diagrammen, die mit Datawrapper erstellt wurden
+          name: DataWrapper Diagramm
+          tabs:
+            general: Diagramm
+        externalLinkList:
+          add: Hinzufügen
+          attributes:
+            thumbnail:
+              inline_help: Dem Link zugeordnertes Bild für die Darstellung im Beitrag.
+              label: Miniaturansicht
+          back: Zurück
+          destroy: Löschen
+        heading:
+          attributes:
+            children:
+              label: Text
+            color:
+              label: Farbe
+            entranceAnimation:
+              inline_help: Lege die Animation fest, mit der die Überschrift eingeblendet werden soll, wenn sie die Mitte des Viewports erreicht.
+              label: Eingangsanimation
+              values:
+                fadeIn: Einblenden
+                fadeInFast: Einblenden (Schnell)
+                fadeInSlow: Einblenden (Langsam)
+                none: "(Keine)"
+            hyphens:
+              inline_help: |
+                Bei manueller Silbentrennung werden Worte nur an
+                Stellen getrennt, die durch einen bedingten
+                Trennstrich ausgezeichnet wurden. Du kannst so
+                Trennung an unerwünschten Stellen verhindern.  Ohne
+                bedingte Trennstriche werden lange Worte in der
+                nächsten Zeile ohne Bindestrich fortgesetzt.  Prüfe
+                daher insbesondere die mobile Darstellung, wenn du
+                manuelle Silbentrennung verwendest.
+              label: Silbentrennung
+              values:
+                auto: Automatisch
+                manual: Manuell
+            textSize:
+              inline_help: |
+                Standardmäßig haben Überschriften im ersten Abschnitt
+                des Beitrags große Schrift. Überschriften in späteren
+                Abschnitten verwenden Schriftgröße "Klein".
+              label: Schriftgröße
+              values:
+                auto: "(Automatisch)"
+                large: Groß
+                medium: Mittel
+                small: Klein
+          description: Beitrags- oder Kapiteltitel
+          help_texts:
+            shortcuts: |
+              <dl class="shortcuts">
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Alt</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Füge potentielle Zeilenumbruchspunkte in lange Worte ein,
+                    um Silbentrennung zu ermöglichen.
+                  </span>
+                </dt>
+                <dd>
+                  Bedingten Trennstrich einfügen
+                </dd>
+              </dl>
+          name: Überschrift
+          tabs:
+            general: Überschrift
+        iframeEmbed:
+          attributes:
+            aspectRatio:
+              label: Seitenverhältnis
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Quadratisch (1:1)
+                wide: Landscape (16:9)
+            portraitAspectRatio:
+              blank: "(Standard)"
+              label: Seitenverhältnis (Hochkant)
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Quadratisch (1:1)
+                wide: Landscape (16:9)
+            requireConsent:
+              inline_help: |
+                iframe erst laden, nachdem Besucher der
+                Datenverarbeitung durch die eingebettete Seite
+                zugestimmt hat.
+              label: Datenschutz-Einwilligung aktivieren
+            scale:
+              label: Skalieren
+              values:
+                p100: 100%
+                p33: 33%
+                p50: 50%
+                p75: 75%
+            source:
+              label: URL
+            title:
+              inline_help: Dieser Titel wird von Screenreadern verwendet, um das iframe als Ganzes zu beschreiben.
+              label: Titel
+          description: Einbindung einer extern gehosteten Website
+          help_texts:
+            missingConsentVendor: |-
+              Für den Anbieter der angegeben URL stehen keine
+              Datenschutzangaben zur Verfügung.
+          name: iframe-Embed
+          tabs:
+            general: iframe-Embed
+        imageGallery:
+          attributes:
+            enableFullscreenOnDesktop:
+              inline_help: |-
+                Ermögliche, die Galerie auf Desktop-Browsern in den
+                Vollbildmodus zu schalten. Auf mobilen Browsern werden
+                die Bilder bereits standardmäßig so groß wie möglich
+                angezeigt.
+              inline_help_disabled: Steht nicht zur Verfügung, wenn Position "Volle Breite" ausgewählt wurde.
+              label: Vollbildmodus auf Desktop erlauben
+          description: Eine Serie von Bildern zum Durchblättern
+          items:
+            add: Hinzufügen
+            label: Einträge
+          name: Bildergalerie
+          tabs:
+            general: Bildergalerie
+        inlineAudio:
+          attributes:
+            atmoDuringPlayback:
+              inline_help: Wähle wie sich die Atmo während der Wiedergabe dieses Audio-Elements verhalten soll.
+              label: Atmo während Medien-Wiedergabe
+              values:
+                mute: Ausblenden
+                play: Weiterspielen
+                turnDown: Leiser weiterspielen
+            id:
+              label: Audio
+            playerControlVariant:
+              inline_help: Wähle den Stil der Player-Steuerelemente.
+              label: Player Controls
+              values:
+                classic: Klassisch
+                waveform: Waveform (Fein)
+                waveformBars: Waveform (Balken)
+                waveformLines: Waveform (Linien)
+            posterId:
+              label: Poster
+            waveformColor:
+              inline_help: Farbe des Bereichs der Waveform, der den bereits abgespielten Teil der Audio-Datei repräsentiert.
+              label: Waveform Farbe
+          description: Wiedergabe einer Audiodatei mit Steuerelementen
+        inlineBeforeAfter:
+          attributes:
+            after_id:
+              inline_help: Wird rechts von der Trennlinie gezeigt.
+              label: Nachher-Bild
+            after_label:
+              inline_help: 'Hier kann ein kurzes Label für das Nachher-Bild mit Text gefüllt werden. Beispiele: ''Nachher'', ''Januar 2040'''
+              label: Nachher-Beschriftung
+            before_id:
+              inline_help: Wird links von der Trennlinie gezeigt.
+              label: Vorher-Bild
+            before_label:
+              inline_help: 'Hier kann ein kurzes Label für das Vorher-Bild mit Text gefüllt werden. Beispiele: ''Vorher'', ''Januar 2000'''
+              label: Vorher-Beschriftung
+            initial_slider_position:
+              inline_help: Falls die Trennlinie zu Beginn nicht in der Mitte des Bildes liegen soll, lässt sich ihre Startposition hier voreinstellen.
+              label: Trennlinien-Startposition
+            slider_color:
+              inline_help: Farbe des Schiebereglers inklusive Griff kann frei konfiguriert werden. Achte auf gute Sichtbarkeit des Reglers über den gesamten Vorher/Nachher-Bereich.
+              label: Schieberegler-Farbe
+          description: Zwei übereinandergelegte Bilder mit Schieberegler getrennt
+          name: Vorher/Nachher
+          tabs:
+            general: Vorher/Nachher
+        inlineImage:
+          attributes:
+            enableFullscreen:
+              inline_help: Bild per Klick bildschirmfüllend öffnen.
+              inline_help_disabled: Steht nicht zur Verfügung, wenn Position "Volle Breite" ausgewählt wurde.
+              label: Vollbildmodus erlauben
+            id:
+              label: Bild
+            portraitId:
+              inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Bild konfiguriert werden, das ansonsten zu klein dargestellt würde.
+              label: Bild (Hochkant)
+          description: Einbindung von Bildern
+        inlineVideo:
+          attributes:
+            atmoDuringPlayback:
+              inline_help: Wähle wie sich die Atmo während der Wiedergabe dieses Videos verhalten soll.
+              label: Atmo während Medien-Wiedergabe
+              values:
+                mute: Ausblenden
+                play: Weiterspielen
+                turnDown: Leiser weiterspielen
+            hideControlBar:
+              inline_help: Für kurze Videos, bei denen der Benutzer nicht an bestimmte Stellen springen will.
+              inline_help_disabled: Für Videos mit Wiedergabe-Modus "Loop" sind die Controls immer ausgeblendet.
+              label: Controls ausblenden
+            id:
+              label: Video
+            playbackMode:
+              inline_help_html: Bestimme, wie das Video gestartet wird:<ul><li><strong>Manuell:</strong> Durch einen Klick des Benutzers.</li><li><strong>Automatisch:</strong> Wenn es die Mitte des Browser-Viewports erreicht.</li><li><strong>Loop:</strong> In Endlosschleife sobald es sichtbar wird.</li></ul>
+              label: Wiedergabe-Modus
+              values:
+                autoplay: Automatisch
+                loop: Loop
+                manual: Manuell
+            portraitId:
+              inline_help: |
+                Wird gezeigt, wenn der Browser-Viewport höher als
+                breit ist - zum Beispiel auf Smartphones oder Tablets
+                in Portrait-Ausrichtung. Kann als Alternative zu einem
+                querformatigen Video konfiguriert werden, um den
+                verfügbaren Platz besser zu nutzen.
+              label: Video (Hochkant)
+            portraitPosterId:
+              inline_help: Poster-Bild für das alternative Hochkant-Video.
+              label: Poster (Hochkant)
+            posterId:
+              label: Poster
+            rewindOnUnmute:
+              inline_help_html: Verhindere, dass der Benutzer bei einem automatisch ohne Ton gestarteten Video wichtige Inhalte verpasst.<br /><br />Alternativ kann dem Video eine Ton-Ersatz-Textspur hinzugefügt werden. Diese wird automatisch gezeigt solange der Beitrag stummgeschaltet ist.
+              label: "...und Video von vorne abspielen"
+            unmute:
+              inline_help_html: Der Klick auf das Video wird verwendet, um den Ton für den gesamten Beitrag zu aktivieren.<br /><br />Nach dem Klick können Atmo-Audios sowie der Ton nachfolgender Videos dann unmittelbar wiedergegeben werden.<br /><br />Wenn diese Option aktiviert ist, wird bei automatisch ohne Ton gestarteten Videos ein animierter Indikator angezeigt, der auf die Stummschaltung hinweist.
+              label: "...bei Klick auf Video aufheben"
+            unmuteLabel:
+              inline_help_html: Browser erlauben standardmäßig das Abspielen von Videos mit Ton nur nach einer Benutzer-Interaktion. Um Videos dennoch automatisch abspielen zu können, sind Beiträge zu Beginn stummgeschaltet.<br /><br />Die Stummschaltung kann z.B. über das Lautsprecher-Icon in der Navigationsleiste oder ein im Beitrag platziertes "Audio-Hinweis"-Element aufgehoben werden.
+              label: Stummschaltung des Beitrags
+          description: Wiedergabe einer Videodatei mit Steuerelementen
+        question:
+          attributes:
+            expandByDefault:
+              inline_help: Anwort zu Beginn anzeigen.
+              label: Standardmäßig aufklappen
+          description: Aufklappen, um Antwort anzuzeigen
+          name: Frage/Anwort
+          tabs:
+            general: Frage/Anwort
+        quote:
+          attributes:
+            color:
+              label: Farbe
+            textSize:
+              label: Schriftgröße
+              values:
+                large: Groß
+                medium: Mittel
+                small: Klein
+                verySmall: Sehr klein
+          description: Freigestelltes Zitat mit Zuschreibung
+          name: Zitat
+          tabs:
+            general: Zitat
+        soundDisclaimer:
+          description: Lass den Leser den Ton aktiveren
+          name: Audio-Hinweis
+          tabs:
+            general: Audio-Hinweis
+        textBlock:
+          attributes:
+            color:
+              label: Farbe
+          description: Text mit Listen, Zitaten und Zwischenüberschriften
+          help_texts:
+            shortcuts: |
+              <dl class="shortcuts">
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Shift</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Füge eine neue Zeile ein, ohne einen neuen Absatz zu beginnen.
+                  </span>
+                </dt>
+                <dd>
+                  Zeilenumbruch einfügen
+                </dd>
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Alt</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Füge potentielle Zeilenumbruchspunkte in lange Worte ein,
+                    um Silbentrennung zu ermöglichen.
+                  </span>
+                </dt>
+                <dd>
+                  Bedingten Trennstrich einfügen
+                </dd>
+              </dl>
+          name: Text-Block
+          tabs:
+            general: Text-Block
+        twitterEmbed:
+          attributes:
+            hideConversation:
+              label: Konversation ausblenden
+            hideMedia:
+              label: Medien ausblenden
+        videoEmbed:
+          attributes:
+            aspectRatio:
+              label: Seitenverhältnis des Videos
+              values:
+                narrow: Landscape 4:3
+                portrait: Portrait (9:16)
+                square: Quadratisch
+                wide: Landscape 16:9
+            atmoDuringPlayback:
+              inline_help: Wähle wie sich die Atmo während der Wiedergabe des Video-Embeds verhalten soll.
+              label: Atmo während Medien-Wiedergabe
+              values:
+                mute: Ausblenden
+                play: Weiterspielen
+                turnDown: Leiser weiterspielen
+            hideControls:
+              inline_help: Blendet die Steuerelemente aus wenn möglich (variiert je nach Anbieter und Konfiguration). Das Video kann per Klick gestartet und pausiert werden.
+              label: Steuerelemente ausblenden
+            hideInfo:
+              inline_help: Blendet Titel und Author Informationen innerhalb des Embeds aus wenn möglich (variiert je nach Anbieter und Konfiguration)
+              label: Titel in Embed ausblenden
+            posterId:
+              label: Poster
+            videoSource:
+              label: Video-URL
+          description: Bettet ein externes Video von YouTube, Vimeo oder Facebook ein
+          name: Video Embed
+          tabs:
+            general: Video-Embed
+        vrImage:
+          attributes:
+            image:
+              label: 360°-Bild
+            initialPitch:
+              label: Initialer Gierungswinkel
+            initialYaw:
+              label: Initialer Neigungswinkel
+          description: Interaktives Panorama aus Bild mit rektangularer Projektion
+          name: 360°-Bild
+      edit_chapter:
+        attributes:
+          summary:
+            label: Zusammenfassung
+          title:
+            label: Titel
+        confirm_destroy: |-
+          Kapitel einschließlich ALLER enthaltener Abschnitte wirklich löschen?
+
+          Dieser Schritt kann nicht rückgängig gemacht werden.
+        save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
+        tabs:
+          chapter: Kapitel
+      edit_motif_area:
+        blank_slate: Kein Bereich markiert.
+        cancel: Abbrechen
+        header: Motivbereich
+        help_link: Wo wird dies verwendet?
+        hint: Ziehe ein Rechteck, um den wichtigsten Bereich des Bildes zu markieren.
+        reset: Zurücksetzen
+        save: Speichern
+      edit_section:
+        attributes:
+          appearance:
+            inline_help: Diese Einstellung legt fest wie die scrollenden Vordergrund-Ebene vom Hintergrund abgehoben werden soll. Bei der Einstellung "Karte" wird der Vordergrund mit einer Fläche mit abgerundeten Ecken hinterlegt, bei "Schatten" mit einem hellen oder dunklen Farbverlauf.
+            label: Abblendung
+            values:
+              cards: Karte
+              shadow: Schatten
+              transparent: Keine
+          atmoAudioFileId:
+            inline_help: Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch in nachfolgenden Abschnitten nahtlos weiterspielen soll, wähle für diese Abschnitte die selbe Atmo aus.
+            label: Atmo-Audio
+          backdropColor:
+            label: Hintergrund-Farbe
+          backdropImage:
+            label: Hintergrund-Bild
+          backdropImageMobile:
+            inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Hintergrund-Bild konfiguriert werden, von dem ansonsten wichtige Teile abgeschnitten würden.
+            label: Hintergrund-Bild (Hochkant)
+          backdropType:
+            inline_help: Im Hintergund des Abschnitts kann entweder ein Bild, eine Farbe oder ein Video-Loop angezeigt werden.
+            label: Hintergrund-Typ
+            values:
+              color: Farbe
+              image: Bild
+              video: Video
+          backdropVideo:
+            label: Hintergrund-Video
+          backdropVideoMobile:
+            inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Hintergrund-Video konfiguriert werden, von dem ansonsten wichtige Teile abgeschnitten würden.
+            label: Hintergrund-Video (Hochkant)
+          dynamicShadowOpacity:
+            inline_help: Intensität der Abblendung, die - gesteuert durch die Scrollposition - hinter dem Text eingeblendet wird, sobald sich Motivbereich und Inhalt des Abschnitts zu überschneiden beginnen, um einen ausreichnenden Kontrast zu gewährleisten. Beachte, dass diese Abblendung nur sichtbar ist, wenn Motivbereich und Inhalt nicht nebeneinander dargestellt werden können. Wechsle am besten in die Phone-Vorschau, wenn du den eingestellten Wert veränderst.
+            inline_help_disabled: Aktiviere "Motivbereich freilegen" weiter oben, um diese Einstellung zu verwenden.
+            label: Dynamische Abblendung
+          exposeMotifArea:
+            inline_help: Sicherstellen, dass der markierte Motivbereich des Hintergrunds beim Erreichen des Abschnitts sichtbar ist und nicht von anderen Elementen überlagert wird. Wenn Motivbereich und Inhalt des Abschnitts nicht nebeneiner dargestellt werden können, wird zusätzlicher Freiraum am Anfang des Abschnitts eingefügt und der Inhalt nach unten verschoben.
+            inline_help_disabled: Wähle "Motivbereich markieren" im Drei-Punkte-Menü des Hintergrund-Bilds/Videos weiter oben, um diese Funktion zu verwenden. du kannst damit sicherzustellen, dass wichtige Teile des Hintegrunds nicht von anderen Elementen überdeckt werden.
+            label: Motivbereich freilegen
+          fullHeight:
+            inline_help: Aktiviere diese Einstellung, wenn der Hintergrund des Abschnitts (z.B. Bild, Farbfläche oder Hintergrundvideo) so groß angezeigt werden soll, dass das gesamte Browserfenster (der sogenannte Viewport) gefüllt ist. Wenn du mit kurzen Abschnitten arbeiten möchtest, musst du diese Option deaktivieren. Dann nimmt der Abschnitt und sein Hintergrund vertikal nur so viel Platz ein, wie für den Inhalt des Abschnitts unbedingt nötig ist. Es können dann mehrere Abschnitte mit verschiedenen Hintergründen gleichzeitig auf dem Bildschirm des Nutzers sichtbar sein. Um einen Überblendeffekt zwischen den Hintergründen zweier Abschnitte verwenden zu können, muss diese Option für beide Abschnitte aktiviert sein.
+            label: Volle Viewport-Höhe
+          invert:
+            label: Textfarben invertieren
+          layout:
+            inline_help: Mit dieser Einstellung kannst du die Position der scrollenden Vordergrund-Ebene des Abschnitts in Desktop-Darstellung konfigurieren. In Mobil-Darstellung wird die Vordergrund-Ebene automatisch zentriert.
+            label: Vordergrund-Positionierung
+            values:
+              center: Mitte
+              centerRagged: Zentriert
+              left: Links
+              right: Rechts
+          staticShadowOpacity:
+            inline_help: Intensität des Schattens, der hinter dem Text angezeigt wird, wenn Inhalt und Motivbereich nebeneinander dargestellt werden können oder kein Motivbereich markiert wurde. Bei links oder rechts positioniertem Vordergrund hat dieser Schatten die Form eines horizontal verlaufenden halbtransparenten Farbverlaufs. Bei "Vordergrund-Position" "Mitte", wird eine gleichmäßige halbtransparente Abblendung hinter dem Text gezeigt.
+            label: Statische Abblendung
+          width:
+            label: Laufweite
+            values:
+              narrow: Schmal
+              wide: Breit
+        tabs:
+          section: Abschnitt
+      edit_section_transition:
+        attributes:
+          transition:
+            default_transition: Wird als Standard für neue Abschnitte verwendet
+            inline_help: Diese Einstellung definiert den Übergang vom vorigen Abschnitt zu diesem. Der Übergang wirkt sich jeweils auf den Hintergrund und den Vordergrund unterschiedlich aus. Die Effekte "Alles Überblenden" und "Nur Hintergrund überblenden" stehen nur zur Verfügung, wenn für beide angrenzende Abschnitte die Option "Volle Viewport-Höhe" aktiviert ist.
+            label: Effekt
+            mark_as_default_transition: Als Standard für neue Abschnitte verwenden
+            values:
+              beforeAfter: Scrollen mit statischen Hintergründen
+              fade: Überblenden
+              reveal: Freilegen
+              scroll: Aus-/Einscrollen
+              scrollOver: Überlagern
+            variants:
+              fade: Inhalte der Abschnitte ebenfalls überblenden
+              fadeBg: Nur Hintergründe der Abschnitte überblenden
+        confirm_destroy: |-
+          Abschnitt einschließlich ALLER enthaltener Elemente wirklich löschen?
+
+          Dieser Schritt kann nicht rückgängig gemacht werden.
+        save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
+        tabs:
+          transition: Übergang
+      effect_list_input:
+        add: Effekt hinzufügen...
+        remove: Entfernen
+      entry_outline:
+        add_chapter: Neues Kapitel
+        header: Gliederung
+      inline_file_rights_menu_item:
+        label: Rechteangabe an dieser Stelle ausblenden
+      insert_content_element:
+        cancel: Abbrechen
+        header: Element einfügen
+      no_options: Keine Optionen verfügbar
+      section_item:
+        drag_hint: Ziehen, um den Abschnitt zu verschieben
+        duplicate: Duplizieren
+        insert_section_above: Abschnitt oberhalb einfügen
+        insert_section_below: Abschnitt unterhalb einfügen
+        save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
+        transitions:
+          beforeAfter: Statische Hintergründe
+          fade: Überblenden (inkl. Inhalt)
+          fadeBg: Überblenden
+          reveal: Freilegen
+          scroll: Aus-/Einscrollen
+          scrollOver: Überlagern
+      select_link_destination:
+        cancel: Abbrechen
+        create: Erstellen
+        enter_url: Verwende eine URL als Ziel
+        header: Link erstellen
+        open_in_new_tab: In neuem Tab öffnen
+        or: oder
+        select_chapter_or_section: Wähle ein Kapitel oder einen Abschnitt als Ziel aus
+        select_file: Biete eine Datei zum Download an
+        select_file_description: Lasse Leser eine Datei herunterladen, wenn sie auf den Link klicken.
+        select_in_sidebar: Datei auswählen
+      selectable_chapter_item:
+        title: Kapitel auswählen
+      selectable_section_item:
+        title: Abschnitt auswählen
+    help_entries:
+      content_elements:
+        menu_item: Inhaltselemente
+        text: |
+          # Inhaltselemente
+
+          In jedem Abschnitt können beliebig viele Inhaltselemente
+          eingefügt werden.
+
+          Um ein neues Inhaltselement hinzuzufügen, klicke auf das
+          Plus-Zeichen ober- oder unterhalb eines bestehenden Elements
+          und füge dann Text-Blöcke, Medien, Embeds oder externe
+          Verweise ein.
+
+          Durch einen Klick auf ein Inhaltselement wird diese
+          ausgewählt. In der Seitenleiste erscheinen die verfügbaren
+          Konfigurationsoptionen. Hier kann unter anderem die
+          **Positionierung** und **Breite** der Inhaltselemente
+          festgelegt und weitere Optionen wie **Autoplay** für Audios
+          und Videos bearbeitet werden.
+
+          Für die Darstellung auf breiten
+          Bildschirm-Seitenverhältnissen (Desktop, Notebook, Tablet,
+          Smartphone quer) können einzelne Inhaltselemente, wie
+          Videos, Audios, Video Embeds, 360° Bilder auch als
+          **Sticky** angeordnet werden. Sticky-Elemente bleiben
+          statisch in der Mitte des Viewports neben dem Text stehen,
+          bis entweder der Abschnitt aus dem Viewport gescrollt wird
+          oder sie vom nächsten Sticky-Element des Abschnitts
+          verdrängt werden.
+
+          Wenn ein Abschnitt mittig ausgerichtet ist, können
+          Inhaltselemente zudem auch nach **links oder rechts
+          eingerückt** werden. Dabei wird das Inhaltselement soweit
+          verkleinert, dass der Text das Element umfließen kann.
+      meta_data:
+        menu_item: Titel und Optionen
+        text: |
+          # Titel und Optionen
+
+          Allgemeine Einstellungen für den Beitrag. Bitte einen
+          Unterpunkt auf der linken Seite auswählen.
+      motif_area:
+        menu_item: Motivbereiche
+        text: |
+          # Motivbereiche
+
+          Durch das Markieren des **Motivbereichs** eines Bildes oder
+          Videos teilst du Pageflow mit, welcher Bildauschnitt der
+          wichtigste ist. Bei einem Portrait kann dies zum Beispiel
+          das Gesicht der abgebildeten Person sein.
+
+          Wird das Bild dann als Hintergrund eines Abschnitts
+          verwendet, versucht Pageflow sicherzustellen, dass der Leser
+          diesen Teil des Bildes möglichst ungestört betrachten kann.
+
+          1. Falls nicht das gesamte Bild dargestellt werden kann
+             (weil das Bild z.B. Querformat besitzt, der Beitrag aber
+             gerade auf einem Telefon in Portrait-Orientierung
+             angesehen wird), wird der Hintergrund so positioniert,
+             dass der Motivbereich zentriert wird.
+
+          2. Falls der Abschnitt Text oder andere Inhaltselemente
+             enthält, wird am Anfang des Abschnitts so viel Freiraum
+             eingefügt, dass der Motivbereich beim Erreichen des
+             Abschnitts initial nicht durch diese Elemente überdeckt
+             wird. Erst beim Weiterscrollen überlagert der Inhalt des
+             Abschnitts dann das Motiv.
+
+             Das Layout passt sich hierbei intelligent an: Ist der
+             Text des Abschnitts zum Beispiel links ausgerichtet, so
+             dass der Motivbereich des Hintergrundbilds vollständig
+             rechts neben dem Text dargestellt werden kann, so wird
+             kein zusätzlicher Abstand oberhalb des Texts eingefügt.
+
+             Deaktiviere die Option **Motivbereich freilegen**, falls
+             der Bildauschnitt zwar passend zum Motivbereich gewählt
+             werden soll, der Inhalt des Abschnitts das Motiv aber
+             überlagern darf.
+
+          Der Motivbereich kann über den Menüpunkt **Bildmotiv
+          markieren** der **Hintergrund-Bild**- und **Hintergrund
+          Video**-Felder in den Einstellungen des Abschnitts
+          bearbeitet werden.
+      outline:
+        menu_item: Kapitel, Abschnitte, Inhaltselemente
+        text: "# Kapitel, Abschnitte, Inhaltselemente\n\nEin Pageflow besteht aus einem oder mehreren **Kapiteln**, die\njeweils mehere **Abschnitte** enthalten können. Je Abschnitt\nkann ein Hintegrund (z.B. ein Bild oder ein Video-Loop)\nfestgelegt werden, der angezeigt wird, während sich der\nLeser innerhalb des Abschnitts befindet.\n\nAbschnitte beinhalten **Inhaltselemente**. Diese\nkönnen unterschiedlichen Typs sein (z.B. Text, Bilder,\nVideos, Diagramme). Sie machen den eigentlichen\nInhalt des Beitrags aus, durch den der Leser scrollt.\n\nUm Inhalte zu erstellen, klicke zunächst auf **„Neues\nKapitel\"**, um ein erstes Kapitel zu erstellen. Wenn du auf\ndie Kopfzeile des Kapitels klickst, kannst du den Titel und\neine Beschreibung angegeben, die in der Navigationsleiste\nerscheinen sollen.\n\nKlicke als nächstes auf **„Neuer Abschnitt\"**, um dem Kapitel\neinen Abschnitt hinzuzufügen. In der Vorschau auf der linken\nSeite wird nun ein Auswahlrechteck um den neuen Abschnitt\ngezeigt. In der Seitenleiste kannst du die Optionen des\nAbschnitts bearbeiten. Hier kannst du z.B. ein Bild oder\neine Farbe als Hintergrund für den Abschnitt\nfestlegen. Details findest du unter:\n[Abschnittsoptionen](#pageflow_scrolled.help_entries.sections)\n\nDer Abschnitt enthält bereits einen Text-Block. Klicke auf\nden Text, um diesen zu bearbeiten. Mit einem Klick in den\nleeren Bereich neben dem Text, kannst du wieder den\nAbschnitt auswählen.\n\nWenn der Abschnitt ausgewählt ist, wird unterhalb des\nletzten Elements ein Plus-Button mit der Beschriftung\n**„Neues Element hinzufügen\"** angezeigt. Wenn du darauf\nklickst, kannst du auswählen was für einen Typ von\nInhaltselement du einfügen möchtest. Wenn ein Inhaltselement\nper Klick ausgewählt wird, können in der Seitenleiste seine\nEinstellungen bearbeitet werden. Details zu den verfügbaren\nInhaltselementen findest du unter:\n[Inhaltselemente](#pageflow_scrolled.help_entries.content_elements)\n\nOben und unten am Auswahlrechteck um ein Inhaltselement\nbefinden sich ebenfalls Plus-Buttons, über die weitere\nElemente vor oder nach dem ausgewählten Element eingefügt\nwerden können."
+      overview:
+        menu_item: Übersicht
+        text: |-
+          # Übersicht
+
+          Dies ist der Editor zum Bearbeiten von Pageflows. Mit
+          seiner Zweiteilung ermöglicht er die direkte Vorschau
+          während der Bearbeitung, zeigt Änderungen am Text oder neu
+          ausgewählte Dateien unmittelbar an und speichert diese
+          automatisch.
+
+          ## Titel und Optionen
+
+          Unter „Titel und Optionen“ kannst du grundsätzliche
+          Parameter des Erscheinungsbildes, sowie Titel, Sprache,
+          Impressum etc. einstellen. Dazu können Texte festgelegt
+          werden, die beim Teilen des Beitrags über Social Media
+          Dienste angezeigt werden sollen.
+
+          Details findest du unter: [Titel und Optionen](#pageflow_scrolled.help_entries.meta_data)
+
+          ## Dateien verwalten
+
+          Unter „Dateien verwalten“ lädst du die Mediendateien hoch,
+          die im Pageflow verwendet werden sollen. du kannst hier auch
+          bereits hochgeladene Videos, Fotos und Audios
+          wiederverwenden.
+
+          Details findest du unter: [Dateien verwalten](#pageflow.help_entries.files)
+
+          ## Gliederung
+
+          Über die „Gliederung“ kannst du Kapitel und Abschnitte
+          hinzufügen, also die eigentlichen Inhalte bearbeiten. Per
+          Drag&Drop lassen sich Abschnitte und Kapitel auch jederzeit
+          umsortieren.
+
+          Details findest du unter: [Kapitel und Abschnitte](#pageflow_scrolled.help_entries.outline)
+
+          ## Phone Vorschau
+
+          Über den Umschalter unten in der Seitenleiste neben dem
+          Hilfe-Button, kann in die Phone-Vorschau umgeschaltet
+          werden. Damit kannst du testen wie Dein Beitrag im
+          Hochkant-Format aussieht und funktioniert.
+      sections:
+        menu_item: Abschnittsoptionen
+        text: "# Abschnittsoptionen\n\nEin Klick in einen leeren Bereich eines Abschnitts lässt ein\nAuswahlrechteck um den Abschnitt erscheinen. In der\nSeitenleiste können die Optionen des ausgewählten Abschnitts\nbearbeitet werden.\n\n## Layout\n\nÜber die Option **Vordergrund-Positionierung** kann\nausgewählt werden, wie der Inhalt des Abschnitts horizontal\nangeordnet werden soll. Ist das Motiv im Hintergrund des\nAbschnittes beispielsweise auf der rechten Seite, können\nText- und Inhaltselemente auf der linken Seite positioniert\nsein und umgekehrt. Bei Hintergründen in der Totale\nbzw. einem zentrierten Motiv, bietet sich die mittige\nAusrichtung der Inhaltselemente an.\n\nDurch Auswahl einer **Abblendung** kann ein ausreichender\nKontrast zwischen Text und Hintergrund sichergestellt\nwerden. Bei der Variante **Schatten** wird der Hintergrund\nmit einem Farbverlauf verdunkelt bzw. aufgehellt. Mit der\nEinstellung **Karte** werden die Inhaltselemente auf einer\nFläche mit abgerundeten Ecken abgebildet.\n\n## Hintergrund\n\nIm Hintergrund des Abschnitts kann entweder ein **Bild**,\nein **Video-Loop** oder eine **Farbe** angezeigt werden. Bei\nHintergrund-Bildern und -Videos kann der wichtigste Bildteil\nmarkiert werden. Dieser sogenannte **Motivbereich** wird\ndann sowohl in der Desktop- als auch in der Darstellung auf\nmobilen Geräten zunächst nicht vom scrollenden Vordergrund\nverdeckt. Weitere Infos findest du unter\n[Motivbereiche](#pageflow_scrolled.help_entries.motif_area)\n\nÜber die Option **Hintergrund-Bild (Hochkant)** kann\noptional ein alternatives Bild festgelegt werden, das\nverwendet werden soll, wenn das Bildschirm-Seitenverhältnis\neines Endgerätes höher als breit ist, zum Beispiel auf\nSmartphones und Tablets im Portrait-Modus (hochkant). Das\nBild kann als Alternative zum Hintergrund-Bild im Querformat\nkonfiguriert werden, von dem ansonsten eventuell wichtige\nTeile abgeschnitten werden könnten.\n\n## Atmo\n\nMit der **Atmo** kann jeder Abschnitt, unabhängig von seinen\nInhaltselementen, im Hintergrund Sound abspielen. Dabei kann\nbestimmt werden, ob ein Sound nur in einem Abschnitt zu\nhören ist oder über mehrere Abschnitte ohne Unterbrechung\nweiterläuft. Wähle dazu einfach für die nachfolgenden\nAbschnitte die selbe Audiodatei als Atmo aus. Auf diese\nWeise lassen sich Kapitel akustisch voneinander absetzen und\nzusammenhängende Abschnitte stärker verweben.\n\nBeim Abspielen von Audios und Videos kann zusätzlich\nausgewählt werden, ob der Hintergrundsound während der\nMedien-Wiedergabe normal oder leiser weitergespielt oder\nganz ausgeblendet werden soll. Wähle dazu ein Video oder\nAudio Element aus und lege das gewünschte Verhalten über das\nFeld **Atmo während Medien-Wiedergabe** fest.\n\nSollte Dich die Atmo während der Bearbeitung Deines Beitrags\nim Editor einmal stören, kannst du sie mit der\nTastenkombination Alt + a vorübergehend stumm schalten. Um\ndie Atmo wieder zu aktivieren, drücke einfach erneut Alt +\na.\n\n## Transitionen\n\nZwischen je zwei Abschnitte kann ein **Übergangseffekt**\nausgewählt werden. Klicke in den Hintergrund eines\nAbschnitts, um diesen auszuwählen. Auf der rechten Seite des\nAuswahlrechteck erscheinen dann an den Grenzen zum\nbenachbarten Abschnitten Buttons mit zwei verschränkten\nPfeilen als Symbol. Klicke auf einen der Buttons, um in der\nSeitenleiste den Übergangseffekt für die Abschnittsgrenze\nauszuwählen.\n\nDer Effekt **Überblenden** steht nur zwischen Abschnitten\nzur Verfügung, für die die Option **Volle Viewport-Höhe**\naktiviert wurde."
+    inline_editing:
+      add_caption: Beschriftung hinzufügen
+      add_content_element: Neues Element hinzufügen
+      cancel: Abbrechen
+      drag_content_element: Ziehen, um Element zu verschieben
+      edit_section_transition_after: Übergangseffekt bearbeiten
+      edit_section_transition_before: Übergangseffekt bearbeiten
+      formats:
+        block_quote: Blockzitat
+        bulleted_list: Auflistung
+        heading: Überschrift
+        ordered_list: Aufzählung
+        paragraph: Absatz
+      insert_content_element:
+        after: Neues Element unterhalb einfügen
+        before: Neues Element oberhalb einfügen
+      insert_link: Link einfügen
+      link_tooltip:
+        chapter_number: Kapitel %{number}
+        deleted_chapter: Gelöschtes Kapitel
+        deleted_file: Gelöschte Datei
+        opens_in_new_tab: Öffnet in neuem Tab
+        opens_in_same_tab: Öffnet außerhalb des Editors im selben Tab
+        visit_chapter: Gehe zu Kapitel
+        visit_section: Gehe zu Abschnitt
+      remove_link: Link entfernen
+      select_content_element: Element auswählen
+      select_section: Abschnitt auswählen
+      type_answer: Antworttext eingeben
+      type_attribution: Namen eingeben
+      type_description: Beschreibung eingeben
+      type_heading: Überschrift
+      type_question: Fragetext eingeben
+      type_quote: Zitat eingeben
+      type_subtitle: Untertitel eingeben
+      type_tagline: Tagline eingeben
+      type_text: Text eingeben
+      type_title: Titel
+      url_placeholder: URL eingeben oder einfügen
