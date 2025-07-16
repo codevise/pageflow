@@ -41,6 +41,16 @@ Metrics/AbcSize:
   Exclude:
     - '**/spec/**/*'
 
+# Long spec and DSL files are ok. Ignore some historically long helpers.
+Metrics/ModuleLength:
+  Exclude:
+    - 'admins/**/*.rb'
+    - 'app/helpers/pageflow/entries_helper.rb'
+    - 'app/helpers/pageflow/video_files_helper.rb'
+    - '**/seeds.rb'
+    - '**/ability_mixin.rb'
+    - '**/spec/**/*'
+
 # Ignore DSLs
 Metrics/BlockLength:
   AllowedMethods:
@@ -67,11 +77,6 @@ Metrics/MethodLength:
     - method_call
   Exclude:
     - '**/app/views/components/**/*'
-    - '**/spec/**/*'
-
-# Long spec files are ok
-Metrics/ModuleLength:
-  Exclude:
     - '**/spec/**/*'
 
 Metrics/ParameterLists:
