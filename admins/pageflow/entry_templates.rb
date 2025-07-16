@@ -59,8 +59,8 @@ module Pageflow
       private
 
       def page_title(rest_verb, entry_type_name)
-        "#{I18n.t('pageflow.admin.entry_templates.page_title.' + rest_verb)} "\
-        "#{I18n.t('activerecord.values.pageflow/entry.type_names.' + entry_type_name)}"
+        "#{I18n.t("pageflow.admin.entry_templates.page_title.#{rest_verb}")} "\
+        "#{I18n.t("activerecord.values.pageflow/entry.type_names.#{entry_type_name}")}"
       end
 
       def permitted_params
@@ -107,7 +107,7 @@ module Pageflow
       end
 
       def true_false_strings_to_booleans_or_numbers(hash)
-        hash&.map { |k, v| [k, to_boolean_or_number(v)] }&.to_h
+        hash&.transform_values { |v| to_boolean_or_number(v) }
       end
 
       def to_boolean_or_number(value)

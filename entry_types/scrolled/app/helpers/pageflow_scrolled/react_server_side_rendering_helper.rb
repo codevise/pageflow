@@ -58,7 +58,7 @@ module PageflowScrolled
             end
           else
             asset_paths.map do |asset_path|
-              full_path = ::Rails.root.join('public', asset_path[1..-1])
+              full_path = ::Rails.root.join('public', asset_path[1..])
               File.read(full_path)
             end
           end

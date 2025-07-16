@@ -17,7 +17,7 @@ module Pageflow
   #          last_name: 'Doe')
   #   end
   module Seeds
-    DEFAULT_USER_PASSWORD = '!Pass123'
+    DEFAULT_USER_PASSWORD = '!Pass123'.freeze
 
     # Create an {Account} with a default {Site} if no account by
     # that name exists.
@@ -186,7 +186,7 @@ module Pageflow
     end
 
     def say_creating_membership(membership)
-      say("   -- '#{membership.role}' membership for user '#{membership.user.email}' on " +
+      say("   -- '#{membership.role}' membership for user '#{membership.user.email}' on " \
           "#{membership.entity_type == 'Pageflow::Entry' ? 'entry' : 'account'} " +
           %('#{if membership.entity_type == 'Pageflow::Entry'
                  membership.entity.title

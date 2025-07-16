@@ -58,7 +58,7 @@ module Pageflow
     end
 
     def sftp_url(path)
-      "#{File.join(sftp_host, path)}"
+      File.join(sftp_host, path).to_s
     end
 
     def sftp_host
@@ -70,7 +70,7 @@ module Pageflow
     end
 
     def akamai_url(path)
-      "#{File.join(akamai_host, path)}"
+      File.join(akamai_host, path).to_s
     end
 
     def akamai_host

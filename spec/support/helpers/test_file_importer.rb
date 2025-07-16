@@ -46,7 +46,7 @@ module Pageflow
         collection: 'image_files',
         files: []
       }
-      selected_files.each do |_key, file|
+      selected_files.each_value do |file|
         meta_data[:files].push file_meta_data file
       end
       meta_data
@@ -56,7 +56,7 @@ module Pageflow
       {
         'file_name' => "#{file['id']}.png",
         'id' => file['id'],
-        'rights' => "#{file['photographer']}",
+        'rights' => (file['photographer']).to_s,
         'url' => file['url'],
         'content_type' => 'image/png'
       }

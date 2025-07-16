@@ -87,7 +87,7 @@ module Pageflow
 
       if rights.any?
         content_tag :p, class: 'rights' do
-          I18n.t('pageflow.helpers.entries.image_rights') + ': ' + rights * ', '
+          "#{I18n.t('pageflow.helpers.entries.image_rights')}: #{rights * ', '}"
         end
       else
         ''

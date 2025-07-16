@@ -1,6 +1,6 @@
 module Pageflow
   # rubocop:todo Style/Documentation
-  class ThumbnailFileResolver < Struct.new(:entry, :candidates, :configuration)
+  ThumbnailFileResolver = Struct.new(:entry, :candidates, :configuration) do
     # rubocop:enable Style/Documentation
     def find_thumbnail
       candidates.detect do |candidate|

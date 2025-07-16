@@ -15,7 +15,7 @@ module PageflowScrolled
       it 'can deal with proc asset host' do
         allow(Rails.configuration.action_controller).to receive(:asset_host)
           .and_return(lambda do |source, request = nil, *_|
-                        '2' + source.to_s if request && source
+                        "2#{source}" if request && source
                       end)
 
         html = helper.scrolled_webpack_public_path_script_tag

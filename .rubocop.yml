@@ -145,6 +145,14 @@ Naming/PredicateName:
 Style/SymbolProc:
   Enabled: false
 
+# Comparing with 0 is fine
+Style/NumericPredicate:
+  Enabled: false
+
+# !! is fine
+Style/DoubleNegation:
+  Enabled: false
+
 # Temp
 Style/IfUnlessModifier:
   Enabled: false

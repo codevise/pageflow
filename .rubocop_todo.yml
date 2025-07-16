@@ -113,25 +113,6 @@ Style/CaseEquality:
   Exclude:
     - 'app/jobs/pageflow/poll_zencoder_job.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: MinBranchesCount.
-Style/CaseLikeIf:
-  Exclude:
-    - 'app/models/pageflow/roles.rb'
-
-# Offense count: 5
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: allowed_in_returns, forbidden
-Style/DoubleNegation:
-  Exclude:
-    - 'app/helpers/pageflow/common_entry_seed_helper.rb'
-    - 'app/models/pageflow/entry.rb'
-    - 'app/views/pageflow/page_types/_page_type.json.jbuilder'
-    - 'entry_types/scrolled/spec/support/config/active_job.rb'
-    - 'spec/support/config/active_job.rb'
-
 # Offense count: 3
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, MaxUnannotatedPlaceholdersAllowed, AllowedMethods, AllowedPatterns.
@@ -147,28 +128,6 @@ Style/GuardClause:
   Exclude:
     - 'spec/support/pageflow/dummy/app.rb'
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: AllowedReceivers.
-# AllowedReceivers: Thread.current
-Style/HashEachMethods:
-  Exclude:
-    - 'entry_types/scrolled/lib/pageflow_scrolled/seeds.rb'
-    - 'spec/support/helpers/test_file_importer.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/HashTransformValues:
-  Exclude:
-    - 'admins/pageflow/entry_templates.rb'
-
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/LineEndConcatenation:
-  Exclude:
-    - 'lib/generators/pageflow/assets/assets_generator.rb'
-    - 'lib/pageflow/seeds.rb'
-
 # Offense count: 1
 Style/MissingRespondToMissing:
   Exclude:
@@ -179,84 +138,9 @@ Style/MixinUsage:
   Exclude:
     - 'lib/generators/pageflow/seeds/templates/seeds.rb'
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'app/models/concerns/pageflow/feature_target.rb'
-    - 'lib/pageflow/seeds.rb'
-
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle, AllowedMethods, AllowedPatterns.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'app/helpers/pageflow/pages_helper.rb'
-    - 'entry_types/scrolled/spec/controllers/pageflow_scrolled/editor/sections_controller_spec.rb'
-
 # Offense count: 1
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: respond_to_missing?
 Style/OptionalBooleanParameter:
   Exclude:
     - 'entry_types/scrolled/lib/pageflow_scrolled/seeds.rb'
-
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: short, verbose
-Style/PreferredHashMethods:
-  Exclude:
-    - 'config/initializers/zencoder.rb'
-
-# Offense count: 3
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/RedundantInterpolation:
-  Exclude:
-    - 'lib/pageflow/zencoder_output_definition.rb'
-    - 'spec/support/helpers/test_file_importer.rb'
-
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: ConvertCodeThatCanStartToReturnNil, AllowedMethods, MaxChainLength.
-# AllowedMethods: present?, blank?, presence, try, try!
-Style/SafeNavigation:
-  Exclude:
-    - 'app/models/pageflow/invitation_form.rb'
-    - 'lib/pageflow/feature.rb'
-    - 'lib/pageflow/news_item_api.rb'
-    - 'spec/support/matchers/be_published_with_password.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/SlicingWithRange:
-  Exclude:
-    - 'entry_types/scrolled/app/helpers/pageflow_scrolled/react_server_side_rendering_helper.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: RequireEnglish, EnforcedStyle.
-# SupportedStyles: use_perl_names, use_english_names, use_builtin_english_names
-Style/SpecialGlobalVars:
-  Exclude:
-    - 'spec/support/pageflow-support.gemspec'
-
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Mode.
-Style/StringConcatenation:
-  Exclude:
-    - 'admins/pageflow/entry_templates.rb'
-    - 'app/helpers/pageflow/entries_helper.rb'
-    - 'entry_types/scrolled/spec/helpers/pageflow_scrolled/webpack_public_path_helper_spec.rb'
-
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/StructInheritance:
-  Exclude:
-    - 'app/models/pageflow/entry_duplicate.rb'
-    - 'app/models/pageflow/thumbnail_file_resolver.rb'

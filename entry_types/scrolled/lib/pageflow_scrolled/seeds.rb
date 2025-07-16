@@ -68,7 +68,7 @@ module PageflowScrolled
 
         # rewrite parent file references to actual ids
         text_tracks_by_name = attributes.fetch(:text_track_files, {})
-        text_tracks_by_name.each do |_name, text_track_config|
+        text_tracks_by_name.each_value do |text_track_config|
           parent_file = files_by_name.fetch(text_track_config['parent_file_id'])
           text_track_config['parent_file_id'] = parent_file.id
         end

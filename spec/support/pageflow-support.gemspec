@@ -1,4 +1,4 @@
-$:.push File.expand_path('../../lib', __dir__)
+$LOAD_PATH.push File.expand_path('../../lib', __dir__)
 
 require 'pageflow/version'
 require 'pageflow/rails_version'

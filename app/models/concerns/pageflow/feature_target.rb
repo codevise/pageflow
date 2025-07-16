@@ -5,7 +5,7 @@ module Pageflow
       true => 'enabled',
       false => 'disabled',
       nil => 'default'
-    }
+    }.freeze
 
     extend ActiveSupport::Concern
 

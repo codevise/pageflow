@@ -11,7 +11,7 @@ module Pageflow
     # @since 12.2
     def news_item(name, options)
       after_global_configure do |config|
-        config.news.item(name, options) if config.news
+        config.news&.item(name, options)
       end
     end
   end

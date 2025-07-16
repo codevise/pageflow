@@ -19,10 +19,10 @@ Pageflow.after_global_configure do |config|
   Pageflow::ZencoderVideoOutputDefinition.skip_hls = zencoder_options.fetch(:skip_hls, false)
   Pageflow::ZencoderVideoOutputDefinition.skip_smil = zencoder_options.fetch(:skip_smil, false)
 
-  unless zencoder_options.has_key?(:s3_host_alias)
+  unless zencoder_options.key?(:s3_host_alias)
     raise 'Missing s3_host_alias option in Pageflow.config.zencoder_options.'
   end
-  unless zencoder_options.has_key?(:s3_protocol)
+  unless zencoder_options.key?(:s3_protocol)
     raise 'Missing s3_protocol option in Pageflow.config.zencoder_options.'
   end
 

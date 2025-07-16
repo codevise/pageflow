@@ -4,15 +4,16 @@ module Pageflow
 
     def at_least(role_uncasted)
       role = role_uncasted.to_sym
-      if role == :member
+      case role
+      when :member
         %w[member previewer editor publisher manager]
-      elsif role == :previewer
+      when :previewer
         %w[previewer editor publisher manager]
-      elsif role == :editor
+      when :editor
         %w[editor publisher manager]
-      elsif role == :publisher
+      when :publisher
         %w[publisher manager]
-      elsif role == :manager
+      when :manager
         %w[manager]
       end
     end
