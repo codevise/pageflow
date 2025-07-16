@@ -260,15 +260,3 @@ Style/StructInheritance:
   Exclude:
     - 'app/models/pageflow/entry_duplicate.rb'
     - 'app/models/pageflow/thumbnail_file_resolver.rb'
-
-# Offense count: 5
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: AllowMethodsWithArguments, AllowedMethods, AllowedPatterns, AllowComments.
-# AllowedMethods: define_method
-Style/SymbolProc:
-  Exclude:
-    - 'admins/pageflow/sites.rb'
-    - 'app/controllers/pageflow/feeds_controller.rb'
-    - 'app/controllers/pageflow/sitemaps_controller.rb'
-    - 'lib/pageflow/global_config_api.rb'
-    - 'spec/support/dominos/admin/entry_revision.rb'

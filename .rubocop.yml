@@ -141,6 +141,9 @@ Style/ModuleFunction:
 Naming/PredicateName:
   Enabled: false
 
+# Especially for respond_to blocks and callbacks a one line proc sometimes read better
+Style/SymbolProc:
+  Enabled: false
 
 # Temp
 Style/IfUnlessModifier:
