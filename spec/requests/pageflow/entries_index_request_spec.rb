@@ -267,7 +267,8 @@ module Pageflow
         expect(response.status).to eq(401)
       end
 
-      it 'responds with success for entry published with password when correct password is supplied' do
+      it('responds with success for entry published with password when correct password ' \
+         'is supplied') do
         site = create(:site, cname: 'pageflow.example.com')
         create(
           :entry,

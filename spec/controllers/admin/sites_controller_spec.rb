@@ -304,8 +304,14 @@ module Admin
         site = create(:site)
         published_entry = create(:entry, :published, site:, title: 'Published Entry')
         unpublished_entry = create(:entry, site:, title: 'Unpublished Entry')
-        password_protected_entry = create(:entry, :published_with_password, site:,
-                                                                            password: 'secret', title: 'Protected Entry')
+        password_protected_entry =
+          create(
+            :entry,
+            :published_with_password,
+            site:,
+            password: 'secret',
+            title: 'Protected Entry'
+          )
 
         sign_in(create(:user, :admin), scope: :user)
         get(:edit, params: {account_id: site.account, id: site})

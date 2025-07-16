@@ -472,7 +472,8 @@ module PageflowScrolled
                                                        'sample' => {
                                                          'url' => 'https://example.com/sample.vtt',
                                                          'parent_file_id' => 'some-video',
-                                                         'parent_file_model_type' => 'Pageflow::VideoFile'
+                                                         'parent_file_model_type' =>
+                                                           'Pageflow::VideoFile'
                                                        }
                                                      },
                                                      chapters: []
@@ -545,7 +546,8 @@ module PageflowScrolled
                                                        'sample' => {
                                                          'url' => 'https://example.com/sample.vtt',
                                                          'parent_file_id' => 'some-audio',
-                                                         'parent_file_model_type' => 'Pageflow::AudioFile'
+                                                         'parent_file_model_type' =>
+                                                           'Pageflow::AudioFile'
                                                        }
                                                      },
                                                      chapters: []

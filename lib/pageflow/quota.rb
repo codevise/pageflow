@@ -18,8 +18,11 @@ module Pageflow
     end
 
     def state
-      raise(NotImplementedError,
-            'Quota#state must be implemented and return either "available", "exhausted" or "exceeded".')
+      raise(
+        NotImplementedError,
+        'Quota#state must be implemented and return either ' \
+        '"available", "exhausted" or "exceeded".'
+      )
     end
 
     def state_description

@@ -12,8 +12,11 @@ module Pageflow
         expect {
           sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
-          post(:create,
-               params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
+          post(
+            :create,
+            params: {entry_id: entry, storyline: attributes_for(:valid_storyline)},
+            format: 'json'
+          )
         }.to change { entry.draft.storylines.count }.by(1)
       end
 
@@ -39,8 +42,11 @@ module Pageflow
         expect {
           sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
-          post(:scaffold,
-               params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
+          post(
+            :scaffold,
+            params: {entry_id: entry, storyline: attributes_for(:valid_storyline)},
+            format: 'json'
+          )
         }.to change { entry.draft.storylines.count }.by(1)
       end
 

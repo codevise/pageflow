@@ -72,8 +72,10 @@ module Pageflow
 
     scope :publications, -> { where('published_at IS NOT NULL') }
     scope :publications_and_user_snapshots, lambda {
-                                              where('published_at IS NOT NULL OR snapshot_type = "user"')
-                                            }
+      where(
+        'published_at IS NOT NULL OR snapshot_type = "user"'
+      )
+    }
     scope :user_snapshots, -> { where(snapshot_type: 'user') }
     scope :auto_snapshots, -> { where(snapshot_type: 'auto') }
 

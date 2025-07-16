@@ -149,7 +149,10 @@ module Pageflow
         expect(result).to eq(page.configuration['description'])
       end
 
-      it 'returns result of social_share_entry_description if page has neither text nor description' do
+      it(
+        'returns result of social_share_entry_description if page has neither ' \
+        'text nor description'
+      ) do
         entry = create(:entry, :published)
         entry.published_revision.summary = 'social share description'
         storyline = create(:storyline, revision: entry.published_revision)
@@ -174,17 +177,25 @@ module Pageflow
         html = helper.social_share_entry_image_tags(entry)
 
         expect(html).to have_css(
-          "meta[content=\"#{image_file.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1
+          "meta[content=\"#{image_file.thumbnail_url(:medium)}\"][property=\"og:image\"]",
+          visible: false,
+          count: 1
         )
         expect(html).to have_css(
-          "meta[content=\"#{image_file.width}\"][property=\"og:image:width\"]", visible: false, count: 1
+          "meta[content=\"#{image_file.width}\"][property=\"og:image:width\"]",
+          visible: false,
+          count: 1
         )
         expect(html).to have_css(
-          "meta[content=\"#{image_file.height}\"][property=\"og:image:height\"]", visible: false, count: 1
+          "meta[content=\"#{image_file.height}\"][property=\"og:image:height\"]",
+          visible: false,
+          count: 1
         )
 
         expect(html).to have_css(
-          "meta[content=\"#{image_file.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false, count: 1
+          "meta[content=\"#{image_file.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]",
+          visible: false,
+          count: 1
         )
       end
 
@@ -227,25 +238,39 @@ module Pageflow
         html = helper.social_share_entry_image_tags(entry)
 
         expect(html).to have_css(
-          "meta[content=\"#{image_file1.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1
+          "meta[content=\"#{image_file1.thumbnail_url(:medium)}\"][property=\"og:image\"]",
+          visible: false,
+          count: 1
         )
         expect(html).to have_css(
-          "meta[content=\"#{image_file2.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1
+          "meta[content=\"#{image_file2.thumbnail_url(:medium)}\"][property=\"og:image\"]",
+          visible: false,
+          count: 1
         )
         expect(html).to have_css(
-          "meta[content=\"#{image_file3.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1
+          "meta[content=\"#{image_file3.thumbnail_url(:medium)}\"][property=\"og:image\"]",
+          visible: false,
+          count: 1
         )
         expect(html).to have_css(
-          "meta[content=\"#{image_file1.width}\"][property=\"og:image:width\"]", visible: false, count: 2
+          "meta[content=\"#{image_file1.width}\"][property=\"og:image:width\"]",
+          visible: false,
+          count: 2
         )
         expect(html).to have_css(
-          "meta[content=\"#{image_file1.height}\"][property=\"og:image:height\"]", visible: false, count: 2
+          "meta[content=\"#{image_file1.height}\"][property=\"og:image:height\"]",
+          visible: false,
+          count: 2
         )
         expect(html).to have_css(
-          "meta[content=\"#{image_file3.width}\"][property=\"og:image:width\"]", visible: false, count: 1
+          "meta[content=\"#{image_file3.width}\"][property=\"og:image:width\"]",
+          visible: false,
+          count: 1
         )
         expect(html).to have_css(
-          "meta[content=\"#{image_file3.height}\"][property=\"og:image:height\"]", visible: false, count: 1
+          "meta[content=\"#{image_file3.height}\"][property=\"og:image:height\"]",
+          visible: false,
+          count: 1
         )
 
         expect(html).to have_css('meta[property="og:image"]', visible: false, maximum: 3)
@@ -266,7 +291,8 @@ module Pageflow
         html = helper.social_share_entry_image_tags(entry)
 
         expect(html).to have_css(
-          "meta[content=\"#{image_file1.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false
+          "meta[content=\"#{image_file1.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]",
+          visible: false
         )
         expect(html).to have_css('meta[name="twitter:image:src"]', visible: false, count: 1)
       end

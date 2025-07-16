@@ -604,7 +604,10 @@ module PageflowScrolled
                              })
         end
 
-        it 'supports filtering content elements based on cutoff section when cutoff mode is enabled' do
+        it(
+          'supports filtering content elements based on cutoff section ' \
+          'when cutoff mode is enabled'
+        ) do
           pageflow_configure do |config|
             config.cutoff_modes.register(
               :test,
@@ -858,7 +861,8 @@ module PageflowScrolled
                              theme: {
                                assets: {
                                  logoDesktop: %r{themes/default/logoDesktop.*svg$},
-                                 logoDarkVariantDesktop: %r{themes/default/logoDarkVariantDesktop.*svg$}
+                                 logoDarkVariantDesktop:
+                                   %r{themes/default/logoDarkVariantDesktop.*svg$}
                                }
                              }
                            })

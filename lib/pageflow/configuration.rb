@@ -585,7 +585,9 @@ module Pageflow
     # @deprecated Use `config.page_types.register` instead.
     def register_page_type(page_type)
       ActiveSupport::Deprecation.warn(
-        'Pageflow::Configuration#register_page_type is deprecated. Use config.page_types.register instead.', caller
+        'Pageflow::Configuration#register_page_type is deprecated. ' \
+        'Use config.page_types.register instead.',
+        caller
       )
       page_types.register(page_type)
     end

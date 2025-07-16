@@ -138,7 +138,9 @@ module Pageflow
 
         expect(copied_revision.storylines.first.chapters.first).to have(1).page
         expect(copied_revision.storylines.first.chapters.first.pages.first).not_to eq(page)
-        expect(copied_revision.storylines.first.chapters.first.pages.first.configuration['title']).to eq('Main')
+        expect(
+          copied_revision.storylines.first.chapters.first.pages.first.configuration['title']
+        ).to eq('Main')
       end
 
       it 'copies file usages to new revision' do

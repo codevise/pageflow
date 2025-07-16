@@ -6,7 +6,10 @@ module Pageflow
     layout 'pageflow/application'
 
     before_action do
-      I18n.locale = current_user.try(:locale) || locale_from_accept_language_header || I18n.default_locale
+      I18n.locale =
+        current_user.try(:locale) ||
+        locale_from_accept_language_header ||
+        I18n.default_locale
     end
 
     # Prevent CSRF attacks by raising an exception.

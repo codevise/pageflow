@@ -23,7 +23,8 @@ module Pageflow
     def entry_theme_seed(entry)
       theme = entry.theme
       {
-        change_to_parent_page_at_storyline_boundary: theme.change_to_parent_page_at_storyline_boundary?,
+        change_to_parent_page_at_storyline_boundary:
+          theme.change_to_parent_page_at_storyline_boundary?,
         page_change_by_scrolling: theme.page_change_by_scrolling?,
         hide_text_on_swipe: theme.hide_text_on_swipe?
       }

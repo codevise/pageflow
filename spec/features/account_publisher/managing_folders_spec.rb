@@ -14,7 +14,9 @@ feature 'as account publisher, managing folders' do
 
     visit(admin_entries_path)
     expect(Dom::Admin::FolderPanelItem.find_by_name('A new folder')).to be_present
-    expect(Dom::Admin::FolderPanelAccountItem.find_by(account_name: 'New Folder Account')).to be_present
+    expect(
+      Dom::Admin::FolderPanelAccountItem.find_by(account_name: 'New Folder Account')
+    ).to be_present
   end
 
   scenario 'renaming a folder' do

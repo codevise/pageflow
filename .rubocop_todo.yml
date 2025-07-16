@@ -14,13 +14,6 @@ Gemspec/RequiredRubyVersion:
     - 'pageflow.gemspec'
     - 'spec/support/pageflow-support.gemspec'
 
-# Offense count: 57
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: Max, AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns.
-# URISchemes: http, https
-Layout/LineLength:
-  Enabled: false
-
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowSafeAssignment.

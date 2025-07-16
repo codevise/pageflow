@@ -19,17 +19,22 @@ shared_examples 'media encoding state machine' do |model|
 
         file.publish!
 
-        expect(Pageflow::ZencoderApi.instance).to have_received(:create_job).with(file.reload.output_definition)
+        expect(Pageflow::ZencoderApi.instance)
+          .to have_received(:create_job)
+          .with(file.reload.output_definition)
       end
 
       it 'polls zencoder' do
         file = create(model, :uploading)
 
-        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
+        allow(Pageflow::ZencoderApi).to receive(:instance)
+          .and_return(ZencoderApiDouble.once_pending_then_finished)
 
         file.publish!
 
-        expect(Pageflow::ZencoderApi.instance).to have_received(:get_info).with(file.reload.job_id).twice
+        expect(Pageflow::ZencoderApi.instance)
+          .to have_received(:get_info)
+          .with(file.reload.job_id).twice
       end
 
       it 'sets state to encoded after job has finished' do
@@ -72,7 +77,8 @@ shared_examples 'media encoding state machine' do |model|
           file = create(model, :uploading)
           subscriber = double('subscriber', call: nil)
 
-          allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished_but_failed)
+          allow(Pageflow::ZencoderApi).to receive(:instance)
+            .and_return(ZencoderApiDouble.finished_but_failed)
 
           Pageflow.config.hooks.on(:file_encoding_failed, subscriber)
           file.publish!
@@ -90,21 +96,26 @@ shared_examples 'media encoding state machine' do |model|
       it 'creates zencoder job for file meta data' do
         file = create(model, :uploading)
 
-        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+        allow(Pageflow::ZencoderApi).to receive(:instance)
+          .and_return(ZencoderApiDouble.finished)
 
         file.publish!
 
-        expect(Pageflow::ZencoderApi.instance).to have_received(:create_job).with(Pageflow::ZencoderMetaDataOutputDefinition.new(file.reload))
+        expect(Pageflow::ZencoderApi.instance).to have_received(:create_job)
+          .with(Pageflow::ZencoderMetaDataOutputDefinition.new(file.reload))
       end
 
       it 'polls zencoder' do
         file = create(model, :uploading)
 
-        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
+        allow(Pageflow::ZencoderApi).to receive(:instance)
+          .and_return(ZencoderApiDouble.once_pending_then_finished)
 
         file.publish!
 
-        expect(Pageflow::ZencoderApi.instance).to have_received(:get_info).with(file.reload.job_id).twice
+        expect(Pageflow::ZencoderApi.instance)
+          .to have_received(:get_info)
+          .with(file.reload.job_id).twice
       end
 
       it 'sets state to waiting_for_confirmation' do
@@ -257,21 +268,27 @@ shared_examples 'media encoding state machine' do |model|
         it 'creates zencoder job for file' do
           file = create(model, :encoding_failed)
 
-          allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+          allow(Pageflow::ZencoderApi).to receive(:instance)
+            .and_return(ZencoderApiDouble.finished)
 
           file.retry!
 
-          expect(Pageflow::ZencoderApi.instance).to have_received(:create_job).with(file.reload.output_definition)
+          expect(Pageflow::ZencoderApi.instance)
+            .to have_received(:create_job)
+            .with(file.reload.output_definition)
         end
 
         it 'polls zencoder' do
           file = create(model, :encoding_failed)
 
-          allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
+          allow(Pageflow::ZencoderApi).to receive(:instance)
+            .and_return(ZencoderApiDouble.once_pending_then_finished)
 
           file.retry!
 
-          expect(Pageflow::ZencoderApi.instance).to have_received(:get_info).with(file.reload.job_id).twice
+          expect(Pageflow::ZencoderApi.instance)
+            .to have_received(:get_info)
+            .with(file.reload.job_id).twice
         end
 
         it 'sets state to encoded after job has finished' do

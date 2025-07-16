@@ -89,7 +89,9 @@ module Pageflow
         html = helper.background_image_div_with_size(configuration, 'background_image',
                                                      spanning: true)
 
-        expect(html).to have_selector('div.background_image[style*="padding-top: 50.0%"][style*="width: 100%"]')
+        expect(html).to have_selector(
+          'div.background_image[style*="padding-top: 50.0%"][style*="width: 100%"]'
+        )
       end
 
       it 'returns div with data-width and data-height attributes from video' do
@@ -108,7 +110,10 @@ module Pageflow
 
         css_class = helper.background_image_lazy_loading_css_class('image', image_file)
 
-        expect(css_class).to eq(".load_all_images .image_#{image_file.perma_id}, .load_image.image_#{image_file.perma_id}")
+        expect(css_class).to eq(
+          ".load_all_images .image_#{image_file.perma_id}, " \
+          ".load_image.image_#{image_file.perma_id}"
+        )
       end
     end
   end

@@ -20,7 +20,9 @@ module Pageflow
 
         result = helper.file_thumbnails_css(entry)
 
-        expect(result).to include(".pageflow_image_file_link_thumbnail_large_#{image_file.perma_id}")
+        expect(result).to include(
+          ".pageflow_image_file_link_thumbnail_large_#{image_file.perma_id}"
+        )
       end
 
       it 'renders lazy loaded variants' do
@@ -29,7 +31,9 @@ module Pageflow
 
         result = helper.file_thumbnails_css(entry)
 
-        expect(result).to include(".load_image.lazy_pageflow_image_file_link_thumbnail_#{image_file.perma_id}")
+        expect(result).to include(
+          ".load_image.lazy_pageflow_image_file_link_thumbnail_#{image_file.perma_id}"
+        )
       end
 
       it 'renders link thumbnail rule for video files of revision' do

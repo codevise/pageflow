@@ -130,7 +130,8 @@ module Pageflow
       raise 'Not implemented!'
     end
 
-    # Gets called to trigger the `file_uploaded` event in the upload state machine of UploadableFile.
+    # Gets called to trigger the `file_uploaded` event in the upload state
+    # machine of UploadableFile.
     # Files that are not uploaded through the editor (and therefore not using the
     # upload state machine of UploadableFile) can overwrite this method to trigger whatever
     # the file does (i.e. processing/transcoding), depending on the including class'

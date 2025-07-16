@@ -3,7 +3,10 @@ class MailClient
 
   class MissingDeliveryError < StandardError
     def initialize(options)
-      super("Expected #{options[:name]} to have been delivered to #{options[:to]}.\n\nOther deliveries:\n#{other_deliveries}")
+      super(
+        "Expected #{options[:name]} to have been delivered to #{options[:to]}." \
+        "\n\nOther deliveries:\n#{other_deliveries}"
+      )
     end
 
     private

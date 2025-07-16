@@ -31,7 +31,9 @@ gem 'shakapacker', '~> 7.0'
 
 # Make tests fail on JS errors
 gem 'capybara-chromedriver-logger',
-    git: 'https://github.com/codevise/capybara-chromedriver-logger', branch: 'fix-selenium-4-deprecation', require: false
+    git: 'https://github.com/codevise/capybara-chromedriver-logger',
+    branch: 'fix-selenium-4-deprecation',
+    require: false
 
 # See https://github.com/charkost/prosopite/pull/79
 gem 'prosopite', git: 'https://github.com/tf/prosopite', branch: 'location-backtrace-cleaner'

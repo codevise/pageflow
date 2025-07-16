@@ -19,7 +19,8 @@ module Pageflow
         classes << "scroll_indicator_mode_#{page.configuration['scroll_indicator_mode']}"
       end
       if page.configuration['scroll_indicator_orientation'].present?
-        classes << "scroll_indicator_orientation_#{page.configuration['scroll_indicator_orientation']}"
+        classes <<
+          "scroll_indicator_orientation_#{page.configuration['scroll_indicator_orientation']}"
       end
       if page.configuration['delayed_text_fade_in'].present?
         classes << "delayed_text_fade_in_#{page.configuration['delayed_text_fade_in']}"
