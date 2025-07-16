@@ -159,11 +159,6 @@ Style/CaseLikeIf:
   Exclude:
     - 'app/models/pageflow/roles.rb'
 
-# Offense count: 221
-# Configuration parameters: AllowedConstants.
-Style/Documentation:
-  Enabled: false
-
 # Offense count: 5
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.
