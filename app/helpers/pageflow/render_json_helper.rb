@@ -3,7 +3,7 @@ module Pageflow
   module RenderJsonHelper
     # Renders `image_files/_image_file.json.jbuilder` when given a
     # collection of `ImageFile` records.
-    def render_json_seed(records, _options = {})
+    def render_json_seed(records, _options = {}) # rubocop:todo Metrics/AbcSize
       if records.respond_to?(:to_model)
         name = records.to_model.class.model_name.to_s.split('::').last.underscore.downcase
         render_json_partial(['pageflow/editor', name.pluralize, name.singularize].join('/'),

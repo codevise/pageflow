@@ -60,6 +60,7 @@ module Pageflow
       ''
     end
 
+    # rubocop:todo Metrics/AbcSize
     def social_share_entry_image_tags(entry) # rubocop:todo Metrics/MethodLength
       share_images = []
       image_file = find_file_in_entry(ImageFile, entry.share_image_id, entry)
@@ -93,6 +94,7 @@ module Pageflow
 
       render 'pageflow/social_share/image_tags', share_images:
     end
+    # rubocop:enable Metrics/AbcSize
 
     def social_share_normalize_protocol(url)
       url.gsub(%r{^//}, 'https://')

@@ -119,7 +119,7 @@ module Pageflow
         end
       end
 
-      def redirect_path
+      def redirect_path # rubocop:todo Metrics/AbcSize
         if params[:user_id].present? && authorized?(:redirect_to_user, resource.user)
           tab = resource.entity_type == 'Pageflow::Account' ? 'accounts' : 'entries'
           admin_user_path(params[:user_id], tab:)

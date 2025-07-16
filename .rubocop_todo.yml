@@ -73,11 +73,6 @@ Lint/UselessAssignment:
     - 'spec/models/pageflow/site_spec.rb'
     - 'spec/policies/pageflow/membership_policy_spec.rb'
 
-# Offense count: 45
-# Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
-Metrics/AbcSize:
-  Max: 281
-
 # Offense count: 12
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/CyclomaticComplexity:

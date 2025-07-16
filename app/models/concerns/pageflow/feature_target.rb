@@ -32,7 +32,7 @@ module Pageflow
       Pageflow.config.features.enabled_by_default?(name)
     end
 
-    def feature_states=(states)
+    def feature_states=(states) # rubocop:todo Metrics/AbcSize
       boolean_states = states.each_with_object({}) do |(key, value), result|
         if value == true || value == STATE_MAPPING[true]
           result[key] = true

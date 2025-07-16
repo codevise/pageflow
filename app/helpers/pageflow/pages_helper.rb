@@ -8,7 +8,7 @@ module Pageflow
                                   configuration: page.configuration))
     end
 
-    def page_css_class(page)
+    def page_css_class(page) # rubocop:todo Metrics/AbcSize
       classes = ['page']
       classes << 'invert' if page.configuration['invert']
       classes << 'hide_title' if page.configuration['hide_title']

@@ -78,7 +78,7 @@ module Pageflow
       "#{entry.site.privacy_link_url}?lang=#{entry.locale}"
     end
 
-    def entry_file_rights(entry)
+    def entry_file_rights(entry) # rubocop:todo Metrics/AbcSize
       rights = Pageflow.config.file_types.map { |file_type|
         entry.find_files(file_type.model).map do |file|
           file.rights.presence || entry.account.default_file_rights.presence
@@ -94,7 +94,7 @@ module Pageflow
       end
     end
 
-    def entry_global_links(entry)
+    def entry_global_links(entry) # rubocop:todo Metrics/AbcSize
       links = []
 
       if entry.site.imprint_link_label.present? && entry.site.imprint_link_url.present?

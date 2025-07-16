@@ -2,7 +2,7 @@ module Pageflow
   module VideoFilesHelper
     include RevisionFileHelper
 
-    def mobile_poster_image_div(config = {})
+    def mobile_poster_image_div(config = {}) # rubocop:todo Metrics/AbcSize
       classes = ['background', 'background_image']
       position = {x: 50, y: 50}
 
@@ -45,6 +45,7 @@ module Pageflow
       image_tag('', options)
     end
 
+    # rubocop:todo Metrics/AbcSize
     def video_file_video_tag(video_file, options = {}) # rubocop:todo Metrics/MethodLength
       defaults = {
         crossorigin: 'anonymous',
@@ -91,6 +92,7 @@ module Pageflow
              options:,
              url_options:)
     end
+    # rubocop:enable Metrics/AbcSize
 
     # @deprecated
     def lookup_video_tag(video_id, poster_image_id, options = {})

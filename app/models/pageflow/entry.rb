@@ -77,7 +77,7 @@ module Pageflow
       account.feature_state(name)
     end
 
-    def publish(options = {})
+    def publish(options = {}) # rubocop:todo Metrics/AbcSize
       ActiveRecord::Base.transaction do
         self.first_published_at ||= Time.now
         update_password!(options.slice(:password, :password_protected))

@@ -33,7 +33,7 @@ module Pageflow
       get_details(job_id)
     end
 
-    def get_details(job_id)
+    def get_details(job_id) # rubocop:todo Metrics/AbcSize
       with_exception_translation do
         response = Zencoder::Job.details(job_id)
 

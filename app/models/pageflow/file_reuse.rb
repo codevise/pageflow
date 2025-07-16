@@ -9,7 +9,7 @@ module Pageflow
       @file = source_entry.find_file(file_type.model, file_id)
     end
 
-    def save!
+    def save! # rubocop:todo Metrics/AbcSize
       destination_entry.use_file(file)
 
       file_type.nested_file_types.each do |nested_file_type|

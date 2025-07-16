@@ -35,7 +35,7 @@ module PageflowScrolled
       CLIENT_EXEC =
         %r{__webpack_exec__\("./node_modules/webpack-dev-server/client/index\.js[^"]*"\),}
 
-      def find_asset(logical_path)
+      def find_asset(logical_path) # rubocop:todo Metrics/AbcSize
         asset_paths = manifest.lookup_pack_with_chunks(logical_path, type: :javascript)
 
         asset_contents =

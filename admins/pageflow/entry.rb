@@ -317,7 +317,7 @@ module Pageflow
         SitePolicy::Scope.new(current_user, Site)
       end
 
-      def permitted_attributes
+      def permitted_attributes # rubocop:todo Metrics/AbcSize
         result = [:title, :type_name, {permalink_attributes: [:slug, :directory_id]}]
         target = if !params[:id] && current_user.admin?
                    Account.first

@@ -38,8 +38,16 @@ Style/LambdaCall:
 
 # In specs methods using RSpec DSL often become complex
 Metrics/AbcSize:
+  Max: 20
   Exclude:
+    - '**/app/views/components/**/*.rb'
+    - '**/db/migrate/**/*.rb'
+    - '**/plugin.rb'
     - '**/spec/**/*'
+    - '**/seeds.rb'
+    - 'lib/pageflow/ability_mixin.rb'
+    - 'lib/pageflow/configuration.rb'
+    - 'lib/pageflow/zencoder_video_output_definition.rb'
 
 # Certain files are long.
 Metrics/ClassLength:

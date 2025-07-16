@@ -38,7 +38,7 @@ module Pageflow
       UsedFile.new(file, usage)
     end
 
-    def remove_file(file)
+    def remove_file(file) # rubocop:todo Metrics/AbcSize
       draft.file_usages.where(file:).destroy_all
 
       file.file_type.nested_file_types.each do |nested_file_type|
