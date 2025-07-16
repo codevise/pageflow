@@ -41,12 +41,25 @@ Metrics/AbcSize:
   Exclude:
     - '**/spec/**/*'
 
-# Ignore long RSpec and ActiveAdmin blocks
+# Ignore DSLs
 Metrics/BlockLength:
-  AllowedMethods: ['describe', 'context', 'feature', 'it', 'namespace']
+  AllowedMethods:
+    - namespace
+    - included
+    - for_entry_type
+    - configure
+    - processing_state_machine
+  CountAsOne:
+    - method_call
   Exclude:
-    - '**/spec/factories/*.rb'
+    - '**/*.arb'
+    - '**/*.gemspec'
+    - '**/*.jbuilder'
+    - '**/seeds.rb'
     - '**/admins/pageflow/*.rb'
+    - '**/app/views/components/**/*.rb'
+    - '**/config/**/*.rb'
+    - '**/spec/**/*.rb'
 
 # In specs methods using RSpec DSL often become long
 Metrics/MethodLength:
