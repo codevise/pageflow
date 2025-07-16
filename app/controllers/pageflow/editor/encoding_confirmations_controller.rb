@@ -1,5 +1,6 @@
 module Pageflow
   module Editor
+    # @api private
     class EncodingConfirmationsController < Pageflow::ApplicationController
       respond_to :json
 

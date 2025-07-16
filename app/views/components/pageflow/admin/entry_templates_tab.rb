@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class EntryTemplatesTab < ViewComponent
       def build(site)
         table_subjects = site.existing_and_potential_entry_templates

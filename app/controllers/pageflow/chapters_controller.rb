@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class ChaptersController < Pageflow::ApplicationController
     respond_to :json
 

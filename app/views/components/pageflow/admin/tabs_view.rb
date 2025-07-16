@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class TabsView < ViewComponent
       builder_method :tabs_view
 

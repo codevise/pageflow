@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class EntryTemplatePolicy < ApplicationPolicy
     def initialize(user, entry_template)
       @user = user

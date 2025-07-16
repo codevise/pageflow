@@ -1,5 +1,6 @@
 module Pageflow
   module Editor
+    # @api private
     class EntryPublicationsController < Pageflow::ApplicationController
       respond_to :json
 

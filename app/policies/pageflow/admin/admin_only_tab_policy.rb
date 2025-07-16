@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class AdminOnlyTabPolicy
       attr_reader :user, :tab
 

@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class StorylinesController < Pageflow::ApplicationController
     respond_to :json
 

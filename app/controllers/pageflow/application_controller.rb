@@ -2,6 +2,7 @@ require 'cancan'
 require 'state_machines'
 
 module Pageflow
+  # @api private
   class ApplicationController < ActionController::Base
     layout 'pageflow/application'
 

@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class EmbeddedIndexTable < ViewComponent
       builder_method :embedded_index_table
 
@@ -96,6 +97,7 @@ module Pageflow
         @sort_columns = recorder.columns
       end
 
+      # @api private
       class SortColumnRecorder
         attr_reader :columns
 

@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class UserAccountBadgeList < ViewComponent
       builder_method :user_account_badge_list
 

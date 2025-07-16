@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class ProcessImageOrTextTrackJob < ApplicationJob
     queue_as :resizing
 

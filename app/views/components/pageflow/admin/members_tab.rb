@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class MembersTab < ViewComponent
       def build(entry)
         embedded_index_table(entry.memberships.includes(:user).references(:users),

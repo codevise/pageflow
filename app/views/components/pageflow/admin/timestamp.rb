@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class Timestamp < ViewComponent
       builder_method :timestamp
 

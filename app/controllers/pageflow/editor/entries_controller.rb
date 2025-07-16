@@ -1,5 +1,6 @@
 module Pageflow
   module Editor
+    # @api private
     class EntriesController < Pageflow::ApplicationController
       layout 'pageflow/editor'
 

@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class FilesController < Pageflow::ApplicationController
     include PublicHttpsMode
     include EntryPasswordProtection

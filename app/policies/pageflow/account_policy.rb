@@ -1,5 +1,7 @@
 module Pageflow
+  # @api private
   class AccountPolicy < ApplicationPolicy
+    # @api private
     class Scope < Scope
       attr_reader :user, :scope, :query
 

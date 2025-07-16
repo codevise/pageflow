@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class EntryPublicationStateIndicator < ViewComponent
       builder_method :entry_publication_state_indicator
 

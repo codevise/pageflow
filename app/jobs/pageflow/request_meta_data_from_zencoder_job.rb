@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class RequestMetaDataFromZencoderJob < ApplicationJob
     queue_as :default
 

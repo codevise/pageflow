@@ -1,6 +1,7 @@
 module Pageflow
   module Admin
     class ExtensibleAttributesTable < ActiveAdmin::Views::AttributesTable
+      # @api private
       module BuilderMethods
         def extensible_attributes_table_for(model, additional_rows, &block)
           attributes_table_for(model) do
@@ -11,6 +12,7 @@ module Pageflow
         end
       end
 
+      # @api private
       class RowInserter
         def initialize(context, additional_rows)
           @context = context
@@ -55,6 +57,7 @@ module Pageflow
         end
       end
 
+      # @api private
       class RowDelegator
         def initialize(context, row_handler)
           @context = context

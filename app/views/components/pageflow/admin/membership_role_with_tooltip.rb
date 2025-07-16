@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class MembershipRoleWithTooltip < ViewComponent
       builder_method :membership_role_with_tooltip
 

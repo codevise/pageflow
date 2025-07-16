@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class RevisionsController < Pageflow::ApplicationController
     include ControllerDelegation
     include QuotaVerification

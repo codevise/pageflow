@@ -1,5 +1,6 @@
 module Pageflow
   module Editor
+    # @api private
     class FilesController < Pageflow::ApplicationController
       respond_to :json
 

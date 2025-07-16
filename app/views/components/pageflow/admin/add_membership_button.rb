@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class AddMembershipButton < ViewComponent
       builder_method :add_membership_button
 

@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class PollZencoderJob < ApplicationJob
     queue_as :resizing
 

@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class UserMailer < ActionMailer::Base
     def invitation(options)
       @user = options[:user]

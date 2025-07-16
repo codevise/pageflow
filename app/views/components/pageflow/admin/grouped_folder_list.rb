@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class GroupedFolderList < ViewComponent
       builder_method :grouped_folder_list
 

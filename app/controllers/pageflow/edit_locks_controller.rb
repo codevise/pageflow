@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class EditLocksController < Pageflow::ApplicationController
     before_action :authenticate_user!
 

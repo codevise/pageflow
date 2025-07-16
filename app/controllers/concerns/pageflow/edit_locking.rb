@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   module EditLocking
     extend ActiveSupport::Concern
 
