@@ -19,12 +19,6 @@ Lint/ConstantDefinitionInBlock:
     - 'spec/pageflow/seeds_spec.rb'
     - 'spec/support/helpers/stub_template_in_helper_specs.rb'
 
-# Offense count: 1
-# Configuration parameters: AllowComments.
-Lint/EmptyFile:
-  Exclude:
-    - 'entry_types/paged/app/views/pageflow_paged/editor/entries/_seed.json.jbuilder'
-
 # Offense count: 33
 # Configuration parameters: AllowedParentClasses.
 Lint/MissingSuper:
