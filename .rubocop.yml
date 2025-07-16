@@ -78,12 +78,20 @@ Metrics/BlockLength:
     - '**/config/**/*.rb'
     - '**/spec/**/*.rb'
 
-# In specs methods using RSpec DSL often become long
+# Ignore DSLs. Slightly longer methods are ok
 Metrics/MethodLength:
+  Max: 20
   CountAsOne:
+    - array
+    - hash
     - method_call
   Exclude:
+    - 'lib/pageflow/ability_mixin.rb'
+    - 'lib/pageflow/configuration.rb'
+    - '**/plugin.rb'
     - '**/app/views/components/**/*'
+    - '**/db/migrate/**/*'
+    - '**/seeds.rb'
     - '**/spec/**/*'
 
 Metrics/ParameterLists:

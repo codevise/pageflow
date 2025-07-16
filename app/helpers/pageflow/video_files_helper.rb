@@ -45,7 +45,7 @@ module Pageflow
       image_tag('', options)
     end
 
-    def video_file_video_tag(video_file, options = {})
+    def video_file_video_tag(video_file, options = {}) # rubocop:todo Metrics/MethodLength
       defaults = {
         crossorigin: 'anonymous',
         class: [

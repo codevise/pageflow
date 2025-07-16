@@ -60,7 +60,7 @@ module Pageflow
       ''
     end
 
-    def social_share_entry_image_tags(entry)
+    def social_share_entry_image_tags(entry) # rubocop:todo Metrics/MethodLength
       share_images = []
       image_file = find_file_in_entry(ImageFile, entry.share_image_id, entry)
 
