@@ -317,8 +317,8 @@ module Pageflow
     describe '#entry_file_rights' do
       it 'returns comma separated list of file rights' do
         revision = create(:revision)
-        image_file = create(:image_file, rights: 'My Company', used_in: revision)
-        image_file = create(:image_file, rights: 'My Photographer', used_in: revision)
+        create(:image_file, rights: 'My Company', used_in: revision)
+        create(:image_file, rights: 'My Photographer', used_in: revision)
         entry = PublishedEntry.new(create(:entry), revision)
 
         result = helper.entry_file_rights(entry)
@@ -328,7 +328,7 @@ module Pageflow
 
       it 'falls back to default file rights' do
         revision = create(:revision)
-        image_file = create(:image_file, used_in: revision)
+        create(:image_file, used_in: revision)
         account = create(:account, default_file_rights: 'My Account')
         entry = PublishedEntry.new(create(:entry, account:), revision)
 
@@ -339,8 +339,8 @@ module Pageflow
 
       it 'does not insert extra comma if a file has no rights and defaults are not configured' do
         revision = create(:revision)
-        image_file = create(:image_file, used_in: revision)
-        image_file = create(:image_file, rights: 'My Photographer', used_in: revision)
+        create(:image_file, used_in: revision)
+        create(:image_file, rights: 'My Photographer', used_in: revision)
         entry = PublishedEntry.new(create(:entry), revision)
 
         result = helper.entry_file_rights(entry)
@@ -350,7 +350,7 @@ module Pageflow
 
       it 'returns empty string if no rights are defined' do
         revision = create(:revision)
-        image_file = create(:image_file, used_in: revision)
+        create(:image_file, used_in: revision)
         entry = PublishedEntry.new(create(:entry), revision)
 
         result = helper.entry_file_rights(entry)

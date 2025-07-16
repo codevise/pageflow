@@ -27,7 +27,7 @@ module Pageflow
       file.encoding_progress = info[:finished] ? 100 : info[:progress]
       file.encoding_error_message = nil
 
-      if info[:state] === 'failed'
+      if info[:state] == 'failed'
         throw(:halt, :error)
       elsif !info[:finished]
         throw(:halt, :pending)

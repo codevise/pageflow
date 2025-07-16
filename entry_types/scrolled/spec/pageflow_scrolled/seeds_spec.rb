@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 module PageflowScrolled
-  RSpec.describe Seeds do
-    module SeedsDsl
-      extend Seeds
-    end
+  module SeedsDsl
+    extend Seeds
+  end
 
+  RSpec.describe Seeds do
     describe '#sample_scrolled_entry' do
       context 'entry' do
         it 'creates entry for account' do

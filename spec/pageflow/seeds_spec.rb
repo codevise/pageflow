@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 module Pageflow
+  module SeedsDsl
+    extend Seeds
+  end
+
   describe Seeds do
     describe '#account' do
-      module SeedsDsl
-        extend Seeds
-      end
-
       it 'creates account' do
         account = SeedsDsl.account(name: 'example')
 

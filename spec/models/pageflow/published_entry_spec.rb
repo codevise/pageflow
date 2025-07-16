@@ -77,7 +77,7 @@ module Pageflow
 
       it 'returns blank attachment for published revision without pages' do
         entry = create(:entry)
-        revision = create(:revision, :published, entry:)
+        create(:revision, :published, entry:)
         published_entry = PublishedEntry.new(entry)
 
         expect(published_entry.thumbnail_url).to eq(ImageFile.new.attachment.url)
@@ -199,7 +199,7 @@ module Pageflow
     describe '#stylesheet_model' do
       it 'returns entry if no revision was passed to constructor' do
         entry = create(:entry)
-        revision = create(:revision, entry:)
+        create(:revision, entry:)
         published_entry = PublishedEntry.new(entry)
 
         expect(published_entry.stylesheet_model).to be(entry)

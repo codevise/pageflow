@@ -2,13 +2,15 @@ require 'spec_helper'
 
 module Pageflow
   describe GlobalConfigApi do
-    class PageflowModule
-      include GlobalConfigApi
+    let(:pageflow_module) do
+      Class.new do
+        include GlobalConfigApi
+      end
     end
 
     describe '#config' do
       it 'returns configuration available for which all features have been enabled' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
 
         pageflow.configure do |config|
           config.features.register('some_stuff')
@@ -20,7 +22,7 @@ module Pageflow
       end
 
       it 'raises exception before finalize!' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
 
         pageflow.configure do |config|
           config.features.register('some_stuff')
@@ -32,7 +34,7 @@ module Pageflow
       end
 
       it 'returns empty configuration if not yet configured is ignored' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
 
         pageflow.configure do |config|
           config.features.register('some_stuff')
@@ -44,7 +46,7 @@ module Pageflow
       it 'returns all global file types as well as those for entry types' do
         entry_type = TestEntryType.new(name: 'skulled')
         entry_type2 = TestEntryType.new(name: 'phaged')
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         file_type = FileType.new(model: 'Pageflow::ImageFile',
                                  collection_name: 'image_files')
         file_type2 = FileType.new(model: 'Pageflow::VideoFile',
@@ -71,7 +73,7 @@ module Pageflow
       it 'handles duplicate file types' do
         entry_type = TestEntryType.new(name: 'skulled')
         entry_type2 = TestEntryType.new(name: 'phaged')
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         file_type = FileType.new(model: 'Pageflow::ImageFile',
                                  collection_name: 'image_files')
         file_type2 = FileType.new(model: 'Pageflow::ImageFile',
@@ -98,7 +100,7 @@ module Pageflow
       it 'returns all global widget types as well as those for entry types' do
         entry_type = TestEntryType.new(name: 'skulled')
         entry_type2 = TestEntryType.new(name: 'phaged')
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         widget_type = TestWidgetType.new(name: 'test_widget')
         widget_type2 = TestWidgetType.new(name: 'test_fidget')
         widget_type3 = TestWidgetType.new(name: 'test_midget')
@@ -122,7 +124,7 @@ module Pageflow
       it 'handles duplicate widget types' do
         entry_type = TestEntryType.new(name: 'skulled')
         entry_type2 = TestEntryType.new(name: 'phaged')
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         widget_type = TestWidgetType.new(name: 'test_widget')
         widget_type2 = TestWidgetType.new(name: 'test_fidget')
         widget_type3 = TestWidgetType.new(name: 'test_widget')
@@ -145,7 +147,7 @@ module Pageflow
 
       it 'returns all global revision components as well as those for entry types' do
         entry_type = TestEntryType.new
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
 
@@ -163,7 +165,7 @@ module Pageflow
 
       it 'returns all global hooks as well as those for entry types' do
         entry_type = TestEntryType.new
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         entry_type_subscriber = spy
         global_subscriber = spy
         pageflow.configure do |config|
@@ -188,7 +190,7 @@ module Pageflow
     describe '#configure!' do
       it 'yields config to after_configure blocks' do
         result = false
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
 
         pageflow.configure do |config|
           config.features.register('some_stuff')
@@ -204,7 +206,7 @@ module Pageflow
 
       it 'yields config to after_global_configure blocks' do
         result = false
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
 
         pageflow.configure do |config|
           config.features.register('some_stuff')
@@ -219,7 +221,7 @@ module Pageflow
       end
 
       it 'raises helpful error when trying to enable unknown feature by default' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
 
         pageflow.configure do |config|
           config.features.enable_by_default('unknown')
@@ -233,7 +235,7 @@ module Pageflow
       end
 
       it 'does not raise error when enabling feature by default before registering it' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
 
         expect {
           pageflow.configure do |config|
@@ -247,7 +249,7 @@ module Pageflow
     describe '#config_for' do
       it 'returns config with enabled features of target' do
         target = double('target', enabled_feature_names: ['some_stuff'])
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
 
         pageflow.configure do |config|
           config.features.register('some_stuff')
@@ -262,7 +264,7 @@ module Pageflow
 
       it 'yields config with enabled features of target to after_configure blocks' do
         target = double('target', enabled_feature_names: ['some_stuff'])
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         result = nil
         result_other = nil
 
@@ -281,7 +283,7 @@ module Pageflow
       end
 
       it 'yields config to entry type specific configure blocks, then after_configure blocks' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         entry_type = TestEntryType.new(name: 'skulled')
         entry = double('entry', entry_type:, enabled_feature_names: [])
         calls = []
@@ -311,7 +313,7 @@ module Pageflow
           end
         end
         entry_type = TestEntryType.new(name: 'phaged', configuration: phaged_config)
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
           config.for_entry_type(entry_type) do |c|
@@ -341,7 +343,7 @@ module Pageflow
         end
         entry_type = TestEntryType.new(name: 'phaged', configuration: phaged_config)
         entry_type2 = TestEntryType.new(name: 'skulled', configuration: skulled_config)
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
           config.for_entry_type(entry_type) do |c|
@@ -368,7 +370,7 @@ module Pageflow
         end
         entry_type = TestEntryType.new(name: 'skulled', configuration: skulled_config)
         entry = double('entry', entry_type:, enabled_feature_names: [])
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
         end
@@ -396,7 +398,7 @@ module Pageflow
         end
         entry_type = TestEntryType.new(name: 'skulled', configuration: skulled_config)
         entry = double('entry', entry_type:, enabled_feature_names: [])
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
           config.for_entry_type(entry_type) do |c|
@@ -414,7 +416,7 @@ module Pageflow
 
       it "doesn't make available all config options inside for_entry_blocks" do
         entry_type = TestEntryType.new(name: 'skulled')
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         entry = double('entry', entry_type:, enabled_feature_names: [])
         pageflow.configure do |config|
           config.entry_types.register(entry_type)
@@ -428,7 +430,7 @@ module Pageflow
 
       it 'allows registering a file type for an entry type' do
         entry_type = TestEntryType.new(name: 'skulled')
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         entry = double('entry', entry_type:, enabled_feature_names: [])
         file_type = FileType.new(model: 'Pageflow::ImageFile',
                                  collection_name: 'image_files')
@@ -446,7 +448,7 @@ module Pageflow
       it "doesn't make file types available to other entry types" do
         entry_type = TestEntryType.new(name: 'skulled')
         other_entry_type = TestEntryType.new(name: 'phaged')
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         entry = double('entry', entry_type: other_entry_type, enabled_feature_names: [])
         file_type = FileType.new(model: 'Pageflow::ImageFile',
                                  collection_name: 'image_files')
@@ -466,7 +468,7 @@ module Pageflow
 
       it 'allows registering a widget type for an entry type' do
         entry_type = TestEntryType.new(name: 'skulled')
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         entry = double('entry', entry_type:, enabled_feature_names: [])
         widget_type = TestWidgetType.new(name: 'test_widget')
         pageflow.configure do |config|
@@ -483,7 +485,7 @@ module Pageflow
       it "doesn't make widget types available to other entry types" do
         entry_type = TestEntryType.new(name: 'skulled')
         other_entry_type = TestEntryType.new(name: 'phaged')
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         entry = double('entry', entry_type: other_entry_type, enabled_feature_names: [])
         widget_type = TestWidgetType.new(name: 'test_widget')
         pageflow.configure do |config|
@@ -501,7 +503,7 @@ module Pageflow
       end
 
       it 'allows using for_entry_type inside features' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         widget_type = TestWidgetType.new(name: 'test_widget')
         entry_type = TestEntryType.new(name: 'skulled')
         other_entry_type = TestEntryType.new(name: 'phaged')
@@ -535,7 +537,7 @@ module Pageflow
       end
 
       it 'allows registering feature blocks in for_entry_type blocks' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         widget_type = TestWidgetType.new(name: 'test_widget')
         entry_type = TestEntryType.new(name: 'skulled')
         entry_with_feature = double('entry',
@@ -562,7 +564,7 @@ module Pageflow
       end
 
       it 'allows using entry type specific config in feature block in for_entry_type blocks' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         skulled_config = Class.new do
           include EntryTypeConfiguration
           attr_accessor :data
@@ -592,7 +594,7 @@ module Pageflow
 
       it 'allows using entry type specific config in feature object registered ' \
          'in for_entry_type blocks' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         skulled_config = Class.new do
           include EntryTypeConfiguration
           attr_accessor :data
@@ -620,7 +622,7 @@ module Pageflow
       end
 
       it 'preserves name_translation_key for features registered in for_entry_type blocks' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         entry_type = TestEntryType.new(name: 'skulled')
         entry = double('entry',
                        entry_type:,
@@ -639,7 +641,7 @@ module Pageflow
       end
 
       it 'allows registering help entries in for_entry_type block' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         phaged_entry_type = TestEntryType.new(name: 'phaged')
         skulled_entry_type = TestEntryType.new(name: 'skulled')
         pageflow.configure do |config|
@@ -661,7 +663,7 @@ module Pageflow
       end
 
       it 'allows registering themes in for_entry_type block' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         phaged_entry_type = TestEntryType.new(name: 'phaged')
         skulled_entry_type = TestEntryType.new(name: 'skulled')
         pageflow.configure do |config|
@@ -683,7 +685,7 @@ module Pageflow
       end
 
       it 'allows registering file importers in for_entry_type block' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         phaged_entry_type = TestEntryType.new(name: 'phaged')
         skulled_entry_type = TestEntryType.new(name: 'skulled')
         pageflow.configure do |config|
@@ -705,7 +707,7 @@ module Pageflow
       end
 
       it 'allows calling plugin method inside for_entry_type block' do
-        pageflow = PageflowModule.new
+        pageflow = pageflow_module.new
         entry_type = TestEntryType.new(name: 'phaged')
         plugin = Class.new {
           def configure(config)

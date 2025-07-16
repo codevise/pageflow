@@ -64,6 +64,7 @@ module Pageflow
       begin
         PollZencoderJob.new.perform_with_result(video_file, {})
       rescue ZencoderApi::UnrecoverableError
+        # Intentionally suppress exception to test error handling
       end
 
       expect(video_file.reload.encoding_error_message).to be_present

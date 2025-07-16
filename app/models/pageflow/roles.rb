@@ -4,18 +4,13 @@ module Pageflow
 
     def at_least(role_uncasted)
       role = role_uncasted.to_sym
-      case role
-      when :member
-        %w[member previewer editor publisher manager]
-      when :previewer
-        %w[previewer editor publisher manager]
-      when :editor
-        %w[editor publisher manager]
-      when :publisher
-        %w[publisher manager]
-      when :manager
-        %w[manager]
-      end
+      {
+        member: %w[member previewer editor publisher manager],
+        previewer: %w[previewer editor publisher manager],
+        editor: %w[editor publisher manager],
+        publisher: %w[publisher manager],
+        manager: %w[manager]
+      }[role]
     end
 
     def high(user, entry)

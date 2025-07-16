@@ -2,23 +2,25 @@ require 'spec_helper'
 
 module Pageflow
   describe Quota do
-    class TestQuota < Quota
-      def initialize(account, state)
-        super('test', account)
-        @state = state
-      end
+    let(:test_quota) do
+      Class.new(Quota) do
+        def initialize(account, state)
+          super('test', account)
+          @state = state
+        end
 
-      attr_reader :state
+        attr_reader :state
 
-      def state_description
-        nil
+        def state_description
+          nil
+        end
       end
     end
 
     describe '#verify_available!' do
       it 'raises ExhaustedError for exhausted quota' do
         account = build(:account)
-        quota = TestQuota.new(account, 'exhausted')
+        quota = test_quota.new(account, 'exhausted')
 
         expect {
           quota.verify_available!
@@ -29,7 +31,7 @@ module Pageflow
     describe '#verify_not_exceeded!' do
       it 'raises ExceededError for exceeded quota' do
         account = build(:account)
-        quota = TestQuota.new(account, 'exceeded')
+        quota = test_quota.new(account, 'exceeded')
 
         expect {
           quota.verify_not_exceeded!
@@ -38,7 +40,7 @@ module Pageflow
 
       it 'does not raise for exhausted quota' do
         account = build(:account)
-        quota = TestQuota.new(account, 'exhausted')
+        quota = test_quota.new(account, 'exhausted')
 
         expect {
           quota.verify_not_exceeded!
@@ -49,21 +51,21 @@ module Pageflow
     describe '#available?' do
       it 'returns true for available quota' do
         account = build(:account)
-        quota = TestQuota.new(account, 'available')
+        quota = test_quota.new(account, 'available')
 
         expect(quota).to be_available
       end
 
       it 'returns false for exhausted quota' do
         account = build(:account)
-        quota = TestQuota.new(account, 'exhausted')
+        quota = test_quota.new(account, 'exhausted')
 
         expect(quota).not_to be_available
       end
 
       it 'returns false for exceeded quota' do
         account = build(:account)
-        quota = TestQuota.new(account, 'exceeded')
+        quota = test_quota.new(account, 'exceeded')
 
         expect(quota).not_to be_available
       end
@@ -72,21 +74,21 @@ module Pageflow
     describe '#exhausted?' do
       it 'returns false for available quota' do
         account = build(:account)
-        quota = TestQuota.new(account, 'available')
+        quota = test_quota.new(account, 'available')
 
         expect(quota).not_to be_exhausted
       end
 
       it 'returns true for exhausted quota' do
         account = build(:account)
-        quota = TestQuota.new(account, 'exhausted')
+        quota = test_quota.new(account, 'exhausted')
 
         expect(quota).to be_exhausted
       end
 
       it 'returns true for exceeded quota' do
         account = build(:account)
-        quota = TestQuota.new(account, 'exceeded')
+        quota = test_quota.new(account, 'exceeded')
 
         expect(quota).to be_exhausted
       end
@@ -95,7 +97,7 @@ module Pageflow
     describe '#assume' do
       it 'returns same quota by default' do
         account = build(:account)
-        quota = TestQuota.new(account, 'available')
+        quota = test_quota.new(account, 'available')
 
         expect(quota.assume(some: 'information')).to be_available
       end

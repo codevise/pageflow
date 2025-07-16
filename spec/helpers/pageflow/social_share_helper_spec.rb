@@ -309,9 +309,9 @@ module Pageflow
         image_file1.destroy
         html = helper.social_share_entry_image_tags(entry)
 
-        expect(html).to have_css(<<-END.strip, visible: false, count: 1)
+        expect(html).to have_css(<<-HTML.strip, visible: false, count: 1)
           meta[content="#{image_file2.thumbnail_url(:medium)}"][property="og:image"]
-        END
+        HTML
       end
     end
   end

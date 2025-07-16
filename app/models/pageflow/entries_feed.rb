@@ -1,6 +1,6 @@
 module Pageflow
   # @api private
-  EntriesFeed = Struct.new(:title, :locale, :custom_url, :root_url, :entries) do
+  EntriesFeed = Struct.new(:title, :locale, :custom_url, :root_url, :entries) do # rubocop:disable Lint/StructNewOverride
     def updated_at
       entries.map(&:published_at).max
     end

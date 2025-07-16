@@ -24,13 +24,13 @@ module Pageflow
       collection = find_collection(options[:parent])
 
       collection << help_entry
-      collection.sort_by! { |help_entry| -help_entry.priority }
+      collection.sort_by! { |entry| -entry.priority }
     end
 
     # @api private
     def flat
-      map { |help_entry|
-        [help_entry, help_entry.children]
+      map { |entry|
+        [entry, entry.children]
       }.flatten
     end
 

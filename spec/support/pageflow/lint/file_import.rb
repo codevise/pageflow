@@ -15,7 +15,7 @@ module Pageflow
             end
           end
 
-          def file_importer_credentials(authentication_provider)
+          file_importer_credentials = lambda do |authentication_provider|
             token = AuthenticationToken.where(provider: authentication_provider) if
               authentication_provider.present?
             token = nil if !token.nil? && token.empty?
@@ -52,7 +52,7 @@ module Pageflow
             expect(file_importer.class.method_defined?(:search)).to be(true)
             expect {
               provider = file_importer.authentication_provider
-              search_result = file_importer.search(file_importer_credentials(provider),
+              search_result = file_importer.search(file_importer_credentials.call(provider),
                                                    'test*$*page=1&per_page=15*$*')
               expect(search_result).not_to be_nil
             }.not_to raise_error
@@ -62,7 +62,8 @@ module Pageflow
             expect(file_importer.class.method_defined?(:files_meta_data)).to be(true)
             expect {
               provider = file_importer.authentication_provider
-              meta_data = file_importer.files_meta_data(file_importer_credentials(provider), {})
+              meta_data = file_importer.files_meta_data(file_importer_credentials.call(provider),
+                                                        {})
               expect(meta_data).not_to be_nil
               expect(meta_data).to include(:collection)
               expect(meta_data).to include(:files)

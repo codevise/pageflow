@@ -57,12 +57,12 @@ module PageflowScrolled
         video_files_by_name = create_files(draft_entry,
                                            :video,
                                            attributes.fetch(:video_files, {}),
-                                           options.fetch(:skip_encoding, false))
+                                           skip_encoding: options.fetch(:skip_encoding, false))
 
         audio_files_by_name = create_files(draft_entry,
                                            :audio,
                                            attributes.fetch(:audio_files, {}),
-                                           options.fetch(:skip_encoding, false))
+                                           skip_encoding: options.fetch(:skip_encoding, false))
 
         files_by_name = image_files_by_name.merge(video_files_by_name).merge(audio_files_by_name)
 
@@ -92,7 +92,7 @@ module PageflowScrolled
       say("   sample scrolled entry '#{entry.title}'\n")
     end
 
-    def create_files(draft_entry, file_type, file_data_by_name, skip_encoding = false)
+    def create_files(draft_entry, file_type, file_data_by_name, skip_encoding: false)
       file_data_by_name.transform_values do |data|
         say("     creating #{file_type} file from #{data['url']}")
 

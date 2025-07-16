@@ -208,7 +208,7 @@ module Pageflow
           sites.where(cname: request.subdomain)
         end
         matching_site = create(:site, cname: 'matching')
-        other_site = create(:site, cname: 'other')
+        create(:site, cname: 'other')
         request = double('Request', subdomain: 'matching')
 
         result = Site.for_request(request)

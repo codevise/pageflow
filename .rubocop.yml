@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 AllCops:
   TargetRubyVersion: 3.2
   SuggestExtensions: false
@@ -153,9 +151,11 @@ Style/NumericPredicate:
 Style/DoubleNegation:
   Enabled: false
 
-# Temp
-Style/IfUnlessModifier:
+# Many policy and query classes inherit from base classes but don't need to call super
+# in their initialize methods as they handle initialization differently
+Lint/MissingSuper:
   Enabled: false
 
-Lint/RedundantCopDisableDirective:
+# Standard identifiers like Creative Commons license names (cc_by_4) should keep their naming
+Naming/VariableNumber:
   Enabled: false

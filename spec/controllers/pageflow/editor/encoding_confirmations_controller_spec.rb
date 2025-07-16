@@ -3,13 +3,15 @@ require 'spec_helper'
 module Pageflow
   module Editor
     describe EncodingConfirmationsController do
-      class ExceededTestQuota < Quota
-        def state
-          'exceeded'
-        end
+      let(:exceeded_test_quota) do
+        Class.new(Quota) do
+          def state
+            'exceeded'
+          end
 
-        def state_description
-          nil
+          def state_description
+            nil
+          end
         end
       end
 
@@ -88,7 +90,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
-          Pageflow.config.quotas.register(:encoding, ExceededTestQuota)
+          Pageflow.config.quotas.register(:encoding, exceeded_test_quota)
 
           sign_in(user, scope: :user)
           post(:create,
@@ -138,7 +140,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
-          Pageflow.config.quotas.register(:encoding, ExceededTestQuota)
+          Pageflow.config.quotas.register(:encoding, exceeded_test_quota)
 
           sign_in(user, scope: :user)
           post(:check,

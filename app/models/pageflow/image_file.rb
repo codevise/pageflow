@@ -88,6 +88,7 @@ module Pageflow
       self.width = geo.width
       self.height = geo.height
     rescue Paperclip::Errors::NotIdentifiedByImageMagickError
+      # Ignore files that can't be processed by ImageMagick
     end
 
     def social_image_styles

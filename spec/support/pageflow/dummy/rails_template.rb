@@ -25,11 +25,11 @@ gsub_file('config/environments/test.rb',
           'config.eager_load = ENV["CI"].present?',
           'config.eager_load = ENV["CI"].present? && !ENV["SKIP_EAGER_LOAD"]')
 
-append_to_file('config/application.rb', <<-END)
+append_to_file('config/application.rb', <<-RUBY)
   if ENV['PAGEFLOW_DB_HOST'].present?
     ActiveRecord::Tasks::DatabaseTasks::LOCAL_HOSTS << ENV['PAGEFLOW_DB_HOST']
   end
-END
+RUBY
 
 # Ensure pageflow is required even if it is not listed in plugin Gemfile does
 inject_into_file('config/application.rb',
@@ -67,9 +67,9 @@ inject_into_file('config/environments/test.rb',
 
 # ActiveAdmin does not look for admin definitions inside dummy apps by default.
 
-prepend_to_file('config/initializers/pageflow.rb', <<-END)
+prepend_to_file('config/initializers/pageflow.rb', <<-RUBY)
   ActiveAdmin.application.load_paths.unshift(Dir[Rails.root.join('app/admin')].first)\n
-END
+RUBY
 
 # Adapt default configuration
 
@@ -90,9 +90,9 @@ copy_file('test_theme_preview.png',
 # automatically. Since the test_theme is not yet registered when the
 # environment is loaded, we need to add its stylesheet manually.
 
-append_to_file('config/initializers/assets.rb', <<-END)
+append_to_file('config/initializers/assets.rb', <<-RUBY)
   Rails.application.config.assets.precompile += %w( pageflow/themes/test_theme.css )
-END
+RUBY
 
 # Create database tables for fake hosted files and revision components.
 

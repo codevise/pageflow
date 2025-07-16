@@ -1,22 +1,22 @@
 module Pageflow
   module Admin
     module MembershipsHelper # rubocop:todo Style/Documentation
-      def membership_user_select(f, parent)
-        if f.object.persisted?
-          membership_disabled_select(f, :user, f.object.user, :formal_name)
+      def membership_user_select(form, parent)
+        if form.object.persisted?
+          membership_disabled_select(form, :user, form.object.user, :formal_name)
         elsif parent.is_a?(User)
-          membership_disabled_select(f, :user, parent, :formal_name)
+          membership_disabled_select(form, :user, parent, :formal_name)
         else
           parent_type = parent.class.model_name.singular_route_key
-          membership_select(f, :user, parent, :"potential_users_for_#{parent_type}")
+          membership_select(form, :user, parent, :"potential_users_for_#{parent_type}")
         end
       end
 
-      def membership_entity_select(f, parent, entity_type)
+      def membership_entity_select(form, parent, entity_type)
         if entity_type == 'Pageflow::Entry'
-          membership_entry_select(f, parent)
+          membership_entry_select(form, parent)
         else
-          membership_account_select(f, parent)
+          membership_account_select(form, parent)
         end
       end
 
@@ -35,41 +35,41 @@ module Pageflow
 
       private
 
-      def membership_entry_select(f, parent)
-        if f.object.persisted?
-          membership_disabled_select(f, :entity, f.object.entity, :title)
+      def membership_entry_select(form, parent)
+        if form.object.persisted?
+          membership_disabled_select(form, :entity, form.object.entity, :title)
         elsif parent.is_a?(Entry)
-          membership_disabled_select(f, :entity, parent, :title)
+          membership_disabled_select(form, :entity, parent, :title)
         else
-          membership_select(f, :entry, parent, :potential_entries_for_user)
+          membership_select(form, :entry, parent, :potential_entries_for_user)
         end
       end
 
-      def membership_account_select(f, parent)
-        if f.object.persisted?
-          membership_disabled_select(f, :entity, f.object.entity, :name)
+      def membership_account_select(form, parent)
+        if form.object.persisted?
+          membership_disabled_select(form, :entity, form.object.entity, :name)
         elsif parent.is_a?(Account)
-          membership_disabled_select(f, :entity, parent, :name)
+          membership_disabled_select(form, :entity, parent, :name)
         else
-          membership_select(f, :entity, parent, :potential_accounts_for_user)
+          membership_select(form, :entity, parent, :potential_accounts_for_user)
         end
       end
 
-      def membership_select(f, name, parent, collection_name)
-        f.input(name,
-                as: :searchable_select,
-                ajax: {resource: Membership,
-                       collection_name:,
-                       params: {parent_id: parent.id}},
-                include_blank: false)
+      def membership_select(form, name, parent, collection_name)
+        form.input(name,
+                   as: :searchable_select,
+                   ajax: {resource: Membership,
+                          collection_name:,
+                          params: {parent_id: parent.id}},
+                   include_blank: false)
       end
 
-      def membership_disabled_select(f, name, record, text_method)
-        f.input(name,
-                as: :searchable_select,
-                collection: [[record.send(text_method), record.id]],
-                include_blank: false,
-                input_html: {disabled: true})
+      def membership_disabled_select(form, name, record, text_method)
+        form.input(name,
+                   as: :searchable_select,
+                   collection: [[record.send(text_method), record.id]],
+                   include_blank: false,
+                   input_html: {disabled: true})
       end
     end
   end

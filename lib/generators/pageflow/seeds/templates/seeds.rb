@@ -2,7 +2,7 @@
 # It will create example users for each of the Pageflow roles.
 # Feel free to edit or remove it; these entries are not required for Pageflow to function.
 
-include Pageflow::Seeds
+include Pageflow::Seeds # rubocop:disable Style/MixinUsage
 
 default_user_password('<%= password %>')
 

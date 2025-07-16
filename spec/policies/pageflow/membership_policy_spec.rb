@@ -111,7 +111,7 @@ module Pageflow
         user = create(:user)
         account = create(:account)
         account_publisher = create(:user, :publisher, on: account)
-        entry = create(:entry, account:, with_manager: account_publisher)
+        create(:entry, account:, with_manager: account_publisher)
         membership = create(:membership, role: :member, entity: account, user:)
 
         expect(MembershipPolicy::Scope

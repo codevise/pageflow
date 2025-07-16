@@ -146,7 +146,7 @@ module Pageflow
       it 'copies file usages to new revision' do
         revision = create(:revision)
         storyline = create(:storyline, revision:)
-        chapter = create(:chapter, storyline:)
+        create(:chapter, storyline:)
         image_file = create(:image_file)
         revision.file_usages.create!(file: image_file)
 

@@ -171,14 +171,14 @@ module Pageflow
     end
 
     def say_creating_user(user)
-      say(<<-END)
+      say(<<-TEXT)
 
    user with login:
 
    email:     #{user.email}
    password:  #{user.password}
 
-      END
+      TEXT
     end
 
     def say_creating_entry(entry)

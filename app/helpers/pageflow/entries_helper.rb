@@ -78,7 +78,7 @@ module Pageflow
       "#{entry.site.privacy_link_url}?lang=#{entry.locale}"
     end
 
-    def entry_file_rights(entry) # rubocop:todo Metrics/AbcSize
+    def entry_file_rights(entry)
       rights = Pageflow.config.file_types.map { |file_type|
         entry.find_files(file_type.model).map do |file|
           file.rights.presence || entry.account.default_file_rights.presence

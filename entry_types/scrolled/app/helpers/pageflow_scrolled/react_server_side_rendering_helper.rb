@@ -47,7 +47,7 @@ module PageflowScrolled
               # it does not
               asset_path.slice!("#{ds.protocol}://#{ds.host_with_port}")
               dev_server_asset =
-                URI.open("#{ds.protocol}://#{ds.host_with_port}#{asset_path}").read
+                URI.open("#{ds.protocol}://#{ds.host_with_port}#{asset_path}").read # rubocop:disable Security/Open
 
               # Remove webpack-dev-server client code that tries to
               # interact with browser globals:
