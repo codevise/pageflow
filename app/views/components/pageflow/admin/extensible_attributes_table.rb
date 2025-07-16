@@ -20,9 +20,9 @@ module Pageflow
           @rendered_rows = []
         end
 
-        def row(name, options = {}, &block)
+        def row(name, options = {}, &)
           render_additional_rows(rows_at(:before, name))
-          context.row(name, options, &block)
+          context.row(name, options, &)
           render_additional_rows(rows_at(:after, name))
         end
 
@@ -64,8 +64,8 @@ module Pageflow
           @row_handler = row_handler
         end
 
-        def row(name, options = {}, &block)
-          @row_handler.row(name, options, &block)
+        def row(name, options = {}, &)
+          @row_handler.row(name, options, &)
         end
 
         private
@@ -80,8 +80,8 @@ module Pageflow
         #
         # This is also the reason we can not use SimpleDelegator here
         # and also delegate_missing in Rails 5 would not work.
-        def method_missing(method, *args, **kwargs, &block)
-          @context.public_send(method, *args, **kwargs, &block)
+        def method_missing(method, ...)
+          @context.public_send(method, ...)
         end
       end
     end

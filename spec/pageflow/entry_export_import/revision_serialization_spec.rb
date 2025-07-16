@@ -135,7 +135,7 @@ module Pageflow
         exported_revision = create(:revision)
         exported_storyline = create(:storyline,
                                     revision: exported_revision,
-                                    configuration: {'some': 'value'},
+                                    configuration: {some: 'value'},
                                     created_at: 2.month.ago,
                                     updated_at: 1.month.ago)
 

@@ -6,8 +6,8 @@ module Pageflow
       # `action_class_finder`. `active_admin_form_for` causes issues
       # in `erb` templates (see
       # https://github.com/activeadmin/activeadmin/issues/3916).
-      def admin_form_for(resource, options = {}, &block)
-        semantic_form_for(resource, options.merge(builder: ActiveAdmin::FormBuilder), &block)
+      def admin_form_for(resource, options = {}, &)
+        semantic_form_for(resource, options.merge(builder: ActiveAdmin::FormBuilder), &)
       end
     end
   end

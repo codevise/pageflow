@@ -132,20 +132,20 @@ module Pageflow
         expect(response.body)
           .to include('xmlns:xhtml="http://www.w3.org/1999/xhtml')
         expect(response.body)
-          .to have_xpath('//urlset/url[*[@rel="alternate" and @hreflang="de"' \
-                         ' and @href="http://pageflow.example.com/de/erster-beitrag"]]/loc',
+          .to have_xpath('//urlset/url[*[@rel="alternate" and @hreflang="de" ' \
+                         'and @href="http://pageflow.example.com/de/erster-beitrag"]]/loc',
                          text: 'http://pageflow.example.com/en/story-one')
         expect(response.body)
-          .to have_xpath('//urlset/url[*[@rel="alternate" and @hreflang="en"' \
-                         ' and @href="http://pageflow.example.com/en/story-one"]]/loc',
+          .to have_xpath('//urlset/url[*[@rel="alternate" and @hreflang="en" ' \
+                         'and @href="http://pageflow.example.com/en/story-one"]]/loc',
                          text: 'http://pageflow.example.com/en/story-one')
         expect(response.body)
-          .to have_xpath('//urlset/url[*[@rel="alternate" and @hreflang="de"' \
-                         ' and @href="http://pageflow.example.com/de/erster-beitrag"]]/loc',
+          .to have_xpath('//urlset/url[*[@rel="alternate" and @hreflang="de" ' \
+                         'and @href="http://pageflow.example.com/de/erster-beitrag"]]/loc',
                          text: 'http://pageflow.example.com/de/erster-beitrag')
         expect(response.body)
-          .to have_xpath('//urlset/url[*[@rel="alternate" and @hreflang="en"' \
-                         ' and @href="http://pageflow.example.com/en/story-one"]]/loc',
+          .to have_xpath('//urlset/url[*[@rel="alternate" and @hreflang="en" ' \
+                         'and @href="http://pageflow.example.com/en/story-one"]]/loc',
                          text: 'http://pageflow.example.com/de/erster-beitrag')
       end
 

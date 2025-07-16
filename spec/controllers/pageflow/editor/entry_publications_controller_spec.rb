@@ -136,7 +136,7 @@ module Pageflow
           expect(response.status).to eq(403)
         end
 
-        it 'responds with success if :published_entries quota is exhausted but would not be '\
+        it 'responds with success if :published_entries quota is exhausted but would not be ' \
            'exceeded ' do
           user = create(:user)
           entry = create(:entry, with_publisher: user)

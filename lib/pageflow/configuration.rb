@@ -518,7 +518,7 @@ module Pageflow
 
       @site_request_scope = CnameSiteRequestScope.new
       @public_entry_request_scope = ->(entries, _request) { entries }
-      @public_entry_redirect = ->(_entry, _request) { nil }
+      @public_entry_redirect = ->(_entry, _request) {}
       @additional_public_entry_headers = AdditionalHeaders.new
       @entry_embed_url_options = {protocol: 'https'}
       @cutoff_modes = CutoffModes.new
@@ -703,11 +703,11 @@ module Pageflow
         @entry_type_config = config.get_entry_type_config(entry_type)
       end
 
-      def method_missing(method, *args)
+      def method_missing(method, *)
         if @config.respond_to?(method)
-          @config.send(method, *args)
+          @config.send(method, *)
         elsif @entry_type_config.respond_to?(method)
-          @entry_type_config.send(method, *args)
+          @entry_type_config.send(method, *)
         else
           super
         end

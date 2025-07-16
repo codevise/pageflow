@@ -11,9 +11,9 @@ module Pageflow
       render('pageflow/help_entries/menu', help_entries: config.help_entries)
     end
 
-    def help_entry_li(help_entry, &block)
+    def help_entry_li(help_entry, &)
       css_class = help_entry.children.present? ? 'expandable' : nil
-      content_tag(:li, class: css_class, &block)
+      content_tag(:li, class: css_class, &)
     end
   end
 end

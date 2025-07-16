@@ -7,7 +7,7 @@ module Pageflow
         entry = PublishedEntry.new(create(:entry),
                                    create(:revision))
 
-        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split(' ')
+        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split
 
         expect(css_classes).to include('some_navigation')
       end
@@ -16,7 +16,7 @@ module Pageflow
         entry = PublishedEntry.new(create(:entry),
                                    create(:revision, :with_home_button))
 
-        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split(' ')
+        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split
 
         expect(css_classes).to include('with_home_button')
       end
@@ -25,7 +25,7 @@ module Pageflow
         entry = PublishedEntry.new(create(:entry),
                                    create(:revision, :without_home_button))
 
-        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split(' ')
+        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split
 
         expect(css_classes).not_to include('with_home_button')
       end
@@ -34,7 +34,7 @@ module Pageflow
         entry = PublishedEntry.new(create(:entry),
                                    create(:revision, :with_overview_button))
 
-        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split(' ')
+        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split
 
         expect(css_classes).to include('with_overview_button')
       end
@@ -43,7 +43,7 @@ module Pageflow
         entry = PublishedEntry.new(create(:entry),
                                    create(:revision, :without_overview_button))
 
-        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split(' ')
+        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split
 
         expect(css_classes).not_to include('with_overview_button')
       end
@@ -52,7 +52,7 @@ module Pageflow
         entry = DraftEntry.new(create(:entry),
                                create(:revision))
 
-        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split(' ')
+        css_classes = helper.navigation_bar_css_class(entry, class: 'some_navigation').split
 
         expect(css_classes).to include('some_navigation')
       end

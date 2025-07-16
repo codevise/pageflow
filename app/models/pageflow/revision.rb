@@ -145,7 +145,7 @@ module Pageflow
     end
 
     def published?
-      (published_at.present? && Time.now >= published_at) &&
+      published_at.present? && Time.now >= published_at &&
         (published_until.blank? || Time.now < published_until)
     end
 

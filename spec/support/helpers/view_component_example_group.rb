@@ -8,8 +8,8 @@ module ViewComponentExampleGroup
     attr_reader :rendered
   end
 
-  def arbre(&block)
-    Arbre::Context.new({}, _view, &block)
+  def arbre(&)
+    Arbre::Context.new({}, _view, &)
   end
 
   def helper

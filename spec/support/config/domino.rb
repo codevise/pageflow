@@ -1,5 +1,5 @@
 class Domino
-  def self.find!(**options)
-    new(Capybara.current_session.find(@selector, **options))
+  def self.find!(**)
+    new(Capybara.current_session.find(@selector, **))
   end
 end

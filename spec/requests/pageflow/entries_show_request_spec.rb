@@ -299,7 +299,7 @@ module Pageflow
         expect(response.status).to eq(401)
       end
 
-      it 'responds with success for entry published with password when correct password is '\
+      it 'responds with success for entry published with password when correct password is ' \
          'supplied' do
         entry = create(:entry, :published_with_password,
                        type_name: 'test',
@@ -394,7 +394,7 @@ module Pageflow
           entry = create(:entry, :published,
                          type_name: 'test')
 
-          Pageflow.config.public_entry_redirect = ->(_, _) { nil }
+          Pageflow.config.public_entry_redirect = ->(_, _) {}
 
           get(short_entry_url(entry))
 

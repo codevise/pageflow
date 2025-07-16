@@ -27,8 +27,8 @@ module Pageflow
       @default_configurations = {}
     end
 
-    def each(&block)
-      @widget_types.values.each(&block)
+    def each(&)
+      @widget_types.values.each(&)
     end
 
     def find_by_name!(name)
@@ -37,8 +37,8 @@ module Pageflow
       end
     end
 
-    def fetch_by_name(name, &block)
-      @widget_types.fetch(name, &block)
+    def fetch_by_name(name, &)
+      @widget_types.fetch(name, &)
     end
 
     def type_name?(name)

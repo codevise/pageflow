@@ -493,7 +493,7 @@ module PageflowScrolled
 
       context 'content_elements' do
         it 'renders content elements with id, perma_id, type_name, position, section id ' \
-         'and configuration' do
+           'and configuration' do
           entry = create(:published_entry, type_name: 'scrolled')
           chapter = create(:scrolled_chapter, revision: entry.revision)
           section = create(:section, chapter:)
@@ -737,7 +737,7 @@ module PageflowScrolled
 
       it 'renders files' do
         entry = create(:published_entry, type_name: 'scrolled')
-        image_file = create_used_file(:video_file, entry:, output_presences: {'high': true})
+        image_file = create_used_file(:video_file, entry:, output_presences: {high: true})
 
         result = render(helper, entry)
 

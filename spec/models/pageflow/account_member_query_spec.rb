@@ -24,7 +24,7 @@ module Pageflow
           expect(result).to include(user)
         end
 
-        it 'does not include members with account membership with '\
+        it 'does not include members with account membership with ' \
            'insufficient role' do
           user = create(:user)
           account = create(:account, with_member: user)

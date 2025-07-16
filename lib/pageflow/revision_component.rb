@@ -51,17 +51,17 @@ module Pageflow
 
       private
 
-      def with_advisory_lock_for_perma_id_generation!(&block)
-        r = with_advisory_lock_result_for_perma_id_generation(&block)
+      def with_advisory_lock_for_perma_id_generation!(&)
+        r = with_advisory_lock_result_for_perma_id_generation(&)
         raise(PermaIdGenerationAdvisoryLockTimeout) unless r.lock_was_acquired?
 
         r.result
       end
 
-      def with_advisory_lock_result_for_perma_id_generation(&block)
+      def with_advisory_lock_result_for_perma_id_generation(&)
         with_advisory_lock_result("#{table_name}_perma_id",
                                   timeout_seconds: ADVISORY_LOCK_TIMEOUT_SECONDS,
-                                  &block)
+                                  &)
       end
     end
   end

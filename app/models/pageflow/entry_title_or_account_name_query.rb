@@ -19,7 +19,7 @@ module Pageflow
       attr_reader :term, :scope
 
       def word_conditions(term)
-        term.split(' ').map { |word|
+        term.split.map { |word|
           word_condition(word)
         }.join(' AND ')
       end

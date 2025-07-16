@@ -27,8 +27,8 @@ module Pageflow
     #
     # @overload register(feature)
     #   @param feature [String]
-    def register(feature, &block)
-      return register(Feature.new(feature, &block)) if feature.is_a?(String)
+    def register(feature, &)
+      return register(Feature.new(feature, &)) if feature.is_a?(String)
 
       if @features.key?(feature.name)
         raise(ArgumentError, "Feature #{feature.name} is already registered.")
@@ -83,8 +83,8 @@ module Pageflow
       end
     end
 
-    def each(&block)
-      @features.values.each(&block)
+    def each(&)
+      @features.values.each(&)
     end
   end
 end

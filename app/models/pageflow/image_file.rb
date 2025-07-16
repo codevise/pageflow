@@ -14,12 +14,12 @@ module Pageflow
 
     before_attachment_on_s3_post_process :save_image_dimensions
 
-    def thumbnail_url(*args)
+    def thumbnail_url(*)
       unless ready?
-        return Pageflow::PaperclipInterpolations::Support.pageflow_placeholder(attachment, *args)
+        return Pageflow::PaperclipInterpolations::Support.pageflow_placeholder(attachment, *)
       end
 
-      attachment.url(*args)
+      attachment.url(*)
     end
 
     def original_url

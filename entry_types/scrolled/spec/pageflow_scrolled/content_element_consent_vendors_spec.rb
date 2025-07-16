@@ -54,7 +54,7 @@ module PageflowScrolled
       it 'skips content elements that return nil vendor' do
         content_element_consent_vendors = ContentElementConsentVendors.new
         content_element_consent_vendors.register(
-          ->(**) { nil },
+          ->(**) {},
           content_element_type_name: 'someEmbed'
         )
 

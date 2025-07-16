@@ -1,7 +1,7 @@
 AllCops:
   TargetRubyVersion: 3.2
   SuggestExtensions: false
-  NewCops: disable
+  NewCops: enable
   Exclude:
     - '**/spec/dummy/**/*'
     - '**/node_modules/**/*'
@@ -136,7 +136,11 @@ Style/ModuleFunction:
   Enabled: false
 
 # Allow method names like has_text?
-Naming/PredicateName:
+Naming/PredicatePrefix:
+  Enabled: false
+
+# We use methods with side effects that return booleans. Those should not end with ?
+Naming/PredicateMethod:
   Enabled: false
 
 # Especially for respond_to blocks and callbacks a one line proc sometimes read better
@@ -159,3 +163,16 @@ Lint/MissingSuper:
 # Standard identifiers like Creative Commons license names (cc_by_4) should keep their naming
 Naming/VariableNumber:
   Enabled: false
+
+# Do not complain about nested classes at the end of classes with private methods
+Lint/UselessConstantScoping:
+  Enabled: false
+
+# Do not complain about development dependencies
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+# Ignore empty specs and factory traits
+Lint/EmptyBlock:
+  Exclude:
+    - '**/spec/**/*'

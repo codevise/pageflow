@@ -1,9 +1,9 @@
 require 'rake'
 
 module RakeTestHelper
-  def rake(task, *args)
+  def rake(task, *)
     Rake.application.tasks.each(&:reenable)
-    Rake.application[task].invoke(*args)
+    Rake.application[task].invoke(*)
   end
 end
 

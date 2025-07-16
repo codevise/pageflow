@@ -56,7 +56,7 @@ module Pageflow
       {
         'file_name' => "#{file['id']}.png",
         'id' => file['id'],
-        'rights' => (file['photographer']).to_s,
+        'rights' => file['photographer'].to_s,
         'url' => file['url'],
         'content_type' => 'image/png'
       }

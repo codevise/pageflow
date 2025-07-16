@@ -30,7 +30,7 @@ module Pageflow
       describe '#publish' do
         it 'triggers process event' do
           uploadable_file = ProcessedTestUploadableFile.create!(attributes_for(:uploadable_file,
-                                                                                  :uploading))
+                                                                               :uploading))
           uploadable_file.publish!
 
           expect(uploadable_file.reload.state).to eq('processing')

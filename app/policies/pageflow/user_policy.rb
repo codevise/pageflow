@@ -60,7 +60,7 @@ module Pageflow
                          .new(@user, Account).member_addable
       managed_user_accounts = AccountPolicy::Scope
                               .new(@managed_user, Account).resolve
-      (manager_accounts & managed_user_accounts).any?
+      manager_accounts.intersect?(managed_user_accounts)
     end
 
     def redirect_to_user?

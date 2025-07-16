@@ -66,7 +66,7 @@ module Pageflow
     end
 
     def hashify_provider_array(arr)
-      Hash[arr.reject(&:blank?).map { |v| [v.to_s, true] }]
+      arr.reject(&:blank?).to_h { |v| [v.to_s, true] }
     end
   end
 end

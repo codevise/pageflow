@@ -25,7 +25,7 @@ module Pageflow
       end
 
       describe 'nested file that is valid' do
-        it 'returns valid if nested type is registered with parent and among usage entries of '\
+        it 'returns valid if nested type is registered with parent and among usage entries of ' \
            'parent' do
           entry = create(:entry)
           parent_file = create(:video_file, used_in: entry.draft)

@@ -59,7 +59,7 @@ module Pageflow
       @user
         .memberships
         .where(role: Roles.at_least(role))
-        .where('(entity_id = :account_id AND '\
+        .where('(entity_id = :account_id AND ' \
                "entity_type = 'Pageflow::Account')",
                account_id: @account.id)
         .any?

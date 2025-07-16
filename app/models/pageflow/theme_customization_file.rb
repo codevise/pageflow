@@ -40,9 +40,9 @@ module Pageflow
     # A hash of urls based on the styles that were defined when
     # registering the entry type.
     def urls
-      styles_from_options.map { |style, _|
+      styles_from_options.to_h do |style, _|
         [style, attachment.url(style)]
-      }.to_h
+      end
     end
 
     # @api private

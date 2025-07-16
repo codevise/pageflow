@@ -1,8 +1,8 @@
 class ConvertLegacyScrolledContentElementTypes < ActiveRecord::Migration[5.2]
   def up
     lorem_ipsum1 = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam ' \
-                    'nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam ' \
-                    'erat, sed diam voluptua. '
+                   'nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam ' \
+                   'erat, sed diam voluptua. '
 
     lorem_ipsum2 = 'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita ' \
                    'kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. ' \
@@ -15,7 +15,7 @@ class ConvertLegacyScrolledContentElementTypes < ActiveRecord::Migration[5.2]
     lorem_ipsum3 = 'Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ' \
                    'ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero ' \
                    'eos et accusam et justo duo dolores et ea rebum. Stet clita kasd  ' \
-                   'gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. '\
+                   'gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. ' \
                    'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse ' \
                    'molestie consequat, vel illum dolore eu feugiat nulla facilisis at ' \
                    'vero eros et accumsan et iusto odio dignissim qui blandit praesent ' \

@@ -576,7 +576,7 @@ describe Admin::EntriesController do
       get :new
 
       expect(response.body)
-        .to have_selector('select[name="entry[permalink_attributes][directory_id]"] '\
+        .to have_selector('select[name="entry[permalink_attributes][directory_id]"] ' \
                           "option[value='#{permalink_directory.id}']")
       expect(response.body)
         .to have_selector('input[name="entry[permalink_attributes][slug]"]')
@@ -782,7 +782,7 @@ describe Admin::EntriesController do
       expect(Pageflow::Entry.last.custom_field).to eq(nil)
     end
 
-    it "sets the entry revisions locale to the default locale of the sites's "\
+    it "sets the entry revisions locale to the default locale of the sites's " \
        'first paged entry template' do
       user = create(:user, locale: 'en')
       account = create(:account, with_publisher: user)
@@ -1035,7 +1035,7 @@ describe Admin::EntriesController do
       get :edit, params: {id: entry}
 
       expect(response.body)
-        .to have_selector('select[name="entry[permalink_attributes][directory_id]"] '\
+        .to have_selector('select[name="entry[permalink_attributes][directory_id]"] ' \
                           "option[selected][value='#{entry.permalink.directory.id}']")
       expect(response.body)
         .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
@@ -1064,7 +1064,7 @@ describe Admin::EntriesController do
       get :edit, params: {id: entry}
 
       expect(response.body)
-        .to have_selector('select[name="entry[permalink_attributes][directory_id]"] '\
+        .to have_selector('select[name="entry[permalink_attributes][directory_id]"] ' \
                           "option[value='#{permalink_directory.id}']")
       expect(response.body)
         .to have_selector('input[name="entry[permalink_attributes][slug]"]')
@@ -1213,8 +1213,8 @@ describe Admin::EntriesController do
     end
 
     context 'with config.permissions.only_admins_may_update_site' do
-      it 'updates entry site to default site of new account ' \
-         ' when account publisher moves entry to other account' do
+      it 'updates entry site to default site of new account  ' \
+         'when account publisher moves entry to other account' do
         pageflow_configure do |config|
           config.permissions.only_admins_may_update_site = true
         end
@@ -1845,7 +1845,7 @@ describe Admin::EntriesController do
 
       expect(response.body)
         .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
-                         '[data-placeholder="some-title"]')
+                          '[data-placeholder="some-title"]')
     end
 
     it 'renders hidden permalink field without inputs if no permalink directories' do

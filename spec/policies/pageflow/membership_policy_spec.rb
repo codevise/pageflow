@@ -106,7 +106,7 @@ module Pageflow
                 .new(entry_publisher, Membership).indexable).not_to include(membership)
       end
 
-      it 'does not include account memberships for account publisher and entry manager '\
+      it 'does not include account memberships for account publisher and entry manager ' \
          'in spite of correct entry' do
         user = create(:user)
         account = create(:account)

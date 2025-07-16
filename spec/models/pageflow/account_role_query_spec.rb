@@ -94,7 +94,7 @@ module Pageflow
         expect(result).to be false
       end
 
-      it 'returns false if user has entry membership with given role on '\
+      it 'returns false if user has entry membership with given role on ' \
          'account' do
         user = create(:user)
         account = create(:account, with_editor: user)
@@ -106,7 +106,7 @@ module Pageflow
         expect(result).to be false
       end
 
-      it 'returns false if user has account membership with given role on '\
+      it 'returns false if user has account membership with given role on ' \
          'other account' do
         user = create(:user)
         account = create(:account, with_editor: user)

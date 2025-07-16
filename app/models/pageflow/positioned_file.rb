@@ -11,7 +11,7 @@ module Pageflow
     end
 
     def ==(other)
-      super(other) ||
+      super ||
         other == file ||
         (other.is_a?(PositionedFile) && other.file == file) ||
         (other.class == file.class && other.id == file.id)
@@ -34,8 +34,8 @@ module Pageflow
         super(nil)
       end
 
-      def thumbnail_url(*args)
-        ImageFile.new.attachment.url(*args)
+      def thumbnail_url(*)
+        ImageFile.new.attachment.url(*)
       end
 
       def blank?

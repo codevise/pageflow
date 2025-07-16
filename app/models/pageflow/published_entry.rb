@@ -46,8 +46,8 @@ module Pageflow
       revision.cache_key_with_version
     end
 
-    def thumbnail_url(*args)
-      thumbnail_file.thumbnail_url(*args)
+    def thumbnail_url(*)
+      thumbnail_file.thumbnail_url(*)
     end
 
     def thumbnail_file

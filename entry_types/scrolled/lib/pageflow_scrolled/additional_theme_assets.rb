@@ -17,8 +17,8 @@ module PageflowScrolled
     end
 
     # @api private
-    def each(&block)
-      @assets.each(&block)
+    def each(&)
+      @assets.each(&)
     end
 
     # @api private

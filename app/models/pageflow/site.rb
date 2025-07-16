@@ -41,7 +41,9 @@ module Pageflow
     end
 
     def root_entry
-      root_permalink_directory&.permalinks&.find_by_slug('')&.entry
+      return unless root_permalink_directory
+
+      root_permalink_directory.permalinks.find_by_slug('')&.entry
     end
 
     def root_permalink_directory

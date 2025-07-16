@@ -52,7 +52,7 @@ module Pageflow
     # @param [Hash] attributes  further attributes to override defaults
     # @yield [site] a block which is passed the newly built site
     # @return [Site] newly built site
-    def build_default_site_for(account, attributes = {}, &block)
+    def build_default_site_for(account, attributes = {}, &)
       default_attributes = {
         imprint_link_label: 'Impressum',
         imprint_link_url: 'http://example.com/impressum.html',
@@ -60,7 +60,7 @@ module Pageflow
         copyright_link_url: 'http://www.example.com/copyright.html'
       }
 
-      account.build_default_site(default_attributes.merge(attributes), &block)
+      account.build_default_site(default_attributes.merge(attributes), &)
     end
 
     # Create a {User} if none with the given email exists yet.

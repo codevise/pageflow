@@ -23,7 +23,7 @@ module Pageflow
       output_presences[type.to_s]
     end
 
-    def output_presences=(presences) # rubocop:todo Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    def output_presences=(presences)
       boolean_presences = presences.stringify_keys.each_with_object({}) do |(key, value), result|
         if value == true || value == STATE_MAPPING[true]
           result[key] = true
@@ -36,7 +36,7 @@ module Pageflow
 
       self[:output_presences] = output_presences
                                 .merge(boolean_presences)
-                                .reject { |_key, value| value.nil? }
+                                .compact
     end
 
     def output_presences
@@ -55,7 +55,7 @@ module Pageflow
         [label.to_s, true]
       end
 
-      Hash[pairs]
+      pairs.to_h
     end
   end
 end

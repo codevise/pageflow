@@ -23,7 +23,7 @@ module Pageflow
                           output_presences: {high: true},
                           poster_file_name: 'poster-0.jpg',
                           rights: 'some author',
-                          duration_in_ms: (3 * 60 + 43) * 1000 + 120)
+                          duration_in_ms: (((3 * 60) + 43) * 1000) + 120)
 
       file_usage = revision.file_usages.first
 

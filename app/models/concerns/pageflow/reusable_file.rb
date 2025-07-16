@@ -33,7 +33,7 @@ module Pageflow
       models_of_nested_file_types = file_type_of_parent.nested_file_types.map(&:model)
       return if models_of_nested_file_types.include?(self.class)
 
-      errors.add(:base, 'File type of provided parent file does not permit nesting files of '\
+      errors.add(:base, 'File type of provided parent file does not permit nesting files of ' \
                         "type #{self.class.name}")
     end
 
@@ -48,7 +48,7 @@ module Pageflow
       model_table_name = model.table_name
       model
         .select("#{model_table_name}.*")
-        .where("#{model_table_name}.parent_file_id = #{id} AND "\
+        .where("#{model_table_name}.parent_file_id = #{id} AND " \
                "#{model_table_name}.parent_file_model_type = '#{self.class.name}'")
     end
 

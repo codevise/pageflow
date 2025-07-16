@@ -28,11 +28,11 @@ module Pageflow
               sanitize_sql_array(
                 [
                   'LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
-                    'pageflow_memberships_2.user_id = :user_id AND ' \
-                    'pageflow_memberships_2.entity_type = \'Pageflow::Account\' AND ' \
-                    'pageflow_memberships_2.entity_id = pageflow_accounts.id AND ' \
-                    'pageflow_memberships_2.role IN (\'previewer\', ' \
-                    "\'editor\', \'publisher\', \'manager\')",
+                  'pageflow_memberships_2.user_id = :user_id AND ' \
+                  'pageflow_memberships_2.entity_type = \'Pageflow::Account\' AND ' \
+                  'pageflow_memberships_2.entity_id = pageflow_accounts.id AND ' \
+                  'pageflow_memberships_2.role IN (\'previewer\', ' \
+                  "'editor', 'publisher', 'manager')",
                   {user_id: user.id}
                 ]
               )

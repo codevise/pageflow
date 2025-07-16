@@ -14,7 +14,7 @@ module Pageflow
       end
 
       def class_basename(attachment, _style)
-        attachment \
+        attachment
           .instance
           .class
           .name

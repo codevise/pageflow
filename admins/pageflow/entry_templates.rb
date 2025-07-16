@@ -59,8 +59,8 @@ module Pageflow
       private
 
       def page_title(rest_verb, entry_type_name)
-        "#{I18n.t("pageflow.admin.entry_templates.page_title.#{rest_verb}")} "\
-        "#{I18n.t("activerecord.values.pageflow/entry.type_names.#{entry_type_name}")}"
+        "#{I18n.t("pageflow.admin.entry_templates.page_title.#{rest_verb}")} " \
+          "#{I18n.t("activerecord.values.pageflow/entry.type_names.#{entry_type_name}")}"
       end
 
       def permitted_params
@@ -130,7 +130,7 @@ module Pageflow
       end
 
       def widgets_params
-        (params[:widgets].try(:permit!).to_h || {}).map do |role, type_name|
+        params[:widgets].try(:permit!).to_h.map do |role, type_name|
           {role:, type_name:}
         end
       end

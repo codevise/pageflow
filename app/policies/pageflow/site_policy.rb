@@ -14,7 +14,7 @@ module Pageflow
         if user.admin?
           scope.all
         else
-          accounts_ids = accounts.try(:id) || accounts.try(:length) && accounts.map(&:id)
+          accounts_ids = accounts.try(:id) || (accounts.try(:length) && accounts.map(&:id))
           scope.joins(publisher_memberships_for_accounts(user, accounts_ids))
                .where(membership_is_present)
         end

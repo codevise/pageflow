@@ -129,8 +129,8 @@ module Pageflow
 
     collection_action 'delete_me',
                       title: I18n.t('pageflow.admin.users.account'), method: [:get, :delete] do
-      if request.delete? && (authorized?(:delete_own_user, current_user) &&
-           current_user.destroy_with_password(params.require(:user)[:current_password]))
+      if request.delete? && authorized?(:delete_own_user, current_user) &&
+         current_user.destroy_with_password(params.require(:user)[:current_password])
         redirect_to admin_root_path, notice: I18n.t('pageflow.admin.users.me.updated')
       end
     end

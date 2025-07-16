@@ -106,8 +106,8 @@ module Pageflow
                                hero ? :link_thumbnail_large : :link_thumbnail)
     end
 
-    def page_thumbnail_url(page, *args)
-      page_thumbnail_file(page).thumbnail_url(*args)
+    def page_thumbnail_url(page, *)
+      page_thumbnail_file(page).thumbnail_url(*)
     end
 
     def page_thumbnail_file(page)

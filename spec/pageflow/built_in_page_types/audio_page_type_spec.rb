@@ -19,7 +19,7 @@ module Pageflow
                           with_configuration: {alt: 'some alt text'},
                           created_at: upload_date,
                           rights: 'some author',
-                          duration_in_ms: (3 * 60 + 43) * 1000 + 120)
+                          duration_in_ms: (((3 * 60) + 43) * 1000) + 120)
 
       file_usage = revision.file_usages.first
 

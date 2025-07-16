@@ -94,7 +94,7 @@ module Pageflow
       def inline_style
         if options[:spanning]
           "padding-top: #{padding_top}%; width: 100%; " \
-          'background-position: 0 0' # fix me (yet disables background_position option)
+            'background-position: 0 0' # fix me (yet disables background_position option)
         else
           super
         end

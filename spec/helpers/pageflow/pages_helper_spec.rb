@@ -56,7 +56,7 @@ module Pageflow
       it 'contains invert class if invert configuration option is present' do
         page = build(:page, configuration: {'invert' => true})
 
-        css_classes = helper.page_css_class(page).split(' ')
+        css_classes = helper.page_css_class(page).split
 
         expect(css_classes).to include('page')
         expect(css_classes).to include('invert')
@@ -65,7 +65,7 @@ module Pageflow
       it 'contains invert class if hide_title configuration option is present' do
         page = build(:page, configuration: {'hide_title' => true})
 
-        css_classes = helper.page_css_class(page).split(' ')
+        css_classes = helper.page_css_class(page).split
 
         expect(css_classes).to include('page')
         expect(css_classes).to include('hide_title')
@@ -74,7 +74,7 @@ module Pageflow
       it 'contains text_position_right class if text_position is right' do
         page = build(:page, configuration: {'text_position' => 'right'})
 
-        css_classes = helper.page_css_class(page).split(' ')
+        css_classes = helper.page_css_class(page).split
 
         expect(css_classes).to include('page')
         expect(css_classes).to include('text_position_right')
@@ -83,7 +83,7 @@ module Pageflow
       it 'does not contain first_page class by default' do
         page = build(:page)
 
-        css_classes = helper.page_css_class(page).split(' ')
+        css_classes = helper.page_css_class(page).split
 
         expect(css_classes).not_to include('first_page')
       end
@@ -91,7 +91,7 @@ module Pageflow
       it 'contains first_page class if page has is_first attribute set' do
         page = build(:page, is_first: true)
 
-        css_classes = helper.page_css_class(page).split(' ')
+        css_classes = helper.page_css_class(page).split
 
         expect(css_classes).to include('first_page')
       end

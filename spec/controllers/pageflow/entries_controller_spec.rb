@@ -19,7 +19,7 @@ module Pageflow
           TestEntryType.register(config,
                                  name: 'test',
                                  web_app_manifest: lambda do |entry|
-                                   {"name": entry.title}.to_json
+                                   {name: entry.title}.to_json
                                  end)
         end
 

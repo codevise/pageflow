@@ -34,9 +34,9 @@ module Pageflow
       can :create, Membership, Membership.all do |membership|
         membership.entity.nil? ||
           membership.user.nil? ||
-          !(membership.user.entries.include?(membership.entity) ||
+          (!(membership.user.entries.include?(membership.entity) ||
              membership.user.accounts.include?(membership.entity)) &&
-            MembershipPolicy.new(user, membership).create?
+            MembershipPolicy.new(user, membership).create?)
       end
 
       can :index, Membership, MembershipPolicy::Scope.new(user, Membership).indexable

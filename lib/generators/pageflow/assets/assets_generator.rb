@@ -29,8 +29,8 @@ module Pageflow
       def initialize_on_precompile
         inject_into_file 'config/application.rb',
                          after: "class Application < Rails::Application\n" do
-          "    # required for i18n-js gem\n" \
-            "    config.assets.initialize_on_precompile = true\n\n"
+          "    # required for i18n-js gem\n    " \
+            "config.assets.initialize_on_precompile = true\n\n"
         end
       end
     end

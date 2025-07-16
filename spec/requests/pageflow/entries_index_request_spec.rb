@@ -179,7 +179,7 @@ module Pageflow
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
 
-          Pageflow.config.public_entry_redirect = ->(_, _) { nil }
+          Pageflow.config.public_entry_redirect = ->(_, _) {}
 
           get('http://pageflow.example.com/')
 

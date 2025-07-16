@@ -35,7 +35,7 @@ require 'pageflow/rails_version'
 
 if Gem::Specification.find_all_by_name('pageflow-react', '>= 0.0').any?
   raise('The pageflow-react gem has been merged into the pageflow gem. ' \
-       'See the pageflow changelog for update instructions.')
+        'See the pageflow changelog for update instructions.')
 end
 
 module Pageflow

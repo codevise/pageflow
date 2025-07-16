@@ -34,8 +34,8 @@ module Pageflow
       }.flatten
     end
 
-    def each(&block)
-      @help_entries.each(&block)
+    def each(&)
+      @help_entries.each(&)
     end
 
     private
