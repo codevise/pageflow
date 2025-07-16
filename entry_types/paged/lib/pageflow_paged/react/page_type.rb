@@ -1,6 +1,6 @@
 module PageflowPaged
   module React
-    class PageType < Pageflow::PageType
+    class PageType < Pageflow::PageType # rubocop:todo Style/Documentation
       attr_reader :name, :component_name, :file_types
 
       def initialize(name, options)

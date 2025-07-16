@@ -4,8 +4,8 @@ feature 'as visitor, reading entry' do
   scenario 'visitor sees pages of entry' do
     entry = create(:entry, :published)
     storyline = create(:storyline, revision: entry.published_revision)
-    chapter = create(:chapter, storyline: storyline)
-    page = create(:page, chapter: chapter, template: 'background_image')
+    chapter = create(:chapter, storyline:)
+    page = create(:page, chapter:, template: 'background_image')
 
     visit(pageflow.entry_path(page.chapter.entry))
 
@@ -28,13 +28,13 @@ feature 'as visitor, reading entry' do
   scenario 'can change pages', js: true do
     entry = create(:entry, :published)
     storyline = create(:storyline, revision: entry.published_revision)
-    chapter = create(:chapter, storyline: storyline)
+    chapter = create(:chapter, storyline:)
     create(:page,
-           chapter: chapter,
+           chapter:,
            template: 'background_image',
            configuration: {title: 'Page one'})
     create(:page,
-           chapter: chapter,
+           chapter:,
            template: 'video',
            configuration: {title: 'Page two'})
 
@@ -55,15 +55,15 @@ feature 'as visitor, reading entry' do
                      features_configuration: {'emphasize_new_pages' => true})
     entry = create(:entry,
                    :published,
-                   account: account,
+                   account:,
                    published_revision_attributes: {
                      configuration: {
                        emphasize_new_pages: true
                      }
                    })
     storyline = create(:storyline, revision: entry.published_revision)
-    chapter = create(:chapter, storyline: storyline)
-    create(:page, chapter: chapter, template: 'background_image')
+    chapter = create(:chapter, storyline:)
+    create(:page, chapter:, template: 'background_image')
     create(:widget, subject: entry.published_revision, type_name: 'cookie_notice_bar')
 
     visit(pageflow.entry_path(entry))

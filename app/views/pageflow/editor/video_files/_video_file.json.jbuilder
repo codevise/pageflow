@@ -12,6 +12,4 @@ if video_file.state == 'encoded'
   end
 end
 
-if video_file.poster.present?
-  json.poster_url(video_file.poster.url(:large))
-end
+json.poster_url(video_file.poster.url(:large)) if video_file.poster.present?

@@ -3,7 +3,7 @@ require 'pageflow/global_config_api'
 require 'pageflow/news_item_api'
 require 'pageflow/version'
 
-module Pageflow
+module Pageflow # rubocop:todo Style/Documentation
   extend GlobalConfigApi
   extend NewsItemApi
 
@@ -29,7 +29,12 @@ module Pageflow
 
   def self.active_admin_settings(config)
     config.before_action do
-      I18n.locale = current_user.try(:locale) || http_accept_language.compatible_language_from(I18n.available_locales) || I18n.default_locale
+      I18n.locale =
+        current_user.try(:locale) ||
+        http_accept_language.compatible_language_from(
+          I18n.available_locales
+        ) ||
+        I18n.default_locale
     end
   end
 

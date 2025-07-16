@@ -123,11 +123,11 @@ module Pageflow
       @css_background_image_class_prefix || model.model_name.singular
     end
 
-    def css_background_image_urls_for(file, **options)
+    def css_background_image_urls_for(file, **)
       if call_arity(css_background_image_urls) == 1
         css_background_image_urls.call(file)
       else
-        css_background_image_urls.call(file, **options)
+        css_background_image_urls.call(file, **)
       end
     end
 
@@ -137,7 +137,7 @@ module Pageflow
     end
 
     # @api private
-    alias_method :short_name, :param_key
+    alias short_name param_key
 
     # @api private
     def type_name

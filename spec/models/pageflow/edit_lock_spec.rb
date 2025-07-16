@@ -25,7 +25,7 @@ module Pageflow
           current_user = create(:user)
           other_user = create(:user)
           entry = create(:entry)
-          edit_lock = create(:edit_lock, user: other_user, entry: entry)
+          edit_lock = create(:edit_lock, user: other_user, entry:)
 
           edit_lock.acquire(current_user, force: true)
 
@@ -36,7 +36,7 @@ module Pageflow
           current_user = create(:user)
           other_user = create(:user)
           entry = create(:entry)
-          edit_lock = create(:edit_lock, user: other_user, entry: entry)
+          edit_lock = create(:edit_lock, user: other_user, entry:)
 
           Timecop.freeze(Time.now + EditLock.time_to_live + 1.minute)
           edit_lock.acquire(current_user)
@@ -67,7 +67,7 @@ module Pageflow
         it 'can be acquired with force option' do
           current_user = create(:user)
           entry = create(:entry)
-          edit_lock = create(:edit_lock, user: current_user, entry: entry)
+          edit_lock = create(:edit_lock, user: current_user, entry:)
 
           edit_lock.acquire(current_user, id: 'other_id', force: true)
 
@@ -77,7 +77,7 @@ module Pageflow
         it 'can be acquired if timed out' do
           current_user = create(:user)
           entry = create(:entry)
-          edit_lock = create(:edit_lock, user: current_user, entry: entry)
+          edit_lock = create(:edit_lock, user: current_user, entry:)
 
           Timecop.freeze(Time.now + EditLock.time_to_live + 1.minute)
           edit_lock.acquire(current_user, id: 'other_id')
@@ -90,7 +90,7 @@ module Pageflow
         it 'returns quietly' do
           current_user = create(:user)
           entry = create(:entry)
-          edit_lock = create(:edit_lock, user: current_user, entry: entry)
+          edit_lock = create(:edit_lock, user: current_user, entry:)
 
           expect {
             edit_lock.acquire(current_user, id: edit_lock.id)
@@ -100,7 +100,7 @@ module Pageflow
         it 'does not create new lock even with force option' do
           current_user = create(:user)
           entry = create(:entry)
-          edit_lock = create(:edit_lock, user: current_user, entry: entry)
+          edit_lock = create(:edit_lock, user: current_user, entry:)
 
           edit_lock.acquire(current_user, id: edit_lock.id, force: true)
 
@@ -110,7 +110,7 @@ module Pageflow
         it 'deferres time out' do
           current_user = create(:user)
           entry = create(:entry)
-          edit_lock = create(:edit_lock, user: current_user, entry: entry)
+          edit_lock = create(:edit_lock, user: current_user, entry:)
 
           Timecop.freeze(Time.now + EditLock.time_to_live + 1.minute)
           edit_lock.acquire(current_user, id: edit_lock.id)
@@ -173,7 +173,7 @@ module Pageflow
         it 'returns quietly' do
           current_user = create(:user)
           entry = create(:entry)
-          edit_lock = create(:edit_lock, user: current_user, entry: entry)
+          edit_lock = create(:edit_lock, user: current_user, entry:)
 
           expect {
             edit_lock.verify!(current_user, id: edit_lock.id)

@@ -18,31 +18,31 @@ module Pageflow
 
       trait :member do
         after(:create) do |user, evaluator|
-          create(:membership, user: user, entity: evaluator.on, role: :member)
+          create(:membership, user:, entity: evaluator.on, role: :member)
         end
       end
 
       trait :previewer do
         after(:create) do |user, evaluator|
-          create(:membership, user: user, entity: evaluator.on, role: :previewer)
+          create(:membership, user:, entity: evaluator.on, role: :previewer)
         end
       end
 
       trait :editor do
         after(:create) do |user, evaluator|
-          create(:membership, user: user, entity: evaluator.on, role: :editor)
+          create(:membership, user:, entity: evaluator.on, role: :editor)
         end
       end
 
       trait :publisher do
         after(:create) do |user, evaluator|
-          create(:membership, user: user, entity: evaluator.on, role: :publisher)
+          create(:membership, user:, entity: evaluator.on, role: :publisher)
         end
       end
 
       trait :manager do
         after(:create) do |user, evaluator|
-          create(:membership, user: user, entity: evaluator.on, role: :manager)
+          create(:membership, user:, entity: evaluator.on, role: :manager)
         end
       end
 
@@ -50,7 +50,7 @@ module Pageflow
         admin { true }
         after(:create) do |user, evaluator|
           create(:membership,
-                 user: user,
+                 user:,
                  role: :member,
                  entity: evaluator.on || create(:account))
         end

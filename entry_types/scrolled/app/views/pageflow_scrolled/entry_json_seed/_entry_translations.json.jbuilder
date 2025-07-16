@@ -1,5 +1,7 @@
 json.entry_translations do
-  json.array!(entry.translations(-> { preload(:site, :account) }, include_noindex: true)) do |translation|
+  json.array!(entry.translations(lambda {
+                                   preload(:site, :account)
+                                 }, include_noindex: true)) do |translation|
     json.(translation, :id, :locale)
     json.display_locale public_locale_name_for(translation.locale)
 

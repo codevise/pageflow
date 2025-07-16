@@ -5,7 +5,7 @@ module Pageflow
     it_behaves_like 'a membership-based permission that',
                     allows: :publisher,
                     but_forbids: :editor,
-                    of_account: -> (topic) { topic.account },
+                    of_account: ->(topic) { topic.account },
                     to: :manage,
                     topic: -> { create(:folder) }
   end
@@ -68,7 +68,7 @@ module Pageflow
     it 'includes folders containing an entry of the user' do
       folder = create(:folder)
       user = create(:user)
-      create(:entry, with_previewer: user, folder: folder, account: folder.account)
+      create(:entry, with_previewer: user, folder:, account: folder.account)
 
       expect(FolderPolicy::Scope.new(user, Folder).resolve).to include(folder)
     end
@@ -76,7 +76,7 @@ module Pageflow
     it 'includes folders on the accounts of which the user is publisher' do
       user = create(:user)
       account = create(:account, with_publisher: user)
-      folder = create(:folder, account: account)
+      folder = create(:folder, account:)
 
       expect(FolderPolicy::Scope.new(user, Folder).resolve).to include(folder)
     end
@@ -85,7 +85,7 @@ module Pageflow
        'account previewer' do
       user = create(:user)
       account = create(:account)
-      folder = create(:folder, account: account)
+      folder = create(:folder, account:)
 
       expect(FolderPolicy::Scope.new(user, Folder).resolve).not_to include(folder)
     end

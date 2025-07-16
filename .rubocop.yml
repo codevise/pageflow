@@ -1,5 +1,10 @@
 AllCops:
   TargetRubyVersion: 3.2
+  SuggestExtensions: false
+  NewCops: enable
+  Exclude:
+    - '**/spec/dummy/**/*'
+    - '**/node_modules/**/*'
 
 # Use double quotes only for interpolation.
 Style/StringLiterals:
@@ -29,33 +34,82 @@ Style/FrozenStringLiteralComment:
 Style/LambdaCall:
   Enabled: false
 
-# Do not use %i for symbol arrays
-Style/SymbolArray:
-  EnforcedStyle: brackets
-
 # In specs methods using RSpec DSL often become complex
 Metrics/AbcSize:
+  Max: 20
   Exclude:
+    - '**/app/views/components/**/*.rb'
+    - '**/db/migrate/**/*.rb'
+    - '**/plugin.rb'
+    - '**/spec/**/*'
+    - '**/seeds.rb'
+    - 'lib/pageflow/ability_mixin.rb'
+    - 'lib/pageflow/configuration.rb'
+    - 'lib/pageflow/zencoder_video_output_definition.rb'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - '**/app/views/components/**/*.rb'
+    - '**/seeds.rb'
+    - 'lib/pageflow/ability_mixin.rb'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - '**/app/views/components/**/*.rb'
+    - '**/seeds.rb'
+    - 'lib/pageflow/ability_mixin.rb'
+
+# Certain files are long.
+Metrics/ClassLength:
+  Max: 200
+  Exclude:
+    - 'lib/pageflow/configuration.rb'
+    - 'lib/pageflow/zencoder_video_output_definition.rb'
+
+# Long spec and DSL files are ok. Ignore some historically long helpers.
+Metrics/ModuleLength:
+  Exclude:
+    - 'admins/**/*.rb'
+    - 'app/helpers/pageflow/entries_helper.rb'
+    - 'app/helpers/pageflow/video_files_helper.rb'
+    - '**/seeds.rb'
+    - '**/ability_mixin.rb'
     - '**/spec/**/*'
 
-# Ignore long RSpec and ActiveAdmin blocks
+# Ignore DSLs
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'feature', 'it', 'namespace']
-  Exclude:
-    - '**/spec/factories/*.rb'
-    - '**/admins/pageflow/*.rb'
-
-# In specs methods using RSpec DSL often become long
-Metrics/MethodLength:
+  AllowedMethods:
+    - namespace
+    - included
+    - for_entry_type
+    - configure
+    - processing_state_machine
   CountAsOne:
     - method_call
   Exclude:
-    - '**/app/views/components/**/*'
-    - '**/spec/**/*'
+    - '**/*.arb'
+    - '**/*.gemspec'
+    - '**/*.jbuilder'
+    - '**/seeds.rb'
+    - '**/admins/pageflow/*.rb'
+    - '**/app/views/components/**/*.rb'
+    - '**/config/**/*.rb'
+    - '**/spec/**/*.rb'
 
-# Long spec files are ok
-Metrics/ModuleLength:
+# Ignore DSLs. Slightly longer methods are ok
+Metrics/MethodLength:
+  Max: 20
+  CountAsOne:
+    - array
+    - hash
+    - method_call
   Exclude:
+    - 'lib/pageflow/ability_mixin.rb'
+    - 'lib/pageflow/configuration.rb'
+    - '**/plugin.rb'
+    - '**/app/views/components/**/*'
+    - '**/db/migrate/**/*'
+    - '**/seeds.rb'
     - '**/spec/**/*'
 
 Metrics/ParameterLists:
@@ -66,6 +120,7 @@ Style/Documentation:
   Exclude:
     - admins/**/*
     - '**/spec/**/*'
+    - '**/generators/**/templates/*.rb'
     - db/migrate/*
 
 # Both ['...'] and %w(...) are fine
@@ -81,5 +136,43 @@ Style/ModuleFunction:
   Enabled: false
 
 # Allow method names like has_text?
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Enabled: false
+
+# We use methods with side effects that return booleans. Those should not end with ?
+Naming/PredicateMethod:
+  Enabled: false
+
+# Especially for respond_to blocks and callbacks a one line proc sometimes read better
+Style/SymbolProc:
+  Enabled: false
+
+# Comparing with 0 is fine
+Style/NumericPredicate:
+  Enabled: false
+
+# !! is fine
+Style/DoubleNegation:
+  Enabled: false
+
+# Many policy and query classes inherit from base classes but don't need to call super
+# in their initialize methods as they handle initialization differently
+Lint/MissingSuper:
+  Enabled: false
+
+# Standard identifiers like Creative Commons license names (cc_by_4) should keep their naming
+Naming/VariableNumber:
+  Enabled: false
+
+# Do not complain about nested classes at the end of classes with private methods
+Lint/UselessConstantScoping:
+  Enabled: false
+
+# Do not complain about development dependencies
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+# Ignore empty specs and factory traits
+Lint/EmptyBlock:
+  Exclude:
+    - '**/spec/**/*'

@@ -6,13 +6,13 @@ module Pageflow
       describe 'downloads' do
         render_views
 
-        %w(csv json xml).each do |format|
+        %w[csv json xml].each do |format|
           describe "with #{format} format" do
             it 'does not include sensitive data' do
               user = create(:user, :admin)
 
               sign_in(user, scope: :user)
-              get(:index, format: format)
+              get(:index, format:)
 
               expect(response.body).not_to include('password')
               expect(response.body).not_to include(user.encrypted_password)
@@ -211,7 +211,7 @@ module Pageflow
                    }
                  }
                })
-        }.to change { User.count }
+        }.to(change { User.count })
       end
 
       it 'allows account managers to create user in account with manager role' do
@@ -231,7 +231,7 @@ module Pageflow
                    }
                  }
                })
-        }.to change { account_members.with_role_at_least(:manager).count }
+        }.to(change { account_members.with_role_at_least(:manager).count })
       end
 
       it 'create membership in account if user with email already exisits' do
@@ -252,7 +252,7 @@ module Pageflow
                    }
                  }
                })
-        }.to change { account.users.count }
+        }.to(change { account.users.count })
       end
 
       it 'invokes user_changed hook ' do
@@ -294,7 +294,7 @@ module Pageflow
                    }
                  }
                })
-        }.not_to change { Membership.count }
+        }.not_to(change { Membership.count })
 
         expect(response).to have_http_status(422)
         expect(response.body).to include(I18n.t('pageflow.admin.users.member_exists'))
@@ -316,7 +316,7 @@ module Pageflow
                    }
                  }
                })
-        }.not_to change { User.count }
+        }.not_to(change { User.count })
 
         expect(response).to have_http_status(422)
       end
@@ -337,7 +337,7 @@ module Pageflow
                    }
                  }
                })
-        }.not_to change { User.count }
+        }.not_to(change { User.count })
 
         expect(response).to have_http_status(422)
       end
@@ -359,7 +359,7 @@ module Pageflow
                    }
                  }
                })
-        }.not_to change { User.admins.count }
+        }.not_to(change { User.admins.count })
       end
 
       it 'allows admins to create admins' do
@@ -379,7 +379,7 @@ module Pageflow
                    }
                  }
                })
-        }.to change { User.admins.count }
+        }.to(change { User.admins.count })
       end
 
       it 'does not allow account manager to create users for off-limits account' do
@@ -399,7 +399,7 @@ module Pageflow
                    }
                  }
                })
-        }.to_not change { other_account.users.count }
+        }.to_not(change { other_account.users.count })
       end
 
       context 'when users quota is exhausted' do
@@ -421,7 +421,7 @@ module Pageflow
                      }
                    }
                  })
-          }.not_to change { User.count }
+          }.not_to(change { User.count })
         end
 
         it 'does not create membership for existing user' do
@@ -444,7 +444,7 @@ module Pageflow
                      }
                    }
                  })
-          }.not_to change { account.users.count }
+          }.not_to(change { account.users.count })
         end
 
         it 'redirects with flash' do
@@ -490,7 +490,7 @@ module Pageflow
                      }
                    }
                  })
-          }.to change { account.users.count }
+          }.to(change { account.users.count })
         end
 
         it 'does not allow to add existing users to another account' do
@@ -515,7 +515,7 @@ module Pageflow
                      }
                    }
                  })
-          }.not_to change { account.users.count }
+          }.not_to(change { account.users.count })
 
           expect(response).to have_http_status(422)
         end
@@ -865,14 +865,14 @@ module Pageflow
       it 'allows to destroy the user by default' do
         sign_in(create(:user, password: '@qwert123'))
 
-        expect do
+        expect {
           delete(:delete_me, params: {user: {current_password: '@qwert123'}})
-        end.to change { User.count }
+        }.to(change { User.count })
       end
 
       it 'does not allow to destroy the user when authorize_user_deletion non-true' do
         user = create(:user, password: '@qwert123')
-        create(:membership, user: user, entity: create(:account))
+        create(:membership, user:, entity: create(:account))
         sign_in(user, scope: :user)
         Pageflow.config.authorize_user_deletion =
           lambda do |user_to_delete|
@@ -883,9 +883,9 @@ module Pageflow
             end
           end
 
-        expect do
+        expect {
           delete(:delete_me, params: {user: {current_password: '@qwert123'}})
-        end.not_to change { User.count }
+        }.not_to(change { User.count })
       end
     end
   end

@@ -1,5 +1,5 @@
 module Pageflow
-  class OverviewButton
+  class OverviewButton # rubocop:todo Style/Documentation
     attr_reader :revision
 
     def initialize(revision)

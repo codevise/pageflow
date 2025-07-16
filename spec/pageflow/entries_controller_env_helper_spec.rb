@@ -7,7 +7,7 @@ module Pageflow
         env = {}
         entry = build(:entry)
 
-        EntriesControllerEnvHelper.add_entry_info_to_env(env, entry: entry)
+        EntriesControllerEnvHelper.add_entry_info_to_env(env, entry:)
         result = EntriesControllerEnvHelper.get_published_entry_from_env(env)
 
         expect(result).to eq(entry)
@@ -25,7 +25,7 @@ module Pageflow
         env = {}
         entry = build(:entry)
 
-        EntriesControllerEnvHelper.add_entry_info_to_env(env, entry: entry, mode: :preview)
+        EntriesControllerEnvHelper.add_entry_info_to_env(env, entry:, mode: :preview)
         result = EntriesControllerEnvHelper.get_entry_mode_from_env(env)
 
         expect(result).to eq(:preview)

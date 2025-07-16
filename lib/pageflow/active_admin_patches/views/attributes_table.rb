@@ -1,6 +1,7 @@
 module Pageflow
   module ActiveAdminPatches
     module Views
+      # @api private
       module AttributesTable
         def boolean_status_tag_row(name, yes_state = :warning)
           status_tag_row(name,

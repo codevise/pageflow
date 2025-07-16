@@ -86,7 +86,7 @@ module Pageflow
         it 'requires user to be signed in' do
           user = create(:user, :admin)
           entry = create(:entry)
-          create(:membership, user: user, entity: entry.account, role: :manager)
+          create(:membership, user:, entity: entry.account, role: :manager)
 
           get(:index, params: {collection_name: 'entries', subject_id: entry.id}, format: 'json')
 
@@ -207,7 +207,7 @@ module Pageflow
         it 'allows account editor to edit entries of own account' do
           user = create(:user)
           account = create(:account, with_editor: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           sign_in(user, scope: :user)
           patch(:batch,

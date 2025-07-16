@@ -1,5 +1,5 @@
 module Pageflow
-  module BackgroundImageHelper
+  module BackgroundImageHelper # rubocop:todo Style/Documentation
     include RevisionFileHelper
 
     def background_image_div(configuration, property_base_name, options = {})
@@ -24,7 +24,7 @@ module Pageflow
       ".load_all_images .#{css_class}, .load_image.#{css_class}"
     end
 
-    class Div
+    class Div # rubocop:todo Style/Documentation
       attr_reader :configuration, :property_base_name, :options
 
       delegate :content_tag, to: :@template
@@ -71,7 +71,7 @@ module Pageflow
 
       def background_position(coord)
         property_name = "#{property_base_name}_#{coord}"
-        configuration.key?(property_name) ? "#{configuration[property_name]}%" : "50%"
+        configuration.key?(property_name) ? "#{configuration[property_name]}%" : '50%'
       end
 
       def file_type
@@ -80,7 +80,7 @@ module Pageflow
       end
     end
 
-    class DivWithSizeAttributes < Div
+    class DivWithSizeAttributes < Div # rubocop:todo Style/Documentation
       include RevisionFileHelper
 
       def data_attributes
@@ -93,7 +93,8 @@ module Pageflow
 
       def inline_style
         if options[:spanning]
-          "padding-top: #{padding_top}%; width: 100%; background-position: 0 0" # fix me (yet disables background_position option)
+          "padding-top: #{padding_top}%; width: 100%; " \
+            'background-position: 0 0' # fix me (yet disables background_position option)
         else
           super
         end
@@ -110,7 +111,7 @@ module Pageflow
       end
 
       def file
-        @file ||= (find_file || :none)
+        @file ||= find_file || :none
         @file == :none ? nil : @file
       end
 

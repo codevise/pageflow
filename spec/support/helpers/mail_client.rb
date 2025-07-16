@@ -3,15 +3,18 @@ class MailClient
 
   class MissingDeliveryError < StandardError
     def initialize(options)
-      super("Expected #{options[:name]} to have been delivered to #{options[:to]}.\n\nOther deliveries:\n#{other_deliveries}")
+      super(
+        "Expected #{options[:name]} to have been delivered to #{options[:to]}." \
+        "\n\nOther deliveries:\n#{other_deliveries}"
+      )
     end
 
     private
 
     def other_deliveries
-      ActionMailer::Base.deliveries.map do |delivery|
+      ActionMailer::Base.deliveries.map { |delivery|
         "- from #{delivery[:from]} to #{delivery[:to]}: #{delivery.subject}\n"
-      end.join
+      }.join
     end
   end
 
@@ -25,7 +28,7 @@ class MailClient
   end
 
   def receive_invitation_link
-    fetch_link_from(invitation_mail) { raise("Expected to find link in invitation mail.") }
+    fetch_link_from(invitation_mail) { raise('Expected to find link in invitation mail.') }
   end
 
   def password_reset_mail
@@ -33,7 +36,7 @@ class MailClient
   end
 
   def receive_password_reset_link
-    fetch_link_from(password_reset_mail) { raise("Expected to find link in password reset mail.") }
+    fetch_link_from(password_reset_mail) { raise('Expected to find link in password reset mail.') }
   end
 
   def self.of(email)
@@ -42,12 +45,12 @@ class MailClient
 
   private
 
-  def delivery_by_subject(subject, &block)
+  def delivery_by_subject(subject)
     deliveries.detect { |delivery| delivery.subject == I18n.t(subject) } ||
-      raise(MissingDeliveryError.new(:name => subject, :to => email))
+      raise(MissingDeliveryError.new(name: subject, to: email))
   end
 
-  def fetch_link_from(mail, &block)
+  def fetch_link_from(mail)
     match = (mail.html_part || mail).body.match(/href="([^"]+)"/)
     (match && match[1]) || yield
   end

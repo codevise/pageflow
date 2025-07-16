@@ -39,7 +39,7 @@ module Pageflow
     it 'responds with forbidden for entry previewer' do
       user = create(:user)
       account = create(:account, with_previewer: user)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       post(:create,
@@ -52,7 +52,7 @@ module Pageflow
     it 'responds with conflict for entry editor without edit lock' do
       user = create(:user)
       account = create(:account, with_editor: user)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       post(:create,
@@ -65,7 +65,7 @@ module Pageflow
     it 'allows skipping the verify_edit_lock before action' do
       user = create(:user)
       account = create(:account, with_editor: user)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       post(:index,
@@ -78,7 +78,7 @@ module Pageflow
     it 'is allowed for entry editor with edit lock' do
       user = create(:user)
       account = create(:account, with_editor: user)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       acquire_edit_lock(user, entry)

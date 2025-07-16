@@ -285,7 +285,7 @@ module Pageflow
       it 'includes entries with membership with correct user and correct account' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).resolve).to include(entry)
       end
@@ -310,7 +310,7 @@ module Pageflow
         user = create(:user)
         account = create(:account)
         create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
       end
@@ -319,7 +319,7 @@ module Pageflow
         user = create(:user)
         other_user = create(:user)
         account = create(:account, with_previewer: other_user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
       end
@@ -342,7 +342,7 @@ module Pageflow
       it 'includes entries with membership with correct user and correct account' do
         user = create(:user)
         account = create(:account, with_editor: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).editor_or_above).to include(entry)
       end
@@ -367,7 +367,7 @@ module Pageflow
         user = create(:user)
         account = create(:account)
         create(:account, with_editor: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).editor_or_above).not_to include(entry)
       end
@@ -376,7 +376,7 @@ module Pageflow
         user = create(:user)
         other_user = create(:user)
         account = create(:account, with_editor: other_user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).editor_or_above).not_to include(entry)
       end
@@ -406,7 +406,7 @@ module Pageflow
       it 'includes entries with membership with correct user and correct account' do
         user = create(:user)
         account = create(:account, with_publisher: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).publisher_or_above).to include(entry)
       end
@@ -431,7 +431,7 @@ module Pageflow
         user = create(:user)
         account = create(:account)
         create(:account, with_publisher: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).publisher_or_above).not_to include(entry)
       end
@@ -440,7 +440,7 @@ module Pageflow
         user = create(:user)
         other_user = create(:user)
         account = create(:account, with_publisher: other_user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).publisher_or_above).not_to include(entry)
       end
@@ -470,7 +470,7 @@ module Pageflow
       it 'includes entries with membership with correct user and correct account' do
         user = create(:user)
         account = create(:account, with_publisher: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).member_addable).to include(entry)
       end
@@ -495,7 +495,7 @@ module Pageflow
         user = create(:user)
         account = create(:account)
         create(:account, with_publisher: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).member_addable).not_to include(entry)
       end
@@ -504,7 +504,7 @@ module Pageflow
         user = create(:user)
         other_user = create(:user)
         account = create(:account, with_publisher: other_user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).member_addable).not_to include(entry)
       end
@@ -534,7 +534,7 @@ module Pageflow
       it 'includes entries with membership with correct user and correct account' do
         user = create(:user)
         account = create(:account, with_manager: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).manager_or_above).to include(entry)
       end
@@ -559,7 +559,7 @@ module Pageflow
         user = create(:user)
         account = create(:account)
         create(:account, with_manager: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).manager_or_above).not_to include(entry)
       end
@@ -568,7 +568,7 @@ module Pageflow
         user = create(:user)
         other_user = create(:user)
         account = create(:account, with_manager: other_user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(EntryPolicy::Scope.new(user, Entry).manager_or_above).not_to include(entry)
       end

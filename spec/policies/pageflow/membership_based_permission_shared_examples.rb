@@ -10,9 +10,7 @@ module Pageflow
 
     unknown_params = params.keys - allowed_params
 
-    if unknown_params.any?
-      fail("Unknown params: #{unknown_params * ', '}")
-    end
+    raise("Unknown params: #{unknown_params * ', '}") if unknown_params.any?
 
     if params[:of_entry_or_its_account]
       params[:of_entry] = params[:of_entry_or_its_account]
@@ -24,13 +22,13 @@ module Pageflow
     end
 
     if !params[:of_entry] && !params[:of_account]
-      fail('Speficy at least one of the following options: of_entry, of_account')
+      raise('Speficy at least one of the following options: of_entry, of_account')
     end
 
     params[:forbids] ||= params[:but_forbids]
 
     if !params[:allows] && !params[:forbids]
-      fail('Specify at least one of the following options: allows, forbids')
+      raise('Specify at least one of the following options: allows, forbids')
     end
 
     topic_class_name = described_class.name.humanize.sub('Pageflow::', '').chomp('policy')
@@ -54,7 +52,7 @@ module Pageflow
         if params[:allows].present?
           it "allows #{membership_type == :of_account ? 'account' : 'entry'} #{params[:allows]} " \
              "to #{params[:to]} respective #{topic_class_name}" do
-            create(:membership, user: user, entity: entity, role: params[:allows])
+            create(:membership, user:, entity:, role: params[:allows])
 
             expect(policy).to permit_action(params[:to])
           end
@@ -62,7 +60,7 @@ module Pageflow
           it "does not allow #{membership_type == :of_account ? 'account' : 'entry'} " \
              "#{params[:allows]} to #{params[:to]} off-limits #{topic_class_name}" do
             other_entity = (membership_type == :of_entry ? create(:entry) : create(:account))
-            create(:membership, user: user, entity: other_entity, role: params[:allows])
+            create(:membership, user:, entity: other_entity, role: params[:allows])
 
             expect(policy).not_to permit_action(params[:to])
           end
@@ -71,7 +69,7 @@ module Pageflow
         if params[:forbids].present?
           it "does not allow #{membership_type == :of_account ? 'account' : 'entry'} " \
              "#{params[:forbids]} to #{params[:to]} respective #{topic_class_name}" do
-            create(:membership, user: user, entity: entity, role: params[:forbids])
+            create(:membership, user:, entity:, role: params[:forbids])
 
             expect(policy).not_to permit_action(params[:to])
           end

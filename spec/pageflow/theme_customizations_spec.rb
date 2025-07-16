@@ -16,11 +16,11 @@ module Pageflow
       end
       site = create(:site)
       entry = create(:published_entry,
-                     site: site,
+                     site:,
                      type_name: 'rainbow',
                      revision_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.update(site: site,
+      Pageflow.theme_customizations.update(site:,
                                            entry_type_name: 'rainbow',
                                            overrides: {colors: {accent: '#0f0'}})
 
@@ -37,13 +37,13 @@ module Pageflow
       end
       site = create(:site)
       entry = create(:entry,
-                     site: site,
+                     site:,
                      type_name: 'rainbow',
                      draft_attributes: {theme_name: 'dark'})
 
       preview_entry =
-        Pageflow.theme_customizations.preview(site: site,
-                                              entry: entry,
+        Pageflow.theme_customizations.preview(site:,
+                                              entry:,
                                               overrides: {colors: {accent: '#0f0'}})
 
       expect(preview_entry.theme.options).to match(colors: {accent: '#0f0', surface: '#000'})
@@ -59,16 +59,16 @@ module Pageflow
       end
       site = create(:site)
       entry = create(:entry,
-                     site: site,
+                     site:,
                      type_name: 'rainbow',
                      draft_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.preview(site: site,
-                                            entry: entry,
+      Pageflow.theme_customizations.preview(site:,
+                                            entry:,
                                             overrides: {colors: {accent: '#0f0'}})
 
       customization =
-        Pageflow.theme_customizations.get(site: site,
+        Pageflow.theme_customizations.get(site:,
                                           entry_type_name: 'rainbow')
 
       expect(customization.overrides).to eq({})
@@ -84,11 +84,11 @@ module Pageflow
       end
       site = create(:site)
 
-      Pageflow.theme_customizations.update(site: site,
+      Pageflow.theme_customizations.update(site:,
                                            entry_type_name: 'rainbow',
                                            overrides: {colors: {accent: '#0f0'}})
       customization =
-        Pageflow.theme_customizations.get(site: site,
+        Pageflow.theme_customizations.get(site:,
                                           entry_type_name: 'rainbow')
 
       expect(customization.overrides).to match(colors: {accent: '#0f0'})
@@ -101,7 +101,7 @@ module Pageflow
       site = create(:site)
 
       customization =
-        Pageflow.theme_customizations.get(site: site,
+        Pageflow.theme_customizations.get(site:,
                                           entry_type_name: 'rainbow')
 
       expect(customization.overrides).to eq({})
@@ -118,11 +118,11 @@ module Pageflow
       site = create(:site)
       other_site = create(:site)
       entry = create(:published_entry,
-                     site: site,
+                     site:,
                      type_name: 'rainbow',
                      revision_attributes: {theme_name: 'dark'})
 
-      Pageflow.theme_customizations.update(site: site,
+      Pageflow.theme_customizations.update(site:,
                                            entry_type_name: 'rainbow',
                                            overrides: {colors: {accent: '#ff0'}})
       Pageflow.theme_customizations.update(site: other_site,
@@ -214,7 +214,7 @@ module Pageflow
                      draft_attributes: {theme_name: 'dark'})
 
       Pageflow.theme_customizations.preview(site: entry.site,
-                                            entry: entry,
+                                            entry:,
                                             overrides: {colors: {accent: '#0f0'}})
 
       expect(transform)

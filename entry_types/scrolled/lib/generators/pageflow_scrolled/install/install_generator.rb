@@ -11,10 +11,10 @@ module PageflowScrolled
       def initializer
         inject_into_file('config/initializers/pageflow.rb',
                          after: "Pageflow.configure do |config|\n") do
-          "  config.plugin(PageflowScrolled.plugin)\n\n" \
-          "  config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|\n" \
-          "    entry_type_config.plugin(ScrolledThemesPlugin.new)\n" \
-          "  end\n\n"
+          "  config.plugin(PageflowScrolled.plugin)\n\n  " \
+            "config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|\n    " \
+            "entry_type_config.plugin(ScrolledThemesPlugin.new)\n  " \
+            "end\n\n"
         end
       end
 
@@ -30,11 +30,11 @@ module PageflowScrolled
       end
 
       def install_packages
-        run 'yarn add css-loader style-loader' \
-            ' mini-css-extract-plugin css-minimizer-webpack-plugin' \
-            ' postcss postcss-preset-env postcss-loader' \
-            ' postcss-import postcss-url postcss-flexbugs-fixes' \
-            ' @fontsource/source-sans-pro'
+        run 'yarn add css-loader style-loader ' \
+            'mini-css-extract-plugin css-minimizer-webpack-plugin ' \
+            'postcss postcss-preset-env postcss-loader ' \
+            'postcss-import postcss-url postcss-flexbugs-fixes ' \
+            '@fontsource/source-sans-pro'
       end
 
       def webpack_config
@@ -76,7 +76,7 @@ module PageflowScrolled
               module: {
                 rules: [
                   {
-                    test: /\.(bmp|gif|jpe?g|png|tiff|ico|avif|webp|eot|otf|ttf|woff|woff2|svg|mp3)$/,
+                    test: /\\.(bmp|gif|jpe?g|png|tiff|ico|avif|webp|eot|otf|ttf|woff|woff2|svg|mp3)$/,
                     type: 'asset/resource'
                   }
                 ]

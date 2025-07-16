@@ -10,9 +10,9 @@ module Pageflow
         video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
         quota = QuotaDouble.available.new(:encoding, entry.account)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
-                                             video_file_ids: [video_file.id],
-                                             audio_file_ids: [audio_file.id]
-                                           }, quota, user)
+                                                           video_file_ids: [video_file.id],
+                                                           audio_file_ids: [audio_file.id]
+                                                         }, quota, user)
 
         expect(quota).to receive(:assume).with(files: [video_file, audio_file]).and_return(quota)
 
@@ -25,9 +25,9 @@ module Pageflow
         quota = QuotaDouble.available.new(:encoding, entry.account)
         assumed_quota = QuotaDouble.exceeded.new(:encoding, entry.account)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
-                                             video_file_ids: [],
-                                             audio_file_ids: []
-                                           }, quota, user)
+                                                           video_file_ids: [],
+                                                           audio_file_ids: []
+                                                         }, quota, user)
 
         allow(quota).to receive(:assume).and_return(assumed_quota)
 
@@ -40,9 +40,9 @@ module Pageflow
         quota = QuotaDouble.available.new(:encoding, entry.account)
         assumed_quota = QuotaDouble.exhausted.new(:encoding, entry.account)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
-                                             video_file_ids: [],
-                                             audio_file_ids: []
-                                           }, quota, user)
+                                                           video_file_ids: [],
+                                                           audio_file_ids: []
+                                                         }, quota, user)
 
         allow(quota).to receive(:assume).and_return(assumed_quota)
 
@@ -54,9 +54,9 @@ module Pageflow
         user = create(:user)
         quota = QuotaDouble.available.new(:encoding, entry.account)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
-                                             video_file_ids: [],
-                                             audio_file_ids: []
-                                           }, quota, user)
+                                                           video_file_ids: [],
+                                                           audio_file_ids: []
+                                                         }, quota, user)
 
         expect(encoding_confirmation).not_to be_exceeding
       end
@@ -67,8 +67,8 @@ module Pageflow
         quota = QuotaDouble.available.new(:encoding, entry.account)
         audio_file = create(:audio_file, :waiting_for_confirmation)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
-                                             audio_file_ids: [audio_file.id]
-                                           }, quota, user)
+                                                           audio_file_ids: [audio_file.id]
+                                                         }, quota, user)
 
         expect {
           encoding_confirmation.exceeding?
@@ -84,9 +84,9 @@ module Pageflow
         audio_file = create(:audio_file, :waiting_for_confirmation, used_in: entry.draft)
         video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
-                                             video_file_ids: [video_file.id],
-                                             audio_file_ids: [audio_file.id]
-                                           }, quota, user)
+                                                           video_file_ids: [video_file.id],
+                                                           audio_file_ids: [audio_file.id]
+                                                         }, quota, user)
 
         expect(quota).to receive(:assume).with(files: [video_file, audio_file]).and_return(quota)
 
@@ -100,9 +100,9 @@ module Pageflow
         audio_file = create(:audio_file, :waiting_for_confirmation, used_in: entry.draft)
         video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
-                                             video_file_ids: [video_file.id],
-                                             audio_file_ids: [audio_file.id]
-                                           }, quota, user)
+                                                           video_file_ids: [video_file.id],
+                                                           audio_file_ids: [audio_file.id]
+                                                         }, quota, user)
 
         encoding_confirmation.save!
 
@@ -117,9 +117,9 @@ module Pageflow
         audio_file = create(:audio_file, :waiting_for_confirmation, used_in: entry.draft)
         video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
-                                             video_file_ids: [video_file.id],
-                                             audio_file_ids: [audio_file.id]
-                                           }, quota, user)
+                                                           video_file_ids: [video_file.id],
+                                                           audio_file_ids: [audio_file.id]
+                                                         }, quota, user)
 
         encoding_confirmation.save!
 

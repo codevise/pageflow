@@ -94,7 +94,7 @@ module ZencoderApiDouble
     {format: 'ogg',
      width: 200,
      height: 100,
-     duration_in_ms: duration_in_ms,
+     duration_in_ms:,
      output_presences: {avi: 'finished', gif: 'skipped'}}
   end
 end

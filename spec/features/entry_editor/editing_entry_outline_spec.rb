@@ -43,7 +43,7 @@ feature 'as entry editor, editing entry outline', js: true do
     entry = create(:entry, title: 'Test Entry')
     Dom::Admin::Page.sign_in_as(:editor, on: entry)
     chapter = create(:chapter, in_main_storyline_of: entry.draft, title: 'Intro')
-    create(:page, chapter: chapter, configuration: {title: 'Welcome'})
+    create(:page, chapter:, configuration: {title: 'Welcome'})
 
     visit(pageflow.editor_entry_path(entry))
     Dom::Editor::EntryOutline.await!

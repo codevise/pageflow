@@ -1,5 +1,5 @@
 module Pageflow
-  ActiveAdmin.register Account, :as => 'Account' do
+  ActiveAdmin.register Account, as: 'Account' do
     menu({priority: 3}.merge(Pageflow.config.account_admin_menu_options))
 
     config.batch_actions = false
@@ -55,10 +55,10 @@ module Pageflow
                                   .order(:name)
                               end)
 
-    form :partial => 'form'
+    form partial: 'form'
 
-    show :title => :name do |account|
-      render 'account_details', :account => account
+    show title: :name do |account|
+      render('account_details', account:)
 
       tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(account),
                 i18n: 'pageflow.admin.resource_tabs',
@@ -89,7 +89,7 @@ module Pageflow
       end
 
       def update
-        update! do |success, failure|
+        update! do |success, _failure|
           success.html { redirect_to(admin_account_path(resource, params.permit(:tab))) }
         end
       end
@@ -116,7 +116,7 @@ module Pageflow
         [
           :name,
           :default_file_rights,
-          default_site_attributes: permitted_site_attributes
+          {default_site_attributes: permitted_site_attributes}
         ] +
           permitted_attributes_for(:account)
       end
@@ -141,10 +141,10 @@ module Pageflow
       end
 
       def permit_feature_states(attributes)
-        if params[:id] && authorized?(:update_feature_configuration_on, resource)
-          feature_states = params[:account][:feature_states].try(:permit!)
-          attributes.merge!(feature_states: feature_states || {})
-        end
+        return unless params[:id] && authorized?(:update_feature_configuration_on, resource)
+
+        feature_states = params[:account][:feature_states].try(:permit!)
+        attributes.merge!(feature_states: feature_states || {})
       end
     end
   end

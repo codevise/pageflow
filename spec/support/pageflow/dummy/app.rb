@@ -8,7 +8,7 @@ module Pageflow
       def generate
         ENV['RAILS_ROOT'] = File.expand_path(directory)
 
-        if File.exist?(directory)
+        if File.exist?(directory) # rubocop:disable Style/GuardClause
           puts("Dummy directory #{directory} exists.")
         else
           system('SKIP_EAGER_LOAD=true ' \
@@ -17,7 +17,7 @@ module Pageflow
             raise('Error generating dummy app.')
         end
 
-        require(File.join(ENV['RAILS_ROOT'], 'config', 'environment'))
+        require(File.join(ENV.fetch('RAILS_ROOT', nil), 'config', 'environment'))
       end
 
       def directory

@@ -1,5 +1,5 @@
 module Pageflow
-  class RevisionComponents
+  class RevisionComponents # rubocop:todo Style/Documentation
     include Enumerable
 
     def initialize
@@ -17,8 +17,8 @@ module Pageflow
       @create_defaults_hooks << ->(revision) { revision_component.create_defaults(revision) }
     end
 
-    def each(&block)
-      @revision_components.each(&block)
+    def each(&)
+      @revision_components.each(&)
     end
 
     def create_defaults(revision)

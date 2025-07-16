@@ -10,6 +10,4 @@ json.call(file,
 
 json.is_ready(file.ready?)
 
-if file_type.partial.present?
-  json.partial!(object: file, partial: file_type.partial)
-end
+json.partial!(object: file, partial: file_type.partial) if file_type.partial.present?

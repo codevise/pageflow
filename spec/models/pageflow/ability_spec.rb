@@ -15,7 +15,7 @@ module Pageflow
         user = create(:user, :admin)
         entry = create(:entry)
         file = create(:audio_file)
-        create(:file_usage, revision: entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
         ability = Ability.new(user)
 
         expect(ability.can?(:manage, file)).to eq(true)

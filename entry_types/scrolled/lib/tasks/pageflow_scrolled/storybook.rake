@@ -39,7 +39,7 @@ namespace :pageflow_scrolled do
         seeds.sample_scrolled_entry(
           attributes: {
             title: 'Storybook seed',
-            account: account,
+            account:,
             chapters: [],
             image_files: {
               turtle: {
@@ -119,8 +119,8 @@ namespace :pageflow_scrolled do
         end
 
         if args[:output_dir].blank?
-          puts 'Missing argument: Pass output directory via '\
-            '`rake pageflow_scrolled:storybook:seed:setup[some/directory]`'
+          puts 'Missing argument: Pass output directory via ' \
+               '`rake pageflow_scrolled:storybook:seed:setup[some/directory]`'
           exit 1
         end
 
@@ -150,8 +150,8 @@ namespace :pageflow_scrolled do
         end
 
         if args[:output_dir].blank?
-          puts 'Missing argument: Pass output directory via '\
-            '`rake pageflow_scrolled:storybook:seed:setup[some/directory]`'
+          puts 'Missing argument: Pass output directory via ' \
+               '`rake pageflow_scrolled:storybook:seed:setup[some/directory]`'
           exit 1
         end
 

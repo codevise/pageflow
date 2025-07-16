@@ -6,7 +6,7 @@ module Pageflow
       it 'contains only folders of correct account' do
         user = create(:user)
         account = create(:account, with_publisher: user, name: 'This account here')
-        create(:folder, account: account, name: 'This folder')
+        create(:folder, account:, name: 'This folder')
         create(:folder, name: 'not this folder')
 
         allow(helper).to receive(:current_user) { user }

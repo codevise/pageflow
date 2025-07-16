@@ -1,5 +1,7 @@
 module Pageflow
+  # @api private
   class FolderPolicy < ApplicationPolicy
+    # @api private
     class Scope < Scope
       attr_reader :user, :scope
 
@@ -21,13 +23,21 @@ module Pageflow
       private
 
       def accounts_where_user_is_at_least_previewer(user)
-        user.accounts.joins(sanitize_sql_array([
-          'LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
-          'pageflow_memberships_2.user_id = :user_id AND ' \
-          'pageflow_memberships_2.entity_type = \'Pageflow::Account\' AND ' \
-          'pageflow_memberships_2.entity_id = pageflow_accounts.id AND ' \
-          'pageflow_memberships_2.role IN (\'previewer\', \'editor\', \'publisher\', \'manager\')',
-          user_id: user.id])).where('pageflow_memberships_2.entity_id IS NOT NULL')
+        user.accounts
+            .joins(
+              sanitize_sql_array(
+                [
+                  'LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
+                  'pageflow_memberships_2.user_id = :user_id AND ' \
+                  'pageflow_memberships_2.entity_type = \'Pageflow::Account\' AND ' \
+                  'pageflow_memberships_2.entity_id = pageflow_accounts.id AND ' \
+                  'pageflow_memberships_2.role IN (\'previewer\', ' \
+                  "'editor', 'publisher', 'manager')",
+                  {user_id: user.id}
+                ]
+              )
+            )
+            .where('pageflow_memberships_2.entity_id IS NOT NULL')
       end
     end
 
@@ -37,7 +47,7 @@ module Pageflow
     end
 
     def manage?
-      allows?(%w(publisher manager))
+      allows?(%w[publisher manager])
     end
 
     def show_account_selection_on?

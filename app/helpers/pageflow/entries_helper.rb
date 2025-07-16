@@ -1,5 +1,5 @@
 module Pageflow
-  module EntriesHelper
+  module EntriesHelper # rubocop:todo Style/Documentation
     def pretty_entry_title(entry)
       return entry.title if entry.site.title == ' '
 
@@ -79,22 +79,24 @@ module Pageflow
     end
 
     def entry_file_rights(entry)
-      rights = Pageflow.config.file_types.map do |file_type|
+      rights = Pageflow.config.file_types.map { |file_type|
         entry.find_files(file_type.model).map do |file|
           file.rights.presence || entry.account.default_file_rights.presence
         end
-      end.flatten.compact.sort.uniq
+      }.flatten.compact.sort.uniq
 
       if rights.any?
         content_tag :p, class: 'rights' do
-          I18n.t('pageflow.helpers.entries.image_rights') + ": " + rights * ', '
+          "#{I18n.t('pageflow.helpers.entries.image_rights')}: #{rights * ', '}"
         end
       else
         ''
       end
     end
 
-    def entry_global_links(entry)
+    # rubocop:todo Metrics/PerceivedComplexity
+    # rubocop:todo Metrics/CyclomaticComplexity
+    def entry_global_links(entry) # rubocop:todo Metrics/AbcSize
       links = []
 
       if entry.site.imprint_link_label.present? && entry.site.imprint_link_url.present?
@@ -128,11 +130,14 @@ module Pageflow
       end
 
       if links.any?
-        content_tag(:span, I18n.t('pageflow.helpers.entries.global_links'), class: 'hidden') + safe_join(links, ''.html_safe)
+        content_tag(:span, I18n.t('pageflow.helpers.entries.global_links'),
+                    class: 'hidden') + safe_join(links, ''.html_safe)
       else
         ''
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def entry_theme_stylesheet_link_tag(entry)
       stylesheet_link_tag(entry.theme.stylesheet_path,
@@ -176,15 +181,14 @@ module Pageflow
 
     def entry_header_css_class(entry)
       css_class = 'header'
-      if entry.pages.any? && entry.pages.first.configuration['invert']
-        css_class += ' invert'
-      end
+      css_class += ' invert' if entry.pages.any? && entry.pages.first.configuration['invert']
       css_class
     end
 
     def entry_summary(entry)
       return '' if entry.summary.blank?
-      strip_tags(entry.summary.gsub(/<br ?\/?>/, ' ').squish)
+
+      strip_tags(entry.summary.gsub(%r{<br ?/?>}, ' ').squish)
     end
   end
 end

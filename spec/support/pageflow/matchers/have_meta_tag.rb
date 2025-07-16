@@ -1,6 +1,6 @@
 RSpec::Matchers.define :have_meta_tag do
   match do |body|
-    Capybara.string(body).has_selector?(selectors.join(''), visible: false)
+    Capybara.string(body).has_selector?(selectors.join, visible: false)
   end
 
   chain :with_name do |value|

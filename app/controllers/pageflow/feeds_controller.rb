@@ -6,7 +6,7 @@ module Pageflow
       return head 404 unless site.feeds_enabled?
 
       @feed = EntriesFeed.for(
-        site: site,
+        site:,
         locale: params[:locale]
       )
 

@@ -4,7 +4,7 @@ class CreatePageflowScrolledChapters < ActiveRecord::Migration[5.2]
       t.integer :perma_id                           # deep link / anchor for menu
       t.integer :position, default: 0, null: false  # position within entry
       t.text :configuration                         # schemaless JSON
-                                                    # - title (title for editor-overview)
+      # - title (title for editor-overview)
       t.timestamps
     end
   end

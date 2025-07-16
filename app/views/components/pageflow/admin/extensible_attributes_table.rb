@@ -1,6 +1,7 @@
 module Pageflow
   module Admin
     class ExtensibleAttributesTable < ActiveAdmin::Views::AttributesTable
+      # @api private
       module BuilderMethods
         def extensible_attributes_table_for(model, additional_rows, &block)
           attributes_table_for(model) do
@@ -11,6 +12,7 @@ module Pageflow
         end
       end
 
+      # @api private
       class RowInserter
         def initialize(context, additional_rows)
           @context = context
@@ -18,9 +20,9 @@ module Pageflow
           @rendered_rows = []
         end
 
-        def row(name, options = {}, &block)
+        def row(name, options = {}, &)
           render_additional_rows(rows_at(:before, name))
-          context.row(name, options, &block)
+          context.row(name, options, &)
           render_additional_rows(rows_at(:after, name))
         end
 
@@ -55,14 +57,15 @@ module Pageflow
         end
       end
 
+      # @api private
       class RowDelegator
         def initialize(context, row_handler)
           @context = context
           @row_handler = row_handler
         end
 
-        def row(name, options = {}, &block)
-          @row_handler.row(name, options, &block)
+        def row(name, options = {}, &)
+          @row_handler.row(name, options, &)
         end
 
         private
@@ -71,17 +74,15 @@ module Pageflow
           @context.respond_to?(name)
         end
 
-        # rubocop:disable Style/MethodMissing
         # Normally we would delegate to super if context does not
         # respond_to? method. But Arbre appears to report not to
         # repond to helpers like authorized? even if it does.
         #
         # This is also the reason we can not use SimpleDelegator here
         # and also delegate_missing in Rails 5 would not work.
-        def method_missing(method, *args, **kwargs, &block)
-          @context.public_send(method, *args, **kwargs, &block)
+        def method_missing(method, ...)
+          @context.public_send(method, ...)
         end
-        # rubocop:enable Style/MethodMissing
       end
     end
   end

@@ -57,18 +57,18 @@ module PageflowScrolled
         video_files_by_name = create_files(draft_entry,
                                            :video,
                                            attributes.fetch(:video_files, {}),
-                                           options.fetch(:skip_encoding, false))
+                                           skip_encoding: options.fetch(:skip_encoding, false))
 
         audio_files_by_name = create_files(draft_entry,
                                            :audio,
                                            attributes.fetch(:audio_files, {}),
-                                           options.fetch(:skip_encoding, false))
+                                           skip_encoding: options.fetch(:skip_encoding, false))
 
         files_by_name = image_files_by_name.merge(video_files_by_name).merge(audio_files_by_name)
 
         # rewrite parent file references to actual ids
         text_tracks_by_name = attributes.fetch(:text_track_files, {})
-        text_tracks_by_name.each do |_name, text_track_config|
+        text_tracks_by_name.each_value do |text_track_config|
           parent_file = files_by_name.fetch(text_track_config['parent_file_id'])
           text_track_config['parent_file_id'] = parent_file.id
         end
@@ -92,7 +92,7 @@ module PageflowScrolled
       say("   sample scrolled entry '#{entry.title}'\n")
     end
 
-    def create_files(draft_entry, file_type, file_data_by_name, skip_encoding = false)
+    def create_files(draft_entry, file_type, file_data_by_name, skip_encoding: false)
       file_data_by_name.transform_values do |data|
         say("     creating #{file_type} file from #{data['url']}")
 
@@ -109,18 +109,18 @@ module PageflowScrolled
             file.update!(state: 'encoded')
             if file_type.eql?(:video)
               file.update!(output_presences: {
-                "dash-playlist" => true,
-                "hls-playlist" => true,
-                "dash-medium"=> true,
-                "hls-medium" => true,
-                "dash-high" => true,
-                "hls-high" => true,
-                "dash-low" => true,
-                "hls-low" => true,
-                "medium" => true,
-                "high" => true,
-                "low" => true
-              })
+                             'dash-playlist' => true,
+                             'hls-playlist' => true,
+                             'dash-medium' => true,
+                             'hls-medium' => true,
+                             'dash-high' => true,
+                             'hls-high' => true,
+                             'dash-low' => true,
+                             'hls-low' => true,
+                             'medium' => true,
+                             'high' => true,
+                             'low' => true
+                           })
             end
           else
             file.publish!
@@ -139,7 +139,7 @@ module PageflowScrolled
           title: chapter_config['title'],
           summary: chapter_config['summary']
         },
-        position: position
+        position:
       )
 
       section_configs.each_with_index do |section_config, i|
@@ -154,9 +154,9 @@ module PageflowScrolled
                                %w[image imageMobile video],
                                files_by_name)
 
-      section = Section.create!(chapter: chapter,
+      section = Section.create!(chapter:,
                                 configuration: section_config,
-                                position: position)
+                                position:)
 
       content_element_configs.each_with_index do |content_element_config, i|
         create_content_element(section, content_element_config, i, files_by_name)
@@ -176,7 +176,7 @@ module PageflowScrolled
       section.content_elements.create!(
         type_name: content_element_config['type'],
         configuration: content_element_config['props'],
-        position: position
+        position:
       )
     end
 

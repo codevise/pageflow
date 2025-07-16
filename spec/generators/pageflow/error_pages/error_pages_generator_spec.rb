@@ -14,7 +14,7 @@ module Pageflow
       it 'copies the fonts' do
         run_generator
 
-        %w(
+        %w[
           sourcesanspro-bold-webfont.eot
           sourcesanspro-bold-webfont.svg
           sourcesanspro-bold-webfont.ttf
@@ -24,7 +24,7 @@ module Pageflow
           sourcesanspro-regular-webfont.svg
           sourcesanspro-regular-webfont.ttf
           sourcesanspro-regular-webfont.woff
-        ).each do |font_file|
+        ].each do |font_file|
           expect(file("public/pageflow/error_pages/fonts/#{font_file}")).to exist
         end
       end

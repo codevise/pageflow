@@ -1,4 +1,4 @@
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'pageflow/version'
@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://pageflow.io'
   s.summary     = 'Multimedia story telling for the web.'
   s.license     = 'MIT'
+  s.metadata['rubygems_mfa_required'] = 'true'
 
   s.files = Dir['{,entry_types/*/}' \
                 '{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*',
@@ -26,6 +27,8 @@ Gem::Specification.new do |s|
                 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
 
   s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
+
+  s.required_ruby_version = '>= 3.2'
 
   s.add_dependency 'rails', '~> 7.1.2'
 
@@ -209,12 +212,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'ammeter', '~> 1.1'
 
   # Ruby code linter
-  s.add_development_dependency 'rubocop', '~> 1.60'
+  s.add_development_dependency 'rubocop', '~> 1.78'
 
   # Scss code linter
   s.add_development_dependency 'scss_lint', '~> 0.60.0'
   s.add_development_dependency 'scss_lint_reporter_checkstyle', '~> 0.2.0'
-
 
   # For oauth authentication
   s.add_development_dependency 'omniauth', '~> 1.9'

@@ -7,7 +7,6 @@ module Pageflow
     # Override to configure Pageflow
     #
     # @param [Configuration] config
-    def configure(config)
-    end
+    def configure(config); end
   end
 end

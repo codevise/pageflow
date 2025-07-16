@@ -9,20 +9,24 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        expect do
+        expect {
           sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
-          post(:create,
-               params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
-        end.to change { entry.draft.storylines.count }.by(1)
+          post(
+            :create,
+            params: {entry_id: entry, storyline: attributes_for(:valid_storyline)},
+            format: 'json'
+          )
+        }.to change { entry.draft.storylines.count }.by(1)
       end
 
       it 'responds with failure for previewers of the respective account and below' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
-        post(:create, params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
+        post(:create, params: {entry_id: entry, storyline: attributes_for(:valid_storyline)},
+                      format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -35,12 +39,15 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        expect do
+        expect {
           sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
-          post(:scaffold,
-               params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
-        end.to change { entry.draft.storylines.count }.by(1)
+          post(
+            :scaffold,
+            params: {entry_id: entry, storyline: attributes_for(:valid_storyline)},
+            format: 'json'
+          )
+        }.to change { entry.draft.storylines.count }.by(1)
       end
 
       it 'creates chapter inside new storyline' do
@@ -112,7 +119,7 @@ module Pageflow
       it 'requires the signed in user to be editor of the parent entry' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         sign_in(user, scope: :user)
         post(:scaffold,
@@ -160,11 +167,12 @@ module Pageflow
       it 'requires the signed in user to be editor of the parent entry' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         storyline = create(:storyline, revision: entry.draft)
 
         sign_in(user, scope: :user)
-        patch(:update, params: {id: storyline, storyline: attributes_for(:valid_storyline)}, format: 'json')
+        patch(:update, params: {id: storyline, storyline: attributes_for(:valid_storyline)},
+                       format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -172,7 +180,8 @@ module Pageflow
       it 'requires authentication' do
         storyline = create(:storyline)
 
-        patch(:update, params: {id: storyline, storyline: attributes_for(:valid_storyline)}, format: 'json')
+        patch(:update, params: {id: storyline, storyline: attributes_for(:valid_storyline)},
+                       format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -187,7 +196,7 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         put(:order, params: {entry_id: entry, ids: [storylines.first.id,
-                                           storylines.last.id]}, format: 'json')
+                                                    storylines.last.id]}, format: 'json')
 
         expect(response.status).to eq(204)
       end
@@ -200,7 +209,7 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         put(:order, params: {entry_id: entry, ids: [storylines.first.id,
-                                           storylines.last.id]}, format: 'json')
+                                                    storylines.last.id]}, format: 'json')
 
         expect(storylines.first.reload.position).to eq(0)
         expect(storylines.last.reload.position).to eq(1)
@@ -209,7 +218,7 @@ module Pageflow
       it 'requires signed in user to be editor of the parent entry' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         storyline = create(:storyline, revision: entry.draft)
 
         sign_in(user, scope: :user)
@@ -236,15 +245,15 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
 
-        expect do
+        expect {
           delete(:destroy, params: {id: storyline}, format: 'json')
-        end.to change { entry.draft.storylines.count }.by(-1)
+        }.to change { entry.draft.storylines.count }.by(-1)
       end
 
       it 'requires the signed in user to be editor of the parent entry' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         storyline = create(:storyline, revision: entry.draft)
 
         sign_in(user, scope: :user)

@@ -72,9 +72,9 @@ module PageflowScrolled
       uri = URI.parse(configuration['source'])
       host_matchers = Pageflow.config_for(entry).consent_vendor_host_matchers
 
-      host_matchers.detect do |matcher, _|
+      host_matchers.detect { |matcher, _|
         uri.host =~ matcher
-      end&.last
+      }&.last
     rescue URI::InvalidURIError
       nil
     end

@@ -140,9 +140,9 @@ module Pageflow
           file_mappings = FileMappings.new
           data = RevisionSerialization.dump(exported_revision)
           imported_revision = RevisionSerialization.import(data,
-                                                           entry: entry,
+                                                           entry:,
                                                            creator: create(:user),
-                                                           file_mappings: file_mappings)
+                                                           file_mappings:)
           [imported_revision, file_mappings]
         end
 

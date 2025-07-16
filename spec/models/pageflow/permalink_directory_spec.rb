@@ -41,8 +41,8 @@ module Pageflow
 
       it 'needs to be unique in site' do
         site = create(:site)
-        create(:permalink_directory, path: 'de/', site: site)
-        permalink_directory = build(:permalink_directory, path: 'de/', site: site)
+        create(:permalink_directory, path: 'de/', site:)
+        permalink_directory = build(:permalink_directory, path: 'de/', site:)
 
         expect(permalink_directory).to have(1).errors_on(:path)
       end

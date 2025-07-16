@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class EmbeddedIndexTable < ViewComponent
       builder_method :embedded_index_table
 
@@ -22,15 +23,13 @@ module Pageflow
         scopes << ActiveAdmin::Scope.new(title, method, options)
       end
 
-      def table_for_collection(options = {}, &block)
-        if scopes.any?
-          custom_scopes_renderer(scopes, default_scope: scopes.first.id)
-        end
+      def table_for_collection(options = {}, &)
+        custom_scopes_renderer(scopes, default_scope: scopes.first.id) if scopes.any?
 
-        record_sort_columns(&block) if options[:sortable]
+        record_sort_columns(&) if options[:sortable]
 
         if scoped_collection.any?
-          build_table(options, &block)
+          build_table(options, &)
         else
           build_blank_slate
         end
@@ -92,12 +91,13 @@ module Pageflow
           @sort_columns.include?(params[:order].gsub('_asc', '').gsub('_desc', ''))
       end
 
-      def record_sort_columns(&block)
+      def record_sort_columns(&)
         recorder = SortColumnRecorder.new
-        recorder.instance_eval(&block)
+        recorder.instance_eval(&)
         @sort_columns = recorder.columns
       end
 
+      # @api private
       class SortColumnRecorder
         attr_reader :columns
 
@@ -113,8 +113,7 @@ module Pageflow
           end
         end
 
-        def row_attributes
-        end
+        def row_attributes; end
       end
     end
   end

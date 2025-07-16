@@ -13,8 +13,8 @@ Prosopite.location_backtrace_cleaner = ActiveSupport::BacktraceCleaner.new
 Prosopite.location_backtrace_cleaner.add_silencer { |line| !/pageflow/.match?(line) }
 
 module NPlusOneQueriesTestHelper
-  def detect_n_plus_one_queries(&block)
-    Prosopite.scan(&block)
+  def detect_n_plus_one_queries(&)
+    Prosopite.scan(&)
   end
 end
 

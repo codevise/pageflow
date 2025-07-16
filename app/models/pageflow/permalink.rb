@@ -17,7 +17,9 @@ module Pageflow
     validate :belongs_to_same_site_as_entry
 
     before_update(:create_redirect,
-                  if: -> { entry.first_published_at.present? && (slug_changed? || directory_changed?) })
+                  if: lambda {
+                        entry.first_published_at.present? && (slug_changed? || directory_changed?)
+                      })
 
     attr_accessor :allow_root_path
 

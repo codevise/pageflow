@@ -7,7 +7,7 @@ module Pageflow
       options[:except] = Array(options[:except])
       options[:except].concat(blacklist_for_serialization)
 
-      super(options)
+      super
     end
 
     private

@@ -18,7 +18,7 @@ module Pageflow
       it 'includes rules for files in draft' do
         revision = create(:revision)
         entry = PublishedEntry.new(revision.entry, revision)
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
 
         get(:stylesheet, params: {id: revision}, format: 'css')
 
@@ -51,7 +51,7 @@ module Pageflow
       it 'requires the signed in user to be publisher of the parent entry or account' do
         user = create(:user)
         account = create(:account, with_editor: user)
-        entry = create(:entry, account: account, with_editor: user)
+        entry = create(:entry, account:, with_editor: user)
 
         sign_in(user, scope: :user)
         delete(:depublish_current, params: {entry_id: entry})

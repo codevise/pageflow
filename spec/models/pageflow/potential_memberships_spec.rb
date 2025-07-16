@@ -51,7 +51,7 @@ module Pageflow
         account = create(:account)
         user = create(:user, :member, on: account)
         current_user = create(:user, :manager, on: account)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         result = PotentialMemberships.creatable_by(current_user).entries_for_user(user)
 
@@ -62,7 +62,7 @@ module Pageflow
         account = create(:account)
         user = create(:user, :member, on: account)
         current_user = create(:user, :member, on: account)
-        entry = create(:entry, account: account, with_manager: current_user)
+        entry = create(:entry, account:, with_manager: current_user)
 
         result = PotentialMemberships.creatable_by(current_user).entries_for_user(user)
 
@@ -85,7 +85,7 @@ module Pageflow
         account = create(:account)
         user = create(:user, :member, on: account)
         current_user = create(:user, :member, on: account)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         result = PotentialMemberships.creatable_by(current_user).entries_for_user(user)
 
@@ -96,7 +96,7 @@ module Pageflow
         account = create(:account)
         user = create(:user, :member, on: account)
         current_user = create(:user, :manager, on: account)
-        entry = create(:entry, account: account, with_editor: user)
+        entry = create(:entry, account:, with_editor: user)
 
         result = PotentialMemberships.creatable_by(current_user).entries_for_user(user)
 
@@ -107,7 +107,7 @@ module Pageflow
         it 'includes all entries in user`s accounts the user in not member of' do
           account = create(:account)
           user = create(:user, :member, on: account)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
           current_user = create(:user, :admin)
 
           result = PotentialMemberships.new(current_user).entries_for_user(user)
@@ -158,7 +158,7 @@ module Pageflow
       it 'includes users of entry`s account for entry manager' do
         account = create(:account)
         user = create(:user, :member, on: account)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         current_user = create(:user, :manager, on: entry)
 
         result = PotentialMemberships.creatable_by(current_user).users_for_entry(entry)
@@ -169,7 +169,7 @@ module Pageflow
       it 'includes users of entry`s account for account manager' do
         account = create(:account)
         user = create(:user, :member, on: account)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         current_user = create(:user, :manager, on: account)
 
         result = PotentialMemberships.creatable_by(current_user).users_for_entry(entry)
@@ -180,7 +180,7 @@ module Pageflow
       it 'includes users of entry`s account for admin' do
         account = create(:account)
         user = create(:user, :member, on: account)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         current_user = create(:user, :admin)
 
         result = PotentialMemberships.creatable_by(current_user).users_for_entry(entry)
@@ -191,7 +191,7 @@ module Pageflow
       it 'does not include users that are already member of the entry' do
         account = create(:account)
         user = create(:user, :member, on: account)
-        entry = create(:entry, account: account, with_publisher: user)
+        entry = create(:entry, account:, with_publisher: user)
         current_user = create(:user, :manager, on: entry)
 
         result = PotentialMemberships.creatable_by(current_user).users_for_entry(entry)
@@ -213,7 +213,7 @@ module Pageflow
       it 'returns an empty scope if current user does not manage entry' do
         account = create(:account)
         create(:user, :member, on: account)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         current_user = create(:user, :publisher, on: entry)
 
         result = PotentialMemberships.creatable_by(current_user).users_for_entry(entry)

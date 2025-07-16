@@ -1,6 +1,6 @@
 module Pageflow
   FactoryBot.define do
-    factory :revision, :class => Revision do
+    factory :revision, class: Revision do
       entry
 
       trait :frozen do

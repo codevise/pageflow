@@ -22,6 +22,7 @@ module Pageflow
 
     def save
       return false unless valid?
+
       Pageflow.config.quotas.get(:users, initial_account).verify_available!
 
       membership.save!
@@ -33,7 +34,7 @@ module Pageflow
 
     def existing_member
       @existing_member ||=
-        initial_account && initial_account.users.find_by_email(user.email)
+        initial_account&.users&.find_by_email(user.email)
     end
 
     def initial_account

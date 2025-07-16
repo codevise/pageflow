@@ -1,5 +1,5 @@
 module Pageflow
-  class TextTrackFileUrlTemplates
+  class TextTrackFileUrlTemplates # rubocop:todo Style/Documentation
     def call
       {
         vtt: UrlTemplate.from_attachment(example_file.attachment, :vtt)

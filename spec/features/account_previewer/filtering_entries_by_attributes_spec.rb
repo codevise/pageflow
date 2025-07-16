@@ -6,14 +6,14 @@ feature 'as account previewer, filtering entries by attributes' do
     user = Dom::Admin::Page.sign_in_as(:previewer, on: account)
     matching_entry = create(:entry,
                             :published,
-                            account: account,
+                            account:,
                             with_previewer: user,
                             published_revision_attributes: {
                               published_at: 40.days.ago
                             })
     other_entry = create(:entry,
                          :published,
-                         account: account,
+                         account:,
                          with_previewer: user,
                          published_revision_attributes: {
                            published_at: 2.days.ago

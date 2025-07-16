@@ -9,8 +9,10 @@ module Dom
           fill_in('user_first_name', with: options[:first_name]) if options[:first_name]
           fill_in('user_last_name', with: options[:last_name]) if options[:last_name]
 
-          select(Pageflow::Account.find(options[:account_id]).name,
-                 from: 'user_initial_account') if options[:account_id]
+          if options[:account_id]
+            select(Pageflow::Account.find(options[:account_id]).name,
+                   from: 'user_initial_account')
+          end
 
           if has_selector?('#user_admin')
             if options[:admin]

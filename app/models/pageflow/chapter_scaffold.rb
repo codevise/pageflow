@@ -1,5 +1,5 @@
 module Pageflow
-  class ChapterScaffold
+  class ChapterScaffold # rubocop:todo Style/Documentation
     def initialize(chapter, options)
       @chapter = chapter
       @options = options
@@ -8,9 +8,7 @@ module Pageflow
     delegate :save!, to: :@chapter
 
     def build
-      if @options[:depth] == 'page'
-        @page = @chapter.pages.build(template: 'background_image')
-      end
+      @page = @chapter.pages.build(template: 'background_image') if @options[:depth] == 'page'
 
       self
     end

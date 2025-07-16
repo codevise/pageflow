@@ -29,8 +29,8 @@ module Pageflow
             ANIMATED_FORMATS.include?(@current_format) ? "#{source.path}[n=-1]" : source.path,
             width,
             size: @should_crop ? :both : :down,
-            height: height,
-            crop: crop
+            height:,
+            crop:
           )
           thumbnail.webpsave(destination.path)
         rescue Vips::Error => e

@@ -1,5 +1,5 @@
 module Pageflow
-  class PositionedFile
+  class PositionedFile # rubocop:todo Style/Documentation
     attr_reader :file, :position_x, :position_y
 
     delegate :thumbnail_url, :perma_id, to: :file
@@ -11,7 +11,7 @@ module Pageflow
     end
 
     def ==(other)
-      super(other) ||
+      super ||
         other == file ||
         (other.is_a?(PositionedFile) && other.file == file) ||
         (other.class == file.class && other.id == file.id)
@@ -29,13 +29,13 @@ module Pageflow
       Null.new
     end
 
-    class Null < PositionedFile
+    class Null < PositionedFile # rubocop:todo Style/Documentation
       def initialize
         super(nil)
       end
 
-      def thumbnail_url(*args)
-        ImageFile.new.attachment.url(*args)
+      def thumbnail_url(*)
+        ImageFile.new.attachment.url(*)
       end
 
       def blank?

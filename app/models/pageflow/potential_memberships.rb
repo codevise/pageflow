@@ -23,6 +23,7 @@ module Pageflow
 
     def users_for_entry(entry)
       return User.none unless manages_entry?(entry)
+
       exclude_users_with_membership(entry, entry.account.users)
     end
 
@@ -88,8 +89,8 @@ module Pageflow
                           'existing_memberships.user_id = :user_id AND ' \
                           "existing_memberships.entity_id = #{entity_model.table_name}.id AND " \
                           'existing_memberships.entity_type = :entity_type',
-                          user_id: user.id,
-                          entity_type: entity_model.name])
+                          {user_id: user.id,
+                           entity_type: entity_model.name}])
     end
 
     def existing_memberships_on(entity)
@@ -97,8 +98,8 @@ module Pageflow
                           'existing_memberships.user_id = users.id AND ' \
                           'existing_memberships.entity_id = :entity_id AND ' \
                           'existing_memberships.entity_type = :entity_type',
-                          entity_id: entity.id,
-                          entity_type: entity.class.name])
+                          {entity_id: entity.id,
+                           entity_type: entity.class.name}])
     end
 
     def existing_membership_is_missing

@@ -66,9 +66,9 @@ module Pageflow
         allow(quota).to receive(:assume).and_return(QuotaDouble.exceeded.new(:published_entries,
                                                                              entry.account))
 
-        expect do
+        expect {
           entry_publication.save!
-        end.to raise_error(Quota::ExceededError)
+        }.to raise_error(Quota::ExceededError)
       end
 
       it 'passes attributes and creator to Entry#publish' do
@@ -95,7 +95,7 @@ module Pageflow
         Pageflow.config.hooks.on(:entry_published, subscriber)
         entry_publication.save!
 
-        expect(subscriber).to have_received(:call).with(entry: entry)
+        expect(subscriber).to have_received(:call).with(entry:)
       end
     end
   end

@@ -29,7 +29,7 @@ module Pageflow
           entry = create(:entry)
           revision = entry.draft
           image_file = create(:image_file)
-          usage = create(:file_usage, revision: revision, file: image_file)
+          usage = create(:file_usage, revision:, file: image_file)
           @entry = DraftEntry.new(entry)
 
           result = helper.find_file_in_entry(ImageFile, usage.perma_id)
@@ -40,9 +40,9 @@ module Pageflow
       context 'published entry' do
         it 'finds a file specified by its usages perma_id within the revisions usage scope' do
           entry = create(:entry)
-          revision = create(:revision, :published, entry: entry)
+          revision = create(:revision, :published, entry:)
           image_file = create(:image_file)
-          usage = create(:file_usage, revision: revision, file: image_file)
+          usage = create(:file_usage, revision:, file: image_file)
           @entry = PublishedEntry.new(entry)
 
           result = helper.find_file_in_entry(ImageFile, usage.perma_id)
@@ -52,9 +52,9 @@ module Pageflow
 
       it 'allows passing entry explicitly' do
         entry = create(:entry)
-        revision = create(:revision, :published, entry: entry)
+        revision = create(:revision, :published, entry:)
         image_file = create(:image_file)
-        usage = create(:file_usage, revision: revision, file: image_file)
+        usage = create(:file_usage, revision:, file: image_file)
         entry = PublishedEntry.new(entry)
 
         result = helper.find_file_in_entry(ImageFile, usage.perma_id, entry)

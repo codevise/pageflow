@@ -1,5 +1,5 @@
 module Pageflow
-  module Suspendable
+  module Suspendable # rubocop:todo Style/Documentation
     def active_for_authentication?
       super && !suspended?
     end
@@ -10,14 +10,16 @@ module Pageflow
 
     def suspend!
       return if suspended?
+
       self.suspended_at = Time.zone.now
-      save(:validate => false)
+      save(validate: false)
     end
 
     def unsuspend!
       return unless suspended?
+
       self.suspended_at = nil
-      save(:validate => false)
+      save(validate: false)
     end
   end
 end

@@ -1,5 +1,5 @@
 module Pageflow
-  module NavigationBarHelper
+  module NavigationBarHelper # rubocop:todo Style/Documentation
     def navigation_bar_css_class(entry, options = {})
       [
         options[:class],

@@ -14,7 +14,7 @@ RSpec.shared_context 'fake translations' do
     data = {}
 
     inner = keys.inject(data) do |result, key|
-      result[key] = {}
+      result[key] = {} # rubocop:disable Lint/UnmodifiedReduceAccumulator
     end
 
     inner[last_key] = value

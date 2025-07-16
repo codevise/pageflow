@@ -1,6 +1,7 @@
 module Pageflow
   module ActiveAdminPatches
     module Views
+      # @api private
       module TableFor
         def row_attributes
           @collection.each_with_index do |item, i|

@@ -1,5 +1,5 @@
 module Pageflow
-  class Site < ApplicationRecord
+  class Site < ApplicationRecord # rubocop:todo Style/Documentation
     belongs_to :account
     belongs_to :custom_404_entry, class_name: 'Entry', optional: true
 
@@ -41,7 +41,9 @@ module Pageflow
     end
 
     def root_entry
-      root_permalink_directory&.permalinks&.find_by_slug('')&.entry
+      return unless root_permalink_directory
+
+      root_permalink_directory.permalinks.find_by_slug('')&.entry
     end
 
     def root_permalink_directory

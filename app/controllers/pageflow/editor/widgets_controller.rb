@@ -1,5 +1,6 @@
 module Pageflow
   module Editor
+    # @api private
     class WidgetsController < Pageflow::ApplicationController
       respond_to :json
 

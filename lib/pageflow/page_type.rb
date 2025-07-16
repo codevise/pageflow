@@ -63,7 +63,6 @@ module Pageflow
       []
     end
 
-
     # ActiveRecord models to be copied together with a revision.
     #
     # This allows authors of PageTypes to attach models to the Pageflow
@@ -217,12 +216,12 @@ module Pageflow
     #       }
     #     });
     #
-    def json_seed_template
-    end
+    def json_seed_template; end
 
     # Helper method to define the name of a subclassed page type.
     def self.name(name = nil)
       return super() unless name
+
       define_method :name do
         name
       end

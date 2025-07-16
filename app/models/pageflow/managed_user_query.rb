@@ -1,7 +1,7 @@
 module Pageflow
   # @api private
   class ManagedUserQuery < ApplicationQuery
-    class Scope < Scope
+    class Scope < Scope # rubocop:todo Style/Documentation
       def initialize(current_user, scope)
         @current_user = current_user
         @scope = scope

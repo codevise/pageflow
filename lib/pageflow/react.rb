@@ -1,5 +1,5 @@
 module Pageflow
-  module React
+  module React # rubocop:todo Style/Documentation
     # @deprecated Use `PageflowPaged::React.create_page_type` instead.
     def self.create_page_type(name, options = {})
       PageflowPaged::React.create_page_type(name, options)

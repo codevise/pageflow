@@ -1,5 +1,5 @@
 module Pageflow
-  class BuiltInWidgetType < WidgetType
+  class BuiltInWidgetType < WidgetType # rubocop:todo Style/Documentation
     attr_reader :name, :roles, :partial_path
 
     def initialize(name, roles, partial_path)
@@ -13,7 +13,7 @@ module Pageflow
     end
 
     def render(template, entry)
-      template.render(partial_path, entry: entry, widget_type_name: name)
+      template.render(partial_path, entry:, widget_type_name: name)
     end
 
     def self.navigation

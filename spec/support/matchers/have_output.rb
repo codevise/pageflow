@@ -47,6 +47,6 @@ RSpec::Matchers.define :have_output do
   end
 
   def output_matchers
-    @matchers ||= {}
+    @output_matchers ||= {}
   end
 end

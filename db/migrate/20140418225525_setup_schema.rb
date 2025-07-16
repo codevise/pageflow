@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/LineLength, Metrics/BlockLength
+# rubocop:disable Layout/LineLength, Metrics/ClassLength, Metrics/MethodLength, Metrics/AbcSize, Metrics/BlockLength
 
 class SetupSchema < ActiveRecord::Migration[5.2]
   def change
@@ -296,4 +296,4 @@ class SetupSchema < ActiveRecord::Migration[5.2]
   end
 end
 
-# rubocop:enable Metrics/LineLength, Metrics/BlockLength
+# rubocop:enable Layout/LineLength, Metrics/ClassLength, Metrics/MethodLength, Metrics/AbcSize, Metrics/BlockLength

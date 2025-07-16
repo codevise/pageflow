@@ -15,7 +15,7 @@ module PageflowScrolled
       def scrolled_editor_iframe_seed_html_script_tag(entry)
         html = render(template: 'pageflow_scrolled/entries/show',
                       locals: {
-                        entry: entry,
+                        entry:,
                         widget_scope: :editor,
                         skip_ssr: true,
                         skip_structured_data: true,

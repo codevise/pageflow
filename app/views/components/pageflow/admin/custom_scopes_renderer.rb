@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class CustomScopesRenderer < ActiveAdmin::Views::Scopes
       builder_method :custom_scopes_renderer
 

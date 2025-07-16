@@ -25,8 +25,8 @@ module Pageflow
     #   require 'pageflow/lint'
     #
     #   Pageflow::Lint.entry_type(SomePlugin.entry_type)
-    def self.entry_type(*args, **kws)
-      Lint::EntryType.lint(*args, **kws)
+    def self.entry_type(*, **kws)
+      Lint::EntryType.lint(*, **kws)
     end
 
     # Ensure file type json partials render correctly.
@@ -52,8 +52,8 @@ module Pageflow
     #                              create_file_type: -> { SomePlugin.file_type },
     #                              create_file: -> { create(:some_file) })
     #   end
-    def self.file_type(*args, **kws)
-      Lint::FileType.lint(*args, **kws)
+    def self.file_type(*, **kws)
+      Lint::FileType.lint(*, **kws)
     end
 
     # Contract specs for page types
@@ -70,8 +70,8 @@ module Pageflow
     #   module SomePlugin
     #     Pageflow::Lint.page_type(SomePLugin.page_type)
     #   end
-    def self.page_type(*args, **kws)
-      Lint::PageType.lint(*args, **kws)
+    def self.page_type(*, **kws)
+      Lint::PageType.lint(*, **kws)
     end
 
     # Contracts specs for file import plugin
@@ -83,8 +83,8 @@ module Pageflow
     #   module SomePlugin
     #     Pageflow::Lint.file_import(SomePLugin.file_import)
     #   end
-    def self.file_import(*args, **kws)
-      Lint::FileImport.lint(*args, **kws)
+    def self.file_import(*, **kws)
+      Lint::FileImport.lint(*, **kws)
     end
   end
 end

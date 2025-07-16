@@ -16,8 +16,8 @@ module Pageflow
       @file_importers = {}
     end
 
-    def each(&block)
-      @file_importers.values.each(&block)
+    def each(&)
+      @file_importers.values.each(&)
     end
 
     def find_by_name!(name)
@@ -26,8 +26,8 @@ module Pageflow
       end
     end
 
-    def fetch_by_name(name, &block)
-      @file_importers.fetch(name, &block)
+    def fetch_by_name(name, &)
+      @file_importers.fetch(name, &)
     end
   end
 end

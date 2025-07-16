@@ -6,8 +6,8 @@ module PageflowScrolled
       it 'returns 1 by default' do
         entry = create(:entry)
 
-        result = Plugin::FRONTEND_VERSION_SEED_DATA.call(request: request,
-                                                         entry: entry)
+        result = Plugin::FRONTEND_VERSION_SEED_DATA.call(request:,
+                                                         entry:)
 
         expect(result).to eq(1)
       end
@@ -17,7 +17,7 @@ module PageflowScrolled
 
         result = Plugin::FRONTEND_VERSION_SEED_DATA.call(
           request: request('https://example.com/some-entry?frontend=v2'),
-          entry: entry
+          entry:
         )
 
         expect(result).to eq(2)
@@ -26,8 +26,8 @@ module PageflowScrolled
       it 'returns 2 if frontend_v2 feature is enabled for entry' do
         entry = create(:entry, with_feature: 'frontend_v2')
 
-        result = Plugin::FRONTEND_VERSION_SEED_DATA.call(request: request,
-                                                         entry: entry)
+        result = Plugin::FRONTEND_VERSION_SEED_DATA.call(request:,
+                                                         entry:)
 
         expect(result).to eq(2)
       end

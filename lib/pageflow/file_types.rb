@@ -1,5 +1,5 @@
 module Pageflow
-  class FileTypes
+  class FileTypes # rubocop:todo Style/Documentation
     include Enumerable
 
     def initialize
@@ -14,10 +14,10 @@ module Pageflow
       @file_types = []
     end
 
-    def each(&block)
+    def each(&)
       first_level_file_types = trigger_lazy_loading_of_file_types
       lower_level_file_types = search_for_nested_file_types(first_level_file_types)
-      (first_level_file_types + lower_level_file_types).uniq(&:model).each(&block)
+      (first_level_file_types + lower_level_file_types).uniq(&:model).each(&)
     end
 
     def find_by_collection_name!(collection_name)

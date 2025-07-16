@@ -17,7 +17,7 @@ module Pageflow
   #          last_name: 'Doe')
   #   end
   module Seeds
-    DEFAULT_USER_PASSWORD = '!Pass123'
+    DEFAULT_USER_PASSWORD = '!Pass123'.freeze
 
     # Create an {Account} with a default {Site} if no account by
     # that name exists.
@@ -26,7 +26,7 @@ module Pageflow
     # @option attributes [String] :name  required
     # @yield [account] a block to be called before the account is saved
     # @return [Account] newly created account
-    def account(attributes, &block)
+    def account(attributes)
       Account.find_or_create_by!(attributes.slice(:name)) do |account|
         account.attributes = attributes.reverse_merge(name: 'Pageflow')
 
@@ -52,7 +52,7 @@ module Pageflow
     # @param [Hash] attributes  further attributes to override defaults
     # @yield [site] a block which is passed the newly built site
     # @return [Site] newly built site
-    def build_default_site_for(account, attributes = {}, &block)
+    def build_default_site_for(account, attributes = {}, &)
       default_attributes = {
         imprint_link_label: 'Impressum',
         imprint_link_url: 'http://example.com/impressum.html',
@@ -60,7 +60,7 @@ module Pageflow
         copyright_link_url: 'http://www.example.com/copyright.html'
       }
 
-      account.build_default_site(default_attributes.merge(attributes), &block)
+      account.build_default_site(default_attributes.merge(attributes), &)
     end
 
     # Create a {User} if none with the given email exists yet.
@@ -69,7 +69,7 @@ module Pageflow
     # @option attributes [String] :email  required
     # @yield [user] a block to be called before the user is saved
     # @return [User] newly created user
-    def user(attributes, &block)
+    def user(attributes)
       default_attributes = {
         password: default_user_password,
         first_name: 'Elliot',
@@ -146,9 +146,7 @@ module Pageflow
          (attributes[:account].present? && attributes[:entity].present?)
         say_attribute_precedence(':entity', ':entry and :account')
       end
-      unless attributes[:entity].present?
-        entry_or_account_attributes_specified attributes
-      end
+      entry_or_account_attributes_specified attributes unless attributes[:entity].present?
 
       if attributes[:entity].is_a?(Entry) || attributes[:entry].present?
         entry = attributes[:entity] || attributes[:entry]
@@ -173,14 +171,14 @@ module Pageflow
     end
 
     def say_creating_user(user)
-      say(<<-END)
+      say(<<-TEXT)
 
    user with login:
 
    email:     #{user.email}
    password:  #{user.password}
 
-END
+      TEXT
     end
 
     def say_creating_entry(entry)
@@ -188,13 +186,13 @@ END
     end
 
     def say_creating_membership(membership)
-      say("   -- '#{membership.role}' membership for user '#{membership.user.email}' on " +
+      say("   -- '#{membership.role}' membership for user '#{membership.user.email}' on " \
           "#{membership.entity_type == 'Pageflow::Entry' ? 'entry' : 'account'} " +
-          %|'#{if membership.entity_type == "Pageflow::Entry"
+          %('#{if membership.entity_type == 'Pageflow::Entry'
                  membership.entity.title
                else
                  membership.entity.name
-               end}'\n|)
+               end}'\n))
     end
 
     def say_attribute_precedence(subject, object)
@@ -208,9 +206,7 @@ END
     def entry_or_account_attributes_specified(attributes)
       if attributes[:entry].present? || attributes[:account].present?
         attributes[:entity] = attributes[:entry]
-        if attributes[:account].present?
-          say_attribute_precedence(':entry', ':account')
-        end
+        say_attribute_precedence(':entry', ':account') if attributes[:account].present?
       else
         attributes[:entity] = attributes[:account]
       end

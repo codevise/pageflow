@@ -1,5 +1,5 @@
 module Pageflow
-  class TextTrackFile < ApplicationRecord
+  class TextTrackFile < ApplicationRecord # rubocop:todo Style/Documentation
     include UploadableFile
     include ImageAndTextTrackProcessingStateMachine
 

@@ -6,9 +6,9 @@ module FactoryBot
         attachment_path = Pageflow::Engine.root.join('spec',
                                                      'fixtures',
                                                      uploadable_file.file_name)
-        unless File.identical?(attachment_path, uploadable_file.attachment.path)
-          FileUtils.cp(attachment_path, uploadable_file.attachment.path)
-        end
+        return if File.identical?(attachment_path, uploadable_file.attachment.path)
+
+        FileUtils.cp(attachment_path, uploadable_file.attachment.path)
       end
     end
   end

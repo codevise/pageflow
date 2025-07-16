@@ -9,7 +9,7 @@ module Pageflow
       end
 
       after(:create) do |file, evaluator|
-        create(:file_usage, file: file, revision: evaluator.used_in) if evaluator.used_in
+        create(:file_usage, file:, revision: evaluator.used_in) if evaluator.used_in
       end
 
       trait :uploading do

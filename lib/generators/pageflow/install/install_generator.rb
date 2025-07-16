@@ -1,8 +1,8 @@
 module Pageflow
   module Generators
+    # @api private
     class InstallGenerator < Rails::Generators::Base
-
-      desc "Installs Pageflow and generates the necessary migrations."
+      desc 'Installs Pageflow and generates the necessary migrations.'
 
       def generate_all
         generate 'active_admin:install User --skip-users'

@@ -27,17 +27,6 @@ module Pageflow
     end
 
     context 'with processing_state_machine' do
-      class ProcessedTestUploadableFile < ActiveRecord::Base
-        self.table_name = :test_uploadable_files
-        include UploadableFile
-
-        processing_state_machine do
-          event :process do
-            transition any => 'processing'
-          end
-        end
-      end
-
       describe '#publish' do
         it 'triggers process event' do
           uploadable_file = ProcessedTestUploadableFile.create!(attributes_for(:uploadable_file,

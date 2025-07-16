@@ -22,7 +22,7 @@ module Pageflow
 
     it 'finds site by one of multiple additional cname' do
       site = create(:site,
-                       additional_cnames: 'some.example.com, other.example.com,more.example.com')
+                    additional_cnames: 'some.example.com, other.example.com,more.example.com')
       request = double('Request', host: 'other.example.com')
 
       result = CnameSiteRequestScope.new.call(Site, request)

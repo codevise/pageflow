@@ -7,7 +7,7 @@ module Pageflow
     describe '#file_thumbnails_css' do
       it 'renders link thumbnail rule for image files of revision' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
 
         result = helper.file_thumbnails_css(entry)
 
@@ -16,25 +16,29 @@ module Pageflow
 
       it 'renders large link thumbnail rule for image files of revision' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
 
         result = helper.file_thumbnails_css(entry)
 
-        expect(result).to include(".pageflow_image_file_link_thumbnail_large_#{image_file.perma_id}")
+        expect(result).to include(
+          ".pageflow_image_file_link_thumbnail_large_#{image_file.perma_id}"
+        )
       end
 
       it 'renders lazy loaded variants' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
 
         result = helper.file_thumbnails_css(entry)
 
-        expect(result).to include(".load_image.lazy_pageflow_image_file_link_thumbnail_#{image_file.perma_id}")
+        expect(result).to include(
+          ".load_image.lazy_pageflow_image_file_link_thumbnail_#{image_file.perma_id}"
+        )
       end
 
       it 'renders link thumbnail rule for video files of revision' do
         entry = PublishedEntry.new(create(:entry, :published))
-        video_file = create_used_file(:video_file, entry: entry)
+        video_file = create_used_file(:video_file, entry:)
 
         result = helper.file_thumbnails_css(entry)
 
@@ -43,7 +47,7 @@ module Pageflow
 
       it 'skips file types that do not support thumbnails' do
         entry = PublishedEntry.new(create(:entry, :published))
-        audio_file = create_used_file(:audio_file, entry: entry)
+        audio_file = create_used_file(:audio_file, entry:)
 
         result = helper.file_thumbnails_css(entry)
 

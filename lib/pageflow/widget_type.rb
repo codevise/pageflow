@@ -1,5 +1,5 @@
 module Pageflow
-  class WidgetType
+  class WidgetType # rubocop:todo Style/Documentation
     class NotFoundError < RuntimeError
     end
 
@@ -44,7 +44,7 @@ module Pageflow
 
     # Override to return html as string.
     def render(template, entry)
-      template.render(File.join('pageflow', name, 'widget'), entry: entry)
+      template.render(File.join('pageflow', name, 'widget'), entry:)
     end
 
     # Override instead of render_head_fragment to use the widget
@@ -56,11 +56,11 @@ module Pageflow
 
     # Override to return html that should be placed in the head
     # element of the page. Not supported inside the editor.
-    def render_head_fragment(template, entry)
+    def render_head_fragment(_template, _entry)
       ''
     end
 
-    class Null < WidgetType
+    class Null < WidgetType # rubocop:todo Style/Documentation
       def initialize(role)
         @role = role
       end

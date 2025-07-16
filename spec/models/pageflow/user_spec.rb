@@ -4,26 +4,27 @@ module Pageflow
   describe User do
     describe '#update_with_password' do
       it 'allows to update profile attributes without password' do
-        user = create(:user, :first_name => 'John', :last_name => 'J.')
+        user = create(:user, first_name: 'John', last_name: 'J.')
 
-        user.update_with_password(:first_name => 'Danny', :last_name => 'D.')
+        user.update_with_password(first_name: 'Danny', last_name: 'D.')
 
         expect(user.first_name).to eq('Danny')
         expect(user.last_name).to eq('D.')
       end
 
       it 'allows to update password when given current password' do
-        user = create(:user, :password => '@qwert123')
+        user = create(:user, password: '@qwert123')
 
-        user.update_with_password(:current_password => '@qwert123', :password => '@new12345', :password_confirmation => '@new12345')
+        user.update_with_password(current_password: '@qwert123', password: '@new12345',
+                                  password_confirmation: '@new12345')
 
         expect(user.errors).to be_empty
       end
 
       it 'does not allow to update password without current password' do
-        user = create(:user, :password => '@qwert123')
+        user = create(:user, password: '@qwert123')
 
-        user.update_with_password(:password => '@new12345', :password_confirmation => '@new12345')
+        user.update_with_password(password: '@new12345', password_confirmation: '@new12345')
 
         expect(user.errors).not_to be_empty
       end
@@ -39,7 +40,7 @@ module Pageflow
 
     describe '#destroy_with_password' do
       it 'allows to destroy the user when given current password' do
-        user = create(:user, :password => '@qwert123')
+        user = create(:user, password: '@qwert123')
 
         user.destroy_with_password('@qwert123')
 
@@ -48,7 +49,7 @@ module Pageflow
 
       context 'without correct password' do
         it 'adds error on the current_password' do
-          user = create(:user, :password => '@qwert123')
+          user = create(:user, password: '@qwert123')
 
           user.destroy_with_password('wrong')
 
@@ -56,7 +57,7 @@ module Pageflow
         end
 
         it 'does not allow to destroy the user when given wrong password' do
-          user = create(:user, :password => '@qwert123')
+          user = create(:user, password: '@qwert123')
 
           user.destroy_with_password('wrong')
 

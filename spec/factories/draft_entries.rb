@@ -16,13 +16,13 @@ module Pageflow
 
       initialize_with do
         DraftEntry.new(create(:entry,
-                              title: title,
-                              account: account,
-                              site: site,
-                              type_name: type_name,
+                              title:,
+                              account:,
+                              site:,
+                              type_name:,
                               draft_attributes: revision_attributes,
-                              with_feature: with_feature,
-                              without_feature: without_feature))
+                              with_feature:,
+                              without_feature:))
       end
 
       to_create { |draft_entry| draft_entry.entry.save! }

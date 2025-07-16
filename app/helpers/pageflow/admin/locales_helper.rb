@@ -1,11 +1,11 @@
 module Pageflow
   module Admin
-    module LocalesHelper
+    module LocalesHelper # rubocop:todo Style/Documentation
       include Pageflow::PublicI18n::LocalesHelper
 
       def available_locales_collection
         Pageflow.config.available_locales.map do |locale|
-          [I18n.t('language', locale: locale), locale.to_s]
+          [I18n.t('language', locale:), locale.to_s]
         end
       end
 

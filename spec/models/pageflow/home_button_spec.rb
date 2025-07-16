@@ -14,8 +14,8 @@ module Pageflow
       it 'falls back to cname of site if site has home_url' do
         revision = build(:revision, configuration: {home_url: ''})
         site = create(:site,
-                         cname: 'pageflow.example.com',
-                         home_url: 'http://example.com')
+                      cname: 'pageflow.example.com',
+                      home_url: 'http://example.com')
         home_button = HomeButton.new(revision, site)
 
         expect(home_button.url).to eq('http://pageflow.example.com/')
@@ -50,8 +50,8 @@ module Pageflow
                          },
                          theme_name: 'with_home_button')
         site = create(:site,
-                         home_url: 'http://example.com',
-                         cname: 'pageflow.exmaple.com')
+                      home_url: 'http://example.com',
+                      cname: 'pageflow.exmaple.com')
         home_button = HomeButton.new(revision, site)
 
         expect(home_button).to be_enabled

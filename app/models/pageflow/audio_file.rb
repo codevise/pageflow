@@ -1,5 +1,5 @@
 module Pageflow
-  class AudioFile < ApplicationRecord
+  class AudioFile < ApplicationRecord # rubocop:todo Style/Documentation
     include UploadableFile
     include MediaEncodingStateMachine
 
@@ -21,15 +21,15 @@ module Pageflow
     end
 
     def m4a
-      ZencoderAttachment.new(self, "audio.m4a")
+      ZencoderAttachment.new(self, 'audio.m4a')
     end
 
     def mp3
-      ZencoderAttachment.new(self, "audio.mp3")
+      ZencoderAttachment.new(self, 'audio.mp3')
     end
 
     def ogg
-      ZencoderAttachment.new(self, "audio.ogg")
+      ZencoderAttachment.new(self, 'audio.ogg')
     end
 
     def output_definition

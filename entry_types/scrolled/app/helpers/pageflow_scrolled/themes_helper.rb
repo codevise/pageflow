@@ -110,6 +110,7 @@ module PageflowScrolled
 
       def selector(rule_name)
         return ':root' if rule_name == :root
+
         ".#{@prefix}-#{rule_name.to_s.camelize(:lower)}"
       end
     end

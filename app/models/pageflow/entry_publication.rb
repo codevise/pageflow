@@ -1,5 +1,5 @@
 module Pageflow
-  class EntryPublication
+  class EntryPublication # rubocop:todo Style/Documentation
     attr_reader :entry, :attributes, :quota, :user
 
     def initialize(entry, attributes, published_entries_quota, user)
@@ -17,7 +17,7 @@ module Pageflow
       assumed_quota.verify_not_exceeded!
       entry.publish(attributes.merge(creator: user))
 
-      Pageflow.config.hooks.invoke(:entry_published, entry: entry)
+      Pageflow.config.hooks.invoke(:entry_published, entry:)
     end
 
     private

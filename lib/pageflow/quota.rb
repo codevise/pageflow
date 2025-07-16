@@ -1,6 +1,6 @@
 module Pageflow
-  class Quota
-    class ExhaustedError < RuntimeError
+  class Quota # rubocop:todo Style/Documentation
+    class ExhaustedError < RuntimeError # rubocop:todo Style/Documentation
       attr_reader :quota
 
       def initialize(quota)
@@ -18,7 +18,11 @@ module Pageflow
     end
 
     def state
-      raise(NotImplementedError, 'Quota#state must be implemented and return either "available", "exhausted" or "exceeded".')
+      raise(
+        NotImplementedError,
+        'Quota#state must be implemented and return either ' \
+        '"available", "exhausted" or "exceeded".'
+      )
     end
 
     def state_description
@@ -45,11 +49,11 @@ module Pageflow
       raise(ExceededError.new(self), "Quota '#{name}' exceeded.") if exceeded?
     end
 
-    def assume(assumptions)
+    def assume(_assumptions)
       self
     end
 
-    class Unlimited < Quota
+    class Unlimited < Quota # rubocop:todo Style/Documentation
       def state
         'available'
       end

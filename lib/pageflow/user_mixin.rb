@@ -34,11 +34,11 @@ module Pageflow
     end
 
     def full_name
-      [first_name, last_name] * ' '
+      [first_name, last_name].join(' ')
     end
 
     def formal_name
-      [last_name, first_name] * ', '
+      [last_name, first_name].join(', ')
     end
 
     def locale
@@ -47,7 +47,7 @@ module Pageflow
 
     def update_with_password(attributes)
       if needs_password?(attributes)
-        super(attributes)
+        super
       else
         # remove the virtual current_password attribute update_without_password
         # doesn't know how to ignore it
@@ -66,11 +66,11 @@ module Pageflow
     end
 
     # Configure devise to send emails using ActiveJob.
-    def send_devise_notification(notification, *args)
-      devise_mailer.send(notification, self, *args).deliver_later
+    def send_devise_notification(notification, *)
+      devise_mailer.send(notification, self, *).deliver_later
     end
 
-    module ClassMethods
+    module ClassMethods # rubocop:todo Style/Documentation
       def ransackable_attributes(_auth_object = nil)
         %w[first_name last_name email]
       end

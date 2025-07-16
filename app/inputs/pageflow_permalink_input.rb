@@ -1,3 +1,4 @@
+# @api private
 class PageflowPermalinkInput
   include Formtastic::Inputs::Base
   include Formtastic::Inputs::Base::Stringish

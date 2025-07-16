@@ -39,7 +39,7 @@ module PageflowScrolled
     def paths_for_content_element_types(entry, type_names)
       packs_matching_conditions(entry).reject { |pack|
         pack.content_element_type_names.present? &&
-          (pack.content_element_type_names & type_names).empty?
+          !pack.content_element_type_names.intersect?(type_names)
       }.map(&:path)
     end
 

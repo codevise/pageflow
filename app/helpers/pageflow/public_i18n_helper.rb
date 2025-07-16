@@ -1,5 +1,5 @@
 module Pageflow
-  module PublicI18nHelper
+  module PublicI18nHelper # rubocop:todo Style/Documentation
     def public_i18n_javascript_tag(entry)
       render('pageflow/public_i18n/javascript_tag',
              entry_locale: entry.locale,

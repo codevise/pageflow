@@ -6,7 +6,7 @@ module Pageflow
       it 'returns list of equal or stronger roles' do
         result = Roles.at_least(:publisher)
 
-        expect(result).to eq(%w(publisher manager))
+        expect(result).to eq(%w[publisher manager])
       end
     end
 
@@ -14,7 +14,7 @@ module Pageflow
       it 'returns role on account when higher' do
         user = create(:user)
         account = create(:account, with_manager: user)
-        entry = create(:entry, with_publisher: user, account: account)
+        entry = create(:entry, with_publisher: user, account:)
 
         expect(Roles.high(user, entry)).to eq(:manager)
       end
@@ -22,7 +22,7 @@ module Pageflow
       it 'returns role on entry when higher' do
         user = create(:user)
         account = create(:account, with_member: user)
-        entry = create(:entry, with_previewer: user, account: account)
+        entry = create(:entry, with_previewer: user, account:)
 
         expect(Roles.high(user, entry)).to eq(:previewer)
       end
@@ -30,7 +30,7 @@ module Pageflow
       it 'returns correct role when account and entry role are equal' do
         user = create(:user)
         account = create(:account, with_editor: user)
-        entry = create(:entry, with_editor: user, account: account)
+        entry = create(:entry, with_editor: user, account:)
 
         expect(Roles.high(user, entry)).to eq(:editor)
       end
@@ -38,7 +38,7 @@ module Pageflow
       it 'returns correct role when only account role exists' do
         user = create(:user)
         account = create(:account, with_member: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         expect(Roles.high(user, entry)).to eq(:member)
       end
@@ -48,7 +48,7 @@ module Pageflow
         account = create(:account)
         entry = create(:entry, with_editor: user)
 
-        entry.update!(account: account)
+        entry.update!(account:)
 
         expect(Roles.high(user, entry)).to eq(:editor)
       end

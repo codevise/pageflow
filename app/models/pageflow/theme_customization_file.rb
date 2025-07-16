@@ -20,6 +20,7 @@ module Pageflow
     class AttachmentContentTypeValidator < Paperclip::Validators::AttachmentContentTypeValidator
       def validate_whitelist(record, attribute, value)
         return if value =~ record.options_from_entry_type[:content_type]
+
         record.errors.add(attribute, :invalid)
       end
 
@@ -39,9 +40,9 @@ module Pageflow
     # A hash of urls based on the styles that were defined when
     # registering the entry type.
     def urls
-      styles_from_options.map { |style, _|
+      styles_from_options.to_h do |style, _|
         [style, attachment.url(style)]
-      }.to_h
+      end
     end
 
     # @api private

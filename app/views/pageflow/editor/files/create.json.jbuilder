@@ -1,1 +1,1 @@
-json.partial!(partial: 'pageflow/editor/files/file', object: @file, locals: {file_type: file_type})
+json.partial!(partial: 'pageflow/editor/files/file', object: @file, locals: {file_type:})

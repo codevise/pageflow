@@ -1,5 +1,5 @@
 module Pageflow
-  class EntryTemplate < ApplicationRecord
+  class EntryTemplate < ApplicationRecord # rubocop:todo Style/Documentation
     include ThemeReferencer
     include SerializedConfiguration
 
@@ -55,8 +55,8 @@ module Pageflow
         publisher: default_publisher.presence || Pageflow.config.default_publisher_meta_tag,
         keywords: default_keywords.presence || Pageflow.config.default_keywords_meta_tag,
         share_providers: default_share_providers,
-        theme_name: theme_name,
-        configuration: configuration,
+        theme_name:,
+        configuration:,
         locale: default_locale
       )
     end
@@ -66,7 +66,7 @@ module Pageflow
     end
 
     def hashify_provider_array(arr)
-      Hash[arr.reject(&:blank?).map { |v| [v.to_s, true] }]
+      arr.reject(&:blank?).to_h { |v| [v.to_s, true] }
     end
   end
 end

@@ -10,8 +10,8 @@ module PageflowScrolled
 
         result = 'initial value'
 
-        helper.cache_scrolled_entry(entry: entry, widget_scope: :published) { result = 'old value' }
-        helper.cache_scrolled_entry(entry: entry, widget_scope: :published) { result = 'new value' }
+        helper.cache_scrolled_entry(entry:, widget_scope: :published) { result = 'old value' }
+        helper.cache_scrolled_entry(entry:, widget_scope: :published) { result = 'new value' }
 
         expect(result).to eq('old value')
       end
@@ -21,8 +21,8 @@ module PageflowScrolled
 
         result = 'initial value'
 
-        helper.cache_scrolled_entry(entry: entry, widget_scope: :published) { result = 'old value' }
-        helper.cache_scrolled_entry(entry: entry, widget_scope: :published) { result = 'new value' }
+        helper.cache_scrolled_entry(entry:, widget_scope: :published) { result = 'old value' }
+        helper.cache_scrolled_entry(entry:, widget_scope: :published) { result = 'new value' }
 
         expect(result).to eq('new value')
       end
@@ -34,8 +34,8 @@ module PageflowScrolled
 
         result = 'initial value'
 
-        helper.cache_scrolled_entry(entry: entry, widget_scope: :editor) { result = 'old value' }
-        helper.cache_scrolled_entry(entry: entry, widget_scope: :editor) { result = 'new value' }
+        helper.cache_scrolled_entry(entry:, widget_scope: :editor) { result = 'old value' }
+        helper.cache_scrolled_entry(entry:, widget_scope: :editor) { result = 'new value' }
 
         expect(result).to eq('new value')
       end
@@ -47,14 +47,14 @@ module PageflowScrolled
         result = 'initial value'
         published_result = 'initial value'
 
-        helper.cache_scrolled_entry(entry: entry, widget_scope: :published) do
+        helper.cache_scrolled_entry(entry:, widget_scope: :published) do
           result = 'oldest value', published_result = 'oldest value'
         end
-        helper.cache_scrolled_entry(entry: entry, widget_scope: :editor) { result = 'old value' }
-        helper.cache_scrolled_entry(entry: entry, widget_scope: :published) do
+        helper.cache_scrolled_entry(entry:, widget_scope: :editor) { result = 'old value' }
+        helper.cache_scrolled_entry(entry:, widget_scope: :published) do
           result = 'new value', published_result = 'new value'
         end
-        helper.cache_scrolled_entry(entry: entry, widget_scope: :editor) { result = 'newest value' }
+        helper.cache_scrolled_entry(entry:, widget_scope: :editor) { result = 'newest value' }
 
         expect(result).to eq('newest value')
         expect(published_result).to eq('oldest value')

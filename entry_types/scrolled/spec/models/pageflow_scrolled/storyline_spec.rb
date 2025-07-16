@@ -12,7 +12,7 @@ module PageflowScrolled
       it 'copies a duplicate of itself to new revision' do
         Pageflow.config.revision_components.register(Storyline)
         revision = create(:revision)
-        storyline = Storyline.create!(revision: revision,
+        storyline = Storyline.create!(revision:,
                                       configuration: {'some' => 'value'})
 
         copied_revision = revision.copy
@@ -27,9 +27,9 @@ module PageflowScrolled
     describe '#copy_to' do
       it 'copies chapters to new revision' do
         revision = create(:revision)
-        storyline = create(:scrolled_storyline, revision: revision)
+        storyline = create(:scrolled_storyline, revision:)
         chapter = create(:scrolled_chapter,
-                         storyline: storyline,
+                         storyline:,
                          configuration: {'title' => 'Intro chapter'})
 
         other_revision = create(:revision)
@@ -44,10 +44,10 @@ module PageflowScrolled
 
       it 'copies sections to new revision' do
         revision = create(:revision)
-        storyline = create(:scrolled_storyline, revision: revision)
-        chapter = create(:scrolled_chapter, storyline: storyline)
+        storyline = create(:scrolled_storyline, revision:)
+        chapter = create(:scrolled_chapter, storyline:)
         section = create(:section,
-                         chapter: chapter,
+                         chapter:,
                          configuration: {transition: 'beam'})
 
         other_revision = create(:revision)
@@ -62,11 +62,11 @@ module PageflowScrolled
 
       it 'copies content elements to new revision' do
         revision = create(:revision)
-        storyline = create(:scrolled_storyline, revision: revision)
-        chapter = create(:scrolled_chapter, storyline: storyline)
-        section = create(:section, chapter: chapter)
+        storyline = create(:scrolled_storyline, revision:)
+        chapter = create(:scrolled_chapter, storyline:)
+        section = create(:section, chapter:)
         content_element = create(:content_element, :heading,
-                                 section: section,
+                                 section:,
                                  configuration: {children: 'Introduction'})
 
         other_revision = create(:revision)

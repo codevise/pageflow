@@ -8,7 +8,7 @@ module Pageflow
     def structured_data_for_entry(entry)
       content_tag(:script, type: 'application/ld+json') do
         render_json_partial('pageflow/structured_data/entry',
-                            entry: entry,
+                            entry:,
                             meta_data: meta_tags_data_for_entry(entry))
       end
     end

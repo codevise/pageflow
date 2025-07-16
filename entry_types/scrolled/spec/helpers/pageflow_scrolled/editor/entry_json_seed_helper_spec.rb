@@ -44,13 +44,13 @@ module PageflowScrolled
                                entries: [],
                                chapters: [{id: chapter.id}],
                                sections: [{id: section.id}],
-                               contentElements: [{id: content_element.id}],
+                               contentElements: [{id: content_element.id}]
                              })
         end
 
         it 'does not render files' do
           entry = create(:draft_entry, type_name: 'scrolled')
-          create_used_file(:image_file, entry: entry)
+          create_used_file(:image_file, entry:)
 
           result = render(helper, entry)
 

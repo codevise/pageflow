@@ -16,7 +16,7 @@ module Pageflow
           archive = ZipArchive.new(archive_file_name)
           archive.add(AttachmentFiles.archive_path(image_file,
                                                    image_file.attachment,
-                                                   exported_id: exported_id),
+                                                   exported_id:),
                       fixture_file)
           archive.close
 

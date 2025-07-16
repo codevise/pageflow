@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   module MediaEncodingStateMachine
     extend ActiveSupport::Concern
 
@@ -55,11 +56,11 @@ module Pageflow
         end
 
         after_transition 'waiting_for_confirmation' => 'waiting_for_encoding' do |file|
-          Pageflow.config.hooks.invoke(:file_encoding_confirmed, file: file)
+          Pageflow.config.hooks.invoke(:file_encoding_confirmed, file:)
         end
 
         after_transition any => 'waiting_for_encoding' do |file|
-          Pageflow.config.hooks.invoke(:file_encoding, file: file)
+          Pageflow.config.hooks.invoke(:file_encoding, file:)
         end
 
         job SubmitFileToZencoderJob do
@@ -76,11 +77,11 @@ module Pageflow
         end
 
         after_transition any => 'encoded' do |file|
-          Pageflow.config.hooks.invoke(:file_encoded, file: file)
+          Pageflow.config.hooks.invoke(:file_encoded, file:)
         end
 
         after_transition any => 'encoding_failed' do |file|
-          Pageflow.config.hooks.invoke(:file_encoding_failed, file: file)
+          Pageflow.config.hooks.invoke(:file_encoding_failed, file:)
         end
       end
     end

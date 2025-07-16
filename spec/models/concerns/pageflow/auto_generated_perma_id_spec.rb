@@ -29,7 +29,7 @@ module Pageflow
 
         expect {
           instance.save!
-        }.not_to change { instance.perma_id }
+        }.not_to(change { instance.perma_id })
       end
     end
   end

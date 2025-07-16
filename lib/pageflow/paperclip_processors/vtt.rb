@@ -3,6 +3,7 @@ require 'fileutils'
 
 module Pageflow
   module PaperclipProcessors
+    # @api private
     class Vtt < Paperclip::Processor
       def make
         destination = make_tempfile_for(file.path)

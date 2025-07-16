@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class EntryTemplatePolicy < ApplicationPolicy
     def initialize(user, entry_template)
       @user = user
@@ -10,7 +11,7 @@ module Pageflow
     end
 
     def update?
-      allows?(%w(publisher manager))
+      allows?(%w[publisher manager])
     end
 
     private

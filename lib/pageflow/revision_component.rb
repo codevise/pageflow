@@ -27,7 +27,7 @@ module Pageflow
       copy_nested_revision_component_to(record)
     end
 
-    module ClassMethods
+    module ClassMethods # rubocop:todo Style/Documentation
       # Recommended way to create revision components. Uses an
       # advisory lock to ensure concurrently created records are not
       # assigned the same perma id.
@@ -44,24 +44,24 @@ module Pageflow
       def from_perma_ids(revision, perma_ids)
         return [] if revision.blank? || perma_ids.blank?
 
-        perma_ids.map do |perma_id|
+        perma_ids.map { |perma_id|
           find_by_revision_id_and_perma_id(revision.id, perma_id)
-        end.compact
+        }.compact
       end
 
       private
 
-      def with_advisory_lock_for_perma_id_generation!(&block)
-        r = with_advisory_lock_result_for_perma_id_generation(&block)
+      def with_advisory_lock_for_perma_id_generation!(&)
+        r = with_advisory_lock_result_for_perma_id_generation(&)
         raise(PermaIdGenerationAdvisoryLockTimeout) unless r.lock_was_acquired?
 
         r.result
       end
 
-      def with_advisory_lock_result_for_perma_id_generation(&block)
+      def with_advisory_lock_result_for_perma_id_generation(&)
         with_advisory_lock_result("#{table_name}_perma_id",
                                   timeout_seconds: ADVISORY_LOCK_TIMEOUT_SECONDS,
-                                  &block)
+                                  &)
       end
     end
   end

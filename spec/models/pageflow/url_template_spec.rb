@@ -7,7 +7,7 @@ module Pageflow
         Class.new(ActiveRecord::Base) {
           self.table_name = 'pageflow_pages'
 
-          has_attached_file(:thumbnail, url: url)
+          has_attached_file(:thumbnail, url:)
           attr_accessor(:thumbnail_file_name)
 
           def self.name

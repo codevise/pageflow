@@ -28,22 +28,30 @@ module Pageflow
       end
 
       after(:create) do |entry, evaluator|
-        create(:membership,
-               entity: entry,
-               user: evaluator.with_previewer,
-               role: :previewer) if evaluator.with_previewer
-        create(:membership,
-               entity: entry,
-               user: evaluator.with_editor,
-               role: :editor) if evaluator.with_editor
-        create(:membership,
-               entity: entry,
-               user: evaluator.with_publisher,
-               role: :publisher) if evaluator.with_publisher
-        create(:membership,
-               entity: entry,
-               user: evaluator.with_manager,
-               role: :manager) if evaluator.with_manager
+        if evaluator.with_previewer
+          create(:membership,
+                 entity: entry,
+                 user: evaluator.with_previewer,
+                 role: :previewer)
+        end
+        if evaluator.with_editor
+          create(:membership,
+                 entity: entry,
+                 user: evaluator.with_editor,
+                 role: :editor)
+        end
+        if evaluator.with_publisher
+          create(:membership,
+                 entity: entry,
+                 user: evaluator.with_publisher,
+                 role: :publisher)
+        end
+        if evaluator.with_manager
+          create(:membership,
+                 entity: entry,
+                 user: evaluator.with_manager,
+                 role: :manager)
+        end
 
         entry.draft.update!(evaluator.draft_attributes) if evaluator.draft_attributes
       end
@@ -79,7 +87,7 @@ module Pageflow
 
         after(:create) do |entry, evaluator|
           create(:revision, :published,
-                 evaluator.published_revision_attributes.merge(entry: entry))
+                 evaluator.published_revision_attributes.merge(entry:))
         end
       end
 
@@ -94,7 +102,7 @@ module Pageflow
           create(:revision,
                  :published,
                  evaluator.published_revision_attributes.merge(
-                   entry: entry,
+                   entry:,
                    password_protected: true
                  ))
         end
@@ -111,7 +119,7 @@ module Pageflow
           create(:revision,
                  :published,
                  evaluator.published_revision_attributes.merge(
-                   entry: entry,
+                   entry:,
                    noindex: true
                  ))
         end

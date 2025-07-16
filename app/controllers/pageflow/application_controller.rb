@@ -2,11 +2,15 @@ require 'cancan'
 require 'state_machines'
 
 module Pageflow
+  # @api private
   class ApplicationController < ActionController::Base
     layout 'pageflow/application'
 
     before_action do
-      I18n.locale = current_user.try(:locale) || locale_from_accept_language_header || I18n.default_locale
+      I18n.locale =
+        current_user.try(:locale) ||
+        locale_from_accept_language_header ||
+        I18n.default_locale
     end
 
     # Prevent CSRF attacks by raising an exception.
@@ -32,7 +36,7 @@ module Pageflow
     rescue_from CanCan::AccessDenied do |exception|
       debug_log_with_backtrace(exception)
       respond_to do |format|
-        format.html { redirect_to main_app.admin_root_path, :alert => t('pageflow.unauthorized') }
+        format.html { redirect_to main_app.admin_root_path, alert: t('pageflow.unauthorized') }
         format.any(:json, :css) { head :forbidden }
       end
     end
@@ -40,7 +44,9 @@ module Pageflow
     rescue_from StateMachines::InvalidTransition do |exception|
       debug_log_with_backtrace(exception)
       respond_to do |format|
-        format.html { redirect_to main_app.admin_root_path, :alert => t('pageflow.invalid_transition') }
+        format.html do
+          redirect_to main_app.admin_root_path, alert: t('pageflow.invalid_transition')
+        end
         format.json { head :bad_request }
       end
     end

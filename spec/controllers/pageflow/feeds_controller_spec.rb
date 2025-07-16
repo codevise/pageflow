@@ -13,7 +13,7 @@ module Pageflow
         create(:entry,
                :published,
                title: 'story one',
-               site: site,
+               site:,
                published_revision_attributes: {
                  title: 'Story One',
                  locale: 'en',
@@ -21,21 +21,21 @@ module Pageflow
                })
         create(:entry,
                :published,
-               site: site,
+               site:,
                published_revision_attributes: {
                  title: 'Story Two',
                  locale: 'en'
                })
         create(:entry,
                :published,
-               site: site,
+               site:,
                published_revision_attributes: {
                  title: 'Story Three',
                  locale: 'en'
                })
         create(:entry,
                :published,
-               site: site,
+               site:,
                published_revision_attributes: {
                  title: 'Story Three',
                  locale: 'en'
@@ -89,7 +89,7 @@ module Pageflow
         site = create(:site, cname: 'pageflow.example.com')
         create(:entry,
                :published,
-               site: site,
+               site:,
                permalink_attributes: {slug: 'custom-slug'},
                published_revision_attributes: {locale: 'en'})
 
@@ -104,11 +104,11 @@ module Pageflow
       it 'includes social share image in content' do
         site = create(:site, cname: 'pageflow.example.com')
         entry = create(:published_entry,
-                       site: site,
+                       site:,
                        revision_attributes: {
                          locale: 'en'
                        })
-        image_file = create_used_file(:image_file, entry: entry, file_name: 'share.jpg')
+        image_file = create_used_file(:image_file, entry:, file_name: 'share.jpg')
         entry.revision.update(share_image_id: image_file.perma_id)
 
         request.env['HTTP_HOST'] = 'pageflow.example.com'
@@ -124,7 +124,7 @@ module Pageflow
         create(:entry,
                :published,
                title: 'Story One',
-               site: site,
+               site:,
                published_revision_attributes: {
                  locale: 'en'
                })
@@ -143,7 +143,7 @@ module Pageflow
         site = create(:site, cname: 'pageflow.example.com')
         create(:entry,
                :published,
-               site: site,
+               site:,
                first_published_at: first_publication_date,
                published_revision_attributes: {
                  locale: 'en',
@@ -163,7 +163,7 @@ module Pageflow
         site = create(:site, cname: 'pageflow.example.com')
         create(:entry,
                :published,
-               site: site,
+               site:,
                published_revision_attributes: {
                  locale: 'en',
                  author: 'Alice Adminson, Alina Publisha, Ed Edison'
@@ -180,14 +180,14 @@ module Pageflow
         site = create(:site, cname: 'pageflow.example.com')
         create(:entry,
                :published,
-               site: site,
+               site:,
                published_revision_attributes: {
                  title: 'Story One',
                  locale: 'en'
                })
         create(:entry,
                :published,
-               site: site,
+               site:,
                published_revision_attributes: {
                  title: 'Story Eins',
                  locale: 'de'
@@ -206,7 +206,7 @@ module Pageflow
         other_site = create(:site, cname: 'pageflow.example.com')
         create(:entry,
                :published,
-               site: site,
+               site:,
                published_revision_attributes: {
                  title: 'Story One',
                  locale: 'en'
@@ -229,14 +229,14 @@ module Pageflow
       it 'filters out unpublished or password protected entries' do
         site = create(:site, cname: 'pageflow.example.com')
         create(:entry,
-               site: site,
+               site:,
                draft_attributes: {
                  title: 'Unfinished Story',
                  locale: 'en'
                })
         create(:entry,
                :published_with_password,
-               site: site,
+               site:,
                published_revision_attributes: {
                  title: 'Secret',
                  locale: 'en'
@@ -252,7 +252,7 @@ module Pageflow
         site = create(:site, cname: 'pageflow.example.com')
         create(:entry,
                :published,
-               site: site,
+               site:,
                published_revision_attributes: {
                  title: 'Story One',
                  locale: 'en'
@@ -270,7 +270,7 @@ module Pageflow
                       feeds_enabled: false)
         create(:entry,
                :published,
-               site: site,
+               site:,
                published_revision_attributes: {
                  title: 'Story One',
                  locale: 'en'

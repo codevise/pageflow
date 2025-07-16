@@ -11,7 +11,7 @@ module PageflowScrolled
       Pageflow::EntryType.new(name: 'scrolled',
                               frontend_app: PageflowScrolled::EntriesController.action(:show),
                               configuration: PageflowScrolled::Configuration,
-                              editor_fragment_renderer: editor_fragment_renderer,
+                              editor_fragment_renderer:,
                               editor_app: PageflowScrolled::Engine,
                               web_app_manifest: PageflowScrolled::WebAppManifest,
                               theme_files: {

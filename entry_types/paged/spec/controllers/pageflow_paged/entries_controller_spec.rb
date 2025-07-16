@@ -24,7 +24,7 @@ module PageflowPaged
         create(:page, revision: entry.published_revision)
         create(:page, revision: entry.published_revision)
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('.first_page', count: 1)
       end
@@ -40,7 +40,7 @@ module PageflowPaged
         entry = create(:entry, :published)
         create(:widget, subject: entry.published_revision, type_name: 'test_widget')
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('#outer_wrapper > div.test_widget')
       end
@@ -57,7 +57,7 @@ module PageflowPaged
         entry = create(:entry, :published)
         create(:widget, subject: entry.published_revision, type_name: 'test_widget')
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('body > div.test_widget')
       end
@@ -75,7 +75,7 @@ module PageflowPaged
         entry = create(:entry, :published)
         create(:widget, subject: entry.published_revision, type_name: 'test_widget')
 
-        get_with_entry_env(:show, entry: entry, mode: :published)
+        get_with_entry_env(:show, entry:, mode: :published)
 
         expect(response.body).to have_selector('div.test_widget')
       end
@@ -95,7 +95,7 @@ module PageflowPaged
         entry = create(:entry, :published)
         create(:page, revision: entry.published_revision, template: 'test')
 
-        get_with_entry_env(:show, entry: entry, mode: :published)
+        get_with_entry_env(:show, entry:, mode: :published)
 
         expect(response.body).to have_selector('div.record')
       end
@@ -115,7 +115,7 @@ module PageflowPaged
           entry = create(:entry)
           create(:widget, subject: entry.draft, type_name: 'test_widget')
 
-          get_with_entry_env(:show, entry: entry, mode: :preview)
+          get_with_entry_env(:show, entry:, mode: :preview)
 
           expect(response.body).to have_selector('div.test_widget')
           expect(response.body).to have_meta_tag.with_name('some_test')
@@ -135,7 +135,7 @@ module PageflowPaged
           entry = create(:entry)
           create(:widget, subject: entry.draft, type_name: 'test_widget')
 
-          get_with_entry_env(:show, entry: entry, mode: :preview)
+          get_with_entry_env(:show, entry:, mode: :preview)
 
           expect(response.body).not_to have_selector('div.test_widget')
         end
@@ -153,7 +153,7 @@ module PageflowPaged
         entry = create(:entry, :published)
         create(:widget, subject: entry.published_revision, type_name: 'test_widget')
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_meta_tag.with_name('some_test')
       end
@@ -161,7 +161,7 @@ module PageflowPaged
       it 'renders structured data for entry' do
         entry = create(:entry, :published)
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_json_ld('@type' => 'Article')
       end
@@ -169,7 +169,7 @@ module PageflowPaged
       it 'does not render structured data if feature is disabled' do
         entry = create(:entry, :published, without_feature: 'structured_data')
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).not_to have_json_ld('@type' => 'Article')
       end
@@ -177,7 +177,7 @@ module PageflowPaged
       it 'renders feed link' do
         entry = create(:entry, :published)
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('link[type="application/atom+xml"]',
                                                visible: false)
@@ -186,7 +186,7 @@ module PageflowPaged
       it 'uses locale of entry' do
         entry = create(:entry, :published, published_revision_attributes: {locale: 'de'})
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry:)
 
         expect(response.body).to have_selector('html[lang=de]')
       end
@@ -195,10 +195,10 @@ module PageflowPaged
         it 'renders social sharing meta tags for page' do
           entry = create(:entry, :published)
           storyline = create(:storyline, revision: entry.published_revision)
-          chapter = create(:chapter, storyline: storyline)
-          page = create(:page, configuration: {title: 'Shared page'}, chapter: chapter)
+          chapter = create(:chapter, storyline:)
+          page = create(:page, configuration: {title: 'Shared page'}, chapter:)
 
-          get_with_entry_env(:show, entry: entry, params: {page: page.perma_id})
+          get_with_entry_env(:show, entry:, params: {page: page.perma_id})
 
           expect(response.body).to have_meta_tag
             .for_property('og:title')
@@ -210,7 +210,7 @@ module PageflowPaged
                          :published,
                          published_revision_attributes: {title: 'Shared entry'})
 
-          get_with_entry_env(:show, entry: entry, params: {page: 1234})
+          get_with_entry_env(:show, entry:, params: {page: 1234})
 
           expect(response.body).to have_meta_tag
             .for_property('og:title')

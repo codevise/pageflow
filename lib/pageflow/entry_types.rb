@@ -25,8 +25,8 @@ module Pageflow
     end
 
     # @api private
-    def each(&block)
-      @entry_types_by_name.values.each(&block)
+    def each(&)
+      @entry_types_by_name.values.each(&)
     end
 
     # @api private

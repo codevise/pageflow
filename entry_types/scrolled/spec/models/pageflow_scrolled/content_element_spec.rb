@@ -5,9 +5,9 @@ module PageflowScrolled
     describe '.all_for_revision' do
       it 'returns all content elements in revision' do
         revision = create(:revision)
-        content_element1 = create(:content_element, revision: revision)
-        content_element2 = create(:content_element, revision: revision)
-        content_element3 = create(:content_element, revision: revision)
+        content_element1 = create(:content_element, revision:)
+        content_element2 = create(:content_element, revision:)
+        content_element3 = create(:content_element, revision:)
         other_revision = create(:revision)
         create(:content_element, revision: other_revision)
 

@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class EmbedCodeField < Pageflow::ViewComponent
       builder_method :embed_code_field
 

@@ -4,13 +4,13 @@ module Pageflow
   describe Revision do
     describe '#creator attribute' do
       it 'is required for published revisions' do
-        revision = build(:revision, :published, :creator => nil)
+        revision = build(:revision, :published, creator: nil)
 
         expect(revision).to have(1).errors_on(:creator)
       end
 
       it 'is not required for draft revisions' do
-        revision = build(:revision, :creator => nil)
+        revision = build(:revision, creator: nil)
 
         expect(revision).to have(:no).errors_on(:creator)
       end
@@ -18,34 +18,34 @@ module Pageflow
 
     describe '#published_until attribute' do
       it 'must not be present if published_at is not present' do
-        revision = build(:revision, :published_at => nil, :published_until => 2.days.ago)
+        revision = build(:revision, published_at: nil, published_until: 2.days.ago)
 
         expect(revision).to have(1).errors_on(:published_until)
       end
 
       it 'must not change if revision is depublished' do
-        revision = create(:revision, :depublished, :published_until => 2.days.ago)
+        revision = create(:revision, :depublished, published_until: 2.days.ago)
         revision.published_until = 1.day.from_now
 
         expect(revision).to have(1).errors_on(:published_until)
       end
 
       it 'can change if revision is published' do
-        revision = create(:revision, :published, :published_until => 2.days.from_now)
+        revision = create(:revision, :published, published_until: 2.days.from_now)
         revision.published_until = 1.day.from_now
 
         expect(revision).to have(:no).errors_on(:published_until)
       end
 
       it 'can be reset if revision is published' do
-        revision = create(:revision, :published, :published_until => 2.days.from_now)
+        revision = create(:revision, :published, published_until: 2.days.from_now)
         revision.published_until = nil
 
         expect(revision).to have(:no).errors_on(:published_until)
       end
 
       it 'can change if revision was published indefinately' do
-        revision = create(:revision, :published, :published_until => nil)
+        revision = create(:revision, :published, published_until: nil)
         revision.published_until = 1.day.ago
 
         expect(revision).to have(:no).errors_on(:published_until)
@@ -84,11 +84,11 @@ module Pageflow
 
         expect {
           revision.copy
-        }.to change { Revision.count }
+        }.to(change { Revision.count })
       end
 
       it 'copies manual_start to new revision' do
-        revision = create(:revision, :manual_start => true)
+        revision = create(:revision, manual_start: true)
 
         copied_revision = revision.copy
 
@@ -96,7 +96,7 @@ module Pageflow
       end
 
       it 'copies emphasize_chapter_beginning to new revision' do
-        revision = create(:revision, :emphasize_chapter_beginning => true)
+        revision = create(:revision, emphasize_chapter_beginning: true)
 
         copied_revision = revision.copy
 
@@ -105,7 +105,7 @@ module Pageflow
 
       it 'copies storylines to new revision' do
         revision = create(:revision)
-        storyline = create(:storyline, :revision => revision, :configuration => {'some' => 'value'})
+        storyline = create(:storyline, revision:, configuration: {'some' => 'value'})
 
         copied_revision = revision.copy
 
@@ -116,8 +116,8 @@ module Pageflow
 
       it 'copies chapters to new revision' do
         revision = create(:revision)
-        storyline = create(:storyline, :revision => revision)
-        chapter = create(:chapter, :storyline => storyline, :title => 'Intro')
+        storyline = create(:storyline, revision:)
+        chapter = create(:chapter, storyline:, title: 'Intro')
 
         copied_revision = revision.copy
 
@@ -130,23 +130,25 @@ module Pageflow
 
       it 'copies pages to new revision' do
         revision = create(:revision)
-        storyline = create(:storyline, :revision => revision)
-        chapter = create(:chapter, :storyline => storyline)
-        page = create(:page, :chapter => chapter, :configuration => {'title' => 'Main'})
+        storyline = create(:storyline, revision:)
+        chapter = create(:chapter, storyline:)
+        page = create(:page, chapter:, configuration: {'title' => 'Main'})
 
         copied_revision = revision.copy
 
         expect(copied_revision.storylines.first.chapters.first).to have(1).page
         expect(copied_revision.storylines.first.chapters.first.pages.first).not_to eq(page)
-        expect(copied_revision.storylines.first.chapters.first.pages.first.configuration['title']).to eq('Main')
+        expect(
+          copied_revision.storylines.first.chapters.first.pages.first.configuration['title']
+        ).to eq('Main')
       end
 
       it 'copies file usages to new revision' do
         revision = create(:revision)
-        storyline = create(:storyline, :revision => revision)
-        chapter = create(:chapter, :storyline => storyline)
+        storyline = create(:storyline, revision:)
+        create(:chapter, storyline:)
         image_file = create(:image_file)
-        revision.file_usages.create!(:file => image_file)
+        revision.file_usages.create!(file: image_file)
 
         copied_revision = revision.copy
 
@@ -169,7 +171,7 @@ module Pageflow
         it 'copies registered RevisionComponents' do
           Pageflow.config.revision_components.register(TestRevisionComponent)
           revision = create(:revision)
-          TestRevisionComponent.create!(revision: revision)
+          TestRevisionComponent.create!(revision:)
 
           copied_revision = revision.copy
 
@@ -180,7 +182,7 @@ module Pageflow
 
     describe '#depublish_all' do
       it 'depublishes all revisions' do
-        revision = create(:revision, :published, :published_at => 1.day.ago)
+        revision = create(:revision, :published, published_at: 1.day.ago)
 
         Revision.depublish_all
 
@@ -188,7 +190,7 @@ module Pageflow
       end
 
       it 'sets published_until of all published revisions' do
-        revision = create(:revision, :published, :published_at => 1.day.ago)
+        revision = create(:revision, :published, published_at: 1.day.ago)
 
         Revision.depublish_all
 
@@ -196,7 +198,8 @@ module Pageflow
       end
 
       it 'sets published_until of all published revisions with future published_until attribute' do
-        revision = create(:revision, :published, :published_at => 1.day.ago, :published_until => 1.month.from_now)
+        revision = create(:revision, :published, published_at: 1.day.ago,
+                                                 published_until: 1.month.from_now)
 
         Revision.depublish_all
 
@@ -204,7 +207,8 @@ module Pageflow
       end
 
       it 'does not override published_until of depublished revisions' do
-        revision = create(:revision, :published, :published_at => 2.months.ago, :published_until => 1.month.ago)
+        revision = create(:revision, :published, published_at: 2.months.ago,
+                                                 published_until: 1.month.ago)
 
         Revision.depublish_all
 
@@ -253,7 +257,7 @@ module Pageflow
       it 'returns a UsedFile for the file specified by its usages perma_id' do
         entry = PublishedEntry.new(create(:entry, :published))
         revision = entry.revision
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         usage_perma_id = image_file.perma_id
 
         result = revision.find_file_by_perma_id(Pageflow::ImageFile, usage_perma_id)
@@ -265,15 +269,15 @@ module Pageflow
     describe '#pages' do
       it 'orders by storyline position first then by chapter and page position' do
         revision = create(:revision)
-        storyline_1 = create(:storyline, :revision => revision, :position => 1)
-        storyline_2 = create(:storyline, :revision => revision, :position => 2)
-        chapter_1 = create(:chapter, :storyline => storyline_1, :position => 1)
-        chapter_2 = create(:chapter, :storyline => storyline_1, :position => 2)
-        chapter_3 = create(:chapter, :storyline => storyline_2, :position => 1)
-        page_1 = create(:page, :chapter => chapter_1, :position => 1)
-        page_2 = create(:page, :chapter => chapter_1, :position => 2)
-        page_3 = create(:page, :chapter => chapter_2, :position => 1)
-        page_4 = create(:page, :chapter => chapter_3, :position => 1)
+        storyline_1 = create(:storyline, revision:, position: 1)
+        storyline_2 = create(:storyline, revision:, position: 2)
+        chapter_1 = create(:chapter, storyline: storyline_1, position: 1)
+        chapter_2 = create(:chapter, storyline: storyline_1, position: 2)
+        chapter_3 = create(:chapter, storyline: storyline_2, position: 1)
+        page_1 = create(:page, chapter: chapter_1, position: 1)
+        page_2 = create(:page, chapter: chapter_1, position: 2)
+        page_3 = create(:page, chapter: chapter_2, position: 1)
+        page_4 = create(:page, chapter: chapter_3, position: 1)
 
         pages = revision.pages
 
@@ -285,8 +289,8 @@ module Pageflow
 
       it 'sets is_first on first page' do
         revision = create(:revision)
-        storyline1 = create(:storyline, revision: revision, position: 1)
-        storyline2 = create(:storyline, revision: revision, position: 2)
+        storyline1 = create(:storyline, revision:, position: 1)
+        storyline2 = create(:storyline, revision:, position: 2)
         chapter1 = create(:chapter, storyline: storyline1, position: 1)
         chapter2 = create(:chapter, storyline: storyline1, position: 1)
         chapter3 = create(:chapter, storyline: storyline2, position: 1)
@@ -304,8 +308,8 @@ module Pageflow
     describe '#chapters' do
       it 'sets is_first on first page' do
         revision = create(:revision)
-        storyline1 = create(:storyline, revision: revision, position: 1)
-        storyline2 = create(:storyline, revision: revision, position: 2)
+        storyline1 = create(:storyline, revision:, position: 1)
+        storyline2 = create(:storyline, revision:, position: 2)
         chapter1 = create(:chapter, storyline: storyline1, position: 1)
         chapter2 = create(:chapter, storyline: storyline1, position: 1)
         chapter3 = create(:chapter, storyline: storyline2, position: 1)
@@ -323,8 +327,8 @@ module Pageflow
     describe '#main_storyline_chapters' do
       it 'returns chapters of first storyline' do
         revision = create(:revision)
-        storyline_1 = create(:storyline, revision: revision, position: 1)
-        storyline_2 = create(:storyline, revision: revision, position: 2)
+        storyline_1 = create(:storyline, revision:, position: 1)
+        storyline_2 = create(:storyline, revision:, position: 2)
         chapter_1 = create(:chapter, storyline: storyline_1, position: 2)
         chapter_2 = create(:chapter, storyline: storyline_1, position: 1)
         create(:chapter, storyline: storyline_2, position: 1)
@@ -338,8 +342,8 @@ module Pageflow
 
       it 'uses position to get first storyline' do
         revision = create(:revision)
-        create(:storyline, revision: revision, position: 2)
-        storyline_2 = create(:storyline, revision: revision, position: 1)
+        create(:storyline, revision:, position: 2)
+        storyline_2 = create(:storyline, revision:, position: 1)
         chapter_1 = create(:chapter, storyline: storyline_2, position: 2)
 
         chapters = revision.main_storyline_chapters
@@ -564,7 +568,7 @@ module Pageflow
       it 'adds file_usage_id to image file record' do
         revision = create(:revision)
         image_file = create(:image_file)
-        usage = create(:file_usage, :revision => revision, :file => image_file)
+        usage = create(:file_usage, revision:, file: image_file)
 
         image_file_record = revision.image_files.with_usage_id.first
 
@@ -576,7 +580,7 @@ module Pageflow
       it 'adds file_usage_id to audio file record' do
         revision = create(:revision)
         audio_file = create(:audio_file)
-        usage = create(:file_usage, :revision => revision, :file => audio_file)
+        usage = create(:file_usage, revision:, file: audio_file)
 
         audio_file_record = revision.audio_files.with_usage_id.first
 
@@ -607,7 +611,7 @@ module Pageflow
         end
 
         entry = create(:entry, feature_states: {red_theme: true})
-        revision = build(:revision, entry: entry, theme_name: 'red')
+        revision = build(:revision, entry:, theme_name: 'red')
 
         expect(revision).to be_valid
       end
@@ -620,7 +624,7 @@ module Pageflow
         end
 
         entry = create(:entry)
-        revision = build(:revision, entry: entry, theme_name: 'glitter')
+        revision = build(:revision, entry:, theme_name: 'glitter')
 
         expect(revision).not_to be_valid
       end

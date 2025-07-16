@@ -1,5 +1,5 @@
 module Pageflow
-  class StorylineScaffold
+  class StorylineScaffold # rubocop:todo Style/Documentation
     def initialize(storyline, options)
       @storyline = storyline
       @options = options

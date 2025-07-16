@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class ChaptersController < Pageflow::ApplicationController
     respond_to :json
 
@@ -67,8 +68,8 @@ module Pageflow
       configuration = params.require(:chapter)[:configuration].try(:permit!) || {}
 
       params.require(:chapter)
-        .permit(:position, :title)
-        .merge(configuration: configuration)
+            .permit(:position, :title)
+            .merge(configuration:)
     end
   end
 end

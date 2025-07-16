@@ -1,5 +1,5 @@
 module Pageflow
-  class PageTypes
+  class PageTypes # rubocop:todo Style/Documentation
     include Enumerable
 
     def initialize
@@ -28,8 +28,8 @@ module Pageflow
       map(&:name)
     end
 
-    def each(&block)
-      @page_types.each(&block)
+    def each(&)
+      @page_types.each(&)
     end
 
     def setup(config)

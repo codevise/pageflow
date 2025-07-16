@@ -11,7 +11,7 @@ module Pageflow
         inner = Pageflow.config.file_types.map { |file_type|
           json = render_json_partial(partial: 'pageflow/editor/files/file',
                                      collection: entry.find_files(file_type.model),
-                                     locals: {file_type: file_type},
+                                     locals: {file_type:},
                                      as: :file)
 
           %("#{file_type.collection_name}": #{json})

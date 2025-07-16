@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 module PageflowScrolled
-  RSpec.describe Seeds do
-    module SeedsDsl
-      extend Seeds
-    end
+  module SeedsDsl
+    extend Seeds
+  end
 
+  RSpec.describe Seeds do
     describe '#sample_scrolled_entry' do
       context 'entry' do
         it 'creates entry for account' do
@@ -22,11 +22,11 @@ module PageflowScrolled
           account = create(:account)
           entry = create(:entry,
                          type_name: 'scrolled',
-                         account: account,
+                         account:,
                          title: 'Example')
 
           result = SeedsDsl.sample_scrolled_entry(attributes: {
-                                                    account: account,
+                                                    account:,
                                                     title: 'Example',
                                                     chapters: []
                                                   })
@@ -187,9 +187,9 @@ module PageflowScrolled
 
               expect(Section.all_for_revision(entry.draft).first.configuration)
                 .to include('backdrop' => {
-                  'image' => image_file.perma_id,
-                  'imageMobile' => image_file.perma_id
-                })
+                              'image' => image_file.perma_id,
+                              'imageMobile' => image_file.perma_id
+                            })
             end
 
             it 'rewrites inlineImage and stickyImage content elements' do
@@ -261,8 +261,8 @@ module PageflowScrolled
 
               expect(Section.all_for_revision(entry.draft).first.configuration)
                 .to include('backdrop' => {
-                  'video' => video_file.perma_id
-                })
+                              'video' => video_file.perma_id
+                            })
             end
 
             it 'rewrites inlineVideo content elements' do
@@ -472,7 +472,8 @@ module PageflowScrolled
                                                        'sample' => {
                                                          'url' => 'https://example.com/sample.vtt',
                                                          'parent_file_id' => 'some-video',
-                                                         'parent_file_model_type' => 'Pageflow::VideoFile'
+                                                         'parent_file_model_type' =>
+                                                           'Pageflow::VideoFile'
                                                        }
                                                      },
                                                      chapters: []
@@ -545,7 +546,8 @@ module PageflowScrolled
                                                        'sample' => {
                                                          'url' => 'https://example.com/sample.vtt',
                                                          'parent_file_id' => 'some-audio',
-                                                         'parent_file_model_type' => 'Pageflow::AudioFile'
+                                                         'parent_file_model_type' =>
+                                                           'Pageflow::AudioFile'
                                                        }
                                                      },
                                                      chapters: []
@@ -561,10 +563,10 @@ module PageflowScrolled
 
       it 'allows overriding attributes in block' do
         account = create(:account)
-        site = create(:site, account: account)
+        site = create(:site, account:)
 
         entry = SeedsDsl.sample_scrolled_entry(attributes: {
-                                                 account: account,
+                                                 account:,
                                                  title: 'Example',
                                                  chapters: []
                                                }) do |created_entry|

@@ -11,7 +11,7 @@ module Pageflow
         reusable_file.attachments_for_export.each do |attachment|
           archive_path = AttachmentFiles.archive_path(reusable_file,
                                                       attachment,
-                                                      exported_id: exported_id)
+                                                      exported_id:)
 
           archive.extract_to_tempfile(archive_path) do |tempfile|
             # Paperclip skips post processing anyway since the name of

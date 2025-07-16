@@ -1,5 +1,5 @@
 module Pageflow
-  class HomeButton
+  class HomeButton # rubocop:todo Style/Documentation
     attr_reader :revision, :site
 
     def initialize(revision, site)
@@ -28,12 +28,12 @@ module Pageflow
     private
 
     def site_home_button_url
-      if site.home_url.present?
-        options = Pageflow.config.site_url_options_for(site) || {}
-        Pageflow::Engine.routes.url_for(options.merge(controller: 'pageflow/entries',
-                                                      action: 'index',
-                                                      only_path: !options[:host]))
-      end
+      return unless site.home_url.present?
+
+      options = Pageflow.config.site_url_options_for(site) || {}
+      Pageflow::Engine.routes.url_for(options.merge(controller: 'pageflow/entries',
+                                                    action: 'index',
+                                                    only_path: !options[:host]))
     end
   end
 end

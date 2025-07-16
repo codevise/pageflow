@@ -1,5 +1,5 @@
 module Pageflow
-  module OutputSource
+  module OutputSource # rubocop:todo Style/Documentation
     STATE_MAPPING = {
       true => 'finished',
       false => 'skipped'
@@ -36,7 +36,7 @@ module Pageflow
 
       self[:output_presences] = output_presences
                                 .merge(boolean_presences)
-                                .reject { |_key, value| value.nil? }
+                                .compact
     end
 
     def output_presences
@@ -55,7 +55,7 @@ module Pageflow
         [label.to_s, true]
       end
 
-      Hash[pairs]
+      pairs.to_h
     end
   end
 end

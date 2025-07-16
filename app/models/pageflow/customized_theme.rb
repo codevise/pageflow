@@ -11,8 +11,8 @@ module Pageflow
 
     def self.find(entry:, theme:)
       build(
-        entry: entry,
-        theme: theme,
+        entry:,
+        theme:,
         theme_customization: Pageflow.theme_customizations.get(
           site: entry.site,
           entry_type_name: entry.type_name
@@ -26,13 +26,13 @@ module Pageflow
       new(theme,
           config.transform_theme_customization_overrides.call(
             theme_customization.overrides,
-            entry: entry,
-            theme: theme
+            entry:,
+            theme:
           ),
           config.transform_theme_customization_files.call(
             theme_customization.selected_files.transform_values(&:urls),
-            entry: entry,
-            theme: theme
+            entry:,
+            theme:
           ))
     end
   end

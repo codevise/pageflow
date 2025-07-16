@@ -94,7 +94,8 @@ module Pageflow
 
         result = helper.page_type_templates(entry)
 
-        expect(result).to have_selector('script[data-template=test_page]', :text => 'template', :visible => false)
+        expect(result).to have_selector('script[data-template=test_page]', text: 'template',
+                                                                           visible: false)
       end
 
       it 'supports template that uses RevisionFileHelper#find_file_in_entry' do

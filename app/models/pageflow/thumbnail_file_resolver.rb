@@ -1,5 +1,5 @@
 module Pageflow
-  class ThumbnailFileResolver < Struct.new(:entry, :candidates, :configuration)
+  ThumbnailFileResolver = Struct.new(:entry, :candidates, :configuration) do
     def find_thumbnail
       candidates.detect do |candidate|
         condition = candidate[:unless] || candidate[:if]

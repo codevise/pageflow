@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class PruneAutoSnapshotsJob < ApplicationJob
     queue_as :prune
 

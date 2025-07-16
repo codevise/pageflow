@@ -22,14 +22,12 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
-    begin
-      # Resetting sessions is required to wait for pending ajax
-      # requests before cleaning the database, but it also re-raises
-      # exceptions raised by the server. So we need to make sure not
-      # to skip database cleaning.
-      Capybara.reset_sessions!
-    ensure
-      DatabaseCleaner.clean
-    end
+    # Resetting sessions is required to wait for pending ajax
+    # requests before cleaning the database, but it also re-raises
+    # exceptions raised by the server. So we need to make sure not
+    # to skip database cleaning.
+    Capybara.reset_sessions!
+  ensure
+    DatabaseCleaner.clean
   end
 end

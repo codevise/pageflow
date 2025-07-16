@@ -1,5 +1,5 @@
 module Pageflow
-  class HelpEntries
+  class HelpEntries # rubocop:todo Style/Documentation
     include Enumerable
 
     def initialize
@@ -24,18 +24,18 @@ module Pageflow
       collection = find_collection(options[:parent])
 
       collection << help_entry
-      collection.sort_by! { |help_entry| -help_entry.priority }
+      collection.sort_by! { |entry| -entry.priority }
     end
 
     # @api private
     def flat
-      map do |help_entry|
-        [help_entry, help_entry.children]
-      end.flatten
+      map { |entry|
+        [entry, entry.children]
+      }.flatten
     end
 
-    def each(&block)
-      @help_entries.each(&block)
+    def each(&)
+      @help_entries.each(&)
     end
 
     private

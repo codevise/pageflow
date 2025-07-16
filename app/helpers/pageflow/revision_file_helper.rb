@@ -1,5 +1,5 @@
 module Pageflow
-  module RevisionFileHelper
+  module RevisionFileHelper # rubocop:todo Style/Documentation
     # Instead of finding a file directly by its ID (stored in configuration hashes for example),
     # finds the file by its usages perma_id within the scope of the revisions usages.
     # The @entry instance variable (of type DraftEntry or PublishedEntry)
@@ -21,6 +21,7 @@ module Pageflow
     # @returns UsedFile
     def find_file_in_entry(file_type, file_perma_id, entry = @entry)
       raise 'No entry of type PublishedEntry or DraftEntry set.' unless entry.present?
+
       entry.find_file_by_perma_id(file_type, file_perma_id)
     end
   end

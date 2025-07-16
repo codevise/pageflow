@@ -1,5 +1,6 @@
 module Pageflow
   module Editor
+    # @api private
     class EntriesController < Pageflow::ApplicationController
       layout 'pageflow/editor'
 
@@ -50,7 +51,7 @@ module Pageflow
                   :share_url, :share_image_id, :share_image_x, :share_image_y,
                   :locale, :author, :publisher, :keywords, :theme_name,
                   share_providers: {})
-          .merge(configuration: configuration)
+          .merge(configuration:)
       end
     end
   end

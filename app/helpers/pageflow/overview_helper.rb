@@ -1,5 +1,5 @@
 module Pageflow
-  module OverviewHelper
+  module OverviewHelper # rubocop:todo Style/Documentation
     def overview_page_description(page)
       if page.configuration['description'].present?
         raw(page.configuration['description'])

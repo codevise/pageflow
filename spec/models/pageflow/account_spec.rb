@@ -5,7 +5,7 @@ module Pageflow
     describe 'with entries' do
       it 'cannot be deleted' do
         account = create(:account)
-        create(:entry, account: account)
+        create(:entry, account:)
 
         expect { account.destroy }.to raise_error(ActiveRecord::DeleteRestrictionError)
       end
@@ -55,7 +55,7 @@ module Pageflow
 
     it 'destroys folders when account is destroyed' do
       account = create(:account)
-      create(:folder, account: account)
+      create(:folder, account:)
 
       expect { account.destroy }.to change(Folder, :count).by(-1)
     end

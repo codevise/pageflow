@@ -7,8 +7,8 @@ RSpec.feature 'as entry editor, viewing entry in editor', js: true do
   scenario 'sees entry outline and preview' do
     entry = create(:entry, type_name: 'scrolled')
     chapter = create(:scrolled_chapter, revision: entry.draft)
-    create(:section, chapter: chapter)
-    create(:section, chapter: chapter)
+    create(:section, chapter:)
+    create(:section, chapter:)
     Pageflow::Dom::Admin::Page.sign_in_as(:editor, on: entry)
 
     visit(pageflow.editor_entry_path(entry))

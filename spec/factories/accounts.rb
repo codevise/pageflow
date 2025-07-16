@@ -13,7 +13,7 @@ FactoryBot.define do
 
     trait(:with_first_paged_entry_template) do
       after(:create) do |account, _|
-        create(:entry_template, account: account, entry_type: 'paged')
+        create(:entry_template, account:, entry_type: 'paged')
       end
     end
 
@@ -32,26 +32,36 @@ FactoryBot.define do
     end
 
     after(:create) do |account, evaluator|
-      create(:membership,
-             entity: account,
-             user: evaluator.with_member,
-             role: :member) if evaluator.with_member
-      create(:membership,
-             entity: account,
-             user: evaluator.with_previewer,
-             role: :previewer) if evaluator.with_previewer
-      create(:membership,
-             entity: account,
-             user: evaluator.with_editor,
-             role: :editor) if evaluator.with_editor
-      create(:membership,
-             entity: account,
-             user: evaluator.with_publisher,
-             role: :publisher) if evaluator.with_publisher
-      create(:membership,
-             entity: account,
-             user: evaluator.with_manager,
-             role: :manager) if evaluator.with_manager
+      if evaluator.with_member
+        create(:membership,
+               entity: account,
+               user: evaluator.with_member,
+               role: :member)
+      end
+      if evaluator.with_previewer
+        create(:membership,
+               entity: account,
+               user: evaluator.with_previewer,
+               role: :previewer)
+      end
+      if evaluator.with_editor
+        create(:membership,
+               entity: account,
+               user: evaluator.with_editor,
+               role: :editor)
+      end
+      if evaluator.with_publisher
+        create(:membership,
+               entity: account,
+               user: evaluator.with_publisher,
+               role: :publisher)
+      end
+      if evaluator.with_manager
+        create(:membership,
+               entity: account,
+               user: evaluator.with_manager,
+               role: :manager)
+      end
     end
 
     after(:build) do |entry, evaluator|

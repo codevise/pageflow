@@ -26,7 +26,7 @@ module Pageflow
 
           FileImportJob.perform_later(file_import.id, file_importer_credentials)
 
-          {file: file, source_url: file_params[:url]}
+          {file:, source_url: file_params[:url]}
         end
       end
 
@@ -59,7 +59,7 @@ module Pageflow
                           :content_type,
                           :file_size,
                           :url,
-                          configuration: [:alt, :source_url]])
+                          {configuration: [:alt, :source_url]}])
           .require(:files)
       end
 

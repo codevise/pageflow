@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class IconLinkTo < ViewComponent
       builder_method :icon_link_to
 

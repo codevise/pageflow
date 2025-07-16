@@ -5,7 +5,7 @@ module Pageflow
       site = Site.for_request(request).first!
       return head 404 unless site.sitemap_enabled?
 
-      @entries = Sitemaps.entries_for(site: site)
+      @entries = Sitemaps.entries_for(site:)
 
       respond_to do |format|
         format.xml

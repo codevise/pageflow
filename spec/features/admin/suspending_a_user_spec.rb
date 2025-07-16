@@ -8,7 +8,8 @@ feature 'as system admin, suspending a user' do
     visit(admin_user_path(user))
     Dom::Admin::UserPage.first.suspend_user_link.click
 
-    expect(Dom::Admin::Page).not_to be_accessible_with(email: 'john@example.com', password: '!Pass123')
+    expect(Dom::Admin::Page).not_to be_accessible_with(email: 'john@example.com',
+                                                       password: '!Pass123')
   end
 
   scenario 'unsuspended user can sign in' do

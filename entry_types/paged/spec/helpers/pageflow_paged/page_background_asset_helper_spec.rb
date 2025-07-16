@@ -10,7 +10,7 @@ module PageflowPaged
     describe '#page_background_asset' do
       it 'renders background image div' do
         entry = create(:published_entry)
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         page = create(:page,
                       revision: entry.revision,
                       configuration: {background_image_id: image_file.perma_id})
@@ -22,7 +22,7 @@ module PageflowPaged
 
       it 'renders structured data for background image' do
         entry = create(:published_entry)
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         page = create(:page,
                       revision: entry.revision,
                       configuration: {background_image_id: image_file.perma_id})
@@ -34,7 +34,7 @@ module PageflowPaged
 
       it 'renders structured data for background vodep' do
         entry = create(:published_entry)
-        video_file = create_used_file(:video_file, entry: entry)
+        video_file = create_used_file(:video_file, entry:)
         page = create(:page,
                       revision: entry.revision,
                       configuration: {
@@ -49,7 +49,7 @@ module PageflowPaged
 
       it 'does not render structured data if feature is disabled' do
         entry = create(:published_entry, without_feature: 'structured_data')
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         page = create(:page,
                       revision: entry.revision,
                       configuration: {background_image_id: image_file.perma_id})

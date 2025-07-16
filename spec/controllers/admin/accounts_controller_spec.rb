@@ -6,14 +6,14 @@ module Admin
       describe 'downloads' do
         render_views
 
-        %w(csv json xml).each do |format|
+        %w[csv json xml].each do |format|
           describe "with #{format} format" do
             it 'does not include sensitive data' do
               user = create(:user, :admin)
               create(:account, features_configuration: {some_feature: true})
 
               sign_in(user, scope: :user)
-              get(:index, format: format)
+              get(:index, format:)
 
               expect(response.body).not_to include('some_feature')
             end
@@ -480,7 +480,7 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
 
-        expect { delete :destroy, params: {id: account} }.to change { Pageflow::Account.count }
+        expect { delete :destroy, params: {id: account} }.to(change { Pageflow::Account.count })
       end
 
       it 'does not allow to destroy account with user' do
@@ -489,16 +489,16 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
 
-        expect { delete :destroy, params: {id: account} }.not_to change { Pageflow::Account.count }
+        expect { delete :destroy, params: {id: account} }.not_to(change { Pageflow::Account.count })
       end
 
       it 'does not allow to destroy account with entry' do
         account = create(:account)
-        create(:entry, account: account)
+        create(:entry, account:)
 
         sign_in(create(:user, :admin), scope: :user)
 
-        expect { delete :destroy, params: {id: account} }.not_to change { Pageflow::Account.count }
+        expect { delete :destroy, params: {id: account} }.not_to(change { Pageflow::Account.count })
       end
     end
   end

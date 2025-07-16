@@ -8,9 +8,9 @@ describe Admin::FoldersController do
 
         sign_in(create(:user, :admin), scope: :user)
 
-        expect do
+        expect {
           post :create, params: {folder: attributes_for(:folder, account_id: account)}
-        end.to change { account.folders.count }
+        }.to(change { account.folders.count })
       end
     end
 
@@ -20,30 +20,30 @@ describe Admin::FoldersController do
         other_account = create(:account)
         sign_in(create(:user, :publisher, on: other_account), scope: :user)
 
-        expect do
+        expect {
           post :create, params: {folder: attributes_for(:folder, account_id: account)}
-        end.not_to change { account.folders.count }
+        }.not_to(change { account.folders.count })
       end
 
       it 'allows to add folder for own account' do
         account = create(:account)
         sign_in(create(:user, :publisher, on: account), scope: :user)
 
-        expect do
+        expect {
           post :create, params: {folder: attributes_for(:folder, account_id: account)}
-        end.to change { account.folders.count }
+        }.to(change { account.folders.count })
       end
 
       it 'allows to add folder for account when multiple accounts are present' do
         account = create(:account)
         other_account = create(:account)
         user = create(:user, :publisher, on: account)
-        create(:membership, user: user, entity: other_account, role: :publisher)
+        create(:membership, user:, entity: other_account, role: :publisher)
         sign_in(user, scope: :user)
 
-        expect do
+        expect {
           post :create, params: {folder: attributes_for(:folder, account_id: other_account)}
-        end.to change { other_account.folders.count }
+        }.to(change { other_account.folders.count })
       end
     end
 
@@ -51,13 +51,13 @@ describe Admin::FoldersController do
       it 'does not allow to add folder for entry/own account' do
         entry = create(:entry)
         user = create(:user)
-        create(:membership, user: user, entity: entry.account, role: :editor)
-        create(:membership, user: user, entity: entry, role: :manager)
+        create(:membership, user:, entity: entry.account, role: :editor)
+        create(:membership, user:, entity: entry, role: :manager)
         sign_in(user, scope: :user)
 
-        expect do
+        expect {
           post :create, params: {folder: attributes_for(:folder, account_id: entry.account)}
-        end.not_to change { entry.account.folders.count }
+        }.not_to(change { entry.account.folders.count })
       end
     end
   end
@@ -109,8 +109,8 @@ describe Admin::FoldersController do
       it 'does not allow to change name of folder of entry account' do
         entry = create(:entry)
         user = create(:user)
-        create(:membership, user: user, entity: entry.account, role: :editor)
-        create(:membership, user: user, entity: entry, role: :manager)
+        create(:membership, user:, entity: entry.account, role: :editor)
+        create(:membership, user:, entity: entry, role: :manager)
         folder = create(:folder, name: 'old', account: entry.account)
 
         sign_in(user, scope: :user)
@@ -128,9 +128,9 @@ describe Admin::FoldersController do
 
         sign_in(create(:user, :admin), scope: :user)
 
-        expect do
+        expect {
           delete :destroy, params: {id: folder}
-        end.to change { Pageflow::Folder.count }
+        }.to(change { Pageflow::Folder.count })
       end
     end
 
@@ -141,9 +141,9 @@ describe Admin::FoldersController do
 
         sign_in(create(:user, :publisher, on: other_account), scope: :user)
 
-        expect do
+        expect {
           delete :destroy, params: {id: folder}
-        end.not_to change { Pageflow::Folder.count }
+        }.not_to(change { Pageflow::Folder.count })
       end
 
       it 'allows to destroy folder of own account' do
@@ -152,9 +152,9 @@ describe Admin::FoldersController do
 
         sign_in(user, scope: :user)
 
-        expect do
+        expect {
           delete :destroy, params: {id: folder}
-        end.to change { Pageflow::Folder.count }
+        }.to(change { Pageflow::Folder.count })
       end
     end
 
@@ -162,15 +162,15 @@ describe Admin::FoldersController do
       it 'does not allow to destroy folder of entry account' do
         entry = create(:entry)
         user = create(:user)
-        create(:membership, user: user, entity: entry.account, role: :editor)
-        create(:membership, user: user, entity: entry, role: :manager)
+        create(:membership, user:, entity: entry.account, role: :editor)
+        create(:membership, user:, entity: entry, role: :manager)
         folder = create(:folder, account: entry.account)
 
         sign_in(user, scope: :user)
 
-        expect do
+        expect {
           delete :destroy, params: {id: folder}
-        end.not_to change { Pageflow::Folder.count }
+        }.not_to(change { Pageflow::Folder.count })
       end
     end
   end

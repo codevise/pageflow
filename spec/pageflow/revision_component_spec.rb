@@ -7,7 +7,7 @@ module Pageflow
 
       expect {
         Timecop.freeze(1.minute.from_now) do
-          TestRevisionComponent.create!(revision: revision)
+          TestRevisionComponent.create!(revision:)
         end
       }.to(change { revision.reload.updated_at })
     end
@@ -15,15 +15,15 @@ module Pageflow
     describe '#perma_id' do
       it 'is set on creation' do
         revision = create(:revision)
-        revision_component = TestRevisionComponent.create!(revision: revision)
+        revision_component = TestRevisionComponent.create!(revision:)
 
         expect(revision_component.perma_id).to be_present
       end
 
       it 'differs for separate RevisonComponents' do
         revision = create(:revision)
-        revision_component1 = TestRevisionComponent.create!(revision: revision)
-        revision_component2 = TestRevisionComponent.create!(revision: revision)
+        revision_component1 = TestRevisionComponent.create!(revision:)
+        revision_component2 = TestRevisionComponent.create!(revision:)
 
         expect(revision_component1.perma_id).not_to eq(revision_component2.perma_id)
       end
@@ -32,7 +32,7 @@ module Pageflow
     describe '#copy_to' do
       it 'keeps perma_id' do
         revision = create(:revision)
-        revision_component = TestRevisionComponent.create!(revision: revision)
+        revision_component = TestRevisionComponent.create!(revision:)
         other_revision = create(:revision)
 
         revision_component.copy_to(other_revision)
@@ -42,7 +42,7 @@ module Pageflow
 
       it 'copies nested revision components' do
         revision = create(:revision)
-        revision_component = TestCompositeRevisionComponent.create!(revision: revision)
+        revision_component = TestCompositeRevisionComponent.create!(revision:)
         revision_component.items.create!(text: 'nested')
         other_revision = create(:revision)
 
@@ -58,7 +58,7 @@ module Pageflow
 
       it 'copies deeply nested revision components' do
         revision = create(:revision)
-        revision_component = TestCompositeRevisionComponent.create!(revision: revision)
+        revision_component = TestCompositeRevisionComponent.create!(revision:)
         nested_revision_component = revision_component.items.create!
         nested_revision_component.items.create!(text: 'deep')
         other_revision = create(:revision)
@@ -79,7 +79,7 @@ module Pageflow
     describe '.from_perma_ids' do
       it 'returns list of RevisionComponents' do
         revision = create(:revision)
-        revision_component = TestRevisionComponent.create!(revision: revision)
+        revision_component = TestRevisionComponent.create!(revision:)
 
         components = TestRevisionComponent.from_perma_ids(revision, [revision_component.perma_id])
 
@@ -95,9 +95,9 @@ module Pageflow
         revision = create(:revision)
 
         expect {
-          TestRevisionComponent.create_with_lock!(revision: revision) do
+          TestRevisionComponent.create_with_lock!(revision:) do
             Thread.new {
-              TestRevisionComponent.create_with_lock!(revision: revision)
+              TestRevisionComponent.create_with_lock!(revision:)
             }.join
           end
         }.to raise_error(RevisionComponent::PermaIdGenerationAdvisoryLockTimeout)
@@ -108,8 +108,8 @@ module Pageflow
         revision = create(:revision)
 
         expect {
-          TestRevisionComponent.create_with_lock!(revision: revision) do
-            TestRevisionComponent.create_with_lock!(revision: revision)
+          TestRevisionComponent.create_with_lock!(revision:) do
+            TestRevisionComponent.create_with_lock!(revision:)
           end
         }.not_to raise_error
       end

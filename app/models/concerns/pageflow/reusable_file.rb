@@ -1,21 +1,22 @@
 module Pageflow
-  module ReusableFile
+  module ReusableFile # rubocop:todo Style/Documentation
     extend ActiveSupport::Concern
 
     included do
       belongs_to :uploader, class_name: 'User', optional: true
       belongs_to :entry, optional: true
-      belongs_to :parent_file, polymorphic: true, foreign_type: :parent_file_model_type, optional: true
+      belongs_to :parent_file, polymorphic: true, foreign_type: :parent_file_model_type,
+                               optional: true
 
-      has_many :usages, :as => :file, :class_name => 'Pageflow::FileUsage', :dependent => :destroy
+      has_many :usages, as: :file, class_name: 'Pageflow::FileUsage', dependent: :destroy
       has_one  :import,
                as: :file,
                class_name: 'Pageflow::FileImport',
                required: false,
                dependent: :destroy
-      has_many :using_revisions, :through => :usages, :source => :revision
-      has_many :using_entries, :through => :using_revisions, :source => :entry
-      has_many :using_accounts, :through => :using_entries, :source => :account
+      has_many :using_revisions, through: :usages, source: :revision
+      has_many :using_entries, through: :using_revisions, source: :entry
+      has_many :using_accounts, through: :using_entries, source: :account
 
       validate :parent_allows_type_for_nesting, :parent_belongs_to_same_entry
 
@@ -25,30 +26,29 @@ module Pageflow
     end
 
     def parent_allows_type_for_nesting
-      if parent_file.present?
-        parent_class = parent_file.class
-        file_type_of_parent = Pageflow.config.file_types.find_by_model!(parent_class)
-        models_of_nested_file_types = file_type_of_parent.nested_file_types.map(&:model)
-        unless models_of_nested_file_types.include?(self.class)
-          errors.add(:base, 'File type of provided parent file does not permit nesting files of '\
-                            "type #{self.class.name}")
-        end
-      end
+      return unless parent_file.present?
+
+      parent_class = parent_file.class
+      file_type_of_parent = Pageflow.config.file_types.find_by_model!(parent_class)
+      models_of_nested_file_types = file_type_of_parent.nested_file_types.map(&:model)
+      return if models_of_nested_file_types.include?(self.class)
+
+      errors.add(:base, 'File type of provided parent file does not permit nesting files of ' \
+                        "type #{self.class.name}")
     end
 
     def parent_belongs_to_same_entry
-      if parent_file.present?
-        unless parent_file.using_entries.include?(entry)
-          errors.add(:base, 'Parent file does not belong to same entry as nested file')
-        end
-      end
+      return unless parent_file.present?
+      return if parent_file.using_entries.include?(entry)
+
+      errors.add(:base, 'Parent file does not belong to same entry as nested file')
     end
 
     def nested_files(model)
       model_table_name = model.table_name
       model
         .select("#{model_table_name}.*")
-        .where("#{model_table_name}.parent_file_id = #{id} AND "\
+        .where("#{model_table_name}.parent_file_id = #{id} AND " \
                "#{model_table_name}.parent_file_model_type = '#{self.class.name}'")
     end
 
@@ -64,7 +64,6 @@ module Pageflow
       # prevent caching outdated information.
       "#{super}-#{state}"
     end
-
 
     # The following are method defaults for file types that do not require processing/encoding.
     # They are overwritten with default values in UploadableFile for files that are uploaded
@@ -131,7 +130,8 @@ module Pageflow
       raise 'Not implemented!'
     end
 
-    # Gets called to trigger the `file_uploaded` event in the upload state machine of UploadableFile.
+    # Gets called to trigger the `file_uploaded` event in the upload state
+    # machine of UploadableFile.
     # Files that are not uploaded through the editor (and therefore not using the
     # upload state machine of UploadableFile) can overwrite this method to trigger whatever
     # the file does (i.e. processing/transcoding), depending on the including class'

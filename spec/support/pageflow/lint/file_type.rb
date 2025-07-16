@@ -39,7 +39,7 @@ module Pageflow
                             formats: [:json],
                             locals: {
                               file: UsedFile.new(file, FileUsage.new),
-                              file_type: file_type
+                              file_type:
                             })
             }.not_to raise_error
           end
@@ -51,14 +51,14 @@ module Pageflow
                           formats: [:json],
                           locals: {
                             file: UsedFile.new(file, FileUsage.new),
-                            file_type: file_type
+                            file_type:
                           })
           end
 
           it 'provides css_background_image_urls that returns hash if present' do
             if file_type.css_background_image_urls
               entry = create(:entry)
-              result = file_type.css_background_image_urls_for(file, entry: entry)
+              result = file_type.css_background_image_urls_for(file, entry:)
 
               expect(result).to be_a(Hash)
             end
@@ -66,7 +66,7 @@ module Pageflow
 
           it 'can be exported and imported without error' do
             exported_entry = create(:entry)
-            create(:file_usage, file: file, revision: exported_entry.draft)
+            create(:file_usage, file:, revision: exported_entry.draft)
             user = create(:user, :manager, on: create(:account))
 
             get_prerequisite_files.call(file).each do |prerequisite_file|

@@ -1,7 +1,7 @@
 extensible_attributes_table_for(entry,
                                 Pageflow.config_for(entry)
                                   .admin_attributes_table_rows.for(:entry)) do
-  row :title, :class => 'title'
+  row :title, class: 'title'
   if authorized?(:see_own_role_on, :entries)
     row :own_role do
       own_role = Pageflow::Roles.high(current_user, entry)
@@ -9,7 +9,7 @@ extensible_attributes_table_for(entry,
     end
   end
   if authorized?(:see, :accounts)
-    row :account, :class => 'account' do
+    row :account, class: 'account' do
       if authorized?(:read, entry.account)
         link_to(entry.account.name,
                 admin_account_path(entry.account),
@@ -26,11 +26,12 @@ extensible_attributes_table_for(entry,
   end
   row :created_at
   row :edited_at
-  row :published?, :class => 'published' do
-    span :'data-published' => entry.published? do
+  row :published?, class: 'published' do
+    span 'data-published': entry.published? do
       if entry.published?
         if entry.published_until
-          I18n.t('pageflow.admin.entries.published_until', :published_until => I18n.l(entry.published_until))
+          I18n.t('pageflow.admin.entries.published_until',
+                 published_until: I18n.l(entry.published_until))
         else
           I18n.t('pageflow.admin.entries.published_forever')
         end

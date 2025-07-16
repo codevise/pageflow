@@ -1,7 +1,7 @@
 require 'uri'
 
 module Pageflow
-  class ZencoderAttachment
+  class ZencoderAttachment # rubocop:todo Style/Documentation
     cattr_accessor :default_options
     self.default_options = {
       path: '/:zencoder_asset_version/:pageflow_s3_root/:class/:id_partition/:zencoder_filename',
@@ -58,7 +58,7 @@ module Pageflow
     private
 
     def ensure_default_protocol(url, url_options)
-      url =~ %r'^//' ? [url_options[:default_protocol], url].compact.join(':') : url
+      url =~ %r{^//} ? [url_options[:default_protocol], url].compact.join(':') : url
     end
 
     def url_pattern(url_options)
@@ -66,7 +66,7 @@ module Pageflow
     end
 
     def base_url(url_options)
-      case (url_options[:host] || options[:host])
+      case url_options[:host] || options[:host]
       when :hls
         options[:hls_url]
       when :hls_origin

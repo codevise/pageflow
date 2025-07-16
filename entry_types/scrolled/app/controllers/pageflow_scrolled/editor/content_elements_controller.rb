@@ -9,7 +9,7 @@ module PageflowScrolled
         content_element = section.content_elements.create(content_element_params)
 
         render partial: 'pageflow_scrolled/content_elements/content_element',
-               locals: {content_element: content_element},
+               locals: {content_element:},
                status: :created
       end
 
@@ -64,7 +64,7 @@ module PageflowScrolled
         params.require(:content_element)
               .transform_keys(&:underscore)
               .permit(:type_name, :position)
-              .merge(configuration: configuration)
+              .merge(configuration:)
       end
     end
   end

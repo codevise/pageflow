@@ -1,7 +1,7 @@
 module Pageflow
   # @api private
   class EntryTitleOrAccountNameQuery < ApplicationQuery
-    class Scope < Scope
+    class Scope < Scope # rubocop:todo Style/Documentation
       def initialize(term, scope)
         @term = term
         @scope = scope
@@ -19,7 +19,7 @@ module Pageflow
       attr_reader :term, :scope
 
       def word_conditions(term)
-        term.split(' ').map { |word|
+        term.split.map { |word|
           word_condition(word)
         }.join(' AND ')
       end

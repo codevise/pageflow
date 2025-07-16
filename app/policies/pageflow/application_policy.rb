@@ -1,5 +1,7 @@
 module Pageflow
+  # @api private
   class ApplicationPolicy
+    # @api private
     class Scope
       protected
 

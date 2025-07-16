@@ -7,7 +7,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
         file = create(:audio_file)
-        create(:file_usage, revision: entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
 
         policy = FilePolicy.new(user, file)
 
@@ -17,9 +17,9 @@ module Pageflow
       it 'allows to manage a file when user may edit one of its entries via its account' do
         user = create(:user)
         account = create(:account, with_editor: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         file = create(:audio_file)
-        create(:file_usage, revision: entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
 
         policy = FilePolicy.new(user, file)
 
@@ -29,11 +29,11 @@ module Pageflow
       it 'forbids to manage a file when user cannot edit one of its entries or accounts' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         other_entry = create(:entry, with_previewer: user)
         file = create(:audio_file)
-        create(:file_usage, revision: entry.draft, file: file)
-        create(:file_usage, revision: other_entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
+        create(:file_usage, revision: other_entry.draft, file:)
 
         policy = FilePolicy.new(user, file)
 
@@ -46,7 +46,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_previewer: user)
         file = create(:audio_file)
-        create(:file_usage, revision: entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
 
         policy = FilePolicy.new(user, file)
 
@@ -56,9 +56,9 @@ module Pageflow
       it 'allows to use a file when user may preview one of its entries via its account' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         file = create(:audio_file)
-        create(:file_usage, revision: entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
 
         policy = FilePolicy.new(user, file)
 
@@ -69,7 +69,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry)
         file = create(:audio_file)
-        create(:file_usage, revision: entry.draft, file: file)
+        create(:file_usage, revision: entry.draft, file:)
 
         policy = FilePolicy.new(user, file)
 

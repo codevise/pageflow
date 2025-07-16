@@ -1,5 +1,5 @@
 module Pageflow
-  class Themes
+  class Themes # rubocop:todo Style/Documentation
     include Enumerable
 
     def initialize
@@ -52,8 +52,8 @@ module Pageflow
       map(&:name)
     end
 
-    def each(&block)
-      @themes.values.each(&block)
+    def each(&)
+      @themes.values.each(&)
     end
   end
 end

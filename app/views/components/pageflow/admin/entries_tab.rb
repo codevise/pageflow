@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class EntriesTab < ViewComponent
       def build(account)
         embedded_index_table(account.entries,

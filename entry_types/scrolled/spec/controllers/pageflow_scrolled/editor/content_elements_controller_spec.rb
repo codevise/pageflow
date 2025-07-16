@@ -26,7 +26,7 @@ module PageflowScrolled
       it 'allows ordering content elements referenced by id' do
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
-        content_elements = create_list(:content_element, 2, section: section)
+        content_elements = create_list(:content_element, 2, section:)
 
         authorize_for_editor_controller(entry)
         post(:batch,
@@ -48,7 +48,7 @@ module PageflowScrolled
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         other_section = create(:section, revision: entry.draft)
-        content_element = create(:content_element, :text_block, section: section)
+        content_element = create(:content_element, :text_block, section:)
 
         authorize_for_editor_controller(entry)
         post(:batch,
@@ -69,7 +69,7 @@ module PageflowScrolled
         section = create(:section, revision: entry.draft)
         other_entry = create(:entry, type_name: 'scrolled')
         other_section = create(:section, revision: other_entry.draft)
-        content_element = create(:content_element, section: section)
+        content_element = create(:content_element, section:)
 
         authorize_for_editor_controller(entry)
         post(:batch,
@@ -88,7 +88,7 @@ module PageflowScrolled
       it 'allows setting content element configuration hashes' do
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
-        content_element = create(:content_element, section: section)
+        content_element = create(:content_element, section:)
 
         authorize_for_editor_controller(entry)
         post(:batch,
@@ -108,7 +108,7 @@ module PageflowScrolled
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
         content_element = create(:content_element,
-                                 section: section,
+                                 section:,
                                  configuration: {some: 'value'})
 
         authorize_for_editor_controller(entry)
@@ -148,7 +148,7 @@ module PageflowScrolled
       it 'deletes content elements marked by _delete flag' do
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
-        content_elements = create_list(:content_element, 2, section: section)
+        content_elements = create_list(:content_element, 2, section:)
 
         authorize_for_editor_controller(entry)
         post(:batch,
@@ -230,7 +230,7 @@ module PageflowScrolled
         section = create(:section, revision: entry.draft)
         content_elements = create_list(:content_element,
                                        3,
-                                       section: section,
+                                       section:,
                                        configuration: {some: 'value'})
 
         authorize_for_editor_controller(entry)
@@ -420,7 +420,7 @@ module PageflowScrolled
       it 'updates position of content elements according to given params order' do
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
-        content_elements = create_list(:content_element, 2, :text_block, section: section)
+        content_elements = create_list(:content_element, 2, :text_block, section:)
 
         authorize_for_editor_controller(entry)
 
@@ -459,7 +459,7 @@ module PageflowScrolled
       it 'deletes the content element' do
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
-        content_element = create(:content_element, :text_block, section: section)
+        content_element = create(:content_element, :text_block, section:)
 
         authorize_for_editor_controller(entry)
         delete(:destroy,

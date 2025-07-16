@@ -4,7 +4,7 @@ module Pageflow
   # AuthenticationToken stores the tokens with expiry time against user and provider
   class AuthenticationToken < ApplicationRecord
     belongs_to :user, class_name: 'User'
-    default_scope -> { where(['expiry_time > :expiry', expiry: Time.zone.now]) }
+    default_scope -> { where(['expiry_time > :expiry', {expiry: Time.zone.now}]) }
 
     def auth_token
       SymmetricEncryption.decrypt(read_attribute(:auth_token))
@@ -31,7 +31,7 @@ module Pageflow
 
     def self.find_auth_token(current_user, provider)
       where(user_id: current_user.id,
-            provider: provider)
+            provider:)
     end
   end
 end

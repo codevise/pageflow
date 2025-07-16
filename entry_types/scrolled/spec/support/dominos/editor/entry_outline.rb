@@ -15,7 +15,7 @@ module Dom
 
       class ChapterItem < Domino
         selector '[class^=ChapterItemView-module_root]' \
-          ':not([class*=creating]):not([class*=destroying])'
+                 ':not([class*=creating]):not([class*=destroying])'
 
         def section_items
           within(node) do
@@ -34,7 +34,7 @@ module Dom
 
       class SectionItem < Domino
         selector '[class^=SectionItemView-module_root]' \
-          ':not([class*=creating]):not([class*=destroying])'
+                 ':not([class*=creating]):not([class*=destroying])'
 
         def thumbnail
           node.find('[class^=SectionItemView-module_clickMask]')

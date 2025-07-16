@@ -1,5 +1,7 @@
 module Pageflow
+  # @api private
   class AccountPolicy < ApplicationPolicy
+    # @api private
     class Scope < Scope
       attr_reader :user, :scope, :query
 
@@ -111,7 +113,7 @@ module Pageflow
     end
 
     def see_badge_belonging_to?
-      (@account.entries & user.entries).any? ||
+      @account.entries.intersect?(user.entries) ||
         query.has_at_least_role?(:previewer) ||
         user.admin?
     end

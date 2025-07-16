@@ -9,7 +9,7 @@ module PageflowScrolled
         section = chapter.create_section(section_params)
 
         render partial: 'pageflow_scrolled/editor/sections/section_with_content_elements',
-               locals: {section: section},
+               locals: {section:},
                status: :created
       end
 
@@ -59,7 +59,7 @@ module PageflowScrolled
         configuration = params.require(:section)[:configuration].try(:permit!) || {}
         params.require(:section)
               .permit(:position)
-              .merge(configuration: configuration)
+              .merge(configuration:)
       end
     end
   end

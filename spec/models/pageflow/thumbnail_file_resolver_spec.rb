@@ -7,7 +7,7 @@ module Pageflow
     describe '#find_thumbnail' do
       it 'returns first exisiting file' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         candidates = [
           {attribute: 'thumbnail_id', file_collection: 'image_files'}
         ]
@@ -21,7 +21,7 @@ module Pageflow
 
       it 'skips missing records' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         candidates = [
           {attribute: 'missing_id', file_collection: 'image_files'},
           {attribute: 'thumbnail_id', file_collection: 'image_files'}
@@ -36,7 +36,7 @@ module Pageflow
 
       it 'skips missing attributes' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         candidates = [
           {attribute: 'missing_id', file_collection: 'image_files'},
           {attribute: 'thumbnail_id', file_collection: 'image_files'}
@@ -66,11 +66,12 @@ module Pageflow
 
       it 'returns positioned file with coordinates from configuration' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         candidates = [
           {attribute: 'thumbnail_id', file_collection: 'image_files'}
         ]
-        configuration = {'thumbnail_id' => image_file.perma_id, 'thumbnail_x' => 20, 'thumbnail_y' => 30}
+        configuration = {'thumbnail_id' => image_file.perma_id, 'thumbnail_x' => 20,
+                         'thumbnail_y' => 30}
         resolver = ThumbnailFileResolver.new(entry, candidates, configuration)
 
         file = resolver.find_thumbnail
@@ -81,7 +82,7 @@ module Pageflow
 
       it 'returns positioned file with default coordinates' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry:)
         candidates = [
           {attribute: 'thumbnail_id', file_collection: 'image_files'}
         ]
@@ -97,8 +98,8 @@ module Pageflow
       context 'with conditions' do
         it 'skips candidate if condition is not met' do
           entry = PublishedEntry.new(create(:entry, :published))
-          image_file = create_used_file(:image_file, entry: entry)
-          panorama_image_file = create_used_file(:image_file, entry: entry)
+          image_file = create_used_file(:image_file, entry:)
+          panorama_image_file = create_used_file(:image_file, entry:)
           candidates = [
             {
               attribute: 'panorama_id',
@@ -125,8 +126,8 @@ module Pageflow
 
         it 'skips candidate if condition given via unless is met' do
           entry = PublishedEntry.new(create(:entry, :published))
-          image_file = create_used_file(:image_file, entry: entry)
-          panorama_image_file = create_used_file(:image_file, entry: entry)
+          image_file = create_used_file(:image_file, entry:)
+          panorama_image_file = create_used_file(:image_file, entry:)
           candidates = [
             {
               attribute: 'panorama_id',

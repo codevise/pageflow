@@ -13,19 +13,15 @@ module Pageflow
       before_action :authenticate_user!
 
       before_action do
-        begin
-          @entry = DraftEntry.find(params[:entry_id])
-        rescue ActiveRecord::RecordNotFound
-          head :not_found
-        end
+        @entry = DraftEntry.find(params[:entry_id])
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       before_action do
-        begin
-          Ability.new(current_user).authorize!(:update, @entry.to_model)
-        rescue CanCan::AccessDenied
-          head :forbidden
-        end
+        Ability.new(current_user).authorize!(:update, @entry.to_model)
+      rescue CanCan::AccessDenied
+        head :forbidden
       end
 
       before_action :verify_edit_lock

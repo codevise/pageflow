@@ -11,7 +11,7 @@ module Dom
         node.find("ul.files_gallery li[data-id='#{file.id}']")
       end
 
-      def select_file(entry, file)
+      def select_file(_entry, file)
         find_file_gallery_item(file).click
         ok_button.click
       end

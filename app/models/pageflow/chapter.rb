@@ -1,5 +1,5 @@
 module Pageflow
-  class Chapter < ApplicationRecord
+  class Chapter < ApplicationRecord # rubocop:todo Style/Documentation
     include SerializedConfiguration
     include NestedRevisionComponent
 

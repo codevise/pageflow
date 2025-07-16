@@ -6,7 +6,7 @@ module PageflowPaged
       it 'renders button with data-consent-vendor attribute' do
         entry = create(:published_entry)
 
-        html = helper.third_party_embed_opt_in(entry: entry,
+        html = helper.third_party_embed_opt_in(entry:,
                                                message: 'I agree',
                                                vendor_name: 'some-vendor')
 
@@ -15,9 +15,9 @@ module PageflowPaged
 
       it 'renders link to consent section of privacy page' do
         site = create(:site, privacy_link_url: 'http://example.com/privacy')
-        entry = create(:published_entry, site: site)
+        entry = create(:published_entry, site:)
 
-        html = helper.third_party_embed_opt_in(entry: entry,
+        html = helper.third_party_embed_opt_in(entry:,
                                                message: 'I agree',
                                                vendor_name: 'some-vendor')
 
@@ -30,7 +30,7 @@ module PageflowPaged
     describe '#third_party_embed_opt_out_info' do
       it 'renders link to consent section of privacy page' do
         site = create(:site, privacy_link_url: 'http://example.com/privacy')
-        entry = create(:published_entry, site: site)
+        entry = create(:published_entry, site:)
 
         html = helper.third_party_embed_opt_out_info(entry)
 

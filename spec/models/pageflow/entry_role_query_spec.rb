@@ -25,7 +25,7 @@ module Pageflow
         it 'includes entries with account membership with required role' do
           user = create(:user)
           account = create(:account, with_editor: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           result = EntryRoleQuery::Scope.new(user, Entry).with_role_at_least(:editor)
 
@@ -35,7 +35,7 @@ module Pageflow
         it 'includes entries with account membership with stronger role' do
           user = create(:user)
           account = create(:account, with_publisher: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           result = EntryRoleQuery::Scope.new(user, Entry).with_role_at_least(:editor)
 
@@ -66,7 +66,7 @@ module Pageflow
           user = create(:user)
           account = create(:account)
           create(:account, with_editor: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           result = EntryRoleQuery::Scope.new(user, Entry).with_role_at_least(:editor)
 
@@ -85,7 +85,7 @@ module Pageflow
         it 'does not include entries with account memberships of insufficient role' do
           user = create(:user)
           account = create(:account, with_previewer: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           result = EntryRoleQuery::Scope.new(user, Entry).with_role_at_least(:editor)
 
@@ -97,7 +97,7 @@ module Pageflow
         it 'includes entries with account membership with required role' do
           user = create(:user)
           account = create(:account, with_editor: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           result = EntryRoleQuery::Scope.new(user, Entry).with_account_role_at_least(:editor)
 
@@ -107,7 +107,7 @@ module Pageflow
         it 'includes entries with account membership with stronger role' do
           user = create(:user)
           account = create(:account, with_publisher: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           result = EntryRoleQuery::Scope.new(user, Entry).with_account_role_at_least(:editor)
 
@@ -117,7 +117,7 @@ module Pageflow
         it 'does not include entries of accounts with memberships of insufficient role' do
           user = create(:user)
           account = create(:account, with_previewer: user)
-          entry = create(:entry, account: account)
+          entry = create(:entry, account:)
 
           result = EntryRoleQuery::Scope.new(user, Entry).with_account_role_at_least(:editor)
 
@@ -192,7 +192,7 @@ module Pageflow
       it 'returns true if user has account membership with given role' do
         user = create(:user)
         account = create(:account, with_editor: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         result = EntryRoleQuery.new(user, entry).has_at_least_role?(:editor)
 
@@ -233,7 +233,7 @@ module Pageflow
       it 'returns true if user has account membership with given role' do
         user = create(:user)
         account = create(:account, with_editor: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         result = EntryRoleQuery.new(user, entry).has_at_least_account_role?(:editor)
 
@@ -243,7 +243,7 @@ module Pageflow
       it 'returns false if user has membership with weaker role' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
 
         result = EntryRoleQuery.new(user, entry).has_at_least_account_role?(:editor)
 

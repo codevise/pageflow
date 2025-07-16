@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class PollZencoderJob < ApplicationJob
     queue_as :resizing
 
@@ -23,10 +24,10 @@ module Pageflow
     def poll_zencoder(file, api)
       info = api.get_info(file.job_id)
 
-      file.encoding_progress = info[:finished] ? 100 : info[:progress];
+      file.encoding_progress = info[:finished] ? 100 : info[:progress]
       file.encoding_error_message = nil
 
-      if info[:state] === 'failed'
+      if info[:state] == 'failed'
         throw(:halt, :error)
       elsif !info[:finished]
         throw(:halt, :pending)

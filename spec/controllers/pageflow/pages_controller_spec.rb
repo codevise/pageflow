@@ -29,11 +29,12 @@ module Pageflow
       it 'requires the signed in user to be editor of the parent entry' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         chapter = create(:chapter, in_main_storyline_of: entry.draft)
 
         sign_in(user, scope: :user)
-        post(:create, params: {chapter_id: chapter, page: attributes_for(:valid_page)}, format: 'json')
+        post(:create, params: {chapter_id: chapter, page: attributes_for(:valid_page)},
+                      format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -41,7 +42,8 @@ module Pageflow
       it 'requires authentication' do
         chapter = create(:chapter)
 
-        post(:create, params: {chapter_id: chapter, page: attributes_for(:valid_page)}, format: 'json')
+        post(:create, params: {chapter_id: chapter, page: attributes_for(:valid_page)},
+                      format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -52,7 +54,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
         chapter = create(:chapter, in_main_storyline_of: entry.draft)
-        page = create(:page, chapter: chapter, configuration: {})
+        page = create(:page, chapter:, configuration: {})
 
         sign_in(user, scope: :user)
         patch(:update, params: {id: page, page: {}}, format: 'json')
@@ -64,7 +66,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
         chapter = create(:chapter, in_main_storyline_of: entry.draft)
-        page = create(:page, chapter: chapter, configuration: {})
+        page = create(:page, chapter:, configuration: {})
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
@@ -83,9 +85,9 @@ module Pageflow
       it 'requires the signed in user to be editor of the parent entry' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         chapter = create(:chapter, in_main_storyline_of: entry.draft)
-        page = create(:page, chapter: chapter)
+        page = create(:page, chapter:)
 
         sign_in(user, scope: :user)
         patch(:update, params: {id: page, page: attributes_for(:valid_page)}, format: 'json')
@@ -107,7 +109,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
         chapter = create(:chapter, in_main_storyline_of: entry.draft)
-        pages = create_list(:page, 2, chapter: chapter)
+        pages = create_list(:page, 2, chapter:)
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
@@ -122,9 +124,9 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         storyline = create(:storyline, revision: entry.draft)
         other_storyline = create(:storyline, revision: entry.draft)
-        chapter = create(:chapter, storyline: storyline)
+        chapter = create(:chapter, storyline:)
         other_chapter = create(:chapter, storyline: other_storyline)
-        page = create(:page, chapter: chapter)
+        page = create(:page, chapter:)
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
@@ -138,10 +140,10 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         other_entry = create(:entry, with_editor: user)
         storyline = create(:storyline, revision: entry.draft)
-        chapter = create(:chapter, storyline: storyline)
+        chapter = create(:chapter, storyline:)
         storyline_of_other_entry = create(:storyline, revision: other_entry.draft)
         chapter_of_other_entry = create(:chapter, storyline: storyline_of_other_entry)
-        page = create(:page, chapter: chapter)
+        page = create(:page, chapter:)
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, other_entry)
@@ -153,9 +155,9 @@ module Pageflow
       it 'requires the signed in user to be editor of the parent entry' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         chapter = create(:chapter, in_main_storyline_of: entry.draft)
-        page = create(:page, chapter: chapter)
+        page = create(:page, chapter:)
 
         sign_in(user, scope: :user)
         put(:order, params: {chapter_id: page.chapter, ids: [page.id]}, format: 'json')
@@ -177,7 +179,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
         chapter = create(:chapter, in_main_storyline_of: entry.draft)
-        page = create(:page, chapter: chapter, configuration: {})
+        page = create(:page, chapter:, configuration: {})
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
@@ -193,9 +195,9 @@ module Pageflow
       it 'requires the signed in user to be editor of the parent entry' do
         user = create(:user)
         account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        entry = create(:entry, account:)
         chapter = create(:chapter, in_main_storyline_of: entry.draft)
-        page = create(:page, chapter: chapter)
+        page = create(:page, chapter:)
 
         sign_in(user, scope: :user)
         delete(:destroy, params: {id: page}, format: 'json')

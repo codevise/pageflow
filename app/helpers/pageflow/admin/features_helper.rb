@@ -1,6 +1,6 @@
 module Pageflow
   module Admin
-    module FeaturesHelper
+    module FeaturesHelper # rubocop:todo Style/Documentation
       def feature_state_select_tag(feature_target, feature_name)
         own_state = feature_target.own_feature_state(feature_name)
         inherited_state = feature_target.inherited_feature_state(feature_name)

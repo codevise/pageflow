@@ -18,7 +18,7 @@ module Pageflow
       json.file_model_types { config_file_model_types_seed(json, config) }
     end
 
-    class PageTypesSeed
+    class PageTypesSeed # rubocop:todo Style/Documentation
       attr_reader :config
 
       def initialize(config)
@@ -58,9 +58,7 @@ module Pageflow
       def condition(candidate)
         result = candidate[:unless] || candidate[:if]
 
-        if result
-          result[:negated] = !!candidate[:unless]
-        end
+        result[:negated] = !!candidate[:unless] if result
 
         result
       end

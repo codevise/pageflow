@@ -5,7 +5,7 @@ module Pageflow
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_account: -> (topic) { topic.accounts.first },
+                    of_account: ->(topic) { topic.accounts.first },
                     to: :read,
                     topic: -> { create(:user, :member, on: create(:account)) }
 
@@ -75,25 +75,25 @@ module Pageflow
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_account: -> (topic) { topic.accounts.first },
+                    of_account: ->(topic) { topic.accounts.first },
                     to: :redirect_to_user,
                     topic: -> { create(:user, :member, on: create(:account)) }
 
     it_behaves_like 'an admin permission that',
                     allows_admins_but_forbids_even_managers: true,
-                    of_account: -> (topic) { topic.accounts.first },
+                    of_account: ->(topic) { topic.accounts.first },
                     to: :admin,
                     topic: -> { create(:user, :member, on: create(:account)) }
 
     it_behaves_like 'an admin permission that',
                     allows_admins_but_forbids_even_managers: true,
-                    of_account: -> (topic) { topic.accounts.first },
+                    of_account: ->(topic) { topic.accounts.first },
                     to: :set_admin,
                     topic: -> { create(:user, :member, on: create(:account)) }
 
     describe 'delete_own_user?' do
       it 'allows users when authorize_user_deletion is true' do
-        Pageflow.config.authorize_user_deletion = lambda { |_user| true }
+        Pageflow.config.authorize_user_deletion = ->(_user) { true }
 
         user = create(:user)
 
@@ -102,7 +102,7 @@ module Pageflow
 
       it 'does not allow users when authorize_user_deletion is false' do
         Pageflow.config.authorize_user_deletion =
-          lambda { |_user| 'User cannot be deleted. Database is read-only' }
+          ->(_user) { 'User cannot be deleted. Database is read-only' }
 
         user = create(:user)
 

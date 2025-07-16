@@ -51,7 +51,7 @@ module PageflowScrolled
         configuration = params.require(:chapter)[:configuration].try(:permit!) || {}
         params.require(:chapter)
               .permit(:position)
-              .merge(configuration: configuration)
+              .merge(configuration:)
       end
 
       def find_storyline

@@ -33,7 +33,7 @@ module Pageflow
     #
     # @param config [Configuration]
     def enable(config)
-      @block.call(config) if @block
+      @block&.call(config)
     end
   end
 end

@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class RevisionsController < Pageflow::ApplicationController
     include ControllerDelegation
     include QuotaVerification
@@ -38,7 +39,7 @@ module Pageflow
     end
 
     def delegate_to_entry_type_frontend_app!(entry)
-      EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry: entry, mode: :preview)
+      EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry:, mode: :preview)
       delegate_to_rack_app!(entry.entry_type.frontend_app)
     end
   end

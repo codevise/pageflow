@@ -1,5 +1,5 @@
 module Pageflow
-  module ThemeReferencer
+  module ThemeReferencer # rubocop:todo Style/Documentation
     extend ActiveSupport::Concern
 
     included do

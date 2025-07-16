@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class SubmitFileToZencoderJob < ApplicationJob
     queue_as :default
 

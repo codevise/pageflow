@@ -15,7 +15,7 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        uploadable_file = create_used_file(:uploadable_file, entry: entry)
+        uploadable_file = create_used_file(:uploadable_file, entry:)
 
         result = helper.file_background_images_css(entry, :desktop)
 
@@ -50,7 +50,7 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        uploadable_file = create_used_file(:uploadable_file, entry: entry)
+        uploadable_file = create_used_file(:uploadable_file, entry:)
 
         result = helper.file_background_images_css(entry, :desktop)
 
@@ -71,7 +71,7 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        uploadable_file = create_used_file(:uploadable_file, entry: entry)
+        uploadable_file = create_used_file(:uploadable_file, entry:)
 
         result = helper.file_background_images_css(entry, :desktop)
 
@@ -134,7 +134,7 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        uploadable_file = create_used_file(:uploadable_file, entry: entry)
+        uploadable_file = create_used_file(:uploadable_file, entry:)
 
         result = helper.file_background_images_css(entry, :desktop)
 
@@ -155,7 +155,7 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        create_used_file(:uploadable_file, entry: entry)
+        create_used_file(:uploadable_file, entry:)
 
         result = helper.file_background_images_css(entry, :desktop)
 

@@ -1,5 +1,6 @@
 module Pageflow
   module Admin
+    # @api private
     class UsersTab < ViewComponent
       def build(account)
         embedded_index_table(account.memberships.on_accounts.includes(:user)

@@ -1,5 +1,5 @@
 module Pageflow
-  class HelpEntry
+  class HelpEntry # rubocop:todo Style/Documentation
     attr_reader :name, :children
 
     def initialize(name, options)

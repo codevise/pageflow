@@ -1,5 +1,5 @@
 module Pageflow
-  class EntryDuplicate < Struct.new(:original_entry)
+  EntryDuplicate = Struct.new(:original_entry) do
     def create!
       create_entry
 

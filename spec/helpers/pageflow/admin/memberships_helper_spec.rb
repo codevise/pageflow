@@ -50,7 +50,7 @@ module Pageflow
           it 'renders disabled select with selected option' do
             parent = build(:entry)
             user = create(:user, id: 5)
-            membership = create(:membership, user: user, entity: parent)
+            membership = create(:membership, user:, entity: parent)
 
             html = with_form(membership) { |f| helper.membership_user_select(f, parent) }
 

@@ -5,7 +5,8 @@ module Pageflow
     it 'saves job id on file' do
       file = create(:video_file)
 
-      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.creating_job_with_id(43))
+      allow(ZencoderApi).to receive(:instance)
+        .and_return(ZencoderApiDouble.creating_job_with_id(43))
 
       SubmitFileToZencoderJob.new.perform_with_result(file, {})
 

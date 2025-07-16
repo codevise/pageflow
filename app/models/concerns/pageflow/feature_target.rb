@@ -5,7 +5,7 @@ module Pageflow
       true => 'enabled',
       false => 'disabled',
       nil => 'default'
-    }
+    }.freeze
 
     extend ActiveSupport::Concern
 
@@ -21,7 +21,7 @@ module Pageflow
 
     def feature_state(name)
       state = own_feature_state(name)
-      state == nil ? inherited_feature_state(name) : state
+      state.nil? ? inherited_feature_state(name) : state
     end
 
     def own_feature_state(name)
@@ -32,6 +32,8 @@ module Pageflow
       Pageflow.config.features.enabled_by_default?(name)
     end
 
+    # rubocop:todo Metrics/PerceivedComplexity
+    # rubocop:todo Metrics/CyclomaticComplexity
     def feature_states=(states)
       boolean_states = states.each_with_object({}) do |(key, value), result|
         if value == true || value == STATE_MAPPING[true]
@@ -44,9 +46,11 @@ module Pageflow
       end
 
       self.features_configuration = features_configuration
-        .merge(boolean_states)
-        .reject { |_, value| value.nil? }
+                                    .merge(boolean_states)
+                                    .compact
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def features_configuration
       self[:features_configuration] || {}
