@@ -2,6 +2,7 @@ require 'rails/generators'
 
 module Pageflow
   module Generators
+    # @api private
     class ErrorPagesGenerator < Rails::Generators::Base
       desc 'Generate error pages.'
 

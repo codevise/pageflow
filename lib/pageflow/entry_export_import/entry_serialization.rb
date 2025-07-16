@@ -1,5 +1,6 @@
 module Pageflow
   module EntryExportImport
+    # @api private
     module EntrySerialization
       extend self
 

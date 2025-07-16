@@ -1,5 +1,5 @@
 module Pageflow
-  class Revision < ApplicationRecord
+  class Revision < ApplicationRecord # rubocop:todo Style/Documentation
     include SerializedConfiguration
 
     PAGE_ORDER = [

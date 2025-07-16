@@ -1,5 +1,6 @@
 module Pageflow
   module Generators
+    # @api private
     class InstallGenerator < Rails::Generators::Base
       desc 'Installs Pageflow and generates the necessary migrations.'
 

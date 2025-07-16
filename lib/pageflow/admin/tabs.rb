@@ -1,6 +1,6 @@
 module Pageflow
   module Admin
-    class Tabs
+    class Tabs # rubocop:todo Style/Documentation
       # @api private
       def initialize
         @tabs = {}

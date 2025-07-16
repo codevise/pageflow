@@ -1,7 +1,7 @@
 require 'uri'
 
 module Pageflow
-  class ZencoderAttachment
+  class ZencoderAttachment # rubocop:todo Style/Documentation
     cattr_accessor :default_options
     self.default_options = {
       path: '/:zencoder_asset_version/:pageflow_s3_root/:class/:id_partition/:zencoder_filename',

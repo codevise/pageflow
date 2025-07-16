@@ -1,5 +1,5 @@
 module Pageflow
-  class FileTypes
+  class FileTypes # rubocop:todo Style/Documentation
     include Enumerable
 
     def initialize

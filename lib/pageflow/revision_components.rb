@@ -1,5 +1,5 @@
 module Pageflow
-  class RevisionComponents
+  class RevisionComponents # rubocop:todo Style/Documentation
     include Enumerable
 
     def initialize

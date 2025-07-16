@@ -1,5 +1,5 @@
 module Pageflow
-  module AudioFilesHelper
+  module AudioFilesHelper # rubocop:todo Style/Documentation
     include RevisionFileHelper
 
     def audio_file_audio_tag(audio_file_perma_id, options = {})

@@ -1,5 +1,5 @@
 module PageflowScrolled
-  class Storyline < Pageflow::ApplicationRecord
+  class Storyline < Pageflow::ApplicationRecord # rubocop:todo Style/Documentation
     SECTIONS_ORDER = [
       'pageflow_scrolled_chapters.position ASC',
       'pageflow_scrolled_sections.position ASC'

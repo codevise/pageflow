@@ -1,5 +1,5 @@
 module Pageflow
-  class Hooks
+  class Hooks # rubocop:todo Style/Documentation
     def initialize
       @subscribers = Hash.new do |hash, key|
         hash[key] = []

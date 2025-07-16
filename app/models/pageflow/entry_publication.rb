@@ -1,5 +1,5 @@
 module Pageflow
-  class EntryPublication
+  class EntryPublication # rubocop:todo Style/Documentation
     attr_reader :entry, :attributes, :quota, :user
 
     def initialize(entry, attributes, published_entries_quota, user)

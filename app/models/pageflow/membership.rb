@@ -1,5 +1,5 @@
 module Pageflow
-  class Membership < ApplicationRecord
+  class Membership < ApplicationRecord # rubocop:todo Style/Documentation
     belongs_to :user
     belongs_to :entity, polymorphic: true
     belongs_to :entry,

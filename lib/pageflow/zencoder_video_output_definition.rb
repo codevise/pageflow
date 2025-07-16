@@ -503,6 +503,7 @@ module Pageflow
       }
     end
 
+    # @api private
     class Playlist
       def self.build(**args)
         builder = new(**args)

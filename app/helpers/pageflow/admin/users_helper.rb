@@ -1,6 +1,6 @@
 module Pageflow
   module Admin
-    module UsersHelper
+    module UsersHelper # rubocop:todo Style/Documentation
       include QuotaHelper
 
       def users_quota_state(account)

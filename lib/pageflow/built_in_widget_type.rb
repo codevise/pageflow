@@ -1,5 +1,5 @@
 module Pageflow
-  class BuiltInWidgetType < WidgetType
+  class BuiltInWidgetType < WidgetType # rubocop:todo Style/Documentation
     attr_reader :name, :roles, :partial_path
 
     def initialize(name, roles, partial_path)

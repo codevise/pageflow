@@ -1,7 +1,7 @@
 module Pageflow
   # Abstraction layer for Pageflow's query interface
   class ApplicationQuery
-    class Scope
+    class Scope # rubocop:todo Style/Documentation
       protected
 
       # @api private

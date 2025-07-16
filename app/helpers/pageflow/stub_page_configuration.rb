@@ -1,5 +1,5 @@
 module Pageflow
-  class StubPageConfiguration
+  class StubPageConfiguration # rubocop:todo Style/Documentation
     attr_reader :template
 
     def initialize(template)

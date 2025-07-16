@@ -1,5 +1,5 @@
 module Pageflow
-  module EntriesHelper
+  module EntriesHelper # rubocop:todo Style/Documentation
     def pretty_entry_title(entry)
       return entry.title if entry.site.title == ' '
 

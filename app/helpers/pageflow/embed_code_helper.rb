@@ -1,10 +1,10 @@
 module Pageflow
-  module EmbedCodeHelper
+  module EmbedCodeHelper # rubocop:todo Style/Documentation
     def embed_code_entry_snippet(entry)
       Pageflow::EmbedCodeHelper::EntrySnippet.new(pageflow, entry)
     end
 
-    class EntrySnippet
+    class EntrySnippet # rubocop:todo Style/Documentation
       def initialize(routes, entry)
         @routes = routes
         @entry = entry

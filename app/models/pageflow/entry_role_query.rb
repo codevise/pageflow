@@ -1,6 +1,6 @@
 module Pageflow
-  class EntryRoleQuery < ApplicationQuery
-    class Scope < Scope
+  class EntryRoleQuery < ApplicationQuery # rubocop:todo Style/Documentation
+    class Scope < Scope # rubocop:todo Style/Documentation
       attr_reader :user, :scope
 
       def initialize(user, scope, table_alias_prefix: nil)

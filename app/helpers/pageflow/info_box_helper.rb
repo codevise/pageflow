@@ -1,5 +1,5 @@
 module Pageflow
-  module InfoBoxHelper
+  module InfoBoxHelper # rubocop:todo Style/Documentation
     def info_box(configuration)
       css_classes = ['add_info_box']
 

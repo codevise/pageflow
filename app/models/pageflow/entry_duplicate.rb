@@ -1,5 +1,5 @@
 module Pageflow
-  class EntryDuplicate < Struct.new(:original_entry)
+  class EntryDuplicate < Struct.new(:original_entry) # rubocop:todo Style/Documentation
     def create!
       create_entry
 

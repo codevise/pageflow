@@ -1,5 +1,5 @@
 module Pageflow
-  module VideoFilesHelper
+  module VideoFilesHelper # rubocop:todo Style/Documentation
     include RevisionFileHelper
 
     # rubocop:todo Metrics/PerceivedComplexity

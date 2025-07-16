@@ -1,5 +1,5 @@
 module Pageflow
-  module SocialShareLinksHelper
+  module SocialShareLinksHelper # rubocop:todo Style/Documentation
     include SocialShareHelper
 
     PROVIDER_URL_TEMPLATES = {

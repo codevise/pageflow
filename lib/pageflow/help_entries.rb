@@ -1,5 +1,5 @@
 module Pageflow
-  class HelpEntries
+  class HelpEntries # rubocop:todo Style/Documentation
     include Enumerable
 
     def initialize

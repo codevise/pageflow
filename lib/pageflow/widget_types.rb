@@ -1,5 +1,5 @@
 module Pageflow
-  class WidgetTypes
+  class WidgetTypes # rubocop:todo Style/Documentation
     include Enumerable
 
     attr_reader :defaults_by_role

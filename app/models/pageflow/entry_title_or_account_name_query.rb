@@ -1,7 +1,7 @@
 module Pageflow
   # @api private
   class EntryTitleOrAccountNameQuery < ApplicationQuery
-    class Scope < Scope
+    class Scope < Scope # rubocop:todo Style/Documentation
       def initialize(term, scope)
         @term = term
         @scope = scope

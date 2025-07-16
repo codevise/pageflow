@@ -1,5 +1,5 @@
 module Pageflow
-  class Storyline < ApplicationRecord
+  class Storyline < ApplicationRecord # rubocop:todo Style/Documentation
     include SerializedConfiguration
     include RevisionComponent
 

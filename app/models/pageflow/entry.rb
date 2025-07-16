@@ -1,5 +1,5 @@
 module Pageflow
-  class Entry < ApplicationRecord
+  class Entry < ApplicationRecord # rubocop:todo Style/Documentation
     class PasswordMissingError < StandardError
     end
 

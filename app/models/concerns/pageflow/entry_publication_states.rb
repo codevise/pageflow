@@ -1,5 +1,5 @@
 module Pageflow
-  module EntryPublicationStates
+  module EntryPublicationStates # rubocop:todo Style/Documentation
     extend ActiveSupport::Concern
 
     included do
@@ -58,7 +58,7 @@ module Pageflow
       !!revisions.publications.first&.noindex
     end
 
-    module ClassMethods
+    module ClassMethods # rubocop:todo Style/Documentation
       def with_publication_state(state)
         case state
         when 'published_with_password_protection'

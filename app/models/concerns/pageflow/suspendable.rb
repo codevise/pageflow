@@ -1,5 +1,5 @@
 module Pageflow
-  module Suspendable
+  module Suspendable # rubocop:todo Style/Documentation
     def active_for_authentication?
       super && !suspended?
     end

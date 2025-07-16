@@ -1,5 +1,5 @@
 module Pageflow
-  module FileThumbnailsHelper
+  module FileThumbnailsHelper # rubocop:todo Style/Documentation
     def file_thumbnails_css(revision)
       render(partial: 'pageflow/file_types/thumbnails',
              collection: Pageflow.config.file_types.with_thumbnail_support,

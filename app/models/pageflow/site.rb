@@ -1,5 +1,5 @@
 module Pageflow
-  class Site < ApplicationRecord
+  class Site < ApplicationRecord # rubocop:todo Style/Documentation
     belongs_to :account
     belongs_to :custom_404_entry, class_name: 'Entry', optional: true
 

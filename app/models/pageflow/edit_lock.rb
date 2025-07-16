@@ -1,17 +1,17 @@
 module Pageflow
-  class EditLock < ApplicationRecord
+  class EditLock < ApplicationRecord # rubocop:todo Style/Documentation
     scope :active, (lambda do
       time = Time.now - EditLock.time_to_live
       where('pageflow_edit_locks.updated_at >= ?', time)
     end)
 
-    class Error < RuntimeError
+    class Error < RuntimeError # rubocop:todo Style/Documentation
       def code
         self.class.name.split('::').last.underscore
       end
     end
 
-    class HeldByOtherUserError < Error
+    class HeldByOtherUserError < Error # rubocop:todo Style/Documentation
       attr_reader :user
 
       def initialize(user)
@@ -63,7 +63,7 @@ module Pageflow
       touch
     end
 
-    class Null
+    class Null # rubocop:todo Style/Documentation
       attr_reader :entry
 
       def initialize(entry)

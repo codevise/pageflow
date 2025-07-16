@@ -1,5 +1,5 @@
 module Pageflow
-  module BuiltInFileType
+  module BuiltInFileType # rubocop:todo Style/Documentation
     # Factory methods to decouple Pageflow initializers from concrete
     # file type classes, making more transparent which file types are
     # available as built-ins.

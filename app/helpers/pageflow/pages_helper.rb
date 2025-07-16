@@ -1,5 +1,5 @@
 module Pageflow
-  module PagesHelper
+  module PagesHelper # rubocop:todo Style/Documentation
     def render_page_template(page, locals = {})
       page_type = Pageflow.config.page_types.find_by_name!(page.template)
 

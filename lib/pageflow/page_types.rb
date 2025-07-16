@@ -1,5 +1,5 @@
 module Pageflow
-  class PageTypes
+  class PageTypes # rubocop:todo Style/Documentation
     include Enumerable
 
     def initialize

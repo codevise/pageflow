@@ -1,5 +1,5 @@
 module Pageflow
-  class CnameSiteRequestScope
+  class CnameSiteRequestScope # rubocop:todo Style/Documentation
     def call(sites, request)
       sites.where(<<-SQL, host: request.host)
         cname = :host OR

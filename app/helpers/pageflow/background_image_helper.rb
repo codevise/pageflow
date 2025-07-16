@@ -1,5 +1,5 @@
 module Pageflow
-  module BackgroundImageHelper
+  module BackgroundImageHelper # rubocop:todo Style/Documentation
     include RevisionFileHelper
 
     def background_image_div(configuration, property_base_name, options = {})
@@ -24,7 +24,7 @@ module Pageflow
       ".load_all_images .#{css_class}, .load_image.#{css_class}"
     end
 
-    class Div
+    class Div # rubocop:todo Style/Documentation
       attr_reader :configuration, :property_base_name, :options
 
       delegate :content_tag, to: :@template
@@ -80,7 +80,7 @@ module Pageflow
       end
     end
 
-    class DivWithSizeAttributes < Div
+    class DivWithSizeAttributes < Div # rubocop:todo Style/Documentation
       include RevisionFileHelper
 
       def data_attributes

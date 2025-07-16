@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class ZencoderMetaDataOutputDefinition < ZencoderOutputDefinition
     attr_reader :file
 

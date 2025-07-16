@@ -1,5 +1,5 @@
 module Pageflow
-  module SitesHelper
+  module SitesHelper # rubocop:todo Style/Documentation
     DEFAULT_SITE_URL_OPTIONS = lambda do |site|
       site.cname.present? ? {host: site.cname} : nil
     end

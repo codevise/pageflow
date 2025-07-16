@@ -1,5 +1,5 @@
 module Pageflow
-  class UsedFile < SimpleDelegator
+  class UsedFile < SimpleDelegator # rubocop:todo Style/Documentation
     def initialize(file, usage = nil)
       super(file)
       @file = file

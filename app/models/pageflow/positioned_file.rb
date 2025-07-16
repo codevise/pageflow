@@ -1,5 +1,5 @@
 module Pageflow
-  class PositionedFile
+  class PositionedFile # rubocop:todo Style/Documentation
     attr_reader :file, :position_x, :position_y
 
     delegate :thumbnail_url, :perma_id, to: :file
@@ -29,7 +29,7 @@ module Pageflow
       Null.new
     end
 
-    class Null < PositionedFile
+    class Null < PositionedFile # rubocop:todo Style/Documentation
       def initialize
         super(nil)
       end

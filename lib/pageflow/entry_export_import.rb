@@ -1,5 +1,5 @@
 module Pageflow
-  module EntryExportImport
+  module EntryExportImport # rubocop:todo Style/Documentation
     extend self
 
     def export(entry, archive_file_path)

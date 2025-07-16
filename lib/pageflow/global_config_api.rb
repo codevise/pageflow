@@ -1,5 +1,5 @@
 module Pageflow
-  module GlobalConfigApi
+  module GlobalConfigApi # rubocop:todo Style/Documentation
     # The global configuration.
     #
     # Note that all features have been activated for this

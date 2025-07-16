@@ -1,5 +1,5 @@
 module Pageflow
-  class NullUser
+  class NullUser # rubocop:todo Style/Documentation
     def full_name
       '-'
     end

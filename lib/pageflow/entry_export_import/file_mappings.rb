@@ -1,5 +1,6 @@
 module Pageflow
   module EntryExportImport
+    # @api private
     class FileMappings
       def initialize
         @file_mappings = {}

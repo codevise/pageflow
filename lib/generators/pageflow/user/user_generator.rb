@@ -2,6 +2,7 @@ require 'rails/generators'
 
 module Pageflow
   module Generators
+    # @api private
     class UserGenerator < Rails::Generators::Base
       desc 'Injects the Pageflow::User mixin into the User class.'
 

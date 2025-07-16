@@ -2,6 +2,7 @@ require 'rails/generators'
 
 module Pageflow
   module Generators
+    # @api private
     class ProcfileGenerator < Rails::Generators::Base
       desc 'Generate a Procfile in Rails root.'
 

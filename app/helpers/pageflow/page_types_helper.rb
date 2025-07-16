@@ -1,5 +1,5 @@
 module Pageflow
-  module PageTypesHelper
+  module PageTypesHelper # rubocop:todo Style/Documentation
     include RenderJsonHelper
 
     def page_type_json_seeds(config)

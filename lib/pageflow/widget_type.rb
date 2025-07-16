@@ -1,5 +1,5 @@
 module Pageflow
-  class WidgetType
+  class WidgetType # rubocop:todo Style/Documentation
     class NotFoundError < RuntimeError
     end
 
@@ -60,7 +60,7 @@ module Pageflow
       ''
     end
 
-    class Null < WidgetType
+    class Null < WidgetType # rubocop:todo Style/Documentation
       def initialize(role)
         @role = role
       end

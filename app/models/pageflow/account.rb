@@ -1,5 +1,5 @@
 module Pageflow
-  class Account < ApplicationRecord
+  class Account < ApplicationRecord # rubocop:todo Style/Documentation
     include FeatureTarget
     include SerializationBlacklist
 

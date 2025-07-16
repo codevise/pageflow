@@ -1,5 +1,5 @@
 module Pageflow
-  class VideoFile < ApplicationRecord
+  class VideoFile < ApplicationRecord # rubocop:todo Style/Documentation
     include UploadableFile
     include MediaEncodingStateMachine
     include OutputSource

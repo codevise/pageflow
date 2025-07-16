@@ -1,5 +1,7 @@
 module Pageflow
+  # rubocop:todo Style/Documentation
   class ThumbnailFileResolver < Struct.new(:entry, :candidates, :configuration)
+    # rubocop:enable Style/Documentation
     def find_thumbnail
       candidates.detect do |candidate|
         condition = candidate[:unless] || candidate[:if]

@@ -4,7 +4,7 @@ module Pageflow
   #
   # @since 12.2
   module Admin
-    class AttributesTableRows
+    class AttributesTableRows # rubocop:todo Style/Documentation
       # @api private
       def initialize
         @rows = {}

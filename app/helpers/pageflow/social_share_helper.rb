@@ -1,5 +1,5 @@
 module Pageflow
-  module SocialShareHelper
+  module SocialShareHelper # rubocop:todo Style/Documentation
     include EntriesHelper
     include PagesHelper
     include RevisionFileHelper

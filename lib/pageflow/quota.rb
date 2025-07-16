@@ -1,6 +1,6 @@
 module Pageflow
-  class Quota
-    class ExhaustedError < RuntimeError
+  class Quota # rubocop:todo Style/Documentation
+    class ExhaustedError < RuntimeError # rubocop:todo Style/Documentation
       attr_reader :quota
 
       def initialize(quota)
@@ -53,7 +53,7 @@ module Pageflow
       self
     end
 
-    class Unlimited < Quota
+    class Unlimited < Quota # rubocop:todo Style/Documentation
       def state
         'available'
       end

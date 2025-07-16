@@ -1,7 +1,7 @@
 module Pageflow
   # Query accounts for members, e.g. based on role
   class AccountMemberQuery < ApplicationQuery
-    class Scope < ApplicationQuery::Scope
+    class Scope < ApplicationQuery::Scope # rubocop:todo Style/Documentation
       # Account whose members we scope
       # @return [Pageflow::Account]
       attr_reader :account

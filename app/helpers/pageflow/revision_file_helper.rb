@@ -1,5 +1,5 @@
 module Pageflow
-  module RevisionFileHelper
+  module RevisionFileHelper # rubocop:todo Style/Documentation
     # Instead of finding a file directly by its ID (stored in configuration hashes for example),
     # finds the file by its usages perma_id within the scope of the revisions usages.
     # The @entry instance variable (of type DraftEntry or PublishedEntry)

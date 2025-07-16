@@ -1,6 +1,6 @@
 module Pageflow
   module Admin
-    module MembershipsHelper
+    module MembershipsHelper # rubocop:todo Style/Documentation
       def membership_user_select(f, parent)
         if f.object.persisted?
           membership_disabled_select(f, :user, f.object.user, :formal_name)

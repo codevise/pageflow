@@ -1,5 +1,5 @@
 module Pageflow
-  class ImageFileUrlTemplates
+  class ImageFileUrlTemplates # rubocop:todo Style/Documentation
     def call
       styles.each_with_object({}) do |style, result|
         result[style] = replace_extension_with_placeholder(

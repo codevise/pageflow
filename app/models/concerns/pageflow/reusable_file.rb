@@ -1,5 +1,5 @@
 module Pageflow
-  module ReusableFile
+  module ReusableFile # rubocop:todo Style/Documentation
     extend ActiveSupport::Concern
 
     included do

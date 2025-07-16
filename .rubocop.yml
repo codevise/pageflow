@@ -122,6 +122,7 @@ Style/Documentation:
   Exclude:
     - admins/**/*
     - '**/spec/**/*'
+    - '**/generators/**/templates/*.rb'
     - db/migrate/*
 
 # Both ['...'] and %w(...) are fine

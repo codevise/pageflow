@@ -1,5 +1,5 @@
 module Pageflow
-  module OutputSource
+  module OutputSource # rubocop:todo Style/Documentation
     STATE_MAPPING = {
       true => 'finished',
       false => 'skipped'

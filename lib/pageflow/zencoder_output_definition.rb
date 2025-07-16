@@ -1,4 +1,5 @@
 module Pageflow
+  # @api private
   class ZencoderOutputDefinition
     cattr_accessor :default_output_bucket_name, :default_sftp_host, :default_akamai_host,
                    :default_akamai_credentials

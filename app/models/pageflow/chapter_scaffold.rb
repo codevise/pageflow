@@ -1,5 +1,5 @@
 module Pageflow
-  class ChapterScaffold
+  class ChapterScaffold # rubocop:todo Style/Documentation
     def initialize(chapter, options)
       @chapter = chapter
       @options = options

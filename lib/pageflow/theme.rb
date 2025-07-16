@@ -1,5 +1,5 @@
 module Pageflow
-  class Theme
+  class Theme # rubocop:todo Style/Documentation
     attr_reader :name, :directory_name, :options
 
     def initialize(name, options = {})

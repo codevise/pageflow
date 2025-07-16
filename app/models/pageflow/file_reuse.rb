@@ -1,5 +1,5 @@
 module Pageflow
-  class FileReuse
+  class FileReuse # rubocop:todo Style/Documentation
     attr_accessor :source_entry, :destination_entry, :file_type, :file
 
     def initialize(destination_entry, source_entry, file_type, file_id)

@@ -1,5 +1,5 @@
 module Pageflow
-  class Quotas
+  class Quotas # rubocop:todo Style/Documentation
     def initialize
       @factories = HashWithIndifferentAccess.new
     end

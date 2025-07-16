@@ -1,5 +1,5 @@
 module Pageflow
-  module QuotaHelper
+  module QuotaHelper # rubocop:todo Style/Documentation
     def quota_state_description(name, account)
       description = Pageflow.config.quotas.get(name, account).state_description
 

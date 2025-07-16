@@ -1,5 +1,5 @@
 module Pageflow
-  class AudioFile < ApplicationRecord
+  class AudioFile < ApplicationRecord # rubocop:todo Style/Documentation
     include UploadableFile
     include MediaEncodingStateMachine
 

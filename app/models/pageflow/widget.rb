@@ -1,5 +1,5 @@
 module Pageflow
-  class Widget < ApplicationRecord
+  class Widget < ApplicationRecord # rubocop:todo Style/Documentation
     include SerializedConfiguration
 
     belongs_to :subject, polymorphic: true, touch: true

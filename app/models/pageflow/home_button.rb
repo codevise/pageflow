@@ -1,5 +1,5 @@
 module Pageflow
-  class HomeButton
+  class HomeButton # rubocop:todo Style/Documentation
     attr_reader :revision, :site
 
     def initialize(revision, site)

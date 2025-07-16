@@ -1,6 +1,6 @@
 module Pageflow
   module Admin
-    module EntriesHelper
+    module EntriesHelper # rubocop:todo Style/Documentation
       def admin_entry_title(entry)
         if entry.title.blank?
           I18n.t('pageflow.admin.entries.default_title', id: entry.id)

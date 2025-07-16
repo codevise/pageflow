@@ -1,5 +1,5 @@
 module Pageflow
-  module WidgetsHelper
+  module WidgetsHelper # rubocop:todo Style/Documentation
     include RenderJsonHelper
 
     def render_widget_head_fragments(entry, options = {})

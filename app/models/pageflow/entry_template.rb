@@ -1,5 +1,5 @@
 module Pageflow
-  class EntryTemplate < ApplicationRecord
+  class EntryTemplate < ApplicationRecord # rubocop:todo Style/Documentation
     include ThemeReferencer
     include SerializedConfiguration
 

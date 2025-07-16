@@ -1,5 +1,5 @@
 module Pageflow
-  module MediaQueryHelper
+  module MediaQueryHelper # rubocop:todo Style/Documentation
     def media_query(condition, &block)
       content = capture(&block)
 

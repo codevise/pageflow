@@ -1,5 +1,5 @@
 module Pageflow
-  class BuiltInPageTypesPlugin < Plugin
+  class BuiltInPageTypesPlugin < Plugin # rubocop:todo Style/Documentation
     def configure(config)
       config.for_entry_type(PageflowPaged.entry_type) do |entry_type_config|
         entry_type_config.page_types.register(BuiltInPageType.plain)

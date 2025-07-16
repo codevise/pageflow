@@ -1,5 +1,5 @@
 module Pageflow
-  module UploadableFile
+  module UploadableFile # rubocop:todo Style/Documentation
     extend ActiveSupport::Concern
     include ReusableFile
 
@@ -109,7 +109,7 @@ module Pageflow
       file_uploaded!
     end
 
-    module ClassMethods
+    module ClassMethods # rubocop:todo Style/Documentation
       def processing_state_machine(&block)
         state_machine do
           extend StateMachineJob::Macro

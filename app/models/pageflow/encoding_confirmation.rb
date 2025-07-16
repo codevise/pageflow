@@ -1,5 +1,5 @@
 module Pageflow
-  class EncodingConfirmation
+  class EncodingConfirmation # rubocop:todo Style/Documentation
     class QuotaExceededError < RuntimeError
     end
 

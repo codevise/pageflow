@@ -1,5 +1,5 @@
 module Pageflow
-  module UrlTemplate
+  module UrlTemplate # rubocop:todo Style/Documentation
     extend self
 
     def from_attachment(attachment, *style)

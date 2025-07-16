@@ -1,6 +1,6 @@
 module PageflowPaged
   module React
-    class WidgetType < Pageflow::WidgetType
+    class WidgetType < Pageflow::WidgetType # rubocop:todo Style/Documentation
       attr_reader :name, :role, :options
 
       def initialize(name, role, options = {})

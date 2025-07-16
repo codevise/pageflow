@@ -1,7 +1,7 @@
 module Pageflow
   # @api private
   class UserNameQuery < ApplicationQuery
-    class Scope < Scope
+    class Scope < Scope # rubocop:todo Style/Documentation
       def initialize(term, scope)
         @term = term
         @scope = scope

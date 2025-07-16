@@ -1,5 +1,5 @@
 module Pageflow
-  module Roles
+  module Roles # rubocop:todo Style/Documentation
     module_function
 
     def at_least(role_uncasted)

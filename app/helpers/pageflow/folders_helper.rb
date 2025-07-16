@@ -1,5 +1,5 @@
 module Pageflow
-  module FoldersHelper
+  module FoldersHelper # rubocop:todo Style/Documentation
     def collection_for_folders(current_account, current_folder = nil)
       accounts = AccountPolicy::Scope
                  .new(current_user, Pageflow::Account)

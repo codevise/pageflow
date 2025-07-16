@@ -2,6 +2,7 @@ require 'rails/generators'
 
 module Pageflow
   module Generators
+    # @api private
     class AssetsGenerator < Rails::Generators::Base
       desc 'Install the pageflow assets.'
 

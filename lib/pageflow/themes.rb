@@ -1,5 +1,5 @@
 module Pageflow
-  class Themes
+  class Themes # rubocop:todo Style/Documentation
     include Enumerable
 
     def initialize

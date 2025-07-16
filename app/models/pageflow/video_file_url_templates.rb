@@ -1,5 +1,5 @@
 module Pageflow
-  class VideoFileUrlTemplates
+  class VideoFileUrlTemplates # rubocop:todo Style/Documentation
     def call
       {
         original: url_template(:attachment, :original),

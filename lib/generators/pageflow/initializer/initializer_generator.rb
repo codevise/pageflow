@@ -2,6 +2,7 @@ require 'rails/generators'
 
 module Pageflow
   module Generators
+    # @api private
     class InitializerGenerator < Rails::Generators::Base
       desc 'Install the pageflow initializer.'
 

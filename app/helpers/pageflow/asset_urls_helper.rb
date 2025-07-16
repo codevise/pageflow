@@ -1,5 +1,5 @@
 module Pageflow
-  module AssetUrlsHelper
+  module AssetUrlsHelper # rubocop:todo Style/Documentation
     include RenderJsonHelper
 
     def editor_asset_urls

@@ -1,5 +1,5 @@
 module Pageflow
-  module ThemesHelper
+  module ThemesHelper # rubocop:todo Style/Documentation
     include RenderJsonHelper
 
     def themes_options_json_seed(config = Pageflow.config)

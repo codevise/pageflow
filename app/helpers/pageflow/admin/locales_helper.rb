@@ -1,6 +1,6 @@
 module Pageflow
   module Admin
-    module LocalesHelper
+    module LocalesHelper # rubocop:todo Style/Documentation
       include Pageflow::PublicI18n::LocalesHelper
 
       def available_locales_collection

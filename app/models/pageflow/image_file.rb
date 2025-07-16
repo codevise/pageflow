@@ -1,5 +1,5 @@
 module Pageflow
-  class ImageFile < ApplicationRecord
+  class ImageFile < ApplicationRecord # rubocop:todo Style/Documentation
     include UploadableFile
     include ImageAndTextTrackProcessingStateMachine
     include OutputSource

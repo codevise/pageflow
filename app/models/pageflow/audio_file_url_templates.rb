@@ -1,5 +1,5 @@
 module Pageflow
-  class AudioFileUrlTemplates
+  class AudioFileUrlTemplates # rubocop:todo Style/Documentation
     def call
       {
         original: url_template(:attachment, :original),

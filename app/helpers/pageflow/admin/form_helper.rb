@@ -1,6 +1,6 @@
 module Pageflow
   module Admin
-    module FormHelper
+    module FormHelper # rubocop:todo Style/Documentation
       # Using semantic_form_for directly causes Formtastic deprecation
       # warnings regarding `input_class_finder` and
       # `action_class_finder`. `active_admin_form_for` causes issues

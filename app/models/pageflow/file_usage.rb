@@ -1,5 +1,5 @@
 module Pageflow
-  class FileUsage < ApplicationRecord
+  class FileUsage < ApplicationRecord # rubocop:todo Style/Documentation
     include SerializedConfiguration
     include RevisionComponent
 
