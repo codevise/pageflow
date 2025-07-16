@@ -41,6 +41,13 @@ Metrics/AbcSize:
   Exclude:
     - '**/spec/**/*'
 
+# Certain files are long.
+Metrics/ClassLength:
+  Max: 200
+  Exclude:
+    - 'lib/pageflow/configuration.rb'
+    - 'lib/pageflow/zencoder_video_output_definition.rb'
+
 # Long spec and DSL files are ok. Ignore some historically long helpers.
 Metrics/ModuleLength:
   Exclude:
