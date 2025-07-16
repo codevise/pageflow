@@ -49,6 +49,18 @@ Metrics/AbcSize:
     - 'lib/pageflow/configuration.rb'
     - 'lib/pageflow/zencoder_video_output_definition.rb'
 
+Metrics/PerceivedComplexity:
+  Exclude:
+    - '**/app/views/components/**/*.rb'
+    - '**/seeds.rb'
+    - 'lib/pageflow/ability_mixin.rb'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - '**/app/views/components/**/*.rb'
+    - '**/seeds.rb'
+    - 'lib/pageflow/ability_mixin.rb'
+
 # Certain files are long.
 Metrics/ClassLength:
   Max: 200

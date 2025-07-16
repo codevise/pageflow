@@ -94,6 +94,8 @@ module Pageflow
       end
     end
 
+    # rubocop:todo Metrics/PerceivedComplexity
+    # rubocop:todo Metrics/CyclomaticComplexity
     def entry_global_links(entry) # rubocop:todo Metrics/AbcSize
       links = []
 
@@ -134,6 +136,8 @@ module Pageflow
         ''
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def entry_theme_stylesheet_link_tag(entry)
       stylesheet_link_tag(entry.theme.stylesheet_path,

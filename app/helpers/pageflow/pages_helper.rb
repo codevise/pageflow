@@ -8,6 +8,8 @@ module Pageflow
                                   configuration: page.configuration))
     end
 
+    # rubocop:todo Metrics/PerceivedComplexity
+    # rubocop:todo Metrics/CyclomaticComplexity
     def page_css_class(page) # rubocop:todo Metrics/AbcSize
       classes = ['page']
       classes << 'invert' if page.configuration['invert']
@@ -31,6 +33,8 @@ module Pageflow
       classes << 'hide_logo' if page.configuration['hide_logo']
       classes.join(' ')
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def page_default_content(page)
       safe_join([

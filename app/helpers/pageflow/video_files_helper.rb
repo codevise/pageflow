@@ -2,6 +2,8 @@ module Pageflow
   module VideoFilesHelper
     include RevisionFileHelper
 
+    # rubocop:todo Metrics/PerceivedComplexity
+    # rubocop:todo Metrics/CyclomaticComplexity
     def mobile_poster_image_div(config = {}) # rubocop:todo Metrics/AbcSize
       classes = ['background', 'background_image']
       position = {x: 50, y: 50}
@@ -26,6 +28,8 @@ module Pageflow
                   class: classes.join(' '),
                   style: "background-position: #{position[:x]}% #{position[:y]}%;")
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def poster_image_tag(video_file_perma_id, poster_image_perma_id = nil, options = {})
       video_file = find_file_in_entry(VideoFile, video_file_perma_id)
@@ -46,6 +50,8 @@ module Pageflow
     end
 
     # rubocop:todo Metrics/AbcSize
+    # rubocop:todo Metrics/PerceivedComplexity
+    # rubocop:todo Metrics/CyclomaticComplexity
     def video_file_video_tag(video_file, options = {}) # rubocop:todo Metrics/MethodLength
       defaults = {
         crossorigin: 'anonymous',
@@ -92,6 +98,8 @@ module Pageflow
              options:,
              url_options:)
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/AbcSize
 
     # @deprecated

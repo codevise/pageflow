@@ -317,6 +317,7 @@ module Pageflow
         SitePolicy::Scope.new(current_user, Site)
       end
 
+      # rubocop:todo Metrics/PerceivedComplexity
       def permitted_attributes # rubocop:todo Metrics/AbcSize
         result = [:title, :type_name, {permalink_attributes: [:slug, :directory_id]}]
         target = if !params[:id] && current_user.admin?
@@ -341,6 +342,7 @@ module Pageflow
 
         result
       end
+      # rubocop:enable Metrics/PerceivedComplexity
 
       def permit_feature_states(attributes)
         return unless params[:id] && authorized?(:update_feature_configuration_on, resource)

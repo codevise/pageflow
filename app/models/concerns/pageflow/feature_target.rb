@@ -32,6 +32,8 @@ module Pageflow
       Pageflow.config.features.enabled_by_default?(name)
     end
 
+    # rubocop:todo Metrics/PerceivedComplexity
+    # rubocop:todo Metrics/CyclomaticComplexity
     def feature_states=(states) # rubocop:todo Metrics/AbcSize
       boolean_states = states.each_with_object({}) do |(key, value), result|
         if value == true || value == STATE_MAPPING[true]
@@ -47,6 +49,8 @@ module Pageflow
                                     .merge(boolean_states)
                                     .reject { |_, value| value.nil? }
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def features_configuration
       self[:features_configuration] || {}

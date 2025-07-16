@@ -4,7 +4,7 @@ module Pageflow
       json_get(response.body, options)
     end
 
-    def json_get(text, options = {})
+    def json_get(text, options = {}) # rubocop:todo Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       object = JSON.parse(text)
       path = options[:path] || []
       pretty_path = nil
