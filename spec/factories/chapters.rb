@@ -8,7 +8,7 @@ module Pageflow
       end
 
       before(:create) do |chapter, evaluator|
-        if revision = evaluator.in_main_storyline_of
+        if (revision = evaluator.in_main_storyline_of)
           chapter.storyline = revision.storylines.first ||
                               raise('Expected revision to have a main storyline.')
         end
