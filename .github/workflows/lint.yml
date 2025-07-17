@@ -1,0 +1,80 @@
+name: lint
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Caching
+
+      - name: Set up cache for Bundler
+        uses: actions/cache@v4
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Set up cache for Yarn
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # Ruby/Node
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18
+
+      # Dependencies
+
+      - name: Install Ruby dependencies
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: Install JavaScript dependencies
+        run: yarn install
+
+      # Build
+
+      - name: Build packages
+        run: |
+          bin/build-packages
+
+      # Lint
+
+      - name: Run RuboCop
+        shell: bash
+        continue-on-error: true
+        run: |
+          bundle exec rubocop --format github | sed 's/::error/::warning/g'
+
+      - name: Run ESLint in pageflow package
+        shell: bash
+        continue-on-error: true
+        run: |
+          yarn --cwd package lint . --format @jamesacarr/github-actions
+
+      - name: Run ESLint in pageflow-scrolled
+        shell: bash
+        continue-on-error: true
+        run: |
+          yarn --cwd entry_types/scrolled/package lint . --format @jamesacarr/github-actions

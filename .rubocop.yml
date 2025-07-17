@@ -3,6 +3,7 @@ AllCops:
   SuggestExtensions: false
   NewCops: enable
   Exclude:
+    - 'vendor/**/*'
     - '**/spec/dummy/**/*'
     - '**/node_modules/**/*'
 

@@ -7,10 +7,13 @@
       "entry_types/paged/packages/pageflow-paged-react",
       "entry_types/scrolled/package"
     ],
-    "nohoist": ["**/pageflow-paged-react/**"]
+    "nohoist": [
+      "**/pageflow-paged-react/**"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
+    "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
     "@rollup/plugin-alias": "^2.2.0",
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-node-resolve": "^11.2.1",
