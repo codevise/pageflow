@@ -71,7 +71,14 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   filterTranslation: function(keyName, options) {
     var filterName = this.options.filterName;
 
+    var entryTypeName = editor.entryType.name;
+
     return i18nUtils.findTranslation([
+      'pageflow.entry_types.' + entryTypeName + '.editor.files.filters.' +
+        this.options.fileType.collectionName + '.' +
+        filterName + '.' +
+        keyName,
+      'pageflow.entry_types.' + entryTypeName + '.editor.files.common_filters.' + keyName,
       'pageflow.editor.files.filters.' +
         this.options.fileType.collectionName + '.' +
         filterName + '.' +

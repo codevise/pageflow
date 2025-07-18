@@ -3,6 +3,7 @@ import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
 import {PresenceTableCellView, TableView, TextTableCellView} from 'pageflow/ui';
+import {editor} from '../base';
 
 export const UploadableFilesView = Marionette.View.extend({
   className: 'uploadable_files',
@@ -16,15 +17,20 @@ export const UploadableFilesView = Marionette.View.extend({
   },
 
   render: function() {
+    var entryTypeName = editor.entryType.name;
+
     this.appendSubview(new TableView({
       collection: this.uploadableFiles,
       attributeTranslationKeyPrefixes: [
+        'pageflow.entry_types.' + entryTypeName + '.editor.files.attributes.' +
+          this.options.fileType.collectionName,
+        'pageflow.entry_types.' + entryTypeName + '.editor.files.common_attributes',
         'pageflow.editor.files.attributes.' + this.options.fileType.collectionName,
         'pageflow.editor.files.common_attributes'
       ],
       columns: this.commonColumns({
         fileTypeDisplayName: I18n.t('pageflow.editor.files.tabs.' +
-                                       this.options.fileType.collectionName)
+                                   this.options.fileType.collectionName)
       }).concat(this.fileTypeColumns()),
       selection: this.options.selection,
       selectionAttribute: 'file'
