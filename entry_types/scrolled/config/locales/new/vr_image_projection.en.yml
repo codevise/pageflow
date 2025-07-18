@@ -1,0 +1,24 @@
+en:
+  pageflow:
+    entry_types:
+      scrolled:
+        editor:
+          files:
+            attributes:
+              image_files:
+                projection:
+                  cell_text:
+                    blank: "(none)"
+                    equirectangular_mono: Equirectangular (mono)
+                    equirectangular_stereo: Equirectangular (stereo)
+                  column_header: Projection
+                  inline_help: Determine whether this image is a mono- or stereoscopic 360° image. It can be chosen as poster image for 360° videos.
+                  label: 360° projection
+                  values:
+                    equirectangular_mono: Equirectangular (mono)
+                    equirectangular_stereo: Equirectangular (stereo)
+            filters:
+              image_files:
+                with_projection:
+                  blank_slate: Choose a projection in the file settings, to mark it as a 360° image.
+                  name: 360° images

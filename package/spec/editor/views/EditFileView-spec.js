@@ -17,7 +17,9 @@ describe('EditFileView', () => {
   useFakeTranslations({
     'pageflow.editor.files.common_attributes.source_url.label': 'Source URL',
     'pageflow.editor.files.common_attributes.license.label': 'License',
-    'pageflow.file_licenses.cc0.name': 'CC0'
+    'pageflow.file_licenses.cc0.name': 'CC0',
+    'pageflow.entry_types.strange.editor.files.attributes.image_files.custom.label': 'Entry Label',
+    'pageflow.editor.files.attributes.image_files.custom.label': 'Fallback Label'
   });
 
   it('renders configurationEditorInputs of file type', () => {
@@ -76,6 +78,42 @@ describe('EditFileView', () => {
     const {queryByLabelText} = within(view.el);
 
     expect(queryByLabelText('Source URL')).toBeNull();
+  });
+
+  it('uses entry type-specific translation keys if provided', () => {
+    editor.registerEntryType('strange');
+    const fileType = f.fileType({
+      configurationEditorInputs: [
+        {name: 'custom', inputView: TextInputView}
+      ]
+    });
+    const view = new EditFileView({
+      model: f.file({}, {fileType}),
+      entry: new Backbone.Model()
+    });
+
+    view.render();
+    const configurationEditor = ConfigurationEditorTab.find(view);
+
+    expect(configurationEditor.inputLabels()).toEqual(expect.arrayContaining(['Entry Label']));
+  });
+
+  it('falls back to generic translation keys', () => {
+    editor.registerEntryType('other');
+    const fileType = f.fileType({
+      configurationEditorInputs: [
+        {name: 'custom', inputView: TextInputView}
+      ]
+    });
+    const view = new EditFileView({
+      model: f.file({}, {fileType}),
+      entry: new Backbone.Model()
+    });
+
+    view.render();
+    const configurationEditor = ConfigurationEditorTab.find(view);
+
+    expect(configurationEditor.inputLabels()).toEqual(expect.arrayContaining(['Fallback Label']));
   });
 
   it('renders extended file rights fields if supported by entry type', () => {
