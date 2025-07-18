@@ -36,7 +36,7 @@ de:
             hideSharingButton:
               label: Share-Button ausblenden
             hideToggleMuteButton:
-              label: "'Ton aktivieren'-Button ausblenden"
+              label: '''Ton aktivieren''-Button ausblenden'
     frontend_v2:
       feature_name: Frontend v2
     hls_instead_of_dash:
@@ -103,12 +103,8 @@ de:
             inline: |-
               Im Text verankern und zusammen mit dem übrigen Inhalt
               des Abschnitts scrollen.
-            left: |-
-              Element links einrücken und vom Text des Abschnitts
-              umfließen lassen.
-            right: |-
-              Element rechts einrücken und vom Text des Abschnitts
-              umfließen lassen.
+            left: "Element links einrücken und vom Text des Abschnitts\numfließen lassen."
+            right: "Element rechts einrücken und vom Text des Abschnitts\numfließen lassen."
             standAlone: |-
               Beim Scrollen kurz in der Mitte des Viewports
               stehenbleiben. Dies gibt dem Leser eine stabile
@@ -299,7 +295,7 @@ de:
                 square: Quadratisch (1:1)
                 wide: Landscape (16:9)
             requireConsent:
-              inline_help: |-
+              inline_help: |
                 iframe erst laden, nachdem Besucher der
                 Datenverarbeitung durch die eingebettete Seite
                 zugestimmt hat.
@@ -789,57 +785,10 @@ de:
           bearbeitet werden.
       outline:
         menu_item: Kapitel, Abschnitte, Inhaltselemente
-        text: |
-          # Kapitel, Abschnitte, Inhaltselemente
-
-          Ein Pageflow besteht aus einem oder mehreren **Kapiteln**, die
-          jeweils mehere **Abschnitte** enthalten können. Je Abschnitt
-          kann ein Hintegrund (z.B. ein Bild oder ein Video-Loop)
-          festgelegt werden, der angezeigt wird, während sich der
-          Leser innerhalb des Abschnitts befindet.
-
-          Abschnitte beinhalten **Inhaltselemente**. Diese
-          können unterschiedlichen Typs sein (z.B. Text, Bilder,
-          Videos, Diagramme). Sie machen den eigentlichen
-          Inhalt des Beitrags aus, durch den der Leser scrollt.
-
-          Um Inhalte zu erstellen, klicke zunächst auf **„Neues
-          Kapitel"**, um ein erstes Kapitel zu erstellen. Wenn du auf
-          die Kopfzeile des Kapitels klickst, kannst du den Titel und
-          eine Beschreibung angegeben, die in der Navigationsleiste
-          erscheinen sollen.
-
-          Klicke als nächstes auf **„Neuer Abschnitt"**, um dem Kapitel
-          einen Abschnitt hinzuzufügen. In der Vorschau auf der linken
-          Seite wird nun ein Auswahlrechteck um den neuen Abschnitt
-          gezeigt. In der Seitenleiste kannst du die Optionen des
-          Abschnitts bearbeiten. Hier kannst du z.B. ein Bild oder
-          eine Farbe als Hintergrund für den Abschnitt
-          festlegen. Details findest du unter:
-          [Abschnittsoptionen](#pageflow_scrolled.help_entries.sections)
-
-          Der Abschnitt enthält bereits einen Text-Block. Klicke auf
-          den Text, um diesen zu bearbeiten. Mit einem Klick in den
-          leeren Bereich neben dem Text, kannst du wieder den
-          Abschnitt auswählen.
-
-          Wenn der Abschnitt ausgewählt ist, wird unterhalb des
-          letzten Elements ein Plus-Button mit der Beschriftung
-          **„Neues Element hinzufügen"** angezeigt. Wenn du darauf
-          klickst, kannst du auswählen was für einen Typ von
-          Inhaltselement du einfügen möchtest. Wenn ein Inhaltselement
-          per Klick ausgewählt wird, können in der Seitenleiste seine
-          Einstellungen bearbeitet werden. Details zu den verfügbaren
-          Inhaltselementen findest du unter:
-          [Inhaltselemente](#pageflow_scrolled.help_entries.content_elements)
-
-          Oben und unten am Auswahlrechteck um ein Inhaltselement
-          befinden sich ebenfalls Plus-Buttons, über die weitere
-          Elemente vor oder nach dem ausgewählten Element eingefügt
-          werden können.
+        text: "# Kapitel, Abschnitte, Inhaltselemente\n\nEin Pageflow besteht aus einem oder mehreren **Kapiteln**, die\njeweils mehere **Abschnitte** enthalten können. Je Abschnitt\nkann ein Hintegrund (z.B. ein Bild oder ein Video-Loop)\nfestgelegt werden, der angezeigt wird, während sich der\nLeser innerhalb des Abschnitts befindet.\n\nAbschnitte beinhalten **Inhaltselemente**. Diese\nkönnen unterschiedlichen Typs sein (z.B. Text, Bilder,\nVideos, Diagramme). Sie machen den eigentlichen\nInhalt des Beitrags aus, durch den der Leser scrollt.\n\nUm Inhalte zu erstellen, klicke zunächst auf **„Neues\nKapitel\"**, um ein erstes Kapitel zu erstellen. Wenn du auf\ndie Kopfzeile des Kapitels klickst, kannst du den Titel und\neine Beschreibung angegeben, die in der Navigationsleiste\nerscheinen sollen.\n\nKlicke als nächstes auf **„Neuer Abschnitt\"**, um dem Kapitel\neinen Abschnitt hinzuzufügen. In der Vorschau auf der linken\nSeite wird nun ein Auswahlrechteck um den neuen Abschnitt\ngezeigt. In der Seitenleiste kannst du die Optionen des\nAbschnitts bearbeiten. Hier kannst du z.B. ein Bild oder\neine Farbe als Hintergrund für den Abschnitt\nfestlegen. Details findest du unter:\n[Abschnittsoptionen](#pageflow_scrolled.help_entries.sections)\n\nDer Abschnitt enthält bereits einen Text-Block. Klicke auf\nden Text, um diesen zu bearbeiten. Mit einem Klick in den\nleeren Bereich neben dem Text, kannst du wieder den\nAbschnitt auswählen.\n\nWenn der Abschnitt ausgewählt ist, wird unterhalb des\nletzten Elements ein Plus-Button mit der Beschriftung\n**„Neues Element hinzufügen\"** angezeigt. Wenn du darauf\nklickst, kannst du auswählen was für einen Typ von\nInhaltselement du einfügen möchtest. Wenn ein Inhaltselement\nper Klick ausgewählt wird, können in der Seitenleiste seine\nEinstellungen bearbeitet werden. Details zu den verfügbaren\nInhaltselementen findest du unter:\n[Inhaltselemente](#pageflow_scrolled.help_entries.content_elements)\n\nOben und unten am Auswahlrechteck um ein Inhaltselement\nbefinden sich ebenfalls Plus-Buttons, über die weitere\nElemente vor oder nach dem ausgewählten Element eingefügt\nwerden können."
       overview:
         menu_item: Übersicht
-        text: |
+        text: |-
           # Übersicht
 
           Dies ist der Editor zum Bearbeiten von Pageflows. Mit
@@ -884,90 +833,7 @@ de:
           Hochkant-Format aussieht und funktioniert.
       sections:
         menu_item: Abschnittsoptionen
-        text: |
-          # Abschnittsoptionen
-
-          Ein Klick in einen leeren Bereich eines Abschnitts lässt ein
-          Auswahlrechteck um den Abschnitt erscheinen. In der
-          Seitenleiste können die Optionen des ausgewählten Abschnitts
-          bearbeitet werden.
-
-          ## Layout
-
-          Über die Option **Vordergrund-Positionierung** kann
-          ausgewählt werden, wie der Inhalt des Abschnitts horizontal
-          angeordnet werden soll. Ist das Motiv im Hintergrund des
-          Abschnittes beispielsweise auf der rechten Seite, können
-          Text- und Inhaltselemente auf der linken Seite positioniert
-          sein und umgekehrt. Bei Hintergründen in der Totale
-          bzw. einem zentrierten Motiv, bietet sich die mittige
-          Ausrichtung der Inhaltselemente an.
-
-          Durch Auswahl einer **Abblendung** kann ein ausreichender
-          Kontrast zwischen Text und Hintergrund sichergestellt
-          werden. Bei der Variante **Schatten** wird der Hintergrund
-          mit einem Farbverlauf verdunkelt bzw. aufgehellt. Mit der
-          Einstellung **Karte** werden die Inhaltselemente auf einer
-          Fläche mit abgerundeten Ecken abgebildet.
-
-          ## Hintergrund
-
-          Im Hintergrund des Abschnitts kann entweder ein **Bild**,
-          ein **Video-Loop** oder eine **Farbe** angezeigt werden. Bei
-          Hintergrund-Bildern und -Videos kann der wichtigste Bildteil
-          markiert werden. Dieser sogenannte **Motivbereich** wird
-          dann sowohl in der Desktop- als auch in der Darstellung auf
-          mobilen Geräten zunächst nicht vom scrollenden Vordergrund
-          verdeckt. Weitere Infos findest du unter
-          [Motivbereiche](#pageflow_scrolled.help_entries.motif_area)
-
-          Über die Option **Hintergrund-Bild (Hochkant)** kann
-          optional ein alternatives Bild festgelegt werden, das
-          verwendet werden soll, wenn das Bildschirm-Seitenverhältnis
-          eines Endgerätes höher als breit ist, zum Beispiel auf
-          Smartphones und Tablets im Portrait-Modus (hochkant). Das
-          Bild kann als Alternative zum Hintergrund-Bild im Querformat
-          konfiguriert werden, von dem ansonsten eventuell wichtige
-          Teile abgeschnitten werden könnten.
-
-          ## Atmo
-
-          Mit der **Atmo** kann jeder Abschnitt, unabhängig von seinen
-          Inhaltselementen, im Hintergrund Sound abspielen. Dabei kann
-          bestimmt werden, ob ein Sound nur in einem Abschnitt zu
-          hören ist oder über mehrere Abschnitte ohne Unterbrechung
-          weiterläuft. Wähle dazu einfach für die nachfolgenden
-          Abschnitte die selbe Audiodatei als Atmo aus. Auf diese
-          Weise lassen sich Kapitel akustisch voneinander absetzen und
-          zusammenhängende Abschnitte stärker verweben.
-
-          Beim Abspielen von Audios und Videos kann zusätzlich
-          ausgewählt werden, ob der Hintergrundsound während der
-          Medien-Wiedergabe normal oder leiser weitergespielt oder
-          ganz ausgeblendet werden soll. Wähle dazu ein Video oder
-          Audio Element aus und lege das gewünschte Verhalten über das
-          Feld **Atmo während Medien-Wiedergabe** fest.
-
-          Sollte Dich die Atmo während der Bearbeitung Deines Beitrags
-          im Editor einmal stören, kannst du sie mit der
-          Tastenkombination Alt + a vorübergehend stumm schalten. Um
-          die Atmo wieder zu aktivieren, drücke einfach erneut Alt +
-          a.
-
-          ## Transitionen
-
-          Zwischen je zwei Abschnitte kann ein **Übergangseffekt**
-          ausgewählt werden. Klicke in den Hintergrund eines
-          Abschnitts, um diesen auszuwählen. Auf der rechten Seite des
-          Auswahlrechteck erscheinen dann an den Grenzen zum
-          benachbarten Abschnitten Buttons mit zwei verschränkten
-          Pfeilen als Symbol. Klicke auf einen der Buttons, um in der
-          Seitenleiste den Übergangseffekt für die Abschnittsgrenze
-          auszuwählen.
-
-          Der Effekt **Überblenden** steht nur zwischen Abschnitten
-          zur Verfügung, für die die Option **Volle Viewport-Höhe**
-          aktiviert wurde.
+        text: "# Abschnittsoptionen\n\nEin Klick in einen leeren Bereich eines Abschnitts lässt ein\nAuswahlrechteck um den Abschnitt erscheinen. In der\nSeitenleiste können die Optionen des ausgewählten Abschnitts\nbearbeitet werden.\n\n## Layout\n\nÜber die Option **Vordergrund-Positionierung** kann\nausgewählt werden, wie der Inhalt des Abschnitts horizontal\nangeordnet werden soll. Ist das Motiv im Hintergrund des\nAbschnittes beispielsweise auf der rechten Seite, können\nText- und Inhaltselemente auf der linken Seite positioniert\nsein und umgekehrt. Bei Hintergründen in der Totale\nbzw. einem zentrierten Motiv, bietet sich die mittige\nAusrichtung der Inhaltselemente an.\n\nDurch Auswahl einer **Abblendung** kann ein ausreichender\nKontrast zwischen Text und Hintergrund sichergestellt\nwerden. Bei der Variante **Schatten** wird der Hintergrund\nmit einem Farbverlauf verdunkelt bzw. aufgehellt. Mit der\nEinstellung **Karte** werden die Inhaltselemente auf einer\nFläche mit abgerundeten Ecken abgebildet.\n\n## Hintergrund\n\nIm Hintergrund des Abschnitts kann entweder ein **Bild**,\nein **Video-Loop** oder eine **Farbe** angezeigt werden. Bei\nHintergrund-Bildern und -Videos kann der wichtigste Bildteil\nmarkiert werden. Dieser sogenannte **Motivbereich** wird\ndann sowohl in der Desktop- als auch in der Darstellung auf\nmobilen Geräten zunächst nicht vom scrollenden Vordergrund\nverdeckt. Weitere Infos findest du unter\n[Motivbereiche](#pageflow_scrolled.help_entries.motif_area)\n\nÜber die Option **Hintergrund-Bild (Hochkant)** kann\noptional ein alternatives Bild festgelegt werden, das\nverwendet werden soll, wenn das Bildschirm-Seitenverhältnis\neines Endgerätes höher als breit ist, zum Beispiel auf\nSmartphones und Tablets im Portrait-Modus (hochkant). Das\nBild kann als Alternative zum Hintergrund-Bild im Querformat\nkonfiguriert werden, von dem ansonsten eventuell wichtige\nTeile abgeschnitten werden könnten.\n\n## Atmo\n\nMit der **Atmo** kann jeder Abschnitt, unabhängig von seinen\nInhaltselementen, im Hintergrund Sound abspielen. Dabei kann\nbestimmt werden, ob ein Sound nur in einem Abschnitt zu\nhören ist oder über mehrere Abschnitte ohne Unterbrechung\nweiterläuft. Wähle dazu einfach für die nachfolgenden\nAbschnitte die selbe Audiodatei als Atmo aus. Auf diese\nWeise lassen sich Kapitel akustisch voneinander absetzen und\nzusammenhängende Abschnitte stärker verweben.\n\nBeim Abspielen von Audios und Videos kann zusätzlich\nausgewählt werden, ob der Hintergrundsound während der\nMedien-Wiedergabe normal oder leiser weitergespielt oder\nganz ausgeblendet werden soll. Wähle dazu ein Video oder\nAudio Element aus und lege das gewünschte Verhalten über das\nFeld **Atmo während Medien-Wiedergabe** fest.\n\nSollte Dich die Atmo während der Bearbeitung Deines Beitrags\nim Editor einmal stören, kannst du sie mit der\nTastenkombination Alt + a vorübergehend stumm schalten. Um\ndie Atmo wieder zu aktivieren, drücke einfach erneut Alt +\na.\n\n## Transitionen\n\nZwischen je zwei Abschnitte kann ein **Übergangseffekt**\nausgewählt werden. Klicke in den Hintergrund eines\nAbschnitts, um diesen auszuwählen. Auf der rechten Seite des\nAuswahlrechteck erscheinen dann an den Grenzen zum\nbenachbarten Abschnitten Buttons mit zwei verschränkten\nPfeilen als Symbol. Klicke auf einen der Buttons, um in der\nSeitenleiste den Übergangseffekt für die Abschnittsgrenze\nauszuwählen.\n\nDer Effekt **Überblenden** steht nur zwischen Abschnitten\nzur Verfügung, für die die Option **Volle Viewport-Höhe**\naktiviert wurde."
     inline_editing:
       add_caption: Beschriftung hinzufügen
       add_content_element: Neues Element hinzufügen
