@@ -334,9 +334,9 @@ module Pageflow
         }
       )
 
-      expect do
+      expect {
         entry.destroy
-      end.to change(Permalink, :count).by(-1)
+      }.to change(Permalink, :count).by(-1)
     end
 
     it 'destroys permalink redirects when entry is destroyed' do
@@ -354,9 +354,9 @@ module Pageflow
         }
       )
 
-      expect do
+      expect {
         entry.destroy
-      end.to change(PermalinkRedirect, :count).by(-1)
+      }.to change(PermalinkRedirect, :count).by(-1)
     end
   end
 end
