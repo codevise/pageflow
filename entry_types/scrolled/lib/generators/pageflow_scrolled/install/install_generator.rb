@@ -141,15 +141,7 @@ module PageflowScrolled
       end
 
       def default_theme
-        theme_dir = 'app/javascript/pageflow-scrolled/themes/default'
-        icons_src_dir = PageflowScrolled::Engine.root.join('package/src/frontend/icons')
-
-        directory 'theme', theme_dir
-
-        CUSTOM_THEME_ICONS.each do |icon|
-          copy_file icons_src_dir.join("#{icon}.svg"),
-                    File.join(theme_dir, "icons/#{icon}.svg")
-        end
+        directory 'theme', 'app/javascript/pageflow-scrolled/themes/default'
       end
     end
   end
