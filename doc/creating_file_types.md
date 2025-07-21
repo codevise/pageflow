@@ -137,7 +137,7 @@ names to the `metaDataAttributes` option, when registering the file
 type.
 
     # app/assets/javascripts/pageflow/panorama/editor/config.js
-    pageflow.editor.fileTypes.register('pageflow_image_files', {
+    pageflow.editor.fileTypes.register('image_files', {
       model: pageflow.ImageFile,
       matchUpload: /^image/,
       metaDataAttributes: ['dimensions']
@@ -163,6 +163,87 @@ value:
 See `pageflow.TextFileMetaDataItemValueView` for more information. You
 can also create a custom view by extending
 `pageflow.FileMetaDataItemValueView`.
+
+## Configuration Editor Inputs
+
+Use the `configurationEditorInputs` option when registering a file type
+to add custom fields to the file settings dialog. Each item describes an
+attribute and the input view used to edit it. Input views can be further
+configured via `inputViewOptions`.
+
+    pageflow.editor.fileTypes.register('image_files', {
+      model: pageflow.ImageFile,
+      matchUpload: /^image/,
+      configurationEditorInputs: [
+        {
+          name: 'custom',
+          inputView: pageflow.TextInputView,
+          inputViewOptions: {
+            maxLength: 5000
+          }
+        }
+      ]
+    });
+
+Translations can be provided under
+`pageflow.editor.files.attributes.image_files.custom` to change the label,
+inline help or select option texts. Entry types can override these by defining
+translations under `pageflow.entry_types.<name>.editor.files.attributes.image_files.custom`.
+
+## Upload Confirmation Table Columns
+
+After files are selected the editor displays a confirmation table before the
+upload begins. Use the `confirmUploadTableColumns` option to add custom columns
+to this table. Columns can specify `cellViewOptions` in addition to the view
+class.
+
+    pageflow.editor.fileTypes.register('image_files', {
+      model: pageflow.ImageFile,
+      matchUpload: /^image/,
+      confirmUploadTableColumns: [
+        {
+          name: 'custom',
+          cellView: pageflow.TextTableCellView,
+          cellViewOptions: {
+            default: '-'
+          }
+        }
+      ]
+    });
+
+Translate column headers and cell contents via keys under
+`pageflow.editor.files.attributes.image_files.custom`. Entry types can override
+these translations under
+`pageflow.entry_types.<name>.editor.files.attributes.image_files.custom`.
+
+## Filters
+
+File collections can expose filters which determine subsets of the
+collection. Each filter has a `name` used for translations and a
+`matches` function deciding whether a file belongs to the filter. Users do
+not select filters directly. Instead, filters can be referenced when rendering
+`FileInputViews`.
+
+    pageflow.editor.fileTypes.register('image_files', {
+      model: pageflow.ImageFile,
+      matchUpload: /^image/,
+      filters: [
+        {
+          name: 'with_projection',
+          matches: function(file) { return file.has('projection'); }
+        }
+      ]
+    });
+
+    this.input('image', FileInputView, {
+      collection: 'image_files',
+      filter: 'with_projection'
+    });
+
+Translations for filter names and blank slates can be defined under
+`pageflow.editor.files.filters.image_files.with_projection`. Entry types can
+override them via
+`pageflow.entry_types.<name>.editor.files.filters.image_files.with_projection`.
 
 ## Custom Processing Stages
 
@@ -424,6 +505,25 @@ from:
 When creating color map files, Pageflow will make sure that the custom
 attribute references an image file from the same revision to prevent
 privilege escalation.
+
+
+## Modifying File Types
+
+Existing file types can be extended by calling `fileTypes.modify` before
+the editor boots. Only a few properties can be changed this way. Any
+changes are appended to the configuration provided when the file type
+was registered.
+
+    pageflow.editor.fileTypes.modify('image_files', {
+      configurationEditorInputs: [
+        {name: 'custom', inputView: pageflow.TextInputView}
+      ]
+    });
+
+The properties that may be modified are `configurationEditorInputs`,
+`configurationUpdaters`, `confirmUploadTableColumns` and `filters`. A
+modification containing any other keys will raise an error during
+initialization.
 
 ## Import/Export
 
