@@ -1,7 +1,10 @@
 .container {
   width: 100%;
   margin: 0 auto;
-  max-width: calc(100 * var(--vh) / var(--fit-viewport-aspect-ratio) * var(--fit-viewport-scale, 1));
+  max-width: var(
+    --theme-fit-viewport,
+    calc(100 * var(--vh) / var(--fit-viewport-aspect-ratio) * var(--fit-viewport-scale, 1))
+  );
 }
 
 .content {
