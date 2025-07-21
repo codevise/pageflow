@@ -195,6 +195,10 @@ module Pageflow
       end
     end
 
+    def entry_for_auto_generated_perma_id
+      entry
+    end
+
     def self.depublish_all
       published.update_all(published_until: Time.now)
     end
