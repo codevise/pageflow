@@ -12,6 +12,10 @@ module Pageflow
 
     scope :displayed_in_navigation, -> { where(display_in_navigation: true) }
 
+    def entry_for_auto_generated_perma_id
+      chapter.storyline.revision.entry
+    end
+
     def title
       configuration['title'].presence || configuration['additional_title']
     end

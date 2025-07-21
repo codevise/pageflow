@@ -86,33 +86,5 @@ module Pageflow
         expect(components).to eq([revision_component])
       end
     end
-
-    describe '.create_with_lock!' do
-      it 'acquires advisory lock to prevent perma id generation race condition',
-         multithread: true do
-        stub_const('Pageflow::RevisionComponent::ADVISORY_LOCK_TIMEOUT_SECONDS', 0)
-
-        revision = create(:revision)
-
-        expect {
-          TestRevisionComponent.create_with_lock!(revision:) do
-            Thread.new {
-              TestRevisionComponent.create_with_lock!(revision:)
-            }.join
-          end
-        }.to raise_error(RevisionComponent::PermaIdGenerationAdvisoryLockTimeout)
-      end
-
-      it 'allows nested creates from same thread' do
-        stub_const('Pageflow::RevisionComponent::ADVISORY_LOCK_TIMEOUT_SECONDS', 0)
-        revision = create(:revision)
-
-        expect {
-          TestRevisionComponent.create_with_lock!(revision:) do
-            TestRevisionComponent.create_with_lock!(revision:)
-          end
-        }.not_to raise_error
-      end
-    end
   end
 end
