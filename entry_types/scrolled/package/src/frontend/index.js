@@ -105,6 +105,7 @@ export {EditableTable} from './EditableTable';
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
 export {EditableLink} from './EditableLink';
+export {LinkTooltipProvider} from './LinkTooltipProvider';
 export {PhonePlatformContext} from './PhonePlatformContext';
 export {
   OptIn as ThirdPartyOptIn,
@@ -116,6 +117,7 @@ export {Tooltip} from './Tooltip';
 export {ThemeIcon} from './ThemeIcon';
 export {InlineFileRights} from './InlineFileRights';
 export {useFloatingPortalRoot, FloatingPortalRootProvider} from './FloatingPortalRootProvider';
+export {ScrollButton} from './ScrollButton';
 
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';

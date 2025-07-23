@@ -54,6 +54,16 @@ describe('Layout', () => {
         }
       });
 
+      frontend.contentElementTypes.register('probeWithCustomMarginFunction', {
+        customMargin({configuration}) { return configuration.useCustomMargin; },
+
+        component: function Probe({contentElementId}) {
+          return (
+            <div>{contentElementId} </div>
+          );
+        }
+      });
+
       frontend.contentElementTypes.register('probeWithCustomMarginProp', {
         customMargin: true,
 
@@ -132,6 +142,23 @@ describe('Layout', () => {
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'}
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, {position, customMargin}) =>
+              <div>{position} {customMargin ? 'custom' : 'normal'} {children}</div>
+            }
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[inline normal 1 inline custom 2 inline normal 3 ]');
+      });
+
+      it('supports function for custom margin option', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probeWithCustomMarginFunction', position: 'inline', props: {useCustomMargin: true}},
+          {id: 3, type: 'probeWithCustomMarginFunction', position: 'inline', props: {useCustomMargin: false}}
         ];
         const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'left'}} items={items}>
@@ -687,6 +714,23 @@ describe('Layout', () => {
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
           {id: 3, type: 'probe', position: 'inline'}
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, {customMargin}) =>
+              <div>{customMargin ? 'custom' : 'normal'} {children}</div>
+            }
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('normal 1 custom 2 normal 3 ');
+      });
+
+      it('supports function for custom margin option', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probeWithCustomMarginFunction', position: 'inline', props: {useCustomMargin: true}},
+          {id: 3, type: 'probeWithCustomMarginFunction', position: 'inline', props: {useCustomMargin: false}}
         ];
         const {container} = renderInEntry(
           <Layout sectionProps={{layout: 'center'}} items={items}>

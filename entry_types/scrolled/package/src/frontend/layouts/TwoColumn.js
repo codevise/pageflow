@@ -107,8 +107,13 @@ function groupItemsByPosition(items, shouldInline) {
   let currentGroup, currentBox;
 
   items.reduce((previousPosition, item, index) => {
-    const {customMargin: elementSupportsCustomMargin} =
+    let {customMargin: elementSupportsCustomMargin} =
       api.contentElementTypes.getOptions(item.type) || {};
+
+    if (typeof elementSupportsCustomMargin === 'function') {
+      elementSupportsCustomMargin = elementSupportsCustomMargin({configuration: item.props});
+    }
+
     let width = item.width || 0;
     const position = onTheSide(item.position) && !shouldInline(width) ? item.position : 'inline';
     const customMargin = !!elementSupportsCustomMargin && width < widths.full;

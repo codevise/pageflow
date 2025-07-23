@@ -1,10 +1,16 @@
 .list {
   --columns: 1;
   --gap: 1rem;
+  --reference-width: min(var(--reference-max-width, 100cqw), var(--full-width-content-width, 100cqw));
+
   display: flex;
   flex-wrap: wrap;
   column-gap: var(--gap);
   justify-content: space-evenly;
+}
+
+.scroller {
+  flex-wrap: nowrap;
 }
 
 .linkAlignment-left {
@@ -21,7 +27,50 @@
 
 .list > * {
   margin: 2% 0;
-  width: calc((100% - var(--gap) * (var(--columns) - 1)) / var(--columns));
+  width: calc((var(--reference-width) - var(--gap) * (var(--columns) - 1)) / var(--columns));
+}
+
+.scroller > * {
+  margin: 0.5rem 0;
+  flex-shrink: 0;
+}
+
+.linkWidth-full-xs {
+  --reference-max-width: var(--layout-inline-content-max-width);
+}
+
+.linkWidth-full-s {
+  --reference-max-width: var(--layout-inline-content-max-width);
+  --columns: 2;
+}
+
+.linkWidth-full-m {
+  --reference-max-width: var(--layout-inline-lg-content-max-width);
+}
+
+.linkWidth-full-l {
+  --reference-max-width: var(--layout-inline-content-max-width);
+}
+
+.linkWidth-full-xl {
+  --reference-max-width: var(--layout-inline-lg-content-max-width);
+}
+
+.linkWidth-full-xxl {
+  --reference-max-width: var(--layout-inline-xl-content-max-width);
+}
+
+.list:where(:not(.width-full)) > * {
+  max-width: calc((var(--content-max-width) - var(--gap) * (var(--max-columns) - 1)) / var(--max-columns));
+}
+
+.width-lg.layout-center.linkWidth-l,
+.width-xl.linkWidth-xl {
+  --max-columns: 2;
+}
+
+.width-xl.linkWidth-l {
+  --max-columns: 3;
 }
 
 .linkWidth-s > * {
@@ -38,6 +87,12 @@
   }
 }
 
+@container (min-width: 375px) {
+  .linkWidth-full-xs {
+    --columns: 2
+  }
+}
+
 @container (min-width: 400px) {
   .linkWidth-s {
     --columns: 2;
@@ -45,14 +100,22 @@
 }
 
 @container (min-width: 500px) {
-  .linkWidth-s,
-  .linkWidth-m,
-  .linkWidth-l,
-  .linkWidth-xl {
+  .list {
     --gap: 1.5rem;
   }
 
+  .linkWidth-xs,
+  .linkWidth-full-xs {
+    --gap: 1rem;
+  }
+
   .linkWidth-xs {
+    --columns: 3;
+  }
+}
+
+@container (min-width: 595px) {
+  .linkWidth-full-xs {
     --columns: 3;
   }
 }
@@ -64,11 +127,13 @@
 }
 
 @container (min-width: 700px) {
-  .linkWidth-s,
-  .linkWidth-m,
-  .linkWidth-l,
-  .linkWidth-xl {
+  .list {
     --gap: 2rem;
+  }
+
+  .linkWidth-xs,
+  .linkWidth-full-xs {
+    --gap: 1rem;
   }
 
   .linkWidth-xs {
@@ -80,6 +145,10 @@
   }
 
   .linkWidth-m {
+    --columns: 2;
+  }
+
+  .linkWidth-full-m {
     --columns: 2;
   }
 }

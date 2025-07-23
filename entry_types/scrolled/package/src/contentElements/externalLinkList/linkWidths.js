@@ -16,6 +16,7 @@ export function maxLinkWidth({layout, textPosition, width}) {
         [contentElementWidths.md]: linkWidths.md,
         [contentElementWidths.lg]: linkWidths.lg,
         [contentElementWidths.xl]: linkWidths.xl,
+        [contentElementWidths.full]: linkWidths.xl,
       }[width];
     }
     else {
@@ -23,6 +24,7 @@ export function maxLinkWidth({layout, textPosition, width}) {
         [contentElementWidths.md]: linkWidths.lg,
         [contentElementWidths.lg]: linkWidths.xl,
         [contentElementWidths.xl]: linkWidths.xxl,
+        [contentElementWidths.full]: linkWidths.xxl,
       }[width];
     }
   }
@@ -32,6 +34,7 @@ export function maxLinkWidth({layout, textPosition, width}) {
         [contentElementWidths.md]: linkWidths.sm,
         [contentElementWidths.lg]: linkWidths.md,
         [contentElementWidths.xl]: linkWidths.xl,
+        [contentElementWidths.full]: linkWidths.xl,
       }[width];
     }
     else {
@@ -39,6 +42,7 @@ export function maxLinkWidth({layout, textPosition, width}) {
         [contentElementWidths.md]: linkWidths.lg,
         [contentElementWidths.lg]: linkWidths.lg,
         [contentElementWidths.xl]: linkWidths.xxl,
+        [contentElementWidths.full]: linkWidths.xxl,
       }[width];
     }
   }

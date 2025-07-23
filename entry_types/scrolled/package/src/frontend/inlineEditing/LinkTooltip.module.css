@@ -11,33 +11,8 @@
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
-.align-center {
-  transform: translateX(-50%);
-}
-
-.linkTooltip::before {
-  content: "";
-  display: block;
-  position: absolute;
-  border: solid 4px transparent;
-}
-
-.position-below::before {
-  bottom: 100%;
-  border-bottom: solid 4px #222;
-}
-
-.position-above::before {
-  top: 100%;
-  border-top: solid 4px #222;
-}
-
-.align-left::before {
-  left: 20px;
-}
-
-.align-center::before {
-  left: calc(50% - 4px);
+.linkTooltip > svg {
+  fill: #222;
 }
 
 .linkTooltip > a,

@@ -9,7 +9,6 @@
   position: relative;
   margin: 0;
   padding: 0;
-  transition: transform 0.3s;
 }
 
 .item > a {
@@ -35,10 +34,11 @@
 }
 
 .textPosition-below .cardWrapper,
-.textPosition-right .cardWrapper{
+.textPosition-right .cardWrapper {
   height: 100%;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s;
 }
 
 .card {
@@ -70,12 +70,16 @@
   composes: textPosition-none;
 }
 
-.link.textPosition-below:not(.outlined):hover {
-  transform: scale(var(--theme-external-links-card-hover-scale, 1.05));
+.link.textPosition-below .cardWrapper {
+  --hover-scale: var(--theme-external-links-card-hover-scale, 1.05);
 }
 
-.link.textPosition-right:not(.outlined):hover {
-  transform: scale(var(--theme-external-links-card-hover-scale, 1.02));
+.link.textPosition-right .cardWrapper {
+  --hover-scale: var(--theme-external-links-card-hover-scale, 1.02);
+}
+
+.link:not(.outlined):hover .cardWrapper {
+  transform: scale(calc(1 + (var(--hover-scale) - 1) * var(--hover-scale-adjustment, 1)));
 }
 
 .link .card:hover .title {

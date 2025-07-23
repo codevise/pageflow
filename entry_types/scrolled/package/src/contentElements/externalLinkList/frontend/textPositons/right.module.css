@@ -1,16 +1,74 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
 .list {
+  --columns: 1;
+  --gap: 1rem;
+  --reference-width: min(var(--reference-max-width, 100cqw), var(--full-width-content-width, 100cqw));
+
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(
-    var(--columns, 1),
+    var(--columns),
     minmax(0px, var(--column-max-width, 1fr))
   );
-  column-gap: 1rem;
+  column-gap: var(--gap);
   justify-content: center;
 }
 
 .list > * {
   width: 100%;
   margin: 2% 0;
+}
+
+.scroller,
+.width-full {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.width-full.layout-center:not(.scroller) {
+  justify-content: center;
+}
+
+.width-full.layout-right:not(.scroller) {
+  justify-content: flex-end;
+}
+
+.scroller {
+  flex-wrap: nowrap;
+  max-width: calc(var(--column-max-width) * var(--columns) + var(--gap) * (var(--columns) - 1) + 2 * var(--scroller-padding-inline));
+}
+
+.scroller > *,
+.width-full > * {
+  flex-shrink: 0;
+  width: calc((var(--reference-width, 100cqw) - var(--gap) * (var(--columns) - 1)) / var(--columns));;
+  max-width: var(--column-max-width);
+}
+
+.linkWidth-full-xs {
+  --reference-max-width: var(--layout-inline-lg-content-max-width);
+}
+
+.linkWidth-full-s {
+  --reference-max-width: var(--layout-inline-content-max-width);
+}
+
+.linkWidth-full-m {
+  --reference-max-width: var(--layout-inline-lg-content-max-width);
+}
+
+.linkWidth-full-l {
+  --reference-max-width: var(--layout-inline-content-max-width);
+}
+
+.linkWidth-full-xl,
+.linkWidth-full-xxl {
+  --reference-max-width: var(--layout-inline-lg-content-max-width);
 }
 
 @container (max-width: 700px) {
@@ -27,15 +85,16 @@
   --column-max-width: 950px;
 }
 
-.linkWidth-s.width-xl.layout-left {
+.linkWidth-s.width-xl.layout-left:not(.scroller) {
   justify-content: start;
 }
 
-.linkWidth-s.width-xl.layout-right {
+.linkWidth-s.width-xl.layout-right:not(.scroller) {
   justify-content: end;
 }
 
 @container (min-width: 501px) {
+  .linkWidth-full-xs,
   .linkWidth-xs {
     --columns: 2;
   }
@@ -48,6 +107,7 @@
 }
 
 @container (min-width: 750px) {
+  .linkWidth-full-xs,
   .linkWidth-xs {
     --columns: 3;
   }
@@ -61,6 +121,7 @@
     grid-column-start: 2;
   }
 
+  .linkWidth-full-m,
   .linkWidth-m {
     --columns: 2;
   }
@@ -78,6 +139,7 @@
 }
 
 @container (min-width: 950px) {
+  .linkWidth-full-s,
   .linkWidth-s {
     --columns: 2;
   }

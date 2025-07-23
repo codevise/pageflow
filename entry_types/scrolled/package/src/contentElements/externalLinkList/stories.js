@@ -2,7 +2,8 @@ import React from 'react';
 
 import {
   Entry, RootProviders,
-  contentElementWidths
+  contentElementWidths,
+  contentElementWidthName
 } from 'pageflow-scrolled/frontend';
 
 import {
@@ -335,19 +336,21 @@ storiesOfContentElement(module, {
   inlineFileRights: true
 });
 
-[['below'], ['right'], ['overlay', 'square']].forEach(([textPosition, thumbnailAspectRatio]) =>
-  storiesOf(`Content Elements/externalLinkList`, module)
-    .add(
-      `Text Position - ${textPosition}`,
-      () => (
-        <RootProviders seed={exampleSeed({textPosition, thumbnailAspectRatio})}>
-          <Entry />
-        </RootProviders>
+['always', 'never'].forEach(enableScroller =>
+  [['below'], ['right'], ['overlay', 'square']].forEach(([textPosition, thumbnailAspectRatio]) =>
+    storiesOf(`Content Elements/externalLinkList`, module)
+      .add(
+        `Text Position - ${textPosition}${enableScroller === 'always' ? ' - scroll' : ''}`,
+        () => (
+          <RootProviders seed={exampleSeed({textPosition, thumbnailAspectRatio, enableScroller})}>
+            <Entry />
+          </RootProviders>
+        )
       )
   )
 );
 
-function exampleSeed({textPosition, thumbnailAspectRatio}) {
+function exampleSeed({textPosition, thumbnailAspectRatio, enableScroller}) {
   const sectionConfiguration = {
     transition: 'scroll'
   };
@@ -386,51 +389,58 @@ function exampleSeed({textPosition, thumbnailAspectRatio}) {
       }
     ],
     contentElements: [
-      ...exampleContentElements(1, 'left', textPosition, thumbnailAspectRatio),
-      ...exampleContentElements(2, 'center', textPosition, thumbnailAspectRatio),
-      ...exampleContentElements(3, 'right', textPosition, thumbnailAspectRatio),
+      ...exampleContentElements(1, 'left', textPosition, thumbnailAspectRatio, enableScroller),
+      ...exampleContentElements(2, 'center', textPosition, thumbnailAspectRatio, enableScroller),
+      ...exampleContentElements(3, 'right', textPosition, thumbnailAspectRatio, enableScroller),
     ]
   });
 }
 
-function linkCount({layout, textPosition, width, linkWidth}) {
+function linkCount({layout, textPosition, width, linkWidth, enableScroller}) {
   if (textPosition === 'right') {
     return 3;
   }
   else {
+    const delta = enableScroller === 'always' ? 2 : 1;
+
     return range(
       linkWidths.xs,
       maxLinkWidth({width, layout, textPosition})
-    ).reverse().indexOf(linkWidth) + 1;
+    ).reverse().indexOf(linkWidth) + delta;
   }
 }
 
-function exampleContentElements(sectionId, layout, textPosition, thumbnailAspectRatio) {
+function exampleContentElements(sectionId, layout, textPosition, thumbnailAspectRatio, enableScroller) {
   return [
     exampleHeading({sectionId, text: `Layout ${layout}`}),
     ...([
       contentElementWidths.md,
       contentElementWidths.lg,
-      contentElementWidths.xl
+      contentElementWidths.xl,
+      contentElementWidths.full
     ].flatMap(width =>
-      range(
-        linkWidths.xs,
-        maxLinkWidth({width, layout, textPosition})
-      ).map(linkWidth => (
-        {
-          sectionId,
-          typeName: 'externalLinkList',
-          configuration: {
-            textPosition,
-            width,
-            linkWidth,
-            thumbnailAspectRatio,
-            ...links({
-              count: linkCount({layout, textPosition, width, linkWidth})
-            })
+      [
+        exampleHeading({sectionId, text: `Width ${contentElementWidthName(width)}`}),
+        ...range(
+          linkWidths.xs,
+          maxLinkWidth({width, layout, textPosition})
+        ).map(linkWidth => (
+          {
+            sectionId,
+            typeName: 'externalLinkList',
+            configuration: {
+              textPosition,
+              width,
+              linkWidth,
+              thumbnailAspectRatio,
+              enableScroller,
+              ...links({
+                count: linkCount({layout, textPosition, width, linkWidth, enableScroller})
+              })
+            }
           }
-        }
-      ))
+        ))
+      ]
     ))
   ];
 }
