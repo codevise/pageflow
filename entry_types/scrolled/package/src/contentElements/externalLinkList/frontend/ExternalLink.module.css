@@ -70,12 +70,16 @@
   composes: textPosition-none;
 }
 
-.link.textPosition-below:not(.outlined):hover .cardWrapper {
-  transform: scale(var(--theme-external-links-card-hover-scale, 1.05));
+.link.textPosition-below .cardWrapper {
+  --hover-scale: var(--theme-external-links-card-hover-scale, 1.05);
 }
 
-.link.textPosition-right:not(.outlined):hover .cardWrapper {
-  transform: scale(var(--theme-external-links-card-hover-scale, 1.02));
+.link.textPosition-right .cardWrapper {
+  --hover-scale: var(--theme-external-links-card-hover-scale, 1.02);
+}
+
+.link:not(.outlined):hover .cardWrapper {
+  transform: scale(calc(1 + (var(--hover-scale) - 1) * var(--hover-scale-adjustment, 1)));
 }
 
 .link .card:hover .title {

@@ -79,6 +79,8 @@
   --scroller-padding-inline: calc(var(--clip-margin) + var(--full-width-padding, 0px));
   padding: 0;
   scroll-padding-left: var(--scroller-padding-inline);
+
+  --hover-scale-adjustment: 0.2;
 }
 
 .scroller > li {
