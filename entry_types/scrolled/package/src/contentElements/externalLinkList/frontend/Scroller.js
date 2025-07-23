@@ -1,9 +1,9 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Measure from 'react-measure';
 
 import {ScrollButton} from 'pageflow-scrolled/frontend';
 
-export function Scroller({enabled, children}) {
+export function Scroller({enabled, measureKey, children}) {
   const ref = useRef();
 
   if (!enabled) {
@@ -66,6 +66,7 @@ export function Scroller({enabled, children}) {
 
         return (
           <>
+            <Watch value={measureKey} onChange={measure} />
             <ScrollButton direction="left"
                           disabled={!canScrollLeft}
                           onClick={() => scrollBy(-1)} />
@@ -81,4 +82,13 @@ export function Scroller({enabled, children}) {
       }}
     </Measure>
   );
+}
+
+function Watch({value, onChange}) {
+  useEffect(
+    () => onChange(),
+    [value, onChange]
+  );
+
+  return null;
 }

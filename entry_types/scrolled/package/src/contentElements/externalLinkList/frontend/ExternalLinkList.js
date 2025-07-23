@@ -85,7 +85,7 @@ export function ExternalLinkList(props) {
     <div className={classNames({[styles.contentMargin]: props.customMargin || fullWidth},
                                styles[`scrollButtons-${theme.options.teasersScrollButtons}`])}
          onClick={handleListClick}>
-      <Scroller enabled={scrollerEnabled}>
+      <Scroller enabled={scrollerEnabled} measureKey={linkList.length}>
         {({scrollerRef, handleScroll}) =>
           <div className={classNames(styles.container,
                                      {[styles.fullContainer]: fullWidth},

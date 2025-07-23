@@ -66,7 +66,8 @@
   --reference-max-width: var(--layout-inline-content-max-width);
 }
 
-.linkWidth-full-xl {
+.linkWidth-full-xl,
+.linkWidth-full-xxl {
   --reference-max-width: var(--layout-inline-lg-content-max-width);
 }
 
