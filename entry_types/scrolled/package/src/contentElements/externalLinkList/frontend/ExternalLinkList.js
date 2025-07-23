@@ -83,7 +83,8 @@ export function ExternalLinkList(props) {
 
   return (
     <div className={classNames({[styles.contentMargin]: props.customMargin || fullWidth},
-                               styles[`scrollButtons-${theme.options.teasersScrollButtons}`])}>
+                               styles[`scrollButtons-${theme.options.teasersScrollButtons}`])}
+         onClick={handleListClick}>
       <Scroller enabled={scrollerEnabled}>
         {({scrollerRef, handleScroll}) =>
           <div className={classNames(styles.container, {[styles.fullContainer]: fullWidth})}>
@@ -109,8 +110,7 @@ export function ExternalLinkList(props) {
                   )}
                   style={{'--overlay-opacity': (props.configuration.overlayOpacity || 70) / 100,
                           '--thumbnail-aspect-ratio': `var(--theme-aspect-ratio-${props.configuration.thumbnailAspectRatio || 'wide'})`}}
-                  onScroll={handleScroll}
-                  onClick={handleListClick}>
+                  onScroll={handleScroll}>
                 {linkList.map((link, index) =>
                   <ExternalLink {...link}
                                 key={link.id}
