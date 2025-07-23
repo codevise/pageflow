@@ -2,24 +2,14 @@ en:
   pageflow_scrolled:
     editor:
       content_element_categories:
-        links: DELETED
         tilesAndLinks:
           name: Links and Tiles
       content_elements:
         externalLinkList:
-          attributes:
-            description: DELETED
-            open_in_new_tab: DELETED
-            title: DELETED
-            url: DELETED
           description: A list of tiles with thumbnail and caption
           confirm_delete_item: Are you sure you want to delete this teaser?
-          confirm_delete: DELETED
-          outline: DELETED
           items: Items
           name: Teasers
           tabs:
             general: Teasers
             edit_link: Teaser
-    inline_editing:
-      external_links: DELETED
