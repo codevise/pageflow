@@ -67,7 +67,7 @@ export const CheckBoxInputView = Marionette.ItemView.extend({
 
   load: function() {
     if (!this.isClosed) {
-      this.ui.input.prop('checked', this.displayValue());
+      this.ui.input.prop('checked', !!this.displayValue());
     }
   },
 

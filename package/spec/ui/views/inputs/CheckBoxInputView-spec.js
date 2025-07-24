@@ -77,6 +77,25 @@ describe('pageflow.CheckBoxInputView', () => {
     expect(view.ui.input.is(':checked')).toEqual(true);
   });
 
+  it('updates displayed value when disabled option returns true or undefined', () => {
+    var model = new Model({state: false});
+    var view = new CheckBoxInputView({
+      model: model,
+      propertyName: 'value',
+      disabledBinding: 'state',
+      disabled: function(state) { return state; },
+      displayCheckedIfDisabled: true
+    });
+
+    view.render();
+
+    expect(view.ui.input.is(':checked')).toEqual(false);
+    model.set('state', true);
+    expect(view.ui.input.is(':checked')).toEqual(true);
+    model.set('state', false);
+    expect(view.ui.input.is(':checked')).toEqual(false);
+  });
+
   describe('with storeInverted option', () => {
     it('displays checked by default', () => {
       var model = new Model();
