@@ -144,7 +144,7 @@ de:
     view: Anzeigen
     resources:
       translations:
-        new_model: Link translation
+        new_model: Übersetzung zuordnen
   activerecord:
     attributes:
       admin_user:
@@ -282,8 +282,8 @@ de:
         share_providers: Standard Share Links
         sitemap_enabled: XML-Sitemap
         title: Titel
-        custom_404_entry_id: "Custom 404 page"
-        cutoff_mode_name: "Cutoff mode"
+        custom_404_entry_id: "Benutzerdefinierte 404-Seite"
+        cutoff_mode_name: "Cutoff-Modus"
       pageflow/text_track_file:
         kind: Art
         label: Label
@@ -437,8 +437,8 @@ de:
         one: Nutzer
         other: Nutzer
       translation:
-        one: Translation
-        other: Translations
+        one: Übersetzung
+        other: Übersetzungen
     values:
       pageflow/chapter:
         navigation_bar_mode:
@@ -865,9 +865,9 @@ de:
         snapshot: Aktuellen Stand sichern
         title_hint: Dieses Feld bestimmt die URL, unter der der Beitrag öffentlich erreichbar ist.
         permalink_hint: |-
-          Changing the permalink after the story has already been
-          published automatically creates a redirect from the old URL
-          to the new URL
+          Wenn der Permalink geändert wird, nachdem der Beitrag
+          bereits veröffentlicht wurde, wird automatisch eine
+          Weiterleitung von der alten URL zur neuen URL eingerichtet.
       entry:
         add: Beitrag hinzufügen
         entry_membership_hint: Lade Benutzer ins Konto ein, um sie als Mitglieder diesem Beitrag zuzuweisen.
@@ -905,7 +905,7 @@ de:
         revisions: Revisionen
         sites: Sites
         users: Benutzer
-        translations: Translations
+        translations: Übersetzungen
       revisions:
         published_until_hint: Freilassen, um Beitrag unbegrenzt zu veröffentlichen.
         restored: Revision wiederhergestellt
@@ -934,21 +934,24 @@ de:
           die URL in Google Search Console oder ähnlichen Tools.
         title_hint: "Wird in Titeln der Beiträge und als Titel für den Atom-Feed\nverwendet."
         custom_404_entry:
-          none: "(Use default 404 page)"
-          hint: "Select an entry to display as the custom 404 page. Only published entries without password protection are available."
+          none: "(Standard 404-Seite verwenden)"
+          hint: "Wählen Sie einen Eintrag aus, der als benutzerdefinierte 404-Seite angezeigt werden soll. Nur veröffentlichte Einträge ohne Passwortschutz sind verfügbar."
         home_url_new_site_hint: |
-          Used for requests to the root path with one of the above
-          CNAMES. Once the site has been created you can also
-          configure an entry as homepage.
+          Wird einer der obigen CNAMES ohne Pfad in der URL verwendet,
+          wird zu dieser URL umgeleitet. Nachdem die Site erstellt
+          wurde kann auch ein Beitrag als Einstiegsseite konfiguriert
+          werden.
         home_url_hint_html: |
-          Used for requests to the root path with one of the above
-          CNAMES. Alternatively, you can also use an entry as homepage.
-          <a href="%{choose_url}">Select existing entry</a> or <a
-          href="%{new_url}">create a new one</a>.
+          Wird einer der obigen CNAMES ohne Pfad in der URL verwendet,
+          wird zu dieser URL umgeleitet.
+          Alternativ kannst du auch einen Beitrag als Einstiegsseite
+          verwenden. <a href="%{choose_url}">Bestehenden Beitrag auswählen</a>
+          oder <a href="%{new_url}">neuen Beitrag erstellen</a>.
         home_url_with_root_entry_hint_html: |
-          At the moment, the site uses the entry <a
-          href="%{entry_url}">%{entry_title}</a> as homepage. Change
-          the permalink of the entry to instead use the redirect URL.
+          Im Moment wird der Beitrag <a
+          href="%{entry_url}">%{entry_title}</a> als Einstiegsseite
+          verwendet. Ändere den Permalink des Beitrags, um stattdessen
+          die Redirect URL zu verwenden.
       user:
         cannot_add: Was Sie tun möchten, ist nicht möglich. Sie müssen aktualisieren.
         none_addable_tooltip: Kein Benutzer verfügbar
@@ -1027,41 +1030,42 @@ de:
         unsuspend: Entsperren
         unsuspended: Der Benutzer wurde entsperrt. Er kann sich nun wieder anmelden.
       entry_translations:
-        add: Link translation
-        generate: Generate translation
-        entry_id: Entry
-        id: Translation(s)
+        add: Übersetzung zuordnen
+        generate: Übersetzung generieren
+        entry_id: Beitrag
+        id: Übersetzung(en)
         new_hint_html: |-
-          Associate entries that represent the same content in
-          different languages.
-        create_model: Link as translation
-        no_translations: No linked entries
-        remove: Remove
+          Verknüpfe Beiträge, die denselben Inhalt in verschiedenen
+          Sprachen darstellen.
+        create_model: Als Übersetzung zuordnen
+        no_translations: Keine Beiträge zugeordnet
+        remove: Entfernen
         remove_confirmation: |-
-          Are you sure you want to remove the entry from the list of translations?
-        mark_as_default: Mark as default
+          Beitrag wirklich aus der Liste der Übersetzungen entfernen?
+        mark_as_default: Als Standard markieren
         mark_as_default_confirmation: |-
-          Really mark this translation as default?
+          Beitrag wirklich as Standardübersetzung markieren?
         default_translation: "%{display_locale} (Standard)"
         default_translation_hint: |-
-          Search engines fall back to the default language if no
-          translation is available that matches the user's language
-          settings.
+          Suchmaschinen verwenden den als Standard markierten Beitrag,
+          falls keine Übersetzung verfügbar ist, die den
+          Spracheinstellungen des Besuchers entspricht.
       site_root_entry:
-        title: Set Homepage
+        title: Einstiegsseite festlegen
         intro_html: |
-          <p>Select the story that should appear as the homepage at:<br>
-          <strong>https://%{site_host}/</strong><br>This content will
-          be shown when someone visits your site without entering a
-          specific path.</p>
+          <p>Wähle den Beitrag aus, der als Einstiegsseite unter der
+          folgenden URL gezeigt werden soll:
+          <strong>https://%{site_host}/</strong><br>Dieser Inhalt
+          wird gezeigt, wenn die Domain der Site ohne weiteren Pfad
+          aufgerufen wird.</p>
         hint: |
-          The story's permalink will be updated automatically. If
-          the story is already published, a redirect from the old URL
-          to the new ULR will be created.
-        submit: Set as Homepage
-        chosen: The story has been chosen as homepage.
-        root_permalink_directory_required: No permalink directory exists for this site.
-        root_entry_exists: Another story is already being used as homepage.
+          Der Permalink des Beitrags wird automatisch angepasst. Falls
+          der Beitrag bereits veröffentlicht wurde, wird eine
+          Weiterleitung von der alten URL zur neuen URL eingerichtet.
+        submit: Als Einstiegsseite festlegen
+        chosen: Der Beitrag wurde als Einstiegsseite festgelegt.
+        root_permalink_directory_required: Für diese Seite wurde noch kein Permalink-Verzeichnis angelegt.
+        root_entry_exists: Es existiert bereits ein Beitrag, der als Einstiegsseite verwendet wird.
     audio:
       help_entries:
         page_type:
@@ -1491,12 +1495,12 @@ de:
 
             Dieser Schritt kann nicht rückgängig gemacht werden.
         edit_configuration:
-          back: "Back"
+          back: "Zurück"
           confirm_destroy: Wirklich löschen?
           destroy: Löschen
           retry: Erneut versuchen
           save_error: Fehler beim Speichern
-          outline: "Outline"
+          outline: "Gliederung"
         edit_entry_view:
           cannot_publish: Sie sind nicht berechtigt diesen Beitrag zu veröffentlichen.
         edit_page_view:
@@ -2080,10 +2084,10 @@ de:
         phone_horizontal_slideshow_mode: Horizontales Wischen auf Phones
         slim_player_controls: Minimalistisch
     public:
-      share_on_bluesky: Share on Bluesky
-      share_on_threads: Share on Threads
+      share_on_bluesky: Auf Bluesky teilen
+      share_on_threads: Auf Threads teilen
     cutoff_modes:
-      none: "(None)"
+      none: "(Kein)"
   support:
     array:
       last_word_connector: " und "
@@ -2108,17 +2112,17 @@ de:
   pageflow_scrolled:
     editor:
       section_item:
-        set_cutoff: "Set paywall cutoff above"
-        reset_cutoff: "Remove paywall cutoff"
-        cutoff: "Paywall cutoff"
+        set_cutoff: "Paywall Grenze oberhalb setzen"
+        reset_cutoff: "Paywall Grenze entfernen"
+        cutoff: "Paywall Grenze"
   activemodel:
     attributes:
       pageflow/site_root_entry_form:
-        entry: Story
-        entry_id: Story
+        entry: Beitrag
+        entry_id: Beitrag
     errors:
       models:
         pageflow/site_root_entry_form:
           attributes:
             entry:
-              blank: not found
+              blank: nicht gefunden
