@@ -36,6 +36,8 @@
 .container {
   grid-column: 2;
   container-type: inline-size;
+  display: flex;
+  justify-content: center;
 }
 
 .fullContainer {
@@ -45,6 +47,7 @@
 .list {
   composes: scope-externalLinks from global;
   composes: contentColorScope;
+  flex: 1;
   padding: 0;
   margin: 0;
   list-style: none;

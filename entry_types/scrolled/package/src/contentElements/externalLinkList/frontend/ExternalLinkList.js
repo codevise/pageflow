@@ -87,9 +87,7 @@ export function ExternalLinkList(props) {
          onClick={handleListClick}>
       <Scroller enabled={scrollerEnabled} measureKey={linkList.length}>
         {({scrollerRef, handleScroll}) =>
-          <div className={classNames(styles.container,
-                                     {[styles.fullContainer]: fullWidth},
-                                     textPositionStyles.container)}>
+          <div className={classNames(styles.container, {[styles.fullContainer]: fullWidth})}>
             <LinkTooltipProvider align="center">
               <ul ref={scrollerRef}
                   className={classNames(
