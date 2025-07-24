@@ -142,6 +142,9 @@ de:
       recommendation: Wir empfehlen ein Update des Browsers auf eine aktuelle Version von <a href="http://windows.microsoft.com/ie">Internet Explorer</a>, <a href="https://chrome.google.com/">Google Chrome</a>, oder <a href="https://mozilla.org/firefox/">Firefox</a>.
       turn_off_compatibility_view: Internet Explorer Version 9 und niedriger sind nicht unterstützt.
     view: Anzeigen
+    resources:
+      translations:
+        new_model: Übersetzung zuordnen
   activerecord:
     attributes:
       admin_user:
@@ -279,6 +282,8 @@ de:
         share_providers: Standard Share Links
         sitemap_enabled: XML-Sitemap
         title: Titel
+        custom_404_entry_id: "Benutzerdefinierte 404-Seite"
+        cutoff_mode_name: "Cutoff-Modus"
       pageflow/text_track_file:
         kind: Art
         label: Label
@@ -431,6 +436,9 @@ de:
       user:
         one: Nutzer
         other: Nutzer
+      translation:
+        one: Übersetzung
+        other: Übersetzungen
     values:
       pageflow/chapter:
         navigation_bar_mode:
@@ -452,6 +460,9 @@ de:
           linked_in: LinkedIn
           telegram: Telegram (nur Mobilgeräte)
           whats_app: WhatsApp (nur Mobilgeräte)
+          bluesky: Bluesky
+          threads: Threads
+          twitter: X
         type_names:
           paged: Seitenbasiert / klassisch
           scrolled: Kontinuierlich scrollend / Pageflow Next
@@ -853,6 +864,10 @@ de:
         show_public_hint: Öffentliche Seite anzeigen
         snapshot: Aktuellen Stand sichern
         title_hint: Dieses Feld bestimmt die URL, unter der der Beitrag öffentlich erreichbar ist.
+        permalink_hint: |-
+          Wenn der Permalink geändert wird, nachdem der Beitrag
+          bereits veröffentlicht wurde, wird automatisch eine
+          Weiterleitung von der alten URL zur neuen URL eingerichtet.
       entry:
         add: Beitrag hinzufügen
         entry_membership_hint: Laden Sie Benutzer in Ihr Konto ein, um sie als Mitglieder dieser Story zuzuweisen.
@@ -890,6 +905,7 @@ de:
         revisions: Revisionen
         sites: Sites
         users: Benutzer
+        translations: Übersetzungen
       revisions:
         published_until_hint: Freilassen, um Beitrag unbegrenzt zu veröffentlichen.
         restored: Revision wiederhergestellt
@@ -919,6 +935,25 @@ de:
         title_hint: |-
           Wird in Titeln der Beiträge und als Titel für den Atom-Feed
           verwendet.
+        custom_404_entry:
+          none: "(Standard 404-Seite verwenden)"
+          hint: "Wählen Sie einen Eintrag aus, der als benutzerdefinierte 404-Seite angezeigt werden soll. Nur veröffentlichte Einträge ohne Passwortschutz sind verfügbar."
+        home_url_new_site_hint: |
+          Wird einer der obigen CNAMES ohne Pfad in der URL verwendet,
+          wird zu dieser URL umgeleitet. Nachdem die Site erstellt
+          wurde kann auch ein Beitrag als Einstiegsseite konfiguriert
+          werden.
+        home_url_hint_html: |
+          Wird einer der obigen CNAMES ohne Pfad in der URL verwendet,
+          wird zu dieser URL umgeleitet.
+          Alternativ kannst du auch einen Beitrag als Einstiegsseite
+          verwenden. <a href="%{choose_url}">Bestehenden Beitrag auswählen</a>
+          oder <a href="%{new_url}">neuen Beitrag erstellen</a>.
+        home_url_with_root_entry_hint_html: |
+          Im Moment wird der Beitrag <a
+          href="%{entry_url}">%{entry_title}</a> als Einstiegsseite
+          verwendet. Ändere den Permalink des Beitrags, um stattdessen
+          die Redirect URL zu verwenden.
       user:
         cannot_add: Was Sie tun möchten, ist nicht möglich. Sie müssen aktualisieren.
         none_addable_tooltip: Kein Benutzer verfügbar
@@ -996,6 +1031,43 @@ de:
         suspended: Der Benutzer wurde gesperrt. Er kann sich nun nicht mehr anmelden.
         unsuspend: Entsperren
         unsuspended: Der Benutzer wurde entsperrt. Er kann sich nun wieder anmelden.
+      entry_translations:
+        add: Übersetzung zuordnen
+        generate: Übersetzung generieren
+        entry_id: Beitrag
+        id: Übersetzung(en)
+        new_hint_html: |-
+          Verknüpfe Beiträge, die denselben Inhalt in verschiedenen
+          Sprachen darstellen.
+        create_model: Als Übersetzung zuordnen
+        no_translations: Keine Beiträge zugeordnet
+        remove: Entfernen
+        remove_confirmation: |-
+          Beitrag wirklich aus der Liste der Übersetzungen entfernen?
+        mark_as_default: Als Standard markieren
+        mark_as_default_confirmation: |-
+          Beitrag wirklich as Standardübersetzung markieren?
+        default_translation: "%{display_locale} (Standard)"
+        default_translation_hint: |-
+          Suchmaschinen verwenden den als Standard markierten Beitrag,
+          falls keine Übersetzung verfügbar ist, die den
+          Spracheinstellungen des Besuchers entspricht.
+      site_root_entry:
+        title: Einstiegsseite festlegen
+        intro_html: |
+          <p>Wähle den Beitrag aus, der als Einstiegsseite unter der
+          folgenden URL gezeigt werden soll:
+          <strong>https://%{site_host}/</strong><br>Dieser Inhalt
+          wird gezeigt, wenn die Domain der Site ohne weiteren Pfad
+          aufgerufen wird.</p>
+        hint: |
+          Der Permalink des Beitrags wird automatisch angepasst. Falls
+          der Beitrag bereits veröffentlicht wurde, wird eine
+          Weiterleitung von der alten URL zur neuen URL eingerichtet.
+        submit: Als Einstiegsseite festlegen
+        chosen: Der Beitrag wurde als Einstiegsseite festgelegt.
+        root_permalink_directory_required: Für diese Seite wurde noch kein Permalink-Verzeichnis angelegt.
+        root_entry_exists: Es existiert bereits ein Beitrag, der als Einstiegsseite verwendet wird.
     audio:
       help_entries:
         page_type:
@@ -1424,11 +1496,12 @@ de:
 
             Dieser Schritt kann nicht rückgängig gemacht werden.
         edit_configuration:
-          back: Gliederung
+          back: "Zurück"
           confirm_destroy: Wirklich löschen?
           destroy: Löschen
           retry: Erneut versuchen
           save_error: Fehler beim Speichern
+          outline: "Gliederung"
         edit_entry_view:
           cannot_publish: Sie sind nicht berechtigt diesen Beitrag zu veröffentlichen.
         edit_page_view:
@@ -1987,6 +2060,11 @@ de:
         default_slideshow_mode: Vertikales Scrollen/Wischen
         phone_horizontal_slideshow_mode: Horizontales Wischen auf Phones
         slim_player_controls: Minimalistisch
+    public:
+      share_on_bluesky: Auf Bluesky teilen
+      share_on_threads: Auf Threads teilen
+    cutoff_modes:
+      none: "(Kein)"
   support:
     array:
       last_word_connector: " und "
@@ -2008,3 +2086,20 @@ de:
       next: ">>"
       previous: !!str '<<'
       truncate: "..."
+  pageflow_scrolled:
+    editor:
+      section_item:
+        set_cutoff: "Paywall Grenze oberhalb setzen"
+        reset_cutoff: "Paywall Grenze entfernen"
+        cutoff: "Paywall Grenze"
+  activemodel:
+    attributes:
+      pageflow/site_root_entry_form:
+        entry: Beitrag
+        entry_id: Beitrag
+    errors:
+      models:
+        pageflow/site_root_entry_form:
+          attributes:
+            entry:
+              blank: nicht gefunden

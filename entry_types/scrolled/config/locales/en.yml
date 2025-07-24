@@ -37,6 +37,25 @@ en:
               label: Hide share button
             hideToggleMuteButton:
               label: Hide unmute button
+            accentColor:
+              label: "Accent color"
+          iconScrollIndicator:
+            animation:
+              label: Animation
+              values:
+                none: None
+                smallBounce: Subtle
+                largeBounce: Obvious
+            alignment:
+              label: Alignment
+              values:
+                centerContent: Center with content
+                centerViewport: Center with viewport
+            size:
+              label: Size
+              values:
+                large: Large
+                small: Small
     frontend_v2:
       feature_name: Frontend v2
     hls_instead_of_dash:
@@ -53,9 +72,50 @@ en:
       configuration_editor:
         tabs:
           defaultNavigation: Default navigation
+          iconScrollIndicator: Icon Scroll Indicator
     widgets:
       roles:
         inlineFileRights: Inline file rights
+        scrollIndicator: Scroll indicator
+    backdrop_content_elements:
+      feature_name: "Backdrop content elements"
+    backdrop_size:
+      feature_name: Backdrop size option
+    custom_palette_colors:
+      feature_name: "Custom Palette Colors"
+    entry_types:
+      scrolled:
+        editor:
+          entry_metadata_configuration_attributes:
+            darkWidgets:
+              label: "Use dark theme variant"
+          files:
+            attributes:
+              image_files:
+                projection:
+                  cell_text:
+                    blank: "(none)"
+                    equirectangular_mono: Equirectangular (mono)
+                    equirectangular_stereo: Equirectangular (stereo)
+                  column_header: Projection
+                  inline_help: Determine whether this image is a mono- or stereoscopic 360° image. It can be chosen as poster image for 360° videos.
+                  label: 360° projection
+                  values:
+                    equirectangular_mono: Equirectangular (mono)
+                    equirectangular_stereo: Equirectangular (stereo)
+            filters:
+              image_files:
+                with_projection:
+                  blank_slate: Choose a projection in the file settings, to mark it as a 360° image.
+                  name: 360° images
+    decoration_effects:
+      feature_name: Decoration Effects
+    content_element_margins:
+      feature_name: "Element Margins"
+    icon_scroll_indicator:
+      feature_name: Icon Scroll Indicator
+    iconScrollIndicator:
+      widget_type_name: Icon at bottom of viewport
   pageflow_scrolled:
     editor:
       backdrop_effects:
@@ -75,6 +135,12 @@ en:
           label: Scroll Parallax
         sepia:
           label: Sepia
+        frame:
+          label: 'Frame'
+        crop:
+          label: Crop
+        rounded:
+          label: Rounded corners
       blank_entry:
         create_chapter: Click <em>New chapter</em> to create your first chapter.
         create_content_element: Use the <em>Plus buttons</em> inside the preview to add text blocks and other elements.
@@ -89,12 +155,16 @@ en:
         add_section: New section
         drag_hint: Drag to move chapter
         save_error: There was an error while saving this chapter.
+        chapter: Chapter
+        unnamed: Untitled
+        hidden_in_navigation: Hidden in navigation bar
       common_content_element_attributes:
         caption:
           inline_help: The caption of the element will be displayed directly underneath the element.
           label: Caption
         palette_color:
           blank: "(Auto)"
+          custom: Custom
         position:
           inline_help: |-
             Control the position of the element in relation to
@@ -110,6 +180,16 @@ en:
               scrolling. This gives the reader a stable position to
               fully view the element. Smaller elements can be given
               more weight that way.
+            backdrop: ''
+            sticky: |-
+              Place alongside the text and keep in a fixed posiiton while
+              scrolling. In mobile view, elements are automatically
+              turned into inline elements. Sticky elements work
+              particularly well in desktop view in combination with
+              long text passages.
+            side: |-
+              Place alongside the text. In mobile view, elements are
+              automatically turned into inline elements.
           label: Position
           values:
             full: Full Width
@@ -118,6 +198,9 @@ en:
             right: Floated right
             standAlone: Stand alone
             wide: Wide
+            backdrop: 'As Backdrop'
+            sticky: Alongside (sticky)
+            side: Alongside
         typographyVariant:
           blank: "(Default)"
           label: Variant
@@ -130,6 +213,24 @@ en:
             elements interrupt the text flow and stand prominently on
             their own.
           label: Width
+        captionVariant:
+          label: Caption Variant
+          inline_help: Switch between different looks of the caption below the element.
+          inline_help_disabled: Add a caption below the element to switch between different looks.
+          blank: "(Default)"
+        marginTop:
+          label: "Margin top"
+          blank: "(Auto)"
+        marginBottom:
+          label: "Margin bottom"
+          blank: "(Auto)"
+        fullWidthInPhoneLayout:
+          label: "Full width in phone layout"
+          inline_help: |-
+            Allow the element to span the full width of the viewport
+            on smaller screens, maximizing use of available space.
+        typographySize:
+          label: "Text size"
       content_element_categories:
         basic:
           name: Basic
@@ -139,6 +240,8 @@ en:
           name: Interactive
         media:
           name: Media
+        tilesAndLinks:
+          name: Links and Tiles
       content_elements:
         counter:
           attributes:
@@ -188,6 +291,9 @@ en:
               values:
                 leading: Leading ($100)
                 trailing: Trailing (100%)
+            thousandsSeparators:
+              label: "Display thousands separators"
+              inline_help: "For example, 1,000 in stories with English language setting."
           description: Animated metrics
           name: Counter
           tabs:
@@ -215,8 +321,101 @@ en:
             thumbnail:
               inline_help: Link thumbnail image for display in entry.
               label: Thumbnail
+            enableScroller:
+              label: "Layout behavior"
+              values:
+                never: "Wrap into multiple lines"
+                always: "Scroll horizontally"
+            thumbnailAspectRatio:
+              label: "Thumbnail aspect ratio"
+              inline_help: |-
+                Determine the proportions of the thumbnails. If the
+                text is displayed next to the image, longer text may
+                result in a more portrait-like aspect ratio so that
+                the thumbnail covers the entire height of the link.
+            textPosition:
+              label: "Caption"
+              inline_help: |-
+                Arrangement of image and text within links.
+              values:
+                below: "Below image"
+                right: "Right from image"
+                overlay: "On Image"
+                none: "None"
+            overlayOpacity:
+              label: Shadow opacity
+              inline_help: |-
+                Intensity of the color gradient that is placed behind
+                the text to improve contrast on busy backgrounds
+            thumbnailSize:
+              label: "Thumbnail width"
+              inline_help: |-
+                Proportion of the thumbnail width relative to the
+                overall width of the link.
+              values:
+                small: "Small"
+                medium: "Medium"
+                large: "Large"
+            thumbnailFit:
+              label: "Thumbnail fit mode"
+              inline_help: |-
+                If the image's aspect ratio doesn't match the selected
+                thumbnail ratio, you can either zoom the image to fill
+                the card completely (which may crop it), or scale it
+                down to fit within the card entirely (which may leave
+                empty space).
+              values:
+                cover: Cover
+                contain: Contain
+            linkWidth:
+              label: "Link width"
+              inline_help: |-
+                Choose a narrower width to arrange more links
+                side by side.
+            linkAlignment:
+              label: "Link alignment"
+              inline_help: |-
+                Determines the alignment in rows that are not
+                completely filled with links.
+              values:
+                spaceEvenly: Space evenly
+                left: Left
+                right: Right
+                center: Center
+            textSize:
+              label: "Text size"
+              inline_help: |-
+                Defines the font size for the title and description of the links.
+              values:
+                small: Small
+                medium: Medium
+                large: Large
+            textAlign:
+              label: Text alignment
+              inline_help: Align the text in the links.
+              values:
+                left: Left
+                center: Center
+                right: Right
+            displayButtons:
+              label: "Display buttons"
+              inline_help: |-
+                Display buttons to open the links.
+            thumbnailBackgroundColor:
+              label: Thumbnail background color
+              inline_help: |-
+                Visible when thumbnail fit mode has been set to
+                "contain" or when the thumbnail image contains
+                transparent areas.
           back: Back
           destroy: Delete
+          description: A list of tiles with thumbnail and caption
+          confirm_delete_item: Are you sure you want to delete this teaser?
+          items: Items
+          name: Teasers
+          tabs:
+            general: Teasers
+            edit_link: Teaser
         heading:
           attributes:
             children:
@@ -309,11 +508,17 @@ en:
             title:
               inline_help: Used by screen readers to describe the chart as a whole.
               label: Title
+            autoResize:
+              label: Dynamic Height
+              inline_help: Adapt height to content automatically.
           description: Embed externally hosted websites
           help_texts:
             missingConsentVendor: |-
               No privacy policy information available for the provider
               of the given URL.
+            autoResize: |-
+              This option requires a custom script in the embedded
+              page. <a target="_blank" rel="noopener noreferrer" href="https://pageflow.freshdesk.com/en/support/solutions/articles/11000130710-how-to-automatically-resize-iframe-embeds-to-fit-the-content">More info</a>.
           name: iframe Embed
           tabs:
             general: iframe Embed
@@ -326,6 +531,15 @@ en:
                 displayed as large as possible by default.
               inline_help_disabled: Not available if position "Full width" has been selected.
               label: Enable fullscreen on desktop
+            displayPeeks:
+              label: "Display peeks of neighboring images"
+              inline_help: "Show partial adjacent image previews as navigation cues."
+            displayPaginationIndicator:
+              label: "Display pagination"
+              inline_help: |-
+                Displays the current image position and the total
+                number of images to make navigating the gallery
+                easier.
           description: A series of images to flip through
           items:
             add: Add
@@ -333,6 +547,23 @@ en:
           name: Image Gallery
           tabs:
             general: Image Gallery
+          edit_item:
+            back: Back
+            destroy: Delete
+            confirm_delete_link: Are you sure you want to delete this image gallery item?
+            attributes:
+              image:
+                label: Image
+              portraitImage:
+                inline_help: |-
+                  Displayed when the browser viewport is taller than
+                  wide, for example on phones or tablets in portrait
+                  orientation. Can be used to provide an alternative
+                  to a landscape image that would otherwise be
+                  displayed too small.
+                label: Image (Portrait)
+            tabs:
+              item: Image Gallery Item
         inlineAudio:
           attributes:
             atmoDuringPlayback:
@@ -358,6 +589,9 @@ en:
               inline_help: Color of the waveform's parts that represents the already played part of the audio.
               label: Waveform Color
           description: Player or waveform with controls
+          name: Audio
+          tabs:
+            general: Audio
         inlineBeforeAfter:
           attributes:
             after_id:
@@ -394,6 +628,9 @@ en:
               inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to provide an alternative to a landscape image that would otherwise be displayed too small.
               label: Image (Portrait)
           description: Display an image
+          name: Image
+          tabs:
+            general: Image
         inlineVideo:
           attributes:
             atmoDuringPlayback:
@@ -439,11 +676,18 @@ en:
               inline_help_html: By default browsers only allow autoplaying videos with sound after a user interaction. To still be able to autoplay videos, entries therefore start muted.<br /><br />Sound can be activated using the speaker icon in the navigation bar or via an "Audio notice" element that has been placed in the entry.
               label: Unmute entry
           description: Player with controls
+          name: Video
+          tabs:
+            general: Video
         question:
           attributes:
             expandByDefault:
               inline_help: Display answer initially.
               label: Expand by default
+            color:
+              label: "Color (Question)"
+            answerColor:
+              label: "Color (Answer)"
           description: Expand to reveal an answer
           name: Question/Answer
           tabs:
@@ -468,10 +712,20 @@ en:
           name: Audio Notice
           tabs:
             general: Audio Notice
+          attributes:
+            mutedText:
+              label: "Muted Text"
+            unmutedText:
+              label: "Unmuted Text"
         textBlock:
           attributes:
             color:
               label: Color
+            textAlign:
+              label: "Text align"
+              values:
+                ragged: "Ragged"
+                justify: "Justified"
           description: Text with lists, block quotes and sub-headings
           help_texts:
             shortcuts: |
@@ -509,6 +763,12 @@ en:
               label: Hide Conversation
             hideMedia:
               label: Hide Media
+            url:
+              label: Post URL
+          description: Embed content from X
+          name: X Post
+          tabs:
+            general: X Embed
         videoEmbed:
           attributes:
             aspectRatio:
@@ -547,14 +807,258 @@ en:
               label: Initial Pitch
             initialYaw:
               label: Initial Yaw
+            aspectRatio:
+              blank: "(Auto)"
+              inline_help: Control the shape of the VR panorama viewport. Auto uses optimized ratios based on element width.
+              label: Aspect Ratio
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Square (1:1)
+                wide: Landscape (16:9)
+            portraitAspectRatio:
+              blank: "(Default)"
+              inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to provide a different aspect ratio optimized for mobile viewing.
+              label: Aspect Ratio (Portrait)
+              values:
+                narrow: Landscape (4:3)
+                portrait: Portrait (9:16)
+                square: Square (1:1)
+                wide: Landscape (16:9)
           description: Interactive panorama using an image with rectangular projection
           name: 360° Image
+        hotspots:
+          edit_area:
+            back: Back
+            destroy: Delete
+            confirm_delete_link: Are you sure you want to delete this area?
+            tabs:
+              area: Hotspot Area
+              portrait: Portrait
+            attributes:
+              tooltipPosition:
+                label: Tooltip orientation
+                inline_help: Prevent the tooltip from covering the parts of the image it is meant to label.
+                values:
+                  below: Below
+                  above: Above
+              tooltipReference:
+                label: Tooltip position
+                inline_help: Show the tooltip at the indicator point or outside the hotspot area.
+                values:
+                  indicator: At indicator
+                  area: At area
+              tooltipMaxWidth:
+                label: Tooltip maximum width
+                inline_help: Set how wide the tooltip should be displayed.
+                values:
+                  medium: Medium
+                  narrow: Narrow
+                  veryNarrow: Very Narrow
+                  wide: Wide
+              tooltipTextAlign:
+                label: Text alignment in tooltip
+                inline_help: Align the text inside the tooltip.
+                values:
+                  left: Left
+                  center: Center
+                  right: Right
+              color:
+                inline_help: Used for the indicator point.
+                label: Color
+              activeImage:
+                label: Active image
+                inline_help: |-
+                  Display an alternative image when the hotspot area
+                  is active. Use an image where the area is visually
+                  highlighted.
+              tooltipImage:
+                label: Image in tooltip
+                inline_help: Display an image inside the tooltip.
+              area:
+                label: Area
+                inline_help: Adjust the size and position of the hotspot area.
+              zoom:
+                label: Zoom
+                inline_help: Set how much the image should be zoomed in when the area is active.
+              portraitTooltipPosition:
+                label: Tooltip orientation (Portrait)
+                inline_help: Prevent the tooltip from covering the parts of the image it is meant to label.
+                values:
+                  below: Below
+                  above: Above
+              portraitTooltipReference:
+                label: Tooltip position (Portrait)
+                inline_help: Show the tooltip at the indicator point or outside the hotspot area.
+                values:
+                  indicator: At indicator
+                  area: At area
+              portraitTooltipMaxWidth:
+                label: Tooltip maximum width (Portrait)
+                inline_help: Set how wide the tooltip should be displayed.
+                values:
+                  medium: Medium
+                  narrow: Narrow
+                  veryNarrow: Very Narrow
+                  wide: Wide
+              portraitColor:
+                label: Color (Portrait)
+                inline_help: Used for the indicator point.
+              portraitActiveImage:
+                label: Active image (Portrait)
+                inline_help: |-
+                  Display an alternative image when the hotspot area
+                  is active. Use an image where the area is visually
+                  highlighted.
+              portraitArea:
+                label: Area (Portrait)
+                inline_help: Adjust the size and position of the hotspot area.
+              portraitZoom:
+                label: Zoom (Portrait)
+                inline_help: Set how much the portrait image should be zoomed in when the area is selected.
+          edit_area_dialog:
+            header: Area outline and indicator position
+            tabs:
+              default: Default image
+              portrait: Portrait image
+            modes:
+              rect: Rectangle
+              polygon: Polygon
+            centerIndicator: Center indicator
+            hotspots_image: Hotspots image
+            double_click_to_delete: Double-click to remove point
+            indicator_title: Drag to position indicator
+            save: Save
+            cancel: Cancel
+          areas:
+            add: Add
+            label: Areas
+            confirm_delete: Are you sure you want to delete this area?
+          area_input:
+            edit: Edit outline and indicator position
+          attributes:
+            image:
+              label: Image
+              inline_help: Image on which the hotspot areas should be placed.
+            portraitImage:
+              inline_help: Displayed when the browser viewport is taller than wide, for example on phones or tablets in portrait orientation. Can be used to provide an alternative to a landscape image that would otherwise be displayed too small.
+              label: Image (Portrait)
+            enablePanZoom:
+              label: Pan & Zoom
+              inline_help_html: |-
+                Animates the image to zoom in on a hotspot when it
+                is selected, making details easier to see.<br/><br/>If
+                all details are clearly visible without zooming on
+                desktop, this effect can optionally be enabled only
+                for portrait mode.
+              values:
+                phonePlatform: In phone layout
+                always: Always
+                never: Never
+            panZoomInitially:
+              label: Pan to first area initially
+              inline_help: Starts the Pan & Zoom effect on the first hotspot area when it becomes active.
+            enableFullscreen:
+              label: Enable fullscreen
+              inline_help: Display a button to open the element in fullscreen mode.
+            invertTooltips:
+              label: Invert tooltip colors
+              inline_help: Use dark tooltips with light text.
+          description: Image with clickable areas
+          name: Hotspots
+          tabs:
+            general: Hotspots
+        infoTable:
+          description: Two-column table for label value pairs.
+          name: Info Table
+          tabs:
+            general: Info Table
+          attributes:
+            labelColumnAlign:
+              label: "Text align (First column)"
+              values:
+                auto: "(Auto)"
+                left: Left
+                center: Center
+                right: Right
+            valueColumnAlign:
+              label: "Text align (Second column)"
+              values:
+                auto: "(Auto)"
+                left: Left
+                center: Center
+                right: Right
+            labelColor:
+              label: "Text color (First column)"
+            valueColor:
+              label: "Text align (Second column)"
+          help_texts:
+            shortcuts: |-
+              <dl class="shortcuts">
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Add a new row to the table..
+                  </span>
+                </dt>
+                <dd>
+                  Insert table row
+                </dd>
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Shift</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Insert a new line without beginning a new paragraph.
+                  </span>
+                </dt>
+                <dd>
+                  Insert soft break/new line
+                </dd>
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Alt</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Specify potential line break points within long words
+                    to control hyphenation.
+                  </span>
+                </dt>
+                <dd>
+                  Insert soft hyphen
+                </dd>
+              </dl>
+        tikTokEmbed:
+          attributes:
+            url:
+              label: TikTok URL
+          description: Embed content from TikTok
+          name: TikTok
+          tabs:
+            general: TikTok Embed
       edit_chapter:
         attributes:
           summary:
             label: Summary
+            inline_help: Summary of the chapter for display in the navigation bar.
           title:
             label: Title
+            inline_help_html: |-
+              The title of the chapter appears in the navigation
+              bar. It is also used to create the part of the web
+              address that helps link directly to that chapter.<br><br>
+
+              For example, if your chapter is titled 'Our Mission,'
+              the system will create a web address like
+              yourwebsite.com/story#our-mission, so
+              people can jump straight to that chapter
+          hideInNavigation:
+            label: Hide in navigation bar
+            inline_help: |-
+              Chapter can be used as link destination but does not
+              appear in the navigation bar.
         confirm_destroy: |-
           Really delete this chapter including ALL its sections?
 
@@ -596,6 +1100,7 @@ en:
               color: Color
               image: Image
               video: Video
+              contentElement: Interactive Element
           backdropVideo:
             label: Background-Video
           backdropVideoMobile:
@@ -612,6 +1117,8 @@ en:
           fullHeight:
             inline_help: Activate this option if the background of this section (e.g. image, color or video) is supposed to be enlarged such that the whole browser window (the so called viewport) is covered. Deactivate this option to create a short section. The height of the section and its background is then determined only by the content of the section.  Multiple sections with different backgrounds can then be visible at once on the user's screen. This option needs to be activated for two adjacent sections to be able to use a fade transition between them.
             label: Use Full Viewport-Height
+            inline_help_disabled: |-
+              Interactive backdrop elements always take up full viewport height.
           invert:
             label: Invert Text Colors
           layout:
@@ -630,6 +1137,16 @@ en:
             values:
               narrow: Narrow
               wide: Wide
+          backdropContentElement:
+            label: Element
+          backdropSize:
+            label: Backdrop scaling
+            values:
+              coverViewport: Cover viewport
+              coverSection: Cover section
+          cardSurfaceColor:
+            label: Cards background color
+            auto: "(Auto)"
         tabs:
           section: Section
       edit_section_transition:
@@ -661,6 +1178,8 @@ en:
       entry_outline:
         add_chapter: New chapter
         header: Outline
+        finish_reorder_chapters: Finish reordering
+        reorder_chapters: "Reorder chapters..."
       inline_file_rights_menu_item:
         label: Hide rights information here
       insert_content_element:
@@ -680,6 +1199,9 @@ en:
           reveal: Reveal
           scroll: Scroll
           scrollOver: Scroll over
+        hide: Hide outside of the editor
+        show: Show outside of the editor
+        hidden: Only visible in editor
       select_link_destination:
         cancel: Cancel
         create: Create
@@ -695,6 +1217,45 @@ en:
         title: Select chapter
       selectable_section_item:
         title: Select section
+      edit_motif_area_menu_item: Select motif area...
+      backdrop_content_element_input:
+        add: New element
+        unset: No longer use as backdrop
+      scales:
+        contentElementBoxBorderRadius:
+          none: None
+      content_element_text_inline_file_rights_attributes:
+        showTextInlineFileRightsBackdrop:
+          label: "Backdrop behind inline file rights"
+          inline_help: "Improve readability on busy backgrounds."
+          inline_help_disabled: "Only available when rights texts are displayed at the element."
+      common:
+        default_suffix: " (Default)"
+      storylines_tabs:
+        main: Outline
+        excursions: Excursions
+      storyline_item:
+        reorder_chapters: To ease reordering, chapters have been collapsed.
+        done: Done
+        add_chapter: New chapter
+        add_excursion: New excursion
+      aspect_ratios:
+        narrow: Landscape (4:3)
+        portrait: Portrait (3:4)
+        square: Square (1:1)
+        wide: Landscape (16:9)
+        original: Original
+      image_modifier_list_input:
+        add: "Add style..."
+        remove: "Remove style"
+      crop_types:
+        circle: Circle
+      typography_sizes:
+        xl: Very large
+        lg: Large
+        md: Medium
+        sm: Small
+        xs: Very small
     help_entries:
       content_elements:
         menu_item: Content Elements
@@ -820,6 +1381,12 @@ en:
         heading: Heading
         ordered_list: Ordered list
         paragraph: Paragraph
+        bold: Bold (Ctrl+B)
+        italic: Italic (Ctrl+I)
+        strikethrough: Strikethrough (Ctrl+Shift+S)
+        underline: Underline (Ctrl+U)
+        sub: Subscript (Ctrl+;)
+        sup: Superscript (Ctrl+,)
       insert_content_element:
         after: Insert new element below
         before: Insert new element above
@@ -846,3 +1413,10 @@ en:
       type_text: Type some text
       type_title: Title
       url_placeholder: Type or paste URL
+      select_backdrop_content_element: Edit backdrop
+      back_to_section: Back to section
+      select_link_destination: "Select link destination"
+      change_link_destination: "Change link destination"
+    public:
+      image_gallery_pagination: "Image gallery pagination"
+      go_to_image_gallery_item: "Go to image %{index}"

@@ -1,9 +1,0 @@
-en:
-  pageflow_scrolled:
-    editor:
-      content_elements:
-        counter:
-          attributes:
-            thousandsSeparators:
-              label: "Display thousands separators"
-              inline_help: "For example, 1,000 in stories with English language setting."

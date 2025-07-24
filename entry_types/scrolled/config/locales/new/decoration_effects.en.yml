@@ -1,9 +1,0 @@
-en:
-  pageflow:
-    decoration_effects:
-      feature_name: Decoration Effects
-  pageflow_scrolled:
-    editor:
-      backdrop_effects:
-        frame:
-          label: 'Frame'
