@@ -53,7 +53,7 @@
 .full {
   --max-width: var(--section-max-width);
   --max-width-padding: calc((100cqw - var(--max-width)) / 2);
-  --full-width-padding: max(var(--content-margin), var(--max-width-padding, 0px));
+  --full-width-padding: max(100cqw * var(--content-margin-fraction), var(--max-width-padding, 0px));
   --full-width-content-width: calc(100cqw - var(--full-width-padding) * 2);
   padding: 0 var(--full-width-padding);
 }

@@ -58,11 +58,9 @@ editor.contentElementTypes.register('externalLinkList', {
       this.group('ContentElementPosition', {entry});
       this.view(SeparatorView);
 
-      if (features.isEnabled('teaser_list_scroller')) {
-        this.input('enableScroller', SelectInputView, {
-          values: ['never', 'always']
-        });
-      }
+      this.input('enableScroller', SelectInputView, {
+        values: ['never', 'always']
+      });
 
       this.input('linkWidth', SliderInputView, {
         displayText: value => [
