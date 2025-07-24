@@ -1,9 +1,0 @@
-de:
-  pageflow:
-    decoration_effects:
-      feature_name: Dekoration-Effekte
-  pageflow_scrolled:
-    editor:
-      backdrop_effects:
-        frame:
-          label: 'Rahmen'

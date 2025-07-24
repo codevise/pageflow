@@ -1,8 +1,0 @@
-de:
-  pageflow:
-    entry_types:
-      scrolled:
-        editor:
-          entry_metadata_configuration_attributes:
-            darkWidgets:
-              label: "Dunkle Theme-Variante verwenden"

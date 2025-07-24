@@ -1,8 +1,0 @@
-de:
-  pageflow_scrolled:
-    editor:
-      edit_section:
-        attributes:
-          cardSurfaceColor:
-            label: Kartenhintergrundfarbe
-            auto: "(Automatisch)"

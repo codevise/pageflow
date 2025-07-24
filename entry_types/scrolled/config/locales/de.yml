@@ -37,6 +37,25 @@ de:
               label: Share-Button ausblenden
             hideToggleMuteButton:
               label: "'Ton aktivieren'-Button ausblenden"
+            accentColor:
+              label: "Akzentfarbe"
+          iconScrollIndicator:
+            animation:
+              label: Animation
+              values:
+                none: Keine
+                smallBounce: Subtil
+                largeBounce: Deutlich
+            alignment:
+              label: Ausrichtung
+              values:
+                centerContent: Zentriert zum Inhalt
+                centerViewport: Zentriert zum Viewport
+            size:
+              label: Größe
+              values:
+                large: Groß
+                small: Klein
     frontend_v2:
       feature_name: Frontend v2
     hls_instead_of_dash:
@@ -53,9 +72,52 @@ de:
       configuration_editor:
         tabs:
           defaultNavigation: Standard Navigation
+          iconScrollIndicator: Icon Scroll-Indikator
     widgets:
       roles:
         inlineFileRights: Inline-Datei-Rechte
+        scrollIndicator: Scroll-Indikator
+    backdrop_content_elements:
+      feature_name: "Inhaltselemente als Backdrop"
+    backdrop_size:
+      feature_name: Hintergrundgröße-Option
+    custom_palette_colors:
+      feature_name: "Freie Palettenfarben"
+    entry_types:
+      scrolled:
+        editor:
+          entry_metadata_configuration_attributes:
+            darkWidgets:
+              label: "Dunkle Theme-Variante verwenden"
+          files:
+            attributes:
+              image_files:
+                projection:
+                  cell_text:
+                    blank: "(Kein)"
+                    equirectangular_mono: Equirectangular (Mono)
+                    equirectangular_stereo: Equirectangular (Stereo)
+                  column_header: Projektion
+                  inline_help: Lege fest, ob es sich um ein mono- oder stereoskopisches 360°-Bild handelt. Diese können als Posterbild für 360°-Videos verwendet werden.
+                  label: 360° Projektion
+                  values:
+                    equirectangular_mono: Equirectangular (Mono)
+                    equirectangular_stereo: Equirectangular (Stereo)
+            filters:
+              image_files:
+                with_projection:
+                  blank_slate: Gebe in den Datei-Einstellungen eines Bildes eine Projektion an, um es als 360° Bild zu markieren.
+                  name: 360° Bilder
+    decoration_effects:
+      feature_name: Dekoration-Effekte
+    content_element_margins:
+      feature_name: "Element Margins"
+    icon_scroll_indicator:
+      feature_name: Icon Scroll-Indikator
+    iconScrollIndicator:
+      widget_type_name: Icon unten am Viewport-Rand
+    section_paddings:
+      feature_name: "Abschnittsinnenabstände"
   pageflow_scrolled:
     editor:
       backdrop_effects:
@@ -75,6 +137,12 @@ de:
           label: Scroll-Parallax
         sepia:
           label: Sepia
+        frame:
+          label: 'Rahmen'
+        crop:
+          label: Zuschneiden
+        rounded:
+          label: Runde Ecken
       blank_entry:
         create_chapter: Klicke jetzt auf <em>Neues Kapitel</em>, um ein erstes Kapitel zu erstellen.
         create_content_element: Über die <em>Plus-Buttons</em> in der Vorschau kannst du Elemente hinzufügen.
@@ -89,12 +157,16 @@ de:
         add_section: Neuer Abschnitt
         drag_hint: Ziehen, um das Kapitel zu verschieben
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
+        chapter: Kapitel
+        unnamed: Unbenannt
+        hidden_in_navigation: In der Navigationsleiste ausgeblendet
       common_content_element_attributes:
         caption:
           inline_help: Die Beschriftung des Elements wird direkt unterhalb des Elements angezeigt.
           label: Beschriftung
         palette_color:
           blank: "(Automatisch)"
+          custom: Benutzerdefiniert
         position:
           inline_help: |-
             Mit dieser Einstellung kannst du die Position des Elements
@@ -115,6 +187,17 @@ de:
               Position, um das Element vollständig betrachten zu
               können. Kleineren Elementen kann so mehr Gewicht
               verliehen werden.
+            backdrop: ''
+            sticky: |-
+              Beim Scrollen begleitend neben dem Text
+              stehenbleiben. In der Mobil-Darstellung werden Elemente
+              automatisch im Text verankert. Sticky-Elemente
+              funktionieren besonders gut bei Desktop-Darstellung in
+              Kombination mit langen Textpassagen.
+            side: |-
+              In einer zweiten Spalte neben dem Text positionieren. In
+              der Mobil-Darstellung werden Elemente automatisch im
+              Text verankert.
           label: Position
           values:
             full: Volle Breite
@@ -123,6 +206,9 @@ de:
             right: Rechts eingerückt
             standAlone: Stand-Alone
             wide: Breit
+            backdrop: 'Als Hintergrund'
+            sticky: Neben dem Text (Sticky)
+            side: Neben dem Text
         typographyVariant:
           blank: "(Standard)"
           label: Variante
@@ -135,6 +221,25 @@ de:
             anzupassen. Breitere Elemente unterbrechen den Textfluss
             und stehen prominent für sich alleine.
           label: Breite
+        captionVariant:
+          label: Beschriftungsvariante
+          inline_help: Ändere die Darstellung der Beschriftung unterhalb des Element.
+          inline_help_disabled: Füge eine Beschriftung unterhalb des Elements hinzu, um zwischen Varianten zu wählen.
+          blank: "(Standard)"
+        marginTop:
+          label: "Abstand oben"
+          blank: "(Automatisch)"
+        marginBottom:
+          label: "Abstand unten"
+          blank: "(Automatisch)"
+        fullWidthInPhoneLayout:
+          label: "Volle Breite im Phone-Layout"
+          inline_help: |-
+            Ermöglicht dem Element, auf kleineren Bildschirmen die
+            volle Breite des Viewports einzunehmen, um den verfügbaren
+            Platz optimal zu nutzen.
+        typographySize:
+          label: "Schriftgröße"
       content_element_categories:
         basic:
           name: Basic
@@ -144,6 +249,8 @@ de:
           name: Interaktiv
         media:
           name: Media
+        tilesAndLinks:
+          name: Verweise und Kacheln
       content_elements:
         counter:
           attributes:
@@ -193,6 +300,9 @@ de:
               values:
                 leading: Vor dem Betrag ($100)
                 trailing: Nach dem Betrag (100%)
+            thousandsSeparators:
+              label: "Tausendertrennzeichen anzeigen"
+              inline_help: "Zum Beispiel 1.000, wenn Deutsch als Sprache für den Beitrag eingestellt ist."
           description: Animierte Metriken
           name: Counter
           tabs:
@@ -220,8 +330,103 @@ de:
             thumbnail:
               inline_help: Dem Link zugeordnertes Bild für die Darstellung im Beitrag.
               label: Miniaturansicht
+            enableScroller:
+              label: "Layout-Verhalten"
+              values:
+                never: "In mehrere Zeilen umbrechen"
+                always: "Horizontal scrollen"
+            thumbnailAspectRatio:
+              label: "Thumbnail Seitenverhältnis"
+              inline_help: |-
+                Bestimme die Proportion der Thumbnails. Wird der Text
+                neben dem Bild gezeigt, kann längerer Text dazu
+                führen, dass ein hochformatigeres Seitenverähltnis
+                gewählt wird, damit das Thumbnail die gesamte Höhe des
+                Links überdeckt.
+            textPosition:
+              label: "Beschriftung"
+              inline_help: |-
+                Anordnung von Bild und Text innerhalb von Links.
+              values:
+                below: "Unter dem Bild"
+                right: "Rechts neben dem Bild"
+                overlay: "Auf dem Bild"
+                none: "Keine"
+            overlayOpacity:
+              label: Abblendung
+              inline_help: |-
+                Intensität des Farbverlaufs, der hinter den Text
+                gelegt wird, um den Kontrast auf unruhigen
+                Hintergründen zu verbessern.
+            thumbnailSize:
+              label: "Thumbnail-Breite"
+              inline_help: |-
+                Anteil der Thumbnail-Breite im Verhältnis zur
+                Gesamtbreite des Links.
+              values:
+                small: "Klein"
+                medium: "Mittel"
+                large: "Groß"
+            thumbnailFit:
+              label: "Thumbnail-Anpassung"
+              inline_help: |-
+                Wenn das Seitenverhältnis des Bildes nicht mit dem
+                ausgewählten Seitenverhältnis der Miniatur übereinstimmt,
+                kann entweder das Bild vergrößert werden, um die Karte
+                vollständig auszufüllen, oder das Bild wird so angepasst,
+                dass es vollständig innerhalb der Karte sichtbar bleibt.
+              values:
+                cover: Füllen
+                contain: Einpassen
+            linkWidth:
+              label: "Link-Breite"
+              inline_help: |-
+                Wähle eine schmalere Breite, um mehr Links
+                nebeneinander anzuordnen.
+            linkAlignment:
+              label: "Link-Ausrichtung"
+              inline_help: |-
+                Bestimmt die Ausrichtung in Zeilen, die nicht
+                vollständig mit Links gefüllt sind.
+              values:
+                spaceEvenly: Gleichmäßig verteilt
+                left: Links
+                right: Rechts
+                center: Mittig
+            textSize:
+              label: "Schriftgröße"
+              inline_help: |
+                Legt die Schriftgröße für Titel und Beschreibung der Links fest.
+              values:
+                small: Klein
+                medium: Mittel
+                large: Groß
+            textAlign:
+              label: Textausrichtung
+              inline_help: Ausrichtung des Texts innerhalb der Links.
+              values:
+                left: Links
+                center: Zentriert
+                right: Rechts
+            displayButtons:
+              label: "Buttons anzeigen"
+              inline_help: |-
+                Zeige Buttons an, um die Links zu öffnen.
+            thumbnailBackgroundColor:
+              label: Thumbnail-Hintergrundfarbe
+              inline_help: |-
+                Sichtbar wenn "Einpassen" als Thumbnail-Anpassung
+                ausgewählt wurde sowie für Thumbnail-Bilder mit
+                transparenten Bereichen.
           back: Zurück
           destroy: Löschen
+          description: Liste von Kacheln mit Bild und Beschriftung
+          confirm_delete_item: Soll der Teaser wirklich gelöscht werden?
+          items: Einträge
+          name: Teaser-Liste
+          tabs:
+            general: Teaser-Liste
+            edit_link: Teaser
         heading:
           attributes:
             children:
@@ -316,11 +521,19 @@ de:
             title:
               inline_help: Dieser Titel wird von Screenreadern verwendet, um das iframe als Ganzes zu beschreiben.
               label: Titel
+            autoResize:
+              label: Dynamische Höhenanpassungen
+              inline_help: Höhe automatisch an den Inhalt des Elements anpassen.
           description: Einbindung einer extern gehosteten Website
           help_texts:
             missingConsentVendor: |-
               Für den Anbieter der angegeben URL stehen keine
               Datenschutzangaben zur Verfügung.
+            autoResize: |-
+              Diese Option erfordert die Integration eines
+              Skripts in die eingebettete Seite. Weitere
+              Informationen findest du in diesem <a target="_blank" rel="noopener noreferrer"
+              href="https://pageflow.freshdesk.com/de/support/solutions/articles/11000130710-wie-passe-ich-die-gr%C3%B6%C3%9Fe-von-iframe-embeds-automatisch-an-den-inhalt-an-">Hilfeartikel</a>.
           name: iframe-Embed
           tabs:
             general: iframe-Embed
@@ -334,6 +547,15 @@ de:
                 angezeigt.
               inline_help_disabled: Steht nicht zur Verfügung, wenn Position "Volle Breite" ausgewählt wurde.
               label: Vollbildmodus auf Desktop erlauben
+            displayPeeks:
+              label: "Anrisse benachbarter Bilder zeigen"
+              inline_help: "Teile der benachbarten Bilder als Hinweis auf weitere Inhalte anzeigen."
+            displayPaginationIndicator:
+              label: "Paginierung anzeigen"
+              inline_help: |-
+                Zeigt die aktuelle Bildposition und die Gesamtzahl der
+                Bilder an, um die Navigation durch die Galerie zu
+                erleichtern.
           description: Eine Serie von Bildern zum Durchblättern
           items:
             add: Hinzufügen
@@ -341,6 +563,24 @@ de:
           name: Bildergalerie
           tabs:
             general: Bildergalerie
+          edit_item:
+            back: Zurück
+            destroy: Löschen
+            confirm_delete_link: Soll der Bildergalerie-Eintrag wirklich gelöscht werden?
+            attributes:
+              image:
+                label: Bild
+              portraitImage:
+                inline_help: |-
+                  Wird verwendet, wenn der Browser-Viewport höher als
+                  breit ist - zum Beispiel auf Smartphones oder
+                  Tablets in Portrait-Ausrichtung. Kann als
+                  Alternative zu einem querformatigen Bild
+                  konfiguriert werden, das ansonsten zu klein
+                  dargestellt würde.
+                label: Bild (Hochkant)
+            tabs:
+              item: Bildergalerie-Eintrag
         inlineAudio:
           attributes:
             atmoDuringPlayback:
@@ -366,6 +606,9 @@ de:
               inline_help: Farbe des Bereichs der Waveform, der den bereits abgespielten Teil der Audio-Datei repräsentiert.
               label: Waveform Farbe
           description: Wiedergabe einer Audiodatei mit Steuerelementen
+          name: Audio
+          tabs:
+            general: Audio
         inlineBeforeAfter:
           attributes:
             after_id:
@@ -402,6 +645,9 @@ de:
               inline_help: Wird gezeigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Bild konfiguriert werden, das ansonsten zu klein dargestellt würde.
               label: Bild (Hochkant)
           description: Einbindung von Bildern
+          name: Bild
+          tabs:
+            general: Bild
         inlineVideo:
           attributes:
             atmoDuringPlayback:
@@ -447,11 +693,18 @@ de:
               inline_help_html: Browser erlauben standardmäßig das Abspielen von Videos mit Ton nur nach einer Benutzer-Interaktion. Um Videos dennoch automatisch abspielen zu können, sind Beiträge zu Beginn stummgeschaltet.<br /><br />Die Stummschaltung kann z.B. über das Lautsprecher-Icon in der Navigationsleiste oder ein im Beitrag platziertes "Audio-Hinweis"-Element aufgehoben werden.
               label: Stummschaltung des Beitrags
           description: Wiedergabe einer Videodatei mit Steuerelementen
+          name: Video
+          tabs:
+            general: Video
         question:
           attributes:
             expandByDefault:
               inline_help: Anwort zu Beginn anzeigen.
               label: Standardmäßig aufklappen
+            color:
+              label: "Farbe (Frage)"
+            answerColor:
+              label: "Farbe (Antwort)"
           description: Aufklappen, um Antwort anzuzeigen
           name: Frage/Anwort
           tabs:
@@ -476,10 +729,20 @@ de:
           name: Audio-Hinweis
           tabs:
             general: Audio-Hinweis
+          attributes:
+            mutedText:
+              label: "'Ton aktivieren' Text"
+            unmutedText:
+              label: "'Ton aktiviert' Text"
         textBlock:
           attributes:
             color:
               label: Farbe
+            textAlign:
+              label: "Textausrichtung"
+              values:
+                ragged: "Flattersatz"
+                justify: "Blocksatz"
           description: Text mit Listen, Zitaten und Zwischenüberschriften
           help_texts:
             shortcuts: |
@@ -517,6 +780,12 @@ de:
               label: Konversation ausblenden
             hideMedia:
               label: Medien ausblenden
+            url:
+              label: Post-URL
+          description: Bettet Inhalte von X ein
+          name: X Post
+          tabs:
+            general: X Embed
         videoEmbed:
           attributes:
             aspectRatio:
@@ -555,14 +824,259 @@ de:
               label: Initialer Gierungswinkel
             initialYaw:
               label: Initialer Neigungswinkel
+            aspectRatio:
+              blank: "(Automatisch)"
+              inline_help: Bestimmt die Form des VR-Panorama-Viewports. Automatisch verwendet optimierte Verhältnisse basierend auf der Elementbreite.
+              label: Seitenverhältnis
+              values:
+                narrow: Querformat (4:3)
+                portrait: Hochformat (9:16)
+                square: Quadrat (1:1)
+                wide: Querformat (16:9)
+            portraitAspectRatio:
+              blank: "(Standard)"
+              inline_help: Wird angezeigt, wenn das Browser-Viewport höher als breit ist, beispielsweise auf Telefonen oder Tablets im Hochformat. Kann verwendet werden, um ein anderes Seitenverhältnis bereitzustellen, das für die mobile Ansicht optimiert ist.
+              label: Seitenverhältnis (Hochkant)
+              values:
+                narrow: Querformat (4:3)
+                portrait: Hochformat (9:16)
+                square: Quadrat (1:1)
+                wide: Querformat (16:9)
           description: Interaktives Panorama aus Bild mit rektangularer Projektion
           name: 360°-Bild
+        hotspots:
+          edit_area:
+            back: Zurück
+            destroy: Löschen
+            confirm_delete_link: Soll der Hotspot-Bereich wirklich gelöscht werden?
+            tabs:
+              area: Hotspot-Bereich
+              portrait: Hochkant
+            attributes:
+              tooltipPosition:
+                label: Tooltip-Ausrichtung
+                inline_help: Verhindere, dass der Tooltip genau die Teile des Bildes überdeckt, die er beschriften soll.
+                values:
+                  below: Unterhalb
+                  above: Oberhalb
+              tooltipReference:
+                label: Tooltip-Position
+                inline_help: Tooltip am Indikator-Punkt oder außerhalb des Hotspot-Bereichs zeigen.
+                values:
+                  indicator: Am Indikator
+                  area: Am Hotspot-Bereich
+              tooltipMaxWidth:
+                label: Tooltip-Maximalbreite
+                inline_help: Bestimme, wie breit der Tooltip dargestellt wird.
+                values:
+                  medium: "Mittel"
+                  veryNarrow: Sehr schmal
+                  narrow: Schmal
+                  wide: Breit
+              tooltipTextAlign:
+                label: Textausrichtung in Tooltip
+                inline_help: Ausrichtung des Texts innerhalb des Tooltips.
+                values:
+                  left: Links
+                  center: Zentriert
+                  right: Rechts
+              color:
+                inline_help: Wird für den Indikator-Punkt verwendet.
+                label: Farbe
+              activeImage:
+                label: Aktives Bild
+                inline_help: |-
+                  Alternatives Bild zeigen, sobald der Hotspot-Bereich
+                  aktiv ist. Verwende ein Bild, in dem der
+                  Hotspot-Bereich optisch hervorgehoben ist.
+              tooltipImage:
+                label: Bild in Tooltip
+                inline_help: Zeige im Bild innerhalb des Tooltips an.
+              area:
+                label: Bereich
+                inline_help: Ändere Größe und Position des Hotspot-Bereichs.
+              zoom:
+                label: Zoom
+                inline_help: Bestimme, wie sehr das Bild herangezoomt werden soll, wenn der Bereich aktiv ist.
+              portraitTooltipPosition:
+                label: Tooltip-Position (Hochkant)
+                inline_help: Verhindere, dass der Tooltip genau die Teile des Bildes überdeckt, die er beschriften soll.
+                values:
+                  below: Unterhalb
+                  above: Oberhalb
+              portraitTooltipReference:
+                label: Tooltip-Position (Hochkant)
+                inline_help: Tooltip am Indikator-Punkt oder außerhalb des Hotspot-Bereichs zeigen.
+                values:
+                  indicator: Am Indikator
+                  area: Am Hotspot-Bereich
+              portraitTooltipMaxWidth:
+                label: Tooltip-Maximalbreite (Hochkant)
+                inline_help: Bestimme, wie breit der Tooltip dargestellt wird.
+                values:
+                  medium: "Mittel"
+                  narrow: Schmal
+                  veryNarrow: Sehr schmal
+                  wide: Breit
+              portraitColor:
+                label: Farbe (Hochkant)
+                inline_help: Wird für den Indikator-Punkt verwendet.
+              portraitActiveImage:
+                label: Aktives Bild (Hochkant)
+                inline_help: |-
+                  Alternatives Bild zeigen, sobald der Hotspot-Bereich
+                  aktiv ist. Verwende ein Bild, in dem der Hotspot-Bereich
+                  optisch hervorgehoben ist.
+              portraitArea:
+                label: Bereich (Hochkant)
+                inline_help: Verändere Größe und Position des Hotspot-Bereichs.
+              portraitZoom:
+                label: Zoom (Hochkant)
+                inline_help: Bestimme, wie sehr das Hochkant-Bild herangezoomt werden soll, wenn der Bereich ausgewählt ist.
+          edit_area_dialog:
+            header: Bereichsumriss und Indikatorposition
+            tabs:
+              default: Standard-Bild
+              portrait: Hochkant-Bild
+            modes:
+              rect: Rechteck
+              polygon: Polygon
+            centerIndicator: Indikator zentrieren
+            hotspots_image: Hotspotbild
+            double_click_to_delete: Doppelklick, um Punkt zu entfernen
+            indicator_title: Ziehen um Indikator zu positionieren
+            save: Speichern
+            cancel: Abbrechen
+          areas:
+            add: Hinzufügen
+            label: Bereiche
+            confirm_delete: Soll der Bereich wirklich gelöscht werden?
+          area_input:
+            edit: Umriss und Indikatorposition bearbeiten
+          attributes:
+            image:
+              label: Bild
+              inline_help: Bild, auf dem Hotspot-Bereiche platziert werden sollen.
+            portraitImage:
+              inline_help: Wird verwendet, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen Bild konfiguriert werden, das ansonsten zu klein dargestellt würde.
+              label: Bild (Hochkant)
+            enablePanZoom:
+              label: Pan & Zoom
+              inline_help_html: |-
+                Passt den Bildausschnitt animiert an, um beim
+                Auswählen eines Hotspots näher heranzuzoomen und
+                Details besser sichtbar zu machen.<br/><br/>Falls auf
+                dem Desktop alle Details auch ohne Zoom gut zu
+                erkennen sind, kann der Effekt optional nur für den
+                Hochkant-Modus aktiviert werden.
+              values:
+                phonePlatform: Im Phone-Layout
+                always: Immer
+                never: Nie
+            panZoomInitially:
+              label: Pan & Zoom bei erstem Bereich starten
+            enableFullscreen:
+              label: Vollbildmodus erlauben
+              inline_help: Button anzeigen, um das Element bildschirmfüllend zu öffnen.
+            invertTooltips:
+              label: Tooltip-Farben invertieren
+              inline_help: Dunkle Tooltips mit hellem Text verwenden.
+          description: Bild mit anklickbaren Bereichen
+          name: Hotspots
+          tabs:
+            general: Hotspots
+        infoTable:
+          description: Zweispaltige Tabelle mit Name/Wert-Paaren.
+          name: Info-Tabelle
+          tabs:
+            general: Info-Tabelle
+          attributes:
+            labelColumnAlign:
+              label: "Text-Ausrichtung (Erste Spalte)"
+              values:
+                auto: "(Automatisch)"
+                left: Linksbündig
+                center: Zentriert
+                right: Rechtsbündig
+            valueColumnAlign:
+              label: "Text-Ausrichtung (Zweite Spalte)"
+              values:
+                auto: "(Automatisch)"
+                left: Linksbündig
+                center: Zentriert
+                right: Rechtsbündig
+            labelColor:
+              label: "Text-Farbe (Erste Spalte)"
+            valueColor:
+              label: "Text-Farbe (Zweite Spalte)"
+          help_texts:
+            shortcuts: |-
+              <dl class="shortcuts">
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Füge eine neue Tabellenzeile hinzu.
+                  </span>
+                </dt>
+                <dd>
+                  Tabellenzeile einfügen
+                </dd>
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Shift</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Füge eine neue Zeile innerhalb einer Tabellenzelle ein.
+                  </span>
+                </dt>
+                <dd>
+                  Zeilenumbruch einfügen
+                </dd>
+                <dt>
+                  <span class="shortcut">
+                    <kbd>Alt</kbd> + <kbd>Enter</kbd>
+                  </span>
+                  <span class="inline_help">
+                    Füge potentielle Zeilenumbruchspunkte in lange Worte ein,
+                    um Silbentrennung zu ermöglichen.
+                  </span>
+                </dt>
+                <dd>
+                  Bedingten Trennstrich einfügen
+                </dd>
+              </dl>
+        tikTokEmbed:
+          attributes:
+            url:
+              label: TikTok-URL
+          description: Bettet Inhalte von TikTok ein
+          name: TikTok
+          tabs:
+            general: TikTok-Embed
       edit_chapter:
         attributes:
           summary:
             label: Zusammenfassung
+            inline_help: Zusammenfassung des Kapitels für die Darstellung in der Navigationsleiste.
           title:
             label: Titel
+            inline_help_html: |-
+              Der Titel des Kapitels erscheint in der
+              Navigationsleiste. Er wird außerdem verwendet, um den
+              Teil der Webadresse zu erstellen, der es ermöglicht,
+              direkt zu diesem Kapitel zu springen.<br><br>
+
+              Zum Beispiel: Wenn dein Kapitel 'Unsere Mission' heißt,
+              kann man über eine Webadresse der Form
+              yourwebsite.com/story#unsere-mission direkt zu diesem
+              Kapitel springen.
+          hideInNavigation:
+            label: In der Navigationsleiste ausblenden
+            inline_help: |-
+              Kapitel kann als Link-Ziel verwendet werden, erscheint
+              allerdings nicht in der Navigationsleiste.
         confirm_destroy: |-
           Kapitel einschließlich ALLER enthaltener Abschnitte wirklich löschen?
 
@@ -604,6 +1118,7 @@ de:
               color: Farbe
               image: Bild
               video: Video
+              contentElement: Interaktives Element
           backdropVideo:
             label: Hintergrund-Video
           backdropVideoMobile:
@@ -620,6 +1135,8 @@ de:
           fullHeight:
             inline_help: Aktiviere diese Einstellung, wenn der Hintergrund des Abschnitts (z.B. Bild, Farbfläche oder Hintergrundvideo) so groß angezeigt werden soll, dass das gesamte Browserfenster (der sogenannte Viewport) gefüllt ist. Wenn du mit kurzen Abschnitten arbeiten möchtest, musst du diese Option deaktivieren. Dann nimmt der Abschnitt und sein Hintergrund vertikal nur so viel Platz ein, wie für den Inhalt des Abschnitts unbedingt nötig ist. Es können dann mehrere Abschnitte mit verschiedenen Hintergründen gleichzeitig auf dem Bildschirm des Nutzers sichtbar sein. Um einen Überblendeffekt zwischen den Hintergründen zweier Abschnitte verwenden zu können, muss diese Option für beide Abschnitte aktiviert sein.
             label: Volle Viewport-Höhe
+            inline_help_disabled: |-
+              Interaktive Hintergrund-Elemente nutzen immer die volle Viewport-Höhe
           invert:
             label: Textfarben invertieren
           layout:
@@ -638,6 +1155,18 @@ de:
             values:
               narrow: Schmal
               wide: Breit
+          backdropContentElement:
+            label: Element
+          backdropSize:
+            label: Hintergrund-Skalierung
+            values:
+              coverViewport: Viewport überdecken
+              coverSection: Abschnitt überdecken
+          cardSurfaceColor:
+            label: Kartenhintergrundfarbe
+            auto: "(Automatisch)"
+          sectionPaddings:
+            label: Innenabstände oben/unten
         tabs:
           section: Abschnitt
       edit_section_transition:
@@ -669,6 +1198,8 @@ de:
       entry_outline:
         add_chapter: Neues Kapitel
         header: Gliederung
+        finish_reorder_chapters: Umsortieren beenden
+        reorder_chapters: "Kapitel umsortieren..."
       inline_file_rights_menu_item:
         label: Rechteangabe an dieser Stelle ausblenden
       insert_content_element:
@@ -688,6 +1219,9 @@ de:
           reveal: Freilegen
           scroll: Aus-/Einscrollen
           scrollOver: Überlagern
+        hide: Außerhalb des Editors ausblenden
+        show: Außerhalb des Editors einblenden
+        hidden: Nur im Editor sichtbar
       select_link_destination:
         cancel: Abbrechen
         create: Erstellen
@@ -703,6 +1237,64 @@ de:
         title: Kapitel auswählen
       selectable_section_item:
         title: Abschnitt auswählen
+      edit_motif_area_menu_item: Motivbereich markieren...
+      backdrop_content_element_input:
+        add: Neues Element
+        unset: Nicht mehr als Hintergrund verwenden
+      scales:
+        contentElementBoxBorderRadius:
+          none: Keine
+      content_element_text_inline_file_rights_attributes:
+        showTextInlineFileRightsBackdrop:
+          label: "Abblendung hinter Rechteangabe"
+          inline_help: "Lesbarkeit des Texts auf unruhigen Hintergründen sicherstellen."
+          inline_help_disabled: "Steht nur zur Verfügung, wenn Rechteangaben am Element angezeigt werden."
+      common:
+        default_suffix: " (Standard)"
+      storylines_tabs:
+        main: Gliederung
+        excursions: Exkurse
+      storyline_item:
+        reorder_chapters: Die Kapitel wurden zusammengeklappt, um das Umsortieren zu erleichtern.
+        done: Fertig
+        add_chapter: Neues Kapitel
+        add_excursion: Neuer Exkurs
+      aspect_ratios:
+        narrow: Landscape (4:3)
+        portrait: Portrait (3:4)
+        square: Quadratisch (1:1)
+        wide: Landscape (16:9)
+        original: Original
+      image_modifier_list_input:
+        add: "Stil hinzufügen..."
+        remove: "Stil entfernen"
+      crop_types:
+        circle: Kreis
+      section_paddings_input:
+        auto: (Automatisch)
+      edit_section_paddings:
+        tabs:
+          sectionPaddings: Innenabstände
+          portrait: Hochkant
+        attributes:
+          paddingTop:
+            blank: (Standard)
+            label: Oben
+          paddingBottom:
+            blank: (Standard)
+            label: Unten
+          portraitPaddingTop:
+            blank: (Standard)
+            label: Oben (Hochkant)
+          portraitPaddingBottom:
+            blank: (Standard)
+            label: Unten (Hochkant)
+      typography_sizes:
+        xl: Sehr groß
+        lg: Groß
+        md: Mittel
+        sm: Klein
+        xs: Sehr klein
     help_entries:
       content_elements:
         menu_item: Inhaltselemente
@@ -981,6 +1573,12 @@ de:
         heading: Überschrift
         ordered_list: Aufzählung
         paragraph: Absatz
+        bold: Fett (Strg+B)
+        italic: Kursiv (Strg+I)
+        strikethrough: Durchgestrichen (Strg+Umschalten+S)
+        underline: Unterstrichen (Strg+U)
+        sub: Tiefgestellt (Strg+;)
+        sup: Hochgestellt (Strg+,)
       insert_content_element:
         after: Neues Element unterhalb einfügen
         before: Neues Element oberhalb einfügen
@@ -1007,3 +1605,10 @@ de:
       type_text: Text eingeben
       type_title: Titel
       url_placeholder: URL eingeben oder einfügen
+      select_backdrop_content_element: Hintergrund bearbeiten
+      back_to_section: Zurück zum Abschnitt
+      select_link_destination: "Link-Ziel auswählen"
+      change_link_destination: "Link-Ziel ändern"
+    public:
+      image_gallery_pagination: "Bildergalerie-Paginierung"
+      go_to_image_gallery_item: "Gehe zu Bild %{index}"

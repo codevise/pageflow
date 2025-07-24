@@ -1,9 +1,0 @@
-de:
-  pageflow_scrolled:
-    editor:
-      content_elements:
-        counter:
-          attributes:
-            thousandsSeparators:
-              label: "Tausendertrennzeichen anzeigen"
-              inline_help: "Zum Beispiel 1.000, wenn Deutsch als Sprache für den Beitrag eingestellt ist."

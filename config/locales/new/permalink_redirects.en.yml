@@ -1,8 +1,0 @@
-en:
-  pageflow:
-    admin:
-      entries:
-        permalink_hint: |-
-          Changing the permalink after the story has already been
-          published automatically creates a redirect from the old URL
-          to the new URL

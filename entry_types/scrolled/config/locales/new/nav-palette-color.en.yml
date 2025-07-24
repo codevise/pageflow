@@ -1,8 +1,0 @@
-en:
-  pageflow:
-    editor:
-      widgets:
-        attributes:
-          defaultNavigation:
-            accentColor:
-              label: "Accent color"
