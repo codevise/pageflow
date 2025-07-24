@@ -1,14 +1,8 @@
-.container {
-  display: flex;
-  justify-content: center;
-}
-
 .list {
   --columns: 1;
   --gap: 1rem;
   --reference-width: min(var(--reference-max-width, 100cqw), var(--full-width-content-width, 100cqw));
 
-  flex: 1;
   display: grid;
   grid-template-columns: repeat(
     var(--columns),

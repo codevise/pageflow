@@ -11,6 +11,7 @@
 
 .scroller {
   flex-wrap: nowrap;
+  max-width: calc(var(--column-max-width) * var(--columns) + var(--gap) * (var(--columns) - 1) + 2 * var(--scroller-padding-inline));
 }
 
 .linkAlignment-left {
@@ -28,6 +29,7 @@
 .list > * {
   margin: 2% 0;
   width: calc((var(--reference-width) - var(--gap) * (var(--columns) - 1)) / var(--columns));
+  max-width: var(--column-max-width);
 }
 
 .scroller > * {
@@ -59,8 +61,8 @@
   --reference-max-width: var(--layout-inline-xl-content-max-width);
 }
 
-.list:where(:not(.width-full)) > * {
-  max-width: calc((var(--content-max-width) - var(--gap) * (var(--max-columns) - 1)) / var(--max-columns));
+.list:where(:not(.width-full)) {
+  --column-max-width: calc((var(--content-max-width) - var(--gap) * (var(--max-columns) - 1)) / var(--max-columns));
 }
 
 .width-lg.layout-center.linkWidth-l,
@@ -72,8 +74,8 @@
   --max-columns: 3;
 }
 
-.linkWidth-s > * {
-  max-width: 240px;
+.linkWidth-s {
+  --column-max-width: 240px;
 }
 
 @container (min-width: 315px) {
@@ -130,8 +132,8 @@
 }
 
 @container (max-width: 699px) {
-  .linkWidth-m > * {
-    max-width: 300px;
+  .linkWidth-m {
+    --column-max-width: 300px;
   }
 }
 
