@@ -41,7 +41,6 @@
 
 .linkWidth-full-s {
   --reference-max-width: var(--layout-inline-content-max-width);
-  --columns: 2;
 }
 
 .linkWidth-full-m {
@@ -91,10 +90,20 @@
   .linkWidth-full-xs {
     --columns: 2
   }
+
+  .linkWidth-full-s {
+    --columns: var(--link-width-s-phone-columns, 2)
+  }
 }
 
 @container (min-width: 400px) {
   .linkWidth-s {
+    --columns: 2;
+  }
+}
+
+@container (min-width: 475px) {
+  .linkWidth-full-s {
     --columns: 2;
   }
 }
