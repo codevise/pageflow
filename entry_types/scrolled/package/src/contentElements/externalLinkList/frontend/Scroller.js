@@ -18,7 +18,7 @@ export function Scroller({enabled, measureKey, children}) {
 
         const canScrollRight =
           contentRect.scroll.width > contentRect.client.width &&
-          contentRect.scroll.left < contentRect.scroll.width - contentRect.client.width;
+          contentRect.scroll.left < contentRect.scroll.width - contentRect.client.width - 5;
 
         function scrollBy(x) {
           const list = ref.current;
