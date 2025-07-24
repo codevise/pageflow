@@ -1,7 +1,4 @@
 en:
-  pageflow:
-    teaser_list_scroller:
-      feature_name: "Teaser List Scroller"
   pageflow_scrolled:
     editor:
       aspect_ratios:
