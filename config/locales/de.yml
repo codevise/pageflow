@@ -706,8 +706,8 @@ de:
       readonly: ist schreibgeschützt
       record_invalid: 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
       restrict_dependent_destroy:
-        many: Cannot delete record because dependent %{record} exist
-        one: Cannot delete record because a dependent %{record} exists
+        many: Der Datensatz kann nicht gelöscht werden, da %{record} von ihm abhängen
+        one: Der Datensatz kann nicht gelöscht werden, da %{record} von ihm abhängt
       taken: ist bereits vergeben
       too_long:
         one: ist zu lang (nicht mehr als 1 Zeichen)
