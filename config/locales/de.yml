@@ -142,6 +142,9 @@ de:
       recommendation: Wir empfehlen ein Update des Browsers auf eine aktuelle Version von <a href="http://windows.microsoft.com/ie">Internet Explorer</a>, <a href="https://chrome.google.com/">Google Chrome</a>, oder <a href="https://mozilla.org/firefox/">Firefox</a>.
       turn_off_compatibility_view: Internet Explorer Version 9 und niedriger sind nicht unterstützt.
     view: Anzeigen
+    resources:
+      translations:
+        new_model: Link translation
   activerecord:
     attributes:
       admin_user:
@@ -279,6 +282,8 @@ de:
         share_providers: Standard Share Links
         sitemap_enabled: XML-Sitemap
         title: Titel
+        custom_404_entry_id: "Custom 404 page"
+        cutoff_mode_name: "Cutoff mode"
       pageflow/text_track_file:
         kind: Art
         label: Label
@@ -431,6 +436,9 @@ de:
       user:
         one: Nutzer
         other: Nutzer
+      translation:
+        one: Translation
+        other: Translations
     values:
       pageflow/chapter:
         navigation_bar_mode:
@@ -452,6 +460,9 @@ de:
           linked_in: LinkedIn
           telegram: Telegram (nur Mobilgeräte)
           whats_app: WhatsApp (nur Mobilgeräte)
+          bluesky: Bluesky
+          threads: Threads
+          twitter: X
         type_names:
           paged: Seitenbasiert / klassisch
           scrolled: Kontinuierlich scrollend / Pageflow Next
@@ -853,6 +864,10 @@ de:
         show_public_hint: Öffentliche Seite anzeigen
         snapshot: Aktuellen Stand sichern
         title_hint: Dieses Feld bestimmt die URL, unter der der Beitrag öffentlich erreichbar ist.
+        permalink_hint: |-
+          Changing the permalink after the story has already been
+          published automatically creates a redirect from the old URL
+          to the new URL
       entry:
         add: Beitrag hinzufügen
         entry_membership_hint: Lade Benutzer ins Konto ein, um sie als Mitglieder diesem Beitrag zuzuweisen.
@@ -890,6 +905,7 @@ de:
         revisions: Revisionen
         sites: Sites
         users: Benutzer
+        translations: Translations
       revisions:
         published_until_hint: Freilassen, um Beitrag unbegrenzt zu veröffentlichen.
         restored: Revision wiederhergestellt
@@ -917,6 +933,22 @@ de:
           https://%{site_host}/sitemap.xml zur Verfügung. Registriere
           die URL in Google Search Console oder ähnlichen Tools.
         title_hint: "Wird in Titeln der Beiträge und als Titel für den Atom-Feed\nverwendet."
+        custom_404_entry:
+          none: "(Use default 404 page)"
+          hint: "Select an entry to display as the custom 404 page. Only published entries without password protection are available."
+        home_url_new_site_hint: |
+          Used for requests to the root path with one of the above
+          CNAMES. Once the site has been created you can also
+          configure an entry as homepage.
+        home_url_hint_html: |
+          Used for requests to the root path with one of the above
+          CNAMES. Alternatively, you can also use an entry as homepage.
+          <a href="%{choose_url}">Select existing entry</a> or <a
+          href="%{new_url}">create a new one</a>.
+        home_url_with_root_entry_hint_html: |
+          At the moment, the site uses the entry <a
+          href="%{entry_url}">%{entry_title}</a> as homepage. Change
+          the permalink of the entry to instead use the redirect URL.
       user:
         cannot_add: Was Sie tun möchten, ist nicht möglich. Sie müssen aktualisieren.
         none_addable_tooltip: Kein Benutzer verfügbar
@@ -994,6 +1026,42 @@ de:
         suspended: 'Der Benutzer wurde gesperrt. Er kann sich nun nicht mehr anmelden.'
         unsuspend: Entsperren
         unsuspended: Der Benutzer wurde entsperrt. Er kann sich nun wieder anmelden.
+      entry_translations:
+        add: Link translation
+        generate: Generate translation
+        entry_id: Entry
+        id: Translation(s)
+        new_hint_html: |-
+          Associate entries that represent the same content in
+          different languages.
+        create_model: Link as translation
+        no_translations: No linked entries
+        remove: Remove
+        remove_confirmation: |-
+          Are you sure you want to remove the entry from the list of translations?
+        mark_as_default: Mark as default
+        mark_as_default_confirmation: |-
+          Really mark this translation as default?
+        default_translation: "%{display_locale} (Standard)"
+        default_translation_hint: |-
+          Search engines fall back to the default language if no
+          translation is available that matches the user's language
+          settings.
+      site_root_entry:
+        title: Set Homepage
+        intro_html: |
+          <p>Select the story that should appear as the homepage at:<br>
+          <strong>https://%{site_host}/</strong><br>This content will
+          be shown when someone visits your site without entering a
+          specific path.</p>
+        hint: |
+          The story's permalink will be updated automatically. If
+          the story is already published, a redirect from the old URL
+          to the new ULR will be created.
+        submit: Set as Homepage
+        chosen: The story has been chosen as homepage.
+        root_permalink_directory_required: No permalink directory exists for this site.
+        root_entry_exists: Another story is already being used as homepage.
     audio:
       help_entries:
         page_type:
@@ -1423,11 +1491,12 @@ de:
 
             Dieser Schritt kann nicht rückgängig gemacht werden.
         edit_configuration:
-          back: Gliederung
+          back: "Back"
           confirm_destroy: Wirklich löschen?
           destroy: Löschen
           retry: Erneut versuchen
           save_error: Fehler beim Speichern
+          outline: "Outline"
         edit_entry_view:
           cannot_publish: Sie sind nicht berechtigt diesen Beitrag zu veröffentlichen.
         edit_page_view:
@@ -2010,6 +2079,11 @@ de:
         default_slideshow_mode: Vertikales Scrollen/Wischen
         phone_horizontal_slideshow_mode: Horizontales Wischen auf Phones
         slim_player_controls: Minimalistisch
+    public:
+      share_on_bluesky: Share on Bluesky
+      share_on_threads: Share on Threads
+    cutoff_modes:
+      none: "(None)"
   support:
     array:
       last_word_connector: " und "
@@ -2031,3 +2105,20 @@ de:
       next: ">>"
       previous: !!str '<<'
       truncate: "..."
+  pageflow_scrolled:
+    editor:
+      section_item:
+        set_cutoff: "Set paywall cutoff above"
+        reset_cutoff: "Remove paywall cutoff"
+        cutoff: "Paywall cutoff"
+  activemodel:
+    attributes:
+      pageflow/site_root_entry_form:
+        entry: Story
+        entry_id: Story
+    errors:
+      models:
+        pageflow/site_root_entry_form:
+          attributes:
+            entry:
+              blank: not found
