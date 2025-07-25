@@ -17,10 +17,12 @@ class AddPermaIdCounterToEntries < ActiveRecord::Migration[7.1]
   private
 
   def select_max_perma_id
-    connection.tables.map { |table|
-      next unless connection.column_exists?(table, :perma_id)
+    ['perma_id', 'file_perma_id'].flat_map { |column|
+      connection.tables.map { |table|
+        next unless connection.column_exists?(table, column)
 
-      connection.select_value("SELECT MAX(perma_id) FROM #{table}").to_i
-    }.compact.max.to_i
+        connection.select_value("SELECT MAX(#{column}) FROM #{table}").to_i
+      }.compact
+    }.max.to_i
   end
 end
