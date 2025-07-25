@@ -177,15 +177,15 @@ module Pageflow
         widget.copy_to(revision)
       end
 
-      file_usages.each do |file_usage|
-        file_usage.copy_to(revision)
-      end
-
-      find_revision_components.each do |revision_component|
-        revision_component.copy_to(revision)
-      end
-
       revision.save!
+
+      NestedRevisionComponentCopy.new(
+        from: self,
+        to: revision
+      ).perform_for(
+        revision_components: Pageflow.config.revision_components.to_a + [FileUsage]
+      )
+
       revision
     end
 
