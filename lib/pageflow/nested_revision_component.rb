@@ -59,7 +59,12 @@ module Pageflow
       record.perma_id = nil if reset_perma_ids && record.respond_to?(:perma_id=)
 
       yield record
-      copy_nested_revision_component_to(record, reset_perma_ids:)
+
+      NestedRevisionComponentCopy.new(
+        from: self,
+        to: record,
+        reset_perma_ids:
+      ).perform_for_nested_revision_components
 
       record
     end
