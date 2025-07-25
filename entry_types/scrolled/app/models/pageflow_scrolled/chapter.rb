@@ -18,6 +18,10 @@ module PageflowScrolled
 
     nested_revision_components :sections
 
+    def entry_for_auto_generated_perma_id
+      storyline.revision.entry
+    end
+
     def create_section(attributes = {})
       shift_section_positions(from: attributes[:position])
 

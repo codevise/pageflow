@@ -11,7 +11,6 @@ module Pageflow
     has_many :pages, through: :chapters
 
     nested_revision_components :chapters
-
     delegate :entry, to: :revision
 
     def self.create_defaults(draft)

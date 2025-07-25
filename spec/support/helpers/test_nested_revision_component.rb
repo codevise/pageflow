@@ -9,5 +9,9 @@ module Pageflow
     has_many :items, class_name: 'TestDeeplyNestedRevisionComponent', foreign_key: :parent_id
 
     nested_revision_components :items
+
+    def entry_for_auto_generated_perma_id
+      parent.revision.entry
+    end
   end
 end

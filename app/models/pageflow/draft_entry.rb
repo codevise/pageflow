@@ -33,8 +33,8 @@ module Pageflow
         f.entry = entry
       end
 
-      usage = revision.file_usages.create_with_lock!(file:,
-                                                     configuration: attributes[:configuration])
+      usage = revision.file_usages.create!(file:,
+                                           configuration: attributes[:configuration])
       UsedFile.new(file, usage)
     end
 

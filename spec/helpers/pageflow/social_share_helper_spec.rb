@@ -153,8 +153,11 @@ module Pageflow
         'returns result of social_share_entry_description if page has neither ' \
         'text nor description'
       ) do
-        entry = create(:entry, :published)
-        entry.published_revision.summary = 'social share description'
+        entry = create(:entry,
+                       :published,
+                       published_revision_attributes: {
+                         summary: 'social share description'
+                       })
         storyline = create(:storyline, revision: entry.published_revision)
         chapter = create(:chapter, storyline:)
         page = create(:page, chapter:)

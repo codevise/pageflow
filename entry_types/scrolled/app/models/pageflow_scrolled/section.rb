@@ -18,6 +18,10 @@ module PageflowScrolled
 
     nested_revision_components :content_elements
 
+    def entry_for_auto_generated_perma_id
+      chapter.storyline.revision.entry
+    end
+
     def self.all_for_revision(revision)
       joins(chapter: {storyline: :revision})
         .where(pageflow_scrolled_storylines: {revision_id: revision})

@@ -58,11 +58,12 @@ module Pageflow
 
     describe '#create_file!' do
       it 'prevents perma_id clashes when called concurrently', multithread: true do
-        entry = DraftEntry.new(create(:entry))
+        entry = create(:entry)
 
         perma_ids = Array.new(3) {
           Thread.new do
-            entry.create_file!(BuiltInFileType.image, attachment: fixture_file)
+            DraftEntry.new(Entry.find(entry.id))
+                      .create_file!(BuiltInFileType.image, attachment: fixture_file)
           end
         }.map(&:join).map(&:value).map(&:perma_id)
 
