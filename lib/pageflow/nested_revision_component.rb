@@ -13,15 +13,6 @@ module Pageflow
         cattr_accessor :nested_revision_component_collection_names, default: []
       end
 
-      # @api private
-      def copy_nested_revision_component_to(record, reset_perma_ids: false)
-        nested_revision_component_collection_names.each do |collection_name|
-          send(collection_name).each do |nested|
-            nested.copy_to(record.send(collection_name), reset_perma_ids:)
-          end
-        end
-      end
-
       # Macro methods to declare nested revision components
       module ClassMethods
         # Call this macro in the body of a class which includes
@@ -39,31 +30,17 @@ module Pageflow
     include Container
 
     def duplicate
-      copy_with(reset_perma_ids: true) do |record|
-        yield record if block_given?
-        record.save!
-      end
-    end
-
-    # @api private
-    def copy_to(collection, reset_perma_ids: false)
-      copy_with(reset_perma_ids:) do |record|
-        collection << record
-      end
-    end
-
-    private
-
-    def copy_with(reset_perma_ids:)
       record = dup
-      record.perma_id = nil if reset_perma_ids && record.respond_to?(:perma_id=)
+      record.perma_id = nil
 
-      yield record
+      yield record if block_given?
+
+      record.save!
 
       NestedRevisionComponentCopy.new(
         from: self,
         to: record,
-        reset_perma_ids:
+        reset_perma_ids: true
       ).perform_for_nested_revision_components
 
       record
