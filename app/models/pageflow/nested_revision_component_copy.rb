@@ -98,8 +98,8 @@ module Pageflow
       # old perma ids=[3, 5] results in offset 10 - 3 + 1 = 8 and
       # hence new ids [11, 13].
       row = @connection.select_one(<<-SQL.squish)
-        SELECT MIN(#{model.old_table_alias}.perma_id) AS min_perma_id,
-               MAX(#{model.old_table_alias}.perma_id) AS max_perma_id
+        SELECT MIN(#{model.old_table_alias}.#{model.perma_id_column}) AS min_perma_id,
+               MAX(#{model.old_table_alias}.#{model.perma_id_column}) AS max_perma_id
         FROM #{model.table_name} AS #{model.old_table_alias}
         #{join_old_parents(model, chain)}
         WHERE #{where_belongs_to_old_root(model, chain)}
@@ -199,6 +199,15 @@ module Pageflow
         "#{new_table_alias}.id"
       end
 
+      def perma_id_column
+        @perma_id_column ||=
+          if klass.column_names.include?('file_perma_id')
+            'file_perma_id'
+          else
+            'perma_id'
+          end
+      end
+
       def insert_list
         quoted_list(insert_columns)
       end
@@ -226,7 +235,7 @@ module Pageflow
       def join_as_new_on_matching_perma_id(foreign_key_value:, perma_id_offset:)
         "JOIN #{table_name} AS #{new_table_alias} " \
           "ON #{new_table_alias}.#{foreign_key} = #{foreign_key_value} " \
-          "AND #{new_table_alias}.perma_id = #{perma_id_expr(perma_id_offset)}"
+          "AND #{new_table_alias}.#{perma_id_column} = #{perma_id_expr(perma_id_offset)}"
       end
 
       private
@@ -236,9 +245,9 @@ module Pageflow
       end
 
       def perma_id_expr(offset)
-        return "#{old_table_alias}.perma_id" if offset.zero?
+        return "#{old_table_alias}.#{perma_id_column}" if offset.zero?
 
-        "#{old_table_alias}.perma_id + #{offset}"
+        "#{old_table_alias}.#{perma_id_column} + #{offset}"
       end
 
       def quoted_list(columns)
