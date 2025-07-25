@@ -19,14 +19,6 @@ module Pageflow
       belongs_to :revision, class_name: 'Pageflow::Revision', touch: true
     end
 
-    def copy_to(revision)
-      record = dup
-      record.revision = revision
-      record.save!
-
-      copy_nested_revision_component_to(record)
-    end
-
     module ClassMethods # rubocop:todo Style/Documentation
       def all_for_revision(revision)
         where(revision_id: revision.id)
