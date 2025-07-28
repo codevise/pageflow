@@ -6,9 +6,9 @@ import {ChapterScaffold} from './ChapterScaffold';
 import {StorylineChaptersCollection} from '../collections/StorylineChaptersCollection';
 import {StorylineConfiguration} from './StorylineConfiguration';
 import {StorylineTransitiveChildPages} from './StorylineTransitiveChildPages';
+import {configurationContainer} from './mixins/configurationContainer';
 import {delayedDestroying} from './mixins/delayedDestroying';
 import {failureTracking} from './mixins/failureTracking';
-
 import {state} from '$state';
 
 export const Storyline = Backbone.Model.extend({
@@ -16,7 +16,14 @@ export const Storyline = Backbone.Model.extend({
   paramRoot: 'storyline',
   i18nKey: 'pageflow/storyline',
 
-  mixins: [failureTracking, delayedDestroying],
+  mixins: [
+    configurationContainer({
+      autoSave: true,
+      configurationModel: StorylineConfiguration
+    }),
+    failureTracking,
+    delayedDestroying
+  ],
 
   initialize: function(attributes, options) {
     this.chapters = new StorylineChaptersCollection({
@@ -24,16 +31,7 @@ export const Storyline = Backbone.Model.extend({
       storyline: this
     });
 
-    this.configuration = new StorylineConfiguration(this.get('configuration') || {});
-
-    this.listenTo(this.configuration, 'change', function() {
-      if (!this.isNew()) {
-        this.save();
-      }
-      this.trigger('change:configuration', this);
-    });
-
-    this.listenTo(this.configuration, 'change:main', function(model, value) {
+    this.listenTo(this, 'change:configuration:main', function(model, value) {
       this.trigger('change:main', this, value);
     });
   },
@@ -100,12 +98,6 @@ export const Storyline = Backbone.Model.extend({
     scaffold.create();
 
     return scaffold;
-  },
-
-  toJSON: function() {
-    return {
-      configuration: this.configuration.toJSON()
-    };
   },
 
   destroy: function() {

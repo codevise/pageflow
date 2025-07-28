@@ -1,11 +1,13 @@
 module Pageflow
   EntryDuplicate = Struct.new(:original_entry) do
     def create!
-      create_entry
+      ActiveRecord::Base.transaction do
+        create_entry
 
-      copy_permalink
-      copy_draft
-      copy_memberships
+        copy_permalink
+        copy_draft
+        copy_memberships
+      end
 
       new_entry
     end

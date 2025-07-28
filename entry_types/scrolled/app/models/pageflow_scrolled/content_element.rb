@@ -14,6 +14,10 @@ module PageflowScrolled
 
     belongs_to :section
 
+    def entry_for_auto_generated_perma_id
+      section.chapter.storyline.revision.entry
+    end
+
     def self.all_for_revision(revision)
       joins(section: {chapter: {storyline: :revision}})
         .where(pageflow_scrolled_storylines: {revision_id: revision})

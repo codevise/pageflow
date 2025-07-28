@@ -177,15 +177,15 @@ module Pageflow
         widget.copy_to(revision)
       end
 
-      file_usages.each do |file_usage|
-        file_usage.copy_to(revision)
-      end
-
-      find_revision_components.each do |revision_component|
-        revision_component.copy_to(revision)
-      end
-
       revision.save!
+
+      NestedRevisionComponentCopy.new(
+        from: self,
+        to: revision
+      ).perform_for(
+        revision_components: Pageflow.config.revision_components.to_a + [FileUsage]
+      )
+
       revision
     end
 
@@ -193,6 +193,10 @@ module Pageflow
       Pageflow.config.revision_components.flat_map do |model|
         model.all_for_revision(self).to_a
       end
+    end
+
+    def entry_for_auto_generated_perma_id
+      entry
     end
 
     def self.depublish_all

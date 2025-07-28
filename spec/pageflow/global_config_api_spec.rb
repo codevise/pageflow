@@ -361,6 +361,7 @@ module Pageflow
       it 'returns values of constant type independent of for_entry_type calls' do
         skulled_config = Class.new do
           include EntryTypeConfiguration
+
           attr_accessor :data
 
           def initialize(*)
@@ -388,6 +389,7 @@ module Pageflow
       it 'returns same config object independent of for_entry_type calls' do
         skulled_config = Class.new do
           include EntryTypeConfiguration
+
           attr_accessor :data, :other_data
 
           def initialize(*)
@@ -567,6 +569,7 @@ module Pageflow
         pageflow = pageflow_module.new
         skulled_config = Class.new do
           include EntryTypeConfiguration
+
           attr_accessor :data
         end
         entry_type = TestEntryType.new(name: 'skulled',
@@ -597,6 +600,7 @@ module Pageflow
         pageflow = pageflow_module.new
         skulled_config = Class.new do
           include EntryTypeConfiguration
+
           attr_accessor :data
         end
         entry_type = TestEntryType.new(name: 'skulled',

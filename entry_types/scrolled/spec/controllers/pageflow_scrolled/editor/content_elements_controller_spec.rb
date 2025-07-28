@@ -5,6 +5,7 @@ module PageflowScrolled
   RSpec.describe Editor::ContentElementsController, type: :controller do
     render_views
     include Pageflow::EditorControllerTestHelper
+
     routes { PageflowScrolled::Engine.routes }
 
     describe '#batch' do

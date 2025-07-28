@@ -5,6 +5,7 @@ import {Configuration} from './Configuration';
 import {delayedDestroying} from './mixins/delayedDestroying';
 import {editor} from '../base';
 import {failureTracking} from './mixins/failureTracking';
+import {configurationContainer} from './mixins/configurationContainer';
 
 export const Page = Backbone.Model.extend({
   modelName: 'page',
@@ -20,28 +21,32 @@ export const Page = Backbone.Model.extend({
     };
   },
 
-  mixins: [failureTracking, delayedDestroying],
+  mixins: [
+    configurationContainer({
+      autoSave: true,
+      includeAttributesInJSON: true,
+      configurationModel: Configuration
+    }),
+    failureTracking,
+    delayedDestroying,
 
-  initialize: function() {
-    this.configuration = new Configuration(this.get('configuration') || {});
-    this.configuration.parent = this.configuration.page = this;
+    // Backbone Cocktail calls the original implementation of a
+    // method before mixin methods. Ensure this.configuration has
+    // already been set up by configurationContainer.
+    {
+      initialize() {
+        this.configuration.page = this;
 
-    this.listenTo(this.configuration, 'change', function() {
-      this.trigger('change:configuration', this);
-    });
+        this.listenTo(this.configuration, 'change:title', function() {
+          this.trigger('change:title');
+        });
 
-    this.listenTo(this.configuration, 'change:title', function() {
-      this.trigger('change:title');
-    });
-
-    this.listenTo(this.configuration, 'change', function() {
-      this.save();
-    });
-
-    this.listenTo(this, 'change:template', function() {
-      this.save();
-    });
-  },
+        this.listenTo(this, 'change:template', function() {
+          this.save();
+        });
+      }
+    }
+  ],
 
   urlRoot: function() {
     return this.isNew() ? this.collection.url() : '/pages';
@@ -89,12 +94,6 @@ export const Page = Backbone.Model.extend({
 
   pageType: function() {
     return editor.pageTypes.findByName(this.get('template'));
-  },
-
-  toJSON: function() {
-    return _.extend(_.clone(this.attributes), {
-      configuration: this.configuration.toJSON()
-    });
   },
 
   destroy: function() {

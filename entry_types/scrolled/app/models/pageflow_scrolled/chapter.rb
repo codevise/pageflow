@@ -18,6 +18,10 @@ module PageflowScrolled
 
     nested_revision_components :sections
 
+    def entry_for_auto_generated_perma_id
+      storyline.revision.entry
+    end
+
     def create_section(attributes = {})
       shift_section_positions(from: attributes[:position])
 
@@ -28,10 +32,12 @@ module PageflowScrolled
     end
 
     def duplicate_section(section)
-      shift_section_positions(from: section.position + 1)
+      transaction do
+        shift_section_positions(from: section.position + 1)
 
-      section.duplicate do |new_section|
-        new_section.position = section.position + 1
+        section.duplicate do |new_section|
+          new_section.position = section.position + 1
+        end
       end
     end
 

@@ -3,6 +3,7 @@ import _ from 'underscore';
 
 import {ChapterConfiguration} from './ChapterConfiguration';
 import {ChapterPagesCollection} from '../collections/ChapterPagesCollection';
+import {configurationContainer} from './mixins/configurationContainer';
 import {delayedDestroying} from './mixins/delayedDestroying';
 import {failureTracking} from './mixins/failureTracking';
 
@@ -13,7 +14,15 @@ export const Chapter = Backbone.Model.extend({
   paramRoot: 'chapter',
   i18nKey: 'pageflow/chapter',
 
-  mixins: [failureTracking, delayedDestroying],
+  mixins: [
+    configurationContainer({
+      autoSave: true,
+      includeAttributesInJSON: true,
+      configurationModel: ChapterConfiguration
+    }),
+    failureTracking,
+    delayedDestroying
+  ],
 
   initialize: function(attributes, options) {
     this.pages = new ChapterPagesCollection({
@@ -24,15 +33,6 @@ export const Chapter = Backbone.Model.extend({
     this.listenTo(this, 'change:title', function() {
       this.save();
     });
-
-    this.configuration = new ChapterConfiguration(this.get('configuration') || {});
-
-    this.listenTo(this.configuration, 'change', function() {
-      this.save();
-      this.trigger('change:configuration', this);
-    });
-
-    return attributes;
   },
 
   urlRoot: function() {

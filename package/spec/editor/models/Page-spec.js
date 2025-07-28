@@ -3,6 +3,68 @@ import {FilesCollection, Page, editor} from 'pageflow/editor';
 import * as support from '$support';
 
 describe('Page', () => {
+  it('initializes configuration model from configuration attribute', () => {
+    const page = new Page({configuration: {some: 'value'}});
+
+    expect(page.configuration.get('some')).toBe('value');
+  });
+
+  it('sets configuration defaults', () => {
+    const page = new Page();
+
+    expect(page.configuration.get('transition')).toBe('fade');
+  });
+
+  it('triggers change:configuration event when configuration changes', () => {
+    const page = new Page({id: 5, configuration: {some: 'value'}});
+    const listener = jest.fn();
+
+    page.on('change:configuration', listener);
+    page.configuration.set('some', 'other value');
+
+    expect(listener).toHaveBeenCalledWith(page, undefined, {});
+  });
+
+  it('triggers change:title event when configuration title changes', () => {
+    const page = new Page({id: 5});
+    const listener = jest.fn();
+
+    page.on('change:title', listener);
+    page.configuration.set('title', 'new');
+
+    expect(listener).toHaveBeenCalled();
+  });
+
+  it('auto saves', () => {
+    const page = new Page({id: 5, configuration: {some: 'value'}});
+    page.save = jest.fn();
+
+    page.configuration.set('some', 'other value');
+
+    expect(page.save).toHaveBeenCalled();
+  });
+
+  it('sets parent reference on configuration', () => {
+    const page = new Page({id: 5, configuration: {some: 'value'}});
+
+    expect(page.configuration.parent).toEqual(page);
+  });
+
+  it('sets page reference on configuration', () => {
+    const page = new Page({id: 5, configuration: {some: 'value'}});
+
+    expect(page.configuration.page).toEqual(page);
+  });
+
+  it('includes all attributes in data returned by toJSON', () => {
+    const page = new Page({title: 'Title', configuration: {some: 'value'}});
+
+    expect(page.toJSON()).toMatchObject({
+      title: 'Title',
+      configuration: {some: 'value'}
+    });
+  });
+
   describe('#thumbnailFile', () => {
     beforeAll(() => {
       editor.pageTypes.register('audio', {});

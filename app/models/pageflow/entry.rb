@@ -10,6 +10,7 @@ module Pageflow
     include Translatable
 
     extend FriendlyId
+
     friendly_id :slug_candidates, use: [:finders, :slugged]
 
     belongs_to :account, counter_cache: true
@@ -78,7 +79,7 @@ module Pageflow
     end
 
     def publish(options = {}) # rubocop:todo Metrics/AbcSize
-      ActiveRecord::Base.transaction do
+      transaction do
         self.first_published_at ||= Time.now
         update_password!(options.slice(:password, :password_protected))
 
@@ -97,26 +98,30 @@ module Pageflow
     end
 
     def snapshot(options)
-      draft.copy do |revision|
-        revision.creator = options[:creator]
-        revision.frozen_at = Time.now
-        revision.snapshot_type = options.fetch(:type, 'auto')
+      transaction do
+        draft.copy do |revision|
+          revision.creator = options[:creator]
+          revision.frozen_at = Time.now
+          revision.snapshot_type = options.fetch(:type, 'auto')
+        end
       end
     end
 
     def restore(options)
-      restored_revision = options.fetch(:revision)
-      draft.update!(frozen_at: Time.now, creator: options[:creator],
-                    snapshot_type: 'before_restore')
+      transaction do
+        restored_revision = options.fetch(:revision)
+        draft.update!(frozen_at: Time.now, creator: options[:creator],
+                      snapshot_type: 'before_restore')
 
-      restored_revision.copy do |revision|
-        revision.restored_from = restored_revision
-        revision.frozen_at = nil
-        revision.snapshot_type = nil
-        revision.published_at = nil
-        revision.published_until = nil
-        revision.password_protected = nil
-        revision.noindex = nil
+        restored_revision.copy do |revision|
+          revision.restored_from = restored_revision
+          revision.frozen_at = nil
+          revision.snapshot_type = nil
+          revision.published_at = nil
+          revision.published_until = nil
+          revision.password_protected = nil
+          revision.noindex = nil
+        end
       end
     end
 

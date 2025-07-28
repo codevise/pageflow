@@ -2,6 +2,7 @@ module Pageflow
   # @api private
   class Permalink < ApplicationRecord
     extend FriendlyId
+
     friendly_id :slug_candidates, use: :scoped, scope: :directory
 
     before_validation :set_default_slug

@@ -10,7 +10,19 @@ module Pageflow
     end
 
     def ensure_perma_id
-      self.perma_id ||= (self.class.maximum(:perma_id) || 0) + 1
+      return if perma_id.present?
+
+      entry = entry_for_auto_generated_perma_id
+
+      entry.with_lock do
+        entry.increment!(:perma_id_counter)
+        self.perma_id = entry.perma_id_counter
+      end
+    end
+
+    def entry_for_auto_generated_perma_id
+      raise NotImplementedError,
+            "#{self.class.name} must implement #entry_for_auto_generated_perma_id"
     end
   end
 end
