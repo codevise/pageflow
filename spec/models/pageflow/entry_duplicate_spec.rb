@@ -51,6 +51,14 @@ module Pageflow
         expect(duplicate.feature_state('fancy_page_type')).to eq(true)
       end
 
+      it 'copies perma id counter' do
+        entry = create(:entry, perma_id_counter: 20)
+
+        duplicate = EntryDuplicate.of(entry).create!
+
+        expect(duplicate.perma_id_counter).to eq(entry.perma_id_counter)
+      end
+
       it 'creates a permalink in same directory if original has one' do
         entry = create(
           :entry,

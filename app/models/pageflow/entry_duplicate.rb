@@ -49,6 +49,7 @@ module Pageflow
         account: original_entry.account,
         site: original_entry.site,
         features_configuration: original_entry.features_configuration,
+        perma_id_counter: original_entry.perma_id_counter,
 
         skip_draft_creation: true
       }

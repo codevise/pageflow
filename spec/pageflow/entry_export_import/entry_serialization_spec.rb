@@ -11,6 +11,7 @@ module Pageflow
                                 folder: create(:folder, account: export_account),
                                 features_configuration: {'some_feature' => true},
                                 first_published_at: 1.year.ago,
+                                perma_id_counter: 20,
                                 edited_at: 3.months.ago,
                                 created_at: 2.months.ago,
                                 updated_at: 1.month.ago)
@@ -26,6 +27,7 @@ module Pageflow
                                                                'account_id',
                                                                'folder_id',
                                                                'site_id',
+                                                               'perma_id_counter',
                                                                'updated_at'))
       end
 
