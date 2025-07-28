@@ -32,10 +32,12 @@ module PageflowScrolled
     end
 
     def duplicate_section(section)
-      shift_section_positions(from: section.position + 1)
+      transaction do
+        shift_section_positions(from: section.position + 1)
 
-      section.duplicate do |new_section|
-        new_section.position = section.position + 1
+        section.duplicate do |new_section|
+          new_section.position = section.position + 1
+        end
       end
     end
 
