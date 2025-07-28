@@ -10,6 +10,7 @@ module Pageflow
     include Translatable
 
     extend FriendlyId
+
     friendly_id :slug_candidates, use: [:finders, :slugged]
 
     belongs_to :account, counter_cache: true

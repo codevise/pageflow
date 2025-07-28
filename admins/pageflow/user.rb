@@ -161,6 +161,7 @@ module Pageflow
 
     controller do
       include QuotaVerification
+
       helper Admin::FormHelper
       helper Admin::LocalesHelper
       helper Admin::MembershipsHelper

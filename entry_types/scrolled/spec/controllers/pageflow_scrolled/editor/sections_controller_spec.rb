@@ -5,6 +5,7 @@ module PageflowScrolled
   RSpec.describe Editor::SectionsController, type: :controller do
     render_views
     include Pageflow::EditorControllerTestHelper
+
     routes { PageflowScrolled::Engine.routes }
 
     describe '#create' do
