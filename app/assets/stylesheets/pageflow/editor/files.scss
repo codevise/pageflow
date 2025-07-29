@@ -44,41 +44,41 @@ ul.files {
     top: 3px;
     text-align: right;
 
-    a {
+    button {
       float: left;
       margin-left: 5px;
     }
   }
 
-  a.settings,
-  a.cancel,
-  a.confirm,
-  a.retry {
+  button.settings,
+  button.cancel,
+  button.confirm,
+  button.retry {
     @include icon-only-button();
   }
 
-  a.settings {
+  button.settings {
     @include cog-icon;
   }
 
-  a.remove {
+  button.remove {
     @include icon-only-button("destructive");
     @include trash-icon;
   }
 
-  a.cancel {
+  button.cancel {
     @include cancel-icon;
   }
 
-  a.confirm {
+  button.confirm {
     @include check-icon;
   }
 
-  a.retry {
+  button.retry {
     @include arrows-ccw-icon;
   }
 
-  a.select {
+  button.select {
     @include simple-button("primary");
 
     padding-left: 5px;
