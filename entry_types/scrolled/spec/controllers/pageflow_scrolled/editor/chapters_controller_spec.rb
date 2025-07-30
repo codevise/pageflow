@@ -110,7 +110,7 @@ module PageflowScrolled
                chapter: attributes_for(:scrolled_chapter)
              },
              format: 'json')
-        expect(json_response(path: [:permaId])).to be_present
+        expect(response.body).to include_json(permaId: a_kind_of(Integer))
       end
     end
 

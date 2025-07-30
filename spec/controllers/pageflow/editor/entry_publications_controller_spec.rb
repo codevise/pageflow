@@ -31,8 +31,12 @@ module Pageflow
                },
                format: :json)
 
-          expect(json_response(path: [:entry, :published])).to eq(true)
-          expect(json_response(path: [:entry, :published_until])).to eq(1.month.from_now.iso8601(3))
+          expect(response.body).to include_json(
+            entry: {
+              published: true,
+              published_until: 1.month.from_now.iso8601(3)
+            }
+          )
         end
 
         it 'allows to define published_until attribute' do
@@ -158,7 +162,7 @@ module Pageflow
           acquire_edit_lock(user, entry)
           post(:create, params: {entry_id: entry.id, entry_publication: {}}, format: 'json')
 
-          expect(json_response(path: :published_message_html)).not_to be_nil
+          expect(response.body).to include_json(published_message_html: a_kind_of(String))
         end
       end
 
@@ -171,7 +175,7 @@ module Pageflow
           acquire_edit_lock(user, entry)
           post(:check, params: {entry_id: entry.id, entry_publication: {}}, format: 'json')
 
-          expect(json_response(path: :exceeding)).to eq(false)
+          expect(response.body).to include_json(exceeding: false)
         end
 
         it 'responds with exceeding state for exceeded quota' do
@@ -182,7 +186,7 @@ module Pageflow
           sign_in(user, scope: :user)
           post(:check, params: {entry_id: entry.id, entry_publication: {}}, format: 'json')
 
-          expect(json_response(path: :exceeding)).to eq(true)
+          expect(response.body).to include_json(exceeding: true)
         end
 
         it 'responds with quota attributes' do
@@ -193,8 +197,12 @@ module Pageflow
           sign_in(user, scope: :user)
           post(:check, params: {entry_id: entry.id, entry_publication: {}}, format: 'json')
 
-          expect(json_response(path: [:quota, :state])).to eq('available')
-          expect(json_response(path: [:quota, :state_description])).to eq('Quota available')
+          expect(response.body).to include_json(
+            quota: {
+              state: 'available',
+              state_description: 'Quota available'
+            }
+          )
         end
 
         it 'responds with exhausted_html' do
@@ -205,7 +213,7 @@ module Pageflow
           sign_in(user, scope: :user)
           post(:check, params: {entry_id: entry.id, entry_publication: {}}, format: 'json')
 
-          expect(json_response(path: :exhausted_html)).to be_present
+          expect(response.body).to include_json(exhausted_html: a_kind_of(String))
         end
 
         it 'renders last_published_with_noindex attribute' do

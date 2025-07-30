@@ -70,7 +70,7 @@ module PageflowScrolled
                chapter_id: chapter,
                section: attributes_for(:section)
              }, format: 'json')
-        expect(json_response(path: [:permaId])).to be_present
+        expect(response.body).to include_json(permaId: a_kind_of(Integer))
       end
 
       it 'renders initial content element' do

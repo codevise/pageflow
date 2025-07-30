@@ -19,7 +19,9 @@ module Pageflow
         sign_in(user, scope: :user)
         get(:index, format: 'json')
 
-        expect(json_response(path: [0, 'id'])).to eq(entry.id)
+        expect(response.body).to include_json([
+                                                {id: entry.id}
+                                              ])
       end
 
       it 'requires user to be signed in' do
@@ -119,7 +121,9 @@ module Pageflow
           sign_in(user, scope: :user)
           get(:show, params: {id: entry}, format: 'json')
 
-          expect(json_response(path: [:image_files, 0, :usage_id])).to eq(usage.id)
+          expect(response.body).to include_json(
+            image_files: [{usage_id: usage.id}]
+          )
         end
 
         it 'does not cache files across entries', :use_clean_rails_memory_store_fragment_caching do
@@ -134,7 +138,9 @@ module Pageflow
           get(:show, params: {id: other_entry}, format: 'json')
           get(:show, params: {id: entry}, format: 'json')
 
-          expect(json_response(path: [:image_files, 0, :usage_id])).to eq(usage.id)
+          expect(response.body).to include_json(
+            image_files: [{usage_id: usage.id}]
+          )
         end
 
         it 'requires the signed in user to be previewer of the parent entry' do
@@ -231,7 +237,8 @@ module Pageflow
         sign_in(user, scope: :user)
         get(:seed, params: {id: entry}, format: 'json')
 
-        expect(response.body).to include_json(site: {cutoff_mode_name: 'subscription_header'})
+        expect(response.body)
+          .to include_json(site: {cutoff_mode_name: 'subscription_header'})
       end
     end
 

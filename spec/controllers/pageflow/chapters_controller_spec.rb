@@ -103,8 +103,10 @@ module Pageflow
              },
              format: 'json')
 
-        expect(json_response(path: [:chapter, :id])).to be_present
-        expect(json_response(path: [:page, :id])).to be_present
+        expect(response.body).to include_json(
+          chapter: {id: a_kind_of(Integer)},
+          page: {id: a_kind_of(Integer)}
+        )
       end
 
       it 'requires the signed in user to be editor of the parent entry' do

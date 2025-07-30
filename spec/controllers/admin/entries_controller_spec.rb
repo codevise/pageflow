@@ -102,9 +102,13 @@ describe Admin::EntriesController do
 
       sign_in(current_user)
       get(:all_options)
-      option_texts = json_response(path: ['results', '*', 'text'])
 
-      expect(option_texts).to eq([entry.title])
+      expect(response.body).to include_json(
+        results: [{text: entry.title}]
+      )
+      expect(response.body).to include_json(
+        results: have_attributes(size: 1)
+      )
     end
 
     it 'allows filtering by site' do
@@ -116,9 +120,13 @@ describe Admin::EntriesController do
 
       sign_in(current_user)
       get(:all_options, params: {site_id: site})
-      option_texts = json_response(path: ['results', '*', 'text'])
 
-      expect(option_texts).to eq([entry.title])
+      expect(response.body).to include_json(
+        results: [{text: entry.title}]
+      )
+      expect(response.body).to include_json(
+        results: have_attributes(size: 1)
+      )
     end
   end
 
@@ -130,10 +138,13 @@ describe Admin::EntriesController do
 
       sign_in(current_user)
       get(:eligible_sites_options, params: {account_id: account.id, term: 'one'})
-      option_texts = json_response(path: ['results', '*', 'text'])
 
-      expect(option_texts).to include('one')
-      expect(option_texts).not_to include('two')
+      expect(response.body).to include_json(
+        results: [{text: 'one'}]
+      )
+      expect(response.body).to include_json(
+        results: have_attributes(size: 1)
+      )
     end
   end
 

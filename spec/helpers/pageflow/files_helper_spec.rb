@@ -58,7 +58,14 @@ module Pageflow
 
         result = render(helper, entry)
 
-        expect(json_get(result, path: %w[video_files * id])).to eq([video_file.id])
+        expect(result).to include_json(
+          video_files: [
+            {id: video_file.id}
+          ]
+        )
+        expect(result).to include_json(
+          video_files: have_attributes(size: 1)
+        )
       end
 
       it 'renders configurations of files' do
@@ -66,9 +73,12 @@ module Pageflow
         create(:video_file, used_in: entry.revision, with_configuration: {some: 'value'})
 
         result = render(helper, entry)
-        value = json_get(result, path: ['video_files', 0, 'configuration', 'some'])
 
-        expect(value).to eq('value')
+        expect(result).to include_json(
+          video_files: [
+            {configuration: {some: 'value'}}
+          ]
+        )
       end
 
       it 'renders parent file info of files' do
@@ -77,11 +87,15 @@ module Pageflow
         create(:text_track_file, used_in: entry.revision, parent_file: video_file)
 
         result = render(helper, entry)
-        id = json_get(result, path: ['text_track_files', 0, 'parent_file_id'])
-        type = json_get(result, path: ['text_track_files', 0, 'parent_file_model_type'])
 
-        expect(id).to eq(video_file.id)
-        expect(type).to eq(video_file.class.name)
+        expect(result).to include_json(
+          text_track_files: [
+            {
+              parent_file_id: video_file.id,
+              parent_file_model_type: video_file.class.name
+            }
+          ]
+        )
       end
 
       it 'renders basenames of files' do
@@ -89,9 +103,12 @@ module Pageflow
         create(:video_file, used_in: entry.revision, file_name: 'some-video.mp4')
 
         result = render(helper, entry)
-        value = json_get(result, path: ['video_files', 0, 'basename'])
 
-        expect(value).to eq('some-video')
+        expect(result).to include_json(
+          video_files: [
+            {basename: 'some-video'}
+          ]
+        )
       end
 
       it 'renders extention of files' do
@@ -99,9 +116,12 @@ module Pageflow
         create(:video_file, used_in: entry.revision, file_name: 'some-video.mp4')
 
         result = render(helper, entry)
-        value = json_get(result, path: ['video_files', 0, 'extension'])
 
-        expect(value).to eq('mp4')
+        expect(result).to include_json(
+          video_files: [
+            {extension: 'mp4'}
+          ]
+        )
       end
 
       it 'renders file type partial, for example variant property for video file' do
@@ -109,9 +129,12 @@ module Pageflow
         create(:video_file, used_in: entry.revision, output_presences: {fullhd: true})
 
         result = render(helper, entry)
-        variants = json_get(result, path: ['video_files', 0, 'variants'])
 
-        expect(variants).to include('fullhd')
+        expect(result).to include_json(
+          video_files: [
+            {variants: a_collection_including('fullhd')}
+          ]
+        )
       end
 
       describe 'for audio files' do
@@ -120,11 +143,12 @@ module Pageflow
           create(:audio_file, used_in: entry.revision)
 
           result = render(helper, entry)
-          variants = json_get(result, path: ['audio_files', 0, 'variants'])
 
-          expect(variants).to include('mp3')
-          expect(variants).to include('ogg')
-          expect(variants).to include('m4a')
+          expect(result).to include_json(
+            audio_files: [
+              {variants: a_collection_including('mp3', 'ogg', 'm4a')}
+            ]
+          )
         end
 
         it 'does not include peak data in variants by default' do
@@ -132,9 +156,10 @@ module Pageflow
           create(:audio_file, used_in: entry.revision)
 
           result = render(helper, entry)
-          variants = json_get(result, path: ['audio_files', 0, 'variants'])
 
-          expect(variants).not_to include('peakData')
+          json = JSON.parse(result)
+
+          expect(json['audio_files'].first['variants']).not_to include('peakData')
         end
 
         it 'includes peak data in variants if peak_data_file_name is present' do
@@ -142,9 +167,12 @@ module Pageflow
           create(:audio_file, used_in: entry.revision, peak_data_file_name: 'audio.json')
 
           result = render(helper, entry)
-          variants = json_get(result, path: ['audio_files', 0, 'variants'])
 
-          expect(variants).to include('peak_data')
+          expect(result).to include_json(
+            audio_files: [
+              {variants: a_collection_including('peak_data')}
+            ]
+          )
         end
 
         it 'applies key format to variants' do
@@ -152,9 +180,12 @@ module Pageflow
           create(:audio_file, used_in: entry.revision, peak_data_file_name: 'audio.json')
 
           result = render(helper, entry) { |json| json.key_format!(camelize: :lower) }
-          variants = json_get(result, path: ['audioFiles', 0, 'variants'])
 
-          expect(variants).to include('peakData')
+          expect(result).to include_json(
+            audioFiles: [
+              {variants: a_collection_including('peakData')}
+            ]
+          )
         end
       end
 
@@ -164,9 +195,12 @@ module Pageflow
           create(:image_file, used_in: entry.revision)
 
           result = render(helper, entry)
-          processed_extension = json_get(result, path: ['image_files', 0, 'processed_extension'])
 
-          expect(processed_extension).to include('JPG')
+          expect(result).to include_json(
+            image_files: [
+              {processed_extension: a_string_including('JPG')}
+            ]
+          )
         end
 
         it 'includes webp processed extension based based on output presence' do
@@ -174,9 +208,12 @@ module Pageflow
           create(:image_file, used_in: entry.revision, output_presences: {webp: true})
 
           result = render(helper, entry)
-          processed_extension = json_get(result, path: ['image_files', 0, 'processed_extension'])
 
-          expect(processed_extension).to include('webp')
+          expect(result).to include_json(
+            image_files: [
+              {processed_extension: a_string_including('webp')}
+            ]
+          )
         end
       end
     end

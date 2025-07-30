@@ -15,7 +15,9 @@ module Pageflow
         sign_in(user, scope: :user)
         get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
 
-        expect(json_response(path: [0, 'id'])).to eq(file.id)
+        expect(response.body).to include_json([
+                                                {id: file.id}
+                                              ])
       end
 
       it 'returns list of files of account' do
@@ -28,7 +30,9 @@ module Pageflow
         sign_in(user, scope: :user)
         get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
 
-        expect(json_response(path: [0, 'id'])).to eq(file.id)
+        expect(response.body).to include_json([
+                                                {id: file.id}
+                                              ])
       end
 
       it 'does not allow to list files of unaccessible entry' do
@@ -53,7 +57,9 @@ module Pageflow
         sign_in(user, scope: :user)
         get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
 
-        expect(json_response(path: [0]).key?('direct_upload_config')).to be_falsey
+        expect(response.body).not_to include_json(
+          [{direct_upload_config: a_kind_of(Hash)}]
+        )
       end
 
       it 'requires user to be signed in' do
@@ -317,7 +323,7 @@ module Pageflow
              },
              format: 'json')
 
-        expect(json_response(path: [:usage_id])).to be_present
+        expect(response.body).to include_json(usage_id: a_kind_of(Integer))
       end
 
       it 'supplies direct upload config for client upload in response' do
@@ -334,7 +340,7 @@ module Pageflow
              },
              format: 'json')
 
-        expect(json_response(path: :direct_upload_config)).to be_present
+        expect(response.body).to include_json(direct_upload_config: a_kind_of(Hash))
       end
 
       it 'does not allow to create file with path for attachment' do

@@ -72,8 +72,10 @@ module Pageflow
         post(:scaffold,
              params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
 
-        expect(json_response(path: [:storyline, :id])).to be_present
-        expect(json_response(path: [:chapter, :id])).to be_present
+        expect(response.body).to include_json(
+          storyline: {id: a_kind_of(Integer)},
+          chapter: {id: a_kind_of(Integer)}
+        )
       end
 
       context 'with depth parameter "page"' do
@@ -112,7 +114,8 @@ module Pageflow
                },
                format: 'json')
 
-          expect(json_response(path: [:page, :id])).to be_present
+          expect(response.body)
+            .to include_json(page: {id: a_kind_of(Integer)})
         end
       end
 
