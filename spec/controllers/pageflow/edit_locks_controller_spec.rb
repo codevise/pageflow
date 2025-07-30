@@ -48,7 +48,7 @@ module Pageflow
           sign_in(user, scope: :user)
           post(:create, params: {entry_id: entry}, format: :json)
 
-          expect(json_response(path: ['id'])).to eq(entry.edit_lock.id)
+          expect(response.body).to include_json(id: entry.edit_lock.id)
         end
 
         it 'locks the entry for the current user' do
@@ -124,7 +124,7 @@ module Pageflow
             sign_in(user, scope: :user)
             post(:create, params: {entry_id: entry, edit_lock: {force: true}}, format: :json)
 
-            expect(json_response(path: ['id'])).to eq(entry.reload.edit_lock.id)
+            expect(response.body).to include_json(id: entry.reload.edit_lock.id)
           end
 
           it 'breaks other users\' lock' do

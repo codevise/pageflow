@@ -25,8 +25,12 @@ module Pageflow
           get(:index, params: {collection_name: 'entries', subject_id: entry.id}, format: 'json')
 
           expect(response.status).to eq(200)
-          response_widget = json_response.detect { |w| w['type_name'] == 'test_widget' }
-          expect(response_widget).not_to be_nil
+          expect(response.body).to include_json(
+            [
+              {},
+              {type_name: 'test_widget'}
+            ]
+          )
         end
 
         it 'includes widget configuration in response' do
@@ -41,8 +45,15 @@ module Pageflow
           get(:index, params: {collection_name: 'entries', subject_id: entry.id}, format: 'json')
 
           expect(response.status).to eq(200)
-          response_widget = json_response.detect { |w| w['type_name'] == 'test_widget' }
-          expect(response_widget['configuration']).to eq('some' => 'value')
+          expect(response.body).to include_json(
+            [
+              {},
+              {
+                type_name: 'test_widget',
+                configuration: {some: 'value'}
+              }
+            ]
+          )
         end
 
         it 'requires permission to edit entry' do
@@ -66,8 +77,12 @@ module Pageflow
                                subject_id: entry_template.id}, format: 'json')
 
           expect(response.status).to eq(200)
-          response_widget = json_response.detect { |w| w['type_name'] == 'test_widget' }
-          expect(response_widget).not_to be_nil
+          expect(response.body).to include_json(
+            [
+              {},
+              {type_name: 'test_widget'}
+            ]
+          )
         end
 
         it 'requires permission to index entry templates' do

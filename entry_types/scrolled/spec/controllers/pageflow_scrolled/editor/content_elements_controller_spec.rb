@@ -372,7 +372,7 @@ module PageflowScrolled
                section_id: section,
                content_element: attributes_for(:content_element, :text_block)
              }, format: 'json')
-        expect(json_response(path: [:permaId])).to be_present
+        expect(response.body).to include_json(permaId: a_kind_of(Integer))
       end
     end
 

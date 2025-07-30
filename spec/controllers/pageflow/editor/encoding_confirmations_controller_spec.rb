@@ -133,7 +133,7 @@ module Pageflow
                },
                format: 'json')
 
-          expect(json_response(path: :exceeding)).to eq(false)
+          expect(response.body).to include_json(exceeding: false)
         end
 
         it 'responds with exceeding state for exceeded quota' do
@@ -150,7 +150,7 @@ module Pageflow
                },
                format: 'json')
 
-          expect(json_response(path: :exceeding)).to eq(true)
+          expect(response.body).to include_json(exceeding: true)
         end
 
         it 'does not allow to confirm encoding file of other entry' do
@@ -218,7 +218,8 @@ module Pageflow
              },
              format: 'json')
 
-        expect(json_response(path: :summary_html).strip).to eq('Summary for 1 file')
+        expect(response.body)
+          .to include_json(summary_html: a_string_including('Summary for 1 file'))
       end
 
       it 'renders intro partial' do
@@ -239,7 +240,8 @@ module Pageflow
              },
              format: 'json')
 
-        expect(json_response(path: :intro_html).strip).to eq('Intro for some-account')
+        expect(response.body)
+          .to include_json(intro_html: a_string_including('Intro for some-account'))
       end
     end
   end

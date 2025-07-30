@@ -37,7 +37,7 @@ module Pageflow
 
         result = helper.entry_json_seed(entry)
 
-        expect(json_get(result, path: %w[entry slug])).to eq('my-entry')
+        expect(result).to include_json(entry: {slug: 'my-entry'})
       end
 
       it 'contains entry title' do
@@ -47,7 +47,7 @@ module Pageflow
 
         result = helper.entry_json_seed(entry)
 
-        expect(json_get(result, path: %w[entry title])).to eq('My Entry')
+        expect(result).to include_json(entry: {title: 'My Entry'})
       end
 
       it 'renders files' do
@@ -56,9 +56,18 @@ module Pageflow
 
         result = helper.entry_json_seed(entry)
 
-        expect(json_get(result, path: %w[files video_files * id])).to eq([video_file.id])
-        expect(json_get(result, path: %w[files video_files * variants]))
-          .to match([include('poster_large')])
+        expect(result).to include_json(
+          files: {
+            video_files: [
+              {id: video_file.id, variants: a_collection_including('poster_large')}
+            ]
+          }
+        )
+        expect(result).to include_json(
+          files: {
+            video_files: have_attributes(size: 1)
+          }
+        )
       end
     end
 

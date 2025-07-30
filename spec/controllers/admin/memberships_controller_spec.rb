@@ -11,9 +11,10 @@ describe Admin::MembershipsController do
 
         sign_in(current_user, scope: :user)
         get(:potential_entries_for_user_options, params: {parent_id: managed_user.id})
-        option_texts = json_response(path: ['results', '*', 'text'])
 
-        expect(option_texts).to include('Some title')
+        expect(response.body).to include_json(
+          results: [{text: 'Some title'}]
+        )
       end
     end
 
@@ -33,9 +34,10 @@ describe Admin::MembershipsController do
 
         sign_in(current_user, scope: :user)
         get(:potential_entries_for_user_options, params: {parent_id: managed_user.id})
-        option_texts = json_response(path: ['results', '*', 'text'])
 
-        expect(option_texts).to include('Entry account / Some title')
+        expect(response.body).to include_json(
+          results: [{text: 'Entry account / Some title'}]
+        )
       end
     end
   end
