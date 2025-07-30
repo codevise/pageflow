@@ -63,7 +63,7 @@ module Pageflow
         perma_ids = Array.new(3) {
           Thread.new do
             DraftEntry.new(Entry.find(entry.id))
-                      .create_file!(BuiltInFileType.image, attachment: fixture_file)
+                      .create_file!(BuiltInFileType.image, file_name: 'image.jpg')
           end
         }.map(&:join).map(&:value).map(&:perma_id)
 
@@ -74,7 +74,7 @@ module Pageflow
         entry = create(:entry)
         draft_entry = DraftEntry.new(entry)
 
-        draft_entry.create_file!(BuiltInFileType.image, attachment: fixture_file)
+        draft_entry.create_file!(BuiltInFileType.image, file_name: 'image.jpg')
 
         expect(entry.draft.reload).to have(1).image_file
       end
@@ -83,9 +83,20 @@ module Pageflow
         entry = create(:entry)
         draft_entry = DraftEntry.new(entry)
 
-        image_file = draft_entry.create_file!(BuiltInFileType.image, attachment: fixture_file)
+        image_file = draft_entry.create_file!(BuiltInFileType.image, file_name: 'image.jpg')
 
         expect(image_file.usage_id).to be_present
+      end
+
+      it 'stores configuration on file usage' do
+        entry = create(:entry)
+        draft_entry = DraftEntry.new(entry)
+
+        image_file = draft_entry.create_file!(BuiltInFileType.image,
+                                              file_name: 'image.jpg',
+                                              configuration: {rights: 'some author'})
+
+        expect(image_file.configuration['rights']).to eq('some author')
       end
 
       it 'raises exception if record is invalid' do
@@ -93,7 +104,7 @@ module Pageflow
         draft_entry = DraftEntry.new(entry)
 
         expect {
-          draft_entry.create_file!(BuiltInFileType.image, {})
+          draft_entry.create_file!(BuiltInFileType.image, file_name: nil)
         }.to raise_error(ActiveRecord::RecordInvalid)
       end
 
@@ -115,7 +126,7 @@ module Pageflow
 
         expect {
           draft_entry.create_file!(test_file_type,
-                                   attachment: fixture_file,
+                                   file_name: 'image.jpg',
                                    related_image_file_id: image_file.id)
         }.to raise_error(DraftEntry::InvalidForeignKeyCustomAttributeError)
       end
@@ -138,13 +149,9 @@ module Pageflow
 
         expect {
           draft_entry.create_file!(test_file_type,
-                                   attachment: fixture_file,
+                                   file_name: 'image.jpg',
                                    related_image_file_id: image_file.id)
         }.not_to raise_error
-      end
-
-      def fixture_file
-        File.open(Engine.root.join('spec', 'fixtures', 'image.jpg'))
       end
     end
 
