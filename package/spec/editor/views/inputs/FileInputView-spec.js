@@ -3,12 +3,31 @@ import Backbone from 'backbone';
 
 import * as support from '$support';
 import {DropDownButton} from '$support/dominos/editor';
+import {within} from '@testing-library/dom';
 
 describe('FileInputView', () => {
   let testContext;
 
   beforeEach(() => {
     testContext = {};
+  });
+
+  it('displays file title', () => {
+    const fixture = support.factories.imageFilesFixture({
+      imageFileAttributes: {perma_id: 5, file_name: 'image.png'}
+    });
+    const model = new Configuration({file_id: 5});
+
+    const view = new FileInputView({
+      collection: fixture.imageFiles,
+      model: model,
+      propertyName: 'file_id'
+    });
+
+    view.render();
+    const {getByText} = within(view.el);
+
+    expect(getByText('image.png')).not.toBeNull();
   });
 
   it('can render button to edit background position', () => {

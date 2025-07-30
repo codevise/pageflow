@@ -1,5 +1,6 @@
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
+import I18n from 'i18n-js';
 
 import {CollectionView} from 'pageflow/ui';
 
@@ -31,7 +32,9 @@ export const FileItemView = Marionette.ItemView.extend({
     retryButton: '.retry',
 
     thumbnail: '.file_thumbnail',
+    thumbnailButton: '.file_thumbnail_button',
     stageItems: '.file_stage_items',
+    details: '.details',
 
     metaData: 'tbody.attributes',
     downloads: 'tbody.downloads',
@@ -64,7 +67,7 @@ export const FileItemView = Marionette.ItemView.extend({
 
     'click .retry': 'retry',
 
-    'click .file_thumbnail': 'toggleExpanded'
+    'click .file_thumbnail_button': 'toggleExpanded'
   },
 
   modelEvents: {
@@ -73,6 +76,7 @@ export const FileItemView = Marionette.ItemView.extend({
 
   onRender: function() {
     this.update();
+    this.setupAriaAttributes();
 
     this.subview(new FileThumbnailView({
       el: this.ui.thumbnail,
@@ -96,7 +100,7 @@ export const FileItemView = Marionette.ItemView.extend({
     }
 
     this.$el.attr('data-id', this.model.id);
-    this.ui.fileName.text(this.model.get('file_name') || '(Unbekannt)');
+    this.ui.fileName.text(this.model.title());
 
     this.ui.downloadLink.attr('href', this.model.get('original_url'));
     this.ui.downloads.toggle(this.model.isUploaded() && !_.isEmpty(this.model.get('original_url')));
@@ -134,8 +138,23 @@ export const FileItemView = Marionette.ItemView.extend({
     this.updateToggleTitle();
   },
 
+  setupAriaAttributes: function() {
+    var uniqueId = this.model.get('id') || this.model.cid;
+    var detailsId = 'file-details-' + uniqueId;
+
+    this.ui.thumbnailButton.attr('aria-controls', detailsId);
+    this.ui.details.attr('id', detailsId);
+  },
+
   updateToggleTitle: function() {
-    this.ui.thumbnail.attr('title', this.$el.hasClass('expanded') ? 'Details ausblenden' : 'Details einblenden');
+    var isExpanded = this.$el.hasClass('expanded');
+    var titleText = I18n.t(isExpanded ?
+                           'pageflow.editor.templates.file_item.collapse_details' :
+                           'pageflow.editor.templates.file_item.expand_details');
+
+    this.ui.thumbnailButton.attr('aria-expanded', isExpanded.toString());
+    this.ui.thumbnailButton.attr('title', titleText);
+    this.ui.thumbnailButton.attr('aria-label', titleText);
   },
 
   destroy: function() {

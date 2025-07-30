@@ -48,7 +48,7 @@ export const ExplorerFileItemView = Marionette.ItemView.extend({
     }
 
     this.$el.attr('data-id', this.model.id);
-    this.ui.fileName.text(this.model.get('file_name') || '(Unbekannt)');
+    this.ui.fileName.text(this.model.title());
   },
 
   isDisabled: function() {

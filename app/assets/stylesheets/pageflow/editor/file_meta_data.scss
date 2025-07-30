@@ -40,7 +40,7 @@
     text-overflow: ellipsis;
   }
 
-  .edit {
+  button.edit {
     @include background-icon-center($font-size: 15px,
                                     $color: var(--ui-primary-color-light));
     @include pencil-icon;
@@ -50,6 +50,10 @@
     height: 20px;
     float: right;
     margin-top: -2px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
 
     &:hover {
       @include background-icon-color(var(--ui-primary-color));
