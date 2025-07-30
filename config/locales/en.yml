@@ -1372,6 +1372,8 @@ en:
           credits: Credits
           destroy: Delete
           download: Download
+          expand_details: Show details
+          collapse_details: Hide details
           retry: Retry
           select: Select
           settings: Settings

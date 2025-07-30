@@ -1,9 +1,14 @@
 import {FileItemView, FileMetaDataItemValueView} from 'pageflow/editor';
+import {within} from '@testing-library/dom';
 
 import * as support from '$support';
 import {FileMetaDataTable} from '$support/dominos/editor';
 
 describe('FileItemView', () => {
+  support.useFakeTranslations({
+    'pageflow.editor.templates.file_item.expand_details': 'Show details',
+    'pageflow.editor.templates.file_item.collapse_details': 'Hide details'
+  });
   it('renders meta data items given as string', () => {
     var file = support.factories.file(
       {dimension: '200x100px'}
@@ -44,5 +49,22 @@ describe('FileItemView', () => {
     var fileMetaDataTable = FileMetaDataTable.find(fileItemView);
 
     expect(fileMetaDataTable.values()).toEqual(expect.arrayContaining(['200x100px!!']));
+  });
+
+  it('sets up proper ARIA attributes for expand/collapse', () => {
+    var file = support.factories.file({id: 123});
+    var fileItemView = new FileItemView({
+      model: file,
+      metaDataAttributes: []
+    });
+
+    const {getByRole} = within(fileItemView.render().el);
+
+    var thumbnailButton = getByRole('button', {name: 'Show details'});
+    var detailsDiv = fileItemView.el.querySelector('.details');
+
+    expect(thumbnailButton.getAttribute('aria-expanded')).toBe('false');
+    expect(thumbnailButton.getAttribute('aria-controls')).toBe('file-details-123');
+    expect(detailsDiv.getAttribute('id')).toBe('file-details-123');
   });
 });

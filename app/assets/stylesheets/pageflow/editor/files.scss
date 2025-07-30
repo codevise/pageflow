@@ -8,12 +8,11 @@ ul.files {
     position: relative;
     padding: 37px 10px 0 70px;
     white-space: nowrap;
-    overflow: hidden;
-    height: 23px;
+    min-height: 23px;
   }
 
-  > li.expanded {
-    height: auto;
+  > li:not(.expanded) .details {
+    display: none;
   }
 
   li.blank_slate {
@@ -22,13 +21,24 @@ ul.files {
     color: var(--ui-on-surface-color-light);
   }
 
-  .file_thumbnail {
+  .file_thumbnail_button {
     position: absolute;
     top: 0;
     left: 0;
     height: 60px;
     width: 60px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    display: block;
+  }
+
+  .file_thumbnail {
+    height: 100%;
+    width: 100%;
     vertical-align: middle;
+    display: block;
   }
 
   .file_name {

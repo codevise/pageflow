@@ -1379,6 +1379,8 @@ de:
           credits: Rechte
           destroy: Löschen
           download: Herunterladen
+          expand_details: Details einblenden
+          collapse_details: Details ausblenden
           retry: Erneut versuchen
           select: Auswählen
           settings: Einstellungen
