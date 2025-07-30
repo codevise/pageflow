@@ -26,7 +26,7 @@ export const ConfirmableFileItemView = Marionette.ItemView.extend({
     this.ui.checkBox.attr('id', this.cid);
     this.ui.checkBox.prop('checked', this.options.selectedFiles.contains(this.model));
 
-    this.ui.fileName.text(this.model.get('file_name') || '(Unbekannt)');
+    this.ui.fileName.text(this.model.title());
     this.ui.duration.text(this.model.get('duration') || '-');
   },
 

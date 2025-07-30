@@ -110,7 +110,7 @@ export const FileInputView = Marionette.ItemView.extend({
 
     this.$el.toggleClass('is_unset', !file);
     this.ui.fileName.text(file ?
-                          file.get('file_name') :
+                          file.title() :
                           I18n.t('pageflow.ui.views.inputs.file_input_view.none'));
 
     this.subview(new FileThumbnailView({

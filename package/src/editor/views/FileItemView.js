@@ -100,7 +100,7 @@ export const FileItemView = Marionette.ItemView.extend({
     }
 
     this.$el.attr('data-id', this.model.id);
-    this.ui.fileName.text(this.model.get('file_name') || '(Unbekannt)');
+    this.ui.fileName.text(this.model.title());
 
     this.ui.downloadLink.attr('href', this.model.get('original_url'));
     this.ui.downloads.toggle(this.model.isUploaded() && !_.isEmpty(this.model.get('original_url')));
