@@ -41,6 +41,7 @@ export * from './models/ChapterConfiguration';
 export * from './models/Widget';
 export * from './models/UploadableFile';
 export * from './models/ReusableFile';
+export * from './models/Search';
 export * from './models/StorylineTransitiveChildPages';
 export * from './models/FileUploader';
 export * from './models/Chapter';

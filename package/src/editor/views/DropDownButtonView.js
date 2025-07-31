@@ -79,6 +79,7 @@ export const DropDownButtonView = Marionette.ItemView.extend({
     this.ui.button.toggleClass('borderless', !!this.options.borderless);
 
     this.ui.button.text(this.options.label);
+    this.ui.button.attr('title', this.options.title);
     this.ui.button.addClass(this.options.buttonClassName);
 
     this.ui.menu.append(this.subview(new DropDownButtonItemListView({

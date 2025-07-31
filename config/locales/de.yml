@@ -517,7 +517,7 @@ de:
     - Fr
     - Sa
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mär
@@ -543,7 +543,7 @@ de:
       long: "%e. %B %Y"
       short: "%e. %b"
     month_names:
-    - 
+    -
     - Januar
     - Februar
     - März
@@ -1530,6 +1530,12 @@ de:
           upload: Hochladen
         filtered_files_view:
           banner_prefix: 'Aktiver Filter:'
+          name_filter_placeholder: 'Dateien filtern'
+          name_filter_reset: 'Filter zurücksetzen'
+          sort_button_label: 'Sortieren'
+          sort:
+            alphabetical: 'Alphabetisch'
+            most_recent: 'Zuletzt hochgeladen'
         inputs:
           file_input:
             auto_default_text_track: "(Automatisch)"

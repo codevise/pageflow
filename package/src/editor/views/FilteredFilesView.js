@@ -1,11 +1,14 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
+import Backbone from 'backbone';
 
 import {CollectionView, i18nUtils} from 'pageflow/ui';
+import {DropDownButtonView} from './DropDownButtonView';
 
 import {editor} from '../base';
 
 import {FileItemView} from './FileItemView';
+import {Search} from '../models/Search';
 
 import template from '../templates/filteredFiles.jst';
 
@@ -17,30 +20,82 @@ export const FilteredFilesView = Marionette.ItemView.extend({
 
   ui: {
     banner: '.filtered_files-banner',
-    filterName: '.filtered_files-filter_name'
+    filterName: '.filtered_files-filter_name',
+    filterBar: '.filtered_files-filter_bar',
+    nameFilter: '.filtered_files-name_filter',
+    nameFilterWrapper: '.filtered_files-name_filter_wrapper',
+    nameFilterReset: '.filtered_files-name_filter_reset',
+    sort: '.filtered_files-sort'
   },
 
   events: {
     'click .filtered_files-reset_filter': function() {
       editor.navigate('/files/' + this.options.fileType.collectionName, {trigger: true});
       return false;
+    },
+
+    'input .filtered_files-name_filter': function() {
+      this.search.set('term', this.ui.nameFilter.val());
+      this.toggleNameFilterReset();
+    },
+
+    'click .filtered_files-name_filter_reset': function() {
+      this.ui.nameFilter.val('');
+      this.search.set('term', '');
+      this.toggleNameFilterReset();
     }
   },
 
+  initialize: function() {
+    this.search = new Search(
+      {term: ''},
+      {
+        attribute: 'file_name',
+        storageKey: 'pageflow.filtered_files.sort_order'
+      }
+    );
+  },
+
   onRender: function() {
-    var entry = this.options.entry;
+    this.renderSortMenu();
+    this.renderNamedFilter();
+    this.renderCollectionView();
+
+    this.toggleNameFilterReset();
+  },
+
+  renderSortMenu: function() {
+    this.appendSubview(new DropDownButtonView({
+      title: I18n.t('pageflow.editor.views.filtered_files_view.sort_button_label'),
+      alignMenu: 'right',
+      openOnClick: true,
+      items: new SortMenuItemsCollection([
+        {name: 'alphabetical'},
+        {name: 'most_recent'}
+      ], {search: this.search})
+    }), {to: this.ui.filterBar});
+  },
+
+  renderNamedFilter: function() {
+    this.ui.banner.toggle(!!this.options.filterName);
+
+    if (this.options.filterName) {
+      this.ui.filterName.text(this.filterTranslation('name'));
+    }
+  },
+
+  renderCollectionView: function() {
     var fileType = this.options.fileType;
-    var collection = entry.getFileCollection(fileType);
+    var collection = this.options.entry.getFileCollection(fileType);
+
     var blankSlateText = I18n.t('pageflow.editor.templates.files_blank_slate.no_files');
 
     if (this.options.filterName) {
-      if (this.filteredCollection) {
-        this.filteredCollection.dispose();
-      }
-
       collection = this.filteredCollection = collection.withFilter(this.options.filterName);
       blankSlateText = this.filterTranslation('blank_slate');
     }
+
+    collection = this.searchFilteredCollection = this.search.applyTo(collection);
 
     this.appendSubview(new CollectionView({
       tagName: 'ul',
@@ -60,12 +115,10 @@ export const FilteredFilesView = Marionette.ItemView.extend({
         }
       })
     }));
+  },
 
-    this.ui.banner.toggle(!!this.options.filterName);
-
-    if (this.options.filterName) {
-      this.ui.filterName.text(this.filterTranslation('name'));
-    }
+  toggleNameFilterReset: function() {
+    this.ui.nameFilterWrapper.toggleClass('has_value', !!this.search.get('term'));
   },
 
   filterTranslation: function(keyName, options) {
@@ -88,8 +141,31 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   },
 
   onClose: function() {
-    if (this.filteredCollection) {
-      this.filteredCollection.dispose();
-    }
+    this.filteredCollection?.dispose();
+    this.searchFilteredCollection.dispose();
   }
+});
+
+const SortMenuItem = Backbone.Model.extend({
+  initialize(attributes, options) {
+    this.search = options.search;
+
+    this.set('label', I18n.t(`pageflow.editor.views.filtered_files_view.sort.${this.get('name')}`));
+    this.set('kind', 'radio');
+
+    const updateChecked = () => {
+      this.set('checked', this.search.get('order') === this.get('name'));
+    };
+
+    this.listenTo(this.search, 'change:order', updateChecked);
+    updateChecked();
+  },
+
+  selected() {
+    this.search.set('order', this.get('name'));
+  }
+});
+
+const SortMenuItemsCollection = Backbone.Collection.extend({
+  model: SortMenuItem
 });
