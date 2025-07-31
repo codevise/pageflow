@@ -1407,6 +1407,10 @@ en:
         list_item:
           edit: Edit
           remove: Delete
+        list_search_field:
+          placeholder: 'Filter files'
+          hint: 'Type %{hotkey} to search'
+          reset: 'Clear filter'
         loading:
           loading: Loading...
         locked:
@@ -1526,8 +1530,6 @@ en:
           upload: Upload
         filtered_files_view:
           banner_prefix: 'Active filter:'
-          name_filter_placeholder: 'Filter files'
-          name_filter_reset: 'Clear name filter'
           sort_button_label: 'Sort'
           sort:
             alphabetical: 'Alphabetical'

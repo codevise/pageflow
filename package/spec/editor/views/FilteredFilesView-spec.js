@@ -1,6 +1,6 @@
 import {FilteredFilesView, editor} from 'pageflow/editor';
 import * as support from '$support';
-import {within} from '@testing-library/dom';
+import {within, waitFor} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -12,8 +12,9 @@ describe('FilteredFilesView', () => {
     'pageflow.entry_types.strange.editor.files.filters.image_files.with_projection.blank_slate': 'Entry Type Blank',
     'pageflow.editor.files.filters.image_files.with_projection.name': 'Fallback Filter',
     'pageflow.editor.files.filters.image_files.with_projection.blank_slate': 'Fallback Blank',
-    'pageflow.editor.views.filtered_files_view.name_filter_placeholder': 'Filter files',
-    'pageflow.editor.views.filtered_files_view.name_filter_reset': 'Clear name filter',
+    'pageflow.editor.templates.list_search_field.placeholder': 'Filter files',
+    'pageflow.editor.templates.list_search_field.hint': 'Type / to search',
+    'pageflow.editor.templates.list_search_field.reset': 'Clear name filter',
     'pageflow.editor.views.filtered_files_view.sort_button_label': 'Sort',
     'pageflow.editor.views.filtered_files_view.sort.alphabetical': 'Alphabetical',
     'pageflow.editor.views.filtered_files_view.sort.most_recent': 'Most recent'
@@ -61,6 +62,7 @@ describe('FilteredFilesView', () => {
 
   beforeEach(() => {
     testContext = {};
+    editor.router = {navigate: jest.fn()};
   });
 
   const {render} = support.useHtmlSandbox(() => testContext);
@@ -85,13 +87,32 @@ describe('FilteredFilesView', () => {
 
     const user = userEvent.setup();
 
-    const {getByPlaceholderText, getAllByText} = render(view);
-    const input = getByPlaceholderText('Filter files');
+    const {getAllByText, getByLabelText} = render(view);
+    const input = getByLabelText('Filter files');
     await user.type(input, 'other');
 
     const names = getAllByText(/\.png$/).map(el => el.textContent);
 
     expect(names).toEqual(['other.png']);
+  });
+
+  it('focuses name filter after rendering in selection mode', async () => {
+    const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+    const fileType = fileTypes.first();
+    const entry = f.entry({}, {fileTypes, filesAttributes: {image_files: []}});
+    const selectionHandler = jest.fn();
+    selectionHandler.getReferer = () => '/';
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileType: fileType,
+      selectionHandler
+    });
+
+    const {getByLabelText} = render(view);
+    const input = getByLabelText('Filter files');
+
+    await waitFor(() => expect(input).toHaveFocus());
   });
 
   it('keeps focus on name filter while typing', async () => {
@@ -113,12 +134,159 @@ describe('FilteredFilesView', () => {
 
     const user = userEvent.setup();
 
-    const {getByPlaceholderText} = render(view);
-    const input = getByPlaceholderText('Filter files');
+    const {getByLabelText} = render(view);
+    const input = getByLabelText('Filter files');
     input.focus();
     await user.type(input, 's');
 
     expect(input).toHaveFocus();
+  });
+
+  it('hides placeholder when typing', async () => {
+    const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+    const fileType = fileTypes.first();
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [
+          {id: 1, display_name: 'some-image.png'}
+        ]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileType: fileType
+    });
+
+    const user = userEvent.setup();
+
+    const {getByLabelText} = render(view);
+    const input = getByLabelText('Filter files');
+    const wrapper = input.closest('.list_search_field');
+
+    expect(wrapper).not.toHaveClass('has_value');
+
+    await user.type(input, 's');
+
+    expect(wrapper).toHaveClass('has_value');
+  });
+
+  it('focuses name filter via hotkey', async () => {
+    const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+    const fileType = fileTypes.first();
+    const entry = f.entry({}, {fileTypes, filesAttributes: {image_files: []}});
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileType: fileType
+    });
+
+    const user = userEvent.setup();
+
+    const {getByLabelText} = render(view);
+    const input = getByLabelText('Filter files');
+    await user.keyboard('/');
+
+    expect(input).toHaveFocus();
+  });
+
+  it('resets filter on Escape', async () => {
+    const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+    const fileType = fileTypes.first();
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [
+          {id: 1, display_name: 'a.png'},
+          {id: 2, display_name: 'b.png'}
+        ]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileType: fileType
+    });
+
+    const user = userEvent.setup();
+
+    const {getAllByText, getByLabelText} = render(view);
+    const input = getByLabelText('Filter files');
+    await user.type(input, 'b');
+    await user.keyboard('{Escape}');
+
+    const names = getAllByText(/\.png$/).map(el => el.textContent);
+    expect(names).toEqual(['a.png', 'b.png']);
+    expect(input).toHaveValue('');
+  });
+
+  it('blurs filter on Escape if empty', async () => {
+    const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+    const fileType = fileTypes.first();
+    const entry = f.entry({}, {fileTypes, filesAttributes: {image_files: []}});
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileType: fileType
+    });
+
+    const user = userEvent.setup();
+
+    const {getByLabelText} = render(view);
+    const input = getByLabelText('Filter files');
+
+    await user.keyboard('{Escape}');
+
+    expect(input).not.toHaveFocus();
+  });
+
+  it('supports keyboard selection', async () => {
+    const selectionHandler = jest.fn();
+    selectionHandler.getReferer = () => '/';
+
+    const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+    const fileType = fileTypes.first();
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [
+          {id: 1, display_name: 'a.png'},
+          {id: 2, display_name: 'b.png'}
+        ]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileType: fileType,
+      selectionHandler
+    });
+
+    const user = userEvent.setup();
+
+    const {getByLabelText} = render(view);
+    const input = getByLabelText('Filter files');
+    input.focus();
+
+    await user.keyboard('{ArrowDown}{ArrowDown}{Enter}');
+
+    expect(selectionHandler).toHaveBeenCalled();
+  });
+
+  it('sets aria-controls on filter input', () => {
+    const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+    const fileType = fileTypes.first();
+    const entry = f.entry({}, {fileTypes, filesAttributes: {image_files: []}});
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileType: fileType
+    });
+
+    const {getByLabelText} = render(view);
+    const input = getByLabelText('Filter files');
+    expect(input.getAttribute('aria-controls')).toEqual('filtered_files');
   });
 
   it('clears filter when clicking reset button', async () => {
@@ -141,8 +309,8 @@ describe('FilteredFilesView', () => {
 
     const user = userEvent.setup();
 
-    const {getByPlaceholderText, getByTitle, getAllByText} = render(view);
-    const input = getByPlaceholderText('Filter files');
+    const {getByLabelText, getByTitle, getAllByText} = render(view);
+    const input = getByLabelText('Filter files');
     const reset = getByTitle('Clear name filter');
 
     await user.type(input, 'other');
@@ -183,8 +351,8 @@ describe('FilteredFilesView', () => {
 
     const user = userEvent.setup();
 
-    const {getByPlaceholderText, getAllByText} = render(view);
-    const input = getByPlaceholderText('Filter files');
+    const {getAllByText, getByLabelText} = render(view);
+    const input = getByLabelText('Filter files');
     await user.type(input, 'some');
 
     const names = getAllByText(/\.png$/).map(el => el.textContent);

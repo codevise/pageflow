@@ -33,36 +33,12 @@
     }
   }
 
-  &-name_filter_wrapper {
-    flex: 1;
-    position: relative;
-    margin: space(2) 0;
-
-    @include background-icon-left($left: space(2), $top: 50%);
-    @include search-icon;
-
-    .filtered_files-name_filter {
-      padding-right: space(7);
-      padding-left: space(7);
-    }
-
-    .filtered_files-name_filter_reset {
-      @include background-icon-center;
-      @include cancel-icon;
-
-      position: absolute;
-      right: space(4);
-      top: space(4);
-      display: none;
-    }
-
-    &.has_value .filtered_files-name_filter_reset {
-      display: block;
-    }
-  }
-
   &-sort {
     margin-top: space(2);
     text-align: right;
+  }
+
+  ul.files > li.keyboard_highlight {
+    background-color: var(--ui-selection-color-light);
   }
 }

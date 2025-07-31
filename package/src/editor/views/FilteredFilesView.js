@@ -9,6 +9,8 @@ import {editor} from '../base';
 
 import {FileItemView} from './FileItemView';
 import {Search} from '../models/Search';
+import {ListHighlight} from '../models/ListHighlight';
+import {ListSearchFieldView} from './ListSearchFieldView';
 
 import template from '../templates/filteredFiles.jst';
 
@@ -22,46 +24,57 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     banner: '.filtered_files-banner',
     filterName: '.filtered_files-filter_name',
     filterBar: '.filtered_files-filter_bar',
-    nameFilter: '.filtered_files-name_filter',
-    nameFilterWrapper: '.filtered_files-name_filter_wrapper',
-    nameFilterReset: '.filtered_files-name_filter_reset',
-    sort: '.filtered_files-sort'
+    sort: '.filtered_files-sort',
   },
 
   events: {
     'click .filtered_files-reset_filter': function() {
       editor.navigate('/files/' + this.options.fileType.collectionName, {trigger: true});
       return false;
-    },
-
-    'input .filtered_files-name_filter': function() {
-      this.search.set('term', this.ui.nameFilter.val());
-      this.toggleNameFilterReset();
-    },
-
-    'click .filtered_files-name_filter_reset': function() {
-      this.ui.nameFilter.val('');
-      this.search.set('term', '');
-      this.toggleNameFilterReset();
     }
   },
 
   initialize: function() {
-    this.search = new Search(
-      {term: ''},
-      {
-        attribute: 'display_name',
-        storageKey: 'pageflow.filtered_files.sort_order'
-      }
-    );
+    this.search = new Search({}, {
+      attribute: 'display_name',
+      storageKey: 'pageflow.filtered_files.sort_order'
+    });
+
+    var collection = this.options.entry.getFileCollection(this.options.fileType);
+
+    if (this.options.filterName) {
+      collection = this.filteredCollection = collection.withFilter(this.options.filterName);
+    }
+
+    this.searchFilteredCollection = this.search.applyTo(collection);
+
+    if (this.options.selectionHandler) {
+      this.listHighlight = new ListHighlight({}, {collection: this.searchFilteredCollection});
+    }
   },
 
   onRender: function() {
-    this.renderSortMenu();
     this.renderNamedFilter();
+    this.renderSearchField();
+    this.renderSortMenu();
     this.renderCollectionView();
+  },
 
-    this.toggleNameFilterReset();
+  renderNamedFilter: function() {
+    this.ui.banner.toggle(!!this.options.filterName);
+
+    if (this.options.filterName) {
+      this.ui.filterName.text(this.filterTranslation('name'));
+    }
+  },
+
+  renderSearchField() {
+    this.searchFieldView = this.appendSubview(new ListSearchFieldView({
+      search: this.search,
+      listHighlight: this.listHighlight,
+      ariaControlsId: 'filtered_files',
+      autoFocus: !!this.options.selectionHandler
+    }), {to: this.ui.filterBar});
   },
 
   renderSortMenu: function() {
@@ -76,35 +89,21 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     }), {to: this.ui.filterBar});
   },
 
-  renderNamedFilter: function() {
-    this.ui.banner.toggle(!!this.options.filterName);
-
-    if (this.options.filterName) {
-      this.ui.filterName.text(this.filterTranslation('name'));
-    }
-  },
-
   renderCollectionView: function() {
-    var fileType = this.options.fileType;
-    var collection = this.options.entry.getFileCollection(fileType);
+    var blankSlateText = this.options.filterName ?
+                         this.filterTranslation('blank_slate') :
+                         I18n.t('pageflow.editor.templates.files_blank_slate.no_files');
 
-    var blankSlateText = I18n.t('pageflow.editor.templates.files_blank_slate.no_files');
-
-    if (this.options.filterName) {
-      collection = this.filteredCollection = collection.withFilter(this.options.filterName);
-      blankSlateText = this.filterTranslation('blank_slate');
-    }
-
-    collection = this.searchFilteredCollection = this.search.applyTo(collection);
-
-    this.appendSubview(new CollectionView({
+    this.appendSubview(this.subview(new CollectionView({
       tagName: 'ul',
+      id: 'filtered_files',
       className: 'files expandable',
-      collection: collection,
+      collection: this.searchFilteredCollection,
       itemViewConstructor: FileItemView,
       itemViewOptions: {
-        metaDataAttributes: fileType.metaDataAttributes,
+        metaDataAttributes: this.options.fileType.metaDataAttributes,
         selectionHandler: this.options.selectionHandler,
+        listHighlight: this.listHighlight
       },
       blankSlateViewConstructor: Marionette.ItemView.extend({
         template: blankSlateTemplate,
@@ -114,11 +113,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
           };
         }
       })
-    }));
-  },
-
-  toggleNameFilterReset: function() {
-    this.ui.nameFilterWrapper.toggleClass('has_value', !!this.search.get('term'));
+    })));
   },
 
   filterTranslation: function(keyName, options) {
@@ -141,6 +136,8 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   },
 
   onClose: function() {
+    Marionette.ItemView.prototype.onClose.call(this);
+
     this.filteredCollection?.dispose();
     this.searchFilteredCollection.dispose();
   }

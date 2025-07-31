@@ -42,16 +42,7 @@ export const FileItemView = Marionette.ItemView.extend({
   },
 
   events: {
-    'click .select': function() {
-      var result = this.options.selectionHandler.call(this.model);
-
-      if (result !== false) {
-        editor.navigate(this.options.selectionHandler.getReferer(),
-                                 {trigger: true});
-      }
-
-      return false;
-    },
+    'click .select': 'select',
 
     'click .settings': function() {
       FileSettingsDialogView.open({
@@ -68,6 +59,13 @@ export const FileItemView = Marionette.ItemView.extend({
     'click .retry': 'retry',
 
     'click .file_thumbnail_button': 'toggleExpanded'
+  },
+
+  initialize: function() {
+    if (this.options.listHighlight) {
+      this.listenTo(this.options.listHighlight, 'change:currentId change:active', this.updateHighlight);
+      this.listenTo(this.options.listHighlight, 'selected:' + this.model.id, this.select);
+    }
   },
 
   modelEvents: {
@@ -92,6 +90,8 @@ export const FileItemView = Marionette.ItemView.extend({
     _.each(this.metaDataViews(), function(view) {
       this.ui.metaData.append(this.subview(view).el);
     }, this);
+
+    this.updateHighlight();
   },
 
   update: function() {
@@ -173,5 +173,26 @@ export const FileItemView = Marionette.ItemView.extend({
 
   retry: function() {
     this.model.retry();
+  },
+
+  select: function() {
+    var result = this.options.selectionHandler.call(this.model);
+
+    if (result !== false) {
+      editor.navigate(this.options.selectionHandler.getReferer(), {trigger: true});
+    }
+
+    return false;
+  },
+
+  updateHighlight: function() {
+    if (!this.options.listHighlight) {
+      return;
+    }
+
+    var highlighted = this.options.listHighlight.get('currentId') === this.model.id &&
+                      this.options.listHighlight.get('active');
+    this.$el.toggleClass('keyboard_highlight', highlighted);
+    this.$el.attr('aria-selected', highlighted ? 'true' : null);
   }
 });

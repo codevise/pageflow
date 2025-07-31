@@ -1414,6 +1414,10 @@ de:
         list_item:
           edit: Bearbeiten
           remove: Löschen
+        list_search_field:
+          placeholder: 'Dateien filtern'
+          hint: 'Mit %{hotkey} suchen'
+          reset: 'Filter zurücksetzen'
         loading:
           loading: Daten werden geladen.
         locked:
@@ -1533,8 +1537,6 @@ de:
           upload: Hochladen
         filtered_files_view:
           banner_prefix: 'Aktiver Filter:'
-          name_filter_placeholder: 'Dateien filtern'
-          name_filter_reset: 'Filter zurücksetzen'
           sort_button_label: 'Sortieren'
           sort:
             alphabetical: 'Alphabetisch'
