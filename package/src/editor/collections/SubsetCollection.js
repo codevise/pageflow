@@ -9,7 +9,7 @@ export const SubsetCollection = Backbone.Collection.extend({
 
     options = options || {};
 
-    this.filter = options.filter || function(item) { return true; };
+    this.predicate = options.filter || function(item) { return true; };
     this.parent = options.parent;
     this.parentModel = options.parentModel;
 
@@ -20,7 +20,7 @@ export const SubsetCollection = Backbone.Collection.extend({
     this.comparator = options.comparator || this.parent.comparator;
 
     this.listenTo(this.parent, 'add', function(model, collection, options) {
-      if (!adding && this.filter(model)) {
+      if (!adding && this.predicate(model)) {
         this.add(model, options);
       }
     });
@@ -37,7 +37,7 @@ export const SubsetCollection = Backbone.Collection.extend({
 
     if (options.watchAttribute) {
       this.listenTo(this.parent, 'change:' + options.watchAttribute, function(model) {
-        if (this.filter(model)) {
+        if (this.predicate(model)) {
           this.add(model);
         }
         else {
@@ -69,7 +69,7 @@ export const SubsetCollection = Backbone.Collection.extend({
     });
 
     Backbone.Collection.prototype.constructor
-      .call(this, this.parent.filter(this.filter, this), options);
+      .call(this, this.parent.filter(this.predicate, this), options);
   },
 
   clear: function() {
