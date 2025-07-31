@@ -63,7 +63,7 @@ describe('FilteredFilesView', () => {
     testContext = {};
   });
 
-  support.useHtmlSandbox(() => testContext);
+  const {render} = support.useHtmlSandbox(() => testContext);
 
   it('filters files by name as user types', async () => {
     const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
@@ -85,14 +85,11 @@ describe('FilteredFilesView', () => {
 
     const user = userEvent.setup();
 
-    view.render();
-    testContext.htmlSandbox.append(view.el);
-
-    const {getByPlaceholderText} = within(view.el);
+    const {getByPlaceholderText, getAllByText} = render(view);
     const input = getByPlaceholderText('Filter files');
     await user.type(input, 'other');
 
-    const names = Array.from(view.el.querySelectorAll('.files .file_name')).map(el => el.textContent);
+    const names = getAllByText(/\.png$/).map(el => el.textContent);
 
     expect(names).toEqual(['other.png']);
   });
@@ -116,10 +113,7 @@ describe('FilteredFilesView', () => {
 
     const user = userEvent.setup();
 
-    view.render();
-    testContext.htmlSandbox.append(view.el);
-
-    const {getByPlaceholderText} = within(view.el);
+    const {getByPlaceholderText} = render(view);
     const input = getByPlaceholderText('Filter files');
     input.focus();
     await user.type(input, 's');
@@ -147,17 +141,14 @@ describe('FilteredFilesView', () => {
 
     const user = userEvent.setup();
 
-    view.render();
-    testContext.htmlSandbox.append(view.el);
-
-    const {getByPlaceholderText, getByTitle} = within(view.el);
+    const {getByPlaceholderText, getByTitle, getAllByText} = render(view);
     const input = getByPlaceholderText('Filter files');
     const reset = getByTitle('Clear name filter');
 
     await user.type(input, 'other');
     await user.click(reset);
 
-    const names = Array.from(view.el.querySelectorAll('.files .file_name')).map(el => el.textContent);
+    const names = getAllByText(/\.png$/).map(el => el.textContent);
 
     expect(names).toEqual(['other.png', 'some-image.png']);
     expect(input).toHaveValue('');
@@ -192,14 +183,11 @@ describe('FilteredFilesView', () => {
 
     const user = userEvent.setup();
 
-    view.render();
-    testContext.htmlSandbox.append(view.el);
-
-    const {getByPlaceholderText} = within(view.el);
+    const {getByPlaceholderText, getAllByText} = render(view);
     const input = getByPlaceholderText('Filter files');
     await user.type(input, 'some');
 
-    const names = Array.from(view.el.querySelectorAll('.files .file_name')).map(el => el.textContent);
+    const names = getAllByText(/\.png$/).map(el => el.textContent);
 
     expect(names).toEqual(['some-image.png']);
   });
@@ -224,17 +212,15 @@ describe('FilteredFilesView', () => {
 
     const user = userEvent.setup();
 
-    view.render();
-    testContext.htmlSandbox.append(view.el);
+    const {getByTitle, getAllByText} = render(view);
 
-    let names = Array.from(view.el.querySelectorAll('.files .file_name')).map(el => el.textContent);
+    let names = getAllByText(/\.png$/).map(el => el.textContent);
     expect(names).toEqual(['a.png', 'b.png']);
 
-    const {getByTitle, getAllByText} = within(view.el);
     await user.click(getByTitle('Sort'));
     await user.click(getAllByText('Most recent')[1]);
 
-    names = Array.from(view.el.querySelectorAll('.files .file_name')).map(el => el.textContent);
+    names = getAllByText(/\.png$/).map(el => el.textContent);
     expect(names).toEqual(['b.png', 'a.png']);
   });
 
@@ -259,10 +245,9 @@ describe('FilteredFilesView', () => {
       fileType: fileType
     });
 
-    view.render();
-    testContext.htmlSandbox.append(view.el);
+    const {getAllByText} = render(view);
 
-    const names = Array.from(view.el.querySelectorAll('.files .file_name')).map(el => el.textContent);
+    const names = getAllByText(/\.png$/).map(el => el.textContent);
 
     expect(names).toEqual(['b.png', 'a.png']);
   });

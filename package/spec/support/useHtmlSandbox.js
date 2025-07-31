@@ -1,12 +1,24 @@
 import $ from 'jquery';
+import {within} from '@testing-library/dom';
 
 export const useHtmlSandbox = function(getTestContext) {
+  let htmlSandbox;
+
   beforeEach(function() {
-    getTestContext().htmlSandbox = $('<div />');
-    $('body').append(getTestContext().htmlSandbox);
+    htmlSandbox = $('<div />');
+    getTestContext().htmlSandbox = htmlSandbox;
+    $('body').append(htmlSandbox);
   });
 
   afterEach(function() {
-    getTestContext().htmlSandbox.remove();
+    htmlSandbox.remove();
+    htmlSandbox = null;
   });
+
+  return {
+    render(view) {
+      htmlSandbox.append(view.el);
+      return within(view.render().el);
+    }
+  };
 };
