@@ -16,6 +16,11 @@ import _ from 'underscore';
  * @param {Boolean|Array<String>} [options.includeAttributesInJSON] -
  *   Include all or specific attributes of the parent model in the
  *   data returned by `toJSON` besides the `configuration` property.
+ * @param {Function} [options.afterInitialize] -
+ *   Callback to invoke once configuration has been set up. The
+ *   initialize method of this mixin is only invoked after the
+ *   initialize method of the class using the mixin. The callback
+ *   is invoked with `this` pointing to the model object.
  * @returns {Object} - Mixin to be included in model.
  *
  * @example
@@ -29,7 +34,7 @@ import _ from 'underscore';
  * const section = new Section({configuration: {some: 'value'}});
  * section.configuration.get('some') // => 'value';
  */
-export function configurationContainer({configurationModel, autoSave, includeAttributesInJSON} = {}) {
+export function configurationContainer({configurationModel, autoSave, includeAttributesInJSON, afterInitialize} = {}) {
   configurationModel = configurationModel || Configuration.extend({
     defaults: {}
   });
@@ -54,6 +59,10 @@ export function configurationContainer({configurationModel, autoSave, includeAtt
           this.trigger('change:configuration:' + name, this, this.configuration.get(name));
         }, this);
       });
+
+      if (afterInitialize) {
+        afterInitialize.call(this);
+      }
     },
 
     toJSON() {

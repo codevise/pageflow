@@ -25,28 +25,25 @@ export const Page = Backbone.Model.extend({
     configurationContainer({
       autoSave: true,
       includeAttributesInJSON: true,
-      configurationModel: Configuration
-    }),
-    failureTracking,
-    delayedDestroying,
+      configurationModel: Configuration,
 
-    // Backbone Cocktail calls the original implementation of a
-    // method before mixin methods. Ensure this.configuration has
-    // already been set up by configurationContainer.
-    {
-      initialize() {
+      afterInitialize() {
         this.configuration.page = this;
 
         this.listenTo(this.configuration, 'change:title', function() {
           this.trigger('change:title');
         });
-
-        this.listenTo(this, 'change:template', function() {
-          this.save();
-        });
       }
-    }
+    }),
+    failureTracking,
+    delayedDestroying
   ],
+
+  initialize() {
+    this.listenTo(this, 'change:template', function() {
+      this.save();
+    });
+  },
 
   urlRoot: function() {
     return this.isNew() ? this.collection.url() : '/pages';

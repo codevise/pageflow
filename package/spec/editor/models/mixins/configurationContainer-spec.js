@@ -38,6 +38,20 @@ describe('configurationContainer', () => {
     expect(model.configuration.getRoutableId()).toBe(5);
   });
 
+  it('invokes afterInitialize callback with model context', () => {
+    const afterInitialize = jest.fn(function() {
+      this.some = this.configuration.get('some');
+    });
+    const Model = Backbone.Model.extend({
+      mixins: [configurationContainer({afterInitialize})],
+    });
+
+    const model = new Model({configuration: {some: 'value'}});
+
+    expect(afterInitialize).toHaveBeenCalled();
+    expect(model.some).toBe('value');
+  });
+
   it('triggers change:configuration event when configuration changes', () => {
     const Model = Backbone.Model.extend({
       mixins: [configurationContainer()],
