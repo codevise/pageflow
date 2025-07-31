@@ -63,7 +63,12 @@ export const FileItemView = Marionette.ItemView.extend({
 
   initialize: function() {
     if (this.options.listHighlight) {
-      this.listenTo(this.options.listHighlight, 'change:currentId change:active', this.updateHighlight);
+      this.listenTo(this.options.listHighlight, 'change:currentId change:active', () => {
+        if (this.updateHighlight()) {
+          this.el.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+        }
+      });
+
       this.listenTo(this.options.listHighlight, 'selected:' + this.model.id, this.select);
     }
   },
@@ -187,12 +192,15 @@ export const FileItemView = Marionette.ItemView.extend({
 
   updateHighlight: function() {
     if (!this.options.listHighlight) {
-      return;
+      return false;
     }
 
     var highlighted = this.options.listHighlight.get('currentId') === this.model.id &&
                       this.options.listHighlight.get('active');
+
     this.$el.toggleClass('keyboard_highlight', highlighted);
     this.$el.attr('aria-selected', highlighted ? 'true' : null);
+
+    return highlighted;
   }
 });

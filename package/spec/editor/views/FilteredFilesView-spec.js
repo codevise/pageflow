@@ -4,6 +4,8 @@ import {within, waitFor} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
 describe('FilteredFilesView', () => {
   const f = support.factories;
 
