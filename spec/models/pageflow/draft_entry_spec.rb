@@ -99,6 +99,17 @@ module Pageflow
         expect(image_file.configuration['rights']).to eq('some author')
       end
 
+      it 'stores passed file name as display name and generates random file name' do
+        entry = create(:entry)
+        draft_entry = DraftEntry.new(entry)
+
+        image_file = draft_entry.create_file!(BuiltInFileType.image,
+                                              file_name: 'image.jpg')
+
+        expect(image_file.display_name).to eq('image.jpg')
+        expect(image_file.file_name).to match(/^[a-z0-9]{8}\.jpg$/)
+      end
+
       it 'raises exception if record is invalid' do
         entry = create(:entry)
         draft_entry = DraftEntry.new(entry)

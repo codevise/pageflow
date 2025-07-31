@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module Pageflow
   # A merged view of an entry and its draft revision
   class DraftEntry < EntryAtRevision
@@ -29,12 +31,15 @@ module Pageflow
     def create_file!(file_type, attributes)
       check_foreign_key_custom_attributes(file_type.custom_attributes, attributes)
 
-      file = file_type.model.create!(attributes.except(:configuration)) do |f|
-        f.entry = entry
-      end
+      file = file_type.model.create!(
+        attributes
+          .except(:configuration)
+          .merge(file_name: generate_file_name(attributes[:file_name]))
+      ) { |f| f.entry = entry }
 
       usage = revision.file_usages.create!(file:,
-                                           configuration: attributes[:configuration])
+                                           configuration: attributes[:configuration],
+                                           display_name: attributes[:file_name])
       UsedFile.new(file, usage)
     end
 
@@ -107,6 +112,12 @@ module Pageflow
                 "Custom attribute #{attribute_name} references #{file_type} #{file_id} " \
                 'which is not used in this revsion')
         end
+    end
+
+    def generate_file_name(file_name)
+      return nil if file_name.blank?
+
+      "#{SecureRandom.alphanumeric(8).downcase}#{File.extname(file_name)}"
     end
 
     def file_is_used(file_type, file_id)

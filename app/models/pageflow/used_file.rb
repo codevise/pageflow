@@ -23,6 +23,10 @@ module Pageflow
       @usage.perma_id
     end
 
+    def display_name
+      @usage.display_name
+    end
+
     def cache_key
       [@file.cache_key, @usage.cache_key].join('-')
     end
