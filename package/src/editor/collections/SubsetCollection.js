@@ -85,5 +85,33 @@ export const SubsetCollection = Backbone.Collection.extend({
   dispose: function() {
     this.stopListening();
     this.reset();
+  },
+
+  updateFilter: function(predicate) {
+    this.predicate = predicate || function() { return true; };
+
+    var modelsToRemove = [];
+    var modelsToAdd = [];
+
+    this.parent.each(function(model) {
+      var included = !!this.get(model);
+      var shouldBeIncluded = this.predicate(model);
+
+      if (shouldBeIncluded && !included) {
+        modelsToAdd.push(model);
+      }
+      if (!shouldBeIncluded && included) {
+        modelsToRemove.push(model);
+      }
+    }, this);
+
+    if (modelsToRemove.length) {
+      this.remove(modelsToRemove);
+    }
+    if (modelsToAdd.length) {
+      this.add(modelsToAdd);
+    }
+
+    return this;
   }
 });
