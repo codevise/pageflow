@@ -14,7 +14,7 @@ export const Search = Backbone.Model.extend({
 
     this.comparators = {
       alphabetical: function(file) {
-        var fileName = file.get('file_name');
+        var fileName = file.get('display_name');
         return (fileName && fileName.toLowerCase) ? fileName.toLowerCase() : fileName;
       },
 

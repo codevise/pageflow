@@ -50,7 +50,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     this.search = new Search(
       {term: ''},
       {
-        attribute: 'file_name',
+        attribute: 'display_name',
         storageKey: 'pageflow.filtered_files.sort_order'
       }
     );

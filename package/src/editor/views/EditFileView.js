@@ -31,12 +31,9 @@ export const EditFileView = Marionette.ItemView.extend({
       ]
     });
 
-    if (this.options.displayFileName) {
-      tab.input('file_name', TextInputView, {
-        model: this.model,
-        disabled: true
-      });
-    }
+    tab.input('display_name', TextInputView, {
+      model: this.model
+    });
 
     tab.input('rights', TextInputView, {
       model: this.model,

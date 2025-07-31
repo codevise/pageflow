@@ -72,8 +72,8 @@ describe('FilteredFilesView', () => {
       fileTypes,
       filesAttributes: {
         image_files: [
-          {id: 1, file_name: 'some-image.png'},
-          {id: 2, file_name: 'other.png'}
+          {id: 1, display_name: 'some-image.png'},
+          {id: 2, display_name: 'other.png'}
         ]
       }
     });
@@ -104,7 +104,7 @@ describe('FilteredFilesView', () => {
       fileTypes,
       filesAttributes: {
         image_files: [
-          {id: 1, file_name: 'some-image.png'}
+          {id: 1, display_name: 'some-image.png'}
         ]
       }
     });
@@ -134,8 +134,8 @@ describe('FilteredFilesView', () => {
       fileTypes,
       filesAttributes: {
         image_files: [
-          {id: 1, file_name: 'some-image.png'},
-          {id: 2, file_name: 'other.png'}
+          {id: 1, display_name: 'some-image.png'},
+          {id: 2, display_name: 'other.png'}
         ]
       }
     });
@@ -177,9 +177,9 @@ describe('FilteredFilesView', () => {
       fileTypes,
       filesAttributes: {
         image_files: [
-          {id: 1, file_name: 'some-image.png', configuration: {custom: 'yes'}},
-          {id: 2, file_name: 'other.png', configuration: {custom: 'yes'}},
-          {id: 3, file_name: 'some-other.png'}
+          {id: 1, display_name: 'some-image.png', configuration: {custom: 'yes'}},
+          {id: 2, display_name: 'other.png', configuration: {custom: 'yes'}},
+          {id: 3, display_name: 'some-other.png'}
         ]
       }
     });
@@ -211,8 +211,8 @@ describe('FilteredFilesView', () => {
       fileTypes,
       filesAttributes: {
         image_files: [
-          {id: 1, file_name: 'a.png'},
-          {id: 2, file_name: 'b.png'}
+          {id: 1, display_name: 'a.png'},
+          {id: 2, display_name: 'b.png'}
         ]
       }
     });
@@ -248,8 +248,8 @@ describe('FilteredFilesView', () => {
       fileTypes,
       filesAttributes: {
         image_files: [
-          {id: 1, file_name: 'a.png', updated_at: '2024-01-01'},
-          {id: 2, file_name: 'b.png', updated_at: '2024-02-01'}
+          {id: 1, display_name: 'a.png', updated_at: '2024-01-01'},
+          {id: 2, display_name: 'b.png', updated_at: '2024-02-01'}
         ]
       }
     });

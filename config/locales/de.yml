@@ -1197,6 +1197,9 @@ de:
           file_name:
             column_header: Dateiname
             label: Dateiname
+          display_name:
+            column_header: Dateiname
+            label: Dateiname
           license:
             blank: "(Nicht angegeben)"
             inline_help: Fügt der Rechteangabe im Beitrag einen Link zur Lizenz hinzu.
