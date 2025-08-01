@@ -9,7 +9,7 @@ module Pageflow
     end
 
     def logo_source
-      'cl'
+      'pageflow/empty.png'
     end
 
     def search(_adf, _asd)

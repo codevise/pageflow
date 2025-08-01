@@ -20,7 +20,7 @@ end
 
 json.file_importers Pageflow.config_for(entry).file_importers do |file_importer|
   json.importer_name file_importer.name
-  json.logo_source file_importer.logo_source
+  json.logo_source asset_url(file_importer.logo_source)
   json.authentication_provider file_importer.authentication_provider
   json.authentication_required file_importer.authentication_required current_user
 end
