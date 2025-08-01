@@ -8,6 +8,8 @@ import * as support from '$support';
 describe('Entry', () => {
   let testContext;
 
+  const {setGlobals} = support.setupGlobals();
+
   beforeEach(() => {
     testContext = {};
   });
@@ -17,9 +19,11 @@ describe('Entry', () => {
     testContext.imageFileType = testContext.fileTypes.first();
 
     testContext.buildEntry = function(attributes, options) {
-      return support.factories.entry(attributes, _.extend({
+      const {entry} = setGlobals({entry: support.factories.entry(attributes, _.extend({
         fileTypes: testContext.fileTypes
-      }, options));
+      }, options))});
+
+      return entry;
     };
   });
 
@@ -122,6 +126,28 @@ describe('Entry', () => {
       });
 
       expect(entry.getFileCollection(testContext.imageFileType).first().get('state')).toBe('processed');
+    });
+
+    it('does not override file display_name and rights', () => {
+      var entry = testContext.buildEntry({id: 1}, {
+        files: {
+          image_files: FilesCollection.createForFileType(
+            testContext.imageFileType,
+            [{id: 12, state: 'uploading', rights: '', display_name: 'old.jpg'}]
+          )
+        }
+      });
+      var imageFile = entry.getFileCollection(testContext.imageFileType).first()
+
+      imageFile.set('rights', 'some author');
+      imageFile.set('display_name', 'new.jpg');
+      entry.parse({
+        image_files: [{id: 12, state: 'processed', rights: '', display_name: 'old.jpg'}]
+      });
+
+      expect(imageFile.get('state')).toBe('processed');
+      expect(imageFile.get('display_name')).toBe('new.jpg');
+      expect(imageFile.get('rights')).toBe('some author');
     });
 
     it('updates last_published_with_noindex attribute', () => {

@@ -161,12 +161,9 @@ export const Entry = Backbone.Model.extend({
     this.fileTypes.each(function(fileType) {
       var filesAttributes = response[fileType.collectionName];
 
-      // Temporary solution until rights attributes is moved to
-      // configuration hash. If we are polling, prevent overwriting
-      // the rights attribute.
       if (options.merge !== false) {
         filesAttributes = _.map(filesAttributes, function(fileAttributes) {
-          return _.omit(fileAttributes, 'rights');
+          return _.omit(fileAttributes, 'display_name', 'rights');
         });
       }
 
