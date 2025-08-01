@@ -11,8 +11,8 @@ module Pageflow
     end
 
     def update!(attributes)
-      super(attributes.except(:configuration))
-      @usage.update!(attributes.slice(:configuration))
+      super(attributes.except(:configuration, :display_name))
+      @usage.update!(attributes.slice(:configuration, :display_name))
     end
 
     def usage_id
@@ -21,6 +21,10 @@ module Pageflow
 
     def perma_id
       @usage.perma_id
+    end
+
+    def display_name
+      @usage.display_name
     end
 
     def cache_key

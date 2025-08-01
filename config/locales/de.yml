@@ -517,7 +517,7 @@ de:
     - Fr
     - Sa
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mär
@@ -543,7 +543,7 @@ de:
       long: "%e. %B %Y"
       short: "%e. %b"
     month_names:
-    - 
+    -
     - Januar
     - Februar
     - März
@@ -1197,6 +1197,9 @@ de:
           file_name:
             column_header: Dateiname
             label: Dateiname
+          display_name:
+            column_header: Dateiname
+            label: Dateiname
           license:
             blank: "(Nicht angegeben)"
             inline_help: Fügt der Rechteangabe im Beitrag einen Link zur Lizenz hinzu.
@@ -1411,6 +1414,10 @@ de:
         list_item:
           edit: Bearbeiten
           remove: Löschen
+        list_search_field:
+          placeholder: 'Dateien filtern'
+          hint: 'Mit %{hotkey} suchen'
+          reset: 'Filter zurücksetzen'
         loading:
           loading: Daten werden geladen.
         locked:
@@ -1530,6 +1537,10 @@ de:
           upload: Hochladen
         filtered_files_view:
           banner_prefix: 'Aktiver Filter:'
+          sort_button_label: 'Sortieren'
+          sort:
+            alphabetical: 'Alphabetisch'
+            most_recent: 'Zuletzt hochgeladen'
         inputs:
           file_input:
             auto_default_text_track: "(Automatisch)"

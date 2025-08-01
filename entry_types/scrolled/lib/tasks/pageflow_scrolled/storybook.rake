@@ -29,6 +29,7 @@ namespace :pageflow_scrolled do
         if ENV['PAGEFLOW_SCROLLED_DB_SEED_SKIP_FILES'] == 'true'
           puts 'Skipping file uploads to S3.'
           Paperclip::Storage::S3.class_eval { def flush_writes; end }
+          Pageflow::DraftEntry.class_eval { def generate_file_name(file_name) = file_name }
         end
 
         account = seeds.account(name: 'storybook-seed') do |account_in_progress|

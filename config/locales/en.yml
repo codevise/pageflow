@@ -517,7 +517,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -543,7 +543,7 @@ en:
       long: "%B %d, %Y"
       short: "%b %d"
     month_names:
-    - 
+    -
     - January
     - February
     - March
@@ -1191,6 +1191,9 @@ en:
           file_name:
             column_header: File name
             label: File name
+          display_name:
+            column_header: File name
+            label: File name
           license:
             blank: "(Not specified)"
             inline_help: Adds a link to the license in the credit note.
@@ -1404,6 +1407,10 @@ en:
         list_item:
           edit: Edit
           remove: Delete
+        list_search_field:
+          placeholder: 'Filter files'
+          hint: 'Type %{hotkey} to search'
+          reset: 'Clear filter'
         loading:
           loading: Loading...
         locked:
@@ -1523,6 +1530,10 @@ en:
           upload: Upload
         filtered_files_view:
           banner_prefix: 'Active filter:'
+          sort_button_label: 'Sort'
+          sort:
+            alphabetical: 'Alphabetical'
+            most_recent: 'Most recent'
         inputs:
           file_input:
             auto_default_text_track: "(Auto)"

@@ -21,4 +21,28 @@
     right: space(4);
     top: space(4);
   }
+
+  &-filter_bar {
+    display: flex;
+    align-items: center;
+    gap: space(1);
+    background-color: var(--ui-surface-color);
+    position: sticky;
+    top: -10px;
+    z-index: 2;
+
+    .drop_down_button button {
+      @include fa-sort-amount-desc-icon;
+      --drop-down-button-width: 31px;
+    }
+  }
+
+  &-sort {
+    margin-top: space(2);
+    text-align: right;
+  }
+
+  ul.files > li.keyboard_highlight {
+    background-color: var(--ui-selection-color-light);
+  }
 }

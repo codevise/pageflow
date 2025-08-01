@@ -115,6 +115,26 @@ describe('watchCollection', () => {
     expect(items.map(i => i.title)).toEqual(['NEWS']);
   });
 
+  it('supports merging multiple attributes', () => {
+    const {result} = renderHook(() => useCollections());
+    const contacts = new Backbone.Collection([
+      {id: 1, firstName: 'Jane', lastName: 'Doe'},
+    ]);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(contacts, {
+        name: 'contacts',
+        attributes: ['id', {name: ['firstName', 'lastName', (f, l) => `${f} ${l}`]}],
+        dispatch
+      });
+    });
+    const [state,] = result.current;
+    const items = getItems(state, 'contacts');
+
+    expect(items.map(i => i.name)).toEqual(['Jane Doe']);
+  });
+
   it('supports watching multiple collections', () => {
     const {result} = renderHook(() => useCollections());
     const posts = new Backbone.Collection([
@@ -559,6 +579,51 @@ describe('watchCollection', () => {
     const items = getItems(state, 'posts');
 
     expect(items.map(i => i.text)).toEqual(['New title']);
+  });
+
+  it('updates useCollections state when attribute mapped via custom function changes', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection([{id: 1, title: 'Old title'}]);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id', {title: title => title.toUpperCase()}],
+        dispatch
+      });
+
+      posts.first().set('title', 'New title')
+    });
+    const [state,] = result.current;
+    const items = getItems(state, 'posts');
+
+    expect(items.map(i => i.title)).toEqual(['NEW TITLE']);
+  });
+
+  it('updates useCollections state when custom watched attributes change for attributes mapped via function', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection([{id: 1, firstName: 'Jane', lastName: 'Doe'}]);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: [
+          'id',
+          {
+            name: ['firstName', 'lastName', (f, l) => `${f} ${l}`],
+          }
+        ],
+        dispatch
+      });
+
+      posts.first().set('firstName', 'Sue')
+    });
+    const [state,] = result.current;
+    const items = getItems(state, 'posts');
+
+    expect(items.map(i => i.name)).toEqual(['Sue Doe']);
   });
 
   it('does not leave updated item referentially equal on update', () => {

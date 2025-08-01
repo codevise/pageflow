@@ -2,7 +2,7 @@ import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 import I18n from 'i18n-js';
 
-import {ConfigurationEditorTabView, SelectInputView, SeparatorView, TextInputView, UrlDisplayView} from 'pageflow/ui';
+import {ConfigurationEditorTabView, SelectInputView, SeparatorView, TextInputView, UrlDisplayView, FileNameInputView} from 'pageflow/ui';
 import {editor} from '../base';
 
 import {state} from '$state';
@@ -31,12 +31,10 @@ export const EditFileView = Marionette.ItemView.extend({
       ]
     });
 
-    if (this.options.displayFileName) {
-      tab.input('file_name', TextInputView, {
-        model: this.model,
-        disabled: true
-      });
-    }
+    tab.input('display_name', FileNameInputView, {
+      model: this.model,
+      required: true
+    });
 
     tab.input('rights', TextInputView, {
       model: this.model,

@@ -60,6 +60,10 @@ export function watchCollections(entry, {dispatch}) {
       name: camelize(collectionName),
       attributes: ['id', {permaId: 'perma_id'}, 'width', 'height',
                    'basename', 'extension', 'rights',
+                   {displayName: [
+                     'display_name', 'file_name',
+                     (displayName, fileName) => displayName || fileName
+                   ]},
                    {processedExtension: 'processed_extension'},
                    {isReady: 'is_ready'},
                    {variants: variants => variants && variants.map(variant => camelize(variant))},

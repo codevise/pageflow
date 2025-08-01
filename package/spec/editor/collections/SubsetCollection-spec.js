@@ -102,4 +102,26 @@ describe('SubsetCollection', () => {
       expect(sortEventHandler).toHaveBeenCalledOnce();
     });
   });
+
+  describe('#updateFilter', () => {
+    it('updates models included in subset', () => {
+      var parentCollection = new ParentCollection([
+        {id: 1, inSubset: true},
+        {id: 2, inSubset: false}
+      ]);
+      var subsetCollection = new SubsetCollection({
+        parent: parentCollection,
+
+        filter: function(item) {
+          return item.get('inSubset');
+        }
+      });
+
+      subsetCollection.updateFilter(function(item) {
+        return !item.get('inSubset');
+      });
+
+      expect(subsetCollection.pluck('id')).toEqual([2]);
+    });
+  });
 });

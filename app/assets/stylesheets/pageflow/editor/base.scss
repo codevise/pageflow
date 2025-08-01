@@ -33,7 +33,7 @@
   background-color: var(--ui-surface-color);
   border: 0;
   color: var(--ui-on-surface-color);
-  overflow: hidden;
+  overflow: clip;
 
   * {
     margin: 0;
@@ -71,6 +71,7 @@
   @import "./confirm_encoding";
   @import "./files_gallery";
   @import "./filtered_files";
+  @import "./list_search_field";
   @import "./file_meta_data";
   @import "./file_stages";
   @import "./file_thumbnails";

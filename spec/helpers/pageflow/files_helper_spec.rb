@@ -111,6 +111,38 @@ module Pageflow
         )
       end
 
+      it 'renders display names of files' do
+        entry = create(:published_entry)
+        video_file = create(:video_file, file_name: 'generated-name.mp4')
+        create(:file_usage,
+               revision: entry.revision,
+               file: video_file,
+               display_name: 'some-video.mp4')
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(
+          video_files: [
+            {display_name: 'some-video.mp4'}
+          ]
+        )
+      end
+
+      it 'falls back to file name when display name is missing' do
+        entry = create(:published_entry)
+        create(:video_file,
+               used_in: entry.revision,
+               file_name: 'some-video.mp4')
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(
+          video_files: [
+            {display_name: 'some-video.mp4'}
+          ]
+        )
+      end
+
       it 'renders extention of files' do
         entry = create(:published_entry)
         create(:video_file, used_in: entry.revision, file_name: 'some-video.mp4')

@@ -7,6 +7,7 @@
 
 %pageflow-ui {
   @import "./ui/forms";
+  @import "./ui/input/file_name_input";
   @import "./ui/input/color_input";
   @import "./ui/table_view";
   @import "./ui/table_cells/presence_table_cell";

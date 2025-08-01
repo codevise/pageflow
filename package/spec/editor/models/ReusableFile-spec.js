@@ -92,9 +92,10 @@ describe('ReusableFile', () => {
   });
 
   describe('#toJSON', () => {
-    it('includes rights, configuration and file_name', () => {
+    it('includes rights, display_name, configuration and file_name', () => {
       var file = new File({
         state: 'processed',
+        display_name: 'My Image',
         rights: 'someone',
         file_name: 'image_jpg',
         configuration: {
@@ -103,12 +104,39 @@ describe('ReusableFile', () => {
       });
 
       expect(file.toJSON()).toEqual({
+        display_name: 'My Image',
         rights: 'someone',
         file_name: 'image_jpg',
         configuration: {
           some: 'value'
         }
       });
+    });
+  });
+
+  it('auto saves when display_name changes', () => {
+    var file = new File({id: 5});
+    file.save = jest.fn();
+
+    file.set('display_name', 'New Name');
+
+    expect(file.save).toHaveBeenCalled();
+  });
+
+  describe('#title', () => {
+    it('returns display_name', () => {
+      var file = new File({
+        display_name: 'My Image',
+        file_name: 'image.jpg'
+      });
+
+      expect(file.title()).toBe('My Image');
+    });
+
+    it('falls back to file_name', () => {
+      var file = new File({file_name: 'image.jpg'});
+
+      expect(file.title()).toBe('image.jpg');
     });
   });
 

@@ -20,6 +20,7 @@ export {
 } from './structure';
 export {useFile} from './useFile';
 export {useFileWithInlineRights} from './useFileWithInlineRights';
+export {useDownloadableFile} from './useDownloadableFile';
 export {useNestedFiles} from './useNestedFiles';
 export {getFileUrlTemplateHost} from './getFileUrlTemplateHost';
 export {useFileRights, useLegalInfo, useCredits} from './legalInfo';

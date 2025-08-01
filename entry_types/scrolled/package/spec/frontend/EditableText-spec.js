@@ -222,13 +222,13 @@ describe('EditableText', () => {
         original: ':id_partition/original/:basename.:extension'
       },
       sections: [{id: 1, permaId: 10}],
-      imageFiles: [{id: 1, permaId: 100}]
+      imageFiles: [{id: 1, permaId: 100, displayName: 'MyImage.jpg'}]
     };
 
     const {getByRole} = renderInEntry(<EditableText value={value} />, {seed});
 
     expect(getByRole('link')).toHaveTextContent('here')
-    expect(getByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg')
+    expect(getByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg?download=MyImage.jpg')
     expect(getByRole('link')).toHaveClass('typography-contentLink')
     expect(getByRole('link')).toHaveAttribute('target', '_blank')
     expect(getByRole('link')).toHaveAttribute('rel', 'noopener noreferrer')

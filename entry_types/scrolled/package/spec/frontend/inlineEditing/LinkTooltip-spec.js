@@ -124,7 +124,7 @@ describe('LinkTooltip', () => {
       imageFileUrlTemplates: {
         original: ':id_partition/original/:basename.:extension'
       },
-      imageFiles: [{id: 1, permaId: 100}],
+      imageFiles: [{id: 1, permaId: 100, displayName: 'MyImage.jpg'}],
       sections: [
         {permaId: 5}
       ]
@@ -141,6 +141,7 @@ describe('LinkTooltip', () => {
     const user = userEvent.setup();
     await user.hover(getByText('A link'));
 
-    expect(queryByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg');
+    expect(queryByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg?download=MyImage.jpg');
+    expect(queryByRole('link')).toHaveTextContent('MyImage.jpg');
   });
 });

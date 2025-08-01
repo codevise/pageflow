@@ -177,7 +177,7 @@ module Pageflow
         expect(file_importer).not_to receive(:donwload_file)
 
         post(:start_import_job,
-             params: {files: meta_data[:files],
+             params: {files: turn_file_names_into_display_names(meta_data[:files]),
                       collection: meta_data[:collection],
                       file_import_name: file_importer.name,
                       entry_id: entry},
@@ -203,7 +203,7 @@ module Pageflow
         expect(file_importer).not_to receive(:donwload_file)
         expect {
           post(:start_import_job,
-               params: {files: meta_data[:files],
+               params: {files: turn_file_names_into_display_names(meta_data[:files]),
                         collection: meta_data[:collection],
                         file_import_name: file_importer.name,
                         entry_id: entry},
@@ -234,7 +234,7 @@ module Pageflow
         meta_data = file_importer.files_meta_data(nil, selected_files)
         expect(file_importer).to receive(:download_file).with(token.auth_token, anything)
         post(:start_import_job,
-             params: {files: meta_data[:files],
+             params: {files: turn_file_names_into_display_names(meta_data[:files]),
                       collection: meta_data[:collection],
                       file_import_name: file_importer.name,
                       entry_id: entry},
@@ -259,7 +259,7 @@ module Pageflow
         selected_files = {'0' => selected_file}
         meta_data = file_importer.files_meta_data(nil, selected_files)
         post(:start_import_job,
-             params: {files: meta_data[:files],
+             params: {files: turn_file_names_into_display_names(meta_data[:files]),
                       collection: meta_data[:collection],
                       file_import_name: file_importer.name,
                       entry_id: entry},
@@ -286,7 +286,7 @@ module Pageflow
         selected_files = {'0' => selected_file}
         meta_data = file_importer.files_meta_data(nil, selected_files)
         post(:start_import_job,
-             params: {files: meta_data[:files],
+             params: {files: turn_file_names_into_display_names(meta_data[:files]),
                       collection: meta_data[:collection],
                       file_import_name: file_importer.name,
                       entry_id: entry},
@@ -314,7 +314,7 @@ module Pageflow
                                                   '0' => selected_files[0],
                                                   '1' => selected_files[1])
         post(:start_import_job,
-             params: {files: meta_data[:files],
+             params: {files: turn_file_names_into_display_names(meta_data[:files]),
                       collection: meta_data[:collection],
                       file_import_name: file_importer.name,
                       entry_id: entry},
@@ -339,6 +339,12 @@ module Pageflow
                                }
                              }
                            ])
+      end
+
+      def turn_file_names_into_display_names(files)
+        files.map do |file|
+          file.except('file_name').merge('display_name' => file['file_name'])
+        end
       end
     end
   end

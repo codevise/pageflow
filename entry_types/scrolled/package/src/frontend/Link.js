@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useChapter, useFile} from '../entryState';
+import {useChapter, useDownloadableFile} from '../entryState';
 
 export function Link({attributes, children, href, openInNewTab}) {
   if (href?.chapter) {
@@ -48,12 +48,12 @@ function ChapterLink({attributes, children, chapterPermaId}) {
 }
 
 function FileLink({attributes, children, fileOptions}) {
-  const file = useFile(fileOptions);
+  const file = useDownloadableFile(fileOptions);
 
   return <a {...attributes}
             target="_blank"
             rel="noopener noreferrer"
-            href={file?.urls.original || '#'}>
+            href={file?.urls.download}>
     {children}
   </a>;
 }

@@ -3,9 +3,24 @@ import Backbone from 'backbone';
 
 import {DropDownButtonView} from 'pageflow/editor';
 
+import {within} from '@testing-library/dom';
 import sinon from 'sinon';
 
 describe('DropDownButtonView', () => {
+  it('supports setting a title on the button', () => {
+    var dropDownButtonView = new DropDownButtonView({
+      title: 'Some title',
+      items: new Backbone.Collection([
+        {label: 'Item 1'},
+        {label: 'Item 2'}
+      ])
+    });
+
+    const {getByTitle} = within(dropDownButtonView.render().el);
+
+    expect(getByTitle('Some title')).not.toBeNull();
+  });
+
   it('renders menu items for collection items', () => {
     var dropDownButtonView = new DropDownButtonView({
       items: new Backbone.Collection([

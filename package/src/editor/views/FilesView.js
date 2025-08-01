@@ -88,12 +88,12 @@ export const FilesView = Marionette.ItemView.extend({
                         this.options.tabName === fileType.collectionName;
 
     this.tabsView.tab(fileType.collectionName, _.bind(function() {
-      return this.subview(new FilteredFilesView({
+      return new FilteredFilesView({
         entry: state.entry,
         fileType: fileType,
         selectionHandler: selectionMode && this.options.selectionHandler,
         filterName: selectionMode && this.options.filterName
-      }));
+      });
     }, this));
 
     this.listenTo(this.model, 'change:uploading_' + fileType.collectionName +'_count', function(model, value) {

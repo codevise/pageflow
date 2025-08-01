@@ -54,7 +54,7 @@ module Pageflow
 
       def files_params
         params
-          .permit(files: [:file_name,
+          .permit(files: [:display_name,
                           :rights,
                           :content_type,
                           :file_size,
