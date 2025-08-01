@@ -11,8 +11,8 @@ module Pageflow
     end
 
     def update!(attributes)
-      super(attributes.except(:configuration))
-      @usage.update!(attributes.slice(:configuration))
+      super(attributes.except(:configuration, :display_name))
+      @usage.update!(attributes.slice(:configuration, :display_name))
     end
 
     def usage_id

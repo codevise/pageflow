@@ -70,7 +70,7 @@ export const FilesImporterView = Marionette.ItemView.extend({
 
           file = new fileType.model({
             state: 'uploadable',
-            file_name: file.name,
+            display_name: file.name,
             content_type: file.type,
             file_size: -1,
             rights: file.rights,

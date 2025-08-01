@@ -63,7 +63,7 @@ module Pageflow
         perma_ids = Array.new(3) {
           Thread.new do
             DraftEntry.new(Entry.find(entry.id))
-                      .create_file!(BuiltInFileType.image, file_name: 'image.jpg')
+                      .create_file!(BuiltInFileType.image, display_name: 'image.jpg')
           end
         }.map(&:join).map(&:value).map(&:perma_id)
 
@@ -74,7 +74,7 @@ module Pageflow
         entry = create(:entry)
         draft_entry = DraftEntry.new(entry)
 
-        draft_entry.create_file!(BuiltInFileType.image, file_name: 'image.jpg')
+        draft_entry.create_file!(BuiltInFileType.image, display_name: 'image.jpg')
 
         expect(entry.draft.reload).to have(1).image_file
       end
@@ -83,7 +83,7 @@ module Pageflow
         entry = create(:entry)
         draft_entry = DraftEntry.new(entry)
 
-        image_file = draft_entry.create_file!(BuiltInFileType.image, file_name: 'image.jpg')
+        image_file = draft_entry.create_file!(BuiltInFileType.image, display_name: 'image.jpg')
 
         expect(image_file.usage_id).to be_present
       end
@@ -93,7 +93,7 @@ module Pageflow
         draft_entry = DraftEntry.new(entry)
 
         image_file = draft_entry.create_file!(BuiltInFileType.image,
-                                              file_name: 'image.jpg',
+                                              display_name: 'image.jpg',
                                               configuration: {rights: 'some author'})
 
         expect(image_file.configuration['rights']).to eq('some author')
@@ -104,7 +104,7 @@ module Pageflow
         draft_entry = DraftEntry.new(entry)
 
         image_file = draft_entry.create_file!(BuiltInFileType.image,
-                                              file_name: 'image.jpg')
+                                              display_name: 'image.jpg')
 
         expect(image_file.display_name).to eq('image.jpg')
         expect(image_file.file_name).to match(/^[a-z0-9]{8}\.jpg$/)
@@ -115,7 +115,7 @@ module Pageflow
         draft_entry = DraftEntry.new(entry)
 
         expect {
-          draft_entry.create_file!(BuiltInFileType.image, file_name: nil)
+          draft_entry.create_file!(BuiltInFileType.image, display_name: nil)
         }.to raise_error(ActiveRecord::RecordInvalid)
       end
 
@@ -137,7 +137,7 @@ module Pageflow
 
         expect {
           draft_entry.create_file!(test_file_type,
-                                   file_name: 'image.jpg',
+                                   display_name: 'image.jpg',
                                    related_image_file_id: image_file.id)
         }.to raise_error(DraftEntry::InvalidForeignKeyCustomAttributeError)
       end
@@ -160,7 +160,7 @@ module Pageflow
 
         expect {
           draft_entry.create_file!(test_file_type,
-                                   file_name: 'image.jpg',
+                                   display_name: 'image.jpg',
                                    related_image_file_id: image_file.id)
         }.not_to raise_error
       end

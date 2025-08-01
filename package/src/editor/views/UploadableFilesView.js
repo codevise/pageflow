@@ -49,7 +49,7 @@ export const UploadableFilesView = Marionette.View.extend({
   commonColumns: function(options) {
     return [
       {
-        name: 'file_name',
+        name: 'display_name',
         headerText: options.fileTypeDisplayName,
         cellView: TextTableCellView
       },

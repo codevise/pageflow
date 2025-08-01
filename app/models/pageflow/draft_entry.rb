@@ -33,13 +33,13 @@ module Pageflow
 
       file = file_type.model.create!(
         attributes
-          .except(:configuration)
-          .merge(file_name: generate_file_name(attributes[:file_name]))
+          .except(:configuration, :display_name)
+          .merge(file_name: generate_file_name(attributes[:display_name]))
       ) { |f| f.entry = entry }
 
       usage = revision.file_usages.create!(file:,
                                            configuration: attributes[:configuration],
-                                           display_name: attributes[:file_name])
+                                           display_name: attributes[:display_name])
       UsedFile.new(file, usage)
     end
 

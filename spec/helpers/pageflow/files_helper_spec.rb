@@ -113,17 +113,17 @@ module Pageflow
 
       it 'renders display names of files' do
         entry = create(:published_entry)
-        video_file = create(:video_file, file_name: 'some-video.mp4')
+        video_file = create(:video_file, file_name: 'generated-name.mp4')
         create(:file_usage,
                revision: entry.revision,
                file: video_file,
-               display_name: 'Video File')
+               display_name: 'some-video.mp4')
 
         result = render(helper, entry)
 
         expect(result).to include_json(
           video_files: [
-            {display_name: 'Video File'}
+            {display_name: 'some-video.mp4'}
           ]
         )
       end

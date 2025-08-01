@@ -21,6 +21,7 @@ export const FileUploader = Object.extend({
     var file = new fileType.model({
       state: 'uploadable',
       file_name: upload.name,
+      display_name: upload.name,
       content_type: upload.type,
       file_size: upload.size
     }, {

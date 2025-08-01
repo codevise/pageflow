@@ -81,7 +81,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {file_name: 'image.jpg'}
+               image_file: {display_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -99,7 +99,7 @@ module Pageflow
                entry_id: entry,
                collection_name: 'image_files',
                image_file: {
-                 file_name: 'image.jpg',
+                 display_name: 'image.jpg',
                  rights: 'someone',
                  configuration: {
                    some: 'value'
@@ -130,7 +130,7 @@ module Pageflow
                entry_id: entry,
                collection_name: 'pageflow_test_uploadable_files',
                test_uploadable_file: {
-                 file_name: 'image.jpg',
+                 display_name: 'image.jpg',
                  custom: 'some value'
                }
              },
@@ -161,7 +161,7 @@ module Pageflow
                entry_id: entry,
                collection_name: 'pageflow_test_uploadable_files',
                test_uploadable_file: {
-                 file_name: 'image.jpg',
+                 display_name: 'image.jpg',
                  custom: 'some value'
                }
              },
@@ -191,7 +191,7 @@ module Pageflow
                entry_id: entry,
                collection_name: 'pageflow_test_uploadable_files',
                test_uploadable_file: {
-                 file_name: 'image.jpg',
+                 display_name: 'image.jpg',
                  custom: 'some value'
                }
              },
@@ -217,7 +217,7 @@ module Pageflow
                entry_id: entry,
                collection_name: 'pageflow_test_uploadable_files',
                test_uploadable_file: {
-                 file_name: 'image.jpg',
+                 display_name: 'image.jpg',
                  custom: 'some value'
                }
              },
@@ -250,7 +250,7 @@ module Pageflow
                entry_id: entry,
                collection_name: 'pageflow_test_uploadable_files',
                test_uploadable_file: {
-                 file_name: 'image.jpg',
+                 display_name: 'image.jpg',
                  related_image_file_id: image_file.id
                }
              },
@@ -282,7 +282,7 @@ module Pageflow
                entry_id: entry,
                collection_name: 'pageflow_test_uploadable_files',
                test_uploadable_file: {
-                 file_name: 'image.jpg',
+                 display_name: 'image.jpg',
                  related_image_file_id: image_file.id
                }
              },
@@ -302,7 +302,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {file_name: 'image.jpg'}
+               image_file: {display_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -319,7 +319,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {file_name: 'image.jpg'}
+               image_file: {display_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -336,46 +336,11 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {file_name: 'image.jpg'}
+               image_file: {display_name: 'image.jpg'}
              },
              format: 'json')
 
         expect(response.body).to include_json(direct_upload_config: a_kind_of(Hash))
-      end
-
-      it 'does not allow to create file with path for attachment' do
-        user = create(:user)
-        entry = create(:entry, with_editor: user)
-
-        sign_in(user, scope: :user)
-        acquire_edit_lock(user, entry)
-        post(:create,
-             params: {
-               entry_id: entry,
-               collection_name: 'image_files',
-               image_file: {file_name: '../../image.jpg'}
-             },
-             format: 'json')
-
-        expect(response.status).to eq(422)
-      end
-
-      it 'does not allow to create file without required attachment file name' do
-        user = create(:user)
-        entry = create(:entry, with_editor: user)
-
-        sign_in(user, scope: :user)
-        acquire_edit_lock(user, entry)
-
-        post(:create,
-             params: {
-               entry_id: entry,
-               collection_name: 'image_files',
-               image_file: {file_name: nil}
-             },
-             format: 'json')
-
-        expect(response.status).to eq(422)
       end
 
       it 'does not allow to create file for entry the signed in user is not editor of' do
@@ -387,7 +352,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {file_name: 'image.jpg'}
+               image_file: {display_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -401,7 +366,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {file_name: 'image.jpg'}
+               image_file: {display_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -420,7 +385,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'text_track_files',
-               text_track_file: {file_name: 'sample.vtt',
+               text_track_file: {display_name: 'sample.vtt',
                                  parent_file_id: parent_file.id,
                                  parent_file_model_type: 'Pageflow::VideoFile'}
              },
@@ -442,7 +407,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {file_name: 'image.jpg',
+               image_file: {display_name: 'image.jpg',
                             parent_file_id: parent_file.id,
                             parent_file_model_type: 'Pageflow::ImageFile'}
              },
@@ -464,7 +429,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'text_track_files',
-               text_track_file: {file_name: 'sample.vtt',
+               text_track_file: {display_name: 'sample.vtt',
                                  parent_file_id: parent_file.id,
                                  parent_file_model_type: 'Pageflow::ImageFile'}
              },
@@ -485,7 +450,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {file_name: 'image.jpg'}
+               image_file: {display_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -504,7 +469,7 @@ module Pageflow
                no_upload: true,
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {file_name: 'image.jpg'}
+               image_file: {display_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -699,6 +664,30 @@ module Pageflow
         expect(response.status).to eq(204)
         expect(used_file.rights).to eq('new')
         expect(used_file.configuration['some']).to eq('value')
+      end
+
+      it 'allows updating display name' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        file = create(:image_file, used_in: entry.draft)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {
+                entry_id: entry.id,
+                collection_name: 'image_files',
+                id: file,
+                image_file: {
+                  display_name: 'new_name.jpg'
+                }
+              },
+              format: 'json')
+
+        used_file = entry.draft.find_file(file.class, file.id)
+
+        expect(response.status).to eq(204)
+        expect(used_file.display_name).to eq('new_name.jpg')
       end
 
       it 'does not allow updating custom attribute defined by file type' do
