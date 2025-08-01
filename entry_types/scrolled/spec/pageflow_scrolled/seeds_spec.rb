@@ -365,7 +365,7 @@ module PageflowScrolled
 
           image_file = entry.draft.find_files(Pageflow::ImageFile).first
 
-          expect(image_file.url).to include('some.JPG')
+          expect(image_file.display_name).to eq('some.jpg')
         end
 
         it 'stores configuration' do
@@ -413,7 +413,7 @@ module PageflowScrolled
 
           video_file = entry.draft.find_files(Pageflow::VideoFile).first
 
-          expect(video_file.url).to include('some.mp4')
+          expect(video_file.display_name).to eq('some.mp4')
           expect(video_file.width).to eq(1920)
           expect(video_file.height).to eq(1080)
         end
@@ -509,7 +509,7 @@ module PageflowScrolled
 
           audio_file = entry.draft.find_files(Pageflow::AudioFile).first
 
-          expect(audio_file.url).to include('some.m4a')
+          expect(audio_file.display_name).to eq('some.m4a')
         end
 
         it 'supports skipping audio encoding' do

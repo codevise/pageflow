@@ -97,9 +97,11 @@ module PageflowScrolled
         say("     creating #{file_type} file from #{data['url']}")
 
         file_state = %i[image text_track].include?(file_type) ? 'processed' : 'uploading'
+        uri = URI.parse(data['url'])
         file = draft_entry.create_file!(Pageflow::BuiltInFileType.send(file_type),
                                         state: file_state,
-                                        attachment: URI.parse(data['url']),
+                                        attachment: uri,
+                                        display_name: File.basename(uri.path, '*'),
                                         configuration: data['configuration'],
                                         parent_file_model_type: data['parent_file_model_type'],
                                         parent_file_id: data['parent_file_id'],
