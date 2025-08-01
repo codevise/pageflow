@@ -74,7 +74,7 @@ describe('EditableLink', () => {
         original: ':id_partition/original/:basename.:extension'
       },
       sections: [{id: 1, permaId: 10}],
-      imageFiles: [{id: 1, permaId: 100}]
+      imageFiles: [{id: 1, permaId: 100, displayName: 'Some File.jpg'}]
     };
 
     const {getByRole} = renderInEntry(
@@ -85,7 +85,7 @@ describe('EditableLink', () => {
     );
 
     expect(getByRole('link')).toHaveTextContent('Some link')
-    expect(getByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg')
+    expect(getByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg?download=Some%20File.jpg')
     expect(getByRole('link')).toHaveAttribute('target', '_blank')
     expect(getByRole('link')).toHaveAttribute('rel', 'noopener noreferrer')
   });

@@ -221,13 +221,24 @@ function hasChangedAttributes(model, attributeNames) {
 }
 
 function getWatchedAttributeNames(attributeNames) {
-  return attributeNames.map(attributeName =>
+  return attributeNames.flatMap(attributeName =>
     typeof attributeName == 'object' ? mappedAttributeSource(attributeName) : attributeName
   );
 }
 
-function mappedAttributeSource(attributeName) {
-  return attributeName[Object.keys(attributeName)[0]];
+function mappedAttributeSource(mapping) {
+  const attributeName = Object.keys(mapping)[0];
+  const source = mapping[attributeName];
+
+  if (typeof source === 'string') {
+    return source;
+  }
+  else if (Array.isArray(source)) {
+    return source.slice(0, -1);
+  }
+  else {
+    return attributeName;
+  }
 }
 
 function mappedAttributeTarget(attributeName) {
@@ -240,7 +251,13 @@ function getAttributes(model, {attributeNames, includeConfiguration}) {
       const key = Object.keys(attributeName)[0];
       const value = attributeName[key];
 
-      if (typeof value == 'function') {
+      if (Array.isArray(value)) {
+        const attributeNames = value.slice(0, -1);
+        const fn = value[value.length - 1];
+
+        result[key] = fn.apply(null, attributeNames.map(attributeName => model.get(attributeName)));
+      }
+      else if (typeof value == 'function') {
         result[key] = value(model.get(key));
       }
       else {

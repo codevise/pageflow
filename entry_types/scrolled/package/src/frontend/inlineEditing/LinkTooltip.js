@@ -12,7 +12,7 @@ import {
 } from '@floating-ui/react';
 
 import {useI18n} from '../i18n';
-import {useChapter, useFile} from '../../entryState';
+import {useChapter, useDownloadableFile} from '../../entryState';
 import {SectionThumbnail} from '../SectionThumbnail';
 import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
 
@@ -213,7 +213,7 @@ function ExternalLinkDestination({href, openInNewTab}) {
 }
 
 function FileLinkDestination({fileOptions}) {
-  const file = useFile(fileOptions);
+  const file = useDownloadableFile(fileOptions);
   const {t} = useI18n({locale: 'ui'});
 
   if (!file) {
@@ -225,10 +225,10 @@ function FileLinkDestination({fileOptions}) {
   }
 
   return (
-    <a href={file.urls.original}
+    <a href={file.urls.download}
        target="_blank"
        rel="noopener noreferrer">
-      {file.urls.original.split('/').pop()}
+      {file.displayName}
       <ExternalLinkIcon width={10} height={10} />
     </a>
   );

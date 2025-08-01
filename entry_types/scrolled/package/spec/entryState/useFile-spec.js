@@ -26,6 +26,7 @@ describe('useFile', () => {
               permaId: 1,
               basename: 'image',
               extension: 'svg',
+              displayName: 'MyImage.svg',
               processedExtension: 'webp',
               rights: 'author',
               configuration: {
@@ -44,6 +45,7 @@ describe('useFile', () => {
       permaId: 1,
       modelType: 'Pageflow::ImageFile',
       extension: 'svg',
+      displayName: 'MyImage.svg',
       configuration: {
         some: 'value'
       },
@@ -79,6 +81,7 @@ describe('useFile', () => {
                   id: 100,
                   perma_id: 1,
                   basename: 'image',
+                  display_name: 'My File.svg',
                   extension: 'svg',
                   processed_extension: 'webp',
                   rights: 'author',
@@ -101,6 +104,7 @@ describe('useFile', () => {
       modelType: 'Pageflow::ImageFile',
       basename: 'image',
       extension: 'svg',
+      displayName: 'My File.svg',
       configuration: {
         some: 'value'
       },
@@ -204,6 +208,38 @@ describe('useFile', () => {
       urls: {
         'hls-playlist': 'http://example.com/,low,medium,high,fullhd,.mp4.csmil/master.m3u8'
       }
+    });
+  });
+
+  it('falls back to file name for display name from watched collection', () => {
+    const {result} = renderHookInEntry(
+      () => useFile({collectionName: 'imageFiles', permaId: 1}),
+      {
+        setup: (dispatch, entryTypeSeed) => {
+          watchCollections(factories.entry(ScrolledEntry, {}, {
+            entryTypeSeed,
+            fileTypes: factories.fileTypesWithImageFileType(),
+            filesAttributes: {
+              image_files: [
+                {
+                  id: 100,
+                  perma_id: 1,
+                  basename: 'image',
+                  extension: 'svg',
+                  file_name: 'image.svg',
+                  processed_extension: 'webp',
+                },
+              ]
+            }
+          }), {dispatch})
+        }
+      }
+    );
+
+    const file = result.current;
+
+    expect(file).toMatchObject({
+      displayName: 'image.svg',
     });
   });
 });
