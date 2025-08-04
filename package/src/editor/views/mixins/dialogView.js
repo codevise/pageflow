@@ -8,6 +8,10 @@ export const dialogView = {
 
     'click .close': function() {
       this.close();
-    }
+    },
+
+    'click .box': function() {
+      return false;
+    },
   },
 };
