@@ -41,7 +41,7 @@ export const UrlDisplayView = Marionette.ItemView.extend({
   },
 
   update: function() {
-    var url = this.model.get('original_url');
+    var url = this.model.get(this.options.propertyName || 'original_url');
 
     this.$el.toggle(this.model.isUploaded() && !_.isEmpty(url));
     this.ui.link.attr('href', url);

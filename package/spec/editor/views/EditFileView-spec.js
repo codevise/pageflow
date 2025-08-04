@@ -19,7 +19,8 @@ describe('EditFileView', () => {
     'pageflow.editor.files.common_attributes.license.label': 'License',
     'pageflow.file_licenses.cc0.name': 'CC0',
     'pageflow.entry_types.strange.editor.files.attributes.image_files.custom.label': 'Entry Label',
-    'pageflow.editor.files.attributes.image_files.custom.label': 'Fallback Label'
+    'pageflow.editor.files.attributes.image_files.custom.label': 'Fallback Label',
+    'pageflow.ui.templates.inputs.url_display.link_text': 'Download'
   });
 
   it('renders configurationEditorInputs of file type', () => {
@@ -164,5 +165,22 @@ describe('EditFileView', () => {
     const {queryByLabelText} = within(view.el);
 
     expect(queryByLabelText('Source URL')).toBeNull();
+  });
+
+  it('renders download_url link', () => {
+    const view = new EditFileView({
+      model: f.file({
+        original_url: '/path/file.png',
+        display_name: 'My File',
+        state: 'processed'
+      }),
+      entry: new Backbone.Model()
+    });
+
+    view.render();
+    const {getByRole} = within(view.el);
+    const link = getByRole('link', {name: 'Download'});
+
+    expect(link.getAttribute('href')).toBe('/path/file.png?download=My%20File');
   });
 });

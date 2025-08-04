@@ -61,7 +61,7 @@ export const EditFileView = Marionette.ItemView.extend({
       tab.input(options.name, options.inputView, options.inputViewOptions);
     });
 
-    tab.input('original_url', UrlDisplayView, {
+    tab.input('download_url', UrlDisplayView, {
       model: this.model
     });
 
