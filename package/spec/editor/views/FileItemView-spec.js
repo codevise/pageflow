@@ -7,7 +7,8 @@ import {within} from '@testing-library/dom';
 describe('FileItemView', () => {
   support.useFakeTranslations({
     'pageflow.editor.templates.file_item.expand_details': 'Show details',
-    'pageflow.editor.templates.file_item.collapse_details': 'Hide details'
+    'pageflow.editor.templates.file_item.collapse_details': 'Hide details',
+    'pageflow.editor.templates.file_item.download': 'Download'
   });
 
   it('displays file title', () => {
@@ -18,6 +19,23 @@ describe('FileItemView', () => {
     const {getByText} = within(view.render().el);
 
     expect(getByText('original.png')).not.toBeNull();
+  });
+
+  it('links to download_url', () => {
+    const file = support.factories.file({
+      original_url: '/path/file.png',
+      display_name: 'My File',
+      state: 'processed'
+    });
+
+    const view = new FileItemView({model: file});
+
+    view.render();
+    const {getByRole} = within(view.el);
+    const link = getByRole('link', {name: 'Download'});
+
+    expect(link.getAttribute('href'))
+      .toBe('/path/file.png?download=My%20File');
   });
 
   it('renders meta data items given as string', () => {
@@ -72,7 +90,7 @@ describe('FileItemView', () => {
     const {getByRole} = within(fileItemView.render().el);
 
     var thumbnailButton = getByRole('button', {name: 'Show details'});
-    var detailsDiv = fileItemView.el.querySelector('.details');
+    var detailsDiv = getByRole('table', {hidden: true}).closest('.details');
 
     expect(thumbnailButton.getAttribute('aria-expanded')).toBe('false');
     expect(thumbnailButton.getAttribute('aria-controls')).toBe('file-details-123');

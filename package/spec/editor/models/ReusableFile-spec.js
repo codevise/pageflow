@@ -123,6 +123,37 @@ describe('ReusableFile', () => {
     expect(file.save).toHaveBeenCalled();
   });
 
+  describe('download_url attribute', () => {
+    it('is constructed from original_url and display_name', () => {
+      var file = new File({
+        original_url: '/path/file.png',
+        display_name: 'My File'
+      });
+
+      expect(file.get('download_url')).toBe('/path/file.png?download=My%20File');
+    });
+
+    it('handles query parameters in original_url correctly', () => {
+      var file = new File({
+        original_url: '/path/file.png?1234',
+        display_name: 'My File'
+      });
+
+      expect(file.get('download_url')).toBe('/path/file.png?1234&download=My%20File');
+    });
+
+    it('updates when display_name changes', () => {
+      var file = new File({
+        original_url: '/path/file.png',
+        display_name: 'My File'
+      });
+
+      file.set('display_name', 'Other Name');
+
+      expect(file.get('download_url')).toBe('/path/file.png?download=Other%20Name');
+    });
+  });
+
   describe('#title', () => {
     it('returns display_name', () => {
       var file = new File({

@@ -43,6 +43,9 @@ export const ReusableFile = Backbone.Model.extend({
       }
     });
 
+    this.listenTo(this, 'change:original_url change:display_name', this.updateDownloadUrl);
+    this.updateDownloadUrl();
+
     this.listenTo(this, 'change', function(model, options) {
       if (options.applyConfigurationUpdaters) {
         this.configuration.applyUpdaters(this.fileType().configurationUpdaters,
@@ -133,5 +136,18 @@ export const ReusableFile = Backbone.Model.extend({
     this.save({}, {
       url: this.url() + '/publish'
     });
+  },
+
+  updateDownloadUrl: function() {
+    const originalUrl = this.get('original_url');
+    const displayName = this.get('display_name');
+
+    if (originalUrl && displayName) {
+      const separator = originalUrl.includes('?') ? '&' : '?'
+      this.set('download_url', `${originalUrl}${separator}download=${encodeURIComponent(displayName)}`);
+    }
+    else {
+      this.unset('download_url');
+    }
   }
 });

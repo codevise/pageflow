@@ -1206,6 +1206,8 @@ de:
             label: Lizenz
           original_url:
             label: Original
+          download_url:
+            label: Download
           rights:
             cell_title:
               blank: Noch nicht ausgefüllt
