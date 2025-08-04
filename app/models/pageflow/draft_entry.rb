@@ -61,7 +61,8 @@ module Pageflow
 
     def use_file(file)
       draft.file_usages.create!(file: file.to_model,
-                                configuration: file.configuration)
+                                configuration: file.configuration,
+                                display_name: file.display_name)
     end
 
     def save!

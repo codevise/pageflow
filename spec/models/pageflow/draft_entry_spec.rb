@@ -192,6 +192,18 @@ module Pageflow
 
         expect(new_used_file.configuration).to eq('some' => 'value')
       end
+
+      it 'copies display name from source usage' do
+        entry = DraftEntry.new(create(:entry))
+        other_entry = DraftEntry.new(create(:entry))
+        used_file = other_entry.create_file!(BuiltInFileType.video,
+                                             display_name: 'video.mp4')
+
+        entry.use_file(used_file)
+        new_used_file = entry.find_file(VideoFile, used_file.id)
+
+        expect(new_used_file.display_name).to eq('video.mp4')
+      end
     end
 
     describe '#remove_file' do
