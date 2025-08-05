@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
                 'entry_types/scrolled/package/' \
                 '{config/**/*,contentElements-frontend.{js,css},frontend-server.js,' \
                 'contentElements/*.{css,js},' \
-                'widgets/*.{css,js},' \
+                'widgets/*.{css,js},widgets-server.js,' \
                 'values/*,testHelpers.js,' \
                 'contentElements-editor.js,frontend/*.{js,css},editor.js,package.json}',
                 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
