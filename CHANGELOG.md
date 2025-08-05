@@ -1,5 +1,24 @@
 # CHANGELOG
 
+### Version 17.0.5
+
+2025-08-05
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v17.0.4...v17.0.5)
+
+- Include missing JS file from scrolled package in gem
+  ([#2277](https://github.com/codevise/pageflow/pull/2277))
+- Require react-rails version that is compatible with Shakapacker
+  ([#2276](https://github.com/codevise/pageflow/pull/2276))
+- Support entry type specific editor translations for file types
+  ([#2261](https://github.com/codevise/pageflow/pull/2261))
+- Do not depend in src icons in install generator
+  ([#2260](https://github.com/codevise/pageflow/pull/2260))
+- Add classnames as dependency of pageflow-scrolled
+  ([#2259](https://github.com/codevise/pageflow/pull/2259))
+- Replace mentions of Twitter with X
+  ([#2111](https://github.com/codevise/pageflow/pull/2111))
+
 ### Version 17.0.4
 
 2024-01-22
