@@ -33,7 +33,7 @@
   background-color: var(--ui-surface-color);
   border: 0;
   color: var(--ui-on-surface-color);
-  overflow: clip;
+  overflow: hidden;
 
   * {
     margin: 0;
