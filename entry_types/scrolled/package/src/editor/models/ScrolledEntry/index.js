@@ -269,6 +269,10 @@ export const ScrolledEntry = Entry.extend({
     return [values, texts]
   },
 
+  getSectionPermalink(section) {
+    return `${this.get('pretty_url')}#section-${section.get('permaId')}`;
+  },
+
   getPaletteColors({name} = {}) {
     const themeOptions = this.scrolledSeed.config.theme.options
 

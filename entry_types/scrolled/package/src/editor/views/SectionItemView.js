@@ -146,6 +146,16 @@ export const SectionItemView = Marionette.ItemView.extend({
       }));
     }
 
+    dropDownMenuItems.add(new MenuItem({
+      label: I18n.t('pageflow_scrolled.editor.section_item.copy_permalink'),
+      separated: true
+    }, {
+      selected: () =>
+        navigator.clipboard.writeText(
+          this.options.entry.getSectionPermalink(this.model)
+        )
+    }));
+
     this.appendSubview(new DropDownButtonView({
       items: dropDownMenuItems,
       alignMenu: 'right',

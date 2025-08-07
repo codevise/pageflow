@@ -1211,6 +1211,7 @@ de:
         duplicate: Duplizieren
         insert_section_above: Abschnitt oberhalb einfügen
         insert_section_below: Abschnitt unterhalb einfügen
+        copy_permalink: Permalink kopieren
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
         transitions:
           beforeAfter: Statische Hintergründe
