@@ -1191,6 +1191,7 @@ en:
         duplicate: Duplicate
         insert_section_above: Insert section above
         insert_section_below: Insert section below
+        copy_permalink: Copy permalink
         save_error: There was an error while saving this section.
         transitions:
           beforeAfter: Static Backgrounds
