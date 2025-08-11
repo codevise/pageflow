@@ -196,6 +196,30 @@ describe('ContentElement', () => {
       expect(contentElement.getWidth()).toEqual(-2);
     });
 
+    it('excludes xxs/full in side position', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {id: 1}
+            ],
+            contentElements: [
+              {id: 5, sectionId: 1, typeName: 'inlineImage', configuration: {
+                position: 'side',
+                width: -3
+
+              }}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      expect(contentElement.getWidth()).toEqual(-2);
+    });
+
     it('excludes xxs/full in floated position', () => {
       const entry = factories.entry(
         ScrolledEntry,
