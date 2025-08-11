@@ -1009,6 +1009,9 @@ de:
               label: "Text-Farbe (Erste Spalte)"
             valueColor:
               label: "Text-Farbe (Zweite Spalte)"
+            singleColumnInPhoneLayout:
+              label: "Einspaltig im Phone-Layout"
+              inline_help: "Ordnet Tabellenzeilen vertikal auf dem Handy an, um zu schmale Spalten zu verhindern. Besonders hilfreich für Tabellen mit langen Texten oder breiten Inhalten."
           help_texts:
             shortcuts: |-
               <dl class="shortcuts">

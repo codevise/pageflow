@@ -1967,4 +1967,48 @@ describe('handleTableNavigation', () => {
       focus: {path: [0, 1, 0], offset: 1}
     });
   });
+
+  it('does nothing in stacked layout when pressing ArrowDown', () => {
+    const editor = withFixedColumns(
+      <editor>
+        <row>
+          <label>
+            Label<cursor />
+          </label>
+          <value>
+            Value
+          </value>
+        </row>
+      </editor>
+    );
+
+    const event = {key: 'ArrowDown', preventDefault: jest.fn()};
+    const before = editor.selection;
+    handleTableNavigation(editor, event, true);
+
+    expect(editor.selection).toEqual(before);
+    expect(event.preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('does nothing in stacked layout when pressing ArrowUp', () => {
+    const editor = withFixedColumns(
+      <editor>
+        <row>
+          <label>
+            Label
+          </label>
+          <value>
+            <cursor />Value
+          </value>
+        </row>
+      </editor>
+    );
+
+    const event = {key: 'ArrowUp', preventDefault: jest.fn()};
+    const before = editor.selection;
+    handleTableNavigation(editor, event, true);
+
+    expect(editor.selection).toEqual(before);
+    expect(event.preventDefault).not.toHaveBeenCalled();
+  });
 });

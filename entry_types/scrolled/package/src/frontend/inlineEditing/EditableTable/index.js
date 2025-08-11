@@ -29,13 +29,16 @@ import {
 } from './placeholders';
 
 import {LinkTooltipProvider} from '../LinkTooltip';
+import {usePhoneLayout} from '../../usePhoneLayout';
+import tableStyles from '../../EditableTable.module.css';
 
 export const EditableTable = React.memo(function EditableTable({
   value, onChange, className,
   labelScaleCategory = 'body',
   valueScaleCategory = 'body',
   labelPlaceholder, valuePlaceholder,
-  floatingControlsPosition = 'below'
+  floatingControlsPosition = 'below',
+  stackedInPhoneLayout = false
 }) {
   const editor = useMemo(
     () => withFixedColumns(
@@ -53,6 +56,8 @@ export const EditableTable = React.memo(function EditableTable({
   );
 
   const {isSelected} = useContentElementEditorState();
+  const phoneLayout = usePhoneLayout();
+  const stacked = stackedInPhoneLayout && phoneLayout;
 
   const handleLineBreaks = useLineBreakHandler(editor);
   const handleShortcuts = useShortcutHandler(editor);
@@ -60,8 +65,8 @@ export const EditableTable = React.memo(function EditableTable({
   const handleKeyDown = useCallback(event => {
     handleLineBreaks(event);
     handleShortcuts(event);
-    handleTableNavigation(editor, event);
-  }, [editor, handleLineBreaks, handleShortcuts]);
+    handleTableNavigation(editor, event, stacked);
+  }, [editor, handleLineBreaks, handleShortcuts, stacked]);
 
   const [cachedValue, setCachedValue] = useCachedValue(value, {
     defaultValue: [{
@@ -106,7 +111,10 @@ export const EditableTable = React.memo(function EditableTable({
       <LinkTooltipProvider disabled={editor.selection && !Range.isCollapsed(editor.selection)}
                            position={floatingControlsPosition}>
         <HoveringToolbar position={floatingControlsPosition} />
-        <table className={classNames(className, {[selectedClassName]: isSelected})}>
+        <table className={classNames(className,
+                                     tableStyles.table,
+                                     {[selectedClassName]: isSelected})}
+               data-stacked={stacked ? '' : undefined}>
           <Editable
             as="tbody"
             decorate={decorateLineBreaks}

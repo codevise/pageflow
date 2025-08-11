@@ -2,7 +2,11 @@ import {Editor, Node, Path, Range, Transforms} from 'slate';
 
 import {Cell} from './helpers';
 
-export function handleTableNavigation(editor, event) {
+export function handleTableNavigation(editor, event, stacked) {
+  if (stacked) {
+    return;
+  }
+
   const {selection} = editor;
 
   if (selection && Range.isCollapsed(selection)) {

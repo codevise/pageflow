@@ -63,6 +63,19 @@
   border-top: solid 1px var(--table-border-color);
 }
 
+.table[data-stacked] tr td:last-child {
+  border-top: solid 1px color-mix(in srgb, transparent, var(--table-border-color));
+}
+
+.table[data-stacked] td:first-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.table[data-stacked] td:last-child {
+  padding-left: 0;
+}
+
 .selected {
   --table-border-color: color-mix(in srgb, transparent, currentColor);
 }

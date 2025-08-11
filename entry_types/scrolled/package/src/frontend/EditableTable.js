@@ -11,6 +11,7 @@ import {
 } from './EditableText';
 
 import styles from './EditableTable.module.css';
+import {usePhoneLayout} from './usePhoneLayout';
 
 const defaultValue = [{
   type: 'row',
@@ -33,10 +34,15 @@ const defaultValue = [{
 export const EditableTable = withInlineEditingAlternative('EditableTable', function EditableTable({
   value, className,
   labelScaleCategory = 'body',
-  valueScaleCategory = 'body'
+  valueScaleCategory = 'body',
+  stackedInPhoneLayout = false
 }) {
+  const phoneLayout = usePhoneLayout();
+  const stacked = stackedInPhoneLayout && phoneLayout;
+
   return (
-    <table className={classNames(className, styles.table)}>
+    <table className={classNames(className, styles.table)}
+           data-stacked={stacked ? '' : undefined}>
       <tbody>
         {render(value || defaultValue, {
           labelScaleCategory,

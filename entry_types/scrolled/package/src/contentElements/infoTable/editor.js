@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import {editor} from 'pageflow-scrolled/editor';
 import {InfoBoxView} from 'pageflow/editor';
-import {SeparatorView, SelectInputView} from 'pageflow/ui'
+import {CheckBoxInputView, SeparatorView, SelectInputView} from 'pageflow/ui';
 
 import pictogram from './pictogram.svg';
 
@@ -26,6 +26,8 @@ editor.contentElementTypes.register('infoTable', {
         propertyName: 'valueColor',
         entry
       });
+
+      this.input('singleColumnInPhoneLayout', CheckBoxInputView);
 
       this.view(SeparatorView);
 

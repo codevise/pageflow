@@ -1,3 +1,8 @@
-.table {
+x.table {
   white-space: pre-line;
+}
+
+.table[data-stacked] tr,
+.table[data-stacked] td {
+  display: block;
 }
