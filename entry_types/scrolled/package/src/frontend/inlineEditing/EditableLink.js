@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {LinkTooltipProvider, LinkPreview} from './LinkTooltip';
-import {ActionButton} from './ActionButton'
+import {ActionButtons} from './ActionButtons'
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useSelectLinkDestination} from './useSelectLinkDestination';
 import {useI18n} from '../i18n';
@@ -16,7 +16,8 @@ export function EditableLink({
   linkPreviewAlign = 'center',
   actionButtonPosition = 'outside',
   actionButtonVisible = 'whenSelected',
-  actionButtonPortal
+  actionButtonPortal,
+  allowRemove = false
 }) {
   const selectLinkDestination = useSelectLinkDestination();
   const {t} = useI18n({locale: 'ui'});
@@ -26,8 +27,12 @@ export function EditableLink({
     actionButtonVisible = isSelected;
   }
 
-  function handleButtonClick() {
+  function handleSelectLinkDestination() {
     selectLinkDestination().then(onChange, () => {});
+  }
+
+  function handleRemoveLink() {
+    onChange(null);
   }
 
   return (
@@ -41,13 +46,17 @@ export function EditableLink({
         </LinkPreview>
       </LinkTooltipProvider>
       {actionButtonVisible &&
-       <ActionButton text={href ?
-                           t('pageflow_scrolled.inline_editing.change_link_destination') :
-                           t('pageflow_scrolled.inline_editing.select_link_destination')}
-                     icon="link"
-                     position={actionButtonPosition}
-                     portal={actionButtonPortal}
-                     onClick={handleButtonClick} />}
+       <ActionButtons buttons={[{icon: 'link',
+                                 text: href ?
+                                   t('pageflow_scrolled.inline_editing.change_link_destination') :
+                                   t('pageflow_scrolled.inline_editing.select_link_destination'),
+                                 onClick: handleSelectLinkDestination},
+                                ...(allowRemove && href ? [{icon: 'unlink',
+                                                           iconOnly: true,
+                                                           text: t('pageflow_scrolled.inline_editing.remove_link'),
+                                                           onClick: handleRemoveLink}] : [])]}
+                      position={actionButtonPosition}
+                      portal={actionButtonPortal} />}
     </div>
   );
 }
