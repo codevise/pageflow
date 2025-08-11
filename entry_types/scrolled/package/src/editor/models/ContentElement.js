@@ -133,7 +133,7 @@ export const ContentElement = Backbone.Model.extend({
     if (this.getPosition() === 'backdrop') {
       return 0;
     }
-    else if (['sticky', 'left', 'right'].includes(this.getResolvedPosition())) {
+    else if (['sticky', 'side', 'left', 'right'].includes(this.getResolvedPosition())) {
       return Math.min(Math.max(width, -2), 2);
     }
     else {
