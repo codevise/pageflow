@@ -30,6 +30,7 @@ export function InfoTable({configuration, sectionProps}) {
                      labelPlaceholder={t('pageflow_scrolled.inline_editing.type_text')}
                      valuePlaceholder={t('pageflow_scrolled.inline_editing.type_text')}
                      value={configuration.value}
+                     stackedInPhoneLayout={configuration.singleColumnInPhoneLayout}
                      onChange={value => updateConfiguration({value})} />
     </div>
   );

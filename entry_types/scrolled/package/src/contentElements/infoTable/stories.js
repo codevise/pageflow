@@ -113,6 +113,49 @@ storiesOfContentElement(module, {
         labelColumnAlign: 'right',
         valueColumnAlign: 'center'
       }
+    },
+    {
+      name: 'Single column in phone layout',
+      configuration: {
+        singleColumnInPhoneLayout: true,
+        value: [
+          {
+            type: 'row',
+            children: [
+              {
+                type: 'label',
+                children: [
+                  {text: 'Very long label with lots of content'}
+                ]
+              },
+              {
+                type: 'value',
+                children: [
+                  {text: 'This is a very long value with lots of text that would be hard to read in narrow columns on mobile devices'}
+                ]
+              }
+            ]
+          },
+          {
+            type: 'row',
+            children: [
+              {
+                type: 'label',
+                children: [
+                  {text: 'Long technical term'}
+                ]
+              },
+              {
+                type: 'value',
+                children: [
+                  {text: 'supercalifragilisticexpialidocious'}
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      viewport: 'phone'
     }
   ]
 });

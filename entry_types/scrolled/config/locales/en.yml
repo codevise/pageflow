@@ -992,6 +992,9 @@ en:
               label: "Text color (First column)"
             valueColor:
               label: "Text align (Second column)"
+            singleColumnInPhoneLayout:
+              label: "Single column in phone layout"
+              inline_help: "Stacks table rows vertically in phone layout to prevent content from being squeezed into narrow columns. Especially helpful for tables with long text or wide content that would otherwise be hard to read on small screens."
           help_texts:
             shortcuts: |-
               <dl class="shortcuts">

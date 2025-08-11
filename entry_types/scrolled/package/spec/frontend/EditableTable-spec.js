@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {EditableTable} from 'frontend';
+import * as phoneLayout from 'frontend/usePhoneLayout';
 
 import {render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
@@ -190,5 +191,15 @@ describe('EditableTable', () => {
     expect(
       screen.queryAllByRole('cell').map(cell => cell.getAttribute('data-blank'))
     ).toEqual(['', null, null, '']);
+  });
+
+  it('renders data-stacked attribute when stackedInPhoneLayout and in phone layout', () => {
+    jest.spyOn(phoneLayout, 'usePhoneLayout').mockReturnValue(true);
+
+    const {getByRole} = render(<EditableTable value={[]} stackedInPhoneLayout />);
+
+    expect(getByRole('table')).toHaveAttribute('data-stacked');
+
+    phoneLayout.usePhoneLayout.mockRestore();
   });
 });
