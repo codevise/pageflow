@@ -16,6 +16,7 @@ export {SelectableWidgetDecorator} from './SelectableWidgetDecorator';
 export {WidgetSelectionRect} from './WidgetSelectionRect';
 
 export {ActionButton} from './ActionButton';
+export {ActionButtons} from './ActionButtons';
 
 export {PhonePlatformProvider} from './PhonePlatformProvider';
 
