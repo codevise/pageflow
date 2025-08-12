@@ -157,5 +157,24 @@ storiesOfContentElement(module, {
       },
       viewport: 'phone'
     }
+    ,
+    {
+      name: 'Single column in center ragged layout',
+      configuration: {
+        singleColumnInPhoneLayout: true
+      },
+      sectionConfiguration: {
+        layout: 'centerRagged'
+      },
+      viewport: 'phone'
+    },
+    {
+      name: 'With custom single column alignment',
+      configuration: {
+        singleColumnInPhoneLayout: true,
+        singleColumnAlign: 'right'
+      },
+      viewport: 'phone'
+    }
   ]
 });
