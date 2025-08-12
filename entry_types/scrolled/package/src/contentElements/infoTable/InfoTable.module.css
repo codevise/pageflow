@@ -36,7 +36,7 @@
   color: var(--value-color);
 }
 
-.center td {
+.center:not([data-stacked]) td {
   width: 50%;
 }
 
@@ -44,18 +44,25 @@
   text-align: right;
 }
 
+.center[data-stacked] td {
+  text-align: center;
+}
+
 .labelColumnAlign-left td:first-child,
-.valueColumnAlign-left td:last-child {
+.valueColumnAlign-left td:last-child,
+.table[data-stacked].singleColumnAlign-left td {
   text-align: left;
 }
 
 .labelColumnAlign-center td:first-child,
-.valueColumnAlign-center td:last-child {
+.valueColumnAlign-center td:last-child,
+.table[data-stacked].singleColumnAlign-center td {
   text-align: center;
 }
 
 .labelColumnAlign-right td:first-child,
-.valueColumnAlign-right td:last-child {
+.valueColumnAlign-right td:last-child,
+.table[data-stacked].singleColumnAlign-right td {
   text-align: right;
 }
 

@@ -18,6 +18,15 @@ editor.contentElementTypes.register('infoTable', {
       this.input('valueColumnAlign', SelectInputView, {
         values: ['auto', 'left', 'center', 'right']
       });
+
+      this.input('singleColumnInPhoneLayout', CheckBoxInputView);
+      this.input('singleColumnAlign', SelectInputView, {
+        values: ['auto', 'left', 'center', 'right'],
+        visibleBinding: 'singleColumnInPhoneLayout'
+      });
+
+      this.view(SeparatorView);
+
       this.group('PaletteColor', {
         propertyName: 'labelColor',
         entry
@@ -26,8 +35,6 @@ editor.contentElementTypes.register('infoTable', {
         propertyName: 'valueColor',
         entry
       });
-
-      this.input('singleColumnInPhoneLayout', CheckBoxInputView);
 
       this.view(SeparatorView);
 

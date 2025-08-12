@@ -1012,6 +1012,13 @@ de:
             singleColumnInPhoneLayout:
               label: "Einspaltig im Phone-Layout"
               inline_help: "Ordnet Tabellenzeilen vertikal auf dem Handy an, um zu schmale Spalten zu verhindern. Besonders hilfreich für Tabellen mit langen Texten oder breiten Inhalten."
+            singleColumnAlign:
+              label: "Text-Ausrichtung (Einspaltig)"
+              values:
+                auto: "(Automatisch)"
+                left: Linksbündig
+                center: Zentriert
+                right: Rechtsbündig
           help_texts:
             shortcuts: |-
               <dl class="shortcuts">
