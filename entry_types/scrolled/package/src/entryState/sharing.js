@@ -5,7 +5,7 @@ import {useEntryMetadata} from "./metadata";
 
 /**
  * Returns a list of attributes (iconName, name and url) of all configured share
- * providers of the entry. The url provides a %{url} placeholder where the link
+ * providers of the entry. The url provides a %<url>s placeholder where the link
  * can be inserted. iconName can be passed to ThemeIcon to render a theme
  * specific icon.
  *
@@ -17,12 +17,12 @@ import {useEntryMetadata} from "./metadata";
  *     {
  *       iconName: 'facebook',
  *       name: 'Facebook',
- *       url: http://www.facebook.com/sharer/sharer.php?u=%{url}
+ *       url: http://www.facebook.com/sharer/sharer.php?u=%<url>s
  *     },
  *     {
  *       iconName: 'twitter',
  *       name: 'Twitter',
- *       url: https://x.com/intent/post?url=%{url}
+ *       url: https://x.com/intent/post?url=%<url>s
  *     }
  *   ]
  */

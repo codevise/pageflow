@@ -20,7 +20,7 @@ export function SharingMenu({shareProviders}) {
         <div key={shareProvider.name}
              className={styles.shareLinkContainer}>
           <a className={classNames('share', styles.shareLink)}
-             href={shareProvider.url.replace('%{url}', shareUrl)}
+             href={shareProvider.url.replace('%<url>s', shareUrl)}
              target={'_blank'}
              rel="noopener noreferrer">
             <ThemeIcon name={shareProvider.iconName} />
