@@ -200,13 +200,13 @@ function normalizeShareUrlTemplates(shareUrlTemplates) {
     return shareUrlTemplates;
   } else {
     return {
-      email: 'mailto:?body=%{url}',
-      facebook: 'http://www.facebook.com/sharer/sharer.php?u=%{url}',
-      google: 'https://plus.google.com/share?url=%{url}',
-      linked_in: 'https://www.linkedin.com/shareArticle?mini=true&url=%{url}',
-      telegram: 'tg://msg?text=%{url}',
-      twitter: 'https://x.com/intent/post?url=%{url}',
-      whats_app: 'WhatsApp://send?text=%{url}'
+      email: 'mailto:?body=%<url>s',
+      facebook: 'http://www.facebook.com/sharer/sharer.php?u=%<url>s',
+      google: 'https://plus.google.com/share?url=%<url>s',
+      linked_in: 'https://www.linkedin.com/shareArticle?mini=true&url=%<url>s',
+      telegram: 'tg://msg?text=%<url>s',
+      twitter: 'https://x.com/intent/post?url=%<url>s',
+      whats_app: 'WhatsApp://send?text=%<url>s'
     }
   }
 }

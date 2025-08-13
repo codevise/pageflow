@@ -7,7 +7,7 @@ import {renderHookInEntry, normalizeSeed} from 'support';
 describe('useShareProviders', () => {
   const expectedShareProviders = [{
     name: 'Facebook',
-    url: 'http://www.facebook.com/sharer/sharer.php?u=%{url}',
+    url: 'http://www.facebook.com/sharer/sharer.php?u=%<url>s',
     iconName: 'facebook'
   }];
 
@@ -57,12 +57,12 @@ describe('useShareProviders', () => {
     const expectedProviders = [
       {
         name: 'Facebook',
-        url: 'http://www.facebook.com/sharer/sharer.php?u=%{url}',
+        url: 'http://www.facebook.com/sharer/sharer.php?u=%<url>s',
         iconName: 'facebook'
       },
       {
         name: 'X',
-        url: 'https://x.com/intent/post?url=%{url}',
+        url: 'https://x.com/intent/post?url=%<url>s',
         iconName: 'twitter'
       }
     ];
@@ -89,17 +89,17 @@ describe('useShareProviders', () => {
     const expectedProviders = [
       {
         name: 'Facebook',
-        url: 'http://www.facebook.com/sharer/sharer.php?u=%{url}',
+        url: 'http://www.facebook.com/sharer/sharer.php?u=%<url>s',
         iconName: 'facebook'
       },
       {
         name: 'X',
-        url: 'https://x.com/intent/post?url=%{url}',
+        url: 'https://x.com/intent/post?url=%<url>s',
         iconName: 'twitter'
       },
       {
         name: 'WhatsApp',
-        url: 'WhatsApp://send?text=%{url}',
+        url: 'WhatsApp://send?text=%<url>s',
         iconName: 'whatsApp'
       }
     ];
