@@ -21,6 +21,7 @@ import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
 import {SelectableWidget} from './SelectableWidget';
 import {useSectionPaddingCustomProperties} from './useSectionPaddingCustomProperties';
+import {SectionIntersectionProbe} from './SectionIntersectionObserver';
 
 import * as v1 from './v1';
 import * as v2 from './v2';
@@ -68,6 +69,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
              }}>
       <SectionLifecycleProvider onActivate={onActivate}
                                 entersWithFadeTransition={section.transition?.startsWith('fade')}>
+        <SectionIntersectionProbe section={section} />
         <SectionViewTimelineProvider backdrop={backdrop}>
           <BackgroundColorProvider dark={!section.invert}>
             <SectionAtmo audioFile={atmoAudioFile} />

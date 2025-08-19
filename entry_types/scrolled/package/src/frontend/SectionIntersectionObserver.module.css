@@ -1,0 +1,7 @@
+.probe {
+  position: absolute;
+  top: calc(var(--section-intersection-observer-root-margin-top, 0) * -1);
+  left: 0;
+  bottom: var(--section-intersection-observer-root-margin-top, 0);
+  width: 1px;
+}
