@@ -61,9 +61,10 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
     <div className={styles.Content} id='goToContent'>
       <VhFix>
         <AtmoProvider>
-          {renderChapters(entryStructure.main,
-                          currentSectionIndex,
-                          setCurrentSection)}
+          {renderMainStoryline(entryStructure.main,
+                               activeExcursion,
+                               currentSectionIndex,
+                               setCurrentSection)}
           {renderExcursion(activeExcursion, {
             onClose: () => returnFromExcursion()
           })}
@@ -72,6 +73,16 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
     </div>
   );
 })
+
+function renderMainStoryline(chapters, activeExcursion, currentSectionIndex, setCurrentSection) {
+  return (
+    <Widget role="mainStoryline"
+            props={{activeExcursion}}
+            renderFallback={({children}) => children}>
+      {renderChapters(chapters, currentSectionIndex, setCurrentSection)}
+    </Widget>
+  );
+}
 
 function renderExcursion(excursion, {onClose}) {
   if (excursion) {
