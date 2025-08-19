@@ -9,136 +9,9 @@ import '@testing-library/jest-dom/extend-expect';
 
 import styles from 'widgets/defaultNavigation/DefaultNavigation.module.css';
 
-describe('DefaultNavigation', () => {
+describe('DefaultNavigation - Mobile Menu', () => {
   useFakeTranslations({
     'pageflow_scrolled.public.navigation.open_mobile_menu': 'Open mobile menu'
-  });
-
-  it('does not have style attribute on header by default', () => {
-    const {container} = renderInEntry(
-      <DefaultNavigation configuration={{}} />
-    );
-
-    expect(container.querySelector('header')).not.toHaveAttribute('style');
-  });
-
-  it('supports overriding accent color', () => {
-    const {container} = renderInEntry(
-      <DefaultNavigation configuration={{accentColor: 'brand-blue'}} />
-    );
-
-    expect(container.querySelector('header')).toHaveStyle(
-      {'--theme-accent-color': 'var(--theme-palette-color-brand-blue)'
-    });
-  });
-
-  it('uses theme logo by default', () => {
-    const {getByRole} = renderInEntry(
-      <DefaultNavigation configuration={{}} />,
-      {
-        seed: {
-          themeAssets: {
-            logoDesktop: 'logo-desktop.png'
-          },
-          themeOptions: {
-            logoUrl: 'https://example.com',
-            logoAltText: 'My logo'
-          }
-        }
-      }
-    );
-
-    expect(getByRole('link', {name: 'My logo'})).toBeInTheDocument();
-    expect(getByRole('link', {name: 'My logo'})).toHaveAttribute('href', 'https://example.com');
-    expect(getByRole('link', {name: 'My logo'})).toHaveAttribute('target', '_blank');
-    expect(getByRole('img', {name: 'My logo'})).toHaveAttribute('src', 'logo-desktop.png');
-  });
-
-  it('supports opening logo link in same tab', () => {
-    const {getByRole} = renderInEntry(
-      <DefaultNavigation configuration={{}} />,
-      {
-        seed: {
-          themeAssets: {
-            logoDesktop: 'logo-desktop.png'
-          },
-          themeOptions: {
-            logoUrl: 'https://example.com',
-            logoAltText: 'My logo',
-            logoOpenInSameTab: true
-          }
-        }
-      }
-    );
-
-    expect(getByRole('link', {name: 'My logo'})).toBeInTheDocument();
-    expect(getByRole('link', {name: 'My logo'})).toHaveAttribute('href', 'https://example.com');
-    expect(getByRole('link', {name: 'My logo'})).not.toHaveAttribute('target');
-  });
-
-  it('takes logo props', () => {
-    const {getByRole} = renderInEntry(
-      <DefaultNavigation configuration={{}}
-                         logo={{
-                           srcDesktop: "other-logo.png",
-                           url: "https://other.example.com",
-                           altText: "Other logo"
-                         }} />,
-      {
-        seed: {
-          themeAssets: {
-            logoDesktop: 'logo.png'
-          },
-          themeOptions: {
-            logoUrl: 'https://exmaple.com',
-            logoAltText: 'My logo'
-          }
-        }
-      }
-    );
-
-    expect(getByRole('link', {name: 'Other logo'})).toBeInTheDocument();
-    expect(getByRole('link', {name: 'Other logo'})).toHaveAttribute('href', 'https://other.example.com');
-    expect(getByRole('img', {name: 'Other logo'})).toHaveAttribute('src', 'other-logo.png');
-  });
-
-  it('does not render chapters that have hide in navigation flag', () => {
-    const {queryByRole} = renderInEntry(
-      <DefaultNavigation configuration={{}} />,
-      {
-        seed: {
-          chapters: [
-            {configuration: {title: 'First chapter'}},
-            {configuration: {title: 'Hidden chapter', hideInNavigation: true}},
-            {configuration: {title: 'Second chapter'}}
-          ]
-        }
-      }
-    );
-
-    expect(queryByRole('link', {name: 'First chapter'})).not.toBeNull();
-    expect(queryByRole('link', {name: 'Second chapter'})).not.toBeNull();
-    expect(queryByRole('link', {name: 'Hidden chapter'})).toBeNull();
-  });
-
-  it('supports extra buttons component', () => {
-    const ExtraButtons = () => <button>Extra</button>;
-    const {queryByRole} = renderInEntry(
-      <DefaultNavigation configuration={{}}
-                         ExtraButtons={ExtraButtons} />
-    );
-
-    expect(queryByRole('button', {name: 'Extra'})).not.toBeNull();
-  });
-
-  it('supports alternative mobile menu component', () => {
-    const MobileMenu = () => <div>Mobile menu</div>;
-    const {queryByText} = renderInEntry(
-      <DefaultNavigation configuration={{}}
-                         MobileMenu={MobileMenu} />
-    );
-
-    expect(queryByText('Mobile menu')).not.toBeNull();
   });
 
   it('does not render mobile menu button by default', () => {
@@ -196,7 +69,7 @@ describe('DefaultNavigation', () => {
     expect(getByRole('navigation')).not.toHaveClass(styles.navigationChaptersHidden);
   });
 
-  it('keeps mobile menu hidden if custom mobile is present', async () => {
+  it('keeps mobile menu hidden if custom mobile menu is present', async () => {
     const MobileMenu = () => <div>Mobile menu</div>;
     const {getByRole} = renderInEntry(
       <DefaultNavigation configuration={{}}
