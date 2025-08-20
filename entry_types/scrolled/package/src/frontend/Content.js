@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 
 import Chapter from "./Chapter";
 import {VhFix} from './VhFix';
@@ -26,6 +26,8 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
   } = useActiveExcursion(entryStructure);
 
   const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
+
+  const [currentExcursionSectionIndex, setCurrentExcursionSectionIndex] = useState(0);
 
   useSectionChangeEvents(currentSectionIndex);
 
@@ -65,9 +67,10 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
                                activeExcursion,
                                currentSectionIndex,
                                setCurrentSection)}
-          {renderExcursion(activeExcursion, {
-            onClose: () => returnFromExcursion()
-          })}
+          {renderExcursion(activeExcursion,
+                           currentExcursionSectionIndex,
+                           setCurrentExcursionSectionIndex,
+                           {onClose: () => returnFromExcursion()})}
         </AtmoProvider>
       </VhFix>
     </div>
@@ -85,12 +88,16 @@ function renderMainStoryline(chapters, activeExcursion, currentSectionIndex, set
   );
 }
 
-function renderExcursion(excursion, {onClose}) {
+function renderExcursion(
+  excursion, currentExcursionSectionIndex, setCurrentExcursionSectionIndex, {onClose}
+) {
   if (excursion) {
     return (
       <Widget role="excursion"
               props={{excursion, onClose}}>
-        {renderChapters([excursion], 0, () => {})}
+        {renderChapters([excursion],
+                        currentExcursionSectionIndex,
+                        section => setCurrentExcursionSectionIndex(section.sectionIndex))}
       </Widget>
     );
   }

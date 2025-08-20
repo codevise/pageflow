@@ -1,4 +1,6 @@
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {viewTimelineStub} from 'support/viewTimelineStub';
+import {animateStub} from 'support/animateStub';
 import '@testing-library/jest-dom/extend-expect'
 
 import effectsStyles from 'frontend/v1/Backdrop/Effects.module.css';
@@ -8,24 +10,6 @@ jest.mock('frontend/usePortraitOrientation');
 
 describe('backdrop animation effects', () => {
   usePageObjects();
-
-  let animateMock;
-  let viewTimelines;
-
-  beforeEach(() => {
-    animateMock = jest.fn(() => {
-      return {
-        cancel() {}
-      }
-    });
-    HTMLDivElement.prototype.animate = animateMock;
-
-    viewTimelines = [];
-
-    window.ViewTimeline = function({subject}) {
-      viewTimelines.push(this);
-    }
-  });
 
   it('neither calls animate nor sets up view timeline by default', () => {
     renderEntry({
@@ -42,8 +26,8 @@ describe('backdrop animation effects', () => {
       }
     });
 
-    expect(viewTimelines.length).toEqual(0);
-    expect(animateMock).not.toHaveBeenCalled();
+    expect(viewTimelineStub.instances.length).toEqual(0);
+    expect(animateStub.current).not.toHaveBeenCalled();
   });
 
   it('supports scroll parallax', () => {
@@ -67,16 +51,16 @@ describe('backdrop animation effects', () => {
       }
     });
 
-    expect(viewTimelines.length).toEqual(1);
-    expect(animateMock).toHaveBeenCalledTimes(1);
-    expect(animateMock).toHaveBeenCalledWith(
+    expect(viewTimelineStub.instances.length).toEqual(1);
+    expect(animateStub.current).toHaveBeenCalledTimes(1);
+    expect(animateStub.current).toHaveBeenCalledWith(
       {
         transform: [
           'translateY(8%) scale(116%)',
           'translateY(-8%) scale(116%)'
         ]
       },
-      expect.objectContaining({timeline: viewTimelines[0]}
+      expect.objectContaining({timeline: viewTimelineStub.instances[0]}
     ));
   });
 
@@ -109,16 +93,16 @@ describe('backdrop animation effects', () => {
       }
     });
 
-    expect(viewTimelines.length).toEqual(1);
-    expect(animateMock).toHaveBeenCalledTimes(1);
-    expect(animateMock).toHaveBeenCalledWith(
+    expect(viewTimelineStub.instances.length).toEqual(1);
+    expect(animateStub.current).toHaveBeenCalledTimes(1);
+    expect(animateStub.current).toHaveBeenCalledWith(
       {
         transform: [
           'translateY(8%) scale(116%)',
           'translateY(-8%) scale(116%)'
         ]
       },
-      expect.objectContaining({timeline: viewTimelines[0]}
+      expect.objectContaining({timeline: viewTimelineStub.instances[0]}
     ));
   });
 
@@ -144,7 +128,7 @@ describe('backdrop animation effects', () => {
       }
     });
 
-    expect(animateMock).not.toHaveBeenCalled();
+    expect(animateStub.current).not.toHaveBeenCalled();
   });
 
   it('neither calls animate nor sets up view timeline when reduced motion is preferred', () => {
@@ -170,8 +154,8 @@ describe('backdrop animation effects', () => {
       }
     });
 
-    expect(viewTimelines.length).toEqual(0);
-    expect(animateMock).not.toHaveBeenCalled();
+    expect(viewTimelineStub.instances.length).toEqual(0);
+    expect(animateStub.current).not.toHaveBeenCalled();
   });
 
   it('supports auto zoom', () => {
@@ -201,7 +185,7 @@ describe('backdrop animation effects', () => {
     getSectionByPermaId(1).simulateScrollingIntoView();
     const autoZoomElement = container.querySelector(`.${effectsStyles.autoZoom}`);
 
-    expect(viewTimelines.length).toEqual(0);
+    expect(viewTimelineStub.instances.length).toEqual(0);
     expect(autoZoomElement).not.toBeNull();
     expect(autoZoomElement).toHaveStyle('--auto-zoom-duration: 20500ms;');
     expect(autoZoomElement).toHaveStyle('--auto-zoom-origin-x: 45%;');
