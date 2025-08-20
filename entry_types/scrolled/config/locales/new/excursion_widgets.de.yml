@@ -1,0 +1,13 @@
+de:
+  pageflow:
+    excursion_sheets:
+      feature_name: "Exkurs-Sheet-Widgets"
+  pageflow_scrolled:
+    editor:
+      edit_chapter:
+        attributes:
+          returnButtonLabel:
+            label: Text für Zurück-Button
+    public:
+      close: Schließen
+      exit_excursion: Exkurs verlassen

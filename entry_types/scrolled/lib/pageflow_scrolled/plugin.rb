@@ -28,11 +28,26 @@ module PageflowScrolled
                                                     role: 'consent'),
                                 default: true)
 
+
         c.widget_types.register(ReactWidgetType.new(name: 'iconInlineFileRights',
                                                     role: 'inlineFileRights'),
                                 default: true)
         c.widget_types.register(ReactWidgetType.new(name: 'textInlineFileRights',
                                                     role: 'inlineFileRights'))
+
+        c.features.register('excursion_sheets') do |feature_config|
+          feature_config.widget_types.register(
+            ReactWidgetType.new(name: 'excursionSheet',
+                                role: 'excursion'),
+            default: true
+          )
+
+          feature_config.widget_types.register(
+            ReactWidgetType.new(name: 'mainStorylineSheet',
+                                role: 'mainStoryline'),
+            default: true
+          )
+        end
 
         c.features.register('icon_scroll_indicator') do |feature_config|
           feature_config.widget_types.register(

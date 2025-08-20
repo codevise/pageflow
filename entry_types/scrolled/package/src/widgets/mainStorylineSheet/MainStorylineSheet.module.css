@@ -1,0 +1,53 @@
+.inactive {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: clip;
+}
+
+.scaler {
+  position: relative;
+  transition: filter .3s ease, transform .3s ease;
+  transform-origin: center calc(var(--previous-scroll-y) + 100vh);
+}
+
+.inactive > .scaler {
+  filter: blur(2px);
+  top: calc(var(--previous-scroll-y) * -1);
+}
+
+@media (max-width: 480px) {
+  .inactive > .scaler {
+    transform: scale(0.94);
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .inactive > .scaler {
+    transform: scale(0.95);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .inactive > .scaler {
+    transform: scale(0.96);
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .inactive > .scaler {
+    transform: scale(0.97);
+  }
+}
+
+@media (min-width: 1441px) and (max-width: 1920px) {
+  .inactive > .scaler {
+    transform: scale(0.98);
+  }
+}
+
+@media (min-width: 1921px) {
+  .inactive > .scaler {
+    transform: scale(0.99);
+  }
+}
