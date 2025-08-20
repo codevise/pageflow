@@ -80,6 +80,7 @@ function renderMainStoryline(chapters, activeExcursion, currentSectionIndex, set
             props={{activeExcursion}}
             renderFallback={({children}) => children}>
       {renderChapters(chapters, currentSectionIndex, setCurrentSection)}
+      <Widget role="footer" />
     </Widget>
   );
 }
