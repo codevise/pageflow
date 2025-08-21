@@ -23,6 +23,5 @@
 }
 
 .foreground-below {
-  opacity: 0;
-  visibility: hidden;
+  composes: fadedOut from './shared.module.css';
 }

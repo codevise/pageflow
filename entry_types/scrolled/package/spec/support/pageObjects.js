@@ -3,6 +3,7 @@ import React from 'react';
 import {renderInEntry} from './index';
 import {Entry} from 'frontend/Entry';
 import foregroundStyles from 'frontend/Foreground.module.css';
+import sharedTransitionStyles from 'frontend/transitions/shared.module.css';
 import contentElementBoxStyles from 'frontend/ContentElementBox.module.css';
 import contentElementMarginStyles from 'frontend/ContentElementMargin.module.css';
 import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
@@ -193,6 +194,10 @@ function createSectionPageObject(el) {
 
     hasBottomPadding() {
       return foreground.classList.contains(foregroundStyles.paddingBottom);
+    },
+
+    hasFadedOutForeground() {
+      return foreground.classList.contains(sharedTransitionStyles.fadedOut);
     }
   }
 }

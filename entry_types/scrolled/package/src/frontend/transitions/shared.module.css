@@ -14,3 +14,8 @@
   top: auto;
   bottom: 0;
 }
+
+.fadedOut {
+  opacity: 0;
+  visibility: hidden;
+}
