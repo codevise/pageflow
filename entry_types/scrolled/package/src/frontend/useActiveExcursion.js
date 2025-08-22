@@ -5,16 +5,29 @@ export function useActiveExcursion(entryStructure) {
 
   useEffect(() => {
     function handleHashChange(event) {
-      const slug = window.location.hash.slice(1);
-      const excursion = entryStructure.excursions.find(
-        chapter => chapter.chapterSlug === slug
-      );
+      const hash = window.location.hash.slice(1);
+      const excursion = findExcursionByHash(hash);
 
       if (excursion && !window.history.state?.excursionReturnHash) {
         window.history.replaceState({excursionReturnHash: '#' + event.oldURL.split('#')[1]}, null);
       }
 
       setActiveExcursionId(excursion?.id);
+    }
+
+    function findExcursionByHash(hash) {
+      if (hash.startsWith('section-')) {
+        const permaId = parseInt(hash.replace('section-', ''), 10);
+        return entryStructure.excursions.find(
+          chapter => chapter.sections.find(
+            section => section.permaId === permaId
+          )
+        );
+      }
+
+      return entryStructure.excursions.find(
+        chapter => chapter.chapterSlug === hash
+      );
     }
 
     window.addEventListener('hashchange', handleHashChange);
