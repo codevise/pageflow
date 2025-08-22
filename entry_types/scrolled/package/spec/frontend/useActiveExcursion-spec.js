@@ -2,6 +2,7 @@ import {useActiveExcursion} from 'frontend/useActiveExcursion';
 import {useEntryStructure} from 'entryState';
 
 import {renderHookInEntry} from 'support';
+import {changeLocationHash} from 'support/changeLocationHash';
 import {act} from '@testing-library/react';
 
 describe('useActiveExcursion', () => {
@@ -153,14 +154,4 @@ describe('useActiveExcursion', () => {
     expect(window.location.hash).toEqual('#initial')
   });
 
-  function changeLocationHash(hash) {
-    const oldURL = window.location.href;
-
-    window.location.hash = hash;
-
-    window.dispatchEvent(new HashChangeEvent('hashchange', {
-      oldURL,
-      newURL: window.location.href
-    }));
-  }
 });

@@ -1,6 +1,7 @@
 import  'widgets/excursionSheet';
 
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {changeLocationHash} from 'support/changeLocationHash';
 import 'support/viewTimelineStub';
 import 'support/animateStub';
 import '@testing-library/jest-dom/extend-expect'
@@ -107,15 +108,4 @@ describe('transitions', () => {
     expect(getSectionByPermaId(2).hasFadedOutForeground()).toBe(false);
     expect(getSectionByPermaId(3).hasFadedOutForeground()).toBe(true);
   });
-
-  function changeLocationHash(hash) {
-    const oldURL = window.location.href;
-
-    window.location.hash = hash;
-
-    window.dispatchEvent(new HashChangeEvent('hashchange', {
-      oldURL,
-      newURL: window.location.href
-    }));
-  }
 });

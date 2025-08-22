@@ -3,6 +3,7 @@ import React from 'react';
 import {frontend} from 'frontend';
 
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {changeLocationHash} from 'support/changeLocationHash';
 import '@testing-library/jest-dom/extend-expect'
 import {act} from '@testing-library/react';
 
@@ -220,14 +221,4 @@ describe('main storyline widget', () => {
     expect(getByTestId('active-excursion')).toHaveTextContent('Excursion: Test Excursion');
   });
 
-  function changeLocationHash(hash) {
-    const oldURL = window.location.href;
-
-    window.location.hash = hash;
-
-    window.dispatchEvent(new HashChangeEvent('hashchange', {
-      oldURL,
-      newURL: window.location.href
-    }));
-  }
 });
