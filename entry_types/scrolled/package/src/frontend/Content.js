@@ -32,14 +32,16 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
   useSectionChangeEvents(currentSectionIndex);
 
   let updateChapterSlug = (section) => {
-    if (window.history && window.history.replaceState) {
-      if (section.sectionIndex > 0) {
-        window.history.replaceState(null, null, '#'+ section.chapter.chapterSlug);
-      }
-      else {
-        window.history.replaceState(null, null, window.location.href.split('#')[0]);
-      }
+    if (section.sectionIndex > 0) {
+      window.history.replaceState(null, null, '#'+ section.chapter.chapterSlug);
     }
+    else {
+      window.history.replaceState(null, null, window.location.href.split('#')[0]);
+    }
+  }
+
+  let updateExcursionChapterSlug = (section) => {
+    window.history.replaceState(null, null, '#'+ section.chapter.chapterSlug);
   }
 
   const setCurrentSection = useCallback(section => {
@@ -47,6 +49,12 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
     setCurrentSectionIndexState(section.sectionIndex);
     updateChapterSlug(section);
   }, [setCurrentSectionIndexState]);
+
+  const setCurrentExcursionSection = useCallback(section => {
+    sectionChangeMessagePoster(section.sectionIndex);
+    setCurrentExcursionSectionIndex(section.sectionIndex);
+    updateExcursionChapterSlug(section);
+  }, [setCurrentExcursionSectionIndex]);
 
   const scrollToTarget = useScrollToTarget();
 
@@ -69,7 +77,7 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
                                setCurrentSection)}
           {renderExcursion(activeExcursion,
                            currentExcursionSectionIndex,
-                           setCurrentExcursionSectionIndex,
+                           setCurrentExcursionSection,
                            {onClose: () => returnFromExcursion()})}
         </AtmoProvider>
       </VhFix>
@@ -89,7 +97,7 @@ function renderMainStoryline(chapters, activeExcursion, currentSectionIndex, set
 }
 
 function renderExcursion(
-  excursion, currentExcursionSectionIndex, setCurrentExcursionSectionIndex, {onClose}
+  excursion, currentExcursionSectionIndex, setCurrentExcursionSection, {onClose}
 ) {
   if (excursion) {
     return (
@@ -97,7 +105,7 @@ function renderExcursion(
               props={{excursion, onClose}}>
         {renderChapters([excursion],
                         currentExcursionSectionIndex,
-                        section => setCurrentExcursionSectionIndex(section.sectionIndex))}
+                        setCurrentExcursionSection)}
       </Widget>
     );
   }

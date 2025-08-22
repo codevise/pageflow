@@ -154,6 +154,35 @@ describe('useActiveExcursion', () => {
     expect(window.location.hash).toEqual('#initial')
   });
 
+  it('can return to initial empty hash', async () => {
+    const {result} = renderHookInEntry(() => useActiveExcursion(useEntryStructure()), {
+      seed: {
+        storylines: [
+          {id: 1, configuration: {main: true}},
+          {id: 2}
+        ],
+        chapters: [
+          {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+          {id: 11, storylineId: 2, configuration: {title: 'excursion1'}}
+        ],
+        sections: [
+          {id: 100, permaId: 1000, chapterId: 10},
+          {id: 101, permaId: 1001, chapterId: 11}
+        ]
+      }
+    });
+
+    window.location.hash = '';
+    const {returnFromExcursion} = result.current;
+
+    act(() => { changeLocationHash('#section-1001') });
+    act(() => { changeLocationHash('#excursion1') });
+
+    act(() => { returnFromExcursion() });
+
+    expect(window.location.hash).toEqual('')
+  });
+
   it('activates excursion when hash matches section permaId pattern', async () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(useEntryStructure()), {
       seed: {
