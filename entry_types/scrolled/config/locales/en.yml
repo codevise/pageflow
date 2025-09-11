@@ -213,6 +213,14 @@ en:
             elements interrupt the text flow and stand prominently on
             their own.
           label: Width
+        alignment:
+          label: Alignment
+          inline_help: |-
+            Align narrow elements relative to the content width.
+          values:
+            center: Center
+            left: Left
+            right: Right
         captionVariant:
           label: Caption Variant
           inline_help: Switch between different looks of the caption below the element.

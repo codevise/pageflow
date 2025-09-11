@@ -6,6 +6,7 @@ import {frontend} from 'pageflow-scrolled/frontend';
 
 import centerStyles from 'frontend/layouts/Center.module.css';
 import twoColumnStyles from 'frontend/layouts/TwoColumn.module.css';
+import alignmentStyles from 'frontend/layouts/alignment.module.css';
 
 import {widthName} from 'frontend/layouts/widths';
 
@@ -1264,6 +1265,88 @@ describe('Layout', () => {
       );
 
       expect(findParentWithClass(getByTestId('probe'), centerStyles['outer-full'])).not.toBeNull();
+    });
+  });
+
+  describe('alignment classes in two column variant', () => {
+    it('applies alignment class to inline box with negative width', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'inline', width: -2, alignment: 'left'}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.left)).not.toBeNull();
+    });
+
+    it('applies alignment class to sticky elements with negative width', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'sticky', width: -2, alignment: 'center'}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.center)).not.toBeNull();
+    });
+
+    it('does not apply alignment class to inline box with non-negative width', () => {
+      const items = [
+        {id: 2, type: 'probe', alignment: 'left'}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.left)).toBeNull();
+    });
+  });
+
+  describe('alignment classes in centered variant', () => {
+    it('applies alignment class to inline item', () => {
+      const items = [
+        {id: 2, type: 'probe', width: -2, alignment: 'left'}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.left)).not.toBeNull();
+    });
+
+    it('applies center alignment class', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'left', width: -2, alignment: 'center'}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.center)).not.toBeNull();
+    });
+
+    it('does not apply alignment class to elements with non-negative width', () => {
+      const items = [
+        {id: 2, type: 'probe', alignment: 'left'}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.left)).toBeNull();
     });
   });
 

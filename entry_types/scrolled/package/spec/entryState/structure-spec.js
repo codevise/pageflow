@@ -570,6 +570,29 @@ describe('useSectionForegroundContentElements', () => {
     ]);
   });
 
+  it('includes alignment of content elements', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionForegroundContentElements({sectionId: 1}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [...contentElementsSeed,
+                            {id: 6,
+                             permaId: 1006,
+                             sectionId: 1,
+                             typeName: 'textBlock',
+                             configuration: {alignment: 'left', width: -1}}]
+        }
+      }
+    );
+
+    const contentElements = result.current;
+    expect(contentElements).toEqual(expect.arrayContaining([
+      expect.objectContaining({permaId: 1006, alignment: 'left'})
+    ]));
+  });
+
   it('filters out content elements with position backdrop', () => {
     const {result} = renderHookInEntry(
       () => useSectionForegroundContentElements({sectionId: 2}),

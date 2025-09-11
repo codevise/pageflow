@@ -8,6 +8,7 @@ import {useTheme} from '../../entryState';
 import {widths, widthName} from './widths';
 
 import styles from './TwoColumn.module.css';
+import alignmentStyles from './alignment.module.css';
 
 export function TwoColumn(props) {
   const shouldInline = useShouldInlineSticky();
@@ -69,7 +70,7 @@ function renderItemGroup(props, box, key) {
                                            styles[`width-${widthName(box.width)}`],
                                            {[styles.customMargin]: box.customMargin})}>
         {props.children(
-          <RestrictWidth width={box.width}>
+          <RestrictWidth width={box.width} alignment={box.alignment}>
             <ContentElements sectionProps={props.sectionProps}
                              customMargin={box.customMargin}
                              items={box.items} />
@@ -87,13 +88,14 @@ function renderItemGroup(props, box, key) {
   }
 }
 
-function RestrictWidth({width, children}) {
+function RestrictWidth({width, alignment, children}) {
   if (width >= 0) {
     return children;
   }
   else {
     return (
-      <div className={styles[`restrict-${widthName(width)}`]}>
+      <div className={classNames(styles[`restrict-${widthName(width)}`],
+                                 alignmentStyles[alignment])}>
         {children}
       </div>
     );
@@ -117,6 +119,8 @@ function groupItemsByPosition(items, shouldInline) {
     let width = item.width || 0;
     const position = onTheSide(item.position) && !shouldInline(width) ? item.position : 'inline';
     const customMargin = !!elementSupportsCustomMargin && width < widths.full;
+    const alignment = width < 0 ?
+                      (item.alignment || 'center') : null;
 
     if (onTheSide(item.position) && position === 'inline' && width > widths.md) {
       width -= 1;
@@ -137,11 +141,12 @@ function groupItemsByPosition(items, shouldInline) {
       }
     }
 
-    if (!currentBox || currentBox.customMargin !== customMargin) {
+    if (!currentBox || currentBox.customMargin !== customMargin || currentBox.alignment !== alignment) {
       currentBox = {
         customMargin,
         position,
         width,
+        alignment,
         items: []
       };
 

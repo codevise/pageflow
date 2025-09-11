@@ -7,6 +7,7 @@ import {ContentElements} from '../ContentElements';
 import {widths, widthName} from './widths';
 
 import styles from './Center.module.css';
+import alignmentStyles from './alignment.module.css';
 
 const floatedPositions = ['left', 'right'];
 
@@ -18,7 +19,10 @@ export function Center(props) {
       {props.items.map((item, index) => {
         const customMargin = hasCustomMargin(item);
         const position = item.position;
-        const width = widthName(getWidth(item));
+        const widthValue = getWidth(item);
+        const width = widthName(widthValue);
+        const alignmentClass = widthValue < 0 ?
+                               alignmentStyles[item.alignment || 'center'] : null;
 
         return (
           <ContentElements key={item.id} sectionProps={props.sectionProps} items={[item]} customMargin={customMargin}>
@@ -29,6 +33,7 @@ export function Center(props) {
                   {props.children(
                     <div className={classNames(styles[`inner-${item.position}`],
                                                styles[`inner-${width}`],
+                                               alignmentClass,
                                                {[styles[`sideBySide`]]: sideBySideFloat(props.items, index)})}>
                       {child}
                     </div>,

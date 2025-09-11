@@ -39,12 +39,6 @@
   --content-max-width: unset;
 }
 
-.restrict-xxs,
-.restrict-xs,
-.restrict-sm {
-  margin: 0 auto;
-}
-
 .restrict-xxs {
   width: 30%;
 }
