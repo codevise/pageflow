@@ -204,6 +204,7 @@ function contentElementData(contentElement, layout, phoneLayout) {
     position,
     width: getWidth(contentElement, position, phoneLayout),
     standAlone: contentElement.configuration.position === 'standAlone',
+    alignment: contentElement.configuration.alignment,
     props: contentElement.configuration
   };
 }

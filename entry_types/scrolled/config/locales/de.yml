@@ -221,6 +221,14 @@ de:
             anzupassen. Breitere Elemente unterbrechen den Textfluss
             und stehen prominent für sich alleine.
           label: Breite
+        alignment:
+          label: Ausrichtung
+          inline_help: |-
+            Richte schmale Elemente links, rechts oder zentriert zur Textbreite aus.
+          values:
+            center: Zentriert
+            left: Links
+            right: Rechts
         captionVariant:
           label: Beschriftungsvariante
           inline_help: Ändere die Darstellung der Beschriftung unterhalb des Element.

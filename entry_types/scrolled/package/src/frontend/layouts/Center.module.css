@@ -47,12 +47,6 @@
   clear: both;
 }
 
-.inner-xxs,
-.inner-xs,
-.inner-sm {
-  margin: 0 auto;
-}
-
 .inner-xxs {
   width: 30%;
 }

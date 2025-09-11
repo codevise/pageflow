@@ -53,6 +53,14 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function({ent
       0
   });
 
+  this.input('alignment', SelectInputView, {
+    attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
+    values: ['center', 'left', 'right'],
+    defaultValue: 'center',
+    visibleBinding: 'width',
+    visible: () => contentElement.getWidth() < 0
+  });
+
   if (contentElement.supportsFullWidthInPhoneLayout()) {
     this.input('fullWidthInPhoneLayout', CheckBoxInputView, {
       attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
