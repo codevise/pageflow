@@ -89,19 +89,7 @@ function exampleSeed({layout}) {
                                   position: 'sticky',
                                   width: -1,
                                   configuration: {alignment: 'left'},
-                                  caption: 'Sticky Left'}),
-        examplePositionedElement({sectionId,
-                                  typeName: 'measuringProbe',
-                                  position: 'sticky',
-                                  width: -1,
-                                  configuration: {alignment: 'center'},
-                                  caption: 'Sticky Center'}),
-        examplePositionedElement({sectionId,
-                                  typeName: 'measuringProbe',
-                                  position: 'sticky',
-                                  width: -1,
-                                  configuration: {alignment: 'right'},
-                                  caption: 'Sticky Right'}),
+                                  caption: 'Sticky (alignment ignored)'}),
         exampleTextBlock({sectionId})
       );
     }

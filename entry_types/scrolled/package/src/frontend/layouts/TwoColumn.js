@@ -8,7 +8,6 @@ import {useTheme} from '../../entryState';
 import {widths, widthName} from './widths';
 
 import styles from './TwoColumn.module.css';
-import alignmentStyles from './alignment.module.css';
 
 export function TwoColumn(props) {
   const shouldInline = useShouldInlineSticky();
@@ -95,7 +94,7 @@ function RestrictWidth({width, alignment, children}) {
   else {
     return (
       <div className={classNames(styles[`restrict-${widthName(width)}`],
-                                 alignmentStyles[alignment])}>
+                                 styles[`align-${alignment}`])}>
         {children}
       </div>
     );
@@ -119,8 +118,7 @@ function groupItemsByPosition(items, shouldInline) {
     let width = item.width || 0;
     const position = onTheSide(item.position) && !shouldInline(width) ? item.position : 'inline';
     const customMargin = !!elementSupportsCustomMargin && width < widths.full;
-    const alignment = width < 0 ?
-                      (item.alignment || 'center') : null;
+    const alignment = item.position === 'inline' && width < 0 ? item.alignment : null;
 
     if (onTheSide(item.position) && position === 'inline' && width > widths.md) {
       width -= 1;
