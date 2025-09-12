@@ -7,7 +7,6 @@ import {ContentElements} from '../ContentElements';
 import {widths, widthName} from './widths';
 
 import styles from './Center.module.css';
-import alignmentStyles from './alignment.module.css';
 
 const floatedPositions = ['left', 'right'];
 
@@ -19,21 +18,19 @@ export function Center(props) {
       {props.items.map((item, index) => {
         const customMargin = hasCustomMargin(item);
         const position = item.position;
-        const widthValue = getWidth(item);
-        const width = widthName(widthValue);
-        const alignmentClass = widthValue < 0 ?
-                               alignmentStyles[item.alignment || 'center'] : null;
+        const width = getWidth(item);
+        const alignment = width < 0 && item.position === 'inline' ? item.alignment : null;
 
         return (
           <ContentElements key={item.id} sectionProps={props.sectionProps} items={[item]} customMargin={customMargin}>
             {(item, child) =>
               <div key={item.id} className={outerClassName(props.items, index)}>
                 <div className={classNames(styles.item,
-                                           styles[`item-${position}-${width}`])}>
+                                           styles[`item-${position}-${widthName(width)}`])}>
                   {props.children(
                     <div className={classNames(styles[`inner-${item.position}`],
-                                               styles[`inner-${width}`],
-                                               alignmentClass,
+                                               styles[`inner-${widthName(width)}`],
+                                               styles[`align-${alignment}`],
                                                {[styles[`sideBySide`]]: sideBySideFloat(props.items, index)})}>
                       {child}
                     </div>,

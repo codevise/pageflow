@@ -6,7 +6,6 @@ import {frontend} from 'pageflow-scrolled/frontend';
 
 import centerStyles from 'frontend/layouts/Center.module.css';
 import twoColumnStyles from 'frontend/layouts/TwoColumn.module.css';
-import alignmentStyles from 'frontend/layouts/alignment.module.css';
 
 import {widthName} from 'frontend/layouts/widths';
 
@@ -1279,12 +1278,12 @@ describe('Layout', () => {
         </Layout>
       );
 
-      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.left)).not.toBeNull();
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['align-left'])).not.toBeNull();
     });
 
-    it('applies alignment class to sticky elements with negative width', () => {
+    it('does not apply alignment class to sticky elements with negative width', () => {
       const items = [
-        {id: 2, type: 'probe', position: 'sticky', width: -2, alignment: 'center'}
+        {id: 2, type: 'probe', position: 'sticky', width: -2, alignment: 'left'}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'left'}} items={items}>
@@ -1292,12 +1291,26 @@ describe('Layout', () => {
         </Layout>
       );
 
-      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.center)).not.toBeNull();
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['align-left'])).toBeNull();
+    });
+
+    it('does not apply alignment class to inlined sticky elements with negative width', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'sticky', width: -2, alignment: 'left'}
+      ];
+      window.matchMedia.mockViewportWidth(500);
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['align-left'])).toBeNull();
     });
 
     it('does not apply alignment class to inline box with non-negative width', () => {
       const items = [
-        {id: 2, type: 'probe', alignment: 'left'}
+        {id: 2, type: 'probe', position: 'inline', alignment: 'left'}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'left'}} items={items}>
@@ -1305,14 +1318,14 @@ describe('Layout', () => {
         </Layout>
       );
 
-      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.left)).toBeNull();
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['align-left'])).toBeNull();
     });
   });
 
   describe('alignment classes in centered variant', () => {
     it('applies alignment class to inline item', () => {
       const items = [
-        {id: 2, type: 'probe', width: -2, alignment: 'left'}
+        {id: 2, type: 'probe', position: 'inline', width: -2, alignment: 'right'}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -1320,12 +1333,12 @@ describe('Layout', () => {
         </Layout>
       );
 
-      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.left)).not.toBeNull();
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['align-right'])).not.toBeNull();
     });
 
-    it('applies center alignment class', () => {
+    it('does not apply alignment class to floated elements', () => {
       const items = [
-        {id: 2, type: 'probe', position: 'left', width: -2, alignment: 'center'}
+        {id: 2, type: 'probe', position: 'left', width: -2, alignment: 'right'}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -1333,12 +1346,12 @@ describe('Layout', () => {
         </Layout>
       );
 
-      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.center)).not.toBeNull();
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['align-right'])).toBeNull();
     });
 
     it('does not apply alignment class to elements with non-negative width', () => {
       const items = [
-        {id: 2, type: 'probe', alignment: 'left'}
+        {id: 2, type: 'probe', position: 'inline', alignment: 'right'}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
@@ -1346,7 +1359,7 @@ describe('Layout', () => {
         </Layout>
       );
 
-      expect(findParentWithClass(getByTestId('probe'), alignmentStyles.left)).toBeNull();
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['align-right'])).toBeNull();
     });
   });
 

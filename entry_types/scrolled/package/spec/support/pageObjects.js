@@ -7,7 +7,8 @@ import contentElementBoxStyles from 'frontend/ContentElementBox.module.css';
 import contentElementMarginStyles from 'frontend/ContentElementMargin.module.css';
 import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
 import fitViewportStyles from 'frontend/FitViewport.module.css';
-import layoutAlignmentStyles from 'frontend/layouts/alignment.module.css';
+import centerLayoutStyles from 'frontend/layouts/Center.module.css';
+import twoColumnLayoutStyles from 'frontend/layouts/TwoColumn.module.css';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 import {api} from 'frontend/api';
@@ -232,7 +233,10 @@ function createContentElementPageObject(el) {
     },
 
     hasAlignment(alignment) {
-      return !!(el.closest(`.${layoutAlignmentStyles[alignment]}`));
+      return !!(
+        el.closest(`.${centerLayoutStyles[`align-${alignment}`]}`) ||
+        el.closest(`.${twoColumnLayoutStyles[`align-${alignment}`]}`)
+      );
     },
 
     getFitViewportAspectRatio() {

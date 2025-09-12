@@ -47,6 +47,20 @@
   clear: both;
 }
 
+.inner-xxs,
+.inner-xs,
+.inner-sm {
+  margin: 0 auto;
+}
+
+.align-left {
+  margin-left: 0;
+}
+
+.align-right {
+  margin-right: 0;
+}
+
 .inner-xxs {
   width: 30%;
 }
