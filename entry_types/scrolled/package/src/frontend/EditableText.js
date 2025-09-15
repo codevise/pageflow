@@ -30,7 +30,7 @@ export const EditableText = withInlineEditingAlternative('EditableText', functio
 
 function render(children) {
   return children.map((element, index) => {
-    if (element.type) {
+    if (element.type && element.children) {
       return renderElement({attributes: {key: index}, element, children: render(element.children)});
     }
     else {
