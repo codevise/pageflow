@@ -5,7 +5,13 @@
  * <div style={{backgroundColor: paletteColor(configuration.backgroundColor)}}>
  */
 export function paletteColor(value) {
-  return !value || value[0] === '#' ?
-         value :
-         `var(--theme-palette-color-${value})`;
+  if (!value) {
+    return undefined;
+  }
+
+  if (value[0] === '#') {
+    return value;
+  }
+
+  return `var(--theme-palette-color-${value})`;
 }
