@@ -458,4 +458,20 @@ describe('EditableText', () => {
 
     expect(container.querySelector('.typography-question-lg')).toBeInTheDocument()
   });
+
+  it('ignores arbitrary types in text nodes that can sometimes occur when pasting content', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {
+          type: 'word',
+          text: 'Something'
+        }
+      ]
+    }];
+
+    const {getByText} = render(<EditableText value={value} />);
+
+    expect(getByText('Something')).toBeInTheDocument()
+  });
 });
