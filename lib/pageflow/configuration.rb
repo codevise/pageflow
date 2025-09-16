@@ -584,7 +584,7 @@ module Pageflow
 
     # @deprecated Use `config.page_types.register` instead.
     def register_page_type(page_type)
-      ActiveSupport::Deprecation.warn(
+      Pageflow::Deprecation.warn(
         'Pageflow::Configuration#register_page_type is deprecated. ' \
         'Use config.page_types.register instead.',
         caller
@@ -595,13 +595,13 @@ module Pageflow
     # @deprecated Pageflow now supports direct uploads to S3 via signed post requests.
     # Please change your forms accordingly.
     def paperclip_filesystem_root
-      ActiveSupport::Deprecation.warn(
+      Pageflow::Deprecation.warn(
         'Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller
       )
     end
 
     def paperclip_filesystem_root=(_val)
-      ActiveSupport::Deprecation.warn(
+      Pageflow::Deprecation.warn(
         'Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller
       )
     end

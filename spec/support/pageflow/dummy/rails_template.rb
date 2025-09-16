@@ -86,6 +86,10 @@ copy_file('test_theme_preview.png',
 copy_file('test_theme_preview.png',
           'app/assets/images/pageflow/themes/test_theme/preview_thumbnail.png')
 
+# Add fallback favicon used by browsers to prevent console log warnings
+
+copy_file('favicon.ico', 'public/favicon.ico')
+
 # Normally theme stylesheets are added to the precompile list
 # automatically. Since the test_theme is not yet registered when the
 # environment is loaded, we need to add its stylesheet manually.
@@ -96,13 +100,20 @@ RUBY
 
 # Create database tables for fake hosted files and revision components.
 
-copy_file('create_test_uploadable_file.rb',
-          'db/migrate/00000000000000_create_test_uploadable_file.rb')
-copy_file('create_test_multi_attachment_file.rb',
-          'db/migrate/00000000000001_create_test_multi_attachment_file.rb')
-copy_file('create_test_revision_components.rb',
-          'db/migrate/00000000000002_create_test_revision_components.rb')
-copy_file('add_custom_fields.rb',
-          'db/migrate/99990000000000_add_custom_fields.rb')
+migration_paths = Dir[File.join('db', 'migrate', '*.rb')]
+latest_migration = migration_paths.map { |path| File.basename(path).split('_').first.to_i }.max
+
+timestamp = (latest_migration || Time.now.utc.strftime('%Y%m%d%H%M%S').to_i) + 1
+[
+  'create_test_uploadable_file.rb',
+  'create_test_multi_attachment_file.rb',
+  'create_test_revision_components.rb',
+  'add_custom_fields.rb'
+].each_with_index do |migration, index|
+  copy_file(
+    migration,
+    format('db/migrate/%<timestamp>014d_%<name>s', timestamp: timestamp + index, name: migration)
+  )
+end
 
 rake 'db:migrate'

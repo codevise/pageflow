@@ -10,6 +10,7 @@ feature 'as account manager, inviting a user', perform_jobs: true do
     Dom::Admin::InvitationForm.find!.submit_with(first_name: 'John',
                                                  last_name: 'Doe',
                                                  email: 'sepp@example.com')
+    Dom::Admin::Page.sign_out
     visit(MailClient.of('sepp@example.com').receive_invitation_link)
     Dom::Admin::NewPasswordForm.find!.submit_with(password: '@new12345')
 
@@ -23,6 +24,7 @@ feature 'as account manager, inviting a user', perform_jobs: true do
     Dom::Admin::Page.sign_in_as(:manager, on: account)
     visit(admin_user_path(user))
     Dom::Admin::UserPage.find!.resend_invitation_link.click
+    Dom::Admin::Page.sign_out
     visit(MailClient.of('heinz@example.com').receive_invitation_link)
     Dom::Admin::NewPasswordForm.find!.submit_with(password: '@new12345')
 

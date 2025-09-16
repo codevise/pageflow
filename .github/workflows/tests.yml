@@ -7,36 +7,51 @@ env:
 
 jobs:
   rspec:
+    name: ${{ matrix.job }} (Rails ${{ matrix.rails-version }})
     runs-on: ubuntu-latest
+    env:
+      PAGEFLOW_RAILS_VERSION: ${{ matrix.rails-version }}
 
     strategy:
       fail-fast: false
       matrix:
+        rails-version: ['~> 7.1.0', '~> 7.2.0']
+        job:
+          - pageflow
+          - pageflow_js
+          - pageflow_paged
+          - pageflow_scrolled
+          - pageflow_scrolled_js
         include:
-          - engine-name: pageflow
+          - job: pageflow
+            engine-name: pageflow
             ruby-version: 3.2
             engine-directory: .
             rspec-command: bin/rspec --tag ~js
             install-audiowaveform: true
 
-          - engine-name: pageflow
+          - job: pageflow_js
+            engine-name: pageflow
             ruby-version: 3.2
             engine-directory: .
             rspec-command: bin/rspec-with-retry --tag js
 
-          - engine-name: pageflow_paged
+          - job: pageflow_paged
+            engine-name: pageflow_paged
             ruby-version: 3.2
             engine-directory: entry_types/paged
             plugin-name: pageflow_paged
             rspec-command: bin/rspec
 
-          - engine-name: pageflow_scrolled
+          - job: pageflow_scrolled
+            engine-name: pageflow_scrolled
             ruby-version: 3.2
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
             rspec-command: bin/rspec --tag ~js
 
-          - engine-name: pageflow_scrolled
+          - job: pageflow_scrolled_js
+            engine-name: pageflow_scrolled
             ruby-version: 3.2
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
@@ -74,9 +89,9 @@ jobs:
       uses: actions/cache@v4
       with:
         path: vendor/bundle
-        key: ${{ runner.os }}-ruby-${{ matrix.ruby-version }}-gems-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
+        key: ${{ runner.os }}-ruby-${{ matrix.ruby-version }}-rails-${{ matrix.rails-version }}-gems-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
         restore-keys: |
-          ${{ runner.os }}-ruby-${{ matrix.ruby-version }}-gems-
+          ${{ runner.os }}-ruby-${{ matrix.ruby-version }}-rails-${{ matrix.rails-version }}-gems-
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
