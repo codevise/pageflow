@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'resque', '~> 2.6'
   s.add_dependency 'resque-scheduler', '~> 4.10'
 
-  s.add_dependency 'ar_after_transaction', '~> 0.10.0'
+  s.add_dependency 'ar_after_transaction', '~> 1.0.0'
 
   s.add_dependency 'redis', '~> 3.0'
   s.add_dependency 'redis-namespace', '~> 1.5'

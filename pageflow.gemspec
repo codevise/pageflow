@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 3.2'
 
-  s.add_dependency 'rails', '~> 7.1.2'
+  s.add_dependency 'rails', Pageflow::RailsVersion.detect
 
   # Framework for admin interface
   s.add_dependency 'activeadmin', '~> 3.0'
@@ -152,7 +152,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'resque', ['>= 1.25', '< 3']
   s.add_development_dependency 'resque-scheduler', '~> 4.10'
 
-  s.add_development_dependency 'ar_after_transaction', '~> 0.10.0'
+  s.add_development_dependency 'ar_after_transaction', '~> 1.0.0'
 
   s.add_development_dependency 'redis', '~> 3.0'
   s.add_development_dependency 'redis-namespace', '~> 1.5'
