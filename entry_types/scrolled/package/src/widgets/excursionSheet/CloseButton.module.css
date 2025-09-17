@@ -1,0 +1,27 @@
+.button {
+  position: sticky;
+  top: var(--widget-margin-top, 0);
+  z-index: 10;
+  display: flex;
+  margin: space(1) space(1) space(1) auto;
+  padding: space(3);
+  border: 0;
+  background-color: transparent;
+  color: var(--theme-light-content-text-color);
+  cursor: pointer;
+  outline-offset: -3px;
+  transition: opacity .5s, top .15s ease;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.button svg {
+  position: relative;
+  transition: color .5s;
+}
+
+.invert svg {
+  color: var(--theme-dark-content-text-color);
+}

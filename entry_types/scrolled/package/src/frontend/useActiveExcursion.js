@@ -1,20 +1,34 @@
-import {useCallback, useEffect, useState, useMemo} from 'react';
+import {useCallback, useEffect, useState, useMemo, useRef} from 'react';
 
 export function useActiveExcursion(entryStructure) {
   const [activeExcursionId, setActiveExcursionId] = useState();
+  const returnUrlRef = useRef(null);
 
   useEffect(() => {
     function handleHashChange(event) {
-      const slug = window.location.hash.slice(1);
-      const excursion = entryStructure.excursions.find(
-        chapter => chapter.chapterSlug === slug
-      );
+      const hash = window.location.hash.slice(1);
+      const excursion = findExcursionByHash(hash);
 
-      if (excursion && !window.history.state?.excursionReturnHash) {
-        window.history.replaceState({excursionReturnHash: '#' + event.oldURL.split('#')[1]}, null);
+      if (excursion && !returnUrlRef.current) {
+        returnUrlRef.current = event.oldURL;
       }
 
       setActiveExcursionId(excursion?.id);
+    }
+
+    function findExcursionByHash(hash) {
+      if (hash.startsWith('section-')) {
+        const permaId = parseInt(hash.replace('section-', ''), 10);
+        return entryStructure.excursions.find(
+          chapter => chapter.sections.find(
+            section => section.permaId === permaId
+          )
+        );
+      }
+
+      return entryStructure.excursions.find(
+        chapter => chapter.chapterSlug === hash
+      );
     }
 
     window.addEventListener('hashchange', handleHashChange);
@@ -29,12 +43,8 @@ export function useActiveExcursion(entryStructure) {
     );
 
     if (excursion) {
-      window.history.replaceState(
-        {excursionReturnHash: window.history.state?.excursionReturnHash ||
-                              window.location.hash},
-        null,
-        '#' + excursion.chapterSlug
-      );
+      returnUrlRef.current = returnUrlRef.current || window.location.href;
+      window.history.replaceState(null, null, '#' + excursion.chapterSlug);
     }
 
     setActiveExcursionId(excursion?.id);
@@ -43,8 +53,9 @@ export function useActiveExcursion(entryStructure) {
   const returnFromExcursion = useCallback(() => {
     setActiveExcursionId(undefined);
 
-    if (window.history.state?.excursionReturnHash) {
-      window.history.replaceState(null, null, window.history.state?.excursionReturnHash)
+    if (returnUrlRef.current) {
+      window.history.replaceState(null, null, returnUrlRef.current);
+      returnUrlRef.current = null;
     }
   }, []);
 

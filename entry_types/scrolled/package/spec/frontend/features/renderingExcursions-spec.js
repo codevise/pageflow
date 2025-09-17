@@ -3,6 +3,7 @@ import React from 'react';
 import {frontend} from 'frontend';
 
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {changeLocationHash} from 'support/changeLocationHash';
 import '@testing-library/jest-dom/extend-expect'
 import {act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -138,7 +139,7 @@ describe('rendering excursions', () => {
       }
     });
 
-    const {container, getByRole} = renderEntry({
+    const {container, getByRole, getSectionByPermaId} = renderEntry({
       seed: {
         widgets: [{
           typeName: 'excursionOverlay',
@@ -157,7 +158,7 @@ describe('rendering excursions', () => {
           {id: 1, storylineId: 2, configuration: {title: 'some-excursion'}}
         ],
         sections: [
-          {id: 1, chapterId: 1}
+          {id: 1, permaId: 10, chapterId: 1}
         ],
         contentElements: [
           {
@@ -173,20 +174,10 @@ describe('rendering excursions', () => {
     const user = userEvent.setup();
 
     act(() => changeLocationHash('#some-excursion'));
+    getSectionByPermaId(10).simulateScrollingIntoView();
     await user.click(getByRole('button', {name: 'Close'}));
 
     expect(window.location.hash).toEqual('#initial');
     expect(container).not.toHaveTextContent('Some text');
   });
-
-  function changeLocationHash(hash) {
-    const oldURL = window.location.href;
-
-    window.location.hash = hash;
-
-    window.dispatchEvent(new HashChangeEvent('hashchange', {
-      oldURL,
-      newURL: window.location.href
-    }));
-  }
 });

@@ -117,6 +117,7 @@ export {Tooltip} from './Tooltip';
 export {ThemeIcon} from './ThemeIcon';
 export {InlineFileRights} from './InlineFileRights';
 export {useFloatingPortalRoot, FloatingPortalRootProvider} from './FloatingPortalRootProvider';
+export {SectionIntersectionObserver} from './SectionIntersectionObserver';
 export {ScrollButton} from './ScrollButton';
 
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';

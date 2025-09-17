@@ -7,5 +7,5 @@ beforeEach(() => {
     }
   });
 
-  HTMLDivElement.prototype.animate = animateStub.current;
+  HTMLElement.prototype.animate = animateStub.current;
 });

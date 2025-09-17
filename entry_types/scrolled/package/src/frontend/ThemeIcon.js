@@ -10,6 +10,7 @@ import copyright from './icons/copyright.svg';
 import world from './icons/world.svg';
 import close from './icons/close.svg';
 import checked from './icons/checked.svg';
+import back from './icons/back.svg';
 
 import bluesky from './icons/social/bluesky.svg';
 import email from './icons/social/email.svg';
@@ -43,6 +44,7 @@ const icons = {
   copyright,
   world,
   close,
+  back,
   checked,
 
   bluesky,
@@ -70,7 +72,7 @@ const icons = {
  *
  * @param {Object} props
  * @param {string} props.name -
- *   Either: arrowLeft, arrowRight, checked, copyright, close, email,
+ *   Either: arrowLeft, arrowRight, back, checked, copyright, close, email,
  *   enterFullscreen, exitFullscreen, expand, facebook, gear, information,
  *   linkedIn, menu, muted, pause, play, share, telegram,
  *   textTracks, twitter, unmuted, world, whatsApp,

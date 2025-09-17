@@ -18,7 +18,8 @@ section::before {
 .highlighted > section::before,
 .lineAbove > section::before,
 .lineBelow > section::before,
-.selected > section::before {
+.selected > section::before,
+.transitionSelected > section::before {
   visibility: visible;
 }
 
@@ -47,11 +48,13 @@ section::before {
   position: absolute;
   display: block;
   top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
   width: 100%;
-  border-top: dotted 2px #fff;
+  border-top: solid 1px #fff;
+  box-shadow: 0 0 0 1px #000;
   z-index: 9;
-  background-color: #555;
-  opacity: 0.7;
 }
 
 .controls {

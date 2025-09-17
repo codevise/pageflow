@@ -37,6 +37,18 @@ module.exports = {
         'pageflow-scrolled/widgets/consentBar.css'
       ]
     },
+    'pageflow-scrolled/widgets/excursionSheet': {
+      import: [
+        'pageflow-scrolled/widgets/excursionSheet',
+        'pageflow-scrolled/widgets/excursionSheet.css'
+      ]
+    },
+    'pageflow-scrolled/widgets/mainStorylineSheet': {
+      import: [
+        'pageflow-scrolled/widgets/mainStorylineSheet',
+        'pageflow-scrolled/widgets/mainStorylineSheet.css'
+      ]
+    },
     'pageflow-scrolled/widgets/iconInlineFileRights': {
       import: [
         'pageflow-scrolled/widgets/iconInlineFileRights',

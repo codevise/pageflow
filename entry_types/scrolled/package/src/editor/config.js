@@ -14,7 +14,9 @@ import {browser} from 'pageflow/frontend';
 import {
   CheckBoxInputView,
   ConfigurationEditorView,
-  SelectInputView
+  SelectInputView,
+  SeparatorView,
+  TextInputView
 } from 'pageflow/ui';
 
 import {ColorSelectInputView} from './views/inputs/ColorSelectInputView';
@@ -128,4 +130,13 @@ editor.widgetTypes.register('iconScrollIndicator', {
       });
     }
   })
+});
+
+editor.widgetTypes.register('excursionSheet', {
+  configurationEditorTabViewGroups: {
+    ChapterExcursionSettings: function() {
+      this.view(SeparatorView);
+      this.input('returnButtonLabel', TextInputView);
+    }
+  }
 });

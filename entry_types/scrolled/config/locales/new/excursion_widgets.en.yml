@@ -1,0 +1,13 @@
+en:
+  pageflow:
+    excursion_sheets:
+      feature_name: "Excursion sheet widgets"
+  pageflow_scrolled:
+    editor:
+      edit_chapter:
+        attributes:
+          returnButtonLabel:
+            label: Return button label
+    public:
+      close: Close
+      exit_excursion: Exit excursion

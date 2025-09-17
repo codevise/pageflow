@@ -12,7 +12,6 @@ export const Entry = withInlineEditingDecorator('EntryDecorator', function Entry
       <Widget role="consent" />
       <SelectableWidget role="header" />
       <Content />
-      <Widget role="footer" />
     </>
   );
 });

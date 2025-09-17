@@ -9,6 +9,7 @@ import {
   useMainChapters,
   useCurrentChapter,
   useDarkWidgets,
+  useIsomorphicLayoutEffect,
   useOnUnmuteMedia,
   usePhonePlatform,
   useShareProviders,
@@ -72,6 +73,14 @@ export function DefaultNavigation({
     1);
 
   useOnUnmuteMedia(useCallback(() => setNavExpanded(true), []));
+
+  useIsomorphicLayoutEffect(() => {
+    document.documentElement.toggleAttribute('data-default-navigation-expanded', navExpanded);
+
+    return () => {
+      document.documentElement.removeAttribute('data-default-navigation-expanded');
+    };
+  }, [navExpanded]);
 
   const darkWidgets = useDarkWidgets();
 

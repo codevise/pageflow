@@ -12,7 +12,7 @@
      We can, thus, increase the height of the clip-path polygon
      generously to prevent those rounding errors.
   */
-  clip-path: polygon(0% 0%, 100% 0%, 100% 110%, 0% 110%);
+  clip-path: inset(0% 0% -10% 0%);
 }
 
 .unstyledButton {

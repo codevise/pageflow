@@ -316,6 +316,7 @@ const pageflowScrolled = [
 
   ...([
     'defaultNavigation', 'consentBar',
+    'excursionSheet', 'mainStorylineSheet',
     'textInlineFileRights', 'iconInlineFileRights',
     'iconScrollIndicator'
   ].map(name => (

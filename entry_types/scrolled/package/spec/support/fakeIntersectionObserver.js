@@ -18,6 +18,7 @@ global.IntersectionObserver = function(callback, {threshold = 0, root} = {}) {
     throw new Error('Did not except more than one intersection observer per root');
   }
 
+  fakeIntersectionObserver.instances.add(this);
   this.root = root;
 
   this.observe = function(target) {
@@ -39,7 +40,9 @@ global.IntersectionObserver = function(callback, {threshold = 0, root} = {}) {
     fakeIntersectionObserver.observedElements.delete(el);
   };
 
-  this.disconnect = function() {};
+  this.disconnect = function() {
+    fakeIntersectionObserver.instances.delete(this);
+  };
 };
 
 export function simulateIntersecting(target) {

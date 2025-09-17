@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 
 import Chapter from "./Chapter";
 import {VhFix} from './VhFix';
@@ -27,17 +27,21 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
 
   const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
 
+  const [currentExcursionSectionIndex, setCurrentExcursionSectionIndex] = useState(0);
+
   useSectionChangeEvents(currentSectionIndex);
 
   let updateChapterSlug = (section) => {
-    if (window.history && window.history.replaceState) {
-      if (section.sectionIndex > 0) {
-        window.history.replaceState(null, null, '#'+ section.chapter.chapterSlug);
-      }
-      else {
-        window.history.replaceState(null, null, window.location.href.split('#')[0]);
-      }
+    if (section.sectionIndex > 0) {
+      window.history.replaceState(null, null, '#'+ section.chapter.chapterSlug);
     }
+    else {
+      window.history.replaceState(null, null, window.location.href.split('#')[0]);
+    }
+  }
+
+  let updateExcursionChapterSlug = (section) => {
+    window.history.replaceState(null, null, '#'+ section.chapter.chapterSlug);
   }
 
   const setCurrentSection = useCallback(section => {
@@ -45,6 +49,12 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
     setCurrentSectionIndexState(section.sectionIndex);
     updateChapterSlug(section);
   }, [setCurrentSectionIndexState]);
+
+  const setCurrentExcursionSection = useCallback(section => {
+    sectionChangeMessagePoster(section.sectionIndex);
+    setCurrentExcursionSectionIndex(section.sectionIndex);
+    updateExcursionChapterSlug(section);
+  }, [setCurrentExcursionSectionIndex]);
 
   const scrollToTarget = useScrollToTarget();
 
@@ -61,24 +71,41 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
     <div className={styles.Content} id='goToContent'>
       <VhFix>
         <AtmoProvider>
-          {renderChapters(entryStructure.main,
-                          currentSectionIndex,
-                          setCurrentSection)}
-          {renderExcursion(activeExcursion, {
-            onClose: () => returnFromExcursion()
-          })}
+          {renderMainStoryline(entryStructure.main,
+                               activeExcursion,
+                               currentSectionIndex,
+                               setCurrentSection)}
+          {renderExcursion(activeExcursion,
+                           currentExcursionSectionIndex,
+                           setCurrentExcursionSection,
+                           {onClose: () => returnFromExcursion()})}
         </AtmoProvider>
       </VhFix>
     </div>
   );
 })
 
-function renderExcursion(excursion, {onClose}) {
+function renderMainStoryline(chapters, activeExcursion, currentSectionIndex, setCurrentSection) {
+  return (
+    <Widget role="mainStoryline"
+            props={{activeExcursion}}
+            renderFallback={({children}) => children}>
+      {renderChapters(chapters, currentSectionIndex, setCurrentSection)}
+      <Widget role="footer" />
+    </Widget>
+  );
+}
+
+function renderExcursion(
+  excursion, currentExcursionSectionIndex, setCurrentExcursionSection, {onClose}
+) {
   if (excursion) {
     return (
       <Widget role="excursion"
               props={{excursion, onClose}}>
-        {renderChapters([excursion], 0, () => {})}
+        {renderChapters([excursion],
+                        currentExcursionSectionIndex,
+                        setCurrentExcursionSection)}
       </Widget>
     );
   }
