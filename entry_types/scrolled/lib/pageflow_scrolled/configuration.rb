@@ -52,7 +52,7 @@ module PageflowScrolled
     #     config.additional_theme_assets.register(theme_file_role: :footer_logo)
     #
     # @return [AdditionalThemeAssets]
-    # @since edge
+    # @since 17.1
     attr_reader :additional_theme_assets
 
     # Determine which vendors a content element will require consent

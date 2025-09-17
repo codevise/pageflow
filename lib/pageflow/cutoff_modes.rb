@@ -2,7 +2,7 @@ module Pageflow
   # Register strategies to determine whether only the part of an entry
   # before some cutoff point should be rendered (e.g., to preview
   # paywalled premium content).
-  # @since edge
+  # @since 17.1
   class CutoffModes
     # @api private
     def initialize

@@ -1,7 +1,7 @@
 module Pageflow
   # Helpers to render alternate links to translations of an entry.
   #
-  # @since edge
+  # @since 17.1
   module HreflangLinksHelper
     include SocialShareHelper
 

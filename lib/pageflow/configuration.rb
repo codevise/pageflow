@@ -223,7 +223,7 @@ module Pageflow
     #     )
     #
     # @return [AdditionalHeaders]
-    # @since edge
+    # @since 17.1
     attr_reader :additional_public_entry_headers
 
     # Either a lambda or an object with a `call` method taking a
@@ -299,7 +299,7 @@ module Pageflow
     #     )
     #
     # @return [CutoffModes]
-    # @since edge
+    # @since 17.1
     attr_reader :cutoff_modes
 
     # Either a lambda or an object with a `call` method taking a hash
@@ -470,7 +470,7 @@ module Pageflow
     #     config.entry_translator_url = lambda do |entry|
     #       Rails.application.routes.url_helpers.some_custom_route(entry)
     #     end
-    # @since edge
+    # @since 17.1
     attr_accessor :entry_translator_url
 
     def initialize(target_type_name = nil)

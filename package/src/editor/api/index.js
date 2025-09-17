@@ -190,7 +190,7 @@ export const EditorApi = Object.extend(
    * title and options. Passed callback receives tabView and options
    * with entry.
    *
-   * @since edge
+   * @since 17.1
    */
   registerAppearanceInputs(callback) {
     this.appearanceInputsCallbacks.push(callback);
