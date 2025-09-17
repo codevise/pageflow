@@ -1629,6 +1629,3 @@ de:
       select_link_destination: "Link-Ziel auswählen"
       change_link_destination: "Link-Ziel ändern"
       remove_link: "Link entfernen"
-    public:
-      image_gallery_pagination: "Bildergalerie-Paginierung"
-      go_to_image_gallery_item: "Gehe zu Bild %{index}"

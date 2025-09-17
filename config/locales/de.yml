@@ -2075,9 +2075,6 @@ de:
         default_slideshow_mode: Vertikales Scrollen/Wischen
         phone_horizontal_slideshow_mode: Horizontales Wischen auf Phones
         slim_player_controls: Minimalistisch
-    public:
-      share_on_bluesky: Auf Bluesky teilen
-      share_on_threads: Auf Threads teilen
     cutoff_modes:
       none: "(Kein)"
   support:

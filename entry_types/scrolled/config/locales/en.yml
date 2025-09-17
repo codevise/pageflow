@@ -1437,6 +1437,3 @@ en:
       select_link_destination: "Select link destination"
       change_link_destination: "Change link destination"
       remove_link: "Remove link"
-    public:
-      image_gallery_pagination: "Image gallery pagination"
-      go_to_image_gallery_item: "Go to image %{index}"

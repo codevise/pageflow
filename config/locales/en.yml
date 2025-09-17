@@ -2066,9 +2066,6 @@ en:
         default_slideshow_mode: Vertical scoll/swipe
         phone_horizontal_slideshow_mode: Horizontal swipe on phone
         slim_player_controls: Minimal
-    public:
-      share_on_bluesky: Share on Bluesky
-      share_on_threads: Share on Threads
     cutoff_modes:
       none: "(None)"
   support:
