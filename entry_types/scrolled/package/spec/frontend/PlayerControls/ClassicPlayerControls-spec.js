@@ -11,6 +11,7 @@ import * as queries from 'support/roleQueriesExcludingInert';
 describe('ClassicPlayerControls', () => {
   useFakeTranslations({
     'pageflow_scrolled.public.player_controls.play': 'Play',
+    'pageflow_scrolled.public.player_controls.pause': 'Pause',
     'pageflow_scrolled.public.player_controls.quality': 'Quality'
   });
 
@@ -74,5 +75,65 @@ describe('ClassicPlayerControls', () => {
     );
 
     expect(queryByRole('button', {name: 'Play'})).toBeNull();
+  });
+
+  it('moves focus from big play button to control bar pause button on play', () => {
+    const {getByRole, rerender} = renderInEntry(
+      <ClassicPlayerControls unplayed={true} />,
+      {queries}
+    );
+
+    getByRole('button', {name: 'Play'}).focus();
+
+    rerender(
+      <ClassicPlayerControls unplayed={false} isPlaying={true} />,
+      {queries}
+    );
+
+    expect(getByRole('button', {name: 'Pause'})).toHaveFocus();
+  });
+
+  it('does not move focus on play if big play button does not have focus', () => {
+    const {getByRole, rerender} = renderInEntry(
+      <ClassicPlayerControls unplayed={true} />,
+      {queries}
+    );
+
+    rerender(
+      <ClassicPlayerControls unplayed={false} isPlaying={true} />,
+      {queries}
+    );
+
+    expect(getByRole('button', {name: 'Pause'})).not.toHaveFocus();
+  });
+
+  it('moves focus from control bar pause button to big play button on ended', () => {
+    const {getByRole, rerender} = renderInEntry(
+      <ClassicPlayerControls unplayed={false} isPlaying={true} />,
+      {queries}
+    );
+
+    getByRole('button', {name: 'Pause'}).focus();
+
+    rerender(
+      <ClassicPlayerControls unplayed={true} />,
+      {queries}
+    );
+
+    expect(getByRole('button', {name: 'Play'})).toHaveFocus();
+  });
+
+  it('does not move focus on ended if control bar play button does not have focus', () => {
+    const {getByRole, rerender} = renderInEntry(
+      <ClassicPlayerControls unplayed={false} isPlaying={true} />,
+      {queries}
+    );
+
+    rerender(
+      <ClassicPlayerControls unplayed={true} />,
+      {queries}
+    );
+
+    expect(getByRole('button', {name: 'Play'})).not.toHaveFocus();
   });
 });

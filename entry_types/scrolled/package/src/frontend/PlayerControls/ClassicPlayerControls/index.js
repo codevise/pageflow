@@ -9,18 +9,21 @@ import {QualityMenu} from './QualityMenu';
 import {TextTracksMenu} from '../TextTracksMenu';
 import {InlineFileRights} from '../../InlineFileRights';
 import {useDarkBackground} from '../../backgroundColor';
+import {useFocusHandoff, usePassFocus} from './useFocusHandoff';
 
 import styles from '../ControlBar.module.css';
 
 export function ClassicPlayerControls(props) {
   const darkBackground = useDarkBackground();
+  const [bigPlayButtonFocusHandoff, controlBarFocusHandoff] = useFocusHandoff();
 
   return (
     <div className={classNames(styles.container,
                                {[styles.sticky]: props.sticky})}>
       {props.children}
       {!props.standAlone &&
-       <BigPlayPauseButton unplayed={props.unplayed}
+       <BigPlayPauseButton focusHandoff={bigPlayButtonFocusHandoff}
+                           unplayed={props.unplayed}
                            isPlaying={props.isPlaying}
                            lastControlledVia={props.lastControlledVia}
                            hidden={props.hideBigPlayButton}
@@ -28,29 +31,34 @@ export function ClassicPlayerControls(props) {
                            hideCursor={props.isPlaying && props.inactive}
                            onClick={props.onPlayerClick} />}
       {!props.hideControlBar &&
-       renderControlBar(props, darkBackground)}
+       <ControlBar {...props}
+                   darkBackground={darkBackground}
+                   focusHandoff={controlBarFocusHandoff} />}
     </div>
   );
 }
 
-function renderControlBar(props, darkBackground) {
+function ControlBar({darkBackground, focusHandoff, ...props}) {
   const hidden = (!props.standAlone && props.unplayed) || props.fadedOut;
   const inactive = (props.isPlaying && props.inactive);
   const fadedOut = hidden || inactive;
+
+  const focusHandoffRef = usePassFocus(hidden, focusHandoff);
 
   return (
     <div onFocus={props.onFocus}
          onBlur={props.onBlur}
          onMouseEnter={props.onMouseEnter}
          onMouseLeave={props.onMouseLeave}
-         inert={hidden ? 'true' : undefined}
          className={classNames(styles.controlBarContainer,
                                darkBackground ? styles.darkBackground : styles.lightBackground,
                                {
                                  [styles.inset]: !props.standAlone,
                                  [styles.fadedOut]: fadedOut
-                               })}>
-      <div className={styles.controlBarInner}>
+         })}>
+      <div ref={focusHandoffRef}
+           inert={hidden ? 'true' : undefined}
+           className={styles.controlBarInner}>
         <PlayPauseButton isPlaying={props.isPlaying}
                          play={props.play}
                          pause={props.pause}/>

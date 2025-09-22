@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import styles from './BigPlayPauseButton.module.css'
 import {ThemeIcon} from '../../ThemeIcon';
 import {useI18n} from '../../i18n';
+import {usePassFocus} from './useFocusHandoff';
 
 export function BigPlayPauseButton(props) {
   const {t} = useI18n();
@@ -16,6 +17,8 @@ export function BigPlayPauseButton(props) {
 
   const inert = props.hidden || !props.unplayed;
 
+  const ref = usePassFocus(inert, props.focusHandoff);
+
   return (
     <div className={classNames(styles.container,
                                {[styles.hideCursor]: props.hideCursor,
@@ -24,6 +27,7 @@ export function BigPlayPauseButton(props) {
                                 [styles.pointerCursor]: !!props.onClick})}
          onClick={props.onClick}>
       <button key={props.isPlaying}
+              ref={ref}
               className={c}
               aria-label={t('pageflow_scrolled.public.player_controls.play')}
               inert={inert ? 'true' : undefined}>
