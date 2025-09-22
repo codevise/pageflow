@@ -14,7 +14,6 @@ import styles from '../ControlBar.module.css';
 
 export function ClassicPlayerControls(props) {
   const darkBackground = useDarkBackground();
-  const fadedOut = (!props.standAlone && props.unplayed) || (props.isPlaying && props.inactive) || props.fadedOut;
 
   return (
     <div className={classNames(styles.container,
@@ -29,23 +28,28 @@ export function ClassicPlayerControls(props) {
                            hideCursor={props.isPlaying && props.inactive}
                            onClick={props.onPlayerClick} />}
       {!props.hideControlBar &&
-       renderControlBar(props, darkBackground, fadedOut)}
+       renderControlBar(props, darkBackground)}
     </div>
   );
 }
 
-function renderControlBar(props, darkBackground, fadedOut) {
+function renderControlBar(props, darkBackground) {
+  const hidden = (!props.standAlone && props.unplayed) || props.fadedOut;
+  const inactive = (props.isPlaying && props.inactive);
+  const fadedOut = hidden || inactive;
+
   return (
     <div onFocus={props.onFocus}
          onBlur={props.onBlur}
          onMouseEnter={props.onMouseEnter}
          onMouseLeave={props.onMouseLeave}
+         inert={hidden ? 'true' : undefined}
          className={classNames(styles.controlBarContainer,
                                darkBackground ? styles.darkBackground : styles.lightBackground,
                                {
                                  [styles.inset]: !props.standAlone,
                                  [styles.fadedOut]: fadedOut
-         })}>
+                               })}>
       <div className={styles.controlBarInner}>
         <PlayPauseButton isPlaying={props.isPlaying}
                          play={props.play}

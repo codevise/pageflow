@@ -6,6 +6,7 @@ import '@testing-library/jest-dom/extend-expect'
 import {fireEvent} from '@testing-library/react'
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {renderInEntry} from 'support';
+import * as queries from 'support/roleQueriesExcludingInert';
 
 describe('ClassicPlayerControls', () => {
   useFakeTranslations({
@@ -30,19 +31,48 @@ describe('ClassicPlayerControls', () => {
     expect(listener).toHaveBeenCalledWith('fullhd');
   });
 
-  it('renders control bar by default', () => {
-    const {queryByLabelText} = renderInEntry(
-      <ClassicPlayerControls />
+  it('renders play button when unplayed', () => {
+    const {queryByRole} = renderInEntry(
+      <ClassicPlayerControls unplayed={true} />,
+      {queries}
     );
 
-    expect(queryByLabelText('Play')).not.toBeNull();
+    expect(queryByRole('button', {name: 'Play'})).not.toBeNull();
+  });
+
+  it('renders control bar by default', () => {
+    const {getByRole} = renderInEntry(
+      <ClassicPlayerControls unplayed={false} />,
+      {queries}
+    );
+
+    expect(getByRole('button', {name: 'Play'})).not.toBeNull();
   });
 
   it('supports hiding control bar', () => {
-    const {queryByLabelText} = renderInEntry(
-      <ClassicPlayerControls hideControlBar={true} />
+    const {queryByRole} = renderInEntry(
+      <ClassicPlayerControls unplayed={false} hideControlBar={true} />,
+      {queries}
     );
 
-    expect(queryByLabelText('Play')).toBeNull();
+    expect(queryByRole('button', {name: 'Play'})).toBeNull();
+  });
+
+  it('renders play button initially even when hiding control bar', () => {
+    const {getByRole} = renderInEntry(
+      <ClassicPlayerControls unplayed={true} hideControlBar={true} />,
+      {queries}
+    );
+
+    expect(getByRole('button', {name: 'Play'})).not.toBeNull();
+  });
+
+  it('supports hiding big play button shown initially', () => {
+    const {queryByRole} = renderInEntry(
+      <ClassicPlayerControls unplayed={true} hideBigPlayButton={true} />,
+      {queries}
+    );
+
+    expect(queryByRole('button', {name: 'Play'})).toBeNull();
   });
 });
