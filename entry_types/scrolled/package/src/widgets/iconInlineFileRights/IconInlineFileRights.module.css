@@ -34,6 +34,7 @@
   color: currentColor;
   cursor: pointer;
   position: relative;
+  outline-offset: -5px;
 }
 
 .button,

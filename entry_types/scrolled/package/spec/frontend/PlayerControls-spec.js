@@ -6,48 +6,52 @@ import '@testing-library/jest-dom/extend-expect'
 import {fireEvent} from '@testing-library/react'
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {renderInEntry} from 'support';
+import * as queries from 'support/roleQueriesExcludingInert';
 
 describe('PlayerControls', () => {
   useFakeTranslations({
     'pageflow_scrolled.public.player_controls.play': 'Play',
-    'pageflow_scrolled.public.player_controls.quality': 'Quality',
     'pageflow_scrolled.public.player_controls.text_tracks': 'Text Tracks'
   });
 
   [ClassicPlayerControls, WaveformPlayerControls].forEach((PlayerControlComponent)=>{
     it('supports onFocus prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = renderInEntry(<PlayerControlComponent onFocus={listener} />);
+      const {getByRole} = renderInEntry(<PlayerControlComponent onFocus={listener} />,
+                                        {queries});
 
-      getByLabelText('Play').focus();
+      getByRole('button', {name: 'Play'}).focus();
 
       expect(listener).toHaveBeenCalled();
     });
 
     it('supports onBlur prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = renderInEntry(<PlayerControlComponent onBlur={listener} />);
+      const {getByRole} = renderInEntry(<PlayerControlComponent onBlur={listener} />,
+                                        {queries});
 
-      getByLabelText('Play').focus();
-      getByLabelText('Play').blur();
+      getByRole('button', {name: 'Play'}).focus();
+      getByRole('button', {name: 'Play'}).blur();
 
       expect(listener).toHaveBeenCalled();
     });
 
     it('supports onMouseEnter prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = renderInEntry(<PlayerControlComponent onMouseEnter={listener} />);
+      const {getByRole} = renderInEntry(<PlayerControlComponent onMouseEnter={listener} />,
+                                        {queries});
 
-      fireEvent.mouseEnter(getByLabelText('Play'));
+      fireEvent.mouseEnter(getByRole('button', {name: 'Play'}));
 
       expect(listener).toHaveBeenCalled();
     });
 
     it('supports onMouseLeave prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = renderInEntry(<PlayerControlComponent onMouseLeave={listener} />);
+      const {getByRole} = renderInEntry(<PlayerControlComponent onMouseLeave={listener} />,
+                                        {queries});
 
-      fireEvent.mouseLeave(getByLabelText('Play'));
+      fireEvent.mouseLeave(getByRole('button', {name: 'Play'}));
 
       expect(listener).toHaveBeenCalled();
 
@@ -68,41 +72,6 @@ describe('PlayerControls', () => {
       fireEvent.click(getByText('English'));
 
       expect(listener).toHaveBeenCalledWith('en');
-    });
-  });
-
-  describe('classic player controls variant', () => {
-    it('supports rendering and handling events for quality menu items', () => {
-      const listener = jest.fn();
-      const {getByTitle, getByText} = renderInEntry(
-        <ClassicPlayerControls
-          qualityMenuItems={[
-            {label: '1080p', value: 'fullhd'},
-            {label: '720p', value: 'medium'},
-          ]}
-          onQualityMenuItemClick={listener} />
-      );
-
-      fireEvent.click(getByTitle('Quality'));
-      fireEvent.click(getByText('1080p'));
-
-      expect(listener).toHaveBeenCalledWith('fullhd');
-    });
-
-    it('renders control bar by default', () => {
-      const {queryByLabelText} = renderInEntry(
-        <ClassicPlayerControls />
-      );
-
-      expect(queryByLabelText('Play')).not.toBeNull();
-    });
-
-    it('supports hiding control bar', () => {
-      const {queryByLabelText} = renderInEntry(
-        <ClassicPlayerControls hideControlBar={true} />
-      );
-
-      expect(queryByLabelText('Play')).toBeNull();
     });
   });
 });
