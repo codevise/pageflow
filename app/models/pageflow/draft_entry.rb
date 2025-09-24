@@ -31,11 +31,13 @@ module Pageflow
     def create_file!(file_type, attributes)
       check_foreign_key_custom_attributes(file_type.custom_attributes, attributes)
 
-      file = file_type.model.create!(
-        attributes
-          .except(:configuration, :display_name)
-          .merge(file_name: generate_file_name(attributes[:display_name]))
-      ) { |f| f.entry = entry }
+      file_attributes = attributes.except(:configuration, :display_name)
+
+      if file_name_attribute?(file_type)
+        file_attributes[:file_name] = generate_file_name(attributes[:display_name])
+      end
+
+      file = file_type.model.create!(file_attributes) { |f| f.entry = entry }
 
       usage = revision.file_usages.create!(file:,
                                            configuration: attributes[:configuration],
@@ -113,6 +115,10 @@ module Pageflow
                 "Custom attribute #{attribute_name} references #{file_type} #{file_id} " \
                 'which is not used in this revsion')
         end
+    end
+
+    def file_name_attribute?(file_type)
+      file_type.model.new.respond_to?(:file_name=)
     end
 
     def generate_file_name(file_name)

@@ -291,6 +291,39 @@ module Pageflow
         expect(response.status).to eq(200)
       end
 
+      it 'allows to create generated file without file_name attribute' do
+        pageflow_configure do |config|
+          TestFileType.register(config,
+                                model: Pageflow::TestGeneratedFile,
+                                custom_attributes: {
+                                  url: {
+                                    permitted_create_param: true
+                                  }
+                                })
+        end
+
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'pageflow_test_generated_files',
+               test_generated_file: {
+                 url: 'http://example.com/generated'
+               },
+               no_upload: true
+             },
+             format: 'json')
+
+        file = entry.draft.find_files(Pageflow::TestGeneratedFile).last
+
+        expect(file.url).to eq('http://example.com/generated')
+        expect(response.status).to eq(200)
+      end
+
       it 'creates file for entry' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
