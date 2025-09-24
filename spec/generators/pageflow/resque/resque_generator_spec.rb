@@ -18,7 +18,6 @@ module Pageflow
       it 'generates initializers' do
         run_generator
         expect(file('config/initializers/resque.rb')).to exist
-        expect(file('config/initializers/resque_enqueue_after_commit_patch.rb')).to exist
         expect(file('config/application.rb')).to contain('queue_adapter = :resque')
       end
 

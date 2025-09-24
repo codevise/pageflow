@@ -27,8 +27,6 @@ module PageflowScrolled
         c.widget_types.register(ReactWidgetType.new(name: 'consentBar',
                                                     role: 'consent'),
                                 default: true)
-
-
         c.widget_types.register(ReactWidgetType.new(name: 'iconInlineFileRights',
                                                     role: 'inlineFileRights'),
                                 default: true)
