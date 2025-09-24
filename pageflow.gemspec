@@ -152,8 +152,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'resque', ['>= 1.25', '< 3']
   s.add_development_dependency 'resque-scheduler', '~> 4.10'
 
-  s.add_development_dependency 'ar_after_transaction', '~> 1.0.0'
-
   s.add_development_dependency 'redis', '~> 3.0'
   s.add_development_dependency 'redis-namespace', '~> 1.5'
 
