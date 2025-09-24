@@ -88,7 +88,7 @@ copy_file('test_theme_preview.png',
 
 # Add fallback favicon used by browsers to prevent console log warnings
 
-copy_file('favicon.ico', 'public/favicon.ico')
+copy_file('favicon.ico', 'public/favicon.ico', force: true)
 
 # Normally theme stylesheets are added to the precompile list
 # automatically. Since the test_theme is not yet registered when the
