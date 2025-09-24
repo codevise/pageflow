@@ -164,6 +164,21 @@ module Pageflow
                                    related_image_file_id: image_file.id)
         }.not_to raise_error
       end
+
+      it 'creates generated file without requiring file_name attribute' do
+        pageflow_configure do |config|
+          TestFileType.register(config, model: Pageflow::TestGeneratedFile)
+        end
+        test_file_type = Pageflow.config.file_types.find_by_model!(TestGeneratedFile)
+
+        entry = create(:entry)
+        draft_entry = DraftEntry.new(entry)
+
+        used_file = draft_entry.create_file!(test_file_type,
+                                             url: 'http://example.com/generated')
+
+        expect(used_file.url).to eq('http://example.com/generated')
+      end
     end
 
     describe '#use_file' do

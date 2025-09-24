@@ -107,6 +107,7 @@ timestamp = (latest_migration || Time.now.utc.strftime('%Y%m%d%H%M%S').to_i) + 1
 [
   'create_test_uploadable_file.rb',
   'create_test_multi_attachment_file.rb',
+  'create_test_generated_file.rb',
   'create_test_revision_components.rb',
   'add_custom_fields.rb'
 ].each_with_index do |migration, index|
