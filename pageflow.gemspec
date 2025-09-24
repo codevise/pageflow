@@ -2,7 +2,6 @@ lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'pageflow/version'
-require File.expand_path('lib/pageflow/rails_version', File.dirname(__FILE__))
 
 Gem::Specification.new do |s|
   s.name        = 'pageflow'
@@ -30,7 +29,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 3.2'
 
-  s.add_dependency 'rails', Pageflow::RailsVersion.detect
+  s.add_dependency 'rails', ['>= 7.1.2', '< 7.3']
 
   # Framework for admin interface
   s.add_dependency 'activeadmin', '~> 3.0'
