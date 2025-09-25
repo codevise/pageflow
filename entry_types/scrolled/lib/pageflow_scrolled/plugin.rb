@@ -50,8 +50,7 @@ module PageflowScrolled
         c.features.register('icon_scroll_indicator') do |feature_config|
           feature_config.widget_types.register(
             ReactWidgetType.new(name: 'iconScrollIndicator',
-                                role: 'scrollIndicator'),
-            default: true
+                                role: 'scrollIndicator')
           )
         end
 
