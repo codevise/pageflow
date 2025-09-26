@@ -6,8 +6,8 @@ import Backbone from 'backbone';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent} from '@testing-library/dom';
-import {useFakeTranslations} from 'pageflow/testHelpers';
-import {useReactBasedBackboneViews, factories} from 'support';
+import {useFakeTranslations, renderBackboneView as render} from 'pageflow/testHelpers';
+import {factories} from 'support';
 
 describe('EditAreaDialogView', () => {
   useFakeTranslations({
@@ -19,8 +19,6 @@ describe('EditAreaDialogView', () => {
     'pageflow_scrolled.editor.content_elements.hotspots.edit_area_dialog.indicator_title': 'Drag to position indicator',
     'pageflow_scrolled.editor.content_elements.hotspots.edit_area_dialog.save': 'Save'
   });
-
-  const {render} = useReactBasedBackboneViews();
 
   it('renders default image', () => {
     const imageFile = factories.imageFile({

@@ -1,7 +1,7 @@
 import {ConfirmableFileItemView} from 'pageflow/editor';
 import Backbone from 'backbone';
-import {within} from '@testing-library/dom';
 import * as support from '$support';
+import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 describe('ConfirmableFileItemView', () => {
   it('displays file title', () => {
@@ -12,9 +12,7 @@ describe('ConfirmableFileItemView', () => {
       selectedFiles: new Backbone.Collection()
     });
 
-    view.render();
-
-    const {getByText} = within(view.el);
+    const {getByText} = render(view);
 
     expect(getByText('original.mp4')).not.toBeNull();
   });

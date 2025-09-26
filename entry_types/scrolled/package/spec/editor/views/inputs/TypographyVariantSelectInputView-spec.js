@@ -8,13 +8,11 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {
   factories,
-  normalizeSeed,
-  useReactBasedBackboneViews
+  normalizeSeed
 } from 'support';
+import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 describe('TypographyVariantSelectInputView', () => {
-  const {render} = useReactBasedBackboneViews();
-
   it('renders items with previews', async () => {
     frontend.contentElementTypes.register('test', {
       component: function({configuration}) {

@@ -1,8 +1,8 @@
 import {ChapterItemView} from 'editor/views/ChapterItemView';
 
-import {useEditorGlobals, useFakeXhr, useReactBasedBackboneViews} from 'support';
+import {useEditorGlobals, useFakeXhr} from 'support';
 import {screen} from '@testing-library/dom';
-import {useFakeTranslations} from 'pageflow/testHelpers';
+import {useFakeTranslations, renderBackboneView as render} from 'pageflow/testHelpers';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('ChapterItemView', () => {
@@ -16,8 +16,6 @@ describe('ChapterItemView', () => {
   });
 
   const {createEntry} = useEditorGlobals();
-  const {render} = useReactBasedBackboneViews();
-
   it('renders chapter link', async () => {
     const entry = createEntry({
       chapters: [

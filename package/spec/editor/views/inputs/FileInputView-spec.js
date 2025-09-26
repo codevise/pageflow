@@ -3,7 +3,7 @@ import Backbone from 'backbone';
 
 import * as support from '$support';
 import {DropDownButton} from '$support/dominos/editor';
-import {within} from '@testing-library/dom';
+import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 describe('FileInputView', () => {
   let testContext;
@@ -24,8 +24,7 @@ describe('FileInputView', () => {
       propertyName: 'file_id'
     });
 
-    view.render();
-    const {getByText} = within(view.el);
+    const {getByText} = render(view);
 
     expect(getByText('image.png')).not.toBeNull();
   });

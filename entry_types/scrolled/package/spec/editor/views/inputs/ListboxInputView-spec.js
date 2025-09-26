@@ -7,7 +7,7 @@ import Backbone from 'backbone';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {useFakeTranslations} from 'pageflow/testHelpers';
-import {useReactBasedBackboneViews} from 'support';
+import {renderReactBasedBackboneView as render} from 'pageflow-scrolled/testHelpers';
 
 describe('ListboxInputView', () => {
   useFakeTranslations({
@@ -17,8 +17,6 @@ describe('ListboxInputView', () => {
     'some_attributes.variant.values.default': 'Default',
     'some_attributes.variant.values.large': 'Large'
   });
-
-  const {render} = useReactBasedBackboneViews();
 
   it('renders radio inputs for values', async () => {
     const model = new Backbone.Model({variant: 'large'});

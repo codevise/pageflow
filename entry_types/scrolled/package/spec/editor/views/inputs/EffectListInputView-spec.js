@@ -2,10 +2,9 @@ import {EffectListInputView} from 'editor/views/inputs/EffectListInputView';
 
 import Backbone from 'backbone';
 
-import {within} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import {useFakeTranslations} from 'pageflow/testHelpers';
+import {renderBackboneView as render, useFakeTranslations} from 'pageflow/testHelpers';
 
 describe('EffectListInputView', () => {
   useFakeTranslations({
@@ -31,7 +30,7 @@ describe('EffectListInputView', () => {
     const view = new EffectListInputView({model, propertyName: 'effects'});
 
     const user = userEvent.setup();
-    const {getByRole} = within(view.render().el);
+    const {getByRole} = render(view);
     await user.click(getByRole('button', {name: 'Add effect'}));
     await user.click(getByRole('link', {name: 'Blur'}));
 
@@ -46,7 +45,7 @@ describe('EffectListInputView', () => {
     const view = new EffectListInputView({model, propertyName: 'effects'});
 
     const user = userEvent.setup();
-    const {getByRole} = within(view.render().el);
+    const {getByRole} = render(view);
     await user.click(getByRole('button', {name: 'Remove effect'}));
 
     expect(model.get('effects')).toEqual([])

@@ -14,8 +14,6 @@ describe('pageflow.ColorInputView', () => {
     testContext = {};
   });
 
-  support.useHtmlSandbox(() => testContext);
-
   beforeEach(() => {
     testContext.clock = sinon.useFakeTimers();
   });
@@ -61,8 +59,7 @@ describe('pageflow.ColorInputView', () => {
     });
 
     var colorInput = ColorInput.render(
-      colorInputView,
-      {appendTo: testContext.htmlSandbox}
+      colorInputView
     );
     colorInput.fillIn('#bbb', testContext.clock);
 
@@ -79,8 +76,7 @@ describe('pageflow.ColorInputView', () => {
     });
 
     var colorInput = ColorInput.render(
-      colorInputView,
-      {appendTo: testContext.htmlSandbox}
+      colorInputView
     );
     colorInput.fillIn('#bbb', testContext.clock);
 
@@ -96,8 +92,7 @@ describe('pageflow.ColorInputView', () => {
     });
 
     var colorInput = ColorInput.render(
-      colorInputView,
-      {appendTo: testContext.htmlSandbox}
+      colorInputView
     );
 
     expect(colorInput.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
@@ -128,8 +123,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       colorInput.fillIn('#cdcdcd', testContext.clock);
 
@@ -145,8 +139,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       colorInput.fillIn('#ababab', testContext.clock);
 
@@ -164,8 +157,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       colorInput.fillIn('#cdcdcd', testContext.clock);
 
@@ -182,8 +174,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
 
       expect(colorInput.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
@@ -199,8 +190,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
 
       expect(colorInput.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
@@ -232,8 +222,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       colorInput.fillIn('#cdcdcd', testContext.clock);
 
@@ -249,8 +238,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       colorInput.fillIn('#ababab', testContext.clock);
 
@@ -268,8 +256,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       colorInput.fillIn('#cdcdcd', testContext.clock);
 
@@ -286,8 +273,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
 
       expect(colorInput.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
@@ -344,8 +330,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       model.set('default_color', '#aaaaaa');
       colorInput.fillIn('#aaaaaa', testContext.clock);
@@ -364,8 +349,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       model.set('default_color', '#aaaaaa');
       colorInput.fillIn('#cdcdcd', testContext.clock);
@@ -384,8 +368,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       model.set('default_color', '#cdcdcd');
       colorInput.fillIn('#cdcdcd', testContext.clock);
@@ -447,8 +430,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       model.set('light', false);
       colorInput.fillIn('#010101', testContext.clock);
@@ -468,8 +450,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       model.set('light', false);
       colorInput.fillIn('#fefefe', testContext.clock);
@@ -489,8 +470,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
       model.set('light', false);
       colorInput.fillIn('#010101', testContext.clock);
@@ -508,8 +488,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
 
       expect(colorInput.$el[0]).toHaveStyle('--placeholder-color: #fff');
@@ -527,8 +506,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
 
       expect(colorInput.$el[0]).toHaveStyle('--placeholder-color: #fff');
@@ -544,8 +522,7 @@ describe('pageflow.ColorInputView', () => {
       });
 
       var colorInput = ColorInput.render(
-        colorInputView,
-        {appendTo: testContext.htmlSandbox}
+        colorInputView
       );
 
       model.set('invert', true);

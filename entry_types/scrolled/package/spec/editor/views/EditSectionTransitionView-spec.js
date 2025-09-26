@@ -1,10 +1,9 @@
 import {EditSectionTransitionView} from 'editor/views/EditSectionTransitionView';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
-import {useFakeTranslations, setupGlobals} from 'pageflow/testHelpers';
+import {renderBackboneView as render, useFakeTranslations, setupGlobals} from 'pageflow/testHelpers';
 import {normalizeSeed, factories, useFakeXhr} from 'support';
 import 'editor/config';
 
-import {within} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -42,7 +41,7 @@ describe('EditSectionTransitionView', () => {
       entry
     });
 
-    const {getByLabelText} = within(view.render().el);
+    const {getByLabelText} = render(view);
 
     expect(getByLabelText('Fade background and contents')).toBeEnabled();
     expect(getByLabelText('Fade background only')).toBeEnabled();
@@ -63,7 +62,7 @@ describe('EditSectionTransitionView', () => {
       entry
     });
 
-    const {getByLabelText} = within(view.render().el);
+    const {getByLabelText} = render(view);
 
     expect(getByLabelText('Fade background and contents')).toBeDisabled();
     expect(getByLabelText('Fade background only')).toBeDisabled();
@@ -84,7 +83,7 @@ describe('EditSectionTransitionView', () => {
       entry
     });
 
-    const {getByLabelText} = within(view.render().el);
+    const {getByLabelText} = render(view);
 
     expect(getByLabelText('Fade background and contents')).toBeEnabled();
     expect(getByLabelText('Fade background only')).toBeEnabled();
@@ -106,7 +105,7 @@ describe('EditSectionTransitionView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByLabelText} = within(view.render().el);
+    const {getByLabelText} = render(view);
     await user.click(getByLabelText('Fade background and contents'));
     await user.click(getByLabelText('Before After'));
     await user.click(getByLabelText('Fade'));
@@ -140,7 +139,7 @@ describe('EditSectionTransitionView', () => {
       entry
     });
 
-    const {getByLabelText} = within(view.render().el);
+    const {getByLabelText} = render(view);
 
     expect(getByLabelText('Use Scroll by default')).toBeChecked();
   });
@@ -159,7 +158,7 @@ describe('EditSectionTransitionView', () => {
       entry
     });
 
-    const {getByLabelText} = within(view.render().el);
+    const {getByLabelText} = render(view);
 
     expect(getByLabelText('Use Fade background only by default')).toBeChecked();
   });
@@ -179,7 +178,7 @@ describe('EditSectionTransitionView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByTitle} = within(view.render().el);
+    const {getByTitle} = render(view);
     await user.click(getByTitle('Use Before After by default'));
 
     expect(entry.metadata.configuration.get('defaultTransition')).toEqual('beforeAfter');
