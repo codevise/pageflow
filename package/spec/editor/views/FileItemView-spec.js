@@ -2,7 +2,7 @@ import {FileItemView, FileMetaDataItemValueView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {FileMetaDataTable} from '$support/dominos/editor';
-import {within} from '@testing-library/dom';
+import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 describe('FileItemView', () => {
   support.useFakeTranslations({
@@ -16,7 +16,7 @@ describe('FileItemView', () => {
 
     const view = new FileItemView({model: file});
 
-    const {getByText} = within(view.render().el);
+    const {getByText} = render(view);
 
     expect(getByText('original.png')).not.toBeNull();
   });
@@ -30,8 +30,7 @@ describe('FileItemView', () => {
 
     const view = new FileItemView({model: file});
 
-    view.render();
-    const {getByRole} = within(view.el);
+    const {getByRole} = render(view);
     const link = getByRole('link', {name: 'Download'});
 
     expect(link.getAttribute('href'))
@@ -87,7 +86,7 @@ describe('FileItemView', () => {
       metaDataAttributes: []
     });
 
-    const {getByRole} = within(fileItemView.render().el);
+    const {getByRole} = render(fileItemView);
 
     var thumbnailButton = getByRole('button', {name: 'Show details'});
     var detailsDiv = getByRole('table', {hidden: true}).closest('.details');

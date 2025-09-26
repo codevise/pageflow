@@ -6,7 +6,7 @@ import {EditFileView, editor} from 'pageflow/editor';
 import {state} from '$state';
 
 import * as support from '$support';
-import {useFakeTranslations} from 'pageflow/testHelpers';
+import {useFakeTranslations, renderBackboneView as render} from 'pageflow/testHelpers';
 import sinon from 'sinon';
 import {within} from '@testing-library/dom';
 import {ConfigurationEditorTab} from '$support/dominos/ui';
@@ -75,8 +75,7 @@ describe('EditFileView', () => {
       entry: new Backbone.Model()
     });
 
-    view.render();
-    const {queryByLabelText} = within(view.el);
+    const {queryByLabelText} = render(view);
 
     expect(queryByLabelText('Source URL')).toBeNull();
   });
@@ -93,7 +92,7 @@ describe('EditFileView', () => {
       entry: new Backbone.Model()
     });
 
-    view.render();
+    render(view);
     const configurationEditor = ConfigurationEditorTab.find(view);
 
     expect(configurationEditor.inputLabels()).toEqual(expect.arrayContaining(['Entry Label']));
@@ -111,7 +110,7 @@ describe('EditFileView', () => {
       entry: new Backbone.Model()
     });
 
-    view.render();
+    render(view);
     const configurationEditor = ConfigurationEditorTab.find(view);
 
     expect(configurationEditor.inputLabels()).toEqual(expect.arrayContaining(['Fallback Label']));
@@ -126,8 +125,7 @@ describe('EditFileView', () => {
       entry: new Backbone.Model()
     });
 
-    view.render();
-    const {queryByLabelText} = within(view.el);
+    const {queryByLabelText} = render(view);
 
     expect(queryByLabelText('Source URL')).not.toBeNull();
   });
@@ -142,8 +140,7 @@ describe('EditFileView', () => {
       entry: new Backbone.Model()
     });
 
-    view.render();
-    const {getByLabelText} = within(view.el);
+    const {getByLabelText} = render(view);
     const {getByRole} = within(getByLabelText('License'))
 
     expect(getByRole('option', {name: 'CC0'})).not.toBeNull();
@@ -161,8 +158,7 @@ describe('EditFileView', () => {
       entry: new Backbone.Model()
     });
 
-    view.render();
-    const {queryByLabelText} = within(view.el);
+    const {queryByLabelText} = render(view);
 
     expect(queryByLabelText('Source URL')).toBeNull();
   });
@@ -177,8 +173,7 @@ describe('EditFileView', () => {
       entry: new Backbone.Model()
     });
 
-    view.render();
-    const {getByRole} = within(view.el);
+    const {getByRole} = render(view);
     const link = getByRole('link', {name: 'Download'});
 
     expect(link.getAttribute('href')).toBe('/path/file.png?download=My%20File');

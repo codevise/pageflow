@@ -1,8 +1,9 @@
 import {FilteredFilesView, editor} from 'pageflow/editor';
 import * as support from '$support';
-import {within, waitFor} from '@testing-library/dom';
+import {waitFor} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -34,8 +35,7 @@ describe('FilteredFilesView', () => {
       filterName: 'with_projection'
     });
 
-    view.render();
-    const {getByText} = within(view.el);
+    const {getByText} = render(view);
 
     expect(getByText('Entry Type Filter')).not.toBeNull();
     expect(getByText('Entry Type Blank')).not.toBeNull();
@@ -53,21 +53,15 @@ describe('FilteredFilesView', () => {
       filterName: 'with_projection'
     });
 
-    view.render();
-    const {getByText} = within(view.el);
+    const {getByText} = render(view);
 
     expect(getByText('Fallback Filter')).not.toBeNull();
     expect(getByText('Fallback Blank')).not.toBeNull();
   });
 
-  let testContext;
-
   beforeEach(() => {
-    testContext = {};
     editor.router = {navigate: jest.fn()};
   });
-
-  const {render} = support.useHtmlSandbox(() => testContext);
 
   it('filters files by name as user types', async () => {
     const fileTypes = f.fileTypes(function() { this.withImageFileType(); });

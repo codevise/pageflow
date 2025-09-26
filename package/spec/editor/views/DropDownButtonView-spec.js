@@ -3,7 +3,7 @@ import Backbone from 'backbone';
 
 import {DropDownButtonView} from 'pageflow/editor';
 
-import {within} from '@testing-library/dom';
+import {renderBackboneView as render} from 'pageflow/testHelpers';
 import sinon from 'sinon';
 
 describe('DropDownButtonView', () => {
@@ -16,7 +16,7 @@ describe('DropDownButtonView', () => {
       ])
     });
 
-    const {getByTitle} = within(dropDownButtonView.render().el);
+    const {getByTitle} = render(dropDownButtonView);
 
     expect(getByTitle('Some title')).not.toBeNull();
   });

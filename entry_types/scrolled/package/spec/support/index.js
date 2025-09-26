@@ -6,4 +6,3 @@ export * from './scrollPositionLifecycle';
 export * from './tick';
 export * from './useFakeXhr';
 export * from './useEditorGlobals';
-export * from './reactBasedBackboneViews';

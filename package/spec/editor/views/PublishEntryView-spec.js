@@ -3,8 +3,7 @@ import {PublishEntryView} from 'pageflow/editor';
 import Backbone from 'backbone';
 import $ from 'jquery';
 
-import {useFakeTranslations} from 'pageflow/testHelpers';
-import {within} from '@testing-library/dom';
+import {useFakeTranslations, renderBackboneView as render} from 'pageflow/testHelpers';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -32,9 +31,7 @@ describe('PublishEntryView', () => {
       }
     });
 
-    view.render();
-
-    const {getByLabelText} = within(view.el);
+    const {getByLabelText} = render(view);
 
     expect(getByLabelText('Published until date')).toHaveValue('31.05.2022');
   });
@@ -52,9 +49,7 @@ describe('PublishEntryView', () => {
       }
     });
 
-    view.render();
-
-    const {getByLabelText} = within(view.el);
+    const {getByLabelText} = render(view);
 
     expect(getByLabelText('Published until date')).toHaveValue('01.07.2020');
   });
@@ -72,9 +67,7 @@ describe('PublishEntryView', () => {
       }
     });
 
-    view.render();
-
-    const {getByLabelText} = within(view.el);
+    const {getByLabelText} = render(view);
 
     expect(getByLabelText('Published until date')).toHaveValue('31.05.2022');
   });
@@ -93,7 +86,7 @@ describe('PublishEntryView', () => {
       config: {}
     });
 
-    const {getByLabelText} = within(view.render().el);
+    const {getByLabelText} = render(view);
 
     expect(getByLabelText('Set noindex')).toBeChecked();
   });
@@ -111,7 +104,7 @@ describe('PublishEntryView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByRole, getByLabelText} = within(view.render().el);
+    const {getByRole, getByLabelText} = render(view);
     await user.click(getByLabelText('Unlimited'));
     await user.click(getByRole('button', {name: 'Publish'}));
 
@@ -133,7 +126,7 @@ describe('PublishEntryView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByRole, getByLabelText} = within(view.render().el);
+    const {getByRole, getByLabelText} = render(view);
     await user.click(getByLabelText('Unlimited'));
     await user.click(getByLabelText('Set noindex'));
     await user.click(getByRole('button', {name: 'Publish'}));
