@@ -1,9 +1,8 @@
 import {SidebarEditAreaView} from 'contentElements/hotspots/editor/SidebarEditAreaView';
 import {AreasCollection} from 'contentElements/hotspots/editor/models/AreasCollection';
 
-import {ConfigurationEditor, Tabs, useFakeTranslations} from 'pageflow/testHelpers';
+import {ConfigurationEditor, Tabs, renderBackboneView as render, useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals, useFakeXhr} from 'support';
-import {within} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
 describe('SidebarEditAreaView', () => {
@@ -108,7 +107,7 @@ describe('SidebarEditAreaView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByText} = within(view.render().el);
+    const {getByText} = render(view);
 
     let configurationEditor = ConfigurationEditor.find(view);
     expect(configurationEditor.inputPropertyNames()).toContain('zoom');
@@ -148,7 +147,7 @@ describe('SidebarEditAreaView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByText} = within(view.render().el);
+    const {getByText} = render(view);
 
     let configurationEditor = ConfigurationEditor.find(view);
     expect(configurationEditor.inputPropertyNames()).not.toContain('zoom');

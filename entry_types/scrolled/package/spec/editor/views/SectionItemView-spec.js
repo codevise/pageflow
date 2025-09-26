@@ -1,8 +1,8 @@
 import {SectionItemView} from 'editor/views/SectionItemView';
 
-import {useEditorGlobals, useFakeXhr, useReactBasedBackboneViews} from 'support';
+import {useEditorGlobals, useFakeXhr} from 'support';
 import userEvent from '@testing-library/user-event';
-import {useFakeTranslations} from 'pageflow/testHelpers';
+import {useFakeTranslations, renderBackboneView as render} from 'pageflow/testHelpers';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('SectionItemView', () => {
@@ -17,8 +17,6 @@ describe('SectionItemView', () => {
   });
 
   const {createEntry} = useEditorGlobals();
-  const {render} = useReactBasedBackboneViews();
-
   it('offer menu item to hide and show section', async () => {
     const entry = createEntry({
       sections: [

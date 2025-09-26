@@ -2,10 +2,9 @@ import {StyleListInputView} from 'editor/views/inputs/StyleListInputView';
 
 import Backbone from 'backbone';
 
-import {within} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import {useFakeTranslations} from 'pageflow/testHelpers';
+import {renderBackboneView as render, useFakeTranslations} from 'pageflow/testHelpers';
 
 describe('StyleListInputView', () => {
   useFakeTranslations({
@@ -60,7 +59,7 @@ describe('StyleListInputView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByRole} = within(view.render().el);
+    const {getByRole} = render(view);
     await user.click(getByRole('button', {name: 'Add style'}));
     await user.click(getByRole('link', {name: 'Blur'}));
 
@@ -90,7 +89,7 @@ describe('StyleListInputView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByRole} = within(view.render().el);
+    const {getByRole} = render(view);
     await user.click(getByRole('button', {name: 'Remove style'}));
 
     expect(model.get('styles')).toEqual([])

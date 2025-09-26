@@ -1,7 +1,7 @@
 import {ExplorerFileItemView} from 'pageflow/editor';
 import Backbone from 'backbone';
-import {within} from '@testing-library/dom';
 import * as support from '$support';
+import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 describe('ExplorerFileItemView', () => {
   it('displays file title', () => {
@@ -11,9 +11,7 @@ describe('ExplorerFileItemView', () => {
       model: file,
       selection: new Backbone.Model()
     });
-    view.render();
-
-    const {getByText} = within(view.el);
+    const {getByText} = render(view);
 
     expect(getByText('original.mp4')).not.toBeNull();
   });

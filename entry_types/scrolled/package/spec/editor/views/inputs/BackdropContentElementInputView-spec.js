@@ -6,10 +6,9 @@ import {
   InsertContentElementDialogView
 } from 'editor/views/InsertContentElementDialogView';
 
-import {within} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import {useFakeTranslations} from 'pageflow/testHelpers';
+import {renderBackboneView as render, useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals, useFakeXhr} from 'support';
 
 describe('BackdropContentElementInputView', () => {
@@ -43,7 +42,7 @@ describe('BackdropContentElementInputView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByRole} = within(view.render().el);
+    const {getByRole} = render(view);
     await user.click(getByRole('button', {name: 'Add'}));
 
     expect(showDialog).toHaveBeenCalledWith({
@@ -77,7 +76,7 @@ describe('BackdropContentElementInputView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByRole} = within(view.render().el);
+    const {getByRole} = render(view);
     await user.click(getByRole('button', {name: 'Video'}));
 
     expect(navigate).toHaveBeenCalledWith('/scrolled/content_elements/5', {trigger: true});
@@ -106,7 +105,7 @@ describe('BackdropContentElementInputView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByRole} = within(view.render().el);
+    const {getByRole} = render(view);
     await user.click(getByRole('button', {name: 'Unset'}));
 
     expect(entry.contentElements.first().configuration.get('position')).toEqual('inline')
