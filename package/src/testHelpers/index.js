@@ -4,3 +4,4 @@ export * from './factories';
 export * from './fakeBrowserAgent';
 export * from './setupGlobals';
 export * from './useFakeTranslations';
+export * from './renderBackboneView';

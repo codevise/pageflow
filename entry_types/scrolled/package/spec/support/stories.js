@@ -11,7 +11,7 @@ import {browser, Consent} from 'pageflow/frontend';
 import '../../src/widgets/iconInlineFileRights';
 import '../../src/widgets/textInlineFileRights';
 
-import {normalizeSeed} from 'pageflow-scrolled/testHelpers';
+import {normalizeSeed} from '../../src/testHelpers/normalizeSeed';
 import {storiesOf} from '@storybook/react';
 
 import seedFixtureFromFile from '../../.storybook/seed.json'

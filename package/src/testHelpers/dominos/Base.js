@@ -2,6 +2,7 @@ import $ from 'jquery';
 import _ from 'underscore';
 
 import {Object} from 'pageflow/ui';
+import {renderBackboneView} from '../renderBackboneView';
 
 export const Base = Object.extend({
   initialize: function($el) {
@@ -57,13 +58,8 @@ Base.classMethods = function(Constructor) {
       return new Constructor(element);
     },
 
-    render: function(view, options) {
-      view.render();
-
-      if (options && options.appendTo) {
-        options.appendTo.append(view.$el);
-      }
-
+    render: function(view) {
+      renderBackboneView(view);
       return new Constructor(view.$el);
     }
   };

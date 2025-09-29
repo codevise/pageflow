@@ -3,9 +3,8 @@ import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {editor} from 'pageflow/editor';
 
 import {factories, normalizeSeed} from 'support';
-import {useFakeTranslations} from 'pageflow/testHelpers';
+import {useFakeTranslations, renderBackboneView as render} from 'pageflow/testHelpers';
 
-import {within} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
 describe('SelectLinkDestinationDialogView', () => {
@@ -18,12 +17,6 @@ describe('SelectLinkDestinationDialogView', () => {
     'pageflow.editor.file_types.image_files.name.one': 'Image files',
     'pageflow_scrolled.editor.select_link_destination.cancel': 'Cancel'
   });
-
-  function render(view) {
-    view.render();
-    document.body.appendChild(view.el);
-    return within(view.el);
-  }
 
   let fileTypes;
 
@@ -49,7 +42,7 @@ describe('SelectLinkDestinationDialogView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByText} = within(view.render().el);
+    const {getByText} = render(view);
     await user.click(getByText('Intro'));
 
     expect(listener).toHaveBeenCalledWith({href: {chapter: 10}});
@@ -71,7 +64,7 @@ describe('SelectLinkDestinationDialogView', () => {
     });
 
     const user = userEvent.setup();
-    const {getByTitle} = within(view.render().el);
+    const {getByTitle} = render(view);
     await user.click(getByTitle('Select section'));
 
     expect(listener).toHaveBeenCalledWith({href: {section: 10}});
