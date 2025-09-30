@@ -48,13 +48,24 @@ describe('PreviewMessageController', () => {
 
   it('sets current section index in model on CHANGE_SECTION message', () => {
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
-        const iframeWindow = createIframeWindow();
+    const iframeWindow = createIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     return expect(new Promise(resolve => {
       entry.once('change:currentSectionIndex', (model, value) => resolve(value));
-      window.postMessage({type: 'CHANGE_SECTION', payload: {index: 4}}, '*');
+      window.postMessage({type: 'CHANGE_SECTION', payload: {sectionIndex: 4}}, '*');
     })).resolves.toBe(4);
+  });
+
+  it('sets current excursion id in model on CHANGE_SECTION message', () => {
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:currentExcursionId', (model, value) => resolve(value));
+      window.postMessage({type: 'CHANGE_SECTION', payload: {sectionIndex: 4, excursionId: 10}}, '*');
+    })).resolves.toBe(10);
   });
 
   it('sends SCROLL_TO_SECTION message to iframe on scrollToSection event on model', async () => {

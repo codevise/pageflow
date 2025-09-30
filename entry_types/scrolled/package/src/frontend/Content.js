@@ -40,7 +40,7 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
   }, [setCurrentSectionIndexState, updateChapterSlug]);
 
   const setCurrentExcursionSection = useCallback(section => {
-    sectionChangeMessagePoster(section.sectionIndex);
+    sectionChangeMessagePoster(section.sectionIndex, section.chapter.id);
     setCurrentExcursionSectionIndex(section.sectionIndex);
     updateExcursionChapterSlug(section);
   }, [updateExcursionChapterSlug]);

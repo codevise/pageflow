@@ -118,7 +118,10 @@ export const PreviewMessageController = Object.extend({
         postMessage({type: 'ACK'})
       }
       else if (message.data.type === 'CHANGE_SECTION') {
-        this.entry.set('currentSectionIndex', message.data.payload.index);
+        this.entry.set({
+          currentSectionIndex: message.data.payload.sectionIndex,
+          currentExcursionId: message.data.payload.excursionId
+        });
       }
       else if (message.data.type === 'SELECTED') {
         const {type, id} = message.data.payload;

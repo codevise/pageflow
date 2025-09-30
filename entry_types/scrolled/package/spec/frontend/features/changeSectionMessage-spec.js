@@ -29,7 +29,7 @@ describe('CHANGE_SECTION message', () => {
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'CHANGE_SECTION',
-      payload: {index: 1}
+      payload: {sectionIndex: 1, excursionId: undefined}
     }, expect.anything());
   });
 
@@ -77,7 +77,7 @@ describe('CHANGE_SECTION message', () => {
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'CHANGE_SECTION',
-      payload: {index: 1}
+      payload: {sectionIndex: 1, excursionId: 1}
     }, expect.anything());
   });
 });
