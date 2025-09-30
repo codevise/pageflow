@@ -95,7 +95,7 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
       preventDefault: false,
     });
 
-    this.changeTab(this.defaultTab());
+    this.changeTab(this.defaultTab(), {refresh: true});
   },
 
   changeTab: function(name, options = {}) {
