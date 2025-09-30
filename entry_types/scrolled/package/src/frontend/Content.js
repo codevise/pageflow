@@ -67,7 +67,10 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
           {renderExcursion(activeExcursion,
                            currentExcursionSectionIndex,
                            setCurrentExcursionSection,
-                           {onClose: () => returnFromExcursion()})}
+                           {onClose: () => {
+                             returnFromExcursion();
+                             sectionChangeMessagePoster(currentSectionIndex);
+                           }})}
         </AtmoProvider>
       </VhFix>
     </div>
