@@ -5,6 +5,7 @@ export const StorylinesTabsView = Marionette.View.extend({
   render() {
     const tabsView = new TabsView({
       i18n: 'pageflow_scrolled.editor.storylines_tabs',
+      defaultTab: this.options.entry.isCurrentSectionInExcursion() ? 'excursions' : 'main'
     });
 
     ['main', 'excursions'].forEach(name => {
