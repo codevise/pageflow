@@ -5,7 +5,9 @@ export const EditChapterView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_chapter',
 
   configure: function(configurationEditor) {
-    configurationEditor.tab('chapter', function() {
+    const chapter = this.model;
+
+    configurationEditor.tab(chapter.isExcursion() ? 'excursion' : 'chapter', function() {
       this.input('title', TextInputView);
 
       if (this.model.parent.storyline.isMain()) {

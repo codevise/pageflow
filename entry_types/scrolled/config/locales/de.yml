@@ -1109,6 +1109,7 @@ de:
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
         tabs:
           chapter: Kapitel
+          excursion: Exkurs
       edit_motif_area:
         blank_slate: Kein Bereich markiert.
         cancel: Abbrechen

@@ -1091,6 +1091,7 @@ en:
         save_error: There was an error while saving this chapter.
         tabs:
           chapter: Chapter
+          excursion: Excursion
       edit_motif_area:
         blank_slate: No area selected.
         cancel: Cancel
