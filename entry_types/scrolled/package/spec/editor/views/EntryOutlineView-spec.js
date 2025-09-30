@@ -210,4 +210,104 @@ describe('EntryOutlineView', () => {
     expect(excursionsTab).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('link', {name: /Excursion Chapter/})).toBeInTheDocument();
   });
+
+  it('switches to excursions tab when entering excursion', () => {
+    const entry = createEntry({
+      storylines: [
+        {
+          id: 10,
+          permaId: 200,
+          position: 0,
+          configuration: {main: true}
+        },
+        {
+          id: 11,
+          permaId: 201,
+          position: 1,
+          configuration: {}
+        }
+      ],
+      chapters: [
+        {
+          id: 1,
+          permaId: 100,
+          position: 0,
+          storylineId: 10,
+          configuration: {
+            title: 'Main Story Chapter'
+          }
+        },
+        {
+          id: 2,
+          permaId: 101,
+          position: 0,
+          storylineId: 11,
+          configuration: {
+            title: 'Excursion Chapter'
+          }
+        }
+      ]
+    });
+
+    render(new EntryOutlineView({entry}));
+
+    entry.set('currentExcursionId', 11);
+
+    const tablist = screen.getByRole('tablist');
+    const excursionsTab = within(tablist).getByRole('tab', {name: 'Excursions'});
+
+    expect(excursionsTab).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('link', {name: /Excursion Chapter/})).toBeInTheDocument();
+  });
+
+  it('switches to main tab when leaving excursion', () => {
+    const entry = createEntry({
+      storylines: [
+        {
+          id: 10,
+          permaId: 200,
+          position: 0,
+          configuration: {main: true}
+        },
+        {
+          id: 11,
+          permaId: 201,
+          position: 1,
+          configuration: {}
+        }
+      ],
+      chapters: [
+        {
+          id: 1,
+          permaId: 100,
+          position: 0,
+          storylineId: 10,
+          configuration: {
+            title: 'Main Story Chapter'
+          }
+        },
+        {
+          id: 2,
+          permaId: 101,
+          position: 0,
+          storylineId: 11,
+          configuration: {
+            title: 'Excursion Chapter'
+          }
+        }
+      ]
+    });
+
+    entry.set('currentExcursionId', 11);
+
+    render(new EntryOutlineView({entry}));
+
+    entry.unset('currentExcursionId');
+
+    const tablist = screen.getByRole('tablist');
+    const mainTab = within(tablist).getByRole('tab', {name: 'Main'});
+
+    expect(mainTab).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('link', {name: /Main Story Chapter/})).toBeInTheDocument();
+  });
 });
