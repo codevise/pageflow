@@ -179,4 +179,105 @@ describe('SectionItemView', () => {
 
     expect(queryByText('Cutoff point')).not.toBeVisible();
   });
+
+  describe('active state', () => {
+    beforeEach(() => {
+      Element.prototype.scrollIntoView = jest.fn();
+    });
+
+    it('marks section as active when it is the current section in main storyline', () => {
+      const entry = createEntry({
+        sections: [
+          {id: 1, permaId: 100},
+          {id: 2, permaId: 101},
+          {id: 3, permaId: 102}
+        ]
+      });
+      const view = new SectionItemView({
+        entry,
+        model: entry.sections.get(2)
+      });
+
+      render(view);
+      entry.set('currentSectionIndex', 1);
+
+      expect(view.el).toHaveAttribute('aria-current', 'true');
+    });
+
+    it('does not mark section as active when it is not the current section', () => {
+      const entry = createEntry({
+        sections: [
+          {id: 1, permaId: 100},
+          {id: 2, permaId: 101},
+          {id: 3, permaId: 102}
+        ]
+      });
+      const view = new SectionItemView({
+        entry,
+        model: entry.sections.get(2)
+      });
+
+      render(view);
+      entry.set('currentSectionIndex', 0);
+
+      expect(view.el).not.toHaveAttribute('aria-current', 'true');
+    });
+
+    it('marks section as active when in excursion and section is current in that excursion', () => {
+      const entry = createEntry({
+        storylines: [
+          {id: 100, configuration: {main: true}},
+          {id: 200}
+        ],
+        chapters: [
+          {id: 1, storylineId: 100},
+          {id: 2, storylineId: 200}
+        ],
+        sections: [
+          {id: 10, permaId: 100, chapterId: 1},
+          {id: 11, permaId: 101, chapterId: 2},
+          {id: 12, permaId: 102, chapterId: 2},
+          {id: 13, permaId: 103, chapterId: 2}
+        ]
+      });
+      const view = new SectionItemView({
+        entry,
+        model: entry.sections.get(12)
+      });
+
+      render(view);
+      entry.set('currentExcursionId', 2);
+      entry.set('currentSectionIndex', 1);
+
+      expect(view.el).toHaveAttribute('aria-current', 'true');
+    });
+
+    it('does not mark section as active when in excursion but belongs to different chapter', () => {
+      const entry = createEntry({
+        storylines: [
+          {id: 100, configuration: {main: true}},
+          {id: 200}
+        ],
+        chapters: [
+          {id: 1, storylineId: 100},
+          {id: 2, storylineId: 200}
+        ],
+        sections: [
+          {id: 10, permaId: 100, chapterId: 1},
+          {id: 11, permaId: 101, chapterId: 2},
+          {id: 12, permaId: 102, chapterId: 2}
+        ]
+      });
+      const view = new SectionItemView({
+        entry,
+        model: entry.sections.get(10)
+      });
+
+      render(view);
+      entry.set('currentExcursionId', 2);
+      entry.set('currentSectionIndex', 0);
+
+      expect(view.el).not.toHaveAttribute('aria-current', 'true');
+    });
+  });
 });

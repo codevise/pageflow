@@ -68,5 +68,29 @@ export const Section = Backbone.Model.extend({
     return this.contentElements.findWhere({
       permaId: this.configuration.get('backdropContentElement')
     });
+  },
+
+  isCurrent() {
+    if (!this.chapter) {
+      return false;
+    }
+
+    const entry = this.chapter.entry;
+    const currentExcursionId = entry.get('currentExcursionId');
+    const currentSectionIndex = entry.get('currentSectionIndex');
+
+    if (currentExcursionId) {
+      if (this.chapter.id !== currentExcursionId) {
+        return false;
+      }
+
+      const sectionsInChapter = this.chapter.sections.models;
+      const indexInChapter = sectionsInChapter.indexOf(this);
+
+      return indexInChapter === currentSectionIndex;
+    }
+    else {
+      return entry.sections.indexOf(this) === currentSectionIndex;
+    }
   }
 });
