@@ -51,10 +51,18 @@ describe('Section', () => {
     it('returns true when section index matches current section index in main storyline', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
+          storylines: [
+            {id: 100, configuration: {main: true}},
+            {id: 200}
+          ],
+          chapters: [
+            {id: 1, storylineId: 100},
+            {id: 2, storylineId: 200}
+          ],
           sections: [
-            {id: 10, position: 0},
-            {id: 11, position: 1},
-            {id: 12, position: 2}
+            {id: 10, position: 0, chapterId: 1},
+            {id: 11, position: 2, chapterId: 1},
+            {id: 12, position: 1, chapterId: 2}
           ]
         })
       });
