@@ -1,8 +1,8 @@
-.view :global(.tabs_view-headers) li:nth-child(2) {
+.view :global(.tabs_view-tabs) > :nth-child(2) {
   margin-left: 5px;
 }
 
-.view :global(.tabs_view-headers) li:nth-child(2)::before {
+.view :global(.tabs_view-tabs) > :nth-child(2)::before {
   content: "›";
   margin-left: -15px;
   margin-right: 10px;

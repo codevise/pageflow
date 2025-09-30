@@ -34,8 +34,9 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
   className: 'tabs_view',
 
   ui: {
-    headers: '.tabs_view-headers',
-    scroller: '.tabs_view-scroller'
+    tabs: '.tabs_view-tabs',
+    scroller: '.tabs_view-scroller',
+    container: '.tabs_view-container'
   },
 
   regions: {
@@ -43,8 +44,12 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
   },
 
   events: {
-    'click .tabs_view-headers > li': function(event) {
-      this.changeTab($(event.target).data('tab-name'));
+    'click .tabs_view-tab': function(event) {
+      this.changeTab($(event.currentTarget).data('tab-name'));
+    },
+
+    'keydown .tabs_view-tab': function(event) {
+      this._handleKeyDown(event);
     }
   },
 
@@ -64,13 +69,23 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
   onRender: function() {
     _.each(this.tabNames, function(name) {
       var label = findTranslation(this._labelTranslationKeys(name));
+      var tabId = this._tabId(name);
+      var button = $('<button />')
+        .attr('type', 'button')
+        .attr('role', 'tab')
+        .attr('id', tabId)
+        .attr('data-tab-name', name)
+        .attr('tabindex', '-1')
+        .attr('aria-selected', 'false')
+        .addClass('tabs_view-tab')
+        .text(label);
 
-      this.ui.headers.append(
-        $('<li />')
-          .attr('data-tab-name', name)
-          .text(label)
-      );
+      this.ui.tabs.append(button);
     }, this);
+
+    this.ui.container
+      .attr('id', this._panelId())
+      .attr('role', 'tabpanel');
 
     this.scroller = new IScroll(this.ui.scroller[0], {
       scrollX: true,
@@ -80,13 +95,22 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
       preventDefault: false,
     });
 
-    this.changeTab(this.defaultTab());
+    this.changeTab(this.defaultTab(), {refresh: true});
   },
 
-  changeTab: function(name) {
-    this.container.show(this.tabFactoryFns[name]());
-    this._updateActiveHeader(name);
+  changeTab: function(name, options = {}) {
+    if (!this.tabFactoryFns[name]) {
+      return;
+    }
+
+    if (this.currentTabName !== name || options.refresh) {
+      this.container.show(this.tabFactoryFns[name]());
+    }
+
     this.currentTabName = name;
+
+    this._updateActiveTab(name, options.focusTab);
+    this._updateActivePanel(name);
   },
 
   defaultTab: function() {
@@ -102,7 +126,9 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
    * Rerender current tab.
    */
   refresh: function() {
-    this.changeTab(this.currentTabName);
+    if (this.currentTabName) {
+      this.changeTab(this.currentTabName, {refresh: true});
+    }
   },
 
   /**
@@ -132,18 +158,83 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
     return result;
   },
 
-  _updateActiveHeader: function(activeTabName) {
+  _updateActiveTab: function(activeTabName, focusTab) {
     var scroller = this.scroller;
+    var panelId = this._panelId();
 
-    this.ui.headers.children().each(function() {
-      if ($(this).data('tab-name') === activeTabName) {
+    this.ui.tabs.children().each(function() {
+      var button = $(this);
+      var isActive = button.data('tab-name') === activeTabName;
+
+      if (isActive) {
         scroller.scrollToElement(this, 200, true);
-        $(this).addClass('active');
+        button.addClass('active');
+        button.attr('aria-selected', 'true');
+        button.attr('aria-controls', panelId);
+        button.attr('tabindex', '0');
+
+        if (focusTab) {
+          button.focus();
+        }
       }
       else {
-        $(this).removeClass('active');
+        button.removeClass('active');
+        button.attr('aria-selected', 'false');
+        button.attr('tabindex', '-1');
       }
     });
+  },
+
+  _updateActivePanel: function(activeTabName) {
+    this.ui.container.attr('aria-labelledby', this._tabId(activeTabName));
+  },
+
+  _handleKeyDown: function(event) {
+    var tabName = $(event.currentTarget).data('tab-name');
+    var nextTabName;
+
+    switch (event.key) {
+    case 'ArrowLeft':
+    case 'ArrowUp':
+      nextTabName = this._previousTabName(tabName);
+      break;
+    case 'ArrowRight':
+    case 'ArrowDown':
+      nextTabName = this._nextTabName(tabName);
+      break;
+    case 'Home':
+      nextTabName = _.first(this.tabNames);
+      break;
+    case 'End':
+      nextTabName = _.last(this.tabNames);
+      break;
+    case 'Enter':
+    case ' ':
+      nextTabName = tabName;
+      break;
+    default:
+      return;
+    }
+
+    event.preventDefault();
+
+    if (nextTabName) {
+      this.changeTab(nextTabName, {focusTab: true});
+    }
+  },
+
+  _previousTabName: function(currentTabName) {
+    var currentIndex = _.indexOf(this.tabNames, currentTabName);
+    var previousIndex = (currentIndex - 1 + this.tabNames.length) % this.tabNames.length;
+
+    return this.tabNames[previousIndex];
+  },
+
+  _nextTabName: function(currentTabName) {
+    var currentIndex = _.indexOf(this.tabNames, currentTabName);
+    var nextIndex = (currentIndex + 1) % this.tabNames.length;
+
+    return this.tabNames[nextIndex];
   },
 
   _refreshScrollerOnSideBarResize: function() {
@@ -152,5 +243,13 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
         this.scroller.refresh();
       });
     }
+  },
+
+  _tabId: function(name) {
+    return this.cid + '-tab-' + name;
+  },
+
+  _panelId: function() {
+    return this.cid + '-panel';
   }
 });

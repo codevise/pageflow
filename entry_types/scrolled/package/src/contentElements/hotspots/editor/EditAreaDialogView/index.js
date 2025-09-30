@@ -71,7 +71,7 @@ export const EditAreaDialogView = Marionette.ItemView.extend({
       tabsView.tab('default', () => this.editorViews[0]);
       tabsView.tab('portrait', () => this.editorViews[1]);
 
-      this.appendSubview(tabsView.render(), {to: this.ui.wrapper});
+      this.appendSubview(tabsView, {to: this.ui.wrapper});
     }
     else {
       this.editorViews = [
@@ -81,7 +81,7 @@ export const EditAreaDialogView = Marionette.ItemView.extend({
         })
       ];
 
-      this.appendSubview(this.editorViews[0].render(), {to: this.ui.wrapper});
+      this.appendSubview(this.editorViews[0], {to: this.ui.wrapper});
     }
   },
 

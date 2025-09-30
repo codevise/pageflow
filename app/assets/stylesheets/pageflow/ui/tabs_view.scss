@@ -6,17 +6,22 @@
     border-bottom: solid 1px var(--ui-on-surface-color-lighter);
   }
 
-  &-headers {
+  &-tabs {
     white-space: nowrap;
     padding: 0;
     position: absolute;
 
-    li {
+    > button {
       display: inline-block;
-      padding: 10px 10px;
       cursor: pointer;
       color: var(--ui-on-surface-color-light);
+      padding: 10px 10px;
       height: 14px;
+      box-sizing: content-box;
+      border: none;
+      background-color: transparent;
+      line-height: inherit;
+      outline-offset: -1px;
 
       &.active {
         color: var(--ui-primary-color);
