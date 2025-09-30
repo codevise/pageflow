@@ -19,13 +19,13 @@ import styles from './Content.module.css';
 export const Content = withInlineEditingDecorator('ContentDecorator', function Content(props) {
   const entryStructure = useEntryStructure();
 
+  const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
+
   const {
     activeExcursion,
     activateExcursionOfSection,
     returnFromExcursion
   } = useActiveExcursion(entryStructure);
-
-  const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
 
   const [currentExcursionSectionIndex, setCurrentExcursionSectionIndex] = useState(0);
 
@@ -78,7 +78,10 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
           {renderExcursion(activeExcursion,
                            currentExcursionSectionIndex,
                            setCurrentExcursionSection,
-                           {onClose: () => returnFromExcursion()})}
+                           {onClose: () => {
+                             returnFromExcursion();
+                             sectionChangeMessagePoster(currentSectionIndex);
+                           }})}
         </AtmoProvider>
       </VhFix>
     </div>
