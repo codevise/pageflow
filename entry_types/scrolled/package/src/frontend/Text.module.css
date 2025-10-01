@@ -213,9 +213,7 @@
 
 .hotspotsTooltipLink {
   composes: typography-hotspotTooltipLink from global;
-  font-size: text-2xs;
-  line-height: 1.4;
-  font-weight: bold;
+  composes: typography-linkButton from global;
 }
 
 .teaserTitle-lg {
@@ -282,6 +280,17 @@
   composes: typography-externalLinkDescription from global;
   line-height: 1.3;
   font-size: text-2xs;
+}
+
+.teaserLink {
+  composes: typography-teaserLink from global;
+  composes: typography-linkButton from global;
+}
+
+:global(.typography-linkButton) {
+  font-size: text-2xs;
+  line-height: 1.4;
+  font-weight: bold;
 }
 
 .infoTableLabel {

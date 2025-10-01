@@ -153,7 +153,8 @@ export function ExternalLink({id, configuration, ...props}) {
                                onChange={value => handleTextChange('description', value)} />}
                 {configuration.displayButtons && presentOrEditing('link') &&
                  <div className={styles.button}>
-                   <LinkButton href={href}
+                   <LinkButton scaleCategory="teaserLink"
+                               href={href}
                                openInNewTab={openInNewTab}
                                value={itemTexts[id]?.link}
                                linkPreviewDisabled={true}
