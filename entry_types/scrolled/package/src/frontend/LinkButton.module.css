@@ -11,6 +11,7 @@
 }
 
 .button {
+  composes: scope-linkButton from global;
   display: inline-flex;
   min-width: var(--theme-link-button-width, 100%);
   box-sizing: border-box;

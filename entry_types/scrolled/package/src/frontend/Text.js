@@ -20,7 +20,8 @@ import styles from './Text.module.css';
  *   `'hotspotsTooltipTitle'`, `'hotspotsTooltipDescription`', `'hotspotsTooltipLink`',
  *   `'teaserTitle-lg'`, `'teaserTitle-md'`, `'teaserTitle-sm'`,
  *   `'teaserTagline-lg'`, `'teaserTagline-md'`, `'teaserTagline-sm'`,
- *   `'teaserDescription-lg'`, `'teaserDescription-md'`, `'teaserDescription-sm'`.
+ *   `'teaserDescription-lg'`, `'teaserDescription-md'`, `'teaserDescription-sm'`,
+ *   `'teaserLink'`.
  * @param {string} [props.typographyVariant] - Suffix for variant class name.
  * @param {string} [props.typographySize] - Suffix for size class name.
  * @param {string} [props.inline] - Render a span instread of a div.
@@ -57,6 +58,7 @@ Text.propTypes = {
     'teaserTitle-lg', 'teaserTitle-md', 'teaserTitle-sm',
     'teaserTagline-lg', 'teaserTagline-md', 'teaserTagline-sm',
     'teaserDescription-lg', 'teaserDescription-md', 'teaserDescription-sm',
+    'teaserLink',
     'counterNumber-lg', 'counterNumber-md', 'counterNumber-sm', 'counterNumber-xs',
     'counterDescription',
     'infoTableLabel', 'infoTableValue',
