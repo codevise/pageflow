@@ -140,11 +140,12 @@ export function ExternalLink({id, configuration, ...props}) {
                                        placeholder={t('pageflow_scrolled.inline_editing.type_tagline')}
                                        onChange={value => handleTextChange('tagline', value)} />
                  </Text>}
-                <Text scaleCategory={`teaserTitle-${scaleCategorySuffix}`}>
-                  <EditableInlineText value={itemTexts[id]?.title || legacyTexts.title}
-                                      placeholder={t('pageflow_scrolled.inline_editing.type_heading')}
-                                      onChange={value => handleTextChange('title', value)} />
-                </Text>
+                {presentOrEditing('title') &&
+                 <Text scaleCategory={`teaserTitle-${scaleCategorySuffix}`}>
+                   <EditableInlineText value={itemTexts[id]?.title || legacyTexts.title}
+                                       placeholder={t('pageflow_scrolled.inline_editing.type_heading')}
+                                       onChange={value => handleTextChange('title', value)} />
+                 </Text>}
                 {presentOrEditing('description') &&
                  <EditableText value={itemTexts[id]?.description || legacyTexts.description}
                                scaleCategory={`teaserDescription-${scaleCategorySuffix}`}

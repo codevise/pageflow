@@ -189,6 +189,10 @@
   margin-top: 1rem;
 }
 
+.details > :first-child p {
+  margin-top: 0;
+}
+
 .button {
   flex: 1;
   display: flex;
