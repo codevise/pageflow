@@ -7,7 +7,7 @@ import './videojsBase.module.css';
 function PlayerContainer({
   filePermaId, sources, textTrackSources, type,
   playsInline, loop, controls, altText,
-  mediaEventsContextData, atmoDuringPlayback, onSetup, onDispose
+  mediaEventsContextData, atmoDuringPlayback, onSetup
 }){
   const playerWrapperRef = useRef(null);
   let atmo = useAtmo();
@@ -16,6 +16,8 @@ function PlayerContainer({
     let playerWrapper = playerWrapperRef.current;
 
     if (sources) {
+      let disposeHandler;
+
       let player = media.getPlayer(sources, {
         textTrackSources,
         filePermaId,
@@ -31,15 +33,15 @@ function PlayerContainer({
           playerWrapper.removeChild(player.el());
           player = null;
 
-          if (onDispose) {
-            onDispose();
+          if (disposeHandler) {
+            disposeHandler();
           }
         }
       });
       playerWrapper.appendChild(player.el());
 
       if (onSetup) {
-        onSetup(player);
+        disposeHandler = onSetup(player);
       }
 
       return () => {

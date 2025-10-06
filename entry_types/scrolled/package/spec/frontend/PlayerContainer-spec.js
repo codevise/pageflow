@@ -42,12 +42,19 @@ describe('PlayerContainer', () => {
     render(<PlayerContainer type={'video'} onSetup={onSetup} sources={getVideoSources()} />);
   });
 
-  it('calls onDispose on player unmount', () => {
-    let onDispose = jest.fn();
-    let {unmount} = render(<PlayerContainer type={'video'} onDispose={onDispose} sources={getVideoSources()} />);
-    expect(onDispose).not.toHaveBeenCalled();
+  it('calls cleanup returned from onSetup on player unmount', () => {
+    const cleanup = jest.fn();
+    const onSetup = jest.fn(() => cleanup);
+    const {unmount} = render(
+      <PlayerContainer type={'video'} onSetup={onSetup} sources={getVideoSources()} />
+    );
+
+    expect(cleanup).not.toHaveBeenCalled();
+
     unmount();
-    expect(onDispose).toHaveBeenCalledTimes(1);
+
+    expect(cleanup).toHaveBeenCalledTimes(1);
+    expect(onSetup).toHaveBeenCalledTimes(1);
   });
 
   it('calls media.getPlayer with new sources, when sources are changed', () => {
