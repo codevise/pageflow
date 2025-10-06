@@ -185,4 +185,33 @@ describe('MediaPlayer', () => {
 
     expect(getPlayer().textTracks()[0].mode).toEqual('showing');
   });
+
+  it('keeps configured text track active when another track becomes showing', () => {
+    const sampleTextTrack = {
+      id: 1,
+      configuration: {
+        srclang: 'de',
+        kind: 'caption'
+      }
+    };
+    const {getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getAudioSources()}
+                          textTracks={getTextTracks({sampleTextTrack})} />);
+
+    const player = getPlayer();
+    const configuredTrack = player.textTracks()[0];
+    const injectedTrack = {mode: 'disabled'};
+    player.textTracks().push(injectedTrack);
+
+    configuredTrack.mode = 'disabled';
+    injectedTrack.mode = 'showing';
+
+    act(() => {
+      player.trigger('play');
+    });
+
+    expect(configuredTrack.mode).toEqual('showing');
+    expect(injectedTrack.mode).toEqual('disabled');
+  });
 });

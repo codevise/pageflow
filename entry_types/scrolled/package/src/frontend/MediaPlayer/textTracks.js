@@ -9,6 +9,22 @@ export function updateTextTracksMode(player, activeTextTrackFileId) {
   });
 }
 
+export function watchTextTracks(player, getActiveTextTrackFileId) {
+  function handleTextTracksUpdate() {
+    updateTextTracksMode(player, getActiveTextTrackFileId());
+  }
+
+  player.on('play', handleTextTracksUpdate);
+  player.on('texttrackchange', handleTextTracksUpdate);
+
+  handleTextTracksUpdate();
+
+  return () => {
+    player.off('play', handleTextTracksUpdate);
+    player.off('texttrackchange', handleTextTracksUpdate);
+  };
+}
+
 export function getTextTrackSources(textTrackFiles, textTracksDisabled) {
   if (textTracksDisabled) {
     return [];

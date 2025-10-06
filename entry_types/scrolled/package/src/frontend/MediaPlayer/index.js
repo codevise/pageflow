@@ -10,7 +10,8 @@ import {updateObjectPosition} from './updateObjectPosition';
 import {useEventContextData} from '../useEventContextData';
 import {useIsStaticPreview} from '../useScrollPositionLifecycle';
 
-import {getTextTrackSources, updateTextTracksMode} from './textTracks';
+import {getTextTrackSources} from './textTracks';
+import {usePlayerTextTracks} from './usePlayerTextTracks';
 import textTrackStyles from './textTracks.module.css';
 import styles from '../MediaPlayer.module.css';
 
@@ -58,19 +59,27 @@ function PreparedMediaPlayer(props){
   let playerRef = useRef();
   let previousPlayerState = useRef(props.playerState);
   let eventContextData = useEventContextData();
-  let unwatchPlayer;
+
+  const setupTextTracks = usePlayerTextTracks({
+    playerRef,
+    activeTextTrackFileId: props.textTracks.activeFileId
+  });
 
   let onSetup = (newPlayer)=>{
     playerRef.current = newPlayer;
 
-    unwatchPlayer = watchPlayer(newPlayer, props.playerActions);
+    const unwatchPlayer = watchPlayer(newPlayer, props.playerActions);
+    const unwatchTextTracks = setupTextTracks(newPlayer);
+
     applyPlayerState(newPlayer, props.playerState, props.playerActions)
     updateObjectPosition(newPlayer, props.objectPosition.x, props.objectPosition.y)
-  }
 
-  let onDispose = ()=>{
-    unwatchPlayer();
-    playerRef.current = undefined;
+    return () => {
+      unwatchTextTracks();
+      unwatchPlayer();
+
+      playerRef.current = undefined;
+    };
   }
 
   useEffect(() => {
@@ -80,13 +89,6 @@ function PreparedMediaPlayer(props){
     }
     previousPlayerState.current = props.playerState;
   }, [props.playerState, props.playerActions]);
-
-  useEffect(() => {
-    let player = playerRef.current
-    if (player) {
-      updateTextTracksMode(player, props.textTracks.activeFileId);
-    }
-  }, [props.textTracks.activeFileId]);
 
   useEffect(() => {
     const player = playerRef.current;
@@ -106,7 +108,6 @@ function PreparedMediaPlayer(props){
                      mediaEventsContextData={eventContextData}
                      atmoDuringPlayback={props.atmoDuringPlayback}
                      onSetup={onSetup}
-                     onDispose={onDispose}
                      altText={props.altText} />
   );
 };
