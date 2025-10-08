@@ -75,7 +75,7 @@ editor.contentElementTypes.register('inlineVideo', {
       this.view(SeparatorView);
 
       this.input('playbackMode', SelectInputView, {
-        values: ['manual', 'autoplay', 'loop']
+        values: ['manual', 'autoplay', 'autoplayIfUnmuted', 'loop']
       });
 
       this.input('hideControlBar', CheckBoxInputView, {

@@ -13,7 +13,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {};
       const playerActions = getPlayerActions();
 
-      const {onVisible} = getLifecycleHandlers(configuration, playerActions);
+      const {onVisible} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onVisible();
 
       expect(playerActions.calls).toEqual([]);
@@ -23,7 +23,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'manual'};
       const playerActions = getPlayerActions();
 
-      const {onVisible} = getLifecycleHandlers(configuration, playerActions);
+      const {onVisible} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onVisible();
 
       expect(playerActions.calls).toEqual([]);
@@ -33,7 +33,17 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'autoplay'};
       const playerActions = getPlayerActions();
 
-      const {onVisible} = getLifecycleHandlers(configuration, playerActions);
+      const {onVisible} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onVisible();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('is no-op for autoplayIfUnmuted playbackMode', () => {
+      const configuration = {playbackMode: 'autoplayIfUnmuted'};
+      const playerActions = getPlayerActions();
+
+      const {onVisible} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onVisible();
 
       expect(playerActions.calls).toEqual([]);
@@ -43,7 +53,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'loop'};
       const playerActions = getPlayerActions();
 
-      const {onVisible} = getLifecycleHandlers(configuration, playerActions);
+      const {onVisible} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onVisible();
 
       expect(playerActions.play).toHaveBeenCalledWith();
@@ -55,7 +65,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {};
       const playerActions = getPlayerActions();
 
-      const {onActivate} = getLifecycleHandlers(configuration, playerActions);
+      const {onActivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onActivate();
 
       expect(playerActions.calls).toEqual([]);
@@ -65,7 +75,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'loop'};
       const playerActions = getPlayerActions();
 
-      const {onActivate} = getLifecycleHandlers(configuration, playerActions);
+      const {onActivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onActivate();
 
       expect(playerActions.calls).toEqual([]);
@@ -75,7 +85,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'manual'};
       const playerActions = getPlayerActions();
 
-      const {onActivate} = getLifecycleHandlers(configuration, playerActions);
+      const {onActivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onActivate();
 
       expect(playerActions.calls).toEqual([]);
@@ -85,7 +95,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'autoplay'};
       const playerActions = getPlayerActions();
 
-      const {onActivate} = getLifecycleHandlers(configuration, playerActions);
+      const {onActivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onActivate();
 
       expect(playerActions.play).toHaveBeenCalledWith({via: 'autoplay'});
@@ -95,7 +105,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {autoplay: true};
       const playerActions = getPlayerActions();
 
-      const {onActivate} = getLifecycleHandlers(configuration, playerActions);
+      const {onActivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onActivate();
 
       expect(playerActions.play).toHaveBeenCalledWith({via: 'autoplay'});
@@ -105,10 +115,30 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'manual', autoplay: true};
       const playerActions = getPlayerActions();
 
-      const {onActivate} = getLifecycleHandlers(configuration, playerActions);
+      const {onActivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onActivate();
 
       expect(playerActions.calls).toEqual([]);
+    });
+
+    it('is no-op for autoplayIfUnmuted playbackMode when muted', () => {
+      const configuration = {playbackMode: 'autoplayIfUnmuted'};
+      const playerActions = getPlayerActions();
+
+      const {onActivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: true});
+      onActivate();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('calls play for autoplayIfUnmuted playbackMode when unmuted', () => {
+      const configuration = {playbackMode: 'autoplayIfUnmuted'};
+      const playerActions = getPlayerActions();
+
+      const {onActivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onActivate();
+
+      expect(playerActions.play).toHaveBeenCalledWith({via: 'autoplay'});
     });
   });
 
@@ -117,7 +147,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {};
       const playerActions = getPlayerActions();
 
-      const {onDeactivate} = getLifecycleHandlers(configuration, playerActions);
+      const {onDeactivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onDeactivate();
 
       expect(playerActions.fadeOutAndPause).toHaveBeenCalled();
@@ -127,7 +157,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'manual'};
       const playerActions = getPlayerActions();
 
-      const {onDeactivate} = getLifecycleHandlers(configuration, playerActions);
+      const {onDeactivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onDeactivate();
 
       expect(playerActions.fadeOutAndPause).toHaveBeenCalled();
@@ -137,7 +167,17 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'autoplay'};
       const playerActions = getPlayerActions();
 
-      const {onDeactivate} = getLifecycleHandlers(configuration, playerActions);
+      const {onDeactivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onDeactivate();
+
+      expect(playerActions.fadeOutAndPause).toHaveBeenCalled();
+    });
+
+    it('calls fadeOutAndPause for autoplayIfUnmuted playbackMode', () => {
+      const configuration = {playbackMode: 'autoplayIfUnmuted'};
+      const playerActions = getPlayerActions();
+
+      const {onDeactivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onDeactivate();
 
       expect(playerActions.fadeOutAndPause).toHaveBeenCalled();
@@ -147,7 +187,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'loop'};
       const playerActions = getPlayerActions();
 
-      const {onDeactivate} = getLifecycleHandlers(configuration, playerActions);
+      const {onDeactivate} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onDeactivate();
 
       expect(playerActions.calls).toEqual([]);
@@ -159,7 +199,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {};
       const playerActions = getPlayerActions();
 
-      const {onInvisible} = getLifecycleHandlers(configuration, playerActions);
+      const {onInvisible} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onInvisible();
 
       expect(playerActions.calls).toEqual([]);
@@ -169,7 +209,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'manual'};
       const playerActions = getPlayerActions();
 
-      const {onInvisible} = getLifecycleHandlers(configuration, playerActions);
+      const {onInvisible} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onInvisible();
 
       expect(playerActions.calls).toEqual([]);
@@ -179,7 +219,17 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'autoplay'};
       const playerActions = getPlayerActions();
 
-      const {onInvisible} = getLifecycleHandlers(configuration, playerActions);
+      const {onInvisible} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onInvisible();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('is no-op for autoplayIfUnmuted playbackMode', () => {
+      const configuration = {playbackMode: 'autoplayIfUnmuted'};
+      const playerActions = getPlayerActions();
+
+      const {onInvisible} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onInvisible();
 
       expect(playerActions.calls).toEqual([]);
@@ -189,7 +239,7 @@ describe('getLifecycleHandlers', () => {
       const configuration = {playbackMode: 'loop'};
       const playerActions = getPlayerActions();
 
-      const {onInvisible} = getLifecycleHandlers(configuration, playerActions);
+      const {onInvisible} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
       onInvisible();
 
       expect(playerActions.fadeOutAndPause).toHaveBeenCalled();

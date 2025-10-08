@@ -1,4 +1,4 @@
-export function getLifecycleHandlers(configuration, playerActions) {
+export function getLifecycleHandlers({configuration, playerActions, mediaMuted}) {
   return {
     onVisible() {
       if (configuration.playbackMode === 'loop') {
@@ -8,7 +8,8 @@ export function getLifecycleHandlers(configuration, playerActions) {
 
     onActivate() {
       if (configuration.playbackMode === 'autoplay' ||
-          (!configuration.playbackMode && configuration.autoplay)) {
+          (!configuration.playbackMode && configuration.autoplay) ||
+          (configuration.playbackMode === 'autoplayIfUnmuted' && !mediaMuted)) {
         playerActions.play({via: 'autoplay'});
       }
     },

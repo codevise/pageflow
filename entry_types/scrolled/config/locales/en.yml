@@ -661,10 +661,11 @@ en:
             id:
               label: Video
             playbackMode:
-              inline_help_html: Determines how the video starts:<ul><li><strong>Manual:</strong> When the user clicks the video.</li><li><strong>Autoplay:</strong> When the video is scrolled to the center of the browser viewport.</li><li><strong>Loop:</strong> In an endless loop soon as it becomes visible.</li></ul>
+              inline_help_html: Determines how the video starts:<ul><li><strong>Manual:</strong> When the user clicks the video.</li><li><strong>Autoplay:</strong> When the video is scrolled to the center of the browser viewport.</li><li><strong>Autoplay if entry unmuted:</strong> When scrolled to center, but only if sound for the entry has been unmuted, for example via the unmute button in the navigation bar.</li><li><strong>Loop:</strong> In an endless loop soon as it becomes visible.</li></ul>
               label: Playback Mode
               values:
                 autoplay: Autoplay
+                autoplayIfUnmuted: Autoplay if entry unmuted
                 loop: Loop
                 manual: Manual
             portraitId:

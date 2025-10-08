@@ -177,7 +177,7 @@ function PlayerWithControlBar({
   const {isEditable, isSelected} = useContentElementEditorState();
 
   const {shouldLoad, shouldPrepare} = useContentElementLifecycle(
-    getLifecycleHandlers(configuration, playerActions)
+    getLifecycleHandlers({configuration, playerActions, mediaMuted: media.muted})
   );
 
   useAudioFocus({
