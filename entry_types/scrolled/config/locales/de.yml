@@ -288,6 +288,12 @@ de:
             startValue:
               inline_help: Bei diesem Wert beginnt die Zählanimation.
               label: Startwert
+            startAnimationTrigger:
+              inline_help: Lege fest, wann die Animation starten soll.
+              label: Animation starten
+              values:
+                onActivate: Bei Erreichen der Viewport-Mitte
+                onVisible: Sobald das Element sichtbar wird
             targetValue:
               inline_help: Zahlenwert, der angezeigt werden soll. Die Zählanimation endet bei diesem Wert.
               label: Zielwert
