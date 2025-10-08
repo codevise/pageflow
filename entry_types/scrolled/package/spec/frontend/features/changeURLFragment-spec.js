@@ -32,6 +32,53 @@ const seedData = {
 }
 
 describe('change url fragment on section update', () => {
+  beforeEach(() => {
+    Object.defineProperty(document, 'readyState', {
+      configurable: true,
+      get() { return 'complete'; }
+    });
+  });
+
+  it('does not update fragment before window load event', () => {
+    Object.defineProperty(document, 'readyState', {
+      configurable: true,
+      get() { return 'loading'; }
+    });
+
+    const {getSectionByPermaId} = renderEntry({
+      seed: seedData
+    });
+    window.history.replaceState = jest.fn();
+
+    getSectionByPermaId(11).simulateScrollingIntoView();
+
+    expect(window.history.replaceState).not.toHaveBeenCalled();
+  });
+
+  it('updates fragment after window load event', () => {
+    Object.defineProperty(document, 'readyState', {
+      configurable: true,
+      get() { return 'loading'; }
+    });
+
+    const {getSectionByPermaId} = renderEntry({
+      seed: seedData
+    });
+    window.history.replaceState = jest.fn();
+
+    act(() => {
+      Object.defineProperty(document, 'readyState', {
+        configurable: true,
+        get() { return 'complete'; }
+      });
+      window.dispatchEvent(new Event('load'));
+    });
+
+    getSectionByPermaId(11).simulateScrollingIntoView();
+
+    expect(window.history.replaceState).toHaveBeenCalledWith(null, null, '#on-the-destination-of-species');
+  });
+
   it('resets fragment when scrolling back to top', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: seedData

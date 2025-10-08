@@ -10,6 +10,7 @@ import {usePostMessageListener} from './usePostMessageListener';
 import {useSectionChangeEvents} from './useSectionChangeEvents';
 import {sectionChangeMessagePoster} from './sectionChangeMessagePoster';
 import {useScrollToTarget} from './useScrollTarget';
+import {useChapterSlugUpdater} from './useChapterSlugUpdater';
 
 import {AtmoProvider} from './useAtmo';
 import {Widget} from './Widget';
@@ -26,35 +27,23 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
   } = useActiveExcursion(entryStructure);
 
   const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
-
   const [currentExcursionSectionIndex, setCurrentExcursionSectionIndex] = useState(0);
 
+  const {updateChapterSlug, updateExcursionChapterSlug} = useChapterSlugUpdater();
+
   useSectionChangeEvents(currentSectionIndex);
-
-  let updateChapterSlug = (section) => {
-    if (section.sectionIndex > 0) {
-      window.history.replaceState(null, null, '#'+ section.chapter.chapterSlug);
-    }
-    else {
-      window.history.replaceState(null, null, window.location.href.split('#')[0]);
-    }
-  }
-
-  let updateExcursionChapterSlug = (section) => {
-    window.history.replaceState(null, null, '#'+ section.chapter.chapterSlug);
-  }
 
   const setCurrentSection = useCallback(section => {
     sectionChangeMessagePoster(section.sectionIndex);
     setCurrentSectionIndexState(section.sectionIndex);
     updateChapterSlug(section);
-  }, [setCurrentSectionIndexState]);
+  }, [setCurrentSectionIndexState, updateChapterSlug]);
 
   const setCurrentExcursionSection = useCallback(section => {
     sectionChangeMessagePoster(section.sectionIndex);
     setCurrentExcursionSectionIndex(section.sectionIndex);
     updateExcursionChapterSlug(section);
-  }, [setCurrentExcursionSectionIndex]);
+  }, [updateExcursionChapterSlug]);
 
   const scrollToTarget = useScrollToTarget();
 
