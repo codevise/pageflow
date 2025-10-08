@@ -48,6 +48,12 @@ editor.contentElementTypes.register('counter', {
         visibleBinding: 'countingSpeed',
         visible: countingSpeed => countingSpeed !== 'none'
       });
+      this.input('startAnimationTrigger', SelectInputView, {
+        values: ['onActivate', 'onVisible'],
+        visibleBinding: ['entranceAnimation', 'countingSpeed'],
+        visible: ([entranceAnimation, countingSpeed]) =>
+          (entranceAnimation || 'none') !== 'none' || countingSpeed !== 'none'
+      });
       this.view(SeparatorView);
       this.input('textSize', SelectInputView, {
         values: ['large', 'medium', 'small', 'verySmall']

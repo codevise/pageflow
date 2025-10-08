@@ -23,6 +23,7 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
   const decimalPlaces = configuration.decimalPlaces || 0;
   const startValue = configuration.startValue || 0;
   const countingDuration = countingDurations[configuration.countingSpeed];
+  const startAnimationTrigger = configuration.startAnimationTrigger || 'onActivate';
 
   const [currentValue, setCurrentValue] = useState(
     countingDuration > 0 ? startValue : targetValue
@@ -75,9 +76,8 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
   }, [animate, resetAnimation, isEditable]);
 
   useContentElementLifecycle({
-    onActivate() {
-      animate();
-    },
+    onActivate: startAnimationTrigger === 'onActivate' ? animate : undefined,
+    onVisible: startAnimationTrigger === 'onVisible' ? animate : undefined,
 
     onInvisible() {
       if (isEditable) {

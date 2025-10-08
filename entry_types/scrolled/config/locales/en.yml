@@ -279,6 +279,12 @@ en:
             startValue:
               inline_help: The counting animation starts with this value
               label: Start value
+            startAnimationTrigger:
+              inline_help: Determine when the animation should start.
+              label: Start animation
+              values:
+                onActivate: When scrolled to center of viewport
+                onVisible: When first scrolled into view
             targetValue:
               inline_help: Value to display. Final value for counting animation.
               label: Target value
