@@ -672,10 +672,11 @@ de:
             id:
               label: Video
             playbackMode:
-              inline_help_html: Bestimme, wie das Video gestartet wird:<ul><li><strong>Manuell:</strong> Durch einen Klick des Benutzers.</li><li><strong>Automatisch:</strong> Wenn es die Mitte des Browser-Viewports erreicht.</li><li><strong>Loop:</strong> In Endlosschleife sobald es sichtbar wird.</li></ul>
+              inline_help_html: Bestimme, wie das Video gestartet wird:<ul><li><strong>Manuell:</strong> Durch einen Klick des Benutzers.</li><li><strong>Automatisch:</strong> Wenn es die Mitte des Browser-Viewports erreicht.</li><li><strong>Automatisch falls Stummschaltung aufgehoben:</strong> Wenn es die Mitte des Viewports erreicht, aber nur wenn der Ton des Beitrags bereits aktiviert wurde, z.B. über das Lautsprecher-Icon in der Navigationsleiste.</li><li><strong>Loop:</strong> In Endlosschleife sobald es sichtbar wird.</li></ul>
               label: Wiedergabe-Modus
               values:
                 autoplay: Automatisch
+                autoplayIfUnmuted: Automatisch falls Stummschaltung aufgehoben
                 loop: Loop
                 manual: Manuell
             portraitId:
