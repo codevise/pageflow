@@ -1422,9 +1422,12 @@ en:
         chapter_number: Chapter %{number}
         deleted_chapter: Deleted chapter
         deleted_file: Deleted file
+        excursion_with_title: "Excursion: %{title}"
         opens_in_new_tab: Opens in new tab
         opens_in_same_tab: Outside editor, will open in same tab
+        untitled_excursion: Untitled excursion
         visit_chapter: Go to chapter
+        visit_excursion: Go to excursion
         visit_section: Go to section
       remove_link: Remove link
       select_content_element: Select element

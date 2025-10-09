@@ -1614,9 +1614,12 @@ de:
         chapter_number: Kapitel %{number}
         deleted_chapter: Gelöschtes Kapitel
         deleted_file: Gelöschte Datei
+        excursion_with_title: "Exkurs: %{title}"
         opens_in_new_tab: Öffnet in neuem Tab
         opens_in_same_tab: Öffnet außerhalb des Editors im selben Tab
+        untitled_excursion: Unbenannter Exkurs
         visit_chapter: Gehe zu Kapitel
+        visit_excursion: Gehe zu Exkurs
         visit_section: Gehe zu Abschnitt
       remove_link: Link entfernen
       select_content_element: Element auswählen

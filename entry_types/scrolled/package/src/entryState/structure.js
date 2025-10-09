@@ -308,7 +308,7 @@ export function useMainChapters() {
   );
 };
 
-function useMainStoryline() {
+export function useMainStoryline() {
   const storylines = useEntryStateCollectionItems('storylines');
 
   return useMemo(
