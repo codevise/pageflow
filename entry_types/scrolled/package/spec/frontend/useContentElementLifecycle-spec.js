@@ -6,6 +6,7 @@ import {renderInEntry} from 'support';
 import {simulateScrollingIntoView, simulateScrollingOutOfView} from 'support/fakeIntersectionObserver';
 import {findIsActiveProbe, findIsPreparedProbe} from 'support/scrollPositionLifecycle';
 import {fakeBoundingClientRectsByTestId} from 'support/fakeBoundingClientRects';
+import {changeLocationHash} from 'support/changeLocationHash';
 
 import React from 'react';
 import {act} from '@testing-library/react';
@@ -84,6 +85,34 @@ describe('useContentElementLifecycle', () => {
         simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement')))
       );
 
+      expect(getByTestId('testElement')).toHaveTextContent('paused');
+    });
+
+    it('stays false even with probe inside viewport when excursion is active', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          storylines: [
+            {id: 1, configuration: {main: true}},
+            {id: 2}
+          ],
+          chapters: [
+            {id: 1, storylineId: 1},
+            {id: 2, storylineId: 2, configuration: {title: 'excursion'}}
+          ],
+          sections: [
+            {id: 1, chapterId: 1},
+            {id: 2, chapterId: 2}
+          ],
+          contentElements: [
+            {sectionId: 1, typeName: 'test'}
+          ]
+        }
+      });
+
+      act(() => simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement'))));
+      expect(getByTestId('testElement')).toHaveTextContent('playing');
+
+      act(() => changeLocationHash('#excursion'));
       expect(getByTestId('testElement')).toHaveTextContent('paused');
     });
 

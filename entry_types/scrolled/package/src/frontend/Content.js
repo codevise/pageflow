@@ -14,6 +14,7 @@ import {useChapterSlugUpdater} from './useChapterSlugUpdater';
 
 import {AtmoProvider} from './useAtmo';
 import {Widget} from './Widget';
+import {StorylineActivity} from './useScrollPositionLifecycle';
 
 import styles from './Content.module.css';
 
@@ -80,9 +81,11 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
 function renderMainStoryline(chapters, activeExcursion, currentSectionIndex, setCurrentSection) {
   return (
     <Widget role="mainStoryline"
-            props={{activeExcursion}}
-            renderFallback={({children}) => children}>
-      {renderChapters(chapters, currentSectionIndex, setCurrentSection)}
+              props={{activeExcursion}}
+              renderFallback={({children}) => children}>
+      <StorylineActivity mode={activeExcursion ? 'background' : 'active'}>
+        {renderChapters(chapters, currentSectionIndex, setCurrentSection)}
+      </StorylineActivity>
       <Widget role="footer" />
     </Widget>
   );
