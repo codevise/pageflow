@@ -247,6 +247,29 @@ the story.
 | ---- | ----------- |
 | `image_gallery_scroll_button_size` | Size of the scroll buttons displayed on the left and right of the image gallery. |
 
+### Inline Video Controls
+
+| Name | Description |
+| ---- | ----------- |
+| `big_play_pause_button_background` | Background of the big play/pause button. |
+| `big_play_pause_button_size` | Width and height of the big play/pause button. |
+| `big_play_pause_button_icon_fill` | Fill color of the play/pause icon. |
+| `big_play_pause_button_icon_size` | Width and height of the play/pause icon. |
+
+### Hotspots
+
+The following theme option is supported:
+
+``` ruby
+entry_type_config.themes.register(
+  :my_custom_theme,
+  # ...
+
+  # Hide pager buttons in hotspots content elements
+  hotspots_pager_buttons_hidden: true
+)
+```
+
 ### Shared Widget Colors
 
 Surfaces use colors from specific categories in your color palette,

@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {useTheme} from 'pageflow-scrolled/frontend';
 import {PagerButton} from './PagerButton';
 
 import styles from './Pager.module.css';
@@ -10,6 +11,8 @@ export function Pager({
   activeIndex, activateArea,
   children
 }) {
+  const theme = useTheme();
+
   return (
     <div className={classNames(styles.outer, {[styles.customMargin]: customMargin})}>
       {renderScrollButtons()}
@@ -20,7 +23,7 @@ export function Pager({
   );
 
   function renderScrollButtons() {
-    if (!panZoomEnabled) {
+    if (!panZoomEnabled || theme.options.hotspotsPagerButtonsHidden) {
       return null;
     }
 
