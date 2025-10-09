@@ -429,4 +429,147 @@ describe('useContentElementLifecycle', () => {
       expect(handler).toHaveBeenCalled();
     });
   });
+
+  describe('inForeground', () => {
+    beforeEach(() => {
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          const {inForeground} = useContentElementLifecycle();
+          return (
+            <div data-testid="testElement">
+              {inForeground ? 'foreground' : 'background'}
+            </div>
+          );
+        }
+      });
+    });
+
+    it('is true by default', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      expect(getByTestId('testElement')).toHaveTextContent('foreground');
+    });
+
+    it('becomes false when excursion is activated', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          storylines: [
+            {id: 1, configuration: {main: true}},
+            {id: 2}
+          ],
+          chapters: [
+            {id: 1, storylineId: 1},
+            {id: 2, storylineId: 2, configuration: {title: 'excursion'}}
+          ],
+          sections: [
+            {id: 1, chapterId: 1},
+            {id: 2, chapterId: 2}
+          ],
+          contentElements: [
+            {sectionId: 1, typeName: 'test'}
+          ]
+        }
+      });
+
+      expect(getByTestId('testElement')).toHaveTextContent('foreground');
+
+      act(() => changeLocationHash('#excursion'));
+      expect(getByTestId('testElement')).toHaveTextContent('background');
+    });
+  });
+
+  describe('onEnterBackground option', () => {
+    it('invoked when excursion is activated', async () => {
+      const handler = jest.fn();
+
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          useContentElementLifecycle({
+            onEnterBackground: handler
+          });
+
+          return (
+            <div data-testid="testElement" />
+          );
+        }
+      });
+
+      renderInEntry(<Entry />, {
+        seed: {
+          storylines: [
+            {id: 1, configuration: {main: true}},
+            {id: 2}
+          ],
+          chapters: [
+            {id: 1, storylineId: 1},
+            {id: 2, storylineId: 2, configuration: {title: 'excursion'}}
+          ],
+          sections: [
+            {id: 1, chapterId: 1},
+            {id: 2, chapterId: 2}
+          ],
+          contentElements: [
+            {sectionId: 1, typeName: 'test'}
+          ]
+        }
+      });
+
+      act(() => changeLocationHash('#excursion'));
+
+      expect(handler).toHaveBeenCalled();
+    });
+  });
+
+  describe('onEnterForeground option', () => {
+    it('invoked when excursion is closed', async () => {
+      const handler = jest.fn();
+
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          useContentElementLifecycle({
+            onEnterForeground: handler
+          });
+
+          return (
+            <div data-testid="testElement" />
+          );
+        }
+      });
+
+      renderInEntry(<Entry />, {
+        seed: {
+          storylines: [
+            {id: 1, configuration: {main: true}},
+            {id: 2}
+          ],
+          chapters: [
+            {id: 1, storylineId: 1},
+            {id: 2, storylineId: 2, configuration: {title: 'excursion'}}
+          ],
+          sections: [
+            {id: 1, chapterId: 1},
+            {id: 2, chapterId: 2}
+          ],
+          contentElements: [
+            {sectionId: 1, typeName: 'test'}
+          ]
+        }
+      });
+
+      act(() => changeLocationHash('#excursion'));
+      act(() => changeLocationHash(''));
+
+      expect(handler).toHaveBeenCalled();
+    });
+  });
 });

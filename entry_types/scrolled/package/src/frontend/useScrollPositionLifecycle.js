@@ -88,10 +88,11 @@ export function createScrollPositionLifecycleProvider(Context) {
     // `onVisible`, no matter in which order the intersection
     // observers above fire.
     const isActive = isVisible && shouldBeActive && !inInactiveStoryline
+    const inForeground = !inInactiveStoryline
 
     const value = useMemo(() => ({
-      shouldLoad, shouldPrepare, isVisible, isActive}
-    ), [shouldLoad, shouldPrepare, isVisible, isActive]);
+      shouldLoad, shouldPrepare, isVisible, isActive, inForeground}
+    ), [shouldLoad, shouldPrepare, isVisible, isActive, inForeground]);
 
     return (
       <div ref={ref} className={classNames(styles.wrapper)}>
@@ -106,13 +107,14 @@ export function createScrollPositionLifecycleProvider(Context) {
 }
 
 export function createScrollPositionLifecycleHook(Context) {
-  return function useScrollPositionLifecycle({onActivate, onDeactivate, onVisible, onInvisible} = {}) {
+  return function useScrollPositionLifecycle({onActivate, onDeactivate, onVisible, onInvisible, onEnterBackground, onEnterForeground} = {}) {
     const result = useContext(Context);
 
     const wasActive = useRef();
     const wasVisible = useRef();
+    const wasForeground = useRef();
 
-    const {isActive, isVisible} = result || {};
+    const {isActive, isVisible, inForeground} = result || {};
 
     useEffect(() => {
       if (!wasVisible.current && isVisible && onVisible) {
@@ -126,12 +128,20 @@ export function createScrollPositionLifecycleHook(Context) {
         onDeactivate();
       }
 
+      if (wasForeground.current && !inForeground && onEnterBackground) {
+        onEnterBackground();
+      }
+      else if (!wasForeground.current && inForeground && onEnterForeground) {
+        onEnterForeground();
+      }
+
       if (wasVisible.current && !isVisible && onInvisible) {
         onInvisible();
       }
 
       wasActive.current = isActive;
       wasVisible.current = isVisible;
+      wasForeground.current = inForeground;
     });
 
     return result;
