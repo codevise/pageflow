@@ -24,9 +24,9 @@
 
 .button {
   composes: unstyledButton from '../../utils.module.css';
-  background: radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 60%);
-  width: 64px;
-  height: 64px;
+  background: var(--theme-big-play-pause-button-background, radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 60%));
+  width: var(--theme-big-play-pause-button-size, 64px);
+  height: var(--theme-big-play-pause-button-size, 64px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,9 +37,9 @@
 }
 
 .button svg {
-  fill: #fff;
-  width: 56px;
-  height: 56px;
+  fill: var(--theme-big-play-pause-button-icon-fill, #fff);
+  width: var(--theme-big-play-pause-button-icon-size, 56px);
+  height: var(--theme-big-play-pause-button-icon-size, 56px);
 }
 
 .hidden {

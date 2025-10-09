@@ -27,6 +27,19 @@ storiesOfContentElement(module, {
       configuration: {
         position: 'backdrop'
       }
+    },
+    {
+      name: 'with white circle play button',
+      themeOptions: {
+        properties: {
+          root: {
+            bigPlayPauseButtonBackground: 'radial-gradient(#fff, #fff 60%, rgba(255, 255, 255, 0) 61%)',
+            bigPlayPauseButtonIconFill: '#000',
+            bigPlayPauseButtonSize: '80px',
+            bigPlayPauseButtonIconSize: '64px'
+          }
+        }
+      }
     }
   ],
   inlineFileRights: true
