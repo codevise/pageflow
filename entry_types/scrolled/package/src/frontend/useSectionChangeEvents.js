@@ -1,19 +1,13 @@
-import {events} from 'pageflow/frontend';
-import {useEffect} from 'react';
-import {usePrevious} from './usePrevious';
+import {useCallback, useRef} from 'react';
 import {getEventObject} from './useEventContextData';
-import {useSectionsWithChapter} from '../entryState';
 
-export function useSectionChangeEvents(currentSectionIndex) {
-  const previousSectionIndex = usePrevious(currentSectionIndex);
-  const sections = useSectionsWithChapter();
+export function useSectionChangeEvents(events) {
+  const previousSectionPermaIdRef = useRef();
 
-  useEffect(() => {
-    if (previousSectionIndex !== currentSectionIndex) {
-      events.trigger('page:change', getEventObject({
-        section: sections[currentSectionIndex],
-        sectionsCount: sections.length
-      }));
+  return useCallback((section, sectionsCount) => {
+    if (previousSectionPermaIdRef.current !== section?.permaId) {
+      events.trigger('page:change', getEventObject({section, sectionsCount}));
+      previousSectionPermaIdRef.current = section?.permaId;
     }
-  });
-};
+  }, [events]);
+}

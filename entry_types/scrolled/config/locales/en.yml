@@ -116,6 +116,8 @@ en:
       feature_name: Icon Scroll Indicator
     iconScrollIndicator:
       widget_type_name: Icon at bottom of viewport
+    excursions:
+      feature_name: Excursions
   pageflow_scrolled:
     editor:
       backdrop_effects:
@@ -1091,6 +1093,7 @@ en:
         save_error: There was an error while saving this chapter.
         tabs:
           chapter: Chapter
+          excursion: Excursion
       edit_motif_area:
         blank_slate: No area selected.
         cancel: Cancel
@@ -1421,9 +1424,12 @@ en:
         chapter_number: Chapter %{number}
         deleted_chapter: Deleted chapter
         deleted_file: Deleted file
+        excursion_with_title: "Excursion: %{title}"
         opens_in_new_tab: Opens in new tab
         opens_in_same_tab: Outside editor, will open in same tab
+        untitled_excursion: Untitled excursion
         visit_chapter: Go to chapter
+        visit_excursion: Go to excursion
         visit_section: Go to section
       remove_link: Remove link
       select_content_element: Select element

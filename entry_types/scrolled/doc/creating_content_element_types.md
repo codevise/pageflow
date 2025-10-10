@@ -116,9 +116,18 @@ registering the content element type.
   viewport. Use it to start prebuffering media or trigger other
   expensive actions.
 
+* `isVisible` is true if the content element is in the viewport. Use
+  it to start media playback that should remain active even when the
+  element is not fully centered.
+
 * `isActive` is true if the content element is completely in the
   viewport. Use it to activate some interactive behavior like an
   animation or media playback.
+
+* `inForeground` is true when the storyline containing the content
+  element is active (not in background mode). Use it to distinguish
+  between content being in the viewport of the active storyline versus
+  being visible but in the background (e.g., when an excursion is displayed).
 
 ```javascript
 // frontend.js
@@ -131,10 +140,10 @@ frontend.contentElementTypes.register('inlineImage', {
 });
 
 function Component() {
-  const {isActive, shouldLoad} = useContentElementLifecycle();
+  const {isActive, isVisible, shouldLoad, inForeground} = useContentElementLifecycle();
 
   return (
-    <div>{isActive ? 'visible' : 'hidden'}</div>
+    <div>{isActive ? 'active' : 'idle'}</div>
   )
 }
 ```
@@ -156,6 +165,36 @@ function InlineVideo(props) {
 
   return (
     <Video playerState={playerState} playerActions={playerActions} />
+  );
+}
+```
+
+The `onVisible` and `onInvisible` callbacks are invoked when the
+content element enters or leaves the viewport. Use these for content
+that should start or stop based on viewport visibility, such as
+looping videos.
+
+The `onEnterBackground` and `onEnterForeground` callbacks are invoked
+when the storyline switches between active and background mode. This is
+useful for content that should remain visible but reduce its activity
+level when an excursion is displayed:
+
+```javascript
+function LoopingVideo(props) {
+  const [playerState, playerActions] = usePlayerState();
+  const {shouldPrepare} = useContentElementLifecycle({
+    onVisible: () => playerActions.play(),
+    onEnterBackground: () => playerActions.changeVolumeFactor(0, 400),
+    onEnterForeground: () => playerActions.changeVolumeFactor(1, 400),
+    onInvisible: () => playerActions.pause()
+  });
+
+  if (!shouldPrepare) {
+    return null;
+  }
+
+  return (
+    <Video playerState={playerState} playerActions={playerActions} loop />
   );
 }
 ```

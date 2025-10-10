@@ -13,6 +13,7 @@ import {
 
 import {useI18n} from '../i18n';
 import {useChapter, useDownloadableFile} from '../../entryState';
+import {useMainStoryline} from '../../entryState/structure';
 import {SectionThumbnail} from '../SectionThumbnail';
 import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
 
@@ -159,11 +160,25 @@ function LinkDestination({href, openInNewTab}) {
 
 function ChapterLinkDestination({permaId}) {
   const chapter = useChapter({permaId});
+  const mainStoryline = useMainStoryline();
   const {t} = useI18n({locale: 'ui'});
 
   if (!chapter) {
     return (
       <span>{t('pageflow_scrolled.inline_editing.link_tooltip.deleted_chapter')}</span>
+    );
+  }
+
+  const isExcursion = mainStoryline && chapter.storylineId !== mainStoryline.id;
+
+  if (isExcursion) {
+    return (
+      <a href={`#${chapter.chapterSlug}`}
+         title={t('pageflow_scrolled.inline_editing.link_tooltip.visit_excursion')}>
+        {chapter.title ?
+         t('pageflow_scrolled.inline_editing.link_tooltip.excursion_with_title', {title: chapter.title}) :
+         t('pageflow_scrolled.inline_editing.link_tooltip.untitled_excursion')}
+      </a>
     );
   }
 

@@ -3,6 +3,7 @@ import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 
 import {setupGlobals} from 'pageflow/testHelpers';
 import {factories, normalizeSeed} from 'support';
+import I18n from 'i18n-js';
 
 // Required to define editor.entryType global
 import 'editor/config';
@@ -18,6 +19,8 @@ export function useEditorGlobals() {
         .withAudioFileType()
         .withTextTrackFileType()
     );
+
+    window.I18n = I18n;
   });
 
   return {

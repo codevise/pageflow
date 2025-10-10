@@ -20,6 +20,18 @@ export function getLifecycleHandlers({configuration, playerActions, mediaMuted})
       }
     },
 
+    onEnterBackground() {
+      if (configuration.playbackMode === 'loop') {
+        playerActions.changeVolumeFactor(0, 400);
+      }
+    },
+
+    onEnterForeground() {
+      if (configuration.playbackMode === 'loop') {
+        playerActions.changeVolumeFactor(1, 400);
+      }
+    },
+
     onInvisible() {
       if (configuration.playbackMode === 'loop') {
         playerActions.fadeOutAndPause(400);

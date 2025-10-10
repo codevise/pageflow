@@ -65,6 +65,7 @@ module PageflowScrolled
         c.features.register('content_element_margins')
         c.features.register('backdrop_size')
         c.features.register('section_paddings')
+        c.features.register('excursions')
 
         c.additional_frontend_seed_data.register(
           'frontendVersion',

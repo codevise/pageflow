@@ -70,7 +70,7 @@ export const SectionItemView = Marionette.ItemView.extend({
   }),
 
   initialize() {
-    this.listenTo(this.options.entry, 'change:currentSectionIndex', () => {
+    this.listenTo(this.options.entry, 'change:currentSectionIndex change:currentExcursionId', () => {
       const active = this.updateActive();
 
       if (active) {
@@ -182,10 +182,11 @@ export const SectionItemView = Marionette.ItemView.extend({
   },
 
   updateActive() {
-    const active =
-      this.options.entry.sections.indexOf(this.model) === this.options.entry.get('currentSectionIndex');
+    const active = this.model.isCurrent();
 
     this.$el.toggleClass(styles.active, active);
+    this.$el.attr('aria-current', active ? 'true' : null);
+
     return active;
   },
 

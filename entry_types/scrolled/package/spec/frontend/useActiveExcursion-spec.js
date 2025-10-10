@@ -235,4 +235,48 @@ describe('useActiveExcursion', () => {
     expect(activeExcursion).toBeUndefined();
   });
 
+  it('activates excursion on initial render when hash matches chapter slug', () => {
+    window.location.hash = '#excursion';
+
+    const {result} = renderHookInEntry(() => useActiveExcursion(useEntryStructure()), {
+      seed: {
+        storylines: [
+          {id: 1, configuration: {main: true}},
+          {id: 2}
+        ],
+        chapters: [
+          {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+          {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+        ]
+      }
+    });
+
+    const {activeExcursion} = result.current;
+    expect(activeExcursion).toMatchObject({title: 'excursion'});
+  });
+
+  it('activates excursion on initial render when hash matches section permaId pattern', () => {
+    window.location.hash = '#section-501';
+
+    const {result} = renderHookInEntry(() => useActiveExcursion(useEntryStructure()), {
+      seed: {
+        storylines: [
+          {id: 1, configuration: {main: true}},
+          {id: 2}
+        ],
+        chapters: [
+          {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+          {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+        ],
+        sections: [
+          {id: 100, chapterId: 10, permaId: 500},
+          {id: 101, chapterId: 11, permaId: 501},
+        ]
+      }
+    });
+
+    const {activeExcursion} = result.current;
+    expect(activeExcursion).toMatchObject({title: 'excursion'});
+  });
+
 });

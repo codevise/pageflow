@@ -220,6 +220,7 @@ describe('useEntryStructure', () => {
     const entryStructure = result.current;
 
     expect(entryStructure).toMatchObject(expectedEntryStructure);
+    expect(entryStructure.mainSectionsCount).toBe(2);
   });
 
   it('reads data from seed', () => {
@@ -238,6 +239,7 @@ describe('useEntryStructure', () => {
     const entryStructure = result.current;
 
     expect(entryStructure).toMatchObject(expectedEntryStructure);
+    expect(entryStructure.mainSectionsCount).toBe(2);
   });
 });
 

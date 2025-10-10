@@ -44,6 +44,10 @@ export const Chapter = Backbone.Model.extend({
     }
   },
 
+  isExcursion() {
+    return !this.storyline.isMain();
+  },
+
   addSection(attributes, options) {
     const section = this.sections.create(
       new Section(

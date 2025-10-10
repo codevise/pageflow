@@ -11,7 +11,9 @@ describe('LinkTooltip', () => {
   useFakeTranslations({
     'pageflow_scrolled.inline_editing.link_tooltip.opens_in_new_tab': 'Opens in new tab',
     'pageflow_scrolled.inline_editing.link_tooltip.opens_in_same_tab': 'Opens in same tab',
-    'pageflow_scrolled.inline_editing.link_tooltip.chapter_number': 'Chapter %{number}'
+    'pageflow_scrolled.inline_editing.link_tooltip.chapter_number': 'Chapter %{number}',
+    'pageflow_scrolled.inline_editing.link_tooltip.excursion_with_title': 'Excursion: %{title}',
+    'pageflow_scrolled.inline_editing.link_tooltip.untitled_excursion': 'Untitled Excursion'
   });
 
   it('displays tooltip for external link on hover', async () => {
@@ -143,5 +145,59 @@ describe('LinkTooltip', () => {
 
     expect(queryByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg?download=MyImage.jpg');
     expect(queryByRole('link')).toHaveTextContent('MyImage.jpg');
+  });
+
+  it('displays tooltip for excursion chapter link with title', async () => {
+    const seed = {
+      storylines: [
+        {id: 1, configuration: {main: true}},
+        {id: 2}
+      ],
+      chapters: [
+        {permaId: 10, storylineId: 1, configuration: {title: 'Main Chapter'}},
+        {permaId: 20, storylineId: 2, configuration: {title: 'Side Story'}}
+      ]
+    }
+    const {getByText, queryByRole} = renderInEntry(
+      <LinkTooltipProvider>
+        <LinkPreview href={{chapter: 20}}>
+          A link
+        </LinkPreview>
+      </LinkTooltipProvider>,
+      {seed}
+    );
+
+    const user = userEvent.setup();
+    await user.hover(getByText('A link'));
+
+    expect(queryByRole('link')).toHaveAttribute('href', '#side-story');
+    expect(queryByRole('link')).toHaveTextContent('Excursion: Side Story');
+  });
+
+  it('displays tooltip for excursion chapter link without title', async () => {
+    const seed = {
+      storylines: [
+        {id: 1, configuration: {main: true}},
+        {id: 2}
+      ],
+      chapters: [
+        {permaId: 10, storylineId: 1, configuration: {title: 'Main Chapter'}},
+        {permaId: 20, storylineId: 2, configuration: {}}
+      ]
+    }
+    const {getByText, queryByRole} = renderInEntry(
+      <LinkTooltipProvider>
+        <LinkPreview href={{chapter: 20}}>
+          A link
+        </LinkPreview>
+      </LinkTooltipProvider>,
+      {seed}
+    );
+
+    const user = userEvent.setup();
+    await user.hover(getByText('A link'));
+
+    expect(queryByRole('link')).toHaveAttribute('href', '#chapter-20');
+    expect(queryByRole('link')).toHaveTextContent('Untitled Excursion');
   });
 });

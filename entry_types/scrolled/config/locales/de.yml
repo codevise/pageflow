@@ -116,6 +116,8 @@ de:
       feature_name: Icon Scroll-Indikator
     iconScrollIndicator:
       widget_type_name: Icon unten am Viewport-Rand
+    excursions:
+      feature_name: Exkurse
     section_paddings:
       feature_name: "Abschnittsinnenabstände"
   pageflow_scrolled:
@@ -1109,6 +1111,7 @@ de:
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
         tabs:
           chapter: Kapitel
+          excursion: Exkurs
       edit_motif_area:
         blank_slate: Kein Bereich markiert.
         cancel: Abbrechen
@@ -1613,9 +1616,12 @@ de:
         chapter_number: Kapitel %{number}
         deleted_chapter: Gelöschtes Kapitel
         deleted_file: Gelöschte Datei
+        excursion_with_title: "Exkurs: %{title}"
         opens_in_new_tab: Öffnet in neuem Tab
         opens_in_same_tab: Öffnet außerhalb des Editors im selben Tab
+        untitled_excursion: Unbenannter Exkurs
         visit_chapter: Gehe zu Kapitel
+        visit_excursion: Gehe zu Exkurs
         visit_section: Gehe zu Abschnitt
       remove_link: Link entfernen
       select_content_element: Element auswählen

@@ -11,9 +11,14 @@ import {useSectionChangeEvents} from './useSectionChangeEvents';
 import {sectionChangeMessagePoster} from './sectionChangeMessagePoster';
 import {useScrollToTarget} from './useScrollTarget';
 import {useChapterSlugUpdater} from './useChapterSlugUpdater';
+import {events} from 'pageflow/frontend';
 
 import {AtmoProvider} from './useAtmo';
 import {Widget} from './Widget';
+
+import {
+  MainStorylineActivity, MainStorylineCoverageProvider, useMainStorylineCoverage
+} from './useScrollPositionLifecycle';
 
 import styles from './Content.module.css';
 
@@ -31,19 +36,21 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
 
   const {updateChapterSlug, updateExcursionChapterSlug} = useChapterSlugUpdater();
 
-  useSectionChangeEvents(currentSectionIndex);
+  const triggerSectionChange = useSectionChangeEvents(events);
 
   const setCurrentSection = useCallback(section => {
     sectionChangeMessagePoster(section.sectionIndex);
     setCurrentSectionIndexState(section.sectionIndex);
     updateChapterSlug(section);
-  }, [setCurrentSectionIndexState, updateChapterSlug]);
+    triggerSectionChange(section, entryStructure.mainSectionsCount);
+  }, [setCurrentSectionIndexState, updateChapterSlug, triggerSectionChange, entryStructure.mainSectionsCount]);
 
   const setCurrentExcursionSection = useCallback(section => {
-    sectionChangeMessagePoster(section.sectionIndex);
+    sectionChangeMessagePoster(section.sectionIndex, section.chapter.id);
     setCurrentExcursionSectionIndex(section.sectionIndex);
     updateExcursionChapterSlug(section);
-  }, [updateExcursionChapterSlug]);
+    triggerSectionChange(section, activeExcursion.sections.length);
+  }, [updateExcursionChapterSlug, triggerSectionChange, activeExcursion]);
 
   const scrollToTarget = useScrollToTarget();
 
@@ -59,16 +66,23 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
   return (
     <div className={styles.Content} id='goToContent'>
       <VhFix>
-        <AtmoProvider>
-          {renderMainStoryline(entryStructure.main,
-                               activeExcursion,
-                               currentSectionIndex,
-                               setCurrentSection)}
-          {renderExcursion(activeExcursion,
-                           currentExcursionSectionIndex,
-                           setCurrentExcursionSection,
-                           {onClose: () => returnFromExcursion()})}
-        </AtmoProvider>
+        <MainStorylineCoverageProvider>
+          <AtmoProvider>
+            {renderMainStoryline(entryStructure.main,
+                                 activeExcursion,
+                                 currentSectionIndex,
+                                 setCurrentSection)}
+            <ActiveExcursion
+              excursion={activeExcursion}
+              currentExcursionSectionIndex={currentExcursionSectionIndex}
+              setCurrentExcursionSection={setCurrentExcursionSection}
+              onClose={() => {
+                returnFromExcursion();
+                sectionChangeMessagePoster(currentSectionIndex);
+              }}
+            />
+          </AtmoProvider>
+        </MainStorylineCoverageProvider>
       </VhFix>
     </div>
   );
@@ -77,27 +91,43 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
 function renderMainStoryline(chapters, activeExcursion, currentSectionIndex, setCurrentSection) {
   return (
     <Widget role="mainStoryline"
-            props={{activeExcursion}}
-            renderFallback={({children}) => children}>
-      {renderChapters(chapters, currentSectionIndex, setCurrentSection)}
+              props={{activeExcursion}}
+              renderFallback={({children}) => children}>
+      <MainStorylineActivity activeExcursion={activeExcursion}>
+        {renderChapters(chapters, currentSectionIndex, setCurrentSection)}
+      </MainStorylineActivity>
       <Widget role="footer" />
     </Widget>
   );
 }
 
-function renderExcursion(
-  excursion, currentExcursionSectionIndex, setCurrentExcursionSection, {onClose}
-) {
-  if (excursion) {
-    return (
-      <Widget role="excursion"
-              props={{excursion, onClose}}>
-        {renderChapters([excursion],
-                        currentExcursionSectionIndex,
-                        setCurrentExcursionSection)}
-      </Widget>
-    );
+function ActiveExcursion({
+  excursion,
+  currentExcursionSectionIndex,
+  setCurrentExcursionSection,
+  onClose
+}) {
+  const {setMainStorylineCovered} = useMainStorylineCoverage();
+
+  if (!excursion) {
+    return null;
   }
+
+  return (
+    <Widget role="excursion"
+            props={{
+              excursion,
+              onClose: () => {
+                onClose();
+                setMainStorylineCovered(false);
+              },
+              setIsCoveringBackground: setMainStorylineCovered
+            }}>
+      {renderChapters([excursion],
+                      currentExcursionSectionIndex,
+                      setCurrentExcursionSection)}
+    </Widget>
+  );
 }
 
 function renderChapters(chapters,

@@ -9,7 +9,7 @@ export function useActiveExcursion(entryStructure) {
       const hash = window.location.hash.slice(1);
       const excursion = findExcursionByHash(hash);
 
-      if (excursion && !returnUrlRef.current) {
+      if (excursion && event?.oldURL && !returnUrlRef.current) {
         returnUrlRef.current = event.oldURL;
       }
 
@@ -30,6 +30,8 @@ export function useActiveExcursion(entryStructure) {
         chapter => chapter.chapterSlug === hash
       );
     }
+
+    handleHashChange();
 
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);

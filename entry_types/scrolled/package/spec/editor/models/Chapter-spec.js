@@ -226,4 +226,42 @@ describe('Chapter', () => {
       expect(requests[1].url).toBe('/editor/entries/1/scrolled/sections/102');
     });
   });
+
+  describe('#isExcursion', () => {
+    it('returns false for chapters in main storyline', () => {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          storylines: [
+            {id: 100, configuration: {main: true}}
+          ],
+          chapters: [
+            {id: 1, storylineId: 100}
+          ]
+        })
+      });
+
+      const chapter = entry.chapters.get(1);
+
+      expect(chapter.isExcursion()).toBe(false);
+    });
+
+    it('returns true for chapters in excursion storyline', () => {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          storylines: [
+            {id: 100, configuration: {main: true}},
+            {id: 200}
+          ],
+          chapters: [
+            {id: 1, storylineId: 100},
+            {id: 2, storylineId: 200}
+          ]
+        })
+      });
+
+      const chapter = entry.chapters.get(2);
+
+      expect(chapter.isExcursion()).toBe(true);
+    });
+  });
 });

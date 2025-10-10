@@ -245,6 +245,110 @@ describe('getLifecycleHandlers', () => {
       expect(playerActions.fadeOutAndPause).toHaveBeenCalled();
     });
   });
+
+  describe('onEnterBackground', () => {
+    it('is no-op by default', () => {
+      const configuration = {};
+      const playerActions = getPlayerActions();
+
+      const {onEnterBackground} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onEnterBackground();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('is no-op for manual playbackMode', () => {
+      const configuration = {playbackMode: 'manual'};
+      const playerActions = getPlayerActions();
+
+      const {onEnterBackground} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onEnterBackground();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('is no-op for autoplay playbackMode', () => {
+      const configuration = {playbackMode: 'autoplay'};
+      const playerActions = getPlayerActions();
+
+      const {onEnterBackground} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onEnterBackground();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('is no-op for autoplayIfUnmuted playbackMode', () => {
+      const configuration = {playbackMode: 'autoplayIfUnmuted'};
+      const playerActions = getPlayerActions();
+
+      const {onEnterBackground} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onEnterBackground();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('calls changeVolumeFactor with 0 for loop playbackMode', () => {
+      const configuration = {playbackMode: 'loop'};
+      const playerActions = getPlayerActions();
+
+      const {onEnterBackground} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onEnterBackground();
+
+      expect(playerActions.changeVolumeFactor).toHaveBeenCalledWith(0, 400);
+    });
+  });
+
+  describe('onEnterForeground', () => {
+    it('is no-op by default', () => {
+      const configuration = {};
+      const playerActions = getPlayerActions();
+
+      const {onEnterForeground} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onEnterForeground();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('is no-op for manual playbackMode', () => {
+      const configuration = {playbackMode: 'manual'};
+      const playerActions = getPlayerActions();
+
+      const {onEnterForeground} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onEnterForeground();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('is no-op for autoplay playbackMode', () => {
+      const configuration = {playbackMode: 'autoplay'};
+      const playerActions = getPlayerActions();
+
+      const {onEnterForeground} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onEnterForeground();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('is no-op for autoplayIfUnmuted playbackMode', () => {
+      const configuration = {playbackMode: 'autoplayIfUnmuted'};
+      const playerActions = getPlayerActions();
+
+      const {onEnterForeground} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onEnterForeground();
+
+      expect(playerActions.calls).toEqual([]);
+    });
+
+    it('calls changeVolumeFactor with 1 for loop playbackMode', () => {
+      const configuration = {playbackMode: 'loop'};
+      const playerActions = getPlayerActions();
+
+      const {onEnterForeground} = getLifecycleHandlers({configuration, playerActions, mediaMuted: false});
+      onEnterForeground();
+
+      expect(playerActions.changeVolumeFactor).toHaveBeenCalledWith(1, 400);
+    });
+  });
 });
 
 describe('getPlayerClickHandler', () => {
