@@ -7,8 +7,13 @@
 
 .scaler {
   position: relative;
-  transition: filter .3s ease, transform .3s ease;
   transform-origin: center calc(var(--previous-scroll-y) + 100vh);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scaler {
+    transition: filter .3s ease, transform .3s ease;
+  }
 }
 
 .inactive > .scaler {
