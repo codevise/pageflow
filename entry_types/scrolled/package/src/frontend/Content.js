@@ -11,6 +11,7 @@ import {useSectionChangeEvents} from './useSectionChangeEvents';
 import {sectionChangeMessagePoster} from './sectionChangeMessagePoster';
 import {useScrollToTarget} from './useScrollTarget';
 import {useChapterSlugUpdater} from './useChapterSlugUpdater';
+import {events} from 'pageflow/frontend';
 
 import {AtmoProvider} from './useAtmo';
 import {Widget} from './Widget';
@@ -35,19 +36,21 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
 
   const {updateChapterSlug, updateExcursionChapterSlug} = useChapterSlugUpdater();
 
-  useSectionChangeEvents(currentSectionIndex);
+  const triggerSectionChange = useSectionChangeEvents(events);
 
   const setCurrentSection = useCallback(section => {
     sectionChangeMessagePoster(section.sectionIndex);
     setCurrentSectionIndexState(section.sectionIndex);
     updateChapterSlug(section);
-  }, [setCurrentSectionIndexState, updateChapterSlug]);
+    triggerSectionChange(section, entryStructure.mainSectionsCount);
+  }, [setCurrentSectionIndexState, updateChapterSlug, triggerSectionChange, entryStructure.mainSectionsCount]);
 
   const setCurrentExcursionSection = useCallback(section => {
     sectionChangeMessagePoster(section.sectionIndex, section.chapter.id);
     setCurrentExcursionSectionIndex(section.sectionIndex);
     updateExcursionChapterSlug(section);
-  }, [updateExcursionChapterSlug]);
+    triggerSectionChange(section, activeExcursion.sections.length);
+  }, [updateExcursionChapterSlug, triggerSectionChange, activeExcursion]);
 
   const scrollToTarget = useScrollToTarget();
 
