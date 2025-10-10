@@ -13,6 +13,8 @@ import {act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('useContentElementLifecycle', () => {
+  beforeEach(() => changeLocationHash(''));
+
   afterEach(() => jest.restoreAllMocks());
 
   it('throws descriptive error if content element type is missing flag', () => {
