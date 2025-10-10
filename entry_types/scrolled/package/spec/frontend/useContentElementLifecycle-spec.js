@@ -572,4 +572,270 @@ describe('useContentElementLifecycle', () => {
       expect(handler).toHaveBeenCalled();
     });
   });
+
+  describe('isVisible when excursion covers viewport', () => {
+    beforeEach(() => {
+      frontend.widgetTypes.register('testExcursion', {
+        component: function TestExcursion({setIsCoveringBackground, children}) {
+          React.useEffect(() => {
+            if (setIsCoveringBackground) {
+              setIsCoveringBackground(true);
+            }
+
+            return () => {
+              if (setIsCoveringBackground) {
+                setIsCoveringBackground(false);
+              }
+            };
+          }, [setIsCoveringBackground]);
+
+          return children;
+        }
+      });
+    });
+
+    it('becomes false when excursion covers viewport', async () => {
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          const {isVisible} = useContentElementLifecycle();
+          return (
+            <div data-testid="testElement">
+              {isVisible ? 'visible' : 'hidden'}
+            </div>
+          );
+        }
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          widgets: [{
+            typeName: 'testExcursion',
+            role: 'excursion'
+          }],
+          storylines: [
+            {id: 1, configuration: {main: true}},
+            {id: 2}
+          ],
+          chapters: [
+            {id: 1, storylineId: 1},
+            {id: 2, storylineId: 2, configuration: {title: 'excursion'}}
+          ],
+          sections: [
+            {id: 1, chapterId: 1},
+            {id: 2, chapterId: 2}
+          ],
+          contentElements: [
+            {sectionId: 1, typeName: 'test'}
+          ]
+        }
+      });
+
+      act(() => simulateScrollingIntoView(getByTestId('testElement')));
+      expect(getByTestId('testElement')).toHaveTextContent('visible');
+
+      act(() => changeLocationHash('#excursion'));
+      expect(getByTestId('testElement')).toHaveTextContent('hidden');
+    });
+
+    it('invokes onInvisible callback when excursion covers viewport', async () => {
+      const handler = jest.fn();
+
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          useContentElementLifecycle({
+            onInvisible: handler
+          });
+
+          return (
+            <div data-testid="testElement" />
+          );
+        }
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          widgets: [{
+            typeName: 'testExcursion',
+            role: 'excursion'
+          }],
+          storylines: [
+            {id: 1, configuration: {main: true}},
+            {id: 2}
+          ],
+          chapters: [
+            {id: 1, storylineId: 1},
+            {id: 2, storylineId: 2, configuration: {title: 'excursion'}}
+          ],
+          sections: [
+            {id: 1, chapterId: 1},
+            {id: 2, chapterId: 2}
+          ],
+          contentElements: [
+            {sectionId: 1, typeName: 'test'}
+          ]
+        }
+      });
+
+      act(() => simulateScrollingIntoView(getByTestId('testElement')));
+
+      act(() => changeLocationHash('#excursion'));
+
+      expect(handler).toHaveBeenCalled();
+    });
+
+    it('becomes visible again when excursion is closed', async () => {
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          const {isVisible} = useContentElementLifecycle();
+          return (
+            <div data-testid="testElement">
+              {isVisible ? 'visible' : 'hidden'}
+            </div>
+          );
+        }
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          widgets: [{
+            typeName: 'testExcursion',
+            role: 'excursion'
+          }],
+          storylines: [
+            {id: 1, configuration: {main: true}},
+            {id: 2}
+          ],
+          chapters: [
+            {id: 1, storylineId: 1},
+            {id: 2, storylineId: 2, configuration: {title: 'excursion'}}
+          ],
+          sections: [
+            {id: 1, chapterId: 1},
+            {id: 2, chapterId: 2}
+          ],
+          contentElements: [
+            {sectionId: 1, typeName: 'test'}
+          ]
+        }
+      });
+
+      act(() => simulateScrollingIntoView(getByTestId('testElement')));
+      expect(getByTestId('testElement')).toHaveTextContent('visible');
+
+      act(() => changeLocationHash('#excursion'));
+      expect(getByTestId('testElement')).toHaveTextContent('hidden');
+
+      act(() => changeLocationHash(''));
+      expect(getByTestId('testElement')).toHaveTextContent('visible');
+    });
+
+    it('invokes onVisible callback when excursion is closed', async () => {
+      const handler = jest.fn();
+
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          useContentElementLifecycle({
+            onVisible: handler
+          });
+
+          return (
+            <div data-testid="testElement" />
+          );
+        }
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          widgets: [{
+            typeName: 'testExcursion',
+            role: 'excursion'
+          }],
+          storylines: [
+            {id: 1, configuration: {main: true}},
+            {id: 2}
+          ],
+          chapters: [
+            {id: 1, storylineId: 1},
+            {id: 2, storylineId: 2, configuration: {title: 'excursion'}}
+          ],
+          sections: [
+            {id: 1, chapterId: 1},
+            {id: 2, chapterId: 2}
+          ],
+          contentElements: [
+            {sectionId: 1, typeName: 'test'}
+          ]
+        }
+      });
+
+      act(() => simulateScrollingIntoView(getByTestId('testElement')));
+      expect(handler).toHaveBeenCalledTimes(1);
+
+      act(() => changeLocationHash('#excursion'));
+      act(() => changeLocationHash(''));
+
+      expect(handler).toHaveBeenCalledTimes(2);
+    });
+
+    it('stays true for elements in excursion storyline when excursion covers viewport', async () => {
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          const {isVisible} = useContentElementLifecycle();
+          return (
+            <div data-testid="testElement">
+              {isVisible ? 'visible' : 'hidden'}
+            </div>
+          );
+        }
+      });
+
+      const result = renderInEntry(<Entry />, {
+        seed: {
+          widgets: [{
+            typeName: 'testExcursion',
+            role: 'excursion'
+          }],
+          storylines: [
+            {id: 1, configuration: {main: true}},
+            {id: 2}
+          ],
+          chapters: [
+            {id: 1, storylineId: 1},
+            {id: 2, storylineId: 2, configuration: {title: 'excursion'}}
+          ],
+          sections: [
+            {id: 1, chapterId: 1},
+            {id: 2, chapterId: 2}
+          ],
+          contentElements: [
+            {sectionId: 1, typeName: 'test'},
+            {sectionId: 2, typeName: 'test'}
+          ]
+        }
+      });
+
+      const mainElement = result.getAllByTestId('testElement')[0];
+
+      act(() => simulateScrollingIntoView(mainElement));
+      expect(mainElement).toHaveTextContent('visible');
+
+      act(() => changeLocationHash('#excursion'));
+
+      const excursionElement = result.getAllByTestId('testElement')[1];
+      act(() => simulateScrollingIntoView(excursionElement));
+
+      expect(mainElement).toHaveTextContent('hidden');
+      expect(excursionElement).toHaveTextContent('visible');
+    });
+  });
 });
