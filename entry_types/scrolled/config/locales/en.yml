@@ -116,6 +116,8 @@ en:
       feature_name: Icon Scroll Indicator
     iconScrollIndicator:
       widget_type_name: Icon at bottom of viewport
+    excursions:
+      feature_name: Excursions
   pageflow_scrolled:
     editor:
       backdrop_effects:

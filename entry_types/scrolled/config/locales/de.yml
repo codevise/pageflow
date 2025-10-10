@@ -116,6 +116,8 @@ de:
       feature_name: Icon Scroll-Indikator
     iconScrollIndicator:
       widget_type_name: Icon unten am Viewport-Rand
+    excursions:
+      feature_name: Exkurse
     section_paddings:
       feature_name: "Abschnittsinnenabstände"
   pageflow_scrolled:
