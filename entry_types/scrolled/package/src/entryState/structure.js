@@ -12,29 +12,33 @@ import slugify from 'slugify';
  *
  * const structure = useEntryStructure();
  * structure // =>
- *   [
- *     {
- *       permaId: 5,
- *       title: 'Chapter 1',
- *       summary: 'An introductory chapter',
- *       sections: [
- *         {
- *           id: 1,
- *           permaId: 101,
- *           chapterId: 3,
- *           sectionIndex: 0,
- *           transition: 'scroll',
+ *   {
+ *     main: [
+ *       {
+ *         permaId: 5,
+ *         title: 'Chapter 1',
+ *         summary: 'An introductory chapter',
+ *         sections: [
+ *           {
+ *             id: 1,
+ *             permaId: 101,
+ *             chapterId: 3,
+ *             sectionIndex: 0,
+ *             transition: 'scroll',
  *
- *           // references to parent chapter
- *           chapter: { ... },
+ *             // references to parent chapter
+ *             chapter: { ... },
  *
- *           // references to adjacent section objects
- *           previousSection: { ... },
- *           nextSection: { ... },
- *         }
- *       ],
- *     }
- *   ]
+ *             // references to adjacent section objects
+ *             previousSection: { ... },
+ *             nextSection: { ... },
+ *           }
+ *         ],
+ *       }
+ *     ],
+ *     excursions: [ ... ],
+ *     mainSectionsCount: 2
+ *   }
  */
 export function useEntryStructure() {
   const mainStoryline = useMainStoryline();
@@ -69,12 +73,14 @@ export function useEntryStructure() {
       }
     });
 
-    linkAndIndexSections(main.flatMap(chapter => chapter.sections));
+    const mainSections = main.flatMap(chapter => chapter.sections);
+    linkAndIndexSections(mainSections);
     excursions.forEach(excursion => linkAndIndexSections(excursion.sections));
 
     return {
       main,
-      excursions
+      excursions,
+      mainSectionsCount: mainSections.length
     }
   }, [mainStoryline, chapters, sections]);
 };
@@ -308,7 +314,7 @@ export function useMainChapters() {
   );
 };
 
-function useMainStoryline() {
+export function useMainStoryline() {
   const storylines = useEntryStateCollectionItems('storylines');
 
   return useMemo(

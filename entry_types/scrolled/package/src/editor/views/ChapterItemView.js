@@ -67,7 +67,9 @@ export const ChapterItemView = Marionette.Layout.extend({
   },
 
   update() {
-    this.ui.title.toggleClass(styles.blank, !this.model.configuration.get('title'));
+    this.ui.title.toggleClass(styles.blank,
+                              !this.model.configuration.get('title') &&
+                              !!this.model.getDisplayNumber());
 
     this.ui.title.text(this.model.getDisplayTitle());
     this.ui.number.text(this.model.getDisplayNumber());

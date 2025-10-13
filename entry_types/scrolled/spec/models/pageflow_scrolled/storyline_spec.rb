@@ -3,10 +3,16 @@ require 'spec_helper'
 module PageflowScrolled
   RSpec.describe Storyline do
     context 'as registered RevisionComponent' do
-      it 'is created by default for drafts of new paged entries' do
+      it 'is created by default for drafts of new scrolled entries' do
         entry = create(:entry, type_name: 'scrolled')
 
         expect(Storyline.all_for_revision(entry.draft)).to have(1).item
+      end
+
+      it 'is created with two storylines when excursions feature is enabled' do
+        entry = create(:entry, type_name: 'scrolled', with_feature: 'excursions')
+
+        expect(Storyline.all_for_revision(entry.draft)).to have(2).items
       end
 
       it 'copies a duplicate of itself to new revision' do

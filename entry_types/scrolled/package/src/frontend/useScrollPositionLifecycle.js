@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useContext, useMemo, createContext} from 'react';
+import React, {useRef, useEffect, useContext, useMemo, createContext, useState} from 'react';
 import classNames from 'classnames';
 import {useOnScreen} from './useOnScreen';
 import {useDelayedBoolean} from './useDelayedBoolean';
@@ -6,6 +6,12 @@ import {useDelayedBoolean} from './useDelayedBoolean';
 import styles from './useScrollPositionLifecycle.module.css';
 
 const StaticPreviewContext = createContext(false);
+const StorylineActivityContext = createContext('active');
+
+const MainStorylineCoverageContext = createContext({
+  mainStorylineCovered: false,
+  setMainStorylineCovered: () => {}
+});
 
 export function StaticPreview({children}) {
   return (
@@ -13,6 +19,35 @@ export function StaticPreview({children}) {
       {children}
     </StaticPreviewContext.Provider>
   );
+}
+
+export function MainStorylineActivity({activeExcursion, children}) {
+  const {mainStorylineCovered} = useContext(MainStorylineCoverageContext);
+
+  const mode = activeExcursion
+    ? (mainStorylineCovered ? 'covered' : 'background')
+    : 'active';
+
+  return (
+    <StorylineActivityContext.Provider value={mode}>
+      {children}
+    </StorylineActivityContext.Provider>
+  );
+}
+
+export function MainStorylineCoverageProvider({children}) {
+  const [mainStorylineCovered, setMainStorylineCovered] = useState(false);
+  const value = useMemo(() => ({mainStorylineCovered, setMainStorylineCovered}), [mainStorylineCovered]);
+
+  return (
+    <MainStorylineCoverageContext.Provider value={value}>
+      {children}
+    </MainStorylineCoverageContext.Provider>
+  );
+}
+
+export function useMainStorylineCoverage() {
+  return useContext(MainStorylineCoverageContext);
 }
 
 /**
@@ -35,6 +70,7 @@ export function createScrollPositionLifecycleProvider(Context) {
     const isActiveProbeRef = useRef();
 
     const isStaticPreview = useContext(StaticPreviewContext);
+    const mode = useContext(StorylineActivityContext);
 
     const shouldLoad = useOnScreen(ref, {rootMargin: '200% 0px 200% 0px'});
     const shouldPrepare = useOnScreen(ref, {rootMargin: '25% 0px 25% 0px'}) && !isStaticPreview;
@@ -73,15 +109,20 @@ export function createScrollPositionLifecycleProvider(Context) {
     );
 
     const isVisible = entersWithFadeTransition ? isVisibleWithDelay : shouldBeVisible;
+    // Elements in covered storylines are not visible.
+    // Elements in background storylines are visible (but not active).
+    // Elements in active storylines are both visible and active.
+    const isVisibleFinal = isVisible && mode !== 'covered';
+    const inForeground = mode === 'active';
 
     // We want to make sure that `onActivate` is never called before
     // `onVisible`, no matter in which order the intersection
     // observers above fire.
-    const isActive = isVisible && shouldBeActive
+    const isActive = isVisibleFinal && shouldBeActive && inForeground;
 
     const value = useMemo(() => ({
-      shouldLoad, shouldPrepare, isVisible, isActive}
-    ), [shouldLoad, shouldPrepare, isVisible, isActive]);
+      shouldLoad, shouldPrepare, isVisible: isVisibleFinal, isActive, inForeground}
+    ), [shouldLoad, shouldPrepare, isVisibleFinal, isActive, inForeground]);
 
     return (
       <div ref={ref} className={classNames(styles.wrapper)}>
@@ -96,13 +137,16 @@ export function createScrollPositionLifecycleProvider(Context) {
 }
 
 export function createScrollPositionLifecycleHook(Context) {
-  return function useScrollPositionLifecycle({onActivate, onDeactivate, onVisible, onInvisible} = {}) {
+  return function useScrollPositionLifecycle({
+    onActivate, onDeactivate, onVisible, onInvisible, onEnterBackground, onEnterForeground} = {
+  }) {
     const result = useContext(Context);
 
     const wasActive = useRef();
     const wasVisible = useRef();
+    const wasForeground = useRef();
 
-    const {isActive, isVisible} = result || {};
+    const {isActive, isVisible, inForeground} = result || {};
 
     useEffect(() => {
       if (!wasVisible.current && isVisible && onVisible) {
@@ -116,12 +160,20 @@ export function createScrollPositionLifecycleHook(Context) {
         onDeactivate();
       }
 
+      if (wasForeground.current && !inForeground && onEnterBackground) {
+        onEnterBackground();
+      }
+      else if (!wasForeground.current && inForeground && onEnterForeground) {
+        onEnterForeground();
+      }
+
       if (wasVisible.current && !isVisible && onInvisible) {
         onInvisible();
       }
 
       wasActive.current = isActive;
       wasVisible.current = isVisible;
+      wasForeground.current = inForeground;
     });
 
     return result;

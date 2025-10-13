@@ -11,7 +11,16 @@ export const SectionsCollection = Backbone.Collection.extend({
   ],
 
   comparator: function(sectionA, sectionB) {
-    if (sectionA.chapterPosition() > sectionB.chapterPosition()) {
+    const aIsMain = sectionA.chapter?.storyline?.isMain();
+    const bIsMain = sectionB.chapter?.storyline?.isMain();
+
+    if (aIsMain && !bIsMain) {
+      return -1;
+    }
+    else if (!aIsMain && bIsMain) {
+      return 1;
+    }
+    else if (sectionA.chapterPosition() > sectionB.chapterPosition()) {
       return 1;
     }
     else if (sectionA.chapterPosition() < sectionB.chapterPosition()) {

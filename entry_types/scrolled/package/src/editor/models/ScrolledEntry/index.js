@@ -382,6 +382,10 @@ export const ScrolledEntry = Entry.extend({
     return Object.keys(properties.root || {}).some(key =>
       key.startsWith('narrowSection')
     );
+  },
+
+  isCurrentSectionInExcursion() {
+    return !!this.get('currentExcursionId');
   }
 });
 

@@ -4,15 +4,20 @@ const OnScreenObserverRootContext = createContext();
 
 export const OnScreenObserverRootProvider = OnScreenObserverRootContext.Provider;
 
-export function useOnScreen(ref, {rootMargin, onIntersecting, skipIframeFix} = {}) {
+export function useOnScreen(ref, {rootMargin, onIntersecting, onChange, skipIframeFix} = {}) {
   const [isIntersecting, setIntersecting] = useState(false);
   const onIntersectingRef = useRef();
+  const onChangeRef = useRef();
 
   const root = useContext(OnScreenObserverRootContext)?.current;
 
   useEffect(() => {
     onIntersectingRef.current = onIntersecting
   }, [onIntersecting]);
+
+  useEffect(() => {
+    onChangeRef.current = onChange
+  }, [onChange]);
 
   useEffect(() => {
     const current = ref.current;
@@ -32,6 +37,10 @@ export function useOnScreen(ref, {rootMargin, onIntersecting, skipIframeFix} = {
 
         if (entry.isIntersecting && onIntersectingRef.current) {
           onIntersectingRef.current();
+        }
+
+        if (onChangeRef.current) {
+          onChangeRef.current(entry.isIntersecting);
         }
       },
       {

@@ -13,13 +13,14 @@ beforeEach(() => {
   fakeIntersectionObserver.observedElements = new Set();
 });
 
-global.IntersectionObserver = function(callback, {threshold = 0, root} = {}) {
+global.IntersectionObserver = function(callback, {threshold = 0, root, rootMargin} = {}) {
   if (root && fakeIntersectionObserver.byRoot(root)) {
     throw new Error('Did not except more than one intersection observer per root');
   }
 
   fakeIntersectionObserver.instances.add(this);
   this.root = root;
+  this.rootMargin = rootMargin;
 
   this.observe = function(target) {
     fakeIntersectionObserver.observedElements.add(target);
@@ -27,11 +28,13 @@ global.IntersectionObserver = function(callback, {threshold = 0, root} = {}) {
     const previousInvokeIntersectionCallback =
       target.invokeIntersectionCallback;
 
-    target.invokeIntersectionCallback = (isIntersecting) => {
-      callback([{target, isIntersecting, intersectionRatio: threshold}]);
+    target.invokeIntersectionCallback = (isIntersecting, filterRootMargin) => {
+      if (!filterRootMargin || rootMargin === filterRootMargin) {
+        callback([{target, isIntersecting, intersectionRatio: threshold}]);
+      }
 
       if (previousInvokeIntersectionCallback) {
-        previousInvokeIntersectionCallback(isIntersecting);
+        previousInvokeIntersectionCallback(isIntersecting, filterRootMargin);
       }
     };
   };
@@ -45,12 +48,20 @@ global.IntersectionObserver = function(callback, {threshold = 0, root} = {}) {
   };
 };
 
-export function simulateIntersecting(target) {
+export function simulateIntersecting(target, {rootMargin} = {}) {
   if (!target.invokeIntersectionCallback) {
     throw new Error(`Intersection observer does not currently observe ${target}.`);
   }
 
-  act(() => target.invokeIntersectionCallback(true));
+  act(() => target.invokeIntersectionCallback(true, rootMargin));
+}
+
+export function simulateNotIntersecting(target, {rootMargin} = {}) {
+  if (!target.invokeIntersectionCallback) {
+    throw new Error(`Intersection observer does not currently observe ${target}.`);
+  }
+
+  act(() => target.invokeIntersectionCallback(false, rootMargin));
 }
 
 export function simulateScrollingIntoView(visibleEl) {
