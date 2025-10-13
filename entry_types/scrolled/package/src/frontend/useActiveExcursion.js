@@ -6,7 +6,8 @@ export function useActiveExcursion(entryStructure) {
 
   useEffect(() => {
     function handleHashChange(event) {
-      const hash = window.location.hash.slice(1);
+      const hash = window.__ACTIVE_EXCURSION__ || // Used in Storybook
+                   window.location.hash.slice(1);
       const excursion = findExcursionByHash(hash);
 
       if (excursion && event?.oldURL && !returnUrlRef.current) {
