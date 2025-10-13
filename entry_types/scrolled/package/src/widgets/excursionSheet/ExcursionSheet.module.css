@@ -7,6 +7,11 @@
   pointer-events: none;
 }
 
+.width-inset {
+  margin-left: 3vw;
+  margin-right: 3vw;
+}
+
 .container > * {
   pointer-events: auto;
 }

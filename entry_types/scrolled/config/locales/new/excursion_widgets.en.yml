@@ -8,6 +8,11 @@ en:
         attributes:
           returnButtonLabel:
             label: Return button label
+          sheetWidth:
+            label: Overlay width
+            values:
+              full: Full width
+              inset: With side margins
     public:
       close: Close
       exit_excursion: Exit excursion
