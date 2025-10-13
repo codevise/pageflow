@@ -8,6 +8,11 @@ de:
         attributes:
           returnButtonLabel:
             label: Text für Zurück-Button
+          sheetWidth:
+            label: Overlay-Breite
+            values:
+              full: Volle Breite
+              inset: Mit seitlichem Abstand
     public:
       close: Schließen
       exit_excursion: Exkurs verlassen

@@ -15,7 +15,8 @@ const stories = storiesOf('Widgets/Excursion Sheet', module);
 window.__ACTIVE_EXCURSION__ = 'example-excursion';
 
 function getSeed({
-  returnButtonLabel = undefined
+  returnButtonLabel,
+  sheetWidth
 }) {
   return {
     storylines: [
@@ -43,7 +44,8 @@ function getSeed({
         position: 1,
         configuration: {
           title: 'Example Excursion',
-          ...(returnButtonLabel ? {returnButtonLabel} : {})
+          returnButtonLabel,
+          sheetWidth
         }
       }
     ],
@@ -117,6 +119,39 @@ stories.add(
   'Mobile',
   () => (
     <ExcursionStory seed={getSeed({})} />
+  ),
+  {
+    percy: {
+      widths: [320]
+    },
+    viewport: {
+      viewports: INITIAL_VIEWPORTS,
+      defaultViewport: 'iphone6'
+    }
+  }
+);
+
+stories.add(
+  'Sheet Width Inset',
+  () => (
+    <ExcursionStory
+      seed={getSeed({
+        sheetWidth: 'inset',
+        returnButtonLabel: 'Back to Story'
+      })}
+    />
+  )
+);
+
+stories.add(
+  'Mobil - Sheet Width Inset',
+  () => (
+    <ExcursionStory
+      seed={getSeed({
+        sheetWidth: 'inset',
+        returnButtonLabel: 'Back to Story'
+      })}
+    />
   ),
   {
     percy: {

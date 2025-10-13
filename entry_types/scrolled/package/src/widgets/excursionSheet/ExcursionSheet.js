@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
+import classNames from 'classnames';
 
 import {SectionIntersectionObserver, useOnScreen} from 'pageflow-scrolled/frontend';
 
@@ -18,7 +19,7 @@ export function ExcursionSheet({excursion, onClose, setIsCoveringBackground, chi
       <div className={styles.backdrop}
            onClick={onClose} />
       <div key={excursion.id}
-           className={styles.container}>
+           className={classNames(styles.container, styles[`width-${excursion.sheetWidth}`])}>
         <CloseButton invert={intersectingSectionInverted}
                      onClick={onClose} />
         <div ref={contentRef} className={styles.content}>
