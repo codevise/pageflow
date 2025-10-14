@@ -8,7 +8,7 @@ export function MainStorylineSheet({activeExcursion, children}) {
   const excursionActive = !!activeExcursion;
   const activeExcursionId = activeExcursion?.id;
 
-  const [previousScrollY, setPreviousScrollY] = useState(0);
+  const [previousScrollY, setPreviousScrollY] = useState(null);
   const [inactive, setInactive] = useState(false);
 
   const previousThemeColorRef = useRef();
@@ -26,7 +26,9 @@ export function MainStorylineSheet({activeExcursion, children}) {
     else {
       setInactive(false);
 
-      themeColorMeta.setAttribute('content', previousThemeColorRef.current);
+      if (previousThemeColorRef.current) {
+        themeColorMeta.setAttribute('content', previousThemeColorRef.current);
+      }
     }
   }, [excursionActive]);
 
@@ -36,7 +38,9 @@ export function MainStorylineSheet({activeExcursion, children}) {
     }
     else {
       setPreviousScrollY(previousScrollY => {
-        window.queueMicrotask(() => window.scrollTo(0, previousScrollY));
+        if (previousScrollY !== null) {
+          window.queueMicrotask(() => window.scrollTo(0, previousScrollY));
+        }
 
         return previousScrollY;
       });
@@ -45,7 +49,7 @@ export function MainStorylineSheet({activeExcursion, children}) {
 
   return (
     <div inert={inactive ? 'true' : undefined}
-         style={{'--previous-scroll-y': `${previousScrollY}px`}}
+         style={{'--previous-scroll-y': `${previousScrollY || 0}px`}}
          className={classNames(styles.wrapper, {[styles.inactive]: inactive})}>
       <div className={styles.scaler}>
         {children}
