@@ -11,6 +11,7 @@ json.last_published_with_noindex(entry.last_published_with_noindex?)
 json.metadata do
   json.(entry,
         :title, :locale, :summary, :credits, :author, :publisher, :keywords, :share_providers,
-        :share_url, :share_image_id, :share_image_x, :share_image_y, :configuration)
+        :share_url, :share_image_id, :share_image_x, :share_image_y, :configuration,
+        :structured_data_type_name)
   json.theme_name entry.theme.name
 end

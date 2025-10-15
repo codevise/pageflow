@@ -40,6 +40,9 @@ describe('EditMetaDataView', () => {
     const view = new EditMetaDataView({
       model: entry,
       tab: 'widgets',
+      state: {
+        config: {}
+      },
       editor: editor
     });
 
@@ -61,6 +64,9 @@ describe('EditMetaDataView', () => {
     const view = new EditMetaDataView({
       model: entry,
       tab: 'widgets',
+      state: {
+        config: {}
+      },
       editor
     });
 
@@ -75,7 +81,9 @@ describe('EditMetaDataView', () => {
 
   support.useFakeTranslations({
     'pageflow.entry_types.strange.editor.entry_metadata_configuration_attributes.quark.label': 'Up',
-    'pageflow.entry_types.strange.editor.entry_metadata_configuration_attributes.quark.inline_help': 'Help yourself!'
+    'pageflow.entry_types.strange.editor.entry_metadata_configuration_attributes.quark.inline_help': 'Help yourself!',
+    'pageflow.editor.entry_structured_data_types.article.label': 'Article',
+    'pageflow.editor.entry_structured_data_types.faq_page.label': 'FAQ Page'
   });
 
   it('uses entry type-specific translation keys if provided', () => {
@@ -88,6 +96,9 @@ describe('EditMetaDataView', () => {
     const view = new EditMetaDataView({
       model: entry,
       tab: 'widgets',
+      state: {
+        config: {}
+      },
       editor: editor
     });
 
@@ -108,6 +119,9 @@ describe('EditMetaDataView', () => {
     const view = new EditMetaDataView({
       model: entry,
       tab: 'widgets',
+      state: {
+        config: {}
+      },
       editor: editor
     });
 
@@ -122,10 +136,13 @@ describe('EditMetaDataView', () => {
     const view = new EditMetaDataView({
       model: entry,
       tab: 'widgets',
-      state: {themes: {
-        findByName: () => factories.theme(),
-        length: 2,
-      }},
+      state: {
+        config: {},
+        themes: {
+          findByName: () => factories.theme(),
+          length: 2,
+        }
+      },
       features: {
         isEnabled: () => true
       },
@@ -163,6 +180,50 @@ describe('EditMetaDataView', () => {
     expect(configurationEditor.tabNames()).toEqual(expect.arrayContaining(['social']));
     expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining([
       'share_image_id', 'summary', 'share_url', 'share_providers'
+    ]));
+  });
+
+  it('renders structured_data_type_name input on general tab when multiple types available', () => {
+    editor.registerEntryType('test');
+    const entry = factories.entry({}, {type_name: 'test'});
+    const view = new EditMetaDataView({
+      model: entry,
+      tab: 'general',
+      state: {
+        config: {
+          entryStructuredDataTypes: ['article', 'faq_page']
+        }
+      },
+      editor: editor
+    });
+
+    view.render();
+    var configurationEditor = ConfigurationEditor.find(view);
+
+    expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining([
+      'structured_data_type_name'
+    ]));
+  });
+
+  it('does not render structured_data_type_name input when only one type available', () => {
+    editor.registerEntryType('test');
+    const entry = factories.entry({}, {type_name: 'test'});
+    const view = new EditMetaDataView({
+      model: entry,
+      tab: 'general',
+      state: {
+        config: {
+          entryStructuredDataTypes: ['article']
+        }
+      },
+      editor: editor
+    });
+
+    view.render();
+    var configurationEditor = ConfigurationEditor.find(view);
+
+    expect(configurationEditor.inputPropertyNames()).not.toEqual(expect.arrayContaining([
+      'structured_data_type_name'
     ]));
   });
 });

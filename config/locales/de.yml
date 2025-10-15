@@ -183,6 +183,7 @@ de:
         author: Autor
         created_at: Erstellt
         credits: Credits
+        structured_data_type_name: Strukturierter Datentyp
         edited_at: Geändert
         embed_code: Einbetten
         first_published_at: Erstmals veröffentlicht am
@@ -1178,6 +1179,9 @@ de:
       entries:
         unsupported_browser_hint:
           message: Die Version Ihres Browsers wird vom Pageflow Editor nicht unterstützt. Bitte benutzen Sie einen aktuellen Browser.
+      entry_structured_data_types:
+        article:
+          label: Artikel
       errors:
         UnmatchedUploadError: Der Dateityp wird nicht unterstützt.
         invalid_nested_type_error: 'Fehler: Upload-Datei ''%{name}'' ist eine %{type}. Es sind nur folgende Arten von Dateien erlaubt: %{validList}'

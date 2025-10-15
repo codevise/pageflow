@@ -28,6 +28,11 @@ module Pageflow
     end
 
     # @api private
+    def names
+      @types.keys
+    end
+
+    # @api private
     def for(entry)
       structured_data_type =
         @types[entry.structured_data_type_name] || @types[@default_name]

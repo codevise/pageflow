@@ -7,7 +7,7 @@ json.call(Pageflow.config,
           :available_file_licenses,
           :available_text_track_kinds,
           :available_share_providers)
-json.file_types Pageflow.config_for(entry).file_types do |file_type|
+json.file_types entry_config.file_types do |file_type|
   json.collection_name file_type.collection_name
   json.top_level_type file_type.top_level_type
   json.type_name file_type.type_name
@@ -18,7 +18,7 @@ json.file_types Pageflow.config_for(entry).file_types do |file_type|
   end
 end
 
-json.file_importers Pageflow.config_for(entry).file_importers do |file_importer|
+json.file_importers entry_config.file_importers do |file_importer|
   json.importer_name file_importer.name
   json.logo_source asset_url(file_importer.logo_source)
   json.authentication_provider file_importer.authentication_provider
@@ -29,3 +29,5 @@ json.default_publisher_meta_tag Pageflow.config.default_publisher_meta_tag
 json.default_keywords_meta_tag Pageflow.config.default_keywords_meta_tag
 json.themes(Pageflow.config.themes, :name, :preview_image_path)
 json.edit_lock_polling_interval_in_seconds Pageflow.config.edit_lock_polling_interval
+
+json.entry_structured_data_types entry_config.entry_structured_data_types.names
