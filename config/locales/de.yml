@@ -1182,6 +1182,8 @@ de:
       entry_structured_data_types:
         article:
           label: Artikel
+        faq_page:
+          label: FAQ-Seite
       errors:
         UnmatchedUploadError: Der Dateityp wird nicht unterstützt.
         invalid_nested_type_error: 'Fehler: Upload-Datei ''%{name}'' ist eine %{type}. Es sind nur folgende Arten von Dateien erlaubt: %{validList}'
@@ -1937,6 +1939,8 @@ de:
       untitled: Unbenannter Erzählstrang
     structured_data:
       feature_name: Eingebettete strukturierte Daten
+    faq_page_structured_data:
+      feature_name: FAQ-Seite strukturierte Daten
     title_loading_spinner:
       feature_name: "'Titel und Bild'-Lade-Ansicht"
       widget_type_name: Titel und Bild
