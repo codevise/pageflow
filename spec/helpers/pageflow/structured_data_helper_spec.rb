@@ -10,17 +10,19 @@ module Pageflow
       first_publication_date = 1.month.ago
       last_publication_date = 3.days.ago
 
-      entry = PublishedEntry.new(create(:entry, :published,
-                                        first_published_at: first_publication_date))
+      entry = create(:published_entry,
+                     first_published_at: first_publication_date,
+                     revision_attributes: {
+                       title: 'Some entry',
+                       summary: 'Summary text',
+                       author: 'Some author',
+                       publisher: 'Some publisher',
+                       keywords: 'Some, key, words',
+                       share_url: '//example.com',
+                       published_at: last_publication_date
+                     })
       image_file = create_used_file(:image_file, entry:, file_name: 'share.jpg')
-      entry.revision.update(title: 'Some entry',
-                            summary: 'Summary text',
-                            author: 'Some author',
-                            publisher: 'Some publisher',
-                            keywords: 'Some, key, words',
-                            share_url: '//example.com',
-                            share_image_id: image_file.perma_id,
-                            published_at: last_publication_date)
+      entry.revision.update(share_image_id: image_file.perma_id)
 
       html = helper.structured_data_for_entry(entry)
 
@@ -66,9 +68,9 @@ module Pageflow
         config.default_publisher_meta_tag = ''
       end
 
-      entry = create(:entry, :published)
+      entry = create(:published_entry)
 
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
+      html = helper.structured_data_for_entry(entry)
 
       expect(html).not_to have_json_ld('keywords' => anything)
       expect(html).not_to have_json_ld('author' => anything)
@@ -82,9 +84,9 @@ module Pageflow
         config.default_publisher_meta_tag = 'some publisher'
       end
 
-      entry = create(:entry, :published)
+      entry = create(:published_entry)
 
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
+      html = helper.structured_data_for_entry(entry)
 
       expect(html).to have_json_ld('keywords' => ['some keywords'],
                                    'author' => a_hash_including('name' => ['some author']),
@@ -92,14 +94,13 @@ module Pageflow
     end
 
     it 'renders authors and publishers separated by commas as individual items' do
-      entry = create(:entry,
-                     :published,
-                     published_revision_attributes: {
+      entry = create(:published_entry,
+                     revision_attributes: {
                        author: 'Alice Adminson, Alina Publisha, Ed Edison',
                        publisher: 'Alice Adminson, Alina Publisha, Ed Edison'
                      })
 
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
+      html = helper.structured_data_for_entry(entry)
 
       expect(html).to have_json_ld('author' => a_hash_including('name' => ['Alice Adminson',
                                                                            'Alina Publisha',
@@ -110,17 +111,17 @@ module Pageflow
     end
 
     it 'skips image if share image not present' do
-      entry = create(:entry, :published)
+      entry = create(:published_entry)
 
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
+      html = helper.structured_data_for_entry(entry)
 
       expect(html).not_to have_json_ld('image' => a_hash_including('@type' => 'ImageObject'))
     end
 
     it 'skips thumbnailUrl if share image not present' do
-      entry = create(:entry, :published)
+      entry = create(:published_entry)
 
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
+      html = helper.structured_data_for_entry(entry)
 
       expect(html).not_to have_json_ld('thumbnailUrl' => a_string_including('image_files'))
     end
@@ -135,9 +136,11 @@ module Pageflow
         end)
       end
 
-      entry = PublishedEntry.new(create(:entry, :published))
-      entry.revision.update(structured_data_type_name: 'about_page',
-                            configuration: {breadcrumb: 'Home > About'})
+      entry = create(:published_entry,
+                     revision_attributes: {
+                       structured_data_type_name: 'about_page',
+                       configuration: {breadcrumb: 'Home > About'}
+                     })
 
       html = helper.structured_data_for_entry(entry)
 
@@ -156,7 +159,7 @@ module Pageflow
         end, default: true)
       end
 
-      entry = PublishedEntry.new(create(:entry, :published))
+      entry = create(:published_entry)
 
       html = helper.structured_data_for_entry(entry)
 
@@ -177,10 +180,11 @@ module Pageflow
         end
       end
 
-      entry = PublishedEntry.new(create(:entry,
-                                        :published,
-                                        with_feature: 'custom_structured_data'))
-      entry.revision.update(structured_data_type_name: 'report')
+      entry = create(:published_entry,
+                     with_feature: 'custom_structured_data',
+                     revision_attributes: {
+                       structured_data_type_name: 'report'
+                     })
 
       html = helper.structured_data_for_entry(entry)
 
@@ -201,7 +205,7 @@ module Pageflow
         end
       end
 
-      entry = PublishedEntry.new(create(:entry, :published))
+      entry = create(:published_entry)
 
       html = helper.structured_data_for_entry(entry)
 
