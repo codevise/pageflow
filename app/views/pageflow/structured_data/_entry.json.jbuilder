@@ -1,7 +1,8 @@
 json.key_format!(camelize: :lower)
 
 json.set! '@context', 'http://schema.org'
-json.set! '@type', 'Article'
+
+json.merge! custom_properties
 
 json.headline pretty_entry_title(entry)
 json.url structured_data_normalize_protocol(social_share_entry_url(entry))
@@ -29,8 +30,6 @@ end
 
 json.date_published entry.first_published_at.try(:utc).try(:iso8601, 0)
 json.date_modified entry.published_at.try(:utc).try(:iso8601, 0)
-
-json.article_section 'longform'
 
 json.main_entity_of_page do
   json.set! '@type', 'WebPage'

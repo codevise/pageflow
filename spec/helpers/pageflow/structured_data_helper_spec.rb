@@ -124,5 +124,112 @@ module Pageflow
 
       expect(html).not_to have_json_ld('thumbnailUrl' => a_string_including('image_files'))
     end
+
+    it 'uses custom structured data type from configuration' do
+      pageflow_configure do |config|
+        config.entry_structured_data_types.register(:about_page, lambda do |entry|
+          {
+            '@type' => 'AboutPage',
+            breadcrumb: entry.configuration['breadcrumb']
+          }
+        end)
+      end
+
+      entry = PublishedEntry.new(create(:entry, :published))
+      entry.revision.update(structured_data_type_name: 'about_page',
+                            configuration: {breadcrumb: 'Home > About'})
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld('@type' => 'AboutPage',
+                                   'breadcrumb' => 'Home > About')
+      expect(html).not_to have_json_ld('articleSection' => anything)
+    end
+
+    it 'uses default structured data type when none is specified' do
+      pageflow_configure do |config|
+        config.entry_structured_data_types.register(:video_object, lambda do |_entry|
+          {
+            '@type' => 'VideoObject',
+            videoSection: 'documentary'
+          }
+        end, default: true)
+      end
+
+      entry = PublishedEntry.new(create(:entry, :published))
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld('@type' => 'VideoObject',
+                                   'videoSection' => 'documentary')
+      expect(html).not_to have_json_ld('articleSection' => anything)
+    end
+
+    it 'supports registering structured data types in feature block' do
+      pageflow_configure do |config|
+        config.features.register('custom_structured_data') do |feature_config|
+          feature_config.entry_structured_data_types.register(:report, lambda do |_entry|
+            {
+              '@type' => 'Report',
+              reportType: 'investigation'
+            }
+          end)
+        end
+      end
+
+      entry = PublishedEntry.new(create(:entry,
+                                        :published,
+                                        with_feature: 'custom_structured_data'))
+      entry.revision.update(structured_data_type_name: 'report')
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld('@type' => 'Report',
+                                   'reportType' => 'investigation')
+      expect(html).not_to have_json_ld('articleSection' => anything)
+    end
+
+    it 'uses global default when feature block default is not enabled' do
+      pageflow_configure do |config|
+        config.features.register('video_feature') do |feature_config|
+          feature_config.entry_structured_data_types.register(:video_object, lambda do |_entry|
+            {
+              '@type' => 'VideoObject',
+              videoSection: 'documentary'
+            }
+          end, default: true)
+        end
+      end
+
+      entry = PublishedEntry.new(create(:entry, :published))
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld('@type' => 'Article',
+                                   'articleSection' => 'longform')
+      expect(html).not_to have_json_ld('videoSection' => anything)
+    end
+
+    it 'falls back to default when entry references type from disabled feature' do
+      pageflow_configure do |config|
+        config.features.register('faq_feature') do |feature_config|
+          feature_config.entry_structured_data_types.register(:faq_page, lambda do |_entry|
+            {
+              '@type' => 'FAQPage',
+              mainEntity: []
+            }
+          end)
+        end
+      end
+
+      entry = create(:published_entry,
+                     revision_attributes: {
+                       structured_data_type_name: 'faq_page'
+                     })
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld('@type' => 'Article')
+    end
   end
 end

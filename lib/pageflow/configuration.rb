@@ -120,6 +120,20 @@ module Pageflow
     # @return [fileImporters]
     attr_reader :file_importers
 
+    # Used to register different structured data types for entries.
+    #
+    # @example
+    #
+    #   config.entry_structured_data_types.register(:about_page, lambda do |entry|
+    #     {
+    #       '@type' => 'AboutPage',
+    #       breadcrumb: entry.configuration['breadcrumb']
+    #     }
+    #   end)
+    #
+    # @return [EntryStructuredDataTypes]
+    attr_reader :entry_structured_data_types
+
     # Used to add new sections to the help dialog displayed in the
     # editor.
     #
@@ -510,6 +524,13 @@ module Pageflow
       @file_types = FileTypes.new
       @widget_types = WidgetTypes.new
       @file_importers = FileImporters.new
+      @entry_structured_data_types = EntryStructuredDataTypes.new
+      @entry_structured_data_types.register(:article, lambda do |_entry|
+        {
+          '@type' => 'Article',
+          articleSection: 'longform'
+        }
+      end, default: true)
       @help_entries = HelpEntries.new
       @revision_components = RevisionComponents.new
 
@@ -687,6 +708,7 @@ module Pageflow
       delegate :page_types, to: :config
       delegate :themes, to: :config
       delegate :widget_types, to: :config
+      delegate :entry_structured_data_types, to: :config
       delegate :public_entry_cache_control_header=, to: :config
       delegate :additional_public_entry_headers, to: :config
       delegate :cutoff_modes, to: :config
