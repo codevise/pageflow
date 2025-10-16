@@ -11,7 +11,7 @@ module PageflowScrolled
                            .all_for_revision(entry.revision)
                            .where(type_name: @content_element_type_names)
 
-        main_entity = content_elements.map do |element|
+        main_entity = content_elements.map { |element|
           question_text = extract_text(element.configuration['question'])
           answer_text = extract_text(element.configuration['answer'])
 
@@ -25,7 +25,7 @@ module PageflowScrolled
               'text' => answer_text
             }
           }
-        end.compact
+        }.compact
 
         {
           '@type' => 'FAQPage',
