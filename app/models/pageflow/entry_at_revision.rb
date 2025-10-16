@@ -38,6 +38,7 @@ module Pageflow
              :published_at,
              :noindex?,
              :configuration,
+             :structured_data_type_name,
              to: :revision)
 
     def resolve_widgets(options = {})

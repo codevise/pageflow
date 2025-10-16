@@ -67,6 +67,13 @@ module PageflowScrolled
         c.features.register('section_paddings')
         c.features.register('excursions')
 
+        c.features.register('faq_page_structured_data') do |feature_config|
+          feature_config.entry_structured_data_types.register(
+            :faq_page,
+            PageflowScrolled::EntryStructuredDataTypes::FaqPage.new
+          )
+        end
+
         c.additional_frontend_seed_data.register(
           'frontendVersion',
           FRONTEND_VERSION_SEED_DATA

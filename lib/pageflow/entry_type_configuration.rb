@@ -20,6 +20,7 @@ module Pageflow
     delegate :widget_types, to: :@config
     delegate :transform_theme_customization_overrides=, to: :@config
     delegate :transform_theme_customization_files=, to: :@config
+    delegate :entry_structured_data_types, to: :@config
 
     def plugin(plugin)
       plugin.configure(self)

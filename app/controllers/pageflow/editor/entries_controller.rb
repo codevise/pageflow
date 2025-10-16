@@ -50,6 +50,7 @@ module Pageflow
           .permit(:title, :summary, :credits,
                   :share_url, :share_image_id, :share_image_x, :share_image_y,
                   :locale, :author, :publisher, :keywords, :theme_name,
+                  :structured_data_type_name,
                   share_providers: {})
           .merge(configuration:)
       end

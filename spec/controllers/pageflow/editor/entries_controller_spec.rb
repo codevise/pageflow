@@ -224,6 +224,23 @@ module Pageflow
         expect(response.body).to include_json(entry: {last_published_with_noindex: true})
       end
 
+      it 'renders structured_data_type_name' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        entry.draft.update!(structured_data_type_name: 'faq_page')
+
+        sign_in(user, scope: :user)
+        get(:seed, params: {id: entry}, format: 'json')
+
+        expect(response.body).to include_json(
+          entry: {
+            metadata: {
+              structured_data_type_name: 'faq_page'
+            }
+          }
+        )
+      end
+
       it 'renders site cutoff mode' do
         pageflow_configure do |config|
           config.cutoff_modes.register('subscription_header', proc { true })
@@ -268,6 +285,19 @@ module Pageflow
 
         expect(entry.draft.reload.title).to eq('new')
         expect(entry.draft.credits).to eq('credits')
+      end
+
+      it 'updates structured_data_type_name in draft' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {id: entry, entry: {structured_data_type_name: 'video_object'}},
+              format: 'json')
+
+        expect(entry.draft.reload.structured_data_type_name).to eq('video_object')
       end
 
       it 'requires the signed in user to be editor of the parent entry' do

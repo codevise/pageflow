@@ -10,17 +10,19 @@ module Pageflow
       first_publication_date = 1.month.ago
       last_publication_date = 3.days.ago
 
-      entry = PublishedEntry.new(create(:entry, :published,
-                                        first_published_at: first_publication_date))
+      entry = create(:published_entry,
+                     first_published_at: first_publication_date,
+                     revision_attributes: {
+                       title: 'Some entry',
+                       summary: 'Summary text',
+                       author: 'Some author',
+                       publisher: 'Some publisher',
+                       keywords: 'Some, key, words',
+                       share_url: '//example.com',
+                       published_at: last_publication_date
+                     })
       image_file = create_used_file(:image_file, entry:, file_name: 'share.jpg')
-      entry.revision.update(title: 'Some entry',
-                            summary: 'Summary text',
-                            author: 'Some author',
-                            publisher: 'Some publisher',
-                            keywords: 'Some, key, words',
-                            share_url: '//example.com',
-                            share_image_id: image_file.perma_id,
-                            published_at: last_publication_date)
+      entry.revision.update(share_image_id: image_file.perma_id)
 
       html = helper.structured_data_for_entry(entry)
 
@@ -66,9 +68,9 @@ module Pageflow
         config.default_publisher_meta_tag = ''
       end
 
-      entry = create(:entry, :published)
+      entry = create(:published_entry)
 
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
+      html = helper.structured_data_for_entry(entry)
 
       expect(html).not_to have_json_ld('keywords' => anything)
       expect(html).not_to have_json_ld('author' => anything)
@@ -82,9 +84,9 @@ module Pageflow
         config.default_publisher_meta_tag = 'some publisher'
       end
 
-      entry = create(:entry, :published)
+      entry = create(:published_entry)
 
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
+      html = helper.structured_data_for_entry(entry)
 
       expect(html).to have_json_ld('keywords' => ['some keywords'],
                                    'author' => a_hash_including('name' => ['some author']),
@@ -92,14 +94,13 @@ module Pageflow
     end
 
     it 'renders authors and publishers separated by commas as individual items' do
-      entry = create(:entry,
-                     :published,
-                     published_revision_attributes: {
+      entry = create(:published_entry,
+                     revision_attributes: {
                        author: 'Alice Adminson, Alina Publisha, Ed Edison',
                        publisher: 'Alice Adminson, Alina Publisha, Ed Edison'
                      })
 
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
+      html = helper.structured_data_for_entry(entry)
 
       expect(html).to have_json_ld('author' => a_hash_including('name' => ['Alice Adminson',
                                                                            'Alina Publisha',
@@ -110,19 +111,129 @@ module Pageflow
     end
 
     it 'skips image if share image not present' do
-      entry = create(:entry, :published)
+      entry = create(:published_entry)
 
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
+      html = helper.structured_data_for_entry(entry)
 
       expect(html).not_to have_json_ld('image' => a_hash_including('@type' => 'ImageObject'))
     end
 
     it 'skips thumbnailUrl if share image not present' do
-      entry = create(:entry, :published)
+      entry = create(:published_entry)
 
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
+      html = helper.structured_data_for_entry(entry)
 
       expect(html).not_to have_json_ld('thumbnailUrl' => a_string_including('image_files'))
+    end
+
+    it 'uses custom structured data type from configuration' do
+      pageflow_configure do |config|
+        config.entry_structured_data_types.register(:about_page, lambda do |entry|
+          {
+            '@type' => 'AboutPage',
+            breadcrumb: entry.configuration['breadcrumb']
+          }
+        end)
+      end
+
+      entry = create(:published_entry,
+                     revision_attributes: {
+                       structured_data_type_name: 'about_page',
+                       configuration: {breadcrumb: 'Home > About'}
+                     })
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld('@type' => 'AboutPage',
+                                   'breadcrumb' => 'Home > About')
+      expect(html).not_to have_json_ld('articleSection' => anything)
+    end
+
+    it 'uses default structured data type when none is specified' do
+      pageflow_configure do |config|
+        config.entry_structured_data_types.register(:video_object, lambda do |_entry|
+          {
+            '@type' => 'VideoObject',
+            videoSection: 'documentary'
+          }
+        end, default: true)
+      end
+
+      entry = create(:published_entry)
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld('@type' => 'VideoObject',
+                                   'videoSection' => 'documentary')
+      expect(html).not_to have_json_ld('articleSection' => anything)
+    end
+
+    it 'supports registering structured data types in feature block' do
+      pageflow_configure do |config|
+        config.features.register('custom_structured_data') do |feature_config|
+          feature_config.entry_structured_data_types.register(:report, lambda do |_entry|
+            {
+              '@type' => 'Report',
+              reportType: 'investigation'
+            }
+          end)
+        end
+      end
+
+      entry = create(:published_entry,
+                     with_feature: 'custom_structured_data',
+                     revision_attributes: {
+                       structured_data_type_name: 'report'
+                     })
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld('@type' => 'Report',
+                                   'reportType' => 'investigation')
+      expect(html).not_to have_json_ld('articleSection' => anything)
+    end
+
+    it 'uses global default when feature block default is not enabled' do
+      pageflow_configure do |config|
+        config.features.register('video_feature') do |feature_config|
+          feature_config.entry_structured_data_types.register(:video_object, lambda do |_entry|
+            {
+              '@type' => 'VideoObject',
+              videoSection: 'documentary'
+            }
+          end, default: true)
+        end
+      end
+
+      entry = create(:published_entry)
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld('@type' => 'Article',
+                                   'articleSection' => 'longform')
+      expect(html).not_to have_json_ld('videoSection' => anything)
+    end
+
+    it 'falls back to default when entry references type from disabled feature' do
+      pageflow_configure do |config|
+        config.features.register('faq_feature') do |feature_config|
+          feature_config.entry_structured_data_types.register(:faq_page, lambda do |_entry|
+            {
+              '@type' => 'FAQPage',
+              mainEntity: []
+            }
+          end)
+        end
+      end
+
+      entry = create(:published_entry,
+                     revision_attributes: {
+                       structured_data_type_name: 'faq_page'
+                     })
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld('@type' => 'Article')
     end
   end
 end

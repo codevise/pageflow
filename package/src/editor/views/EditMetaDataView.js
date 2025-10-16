@@ -69,6 +69,19 @@ export const EditMetaDataView = Marionette.Layout.extend({
         placeholder: state.config.defaultKeywordsMetaTag,
         model: entry.metadata
       });
+
+      if (state.config.entryStructuredDataTypes &&
+          state.config.entryStructuredDataTypes.length > 1) {
+        this.input('structured_data_type_name', SelectInputView, {
+          values: state.config.entryStructuredDataTypes,
+          texts: state.config.entryStructuredDataTypes.map(name =>
+            I18n.t(`pageflow.editor.entry_structured_data_types.${name}.label`, {
+              defaultValue: name.replace(/_/g, ' ')
+            })
+          ),
+          model: entry.metadata
+        });
+      }
     });
 
     configurationEditor.tab('widgets', function() {

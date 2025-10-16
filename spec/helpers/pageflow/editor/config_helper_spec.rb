@@ -120,6 +120,47 @@ module Pageflow
 
         expect(result['defaultPublishedUntilDurationInMonths']).to eq(24)
       end
+
+      it 'includes entry structured data type names' do
+        pageflow_configure do |config|
+          config.entry_structured_data_types.register(:faq_page, lambda do |_entry|
+            {'@type' => 'FAQPage'}
+          end)
+        end
+
+        result = JSON.parse(helper.editor_config_seeds(create(:entry)))
+
+        expect(result['entryStructuredDataTypes']).to include('article', 'faq_page')
+      end
+
+      it 'does not include entry structured data types from disabled features' do
+        pageflow_configure do |config|
+          config.features.register('custom_type') do |feature_config|
+            feature_config.entry_structured_data_types.register(:report, lambda do |_entry|
+              {'@type' => 'Report'}
+            end)
+          end
+        end
+
+        result = JSON.parse(helper.editor_config_seeds(create(:entry)))
+
+        expect(result['entryStructuredDataTypes']).not_to include('report')
+      end
+
+      it 'includes entry structured data types from enabled features' do
+        pageflow_configure do |config|
+          config.features.register('custom_type') do |feature_config|
+            feature_config.entry_structured_data_types.register(:report, lambda do |_entry|
+              {'@type' => 'Report'}
+            end)
+          end
+        end
+        entry = create(:entry, with_feature: 'custom_type')
+
+        result = JSON.parse(helper.editor_config_seeds(entry))
+
+        expect(result['entryStructuredDataTypes']).to include('report')
+      end
     end
   end
 end
