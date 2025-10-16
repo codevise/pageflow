@@ -50,8 +50,8 @@ jobs:
         BRANCH=${GITHUB_REF/refs\/heads\//}
         BRANCH=${BRANCH/refs\/tags\//}
 
-        echo "::set-output name=on-upstream::$ON_UPSTREAM"
-        echo "::set-output name=branch::$BRANCH"
+        echo "on-upstream=$ON_UPSTREAM" >> $GITHUB_OUTPUT
+        echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
     # Caching
 
@@ -65,7 +65,7 @@ jobs:
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
+      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
     - name: Set up cache for Yarn
       uses: actions/cache@v4
