@@ -44,17 +44,20 @@ export function TranslationsMenu({tooltipOffset = 0}) {
   );
 
   return (
-    <Tooltip horizontalOffset={tooltipOffset - 30}
+    <Tooltip name="translations"
+             horizontalOffset={tooltipOffset - 30}
              arrowPos={120 - tooltipOffset}
              content={content}>
-      <button className={classNames(headerStyles.contextIcon)}
-              aria-haspopup="true"
-              title={t('pageflow_scrolled.public.navigation.language')}>
-        <ThemeIcon name="world" />
-        <div className={styles.tag}>
-          <span>{entry.locale.substring(0, 2).toUpperCase()}</span>
-        </div>
-      </button>
+      {(buttonProps) => (
+        <button {...buttonProps}
+                className={classNames(headerStyles.contextIcon)}
+                title={t('pageflow_scrolled.public.navigation.language')}>
+          <ThemeIcon name="world" />
+          <div className={styles.tag}>
+            <span>{entry.locale.substring(0, 2).toUpperCase()}</span>
+          </div>
+        </button>
+      )}
     </Tooltip>
   )
 }

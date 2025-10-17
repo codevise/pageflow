@@ -146,7 +146,8 @@ export function DefaultNavigation({
           !mobileNavHidden
         ),
         [styles.hasChapters]: hasChapters
-      })} style={{'--theme-accent-color': paletteColor(configuration.accentColor)}}>
+      })} style={{'--theme-accent-color': paletteColor(configuration.accentColor)}}
+         onFocus={() => setNavExpanded(true)}>
         <WidgetSelectionRect>
           <div className={styles.navigationBarContentWrapper}>
             {(hasChapters || MobileMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}

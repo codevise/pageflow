@@ -32,13 +32,17 @@ export function SharingMenu({shareProviders}) {
   };
 
   return (
-    <Tooltip horizontalOffset={-70}
+    <Tooltip name="sharing"
+             horizontalOffset={-70}
              arrowPos={160}
              content={renderShareLinks(shareProviders)}>
-      <button className={classNames(headerStyles.contextIcon)}
-              title={t('pageflow_scrolled.public.navigation.share')}>
-        <ThemeIcon name="share" />
-      </button>
+      {(buttonProps) => (
+        <button {...buttonProps}
+                className={classNames(headerStyles.contextIcon)}
+                title={t('pageflow_scrolled.public.navigation.share')}>
+          <ThemeIcon name="share" />
+        </button>
+      )}
     </Tooltip>
   );
 }

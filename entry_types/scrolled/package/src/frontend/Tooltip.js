@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useRef} from 'react'
 import classNames from 'classnames';
 
 import styles from './Tooltip.module.css'
@@ -10,64 +10,83 @@ export function Tooltip({
   content,
   fixed,
   highlight,
+  name,
   openOnHover,
   verticalOffset,
   horizontalOffset
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const buttonRef = useRef(null);
+  const containerRef = useRef(null);
+
+  const tooltipId = `tooltip-${name}`;
+
+  const handleClick = () => {
+    setIsOpen(prev => !prev);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Escape' && isOpen) {
+      setIsOpen(false);
+      setTimeout(() => buttonRef.current?.focus(), 0);
+    }
+  };
+
+  const handleBlur = (event) => {
+    if (isOpen && !containerRef.current?.contains(event.relatedTarget)) {
+      setIsOpen(false);
+    }
+  };
+
+  const isControlled = !openOnHover && !fixed;
+
+  const buttonProps = isControlled ? {
+    onClick: handleClick,
+    ref: buttonRef,
+    'aria-expanded': isOpen,
+    'aria-controls': tooltipId
+  } : {};
+
   return (
-    <div className={classNames(styles.container, {[styles.openOnHover]: openOnHover, [styles.fixed]: fixed})}
-         onClick={fixFocusHandlingSafari}>
-      {children}
+    <div ref={containerRef}
+         className={classNames(styles.container, {
+           [styles.openOnHover]: openOnHover,
+           [styles.fixed]: fixed
+         })}
+         onKeyDown={isControlled ? handleKeyDown : undefined}
+         onBlur={isControlled ? handleBlur : undefined}>
+      {typeof children === 'function' ? children(buttonProps) : children}
       <Bubble className={bubbleClassName}
               highlight={highlight}
               arrowPos={arrowPos}
               verticalOffset={verticalOffset}
-              horizontalOffset={horizontalOffset}>
+              horizontalOffset={horizontalOffset}
+              isOpen={isOpen}
+              id={tooltipId}>
         {content}
       </Bubble>
     </div>
   );
 }
 
-export function Bubble({className, arrowPos, children, highlight, horizontalOffset, verticalOffset}) {
+export function Bubble({className, arrowPos, children, highlight, horizontalOffset, verticalOffset, isOpen, id}) {
   let inlineStyle = {
     marginLeft: horizontalOffset,
     marginTop: verticalOffset
   }
 
-  // Negative tabIndex ensures element can take focus but does not
-  // come up in tab order. This ensures the tooltip stays expanded
-  // when text in the legal info menu is selected.
   return (
     <div style={inlineStyle}
-         tabIndex="-1"
+         id={id}
          className={classNames(className,
                                styles.bubble,
-                               {[styles.highlight]: highlight})}>
+                               {[styles.highlight]: highlight, [styles.open]: isOpen})}>
       <div style={{left: arrowPos}} className={styles.arrow} />
       <div className={styles.inner}>
         {children}
       </div>
     </div>
   );
-}
-
-// Safari does not focus buttons after they are clicked [1]. Focus
-// manually to ensure `focus-within` selector that opens the tooltip
-// applies.
-//
-// [1] https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Clicking_and_focus
-function fixFocusHandlingSafari(event) {
-  if (!event.target.closest) {
-    // IE does not support closest, but also does not need this fix.
-    return
-  }
-
-  const button = event.target.closest('button');
-
-  if (button) {
-    button.focus();
-  }
 }
 
 Tooltip.defaultProps = {

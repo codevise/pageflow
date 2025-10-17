@@ -20,9 +20,10 @@
   transition: visibility 0.1s linear, opacity 0.1s linear;
 }
 
-.container:focus-within .bubble,
+.bubble.open,
 .fixed .bubble,
-.openOnHover:hover .bubble {
+.openOnHover:hover .bubble,
+.openOnHover:focus-within .bubble {
   animation: fadeIn 0.1s ease-out 0s 1 alternate;
   opacity: 1;
   visibility: visible;
