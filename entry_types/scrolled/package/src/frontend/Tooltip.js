@@ -40,11 +40,13 @@ export function Tooltip({
 
   const isControlled = !openOnHover && !fixed;
 
-  const buttonProps = isControlled ? {
+  const triggerProps = isControlled ? {
     onClick: handleClick,
     ref: buttonRef,
     'aria-expanded': isOpen,
     'aria-controls': tooltipId
+  } : openOnHover ? {
+    'aria-describedby': tooltipId
   } : {};
 
   return (
@@ -55,7 +57,7 @@ export function Tooltip({
          })}
          onKeyDown={isControlled ? handleKeyDown : undefined}
          onBlur={isControlled ? handleBlur : undefined}>
-      {typeof children === 'function' ? children(buttonProps) : children}
+      {typeof children === 'function' ? children(triggerProps) : children}
       <Bubble className={bubbleClassName}
               highlight={highlight}
               arrowPos={arrowPos}

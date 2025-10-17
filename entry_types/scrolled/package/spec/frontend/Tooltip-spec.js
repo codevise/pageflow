@@ -8,7 +8,7 @@ describe('Tooltip', () => {
   it('renders trigger', () => {
     const {getByTestId} = render(
       <Tooltip name="test">
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
     expect(getByTestId('trigger')).toBeDefined();
@@ -26,7 +26,7 @@ describe('Tooltip', () => {
   it('opens tooltip when button is clicked', () => {
     const {getByTestId} = render(
       <Tooltip name="test" content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
@@ -42,7 +42,7 @@ describe('Tooltip', () => {
   it('closes tooltip when button is clicked again', () => {
     const {getByTestId} = render(
       <Tooltip name="test" content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
@@ -58,7 +58,7 @@ describe('Tooltip', () => {
   it('closes tooltip when ESC key is pressed', () => {
     const {getByTestId} = render(
       <Tooltip name="test" content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
@@ -74,7 +74,7 @@ describe('Tooltip', () => {
   it('returns focus to button when ESC key is pressed', async () => {
     const {getByTestId} = render(
       <Tooltip name="test" content={<button data-testid="content-button">content button</button>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
@@ -96,7 +96,7 @@ describe('Tooltip', () => {
   it('sets aria-expanded and aria-controls attributes', () => {
     const {getByTestId} = render(
       <Tooltip name="test" content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
@@ -114,7 +114,7 @@ describe('Tooltip', () => {
   it('does not toggle on click when openOnHover is true', () => {
     const {getByTestId} = render(
       <Tooltip name="test" openOnHover content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
@@ -127,10 +127,22 @@ describe('Tooltip', () => {
     expect(button.getAttribute('aria-expanded')).toBeNull();
   });
 
+  it('sets aria-describedby when openOnHover is true', () => {
+    const {getByTestId} = render(
+      <Tooltip name="test" openOnHover content={<div data-testid="content">content</div>}>
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
+      </Tooltip>
+    );
+
+    const button = getByTestId('trigger');
+
+    expect(button.getAttribute('aria-describedby')).toBe('tooltip-test');
+  });
+
   it('does not toggle on click when fixed is true', () => {
     const {getByTestId} = render(
       <Tooltip name="test" fixed content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
@@ -147,7 +159,7 @@ describe('Tooltip', () => {
     const {getByTestId} = render(
       <>
         <Tooltip name="test" content={<div data-testid="content">content</div>}>
-          {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+          {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
         </Tooltip>
         <button data-testid="outside">outside</button>
       </>

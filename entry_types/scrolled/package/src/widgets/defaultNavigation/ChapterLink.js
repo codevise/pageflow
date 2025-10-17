@@ -13,9 +13,10 @@ const {isBlank, presence} = utils;
 export function ChapterLink(props) {
   const {t} = useI18n();
 
-  const item = (
+  const renderLink = (triggerProps = {}) => (
     <div>
-      <a className={classNames(styles.chapterLink, {[styles.chapterLinkActive]: props.active})}
+      <a {...triggerProps}
+         className={classNames(styles.chapterLink, {[styles.chapterLinkActive]: props.active})}
          href={`#${props.chapterSlug}`}
          onClick={() => props.handleMenuClick(props.chapterLinkId)}>
         {presence(props.title) || t('pageflow_scrolled.public.navigation.chapter', {number: props.chapterIndex})}
@@ -26,7 +27,7 @@ export function ChapterLink(props) {
   );
 
   if (isBlank(props.summary)) {
-    return item;
+    return renderLink();
   }
 
   const content = (
@@ -35,7 +36,7 @@ export function ChapterLink(props) {
 
   return (
     <Tooltip name={`chapter-${props.chapterLinkId}`} content={content} openOnHover={true} highlight={true} bubbleClassName={styles.tooltipBubble}>
-      {item}
+      {renderLink}
     </Tooltip>
   )
 }
