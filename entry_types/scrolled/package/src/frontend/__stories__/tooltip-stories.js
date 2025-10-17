@@ -10,7 +10,7 @@ stories.add(
   () => {
     return (
       <div style={{width: '100%', height: '100vh', background: '#fff', margin: 100}}>
-        <Tooltip fixed={true} content={"Pageflow Tooltip Content"} highlight={true}>
+        <Tooltip name="story" fixed={true} content={"Pageflow Tooltip Content"} highlight={true}>
           <button>Tooltip</button>
         </Tooltip>
       </div>
