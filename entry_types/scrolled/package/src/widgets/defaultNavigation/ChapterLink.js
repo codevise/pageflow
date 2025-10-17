@@ -18,7 +18,8 @@ export function ChapterLink(props) {
       <a {...triggerProps}
          className={classNames(styles.chapterLink, {[styles.chapterLinkActive]: props.active})}
          href={`#${props.chapterSlug}`}
-         onClick={() => props.handleMenuClick(props.chapterLinkId)}>
+         onClick={() => props.handleMenuClick(props.chapterLinkId)}
+         aria-current={props.active ? 'location' : undefined}>
         {presence(props.title) || t('pageflow_scrolled.public.navigation.chapter', {number: props.chapterIndex})}
       </a>
       {!isBlank(props.summary) && <p className={classNames(styles.summary, styles.inlineSummary) }
