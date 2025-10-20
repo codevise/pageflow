@@ -46,14 +46,17 @@ export function LegalInfoMenu(props) {
   );
 
   return (
-    <Tooltip horizontalOffset={props.tooltipOffset - 30}
+    <Tooltip name="legalInfo"
+             horizontalOffset={props.tooltipOffset - 30}
              arrowPos={120 - props.tooltipOffset}
              content={content}>
-      <button className={classNames(headerStyles.contextIcon)}
-              aria-haspopup="true"
-              title={t('pageflow_scrolled.public.navigation.legal_info')}>
-        <ThemeIcon name="information" />
-      </button>
+      {(buttonProps) => (
+        <button {...buttonProps}
+                className={classNames(headerStyles.contextIcon)}
+                title={t('pageflow_scrolled.public.navigation.legal_info')}>
+          <ThemeIcon name="information" />
+        </button>
+      )}
     </Tooltip>
   )
 }

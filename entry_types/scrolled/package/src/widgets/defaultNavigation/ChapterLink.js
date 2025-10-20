@@ -34,7 +34,7 @@ export function ChapterLink(props) {
   );
 
   return (
-    <Tooltip content={content} openOnHover={true} highlight={true} bubbleClassName={styles.tooltipBubble}>
+    <Tooltip name={`chapter-${props.chapterLinkId}`} content={content} openOnHover={true} highlight={true} bubbleClassName={styles.tooltipBubble}>
       {item}
     </Tooltip>
   )
