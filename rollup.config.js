@@ -332,7 +332,7 @@ const pageflowScrolled = [
     }
   ))),
 
-  ...(['tikTokEmbed', 'hotspots'].map(name => (
+  ...(['tikTokEmbed', 'hotspots', 'socialEmbed'].map(name => (
     {
       input: `${pageflowScrolledPackageRoot}/src/contentElements/${name}/frontend.js`,
       output: {

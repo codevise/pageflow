@@ -12,6 +12,7 @@ import './hotspots/editor'
 import './vrImage/editor';
 import './iframeEmbed/editor';
 import './imageGallery/editor'
+import './socialEmbed/editor'
 import './twitterEmbed/editor'
 import './tikTokEmbed/editor'
 import './question/editor'

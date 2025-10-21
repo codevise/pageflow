@@ -14,7 +14,7 @@ module PageflowScrolled
 
         c.revision_components.register(Storyline, create_defaults: true)
 
-        ['tikTokEmbed', 'hotspots'].each do |name|
+        ['tikTokEmbed', 'hotspots', 'socialEmbed'].each do |name|
           c.additional_frontend_packs.register(
             "pageflow-scrolled/contentElements/#{name}-frontend",
             content_element_type_names: [name]
@@ -57,6 +57,7 @@ module PageflowScrolled
         c.features.register('datawrapper_chart_embed_opt_in')
         c.features.enable_by_default('datawrapper_chart_embed_opt_in')
         c.features.register('iframe_embed_content_element')
+        c.features.register('social_embed_content_element')
         c.features.register('frontend_v2')
         c.features.register('scrolled_entry_fragment_caching')
         c.features.register('backdrop_content_elements')
@@ -83,6 +84,11 @@ module PageflowScrolled
           IFRAME_EMBED_CONSENT_VENDOR,
           content_element_type_name: 'iframeEmbed'
         )
+
+        c.content_element_consent_vendors.register(
+          SOCIAL_EMBED_CONSENT_VENDOR,
+          content_element_type_name: 'socialEmbed'
+        )
       end
     end
 
@@ -97,6 +103,13 @@ module PageflowScrolled
       }&.last
     rescue URI::InvalidURIError
       nil
+    end
+
+    SOCIAL_EMBED_CONSENT_VENDOR = lambda do |configuration:, **|
+      provider = configuration['provider']
+      valid_providers = ['x', 'instagram', 'bluesky', 'tiktok']
+
+      valid_providers.include?(provider) ? provider : nil
     end
 
     FRONTEND_VERSION_SEED_DATA = lambda do |request:, entry:, **|

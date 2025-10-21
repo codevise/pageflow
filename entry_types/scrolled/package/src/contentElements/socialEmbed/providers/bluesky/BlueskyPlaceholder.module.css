@@ -1,0 +1,62 @@
+.wrapper {
+  border-radius: .75rem;
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  padding: .75rem 1rem 2rem;
+  margin: 10px auto;
+  border: solid 1px #e1e8ed;
+  max-width: 550px;
+  box-sizing: border-box;
+}
+
+.wrapper svg {
+  height: 2rem;
+  width: auto;
+  fill: #eee;
+}
+
+.item {
+  composes: item from '../../placeholder.module.css';
+}
+
+.header {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.avatar {
+  composes: item;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  margin-right: 10px;
+}
+
+.info {
+  flex: 1;
+}
+
+.name {
+  composes: item;
+  height: 14px;
+  width: 100px;
+  margin-bottom: 6px;
+  border-radius: 2px;
+}
+
+.handle {
+  composes: item;
+  height: 12px;
+  width: 80px;
+  border-radius: 2px;
+}
+
+.content {
+  composes: item;
+  height: 130px;
+  flex-grow: 1;
+  margin-bottom: 12px;
+  border-radius: 2px;
+}

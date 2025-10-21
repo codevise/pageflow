@@ -25,6 +25,12 @@ module.exports = {
         'pageflow-scrolled/contentElements/hotspots-frontend.css'
       ]
     },
+    'pageflow-scrolled/contentElements/socialEmbed-frontend': {
+      import: [
+        'pageflow-scrolled/contentElements/socialEmbed-frontend',
+        'pageflow-scrolled/contentElements/socialEmbed-frontend.css'
+      ]
+    },
     'pageflow-scrolled/widgets/defaultNavigation': {
       import: [
         'pageflow-scrolled/widgets/defaultNavigation',

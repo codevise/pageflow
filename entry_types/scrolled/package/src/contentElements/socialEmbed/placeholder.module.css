@@ -1,0 +1,11 @@
+.item {
+  animation: load 2s linear infinite;
+  background: linear-gradient(-75deg, transparent 30%, #ddd 50%, transparent 70%) 0 0 / 200% 100%, #eee;
+  background-attachment: fixed;
+}
+
+@keyframes load {
+  to {
+    background-position: -200% 0;
+  }
+}

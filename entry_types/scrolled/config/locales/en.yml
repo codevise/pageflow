@@ -66,6 +66,8 @@ en:
       feature_name: iframe embed content element
     scrolled_entry_fragment_caching:
       feature_name: Pageflow Next Fragment Caching
+    social_embed_content_element:
+      feature_name: Social embed content element
     textInlineFileRights:
       widget_type_name: Text at element
     ui:
@@ -774,6 +776,24 @@ en:
           name: Text Block
           tabs:
             general: Text Block
+        socialEmbed:
+          attributes:
+            provider:
+              label: Provider
+              values:
+                x: X
+                instagram: Instagram
+                bluesky: Bluesky
+            url:
+              label: Post URL
+            hideConversation:
+              label: Hide Conversation
+            hideMedia:
+              label: Hide Media
+          description: Embed posts from X, Instagram, or Bluesky
+          name: Social Media Post
+          tabs:
+            general: Social Embed
         twitterEmbed:
           attributes:
             hideConversation:
