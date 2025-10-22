@@ -15,9 +15,13 @@ import {UrlInputView} from 'pageflow/ui';
  * @param {string} options.providerNameProperty
  *   Name of the property on the model that contains the provider name.
  *
- * @param {Object.<string, Function>} options.processingFunctions
- *   Map of provider names to processing functions. Each function receives
- *   the oEmbed response and should return a transformed/normalized URL string.
+ * @param {Object.<string, Object>} [options.providers]
+ *   Map of provider names to provider configuration objects. Each provider
+ *   config can have:
+ *   - `transform`: Function that receives the oEmbed response and returns
+ *     a transformed/normalized URL string.
+ *   - `skipOembedValidation`: Boolean to skip oEmbed validation entirely
+ *     for this provider.
  *
  * @example
  *
@@ -26,10 +30,15 @@ import {UrlInputView} from 'pageflow/ui';
  *     propertyName: 'url',
  *     displayPropertyName: 'displayUrl',
  *     providerNameProperty: 'provider',
- *     processingFunctions: {
- *       bluesky: function(response) {
- *         // Return canonical URL from response
- *         return response.url || response.author_url;
+ *     providers: {
+ *       bluesky: {
+ *         transform: function(response) {
+ *           // Return canonical URL from response
+ *           return response.url || response.author_url;
+ *         }
+ *       },
+ *       instagram: {
+ *         skipOembedValidation: true
  *       }
  *     }
  *   });
@@ -81,6 +90,12 @@ export const OembedUrlInputView = UrlInputView.extend({
       return deferred.promise();
     }
 
+    var providerConfig = this.options.providers && this.options.providers[providerName];
+    if (providerConfig && providerConfig.skipOembedValidation) {
+      deferred.resolve();
+      return deferred.promise();
+    }
+
     deferred.notify(I18n.t('pageflow.editor.views.inputs.oembed_url_input_view.status.resolving'));
 
     $.ajax({
@@ -121,11 +136,11 @@ export const OembedUrlInputView = UrlInputView.extend({
     }
 
     var providerName = this.model.get(this.options.providerNameProperty);
-    var processingFunction = this.options.processingFunctions &&
-                             this.options.processingFunctions[providerName];
+    var providerConfig = this.options.providers && this.options.providers[providerName];
+    var transformFunction = providerConfig && providerConfig.transform;
 
-    if (processingFunction) {
-      return processingFunction(oembedResponse);
+    if (transformFunction) {
+      return transformFunction(oembedResponse);
     }
 
     return value;

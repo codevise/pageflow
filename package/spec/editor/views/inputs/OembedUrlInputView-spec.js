@@ -100,44 +100,7 @@ describe('OembedUrlInputView', () => {
     expect(validation).toHaveClass('pending');
   });
 
-  it('transforms URL with provider-specific processing function', () => {
-    const model = new Backbone.Model({
-      url: '',
-      provider: 'test_provider'
-    });
-    const processingFunction = jest.fn((response) => response.author_url);
-    const view = new OembedUrlInputView({
-      model,
-      propertyName: 'url',
-      displayPropertyName: 'displayUrl',
-      providerNameProperty: 'provider',
-      processingFunctions: {
-        test_provider: processingFunction
-      }
-    });
-
-    const {getByRole} = renderBackboneView(view);
-    const input = getByRole('textbox');
-
-    input.value = 'https://example.com/post/123';
-    fireEvent.change(input);
-
-    const response = {
-      html: '<iframe src="..."></iframe>',
-      title: 'Example Post',
-      author_url: 'https://example.com/canonical/123'
-    };
-    testContext.server.respond(
-      'GET', /\/editor\/oembed/,
-      [200, {'Content-Type': 'application/json'}, JSON.stringify(response)]
-    );
-
-    expect(processingFunction).toHaveBeenCalledWith(response);
-    expect(model.get('url')).toBe('https://example.com/canonical/123');
-    expect(model.get('displayUrl')).toBe('https://example.com/post/123');
-  });
-
-  it('saves URL without transformation if no processing function', () => {
+  it('saves URL without transformation if no transform function', () => {
     const model = new Backbone.Model({
       url: '',
       provider: 'test_provider'
@@ -265,6 +228,77 @@ describe('OembedUrlInputView', () => {
     expect(testContext.requests.length).toBe(0);
   });
 
+  it('skips oEmbed validation when skipOembedValidation is true', () => {
+    const model = new Backbone.Model({
+      url: '',
+      provider: 'test_provider'
+    });
+    const view = new OembedUrlInputView({
+      model,
+      propertyName: 'url',
+      displayPropertyName: 'displayUrl',
+      providerNameProperty: 'provider',
+      providers: {
+        test_provider: {
+          skipOembedValidation: true
+        }
+      }
+    });
+
+    const {getByRole} = renderBackboneView(view);
+    const input = getByRole('textbox');
+    const testUrl = 'https://example.com/post/123';
+
+    input.value = testUrl;
+    fireEvent.change(input);
+
+    // Should not make XHR request
+    expect(testContext.requests.length).toBe(0);
+
+    // Should save URL directly
+    expect(model.get('url')).toBe(testUrl);
+    expect(model.get('displayUrl')).toBe(testUrl);
+  });
+
+  it('transforms URL with provider-specific transform function in providers option', () => {
+    const model = new Backbone.Model({
+      url: '',
+      provider: 'test_provider'
+    });
+    const transformFunction = jest.fn((response) => response.author_url);
+    const view = new OembedUrlInputView({
+      model,
+      propertyName: 'url',
+      displayPropertyName: 'displayUrl',
+      providerNameProperty: 'provider',
+      providers: {
+        test_provider: {
+          transform: transformFunction
+        }
+      }
+    });
+
+    const {getByRole} = renderBackboneView(view);
+    const input = getByRole('textbox');
+
+    input.value = 'https://example.com/post/123';
+    fireEvent.change(input);
+
+    const response = {
+      html: '<iframe src="..."></iframe>',
+      title: 'Example Post',
+      author_url: 'https://example.com/canonical/123'
+    };
+    testContext.server.respond(
+      'GET', /\/editor\/oembed/,
+      [200, {'Content-Type': 'application/json'}, JSON.stringify(response)]
+    );
+
+    expect(transformFunction).toHaveBeenCalledWith(response);
+    expect(model.get('url')).toBe('https://example.com/canonical/123');
+    expect(model.get('displayUrl')).toBe('https://example.com/post/123');
+  });
+
   describe('provider switching', () => {
     it('clears URL when provider changes', () => {
       const model = new Backbone.Model({
@@ -343,8 +377,10 @@ describe('OembedUrlInputView', () => {
         propertyName: 'url',
         displayPropertyName: 'displayUrl',
         providerNameProperty: 'provider',
-        processingFunctions: {
-          bluesky: processingFunction
+        providers: {
+          bluesky: {
+            transform: processingFunction
+          }
         }
       });
 

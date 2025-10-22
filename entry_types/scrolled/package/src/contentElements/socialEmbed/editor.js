@@ -18,8 +18,16 @@ editor.contentElementTypes.register('socialEmbed', {
       this.input('url', OembedUrlInputView, {
         displayPropertyName: 'displayPostId',
         providerNameProperty: 'provider',
-        processingFunctions: {
-          bluesky: processBlueskyOembed
+        providers: {
+          bluesky: {
+            transform: processBlueskyOembed
+          },
+          instagram: {
+            skipOembedValidation: true
+          },
+          x: {
+            skipOembedValidation: true
+          }
         }
       });
       this.group('ContentElementPosition', {entry});
