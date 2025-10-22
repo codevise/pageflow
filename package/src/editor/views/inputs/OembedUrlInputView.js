@@ -37,6 +37,32 @@ import {UrlInputView} from 'pageflow/ui';
  * @class
  */
 export const OembedUrlInputView = UrlInputView.extend({
+  onRender: function() {
+    UrlInputView.prototype.onRender.call(this);
+
+    this.displayUrlsByProvider = {};
+    this.listenTo(this.model, 'change:' + this.options.providerNameProperty, this.onProviderChange);
+  },
+
+  onProviderChange: function() {
+    var oldProvider = this.model.previous(this.options.providerNameProperty);
+    var newProvider = this.model.get(this.options.providerNameProperty);
+    var currentDisplayUrl = this.model.get(this.options.displayPropertyName);
+
+    if (currentDisplayUrl) {
+      this.displayUrlsByProvider[oldProvider] = currentDisplayUrl;
+    }
+
+    var restoredDisplayUrl = this.displayUrlsByProvider[newProvider];
+
+    this.model.set({
+      [this.options.propertyName]: '',
+      [this.options.displayPropertyName]: restoredDisplayUrl || ''
+    });
+
+    this.onChange();
+  },
+
   supportedHosts: function() {
     // Accept all hosts - provider-specific validation happens via oEmbed
     return ['.*'];

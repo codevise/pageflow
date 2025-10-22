@@ -42,8 +42,11 @@ export const UrlInputView = Marionette.Layout.extend(
 
   onRender: function() {
     this.ui.validation.hide();
+
     this.load();
     this.validate();
+
+    this.listenTo(this.model, 'change:' + this.options.displayPropertyName, this.load);
   },
 
   onChange: function() {
@@ -211,6 +214,7 @@ export const UrlInputView = Marionette.Layout.extend(
     function resetValidationError(message) {
       view.$el.removeClass('invalid');
       view.ui.input.attr('aria-invalid', 'false');
+      view.ui.validation.text('');
       view.ui.validation.hide();
     }
   }
