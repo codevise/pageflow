@@ -487,6 +487,19 @@ module Pageflow
     # @since 17.1
     attr_accessor :entry_translator_url
 
+    # Registry for oEmbed providers that can be used to resolve URLs.
+    #
+    # @example
+    #
+    #     config.oembed_providers.register(
+    #       :bluesky,
+    #       endpoint: 'https://bsky.app/oembed.{format}',
+    #       url_patterns: ['https://bsky.app/profile/*/post/*']
+    #     )
+    # @since 17.2
+    # @return [OembedProviders]
+    attr_reader :oembed_providers
+
     def initialize(target_type_name = nil)
       @target_type_name = target_type_name
 
@@ -583,6 +596,13 @@ module Pageflow
       @permissions = Permissions.new
 
       @edit_lock_polling_interval = 15.seconds
+
+      @oembed_providers = OembedProviders.new
+      @oembed_providers.register(
+        :bluesky,
+        endpoint: 'https://embed.bsky.app/oembed',
+        url_patterns: ['https://bsky.app/profile/*/post/*']
+      )
     end
 
     # Activate a plugin.

@@ -141,6 +141,9 @@ Gem::Specification.new do |s|
   # string encryptor/decryptor
   s.add_dependency 'symmetric-encryption', '~> 4.3.1'
 
+  # oEmbed URL resolving
+  s.add_dependency 'ruby-oembed', '~> 0.18.0'
+
   # Used for Webpack build in host application
   s.add_development_dependency 'shakapacker', '~> 7.0'
 

@@ -73,6 +73,8 @@ Pageflow::Engine.routes.draw do
           patch :batch, on: :collection
         end
       end
+
+      resource :oembed, only: [:show]
     end
 
     root to: redirect('/admin')
