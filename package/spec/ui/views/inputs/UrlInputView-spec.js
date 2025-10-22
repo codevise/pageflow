@@ -1,5 +1,7 @@
+import $ from 'jquery';
 import Backbone from 'backbone';
 
+import {waitFor} from '@testing-library/dom';
 import '@testing-library/jest-dom/extend-expect';
 
 import {UrlInputView} from 'pageflow/ui';
@@ -240,6 +242,69 @@ describe('UrlInputView', () => {
     expect(input[0]).toBeValid();
   });
 
+  it('passes validateUrl result to transformPropertyValue', async () => {
+    var model = new Backbone.Model();
+    var validationData = {foo: 'bar'};
+    var transformSpy = jest.fn((value) => value);
+
+    var TestView = UrlInputView.extend({
+      validateUrl: function() {
+        var deferred = $.Deferred();
+        setTimeout(() => deferred.resolve(validationData), 0);
+        return deferred.promise();
+      },
+      transformPropertyValue: transformSpy
+    });
+
+    var view = new TestView({
+      model: model,
+      propertyName: 'url',
+      displayPropertyName: 'displayUrl',
+      supportedHosts: ['example.com']
+    });
+
+    view.render();
+    var input = view.$el.find('input');
+    input.val('http://example.com/test');
+    input.trigger('change');
+
+    await waitFor(() => {
+      expect(transformSpy).toHaveBeenCalledWith('http://example.com/test', validationData);
+    });
+  });
+
+  it('can use validateUrl result in transformPropertyValue', async () => {
+    var model = new Backbone.Model();
+
+    var TestView = UrlInputView.extend({
+      validateUrl: function(url) {
+        var deferred = $.Deferred();
+        setTimeout(() => deferred.resolve({canonical: url + '/normalized'}), 0);
+        return deferred.promise();
+      },
+      transformPropertyValue: function(value, validationResult) {
+        return validationResult ? validationResult.canonical : value;
+      }
+    });
+
+    var view = new TestView({
+      model: model,
+      propertyName: 'url',
+      displayPropertyName: 'displayUrl',
+      supportedHosts: ['example.com']
+    });
+
+    view.render();
+    var input = view.$el.find('input');
+    input.val('http://example.com/test');
+    input.trigger('change');
+
+    await waitFor(() => {
+      expect(model.get('url')).toBe('http://example.com/test/normalized');
+      expect(model.get('displayUrl')).toBe('http://example.com/test');
+    });
+  });
+
   it('should be invalid if URL uses https', () => {
     var model = new Backbone.Model();
     var view = new UrlInputView({
@@ -291,5 +356,35 @@ describe('UrlInputView', () => {
     input.trigger('change');
 
     expect(input[0]).toBeValid();
+  });
+
+  it('still sets propertry if validateUrl resolves after view has been closed', async () => {
+    var model = new Backbone.Model();
+    var deferred;
+
+    var TestView = UrlInputView.extend({
+      validateUrl: function(url) {
+        deferred = $.Deferred();
+        return deferred.promise();
+      }
+    });
+
+    var view = new TestView({
+      model: model,
+      propertyName: 'url',
+      displayPropertyName: 'displayUrl',
+      supportedHosts: ['example.com']
+    });
+
+    view.render();
+    var input = view.$el.find('input');
+    input.val('http://example.com/test');
+    input.trigger('change');
+    view.close();
+
+    deferred.resolve();
+
+    expect(model.get('url')).toBe('http://example.com/test');
+    expect(model.get('displayUrl')).toBe('http://example.com/test');
   });
 });

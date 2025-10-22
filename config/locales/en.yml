@@ -1555,6 +1555,13 @@ en:
             unset: Reset
           theme_input_view:
             choose: Change theme
+          oembed_url_input_view:
+            status:
+              resolving: "Resolving..."
+              resolved: "Resolved"
+              invalid_provider: "Invalid provider"
+              not_found: "URL not found"
+              error: "Error resolving URL"
         page_item_view:
           unnamed: "(New page)"
         page_link_item_view:
