@@ -1,6 +1,8 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {UrlInputView, CheckBoxInputView, SelectInputView} from 'pageflow/ui';
+import {OembedUrlInputView} from 'pageflow/editor';
+import {CheckBoxInputView, SelectInputView} from 'pageflow/ui';
 import pictogram from './pictogram.svg'
+import {processBlueskyOembed} from './processBlueskyOembed';
 
 editor.contentElementTypes.register('socialEmbed', {
   pictogram,
@@ -13,9 +15,12 @@ editor.contentElementTypes.register('socialEmbed', {
       this.input('provider', SelectInputView, {
         values: ['x', 'instagram', 'bluesky']
       });
-      this.input('url', UrlInputView, {
+      this.input('url', OembedUrlInputView, {
         displayPropertyName: 'displayPostId',
-        permitHttps: true
+        providerNameProperty: 'provider',
+        processingFunctions: {
+          bluesky: processBlueskyOembed
+        }
       });
       this.group('ContentElementPosition', {entry});
       this.input('hideConversation', CheckBoxInputView, {
