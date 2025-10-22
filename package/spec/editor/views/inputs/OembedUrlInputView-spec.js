@@ -299,6 +299,68 @@ describe('OembedUrlInputView', () => {
     expect(model.get('displayUrl')).toBe('https://example.com/post/123');
   });
 
+  it('accepts URLs matching provider-specific supported hosts', () => {
+    const model = new Backbone.Model({
+      url: '',
+      provider: 'test_provider'
+    });
+    const view = new OembedUrlInputView({
+      model,
+      propertyName: 'url',
+      displayPropertyName: 'displayUrl',
+      providerNameProperty: 'provider',
+      providers: {
+        test_provider: {
+          supportedHosts: ['bsky.app', 'bsky.social']
+        }
+      }
+    });
+
+    const {getByRole} = renderBackboneView(view);
+    const input = getByRole('textbox');
+
+    input.value = 'https://bsky.app/post/123';
+    fireEvent.change(input);
+
+    testContext.server.respond(
+      'GET', /\/editor\/oembed/,
+      [200, {'Content-Type': 'application/json'}, JSON.stringify({html: '<div></div>'})]
+    );
+
+    expect(model.get('url')).toBe('https://bsky.app/post/123');
+    expect(model.get('displayUrl')).toBe('https://bsky.app/post/123');
+  });
+
+  it('rejects URLs not matching provider-specific supported hosts', () => {
+    const model = new Backbone.Model({
+      url: '',
+      provider: 'test_provider'
+    });
+    const view = new OembedUrlInputView({
+      model,
+      propertyName: 'url',
+      displayPropertyName: 'displayUrl',
+      providerNameProperty: 'provider',
+      providers: {
+        test_provider: {
+          supportedHosts: ['bsky.app', 'bsky.social']
+        }
+      }
+    });
+
+    const {getByRole} = renderBackboneView(view);
+    const input = getByRole('textbox');
+    const validation = view.el.querySelector('.validation');
+
+    input.value = 'https://example.com/post/456';
+    fireEvent.change(input);
+
+    expect(validation).toHaveClass('failed');
+    expect(input).toBeInvalid();
+    expect(model.get('url')).toBeUndefined();
+    expect(model.get('displayUrl')).toBe('https://example.com/post/456');
+  });
+
   describe('provider switching', () => {
     it('clears URL when provider changes', () => {
       const model = new Backbone.Model({

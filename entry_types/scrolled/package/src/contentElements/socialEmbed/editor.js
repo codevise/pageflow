@@ -20,12 +20,15 @@ editor.contentElementTypes.register('socialEmbed', {
         providerNameProperty: 'provider',
         providers: {
           bluesky: {
+            supportedHosts: ['bsky.app', 'bsky.social'],
             transform: processBlueskyOembed
           },
           instagram: {
+            supportedHosts: ['instagram.com', 'www.instagram.com'],
             skipOembedValidation: true
           },
           x: {
+            supportedHosts: ['twitter.com', 'www.twitter.com', 'x.com', 'www.x.com'],
             skipOembedValidation: true
           }
         }

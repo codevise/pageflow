@@ -18,6 +18,8 @@ import {UrlInputView} from 'pageflow/ui';
  * @param {Object.<string, Object>} [options.providers]
  *   Map of provider names to provider configuration objects. Each provider
  *   config can have:
+ *   - `supportedHosts`: Array of supported host patterns (e.g., ['bsky.app', 'bsky.social']).
+ *     If not specified, all hosts are accepted.
  *   - `transform`: Function that receives the oEmbed response and returns
  *     a transformed/normalized URL string.
  *   - `skipOembedValidation`: Boolean to skip oEmbed validation entirely
@@ -32,12 +34,14 @@ import {UrlInputView} from 'pageflow/ui';
  *     providerNameProperty: 'provider',
  *     providers: {
  *       bluesky: {
+ *         supportedHosts: ['bsky.app', 'bsky.social'],
  *         transform: function(response) {
  *           // Return canonical URL from response
  *           return response.url || response.author_url;
  *         }
  *       },
  *       instagram: {
+ *         supportedHosts: ['instagram.com', 'www.instagram.com'],
  *         skipOembedValidation: true
  *       }
  *     }
@@ -72,9 +76,13 @@ export const OembedUrlInputView = UrlInputView.extend({
     this.onChange();
   },
 
+  providerOptions: function() {
+    var providerName = this.model.get(this.options.providerNameProperty);
+    return (this.options.providers && this.options.providers[providerName]) || {};
+  },
+
   supportedHosts: function() {
-    // Accept all hosts - provider-specific validation happens via oEmbed
-    return ['.*'];
+    return this.providerOptions().supportedHosts || ['.*'];
   },
 
   permitHttps: function() {
@@ -90,8 +98,7 @@ export const OembedUrlInputView = UrlInputView.extend({
       return deferred.promise();
     }
 
-    var providerConfig = this.options.providers && this.options.providers[providerName];
-    if (providerConfig && providerConfig.skipOembedValidation) {
+    if (this.providerOptions().skipOembedValidation) {
       deferred.resolve();
       return deferred.promise();
     }
@@ -135,9 +142,7 @@ export const OembedUrlInputView = UrlInputView.extend({
       return value;
     }
 
-    var providerName = this.model.get(this.options.providerNameProperty);
-    var providerConfig = this.options.providers && this.options.providers[providerName];
-    var transformFunction = providerConfig && providerConfig.transform;
+    var transformFunction = this.providerOptions().transform;
 
     if (transformFunction) {
       return transformFunction(oembedResponse);
