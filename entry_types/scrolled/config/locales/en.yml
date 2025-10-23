@@ -784,13 +784,14 @@ en:
                 x: X
                 instagram: Instagram
                 bluesky: Bluesky
+                tiktok: TikTok
             url:
               label: Post URL
             hideConversation:
               label: Hide Conversation
             hideMedia:
               label: Hide Media
-          description: Embed posts from X, Instagram, or Bluesky
+          description: Embed posts from X, Instagram, Bluesky, or TikTok
           name: Social Media Post
           tabs:
             general: Social Embed

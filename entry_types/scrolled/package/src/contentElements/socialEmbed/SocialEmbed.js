@@ -22,7 +22,7 @@ export function SocialEmbed({configuration, providers = defaultProviders}) {
     return (
       <ContentElementBox>
         <div>
-          <p>Please select a provider (X, Instagram, or BlueSky).</p>
+          <p>Please select a provider (X, Instagram, Bluesky, or TikTok).</p>
         </div>
       </ContentElementBox>
     );

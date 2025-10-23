@@ -801,13 +801,14 @@ de:
                 x: X
                 instagram: Instagram
                 bluesky: Bluesky
+                tiktok: TikTok
             url:
               label: Post-URL
             hideConversation:
               label: Konversation ausblenden
             hideMedia:
               label: Medien ausblenden
-          description: Bettet Posts von X, Instagram oder Bluesky ein
+          description: Bettet Posts von X, Instagram, Bluesky oder TikTok ein
           name: Social Media Post
           tabs:
             general: Social Embed

@@ -13,7 +13,7 @@ editor.contentElementTypes.register('socialEmbed', {
   configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('provider', SelectInputView, {
-        values: ['x', 'instagram', 'bluesky']
+        values: ['x', 'instagram', 'bluesky', 'tiktok']
       });
       this.input('url', OembedUrlInputView, {
         displayPropertyName: 'displayPostId',
@@ -29,6 +29,10 @@ editor.contentElementTypes.register('socialEmbed', {
           },
           x: {
             supportedHosts: ['twitter.com', 'www.twitter.com', 'x.com', 'www.x.com'],
+            skipOembedValidation: true
+          },
+          tiktok: {
+            supportedHosts: ['https://www.tiktok.com'],
             skipOembedValidation: true
           }
         }
