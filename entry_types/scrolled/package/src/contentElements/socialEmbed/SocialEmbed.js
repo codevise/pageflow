@@ -106,7 +106,7 @@ function Embed({provider, url, configuration, minHeight, onLoad}) {
 
         if (isComponentMounted) {
           setScriptLoaded(true);
-          onLoad({height: ref.current?.clientHeight});
+          onLoad({height: ref.current?.clientHeight - 20})
         }
       } catch (error) {
         console.error(`Failed to load ${provider.name} embed:`, error);
@@ -121,11 +121,12 @@ function Embed({provider, url, configuration, minHeight, onLoad}) {
   }, [provider, url, configuration, onLoad]);
 
   return (
-    <>
+    <div className={styles.wrapper}>
       {!scriptLoaded && <Placeholder minHeight={minHeight} />}
-      <div className={classNames(styles.container, {[styles.loadingContainer]: !scriptLoaded})} ref={ref}>
-        <provider.Seed  url={url} configuration={configuration} />
+      <div className={classNames(styles.container, {[styles.loadingContainer]: !scriptLoaded})}
+           ref={ref}>
+        <provider.Seed url={url} configuration={configuration} />
       </div>
-    </>
+    </div>
   );
 }

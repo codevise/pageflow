@@ -16,7 +16,6 @@ export const tiktokProvider = {
         data-video-id={videoId}
         style={{width: '325px'}}>
         <section>
-          <a target="_blank" rel="noopener noreferrer" href={url}>View on TikTok</a>
         </section>
       </blockquote>
     );

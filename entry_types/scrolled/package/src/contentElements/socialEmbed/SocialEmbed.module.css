@@ -1,11 +1,17 @@
-.loadingContainer > div {
-  /* X already inserts a div with margins while the post still
-     loads. Since the placeholder also has these margins, prevent
-     displaying extra space. */
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
+.wrapper {
+  display: grid;
 }
 
-.container > div {
-  margin: 0 auto;
+.wrapper > * {
+  width: 100%;
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.loadingContainer > * {
+  opacity: 0;
+}
+
+.container > * {
+  margin: 10px auto !important;
 }
