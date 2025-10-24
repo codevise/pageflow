@@ -35,7 +35,7 @@ export function DefaultNavigation({
   logo
 }) {
   const [navExpanded, setNavExpanded] = useState(true);
-  const [mobileNavHidden, setMobileNavHidden] = useState(!configuration.defaultMobileNavVisible);
+  const [menuOpen, setMenuOpen] = useState(!!configuration.defaultMobileNavVisible);
   const [readingProgress, setReadingProgress] = useState(0);
 
   const chapters = useMainChapters().filter(chapter => !chapter.hideInNavigation);
@@ -97,11 +97,11 @@ export function DefaultNavigation({
   };
 
   function handleBurgerMenuClick() {
-    setMobileNavHidden(!mobileNavHidden);
+    setMenuOpen(!menuOpen);
   };
 
   function handleMenuClick(chapterLinkId) {
-    setMobileNavHidden(true);
+    setMenuOpen(false);
   };
 
   function renderChapterLinks(chapters) {
@@ -128,7 +128,7 @@ export function DefaultNavigation({
     return (
       <Scroller>
         <nav className={classNames(styles.navigationChapters,
-                                   {[styles.navigationChaptersHidden]: mobileNavHidden || hasMenu})}>
+                                   {[styles.navigationChaptersHidden]: !menuOpen || hasMenu})}>
           <ul className={styles.chapterList}>
             {renderChapterLinks(chapters)}
           </ul>
@@ -147,7 +147,7 @@ export function DefaultNavigation({
         [styles.navigationBarExpanded]: (
           navExpanded ||
           (!isPhonePlatform && configuration.fixedOnDesktop) ||
-          !mobileNavHidden
+          menuOpen
         ),
         [styles.hasChapters]: hasChapters,
         [styles.hasDesktopMenu]: hasDesktopMenu
@@ -156,16 +156,16 @@ export function DefaultNavigation({
         <WidgetSelectionRect>
           <div className={styles.navigationBarContentWrapper}>
             {(hasChapters || hasMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}
-                                                         mobileNavHidden={mobileNavHidden}
-                                                         visibleOnDesktop={hasDesktopMenu}/>}
+                                                        menuOpen={menuOpen}
+                                                        visibleOnDesktop={hasDesktopMenu}/>}
 
             <SkipLinks />
             <Logo {...logo} />
 
             {renderNav()}
             {CustomMenu && <CustomMenu configuration={configuration}
-                                       open={!mobileNavHidden}
-                                       close={() => setMobileNavHidden(true)} />}
+                                       open={menuOpen}
+                                       close={() => setMenuOpen(false)} />}
 
             <div className={classNames(styles.contextIcons)}>
               {!configuration.hideToggleMuteButton && <ToggleMuteButton />}
@@ -183,7 +183,7 @@ export function DefaultNavigation({
       </header>
       <SelectableWidget role="defaultNavigationExtra"
                         props={{navigationExpanded: navExpanded,
-                                mobileNavigationVisible: !mobileNavHidden}} />
+                                mobileNavigationVisible: menuOpen}} />
     </>
   );
 }
