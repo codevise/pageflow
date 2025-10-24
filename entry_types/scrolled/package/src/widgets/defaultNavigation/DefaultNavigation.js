@@ -32,7 +32,8 @@ import styles from './DefaultNavigation.module.css';
 export function DefaultNavigation({
   configuration,
   ExtraButtons, Menu, MobileMenu,
-  logo
+  logo,
+  omitChapterNavigation
 }) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [menuOpen, setMenuOpen] = useState(!!configuration.defaultMobileNavVisible);
@@ -88,9 +89,10 @@ export function DefaultNavigation({
 
   const darkWidgets = useDarkWidgets();
 
-  const hasChapters = chapters.length > 1 ||
-                      !utils.isBlank(chapters[0]?.title) ||
-                      !utils.isBlank(chapters[0]?.summary);
+  const hasChapters = (chapters.length > 1 ||
+                       !utils.isBlank(chapters[0]?.title) ||
+                       !utils.isBlank(chapters[0]?.summary)) &&
+                      !omitChapterNavigation;
 
   function handleProgressBarMouseEnter() {
     setNavExpanded(true);

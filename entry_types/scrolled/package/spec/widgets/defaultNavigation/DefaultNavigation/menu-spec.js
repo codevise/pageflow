@@ -83,7 +83,7 @@ describe('DefaultNavigation - Menu', () => {
     expect(queryByText('MobileMenu component')).toBeNull();
   });
 
-  it('hides default chapter navigation when Menu is present', async () => {
+  it('hides mobile chapter navigation when Menu is present', async () => {
     const Menu = () => <div>Menu</div>;
     const {getByRole} = renderInEntry(
       <DefaultNavigation configuration={{}}
@@ -129,5 +129,85 @@ describe('DefaultNavigation - Menu', () => {
 
     const hamburgerContainer = container.querySelector(`.${hamburgerStyles.burgerMenuIconContainer}`);
     expect(hamburgerContainer).toHaveClass(hamburgerStyles.visibleOnDesktop);
+  });
+
+  it('shifts logo position when Menu is used', () => {
+    const Menu = () => <div>Menu</div>;
+    const {container} = renderInEntry(
+      <DefaultNavigation configuration={{}}
+                         Menu={Menu} />,
+      {
+        seed: {
+          entry: {
+            configuration: {
+              logo_url: 'logo.png'
+            }
+          }
+        }
+      }
+    );
+
+    const header = container.querySelector('header');
+    expect(header).toHaveClass(styles.hasDesktopMenu);
+  });
+
+  it('does not render chapter navigation when omitChapterNavigation is true', () => {
+    const {queryByRole} = renderInEntry(
+      <DefaultNavigation configuration={{}}
+                         omitChapterNavigation={true} />,
+      {
+        seed: {
+          chapters: [{}, {}]
+        }
+      }
+    );
+
+    expect(queryByRole('navigation')).toBeNull();
+  });
+
+  it('does not render hamburger when omitChapterNavigation is true and no Menu', () => {
+    const {queryByRole} = renderInEntry(
+      <DefaultNavigation configuration={{}}
+                         omitChapterNavigation={true} />,
+      {
+        seed: {
+          chapters: [{}, {}]
+        }
+      }
+    );
+
+    expect(queryByRole('button', {name: 'Open mobile menu'})).toBeNull();
+  });
+
+  it('renders hamburger when omitChapterNavigation is true but Menu is provided', () => {
+    const Menu = () => <div>Menu</div>;
+    const {queryByRole} = renderInEntry(
+      <DefaultNavigation configuration={{}}
+                         Menu={Menu}
+                         omitChapterNavigation={true} />,
+      {
+        seed: {
+          chapters: [{}, {}]
+        }
+      }
+    );
+
+    expect(queryByRole('button', {name: 'Open mobile menu'})).not.toBeNull();
+  });
+
+  it('does not render chapter navigation when omitChapterNavigation is true even with Menu', () => {
+    const Menu = () => <div>Menu</div>;
+    const {queryByRole} = renderInEntry(
+      <DefaultNavigation configuration={{}}
+                         Menu={Menu}
+                         omitChapterNavigation={true} />,
+      {
+        seed: {
+          chapters: [{}, {}]
+        }
+      }
+    );
+
+    expect(queryByRole('navigation')).toBeNull();
   });
 });
