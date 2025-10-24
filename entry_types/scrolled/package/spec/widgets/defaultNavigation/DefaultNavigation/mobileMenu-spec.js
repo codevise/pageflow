@@ -62,12 +62,12 @@ describe('DefaultNavigation - Mobile Menu', () => {
       }
     );
 
-    expect(getByRole('navigation')).toHaveClass(styles.navigationChaptersHidden);
+    expect(getByRole('navigation')).toHaveClass(styles.hiddenOnMobile);
 
     const user = userEvent.setup();
     await user.click(getByRole('button', {name: 'Open mobile menu'}));
 
-    expect(getByRole('navigation')).not.toHaveClass(styles.navigationChaptersHidden);
+    expect(getByRole('navigation')).not.toHaveClass(styles.hiddenOnMobile);
   });
 
   it('keeps mobile menu hidden if custom mobile menu is present', async () => {
@@ -82,12 +82,12 @@ describe('DefaultNavigation - Mobile Menu', () => {
       }
     );
 
-    expect(getByRole('navigation')).toHaveClass(styles.navigationChaptersHidden);
+    expect(getByRole('navigation')).toHaveClass(styles.hiddenOnMobile);
 
     const user = userEvent.setup();
     await user.click(getByRole('button', {name: 'Open mobile menu'}));
 
-    expect(getByRole('navigation')).toHaveClass(styles.navigationChaptersHidden);
+    expect(getByRole('navigation')).toHaveClass(styles.hiddenOnMobile);
   });
 
   it('renders mobile menu button if custom mobile menu is present', () => {

@@ -128,7 +128,7 @@ export function DefaultNavigation({
     return (
       <Scroller>
         <nav className={classNames(styles.navigationChapters,
-                                   {[styles.navigationChaptersHidden]: !menuOpen || hasMenu})}>
+                                   {[styles.hiddenOnMobile]: !menuOpen || hasMenu})}>
           <ul className={styles.chapterList}>
             {renderChapterLinks(chapters)}
           </ul>

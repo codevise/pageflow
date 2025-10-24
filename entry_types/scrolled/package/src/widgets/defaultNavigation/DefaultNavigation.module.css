@@ -215,7 +215,7 @@ div:focus-within > .contextIcon,
     overflow: scroll;
   }
 
-  .navigationChaptersHidden {
+  .hiddenOnMobile {
     display: none;
   }
 

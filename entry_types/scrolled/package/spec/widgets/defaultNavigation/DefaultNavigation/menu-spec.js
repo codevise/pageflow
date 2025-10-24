@@ -95,7 +95,7 @@ describe('DefaultNavigation - Menu', () => {
       }
     );
 
-    expect(getByRole('navigation')).toHaveClass(styles.navigationChaptersHidden);
+    expect(getByRole('navigation')).toHaveClass(styles.hiddenOnMobile);
   });
 
   it('adds hasDesktopMenu class to navigation bar', () => {
