@@ -4,6 +4,10 @@
   .burgerMenuIconContainer {
     display: none;
   }
+
+  .visibleOnDesktop {
+    display: block;
+  }
 }
 
 .small {

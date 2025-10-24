@@ -31,7 +31,7 @@ import styles from './DefaultNavigation.module.css';
 
 export function DefaultNavigation({
   configuration,
-  ExtraButtons, MobileMenu,
+  ExtraButtons, Menu, MobileMenu,
   logo
 }) {
   const [navExpanded, setNavExpanded] = useState(true);
@@ -44,6 +44,10 @@ export function DefaultNavigation({
   const isPhonePlatform = usePhonePlatform();
   const shareProviders = useShareProviders({isPhonePlatform});
   const theme = useTheme();
+
+  const CustomMenu = Menu || MobileMenu;
+  const hasMenu = !!CustomMenu;
+  const hasDesktopMenu = !!Menu;
 
   useScrollPosition(
     ({prevPos, currPos}) => {
@@ -124,7 +128,7 @@ export function DefaultNavigation({
     return (
       <Scroller>
         <nav className={classNames(styles.navigationChapters,
-                                   {[styles.navigationChaptersHidden]: mobileNavHidden || MobileMenu})}>
+                                   {[styles.navigationChaptersHidden]: mobileNavHidden || hasMenu})}>
           <ul className={styles.chapterList}>
             {renderChapterLinks(chapters)}
           </ul>
@@ -145,19 +149,21 @@ export function DefaultNavigation({
           (!isPhonePlatform && configuration.fixedOnDesktop) ||
           !mobileNavHidden
         ),
-        [styles.hasChapters]: hasChapters
+        [styles.hasChapters]: hasChapters,
+        [styles.hasDesktopMenu]: hasDesktopMenu
       })} style={{'--theme-accent-color': paletteColor(configuration.accentColor)}}
          onFocus={() => setNavExpanded(true)}>
         <WidgetSelectionRect>
           <div className={styles.navigationBarContentWrapper}>
-            {(hasChapters || MobileMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}
-                                                           mobileNavHidden={mobileNavHidden}/>}
+            {(hasChapters || hasMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}
+                                                         mobileNavHidden={mobileNavHidden}
+                                                         visibleOnDesktop={hasDesktopMenu}/>}
 
             <SkipLinks />
             <Logo {...logo} />
 
             {renderNav()}
-            {MobileMenu && <MobileMenu configuration={configuration}
+            {CustomMenu && <CustomMenu configuration={configuration}
                                        open={!mobileNavHidden}
                                        close={() => setMobileNavHidden(true)} />}
 

@@ -5,12 +5,14 @@ import styles from "./HamburgerIcon.module.css";
 import hamburgerIconStyles from "./HamburgerIcons.module.css";
 import {useI18n, useTheme, ThemeIcon} from 'pageflow-scrolled/frontend';
 
-export function HamburgerIcon({mobileNavHidden, onClick}) {
+export function HamburgerIcon({mobileNavHidden, onClick, visibleOnDesktop}) {
   const theme = useTheme();
   const {t} = useI18n();
 
   return (
-    <div className={styles.burgerMenuIconContainer}>
+    <div className={classNames(styles.burgerMenuIconContainer, {
+      [styles.visibleOnDesktop]: visibleOnDesktop
+    })}>
       <button className={headerStyles.menuIcon}
               title={mobileNavHidden ?
                      t('pageflow_scrolled.public.navigation.open_mobile_menu') :
