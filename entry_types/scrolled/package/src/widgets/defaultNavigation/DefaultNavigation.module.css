@@ -135,6 +135,10 @@ div:focus-within > .contextIcon,
   object-fit: contain;
 }
 
+.hasDesktopMenu .logo {
+  left: 65px;
+}
+
 .chapterList {
   composes: scope-defaultNavigationChapterList from global;
   padding: 0;
@@ -211,7 +215,7 @@ div:focus-within > .contextIcon,
     overflow: scroll;
   }
 
-  .navigationChaptersHidden {
+  .hiddenOnMobile {
     display: none;
   }
 

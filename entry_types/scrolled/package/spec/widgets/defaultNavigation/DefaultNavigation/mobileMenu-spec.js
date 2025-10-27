@@ -8,6 +8,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 import styles from 'widgets/defaultNavigation/DefaultNavigation.module.css';
+import hamburgerStyles from 'widgets/defaultNavigation/HamburgerIcon.module.css';
 
 describe('DefaultNavigation - Mobile Menu', () => {
   useFakeTranslations({
@@ -61,12 +62,12 @@ describe('DefaultNavigation - Mobile Menu', () => {
       }
     );
 
-    expect(getByRole('navigation')).toHaveClass(styles.navigationChaptersHidden);
+    expect(getByRole('navigation')).toHaveClass(styles.hiddenOnMobile);
 
     const user = userEvent.setup();
     await user.click(getByRole('button', {name: 'Open mobile menu'}));
 
-    expect(getByRole('navigation')).not.toHaveClass(styles.navigationChaptersHidden);
+    expect(getByRole('navigation')).not.toHaveClass(styles.hiddenOnMobile);
   });
 
   it('keeps mobile menu hidden if custom mobile menu is present', async () => {
@@ -81,12 +82,12 @@ describe('DefaultNavigation - Mobile Menu', () => {
       }
     );
 
-    expect(getByRole('navigation')).toHaveClass(styles.navigationChaptersHidden);
+    expect(getByRole('navigation')).toHaveClass(styles.hiddenOnMobile);
 
     const user = userEvent.setup();
     await user.click(getByRole('button', {name: 'Open mobile menu'}));
 
-    expect(getByRole('navigation')).toHaveClass(styles.navigationChaptersHidden);
+    expect(getByRole('navigation')).toHaveClass(styles.hiddenOnMobile);
   });
 
   it('renders mobile menu button if custom mobile menu is present', () => {
@@ -142,5 +143,27 @@ describe('DefaultNavigation - Mobile Menu', () => {
     );
 
     expect(queryByText('Some title')).not.toBeNull();
+  });
+
+  it('hamburger icon is mobile-only when MobileMenu is used', () => {
+    const MobileMenu = () => <div>Mobile Menu</div>;
+    const {container} = renderInEntry(
+      <DefaultNavigation configuration={{}}
+                         MobileMenu={MobileMenu} />
+    );
+
+    const hamburgerContainer = container.querySelector(`.${hamburgerStyles.burgerMenuIconContainer}`);
+    expect(hamburgerContainer).not.toHaveClass(hamburgerStyles.visibleOnDesktop);
+  });
+
+  it('does not shift logo position on desktop when MobileMenu is used', () => {
+    const MobileMenu = () => <div>Mobile Menu</div>;
+    const {container} = renderInEntry(
+      <DefaultNavigation configuration={{}}
+                         MobileMenu={MobileMenu} />
+    );
+
+    const header = container.querySelector('header');
+    expect(header).not.toHaveClass(styles.hasDesktopMenu);
   });
 });

@@ -31,11 +31,12 @@ import styles from './DefaultNavigation.module.css';
 
 export function DefaultNavigation({
   configuration,
-  ExtraButtons, MobileMenu,
-  logo
+  ExtraButtons, Menu, MobileMenu,
+  logo,
+  omitChapterNavigation
 }) {
   const [navExpanded, setNavExpanded] = useState(true);
-  const [mobileNavHidden, setMobileNavHidden] = useState(!configuration.defaultMobileNavVisible);
+  const [menuOpen, setMenuOpen] = useState(!!configuration.defaultMobileNavVisible);
   const [readingProgress, setReadingProgress] = useState(0);
 
   const chapters = useMainChapters().filter(chapter => !chapter.hideInNavigation);
@@ -44,6 +45,10 @@ export function DefaultNavigation({
   const isPhonePlatform = usePhonePlatform();
   const shareProviders = useShareProviders({isPhonePlatform});
   const theme = useTheme();
+
+  const CustomMenu = Menu || MobileMenu;
+  const hasMenu = !!CustomMenu;
+  const hasDesktopMenu = !!Menu;
 
   useScrollPosition(
     ({prevPos, currPos}) => {
@@ -84,20 +89,21 @@ export function DefaultNavigation({
 
   const darkWidgets = useDarkWidgets();
 
-  const hasChapters = chapters.length > 1 ||
-                      !utils.isBlank(chapters[0]?.title) ||
-                      !utils.isBlank(chapters[0]?.summary);
+  const hasChapters = (chapters.length > 1 ||
+                       !utils.isBlank(chapters[0]?.title) ||
+                       !utils.isBlank(chapters[0]?.summary)) &&
+                      !omitChapterNavigation;
 
   function handleProgressBarMouseEnter() {
     setNavExpanded(true);
   };
 
   function handleBurgerMenuClick() {
-    setMobileNavHidden(!mobileNavHidden);
+    setMenuOpen(!menuOpen);
   };
 
   function handleMenuClick(chapterLinkId) {
-    setMobileNavHidden(true);
+    setMenuOpen(false);
   };
 
   function renderChapterLinks(chapters) {
@@ -124,7 +130,7 @@ export function DefaultNavigation({
     return (
       <Scroller>
         <nav className={classNames(styles.navigationChapters,
-                                   {[styles.navigationChaptersHidden]: mobileNavHidden || MobileMenu})}>
+                                   {[styles.hiddenOnMobile]: !menuOpen || hasMenu})}>
           <ul className={styles.chapterList}>
             {renderChapterLinks(chapters)}
           </ul>
@@ -143,23 +149,25 @@ export function DefaultNavigation({
         [styles.navigationBarExpanded]: (
           navExpanded ||
           (!isPhonePlatform && configuration.fixedOnDesktop) ||
-          !mobileNavHidden
+          menuOpen
         ),
-        [styles.hasChapters]: hasChapters
+        [styles.hasChapters]: hasChapters,
+        [styles.hasDesktopMenu]: hasDesktopMenu
       })} style={{'--theme-accent-color': paletteColor(configuration.accentColor)}}
          onFocus={() => setNavExpanded(true)}>
         <WidgetSelectionRect>
           <div className={styles.navigationBarContentWrapper}>
-            {(hasChapters || MobileMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}
-                                                           mobileNavHidden={mobileNavHidden}/>}
+            {(hasChapters || hasMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}
+                                                        menuOpen={menuOpen}
+                                                        visibleOnDesktop={hasDesktopMenu}/>}
 
             <SkipLinks />
             <Logo {...logo} />
 
             {renderNav()}
-            {MobileMenu && <MobileMenu configuration={configuration}
-                                       open={!mobileNavHidden}
-                                       close={() => setMobileNavHidden(true)} />}
+            {CustomMenu && <CustomMenu configuration={configuration}
+                                       open={menuOpen}
+                                       close={() => setMenuOpen(false)} />}
 
             <div className={classNames(styles.contextIcons)}>
               {!configuration.hideToggleMuteButton && <ToggleMuteButton />}
@@ -177,7 +185,7 @@ export function DefaultNavigation({
       </header>
       <SelectableWidget role="defaultNavigationExtra"
                         props={{navigationExpanded: navExpanded,
-                                mobileNavigationVisible: !mobileNavHidden}} />
+                                mobileNavigationVisible: menuOpen}} />
     </>
   );
 }
