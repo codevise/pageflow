@@ -10,10 +10,12 @@ editor.contentElementTypes.register('socialEmbed', {
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   featureName: 'social_embed_content_element',
 
+  defaultConfig: {provider: 'bluesky'},
+
   configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('provider', SelectInputView, {
-        values: ['x', 'instagram', 'bluesky', 'tiktok']
+        values: ['bluesky', 'instagram', 'tiktok', 'x']
       });
       this.input('url', OembedUrlInputView, {
         displayPropertyName: 'displayPostId',

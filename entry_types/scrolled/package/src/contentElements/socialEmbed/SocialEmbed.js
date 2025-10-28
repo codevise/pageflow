@@ -18,16 +18,6 @@ export function SocialEmbed({configuration, providers = defaultProviders}) {
   const {provider: providerName} = configuration;
   const provider = providers.find(p => p.name === providerName);
 
-  if (!provider) {
-    return (
-      <ContentElementBox>
-        <div>
-          <p>Please select a provider (X, Instagram, Bluesky, or TikTok).</p>
-        </div>
-      </ContentElementBox>
-    );
-  }
-
   return (
     <SocialEmbedWithProvider
       configuration={configuration}
