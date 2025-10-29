@@ -5,6 +5,7 @@ import pictogram from './pictogram.svg'
 editor.contentElementTypes.register('tikTokEmbed', {
   pictogram,
   category: 'media',
+  featureName: 'legacy_social_embed_content_elements',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['md', 'full'],
 

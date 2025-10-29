@@ -14,7 +14,7 @@ module PageflowScrolled
 
         c.revision_components.register(Storyline, create_defaults: true)
 
-        ['tikTokEmbed', 'hotspots', 'socialEmbed'].each do |name|
+        ['tikTokEmbed', 'twitterEmbed', 'hotspots', 'socialEmbed'].each do |name|
           c.additional_frontend_packs.register(
             "pageflow-scrolled/contentElements/#{name}-frontend",
             content_element_type_names: [name]
@@ -58,6 +58,7 @@ module PageflowScrolled
         c.features.enable_by_default('datawrapper_chart_embed_opt_in')
         c.features.register('iframe_embed_content_element')
         c.features.register('social_embed_content_element')
+        c.features.register('legacy_social_embed_content_elements')
         c.features.register('frontend_v2')
         c.features.register('scrolled_entry_fragment_caching')
         c.features.register('backdrop_content_elements')

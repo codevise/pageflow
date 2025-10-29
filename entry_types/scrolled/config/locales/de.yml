@@ -64,6 +64,8 @@ de:
       widget_type_name: Copyright-Icons
     iframe_embed_content_element:
       feature_name: iframe-Embed Inhaltselement
+    legacy_social_embed_content_elements:
+      feature_name: Legacy Twitter und TikTok Inhaltselemente
     scrolled_entry_fragment_caching:
       feature_name: Pageflow-Next-Fragment-Caching
     social_embed_content_element:
