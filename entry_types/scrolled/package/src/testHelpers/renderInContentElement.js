@@ -12,6 +12,8 @@ import {
   PhonePlatformContext
 } from 'pageflow-scrolled/frontend';
 
+import {Consent} from 'pageflow/frontend';
+
 import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycle';
 
 /**
@@ -24,6 +26,7 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
  * @param {Object} [options] - Supports all options supported by {@link `renderInEntry`}.
  * @param {Object} [options.editorState] - Fake result of `useContentElementEditorState`.
  * @param {Object} [options.phonePlatform] - Fake result of `usePhonePlatform`.
+ * @param {Object} [options.consentState] - Pass 'undecided' to render third party consent opt in.
  *
  * @example
  *
@@ -37,6 +40,8 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
 export function renderInContentElement(ui, {editorState,
                                             phonePlatform = false,
                                             wrapper: OriginalWrapper,
+                                            consentState = 'accepted',
+                                            seed,
                                             ...options} = {}) {
   const emitter = Object.assign({}, BackboneEvents);
 
@@ -66,6 +71,11 @@ export function renderInContentElement(ui, {editorState,
       {
         lifecycleContext: ContentElementLifecycleContext,
         wrapper: Wrapper,
+        consent: createConsent(consentState),
+        seed: {
+          ...consentSeed,
+          ...seed
+        },
         ...options
       }
     ),
@@ -76,3 +86,29 @@ export function renderInContentElement(ui, {editorState,
     }
   };
 }
+
+function createConsent(consentState) {
+  const consent = Consent.create();
+
+  consent.registerVendor('testVendor', {
+    displayName: 'Test Vendor',
+    description: 'Test embeds',
+    paradigm: 'lazy opt-in'
+  });
+
+  consent.closeVendorRegistration();
+
+  if (consentState === 'accepted') {
+    consent.accept('testVendor');
+  }
+
+  return consent;
+}
+
+const consentSeed = {
+  consentVendors: [{
+    name: 'testVendor',
+    paradigm: 'lazy opt-in'
+  }],
+  contentElementConsentVendors: {42: 'testVendor'}
+};

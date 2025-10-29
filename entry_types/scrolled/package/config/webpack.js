@@ -19,10 +19,22 @@ module.exports = {
         'pageflow-scrolled/contentElements/tikTokEmbed-frontend.css'
       ]
     },
+    'pageflow-scrolled/contentElements/twitterEmbed-frontend': {
+      import: [
+        'pageflow-scrolled/contentElements/twitterEmbed-frontend',
+        'pageflow-scrolled/contentElements/twitterEmbed-frontend.css'
+      ]
+    },
     'pageflow-scrolled/contentElements/hotspots-frontend': {
       import: [
         'pageflow-scrolled/contentElements/hotspots-frontend',
         'pageflow-scrolled/contentElements/hotspots-frontend.css'
+      ]
+    },
+    'pageflow-scrolled/contentElements/socialEmbed-frontend': {
+      import: [
+        'pageflow-scrolled/contentElements/socialEmbed-frontend',
+        'pageflow-scrolled/contentElements/socialEmbed-frontend.css'
       ]
     },
     'pageflow-scrolled/widgets/defaultNavigation': {

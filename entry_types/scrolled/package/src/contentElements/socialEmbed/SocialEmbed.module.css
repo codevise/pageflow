@@ -1,0 +1,21 @@
+.wrapper {
+  display: grid;
+}
+
+.wrapper > * {
+  width: 100%;
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.loadingContainer > * {
+  opacity: 0;
+}
+
+.container {
+  overflow:hidden;
+}
+
+.container > * {
+  margin: 10px auto !important;
+}

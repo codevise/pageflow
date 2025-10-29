@@ -26,6 +26,7 @@ require 'jquery-minicolors-rails'
 require 'i18n-js'
 require 'http_accept_language'
 require 'pageflow-public-i18n'
+require 'oembed'
 
 require 'pageflow_paged'
 require 'pageflow_scrolled'

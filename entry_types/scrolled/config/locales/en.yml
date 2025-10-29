@@ -64,8 +64,12 @@ en:
       widget_type_name: Copyright icons
     iframe_embed_content_element:
       feature_name: iframe embed content element
+    legacy_social_embed_content_elements:
+      feature_name: Legacy Twitter and TikTok content elements
     scrolled_entry_fragment_caching:
       feature_name: Pageflow Next Fragment Caching
+    social_embed_content_element:
+      feature_name: Social embed content element
     textInlineFileRights:
       widget_type_name: Text at element
     ui:
@@ -774,6 +778,25 @@ en:
           name: Text Block
           tabs:
             general: Text Block
+        socialEmbed:
+          attributes:
+            provider:
+              label: Provider
+              values:
+                x: X
+                instagram: Instagram
+                bluesky: Bluesky
+                tiktok: TikTok
+            url:
+              label: Post URL
+            hideConversation:
+              label: Hide Conversation
+            hideMedia:
+              label: Hide Media
+          description: Embed posts from X, Instagram, Bluesky, or TikTok
+          name: Social Media Post
+          tabs:
+            general: Social Embed
         twitterEmbed:
           attributes:
             hideConversation:

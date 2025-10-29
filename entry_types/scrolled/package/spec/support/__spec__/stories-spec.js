@@ -162,6 +162,35 @@ describe('exampleStories', () => {
     }));
   });
 
+  it('supports adding variant with consent state denied', () => {
+    const stories = exampleStories({
+      typeName: 'test',
+      baseConfiguration: {},
+      variants: [
+        {
+          name: 'Twitter',
+          configuration: {provider: 'twitter'},
+          consentState: 'denied'
+        }
+      ]
+    });
+
+    expect(stories).toContainEqual(expect.objectContaining({
+      title: 'Variants - Twitter',
+      requireConsentOptIn: true,
+      seed: expect.objectContaining({
+        config: expect.objectContaining({
+          consentVendors: [
+            expect.objectContaining({name: 'test'})
+          ],
+          contentElementConsentVendors: expect.objectContaining({
+            1000: 'test'
+          })
+        })
+      })
+    }));
+  });
+
   it('supports adding story for inline file rights', () => {
     stubSeedFixture(normalizeSeed({
       imageFiles: [

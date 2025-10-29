@@ -42,24 +42,27 @@ export const UrlInputView = Marionette.Layout.extend(
 
   onRender: function() {
     this.ui.validation.hide();
+
     this.load();
     this.validate();
+
+    this.listenTo(this.model, 'change:' + this.options.displayPropertyName, this.load);
   },
 
   onChange: function() {
-    this.validate().then(() => this.save(),
-                         () => this.saveDisplayProperty());
-  },
-
-  saveDisplayProperty: function() {
-    this.model.unset(this.options.propertyName, {silent: true});
-    this.model.set(this.options.displayPropertyName, this.ui.input.val());
-  },
-
-  save: function() {
     var value = this.ui.input.val();
 
-    $.when(this.transformPropertyValue(value)).then(transformedValue => {
+    this.validate().then(() => this.save(value),
+                         () => this.saveDisplayProperty(value));
+  },
+
+  saveDisplayProperty: function(value) {
+    this.model.unset(this.options.propertyName, {silent: true});
+    this.model.set(this.options.displayPropertyName, value);
+  },
+
+  save: function(value) {
+    $.when(this.transformPropertyValue(value, this.lastValidationResult)).then(transformedValue => {
       this.model.set({
         [this.options.displayPropertyName]: value,
         [this.options.propertyName]: transformedValue
@@ -84,6 +87,10 @@ export const UrlInputView = Marionette.Layout.extend(
    * message can be passed as rejected promise. Progress notifications
    * are displayed. Only valid urls are stored in the configuration.
    *
+   * Can optionally return a value when the promise resolves. This
+   * value will be passed to transformPropertyValue as the second
+   * parameter.
+   *
    * @return Promise
    */
   validateUrl: function(url) {
@@ -93,9 +100,11 @@ export const UrlInputView = Marionette.Layout.extend(
   /**
    * Override to transform the property value before it is stored.
    *
+   * @param {String} value - The URL value to transform
+   * @param {*} validationResult - Optional result returned by validateUrl
    * @return Promise | String
    */
-  transformPropertyValue: function(value) {
+  transformPropertyValue: function(value, validationResult) {
     return value;
   },
 
@@ -104,6 +113,14 @@ export const UrlInputView = Marionette.Layout.extend(
    */
   supportedHosts: function() {
     return this.options.supportedHosts;
+  },
+
+  /**
+   * Override to enable HTTPS URLs by default.
+   * @return {boolean}
+   */
+  permitHttps: function() {
+    return this.options.permitHttps;
   },
 
   // Host names used to be expected to include protocols. Remove
@@ -127,7 +144,7 @@ export const UrlInputView = Marionette.Layout.extend(
     else if (value && !isValidUrl(value)) {
       var errorMessage = I18n.t('pageflow.ui.views.inputs.url_input_view.url_hint');
 
-      if (options.permitHttps) {
+      if (view.permitHttps()) {
         errorMessage = I18n.t('pageflow.ui.views.inputs.url_input_view.url_hint_https');
       }
 
@@ -142,20 +159,30 @@ export const UrlInputView = Marionette.Layout.extend(
     else {
       return view.validateUrl(value)
         .progress(function(message) {
-          displayValidationPending(message);
+          if (!view.isClosed) {
+            displayValidationPending(message);
+          }
         })
-        .done(function() {
-          resetValidationError();
+        .done(function(result) {
+          view.lastValidationResult = result;
+
+          if (!view.isClosed) {
+            resetValidationError();
+          }
         })
         .fail(function(error) {
-          displayValidationError(error);
+          view.lastValidationResult = undefined;
+
+          if (!view.isClosed) {
+            displayValidationError(error);
+          }
         });
     }
 
     return $.Deferred().reject().promise();
 
     function isValidUrl(url) {
-      return options.permitHttps ? url.match(/^https?:\/\//i) : url.match(/^http:\/\//i);
+      return view.permitHttps() ? url.match(/^https?:\/\//i) : url.match(/^http:\/\//i);
     }
 
     function hasSupportedHost(url) {
@@ -187,6 +214,7 @@ export const UrlInputView = Marionette.Layout.extend(
     function resetValidationError(message) {
       view.$el.removeClass('invalid');
       view.ui.input.attr('aria-invalid', 'false');
+      view.ui.validation.text('');
       view.ui.validation.hide();
     }
   }

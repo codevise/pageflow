@@ -1562,6 +1562,13 @@ de:
             unset: Verknüpfung entfernen
           theme_input_view:
             choose: Theme ändern
+          oembed_url_input_view:
+            status:
+              resolving: "Auflösen..."
+              resolved: "Aufgelöst"
+              invalid_provider: "Ungültiger Anbieter"
+              not_found: "URL nicht gefunden"
+              error: "Fehler beim Auflösen der URL"
         page_item_view:
           unnamed: "(Unbenannt)"
         page_link_item_view:

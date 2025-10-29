@@ -102,5 +102,65 @@ module PageflowScrolled
         expect(result).to eq(nil)
       end
     end
+
+    describe 'SOCIAL_EMBED_CONSENT_VENDOR' do
+      it 'returns provider name for X/Twitter' do
+        result = Plugin::SOCIAL_EMBED_CONSENT_VENDOR.call(
+          configuration: {
+            'provider' => 'x'
+          }
+        )
+
+        expect(result).to eq('x')
+      end
+
+      it 'returns provider name for Instagram' do
+        result = Plugin::SOCIAL_EMBED_CONSENT_VENDOR.call(
+          configuration: {
+            'provider' => 'instagram'
+          }
+        )
+
+        expect(result).to eq('instagram')
+      end
+
+      it 'returns provider name for Bluesky' do
+        result = Plugin::SOCIAL_EMBED_CONSENT_VENDOR.call(
+          configuration: {
+            'provider' => 'bluesky'
+          }
+        )
+
+        expect(result).to eq('bluesky')
+      end
+
+      it 'returns provider name for TikTok' do
+        result = Plugin::SOCIAL_EMBED_CONSENT_VENDOR.call(
+          configuration: {
+            'provider' => 'tiktok'
+          }
+        )
+
+        expect(result).to eq('tiktok')
+      end
+
+      it 'returns nil for unknown provider' do
+        result = Plugin::SOCIAL_EMBED_CONSENT_VENDOR.call(
+          configuration: {
+            'provider' => 'unknown'
+          }
+        )
+
+        expect(result).to eq(nil)
+      end
+
+      it 'returns nil when provider field is missing' do
+        result = Plugin::SOCIAL_EMBED_CONSENT_VENDOR.call(
+          configuration: {}
+        )
+
+        expect(result).to eq(nil)
+      end
+    end
   end
 end

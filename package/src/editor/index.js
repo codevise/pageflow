@@ -130,6 +130,7 @@ export * from './views/inputs/FileProcessingStateDisplayView';
 export * from './views/inputs/ReferenceInputView';
 export * from './views/inputs/ThemeInputView';
 export * from './views/inputs/FileInputView';
+export * from './views/inputs/OembedUrlInputView';
 export * from './views/EditEntryView';
 export * from './views/TextTracksView';
 export * from './views/FileThumbnailView';
