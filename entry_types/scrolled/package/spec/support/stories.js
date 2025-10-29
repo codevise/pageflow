@@ -190,7 +190,7 @@ function variantsExampleStories({typeName, baseConfiguration, variants}) {
     name: 'Variants',
     examples: variants.map(({
       name, permaId, configuration, themeOptions, sectionConfiguration, viewport,
-      inlineFileRightsWidgetTypeName
+      inlineFileRightsWidgetTypeName, consentState
     }) => ({
       name: name,
       permaId,
@@ -202,7 +202,13 @@ function variantsExampleStories({typeName, baseConfiguration, variants}) {
       widgets: inlineFileRightsWidgetTypeName ? [{
         role: 'inlineFileRights',
         typeName: inlineFileRightsWidgetTypeName
-      }] : []
+      }] : [],
+      consentVendors: consentState === 'denied' ? [
+        {
+          name: 'test',
+          optInPrompt: 'I agree with being shown this content.'
+        }
+      ] : undefined
     }))
   });
 }
@@ -324,34 +330,38 @@ function exampleStoryGroup({
     }
   ], []);
 
-  return sections.map((section, index) => ({
-    title: `${name} - ${examples[index].name}`,
-    seed: normalizeAndMergeFixture({
-      sections: [section],
-      contentElements: contentElements,
-      widgets: examples[index].widgets,
-      themeOptions: examples[index].themeOptions,
-      consentVendors,
-      inlineFileRightsFor: inlineFileRightsFor || examples[index].inlineFileRightsFor,
-      contentElementConsentVendors: consentVendors &&
-                                    contentElements
-                                      .filter(({id}) => id)
-                                      .reduce(
-                                        (memo, {id}) => ({...memo, [id]: consentVendors[0].name}),
-                                        {}
-                                      )
-    }),
-    requireConsentOptIn: !!consentVendors,
-    parameters: examples[index].viewport === 'phone' ? {
-      viewport: {
-        defaultViewport: 'iphone6'
-      },
-      percy: {
-        widths: [320]
-      }
-    } : {},
-    cssRules: themeOptionsCssRules(examples[index].themeOptions)
-  }));
+  return sections.map((section, index) => {
+    const exampleConsentVendors = examples[index].consentVendors || consentVendors;
+
+    return {
+      title: `${name} - ${examples[index].name}`,
+      seed: normalizeAndMergeFixture({
+        sections: [section],
+        contentElements: contentElements,
+        widgets: examples[index].widgets,
+        themeOptions: examples[index].themeOptions,
+        consentVendors: exampleConsentVendors,
+        inlineFileRightsFor: inlineFileRightsFor || examples[index].inlineFileRightsFor,
+        contentElementConsentVendors: exampleConsentVendors &&
+                                      contentElements
+                                        .filter(({id}) => id)
+                                        .reduce(
+                                          (memo, {id}) => ({...memo, [id]: exampleConsentVendors[0].name}),
+                                          {}
+                                        )
+      }),
+      requireConsentOptIn: !!exampleConsentVendors,
+      parameters: examples[index].viewport === 'phone' ? {
+        viewport: {
+          defaultViewport: 'iphone6'
+        },
+        percy: {
+          widths: [320]
+        }
+      } : {},
+      cssRules: themeOptionsCssRules(examples[index].themeOptions)
+    };
+  });
 }
 
 function themeOptionsCssRules(themeOptions) {
