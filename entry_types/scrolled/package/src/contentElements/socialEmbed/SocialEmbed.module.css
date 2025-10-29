@@ -12,6 +12,10 @@
   opacity: 0;
 }
 
+.container {
+  overflow:hidden;
+}
+
 .container > * {
   margin: 10px auto !important;
 }
