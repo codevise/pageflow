@@ -189,7 +189,7 @@
   margin-top: 1rem;
 }
 
-.details > :first-child p {
+.details > :first-child p:first-child {
   margin-top: 0;
 }
 
