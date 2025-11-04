@@ -78,3 +78,8 @@
   left: 50%;
   transform: translateX(-50%);
 }
+
+.position-topRight {
+  bottom: calc(100% - 0.3em);
+  right: -0.3em;
+}
