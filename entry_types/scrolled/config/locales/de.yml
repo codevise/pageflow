@@ -124,6 +124,8 @@ de:
       feature_name: Exkurse
     section_paddings:
       feature_name: "Abschnittsinnenabstände"
+    teaser_backfaces:
+      feature_name: "Teaser Rückseiten"
   pageflow_scrolled:
     editor:
       backdrop_effects:
@@ -432,12 +434,20 @@ de:
               label: "Buttons anzeigen"
               inline_help: |-
                 Zeige Buttons an, um die Links zu öffnen.
+              inline_help_disabled: |-
+                Da die Flip-Animation per Klick ausgelöst wird, können
+                Links nur als Buttons angeboten werden.
             thumbnailBackgroundColor:
               label: Thumbnail-Hintergrundfarbe
               inline_help: |-
                 Sichtbar wenn "Einpassen" als Thumbnail-Anpassung
                 ausgewählt wurde sowie für Thumbnail-Bilder mit
                 transparenten Bereichen.
+            backfaces:
+              label: Kartenrückseiten
+              inline_help: |-
+                Karten mit einer Flip-Animation drehen und weitere
+                Inhalte auf der Rückseite der Karte anbieten.
           back: Zurück
           destroy: Löschen
           description: Liste von Kacheln mit Bild und Beschriftung
