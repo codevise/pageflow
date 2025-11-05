@@ -88,6 +88,7 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
   const openInNewTab = itemLinks[id] ? itemLinks[id]?.openInNewTab : props.open_in_new_tab;
 
   const scaleCategorySuffix = scaleCategorySuffixes[props.textSize || 'small'];
+  const displayButtons = configuration.displayButtons || configuration.backfaces
 
   const inlineFileRightsAfterCard = props.textPosition === 'right' ||
                                     props.textPosition === 'overlay' ||
@@ -97,12 +98,12 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
   return (
     <li className={classNames(styles.item,
                               styles[`textPosition-${props.textPosition}`],
-                              {[styles.link]: !!href && !configuration.displayButtons},
+                              {[styles.link]: !!href && !displayButtons},
                               {[styles.outlined]: props.outlined},
                               {[styles.highlighted]: props.highlighted},
                               {[styles.selected]: props.selected})}
         onClick={props.onClick}>
-      <Link isEnabled={!configuration.displayButtons && !configuration.backfaces}
+      <Link isEnabled={!displayButtons}
             isEditable={isEditable}
             linkPreviewDisabled={props.selected && configuration.backfaces}
             actionButtonVisible={props.selected}
