@@ -11,7 +11,18 @@ export function FlippedItemProvider({children}) {
   useEffect(() => {
     function reset(event) {
       if (!ref.current.contains(event.target)) {
-        setFlippedId(null);
+        setFlippedId(currentFlippedId => {
+          if (currentFlippedId !== flippedId) {
+            // Do not reset, if state has already been altered in this
+            // click event by a flip action button. Since flip action
+            // buttons live in floating portals, they are not handled
+            // by the the above contains check.
+            return currentFlippedId;
+          }
+          else {
+            return null;
+          }
+        });
       }
     }
 
