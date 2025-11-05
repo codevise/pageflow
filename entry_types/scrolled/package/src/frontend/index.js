@@ -105,6 +105,7 @@ export {EditableTable} from './EditableTable';
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
 export {EditableLink} from './EditableLink';
+export {ActionButton} from './ActionButton';
 export {LinkTooltipProvider} from './LinkTooltipProvider';
 export {PhonePlatformContext} from './PhonePlatformContext';
 export {

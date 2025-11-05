@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
 import classNames from 'classnames';
 import styles from './ExternalLink.module.css';
+
 import {
   EditableLink,
   EditableInlineText,
@@ -15,6 +16,7 @@ import {
   LinkButton
 } from 'pageflow-scrolled/frontend';
 
+import {Flippable} from './Flippable';
 import {Thumbnail} from './Thumbnail';
 
 const scaleCategorySuffixes = {
@@ -23,7 +25,7 @@ const scaleCategorySuffixes = {
   large: 'lg'
 };
 
-export function ExternalLink({id, configuration, ...props}) {
+export function ExternalLink({id, configuration, contentElementId, ...props}) {
   const {isEditable, isSelected} = useContentElementEditorState();
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {t} = useI18n({locale: 'ui'});
@@ -100,88 +102,150 @@ export function ExternalLink({id, configuration, ...props}) {
                               {[styles.highlighted]: props.highlighted},
                               {[styles.selected]: props.selected})}
         onClick={props.onClick}>
-      <Link isEnabled={!configuration.displayButtons}
+      <Link isEnabled={!configuration.displayButtons && !configuration.backfaces}
             isEditable={isEditable}
+            linkPreviewDisabled={props.selected && configuration.backfaces}
             actionButtonVisible={props.selected}
             actionButtonPortal={true}
             href={href}
             openInNewTab={openInNewTab}
             onChange={handleLinkChange}>
         <div className={styles.cardWrapper}>
-          <div className={classNames(
-            styles.card,
-            styles[`thumbnailSize-${props.thumbnailSize}`]
-          )}>
-            <div className={styles.thumbnail}
-                 style={{backgroundColor: props.thumbnailBackgroundColor}}>
-              <Thumbnail imageFile={thumbnailImageFile}
-                         aspectRatio={props.thumbnailAspectRatio}
-                         cropPosition={props.thumbnailCropPosition}
-                         fit={props.thumbnailFit}
-                         load={props.loadImages}>
-                <InlineFileRights configuration={configuration}
-                                  context="insideElement"
-                                  position={props.textPosition === 'overlay' ? 'top': 'bottom'}
-                                  items={inlineFileRightsItems} />
-              </Thumbnail>
-            </div>
-            <div className={classNames(styles.background,
-                                       styles[`align-${configuration.textAlign}`],
-                                       props.darkBackground ? styles.light : styles.dark)}
-                 style={{pointerEvents: !isEditable || isSelected ? undefined : 'none'}}>
-              {!inlineFileRightsAfterCard &&
-               <InlineFileRights configuration={configuration}
-                                 context="afterElement"
-                                 items={inlineFileRightsItems} />}
-              <div className={styles.details}>
-                {presentOrEditing('tagline') &&
-                 <Text scaleCategory={`teaserTagline-${scaleCategorySuffix}`}>
-                   <EditableInlineText value={itemTexts[id]?.tagline}
-                                       placeholder={t('pageflow_scrolled.inline_editing.type_tagline')}
-                                       onChange={value => handleTextChange('tagline', value)} />
-                 </Text>}
-                {presentOrEditing('title') &&
-                 <Text scaleCategory={`teaserTitle-${scaleCategorySuffix}`}>
-                   <EditableInlineText value={itemTexts[id]?.title || legacyTexts.title}
-                                       placeholder={t('pageflow_scrolled.inline_editing.type_heading')}
-                                       onChange={value => handleTextChange('title', value)} />
-                 </Text>}
-                {presentOrEditing('description') &&
-                 <EditableText value={itemTexts[id]?.description || legacyTexts.description}
-                               scaleCategory={`teaserDescription-${scaleCategorySuffix}`}
-                               placeholder={t('pageflow_scrolled.inline_editing.type_text')}
-                               onChange={value => handleTextChange('description', value)} />}
-                {configuration.displayButtons && presentOrEditing('link') &&
-                 <div className={styles.button}>
-                   <LinkButton scaleCategory="teaserLink"
-                               href={href}
-                               openInNewTab={openInNewTab}
-                               value={itemTexts[id]?.link}
-                               linkPreviewDisabled={true}
-                               actionButtonVisible={false}
-                               onTextChange={value => handleTextChange('link', value)}
-                               onLinkChange={value => handleLinkChange(value)} />
-                 </div>}
-              </div>
-            </div>
-          </div>
-          {inlineFileRightsAfterCard &&
-           <div className={styles.inlineFileRightsAfterCard}>
-             <InlineFileRights configuration={configuration}
-                               context="afterElement"
-                               items={inlineFileRightsItems} />
-           </div>}
+          {renderItemContent()}
         </div>
       </Link>
     </li>
   );
+
+  function renderItemContent() {
+    if (configuration.backfaces) {
+      return (
+        <Flippable
+          contentElementId={contentElementId}
+          linkId={id}
+          actionButtonVisible={props.selected}
+          front={renderFront()}
+          back={renderBack()}
+        />
+      )
+    }
+    else {
+      return renderFront();
+    }
+  }
+
+  function renderFront() {
+    return (
+      <>
+        <div className={classNames(
+          styles.card,
+          styles.front,
+          styles[`thumbnailSize-${props.thumbnailSize}`]
+        )}>
+          <div className={styles.thumbnail}
+               style={{backgroundColor: props.thumbnailBackgroundColor}}>
+            <Thumbnail imageFile={thumbnailImageFile}
+                       aspectRatio={props.thumbnailAspectRatio}
+                       cropPosition={props.thumbnailCropPosition}
+                       fit={props.thumbnailFit}
+                       load={props.loadImages}>
+              <InlineFileRights configuration={configuration}
+                                context="insideElement"
+                                position={props.textPosition === 'overlay' ? 'top': 'bottom'}
+                                items={inlineFileRightsItems} />
+            </Thumbnail>
+          </div>
+          <div className={classNames(styles.background,
+                                     styles[`align-${configuration.textAlign}`],
+                                     props.darkBackground ? styles.light : styles.dark)}
+               style={{pointerEvents: !isEditable || isSelected ? undefined : 'none'}}>
+            {!inlineFileRightsAfterCard &&
+             <InlineFileRights configuration={configuration}
+                               context="afterElement"
+                               items={inlineFileRightsItems} />}
+            <div className={styles.details}>
+              {presentOrEditing('tagline') &&
+               <Text scaleCategory={`teaserTagline-${scaleCategorySuffix}`}>
+                 <EditableInlineText value={itemTexts[id]?.tagline}
+                                     placeholder={t('pageflow_scrolled.inline_editing.type_tagline')}
+                                     onChange={value => handleTextChange('tagline', value)} />
+               </Text>}
+              {presentOrEditing('title') &&
+               <Text scaleCategory={`teaserTitle-${scaleCategorySuffix}`}>
+                 <EditableInlineText value={itemTexts[id]?.title || legacyTexts.title}
+                                     placeholder={t('pageflow_scrolled.inline_editing.type_heading')}
+                                     onChange={value => handleTextChange('title', value)} />
+               </Text>}
+              {presentOrEditing('description') &&
+               <EditableText value={itemTexts[id]?.description || legacyTexts.description}
+                             scaleCategory={`teaserDescription-${scaleCategorySuffix}`}
+                             placeholder={t('pageflow_scrolled.inline_editing.type_text')}
+                             onChange={value => handleTextChange('description', value)} />}
+              {configuration.displayButtons && !configuration.backfaces &&
+               presentOrEditing('link') &&
+               <div className={styles.button}>
+                 <LinkButton scaleCategory="teaserLink"
+                             href={href}
+                             openInNewTab={openInNewTab}
+                             value={itemTexts[id]?.link}
+                             linkPreviewDisabled={true}
+                             actionButtonVisible={false}
+                             onTextChange={value => handleTextChange('link', value)}
+                             onLinkChange={value => handleLinkChange(value)} />
+               </div>}
+            </div>
+          </div>
+        </div>
+        {inlineFileRightsAfterCard &&
+         <div className={styles.inlineFileRightsAfterCard}>
+           <InlineFileRights configuration={configuration}
+                             context="afterElement"
+                             items={inlineFileRightsItems} />
+         </div>}
+      </>
+    );
+  }
+
+  function renderBack() {
+    return (
+      <div className={styles.card}>
+        <div className={classNames(styles.background,
+                                   styles[`align-${configuration.textAlign}`],
+                                   props.darkBackground ? styles.light : styles.dark)}
+             style={{pointerEvents: !isEditable || isSelected ? undefined : 'none'}}>
+          <div className={styles.details}>
+            {presentOrEditing('backfaceTitle') &&
+             <Text scaleCategory={`teaserTitle-${scaleCategorySuffix}`}>
+               <EditableInlineText value={itemTexts[id]?.backfaceTitle}
+                                   placeholder={t('pageflow_scrolled.inline_editing.type_heading')}
+                                   onChange={value => handleTextChange('backfaceTitle', value)} />
+             </Text>}
+            {presentOrEditing('backfaceDescription') &&
+             <EditableText value={itemTexts[id]?.backfaceDescription}
+                           scaleCategory={`teaserDescription-${scaleCategorySuffix}`}
+                           placeholder={t('pageflow_scrolled.inline_editing.type_text')}
+                           onChange={value => handleTextChange('backfaceDescription', value)} />}
+            {presentOrEditing('link') &&
+             <div className={styles.button}>
+               <LinkButton scaleCategory="teaserLink"
+                           href={href}
+                           openInNewTab={openInNewTab}
+                           value={itemTexts[id]?.link}
+                           actionButtonVisible={false}
+                           onTextChange={value => handleTextChange('link', value)}
+                           onLinkChange={value => handleLinkChange(value)} />
+             </div>}
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 function Link({isEnabled, isEditable, ...props}) {
   if ((isEnabled && props.href) || isEditable) {
     return (
       <EditableLink {...props}
-                    actionButtonVisible={props.actionButtonVisible}
                     allowRemove={true} />
     );
   }
@@ -189,7 +253,6 @@ function Link({isEnabled, isEditable, ...props}) {
     return props.children;
   }
 }
-
 
 function ensureAbsolute(url) {
   if (!url || url.match(/^(https?:)?\/\//)) {

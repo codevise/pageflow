@@ -28,12 +28,17 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+:global [data-floating-ui-portal],
+:global #floating-ui-above-navigation-widgets {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
 :global [data-floating-ui-portal] {
-  position: relative;
   z-index: 1000;
 }
 
 :global #floating-ui-above-navigation-widgets {
-  position: relative;
   z-index: 20000;
 }

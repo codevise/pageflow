@@ -68,6 +68,7 @@ module PageflowScrolled
         c.features.register('backdrop_size')
         c.features.register('section_paddings')
         c.features.register('excursions')
+        c.features.register('teaser_backfaces')
 
         c.features.register('faq_page_structured_data') do |feature_config|
           feature_config.entry_structured_data_types.register(

@@ -37,11 +37,13 @@ export function EditableLink({
 
   return (
     <div className={styles.wrapper}>
-      <LinkTooltipProvider disabled={linkPreviewDisabled}
-                           position={linkPreviewPosition}
+      <LinkTooltipProvider position={linkPreviewPosition}
                            align={linkPreviewAlign}
                            gap={5}>
-        <LinkPreview href={href} openInNewTab={openInNewTab} className={className}>
+        <LinkPreview disabled={linkPreviewDisabled}
+                     href={href}
+                     openInNewTab={openInNewTab}
+                     className={className}>
           {children}
         </LinkPreview>
       </LinkTooltipProvider>

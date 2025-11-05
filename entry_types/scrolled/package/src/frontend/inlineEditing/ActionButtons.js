@@ -28,6 +28,7 @@ export function ActionButtons({buttons, position, portal, size = 'md'}) {
     placement: position === 'center' ? 'bottom' :
                position === 'inside' ? 'top-end' :
                position === 'outsideLeft' ? 'bottom-start' :
+               position === 'topRight' ? 'top-end' :
                'bottom-end',
     middleware: portal && [
       hide({strategy: 'escaped'}),

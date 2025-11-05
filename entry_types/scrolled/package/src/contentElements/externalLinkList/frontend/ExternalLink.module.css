@@ -132,14 +132,14 @@
   padding-right: min(var(--padding-inline), 5px);
 }
 
-.textPosition-overlay .background {
+.textPosition-overlay .front .background {
   position: relative;
   align-self: end;
   background: transparent;
   z-index: 1;
 }
 
-.textPosition-overlay .background::after {
+.textPosition-overlay .front .background::after {
   content: "";
   position: absolute;
   z-index: -1;
@@ -189,7 +189,7 @@
   margin-top: 1rem;
 }
 
-.details > :first-child p {
+.details > :first-child p:first-child {
   margin-top: 0;
 }
 

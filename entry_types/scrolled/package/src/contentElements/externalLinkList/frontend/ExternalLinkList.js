@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import classNames from 'classnames';
+
 import {
   LinkTooltipProvider,
   useContentElementEditorCommandSubscription,
@@ -10,8 +11,11 @@ import {
   contentElementWidthName,
   contentElementWidths
 } from 'pageflow-scrolled/frontend';
+
 import {ExternalLink} from './ExternalLink';
 import {Scroller} from './Scroller';
+import {FlippedItemProvider} from './FlippedItemProvider';
+
 import styles from './ExternalLinkList.module.css';
 
 import textPositionBelowStyles from './textPositons/below.module.css';
@@ -81,7 +85,7 @@ export function ExternalLinkList(props) {
   const fullWidth = props.contentElementWidth === contentElementWidths.full;
   const linkAlignment = scrollerEnabled ? 'left' : props.configuration.linkAlignment;
 
-  return (
+  return wrapWithFlippedItemProvider(
     <div className={classNames({[styles.contentMargin]: props.customMargin || fullWidth},
                                styles[`scrollButtons-${theme.options.teasersScrollButtons}`])}
          onClick={handleListClick}>
@@ -114,6 +118,7 @@ export function ExternalLinkList(props) {
                 {linkList.map((link, index) =>
                   <ExternalLink {...link}
                                 key={link.id}
+                                contentElementId={props.contentElementId}
                                 configuration={props.configuration}
                                 thumbnailAspectRatio={props.configuration.thumbnailAspectRatio}
                                 thumbnailSize={props.configuration.thumbnailSize || 'small'}
@@ -134,4 +139,17 @@ export function ExternalLinkList(props) {
       </Scroller>
     </div>
   );
+
+  function wrapWithFlippedItemProvider(children) {
+    if (props.configuration.backfaces) {
+      return (
+        <FlippedItemProvider>
+          {children}
+        </FlippedItemProvider>
+      )
+    }
+    else {
+      return children
+    }
+  }
 }
