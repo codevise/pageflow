@@ -82,10 +82,6 @@
   transform: scale(calc(1 + (var(--hover-scale) - 1) * var(--hover-scale-adjustment, 1)));
 }
 
-.link .card:hover .title {
-  text-decoration: underline;
-}
-
 .textPosition-right .thumbnail {
   width: 33%;
   display: flex;
@@ -180,12 +176,8 @@
   padding: max(10px, 10%) max(20px, 3%);
 }
 
-.details p,
-.textPosition-overlay .title:last-child {
-  margin-bottom: 0;
-}
-
 .details p {
+  margin-bottom: 0;
   margin-top: 1rem;
 }
 
