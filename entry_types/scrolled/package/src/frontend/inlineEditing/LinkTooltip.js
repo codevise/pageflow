@@ -1,4 +1,4 @@
-import React, {useContext, useState, createContext, useMemo, useRef} from 'react';
+import React, {useContext, useEffect, useState, createContext, useMemo, useRef} from 'react';
 import classNames from 'classnames';
 import {
   useFloating,
@@ -75,12 +75,12 @@ export function LinkTooltipProviderInner({
         timeout = null;
       },
 
-      deactivate() {
+      deactivate({delay = 200} = {}) {
         if (!timeout) {
           timeout = setTimeout(() => {
             timeout = null;
             setState(null)
-          }, 200);
+          }, delay);
         }
       }
     }
@@ -101,14 +101,21 @@ export function LinkTooltipProviderInner({
   );
 }
 
-export function LinkPreview({href, openInNewTab, children, className}) {
+export function LinkPreview({disabled, href, openInNewTab, children, className}) {
   const {activate, deactivate} = useContext(UpdateContext);
   const ref = useRef();
+
+  useEffect(() => {
+    if (disabled) {
+      deactivate({delay: 0})
+    }
+  }, [disabled, deactivate])
+
   return (
     <span ref={ref}
           className={className}
-          onMouseEnter={() => activate(href, openInNewTab, ref)}
-          onMouseLeave={deactivate}>
+          onMouseEnter={() => !disabled && activate(href, openInNewTab, ref)}
+          onMouseLeave={() => !disabled && deactivate()}>
       {children}
     </span>
   );

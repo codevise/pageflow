@@ -3,7 +3,7 @@ import {LinkTooltipProvider, LinkPreview} from 'frontend/inlineEditing/LinkToolt
 
 import {renderInEntry} from 'support';
 import {useFakeTranslations} from 'pageflow/testHelpers';
-import {render} from '@testing-library/react';
+import {render, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -32,7 +32,7 @@ describe('LinkTooltip', () => {
     expect(queryByText('Opens in same tab')).not.toBeNull();
   });
 
-  it('does not display tooltip when disabled', async () => {
+  it('does not display tooltip when disabled on provider', async () => {
     const {getByText, queryByRole} = render(
       <LinkTooltipProvider disabled={true}>
         <LinkPreview href="https://example.com">
@@ -45,6 +45,40 @@ describe('LinkTooltip', () => {
     await user.hover(getByText('A link'));
 
     expect(queryByRole('link')).toBeNull();
+  });
+
+  it('does not display tooltip when disabled on LinkPreview', async () => {
+    const {getByText, queryByRole} = render(
+      <LinkTooltipProvider>
+        <LinkPreview href="https://example.com" disabled={true}>
+          A link
+        </LinkPreview>
+      </LinkTooltipProvider>
+    );
+
+    const user = userEvent.setup();
+    await user.hover(getByText('A link'));
+
+    expect(queryByRole('link')).toBeNull();
+  });
+
+  it('hides tooltip when disabled prop changes on LinkPreview', async () => {
+    const Fixture = ({disabled}) =>
+      <LinkTooltipProvider>
+        <LinkPreview href="https://example.com" disabled={disabled}>
+          A link
+        </LinkPreview>
+      </LinkTooltipProvider>;
+
+    const {getByText, queryByRole, rerender} = render(<Fixture />);
+
+    const user = userEvent.setup();
+    await user.hover(getByText('A link'));
+    rerender(<Fixture disabled={true} />);
+
+    await waitFor(() =>
+      expect(queryByRole('link')).toBeNull()
+    );
   });
 
   it('does not display tooltip when href is missing', async () => {
