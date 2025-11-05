@@ -1439,6 +1439,7 @@ en:
       drag_content_element: Drag to move element
       edit_section_transition_after: Edit section transition
       edit_section_transition_before: Edit section transition
+      flip_card: Flip card
       formats:
         block_quote: Block quote
         bulleted_list: Bulleted list

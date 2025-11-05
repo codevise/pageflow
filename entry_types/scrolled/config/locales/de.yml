@@ -1629,6 +1629,7 @@ de:
       drag_content_element: Ziehen, um Element zu verschieben
       edit_section_transition_after: Übergangseffekt bearbeiten
       edit_section_transition_before: Übergangseffekt bearbeiten
+      flip_card: Karte wenden
       formats:
         block_quote: Blockzitat
         bulleted_list: Auflistung

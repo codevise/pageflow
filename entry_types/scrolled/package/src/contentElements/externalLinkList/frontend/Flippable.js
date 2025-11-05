@@ -14,7 +14,8 @@ import {useFlippedItem} from './FlippedItemProvider';
 export function Flippable({contentElementId, linkId, actionButtonVisible, front, back}) {
   const {isEditable, isSelected} = useContentElementEditorState();
 
-  const {t} = useI18n({locale: 'ui'});
+  const {t: uiTranslate} = useI18n({locale: 'ui'});
+  const {t} = useI18n();
   const backfaceId = `teaser-${contentElementId}-${linkId}-backface`;
 
   const [isFlipped, toggle] = useFlippedItem(linkId);
@@ -49,7 +50,7 @@ export function Flippable({contentElementId, linkId, actionButtonVisible, front,
        <ActionButton icon="background"
                      position="topRight"
                      portal={true}
-                     text={t('pageflow_scrolled.public.flip_card')}
+                     text={uiTranslate('pageflow_scrolled.inline_editing.flip_card')}
                      onClick={toggle} />}
     </div>
   );
