@@ -1,0 +1,56 @@
+.outer,
+.flippable,
+.flippable > * {
+  height: 100%;
+}
+
+.flippable {
+  perspective: 100rem;
+  display: grid;
+  --theme-external-links-card-hover-scale: 1;
+}
+
+.flippable > * {
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.flippable > :nth-child(2) {
+  transform: rotateY(180deg);
+}
+
+.flipped > :first-child {
+  transform: rotateY(-180deg);
+}
+
+.flipped  > :nth-child(2) {
+  transform: rotateY(0deg);
+}
+
+@media (hover: hover) {
+  .teaseFlip:hover:not(.flipped) > :first-child {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .flippable > * {
+    transition: transform .5s ease;
+  }
+
+  @media (hover: hover) {
+    .teaseFlip:hover:not(.flipped) > :first-child {
+      transform: rotateY(-15deg);
+    }
+  }
+}
+
+.flipButton {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: 0;
+}
