@@ -15,6 +15,7 @@ export function EditableLink({
   linkPreviewDisabled,
   linkPreviewPosition = 'below',
   linkPreviewAlign = 'center',
+  linkPreviewFloatingStrategy,
   actionButtonPosition = 'outside',
   actionButtonVisible = 'whenSelected',
   actionButtonPortal,
@@ -40,6 +41,7 @@ export function EditableLink({
   return (
     <div className={styles.wrapper}>
       <LinkTooltipProvider position={linkPreviewPosition}
+                           floatingStrategy={linkPreviewFloatingStrategy}
                            align={linkPreviewAlign}
                            gap={5}>
         <LinkPreview disabled={linkPreviewDisabled}
