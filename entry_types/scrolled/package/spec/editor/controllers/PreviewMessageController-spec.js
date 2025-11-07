@@ -7,6 +7,7 @@ import {SelectLinkDestinationDialogView} from 'editor/views/SelectLinkDestinatio
 import {
   postInsertContentElementMessage,
   postUpdateContentElementMessage,
+  postUpdateWidgetMessage,
   postUpdateTransientContentElementStateMessage,
   postSelectLinkDestinationMessage
 } from 'frontend/inlineEditing/postMessage';
@@ -431,6 +432,64 @@ describe('PreviewMessageController', () => {
       });
       postUpdateContentElementMessage({id: 1, configuration: {some: 'value'}});
     })).resolves.toEqual('value');
+  });
+
+  it('updates configuration on UPDATE_WIDGET message', () => {
+    const entry = factories.entry(ScrolledEntry, {id: 1}, {
+      widgetTypes: factories.widgetTypes([{
+        role: 'header', name: 'someNavigation'
+      }]),
+      widgetsAttributes: [{
+        type_name: 'someNavigation',
+        role: 'header'
+      }],
+      entryTypeSeed: normalizeSeed()
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    return expect(new Promise(resolve => {
+      const widget = entry.widgets.first();
+      widget.on('change:configuration', () => {
+        resolve(widget.configuration.get('some'));
+      });
+      postUpdateWidgetMessage({role: 'header', configuration: {some: 'value'}});
+    })).resolves.toEqual('value');
+  });
+
+  it('surpresses ACTION message for change caused by UPDATE_WIDGET message', async () => {
+    const entry = factories.entry(ScrolledEntry, {id: 1}, {
+      widgetTypes: factories.widgetTypes([{
+        role: 'header', name: 'someNavigation'
+      }]),
+      widgetsAttributes: [{
+        type_name: 'someNavigation',
+        role: 'header'
+      }],
+      entryTypeSeed: normalizeSeed({
+        chapters: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    // First update widget via UPDATE_WIDGET
+    // message. Then update chapter. Expect the first posted ACTION
+    // message to be about chapters, thus proving that the ACTION for
+    // the widget update has been skipped.
+    return expect(new Promise(async resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'ACTION') {
+          const action = event.data.payload;
+          resolve(action.payload.collectionName);
+        }
+      });
+
+      postUpdateWidgetMessage({role: 'header', configuration: {some: 'ignored update'}});
+      entry.chapters.first().configuration.set({title: 'next update'});
+    })).resolves.toEqual('chapters');
   });
 
   it('sends ACTION message for content element updates', async () => {

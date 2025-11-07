@@ -81,6 +81,7 @@ export {
 
 export {ContentElementAttributesProvider} from './useContentElementAttributes';
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
+export {useWidgetConfigurationUpdate} from './useWidgetConfigurationUpdate';
 export {
   useContentElementEditorCommandSubscription,
   ContentElementEditorCommandEmitterContext

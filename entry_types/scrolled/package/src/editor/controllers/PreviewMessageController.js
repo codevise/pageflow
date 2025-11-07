@@ -170,7 +170,17 @@ export const PreviewMessageController = Object.extend({
       }
       else if (message.data.type === 'UPDATE_CONTENT_ELEMENT') {
         const {id, configuration} = message.data.payload;
-        this.entry.contentElements.get(id).configuration.set(configuration, {ignoreInWatchCollection: true});
+
+        this.entry.contentElements.get(id).configuration.set(
+          configuration, {ignoreInWatchCollection: true}
+        );
+      }
+      else if (message.data.type === 'UPDATE_WIDGET') {
+        const {role, configuration} = message.data.payload;
+
+        this.entry.widgets.findWhere({role}).configuration.set(
+          configuration, {ignoreInWatchCollection: true}
+        );
       }
       else if (message.data.type === 'UPDATE_TRANSIENT_CONTENT_ELEMENT_STATE') {
         const {id, state} = message.data.payload;

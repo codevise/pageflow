@@ -38,7 +38,6 @@ app.addInitializer(function(options) {
   state.entry = editor.createEntryModel(options, {widgets: widgets});
   state.account = new Backbone.Model(options.account);
 
-  widgets.subject = state.entry;
   widgets.setupConfigurationEditorTabViewGroups(ConfigurationEditorTabView.groups);
 
   state.storylineOrdering = new StorylineOrdering(state.storylines, state.pages);

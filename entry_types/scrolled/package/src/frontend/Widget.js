@@ -2,8 +2,9 @@ import React from 'react';
 
 import {api} from './api';
 import {useWidget} from '../entryState';
+import {withInlineEditingDecorator} from './inlineEditing';
 
-export function Widget({role, props, children, renderFallback}) {
+export const Widget = withInlineEditingDecorator('WidgetDecorator', function Widget({role, props, children, renderFallback}) {
   const widget = useWidget({role});
 
   if (!widget) {
@@ -15,4 +16,4 @@ export function Widget({role, props, children, renderFallback}) {
   return (
     <Component configuration={widget.configuration} {...props} children={children} />
   );
-}
+});
