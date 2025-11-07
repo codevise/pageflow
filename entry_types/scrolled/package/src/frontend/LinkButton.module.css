@@ -23,8 +23,6 @@
   padding: var(--theme-link-button-padding, 0.5rem);
   background-color: var(--link-button-surface-color, transparent);
   color: var(--link-button-on-surface-color);
-  margin-top: 1rem;
-  font-weight: bold;
   border: solid 1px var(--link-button-surface-color,
                         color-mix(in srgb,
                                   var(--link-button-on-surface-color),
