@@ -1320,6 +1320,10 @@ en:
         md: Medium
         sm: Small
         xs: Very small
+      link_button_variant_attributes:
+        linkButtonVariant:
+          label: Button Variante
+          blank: "(Default)"
     help_entries:
       content_elements:
         menu_item: Content Elements

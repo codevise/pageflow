@@ -180,6 +180,8 @@ export function Tooltip({
                   className={classNames(styles.box,
                                         styles[`maxWidth-${maxWidth}`],
                                         styles[`align-${area.tooltipTextAlign}`],
+                                        configuration.linkButtonVariant &&
+                                        `scope-linkButton-${configuration.linkButtonVariant}`,
                                         light ? styles.light : styles.dark,
                                         {[styles.paddingForScrollButtons]: keepInViewport,
                                          [styles.minWidth]: presentOrEditing('link')})}
