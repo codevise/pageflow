@@ -62,6 +62,7 @@ editor.contentElementTypes.register('hotspots', {
       });
       this.group('ContentElementPosition', {entry});
       this.view(SeparatorView);
+      this.group('LinkButtonVariant', {entry});
       this.group('ContentElementCaption', {entry});
       this.group('ContentElementInlineFileRightsSettings');
     });

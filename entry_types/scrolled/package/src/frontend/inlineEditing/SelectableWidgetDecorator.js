@@ -2,7 +2,7 @@ import React, {createContext, useContext, useMemo} from 'react';
 
 import {useEditorSelection} from './EditorState';
 
-const WidgetEditorStateContext = createContext();
+const WidgetEditorStateContext = createContext({});
 
 export function useWidgetEditorState() {
   return useContext(WidgetEditorStateContext);

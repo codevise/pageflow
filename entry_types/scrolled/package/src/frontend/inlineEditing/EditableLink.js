@@ -3,6 +3,7 @@ import React from 'react';
 import {LinkTooltipProvider, LinkPreview} from './LinkTooltip';
 import {ActionButtons} from './ActionButtons'
 import {useContentElementEditorState} from '../useContentElementEditorState';
+import {useWidgetEditorState} from './SelectableWidgetDecorator';
 import {useSelectLinkDestination} from './useSelectLinkDestination';
 import {useI18n} from '../i18n';
 
@@ -14,6 +15,7 @@ export function EditableLink({
   linkPreviewDisabled,
   linkPreviewPosition = 'below',
   linkPreviewAlign = 'center',
+  linkPreviewFloatingStrategy,
   actionButtonPosition = 'outside',
   actionButtonVisible = 'whenSelected',
   actionButtonPortal,
@@ -21,10 +23,11 @@ export function EditableLink({
 }) {
   const selectLinkDestination = useSelectLinkDestination();
   const {t} = useI18n({locale: 'ui'});
-  const {isSelected} = useContentElementEditorState();
+  const {isSelected: inSelectedContentElement} = useContentElementEditorState();
+  const {isSelected: inSelectedWidget} = useWidgetEditorState();
 
   if (actionButtonVisible === 'whenSelected') {
-    actionButtonVisible = isSelected;
+    actionButtonVisible = inSelectedContentElement || inSelectedWidget;
   }
 
   function handleSelectLinkDestination() {
@@ -38,6 +41,7 @@ export function EditableLink({
   return (
     <div className={styles.wrapper}>
       <LinkTooltipProvider position={linkPreviewPosition}
+                           floatingStrategy={linkPreviewFloatingStrategy}
                            align={linkPreviewAlign}
                            gap={5}>
         <LinkPreview disabled={linkPreviewDisabled}

@@ -48,6 +48,7 @@ export const Entry = Backbone.Model.extend({
     this.chapters.parentModel = this;
     this.pages = state.pages;
     this.widgets = options.widgets;
+    this.widgets.subject = this;
 
     this.imageFiles = state.imageFiles;
     this.videoFiles = state.videoFiles;

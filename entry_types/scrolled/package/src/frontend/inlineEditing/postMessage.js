@@ -31,6 +31,19 @@ export function postUpdateContentElementMessage({id, configuration}) {
   );
 }
 
+export function postUpdateWidgetMessage({role, configuration}) {
+  window.parent.postMessage(
+    {
+      type: 'UPDATE_WIDGET',
+      payload: {
+        role,
+        configuration
+      }
+    },
+    window.location.origin
+  );
+}
+
 export function postUpdateTransientContentElementStateMessage({id, state}) {
   window.parent.postMessage(
     {

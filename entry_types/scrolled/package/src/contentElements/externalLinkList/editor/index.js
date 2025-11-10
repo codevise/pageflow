@@ -115,6 +115,11 @@ editor.contentElementTypes.register('externalLinkList', {
         disabledBinding: 'backfaces',
         displayCheckedIfDisabled: true
       });
+      this.group('LinkButtonVariant', {
+        entry,
+        visibleBinding: ['displayButtons', 'backfaces'],
+        visible: ([displayButtons, backfaces]) => displayButtons || backfaces
+      });
 
       this.group('ContentElementInlineFileRightsSettings');
     });

@@ -87,6 +87,8 @@ export function ExternalLinkList(props) {
 
   return wrapWithFlippedItemProvider(
     <div className={classNames({[styles.contentMargin]: props.customMargin || fullWidth},
+                               props.configuration.linkButtonVariant &&
+                               `scope-linkButton-${props.configuration.linkButtonVariant}`,
                                styles[`scrollButtons-${theme.options.teasersScrollButtons}`])}
          onClick={handleListClick}>
       <Scroller enabled={scrollerEnabled} measureKey={linkList.length}>

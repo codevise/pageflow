@@ -125,6 +125,10 @@
   margin-bottom: 0;
 }
 
+.link {
+  margin-top: 1rem;
+}
+
 .textWrapper > :first-child .link {
   margin-top: 0;
 }

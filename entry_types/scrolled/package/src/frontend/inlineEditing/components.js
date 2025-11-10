@@ -13,6 +13,7 @@ export {EditableLink} from './EditableLink';
 export {LinkTooltipProvider} from './LinkTooltip';
 
 export {SelectableWidgetDecorator} from './SelectableWidgetDecorator';
+export {WidgetDecorator} from './WidgetDecorator';
 export {WidgetSelectionRect} from './WidgetSelectionRect';
 
 export {ActionButton} from './ActionButton';

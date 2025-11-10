@@ -37,13 +37,14 @@ export function LinkTooltipProvider(props) {
 }
 
 export function LinkTooltipProviderInner({
-  disabled, position, children, align = 'left', gap = 10
+  disabled, position, floatingStrategy, children, align = 'left', gap = 10
 }) {
   const [state, setState] = useState();
 
   const arrowRef = useRef();
 
   const {refs, floatingStyles, context: floatingContext} = useFloating({
+    strategy: floatingStrategy,
     placement: `${position === 'below' ? 'bottom' : 'top'}${align === 'left' ? '-start' : ''}`,
     middleware: [
       offset(gap),
