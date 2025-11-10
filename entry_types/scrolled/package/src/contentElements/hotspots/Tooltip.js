@@ -129,10 +129,18 @@ export function Tooltip({
   }
 
   function handleLinkChange(value) {
-    if (utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)) {
+    if (value) {
+      if (utils.isBlankEditableTextValue(tooltipTexts[area.id]?.link)) {
+        handleTextChange('link', [{
+          type: 'heading',
+          children: [{text: translateWithEntryLocale('pageflow_scrolled.public.more')}]
+        }]);
+      }
+    }
+    else {
       handleTextChange('link', [{
         type: 'heading',
-        children: [{text: translateWithEntryLocale('pageflow_scrolled.public.more')}]
+        children: [{text: ''}]
       }]);
     }
 
@@ -224,6 +232,7 @@ export function Tooltip({
                               href={tooltipLinks[area.id]?.href}
                               openInNewTab={tooltipLinks[area.id]?.openInNewTab}
                               value={tooltipTexts[area.id]?.link}
+                              allowRemove={true}
                               onTextChange={value => handleTextChange('link', value)}
                               onLinkChange={value => handleLinkChange(value)} />}
                </div>

@@ -148,7 +148,7 @@
   pointer-events: none;
 }
 
-.textPosition-none .background {
+.textPosition-none .front .background {
   display: none;
 }
 
