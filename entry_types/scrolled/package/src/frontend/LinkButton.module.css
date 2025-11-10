@@ -2,12 +2,24 @@
   --link-button-on-surface-color: var(--theme-light-content-link-button-on-surface-color,
                                       currentColor);
   --link-button-surface-color: var(--theme-light-content-link-button-surface-color);
+
+  --link-button-hover-on-surface-color: var(--theme-light-content-link-button-hover-on-surface-color);
+  --link-button-hover-surface-color: var(--theme-light-content-link-button-hover-surface-color);
+
+  --link-button-active-on-surface-color: var(--theme-light-content-link-button-active-on-surface-color);
+  --link-button-active-surface-color: var(--theme-light-content-link-button-active-surface-color);
 }
 
 :global .scope-darkContent {
   --link-button-on-surface-color: var(--theme-dark-content-link-button-on-surface-color,
                                       var(--theme-widget-primary-color));
   --link-button-surface-color: var(--theme-dark-content-link-button-surface-color);
+
+  --link-button-hover-on-surface-color: var(--theme-dark-content-link-button-hover-on-surface-color);
+  --link-button-hover-surface-color: var(--theme-dark-content-link-button-hover-surface-color);
+
+  --link-button-active-on-surface-color: var(--theme-dark-content-link-button-active-on-surface-color);
+  --link-button-active-surface-color: var(--theme-dark-content-link-button-active-surface-color);
 }
 
 .button {
@@ -24,9 +36,7 @@
   background-color: var(--link-button-surface-color, transparent);
   color: var(--link-button-on-surface-color);
   border: solid 1px var(--link-button-surface-color,
-                        color-mix(in srgb,
-                                  var(--link-button-on-surface-color),
-                                  transparent));
+                        color-mix(in srgb, currentColor, transparent));
   cursor: pointer;
 }
 
@@ -34,9 +44,16 @@
   content: var(--theme-link-button-symbol, "›");
 }
 
-.button:hover,
+.button:hover {
+  background-color: var(--link-button-hover-surface-color, var(--link-button-surface-color));
+  color: var(--link-button-hover-on-surface-color, var(--link-button-on-surface-color));
+  border: solid 1px var(--link-button-hover-surface-color, var(--link-button-surface-color, currentColor));
+}
+
 .button:active {
-  border: solid 1px var(--link-button-surface-color, var(--link-button-on-surface-color));
+  background-color: var(--link-button-active-surface-color, var(--link-button-surface-color));
+  color: var(--link-button-active-on-surface-color, var(--link-button-on-surface-color));
+  border: solid 1px var(--link-button-active-surface-color, var(--link-button-surface-color, currentColor));
 }
 
 .editable {
