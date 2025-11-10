@@ -28,6 +28,7 @@ const scaleCategorySuffixes = {
 export function ExternalLink({id, configuration, contentElementId, ...props}) {
   const {isEditable, isSelected} = useContentElementEditorState();
   const updateConfiguration = useContentElementConfigurationUpdate();
+  const {t: translateWithEntryLocale} = useI18n();
   const {t} = useI18n({locale: 'ui'});
 
   const itemTexts = configuration.itemTexts || {};
@@ -52,6 +53,21 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
   }
 
   function handleLinkChange(value) {
+    if (value) {
+      if (utils.isBlankEditableTextValue(itemTexts[id]?.link)) {
+        handleTextChange('link', [{
+          type: 'heading',
+          children: [{text: translateWithEntryLocale('pageflow_scrolled.public.more')}]
+        }]);
+      }
+    }
+    else {
+      handleTextChange('link', [{
+        type: 'heading',
+        children: [{text: ''}]
+      }]);
+    }
+
     updateConfiguration({
       itemLinks: {
         ...itemLinks,
