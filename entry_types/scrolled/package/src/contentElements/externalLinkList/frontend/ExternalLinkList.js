@@ -84,6 +84,8 @@ export function ExternalLinkList(props) {
   const scrollerEnabled = props.configuration.enableScroller === 'always';
   const fullWidth = props.contentElementWidth === contentElementWidths.full;
   const linkAlignment = scrollerEnabled ? 'left' : props.configuration.linkAlignment;
+  const overlayOpacity = props.configuration.overlayOpacity !== undefined ?
+                         props.configuration.overlayOpacity / 100 : 0.7;
 
   return wrapWithFlippedItemProvider(
     <div className={classNames({[styles.contentMargin]: props.customMargin || fullWidth},
@@ -114,7 +116,7 @@ export function ExternalLinkList(props) {
                     textPositionStyles[`textPosition-${textPosition}`],
                     {[textPositionStyles.scroller]: scrollerEnabled}
                   )}
-                  style={{'--overlay-opacity': (props.configuration.overlayOpacity || 70) / 100,
+                  style={{'--overlay-opacity': overlayOpacity,
                           '--thumbnail-aspect-ratio': `var(--theme-aspect-ratio-${props.configuration.thumbnailAspectRatio || 'wide'})`}}
                   onScroll={handleScroll}>
                 {linkList.map((link, index) =>
