@@ -157,11 +157,12 @@ export function DefaultNavigation({
          onFocus={() => setNavExpanded(true)}>
         <WidgetSelectionRect>
           <div className={styles.navigationBarContentWrapper}>
+            <SkipLinks />
+
             {(hasChapters || hasMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}
                                                         menuOpen={menuOpen}
                                                         visibleOnDesktop={hasDesktopMenu}/>}
 
-            <SkipLinks />
             <Logo {...logo} />
 
             {renderNav()}
