@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import classNames from 'classnames';
 
 import styles from './Tooltip.module.css'
@@ -33,12 +33,32 @@ export function Tooltip({
   };
 
   const handleBlur = (event) => {
-    if (isOpen && !containerRef.current?.contains(event.relatedTarget)) {
+    if (isOpen &&
+        event.relatedTarget &&
+        !containerRef.current?.contains(event.relatedTarget)) {
       setIsOpen(false);
     }
   };
 
   const isControlled = !openOnHover && !fixed;
+
+  useEffect(() => {
+    if (!isControlled || !isOpen) {
+      return;
+    }
+
+    const handleDocumentClick = (event) => {
+      if (!containerRef.current?.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleDocumentClick);
+
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
+  }, [isControlled, isOpen]);
 
   const triggerProps = isControlled ? {
     onClick: handleClick,
