@@ -124,8 +124,6 @@ en:
       feature_name: Excursions
     section_paddings:
       feature_name: "Section paddings"
-    teaser_backfaces:
-      feature_name: "Teaser backfaces"
   pageflow_scrolled:
     editor:
       backdrop_effects:

@@ -1,5 +1,4 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {features} from 'pageflow/frontend';
 import {SelectInputView, SliderInputView, SeparatorView, CheckBoxInputView} from 'pageflow/ui';
 
 import {SidebarRouter} from './SidebarRouter';
@@ -107,9 +106,7 @@ editor.contentElementTypes.register('externalLinkList', {
         values: ['left', 'right', 'center']
       });
 
-      if (features.isEnabled('teaser_backfaces')) {
-        this.input('backfaces', CheckBoxInputView);
-      }
+      this.input('backfaces', CheckBoxInputView);
 
       this.input('displayButtons', CheckBoxInputView, {
         disabledBinding: 'backfaces',

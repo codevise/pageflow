@@ -124,8 +124,6 @@ de:
       feature_name: Exkurse
     section_paddings:
       feature_name: "Abschnittsinnenabstände"
-    teaser_backfaces:
-      feature_name: "Teaser Rückseiten"
   pageflow_scrolled:
     editor:
       backdrop_effects:
