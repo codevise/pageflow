@@ -1301,6 +1301,20 @@ en:
         done: Done
         add_chapter: New chapter
         add_excursion: New excursion
+        excursion_blank_slate: |-
+          <p>
+            <strong>Excursions</strong> provide additional content
+            outside the main path. They open in a <strong>separate
+            layer</strong> and readers automatically return to their
+            original position.
+          </p>
+          <p>
+            Create your first excursion and <strong>link to
+            it</strong> from your story to make it accessible to
+            readers.
+          </p>
+          <a target="_blank" rel="noopener noreferrer"
+              href="https://pageflow.freshdesk.com/en/support/solutions/articles/11000134532-what-are-excursions-and-how-can-i-use-them-for-in-depth-content">Learn more about excursions</a>
       aspect_ratios:
         narrow: Landscape (4:3)
         portrait: Portrait (3:4)

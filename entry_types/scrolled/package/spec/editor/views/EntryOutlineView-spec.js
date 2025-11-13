@@ -9,7 +9,8 @@ import '@testing-library/jest-dom/extend-expect';
 describe('EntryOutlineView', () => {
   useFakeTranslations({
     'pageflow_scrolled.editor.storylines_tabs.main': 'Main',
-    'pageflow_scrolled.editor.storylines_tabs.excursions': 'Excursions'
+    'pageflow_scrolled.editor.storylines_tabs.excursions': 'Excursions',
+    'pageflow_scrolled.editor.storyline_item.excursion_blank_slate': 'Excursions provide additional content outside the main path. Create your first excursion.'
   });
 
   const {createEntry} = useEditorGlobals();
@@ -309,5 +310,56 @@ describe('EntryOutlineView', () => {
 
     expect(mainTab).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('link', {name: /Main Story Chapter/})).toBeInTheDocument();
+  });
+
+  it('displays blank slate on excursions tab when no chapters exist', async () => {
+    const entry = createEntry({
+      storylines: [
+        {
+          id: 10,
+          permaId: 200,
+          position: 0,
+          configuration: {main: true}
+        },
+        {
+          id: 11,
+          permaId: 201,
+          position: 1,
+          configuration: {}
+        }
+      ],
+      chapters: [
+        {
+          id: 1,
+          permaId: 100,
+          position: 0,
+          storylineId: 10,
+          configuration: {
+            title: 'Main Story Chapter'
+          }
+        }
+      ]
+    });
+
+    const user = userEvent.setup();
+
+    render(new EntryOutlineView({entry}));
+
+    const tablist = screen.getByRole('tablist');
+    const excursionsTab = within(tablist).getByRole('tab', {name: 'Excursions'});
+
+    await user.click(excursionsTab);
+
+    expect(screen.getByText(/Excursions provide additional content outside the main path/)).toBeInTheDocument();
+  });
+
+  it('does not display blank slate on main tab when no chapters exist', () => {
+    const entry = createEntry({
+      chapters: []
+    });
+
+    render(new EntryOutlineView({entry}));
+
+    expect(screen.queryByText(/Excursions provide additional content outside the main path/)).toBeNull();
   });
 });

@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-34 0 228 128" width="228" height="128">
+  <defs>
+    <style>
+      @keyframes excursion-main-scale {
+        0%, 10% {
+          transform: scale(1);
+          filter: blur(0px);
+          opacity: 1;
+        }
+        20%, 60% {
+          transform: scale(0.94);
+          filter: blur(1px);
+          opacity: 0.7;
+        }
+        70%, 100% {
+          transform: scale(1);
+          filter: blur(0px);
+          opacity: 1;
+        }
+      }
+
+      @keyframes excursion-backdrop-fade {
+        0%, 10% {
+          opacity: 0;
+        }
+        20%, 60% {
+          opacity: 1;
+        }
+        70%, 100% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes excursion-sheet-slide {
+        0%, 10% {
+          transform: translateY(128px);
+          opacity: 0;
+        }
+        20%, 30% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        50%, 60% {
+          transform: translateY(-90px);
+          opacity: 1;
+        }
+        70%, 100% {
+          transform: translateY(-90px);
+          opacity: 0;
+        }
+      }
+
+      @keyframes excursion-close-position {
+        0%, 15% {
+          opacity: 0;
+          transform: translate(184px, 32px);
+        }
+        20%, 30% {
+          opacity: 1;
+          transform: translate(184px, 32px);
+        }
+        50%, 60% {
+          opacity: 1;
+          transform: translate(184px, 10px);
+        }
+        70%, 100% {
+          opacity: 0;
+          transform: translate(184px, 10px);
+        }
+      }
+
+      .main-storyline {
+        animation: excursion-main-scale 5s ease infinite;
+        transform-origin: center center;
+      }
+
+      .excursion-backdrop {
+        animation: excursion-backdrop-fade 5s ease infinite;
+      }
+
+      .excursion-sheet {
+        animation: excursion-sheet-slide 5s ease infinite;
+      }
+
+      .excursion-close {
+        animation: excursion-close-position 5s ease infinite;
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect x="-34" width="228" height="128" rx="4" fill="#2a5a7a"/>
+
+  <!-- Main storyline section (background) -->
+  <g class="main-storyline">
+    <rect x="-34" width="228" height="128" fill="#2a5a7a"/>
+
+    <!-- Section content -->
+    <g transform="translate(16, 26)">
+      <!-- Heading -->
+      <rect x="0" y="0" width="60" height="4" rx="2" fill="rgba(255,255,255,0.3)"/>
+
+      <!-- Text lines -->
+      <rect x="0" y="10" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="14" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="18" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="22" width="38" height="1" fill="rgba(255,255,255,0.3)"/>
+
+      <!-- Image with play button -->
+      <g transform="translate(85, 10)">
+        <rect width="50" height="38" rx="2" fill="rgba(255,255,255,0.6)"/>
+        <!-- Play button -->
+        <path d="M 22,14 L 22,24 L 32,19 Z" fill="#fff"/>
+      </g>
+
+      <!-- Second paragraph -->
+      <rect x="0" y="32" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="36" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="40" width="38" height="1" fill="rgba(255,255,255,0.3)"/>
+
+      <!-- Third paragraph -->
+      <rect x="0" y="50" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="54" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="58" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="62" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="66" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="70" width="42" height="1" fill="rgba(255,255,255,0.3)"/>
+
+      <!-- Fourth paragraph -->
+      <rect x="0" y="80" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="84" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="88" width="55" height="1" fill="rgba(255,255,255,0.3)"/>
+      <rect x="0" y="92" width="38" height="1" fill="rgba(255,255,255,0.3)"/>
+    </g>
+  </g>
+
+  <!-- Dark backdrop -->
+  <rect class="excursion-backdrop" x="-34" width="228" height="128" fill="rgba(0,0,0,0.4)"/>
+
+  <!-- Excursion sheet -->
+  <g class="excursion-sheet">
+    <!-- Sheet shadow -->
+    <rect x="-34" y="47" width="228" height="140" rx="0" fill="rgba(0,0,0,0.3)" filter="blur(4)"/>
+
+    <!-- Sheet background -->
+    <rect x="-34" y="42" width="228" height="140" rx="0" fill="#b8d4e8"/>
+
+    <!-- Excursion content -->
+    <g transform="translate(35, 56)">
+      <!-- Heading -->
+      <rect x="0" y="0" width="60" height="4" rx="2" fill="rgba(42,90,122,0.3)"/>
+
+      <!-- Text lines -->
+      <rect x="0" y="10" width="90" height="1" fill="rgba(42,90,122,0.3)"/>
+      <rect x="0" y="14" width="90" height="1" fill="rgba(42,90,122,0.3)"/>
+      <rect x="0" y="18" width="90" height="1" fill="rgba(42,90,122,0.3)"/>
+      <rect x="0" y="22" width="90" height="1" fill="rgba(42,90,122,0.3)"/>
+      <rect x="0" y="26" width="63" height="1" fill="rgba(42,90,122,0.3)"/>
+
+      <!-- Image -->
+      <rect x="13" y="34" width="65" height="49" rx="2" fill="rgba(42,90,122,0.6)"/>
+
+      <!-- More content below -->
+      <rect x="0" y="93" width="90" height="1" fill="rgba(42,90,122,0.3)"/>
+      <rect x="0" y="97" width="90" height="1" fill="rgba(42,90,122,0.3)"/>
+      <rect x="0" y="101" width="90" height="1" fill="rgba(42,90,122,0.3)"/>
+      <rect x="0" y="105" width="63" height="1" fill="rgba(42,90,122,0.3)"/>
+    </g>
+  </g>
+
+  <!-- Close button (separate, stays at top) -->
+  <g class="excursion-close" transform="translate(184, 32)">
+    <!-- X icon -->
+    <line x1="-3" y1="-3" x2="3" y2="3" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+    <line x1="3" y1="-3" x2="-3" y2="3" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
