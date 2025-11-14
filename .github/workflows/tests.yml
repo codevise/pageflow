@@ -25,34 +25,34 @@ jobs:
         include:
           - job: pageflow
             engine-name: pageflow
-            ruby-version: 3.2
+            ruby-version: 3.4
             engine-directory: .
             rspec-command: bin/rspec --tag ~js
             install-audiowaveform: true
 
           - job: pageflow_js
             engine-name: pageflow
-            ruby-version: 3.2
+            ruby-version: 3.4
             engine-directory: .
             rspec-command: bin/rspec-with-retry --tag js
 
           - job: pageflow_paged
             engine-name: pageflow_paged
-            ruby-version: 3.2
+            ruby-version: 3.4
             engine-directory: entry_types/paged
             plugin-name: pageflow_paged
             rspec-command: bin/rspec
 
           - job: pageflow_scrolled
             engine-name: pageflow_scrolled
-            ruby-version: 3.2
+            ruby-version: 3.4
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
             rspec-command: bin/rspec --tag ~js
 
           - job: pageflow_scrolled_js
             engine-name: pageflow_scrolled
-            ruby-version: 3.2
+            ruby-version: 3.4
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
             rspec-command: bin/rspec-with-retry-on-timeout --tag js
@@ -112,10 +112,10 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
 
-    - name: Use Node.js 18
+    - name: Use Node.js 22
       uses: actions/setup-node@v1
       with:
-        node-version: 18
+        node-version: 22
 
     # Dependencies
 
@@ -200,10 +200,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    - name: Set up Node.js 18
+    - name: Set up Node.js 22
       uses: actions/setup-node@v1
       with:
-        node-version: 18
+        node-version: 22
 
     - name: Yarn install
       run: |
