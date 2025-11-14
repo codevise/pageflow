@@ -3,6 +3,7 @@ import I18n from 'i18n-js';
 import {cssModulesUtils, SortableCollectionView} from 'pageflow/ui';
 
 import {ChapterItemView} from './ChapterItemView';
+import {ExcursionBlankSlateView} from './ExcursionBlankSlateView';
 
 import styles from './StorylineItemView.module.css';
 import outlineStyles from './outline.module.css';
@@ -61,7 +62,8 @@ export const StorylineItemView = Marionette.Layout.extend({
       itemViewConstructor: ChapterItemView,
       itemViewOptions: {
         entry: this.options.entry
-      }
+      },
+      blankSlateViewConstructor: this.model.isMain() ? null : ExcursionBlankSlateView
     });
 
     this.subview(this.sortableCollectionView);

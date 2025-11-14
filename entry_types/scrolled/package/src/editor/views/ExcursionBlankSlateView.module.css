@@ -1,0 +1,27 @@
+.box {
+  border-radius: rounded(lg);
+  padding: space(3);
+  margin-bottom: space(3);
+  background-color: var(--ui-selection-color-lighter);
+}
+
+.box p {
+  line-height: 1.4;
+  margin-bottom: 1em;
+}
+
+.box a {
+  text-decoration: underline;
+}
+
+.pictogram {
+  margin-bottom: space(3);
+  text-align: center;
+}
+
+.pictogram img {
+  width: 100%;
+  max-width: 20rem;
+  height: auto;
+  border-radius: rounded();
+}

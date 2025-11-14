@@ -1319,6 +1319,20 @@ de:
         done: Fertig
         add_chapter: Neues Kapitel
         add_excursion: Neuer Exkurs
+        excursion_blank_slate: |-
+          <p>
+            <strong>Exkurse</strong> bieten zusätzliche Inhalte abseits des
+            Hauptpfads. Sie öffnen sich in einer <strong>separaten
+            Ebene</strong> und der Leser kehrt automatisch zur
+            ursprünglichen Position zurück.
+          </p>
+          <p>
+            Lege deinen ersten Exkurs an und <strong>verlinke
+            ihn</strong> aus deinem Beitrag, um ihn für Leser zugänglich
+            zu machen.
+          </p>
+          <a target="_blank" rel="noopener noreferrer"
+              href="https://pageflow.freshdesk.com/de/support/solutions/articles/11000134532-was-sind-exkurse-und-wie-nutze-ich-sie-fr-vertiefende-inhalte">Mehr über Exkurse erfahren</a>
       aspect_ratios:
         narrow: Landscape (4:3)
         portrait: Portrait (3:4)
