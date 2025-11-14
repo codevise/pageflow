@@ -18,6 +18,7 @@ export function SelectionRect(props) {
                                 [styles.start]: props.selected && props.start,
                                 [styles.end]: props.selected && props.end})}
          aria-label={props.ariaLabel}
+         aria-selected={props.selected}
          data-scrollpoint={props.scrollPoint ? 'selection' : undefined}
          onClick={props.onClick}>
       {renderDragHandle(props)}
