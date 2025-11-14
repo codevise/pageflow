@@ -17,6 +17,12 @@ describe('LinkTooltip', () => {
     'pageflow_scrolled.inline_editing.link_tooltip.untitled_excursion': 'Untitled Excursion'
   });
 
+  beforeEach(() => {
+    const rect = {width: 100, height: 20, top: 100, left: 100, bottom: 120, right: 200, x: 100, y: 100};
+    Element.prototype.getClientRects = jest.fn(() => [rect]);
+    Element.prototype.getBoundingClientRect = jest.fn(() => rect);
+  });
+
   it('displays tooltip for external link on hover', async () => {
     const {getByText, queryByRole, queryByText} = render(
       <LinkTooltipProvider>
