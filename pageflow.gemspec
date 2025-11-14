@@ -188,7 +188,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'domino', '~> 0.7.0'
 
   # Fixture replacement
-  s.add_development_dependency 'factory_bot_rails', '~> 4.8'
+  s.add_development_dependency 'factory_bot_rails', '~> 6.5'
 
   # Matchers for Pundit policies
   s.add_development_dependency 'pundit-matchers', '~> 1.0'
