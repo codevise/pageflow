@@ -48,8 +48,8 @@ export function TranslationsMenu({tooltipOffset = 0}) {
              horizontalOffset={tooltipOffset - 30}
              arrowPos={120 - tooltipOffset}
              content={content}>
-      {(buttonProps) => (
-        <button {...buttonProps}
+      {(triggerProps) => (
+        <button {...triggerProps}
                 className={classNames(headerStyles.contextIcon)}
                 title={t('pageflow_scrolled.public.navigation.language')}>
           <ThemeIcon name="world" />

@@ -36,8 +36,8 @@ export function SharingMenu({shareProviders}) {
              horizontalOffset={-70}
              arrowPos={160}
              content={renderShareLinks(shareProviders)}>
-      {(buttonProps) => (
-        <button {...buttonProps}
+      {(triggerProps) => (
+        <button {...triggerProps}
                 className={classNames(headerStyles.contextIcon)}
                 title={t('pageflow_scrolled.public.navigation.share')}>
           <ThemeIcon name="share" />

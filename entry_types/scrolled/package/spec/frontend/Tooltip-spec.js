@@ -1,6 +1,7 @@
 import React from 'react'
-import {render, fireEvent, waitFor} from '@testing-library/react'
+import {render, waitFor} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
+import userEvent from '@testing-library/user-event';
 
 import {Tooltip} from 'frontend/Tooltip';
 
@@ -8,7 +9,7 @@ describe('Tooltip', () => {
   it('renders trigger', () => {
     const {getByTestId} = render(
       <Tooltip name="test">
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
     expect(getByTestId('trigger')).toBeDefined();
@@ -23,143 +24,164 @@ describe('Tooltip', () => {
     expect(getByTestId('content')).toBeDefined();
   });
 
-  it('opens tooltip when button is clicked', () => {
+  it('opens tooltip when button is clicked', async () => {
     const {getByTestId} = render(
       <Tooltip name="test" content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
+    const user = userEvent.setup();
     const button = getByTestId('trigger');
 
     expect(button.getAttribute('aria-expanded')).toBe('false');
 
-    fireEvent.click(button);
+    await user.click(button);
 
     expect(button.getAttribute('aria-expanded')).toBe('true');
   });
 
-  it('closes tooltip when button is clicked again', () => {
+  it('closes tooltip when button is clicked again', async () => {
     const {getByTestId} = render(
       <Tooltip name="test" content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
+    const user = userEvent.setup();
     const button = getByTestId('trigger');
 
-    fireEvent.click(button);
+    await user.click(button);
     expect(button.getAttribute('aria-expanded')).toBe('true');
 
-    fireEvent.click(button);
+    await user.click(button);
     expect(button.getAttribute('aria-expanded')).toBe('false');
   });
 
-  it('closes tooltip when ESC key is pressed', () => {
+  it('closes tooltip when ESC key is pressed', async () => {
     const {getByTestId} = render(
       <Tooltip name="test" content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
+    const user = userEvent.setup();
     const button = getByTestId('trigger');
 
-    fireEvent.click(button);
+    await user.click(button);
     expect(button.getAttribute('aria-expanded')).toBe('true');
 
-    fireEvent.keyDown(button, {key: 'Escape'});
+    await user.keyboard('{Escape}');
     expect(button.getAttribute('aria-expanded')).toBe('false');
   });
 
   it('returns focus to button when ESC key is pressed', async () => {
     const {getByTestId} = render(
       <Tooltip name="test" content={<button data-testid="content-button">content button</button>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
+    const user = userEvent.setup();
     const button = getByTestId('trigger');
     const contentButton = getByTestId('content-button');
 
-    fireEvent.click(button);
+    await user.click(button);
     contentButton.focus();
 
     expect(document.activeElement).toBe(contentButton);
 
-    fireEvent.keyDown(button, {key: 'Escape'});
+    await user.keyboard('{Escape}');
 
     await waitFor(() => {
       expect(document.activeElement).toBe(button);
     });
   });
 
-  it('sets aria-expanded and aria-controls attributes', () => {
+  it('sets aria-expanded and aria-controls attributes', async () => {
     const {getByTestId} = render(
       <Tooltip name="test" content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
+    const user = userEvent.setup();
     const button = getByTestId('trigger');
 
     expect(button.getAttribute('aria-expanded')).toBe('false');
     expect(button.getAttribute('aria-controls')).toBe('tooltip-test');
 
-    fireEvent.click(button);
+    await user.click(button);
 
     expect(button.getAttribute('aria-expanded')).toBe('true');
     expect(button.getAttribute('aria-controls')).toBe('tooltip-test');
   });
 
-  it('does not toggle on click when openOnHover is true', () => {
+  it('does not toggle on click when openOnHover is true', async () => {
     const {getByTestId} = render(
       <Tooltip name="test" openOnHover content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
+      </Tooltip>
+    );
+
+    const user = userEvent.setup();
+    const button = getByTestId('trigger');
+
+    expect(button.getAttribute('aria-expanded')).toBeNull();
+
+    await user.click(button);
+
+    expect(button.getAttribute('aria-expanded')).toBeNull();
+  });
+
+  it('sets aria-describedby when openOnHover is true', () => {
+    const {getByTestId} = render(
+      <Tooltip name="test" openOnHover content={<div data-testid="content">content</div>}>
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
     const button = getByTestId('trigger');
 
-    expect(button.getAttribute('aria-expanded')).toBeNull();
-
-    fireEvent.click(button);
-
-    expect(button.getAttribute('aria-expanded')).toBeNull();
+    expect(button.getAttribute('aria-describedby')).toBe('tooltip-test');
   });
 
-  it('does not toggle on click when fixed is true', () => {
+  it('does not toggle on click when fixed is true', async () => {
     const {getByTestId} = render(
       <Tooltip name="test" fixed content={<div data-testid="content">content</div>}>
-        {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
       </Tooltip>
     );
 
+    const user = userEvent.setup();
     const button = getByTestId('trigger');
 
     expect(button.getAttribute('aria-expanded')).toBeNull();
 
-    fireEvent.click(button);
+    await user.click(button);
 
     expect(button.getAttribute('aria-expanded')).toBeNull();
   });
 
-  it('closes tooltip when focus leaves the container', () => {
+  it('closes tooltip when focus leaves the container', async () => {
     const {getByTestId} = render(
       <>
-        <Tooltip name="test" content={<div data-testid="content">content</div>}>
-          {(buttonProps) => <button data-testid="trigger" {...buttonProps}>trigger</button>}
+        <Tooltip name="test" content={<button data-testid="content-button">content button</button>}>
+          {(triggerProps) => <button data-testid="trigger" {...triggerProps}>trigger</button>}
         </Tooltip>
         <button data-testid="outside">outside</button>
       </>
     );
 
+    const user = userEvent.setup();
     const button = getByTestId('trigger');
-    const outsideButton = getByTestId('outside');
+    const contentButton = getByTestId('content-button');
 
-    fireEvent.click(button);
+    await user.click(button);
     expect(button.getAttribute('aria-expanded')).toBe('true');
 
-    fireEvent.blur(button, {relatedTarget: outsideButton});
+    contentButton.focus();
+    await user.keyboard('{Tab}');
 
     expect(button.getAttribute('aria-expanded')).toBe('false');
   });

@@ -50,8 +50,8 @@ export function LegalInfoMenu(props) {
              horizontalOffset={props.tooltipOffset - 30}
              arrowPos={120 - props.tooltipOffset}
              content={content}>
-      {(buttonProps) => (
-        <button {...buttonProps}
+      {(triggerProps) => (
+        <button {...triggerProps}
                 className={classNames(headerStyles.contextIcon)}
                 title={t('pageflow_scrolled.public.navigation.legal_info')}>
           <ThemeIcon name="information" />
