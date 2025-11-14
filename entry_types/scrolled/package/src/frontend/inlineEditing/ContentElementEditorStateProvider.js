@@ -3,11 +3,15 @@ import React, {useMemo, useCallback, useRef} from 'react';
 import {ContentElementEditorStateContext} from '../useContentElementEditorState';
 import {useEditorSelection} from './EditorState';
 import {postUpdateTransientContentElementStateMessage} from './postMessage';
+import {useStorylineActivity} from '../storylineActivity';
 
 export function ContentElementEditorStateProvider({id, children}) {
   const {isSelected, select, range} = useEditorSelection(
     useMemo(() => ({id, type: 'contentElement'}), [id])
   );
+
+  const storylineMode = useStorylineActivity();
+  const isSelectedInForeground = isSelected && storylineMode === 'active';
 
   const previousTransientState = useRef({});
   const setTransientState = useCallback(state => {
@@ -20,10 +24,10 @@ export function ContentElementEditorStateProvider({id, children}) {
   const value = useMemo(() => ({
     isEditable: true,
     select,
-    isSelected,
+    isSelected: isSelectedInForeground,
     range,
     setTransientState
-  }), [select, isSelected, range, setTransientState]);
+  }), [select, isSelectedInForeground, range, setTransientState]);
 
   return (
     <ContentElementEditorStateContext.Provider value={value}>

@@ -18,7 +18,7 @@ import {Widget} from './Widget';
 
 import {
   MainStorylineActivity, MainStorylineCoverageProvider, useMainStorylineCoverage
-} from './useScrollPositionLifecycle';
+} from './storylineActivity';
 
 import styles from './Content.module.css';
 

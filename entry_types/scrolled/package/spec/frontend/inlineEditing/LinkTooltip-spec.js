@@ -1,5 +1,6 @@
 import React from 'react';
 import {LinkTooltipProvider, LinkPreview} from 'frontend/inlineEditing/LinkTooltip';
+import {MainStorylineActivity} from 'frontend/storylineActivity';
 
 import {renderInEntry} from 'support';
 import {useFakeTranslations} from 'pageflow/testHelpers';
@@ -14,6 +15,12 @@ describe('LinkTooltip', () => {
     'pageflow_scrolled.inline_editing.link_tooltip.chapter_number': 'Chapter %{number}',
     'pageflow_scrolled.inline_editing.link_tooltip.excursion_with_title': 'Excursion: %{title}',
     'pageflow_scrolled.inline_editing.link_tooltip.untitled_excursion': 'Untitled Excursion'
+  });
+
+  beforeEach(() => {
+    const rect = {width: 100, height: 20, top: 100, left: 100, bottom: 120, right: 200, x: 100, y: 100};
+    Element.prototype.getClientRects = jest.fn(() => [rect]);
+    Element.prototype.getBoundingClientRect = jest.fn(() => rect);
   });
 
   it('displays tooltip for external link on hover', async () => {
@@ -233,5 +240,30 @@ describe('LinkTooltip', () => {
 
     expect(queryByRole('link')).toHaveAttribute('href', '#chapter-20');
     expect(queryByRole('link')).toHaveTextContent('Untitled Excursion');
+  });
+
+  it('hides tooltip when storyline is in background', async () => {
+    const Fixture = ({activeExcursion}) => (
+      <MainStorylineActivity activeExcursion={activeExcursion}>
+        <LinkTooltipProvider>
+          <LinkPreview href="https://example.com" openInNewTab={false}>
+            <a>Test Link</a>
+          </LinkPreview>
+        </LinkTooltipProvider>
+      </MainStorylineActivity>
+    );
+
+    const {getByText, queryByRole, rerender} = render(<Fixture activeExcursion={null} />);
+
+    const user = userEvent.setup();
+    await user.hover(getByText('Test Link'));
+
+    expect(queryByRole('link')).toHaveAttribute('href', 'https://example.com');
+
+    rerender(<Fixture activeExcursion={{id: 1}} />);
+
+    await waitFor(() => {
+      expect(queryByRole('link')).toBeNull();
+    });
   });
 });

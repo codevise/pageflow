@@ -2,16 +2,11 @@ import React, {useRef, useEffect, useContext, useMemo, createContext, useState} 
 import classNames from 'classnames';
 import {useOnScreen} from './useOnScreen';
 import {useDelayedBoolean} from './useDelayedBoolean';
+import {useStorylineActivity} from './storylineActivity';
 
 import styles from './useScrollPositionLifecycle.module.css';
 
 const StaticPreviewContext = createContext(false);
-const StorylineActivityContext = createContext('active');
-
-const MainStorylineCoverageContext = createContext({
-  mainStorylineCovered: false,
-  setMainStorylineCovered: () => {}
-});
 
 export function StaticPreview({children}) {
   return (
@@ -19,35 +14,6 @@ export function StaticPreview({children}) {
       {children}
     </StaticPreviewContext.Provider>
   );
-}
-
-export function MainStorylineActivity({activeExcursion, children}) {
-  const {mainStorylineCovered} = useContext(MainStorylineCoverageContext);
-
-  const mode = activeExcursion
-    ? (mainStorylineCovered ? 'covered' : 'background')
-    : 'active';
-
-  return (
-    <StorylineActivityContext.Provider value={mode}>
-      {children}
-    </StorylineActivityContext.Provider>
-  );
-}
-
-export function MainStorylineCoverageProvider({children}) {
-  const [mainStorylineCovered, setMainStorylineCovered] = useState(false);
-  const value = useMemo(() => ({mainStorylineCovered, setMainStorylineCovered}), [mainStorylineCovered]);
-
-  return (
-    <MainStorylineCoverageContext.Provider value={value}>
-      {children}
-    </MainStorylineCoverageContext.Provider>
-  );
-}
-
-export function useMainStorylineCoverage() {
-  return useContext(MainStorylineCoverageContext);
 }
 
 /**
@@ -70,7 +36,7 @@ export function createScrollPositionLifecycleProvider(Context) {
     const isActiveProbeRef = useRef();
 
     const isStaticPreview = useContext(StaticPreviewContext);
-    const mode = useContext(StorylineActivityContext);
+    const mode = useStorylineActivity();
 
     const shouldLoad = useOnScreen(ref, {rootMargin: '200% 0px 200% 0px'});
     const shouldPrepare = useOnScreen(ref, {rootMargin: '25% 0px 25% 0px'}) && !isStaticPreview;

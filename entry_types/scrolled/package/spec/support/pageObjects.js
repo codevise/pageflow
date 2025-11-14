@@ -263,6 +263,10 @@ function createContentElementPageObject(el) {
       fireEvent.click(selectionRect);
     },
 
+    isSelected() {
+      return selectionRect.getAttribute('aria-selected') === 'true';
+    },
+
     clickInsertAfterButton() {
       const {getByTitle} = within(selectionRect);
       fireEvent.click(getByTitle('Insert content element after'));
