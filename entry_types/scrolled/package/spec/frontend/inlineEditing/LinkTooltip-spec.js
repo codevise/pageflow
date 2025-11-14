@@ -1,5 +1,6 @@
 import React from 'react';
 import {LinkTooltipProvider, LinkPreview} from 'frontend/inlineEditing/LinkTooltip';
+import {MainStorylineActivity} from 'frontend/storylineActivity';
 
 import {renderInEntry} from 'support';
 import {useFakeTranslations} from 'pageflow/testHelpers';
@@ -233,5 +234,30 @@ describe('LinkTooltip', () => {
 
     expect(queryByRole('link')).toHaveAttribute('href', '#chapter-20');
     expect(queryByRole('link')).toHaveTextContent('Untitled Excursion');
+  });
+
+  it('hides tooltip when storyline is in background', async () => {
+    const Fixture = ({activeExcursion}) => (
+      <MainStorylineActivity activeExcursion={activeExcursion}>
+        <LinkTooltipProvider>
+          <LinkPreview href="https://example.com" openInNewTab={false}>
+            <a>Test Link</a>
+          </LinkPreview>
+        </LinkTooltipProvider>
+      </MainStorylineActivity>
+    );
+
+    const {getByText, queryByRole, rerender} = render(<Fixture activeExcursion={null} />);
+
+    const user = userEvent.setup();
+    await user.hover(getByText('Test Link'));
+
+    expect(queryByRole('link')).toHaveAttribute('href', 'https://example.com');
+
+    rerender(<Fixture activeExcursion={{id: 1}} />);
+
+    await waitFor(() => {
+      expect(queryByRole('link')).toBeNull();
+    });
   });
 });

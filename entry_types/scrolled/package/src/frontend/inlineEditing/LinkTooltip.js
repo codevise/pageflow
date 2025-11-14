@@ -16,6 +16,7 @@ import {useChapter, useDownloadableFile} from '../../entryState';
 import {useMainStoryline} from '../../entryState/structure';
 import {SectionThumbnail} from '../SectionThumbnail';
 import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
+import {useStorylineActivity} from '../storylineActivity';
 
 import styles from './LinkTooltip.module.css';
 
@@ -39,6 +40,7 @@ export function LinkTooltipProvider(props) {
 export function LinkTooltipProviderInner({
   disabled, position, floatingStrategy, children, align = 'left', gap = 10
 }) {
+  const storylineMode = useStorylineActivity();
   const [state, setState] = useState();
 
   const arrowRef = useRef();
@@ -86,6 +88,12 @@ export function LinkTooltipProviderInner({
       }
     }
   }, [refs]);
+
+  useEffect(() => {
+    if (storylineMode !== 'active') {
+      update.deactivate({delay: 0})
+    }
+  }, [storylineMode, update])
 
   return (
     <UpdateContext.Provider value={update}>
