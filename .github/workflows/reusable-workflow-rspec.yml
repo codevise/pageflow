@@ -13,8 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby-version: 3.2
-          - ruby-version: 3.2
+          - ruby-version: 3.4
+          - ruby-version: 3.4
             rails-version: "~> 7.2"
 
     env:

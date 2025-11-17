@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'pageflow', Pageflow::VERSION
 
   s.add_dependency 'domino', '~> 0.7.0'
-  s.add_dependency 'factory_bot_rails', '~> 4.8'
+  s.add_dependency 'factory_bot_rails', '~> 6.5'
 
   s.add_dependency 'bootsnap', '~> 1.0'
   s.add_dependency 'listen', '~> 3.0'
