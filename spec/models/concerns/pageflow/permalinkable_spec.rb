@@ -3,7 +3,7 @@ require 'spec_helper'
 module Pageflow
   describe Permalinkable do
     it 'accepts permalink attributes on create' do
-      entry = build(:entry)
+      entry = create(:entry)
       permalink_directory = create(:permalink_directory, site: entry.site)
       entry.update!(permalink_attributes: {
                       slug: 'some-slug',
