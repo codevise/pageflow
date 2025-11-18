@@ -21,7 +21,8 @@ Object.defineProperty(window, 'matchMedia', {
         matches: mockOrientation !== 'portrait'
       };
     }
-    else if (query === '(prefers-reduced-motion)') {
+    else if (query === '(prefers-reduced-motion)' ||
+             query === '(prefers-reduced-motion: reduce)') {
       return {
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
