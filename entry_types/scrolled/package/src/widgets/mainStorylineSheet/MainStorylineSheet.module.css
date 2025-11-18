@@ -21,6 +21,10 @@
   top: calc(var(--previous-scroll-y) * -1);
 }
 
+.fixedPositioningContainingBlock {
+  --fixed-positioning-containing-block-offset: var(--previous-scroll-y);
+}
+
 @media (max-width: 480px) {
   .inactive > .scaler {
     transform: scale(0.94);
