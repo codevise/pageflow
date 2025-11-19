@@ -120,8 +120,6 @@ en:
       feature_name: Icon Scroll Indicator
     iconScrollIndicator:
       widget_type_name: Icon at bottom of viewport
-    excursions:
-      feature_name: Excursions
     section_paddings:
       feature_name: "Section paddings"
   pageflow_scrolled:

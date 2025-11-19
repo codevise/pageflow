@@ -34,7 +34,7 @@ module PageflowScrolled
 
     def self.create_defaults(draft)
       create!(revision: draft, configuration: {main: true})
-      create!(revision: draft, position: 1) if draft.entry.feature_state('excursions')
+      create!(revision: draft, position: 1)
     end
 
     private
