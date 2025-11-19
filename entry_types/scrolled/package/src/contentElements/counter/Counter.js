@@ -73,6 +73,11 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
       clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(animate, 500);
     }
+
+    return () => {
+      clearTimeout(timeoutRef.current);
+      clearInterval(intervalRef.current);
+    };
   }, [animate, resetAnimation, isEditable]);
 
   useContentElementLifecycle({

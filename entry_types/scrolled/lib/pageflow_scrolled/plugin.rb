@@ -47,6 +47,8 @@ module PageflowScrolled
           )
         end
 
+        c.features.enable_by_default('excursion_sheets')
+
         c.features.register('icon_scroll_indicator') do |feature_config|
           feature_config.widget_types.register(
             ReactWidgetType.new(name: 'iconScrollIndicator',
@@ -67,7 +69,6 @@ module PageflowScrolled
         c.features.register('content_element_margins')
         c.features.register('backdrop_size')
         c.features.register('section_paddings')
-        c.features.register('excursions')
 
         c.features.register('faq_page_structured_data') do |feature_config|
           feature_config.entry_structured_data_types.register(

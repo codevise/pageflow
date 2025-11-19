@@ -6,12 +6,6 @@ module PageflowScrolled
       it 'is created by default for drafts of new scrolled entries' do
         entry = create(:entry, type_name: 'scrolled')
 
-        expect(Storyline.all_for_revision(entry.draft)).to have(1).item
-      end
-
-      it 'is created with two storylines when excursions feature is enabled' do
-        entry = create(:entry, type_name: 'scrolled', with_feature: 'excursions')
-
         storylines = Storyline.all_for_revision(entry.draft)
 
         expect(storylines).to have(2).items
