@@ -98,9 +98,6 @@ describe('ConsentBar', () => {
       {
         consent,
         seed: {
-          entry: {
-            locale: 'en',
-          },
           legalInfo: {
             privacy: {
               url: 'http://example.com/privacy'
@@ -112,7 +109,33 @@ describe('ConsentBar', () => {
 
     expect(await findByRole('link')).toHaveAttribute(
       'href',
-      'http://example.com/privacy?lang=en&vendors=someService,otherService#consent'
+      'http://example.com/privacy?vendors=someService%2CotherService#consent'
+    );
+  });
+
+  it('supports privacy page url with params', async () => {
+    const consent = Consent.create();
+    consent.registerVendor('someService', {paradigm: 'opt-in'});
+    consent.registerVendor('otherService', {paradigm: 'opt-in'});
+    consent.closeVendorRegistration();
+
+    const {findByRole} = renderInEntry(
+      <ConsentBar />,
+      {
+        consent,
+        seed: {
+          legalInfo: {
+            privacy: {
+              url: 'http://example.com/privacy?lang=en'
+            }
+          }
+        }
+      }
+    );
+
+    expect(await findByRole('link')).toHaveAttribute(
+      'href',
+      'http://example.com/privacy?lang=en&vendors=someService%2CotherService#consent'
     );
   });
 });
