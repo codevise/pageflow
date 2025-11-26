@@ -101,7 +101,8 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
       this.subview(new TextInputView({
         model: this.externalLink,
         propertyName: 'url',
-        label: I18n.t('pageflow_scrolled.editor.select_link_destination.enter_url')
+        label: I18n.t('pageflow_scrolled.editor.select_link_destination.enter_url'),
+        maxLength: 2000
       })).el
     );
 
