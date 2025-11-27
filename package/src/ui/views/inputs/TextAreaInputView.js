@@ -131,6 +131,19 @@ export const TextAreaInputView = Marionette.ItemView.extend({
     this.editor.fire('destroy:composer');
   },
 
+  updateDisabled: function() {
+    inputView.updateDisabled.call(this);
+
+    if (this.isDisabled()) {
+      this.editor.disable();
+      this.$el.attr('inert', true);
+    }
+    else {
+      this.editor.enable();
+      this.$el.removeAttr('inert');
+    }
+  },
+
   save: function() {
     this.model.set(this.options.propertyName, this.editor.getValue());
   },
