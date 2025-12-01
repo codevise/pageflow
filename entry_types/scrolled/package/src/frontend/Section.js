@@ -40,7 +40,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
 
   const ref = useScrollTarget(section.id);
 
-  const transitionStyles = getTransitionStyles(section, section.previousSection, section.nextSection);
+  const transitionStyles = getTransitionStyles(section);
 
   const backdropSectionClassNames = useBackdropSectionClassNames(backdrop, {
     layout: section.layout,
@@ -195,11 +195,7 @@ function ConnectedSection(props) {
 
   const backdrop = useBackdrop(props.section);
 
-  const transitions = getEnterAndExitTransitions(
-    props.section,
-    props.section.previousSection,
-    props.section.nextSection
-  );
+  const transitions = getEnterAndExitTransitions(props.section);
 
   return <Section {...props}
                   transitions={transitions}

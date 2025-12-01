@@ -70,8 +70,8 @@ export function getAvailableTransitionNames(section, previousSection) {
   return getTransitionNames();
 }
 
-export function getTransitionStyles(section, previousSection, nextSection) {
-  const name = getTransitionStylesName(section, previousSection, nextSection);
+export function getTransitionStyles(section) {
+  const name = getTransitionStylesName(section);
 
   if (!styles[name]) {
     throw new Error(`Unknown transition ${name}`);
@@ -80,15 +80,15 @@ export function getTransitionStyles(section, previousSection, nextSection) {
   return styles[name];
 }
 
-export function getEnterAndExitTransitions(section, previousSection, nextSection) {
+export function getEnterAndExitTransitions(section) {
   return [
-    enterTransitions[getTransitionName(previousSection, section)],
-    exitTransitions[getTransitionName(section, nextSection)]
+    enterTransitions[getTransitionName(section.previousSection, section)],
+    exitTransitions[getTransitionName(section, section.nextSection)]
   ];
 }
 
-export function getTransitionStylesName(section, previousSection, nextSection) {
-  const [enter, exit] = getEnterAndExitTransitions(section, previousSection, nextSection);
+export function getTransitionStylesName(section) {
+  const [enter, exit] = getEnterAndExitTransitions(section);
   return `${enter}${capitalize(exit)}`;
 }
 

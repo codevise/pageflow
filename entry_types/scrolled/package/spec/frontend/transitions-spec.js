@@ -62,10 +62,9 @@ describe('getTransitionStylesName', () => {
         ]
       }
     });
-    const sections = result.current.main[0].sections;
 
     expect(getTransitionStylesName(
-      sections[1], sections[0], sections[2]
+      result.current.main[0].sections[1]
     )).toBe('fadeInScrollOut');
   });
 
@@ -79,10 +78,9 @@ describe('getTransitionStylesName', () => {
         ]
       }
     });
-    const sections = result.current.main[0].sections;
 
     expect(getTransitionStylesName(
-      sections[1], sections[0], sections[2]
+      result.current.main[0].sections[1]
     )).toBe('scrollInScrollOut');
   });
 
@@ -96,10 +94,9 @@ describe('getTransitionStylesName', () => {
         ]
       }
     });
-    const sections = result.current.main[0].sections;
 
     expect(getTransitionStylesName(
-      sections[1], sections[0], sections[2]
+      result.current.main[0].sections[1]
     )).toBe('scrollInScrollOut');
   });
 
@@ -112,10 +109,9 @@ describe('getTransitionStylesName', () => {
         ]
       }
     });
-    const sections = result.current.main[0].sections;
 
     expect(getTransitionStylesName(
-      sections[0], null, sections[1]
+      result.current.main[0].sections[0]
     )).toBe('scrollInScrollOut');
   });
 
@@ -129,10 +125,9 @@ describe('getTransitionStylesName', () => {
         ]
       }
     });
-    const sections = result.current.main[0].sections;
 
     expect(getTransitionStylesName(
-      sections[1], sections[0], sections[2]
+      result.current.main[0].sections[1]
     )).toBe('revealFadeOut');
   });
 
@@ -146,10 +141,9 @@ describe('getTransitionStylesName', () => {
         ]
       }
     });
-    const sections = result.current.main[0].sections;
 
     expect(getTransitionStylesName(
-      sections[1], sections[0], sections[2]
+      result.current.main[0].sections[1]
     )).toBe('revealScrollOut');
   });
 
@@ -163,10 +157,9 @@ describe('getTransitionStylesName', () => {
         ]
       }
     });
-    const sections = result.current.main[0].sections;
 
     expect(getTransitionStylesName(
-      sections[1], sections[0], sections[2]
+      result.current.main[0].sections[1]
     )).toBe('revealScrollOut');
   });
 
@@ -179,10 +172,9 @@ describe('getTransitionStylesName', () => {
         ]
       }
     });
-    const sections = result.current.main[0].sections;
 
     expect(getTransitionStylesName(
-      sections[1], sections[0], null
+      result.current.main[0].sections[1]
     )).toBe('revealScrollOut');
   });
 });
