@@ -56,20 +56,23 @@ export function useEntryStructure() {
         item => item.chapterId === chapter.id
       );
 
+      const isExcursion = chapter.storylineId !== mainStoryline.id;
+
+      chapter = {
+        ...chapter,
+        isExcursion,
+        sections: chapterSections
+      };
+
       chapterSections.forEach(section =>
         section.chapter = chapter
       );
 
-      chapter = {
-        ...chapter,
-        sections: chapterSections
-      };
-
-      if (chapter.storylineId === mainStoryline.id) {
-        main.push(chapter);
+      if (isExcursion) {
+        excursions.push(chapter);
       }
       else {
-        excursions.push(chapter);
+        main.push(chapter);
       }
     });
 

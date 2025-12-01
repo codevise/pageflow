@@ -93,7 +93,14 @@ export function getTransitionStylesName(section) {
 }
 
 function getTransitionName(previousSection, section) {
-  if (!section || !previousSection) {
+  if (!section) {
+    if (previousSection?.chapter?.isExcursion || !previousSection?.fullHeight) {
+      return 'scroll';
+    }
+    return 'fadeBg';
+  }
+
+  if (!previousSection) {
     return 'scroll';
   }
 

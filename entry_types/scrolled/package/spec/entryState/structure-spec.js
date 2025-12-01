@@ -145,6 +145,37 @@ const contentElementsSeed = [
 ];
 
 describe('useEntryStructure', () => {
+  it('sets isExcursion to false for chapters in main storyline', () => {
+    const {result} = renderHookInEntry(
+      () => useEntryStructure(),
+      {
+        seed: {
+          storylines: storylinesSeed,
+          chapters: chaptersSeed,
+          sections: sectionsSeed
+        }
+      }
+    );
+
+    expect(result.current.main[0].isExcursion).toBe(false);
+    expect(result.current.main[1].isExcursion).toBe(false);
+  });
+
+  it('sets isExcursion to true for chapters not in main storyline', () => {
+    const {result} = renderHookInEntry(
+      () => useEntryStructure(),
+      {
+        seed: {
+          storylines: storylinesSeed,
+          chapters: chaptersSeed,
+          sections: sectionsSeed
+        }
+      }
+    );
+
+    expect(result.current.excursions[0].isExcursion).toBe(true);
+  });
+
   const expectedEntryStructure = {
     main: [
       {

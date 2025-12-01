@@ -163,7 +163,22 @@ describe('getTransitionStylesName', () => {
     )).toBe('revealScrollOut');
   });
 
-  it('falls back to scrollOut if next section is missing', () => {
+  it('uses fadeOutBg for fullHeight last section in main storyline', () => {
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {transition: 'scroll'}},
+          {configuration: {transition: 'reveal', fullHeight: true}}
+        ]
+      }
+    });
+
+    expect(getTransitionStylesName(
+      result.current.main[0].sections[1]
+    )).toBe('revealFadeOutBg');
+  });
+
+  it('uses scrollOut for non-fullHeight last section in main storyline', () => {
     const {result} = renderHookInEntry(() => useEntryStructure(), {
       seed: {
         sections: [
@@ -175,6 +190,30 @@ describe('getTransitionStylesName', () => {
 
     expect(getTransitionStylesName(
       result.current.main[0].sections[1]
+    )).toBe('revealScrollOut');
+  });
+
+  it('uses scrollOut for last section in excursion', () => {
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        storylines: [
+          {id: 1, configuration: {main: true}},
+          {id: 2, configuration: {}}
+        ],
+        chapters: [
+          {id: 1, storylineId: 1, configuration: {}},
+          {id: 2, storylineId: 2, configuration: {}}
+        ],
+        sections: [
+          {chapterId: 1, configuration: {transition: 'scroll'}},
+          {chapterId: 2, configuration: {transition: 'scroll'}},
+          {chapterId: 2, configuration: {transition: 'reveal'}}
+        ]
+      }
+    });
+
+    expect(getTransitionStylesName(
+      result.current.excursions[0].sections[1]
     )).toBe('revealScrollOut');
   });
 });
