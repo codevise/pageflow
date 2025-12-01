@@ -4,6 +4,10 @@ import {
   getTransitionStylesName
 } from 'frontend/transitions';
 
+import {useEntryStructure} from 'entryState/structure';
+
+import {renderHookInEntry} from 'support';
+
 describe('getTransitionNames', () => {
   it('returns array of names', () => {
     const result = getTransitionNames();
@@ -49,80 +53,167 @@ describe('getAvailableTransitions', () => {
 
 describe('getTransitionStylesName', () => {
   it('uses fadeIn if both section and previous section have fullHeight', () => {
-    const previousSection = {fullHeight: true, transition: 'scroll'};
-    const section = {fullHeight: true, transition: 'fade'};
-    const nextSection = {transition: 'scroll'};
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {fullHeight: true, transition: 'scroll'}},
+          {configuration: {fullHeight: true, transition: 'fade'}},
+          {configuration: {transition: 'scroll'}}
+        ]
+      }
+    });
 
-    const result = getTransitionStylesName(section, previousSection, nextSection);
-
-    expect(result).toBe('fadeInScrollOut');
+    expect(getTransitionStylesName(
+      result.current.main[0].sections[1]
+    )).toBe('fadeInScrollOut');
   });
 
   it('falls back to scrollIn if previous section does not have fullHeight', () => {
-    const previousSection = {transition: 'scroll'};
-    const section = {fullHeight: true, transition: 'fade'};
-    const nextSection = {fullHeight: true, transition: 'scroll'};
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {transition: 'scroll'}},
+          {configuration: {fullHeight: true, transition: 'fade'}},
+          {configuration: {fullHeight: true, transition: 'scroll'}}
+        ]
+      }
+    });
 
-    const result = getTransitionStylesName(section, previousSection, nextSection);
-
-    expect(result).toBe('scrollInScrollOut');
+    expect(getTransitionStylesName(
+      result.current.main[0].sections[1]
+    )).toBe('scrollInScrollOut');
   });
 
   it('falls back to scrollIn if section does not have fullHeight', () => {
-    const previousSection = {fullHeight: true, transition: 'scroll'};
-    const section = {transition: 'fade'};
-    const nextSection = {fullHeight: true, transition: 'scroll'};
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {fullHeight: true, transition: 'scroll'}},
+          {configuration: {transition: 'fade'}},
+          {configuration: {fullHeight: true, transition: 'scroll'}}
+        ]
+      }
+    });
 
-    const result = getTransitionStylesName(section, previousSection, nextSection);
-
-    expect(result).toBe('scrollInScrollOut');
+    expect(getTransitionStylesName(
+      result.current.main[0].sections[1]
+    )).toBe('scrollInScrollOut');
   });
 
   it('falls back to scrollIn if previous is missing', () => {
-    const section = {transition: 'fade'};
-    const nextSection = {fullHeight: true, transition: 'scroll'};
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {transition: 'fade'}},
+          {configuration: {fullHeight: true, transition: 'scroll'}}
+        ]
+      }
+    });
 
-    const result = getTransitionStylesName(section, null, nextSection);
-
-    expect(result).toBe('scrollInScrollOut');
+    expect(getTransitionStylesName(
+      result.current.main[0].sections[0]
+    )).toBe('scrollInScrollOut');
   });
 
   it('uses fadeOut if both section and next section have fullHeight', () => {
-    const previousSection = {transition: 'scroll'};
-    const section = {fullHeight: true, transition: 'reveal'};
-    const nextSection = {fullHeight: true, transition: 'fade'};
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {transition: 'scroll'}},
+          {configuration: {fullHeight: true, transition: 'reveal'}},
+          {configuration: {fullHeight: true, transition: 'fade'}}
+        ]
+      }
+    });
 
-    const result = getTransitionStylesName(section, previousSection, nextSection);
-
-    expect(result).toBe('revealFadeOut');
+    expect(getTransitionStylesName(
+      result.current.main[0].sections[1]
+    )).toBe('revealFadeOut');
   });
 
   it('falls back to scrollOut if next section does not have fullHeight', () => {
-    const previousSection = {transition: 'scroll'};
-    const section = {fullHeight: true, transition: 'reveal'};
-    const nextSection = {transition: 'fade'};
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {transition: 'scroll'}},
+          {configuration: {fullHeight: true, transition: 'reveal'}},
+          {configuration: {transition: 'fade'}}
+        ]
+      }
+    });
 
-    const result = getTransitionStylesName(section, previousSection, nextSection);
-
-    expect(result).toBe('revealScrollOut');
+    expect(getTransitionStylesName(
+      result.current.main[0].sections[1]
+    )).toBe('revealScrollOut');
   });
 
   it('falls back to scrollOut if section does not have fullHeight', () => {
-    const previousSection = {transition: 'scroll'};
-    const section = {transition: 'reveal'};
-    const nextSection = {fullHeight: true, transition: 'fade'};
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {transition: 'scroll'}},
+          {configuration: {transition: 'reveal'}},
+          {configuration: {fullHeight: true, transition: 'fade'}}
+        ]
+      }
+    });
 
-    const result = getTransitionStylesName(section, previousSection, nextSection);
-
-    expect(result).toBe('revealScrollOut');
+    expect(getTransitionStylesName(
+      result.current.main[0].sections[1]
+    )).toBe('revealScrollOut');
   });
 
-  it('falls back to scrollOut if next section is missing', () => {
-    const previousSection = {transition: 'scroll'};
-    const section = {transition: 'reveal'};
+  it('uses fadeOutBg for fullHeight last section in main storyline', () => {
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {transition: 'scroll'}},
+          {configuration: {transition: 'reveal', fullHeight: true}}
+        ]
+      }
+    });
 
-    const result = getTransitionStylesName(section, previousSection, null);
+    expect(getTransitionStylesName(
+      result.current.main[0].sections[1]
+    )).toBe('revealFadeOutBg');
+  });
 
-    expect(result).toBe('revealScrollOut');
+  it('uses scrollOut for non-fullHeight last section in main storyline', () => {
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {transition: 'scroll'}},
+          {configuration: {transition: 'reveal'}}
+        ]
+      }
+    });
+
+    expect(getTransitionStylesName(
+      result.current.main[0].sections[1]
+    )).toBe('revealScrollOut');
+  });
+
+  it('uses scrollOut for last section in excursion', () => {
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        storylines: [
+          {id: 1, configuration: {main: true}},
+          {id: 2, configuration: {}}
+        ],
+        chapters: [
+          {id: 1, storylineId: 1, configuration: {}},
+          {id: 2, storylineId: 2, configuration: {}}
+        ],
+        sections: [
+          {chapterId: 1, configuration: {transition: 'scroll'}},
+          {chapterId: 2, configuration: {transition: 'scroll'}},
+          {chapterId: 2, configuration: {transition: 'reveal'}}
+        ]
+      }
+    });
+
+    expect(getTransitionStylesName(
+      result.current.excursions[0].sections[1]
+    )).toBe('revealScrollOut');
   });
 });
