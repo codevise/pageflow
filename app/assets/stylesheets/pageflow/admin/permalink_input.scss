@@ -18,6 +18,7 @@ $pageflow-permalink-input-directory-background-position: null !default;
 .pageflow_permalink.input {
   .permalink {
     display: inline-flex;
+    flex-wrap: wrap;
     border: 1px solid $pageflow-permalink-input-border-color;
     border-radius: $pageflow-permalink-input-border-radius;
     background-color: $pageflow-permalink-input-background-color;
@@ -38,6 +39,12 @@ $pageflow-permalink-input-directory-background-position: null !default;
     background-color: $pageflow-permalink-input-base-url-background-color;
     color: $pageflow-permalink-input-base-url-color;
     flex: 1;
+    white-space: nowrap;
+  }
+
+  .permalink_inputs {
+    display: inline-flex;
+    flex: 10;
   }
 
   select,
@@ -61,7 +68,7 @@ $pageflow-permalink-input-directory-background-position: null !default;
 
   input {
     padding-left: 0;
-    flex: 2;
+    flex: 1;
   }
 
   &.no_directories {
