@@ -101,6 +101,8 @@ export {usePortraitOrientation} from './usePortraitOrientation';
 export {useScrollPosition} from './useScrollPosition';
 export {usePhonePlatform} from './usePhonePlatform';
 export {useIsomorphicLayoutEffect} from './useIsomorphicLayoutEffect';
+export {MainStorylineActivity, useStorylineActivity} from './storylineActivity';
+export {useDelayedBoolean} from './useDelayedBoolean';
 
 export {EditableTable} from './EditableTable';
 export {EditableText} from './EditableText';

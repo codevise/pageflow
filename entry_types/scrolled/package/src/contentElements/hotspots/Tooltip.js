@@ -22,9 +22,11 @@ import {
   useContentElementEditorState,
   useContentElementConfigurationUpdate,
   useDarkBackground,
+  useDelayedBoolean,
   useFileWithInlineRights,
   useFloatingPortalRoot,
   useI18n,
+  useStorylineActivity,
   utils,
   LinkButton
 } from 'pageflow-scrolled/frontend';
@@ -53,6 +55,9 @@ export function Tooltip({
   const updateConfiguration = useContentElementConfigurationUpdate();
   const {isEditable} = useContentElementEditorState();
 
+  const storylineMode = useStorylineActivity();
+  const inBackground = useDelayedBoolean(storylineMode !== 'active', {fromTrueToFalse: 200});
+
   const darkBackground = useDarkBackground();
   const light = configuration.invertTooltips ? !darkBackground : darkBackground;
 
@@ -75,7 +80,7 @@ export function Tooltip({
 
   const arrowRef = useRef();
   const {refs, floatingStyles, context} = useFloating({
-    open: containerRect.width > 0 && visible,
+    open: containerRect.width > 0 && visible && !inBackground,
     onOpenChange: open => !open && onDismiss(),
     strategy: floatingStrategy || 'absolute',
     placement: position === 'above' ? 'top' : 'bottom',

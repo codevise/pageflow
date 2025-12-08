@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import BackboneEvents from 'backbone-events-standalone';
@@ -9,6 +9,7 @@ import {
   ContentElementEditorCommandEmitterContext,
   ContentElementEditorStateContext,
   ContentElementLifecycleContext,
+  MainStorylineActivity,
   PhonePlatformContext
 } from 'pageflow-scrolled/frontend';
 
@@ -19,8 +20,9 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
 /**
  * Provide context as if component was rendered inside of a content element.
  *
- * Returns two additionals functions to control content element scroll
- * lifecycle and editor commands: `simulateScrollPosition` and `triggerEditorCommand`.
+ * Returns additional functions to control content element scroll
+ * lifecycle, editor commands, and storyline mode: `simulateScrollPosition`,
+ * `triggerEditorCommand`, and `simulateStorylineMode`.
  *
  * @param {Function} callback - React component or function returning a React component.
  * @param {Object} [options] - Supports all options supported by {@link `renderInEntry`}.
@@ -30,12 +32,13 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
  *
  * @example
  *
- * const {getByRole, simulateScrollPosition, triggerEditorCommand} =
+ * const {getByRole, simulateScrollPosition, triggerEditorCommand, simulateStorylineMode} =
  *   renderInContentElement(<MyContentElement />, {
  *     seed: {...}
  *   });
  * simulateScrollPosition('near viewport');
  * triggerEditorCommand({type: 'HIGHLIGHT'});
+ * simulateStorylineMode('background');
  */
 export function renderInContentElement(ui, {editorState,
                                             phonePlatform = false,
@@ -44,24 +47,33 @@ export function renderInContentElement(ui, {editorState,
                                             seed,
                                             ...options} = {}) {
   const emitter = Object.assign({}, BackboneEvents);
+  const storylineEmitter = Object.assign({}, BackboneEvents);
 
   function Wrapper({children}) {
     const defaultEditorState = useContext(ContentElementEditorStateContext);
+    const [storylineMode, setStorylineMode] = useState('active');
+
+    useEffect(() => {
+      storylineEmitter.on('storylineMode', setStorylineMode);
+      return () => storylineEmitter.off('storylineMode', setStorylineMode);
+    }, []);
 
     return (
-      <PhonePlatformContext.Provider value={phonePlatform}>
-        <DndProvider backend={HTML5Backend}>
-          <ContentElementAttributesProvider id={42}>
-            <ContentElementEditorCommandEmitterContext.Provider
-              value={emitter}>
-              <ContentElementEditorStateContext.Provider
-                value={{...defaultEditorState, ...editorState}}>
-                {OriginalWrapper ? <OriginalWrapper children={children} /> : children}
-              </ContentElementEditorStateContext.Provider>
-            </ContentElementEditorCommandEmitterContext.Provider>
-          </ContentElementAttributesProvider>
-        </DndProvider>
-      </PhonePlatformContext.Provider>
+      <MainStorylineActivity activeExcursion={storylineMode !== 'active' ? {id: 1} : null}>
+        <PhonePlatformContext.Provider value={phonePlatform}>
+          <DndProvider backend={HTML5Backend}>
+            <ContentElementAttributesProvider id={42}>
+              <ContentElementEditorCommandEmitterContext.Provider
+                value={emitter}>
+                <ContentElementEditorStateContext.Provider
+                  value={{...defaultEditorState, ...editorState}}>
+                  {OriginalWrapper ? <OriginalWrapper children={children} /> : children}
+                </ContentElementEditorStateContext.Provider>
+              </ContentElementEditorCommandEmitterContext.Provider>
+            </ContentElementAttributesProvider>
+          </DndProvider>
+        </PhonePlatformContext.Provider>
+      </MainStorylineActivity>
     );
   }
 
@@ -83,6 +95,11 @@ export function renderInContentElement(ui, {editorState,
       act(() => {
         emitter.trigger(`command:42`, command)
       })
+    },
+    simulateStorylineMode(mode) {
+      act(() => {
+        storylineEmitter.trigger('storylineMode', mode)
+      });
     }
   };
 }
