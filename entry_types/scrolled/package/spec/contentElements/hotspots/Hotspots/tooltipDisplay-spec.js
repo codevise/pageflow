@@ -8,6 +8,7 @@ import tooltipStyles from 'contentElements/hotspots/Tooltip.module.css';
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import {asyncHandlingOf} from 'support/asyncHandlingOf'
 import '@testing-library/jest-dom/extend-expect'
+import {act, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import 'support/fakeResizeObserver';
 
@@ -15,6 +16,10 @@ jest.mock('contentElements/hotspots/TooltipPortal');
 jest.mock('contentElements/hotspots/useTooltipTransitionStyles');
 
 describe('Hotspots', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('shows tooltip on area hover', async () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},
@@ -225,6 +230,85 @@ describe('Hotspots', () => {
     );;
 
     expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull();
+  });
+
+  it('hides tooltip when storyline enters background', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, simulateScrollPosition, simulateStorylineMode} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    await user.hover(clickableArea(container));
+    expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
+
+    simulateStorylineMode('background');
+
+    await waitFor(() =>
+      expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull()
+    );
+  });
+
+  it('shows tooltip again after delay when storyline becomes active', async () => {
+    jest.useFakeTimers();
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+        }
+      }
+    };
+
+    const user = userEvent.setup({advanceTimers: jest.advanceTimersByTime});
+    const {container, simulateScrollPosition, simulateStorylineMode} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    await user.hover(clickableArea(container));
+    simulateStorylineMode('background');
+    await waitFor(() =>
+      expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull()
+    );
+
+    simulateStorylineMode('active');
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull();
+
+    act(() => jest.advanceTimersByTime(200));
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
   });
 });
 
