@@ -37,6 +37,31 @@ module PageflowScrolled
         expect(response.body).to have_selector('figcaption', text: 'Some caption')
       end
 
+      it 'server side renders external links with target top in embed mode' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.published_revision)
+        section = create(:section, chapter:)
+        create(:content_element,
+               section:,
+               type_name: 'textBlock',
+               configuration: {
+                 value: [{
+                   type: 'paragraph',
+                   children: [
+                     {
+                       type: 'link',
+                       href: 'https://example.com',
+                       children: [{text: 'External link'}]
+                     }
+                   ]
+                 }]
+               })
+
+        get_with_entry_env(:show, entry:, embed: true)
+
+        expect(response.body).to have_selector('a[href="https://example.com"][target="_top"]')
+      end
+
       it 'renders generated media queries if frontend v2' do
         entry = create(:entry, :published, type_name: 'scrolled')
 
@@ -149,6 +174,30 @@ module PageflowScrolled
 
         expect(response.body).to have_selector('link[type="application/atom+xml"]',
                                                visible: false)
+      end
+
+      it 'includes embed false in seed data by default' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry:)
+
+        expect(response.body).to include('"embed":false')
+      end
+
+      it 'includes embed true in seed data for embed requests' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry:, embed: true)
+
+        expect(response.body).to include('"embed":true')
+      end
+
+      it 'includes origin_url in seed data' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry:)
+
+        expect(response.body).to include('"originUrl":"http://test.host/test/entry"')
       end
     end
   end

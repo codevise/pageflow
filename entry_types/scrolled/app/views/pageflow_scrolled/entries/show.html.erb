@@ -35,7 +35,7 @@
         </script>
       <% end %>
 
-      <% ssr_html = local_assigns[:skip_ssr] ? '' : render_scrolled_entry(entry) %>
+      <% ssr_html = local_assigns[:skip_ssr] ? '' : render_scrolled_entry(entry, local_assigns[:seed_options] || {}) %>
 
       <% if !local_assigns[:skip_ssr] && (params[:frontend] == 'v2' || entry.feature_state('frontend_v2')) %>
         <%= generated_media_queries_tags_for(ssr_html) %>

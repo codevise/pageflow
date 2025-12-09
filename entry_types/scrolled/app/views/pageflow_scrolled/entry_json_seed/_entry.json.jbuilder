@@ -48,6 +48,8 @@ json.config do
   )
 
   json.cut_off entry.cutoff_mode_enabled_for?(request)
+  json.embed options.fetch(:embed, false)
+  json.origin_url options[:origin_url] if options[:origin_url]
 end
 
 unless options[:skip_i18n]

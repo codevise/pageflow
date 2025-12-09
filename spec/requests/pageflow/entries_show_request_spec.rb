@@ -6,10 +6,11 @@ module Pageflow
       lambda do |env|
         entry = EntriesControllerEnvHelper.get_published_entry_from_env(env)
         mode = EntriesControllerEnvHelper.get_entry_mode_from_env(env)
+        embed = EntriesControllerEnvHelper.get_embed_from_env(env)
 
         ['200',
          {'Content-Type' => 'text/html'},
-         ["#{entry.title} #{mode} rendered by entry type frontend app."]]
+         ["#{entry.title} #{mode} embed=#{embed} rendered by entry type frontend app."]]
       end
     end
 
@@ -59,7 +60,16 @@ module Pageflow
         get(short_entry_url(entry))
 
         expect(response.status).to eq(200)
-        expect(response.body).to include('some-entry published rendered by entry type frontend app')
+        expect(response.body).to include('some-entry published embed=false rendered by entry type frontend app')
+      end
+
+      it 'passes embed=true for embed requests' do
+        entry = create(:entry, :published, type_name: 'test', title: 'some-entry')
+
+        get(entry_embed_url(entry))
+
+        expect(response.status).to eq(200)
+        expect(response.body).to include('some-entry published embed=true rendered by entry type frontend app')
       end
 
       it 'supports finding published entry based on permalink' do
@@ -79,7 +89,7 @@ module Pageflow
 
         expect(response.status).to eq(200)
         expect(response.body)
-          .to include('some-entry published rendered by entry type frontend app')
+          .to include('some-entry published embed=false rendered by entry type frontend app')
       end
 
       it 'supports finding published entry based on permalink with directory' do
@@ -100,7 +110,7 @@ module Pageflow
 
         expect(response.status).to eq(200)
         expect(response.body)
-          .to include('some-entry published rendered by entry type frontend app')
+          .to include('some-entry published embed=false rendered by entry type frontend app')
       end
 
       it 'redirects to renamed permalink' do
@@ -227,7 +237,7 @@ module Pageflow
         get('http://my.example.com/non-existent-entry')
 
         expect(response.status).to eq(404)
-        expect(response.body).to include('Custom 404 published rendered by entry type frontend app')
+        expect(response.body).to include('Custom 404 published embed=false rendered by entry type frontend app')
       end
 
       it 'falls back to default 404 when site has no custom_404_entry' do

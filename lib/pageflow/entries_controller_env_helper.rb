@@ -28,9 +28,19 @@ module Pageflow
       EntriesControllerEnvHelper.get_pageflow_hash(env)['entry_mode']
     end
 
+    # Returns `true` if the entry is being rendered as an embed. The
+    # information will be placed in the request env by the Pageflow
+    # engine before delegating to the entry type's frontend app.
+    #
+    # Use {EntriesControllerTestHelper} to set up the request
+    # environment in controller tests.
+    def get_embed_from_env(env = request.env)
+      EntriesControllerEnvHelper.get_pageflow_hash(env)['embed']
+    end
+
     # @api private
-    def self.add_entry_info_to_env(env, entry:, mode: nil)
-      env['pageflow'] = {'published_entry' => entry, 'entry_mode' => mode}
+    def self.add_entry_info_to_env(env, entry:, mode: nil, embed: false)
+      env['pageflow'] = {'published_entry' => entry, 'entry_mode' => mode, 'embed' => embed}
     end
 
     # @api private

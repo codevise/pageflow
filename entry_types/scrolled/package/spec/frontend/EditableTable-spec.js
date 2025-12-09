@@ -4,6 +4,7 @@ import {EditableTable} from 'frontend';
 import * as phoneLayout from 'frontend/usePhoneLayout';
 
 import {render, screen} from '@testing-library/react';
+import {renderInEntry} from 'support';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('EditableTable', () => {
@@ -74,7 +75,7 @@ describe('EditableTable', () => {
       ]
     }];
 
-    const {getByRole} = render(<EditableTable value={value} />);
+    const {getByRole} = renderInEntry(<EditableTable value={value} />);
 
     expect(getByRole('link')).toHaveTextContent('here')
     expect(getByRole('link')).toHaveAttribute('href', 'https://example.com')
@@ -111,7 +112,7 @@ describe('EditableTable', () => {
       ]
     }];
 
-    const {getByRole} = render(<EditableTable value={value} />);
+    const {getByRole} = renderInEntry(<EditableTable value={value} />);
 
     expect(getByRole('link')).toHaveTextContent('here')
     expect(getByRole('link')).toHaveAttribute('target', '_blank')
