@@ -37,5 +37,23 @@ module Pageflow
         }.to raise_error(/Use Pageflow::EntriesControllerTestHelper/)
       end
     end
+
+    describe '#get_embed_from_env' do
+      it 'reads embed from where add_entry_info_to_env puts it' do
+        env = {}
+        entry = build(:entry)
+
+        EntriesControllerEnvHelper.add_entry_info_to_env(env, entry:, embed: true)
+        result = EntriesControllerEnvHelper.get_embed_from_env(env)
+
+        expect(result).to be(true)
+      end
+
+      it 'fails with a helpful message when info is missing in env' do
+        expect {
+          EntriesControllerEnvHelper.get_embed_from_env({})
+        }.to raise_error(/Use Pageflow::EntriesControllerTestHelper/)
+      end
+    end
   end
 end

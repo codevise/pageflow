@@ -119,7 +119,10 @@ module Pageflow
     end
 
     def delegate_to_entry_type_frontend_app!(entry, override_status: nil)
-      EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry:, mode: :published)
+      EntriesControllerEnvHelper.add_entry_info_to_env(request.env,
+                                                       entry:,
+                                                       mode: :published,
+                                                       embed: params[:embed].present?)
 
       delegate_to_rack_app!(entry.entry_type.frontend_app) do |result|
         status, headers, body = result
