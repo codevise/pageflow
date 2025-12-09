@@ -1,8 +1,10 @@
 import React from 'react';
 
-import {useChapter, useDownloadableFile} from '../entryState';
+import {useChapter, useDownloadableFile, useEmbedOriginUrl} from '../entryState';
 
 export function Link({attributes, children, href, openInNewTab}) {
+  const embedOriginUrl = useEmbedOriginUrl();
+
   if (href?.chapter) {
     return (
       <ChapterLink attributes={attributes}
@@ -26,9 +28,7 @@ export function Link({attributes, children, href, openInNewTab}) {
     );
   }
   else {
-    const targetAttributes = openInNewTab ?
-                             {target: '_blank', rel: 'noopener noreferrer'} :
-                             {};
+    const targetAttributes = getTargetAttributes({href, openInNewTab, embedOriginUrl});
 
     return <a {...attributes}
               {...targetAttributes}
@@ -56,4 +56,19 @@ function FileLink({attributes, children, fileOptions}) {
             href={file?.urls.download}>
     {children}
   </a>;
+}
+
+function getTargetAttributes({href, openInNewTab, embedOriginUrl}) {
+  if (openInNewTab) {
+    return {target: '_blank', rel: 'noopener noreferrer'};
+  }
+
+  if (embedOriginUrl &&
+      typeof href === 'string' &&
+      !href.startsWith('#') &&
+      !href.startsWith(embedOriginUrl)) {
+    return {target: '_top'};
+  }
+
+  return {};
 }

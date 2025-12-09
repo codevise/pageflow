@@ -1,6 +1,7 @@
 export {useAdditionalSeedData} from './additionalSeedData';
 export {useContentElementConsentVendor} from './consentVendors';
 export {useCutOff} from './cutoff';
+export {useEmbedOriginUrl} from './embedOriginUrl';
 export {useShareProviders, useShareUrl} from './sharing';
 export {useEntryTranslations} from './entryTranslations';
 export {

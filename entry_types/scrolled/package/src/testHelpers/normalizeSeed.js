@@ -49,6 +49,8 @@ export function normalizeSeed({
   consentVendors,
   contentElementConsentVendors,
   cutOff,
+  embed,
+  originUrl,
   fileLicenses,
   entryTranslations
 } = {}) {
@@ -96,6 +98,8 @@ export function normalizeSeed({
       consentVendors: consentVendors || [],
       contentElementConsentVendors: contentElementConsentVendors || {},
       cutOff,
+      embed,
+      originUrl,
       fileLicenses: fileLicenses || {},
       entryTranslations: entryTranslations || []
     },
