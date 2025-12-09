@@ -1408,6 +1408,26 @@ module PageflowScrolled
         end
       end
 
+      context 'embed' do
+        it 'renders false by default' do
+          entry = create(:published_entry,
+                         type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(config: {embed: false})
+        end
+
+        it 'renders true when embed option is true' do
+          entry = create(:published_entry,
+                         type_name: 'scrolled')
+
+          result = render(helper, entry, embed: true)
+
+          expect(result).to include_json(config: {embed: true})
+        end
+      end
+
       context 'cutoff' do
         it 'renders false by default' do
           entry = create(:published_entry,

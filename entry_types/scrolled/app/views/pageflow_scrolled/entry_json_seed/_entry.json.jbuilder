@@ -48,6 +48,7 @@ json.config do
   )
 
   json.cut_off entry.cutoff_mode_enabled_for?(request)
+  json.embed options.fetch(:embed, false)
 end
 
 unless options[:skip_i18n]

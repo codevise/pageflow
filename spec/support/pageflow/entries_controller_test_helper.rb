@@ -32,7 +32,10 @@ module Pageflow
     #
     # @param mode [:published|:preview] Whether to render the
     #   published revision or the draft.
-    def get_with_entry_env(action, entry:, mode: :published, params: {})
+    #
+    # @param embed [Boolean] Whether the entry is being rendered as an
+    #   embed.
+    def get_with_entry_env(action, entry:, mode: :published, embed: false, params: {})
       revision =
         if mode == :published
           entry.published_revision
@@ -43,7 +46,8 @@ module Pageflow
       published_entry = PublishedEntry.new(entry, revision)
       EntriesControllerEnvHelper.add_entry_info_to_env(request.env,
                                                        entry: published_entry,
-                                                       mode:)
+                                                       mode:,
+                                                       embed:)
       get(action, params: {**params})
     end
   end

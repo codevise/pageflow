@@ -150,6 +150,22 @@ module PageflowScrolled
         expect(response.body).to have_selector('link[type="application/atom+xml"]',
                                                visible: false)
       end
+
+      it 'includes embed false in seed data by default' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry:)
+
+        expect(response.body).to include('"embed":false')
+      end
+
+      it 'includes embed true in seed data for embed requests' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry:, embed: true)
+
+        expect(response.body).to include('"embed":true')
+      end
     end
   end
 end
