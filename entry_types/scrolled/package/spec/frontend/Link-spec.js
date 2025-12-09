@@ -82,4 +82,59 @@ describe('Link', () => {
       });
     });
   });
+
+  describe('with chapter href', () => {
+    it('renders link to chapter slug', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{chapter: 10}}>Click</Link>,
+        {
+          seed: {
+            chapters: [{id: 1, permaId: 10, configuration: {title: 'The Intro'}}]
+          }
+        }
+      );
+
+      expect(getByRole('link')).toHaveAttribute('href', '#the-intro');
+      expect(getByRole('link')).not.toHaveAttribute('target');
+    });
+  });
+
+  describe('with section href', () => {
+    it('renders link to section anchor', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{section: 10}}>Click</Link>,
+        {
+          seed: {
+            sections: [{id: 1, permaId: 10}]
+          }
+        }
+      );
+
+      expect(getByRole('link')).toHaveAttribute('href', '#section-10');
+      expect(getByRole('link')).not.toHaveAttribute('target');
+    });
+  });
+
+  describe('with file href', () => {
+    it('renders download link with target blank', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{file: {permaId: 100, collectionName: 'imageFiles'}}}>Click</Link>,
+        {
+          seed: {
+            imageFileUrlTemplates: {
+              original: ':id_partition/original/:basename.:extension'
+            },
+            imageFiles: [{id: 1, permaId: 100, displayName: 'Some File.jpg'}]
+          }
+        }
+      );
+
+      expect(getByRole('link')).toHaveAttribute(
+        'href',
+        '000/000/001/original/image.jpg?download=Some%20File.jpg'
+      );
+      expect(getByRole('link')).toHaveAttribute('target', '_blank');
+      expect(getByRole('link')).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+  });
 });

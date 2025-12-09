@@ -97,6 +97,9 @@ describe('EditableText', () => {
     expect(getByRole('listitem')).toHaveTextContent('List item')
   });
 
+  // Link behavior is tested in Link-spec.js.
+  // These tests verify EditableText correctly renders links via Link.
+
   it('renders links', () => {
     const value = [{
       type: 'paragraph',
@@ -113,37 +116,11 @@ describe('EditableText', () => {
       ]
     }]
 
-    const {getByRole} = render(<EditableText value={value} />);
+    const {getByRole} = renderInEntry(<EditableText value={value} />);
 
     expect(getByRole('link')).toHaveTextContent('here')
     expect(getByRole('link')).toHaveAttribute('href', 'https://example.com')
     expect(getByRole('link')).toHaveClass('typography-contentLink')
-    expect(getByRole('link')).not.toHaveAttribute('target')
-    expect(getByRole('link')).not.toHaveAttribute('rel')
-  });
-
-  it('supports rendering links with target blank', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: 'Find more '},
-        {
-          type: 'link',
-          href: 'https://example.com',
-          openInNewTab: true,
-          children: [
-            {text: 'here'}
-          ]
-        },
-        {text: '.'}
-      ]
-    }]
-
-    const {getByRole} = render(<EditableText value={value} />);
-
-    expect(getByRole('link')).toHaveTextContent('here')
-    expect(getByRole('link')).toHaveAttribute('target', '_blank')
-    expect(getByRole('link')).toHaveAttribute('rel', 'noopener noreferrer')
   });
 
   it('supports rendering internal chapter links', () => {
@@ -170,68 +147,6 @@ describe('EditableText', () => {
     expect(getByRole('link')).toHaveTextContent('here')
     expect(getByRole('link')).toHaveAttribute('href', '#the-intro')
     expect(getByRole('link')).toHaveClass('typography-contentLink')
-    expect(getByRole('link')).not.toHaveAttribute('target')
-    expect(getByRole('link')).not.toHaveAttribute('rel')
-  });
-
-  it('supports rendering internal section links', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: 'Find more '},
-        {
-          type: 'link',
-          href: {section: 10},
-          children: [
-            {text: 'here'}
-          ]
-        },
-        {text: '.'}
-      ]
-    }];
-    const seed = {
-      sections: [{id: 1, permaId: 10}]
-    };
-
-    const {getByRole} = renderInEntry(<EditableText value={value} />, {seed});
-
-    expect(getByRole('link')).toHaveTextContent('here')
-    expect(getByRole('link')).toHaveAttribute('href', '#section-10')
-    expect(getByRole('link')).toHaveClass('typography-contentLink')
-    expect(getByRole('link')).not.toHaveAttribute('target')
-    expect(getByRole('link')).not.toHaveAttribute('rel')
-  });
-
-  it('supports rendering file links', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: 'Find more '},
-        {
-          type: 'link',
-          href: {file: {permaId: 100, collectionName: 'imageFiles'}},
-          children: [
-            {text: 'here'}
-          ]
-        },
-        {text: '.'}
-      ]
-    }];
-    const seed = {
-      imageFileUrlTemplates: {
-        original: ':id_partition/original/:basename.:extension'
-      },
-      sections: [{id: 1, permaId: 10}],
-      imageFiles: [{id: 1, permaId: 100, displayName: 'MyImage.jpg'}]
-    };
-
-    const {getByRole} = renderInEntry(<EditableText value={value} />, {seed});
-
-    expect(getByRole('link')).toHaveTextContent('here')
-    expect(getByRole('link')).toHaveAttribute('href', '000/000/001/original/image.jpg?download=MyImage.jpg')
-    expect(getByRole('link')).toHaveClass('typography-contentLink')
-    expect(getByRole('link')).toHaveAttribute('target', '_blank')
-    expect(getByRole('link')).toHaveAttribute('rel', 'noopener noreferrer')
   });
 
   it('renders zero width no break space in empty leafs to prevent empty paragraphs from collapsing', () => {
