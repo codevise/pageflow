@@ -198,7 +198,7 @@ export function Tooltip({
                                         light ? styles.light : styles.dark,
                                         {[styles.paddingForScrollButtons]: keepInViewport,
                                          [styles.minWidth]: presentOrEditing('link')})}
-                  onMouseEnter={onMouseEnter}
+                  onMouseEnter={() => storylineMode === 'active' && onMouseEnter()}
                   onMouseLeave={onMouseLeave}
                   onClick={onClick}
                   {...getFloatingProps()}>
