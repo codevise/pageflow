@@ -110,7 +110,10 @@ export function Tooltip({
 
   const dismiss = useDismiss(context, {
     outsidePressEvent: 'mousedown',
-    outsidePress: event => !insidePagerButton(event.target)
+    outsidePress: event => !insidePagerButton(event.target),
+    capture: {
+      outsidePress: false
+    }
   });
 
   const {getReferenceProps, getFloatingProps} = useInteractions([
