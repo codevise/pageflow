@@ -23,12 +23,14 @@ export function ExcursionSheet({excursion, onClose, setIsCoveringBackground, chi
         <CloseButton invert={intersectingSectionInverted}
                      onClick={onClose} />
         <div ref={contentRef} className={styles.content}>
-          <SectionIntersectionObserver
-            sections={excursion.sections}
-            probeClassName={styles.probe}
-            onChange={section => setIntersectingSectionInverted(section?.invert)}>
-            {children}
-          </SectionIntersectionObserver>
+          <div className={styles.clip}>
+            <SectionIntersectionObserver
+              sections={excursion.sections}
+              probeClassName={styles.probe}
+              onChange={section => setIntersectingSectionInverted(section?.invert)}>
+              {children}
+            </SectionIntersectionObserver>
+          </div>
         </div>
         <ReturnButton label={excursion.returnButtonLabel}
                       onClose={onClose} />

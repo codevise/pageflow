@@ -38,6 +38,9 @@
   box-shadow: 0 0 20px 5px rgb(0 0 0 / 0.5);
   position: relative;
   overflow: clip;
+}
+
+.clip {
   clip-path: inset(0);
 }
 
