@@ -166,6 +166,14 @@ module PageflowScrolled
 
         expect(response.body).to include('"embed":true')
       end
+
+      it 'includes origin_url in seed data' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry:)
+
+        expect(response.body).to include('"originUrl":"http://test.host/test/entry"')
+      end
     end
   end
 end

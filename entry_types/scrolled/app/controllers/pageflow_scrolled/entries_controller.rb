@@ -22,7 +22,10 @@ module PageflowScrolled
         locals: {
           entry:,
           widget_scope: get_entry_mode_from_env,
-          seed_options: {embed: get_embed_from_env}
+          seed_options: {
+            embed: get_embed_from_env,
+            origin_url: request.original_url
+          }
         }
       )
     end
