@@ -4,9 +4,9 @@ module PageflowScrolled
     include Pageflow::RenderJsonHelper
     include PageflowScrolled::EntryJsonSeedHelper
 
-    def render_scrolled_entry(entry)
+    def render_scrolled_entry(entry, options = {})
       seed_json = render_json do |json|
-        scrolled_entry_json_seed(json, entry)
+        scrolled_entry_json_seed(json, entry, options)
       end
 
       ReactServerSideRenderingHelper.renderer.render('Root', "{seed: #{seed_json}}", {})
