@@ -105,6 +105,9 @@ Gem::Specification.new do |s|
   # React.js assets and server side rendering helpers
   s.add_dependency 'react-rails', '~> 2.6.2'
 
+  # Use connection pool compatible with react-rails
+  s.add_dependency 'connection_pool', '< 3'
+
   # Templating engine used to render jst tempaltes.
   s.add_dependency 'ejs', '~> 1.1'
 
