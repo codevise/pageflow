@@ -501,6 +501,46 @@ describe('Hotspots', () => {
 
     expect(scroller.scrollTo).toHaveBeenCalled();
   });
+
+  it('scrolls pan zoom scroller when link button is clicked', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      enablePanZoom: 'always',
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          link: [{type: 'heading', children: [{text: 'Some link'}]}]
+        }
+      },
+      tooltipLinks: {
+        1: {href: 'https://example.com', openInNewTab: true}
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, getByRole, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    simulateIntersecting(container.querySelectorAll(`.${scrollerStyles.step}`)[1]);
+    const scroller = container.querySelector(`.${scrollerStyles.scroller}`);
+    scroller.scrollTo = jest.fn();
+    await user.click(getByRole('link'));
+
+    expect(scroller.scrollTo).toHaveBeenCalled();
+  });
 });
 
 function clickableArea(container) {

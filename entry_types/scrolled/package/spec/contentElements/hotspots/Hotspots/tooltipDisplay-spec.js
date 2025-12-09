@@ -195,6 +195,43 @@ describe('Hotspots', () => {
     expect(container.querySelector(`.${tooltipStyles.box}`)).not.toBeNull();
   });
 
+  it('hides tooltip when link button is clicked', async () => {
+    const seed = {
+      imageFileUrlTemplates: {large: ':id_partition/image.webp'},
+      imageFiles: [{id: 1, permaId: 100}]
+    };
+    const configuration = {
+      image: 100,
+      areas: [
+        {
+          id: 1,
+          outline: [[10, 20], [10, 30], [40, 30], [40, 20]],
+          indicatorPosition: [20, 25],
+        }
+      ],
+      tooltipTexts: {
+        1: {
+          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          link: [{type: 'heading', children: [{text: 'Some link'}]}]
+        }
+      },
+      tooltipLinks: {
+        1: {href: 'https://example.com', openInNewTab: true}
+      }
+    };
+
+    const user = userEvent.setup();
+    const {container, getByRole, simulateScrollPosition} = renderInContentElement(
+      <Hotspots configuration={configuration} />, {seed}
+    );
+    simulateScrollPosition('near viewport');
+
+    await user.hover(clickableArea(container));
+    await user.click(getByRole('link'));
+
+    expect(container.querySelector(`.${tooltipStyles.box}`)).toBeNull();
+  });
+
   it('hides when backdrop element is intersecting content', async () => {
     const seed = {
       imageFileUrlTemplates: {large: ':id_partition/image.webp'},

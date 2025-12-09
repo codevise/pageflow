@@ -48,7 +48,7 @@ export function Tooltip({
   imageFile, containerRect, keepInViewport, floatingStrategy,
   aboveNavigationWidgets,
   wrapperRef,
-  onMouseEnter, onMouseLeave, onClick, onDismiss,
+  onMouseEnter, onMouseLeave, onClick, onDismiss, onLinkClick
 }) {
   const {t: translateWithEntryLocale} = useI18n();
   const {t} = useI18n({locale: 'ui'});
@@ -239,7 +239,8 @@ export function Tooltip({
                               value={tooltipTexts[area.id]?.link}
                               allowRemove={true}
                               onTextChange={value => handleTextChange('link', value)}
-                              onLinkChange={value => handleLinkChange(value)} />}
+                              onLinkChange={value => handleLinkChange(value)}
+                              onClick={onLinkClick} />}
                </div>
              </div>
            </div>

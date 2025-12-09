@@ -38,7 +38,7 @@ export function LinkTooltipProvider(props) {
 }
 
 export function LinkTooltipProviderInner({
-  disabled, position, floatingStrategy, children, align = 'left', gap = 10
+  disabled, position, floatingStrategy, onClick, children, align = 'left', gap = 10
 }) {
   const storylineMode = useStorylineActivity();
   const [state, setState] = useState();
@@ -103,6 +103,7 @@ export function LinkTooltipProviderInner({
                      floatingStyles={floatingStyles}
                      floatingContext={floatingContext}
                      arrowRef={arrowRef}
+                     onClick={onClick}
                      disabled={disabled} />
       </FloatingPortal>
       {children}
@@ -130,17 +131,25 @@ export function LinkPreview({disabled, href, openInNewTab, children, className})
   );
 }
 
-export function LinkTooltip({disabled, setFloating, floatingStyles, floatingContext, arrowRef, state}) {
+export function LinkTooltip({disabled, setFloating, floatingStyles, floatingContext, arrowRef, onClick, state}) {
   const {keep, deactivate} = useContext(UpdateContext);
 
   if (disabled || !state || !state.href) {
     return null;
   }
 
+  function handleClick(event) {
+    event.stopPropagation();
+
+    if (onClick) {
+      onClick(event);
+    }
+  }
+
   return (
     <div ref={setFloating}
          className={classNames(styles.linkTooltip)}
-         onClick={e => e.stopPropagation()}
+         onClick={handleClick}
          onMouseEnter={keep}
          onMouseLeave={deactivate}
          style={floatingStyles}>
