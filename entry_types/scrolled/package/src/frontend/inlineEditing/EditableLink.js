@@ -12,6 +12,7 @@ import styles from './EditableLink.module.css';
 export function EditableLink({
   className, href, openInNewTab, children,
   onChange,
+  onClick,
   linkPreviewDisabled,
   linkPreviewPosition = 'below',
   linkPreviewAlign = 'center',
@@ -43,6 +44,7 @@ export function EditableLink({
       <LinkTooltipProvider position={linkPreviewPosition}
                            floatingStrategy={linkPreviewFloatingStrategy}
                            align={linkPreviewAlign}
+                           onClick={onClick}
                            gap={5}>
         <LinkPreview disabled={linkPreviewDisabled}
                      href={href}

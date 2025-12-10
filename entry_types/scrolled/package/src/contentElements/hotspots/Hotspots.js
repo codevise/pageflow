@@ -193,6 +193,11 @@ export function HotspotsImage({
                onMouseEnter={() => setHoveredIndex(index)}
                onMouseLeave={() => setHoveredIndex(-1)}
                onClick={() => setActiveIndex(index)}
+               onLinkClick={event => {
+                 activateArea(-1);
+                 setHoveredIndex(-1);
+                 event.stopPropagation();
+               }}
                onDismiss={() => activateArea(-1)} />
     );
   }

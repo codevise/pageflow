@@ -48,7 +48,7 @@ export function Tooltip({
   imageFile, containerRect, keepInViewport, floatingStrategy,
   aboveNavigationWidgets,
   wrapperRef,
-  onMouseEnter, onMouseLeave, onClick, onDismiss,
+  onMouseEnter, onMouseLeave, onClick, onDismiss, onLinkClick
 }) {
   const {t: translateWithEntryLocale} = useI18n();
   const {t} = useI18n({locale: 'ui'});
@@ -110,7 +110,10 @@ export function Tooltip({
 
   const dismiss = useDismiss(context, {
     outsidePressEvent: 'mousedown',
-    outsidePress: event => !insidePagerButton(event.target)
+    outsidePress: event => !insidePagerButton(event.target),
+    capture: {
+      outsidePress: false
+    }
   });
 
   const {getReferenceProps, getFloatingProps} = useInteractions([
@@ -198,7 +201,7 @@ export function Tooltip({
                                         light ? styles.light : styles.dark,
                                         {[styles.paddingForScrollButtons]: keepInViewport,
                                          [styles.minWidth]: presentOrEditing('link')})}
-                  onMouseEnter={onMouseEnter}
+                  onMouseEnter={() => storylineMode === 'active' && onMouseEnter()}
                   onMouseLeave={onMouseLeave}
                   onClick={onClick}
                   {...getFloatingProps()}>
@@ -239,7 +242,8 @@ export function Tooltip({
                               value={tooltipTexts[area.id]?.link}
                               allowRemove={true}
                               onTextChange={value => handleTextChange('link', value)}
-                              onLinkChange={value => handleLinkChange(value)} />}
+                              onLinkChange={value => handleLinkChange(value)}
+                              onClick={onLinkClick} />}
                </div>
              </div>
            </div>

@@ -13,6 +13,12 @@ import '@testing-library/jest-dom/extend-expect'
 jest.mock('frontend/inlineEditing/useSelectLinkDestination');
 
 describe('EditableLink', () => {
+  beforeEach(() => {
+    const rect = {width: 100, height: 20, top: 100, left: 100, bottom: 120, right: 200, x: 100, y: 100};
+    Element.prototype.getClientRects = jest.fn(() => [rect]);
+    Element.prototype.getBoundingClientRect = jest.fn(() => rect);
+  });
+
   useFakeTranslations({
     'pageflow_scrolled.inline_editing.change_link_destination': 'Change link destination',
     'pageflow_scrolled.inline_editing.select_link_destination': 'Select link destination',
@@ -144,5 +150,18 @@ describe('EditableLink', () => {
     await user.click(screen.getByRole('button', {name: 'Remove link'}));
 
     expect(onChange).toHaveBeenCalledWith(null);
+  });
+
+  it('triggers onClick when tooltip is clicked', async () => {
+    const onClick = jest.fn();
+    const user = userEvent.setup();
+    render(
+      <EditableLink href="https://example.com" onClick={onClick}>Some link</EditableLink>
+    );
+
+    await user.hover(screen.getByText('Some link'));
+    await user.click(screen.getByRole('link'));
+
+    expect(onClick).toHaveBeenCalled();
   });
 });

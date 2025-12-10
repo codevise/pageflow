@@ -5,11 +5,11 @@ import {Link} from './Link';
 
 export const EditableLink = withInlineEditingAlternative(
   'EditableLink',
-  function EditableLink({className, href, openInNewTab, children}) {
+  function EditableLink({className, href, openInNewTab, onClick, children}) {
     return (
       <Link href={href}
             openInNewTab={openInNewTab}
-            attributes={{className}}
+            attributes={{className, onClick}}
             children={children} />
     );
   }
