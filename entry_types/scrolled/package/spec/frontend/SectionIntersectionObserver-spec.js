@@ -193,4 +193,67 @@ describe('SectionIntersectionObserver', () => {
 
     expect(fakeIntersectionObserver.instances.size).toEqual(0);
   });
+
+  it('uses updated callback when onChange prop changes', () => {
+    const sections = [
+      {id: 1}
+    ];
+    const callback1 = jest.fn();
+    const callback2 = jest.fn();
+
+    const {getByTestId, rerender} = render(
+      <SectionIntersectionObserver sections={sections}
+                                   onChange={callback1}>
+        <section data-testid="section1">
+          <SectionIntersectionProbe section={sections[0]} />
+        </section>
+      </SectionIntersectionObserver>
+    );
+
+    rerender(
+      <SectionIntersectionObserver sections={sections}
+                                   onChange={callback2}>
+        <section data-testid="section1">
+          <SectionIntersectionProbe section={sections[0]} />
+        </section>
+      </SectionIntersectionObserver>
+    );
+
+    simulateScrollingIntoView(getByTestId('section1'));
+
+    expect(callback2).toHaveBeenCalledWith(sections[0]);
+    expect(callback1).not.toHaveBeenCalled();
+  });
+
+  it('does not re-subscribe probes on rerender', () => {
+    const sections = [
+      {id: 1}
+    ];
+    const callback = jest.fn();
+
+    const {rerender} = render(
+      <SectionIntersectionObserver sections={sections}
+                                   onChange={callback}>
+        <section data-testid="section1">
+          <SectionIntersectionProbe section={sections[0]} />
+        </section>
+      </SectionIntersectionObserver>
+    );
+
+    const observer = [...fakeIntersectionObserver.instances][0];
+    const observeSpy = jest.spyOn(observer, 'observe');
+    const unobserveSpy = jest.spyOn(observer, 'unobserve');
+
+    rerender(
+      <SectionIntersectionObserver sections={sections}
+                                   onChange={callback}>
+        <section data-testid="section1">
+          <SectionIntersectionProbe section={sections[0]} />
+        </section>
+      </SectionIntersectionObserver>
+    );
+
+    expect(observeSpy).not.toHaveBeenCalled();
+    expect(unobserveSpy).not.toHaveBeenCalled();
+  });
 });
