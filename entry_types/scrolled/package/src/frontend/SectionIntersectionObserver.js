@@ -1,24 +1,23 @@
 import React, {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
-  useRef
+  useRef,
+  useState
 } from 'react';
 
 import classNames from 'classnames';
 
 import styles from './SectionIntersectionObserver.module.css';
+import {useIsStaticPreview} from './useScrollPositionLifecycle';
 
 const SectionIntersectionObserverContext = createContext([]);
 
 export function SectionIntersectionObserver({sections, probeClassName, onChange, children}) {
   const sectionsByIdRef = useRef();
   const callbackRef = useRef();
-
-  const observerRef = useRef();
-  const probesRef = useRef({});
+  const [observer, setObserver] = useState(null);
 
   useEffect(() => {
     sectionsByIdRef.current = sections.reduce((result, section) => {
@@ -32,22 +31,19 @@ export function SectionIntersectionObserver({sections, probeClassName, onChange,
   }, [onChange]);
 
   useEffect(() => {
-    const sectionsById = sectionsByIdRef.current;
-    const callback = callbackRef.current;
-
     let visibleSection = null;
 
-    const observer = observerRef.current = new IntersectionObserver(
+    const newObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          const section = sectionsById[entry.target.dataset.id];
+          const section = sectionsByIdRef.current[entry.target.dataset.id];
           if (entry.isIntersecting) {
             visibleSection = section;
-            callback(visibleSection);
+            callbackRef.current(visibleSection);
           }
           else if (visibleSection === section) {
             visibleSection = null;
-            callback(visibleSection);
+            callbackRef.current(visibleSection);
           }
         });
       },
@@ -56,35 +52,15 @@ export function SectionIntersectionObserver({sections, probeClassName, onChange,
       }
     );
 
-    Object.values(probesRef.current).forEach(el => {
-      observer.observe(el);
-    });
+    setObserver(newObserver);
 
-    return () => observer.disconnect();
+    return () => newObserver.disconnect();
   }, [sections]);
-
-  const setProbeRef = useCallback(id => el => {
-    if (observerRef.current) {
-      if (el) {
-        observerRef.current.observe(el);
-      }
-      else {
-        observerRef.current.unobserve(probesRef.current[id]);
-      }
-    }
-
-    if (el) {
-      probesRef.current[id] = el;
-    }
-    else {
-      delete probesRef.current[id];
-    }
-  }, []);
 
   const previousContextValue = useContext(SectionIntersectionObserverContext);
 
-  const contextValue = useMemo(() => [...previousContextValue, {setProbeRef, probeClassName}],
-                               [previousContextValue, setProbeRef, probeClassName]);
+  const contextValue = useMemo(() => [...previousContextValue, {observer, probeClassName}],
+                               [previousContextValue, observer, probeClassName]);
 
   return (
     <SectionIntersectionObserverContext.Provider value={contextValue}>
@@ -93,12 +69,36 @@ export function SectionIntersectionObserver({sections, probeClassName, onChange,
   );
 }
 
-export
-function SectionIntersectionProbe({section}) {
-  const value = useContext(SectionIntersectionObserverContext);
+export function SectionIntersectionProbe({section}) {
+  const isStaticPreview = useIsStaticPreview();
 
-  return value.map(({setProbeRef, probeClassName}, index) =>
-    <div ref={setProbeRef(section.id)}
+  const observers = useContext(SectionIntersectionObserverContext);
+  const probeRefs = useRef([]);
+
+  useEffect(() => {
+    if (isStaticPreview) {
+      return;
+    }
+
+    const elements = probeRefs.current.slice();
+
+    observers.forEach(({observer}, index) => {
+      if (observer && elements[index]) {
+        observer.observe(elements[index]);
+      }
+    });
+
+    return () => {
+      observers.forEach(({observer}, index) => {
+        if (observer && elements[index]) {
+          observer.unobserve(elements[index]);
+        }
+      });
+    };
+  }, [observers, isStaticPreview]);
+
+  return observers.map(({probeClassName}, index) =>
+    <div ref={el => probeRefs.current[index] = el}
          key={index}
          className={classNames(styles.probe, probeClassName)}
          data-id={section.id} />
