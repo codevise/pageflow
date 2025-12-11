@@ -145,9 +145,20 @@ textarea.short {
 .slider_input {
   padding: space(1) 0 0;
 
+  label {
+    margin-bottom: space(2.5);
+  }
+
+  .slider_wrapper {
+    display: flex;
+    align-items: center;
+    gap: space(2);
+  }
+
   .slider {
-    margin: 10px 10px 0 40px;
+    flex: 1;
     border: 1px solid var(--ui-on-surface-color-lighter);
+    margin-right: 10px;
   }
 
   .ui-slider-handle {
@@ -157,8 +168,7 @@ textarea.short {
 
   .value {
     font-size: 11px;
-    margin: 7px 0;
-    float: left;
+    min-width: space(8);
   }
 
   &.disabled .slider,
