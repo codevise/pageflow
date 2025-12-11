@@ -5,6 +5,8 @@ import {
   SectionIntersectionProbe
 } from 'frontend/SectionIntersectionObserver';
 
+import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
+
 import {
   fakeIntersectionObserver,
   simulateScrollingIntoView,
@@ -255,5 +257,27 @@ describe('SectionIntersectionObserver', () => {
 
     expect(observeSpy).not.toHaveBeenCalled();
     expect(unobserveSpy).not.toHaveBeenCalled();
+  });
+
+  it('is no-op inside StaticPreview', () => {
+    const sections = [
+      {id: 1}
+    ];
+    const callback = jest.fn();
+
+    const {getByTestId} = render(
+      <SectionIntersectionObserver sections={sections}
+                                   onChange={callback}>
+        <StaticPreview>
+          <section data-testid="section1">
+            <SectionIntersectionProbe section={sections[0]} />
+          </section>
+        </StaticPreview>
+      </SectionIntersectionObserver>
+    );
+
+    simulateScrollingIntoView(getByTestId('section1'));
+
+    expect(callback).not.toHaveBeenCalled();
   });
 });

@@ -10,6 +10,7 @@ import React, {
 import classNames from 'classnames';
 
 import styles from './SectionIntersectionObserver.module.css';
+import {useIsStaticPreview} from './useScrollPositionLifecycle';
 
 const SectionIntersectionObserverContext = createContext([]);
 
@@ -69,10 +70,16 @@ export function SectionIntersectionObserver({sections, probeClassName, onChange,
 }
 
 export function SectionIntersectionProbe({section}) {
+  const isStaticPreview = useIsStaticPreview();
+
   const observers = useContext(SectionIntersectionObserverContext);
   const probeRefs = useRef([]);
 
   useEffect(() => {
+    if (isStaticPreview) {
+      return;
+    }
+
     const elements = probeRefs.current.slice();
 
     observers.forEach(({observer}, index) => {
@@ -88,7 +95,7 @@ export function SectionIntersectionProbe({section}) {
         }
       });
     };
-  }, [observers]);
+  }, [observers, isStaticPreview]);
 
   return observers.map(({probeClassName}, index) =>
     <div ref={el => probeRefs.current[index] = el}
