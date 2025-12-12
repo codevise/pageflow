@@ -1280,6 +1280,12 @@ de:
         hide: Außerhalb des Editors ausblenden
         show: Außerhalb des Editors einblenden
         hidden: Nur im Editor sichtbar
+      section_padding_visualization:
+        intersecting_auto: "Darstellung des dynamischen Abstands, der sich an die Größe des Motivbereichs anpasst, um Überlappungen von Text und Motiv zu vermeiden"
+        intersecting_manual: "Darstellung des manuell definierten Abstands, der bei Änderung der Fenstergröße konstant bleibt"
+        side_by_side: "Darstellung des oberen Abstands, wenn der Inhalt neben dem Motivbereich Platz findet"
+        top_padding: "Darstellung des oberen Abstands"
+        bottom_padding: "Darstellung des unteren Abstands"
       select_link_destination:
         cancel: Abbrechen
         create: Erstellen

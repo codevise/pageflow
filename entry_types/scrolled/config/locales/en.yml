@@ -1262,6 +1262,12 @@ en:
         hide: Hide outside of the editor
         show: Show outside of the editor
         hidden: Only visible in editor
+      section_padding_visualization:
+        intersecting_auto: "Visualization of dynamic padding that adjusts to the motif area size to prevent text from overlapping the motif"
+        intersecting_manual: "Visualization of manually defined padding that stays constant as viewport size changes"
+        side_by_side: "Visualization of top padding when content fits next to the motif area"
+        top_padding: "Visualization of top padding"
+        bottom_padding: "Visualization of bottom padding"
       select_link_destination:
         cancel: Cancel
         create: Create
