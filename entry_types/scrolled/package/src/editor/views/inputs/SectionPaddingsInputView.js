@@ -35,6 +35,7 @@ export const SectionPaddingsInputView = Marionette.Layout.extend({
 
   events: cssModulesUtils.events(styles, {
     'click button': function () {
+      this.options.entry.trigger('selectSectionPaddings', this.model.parent);
       this.options.entry.trigger('scrollToSection', this.model.parent, {ifNeeded: true});
       editor.navigate('/scrolled/sections/' + this.model.parent.get('id') + '/paddings', {trigger: true});
     }

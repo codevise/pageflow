@@ -80,6 +80,16 @@ export const PreviewMessageController = Object.extend({
           })
         );
 
+        this.listenTo(this.entry, 'selectSectionPaddings', section =>
+          postMessage({
+            type: 'SELECT',
+            payload: {
+              id: section.id,
+              type: 'sectionPaddings'
+            }
+          })
+        );
+
         this.listenTo(this.entry, 'selectContentElement', (contentElement, options) => {
           postMessage({
             type: 'SELECT',

@@ -55,4 +55,24 @@ describe('SectionPaddingsInputView', () => {
 
     expect(editor.navigate).toHaveBeenCalledWith('/scrolled/sections/1/paddings', {trigger: true});
   });
+
+  it('triggers selectSectionPaddings when clicking button', async () => {
+    const entry = createEntry({
+      sections: [{id: 1}]
+    });
+    const listener = jest.fn();
+    entry.on('selectSectionPaddings', listener);
+
+    const view = new SectionPaddingsInputView({
+      model: entry.sections.get(1).configuration,
+      entry
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = renderBackboneView(view);
+
+    await user.click(getByRole('button'));
+
+    expect(listener).toHaveBeenCalledWith(entry.sections.get(1));
+  });
 });
