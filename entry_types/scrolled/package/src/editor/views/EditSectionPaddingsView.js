@@ -23,13 +23,14 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
 
   configure: function(configurationEditor) {
     const entry = this.options.entry;
-    const configuration = this.model.configuration;
+    const section = this.model;
+    const configuration = section.configuration;
 
     const [paddingTopValues, paddingTopTexts] = entry.getScale('sectionPaddingTop');
     const [paddingBottomValues, paddingBottomTexts] = entry.getScale('sectionPaddingBottom');
 
     configurationEditor.tab('sectionPaddings', function() {
-      paddingInputs(this, {paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts});
+      paddingInputs(this, {entry, section, paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts});
     });
 
     if (!hasPortraitBackdrop(configuration)) {
@@ -48,6 +49,8 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
       const usePortraitProperties = this.model.get('customPortraitPaddings');
 
       paddingInputs(this, {
+        entry,
+        section,
         prefix: usePortraitProperties ? 'portrait' : '',
         portrait: true,
         paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts,
@@ -59,13 +62,20 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
 
 function paddingInputs(tab, options) {
   const {
+    entry,
+    section,
     prefix = '',
     portrait = false,
     paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts,
     disabledOptions
   } = options;
 
+  const paddingTopProperty = prefix ? `${prefix}PaddingTop` : 'paddingTop';
+  const paddingBottomProperty = prefix ? `${prefix}PaddingBottom` : 'paddingBottom';
   const exposeMotifArea = prefix ? `${prefix}ExposeMotifArea` : 'exposeMotifArea';
+
+  const scrollToSectionStart = () => entry.trigger('scrollToSection', section, {ifNeeded: true});
+  const scrollToSectionEnd = () => entry.trigger('scrollToSection', section, {align: 'nearEnd', ifNeeded: true});
 
   tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
     variant: 'intersectingAuto',
@@ -130,12 +140,13 @@ function paddingInputs(tab, options) {
     disabled: motifAreaNotDefined
   });
 
-  tab.input(prefix ? `${prefix}PaddingTop` : 'paddingTop', SliderInputView, {
+  tab.input(paddingTopProperty, SliderInputView, {
     hideLabel: true,
     icon: paddingTopIcon,
     texts: paddingTopTexts,
     values: paddingTopValues,
     saveOnSlide: true,
+    onInteractionStart: scrollToSectionStart,
     disabledBinding: motifAreaNotDefinedBinding,
     disabled: motifAreaNotDefined,
     ...disabledOptions
@@ -148,12 +159,13 @@ function paddingInputs(tab, options) {
     portrait,
     ...disabledOptions
   });
-  tab.input(prefix ? `${prefix}PaddingBottom` : 'paddingBottom', SliderInputView, {
+  tab.input(paddingBottomProperty, SliderInputView, {
     hideLabel: true,
     icon: paddingBottomIcon,
     texts: paddingBottomTexts,
     values: paddingBottomValues,
     saveOnSlide: true,
+    onInteractionStart: scrollToSectionEnd,
     ...disabledOptions
   });
 }

@@ -53,6 +53,7 @@ export const SliderInputView = Marionette.ItemView.extend({
   },
 
   events: {
+    'slidestart': 'handleSlideStart',
     'slidechange': 'save',
     'slide': 'handleSlide'
   },
@@ -88,6 +89,12 @@ export const SliderInputView = Marionette.ItemView.extend({
     }
     else {
       this.ui.widget.slider('enable');
+    }
+  },
+
+  handleSlideStart() {
+    if (this.options.onInteractionStart) {
+      this.options.onInteractionStart();
     }
   },
 

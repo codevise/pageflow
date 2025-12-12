@@ -614,4 +614,90 @@ describe('EditSectionPaddingsView', () => {
       expect(getByRole('tab', {name: 'Portrait'})).toBeInTheDocument();
     });
   });
+
+  describe('scrollToSection events', () => {
+    it('triggers scrollToSection when starting to drag paddingTop slider', () => {
+      const entry = createEntry({
+        sections: [{id: 1}]
+      });
+      const listener = jest.fn();
+      entry.on('scrollToSection', listener);
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      renderBackboneView(view);
+
+      view.$el.find('.slider_input').eq(0).trigger('slidestart');
+
+      expect(listener).toHaveBeenCalledWith(entry.sections.get(1), {ifNeeded: true});
+    });
+
+    it('triggers scrollToSection to end when starting to drag paddingBottom slider', () => {
+      const entry = createEntry({
+        sections: [{id: 1}]
+      });
+      const listener = jest.fn();
+      entry.on('scrollToSection', listener);
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      renderBackboneView(view);
+
+      view.$el.find('.slider_input').eq(1).trigger('slidestart');
+
+      expect(listener).toHaveBeenCalledWith(entry.sections.get(1), {align: 'nearEnd', ifNeeded: true});
+    });
+
+    it('triggers scrollToSection when starting to drag portraitPaddingTop slider', async () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImageMobile: 10, customPortraitPaddings: true}}]
+      });
+      const listener = jest.fn();
+      entry.on('scrollToSection', listener);
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      const user = userEvent.setup();
+      const {getByRole} = renderBackboneView(view);
+
+      await user.click(getByRole('tab', {name: 'Portrait'}));
+
+      view.$el.find('.slider_input').eq(0).trigger('slidestart');
+
+      expect(listener).toHaveBeenCalledWith(entry.sections.get(1), {ifNeeded: true});
+    });
+
+    it('triggers scrollToSection to end when starting to drag portraitPaddingBottom slider', async () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImageMobile: 10, customPortraitPaddings: true}}]
+      });
+      const listener = jest.fn();
+      entry.on('scrollToSection', listener);
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      const user = userEvent.setup();
+      const {getByRole} = renderBackboneView(view);
+
+      await user.click(getByRole('tab', {name: 'Portrait'}));
+
+      view.$el.find('.slider_input').eq(1).trigger('slidestart');
+
+      expect(listener).toHaveBeenCalledWith(entry.sections.get(1), {align: 'nearEnd', ifNeeded: true});
+    });
+  });
 });
