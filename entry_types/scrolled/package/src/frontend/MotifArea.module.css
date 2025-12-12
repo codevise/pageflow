@@ -1,6 +1,5 @@
 .root {
   position: absolute;
-  background: radial-gradient(transparent, currentColor);
   z-index: 2;
   opacity: 0;
   pointer-events: none;
@@ -13,6 +12,53 @@
   -webkit-transform: translateZ(0);
 }
 
+.root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(transparent, currentColor);
+  opacity: 0.15;
+}
+
 .visible {
-  opacity: 0.2;
+  opacity: 1;
+}
+
+.corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: currentColor;
+  border-style: solid;
+  border-width: 0;
+  border-radius: 3px;
+  opacity: 0.5;
+}
+
+.topLeft {
+  top: 0;
+  left: 0;
+  border-top-width: 3px;
+  border-left-width: 3px;
+}
+
+.topRight {
+  top: 0;
+  right: 0;
+  border-top-width: 3px;
+  border-right-width: 3px;
+}
+
+.bottomLeft {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 3px;
+  border-left-width: 3px;
+}
+
+.bottomRight {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 3px;
+  border-right-width: 3px;
 }

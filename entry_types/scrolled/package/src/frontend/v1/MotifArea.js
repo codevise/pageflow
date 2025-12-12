@@ -41,6 +41,10 @@ export const MotifArea = function MotifArea(props) {
          style={position}
          onMouseEnter={props.onMouseEnter}
          onMouseLeave={props.onMouseLeave}>
+      <div className={classNames(styles.corner, styles.topLeft)} />
+      <div className={classNames(styles.corner, styles.topRight)} />
+      <div className={classNames(styles.corner, styles.bottomLeft)} />
+      <div className={classNames(styles.corner, styles.bottomRight)} />
     </div>
   );
 };
