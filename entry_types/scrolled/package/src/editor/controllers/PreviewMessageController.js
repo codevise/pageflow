@@ -134,7 +134,7 @@ export const PreviewMessageController = Object.extend({
         });
       }
       else if (message.data.type === 'SELECTED') {
-        const {type, id} = message.data.payload;
+        const {type, id, position} = message.data.payload;
 
         if (type === 'contentElement') {
           const contentElement = this.entry.contentElements.get(id);
@@ -144,7 +144,8 @@ export const PreviewMessageController = Object.extend({
           this.editor.navigate(`/scrolled/sections/${id}`, {trigger: true})
         }
         else if (type === 'sectionPaddings') {
-          this.editor.navigate(`/scrolled/sections/${id}/paddings`, {trigger: true})
+          const query = position ? `?position=${position}` : '';
+          this.editor.navigate(`/scrolled/sections/${id}/paddings${query}`, {trigger: true})
         }
         else if (type === 'sectionTransition') {
           this.editor.navigate(`/scrolled/sections/${id}/transition`, {trigger: true})

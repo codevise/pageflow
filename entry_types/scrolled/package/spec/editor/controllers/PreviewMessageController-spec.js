@@ -369,6 +369,38 @@ describe('PreviewMessageController', () => {
     })).resolves.toBe('/widgets/header');
   });
 
+  it('navigates to paddings route on SELECTED message for sectionPaddings', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'sectionPaddings'}}, '*');
+    })).resolves.toBe('/scrolled/sections/1/paddings');
+  });
+
+  it('navigates to paddings route with position query param on SELECTED message for sectionPaddings', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'sectionPaddings', position: 'bottom'}}, '*');
+    })).resolves.toBe('/scrolled/sections/1/paddings?position=bottom');
+  });
+
   it('displays insert dialog on INSERT_CONTENT_ELEMENT message', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {
