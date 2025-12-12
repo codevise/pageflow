@@ -1278,6 +1278,9 @@ en:
       selectable_section_item:
         title: Select section
       edit_motif_area_menu_item: Select motif area...
+      edit_motif_area_input:
+        select: Select motif area
+        edit: Edit motif area
       backdrop_content_element_input:
         add: New element
         unset: No longer use as backdrop

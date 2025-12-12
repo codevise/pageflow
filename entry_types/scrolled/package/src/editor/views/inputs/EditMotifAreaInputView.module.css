@@ -1,0 +1,24 @@
+.button {
+  width: 100%;
+  display: flex !important;
+  align-items: center;
+  gap: space(2);
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  flex-shrink: 0;
+}
+
+.buttonText {
+}
+
+.checkIcon {
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}

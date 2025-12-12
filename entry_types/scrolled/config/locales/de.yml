@@ -1296,6 +1296,9 @@ de:
       selectable_section_item:
         title: Abschnitt auswählen
       edit_motif_area_menu_item: Motivbereich markieren...
+      edit_motif_area_input:
+        select: Motivbereich auswählen
+        edit: Motivbereich bearbeiten
       backdrop_content_element_input:
         add: Neues Element
         unset: Nicht mehr als Hintergrund verwenden
