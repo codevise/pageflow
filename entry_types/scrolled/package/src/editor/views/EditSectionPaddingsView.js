@@ -21,6 +21,7 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
 
   configure: function(configurationEditor) {
     const entry = this.options.entry;
+    const configuration = this.model.configuration;
 
     const [paddingTopValues, paddingTopTexts] = entry.getScale('sectionPaddingTop');
     const [paddingBottomValues, paddingBottomTexts] = entry.getScale('sectionPaddingBottom');
@@ -28,6 +29,10 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
     configurationEditor.tab('sectionPaddings', function() {
       paddingInputs(this, {paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts});
     });
+
+    if (!hasPortraitBackdrop(configuration)) {
+      return;
+    }
 
     configurationEditor.tab('portrait', function() {
       this.listenTo(this.model, 'change:customPortraitPaddings', () => {
@@ -162,4 +167,17 @@ function motifAreaNotDefined([exposeMotifAreaValue, backdropType, imageMotifArea
 
   const motifArea = backdropType === 'video' ? videoMotifArea : imageMotifArea;
   return exposeMotifAreaValue && !motifArea;
+}
+
+function hasPortraitBackdrop(configuration) {
+  const backdropType = configuration.get('backdropType');
+
+  if (backdropType === 'color') {
+    return false;
+  }
+
+  const propertyName = backdropType === 'video' ? 'backdropVideoMobile' : 'backdropImageMobile';
+  const collection = backdropType === 'video' ? 'video_files' : 'image_files';
+
+  return !!configuration.getReference(propertyName, collection);
 }

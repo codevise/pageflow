@@ -136,7 +136,8 @@ describe('EditSectionPaddingsView', () => {
   it.each(['center', 'centerRagged'])
   ('hides portrait sideBySide visualization when layout is %s', async (layout) => {
     const entry = createEntry({
-      sections: [{id: 1, configuration: {portraitExposeMotifArea: true, layout}}]
+      imageFiles: [{id: 100, perma_id: 10}],
+      sections: [{id: 1, configuration: {portraitExposeMotifArea: true, layout, backdropImageMobile: 10}}]
     });
 
     const view = new EditSectionPaddingsView({
@@ -378,10 +379,12 @@ describe('EditSectionPaddingsView', () => {
   describe('portrait tab with same paddings checkbox checked', () => {
     it('shows non-portrait exposeMotifArea value in radio button', async () => {
       const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
         sections: [{id: 1, configuration: {
           exposeMotifArea: true,
           portraitExposeMotifArea: false,
-          customPortraitPaddings: false
+          customPortraitPaddings: false,
+          backdropImageMobile: 10
         }}]
       });
 
@@ -400,8 +403,10 @@ describe('EditSectionPaddingsView', () => {
 
     it('disables portrait paddingTop slider', async () => {
       const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
         sections: [{id: 1, configuration: {
-          customPortraitPaddings: false
+          customPortraitPaddings: false,
+          backdropImageMobile: 10
         }}]
       });
 
@@ -421,10 +426,12 @@ describe('EditSectionPaddingsView', () => {
 
     it('switches to portrait auto mode and reveals elements when unchecking checkbox', async () => {
       const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
         sections: [{id: 1, configuration: {
           exposeMotifArea: false,
           portraitExposeMotifArea: true,
-          customPortraitPaddings: false
+          customPortraitPaddings: false,
+          backdropImageMobile: 10
         }}]
       });
 
@@ -526,6 +533,85 @@ describe('EditSectionPaddingsView', () => {
       const {getByRole} = renderBackboneView(view);
 
       expect(getByRole('button', {name: 'Select motif area'})).not.toBeVisibleViaBinding();
+    });
+  });
+
+  describe('portrait tab visibility', () => {
+    it('hides portrait tab when backdropType is color', () => {
+      const entry = createEntry({
+        sections: [{id: 1, configuration: {backdropType: 'color'}}]
+      });
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      const {queryByRole} = renderBackboneView(view);
+
+      expect(queryByRole('tab', {name: 'Portrait'})).not.toBeInTheDocument();
+    });
+
+    it('hides portrait tab when no portrait image is present', () => {
+      const entry = createEntry({
+        sections: [{id: 1, configuration: {backdropType: 'image'}}]
+      });
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      const {queryByRole} = renderBackboneView(view);
+
+      expect(queryByRole('tab', {name: 'Portrait'})).not.toBeInTheDocument();
+    });
+
+    it('hides portrait tab when no portrait video is present', () => {
+      const entry = createEntry({
+        sections: [{id: 1, configuration: {backdropType: 'video'}}]
+      });
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      const {queryByRole} = renderBackboneView(view);
+
+      expect(queryByRole('tab', {name: 'Portrait'})).not.toBeInTheDocument();
+    });
+
+    it('shows portrait tab when portrait image is present', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImageMobile: 10}}]
+      });
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('tab', {name: 'Portrait'})).toBeInTheDocument();
+    });
+
+    it('shows portrait tab when portrait video is present', () => {
+      const entry = createEntry({
+        videoFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropType: 'video', backdropVideoMobile: 10}}]
+      });
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('tab', {name: 'Portrait'})).toBeInTheDocument();
     });
   });
 });
