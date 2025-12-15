@@ -85,6 +85,7 @@ textarea.short {
 }
 
 .radio_input,
+.radio_button,
 .check_box_input {
   padding: space(1) 0;
   position: relative;
@@ -106,6 +107,10 @@ textarea.short {
     right: -5px;
     top: space(1) * -1;
   }
+}
+
+.radio_button {
+  padding: space(2);
 }
 
 .radio_input {
