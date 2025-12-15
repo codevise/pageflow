@@ -1500,3 +1500,6 @@ en:
       select_link_destination: "Select link destination"
       change_link_destination: "Change link destination"
       remove_link: "Remove link"
+      edit_section_padding_top: Edit top padding
+      edit_section_padding_bottom: Edit bottom padding
+      expose_motif_area: Expose motif

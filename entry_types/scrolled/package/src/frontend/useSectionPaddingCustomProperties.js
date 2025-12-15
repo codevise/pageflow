@@ -1,8 +1,6 @@
 import {usePortraitOrientation} from './usePortraitOrientation';
 
-export function useSectionPaddingCustomProperties(section) {
-  const styles = {};
-
+export function useSectionPadding(section) {
   const portrait = usePortraitOrientation({
     active: section.portraitPaddingTop ||
             section.portraitPaddingBottom
@@ -16,6 +14,8 @@ export function useSectionPaddingCustomProperties(section) {
     portrait && section.portraitPaddingBottom  ?
     section.portraitPaddingBottom : section.paddingBottom;
 
+  const styles = {};
+
   if (paddingTop) {
     styles['--foreground-padding-top'] =
       `var(--theme-section-padding-top-${paddingTop})`;
@@ -26,5 +26,5 @@ export function useSectionPaddingCustomProperties(section) {
       `var(--theme-section-padding-bottom-${paddingBottom})`;
   }
 
-  return styles;
+  return {styles, paddingTop, paddingBottom};
 }

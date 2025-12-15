@@ -75,7 +75,10 @@ export function useInlineEditingPageObjects() {
     'pageflow_scrolled.inline_editing.insert_content_element.after': 'Insert content element after',
     'pageflow_scrolled.inline_editing.drag_content_element': 'Drag to move',
     'pageflow_scrolled.inline_editing.edit_section_transition_before': 'Edit section transition before',
-    'pageflow_scrolled.inline_editing.edit_section_transition_after': 'Edit section transition after'
+    'pageflow_scrolled.inline_editing.edit_section_transition_after': 'Edit section transition after',
+    'pageflow_scrolled.inline_editing.edit_section_padding_top': 'Edit top padding',
+    'pageflow_scrolled.inline_editing.edit_section_padding_bottom': 'Edit bottom padding',
+    'pageflow_scrolled.inline_editing.expose_motif_area': 'Expose motif area'
   });
 
   usePageObjects();
@@ -198,6 +201,15 @@ function createSectionPageObject(el) {
 
     hasFadedOutForeground() {
       return foreground.classList.contains(sharedTransitionStyles.fadedOut);
+    },
+
+    getPaddingIndicator(position) {
+      const {getByLabelText} = within(selectionRect);
+      const labels = {
+        top: 'Edit top padding',
+        bottom: 'Edit bottom padding'
+      };
+      return getByLabelText(labels[position]);
     }
   }
 }

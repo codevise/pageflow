@@ -123,6 +123,42 @@ describe('SELECTED message', () => {
     }, expect.anything());
   });
 
+  it('is posted when top padding indicator is clicked', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{sectionId: 1}]
+      }
+    });
+
+    const section = getSectionByPermaId(10);
+    section.select();
+    fireEvent.click(section.getPaddingIndicator('top'));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 1, type: 'sectionPaddings', position: 'top'}
+    }, expect.anything());
+  });
+
+  it('is posted when bottom padding indicator is clicked', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{sectionId: 1}]
+      }
+    });
+
+    const section = getSectionByPermaId(10);
+    section.select();
+    fireEvent.click(section.getPaddingIndicator('bottom'));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 1, type: 'sectionPaddings', position: 'bottom'}
+    }, expect.anything());
+  });
+
   it('is posted when widget selection rect is clicked', () => {
     frontend.widgetTypes.register('customNavigation', {
       component: function ({children}) {
