@@ -103,6 +103,22 @@ module PageflowScrolled
                                             text: '"EDIT ME"',
                                             visible: false)
           end
+
+          it 'includes theme scale translations' do
+            translation(I18n.locale,
+                        'pageflow_scrolled.editor.scales.sectionPaddingTop.sm',
+                        'Small')
+            entry = create(:published_entry, type_name: 'scrolled')
+
+            result = helper.scrolled_editor_iframe_seed_html_script_tag(entry)
+
+            expect(result).to have_selector('script',
+                                            text: '"sectionPaddingTop"',
+                                            visible: false)
+            expect(result).to have_selector('script',
+                                            text: '"Small"',
+                                            visible: false)
+          end
         end
 
         it 'renders widgets' do

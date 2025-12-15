@@ -1,19 +1,9 @@
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
-import {factories, useFakeTranslations} from 'pageflow/testHelpers';
+import {factories} from 'pageflow/testHelpers';
 import {normalizeSeed} from 'support';
 
 describe('ScrolledEntry', () => {
   describe('#getScale', () => {
-    const commonPrefix = 'pageflow_scrolled.editor.scales.contentElementMargin';
-    const themePrefix = `pageflow_scrolled.editor.themes.custom.scales.contentElementMargin`;
-
-    useFakeTranslations({
-      [`${commonPrefix}.sm`]: 'Small',
-      [`${commonPrefix}.md`]: 'Medium',
-      [`${commonPrefix}.lg`]: 'Large',
-      [`${themePrefix}.sm`]: 'Tiny'
-    });
-
     it('returns empty arrays by default', () => {
       const entry = factories.entry(
         ScrolledEntry,
@@ -33,9 +23,7 @@ describe('ScrolledEntry', () => {
     it('returns values, texts, and cssValues based on theme custom properties', () => {
       const entry = factories.entry(
         ScrolledEntry,
-        {
-          metadata: {theme_name: 'custom'}
-        },
+        {},
         {
           entryTypeSeed: normalizeSeed({
             themeOptions: {
@@ -46,6 +34,15 @@ describe('ScrolledEntry', () => {
                   'contentElementMargin-lg': '1.5rem'
                 }
               }
+            },
+            themeTranslations: {
+              scales: {
+                contentElementMargin: {
+                  sm: 'Small',
+                  md: 'Medium',
+                  lg: 'Large'
+                }
+              }
             }
           })
         }
@@ -54,12 +51,9 @@ describe('ScrolledEntry', () => {
       const [values, texts, cssValues] = entry.getScale('contentElementMargin');
 
       expect(values).toEqual(['sm', 'md', 'lg']);
-      expect(texts).toEqual([
-        'Tiny',
-        'Medium',
-        'Large'
-      ]);
+      expect(texts).toEqual(['Small', 'Medium', 'Large']);
       expect(cssValues).toEqual(['0.5rem', '1rem', '1.5rem']);
     });
+
   });
 });

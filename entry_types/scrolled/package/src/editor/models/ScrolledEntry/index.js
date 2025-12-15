@@ -339,18 +339,13 @@ export const ScrolledEntry = Entry.extend({
   getScale(scaleName) {
     const themeOptions = this.scrolledSeed.config.theme.options;
     const root = themeOptions.properties?.root || {};
+    const scaleTranslations = this.scrolledSeed.config.theme.translations?.scales || {};
 
     const scaleProperties = Object.keys(root)
                                   .filter(name => name.indexOf(`${scaleName}-`) === 0);
 
     const values = scaleProperties.map(name => name.split('-').pop());
-    const texts = values.map(value =>
-      I18n.t(
-        `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
-        `.scales.${scaleName}.${value}`,
-        {defaultValue: I18n.t(`pageflow_scrolled.editor.scales.${scaleName}.${value}`)}
-      )
-    );
+    const texts = values.map(value => scaleTranslations[scaleName]?.[value]);
     const cssValues = scaleProperties.map(propertyName => root[propertyName]);
 
     return [values, texts, cssValues];
