@@ -273,6 +273,39 @@ describe('EditConfigurationView', () => {
     });
   });
 
+  describe('defaultTab', () => {
+    support.useFakeTranslations({
+      test_default_tab: {
+        tabs: {
+          main: 'Main',
+          other: 'Other'
+        }
+      }
+    });
+
+    it('supports defaultTab method to set initial tab', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        translationKeyPrefix: 'test_default_tab',
+
+        defaultTab() {
+          return 'other';
+        },
+
+        configure(configurationEditor) {
+          configurationEditor.tab('main', function() {});
+          configurationEditor.tab('other', function() {});
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('[aria-selected="true"]').text()).toBe('Other');
+    });
+  });
+
   describe('hideDestroyButton', () => {
     it('shows destroy button by default', () => {
       const Model = Backbone.Model.extend({

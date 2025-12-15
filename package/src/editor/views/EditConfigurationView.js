@@ -42,6 +42,9 @@ import {editor} from '../base';
  * Override the `goBackPath` property or method to customize the path
  * that the back button navigates to. Defaults to `/`.
  *
+ * Override the `defaultTab` property or method to set the initially
+ * selected tab.
+ *
  * Set the `hideDestroyButton` property to `true` to hide the destroy
  * button.
  *
@@ -93,7 +96,8 @@ export const EditConfigurationView = Marionette.Layout.extend({
     this.configurationEditor = new ConfigurationEditorView({
       tabTranslationKeyPrefix: `${translationKeyPrefix}.tabs`,
       attributeTranslationKeyPrefixes: [`${translationKeyPrefix}.attributes`],
-      model: this.model.configuration
+      model: this.model.configuration,
+      tab: _.result(this, 'defaultTab')
     });
 
     this.configure(this.configurationEditor);
