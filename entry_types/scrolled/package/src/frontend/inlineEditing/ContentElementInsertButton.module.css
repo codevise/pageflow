@@ -32,6 +32,9 @@
   border: 0;
   background: none;
   color: currentColor;
-  position: relative;
-  top: -8px;
+  position: absolute;
+  top: space(-4);
+  left: 0;
+  width: 100%;
+  height: space(8);
 }
