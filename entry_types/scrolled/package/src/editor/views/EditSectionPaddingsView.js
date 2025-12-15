@@ -21,6 +21,12 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
     return `/scrolled/sections/` + this.model.get('id')
   },
 
+  defaultTab() {
+    if (this.options.entry.get('emulation_mode') === 'phone') {
+      return 'portrait';
+    }
+  },
+
   configure: function(configurationEditor) {
     const entry = this.options.entry;
     const section = this.model;
@@ -29,15 +35,25 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
     const [paddingTopValues, paddingTopTexts] = entry.getScale('sectionPaddingTop');
     const [paddingBottomValues, paddingBottomTexts] = entry.getScale('sectionPaddingBottom');
 
+    const hasPortrait = hasPortraitBackdrop(configuration);
+
     configurationEditor.tab('sectionPaddings', function() {
+      if (hasPortrait && entry.has('emulation_mode')) {
+        entry.unset('emulation_mode');
+      }
+
       paddingInputs(this, {entry, section, paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts});
     });
 
-    if (!hasPortraitBackdrop(configuration)) {
+    if (!hasPortrait) {
       return;
     }
 
     configurationEditor.tab('portrait', function() {
+      if (!entry.has('emulation_mode')) {
+        entry.set('emulation_mode', 'phone');
+      }
+
       this.listenTo(this.model, 'change:customPortraitPaddings', () => {
         configurationEditor.refresh();
       });
@@ -74,8 +90,12 @@ function paddingInputs(tab, options) {
   const paddingBottomProperty = prefix ? `${prefix}PaddingBottom` : 'paddingBottom';
   const exposeMotifArea = prefix ? `${prefix}ExposeMotifArea` : 'exposeMotifArea';
 
-  const scrollToSectionStart = () => entry.trigger('scrollToSection', section, {ifNeeded: true});
-  const scrollToSectionEnd = () => entry.trigger('scrollToSection', section, {align: 'nearEnd', ifNeeded: true});
+  const scrollToSectionStart = () => {
+    entry.trigger('scrollToSection', section, {ifNeeded: true});
+  };
+  const scrollToSectionEnd = () => {
+    entry.trigger('scrollToSection', section, {align: 'nearEnd', ifNeeded: true});
+  };
 
   tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
     variant: 'intersectingAuto',
@@ -121,6 +141,7 @@ function paddingInputs(tab, options) {
 
   const imageMotifAreaPropertyName = portrait ? 'backdropImageMobileMotifArea' : 'backdropImageMotifArea';
   const videoMotifAreaPropertyName = portrait ? 'backdropVideoMobileMotifArea' : 'backdropVideoMotifArea';
+
   const motifAreaNotDefinedBinding = [
     exposeMotifArea, 'backdropType', imageMotifAreaPropertyName, videoMotifAreaPropertyName
   ];

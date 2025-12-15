@@ -19,6 +19,7 @@ describe('EditSectionPaddingsView', () => {
     'pageflow_scrolled.editor.section_padding_visualization.side_by_side': 'SideBySide',
     'pageflow_scrolled.editor.section_padding_visualization.top_padding': 'TopPadding',
     'pageflow_scrolled.editor.section_padding_visualization.bottom_padding': 'Bottom',
+    'pageflow_scrolled.editor.edit_section_paddings.tabs.sectionPaddings': 'Landscape',
     'pageflow_scrolled.editor.edit_section_paddings.tabs.portrait': 'Portrait',
     'pageflow_scrolled.editor.edit_section_paddings.attributes.samePortraitPaddings.label': 'Same as landscape',
     'pageflow_scrolled.editor.edit_motif_area_input.select': 'Select motif area',
@@ -612,6 +613,65 @@ describe('EditSectionPaddingsView', () => {
       const {getByRole} = renderBackboneView(view);
 
       expect(getByRole('tab', {name: 'Portrait'})).toBeInTheDocument();
+    });
+  });
+
+  describe('emulation mode toggling', () => {
+    it('defaults to portrait tab when emulation_mode is phone', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImageMobile: 10}}]
+      });
+      entry.set('emulation_mode', 'phone');
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('tab', {name: 'Portrait'})).toHaveAttribute('aria-selected', 'true');
+    });
+
+    it('sets emulation_mode to phone when switching to portrait tab', async () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImageMobile: 10}}]
+      });
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      const user = userEvent.setup();
+      const {getByRole} = renderBackboneView(view);
+
+      await user.click(getByRole('tab', {name: 'Portrait'}));
+
+      expect(entry.get('emulation_mode')).toEqual('phone');
+    });
+
+    it('unsets emulation_mode when switching back to sectionPaddings tab', async () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImageMobile: 10}}]
+      });
+      entry.set('emulation_mode', 'phone');
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      const user = userEvent.setup();
+      const {getByRole} = renderBackboneView(view);
+
+      await user.click(getByRole('tab', {name: 'Portrait'}));
+      await user.click(getByRole('tab', {name: 'Landscape'}));
+
+      expect(entry.has('emulation_mode')).toEqual(false);
     });
   });
 
