@@ -92,6 +92,10 @@ export const SliderInputView = Marionette.ItemView.extend({
   },
 
   save: function(event, ui) {
+    if (this.loading) {
+      return;
+    }
+
     var value = this.options.values ? this.options.values[ui.value] : ui.value;
     this.model.set(this.options.propertyName, value);
   },
@@ -110,7 +114,9 @@ export const SliderInputView = Marionette.ItemView.extend({
       this.options.values.indexOf(value) :
       value;
 
+    this.loading = true;
     this.ui.widget.slider('option', 'value', this.clampValue(sliderValue));
+    this.loading = false;
     this.updateText(value);
   },
 

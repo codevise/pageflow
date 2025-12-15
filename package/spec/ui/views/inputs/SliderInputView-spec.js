@@ -81,6 +81,19 @@ describe('pageflow.SliderInputView', () => {
     expect(view.ui.value.text()).toEqual('€ 75');
   });
 
+  it('does not save default value on render', () => {
+    var model = new Model();
+    var view = new SliderInputView({
+      model: model,
+      propertyName: 'value',
+      defaultValue: 50
+    });
+
+    view.render();
+
+    expect(model.has('value')).toEqual(false);
+  });
+
   it('saves value on slidechange', () => {
     var model = new Model();
     var view = new SliderInputView({
