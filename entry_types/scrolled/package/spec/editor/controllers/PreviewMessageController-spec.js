@@ -706,6 +706,105 @@ describe('PreviewMessageController', () => {
       window.postMessage({type: 'SAVED_SCROLL_POINT'}, '*');
     })).resolves.toEqual('received');
   });
+
+  it('sends instant SCROLL_TO_SECTION in preserveScrollPoint if paddings were selected', async () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 5}]
+      })
+    });
+
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    // First select paddings
+    await new Promise(resolve => {
+      editor.once('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 5, type: 'sectionPaddings'}}, '*');
+    });
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SCROLL_TO_SECTION') {
+          resolve(event.data);
+        }
+      });
+      controller.preserveScrollPoint(() => {});
+    })).resolves.toMatchObject({
+      type: 'SCROLL_TO_SECTION',
+      payload: {id: 5, behavior: 'instant'}
+    });
+  });
+
+  it('sends SCROLL_TO_SECTION with nearEnd align when bottom paddings were selected', async () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 5}]
+      })
+    });
+
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    // Select bottom paddings
+    await new Promise(resolve => {
+      editor.once('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 5, type: 'sectionPaddings', position: 'bottom'}}, '*');
+    });
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SCROLL_TO_SECTION') {
+          resolve(event.data);
+        }
+      });
+      controller.preserveScrollPoint(() => {});
+    })).resolves.toMatchObject({
+      type: 'SCROLL_TO_SECTION',
+      payload: {id: 5, align: 'nearEnd', behavior: 'instant'}
+    });
+  });
+
+  it('clears selected paddings when another selection type is received', async () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 5}]
+      })
+    });
+
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    // First select paddings
+    await new Promise(resolve => {
+      editor.once('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 5, type: 'sectionPaddings'}}, '*');
+    });
+
+    // Then select section settings
+    await new Promise(resolve => {
+      editor.once('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 5, type: 'sectionSettings'}}, '*');
+    });
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SAVE_SCROLL_POINT') {
+          resolve('save_scroll_point');
+        }
+      });
+      controller.preserveScrollPoint(() => {});
+    })).resolves.toEqual('save_scroll_point');
+  });
 });
 
 function postReadyMessageAndWaitForAcknowledgement(iframeWindow) {

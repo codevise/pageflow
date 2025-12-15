@@ -136,6 +136,8 @@ export const PreviewMessageController = Object.extend({
       else if (message.data.type === 'SELECTED') {
         const {type, id, position} = message.data.payload;
 
+        this.preservedScrollTarget = null;
+
         if (type === 'contentElement') {
           const contentElement = this.entry.contentElements.get(id);
           this.editor.navigate(contentElement.getEditorPath(), {trigger: true})
@@ -144,6 +146,10 @@ export const PreviewMessageController = Object.extend({
           this.editor.navigate(`/scrolled/sections/${id}`, {trigger: true})
         }
         else if (type === 'sectionPaddings') {
+          this.preservedScrollTarget = {
+            sectionId: id,
+            align: position === 'bottom' ? 'nearEnd' : undefined
+          };
           const query = position ? `?position=${position}` : '';
           this.editor.navigate(`/scrolled/sections/${id}/paddings${query}`, {trigger: true})
         }
@@ -212,7 +218,17 @@ export const PreviewMessageController = Object.extend({
   },
 
   preserveScrollPoint(callback) {
-    this.currentScrollPointCallback = callback;
-    this.iframeWindow.postMessage({type: 'SAVE_SCROLL_POINT'}, window.location.origin);
+    if (this.preservedScrollTarget) {
+      const {sectionId, align} = this.preservedScrollTarget;
+      callback();
+      this.iframeWindow.postMessage({
+        type: 'SCROLL_TO_SECTION',
+        payload: {id: sectionId, align, behavior: 'instant'}
+      }, window.location.origin);
+    }
+    else {
+      this.currentScrollPointCallback = callback;
+      this.iframeWindow.postMessage({type: 'SAVE_SCROLL_POINT'}, window.location.origin);
+    }
   }
 });
