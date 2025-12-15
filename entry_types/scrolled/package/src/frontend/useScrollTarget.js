@@ -17,7 +17,7 @@ export function useScrollToTarget() {
   const emitter = useContext(ScrollTargetEmitterContext);
 
   return useCallback(
-    ({id, align, ifNeeded}) => emitter.trigger(id, {align, ifNeeded}),
+    ({id, align, ifNeeded, behavior}) => emitter.trigger(id, {align, ifNeeded, behavior}),
     [emitter]
   )
 }
@@ -28,7 +28,7 @@ export function useScrollTarget(id) {
   const emitter = useContext(ScrollTargetEmitterContext);
 
   useEffect(() => {
-    emitter.on(id, ({align, ifNeeded}) => {
+    emitter.on(id, ({align, ifNeeded, behavior}) => {
       if (ref.current) {
         const rect = ref.current.getBoundingClientRect();
 
@@ -38,7 +38,7 @@ export function useScrollTarget(id) {
 
         window.scrollTo({
           top: rect.top + window.scrollY + getAlignOffset(align, rect),
-          behavior: 'smooth'
+          behavior: behavior || 'smooth'
         });
       }
     });

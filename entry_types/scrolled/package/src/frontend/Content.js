@@ -57,7 +57,12 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
   const receiveMessage = useCallback(data => {
     if (data.type === 'SCROLL_TO_SECTION') {
       activateExcursionOfSection({id: data.payload.id});
-      scrollToTarget({id: data.payload.id, align: data.payload.align, ifNeeded: data.payload.ifNeeded});
+      scrollToTarget({
+        id: data.payload.id,
+        align: data.payload.align,
+        ifNeeded: data.payload.ifNeeded,
+        behavior: data.payload.behavior
+      });
     }
   }, [scrollToTarget, activateExcursionOfSection]);
 
