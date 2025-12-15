@@ -263,4 +263,132 @@ describe('pageflow.SliderInputView', () => {
 
     expect(view.ui.widget.slider('option', 'value')).toEqual(20);
   });
+
+  describe('with values option', () => {
+    it('sets slider min to 0 and max to last index', () => {
+      var model = new Model();
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value',
+        values: [0, 25, 50, 75, 100]
+      });
+
+      view.render();
+
+      expect(view.ui.widget.slider('option', 'min')).toEqual(0);
+      expect(view.ui.widget.slider('option', 'max')).toEqual(4);
+    });
+
+    it('loads value by finding index in values array', () => {
+      var model = new Model({value: 50});
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value',
+        values: [0, 25, 50, 75, 100]
+      });
+
+      view.render();
+
+      expect(view.ui.widget.slider('value')).toEqual(2);
+    });
+
+    it('displays value from values array', () => {
+      var model = new Model({value: 50});
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value',
+        values: [0, 25, 50, 75, 100]
+      });
+
+      view.render();
+
+      expect(view.ui.value.text()).toEqual('50%');
+    });
+
+    it('saves value from values array on slidechange', () => {
+      var model = new Model();
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value',
+        values: [0, 25, 50, 75, 100]
+      });
+
+      view.render();
+      view.$el.trigger('slidechange', {value: 3});
+
+      expect(model.get('value')).toEqual(75);
+    });
+
+    it('updates displayed value on slide', () => {
+      var model = new Model();
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value',
+        values: [0, 25, 50, 75, 100]
+      });
+
+      view.render();
+      view.$el.trigger('slide', {value: 2});
+
+      expect(view.ui.value.text()).toEqual('50%');
+    });
+
+    it('displays text from texts option', () => {
+      var model = new Model({value: 50});
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value',
+        values: [0, 25, 50, 75, 100],
+        texts: ['None', 'Low', 'Medium', 'High', 'Full']
+      });
+
+      view.render();
+
+      expect(view.ui.value.text()).toEqual('Medium');
+    });
+
+    it('updates displayed text on slide', () => {
+      var model = new Model();
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value',
+        values: [0, 25, 50, 75, 100],
+        texts: ['None', 'Low', 'Medium', 'High', 'Full']
+      });
+
+      view.render();
+      view.$el.trigger('slide', {value: 3});
+
+      expect(view.ui.value.text()).toEqual('High');
+    });
+
+    it('loads defaultValue by finding index in values array', () => {
+      var model = new Model();
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value',
+        values: ['none', 'sm', 'md', 'lg'],
+        defaultValue: 'md'
+      });
+
+      view.render();
+
+      expect(view.ui.widget.slider('value')).toEqual(2);
+    });
+
+    it('displays text for defaultValue from texts option', () => {
+      var model = new Model();
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value',
+        values: ['none', 'sm', 'md', 'lg'],
+        texts: ['None', 'Small', 'Medium', 'Large'],
+        defaultValue: 'md'
+      });
+
+      view.render();
+
+      expect(view.ui.value.text()).toEqual('Medium');
+    });
+  });
 });
