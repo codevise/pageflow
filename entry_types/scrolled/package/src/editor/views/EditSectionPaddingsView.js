@@ -1,7 +1,13 @@
-import {EditConfigurationView} from 'pageflow/editor';
-import {SelectInputView} from 'pageflow/ui';
+import I18n from 'i18n-js';
 
+import {EditConfigurationView, SeparatorView} from 'pageflow/editor';
+import {SliderInputView, RadioButtonGroupInputView, CheckBoxInputView} from 'pageflow/ui';
+
+import {SectionPaddingVisualizationView} from './inputs/SectionPaddingVisualizationView';
+import {EditMotifAreaInputView} from './inputs/EditMotifAreaInputView';
 import styles from './EditSectionPaddingsView.module.css';
+
+const i18nPrefix = 'pageflow_scrolled.editor.edit_section_paddings';
 
 export const EditSectionPaddingsView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_section_paddings',
@@ -20,30 +26,140 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
     const [paddingBottomValues, paddingBottomTexts] = entry.getScale('sectionPaddingBottom');
 
     configurationEditor.tab('sectionPaddings', function() {
-      this.input('paddingTop', SelectInputView, {
-        includeBlank: true,
-        values: paddingTopValues,
-        texts: paddingTopTexts
-      });
-
-      this.input('paddingBottom', SelectInputView, {
-        includeBlank: true,
-        values: paddingBottomValues,
-        texts: paddingBottomTexts
-      });
+      paddingInputs(this, {paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts});
     });
+
     configurationEditor.tab('portrait', function() {
-      this.input('portraitPaddingTop', SelectInputView, {
-        includeBlank: true,
-        values: paddingTopValues,
-        texts: paddingTopTexts
+      this.listenTo(this.model, 'change:customPortraitPaddings', () => {
+        configurationEditor.refresh();
       });
 
-      this.input('portraitPaddingBottom', SelectInputView, {
-        includeBlank: true,
-        values: paddingBottomValues,
-        texts: paddingBottomTexts
+      this.input('samePortraitPaddings', CheckBoxInputView, {
+        storeInverted: 'customPortraitPaddings'
+      });
+
+      const usePortraitProperties = this.model.get('customPortraitPaddings');
+
+      paddingInputs(this, {
+        prefix: usePortraitProperties ? 'portrait' : '',
+        portrait: true,
+        paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts,
+        disabledOptions: usePortraitProperties ? {} : {disabled: true}
       });
     });
   }
 });
+
+function paddingInputs(tab, options) {
+  const {
+    prefix = '',
+    portrait = false,
+    paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts,
+    disabledOptions
+  } = options;
+
+  const exposeMotifArea = prefix ? `${prefix}ExposeMotifArea` : 'exposeMotifArea';
+
+  tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
+    variant: 'intersectingAuto',
+    portrait,
+    visibleBinding: [exposeMotifArea, ...motifAreaBinding],
+    visible: ([exposeMotifAreaValue, ...motifAreaValues]) =>
+      exposeMotifAreaValue && !motifAreaUnavailable(motifAreaValues),
+    ...disabledOptions
+  });
+  tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
+    variant: 'intersectingManual',
+    portrait,
+    visibleBinding: [exposeMotifArea, ...motifAreaBinding],
+    visible: ([exposeMotifAreaValue, ...motifAreaValues]) =>
+      !exposeMotifAreaValue && !motifAreaUnavailable(motifAreaValues),
+    ...disabledOptions
+  });
+  tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
+    variant: 'topPadding',
+    portrait,
+    visibleBinding: motifAreaBinding,
+    visible: motifAreaUnavailable,
+    ...disabledOptions
+  });
+  tab.input(exposeMotifArea, RadioButtonGroupInputView, {
+    hideLabel: true,
+    values: [true, false],
+    texts: [
+      I18n.t(`${i18nPrefix}.attributes.exposeMotifArea.values.true`),
+      I18n.t(`${i18nPrefix}.attributes.exposeMotifArea.values.false`)
+    ],
+    visibleBinding: motifAreaBinding,
+    visible: values => !motifAreaUnavailable(values),
+    ...disabledOptions
+  });
+  tab.input('editMotifArea', EditMotifAreaInputView, {
+    hideLabel: true,
+    portrait,
+    visibleBinding: [exposeMotifArea, ...motifAreaBinding],
+    visible: ([exposeMotifAreaValue, ...motifAreaValues]) =>
+      exposeMotifAreaValue && !motifAreaUnavailable(motifAreaValues)
+  });
+
+  const imageMotifAreaPropertyName = portrait ? 'backdropImageMobileMotifArea' : 'backdropImageMotifArea';
+  const videoMotifAreaPropertyName = portrait ? 'backdropVideoMobileMotifArea' : 'backdropVideoMotifArea';
+  const motifAreaNotDefinedBinding = [
+    exposeMotifArea, 'backdropType', imageMotifAreaPropertyName, videoMotifAreaPropertyName
+  ];
+
+  tab.input('sideBySideVisualization', SectionPaddingVisualizationView, {
+    hideLabel: true,
+    variant: 'sideBySide',
+    portrait,
+    infoText: I18n.t(`${i18nPrefix}.side_by_side_info`),
+    visibleBinding: [exposeMotifArea, 'layout', ...motifAreaBinding],
+    visible: ([exposeMotifAreaValue, layout, ...motifAreaValues]) =>
+      exposeMotifAreaValue &&
+      layout !== 'center' &&
+      layout !== 'centerRagged' &&
+      !motifAreaUnavailable(motifAreaValues),
+    disabledBinding: motifAreaNotDefinedBinding,
+    disabled: motifAreaNotDefined
+  });
+
+  tab.input(prefix ? `${prefix}PaddingTop` : 'paddingTop', SliderInputView, {
+    hideLabel: true,
+    texts: paddingTopTexts,
+    values: paddingTopValues,
+    saveOnSlide: true,
+    disabledBinding: motifAreaNotDefinedBinding,
+    disabled: motifAreaNotDefined,
+    ...disabledOptions
+  });
+
+  tab.view(SeparatorView);
+
+  tab.input('bottomPaddingVisualization', SectionPaddingVisualizationView, {
+    variant: 'bottomPadding',
+    portrait,
+    ...disabledOptions
+  });
+  tab.input(prefix ? `${prefix}PaddingBottom` : 'paddingBottom', SliderInputView, {
+    hideLabel: true,
+    texts: paddingBottomTexts,
+    values: paddingBottomValues,
+    saveOnSlide: true,
+    ...disabledOptions
+  });
+}
+
+const motifAreaBinding = ['backdropType'];
+
+function motifAreaUnavailable([backdropType]) {
+  return backdropType === 'color';
+}
+
+function motifAreaNotDefined([exposeMotifAreaValue, backdropType, imageMotifArea, videoMotifArea]) {
+  if (backdropType === 'color') {
+    return false;
+  }
+
+  const motifArea = backdropType === 'video' ? videoMotifArea : imageMotifArea;
+  return exposeMotifAreaValue && !motifArea;
+}

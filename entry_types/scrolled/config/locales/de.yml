@@ -1357,19 +1357,32 @@ de:
         tabs:
           sectionPaddings: Innenabstände
           portrait: Hochkant
+
+        side_by_side_info: 'Wenn Motiv und Inhalt nebeneinander passen:'
         attributes:
+          topPaddingVisualization:
+            label: Abstand oben
+          exposeMotifArea:
+            label: Abstand oben
+            values:
+              'true': Automatisch anpassen, um das Motiv im Hintergrund freizustellen
+              'false': Manuell festlegen
+          sideBySideVisualization:
+            label: Nebeneinander
           paddingTop:
-            blank: (Standard)
-            label: Oben
+            label: Abstand oben
+          bottomPaddingVisualization:
+            label: Abstand unten
           paddingBottom:
-            blank: (Standard)
-            label: Unten
+            label: Abstand unten
+          samePortraitPaddings:
+            label: Gleiche Innenabstände wie bei Querformat verwenden
+          portraitExposeMotifArea:
+            label: Abstand oben
           portraitPaddingTop:
-            blank: (Standard)
-            label: Oben (Hochkant)
+            label: Abstand oben (Hochkant)
           portraitPaddingBottom:
-            blank: (Standard)
-            label: Unten (Hochkant)
+            label: Abstand unten (Hochkant)
       typography_sizes:
         xl: Sehr groß
         lg: Groß

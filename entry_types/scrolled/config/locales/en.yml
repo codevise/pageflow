@@ -1206,6 +1206,8 @@ en:
           cardSurfaceColor:
             label: Cards background color
             auto: "(Auto)"
+          sectionPaddings:
+            label: "Top/bottom padding"
         tabs:
           section: Section
       edit_section_transition:
@@ -1333,6 +1335,37 @@ en:
         remove: "Remove style"
       crop_types:
         circle: Circle
+      section_paddings_input:
+        auto: (Auto)
+      edit_section_paddings:
+        tabs:
+          sectionPaddings: Paddings
+          portrait: Portrait
+        side_by_side_info: 'When motif and content fit side by side:'
+        attributes:
+          topPaddingVisualization:
+            label: Top padding
+          exposeMotifArea:
+            label: Top Padding
+            values:
+              'true': Adjust automatically to expose a motif in the background
+              'false': Set manually
+          sideBySideVisualization:
+            label: Side by side
+          paddingTop:
+            label: Top padding
+          bottomPaddingVisualization:
+            label: Bottom padding
+          paddingBottom:
+            label: Bottom padding
+          samePortraitPaddings:
+            label: Use same paddings as in landscape orientation
+          portraitExposeMotifArea:
+            label: Top Padding
+          portraitPaddingTop:
+            label: Top padding (Portrait)
+          portraitPaddingBottom:
+            label: Bottom padding (Portrait)
       typography_sizes:
         xl: Very large
         lg: Large
