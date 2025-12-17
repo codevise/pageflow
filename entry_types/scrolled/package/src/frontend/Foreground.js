@@ -24,6 +24,16 @@ function className(props, forcePadding) {
     props.transitionStyles.foreground,
     props.transitionStyles[`foreground-${props.state}`],
     {[styles.paddingBottom]: props.paddingBottom || forcePadding},
-    styles[`${props.heightMode}Height`]
+    styles[`${props.heightMode}Height`],
+    styles[spaceClassName(props.section?.remainingVerticalSpace)]
   )
+}
+
+function spaceClassName(remainingVerticalSpace) {
+  if (remainingVerticalSpace === 'above') {
+    return 'spaceAbove';
+  }
+  else if (remainingVerticalSpace === 'below') {
+    return 'spaceBelow';
+  }
 }
