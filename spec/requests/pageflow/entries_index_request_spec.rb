@@ -106,14 +106,16 @@ module Pageflow
 
       describe 'with configured public_entry_redirect' do
         it 'redirects to returned location' do
+          pageflow_configure do |config|
+            config.public_entry_redirect = ->(_, _) { '/some_location' }
+          end
+
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
                  site:,
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
-
-          Pageflow.config.public_entry_redirect = ->(_, _) { '/some_location' }
 
           get('http://pageflow.example.com/')
 
@@ -121,6 +123,11 @@ module Pageflow
         end
 
         it 'redirects even before https redirect takes place' do
+          pageflow_configure do |config|
+            config.public_https_mode = :enforce
+            config.public_entry_redirect = ->(_, _) { '/some_location' }
+          end
+
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
@@ -128,15 +135,18 @@ module Pageflow
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
 
-          Pageflow.config.public_https_mode = :enforce
-          Pageflow.config.public_entry_redirect = ->(_, _) { '/some_location' }
-
           get('http://pageflow.example.com/')
 
           expect(response).to redirect_to('/some_location')
         end
 
         it 'passes entry and request' do
+          pageflow_configure do |config|
+            config.public_entry_redirect = lambda do |passed_entry, request|
+              "#{request.protocol}#{request.host}/#{passed_entry.slug}"
+            end
+          end
+
           site = create(:site, cname: 'pageflow.example.com')
           entry = create(
             :entry,
@@ -147,24 +157,22 @@ module Pageflow
             permalink_attributes: {slug: '', allow_root_path: true}
           )
 
-          Pageflow.config.public_entry_redirect = lambda do |passed_entry, request|
-            "#{request.protocol}#{request.host}/#{passed_entry.slug}"
-          end
-
           get('http://pageflow.example.com/')
 
           expect(response).to redirect_to("http://pageflow.example.com/#{entry.slug}")
         end
 
         it 'allows redirecting to other host' do
+          pageflow_configure do |config|
+            config.public_entry_redirect = ->(_, _) { 'http://www.example.com/' }
+          end
+
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
                  site:,
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
-
-          Pageflow.config.public_entry_redirect = ->(_, _) { 'http://www.example.com/' }
 
           get('http://pageflow.example.com/')
 
@@ -172,14 +180,16 @@ module Pageflow
         end
 
         it 'does not redirect if nil is returned' do
+          pageflow_configure do |config|
+            config.public_entry_redirect = ->(_, _) {}
+          end
+
           site = create(:site, cname: 'pageflow.example.com')
           create(:entry,
                  :published,
                  site:,
                  type_name: 'test',
                  permalink_attributes: {slug: '', allow_root_path: true})
-
-          Pageflow.config.public_entry_redirect = ->(_, _) {}
 
           get('http://pageflow.example.com/')
 

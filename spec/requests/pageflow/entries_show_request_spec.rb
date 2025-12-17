@@ -60,7 +60,8 @@ module Pageflow
         get(short_entry_url(entry))
 
         expect(response.status).to eq(200)
-        expect(response.body).to include('some-entry published embed=false rendered by entry type frontend app')
+        expect(response.body)
+          .to include('some-entry published embed=false rendered by entry type frontend app')
       end
 
       it 'passes embed=true for embed requests' do
@@ -69,7 +70,8 @@ module Pageflow
         get(entry_embed_url(entry))
 
         expect(response.status).to eq(200)
-        expect(response.body).to include('some-entry published embed=true rendered by entry type frontend app')
+        expect(response.body)
+          .to include('some-entry published embed=true rendered by entry type frontend app')
       end
 
       it 'supports finding published entry based on permalink' do
@@ -237,7 +239,8 @@ module Pageflow
         get('http://my.example.com/non-existent-entry')
 
         expect(response.status).to eq(404)
-        expect(response.body).to include('Custom 404 published embed=false rendered by entry type frontend app')
+        expect(response.body)
+          .to include('Custom 404 published embed=false rendered by entry type frontend app')
       end
 
       it 'falls back to default 404 when site has no custom_404_entry' do
@@ -353,10 +356,12 @@ module Pageflow
 
       describe 'with configured public_entry_redirect' do
         it 'redirects to returned location' do
+          pageflow_configure do |config|
+            config.public_entry_redirect = ->(_, _) { '/some_location' }
+          end
+
           entry = create(:entry, :published,
                          type_name: 'test')
-
-          Pageflow.config.public_entry_redirect = ->(_, _) { '/some_location' }
 
           get(short_entry_url(entry))
 
@@ -364,11 +369,13 @@ module Pageflow
         end
 
         it 'redirects even before https redirect takes place' do
+          pageflow_configure do |config|
+            config.public_https_mode = :enforce
+            config.public_entry_redirect = ->(_, _) { '/some_location' }
+          end
+
           entry = create(:entry, :published,
                          type_name: 'test')
-
-          Pageflow.config.public_https_mode = :enforce
-          Pageflow.config.public_entry_redirect = ->(_, _) { '/some_location' }
 
           get(short_entry_url(entry))
 
@@ -376,13 +383,15 @@ module Pageflow
         end
 
         it 'passes entry and request' do
+          pageflow_configure do |config|
+            config.public_entry_redirect = lambda do |passed_entry, request|
+              "#{request.protocol}#{request.host}/#{passed_entry.slug}"
+            end
+          end
+
           create(:entry, :published,
                  title: 'some-entry',
                  type_name: 'test')
-
-          Pageflow.config.public_entry_redirect = lambda do |passed_entry, request|
-            "#{request.protocol}#{request.host}/#{passed_entry.slug}"
-          end
 
           get('http://www.example.com/some-entry')
 
@@ -390,10 +399,12 @@ module Pageflow
         end
 
         it 'allows redirecting to other host' do
+          pageflow_configure do |config|
+            config.public_entry_redirect = ->(_, _) { 'http://www.example.com/' }
+          end
+
           entry = create(:entry, :published,
                          type_name: 'test')
-
-          Pageflow.config.public_entry_redirect = ->(_, _) { 'http://www.example.com/' }
 
           get(short_entry_url(entry), headers: {'HTTP_HOST' => 'pageflow.example.com'})
 
@@ -401,14 +412,47 @@ module Pageflow
         end
 
         it 'does not redirect if nil is returned' do
+          pageflow_configure do |config|
+            config.public_entry_redirect = ->(_, _) {}
+          end
+
           entry = create(:entry, :published,
                          type_name: 'test')
-
-          Pageflow.config.public_entry_redirect = ->(_, _) {}
 
           get(short_entry_url(entry))
 
           expect(response.status).to eq(200)
+        end
+
+        it 'does not use redirect from feature flag by default' do
+          pageflow_configure do |config|
+            config.features.register('redirect_feature') do |feature_config|
+              feature_config.public_entry_redirect = ->(_, _) { '/redirected' }
+            end
+          end
+
+          entry = create(:entry, :published,
+                         type_name: 'test')
+
+          get(short_entry_url(entry))
+
+          expect(response.status).to eq(200)
+        end
+
+        it 'uses redirect from feature flag if enabled' do
+          pageflow_configure do |config|
+            config.features.register('redirect_feature') do |feature_config|
+              feature_config.public_entry_redirect = ->(_, _) { '/redirected' }
+            end
+          end
+
+          entry = create(:entry, :published,
+                         type_name: 'test',
+                         with_feature: 'redirect_feature')
+
+          get(short_entry_url(entry))
+
+          expect(response).to redirect_to('/redirected')
         end
       end
 
