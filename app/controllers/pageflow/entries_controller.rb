@@ -85,11 +85,13 @@ module Pageflow
     end
 
     def handle_public_entry_request(entry)
-      return if redirect_according_to_entry_redirect(entry)
+      config = Pageflow.config_for(entry)
+
+      return if redirect_according_to_entry_redirect(entry, config)
       return if redirect_according_to_public_https_mode
       return unless check_entry_password_protection(entry)
 
-      delegate_to_entry_type_frontend_app!(entry)
+      delegate_to_entry_type_frontend_app!(entry, config:)
     end
 
     def redirect_according_to_permalink_redirect
@@ -107,18 +109,14 @@ module Pageflow
       true
     end
 
-    def redirect_according_to_entry_redirect(entry)
-      return false unless (redirect_location = entry_redirect(entry))
+    def redirect_according_to_entry_redirect(entry, config)
+      return false unless (redirect_location = config.public_entry_redirect.call(entry, request))
 
       redirect_to(redirect_location, status: :moved_permanently, allow_other_host: true)
       true
     end
 
-    def entry_redirect(entry)
-      Pageflow.config.public_entry_redirect.call(entry, request)
-    end
-
-    def delegate_to_entry_type_frontend_app!(entry, override_status: nil)
+    def delegate_to_entry_type_frontend_app!(entry, config:, override_status: nil)
       EntriesControllerEnvHelper.add_entry_info_to_env(request.env,
                                                        entry:,
                                                        mode: :published,
@@ -126,7 +124,6 @@ module Pageflow
 
       delegate_to_rack_app!(entry.entry_type.frontend_app) do |result|
         status, headers, body = result
-        config = Pageflow.config_for(entry)
 
         allow_iframe_for_embed(headers)
         apply_additional_headers(entry, config, headers)
@@ -158,7 +155,9 @@ module Pageflow
 
       if site&.custom_404_entry&.published_without_password_protection?
         entry = PublishedEntry.new(site.custom_404_entry)
-        delegate_to_entry_type_frontend_app!(entry, override_status: 404)
+        config = Pageflow.config_for(entry)
+
+        delegate_to_entry_type_frontend_app!(entry, config:, override_status: 404)
       else
         # Fallback to ApplicationController's handler method
         render_static_404_error_page

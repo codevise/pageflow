@@ -733,6 +733,7 @@ module Pageflow
       delegate :additional_public_entry_headers, to: :config
       delegate :cutoff_modes, to: :config
       delegate :entry_translator_url=, to: :config
+      delegate :public_entry_redirect=, to: :config
       delegate :public_entry_url_options=, to: :config
 
       delegate :for_entry_type, to: :config
