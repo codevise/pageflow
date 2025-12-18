@@ -196,8 +196,12 @@ function createSectionPageObject(el) {
       fireEvent.mouseDown(getByTitle('Edit section transition after'));
     },
 
-    hasBottomPadding() {
-      return foreground.classList.contains(foregroundStyles.paddingBottom);
+    hasSuppressedTopPadding() {
+      return foreground.classList.contains(foregroundStyles.suppressedPaddingTop);
+    },
+
+    hasSuppressedBottomPadding() {
+      return foreground.classList.contains(foregroundStyles.suppressedPaddingBottom);
     },
 
     hasForcedPadding() {

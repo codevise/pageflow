@@ -163,7 +163,7 @@ function SectionContents({
                   motifAreaState={motifAreaState}
                   sectionPadding={sectionPadding}
                   minHeight={motifAreaState.minHeight}
-                  paddingBottom={!endsWithFullWidthElement(contentElements)}
+                  suppressedPaddings={getSuppressedPaddings(contentElements)}
                   heightMode={heightMode(section)}>
         <Box inverted={section.invert}
              coverInvisibleNextSection={exitTransition.startsWith('fade')}
@@ -226,11 +226,17 @@ function heightMode(section) {
   return 'dynamic';
 }
 
-function endsWithFullWidthElement(elements) {
-  const lastElement = elements[elements.length - 1];
-  return lastElement &&
-         lastElement.position === 'inline' &&
-         lastElement.width === contentElementWidths.full;
+function getSuppressedPaddings(contentElements) {
+  return {
+    top: isFullWidthElement(contentElements[0]),
+    bottom: isFullWidthElement(contentElements[contentElements.length - 1])
+  };
+}
+
+function isFullWidthElement(element) {
+  return element &&
+         element.position === 'inline' &&
+         element.width === contentElementWidths.full;
 }
 
 function percentToFraction(value, {defaultValue}) {

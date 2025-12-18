@@ -30,8 +30,12 @@
   justify-content: flex-start;
 }
 
-.paddingBottom {
-  padding-bottom: var(--foreground-padding-bottom);
+.suppressedPaddingTop {
+  --foreground-padding-top: 0px;
+}
+
+.suppressedPaddingBottom {
+  --foreground-padding-bottom: 0px;
 }
 
 .forcePadding {

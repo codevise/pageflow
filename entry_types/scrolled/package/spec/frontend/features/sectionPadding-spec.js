@@ -13,7 +13,7 @@ describe('section padding', () => {
 
   useInlineEditingPageObjects();
 
-  it('adds padding to bottom of section by default', () => {
+  it('does not suppress top padding by default', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: {
         sections: [{id: 5, permaId: 6}],
@@ -21,10 +21,21 @@ describe('section padding', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasBottomPadding()).toBe(true);
+    expect(getSectionByPermaId(6).hasSuppressedTopPadding()).toBe(false);
   });
 
-  it('does not add padding to bottom of section if last content element is full width', () => {
+  it('does not suppress bottom padding by default', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).hasSuppressedBottomPadding()).toBe(false);
+  });
+
+  it('suppresses top padding if first content element is full width', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: {
         sections: [{id: 5, permaId: 6}],
@@ -32,7 +43,18 @@ describe('section padding', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasBottomPadding()).toBe(false);
+    expect(getSectionByPermaId(6).hasSuppressedTopPadding()).toBe(true);
+  });
+
+  it('suppresses bottom padding if last content element is full width', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5, configuration: {width: 3}}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).hasSuppressedBottomPadding()).toBe(true);
   });
 
   it('forces padding below full width element if section is selected', () => {
