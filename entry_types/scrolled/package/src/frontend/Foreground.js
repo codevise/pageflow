@@ -23,7 +23,8 @@ function className(props, forcePadding) {
     styles.Foreground,
     props.transitionStyles.foreground,
     props.transitionStyles[`foreground-${props.state}`],
-    {[styles.paddingBottom]: props.paddingBottom || forcePadding},
+    {[styles.paddingBottom]: props.paddingBottom},
+    {[styles.forcePadding]: forcePadding},
     styles[`${props.heightMode}Height`],
     styles[spaceClassName(props.section?.remainingVerticalSpace)]
   )

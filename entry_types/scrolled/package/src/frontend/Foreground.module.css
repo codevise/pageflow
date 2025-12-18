@@ -31,7 +31,11 @@
 }
 
 .paddingBottom {
-  padding-bottom: var(--foreground-padding-bottom, 3em);
+  padding-bottom: var(--foreground-padding-bottom);
+}
+
+.forcePadding {
+  padding-bottom: max(var(--foreground-padding-bottom, 0px), 3em);
 }
 
 @media print {

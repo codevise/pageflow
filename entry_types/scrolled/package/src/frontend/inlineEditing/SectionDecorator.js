@@ -80,7 +80,7 @@ export function SectionDecorator({backdrop, section, contentElements, transition
                                      position: 'after'})}
       </div>
       <MotifAreaVisibilityProvider visible={isSelected}>
-        <ForcePaddingContext.Provider value={isLastContentElementSelected || isSelected}>
+        <ForcePaddingContext.Provider value={isLastContentElementSelected || isSectionSelected}>
           {children}
         </ForcePaddingContext.Provider>
       </MotifAreaVisibilityProvider>
@@ -88,9 +88,9 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   );
 }
 
-function className(isSectionSelected, transitionSelection, isHighlighted, isBackdropElementSelected, transitions) {
+function className(isSelected, transitionSelection, isHighlighted, isBackdropElementSelected, transitions) {
   return classNames(styles.wrapper, {
-    [styles.selected]: isSectionSelected,
+    [styles.selected]: isSelected,
     [styles.highlighted]: isHighlighted,
     [styles.lineAbove]: isBackdropElementSelected && transitions[0].startsWith('fade'),
     [styles.lineBelow]: isBackdropElementSelected && transitions[1].startsWith('fade'),

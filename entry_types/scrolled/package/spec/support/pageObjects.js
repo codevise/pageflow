@@ -200,6 +200,10 @@ function createSectionPageObject(el) {
       return foreground.classList.contains(foregroundStyles.paddingBottom);
     },
 
+    hasForcedPadding() {
+      return foreground.classList.contains(foregroundStyles.forcePadding);
+    },
+
     hasRemainingSpaceAbove() {
       return foreground.classList.contains(foregroundStyles.spaceAbove);
     },
@@ -219,6 +223,11 @@ function createSectionPageObject(el) {
         bottom: 'Edit bottom padding'
       };
       return getByLabelText(labels[position]);
+    },
+
+    selectPadding(position) {
+      fireEvent.mouseDown(selectionRect);
+      fireEvent.click(this.getPaddingIndicator(position));
     }
   }
 }

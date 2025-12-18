@@ -2,10 +2,15 @@ import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects';
 
 import '@testing-library/jest-dom/extend-expect';
 
+import {features} from 'pageflow/frontend';
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 jest.mock('frontend/usePortraitOrientation');
 
 describe('section padding', () => {
+  beforeEach(() => {
+    features.enable('frontend', ['section_paddings']);
+  });
+
   useInlineEditingPageObjects();
 
   it('adds padding to bottom of section by default', () => {
@@ -30,35 +35,49 @@ describe('section padding', () => {
     expect(getSectionByPermaId(6).hasBottomPadding()).toBe(false);
   });
 
-  it('adds padding below full width element if section is selected', () => {
+  it('forces padding below full width element if section is selected', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: {
         sections: [{id: 5, permaId: 6}],
-        contentElements: [{sectionId: 5, configuration: {position: 'full'}}]
+        contentElements: [{sectionId: 5, configuration: {width: 3}}]
       }
     });
 
     const section = getSectionByPermaId(6);
     section.select();
 
-    expect(section.hasBottomPadding()).toBe(true);
+    expect(section.hasForcedPadding()).toBe(true);
   });
 
-  it('adds padding below full width element if element is selected', () => {
+  it('forces padding below full width element if element is selected', () => {
     const {getSectionByPermaId, getContentElementByTestId} = renderEntry({
       seed: {
         sections: [{id: 5, permaId: 6}],
         contentElements: [{
           sectionId: 5,
           typeName: 'withTestId',
-          configuration: {testId: 10, position: 'full'}
+          configuration: {testId: 10, width: 3}
         }]
       }
     });
 
     getContentElementByTestId(10).select();
 
-    expect(getSectionByPermaId(6).hasBottomPadding()).toBe(true);
+    expect(getSectionByPermaId(6).hasForcedPadding()).toBe(true);
+  });
+
+  it('does not force padding if padding is selected', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5, configuration: {width: 3}}]
+      }
+    });
+
+    const section = getSectionByPermaId(6);
+    section.selectPadding('bottom');
+
+    expect(section.hasForcedPadding()).toBe(false);
   });
 
   it('does not set inline padding styles when no paddingTop/paddingBottom set', () => {
