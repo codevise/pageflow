@@ -34,6 +34,8 @@ function className(props) {
     styles[`selfClear-${props.selfClear}`],
     {[styles.blur]: props.cardSurfaceTransparency > 0},
     {[styles.cardStart]: !props.openStart},
-    {[styles.cardEnd]: !props.openEnd}
+    {[styles.cardEnd]: !props.openEnd},
+    {[styles.noTopMargin]: props.atSectionStart},
+    {[styles.noBottomMargin]: props.atSectionEnd}
   );
 }

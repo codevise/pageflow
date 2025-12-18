@@ -814,6 +814,77 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('( 1 || 2 || 3 )');
       });
     });
+
+    describe('atSectionStart and atSectionEnd props', () => {
+      beforeAll(() => {
+        TwoColumn.GroupComponent = 'div';
+      });
+
+      const SectionBoundaryBox = function SectionBoundaryBox({atSectionStart, atSectionEnd, children}) {
+        return (
+          <div>{atSectionStart ? '[' : ''}{children}{atSectionEnd ? ']' : ''}</div>
+        );
+      };
+
+      it('marks first box with atSectionStart in two column variant', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <SectionBoundaryBox {...boxProps}>{children}</SectionBoundaryBox>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[1 2 ]');
+      });
+
+      it('marks first and last boxes in multiple groups', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'sticky'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <SectionBoundaryBox {...boxProps}>{children}</SectionBoundaryBox>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[1 2 3 ]');
+      });
+
+      it('marks first inline box with atSectionStart when first element is sticky', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'sticky'},
+          {id: 2, type: 'probe', position: 'inline'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <SectionBoundaryBox {...boxProps}>{children}</SectionBoundaryBox>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('1 [2 3 ]');
+      });
+
+      it('marks first and last boxes in center variant', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, boxProps) => <SectionBoundaryBox {...boxProps}>{children}</SectionBoundaryBox>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('[1 2 3 ]');
+      });
+    });
   });
 
   describe('floating items in centered variant', () => {

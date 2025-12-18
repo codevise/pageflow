@@ -47,9 +47,17 @@
   margin-top: 3em;
 }
 
+.cardStart.noTopMargin {
+  margin-top: 0;
+}
+
 .cardEnd {
   margin-bottom: 3em;
   padding-bottom: 1.5em;
+}
+
+.cardEnd.noBottomMargin {
+  margin-bottom: 0;
 }
 
 .cardStart::before {

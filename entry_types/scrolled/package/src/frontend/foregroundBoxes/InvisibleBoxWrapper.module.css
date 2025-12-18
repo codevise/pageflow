@@ -2,6 +2,14 @@
   margin-top: 1.375em;
 }
 
+.start.noTopMargin {
+  margin-top: 0;
+}
+
 .end {
   margin-bottom: 1.375em;
+}
+
+.end.noBottomMargin {
+  margin-bottom: 0;
 }

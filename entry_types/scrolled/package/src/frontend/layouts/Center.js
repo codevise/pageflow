@@ -76,7 +76,9 @@ function boxProps(items, item, index) {
     openEnd: next &&
              !customMargin &&
              !hasCustomMargin(next) &&
-             !isWideOrFull(item) && !isWideOrFull(next)
+             !isWideOrFull(item) && !isWideOrFull(next),
+    atSectionStart: index === 0,
+    atSectionEnd: index === items.length - 1
   }
 }
 
