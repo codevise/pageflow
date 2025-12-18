@@ -760,4 +760,103 @@ describe('EditSectionPaddingsView', () => {
       expect(listener).toHaveBeenCalledWith(entry.sections.get(1), {align: 'nearEnd', ifNeeded: true});
     });
   });
+
+  describe('slider default value', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.edit_section_paddings.tabs.sectionPaddings': 'Landscape',
+      'pageflow_scrolled.editor.section_padding_visualization.top_padding': 'TopPadding',
+      'pageflow_scrolled.editor.section_padding_visualization.bottom_padding': 'Bottom'
+    });
+
+    it('displays default value text when section has no paddingTop set', () => {
+      const entry = createEntry({
+        sections: [{id: 1, configuration: {backdropType: 'color'}}],
+        themeOptions: {
+          properties: {
+            root: {
+              sectionDefaultPaddingTop: '3em',
+              'sectionPaddingTop-none': '0',
+              'sectionPaddingTop-sm': '1.375em',
+              'sectionPaddingTop-lg': '3em',
+              'sectionPaddingBottom-none': '0',
+              'sectionPaddingBottom-sm': '1.375em',
+              'sectionPaddingBottom-lg': '3em'
+            }
+          }
+        },
+        themeTranslations: {
+          scales: {
+            sectionPaddingTop: {
+              none: 'None',
+              sm: 'Small',
+              lg: 'Large'
+            },
+            sectionPaddingBottom: {
+              none: 'None',
+              sm: 'Small',
+              lg: 'Large'
+            }
+          }
+        }
+      });
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      renderBackboneView(view);
+
+      // Find the first slider's value display element
+      const sliderValueText = view.$el.find('.slider_input .value').eq(0).text();
+      expect(sliderValueText).toEqual('Large');
+    });
+
+    it('prefers appearance-specific default over root default', () => {
+      const entry = createEntry({
+        sections: [{id: 1, configuration: {backdropType: 'color', appearance: 'cards'}}],
+        themeOptions: {
+          properties: {
+            root: {
+              sectionDefaultPaddingTop: '1.375em',
+              'sectionPaddingTop-none': '0',
+              'sectionPaddingTop-sm': '1.375em',
+              'sectionPaddingTop-lg': '3em',
+              'sectionPaddingBottom-none': '0',
+              'sectionPaddingBottom-sm': '1.375em',
+              'sectionPaddingBottom-lg': '3em'
+            },
+            cardsAppearanceSection: {
+              sectionDefaultPaddingTop: '3em'
+            }
+          }
+        },
+        themeTranslations: {
+          scales: {
+            sectionPaddingTop: {
+              none: 'None',
+              sm: 'Small',
+              lg: 'Large'
+            },
+            sectionPaddingBottom: {
+              none: 'None',
+              sm: 'Small',
+              lg: 'Large'
+            }
+          }
+        }
+      });
+
+      const view = new EditSectionPaddingsView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      renderBackboneView(view);
+
+      // Should display 'Large' (3em from cardsAppearanceSection) not 'Small' (1.375em from root)
+      const sliderValueText = view.$el.find('.slider_input .value').eq(0).text();
+      expect(sliderValueText).toEqual('Large');
+    });
+  });
 });
