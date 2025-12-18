@@ -35,9 +35,11 @@ export const MotifArea = function MotifArea(props) {
     return null;
   }
 
+  const hasMotifArea = !!props.file.motifAreaOffsetRect;
+
   return (
     <div ref={setElementRef}
-         className={classNames(styles.root, {[styles.visible]: visible})}
+         className={classNames(styles.root, {[styles.visible]: visible && hasMotifArea})}
          style={position}
          onMouseEnter={props.onMouseEnter}
          onMouseLeave={props.onMouseLeave}>
