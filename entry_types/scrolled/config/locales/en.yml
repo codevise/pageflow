@@ -1502,6 +1502,8 @@ en:
       cancel: Cancel
       default_padding: Default
       drag_content_element: Drag to move element
+      padding_suppressed_before_full_width: Padding suppressed before full width element
+      padding_suppressed_after_full_width: Padding suppressed after full width element
       edit_section_transition_after: Edit section transition
       edit_section_transition_before: Edit section transition
       flip_card: Flip card

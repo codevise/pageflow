@@ -103,4 +103,75 @@ describe('PaddingIndicator', () => {
 
     expect(section.getPaddingIndicator('top')).toHaveTextContent('Expose motif area');
   });
+
+  it('displays suppressed text for top padding when section starts with full width element', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{
+          id: 1,
+          permaId: 10
+        }],
+        contentElements: [{sectionId: 1, configuration: {width: 3}}]
+      }
+    });
+
+    const section = getSectionByPermaId(10);
+    section.select();
+
+    expect(section.getPaddingIndicator('top')).toHaveTextContent('Padding suppressed before full width element');
+  });
+
+  it('displays suppressed text for bottom padding when section ends with full width element', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{
+          id: 1,
+          permaId: 10
+        }],
+        contentElements: [{sectionId: 1, configuration: {width: 3}}]
+      }
+    });
+
+    const section = getSectionByPermaId(10);
+    section.select();
+
+    expect(section.getPaddingIndicator('bottom')).toHaveTextContent('Padding suppressed after full width element');
+  });
+
+  it('applies none class to padding indicator when padding is suppressed', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{
+          id: 1,
+          permaId: 10
+        }],
+        contentElements: [{sectionId: 1, configuration: {width: 3}}]
+      }
+    });
+
+    const section = getSectionByPermaId(10);
+    section.select();
+
+    expect(section.getPaddingIndicator('top').className).toContain('none');
+  });
+
+  it('applies none class to padding indicator when padding value is none', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{
+          id: 1,
+          permaId: 10,
+          configuration: {
+            paddingTop: 'none'
+          }
+        }],
+        contentElements: [{sectionId: 1}]
+      }
+    });
+
+    const section = getSectionByPermaId(10);
+    section.select();
+
+    expect(section.getPaddingIndicator('top').className).toContain('none');
+  });
 });

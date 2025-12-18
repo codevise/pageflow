@@ -20,7 +20,7 @@ const scaleNames = {
   bottom: 'sectionPaddingBottom'
 };
 
-export function PaddingIndicator({section, motifAreaState, paddingValue, position}) {
+export function PaddingIndicator({section, motifAreaState, paddingValue, position, suppressed}) {
   const Icon = paddingIcons[position];
   const theme = useTheme();
   const {t} = useI18n({locale: 'ui'});
@@ -39,7 +39,7 @@ export function PaddingIndicator({section, motifAreaState, paddingValue, positio
   const motifPadding = motifAreaState?.paddingTop > 0;
   const paddingText = motifPadding ?
                       t('pageflow_scrolled.inline_editing.expose_motif_area') :
-                      getPaddingText({theme, paddingValue, position, t});
+                      getPaddingText({theme, paddingValue, position, t, suppressed});
 
   if (isSectionSelected || isPaddingSelected) {
     return (
@@ -47,7 +47,7 @@ export function PaddingIndicator({section, motifAreaState, paddingValue, positio
            className={classNames(styles[`indicator-${position}`],
                                  {[styles.selected]: isPaddingSelected,
                                   [styles.motif]: motifPadding,
-                                  [styles.none]: !motifPadding && paddingValue === 'none'})}
+                                  [styles.none]: !motifPadding && (paddingValue === 'none' || suppressed)})}
            onClick={() => select()}>
         <div className={styles.tooltip}>
           <Icon />
@@ -61,7 +61,14 @@ export function PaddingIndicator({section, motifAreaState, paddingValue, positio
   }
 }
 
-function getPaddingText({theme, paddingValue, position, t}) {
+function getPaddingText({theme, paddingValue, position, t, suppressed}) {
+  if (suppressed) {
+    const key = position === 'top' ?
+                'pageflow_scrolled.inline_editing.padding_suppressed_before_full_width' :
+                'pageflow_scrolled.inline_editing.padding_suppressed_after_full_width';
+    return t(key);
+  }
+
   if (!paddingValue) {
     return t('pageflow_scrolled.inline_editing.default_padding');
   }
