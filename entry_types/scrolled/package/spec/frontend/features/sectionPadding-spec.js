@@ -61,6 +61,22 @@ describe('section padding', () => {
     expect(getSectionByPermaId(6).hasBottomPadding()).toBe(true);
   });
 
+  it('does not set inline padding styles when no paddingTop/paddingBottom set', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).el).not.toHaveStyle({
+      '--foreground-padding-top': expect.anything(),
+    });
+    expect(getSectionByPermaId(6).el).not.toHaveStyle({
+      '--foreground-padding-bottom': expect.anything(),
+    });
+  });
+
   it('supports setting custom foreground padding', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: {

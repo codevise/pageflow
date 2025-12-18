@@ -10,7 +10,8 @@
   flex-direction: column;
   justify-content: center;
 
-  padding-top: var(--foreground-padding-top);
+  padding-top: calc(var(--foreground-widget-padding-top) + var(--foreground-padding-top));
+  padding-bottom: var(--foreground-padding-bottom);
 }
 
 .fullFadeHeight {
