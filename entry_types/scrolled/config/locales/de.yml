@@ -1640,6 +1640,7 @@ de:
       add_caption: Beschriftung hinzufügen
       add_content_element: Neues Element hinzufügen
       cancel: Abbrechen
+      default_padding: Standard
       drag_content_element: Ziehen, um Element zu verschieben
       edit_section_transition_after: Übergangseffekt bearbeiten
       edit_section_transition_before: Übergangseffekt bearbeiten

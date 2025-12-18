@@ -39,7 +39,7 @@ export function PaddingIndicator({section, motifAreaState, paddingValue, positio
   const motifPadding = motifAreaState?.paddingTop > 0;
   const paddingText = motifPadding ?
                       t('pageflow_scrolled.inline_editing.expose_motif_area') :
-                      getPaddingText({theme, paddingValue, position});
+                      getPaddingText({theme, paddingValue, position, t});
 
   if (isSectionSelected || isPaddingSelected) {
     return (
@@ -61,7 +61,11 @@ export function PaddingIndicator({section, motifAreaState, paddingValue, positio
   }
 }
 
-function getPaddingText({theme, paddingValue, position}) {
+function getPaddingText({theme, paddingValue, position, t}) {
+  if (!paddingValue) {
+    return t('pageflow_scrolled.inline_editing.default_padding');
+  }
+
   const scaleTranslations = theme.translations?.scales || {};
   const scaleName = scaleNames[position];
 

@@ -66,6 +66,23 @@ describe('PaddingIndicator', () => {
     expect(section.getPaddingIndicator('bottom')).toHaveTextContent('Medium');
   });
 
+  it('displays default padding translation when paddingValue is undefined', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{
+          id: 1,
+          permaId: 10
+        }],
+        contentElements: [{sectionId: 1}]
+      }
+    });
+
+    const section = getSectionByPermaId(10);
+    section.select();
+
+    expect(section.getPaddingIndicator('top')).toHaveTextContent('Default');
+  });
+
   it('displays expose motif area translation when motif padding is active', () => {
     useMotifAreaState.mockContentPadded();
 

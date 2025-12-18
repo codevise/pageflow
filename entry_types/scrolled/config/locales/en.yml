@@ -1450,6 +1450,7 @@ en:
       add_caption: Add caption
       add_content_element: Add new element
       cancel: Cancel
+      default_padding: Default
       drag_content_element: Drag to move element
       edit_section_transition_after: Edit section transition
       edit_section_transition_before: Edit section transition

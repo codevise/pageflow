@@ -78,7 +78,8 @@ export function useInlineEditingPageObjects() {
     'pageflow_scrolled.inline_editing.edit_section_transition_after': 'Edit section transition after',
     'pageflow_scrolled.inline_editing.edit_section_padding_top': 'Edit top padding',
     'pageflow_scrolled.inline_editing.edit_section_padding_bottom': 'Edit bottom padding',
-    'pageflow_scrolled.inline_editing.expose_motif_area': 'Expose motif area'
+    'pageflow_scrolled.inline_editing.expose_motif_area': 'Expose motif area',
+    'pageflow_scrolled.inline_editing.default_padding': 'Default'
   });
 
   usePageObjects();
