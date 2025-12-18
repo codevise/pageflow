@@ -4,6 +4,38 @@ module Pageflow
 
     def initialize
       @themes = HashWithIndifferentAccess.new
+      @options_transforms = []
+    end
+
+    # Register default options that apply to all themes. Can be called
+    # multiple times to accumulate defaults from different sources
+    # (gem, plugins, host app).
+    #
+    # @overload register_default_options(options)
+    #   @param options [Hash]
+    #     Default options to deep merge into theme options.
+    #
+    # @overload register_default_options(callable)
+    #   @param callable [#call]
+    #     Receives options hash, returns transformed options.
+    #     Use for conditional defaults based on what theme defines.
+    #
+    # @since edge
+    def register_default_options(options_or_callable)
+      @options_transforms << if options_or_callable.respond_to?(:call)
+                               options_or_callable
+                             else
+                               ->(options) { options_or_callable.deep_merge(options) }
+                             end
+    end
+
+    # Apply all registered defaults to theme options.
+    #
+    # @api private
+    def apply_default_options(options)
+      @options_transforms.reduce(options.deep_dup) do |opts, transform|
+        transform.call(opts)
+      end
     end
 
     # Register a theme and supply theme options.

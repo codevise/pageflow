@@ -471,5 +471,122 @@ module Pageflow
       expect(customization.selected_files[:inverted_logo].urls[:small])
         .to match(%r{small/image.png})
     end
+
+    it 'deep merges hash default options into theme options' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register_default_options(colors: {accent: '#default', surface: '#fff'})
+          c.themes.register('dark')
+        end
+      end
+      entry = create(:published_entry,
+                     type_name: 'rainbow',
+                     revision_attributes: {theme_name: 'dark'})
+
+      expect(entry.theme.options).to match(colors: {accent: '#default', surface: '#fff'})
+    end
+
+    it 'lets theme options override hash defaults' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register_default_options(colors: {accent: '#default', surface: '#fff'})
+          c.themes.register('dark', colors: {accent: '#f00'})
+        end
+      end
+      entry = create(:published_entry,
+                     type_name: 'rainbow',
+                     revision_attributes: {theme_name: 'dark'})
+
+      expect(entry.theme.options).to match(colors: {accent: '#f00', surface: '#fff'})
+    end
+
+    it 'allows site customizations to override default options' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register_default_options(colors: {surface: '#fff'})
+          c.themes.register('dark', colors: {accent: '#f00'})
+        end
+      end
+      site = create(:site)
+      entry = create(:published_entry,
+                     site:,
+                     type_name: 'rainbow',
+                     revision_attributes: {theme_name: 'dark'})
+
+      Pageflow.theme_customizations.update(site:,
+                                           entry_type_name: 'rainbow',
+                                           overrides: {colors: {accent: '#0f0'}})
+
+      expect(entry.theme.options).to match(colors: {accent: '#0f0', surface: '#fff'})
+    end
+
+    it 'accumulates multiple register_default_options calls' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register_default_options(colors: {accent: '#default'})
+          c.themes.register_default_options(typography: {base: {fontSize: '16px'}})
+          c.themes.register('dark')
+        end
+      end
+      entry = create(:published_entry,
+                     type_name: 'rainbow',
+                     revision_attributes: {theme_name: 'dark'})
+
+      expect(entry.theme.options).to match(
+        colors: {accent: '#default'},
+        typography: {base: {fontSize: '16px'}}
+      )
+    end
+
+    it 'supports callable for conditional defaults' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register_default_options(->(options) {
+            if options[:colors].blank?
+              options.deep_merge(colors: {accent: '#default'})
+            else
+              options
+            end
+          })
+          c.themes.register('dark', colors: {accent: '#f00'})
+        end
+      end
+      entry = create(:published_entry,
+                     type_name: 'rainbow',
+                     revision_attributes: {theme_name: 'dark'})
+
+      expect(entry.theme.options).to match(colors: {accent: '#f00'})
+    end
+
+    it 'scopes default options by entry type' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+        other_entry_type = TestEntryType.register(config, name: 'other')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register('dark', colors: {accent: '#f00'})
+        end
+
+        config.for_entry_type(other_entry_type) do |c|
+          c.themes.register_default_options(colors: {accent: '#other'})
+          c.themes.register('dark')
+        end
+      end
+      entry = create(:published_entry,
+                     type_name: 'rainbow',
+                     revision_attributes: {theme_name: 'dark'})
+
+      expect(entry.theme.options).to match(colors: {accent: '#f00'})
+    end
   end
 end
