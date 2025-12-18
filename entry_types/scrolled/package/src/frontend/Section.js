@@ -22,13 +22,13 @@ import {BackgroundColorProvider} from './backgroundColor';
 import {SelectableWidget} from './SelectableWidget';
 import {useSectionPadding} from './useSectionPaddingCustomProperties';
 import {SectionIntersectionProbe} from './SectionIntersectionObserver';
+import {getAppearanceComponents, getAppearanceSectionScopeName} from './appearance';
 
 import * as v1 from './v1';
 import * as v2 from './v2';
 
 import styles from './Section.module.css';
 import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
-import {getAppearanceComponents} from './appearance';
 
 const Section = withInlineEditingDecorator('SectionDecorator', function Section({
   section, transitions, backdrop, contentElements, state, onActivate, domIdPrefix
@@ -64,6 +64,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                                    backdropSectionClassNames,
                                    {[styles.first]: section.sectionIndex === 0},
                                    {[styles.narrow]: section.width === 'narrow'},
+                                   `scope-${getAppearanceSectionScopeName(section.appearance)}`,
                                    section.invert ? styles.darkContent : styles.lightContent)}
              style={{
                ...useBackdropSectionCustomProperties(backdrop),

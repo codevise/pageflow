@@ -126,6 +126,7 @@ export {ScrollButton} from './ScrollButton';
 
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
+export {getAppearanceSectionScopeName} from './appearance';
 
 export {RootProviders, registerConsentVendors};
 export {default as registerTemplateWidgetType} from './registerTemplateWidgetType';
