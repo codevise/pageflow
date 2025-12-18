@@ -159,6 +159,7 @@ describe('section padding', () => {
 
     const {getSectionByPermaId} = renderEntry({
       seed: {
+        imageFiles: [{id: 100, permaId: 100}],
         sections: [{
           id: 5,
           permaId: 6,
@@ -166,7 +167,8 @@ describe('section padding', () => {
             paddingTop: 'lg',
             paddingBottom: 'md',
             portraitPaddingTop: 'sm',
-            portraitPaddingBottom: 'xs'
+            portraitPaddingBottom: 'xs',
+            backdrop: {image: 100, imageMobile: 100}
           }
         }],
         contentElements: [{sectionId: 5}]
@@ -190,6 +192,61 @@ describe('section padding', () => {
           configuration: {
             paddingTop: 'lg',
             paddingBottom: 'md'
+          }
+        }],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).el).toHaveStyle({
+      '--foreground-padding-top': 'var(--theme-section-padding-top-lg)',
+      '--foreground-padding-bottom': 'var(--theme-section-padding-bottom-md)',
+    });
+  });
+
+  it('ignores portrait paddings if customPortraitPaddings is false', () => {
+    usePortraitOrientation.mockReturnValue(true);
+
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        imageFiles: [{id: 100, permaId: 100}],
+        sections: [{
+          id: 5,
+          permaId: 6,
+          configuration: {
+            paddingTop: 'lg',
+            paddingBottom: 'md',
+            portraitPaddingTop: 'sm',
+            portraitPaddingBottom: 'xs',
+            customPortraitPaddings: false,
+            backdrop: {image: 100, imageMobile: 100}
+          }
+        }],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).el).toHaveStyle({
+      '--foreground-padding-top': 'var(--theme-section-padding-top-lg)',
+      '--foreground-padding-bottom': 'var(--theme-section-padding-bottom-md)',
+    });
+  });
+
+  it('ignores portrait paddings if no mobile backdrop is assigned', () => {
+    usePortraitOrientation.mockReturnValue(true);
+
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        imageFiles: [{id: 100, permaId: 100}],
+        sections: [{
+          id: 5,
+          permaId: 6,
+          configuration: {
+            paddingTop: 'lg',
+            paddingBottom: 'md',
+            portraitPaddingTop: 'sm',
+            portraitPaddingBottom: 'xs',
+            backdrop: {image: 100}
           }
         }],
         contentElements: [{sectionId: 5}]

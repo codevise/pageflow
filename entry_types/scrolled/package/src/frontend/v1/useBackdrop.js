@@ -53,14 +53,16 @@ function useFileBackdrop({section, collectionName, propertyName}) {
     return {
       [propertyName]: mobileFile,
       motifArea: section.backdrop[`${propertyName}MobileMotifArea`],
-      effects: section.backdropEffectsMobile
+      effects: section.backdropEffectsMobile,
+      portrait: true
     }
   }
   else if (file) {
     return {
       [propertyName]: file,
       motifArea: section.backdrop[`${propertyName}MotifArea`],
-      effects: section.backdropEffects
+      effects: section.backdropEffects,
+      portrait: false
     }
   }
   else {

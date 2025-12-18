@@ -54,7 +54,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
     propertyName: 'atmoAudioFileId'
   });
 
-  const sectionPadding = useSectionPadding(section);
+  const sectionPadding = useSectionPadding(section, {portrait: backdrop.portrait});
 
   return (
     <section id={`${domIdPrefix}-${section.permaId}`}
