@@ -1309,6 +1309,28 @@ de:
         add: Neues Element
         unset: Nicht mehr als Hintergrund verwenden
       scales:
+        sectionPaddingTop:
+          none: "-"
+          xxxs: XXXS
+          xxs: XXS
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+          xxl: XXL
+          xxxl: XXXL
+        sectionPaddingBottom:
+          none: "-"
+          xxxs: XXXS
+          xxs: XXS
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+          xxl: XXL
+          xxxl: XXXL
         contentElementBoxBorderRadius:
           none: Keine
       content_element_text_inline_file_rights_attributes:

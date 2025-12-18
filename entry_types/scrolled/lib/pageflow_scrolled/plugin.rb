@@ -7,6 +7,46 @@ module PageflowScrolled
       end
 
       config.for_entry_type(PageflowScrolled.entry_type) do |c|
+        padding_scale = {
+          'none' => '0px',
+          'xxxs' => '1.375em',
+          'xxs' => '3em',
+          'xs' => '4.375em',
+          'sm' => '6em',
+          'md' => 'max(7em, 10svh)',
+          'lg' => 'max(8em, 10svh)',
+          'xl' => 'max(9em, 15svh)',
+          'xxl' => 'max(10em, 20svh)',
+          'xxxl' => 'max(11em, 30svh)'
+        }
+
+        c.themes.register_default_options(
+          ThemeOptionsDefaultScale.new(
+            prefix: 'section_padding_top',
+            values: padding_scale
+          )
+        )
+
+        c.themes.register_default_options(
+          ThemeOptionsDefaultScale.new(
+            prefix: 'section_padding_bottom',
+            values: padding_scale
+          )
+        )
+
+        c.themes.register_default_options(
+          properties: {
+            root: {
+              'section_default_padding_top' => '1.375em',
+              'section_default_padding_bottom' => '4.375em'
+            },
+            cards_appearance_section: {
+              'section_default_padding_top' => '3em',
+              'section_default_padding_bottom' => '6em'
+            }
+          }
+        )
+
         c.file_types.register(Pageflow::BuiltInFileType.image)
         c.file_types.register(Pageflow::BuiltInFileType.video)
         c.file_types.register(Pageflow::BuiltInFileType.audio)
