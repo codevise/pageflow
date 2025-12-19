@@ -5,6 +5,8 @@ import {editor} from 'pageflow/editor';
 import {buttonStyles} from 'pageflow-scrolled/editor';
 import {cssModulesUtils, inputView} from 'pageflow/ui';
 
+import paddingTopIcon from '../images/paddingTop.svg';
+import paddingBottomIcon from '../images/paddingBottom.svg';
 import styles from './SectionPaddingsInputView.module.css';
 
 export const SectionPaddingsInputView = Marionette.Layout.extend({
@@ -17,12 +19,10 @@ export const SectionPaddingsInputView = Marionette.Layout.extend({
     </label>
     <button class="${buttonStyles.secondaryIconButton} ${styles.button}">
       <div class="${styles.grid}">
-<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-unfold-vertical-icon lucide-unfold-vertical"><path d="M12 22v-6"></path><path d="M4 12H2"></path><path d="M10 12H8"></path><path d="M16 12h-2"></path><path d="M22 12h-2"></path><path d="m15 19-3 3-3-3"></path></svg>
-
-
+        <img src="${paddingTopIcon}" width="18" height="18" />
         <div class="${styles.paddingTop}"></div>
         <div class="${styles.portraitPaddingTop}"></div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-unfold-vertical-icon lucide-unfold-vertical"><path d="M12 8V2"></path><path d="M4 12H2"></path><path d="M10 12H8"></path><path d="M16 12h-2"></path><path d="M22 12h-2"></path><path d="m15 5-3-3-3 3"></path></svg>
+        <img src="${paddingBottomIcon}" width="18" height="18" />
         <div class="${styles.paddingBottom}"></div>
         <div class="${styles.portraitPaddingBottom}"></div>
       </div>

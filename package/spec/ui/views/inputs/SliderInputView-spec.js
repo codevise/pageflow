@@ -277,6 +277,35 @@ describe('pageflow.SliderInputView', () => {
     expect(view.ui.widget.slider('option', 'value')).toEqual(20);
   });
 
+  describe('with icon option', () => {
+    it('renders icon img before label', () => {
+      var model = new Model({value: 50});
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value',
+        icon: 'path/to/icon.svg'
+      });
+
+      view.render();
+
+      var img = view.el.querySelector('img.icon');
+      expect(img).not.toBeNull();
+      expect(img.getAttribute('src')).toEqual('path/to/icon.svg');
+    });
+
+    it('does not render icon element when no icon option', () => {
+      var model = new Model({value: 50});
+      var view = new SliderInputView({
+        model: model,
+        propertyName: 'value'
+      });
+
+      view.render();
+
+      expect(view.el.querySelector('.icon')).toBeNull();
+    });
+  });
+
   describe('with values option', () => {
     it('sets slider min to 0 and max to last index', () => {
       var model = new Model();

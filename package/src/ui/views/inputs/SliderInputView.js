@@ -30,6 +30,9 @@ import template from '../../templates/inputs/sliderInput.jst';
  *   Already update the model while dragging the handle - not only after
  *   handle has been released.
  *
+ * @param {string} [options.icon]
+ *   Path to an icon image to display before the label.
+ *
  * @class
  */
 export const SliderInputView = Marionette.ItemView.extend({
@@ -37,6 +40,12 @@ export const SliderInputView = Marionette.ItemView.extend({
 
   className: 'slider_input',
   template,
+
+  serializeData() {
+    return {
+      icon: this.options.icon
+    };
+  },
 
   ui: {
     widget: '.slider',

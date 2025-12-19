@@ -5,6 +5,8 @@ import {SliderInputView, RadioButtonGroupInputView, CheckBoxInputView} from 'pag
 
 import {SectionPaddingVisualizationView} from './inputs/SectionPaddingVisualizationView';
 import {EditMotifAreaInputView} from './inputs/EditMotifAreaInputView';
+import paddingTopIcon from './images/paddingTop.svg';
+import paddingBottomIcon from './images/paddingBottom.svg';
 import styles from './EditSectionPaddingsView.module.css';
 
 const i18nPrefix = 'pageflow_scrolled.editor.edit_section_paddings';
@@ -130,6 +132,7 @@ function paddingInputs(tab, options) {
 
   tab.input(prefix ? `${prefix}PaddingTop` : 'paddingTop', SliderInputView, {
     hideLabel: true,
+    icon: paddingTopIcon,
     texts: paddingTopTexts,
     values: paddingTopValues,
     saveOnSlide: true,
@@ -147,6 +150,7 @@ function paddingInputs(tab, options) {
   });
   tab.input(prefix ? `${prefix}PaddingBottom` : 'paddingBottom', SliderInputView, {
     hideLabel: true,
+    icon: paddingBottomIcon,
     texts: paddingBottomTexts,
     values: paddingBottomValues,
     saveOnSlide: true,
