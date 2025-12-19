@@ -1,3 +1,8 @@
+.infoText {
+  padding-top: space(1);
+  margin-bottom: space(2);
+}
+
 .button {
   width: 100%;
   display: flex !important;
@@ -21,4 +26,66 @@
   stroke: currentColor;
   stroke-width: 2;
   fill: none;
+}
+
+.ignoreButton {
+  width: 100%;
+  margin-top: space(2);
+  display: flex !important;
+  align-items: center;
+  gap: space(2);
+}
+
+.ignoreIcon {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  flex-shrink: 0;
+}
+
+.highlight-box {
+  position: relative;
+  padding: space(2.5);
+}
+
+.highlight-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--ui-selection-color-lighter);
+  z-index: -1;
+}
+
+.highlight-boxBelow {
+  composes: highlight-box;
+  margin-top: space(-2.5) !important;
+}
+
+.highlight-boxBelow::before {
+  border-bottom-right-radius: rounded(md);
+  border-bottom-left-radius: rounded(md);
+}
+
+.highlight-boxWithArrow {
+  composes: highlight-box;
+}
+
+.highlight-boxWithArrow::before {
+  border-radius: rounded(md);
+}
+
+.highlight-boxWithArrow::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 77px;
+  border: solid space(2) transparent;
+  border-bottom-color: var(--ui-selection-color-lighter);
+  z-index: -1;
+}
+
+.hidden {
+  display: none;
 }

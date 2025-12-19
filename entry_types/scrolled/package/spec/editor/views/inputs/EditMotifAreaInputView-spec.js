@@ -6,7 +6,7 @@ import {EditMotifAreaDialogView} from 'editor/views/EditMotifAreaDialogView';
 import styles from 'editor/views/inputs/EditMotifAreaInputView.module.css';
 
 import {useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
-import {useEditorGlobals} from 'support';
+import {useEditorGlobals, useFakeXhr} from 'support';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('editor/views/EditMotifAreaDialogView');
@@ -14,9 +14,13 @@ jest.mock('editor/views/EditMotifAreaDialogView');
 describe('EditMotifAreaInputView', () => {
   const {createEntry} = useEditorGlobals();
 
+  useFakeXhr();
+
   useFakeTranslations({
     'pageflow_scrolled.editor.edit_motif_area_input.select': 'Select motif area',
-    'pageflow_scrolled.editor.edit_motif_area_input.edit': 'Edit motif area'
+    'pageflow_scrolled.editor.edit_motif_area_input.edit': 'Edit motif area',
+    'pageflow_scrolled.editor.edit_motif_area_input.ignore_image': 'Ignore for this image',
+    'pageflow_scrolled.editor.edit_motif_area_input.ignore_video': 'Ignore for this video'
   });
 
   it('renders select button when no motif area defined', () => {
@@ -213,5 +217,230 @@ describe('EditMotifAreaInputView', () => {
     const {getByRole} = renderBackboneView(view);
 
     expect(getByRole('button')).toBeDisabled();
+  });
+
+  it('renders infoText when provided', () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 10}],
+      sections: [{id: 1, configuration: {backdropImage: 10}}]
+    });
+
+    const view = new EditMotifAreaInputView({
+      model: entry.sections.get(1).configuration,
+      infoText: 'Some helpful information'
+    });
+
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('Some helpful information')).toBeInTheDocument();
+  });
+
+  it('does not render ignore button by default', () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 10}],
+      sections: [{id: 1, configuration: {backdropImage: 10}}]
+    });
+
+    const view = new EditMotifAreaInputView({
+      model: entry.sections.get(1).configuration
+    });
+
+    const {queryByRole} = renderBackboneView(view);
+
+    expect(queryByRole('button', {name: 'Ignore for this image'})).not.toBeInTheDocument();
+  });
+
+  it('renders primary button when showIgnoreOption is true', () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 10}],
+      sections: [{id: 1, configuration: {backdropImage: 10}}]
+    });
+
+    const view = new EditMotifAreaInputView({
+      model: entry.sections.get(1).configuration,
+      showIgnoreOption: true
+    });
+
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button', {name: 'Select motif area'})).toHaveClass('primary_icon_button');
+  });
+
+  it('renders ignore button for image when showIgnoreOption is true', () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 10}],
+      sections: [{id: 1, configuration: {backdropImage: 10}}]
+    });
+
+    const view = new EditMotifAreaInputView({
+      model: entry.sections.get(1).configuration,
+      showIgnoreOption: true
+    });
+
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button', {name: 'Ignore for this image'})).toBeInTheDocument();
+  });
+
+  it('renders ignore button for video when showIgnoreOption is true and backdropType is video', () => {
+    const entry = createEntry({
+      videoFiles: [{id: 100, perma_id: 10}],
+      sections: [{id: 1, configuration: {backdropType: 'video', backdropVideo: 10}}]
+    });
+
+    const view = new EditMotifAreaInputView({
+      model: entry.sections.get(1).configuration,
+      showIgnoreOption: true
+    });
+
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button', {name: 'Ignore for this video'})).toBeInTheDocument();
+  });
+
+  it('renders x icon in ignore button', () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 10}],
+      sections: [{id: 1, configuration: {backdropImage: 10}}]
+    });
+
+    const view = new EditMotifAreaInputView({
+      model: entry.sections.get(1).configuration,
+      showIgnoreOption: true
+    });
+
+    renderBackboneView(view);
+
+    expect(view.el.querySelector(`.${styles.ignoreIcon}`)).toBeInTheDocument();
+  });
+
+  it('sets ignoreMissingMotif on file configuration when clicking ignore button', async () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 10}],
+      sections: [{id: 1, configuration: {backdropImage: 10}}]
+    });
+    const file = entry.getFileCollection('image_files').get(100);
+
+    const view = new EditMotifAreaInputView({
+      model: entry.sections.get(1).configuration,
+      showIgnoreOption: true
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = renderBackboneView(view);
+
+    await user.click(getByRole('button', {name: 'Ignore for this image'}));
+
+    expect(file.configuration.get('ignoreMissingMotif')).toBe(true);
+  });
+
+  describe('with onlyShowWhenMissing option', () => {
+    it('has hidden class when motif area is present', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10, backdropImageMotifArea: {left: 0, top: 0, width: 50, height: 50}}}]
+      });
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        onlyShowWhenMissing: true
+      });
+
+      renderBackboneView(view);
+
+      expect(view.el).toHaveClass(styles.hidden);
+    });
+
+    it('has hidden class when file has ignoreMissingMotif flag', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+      const file = entry.getFileCollection('image_files').get(100);
+      file.configuration.set('ignoreMissingMotif', true);
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        onlyShowWhenMissing: true
+      });
+
+      renderBackboneView(view);
+
+      expect(view.el).toHaveClass(styles.hidden);
+    });
+
+    it('has hidden class when file is missing', () => {
+      const entry = createEntry({
+        sections: [{id: 1}]
+      });
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        onlyShowWhenMissing: true
+      });
+
+      renderBackboneView(view);
+
+      expect(view.el).toHaveClass(styles.hidden);
+    });
+
+    it('does not have hidden class when motif area is missing and file does not have ignoreMissingMotif flag', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        onlyShowWhenMissing: true
+      });
+
+      renderBackboneView(view);
+
+      expect(view.el).not.toHaveClass(styles.hidden);
+    });
+
+    it('adds hidden class after clicking ignore button', async () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        onlyShowWhenMissing: true,
+        showIgnoreOption: true
+      });
+
+      const user = userEvent.setup();
+      const {getByRole} = renderBackboneView(view);
+
+      await user.click(getByRole('button', {name: 'Ignore for this image'}));
+
+      expect(view.el).toHaveClass(styles.hidden);
+    });
+
+    it('adds hidden class when motif area is set', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        onlyShowWhenMissing: true
+      });
+
+      renderBackboneView(view);
+
+      expect(view.el).not.toHaveClass(styles.hidden);
+
+      entry.sections.get(1).configuration.set(
+        'backdropImageMotifArea',
+        {left: 0, top: 0, width: 50, height: 50}
+      );
+
+      expect(view.el).toHaveClass(styles.hidden);
+    });
   });
 });
