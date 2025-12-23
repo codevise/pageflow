@@ -1391,7 +1391,7 @@ de:
           exposeMotifArea:
             label: Abstand oben
             values:
-              'true': Automatisch anpassen, um das Motiv im Hintergrund freizustellen
+              'true': Automatisch anpassen, um ein Motiv im Hintergrund freizustellen
               'false': Manuell festlegen
           sideBySideVisualization:
             label: Nebeneinander
