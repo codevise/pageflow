@@ -1134,6 +1134,7 @@ en:
         reset: Reset
         save: Save
       edit_section:
+        motif_area_info_text: Mark the most important part of the backdrop that should be visible and unobstructed when reaching the section.
         attributes:
           appearance:
             inline_help: This setting controls how the scrolling foreground should get dimmed to increase contrast from the background. The option "Cards" adds a box with rounded corners to the foreground, with "Shadow" you can add a light or dark shadow to increase readability.

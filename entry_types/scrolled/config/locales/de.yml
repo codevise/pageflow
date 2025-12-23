@@ -1150,6 +1150,7 @@ de:
         reset: Zurücksetzen
         save: Speichern
       edit_section:
+        motif_area_info_text: Markiere den wichtigsten Teil des Hintergrunds, der beim Erreichen des Abschnitts sichtbar und nicht von anderen Elementen überdeckt sein soll.
         attributes:
           appearance:
             inline_help: Diese Einstellung legt fest wie die scrollenden Vordergrund-Ebene vom Hintergrund abgehoben werden soll. Bei der Einstellung "Karte" wird der Vordergrund mit einer Fläche mit abgerundeten Ecken hinterlegt, bei "Schatten" mit einem hellen oder dunklen Farbverlauf.
