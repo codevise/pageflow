@@ -1286,6 +1286,8 @@ de:
         side_by_side: "Darstellung des oberen Abstands, wenn der Inhalt neben dem Motivbereich Platz findet"
         top_padding: "Darstellung des oberen Abstands"
         bottom_padding: "Darstellung des unteren Abstands"
+      section_paddings_input:
+        motif: Motiv
       select_link_destination:
         cancel: Abbrechen
         create: Erstellen

@@ -1,3 +1,4 @@
+import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import {editor} from 'pageflow/editor';
 import {buttonStyles} from 'pageflow-scrolled/editor';
@@ -45,9 +46,19 @@ export const SectionPaddingsInputView = Marionette.Layout.extend({
     const paddingTopScale = entry.getScale('sectionPaddingTop');
     const paddingBottomScale = entry.getScale('sectionPaddingBottom');
 
-    this.ui.paddingTop.text(getValueText(paddingTopScale, this.model.get('paddingTop')));
+    const paddingTopText = getValueText(paddingTopScale, this.model.get('paddingTop'));
+    const motifPrefix = I18n.t('pageflow_scrolled.editor.section_paddings_input.motif');
+
+    const portraitPaddingTopText = getValueText(paddingTopScale, this.model.get('portraitPaddingTop'));
+    const exposeMotifArea = this.model.get('exposeMotifArea');
+
+    this.ui.paddingTop.text(
+      exposeMotifArea ? `${motifPrefix}/${paddingTopText}` : paddingTopText
+    );
     this.ui.paddingBottom.text(getValueText(paddingBottomScale, this.model.get('paddingBottom')));
-    this.ui.portraitPaddingTop.text(getValueText(paddingTopScale, this.model.get('portraitPaddingTop')));
+    this.ui.portraitPaddingTop.text(
+      exposeMotifArea ? `${motifPrefix}/${portraitPaddingTopText}` : portraitPaddingTopText
+    );
     this.ui.portraitPaddingBottom.text(getValueText(paddingBottomScale, this.model.get('portraitPaddingBottom')));
 
     const hasPortrait = this.model.get('customPortraitPaddings');

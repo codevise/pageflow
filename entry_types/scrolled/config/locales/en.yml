@@ -1270,6 +1270,8 @@ en:
         side_by_side: "Visualization of top padding when content fits next to the motif area"
         top_padding: "Visualization of top padding"
         bottom_padding: "Visualization of bottom padding"
+      section_paddings_input:
+        motif: Motif
       select_link_destination:
         cancel: Cancel
         create: Create

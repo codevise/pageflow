@@ -3,15 +3,87 @@ import '@testing-library/jest-dom/extend-expect';
 import {SectionPaddingsInputView} from 'editor/views/inputs/SectionPaddingsInputView';
 import {editor} from 'pageflow/editor';
 
-import {renderBackboneView} from 'pageflow/testHelpers';
+import {useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
 import userEvent from '@testing-library/user-event';
 
 describe('SectionPaddingsInputView', () => {
   const {createEntry} = useEditorGlobals();
 
+  useFakeTranslations({
+    'pageflow_scrolled.editor.section_paddings_input.motif': 'Motif'
+  });
+
   beforeEach(() => {
     jest.spyOn(editor, 'navigate').mockImplementation(() => {});
+  });
+
+  it('displays Motif prefix for paddingTop when exposeMotifArea is true', () => {
+    const entry = createEntry({
+      sections: [{id: 1, configuration: {exposeMotifArea: true, paddingTop: 'lg'}}],
+      themeOptions: {
+        properties: {
+          root: {
+            'sectionPaddingTop-sm': '10vh',
+            'sectionPaddingTop-lg': '30vh'
+          }
+        }
+      },
+      themeTranslations: {
+        scales: {
+          sectionPaddingTop: {
+            sm: 'Small',
+            lg: 'Large'
+          }
+        }
+      }
+    });
+
+    const view = new SectionPaddingsInputView({
+      model: entry.sections.get(1).configuration,
+      entry
+    });
+
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button')).toHaveTextContent('Motif/Large');
+  });
+
+  it('displays Motif prefix for portraitPaddingTop when exposeMotifArea is true', () => {
+    const entry = createEntry({
+      sections: [{id: 1, configuration: {
+        exposeMotifArea: true,
+        customPortraitPaddings: true,
+        paddingTop: 'sm',
+        portraitPaddingTop: 'lg'
+      }}],
+      themeOptions: {
+        properties: {
+          root: {
+            'sectionPaddingTop-sm': '10vh',
+            'sectionPaddingTop-lg': '30vh'
+          }
+        }
+      },
+      themeTranslations: {
+        scales: {
+          sectionPaddingTop: {
+            sm: 'Small',
+            lg: 'Large'
+          }
+        }
+      }
+    });
+
+    const view = new SectionPaddingsInputView({
+      model: entry.sections.get(1).configuration,
+      entry
+    });
+
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button')).toHaveTextContent('Motif/Small');
+    expect(getByRole('button')).toHaveTextContent('Motif/Large');
   });
 
   it('displays default value text when no padding is set', () => {
