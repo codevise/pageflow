@@ -37,6 +37,10 @@ export const EditMotifAreaInputView = Marionette.ItemView.extend({
 
   mixins: [inputView],
 
+  initialize() {
+    this.backdrop = this.model.getBackdrop();
+  },
+
   serializeData() {
     const ignoreButtonTextKey = this.model.get('backdropType') === 'video' ? 'ignore_video' : 'ignore_image';
 
@@ -51,14 +55,17 @@ export const EditMotifAreaInputView = Marionette.ItemView.extend({
 
   events: cssModulesUtils.events(styles, {
     'click button': function() {
+      const portrait = this.options.portrait;
+
       EditMotifAreaDialogView.show({
         model: this.model,
-        propertyName: this.getPropertyName(),
-        file: this.getFile()
+        propertyName: this.backdrop.getFilePropertyName({portrait}),
+        file: this.backdrop.getFile({portrait})
       });
     },
     'click ignoreButton': function() {
-      const file = this.getFile();
+      const file = this.backdrop.getFile({portrait: this.options.portrait});
+
       if (file) {
         file.configuration.set('ignoreMissingMotif', true);
         this.updateVisibility();
@@ -70,13 +77,7 @@ export const EditMotifAreaInputView = Marionette.ItemView.extend({
     this.$el.addClass(styles[`highlight-${this.options.highlight}`]);
 
     this.update();
-
-    this.listenTo(
-      this.model,
-      'change:' + this.getPropertyName() + 'MotifArea',
-      this.update
-    );
-
+    this.listenTo(this.backdrop, 'change:motifArea', this.update);
     this.updateVisibility();
   },
 
@@ -85,46 +86,26 @@ export const EditMotifAreaInputView = Marionette.ItemView.extend({
       return;
     }
 
-    const file = this.getFile();
-    const hasMotifArea = !!(file && this.model.get(this.getPropertyName() + 'MotifArea'));
-    const showWarning = !!(this.options.displayWarningWhenMissing && file && !hasMotifArea);
-    const key = hasMotifArea ? 'edit' : (showWarning ? 'missing' : 'select');
+    const status = this.backdrop.getMotifAreaStatus({portrait: this.options.portrait});
+
+    const hasMotifArea = status === 'defined';
+    const showWarning = this.options.required && (status === 'missing' || status === 'ignored');
+
+    const key = hasMotifArea ? 'edit' : (showWarning ? 'warn' : 'select');
 
     this.ui.buttonText.text(I18n.t(`pageflow_scrolled.editor.edit_motif_area_input.${key}`));
     this.ui.checkIcon.toggle(hasMotifArea);
-    this.ui.button.toggleClass(styles.warning, showWarning);
+    this.ui.button.toggleClass(styles.warning, !!showWarning);
     this.updateVisibility();
   },
 
   updateDisabled(disabled) {
-    this.ui.button.prop('disabled', disabled || !this.getFile());
+    this.ui.button.prop('disabled', disabled || !this.backdrop.getFile({portrait: this.options.portrait}));
   },
 
   updateVisibility() {
-    if (!this.options.onlyShowWhenMissing) {
-      return;
+    if (this.options.onlyShowWhenMissing) {
+      this.$el.toggleClass(styles.hidden, this.backdrop.getMotifAreaStatus({portrait: this.options.portrait}) !== 'missing');
     }
-
-    const file = this.getFile();
-    const hasMotifArea = !!(file && this.model.get(this.getPropertyName() + 'MotifArea'));
-    const isIgnored = !!(file && file.configuration.get('ignoreMissingMotif'));
-
-    this.$el.toggleClass(styles.hidden, !file || hasMotifArea || isIgnored);
-  },
-
-  getPropertyName() {
-    const backdropType = this.model.get('backdropType');
-
-    if (this.options.portrait) {
-      return backdropType === 'video' ? 'backdropVideoMobile' : 'backdropImageMobile';
-    }
-    else {
-      return backdropType === 'video' ? 'backdropVideo' : 'backdropImage';
-    }
-  },
-
-  getFile() {
-    const collection = this.model.get('backdropType') === 'video' ? 'video_files' : 'image_files';
-    return this.model.getReference(this.getPropertyName(), collection);
   }
 });

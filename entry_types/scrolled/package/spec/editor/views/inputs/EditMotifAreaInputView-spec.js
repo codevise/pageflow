@@ -21,7 +21,7 @@ describe('EditMotifAreaInputView', () => {
     'pageflow_scrolled.editor.edit_motif_area_input.edit': 'Edit motif area',
     'pageflow_scrolled.editor.edit_motif_area_input.ignore_image': 'Ignore for this image',
     'pageflow_scrolled.editor.edit_motif_area_input.ignore_video': 'Ignore for this video',
-    'pageflow_scrolled.editor.edit_motif_area_input.missing': 'No motif area selected'
+    'pageflow_scrolled.editor.edit_motif_area_input.warn': 'No motif area selected'
   });
 
   it('renders select button when no motif area defined', () => {
@@ -445,7 +445,7 @@ describe('EditMotifAreaInputView', () => {
     });
   });
 
-  describe('with displayWarningWhenMissing option', () => {
+  describe('with required option', () => {
     it('does not add warning class to button by default', () => {
       const entry = createEntry({
         imageFiles: [{id: 100, perma_id: 10}],
@@ -469,7 +469,7 @@ describe('EditMotifAreaInputView', () => {
 
       const view = new EditMotifAreaInputView({
         model: entry.sections.get(1).configuration,
-        displayWarningWhenMissing: true
+        required: true
       });
 
       const {getByRole} = renderBackboneView(view);
@@ -485,7 +485,7 @@ describe('EditMotifAreaInputView', () => {
 
       const view = new EditMotifAreaInputView({
         model: entry.sections.get(1).configuration,
-        displayWarningWhenMissing: true
+        required: true
       });
 
       const {getByRole} = renderBackboneView(view);
@@ -501,7 +501,7 @@ describe('EditMotifAreaInputView', () => {
 
       const view = new EditMotifAreaInputView({
         model: entry.sections.get(1).configuration,
-        displayWarningWhenMissing: true
+        required: true
       });
 
       const {getByRole} = renderBackboneView(view);
@@ -519,7 +519,7 @@ describe('EditMotifAreaInputView', () => {
 
       const view = new EditMotifAreaInputView({
         model: entry.sections.get(1).configuration,
-        displayWarningWhenMissing: true
+        required: true
       });
 
       const {getByRole} = renderBackboneView(view);
@@ -534,7 +534,7 @@ describe('EditMotifAreaInputView', () => {
 
       const view = new EditMotifAreaInputView({
         model: entry.sections.get(1).configuration,
-        displayWarningWhenMissing: true
+        required: true
       });
 
       const {getByRole} = renderBackboneView(view);
