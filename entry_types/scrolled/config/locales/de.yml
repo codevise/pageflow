@@ -1305,6 +1305,7 @@ de:
       edit_motif_area_input:
         select: Motivbereich auswählen
         edit: Motivbereich bearbeiten
+        missing: Noch kein Motivbereich ausgewählt
         ignore_image: Für dieses Bild ignorieren
         ignore_video: Für dieses Video ignorieren
       backdrop_content_element_input:

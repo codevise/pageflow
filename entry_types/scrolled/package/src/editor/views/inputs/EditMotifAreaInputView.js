@@ -87,10 +87,12 @@ export const EditMotifAreaInputView = Marionette.ItemView.extend({
 
     const file = this.getFile();
     const hasMotifArea = !!(file && this.model.get(this.getPropertyName() + 'MotifArea'));
-    const key = hasMotifArea ? 'edit' : 'select';
+    const showWarning = !!(this.options.displayWarningWhenMissing && file && !hasMotifArea);
+    const key = hasMotifArea ? 'edit' : (showWarning ? 'missing' : 'select');
 
     this.ui.buttonText.text(I18n.t(`pageflow_scrolled.editor.edit_motif_area_input.${key}`));
     this.ui.checkIcon.toggle(hasMotifArea);
+    this.ui.button.toggleClass(styles.warning, showWarning);
     this.updateVisibility();
   },
 

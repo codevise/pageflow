@@ -20,7 +20,8 @@ describe('EditMotifAreaInputView', () => {
     'pageflow_scrolled.editor.edit_motif_area_input.select': 'Select motif area',
     'pageflow_scrolled.editor.edit_motif_area_input.edit': 'Edit motif area',
     'pageflow_scrolled.editor.edit_motif_area_input.ignore_image': 'Ignore for this image',
-    'pageflow_scrolled.editor.edit_motif_area_input.ignore_video': 'Ignore for this video'
+    'pageflow_scrolled.editor.edit_motif_area_input.ignore_video': 'Ignore for this video',
+    'pageflow_scrolled.editor.edit_motif_area_input.missing': 'No motif area selected'
   });
 
   it('renders select button when no motif area defined', () => {
@@ -441,6 +442,104 @@ describe('EditMotifAreaInputView', () => {
       );
 
       expect(view.el).toHaveClass(styles.hidden);
+    });
+  });
+
+  describe('with displayWarningWhenMissing option', () => {
+    it('does not add warning class to button by default', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration
+      });
+
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('button')).not.toHaveClass(styles.warning);
+    });
+
+    it('adds warning class to button when file is present but motif area is missing', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        displayWarningWhenMissing: true
+      });
+
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('button')).toHaveClass(styles.warning);
+    });
+
+    it('shows missing label when file is present but motif area is missing', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        displayWarningWhenMissing: true
+      });
+
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('button', {name: 'No motif area selected'})).toBeInTheDocument();
+    });
+
+    it('removes warning class when motif area is present', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10, backdropImageMotifArea: {left: 0, top: 0, width: 50, height: 50}}}]
+      });
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        displayWarningWhenMissing: true
+      });
+
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('button')).not.toHaveClass(styles.warning);
+    });
+
+    it('adds warning class even when ignoreMissingMotif flag is set', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+      const file = entry.getFileCollection('image_files').get(100);
+      file.configuration.set('ignoreMissingMotif', true);
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        displayWarningWhenMissing: true
+      });
+
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('button')).toHaveClass(styles.warning);
+    });
+
+    it('does not add warning class when file is missing', () => {
+      const entry = createEntry({
+        sections: [{id: 1}]
+      });
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        displayWarningWhenMissing: true
+      });
+
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('button')).not.toHaveClass(styles.warning);
     });
   });
 });

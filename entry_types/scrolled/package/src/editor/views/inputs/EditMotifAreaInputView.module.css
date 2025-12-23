@@ -89,3 +89,8 @@
 .hidden {
   display: none;
 }
+
+.warning {
+  color: var(--ui-warning-color) !important;
+  border-color: var(--ui-warning-color) !important;
+}
