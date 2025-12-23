@@ -50,7 +50,7 @@ export const SectionPaddingsInputView = Marionette.Layout.extend({
     this.ui.portraitPaddingTop.text(getValueText(paddingTopScale, this.model.get('portraitPaddingTop')));
     this.ui.portraitPaddingBottom.text(getValueText(paddingBottomScale, this.model.get('portraitPaddingBottom')));
 
-    const hasPortrait = this.model.get('portraitPaddingTop') || this.model.get('portraitPaddingBottom')
+    const hasPortrait = this.model.get('customPortraitPaddings');
 
     this.ui.portraitPaddingTop.toggle(!!hasPortrait);
     this.ui.portraitPaddingBottom.toggle(!!hasPortrait);
