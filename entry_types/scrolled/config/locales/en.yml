@@ -1360,8 +1360,6 @@ en:
         remove: "Remove style"
       crop_types:
         circle: Circle
-      section_paddings_input:
-        auto: (Auto)
       edit_section_paddings:
         tabs:
           sectionPaddings: Paddings

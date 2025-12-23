@@ -1,6 +1,4 @@
 import Marionette from 'backbone.marionette';
-import _ from 'underscore';
-import I18n from 'i18n-js';
 import {editor} from 'pageflow/editor';
 import {buttonStyles} from 'pageflow-scrolled/editor';
 import {cssModulesUtils, inputView} from 'pageflow/ui';
@@ -44,18 +42,13 @@ export const SectionPaddingsInputView = Marionette.Layout.extend({
   onRender() {
     const entry = this.options.entry;
 
-    const [paddingTopValues, paddingTopTexts] = entry.getScale('sectionPaddingTop');
-    const [paddingBottomValues, paddingBottomTexts] = entry.getScale('sectionPaddingBottom');
+    const paddingTopScale = entry.getScale('sectionPaddingTop');
+    const paddingBottomScale = entry.getScale('sectionPaddingBottom');
 
-    const paddingTopTextsByValue = Object.fromEntries(_.zip(paddingTopValues, paddingTopTexts));
-    const paddingBottomTextsByValue = Object.fromEntries(_.zip(paddingBottomValues, paddingBottomTexts));
-
-    const auto = I18n.t('pageflow_scrolled.editor.section_paddings_input.auto');
-
-    this.ui.paddingTop.text(paddingTopTextsByValue[this.model.get('paddingTop')] || auto);
-    this.ui.paddingBottom.text(paddingBottomTextsByValue[this.model.get('paddingBottom')] || auto);
-    this.ui.portraitPaddingTop.text(paddingTopTextsByValue[this.model.get('portraitPaddingTop')] || auto);
-    this.ui.portraitPaddingBottom.text(paddingBottomTextsByValue[this.model.get('portraitPaddingBottom')] || auto);
+    this.ui.paddingTop.text(getValueText(paddingTopScale, this.model.get('paddingTop')));
+    this.ui.paddingBottom.text(getValueText(paddingBottomScale, this.model.get('paddingBottom')));
+    this.ui.portraitPaddingTop.text(getValueText(paddingTopScale, this.model.get('portraitPaddingTop')));
+    this.ui.portraitPaddingBottom.text(getValueText(paddingBottomScale, this.model.get('portraitPaddingBottom')));
 
     const hasPortrait = this.model.get('portraitPaddingTop') || this.model.get('portraitPaddingBottom')
 
@@ -63,3 +56,14 @@ export const SectionPaddingsInputView = Marionette.Layout.extend({
     this.ui.portraitPaddingBottom.toggle(!!hasPortrait);
   }
 });
+
+function getValueText(scale, value) {
+  const index = scale.values.indexOf(value);
+
+  if (index >= 0) {
+    return scale.texts[index];
+  }
+
+  const defaultIndex = scale.values.indexOf(scale.defaultValue);
+  return scale.texts[defaultIndex];
+}

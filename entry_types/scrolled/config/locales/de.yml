@@ -1376,8 +1376,6 @@ de:
         remove: "Stil entfernen"
       crop_types:
         circle: Kreis
-      section_paddings_input:
-        auto: (Automatisch)
       edit_section_paddings:
         tabs:
           sectionPaddings: Innenabstände
