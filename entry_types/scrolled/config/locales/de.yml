@@ -1693,7 +1693,6 @@ de:
       add_caption: Beschriftung hinzufügen
       add_content_element: Neues Element hinzufügen
       cancel: Abbrechen
-      default_padding: Standard
       drag_content_element: Ziehen, um Element zu verschieben
       padding_suppressed_before_full_width: Abstand unterdrückt vor vollbreitem Element
       padding_suppressed_after_full_width: Abstand unterdrückt nach vollbreitem Element

@@ -1523,7 +1523,6 @@ en:
       add_caption: Add caption
       add_content_element: Add new element
       cancel: Cancel
-      default_padding: Default
       drag_content_element: Drag to move element
       padding_suppressed_before_full_width: Padding suppressed before full width element
       padding_suppressed_after_full_width: Padding suppressed after full width element

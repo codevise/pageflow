@@ -18,7 +18,7 @@ import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
 
 import {sortColors} from './sortColors';
-import {Scale} from '../Scale';
+import {Scale} from '../../../shared/Scale';
 
 const typographySizeSuffixes = ['xl', 'lg', 'md', 'sm', 'xs'];
 

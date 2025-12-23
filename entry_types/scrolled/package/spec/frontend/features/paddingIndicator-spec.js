@@ -25,6 +25,13 @@ describe('PaddingIndicator', () => {
           }
         }],
         contentElements: [{sectionId: 1}],
+        themeOptions: {
+          properties: {
+            root: {
+              'sectionPaddingTop-lg': '30vh'
+            }
+          }
+        },
         themeTranslations: {
           scales: {
             sectionPaddingTop: {
@@ -52,6 +59,13 @@ describe('PaddingIndicator', () => {
           }
         }],
         contentElements: [{sectionId: 1}],
+        themeOptions: {
+          properties: {
+            root: {
+              'sectionPaddingBottom-md': '20vh'
+            }
+          }
+        },
         themeTranslations: {
           scales: {
             sectionPaddingBottom: {
@@ -68,21 +82,38 @@ describe('PaddingIndicator', () => {
     expect(section.getPaddingIndicator('bottom')).toHaveTextContent('Medium');
   });
 
-  it('displays default padding translation when paddingValue is undefined', () => {
+  it('displays default value text when paddingValue is undefined', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: {
         sections: [{
           id: 1,
           permaId: 10
         }],
-        contentElements: [{sectionId: 1}]
+        contentElements: [{sectionId: 1}],
+        themeOptions: {
+          properties: {
+            root: {
+              'sectionPaddingTop-sm': '10vh',
+              'sectionPaddingTop-md': '20vh',
+              'sectionDefaultPaddingTop': '20vh'
+            }
+          }
+        },
+        themeTranslations: {
+          scales: {
+            sectionPaddingTop: {
+              sm: 'Small',
+              md: 'Medium'
+            }
+          }
+        }
       }
     });
 
     const section = getSectionByPermaId(10);
     section.select();
 
-    expect(section.getPaddingIndicator('top')).toHaveTextContent('Default');
+    expect(section.getPaddingIndicator('top')).toHaveTextContent('Medium');
   });
 
   it('displays expose motif area translation when motif padding is active', () => {

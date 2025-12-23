@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {useTheme} from '../../entryState';
+import {Scale} from '../../shared/Scale';
 import {useEditorSelection} from './EditorState';
 import {useI18n} from '../i18n';
 
@@ -18,6 +19,11 @@ const paddingIcons = {
 const scaleNames = {
   top: 'sectionPaddingTop',
   bottom: 'sectionPaddingBottom'
+};
+
+const scaleDefaultPropertyNames = {
+  sectionPaddingTop: 'sectionDefaultPaddingTop',
+  sectionPaddingBottom: 'sectionDefaultPaddingBottom'
 };
 
 export function PaddingIndicator({section, motifAreaState, paddingValue, position, suppressed}) {
@@ -69,12 +75,16 @@ function getPaddingText({theme, paddingValue, position, t, suppressed}) {
     return t(key);
   }
 
-  if (!paddingValue) {
-    return t('pageflow_scrolled.inline_editing.default_padding');
-  }
-
-  const scaleTranslations = theme.translations?.scales || {};
   const scaleName = scaleNames[position];
+  const scale = Scale({
+    scaleName,
+    themeProperties: theme.options?.properties || {},
+    scaleTranslations: theme.translations?.scales || {},
+    defaultValuePropertyName: scaleDefaultPropertyNames[scaleName]
+  });
 
-  return scaleTranslations[scaleName]?.[paddingValue];
+  const value = paddingValue || scale.defaultValue;
+  const index = scale.values.indexOf(value);
+
+  return scale.texts[index];
 }
