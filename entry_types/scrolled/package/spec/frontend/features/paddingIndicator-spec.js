@@ -205,4 +205,46 @@ describe('PaddingIndicator', () => {
 
     expect(section.getPaddingIndicator('top').className).toContain('none');
   });
+
+  it('uses appearance-scoped default value for paddingTop', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{
+          id: 1,
+          permaId: 10,
+          configuration: {
+            appearance: 'cards'
+          }
+        }],
+        contentElements: [{sectionId: 1}],
+        themeOptions: {
+          properties: {
+            root: {
+              'sectionPaddingTop-sm': '10vh',
+              'sectionPaddingTop-lg': '30vh',
+              'sectionDefaultPaddingTop': '10vh'
+            },
+            cardsAppearanceSection: {
+              'sectionDefaultPaddingTop': '30vh'
+            }
+          }
+        },
+        themeTranslations: {
+          scales: {
+            sectionPaddingTop: {
+              sm: 'Small',
+              lg: 'Large'
+            }
+          }
+        }
+      }
+    });
+
+    const section = getSectionByPermaId(10);
+    section.select();
+
+    // Should display 'Large' (lg) because cardsAppearanceSection defaults to 30vh
+    // rather than 'Small' (sm) from root default of 10vh
+    expect(section.getPaddingIndicator('top')).toHaveTextContent('Large');
+  });
 });

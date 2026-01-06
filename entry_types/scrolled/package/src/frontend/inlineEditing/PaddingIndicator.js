@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import {useTheme} from '../../entryState';
 import {Scale} from '../../shared/Scale';
+import {getAppearanceSectionScopeName} from '../appearance';
 import {useEditorSelection} from './EditorState';
 import {useI18n} from '../i18n';
 
@@ -43,9 +44,6 @@ export function PaddingIndicator({section, motifAreaState, paddingValue, positio
   });
 
   const motifPadding = motifAreaState?.paddingTop > 0;
-  const paddingText = motifPadding ?
-                      t('pageflow_scrolled.inline_editing.expose_motif_area') :
-                      getPaddingText({theme, paddingValue, position, t, suppressed});
 
   if (isSectionSelected || isPaddingSelected) {
     return (
@@ -57,7 +55,7 @@ export function PaddingIndicator({section, motifAreaState, paddingValue, positio
            onClick={() => select()}>
         <div className={styles.tooltip}>
           <Icon />
-          {paddingText}
+          {getPaddingText()}
         </div>
       </div>
     );
@@ -65,26 +63,32 @@ export function PaddingIndicator({section, motifAreaState, paddingValue, positio
   else {
     return null;
   }
-}
 
-function getPaddingText({theme, paddingValue, position, t, suppressed}) {
-  if (suppressed) {
-    const key = position === 'top' ?
-                'pageflow_scrolled.inline_editing.padding_suppressed_before_full_width' :
-                'pageflow_scrolled.inline_editing.padding_suppressed_after_full_width';
-    return t(key);
+  function getPaddingText() {
+    if (motifPadding) {
+      return t('pageflow_scrolled.inline_editing.expose_motif_area');
+    }
+
+    if (suppressed) {
+      const key = position === 'top' ?
+                  'pageflow_scrolled.inline_editing.padding_suppressed_before_full_width' :
+                  'pageflow_scrolled.inline_editing.padding_suppressed_after_full_width';
+      return t(key);
+    }
+
+    const scaleName = scaleNames[position];
+    const scope = getAppearanceSectionScopeName(section.appearance);
+    const scale = Scale({
+      scaleName,
+      themeProperties: theme.options?.properties || {},
+      scaleTranslations: theme.translations?.scales || {},
+      defaultValuePropertyName: scaleDefaultPropertyNames[scaleName],
+      scope
+    });
+
+    const value = paddingValue || scale.defaultValue;
+    const index = scale.values.indexOf(value);
+
+    return scale.texts[index];
   }
-
-  const scaleName = scaleNames[position];
-  const scale = Scale({
-    scaleName,
-    themeProperties: theme.options?.properties || {},
-    scaleTranslations: theme.translations?.scales || {},
-    defaultValuePropertyName: scaleDefaultPropertyNames[scaleName]
-  });
-
-  const value = paddingValue || scale.defaultValue;
-  const index = scale.values.indexOf(value);
-
-  return scale.texts[index];
 }
