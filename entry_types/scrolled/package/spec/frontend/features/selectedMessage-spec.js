@@ -3,6 +3,7 @@ import {frontend, WidgetSelectionRect} from 'frontend';
 
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
 import {fakeParentWindow} from 'support';
+import {features} from 'pageflow/frontend';
 import {fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
@@ -123,40 +124,46 @@ describe('SELECTED message', () => {
     }, expect.anything());
   });
 
-  it('is posted when top padding indicator is clicked', () => {
-    const {getSectionByPermaId} = renderEntry({
-      seed: {
-        sections: [{id: 1, permaId: 10}],
-        contentElements: [{sectionId: 1}]
-      }
+  describe('padding indicators', () => {
+    beforeEach(() => {
+      features.enable('frontend', ['section_paddings']);
     });
 
-    const section = getSectionByPermaId(10);
-    section.select();
-    fireEvent.click(section.getPaddingIndicator('top'));
+    it('is posted when top padding indicator is clicked', () => {
+      const {getSectionByPermaId} = renderEntry({
+        seed: {
+          sections: [{id: 1, permaId: 10}],
+          contentElements: [{sectionId: 1}]
+        }
+      });
 
-    expect(window.parent.postMessage).toHaveBeenCalledWith({
-      type: 'SELECTED',
-      payload: {id: 1, type: 'sectionPaddings', position: 'top'}
-    }, expect.anything());
-  });
+      const section = getSectionByPermaId(10);
+      section.select();
+      fireEvent.click(section.getPaddingIndicator('top'));
 
-  it('is posted when bottom padding indicator is clicked', () => {
-    const {getSectionByPermaId} = renderEntry({
-      seed: {
-        sections: [{id: 1, permaId: 10}],
-        contentElements: [{sectionId: 1}]
-      }
+      expect(window.parent.postMessage).toHaveBeenCalledWith({
+        type: 'SELECTED',
+        payload: {id: 1, type: 'sectionPaddings', position: 'top'}
+      }, expect.anything());
     });
 
-    const section = getSectionByPermaId(10);
-    section.select();
-    fireEvent.click(section.getPaddingIndicator('bottom'));
+    it('is posted when bottom padding indicator is clicked', () => {
+      const {getSectionByPermaId} = renderEntry({
+        seed: {
+          sections: [{id: 1, permaId: 10}],
+          contentElements: [{sectionId: 1}]
+        }
+      });
 
-    expect(window.parent.postMessage).toHaveBeenCalledWith({
-      type: 'SELECTED',
-      payload: {id: 1, type: 'sectionPaddings', position: 'bottom'}
-    }, expect.anything());
+      const section = getSectionByPermaId(10);
+      section.select();
+      fireEvent.click(section.getPaddingIndicator('bottom'));
+
+      expect(window.parent.postMessage).toHaveBeenCalledWith({
+        type: 'SELECTED',
+        payload: {id: 1, type: 'sectionPaddings', position: 'bottom'}
+      }, expect.anything());
+    });
   });
 
   it('is posted when widget selection rect is clicked', () => {
