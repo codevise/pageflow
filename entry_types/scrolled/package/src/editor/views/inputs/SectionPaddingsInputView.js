@@ -4,12 +4,18 @@ import {editor} from 'pageflow/editor';
 import {buttonStyles} from 'pageflow-scrolled/editor';
 import {cssModulesUtils, inputView} from 'pageflow/ui';
 
+import {getAppearanceSectionScopeName} from 'pageflow-scrolled/frontend';
+
 import paddingTopIcon from '../images/paddingTop.svg';
 import paddingBottomIcon from '../images/paddingBottom.svg';
 import styles from './SectionPaddingsInputView.module.css';
 
 export const SectionPaddingsInputView = Marionette.Layout.extend({
   mixins: [inputView],
+
+  modelEvents: {
+    'change:appearance': 'render'
+  },
 
   template: (data) => `
     <label>
@@ -43,8 +49,9 @@ export const SectionPaddingsInputView = Marionette.Layout.extend({
   onRender() {
     const entry = this.options.entry;
 
-    const paddingTopScale = entry.getScale('sectionPaddingTop');
-    const paddingBottomScale = entry.getScale('sectionPaddingBottom');
+    const scope = getAppearanceSectionScopeName(this.model.get('appearance'));
+    const paddingTopScale = entry.getScale('sectionPaddingTop', {scope});
+    const paddingBottomScale = entry.getScale('sectionPaddingBottom', {scope});
 
     const paddingTopText = getValueText(paddingTopScale, this.model.get('paddingTop'));
     const motifPrefix = I18n.t('pageflow_scrolled.editor.section_paddings_input.motif');

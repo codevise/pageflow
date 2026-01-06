@@ -353,4 +353,80 @@ describe('SectionPaddingsInputView', () => {
 
     expect(listener).toHaveBeenCalledWith(entry.sections.get(1));
   });
+
+  it('uses appearance-scoped default value for paddingTop', () => {
+    const entry = createEntry({
+      sections: [{id: 1, configuration: {appearance: 'cards'}}],
+      themeOptions: {
+        properties: {
+          root: {
+            'sectionPaddingTop-sm': '10vh',
+            'sectionPaddingTop-lg': '30vh',
+            'sectionDefaultPaddingTop': '10vh'
+          },
+          cardsAppearanceSection: {
+            'sectionDefaultPaddingTop': '30vh'
+          }
+        }
+      },
+      themeTranslations: {
+        scales: {
+          sectionPaddingTop: {
+            sm: 'Small',
+            lg: 'Large'
+          }
+        }
+      }
+    });
+
+    const view = new SectionPaddingsInputView({
+      model: entry.sections.get(1).configuration,
+      entry
+    });
+
+    const {getByRole} = renderBackboneView(view);
+
+    // Should display 'Large' (lg) because cardsAppearanceSection defaults to 30vh
+    // rather than 'Small' (sm) from root default of 10vh
+    expect(getByRole('button')).toHaveTextContent('Large');
+  });
+
+  it('updates displayed default value when appearance changes', () => {
+    const entry = createEntry({
+      sections: [{id: 1, configuration: {appearance: 'shadow', exposeMotifArea: false}}],
+      themeOptions: {
+        properties: {
+          root: {
+            'sectionPaddingTop-sm': '10vh',
+            'sectionPaddingTop-lg': '30vh',
+            'sectionDefaultPaddingTop': '10vh'
+          },
+          cardsAppearanceSection: {
+            'sectionDefaultPaddingTop': '30vh'
+          }
+        }
+      },
+      themeTranslations: {
+        scales: {
+          sectionPaddingTop: {
+            sm: 'Small',
+            lg: 'Large'
+          }
+        }
+      }
+    });
+
+    const view = new SectionPaddingsInputView({
+      model: entry.sections.get(1).configuration,
+      entry
+    });
+
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button')).toHaveTextContent('Small');
+
+    entry.sections.get(1).configuration.set('appearance', 'cards');
+
+    expect(getByRole('button')).toHaveTextContent('Large');
+  });
 });
