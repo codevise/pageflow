@@ -17,7 +17,8 @@
   border-top: solid 1px currentColor;
   width: calc(50% - 20px);
   position: absolute;
-  top: 0;
+  top: calc(space(1.5) - 1px);
+  z-index: -1;
 }
 
 .container::before {
@@ -37,4 +38,8 @@
   left: 0;
   width: 100%;
   height: space(8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: space(3)
 }
