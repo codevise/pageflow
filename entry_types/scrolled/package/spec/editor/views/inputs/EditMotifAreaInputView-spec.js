@@ -299,6 +299,28 @@ describe('EditMotifAreaInputView', () => {
     expect(getByRole('button', {name: 'Ignore for this video'})).toBeInTheDocument();
   });
 
+  it('updates ignore button text when backdropType changes', () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 10}],
+      videoFiles: [{id: 200, perma_id: 20}],
+      sections: [{id: 1, configuration: {backdropImage: 10, backdropVideo: 20}}]
+    });
+
+    const view = new EditMotifAreaInputView({
+      model: entry.sections.get(1).configuration,
+      showIgnoreOption: true
+    });
+
+    const {getByRole, queryByRole} = renderBackboneView(view);
+
+    expect(getByRole('button', {name: 'Ignore for this image'})).toBeInTheDocument();
+
+    entry.sections.get(1).configuration.set('backdropType', 'video');
+
+    expect(queryByRole('button', {name: 'Ignore for this image'})).not.toBeInTheDocument();
+    expect(getByRole('button', {name: 'Ignore for this video'})).toBeInTheDocument();
+  });
+
   it('renders x icon in ignore button', () => {
     const entry = createEntry({
       imageFiles: [{id: 100, perma_id: 10}],

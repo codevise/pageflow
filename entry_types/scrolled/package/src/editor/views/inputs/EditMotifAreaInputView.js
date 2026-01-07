@@ -39,6 +39,9 @@ export const EditMotifAreaInputView = Marionette.ItemView.extend({
 
   initialize() {
     this.backdrop = this.model.getBackdrop();
+
+    this.listenTo(this.backdrop, 'change:motifArea', this.update);
+    this.listenTo(this.backdrop, 'change:type', this.render);
   },
 
   serializeData() {
@@ -77,7 +80,6 @@ export const EditMotifAreaInputView = Marionette.ItemView.extend({
     this.$el.addClass(styles[`highlight-${this.options.highlight}`]);
 
     this.update();
-    this.listenTo(this.backdrop, 'change:motifArea', this.update);
     this.updateVisibility();
   },
 

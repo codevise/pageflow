@@ -10,6 +10,12 @@ export const SectionBackdrop = Object.extend({
       'change:backdropImageMobileMotifArea change:backdropVideoMobileMotifArea',
       () => this.trigger('change:motifArea')
     );
+
+    this.listenTo(
+      configuration,
+      'change:backdropType',
+      () => this.trigger('change:type')
+    );
   },
 
   getMotifAreaStatus({portrait} = {}) {

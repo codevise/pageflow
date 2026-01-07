@@ -180,6 +180,21 @@ describe('SectionBackdrop', () => {
     });
   });
 
+  describe('change:type event', () => {
+    it('is triggered when backdropType changes', () => {
+      const entry = createEntry({
+        sections: [{id: 1, configuration: {}}]
+      });
+      const backdrop = entry.sections.get(1).configuration.getBackdrop();
+      const listener = jest.fn();
+
+      backdrop.on('change:type', listener);
+      entry.sections.get(1).configuration.set('backdropType', 'video');
+
+      expect(listener).toHaveBeenCalled();
+    });
+  });
+
   describe('change:motifArea event', () => {
     it('is triggered when backdropImageMotifArea changes', () => {
       const entry = createEntry({
