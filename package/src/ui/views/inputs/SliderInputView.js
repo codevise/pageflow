@@ -30,6 +30,9 @@ import template from '../../templates/inputs/sliderInput.jst';
  *   Already update the model while dragging the handle - not only after
  *   handle has been released.
  *
+ * @param {string} [options.icon]
+ *   Path to an icon image to display before the label.
+ *
  * @class
  */
 export const SliderInputView = Marionette.ItemView.extend({
@@ -38,12 +41,19 @@ export const SliderInputView = Marionette.ItemView.extend({
   className: 'slider_input',
   template,
 
+  serializeData() {
+    return {
+      icon: this.options.icon
+    };
+  },
+
   ui: {
     widget: '.slider',
     value: '.value'
   },
 
   events: {
+    'slidestart': 'handleSlideStart',
     'slidechange': 'save',
     'slide': 'handleSlide'
   },
@@ -53,8 +63,14 @@ export const SliderInputView = Marionette.ItemView.extend({
       animate: 'fast'
     });
 
-    this.setupAttributeBinding('minValue', value => this.updateSliderOption('min', value || 0));
-    this.setupAttributeBinding('maxValue', value => this.updateSliderOption('max', value !== undefined ? value : 100));
+    if (this.options.values) {
+      this.ui.widget.slider('option', 'min', 0);
+      this.ui.widget.slider('option', 'max', this.options.values.length - 1);
+    }
+    else {
+      this.setupAttributeBinding('minValue', value => this.updateSliderOption('min', value || 0));
+      this.setupAttributeBinding('maxValue', value => this.updateSliderOption('max', value !== undefined ? value : 100));
+    }
 
     this.load();
     this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
@@ -76,8 +92,15 @@ export const SliderInputView = Marionette.ItemView.extend({
     }
   },
 
+  handleSlideStart() {
+    if (this.options.onInteractionStart) {
+      this.options.onInteractionStart();
+    }
+  },
+
   handleSlide(event, ui) {
-    this.updateText(ui.value);
+    var value = this.options.values ? this.options.values[ui.value] : ui.value;
+    this.updateText(value);
 
     if (this.options.saveOnSlide) {
       this.save(event, ui);
@@ -85,7 +108,12 @@ export const SliderInputView = Marionette.ItemView.extend({
   },
 
   save: function(event, ui) {
-    this.model.set(this.options.propertyName, ui.value);
+    if (this.loading) {
+      return;
+    }
+
+    var value = this.options.values ? this.options.values[ui.value] : ui.value;
+    this.model.set(this.options.propertyName, value);
   },
 
   load: function() {
@@ -98,7 +126,13 @@ export const SliderInputView = Marionette.ItemView.extend({
       value = 'defaultValue' in this.options ? this.options.defaultValue : 0
     }
 
-    this.ui.widget.slider('option', 'value', this.clampValue(value));
+    var sliderValue = this.options.values ?
+      this.options.values.indexOf(value) :
+      value;
+
+    this.loading = true;
+    this.ui.widget.slider('option', 'value', this.clampValue(sliderValue));
+    this.loading = false;
     this.updateText(value);
   },
 
@@ -110,10 +144,19 @@ export const SliderInputView = Marionette.ItemView.extend({
   },
 
   updateText: function(value) {
-    var unit = 'unit' in this.options ? this.options.unit : '%';
-    var text = 'displayText' in this.options ?
-               this.options.displayText(value) :
-               value + unit;
+    var text;
+
+    if (this.options.texts) {
+      var index = this.options.values.indexOf(value);
+      text = this.options.texts[index];
+    }
+    else if ('displayText' in this.options) {
+      text = this.options.displayText(value);
+    }
+    else {
+      var unit = 'unit' in this.options ? this.options.unit : '%';
+      text = value + unit;
+    }
 
     this.ui.value.text(text);
   }

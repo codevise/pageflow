@@ -2,5 +2,8 @@
   <span class="name"></span>
   <span class="inline_help"></span>
 </label>
-<div class="value"></div>
-<div class="slider"></div>
+<div class="slider_wrapper">
+  <% if (data.icon) { %><img class="icon" src="<%= data.icon %>" width="18" height="18" /><% } %>
+  <div class="value"></div>
+  <div class="slider"></div>
+</div>

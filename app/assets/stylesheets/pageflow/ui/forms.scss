@@ -85,6 +85,7 @@ textarea.short {
 }
 
 .radio_input,
+.radio_button,
 .check_box_input {
   padding: space(1) 0;
   position: relative;
@@ -106,6 +107,10 @@ textarea.short {
     right: -5px;
     top: space(1) * -1;
   }
+}
+
+.radio_button {
+  padding: space(2);
 }
 
 .radio_input {
@@ -140,9 +145,20 @@ textarea.short {
 .slider_input {
   padding: space(1) 0 0;
 
+  label {
+    margin-bottom: space(2.5);
+  }
+
+  .slider_wrapper {
+    display: flex;
+    align-items: center;
+    gap: space(2);
+  }
+
   .slider {
-    margin: 10px 10px 0 40px;
+    flex: 1;
     border: 1px solid var(--ui-on-surface-color-lighter);
+    margin-right: 10px;
   }
 
   .ui-slider-handle {
@@ -152,8 +168,7 @@ textarea.short {
 
   .value {
     font-size: 11px;
-    margin: 7px 0;
-    float: left;
+    min-width: space(8);
   }
 
   &.disabled .slider,
@@ -225,6 +240,18 @@ textarea.short {
 
 .hidden_via_binding {
   display: none;
+}
+
+.visually_hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .input-disabled {

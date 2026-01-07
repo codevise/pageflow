@@ -1280,6 +1280,12 @@ de:
         hide: Außerhalb des Editors ausblenden
         show: Außerhalb des Editors einblenden
         hidden: Nur im Editor sichtbar
+      section_padding_visualization:
+        intersecting_auto: "Darstellung des dynamischen Abstands, der sich an die Größe des Motivbereichs anpasst, um Überlappungen von Text und Motiv zu vermeiden"
+        intersecting_manual: "Darstellung des manuell definierten Abstands, der bei Änderung der Fenstergröße konstant bleibt"
+        side_by_side: "Darstellung des oberen Abstands, wenn der Inhalt neben dem Motivbereich Platz findet"
+        top_padding: "Darstellung des oberen Abstands"
+        bottom_padding: "Darstellung des unteren Abstands"
       select_link_destination:
         cancel: Abbrechen
         create: Erstellen
@@ -1296,6 +1302,9 @@ de:
       selectable_section_item:
         title: Abschnitt auswählen
       edit_motif_area_menu_item: Motivbereich markieren...
+      edit_motif_area_input:
+        select: Motivbereich auswählen
+        edit: Motivbereich bearbeiten
       backdrop_content_element_input:
         add: Neues Element
         unset: Nicht mehr als Hintergrund verwenden
@@ -1348,19 +1357,32 @@ de:
         tabs:
           sectionPaddings: Innenabstände
           portrait: Hochkant
+
+        side_by_side_info: 'Wenn Motiv und Inhalt nebeneinander passen:'
         attributes:
+          topPaddingVisualization:
+            label: Abstand oben
+          exposeMotifArea:
+            label: Abstand oben
+            values:
+              'true': Automatisch anpassen, um das Motiv im Hintergrund freizustellen
+              'false': Manuell festlegen
+          sideBySideVisualization:
+            label: Nebeneinander
           paddingTop:
-            blank: (Standard)
-            label: Oben
+            label: Abstand oben
+          bottomPaddingVisualization:
+            label: Abstand unten
           paddingBottom:
-            blank: (Standard)
-            label: Unten
+            label: Abstand unten
+          samePortraitPaddings:
+            label: Gleiche Innenabstände wie bei Querformat verwenden
+          portraitExposeMotifArea:
+            label: Abstand oben
           portraitPaddingTop:
-            blank: (Standard)
-            label: Oben (Hochkant)
+            label: Abstand oben (Hochkant)
           portraitPaddingBottom:
-            blank: (Standard)
-            label: Unten (Hochkant)
+            label: Abstand unten (Hochkant)
       typography_sizes:
         xl: Sehr groß
         lg: Groß

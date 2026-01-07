@@ -189,6 +189,10 @@ export const inputView = {
 
     this.ui.labelText.text(this.labelText());
 
+    if (this.options.hideLabel) {
+      this.ui.label.addClass('visually_hidden');
+    }
+
     this.updateInlineHelp();
     this.setLabelFor();
 

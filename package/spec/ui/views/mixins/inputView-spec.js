@@ -712,6 +712,29 @@ describe('pageflow.inputView', () => {
     });
   });
 
+  describe('hideLabel', () => {
+    it('adds visually_hidden class to label when true', () => {
+      var view = createInputView({
+        model: new Backbone.Model(),
+        hideLabel: true
+      });
+
+      view.render();
+
+      expect(view.ui.label).toHaveClass('visually_hidden');
+    });
+
+    it('does not add visually_hidden class to label by default', () => {
+      var view = createInputView({
+        model: new Backbone.Model()
+      });
+
+      view.render();
+
+      expect(view.ui.label).not.toHaveClass('visually_hidden');
+    });
+  });
+
   describe('for view with input and label', () => {
     it('generates for and id attributes', () => {
       const Model = Backbone.Model.extend({

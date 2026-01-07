@@ -38,11 +38,12 @@ export const SideBarController = Marionette.Controller.extend({
     }));
   },
 
-  sectionPaddings: function(id, tab) {
+  sectionPaddings: function(id, position) {
     this.region.show(new EditSectionPaddingsView({
       entry: this.entry,
       model: this.entry.sections.get(id),
-      editor
+      editor,
+      position
     }));
   },
 

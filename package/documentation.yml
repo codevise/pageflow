@@ -86,6 +86,7 @@ toc:
       - inputWithPlaceholderText
       - CheckBoxGroupInputView
       - CheckBoxInputView
+      - RadioButtonGroupInputView
       - ColorInputView
       - LabelOnlyView
       - NumberInputView

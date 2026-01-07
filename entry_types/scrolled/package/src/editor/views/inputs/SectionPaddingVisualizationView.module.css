@@ -1,0 +1,53 @@
+.infoText {
+  margin: space(4) 0 space(2);
+}
+
+.preview {
+  border: solid 1px var(--ui-on-surface-color-lightest);
+  border-radius: rounded(sm);
+  margin-bottom: space(1);
+  background-color: var(--ui-primary-color-lighter);
+  color: var(--ui-on-primary-color);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+:global(.input-disabled) .preview,
+:global(.input-disabled) .infoText {
+  opacity: 0.5;
+}
+
+.svg {
+  display: block;
+  aspect-ratio: 9 / 4;
+  max-height: 150px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.silhouette {
+  fill: currentColor;
+  opacity: 0.5;
+}
+
+.cornerMarker {
+  stroke: currentColor;
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.7;
+}
+
+.spacingZone {
+  fill: url(#diagonalStripes);
+}
+
+.arrow {
+  stroke: var(--ui-selection-color);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.textBlock rect {
+  fill: currentColor;
+  opacity: 0.6;
+}

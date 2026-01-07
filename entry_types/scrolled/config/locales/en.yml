@@ -1206,6 +1206,8 @@ en:
           cardSurfaceColor:
             label: Cards background color
             auto: "(Auto)"
+          sectionPaddings:
+            label: "Top/bottom padding"
         tabs:
           section: Section
       edit_section_transition:
@@ -1262,6 +1264,12 @@ en:
         hide: Hide outside of the editor
         show: Show outside of the editor
         hidden: Only visible in editor
+      section_padding_visualization:
+        intersecting_auto: "Visualization of dynamic padding that adjusts to the motif area size to prevent text from overlapping the motif"
+        intersecting_manual: "Visualization of manually defined padding that stays constant as viewport size changes"
+        side_by_side: "Visualization of top padding when content fits next to the motif area"
+        top_padding: "Visualization of top padding"
+        bottom_padding: "Visualization of bottom padding"
       select_link_destination:
         cancel: Cancel
         create: Create
@@ -1278,6 +1286,9 @@ en:
       selectable_section_item:
         title: Select section
       edit_motif_area_menu_item: Select motif area...
+      edit_motif_area_input:
+        select: Select motif area
+        edit: Edit motif area
       backdrop_content_element_input:
         add: New element
         unset: No longer use as backdrop
@@ -1324,6 +1335,37 @@ en:
         remove: "Remove style"
       crop_types:
         circle: Circle
+      section_paddings_input:
+        auto: (Auto)
+      edit_section_paddings:
+        tabs:
+          sectionPaddings: Paddings
+          portrait: Portrait
+        side_by_side_info: 'When motif and content fit side by side:'
+        attributes:
+          topPaddingVisualization:
+            label: Top padding
+          exposeMotifArea:
+            label: Top Padding
+            values:
+              'true': Adjust automatically to expose a motif in the background
+              'false': Set manually
+          sideBySideVisualization:
+            label: Side by side
+          paddingTop:
+            label: Top padding
+          bottomPaddingVisualization:
+            label: Bottom padding
+          paddingBottom:
+            label: Bottom padding
+          samePortraitPaddings:
+            label: Use same paddings as in landscape orientation
+          portraitExposeMotifArea:
+            label: Top Padding
+          portraitPaddingTop:
+            label: Top padding (Portrait)
+          portraitPaddingBottom:
+            label: Bottom padding (Portrait)
       typography_sizes:
         xl: Very large
         lg: Large

@@ -80,6 +80,16 @@ export const PreviewMessageController = Object.extend({
           })
         );
 
+        this.listenTo(this.entry, 'selectSectionPaddings', section =>
+          postMessage({
+            type: 'SELECT',
+            payload: {
+              id: section.id,
+              type: 'sectionPaddings'
+            }
+          })
+        );
+
         this.listenTo(this.entry, 'selectContentElement', (contentElement, options) => {
           postMessage({
             type: 'SELECT',
@@ -124,7 +134,9 @@ export const PreviewMessageController = Object.extend({
         });
       }
       else if (message.data.type === 'SELECTED') {
-        const {type, id} = message.data.payload;
+        const {type, id, position} = message.data.payload;
+
+        this.preservedScrollTarget = null;
 
         if (type === 'contentElement') {
           const contentElement = this.entry.contentElements.get(id);
@@ -134,7 +146,12 @@ export const PreviewMessageController = Object.extend({
           this.editor.navigate(`/scrolled/sections/${id}`, {trigger: true})
         }
         else if (type === 'sectionPaddings') {
-          this.editor.navigate(`/scrolled/sections/${id}/paddings`, {trigger: true})
+          this.preservedScrollTarget = {
+            sectionId: id,
+            align: position === 'bottom' ? 'nearEnd' : undefined
+          };
+          const query = position ? `?position=${position}` : '';
+          this.editor.navigate(`/scrolled/sections/${id}/paddings${query}`, {trigger: true})
         }
         else if (type === 'sectionTransition') {
           this.editor.navigate(`/scrolled/sections/${id}/transition`, {trigger: true})
@@ -201,7 +218,17 @@ export const PreviewMessageController = Object.extend({
   },
 
   preserveScrollPoint(callback) {
-    this.currentScrollPointCallback = callback;
-    this.iframeWindow.postMessage({type: 'SAVE_SCROLL_POINT'}, window.location.origin);
+    if (this.preservedScrollTarget) {
+      const {sectionId, align} = this.preservedScrollTarget;
+      callback();
+      this.iframeWindow.postMessage({
+        type: 'SCROLL_TO_SECTION',
+        payload: {id: sectionId, align, behavior: 'instant'}
+      }, window.location.origin);
+    }
+    else {
+      this.currentScrollPointCallback = callback;
+      this.iframeWindow.postMessage({type: 'SAVE_SCROLL_POINT'}, window.location.origin);
+    }
   }
 });

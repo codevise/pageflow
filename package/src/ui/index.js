@@ -39,6 +39,7 @@ export * from './views/inputs/ProxyUrlInputView';
 export * from './views/inputs/SliderInputView';
 export * from './views/inputs/JsonInputView';
 export * from './views/inputs/CheckBoxInputView';
+export * from './views/inputs/RadioButtonGroupInputView';
 export * from './views/inputs/UrlInputView';
 export * from './views/inputs/SeparatorView';
 export * from './views/inputs/LabelOnlyView';
