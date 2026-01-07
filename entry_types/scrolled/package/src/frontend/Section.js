@@ -163,7 +163,7 @@ function SectionContents({
                   motifAreaState={motifAreaState}
                   sectionPadding={sectionPadding}
                   minHeight={motifAreaState.minHeight}
-                  suppressedPaddings={getSuppressedPaddings(contentElements)}
+                  suppressedPaddings={getSuppressedPaddings(contentElements, motifAreaState)}
                   heightMode={heightMode(section)}>
         <Box inverted={section.invert}
              coverInvisibleNextSection={exitTransition.startsWith('fade')}
@@ -226,9 +226,9 @@ function heightMode(section) {
   return 'dynamic';
 }
 
-function getSuppressedPaddings(contentElements) {
+function getSuppressedPaddings(contentElements, motifAreaState) {
   return {
-    top: isFullWidthElement(contentElements[0]),
+    top: isFullWidthElement(contentElements[0]) || motifAreaState.isContentPadded,
     bottom: isFullWidthElement(contentElements[contentElements.length - 1])
   };
 }

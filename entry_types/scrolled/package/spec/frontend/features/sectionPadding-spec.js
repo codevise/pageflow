@@ -4,7 +4,9 @@ import '@testing-library/jest-dom/extend-expect';
 
 import {features} from 'pageflow/frontend';
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
+import {useMotifAreaState} from 'frontend/v1/useMotifAreaState';
 jest.mock('frontend/usePortraitOrientation');
+jest.mock('frontend/v1/useMotifAreaState');
 
 describe('section padding', () => {
   beforeEach(() => {
@@ -40,6 +42,19 @@ describe('section padding', () => {
       seed: {
         sections: [{id: 5, permaId: 6}],
         contentElements: [{sectionId: 5, configuration: {width: 3}}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).hasSuppressedTopPadding()).toBe(true);
+  });
+
+  it('suppresses top padding if motif area is content padded', () => {
+    useMotifAreaState.mockContentPadded();
+
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5}]
       }
     });
 
