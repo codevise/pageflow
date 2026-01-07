@@ -24,6 +24,7 @@ module PageflowScrolled
                         seed_options: {
                           skip_collections: true,
                           include_unused_additional_seed_data: true,
+                          include_theme_translations: true,
                           translations: {include_inline_editing: true}
                         }
                       })

@@ -36,4 +36,13 @@ json.theme do
     end
   end
   json.options(theme.options.deep_transform_keys { |key| key.to_s.camelize(:lower) })
+
+  if include_theme_translations
+    json.translations do
+      generic_scales = I18n.t('pageflow_scrolled.editor.scales', default: {})
+      theme_scales = I18n.t("pageflow_scrolled.editor.themes.#{theme.name}.scales", default: {})
+      json.scales(generic_scales.deep_merge(theme_scales)
+                    .deep_transform_keys { |key| key.to_s.camelize(:lower) })
+    end
+  end
 end

@@ -10,6 +10,7 @@
  * @param {Object} [options.legalInfo] - imprint, copyright and privacy information of entry.
  * @param {Object} [options.themeOptions] - Options set via theme registration.
  * @param {Object} [options.themeAssets] - Paths to theme assets.
+ * @param {Object} [options.themeTranslations] - Pre-merged theme translations (e.g., scales).
  * @param {Object} [options.additionalSeedData] - Seed data by name.
  * @param {Array} [options.consentVendors] - Server rendered consent vendor data.
  * @param {Object} [options.contentElementConsentVendors] - Consent vendor name by content element id.
@@ -35,6 +36,7 @@ export function normalizeSeed({
   legalInfo,
   themeOptions,
   themeAssets,
+  themeTranslations,
   entry,
   imageFiles,
   videoFiles,
@@ -91,7 +93,7 @@ export function normalizeSeed({
       shareUrlTemplates: normalizeShareUrlTemplates(shareUrlTemplates),
       defaultFileRights: defaultFileRights,
       legalInfo: normalizeLegalInfo(legalInfo),
-      theme: normalizeTheme({themeOptions, themeAssets}),
+      theme: normalizeTheme({themeOptions, themeAssets, themeTranslations}),
       additionalSeedData: additionalSeedData || {
         frontendVersion: 1
       },
@@ -227,7 +229,7 @@ function normalizeLegalInfo(legalInfo) {
   }
 }
 
-function normalizeTheme({themeAssets, themeOptions}) {
+function normalizeTheme({themeAssets, themeOptions, themeTranslations}) {
   return {
     assets: {
       icons: {},
@@ -236,7 +238,8 @@ function normalizeTheme({themeAssets, themeOptions}) {
     options: {
       colors: {},
       ...themeOptions
-    }
+    },
+    translations: themeTranslations
   }
 }
 

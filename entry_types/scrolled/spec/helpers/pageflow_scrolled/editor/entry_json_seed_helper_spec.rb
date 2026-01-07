@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'pageflow/used_file_test_helper'
+require 'pageflow/shared_contexts/fake_translations'
 
 module PageflowScrolled
   module Editor
@@ -130,6 +131,51 @@ module PageflowScrolled
           expect(result).to include_json(consentVendorHostMatchers: {
                                            '\\.some-vendor\\.com$' => 'someVendor'
                                          })
+        end
+
+        context 'theme translations' do
+          include_context 'fake translations'
+
+          it 'includes theme scale translations' do
+            translation(I18n.locale,
+                        'pageflow_scrolled.editor.scales.sectionPaddingTop.sm',
+                        'Small')
+            entry = create(:draft_entry, type_name: 'scrolled')
+
+            result = render(helper, entry)
+
+            expect(result).to include_json(config: {
+                                             theme: {
+                                               translations: {
+                                                 scales: {
+                                                   sectionPaddingTop: {sm: 'Small'}
+                                                 }
+                                               }
+                                             }
+                                           })
+          end
+
+          it 'merges theme-specific scale translations over generic scales' do
+            translation(I18n.locale,
+                        'pageflow_scrolled.editor.scales.sectionPaddingTop.sm',
+                        'Small')
+            translation(I18n.locale,
+                        'pageflow_scrolled.editor.themes.default.scales.sectionPaddingTop.sm',
+                        'Tiny')
+            entry = create(:draft_entry, type_name: 'scrolled')
+
+            result = render(helper, entry)
+
+            expect(result).to include_json(config: {
+                                             theme: {
+                                               translations: {
+                                                 scales: {
+                                                   sectionPaddingTop: {sm: 'Tiny'}
+                                                 }
+                                               }
+                                             }
+                                           })
+          end
         end
       end
     end

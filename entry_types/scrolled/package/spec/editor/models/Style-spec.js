@@ -133,9 +133,7 @@ describe('Style', () => {
     it('includes rounded modifier with theme border radius scale', () => {
       const entry = factories.entry(
         ScrolledEntry,
-        {
-          metadata: {theme_name: 'custom'}
-        },
+        {},
         {
           entryTypeSeed: normalizeSeed({
             themeOptions: {
@@ -143,6 +141,14 @@ describe('Style', () => {
                 root: {
                   'contentElementBoxBorderRadius-sm': '4px',
                   'contentElementBoxBorderRadius-md': '8px'
+                }
+              }
+            },
+            themeTranslations: {
+              scales: {
+                contentElementBoxBorderRadius: {
+                  sm: 'Small',
+                  md: 'Medium'
                 }
               }
             }
@@ -171,9 +177,7 @@ describe('Style', () => {
     it('includes none option and disables matching item when theme has default border radius', () => {
       const entry = factories.entry(
         ScrolledEntry,
-        {
-          metadata: {theme_name: 'custom'}
-        },
+        {},
         {
           entryTypeSeed: normalizeSeed({
             themeOptions: {
@@ -183,6 +187,16 @@ describe('Style', () => {
                   'contentElementBoxBorderRadius-sm': '4px',
                   'contentElementBoxBorderRadius-md': '8px',
                   'contentElementBoxBorderRadius-lg': '16px'
+                }
+              }
+            },
+            themeTranslations: {
+              scales: {
+                contentElementBoxBorderRadius: {
+                  none: 'None',
+                  sm: 'Small',
+                  md: 'Medium',
+                  lg: 'Large'
                 }
               }
             }

@@ -1043,6 +1043,56 @@ module PageflowScrolled
                                        })
       end
 
+      context 'theme translations' do
+        include_context 'fake translations'
+
+        it 'does not render theme scale translations by default' do
+          translation(I18n.locale, 'pageflow_scrolled.editor.scales.sectionPaddingTop.sm', 'Small')
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(JSON.parse(result).dig('config', 'theme')).not_to have_key('translations')
+        end
+
+        it 'includes theme scale translations when include_theme_translations is true' do
+          translation(I18n.locale, 'pageflow_scrolled.editor.scales.sectionPaddingTop.sm', 'Small')
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry, include_theme_translations: true)
+
+          expect(result).to include_json(config: {
+                                           theme: {
+                                             translations: {
+                                               scales: {
+                                                 sectionPaddingTop: {sm: 'Small'}
+                                               }
+                                             }
+                                           }
+                                         })
+        end
+
+        it 'merges theme-specific scale translations over generic scales' do
+          translation(I18n.locale, 'pageflow_scrolled.editor.scales.sectionPaddingTop.sm', 'Small')
+          translation(I18n.locale,
+                      'pageflow_scrolled.editor.themes.default.scales.sectionPaddingTop.sm',
+                      'Tiny')
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry, include_theme_translations: true)
+
+          expect(result).to include_json(config: {
+                                           theme: {
+                                             translations: {
+                                               scales: {
+                                                 sectionPaddingTop: {sm: 'Tiny'}
+                                               }
+                                             }
+                                           }
+                                         })
+        end
+      end
+
       it 'renders enabled feature names' do
         pageflow_configure do |config|
           config.features.register('rainbows')
