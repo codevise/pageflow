@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 
 import {EditConfigurationView, SeparatorView} from 'pageflow/editor';
-import {SliderInputView, RadioButtonGroupInputView, CheckBoxInputView} from 'pageflow/ui';
+import {SliderInputView, RadioButtonGroupInputView, CheckBoxInputView, SelectInputView} from 'pageflow/ui';
 
 import {SectionPaddingVisualizationView} from './inputs/SectionPaddingVisualizationView';
 import {EditMotifAreaInputView} from './inputs/EditMotifAreaInputView';
@@ -187,6 +187,16 @@ function paddingInputs(tab, options) {
     values: paddingBottomValues,
     saveOnSlide: true,
     onInteractionStart: scrollToSectionEnd,
+    ...disabledOptions
+  });
+
+  tab.view(SeparatorView);
+
+  tab.input('remainingVerticalSpace', SelectInputView, {
+    values: ['around', 'above', 'below'],
+    defaultValue: 'around',
+    disabledBinding: 'fullHeight',
+    disabled: fullHeight => !fullHeight,
     ...disabledOptions
   });
 }

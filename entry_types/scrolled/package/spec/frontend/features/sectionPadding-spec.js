@@ -129,4 +129,51 @@ describe('section padding', () => {
       '--foreground-padding-bottom': 'var(--theme-section-padding-bottom-md)',
     });
   });
+
+  it('centers content vertically by default', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    const section = getSectionByPermaId(6);
+    expect(section.hasRemainingSpaceAbove()).toBe(false);
+    expect(section.hasRemainingSpaceBelow()).toBe(false);
+  });
+
+  it('supports remaining vertical space above content', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{
+          id: 5,
+          permaId: 6,
+          configuration: {remainingVerticalSpace: 'above'}
+        }],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    const section = getSectionByPermaId(6);
+    expect(section.hasRemainingSpaceAbove()).toBe(true);
+    expect(section.hasRemainingSpaceBelow()).toBe(false);
+  });
+
+  it('supports remaining vertical space below content', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{
+          id: 5,
+          permaId: 6,
+          configuration: {remainingVerticalSpace: 'below'}
+        }],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    const section = getSectionByPermaId(6);
+    expect(section.hasRemainingSpaceAbove()).toBe(false);
+    expect(section.hasRemainingSpaceBelow()).toBe(true);
+  });
 });

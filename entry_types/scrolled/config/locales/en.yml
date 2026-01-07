@@ -1366,6 +1366,14 @@ en:
             label: Top padding (Portrait)
           portraitPaddingBottom:
             label: Bottom padding (Portrait)
+          remainingVerticalSpace:
+            label: Remaining vertical space
+            inline_help: Controls where content is positioned when it does not fill the full height of the section.
+            inline_help_disabled: Only available when "Use Full Viewport-Height" is enabled in section settings.
+            values:
+              around: Around content
+              above: Above content
+              below: Below content
       typography_sizes:
         xl: Very large
         lg: Large

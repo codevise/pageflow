@@ -200,6 +200,14 @@ function createSectionPageObject(el) {
       return foreground.classList.contains(foregroundStyles.paddingBottom);
     },
 
+    hasRemainingSpaceAbove() {
+      return foreground.classList.contains(foregroundStyles.spaceAbove);
+    },
+
+    hasRemainingSpaceBelow() {
+      return foreground.classList.contains(foregroundStyles.spaceBelow);
+    },
+
     hasFadedOutForeground() {
       return foreground.classList.contains(sharedTransitionStyles.fadedOut);
     },

@@ -21,6 +21,14 @@
   min-height: 100vh;
 }
 
+.spaceAbove {
+  justify-content: flex-end;
+}
+
+.spaceBelow {
+  justify-content: flex-start;
+}
+
 .paddingBottom {
   padding-bottom: var(--foreground-padding-bottom, 3em);
 }

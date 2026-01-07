@@ -1383,6 +1383,14 @@ de:
             label: Abstand oben (Hochkant)
           portraitPaddingBottom:
             label: Abstand unten (Hochkant)
+          remainingVerticalSpace:
+            label: Verbleibender vertikaler Raum
+            inline_help: Bestimmt, wo der Inhalt positioniert wird, wenn er nicht die gesamte Höhe des Abschnitts ausfüllt.
+            inline_help_disabled: Nur verfügbar, wenn "Volle Viewport-Höhe" in den Abschnittseinstellungen aktiviert ist.
+            values:
+              around: Um den Inhalt
+              above: Über dem Inhalt
+              below: Unter dem Inhalt
       typography_sizes:
         xl: Sehr groß
         lg: Groß
