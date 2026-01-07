@@ -1640,6 +1640,7 @@ de:
       add_caption: Beschriftung hinzufügen
       add_content_element: Neues Element hinzufügen
       cancel: Abbrechen
+      default_padding: Standard
       drag_content_element: Ziehen, um Element zu verschieben
       edit_section_transition_after: Übergangseffekt bearbeiten
       edit_section_transition_before: Übergangseffekt bearbeiten
@@ -1690,3 +1691,6 @@ de:
       select_link_destination: "Link-Ziel auswählen"
       change_link_destination: "Link-Ziel ändern"
       remove_link: "Link entfernen"
+      edit_section_padding_top: Oberen Abstand bearbeiten
+      edit_section_padding_bottom: Unteren Abstand bearbeiten
+      expose_motif_area: Motiv freilegen

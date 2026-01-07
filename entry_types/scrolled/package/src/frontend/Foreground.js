@@ -1,11 +1,13 @@
 import React, {createContext, useContext} from 'react';
 import classNames from 'classnames';
 
+import {withInlineEditingDecorator} from './inlineEditing';
+
 import styles from './Foreground.module.css';
 
 export const ForcePaddingContext = createContext(false);
 
-export default function Foreground(props) {
+export const Foreground = withInlineEditingDecorator('ForegroundDecorator', function Foreground(props) {
   const forcePadding = useContext(ForcePaddingContext);
 
   return (
@@ -14,7 +16,7 @@ export default function Foreground(props) {
       {props.children}
     </div>
   );
-}
+});
 
 function className(props, forcePadding) {
   return classNames(

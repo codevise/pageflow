@@ -4,6 +4,7 @@ import styles from './SectionDecorator.module.css';
 import backdropStyles from './BackdropDecorator.module.css';
 import contentElementStyles from './ContentElementDecorator.module.css';
 import widgetSelectionRectStyles from './WidgetSelectionRect.module.css';
+import paddingIndicatorStyles from './PaddingIndicator.module.css';
 
 import {Toolbar} from './Toolbar';
 import {ForcePaddingContext} from '../Foreground';
@@ -16,10 +17,17 @@ import transitionIcon from './images/arrows.svg';
 export function SectionDecorator({backdrop, section, contentElements, transitions, children}) {
   const {t} = useI18n({locale: 'ui'});
 
-  const {isSelected, select, resetSelection} = useEditorSelection({
+  const {isSelected: isSectionSelected, select, resetSelection} = useEditorSelection({
     id: section.id,
     type: 'sectionSettings'
   });
+
+  const {isSelected: isPaddingSelected} = useEditorSelection({
+    id: section.id,
+    type: 'sectionPaddings'
+  });
+
+  const isSelected = isPaddingSelected || isSectionSelected;
 
   const {isSelected: isBackdropElementSelected} = useEditorSelection({
     id: backdrop.contentElement?.id,
@@ -52,9 +60,10 @@ export function SectionDecorator({backdrop, section, contentElements, transition
     if (!event.target.closest(`.${contentElementStyles.wrapper}`) &&
         !event.target.closest(`.${backdropStyles.wrapper}`) &&
         !event.target.closest(`.${widgetSelectionRectStyles.wrapper}`) &&
+        !event.target.closest(`.${paddingIndicatorStyles.indicator}`) &&
         !event.target.closest('#fullscreenRoot') &&
         !event.target.closest('[data-floating-ui-portal]')) {
-      isSelected ? resetSelection() : select();
+      isSectionSelected ? resetSelection() : select();
     }
   }
 

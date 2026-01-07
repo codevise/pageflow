@@ -1,0 +1,97 @@
+.indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.indicator::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: 2;
+
+  --line-width: 5px;
+  --white: rgb(255 255 255 / 0.4);
+  --black: rgb(0 0 0 / 0.1);
+  background: repeating-linear-gradient(-45deg,
+                                        var(--white),
+                                        var(--white) var(--line-width),
+                                        var(--black) var(--line-width),
+                                        var(--black) calc(var(--line-width) * 2));
+}
+
+.indicator:hover::before {
+  opacity: 0.2;
+}
+
+.selected::before,
+.selected:hover::before {
+  opacity: 1;
+}
+
+.selected::before {
+  z-index: 4;
+}
+
+.indicator-top {
+  composes: indicator;
+  top: 0;
+  height: var(--foreground-padding-top, space(12));
+}
+
+.indicator-top::before {
+  z-index: 4;
+}
+
+.indicator-bottom {
+  composes: indicator;
+  bottom: 0;
+  height: var(--foreground-padding-bottom);
+}
+
+.none {
+  height: space(8);
+}
+
+.none::before {
+  background: none;
+}
+
+.motif {
+  height: space(20);
+}
+
+.motif::before {
+  mask-image: linear-gradient(to bottom, #000, transparent);
+}
+
+.tooltip {
+  display: flex;
+  z-index: 4;
+  gap: space(1);
+  align-items: center;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 3px;
+  visibility: hidden;
+  position: absolute;
+  left: 20px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  padding: space(1) space(2) space(1) space(1);
+}
+
+.indicator-top .tooltip {
+  top: 20px;
+}
+
+.indicator-bottom .tooltip {
+  bottom: 20px;
+}
+
+.selected .tooltip,
+.indicator:hover .tooltip {
+  visibility: visible;
+}

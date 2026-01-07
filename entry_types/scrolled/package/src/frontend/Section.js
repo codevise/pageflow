@@ -9,7 +9,7 @@ import {
   useFileWithInlineRights
 } from '../entryState';
 
-import Foreground from './Foreground';
+import {Foreground} from './Foreground';
 import {BackdropFrameEffect} from './BackdropFrameEffect';
 import {SectionInlineFileRights} from './SectionInlineFileRights';
 import {Layout, widths as contentElementWidths} from './layouts';
@@ -20,7 +20,7 @@ import {SectionViewTimelineProvider} from './SectionViewTimelineProvider';
 import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
 import {SelectableWidget} from './SelectableWidget';
-import {useSectionPaddingCustomProperties} from './useSectionPaddingCustomProperties';
+import {useSectionPadding} from './useSectionPaddingCustomProperties';
 import {SectionIntersectionProbe} from './SectionIntersectionObserver';
 
 import * as v1 from './v1';
@@ -54,6 +54,8 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
     propertyName: 'atmoAudioFileId'
   });
 
+  const sectionPadding = useSectionPadding(section);
+
   return (
     <section id={`${domIdPrefix}-${section.permaId}`}
              ref={ref}
@@ -65,7 +67,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                                    section.invert ? styles.darkContent : styles.lightContent)}
              style={{
                ...useBackdropSectionCustomProperties(backdrop),
-               ...useSectionPaddingCustomProperties(section)
+               ...sectionPadding.styles
              }}>
       <SectionLifecycleProvider onActivate={onActivate}
                                 entersWithFadeTransition={section.transition?.startsWith('fade')}>
@@ -79,7 +81,8 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                              backdrop={backdrop}
                              contentElements={contentElements}
                              state={state}
-                             transitionStyles={transitionStyles} />
+                             transitionStyles={transitionStyles}
+                             sectionPadding={sectionPadding} />
 
             <SectionInlineFileRights section={section}
                                      backdrop={backdrop}
@@ -101,7 +104,7 @@ Section.defaultProps = {
 };
 
 function SectionContents({
-  section, backdrop, contentElements, state, transitions, transitionStyles
+  section, backdrop, contentElements, state, transitions, transitionStyles, sectionPadding
 }) {
   const {
     Backdrop,
@@ -153,8 +156,11 @@ function SectionContents({
           </Shadow>}
       </Backdrop>
       <BackdropFrameEffect backdrop={backdrop} />
-      <Foreground transitionStyles={transitionStyles}
+      <Foreground section={section}
+                  transitionStyles={transitionStyles}
                   state={state}
+                  motifAreaState={motifAreaState}
+                  sectionPadding={sectionPadding}
                   minHeight={motifAreaState.minHeight}
                   paddingBottom={!endsWithFullWidthElement(contentElements)}
                   heightMode={heightMode(section)}>
