@@ -30,4 +30,34 @@ describe('content element margin', () => {
 
     expect(getContentElementByTestId(1).hasMargin()).toBe(false);
   });
+
+  it('does not apply top margin to first content element in section', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        sections: [{id: 5}],
+        contentElements: [
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 1}},
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 2}}
+        ]
+      }
+    });
+
+    expect(getContentElementByTestId(1).hasTopMargin()).toBe(false);
+    expect(getContentElementByTestId(2).hasTopMargin()).toBe(true);
+  });
+
+  it('still applies top margin to first content element in cards appearance', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        sections: [{id: 5, configuration: {appearance: 'cards'}}],
+        contentElements: [
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 1}},
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 2}}
+        ]
+      }
+    });
+
+    expect(getContentElementByTestId(1).hasTopMargin()).toBe(true);
+    expect(getContentElementByTestId(2).hasTopMargin()).toBe(true);
+  });
 });

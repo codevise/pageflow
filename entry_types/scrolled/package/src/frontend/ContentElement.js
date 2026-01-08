@@ -20,6 +20,7 @@ export const ContentElement = React.memo(withInlineEditingDecorator(
           <ContentElementLifecycleProvider type={props.type}
                                            override={props.lifecycleOverride}>
             <ContentElementMargin width={props.width}
+                                  first={props.first}
                                   top={props.itemProps.marginTop}
                                   bottom={props.itemProps.marginBottom}>
               <ContentElementErrorBoundary typeName={props.type}
@@ -46,6 +47,7 @@ function arePropsEqual(prevProps, nextProps) {
     prevProps.id === nextProps.id &&
     prevProps.permaId === nextProps.permaId &&
     prevProps.type === nextProps.type &&
+    prevProps.first === nextProps.first &&
     prevProps.position === nextProps.position &&
     prevProps.width === nextProps.width &&
     prevProps.itemProps === nextProps.itemProps &&
