@@ -96,6 +96,31 @@ describe('MotifArea', () => {
     expect(container.firstChild).toHaveStyle('height: 0px');
   });
 
+  it('does not apply visible class when image does not have motif area', () => {
+    const {container} =
+      renderInEntry(
+        () => <MotifArea file={useFile({collectionName: 'imageFiles', permaId: 100})} />,
+        {
+          wrapper: ({children}) => (
+            <MotifAreaVisibilityProvider visible={true}>
+              {children}
+            </MotifAreaVisibilityProvider>
+          ),
+          seed: {
+            imageFiles: [
+              {
+                permaId: 100,
+                width: 200,
+                height: 100
+              }
+            ]
+          }
+        }
+      );
+
+    expect(container.firstChild).not.toHaveClass(styles.visible);
+  });
+
   describe('onUpdate prop', () => {
     const seed = {
       imageFiles: [
