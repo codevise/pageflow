@@ -1400,6 +1400,27 @@ en:
               around: Around content
               above: Above content
               below: Below content
+      edit_defaults:
+        back: Appearance
+        sections_info: Changes to these settings have no effect on existing sections.
+        tabs:
+          sections: New sections
+        attributes:
+          defaultSectionLayout:
+            label: Content alignment
+            values:
+              center: Centered
+              centerRagged: Centered (Ragged)
+              left: Left
+              right: Right
+          topPaddingVisualization:
+            label: Top padding
+          defaultSectionPaddingTop:
+            label: Top padding
+          bottomPaddingVisualization:
+            label: Bottom padding
+          defaultSectionPaddingBottom:
+            label: Bottom padding
       typography_sizes:
         xl: Very large
         lg: Large

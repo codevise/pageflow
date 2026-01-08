@@ -1417,6 +1417,27 @@ de:
               around: Um den Inhalt
               above: Über dem Inhalt
               below: Unter dem Inhalt
+      edit_defaults:
+        back: Erscheinungsbild
+        sections_info: Änderungen an diesen Einstellungen haben keine Auswirkungen auf existierende Abschnitte.
+        tabs:
+          sections: Neue Abschnitte
+        attributes:
+          defaultSectionLayout:
+            label: Vordergrund-Positionierung
+            values:
+              center: Mitte
+              centerRagged: Zentriert
+              left: Links
+              right: Rechts
+          topPaddingVisualization:
+            label: Abstand oben
+          defaultSectionPaddingTop:
+            label: Abstand oben
+          bottomPaddingVisualization:
+            label: Abstand unten
+          defaultSectionPaddingBottom:
+            label: Abstand unten
       typography_sizes:
         xl: Sehr groß
         lg: Groß

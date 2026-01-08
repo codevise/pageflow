@@ -1555,6 +1555,8 @@ en:
             unset: Reset
           theme_input_view:
             choose: Change theme
+          edit_defaults_input_view:
+            label: Defaults for new elements
           oembed_url_input_view:
             status:
               resolving: "Resolving..."

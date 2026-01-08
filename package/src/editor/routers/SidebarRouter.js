@@ -14,6 +14,7 @@ export const SidebarRouter = Marionette.AppRouter.extend({
 
     'meta_data': 'metaData',
     'meta_data/:tab': 'metaData',
+    'defaults': 'defaults',
     'publish': 'publish',
 
     '?storyline=:id': 'index',

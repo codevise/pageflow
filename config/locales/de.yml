@@ -1562,6 +1562,8 @@ de:
             unset: Verknüpfung entfernen
           theme_input_view:
             choose: Theme ändern
+          edit_defaults_input_view:
+            label: Voreinstellungen für neue Elemente
           oembed_url_input_view:
             status:
               resolving: "Auflösen..."
