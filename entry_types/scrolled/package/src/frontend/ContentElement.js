@@ -13,6 +13,7 @@ export const ContentElement = React.memo(withInlineEditingDecorator(
   'ContentElementDecorator',
   function ContentElement(props) {
     const Component = api.contentElementTypes.getComponent(props.type);
+    const {defaultMarginTop} = api.contentElementTypes.getOptions(props.type) || {};
 
     if (Component) {
       return (
@@ -21,6 +22,7 @@ export const ContentElement = React.memo(withInlineEditingDecorator(
                                            override={props.lifecycleOverride}>
             <ContentElementMargin width={props.width}
                                   first={props.first}
+                                  defaultMarginTop={defaultMarginTop}
                                   top={props.itemProps.marginTop}
                                   bottom={props.itemProps.marginBottom}>
               <ContentElementErrorBoundary typeName={props.type}

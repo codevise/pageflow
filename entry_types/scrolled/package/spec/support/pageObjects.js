@@ -270,6 +270,11 @@ function createContentElementPageObject(el) {
       return wrapper && !wrapper.classList.contains(contentElementMarginStyles.noTopMargin);
     },
 
+    getMarginTop() {
+      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
+      return wrapper && wrapper.style.marginTop;
+    },
+
     hasScrollSpace() {
       return !!el.closest(`.${contentElementScrollSpaceStyles.wrapper}`);
     },

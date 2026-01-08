@@ -16,8 +16,17 @@
   margin: 1.375rem 0 0 0;
 }
 
+.text > p:first-child {
+  margin-top: 0;
+}
+
 .text li {
   margin: var(--theme-text-block-first-list-item-margin-top, 1.375rem) 0 0 0;
+}
+
+.text > ol:first-child > li:first-child,
+.text > ul:first-child > li:first-child {
+  margin-top: 0;
 }
 
 .text li + li {
@@ -57,6 +66,10 @@
   position: relative;
   /* Prevent block quote symbol from overlapping with floated elements. */
   overflow: hidden;
+}
+
+.text > blockquote:first-child {
+  margin-top: 0;
 }
 
 .text blockquote::before,

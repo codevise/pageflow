@@ -6,7 +6,7 @@ import {useTrimMarginTop} from './TrimMarginTop';
 
 import styles from './ContentElementMargin.module.css';
 
-export function ContentElementMargin({width, first, top, bottom, children}) {
+export function ContentElementMargin({width, first, defaultMarginTop, top, bottom, children}) {
   const trimMarginTop = useTrimMarginTop();
 
   if (width === widths.full) {
@@ -16,7 +16,7 @@ export function ContentElementMargin({width, first, top, bottom, children}) {
   return (
     <div className={classNames(styles.wrapper,
                                {[styles.noTopMargin]: trimMarginTop && first})}
-         style={{marginTop: scaleProperty(top),
+         style={{marginTop: scaleProperty(top) || defaultMarginTop,
                  marginBottom: scaleProperty(bottom)}}>
       {children}
     </div>
