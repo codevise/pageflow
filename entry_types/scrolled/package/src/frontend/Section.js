@@ -175,7 +175,8 @@ function SectionContents({
                   items={contentElements}
                   appearance={section.appearance}
                   contentAreaRef={setContentAreaRef}
-                  sectionProps={sectionProperties}>
+                  sectionProps={sectionProperties}
+                  isContentPadded={motifAreaState.isContentPadded}>
             {(children, boxProps) =>
               <BoxWrapper {...boxProps}
                           cardSurfaceColor={section.cardSurfaceColor}

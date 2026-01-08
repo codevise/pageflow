@@ -884,6 +884,34 @@ describe('Layout', () => {
 
         expect(container.textContent).toEqual('[1 2 3 ]');
       });
+
+      it('does not mark first box with atSectionStart when isContentPadded in two column variant', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items} isContentPadded={true}>
+            {(children, boxProps) => <SectionBoundaryBox {...boxProps}>{children}</SectionBoundaryBox>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('1 2 ]');
+      });
+
+      it('does not mark first box with atSectionStart when isContentPadded in center variant', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'center'}} items={items} isContentPadded={true}>
+            {(children, boxProps) => <SectionBoundaryBox {...boxProps}>{children}</SectionBoundaryBox>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('1 2 ]');
+      });
     });
   });
 

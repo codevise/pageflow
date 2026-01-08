@@ -51,7 +51,7 @@ TwoColumn.GroupComponent = 'div';
 TwoColumn.contentAreaProbeProps = {};
 
 function renderItems(props, shouldInline) {
-  const groups = groupItemsByPosition(props.items, shouldInline);
+  const groups = groupItemsByPosition(props.items, shouldInline, props.isContentPadded);
 
   return groups.map((group, groupIndex) =>
     <TwoColumn.GroupComponent key={groupIndex}
@@ -106,7 +106,7 @@ function RestrictWidth({width, alignment, children}) {
   }
 }
 
-function groupItemsByPosition(items, shouldInline) {
+function groupItemsByPosition(items, shouldInline, isContentPadded) {
   const groups = [];
 
   let lastInlineBox = null;
@@ -168,7 +168,7 @@ function groupItemsByPosition(items, shouldInline) {
       }
 
       if (position === 'inline' && !firstInlineBox) {
-        currentBox.atSectionStart = true;
+        currentBox.atSectionStart = !isContentPadded;
         firstInlineBox = currentBox;
       }
 
