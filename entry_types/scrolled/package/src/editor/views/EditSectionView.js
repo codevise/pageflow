@@ -159,15 +159,19 @@ export const EditSectionView = EditConfigurationView.extend({
         values: ['shadow', 'cards', 'transparent']
       });
       this.input('invert', CheckBoxInputView);
-      this.input('exposeMotifArea', CheckBoxInputView, {
-        displayUncheckedIfDisabled: true,
-        visibleBinding: ['backdropType'],
-        visible: ([backdropType]) => {
-          return backdropType !== 'color' && backdropType !== 'contentElement';
-        },
-        disabledBinding: motifAreaDisabledBinding,
-        disabled: motifAreaDisabled,
-      });
+
+      if (!features.isEnabled('section_paddings')) {
+        this.input('exposeMotifArea', CheckBoxInputView, {
+          displayUncheckedIfDisabled: true,
+          visibleBinding: ['backdropType'],
+          visible: ([backdropType]) => {
+            return backdropType !== 'color' && backdropType !== 'contentElement';
+          },
+          disabledBinding: motifAreaDisabledBinding,
+          disabled: motifAreaDisabled,
+        });
+      }
+
       this.input('staticShadowOpacity', SliderInputView, {
         defaultValue: 70,
         visibleBinding: 'appearance',
