@@ -4,8 +4,7 @@
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .root {
-  margin-top: 0.3em;
-  margin-bottom: 0;
+  margin: 0;
   padding-top: 0.45em;
 }
 
