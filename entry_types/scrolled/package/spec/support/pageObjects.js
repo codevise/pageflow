@@ -10,6 +10,7 @@ import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.
 import fitViewportStyles from 'frontend/FitViewport.module.css';
 import centerLayoutStyles from 'frontend/layouts/Center.module.css';
 import twoColumnLayoutStyles from 'frontend/layouts/TwoColumn.module.css';
+import boxBoundaryMarginStyles from 'frontend/foregroundBoxes/BoxBoundaryMargin.module.css';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 import {api} from 'frontend/api';
@@ -234,6 +235,11 @@ function createSectionPageObject(el) {
     selectPadding(position) {
       fireEvent.mouseDown(selectionRect);
       fireEvent.click(this.getPaddingIndicator(position));
+    },
+
+    hasFirstBoxSuppressedTopMargin() {
+      const firstBox = foreground.querySelector(`.${boxBoundaryMarginStyles.noTopMargin}`);
+      return !!firstBox;
     }
   }
 }

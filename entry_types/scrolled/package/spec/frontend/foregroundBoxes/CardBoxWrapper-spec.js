@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import CardBoxWrapper from 'frontend/foregroundBoxes/CardBoxWrapper';
 
-import styles from 'frontend/foregroundBoxes/CardBoxWrapper.module.css';
+import boundaryMarginStyles from 'frontend/foregroundBoxes/BoxBoundaryMargin.module.css';
 
 describe('CardBoxWrapper', () => {
   describe('at section boundaries', () => {
@@ -15,7 +15,7 @@ describe('CardBoxWrapper', () => {
         </CardBoxWrapper>
       );
 
-      expect(container.firstChild).not.toHaveClass(styles.noTopMargin);
+      expect(container.firstChild).not.toHaveClass(boundaryMarginStyles.noTopMargin);
     });
 
     it('has noTopMargin class when at section start', () => {
@@ -25,7 +25,7 @@ describe('CardBoxWrapper', () => {
         </CardBoxWrapper>
       );
 
-      expect(container.firstChild).toHaveClass(styles.noTopMargin);
+      expect(container.firstChild).toHaveClass(boundaryMarginStyles.noTopMargin);
     });
 
     it('does not have noBottomMargin class when not at section end', () => {
@@ -35,7 +35,7 @@ describe('CardBoxWrapper', () => {
         </CardBoxWrapper>
       );
 
-      expect(container.firstChild).not.toHaveClass(styles.noBottomMargin);
+      expect(container.firstChild).not.toHaveClass(boundaryMarginStyles.noBottomMargin);
     });
 
     it('has noBottomMargin class when at section end', () => {
@@ -45,7 +45,7 @@ describe('CardBoxWrapper', () => {
         </CardBoxWrapper>
       );
 
-      expect(container.firstChild).toHaveClass(styles.noBottomMargin);
+      expect(container.firstChild).toHaveClass(boundaryMarginStyles.noBottomMargin);
     });
   });
 });

@@ -1,4 +1,5 @@
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects';
+import {act} from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
 
@@ -59,6 +60,21 @@ describe('section padding', () => {
     });
 
     expect(getSectionByPermaId(6).hasSuppressedTopPadding()).toBe(true);
+  });
+
+  it('does not suppress first box top margin if motif area becomes content padded', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).hasFirstBoxSuppressedTopMargin()).toBe(true);
+
+    act(() => useMotifAreaState.mockContentPadded());
+
+    expect(getSectionByPermaId(6).hasFirstBoxSuppressedTopMargin()).toBe(false);
   });
 
   it('suppresses bottom padding if last content element is full width', () => {
