@@ -13,6 +13,11 @@ import styles from './SectionPaddingsInputView.module.css';
 export const SectionPaddingsInputView = Marionette.Layout.extend({
   mixins: [inputView],
 
+  initialize() {
+    this.backdrop = this.model.getBackdrop();
+    this.listenTo(this.backdrop, 'change:motifArea', this.render);
+  },
+
   modelEvents: {
     'change:appearance': 'render'
   },
@@ -53,25 +58,27 @@ export const SectionPaddingsInputView = Marionette.Layout.extend({
     const paddingTopScale = entry.getScale('sectionPaddingTop', {scope});
     const paddingBottomScale = entry.getScale('sectionPaddingBottom', {scope});
 
-    const paddingTopText = getValueText(paddingTopScale, this.model.get('paddingTop'));
-    const motifPrefix = I18n.t('pageflow_scrolled.editor.section_paddings_input.motif');
-
-    const portraitPaddingTopText = getValueText(paddingTopScale, this.model.get('portraitPaddingTop'));
-    const exposeMotifArea = this.model.get('exposeMotifArea');
-
-    this.ui.paddingTop.text(
-      exposeMotifArea ? `${motifPrefix}/${paddingTopText}` : paddingTopText
-    );
+    this.ui.paddingTop.text(this.getPaddingTopText(paddingTopScale, 'paddingTop', {portrait: false}));
     this.ui.paddingBottom.text(getValueText(paddingBottomScale, this.model.get('paddingBottom')));
-    this.ui.portraitPaddingTop.text(
-      exposeMotifArea ? `${motifPrefix}/${portraitPaddingTopText}` : portraitPaddingTopText
-    );
+    this.ui.portraitPaddingTop.text(this.getPaddingTopText(paddingTopScale, 'portraitPaddingTop', {portrait: true}));
     this.ui.portraitPaddingBottom.text(getValueText(paddingBottomScale, this.model.get('portraitPaddingBottom')));
 
     const hasPortrait = this.model.get('customPortraitPaddings');
 
     this.ui.portraitPaddingTop.toggle(!!hasPortrait);
     this.ui.portraitPaddingBottom.toggle(!!hasPortrait);
+  },
+
+  getPaddingTopText(scale, property, {portrait}) {
+    const text = getValueText(scale, this.model.get(property));
+
+    if (this.model.get('exposeMotifArea') &&
+        this.backdrop.getMotifAreaStatus({portrait}) === 'defined') {
+      const motifPrefix = I18n.t('pageflow_scrolled.editor.section_paddings_input.motif');
+      return `${motifPrefix}/${text}`;
+    }
+
+    return text;
   }
 });
 

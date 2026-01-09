@@ -18,9 +18,52 @@ describe('SectionPaddingsInputView', () => {
     jest.spyOn(editor, 'navigate').mockImplementation(() => {});
   });
 
+  it('does not display Motif prefix for paddingTop when exposeMotifArea is true but landscape motif is not defined', () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 10}],
+      sections: [{id: 1, configuration: {
+        exposeMotifArea: true,
+        paddingTop: 'lg',
+        backdropImage: 10
+      }}],
+      themeOptions: {
+        properties: {
+          root: {
+            'sectionPaddingTop-sm': '10vh',
+            'sectionPaddingTop-lg': '30vh'
+          }
+        }
+      },
+      themeTranslations: {
+        scales: {
+          sectionPaddingTop: {
+            sm: 'Small',
+            lg: 'Large'
+          }
+        }
+      }
+    });
+
+    const view = new SectionPaddingsInputView({
+      model: entry.sections.get(1).configuration,
+      entry
+    });
+
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button')).toHaveTextContent('Large');
+    expect(getByRole('button')).not.toHaveTextContent('Motif');
+  });
+
   it('displays Motif prefix for paddingTop when exposeMotifArea is true', () => {
     const entry = createEntry({
-      sections: [{id: 1, configuration: {exposeMotifArea: true, paddingTop: 'lg'}}],
+      imageFiles: [{id: 100, perma_id: 10}],
+      sections: [{id: 1, configuration: {
+        exposeMotifArea: true,
+        paddingTop: 'lg',
+        backdropImage: 10,
+        backdropImageMotifArea: {left: 0, top: 0, width: 50, height: 50}
+      }}],
       themeOptions: {
         properties: {
           root: {
@@ -49,13 +92,60 @@ describe('SectionPaddingsInputView', () => {
     expect(getByRole('button')).toHaveTextContent('Motif/Large');
   });
 
-  it('displays Motif prefix for portraitPaddingTop when exposeMotifArea is true', () => {
+  it('does not display Motif prefix for portraitPaddingTop when portrait motif is not defined', () => {
     const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 10}, {id: 101, perma_id: 11}],
       sections: [{id: 1, configuration: {
         exposeMotifArea: true,
         customPortraitPaddings: true,
         paddingTop: 'sm',
-        portraitPaddingTop: 'lg'
+        portraitPaddingTop: 'lg',
+        backdropImage: 10,
+        backdropImageMotifArea: {left: 0, top: 0, width: 50, height: 50},
+        backdropImageMobile: 11
+      }}],
+      themeOptions: {
+        properties: {
+          root: {
+            'sectionPaddingTop-sm': '10vh',
+            'sectionPaddingTop-lg': '30vh'
+          }
+        }
+      },
+      themeTranslations: {
+        scales: {
+          sectionPaddingTop: {
+            sm: 'Small',
+            lg: 'Large'
+          }
+        }
+      }
+    });
+
+    const view = new SectionPaddingsInputView({
+      model: entry.sections.get(1).configuration,
+      entry
+    });
+
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button')).toHaveTextContent('Motif/Small');
+    expect(getByRole('button')).toHaveTextContent('Large');
+    expect(getByRole('button')).not.toHaveTextContent('Motif/Large');
+  });
+
+  it('displays Motif prefix for portraitPaddingTop when exposeMotifArea is true', () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 10}, {id: 101, perma_id: 11}],
+      sections: [{id: 1, configuration: {
+        exposeMotifArea: true,
+        customPortraitPaddings: true,
+        paddingTop: 'sm',
+        portraitPaddingTop: 'lg',
+        backdropImage: 10,
+        backdropImageMotifArea: {left: 0, top: 0, width: 50, height: 50},
+        backdropImageMobile: 11,
+        backdropImageMobileMotifArea: {left: 0, top: 0, width: 50, height: 50}
       }}],
       themeOptions: {
         properties: {
