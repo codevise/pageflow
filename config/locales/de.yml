@@ -1513,6 +1513,7 @@ de:
 
             Dieser Schritt kann nicht rückgängig gemacht werden.
         edit_configuration:
+          actions: Aktionen
           back: "Zurück"
           confirm_destroy: Wirklich löschen?
           destroy: Löschen

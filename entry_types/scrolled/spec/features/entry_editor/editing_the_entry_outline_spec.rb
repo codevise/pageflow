@@ -17,7 +17,7 @@ RSpec.feature 'as entry editor, editing the entry outline', js: true do
 
     outline.chapter_items.first.edit_link.click
     accept_confirm do
-      Pageflow::Dom::Editor::EditConfigurationView.find!.destroy_button.click
+      Pageflow::Dom::Editor::EditConfigurationView.find!.select_action('Delete chapter')
     end
 
     outline = Dom::Editor::EntryOutline.find!
@@ -39,7 +39,7 @@ RSpec.feature 'as entry editor, editing the entry outline', js: true do
 
     chapter_item.section_items.first.thumbnail.double_click
     accept_confirm do
-      Pageflow::Dom::Editor::EditConfigurationView.find!.destroy_button.click
+      Pageflow::Dom::Editor::EditConfigurationView.find!.select_action('Delete section')
     end
 
     outline = Dom::Editor::EntryOutline.find!

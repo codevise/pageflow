@@ -9,6 +9,7 @@ import {
 
 import {TextInputView} from 'pageflow/ui';
 import {ConfigurationEditor} from '$support/dominos/ui';
+import {DropDownButton} from '$support/dominos/editor';
 import * as support from '$support';
 
 describe('EditConfigurationView', () => {
@@ -117,7 +118,7 @@ describe('EditConfigurationView', () => {
 
     const view = new View({model: new Model()}).render();
     window.confirm = () => true;
-    view.$el.find('.destroy').click();
+    DropDownButton.find(view).selectMenuItemByName('destroy');
 
     expect(customDestroyMethod).toHaveBeenCalled();
     expect(editor.router.navigate).toHaveBeenCalled();
@@ -140,7 +141,7 @@ describe('EditConfigurationView', () => {
 
     const view = new View({model: new Model()}).render();
     window.confirm = () => true;
-    view.$el.find('.destroy').click();
+    DropDownButton.find(view).selectMenuItemByName('destroy');
 
     expect(editor.router.navigate).not.toHaveBeenCalled();
   });
@@ -306,8 +307,56 @@ describe('EditConfigurationView', () => {
     });
   });
 
-  describe('hideDestroyButton', () => {
-    it('shows destroy button by default', () => {
+  describe('actions dropdown', () => {
+    support.useFakeTranslations({
+      pageflow: {
+        editor: {
+          views: {
+            edit_configuration: {
+              actions: 'Actions',
+              confirm_destroy: 'Really delete?',
+              destroy: 'Delete'
+            }
+          }
+        }
+      }
+    });
+
+    it('renders a DropDownButtonView', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+      const dropDownButton = DropDownButton.find(view);
+
+      expect(dropDownButton).toBeDefined();
+    });
+
+    it('renders Delete menu item', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+      const dropDownButton = DropDownButton.find(view);
+
+      expect(dropDownButton.menuItemLabels()).toContain('Delete');
+    });
+
+    it('uses Actions as button label', () => {
       const Model = Backbone.Model.extend({
         mixins: [configurationContainer(), failureTracking]
       });
@@ -320,10 +369,48 @@ describe('EditConfigurationView', () => {
 
       const view = new View({model: new Model()}).render();
 
-      expect(view.$el.find('.destroy')).toHaveLength(1);
+      expect(view.$el.find('.drop_down_button button').text()).toBe('Actions');
     });
 
-    it('hides destroy button when hideDestroyButton is true', () => {
+    it('calls destroyModel when Delete menu item is clicked', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const destroyModel = jest.fn();
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        },
+        destroyModel
+      });
+
+      const view = new View({model: new Model()}).render();
+      window.confirm = () => true;
+      DropDownButton.find(view).selectMenuItemByName('destroy');
+
+      expect(destroyModel).toHaveBeenCalled();
+    });
+  });
+
+  describe('hideDestroyButton', () => {
+    it('shows actions dropdown by default', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(DropDownButton.findAll(view)).toHaveLength(1);
+    });
+
+    it('hides actions dropdown when hideDestroyButton is true', () => {
       const Model = Backbone.Model.extend({
         mixins: [configurationContainer(), failureTracking]
       });
@@ -338,7 +425,7 @@ describe('EditConfigurationView', () => {
 
       const view = new View({model: new Model()}).render();
 
-      expect(view.$el.find('.destroy')).toHaveLength(0);
+      expect(DropDownButton.findAll(view)).toHaveLength(0);
     });
 
     it('supports hideDestroyButton as function', () => {
@@ -359,11 +446,11 @@ describe('EditConfigurationView', () => {
       const viewWithDestroy = new View({model: new Model({preventDestroy: false})}).render();
       const viewWithoutDestroy = new View({model: new Model({preventDestroy: true})}).render();
 
-      expect(viewWithDestroy.$el.find('.destroy')).toHaveLength(1);
-      expect(viewWithoutDestroy.$el.find('.destroy')).toHaveLength(0);
+      expect(DropDownButton.findAll(viewWithDestroy)).toHaveLength(1);
+      expect(DropDownButton.findAll(viewWithoutDestroy)).toHaveLength(0);
     });
 
-    it('does not prevent destroy event handler when button is shown', () => {
+    it('does not prevent destroy event handler when actions dropdown is shown', () => {
       const Model = Backbone.Model.extend({
         mixins: [configurationContainer(), failureTracking],
         destroyWithDelay: jest.fn()
@@ -379,7 +466,7 @@ describe('EditConfigurationView', () => {
 
       const view = new View({model: new Model()}).render();
       window.confirm = () => true;
-      view.$el.find('.destroy').click();
+      DropDownButton.find(view).selectMenuItemByName('destroy');
 
       expect(view.model.destroyWithDelay).toHaveBeenCalled();
     });

@@ -12,7 +12,14 @@
 
   > button.ellipsis_icon {
     @include fa-ellipsis-v-icon;
+  }
+
+  > button.ellipsis_icon.has_icon_only {
     width: var(--drop-down-button-width, 31px);
+  }
+
+  > button.ellipsis_icon.has_icon_and_text::before {
+    margin-right: 9px;
   }
 
   > button.borderless {

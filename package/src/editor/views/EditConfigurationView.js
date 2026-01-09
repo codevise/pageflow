@@ -1,7 +1,9 @@
+import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
+import {DropDownButtonView} from './DropDownButtonView';
 import {failureIndicatingView} from './mixins/failureIndicatingView';
 import {ConfigurationEditorView} from 'pageflow/ui';
 import {editor} from '../base';
@@ -60,7 +62,7 @@ export const EditConfigurationView = Marionette.Layout.extend({
 
   template: ({t, backLabel, hideDestroyButton}) => `
     <a class="back">${backLabel}</a>
-    ${hideDestroyButton ? '' : `<a class="destroy">${t('destroy')}</a>`}
+    ${hideDestroyButton ? '' : '<div class="actions_drop_down_button"></div>'}
 
     <div class="failure">
       <p>${t('save_error')}</p>
@@ -86,8 +88,7 @@ export const EditConfigurationView = Marionette.Layout.extend({
   },
 
   events: {
-    'click a.back': 'goBack',
-    'click a.destroy': 'destroy'
+    'click a.back': 'goBack'
   },
 
   onRender: function() {
@@ -102,6 +103,33 @@ export const EditConfigurationView = Marionette.Layout.extend({
 
     this.configure(this.configurationEditor);
     this.configurationContainer.show(this.configurationEditor);
+
+    this.renderActionsDropDown();
+  },
+
+  renderActionsDropDown() {
+    if (_.result(this, 'hideDestroyButton')) {
+      return;
+    }
+
+    const items = new Backbone.Collection([
+      new DestroyMenuItem({
+        name: 'destroy',
+        label: this.t('destroy')
+      }, {
+        view: this
+      })
+    ]);
+
+    this.$el.find('.actions_drop_down_button').append(
+      this.subview(new DropDownButtonView({
+        items,
+        label: this.t('actions'),
+        ellipsisIcon: true,
+        openOnClick: true,
+        alignMenu: 'right'
+      })).el
+    );
   },
 
   onShow: function() {
@@ -135,5 +163,15 @@ export const EditConfigurationView = Marionette.Layout.extend({
     return I18n.t(`${translationKeyPrefix}.${suffix}`, {
       defaultValue: I18n.t(`pageflow.editor.views.edit_configuration.${suffix}`)
     });
+  }
+});
+
+const DestroyMenuItem = Backbone.Model.extend({
+  initialize(attributes, options) {
+    this.options = options;
+  },
+
+  selected() {
+    this.options.view.destroy();
   }
 });
