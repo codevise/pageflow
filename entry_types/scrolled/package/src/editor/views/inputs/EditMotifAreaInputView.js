@@ -41,6 +41,7 @@ export const EditMotifAreaInputView = Marionette.ItemView.extend({
     this.backdrop = this.model.getBackdrop();
 
     this.listenTo(this.backdrop, 'change:motifArea', this.update);
+    this.listenTo(this.backdrop, 'change:ignoreMissingMotif', this.update);
     this.listenTo(this.backdrop, 'change:type', this.render);
   },
 

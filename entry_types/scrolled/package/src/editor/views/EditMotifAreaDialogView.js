@@ -73,6 +73,10 @@ export const EditMotifAreaDialogView = Marionette.ItemView.extend({
 
     this.model.set(this.getPropertyName(), motifArea);
     this.options.file.configuration.set('motifArea', motifArea);
+
+    if (!motifArea) {
+      this.options.file.configuration.set('ignoreMissingMotif', true);
+    }
   },
 
   onRender() {

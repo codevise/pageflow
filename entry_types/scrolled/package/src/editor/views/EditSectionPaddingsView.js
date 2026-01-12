@@ -98,7 +98,7 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
         toggleExposeMotifAreaInputs(tab, {portrait, disabled, paddingTopProperty});
       }
       else {
-        tab.listenTo(backdropFile, 'change:configuration:ignoreMissingMotif', () => {
+        tab.listenTo(backdrop, 'change:ignoreMissingMotif', () => {
           configurationEditor.refresh();
         });
 

@@ -16,6 +16,15 @@ export const SectionBackdrop = Object.extend({
       'change:backdropType',
       () => this.trigger('change:type')
     );
+
+    this.listenToFiles();
+    this.listenTo(
+      configuration,
+      'change:backdropType ' +
+      'change:backdropImage change:backdropImageMobile ' +
+      'change:backdropVideo change:backdropVideoMobile',
+      this.listenToFiles
+    );
   },
 
   getMotifAreaStatus({portrait} = {}) {
@@ -67,6 +76,27 @@ export const SectionBackdrop = Object.extend({
     }
     else {
       return backdropType === 'video' ? 'backdropVideoMotifArea' : 'backdropImageMotifArea';
+    }
+  },
+
+  listenToFiles() {
+    this.listenToFile('currentFile', {portrait: false});
+    this.listenToFile('currentPortraitFile', {portrait: true});
+  },
+
+  listenToFile(property, options) {
+    if (this[property]) {
+      this.stopListening(this[property].configuration);
+    }
+
+    this[property] = this.getFile(options);
+
+    if (this[property]) {
+      this.listenTo(
+        this[property].configuration,
+        'change:ignoreMissingMotif',
+        () => this.trigger('change:ignoreMissingMotif')
+      );
     }
   }
 });

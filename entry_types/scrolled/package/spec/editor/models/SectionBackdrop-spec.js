@@ -247,5 +247,136 @@ describe('SectionBackdrop', () => {
 
       expect(listener).toHaveBeenCalled();
     });
+
+  });
+
+  describe('change:ignoreMissingMotif event', () => {
+    it('is triggered when ignoreMissingMotif changes on backdrop image file', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+      const backdrop = entry.sections.get(1).configuration.getBackdrop();
+      const file = entry.getFileCollection('image_files').get(100);
+      const listener = jest.fn();
+
+      backdrop.on('change:ignoreMissingMotif', listener);
+      file.configuration.set('ignoreMissingMotif', true);
+
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('is triggered when ignoreMissingMotif changes on backdrop image mobile file', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImageMobile: 10}}]
+      });
+      const backdrop = entry.sections.get(1).configuration.getBackdrop();
+      const file = entry.getFileCollection('image_files').get(100);
+      const listener = jest.fn();
+
+      backdrop.on('change:ignoreMissingMotif', listener);
+      file.configuration.set('ignoreMissingMotif', true);
+
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('is triggered when ignoreMissingMotif changes on new backdrop image file', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}, {id: 101, perma_id: 11}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+      const backdrop = entry.sections.get(1).configuration.getBackdrop();
+      const newFile = entry.getFileCollection('image_files').get(101);
+      const listener = jest.fn();
+
+      entry.sections.get(1).configuration.set('backdropImage', 11);
+      backdrop.on('change:ignoreMissingMotif', listener);
+      newFile.configuration.set('ignoreMissingMotif', true);
+
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('is not triggered when ignoreMissingMotif changes on old backdrop image file', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}, {id: 101, perma_id: 11}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+      const backdrop = entry.sections.get(1).configuration.getBackdrop();
+      const oldFile = entry.getFileCollection('image_files').get(100);
+      const listener = jest.fn();
+
+      entry.sections.get(1).configuration.set('backdropImage', 11);
+      backdrop.on('change:ignoreMissingMotif', listener);
+      oldFile.configuration.set('ignoreMissingMotif', true);
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it('is triggered when ignoreMissingMotif changes on new backdrop image mobile file', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}, {id: 101, perma_id: 11}],
+        sections: [{id: 1, configuration: {backdropImageMobile: 10}}]
+      });
+      const backdrop = entry.sections.get(1).configuration.getBackdrop();
+      const newFile = entry.getFileCollection('image_files').get(101);
+      const listener = jest.fn();
+
+      entry.sections.get(1).configuration.set('backdropImageMobile', 11);
+      backdrop.on('change:ignoreMissingMotif', listener);
+      newFile.configuration.set('ignoreMissingMotif', true);
+
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('is not triggered when ignoreMissingMotif changes on old backdrop image mobile file', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}, {id: 101, perma_id: 11}],
+        sections: [{id: 1, configuration: {backdropImageMobile: 10}}]
+      });
+      const backdrop = entry.sections.get(1).configuration.getBackdrop();
+      const oldFile = entry.getFileCollection('image_files').get(100);
+      const listener = jest.fn();
+
+      entry.sections.get(1).configuration.set('backdropImageMobile', 11);
+      backdrop.on('change:ignoreMissingMotif', listener);
+      oldFile.configuration.set('ignoreMissingMotif', true);
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it('is triggered when ignoreMissingMotif changes on video file after switching to video backdrop', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        videoFiles: [{id: 200, perma_id: 20}],
+        sections: [{id: 1, configuration: {backdropImage: 10, backdropVideo: 20}}]
+      });
+      const backdrop = entry.sections.get(1).configuration.getBackdrop();
+      const videoFile = entry.getFileCollection('video_files').get(200);
+      const listener = jest.fn();
+
+      entry.sections.get(1).configuration.set('backdropType', 'video');
+      backdrop.on('change:ignoreMissingMotif', listener);
+      videoFile.configuration.set('ignoreMissingMotif', true);
+
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('is not triggered when ignoreMissingMotif changes on image file after switching to video backdrop', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        videoFiles: [{id: 200, perma_id: 20}],
+        sections: [{id: 1, configuration: {backdropImage: 10, backdropVideo: 20}}]
+      });
+      const backdrop = entry.sections.get(1).configuration.getBackdrop();
+      const imageFile = entry.getFileCollection('image_files').get(100);
+      const listener = jest.fn();
+
+      entry.sections.get(1).configuration.set('backdropType', 'video');
+      backdrop.on('change:ignoreMissingMotif', listener);
+      imageFile.configuration.set('ignoreMissingMotif', true);
+
+      expect(listener).not.toHaveBeenCalled();
+    });
   });
 });
