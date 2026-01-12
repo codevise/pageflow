@@ -153,6 +153,38 @@ describe('EditMotifAreaDialogView', () => {
     expect(model.get('imageMotifArea')).toBe(null);
     expect(file.configuration.get('motifArea')).toBe(null);
   });
+
+  it('sets ignoreMissingMotif on file when resetting motif area', () => {
+    const model = new Backbone.Model({
+      imageMotifArea: {
+        left: 5, top: 10, width: 25, height: 50
+      }
+    });
+    const file = factories.imageFile({
+      width: 200,
+      height: 100,
+      configuration: {
+        motifArea: {
+          left: 5, top: 10, width: 25, height: 50
+        }
+      }
+    });
+
+    const view = new EditMotifAreaDialogView({
+      model,
+      file,
+      propertyName: 'image'
+    });
+
+    view.render();
+    view.onShow();
+
+    fireEvent.click(getByText(view.el, 'Reset'));
+    fireEvent.click(getByText(view.el, 'Save'));
+
+    expect(file.configuration.get('ignoreMissingMotif')).toBe(true);
+  });
+
 });
 
 function fakeImgAreaSelect() {
