@@ -465,6 +465,27 @@ describe('EditMotifAreaInputView', () => {
 
       expect(view.el).toHaveClass(styles.hidden);
     });
+
+    it('adds hidden class when ignoreMissingMotif is set externally on file', () => {
+      const entry = createEntry({
+        imageFiles: [{id: 100, perma_id: 10}],
+        sections: [{id: 1, configuration: {backdropImage: 10}}]
+      });
+      const file = entry.getFileCollection('image_files').get(100);
+
+      const view = new EditMotifAreaInputView({
+        model: entry.sections.get(1).configuration,
+        onlyShowWhenMissing: true
+      });
+
+      renderBackboneView(view);
+
+      expect(view.el).not.toHaveClass(styles.hidden);
+
+      file.configuration.set('ignoreMissingMotif', true);
+
+      expect(view.el).toHaveClass(styles.hidden);
+    });
   });
 
   describe('with required option', () => {
