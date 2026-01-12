@@ -32,6 +32,33 @@ describe('Chapter', () => {
       expect(section.configuration.get('transition')).toEqual('beforeAfter');
     });
 
+    it('uses default paddingTop from entry metadata configuration', () => {
+      const {entry} = testContext;
+
+      entry.metadata.configuration.set('defaultSectionPaddingTop', 'lg');
+      const section = entry.chapters.first().addSection();
+
+      expect(section.configuration.get('paddingTop')).toEqual('lg');
+    });
+
+    it('uses default paddingBottom from entry metadata configuration', () => {
+      const {entry} = testContext;
+
+      entry.metadata.configuration.set('defaultSectionPaddingBottom', 'sm');
+      const section = entry.chapters.first().addSection();
+
+      expect(section.configuration.get('paddingBottom')).toEqual('sm');
+    });
+
+    it('uses default layout from entry metadata configuration', () => {
+      const {entry} = testContext;
+
+      entry.metadata.configuration.set('defaultSectionLayout', 'right');
+      const section = entry.chapters.first().addSection();
+
+      expect(section.configuration.get('layout')).toEqual('right');
+    });
+
     it('handles sparse positions correctly', () => {
       const {entry} = testContext;
 
@@ -224,6 +251,16 @@ describe('Chapter', () => {
 
       expect(requests.length).toEqual(2);
       expect(requests[1].url).toBe('/editor/entries/1/scrolled/sections/102');
+    });
+
+    it('does not apply default configuration', () => {
+      const {entry} = testContext;
+      entry.metadata.configuration.set('defaultSectionLayout', 'right');
+
+      const chapter = entry.chapters.first();
+      const section = chapter.duplicateSection(chapter.sections.first());
+
+      expect(section.configuration.get('layout')).toBeUndefined();
     });
   });
 

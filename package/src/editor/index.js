@@ -131,6 +131,7 @@ export * from './views/inputs/ReferenceInputView';
 export * from './views/inputs/ThemeInputView';
 export * from './views/inputs/FileInputView';
 export * from './views/inputs/OembedUrlInputView';
+export * from './views/inputs/EditDefaultsInputView';
 export * from './views/EditEntryView';
 export * from './views/TextTracksView';
 export * from './views/FileThumbnailView';

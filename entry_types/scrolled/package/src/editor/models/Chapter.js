@@ -48,15 +48,20 @@ export const Chapter = Backbone.Model.extend({
     return !this.storyline.isMain();
   },
 
-  addSection(attributes, options) {
+  addSection(attributes, options = {}) {
+    const defaultConfiguration = options.skipDefaults ? {} : {
+      transition: this.entry.metadata.configuration.get('defaultTransition'),
+      layout: this.entry.metadata.configuration.get('defaultSectionLayout'),
+      paddingTop: this.entry.metadata.configuration.get('defaultSectionPaddingTop'),
+      paddingBottom: this.entry.metadata.configuration.get('defaultSectionPaddingBottom')
+    };
+
     const section = this.sections.create(
       new Section(
         {
           position: this.sections.length ? Math.max(...this.sections.pluck('position')) + 1 : 0,
           chapterId: this.id,
-          configuration: {
-            transition: this.entry.metadata.configuration.get('defaultTransition')
-          },
+          configuration: defaultConfiguration,
           ...attributes
         },
         {
@@ -95,6 +100,7 @@ export const Chapter = Backbone.Model.extend({
   duplicateSection(section) {
     const newSection = this.insertSection({after: section}, {
       url: `${section.url()}/duplicate`,
+      skipDefaults: true
     });
 
     return newSection;

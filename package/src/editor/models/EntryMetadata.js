@@ -1,8 +1,11 @@
 import _ from 'underscore';
 import {Configuration} from './Configuration';
 import {EntryMetadataConfiguration} from './EntryMetadataConfiguration';
+import {failureTracking} from './mixins/failureTracking';
 
 export const EntryMetadata = Configuration.extend({
+  mixins: [failureTracking],
+
   modelName: 'entry',
   i18nKey: 'pageflow/entry',
 

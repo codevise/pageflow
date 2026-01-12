@@ -226,4 +226,40 @@ describe('EditMetaDataView', () => {
       'structured_data_type_name'
     ]));
   });
+
+  it('renders edit defaults button on widgets tab when entry type has editDefaultsView', () => {
+    const entry = factories.entry();
+    editor.registerEntryType('test', {
+      editDefaultsView: function() {}
+    });
+    const view = new EditMetaDataView({
+      model: entry,
+      tab: 'widgets',
+      state: {
+        config: {}
+      },
+      editor: editor
+    });
+
+    view.render();
+
+    expect(view.$el).toHaveDescendant('.edit_defaults_button');
+  });
+
+  it('does not render edit defaults button when entry type has no editDefaultsView', () => {
+    const entry = factories.entry();
+    editor.registerEntryType('test', {});
+    const view = new EditMetaDataView({
+      model: entry,
+      tab: 'widgets',
+      state: {
+        config: {}
+      },
+      editor: editor
+    });
+
+    view.render();
+
+    expect(view.$el).not.toHaveDescendant('.edit_defaults_button');
+  });
 });

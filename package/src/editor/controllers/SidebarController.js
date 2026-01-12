@@ -86,4 +86,16 @@ export const SidebarController = Marionette.Controller.extend({
 
     this.entry.trigger('selectWidget', model);
   },
+
+  defaults: function() {
+    const EditDefaultsView = editor.entryType.editDefaultsView;
+
+    if (EditDefaultsView) {
+      this.region.show(new EditDefaultsView({
+        model: this.entry.metadata,
+        entry: this.entry,
+        editor
+      }));
+    }
+  },
 });

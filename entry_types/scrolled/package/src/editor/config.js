@@ -3,6 +3,7 @@ import {editor} from './api';
 import {ScrolledEntry} from './models/ScrolledEntry';
 import {ContentElementFileSelectionHandler} from './models/ContentElementFileSelectionHandler';
 
+import {EditDefaultsView} from './views/EditDefaultsView';
 import {EntryOutlineView} from './views/EntryOutlineView';
 import {EntryPreviewView} from './views/EntryPreviewView';
 
@@ -32,6 +33,7 @@ editor.registerEntryType('scrolled', {
     });
   },
   outlineView: EntryOutlineView,
+  editDefaultsView: EditDefaultsView,
 
   appearanceInputs(tabView) {
     tabView.input('darkWidgets', CheckBoxInputView);
