@@ -1309,6 +1309,28 @@ de:
         add: Neues Element
         unset: Nicht mehr als Hintergrund verwenden
       scales:
+        sectionPaddingTop:
+          none: "-"
+          xxxs: XXXS
+          xxs: XXS
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+          xxl: XXL
+          xxxl: XXXL
+        sectionPaddingBottom:
+          none: "-"
+          xxxs: XXXS
+          xxs: XXS
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+          xxl: XXL
+          xxxl: XXXL
         contentElementBoxBorderRadius:
           none: Keine
       content_element_text_inline_file_rights_attributes:
@@ -1672,6 +1694,8 @@ de:
       cancel: Abbrechen
       default_padding: Standard
       drag_content_element: Ziehen, um Element zu verschieben
+      padding_suppressed_before_full_width: Abstand unterdrückt vor vollbreitem Element
+      padding_suppressed_after_full_width: Abstand unterdrückt nach vollbreitem Element
       edit_section_transition_after: Übergangseffekt bearbeiten
       edit_section_transition_before: Übergangseffekt bearbeiten
       flip_card: Karte wenden

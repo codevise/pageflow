@@ -34,7 +34,7 @@ export function Center(props) {
                                                {[styles[`sideBySide`]]: sideBySideFloat(props.items, index)})}>
                       {child}
                     </div>,
-                    boxProps(props.items, item, index)
+                    boxProps(props.items, item, index, props.isContentPadded)
                   )}
                 </div>
               </div>
@@ -58,7 +58,7 @@ function outerClassName(items, index) {
   );
 }
 
-function boxProps(items, item, index) {
+function boxProps(items, item, index, isContentPadded) {
   const previous = items[index - 1];
   const next = items[index + 1];
   const customMargin = hasCustomMargin(item);
@@ -76,7 +76,9 @@ function boxProps(items, item, index) {
     openEnd: next &&
              !customMargin &&
              !hasCustomMargin(next) &&
-             !isWideOrFull(item) && !isWideOrFull(next)
+             !isWideOrFull(item) && !isWideOrFull(next),
+    atSectionStart: index === 0 && !isContentPadded,
+    atSectionEnd: index === items.length - 1
   }
 }
 

@@ -10,7 +10,8 @@
   flex-direction: column;
   justify-content: center;
 
-  padding-top: var(--foreground-padding-top);
+  padding-top: calc(var(--foreground-widget-padding-top) + var(--foreground-padding-top));
+  padding-bottom: var(--foreground-padding-bottom);
 }
 
 .fullFadeHeight {
@@ -29,8 +30,16 @@
   justify-content: flex-start;
 }
 
-.paddingBottom {
-  padding-bottom: var(--foreground-padding-bottom, 3em);
+.suppressedPaddingTop {
+  --foreground-padding-top: 0px;
+}
+
+.suppressedPaddingBottom {
+  --foreground-padding-bottom: 0px;
+}
+
+.forcePadding {
+  padding-bottom: max(var(--foreground-padding-bottom, 0px), 3em);
 }
 
 @media print {

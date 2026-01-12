@@ -1,14 +1,22 @@
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects';
+import {act} from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
 
+import {features} from 'pageflow/frontend';
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
+import {useMotifAreaState} from 'frontend/v1/useMotifAreaState';
 jest.mock('frontend/usePortraitOrientation');
+jest.mock('frontend/v1/useMotifAreaState');
 
 describe('section padding', () => {
+  beforeEach(() => {
+    features.enable('frontend', ['section_paddings']);
+  });
+
   useInlineEditingPageObjects();
 
-  it('adds padding to bottom of section by default', () => {
+  it('does not suppress top padding by default', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: {
         sections: [{id: 5, permaId: 6}],
@@ -16,10 +24,21 @@ describe('section padding', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasBottomPadding()).toBe(true);
+    expect(getSectionByPermaId(6).hasSuppressedTopPadding()).toBe(false);
   });
 
-  it('does not add padding to bottom of section if last content element is full width', () => {
+  it('does not suppress bottom padding by default', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).hasSuppressedBottomPadding()).toBe(false);
+  });
+
+  it('suppresses top padding if first content element is full width', () => {
     const {getSectionByPermaId} = renderEntry({
       seed: {
         sections: [{id: 5, permaId: 6}],
@@ -27,38 +46,107 @@ describe('section padding', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasBottomPadding()).toBe(false);
+    expect(getSectionByPermaId(6).hasSuppressedTopPadding()).toBe(true);
   });
 
-  it('adds padding below full width element if section is selected', () => {
+  it('suppresses top padding if motif area is content padded', () => {
+    useMotifAreaState.mockContentPadded();
+
     const {getSectionByPermaId} = renderEntry({
       seed: {
         sections: [{id: 5, permaId: 6}],
-        contentElements: [{sectionId: 5, configuration: {position: 'full'}}]
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).hasSuppressedTopPadding()).toBe(true);
+  });
+
+  it('does not suppress first box top margin if motif area becomes content padded', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).hasFirstBoxSuppressedTopMargin()).toBe(true);
+
+    act(() => useMotifAreaState.mockContentPadded());
+
+    expect(getSectionByPermaId(6).hasFirstBoxSuppressedTopMargin()).toBe(false);
+  });
+
+  it('suppresses bottom padding if last content element is full width', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5, configuration: {width: 3}}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).hasSuppressedBottomPadding()).toBe(true);
+  });
+
+  it('forces padding below full width element if section is selected', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5, configuration: {width: 3}}]
       }
     });
 
     const section = getSectionByPermaId(6);
     section.select();
 
-    expect(section.hasBottomPadding()).toBe(true);
+    expect(section.hasForcedPadding()).toBe(true);
   });
 
-  it('adds padding below full width element if element is selected', () => {
+  it('forces padding below full width element if element is selected', () => {
     const {getSectionByPermaId, getContentElementByTestId} = renderEntry({
       seed: {
         sections: [{id: 5, permaId: 6}],
         contentElements: [{
           sectionId: 5,
           typeName: 'withTestId',
-          configuration: {testId: 10, position: 'full'}
+          configuration: {testId: 10, width: 3}
         }]
       }
     });
 
     getContentElementByTestId(10).select();
 
-    expect(getSectionByPermaId(6).hasBottomPadding()).toBe(true);
+    expect(getSectionByPermaId(6).hasForcedPadding()).toBe(true);
+  });
+
+  it('does not force padding if padding is selected', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5, configuration: {width: 3}}]
+      }
+    });
+
+    const section = getSectionByPermaId(6);
+    section.selectPadding('bottom');
+
+    expect(section.hasForcedPadding()).toBe(false);
+  });
+
+  it('does not set inline padding styles when no paddingTop/paddingBottom set', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).el).not.toHaveStyle({
+      '--foreground-padding-top': expect.anything(),
+    });
+    expect(getSectionByPermaId(6).el).not.toHaveStyle({
+      '--foreground-padding-bottom': expect.anything(),
+    });
   });
 
   it('supports setting custom foreground padding', () => {
@@ -87,6 +175,7 @@ describe('section padding', () => {
 
     const {getSectionByPermaId} = renderEntry({
       seed: {
+        imageFiles: [{id: 100, permaId: 100}],
         sections: [{
           id: 5,
           permaId: 6,
@@ -94,7 +183,8 @@ describe('section padding', () => {
             paddingTop: 'lg',
             paddingBottom: 'md',
             portraitPaddingTop: 'sm',
-            portraitPaddingBottom: 'xs'
+            portraitPaddingBottom: 'xs',
+            backdrop: {image: 100, imageMobile: 100}
           }
         }],
         contentElements: [{sectionId: 5}]
@@ -118,6 +208,61 @@ describe('section padding', () => {
           configuration: {
             paddingTop: 'lg',
             paddingBottom: 'md'
+          }
+        }],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).el).toHaveStyle({
+      '--foreground-padding-top': 'var(--theme-section-padding-top-lg)',
+      '--foreground-padding-bottom': 'var(--theme-section-padding-bottom-md)',
+    });
+  });
+
+  it('ignores portrait paddings if customPortraitPaddings is false', () => {
+    usePortraitOrientation.mockReturnValue(true);
+
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        imageFiles: [{id: 100, permaId: 100}],
+        sections: [{
+          id: 5,
+          permaId: 6,
+          configuration: {
+            paddingTop: 'lg',
+            paddingBottom: 'md',
+            portraitPaddingTop: 'sm',
+            portraitPaddingBottom: 'xs',
+            customPortraitPaddings: false,
+            backdrop: {image: 100, imageMobile: 100}
+          }
+        }],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).el).toHaveStyle({
+      '--foreground-padding-top': 'var(--theme-section-padding-top-lg)',
+      '--foreground-padding-bottom': 'var(--theme-section-padding-bottom-md)',
+    });
+  });
+
+  it('ignores portrait paddings if no mobile backdrop is assigned', () => {
+    usePortraitOrientation.mockReturnValue(true);
+
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        imageFiles: [{id: 100, permaId: 100}],
+        sections: [{
+          id: 5,
+          permaId: 6,
+          configuration: {
+            paddingTop: 'lg',
+            paddingBottom: 'md',
+            portraitPaddingTop: 'sm',
+            portraitPaddingBottom: 'xs',
+            backdrop: {image: 100}
           }
         }],
         contentElements: [{sectionId: 5}]

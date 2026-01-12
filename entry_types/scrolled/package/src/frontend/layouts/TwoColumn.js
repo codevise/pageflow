@@ -51,18 +51,21 @@ TwoColumn.GroupComponent = 'div';
 TwoColumn.contentAreaProbeProps = {};
 
 function renderItems(props, shouldInline) {
-  return groupItemsByPosition(props.items, shouldInline).map((group, index) =>
-    <TwoColumn.GroupComponent key={index}
+  const groups = groupItemsByPosition(props.items, shouldInline, props.isContentPadded);
+
+  return groups.map((group, groupIndex) =>
+    <TwoColumn.GroupComponent key={groupIndex}
                               className={classNames(styles.group,
                                                     styles[`group-${widthName(group.width)}`])}>
-      {group.boxes.map((box, index) => renderItemGroup(props, box, index))}
+      {group.boxes.map((box, boxIndex) =>
+        renderItemGroup(props, box, boxIndex)
+      )}
     </TwoColumn.GroupComponent>
   );
 }
 
 function renderItemGroup(props, box, key) {
   if (box.items.length) {
-
     return (
       <div key={key} className={classNames(styles.box,
                                            styles[box.position],
@@ -79,7 +82,9 @@ function renderItemGroup(props, box, key) {
             width: box.width,
             customMargin: box.customMargin,
             openStart: box.openStart,
-            openEnd: box.openEnd
+            openEnd: box.openEnd,
+            atSectionStart: box.atSectionStart,
+            atSectionEnd: box.atSectionEnd
           }
         )}
       </div>
@@ -101,10 +106,11 @@ function RestrictWidth({width, alignment, children}) {
   }
 }
 
-function groupItemsByPosition(items, shouldInline) {
+function groupItemsByPosition(items, shouldInline, isContentPadded) {
   const groups = [];
 
   let lastInlineBox = null;
+  let firstInlineBox = null;
   let currentGroup, currentBox;
 
   items.reduce((previousPosition, item, index) => {
@@ -161,12 +167,21 @@ function groupItemsByPosition(items, shouldInline) {
         lastInlineBox = null;
       }
 
+      if (position === 'inline' && !firstInlineBox) {
+        currentBox.atSectionStart = !isContentPadded;
+        firstInlineBox = currentBox;
+      }
+
       currentGroup.boxes.push(currentBox)
     }
 
     currentBox.items.push(item);
     return position;
   }, null);
+
+  if (currentBox) {
+    currentBox.atSectionEnd = true;
+  }
 
   return groups;
 }

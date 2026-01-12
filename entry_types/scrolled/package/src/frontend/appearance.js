@@ -24,6 +24,16 @@ const components = {
   }
 };
 
+const sectionScopeNames = {
+  shadow: 'shadowAppearanceSection',
+  transparent: 'transparentAppearanceSection',
+  cards: 'cardsAppearanceSection'
+};
+
 export function getAppearanceComponents(appearance) {
   return components[appearance || 'shadow']
+}
+
+export function getAppearanceSectionScopeName(appearance) {
+  return sectionScopeNames[appearance || 'shadow'];
 }

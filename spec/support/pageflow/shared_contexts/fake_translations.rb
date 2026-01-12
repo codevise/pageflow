@@ -4,6 +4,7 @@ RSpec.shared_context 'fake translations' do
     @fake_i18n_backend = I18n::Backend::Simple.new
 
     I18n.backend = @fake_i18n_backend
+    @fake_i18n_backend.send(:init_translations)
     example.run
     I18n.backend = i18n_backend_backup
   end

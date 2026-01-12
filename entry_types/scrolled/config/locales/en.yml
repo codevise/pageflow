@@ -1293,6 +1293,28 @@ en:
         add: New element
         unset: No longer use as backdrop
       scales:
+        sectionPaddingTop:
+          none: "-"
+          xxxs: XXXS
+          xxs: XXS
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+          xxl: XXL
+          xxxl: XXXL
+        sectionPaddingBottom:
+          none: "-"
+          xxxs: XXXS
+          xxs: XXS
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+          xxl: XXL
+          xxxl: XXXL
         contentElementBoxBorderRadius:
           none: None
       content_element_text_inline_file_rights_attributes:
@@ -1502,6 +1524,8 @@ en:
       cancel: Cancel
       default_padding: Default
       drag_content_element: Drag to move element
+      padding_suppressed_before_full_width: Padding suppressed before full width element
+      padding_suppressed_after_full_width: Padding suppressed after full width element
       edit_section_transition_after: Edit section transition
       edit_section_transition_before: Edit section transition
       flip_card: Flip card

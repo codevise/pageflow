@@ -1,17 +1,13 @@
-import {usePortraitOrientation} from './usePortraitOrientation';
-
-export function useSectionPadding(section) {
-  const portrait = usePortraitOrientation({
-    active: section.portraitPaddingTop ||
-            section.portraitPaddingBottom
-  });
+export function useSectionPadding(section, {portrait} = {}) {
+  const usePortraitPaddings =
+    section.customPortraitPaddings !== false && portrait;
 
   const paddingTop =
-    portrait && section.portraitPaddingTop ?
+    usePortraitPaddings && section.portraitPaddingTop ?
     section.portraitPaddingTop : section.paddingTop;
 
   const paddingBottom =
-    portrait && section.portraitPaddingBottom  ?
+    usePortraitPaddings && section.portraitPaddingBottom ?
     section.portraitPaddingBottom : section.paddingBottom;
 
   const styles = {};

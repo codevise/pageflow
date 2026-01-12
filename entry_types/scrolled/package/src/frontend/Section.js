@@ -22,13 +22,13 @@ import {BackgroundColorProvider} from './backgroundColor';
 import {SelectableWidget} from './SelectableWidget';
 import {useSectionPadding} from './useSectionPaddingCustomProperties';
 import {SectionIntersectionProbe} from './SectionIntersectionObserver';
+import {getAppearanceComponents, getAppearanceSectionScopeName} from './appearance';
 
 import * as v1 from './v1';
 import * as v2 from './v2';
 
 import styles from './Section.module.css';
 import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
-import {getAppearanceComponents} from './appearance';
 
 const Section = withInlineEditingDecorator('SectionDecorator', function Section({
   section, transitions, backdrop, contentElements, state, onActivate, domIdPrefix
@@ -54,7 +54,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
     propertyName: 'atmoAudioFileId'
   });
 
-  const sectionPadding = useSectionPadding(section);
+  const sectionPadding = useSectionPadding(section, {portrait: backdrop.portrait});
 
   return (
     <section id={`${domIdPrefix}-${section.permaId}`}
@@ -64,6 +64,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                                    backdropSectionClassNames,
                                    {[styles.first]: section.sectionIndex === 0},
                                    {[styles.narrow]: section.width === 'narrow'},
+                                   `scope-${getAppearanceSectionScopeName(section.appearance)}`,
                                    section.invert ? styles.darkContent : styles.lightContent)}
              style={{
                ...useBackdropSectionCustomProperties(backdrop),
@@ -162,7 +163,7 @@ function SectionContents({
                   motifAreaState={motifAreaState}
                   sectionPadding={sectionPadding}
                   minHeight={motifAreaState.minHeight}
-                  paddingBottom={!endsWithFullWidthElement(contentElements)}
+                  suppressedPaddings={getSuppressedPaddings(contentElements, motifAreaState)}
                   heightMode={heightMode(section)}>
         <Box inverted={section.invert}
              coverInvisibleNextSection={exitTransition.startsWith('fade')}
@@ -174,7 +175,8 @@ function SectionContents({
                   items={contentElements}
                   appearance={section.appearance}
                   contentAreaRef={setContentAreaRef}
-                  sectionProps={sectionProperties}>
+                  sectionProps={sectionProperties}
+                  isContentPadded={motifAreaState.isContentPadded}>
             {(children, boxProps) =>
               <BoxWrapper {...boxProps}
                           cardSurfaceColor={section.cardSurfaceColor}
@@ -225,11 +227,17 @@ function heightMode(section) {
   return 'dynamic';
 }
 
-function endsWithFullWidthElement(elements) {
-  const lastElement = elements[elements.length - 1];
-  return lastElement &&
-         lastElement.position === 'inline' &&
-         lastElement.width === contentElementWidths.full;
+function getSuppressedPaddings(contentElements, motifAreaState) {
+  return {
+    top: isFullWidthElement(contentElements[0]) || motifAreaState.isContentPadded,
+    bottom: isFullWidthElement(contentElements[contentElements.length - 1])
+  };
+}
+
+function isFullWidthElement(element) {
+  return element &&
+         element.position === 'inline' &&
+         element.width === contentElementWidths.full;
 }
 
 function percentToFraction(value, {defaultValue}) {

@@ -5,6 +5,7 @@ import {widths} from '../layouts';
 import {BackgroundColorProvider} from '../backgroundColor';
 
 import styles from "./CardBoxWrapper.module.css";
+import boundaryMarginStyles from "./BoxBoundaryMargin.module.css";
 
 export default function CardBoxWrapper(props) {
   if (outsideBox(props)) {
@@ -34,6 +35,8 @@ function className(props) {
     styles[`selfClear-${props.selfClear}`],
     {[styles.blur]: props.cardSurfaceTransparency > 0},
     {[styles.cardStart]: !props.openStart},
-    {[styles.cardEnd]: !props.openEnd}
+    {[styles.cardEnd]: !props.openEnd},
+    {[boundaryMarginStyles.noTopMargin]: props.atSectionStart},
+    {[boundaryMarginStyles.noBottomMargin]: props.atSectionEnd}
   );
 }

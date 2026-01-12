@@ -14,7 +14,8 @@ export const Layout = React.memo(
     prevProps.items === nextProps.items &&
     prevProps.appearance === nextProps.appearance &&
     prevProps.contentAreaRef === nextProps.contentAreaRef &&
-    prevProps.sectionProps === nextProps.sectionProps
+    prevProps.sectionProps === nextProps.sectionProps &&
+    prevProps.isContentPadded === nextProps.isContentPadded
   )
 );
 

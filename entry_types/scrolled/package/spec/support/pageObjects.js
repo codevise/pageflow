@@ -10,6 +10,7 @@ import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.
 import fitViewportStyles from 'frontend/FitViewport.module.css';
 import centerLayoutStyles from 'frontend/layouts/Center.module.css';
 import twoColumnLayoutStyles from 'frontend/layouts/TwoColumn.module.css';
+import boxBoundaryMarginStyles from 'frontend/foregroundBoxes/BoxBoundaryMargin.module.css';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 import {api} from 'frontend/api';
@@ -79,7 +80,9 @@ export function useInlineEditingPageObjects() {
     'pageflow_scrolled.inline_editing.edit_section_padding_top': 'Edit top padding',
     'pageflow_scrolled.inline_editing.edit_section_padding_bottom': 'Edit bottom padding',
     'pageflow_scrolled.inline_editing.expose_motif_area': 'Expose motif area',
-    'pageflow_scrolled.inline_editing.default_padding': 'Default'
+    'pageflow_scrolled.inline_editing.default_padding': 'Default',
+    'pageflow_scrolled.inline_editing.padding_suppressed_before_full_width': 'Padding suppressed before full width element',
+    'pageflow_scrolled.inline_editing.padding_suppressed_after_full_width': 'Padding suppressed after full width element'
   });
 
   usePageObjects();
@@ -196,8 +199,16 @@ function createSectionPageObject(el) {
       fireEvent.mouseDown(getByTitle('Edit section transition after'));
     },
 
-    hasBottomPadding() {
-      return foreground.classList.contains(foregroundStyles.paddingBottom);
+    hasSuppressedTopPadding() {
+      return foreground.classList.contains(foregroundStyles.suppressedPaddingTop);
+    },
+
+    hasSuppressedBottomPadding() {
+      return foreground.classList.contains(foregroundStyles.suppressedPaddingBottom);
+    },
+
+    hasForcedPadding() {
+      return foreground.classList.contains(foregroundStyles.forcePadding);
     },
 
     hasRemainingSpaceAbove() {
@@ -219,6 +230,16 @@ function createSectionPageObject(el) {
         bottom: 'Edit bottom padding'
       };
       return getByLabelText(labels[position]);
+    },
+
+    selectPadding(position) {
+      fireEvent.mouseDown(selectionRect);
+      fireEvent.click(this.getPaddingIndicator(position));
+    },
+
+    hasFirstBoxSuppressedTopMargin() {
+      const firstBox = foreground.querySelector(`.${boxBoundaryMarginStyles.noTopMargin}`);
+      return !!firstBox;
     }
   }
 }
@@ -248,6 +269,16 @@ function createContentElementPageObject(el) {
 
     hasMargin() {
       return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
+    },
+
+    hasTopMargin() {
+      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
+      return wrapper && !wrapper.classList.contains(contentElementMarginStyles.noTopMargin);
+    },
+
+    getMarginTop() {
+      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
+      return wrapper && wrapper.style.marginTop;
     },
 
     hasScrollSpace() {

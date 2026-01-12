@@ -1,28 +1,41 @@
-let currentState = {};
+import {useState, useCallback} from 'react';
+
+let initialState = {};
+let setStateRef = null;
 
 export function useMotifAreaState() {
+  const [overrides, setOverrides] = useState(initialState);
+  setStateRef = setOverrides;
+
   const state = {
     paddingTop: 0,
     isContentPadded: false,
     minHeight: undefined,
     intersectionRatioY: 0,
     isMotifIntersected: false,
-    ...currentState
+    ...overrides
   };
 
-  const setMotifAreaRef = () => {};
-  const setContentAreaRef = () => {};
+  const setMotifAreaRef = useCallback(() => {}, []);
+  const setContentAreaRef = useCallback(() => {}, []);
 
   return [state, setMotifAreaRef, setContentAreaRef];
 }
 
 beforeEach(() => {
-  currentState = {};
+  initialState = {};
+  setStateRef = null;
 });
 
 useMotifAreaState.mockContentPadded = function() {
-  currentState = {
+  const state = {
     paddingTop: 100,
     isContentPadded: true
   };
+
+  if (setStateRef) {
+    setStateRef(state);
+  } else {
+    initialState = state;
+  }
 };

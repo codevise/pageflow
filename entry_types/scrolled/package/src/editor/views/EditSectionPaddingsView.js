@@ -3,6 +3,7 @@ import I18n from 'i18n-js';
 import {EditConfigurationView, SeparatorView} from 'pageflow/editor';
 import {SliderInputView, RadioButtonGroupInputView, CheckBoxInputView, SelectInputView} from 'pageflow/ui';
 
+import {getAppearanceSectionScopeName} from 'pageflow-scrolled/frontend';
 import {SectionPaddingVisualizationView} from './inputs/SectionPaddingVisualizationView';
 import {EditMotifAreaInputView} from './inputs/EditMotifAreaInputView';
 import paddingTopIcon from './images/paddingTop.svg';
@@ -32,8 +33,12 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
     const section = this.model;
     const configuration = section.configuration;
 
-    const [paddingTopValues, paddingTopTexts] = entry.getScale('sectionPaddingTop');
-    const [paddingBottomValues, paddingBottomTexts] = entry.getScale('sectionPaddingBottom');
+    const [paddingTopValues, paddingTopTexts, paddingTopCssValues] = entry.getScale('sectionPaddingTop');
+    const [paddingBottomValues, paddingBottomTexts, paddingBottomCssValues] = entry.getScale('sectionPaddingBottom');
+
+    const appearance = configuration.get('appearance');
+    const defaultPaddingTop = getDefaultPaddingValue(entry, 'sectionDefaultPaddingTop', paddingTopValues, paddingTopCssValues, appearance);
+    const defaultPaddingBottom = getDefaultPaddingValue(entry, 'sectionDefaultPaddingBottom', paddingBottomValues, paddingBottomCssValues, appearance);
 
     const hasPortrait = hasPortraitBackdrop(configuration);
 
@@ -42,7 +47,7 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
         entry.unset('emulation_mode');
       }
 
-      paddingInputs(this, {entry, section, paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts});
+      paddingInputs(this, {entry, section, paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts, defaultPaddingTop, defaultPaddingBottom});
     });
 
     if (!hasPortrait) {
@@ -70,6 +75,7 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
         prefix: usePortraitProperties ? 'portrait' : '',
         portrait: true,
         paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts,
+        defaultPaddingTop, defaultPaddingBottom,
         disabledOptions: usePortraitProperties ? {} : {disabled: true}
       });
     });
@@ -83,6 +89,7 @@ function paddingInputs(tab, options) {
     prefix = '',
     portrait = false,
     paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts,
+    defaultPaddingTop, defaultPaddingBottom,
     disabledOptions
   } = options;
 
@@ -166,6 +173,7 @@ function paddingInputs(tab, options) {
     icon: paddingTopIcon,
     texts: paddingTopTexts,
     values: paddingTopValues,
+    defaultValue: defaultPaddingTop,
     saveOnSlide: true,
     onInteractionStart: scrollToSectionStart,
     disabledBinding: motifAreaNotDefinedBinding,
@@ -185,6 +193,7 @@ function paddingInputs(tab, options) {
     icon: paddingBottomIcon,
     texts: paddingBottomTexts,
     values: paddingBottomValues,
+    defaultValue: defaultPaddingBottom,
     saveOnSlide: true,
     onInteractionStart: scrollToSectionEnd,
     ...disabledOptions
@@ -227,4 +236,17 @@ function hasPortraitBackdrop(configuration) {
   const collection = backdropType === 'video' ? 'video_files' : 'image_files';
 
   return !!configuration.getReference(propertyName, collection);
+}
+
+function getDefaultPaddingValue(entry, propertyName, scaleValues, scaleCssValues, appearance) {
+  const properties = entry.getThemeProperties();
+  const scopeName = getAppearanceSectionScopeName(appearance);
+  const defaultCssValue = properties[scopeName]?.[propertyName] ?? properties.root?.[propertyName];
+
+  if (!defaultCssValue) {
+    return undefined;
+  }
+
+  const index = scaleCssValues.indexOf(defaultCssValue);
+  return index >= 0 ? scaleValues[index] : undefined;
 }

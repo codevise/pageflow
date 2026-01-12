@@ -1,9 +1,9 @@
 module Pageflow
   # @api private
   class CustomizedTheme < SimpleDelegator
-    def initialize(theme, overrides, files)
+    def initialize(theme, transformed_options, overrides, files)
       super(theme)
-      @options = __getobj__.options.deep_merge(overrides || {})
+      @options = transformed_options.deep_merge(overrides || {})
       @files = files
     end
 
@@ -24,6 +24,7 @@ module Pageflow
       config = Pageflow.config_for(entry)
 
       new(theme,
+          config.themes.apply_default_options(theme.options),
           config.transform_theme_customization_overrides.call(
             theme_customization.overrides,
             entry:,
