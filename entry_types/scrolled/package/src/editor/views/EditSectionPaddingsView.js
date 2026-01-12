@@ -1,3 +1,4 @@
+import Backbone from 'backbone';
 import I18n from 'i18n-js';
 
 import {EditConfigurationView, SeparatorView} from 'pageflow/editor';
@@ -13,7 +14,7 @@ import styles from './EditSectionPaddingsView.module.css';
 const i18nPrefix = 'pageflow_scrolled.editor.edit_section_paddings';
 
 export const EditSectionPaddingsView = EditConfigurationView.extend({
-  translationKeyPrefix: 'pageflow_scrolled.editor.edit_section_paddings',
+  translationKeyPrefix: i18nPrefix,
   hideDestroyButton: true,
 
   className: styles.view,
@@ -32,221 +33,240 @@ export const EditSectionPaddingsView = EditConfigurationView.extend({
     const entry = this.options.entry;
     const section = this.model;
     const configuration = section.configuration;
+    const backdrop = configuration.getBackdrop();
 
-    const [paddingTopValues, paddingTopTexts, paddingTopCssValues] = entry.getScale('sectionPaddingTop');
-    const [paddingBottomValues, paddingBottomTexts, paddingBottomCssValues] = entry.getScale('sectionPaddingBottom');
+    const scope = getAppearanceSectionScopeName(configuration.get('appearance'));
+    const paddingTopScale = entry.getScale('sectionPaddingTop', {scope});
+    const paddingBottomScale = entry.getScale('sectionPaddingBottom', {scope});
 
-    const appearance = configuration.get('appearance');
-    const defaultPaddingTop = getDefaultPaddingValue(entry, 'sectionDefaultPaddingTop', paddingTopValues, paddingTopCssValues, appearance);
-    const defaultPaddingBottom = getDefaultPaddingValue(entry, 'sectionDefaultPaddingBottom', paddingBottomValues, paddingBottomCssValues, appearance);
+    const hasPortrait = !!backdrop.getFile({portrait: true});
 
-    const hasPortrait = hasPortraitBackdrop(configuration);
+    let transientStateModel = null;
+
+    this.listenTo(backdrop, 'change:motifArea', () => {
+      persistMotifBasedPadding();
+      configurationEditor.refresh();
+    });
 
     configurationEditor.tab('sectionPaddings', function() {
       if (hasPortrait && entry.has('emulation_mode')) {
         entry.unset('emulation_mode');
       }
 
-      paddingInputs(this, {entry, section, paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts, defaultPaddingTop, defaultPaddingBottom});
+      paddingInputs(this);
+      remainingVerticalSpaceInputs(this);
     });
 
-    if (!hasPortrait) {
-      return;
+    if (hasPortrait) {
+      configurationEditor.tab('portrait', function() {
+        if (!entry.has('emulation_mode')) {
+          entry.set('emulation_mode', 'phone');
+        }
+
+        this.listenTo(configuration, 'change:customPortraitPaddings', () => {
+          configurationEditor.refresh();
+        });
+
+        this.input('samePortraitPaddings', CheckBoxInputView, {
+          storeInverted: 'customPortraitPaddings'
+        });
+
+        const portraitOptions = configuration.get('customPortraitPaddings') ?
+          {paddingTopProperty: 'portraitPaddingTop', paddingBottomProperty: 'portraitPaddingBottom'} :
+          {disabled: true};
+
+        paddingInputs(this, {portrait: true, ...portraitOptions});
+      });
     }
 
-    configurationEditor.tab('portrait', function() {
-      if (!entry.has('emulation_mode')) {
-        entry.set('emulation_mode', 'phone');
+    function paddingInputs(tab, {
+      portrait,
+      disabled,
+      paddingTopProperty = 'paddingTop',
+      paddingBottomProperty = 'paddingBottom'
+    } = {}) {
+      const backdropFile = backdrop.getFile({portrait});
+
+      if (!backdropFile) {
+        simpleTopPaddingInputs(tab, {portrait, disabled, paddingTopProperty});
+      }
+      else if (backdropHasAnyMotifArea('defined') || backdropHasAnyMotifArea('ignored')) {
+        if (!backdropHasAnyMotifArea('defined')) {
+          displayAsManualPadding();
+        }
+
+        toggleExposeMotifAreaInputs(tab, {portrait, disabled, paddingTopProperty});
+      }
+      else {
+        tab.listenTo(backdropFile, 'change:configuration:ignoreMissingMotif', () => {
+          configurationEditor.refresh();
+        });
+
+        advertiseMotifAreaInputs(tab, {portrait, disabled, paddingTopProperty});
       }
 
-      this.listenTo(this.model, 'change:customPortraitPaddings', () => {
-        configurationEditor.refresh();
+      bottomPaddingInputs(tab, {portrait, disabled, paddingBottomProperty});
+    }
+
+    function remainingVerticalSpaceInputs(tab) {
+      tab.view(SeparatorView);
+
+      tab.input('remainingVerticalSpace', SelectInputView, {
+        values: ['around', 'above', 'below'],
+        defaultValue: 'around',
+        disabledBinding: 'fullHeight',
+        disabled: fullHeight => !fullHeight
+      });
+    }
+
+    function simpleTopPaddingInputs(tab, {portrait, disabled, paddingTopProperty, infoText}) {
+      tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
+        variant: 'topPadding',
+        portrait,
+        disabled,
+        infoText,
+        hideLabel: !!infoText,
+      });
+      tab.input(paddingTopProperty, SliderInputView, {
+        hideLabel: true,
+        icon: paddingTopIcon,
+        values: paddingTopScale.values,
+        texts: paddingTopScale.texts,
+        defaultValue: paddingTopScale.defaultValue,
+        saveOnSlide: true,
+        onInteractionStart: scrollToSectionStart,
+        disabled
+      });
+    }
+
+    function toggleExposeMotifAreaInputs(tab, {portrait, disabled, paddingTopProperty}) {
+      tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
+        variant: 'intersectingAuto',
+        portrait,
+        visibleBinding: 'exposeMotifArea',
+        visibleBindingModel: transientStateModel,
+        visible: exposeMotifArea => exposeMotifArea,
+        disabled
+      });
+      tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
+        variant: 'intersectingManual',
+        portrait,
+        visibleBinding: 'exposeMotifArea',
+        visibleBindingModel: transientStateModel,
+        visible: exposeMotifArea => !exposeMotifArea,
+        disabled
+      });
+      tab.input('exposeMotifArea', RadioButtonGroupInputView, {
+        hideLabel: true,
+        values: [true, false],
+        texts: [
+          I18n.t(`${i18nPrefix}.attributes.exposeMotifArea.values.true`),
+          I18n.t(`${i18nPrefix}.attributes.exposeMotifArea.values.false`)
+        ],
+        ...(transientStateModel && {model: transientStateModel}),
+        disabled: portrait
+      });
+      tab.input('editMotifArea', EditMotifAreaInputView, {
+        hideLabel: true,
+        portrait,
+        required: true,
+        visibleBinding: 'exposeMotifArea',
+        visibleBindingModel: transientStateModel,
+        visible: exposeMotifArea => exposeMotifArea
       });
 
-      this.input('samePortraitPaddings', CheckBoxInputView, {
-        storeInverted: 'customPortraitPaddings'
+      tab.input('sideBySideVisualization', SectionPaddingVisualizationView, {
+        hideLabel: true,
+        variant: 'sideBySide',
+        portrait,
+        infoText: I18n.t(`${i18nPrefix}.side_by_side_info`),
+        visibleBinding: ['exposeMotifArea', 'layout'],
+        visibleBindingModel: transientStateModel,
+        visible: ([exposeMotifArea, layout]) =>
+          exposeMotifArea && layout !== 'center' && layout !== 'centerRagged',
+        disabled
       });
-
-      const usePortraitProperties = this.model.get('customPortraitPaddings');
-
-      paddingInputs(this, {
-        entry,
-        section,
-        prefix: usePortraitProperties ? 'portrait' : '',
-        portrait: true,
-        paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts,
-        defaultPaddingTop, defaultPaddingBottom,
-        disabledOptions: usePortraitProperties ? {} : {disabled: true}
+      tab.input(paddingTopProperty, SliderInputView, {
+        hideLabel: true,
+        icon: paddingTopIcon,
+        values: paddingTopScale.values,
+        texts: paddingTopScale.texts,
+        defaultValue: paddingTopScale.defaultValue,
+        saveOnSlide: true,
+        visibleBinding: ['exposeMotifArea', 'layout'],
+        visibleBindingModel: transientStateModel,
+        visible: ([exposeMotifArea, layout]) =>
+          !exposeMotifArea || (layout !== 'center' && layout !== 'centerRagged'),
+        onInteractionStart: scrollToSectionStart,
+        disabled
       });
-    });
+    }
+
+    function advertiseMotifAreaInputs(tab, {portrait, disabled, paddingTopProperty}) {
+      tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
+        variant: 'intersectingAuto',
+        portrait,
+        disabled
+      });
+      tab.input('editMotifArea', EditMotifAreaInputView, {
+        hideLabel: true,
+        portrait,
+        showIgnoreOption: true,
+        highlight: 'boxBelow',
+        infoText: I18n.t(`${i18nPrefix}.attributes.exposeMotifArea.values.true`)
+      });
+      simpleTopPaddingInputs(tab, {
+        infoText: I18n.t(`${i18nPrefix}.attributes.exposeMotifArea.values.false`),
+        portrait,
+        disabled,
+        paddingTopProperty,
+      });
+    }
+
+    function bottomPaddingInputs(tab, {portrait, disabled, paddingBottomProperty}) {
+      tab.view(SeparatorView);
+
+      tab.input('bottomPaddingVisualization', SectionPaddingVisualizationView, {
+        variant: 'bottomPadding',
+        portrait,
+        disabled
+      });
+      tab.input(paddingBottomProperty, SliderInputView, {
+        hideLabel: true,
+        icon: paddingBottomIcon,
+        values: paddingBottomScale.values,
+        texts: paddingBottomScale.texts,
+        defaultValue: paddingBottomScale.defaultValue,
+        saveOnSlide: true,
+        onInteractionStart: scrollToSectionEnd,
+        disabled
+      });
+    }
+
+    function backdropHasAnyMotifArea(status) {
+      return backdrop.getMotifAreaStatus({portrait: false}) === status ||
+             backdrop.getMotifAreaStatus({portrait: true}) === status;
+    }
+
+    function displayAsManualPadding() {
+      if (!transientStateModel) {
+        transientStateModel = new Backbone.Model({exposeMotifArea: false});
+      }
+    }
+
+    function persistMotifBasedPadding() {
+      if (transientStateModel?.get('exposeMotifArea')) {
+        configuration.set('exposeMotifArea', true);
+        transientStateModel = null;
+      }
+    }
+
+    function scrollToSectionStart() {
+      entry.trigger('scrollToSection', section, {ifNeeded: true});
+    }
+
+    function scrollToSectionEnd() {
+      entry.trigger('scrollToSection', section, {align: 'nearEnd', ifNeeded: true});
+    }
   }
 });
-
-function paddingInputs(tab, options) {
-  const {
-    entry,
-    section,
-    prefix = '',
-    portrait = false,
-    paddingTopValues, paddingTopTexts, paddingBottomValues, paddingBottomTexts,
-    defaultPaddingTop, defaultPaddingBottom,
-    disabledOptions
-  } = options;
-
-  const paddingTopProperty = prefix ? `${prefix}PaddingTop` : 'paddingTop';
-  const paddingBottomProperty = prefix ? `${prefix}PaddingBottom` : 'paddingBottom';
-  const exposeMotifArea = prefix ? `${prefix}ExposeMotifArea` : 'exposeMotifArea';
-
-  const scrollToSectionStart = () => {
-    entry.trigger('scrollToSection', section, {ifNeeded: true});
-  };
-  const scrollToSectionEnd = () => {
-    entry.trigger('scrollToSection', section, {align: 'nearEnd', ifNeeded: true});
-  };
-
-  tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
-    variant: 'intersectingAuto',
-    portrait,
-    visibleBinding: [exposeMotifArea, ...motifAreaBinding],
-    visible: ([exposeMotifAreaValue, ...motifAreaValues]) =>
-      exposeMotifAreaValue && !motifAreaUnavailable(motifAreaValues),
-    ...disabledOptions
-  });
-  tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
-    variant: 'intersectingManual',
-    portrait,
-    visibleBinding: [exposeMotifArea, ...motifAreaBinding],
-    visible: ([exposeMotifAreaValue, ...motifAreaValues]) =>
-      !exposeMotifAreaValue && !motifAreaUnavailable(motifAreaValues),
-    ...disabledOptions
-  });
-  tab.input('topPaddingVisualization', SectionPaddingVisualizationView, {
-    variant: 'topPadding',
-    portrait,
-    visibleBinding: motifAreaBinding,
-    visible: motifAreaUnavailable,
-    ...disabledOptions
-  });
-  tab.input(exposeMotifArea, RadioButtonGroupInputView, {
-    hideLabel: true,
-    values: [true, false],
-    texts: [
-      I18n.t(`${i18nPrefix}.attributes.exposeMotifArea.values.true`),
-      I18n.t(`${i18nPrefix}.attributes.exposeMotifArea.values.false`)
-    ],
-    visibleBinding: motifAreaBinding,
-    visible: values => !motifAreaUnavailable(values),
-    ...disabledOptions
-  });
-  tab.input('editMotifArea', EditMotifAreaInputView, {
-    hideLabel: true,
-    portrait,
-    visibleBinding: [exposeMotifArea, ...motifAreaBinding],
-    visible: ([exposeMotifAreaValue, ...motifAreaValues]) =>
-      exposeMotifAreaValue && !motifAreaUnavailable(motifAreaValues)
-  });
-
-  const imageMotifAreaPropertyName = portrait ? 'backdropImageMobileMotifArea' : 'backdropImageMotifArea';
-  const videoMotifAreaPropertyName = portrait ? 'backdropVideoMobileMotifArea' : 'backdropVideoMotifArea';
-
-  const motifAreaNotDefinedBinding = [
-    exposeMotifArea, 'backdropType', imageMotifAreaPropertyName, videoMotifAreaPropertyName
-  ];
-
-  tab.input('sideBySideVisualization', SectionPaddingVisualizationView, {
-    hideLabel: true,
-    variant: 'sideBySide',
-    portrait,
-    infoText: I18n.t(`${i18nPrefix}.side_by_side_info`),
-    visibleBinding: [exposeMotifArea, 'layout', ...motifAreaBinding],
-    visible: ([exposeMotifAreaValue, layout, ...motifAreaValues]) =>
-      exposeMotifAreaValue &&
-      layout !== 'center' &&
-      layout !== 'centerRagged' &&
-      !motifAreaUnavailable(motifAreaValues),
-    disabledBinding: motifAreaNotDefinedBinding,
-    disabled: motifAreaNotDefined
-  });
-
-  tab.input(paddingTopProperty, SliderInputView, {
-    hideLabel: true,
-    icon: paddingTopIcon,
-    texts: paddingTopTexts,
-    values: paddingTopValues,
-    defaultValue: defaultPaddingTop,
-    saveOnSlide: true,
-    onInteractionStart: scrollToSectionStart,
-    disabledBinding: motifAreaNotDefinedBinding,
-    disabled: motifAreaNotDefined,
-    ...disabledOptions
-  });
-
-  tab.view(SeparatorView);
-
-  tab.input('bottomPaddingVisualization', SectionPaddingVisualizationView, {
-    variant: 'bottomPadding',
-    portrait,
-    ...disabledOptions
-  });
-  tab.input(paddingBottomProperty, SliderInputView, {
-    hideLabel: true,
-    icon: paddingBottomIcon,
-    texts: paddingBottomTexts,
-    values: paddingBottomValues,
-    defaultValue: defaultPaddingBottom,
-    saveOnSlide: true,
-    onInteractionStart: scrollToSectionEnd,
-    ...disabledOptions
-  });
-
-  tab.view(SeparatorView);
-
-  tab.input('remainingVerticalSpace', SelectInputView, {
-    values: ['around', 'above', 'below'],
-    defaultValue: 'around',
-    disabledBinding: 'fullHeight',
-    disabled: fullHeight => !fullHeight,
-    ...disabledOptions
-  });
-}
-
-const motifAreaBinding = ['backdropType'];
-
-function motifAreaUnavailable([backdropType]) {
-  return backdropType === 'color';
-}
-
-function motifAreaNotDefined([exposeMotifAreaValue, backdropType, imageMotifArea, videoMotifArea]) {
-  if (backdropType === 'color') {
-    return false;
-  }
-
-  const motifArea = backdropType === 'video' ? videoMotifArea : imageMotifArea;
-  return exposeMotifAreaValue && !motifArea;
-}
-
-function hasPortraitBackdrop(configuration) {
-  const backdropType = configuration.get('backdropType');
-
-  if (backdropType === 'color') {
-    return false;
-  }
-
-  const propertyName = backdropType === 'video' ? 'backdropVideoMobile' : 'backdropImageMobile';
-  const collection = backdropType === 'video' ? 'video_files' : 'image_files';
-
-  return !!configuration.getReference(propertyName, collection);
-}
-
-function getDefaultPaddingValue(entry, propertyName, scaleValues, scaleCssValues, appearance) {
-  const properties = entry.getThemeProperties();
-  const scopeName = getAppearanceSectionScopeName(appearance);
-  const defaultCssValue = properties[scopeName]?.[propertyName] ?? properties.root?.[propertyName];
-
-  if (!defaultCssValue) {
-    return undefined;
-  }
-
-  const index = scaleCssValues.indexOf(defaultCssValue);
-  return index >= 0 ? scaleValues[index] : undefined;
-}

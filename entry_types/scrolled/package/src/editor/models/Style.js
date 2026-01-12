@@ -115,7 +115,7 @@ Style.effectTypes = {
 
 Style.getImageModifierTypes = function({entry}) {
   const [values, labels] = entry.getAspectRatios();
-  const [borderRadiusValues, borderRadiusLabels, borderRadiusCssValues] = entry.getScale('contentElementBoxBorderRadius');
+  const borderRadiusScale = entry.getScale('contentElementBoxBorderRadius');
 
   const result = {
     crop: {
@@ -135,27 +135,21 @@ Style.getImageModifierTypes = function({entry}) {
     }
   };
 
-  if (borderRadiusValues.length > 0) {
-    const themeProperties = entry.getThemeProperties();
-    const defaultBorderRadius = themeProperties.root?.contentElementBoxBorderRadius;
-
-    const items = borderRadiusValues.map((value, index) => {
-      const cssValue = borderRadiusCssValues[index];
-      const isDefault = !!(defaultBorderRadius && cssValue === defaultBorderRadius);
-
+  if (borderRadiusScale.values.length > 0) {
+    const items = borderRadiusScale.values.map((value, index) => {
       const item = {
-        label: borderRadiusLabels[index],
+        label: borderRadiusScale.texts[index],
         value
       };
 
-      if (isDefault) {
+      if (borderRadiusScale.defaultValue === value) {
         item.default = true;
       }
 
       return item;
     });
 
-    if (defaultBorderRadius) {
+    if (borderRadiusScale.defaultValue) {
       const noneLabel = I18n.t('pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.none');
 
       items.unshift({

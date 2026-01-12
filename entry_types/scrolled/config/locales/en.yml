@@ -1134,6 +1134,7 @@ en:
         reset: Reset
         save: Save
       edit_section:
+        motif_area_info_text: Mark the most important part of the backdrop that should be visible and unobstructed when reaching the section.
         attributes:
           appearance:
             inline_help: This setting controls how the scrolling foreground should get dimmed to increase contrast from the background. The option "Cards" adds a box with rounded corners to the foreground, with "Shadow" you can add a light or dark shadow to increase readability.
@@ -1270,6 +1271,8 @@ en:
         side_by_side: "Visualization of top padding when content fits next to the motif area"
         top_padding: "Visualization of top padding"
         bottom_padding: "Visualization of bottom padding"
+      section_paddings_input:
+        motif: Motif
       select_link_destination:
         cancel: Cancel
         create: Create
@@ -1289,6 +1292,9 @@ en:
       edit_motif_area_input:
         select: Select motif area
         edit: Edit motif area
+        warn: No motif area selected
+        ignore_image: Ignore for this image
+        ignore_video: Ignore for this video
       backdrop_content_element_input:
         add: New element
         unset: No longer use as backdrop
@@ -1357,8 +1363,6 @@ en:
         remove: "Remove style"
       crop_types:
         circle: Circle
-      section_paddings_input:
-        auto: (Auto)
       edit_section_paddings:
         tabs:
           sectionPaddings: Paddings
@@ -1522,7 +1526,6 @@ en:
       add_caption: Add caption
       add_content_element: Add new element
       cancel: Cancel
-      default_padding: Default
       drag_content_element: Drag to move element
       padding_suppressed_before_full_width: Padding suppressed before full width element
       padding_suppressed_after_full_width: Padding suppressed after full width element

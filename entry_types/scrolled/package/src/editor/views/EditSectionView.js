@@ -6,6 +6,7 @@ import {
   SliderInputView
 } from 'pageflow/ui';
 import {BackdropContentElementInputView} from './inputs/BackdropContentElementInputView';
+import {EditMotifAreaInputView} from './inputs/EditMotifAreaInputView';
 import {EffectListInputView} from './inputs/EffectListInputView';
 import {SectionPaddingsInputView} from './inputs/SectionPaddingsInputView';
 import {InlineFileRightsMenuItem} from '../models/InlineFileRightsMenuItem'
@@ -73,6 +74,13 @@ export const EditSectionView = EditConfigurationView.extend({
         positioning: false,
         dropDownMenuItems: [editMotifAreaMenuItem, InlineFileRightsMenuItem]
       });
+      this.input('editMotifArea', EditMotifAreaInputView, {
+        infoText: I18n.t('pageflow_scrolled.editor.edit_section.motif_area_info_text'),
+        hideLabel: true,
+        showIgnoreOption: true,
+        onlyShowWhenMissing: true,
+        highlight: 'boxWithArrow'
+      });
       this.input('backdropEffects', EffectListInputView, {
         visibleBinding: ['backdropType', 'backdropImage'],
         visible: ([backdropType]) =>
@@ -98,6 +106,14 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBindingValue: 'video',
         positioning: false,
         dropDownMenuItems: [editMotifAreaMenuItem, InlineFileRightsMenuItem]
+      });
+      this.input('editMotifArea', EditMotifAreaInputView, {
+        portrait: true,
+        infoText: I18n.t('pageflow_scrolled.editor.edit_section.motif_area_info_text'),
+        hideLabel: true,
+        showIgnoreOption: true,
+        onlyShowWhenMissing: true,
+        highlight: 'boxWithArrow'
       });
       this.input('backdropEffectsMobile', EffectListInputView, {
         visibleBinding: ['backdropType', 'backdropImageMobile'],
@@ -143,15 +159,19 @@ export const EditSectionView = EditConfigurationView.extend({
         values: ['shadow', 'cards', 'transparent']
       });
       this.input('invert', CheckBoxInputView);
-      this.input('exposeMotifArea', CheckBoxInputView, {
-        displayUncheckedIfDisabled: true,
-        visibleBinding: ['backdropType'],
-        visible: ([backdropType]) => {
-          return backdropType !== 'color' && backdropType !== 'contentElement';
-        },
-        disabledBinding: motifAreaDisabledBinding,
-        disabled: motifAreaDisabled,
-      });
+
+      if (!features.isEnabled('section_paddings')) {
+        this.input('exposeMotifArea', CheckBoxInputView, {
+          displayUncheckedIfDisabled: true,
+          visibleBinding: ['backdropType'],
+          visible: ([backdropType]) => {
+            return backdropType !== 'color' && backdropType !== 'contentElement';
+          },
+          disabledBinding: motifAreaDisabledBinding,
+          disabled: motifAreaDisabled,
+        });
+      }
+
       this.input('staticShadowOpacity', SliderInputView, {
         defaultValue: 70,
         visibleBinding: 'appearance',

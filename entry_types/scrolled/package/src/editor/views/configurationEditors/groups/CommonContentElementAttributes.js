@@ -76,19 +76,19 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function({ent
   }
 
   if (features.isEnabled('content_element_margins')) {
-    const [values, texts] = entry.getScale('contentElementMargin');
+    const marginScale = entry.getScale('contentElementMargin');
 
     this.input('marginTop', SelectInputView, {
       attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
       includeBlank: true,
-      values,
-      texts
+      values: marginScale.values,
+      texts: marginScale.texts
     });
     this.input('marginBottom', SelectInputView, {
       attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
       includeBlank: true,
-      values,
-      texts
+      values: marginScale.values,
+      texts: marginScale.texts
     });
   }
 });

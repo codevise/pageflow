@@ -18,8 +18,15 @@ import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
 
 import {sortColors} from './sortColors';
+import {Scale} from '../../../shared/Scale';
 
 const typographySizeSuffixes = ['xl', 'lg', 'md', 'sm', 'xs'];
+
+const scaleDefaultPropertyNames = {
+  sectionPaddingTop: 'sectionDefaultPaddingTop',
+  sectionPaddingBottom: 'sectionDefaultPaddingBottom',
+  contentElementBoxBorderRadius: 'contentElementBoxBorderRadius'
+};
 
 const defaultAspectRatios = [{
   name: 'wide',
@@ -336,19 +343,16 @@ export const ScrolledEntry = Entry.extend({
     return defaultAspectRatios.concat(customRatios);
   },
 
-  getScale(scaleName) {
-    const themeOptions = this.scrolledSeed.config.theme.options;
-    const root = themeOptions.properties?.root || {};
-    const scaleTranslations = this.scrolledSeed.config.theme.translations?.scales || {};
+  getScale(scaleName, {scope} = {}) {
+    const theme = this.scrolledSeed.config.theme;
 
-    const scaleProperties = Object.keys(root)
-                                  .filter(name => name.indexOf(`${scaleName}-`) === 0);
-
-    const values = scaleProperties.map(name => name.split('-').pop());
-    const texts = values.map(value => scaleTranslations[scaleName]?.[value]);
-    const cssValues = scaleProperties.map(propertyName => root[propertyName]);
-
-    return [values, texts, cssValues];
+    return Scale({
+      scaleName,
+      themeProperties: theme.options.properties || {},
+      scaleTranslations: theme.translations?.scales || {},
+      defaultValuePropertyName: scaleDefaultPropertyNames[scaleName],
+      scope
+    });
   },
 
   getUsedSectionBackgroundColors() {

@@ -1,5 +1,7 @@
 import {editor, Configuration} from 'pageflow/editor';
 
+import {SectionBackdrop} from './SectionBackdrop';
+
 export const SectionConfiguration = Configuration.extend({
   defaults: {
     transition: 'fadeBg',
@@ -112,6 +114,11 @@ export const SectionConfiguration = Configuration.extend({
         imageMobileInlineRightsHidden: nextAttributes.backdropImageMobileInlineRightsHidden
       };
     }
+  },
+
+  getBackdrop() {
+    this._backdrop = this._backdrop || new SectionBackdrop({configuration: this});
+    return this._backdrop;
   }
 });
 

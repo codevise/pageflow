@@ -80,7 +80,9 @@ export function SectionDecorator({backdrop, section, contentElements, transition
                                      position: 'after'})}
       </div>
       <MotifAreaVisibilityProvider visible={isSelected}>
-        <ForcePaddingContext.Provider value={isLastContentElementSelected || isSectionSelected}>
+        <ForcePaddingContext.Provider value={isLastContentElementSelected ||
+                                             isSectionSelected ||
+                                             isHighlighted}>
           {children}
         </ForcePaddingContext.Provider>
       </MotifAreaVisibilityProvider>

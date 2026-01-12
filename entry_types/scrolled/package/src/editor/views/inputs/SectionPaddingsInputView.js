@@ -1,9 +1,10 @@
-import Marionette from 'backbone.marionette';
-import _ from 'underscore';
 import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
 import {editor} from 'pageflow/editor';
 import {buttonStyles} from 'pageflow-scrolled/editor';
 import {cssModulesUtils, inputView} from 'pageflow/ui';
+
+import {getAppearanceSectionScopeName} from 'pageflow-scrolled/frontend';
 
 import paddingTopIcon from '../images/paddingTop.svg';
 import paddingBottomIcon from '../images/paddingBottom.svg';
@@ -11,6 +12,15 @@ import styles from './SectionPaddingsInputView.module.css';
 
 export const SectionPaddingsInputView = Marionette.Layout.extend({
   mixins: [inputView],
+
+  initialize() {
+    this.backdrop = this.model.getBackdrop();
+    this.listenTo(this.backdrop, 'change:motifArea', this.render);
+  },
+
+  modelEvents: {
+    'change:appearance': 'render'
+  },
 
   template: (data) => `
     <label>
@@ -44,22 +54,41 @@ export const SectionPaddingsInputView = Marionette.Layout.extend({
   onRender() {
     const entry = this.options.entry;
 
-    const [paddingTopValues, paddingTopTexts] = entry.getScale('sectionPaddingTop');
-    const [paddingBottomValues, paddingBottomTexts] = entry.getScale('sectionPaddingBottom');
+    const scope = getAppearanceSectionScopeName(this.model.get('appearance'));
+    const paddingTopScale = entry.getScale('sectionPaddingTop', {scope});
+    const paddingBottomScale = entry.getScale('sectionPaddingBottom', {scope});
 
-    const paddingTopTextsByValue = Object.fromEntries(_.zip(paddingTopValues, paddingTopTexts));
-    const paddingBottomTextsByValue = Object.fromEntries(_.zip(paddingBottomValues, paddingBottomTexts));
+    this.ui.paddingTop.text(this.getPaddingTopText(paddingTopScale, 'paddingTop', {portrait: false}));
+    this.ui.paddingBottom.text(getValueText(paddingBottomScale, this.model.get('paddingBottom')));
+    this.ui.portraitPaddingTop.text(this.getPaddingTopText(paddingTopScale, 'portraitPaddingTop', {portrait: true}));
+    this.ui.portraitPaddingBottom.text(getValueText(paddingBottomScale, this.model.get('portraitPaddingBottom')));
 
-    const auto = I18n.t('pageflow_scrolled.editor.section_paddings_input.auto');
-
-    this.ui.paddingTop.text(paddingTopTextsByValue[this.model.get('paddingTop')] || auto);
-    this.ui.paddingBottom.text(paddingBottomTextsByValue[this.model.get('paddingBottom')] || auto);
-    this.ui.portraitPaddingTop.text(paddingTopTextsByValue[this.model.get('portraitPaddingTop')] || auto);
-    this.ui.portraitPaddingBottom.text(paddingBottomTextsByValue[this.model.get('portraitPaddingBottom')] || auto);
-
-    const hasPortrait = this.model.get('portraitPaddingTop') || this.model.get('portraitPaddingBottom')
+    const hasPortrait = this.model.get('customPortraitPaddings');
 
     this.ui.portraitPaddingTop.toggle(!!hasPortrait);
     this.ui.portraitPaddingBottom.toggle(!!hasPortrait);
+  },
+
+  getPaddingTopText(scale, property, {portrait}) {
+    const text = getValueText(scale, this.model.get(property));
+
+    if (this.model.get('exposeMotifArea') &&
+        this.backdrop.getMotifAreaStatus({portrait}) === 'defined') {
+      const motifPrefix = I18n.t('pageflow_scrolled.editor.section_paddings_input.motif');
+      return `${motifPrefix}/${text}`;
+    }
+
+    return text;
   }
 });
+
+function getValueText(scale, value) {
+  const index = scale.values.indexOf(value);
+
+  if (index >= 0) {
+    return scale.texts[index];
+  }
+
+  const defaultIndex = scale.values.indexOf(scale.defaultValue);
+  return scale.texts[defaultIndex];
+}

@@ -1150,6 +1150,7 @@ de:
         reset: Zurücksetzen
         save: Speichern
       edit_section:
+        motif_area_info_text: Markiere den wichtigsten Teil des Hintergrunds, der beim Erreichen des Abschnitts sichtbar und nicht von anderen Elementen überdeckt sein soll.
         attributes:
           appearance:
             inline_help: Diese Einstellung legt fest wie die scrollenden Vordergrund-Ebene vom Hintergrund abgehoben werden soll. Bei der Einstellung "Karte" wird der Vordergrund mit einer Fläche mit abgerundeten Ecken hinterlegt, bei "Schatten" mit einem hellen oder dunklen Farbverlauf.
@@ -1286,6 +1287,8 @@ de:
         side_by_side: "Darstellung des oberen Abstands, wenn der Inhalt neben dem Motivbereich Platz findet"
         top_padding: "Darstellung des oberen Abstands"
         bottom_padding: "Darstellung des unteren Abstands"
+      section_paddings_input:
+        motif: Motiv
       select_link_destination:
         cancel: Abbrechen
         create: Erstellen
@@ -1305,6 +1308,9 @@ de:
       edit_motif_area_input:
         select: Motivbereich auswählen
         edit: Motivbereich bearbeiten
+        warn: Noch kein Motivbereich ausgewählt
+        ignore_image: Für dieses Bild ignorieren
+        ignore_video: Für dieses Video ignorieren
       backdrop_content_element_input:
         add: Neues Element
         unset: Nicht mehr als Hintergrund verwenden
@@ -1373,8 +1379,6 @@ de:
         remove: "Stil entfernen"
       crop_types:
         circle: Kreis
-      section_paddings_input:
-        auto: (Automatisch)
       edit_section_paddings:
         tabs:
           sectionPaddings: Innenabstände
@@ -1387,7 +1391,7 @@ de:
           exposeMotifArea:
             label: Abstand oben
             values:
-              'true': Automatisch anpassen, um das Motiv im Hintergrund freizustellen
+              'true': Automatisch anpassen, um ein Motiv im Hintergrund freizustellen
               'false': Manuell festlegen
           sideBySideVisualization:
             label: Nebeneinander
@@ -1692,7 +1696,6 @@ de:
       add_caption: Beschriftung hinzufügen
       add_content_element: Neues Element hinzufügen
       cancel: Abbrechen
-      default_padding: Standard
       drag_content_element: Ziehen, um Element zu verschieben
       padding_suppressed_before_full_width: Abstand unterdrückt vor vollbreitem Element
       padding_suppressed_after_full_width: Abstand unterdrückt nach vollbreitem Element
