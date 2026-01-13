@@ -109,6 +109,11 @@
     padding-top: 1px;
   }
 
+  &.is_destructive a:hover {
+    background-color: var(--ui-error-color);
+    color: var(--ui-on-error-color);
+  }
+
   &.has_radio,
   &.has_check_box {
     a {

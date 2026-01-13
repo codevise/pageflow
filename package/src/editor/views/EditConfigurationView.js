@@ -136,7 +136,8 @@ export const EditConfigurationView = Marionette.Layout.extend({
     return new DestroyMenuItem({
       name: 'destroy',
       label: this.t('destroy'),
-      separated
+      separated,
+      destructive: true
     }, {
       view: this
     });
