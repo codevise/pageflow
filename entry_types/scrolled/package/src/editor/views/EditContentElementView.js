@@ -22,7 +22,8 @@ export const EditContentElementView = EditConfigurationView.extend({
     return [
       new DuplicateContentElementMenuItem({}, {
         contentElement: this.model,
-        entry: this.options.entry
+        entry: this.options.entry,
+        editor: this.options.editor
       }),
       new DestroyContentElementMenuItem({}, {
         contentElement: this.model,

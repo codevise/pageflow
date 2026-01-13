@@ -37,6 +37,7 @@ describe('ContentElementMenuItems', () => {
       });
       const contentElement = entry.contentElements.get(1);
       entry.duplicateContentElement = jest.fn();
+      editor.contentElementTypes.register('textBlock', {});
 
       const menuItem = new DuplicateContentElementMenuItem({}, {
         contentElement,
@@ -47,6 +48,30 @@ describe('ContentElementMenuItems', () => {
       menuItem.selected();
 
       expect(entry.duplicateContentElement).toHaveBeenCalledWith(contentElement);
+    });
+
+    it('calls handleDuplicate instead of duplicateContentElement if defined', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          contentElements: [{id: 1, typeName: 'textBlock'}]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      const handleDuplicate = jest.fn();
+      entry.duplicateContentElement = jest.fn();
+      editor.contentElementTypes.register('textBlock', {handleDuplicate});
+
+      const menuItem = new DuplicateContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      menuItem.selected();
+
+      expect(handleDuplicate).toHaveBeenCalledWith(contentElement);
+      expect(entry.duplicateContentElement).not.toHaveBeenCalled();
     });
   });
 

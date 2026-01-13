@@ -6,11 +6,20 @@ export const DuplicateContentElementMenuItem = Backbone.Model.extend({
   initialize(attributes, options) {
     this.contentElement = options.contentElement;
     this.entry = options.entry;
+    this.editor = options.editor;
     this.set('label', I18n.t('pageflow_scrolled.editor.duplicate_content_element_menu_item.label'));
   },
 
   selected() {
-    this.entry.duplicateContentElement(this.contentElement);
+    const contentElementType =
+      this.editor.contentElementTypes.findByTypeName(this.contentElement.get('typeName'));
+
+    if (contentElementType.handleDuplicate) {
+      contentElementType.handleDuplicate(this.contentElement);
+    }
+    else {
+      this.entry.duplicateContentElement(this.contentElement);
+    }
   }
 });
 
