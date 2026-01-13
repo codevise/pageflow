@@ -62,7 +62,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
              className={classNames(styles.Section,
                                    transitionStyles.section,
                                    backdropSectionClassNames,
-                                   {[styles.first]: section.sectionIndex === 0},
+                                   {[styles.first]: section.sectionIndex === 0 && !section.chapter?.isExcursion},
                                    {[styles.narrow]: section.width === 'narrow'},
                                    `scope-${getAppearanceSectionScopeName(section.appearance)}`,
                                    section.invert ? styles.darkContent : styles.lightContent)}
