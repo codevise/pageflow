@@ -1129,6 +1129,9 @@ en:
         hint: Drag to select the most important part of the image.
         reset: Reset
         save: Save
+      chapter_menu_items:
+        move_to_main: Turn into chapter
+        move_to_excursions: Turn into excursion
       destroy_chapter_menu_item:
         confirm_destroy: |-
           Really delete this chapter including ALL its sections?

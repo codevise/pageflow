@@ -301,4 +301,49 @@ describe('Chapter', () => {
       expect(chapter.isExcursion()).toBe(true);
     });
   });
+
+  describe('#toggleExcursion', () => {
+    useFakeXhr(() => testContext);
+
+    beforeEach(() => {
+      testContext.entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          storylines: [
+            {id: 100, configuration: {main: true}},
+            {id: 200}
+          ],
+          chapters: [
+            {id: 1, storylineId: 100, position: 0},
+            {id: 2, storylineId: 200, position: 0}
+          ]
+        })
+      });
+    });
+
+    setupGlobals({
+      entry: () => testContext.entry
+    });
+
+    it('moves chapter from main to excursions', () => {
+      const {entry} = testContext;
+      const chapter = entry.chapters.get(1);
+
+      chapter.toggleExcursion();
+
+      expect(chapter.get('storylineId')).toEqual(200);
+      expect(entry.storylines.main().chapters.length).toEqual(0);
+      expect(entry.storylines.excursions().chapters.length).toEqual(2);
+    });
+
+    it('moves chapter from excursions to main', () => {
+      const {entry} = testContext;
+      const chapter = entry.chapters.get(2);
+
+      chapter.toggleExcursion();
+
+      expect(chapter.get('storylineId')).toEqual(100);
+      expect(entry.storylines.main().chapters.length).toEqual(2);
+      expect(entry.storylines.excursions().chapters.length).toEqual(0);
+    });
+  });
 });

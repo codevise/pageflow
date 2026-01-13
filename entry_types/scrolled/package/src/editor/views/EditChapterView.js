@@ -1,14 +1,15 @@
 import {EditConfigurationView} from 'pageflow/editor';
 import {CheckBoxInputView, TextInputView, TextAreaInputView} from 'pageflow/ui';
 
-import {DestroyChapterMenuItem} from '../models/chapterMenuItems';
+import {DestroyChapterMenuItem, ToggleExcursionMenuItem} from '../models/chapterMenuItems';
 
 export const EditChapterView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_chapter',
 
   getActionsMenuItems() {
     return [
-      new DestroyChapterMenuItem({}, {chapter: this.model})
+      new ToggleExcursionMenuItem({}, {chapter: this.model}),
+      new DestroyChapterMenuItem({separated: true}, {chapter: this.model})
     ];
   },
 

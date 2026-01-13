@@ -1145,6 +1145,9 @@ de:
         hint: Ziehe ein Rechteck, um den wichtigsten Bereich des Bildes zu markieren.
         reset: Zurücksetzen
         save: Speichern
+      chapter_menu_items:
+        move_to_main: In Kapitel umwandeln
+        move_to_excursions: In Exkurs umwandeln
       destroy_chapter_menu_item:
         confirm_destroy: |-
           Kapitel inklusive ALLER Abschnitte wirklich löschen?
