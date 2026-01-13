@@ -38,6 +38,7 @@ export const ForeignKeySubsetCollection = SubsetCollection.extend({
     SubsetCollection.prototype.constructor.call(this, {
       parent,
       parentModel,
+      watchAttribute: options.foreignKeyAttribute,
 
       filter: function(item) {
         return !parentModel.isNew() &&
@@ -58,7 +59,9 @@ export const ForeignKeySubsetCollection = SubsetCollection.extend({
       this.each(model => model[options.parentReferenceAttribute] = parentModel);
 
       this.listenTo(this, 'remove', function(model) {
-        model[options.parentReferenceAttribute] = null;
+        if (model[options.parentReferenceAttribute] === parentModel) {
+          model[options.parentReferenceAttribute] = null;
+        }
       });
     }
   }

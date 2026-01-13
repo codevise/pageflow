@@ -73,6 +73,38 @@ describe('ForeignKeySubsetCollection', () => {
     expect(postComments.first().get('postId')).toBe(5);
   });
 
+  it('removes model when foreign key changes', () => {
+    const post = new Backbone.Model({id: 5});
+    const comments = new Backbone.Collection([
+      {id: 1, postId: 5}
+    ]);
+    const postComments = new ForeignKeySubsetCollection({
+      parentModel: post,
+      parent: comments,
+      foreignKeyAttribute: 'postId'
+    });
+
+    comments.get(1).set('postId', 10);
+
+    expect(postComments.length).toBe(0);
+  });
+
+  it('adds model when foreign key changes to match', () => {
+    const post = new Backbone.Model({id: 5});
+    const comments = new Backbone.Collection([
+      {id: 1, postId: 10}
+    ], {comparator: 'position'});
+    const postComments = new ForeignKeySubsetCollection({
+      parentModel: post,
+      parent: comments,
+      foreignKeyAttribute: 'postId'
+    });
+
+    comments.get(1).set('postId', 5);
+
+    expect(postComments.length).toBe(1);
+  });
+
   it('clears when parent model is destroyed', () => {
     const post = new Backbone.Model({id: 5}, {urlRoot: '/posts'});
     const comments = new Backbone.Collection([
@@ -250,5 +282,30 @@ describe('ForeignKeySubsetCollection', () => {
     postComments.remove(1);
 
     expect(postComments.first().get('position')).toBe(1);
+  });
+
+  it('keeps reference when model is moved to different subset collection', () => {
+    const post1 = new Backbone.Model({id: 5});
+    const post2 = new Backbone.Model({id: 10});
+    const comments = new Backbone.Collection([
+      {id: 1, postId: 5, position: 0}
+    ], {comparator: 'position'});
+    new ForeignKeySubsetCollection({
+      parentModel: post1,
+      parent: comments,
+      foreignKeyAttribute: 'postId',
+      parentReferenceAttribute: 'post'
+    });
+    const post2Comments = new ForeignKeySubsetCollection({
+      parentModel: post2,
+      parent: comments,
+      foreignKeyAttribute: 'postId',
+      parentReferenceAttribute: 'post'
+    });
+    const comment = comments.get(1);
+
+    post2Comments.add(comment);
+
+    expect(comment.post).toBe(post2);
   });
 });
