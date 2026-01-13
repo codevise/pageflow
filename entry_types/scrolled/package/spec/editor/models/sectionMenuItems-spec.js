@@ -4,8 +4,9 @@ import {
   InsertSectionAboveMenuItem,
   InsertSectionBelowMenuItem,
   CutoffSectionMenuItem,
-  CopyPermalinkMenuItem
-} from 'editor/models/SectionMenuItems';
+  CopyPermalinkMenuItem,
+  DestroySectionMenuItem
+} from 'editor/models/sectionMenuItems';
 
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
@@ -19,7 +20,9 @@ describe('SectionMenuItems', () => {
     'pageflow_scrolled.editor.section_menu_items.insert_section_below': 'Insert below',
     'pageflow_scrolled.editor.section_menu_items.set_cutoff': 'Set cutoff',
     'pageflow_scrolled.editor.section_menu_items.reset_cutoff': 'Reset cutoff',
-    'pageflow_scrolled.editor.section_menu_items.copy_permalink': 'Copy permalink'
+    'pageflow_scrolled.editor.section_menu_items.copy_permalink': 'Copy permalink',
+    'pageflow_scrolled.editor.destroy_section_menu_item.destroy': 'Delete section',
+    'pageflow_scrolled.editor.destroy_section_menu_item.confirm_destroy': 'Really delete this section?'
   });
 
   const {createEntry} = useEditorGlobals();
@@ -212,10 +215,10 @@ describe('SectionMenuItems', () => {
       expect(menuItem.get('label')).toBe('Copy permalink');
     });
 
-    it('has separated attribute', () => {
+    it('supports separated attribute', () => {
       const entry = createEntry({sections: [{id: 1}]});
       const section = entry.sections.get(1);
-      const menuItem = new CopyPermalinkMenuItem({}, {entry, section});
+      const menuItem = new CopyPermalinkMenuItem({separated: true}, {entry, section});
 
       expect(menuItem.get('separated')).toBe(true);
     });
@@ -231,6 +234,29 @@ describe('SectionMenuItems', () => {
 
       expect(entry.getSectionPermalink).toHaveBeenCalledWith(section);
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith('http://example.com/section');
+    });
+  });
+
+  describe('DestroySectionMenuItem', () => {
+    it('has Delete section label', () => {
+      const entry = createEntry({sections: [{id: 1}]});
+      const section = entry.sections.get(1);
+      const menuItem = new DestroySectionMenuItem({}, {section});
+
+      expect(menuItem.get('label')).toBe('Delete section');
+    });
+
+    it('calls destroyWithDelay on section when confirmed', () => {
+      const entry = createEntry({sections: [{id: 1}]});
+      const section = entry.sections.get(1);
+      section.destroyWithDelay = jest.fn();
+      const menuItem = new DestroySectionMenuItem({}, {section});
+      window.confirm = jest.fn().mockReturnValue(true);
+
+      menuItem.selected();
+
+      expect(window.confirm).toHaveBeenCalledWith('Really delete this section?');
+      expect(section.destroyWithDelay).toHaveBeenCalled();
     });
   });
 });

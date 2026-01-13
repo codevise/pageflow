@@ -102,50 +102,6 @@ describe('EditConfigurationView', () => {
     });
   });
 
-  it('allows overriding destroyModel method', () => {
-    const Model = Backbone.Model.extend({
-      mixins: [configurationContainer(), failureTracking]
-    });
-    const customDestroyMethod = jest.fn();
-    const View = EditConfigurationView.extend({
-      configure(configurationEditor) {
-        configurationEditor.tab('general', function() {
-        });
-      },
-
-      destroyModel: customDestroyMethod
-    });
-
-    const view = new View({model: new Model()}).render();
-    window.confirm = () => true;
-    DropDownButton.find(view).selectMenuItemByName('destroy');
-
-    expect(customDestroyMethod).toHaveBeenCalled();
-    expect(editor.router.navigate).toHaveBeenCalled();
-  });
-
-  it('does not go back if destroyModel returns false', () => {
-    const Model = Backbone.Model.extend({
-      mixins: [configurationContainer(), failureTracking]
-    });
-    const View = EditConfigurationView.extend({
-      configure(configurationEditor) {
-        configurationEditor.tab('general', function() {
-        });
-      },
-
-      destroyModel() {
-        return false;
-      }
-    });
-
-    const view = new View({model: new Model()}).render();
-    window.confirm = () => true;
-    DropDownButton.find(view).selectMenuItemByName('destroy');
-
-    expect(editor.router.navigate).not.toHaveBeenCalled();
-  });
-
   describe('goBack navigation', () => {
     it('navigates to / by default', () => {
       const Model = Backbone.Model.extend({
@@ -322,41 +278,7 @@ describe('EditConfigurationView', () => {
       }
     });
 
-    it('renders a DropDownButtonView', () => {
-      const Model = Backbone.Model.extend({
-        mixins: [configurationContainer(), failureTracking]
-      });
-      const View = EditConfigurationView.extend({
-        configure(configurationEditor) {
-          configurationEditor.tab('general', function() {
-          });
-        }
-      });
-
-      const view = new View({model: new Model()}).render();
-      const dropDownButton = DropDownButton.find(view);
-
-      expect(dropDownButton).toBeDefined();
-    });
-
-    it('renders Delete menu item', () => {
-      const Model = Backbone.Model.extend({
-        mixins: [configurationContainer(), failureTracking]
-      });
-      const View = EditConfigurationView.extend({
-        configure(configurationEditor) {
-          configurationEditor.tab('general', function() {
-          });
-        }
-      });
-
-      const view = new View({model: new Model()}).render();
-      const dropDownButton = DropDownButton.find(view);
-
-      expect(dropDownButton.menuItemLabels()).toContain('Delete');
-    });
-
-    it('uses Actions as button label', () => {
+    it('does not render dropdown by default', () => {
       const Model = Backbone.Model.extend({
         mixins: [configurationContainer(), failureTracking]
       });
@@ -369,32 +291,10 @@ describe('EditConfigurationView', () => {
 
       const view = new View({model: new Model()}).render();
 
-      expect(view.$el.find('.drop_down_button button').text()).toBe('Actions');
+      expect(DropDownButton.findAll(view)).toHaveLength(0);
     });
 
-    it('calls destroyModel when Delete menu item is clicked', () => {
-      const Model = Backbone.Model.extend({
-        mixins: [configurationContainer(), failureTracking]
-      });
-      const destroyModel = jest.fn();
-      const View = EditConfigurationView.extend({
-        configure(configurationEditor) {
-          configurationEditor.tab('general', function() {
-          });
-        },
-        destroyModel
-      });
-
-      const view = new View({model: new Model()}).render();
-      window.confirm = () => true;
-      DropDownButton.find(view).selectMenuItemByName('destroy');
-
-      expect(destroyModel).toHaveBeenCalled();
-    });
-  });
-
-  describe('getActionsMenuItems', () => {
-    it('allows subclass to customize menu items', () => {
+    it('renders dropdown when getActionsMenuItems returns items', () => {
       const Model = Backbone.Model.extend({
         mixins: [configurationContainer(), failureTracking]
       });
@@ -415,84 +315,46 @@ describe('EditConfigurationView', () => {
 
       expect(dropDownButton.menuItemLabels()).toContain('Custom Action');
     });
+
+    it('uses Actions as button label', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const CustomMenuItem = Backbone.Model.extend({
+        selected: jest.fn()
+      });
+      const View = EditConfigurationView.extend({
+        getActionsMenuItems() {
+          return [new CustomMenuItem({name: 'custom', label: 'Custom'})];
+        },
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {
+          });
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+
+      expect(view.$el.find('.drop_down_button button').text()).toBe('Actions');
+    });
   });
 
-  describe('hideDestroyButton', () => {
-    it('shows actions dropdown by default', () => {
+  describe('model destroy', () => {
+    it('navigates back when model is destroyed', () => {
       const Model = Backbone.Model.extend({
         mixins: [configurationContainer(), failureTracking]
       });
       const View = EditConfigurationView.extend({
         configure(configurationEditor) {
-          configurationEditor.tab('general', function() {
-          });
+          configurationEditor.tab('general', function() {});
         }
       });
+      const model = new Model();
 
-      const view = new View({model: new Model()}).render();
+      new View({model}).render();
+      model.trigger('destroy');
 
-      expect(DropDownButton.findAll(view)).toHaveLength(1);
-    });
-
-    it('hides actions dropdown when hideDestroyButton is true', () => {
-      const Model = Backbone.Model.extend({
-        mixins: [configurationContainer(), failureTracking]
-      });
-      const View = EditConfigurationView.extend({
-        hideDestroyButton: true,
-
-        configure(configurationEditor) {
-          configurationEditor.tab('general', function() {
-          });
-        }
-      });
-
-      const view = new View({model: new Model()}).render();
-
-      expect(DropDownButton.findAll(view)).toHaveLength(0);
-    });
-
-    it('supports hideDestroyButton as function', () => {
-      const Model = Backbone.Model.extend({
-        mixins: [configurationContainer(), failureTracking]
-      });
-      const View = EditConfigurationView.extend({
-        hideDestroyButton() {
-          return this.model.get('preventDestroy');
-        },
-
-        configure(configurationEditor) {
-          configurationEditor.tab('general', function() {
-          });
-        }
-      });
-
-      const viewWithDestroy = new View({model: new Model({preventDestroy: false})}).render();
-      const viewWithoutDestroy = new View({model: new Model({preventDestroy: true})}).render();
-
-      expect(DropDownButton.findAll(viewWithDestroy)).toHaveLength(1);
-      expect(DropDownButton.findAll(viewWithoutDestroy)).toHaveLength(0);
-    });
-
-    it('does not prevent destroy event handler when actions dropdown is shown', () => {
-      const Model = Backbone.Model.extend({
-        mixins: [configurationContainer(), failureTracking],
-        destroyWithDelay: jest.fn()
-      });
-      const View = EditConfigurationView.extend({
-        hideDestroyButton: false,
-
-        configure(configurationEditor) {
-          configurationEditor.tab('general', function() {
-          });
-        }
-      });
-
-      const view = new View({model: new Model()}).render();
-      window.confirm = () => true;
-      DropDownButton.find(view).selectMenuItemByName('destroy');
-
-      expect(view.model.destroyWithDelay).toHaveBeenCalled();
+      expect(editor.router.navigate).toHaveBeenCalledWith('/', {trigger: true});
     });
   });
 });

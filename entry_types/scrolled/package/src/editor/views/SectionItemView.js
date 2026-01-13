@@ -5,7 +5,7 @@ import {modelLifecycleTrackingView, DropDownButtonView} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 
 import {SectionThumbnailView} from './SectionThumbnailView'
-import {createSectionMenuItems} from '../models/SectionMenuItems';
+import {createSectionMenuItems} from '../models/sectionMenuItems';
 
 import arrowsIcon from './images/arrows.svg';
 import hiddenIcon from './images/hidden.svg';

@@ -1512,6 +1512,9 @@ de:
             Kapitel einschließlich ALLER enthaltener Seiten wirklich löschen?
 
             Dieser Schritt kann nicht rückgängig gemacht werden.
+        destroy_menu_item:
+          confirm_destroy: Wirklich löschen?
+          destroy: Löschen
         edit_configuration:
           actions: Aktionen
           back: "Zurück"

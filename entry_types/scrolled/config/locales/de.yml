@@ -1133,10 +1133,6 @@ de:
             inline_help: |-
               Kapitel kann als Link-Ziel verwendet werden, erscheint
               allerdings nicht in der Navigationsleiste.
-        confirm_destroy: |-
-          Kapitel einschließlich ALLER enthaltener Abschnitte wirklich löschen?
-
-          Dieser Schritt kann nicht rückgängig gemacht werden.
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
         tabs:
           chapter: Kapitel
@@ -1149,6 +1145,18 @@ de:
         hint: Ziehe ein Rechteck, um den wichtigsten Bereich des Bildes zu markieren.
         reset: Zurücksetzen
         save: Speichern
+      destroy_chapter_menu_item:
+        confirm_destroy: |-
+          Kapitel inklusive ALLER Abschnitte wirklich löschen?
+
+          Diese Aktion kann nicht rückgängig gemacht werden.
+        destroy: Kapitel löschen
+      destroy_content_element_menu_item:
+        confirm_destroy: Element wirklich löschen?
+        destroy: Element löschen
+      destroy_section_menu_item:
+        confirm_destroy: Abschnitt inklusive aller Elemente wirklich löschen?
+        destroy: Abschnitt löschen
       edit_section:
         motif_area_info_text: Markiere den wichtigsten Teil des Hintergrunds, der beim Erreichen des Abschnitts sichtbar und nicht von anderen Elementen überdeckt sein soll.
         attributes:

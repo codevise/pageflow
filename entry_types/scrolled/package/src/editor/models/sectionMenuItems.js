@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
+import {DestroyMenuItem} from 'pageflow/editor';
 
 export const HideShowSectionMenuItem = Backbone.Model.extend({
   initialize(attributes, {section}) {
@@ -101,15 +102,28 @@ export const CopyPermalinkMenuItem = Backbone.Model.extend({
   }
 });
 
+export const DestroySectionMenuItem = DestroyMenuItem.extend({
+  translationKeyPrefix: 'pageflow_scrolled.editor.destroy_section_menu_item',
+
+  initialize(attributes, options) {
+    DestroyMenuItem.prototype.initialize.call(
+      this,
+      attributes,
+      {destroyedModel: options.section}
+    );
+  }
+});
+
 export function createSectionMenuItems({entry, section}) {
   return [
     new DuplicateSectionMenuItem({}, {section}),
     new InsertSectionAboveMenuItem({}, {section}),
     new InsertSectionBelowMenuItem({}, {section}),
-    new CopyPermalinkMenuItem({separated: true}, {entry, section}),
-    new HideShowSectionMenuItem({separated: true}, {section}),
     ...(entry.cutoff.isEnabled() ?
         [new CutoffSectionMenuItem({}, {cutoff: entry.cutoff, section})] :
-        [])
+        []),
+    new CopyPermalinkMenuItem({separated: true}, {entry, section}),
+    new HideShowSectionMenuItem({separated: true}, {section}),
+    new DestroySectionMenuItem({}, {section})
   ];
 }

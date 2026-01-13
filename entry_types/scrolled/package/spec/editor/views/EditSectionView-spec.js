@@ -262,7 +262,7 @@ describe('EditSectionView', () => {
       'pageflow_scrolled.editor.section_menu_items.insert_section_below': 'Insert below',
       'pageflow_scrolled.editor.section_menu_items.hide': 'Hide',
       'pageflow_scrolled.editor.section_menu_items.copy_permalink': 'Copy permalink',
-      'pageflow_scrolled.editor.edit_section.destroy': 'Delete section'
+      'pageflow_scrolled.editor.destroy_section_menu_item.destroy': 'Delete section'
     });
 
     it('includes section-specific menu items', () => {

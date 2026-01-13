@@ -1505,6 +1505,9 @@ en:
             Really delete this chapter including ALL its pages?
 
             This operation cannot be undone.
+        destroy_menu_item:
+          confirm_destroy: Really delete this record? This action cannot be undone.
+          destroy: Delete
         edit_configuration:
           actions: Actions
           back: "Back"

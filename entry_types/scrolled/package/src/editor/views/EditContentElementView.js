@@ -1,5 +1,7 @@
 import {EditConfigurationView} from 'pageflow/editor';
 
+import {DestroyContentElementMenuItem} from '../models/contentElementMenuItems';
+
 export const EditContentElementView = EditConfigurationView.extend({
   translationKeyPrefix() {
     return `pageflow_scrolled.editor.content_elements.${this.model.get('typeName')}`
@@ -13,18 +15,13 @@ export const EditContentElementView = EditConfigurationView.extend({
                                    contentElement: this.model});
   },
 
-  destroyModel() {
-    const contentElementType =
-      this.options.editor.contentElementTypes.findByTypeName(this.model.get('typeName'));
-
-    if (contentElementType.handleDestroy) {
-      const result = contentElementType.handleDestroy(this.model);
-
-      if (result === false) {
-        return false;
-      }
-    }
-
-    this.options.entry.deleteContentElement(this.model);
+  getActionsMenuItems() {
+    return [
+      new DestroyContentElementMenuItem({}, {
+        contentElement: this.model,
+        entry: this.options.entry,
+        editor: this.options.editor
+      })
+    ];
   }
 });

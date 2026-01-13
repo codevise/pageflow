@@ -26,20 +26,11 @@ import {editor} from '../base';
  *
  * * `<translationKeyPrefix>.back` (optional): Back button label.
  *
- * * `<translationKeyPrefix>.destroy` (optional): Destroy button
- *   label.
- *
- * * `<translationKeyPrefix>.confirm_destroy` (optional): Confirm
- *   message displayed before destroying.
- *
  * * `<translationKeyPrefix>.save_error` (optional): Header of the
  *   failure message that is displayed if the model cannot be saved.
  *
  * * `<translationKeyPrefix>.retry` (optional): Label of the retry
  *   button of the failure message.
- *
- * Override the `destroyModel` method to customize destroy behavior.
- * Calls `destroyWithDelay` by default.
  *
  * Override the `goBackPath` property or method to customize the path
  * that the back button navigates to. Defaults to `/`.
@@ -47,22 +38,22 @@ import {editor} from '../base';
  * Override the `defaultTab` property or method to set the initially
  * selected tab.
  *
- * Set the `hideDestroyButton` property to `true` to hide the destroy
- * button.
+ * Override the `getActionsMenuItems` method to add menu items to the
+ * actions dropdown.
  *
  * @param {Object} options
  * @param {Backbone.Model} options.model -
- *   Model including the {@link configurationContainer},
- *   {@link failureTracking} and {@link delayedDestroying} mixins.
+ *   Model including the {@link configurationContainer} and
+ *   {@link failureTracking} mixins.
  *
  * @since 15.1
  */
 export const EditConfigurationView = Marionette.Layout.extend({
   className: 'edit_configuration_view',
 
-  template: ({t, backLabel, hideDestroyButton}) => `
+  template: ({t, backLabel}) => `
     <a class="back">${backLabel}</a>
-    ${hideDestroyButton ? '' : '<div class="actions_drop_down_button"></div>'}
+    <div class="actions_drop_down_button"></div>
 
     <div class="failure">
       <p>${t('save_error')}</p>
@@ -76,8 +67,7 @@ export const EditConfigurationView = Marionette.Layout.extend({
   serializeData() {
     return {
       t: key => this.t(key),
-      backLabel: this.getBackLabel(),
-      hideDestroyButton: _.result(this, 'hideDestroyButton')
+      backLabel: this.getBackLabel()
     };
   },
 
@@ -89,6 +79,10 @@ export const EditConfigurationView = Marionette.Layout.extend({
 
   events: {
     'click a.back': 'goBack'
+  },
+
+  initialize() {
+    this.listenTo(this.model, 'destroy', this.goBack);
   },
 
   onRender: function() {
@@ -126,37 +120,11 @@ export const EditConfigurationView = Marionette.Layout.extend({
   },
 
   getActionsMenuItems() {
-    if (_.result(this, 'hideDestroyButton')) {
-      return [];
-    }
-    return [this.getDestroyMenuItem()];
-  },
-
-  getDestroyMenuItem({separated} = {}) {
-    return new DestroyMenuItem({
-      name: 'destroy',
-      label: this.t('destroy'),
-      separated,
-      destructive: true
-    }, {
-      view: this
-    });
+    return [];
   },
 
   onShow: function() {
     this.configurationEditor.refreshScroller();
-  },
-
-  destroy: function() {
-    if (window.confirm(this.t('confirm_destroy'))) {
-      if (this.destroyModel() !== false) {
-        this.goBack();
-      }
-    }
-  },
-
-  destroyModel() {
-    this.model.destroyWithDelay();
   },
 
   goBack: function() {
@@ -174,15 +142,5 @@ export const EditConfigurationView = Marionette.Layout.extend({
     return I18n.t(`${translationKeyPrefix}.${suffix}`, {
       defaultValue: I18n.t(`pageflow.editor.views.edit_configuration.${suffix}`)
     });
-  }
-});
-
-const DestroyMenuItem = Backbone.Model.extend({
-  initialize(attributes, options) {
-    this.options = options;
-  },
-
-  selected() {
-    this.options.view.destroy();
   }
 });

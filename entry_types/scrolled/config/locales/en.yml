@@ -1117,10 +1117,6 @@ en:
             inline_help: |-
               Chapter can be used as link destination but does not
               appear in the navigation bar.
-        confirm_destroy: |-
-          Really delete this chapter including ALL its sections?
-
-          This operation cannot be undone.
         save_error: There was an error while saving this chapter.
         tabs:
           chapter: Chapter
@@ -1133,6 +1129,18 @@ en:
         hint: Drag to select the most important part of the image.
         reset: Reset
         save: Save
+      destroy_chapter_menu_item:
+        confirm_destroy: |-
+          Really delete this chapter including ALL its sections?
+
+          This operation cannot be undone.
+        destroy: Delete chapter
+      destroy_content_element_menu_item:
+        confirm_destroy: Really delete this element?
+        destroy: Delete element
+      destroy_section_menu_item:
+        confirm_destroy: Really delete this section including all its elements?
+        destroy: Delete section
       edit_section:
         motif_area_info_text: Mark the most important part of the backdrop that should be visible and unobstructed when reaching the section.
         attributes:

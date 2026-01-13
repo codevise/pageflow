@@ -15,7 +15,6 @@ const i18nPrefix = 'pageflow_scrolled.editor.edit_section_paddings';
 
 export const EditSectionPaddingsView = EditConfigurationView.extend({
   translationKeyPrefix: i18nPrefix,
-  hideDestroyButton: true,
 
   className: styles.view,
 
