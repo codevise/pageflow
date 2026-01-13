@@ -50,7 +50,41 @@ describe('SidebarEditAreaView', () => {
       expect(areas.length).toBe(1);
       expect(areas.get(1)).toBeUndefined();
     });
+  });
 
+  describe('goBack', () => {
+    it('posts command to deselect area', () => {
+      const entry = createEntry({
+        imageFiles: [{perma_id: 10}],
+        contentElements: [
+          {
+            id: 1,
+            typeName: 'hotspots',
+            configuration: {
+              image: 10,
+              areas: [{id: 1}]
+            }
+          }
+        ]
+      });
+      const contentElement = entry.contentElements.get(1);
+      const areas = AreasCollection.forContentElement(contentElement);
+      const view = new SidebarEditAreaView({
+        model: areas.get(1),
+        collection: areas,
+        entry,
+        contentElement
+      });
+      contentElement.postCommand = jest.fn();
+
+      view.render();
+      view.goBack();
+
+      expect(contentElement.postCommand).toHaveBeenCalledWith({
+        type: 'SET_ACTIVE_AREA',
+        index: -1
+      });
+    });
   });
 
   it('renders portrait tab if portrait image is present', () => {
