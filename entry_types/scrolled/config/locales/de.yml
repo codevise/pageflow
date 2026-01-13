@@ -1157,8 +1157,10 @@ de:
       destroy_content_element_menu_item:
         confirm_destroy: Element wirklich löschen?
         destroy: Element löschen
+        selection_label: Auswahl löschen
       duplicate_content_element_menu_item:
         label: Element duplizieren
+        selection_label: Auswahl duplizieren
       destroy_section_menu_item:
         confirm_destroy: Abschnitt inklusive aller Elemente wirklich löschen?
         destroy: Abschnitt löschen
@@ -1292,7 +1294,7 @@ de:
           scrollOver: Überlagern
       section_menu_items:
         copy_permalink: Permalink kopieren
-        duplicate: Duplizieren
+        duplicate: Abschnitt duplizieren
         hide: Außerhalb des Editors ausblenden
         insert_section_above: Abschnitt oberhalb einfügen
         insert_section_below: Abschnitt unterhalb einfügen

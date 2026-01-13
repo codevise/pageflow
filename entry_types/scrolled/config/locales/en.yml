@@ -1141,8 +1141,10 @@ en:
       destroy_content_element_menu_item:
         confirm_destroy: Really delete this element?
         destroy: Delete element
+        selection_label: Delete selection
       duplicate_content_element_menu_item:
         label: Duplicate element
+        selection_label: Duplicate selection
       destroy_section_menu_item:
         confirm_destroy: Really delete this section including all its elements?
         destroy: Delete section
@@ -1276,7 +1278,7 @@ en:
           scrollOver: Scroll over
       section_menu_items:
         copy_permalink: Copy permalink
-        duplicate: Duplicate
+        duplicate: Duplicate section
         hide: Hide outside of the editor
         insert_section_above: Insert section above
         insert_section_below: Insert section below
