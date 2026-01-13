@@ -263,6 +263,42 @@ describe('EditConfigurationView', () => {
     });
   });
 
+  describe('getConfigurationModel', () => {
+    it('uses model.configuration by default', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {});
+        }
+      });
+      const model = new Model();
+
+      const view = new View({model}).render();
+
+      expect(view.configurationEditor.model).toBe(model.configuration);
+    });
+
+    it('can be overridden to use model directly', () => {
+      const Model = Backbone.Model.extend({});
+      const View = EditConfigurationView.extend({
+        getConfigurationModel() {
+          return this.model;
+        },
+
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {});
+        }
+      });
+      const model = new Model();
+
+      const view = new View({model}).render();
+
+      expect(view.configurationEditor.model).toBe(model);
+    });
+  });
+
   describe('actions dropdown', () => {
     support.useFakeTranslations({
       pageflow: {

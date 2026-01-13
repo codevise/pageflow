@@ -91,7 +91,7 @@ export const EditConfigurationView = Marionette.Layout.extend({
     this.configurationEditor = new ConfigurationEditorView({
       tabTranslationKeyPrefix: `${translationKeyPrefix}.tabs`,
       attributeTranslationKeyPrefixes: [`${translationKeyPrefix}.attributes`],
-      model: this.model.configuration,
+      model: this.getConfigurationModel(),
       tab: _.result(this, 'defaultTab')
     });
 
@@ -130,6 +130,10 @@ export const EditConfigurationView = Marionette.Layout.extend({
   goBack: function() {
     const path = _.result(this, 'goBackPath') || '/';
     editor.navigate(path, {trigger: true});
+  },
+
+  getConfigurationModel() {
+    return this.model.configuration;
   },
 
   getBackLabel() {
