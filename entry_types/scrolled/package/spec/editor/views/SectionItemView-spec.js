@@ -9,10 +9,10 @@ describe('SectionItemView', () => {
   useFakeXhr();
 
   useFakeTranslations({
-    'pageflow_scrolled.editor.section_item.hide': 'Hide',
-    'pageflow_scrolled.editor.section_item.show': 'Show',
-    'pageflow_scrolled.editor.section_item.set_cutoff': 'Set cutoff point',
-    'pageflow_scrolled.editor.section_item.reset_cutoff': 'Remove cutoff point',
+    'pageflow_scrolled.editor.section_menu_items.hide': 'Hide',
+    'pageflow_scrolled.editor.section_menu_items.show': 'Show',
+    'pageflow_scrolled.editor.section_menu_items.set_cutoff': 'Set cutoff point',
+    'pageflow_scrolled.editor.section_menu_items.reset_cutoff': 'Remove cutoff point',
     'pageflow_scrolled.editor.section_item.cutoff': 'Cutoff point',
   });
 

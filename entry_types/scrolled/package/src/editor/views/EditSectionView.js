@@ -10,6 +10,7 @@ import {EditMotifAreaInputView} from './inputs/EditMotifAreaInputView';
 import {EffectListInputView} from './inputs/EffectListInputView';
 import {SectionPaddingsInputView} from './inputs/SectionPaddingsInputView';
 import {InlineFileRightsMenuItem} from '../models/InlineFileRightsMenuItem'
+import {createSectionMenuItems} from '../models/SectionMenuItems';
 import I18n from 'i18n-js';
 import {features} from 'pageflow/frontend';
 
@@ -17,6 +18,13 @@ import {EditMotifAreaDialogView} from './EditMotifAreaDialogView';
 
 export const EditSectionView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_section',
+
+  getActionsMenuItems() {
+    return [
+      ...createSectionMenuItems({entry: this.options.entry, section: this.model}),
+      this.getDestroyMenuItem()
+    ];
+  },
 
   configure: function(configurationEditor) {
     const entry = this.options.entry;

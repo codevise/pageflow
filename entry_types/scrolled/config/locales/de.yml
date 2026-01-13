@@ -1265,11 +1265,9 @@ de:
         header: Element einfügen
       no_options: Keine Optionen verfügbar
       section_item:
+        cutoff: Paywall Grenze
         drag_hint: Ziehen, um den Abschnitt zu verschieben
-        duplicate: Duplizieren
-        insert_section_above: Abschnitt oberhalb einfügen
-        insert_section_below: Abschnitt unterhalb einfügen
-        copy_permalink: Permalink kopieren
+        hidden: Nur im Editor sichtbar
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
         transitions:
           beforeAfter: Statische Hintergründe
@@ -1278,9 +1276,15 @@ de:
           reveal: Freilegen
           scroll: Aus-/Einscrollen
           scrollOver: Überlagern
+      section_menu_items:
+        copy_permalink: Permalink kopieren
+        duplicate: Duplizieren
         hide: Außerhalb des Editors ausblenden
+        insert_section_above: Abschnitt oberhalb einfügen
+        insert_section_below: Abschnitt unterhalb einfügen
+        reset_cutoff: Paywall Grenze entfernen
+        set_cutoff: Paywall Grenze oberhalb setzen
         show: Außerhalb des Editors einblenden
-        hidden: Nur im Editor sichtbar
       section_padding_visualization:
         intersecting_auto: "Darstellung des dynamischen Abstands, der sich an die Größe des Motivbereichs anpasst, um Überlappungen von Text und Motiv zu vermeiden"
         intersecting_manual: "Darstellung des manuell definierten Abstands, der bei Änderung der Fenstergröße konstant bleibt"

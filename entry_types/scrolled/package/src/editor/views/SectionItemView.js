@@ -5,6 +5,7 @@ import {modelLifecycleTrackingView, DropDownButtonView} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 
 import {SectionThumbnailView} from './SectionThumbnailView'
+import {createSectionMenuItems} from '../models/SectionMenuItems';
 
 import arrowsIcon from './images/arrows.svg';
 import hiddenIcon from './images/hidden.svg';
@@ -112,49 +113,9 @@ export const SectionItemView = Marionette.ItemView.extend({
       entry: this.options.entry
     }));
 
-    const dropDownMenuItems = new Backbone.Collection();
-
-    dropDownMenuItems.add(new MenuItem({
-      label: I18n.t('pageflow_scrolled.editor.section_item.duplicate')
-    }, {
-      selected: () =>
-        this.model.chapter.duplicateSection(this.model)
-    }));
-
-    dropDownMenuItems.add(new MenuItem({
-      label: I18n.t('pageflow_scrolled.editor.section_item.insert_section_above')
-    }, {
-      selected: () =>
-        this.model.chapter.insertSection({before: this.model})
-    }));
-
-    dropDownMenuItems.add(new MenuItem({
-      label: I18n.t('pageflow_scrolled.editor.section_item.insert_section_below')
-    }, {
-      selected: () =>
-        this.model.chapter.insertSection({after: this.model})
-    }));
-
-    dropDownMenuItems.add(new HideShowMenuItem({}, {
-      section: this.model
-    }));
-
-    if (this.options.entry.cutoff.isEnabled()) {
-      dropDownMenuItems.add(new CutoffMenuItem({}, {
-        cutoff: this.options.entry.cutoff,
-        section: this.model
-      }));
-    }
-
-    dropDownMenuItems.add(new MenuItem({
-      label: I18n.t('pageflow_scrolled.editor.section_item.copy_permalink'),
-      separated: true
-    }, {
-      selected: () =>
-        navigator.clipboard.writeText(
-          this.options.entry.getSectionPermalink(this.model)
-        )
-    }));
+    const dropDownMenuItems = new Backbone.Collection(
+      createSectionMenuItems({entry: this.options.entry, section: this.model})
+    );
 
     this.appendSubview(new DropDownButtonView({
       items: dropDownMenuItems,
@@ -192,68 +153,5 @@ export const SectionItemView = Marionette.ItemView.extend({
 
   updateHidden() {
     this.$el.toggleClass(styles.hidden, !!this.model.configuration.get('hidden'));
-  }
-});
-
-const MenuItem = Backbone.Model.extend({
-  initialize: function(attributes, options) {
-    this.options = options;
-  },
-
-  selected: function() {
-    this.options.selected();
-  }
-});
-
-const CutoffMenuItem = Backbone.Model.extend({
-  initialize: function(attributes, {cutoff, section}) {
-    this.cutoff = cutoff;
-    this.section = section;
-
-    this.listenTo(cutoff, 'change', this.update);
-    this.update();
-  },
-
-  selected() {
-    if (this.cutoff.isAtSection(this.section)) {
-      this.cutoff.reset();
-    }
-    else {
-      this.cutoff.setSection(this.section);
-    }
-  },
-
-  update() {
-    this.set('label', I18n.t(
-      this.cutoff.isAtSection(this.section) ?
-      'pageflow_scrolled.editor.section_item.reset_cutoff' :
-      'pageflow_scrolled.editor.section_item.set_cutoff'
-    ));
-  }
-});
-
-const HideShowMenuItem = Backbone.Model.extend({
-  initialize: function(attributes, {section}) {
-    this.section = section;
-
-    this.listenTo(section.configuration, 'change:hidden', this.update);
-    this.update();
-  },
-
-  selected() {
-    if (this.section.configuration.get('hidden')) {
-      this.section.configuration.unset('hidden')
-    }
-    else {
-      this.section.configuration.set('hidden', true)
-    }
-  },
-
-  update() {
-    this.set('label', I18n.t(
-      this.section.configuration.get('hidden') ?
-      'pageflow_scrolled.editor.section_item.show' :
-      'pageflow_scrolled.editor.section_item.hide'
-    ));
   }
 });

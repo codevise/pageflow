@@ -1249,11 +1249,9 @@ en:
         header: Insert element
       no_options: No options available
       section_item:
+        cutoff: Paywall cutoff
         drag_hint: Drag to move section
-        duplicate: Duplicate
-        insert_section_above: Insert section above
-        insert_section_below: Insert section below
-        copy_permalink: Copy permalink
+        hidden: Only visible in editor
         save_error: There was an error while saving this section.
         transitions:
           beforeAfter: Static Backgrounds
@@ -1262,9 +1260,15 @@ en:
           reveal: Reveal
           scroll: Scroll
           scrollOver: Scroll over
+      section_menu_items:
+        copy_permalink: Copy permalink
+        duplicate: Duplicate
         hide: Hide outside of the editor
+        insert_section_above: Insert section above
+        insert_section_below: Insert section below
+        reset_cutoff: Remove paywall cutoff
+        set_cutoff: Set paywall cutoff above
         show: Show outside of the editor
-        hidden: Only visible in editor
       section_padding_visualization:
         intersecting_auto: "Visualization of dynamic padding that adjusts to the motif area size to prevent text from overlapping the motif"
         intersecting_manual: "Visualization of manually defined padding that stays constant as viewport size changes"
