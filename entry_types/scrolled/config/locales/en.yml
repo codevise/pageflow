@@ -436,9 +436,9 @@ en:
                 Turn cards with a flip animation and offer
                 additional content on the backside of the card.
           back: Back
-          destroy: Delete
+          confirm_destroy: Are you sure you want to delete this teaser?
+          destroy: Delete teaser
           description: A list of tiles with thumbnail and caption
-          confirm_delete_item: Are you sure you want to delete this teaser?
           items: Items
           name: Teasers
           tabs:
@@ -577,8 +577,8 @@ en:
             general: Image Gallery
           edit_item:
             back: Back
-            destroy: Delete
-            confirm_delete_link: Are you sure you want to delete this image gallery item?
+            confirm_destroy: Are you sure you want to delete this image gallery item?
+            destroy: Delete item
             attributes:
               image:
                 label: Image
@@ -878,8 +878,8 @@ en:
         hotspots:
           edit_area:
             back: Back
-            destroy: Delete
-            confirm_delete_link: Are you sure you want to delete this area?
+            confirm_destroy: Are you sure you want to delete this area?
+            destroy: Delete area
             tabs:
               area: Hotspot Area
               portrait: Portrait

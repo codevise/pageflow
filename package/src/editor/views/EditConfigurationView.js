@@ -81,8 +81,10 @@ export const EditConfigurationView = Marionette.Layout.extend({
     'click a.back': 'goBack'
   },
 
+  destroyEvent: 'destroy',
+
   initialize() {
-    this.listenTo(this.model, 'destroy', this.goBack);
+    this.listenTo(this.model, _.result(this, 'destroyEvent'), this.goBack);
   },
 
   onRender: function() {

@@ -1,40 +1,34 @@
-import {ConfigurationEditorView} from 'pageflow/ui';
-import {editor, FileInputView} from 'pageflow/editor';
-import Marionette from 'backbone.marionette';
-import I18n from 'i18n-js';
+import {EditConfigurationView, DestroyMenuItem, FileInputView} from 'pageflow/editor';
 
-export const SidebarEditItemView = Marionette.Layout.extend({
-  template: (data) => `
-    <a class="back">${I18n.t('pageflow_scrolled.editor.content_elements.imageGallery.edit_item.back')}</a>
-    <a class="destroy">${I18n.t('pageflow_scrolled.editor.content_elements.imageGallery.edit_item.destroy')}</a>
+export const SidebarEditItemView = EditConfigurationView.extend({
+  translationKeyPrefix: 'pageflow_scrolled.editor.content_elements.imageGallery.edit_item',
 
-    <div class='form_container'></div>
-  `,
+  destroyEvent: 'remove',
 
-  regions: {
-    formContainer: '.form_container',
+  getConfigurationModel() {
+    return this.model;
   },
 
-  events: {
-    'click a.back': 'goBack',
-    'click a.destroy': 'destroyLink'
+  goBackPath() {
+    return `/scrolled/content_elements/${this.options.contentElement.get('id')}`;
   },
 
-  onRender: function () {
-    const options = this.options;
+  getActionsMenuItems() {
+    return [new DestroyItemMenuItem({}, {
+      collection: this.options.collection,
+      model: this.model
+    })];
+  },
 
-    const configurationEditor = new ConfigurationEditorView({
-      model: this.model,
-      attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.content_elements.imageGallery.edit_item.attributes'],
-      tabTranslationKeyPrefix: 'pageflow_scrolled.editor.content_elements.imageGallery.edit_item.tabs',
-    });
+  configure(configurationEditor) {
+    const contentElement = this.options.contentElement;
 
     configurationEditor.tab('item', function() {
       this.input('image', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'imageGalleryItem',
         fileSelectionHandlerOptions: {
-          contentElementId: options.contentElement.get('id')
+          contentElementId: contentElement.get('id')
         },
         positioning: false
       });
@@ -42,23 +36,18 @@ export const SidebarEditItemView = Marionette.Layout.extend({
         collection: 'image_files',
         fileSelectionHandler: 'imageGalleryItem',
         fileSelectionHandlerOptions: {
-          contentElementId: options.contentElement.get('id')
+          contentElementId: contentElement.get('id')
         },
         positioning: false
       });
     });
+  }
+});
 
-    this.formContainer.show(configurationEditor);
-  },
+const DestroyItemMenuItem = DestroyMenuItem.extend({
+  translationKeyPrefix: 'pageflow_scrolled.editor.content_elements.imageGallery.edit_item',
 
-  goBack: function() {
-    editor.navigate(`/scrolled/content_elements/${this.options.contentElement.get('id')}`, {trigger: true});
-  },
-
-  destroyLink: function () {
-    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.imageGallery.edit_item.confirm_delete_link'))) {
-      this.options.collection.remove(this.model);
-      this.goBack();
-    }
+  destroyModel() {
+    this.options.collection.remove(this.options.model);
   }
 });

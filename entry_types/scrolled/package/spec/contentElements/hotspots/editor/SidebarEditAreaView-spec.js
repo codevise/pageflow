@@ -1,7 +1,8 @@
 import {SidebarEditAreaView} from 'contentElements/hotspots/editor/SidebarEditAreaView';
 import {AreasCollection} from 'contentElements/hotspots/editor/models/AreasCollection';
 
-import {ConfigurationEditor, Tabs, renderBackboneView as render, useFakeTranslations} from 'pageflow/testHelpers';
+import {editor} from 'pageflow/editor';
+import {ConfigurationEditor, DropDownButton, Tabs, renderBackboneView as render, useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals, useFakeXhr} from 'support';
 import userEvent from '@testing-library/user-event';
 
@@ -9,9 +10,47 @@ describe('SidebarEditAreaView', () => {
   useFakeXhr();
   const {createEntry} = useEditorGlobals();
 
+  beforeEach(() => {
+    editor.router = {navigate: jest.fn()};
+  });
+
   useFakeTranslations({
     'pageflow_scrolled.editor.content_elements.hotspots.edit_area.tabs.area': 'Area',
     'pageflow_scrolled.editor.content_elements.hotspots.edit_area.tabs.portrait': 'Portrait'
+  });
+
+  describe('destroy action', () => {
+    it('removes model from collection when confirmed', () => {
+      const entry = createEntry({
+        imageFiles: [{perma_id: 10}],
+        contentElements: [
+          {
+            id: 1,
+            typeName: 'hotspots',
+            configuration: {
+              image: 10,
+              areas: [{id: 1}, {id: 2}]
+            }
+          }
+        ]
+      });
+      const contentElement = entry.contentElements.get(1);
+      const areas = AreasCollection.forContentElement(contentElement);
+      const view = new SidebarEditAreaView({
+        model: areas.get(1),
+        collection: areas,
+        entry,
+        contentElement
+      });
+      window.confirm = jest.fn(() => true);
+
+      view.render();
+      DropDownButton.find(view).selectMenuItemByName('destroy');
+
+      expect(areas.length).toBe(1);
+      expect(areas.get(1)).toBeUndefined();
+    });
+
   });
 
   it('renders portrait tab if portrait image is present', () => {

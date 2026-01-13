@@ -63,11 +63,11 @@ export function modelLifecycleTrackingView({classNames}) {
     },
 
     updateFailIndicator: function() {
-      if (classNames.failed) {
+      if (classNames.failed && this.model.isFailed) {
         this.$el.toggleClass(classNames.failed, this.model.isFailed());
       }
 
-      if (classNames.failureMessage) {
+      if (classNames.failureMessage && this.model.getFailureMessage) {
         this.$el.find(`.${classNames.failureMessage}`).text(this.model.getFailureMessage());
       }
     }

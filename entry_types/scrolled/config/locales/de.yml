@@ -445,9 +445,9 @@ de:
                 Karten mit einer Flip-Animation drehen und weitere
                 Inhalte auf der Rückseite der Karte anbieten.
           back: Zurück
-          destroy: Löschen
+          confirm_destroy: Soll der Teaser wirklich gelöscht werden?
+          destroy: Teaser löschen
           description: Liste von Kacheln mit Bild und Beschriftung
-          confirm_delete_item: Soll der Teaser wirklich gelöscht werden?
           items: Einträge
           name: Teaser-Liste
           tabs:
@@ -591,8 +591,8 @@ de:
             general: Bildergalerie
           edit_item:
             back: Zurück
-            destroy: Löschen
-            confirm_delete_link: Soll der Bildergalerie-Eintrag wirklich gelöscht werden?
+            confirm_destroy: Soll der Bildergalerie-Eintrag wirklich gelöscht werden?
+            destroy: Eintrag löschen
             attributes:
               image:
                 label: Bild
@@ -893,8 +893,8 @@ de:
         hotspots:
           edit_area:
             back: Zurück
-            destroy: Löschen
-            confirm_delete_link: Soll der Hotspot-Bereich wirklich gelöscht werden?
+            confirm_destroy: Soll der Hotspot-Bereich wirklich gelöscht werden?
+            destroy: Hotspot-Bereich löschen
             tabs:
               area: Hotspot-Bereich
               portrait: Hochkant

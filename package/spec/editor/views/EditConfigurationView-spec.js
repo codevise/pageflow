@@ -392,5 +392,40 @@ describe('EditConfigurationView', () => {
 
       expect(editor.router.navigate).toHaveBeenCalledWith('/', {trigger: true});
     });
+
+    it('does not navigate back by default when model is removed from collection', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {});
+        }
+      });
+      const model = new Model();
+
+      new View({model}).render();
+      model.trigger('remove');
+
+      expect(editor.router.navigate).not.toHaveBeenCalled();
+    });
+
+    it('navigates back when model is removed if destroyEvent is set to remove', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const View = EditConfigurationView.extend({
+        destroyEvent: 'remove',
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {});
+        }
+      });
+      const model = new Model();
+
+      new View({model}).render();
+      model.trigger('remove');
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/', {trigger: true});
+    });
   });
 });

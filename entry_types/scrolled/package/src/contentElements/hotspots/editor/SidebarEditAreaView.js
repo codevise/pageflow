@@ -1,41 +1,39 @@
-import {ConfigurationEditorView, SelectInputView, SliderInputView, SeparatorView} from 'pageflow/ui';
-import {editor, FileInputView} from 'pageflow/editor';
-import Marionette from 'backbone.marionette';
-import I18n from 'i18n-js';
+import {SelectInputView, SliderInputView, SeparatorView} from 'pageflow/ui';
+import {EditConfigurationView, DestroyMenuItem, FileInputView} from 'pageflow/editor';
 
 import {AreaInputView} from './AreaInputView';
 
 import styles from './SidebarEditAreaView.module.css';
 
-export const SidebarEditAreaView = Marionette.Layout.extend({
-  template: (data) => `
-    <a class="back">${I18n.t('pageflow_scrolled.editor.content_elements.hotspots.edit_area.back')}</a>
-    <a class="destroy">${I18n.t('pageflow_scrolled.editor.content_elements.hotspots.edit_area.destroy')}</a>
+export const SidebarEditAreaView = EditConfigurationView.extend({
+  translationKeyPrefix: 'pageflow_scrolled.editor.content_elements.hotspots.edit_area',
 
-    <div class='form_container'></div>
-  `,
+  className: 'edit_configuration_view ' + styles.view,
 
-  className: styles.view,
+  destroyEvent: 'remove',
 
-  regions: {
-    formContainer: '.form_container',
+  getConfigurationModel() {
+    return this.model;
   },
 
-  events: {
-    'click a.back': 'goBack',
-    'click a.destroy': 'destroyLink'
+  defaultTab() {
+    return this.options.tab ||
+           (this.options.entry.get('emulation_mode') === 'phone' ? 'portrait' : 'area');
   },
 
-  onRender: function () {
+  goBackPath() {
+    return `/scrolled/content_elements/${this.options.contentElement.get('id')}`;
+  },
+
+  getActionsMenuItems() {
+    return [new DestroyAreaMenuItem({}, {
+      collection: this.options.collection,
+      model: this.model
+    })];
+  },
+
+  configure(configurationEditor) {
     const options = this.options;
-
-    const configurationEditor = new ConfigurationEditorView({
-      model: this.model,
-      attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.content_elements.hotspots.edit_area.attributes'],
-      tabTranslationKeyPrefix: 'pageflow_scrolled.editor.content_elements.hotspots.edit_area.tabs',
-      tab: options.tab || (options.entry.get('emulation_mode') === 'phone' ? 'portrait' : 'area')
-    });
-
     const file = options.contentElement.configuration.getImageFile('image');
     const portraitFile = options.contentElement.configuration.getImageFile('portraitImage');
     const panZoomEnabled = options.contentElement.configuration.get('enablePanZoom') !== 'never';
@@ -147,18 +145,13 @@ export const SidebarEditAreaView = Marionette.Layout.extend({
         });
       });
     }
+  }
+});
 
-    this.formContainer.show(configurationEditor);
-  },
+const DestroyAreaMenuItem = DestroyMenuItem.extend({
+  translationKeyPrefix: 'pageflow_scrolled.editor.content_elements.hotspots.edit_area',
 
-  goBack: function() {
-    editor.navigate(`/scrolled/content_elements/${this.options.contentElement.get('id')}`, {trigger: true});
-  },
-
-  destroyLink: function () {
-    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.hotspots.edit_area.confirm_delete_link'))) {
-      this.options.collection.remove(this.model);
-      this.goBack();
-    }
-  },
+  destroyModel() {
+    this.options.collection.remove(this.options.model);
+  }
 });
