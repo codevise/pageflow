@@ -1141,6 +1141,8 @@ en:
       destroy_content_element_menu_item:
         confirm_destroy: Really delete this element?
         destroy: Delete element
+      duplicate_content_element_menu_item:
+        label: Duplicate element
       destroy_section_menu_item:
         confirm_destroy: Really delete this section including all its elements?
         destroy: Delete section

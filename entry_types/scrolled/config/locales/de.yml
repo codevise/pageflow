@@ -1157,6 +1157,8 @@ de:
       destroy_content_element_menu_item:
         confirm_destroy: Element wirklich löschen?
         destroy: Element löschen
+      duplicate_content_element_menu_item:
+        label: Element duplizieren
       destroy_section_menu_item:
         confirm_destroy: Abschnitt inklusive aller Elemente wirklich löschen?
         destroy: Abschnitt löschen

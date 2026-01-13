@@ -1,6 +1,9 @@
 import {EditConfigurationView} from 'pageflow/editor';
 
-import {DestroyContentElementMenuItem} from '../models/contentElementMenuItems';
+import {
+  DestroyContentElementMenuItem,
+  DuplicateContentElementMenuItem
+} from '../models/contentElementMenuItems';
 
 export const EditContentElementView = EditConfigurationView.extend({
   translationKeyPrefix() {
@@ -17,6 +20,10 @@ export const EditContentElementView = EditConfigurationView.extend({
 
   getActionsMenuItems() {
     return [
+      new DuplicateContentElementMenuItem({}, {
+        contentElement: this.model,
+        entry: this.options.entry
+      }),
       new DestroyContentElementMenuItem({}, {
         contentElement: this.model,
         entry: this.options.entry,

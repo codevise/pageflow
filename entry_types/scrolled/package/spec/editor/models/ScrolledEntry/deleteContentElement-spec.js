@@ -37,7 +37,7 @@ describe('ScrolledEntry', () => {
       it('sends item with delete flag to batch endpoint', () => {
         const {entry, requests} = testContext;
 
-        entry.deleteContentElement(5);
+        entry.deleteContentElement(entry.contentElements.get(5));
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
@@ -113,7 +113,7 @@ describe('ScrolledEntry', () => {
       it('merges the two adjacent content elements ', () => {
         const {entry, requests} = testContext;
 
-        entry.deleteContentElement(5);
+        entry.deleteContentElement(entry.contentElements.get(5));
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({
@@ -192,7 +192,7 @@ describe('ScrolledEntry', () => {
       it('leaves adjacent content elements unchanged', () => {
         const {entry, requests} = testContext;
 
-        entry.deleteContentElement(5);
+        entry.deleteContentElement(entry.contentElements.get(5));
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({
@@ -245,7 +245,7 @@ describe('ScrolledEntry', () => {
       it('leaves adjacent content element unchanged', () => {
         const {entry, requests} = testContext;
 
-        entry.deleteContentElement(5);
+        entry.deleteContentElement(entry.contentElements.get(5));
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toEqual({

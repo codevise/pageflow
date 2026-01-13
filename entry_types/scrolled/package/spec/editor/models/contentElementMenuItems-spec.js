@@ -1,10 +1,55 @@
-import {DestroyContentElementMenuItem} from 'editor/models/contentElementMenuItems';
+import {DestroyContentElementMenuItem, DuplicateContentElementMenuItem} from 'editor/models/contentElementMenuItems';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {factories, normalizeSeed} from 'support';
 
 describe('ContentElementMenuItems', () => {
+  describe('DuplicateContentElementMenuItem', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.duplicate_content_element_menu_item.label': 'Duplicate element'
+    });
+
+    it('has Duplicate element label', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          contentElements: [{id: 1, typeName: 'textBlock'}]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+
+      const menuItem = new DuplicateContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      expect(menuItem.get('label')).toBe('Duplicate element');
+    });
+
+    it('calls duplicateContentElement on entry when selected', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          contentElements: [{id: 1, typeName: 'textBlock'}]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      entry.duplicateContentElement = jest.fn();
+
+      const menuItem = new DuplicateContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      menuItem.selected();
+
+      expect(entry.duplicateContentElement).toHaveBeenCalledWith(contentElement);
+    });
+  });
+
   describe('DestroyContentElementMenuItem', () => {
     useFakeTranslations({
       'pageflow_scrolled.editor.destroy_content_element_menu_item.destroy': 'Delete element',
