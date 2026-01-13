@@ -1145,6 +1145,7 @@ en:
         confirm_destroy: Really delete this section including all its elements?
         destroy: Delete section
       edit_section:
+        hidden_info: This section is hidden outside of the editor.
         motif_area_info_text: Mark the most important part of the backdrop that should be visible and unobstructed when reaching the section.
         attributes:
           appearance:

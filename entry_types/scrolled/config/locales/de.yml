@@ -1161,6 +1161,7 @@ de:
         confirm_destroy: Abschnitt inklusive aller Elemente wirklich löschen?
         destroy: Abschnitt löschen
       edit_section:
+        hidden_info: Dieser Abschnitt ist außerhalb des Editors ausgeblendet.
         motif_area_info_text: Markiere den wichtigsten Teil des Hintergrunds, der beim Erreichen des Abschnitts sichtbar und nicht von anderen Elementen überdeckt sein soll.
         attributes:
           appearance:

@@ -1,4 +1,4 @@
-import {EditConfigurationView, FileInputView, ColorInputView} from 'pageflow/editor';
+import {EditConfigurationView, FileInputView, ColorInputView, InfoBoxView} from 'pageflow/editor';
 import {
   SelectInputView,
   CheckBoxInputView,
@@ -15,6 +15,8 @@ import I18n from 'i18n-js';
 import {features} from 'pageflow/frontend';
 
 import {EditMotifAreaDialogView} from './EditMotifAreaDialogView';
+
+import hiddenIcon from './images/hidden.svg';
 
 export const EditSectionView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_section',
@@ -41,6 +43,14 @@ export const EditSectionView = EditConfigurationView.extend({
     };
 
     configurationEditor.tab('section', function() {
+      this.view(InfoBoxView, {
+        text: I18n.t('pageflow_scrolled.editor.edit_section.hidden_info'),
+        icon: hiddenIcon,
+        level: 'info',
+        visibleBinding: 'hidden',
+        visible: hidden => !!hidden
+      });
+
       this.input('backdropType', SelectInputView, {
         values: features.isEnabled('backdrop_content_elements') ?
                 ['image', 'video', 'color', 'contentElement'] :
