@@ -393,6 +393,30 @@ describe('EditConfigurationView', () => {
     });
   });
 
+  describe('getActionsMenuItems', () => {
+    it('allows subclass to customize menu items', () => {
+      const Model = Backbone.Model.extend({
+        mixins: [configurationContainer(), failureTracking]
+      });
+      const CustomMenuItem = Backbone.Model.extend({
+        selected: jest.fn()
+      });
+      const View = EditConfigurationView.extend({
+        getActionsMenuItems() {
+          return [new CustomMenuItem({name: 'custom', label: 'Custom Action'})];
+        },
+        configure(configurationEditor) {
+          configurationEditor.tab('general', function() {});
+        }
+      });
+
+      const view = new View({model: new Model()}).render();
+      const dropDownButton = DropDownButton.find(view);
+
+      expect(dropDownButton.menuItemLabels()).toContain('Custom Action');
+    });
+  });
+
   describe('hideDestroyButton', () => {
     it('shows actions dropdown by default', () => {
       const Model = Backbone.Model.extend({

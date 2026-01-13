@@ -108,18 +108,11 @@ export const EditConfigurationView = Marionette.Layout.extend({
   },
 
   renderActionsDropDown() {
-    if (_.result(this, 'hideDestroyButton')) {
+    const items = new Backbone.Collection(this.getActionsMenuItems());
+
+    if (!items.length) {
       return;
     }
-
-    const items = new Backbone.Collection([
-      new DestroyMenuItem({
-        name: 'destroy',
-        label: this.t('destroy')
-      }, {
-        view: this
-      })
-    ]);
 
     this.$el.find('.actions_drop_down_button').append(
       this.subview(new DropDownButtonView({
@@ -130,6 +123,23 @@ export const EditConfigurationView = Marionette.Layout.extend({
         alignMenu: 'right'
       })).el
     );
+  },
+
+  getActionsMenuItems() {
+    if (_.result(this, 'hideDestroyButton')) {
+      return [];
+    }
+    return [this.getDestroyMenuItem()];
+  },
+
+  getDestroyMenuItem({separated} = {}) {
+    return new DestroyMenuItem({
+      name: 'destroy',
+      label: this.t('destroy'),
+      separated
+    }, {
+      view: this
+    });
   },
 
   onShow: function() {
