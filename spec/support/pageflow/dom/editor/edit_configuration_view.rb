@@ -4,8 +4,13 @@ module Pageflow
       class EditConfigurationView < Domino
         selector 'sidebar .edit_configuration_view'
 
-        def destroy_button
-          node.find('.destroy')
+        def actions_button
+          node.find('.drop_down_button')
+        end
+
+        def select_action(label)
+          actions_button.click
+          Capybara.current_session.find('#editor_menu_container .drop_down_button_item', text: label).click
         end
 
         def back_button

@@ -1512,7 +1512,11 @@ de:
             Kapitel einschließlich ALLER enthaltener Seiten wirklich löschen?
 
             Dieser Schritt kann nicht rückgängig gemacht werden.
+        destroy_menu_item:
+          confirm_destroy: Wirklich löschen?
+          destroy: Löschen
         edit_configuration:
+          actions: Aktionen
           back: "Zurück"
           confirm_destroy: Wirklich löschen?
           destroy: Löschen
@@ -2115,12 +2119,6 @@ de:
       next: ">>"
       previous: !!str '<<'
       truncate: "..."
-  pageflow_scrolled:
-    editor:
-      section_item:
-        set_cutoff: "Paywall Grenze oberhalb setzen"
-        reset_cutoff: "Paywall Grenze entfernen"
-        cutoff: "Paywall Grenze"
   activemodel:
     attributes:
       pageflow/site_root_entry_form:

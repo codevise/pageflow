@@ -1505,7 +1505,11 @@ en:
             Really delete this chapter including ALL its pages?
 
             This operation cannot be undone.
+        destroy_menu_item:
+          confirm_destroy: Really delete this record? This action cannot be undone.
+          destroy: Delete
         edit_configuration:
+          actions: Actions
           back: "Back"
           confirm_destroy: Really delete this record? This action cannot be undone.
           destroy: Delete
@@ -2106,12 +2110,6 @@ en:
       next: ">>"
       previous: !!str '<<'
       truncate: "..."
-  pageflow_scrolled:
-    editor:
-      section_item:
-        set_cutoff: "Set paywall cutoff above"
-        reset_cutoff: "Remove paywall cutoff"
-        cutoff: "Paywall cutoff"
   activemodel:
     attributes:
       pageflow/site_root_entry_form:

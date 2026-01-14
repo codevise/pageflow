@@ -18,6 +18,18 @@
     background-color: var(--ui-error-surface-color);
   }
 
+  .with_icon {
+    display: flex;
+    align-items: center;
+    gap: space(2);
+
+    img {
+      flex-shrink: 0;
+      width: space(5);
+      height: space(5);
+    }
+  }
+
   .shortcuts {
     dt {
       display: block;

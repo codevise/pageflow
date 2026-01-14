@@ -38,7 +38,8 @@ import template from '../templates/dropDownButton.jst';
  * - `name` - A name for the menu item which is not displayed.
  * - `label` - Used as menu item label.
  * - `disabled` - Make the menu item inactive.
- * - `checked` - Display a check mark in front of the item
+ * - `checked` - Display a check mark in front of the item.
+ * - `destructive` - Display with red hover state.
  * - `items` - A Backbone collection of nested menu items.
  *
  * If the menu item model provdised a `selected` method, it is called

@@ -36,6 +36,7 @@ import {
 } from './lineBreaks';
 
 import {useShortcutHandler} from './shortcuts';
+import {duplicateNodes} from './duplicateNodes';
 
 import styles from './index.module.css';
 
@@ -111,6 +112,10 @@ export const EditableText = React.memo(function EditableText({
   useContentElementEditorCommandSubscription(command => {
     if (command.type === 'REMOVE') {
       Transforms.removeNodes(editor, {mode: 'highest'});
+    }
+    else if (command.type === 'DUPLICATE') {
+      duplicateNodes(editor);
+      ReactEditor.focus(editor);
     }
     else if (command.type === 'TRANSIENT_STATE_UPDATE') {
       if ('typographyVariant' in command.payload) {

@@ -16,6 +16,7 @@ import {Cutoff} from '../Cutoff';
 import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
+import {duplicateContentElement} from './duplicateContentElement';
 
 import {sortColors} from './sortColors';
 import {Scale} from '../../../shared/Scale';
@@ -131,8 +132,12 @@ export const ScrolledEntry = Entry.extend({
     });
   },
 
-  deleteContentElement(id) {
-    deleteContentElement(this, this.contentElements.get(id));
+  deleteContentElement(contentElement) {
+    deleteContentElement(this, contentElement);
+  },
+
+  duplicateContentElement(contentElement) {
+    return duplicateContentElement(this, contentElement);
   },
 
   getTypographyVariants({contentElement, prefix}) {

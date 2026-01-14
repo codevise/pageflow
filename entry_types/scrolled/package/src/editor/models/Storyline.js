@@ -34,6 +34,17 @@ export const Storyline = Backbone.Model.extend({
     });
   },
 
+  appendChapter(chapter) {
+    const position = this.chapters.length ?
+                     Math.max(...this.chapters.pluck('position')) + 1 :
+                     0;
+
+    chapter.set('position', position);
+    this.chapters.add(chapter);
+    this.chapters.sort();
+    this.chapters.saveOrder();
+  },
+
   isMain() {
     return !!this.configuration.get('main');
   }

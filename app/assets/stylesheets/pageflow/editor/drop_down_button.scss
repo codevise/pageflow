@@ -12,7 +12,14 @@
 
   > button.ellipsis_icon {
     @include fa-ellipsis-v-icon;
+  }
+
+  > button.ellipsis_icon.has_icon_only {
     width: var(--drop-down-button-width, 31px);
+  }
+
+  > button.ellipsis_icon.has_icon_and_text::before {
+    margin-right: 9px;
   }
 
   > button.borderless {
@@ -100,6 +107,11 @@
     border-top: solid 1px var(--ui-on-surface-color-lighter);
     margin-top: 1px;
     padding-top: 1px;
+  }
+
+  &.is_destructive a:hover {
+    background-color: var(--ui-error-color);
+    color: var(--ui-on-error-color);
   }
 
   &.has_radio,

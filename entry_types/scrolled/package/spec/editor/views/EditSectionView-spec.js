@@ -1,6 +1,6 @@
 import {EditSectionView} from 'editor/views/EditSectionView';
 
-import {ConfigurationEditor} from 'pageflow/testHelpers';
+import {ConfigurationEditor, DropDownButton, useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
 
 describe('EditSectionView', () => {
@@ -253,5 +253,35 @@ describe('EditSectionView', () => {
 
     expect(configurationEditor.visibleInputPropertyNames())
       .not.toContain('backdropEffectsMobile');
+  });
+
+  describe('actions dropdown', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.section_menu_items.duplicate': 'Duplicate',
+      'pageflow_scrolled.editor.section_menu_items.insert_section_above': 'Insert above',
+      'pageflow_scrolled.editor.section_menu_items.insert_section_below': 'Insert below',
+      'pageflow_scrolled.editor.section_menu_items.hide': 'Hide',
+      'pageflow_scrolled.editor.section_menu_items.copy_permalink': 'Copy permalink',
+      'pageflow_scrolled.editor.destroy_section_menu_item.destroy': 'Delete section'
+    });
+
+    it('includes section-specific menu items', () => {
+      const entry = createEntry({sections: [{id: 1}]});
+      const view = new EditSectionView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      view.render();
+      const allDropDowns = DropDownButton.findAll(view);
+      const actionsDropDown = allDropDowns[0];
+
+      expect(actionsDropDown.menuItemLabels()).toContain('Duplicate');
+      expect(actionsDropDown.menuItemLabels()).toContain('Insert above');
+      expect(actionsDropDown.menuItemLabels()).toContain('Insert below');
+      expect(actionsDropDown.menuItemLabels()).toContain('Hide');
+      expect(actionsDropDown.menuItemLabels()).toContain('Copy permalink');
+      expect(actionsDropDown.menuItemLabels()).toContain('Delete section');
+    });
   });
 });

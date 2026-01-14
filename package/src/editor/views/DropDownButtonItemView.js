@@ -52,6 +52,7 @@ export const DropDownButtonItemView = Marionette.ItemView.extend({
     this.$el.toggleClass('has_radio', this.model.get('kind') === 'radio');
     this.$el.toggleClass('is_checked', !!this.model.get('checked'));
     this.$el.toggleClass('separated', !!this.model.get('separated'));
+    this.$el.toggleClass('is_destructive', !!this.model.get('destructive'));
 
     this.$el.data('name', this.model.get('name'));
   }

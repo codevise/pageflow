@@ -141,6 +141,10 @@ editor.contentElementTypes.register('textBlock', {
       contentElement.postCommand({type: 'REMOVE'});
       return false;
     }
+  },
+
+  handleDuplicate(contentElement) {
+    contentElement.postCommand({type: 'DUPLICATE'});
   }
 });
 

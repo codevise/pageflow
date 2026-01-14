@@ -183,6 +183,21 @@ describe('DropDownButtonView', () => {
     expect(items.eq(1)).toHaveClass('separated');
   });
 
+  it('supports marking items as destructive', () => {
+    var dropDownButtonView = new DropDownButtonView({
+      items: new Backbone.Collection([
+        {label: 'Item 1'},
+        {label: 'Item 2', destructive: true}
+      ])
+    });
+
+    dropDownButtonView.render();
+    var items = dropDownButtonView.$el.find('ul li');
+
+    expect(items.eq(0)).not.toHaveClass('is_destructive');
+    expect(items.eq(1)).toHaveClass('is_destructive');
+  });
+
   function mapToText(el) {
     return el.map(function() {
       return $(this).text().trim();

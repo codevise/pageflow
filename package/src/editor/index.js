@@ -13,6 +13,7 @@ export * from './utils/formDataUtils';
 export * from './utils/stylesheet';
 
 export * from './models/OtherEntry';
+export * from './models/DestroyMenuItem';
 export * from './models/EditLock';
 export * from './models/Page';
 export * from './models/StorylineScaffold';

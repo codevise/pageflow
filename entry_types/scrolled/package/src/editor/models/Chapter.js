@@ -48,6 +48,19 @@ export const Chapter = Backbone.Model.extend({
     return !this.storyline.isMain();
   },
 
+  toggleExcursion() {
+    const targetStoryline = this.isExcursion() ?
+                            this.entry.storylines.main() :
+                            this.entry.storylines.excursions();
+
+    targetStoryline.appendChapter(this);
+
+    if (this.sections.length) {
+      this.entry.trigger('selectSection', this.sections.first());
+      this.entry.trigger('scrollToSection', this.sections.first());
+    }
+  },
+
   addSection(attributes, options = {}) {
     const defaultConfiguration = options.skipDefaults ? {} : {
       transition: this.entry.metadata.configuration.get('defaultTransition'),

@@ -1,7 +1,9 @@
+import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
+import {DropDownButtonView} from './DropDownButtonView';
 import {failureIndicatingView} from './mixins/failureIndicatingView';
 import {ConfigurationEditorView} from 'pageflow/ui';
 import {editor} from '../base';
@@ -24,20 +26,11 @@ import {editor} from '../base';
  *
  * * `<translationKeyPrefix>.back` (optional): Back button label.
  *
- * * `<translationKeyPrefix>.destroy` (optional): Destroy button
- *   label.
- *
- * * `<translationKeyPrefix>.confirm_destroy` (optional): Confirm
- *   message displayed before destroying.
- *
  * * `<translationKeyPrefix>.save_error` (optional): Header of the
  *   failure message that is displayed if the model cannot be saved.
  *
  * * `<translationKeyPrefix>.retry` (optional): Label of the retry
  *   button of the failure message.
- *
- * Override the `destroyModel` method to customize destroy behavior.
- * Calls `destroyWithDelay` by default.
  *
  * Override the `goBackPath` property or method to customize the path
  * that the back button navigates to. Defaults to `/`.
@@ -45,22 +38,22 @@ import {editor} from '../base';
  * Override the `defaultTab` property or method to set the initially
  * selected tab.
  *
- * Set the `hideDestroyButton` property to `true` to hide the destroy
- * button.
+ * Override the `getActionsMenuItems` method to add menu items to the
+ * actions dropdown.
  *
  * @param {Object} options
  * @param {Backbone.Model} options.model -
- *   Model including the {@link configurationContainer},
- *   {@link failureTracking} and {@link delayedDestroying} mixins.
+ *   Model including the {@link configurationContainer} and
+ *   {@link failureTracking} mixins.
  *
  * @since 15.1
  */
 export const EditConfigurationView = Marionette.Layout.extend({
   className: 'edit_configuration_view',
 
-  template: ({t, backLabel, hideDestroyButton}) => `
+  template: ({t, backLabel}) => `
     <a class="back">${backLabel}</a>
-    ${hideDestroyButton ? '' : `<a class="destroy">${t('destroy')}</a>`}
+    <div class="actions_drop_down_button"></div>
 
     <div class="failure">
       <p>${t('save_error')}</p>
@@ -74,8 +67,7 @@ export const EditConfigurationView = Marionette.Layout.extend({
   serializeData() {
     return {
       t: key => this.t(key),
-      backLabel: this.getBackLabel(),
-      hideDestroyButton: _.result(this, 'hideDestroyButton')
+      backLabel: this.getBackLabel()
     };
   },
 
@@ -86,8 +78,13 @@ export const EditConfigurationView = Marionette.Layout.extend({
   },
 
   events: {
-    'click a.back': 'goBack',
-    'click a.destroy': 'destroy'
+    'click a.back': 'goBack'
+  },
+
+  destroyEvent: 'destroy',
+
+  initialize() {
+    this.listenTo(this.model, _.result(this, 'destroyEvent'), this.goBack);
   },
 
   onRender: function() {
@@ -96,33 +93,49 @@ export const EditConfigurationView = Marionette.Layout.extend({
     this.configurationEditor = new ConfigurationEditorView({
       tabTranslationKeyPrefix: `${translationKeyPrefix}.tabs`,
       attributeTranslationKeyPrefixes: [`${translationKeyPrefix}.attributes`],
-      model: this.model.configuration,
+      model: this.getConfigurationModel(),
       tab: _.result(this, 'defaultTab')
     });
 
     this.configure(this.configurationEditor);
     this.configurationContainer.show(this.configurationEditor);
+
+    this.renderActionsDropDown();
+  },
+
+  renderActionsDropDown() {
+    const items = new Backbone.Collection(this.getActionsMenuItems());
+
+    if (!items.length) {
+      return;
+    }
+
+    this.$el.find('.actions_drop_down_button').append(
+      this.subview(new DropDownButtonView({
+        items,
+        label: this.t('actions'),
+        ellipsisIcon: true,
+        openOnClick: true,
+        alignMenu: 'right'
+      })).el
+    );
+  },
+
+  getActionsMenuItems() {
+    return [];
   },
 
   onShow: function() {
     this.configurationEditor.refreshScroller();
   },
 
-  destroy: function() {
-    if (window.confirm(this.t('confirm_destroy'))) {
-      if (this.destroyModel() !== false) {
-        this.goBack();
-      }
-    }
-  },
-
-  destroyModel() {
-    this.model.destroyWithDelay();
-  },
-
   goBack: function() {
     const path = _.result(this, 'goBackPath') || '/';
     editor.navigate(path, {trigger: true});
+  },
+
+  getConfigurationModel() {
+    return this.model.configuration;
   },
 
   getBackLabel() {

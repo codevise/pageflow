@@ -436,9 +436,9 @@ en:
                 Turn cards with a flip animation and offer
                 additional content on the backside of the card.
           back: Back
-          destroy: Delete
+          confirm_destroy: Are you sure you want to delete this teaser?
+          destroy: Delete teaser
           description: A list of tiles with thumbnail and caption
-          confirm_delete_item: Are you sure you want to delete this teaser?
           items: Items
           name: Teasers
           tabs:
@@ -577,8 +577,8 @@ en:
             general: Image Gallery
           edit_item:
             back: Back
-            destroy: Delete
-            confirm_delete_link: Are you sure you want to delete this image gallery item?
+            confirm_destroy: Are you sure you want to delete this image gallery item?
+            destroy: Delete item
             attributes:
               image:
                 label: Image
@@ -878,8 +878,8 @@ en:
         hotspots:
           edit_area:
             back: Back
-            destroy: Delete
-            confirm_delete_link: Are you sure you want to delete this area?
+            confirm_destroy: Are you sure you want to delete this area?
+            destroy: Delete area
             tabs:
               area: Hotspot Area
               portrait: Portrait
@@ -1117,10 +1117,6 @@ en:
             inline_help: |-
               Chapter can be used as link destination but does not
               appear in the navigation bar.
-        confirm_destroy: |-
-          Really delete this chapter including ALL its sections?
-
-          This operation cannot be undone.
         save_error: There was an error while saving this chapter.
         tabs:
           chapter: Chapter
@@ -1133,7 +1129,27 @@ en:
         hint: Drag to select the most important part of the image.
         reset: Reset
         save: Save
+      chapter_menu_items:
+        move_to_main: Turn into chapter
+        move_to_excursions: Turn into excursion
+      destroy_chapter_menu_item:
+        confirm_destroy: |-
+          Really delete this chapter including ALL its sections?
+
+          This operation cannot be undone.
+        destroy: Delete chapter
+      destroy_content_element_menu_item:
+        confirm_destroy: Really delete this element?
+        destroy: Delete element
+        selection_label: Delete selection
+      duplicate_content_element_menu_item:
+        label: Duplicate element
+        selection_label: Duplicate selection
+      destroy_section_menu_item:
+        confirm_destroy: Really delete this section including all its elements?
+        destroy: Delete section
       edit_section:
+        hidden_info: This section is hidden outside of the editor.
         motif_area_info_text: Mark the most important part of the backdrop that should be visible and unobstructed when reaching the section.
         attributes:
           appearance:
@@ -1249,11 +1265,9 @@ en:
         header: Insert element
       no_options: No options available
       section_item:
+        cutoff: Paywall cutoff
         drag_hint: Drag to move section
-        duplicate: Duplicate
-        insert_section_above: Insert section above
-        insert_section_below: Insert section below
-        copy_permalink: Copy permalink
+        hidden: Only visible in editor
         save_error: There was an error while saving this section.
         transitions:
           beforeAfter: Static Backgrounds
@@ -1262,9 +1276,15 @@ en:
           reveal: Reveal
           scroll: Scroll
           scrollOver: Scroll over
+      section_menu_items:
+        copy_permalink: Copy permalink
+        duplicate: Duplicate section
         hide: Hide outside of the editor
+        insert_section_above: Insert section above
+        insert_section_below: Insert section below
+        reset_cutoff: Remove paywall cutoff
+        set_cutoff: Set paywall cutoff above
         show: Show outside of the editor
-        hidden: Only visible in editor
       section_padding_visualization:
         intersecting_auto: "Visualization of dynamic padding that adjusts to the motif area size to prevent text from overlapping the motif"
         intersecting_manual: "Visualization of manually defined padding that stays constant as viewport size changes"

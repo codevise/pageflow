@@ -445,9 +445,9 @@ de:
                 Karten mit einer Flip-Animation drehen und weitere
                 Inhalte auf der Rückseite der Karte anbieten.
           back: Zurück
-          destroy: Löschen
+          confirm_destroy: Soll der Teaser wirklich gelöscht werden?
+          destroy: Teaser löschen
           description: Liste von Kacheln mit Bild und Beschriftung
-          confirm_delete_item: Soll der Teaser wirklich gelöscht werden?
           items: Einträge
           name: Teaser-Liste
           tabs:
@@ -591,8 +591,8 @@ de:
             general: Bildergalerie
           edit_item:
             back: Zurück
-            destroy: Löschen
-            confirm_delete_link: Soll der Bildergalerie-Eintrag wirklich gelöscht werden?
+            confirm_destroy: Soll der Bildergalerie-Eintrag wirklich gelöscht werden?
+            destroy: Eintrag löschen
             attributes:
               image:
                 label: Bild
@@ -893,8 +893,8 @@ de:
         hotspots:
           edit_area:
             back: Zurück
-            destroy: Löschen
-            confirm_delete_link: Soll der Hotspot-Bereich wirklich gelöscht werden?
+            confirm_destroy: Soll der Hotspot-Bereich wirklich gelöscht werden?
+            destroy: Hotspot-Bereich löschen
             tabs:
               area: Hotspot-Bereich
               portrait: Hochkant
@@ -1133,10 +1133,6 @@ de:
             inline_help: |-
               Kapitel kann als Link-Ziel verwendet werden, erscheint
               allerdings nicht in der Navigationsleiste.
-        confirm_destroy: |-
-          Kapitel einschließlich ALLER enthaltener Abschnitte wirklich löschen?
-
-          Dieser Schritt kann nicht rückgängig gemacht werden.
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
         tabs:
           chapter: Kapitel
@@ -1149,7 +1145,27 @@ de:
         hint: Ziehe ein Rechteck, um den wichtigsten Bereich des Bildes zu markieren.
         reset: Zurücksetzen
         save: Speichern
+      chapter_menu_items:
+        move_to_main: In Kapitel umwandeln
+        move_to_excursions: In Exkurs umwandeln
+      destroy_chapter_menu_item:
+        confirm_destroy: |-
+          Kapitel inklusive ALLER Abschnitte wirklich löschen?
+
+          Diese Aktion kann nicht rückgängig gemacht werden.
+        destroy: Kapitel löschen
+      destroy_content_element_menu_item:
+        confirm_destroy: Element wirklich löschen?
+        destroy: Element löschen
+        selection_label: Auswahl löschen
+      duplicate_content_element_menu_item:
+        label: Element duplizieren
+        selection_label: Auswahl duplizieren
+      destroy_section_menu_item:
+        confirm_destroy: Abschnitt inklusive aller Elemente wirklich löschen?
+        destroy: Abschnitt löschen
       edit_section:
+        hidden_info: Dieser Abschnitt ist außerhalb des Editors ausgeblendet.
         motif_area_info_text: Markiere den wichtigsten Teil des Hintergrunds, der beim Erreichen des Abschnitts sichtbar und nicht von anderen Elementen überdeckt sein soll.
         attributes:
           appearance:
@@ -1265,11 +1281,9 @@ de:
         header: Element einfügen
       no_options: Keine Optionen verfügbar
       section_item:
+        cutoff: Paywall Grenze
         drag_hint: Ziehen, um den Abschnitt zu verschieben
-        duplicate: Duplizieren
-        insert_section_above: Abschnitt oberhalb einfügen
-        insert_section_below: Abschnitt unterhalb einfügen
-        copy_permalink: Permalink kopieren
+        hidden: Nur im Editor sichtbar
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
         transitions:
           beforeAfter: Statische Hintergründe
@@ -1278,9 +1292,15 @@ de:
           reveal: Freilegen
           scroll: Aus-/Einscrollen
           scrollOver: Überlagern
+      section_menu_items:
+        copy_permalink: Permalink kopieren
+        duplicate: Abschnitt duplizieren
         hide: Außerhalb des Editors ausblenden
+        insert_section_above: Abschnitt oberhalb einfügen
+        insert_section_below: Abschnitt unterhalb einfügen
+        reset_cutoff: Paywall Grenze entfernen
+        set_cutoff: Paywall Grenze oberhalb setzen
         show: Außerhalb des Editors einblenden
-        hidden: Nur im Editor sichtbar
       section_padding_visualization:
         intersecting_auto: "Darstellung des dynamischen Abstands, der sich an die Größe des Motivbereichs anpasst, um Überlappungen von Text und Motiv zu vermeiden"
         intersecting_manual: "Darstellung des manuell definierten Abstands, der bei Änderung der Fenstergröße konstant bleibt"

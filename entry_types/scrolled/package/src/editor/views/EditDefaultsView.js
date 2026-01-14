@@ -10,7 +10,6 @@ import paddingBottomIcon from './images/paddingBottom.svg';
 
 export const EditDefaultsView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_defaults',
-  hideDestroyButton: true,
   goBackPath: '/meta_data/widgets',
 
   configure: function(configurationEditor) {
