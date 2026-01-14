@@ -11,6 +11,7 @@ describe('SelectableEntryOutlineView', () => {
     'pageflow_scrolled.editor.selectable_storyline_item.blank_slate': 'No chapters',
     'pageflow_scrolled.editor.selectable_storyline_item.blank_slate_excursions': 'No excursions',
     'pageflow_scrolled.editor.selectable_chapter_item.title': 'Select chapter',
+    'pageflow_scrolled.editor.selectable_chapter_item.insert_here': 'Move to chapter',
     'pageflow_scrolled.editor.selectable_section_item.title': 'Select section',
     'pageflow_scrolled.editor.selectable_section_item.insert_here': 'Move here',
     'pageflow_scrolled.editor.selectable_section_item.insert_at_beginning': 'Move to beginning',
@@ -126,6 +127,29 @@ describe('SelectableEntryOutlineView', () => {
       expect(listener).toHaveBeenCalledWith({
         section: entry.sections.get(1),
         position: 'after'
+      });
+    });
+
+    it('clicking empty chapter insert mask calls onSelectInsertPosition with position into', async () => {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          chapters: [{id: 1}]
+        })
+      });
+      const listener = jest.fn();
+      const view = new SelectableEntryOutlineView({
+        entry,
+        mode: 'insertPosition',
+        onSelectInsertPosition: listener
+      });
+
+      const user = userEvent.setup();
+      const {getByText} = render(view);
+      await user.click(getByText('Move to chapter'));
+
+      expect(listener).toHaveBeenCalledWith({
+        chapter: entry.chapters.get(1),
+        position: 'into'
       });
     });
   });

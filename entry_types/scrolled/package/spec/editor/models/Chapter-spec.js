@@ -414,6 +414,50 @@ describe('Chapter', () => {
         expect(targetChapter.sections.pluck('id')).toEqual([200, 100, 201]);
       });
     });
+
+    describe('into empty chapter', () => {
+      beforeEach(() => {
+        testContext.entry = factories.entry(ScrolledEntry, {}, {
+          entryTypeSeed: normalizeSeed({
+            chapters: [{id: 10}, {id: 20}],
+            sections: [
+              {id: 100, chapterId: 10, position: 0},
+              {id: 101, chapterId: 10, position: 1}
+            ]
+          })
+        });
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      useFakeXhr(() => testContext);
+
+      it('moves section into empty chapter', () => {
+        const {entry} = testContext;
+        const sourceChapter = entry.chapters.get(10);
+        const targetChapter = entry.chapters.get(20);
+        const sectionToMove = sourceChapter.sections.get(100);
+
+        targetChapter.moveSection(sectionToMove);
+
+        expect(sectionToMove.get('chapterId')).toBe(20);
+        expect(sourceChapter.sections.pluck('id')).toEqual([101]);
+        expect(targetChapter.sections.pluck('id')).toEqual([100]);
+      });
+
+      it('sets position to 0 when moving into empty chapter', () => {
+        const {entry} = testContext;
+        const sourceChapter = entry.chapters.get(10);
+        const targetChapter = entry.chapters.get(20);
+        const sectionToMove = sourceChapter.sections.get(100);
+
+        targetChapter.moveSection(sectionToMove);
+
+        expect(targetChapter.sections.pluck('position')).toEqual([0]);
+      });
+    });
   });
 
   describe('#isExcursion', () => {

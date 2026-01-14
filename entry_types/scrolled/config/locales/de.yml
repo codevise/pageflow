@@ -1334,6 +1334,7 @@ de:
         blank_slate_excursions: Keine Exkurse
       selectable_chapter_item:
         title: Kapitel auswählen
+        insert_here: Hierhin verschieben
       selectable_section_item:
         title: Abschnitt auswählen
         insert_here: Hierhin verschieben

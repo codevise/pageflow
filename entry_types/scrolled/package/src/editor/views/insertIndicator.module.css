@@ -1,0 +1,26 @@
+@value selectionColor from './colors.module.css';
+@value insertLineWidth: 4px;
+@value insertLineColor: selectionColor;
+
+.tooltip {
+  position: absolute;
+  left: 100%;
+  margin-left: 20px;
+  background: var(--ui-on-surface-color-light);
+  border-radius: rounded();
+  padding: space(2);
+  white-space: nowrap;
+  color: var(--ui-surface-color);
+  z-index: 1;
+}
+
+.tooltip::before {
+  content: "";
+  position: absolute;
+  left: space(-2);
+  top: 50%;
+  transform: translateY(-50%);
+  border: space(2) solid transparent;
+  border-right-color: var(--ui-on-surface-color-light);
+  border-left: none;
+}

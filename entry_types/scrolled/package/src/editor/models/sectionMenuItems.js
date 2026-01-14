@@ -117,8 +117,11 @@ export const MoveSectionMenuItem = Backbone.Model.extend({
     SelectMoveDestinationDialogView.show({
       entry: this.entry,
       mode: 'insertPosition',
-      onSelect: ({section: targetSection, position}) => {
-        if (position === 'before') {
+      onSelect: ({section: targetSection, chapter: targetChapter, position}) => {
+        if (position === 'into') {
+          targetChapter.moveSection(section);
+        }
+        else if (position === 'before') {
           targetSection.chapter.moveSection(section, {before: targetSection});
         }
         else {

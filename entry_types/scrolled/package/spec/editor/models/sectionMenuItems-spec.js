@@ -337,5 +337,25 @@ describe('SectionMenuItems', () => {
 
       expect(targetSection.chapter.moveSection).toHaveBeenCalledWith(section, {before: targetSection});
     });
+
+    it('moves section into empty chapter when position is into', () => {
+      const entry = createEntry({
+        chapters: [{id: 10}, {id: 20}],
+        sections: [
+          {id: 1, chapterId: 10}
+        ]
+      });
+      const section = entry.sections.get(1);
+      const targetChapter = entry.chapters.get(20);
+      const menuItem = new MoveSectionMenuItem({}, {entry, section});
+
+      menuItem.selected();
+
+      const onSelect = SelectMoveDestinationDialogView.show.mock.calls[0][0].onSelect;
+      targetChapter.moveSection = jest.fn();
+      onSelect({chapter: targetChapter, position: 'into'});
+
+      expect(targetChapter.moveSection).toHaveBeenCalledWith(section);
+    });
   });
 });

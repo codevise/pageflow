@@ -1318,6 +1318,7 @@ en:
         blank_slate_excursions: No excursions
       selectable_chapter_item:
         title: Select chapter
+        insert_here: Move here
       selectable_section_item:
         title: Select section
         insert_here: Move here

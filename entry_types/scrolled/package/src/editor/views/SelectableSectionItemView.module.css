@@ -1,6 +1,6 @@
 @value selectionColor from './colors.module.css';
 @value selectionWidth: 3px;
-@value insertLineWidth: 4px;
+@value insertLineWidth, insertLineColor from './insertIndicator.module.css';
 
 .selectable:hover .outline {
   border-color: selectionColor;
@@ -34,7 +34,7 @@
   display: none;
   position: absolute;
   height: insertLineWidth;
-  background: selectionColor;
+  background: insertLineColor;
 }
 
 .mask:hover::before,
@@ -43,27 +43,8 @@
 }
 
 .indicatorTooltip {
+  composes: tooltip from './insertIndicator.module.css';
   display: none;
-  position: absolute;
-  left: 100%;
-  margin-left: 20px;
-  background: var(--ui-on-surface-color-light);
-  border-radius: rounded();
-  padding: space(2);
-  white-space: nowrap;
-  color: var(--ui-surface-color);
-  z-index: 1;
-}
-
-.indicatorTooltip::before {
-  content: "";
-  position: absolute;
-  left: space(-2);
-  top: 50%;
-  transform: translateY(-50%);
-  border: space(2) solid transparent;
-  border-right-color: var(--ui-on-surface-color-light);
-  border-left: none;
 }
 
 .mask:hover .indicatorTooltip,

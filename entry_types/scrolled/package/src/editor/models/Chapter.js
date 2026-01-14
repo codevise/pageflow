@@ -119,7 +119,7 @@ export const Chapter = Backbone.Model.extend({
     return newSection;
   },
 
-  moveSection(section, {after, before}) {
+  moveSection(section, {after, before} = {}) {
     const targetSection = after || before;
     const sourceChapter = section.chapter;
 
@@ -141,6 +141,12 @@ export const Chapter = Backbone.Model.extend({
 
 function sectionsInNewOrder(sections, section, targetSection, after) {
   const result = sections.filter(s => s !== section);
+
+  if (!targetSection) {
+    result.push(section);
+    return result;
+  }
+
   const targetIndex = result.indexOf(targetSection);
   const insertIndex = after ? targetIndex + 1 : targetIndex;
 
