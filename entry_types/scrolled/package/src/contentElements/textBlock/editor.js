@@ -145,6 +145,13 @@ editor.contentElementTypes.register('textBlock', {
 
   handleDuplicate(contentElement) {
     contentElement.postCommand({type: 'DUPLICATE'});
+  },
+
+  handleMove(contentElement, to) {
+    contentElement.postCommand({
+      type: 'MOVE_TO',
+      payload: {to}
+    });
   }
 });
 

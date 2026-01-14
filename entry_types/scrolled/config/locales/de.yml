@@ -1163,6 +1163,7 @@ de:
         selection_label: Auswahl duplizieren
       content_element_menu_items:
         move: Element verschieben...
+        move_selection: Auswahl verschieben...
       destroy_section_menu_item:
         confirm_destroy: Abschnitt inklusive aller Elemente wirklich löschen?
         destroy: Abschnitt löschen

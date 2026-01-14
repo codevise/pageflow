@@ -37,6 +37,8 @@ import {
 
 import {useShortcutHandler} from './shortcuts';
 import {duplicateNodes} from './duplicateNodes';
+import {computeBounds} from './computeBounds';
+import {postMoveContentElementMessage} from '../postMessage';
 
 import styles from './index.module.css';
 
@@ -116,6 +118,16 @@ export const EditableText = React.memo(function EditableText({
     else if (command.type === 'DUPLICATE') {
       duplicateNodes(editor);
       ReactEditor.focus(editor);
+    }
+    else if (command.type === 'MOVE_TO') {
+      const {to} = command.payload;
+      const [start, end] = computeBounds(editor);
+
+      postMoveContentElementMessage({
+        id: contentElementId,
+        range: [start, end + 1],
+        to
+      });
     }
     else if (command.type === 'TRANSIENT_STATE_UPDATE') {
       if ('typographyVariant' in command.payload) {

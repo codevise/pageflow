@@ -74,38 +74,51 @@ export const MoveContentElementMenuItem = Backbone.Model.extend({
     this.contentElement = options.contentElement;
     this.entry = options.entry;
     this.editor = options.editor;
-    this.set('label', I18n.t('pageflow_scrolled.editor.content_element_menu_items.move'));
+
+    const contentElementType =
+      this.editor.contentElementTypes.findByTypeName(this.contentElement.get('typeName'));
+
+    this.set('label', I18n.t(
+      contentElementType.handleMove ?
+        'pageflow_scrolled.editor.content_element_menu_items.move_selection' :
+        'pageflow_scrolled.editor.content_element_menu_items.move'
+    ));
   },
 
   selected() {
     const contentElement = this.contentElement;
     const entry = this.entry;
+    const contentElementType =
+      this.editor.contentElementTypes.findByTypeName(contentElement.get('typeName'));
 
     SelectMoveDestinationDialogView.show({
       entry,
       mode: 'sectionPart',
       onSelect: ({section: targetSection, part}) => {
-        if (part === 'beginning') {
-          const firstContentElement = targetSection.contentElements.first();
+        const to = getTo(targetSection, part);
 
-          if (firstContentElement) {
-            entry.moveContentElement(
-              {id: contentElement.id},
-              {at: 'before', id: firstContentElement.id}
-            );
-          }
+        if (!to) {
+          return;
+        }
+
+        if (contentElementType.handleMove) {
+          contentElementType.handleMove(contentElement, to);
         }
         else {
-          const lastContentElement = targetSection.contentElements.last();
-
-          if (lastContentElement) {
-            entry.moveContentElement(
-              {id: contentElement.id},
-              {at: 'after', id: lastContentElement.id}
-            );
-          }
+          entry.moveContentElement({id: contentElement.id}, to);
         }
       }
     });
   }
 });
+
+function getTo(targetSection, part) {
+  if (part === 'beginning') {
+    const firstContentElement = targetSection.contentElements.first();
+    return firstContentElement && {at: 'before', id: firstContentElement.id};
+  }
+  else {
+    const lastContentElement = targetSection.contentElements.last();
+    return lastContentElement && {at: 'after', id: lastContentElement.id};
+  }
+}
