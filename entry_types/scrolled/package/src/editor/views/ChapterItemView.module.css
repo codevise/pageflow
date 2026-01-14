@@ -13,10 +13,14 @@
   background-color: var(--ui-selection-color-lighter);
 }
 
-.link {
+.header {
   display: block;
   margin: 0 -10px 0 -10px;
   padding: 10px;
+}
+
+.link {
+  composes: header;
 }
 
 .outlineLink {

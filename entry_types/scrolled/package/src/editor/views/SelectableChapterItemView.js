@@ -14,23 +14,36 @@ export const SelectableChapterItemView = Marionette.ItemView.extend({
 
   className: classNames(baseStyles.root, styles.root),
 
-  template: () => `
-     <a class="${baseStyles.link}"
-        href=""
-        title="${I18n.t(`pageflow_scrolled.editor.selectable_chapter_item.title`)}">
-       <span class="${baseStyles.number}"></span>
-       <span class="${baseStyles.title}"></span>
-     </a>
-
-     <ul class="${baseStyles.sections}"></ul>
-     `,
+  template: (data) => `
+    ${data.selectable ? `
+      <a class="${baseStyles.link}"
+         href=""
+         title="${I18n.t(`pageflow_scrolled.editor.selectable_chapter_item.title`)}">
+        <span class="${baseStyles.number}"></span>
+        <span class="${baseStyles.title}"></span>
+      </a>
+    ` : `
+      <span class="${baseStyles.header}">
+        <span class="${baseStyles.number}"></span>
+        <span class="${baseStyles.title}"></span>
+      </span>
+    `}
+    <ul class="${baseStyles.sections}"></ul>
+    `,
 
   ui: cssModulesUtils.ui(baseStyles, 'title', 'number', 'sections'),
+
+  serializeData() {
+    return {
+      selectable: this.options.mode !== 'insertPosition' &&
+                  this.options.mode !== 'sectionPart'
+    };
+  },
 
   events: cssModulesUtils.events(baseStyles, {
     'click link': function(event) {
       event.preventDefault();
-      return this.options.onSelectChapter(this.model);
+      this.options.onSelectChapter(this.model);
     },
 
     'mouseenter link': function() {
@@ -53,7 +66,10 @@ export const SelectableChapterItemView = Marionette.ItemView.extend({
       itemViewConstructor: SelectableSectionItemView,
       itemViewOptions: {
         entry: this.options.entry,
-        onSelect: this.options.onSelectSection
+        mode: this.options.mode,
+        onSelect: this.options.onSelectSection,
+        onSelectInsertPosition: this.options.onSelectInsertPosition,
+        onSelectSectionPart: this.options.onSelectSectionPart
       }
     }));
 

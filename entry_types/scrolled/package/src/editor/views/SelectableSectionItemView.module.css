@@ -1,0 +1,135 @@
+@value selectionColor from './colors.module.css';
+@value selectionWidth: 3px;
+@value insertLineWidth: 4px;
+
+.selectable:hover .outline {
+  border-color: selectionColor;
+}
+
+.clickMask {
+  composes: clickMask from './SectionItemView.module.css';
+}
+
+.mask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.upperMask {
+  composes: mask;
+  top: calc(-1 * selectionWidth - 1px);
+  bottom: 50%;
+}
+
+.lowerMask {
+  composes: mask;
+  top: 50%;
+  bottom: calc(-1 * selectionWidth - 1px);
+}
+
+.mask::before {
+  content: "";
+  display: none;
+  position: absolute;
+  height: insertLineWidth;
+  background: selectionColor;
+}
+
+.mask:hover::before,
+.mask:focus::before {
+  display: block;
+}
+
+.indicatorTooltip {
+  display: none;
+  position: absolute;
+  left: 100%;
+  margin-left: 20px;
+  background: var(--ui-on-surface-color-light);
+  border-radius: rounded();
+  padding: space(2);
+  white-space: nowrap;
+  color: var(--ui-surface-color);
+  z-index: 1;
+}
+
+.indicatorTooltip::before {
+  content: "";
+  position: absolute;
+  left: space(-2);
+  top: 50%;
+  transform: translateY(-50%);
+  border: space(2) solid transparent;
+  border-right-color: var(--ui-on-surface-color-light);
+  border-left: none;
+}
+
+.mask:hover .indicatorTooltip,
+.mask:focus .indicatorTooltip {
+  display: block;
+}
+
+.insertBeforeMask {
+  composes: upperMask;
+}
+
+.insertBeforeMask::before {
+  top: calc(insertLineWidth / -2);
+  left: 1px;
+  right: 1px;
+}
+
+.insertAfterMask {
+  composes: lowerMask;
+}
+
+.insertAfterMask::before {
+  bottom: calc(insertLineWidth / -2);
+  left: 1px;
+  right: 1px;
+}
+
+.indicatorTooltipTop {
+  composes: indicatorTooltip;
+  top: space(-4);
+}
+
+.indicatorTooltipBottom {
+  composes: indicatorTooltip;
+  bottom: space(4);
+  transform: translateY(100%);
+}
+
+.insertAtBeginningMask {
+  composes: upperMask;
+}
+
+.insertAtBeginningMask::before {
+  top: space(2);
+  left: space(1);
+  right: space(1);
+}
+
+.insertAtEndMask {
+  composes: lowerMask;
+}
+
+.insertAtEndMask::before {
+  bottom: space(2);
+  left: space(1);
+  right: space(1);
+}
+
+.indicatorTooltipInsideTop {
+  composes: indicatorTooltip;
+  top: space(2);
+  transform: translateY(-50%);
+}
+
+.indicatorTooltipInsideBottom {
+  composes: indicatorTooltip;
+  bottom: space(2);
+  transform: translateY(50%);
+}

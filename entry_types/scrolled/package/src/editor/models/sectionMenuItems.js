@@ -2,6 +2,8 @@ import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import {DestroyMenuItem} from 'pageflow/editor';
 
+import {SelectMoveDestinationDialogView} from '../views/SelectMoveDestinationDialogView';
+
 export const HideShowSectionMenuItem = Backbone.Model.extend({
   initialize(attributes, {section}) {
     this.section = section;
@@ -102,6 +104,31 @@ export const CopyPermalinkMenuItem = Backbone.Model.extend({
   }
 });
 
+export const MoveSectionMenuItem = Backbone.Model.extend({
+  initialize(attributes, {entry, section}) {
+    this.entry = entry;
+    this.section = section;
+    this.set('label', I18n.t('pageflow_scrolled.editor.section_menu_items.move'));
+  },
+
+  selected() {
+    const section = this.section;
+
+    SelectMoveDestinationDialogView.show({
+      entry: this.entry,
+      mode: 'insertPosition',
+      onSelect: ({section: targetSection, position}) => {
+        if (position === 'before') {
+          targetSection.chapter.moveSection(section, {before: targetSection});
+        }
+        else {
+          targetSection.chapter.moveSection(section, {after: targetSection});
+        }
+      }
+    });
+  }
+});
+
 export const DestroySectionMenuItem = DestroyMenuItem.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.destroy_section_menu_item',
 
@@ -117,6 +144,7 @@ export const DestroySectionMenuItem = DestroyMenuItem.extend({
 export function createSectionMenuItems({entry, section}) {
   return [
     new DuplicateSectionMenuItem({}, {section}),
+    new MoveSectionMenuItem({}, {entry, section}),
     new InsertSectionAboveMenuItem({}, {section}),
     new InsertSectionBelowMenuItem({}, {section}),
     ...(entry.cutoff.isEnabled() ?

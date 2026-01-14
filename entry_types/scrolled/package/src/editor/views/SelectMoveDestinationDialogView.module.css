@@ -1,0 +1,14 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  height: 100vh;
+  max-height: 1000px;
+}
+
+.outlineContainer {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  container-type: size;
+}

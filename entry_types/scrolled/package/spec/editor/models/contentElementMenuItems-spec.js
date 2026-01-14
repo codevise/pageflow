@@ -1,8 +1,19 @@
-import {DestroyContentElementMenuItem, DuplicateContentElementMenuItem} from 'editor/models/contentElementMenuItems';
+import {
+  DestroyContentElementMenuItem,
+  DuplicateContentElementMenuItem,
+  MoveContentElementMenuItem
+} from 'editor/models/contentElementMenuItems';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
+import {SelectMoveDestinationDialogView} from 'editor/views/SelectMoveDestinationDialogView';
 
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {factories, normalizeSeed} from 'support';
+
+jest.mock('editor/views/SelectMoveDestinationDialogView', () => ({
+  SelectMoveDestinationDialogView: {
+    show: jest.fn()
+  }
+}));
 
 describe('ContentElementMenuItems', () => {
   describe('DuplicateContentElementMenuItem', () => {
@@ -238,6 +249,128 @@ describe('ContentElementMenuItems', () => {
       menuItem.selected();
 
       expect(entry.deleteContentElement).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('MoveContentElementMenuItem', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.content_element_menu_items.move': 'Move...'
+    });
+
+    beforeEach(() => {
+      SelectMoveDestinationDialogView.show.mockClear();
+    });
+
+    it('has Move label', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          contentElements: [{id: 1, typeName: 'textBlock'}]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      editor.contentElementTypes.register('textBlock', {});
+
+      const menuItem = new MoveContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      expect(menuItem.get('label')).toBe('Move...');
+    });
+
+    it('shows dialog when selected', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          contentElements: [{id: 1, typeName: 'textBlock'}]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      editor.contentElementTypes.register('textBlock', {});
+
+      const menuItem = new MoveContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      menuItem.selected();
+
+      expect(SelectMoveDestinationDialogView.show).toHaveBeenCalledWith({
+        entry,
+        mode: 'sectionPart',
+        onSelect: expect.any(Function)
+      });
+    });
+
+    it('moves content element to beginning of selected section', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          sections: [{id: 10}, {id: 20}],
+          contentElements: [
+            {id: 1, sectionId: 10, typeName: 'textBlock'},
+            {id: 2, sectionId: 20, typeName: 'textBlock'},
+            {id: 3, sectionId: 20, typeName: 'textBlock'}
+          ]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      const targetSection = entry.sections.get(20);
+      editor.contentElementTypes.register('textBlock', {});
+      entry.moveContentElement = jest.fn();
+
+      const menuItem = new MoveContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      menuItem.selected();
+
+      const onSelect = SelectMoveDestinationDialogView.show.mock.calls[0][0].onSelect;
+      onSelect({section: targetSection, part: 'beginning'});
+
+      expect(entry.moveContentElement).toHaveBeenCalledWith(
+        {id: 1},
+        {at: 'before', id: 2}
+      );
+    });
+
+    it('moves content element to end of selected section', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          sections: [{id: 10}, {id: 20}],
+          contentElements: [
+            {id: 1, sectionId: 10, typeName: 'textBlock'},
+            {id: 2, sectionId: 20, typeName: 'textBlock'},
+            {id: 3, sectionId: 20, typeName: 'textBlock'}
+          ]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      const targetSection = entry.sections.get(20);
+      editor.contentElementTypes.register('textBlock', {});
+      entry.moveContentElement = jest.fn();
+
+      const menuItem = new MoveContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      menuItem.selected();
+
+      const onSelect = SelectMoveDestinationDialogView.show.mock.calls[0][0].onSelect;
+      onSelect({section: targetSection, part: 'end'});
+
+      expect(entry.moveContentElement).toHaveBeenCalledWith(
+        {id: 1},
+        {at: 'after', id: 3}
+      );
     });
   });
 });

@@ -19,8 +19,11 @@ export const SelectableStorylineItemView = Marionette.ItemView.extend({
       itemViewConstructor: SelectableChapterItemView,
       itemViewOptions: {
         entry: this.options.entry,
+        mode: this.options.mode,
         onSelectChapter: this.options.onSelectChapter,
-        onSelectSection: this.options.onSelectSection
+        onSelectSection: this.options.onSelectSection,
+        onSelectInsertPosition: this.options.onSelectInsertPosition,
+        onSelectSectionPart: this.options.onSelectSectionPart
       }
     }));
   }
