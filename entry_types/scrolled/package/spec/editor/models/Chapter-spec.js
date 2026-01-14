@@ -264,6 +264,158 @@ describe('Chapter', () => {
     });
   });
 
+  describe('#moveSection', () => {
+    describe('within same chapter', () => {
+      beforeEach(() => {
+        testContext.entry = factories.entry(ScrolledEntry, {}, {
+          entryTypeSeed: normalizeSeed({
+            chapters: [{id: 10}],
+            sections: [
+              {id: 100, chapterId: 10, position: 0},
+              {id: 101, chapterId: 10, position: 1},
+              {id: 102, chapterId: 10, position: 2}
+            ]
+          })
+        });
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      useFakeXhr(() => testContext);
+
+      it('re-indexes sections when moving after another section', () => {
+        const {entry} = testContext;
+        const chapter = entry.chapters.first();
+        const sectionToMove = chapter.sections.get(100);
+        const targetSection = chapter.sections.get(102);
+
+        chapter.moveSection(sectionToMove, {after: targetSection});
+
+        expect(chapter.sections.pluck('position')).toEqual([0, 1, 2]);
+        expect(chapter.sections.pluck('id')).toEqual([101, 102, 100]);
+      });
+
+      it('triggers selectSection and scrollToSection events', () => {
+        const {entry} = testContext;
+        const chapter = entry.chapters.first();
+        const sectionToMove = chapter.sections.get(100);
+        const targetSection = chapter.sections.get(102);
+        const selectListener = jest.fn();
+        const scrollListener = jest.fn();
+
+        entry.on('selectSection', selectListener);
+        entry.on('scrollToSection', scrollListener);
+
+        chapter.moveSection(sectionToMove, {after: targetSection});
+
+        expect(selectListener).toHaveBeenCalledWith(sectionToMove);
+        expect(scrollListener).toHaveBeenCalledWith(sectionToMove);
+      });
+
+      it('calls saveOrder', () => {
+        const {entry, requests} = testContext;
+        const chapter = entry.chapters.first();
+        const sectionToMove = chapter.sections.get(100);
+        const targetSection = chapter.sections.get(102);
+
+        chapter.moveSection(sectionToMove, {after: targetSection});
+
+        expect(requests.length).toBe(1);
+        expect(requests[0].url).toContain('/order');
+      });
+
+      it('re-indexes sections when moving before another section', () => {
+        const {entry} = testContext;
+        const chapter = entry.chapters.first();
+        const sectionToMove = chapter.sections.get(102);
+        const targetSection = chapter.sections.get(100);
+
+        chapter.moveSection(sectionToMove, {before: targetSection});
+
+        expect(chapter.sections.pluck('position')).toEqual([0, 1, 2]);
+        expect(chapter.sections.pluck('id')).toEqual([102, 100, 101]);
+      });
+    });
+
+    describe('between chapters', () => {
+      beforeEach(() => {
+        testContext.entry = factories.entry(ScrolledEntry, {}, {
+          entryTypeSeed: normalizeSeed({
+            chapters: [{id: 10}, {id: 20}],
+            sections: [
+              {id: 100, chapterId: 10, position: 0},
+              {id: 101, chapterId: 10, position: 1},
+              {id: 200, chapterId: 20, position: 0},
+              {id: 201, chapterId: 20, position: 1}
+            ]
+          })
+        });
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      useFakeXhr(() => testContext);
+
+      it('moves section to different chapter', () => {
+        const {entry} = testContext;
+        const sourceChapter = entry.chapters.get(10);
+        const targetChapter = entry.chapters.get(20);
+        const sectionToMove = sourceChapter.sections.get(100);
+        const targetSection = targetChapter.sections.get(200);
+
+        targetChapter.moveSection(sectionToMove, {after: targetSection});
+
+        expect(sectionToMove.get('chapterId')).toBe(20);
+        expect(sourceChapter.sections.pluck('id')).toEqual([101]);
+        expect(targetChapter.sections.pluck('id')).toEqual([200, 100, 201]);
+      });
+
+      it('updates positions in target chapter', () => {
+        const {entry} = testContext;
+        const sourceChapter = entry.chapters.get(10);
+        const targetChapter = entry.chapters.get(20);
+        const sectionToMove = sourceChapter.sections.get(100);
+        const targetSection = targetChapter.sections.get(200);
+
+        targetChapter.moveSection(sectionToMove, {after: targetSection});
+
+        expect(sourceChapter.sections.pluck('position')).toEqual([1]);
+        expect(targetChapter.sections.pluck('position')).toEqual([0, 1, 2]);
+      });
+
+      it('calls saveOrder on target chapter', () => {
+        const {entry, requests} = testContext;
+        const sourceChapter = entry.chapters.get(10);
+        const targetChapter = entry.chapters.get(20);
+        const sectionToMove = sourceChapter.sections.get(100);
+        const targetSection = targetChapter.sections.get(200);
+
+        targetChapter.moveSection(sectionToMove, {after: targetSection});
+
+        expect(requests.length).toBe(1);
+        expect(requests[0].url).toContain('/chapters/20/sections/order');
+      });
+
+      it('moves section before target section in different chapter', () => {
+        const {entry} = testContext;
+        const sourceChapter = entry.chapters.get(10);
+        const targetChapter = entry.chapters.get(20);
+        const sectionToMove = sourceChapter.sections.get(100);
+        const targetSection = targetChapter.sections.get(201);
+
+        targetChapter.moveSection(sectionToMove, {before: targetSection});
+
+        expect(sectionToMove.get('chapterId')).toBe(20);
+        expect(sourceChapter.sections.pluck('id')).toEqual([101]);
+        expect(targetChapter.sections.pluck('id')).toEqual([200, 100, 201]);
+      });
+    });
+  });
+
   describe('#isExcursion', () => {
     it('returns false for chapters in main storyline', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
