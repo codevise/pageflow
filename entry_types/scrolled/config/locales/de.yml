@@ -1329,6 +1329,9 @@ de:
         header_insertPosition: Abschnitt verschieben
         header_sectionPart: Element verschieben
         hint: Wähle die Position aus, an die verschoben werden soll.
+      selectable_storyline_item:
+        blank_slate: Keine Kapitel
+        blank_slate_excursions: Keine Exkurse
       selectable_chapter_item:
         title: Kapitel auswählen
       selectable_section_item:

@@ -1313,6 +1313,9 @@ en:
         header_insertPosition: Move section
         header_sectionPart: Move element
         hint: Select the position to move to.
+      selectable_storyline_item:
+        blank_slate: No chapters
+        blank_slate_excursions: No excursions
       selectable_chapter_item:
         title: Select chapter
       selectable_section_item:

@@ -8,6 +8,8 @@ import userEvent from '@testing-library/user-event';
 
 describe('SelectableEntryOutlineView', () => {
   useFakeTranslations({
+    'pageflow_scrolled.editor.selectable_storyline_item.blank_slate': 'No chapters',
+    'pageflow_scrolled.editor.selectable_storyline_item.blank_slate_excursions': 'No excursions',
     'pageflow_scrolled.editor.selectable_chapter_item.title': 'Select chapter',
     'pageflow_scrolled.editor.selectable_section_item.title': 'Select section',
     'pageflow_scrolled.editor.selectable_section_item.insert_here': 'Move here',
@@ -211,6 +213,23 @@ describe('SelectableEntryOutlineView', () => {
         section: entry.sections.get(1),
         part: 'end'
       });
+    });
+  });
+
+  describe('blank slates', () => {
+    it('renders blank slate when main storyline has no chapters', () => {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed()
+      });
+      const view = new SelectableEntryOutlineView({
+        entry,
+        mode: 'sectionPart',
+        onSelectSectionPart: jest.fn()
+      });
+
+      const {getByText} = render(view);
+
+      expect(getByText('No chapters')).toBeTruthy();
     });
   });
 });
