@@ -1,4 +1,14 @@
-.tabs {
-  max-width: 300px;
-  margin: 0 auto;
+.tabs :global(.tabs_view) {
+  height: 100cqh;
+  display: flex;
+  flex-direction: column;
+}
+
+.tabs :global(.tabs_view-container) {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  padding-right: space(2);
+  border-bottom: solid 1px var(--ui-on-surface-color-lightest);
 }
