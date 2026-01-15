@@ -271,6 +271,27 @@ module PageflowScrolled
         expect(section.reload.chapter).to eq(other_chapter)
       end
 
+      it 'allows moving a section from a different storyline' do
+        entry = create(:entry, type_name: 'scrolled')
+        revision = entry.draft
+        storyline = create(:scrolled_storyline, revision:)
+        chapter = create(:scrolled_chapter, storyline:)
+        other_storyline = create(:scrolled_storyline, revision:)
+        other_chapter = create(:scrolled_chapter, storyline: other_storyline)
+        section = create(:section, chapter: other_chapter)
+
+        authorize_for_editor_controller(entry)
+        put(:order,
+            params: {
+              entry_type: 'scrolled',
+              entry_id: entry,
+              chapter_id: chapter,
+              ids: [section.id]
+            }, format: 'json')
+
+        expect(section.reload.chapter).to eq(chapter)
+      end
+
       it 'does not allow moving a section to a chapter of another entry' do
         entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
