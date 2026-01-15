@@ -325,7 +325,7 @@ describe('ContentElementMenuItems', () => {
       });
     });
 
-    it('moves content element to beginning of selected section', () => {
+    it('moves content element to beginning and scrolls on success', () => {
       const editor = factories.editorApi();
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
@@ -341,6 +341,8 @@ describe('ContentElementMenuItems', () => {
       const targetSection = entry.sections.get(20);
       editor.contentElementTypes.register('textBlock', {});
       entry.moveContentElement = jest.fn();
+      const scrollHandler = jest.fn();
+      entry.on('scrollToSection', scrollHandler);
 
       const menuItem = new MoveContentElementMenuItem({}, {
         contentElement,
@@ -355,11 +357,16 @@ describe('ContentElementMenuItems', () => {
 
       expect(entry.moveContentElement).toHaveBeenCalledWith(
         {id: 1},
-        {at: 'before', id: 2}
+        {at: 'before', id: 2},
+        {success: expect.any(Function)}
       );
+
+      entry.moveContentElement.mock.calls[0][2].success();
+
+      expect(scrollHandler).toHaveBeenCalledWith(targetSection, {align: 'nearStart'});
     });
 
-    it('moves content element to end of selected section', () => {
+    it('moves content element to end and scrolls on success', () => {
       const editor = factories.editorApi();
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
@@ -375,6 +382,8 @@ describe('ContentElementMenuItems', () => {
       const targetSection = entry.sections.get(20);
       editor.contentElementTypes.register('textBlock', {});
       entry.moveContentElement = jest.fn();
+      const scrollHandler = jest.fn();
+      entry.on('scrollToSection', scrollHandler);
 
       const menuItem = new MoveContentElementMenuItem({}, {
         contentElement,
@@ -389,8 +398,13 @@ describe('ContentElementMenuItems', () => {
 
       expect(entry.moveContentElement).toHaveBeenCalledWith(
         {id: 1},
-        {at: 'after', id: 3}
+        {at: 'after', id: 3},
+        {success: expect.any(Function)}
       );
+
+      entry.moveContentElement.mock.calls[0][2].success();
+
+      expect(scrollHandler).toHaveBeenCalledWith(targetSection, {align: 'nearEnd'});
     });
 
     it('calls handleMove instead of moveContentElement if defined', () => {

@@ -62,6 +62,24 @@ describe('ScrolledEntry', () => {
         expect(entry.sections.first().contentElements.pluck('position')).toEqual([0, 1, 2]);
       });
 
+      it('calls success callback after save', () => {
+        const {entry, server} = testContext;
+        const success = jest.fn();
+
+        entry.moveContentElement({id: 7}, {at: 'before', id: 5}, {success});
+
+        expect(success).not.toHaveBeenCalled();
+
+        server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 7, permaId: 70}, {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(success).toHaveBeenCalled();
+      });
+
       it('supports moving after other content element', () => {
         const {entry, requests} = testContext;
 

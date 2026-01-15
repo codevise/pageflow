@@ -105,7 +105,13 @@ export const MoveContentElementMenuItem = Backbone.Model.extend({
           contentElementType.handleMove(contentElement, to);
         }
         else {
-          entry.moveContentElement({id: contentElement.id}, to);
+          entry.moveContentElement({id: contentElement.id}, to, {
+            success() {
+              entry.trigger('scrollToSection', targetSection, {
+                align: part === 'beginning' ? 'nearStart' : 'nearEnd'
+              });
+            }
+          });
         }
       }
     });

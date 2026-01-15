@@ -31,7 +31,7 @@ export const EditContentElementView = EditConfigurationView.extend({
         entry: this.options.entry,
         editor: this.options.editor
       }),
-      new DestroyContentElementMenuItem({}, {
+      new DestroyContentElementMenuItem({separated: true}, {
         contentElement: this.model,
         entry: this.options.entry,
         editor: this.options.editor
