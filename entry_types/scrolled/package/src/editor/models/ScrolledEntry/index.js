@@ -122,13 +122,15 @@ export const ScrolledEntry = Entry.extend({
 
   moveContentElement(
     {id: movedId, range: movedRange},
-    {id, at, splitPoint}
+    {id, at, splitPoint},
+    {success} = {}
   ) {
     moveContentElement(this, this.contentElements.get(movedId), {
       range: movedRange,
       sibling: this.contentElements.get(id),
       at,
-      splitPoint
+      splitPoint,
+      success
     });
   },
 

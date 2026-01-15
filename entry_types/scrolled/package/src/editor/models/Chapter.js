@@ -117,5 +117,44 @@ export const Chapter = Backbone.Model.extend({
     });
 
     return newSection;
+  },
+
+  moveSection(section, {after, before} = {}) {
+    const targetSection = after || before;
+    const sourceChapter = section.chapter;
+
+    reindexPositions(
+      sectionsInNewOrder(this.sections, section, targetSection, Boolean(after))
+    );
+
+    if (sourceChapter !== this) {
+      this.sections.add(section);
+    }
+
+    this.sections.sort();
+    this.sections.saveOrder();
+
+    this.entry.trigger('selectSection', section);
+    this.entry.trigger('scrollToSection', section);
   }
 });
+
+function sectionsInNewOrder(sections, section, targetSection, after) {
+  const result = sections.filter(s => s !== section);
+
+  if (!targetSection) {
+    result.push(section);
+    return result;
+  }
+
+  const targetIndex = result.indexOf(targetSection);
+  const insertIndex = after ? targetIndex + 1 : targetIndex;
+
+  result.splice(insertIndex, 0, section);
+
+  return result;
+}
+
+function reindexPositions(sections) {
+  sections.forEach((section, index) => section.set('position', index));
+}

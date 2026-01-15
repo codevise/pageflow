@@ -1,0 +1,48 @@
+@value insertLineWidth, insertLineColor from './insertIndicator.module.css';
+
+.root {
+  max-width: 300px;
+  margin-inline: auto;
+  position: relative;
+}
+
+.empty {
+  cursor: pointer;
+}
+
+.emptyChapterInsertMask {
+  display: none;
+  position: absolute;
+  inset: 0;
+}
+
+.empty .emptyChapterInsertMask {
+  display: block;
+}
+
+.emptyChapterInsertMask::before {
+  content: "";
+  display: none;
+  position: absolute;
+  height: insertLineWidth;
+  background: insertLineColor;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+}
+
+.empty:hover .emptyChapterInsertMask::before {
+  display: block;
+}
+
+.indicatorTooltip {
+  composes: tooltip from './insertIndicator.module.css';
+  display: none;
+  left: calc(100% - 8px);
+  bottom: 13px;
+  transform: translateY(50%);
+}
+
+.empty:hover .indicatorTooltip {
+  display: block;
+}

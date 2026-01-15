@@ -7,7 +7,7 @@ import {maybeMergeWithAdjacent} from './maybeMergeWithAdjacent';
 // block). Merge content elements of the same type that become
 // adjacent by moving a content element away (e.g. two text blocks
 // surrounding an image that is moved away).
-export function moveContentElement(entry, contentElement, {range, sibling, at, splitPoint}) {
+export function moveContentElement(entry, contentElement, {range, sibling, at, splitPoint, success}) {
   const sourceBatch = new Batch(entry, contentElement.section);
 
   // If we move content elements between sections, merges will need to
@@ -114,6 +114,10 @@ export function moveContentElement(entry, contentElement, {range, sibling, at, s
       entry.trigger('selectContentElement', contentElement, {
         range: targetRange
       });
+
+      if (success) {
+        success();
+      }
     }
   });
   sourceBatch.saveIfDirty();

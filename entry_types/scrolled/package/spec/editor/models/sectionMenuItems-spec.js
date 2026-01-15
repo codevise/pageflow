@@ -5,11 +5,19 @@ import {
   InsertSectionBelowMenuItem,
   CutoffSectionMenuItem,
   CopyPermalinkMenuItem,
-  DestroySectionMenuItem
+  DestroySectionMenuItem,
+  MoveSectionMenuItem
 } from 'editor/models/sectionMenuItems';
+import {SelectMoveDestinationDialogView} from 'editor/views/SelectMoveDestinationDialogView';
 
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
+
+jest.mock('editor/views/SelectMoveDestinationDialogView', () => ({
+  SelectMoveDestinationDialogView: {
+    show: jest.fn()
+  }
+}));
 
 describe('SectionMenuItems', () => {
   useFakeTranslations({
@@ -21,6 +29,7 @@ describe('SectionMenuItems', () => {
     'pageflow_scrolled.editor.section_menu_items.set_cutoff': 'Set cutoff',
     'pageflow_scrolled.editor.section_menu_items.reset_cutoff': 'Reset cutoff',
     'pageflow_scrolled.editor.section_menu_items.copy_permalink': 'Copy permalink',
+    'pageflow_scrolled.editor.section_menu_items.move': 'Move...',
     'pageflow_scrolled.editor.destroy_section_menu_item.destroy': 'Delete section',
     'pageflow_scrolled.editor.destroy_section_menu_item.confirm_destroy': 'Really delete this section?'
   });
@@ -257,6 +266,96 @@ describe('SectionMenuItems', () => {
 
       expect(window.confirm).toHaveBeenCalledWith('Really delete this section?');
       expect(section.destroyWithDelay).toHaveBeenCalled();
+    });
+  });
+
+  describe('MoveSectionMenuItem', () => {
+    beforeEach(() => {
+      SelectMoveDestinationDialogView.show.mockClear();
+    });
+
+    it('has Move label', () => {
+      const entry = createEntry({sections: [{id: 1}]});
+      const section = entry.sections.get(1);
+      const menuItem = new MoveSectionMenuItem({}, {entry, section});
+
+      expect(menuItem.get('label')).toBe('Move...');
+    });
+
+    it('shows dialog when selected', () => {
+      const entry = createEntry({sections: [{id: 1}]});
+      const section = entry.sections.get(1);
+      const menuItem = new MoveSectionMenuItem({}, {entry, section});
+
+      menuItem.selected();
+
+      expect(SelectMoveDestinationDialogView.show).toHaveBeenCalledWith({
+        entry,
+        mode: 'insertPosition',
+        onSelect: expect.any(Function)
+      });
+    });
+
+    it('moves section after target when position is after', () => {
+      const entry = createEntry({
+        chapters: [{id: 10}, {id: 20}],
+        sections: [
+          {id: 1, chapterId: 10},
+          {id: 2, chapterId: 20}
+        ]
+      });
+      const section = entry.sections.get(1);
+      const targetSection = entry.sections.get(2);
+      const menuItem = new MoveSectionMenuItem({}, {entry, section});
+
+      menuItem.selected();
+
+      const onSelect = SelectMoveDestinationDialogView.show.mock.calls[0][0].onSelect;
+      targetSection.chapter.moveSection = jest.fn();
+      onSelect({section: targetSection, position: 'after'});
+
+      expect(targetSection.chapter.moveSection).toHaveBeenCalledWith(section, {after: targetSection});
+    });
+
+    it('moves section before target when position is before', () => {
+      const entry = createEntry({
+        chapters: [{id: 10}, {id: 20}],
+        sections: [
+          {id: 1, chapterId: 10},
+          {id: 2, chapterId: 20}
+        ]
+      });
+      const section = entry.sections.get(1);
+      const targetSection = entry.sections.get(2);
+      const menuItem = new MoveSectionMenuItem({}, {entry, section});
+
+      menuItem.selected();
+
+      const onSelect = SelectMoveDestinationDialogView.show.mock.calls[0][0].onSelect;
+      targetSection.chapter.moveSection = jest.fn();
+      onSelect({section: targetSection, position: 'before'});
+
+      expect(targetSection.chapter.moveSection).toHaveBeenCalledWith(section, {before: targetSection});
+    });
+
+    it('moves section into empty chapter when position is into', () => {
+      const entry = createEntry({
+        chapters: [{id: 10}, {id: 20}],
+        sections: [
+          {id: 1, chapterId: 10}
+        ]
+      });
+      const section = entry.sections.get(1);
+      const targetChapter = entry.chapters.get(20);
+      const menuItem = new MoveSectionMenuItem({}, {entry, section});
+
+      menuItem.selected();
+
+      const onSelect = SelectMoveDestinationDialogView.show.mock.calls[0][0].onSelect;
+      targetChapter.moveSection = jest.fn();
+      onSelect({chapter: targetChapter, position: 'into'});
+
+      expect(targetChapter.moveSection).toHaveBeenCalledWith(section);
     });
   });
 });

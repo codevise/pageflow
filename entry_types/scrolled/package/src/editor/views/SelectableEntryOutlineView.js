@@ -20,8 +20,11 @@ export const SelectableEntryOutlineView = Marionette.Layout.extend({
         itemViewContstuctor: SelectableStorylineItemView,
         itemViewOptions: {
           entry: this.options.entry,
+          mode: this.options.mode,
           onSelectChapter: this.options.onSelectChapter,
-          onSelectSection: this.options.onSelectSection
+          onSelectSection: this.options.onSelectSection,
+          onSelectInsertPosition: this.options.onSelectInsertPosition,
+          onSelectSectionPart: this.options.onSelectSectionPart
         }
       }),
       {to: this.ui.tabs}

@@ -4,6 +4,8 @@
   width: 40%;
   min-width: 400px;
   max-width: 700px;
+  height: 100vh;
+  max-height: 1000px;
 }
 
 .urlContainer {
@@ -53,9 +55,8 @@
 
 .outlineContainer {
   width: 100%;
-  box-sizing: border-box;
-  padding: space(2);
-  overflow: auto;
+  flex: 1;
+  container-type: size;
 }
 
 .fileContainer {

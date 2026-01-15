@@ -2,7 +2,8 @@ import {EditConfigurationView} from 'pageflow/editor';
 
 import {
   DestroyContentElementMenuItem,
-  DuplicateContentElementMenuItem
+  DuplicateContentElementMenuItem,
+  MoveContentElementMenuItem
 } from '../models/contentElementMenuItems';
 
 export const EditContentElementView = EditConfigurationView.extend({
@@ -25,7 +26,12 @@ export const EditContentElementView = EditConfigurationView.extend({
         entry: this.options.entry,
         editor: this.options.editor
       }),
-      new DestroyContentElementMenuItem({}, {
+      new MoveContentElementMenuItem({}, {
+        contentElement: this.model,
+        entry: this.options.entry,
+        editor: this.options.editor
+      }),
+      new DestroyContentElementMenuItem({separated: true}, {
         contentElement: this.model,
         entry: this.options.entry,
         editor: this.options.editor

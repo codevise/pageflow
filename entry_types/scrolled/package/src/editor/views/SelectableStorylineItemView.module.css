@@ -1,0 +1,5 @@
+.blankSlate {
+  padding-top: space(8);
+  text-align: center;
+  color: var(--ui-on-surface-color-light);
+}

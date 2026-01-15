@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Editor, Transforms, Range, Path, Node} from 'slate';
+import {Editor, Transforms, Node} from 'slate';
 import {useSlate, ReactEditor} from 'slate-react';
 import {useDrag} from 'react-dnd';
 
@@ -11,6 +11,7 @@ import {useI18n} from '../../i18n';
 import {postInsertContentElementMessage} from '../postMessage';
 import {getUniformSelectedNode} from './getUniformSelectedNode';
 import {toggleBlock, isBlockActive} from './blocks';
+import {computeBounds} from './computeBounds';
 
 import TextIcon from '../images/text.svg';
 import HeadingIcon from '../images/heading.svg';
@@ -142,20 +143,6 @@ export function Selection(props) {
       </div>
     </div>
   );
-}
-
-function computeBounds(editor) {
-  const startPoint = Range.start(editor.selection);
-  const endPoint = Range.end(editor.selection);
-
-  const startPath = startPoint.path.slice(0, 1);
-  let endPath = endPoint.path.slice(0, 1);
-
-  if (!Path.equals(startPath, endPath) && endPoint.offset === 0) {
-    endPath = Path.previous(endPath);
-  }
-
-  return [startPath[0], endPath[0]];
 }
 
 function hideRect(el) {

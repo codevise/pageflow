@@ -30,7 +30,6 @@
   margin-right: -6px;
 }
 
-.selectable:hover .outline,
 .active .outline {
   border: solid selectionWidth selectionColor;
 }

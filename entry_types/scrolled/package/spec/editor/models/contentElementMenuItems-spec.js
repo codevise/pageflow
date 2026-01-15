@@ -1,8 +1,19 @@
-import {DestroyContentElementMenuItem, DuplicateContentElementMenuItem} from 'editor/models/contentElementMenuItems';
+import {
+  DestroyContentElementMenuItem,
+  DuplicateContentElementMenuItem,
+  MoveContentElementMenuItem
+} from 'editor/models/contentElementMenuItems';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
+import {SelectMoveDestinationDialogView} from 'editor/views/SelectMoveDestinationDialogView';
 
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {factories, normalizeSeed} from 'support';
+
+jest.mock('editor/views/SelectMoveDestinationDialogView', () => ({
+  SelectMoveDestinationDialogView: {
+    show: jest.fn()
+  }
+}));
 
 describe('ContentElementMenuItems', () => {
   describe('DuplicateContentElementMenuItem', () => {
@@ -238,6 +249,197 @@ describe('ContentElementMenuItems', () => {
       menuItem.selected();
 
       expect(entry.deleteContentElement).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('MoveContentElementMenuItem', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.content_element_menu_items.move': 'Move...',
+      'pageflow_scrolled.editor.content_element_menu_items.move_selection': 'Move selection...'
+    });
+
+    beforeEach(() => {
+      SelectMoveDestinationDialogView.show.mockClear();
+    });
+
+    it('has Move label', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          contentElements: [{id: 1, typeName: 'textBlock'}]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      editor.contentElementTypes.register('textBlock', {});
+
+      const menuItem = new MoveContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      expect(menuItem.get('label')).toBe('Move...');
+    });
+
+    it('has Move selection label when handleMove is defined', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          contentElements: [{id: 1, typeName: 'textBlock'}]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      editor.contentElementTypes.register('textBlock', {handleMove() {}});
+
+      const menuItem = new MoveContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      expect(menuItem.get('label')).toBe('Move selection...');
+    });
+
+    it('shows dialog when selected', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          contentElements: [{id: 1, typeName: 'textBlock'}]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      editor.contentElementTypes.register('textBlock', {});
+
+      const menuItem = new MoveContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      menuItem.selected();
+
+      expect(SelectMoveDestinationDialogView.show).toHaveBeenCalledWith({
+        entry,
+        mode: 'sectionPart',
+        onSelect: expect.any(Function)
+      });
+    });
+
+    it('moves content element to beginning and scrolls on success', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          sections: [{id: 10}, {id: 20}],
+          contentElements: [
+            {id: 1, sectionId: 10, typeName: 'textBlock'},
+            {id: 2, sectionId: 20, typeName: 'textBlock'},
+            {id: 3, sectionId: 20, typeName: 'textBlock'}
+          ]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      const targetSection = entry.sections.get(20);
+      editor.contentElementTypes.register('textBlock', {});
+      entry.moveContentElement = jest.fn();
+      const scrollHandler = jest.fn();
+      entry.on('scrollToSection', scrollHandler);
+
+      const menuItem = new MoveContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      menuItem.selected();
+
+      const onSelect = SelectMoveDestinationDialogView.show.mock.calls[0][0].onSelect;
+      onSelect({section: targetSection, part: 'beginning'});
+
+      expect(entry.moveContentElement).toHaveBeenCalledWith(
+        {id: 1},
+        {at: 'before', id: 2},
+        {success: expect.any(Function)}
+      );
+
+      entry.moveContentElement.mock.calls[0][2].success();
+
+      expect(scrollHandler).toHaveBeenCalledWith(targetSection, {align: 'nearStart'});
+    });
+
+    it('moves content element to end and scrolls on success', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          sections: [{id: 10}, {id: 20}],
+          contentElements: [
+            {id: 1, sectionId: 10, typeName: 'textBlock'},
+            {id: 2, sectionId: 20, typeName: 'textBlock'},
+            {id: 3, sectionId: 20, typeName: 'textBlock'}
+          ]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      const targetSection = entry.sections.get(20);
+      editor.contentElementTypes.register('textBlock', {});
+      entry.moveContentElement = jest.fn();
+      const scrollHandler = jest.fn();
+      entry.on('scrollToSection', scrollHandler);
+
+      const menuItem = new MoveContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      menuItem.selected();
+
+      const onSelect = SelectMoveDestinationDialogView.show.mock.calls[0][0].onSelect;
+      onSelect({section: targetSection, part: 'end'});
+
+      expect(entry.moveContentElement).toHaveBeenCalledWith(
+        {id: 1},
+        {at: 'after', id: 3},
+        {success: expect.any(Function)}
+      );
+
+      entry.moveContentElement.mock.calls[0][2].success();
+
+      expect(scrollHandler).toHaveBeenCalledWith(targetSection, {align: 'nearEnd'});
+    });
+
+    it('calls handleMove instead of moveContentElement if defined', () => {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          sections: [{id: 10}, {id: 20}],
+          contentElements: [
+            {id: 1, sectionId: 10, typeName: 'textBlock'},
+            {id: 2, sectionId: 20, typeName: 'textBlock'}
+          ]
+        })
+      });
+      const contentElement = entry.contentElements.get(1);
+      const targetSection = entry.sections.get(20);
+      const handleMove = jest.fn();
+      editor.contentElementTypes.register('textBlock', {handleMove});
+      entry.moveContentElement = jest.fn();
+
+      const menuItem = new MoveContentElementMenuItem({}, {
+        contentElement,
+        entry,
+        editor
+      });
+
+      menuItem.selected();
+
+      const onSelect = SelectMoveDestinationDialogView.show.mock.calls[0][0].onSelect;
+      onSelect({section: targetSection, part: 'beginning'});
+
+      expect(handleMove).toHaveBeenCalledWith(contentElement, {
+        at: 'before',
+        id: 2
+      });
+      expect(entry.moveContentElement).not.toHaveBeenCalled();
     });
   });
 });

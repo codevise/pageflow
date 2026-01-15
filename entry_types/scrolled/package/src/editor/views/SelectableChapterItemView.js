@@ -1,43 +1,84 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
+import classNames from 'classnames';
 
 import {cssModulesUtils, CollectionView} from 'pageflow/ui';
 
 import {SelectableSectionItemView} from './SelectableSectionItemView';
 
-import styles from './ChapterItemView.module.css';
+import baseStyles from './ChapterItemView.module.css';
+import styles from './SelectableChapterItemView.module.css';
 
 export const SelectableChapterItemView = Marionette.ItemView.extend({
   tagName: 'li',
-  className: styles.root,
 
-  template: () => `
-     <a class="${styles.link}"
-        href=""
-        title="${I18n.t(`pageflow_scrolled.editor.selectable_chapter_item.title`)}">
-       <span class="${styles.number}"></span>
-       <span class="${styles.title}"></span>
-     </a>
+  className() {
+    return classNames(baseStyles.root, styles.root, {
+      [styles.empty]: this.model.sections.length === 0
+    });
+  },
 
-     <ul class="${styles.sections}"></ul>
-     `,
+  template: (data) => `
+    ${data.selectable ? `
+      <a class="${baseStyles.link}"
+         href=""
+         title="${I18n.t(`pageflow_scrolled.editor.selectable_chapter_item.title`)}">
+        <span class="${baseStyles.number}"></span>
+        <span class="${baseStyles.title}"></span>
+      </a>
+    ` : `
+      <span class="${baseStyles.header}">
+        <span class="${baseStyles.number}"></span>
+        <span class="${baseStyles.title}"></span>
+      </span>
+    `}
+    <ul class="${baseStyles.sections}"></ul>
+    ${data.mode === 'insertPosition' ? `
+      <a class="${styles.emptyChapterInsertMask}" href="">
+        <span class="${styles.indicatorTooltip}">
+          ${I18n.t('pageflow_scrolled.editor.selectable_chapter_item.insert_here')}
+        </span>
+      </a>
+    ` : ''}
+    `,
 
-  ui: cssModulesUtils.ui(styles, 'title', 'number', 'sections'),
+  ui: cssModulesUtils.ui(baseStyles, 'title', 'number', 'sections'),
 
-  events: cssModulesUtils.events(styles, {
-    'click link': function(event) {
-      event.preventDefault();
-      return this.options.onSelectChapter(this.model);
-    },
+  serializeData() {
+    return {
+      mode: this.options.mode,
+      selectable: this.options.mode !== 'insertPosition' &&
+                  this.options.mode !== 'sectionPart'
+    };
+  },
 
-    'mouseenter link': function() {
-      this.$el.addClass(styles.selectableHover);
-    },
+  events() {
+    return {
+      ...cssModulesUtils.events(baseStyles, {
+        'click link': function(event) {
+          event.preventDefault();
+          this.options.onSelectChapter(this.model);
+        },
 
-    'mouseleave link': function() {
-      this.$el.removeClass(styles.selectableHover);
-    }
-  }),
+        'mouseenter link': function() {
+          this.$el.addClass(baseStyles.selectableHover);
+        },
+
+        'mouseleave link': function() {
+          this.$el.removeClass(baseStyles.selectableHover);
+        }
+      }),
+      ...cssModulesUtils.events(styles, {
+        'click emptyChapterInsertMask': function(event) {
+          event.preventDefault();
+          this.options.onSelectInsertPosition({
+            chapter: this.model,
+            position: 'into'
+          });
+        }
+      })
+    };
+  },
 
   modelEvents: {
     change: 'update'
@@ -50,7 +91,10 @@ export const SelectableChapterItemView = Marionette.ItemView.extend({
       itemViewConstructor: SelectableSectionItemView,
       itemViewOptions: {
         entry: this.options.entry,
-        onSelect: this.options.onSelectSection
+        mode: this.options.mode,
+        onSelect: this.options.onSelectSection,
+        onSelectInsertPosition: this.options.onSelectInsertPosition,
+        onSelectSectionPart: this.options.onSelectSectionPart
       }
     }));
 

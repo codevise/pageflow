@@ -1145,6 +1145,9 @@ en:
       duplicate_content_element_menu_item:
         label: Duplicate element
         selection_label: Duplicate selection
+      content_element_menu_items:
+        move: Move element...
+        move_selection: Move selection...
       destroy_section_menu_item:
         confirm_destroy: Really delete this section including all its elements?
         destroy: Delete section
@@ -1282,6 +1285,7 @@ en:
         hide: Hide outside of the editor
         insert_section_above: Insert section above
         insert_section_below: Insert section below
+        move: Move section...
         reset_cutoff: Remove paywall cutoff
         set_cutoff: Set paywall cutoff above
         show: Show outside of the editor
@@ -1304,10 +1308,22 @@ en:
         select_file: Provide file download
         select_file_description: Let readers download a file when they click the link.
         select_in_sidebar: Select file
+      select_move_destination:
+        cancel: Cancel
+        header_insertPosition: Move section
+        header_sectionPart: Move element
+        hint: Select the position to move to.
+      selectable_storyline_item:
+        blank_slate: No chapters
+        blank_slate_excursions: No excursions
       selectable_chapter_item:
         title: Select chapter
+        insert_here: Move here
       selectable_section_item:
         title: Select section
+        insert_here: Move here
+        insert_at_beginning: Move to beginning
+        insert_at_end: Move to end
       edit_motif_area_menu_item: Select motif area...
       edit_motif_area_input:
         select: Select motif area

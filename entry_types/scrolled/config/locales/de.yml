@@ -1161,6 +1161,9 @@ de:
       duplicate_content_element_menu_item:
         label: Element duplizieren
         selection_label: Auswahl duplizieren
+      content_element_menu_items:
+        move: Element verschieben...
+        move_selection: Auswahl verschieben...
       destroy_section_menu_item:
         confirm_destroy: Abschnitt inklusive aller Elemente wirklich löschen?
         destroy: Abschnitt löschen
@@ -1298,6 +1301,7 @@ de:
         hide: Außerhalb des Editors ausblenden
         insert_section_above: Abschnitt oberhalb einfügen
         insert_section_below: Abschnitt unterhalb einfügen
+        move: Abschnitt verschieben...
         reset_cutoff: Paywall Grenze entfernen
         set_cutoff: Paywall Grenze oberhalb setzen
         show: Außerhalb des Editors einblenden
@@ -1320,10 +1324,22 @@ de:
         select_file: Biete eine Datei zum Download an
         select_file_description: Lasse Leser eine Datei herunterladen, wenn sie auf den Link klicken.
         select_in_sidebar: Datei auswählen
+      select_move_destination:
+        cancel: Abbrechen
+        header_insertPosition: Abschnitt verschieben
+        header_sectionPart: Element verschieben
+        hint: Wähle die Position aus, an die verschoben werden soll.
+      selectable_storyline_item:
+        blank_slate: Keine Kapitel
+        blank_slate_excursions: Keine Exkurse
       selectable_chapter_item:
         title: Kapitel auswählen
+        insert_here: Hierhin verschieben
       selectable_section_item:
         title: Abschnitt auswählen
+        insert_here: Hierhin verschieben
+        insert_at_beginning: An den Anfang
+        insert_at_end: Ans Ende
       edit_motif_area_menu_item: Motivbereich markieren...
       edit_motif_area_input:
         select: Motivbereich auswählen
