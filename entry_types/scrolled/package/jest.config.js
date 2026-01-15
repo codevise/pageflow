@@ -26,6 +26,11 @@ module.exports = {
 
     // Make specs run even if ignored json file is not present
     ".*\\.storybook/seed\\.json$": "<rootDir>/spec/support/fakeSeed.json",
+
+    // Resolve pageflow subpath imports and internal aliases
+    "^pageflow/(.+)$": "<rootDir>/../../../package/src/$1/index.js",
+    "^\\$state$": "<rootDir>/../../../package/src/editor/state.js",
+
     ...moduleNameMapper
   },
   transform: {
