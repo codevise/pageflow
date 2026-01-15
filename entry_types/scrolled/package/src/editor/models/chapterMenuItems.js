@@ -2,6 +2,20 @@ import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import {DestroyMenuItem} from 'pageflow/editor';
 
+export const CopyPermalinkMenuItem = Backbone.Model.extend({
+  initialize(attributes, {entry, chapter}) {
+    this.entry = entry;
+    this.chapter = chapter;
+    this.set('label', I18n.t('pageflow_scrolled.editor.chapter_menu_items.copy_permalink'));
+  },
+
+  selected() {
+    navigator.clipboard.writeText(
+      this.entry.getChapterPermalink(this.chapter)
+    );
+  }
+});
+
 export const ToggleExcursionMenuItem = Backbone.Model.extend({
   initialize(attributes, {chapter}) {
     this.chapter = chapter;

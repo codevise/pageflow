@@ -20,6 +20,7 @@ import {duplicateContentElement} from './duplicateContentElement';
 
 import {sortColors} from './sortColors';
 import {Scale} from '../../../shared/Scale';
+import {getChapterSlugs} from '../../../shared/chapterSlug';
 
 const typographySizeSuffixes = ['xl', 'lg', 'md', 'sm', 'xs'];
 
@@ -285,6 +286,16 @@ export const ScrolledEntry = Entry.extend({
 
   getSectionPermalink(section) {
     return `${this.get('pretty_url')}#section-${section.get('permaId')}`;
+  },
+
+  getChapterPermalink(chapter) {
+    const allChapters = this.chapters.map(c => ({
+      permaId: c.get('permaId'),
+      configuration: c.configuration.attributes
+    }));
+    const chapterSlugs = getChapterSlugs(allChapters);
+
+    return `${this.get('pretty_url')}#${chapterSlugs[chapter.get('permaId')]}`;
   },
 
   getPaletteColors({name} = {}) {
