@@ -1146,6 +1146,7 @@ de:
         reset: Zurücksetzen
         save: Speichern
       chapter_menu_items:
+        copy_permalink: Permalink kopieren
         move_to_main: In Kapitel umwandeln
         move_to_excursions: In Exkurs umwandeln
       destroy_chapter_menu_item:

@@ -1130,6 +1130,7 @@ en:
         reset: Reset
         save: Save
       chapter_menu_items:
+        copy_permalink: Copy permalink
         move_to_main: Turn into chapter
         move_to_excursions: Turn into excursion
       destroy_chapter_menu_item:
