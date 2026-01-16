@@ -47,6 +47,29 @@ describe('pageflow.inputView', () => {
         }
       );
     });
+
+    describe('with attributeTranslationPropertyName', () => {
+      it(
+        'uses attributeTranslationPropertyName instead of propertyName for translation keys',
+        () => {
+          var view = createInputView({
+            attributeTranslationKeyPrefixes: [
+              'pageflow.rainbows.page_attributes'
+            ],
+            model: createModel({}, {i18nKey: 'page'}),
+            propertyName: 'prefixed_title',
+            attributeTranslationPropertyName: 'title'
+          });
+
+          var result = view.attributeTranslationKeys('label', {fallbackPrefix: 'activerecord.attributes'});
+
+          expect(result).toEqual([
+            'pageflow.rainbows.page_attributes.title.label',
+            'activerecord.attributes.page.title'
+          ]);
+        }
+      );
+    });
   });
 
   describe('#labelText', () => {
@@ -117,6 +140,27 @@ describe('pageflow.inputView', () => {
         var result = view.labelText();
 
         expect(result).toBe('AR Text');
+      });
+    });
+
+    describe('with attributeTranslationPropertyName', () => {
+      support.useFakeTranslations({
+        'pageflow.rainbows.page_attributes.title.label': 'Rainbow Text'
+      });
+
+      it('uses attributeTranslationPropertyName for prefixed translation lookup', () => {
+        var view = createInputView({
+          attributeTranslationKeyPrefixes: [
+            'pageflow.rainbows.page_attributes'
+          ],
+          model: createModel({}, {i18nKey: 'page'}),
+          propertyName: 'prefixed_title',
+          attributeTranslationPropertyName: 'title'
+        });
+
+        var result = view.labelText();
+
+        expect(result).toBe('Rainbow Text');
       });
     });
   });

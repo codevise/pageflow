@@ -11,6 +11,10 @@ editor.contentElementTypes.register('inlineImage', {
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
 
+  defaultsInputs() {
+    this.input('enableFullscreen', CheckBoxInputView);
+  },
+
   configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
       this.input('id', FileInputView, {

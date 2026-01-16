@@ -515,6 +515,133 @@ describe('ContentElement', () => {
     });
   });
 
+  describe('#applyDefaultConfiguration', () => {
+    describe('with defaultsInputs', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('contentElementWithDefaultsInputs', {
+          defaultsInputs() {
+            this.input('enableFullscreen');
+            this.input('autoplay');
+          }
+        });
+      });
+
+      it('copies defaults from entry metadata to configuration', () => {
+        const entry = factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {
+              configuration: {
+                'default-contentElementWithDefaultsInputs-enableFullscreen': true,
+                'default-contentElementWithDefaultsInputs-autoplay': false
+              }
+            }
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: []
+            })
+          }
+        );
+
+        const contentElement = new entry.contentElements.model({
+          typeName: 'contentElementWithDefaultsInputs'
+        });
+        contentElement.applyDefaultConfiguration({entry});
+
+        expect(contentElement.configuration.get('enableFullscreen')).toEqual(true);
+        expect(contentElement.configuration.get('autoplay')).toEqual(false);
+      });
+
+      it('ignores undefined values in entry metadata', () => {
+        const entry = factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {
+              configuration: {
+                'default-contentElementWithDefaultsInputs-enableFullscreen': true
+              }
+            }
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: []
+            })
+          }
+        );
+
+        const contentElement = new entry.contentElements.model({
+          typeName: 'contentElementWithDefaultsInputs'
+        });
+        contentElement.applyDefaultConfiguration({entry});
+
+        expect(contentElement.configuration.get('enableFullscreen')).toEqual(true);
+        expect(contentElement.configuration.has('autoplay')).toEqual(false);
+      });
+    });
+
+    describe('with defaultContentElementFullWidthInPhoneLayout', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('elementSupportingFullWidth', {
+          supportedWidthRange: ['md', 'full']
+        });
+        editor.contentElementTypes.register('elementNotSupportingFullWidth', {
+          supportedWidthRange: ['md', 'xl']
+        });
+      });
+
+      it('sets fullWidthInPhoneLayout if element supports it', () => {
+        const entry = factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {
+              configuration: {
+                defaultContentElementFullWidthInPhoneLayout: true
+              }
+            }
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: []
+            })
+          }
+        );
+
+        const contentElement = new entry.contentElements.model({
+          typeName: 'elementSupportingFullWidth'
+        });
+        contentElement.applyDefaultConfiguration({entry});
+
+        expect(contentElement.configuration.get('fullWidthInPhoneLayout')).toEqual(true);
+      });
+
+      it('does not set fullWidthInPhoneLayout if element does not support it', () => {
+        const entry = factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {
+              configuration: {
+                defaultContentElementFullWidthInPhoneLayout: true
+              }
+            }
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: []
+            })
+          }
+        );
+
+        const contentElement = new entry.contentElements.model({
+          typeName: 'elementNotSupportingFullWidth'
+        });
+        contentElement.applyDefaultConfiguration({entry});
+
+        expect(contentElement.configuration.has('fullWidthInPhoneLayout')).toEqual(false);
+      });
+    });
+  });
+
   describe('#getEditorPath', () => {
     it('returns content element path by default', () => {
       const entry = factories.entry(

@@ -146,6 +146,114 @@ describe('ContentElementTypeRegistry', () => {
     });
   });
 
+  describe('#getDefaultsInputsMapping', () => {
+    it('returns empty object for type without defaultsInputs', () => {
+      const registry = new ContentElementTypeRegistry({features: new Features()});
+      registry.register('textBlock', {});
+
+      const mapping = registry.getDefaultsInputsMapping('textBlock');
+
+      expect(mapping).toEqual({});
+    });
+
+    it('returns mapping from metadata keys to property names', () => {
+      const registry = new ContentElementTypeRegistry({features: new Features()});
+      registry.register('inlineImage', {
+        defaultsInputs() {
+          this.input('enableFullscreen');
+          this.input('autoplay');
+        }
+      });
+
+      const mapping = registry.getDefaultsInputsMapping('inlineImage');
+
+      expect(mapping).toEqual({
+        'default-inlineImage-enableFullscreen': 'enableFullscreen',
+        'default-inlineImage-autoplay': 'autoplay'
+      });
+    });
+  });
+
+  describe('#createDefaultsInputContext', () => {
+    it('prefixes property names passed to input', () => {
+      const registry = new ContentElementTypeRegistry({features: new Features()});
+      const tabView = {
+        input: jest.fn(),
+        view: jest.fn()
+      };
+
+      const context = registry.createDefaultsInputContext(tabView, 'inlineImage');
+      context.input('enableFullscreen', 'CheckBoxInputView', {some: 'option'});
+
+      expect(tabView.input).toHaveBeenCalledWith(
+        'default-inlineImage-enableFullscreen',
+        'CheckBoxInputView',
+        expect.objectContaining({some: 'option'})
+      );
+    });
+
+    it('adds attributeTranslationKeyPrefixes with fallback to normal attributes', () => {
+      const registry = new ContentElementTypeRegistry({features: new Features()});
+      const tabView = {
+        input: jest.fn(),
+        view: jest.fn()
+      };
+
+      const context = registry.createDefaultsInputContext(tabView, 'inlineImage');
+      context.input('enableFullscreen', 'CheckBoxInputView');
+
+      expect(tabView.input).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.objectContaining({
+          attributeTranslationKeyPrefixes: [
+            'pageflow_scrolled.editor.content_elements.inlineImage.defaults.attributes',
+            'pageflow_scrolled.editor.content_elements.inlineImage.attributes'
+          ],
+          attributeTranslationPropertyName: 'enableFullscreen'
+        })
+      );
+    });
+
+    it('preserves existing attributeTranslationKeyPrefixes', () => {
+      const registry = new ContentElementTypeRegistry({features: new Features()});
+      const tabView = {
+        input: jest.fn(),
+        view: jest.fn()
+      };
+
+      const context = registry.createDefaultsInputContext(tabView, 'inlineImage');
+      context.input('enableFullscreen', 'CheckBoxInputView', {
+        attributeTranslationKeyPrefixes: ['custom.prefix']
+      });
+
+      expect(tabView.input).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.objectContaining({
+          attributeTranslationKeyPrefixes: [
+            'pageflow_scrolled.editor.content_elements.inlineImage.defaults.attributes',
+            'pageflow_scrolled.editor.content_elements.inlineImage.attributes',
+            'custom.prefix'
+          ]
+        })
+      );
+    });
+
+    it('passes through view calls', () => {
+      const registry = new ContentElementTypeRegistry({features: new Features()});
+      const tabView = {
+        input: jest.fn(),
+        view: jest.fn()
+      };
+
+      const context = registry.createDefaultsInputContext(tabView, 'inlineImage');
+      context.view('SomeView', {some: 'option'});
+
+      expect(tabView.view).toHaveBeenCalledWith('SomeView', {some: 'option'});
+    });
+  });
+
   describe('#toArray', () => {
     it('returns array of with options passed to register', () => {
       const registry = new ContentElementTypeRegistry({features: new Features()});

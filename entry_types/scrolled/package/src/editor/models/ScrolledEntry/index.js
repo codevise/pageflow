@@ -102,7 +102,7 @@ export const ScrolledEntry = Entry.extend({
         position: this.contentElements.length,
         ...attributes
       });
-      contentElement.applyDefaultConfiguration();
+      contentElement.applyDefaultConfiguration({entry: this});
 
       this.sections.get(id).contentElements.add(contentElement);
       contentElement.save();

@@ -92,6 +92,11 @@ import {attributeBinding} from './attributeBinding';
  *   An array of prefixes to lookup translations for labels and
  *   inline help texts based on attribute names.
  *
+ * @param {string} [options.attributeTranslationPropertyName]
+ *   Use this property name instead of `propertyName` for looking up
+ *   translations. Useful when the property name has been transformed
+ *   but translations should use the original name.
+ *
  * @param {string} [options.additionalInlineHelpText]
  *   A text that will be appended to the translation based inline
  *   text.
@@ -170,7 +175,7 @@ export const inputView = {
    */
   attributeTranslationKeys: function(keyName, options) {
     return attributeTranslationKeys(
-      this.options.propertyName,
+      this.options.attributeTranslationPropertyName || this.options.propertyName,
       keyName,
       _.extend({
         prefixes: this.options.attributeTranslationKeyPrefixes,

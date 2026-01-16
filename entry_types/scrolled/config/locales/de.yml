@@ -616,6 +616,9 @@ de:
                 mute: Ausblenden
                 play: Weiterspielen
                 turnDown: Leiser weiterspielen
+            autoplay:
+              inline_help: Automatisch abspielen, wenn das Element in den sichtbaren Bereich gescrollt wird.
+              label: Autoplay
             id:
               label: Audio
             playerControlVariant:
@@ -1457,24 +1460,46 @@ de:
       edit_defaults:
         back: Erscheinungsbild
         sections_info: Änderungen an diesen Einstellungen haben keine Auswirkungen auf existierende Abschnitte.
+        content_elements_info: |-
+          Änderungen an diesen Einstellungen haben keine Auswirkungen auf existierende Elemente.
+          Einstellungen können später für einzelne Elemente überschrieben werden.
+        all_elements: Alle Elemente
         tabs:
           sections: Neue Abschnitte
+          content_elements: Neue Elemente
         attributes:
           defaultSectionLayout:
             label: Vordergrund-Positionierung
+            inline_help: |-
+              Standardposition der scrollenden Vordergrund-Ebene
+              neuer Abschnitte in Desktop-Darstellung.
             values:
               center: Mitte
               centerRagged: Zentriert
               left: Links
               right: Rechts
+          defaultSectionAppearance:
+            label: Abblendung
+            inline_help: Standard-Erscheinung neuer Abschnitte.
+            values:
+              cards: Karte
+              shadow: Schatten
+              transparent: Keine
           topPaddingVisualization:
             label: Abstand oben
           defaultSectionPaddingTop:
             label: Abstand oben
+            inline_help: Standardabstand oberhalb des Inhalts neuer Abschnitte.
           bottomPaddingVisualization:
             label: Abstand unten
           defaultSectionPaddingBottom:
             label: Abstand unten
+            inline_help: Standardabstand unterhalb des Inhalts neuer Abschnitte.
+          defaultContentElementFullWidthInPhoneLayout:
+            label: Volle Breite im Phone-Layout
+            inline_help: |-
+              Standardmäßig Elemente auf kleineren Bildschirmen
+              die gesamte Breite des Viewports nutzen lassen.
       typography_sizes:
         xl: Sehr groß
         lg: Groß

@@ -379,6 +379,57 @@ pageflow_scrolled:
             inline_help: "..."
 ```
 
+## Defaults Inputs
+
+Content element types can contribute inputs to the entry defaults
+settings. These inputs allow editors to configure default values that
+are applied when creating new content elements of that type.
+
+To define defaults inputs, provide a `defaultsInputs` function when
+registering your content element type:
+
+```javascript
+import {editor} from 'pageflow-scrolled/editor';
+import {CheckBoxInputView} from 'pageflow/ui';
+
+editor.contentElementTypes.register('inlineImage', {
+  configurationEditor({entry}) {
+    // ...
+  },
+
+  defaultsInputs() {
+    this.input('enableFullscreen', CheckBoxInputView);
+  }
+});
+```
+
+The `defaultsInputs` function is called in a similar context as the
+`this.tab` callback in `configurationEditor`. Property names are
+automatically prefixed with `default-{typeName}-` when stored in the
+entry metadata configuration.
+
+For translations, Pageflow first looks for keys under a `defaults`
+namespace, then falls back to normal attribute translations:
+
+```
+pageflow_scrolled:
+  editor:
+    content_elements:
+      inlineImage:
+        defaults:
+          attributes:
+            enableFullscreen:
+              label: "..."
+              inline_help: "..."
+        attributes:
+          enableFullscreen:
+            label: "..."
+            inline_help: "..."
+```
+
+If the `defaults.attributes` translation is not found, the normal
+`attributes` translation is used as a fallback.
+
 ## Using Palette Colors
 
 [Palette

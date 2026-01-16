@@ -115,4 +115,46 @@ export class ContentElementTypeRegistry {
         !contentElement.featureName || this.features.isEnabled(contentElement.featureName)
       );
   }
+
+  getDefaultsInputsMapping(typeName) {
+    const type = this.contentElementTypes[typeName];
+
+    if (!type?.defaultsInputs) {
+      return {};
+    }
+
+    const mapping = {};
+
+    type.defaultsInputs.call({
+      input(propertyName) {
+        mapping[`default-${typeName}-${propertyName}`] = propertyName;
+      },
+      view() {}
+    });
+
+    return mapping;
+  }
+
+  createDefaultsInputContext(tabView, typeName) {
+    return {
+      input(propertyName, View, options = {}) {
+        tabView.input(
+          `default-${typeName}-${propertyName}`,
+          View,
+          {
+            ...options,
+            attributeTranslationKeyPrefixes: [
+              `pageflow_scrolled.editor.content_elements.${typeName}.defaults.attributes`,
+              `pageflow_scrolled.editor.content_elements.${typeName}.attributes`,
+              ...(options.attributeTranslationKeyPrefixes || [])
+            ],
+            attributeTranslationPropertyName: propertyName
+          }
+        );
+      },
+      view(View, options) {
+        tabView.view(View, options);
+      }
+    };
+  }
 }

@@ -12,6 +12,13 @@ editor.contentElementTypes.register('inlineAudio', {
 
   defaultConfig: {playerControlVariant: 'waveformBars'},
 
+  defaultsInputs() {
+    this.input('autoplay', CheckBoxInputView);
+    this.input('playerControlVariant', SelectInputView, {
+      values: ['waveformBars', 'waveformLines', 'waveform', 'classic']
+    });
+  },
+
   configurationEditor({entry}) {
     const themeOptions = entry.getTheme().get('options');
 
