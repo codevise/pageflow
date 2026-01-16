@@ -601,14 +601,17 @@ en:
                 mute: Mute
                 play: Keep playing
                 turnDown: Keep playing at lower volume
+            autoplay:
+              inline_help: Start playing automatically when the element is scrolled into view.
+              label: Autoplay
             id:
               label: Audio
             playerControlVariant:
               inline_help: Choose the style of player controls.
-              label: Waveform Style
+              label: Player Controls
               values:
                 classic: Classic
-                waveform: Waveform (Fein)
+                waveform: Waveform (Fine)
                 waveformBars: Waveform (Bars)
                 waveformLines: Waveform (Lines)
             posterId:
@@ -1440,11 +1443,19 @@ en:
       edit_defaults:
         back: Appearance
         sections_info: Changes to these settings have no effect on existing sections.
+        content_elements_info: |-
+          Changes to these settings have no effect on existing elements.
+          Settings can later be changed for individual elements.
+        all_elements: All elements
         tabs:
           sections: New sections
+          content_elements: New elements
         attributes:
           defaultSectionLayout:
             label: Content alignment
+            inline_help: |-
+              Default position of the scrolling foreground layer of
+              new sections on desktop devices.
             values:
               center: Centered
               centerRagged: Centered (Ragged)
@@ -1454,10 +1465,17 @@ en:
             label: Top padding
           defaultSectionPaddingTop:
             label: Top padding
+            inline_help: Default vertical spacing above the content of new sections.
           bottomPaddingVisualization:
             label: Bottom padding
           defaultSectionPaddingBottom:
             label: Bottom padding
+            inline_help: Default vertical spacing below the content of new sections.
+          defaultContentElementFullWidthInPhoneLayout:
+            label: Full width in phone layout
+            inline_help: |-
+              By default, make elements span the full width of the
+              viewport on smaller screens.
       typography_sizes:
         xl: Very large
         lg: Large

@@ -1,0 +1,24 @@
+.separator {
+  display: flex;
+  align-items: center;
+  gap: space(2);
+  padding: space(4) 0 space(2);
+}
+
+.typeName {
+  font-weight: 500;
+}
+
+.pictogram {
+  width: 16px;
+  height: 16px;
+  background: var(--ui-primary-color-light);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.rule {
+  flex: 1;
+  border-bottom: solid 1px var(--ui-on-surface-color-lightest);
+}

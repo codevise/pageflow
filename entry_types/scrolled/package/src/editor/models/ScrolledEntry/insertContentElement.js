@@ -12,7 +12,7 @@ export function insertContentElement(entry, sibling, attributes, {at, splitPoint
   }
 
   let contentElement = new ContentElement(attributes);
-  contentElement.applyDefaultConfiguration(sibling);
+  contentElement.applyDefaultConfiguration({entry, sibling});
 
   if (at === 'before') {
     batch.insertBefore(sibling, contentElement);

@@ -38,6 +38,12 @@ editor.contentElementTypes.register('inlineVideo', {
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],
 
+  defaultsInputs() {
+    this.input('playbackMode', SelectInputView, {
+      values: ['manual', 'autoplay', 'autoplayIfUnmuted', 'loop']
+    });
+  },
+
   configurationEditor({entry}) {
     migrateLegacyAutoplay(this.model);
 

@@ -70,8 +70,11 @@ export const ContentElement = Backbone.Model.extend({
     ];
   },
 
-  applyDefaultConfiguration(sibling) {
-    const defaultConfig = {...this.getType().defaultConfig};
+  applyDefaultConfiguration({entry, sibling}) {
+    const defaultConfig = {
+      ...this.getType().defaultConfig,
+      ...this.getDefaultsFromEntryMetadata(entry)
+    };
     const defaultPosition = sibling?.getPosition();
     const supportedPositions = this.getType().supportedPositions || [];
 
@@ -85,6 +88,32 @@ export const ContentElement = Backbone.Model.extend({
     }
 
     this.configuration.set(defaultConfig);
+  },
+
+  getDefaultsFromEntryMetadata(entry) {
+    const defaults = {};
+
+    Object.entries(this.getEntryMetadataDefaultsMapping()).forEach(([metadataKey, propertyName]) => {
+      const value = entry.metadata.configuration.get(metadataKey);
+
+      if (value !== undefined) {
+        defaults[propertyName] = value;
+      }
+    });
+
+    return defaults;
+  },
+
+  getEntryMetadataDefaultsMapping() {
+    const mapping = {
+      ...editor.contentElementTypes.getDefaultsInputsMapping(this.get('typeName'))
+    };
+
+    if (this.supportsFullWidthInPhoneLayout()) {
+      mapping.defaultContentElementFullWidthInPhoneLayout = 'fullWidthInPhoneLayout';
+    }
+
+    return mapping;
   },
 
   getPosition() {
