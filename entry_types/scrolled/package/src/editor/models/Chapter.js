@@ -65,6 +65,7 @@ export const Chapter = Backbone.Model.extend({
     const defaultConfiguration = options.skipDefaults ? {} : {
       transition: this.entry.metadata.configuration.get('defaultTransition'),
       layout: this.entry.metadata.configuration.get('defaultSectionLayout'),
+      appearance: this.entry.metadata.configuration.get('defaultSectionAppearance'),
       paddingTop: this.entry.metadata.configuration.get('defaultSectionPaddingTop'),
       paddingBottom: this.entry.metadata.configuration.get('defaultSectionPaddingBottom')
     };

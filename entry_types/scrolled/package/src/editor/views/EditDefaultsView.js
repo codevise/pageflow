@@ -28,6 +28,10 @@ export const EditDefaultsView = EditConfigurationView.extend({
         values: ['left', 'right', 'center', 'centerRagged']
       });
 
+      this.input('defaultSectionAppearance', SelectInputView, {
+        values: ['shadow', 'cards', 'transparent']
+      });
+
       if (features.isEnabled('section_paddings')) {
         const paddingTopScale = entry.getScale('sectionPaddingTop');
         const paddingBottomScale = entry.getScale('sectionPaddingBottom');

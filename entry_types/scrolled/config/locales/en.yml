@@ -1461,6 +1461,13 @@ en:
               centerRagged: Centered (Ragged)
               left: Left
               right: Right
+          defaultSectionAppearance:
+            label: Text background
+            inline_help: Default appearance of new sections.
+            values:
+              cards: Card
+              shadow: Shadow
+              transparent: Transparent
           topPaddingVisualization:
             label: Top padding
           defaultSectionPaddingTop:

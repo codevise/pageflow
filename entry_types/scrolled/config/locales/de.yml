@@ -1478,6 +1478,13 @@ de:
               centerRagged: Zentriert
               left: Links
               right: Rechts
+          defaultSectionAppearance:
+            label: Abblendung
+            inline_help: Standard-Erscheinung neuer Abschnitte.
+            values:
+              cards: Karte
+              shadow: Schatten
+              transparent: Keine
           topPaddingVisualization:
             label: Abstand oben
           defaultSectionPaddingTop:

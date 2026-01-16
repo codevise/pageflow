@@ -59,6 +59,15 @@ describe('Chapter', () => {
       expect(section.configuration.get('layout')).toEqual('right');
     });
 
+    it('uses default appearance from entry metadata configuration', () => {
+      const {entry} = testContext;
+
+      entry.metadata.configuration.set('defaultSectionAppearance', 'cards');
+      const section = entry.chapters.first().addSection();
+
+      expect(section.configuration.get('appearance')).toEqual('cards');
+    });
+
     it('handles sparse positions correctly', () => {
       const {entry} = testContext;
 
