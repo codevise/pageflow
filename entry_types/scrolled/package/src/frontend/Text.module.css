@@ -164,29 +164,37 @@
   composes: typography-quoteAttributionXs from global;
 }
 
-.counterNumber-lg {
+.counterNumber {
   composes: typography-counterNumber from global;
+}
+
+.counterNumber-lg {
+  composes: counterNumber;
+  composes: typography-counterNumberLg from global;
   font-size: text-5xl;
   line-height: 1;
   font-weight: 700;
 }
 
 .counterNumber-md {
-  composes: typography-counterNumber from global;
+  composes: counterNumber;
+  composes: typography-counterNumberMd from global;
   font-size: text-4xl;
   line-height: 1;
   font-weight: 700;
 }
 
 .counterNumber-sm {
-  composes: typography-counterNumber from global;
+  composes: counterNumber;
+  composes: typography-counterNumberSm from global;
   font-size: text-3xl;
   line-height: 1;
   font-weight: 700;
 }
 
 .counterNumber-xs {
-  composes: typography-counterNumber from global;
+  composes: counterNumber;
+  composes: typography-counterNumberXs from global;
   font-size: text-xl;
   line-height: 1;
   font-weight: 700;
@@ -196,6 +204,26 @@
   composes: typography-counterDescription from global;
   font-size: text-base;
   line-height: 1.4;
+}
+
+.counterDescription-lg {
+  composes: counterDescription;
+  composes: typography-counterDescriptionLg from global;
+}
+
+.counterDescription-md {
+  composes: counterDescription;
+  composes: typography-counterDescriptionMd from global;
+}
+
+.counterDescription-sm {
+  composes: counterDescription;
+  composes: typography-counterDescriptionSm from global;
+}
+
+.counterDescription-xs {
+  composes: counterDescription;
+  composes: typography-counterDescriptionXs from global;
 }
 
 .hotspotsTooltipTitle {
