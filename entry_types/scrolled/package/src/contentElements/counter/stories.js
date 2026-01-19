@@ -84,6 +84,22 @@ storiesOfContentElement(module, {
       configuration: {
         numberColor: 'accent'
       }
+    },
+    {
+      name: 'Custom typography',
+      configuration: {
+        textSize: 'small'
+      },
+      themeOptions: {
+        typography: {
+          counterNumberSm: {
+            fontSize: '40px'
+          },
+          counterDescriptionSm: {
+            fontSize: '18px'
+          }
+        }
+      }
     }
   ]
 });

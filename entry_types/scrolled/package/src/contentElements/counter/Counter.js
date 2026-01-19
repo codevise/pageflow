@@ -132,7 +132,7 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
                       className={styles.description}
                       onChange={description => updateConfiguration({description})}
                       onlyParagraphs={true}
-                      scaleCategory="counterDescription"
+                      scaleCategory={descriptionScaleCategories[configuration.textSize || 'medium']}
                       placeholder={t('pageflow_scrolled.inline_editing.type_description')} />
       </div>
     </div>
@@ -144,6 +144,13 @@ const numberScaleCategories = {
   small: 'counterNumber-sm',
   medium: 'counterNumber-md',
   large: 'counterNumber-lg'
+};
+
+const descriptionScaleCategories = {
+  verySmall: 'counterDescription-xs',
+  small: 'counterDescription-sm',
+  medium: 'counterDescription-md',
+  large: 'counterDescription-lg'
 };
 
 const countingDurations = {
