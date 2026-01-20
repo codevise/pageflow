@@ -41,4 +41,8 @@ export class WidgetTypeRegistry {
 
     return this.types[typeName].component;
   }
+
+  getPresenceProvider(typeName) {
+    return this.types[typeName]?.presenceProvider;
+  }
 }

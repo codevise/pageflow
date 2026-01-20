@@ -1,5 +1,6 @@
 import {
   useWidget,
+  useActiveWidgets,
   watchCollections
 } from 'entryState';
 
@@ -97,5 +98,44 @@ describe('useWidget', () => {
     const widget = result.current;
 
     expect(widget).toBeUndefined();
+  });
+});
+
+describe('useActiveWidgets', () => {
+  it('returns widgets with typeName from seed', () => {
+    const {result} = renderHookInEntry(
+      () => useActiveWidgets(),
+      {
+        seed: {
+          widgets: [
+            {typeName: 'navWidget', role: 'header', configuration: {fixed: true}},
+            {typeName: 'footerWidget', role: 'footer', configuration: {}}
+          ]
+        }
+      }
+    );
+
+    expect(result.current).toMatchObject([
+      {typeName: 'navWidget', role: 'header', configuration: {fixed: true}},
+      {typeName: 'footerWidget', role: 'footer', configuration: {}}
+    ]);
+  });
+
+  it('filters out widgets with blank typeName', () => {
+    const {result} = renderHookInEntry(
+      () => useActiveWidgets(),
+      {
+        seed: {
+          widgets: [
+            {typeName: 'navWidget', role: 'header', configuration: {}},
+            {typeName: null, role: 'consent', configuration: {}}
+          ]
+        }
+      }
+    );
+
+    expect(result.current).toMatchObject([
+      {typeName: 'navWidget', role: 'header', configuration: {}}
+    ]);
   });
 });
