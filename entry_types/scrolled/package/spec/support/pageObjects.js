@@ -278,7 +278,17 @@ function createContentElementPageObject(el) {
 
     getMarginTop() {
       const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
-      return wrapper && wrapper.style.marginTop;
+      return wrapper && wrapper.style.getPropertyValue('--margin-top');
+    },
+
+    getMarginBottom() {
+      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
+      return wrapper && wrapper.style.getPropertyValue('--margin-bottom');
+    },
+
+    getPrevMarginBottom() {
+      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
+      return wrapper && wrapper.style.getPropertyValue('--prev-margin-bottom');
     },
 
     hasScrollSpace() {

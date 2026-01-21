@@ -24,7 +24,8 @@ export const ContentElement = React.memo(withInlineEditingDecorator(
                                   first={props.first}
                                   defaultMarginTop={defaultMarginTop}
                                   top={props.itemProps.marginTop}
-                                  bottom={props.itemProps.marginBottom}>
+                                  bottom={props.marginBottom}
+                                  previousBottom={props.previousMarginBottom}>
               <ContentElementErrorBoundary typeName={props.type}
                                            configuration={props.itemProps}>
                 <Component sectionProps={props.sectionProps}
@@ -53,6 +54,8 @@ function arePropsEqual(prevProps, nextProps) {
     prevProps.position === nextProps.position &&
     prevProps.width === nextProps.width &&
     prevProps.itemProps === nextProps.itemProps &&
+    prevProps.marginBottom === nextProps.marginBottom &&
+    prevProps.previousMarginBottom === nextProps.previousMarginBottom &&
     prevProps.customMargin === nextProps.customMargin &&
     prevProps.sectionProps === nextProps.sectionProps &&
     prevProps.lifecycleOverride === nextProps.lifecycleOverride

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import {widths} from '../layouts';
 import {TrimDefaultMarginTop} from '../TrimDefaultMarginTop';
+
 import styles from './InvisibleBoxWrapper.module.css';
 import boundaryMarginStyles from './BoxBoundaryMargin.module.css';
 

@@ -3,13 +3,18 @@ import classNames from 'classnames';
 
 import {widths} from '../layouts';
 import {BackgroundColorProvider} from '../backgroundColor';
+import {TrimDefaultMarginTop} from '../TrimDefaultMarginTop';
 
 import styles from "./CardBoxWrapper.module.css";
 import boundaryMarginStyles from "./BoxBoundaryMargin.module.css";
 
 export default function CardBoxWrapper(props) {
   if (outsideBox(props)) {
-    return props.children;
+    return (
+      <TrimDefaultMarginTop value={props.atSectionStart}>
+        {props.children}
+      </TrimDefaultMarginTop>
+    );
   }
 
   return (

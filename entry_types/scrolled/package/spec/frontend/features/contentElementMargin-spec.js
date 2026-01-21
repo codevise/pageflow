@@ -95,4 +95,65 @@ describe('content element margin', () => {
 
     expect(getContentElementByTestId(1).getMarginTop()).toBe('1.375rem');
   });
+
+  it('sets margin top via --margin-top custom property', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        sections: [{id: 5}],
+        contentElements: [
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 1, marginTop: 'xl'}}
+        ]
+      }
+    });
+
+    expect(getContentElementByTestId(1).getMarginTop()).toBe('var(--theme-content-element-margin-xl)');
+  });
+
+  it('sets margin bottom via --prev-margin-bottom on next element', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        sections: [{id: 5}],
+        contentElements: [
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 1, marginBottom: 'lg'}},
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 2}}
+        ]
+      }
+    });
+
+    expect(getContentElementByTestId(1).getMarginBottom()).toBe('');
+    expect(getContentElementByTestId(2).getPrevMarginBottom()).toBe('var(--theme-content-element-margin-lg)');
+  });
+
+  it('applies --margin-bottom when next element has different width', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        sections: [{id: 5}],
+        contentElements: [
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 1}},
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 2, marginBottom: 'lg'}},
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 3, width: widths.lg}}
+        ]
+      }
+    });
+
+    expect(getContentElementByTestId(2).getMarginBottom()).toBe('var(--theme-content-element-margin-lg)');
+    expect(getContentElementByTestId(3).getPrevMarginBottom()).toBe('');
+  });
+
+  it('passes previous inline element margin bottom skipping side elements', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        sections: [{id: 5}],
+        contentElements: [
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 1, marginBottom: 'lg'}},
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 2, position: 'side'}},
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 3}}
+        ]
+      }
+    });
+
+    expect(getContentElementByTestId(1).getMarginBottom()).toBe('');
+    expect(getContentElementByTestId(2).getPrevMarginBottom()).toBe('');
+    expect(getContentElementByTestId(3).getPrevMarginBottom()).toBe('var(--theme-content-element-margin-lg)');
+  });
 });
