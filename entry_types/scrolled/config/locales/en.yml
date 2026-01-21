@@ -1401,6 +1401,14 @@ en:
           xxxl: XXXL
         contentElementBoxBorderRadius:
           none: None
+        contentElementMargin:
+          xxs: XXS
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+          xxl: XXL
       content_element_text_inline_file_rights_attributes:
         showTextInlineFileRightsBackdrop:
           label: "Backdrop behind inline file rights"

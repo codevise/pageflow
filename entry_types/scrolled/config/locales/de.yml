@@ -1417,6 +1417,14 @@ de:
           xxxl: XXXL
         contentElementBoxBorderRadius:
           none: Keine
+        contentElementMargin:
+          xxs: XXS
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+          xxl: XXL
       content_element_text_inline_file_rights_attributes:
         showTextInlineFileRightsBackdrop:
           label: "Abblendung hinter Rechteangabe"

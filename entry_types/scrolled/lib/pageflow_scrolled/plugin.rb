@@ -20,6 +20,16 @@ module PageflowScrolled
           'xxxl' => 'max(11em, 30svh)'
         }
 
+        margin_scale = {
+          'xxs' => '2em',
+          'xs' => '3em',
+          'sm' => '4em',
+          'md' => '6em',
+          'lg' => '10em',
+          'xl' => '12em',
+          'xxl' => '16em'
+        }
+
         c.themes.register_default_options(
           ThemeOptionsDefaultScale.new(
             prefix: 'section_padding_top',
@@ -31,6 +41,13 @@ module PageflowScrolled
           ThemeOptionsDefaultScale.new(
             prefix: 'section_padding_bottom',
             values: padding_scale
+          )
+        )
+
+        c.themes.register_default_options(
+          ThemeOptionsDefaultScale.new(
+            prefix: 'content_element_margin',
+            values: margin_scale
           )
         )
 
