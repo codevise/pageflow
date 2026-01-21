@@ -48,6 +48,19 @@ describe('content element margin', () => {
     expect(getContentElementByTestId(2).hasTopMargin()).toBe(true);
   });
 
+  it('does not trim custom margin top on first content element in section', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        sections: [{id: 5}],
+        contentElements: [
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 1, marginTop: 'xl'}}
+        ]
+      }
+    });
+
+    expect(getContentElementByTestId(1).hasTopMargin()).toBe(true);
+  });
+
   it('still applies top margin to first content element in cards appearance', () => {
     const {getContentElementByTestId} = renderEntry({
       seed: {

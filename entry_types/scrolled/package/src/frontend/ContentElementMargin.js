@@ -2,12 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {widths} from './layouts/widths';
-import {useTrimMarginTop} from './TrimMarginTop';
+import {useTrimDefaultMarginTop} from './TrimDefaultMarginTop';
 
 import styles from './ContentElementMargin.module.css';
 
 export function ContentElementMargin({width, first, defaultMarginTop, top, bottom, children}) {
-  const trimMarginTop = useTrimMarginTop();
+  const trimDefaultMarginTop = useTrimDefaultMarginTop();
 
   if (width === widths.full) {
     return children;
@@ -15,7 +15,7 @@ export function ContentElementMargin({width, first, defaultMarginTop, top, botto
 
   return (
     <div className={classNames(styles.wrapper,
-                               {[styles.noTopMargin]: trimMarginTop && first})}
+                               {[styles.noTopMargin]: trimDefaultMarginTop && first && !top})}
          style={{marginTop: scaleProperty(top) || defaultMarginTop,
                  marginBottom: scaleProperty(bottom)}}>
       {children}
