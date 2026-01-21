@@ -6,6 +6,8 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {renderBackboneView as render, useFakeTranslations} from 'pageflow/testHelpers';
 
+import styles from 'editor/views/inputs/StyleListInputView.module.css';
+
 describe('StyleListInputView', () => {
   useFakeTranslations({
     'pageflow_scrolled.editor.style_list_input.add': 'Add style',
@@ -64,6 +66,37 @@ describe('StyleListInputView', () => {
     await user.click(getByRole('link', {name: 'Blur'}));
 
     expect(model.get('styles')).toEqual([{name: 'blur', value: 50}])
+  });
+
+  it('does not apply negative margin top by default', () => {
+    const types = {};
+    const model = new Backbone.Model();
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    render(view);
+
+    expect(view.el).not.toHaveClass(styles.negativeMarginTop);
+  });
+
+  it('applies negative margin top when hideLabel is set', () => {
+    const types = {};
+    const model = new Backbone.Model();
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      hideLabel: true,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    render(view);
+
+    expect(view.el).toHaveClass(styles.negativeMarginTop);
   });
 
   it('allows removing styles', async () => {

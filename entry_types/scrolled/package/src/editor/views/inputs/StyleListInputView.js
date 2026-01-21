@@ -11,7 +11,11 @@ import styles from './StyleListInputView.module.css';
 
 export const StyleListInputView = Marionette.ItemView.extend({
   className: styles.view,
-  template: () => '',
+  template: () => `
+    <label>
+      <span class="name"></span>
+      <span class="inline_help"></span>
+    </label>`,
 
   mixins: [inputView],
 
@@ -27,6 +31,10 @@ export const StyleListInputView = Marionette.ItemView.extend({
   },
 
   onRender() {
+    if (this.options.hideLabel) {
+      this.$el.addClass(styles.negativeMarginTop);
+    }
+
     this.appendSubview(new CollectionView({
       itemViewConstructor: StyleListItemView,
       itemViewOptions: {

@@ -1,6 +1,9 @@
 .view {
   composes: plusCircled from '../icons.module.css';
   position: relative;
+}
+
+.negativeMarginTop {
   margin-top: space(-1) !important;
 }
 
