@@ -284,3 +284,69 @@ entry_type_config.themes.register(:my_custom_theme,
                                     }
                                   }
 ```
+
+## Presence Providers
+
+When registering a widget type, you can pass a `PresenceProvider`
+component. When the widget is present in an entry, this component
+wraps the entry content. This allows widgets to define CSS custom
+properties that cascade down to sections and backdrops, and to provide
+React context that the widget component can consume.
+
+The `PresenceProvider` receives the widget's `configuration` and
+`children`:
+
+``` javascript
+frontend.widgetTypes.register('myNavigation', {
+  component: MyNavigation,
+  PresenceProvider: function({configuration, children}) {
+    const [expanded, setExpanded] = useState(true);
+
+    const className = classNames(styles.presence, {
+      [styles.expanded]: expanded
+    });
+
+    return (
+      <MyNavigationContext.Provider value={{expanded, setExpanded}}>
+        <div className={className}>
+          {children}
+        </div>
+      </MyNavigationContext.Provider>
+    );
+  }
+});
+```
+
+### Widget Margin Custom Properties
+
+Navigation widgets that are fixed at the top of the viewport can set
+the following CSS custom properties via a presence provider to ensure
+backdrops and full height sections are positioned correctly below the
+navigation bar:
+
+* `--widget-margin-top-max`: Maximum height the widget occupies. Used
+  to add padding to the first section so that content starts below the
+  navigation bar.
+
+* `--widget-margin-top-min`: Minimum height the widget occupies when
+  scrolled. Used to position sticky backdrops below the navigation bar
+  and to calculate the height of full viewport sections.
+
+For example, a navigation bar that is always visible could define:
+
+``` css
+.presence {
+  --widget-margin-top-max: 60px;
+  --widget-margin-top-min: 60px;
+}
+```
+
+A navigation bar that hides on scroll but keeps a progress bar visible
+could use different values:
+
+``` css
+.presence {
+  --widget-margin-top-max: 60px;
+  --widget-margin-top-min: 5px;
+}
+```
