@@ -86,6 +86,11 @@ editor.widgetTypes.register('defaultNavigation', {
         this.input('hideToggleMuteButton', CheckBoxInputView);
         this.input('hideSharingButton', CheckBoxInputView);
         this.input('fixedOnDesktop', CheckBoxInputView);
+        this.input('firstBackdropBelowNavigation', CheckBoxInputView, {
+          disabledBinding: 'fixedOnDesktop',
+          disabled: fixedOnDesktop => !fixedOnDesktop,
+          displayUncheckedIfDisabled: true
+        });
       });
     }
   })

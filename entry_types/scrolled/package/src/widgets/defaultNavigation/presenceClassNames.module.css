@@ -1,0 +1,14 @@
+.widgetMarginMax {
+  --widget-margin-top-max: calc(var(--default-navigation-bar-height) +
+                                var(--default-navigation-progress-bar-height));
+  --widget-margin-top: var(--default-navigation-progress-bar-height);
+}
+
+.expanded {
+  --widget-margin-top: calc(var(--default-navigation-bar-height) +
+                            var(--default-navigation-progress-bar-height));
+}
+
+.widgetMarginMin {
+  --widget-margin-top-min: var(--default-navigation-bar-height);
+}

@@ -6,13 +6,6 @@
 
   --default-navigation-progress-bar-height:
     var(--theme-default-navigation-progress-bar-height, 8px);
-
-  --widget-margin-top: var(--default-navigation-progress-bar-height);
-}
-
-:root[data-default-navigation-expanded] {
-  --widget-margin-top: calc(var(--default-navigation-bar-height) +
-                            var(--default-navigation-progress-bar-height));
 }
 
 .navigationBar {
@@ -55,12 +48,20 @@
 }
 
 .navigationBarContentWrapper {
-  composes: translucentWidgetSurface from 'pageflow-scrolled/values/widgets.module.css';
   position: relative;
   z-index: 2;
   height: var(--default-navigation-bar-height);
   box-sizing: border-box;
   padding-top: var(--default-navigation-scroller-top);
+}
+
+.translucentSurface {
+  composes: translucentWidgetSurface from 'pageflow-scrolled/values/widgets.module.css';
+}
+
+.opaqueSurface {
+  color: var(--theme-widget-on-surface-color);
+  background-color: var(--theme-widget-surface-color);
 }
 
 .button {
