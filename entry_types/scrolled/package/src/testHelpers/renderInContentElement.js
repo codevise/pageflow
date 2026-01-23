@@ -9,8 +9,7 @@ import {
   ContentElementEditorCommandEmitterContext,
   ContentElementEditorStateContext,
   ContentElementLifecycleContext,
-  MainStorylineActivity,
-  PhonePlatformContext
+  MainStorylineActivity
 } from 'pageflow-scrolled/frontend';
 
 import {Consent} from 'pageflow/frontend';
@@ -60,19 +59,17 @@ export function renderInContentElement(ui, {editorState,
 
     return (
       <MainStorylineActivity activeExcursion={storylineMode !== 'active' ? {id: 1} : null}>
-        <PhonePlatformContext.Provider value={phonePlatform}>
-          <DndProvider backend={HTML5Backend}>
-            <ContentElementAttributesProvider id={42}>
-              <ContentElementEditorCommandEmitterContext.Provider
-                value={emitter}>
-                <ContentElementEditorStateContext.Provider
-                  value={{...defaultEditorState, ...editorState}}>
-                  {OriginalWrapper ? <OriginalWrapper children={children} /> : children}
-                </ContentElementEditorStateContext.Provider>
-              </ContentElementEditorCommandEmitterContext.Provider>
-            </ContentElementAttributesProvider>
-          </DndProvider>
-        </PhonePlatformContext.Provider>
+        <DndProvider backend={HTML5Backend}>
+          <ContentElementAttributesProvider id={42}>
+            <ContentElementEditorCommandEmitterContext.Provider
+              value={emitter}>
+              <ContentElementEditorStateContext.Provider
+                value={{...defaultEditorState, ...editorState}}>
+                {OriginalWrapper ? <OriginalWrapper children={children} /> : children}
+              </ContentElementEditorStateContext.Provider>
+            </ContentElementEditorCommandEmitterContext.Provider>
+          </ContentElementAttributesProvider>
+        </DndProvider>
       </MainStorylineActivity>
     );
   }
@@ -84,6 +81,7 @@ export function renderInContentElement(ui, {editorState,
         lifecycleContext: ContentElementLifecycleContext,
         wrapper: Wrapper,
         consent: createConsent(consentState),
+        phonePlatform,
         seed: {
           ...consentSeed,
           ...seed

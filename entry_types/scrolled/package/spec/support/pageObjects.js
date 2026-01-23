@@ -19,10 +19,11 @@ import {act, fireEvent, queryHelpers, queries, within} from '@testing-library/re
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {simulateScrollingIntoView} from './fakeIntersectionObserver';
 
-export function renderEntry({seed, consent, isStaticPreview} = {}) {
+export function renderEntry({seed, consent, isStaticPreview, phonePlatform} = {}) {
   const result = renderInEntry(<Entry />, {
     seed,
     consent,
+    phonePlatform,
     wrapper: isStaticPreview ? StaticPreview : null,
     queries: {...queries, ...pageObjectQueries}
   });

@@ -3,7 +3,7 @@ import {render} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks/dom';
 
 import {Consent} from 'pageflow/frontend';
-import {useEntryStateDispatch, RootProviders} from 'pageflow-scrolled/frontend';
+import {useEntryStateDispatch, RootProviders, PhonePlatformContext} from 'pageflow-scrolled/frontend';
 import {normalizeSeed} from './normalizeSeed';
 
 /**
@@ -43,10 +43,10 @@ import {normalizeSeed} from './normalizeSeed';
  *   is passed as a second parameter.
  */
 export function renderInEntry(ui, {
-  seed, setup, wrapper, consent = Consent.create(), ...options
+  seed, setup, wrapper, consent = Consent.create(), phonePlatform, ...options
 } = {}) {
   options = {
-    wrapper: createWrapper(seed, setup, wrapper, consent),
+    wrapper: createWrapper(seed, setup, wrapper, consent, phonePlatform),
     ...options
   };
 
@@ -95,26 +95,38 @@ export function renderInEntry(ui, {
  * @param {Object} [options.seed] - Seed data for entry state. Passed through {@link normalizeSeed}.
  * @param {Function} [options.setup] - See {@link renderInEntry}.
  */
-export function renderHookInEntry(callback, {seed, setup, wrapper, ...options} = {}) {
+export function renderHookInEntry(callback, {seed, setup, wrapper, phonePlatform, ...options} = {}) {
   return renderHook(callback,
                     {
-                      wrapper: createWrapper(seed, setup, wrapper),
+                      wrapper: createWrapper(seed, setup, wrapper, undefined, phonePlatform),
                       ...options
                     });
 }
 
-function createWrapper(seed, setup, originalWrapper, consent) {
+function createWrapper(seed, setup, originalWrapper, consent, phonePlatform) {
   const normalizedSeed = normalizeSeed(seed);
   const OriginalWrapper = originalWrapper || function Noop({children}) { return children; };
 
   return function Wrapper({children}) {
+    let content = (
+      <Dispatcher callback={setup} seed={normalizedSeed}>
+        <OriginalWrapper>
+          {children}
+        </OriginalWrapper>
+      </Dispatcher>
+    );
+
+    if (phonePlatform !== undefined) {
+      content = (
+        <PhonePlatformContext.Provider value={phonePlatform}>
+          {content}
+        </PhonePlatformContext.Provider>
+      );
+    }
+
     return (
       <RootProviders seed={normalizedSeed} consent={consent}>
-        <Dispatcher callback={setup} seed={normalizedSeed}>
-          <OriginalWrapper>
-            {children}
-          </OriginalWrapper>
-        </Dispatcher>
+        {content}
       </RootProviders>
     );
   }
