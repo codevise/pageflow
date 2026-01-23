@@ -35,7 +35,6 @@
   --centered-inline-xl-content-max-width:
     var(--theme-centered-inline-xl-content-max-width);
 
-  --foreground-widget-padding-top: 0px;
   --foreground-padding-top: var(--theme-section-default-padding-top);
   --foreground-padding-bottom: var(--theme-section-default-padding-bottom);
 }
@@ -43,7 +42,8 @@
 .first {
   /* Let content begin below navigation bar. Navigation bar has zero
      height to let first chapter start at the very top. */
-  --foreground-widget-padding-top: var(--theme-widget-margin-top, 58px);
+  --foreground-widget-padding-top: var(--widget-margin-top-max,
+                                       var(--theme-widget-margin-top, 0px));
 }
 
 .narrow {

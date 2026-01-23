@@ -1,6 +1,7 @@
 .fixed {
   position: fixed;
-  top: var(--fixed-positioning-containing-block-offset, 0);
+  top: calc(var(--fixed-positioning-containing-block-offset, 0px) +
+            var(--widget-margin-top-min, 0px));
   height: 100vh;
   width: 100%;
 }

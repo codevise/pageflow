@@ -1,6 +1,6 @@
 .root {
   width: 100%;
-  height: calc(100 * var(--vh));
+  height: calc((100 * var(--vh)) - var(--widget-margin-top-min, 0px));
   position: relative;
   overflow: clip;
 }

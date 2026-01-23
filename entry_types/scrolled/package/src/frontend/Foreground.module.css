@@ -10,7 +10,7 @@
   flex-direction: column;
   justify-content: center;
 
-  padding-top: calc(var(--foreground-widget-padding-top) + var(--foreground-padding-top));
+  padding-top: calc(var(--foreground-widget-padding-top, 0px) + var(--foreground-padding-top));
   padding-bottom: var(--foreground-padding-bottom);
 }
 
@@ -19,7 +19,13 @@
 }
 
 .fullHeight {
-  min-height: 100vh;
+  /* First sections set --foreground-widget-padding-top to make room
+     for the widget, so the terms cancel out to 100vh. Other sections
+     leave it undefined, causing the fallback to --widget-margin-top-min
+     to reduce the height to fit below the navigation widget. */
+  min-height: calc(100vh +
+                   var(--foreground-widget-padding-top, 0px) -
+                   var(--foreground-widget-padding-top, var(--widget-margin-top-min, 0px)));
 }
 
 .spaceAbove {
