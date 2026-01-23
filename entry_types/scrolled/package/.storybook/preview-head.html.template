@@ -29,6 +29,10 @@
     bottom: 0;
     right: 0;
   }
+
+  :root {
+    --theme-widget-margin-top: 58px;
+  }
 </style>
 
 <script>
