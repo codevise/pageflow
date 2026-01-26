@@ -4,7 +4,7 @@ import BackboneEvents from 'backbone-events-standalone';
 const ScrollTargetEmitterContext = createContext();
 
 export function ScrollTargetEmitterProvider({children}) {
-  const emitter =  useMemo(() => Object.assign({}, BackboneEvents), []);
+  const emitter = useMemo(() => Object.assign({}, BackboneEvents), []);
 
   return (
     <ScrollTargetEmitterContext.Provider value={emitter}>
@@ -17,7 +17,9 @@ export function useScrollToTarget() {
   const emitter = useContext(ScrollTargetEmitterContext);
 
   return useCallback(
-    ({id, align, ifNeeded, behavior}) => emitter.trigger(id, {align, ifNeeded, behavior}),
+    ({id, align, ifNeeded, behavior}) => {
+      emitter.trigger(id, {align, ifNeeded, behavior});
+    },
     [emitter]
   )
 }
@@ -28,7 +30,7 @@ export function useScrollTarget(id) {
   const emitter = useContext(ScrollTargetEmitterContext);
 
   useEffect(() => {
-    emitter.on(id, ({align, ifNeeded, behavior}) => {
+    const handler = ({align, ifNeeded, behavior}) => {
       if (ref.current) {
         const rect = ref.current.getBoundingClientRect();
 
@@ -41,9 +43,11 @@ export function useScrollTarget(id) {
           behavior: behavior || 'smooth'
         });
       }
-    });
+    };
 
-    return () => emitter.off(id)
+    emitter.on(id, handler);
+
+    return () => emitter.off(id, handler);
   }, [id, emitter]);
 
   return ref;
