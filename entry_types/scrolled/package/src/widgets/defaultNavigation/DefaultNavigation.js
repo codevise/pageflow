@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import classNames from 'classnames';
 
 import {
@@ -9,8 +9,6 @@ import {
   useMainChapters,
   useCurrentChapter,
   useDarkWidgets,
-  useIsomorphicLayoutEffect,
-  useOnUnmuteMedia,
   usePhonePlatform,
   useShareProviders,
   useTheme,
@@ -26,6 +24,7 @@ import {ToggleMuteButton} from './ToggleMuteButton';
 import {Logo} from './Logo';
 import {SkipLinks} from './SkipLinks';
 import {Scroller} from './Scroller';
+import {useDefaultNavigationState} from './DefaultNavigationPresenceProvider';
 
 import styles from './DefaultNavigation.module.css';
 
@@ -35,7 +34,7 @@ export function DefaultNavigation({
   logo,
   omitChapterNavigation
 }) {
-  const [navExpanded, setNavExpanded] = useState(true);
+  const {navExpanded, setNavExpanded} = useDefaultNavigationState();
   const [menuOpen, setMenuOpen] = useState(!!configuration.defaultMobileNavVisible);
   const [readingProgress, setReadingProgress] = useState(0);
 
@@ -52,20 +51,6 @@ export function DefaultNavigation({
 
   useScrollPosition(
     ({prevPos, currPos}) => {
-
-      const expand = currPos.y > prevPos.y ||
-                     // Mobile Safari reports positive scroll position
-                     // during scroll bounce animation when scrolling
-                     // back to the top. Make sure navigation bar
-                     // stays expanded:
-                     currPos.y >= 0;
-      if (expand !== navExpanded) setNavExpanded(expand);
-    },
-    [navExpanded]
-  );
-
-  useScrollPosition(
-    ({prevPos, currPos}) => {
       const current = currPos.y * -1;
       // Todo: Memoize and update on window resize
       const total = document.body.clientHeight - window.innerHeight;
@@ -76,16 +61,6 @@ export function DefaultNavigation({
     null,
     false,
     1);
-
-  useOnUnmuteMedia(useCallback(() => setNavExpanded(true), []));
-
-  useIsomorphicLayoutEffect(() => {
-    document.documentElement.toggleAttribute('data-default-navigation-expanded', navExpanded);
-
-    return () => {
-      document.documentElement.removeAttribute('data-default-navigation-expanded');
-    };
-  }, [navExpanded]);
 
   const darkWidgets = useDarkWidgets();
 
@@ -156,7 +131,10 @@ export function DefaultNavigation({
       })} style={{'--theme-accent-color': paletteColor(configuration.accentColor)}}
          onFocus={() => setNavExpanded(true)}>
         <WidgetSelectionRect>
-          <div className={styles.navigationBarContentWrapper}>
+          <div className={classNames(
+            styles.navigationBarContentWrapper,
+            configuration.firstBackdropBelowNavigation ? styles.opaqueSurface : styles.translucentSurface
+          )}>
             <SkipLinks />
 
             {(hasChapters || hasMenu) && <HamburgerIcon onClick={handleBurgerMenuClick}

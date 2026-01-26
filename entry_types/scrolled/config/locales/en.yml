@@ -33,6 +33,15 @@ en:
                 navigation is still always hidden when the page is
                 scrolled in phone layout.
               label: Keep expanded in desktop layout
+            firstBackdropBelowNavigation:
+              inline_help: |
+                Position the first section's backdrop image below the
+                navigation bar instead of behind it.
+              inline_help_disabled: |
+                Position the first section's backdrop image below the
+                navigation bar instead of behind it. Only available
+                when navigation is set to stay expanded.
+              label: Start backdrop below
             hideSharingButton:
               label: Hide share button
             hideToggleMuteButton:

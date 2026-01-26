@@ -27,7 +27,7 @@ export {getFileUrlTemplateHost} from './getFileUrlTemplateHost';
 export {useFileRights, useLegalInfo, useCredits} from './legalInfo';
 export {useAvailableQualities} from './useAvailableQualities';
 export {useTheme} from './theme';
-export {useWidget} from './widgets';
+export {useWidget, useActiveWidgets} from './widgets';
 
 export {EntryStateProvider, useEntryStateDispatch} from './EntryStateProvider';
 

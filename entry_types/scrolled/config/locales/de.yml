@@ -33,6 +33,15 @@ de:
                 sparen, wird die Navigation im Phone-Layout beim
                 Scrollen dennoch immer ausgeblendet.
               label: Im Desktop-Layout fixieren
+            firstBackdropBelowNavigation:
+              inline_help: |
+                Positioniert das Hintergrundbild der ersten Sektion
+                unterhalb der Navigationsleiste statt dahinter.
+              inline_help_disabled: |
+                Positioniert das Hintergrundbild der ersten Sektion
+                unterhalb der Navigationsleiste statt dahinter. Nur
+                verfügbar, wenn die Navigation fixiert ist.
+              label: Hintergrund unterhalb beginnen
             hideSharingButton:
               label: Share-Button ausblenden
             hideToggleMuteButton:

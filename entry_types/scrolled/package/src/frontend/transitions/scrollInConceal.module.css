@@ -1,5 +1,5 @@
 .backdrop {
   position: sticky;
-  top: 0;
+  top: var(--widget-margin-top-min, 0px);
   height: 0;
 }

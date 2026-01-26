@@ -8,4 +8,13 @@ export function useWidget({role}) {
     () => widgets.find(widget => widget.role === role && widget.typeName),
     [role, widgets]
   );
-};
+}
+
+export function useActiveWidgets() {
+  const widgets = useEntryStateCollectionItems('widgets');
+
+  return useMemo(
+    () => widgets.filter(widget => widget.typeName),
+    [widgets]
+  );
+}

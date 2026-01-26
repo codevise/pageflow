@@ -6,7 +6,7 @@ section::before {
   content: "";
   display: block;
   position: absolute;
-  top: calc(6px + var(--foreground-widget-padding-top));
+  top: calc(6px + var(--foreground-widget-padding-top, 0px));
   left: 6px;
   right: 6px;
   bottom: 6px;

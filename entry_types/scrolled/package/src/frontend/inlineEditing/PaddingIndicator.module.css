@@ -36,7 +36,7 @@
 
 .indicator-top {
   composes: indicator;
-  top: var(--foreground-widget-padding-top);
+  top: var(--foreground-widget-padding-top, 0px);
   height: var(--foreground-padding-top, space(12));
 }
 
