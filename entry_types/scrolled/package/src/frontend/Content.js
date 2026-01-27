@@ -24,12 +24,13 @@ import styles from './Content.module.css';
 
 export const Content = withInlineEditingDecorator('ContentDecorator', function Content(props) {
   const entryStructure = useEntryStructure();
+  const scrollToTarget = useScrollToTarget();
 
   const {
     activeExcursion,
     activateExcursionOfSection,
     returnFromExcursion
-  } = useActiveExcursion(entryStructure);
+  } = useActiveExcursion(entryStructure, {scrollToTarget});
 
   const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
   const [currentExcursionSectionIndex, setCurrentExcursionSectionIndex] = useState(0);
@@ -51,8 +52,6 @@ export const Content = withInlineEditingDecorator('ContentDecorator', function C
     updateExcursionChapterSlug(section);
     triggerSectionChange(section, activeExcursion.sections.length);
   }, [updateExcursionChapterSlug, triggerSectionChange, activeExcursion]);
-
-  const scrollToTarget = useScrollToTarget();
 
   const receiveMessage = useCallback(data => {
     if (data.type === 'SCROLL_TO_SECTION') {

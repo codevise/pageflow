@@ -1,35 +1,68 @@
 import {useCallback, useEffect, useState, useMemo, useRef} from 'react';
 
-export function useActiveExcursion(entryStructure) {
+export function useActiveExcursion(entryStructure, {scrollToTarget} = {}) {
   const [activeExcursionId, setActiveExcursionId] = useState();
+  const [scrollTarget, setScrollTarget] = useState();
   const returnUrlRef = useRef(null);
 
   useEffect(() => {
     function handleHashChange(event) {
       const hash = window.__ACTIVE_EXCURSION__ || // Used in Storybook
                    window.location.hash.slice(1);
-      const excursion = findExcursionByHash(hash);
+      const {excursion, sectionId} = findScrollTargetByHash(hash);
 
       if (excursion && event?.oldURL && !returnUrlRef.current) {
         returnUrlRef.current = event.oldURL;
       }
 
-      setActiveExcursionId(excursion?.id);
+      setActiveExcursionId(prevExcursionId => {
+        const excursionChanged = excursion?.id !== prevExcursionId;
+
+        if (excursionChanged && sectionId) {
+          setScrollTarget(sectionId);
+        }
+
+        return excursion?.id;
+      });
     }
 
-    function findExcursionByHash(hash) {
+    function findScrollTargetByHash(hash) {
       if (hash.startsWith('section-')) {
         const permaId = parseInt(hash.replace('section-', ''), 10);
-        return entryStructure.excursions.find(
-          chapter => chapter.sections.find(
-            section => section.permaId === permaId
-          )
-        );
+
+        for (const chapter of entryStructure.excursions) {
+          const section = chapter.sections.find(s => s.permaId === permaId);
+          if (section) {
+            const isFirstSection = section.id === chapter.sections[0]?.id;
+            return {excursion: chapter, sectionId: isFirstSection ? null : section.id};
+          }
+        }
+
+        for (const chapter of entryStructure.main) {
+          const section = chapter.sections.find(s => s.permaId === permaId);
+          if (section) {
+            return {excursion: null, sectionId: section.id};
+          }
+        }
+
+        return {excursion: null, sectionId: null};
       }
 
-      return entryStructure.excursions.find(
+      const excursion = entryStructure.excursions.find(
         chapter => chapter.chapterSlug === hash
       );
+      if (excursion) {
+        return {excursion, sectionId: null};
+      }
+
+      const mainChapter = entryStructure.main.find(
+        chapter => chapter.chapterSlug === hash
+      );
+      if (mainChapter) {
+        return {excursion: null, sectionId: mainChapter.sections[0]?.id};
+      }
+
+      return {excursion: null, sectionId: null};
     }
 
     handleHashChange();
@@ -37,6 +70,18 @@ export function useActiveExcursion(entryStructure) {
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, [entryStructure]);
+
+  useEffect(() => {
+    if (!scrollTarget) {
+      return;
+    }
+
+    setTimeout(() => {
+      scrollToTarget({id: scrollTarget});
+    }, 500);
+
+    setScrollTarget(null);
+  }, [scrollTarget, scrollToTarget]);
 
   const activateExcursionOfSection = useCallback(({id}) => {
     const excursion = entryStructure.excursions.find(

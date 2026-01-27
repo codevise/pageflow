@@ -279,4 +279,352 @@ describe('useActiveExcursion', () => {
     expect(activeExcursion).toMatchObject({title: 'excursion'});
   });
 
+  describe('scrolling', () => {
+    beforeEach(() => jest.useFakeTimers());
+    afterEach(() => jest.useRealTimers());
+
+    it('calls scrollToTarget when navigating from main to excursion section', async () => {
+      const scrollToTarget = jest.fn();
+
+      const {result} = renderHookInEntry(
+        () => useActiveExcursion(useEntryStructure(), {scrollToTarget}),
+        {
+          seed: {
+            storylines: [
+              {id: 1, configuration: {main: true}},
+              {id: 2}
+            ],
+            chapters: [
+              {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+              {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+            ],
+            sections: [
+              {id: 100, chapterId: 10, permaId: 500},
+              {id: 101, chapterId: 11, permaId: 501},
+              {id: 102, chapterId: 11, permaId: 502},
+            ]
+          }
+        }
+      );
+
+      act(() => changeLocationHash('#section-502'));
+      act(() => jest.advanceTimersByTime(500));
+
+      const {activeExcursion} = result.current;
+      expect(activeExcursion).toMatchObject({title: 'excursion'});
+      expect(scrollToTarget).toHaveBeenCalledWith({id: 102});
+    });
+
+    it('calls scrollToTarget when navigating from excursion to main section', async () => {
+      window.location.hash = '#excursion';
+      const scrollToTarget = jest.fn();
+
+      const {result} = renderHookInEntry(
+        () => useActiveExcursion(useEntryStructure(), {scrollToTarget}),
+        {
+          seed: {
+            storylines: [
+              {id: 1, configuration: {main: true}},
+              {id: 2}
+            ],
+            chapters: [
+              {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+              {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+            ],
+            sections: [
+              {id: 100, chapterId: 10, permaId: 500},
+              {id: 101, chapterId: 11, permaId: 501},
+            ]
+          }
+        }
+      );
+
+      act(() => changeLocationHash('#section-500'));
+      act(() => jest.advanceTimersByTime(500));
+
+      const {activeExcursion} = result.current;
+      expect(activeExcursion).toBeUndefined();
+      expect(scrollToTarget).toHaveBeenCalledWith({id: 100});
+    });
+
+    it('calls scrollToTarget when navigating from excursion A to excursion B', async () => {
+      window.location.hash = '#excursion1';
+      const scrollToTarget = jest.fn();
+
+      const {result} = renderHookInEntry(
+        () => useActiveExcursion(useEntryStructure(), {scrollToTarget}),
+        {
+          seed: {
+            storylines: [
+              {id: 1, configuration: {main: true}},
+              {id: 2}
+            ],
+            chapters: [
+              {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+              {id: 11, storylineId: 2, configuration: {title: 'excursion1'}},
+              {id: 12, storylineId: 2, configuration: {title: 'excursion2'}}
+            ],
+            sections: [
+              {id: 100, chapterId: 10, permaId: 500},
+              {id: 101, chapterId: 11, permaId: 501},
+              {id: 102, chapterId: 12, permaId: 502},
+              {id: 103, chapterId: 12, permaId: 503}
+            ]
+          }
+        }
+      );
+
+      act(() => changeLocationHash('#section-503'));
+      act(() => jest.advanceTimersByTime(500));
+
+      const {activeExcursion} = result.current;
+      expect(activeExcursion).toMatchObject({title: 'excursion2'});
+      expect(scrollToTarget).toHaveBeenCalledWith({id: 103});
+    });
+
+    it('delays scroll by 500ms', async () => {
+      const scrollToTarget = jest.fn();
+
+      renderHookInEntry(
+        () => useActiveExcursion(useEntryStructure(), {scrollToTarget}),
+        {
+          seed: {
+            storylines: [
+              {id: 1, configuration: {main: true}},
+              {id: 2}
+            ],
+            chapters: [
+              {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+              {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+            ],
+            sections: [
+              {id: 100, chapterId: 10, permaId: 500},
+              {id: 101, chapterId: 11, permaId: 501},
+              {id: 102, chapterId: 11, permaId: 502},
+            ]
+          }
+        }
+      );
+
+      act(() => {
+        changeLocationHash('#section-502');
+      });
+
+      expect(scrollToTarget).not.toHaveBeenCalled();
+
+      act(() => {
+        jest.advanceTimersByTime(499);
+      });
+
+      expect(scrollToTarget).not.toHaveBeenCalled();
+
+      act(() => {
+        jest.advanceTimersByTime(1);
+      });
+
+      expect(scrollToTarget).toHaveBeenCalledWith({id: 102});
+    });
+
+    it('does not call scrollToTarget when navigating within main storyline', async () => {
+      const scrollToTarget = jest.fn();
+
+      const {result} = renderHookInEntry(
+        () => useActiveExcursion(useEntryStructure(), {scrollToTarget}),
+        {
+          seed: {
+            storylines: [
+              {id: 1, configuration: {main: true}},
+              {id: 2}
+            ],
+            chapters: [
+              {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+              {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+            ],
+            sections: [
+              {id: 100, chapterId: 10, permaId: 500},
+              {id: 103, chapterId: 10, permaId: 503},
+              {id: 101, chapterId: 11, permaId: 501},
+            ]
+          }
+        }
+      );
+
+      act(() => changeLocationHash('#section-503'));
+      act(() => jest.advanceTimersByTime(500));
+
+      const {activeExcursion} = result.current;
+      expect(activeExcursion).toBeUndefined();
+      expect(scrollToTarget).not.toHaveBeenCalled();
+    });
+
+    it('does not call scrollToTarget when navigating within same excursion', async () => {
+      window.location.hash = '#excursion';
+      const scrollToTarget = jest.fn();
+
+      const {result} = renderHookInEntry(
+        () => useActiveExcursion(useEntryStructure(), {scrollToTarget}),
+        {
+          seed: {
+            storylines: [
+              {id: 1, configuration: {main: true}},
+              {id: 2}
+            ],
+            chapters: [
+              {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+              {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+            ],
+            sections: [
+              {id: 100, chapterId: 10, permaId: 500},
+              {id: 101, chapterId: 11, permaId: 501},
+              {id: 102, chapterId: 11, permaId: 502},
+            ]
+          }
+        }
+      );
+
+      act(() => changeLocationHash('#section-502'));
+      act(() => jest.advanceTimersByTime(500));
+
+      const {activeExcursion} = result.current;
+      expect(activeExcursion).toMatchObject({title: 'excursion'});
+      expect(scrollToTarget).not.toHaveBeenCalled();
+    });
+
+    it('does not call scrollToTarget when hash does not match anything', async () => {
+      const scrollToTarget = jest.fn();
+
+      const {result} = renderHookInEntry(
+        () => useActiveExcursion(useEntryStructure(), {scrollToTarget}),
+        {
+          seed: {
+            storylines: [
+              {id: 1, configuration: {main: true}},
+              {id: 2}
+            ],
+            chapters: [
+              {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+              {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+            ],
+            sections: [
+              {id: 100, chapterId: 10, permaId: 500},
+              {id: 101, chapterId: 11, permaId: 501},
+            ]
+          }
+        }
+      );
+
+      act(() => changeLocationHash('#nonexistent'));
+      act(() => jest.advanceTimersByTime(500));
+
+      const {activeExcursion} = result.current;
+      expect(activeExcursion).toBeUndefined();
+      expect(scrollToTarget).not.toHaveBeenCalled();
+    });
+
+    it('scrolls again after returning from excursion and re-entering', async () => {
+      const scrollToTarget = jest.fn();
+
+      const {result} = renderHookInEntry(
+        () => useActiveExcursion(useEntryStructure(), {scrollToTarget}),
+        {
+          seed: {
+            storylines: [
+              {id: 1, configuration: {main: true}},
+              {id: 2}
+            ],
+            chapters: [
+              {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+              {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+            ],
+            sections: [
+              {id: 100, chapterId: 10, permaId: 500},
+              {id: 101, chapterId: 11, permaId: 501},
+              {id: 102, chapterId: 11, permaId: 502},
+            ]
+          }
+        }
+      );
+
+      // Enter excursion (non-first section)
+      act(() => changeLocationHash('#section-502'));
+      act(() => jest.advanceTimersByTime(500));
+
+      expect(scrollToTarget).toHaveBeenCalledWith({id: 102});
+      scrollToTarget.mockClear();
+
+      // Return from excursion
+      act(() => result.current.returnFromExcursion());
+
+      expect(result.current.activeExcursion).toBeUndefined();
+
+      // Re-enter excursion - should scroll again
+      act(() => changeLocationHash('#section-502'));
+      act(() => jest.advanceTimersByTime(500));
+
+      expect(scrollToTarget).toHaveBeenCalledWith({id: 102});
+    });
+
+    it('does not scroll when navigating to excursion via slug', async () => {
+      const scrollToTarget = jest.fn();
+
+      const {result} = renderHookInEntry(
+        () => useActiveExcursion(useEntryStructure(), {scrollToTarget}),
+        {
+          seed: {
+            storylines: [
+              {id: 1, configuration: {main: true}},
+              {id: 2}
+            ],
+            chapters: [
+              {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+              {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+            ],
+            sections: [
+              {id: 100, chapterId: 10, permaId: 500},
+              {id: 101, chapterId: 11, permaId: 501},
+            ]
+          }
+        }
+      );
+
+      act(() => changeLocationHash('#excursion'));
+      act(() => jest.advanceTimersByTime(500));
+
+      const {activeExcursion} = result.current;
+      expect(activeExcursion).toMatchObject({title: 'excursion'});
+      expect(scrollToTarget).not.toHaveBeenCalled();
+    });
+
+    it('does not scroll when navigating to first section of excursion', async () => {
+      const scrollToTarget = jest.fn();
+
+      const {result} = renderHookInEntry(
+        () => useActiveExcursion(useEntryStructure(), {scrollToTarget}),
+        {
+          seed: {
+            storylines: [
+              {id: 1, configuration: {main: true}},
+              {id: 2}
+            ],
+            chapters: [
+              {id: 10, storylineId: 1, configuration: {title: 'intro'}},
+              {id: 11, storylineId: 2, configuration: {title: 'excursion'}},
+            ],
+            sections: [
+              {id: 100, chapterId: 10, permaId: 500},
+              {id: 101, chapterId: 11, permaId: 501},
+              {id: 102, chapterId: 11, permaId: 502},
+            ]
+          }
+        }
+      );
+
+      act(() => changeLocationHash('#section-501'));
+      act(() => jest.advanceTimersByTime(500));
+
+      const {activeExcursion} = result.current;
+      expect(activeExcursion).toMatchObject({title: 'excursion'});
+      expect(scrollToTarget).not.toHaveBeenCalled();
+    });
+  });
 });
