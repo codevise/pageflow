@@ -4,6 +4,7 @@ import {createEditor, Transforms, Node, Text as SlateText, Range} from 'slate';
 import {Slate, Editable, withReact, ReactEditor} from 'slate-react';
 import {withHistory} from 'slate-history';
 
+import '../slateFixes';
 import {Text} from '../../Text';
 import {useCachedValue} from '../useCachedValue';
 import {useContentElementEditorCommandSubscription} from '../../useContentElementEditorCommandSubscription';
