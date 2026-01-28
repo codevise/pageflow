@@ -203,6 +203,37 @@ describe('ScrolledEntry', () => {
       expect(values).toEqual(['xl', 'md', 'sm']);
     });
 
+    it('returns sizes in ascending order when order option is asc', () => {
+      editor.contentElementTypes.register('someElement', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              typography: {
+                'someElement-lg': {
+                  fontSize: '3rem'
+                },
+                'someElement-sm': {
+                  fontSize: '2rem'
+                }
+              }
+            },
+            contentElements: [
+              {id: 5, typeName: 'someElement'}
+            ]
+          })
+        }
+      );
+      const contentElement = entry.contentElements.get(5);
+
+      const [values] = entry.getTypographySizes({contentElement, order: 'asc'});
+
+      expect(values).toEqual(['sm', 'md', 'lg']);
+    });
+
     describe('with texts option', () => {
       const commonPrefix = 'pageflow_scrolled.editor.typography_sizes';
 

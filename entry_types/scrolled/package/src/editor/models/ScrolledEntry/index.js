@@ -178,7 +178,7 @@ export const ScrolledEntry = Entry.extend({
     return [values, texts];
   },
 
-  getTypographySizes({contentElement, scaleCategory, prefix, texts: textsOption}) {
+  getTypographySizes({contentElement, scaleCategory, prefix, texts: textsOption, order = 'desc'}) {
     const typographyRules = this.scrolledSeed.config.theme.options.typography || {};
 
     const rulePrefix = [
@@ -186,7 +186,9 @@ export const ScrolledEntry = Entry.extend({
       prefix
     ].filter(Boolean).join('-')
 
-    const values = typographySizeSuffixes
+    const suffixes = order === 'asc' ? [...typographySizeSuffixes].reverse() : typographySizeSuffixes;
+
+    const values = suffixes
       .filter(sizeSuffix =>
         typographyRules[`${rulePrefix}-${sizeSuffix}`] || sizeSuffix === 'md'
       )
