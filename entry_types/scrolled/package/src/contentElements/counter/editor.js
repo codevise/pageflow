@@ -1,6 +1,6 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {
-  CheckBoxInputView, SelectInputView, TextInputView, NumberInputView, SeparatorView
+  CheckBoxInputView, SelectInputView, SliderInputView, TextInputView, NumberInputView, SeparatorView
 } from 'pageflow/ui';
 
 import pictogram from './pictogram.svg';
@@ -14,7 +14,9 @@ editor.contentElementTypes.register('counter', {
   defaultConfig: {
     targetValue: 100,
     countingSpeed: 'medium',
-    textSize: 'medium'
+    numberSize: 'md',
+    unitSize: 'md',
+    descriptionSize: 'md'
   },
 
   configurationEditor({entry}) {
@@ -33,6 +35,42 @@ editor.contentElementTypes.register('counter', {
       this.input('unit', TextInputView);
       this.input('unitPlacement', SelectInputView, {
         values: ['trailing', 'leading'],
+      });
+      this.view(SeparatorView);
+      const [numberSizes, numberTexts] = entry.getTypographySizes({
+        scaleCategory: 'counterNumber',
+        texts: 'short',
+        order: 'asc'
+      });
+      this.input('numberSize', SliderInputView, {
+        values: numberSizes,
+        texts: numberTexts,
+        defaultValue: 'md',
+        saveOnSlide: true
+      });
+      const [unitSizes, unitTexts] = entry.getTypographySizes({
+        scaleCategory: 'counterUnit',
+        texts: 'short',
+        order: 'asc'
+      });
+      this.input('unitSize', SliderInputView, {
+        values: unitSizes,
+        texts: unitTexts,
+        defaultValue: 'md',
+        saveOnSlide: true,
+        visibleBinding: 'unit',
+        visible: unit => !!unit
+      });
+      const [descriptionSizes, descriptionTexts] = entry.getTypographySizes({
+        scaleCategory: 'counterDescription',
+        texts: 'short',
+        order: 'asc'
+      });
+      this.input('descriptionSize', SliderInputView, {
+        values: descriptionSizes,
+        texts: descriptionTexts,
+        defaultValue: 'md',
+        saveOnSlide: true
       });
       this.view(SeparatorView);
       this.input('entranceAnimation', SelectInputView, {
@@ -54,10 +92,6 @@ editor.contentElementTypes.register('counter', {
         visible: ([entranceAnimation, countingSpeed]) =>
           (entranceAnimation || 'none') !== 'none' || countingSpeed !== 'none'
       });
-      this.view(SeparatorView);
-      this.input('textSize', SelectInputView, {
-        values: ['large', 'medium', 'small', 'verySmall']
-      });
       this.group('ContentElementTypographyVariant', {
         entry,
         getPreviewConfiguration: (configuration, typographyVariant) =>
@@ -66,7 +100,7 @@ editor.contentElementTypes.register('counter', {
             typographyVariant,
             entranceAnimation: 'none',
             countingSpeed: 'none',
-            textSize: 'small',
+            numberSize: 'sm',
             position: 'inline'
           })
       });

@@ -14,8 +14,7 @@ import styles from './Text.module.css';
  *   `'headingSubtitle-lg'`, `'headingSubtitle-md'`, `'headingSubtitle-sm'`,
  *   `'body'`, `'caption'`, `'question'`, `'questionAnswer'`,
  *   `'quoteText-lg'`, `'quoteText-md'`, `'quoteText-sm'`, `'quoteText-xs'`, `'quoteAttribution'`,
- *   `'counterNumber-lg'`, `'counterNumber-md'`, `'counterNumber-sm'`, `'counterNumber-xs'`,
- *   `'counterDescription-lg'`, `'counterDescription-md'`, `'counterDescription-sm'`, `'counterDescription-xs'`.
+ *   `'counterNumber'`, `'counterUnit'`, `'counterDescription'`,
  *   `'infoTableLabel'`, `'infoTableValue`'.
  *   `'hotspotsTooltipTitle'`, `'hotspotsTooltipDescription`', `'hotspotsTooltipLink`',
  *   `'teaserTitle-lg'`, `'teaserTitle-md'`, `'teaserTitle-sm'`,
@@ -59,8 +58,7 @@ Text.propTypes = {
     'teaserTagline-lg', 'teaserTagline-md', 'teaserTagline-sm',
     'teaserDescription-lg', 'teaserDescription-md', 'teaserDescription-sm',
     'teaserLink',
-    'counterNumber-lg', 'counterNumber-md', 'counterNumber-sm', 'counterNumber-xs',
-    'counterDescription-lg', 'counterDescription-md', 'counterDescription-sm', 'counterDescription-xs',
+    'counterNumber', 'counterUnit', 'counterDescription',
     'infoTableLabel', 'infoTableValue',
     'body', 'caption', 'question', 'questionAnswer'
   ]),

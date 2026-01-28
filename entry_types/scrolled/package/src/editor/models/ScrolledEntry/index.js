@@ -22,7 +22,7 @@ import {sortColors} from './sortColors';
 import {Scale} from '../../../shared/Scale';
 import {getChapterSlugs} from '../../../shared/chapterSlug';
 
-const typographySizeSuffixes = ['xl', 'lg', 'md', 'sm', 'xs'];
+const typographySizeSuffixes = ['xxxl', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs', 'xxxs'];
 
 const scaleDefaultPropertyNames = {
   sectionPaddingTop: 'sectionDefaultPaddingTop',

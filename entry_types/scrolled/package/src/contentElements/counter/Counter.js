@@ -92,17 +92,25 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
   });
 
   function format(value) {
-    const localeString = value.toLocaleString(locale, {
+    return value.toLocaleString(locale, {
       useGrouping: !configuration.hideThousandsSeparators,
       minimumFractionDigits: decimalPlaces,
       maximumFractionDigits: decimalPlaces
     });
+  }
 
-    const unit = configuration.unit || '';
+  function renderUnit() {
+    if (!configuration.unit) {
+      return null;
+    }
 
-    return configuration.unitPlacement === 'leading' ?
-           `${unit}${localeString}` :
-           `${localeString}${unit}`;
+    return (
+      <Text scaleCategory="counterUnit"
+            typographySize={configuration.unitSize}
+            inline>
+        {configuration.unit}
+      </Text>
+    );
   }
 
   return (
@@ -113,45 +121,36 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
         styles.wrapper,
         {[styles.centerRagged]: sectionProps.layout === 'centerRagged'}
       )}>
-        <Text scaleCategory={numberScaleCategories[configuration.textSize || 'medium']}>
-          <div
-            className={classNames(
-              `typography-counter-${configuration.typographyVariant}`,
-              styles.number,
-              styles[`animation-${configuration.entranceAnimation}`],
-              {[styles[`animation-${configuration.entranceAnimation}-active`]]: animated
-            })}
-            style={{'--counting-duration': `${countingDuration || 1000}ms`,
-                    '--palette-color': paletteColor(configuration.numberColor)}}
-          >
+        <div
+          className={classNames(
+            `typography-counter-${configuration.typographyVariant}`,
+            styles.number,
+            styles[`animation-${configuration.entranceAnimation}`],
+            {[styles[`animation-${configuration.entranceAnimation}-active`]]: animated
+          })}
+          style={{'--counting-duration': `${countingDuration || 1000}ms`,
+                  '--palette-color': paletteColor(configuration.numberColor)}}
+        >
+          <Text scaleCategory="counterNumber"
+                typographySize={configuration.numberSize}
+                inline>
+            {configuration.unitPlacement === 'leading' && renderUnit()}
             {format(currentValue)}
-          </div>
-        </Text>
+            {configuration.unitPlacement !== 'leading' && renderUnit()}
+          </Text>
+        </div>
         <EditableText value={configuration.description}
                       contentElementId={contentElementId}
                       className={styles.description}
                       onChange={description => updateConfiguration({description})}
                       onlyParagraphs={true}
-                      scaleCategory={descriptionScaleCategories[configuration.textSize || 'medium']}
+                      scaleCategory="counterDescription"
+                      typographySize={configuration.descriptionSize}
                       placeholder={t('pageflow_scrolled.inline_editing.type_description')} />
       </div>
     </div>
   );
 }
-
-const numberScaleCategories = {
-  verySmall: 'counterNumber-xs',
-  small: 'counterNumber-sm',
-  medium: 'counterNumber-md',
-  large: 'counterNumber-lg'
-};
-
-const descriptionScaleCategories = {
-  verySmall: 'counterDescription-xs',
-  small: 'counterDescription-sm',
-  medium: 'counterDescription-md',
-  large: 'counterDescription-lg'
-};
 
 const countingDurations = {
   none: 0,

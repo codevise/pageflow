@@ -303,14 +303,15 @@ en:
             targetValue:
               inline_help: Value to display. Final value for counting animation.
               label: Target value
-            textSize:
+            numberSize:
               inline_help: Determine the font size of the number.
-              label: Text size
-              values:
-                large: Large
-                medium: Medium
-                small: Small
-                verySmall: Very small
+              label: Number size
+            unitSize:
+              inline_help: Relative size of the unit based on the number size.
+              label: Unit size
+            descriptionSize:
+              inline_help: Determine the font size of the description.
+              label: Description size
             unit:
               inline_help: Display a text before or after the number.
               label: Unit
@@ -1493,17 +1494,25 @@ en:
               By default, make elements span the full width of the
               viewport on smaller screens.
       typography_sizes:
+        xxxl: Huge
+        xxl: Extra large
         xl: Very large
         lg: Large
         md: Medium
         sm: Small
         xs: Very small
+        xxs: Extra small
+        xxxs: Tiny
         short:
+          xxxl: XXXL
+          xxl: XXL
           xl: XL
           lg: L
           md: M
           sm: S
           xs: XS
+          xxs: XXS
+          xxxs: XXXS
       link_button_variant_attributes:
         linkButtonVariant:
           label: Button Variante

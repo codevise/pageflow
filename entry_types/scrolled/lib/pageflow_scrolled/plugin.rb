@@ -47,6 +47,56 @@ module PageflowScrolled
           }
         )
 
+        c.themes.register_default_options(
+          typography: {
+            'counterNumber-xxxl' => {
+              font_size: '200px', line_height: '1',
+              sm: {font_size: '350px'}
+            },
+            'counterNumber-xxl' => {
+              font_size: '150px', line_height: '1',
+              sm: {font_size: '265px'}
+            },
+            'counterNumber-xl' => {
+              font_size: '110px', line_height: '1',
+              sm: {font_size: '200px'}
+            },
+            'counterNumber-lg' => {
+              font_size: '86px', line_height: '1',
+              sm: {font_size: '150px'}
+            },
+            'counterNumber-md' => {
+              font_size: '66px', line_height: '1',
+              sm: {font_size: '110px'}
+            },
+            'counterNumber-sm' => {
+              font_size: '52px', line_height: '1',
+              sm: {font_size: '86px'}
+            },
+            'counterNumber-xs' => {
+              font_size: '40px', line_height: '1.1',
+              sm: {font_size: '66px', line_height: '1'}
+            },
+            'counterNumber-xxs' => {
+              font_size: '34px', line_height: '1.1',
+              sm: {font_size: '52px', line_height: '1'}
+            },
+            'counterNumber-xxxs' => {
+              font_size: '28px', line_height: '1.1',
+              sm: {font_size: '40px', line_height: '1'}
+            },
+            'counterUnit-md' => {font_size: '1em'},
+            'counterUnit-sm' => {font_size: '0.7em'},
+            'counterUnit-xs' => {font_size: '0.5em'},
+            'counterDescription-lg' => {
+              font_size: '28px', line_height: '1.1',
+              sm: {font_size: '40px', line_height: '1',}
+            },
+            'counterDescription-md' => {font_size: '22px'},
+            'counterDescription-sm' => {font_size: '18px'}
+          }
+        )
+
         c.file_types.register(Pageflow::BuiltInFileType.image)
         c.file_types.register(Pageflow::BuiltInFileType.video)
         c.file_types.register(Pageflow::BuiltInFileType.audio)

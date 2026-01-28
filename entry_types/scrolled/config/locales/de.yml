@@ -310,14 +310,15 @@ de:
             targetValue:
               inline_help: Zahlenwert, der angezeigt werden soll. Die Zählanimation endet bei diesem Wert.
               label: Zielwert
-            textSize:
-              inline_help: Bestimme die Textgröße der Zahl.
-              label: Schriftgröße
-              values:
-                large: Groß
-                medium: Mittel
-                small: Klein
-                verySmall: Sehr klein
+            numberSize:
+              inline_help: Bestimme die Schriftgröße der Zahl.
+              label: Schriftgröße Zahl
+            unitSize:
+              inline_help: Relative Größe der Einheit basierend auf der Schriftgröße der Zahl.
+              label: Schriftgröße Einheit
+            descriptionSize:
+              inline_help: Bestimme die Schriftgröße der Beschreibung.
+              label: Schriftgröße Beschreibung
             unit:
               inline_help: Text der vor oder hinter der Zahl gezeigt werden soll.
               label: Einheit
@@ -1510,17 +1511,25 @@ de:
               Standardmäßig Elemente auf kleineren Bildschirmen
               die gesamte Breite des Viewports nutzen lassen.
       typography_sizes:
+        xxxl: Riesig
+        xxl: Extra groß
         xl: Sehr groß
         lg: Groß
         md: Mittel
         sm: Klein
         xs: Sehr klein
+        xxs: Extra klein
+        xxxs: Winzig
         short:
+          xxxl: XXXL
+          xxl: XXL
           xl: XL
           lg: L
           md: M
           sm: S
           xs: XS
+          xxs: XXS
+          xxxs: XXXS
       link_button_variant_attributes:
         linkButtonVariant:
           label: Button-Variante
