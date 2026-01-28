@@ -297,7 +297,11 @@ de:
                 fadeInScaleUp: Einblenden und vergrößern
                 none: "(Keine)"
             numberColor:
-              label: Farbe
+              label: Farbe Zahl
+            unitColor:
+              label: Farbe Einheit
+            descriptionColor:
+              label: Farbe Beschreibung
             startValue:
               inline_help: Bei diesem Wert beginnt die Zählanimation.
               label: Startwert

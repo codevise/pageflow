@@ -108,7 +108,9 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
       <Text scaleCategory="counterUnit"
             typographySize={configuration.unitSize}
             inline>
-        {configuration.unit}
+        <span style={configuration.unitColor ? {color: paletteColor(configuration.unitColor)} : undefined}>
+          {configuration.unit}
+        </span>
       </Text>
     );
   }
@@ -128,25 +130,28 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
             styles[`animation-${configuration.entranceAnimation}`],
             {[styles[`animation-${configuration.entranceAnimation}-active`]]: animated
           })}
-          style={{'--counting-duration': `${countingDuration || 1000}ms`,
-                  '--palette-color': paletteColor(configuration.numberColor)}}
+          style={{'--counting-duration': `${countingDuration || 1000}ms`}}
         >
           <Text scaleCategory="counterNumber"
                 typographySize={configuration.numberSize}
                 inline>
-            {configuration.unitPlacement === 'leading' && renderUnit()}
-            {format(currentValue)}
-            {configuration.unitPlacement !== 'leading' && renderUnit()}
+            <span style={{color: paletteColor(configuration.numberColor)}}>
+              {configuration.unitPlacement === 'leading' && renderUnit()}
+              {format(currentValue)}
+              {configuration.unitPlacement !== 'leading' && renderUnit()}
+            </span>
           </Text>
         </div>
-        <EditableText value={configuration.description}
-                      contentElementId={contentElementId}
-                      className={styles.description}
-                      onChange={description => updateConfiguration({description})}
-                      onlyParagraphs={true}
-                      scaleCategory="counterDescription"
-                      typographySize={configuration.descriptionSize}
-                      placeholder={t('pageflow_scrolled.inline_editing.type_description')} />
+        <div style={{color: paletteColor(configuration.descriptionColor)}}>
+          <EditableText value={configuration.description}
+                        contentElementId={contentElementId}
+                        className={styles.description}
+                        onChange={description => updateConfiguration({description})}
+                        onlyParagraphs={true}
+                        scaleCategory="counterDescription"
+                        typographySize={configuration.descriptionSize}
+                        placeholder={t('pageflow_scrolled.inline_editing.type_description')} />
+        </div>
       </div>
     </div>
   );

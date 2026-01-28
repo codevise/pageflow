@@ -290,7 +290,11 @@ en:
                 fadeInScaleUp: Fade in and scale up
                 none: "(None)"
             numberColor:
-              label: Color
+              label: Number color
+            unitColor:
+              label: Unit color
+            descriptionColor:
+              label: Description color
             startValue:
               inline_help: The counting animation starts with this value
               label: Start value

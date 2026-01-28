@@ -7,6 +7,7 @@ import {contentElementWidths} from 'pageflow-scrolled/frontend';
 
 import '@testing-library/jest-dom/extend-expect';
 import 'support/toHaveScaleCategory';
+import 'support/toHaveColor';
 
 describe('Counter', () => {
   function renderCounter(configuration = {}) {
@@ -66,6 +67,39 @@ describe('Counter', () => {
     });
 
     expect(getByText('Some text')).toHaveScaleCategory('counterDescription');
+  });
+
+  it('applies number color', () => {
+    const {getByText} = renderCounter({numberColor: '#f00'});
+
+    expect(getByText('10')).toHaveColor('#f00');
+  });
+
+  it('inherits number color for unit by default', () => {
+    const {getByText} = renderCounter({unit: 'kg', numberColor: '#f00'});
+
+    expect(getByText('kg')).toHaveColor('#f00');
+  });
+
+  it('applies unit color', () => {
+    const {getByText} = renderCounter({unit: 'kg', unitColor: '#0f0'});
+
+    expect(getByText('kg')).toHaveColor('#0f0');
+  });
+
+  it('overrides number color with unit color', () => {
+    const {getByText} = renderCounter({unit: 'kg', numberColor: '#f00', unitColor: '#0f0'});
+
+    expect(getByText('kg')).toHaveColor('#0f0');
+  });
+
+  it('applies description color', () => {
+    const {getByText} = renderCounter({
+      description: [{type: 'paragraph', children: [{text: 'Some text'}]}],
+      descriptionColor: '#00f'
+    });
+
+    expect(getByText('Some text')).toHaveColor('#00f');
   });
 
   it('renders description with counterDescription size typography class', () => {

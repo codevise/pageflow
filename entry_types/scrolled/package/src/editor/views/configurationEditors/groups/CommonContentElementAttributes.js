@@ -181,7 +181,7 @@ ConfigurationEditorTabView.groups.define(
 
 ConfigurationEditorTabView.groups.define(
   'PaletteColor',
-  function({propertyName, entry, model}) {
+  function({propertyName, entry, model, visibleBinding, visible}) {
     const [values, texts] = entry.getPaletteColors();
     const inputView = features.isEnabled('custom_palette_colors') ?
                       ColorSelectOrCustomColorInputView :
@@ -199,6 +199,8 @@ ConfigurationEditorTabView.groups.define(
                                    'palette_color.custom',
         values,
         texts,
+        visibleBinding,
+        visible: visible || true
       });
     }
   }

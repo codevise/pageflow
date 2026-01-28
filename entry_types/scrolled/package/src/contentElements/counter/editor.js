@@ -73,6 +73,21 @@ editor.contentElementTypes.register('counter', {
         saveOnSlide: true
       });
       this.view(SeparatorView);
+      this.group('PaletteColor', {
+        propertyName: 'numberColor',
+        entry
+      });
+      this.group('PaletteColor', {
+        propertyName: 'unitColor',
+        entry,
+        visibleBinding: 'unit',
+        visible: unit => !!unit
+      });
+      this.group('PaletteColor', {
+        propertyName: 'descriptionColor',
+        entry
+      });
+      this.view(SeparatorView);
       this.input('entranceAnimation', SelectInputView, {
         values: ['none', 'fadeIn',
                  'fadeInFromBelow', 'fadeInFromAbove',
@@ -92,6 +107,7 @@ editor.contentElementTypes.register('counter', {
         visible: ([entranceAnimation, countingSpeed]) =>
           (entranceAnimation || 'none') !== 'none' || countingSpeed !== 'none'
       });
+      this.view(SeparatorView);
       this.group('ContentElementTypographyVariant', {
         entry,
         getPreviewConfiguration: (configuration, typographyVariant) =>
@@ -103,10 +119,6 @@ editor.contentElementTypes.register('counter', {
             numberSize: 'sm',
             position: 'inline'
           })
-      });
-      this.group('PaletteColor', {
-        propertyName: 'numberColor',
-        entry
       });
       this.group('ContentElementPosition', {entry});
     });
