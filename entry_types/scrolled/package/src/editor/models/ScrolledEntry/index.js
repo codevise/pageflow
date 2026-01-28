@@ -178,7 +178,7 @@ export const ScrolledEntry = Entry.extend({
     return [values, texts];
   },
 
-  getTypographySizes({contentElement, scaleCategory, prefix}) {
+  getTypographySizes({contentElement, scaleCategory, prefix, texts: textsOption}) {
     const typographyRules = this.scrolledSeed.config.theme.options.typography || {};
 
     const rulePrefix = [
@@ -191,11 +191,13 @@ export const ScrolledEntry = Entry.extend({
         typographyRules[`${rulePrefix}-${sizeSuffix}`] || sizeSuffix === 'md'
       )
 
+    const translationKey = textsOption === 'short' ? 'typography_sizes.short' : 'typography_sizes';
+
     const texts = values.map(name =>
       I18n.t(
         `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
-        `.typography_sizes.${name}`,
-        {defaultValue: I18n.t(`pageflow_scrolled.editor.typography_sizes.${name}`)}
+        `.${translationKey}.${name}`,
+        {defaultValue: I18n.t(`pageflow_scrolled.editor.${translationKey}.${name}`)}
       )
     );
 

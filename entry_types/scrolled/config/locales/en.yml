@@ -1498,6 +1498,12 @@ en:
         md: Medium
         sm: Small
         xs: Very small
+        short:
+          xl: XL
+          lg: L
+          md: M
+          sm: S
+          xs: XS
       link_button_variant_attributes:
         linkButtonVariant:
           label: Button Variante

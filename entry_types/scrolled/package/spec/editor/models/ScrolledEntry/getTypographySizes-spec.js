@@ -202,5 +202,47 @@ describe('ScrolledEntry', () => {
 
       expect(values).toEqual(['xl', 'md', 'sm']);
     });
+
+    describe('with texts option', () => {
+      const commonPrefix = 'pageflow_scrolled.editor.typography_sizes';
+
+      useFakeTranslations({
+        [`${commonPrefix}.lg`]: 'Large',
+        [`${commonPrefix}.md`]: 'Medium',
+        [`${commonPrefix}.short.lg`]: 'L',
+        [`${commonPrefix}.short.md`]: 'M'
+      });
+
+      it('returns short translated display names when texts option is short', () => {
+        editor.contentElementTypes.register('someElement', {});
+
+        const entry = factories.entry(
+          ScrolledEntry,
+          {},
+          {
+            entryTypeSeed: normalizeSeed({
+              themeOptions: {
+                typography: {
+                  'someElement-lg': {
+                    fontSize: '3rem'
+                  }
+                }
+              },
+              contentElements: [
+                {id: 5, typeName: 'someElement'}
+              ]
+            })
+          }
+        );
+        const contentElement = entry.contentElements.get(5);
+
+        const [, texts] = entry.getTypographySizes({contentElement, texts: 'short'});
+
+        expect(texts).toEqual([
+          'L',
+          'M'
+        ]);
+      });
+    });
   });
 });
