@@ -177,5 +177,30 @@ describe('ScrolledEntry', () => {
 
       expect(values).toEqual(['lg', 'md', 'sm']);
     });
+
+    it('supports passing scaleCategory instead of contentElement', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              typography: {
+                'counterNumber-xl': {
+                  fontSize: '350px'
+                },
+                'counterNumber-sm': {
+                  fontSize: '110px'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const [values] = entry.getTypographySizes({scaleCategory: 'counterNumber'});
+
+      expect(values).toEqual(['xl', 'md', 'sm']);
+    });
   });
 });

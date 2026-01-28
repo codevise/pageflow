@@ -178,11 +178,11 @@ export const ScrolledEntry = Entry.extend({
     return [values, texts];
   },
 
-  getTypographySizes({contentElement, prefix}) {
+  getTypographySizes({contentElement, scaleCategory, prefix}) {
     const typographyRules = this.scrolledSeed.config.theme.options.typography || {};
 
     const rulePrefix = [
-      contentElement.get('typeName'),
+      scaleCategory || contentElement.get('typeName'),
       prefix
     ].filter(Boolean).join('-')
 
