@@ -106,7 +106,7 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
 
     return (
       <Text scaleCategory="counterUnit"
-            typographySize={configuration.unitSize}
+            typographySize={configuration.unitSize || 'md'}
             inline>
         <span style={configuration.unitColor ? {color: paletteColor(configuration.unitColor)} : undefined}>
           {configuration.unit}
@@ -133,7 +133,7 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
           style={{'--counting-duration': `${countingDuration || 1000}ms`}}
         >
           <Text scaleCategory="counterNumber"
-                typographySize={configuration.numberSize}
+                typographySize={configuration.numberSize || legacyTextSizes[configuration.textSize] || 'md'}
                 inline>
             <span style={{color: paletteColor(configuration.numberColor)}}>
               {configuration.unitPlacement === 'leading' && renderUnit()}
@@ -149,7 +149,7 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
                         onChange={description => updateConfiguration({description})}
                         onlyParagraphs={true}
                         scaleCategory="counterDescription"
-                        typographySize={configuration.descriptionSize}
+                        typographySize={configuration.descriptionSize || 'md'}
                         placeholder={t('pageflow_scrolled.inline_editing.type_description')} />
         </div>
       </div>
@@ -163,6 +163,13 @@ const countingDurations = {
   medium: 2000,
   slow: 5000
 }
+
+const legacyTextSizes = {
+  verySmall: 'xs',
+  small: 'md',
+  medium: 'xl',
+  large: 'xxxl'
+};
 
 function easeInOut(t) {
   t = t * 2;

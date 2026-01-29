@@ -3,6 +3,7 @@ import {
   CheckBoxInputView, SelectInputView, SliderInputView, TextInputView, NumberInputView, SeparatorView
 } from 'pageflow/ui';
 
+import {createLegacyTextSizeDelegator} from './createLegacyTextSizeDelegator';
 import pictogram from './pictogram.svg';
 
 editor.contentElementTypes.register('counter', {
@@ -13,15 +14,14 @@ editor.contentElementTypes.register('counter', {
 
   defaultConfig: {
     targetValue: 100,
-    countingSpeed: 'medium',
-    numberSize: 'md',
-    unitSize: 'md',
-    descriptionSize: 'md'
+    countingSpeed: 'medium'
   },
 
   configurationEditor({entry}) {
     const locale = entry.metadata.get('locale');
     this.tab('general', function() {
+      const modelDelegator = createLegacyTextSizeDelegator(this.model);
+
       this.input('targetValue', NumberInputView, {locale});
       this.input('decimalPlaces', SelectInputView, {
         values: [0, 1, 2, 3],
@@ -43,6 +43,7 @@ editor.contentElementTypes.register('counter', {
         order: 'asc'
       });
       this.input('numberSize', SliderInputView, {
+        model: modelDelegator,
         values: numberSizes,
         texts: numberTexts,
         defaultValue: 'md',

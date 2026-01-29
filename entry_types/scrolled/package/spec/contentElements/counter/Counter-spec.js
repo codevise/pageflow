@@ -61,6 +61,50 @@ describe('Counter', () => {
     expect(getByText('10')).toHaveScaleCategory('counterNumber', 'lg');
   });
 
+  it('defaults to md size for number', () => {
+    const {getByText} = renderCounter();
+
+    expect(getByText('10')).toHaveScaleCategory('counterNumber', 'md');
+  });
+
+  it('defaults to md size for unit', () => {
+    const {getByText} = renderCounter({unit: 'kg'});
+
+    expect(getByText('kg')).toHaveScaleCategory('counterUnit', 'md');
+  });
+
+  it('defaults to md size for description', () => {
+    const {getByText} = renderCounter({
+      description: [{type: 'paragraph', children: [{text: 'Some text'}]}]
+    });
+
+    expect(getByText('Some text')).toHaveScaleCategory('counterDescription', 'md');
+  });
+
+  it('maps legacy textSize large to counterNumber-xxxl', () => {
+    const {getByText} = renderCounter({textSize: 'large'});
+
+    expect(getByText('10')).toHaveScaleCategory('counterNumber', 'xxxl');
+  });
+
+  it('maps legacy textSize medium to counterNumber-xl', () => {
+    const {getByText} = renderCounter({textSize: 'medium'});
+
+    expect(getByText('10')).toHaveScaleCategory('counterNumber', 'xl');
+  });
+
+  it('maps legacy textSize small to counterNumber-md', () => {
+    const {getByText} = renderCounter({textSize: 'small'});
+
+    expect(getByText('10')).toHaveScaleCategory('counterNumber', 'md');
+  });
+
+  it('maps legacy textSize verySmall to counterNumber-xs', () => {
+    const {getByText} = renderCounter({textSize: 'verySmall'});
+
+    expect(getByText('10')).toHaveScaleCategory('counterNumber', 'xs');
+  });
+
   it('renders description with counterDescription scale category', () => {
     const {getByText} = renderCounter({
       description: [{type: 'paragraph', children: [{text: 'Some text'}]}]
