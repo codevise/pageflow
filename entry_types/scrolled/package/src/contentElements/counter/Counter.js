@@ -13,6 +13,7 @@ import {
 } from 'pageflow-scrolled/frontend';
 
 import styles from './Counter.module.css';
+import {PlainNumber} from './PlainNumber';
 
 export function Counter({configuration, contentElementId, contentElementWidth, sectionProps}) {
   const updateConfiguration = useContentElementConfigurationUpdate();
@@ -91,14 +92,6 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
     }
   });
 
-  function format(value) {
-    return value.toLocaleString(locale, {
-      useGrouping: !configuration.hideThousandsSeparators,
-      minimumFractionDigits: decimalPlaces,
-      maximumFractionDigits: decimalPlaces
-    });
-  }
-
   function renderUnit() {
     if (!configuration.unit) {
       return null;
@@ -156,7 +149,15 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
                 inline>
             <span style={{color: paletteColor(configuration.numberColor)}}>
               {configuration.unitPlacement === 'leading' && renderUnit()}
-              {format(currentValue)}
+              <PlainNumber
+                value={currentValue}
+                targetValue={countingDuration > 0 ? targetValue : null}
+                formatOptions={{
+                  locale,
+                  decimalPlaces,
+                  useGrouping: !configuration.hideThousandsSeparators
+                }}
+              />
               {configuration.unitPlacement !== 'leading' && renderUnit()}
             </span>
           </Text>

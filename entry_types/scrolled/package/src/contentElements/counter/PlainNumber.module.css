@@ -1,0 +1,12 @@
+.numberGrid {
+  display: inline-grid;
+}
+
+.numberGrid > * {
+  grid-area: 1 / 1;
+  text-align: right;
+}
+
+.numberPlaceholder {
+  visibility: hidden;
+}

@@ -318,4 +318,51 @@ describe('Counter', () => {
       expect(descriptionDiv).toHaveClass(styles.textRight);
     });
   });
+
+  describe('space reservation', () => {
+    it('renders hidden placeholder with target value when counting up', () => {
+      const {container} = renderCounter({
+        targetValue: 1000,
+        startValue: 0,
+        countingSpeed: 'medium'
+      });
+      const placeholder = container.querySelector('[aria-hidden="true"]');
+
+      expect(placeholder).toBeInTheDocument();
+      expect(placeholder).toHaveTextContent('1,000');
+    });
+
+    it('renders placeholder when targetValue equals startValue', () => {
+      const {container} = renderCounter({
+        targetValue: 100,
+        startValue: 100,
+        countingSpeed: 'medium'
+      });
+      const placeholder = container.querySelector('[aria-hidden="true"]');
+
+      expect(placeholder).toBeInTheDocument();
+    });
+
+    it('does not render placeholder when counting down', () => {
+      const {container} = renderCounter({
+        targetValue: 0,
+        startValue: 100,
+        countingSpeed: 'medium'
+      });
+      const placeholder = container.querySelector('[aria-hidden="true"]');
+
+      expect(placeholder).not.toBeInTheDocument();
+    });
+
+    it('does not render placeholder when countingSpeed is none', () => {
+      const {container} = renderCounter({
+        targetValue: 1000,
+        startValue: 0,
+        countingSpeed: 'none'
+      });
+      const placeholder = container.querySelector('[aria-hidden="true"]');
+
+      expect(placeholder).not.toBeInTheDocument();
+    });
+  });
 });
