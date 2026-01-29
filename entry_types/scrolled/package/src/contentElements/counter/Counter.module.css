@@ -7,8 +7,12 @@
   word-break: break-word;
 }
 
-.centerRagged {
+.numberCenter {
   text-align: center;
+}
+
+.numberRight {
+  text-align: right;
 }
 
 .center,
@@ -16,6 +20,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.right,
+.right .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.textRight {
+  text-align: right;
 }
 
 .animation-fadeIn {

@@ -325,6 +325,14 @@ en:
               values:
                 leading: Leading ($100)
                 trailing: Trailing (100%)
+            textAlign:
+              label: Text alignment
+              blank: "(Auto)"
+              values:
+                left: Left
+                center: Center
+                centerRagged: Center (ragged)
+                right: Right
             thousandsSeparators:
               label: "Display thousands separators"
               inline_help: "For example, 1,000 in stories with English language setting."

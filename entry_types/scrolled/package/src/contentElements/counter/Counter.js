@@ -115,18 +115,36 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
     );
   }
 
+  const textAlign = configuration.textAlign ||
+    (sectionProps.layout === 'centerRagged' ? 'centerRagged' : 'auto');
+
+  const wrapperAlignment = {
+    auto: contentElementWidth > contentElementWidths.md ? 'center' : null,
+    center: 'center',
+    centerRagged: 'center',
+    left: 'left',
+    right: 'right'
+  }[textAlign];
+
+  const numberAlignment = {
+    center: 'numberCenter',
+    centerRagged: 'numberCenter',
+    right: 'numberRight'
+  }[textAlign];
+
+  const descriptionAlignment = {
+    centerRagged: 'textCenter',
+    right: 'textRight'
+  }[textAlign];
+
   return (
-    <div className={classNames(
-      {[styles.center]: contentElementWidth > contentElementWidths.md}
-    )}>
-      <div className={classNames(
-        styles.wrapper,
-        {[styles.centerRagged]: sectionProps.layout === 'centerRagged'}
-      )}>
+    <div className={styles[wrapperAlignment]}>
+      <div className={styles.wrapper}>
         <div
           className={classNames(
             `typography-counter-${configuration.typographyVariant}`,
             styles.number,
+            styles[numberAlignment],
             styles[`animation-${configuration.entranceAnimation}`],
             {[styles[`animation-${configuration.entranceAnimation}-active`]]: animated
           })}
@@ -142,7 +160,8 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
             </span>
           </Text>
         </div>
-        <div style={{color: paletteColor(configuration.descriptionColor)}}>
+        <div className={styles[descriptionAlignment]}
+             style={{color: paletteColor(configuration.descriptionColor)}}>
           <EditableText value={configuration.description}
                         contentElementId={contentElementId}
                         className={styles.description}

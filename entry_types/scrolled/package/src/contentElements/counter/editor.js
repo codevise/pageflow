@@ -121,6 +121,10 @@ editor.contentElementTypes.register('counter', {
             position: 'inline'
           })
       });
+      this.input('textAlign', SelectInputView, {
+        values: ['left', 'right', 'center', 'centerRagged'],
+        includeBlank: true
+      });
       this.group('ContentElementPosition', {entry});
     });
   }

@@ -332,6 +332,14 @@ de:
               values:
                 leading: Vor dem Betrag ($100)
                 trailing: Nach dem Betrag (100%)
+            textAlign:
+              label: Textausrichtung
+              blank: "(Automatisch)"
+              values:
+                left: Links
+                center: Mitte
+                centerRagged: Zentriert
+                right: Rechts
             thousandsSeparators:
               label: "Tausendertrennzeichen anzeigen"
               inline_help: "Zum Beispiel 1.000, wenn Deutsch als Sprache für den Beitrag eingestellt ist."
