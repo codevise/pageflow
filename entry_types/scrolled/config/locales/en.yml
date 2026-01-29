@@ -270,12 +270,17 @@ en:
           attributes:
             countingSpeed:
               inline_help: Determine the speed of the counting animation.
-              label: Counting animation
+              label: Counting speed
               values:
                 fast: Fast
                 medium: Medium
-                none: "(None)"
                 slow: Slow
+            countingAnimation:
+              label: Counting animation
+              values:
+                none: "(None)"
+                plain: Simple
+                wheel: Rolling digits
             decimalPlaces:
               inline_help: Determine how many decimal places shall be visible.
               label: Decimal places

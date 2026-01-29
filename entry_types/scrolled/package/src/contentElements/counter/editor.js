@@ -3,7 +3,7 @@ import {
   CheckBoxInputView, SelectInputView, SliderInputView, TextInputView, NumberInputView, SeparatorView
 } from 'pageflow/ui';
 
-import {createLegacyTextSizeDelegator} from './createLegacyTextSizeDelegator';
+import {createLegacyConfigurationDelegator} from './createLegacyConfigurationDelegator';
 import pictogram from './pictogram.svg';
 
 editor.contentElementTypes.register('counter', {
@@ -20,7 +20,7 @@ editor.contentElementTypes.register('counter', {
   configurationEditor({entry}) {
     const locale = entry.metadata.get('locale');
     this.tab('general', function() {
-      const modelDelegator = createLegacyTextSizeDelegator(this.model);
+      const modelDelegator = createLegacyConfigurationDelegator(this.model);
 
       this.input('targetValue', NumberInputView, {locale});
       this.input('decimalPlaces', SelectInputView, {
@@ -46,7 +46,7 @@ editor.contentElementTypes.register('counter', {
         model: modelDelegator,
         values: numberSizes,
         texts: numberTexts,
-        defaultValue: 'md',
+        defaultValue: 'xl',
         saveOnSlide: true
       });
       const [unitSizes, unitTexts] = entry.getTypographySizes({
@@ -94,19 +94,29 @@ editor.contentElementTypes.register('counter', {
                  'fadeInFromBelow', 'fadeInFromAbove',
                  'fadeInScaleUp', 'fadeInScaleDown'],
       });
+      this.input('countingAnimation', SelectInputView, {
+        model: modelDelegator,
+        values: ['none', 'plain', 'wheel'],
+      });
       this.input('countingSpeed', SelectInputView, {
-        values: ['none', 'slow', 'medium', 'fast'],
+        model: modelDelegator,
+        values: ['slow', 'medium', 'fast'],
+        visibleBinding: 'countingAnimation',
+        visible: countingAnimation => countingAnimation && countingAnimation !== 'none'
       });
       this.input('startValue', NumberInputView, {
+        model: modelDelegator,
         locale,
-        visibleBinding: 'countingSpeed',
-        visible: countingSpeed => countingSpeed !== 'none'
+        visibleBinding: 'countingAnimation',
+        visible: countingAnimation => countingAnimation && countingAnimation !== 'none'
       });
       this.input('startAnimationTrigger', SelectInputView, {
+        model: modelDelegator,
         values: ['onActivate', 'onVisible'],
-        visibleBinding: ['entranceAnimation', 'countingSpeed'],
-        visible: ([entranceAnimation, countingSpeed]) =>
-          (entranceAnimation || 'none') !== 'none' || countingSpeed !== 'none'
+        visibleBinding: ['entranceAnimation', 'countingAnimation'],
+        visible: ([entranceAnimation, countingAnimation]) =>
+          (entranceAnimation || 'none') !== 'none' ||
+          (countingAnimation && countingAnimation !== 'none')
       });
       this.view(SeparatorView);
       this.group('ContentElementTypographyVariant', {

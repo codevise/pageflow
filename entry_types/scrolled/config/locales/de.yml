@@ -277,12 +277,17 @@ de:
           attributes:
             countingSpeed:
               inline_help: Lege fest, wie schnell die Zählanimation ablaufen soll.
-              label: Zählanimation
+              label: Zählgeschwindigkeit
               values:
                 fast: Schnell
                 medium: Mittel
-                none: "(Keine)"
                 slow: Langsam
+            countingAnimation:
+              label: Zählanimation
+              values:
+                none: "(Keine)"
+                plain: Einfach
+                wheel: Zählwerk
             decimalPlaces:
               inline_help: Bestimme, wie wieviele Nachkommastellen gezeigt werden sollen.
               label: Nachkommastellen

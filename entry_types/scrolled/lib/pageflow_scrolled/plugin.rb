@@ -90,7 +90,7 @@ module PageflowScrolled
             'counterUnit-xs' => {font_size: '0.5em'},
             'counterDescription-lg' => {
               font_size: '28px', line_height: '1.1',
-              sm: {font_size: '40px', line_height: '1',}
+              sm: {font_size: '40px', line_height: '1'}
             },
             'counterDescription-md' => {font_size: '22px'},
             'counterDescription-sm' => {font_size: '18px'}

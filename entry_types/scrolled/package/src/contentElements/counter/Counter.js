@@ -14,6 +14,7 @@ import {
 
 import styles from './Counter.module.css';
 import {PlainNumber} from './PlainNumber';
+import {WheelNumber} from './WheelNumber';
 
 export function Counter({configuration, contentElementId, contentElementWidth, sectionProps}) {
   const updateConfiguration = useContentElementConfigurationUpdate();
@@ -21,9 +22,12 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
   const {t} = useI18n({locale: 'ui'});
 
   const targetValue = configuration.targetValue || 0;
-  const decimalPlaces = configuration.decimalPlaces || 0;
+  const decimalPlaces = Number(configuration.decimalPlaces) || 0;
   const startValue = configuration.startValue || 0;
-  const countingDuration = countingDurations[configuration.countingSpeed];
+  const countingAnimation = configuration.countingAnimation ||
+    (configuration.countingSpeed && configuration.countingSpeed !== 'none' ? 'plain' : 'none');
+  const countingDuration = countingAnimation === 'none' ?
+    0 : countingDurations[configuration.countingSpeed] || countingDurations.medium;
   const startAnimationTrigger = configuration.startAnimationTrigger || 'onActivate';
 
   const [currentValue, setCurrentValue] = useState(
@@ -79,7 +83,7 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
       clearTimeout(timeoutRef.current);
       clearInterval(intervalRef.current);
     };
-  }, [animate, resetAnimation, isEditable]);
+  }, [animate, resetAnimation, isEditable, countingAnimation]);
 
   useContentElementLifecycle({
     onActivate: startAnimationTrigger === 'onActivate' ? animate : undefined,
@@ -145,19 +149,29 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
           style={{'--counting-duration': `${countingDuration || 1000}ms`}}
         >
           <Text scaleCategory="counterNumber"
-                typographySize={configuration.numberSize || legacyTextSizes[configuration.textSize] || 'md'}
+                typographySize={configuration.numberSize || legacyTextSizes[configuration.textSize] || 'xl'}
                 inline>
             <span style={{color: paletteColor(configuration.numberColor)}}>
               {configuration.unitPlacement === 'leading' && renderUnit()}
-              <PlainNumber
-                value={currentValue}
-                targetValue={countingDuration > 0 ? targetValue : null}
-                formatOptions={{
-                  locale,
-                  decimalPlaces,
-                  useGrouping: !configuration.hideThousandsSeparators
-                }}
-              />
+              {countingAnimation === 'wheel' && startValue !== targetValue ?
+                <WheelNumber
+                  value={currentValue}
+                  startValue={countingDuration > 0 ? startValue : null}
+                  targetValue={countingDuration > 0 ? targetValue : null}
+                  decimalPlaces={decimalPlaces}
+                  locale={locale}
+                  useGrouping={!configuration.hideThousandsSeparators}
+                /> :
+                <PlainNumber
+                  value={currentValue}
+                  targetValue={countingDuration > 0 ? targetValue : null}
+                  formatOptions={{
+                    locale,
+                    decimalPlaces,
+                    useGrouping: !configuration.hideThousandsSeparators
+                  }}
+                />
+              }
               {configuration.unitPlacement !== 'leading' && renderUnit()}
             </span>
           </Text>

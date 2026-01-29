@@ -63,10 +63,10 @@ describe('Counter', () => {
     expect(getByText('10')).toHaveScaleCategory('counterNumber', 'lg');
   });
 
-  it('defaults to md size for number', () => {
+  it('defaults to xl size for number', () => {
     const {getByText} = renderCounter();
 
-    expect(getByText('10')).toHaveScaleCategory('counterNumber', 'md');
+    expect(getByText('10')).toHaveScaleCategory('counterNumber', 'xl');
   });
 
   it('defaults to md size for unit', () => {
@@ -316,6 +316,35 @@ describe('Counter', () => {
       const descriptionDiv = wrapper.lastChild;
 
       expect(descriptionDiv).toHaveClass(styles.textRight);
+    });
+  });
+
+  describe('countingAnimation', () => {
+    it('renders digit wheels when countingAnimation is wheel', () => {
+      const {container} = renderCounter({countingAnimation: 'wheel'});
+      const digitSpans = container.querySelectorAll('span');
+      const wheels = Array.from(digitSpans).filter(span =>
+        /^\d$/.test(span.textContent)
+      );
+
+      expect(wheels.length).toBeGreaterThan(0);
+    });
+
+    it('renders plain number when countingAnimation is wheel but startValue equals targetValue', () => {
+      const {queryAllByText} = renderCounter({
+        countingAnimation: 'wheel',
+        startValue: 10,
+        targetValue: 10
+      });
+
+      expect(queryAllByText('10').length).toBeGreaterThan(0);
+      expect(queryAllByText('1').length).toBe(0);
+    });
+
+    it('defaults to plain when countingSpeed is set but countingAnimation is not', () => {
+      const {getByText} = renderCounter({countingSpeed: 'medium'});
+
+      expect(getByText('10')).toBeInTheDocument();
     });
   });
 

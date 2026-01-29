@@ -5,7 +5,7 @@ const legacyTextSizes = {
   large: 'xxxl'
 };
 
-export function createLegacyTextSizeDelegator(model) {
+export function createLegacyConfigurationDelegator(model) {
   const delegator = Object.create(model);
 
   delegator.get = function(name) {
@@ -13,6 +13,11 @@ export function createLegacyTextSizeDelegator(model) {
 
     if (name === 'numberSize') {
       return result || legacyTextSizes[model.get('textSize')];
+    }
+
+    if (name === 'countingAnimation') {
+      const countingSpeed = model.get('countingSpeed');
+      return result || (countingSpeed && countingSpeed !== 'none' ? 'plain' : undefined);
     }
 
     return result;
