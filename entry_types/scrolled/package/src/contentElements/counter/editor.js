@@ -1,8 +1,9 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {
-  CheckBoxInputView, SelectInputView, TextInputView, NumberInputView, SeparatorView
+  CheckBoxInputView, SelectInputView, SliderInputView, TextInputView, NumberInputView, SeparatorView
 } from 'pageflow/ui';
 
+import {createLegacyConfigurationDelegator} from './createLegacyConfigurationDelegator';
 import pictogram from './pictogram.svg';
 
 editor.contentElementTypes.register('counter', {
@@ -13,13 +14,14 @@ editor.contentElementTypes.register('counter', {
 
   defaultConfig: {
     targetValue: 100,
-    countingSpeed: 'medium',
-    textSize: 'medium'
+    countingSpeed: 'medium'
   },
 
   configurationEditor({entry}) {
     const locale = entry.metadata.get('locale');
     this.tab('general', function() {
+      const modelDelegator = createLegacyConfigurationDelegator(this.model);
+
       this.input('targetValue', NumberInputView, {locale});
       this.input('decimalPlaces', SelectInputView, {
         values: [0, 1, 2, 3],
@@ -35,29 +37,88 @@ editor.contentElementTypes.register('counter', {
         values: ['trailing', 'leading'],
       });
       this.view(SeparatorView);
+      const [numberSizes, numberTexts] = entry.getTypographySizes({
+        scaleCategory: 'counterNumber',
+        texts: 'short',
+        order: 'asc'
+      });
+      this.input('numberSize', SliderInputView, {
+        model: modelDelegator,
+        values: numberSizes,
+        texts: numberTexts,
+        defaultValue: 'xl',
+        saveOnSlide: true
+      });
+      const [unitSizes, unitTexts] = entry.getTypographySizes({
+        scaleCategory: 'counterUnit',
+        texts: 'short',
+        order: 'asc'
+      });
+      this.input('unitSize', SliderInputView, {
+        values: unitSizes,
+        texts: unitTexts,
+        defaultValue: 'md',
+        saveOnSlide: true,
+        visibleBinding: 'unit',
+        visible: unit => !!unit
+      });
+      const [descriptionSizes, descriptionTexts] = entry.getTypographySizes({
+        scaleCategory: 'counterDescription',
+        texts: 'short',
+        order: 'asc'
+      });
+      this.input('descriptionSize', SliderInputView, {
+        values: descriptionSizes,
+        texts: descriptionTexts,
+        defaultValue: 'md',
+        saveOnSlide: true
+      });
+      this.view(SeparatorView);
+      this.group('PaletteColor', {
+        propertyName: 'numberColor',
+        entry
+      });
+      this.group('PaletteColor', {
+        propertyName: 'unitColor',
+        entry,
+        visibleBinding: 'unit',
+        visible: unit => !!unit
+      });
+      this.group('PaletteColor', {
+        propertyName: 'descriptionColor',
+        entry
+      });
+      this.view(SeparatorView);
       this.input('entranceAnimation', SelectInputView, {
         values: ['none', 'fadeIn',
                  'fadeInFromBelow', 'fadeInFromAbove',
                  'fadeInScaleUp', 'fadeInScaleDown'],
       });
+      this.input('countingAnimation', SelectInputView, {
+        model: modelDelegator,
+        values: ['none', 'plain', 'wheel'],
+      });
       this.input('countingSpeed', SelectInputView, {
-        values: ['none', 'slow', 'medium', 'fast'],
+        model: modelDelegator,
+        values: ['slow', 'medium', 'fast'],
+        visibleBinding: 'countingAnimation',
+        visible: countingAnimation => countingAnimation && countingAnimation !== 'none'
       });
       this.input('startValue', NumberInputView, {
+        model: modelDelegator,
         locale,
-        visibleBinding: 'countingSpeed',
-        visible: countingSpeed => countingSpeed !== 'none'
+        visibleBinding: 'countingAnimation',
+        visible: countingAnimation => countingAnimation && countingAnimation !== 'none'
       });
       this.input('startAnimationTrigger', SelectInputView, {
+        model: modelDelegator,
         values: ['onActivate', 'onVisible'],
-        visibleBinding: ['entranceAnimation', 'countingSpeed'],
-        visible: ([entranceAnimation, countingSpeed]) =>
-          (entranceAnimation || 'none') !== 'none' || countingSpeed !== 'none'
+        visibleBinding: ['entranceAnimation', 'countingAnimation'],
+        visible: ([entranceAnimation, countingAnimation]) =>
+          (entranceAnimation || 'none') !== 'none' ||
+          (countingAnimation && countingAnimation !== 'none')
       });
       this.view(SeparatorView);
-      this.input('textSize', SelectInputView, {
-        values: ['large', 'medium', 'small', 'verySmall']
-      });
       this.group('ContentElementTypographyVariant', {
         entry,
         getPreviewConfiguration: (configuration, typographyVariant) =>
@@ -66,13 +127,13 @@ editor.contentElementTypes.register('counter', {
             typographyVariant,
             entranceAnimation: 'none',
             countingSpeed: 'none',
-            textSize: 'small',
+            numberSize: 'sm',
             position: 'inline'
           })
       });
-      this.group('PaletteColor', {
-        propertyName: 'numberColor',
-        entry
+      this.input('textAlign', SelectInputView, {
+        values: ['left', 'right', 'center', 'centerRagged'],
+        includeBlank: true
       });
       this.group('ContentElementPosition', {entry});
     });

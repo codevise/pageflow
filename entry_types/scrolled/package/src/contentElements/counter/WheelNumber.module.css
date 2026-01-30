@@ -1,0 +1,33 @@
+.number {
+  display: inline-flex;
+}
+
+.wheel {
+  display: inline-grid;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+}
+
+.wheel > span {
+  grid-row: 1;
+  grid-column: 1;
+  transform: rotateX(calc((var(--digit) - var(--val, 0)) * -36deg));
+  transform-origin: 50% 50% 1.5em;
+  backface-visibility: hidden;
+  text-align: center;
+}
+
+.text {
+  transition: opacity 0.3s;
+}
+
+.hidden {
+  opacity: 0;
+  transition: none;
+}

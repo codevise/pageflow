@@ -277,12 +277,17 @@ de:
           attributes:
             countingSpeed:
               inline_help: Lege fest, wie schnell die Zählanimation ablaufen soll.
-              label: Zählanimation
+              label: Zählgeschwindigkeit
               values:
                 fast: Schnell
                 medium: Mittel
-                none: "(Keine)"
                 slow: Langsam
+            countingAnimation:
+              label: Zählanimation
+              values:
+                none: "(Keine)"
+                plain: Einfach
+                wheel: Zählwerk
             decimalPlaces:
               inline_help: Bestimme, wie wieviele Nachkommastellen gezeigt werden sollen.
               label: Nachkommastellen
@@ -297,7 +302,11 @@ de:
                 fadeInScaleUp: Einblenden und vergrößern
                 none: "(Keine)"
             numberColor:
-              label: Farbe
+              label: Farbe Zahl
+            unitColor:
+              label: Farbe Einheit
+            descriptionColor:
+              label: Farbe Beschreibung
             startValue:
               inline_help: Bei diesem Wert beginnt die Zählanimation.
               label: Startwert
@@ -310,14 +319,15 @@ de:
             targetValue:
               inline_help: Zahlenwert, der angezeigt werden soll. Die Zählanimation endet bei diesem Wert.
               label: Zielwert
-            textSize:
-              inline_help: Bestimme die Textgröße der Zahl.
-              label: Schriftgröße
-              values:
-                large: Groß
-                medium: Mittel
-                small: Klein
-                verySmall: Sehr klein
+            numberSize:
+              inline_help: Bestimme die Schriftgröße der Zahl.
+              label: Schriftgröße Zahl
+            unitSize:
+              inline_help: Relative Größe der Einheit basierend auf der Schriftgröße der Zahl.
+              label: Schriftgröße Einheit
+            descriptionSize:
+              inline_help: Bestimme die Schriftgröße der Beschreibung.
+              label: Schriftgröße Beschreibung
             unit:
               inline_help: Text der vor oder hinter der Zahl gezeigt werden soll.
               label: Einheit
@@ -327,6 +337,14 @@ de:
               values:
                 leading: Vor dem Betrag ($100)
                 trailing: Nach dem Betrag (100%)
+            textAlign:
+              label: Textausrichtung
+              blank: "(Automatisch)"
+              values:
+                left: Links
+                center: Mitte
+                centerRagged: Zentriert
+                right: Rechts
             thousandsSeparators:
               label: "Tausendertrennzeichen anzeigen"
               inline_help: "Zum Beispiel 1.000, wenn Deutsch als Sprache für den Beitrag eingestellt ist."
@@ -1510,11 +1528,25 @@ de:
               Standardmäßig Elemente auf kleineren Bildschirmen
               die gesamte Breite des Viewports nutzen lassen.
       typography_sizes:
+        xxxl: Riesig
+        xxl: Extra groß
         xl: Sehr groß
         lg: Groß
         md: Mittel
         sm: Klein
         xs: Sehr klein
+        xxs: Extra klein
+        xxxs: Winzig
+        short:
+          xxxl: XXXL
+          xxl: XXL
+          xl: XL
+          lg: L
+          md: M
+          sm: S
+          xs: XS
+          xxs: XXS
+          xxxs: XXXS
       link_button_variant_attributes:
         linkButtonVariant:
           label: Button-Variante

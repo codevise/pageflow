@@ -22,7 +22,7 @@ import {sortColors} from './sortColors';
 import {Scale} from '../../../shared/Scale';
 import {getChapterSlugs} from '../../../shared/chapterSlug';
 
-const typographySizeSuffixes = ['xl', 'lg', 'md', 'sm', 'xs'];
+const typographySizeSuffixes = ['xxxl', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs', 'xxxs'];
 
 const scaleDefaultPropertyNames = {
   sectionPaddingTop: 'sectionDefaultPaddingTop',
@@ -178,24 +178,28 @@ export const ScrolledEntry = Entry.extend({
     return [values, texts];
   },
 
-  getTypographySizes({contentElement, prefix}) {
+  getTypographySizes({contentElement, scaleCategory, prefix, texts: textsOption, order = 'desc'}) {
     const typographyRules = this.scrolledSeed.config.theme.options.typography || {};
 
     const rulePrefix = [
-      contentElement.get('typeName'),
+      scaleCategory || contentElement.get('typeName'),
       prefix
     ].filter(Boolean).join('-')
 
-    const values = typographySizeSuffixes
+    const suffixes = order === 'asc' ? [...typographySizeSuffixes].reverse() : typographySizeSuffixes;
+
+    const values = suffixes
       .filter(sizeSuffix =>
         typographyRules[`${rulePrefix}-${sizeSuffix}`] || sizeSuffix === 'md'
       )
 
+    const translationKey = textsOption === 'short' ? 'typography_sizes.short' : 'typography_sizes';
+
     const texts = values.map(name =>
       I18n.t(
         `pageflow_scrolled.editor.themes.${this.metadata.get('theme_name')}` +
-        `.typography_sizes.${name}`,
-        {defaultValue: I18n.t(`pageflow_scrolled.editor.typography_sizes.${name}`)}
+        `.${translationKey}.${name}`,
+        {defaultValue: I18n.t(`pageflow_scrolled.editor.${translationKey}.${name}`)}
       )
     );
 

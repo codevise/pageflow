@@ -13,6 +13,8 @@ import {
 } from 'pageflow-scrolled/frontend';
 
 import styles from './Counter.module.css';
+import {PlainNumber} from './PlainNumber';
+import {WheelNumber} from './WheelNumber';
 
 export function Counter({configuration, contentElementId, contentElementWidth, sectionProps}) {
   const updateConfiguration = useContentElementConfigurationUpdate();
@@ -20,9 +22,12 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
   const {t} = useI18n({locale: 'ui'});
 
   const targetValue = configuration.targetValue || 0;
-  const decimalPlaces = configuration.decimalPlaces || 0;
+  const decimalPlaces = Number(configuration.decimalPlaces) || 0;
   const startValue = configuration.startValue || 0;
-  const countingDuration = countingDurations[configuration.countingSpeed];
+  const countingAnimation = configuration.countingAnimation ||
+    (configuration.countingSpeed && configuration.countingSpeed !== 'none' ? 'plain' : 'none');
+  const countingDuration = countingAnimation === 'none' ?
+    0 : countingDurations[configuration.countingSpeed] || countingDurations.medium;
   const startAnimationTrigger = configuration.startAnimationTrigger || 'onActivate';
 
   const [currentValue, setCurrentValue] = useState(
@@ -78,7 +83,7 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
       clearTimeout(timeoutRef.current);
       clearInterval(intervalRef.current);
     };
-  }, [animate, resetAnimation, isEditable]);
+  }, [animate, resetAnimation, isEditable, countingAnimation]);
 
   useContentElementLifecycle({
     onActivate: startAnimationTrigger === 'onActivate' ? animate : undefined,
@@ -91,67 +96,101 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
     }
   });
 
-  function format(value) {
-    const localeString = value.toLocaleString(locale, {
-      useGrouping: !configuration.hideThousandsSeparators,
-      minimumFractionDigits: decimalPlaces,
-      maximumFractionDigits: decimalPlaces
-    });
+  function renderUnit() {
+    if (!configuration.unit) {
+      return null;
+    }
 
-    const unit = configuration.unit || '';
-
-    return configuration.unitPlacement === 'leading' ?
-           `${unit}${localeString}` :
-           `${localeString}${unit}`;
+    return (
+      <Text scaleCategory="counterUnit"
+            typographySize={configuration.unitSize || 'md'}
+            inline>
+        <span className={styles.unit}
+              style={configuration.unitColor ? {color: paletteColor(configuration.unitColor)} : undefined}>
+          {configuration.unit}
+        </span>
+      </Text>
+    );
   }
 
+  const textAlign = configuration.textAlign ||
+    (sectionProps.layout === 'centerRagged' ? 'centerRagged' : 'auto');
+
+  const wrapperAlignment = {
+    auto: contentElementWidth > contentElementWidths.md ? 'center' : null,
+    center: 'center',
+    centerRagged: 'center',
+    left: 'left',
+    right: 'right'
+  }[textAlign];
+
+  const numberAlignment = {
+    center: 'numberCenter',
+    centerRagged: 'numberCenter',
+    right: 'numberRight'
+  }[textAlign];
+
+  const descriptionAlignment = {
+    centerRagged: 'textCenter',
+    right: 'textRight'
+  }[textAlign];
+
   return (
-    <div className={classNames(
-      {[styles.center]: contentElementWidth > contentElementWidths.md}
-    )}>
-      <div className={classNames(
-        styles.wrapper,
-        {[styles.centerRagged]: sectionProps.layout === 'centerRagged'}
-      )}>
-        <Text scaleCategory={numberScaleCategories[configuration.textSize || 'medium']}>
-          <div
-            className={classNames(
-              `typography-counter-${configuration.typographyVariant}`,
-              styles.number,
-              styles[`animation-${configuration.entranceAnimation}`],
-              {[styles[`animation-${configuration.entranceAnimation}-active`]]: animated
-            })}
-            style={{'--counting-duration': `${countingDuration || 1000}ms`,
-                    '--palette-color': paletteColor(configuration.numberColor)}}
-          >
-            {format(currentValue)}
-          </div>
-        </Text>
-        <EditableText value={configuration.description}
-                      contentElementId={contentElementId}
-                      className={styles.description}
-                      onChange={description => updateConfiguration({description})}
-                      onlyParagraphs={true}
-                      scaleCategory={descriptionScaleCategories[configuration.textSize || 'medium']}
-                      placeholder={t('pageflow_scrolled.inline_editing.type_description')} />
+    <div className={styles[wrapperAlignment]}>
+      <div className={styles.wrapper}>
+        <div
+          className={classNames(
+            `typography-counter-${configuration.typographyVariant}`,
+            styles.number,
+            styles[numberAlignment],
+            styles[`animation-${configuration.entranceAnimation}`],
+            {[styles[`animation-${configuration.entranceAnimation}-active`]]: animated
+          })}
+          style={{'--counting-duration': `${countingDuration || 1000}ms`}}
+        >
+          <Text scaleCategory="counterNumber"
+                typographySize={configuration.numberSize || legacyTextSizes[configuration.textSize] || 'xl'}
+                inline>
+            <span style={{color: paletteColor(configuration.numberColor)}}>
+              {configuration.unitPlacement === 'leading' && renderUnit()}
+              {countingAnimation === 'wheel' && startValue !== targetValue ?
+                <WheelNumber
+                  value={currentValue}
+                  startValue={countingDuration > 0 ? startValue : null}
+                  targetValue={countingDuration > 0 ? targetValue : null}
+                  decimalPlaces={decimalPlaces}
+                  locale={locale}
+                  useGrouping={!configuration.hideThousandsSeparators}
+                /> :
+                <PlainNumber
+                  value={currentValue}
+                  targetValue={countingDuration > 0 ? targetValue : null}
+                  formatOptions={{
+                    locale,
+                    decimalPlaces,
+                    useGrouping: !configuration.hideThousandsSeparators
+                  }}
+                />
+              }
+              {configuration.unitPlacement !== 'leading' && renderUnit()}
+            </span>
+          </Text>
+        </div>
+        <div className={styles[descriptionAlignment]}
+             style={{color: paletteColor(configuration.descriptionColor)}}>
+          <EditableText value={configuration.description}
+                        contentElementId={contentElementId}
+                        className={styles.description}
+                        onChange={description => updateConfiguration({description})}
+                        onlyParagraphs={true}
+                        scaleCategory="counterDescription"
+                        typographySize={configuration.descriptionSize || 'md'}
+                        placeholder={t('pageflow_scrolled.inline_editing.type_description')} />
+        </div>
       </div>
     </div>
   );
 }
-
-const numberScaleCategories = {
-  verySmall: 'counterNumber-xs',
-  small: 'counterNumber-sm',
-  medium: 'counterNumber-md',
-  large: 'counterNumber-lg'
-};
-
-const descriptionScaleCategories = {
-  verySmall: 'counterDescription-xs',
-  small: 'counterDescription-sm',
-  medium: 'counterDescription-md',
-  large: 'counterDescription-lg'
-};
 
 const countingDurations = {
   none: 0,
@@ -159,6 +198,13 @@ const countingDurations = {
   medium: 2000,
   slow: 5000
 }
+
+const legacyTextSizes = {
+  verySmall: 'xs',
+  small: 'md',
+  medium: 'xl',
+  large: 'xxxl'
+};
 
 function easeInOut(t) {
   t = t * 2;

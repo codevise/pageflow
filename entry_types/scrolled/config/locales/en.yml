@@ -270,12 +270,17 @@ en:
           attributes:
             countingSpeed:
               inline_help: Determine the speed of the counting animation.
-              label: Counting animation
+              label: Counting speed
               values:
                 fast: Fast
                 medium: Medium
-                none: "(None)"
                 slow: Slow
+            countingAnimation:
+              label: Counting animation
+              values:
+                none: "(None)"
+                plain: Simple
+                wheel: Rolling digits
             decimalPlaces:
               inline_help: Determine how many decimal places shall be visible.
               label: Decimal places
@@ -290,7 +295,11 @@ en:
                 fadeInScaleUp: Fade in and scale up
                 none: "(None)"
             numberColor:
-              label: Color
+              label: Number color
+            unitColor:
+              label: Unit color
+            descriptionColor:
+              label: Description color
             startValue:
               inline_help: The counting animation starts with this value
               label: Start value
@@ -303,14 +312,15 @@ en:
             targetValue:
               inline_help: Value to display. Final value for counting animation.
               label: Target value
-            textSize:
+            numberSize:
               inline_help: Determine the font size of the number.
-              label: Text size
-              values:
-                large: Large
-                medium: Medium
-                small: Small
-                verySmall: Very small
+              label: Number size
+            unitSize:
+              inline_help: Relative size of the unit based on the number size.
+              label: Unit size
+            descriptionSize:
+              inline_help: Determine the font size of the description.
+              label: Description size
             unit:
               inline_help: Display a text before or after the number.
               label: Unit
@@ -320,6 +330,14 @@ en:
               values:
                 leading: Leading ($100)
                 trailing: Trailing (100%)
+            textAlign:
+              label: Text alignment
+              blank: "(Auto)"
+              values:
+                left: Left
+                center: Center
+                centerRagged: Center (ragged)
+                right: Right
             thousandsSeparators:
               label: "Display thousands separators"
               inline_help: "For example, 1,000 in stories with English language setting."
@@ -1493,11 +1511,25 @@ en:
               By default, make elements span the full width of the
               viewport on smaller screens.
       typography_sizes:
+        xxxl: Huge
+        xxl: Extra large
         xl: Very large
         lg: Large
         md: Medium
         sm: Small
         xs: Very small
+        xxs: Extra small
+        xxxs: Tiny
+        short:
+          xxxl: XXXL
+          xxl: XXL
+          xl: XL
+          lg: L
+          md: M
+          sm: S
+          xs: XS
+          xxs: XXS
+          xxxs: XXXS
       link_button_variant_attributes:
         linkButtonVariant:
           label: Button Variante
