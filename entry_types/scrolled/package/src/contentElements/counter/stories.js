@@ -21,22 +21,16 @@ storiesOfContentElement(module, {
   },
   variants: [
     {
-      name: 'Large',
+      name: 'Legacy Text Size Large',
       configuration: {
         textSize: 'large',
         targetValue: 7
       }
     },
     {
-      name: 'Medium',
+      name: 'Legacy Text Size Medium',
       configuration: {
         textSize: 'medium'
-      }
-    },
-    {
-      name: 'Small',
-      configuration: {
-        textSize: 'small'
       }
     },
     {
@@ -86,19 +80,40 @@ storiesOfContentElement(module, {
       }
     },
     {
-      name: 'Custom typography',
+      name: 'Wheel Animation',
       configuration: {
-        textSize: 'small'
-      },
+        countingAnimation: 'wheel'
+      }
+    },
+    {
+      name: 'Custom Sizes',
+      configuration: {
+        numberSize: 'xl',
+        unitSize: 'sm',
+        descriptionSize: 'lg'
+      }
+    },
+    {
+      name: 'Separate Colors',
       themeOptions: {
-        typography: {
-          counterNumberSm: {
-            fontSize: '40px'
-          },
-          counterDescriptionSm: {
-            fontSize: '18px'
+        properties: {
+          root: {
+            paletteColorAccent: '#04f',
+            paletteColorPrimary: '#f40',
+            paletteColorSecondary: '#0a0'
           }
         }
+      },
+      configuration: {
+        numberColor: 'accent',
+        unitColor: 'primary',
+        descriptionColor: 'secondary'
+      }
+    },
+    {
+      name: 'Right Aligned',
+      configuration: {
+        textAlign: 'right'
       }
     }
   ]
