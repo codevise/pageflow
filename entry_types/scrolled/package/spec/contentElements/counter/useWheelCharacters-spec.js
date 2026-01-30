@@ -65,10 +65,21 @@ describe('createWheelCharacterFunctions', () => {
     ]);
   });
 
-  it('hides minus sign when transitioning to negative', () => {
+  it('hides minus sign when transitioning to negative integer', () => {
     const result = getRotationValues({value: -0.4, startValue: 0, targetValue: -1});
 
     expect(result[0]).toEqual({text: '-', hide: true});
+  });
+
+  it('shows minus sign for small negative values with decimal places', () => {
+    const result = getRotationValues({
+      value: -0.1,
+      startValue: 0,
+      targetValue: -0.5,
+      decimalPlaces: 1
+    });
+
+    expect(result[0]).toEqual({text: '-', hide: false});
   });
 
   it('includes hidden minus sign at start when counting to negative', () => {
@@ -127,7 +138,7 @@ describe('createWheelCharacterFunctions', () => {
     });
 
     expect(result).toEqual([
-      {value: 1, hideZero: false},
+      {value: 1, hideZero: true},
       {text: ',', hide: false},
       {value: 2, hideZero: false},
       {value: 3, hideZero: false},
@@ -160,5 +171,95 @@ describe('createWheelCharacterFunctions', () => {
     expect(values[1]).toBe(5);   // hundreds: 0 → 0 (full rotation), at halfway = 5
     expect(values[2]).toBe(0.5); // tens: 1 → 0 (99 rotations), at halfway = 0.5
     expect(values[3]).toBe(5);   // ones: 0 → 0 (99 rotations), at halfway = 5
+  });
+
+  it('animates digits when counting down from 10 to 9', () => {
+    const result = getRotationValues({value: 9.5, startValue: 10, targetValue: 9});
+
+    expect(result.map(r => r.value)).toEqual([0.5, 9.5]);
+  });
+
+  it('keeps hideZero true while digit value is below 1 when counting up past threshold', () => {
+    const result = getRotationValues({value: 10, startValue: 9, targetValue: 15});
+
+    expect(result[0].hideZero).toBe(true);
+    expect(result[0].value).toBeCloseTo(1 / 6);
+  });
+
+  it('does not hide middle zero at end when digit completes full rotation', () => {
+    const result = getRotationValues({value: 100, startValue: 0, targetValue: 100});
+
+    expect(result[1].hideZero).toBe(false);
+    expect(result[1].value).toBe(0);
+  });
+
+  it('does not hide middle zero at end when start was not a leading zero', () => {
+    const result = getRotationValues({value: 100, startValue: 10, targetValue: 100});
+
+    expect(result[1].hideZero).toBe(false);
+    expect(result[1].value).toBe(0);
+  });
+
+  it('shows correct final digit when crossing zero from negative to positive', () => {
+    const result = getRotationValues({value: 9, startValue: -10, targetValue: 9});
+
+    // tens digit should be 0, not 0.9
+    expect(result[1].value).toBe(0);
+    expect(result[2].value).toBe(9);
+  });
+
+  it('shows correct final digit when crossing zero from positive to negative', () => {
+    const result = getRotationValues({value: -9, startValue: 10, targetValue: -9});
+
+    expect(result[1].value).toBe(0);
+    expect(result[2].value).toBe(9);
+  });
+
+  it('works with decimal places when counting from 0 to 0.5', () => {
+    const result = getRotationValues({
+      value: 0.5,
+      startValue: 0,
+      targetValue: 0.5,
+      decimalPlaces: 1,
+      locale: 'en'
+    });
+
+    expect(result).toEqual([
+      {value: 0, hideZero: false},
+      {text: '.'},
+      {value: 5, hideZero: false}
+    ]);
+  });
+
+  it('handles floating point precision when counting to 0.7', () => {
+    const result = getRotationValues({
+      value: 0.7,
+      startValue: 0,
+      targetValue: 0.7,
+      decimalPlaces: 1,
+      locale: 'en'
+    });
+
+    expect(result).toEqual([
+      {value: 0, hideZero: false},
+      {text: '.'},
+      {value: 7, hideZero: false}
+    ]);
+  });
+
+  it('does not hide leading digit at start when counting down from 1900 to 0', () => {
+    const result = getRotationValues({value: 1900, startValue: 1900, targetValue: 0});
+
+    // thousands digit should not have hideZero at value 1900
+    expect(result[0].hideZero).toBe(false);
+    expect(result[0].value).toBe(1);
+  });
+
+  it('hides thousands digit at value 1000 when counting down from 1900', () => {
+    const result = getRotationValues({value: 1000, startValue: 1900, targetValue: 0});
+
+    // at 1000, the "0" coming in on the thousands wheel should be hidden
+    // since it will become a leading zero
+    expect(result[0].hideZero).toBe(true);
   });
 });
