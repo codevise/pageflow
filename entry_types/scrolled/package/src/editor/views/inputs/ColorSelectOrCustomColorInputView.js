@@ -39,9 +39,39 @@ export const ColorSelectOrCustomColorInputView = Marionette.View.extend({
     });
   },
 
+  getBindingOptions() {
+    return {
+      ...this.getBindingOptionsFor('visible'),
+      ...this.getBindingOptionsFor('disabled')
+    };
+  },
+
+  getBindingOptionsFor(optionName) {
+    const result = {};
+    const bindingKey = `${optionName}Binding`;
+    const bindingValueKey = `${optionName}BindingValue`;
+    const bindingModelKey = `${optionName}BindingModel`;
+
+    if (optionName in this.options) {
+      result[optionName] = this.options[optionName];
+    }
+
+    if (this.options[bindingKey]) {
+      result[bindingKey] = this.options[bindingKey];
+      result[bindingModelKey] = this.options[bindingModelKey] || this.model;
+
+      if (bindingValueKey in this.options) {
+        result[bindingValueKey] = this.options[bindingValueKey];
+      }
+    }
+
+    return result;
+  },
+
   render() {
     this.colorSelectInputView = new ColorSelectInputView({
       ...this.options,
+      ...this.getBindingOptions(),
       label: this.labelText(),
       model: this.viewModel,
       propertyName: 'value',
@@ -66,6 +96,7 @@ export const ColorSelectOrCustomColorInputView = Marionette.View.extend({
 
     if (customColor && !this.colorInputView) {
       this.colorInputView = new ColorInputView({
+        ...this.getBindingOptions(),
         model: this.viewModel,
         propertyName: 'color'
       });

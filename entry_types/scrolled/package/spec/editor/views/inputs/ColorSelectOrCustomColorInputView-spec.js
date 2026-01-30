@@ -7,6 +7,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {renderReactBasedBackboneView as render} from 'pageflow-scrolled/testHelpers';
+import 'support/toBeVisibleViaBinding';
 
 describe('ColorSelectOrCustomColorInputView', () => {
   useFakeTranslations({
@@ -156,5 +157,409 @@ describe('ColorSelectOrCustomColorInputView', () => {
     await userEvent.click(getByRole('button'));
 
     expect(getByRole('option', {name: 'Auto'})).not.toBeNull();
+  });
+
+  describe('visibleBinding', () => {
+    it('hides select input based on visibleBinding', () => {
+      const model = new Backbone.Model({
+        color: 'brand-red',
+        hidden: true
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        visibleBinding: 'hidden',
+        visibleBindingValue: false
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Red'})).not.toBeVisibleViaBinding();
+    });
+
+    it('shows select input when visibleBinding condition is met', () => {
+      const model = new Backbone.Model({
+        color: 'brand-red',
+        hidden: false
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        visibleBinding: 'hidden',
+        visibleBindingValue: false
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Red'})).toBeVisibleViaBinding();
+    });
+
+    it('hides custom color input based on visibleBinding', () => {
+      const model = new Backbone.Model({
+        color: '#ff0000',
+        hidden: true
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        visibleBinding: 'hidden',
+        visibleBindingValue: false
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('textbox')).not.toBeVisibleViaBinding();
+    });
+
+    it('shows custom color input when visibleBinding condition is met', () => {
+      const model = new Backbone.Model({
+        color: '#ff0000',
+        hidden: false
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        visibleBinding: 'hidden',
+        visibleBindingValue: false
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('textbox')).toBeVisibleViaBinding();
+    });
+
+    it('uses custom visibleBindingModel for select input', () => {
+      const model = new Backbone.Model({
+        color: 'brand-red'
+      });
+      const bindingModel = new Backbone.Model({
+        hidden: true
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        visibleBinding: 'hidden',
+        visibleBindingValue: false,
+        visibleBindingModel: bindingModel
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Red'})).not.toBeVisibleViaBinding();
+    });
+
+    it('uses custom visibleBindingModel for custom color input', () => {
+      const model = new Backbone.Model({
+        color: '#ff0000'
+      });
+      const bindingModel = new Backbone.Model({
+        hidden: true
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        visibleBinding: 'hidden',
+        visibleBindingValue: false,
+        visibleBindingModel: bindingModel
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('textbox')).not.toBeVisibleViaBinding();
+    });
+
+    it('supports visible function without visibleBinding', () => {
+      const model = new Backbone.Model({
+        color: 'brand-red'
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        visible: () => false
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Red'})).not.toBeVisibleViaBinding();
+    });
+
+    it('supports visible function for custom color input', () => {
+      const model = new Backbone.Model({
+        color: '#ff0000'
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        visible: () => false
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('textbox')).not.toBeVisibleViaBinding();
+    });
+
+    it('supports visibleBinding with visible function instead of visibleBindingValue', () => {
+      const model = new Backbone.Model({
+        color: 'brand-red',
+        state: 'locked'
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        visibleBinding: 'state',
+        visible: state => state !== 'locked'
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Red'})).not.toBeVisibleViaBinding();
+    });
+  });
+
+  describe('disabledBinding', () => {
+    it('disables select input based on disabledBinding', () => {
+      const model = new Backbone.Model({
+        color: 'brand-red',
+        locked: true
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        disabledBinding: 'locked',
+        disabledBindingValue: true
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Red'}).closest('.input')).toHaveClass('input-disabled');
+    });
+
+    it('enables select input when disabledBinding condition is not met', () => {
+      const model = new Backbone.Model({
+        color: 'brand-red',
+        locked: false
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        disabledBinding: 'locked',
+        disabledBindingValue: true
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Red'}).closest('.input')).not.toHaveClass('input-disabled');
+    });
+
+    it('disables custom color input based on disabledBinding', () => {
+      const model = new Backbone.Model({
+        color: '#ff0000',
+        locked: true
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        disabledBinding: 'locked',
+        disabledBindingValue: true
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('textbox').closest('.input')).toHaveClass('input-disabled');
+    });
+
+    it('enables custom color input when disabledBinding condition is not met', () => {
+      const model = new Backbone.Model({
+        color: '#ff0000',
+        locked: false
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        disabledBinding: 'locked',
+        disabledBindingValue: true
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('textbox').closest('.input')).not.toHaveClass('input-disabled');
+    });
+
+    it('uses custom disabledBindingModel for select input', () => {
+      const model = new Backbone.Model({
+        color: 'brand-red'
+      });
+      const bindingModel = new Backbone.Model({
+        locked: true
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        disabledBinding: 'locked',
+        disabledBindingValue: true,
+        disabledBindingModel: bindingModel
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Red'}).closest('.input')).toHaveClass('input-disabled');
+    });
+
+    it('uses custom disabledBindingModel for custom color input', () => {
+      const model = new Backbone.Model({
+        color: '#ff0000'
+      });
+      const bindingModel = new Backbone.Model({
+        locked: true
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        disabledBinding: 'locked',
+        disabledBindingValue: true,
+        disabledBindingModel: bindingModel
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('textbox').closest('.input')).toHaveClass('input-disabled');
+    });
+
+    it('supports disabled function without disabledBinding', () => {
+      const model = new Backbone.Model({
+        color: 'brand-red'
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        disabled: () => true
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Red'}).closest('.input')).toHaveClass('input-disabled');
+    });
+
+    it('supports disabled function for custom color input', () => {
+      const model = new Backbone.Model({
+        color: '#ff0000'
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        disabled: () => true
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('textbox').closest('.input')).toHaveClass('input-disabled');
+    });
+
+    it('supports disabledBinding with disabled function instead of disabledBindingValue', () => {
+      const model = new Backbone.Model({
+        color: 'brand-red',
+        state: 'locked'
+      });
+
+      const inputView = new ColorSelectOrCustomColorInputView({
+        model,
+        label: 'Background Color',
+        customColorTranslationKey: 'pageflow_scrolled.editor.custom_color',
+        values: ['brand-red', 'brand-green'],
+        texts: ['Red', 'Green'],
+        propertyName: 'color',
+        disabledBinding: 'state',
+        disabled: state => state === 'locked'
+      });
+
+      const {getByRole} = render(inputView);
+
+      expect(getByRole('button', {name: 'Red'}).closest('.input')).toHaveClass('input-disabled');
+    });
   });
 });
