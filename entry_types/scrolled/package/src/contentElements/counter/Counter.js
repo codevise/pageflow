@@ -105,8 +105,7 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
       <Text scaleCategory="counterUnit"
             typographySize={configuration.unitSize || 'md'}
             inline>
-        <span className={styles.unit}
-              style={configuration.unitColor ? {color: paletteColor(configuration.unitColor)} : undefined}>
+        <span style={configuration.unitColor ? {color: paletteColor(configuration.unitColor)} : undefined}>
           {configuration.unit}
         </span>
       </Text>

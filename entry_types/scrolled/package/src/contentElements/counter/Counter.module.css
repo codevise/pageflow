@@ -7,10 +7,6 @@
   word-break: break-word;
 }
 
-.unit {
-  white-space: nowrap;
-}
-
 .numberCenter {
   text-align: center;
 }
