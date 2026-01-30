@@ -65,10 +65,21 @@ describe('createWheelCharacterFunctions', () => {
     ]);
   });
 
-  it('hides minus sign when transitioning to negative', () => {
+  it('hides minus sign when transitioning to negative integer', () => {
     const result = getRotationValues({value: -0.4, startValue: 0, targetValue: -1});
 
     expect(result[0]).toEqual({text: '-', hide: true});
+  });
+
+  it('shows minus sign for small negative values with decimal places', () => {
+    const result = getRotationValues({
+      value: -0.1,
+      startValue: 0,
+      targetValue: -0.5,
+      decimalPlaces: 1
+    });
+
+    expect(result[0]).toEqual({text: '-', hide: false});
   });
 
   it('includes hidden minus sign at start when counting to negative', () => {

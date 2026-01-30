@@ -45,7 +45,8 @@ export function createWheelCharacterFunctions({startValue, targetValue, decimalP
   });
 
   if (hasNegative) {
-    charFunctions.unshift((value) => ({text: '-', hide: value > -1}));
+    const minusThreshold = -Math.pow(10, -decimalPlaces);
+    charFunctions.unshift((value) => ({text: '-', hide: value > minusThreshold}));
   }
 
   const range = targetValue - startValue;
