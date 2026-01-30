@@ -231,6 +231,22 @@ describe('createWheelCharacterFunctions', () => {
     ]);
   });
 
+  it('handles floating point precision when counting to 0.7', () => {
+    const result = getRotationValues({
+      value: 0.7,
+      startValue: 0,
+      targetValue: 0.7,
+      decimalPlaces: 1,
+      locale: 'en'
+    });
+
+    expect(result).toEqual([
+      {value: 0, hideZero: false},
+      {text: '.'},
+      {value: 7, hideZero: false}
+    ]);
+  });
+
   it('does not hide leading digit at start when counting down from 1900 to 0', () => {
     const result = getRotationValues({value: 1900, startValue: 1900, targetValue: 0});
 

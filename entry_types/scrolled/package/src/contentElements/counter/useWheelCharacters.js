@@ -1,6 +1,17 @@
 import {useMemo} from 'react';
 
-export function createWheelCharacterFunctions({startValue, targetValue, decimalPlaces = 0, locale = 'en', useGrouping = false}) {
+export function useWheelCharacters({
+  startValue, targetValue, decimalPlaces = 0, locale = 'en', useGrouping = false
+}) {
+  return useMemo(
+    () => createWheelCharacterFunctions({startValue, targetValue, decimalPlaces, locale, useGrouping}),
+    [startValue, targetValue, decimalPlaces, locale, useGrouping]
+  );
+}
+
+export function createWheelCharacterFunctions({
+  startValue, targetValue, decimalPlaces = 0, locale = 'en', useGrouping = false
+}) {
   const hasNegative = startValue < 0 || targetValue < 0;
   const crossesZero = (startValue > 0 && targetValue < 0) || (startValue < 0 && targetValue > 0);
   const absStartValue = Math.abs(startValue);
@@ -58,8 +69,8 @@ export function createWheelCharacterFunctions({startValue, targetValue, decimalP
 }
 
 function createDigitCharFunction(position, divisor, segmentStart, segmentEnd) {
-  const startDigit = Math.floor(segmentStart / divisor) % 10;
-  const endDigit = Math.floor(segmentEnd / divisor) % 10;
+  const startDigit = getDigitAtPosition(segmentStart, divisor);
+  const endDigit = getDigitAtPosition(segmentEnd, divisor);
   const fullRotations = Math.floor(segmentEnd / (divisor * 10)) -
                         Math.floor(segmentStart / (divisor * 10));
   const distance = endDigit - startDigit + fullRotations * 10;
@@ -70,9 +81,12 @@ function createDigitCharFunction(position, divisor, segmentStart, segmentEnd) {
   });
 }
 
-export function useWheelCharacters({startValue, targetValue, decimalPlaces = 0, locale = 'en', useGrouping = false}) {
-  return useMemo(
-    () => createWheelCharacterFunctions({startValue, targetValue, decimalPlaces, locale, useGrouping}),
-    [startValue, targetValue, decimalPlaces, locale, useGrouping]
-  );
+function getDigitAtPosition(value, divisor) {
+  // Multiply by integer instead of dividing by fraction to avoid floating point errors
+  // (e.g., 0.7 / 0.1 = 6.999... but 0.7 * 10 = 7)
+  if (divisor < 1) {
+    const multiplier = Math.round(1 / divisor);
+    return Math.floor(value * multiplier) % 10;
+  }
+  return Math.floor(value / divisor) % 10;
 }
