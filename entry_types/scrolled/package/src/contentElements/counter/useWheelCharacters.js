@@ -9,8 +9,6 @@ export function createWheelCharacterFunctions({startValue, targetValue, decimalP
     String(Math.round(absTargetValue)).length,
     String(Math.round(absStartValue)).length
   );
-  const delta = absTargetValue - absStartValue;
-  const range = targetValue - startValue;
 
   const formatted = absTargetValue.toLocaleString(locale, {
     minimumIntegerDigits: integerDigitCount,
@@ -19,50 +17,56 @@ export function createWheelCharacterFunctions({startValue, targetValue, decimalP
     useGrouping
   });
 
-  const charFunctions = [];
   let digitIndex = 0;
 
-  for (const char of formatted) {
+  const charFunctions = [...formatted].map((char) => {
     if (/\d/.test(char)) {
-      const position = integerDigitCount - 1 - digitIndex;
+      const position = integerDigitCount - digitIndex++ - 1;
       const divisor = Math.pow(10, position);
 
       if (crossesZero) {
-        charFunctions.push((absValue) => ({
-          value: (absValue / divisor) % 10,
-          hideZero: position > 0 && absValue < divisor
-        }));
-      } else {
-        const startDigit = Math.floor(absStartValue / divisor) % 10;
-        const endDigit = Math.floor(absTargetValue / divisor) % 10;
-        const fullRotations = Math.floor(absTargetValue / (divisor * 10)) -
-                              Math.floor(absStartValue / (divisor * 10));
-        let distance = endDigit - startDigit + fullRotations * 10;
-        if (delta < 0 && endDigit > startDigit) distance -= 10;
+        const toZero = createDigitCharFunction(position, divisor, absStartValue, 0);
+        const fromZero = createDigitCharFunction(position, divisor, 0, absTargetValue);
+        const inFirstSegment = (value) => startValue < 0 ? value < 0 : value > 0;
 
-        charFunctions.push((absValue, progress) => ({
-          value: ((startDigit + progress * distance) % 10 + 10) % 10,
-          hideZero: position > 0 && absValue < divisor
-        }));
+        return (value, progress) =>
+          inFirstSegment(value) ?
+            toZero(value, (value - startValue) / -startValue) :
+            fromZero(value, value / targetValue);
+      } else {
+        return createDigitCharFunction(position, divisor, absStartValue, absTargetValue);
       }
-      digitIndex++;
     } else if (digitIndex < integerDigitCount) {
       const threshold = Math.pow(10, integerDigitCount - digitIndex);
-      charFunctions.push((absValue) => ({text: char, hide: absValue < threshold}));
+      return (value) => ({text: char, hide: Math.abs(value) < threshold});
     } else {
-      charFunctions.push(() => ({text: char}));
+      return () => ({text: char});
     }
-  }
+  });
 
   if (hasNegative) {
-    charFunctions.unshift((absValue, progress, value) => ({text: '-', hide: value > -1}));
+    charFunctions.unshift((value) => ({text: '-', hide: value > -1}));
   }
 
+  const range = targetValue - startValue;
+
   return (value) => {
-    const absValue = Math.abs(value);
     const progress = range === 0 ? 0 : (value - startValue) / range;
-    return charFunctions.map(fn => fn(absValue, progress, value));
+    return charFunctions.map(fn => fn(value, progress));
   };
+}
+
+function createDigitCharFunction(position, divisor, segmentStart, segmentEnd) {
+  const startDigit = Math.floor(segmentStart / divisor) % 10;
+  const endDigit = Math.floor(segmentEnd / divisor) % 10;
+  const fullRotations = Math.floor(segmentEnd / (divisor * 10)) -
+                        Math.floor(segmentStart / (divisor * 10));
+  const distance = endDigit - startDigit + fullRotations * 10;
+
+  return (value, progress) => ({
+    value: ((startDigit + progress * distance) % 10 + 10) % 10,
+    hideZero: position > 0 && Math.abs(value) < divisor * 1.9
+  });
 }
 
 export function useWheelCharacters({startValue, targetValue, decimalPlaces = 0, locale = 'en', useGrouping = false}) {
