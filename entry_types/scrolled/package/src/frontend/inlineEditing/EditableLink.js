@@ -16,7 +16,7 @@ export function EditableLink({
   linkPreviewDisabled,
   linkPreviewPosition = 'below',
   linkPreviewAlign = 'center',
-  linkPreviewFloatingStrategy,
+  floatingStrategy,
   actionButtonPosition = 'outside',
   actionButtonVisible = 'whenSelected',
   actionButtonPortal,
@@ -42,7 +42,7 @@ export function EditableLink({
   return (
     <div className={styles.wrapper}>
       <LinkTooltipProvider position={linkPreviewPosition}
-                           floatingStrategy={linkPreviewFloatingStrategy}
+                           floatingStrategy={floatingStrategy}
                            align={linkPreviewAlign}
                            onClick={onClick}
                            gap={5}>
@@ -64,7 +64,8 @@ export function EditableLink({
                                                            text: t('pageflow_scrolled.inline_editing.remove_link'),
                                                            onClick: handleRemoveLink}] : [])]}
                       position={actionButtonPosition}
-                      portal={actionButtonPortal} />}
+                      portal={actionButtonPortal}
+                      floatingStrategy={floatingStrategy} />}
     </div>
   );
 }
