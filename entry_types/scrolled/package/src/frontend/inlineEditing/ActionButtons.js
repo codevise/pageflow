@@ -21,10 +21,11 @@ const icons = {
   unlink
 };
 
-export function ActionButtons({buttons, position, portal, size = 'md'}) {
+export function ActionButtons({buttons, position, portal, floatingStrategy, size = 'md'}) {
   const iconSize = size === 'md' ? 15 : 20;
 
   const {refs, floatingStyles, middlewareData} = useFloating({
+    strategy: floatingStrategy,
     placement: position === 'center' ? 'bottom' :
                position === 'inside' ? 'top-end' :
                position === 'outsideLeft' ? 'bottom-start' :
@@ -41,7 +42,8 @@ export function ActionButtons({buttons, position, portal, size = 'md'}) {
     <span className={classNames(styles.reference,
                                 styles[`position-${position}`])}
           ref={refs.setReference}>
-      <Portal enabled={portal}>
+      <Portal enabled={!!portal}
+              aboveNavigationWidgets={portal === 'aboveNavigationWidgets'}>
         <div ref={refs.setFloating}
              className={classNames(styles.floating, {[styles.escaped]: middlewareData.hide?.escaped})}
              style={floatingStyles}>
@@ -68,12 +70,13 @@ export function ActionButtons({buttons, position, portal, size = 'md'}) {
   );
 }
 
-function Portal({enabled, children}) {
+function Portal({enabled, aboveNavigationWidgets, children}) {
   const floatingPortalRoot = useFloatingPortalRoot();
 
   if (enabled) {
     return (
-      <FloatingPortal root={floatingPortalRoot}>
+      <FloatingPortal id={aboveNavigationWidgets ? 'floating-ui-above-navigation-widgets' : undefined}
+                      root={floatingPortalRoot}>
         {children}
       </FloatingPortal>
     );

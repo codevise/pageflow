@@ -8,7 +8,8 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom/extend-expect';
+import 'support/toHaveAncestorWithInlineStyle';
 
 jest.mock('frontend/inlineEditing/useSelectLinkDestination');
 
@@ -150,6 +151,17 @@ describe('EditableLink', () => {
     await user.click(screen.getByRole('button', {name: 'Remove link'}));
 
     expect(onChange).toHaveBeenCalledWith(null);
+  });
+
+  it('passes floatingStrategy to action buttons', () => {
+    render(
+      <EditableLink actionButtonVisible={true}
+                    floatingStrategy="fixed">
+        Some link
+      </EditableLink>
+    );
+
+    expect(screen.getByRole('button', {name: 'Select link destination'})).toHaveAncestorWithInlineStyle('position: fixed');
   });
 
   it('triggers onClick when tooltip is clicked', async () => {
