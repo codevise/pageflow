@@ -603,7 +603,7 @@ describe('Layout', () => {
     });
 
     describe('in center variant', () => {
-      it('calls children for each item passing position and width', () => {
+      it('calls children for each group of items with same width', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline', width: 2},
           {id: 2, type: 'probe', position: 'inline'},
@@ -616,10 +616,10 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('inline xl 1 inline md 2 left md 3 inline full 4 ');
+        expect(container.textContent).toEqual('inline xl 1 inline md 2 3 inline full 4 ');
       });
 
-      it('renders consecutive inline items with open end/open start', () => {
+      it('renders consecutive inline items in single box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'inline'},
@@ -631,7 +631,7 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('( 1 || 2 || 3 )');
+        expect(container.textContent).toEqual('( 1 2 3 )');
       });
 
       it('treats sticky items like inline items', () => {
@@ -646,10 +646,10 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('( 1 || 2 || 3 )');
+        expect(container.textContent).toEqual('( 1 2 3 )');
       });
 
-      it('renders consecutive inline and floated items with open end/open start', () => {
+      it('renders consecutive inline and floated items in a single box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'left'},
@@ -661,10 +661,10 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('( 1 || 2 || 3 )');
+        expect(container.textContent).toEqual('( 1 2 3 )');
       });
 
-      it('renders items separated by full width item without open end/open start', () => {
+      it('renders items separated by full width item in separate boxes', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'inline', width: 3},
@@ -679,7 +679,7 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('( 1 )( 2 )( 3 )');
       });
 
-      it('renders items separated by wide item without open end/open start', () => {
+      it('renders items separated by wide item in separate boxes', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'inline', width: 1},
@@ -694,7 +694,22 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('( 1 )( 2 )( 3 )');
       });
 
-      it('renders inline items separated by custom margin item without open end/open start', () => {
+      it('renders items separated by wide floated item in single box', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'left', width: 1},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('( 1 2 3 )');
+      });
+
+      it('renders inline items separated by custom margin item in separate boxes', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probeWithCustomMargin', position: 'inline'},
@@ -811,7 +826,7 @@ describe('Layout', () => {
           </Layout>
         );
 
-        expect(container.textContent).toEqual('( 1 || 2 || 3 )');
+        expect(container.textContent).toEqual('( 1 2 3 )');
       });
     });
 
@@ -1092,11 +1107,12 @@ describe('Layout', () => {
     });
   });
 
-  describe('self clearing prop passed to box in centered layout', () => {
+  describe('self clearing classes in centered layout', () => {
     beforeAll(() => {
       frontend.contentElementTypes.register('probe', {
         component: function Probe({configuration}) {
-          return <div />;
+          const testId = configuration?.testId || 'probe';
+          return <div data-testid={testId} />;
         }
       });
 
@@ -1104,141 +1120,141 @@ describe('Layout', () => {
         supportsWrappingAroundFloats: true,
 
         component: function WrappingProbe() {
-          return <div />;
+          return <div data-testid="wrappingProbe" />;
         }
       });
     });
 
     it('self clears wrapping elements after left', () => {
       const items = [
-        {id: 1, type: 'probe', position: 'left'},
+        {id: 1, type: 'probe', position: 'left', props: {testId: 'left'}},
         {id: 2, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {container} = renderInEntry(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
-          {(children, {selfClear}) =>
-            <div>{selfClear} {children}</div>
-          }
+          {children => children}
         </Layout>
       );
 
-      expect(container.textContent).toEqual('right both ');
+      expect(findParentWithClass(getByTestId('left'), centerStyles['selfClear-right'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('wrappingProbe'), centerStyles['selfClear-both'])).not.toBeNull();
     });
 
     it('self clears wrapping elements after right', () => {
       const items = [
-        {id: 1, type: 'probe', position: 'right'},
+        {id: 1, type: 'probe', position: 'right', props: {testId: 'right'}},
         {id: 2, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {container} = renderInEntry(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
-          {(children, {selfClear}) =>
-            <div>{selfClear} {children}</div>
-          }
+          {children => children}
         </Layout>
       );
 
-      expect(container.textContent).toEqual('left both ');
+      expect(findParentWithClass(getByTestId('right'), centerStyles['selfClear-left'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('wrappingProbe'), centerStyles['selfClear-both'])).not.toBeNull();
     });
 
     it('self clears left followed by left', () => {
       const items = [
-        {id: 1, type: 'probe', position: 'left'},
-        {id: 2, type: 'probe', position: 'left'},
+        {id: 1, type: 'probe', position: 'left', props: {testId: 'left-1'}},
+        {id: 2, type: 'probe', position: 'left', props: {testId: 'left-2'}},
       ];
-      const {container} = renderInEntry(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
-          {(children, {selfClear}) =>
-            <div>{selfClear} {children}</div>
-          }
+          {children => children}
         </Layout>
       );
 
-      expect(container.textContent).toEqual('both both ');
+      expect(findParentWithClass(getByTestId('left-1'), centerStyles['selfClear-both'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('left-2'), centerStyles['selfClear-both'])).not.toBeNull();
     });
 
     it('self clears right followed by right', () => {
       const items = [
-        {id: 1, type: 'probe', position: 'right'},
-        {id: 2, type: 'probe', position: 'right'},
+        {id: 1, type: 'probe', position: 'right', props: {testId: 'right-1'}},
+        {id: 2, type: 'probe', position: 'right', props: {testId: 'right-2'}},
       ];
-      const {container} = renderInEntry(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
-          {(children, {selfClear}) =>
-            <div>{selfClear} {children}</div>
-          }
+          {children => children}
         </Layout>
       );
 
-      expect(container.textContent).toEqual('both both ');
+      expect(findParentWithClass(getByTestId('right-1'), centerStyles['selfClear-both'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('right-2'), centerStyles['selfClear-both'])).not.toBeNull();
     });
 
     it('self clears left before non-wrapping inline', () => {
       const items = [
-        {id: 1, type: 'probe', position: 'left'},
-        {id: 2, type: 'probe', position: 'inline'},
+        {id: 1, type: 'probe', position: 'left', props: {testId: 'left'}},
+        {id: 2, type: 'probe', position: 'inline', props: {testId: 'inline'}},
       ];
-      const {container} = renderInEntry(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
-          {(children, {selfClear}) =>
-            <div>{selfClear} {children}</div>
-          }
+          {children => children}
         </Layout>
       );
 
-      expect(container.textContent).toEqual('both none ');
+      expect(findParentWithClass(getByTestId('left'), centerStyles['selfClear-both'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('inline'), centerStyles['selfClear-both'])).toBeNull();
+      expect(findParentWithClass(getByTestId('inline'), centerStyles['selfClear-left'])).toBeNull();
+      expect(findParentWithClass(getByTestId('inline'), centerStyles['selfClear-right'])).toBeNull();
     });
 
     it('self clears right before non-wrapping inline', () => {
       const items = [
-        {id: 1, type: 'probe', position: 'right'},
-        {id: 2, type: 'probe', position: 'inline'},
+        {id: 1, type: 'probe', position: 'right', props: {testId: 'right'}},
+        {id: 2, type: 'probe', position: 'inline', props: {testId: 'inline'}},
       ];
-      const {container} = renderInEntry(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
-          {(children, {selfClear}) =>
-            <div>{selfClear} {children}</div>
-          }
+          {children => children}
         </Layout>
       );
 
-      expect(container.textContent).toEqual('both none ');
+      expect(findParentWithClass(getByTestId('right'), centerStyles['selfClear-both'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('inline'), centerStyles['selfClear-both'])).toBeNull();
+      expect(findParentWithClass(getByTestId('inline'), centerStyles['selfClear-left'])).toBeNull();
+      expect(findParentWithClass(getByTestId('inline'), centerStyles['selfClear-right'])).toBeNull();
     });
 
     it('self clears last left on both sides in alternating cluster', () => {
       const items = [
-        {id: 1, type: 'probe', position: 'left'},
-        {id: 2, type: 'probe', position: 'right'},
-        {id: 3, type: 'probe', position: 'left'},
+        {id: 1, type: 'probe', position: 'left', props: {testId: 'left-1'}},
+        {id: 2, type: 'probe', position: 'right', props: {testId: 'right'}},
+        {id: 3, type: 'probe', position: 'left', props: {testId: 'left-2'}},
         {id: 4, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {container} = renderInEntry(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
-          {(children, {selfClear}) =>
-            <div>{selfClear} {children}</div>
-          }
+          {children => children}
         </Layout>
       );
 
-      expect(container.textContent).toEqual('right left both both ');
+      expect(findParentWithClass(getByTestId('left-1'), centerStyles['selfClear-right'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('right'), centerStyles['selfClear-left'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('left-2'), centerStyles['selfClear-both'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('wrappingProbe'), centerStyles['selfClear-both'])).not.toBeNull();
     });
 
     it('self clears last right on both sides in alternating cluster', () => {
       const items = [
-        {id: 1, type: 'probe', position: 'right'},
-        {id: 2, type: 'probe', position: 'left'},
-        {id: 3, type: 'probe', position: 'right'},
+        {id: 1, type: 'probe', position: 'right', props: {testId: 'right-1'}},
+        {id: 2, type: 'probe', position: 'left', props: {testId: 'left'}},
+        {id: 3, type: 'probe', position: 'right', props: {testId: 'right-2'}},
         {id: 4, type: 'wrappingProbe', position: 'inline'},
       ];
-      const {container} = renderInEntry(
+      const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
-          {(children, {selfClear}) =>
-            <div>{selfClear} {children}</div>
-          }
+          {children => children}
         </Layout>
       );
 
-      expect(container.textContent).toEqual('left right both both ');
+      expect(findParentWithClass(getByTestId('right-1'), centerStyles['selfClear-left'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('left'), centerStyles['selfClear-right'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('right-2'), centerStyles['selfClear-both'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('wrappingProbe'), centerStyles['selfClear-both'])).not.toBeNull();
     });
   });
 
@@ -1300,7 +1316,7 @@ describe('Layout', () => {
       });
     });
 
-    it('applies width class to inline items', () => {
+    it('applies box width class', () => {
       const items = [
         {id: 2, type: 'probe', position: 'inline', width: 1}
       ];
@@ -1310,10 +1326,10 @@ describe('Layout', () => {
         </Layout>
       );
 
-      expect(findParentWithClass(getByTestId('probe'), centerStyles['item-inline-lg'])).not.toBeNull();
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['box-lg'])).not.toBeNull();
     });
 
-    it('does not appliy width class to floated items', () => {
+    it('does not appliy box width based on floated items', () => {
       const items = [
         {id: 2, type: 'probe', position: 'left', width: 2}
       ];
@@ -1323,7 +1339,7 @@ describe('Layout', () => {
         </Layout>
       );
 
-      expect(findParentWithClass(getByTestId('probe'), centerStyles['item-inline-xl'])).toBeNull();
+      expect(findParentWithClass(getByTestId('probe'), centerStyles['box-xl'])).toBeNull();
     });
 
     it('applies width class to inner of inline item', () => {
@@ -1341,7 +1357,7 @@ describe('Layout', () => {
 
     it('applies width class to inner of floated item', () => {
       const items = [
-        {id: 2, type: 'probe', position: 'inline', width: 2}
+        {id: 2, type: 'probe', position: 'left', width: 2}
       ];
       const {getByTestId} = renderInEntry(
         <Layout sectionProps={{layout: 'center'}} items={items}>
