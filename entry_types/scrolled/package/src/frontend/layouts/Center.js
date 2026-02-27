@@ -72,7 +72,10 @@ function groupItems(items) {
       groups.push(currentGroup);
     }
 
-    currentGroup.items.push(item);
+    currentGroup.items.push({
+      ...item,
+      marginBottom: item.props.marginBottom
+    });
   });
 
   return groups;

@@ -156,4 +156,30 @@ describe('content element margin', () => {
     expect(getContentElementByTestId(2).getPrevMarginBottom()).toBe('');
     expect(getContentElementByTestId(3).getPrevMarginBottom()).toBe('var(--theme-content-element-margin-lg)');
   });
+
+  it('sets margin top via --margin-top custom property in center layout', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        sections: [{id: 5, configuration: {layout: 'center'}}],
+        contentElements: [
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 1, marginTop: 'xl'}}
+        ]
+      }
+    });
+
+    expect(getContentElementByTestId(1).getMarginTop()).toBe('var(--theme-content-element-margin-xl)');
+  });
+
+  it('sets margin bottom via --margin-bottom custom property in center layout', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        sections: [{id: 5, configuration: {layout: 'center'}}],
+        contentElements: [
+          {sectionId: 5, typeName: 'withTestId', configuration: {testId: 1, marginBottom: 'xl'}}
+        ]
+      }
+    });
+
+    expect(getContentElementByTestId(1).getMarginBottom()).toBe('var(--theme-content-element-margin-xl)');
+  });
 });
