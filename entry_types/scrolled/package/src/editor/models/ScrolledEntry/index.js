@@ -27,7 +27,8 @@ const typographySizeSuffixes = ['xxxl', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xx
 const scaleDefaultPropertyNames = {
   sectionPaddingTop: 'sectionDefaultPaddingTop',
   sectionPaddingBottom: 'sectionDefaultPaddingBottom',
-  contentElementBoxBorderRadius: 'contentElementBoxBorderRadius'
+  contentElementBoxBorderRadius: 'contentElementBoxBorderRadius',
+  contentElementMargin: 'contentElementMarginStyleDefault'
 };
 
 const defaultAspectRatios = [{

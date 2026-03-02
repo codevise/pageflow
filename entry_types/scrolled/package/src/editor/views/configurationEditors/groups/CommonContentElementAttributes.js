@@ -23,6 +23,10 @@ import {
   PositionSelectInputView
 } from '../../inputs/PositionSelectInputView';
 
+import {
+  ContentElementStyleListInputView
+} from '../../inputs/ContentElementStyleListInputView';
+
 ConfigurationEditorTabView.groups.define('ContentElementPosition', function({entry}) {
   const contentElement = this.model.parent;
 
@@ -76,19 +80,9 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function({ent
   }
 
   if (features.isEnabled('content_element_margins')) {
-    const marginScale = entry.getScale('contentElementMargin');
-
-    this.input('marginTop', SelectInputView, {
-      attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
-      includeBlank: true,
-      values: marginScale.values,
-      texts: marginScale.texts
-    });
-    this.input('marginBottom', SelectInputView, {
-      attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
-      includeBlank: true,
-      values: marginScale.values,
-      texts: marginScale.texts
+    this.input('styles', ContentElementStyleListInputView, {
+      entry,
+      attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes']
     });
   }
 });

@@ -247,12 +247,8 @@ de:
           inline_help: Ändere die Darstellung der Beschriftung unterhalb des Element.
           inline_help_disabled: Füge eine Beschriftung unterhalb des Elements hinzu, um zwischen Varianten zu wählen.
           blank: "(Standard)"
-        marginTop:
-          label: "Abstand oben"
-          blank: "(Automatisch)"
-        marginBottom:
-          label: "Abstand unten"
-          blank: "(Automatisch)"
+        styles:
+          label: "Stile"
         fullWidthInPhoneLayout:
           label: "Volle Breite im Phone-Layout"
           inline_help: |-
@@ -1460,6 +1456,11 @@ de:
         square: Quadratisch (1:1)
         wide: Landscape (16:9)
         original: Original
+      content_element_style_list_input:
+        add: "Stil hinzufügen..."
+        remove: "Stil entfernen"
+        marginTop: "Abstand oben"
+        marginBottom: "Abstand unten"
       image_modifier_list_input:
         add: "Stil hinzufügen..."
         remove: "Stil entfernen"

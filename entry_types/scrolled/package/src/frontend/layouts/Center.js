@@ -74,7 +74,7 @@ function groupItems(items) {
 
     currentGroup.items.push({
       ...item,
-      marginBottom: item.props.marginBottom
+      marginBottom: item.props?.marginBottom
     });
   });
 

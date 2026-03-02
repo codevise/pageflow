@@ -55,7 +55,8 @@ module PageflowScrolled
           properties: {
             root: {
               'section_default_padding_top' => '1.375em',
-              'section_default_padding_bottom' => '4.375em'
+              'section_default_padding_bottom' => '4.375em',
+              'content_element_margin_style_default' => '2em'
             },
             cards_appearance_section: {
               'section_default_padding_top' => '3em',

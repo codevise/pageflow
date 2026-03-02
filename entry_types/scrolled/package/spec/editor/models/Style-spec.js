@@ -77,6 +77,100 @@ describe('Style', () => {
     expect(style.inputType()).toEqual('color');
   });
 
+  describe('.getTypesForContentElement', () => {
+    it('returns empty object when no margin scale is defined', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed()
+        }
+      );
+
+      const result = Style.getTypesForContentElement({entry});
+
+      expect(result).toEqual({});
+    });
+
+    it('returns margin types based on content element margin scale', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementMargin-sm': '0.5rem',
+                  'contentElementMargin-md': '1rem',
+                  'contentElementMargin-lg': '1.5rem'
+                }
+              }
+            },
+            themeTranslations: {
+              scales: {
+                contentElementMargin: {
+                  sm: 'Small',
+                  md: 'Medium',
+                  lg: 'Large'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const result = Style.getTypesForContentElement({entry});
+
+      expect(result).toMatchObject({
+        marginTop: {
+          inputType: 'slider',
+          values: ['sm', 'md', 'lg'],
+          texts: ['Small', 'Medium', 'Large']
+        },
+        marginBottom: {
+          inputType: 'slider',
+          values: ['sm', 'md', 'lg'],
+          texts: ['Small', 'Medium', 'Large']
+        }
+      });
+    });
+    it('includes default value from margin scale', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementMargin-sm': '0.5rem',
+                  'contentElementMargin-md': '1rem',
+                  'contentElementMargin-lg': '1.5rem',
+                  'contentElementMarginStyleDefault': '0.5rem'
+                }
+              }
+            },
+            themeTranslations: {
+              scales: {
+                contentElementMargin: {
+                  sm: 'Small',
+                  md: 'Medium',
+                  lg: 'Large'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const result = Style.getTypesForContentElement({entry});
+
+      expect(result.marginTop.defaultValue).toEqual('sm');
+      expect(result.marginBottom.defaultValue).toEqual('sm');
+    });
+  });
+
   describe('.getImageModifierTypes', () => {
     const commonPrefix = 'pageflow_scrolled.editor.aspect_ratios';
     const themePrefix = `pageflow_scrolled.editor.themes.custom.aspect_ratios`;

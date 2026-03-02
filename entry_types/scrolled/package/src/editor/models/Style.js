@@ -121,6 +121,31 @@ Style.effectTypes = {
   }
 };
 
+Style.getTypesForContentElement = function({entry}) {
+  const marginScale = entry.getScale('contentElementMargin');
+  const result = {};
+
+  if (marginScale.values.length > 0) {
+    result.marginTop = {
+      label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginTop'),
+      inputType: 'slider',
+      values: marginScale.values,
+      texts: marginScale.texts,
+      defaultValue: marginScale.defaultValue
+    };
+
+    result.marginBottom = {
+      label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginBottom'),
+      inputType: 'slider',
+      values: marginScale.values,
+      texts: marginScale.texts,
+      defaultValue: marginScale.defaultValue
+    };
+  }
+
+  return result;
+}
+
 Style.getImageModifierTypes = function({entry}) {
   const [values, labels] = entry.getAspectRatios();
   const borderRadiusScale = entry.getScale('contentElementBoxBorderRadius');

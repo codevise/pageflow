@@ -241,12 +241,8 @@ en:
           inline_help: Switch between different looks of the caption below the element.
           inline_help_disabled: Add a caption below the element to switch between different looks.
           blank: "(Default)"
-        marginTop:
-          label: "Margin top"
-          blank: "(Auto)"
-        marginBottom:
-          label: "Margin bottom"
-          blank: "(Auto)"
+        styles:
+          label: "Styles"
         fullWidthInPhoneLayout:
           label: "Full width in phone layout"
           inline_help: |-
@@ -1444,6 +1440,11 @@ en:
         square: Square (1:1)
         wide: Landscape (16:9)
         original: Original
+      content_element_style_list_input:
+        add: "Add style..."
+        remove: "Remove style"
+        marginTop: "Margin top"
+        marginBottom: "Margin bottom"
       image_modifier_list_input:
         add: "Add style..."
         remove: "Remove style"
