@@ -21,13 +21,54 @@ export const StyleListInputView = Marionette.ItemView.extend({
 
   initialize() {
     this.styles = new StylesCollection(
-      this.model.get(this.options.propertyName),
+      this.readFromModel(),
       {types: this.options.types}
     );
 
     this.listenTo(this.styles, 'add remove change', () => {
-      this.model.set(this.options.propertyName, this.styles.toJSON());
+      this.saveToModel();
     });
+  },
+
+  readFromModel() {
+    const serialized = this.model.get(this.options.propertyName) || [];
+
+    const fromProperties = Object.entries(this.options.types)
+      .filter(([, type]) => {
+        if (!type.propertyName || !this.model.has(type.propertyName)) {
+          return false;
+        }
+
+        return !type.values || type.values.includes(this.model.get(type.propertyName));
+      })
+      .map(([name, type]) => ({name, value: this.model.get(type.propertyName)}));
+
+    return [...serialized, ...fromProperties];
+  },
+
+  saveToModel() {
+    const serialized = [];
+    const setProperties = new Set();
+
+    this.styles.each(style => {
+      const propertyName = style.propertyName();
+
+      if (propertyName) {
+        this.model.set(propertyName, style.get('value'));
+        setProperties.add(propertyName);
+      }
+      else {
+        serialized.push(style.toJSON());
+      }
+    });
+
+    Object.values(this.options.types).forEach(type => {
+      if (type.propertyName && !setProperties.has(type.propertyName)) {
+        this.model.unset(type.propertyName);
+      }
+    });
+
+    this.model.set(this.options.propertyName, serialized);
   },
 
   onRender() {

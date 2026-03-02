@@ -231,6 +231,139 @@ describe('StyleListInputView', () => {
     expect(model.get('styles')).toEqual([{name: 'blur', value: 30}]);
   });
 
+  it('ignores model property value not included in discrete values', () => {
+    const types = {
+      marginTop: {
+        label: 'Margin top',
+        inputType: 'slider',
+        propertyName: 'marginTop',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'sm'
+      }
+    };
+    const model = new Backbone.Model({marginTop: 'none'});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+
+    const {queryByRole} = render(view);
+
+    expect(queryByRole('button', {name: 'Remove style'})).toBeNull();
+  });
+
+  it('reads initial value from model property for style type with propertyName', () => {
+    const types = {
+      marginTop: {
+        label: 'Margin top',
+        inputType: 'slider',
+        propertyName: 'marginTop',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'sm'
+      }
+    };
+    const model = new Backbone.Model({marginTop: 'md'});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    view.render();
+
+    expect(view.el).toHaveTextContent('Margin top Medium');
+  });
+
+  it('sets value on model property when adding style with propertyName', async () => {
+    const types = {
+      marginTop: {
+        label: 'Margin top',
+        inputType: 'slider',
+        propertyName: 'marginTop',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'sm'
+      }
+    };
+    const model = new Backbone.Model();
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = render(view);
+    await user.click(getByRole('button', {name: 'Add style'}));
+    await user.click(getByRole('link', {name: 'Margin top'}));
+
+    expect(model.get('marginTop')).toEqual('sm');
+    expect(model.get('styles')).toEqual([]);
+  });
+
+  it('sets model property to resetValue when removing style with resetValue', async () => {
+    const types = {
+      marginTop: {
+        label: 'Margin top',
+        inputType: 'slider',
+        propertyName: 'marginTop',
+        resetValue: 'none',
+        values: ['none', 'sm', 'md', 'lg'],
+        texts: ['None', 'Small', 'Medium', 'Large'],
+        defaultValue: 'sm'
+      }
+    };
+    const model = new Backbone.Model({marginTop: 'md'});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = render(view);
+    await user.click(getByRole('button', {name: 'Remove style'}));
+
+    expect(model.get('marginTop')).toEqual('none');
+  });
+
+  it('unsets model property when removing style with propertyName', async () => {
+    const types = {
+      marginTop: {
+        label: 'Margin top',
+        inputType: 'slider',
+        propertyName: 'marginTop',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'sm'
+      }
+    };
+    const model = new Backbone.Model({marginTop: 'md'});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = render(view);
+    await user.click(getByRole('button', {name: 'Remove style'}));
+
+    expect(model.has('marginTop')).toBe(false);
+  });
+
   it('allows removing styles', async () => {
     const types = {
       blur: {

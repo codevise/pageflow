@@ -43,6 +43,10 @@ export const Style = Backbone.Model.extend({
     return this.types[this.get('name')].texts;
   },
 
+  propertyName() {
+    return this.types[this.get('name')].propertyName;
+  },
+
   inputType() {
     return this.types[this.get('name')].inputType || 'none';
   }
@@ -128,6 +132,7 @@ Style.getTypesForContentElement = function({entry}) {
   if (marginScale.values.length > 0) {
     result.marginTop = {
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginTop'),
+      propertyName: 'marginTop',
       inputType: 'slider',
       values: marginScale.values,
       texts: marginScale.texts,
@@ -136,6 +141,7 @@ Style.getTypesForContentElement = function({entry}) {
 
     result.marginBottom = {
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginBottom'),
+      propertyName: 'marginBottom',
       inputType: 'slider',
       values: marginScale.values,
       texts: marginScale.texts,
