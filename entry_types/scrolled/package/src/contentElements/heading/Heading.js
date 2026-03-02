@@ -93,6 +93,9 @@ export function Heading({configuration, sectionProps, contentElementWidth}) {
                                   {[styles.hasTagline]: !utils.isBlankEditableTextValue(
                                     configuration.tagline
                                   ) || isSelected},
+                                  {[styles.defaultSubtitleMargin]: !utils.isBlankEditableTextValue(
+                                    configuration.subtitle
+                                  ) && !configuration.marginBottom},
                                   {[styles.forcePaddingTop]: forcePaddingTop},
                                   {[styles[sectionProps.layout]]:
                                     contentElementWidth > contentElementWidths.md ||
