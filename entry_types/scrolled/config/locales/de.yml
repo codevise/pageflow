@@ -1894,4 +1894,6 @@ de:
       remove_link: "Link entfernen"
       edit_section_padding_top: Oberen Abstand bearbeiten
       edit_section_padding_bottom: Unteren Abstand bearbeiten
+      content_element_margin_top: Oberer Außenabstand
+      content_element_margin_bottom: Unterer Außenabstand
       expose_motif_area: Motiv freilegen

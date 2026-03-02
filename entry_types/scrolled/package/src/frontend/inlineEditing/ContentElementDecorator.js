@@ -1,12 +1,15 @@
 import React from 'react';
 import {useDrag} from 'react-dnd';
 
+import {features} from 'pageflow/frontend';
+
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useI18n} from '../i18n';
 import {api} from '../api';
 import {widths} from '../layouts';
 import {SelectionRect} from './SelectionRect';
 import {DropTargets} from './DropTargets';
+import {MarginIndicator} from './MarginIndicator';
 import {
   postInsertContentElementMessage,
   postMoveContentElementMessage
@@ -22,6 +25,7 @@ export function ContentElementDecorator(props) {
       <ContentElementEditorStateProvider id={props.id}>
         <OptionalSelectionRect {...props}>
           <ContentElementConfigurationUpdateProvider id={props.id} permaId={props.permaId}>
+            {renderMarginIndicators(props)}
             {props.children}
           </ContentElementConfigurationUpdateProvider>
         </OptionalSelectionRect>
@@ -74,4 +78,17 @@ function DefaultSelectionRect(props) {
                      postMoveContentElementMessage({id, range, to: {id: props.id, at}})}/>
     </SelectionRect>
   )
+}
+
+function renderMarginIndicators(props) {
+  if (!features.isEnabled('content_element_margins')) {
+    return null;
+  }
+
+  return (
+    <>
+      <MarginIndicator marginValue={props.itemProps?.marginTop} position="top" />
+      <MarginIndicator marginValue={props.itemProps?.marginBottom} position="bottom" />
+    </>
+  );
 }

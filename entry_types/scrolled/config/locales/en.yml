@@ -1724,4 +1724,6 @@ en:
       remove_link: "Remove link"
       edit_section_padding_top: Edit top padding
       edit_section_padding_bottom: Edit bottom padding
+      content_element_margin_top: Top margin
+      content_element_margin_bottom: Bottom margin
       expose_motif_area: Expose motif
