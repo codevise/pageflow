@@ -64,7 +64,12 @@ export const StyleListInputView = Marionette.ItemView.extend({
 
     Object.values(this.options.types).forEach(type => {
       if (type.propertyName && !setProperties.has(type.propertyName)) {
-        this.model.unset(type.propertyName);
+        if ('resetValue' in type) {
+          this.model.set(type.propertyName, type.resetValue);
+        }
+        else {
+          this.model.unset(type.propertyName);
+        }
       }
     });
 

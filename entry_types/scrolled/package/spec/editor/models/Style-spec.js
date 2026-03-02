@@ -1,5 +1,6 @@
 import {Style} from 'editor/models/Style';
 
+import {editor} from 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories, useFakeTranslations} from 'pageflow/testHelpers';
 import {normalizeSeed} from 'support';
@@ -79,25 +80,37 @@ describe('Style', () => {
 
   describe('.getTypesForContentElement', () => {
     it('returns empty object when no margin scale is defined', () => {
-      const entry = factories.entry(
-        ScrolledEntry,
-        {},
-        {
-          entryTypeSeed: normalizeSeed()
-        }
-      );
+      editor.contentElementTypes.register('textBlock', {});
 
-      const result = Style.getTypesForContentElement({entry});
-
-      expect(result).toEqual({});
-    });
-
-    it('returns margin types based on content element margin scale', () => {
       const entry = factories.entry(
         ScrolledEntry,
         {},
         {
           entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'textBlock'}
+            ]
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result).toEqual({});
+    });
+
+    it('returns margin types based on content element margin scale', () => {
+      editor.contentElementTypes.register('textBlock', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'textBlock'}
+            ],
             themeOptions: {
               properties: {
                 root: {
@@ -120,7 +133,8 @@ describe('Style', () => {
         }
       );
 
-      const result = Style.getTypesForContentElement({entry});
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
 
       expect(result).toMatchObject({
         marginTop: {
@@ -135,12 +149,59 @@ describe('Style', () => {
         }
       });
     });
-    it('includes default value from margin scale', () => {
+    it('sets resetValue from content element defaultConfig', () => {
+      editor.contentElementTypes.register('heading', {
+        defaultConfig: {marginTop: 'none'}
+      });
+
       const entry = factories.entry(
         ScrolledEntry,
         {},
         {
           entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'heading'}
+            ],
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementMargin-sm': '0.5rem',
+                  'contentElementMargin-md': '1rem',
+                  'contentElementMargin-lg': '1.5rem'
+                }
+              }
+            },
+            themeTranslations: {
+              scales: {
+                contentElementMargin: {
+                  sm: 'Small',
+                  md: 'Medium',
+                  lg: 'Large'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result.marginTop.resetValue).toEqual('none');
+      expect(result.marginBottom).not.toHaveProperty('resetValue');
+    });
+
+    it('includes default value from margin scale', () => {
+      editor.contentElementTypes.register('textBlock', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'textBlock'}
+            ],
             themeOptions: {
               properties: {
                 root: {
@@ -164,7 +225,8 @@ describe('Style', () => {
         }
       );
 
-      const result = Style.getTypesForContentElement({entry});
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
 
       expect(result.marginTop.defaultValue).toEqual('sm');
       expect(result.marginBottom.defaultValue).toEqual('sm');

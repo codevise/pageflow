@@ -125,8 +125,9 @@ Style.effectTypes = {
   }
 };
 
-Style.getTypesForContentElement = function({entry}) {
+Style.getTypesForContentElement = function({entry, contentElement}) {
   const marginScale = entry.getScale('contentElementMargin');
+  const defaultConfig = contentElement.getType().defaultConfig || {};
   const result = {};
 
   if (marginScale.values.length > 0) {
@@ -136,7 +137,8 @@ Style.getTypesForContentElement = function({entry}) {
       inputType: 'slider',
       values: marginScale.values,
       texts: marginScale.texts,
-      defaultValue: marginScale.defaultValue
+      defaultValue: marginScale.defaultValue,
+      ...('marginTop' in defaultConfig && {resetValue: defaultConfig.marginTop})
     };
 
     result.marginBottom = {
@@ -145,7 +147,8 @@ Style.getTypesForContentElement = function({entry}) {
       inputType: 'slider',
       values: marginScale.values,
       texts: marginScale.texts,
-      defaultValue: marginScale.defaultValue
+      defaultValue: marginScale.defaultValue,
+      ...('marginBottom' in defaultConfig && {resetValue: defaultConfig.marginBottom})
     };
   }
 
