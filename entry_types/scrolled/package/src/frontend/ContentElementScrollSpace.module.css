@@ -3,6 +3,7 @@
 }
 
 .inner {
+  display: flow-root;
   position: sticky;
   top: calc(50% - var(--height) * 1px);
 }
