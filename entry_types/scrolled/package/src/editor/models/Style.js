@@ -35,6 +35,14 @@ export const Style = Backbone.Model.extend({
     return this.types[this.get('name')].maxValue;
   },
 
+  values() {
+    return this.types[this.get('name')].values;
+  },
+
+  texts() {
+    return this.types[this.get('name')].texts;
+  },
+
   inputType() {
     return this.types[this.get('name')].inputType || 'none';
   }

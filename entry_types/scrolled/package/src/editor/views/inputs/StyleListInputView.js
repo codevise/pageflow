@@ -87,25 +87,54 @@ const StyleListItemView = Marionette.ItemView.extend({
       this.options.styles.remove(this.model);
     },
 
-    'slidechange widget': function() {
-      const value = this.ui.widget.slider('option', 'value');
+    'slide widget': function(event, ui) {
+      const values = this.model.values();
 
-      this.ui.value.text(value);
-      this.model.set('value', value);
+      if (values) {
+        this.ui.value.text(this.model.texts()[ui.value]);
+        this.model.set('value', values[ui.value]);
+      }
+    },
+
+    'slidechange widget': function() {
+      if (!this.model.values()) {
+        const value = this.ui.widget.slider('option', 'value');
+
+        this.ui.value.text(value);
+        this.model.set('value', value);
+      }
     }
   }),
 
   onRender() {
     this.$el.addClass(styles[`input-${this.model.inputType()}`]);
-    this.ui.widget.toggleClass(styles.centerZero, this.model.minValue() < 0);
 
-    this.ui.widget.slider({
-      animate: 'fast',
-      min: this.model.minValue(),
-      max: this.model.maxValue()
-    });
+    const values = this.model.values();
 
-    this.ui.widget.slider('option', 'value', this.model.get('value') || 50);
+    if (values) {
+      this.ui.widget.slider({
+        animate: 'fast',
+        min: 0,
+        max: values.length - 1
+      });
+
+      const storedValue = this.model.get('value') || this.model.defaultValue();
+      const index = values.indexOf(storedValue);
+
+      this.ui.widget.slider('option', 'value', index);
+      this.ui.value.text(this.model.texts()[index]);
+    }
+    else {
+      this.ui.widget.toggleClass(styles.centerZero, this.model.minValue() < 0);
+
+      this.ui.widget.slider({
+        animate: 'fast',
+        min: this.model.minValue(),
+        max: this.model.maxValue()
+      });
+
+      this.ui.widget.slider('option', 'value', this.model.get('value') || 50);
+    }
 
     const colorInput = this.ui.colorInput[0];
 

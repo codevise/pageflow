@@ -99,6 +99,138 @@ describe('StyleListInputView', () => {
     expect(view.el).toHaveClass(styles.negativeMarginTop);
   });
 
+  it('displays text for slider with discrete values', () => {
+    const types = {
+      margin: {
+        label: 'Margin',
+        inputType: 'slider',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'sm'
+      }
+    };
+    const model = new Backbone.Model({styles: [
+      {name: 'margin', value: 'md'}
+    ]});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    view.render();
+
+    expect(view.el).toHaveTextContent('Margin Medium');
+  });
+
+  it('displays default text when style with discrete values uses default', () => {
+    const types = {
+      margin: {
+        label: 'Margin',
+        inputType: 'slider',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'sm'
+      }
+    };
+    const model = new Backbone.Model({styles: [
+      {name: 'margin'}
+    ]});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    view.render();
+
+    expect(view.el).toHaveTextContent('Margin Small');
+  });
+
+  it('stores default value when adding style with discrete values', async () => {
+    const types = {
+      margin: {
+        label: 'Margin',
+        inputType: 'slider',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'sm'
+      }
+    };
+    const model = new Backbone.Model();
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = render(view);
+    await user.click(getByRole('button', {name: 'Add style'}));
+    await user.click(getByRole('link', {name: 'Margin'}));
+
+    expect(model.get('styles')).toEqual([{name: 'margin', value: 'sm'}]);
+  });
+
+  it('saves on slide when using discrete values', () => {
+    const types = {
+      margin: {
+        label: 'Margin',
+        inputType: 'slider',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'sm'
+      }
+    };
+    const model = new Backbone.Model({styles: [
+      {name: 'margin', value: 'sm'}
+    ]});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    view.render();
+
+    view.$el.find('.ui-slider').trigger('slide', {value: 2});
+
+    expect(model.get('styles')).toEqual([{name: 'margin', value: 'lg'}]);
+  });
+
+  it('does not save on slide for continuous slider', () => {
+    const types = {
+      blur: {
+        label: 'Blur',
+        minValue: 0,
+        maxValue: 100,
+        defaultValue: 50,
+        kind: 'filter',
+        inputType: 'slider'
+      }
+    };
+    const model = new Backbone.Model({styles: [
+      {name: 'blur', value: 30}
+    ]});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    view.render();
+
+    view.$el.find('.ui-slider').trigger('slide', {value: 80});
+
+    expect(model.get('styles')).toEqual([{name: 'blur', value: 30}]);
+  });
+
   it('allows removing styles', async () => {
     const types = {
       blur: {
