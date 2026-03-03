@@ -83,11 +83,13 @@ function groupItems(items) {
 
 function boxProps(groups, index, isContentPadded) {
   const group = groups[index];
+  const lastItem = group.items[group.items.length - 1];
 
   return {
     position: group.position,
     width: group.width,
     customMargin: group.customMargin,
+    lastMarginBottom: lastItem.marginBottom,
     atSectionStart: index === 0 && !isContentPadded,
     atSectionEnd: index === groups.length - 1
   }

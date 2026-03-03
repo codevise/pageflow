@@ -40,6 +40,7 @@ function className(props) {
     {[styles.blur]: props.cardSurfaceTransparency > 0},
     {[styles.cardStart]: !props.openStart},
     {[styles.cardEnd]: !props.openEnd},
+    {[styles.cardEndPadding]: !props.openEnd && !props.lastMarginBottom},
     {[boundaryMarginStyles.noTopMargin]: props.atSectionStart},
     {[boundaryMarginStyles.noBottomMargin]: props.atSectionEnd}
   );

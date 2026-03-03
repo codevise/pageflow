@@ -81,6 +81,7 @@ function renderItemGroup(props, box, key) {
             position: box.position,
             width: box.width,
             customMargin: box.customMargin,
+            lastMarginBottom: box.items[box.items.length - 1].marginBottom,
             openStart: box.openStart,
             openEnd: box.openEnd,
             atSectionStart: box.atSectionStart,

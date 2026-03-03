@@ -943,6 +943,70 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('1 2 ]');
       });
     });
+
+    describe('lastMarginBottom prop', () => {
+      const LastMarginBox = function LastMarginBox({lastMarginBottom, children}) {
+        return (
+          <div>{children}{lastMarginBottom ? `(${lastMarginBottom})` : ''}</div>
+        );
+      };
+
+      it('passes lastMarginBottom of last item in two column variant', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline', props: {marginBottom: 'lg'}},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <LastMarginBox {...boxProps}>{children}</LastMarginBox>}
+          </Layout>
+        );
+
+        expect(container.textContent).toContain('(lg)');
+      });
+
+      it('does not pass lastMarginBottom when last item has no margin in two column variant', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline', props: {marginBottom: 'lg'}},
+          {id: 2, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <LastMarginBox {...boxProps}>{children}</LastMarginBox>}
+          </Layout>
+        );
+
+        expect(container.textContent).not.toContain('(');
+      });
+
+      it('passes lastMarginBottom of last item in center variant', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'inline', props: {marginBottom: 'md'}},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, boxProps) => <LastMarginBox {...boxProps}>{children}</LastMarginBox>}
+          </Layout>
+        );
+
+        expect(container.textContent).toContain('(md)');
+      });
+
+      it('does not pass lastMarginBottom when last item has no margin in center variant', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline', props: {marginBottom: 'lg'}},
+          {id: 2, type: 'probe', position: 'inline'},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, boxProps) => <LastMarginBox {...boxProps}>{children}</LastMarginBox>}
+          </Layout>
+        );
+
+        expect(container.textContent).not.toContain('(');
+      });
+    });
   });
 
   describe('floating items in centered variant', () => {
