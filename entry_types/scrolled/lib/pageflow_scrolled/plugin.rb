@@ -30,21 +30,21 @@ module PageflowScrolled
           'xxl' => '16em'
         }
 
-        c.themes.register_default_options(
+        c.themes.register_options_transform(
           ThemeOptionsDefaultScale.new(
             prefix: 'section_padding_top',
             values: padding_scale
           )
         )
 
-        c.themes.register_default_options(
+        c.themes.register_options_transform(
           ThemeOptionsDefaultScale.new(
             prefix: 'section_padding_bottom',
             values: padding_scale
           )
         )
 
-        c.themes.register_default_options(
+        c.themes.register_options_transform(
           ThemeOptionsDefaultScale.new(
             prefix: 'content_element_margin',
             values: margin_scale
@@ -54,16 +54,37 @@ module PageflowScrolled
         c.themes.register_default_options(
           properties: {
             root: {
-              'section_default_padding_top' => '1.375em',
-              'section_default_padding_bottom' => '4.375em',
+              'section_default_padding_top' => 'max(10em, 20svh)',
+              'section_default_padding_bottom' => 'max(10em, 20svh)',
               'content_element_margin_style_default' => '2em'
+            },
+            cards_appearance_section: {
+              'section_default_padding_top' => 'max(10em, 20svh)',
+              'section_default_padding_bottom' => 'max(10em, 20svh)'
+            }
+          }
+        )
+
+        legacy_paddings = {
+          properties: {
+            root: {
+              'section_default_padding_top' => '1.375em',
+              'section_default_padding_bottom' => '4.375em'
             },
             cards_appearance_section: {
               'section_default_padding_top' => '3em',
               'section_default_padding_bottom' => '6em'
             }
           }
-        )
+        }
+
+        c.themes.register_options_transform(lambda { |options, entry:, **|
+          if entry.layout_version
+            options
+          else
+            options.deep_merge(legacy_paddings)
+          end
+        })
 
         c.themes.register_default_options(
           typography: {

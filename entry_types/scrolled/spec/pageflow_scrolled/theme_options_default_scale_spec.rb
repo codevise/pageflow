@@ -26,7 +26,7 @@ module PageflowScrolled
         values: {'none' => '0', 'sm' => '1em'}
       )
 
-      result = transform.call(colors: {accent: '#f00'})
+      result = transform.call({colors: {accent: '#f00'}})
 
       expect(result).to eq(
         colors: {accent: '#f00'},
@@ -46,11 +46,11 @@ module PageflowScrolled
       )
 
       result = transform.call(
-        properties: {
+        {properties: {
           root: {
             'section_padding_top-lg' => '5em'
           }
-        }
+        }}
       )
 
       expect(result).to eq(
@@ -69,11 +69,11 @@ module PageflowScrolled
       )
 
       result = transform.call(
-        properties: {
+        {properties: {
           root: {
             'section_padding_bottom-lg' => '5em'
           }
-        }
+        }}
       )
 
       expect(result).to eq(

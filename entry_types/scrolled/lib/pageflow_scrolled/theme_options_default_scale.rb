@@ -10,7 +10,7 @@ module PageflowScrolled
       @values = values
     end
 
-    def call(options)
+    def call(options, **)
       return options if scale_defined?(options)
 
       options.deep_merge(
