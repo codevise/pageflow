@@ -30,7 +30,7 @@ export function Center(props) {
                                  items={group.items}
                                  customMargin={group.customMargin}>
                   {(item, child, itemIndex) => {
-                    const alignment = group.width < 0 && item.position === 'inline' ? item.alignment : null;
+                    const alignment = getWidth(item) < 0 && item.position === 'inline' ? item.alignment : null;
 
                     return (
                       <div key={item.id}
@@ -62,7 +62,7 @@ function groupItems(items) {
   let currentGroup;
 
   items.forEach(item => {
-    const width = isFloated(item) ? widths.md : getWidth(item);
+    const width = isFloated(item) ? widths.md : groupWidth(item);
     const customMargin = hasCustomMargin(item);
 
     if (!currentGroup ||
@@ -161,6 +161,10 @@ function hasCustomMargin(item) {
   return !!(elementSupportsCustomMargin &&
             position === 'inline' &&
             getWidth(item) < widths.full);
+}
+
+function groupWidth(item) {
+  return Math.max(getWidth(item), widths.md);
 }
 
 function getWidth(item) {

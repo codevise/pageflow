@@ -619,6 +619,21 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('inline xl 1 inline md 2 3 inline full 4 ');
       });
 
+      it('places items with width <= md in the same group', () => {
+        const items = [
+          {id: 1, type: 'probe', position: 'inline', width: -1},
+          {id: 2, type: 'probe', position: 'inline'},
+          {id: 3, type: 'probe', position: 'inline', width: -2},
+        ];
+        const {container} = renderInEntry(
+          <Layout sectionProps={{layout: 'center'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('( 1 2 3 )');
+      });
+
       it('renders consecutive inline items in single box', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
