@@ -102,6 +102,91 @@ describe('configurationContainer', () => {
     expect(model.save).toHaveBeenCalled();
   });
 
+  it('debounces auto save for rapid changes', () => {
+    jest.useFakeTimers();
+    const Model = Backbone.Model.extend({
+      mixins: [configurationContainer({autoSave: true})],
+    });
+    const model = new Model({id: 5, configuration: {some: 'value'}});
+    model.save = jest.fn();
+
+    model.configuration.set('some', 'a');
+    model.configuration.set('some', 'b');
+    model.configuration.set('some', 'c');
+
+    expect(model.save).toHaveBeenCalledTimes(1);
+
+    jest.runAllTimers();
+
+    expect(model.save).toHaveBeenCalledTimes(2);
+    jest.useRealTimers();
+  });
+
+  it('resets trailing save delay on each new change', () => {
+    jest.useFakeTimers();
+    const Model = Backbone.Model.extend({
+      mixins: [configurationContainer({autoSave: true})],
+    });
+    const model = new Model({id: 5, configuration: {some: 'value'}});
+    model.save = jest.fn();
+
+    model.configuration.set('some', 'a');
+    expect(model.save).toHaveBeenCalledTimes(1);
+
+    jest.advanceTimersByTime(300);
+    model.configuration.set('some', 'b');
+
+    jest.advanceTimersByTime(300);
+    expect(model.save).toHaveBeenCalledTimes(1);
+
+    jest.advanceTimersByTime(200);
+    expect(model.save).toHaveBeenCalledTimes(2);
+    jest.useRealTimers();
+  });
+
+  it('does not fire trailing save for single change', () => {
+    jest.useFakeTimers();
+    const Model = Backbone.Model.extend({
+      mixins: [configurationContainer({autoSave: true})],
+    });
+    const model = new Model({id: 5, configuration: {some: 'value'}});
+    model.save = jest.fn();
+
+    model.configuration.set('some', 'other value');
+
+    expect(model.save).toHaveBeenCalledTimes(1);
+
+    jest.runAllTimers();
+
+    expect(model.save).toHaveBeenCalledTimes(1);
+    jest.useRealTimers();
+  });
+
+  it('does not fire trailing save for destroyed model', () => {
+    jest.useFakeTimers();
+    const Model = Backbone.Model.extend({
+      mixins: [
+        configurationContainer({autoSave: true}),
+        delayedDestroying
+      ],
+    });
+    const model = new Model({id: 5, configuration: {some: 'value'}}, {urlRoot: '/models'});
+    model.save = jest.fn();
+
+    model.configuration.set('some', 'a');
+    model.configuration.set('some', 'b');
+
+    expect(model.save).toHaveBeenCalledTimes(1);
+
+    model.destroyWithDelay();
+    testContext.requests[0].respond(204, { 'Content-Type': 'application/json' }, '');
+
+    jest.runAllTimers();
+
+    expect(model.save).toHaveBeenCalledTimes(1);
+    jest.useRealTimers();
+  });
+
   it('does not auto save new model', () => {
     const Model = Backbone.Model.extend({
       mixins: [configurationContainer({autoSave: true})],
