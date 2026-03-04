@@ -60,6 +60,9 @@
 
 .subtitle {
   margin-top: 0.6em;
+}
+
+.defaultSubtitleMargin .subtitle {
   margin-bottom: 2em;
 }
 

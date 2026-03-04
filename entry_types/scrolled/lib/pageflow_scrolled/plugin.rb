@@ -20,6 +20,16 @@ module PageflowScrolled
           'xxxl' => 'max(11em, 30svh)'
         }
 
+        margin_scale = {
+          'xxs' => '2em',
+          'xs' => '3em',
+          'sm' => '4em',
+          'md' => '6em',
+          'lg' => '10em',
+          'xl' => '12em',
+          'xxl' => '16em'
+        }
+
         c.themes.register_default_options(
           ThemeOptionsDefaultScale.new(
             prefix: 'section_padding_top',
@@ -35,10 +45,18 @@ module PageflowScrolled
         )
 
         c.themes.register_default_options(
+          ThemeOptionsDefaultScale.new(
+            prefix: 'content_element_margin',
+            values: margin_scale
+          )
+        )
+
+        c.themes.register_default_options(
           properties: {
             root: {
               'section_default_padding_top' => '1.375em',
-              'section_default_padding_bottom' => '4.375em'
+              'section_default_padding_bottom' => '4.375em',
+              'content_element_margin_style_default' => '2em'
             },
             cards_appearance_section: {
               'section_default_padding_top' => '3em',

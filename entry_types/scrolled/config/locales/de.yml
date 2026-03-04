@@ -247,12 +247,8 @@ de:
           inline_help: Ändere die Darstellung der Beschriftung unterhalb des Element.
           inline_help_disabled: Füge eine Beschriftung unterhalb des Elements hinzu, um zwischen Varianten zu wählen.
           blank: "(Standard)"
-        marginTop:
-          label: "Abstand oben"
-          blank: "(Automatisch)"
-        marginBottom:
-          label: "Abstand unten"
-          blank: "(Automatisch)"
+        styles:
+          label: "Stile"
         fullWidthInPhoneLayout:
           label: "Volle Breite im Phone-Layout"
           inline_help: |-
@@ -1417,6 +1413,14 @@ de:
           xxxl: XXXL
         contentElementBoxBorderRadius:
           none: Keine
+        contentElementMargin:
+          xxs: XXS
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+          xxl: XXL
       content_element_text_inline_file_rights_attributes:
         showTextInlineFileRightsBackdrop:
           label: "Abblendung hinter Rechteangabe"
@@ -1452,6 +1456,11 @@ de:
         square: Quadratisch (1:1)
         wide: Landscape (16:9)
         original: Original
+      content_element_style_list_input:
+        add: "Stil hinzufügen..."
+        remove: "Stil entfernen"
+        marginTop: "Abstand oben"
+        marginBottom: "Abstand unten"
       image_modifier_list_input:
         add: "Stil hinzufügen..."
         remove: "Stil entfernen"
@@ -1885,4 +1894,6 @@ de:
       remove_link: "Link entfernen"
       edit_section_padding_top: Oberen Abstand bearbeiten
       edit_section_padding_bottom: Unteren Abstand bearbeiten
+      content_element_margin_top: Oberer Außenabstand
+      content_element_margin_bottom: Unterer Außenabstand
       expose_motif_area: Motiv freilegen

@@ -19,6 +19,8 @@ export function ContentElements(props) {
                             position={item.position}
                             width={item.width}
                             itemProps={item.props}
+                            marginBottom={item.marginBottom}
+                            previousMarginBottom={item.previousMarginBottom}
                             customMargin={props.customMargin}
                             sectionProps={props.sectionProps} />
           ),

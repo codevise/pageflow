@@ -1,5 +1,6 @@
 .wrapper {
-  margin: 1em 0 0 0;
+  --collapsed-margin-top: max(var(--margin-top, 1em), var(--prev-margin-bottom, 1em));
+  margin: var(--collapsed-margin-top) 0 var(--margin-bottom, 0px) 0;
 }
 
 .noTopMargin {

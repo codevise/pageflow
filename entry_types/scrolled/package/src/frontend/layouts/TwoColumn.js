@@ -81,6 +81,7 @@ function renderItemGroup(props, box, key) {
             position: box.position,
             width: box.width,
             customMargin: box.customMargin,
+            lastMarginBottom: box.items[box.items.length - 1].marginBottom,
             openStart: box.openStart,
             openEnd: box.openEnd,
             atSectionStart: box.atSectionStart,
@@ -109,9 +110,11 @@ function RestrictWidth({width, alignment, children}) {
 function groupItemsByPosition(items, shouldInline, isContentPadded) {
   const groups = [];
 
-  let lastInlineBox = null;
-  let firstInlineBox = null;
   let currentGroup, currentBox;
+  let firstInlineBox = null;
+  let previousInlineBox = null;
+  let previousInlineItem = null;
+  let previousMarginBottom = null;
 
   items.reduce((previousPosition, item, index) => {
     let {customMargin: elementSupportsCustomMargin} =
@@ -154,28 +157,31 @@ function groupItemsByPosition(items, shouldInline, isContentPadded) {
         items: []
       };
 
-      if (lastInlineBox && position === 'inline' && width <= widths.md && !customMargin) {
-        lastInlineBox.openEnd = true;
-        currentBox.openStart = true;
-      }
+      if (position === 'inline') {
+        if (!continueInlineBoxes(previousInlineBox, currentBox)) {
+          previousMarginBottom = null;
+        }
 
-      if (position === 'inline' && width <= widths.md && !customMargin) {
-        lastInlineBox = currentBox;
-      }
-      else if ((position === 'inline' && width > widths.md) ||
-               (customMargin && !onTheSide(position))) {
-        lastInlineBox = null;
-      }
-
-      if (position === 'inline' && !firstInlineBox) {
-        currentBox.atSectionStart = !isContentPadded;
-        firstInlineBox = currentBox;
+        markFirstInlineBoxAsAtSectionStart(currentBox);
       }
 
       currentGroup.boxes.push(currentBox)
     }
 
+    item = {
+      ...item,
+      marginBottom: item.props?.marginBottom
+    };
+
     currentBox.items.push(item);
+
+    if (position === 'inline') {
+      assignPreviousMarginBottom(previousInlineItem, item);
+
+      previousInlineItem = item;
+      previousInlineBox = currentBox;
+    }
+
     return position;
   }, null);
 
@@ -184,6 +190,47 @@ function groupItemsByPosition(items, shouldInline, isContentPadded) {
   }
 
   return groups;
+
+  function markFirstInlineBoxAsAtSectionStart(inlineBox) {
+    if (!firstInlineBox) {
+      inlineBox.atSectionStart = !isContentPadded;
+      firstInlineBox = currentBox;
+    }
+  }
+
+  function assignPreviousMarginBottom(previousInlineItem, item) {
+    if (previousMarginBottom) {
+      item.previousMarginBottom = previousMarginBottom;
+
+      previousInlineItem.marginBottom = null;
+      previousMarginBottom = null;
+    }
+
+    if (item.marginBottom) {
+      previousMarginBottom = item.marginBottom;
+    }
+  }
+}
+
+function continueInlineBoxes(previousInlineBox, currentBox) {
+  if (previousInlineBox &&
+      isContinuable(previousInlineBox) &&
+      isContinuable(currentBox)) {
+
+    previousInlineBox.openEnd = true;
+    currentBox.openStart = true;
+
+    return true;
+  }
+
+  return false;
+}
+
+function isContinuable(box) {
+  return (
+    box.width <= widths.md &&
+    !box.customMargin
+  );
 }
 
 function onTheSide(position) {

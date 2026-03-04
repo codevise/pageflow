@@ -241,12 +241,8 @@ en:
           inline_help: Switch between different looks of the caption below the element.
           inline_help_disabled: Add a caption below the element to switch between different looks.
           blank: "(Default)"
-        marginTop:
-          label: "Margin top"
-          blank: "(Auto)"
-        marginBottom:
-          label: "Margin bottom"
-          blank: "(Auto)"
+        styles:
+          label: "Styles"
         fullWidthInPhoneLayout:
           label: "Full width in phone layout"
           inline_help: |-
@@ -1401,6 +1397,14 @@ en:
           xxxl: XXXL
         contentElementBoxBorderRadius:
           none: None
+        contentElementMargin:
+          xxs: XXS
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+          xxl: XXL
       content_element_text_inline_file_rights_attributes:
         showTextInlineFileRightsBackdrop:
           label: "Backdrop behind inline file rights"
@@ -1436,6 +1440,11 @@ en:
         square: Square (1:1)
         wide: Landscape (16:9)
         original: Original
+      content_element_style_list_input:
+        add: "Add style..."
+        remove: "Remove style"
+        marginTop: "Margin top"
+        marginBottom: "Margin bottom"
       image_modifier_list_input:
         add: "Add style..."
         remove: "Remove style"
@@ -1715,4 +1724,6 @@ en:
       remove_link: "Remove link"
       edit_section_padding_top: Edit top padding
       edit_section_padding_bottom: Edit bottom padding
+      content_element_margin_top: Top margin
+      content_element_margin_bottom: Bottom margin
       expose_motif_area: Expose motif

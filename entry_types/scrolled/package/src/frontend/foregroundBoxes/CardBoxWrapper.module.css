@@ -8,10 +8,9 @@
   --theme-first-heading-landscape-padding-top: 0;
 
   composes: scope-cardsAppearance from global;
+  display: flow-root;
   position: relative;
   padding: 0 1.5em;
-  margin-top: -1px;
-  padding-top: 1px;
 }
 
 .card::before {
@@ -24,31 +23,15 @@
   z-index: -1;
 }
 
-.selfClear-left::after,
-.selfClear-right::after,
-.selfClear-both::after {
-  content: '';
-  display: block;
-}
-
-.selfClear-left::after {
-  clear: left;
-}
-
-.selfClear-right::after {
-  clear: right;
-}
-
-.selfClear-both::after {
-  clear: both;
-}
-
 .cardStart {
   margin-top: 3em;
 }
 
 .cardEnd {
   margin-bottom: 3em;
+}
+
+.cardEndPadding {
   padding-bottom: 1.5em;
 }
 
@@ -56,6 +39,7 @@
   border-top-left-radius: var(--theme-cards-border-radius, 15px);
   border-top-right-radius: var(--theme-cards-border-radius, 15px);
 }
+
 
 .cardEnd::before {
   border-bottom-left-radius: var(--theme-cards-border-radius, 15px);

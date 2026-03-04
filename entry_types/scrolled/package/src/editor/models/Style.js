@@ -35,6 +35,18 @@ export const Style = Backbone.Model.extend({
     return this.types[this.get('name')].maxValue;
   },
 
+  values() {
+    return this.types[this.get('name')].values;
+  },
+
+  texts() {
+    return this.types[this.get('name')].texts;
+  },
+
+  propertyName() {
+    return this.types[this.get('name')].propertyName;
+  },
+
   inputType() {
     return this.types[this.get('name')].inputType || 'none';
   }
@@ -112,6 +124,36 @@ Style.effectTypes = {
     defaultValue: '#ffffff'
   }
 };
+
+Style.getTypesForContentElement = function({entry, contentElement}) {
+  const marginScale = entry.getScale('contentElementMargin');
+  const defaultConfig = contentElement.getType().defaultConfig || {};
+  const result = {};
+
+  if (marginScale.values.length > 0) {
+    result.marginTop = {
+      label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginTop'),
+      propertyName: 'marginTop',
+      inputType: 'slider',
+      values: marginScale.values,
+      texts: marginScale.texts,
+      defaultValue: marginScale.defaultValue,
+      ...('marginTop' in defaultConfig && {resetValue: defaultConfig.marginTop})
+    };
+
+    result.marginBottom = {
+      label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginBottom'),
+      propertyName: 'marginBottom',
+      inputType: 'slider',
+      values: marginScale.values,
+      texts: marginScale.texts,
+      defaultValue: marginScale.defaultValue,
+      ...('marginBottom' in defaultConfig && {resetValue: defaultConfig.marginBottom})
+    };
+  }
+
+  return result;
+}
 
 Style.getImageModifierTypes = function({entry}) {
   const [values, labels] = entry.getAspectRatios();

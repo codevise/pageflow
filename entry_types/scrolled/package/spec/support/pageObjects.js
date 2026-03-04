@@ -82,7 +82,9 @@ export function useInlineEditingPageObjects() {
     'pageflow_scrolled.inline_editing.edit_section_padding_bottom': 'Edit bottom padding',
     'pageflow_scrolled.inline_editing.expose_motif_area': 'Expose motif area',
     'pageflow_scrolled.inline_editing.padding_suppressed_before_full_width': 'Padding suppressed before full width element',
-    'pageflow_scrolled.inline_editing.padding_suppressed_after_full_width': 'Padding suppressed after full width element'
+    'pageflow_scrolled.inline_editing.padding_suppressed_after_full_width': 'Padding suppressed after full width element',
+    'pageflow_scrolled.inline_editing.content_element_margin_top': 'Top margin',
+    'pageflow_scrolled.inline_editing.content_element_margin_bottom': 'Bottom margin'
   });
 
   usePageObjects();
@@ -278,7 +280,17 @@ function createContentElementPageObject(el) {
 
     getMarginTop() {
       const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
-      return wrapper && wrapper.style.marginTop;
+      return wrapper && wrapper.style.getPropertyValue('--margin-top');
+    },
+
+    getMarginBottom() {
+      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
+      return wrapper && wrapper.style.getPropertyValue('--margin-bottom');
+    },
+
+    getPrevMarginBottom() {
+      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
+      return wrapper && wrapper.style.getPropertyValue('--prev-margin-bottom');
     },
 
     hasScrollSpace() {
@@ -309,6 +321,15 @@ function createContentElementPageObject(el) {
     isFitViewportOpaque() {
       const container = el.querySelector(`.${fitViewportStyles.container}`);
       return container?.classList.contains(fitViewportStyles.opaque);
+    },
+
+    getMarginIndicator(position) {
+      const {getByLabelText} = within(selectionRect);
+      const labels = {
+        top: 'Top margin',
+        bottom: 'Bottom margin'
+      };
+      return getByLabelText(labels[position]);
     },
 
     select() {

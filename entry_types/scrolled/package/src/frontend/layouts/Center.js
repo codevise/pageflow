@@ -11,35 +11,45 @@ import styles from './Center.module.css';
 const floatedPositions = ['left', 'right'];
 
 export function Center(props) {
+  const groups = groupItems(props.items);
 
   return (
     <div className={classNames(styles.root)}>
       <div ref={props.contentAreaRef} />
-      {props.items.map((item, index) => {
-        const customMargin = hasCustomMargin(item);
-        const position = item.position;
-        const width = getWidth(item);
-        const alignment = width < 0 && item.position === 'inline' ? item.alignment : null;
 
+      {groups.map((group, groupIndex) => {
         return (
-          <ContentElements key={item.id} sectionProps={props.sectionProps} items={[item]} customMargin={customMargin}>
-            {(item, child) =>
-              <div key={item.id} className={outerClassName(props.items, index)}>
-                <div className={classNames(styles.item,
-                                           styles[`item-${position}-${widthName(width)}`])}>
-                  {props.children(
-                    <div className={classNames(styles[`inner-${item.position}`],
-                                               styles[`inner-${widthName(width)}`],
-                                               styles[`align-${alignment}`],
-                                               {[styles[`sideBySide`]]: sideBySideFloat(props.items, index)})}>
-                      {child}
-                    </div>,
-                    boxProps(props.items, item, index, props.isContentPadded)
-                  )}
-                </div>
-              </div>
-            }
-          </ContentElements>
+          <div key={groupIndex}
+               className={classNames(styles.outer,
+                                     styles[`outer-${widthName(group.width)}`],
+                                     {[styles.customMargin]: group.customMargin})}>
+            <div className={classNames(styles.box,
+                                       styles[`box-${widthName(group.width)}`])}>
+              {props.children(
+                <ContentElements sectionProps={props.sectionProps}
+                                 items={group.items}
+                                 customMargin={group.customMargin}>
+                  {(item, child, itemIndex) => {
+                    const alignment = getWidth(item) < 0 && item.position === 'inline' ? item.alignment : null;
+
+                    return (
+                      <div key={item.id}
+                           className={classNames(styles[`selfClear-${selfClear(group.items, itemIndex)}`])}>
+                        <div className={classNames(styles[`inner-${item.position}`],
+                                                   styles[`inner-${widthName(item.width)}`],
+                                                   styles[`align-${alignment}`],
+                                                   {[styles.clear]: clearItem(group.items, itemIndex)},
+                                                   {[styles[`sideBySide`]]: sideBySideFloat(group.items, itemIndex)})}>
+                          {child}
+                        </div>
+                      </div>
+                    );
+                  }}
+                </ContentElements>,
+                boxProps(groups, groupIndex, props.isContentPadded)
+              )}
+            </div>
+          </div>
         );
       })}
       {renderPlaceholder(props.placeholder)}
@@ -47,43 +57,42 @@ export function Center(props) {
   );
 }
 
-function outerClassName(items, index) {
-  const item = items[index];
+function groupItems(items) {
+  const groups = [];
+  let currentGroup;
 
-  return classNames(
-    styles.outer,
-    styles[`outer-${widthName(getWidth(item))}`],
-    {[styles.customMargin]: hasCustomMargin(item)},
-    {[styles.clear]: clearItem(items, index)}
-  );
+  items.forEach(item => {
+    const width = isFloated(item) ? widths.md : groupWidth(item);
+    const customMargin = hasCustomMargin(item);
+
+    if (!currentGroup ||
+        (currentGroup.width !== width) ||
+        currentGroup.customMargin !== customMargin) {
+      currentGroup = {items: [], position: 'inline', width, customMargin};
+      groups.push(currentGroup);
+    }
+
+    currentGroup.items.push({
+      ...item,
+      marginBottom: item.props?.marginBottom
+    });
+  });
+
+  return groups;
 }
 
-function boxProps(items, item, index, isContentPadded) {
-  const previous = items[index - 1];
-  const next = items[index + 1];
-  const customMargin = hasCustomMargin(item);
-  const width = getWidth(item);
+function boxProps(groups, index, isContentPadded) {
+  const group = groups[index];
+  const lastItem = group.items[group.items.length - 1];
 
   return {
-    position: item.position,
-    width,
-    customMargin,
-    selfClear: selfClear(items, index),
-    openStart: previous &&
-               !customMargin &&
-               !hasCustomMargin(previous) &&
-               !isWideOrFull(item) && !isWideOrFull(previous),
-    openEnd: next &&
-             !customMargin &&
-             !hasCustomMargin(next) &&
-             !isWideOrFull(item) && !isWideOrFull(next),
+    position: group.position,
+    width: group.width,
+    customMargin: group.customMargin,
+    lastMarginBottom: lastItem.marginBottom,
     atSectionStart: index === 0 && !isContentPadded,
-    atSectionEnd: index === items.length - 1
+    atSectionEnd: index === groups.length - 1
   }
-}
-
-function isWideOrFull(item) {
-  return item.position === 'inline' && getWidth(item) > widths.md;
 }
 
 function selfClear(items, index) {
@@ -154,6 +163,10 @@ function hasCustomMargin(item) {
   return !!(elementSupportsCustomMargin &&
             position === 'inline' &&
             getWidth(item) < widths.full);
+}
+
+function groupWidth(item) {
+  return Math.max(getWidth(item), widths.md);
 }
 
 function getWidth(item) {

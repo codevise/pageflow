@@ -11,22 +11,76 @@ import styles from './StyleListInputView.module.css';
 
 export const StyleListInputView = Marionette.ItemView.extend({
   className: styles.view,
-  template: () => '',
+  template: () => `
+    <label>
+      <span class="name"></span>
+      <span class="inline_help"></span>
+    </label>`,
 
   mixins: [inputView],
 
   initialize() {
     this.styles = new StylesCollection(
-      this.model.get(this.options.propertyName),
+      this.readFromModel(),
       {types: this.options.types}
     );
 
     this.listenTo(this.styles, 'add remove change', () => {
-      this.model.set(this.options.propertyName, this.styles.toJSON());
+      this.saveToModel();
     });
   },
 
+  readFromModel() {
+    const serialized = this.model.get(this.options.propertyName) || [];
+
+    const fromProperties = Object.entries(this.options.types)
+      .filter(([, type]) => {
+        if (!type.propertyName || !this.model.has(type.propertyName)) {
+          return false;
+        }
+
+        return !type.values || type.values.includes(this.model.get(type.propertyName));
+      })
+      .map(([name, type]) => ({name, value: this.model.get(type.propertyName)}));
+
+    return [...serialized, ...fromProperties];
+  },
+
+  saveToModel() {
+    const serialized = [];
+    const setProperties = new Set();
+
+    this.styles.each(style => {
+      const propertyName = style.propertyName();
+
+      if (propertyName) {
+        this.model.set(propertyName, style.get('value'));
+        setProperties.add(propertyName);
+      }
+      else {
+        serialized.push(style.toJSON());
+      }
+    });
+
+    Object.values(this.options.types).forEach(type => {
+      if (type.propertyName && !setProperties.has(type.propertyName)) {
+        if ('resetValue' in type) {
+          this.model.set(type.propertyName, type.resetValue);
+        }
+        else {
+          this.model.unset(type.propertyName);
+        }
+      }
+    });
+
+    this.model.set(this.options.propertyName, serialized);
+  },
+
   onRender() {
+    if (this.options.hideLabel) {
+      this.$el.addClass(styles.negativeMarginTop);
+    }
+
     this.appendSubview(new CollectionView({
       itemViewConstructor: StyleListItemView,
       itemViewOptions: {
@@ -79,25 +133,54 @@ const StyleListItemView = Marionette.ItemView.extend({
       this.options.styles.remove(this.model);
     },
 
-    'slidechange widget': function() {
-      const value = this.ui.widget.slider('option', 'value');
+    'slide widget': function(event, ui) {
+      const values = this.model.values();
 
-      this.ui.value.text(value);
-      this.model.set('value', value);
+      if (values) {
+        this.ui.value.text(this.model.texts()[ui.value]);
+        this.model.set('value', values[ui.value]);
+      }
+    },
+
+    'slidechange widget': function() {
+      if (!this.model.values()) {
+        const value = this.ui.widget.slider('option', 'value');
+
+        this.ui.value.text(value);
+        this.model.set('value', value);
+      }
     }
   }),
 
   onRender() {
     this.$el.addClass(styles[`input-${this.model.inputType()}`]);
-    this.ui.widget.toggleClass(styles.centerZero, this.model.minValue() < 0);
 
-    this.ui.widget.slider({
-      animate: 'fast',
-      min: this.model.minValue(),
-      max: this.model.maxValue()
-    });
+    const values = this.model.values();
 
-    this.ui.widget.slider('option', 'value', this.model.get('value') || 50);
+    if (values) {
+      this.ui.widget.slider({
+        animate: 'fast',
+        min: 0,
+        max: values.length - 1
+      });
+
+      const storedValue = this.model.get('value') || this.model.defaultValue();
+      const index = values.indexOf(storedValue);
+
+      this.ui.widget.slider('option', 'value', index);
+      this.ui.value.text(this.model.texts()[index]);
+    }
+    else {
+      this.ui.widget.toggleClass(styles.centerZero, this.model.minValue() < 0);
+
+      this.ui.widget.slider({
+        animate: 'fast',
+        min: this.model.minValue(),
+        max: this.model.maxValue()
+      });
+
+      this.ui.widget.slider('option', 'value', this.model.get('value') || 50);
+    }
 
     const colorInput = this.ui.colorInput[0];
 
