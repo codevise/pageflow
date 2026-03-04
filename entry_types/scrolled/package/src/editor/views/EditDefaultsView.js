@@ -1,8 +1,6 @@
 import I18n from 'i18n-js';
 import {EditConfigurationView, InfoBoxView} from 'pageflow/editor';
 import {CheckBoxInputView, SelectInputView, SliderInputView} from 'pageflow/ui';
-import {features} from 'pageflow/frontend';
-
 import {editor} from '../api';
 import {ContentElementTypeSeparatorView} from './ContentElementTypeSeparatorView';
 import {SectionPaddingVisualizationView} from './inputs/SectionPaddingVisualizationView';
@@ -32,32 +30,30 @@ export const EditDefaultsView = EditConfigurationView.extend({
         values: ['shadow', 'cards', 'transparent']
       });
 
-      if (features.isEnabled('section_paddings')) {
-        const paddingTopScale = entry.getScale('sectionPaddingTop');
-        const paddingBottomScale = entry.getScale('sectionPaddingBottom');
+      const paddingTopScale = entry.getScale('sectionPaddingTop');
+      const paddingBottomScale = entry.getScale('sectionPaddingBottom');
 
-        this.input('topPaddingVisualization', SectionPaddingVisualizationView, {
-          variant: 'topPadding'
-        });
-        this.input('defaultSectionPaddingTop', SliderInputView, {
-          hideLabel: true,
-          icon: paddingTopIcon,
-          values: paddingTopScale.values,
-          texts: paddingTopScale.texts,
-          defaultValue: paddingTopScale.defaultValue
-        });
+      this.input('topPaddingVisualization', SectionPaddingVisualizationView, {
+        variant: 'topPadding'
+      });
+      this.input('defaultSectionPaddingTop', SliderInputView, {
+        hideLabel: true,
+        icon: paddingTopIcon,
+        values: paddingTopScale.values,
+        texts: paddingTopScale.texts,
+        defaultValue: paddingTopScale.defaultValue
+      });
 
-        this.input('bottomPaddingVisualization', SectionPaddingVisualizationView, {
-          variant: 'bottomPadding'
-        });
-        this.input('defaultSectionPaddingBottom', SliderInputView, {
-          hideLabel: true,
-          icon: paddingBottomIcon,
-          values: paddingBottomScale.values,
-          texts: paddingBottomScale.texts,
-          defaultValue: paddingBottomScale.defaultValue
-        });
-      }
+      this.input('bottomPaddingVisualization', SectionPaddingVisualizationView, {
+        variant: 'bottomPadding'
+      });
+      this.input('defaultSectionPaddingBottom', SliderInputView, {
+        hideLabel: true,
+        icon: paddingBottomIcon,
+        values: paddingBottomScale.values,
+        texts: paddingBottomScale.texts,
+        defaultValue: paddingBottomScale.defaultValue
+      });
     });
 
     configurationEditor.tab('content_elements', function() {

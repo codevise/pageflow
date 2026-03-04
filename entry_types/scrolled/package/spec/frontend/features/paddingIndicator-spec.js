@@ -1,7 +1,6 @@
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
 import {fakeParentWindow} from 'support';
 import {useMotifAreaState} from 'frontend/v1/useMotifAreaState';
-import {features} from 'pageflow/frontend';
 import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('frontend/v1/useMotifAreaState');
@@ -11,7 +10,6 @@ describe('PaddingIndicator', () => {
 
   beforeEach(() => {
     fakeParentWindow();
-    features.enable('frontend', ['section_paddings']);
   });
 
   it('displays scale translation for top padding when section is selected', () => {

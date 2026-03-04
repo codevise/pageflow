@@ -123,14 +123,10 @@ de:
                   name: 360° Bilder
     decoration_effects:
       feature_name: Dekoration-Effekte
-    content_element_margins:
-      feature_name: "Element Margins"
     icon_scroll_indicator:
       feature_name: Icon Scroll-Indikator
     iconScrollIndicator:
       widget_type_name: Icon unten am Viewport-Rand
-    section_paddings:
-      feature_name: "Abschnittsinnenabstände"
   pageflow_scrolled:
     editor:
       backdrop_effects:
@@ -1241,12 +1237,8 @@ de:
             label: Hintergrund-Video (Hochkant)
           dynamicShadowOpacity:
             inline_help: Intensität der Abblendung, die - gesteuert durch die Scrollposition - hinter dem Text eingeblendet wird, sobald sich Motivbereich und Inhalt des Abschnitts zu überschneiden beginnen, um einen ausreichnenden Kontrast zu gewährleisten. Beachte, dass diese Abblendung nur sichtbar ist, wenn Motivbereich und Inhalt nicht nebeneinander dargestellt werden können. Wechsle am besten in die Phone-Vorschau, wenn du den eingestellten Wert veränderst.
-            inline_help_disabled: Aktiviere "Motivbereich freilegen" weiter oben, um diese Einstellung zu verwenden.
+            inline_help_disabled: Setze den oberen Innenabstand in den Abstandseinstellungen des Abschnitts auf "Automatisch anpassen", um diese Einstellung zu verwenden.
             label: Dynamische Abblendung
-          exposeMotifArea:
-            inline_help: Sicherstellen, dass der markierte Motivbereich des Hintergrunds beim Erreichen des Abschnitts sichtbar ist und nicht von anderen Elementen überlagert wird. Wenn Motivbereich und Inhalt des Abschnitts nicht nebeneiner dargestellt werden können, wird zusätzlicher Freiraum am Anfang des Abschnitts eingefügt und der Inhalt nach unten verschoben.
-            inline_help_disabled: Wähle "Motivbereich markieren" im Drei-Punkte-Menü des Hintergrund-Bilds/Videos weiter oben, um diese Funktion zu verwenden. du kannst damit sicherzustellen, dass wichtige Teile des Hintegrunds nicht von anderen Elementen überdeckt werden.
-            label: Motivbereich freilegen
           fullHeight:
             inline_help: Aktiviere diese Einstellung, wenn der Hintergrund des Abschnitts (z.B. Bild, Farbfläche oder Hintergrundvideo) so groß angezeigt werden soll, dass das gesamte Browserfenster (der sogenannte Viewport) gefüllt ist. Wenn du mit kurzen Abschnitten arbeiten möchtest, musst du diese Option deaktivieren. Dann nimmt der Abschnitt und sein Hintergrund vertikal nur so viel Platz ein, wie für den Inhalt des Abschnitts unbedingt nötig ist. Es können dann mehrere Abschnitte mit verschiedenen Hintergründen gleichzeitig auf dem Bildschirm des Nutzers sichtbar sein. Um einen Überblendeffekt zwischen den Hintergründen zweier Abschnitte verwenden zu können, muss diese Option für beide Abschnitte aktiviert sein.
             label: Volle Viewport-Höhe
@@ -1646,10 +1638,11 @@ de:
              rechts neben dem Text dargestellt werden kann, so wird
              kein zusätzlicher Abstand oberhalb des Texts eingefügt.
 
-             Deaktiviere die Option **Motivbereich freilegen**, falls
-             der Bildauschnitt zwar passend zum Motivbereich gewählt
-             werden soll, der Inhalt des Abschnitts das Motiv aber
-             überlagern darf.
+             Wähle in den Abstandseinstellungen des Abschnitts beim
+             oberen Innenabstand die Option **Manuell festlegen**,
+             falls der Bildauschnitt zwar passend zum Motivbereich
+             gewählt werden soll, der Inhalt des Abschnitts das Motiv
+             aber überlagern darf.
 
           Der Motivbereich kann über den Menüpunkt **Bildmotiv
           markieren** der **Hintergrund-Bild**- und **Hintergrund

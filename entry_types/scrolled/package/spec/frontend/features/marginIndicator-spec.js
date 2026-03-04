@@ -1,6 +1,5 @@
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
 import {fakeParentWindow} from 'support';
-import {features} from 'pageflow/frontend';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('MarginIndicator', () => {
@@ -8,7 +7,6 @@ describe('MarginIndicator', () => {
 
   beforeEach(() => {
     fakeParentWindow();
-    features.enable('frontend', ['content_element_margins']);
   });
 
   it('displays scale translation for top margin when element is selected', () => {

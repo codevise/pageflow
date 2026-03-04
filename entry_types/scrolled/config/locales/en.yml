@@ -123,14 +123,10 @@ en:
                   name: 360° images
     decoration_effects:
       feature_name: Decoration Effects
-    content_element_margins:
-      feature_name: "Element Margins"
     icon_scroll_indicator:
       feature_name: Icon Scroll Indicator
     iconScrollIndicator:
       widget_type_name: Icon at bottom of viewport
-    section_paddings:
-      feature_name: "Section paddings"
   pageflow_scrolled:
     editor:
       backdrop_effects:
@@ -1225,12 +1221,8 @@ en:
             label: Background-Video (Portrait)
           dynamicShadowOpacity:
             inline_help: Intensity of the shadow which is faded in behind the text to ensure contrast when content is scrolled to intersect with the motif area. Note that this shadow is only visible if motif area and section content do not fit side by side. It's best to switch to phone preview when adjusting this value.
-            inline_help_disabled: Activate "Expose motif area" above to use this setting.
+            inline_help_disabled: Set top padding to "Adjust automatically" in the section's padding settings to use this option.
             label: Dynamic shadow
-          exposeMotifArea:
-            inline_help: Ensure the selected motif area of the background asset is visible and not covered by other elements when first reaching the section. If motif area and section content do not fit side by side, extra space will be inserted at the top of the section to move content down.
-            inline_help_disabled: Click "Select motif area" in the "three dots" menu of the background image/video field above to use this feature. It let's you make sure important parts of the backdrop asset won't be hidden by other elements.
-            label: Expose motif area
           fullHeight:
             inline_help: Activate this option if the background of this section (e.g. image, color or video) is supposed to be enlarged such that the whole browser window (the so called viewport) is covered. Deactivate this option to create a short section. The height of the section and its background is then determined only by the content of the section.  Multiple sections with different backgrounds can then be visible at once on the user's screen. This option needs to be activated for two adjacent sections to be able to use a fade transition between them.
             label: Use Full Viewport-Height

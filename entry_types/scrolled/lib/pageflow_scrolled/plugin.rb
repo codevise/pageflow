@@ -195,9 +195,7 @@ module PageflowScrolled
         c.features.register('backdrop_content_elements')
         c.features.register('custom_palette_colors')
         c.features.register('decoration_effects')
-        c.features.register('content_element_margins')
         c.features.register('backdrop_size')
-        c.features.register('section_paddings')
 
         c.features.register('faq_page_structured_data') do |feature_config|
           feature_config.entry_structured_data_types.register(

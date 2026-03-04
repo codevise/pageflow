@@ -1,8 +1,6 @@
 import React from 'react';
 import {useDrag} from 'react-dnd';
 
-import {features} from 'pageflow/frontend';
-
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useI18n} from '../i18n';
 import {api} from '../api';
@@ -81,10 +79,6 @@ function DefaultSelectionRect(props) {
 }
 
 function renderMarginIndicators(props) {
-  if (!features.isEnabled('content_element_margins')) {
-    return null;
-  }
-
   return (
     <>
       <MarginIndicator marginValue={props.itemProps?.marginTop} position="top" />

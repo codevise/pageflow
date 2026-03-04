@@ -2,7 +2,6 @@ import '@testing-library/jest-dom/extend-expect';
 import {fireEvent} from '@testing-library/react';
 
 import {EditDefaultsView} from 'editor/views/EditDefaultsView';
-import {features} from 'pageflow/frontend';
 import {CheckBoxInputView} from 'pageflow/ui';
 
 import {ConfigurationEditor, useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
@@ -99,50 +98,46 @@ describe('EditDefaultsView', () => {
     expect(getByText('Changes to these settings have no effect on existing elements.')).toBeInTheDocument();
   });
 
-  describe('with section_paddings feature flag', () => {
-    beforeEach(() => features.enable('frontend', ['section_paddings']));
+  it('contains defaultSectionPaddingTop slider input', () => {
+    const entry = createEntry({});
 
-    it('contains defaultSectionPaddingTop slider input', () => {
-      const entry = createEntry({});
-
-      const view = new EditDefaultsView({
-        model: entry.metadata,
-        entry
-      });
-
-      view.render();
-      const configurationEditor = ConfigurationEditor.find(view);
-
-      expect(configurationEditor.inputPropertyNames()).toContain('defaultSectionPaddingTop');
+    const view = new EditDefaultsView({
+      model: entry.metadata,
+      entry
     });
 
-    it('contains defaultSectionPaddingBottom slider input', () => {
-      const entry = createEntry({});
+    view.render();
+    const configurationEditor = ConfigurationEditor.find(view);
 
-      const view = new EditDefaultsView({
-        model: entry.metadata,
-        entry
-      });
+    expect(configurationEditor.inputPropertyNames()).toContain('defaultSectionPaddingTop');
+  });
 
-      view.render();
-      const configurationEditor = ConfigurationEditor.find(view);
+  it('contains defaultSectionPaddingBottom slider input', () => {
+    const entry = createEntry({});
 
-      expect(configurationEditor.inputPropertyNames()).toContain('defaultSectionPaddingBottom');
+    const view = new EditDefaultsView({
+      model: entry.metadata,
+      entry
     });
 
-    it('shows padding visualizations', () => {
-      const entry = createEntry({});
+    view.render();
+    const configurationEditor = ConfigurationEditor.find(view);
 
-      const view = new EditDefaultsView({
-        model: entry.metadata,
-        entry
-      });
+    expect(configurationEditor.inputPropertyNames()).toContain('defaultSectionPaddingBottom');
+  });
 
-      const {getByRole} = renderBackboneView(view);
+  it('shows padding visualizations', () => {
+    const entry = createEntry({});
 
-      expect(getByRole('img', {name: 'TopPadding'})).toBeInTheDocument();
-      expect(getByRole('img', {name: 'Bottom'})).toBeInTheDocument();
+    const view = new EditDefaultsView({
+      model: entry.metadata,
+      entry
     });
+
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('img', {name: 'TopPadding'})).toBeInTheDocument();
+    expect(getByRole('img', {name: 'Bottom'})).toBeInTheDocument();
   });
 
   describe('with content element type defaultsInputs', () => {

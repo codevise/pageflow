@@ -3,17 +3,12 @@ import {act} from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
 
-import {features} from 'pageflow/frontend';
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 import {useMotifAreaState} from 'frontend/v1/useMotifAreaState';
 jest.mock('frontend/usePortraitOrientation');
 jest.mock('frontend/v1/useMotifAreaState');
 
 describe('section padding', () => {
-  beforeEach(() => {
-    features.enable('frontend', ['section_paddings']);
-  });
-
   useInlineEditingPageObjects();
 
   it('does not suppress top padding by default', () => {
