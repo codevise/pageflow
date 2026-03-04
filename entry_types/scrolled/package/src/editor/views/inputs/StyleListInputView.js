@@ -100,10 +100,11 @@ export const StyleListInputView = Marionette.ItemView.extend({
     }));
 
     const update = () =>
-      this.$el.toggleClass(styles.allUsed, unusedStyles.length === 0);
+      this.$el.toggleClass(styles.allUsed,
+                           unusedStyles.where({hidden: false}).length === 0);
 
     update();
-    this.listenTo(unusedStyles, 'add remove', update);
+    this.listenTo(unusedStyles, 'change:hidden', update);
   }
 });
 

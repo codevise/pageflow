@@ -364,6 +364,61 @@ describe('StyleListInputView', () => {
     expect(model.has('marginTop')).toBe(false);
   });
 
+  it('applies allUsed class when all styles are in use', () => {
+    const types = {
+      blur: {
+        label: 'Blur',
+        minValue: 0,
+        maxValue: 100,
+        defaultValue: 50,
+        kind: 'filter',
+        inputType: 'slider'
+      }
+    };
+    const model = new Backbone.Model({styles: [
+      {name: 'blur', value: 30}
+    ]});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    render(view);
+
+    expect(view.el).toHaveClass(styles.allUsed);
+  });
+
+  it('removes allUsed class when style is removed', async () => {
+    const types = {
+      blur: {
+        label: 'Blur',
+        minValue: 0,
+        maxValue: 100,
+        defaultValue: 50,
+        kind: 'filter',
+        inputType: 'slider'
+      }
+    };
+    const model = new Backbone.Model({styles: [
+      {name: 'blur', value: 30}
+    ]});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+
+    const user = userEvent.setup();
+    const {getByRole} = render(view);
+    await user.click(getByRole('button', {name: 'Remove style'}));
+
+    expect(view.el).not.toHaveClass(styles.allUsed);
+  });
+
   it('allows removing styles', async () => {
     const types = {
       blur: {
