@@ -44,13 +44,20 @@ export function configurationContainer({configurationModel, autoSave, includeAtt
       this.configuration = new configurationModel(this.get('configuration'));
       this.configuration.parent = this;
 
-      this.listenTo(this.configuration, 'change', function(model, options) {
-        if (!this.isNew() &&
-            (!this.isDestroying || !this.isDestroying()) &&
-            (!this.isDestroyed || !this.isDestroyed()) &&
-            autoSave &&
-            options.autoSave !== false) {
+      const canSave = () =>
+        !this.isNew() &&
+        (!this.isDestroying || !this.isDestroying()) &&
+        (!this.isDestroyed || !this.isDestroyed());
+
+      const debouncedSave = leadingTrailingDebounce(() => {
+        if (canSave()) {
           this.save();
+        }
+      }, 500);
+
+      this.listenTo(this.configuration, 'change', function(model, options) {
+        if (canSave() && autoSave && options.autoSave !== false) {
+          debouncedSave();
         }
 
         this.trigger('change:configuration', this, undefined, options);
@@ -80,4 +87,30 @@ export function configurationContainer({configurationModel, autoSave, includeAtt
       });
     }
   };
+}
+
+function leadingTrailingDebounce(fn, delay) {
+  let timer = null;
+  let pendingTrailing = false;
+
+  function debounced() {
+    if (timer === null) {
+      fn();
+    }
+    else {
+      pendingTrailing = true;
+      clearTimeout(timer);
+    }
+
+    timer = setTimeout(() => {
+      timer = null;
+
+      if (pendingTrailing) {
+        pendingTrailing = false;
+        fn();
+      }
+    }, delay);
+  }
+
+  return debounced;
 }
