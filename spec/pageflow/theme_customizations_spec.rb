@@ -546,12 +546,12 @@ module Pageflow
       )
     end
 
-    it 'supports callable for conditional defaults' do
+    it 'supports transform for conditional defaults' do
       pageflow_configure do |config|
         rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
 
         config.for_entry_type(rainbow_entry_type) do |c|
-          c.themes.register_default_options(->(options) {
+          c.themes.register_options_transform(->(options, **) {
             if options[:colors].blank?
               options.deep_merge(colors: {accent: '#default'})
             else
@@ -566,6 +566,33 @@ module Pageflow
                      revision_attributes: {theme_name: 'dark'})
 
       expect(entry.theme.options).to match(colors: {accent: '#f00'})
+    end
+
+    it 'lets transform skip defaults based on other theme option' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register_options_transform(lambda { |options, **|
+            if options[:custom_scale].blank?
+              options.deep_merge(scale: {small: '1em', large: '2em'})
+            else
+              options
+            end
+          })
+          c.themes.register('default')
+          c.themes.register('custom', custom_scale: true, scale: {small: '10px'})
+        end
+      end
+      default_entry = create(:published_entry,
+                             type_name: 'rainbow',
+                             revision_attributes: {theme_name: 'default'})
+      custom_entry = create(:published_entry,
+                            type_name: 'rainbow',
+                            revision_attributes: {theme_name: 'custom'})
+
+      expect(default_entry.theme.options).to match(scale: {small: '1em', large: '2em'})
+      expect(custom_entry.theme.options).to match(custom_scale: true, scale: {small: '10px'})
     end
 
     it 'scopes default options by entry type' do
@@ -587,6 +614,97 @@ module Pageflow
                      revision_attributes: {theme_name: 'dark'})
 
       expect(entry.theme.options).to match(colors: {accent: '#f00'})
+    end
+
+    it 'lets feature blocks override default options' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.features.register('legacy_colors') do |feature_config|
+            feature_config.themes.register_default_options(colors: {accent: '#legacy'})
+          end
+
+          c.themes.register_default_options(colors: {accent: '#new'})
+          c.themes.register('dark')
+        end
+      end
+      entry = create(:published_entry,
+                     type_name: 'rainbow',
+                     with_feature: 'legacy_colors',
+                     revision_attributes: {theme_name: 'dark'})
+
+      expect(entry.theme.options).to match(colors: {accent: '#legacy'})
+    end
+
+    it 'uses default options when feature is not enabled' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+
+          c.features.register('legacy_colors') do |feature_config|
+            feature_config.themes.register_default_options(colors: {accent: '#legacy'})
+          end
+
+          c.themes.register_default_options(colors: {accent: '#new'})
+          c.themes.register('dark')
+        end
+      end
+      entry = create(:published_entry,
+                     type_name: 'rainbow',
+                     revision_attributes: {theme_name: 'dark'})
+
+      expect(entry.theme.options).to match(colors: {accent: '#new'})
+    end
+
+    it 'passes entry to options transforms' do
+      transform = double('transform', call: {})
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register_options_transform(transform)
+          c.themes.register('dark')
+        end
+      end
+      entry = create(:published_entry,
+                     type_name: 'rainbow',
+                     revision_attributes: {theme_name: 'dark'})
+
+      entry.theme
+
+      expect(transform)
+        .to have_received(:call).with(anything, entry:)
+    end
+
+    it 'lets transform use entry to conditionally set defaults' do
+      pageflow_configure do |config|
+        rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+        config.for_entry_type(rainbow_entry_type) do |c|
+          c.themes.register_default_options(colors: {accent: '#new'})
+          c.themes.register_options_transform(lambda { |options, entry:, **|
+            if entry.layout_version
+              options
+            else
+              options.deep_merge(colors: {accent: '#legacy'})
+            end
+          })
+          c.themes.register('dark')
+        end
+      end
+      legacy_entry = create(:published_entry,
+                            type_name: 'rainbow',
+                            revision_attributes: {theme_name: 'dark',
+                                                  layout_version: nil})
+      new_entry = create(:published_entry,
+                         type_name: 'rainbow',
+                         revision_attributes: {theme_name: 'dark',
+                                               layout_version: 1})
+
+      expect(legacy_entry.theme.options).to match(colors: {accent: '#legacy'})
+      expect(new_entry.theme.options).to match(colors: {accent: '#new'})
     end
   end
 end

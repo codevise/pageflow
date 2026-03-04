@@ -159,11 +159,9 @@ export const EditSectionView = EditConfigurationView.extend({
         values: ['left', 'right', 'center', 'centerRagged']
       });
 
-      if (features.isEnabled('section_paddings')) {
-        this.input('sectionPaddings', SectionPaddingsInputView, {
-          entry
-        });
-      }
+      this.input('sectionPaddings', SectionPaddingsInputView, {
+        entry
+      });
 
       if (entry.supportsSectionWidths()) {
         this.input('width', SelectInputView, {
@@ -174,18 +172,6 @@ export const EditSectionView = EditConfigurationView.extend({
         values: ['shadow', 'cards', 'transparent']
       });
       this.input('invert', CheckBoxInputView);
-
-      if (!features.isEnabled('section_paddings')) {
-        this.input('exposeMotifArea', CheckBoxInputView, {
-          displayUncheckedIfDisabled: true,
-          visibleBinding: ['backdropType'],
-          visible: ([backdropType]) => {
-            return backdropType !== 'color' && backdropType !== 'contentElement';
-          },
-          disabledBinding: motifAreaDisabledBinding,
-          disabled: motifAreaDisabled,
-        });
-      }
 
       this.input('staticShadowOpacity', SliderInputView, {
         defaultValue: 70,

@@ -26,7 +26,8 @@ module Pageflow
              :type_name,
              to: :entry)
 
-    delegate(:title, :summary, :credits,
+    delegate(:layout_version,
+             :title, :summary, :credits,
              :widgets,
              :storylines, :main_storyline_chapters, :chapters, :pages,
              :share_url, :share_image_id, :share_image_x, :share_image_y,

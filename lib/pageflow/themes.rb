@@ -4,37 +4,46 @@ module Pageflow
 
     def initialize
       @themes = HashWithIndifferentAccess.new
+      @default_options = {}
       @options_transforms = []
     end
 
     # Register default options that apply to all themes. Can be called
     # multiple times to accumulate defaults from different sources
-    # (gem, plugins, host app).
+    # (gem, plugins, host app). Later calls override earlier ones for
+    # the same keys. Theme options always take precedence over defaults.
     #
-    # @overload register_default_options(options)
-    #   @param options [Hash]
-    #     Default options to deep merge into theme options.
-    #
-    # @overload register_default_options(callable)
-    #   @param callable [#call]
-    #     Receives options hash, returns transformed options.
-    #     Use for conditional defaults based on what theme defines.
+    # @param options [Hash]
+    #   Default options to deep merge into accumulated defaults.
     #
     # @since edge
-    def register_default_options(options_or_callable)
-      @options_transforms << if options_or_callable.respond_to?(:call)
-                               options_or_callable
-                             else
-                               ->(options) { options_or_callable.deep_merge(options) }
-                             end
+    def register_default_options(options)
+      @default_options = @default_options.deep_merge(options)
+    end
+
+    # Register a transform that can conditionally modify theme options.
+    # Transforms run after defaults are merged with theme options, so
+    # they can inspect what the theme defines and add conditional defaults.
+    #
+    # @param callable [#call]
+    #   Receives merged options hash, returns transformed options.
+    #   Use for conditional defaults based on what theme defines.
+    #
+    # @since edge
+    def register_options_transform(callable)
+      @options_transforms << callable
     end
 
     # Apply all registered defaults to theme options.
     #
     # @api private
-    def apply_default_options(options)
-      @options_transforms.reduce(options.deep_dup) do |opts, transform|
-        transform.call(opts)
+    def apply_default_options(options, entry:)
+      # First merge hash defaults under theme options (theme wins)
+      result = @default_options.deep_merge(options)
+
+      # Then apply callable transforms (they can see theme options)
+      @options_transforms.reduce(result) do |opts, transform|
+        transform.call(opts, entry:)
       end
     end
 

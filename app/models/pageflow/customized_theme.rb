@@ -24,7 +24,7 @@ module Pageflow
       config = Pageflow.config_for(entry)
 
       new(theme,
-          config.themes.apply_default_options(theme.options),
+          config.themes.apply_default_options(theme.options, entry:),
           config.transform_theme_customization_overrides.call(
             theme_customization.overrides,
             entry:,

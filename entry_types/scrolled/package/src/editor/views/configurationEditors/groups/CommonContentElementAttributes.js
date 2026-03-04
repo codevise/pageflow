@@ -79,13 +79,11 @@ ConfigurationEditorTabView.groups.define('ContentElementPosition', function({ent
     });
   }
 
-  if (features.isEnabled('content_element_margins')) {
-    this.input('styles', ContentElementStyleListInputView, {
-      entry,
-      contentElement,
-      attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes']
-    });
-  }
+  this.input('styles', ContentElementStyleListInputView, {
+    entry,
+    contentElement,
+    attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes']
+  });
 });
 
 ConfigurationEditorTabView.groups.define(
