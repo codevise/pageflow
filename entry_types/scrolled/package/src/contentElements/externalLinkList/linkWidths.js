@@ -10,6 +10,8 @@ export const linkWidths = {
 }
 
 export function maxLinkWidth({layout, textPosition, width}) {
+  width = width || contentElementWidths.md;
+
   if (layout === 'center' || layout === 'centerRagged') {
     if (textPosition === 'right') {
       return {
