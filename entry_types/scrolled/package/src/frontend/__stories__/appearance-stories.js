@@ -15,7 +15,7 @@ import {
 
 import {storiesOf} from '@storybook/react';
 
-const appearanceOptions = ['shadow', 'transparent', 'cards'];
+const appearanceOptions = ['shadow', 'transparent', 'cards', 'split'];
 
 function positionOptions({layout, includeWidths}) {
   const result = [{position: 'inline'}];

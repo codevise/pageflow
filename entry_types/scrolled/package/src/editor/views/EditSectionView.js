@@ -169,7 +169,7 @@ export const EditSectionView = EditConfigurationView.extend({
         });
       }
       this.input('appearance', SelectInputView, {
-        values: ['shadow', 'cards', 'transparent']
+        values: ['shadow', 'cards', 'transparent', 'split']
       });
       this.input('invert', CheckBoxInputView);
 
@@ -190,16 +190,24 @@ export const EditSectionView = EditConfigurationView.extend({
           (!exposeMotifArea || motifAreaDisabled(motifAreaDisabledBindingValues)) && backdropType !== 'contentElement'
       });
 
-      if (features.isEnabled('custom_palette_colors')) {
-        this.input('cardSurfaceColor', ColorInputView, {
-          visibleBinding: 'appearance',
-          visibleBindingValue: 'cards',
-          placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto'),
-          placeholderColorBinding: 'invert',
-          placeholderColor: invert => invert ? '#101010' : '#ffffff',
-          swatches: entry.getUsedSectionBackgroundColors()
-        });
-      }
+      this.input('cardSurfaceColor', ColorInputView, {
+        visibleBinding: 'appearance',
+        visibleBindingValue: 'cards',
+        placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto'),
+        placeholderColorBinding: 'invert',
+        placeholderColor: invert => invert ? '#101010' : '#ffffff',
+        swatches: entry.getUsedSectionBackgroundColors()
+      });
+
+      this.input('splitSurfaceColor', ColorInputView, {
+        visibleBinding: 'appearance',
+        visibleBindingValue: 'split',
+        alpha: true,
+        placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.splitSurfaceColor.auto'),
+        placeholderColorBinding: 'invert',
+        placeholderColor: invert => invert ? '#ffffffb3' : '#000000b3',
+        swatches: entry.getUsedSectionBackgroundColors()
+      });
 
       this.view(SeparatorView);
 

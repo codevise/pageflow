@@ -152,7 +152,8 @@ function SectionContents({
                   inverted={section.invert}
                   motifAreaState={motifAreaState}
                   staticShadowOpacity={staticShadowOpacity}
-                  dynamicShadowOpacity={dynamicShadowOpacity}>
+                  dynamicShadowOpacity={dynamicShadowOpacity}
+                  splitSurfaceColor={section.splitSurfaceColor}>
             {children}
           </Shadow>}
       </Backdrop>
@@ -170,7 +171,8 @@ function SectionContents({
              transitionStyles={transitionStyles}
              state={state}
              motifAreaState={motifAreaState}
-             staticShadowOpacity={staticShadowOpacity}>
+             staticShadowOpacity={staticShadowOpacity}
+             splitSurfaceColor={section.splitSurfaceColor}>
           <Layout sectionId={section.id}
                   items={contentElements}
                   appearance={section.appearance}

@@ -1198,6 +1198,7 @@ en:
               cards: Card
               shadow: Shadow
               transparent: Transparent
+              split: Split
           atmoAudioFileId:
             inline_help: Choose an audio file, that shall be played in the background. If you want this audio to continue playing on following sections, just choose the same file again there.
             label: Atmo Audio
@@ -1257,6 +1258,9 @@ en:
               coverSection: Cover section
           cardSurfaceColor:
             label: Cards background color
+            auto: "(Auto)"
+          splitSurfaceColor:
+            label: Overlay color
             auto: "(Auto)"
           sectionPaddings:
             label: "Top/bottom padding"

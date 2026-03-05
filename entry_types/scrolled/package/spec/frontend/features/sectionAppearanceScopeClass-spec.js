@@ -34,4 +34,15 @@ describe('section appearance scope class', () => {
 
     expect(getSectionByPermaId(6).el).toHaveClass('scope-transparentAppearanceSection');
   });
+
+  it('applies scope class for split appearance', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6, configuration: {appearance: 'split'}}],
+        contentElements: [{sectionId: 5}]
+      }
+    });
+
+    expect(getSectionByPermaId(6).el).toHaveClass('scope-splitAppearanceSection');
+  });
 });

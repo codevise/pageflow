@@ -1214,6 +1214,7 @@ de:
               cards: Karte
               shadow: Schatten
               transparent: Keine
+              split: Split
           atmoAudioFileId:
             inline_help: Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch in nachfolgenden Abschnitten nahtlos weiterspielen soll, wähle für diese Abschnitte die selbe Atmo aus.
             label: Atmo-Audio
@@ -1273,6 +1274,9 @@ de:
               coverSection: Abschnitt überdecken
           cardSurfaceColor:
             label: Kartenhintergrundfarbe
+            auto: "(Automatisch)"
+          splitSurfaceColor:
+            label: Overlay-Farbe
             auto: "(Automatisch)"
           sectionPaddings:
             label: Innenabstände oben/unten

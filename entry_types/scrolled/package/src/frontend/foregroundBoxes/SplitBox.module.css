@@ -1,0 +1,39 @@
+.wrapper {}
+
+.content {
+  position: relative;
+  pointer-events: auto;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.overlayDark {
+  composes: overlay;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.overlayLight {
+  composes: overlay;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.long {
+  bottom: -100vh;
+}
+
+@media print {
+  .wrapper {
+    padding-top: 0 !important;
+  }
+
+  .overlay {
+    display: none;
+  }
+}
