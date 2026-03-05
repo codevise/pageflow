@@ -1275,9 +1275,11 @@ de:
           cardSurfaceColor:
             label: Kartenhintergrundfarbe
             auto: "(Automatisch)"
+            auto_color: "Automatische Farbe"
           splitSurfaceColor:
             label: Overlay-Farbe
             auto: "(Automatisch)"
+            auto_color: "Automatische Farbe"
           overlayBackdropBlur:
             inline_help: Stärke der Unschärfe, die auf den Hintergrund hinter dem Overlay angewendet wird.
             label: Hintergrundunschärfe

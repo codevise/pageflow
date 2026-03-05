@@ -3,7 +3,8 @@
 const ctx = typeof OffscreenCanvas !== 'undefined' &&
             new OffscreenCanvas(1, 1).getContext('2d');
 
-const FALLBACK_COLOR = {r: 255, g: 255, b: 255, a: 1};
+const DEFAULT_DISPLAY_COLOR = {r: 255, g: 255, b: 255, a: 1};
+let nextDescriptionId = 0;
 
 const PICKER_HTML =
   '<div class="color_picker-gradient" role="application">' +
@@ -27,6 +28,8 @@ export default class ColorPicker {
     this._alpha = options.alpha || false;
     this._onChange = options.onChange;
     this._defaultColor = strToRGBA(options.defaultValue);
+    this._fallbackColor = strToRGBA(options.fallbackColor);
+    this._fallbackColorDescription = options.fallbackColorDescription;
     this._swatches = options.swatches || [];
 
     this._wrapInput();
@@ -36,9 +39,18 @@ export default class ColorPicker {
     this._updateColor(strToRGBA(this._input.value), {silent: true});
   }
 
+  setValue(str) {
+    this._input.value = str || '';
+    this._updateColor(strToRGBA(str), {silent: true});
+  }
+
   update(options) {
     if ('defaultValue' in options) {
       this._defaultColor = strToRGBA(options.defaultValue);
+    }
+    if ('fallbackColor' in options) {
+      this._fallbackColor = strToRGBA(options.fallbackColor);
+      this._updateColor(this._currentColor, {silent: true});
     }
     if (options.swatches) {
       this._swatches = options.swatches;
@@ -80,6 +92,14 @@ export default class ColorPicker {
       parent.insertBefore(wrapper, this._input);
       wrapper.className = 'color_picker-field';
       wrapper.appendChild(this._input);
+
+      if (this._fallbackColorDescription) {
+        this._descriptionElement = document.createElement('span');
+        this._descriptionElement.hidden = true;
+        this._descriptionElement.id = 'color_picker_desc_' + nextDescriptionId++;
+        wrapper.appendChild(this._descriptionElement);
+        this._input.setAttribute('aria-describedby', this._descriptionElement.id);
+      }
     }
   }
 
@@ -255,7 +275,7 @@ export default class ColorPicker {
     if (rgba && !this._alpha) rgba.a = 1;
 
     this._currentColor = rgba && {...this._displayColor, ...rgba};
-    this._displayColor = this._currentColor || FALLBACK_COLOR;
+    this._displayColor = this._currentColor || this._fallbackColor || DEFAULT_DISPLAY_COLOR;
 
     const hex = rgbaToHex(this._displayColor);
     const opaqueHex = hex.substring(0, 7);
@@ -265,9 +285,15 @@ export default class ColorPicker {
     this._alphaMarker.style.color = hex;
 
     const formatted = this._formatHex(this._currentColor);
+    const fallbackHex = this._formatHex(this._fallbackColor);
     const wrapper = this._input.parentNode;
     if (wrapper && wrapper.classList.contains('color_picker-field')) {
-      wrapper.style.color = formatted || '';
+      wrapper.style.color = formatted || fallbackHex || '';
+    }
+
+    if (this._descriptionElement) {
+      this._descriptionElement.textContent =
+        !formatted && fallbackHex ? `${this._fallbackColorDescription}: ${fallbackHex}` : '';
     }
 
     // Force repaint the color and alpha gradients (Chrome workaround)

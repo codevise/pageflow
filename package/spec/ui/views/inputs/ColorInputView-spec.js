@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import '@testing-library/jest-dom/extend-expect';
 
 import {ColorInputView} from 'pageflow/ui';
+import {renderBackboneView} from 'testHelpers/renderBackboneView';
 
 import {ColorInput} from '$support/dominos/ui'
 
@@ -495,54 +496,47 @@ describe('pageflow.ColorInputView', () => {
   });
 
   describe('with placeholderColor option', () => {
-    it('sets custom property', () => {
-      var colorInputView = new ColorInputView({
+    it('sets fallback color', () => {
+      const {getByRole} = renderBackboneView(new ColorInputView({
         model: new Backbone.Model(),
         propertyName: 'color',
-        placeholderColor: '#fff'
-      });
+        placeholderColor: '#ff0000',
+        placeholderColorDescription: 'Automatic color'
+      }));
 
-      var colorInput = ColorInput.render(
-        colorInputView
-      );
-
-      expect(colorInput.$el[0]).toHaveStyle('--placeholder-color: #fff');
+      expect(getByRole('textbox'))
+        .toHaveAccessibleDescription('Automatic color: #ff0000');
     });
   });
 
-  describe('with function as placeholderColor and placeholderColorBinding option', () => {
-    it('sets custom property', () => {
-      var model = new Backbone.Model();
-      var colorInputView = new ColorInputView({
-        model,
+  describe('with placeholderColor and placeholderColorBinding option', () => {
+    it('sets fallback color', () => {
+      const {getByRole} = renderBackboneView(new ColorInputView({
+        model: new Backbone.Model(),
         propertyName: 'color',
         placeholderColorBinding: 'invert',
-        placeholderColor: invert => invert ? '#000' : '#fff'
-      });
+        placeholderColor: invert => invert ? '#000000' : '#ffffff',
+        placeholderColorDescription: 'Automatic color'
+      }));
 
-      var colorInput = ColorInput.render(
-        colorInputView
-      );
-
-      expect(colorInput.$el[0]).toHaveStyle('--placeholder-color: #fff');
+      expect(getByRole('textbox'))
+        .toHaveAccessibleDescription('Automatic color: #ffffff');
     });
 
-    it('updates custom property', () => {
-      var model = new Backbone.Model();
-      var colorInputView = new ColorInputView({
+    it('updates fallback color', () => {
+      const model = new Backbone.Model();
+      const {getByRole} = renderBackboneView(new ColorInputView({
         model,
         propertyName: 'color',
         placeholderColorBinding: 'invert',
-        placeholderColor: invert => invert ? '#000' : '#fff'
-      });
-
-      var colorInput = ColorInput.render(
-        colorInputView
-      );
+        placeholderColor: invert => invert ? '#000000' : '#ffffff',
+        placeholderColorDescription: 'Automatic color'
+      }));
 
       model.set('invert', true);
 
-      expect(colorInput.$el[0]).toHaveStyle('--placeholder-color: #000');
+      expect(getByRole('textbox'))
+        .toHaveAccessibleDescription('Automatic color: #000000');
     });
   });
 });

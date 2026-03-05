@@ -1259,9 +1259,11 @@ en:
           cardSurfaceColor:
             label: Cards background color
             auto: "(Auto)"
+            auto_color: "Auto color"
           splitSurfaceColor:
             label: Overlay color
             auto: "(Auto)"
+            auto_color: "Auto color"
           overlayBackdropBlur:
             inline_help: Amount of blur applied to the backdrop behind the overlay.
             label: Background blur

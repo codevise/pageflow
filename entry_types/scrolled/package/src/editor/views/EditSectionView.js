@@ -200,6 +200,7 @@ export const EditSectionView = EditConfigurationView.extend({
         placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto'),
         placeholderColorBinding: 'invert',
         placeholderColor: invert => invert ? '#101010' : '#ffffff',
+        placeholderColorDescription: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto_color'),
         swatches: entry.getUsedSectionBackgroundColors()
       });
 
@@ -210,6 +211,7 @@ export const EditSectionView = EditConfigurationView.extend({
         placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.splitSurfaceColor.auto'),
         placeholderColorBinding: 'invert',
         placeholderColor: invert => invert ? '#ffffffb3' : '#000000b3',
+        placeholderColorDescription: I18n.t('pageflow_scrolled.editor.edit_section.attributes.splitSurfaceColor.auto_color'),
         swatches: entry.getUsedSectionBackgroundColors()
       });
 

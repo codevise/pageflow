@@ -478,6 +478,112 @@ describe('ColorPicker', () => {
     });
   });
 
+  describe('fallbackColor option', () => {
+    it('uses fallbackColor for display when opened with no value', () => {
+      createColorPicker({fallbackColor: '#ff0000'});
+
+      open();
+
+      expect(colorPicker._displayColor).toEqual({r: 255, g: 0, b: 0, a: 1});
+    });
+
+    it('does not set fallbackColor as currentColor', () => {
+      createColorPicker({fallbackColor: '#ff0000'});
+
+      open();
+
+      expect(colorPicker._currentColor).toBeNull();
+    });
+
+    it('does not write fallbackColor to input', () => {
+      createColorPicker({fallbackColor: '#ff0000'});
+
+      open();
+
+      expect(input.value).toBe('');
+    });
+
+    it('sets wrapper color to fallbackColor when input is cleared', () => {
+      createColorPicker({value: '#00ff00', fallbackColor: '#ff0000'});
+
+      input.value = '';
+      input.dispatchEvent(new Event('input', {bubbles: true}));
+
+      expect(input.parentNode).toHaveStyle('color: #ff0000');
+    });
+
+    it('sets wrapper color to updated fallbackColor', () => {
+      createColorPicker({fallbackColor: '#ff0000'});
+
+      colorPicker.update({fallbackColor: '#00ff00'});
+
+      expect(input.parentNode).toHaveStyle('color: #00ff00');
+    });
+
+    it('uses updated fallbackColor', () => {
+      createColorPicker({fallbackColor: '#ff0000'});
+
+      colorPicker.update({fallbackColor: '#00ff00'});
+      open();
+
+      expect(colorPicker._displayColor).toEqual({r: 0, g: 255, b: 0, a: 1});
+    });
+
+    it('sets wrapper color to fallbackColor when no value is set', () => {
+      createColorPicker({fallbackColor: '#ff0000'});
+
+      expect(input.parentNode).toHaveStyle('color: #ff0000');
+    });
+
+    it('sets aria-description on input when displaying fallback', () => {
+      createColorPicker({
+        fallbackColor: '#ff0000',
+        fallbackColorDescription: 'Automatic color'
+      });
+
+      expect(input).toHaveAccessibleDescription('Automatic color: #ff0000');
+    });
+
+    it('does not set aria-description without fallbackColorDescription', () => {
+      createColorPicker({fallbackColor: '#ff0000'});
+
+      expect(input).not.toHaveAccessibleDescription();
+    });
+
+    it('clears aria-description when color is set', () => {
+      createColorPicker({
+        fallbackColor: '#ff0000',
+        fallbackColorDescription: 'Automatic color',
+        swatches: ['#00ff00']
+      });
+      open();
+
+      picker().querySelector('.color_picker-swatches button')
+        .dispatchEvent(new Event('click', {bubbles: true}));
+
+      expect(input).not.toHaveAccessibleDescription();
+    });
+
+    it('updates aria-description when fallbackColor changes', () => {
+      createColorPicker({
+        fallbackColor: '#ff0000',
+        fallbackColorDescription: 'Automatic color'
+      });
+
+      colorPicker.update({fallbackColor: '#00ff00'});
+
+      expect(input).toHaveAccessibleDescription('Automatic color: #00ff00');
+    });
+
+    it('prefers defaultColor over fallbackColor', () => {
+      createColorPicker({defaultValue: '#0000ff', fallbackColor: '#ff0000'});
+
+      open();
+
+      expect(colorPicker._displayColor).toEqual({r: 0, g: 0, b: 255, a: 1});
+    });
+  });
+
   describe('destroy', () => {
     it('removes picker element from DOM', () => {
       createColorPicker();

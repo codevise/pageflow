@@ -65,6 +65,8 @@ export const ColorInputView = Marionette.ItemView.extend({
     this._colorPicker = new ColorPicker(this.ui.input[0], {
       alpha: this.options.alpha,
       defaultValue: this.defaultValue(),
+      fallbackColor: this.getAttributeBoundOption('placeholderColor'),
+      fallbackColorDescription: this.options.placeholderColorDescription,
       swatches: this.getSwatches(),
       onChange: _.debounce(_.bind(this._onChange, this), 200)
     });
@@ -79,11 +81,8 @@ export const ColorInputView = Marionette.ItemView.extend({
   },
 
   updatePlaceholderColor(value) {
-    if (value) {
-      this.el.style.setProperty('--placeholder-color', value);
-    }
-    else {
-      this.el.style.removeProperty('--placeholder-color');
+    if (this._colorPicker) {
+      this._colorPicker.update({fallbackColor: value});
     }
   },
 
@@ -100,12 +99,7 @@ export const ColorInputView = Marionette.ItemView.extend({
     var color = this.model.get(this.options.propertyName) || this.defaultValue() || '';
 
     if (!this._saving) {
-      this.ui.input[0].value = color;
-
-      var wrapper = this.ui.input[0].parentNode;
-      if (wrapper && wrapper.classList.contains('color_picker-field')) {
-        wrapper.style.color = color;
-      }
+      this._colorPicker.setValue(color);
     }
 
     this.$el.toggleClass('is_default', !this.model.has(this.options.propertyName));
