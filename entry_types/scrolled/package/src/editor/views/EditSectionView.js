@@ -5,6 +5,8 @@ import {
   SeparatorView,
   SliderInputView
 } from 'pageflow/ui';
+import {AppearanceSelectInputView} from './inputs/AppearanceSelectInputView';
+import {LayoutSelectInputView} from './inputs/LayoutSelectInputView';
 import {BackdropContentElementInputView} from './inputs/BackdropContentElementInputView';
 import {EditMotifAreaInputView} from './inputs/EditMotifAreaInputView';
 import {EffectListInputView} from './inputs/EffectListInputView';
@@ -156,7 +158,7 @@ export const EditSectionView = EditConfigurationView.extend({
 
       this.view(SeparatorView);
 
-      this.input('layout', SelectInputView, {
+      this.input('layout', LayoutSelectInputView, {
         values: ['left', 'right', 'center', 'centerRagged']
       });
 
@@ -169,8 +171,8 @@ export const EditSectionView = EditConfigurationView.extend({
           values: ['wide', 'narrow']
         });
       }
-      this.input('appearance', SelectInputView, {
-        values: ['shadow', 'cards', 'transparent', 'split']
+      this.input('appearance', AppearanceSelectInputView, {
+        values: ['shadow', 'cards', 'split', 'transparent']
       });
       this.input('invert', CheckBoxInputView);
 

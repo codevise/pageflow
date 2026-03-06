@@ -1,0 +1,215 @@
+.preview {
+  --content-width: 35%;
+  aspect-ratio: 16 / 9;
+  border: solid 1px var(--ui-on-surface-color-lightest);
+  border-radius: rounded(sm);
+  margin-bottom: space(1);
+  background-color: var(--ui-primary-color-light);
+  color: #ddd;
+  padding: space(8) 0;
+  overflow: hidden;
+  position: relative;
+  max-width: 260px;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.inverted {
+  color: #222;
+}
+
+.center,
+.centerRagged {
+  --content-width: 45%;
+}
+
+.padded {
+  padding-top: space(16);
+}
+
+/* Content text area */
+
+.content {
+  position: relative;
+  z-index: 1;
+  width: var(--content-width);
+  margin-left: space(8);
+}
+
+.right .content {
+  margin-left: auto;
+  margin-right: space(8);
+}
+
+.center .content,
+.centerRagged .content {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.line {
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  margin-bottom: space(2.5);
+}
+
+.shortLine {
+  width: 60%;
+}
+
+.centerRagged .shortLine {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gap {
+  height: space(3);
+}
+
+/* Shadow appearance: gradient overlay on content side */
+
+.shadowOverlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 70%;
+}
+
+.left .shadowOverlay {
+  left: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.55), transparent);
+}
+
+.right .shadowOverlay {
+  right: 0;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.55), transparent);
+}
+
+.center .shadowOverlay,
+.centerRagged .shadowOverlay {
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.center .shadowOverlay.padded,
+.centerRagged .shadowOverlay.padded {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+}
+
+.left .shadowOverlay.light {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.55), transparent);
+}
+
+.right .shadowOverlay.light {
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.55), transparent);
+}
+
+.center .shadowOverlay.light,
+.centerRagged .shadowOverlay.light {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.center .shadowOverlay.light.padded,
+.centerRagged .shadowOverlay.light.padded {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.55), transparent);
+}
+
+.cards .content {
+  width: calc(var(--content-width) - space(4));
+  margin-left: calc(space(8) + space(2));
+}
+
+.cards.right .content {
+  margin-left: auto;
+  margin-right: calc(space(8) + space(2));
+}
+
+.cards.center .content,
+.cards.centerRagged .content {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Cards appearance: box behind content */
+
+.cardBox {
+  position: absolute;
+  top: space(4);
+  bottom: 0;
+  width: var(--content-width);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: calc(var(--theme-cards-border-radius, 15px) / 3)
+                 calc(var(--theme-cards-border-radius, 15px) / 3)
+                 0 0;
+}
+
+.cardBox.dark {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.left .cardBox {
+  left: space(8);
+}
+
+.right .cardBox {
+  right: space(8);
+}
+
+.center .cardBox,
+.centerRagged .cardBox {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cardBox.padded {
+  top: calc(space(8) + space(4));
+}
+
+/* Split appearance: 50% overlay with reduced content width */
+
+.split {
+  --content-width: calc(50% - space(8) * 2);
+}
+
+.split.center,
+.split.centerRagged {
+  --content-width: calc(50% - space(8) * 2);
+}
+
+.splitOverlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.splitOverlay.light {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.left .splitOverlay {
+  left: 0;
+}
+
+.right .splitOverlay {
+  right: 0;
+}
+
+.center .splitOverlay,
+.centerRagged .splitOverlay {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.center .splitOverlay.padded,
+.centerRagged .splitOverlay.padded {
+  left: 0;
+  right: 0;
+  width: auto;
+  transform: none;
+  top: calc(space(8) + space(4));
+}
