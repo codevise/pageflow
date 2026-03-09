@@ -13,7 +13,8 @@ export function TwoColumn(props) {
   const shouldInline = useShouldInlineSticky();
 
   return (
-    <div className={classNames(styles.root, styles[props.align])}>
+    <div className={classNames(styles.root, styles[props.align],
+                               {[styles.constrainContentWidth]: props.constrainContentWidth})}>
       <div className={classNames(styles.group)} key={props.align}>
         <div className={classNames(styles.box, styles.inline)}
              ref={props.contentAreaRef}
@@ -140,7 +141,7 @@ function groupItemsByPosition(items, shouldInline, isContentPadded) {
 
       if (!(onTheSide(previousPosition) && position === 'inline' && width <= widths.md)) {
         currentGroup = {
-          width,
+          width: onTheSide(position) ? widths.md : width,
           boxes: []
         };
 

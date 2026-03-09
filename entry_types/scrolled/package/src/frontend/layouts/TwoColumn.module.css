@@ -9,7 +9,8 @@
   padding-right: var(--content-margin);
   margin-left: auto;
   margin-right: auto;
-  max-width: var(--section-max-width, none);
+  max-width: min(var(--section-max-width, 100%),
+                 calc(50% + var(--layout-inline-content-max-width)));
 }
 
 .group-full {
@@ -24,11 +25,13 @@
 }
 
 .inline {
-  --content-max-width: var(--layout-inline-content-max-width);
+  --content-max-width: min(var(--layout-inline-content-max-width),
+                           var(--constrained-content-max-width, 100%));
 }
 
 .inline.width-lg {
-  --content-max-width: var(--layout-inline-lg-content-max-width);
+  --content-max-width: min(var(--layout-inline-lg-content-max-width),
+                           var(--constrained-content-max-width, 100%));
 }
 
 .inline.width-xl {
@@ -37,6 +40,25 @@
 
 .inline.width-full {
   --content-max-width: unset;
+}
+
+@media screen and (min-width: 950px) {
+  .constrainContentWidth {
+    container-type: inline-size;
+    --content-margin-fraction-override: calc(var(--content-margin-fraction) / 2);
+  }
+
+  .constrainContentWidth > .group {
+    --constrained-content-max-width: calc(50cqw - 100cqw * var(--content-margin-fraction) * 2);
+  }
+
+  .constrainContentWidth > .group-lg {
+    --content-margin-fraction: var(--content-margin-fraction-override);
+    --content-margin: calc(var(--content-margin-fraction) * 100cqw);
+
+    max-width: min(calc(var(--section-max-width, 100%) + var(--content-margin) * 2),
+                   calc(50% + var(--layout-inline-lg-content-max-width)));
+  }
 }
 
 .restrict-xxs,
@@ -97,6 +119,18 @@
   clear: both;
   top: 33%;
   width: var(--content-width);
+}
+
+.constrainContentWidth .side {
+  position: relative;
+  --side-offset: calc((min(var(--layout-inline-content-max-width), var(--constrained-content-max-width)) -
+                       var(--content-max-width)) / 2);
+  right: var(--side-offset);
+}
+
+.constrainContentWidth.right .side {
+  right: auto;
+  left: var(--side-offset);
 }
 
 .sticky {

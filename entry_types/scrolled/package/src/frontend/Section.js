@@ -176,6 +176,8 @@ function SectionContents({
           <Layout sectionId={section.id}
                   items={contentElements}
                   appearance={section.appearance}
+                  constrainContentWidth={section.appearance === 'split' &&
+                                         !motifAreaState.isContentPadded}
                   contentAreaRef={setContentAreaRef}
                   sectionProps={sectionProperties}
                   isContentPadded={motifAreaState.isContentPadded}>

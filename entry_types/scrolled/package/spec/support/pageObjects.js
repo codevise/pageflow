@@ -242,6 +242,11 @@ function createSectionPageObject(el) {
     hasFirstBoxSuppressedTopMargin() {
       const firstBox = foreground.querySelector(`.${boxBoundaryMarginStyles.noTopMargin}`);
       return !!firstBox;
+    },
+
+    hasConstrainedContentWidth() {
+      return !!(el.querySelector(`.${twoColumnLayoutStyles.constrainContentWidth}`) ||
+                el.querySelector(`.${centerLayoutStyles.constrainContentWidth}`));
     }
   }
 }

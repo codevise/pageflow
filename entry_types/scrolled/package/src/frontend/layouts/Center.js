@@ -14,7 +14,8 @@ export function Center(props) {
   const groups = groupItems(props.items);
 
   return (
-    <div className={classNames(styles.root)}>
+    <div className={classNames(styles.root,
+                               {[styles.constrainContentWidth]: props.constrainContentWidth})}>
       <div ref={props.contentAreaRef} />
 
       {groups.map((group, groupIndex) => {

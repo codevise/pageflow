@@ -15,7 +15,8 @@ export const Layout = React.memo(
     prevProps.appearance === nextProps.appearance &&
     prevProps.contentAreaRef === nextProps.contentAreaRef &&
     prevProps.sectionProps === nextProps.sectionProps &&
-    prevProps.isContentPadded === nextProps.isContentPadded
+    prevProps.isContentPadded === nextProps.isContentPadded &&
+    prevProps.constrainContentWidth === nextProps.constrainContentWidth
   )
 );
 
