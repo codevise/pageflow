@@ -1,3 +1,5 @@
+@import 'pageflow-scrolled/values/properties.css';
+
 .root {
   --layout-inline-content-max-width: var(--two-column-inline-content-max-width, 500px);
   --layout-inline-lg-content-max-width: var(--two-column-inline-lg-content-max-width, 700px);
@@ -26,12 +28,12 @@
 
 .inline {
   --content-max-width: min(var(--layout-inline-content-max-width),
-                           var(--constrained-content-max-width, 100%));
+                           var(--constrained-content-max-width));
 }
 
 .inline.width-lg {
   --content-max-width: min(var(--layout-inline-lg-content-max-width),
-                           var(--constrained-content-max-width, 100%));
+                           var(--constrained-content-max-width));
 }
 
 .inline.width-xl {

@@ -1,0 +1,5 @@
+@property --constrained-content-max-width {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 9999px;
+}
