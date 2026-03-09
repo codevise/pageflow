@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {splitOverlayStyle} from '../splitOverlayStyle';
 import styles from './SplitBox.module.css';
 
 export default function SplitBox(props) {
@@ -11,9 +12,10 @@ export default function SplitBox(props) {
                                    {[styles.long]: props.coverInvisibleNextSection})}
              style={{
                top: props.motifAreaState.paddingTop,
-               ...(props.splitSurfaceColor
-                   ? {backgroundColor: props.splitSurfaceColor}
-                   : undefined)
+               ...splitOverlayStyle({
+                 color: props.splitSurfaceColor,
+                 backdropBlur: props.overlayBackdropBlur
+               })
              }} />}
       <div className={styles.content}>
         {props.children}

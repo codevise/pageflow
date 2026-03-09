@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import Fullscreen from '../Fullscreen';
+import {splitOverlayStyle} from '../splitOverlayStyle';
 import styles from './SplitShadow.module.css';
 
 export default function SplitShadow(props) {
@@ -18,9 +19,10 @@ export default function SplitShadow(props) {
                                styles[`align-${props.align}`],
                                props.inverted ? styles.light : styles.dark)}>
       <div className={styles.overlay}
-           style={props.splitSurfaceColor
-                  ? {backgroundColor: props.splitSurfaceColor}
-                  : undefined}>
+           style={splitOverlayStyle({
+             color: props.splitSurfaceColor,
+             backdropBlur: props.overlayBackdropBlur
+           })}>
         <Fullscreen />
       </div>
       {props.children}

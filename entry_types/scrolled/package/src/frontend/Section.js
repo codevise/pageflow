@@ -156,7 +156,8 @@ function SectionContents({
                   motifAreaState={motifAreaState}
                   staticShadowOpacity={staticShadowOpacity}
                   dynamicShadowOpacity={dynamicShadowOpacity}
-                  splitSurfaceColor={section.splitSurfaceColor}>
+                  splitSurfaceColor={section.splitSurfaceColor}
+                  overlayBackdropBlur={section.overlayBackdropBlur}>
             {children}
           </Shadow>}
       </Backdrop>
@@ -175,7 +176,8 @@ function SectionContents({
              state={state}
              motifAreaState={motifAreaState}
              staticShadowOpacity={staticShadowOpacity}
-             splitSurfaceColor={section.splitSurfaceColor}>
+             splitSurfaceColor={section.splitSurfaceColor}
+             overlayBackdropBlur={section.overlayBackdropBlur}>
           <Layout sectionId={section.id}
                   items={contentElements}
                   appearance={section.appearance}

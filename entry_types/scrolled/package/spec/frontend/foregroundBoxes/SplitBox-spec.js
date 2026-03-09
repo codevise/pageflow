@@ -84,6 +84,34 @@ describe('SplitBox', () => {
       .toHaveClass(styles.overlayLight);
   });
 
+  it('applies backdrop filter when overlayBackdropBlur is set and color is translucent', () => {
+    const {container} = render(
+      <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
+                inverted={false}
+                splitSurfaceColor="#ff000080"
+                overlayBackdropBlur={50}>
+        <div />
+      </SplitBox>
+    );
+
+    expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
+      .toBe('blur(5px)');
+  });
+
+  it('does not apply backdrop filter when color is opaque', () => {
+    const {container} = render(
+      <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
+                inverted={false}
+                splitSurfaceColor="#ff0000"
+                overlayBackdropBlur={50}>
+        <div />
+      </SplitBox>
+    );
+
+    expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
+      .toBeFalsy();
+  });
+
   it('sets overlay background color from splitSurfaceColor', () => {
     const {container} = render(
       <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}

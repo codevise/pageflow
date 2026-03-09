@@ -95,6 +95,44 @@ describe('SplitShadow', () => {
       .toBe('');
   });
 
+  it('applies backdrop filter when overlayBackdropBlur is set and color is translucent', () => {
+    const {container} = render(
+      <SplitShadow {...defaultProps}
+                    splitSurfaceColor="#ff000080"
+                    overlayBackdropBlur={50}>
+        <div />
+      </SplitShadow>
+    );
+
+    expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
+      .toBe('blur(5px)');
+  });
+
+  it('does not apply backdrop filter when color is opaque', () => {
+    const {container} = render(
+      <SplitShadow {...defaultProps}
+                    splitSurfaceColor="#ff0000"
+                    overlayBackdropBlur={50}>
+        <div />
+      </SplitShadow>
+    );
+
+    expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
+      .toBeFalsy();
+  });
+
+  it('does not apply backdrop filter when no color is set', () => {
+    const {container} = render(
+      <SplitShadow {...defaultProps}
+                    overlayBackdropBlur={50}>
+        <div />
+      </SplitShadow>
+    );
+
+    expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
+      .toBeFalsy();
+  });
+
   it('does not render overlay when isContentPadded is true', () => {
     const {container} = render(
       <SplitShadow {...defaultProps}

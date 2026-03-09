@@ -13,6 +13,7 @@ import {InlineFileRightsMenuItem} from '../models/InlineFileRightsMenuItem'
 import {createSectionMenuItems} from '../models/sectionMenuItems';
 import I18n from 'i18n-js';
 import {features} from 'pageflow/frontend';
+import {utils} from 'pageflow-scrolled/frontend';
 
 import {EditMotifAreaDialogView} from './EditMotifAreaDialogView';
 
@@ -207,6 +208,16 @@ export const EditSectionView = EditConfigurationView.extend({
         placeholderColorBinding: 'invert',
         placeholderColor: invert => invert ? '#ffffffb3' : '#000000b3',
         swatches: entry.getUsedSectionBackgroundColors()
+      });
+
+      this.input('overlayBackdropBlur', SliderInputView, {
+        visibleBinding: 'appearance',
+        visibleBindingValue: 'split',
+        disabledBinding: 'splitSurfaceColor',
+        disabled: color => !utils.isTranslucentColor(color),
+        values: [0, 25, 50, 75, 100],
+        defaultValue: 100,
+        saveOnSlide: true
       });
 
       this.view(SeparatorView);

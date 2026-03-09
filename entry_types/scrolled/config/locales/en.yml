@@ -1262,6 +1262,10 @@ en:
           splitSurfaceColor:
             label: Overlay color
             auto: "(Auto)"
+          overlayBackdropBlur:
+            inline_help: Amount of blur applied to the backdrop behind the overlay.
+            label: Background blur
+            inline_help_disabled: Only available when overlay color has transparency.
           sectionPaddings:
             label: "Top/bottom padding"
         tabs:

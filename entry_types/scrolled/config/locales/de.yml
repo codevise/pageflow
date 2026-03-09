@@ -1278,6 +1278,10 @@ de:
           splitSurfaceColor:
             label: Overlay-Farbe
             auto: "(Automatisch)"
+          overlayBackdropBlur:
+            inline_help: Stärke der Unschärfe, die auf den Hintergrund hinter dem Overlay angewendet wird.
+            label: Hintergrundunschärfe
+            inline_help_disabled: Nur verfügbar, wenn die Overlay-Farbe Transparenz hat.
           sectionPaddings:
             label: Innenabstände oben/unten
         tabs:
