@@ -196,6 +196,7 @@ export const EditSectionView = EditConfigurationView.extend({
       this.input('cardSurfaceColor', ColorInputView, {
         visibleBinding: 'appearance',
         visibleBindingValue: 'cards',
+        alpha: true,
         placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto'),
         placeholderColorBinding: 'invert',
         placeholderColor: invert => invert ? '#101010' : '#ffffff',
@@ -214,9 +215,12 @@ export const EditSectionView = EditConfigurationView.extend({
 
       this.input('overlayBackdropBlur', SliderInputView, {
         visibleBinding: 'appearance',
-        visibleBindingValue: 'split',
-        disabledBinding: 'splitSurfaceColor',
-        disabled: color => !utils.isTranslucentColor(color),
+        visible: appearance => appearance === 'split' || appearance === 'cards',
+        disabledBinding: ['appearance', 'splitSurfaceColor', 'cardSurfaceColor'],
+        disabled: ([appearance, splitSurfaceColor, cardSurfaceColor]) =>
+          appearance === 'split'
+            ? splitSurfaceColor && !utils.isTranslucentColor(splitSurfaceColor)
+            : !utils.isTranslucentColor(cardSurfaceColor),
         values: [0, 25, 50, 75, 100],
         defaultValue: 100,
         saveOnSlide: true

@@ -188,6 +188,7 @@ function SectionContents({
             {(children, boxProps) =>
               <BoxWrapper {...boxProps}
                           cardSurfaceColor={section.cardSurfaceColor}
+                          overlayBackdropBlur={section.overlayBackdropBlur}
                           inverted={section.invert}>
                 {children}
               </BoxWrapper>}
