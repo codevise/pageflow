@@ -100,6 +100,9 @@ export function Heading({configuration, sectionProps, contentElementWidth}) {
                                   {[styles[sectionProps.layout]]:
                                     contentElementWidth > contentElementWidths.md ||
                                    sectionProps.layout === 'centerRagged'},
+                                  {[styles.centerConstrained]:
+                                    sectionProps.constrainContentWidth &&
+                                    contentElementWidth === contentElementWidths.lg},
                                   {[withShadowClassName]: !sectionProps.invert})}>
       {renderSubtitle('tagline')}
       <Tag className={classNames(styles.main,

@@ -114,12 +114,6 @@ function SectionContents({
 
   const {shouldPrepare} = useSectionLifecycle();
 
-  const sectionProperties = useMemo(() => ({
-    layout: section.layout,
-    invert: section.invert,
-    sectionIndex: section.sectionIndex
-  }), [section.layout, section.invert, section.sectionIndex]);
-
   const [, exitTransition] = transitions;
 
   const [motifAreaState, setMotifAreaRef, setContentAreaRef] = useMotifAreaState({
@@ -130,6 +124,15 @@ function SectionContents({
     empty: !contentElements.length,
     fullHeight: section.fullHeight
   });
+
+  const sectionProperties = useMemo(() => ({
+    layout: section.layout,
+    invert: section.invert,
+    sectionIndex: section.sectionIndex,
+    constrainContentWidth: section.appearance === 'split' &&
+                           !motifAreaState.isContentPadded
+  }), [section.layout, section.invert, section.sectionIndex,
+       section.appearance, motifAreaState.isContentPadded]);
 
   const {Shadow, Box, BoxWrapper} = getAppearanceComponents(section.appearance)
 
@@ -176,8 +179,7 @@ function SectionContents({
           <Layout sectionId={section.id}
                   items={contentElements}
                   appearance={section.appearance}
-                  constrainContentWidth={section.appearance === 'split' &&
-                                         !motifAreaState.isContentPadded}
+                  constrainContentWidth={sectionProperties.constrainContentWidth}
                   contentAreaRef={setContentAreaRef}
                   sectionProps={sectionProperties}
                   isContentPadded={motifAreaState.isContentPadded}>

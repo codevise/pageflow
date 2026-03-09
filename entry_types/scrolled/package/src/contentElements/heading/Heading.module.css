@@ -76,7 +76,7 @@
   }
 }
 
-@media (min-width: 951px) {
+@media (min-width: 950px) {
   .right {
     text-align: right;
   }
@@ -93,6 +93,12 @@
 .centerRagged,
 .center {
   text-align: center;
+}
+
+@media (min-width: 950px) {
+  .centerConstrained {
+    text-align: center;
+  }
 }
 
 @media (orientation: landscape) {
