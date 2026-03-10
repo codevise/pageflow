@@ -3,6 +3,7 @@ import {useConsentGiven} from './hooks';
 import {useI18n} from '../i18n';
 import {useContentElementAttributes} from '../useContentElementAttributes';
 import {useContentElementConsentVendor} from '../../entryState';
+import {usePrivacyLink} from '../usePrivacyLink';
 
 import styles from './OptIn.module.css';
 import OptInIcon from '../icons/media.svg';
@@ -29,8 +30,9 @@ export function OptIn({children, providerName, wrapper, icon}) {
   const {t} = useI18n();
   const {contentElementId} = useContentElementAttributes();
   const contentElementConsentVendor = useContentElementConsentVendor({contentElementId});
-
   providerName = providerName || contentElementConsentVendor?.name;
+
+  const privacyLink = usePrivacyLink({vendors: providerName});
 
   const cookieMessage =
     contentElementConsentVendor?.optInPrompt ||
@@ -55,6 +57,12 @@ export function OptIn({children, providerName, wrapper, icon}) {
       <div className={styles.optInMessage}>
         {cookieMessage}
       </div>
+      {privacyLink.url &&
+       <div className={styles.privacyLink}>
+         <a {...privacyLink.props}>
+           {privacyLink.label}
+         </a>
+       </div>}
       <div>
         <button className={styles.optInButton} onClick={accept}>
           {t('pageflow_scrolled.public.third_party_consent.confirm')}

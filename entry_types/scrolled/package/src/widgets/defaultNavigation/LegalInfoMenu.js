@@ -9,6 +9,7 @@ import {
   Widget,
   useFileRights,
   useLegalInfo,
+  usePrivacyLink,
   useCredits,
   useI18n
 } from 'pageflow-scrolled/frontend';
@@ -17,6 +18,7 @@ import {LegalInfoLink} from "./LegalInfoLink";
 export function LegalInfoMenu(props) {
   const fileRights = useFileRights();
   const legalInfo = useLegalInfo();
+  const privacyLink = usePrivacyLink();
   const credits = useCredits();
   const {t} = useI18n();
 
@@ -38,7 +40,7 @@ export function LegalInfoMenu(props) {
       <div className={classNames(styles.links, {[styles.separator]: credits || fileRights.length > 0})}>
         <LegalInfoLink {...legalInfo.imprint}/>
         <LegalInfoLink {...legalInfo.copyright}/>
-        <LegalInfoLink {...legalInfo.privacy}/>
+        <LegalInfoLink {...privacyLink}/>
       </div>
 
       <Widget role="creditsBoxFooter" />

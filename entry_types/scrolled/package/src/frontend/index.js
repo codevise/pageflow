@@ -124,6 +124,7 @@ export {useFloatingPortalRoot, FloatingPortalRootProvider} from './FloatingPorta
 export {SectionIntersectionObserver} from './SectionIntersectionObserver';
 export {ScrollButton} from './ScrollButton';
 
+export {usePrivacyLink} from './usePrivacyLink';
 export {textColorForBackgroundColor} from './textColorForBackgroundColor';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 export {getAppearanceSectionScopeName} from './appearance';
