@@ -16,7 +16,7 @@ editor.contentElementTypes.register('iframeEmbed', {
 
   configurationEditor({entry}) {
     this.tab('general', function() {
-      this.input('source', TextInputView);
+      this.input('source', TextInputView, {maxLength: 2000});
       this.input('requireConsent', CheckBoxInputView);
       this.view(InfoBoxView, {
         level: 'error',
