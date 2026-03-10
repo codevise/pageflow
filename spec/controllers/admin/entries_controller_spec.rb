@@ -948,6 +948,30 @@ describe Admin::EntriesController do
       expect(request).to redirect_to(admin_entry_path(Pageflow::Entry.last))
     end
 
+    it 'allows account publisher to create entry in folder' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      folder = create(:folder, account:)
+
+      sign_in(user, scope: :user)
+
+      post :create, params: {entry: attributes_for(:entry, account:, folder_id: folder)}
+
+      expect(Pageflow::Entry.last.folder).to eq(folder)
+    end
+
+    it 'does not allow account publisher to create entry in folder of other account' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      folder = create(:folder, account: create(:account))
+
+      sign_in(user, scope: :user)
+
+      expect {
+        post :create, params: {entry: attributes_for(:entry, account:, folder_id: folder)}
+      }.not_to change(Pageflow::Entry, :count)
+    end
+
     it 'redirects to editor if after_entry_create is set to editor' do
       user = create(:user)
       account = create(:account, with_publisher: user)
