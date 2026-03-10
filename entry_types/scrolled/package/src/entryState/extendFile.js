@@ -1,44 +1,34 @@
 export function extendFile(collectionName, file, config) {
-  return addModelType(
-    collectionName,
-    expandUrls(
-      collectionName,
-      file,
-      config.fileUrlTemplates
-    ),
-    config.fileModelTypes
-  );
-}
-
-function addModelType(collectionName, file, modelTypes) {
   if (!file) {
     return null;
-  }
-
-  if (!modelTypes[collectionName]) {
-    throw new Error(`Could not find model type for collection name ${collectionName}`);
-  }
-
-  return {
-    ...file,
-    modelType: modelTypes[collectionName]
-  };
-}
-
-function expandUrls(collectionName, file, urlTemplates) {
-  if (!file) {
-    return null;
-  }
-
-  if (!urlTemplates[collectionName]) {
-    throw new Error(`No file url templates found for ${collectionName}`);
   }
 
   const variants = file.variants ?
                    ['original', ...file.variants] :
-                   Object.keys(urlTemplates[collectionName]);
+                   Object.keys(config.fileUrlTemplates[collectionName] || {});
 
-  const urls = variants.reduce((result, variant) => {
+  return {
+    ...file,
+    modelType: resolveModelType(collectionName, config.fileModelTypes),
+    urls: buildUrls(collectionName, file, variants, config.fileUrlTemplates),
+    variantWidths: computeVariantWidths(collectionName, file, variants)
+  };
+}
+
+function resolveModelType(collectionName, modelTypes) {
+  if (!modelTypes[collectionName]) {
+    throw new Error(`Could not find model type for collection name ${collectionName}`);
+  }
+
+  return modelTypes[collectionName];
+}
+
+function buildUrls(collectionName, file, variants, urlTemplates) {
+  if (!urlTemplates[collectionName]) {
+    throw new Error(`No file url templates found for ${collectionName}`);
+  }
+
+  return variants.reduce((result, variant) => {
     const url = getFileUrl(collectionName,
                            file,
                            variant,
@@ -50,11 +40,6 @@ function expandUrls(collectionName, file, urlTemplates) {
 
     return result;
   }, {});
-
-  return {
-    urls,
-    ...file
-  };
 }
 
 function getFileUrl(collectionName, file, quality, urlTemplates) {
@@ -90,4 +75,43 @@ function hlsQualities(file) {
   return ['low', 'medium', 'high', 'fullhd', '4k']
     .filter(quality => file.variants.includes(quality))
     .join(',');
+}
+
+const variantGeometries = {
+  imageFiles: {medium: 1024, large: 1920, ultra: 3840}
+};
+
+function computeVariantWidths(collectionName, file, variants) {
+  const geometries = variantGeometries[collectionName];
+
+  if (!geometries) {
+    return undefined;
+  }
+
+  const widthToVariant = {};
+
+  variants.forEach(variant => {
+    const geometrySize = geometries[variant];
+
+    if (geometrySize) {
+      const key = variantWidth(file, geometrySize) + 'w';
+
+      if (!widthToVariant[key]) {
+        widthToVariant[key] = variant;
+      }
+    }
+  });
+
+  return Object.entries(widthToVariant);
+}
+
+function variantWidth(file, geometrySize) {
+  const {width, height} = file;
+
+  if (!width || !height) {
+    return geometrySize;
+  }
+
+  const scale = Math.min(geometrySize / width, geometrySize / height, 1);
+  return Math.round(width * scale);
 }

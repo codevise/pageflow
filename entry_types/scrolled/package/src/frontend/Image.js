@@ -9,7 +9,10 @@ import {ImageStructuredData} from './ImageStructuredData';
  *
  * @param {Object} props
  * @param {Object} props.imageFile - Image file obtained via `useFile`.
- * @param {string} [props.variant] - Paperclip style to use. Defaults to large.
+ * @param {string|string[]} [props.variant] - Paperclip style to use. Defaults to
+ *   large. Pass an array (e.g. `['large', 'ultra']`) to emit a `srcset` with
+ *   width descriptors. The first entry is used as `src` fallback.
+ * @param {string} [props.sizes] - Sizes attribute for srcset. Defaults to `"100vw"`.
  * @param {boolean} [props.load] - Whether to load the image. Can be used for lazy loading.
  * @param {boolean} [props.structuredData] - Whether to render a JSON+LD script tag.
  * @param {boolean} [props.preferSvg] - Use original if image is SVG.
@@ -36,7 +39,9 @@ function renderImageTag(props, imageFile) {
   return (
     <img className={classNames({[styles.fill]: props.fill,
                                 [styles.contain]: props.fit === 'contain'})}
-         src={imageUrl(imageFile, props)}
+         src={imageSrc(imageFile, props)}
+         srcSet={imageSrcSet(imageFile, props)}
+         sizes={imageSizes(imageFile, props)}
          alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''}
          width={props.width}
          height={props.height}
@@ -44,6 +49,38 @@ function renderImageTag(props, imageFile) {
            objectPosition: `${cropPositionX}% ${cropPositionY}%`
          }} />
   );
+}
+
+function imageSrc(imageFile, props) {
+  const {variant} = props;
+
+  if (Array.isArray(variant)) {
+    return imageUrl(imageFile, {...props, variant: variant[0]});
+  }
+
+  return imageUrl(imageFile, props);
+}
+
+function imageSrcSet(imageFile, {variant, preferSvg}) {
+  if (!Array.isArray(variant)) return undefined;
+  if (preferSvg && imageFile.extension?.toLowerCase() === 'svg') return undefined;
+  if (!imageFile.variantWidths) return undefined;
+
+  const entries = imageFile.variantWidths
+    .filter(([, v]) => variant.includes(v) && imageFile.urls[v])
+    .map(([w, v]) => `${imageFile.urls[v]} ${w}`);
+
+  if (entries.length <= 1) return undefined;
+
+  return entries.join(', ');
+}
+
+function imageSizes(imageFile, props) {
+  if (imageSrcSet(imageFile, props)) {
+    return props.sizes || '100vw';
+  }
+
+  return undefined;
 }
 
 function imageUrl(imageFile, {variant, preferSvg}) {

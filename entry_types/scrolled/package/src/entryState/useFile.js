@@ -1,3 +1,5 @@
+import {useMemo} from 'react';
+
 import {useEntryStateCollectionItem, useEntryStateConfig} from './EntryStateProvider';
 import {extendFile} from './extendFile';
 
@@ -26,10 +28,10 @@ import {extendFile} from './extendFile';
  */
 export function useFile({collectionName, permaId}) {
   const file = useEntryStateCollectionItem(collectionName, permaId);
+  const config = useEntryStateConfig();
 
-  return extendFile(
-    collectionName,
-    file,
-    useEntryStateConfig()
+  return useMemo(
+    () => extendFile(collectionName, file, config),
+    [collectionName, file, config]
   );
 }
