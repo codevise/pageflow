@@ -47,7 +47,7 @@ const defaultAspectRatios = [{
 
 export const ScrolledEntry = Entry.extend({
   setupFromEntryTypeSeed(seed) {
-    this.consentVendors = new ConsentVendors({hostMatchers: seed.consentVendorHostMatchers});
+    this.consentVendors = new ConsentVendors({urlMatchers: seed.consentVendorUrlMatchers});
 
     this.contentElements = new ContentElementsCollection(seed.collections.contentElements);
     this.sections = new SectionsCollection(seed.collections.sections,

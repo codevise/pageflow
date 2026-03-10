@@ -227,10 +227,10 @@ module PageflowScrolled
       return unless configuration['requireConsent']
 
       uri = URI.parse(configuration['source'])
-      host_matchers = Pageflow.config_for(entry).consent_vendor_host_matchers
+      url_matchers = Pageflow.config_for(entry).consent_vendor_url_matchers
 
-      host_matchers.detect { |matcher, _|
-        uri.host =~ matcher
+      url_matchers.detect { |matcher, _|
+        (uri.host + uri.path) =~ matcher
       }&.last
     rescue URI::InvalidURIError
       nil
