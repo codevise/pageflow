@@ -2,6 +2,8 @@ de:
   pageflow:
     datawrapper_chart_embed_opt_in:
       feature_name: Opt-in für Datawrapper Embeds
+    image_srcset:
+      feature_name: Responsive Bild-Srcset
     defaultNavigation:
       widget_type_name: Standard Navigation
     editor:

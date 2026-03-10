@@ -211,6 +211,140 @@ describe('useFile', () => {
     });
   });
 
+  it('includes variantWidths for image files', () => {
+    const {result} = renderHookInEntry(
+      () => useFile({collectionName: 'imageFiles', permaId: 1}),
+      {
+        seed: {
+          fileUrlTemplates: {
+            imageFiles: {
+              medium: '/image_files/:id_partition/medium/:basename.:processed_extension',
+              large: '/image_files/:id_partition/large/:basename.:processed_extension',
+            }
+          },
+          fileModelTypes: {
+            imageFiles: 'Pageflow::ImageFile'
+          },
+          imageFiles: [
+            {
+              id: 100,
+              permaId: 1,
+              basename: 'image',
+              extension: 'jpg',
+              processedExtension: 'webp',
+              width: 4000,
+              height: 3000
+            }
+          ]
+        }
+      }
+    );
+
+    expect(result.current.variantWidths).toEqual([
+      ['1024w', 'medium'],
+      ['1920w', 'large']
+    ]);
+  });
+
+  it('computes variantWidths based on actual image dimensions for portrait images', () => {
+    const {result} = renderHookInEntry(
+      () => useFile({collectionName: 'imageFiles', permaId: 1}),
+      {
+        seed: {
+          fileUrlTemplates: {
+            imageFiles: {
+              medium: '/image_files/:id_partition/medium/:basename.:processed_extension',
+              large: '/image_files/:id_partition/large/:basename.:processed_extension',
+            }
+          },
+          fileModelTypes: {
+            imageFiles: 'Pageflow::ImageFile'
+          },
+          imageFiles: [
+            {
+              id: 100,
+              permaId: 1,
+              basename: 'image',
+              extension: 'jpg',
+              processedExtension: 'webp',
+              width: 2160,
+              height: 3840
+            }
+          ]
+        }
+      }
+    );
+
+    expect(result.current.variantWidths).toEqual([
+      ['576w', 'medium'],
+      ['1080w', 'large']
+    ]);
+  });
+
+  it('deduplicates variantWidths when variants produce same width', () => {
+    const {result} = renderHookInEntry(
+      () => useFile({collectionName: 'imageFiles', permaId: 1}),
+      {
+        seed: {
+          fileUrlTemplates: {
+            imageFiles: {
+              medium: '/image_files/:id_partition/medium/:basename.:processed_extension',
+              large: '/image_files/:id_partition/large/:basename.:processed_extension',
+              ultra: '/image_files/:id_partition/ultra/:basename.:processed_extension',
+            }
+          },
+          fileModelTypes: {
+            imageFiles: 'Pageflow::ImageFile'
+          },
+          imageFiles: [
+            {
+              id: 100,
+              permaId: 1,
+              basename: 'image',
+              extension: 'jpg',
+              processedExtension: 'webp',
+              width: 1920,
+              height: 1080
+            }
+          ]
+        }
+      }
+    );
+
+    expect(result.current.variantWidths).toEqual([
+      ['1024w', 'medium'],
+      ['1920w', 'large']
+    ]);
+  });
+
+  it('does not include variantWidths for video files', () => {
+    const {result} = renderHookInEntry(
+      () => useFile({collectionName: 'videoFiles', permaId: 1}),
+      {
+        seed: {
+          fileUrlTemplates: {
+            videoFiles: {
+              high: '/video_files/:id_partition/high.mp4',
+            },
+          },
+          fileModelTypes: {
+            videoFiles: 'Pageflow::VideoFile'
+          },
+          videoFiles: [
+            {
+              id: 100,
+              permaId: 1,
+              basename: 'video',
+              variants: ['high'],
+            }
+          ]
+        }
+      }
+    );
+
+    expect(result.current.variantWidths).toBeUndefined();
+  });
+
   it('falls back to file name for display name from watched collection', () => {
     const {result} = renderHookInEntry(
       () => useFile({collectionName: 'imageFiles', permaId: 1}),

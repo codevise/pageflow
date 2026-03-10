@@ -12,6 +12,7 @@ import {
   ExpandableImage,
   InlineFileRights
 } from 'pageflow-scrolled/frontend';
+import {features} from 'pageflow/frontend';
 
 export function InlineImage({contentElementId, contentElementWidth, configuration}) {
 
@@ -102,8 +103,7 @@ function ImageWithCaption({
                 <Image imageFile={imageFile}
                        load={shouldLoad}
                        structuredData={true}
-                       variant={contentElementWidth === contentElementWidths.full ?
-                                'large' : 'medium'}
+                       {...imageVariantAndSizes(contentElementWidth)}
                        preferSvg={true} />
               </ExpandableImage>
             </ContentElementBox>
@@ -118,6 +118,31 @@ function ImageWithCaption({
                         items={[{file: imageFile, label: 'image'}]} />
     </FitViewport>
   );
+}
+
+function imageVariantAndSizes(contentElementWidth) {
+  if (!features.isEnabled('image_srcset')) {
+    return {
+      variant: contentElementWidth === contentElementWidths.full ? 'large' : 'medium'
+    };
+  }
+
+  if (contentElementWidth >= contentElementWidths.xl) {
+    return {
+      variant: ['medium', 'large', 'ultra'],
+      sizes: contentElementWidth === contentElementWidths.full ?
+             '100vw' : '(min-width: 950px) 1200px, 100vw'
+    };
+  }
+
+  if (contentElementWidth >= contentElementWidths.md) {
+    return {
+      variant: ['medium', 'large'],
+      sizes: '(min-width: 950px) 950px, 100vw'
+    };
+  }
+
+  return {variant: 'medium'};
 }
 
 function processImageModifiers(imageModifiers) {

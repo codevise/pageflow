@@ -359,6 +359,175 @@ describe('Image', () => {
     expect(getByRole('img').hasAttribute('alt')).toBe(true);
   });
 
+  it('renders srcset with width descriptors for array variant', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant={['large', 'ultra']} />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            large: ':id_partition/large/image.jpg',
+            ultra: ':id_partition/ultra/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100, width: 4000, height: 3000}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/large/image.jpg');
+    expect(getByRole('img')).toHaveAttribute('srcset',
+      '000/000/001/large/image.jpg 1920w, 000/000/001/ultra/image.jpg 3840w');
+    expect(getByRole('img')).toHaveAttribute('sizes', '100vw');
+  });
+
+  it('passes custom sizes prop through', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant={['large', 'ultra']}
+                   sizes="(min-width: 960px) 50vw, 100vw" />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            large: ':id_partition/large/image.jpg',
+            ultra: ':id_partition/ultra/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100, width: 4000, height: 3000}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('sizes', '(min-width: 960px) 50vw, 100vw');
+  });
+
+  it('treats single-element array variant like string variant', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant={['large']} />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            large: ':id_partition/large/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/large/image.jpg');
+    expect(getByRole('img')).not.toHaveAttribute('srcset');
+  });
+
+  it('skips srcset for SVG when preferSvg is true', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant={['large', 'ultra']}
+                   preferSvg={true} />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            original: ':id_partition/original/:basename.:extension',
+            large: ':id_partition/large/image.jpg',
+            ultra: ':id_partition/ultra/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100, basename: 'image', extension: 'svg'}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/original/image.svg');
+    expect(getByRole('img')).not.toHaveAttribute('srcset');
+  });
+
+  it('does not render srcset for string variant', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant="large" />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            large: ':id_partition/large/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).not.toHaveAttribute('srcset');
+  });
+
+  it('skips srcset when variants compute to same width', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant={['large', 'ultra']} />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            large: ':id_partition/large/image.jpg',
+            ultra: ':id_partition/ultra/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100, width: 1920, height: 1080}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/large/image.jpg');
+    expect(getByRole('img')).not.toHaveAttribute('srcset');
+  });
+
+  it('uses computed width descriptors for portrait images', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant={['medium', 'large']} />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            medium: ':id_partition/medium/image.jpg',
+            large: ':id_partition/large/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100, width: 2160, height: 3840}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('srcset',
+      '000/000/001/medium/image.jpg 576w, 000/000/001/large/image.jpg 1080w');
+  });
+
+  it('uses correct width descriptors for medium and large array variant', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant={['medium', 'large']} />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            medium: ':id_partition/medium/image.jpg',
+            large: ':id_partition/large/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('srcset',
+      '000/000/001/medium/image.jpg 1024w, 000/000/001/large/image.jpg 1920w');
+  });
+
   it('supports width and height attributes', () => {
     const {getByRole} = renderInEntry(
       () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
