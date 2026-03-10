@@ -330,7 +330,8 @@ module Pageflow
         result += Pageflow.config_for(target).admin_form_inputs.permitted_attributes_for(:entry)
         result += permitted_account_attributes
 
-        result << :folder_id if params[:id] && authorized?(:configure_folder_for, resource)
+        result << :folder_id if create_or_new_action? ||
+                                  (params[:id] && authorized?(:configure_folder_for, resource))
 
         accounts = if params[:id]
                      resource.account
