@@ -1,4 +1,4 @@
-import {useEntryMetadata, useNestedFiles} from '../entryState';
+import {useEntryMetadata, useNestedFiles} from 'pageflow-scrolled/entryState';
 import {useSetting} from './useSetting';
 import {useI18n} from './i18n';
 

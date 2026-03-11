@@ -1,7 +1,7 @@
 import React, {useEffect, useCallback} from 'react';
 
 import {ReviewStateProvider} from 'pageflow-scrolled/review';
-import {useEntryStateDispatch} from '../../entryState';
+import {useEntryStateDispatch} from 'pageflow-scrolled/entryState';
 import {usePostMessageListener} from '../usePostMessageListener';
 import {EditorStateProvider, useEditorSelection} from './EditorState';
 import {

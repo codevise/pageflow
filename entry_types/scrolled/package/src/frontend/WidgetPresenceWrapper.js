@@ -1,5 +1,5 @@
 import React from 'react';
-import {useActiveWidgets} from '../entryState';
+import {useActiveWidgets} from 'pageflow-scrolled/entryState';
 import {api} from './api';
 
 export function WidgetPresenceWrapper({children}) {

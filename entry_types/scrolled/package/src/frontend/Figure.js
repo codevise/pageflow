@@ -6,7 +6,7 @@ import {EditableText} from './EditableText';
 import {useDarkBackground} from './backgroundColor';
 import {useContentElementEditorState} from './useContentElementEditorState';
 import {useI18n} from './i18n';
-import {useTheme} from '../entryState';
+import {useTheme} from 'pageflow-scrolled/entryState';
 import {isBlankEditableTextValue} from './utils/blank';
 
 import styles from './Figure.module.css';

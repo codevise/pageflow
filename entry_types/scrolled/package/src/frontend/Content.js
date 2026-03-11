@@ -4,7 +4,7 @@ import Chapter from "./Chapter";
 import {VhFix} from './VhFix';
 import {useActiveExcursion} from './useActiveExcursion';
 import {useCurrentSectionIndexState} from './useCurrentChapter';
-import {useEntryStructure} from '../entryState';
+import {useEntryStructure} from 'pageflow-scrolled/entryState';
 import {extensible} from './extensions';
 import {usePostMessageListener} from './usePostMessageListener';
 import {useSectionChangeEvents} from './useSectionChangeEvents';

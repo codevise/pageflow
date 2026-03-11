@@ -3,6 +3,7 @@
 /node_modules
 /contentElements
 /editor.js
+/entryState.js
 /frontend
 /frontend-server.js
 /contentElements-editor.js

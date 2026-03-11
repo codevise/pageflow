@@ -2,7 +2,7 @@ import React from 'react';
 
 import {ensureProtocol} from '../utils/urls';
 import {formatTimeDuration} from '../utils/iso8601';
-import {useEntryMetadata} from '../../entryState';
+import {useEntryMetadata} from 'pageflow-scrolled/entryState';
 
 import {StructuredData} from '../StructuredData';
 

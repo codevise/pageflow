@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {useConsentGiven} from './hooks';
-import {useTheme, useContentElementConsentVendor} from '../../entryState';
+import {useTheme, useContentElementConsentVendor} from 'pageflow-scrolled/entryState';
 import {useI18n} from '../i18n';
 import {useContentElementAttributes} from '../useContentElementAttributes';
 import {widths} from '../layouts';

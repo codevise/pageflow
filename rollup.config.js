@@ -276,6 +276,15 @@ const pageflowScrolled = [
     ]
   },
   {
+    input: pageflowScrolledPackageRoot + '/src/entryState/index.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/entryState.js',
+      format: 'esm',
+    },
+    external,
+    plugins: plugins()
+  },
+  {
     input: pageflowScrolledPackageRoot + '/src/frontend/index.js',
     output: {
       dir: pageflowScrolledPackageRoot + '/frontend',

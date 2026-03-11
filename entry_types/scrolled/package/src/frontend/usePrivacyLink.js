@@ -1,4 +1,4 @@
-import {useLegalInfo} from '../entryState';
+import {useLegalInfo} from 'pageflow-scrolled/entryState';
 
 // eslint-disable-next-line no-script-url
 const displayPrivacySettingsUrl = 'javascript:pageflowDisplayPrivacySettings()';

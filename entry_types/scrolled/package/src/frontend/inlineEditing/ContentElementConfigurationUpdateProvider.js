@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 
 import {ContentElementConfigurationUpdateContext} from '../useContentElementConfigurationUpdate';
-import {updateContentElementConfiguration, useEntryStateDispatch} from '../../entryState';
+import {updateContentElementConfiguration, useEntryStateDispatch} from 'pageflow-scrolled/entryState';
 import {postUpdateContentElementMessage} from './postMessage';
 
 export function ContentElementConfigurationUpdateProvider({id, permaId, children}) {

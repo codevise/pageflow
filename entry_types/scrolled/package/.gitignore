@@ -2,6 +2,7 @@
 /contentElements
 /editor.js
 /editor.css
+/entryState.js
 /frontend
 /frontend-server.js
 /contentElements-editor.js

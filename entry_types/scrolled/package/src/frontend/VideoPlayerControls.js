@@ -2,7 +2,7 @@ import React from 'react';
 
 import {MediaPlayerControls} from './MediaPlayerControls';
 import {useVideoQualitySetting} from './useVideoQualitySetting';
-import {useAvailableQualities} from '../entryState';
+import {useAvailableQualities} from 'pageflow-scrolled/entryState';
 import {useI18n} from './i18n';
 
 export function VideoPlayerControls({videoFile, ...props}) {

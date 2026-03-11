@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useChapter, useDownloadableFile, useEmbedOriginUrl} from '../entryState';
+import {useChapter, useDownloadableFile, useEmbedOriginUrl} from 'pageflow-scrolled/entryState';
 
 export function Link({attributes, children, href, openInNewTab}) {
   const embedOriginUrl = useEmbedOriginUrl();

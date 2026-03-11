@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import {api} from '../api';
 import {ContentElements} from '../ContentElements';
 import useMediaQuery from '../useMediaQuery';
-import {useTheme} from '../../entryState';
+import {useTheme} from 'pageflow-scrolled/entryState';
 import {widths, widthName} from './widths';
 
 import styles from './TwoColumn.module.css';

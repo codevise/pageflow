@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 
 import {WidgetConfigurationUpdateContext} from '../useWidgetConfigurationUpdate';
-import {updateWidgetConfiguration, useEntryStateDispatch} from '../../entryState';
+import {updateWidgetConfiguration, useEntryStateDispatch} from 'pageflow-scrolled/entryState';
 import {postUpdateWidgetMessage} from './postMessage';
 
 export function WidgetConfigurationUpdateProvider({role, children}) {

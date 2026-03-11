@@ -1,5 +1,5 @@
 import {browser} from 'pageflow/frontend';
-import {getFileUrlTemplateHost} from '../entryState';
+import {getFileUrlTemplateHost} from 'pageflow-scrolled/entryState';
 
 export async function loadDashUnlessHlsSupported(seed) {
   if (!hasHlsSupport({seed, agent: browser.agent})) {

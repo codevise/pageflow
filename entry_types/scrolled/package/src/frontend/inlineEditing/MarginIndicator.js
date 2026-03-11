@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useTheme} from '../../entryState';
+import {useTheme} from 'pageflow-scrolled/entryState';
 import {Scale} from '../../shared/Scale';
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useI18n} from '../i18n';

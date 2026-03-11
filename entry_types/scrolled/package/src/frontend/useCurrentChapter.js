@@ -1,6 +1,6 @@
 import React, {useState, useContext, useMemo} from 'react';
 
-import {useSectionsWithChapter} from '../entryState';
+import {useSectionsWithChapter} from 'pageflow-scrolled/entryState';
 
 const CurrentChapterContext = React.createContext();
 const CurrentSectionIndexStateContext = React.createContext();

@@ -6,7 +6,7 @@ import { SectionAtmo } from './SectionAtmo';
 import {
   useSectionForegroundContentElements,
   useFileWithInlineRights
-} from '../entryState';
+} from 'pageflow-scrolled/entryState';
 
 import {Foreground} from './Foreground';
 import {BackdropFrameEffect} from './BackdropFrameEffect';
