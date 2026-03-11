@@ -4,7 +4,7 @@ import {
   useConsentRequested,
   useDarkWidgets,
   useI18n,
-  useLegalInfo,
+  usePrivacyLink,
   ThemeIcon
 } from 'pageflow-scrolled/frontend';
 import {VendorsBox} from './VendorsBox';
@@ -15,7 +15,9 @@ export function ConsentBar({configuration = {}}) {
   const {vendors, acceptAll, denyAll, save} = useConsentRequested();
   const [expanded, setExpanded] = useState(configuration.defaultExpanded);
   const {t} = useI18n();
-  const privacyLinkUrl = useLegalInfo().privacy.url;
+  const {url: privacyLinkUrl} = usePrivacyLink({
+    vendors: (vendors || []).map(vendor => vendor.name).join(',')
+  });
   const darkWidgets = useDarkWidgets();
 
   if (vendors) {
@@ -24,7 +26,7 @@ export function ConsentBar({configuration = {}}) {
       <div className={classNames(styles.bar, {
         'scope-dark': darkWidgets,
       })}>
-        {renderText({privacyLinkUrl, t, vendors})}
+        {renderText({privacyLinkUrl, t})}
 
         {!expanded &&
          <button className={styles.configureButton} onClick={() => setExpanded(true)}>
@@ -56,9 +58,9 @@ export function ConsentBar({configuration = {}}) {
   );
 }
 
-function renderText({privacyLinkUrl, t, vendors}) {
+function renderText({privacyLinkUrl, t}) {
   const text = t('pageflow_scrolled.public.consent_prompt_html', {
-    privacyLinkUrl: appendVendorsParam(privacyLinkUrl, vendors)
+    privacyLinkUrl
   });
 
   return (
@@ -68,16 +70,3 @@ function renderText({privacyLinkUrl, t, vendors}) {
   );
 }
 
-function appendVendorsParam(privacyLinkUrl, vendors) {
-  try {
-    const url = new URL(privacyLinkUrl, window.location.href);
-
-    url.searchParams.set('vendors', vendors.map(vendor => vendor.name).join(','));
-    url.hash = '#consent';
-
-    return url.toString();
-  }
-  catch(e) {
-    return privacyLinkUrl;
-  }
-}

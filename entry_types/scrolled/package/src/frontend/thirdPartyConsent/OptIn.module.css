@@ -16,7 +16,7 @@
 }
 
 .optInMessage {
-  margin: 1em 0 1.5em 0;
+  margin: 1em 0;
 }
 
 @media (max-width: 600px) {
@@ -25,7 +25,7 @@
   }
 
   .optInMessage {
-    margin: 0.5em 0 1em 0;
+    margin: 0.5em 0 0.8em 0;
   }
 }
 
@@ -42,4 +42,12 @@
   border: solid 1px currentColor;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.privacyLink {
+  margin-bottom: 1.5em;
+}
+
+.privacyLink a {
+  color: currentColor;
 }

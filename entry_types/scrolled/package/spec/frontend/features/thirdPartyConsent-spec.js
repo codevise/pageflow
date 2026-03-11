@@ -338,6 +338,42 @@ describe('Third party consent', () => {
 
       expect(container.querySelector('[data-file-name=SvgMedia]')).not.toBeNull();
     });
+
+    it('renders privacy link pointing to privacy page with vendor param', async () => {
+      const {getByTestId} = await renderEntry({
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{typeName: 'test'}],
+          legalInfo: {
+            imprint: {label: '', url: ''},
+            copyright: {label: '', url: ''},
+            privacy: {label: 'Privacy', url: 'https://example.com/privacy'}
+          }
+        }
+      });
+
+      const {getByText} = within(getByTestId('test-content-element'));
+      const link = getByText('Privacy');
+
+      expect(link).toHaveAttribute(
+        'href',
+        'https://example.com/privacy?vendors=someService#consent'
+      );
+      expect(link).toHaveAttribute('target', '_blank');
+    });
+
+    it('does not render privacy link when no privacy url is configured', async () => {
+      const {getByTestId} = await renderEntry({
+        seed: {
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      const {queryByText} = within(getByTestId('test-content-element'));
+
+      expect(queryByText('Privacy')).toBeNull();
+    });
   });
 
   describe('opt in with implicit provider name', () => {

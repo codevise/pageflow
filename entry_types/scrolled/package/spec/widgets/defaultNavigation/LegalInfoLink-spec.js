@@ -17,13 +17,14 @@ describe('LegalInfoLink', () => {
     expect(getByRole('link')).toHaveAttribute('rel', 'noreferrer noopener');
   });
 
-  it('supports javascript url scheme', () => {
+  it('allows overriding link props', () => {
     const {getByRole} = render(
-      // eslint-disable-next-line no-script-url
-      <LegalInfoLink label="Copyright" url="javascript:pageflowDisplayPrivacySettings()" />
-    )
+      <LegalInfoLink label="Privacy"
+                     url="https://example.com"
+                     props={{href: '#privacySettings', onClick: jest.fn()}} />
+    );
 
-    expect(getByRole('link')).toHaveTextContent('Copyright');
+    expect(getByRole('link')).toHaveTextContent('Privacy');
     expect(getByRole('link')).toHaveAttribute('href', '#privacySettings');
     expect(getByRole('link')).not.toHaveAttribute('target');
     expect(getByRole('link')).not.toHaveAttribute('rel');

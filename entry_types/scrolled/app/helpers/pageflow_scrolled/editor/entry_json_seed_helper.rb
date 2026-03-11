@@ -11,7 +11,7 @@ module PageflowScrolled
         entry_config = Pageflow.config_for(scrolled_entry)
 
         scrolled_entry_editor_legacy_typography_variants_seed(json, entry_config)
-        scrolled_entry_editor_consent_vendor_host_matchers_seed(json, entry_config)
+        scrolled_entry_editor_consent_vendor_url_matchers_seed(json, entry_config)
 
         scrolled_entry_json_seed(json,
                                  scrolled_entry,
@@ -32,10 +32,10 @@ module PageflowScrolled
         )
       end
 
-      def scrolled_entry_editor_consent_vendor_host_matchers_seed(json, entry_config)
-        json.consent_vendor_host_matchers(
+      def scrolled_entry_editor_consent_vendor_url_matchers_seed(json, entry_config)
+        json.consent_vendor_url_matchers(
           entry_config
-            .consent_vendor_host_matchers
+            .consent_vendor_url_matchers
             .transform_keys { |regexp| regexp.inspect[1..-2] }
         )
       end

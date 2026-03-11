@@ -80,18 +80,32 @@ module PageflowScrolled
     # @since 16.1
     attr_reader :content_element_consent_vendors
 
-    # Mapping from URL hosts to consent vendor names. Used for iframe
-    # embed opt-in.
+    # Mapping from URL host+path patterns to consent vendor names.
+    # Used for iframe embed opt-in.
     #
     # @exmaple
     #
-    #     entry_type_config.consent_vendor_host_matchers = {
-    #       /\.some-vendor\.com$/ => 'someVendor'
+    #     entry_type_config.consent_vendor_url_matchers = {
+    #       /\.some-vendor\.com\// => 'someVendor',
+    #       /google\.com\/maps\/embed/ => 'googleMaps'
     #     }
     #
     # @return [Hash<RegExp, String>]
+    # @since edge
+    attr_accessor :consent_vendor_url_matchers
+
+    # @deprecated Use {#consent_vendor_url_matchers=} instead.
+    #   Rewrites trailing `$` in patterns to `/` and merges
+    #   into {#consent_vendor_url_matchers}.
     # @since 16.1
-    attr_accessor :consent_vendor_host_matchers
+    def consent_vendor_host_matchers=(matchers)
+      rewritten = matchers.transform_keys do |key|
+        source = key.source.sub(/\$$/, '/')
+        Regexp.new(source, key.options)
+      end
+
+      @consent_vendor_url_matchers.merge!(rewritten)
+    end
 
     # Migrate typography variants to palette colors. Before palette
     # colors for text blocks and headings were introduced, it was
@@ -155,7 +169,7 @@ module PageflowScrolled
       @additional_frontend_seed_data = AdditionalSeedData.new
       @additional_theme_assets = AdditionalThemeAssets.new
       @content_element_consent_vendors = ContentElementConsentVendors.new
-      @consent_vendor_host_matchers = {}
+      @consent_vendor_url_matchers = {}
 
       @legacy_typography_variants = {}
     end

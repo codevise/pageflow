@@ -41,8 +41,8 @@ module PageflowScrolled
       it 'returns nil if consent not required' do
         pageflow_configure do |config|
           config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
-            entry_type_config.consent_vendor_host_matchers = {
-              /\.typeform\.com$/ => 'typeform'
+            entry_type_config.consent_vendor_url_matchers = {
+              /\.typeform\.com\// => 'typeform'
             }
           end
         end
@@ -59,6 +59,46 @@ module PageflowScrolled
       end
 
       it 'detects vendor from source when consent is required' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.consent_vendor_url_matchers = {
+              /\.typeform\.com\// => 'typeform'
+            }
+          end
+        end
+
+        result = Plugin::IFRAME_EMBED_CONSENT_VENDOR.call(
+          entry: create(:published_entry, type_name: 'scrolled'),
+          configuration: {
+            'requireConsent' => true,
+            'source' => 'https://foo.typeform.com/to/1234'
+          }
+        )
+
+        expect(result).to eq('typeform')
+      end
+
+      it 'detects vendor from path-based url matcher' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+            entry_type_config.consent_vendor_url_matchers = {
+              /google\.com\/maps\/embed/ => 'googleMaps'
+            }
+          end
+        end
+
+        result = Plugin::IFRAME_EMBED_CONSENT_VENDOR.call(
+          entry: create(:published_entry, type_name: 'scrolled'),
+          configuration: {
+            'requireConsent' => true,
+            'source' => 'https://www.google.com/maps/embed?pb=1234'
+          }
+        )
+
+        expect(result).to eq('googleMaps')
+      end
+
+      it 'supports deprecated consent_vendor_host_matchers setter' do
         pageflow_configure do |config|
           config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
             entry_type_config.consent_vendor_host_matchers = {
