@@ -20,7 +20,7 @@ const displayPrivacySettingsUrl = 'javascript:pageflowDisplayPrivacySettings()';
 export function usePrivacyLink({vendors} = {}) {
   const {privacy} = useLegalInfo();
 
-  const url = vendors && privacy.url
+  const url = vendors && privacy.url && privacy.url !== displayPrivacySettingsUrl
     ? appendVendorsParam(privacy.url, vendors)
     : privacy.url;
 

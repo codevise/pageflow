@@ -142,6 +142,23 @@ describe('usePrivacyLink', () => {
     expect(result.current.props.target).toBeUndefined();
   });
 
+  it('does not append vendors to javascript: privacy settings url', () => {
+    const {result} = renderHookInEntry(
+      // eslint-disable-next-line no-script-url
+      () => usePrivacyLink({vendors: 'spotify'}), {
+        seed: {
+          legalInfo: {
+            privacy: {url: 'javascript:pageflowDisplayPrivacySettings()'}
+          }
+        }
+      }
+    );
+
+    expect(result.current.props.href).toEqual('#privacySettings');
+    expect(result.current.props.onClick).toBeInstanceOf(Function);
+    expect(result.current.props.target).toBeUndefined();
+  });
+
   it('returns link props with vendors param in href', () => {
     const {result} = renderHookInEntry(
       () => usePrivacyLink({vendors: 'spotify'}), {
