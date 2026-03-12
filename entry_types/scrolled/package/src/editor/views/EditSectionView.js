@@ -5,6 +5,8 @@ import {
   SeparatorView,
   SliderInputView
 } from 'pageflow/ui';
+import {AppearanceSelectInputView} from './inputs/AppearanceSelectInputView';
+import {LayoutSelectInputView} from './inputs/LayoutSelectInputView';
 import {BackdropContentElementInputView} from './inputs/BackdropContentElementInputView';
 import {EditMotifAreaInputView} from './inputs/EditMotifAreaInputView';
 import {EffectListInputView} from './inputs/EffectListInputView';
@@ -13,6 +15,7 @@ import {InlineFileRightsMenuItem} from '../models/InlineFileRightsMenuItem'
 import {createSectionMenuItems} from '../models/sectionMenuItems';
 import I18n from 'i18n-js';
 import {features} from 'pageflow/frontend';
+import {utils} from 'pageflow-scrolled/frontend';
 
 import {EditMotifAreaDialogView} from './EditMotifAreaDialogView';
 
@@ -155,7 +158,7 @@ export const EditSectionView = EditConfigurationView.extend({
 
       this.view(SeparatorView);
 
-      this.input('layout', SelectInputView, {
+      this.input('layout', LayoutSelectInputView, {
         values: ['left', 'right', 'center', 'centerRagged']
       });
 
@@ -168,8 +171,8 @@ export const EditSectionView = EditConfigurationView.extend({
           values: ['wide', 'narrow']
         });
       }
-      this.input('appearance', SelectInputView, {
-        values: ['shadow', 'cards', 'transparent']
+      this.input('appearance', AppearanceSelectInputView, {
+        values: ['shadow', 'cards', 'split', 'transparent']
       });
       this.input('invert', CheckBoxInputView);
 
@@ -190,16 +193,40 @@ export const EditSectionView = EditConfigurationView.extend({
           (!exposeMotifArea || motifAreaDisabled(motifAreaDisabledBindingValues)) && backdropType !== 'contentElement'
       });
 
-      if (features.isEnabled('custom_palette_colors')) {
-        this.input('cardSurfaceColor', ColorInputView, {
-          visibleBinding: 'appearance',
-          visibleBindingValue: 'cards',
-          placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto'),
-          placeholderColorBinding: 'invert',
-          placeholderColor: invert => invert ? '#101010' : '#ffffff',
-          swatches: entry.getUsedSectionBackgroundColors()
-        });
-      }
+      this.input('cardSurfaceColor', ColorInputView, {
+        visibleBinding: 'appearance',
+        visibleBindingValue: 'cards',
+        alpha: true,
+        placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto'),
+        placeholderColorBinding: 'invert',
+        placeholderColor: invert => invert ? '#101010' : '#ffffff',
+        placeholderColorDescription: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto_color'),
+        swatches: entry.getUsedSectionBackgroundColors()
+      });
+
+      this.input('splitOverlayColor', ColorInputView, {
+        visibleBinding: 'appearance',
+        visibleBindingValue: 'split',
+        alpha: true,
+        placeholder: I18n.t('pageflow_scrolled.editor.edit_section.attributes.splitOverlayColor.auto'),
+        placeholderColorBinding: 'invert',
+        placeholderColor: invert => invert ? '#ffffffb3' : '#000000b3',
+        placeholderColorDescription: I18n.t('pageflow_scrolled.editor.edit_section.attributes.splitOverlayColor.auto_color'),
+        swatches: entry.getUsedSectionBackgroundColors()
+      });
+
+      this.input('overlayBackdropBlur', SliderInputView, {
+        visibleBinding: 'appearance',
+        visible: appearance => appearance === 'split' || appearance === 'cards',
+        disabledBinding: ['appearance', 'splitOverlayColor', 'cardSurfaceColor'],
+        disabled: ([appearance, splitOverlayColor, cardSurfaceColor]) =>
+          appearance === 'split'
+            ? splitOverlayColor && !utils.isTranslucentColor(splitOverlayColor)
+            : !utils.isTranslucentColor(cardSurfaceColor),
+        values: [0, 25, 50, 75, 100],
+        defaultValue: 100,
+        saveOnSlide: true
+      });
 
       this.view(SeparatorView);
 

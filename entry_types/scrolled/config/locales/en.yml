@@ -1192,12 +1192,13 @@ en:
         motif_area_info_text: Mark the most important part of the backdrop that should be visible and unobstructed when reaching the section.
         attributes:
           appearance:
-            inline_help: This setting controls how the scrolling foreground should get dimmed to increase contrast from the background. The option "Cards" adds a box with rounded corners to the foreground, with "Shadow" you can add a light or dark shadow to increase readability.
+            inline_help: Controls how the foreground is visually separated from the background. "Shadow" adds a gradient behind text. "Cards" places content on a rounded box. "Split" covers half the viewport width with an overlay for the content.
             label: Text-Background
             values:
               cards: Card
               shadow: Shadow
               transparent: Transparent
+              split: Split
           atmoAudioFileId:
             inline_help: Choose an audio file, that shall be played in the background. If you want this audio to continue playing on following sections, just choose the same file again there.
             label: Atmo Audio
@@ -1256,8 +1257,19 @@ en:
               coverViewport: Cover viewport
               coverSection: Cover section
           cardSurfaceColor:
+            inline_help: Background color of the card. Use a translucent color to let the backdrop shine through and enable background blur.
             label: Cards background color
             auto: "(Auto)"
+            auto_color: "Auto color"
+          splitOverlayColor:
+            inline_help: Color of the overlay behind the content.
+            label: Overlay color
+            auto: "(Auto)"
+            auto_color: "Auto color"
+          overlayBackdropBlur:
+            inline_help: Amount of blur applied to the backdrop behind the overlay.
+            label: Background blur
+            inline_help_disabled: Only available when overlay color has transparency.
           sectionPaddings:
             label: "Top/bottom padding"
         tabs:

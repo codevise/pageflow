@@ -114,12 +114,6 @@ function SectionContents({
 
   const {shouldPrepare} = useSectionLifecycle();
 
-  const sectionProperties = useMemo(() => ({
-    layout: section.layout,
-    invert: section.invert,
-    sectionIndex: section.sectionIndex
-  }), [section.layout, section.invert, section.sectionIndex]);
-
   const [, exitTransition] = transitions;
 
   const [motifAreaState, setMotifAreaRef, setContentAreaRef] = useMotifAreaState({
@@ -130,6 +124,15 @@ function SectionContents({
     empty: !contentElements.length,
     fullHeight: section.fullHeight
   });
+
+  const sectionProperties = useMemo(() => ({
+    layout: section.layout,
+    invert: section.invert,
+    sectionIndex: section.sectionIndex,
+    constrainContentWidth: section.appearance === 'split' &&
+                           !motifAreaState.isContentPadded
+  }), [section.layout, section.invert, section.sectionIndex,
+       section.appearance, motifAreaState.isContentPadded]);
 
   const {Shadow, Box, BoxWrapper} = getAppearanceComponents(section.appearance)
 
@@ -152,7 +155,9 @@ function SectionContents({
                   inverted={section.invert}
                   motifAreaState={motifAreaState}
                   staticShadowOpacity={staticShadowOpacity}
-                  dynamicShadowOpacity={dynamicShadowOpacity}>
+                  dynamicShadowOpacity={dynamicShadowOpacity}
+                  splitOverlayColor={section.splitOverlayColor}
+                  overlayBackdropBlur={section.overlayBackdropBlur}>
             {children}
           </Shadow>}
       </Backdrop>
@@ -170,16 +175,20 @@ function SectionContents({
              transitionStyles={transitionStyles}
              state={state}
              motifAreaState={motifAreaState}
-             staticShadowOpacity={staticShadowOpacity}>
+             staticShadowOpacity={staticShadowOpacity}
+             splitOverlayColor={section.splitOverlayColor}
+             overlayBackdropBlur={section.overlayBackdropBlur}>
           <Layout sectionId={section.id}
                   items={contentElements}
                   appearance={section.appearance}
+                  constrainContentWidth={sectionProperties.constrainContentWidth}
                   contentAreaRef={setContentAreaRef}
                   sectionProps={sectionProperties}
                   isContentPadded={motifAreaState.isContentPadded}>
             {(children, boxProps) =>
               <BoxWrapper {...boxProps}
                           cardSurfaceColor={section.cardSurfaceColor}
+                          overlayBackdropBlur={section.overlayBackdropBlur}
                           inverted={section.invert}>
                 {children}
               </BoxWrapper>}

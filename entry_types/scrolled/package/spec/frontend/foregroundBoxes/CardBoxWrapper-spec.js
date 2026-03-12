@@ -50,6 +50,84 @@ describe('CardBoxWrapper', () => {
     });
   });
 
+  describe('backdrop blur', () => {
+    it('applies blur class when overlayBackdropBlur is set and color is translucent', () => {
+      const {container} = render(
+        <CardBoxWrapper cardSurfaceColor="#ff000080"
+                        overlayBackdropBlur={50}>
+          Content
+        </CardBoxWrapper>
+      );
+
+      expect(container.firstChild).toHaveClass(cardBoxStyles.blur);
+    });
+
+    it('does not apply blur class when color is opaque', () => {
+      const {container} = render(
+        <CardBoxWrapper cardSurfaceColor="#ff0000"
+                        overlayBackdropBlur={50}>
+          Content
+        </CardBoxWrapper>
+      );
+
+      expect(container.firstChild).not.toHaveClass(cardBoxStyles.blur);
+    });
+
+    it('does not apply blur when everything is default', () => {
+      const {container} = render(
+        <CardBoxWrapper>
+          Content
+        </CardBoxWrapper>
+      );
+
+      expect(container.firstChild).not.toHaveClass(cardBoxStyles.blur);
+    });
+
+    it('applies blur class by default for translucent color', () => {
+      const {container} = render(
+        <CardBoxWrapper cardSurfaceColor="#ff000080">
+          Content
+        </CardBoxWrapper>
+      );
+
+      expect(container.firstChild).toHaveClass(cardBoxStyles.blur);
+    });
+
+    it('sets backdrop blur CSS variable by default for translucent color', () => {
+      const {container} = render(
+        <CardBoxWrapper cardSurfaceColor="#ff000080">
+          Content
+        </CardBoxWrapper>
+      );
+
+      expect(container.firstChild.style.getPropertyValue('--card-backdrop-blur'))
+        .toBe('blur(10px)');
+    });
+
+    it('does not apply blur class when overlayBackdropBlur is 0', () => {
+      const {container} = render(
+        <CardBoxWrapper cardSurfaceColor="#ff000080"
+                        overlayBackdropBlur={0}>
+          Content
+        </CardBoxWrapper>
+      );
+
+      expect(container.firstChild).not.toHaveClass(cardBoxStyles.blur);
+    });
+
+    it('sets backdrop blur CSS variable when color is translucent', () => {
+      const {container} = render(
+        <CardBoxWrapper cardSurfaceColor="#ff000080"
+                        overlayBackdropBlur={50}>
+          Content
+        </CardBoxWrapper>
+      );
+
+      expect(container.firstChild.style.getPropertyValue('--card-backdrop-blur'))
+        .toBe('blur(5px)');
+    });
+  });
+
   describe('cardEnd padding', () => {
     it('does not have cardEndPadding class when lastMarginBottom is set', () => {
       const {container} = render(

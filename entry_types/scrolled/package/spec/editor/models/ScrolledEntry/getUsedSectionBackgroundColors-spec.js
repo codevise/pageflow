@@ -50,6 +50,29 @@ describe('ScrolledEntry', () => {
       expect(colors).toEqual(['#400', '#500', '#040']);
     });
 
+    it('includes splitOverlayColor of split sections', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            sections: [
+              {
+                configuration: {
+                  appearance: 'split',
+                  splitOverlayColor: '#600'
+                }
+              }
+            ]
+          })
+        }
+      );
+
+      const colors = entry.getUsedSectionBackgroundColors();
+
+      expect(colors).toEqual(['#600']);
+    });
+
     it('ignores blank colors', () => {
       const entry = factories.entry(
         ScrolledEntry,

@@ -54,6 +54,10 @@
   composes: scope-lightContent from global;
 }
 
+.blur::before {
+  backdrop-filter: var(--card-backdrop-blur);
+}
+
 @media screen {
   .cardBgWhite::before {
     background-color: var(--card-surface-color, lightContentSurfaceColor);
