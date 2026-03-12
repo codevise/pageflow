@@ -399,6 +399,10 @@ export const ScrolledEntry = Entry.extend({
       if (section.configuration.get('appearance') === 'cards') {
         colors.add(section.configuration.get('cardSurfaceColor'));
       }
+
+      if (section.configuration.get('appearance') === 'split') {
+        colors.add(section.configuration.get('splitSurfaceColor'));
+      }
     });
 
     return sortColors([...colors].filter(Boolean));

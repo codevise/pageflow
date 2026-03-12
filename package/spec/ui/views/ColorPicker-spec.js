@@ -478,6 +478,34 @@ describe('ColorPicker', () => {
     });
   });
 
+  describe('swatch filtering', () => {
+    it('filters out translucent swatches when alpha is not enabled', () => {
+      createColorPicker({swatches: ['#aabbcc', '#ff000080', '#112233']});
+
+      var buttons = picker().querySelectorAll('.color_picker-swatches button');
+      expect(buttons).toHaveLength(2);
+      expect(buttons[0].textContent).toBe('#aabbcc');
+      expect(buttons[1].textContent).toBe('#112233');
+    });
+
+    it('keeps translucent swatches when alpha is enabled', () => {
+      createColorPicker({alpha: true, swatches: ['#aabbcc', '#ff000080', '#112233']});
+
+      var buttons = picker().querySelectorAll('.color_picker-swatches button');
+      expect(buttons).toHaveLength(3);
+    });
+
+    it('filters translucent swatches on update', () => {
+      createColorPicker({swatches: ['#aabbcc']});
+
+      colorPicker.update({swatches: ['#112233', '#ff000080']});
+
+      var buttons = picker().querySelectorAll('.color_picker-swatches button');
+      expect(buttons).toHaveLength(1);
+      expect(buttons[0].textContent).toBe('#112233');
+    });
+  });
+
   describe('fallbackColor option', () => {
     it('uses fallbackColor for display when opened with no value', () => {
       createColorPicker({fallbackColor: '#ff0000'});
