@@ -1276,7 +1276,7 @@ de:
             label: Kartenhintergrundfarbe
             auto: "(Automatisch)"
             auto_color: "Automatische Farbe"
-          splitSurfaceColor:
+          splitOverlayColor:
             label: Overlay-Farbe
             auto: "(Automatisch)"
             auto_color: "Automatische Farbe"

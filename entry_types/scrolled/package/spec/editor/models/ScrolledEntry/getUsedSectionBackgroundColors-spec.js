@@ -50,7 +50,7 @@ describe('ScrolledEntry', () => {
       expect(colors).toEqual(['#400', '#500', '#040']);
     });
 
-    it('includes splitSurfaceColor of split sections', () => {
+    it('includes splitOverlayColor of split sections', () => {
       const entry = factories.entry(
         ScrolledEntry,
         {},
@@ -60,7 +60,7 @@ describe('ScrolledEntry', () => {
               {
                 configuration: {
                   appearance: 'split',
-                  splitSurfaceColor: '#600'
+                  splitOverlayColor: '#600'
                 }
               }
             ]

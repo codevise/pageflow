@@ -1260,7 +1260,7 @@ en:
             label: Cards background color
             auto: "(Auto)"
             auto_color: "Auto color"
-          splitSurfaceColor:
+          splitOverlayColor:
             label: Overlay color
             auto: "(Auto)"
             auto_color: "Auto color"

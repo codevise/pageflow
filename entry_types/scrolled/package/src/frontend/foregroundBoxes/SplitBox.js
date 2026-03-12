@@ -13,7 +13,7 @@ export default function SplitBox(props) {
              style={{
                top: props.motifAreaState.paddingTop,
                ...splitOverlayStyle({
-                 color: props.splitSurfaceColor,
+                 color: props.splitOverlayColor,
                  backdropBlur: props.overlayBackdropBlur
                })
              }} />}

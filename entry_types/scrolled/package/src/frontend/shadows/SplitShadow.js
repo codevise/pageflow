@@ -20,7 +20,7 @@ export default function SplitShadow(props) {
                                props.inverted ? styles.light : styles.dark)}>
       <div className={styles.overlay}
            style={splitOverlayStyle({
-             color: props.splitSurfaceColor,
+             color: props.splitOverlayColor,
              backdropBlur: props.overlayBackdropBlur
            })}>
         <Fullscreen />

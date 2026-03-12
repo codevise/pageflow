@@ -88,7 +88,7 @@ describe('SplitBox', () => {
     const {container} = render(
       <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
                 inverted={false}
-                splitSurfaceColor="#ff000080"
+                splitOverlayColor="#ff000080"
                 overlayBackdropBlur={50}>
         <div />
       </SplitBox>
@@ -102,7 +102,7 @@ describe('SplitBox', () => {
     const {container} = render(
       <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
                 inverted={false}
-                splitSurfaceColor="#ff0000"
+                splitOverlayColor="#ff0000"
                 overlayBackdropBlur={50}>
         <div />
       </SplitBox>
@@ -112,11 +112,11 @@ describe('SplitBox', () => {
       .toBeFalsy();
   });
 
-  it('sets overlay background color from splitSurfaceColor', () => {
+  it('sets overlay background color from splitOverlayColor', () => {
     const {container} = render(
       <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
                 inverted={false}
-                splitSurfaceColor="#ff000080">
+                splitOverlayColor="#ff000080">
         <div />
       </SplitBox>
     );

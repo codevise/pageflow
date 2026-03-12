@@ -73,9 +73,9 @@ describe('SplitShadow', () => {
     expect(container.firstChild).toHaveClass(styles.light);
   });
 
-  it('sets background color from splitSurfaceColor prop', () => {
+  it('sets background color from splitOverlayColor prop', () => {
     const {container} = render(
-      <SplitShadow {...defaultProps} splitSurfaceColor="#ff000080">
+      <SplitShadow {...defaultProps} splitOverlayColor="#ff000080">
         <div />
       </SplitShadow>
     );
@@ -84,7 +84,7 @@ describe('SplitShadow', () => {
       .toHaveStyle({backgroundColor: '#ff000080'});
   });
 
-  it('does not set inline background color when no splitSurfaceColor', () => {
+  it('does not set inline background color when no splitOverlayColor', () => {
     const {container} = render(
       <SplitShadow {...defaultProps}>
         <div />
@@ -98,7 +98,7 @@ describe('SplitShadow', () => {
   it('applies backdrop filter when overlayBackdropBlur is set and color is translucent', () => {
     const {container} = render(
       <SplitShadow {...defaultProps}
-                    splitSurfaceColor="#ff000080"
+                    splitOverlayColor="#ff000080"
                     overlayBackdropBlur={50}>
         <div />
       </SplitShadow>
@@ -111,7 +111,7 @@ describe('SplitShadow', () => {
   it('does not apply backdrop filter when color is opaque', () => {
     const {container} = render(
       <SplitShadow {...defaultProps}
-                    splitSurfaceColor="#ff0000"
+                    splitOverlayColor="#ff0000"
                     overlayBackdropBlur={50}>
         <div />
       </SplitShadow>
@@ -121,16 +121,15 @@ describe('SplitShadow', () => {
       .toBeFalsy();
   });
 
-  it('does not apply backdrop filter when no color is set', () => {
+  it('applies default backdrop filter when no color is set', () => {
     const {container} = render(
-      <SplitShadow {...defaultProps}
-                    overlayBackdropBlur={50}>
+      <SplitShadow {...defaultProps}>
         <div />
       </SplitShadow>
     );
 
     expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
-      .toBeFalsy();
+      .toBe('blur(10px)');
   });
 
   it('does not render overlay when isContentPadded is true', () => {

@@ -401,7 +401,7 @@ export const ScrolledEntry = Entry.extend({
       }
 
       if (section.configuration.get('appearance') === 'split') {
-        colors.add(section.configuration.get('splitSurfaceColor'));
+        colors.add(section.configuration.get('splitOverlayColor'));
       }
     });
 
