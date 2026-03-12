@@ -68,7 +68,7 @@ export const ColorInputView = Marionette.ItemView.extend({
       fallbackColor: this.getAttributeBoundOption('placeholderColor'),
       fallbackColorDescription: this.options.placeholderColorDescription,
       swatches: this.getSwatches(),
-      onChange: _.debounce(_.bind(this._onChange, this), 200)
+      onChange: this._debouncedOnChange()
     });
 
     this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
@@ -133,6 +133,11 @@ export const ColorInputView = Marionette.ItemView.extend({
     else {
       return bindingValue;
     }
+  },
+
+  _debouncedOnChange: function() {
+    const handler = _.bind(this._onChange, this);
+    return this.options.disableChangeDebounce ? handler : _.debounce(handler, 200);
   },
 
   _onChange: function(color) {
