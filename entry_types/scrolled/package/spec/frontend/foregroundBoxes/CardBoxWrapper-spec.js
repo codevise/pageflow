@@ -7,11 +7,14 @@ import CardBoxWrapper from 'frontend/foregroundBoxes/CardBoxWrapper';
 import cardBoxStyles from 'frontend/foregroundBoxes/CardBoxWrapper.module.css';
 import boundaryMarginStyles from 'frontend/foregroundBoxes/BoxBoundaryMargin.module.css';
 
+const transitionStyles = {foregroundOpacity: 'foregroundOpacity'};
+
 describe('CardBoxWrapper', () => {
   describe('at section boundaries', () => {
     it('does not have noTopMargin class when not at section start', () => {
       const {container} = render(
-        <CardBoxWrapper openStart={false} openEnd={true} atSectionStart={false}>
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        openStart={false} openEnd={true} atSectionStart={false}>
           Content
         </CardBoxWrapper>
       );
@@ -21,7 +24,8 @@ describe('CardBoxWrapper', () => {
 
     it('has noTopMargin class when at section start', () => {
       const {container} = render(
-        <CardBoxWrapper openStart={false} openEnd={true} atSectionStart={true}>
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        openStart={false} openEnd={true} atSectionStart={true}>
           Content
         </CardBoxWrapper>
       );
@@ -31,7 +35,8 @@ describe('CardBoxWrapper', () => {
 
     it('does not have noBottomMargin class when not at section end', () => {
       const {container} = render(
-        <CardBoxWrapper openStart={true} openEnd={false} atSectionEnd={false}>
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        openStart={true} openEnd={false} atSectionEnd={false}>
           Content
         </CardBoxWrapper>
       );
@@ -41,7 +46,8 @@ describe('CardBoxWrapper', () => {
 
     it('has noBottomMargin class when at section end', () => {
       const {container} = render(
-        <CardBoxWrapper openStart={true} openEnd={false} atSectionEnd={true}>
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        openStart={true} openEnd={false} atSectionEnd={true}>
           Content
         </CardBoxWrapper>
       );
@@ -50,88 +56,82 @@ describe('CardBoxWrapper', () => {
     });
   });
 
-  describe('backdrop blur', () => {
-    it('applies blur class when overlayBackdropBlur is set and color is translucent', () => {
+  describe('background element', () => {
+    it('applies foregroundOpacity class to background element', () => {
       const {container} = render(
-        <CardBoxWrapper cardSurfaceColor="#ff000080"
-                        overlayBackdropBlur={50}>
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        openStart={false} openEnd={false}>
           Content
         </CardBoxWrapper>
       );
 
-      expect(container.firstChild).toHaveClass(cardBoxStyles.blur);
+      expect(container.querySelector(`.${cardBoxStyles.cardBg}`))
+        .toHaveClass('foregroundOpacity');
+    });
+  });
+
+  describe('content wrapper', () => {
+    it('applies foregroundOpacity class to content wrapper', () => {
+      const {container} = render(
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        openStart={false} openEnd={false}>
+          <span>Content</span>
+        </CardBoxWrapper>
+      );
+
+      const contentWrapper = container.querySelector(`.foregroundOpacity:not(.${cardBoxStyles.cardBg})`);
+      expect(contentWrapper).not.toBeNull();
+      expect(contentWrapper).toHaveTextContent('Content');
+    });
+  });
+
+  describe('outside box', () => {
+    it('wraps outsideBox children in foregroundOpacity', () => {
+      const {container} = render(
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        position="sticky">
+          <span>Content</span>
+        </CardBoxWrapper>
+      );
+
+      expect(container.querySelector('.foregroundOpacity'))
+        .toHaveTextContent('Content');
+    });
+  });
+
+  describe('overlay style', () => {
+    it('applies overlay style to background element', () => {
+      const {container} = render(
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        overlayStyle={{backgroundColor: '#ff000080', backdropFilter: 'blur(5px)'}}>
+          Content
+        </CardBoxWrapper>
+      );
+
+      const bg = container.querySelector(`.${cardBoxStyles.cardBg}`);
+      expect(bg).toHaveStyle({backgroundColor: '#ff000080'});
+      expect(bg.style.backdropFilter).toBe('blur(5px)');
     });
 
-    it('does not apply blur class when color is opaque', () => {
+    it('does not set inline styles when overlayStyle is empty', () => {
       const {container} = render(
-        <CardBoxWrapper cardSurfaceColor="#ff0000"
-                        overlayBackdropBlur={50}>
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        overlayStyle={{}}>
           Content
         </CardBoxWrapper>
       );
 
-      expect(container.firstChild).not.toHaveClass(cardBoxStyles.blur);
-    });
-
-    it('does not apply blur when everything is default', () => {
-      const {container} = render(
-        <CardBoxWrapper>
-          Content
-        </CardBoxWrapper>
-      );
-
-      expect(container.firstChild).not.toHaveClass(cardBoxStyles.blur);
-    });
-
-    it('applies blur class by default for translucent color', () => {
-      const {container} = render(
-        <CardBoxWrapper cardSurfaceColor="#ff000080">
-          Content
-        </CardBoxWrapper>
-      );
-
-      expect(container.firstChild).toHaveClass(cardBoxStyles.blur);
-    });
-
-    it('sets backdrop blur CSS variable by default for translucent color', () => {
-      const {container} = render(
-        <CardBoxWrapper cardSurfaceColor="#ff000080">
-          Content
-        </CardBoxWrapper>
-      );
-
-      expect(container.firstChild.style.getPropertyValue('--card-backdrop-blur'))
-        .toBe('blur(10px)');
-    });
-
-    it('does not apply blur class when overlayBackdropBlur is 0', () => {
-      const {container} = render(
-        <CardBoxWrapper cardSurfaceColor="#ff000080"
-                        overlayBackdropBlur={0}>
-          Content
-        </CardBoxWrapper>
-      );
-
-      expect(container.firstChild).not.toHaveClass(cardBoxStyles.blur);
-    });
-
-    it('sets backdrop blur CSS variable when color is translucent', () => {
-      const {container} = render(
-        <CardBoxWrapper cardSurfaceColor="#ff000080"
-                        overlayBackdropBlur={50}>
-          Content
-        </CardBoxWrapper>
-      );
-
-      expect(container.firstChild.style.getPropertyValue('--card-backdrop-blur'))
-        .toBe('blur(5px)');
+      const bg = container.querySelector(`.${cardBoxStyles.cardBg}`);
+      expect(bg.style.backdropFilter).toBeFalsy();
+      expect(bg.style.backgroundColor).toBeFalsy();
     });
   });
 
   describe('cardEnd padding', () => {
     it('does not have cardEndPadding class when lastMarginBottom is set', () => {
       const {container} = render(
-        <CardBoxWrapper openStart={true} openEnd={false} lastMarginBottom="lg">
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        openStart={true} openEnd={false} lastMarginBottom="lg">
           Content
         </CardBoxWrapper>
       );
@@ -142,7 +142,8 @@ describe('CardBoxWrapper', () => {
 
     it('has cardEndPadding class when lastMarginBottom is not set', () => {
       const {container} = render(
-        <CardBoxWrapper openStart={true} openEnd={false}>
+        <CardBoxWrapper transitionStyles={transitionStyles}
+                        openStart={true} openEnd={false}>
           Content
         </CardBoxWrapper>
       );

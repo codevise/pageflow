@@ -1,8 +1,11 @@
 import {
   getTransitionNames,
   getAvailableTransitionNames,
+  getTransitionStyles,
   getTransitionStylesName
 } from 'frontend/transitions';
+
+import sharedTransitionStyles from 'frontend/transitions/shared.module.css';
 
 import {useEntryStructure} from 'entryState/structure';
 
@@ -49,6 +52,61 @@ describe('getAvailableTransitions', () => {
     expect(result).not.toContain('fade');
     expect(result).not.toContain('fadeBg');
   });
+});
+
+describe('getTransitionStyles', () => {
+  it('includes perElementFade class in foreground when overlayStyle has backdropFilter', () => {
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {fullHeight: true, transition: 'scroll'}},
+          {configuration: {fullHeight: true, transition: 'fade'}},
+          {configuration: {fullHeight: true, transition: 'scroll'}}
+        ]
+      }
+    });
+
+    const styles = getTransitionStyles(
+      result.current.main[0].sections[1],
+      {backdropFilter: 'blur(10px)'}
+    );
+
+    expect(styles.foreground).toContain(sharedTransitionStyles.perElementFade);
+  });
+
+  it('does not include perElementFade class in foreground by default', () => {
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {fullHeight: true, transition: 'scroll'}},
+          {configuration: {fullHeight: true, transition: 'fade'}},
+          {configuration: {fullHeight: true, transition: 'scroll'}}
+        ]
+      }
+    });
+
+    const styles = getTransitionStyles(result.current.main[0].sections[1]);
+
+    expect(styles.foreground).not.toContain(sharedTransitionStyles.perElementFade);
+  });
+
+  it('does not include perElementFade class for scroll-only transitions', () => {
+    const {result} = renderHookInEntry(() => useEntryStructure(), {
+      seed: {
+        sections: [
+          {configuration: {transition: 'scroll'}}
+        ]
+      }
+    });
+
+    const styles = getTransitionStyles(
+      result.current.main[0].sections[0],
+      {backdropFilter: 'blur(10px)'}
+    );
+
+    expect(styles.foreground).toBeUndefined();
+  });
+
 });
 
 describe('getTransitionStylesName', () => {

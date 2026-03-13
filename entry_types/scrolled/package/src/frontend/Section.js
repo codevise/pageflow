@@ -22,7 +22,7 @@ import {BackgroundColorProvider} from './backgroundColor';
 import {SelectableWidget} from './SelectableWidget';
 import {useSectionPadding} from './useSectionPaddingCustomProperties';
 import {SectionIntersectionProbe} from './SectionIntersectionObserver';
-import {getAppearanceComponents, getAppearanceSectionScopeName} from './appearance';
+import {getAppearanceComponents, getAppearanceSectionScopeName, useAppearanceOverlayStyle} from './appearance';
 
 import * as v1 from './v1';
 import * as v2 from './v2';
@@ -40,7 +40,8 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
 
   const ref = useScrollTarget(section.id);
 
-  const transitionStyles = getTransitionStyles(section);
+  const sectionOverlayStyle = useAppearanceOverlayStyle(section);
+  const transitionStyles = getTransitionStyles(section, sectionOverlayStyle);
 
   const backdropSectionClassNames = useBackdropSectionClassNames(backdrop, {
     layout: section.layout,
@@ -83,6 +84,7 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
                              contentElements={contentElements}
                              state={state}
                              transitionStyles={transitionStyles}
+                             sectionOverlayStyle={sectionOverlayStyle}
                              sectionPadding={sectionPadding} />
 
             <SectionInlineFileRights section={section}
@@ -105,7 +107,7 @@ Section.defaultProps = {
 };
 
 function SectionContents({
-  section, backdrop, contentElements, state, transitions, transitionStyles, sectionPadding
+  section, backdrop, contentElements, state, transitions, transitionStyles, sectionOverlayStyle, sectionPadding
 }) {
   const {
     Backdrop,
@@ -156,8 +158,7 @@ function SectionContents({
                   motifAreaState={motifAreaState}
                   staticShadowOpacity={staticShadowOpacity}
                   dynamicShadowOpacity={dynamicShadowOpacity}
-                  splitOverlayColor={section.splitOverlayColor}
-                  overlayBackdropBlur={section.overlayBackdropBlur}>
+                  overlayStyle={sectionOverlayStyle}>
             {children}
           </Shadow>}
       </Backdrop>
@@ -176,8 +177,7 @@ function SectionContents({
              state={state}
              motifAreaState={motifAreaState}
              staticShadowOpacity={staticShadowOpacity}
-             splitOverlayColor={section.splitOverlayColor}
-             overlayBackdropBlur={section.overlayBackdropBlur}>
+             overlayStyle={sectionOverlayStyle}>
           <Layout sectionId={section.id}
                   items={contentElements}
                   appearance={section.appearance}
@@ -187,8 +187,8 @@ function SectionContents({
                   isContentPadded={motifAreaState.isContentPadded}>
             {(children, boxProps) =>
               <BoxWrapper {...boxProps}
-                          cardSurfaceColor={section.cardSurfaceColor}
-                          overlayBackdropBlur={section.overlayBackdropBlur}
+                          transitionStyles={transitionStyles}
+                          overlayStyle={sectionOverlayStyle}
                           inverted={section.invert}>
                 {children}
               </BoxWrapper>}

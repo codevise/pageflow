@@ -73,63 +73,29 @@ describe('SplitShadow', () => {
     expect(container.firstChild).toHaveClass(styles.light);
   });
 
-  it('sets background color from splitOverlayColor prop', () => {
+  it('applies overlay style to overlay element', () => {
     const {container} = render(
-      <SplitShadow {...defaultProps} splitOverlayColor="#ff000080">
+      <SplitShadow {...defaultProps}
+                    overlayStyle={{backgroundColor: '#ff000080', backdropFilter: 'blur(5px)'}}>
         <div />
       </SplitShadow>
     );
 
-    expect(container.querySelector(`.${styles.overlay}`))
-      .toHaveStyle({backgroundColor: '#ff000080'});
+    const overlay = container.querySelector(`.${styles.overlay}`);
+    expect(overlay).toHaveStyle({backgroundColor: '#ff000080'});
+    expect(overlay.style.backdropFilter).toBe('blur(5px)');
   });
 
-  it('does not set inline background color when no splitOverlayColor', () => {
+  it('does not set inline styles when no overlayStyle is passed', () => {
     const {container} = render(
       <SplitShadow {...defaultProps}>
         <div />
       </SplitShadow>
     );
 
-    expect(container.querySelector(`.${styles.overlay}`).style.backgroundColor)
-      .toBe('');
-  });
-
-  it('applies backdrop filter when overlayBackdropBlur is set and color is translucent', () => {
-    const {container} = render(
-      <SplitShadow {...defaultProps}
-                    splitOverlayColor="#ff000080"
-                    overlayBackdropBlur={50}>
-        <div />
-      </SplitShadow>
-    );
-
-    expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
-      .toBe('blur(5px)');
-  });
-
-  it('does not apply backdrop filter when color is opaque', () => {
-    const {container} = render(
-      <SplitShadow {...defaultProps}
-                    splitOverlayColor="#ff0000"
-                    overlayBackdropBlur={50}>
-        <div />
-      </SplitShadow>
-    );
-
-    expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
-      .toBeFalsy();
-  });
-
-  it('applies default backdrop filter when no color is set', () => {
-    const {container} = render(
-      <SplitShadow {...defaultProps}>
-        <div />
-      </SplitShadow>
-    );
-
-    expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
-      .toBe('blur(10px)');
+    const overlay = container.querySelector(`.${styles.overlay}`);
+    expect(overlay.style.backgroundColor).toBe('');
+    expect(overlay.style.backdropFilter).toBeFalsy();
   });
 
   it('does not render overlay when isContentPadded is true', () => {
