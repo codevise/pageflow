@@ -3,3 +3,9 @@
   inherits: true;
   initial-value: 9999px;
 }
+
+@property --foreground-opacity {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}

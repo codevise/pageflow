@@ -1,12 +1,14 @@
-import NoOpShadow from './shadows/NoOpShadow';
-import GradientShadow from './shadows/GradientShadow';
-import SplitShadow from './shadows/SplitShadow';
+import NoOpShadow from '../shadows/NoOpShadow';
+import GradientShadow from '../shadows/GradientShadow';
+import SplitShadow from '../shadows/SplitShadow';
 
-import {InvisibleBoxWrapper} from './foregroundBoxes/InvisibleBoxWrapper';
-import GradientBox from './foregroundBoxes/GradientBox';
-import CardBox from "./foregroundBoxes/CardBox";
-import CardBoxWrapper from "./foregroundBoxes/CardBoxWrapper";
-import SplitBox from "./foregroundBoxes/SplitBox";
+import {InvisibleBoxWrapper} from '../foregroundBoxes/InvisibleBoxWrapper';
+import GradientBox from '../foregroundBoxes/GradientBox';
+import CardBox from "../foregroundBoxes/CardBox";
+import CardBoxWrapper from "../foregroundBoxes/CardBoxWrapper";
+import SplitBox from "../foregroundBoxes/SplitBox";
+
+export {useAppearanceOverlayStyle} from './useAppearanceOverlayStyle';
 
 const components = {
   shadow: {

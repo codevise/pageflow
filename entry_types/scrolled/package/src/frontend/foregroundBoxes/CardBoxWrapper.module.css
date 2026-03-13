@@ -13,8 +13,11 @@
   padding: 0 1.5em;
 }
 
-.card::before {
-  content: '';
+.cardContent {
+  display: flow-root;
+}
+
+.cardBg {
   position: absolute;
   top: 0;
   left: 0;
@@ -35,13 +38,12 @@
   padding-bottom: 1.5em;
 }
 
-.cardStart::before {
+.cardStart > .cardBg {
   border-top-left-radius: var(--theme-cards-border-radius, 15px);
   border-top-right-radius: var(--theme-cards-border-radius, 15px);
 }
 
-
-.cardEnd::before {
+.cardEnd > .cardBg {
   border-bottom-left-radius: var(--theme-cards-border-radius, 15px);
   border-bottom-right-radius: var(--theme-cards-border-radius, 15px);
 }
@@ -54,17 +56,13 @@
   composes: scope-lightContent from global;
 }
 
-.blur::before {
-  backdrop-filter: var(--card-backdrop-blur);
-}
-
 @media screen {
-  .cardBgWhite::before {
-    background-color: var(--card-surface-color, lightContentSurfaceColor);
+  .cardBgWhite > .cardBg {
+    background-color: lightContentSurfaceColor;
   }
 
-  .cardBgBlack::before {
-    background-color: var(--card-surface-color, darkContentSurfaceColor);
+  .cardBgBlack > .cardBg {
+    background-color: darkContentSurfaceColor;
   }
 
   .cardBgWhite {
