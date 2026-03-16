@@ -1,3 +1,5 @@
+@value fade-duration from './values.module.css';
+
 .fixed {
   position: fixed;
   top: calc(var(--fixed-positioning-containing-block-offset, 0px) +
@@ -19,4 +21,22 @@
 .fadedOut {
   opacity: 0;
   visibility: hidden;
+}
+
+/*
+  Override transition set on .foreground in individual transition
+  modules (e.g. scrollInFadeOut) to animate --foreground-opacity
+  instead of opacity.
+*/
+.perElementFade {
+  transition: --foreground-opacity fade-duration ease, visibility fade-duration !important;
+}
+
+.perElementFade.fadedOut {
+  --foreground-opacity: 0;
+  opacity: 1;
+}
+
+.perElementFade .foregroundOpacity {
+  opacity: var(--foreground-opacity, 1);
 }

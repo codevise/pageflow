@@ -18,6 +18,8 @@ import scrollInFadeOut from './scrollInFadeOut.module.css';
 import scrollInFadeOutBg from './scrollInFadeOutBg.module.css';
 import scrollInScrollOut from './scrollInScrollOut.module.css';
 
+import sharedStyles from './shared.module.css';
+
 const styles = {
   fadeInBgConceal,
   fadeInBgFadeOut,
@@ -70,14 +72,29 @@ export function getAvailableTransitionNames(section, previousSection) {
   return getTransitionNames();
 }
 
-export function getTransitionStyles(section) {
+export function getTransitionStyles(section, overlayStyle) {
   const name = getTransitionStylesName(section);
 
   if (!styles[name]) {
     throw new Error(`Unknown transition ${name}`);
   }
 
-  return styles[name];
+  const base = styles[name];
+
+  const [enter, exit] = getEnterAndExitTransitions(section);
+
+  if (overlayStyle?.backdropFilter &&
+      (enter.startsWith('fade') || exit.startsWith('fade'))) {
+    return {
+      ...base,
+      foreground: base.foreground
+        ? `${base.foreground} ${sharedStyles.perElementFade}`
+        : sharedStyles.perElementFade,
+      foregroundOpacity: sharedStyles.foregroundOpacity
+    };
+  }
+
+  return base;
 }
 
 export function getEnterAndExitTransitions(section) {

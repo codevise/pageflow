@@ -5,10 +5,13 @@ import '@testing-library/jest-dom/extend-expect';
 import SplitBox from 'frontend/foregroundBoxes/SplitBox';
 import styles from 'frontend/foregroundBoxes/SplitBox.module.css';
 
+const transitionStyles = {foregroundOpacity: 'foregroundOpacity'};
+
 describe('SplitBox', () => {
   it('renders children', () => {
     const {getByTestId} = render(
-      <SplitBox motifAreaState={{paddingTop: 0}}>
+      <SplitBox motifAreaState={{paddingTop: 0}}
+                transitionStyles={transitionStyles}>
         <div data-testid="child" />
       </SplitBox>
     );
@@ -18,7 +21,8 @@ describe('SplitBox', () => {
 
   it('applies paddingTop from motifAreaState', () => {
     const {container} = render(
-      <SplitBox motifAreaState={{paddingTop: 100}}>
+      <SplitBox motifAreaState={{paddingTop: 100}}
+                transitionStyles={transitionStyles}>
         <div />
       </SplitBox>
     );
@@ -29,6 +33,7 @@ describe('SplitBox', () => {
   it('renders overlay when isContentPadded is true', () => {
     const {container} = render(
       <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 200}}
+                transitionStyles={transitionStyles}
                 inverted={false}>
         <div />
       </SplitBox>
@@ -40,6 +45,7 @@ describe('SplitBox', () => {
   it('does not render overlay when isContentPadded is false', () => {
     const {container} = render(
       <SplitBox motifAreaState={{isContentPadded: false, paddingTop: 0}}
+                transitionStyles={transitionStyles}
                 inverted={false}>
         <div />
       </SplitBox>
@@ -51,6 +57,7 @@ describe('SplitBox', () => {
   it('sets overlay top from paddingTop', () => {
     const {container} = render(
       <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 200}}
+                transitionStyles={transitionStyles}
                 inverted={false}>
         <div />
       </SplitBox>
@@ -63,6 +70,7 @@ describe('SplitBox', () => {
   it('applies dark overlay class when not inverted', () => {
     const {container} = render(
       <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
+                transitionStyles={transitionStyles}
                 inverted={false}>
         <div />
       </SplitBox>
@@ -75,6 +83,7 @@ describe('SplitBox', () => {
   it('applies light overlay class when inverted', () => {
     const {container} = render(
       <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
+                transitionStyles={transitionStyles}
                 inverted={true}>
         <div />
       </SplitBox>
@@ -84,44 +93,43 @@ describe('SplitBox', () => {
       .toHaveClass(styles.overlayLight);
   });
 
-  it('applies backdrop filter when overlayBackdropBlur is set and color is translucent', () => {
+  it('applies foregroundOpacity class to overlay', () => {
     const {container} = render(
       <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
-                inverted={false}
-                splitOverlayColor="#ff000080"
-                overlayBackdropBlur={50}>
-        <div />
-      </SplitBox>
-    );
-
-    expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
-      .toBe('blur(5px)');
-  });
-
-  it('does not apply backdrop filter when color is opaque', () => {
-    const {container} = render(
-      <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
-                inverted={false}
-                splitOverlayColor="#ff0000"
-                overlayBackdropBlur={50}>
-        <div />
-      </SplitBox>
-    );
-
-    expect(container.querySelector(`.${styles.overlay}`).style.backdropFilter)
-      .toBeFalsy();
-  });
-
-  it('sets overlay background color from splitOverlayColor', () => {
-    const {container} = render(
-      <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
-                inverted={false}
-                splitOverlayColor="#ff000080">
+                transitionStyles={transitionStyles}
+                inverted={false}>
         <div />
       </SplitBox>
     );
 
     expect(container.querySelector(`.${styles.overlay}`))
-      .toHaveStyle({backgroundColor: '#ff000080'});
+      .toHaveClass('foregroundOpacity');
+  });
+
+  it('applies foregroundOpacity class to content', () => {
+    const {container} = render(
+      <SplitBox motifAreaState={{paddingTop: 0}}
+                transitionStyles={transitionStyles}>
+        <div />
+      </SplitBox>
+    );
+
+    expect(container.querySelector(`.${styles.content}`))
+      .toHaveClass('foregroundOpacity');
+  });
+
+  it('applies overlay style to overlay element', () => {
+    const {container} = render(
+      <SplitBox motifAreaState={{isContentPadded: true, paddingTop: 0}}
+                transitionStyles={transitionStyles}
+                inverted={false}
+                overlayStyle={{backgroundColor: '#ff000080', backdropFilter: 'blur(5px)'}}>
+        <div />
+      </SplitBox>
+    );
+
+    const overlay = container.querySelector(`.${styles.overlay}`);
+    expect(overlay).toHaveStyle({backgroundColor: '#ff000080'});
+    expect(overlay.style.backdropFilter).toBe('blur(5px)');
   });
 });

@@ -225,6 +225,10 @@ function createSectionPageObject(el) {
       return foreground.classList.contains(sharedTransitionStyles.fadedOut);
     },
 
+    usesPerElementFadeTransition() {
+      return foreground.classList.contains(sharedTransitionStyles.perElementFade);
+    },
+
     getPaddingIndicator(position) {
       const {getByLabelText} = within(selectionRect);
       const labels = {
