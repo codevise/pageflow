@@ -9,6 +9,7 @@ import {Entry} from './Entry';
 import {setupI18n} from './i18n';
 
 import './global.module.css';
+import './properties.module.css';
 
 import styles from './foregroundBoxes/GradientBox.module.css';
 
