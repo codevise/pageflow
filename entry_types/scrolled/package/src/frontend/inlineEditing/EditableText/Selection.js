@@ -96,6 +96,20 @@ export function Selection(props) {
     updateRect(editor, start, end, outerRef.current, ref.current, innerRef.current);
   });
 
+  useEffect(() => {
+    if (!isContentElementSelected) return;
+
+    function handleResize() {
+      if (boundsRef.current) {
+        updateRect(editor, boundsRef.current.start, boundsRef.current.end,
+                   outerRef.current, ref.current, innerRef.current);
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isContentElementSelected, editor]);
+
   const [, drag] = useDrag({
     item: {type: 'contentElement', id: props.contentElementId},
     begin: () => ({
