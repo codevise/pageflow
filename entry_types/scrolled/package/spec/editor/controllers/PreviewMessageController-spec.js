@@ -628,6 +628,32 @@ describe('PreviewMessageController', () => {
     }).not.toThrowError();
   });
 
+  it('ignores second READY message', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    const actions = [];
+    iframeWindow.addEventListener('message', event => {
+      if (event.data.type === 'ACTION') {
+        actions.push(event.data.payload);
+      }
+    });
+
+    entry.contentElements.first().configuration.set({title: 'update'});
+
+    return expect(new Promise(resolve => {
+      setTimeout(() => resolve(actions.length), 100);
+    })).resolves.toEqual(1);
+  });
+
   it('sends CHANGE_EMULATION_MODE message to iframe on change:emulation_mode event on model', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({

@@ -24,106 +24,110 @@ export const PreviewMessageController = Object.extend({
 
     if (window.location.href.indexOf(message.origin) === 0) {
       if (message.data.type === 'READY') {
-        watchCollections(this.entry, {
-          dispatch: action => {
-            postMessage({type: 'ACTION', payload: action})
-          }
-        });
+        if (!this.ready) {
+          this.ready = true;
 
-        this.listenTo(this.entry, 'scrollToSection', (section, options) =>
-          postMessage({
-            type: 'SCROLL_TO_SECTION',
-            payload: {
-              id: section.id,
-              ...options
+          watchCollections(this.entry, {
+            dispatch: action => {
+              postMessage({type: 'ACTION', payload: action})
             }
-          })
-        );
+          });
 
-        this.listenTo(this.entry.contentElements, 'postCommand', (contentElementId, command) =>
-          postMessage({
-            type: 'CONTENT_ELEMENT_EDITOR_COMMAND',
-            payload: {
-              contentElementId,
-              command
-            }
-          })
-        );
+          this.listenTo(this.entry, 'scrollToSection', (section, options) =>
+            postMessage({
+              type: 'SCROLL_TO_SECTION',
+              payload: {
+                id: section.id,
+                ...options
+              }
+            })
+          );
 
-        this.listenTo(this.entry, 'selectSection', section =>
-          postMessage({
-            type: 'SELECT',
-            payload: {
-              id: section.id,
-              type: 'section'
-            }
-          })
-        );
+          this.listenTo(this.entry.contentElements, 'postCommand', (contentElementId, command) =>
+            postMessage({
+              type: 'CONTENT_ELEMENT_EDITOR_COMMAND',
+              payload: {
+                contentElementId,
+                command
+              }
+            })
+          );
 
-        this.listenTo(this.entry, 'selectSectionSettings', section =>
-          postMessage({
-            type: 'SELECT',
-            payload: {
-              id: section.id,
-              type: 'sectionSettings'
-            }
-          })
-        );
+          this.listenTo(this.entry, 'selectSection', section =>
+            postMessage({
+              type: 'SELECT',
+              payload: {
+                id: section.id,
+                type: 'section'
+              }
+            })
+          );
 
-        this.listenTo(this.entry, 'selectSectionTransition', section =>
-          postMessage({
-            type: 'SELECT',
-            payload: {
-              id: section.id,
-              type: 'sectionTransition'
-            }
-          })
-        );
+          this.listenTo(this.entry, 'selectSectionSettings', section =>
+            postMessage({
+              type: 'SELECT',
+              payload: {
+                id: section.id,
+                type: 'sectionSettings'
+              }
+            })
+          );
 
-        this.listenTo(this.entry, 'selectSectionPaddings', section =>
-          postMessage({
-            type: 'SELECT',
-            payload: {
-              id: section.id,
-              type: 'sectionPaddings'
-            }
-          })
-        );
+          this.listenTo(this.entry, 'selectSectionTransition', section =>
+            postMessage({
+              type: 'SELECT',
+              payload: {
+                id: section.id,
+                type: 'sectionTransition'
+              }
+            })
+          );
 
-        this.listenTo(this.entry, 'selectContentElement', (contentElement, options) => {
-          postMessage({
-            type: 'SELECT',
-            payload: {
-              id: contentElement.id,
-              range: options?.range,
-              type: 'contentElement'
-            }
-          })
-        });
+          this.listenTo(this.entry, 'selectSectionPaddings', section =>
+            postMessage({
+              type: 'SELECT',
+              payload: {
+                id: section.id,
+                type: 'sectionPaddings'
+              }
+            })
+          );
 
-        this.listenTo(this.entry, 'selectWidget', widget => {
-          postMessage({
-            type: 'SELECT',
-            payload: {
-              id: widget.get('role'),
-              type: 'widget'
-            }
-          })
-        });
+          this.listenTo(this.entry, 'selectContentElement', (contentElement, options) => {
+            postMessage({
+              type: 'SELECT',
+              payload: {
+                id: contentElement.id,
+                range: options?.range,
+                type: 'contentElement'
+              }
+            })
+          });
 
-        this.listenTo(this.entry, 'resetSelection', contentElement =>
-          postMessage({
-            type: 'SELECT',
-            payload: null
-          })
-        );
+          this.listenTo(this.entry, 'selectWidget', widget => {
+            postMessage({
+              type: 'SELECT',
+              payload: {
+                id: widget.get('role'),
+                type: 'widget'
+              }
+            })
+          });
 
-        this.listenTo(this.entry, 'change:emulation_mode', entry =>
-          postMessage({
-            type: 'CHANGE_EMULATION_MODE',
-            payload: this.entry.get('emulation_mode')
-          })
-        );
+          this.listenTo(this.entry, 'resetSelection', contentElement =>
+            postMessage({
+              type: 'SELECT',
+              payload: null
+            })
+          );
+
+          this.listenTo(this.entry, 'change:emulation_mode', entry =>
+            postMessage({
+              type: 'CHANGE_EMULATION_MODE',
+              payload: this.entry.get('emulation_mode')
+            })
+          );
+        }
 
         postMessage({type: 'ACK'})
       }
