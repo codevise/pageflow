@@ -44,6 +44,42 @@ describe('content element box', () => {
         )
       }
     });
+
+    frontend.contentElementTypes.register('testBoxShadow', {
+      component: function Component({configuration}) {
+        return (
+          <div data-testid="contentElement-testBoxShadow">
+            <ContentElementBox configuration={configuration}>
+              Some content with box shadow
+            </ContentElementBox>
+          </div>
+        )
+      }
+    });
+
+    frontend.contentElementTypes.register('testOutline', {
+      component: function Component({configuration}) {
+        return (
+          <div data-testid="contentElement-testOutline">
+            <ContentElementBox configuration={configuration}>
+              Some content with outline
+            </ContentElementBox>
+          </div>
+        )
+      }
+    });
+
+    frontend.contentElementTypes.register('testBoxShadowNoBorderRadius', {
+      component: function Component({configuration}) {
+        return (
+          <div data-testid="contentElement-testBoxShadowNoBorderRadius">
+            <ContentElementBox borderRadius="none" configuration={configuration}>
+              Box shadow without border radius
+            </ContentElementBox>
+          </div>
+        )
+      }
+    });
   });
 
   it('renders box', () => {
@@ -104,5 +140,45 @@ describe('content element box', () => {
     });
 
     expect(getContentElementByTestId('testNone').containsBox()).toEqual(false);
+  });
+
+  it('applies box shadow CSS custom property from configuration', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        contentElements: [{
+          typeName: 'testBoxShadow',
+          configuration: {boxShadow: 'md'}
+        }]
+      }
+    });
+
+    expect(getContentElementByTestId('testBoxShadow').hasBoxShadow('md')).toBe(true);
+  });
+
+  it('applies outline color CSS custom property from configuration', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        contentElements: [{
+          typeName: 'testOutline',
+          configuration: {outlineColor: '#ff0000'}
+        }]
+      }
+    });
+
+    expect(getContentElementByTestId('testOutline').hasOutlineColor('#ff0000')).toBe(true);
+  });
+
+  it('renders box when borderRadius is "none" but configuration has boxShadow', () => {
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        contentElements: [{
+          typeName: 'testBoxShadowNoBorderRadius',
+          configuration: {boxShadow: 'md'}
+        }]
+      }
+    });
+
+    expect(getContentElementByTestId('testBoxShadowNoBorderRadius').containsBox()).toEqual(true);
+    expect(getContentElementByTestId('testBoxShadowNoBorderRadius').hasBoxShadow('md')).toBe(true);
   });
 });

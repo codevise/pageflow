@@ -134,6 +134,8 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
   const defaultConfig = contentElement.getType().defaultConfig || {};
   const result = {};
 
+  const supportedStyles = contentElement.getType().supportedStyles || [];
+
   if (marginScale.values.length > 0) {
     result.marginTop = {
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginTop'),
@@ -153,6 +155,36 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
       texts: marginScale.texts,
       defaultValue: marginScale.defaultValue,
       ...('marginBottom' in defaultConfig && {resetValue: defaultConfig.marginBottom})
+    };
+  }
+
+  if (supportedStyles.includes('boxShadow')) {
+    const boxShadowScale = entry.getScale('contentElementBoxShadow');
+
+    if (boxShadowScale.values.length > 0) {
+      result.boxShadow = {
+        label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.boxShadow'),
+        propertyName: 'boxShadow',
+        inputType: 'slider',
+        values: boxShadowScale.values,
+        texts: boxShadowScale.texts,
+        defaultValue: boxShadowScale.defaultValue
+      };
+    }
+  }
+
+  if (supportedStyles.includes('outline')) {
+    const themeProperties = entry.getThemeProperties();
+
+    result.outlineColor = {
+      label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.outlineColor'),
+      propertyName: 'outlineColor',
+      inputType: 'color',
+      defaultValue: themeProperties.root?.outlineColor,
+      inputOptions: {
+        alpha: true,
+        swatches: entry.getUsedContentElementColors('outlineColor')
+      }
     };
   }
 

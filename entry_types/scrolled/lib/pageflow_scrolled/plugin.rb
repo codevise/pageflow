@@ -30,6 +30,13 @@ module PageflowScrolled
           'xxl' => '16em'
         }
 
+        box_shadow_scale = {
+          'sm' => '0 1px 3px 0 rgb(0 0 0 / 0.2), 0 1px 2px -1px rgb(0 0 0 / 0.15)',
+          'md' => '0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.15)',
+          'lg' => '0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.12)',
+          'xl' => '0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.12)'
+        }
+
         c.themes.register_options_transform(
           ThemeOptionsDefaultScale.new(
             prefix: 'section_padding_top',
@@ -51,12 +58,21 @@ module PageflowScrolled
           )
         )
 
+        c.themes.register_options_transform(
+          ThemeOptionsDefaultScale.new(
+            prefix: 'content_element_box_shadow',
+            values: box_shadow_scale
+          )
+        )
+
         c.themes.register_default_options(
           properties: {
             root: {
               'section_default_padding_top' => 'max(10em, 20svh)',
               'section_default_padding_bottom' => 'max(10em, 20svh)',
-              'content_element_margin_style_default' => '2em'
+              'content_element_margin_style_default' => '2em',
+              'content_element_box_shadow_style_default' => '0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.15)',
+              'outline_color' => '#a0a0a080'
             },
             cards_appearance_section: {
               'section_default_padding_top' => 'max(10em, 20svh)',
