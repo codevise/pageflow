@@ -10,6 +10,7 @@ editor.contentElementTypes.register('dataWrapperChart', {
   pictogram,
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
+  supportedStyles: ['boxShadow', 'outline'],
 
   configurationEditor({entry}) {
     this.tab('general', function() {

@@ -35,7 +35,7 @@ export function VideoEmbed({contentElementId, configuration}) {
     <div style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <FitViewport
         aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}>
-        <ContentElementBox>
+        <ContentElementBox configuration={configuration}>
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
               {shouldLoad && <PreparedPlayer playerState={playerState}

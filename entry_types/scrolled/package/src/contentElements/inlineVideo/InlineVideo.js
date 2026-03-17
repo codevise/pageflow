@@ -127,7 +127,7 @@ function OrientationUnawareInlineVideo({
                                 undefined : fallbackAspectRatio}
                    fill={configuration.position === 'backdrop'}
                    opaque={!videoFile}>
-        <ContentElementBox>
+        <ContentElementBox configuration={configuration}>
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
               <MutedIndicator visible={media.muted &&

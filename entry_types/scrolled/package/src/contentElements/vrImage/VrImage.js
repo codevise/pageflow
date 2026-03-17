@@ -32,7 +32,7 @@ export function VrImage({configuration, contentElementWidth}) {
       <FitViewport
         aspectRatio={aspectRatio}
         fill={configuration.position === 'backdrop'}>
-        <ContentElementBox>
+        <ContentElementBox configuration={configuration}>
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
               {renderLazyPanorama(configuration, imageFile, shouldLoad, aspectRatio)}

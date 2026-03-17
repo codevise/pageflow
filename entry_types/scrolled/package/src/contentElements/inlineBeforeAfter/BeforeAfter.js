@@ -66,7 +66,7 @@ export function BeforeAfter(configuration) {
   return (
     <FitViewport file={beforeImage || afterImage || placeholderFile}
                  fill={configuration.position === 'backdrop'}>
-      <ContentElementBox>
+      <ContentElementBox configuration={configuration}>
         <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
             <Measure bounds>
