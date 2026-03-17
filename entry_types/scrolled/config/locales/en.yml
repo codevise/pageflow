@@ -705,7 +705,7 @@ en:
                 turnDown: Keep playing at lower volume
             hideControlBar:
               inline_help: For short videos where there is no need to seek.
-              inline_help_disabled: Controls are always hidden for videos with playback mode "Loop".
+              inline_help_disabled: Controls are always hidden for videos with playback mode "Loop" or circle crop.
               label: Hide controls
             id:
               label: Video

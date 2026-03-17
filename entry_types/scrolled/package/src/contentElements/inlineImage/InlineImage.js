@@ -11,7 +11,9 @@ import {
   useFileWithInlineRights,
   usePortraitOrientation,
   ExpandableImage,
-  InlineFileRights
+  InlineFileRights,
+  processImageModifiers,
+  useFileWithCropPosition
 } from 'pageflow-scrolled/frontend';
 import {features} from 'pageflow/frontend';
 
@@ -149,20 +151,3 @@ function imageVariantAndSizes(contentElementWidth) {
   return {variant: 'medium'};
 }
 
-function processImageModifiers(imageModifiers) {
-  const cropValue = getModiferValue(imageModifiers, 'crop');
-  const isCircleCrop = cropValue === 'circle';
-
-  return {
-    aspectRatio: isCircleCrop ? 1 : cropValue,
-    rounded: isCircleCrop ? 'circle' : getModiferValue(imageModifiers, 'rounded')
-  };
-}
-
-function getModiferValue(imageModifiers, name) {
-  return (imageModifiers || []).find(imageModifier => imageModifier.name === name)?.value;
-}
-
-function useFileWithCropPosition(file, cropPosition) {
-  return file && {...file, cropPosition};
-}

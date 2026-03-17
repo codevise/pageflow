@@ -34,7 +34,7 @@ describe('InlineImage', () => {
       });
 
       const contentElement = getContentElement();
-      expect(contentElement.getFitViewportAspectRatio()).toEqual('1');
+      expect(contentElement.getFitViewportAspectRatio()).toEqual('square');
     });
 
     it('applies circle border radius', () => {
@@ -198,7 +198,7 @@ describe('InlineImage', () => {
       });
 
       const contentElement = getContentElement();
-      expect(contentElement.getFitViewportAspectRatio()).toEqual('1');
+      expect(contentElement.getFitViewportAspectRatio()).toEqual('square');
       expect(contentElement.getBoxBorderRadius()).toEqual('circle');
     });
 

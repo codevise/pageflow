@@ -11,6 +11,9 @@ import {
   InlineFileRights,
   FitViewport,
   PlayerEventContextDataProvider,
+  contentElementBoxProps,
+  processImageModifiers,
+  useFileWithCropPosition,
   useBackgroundFile,
   useContentElementEditorState,
   useFileWithInlineRights,
@@ -28,38 +31,38 @@ import {
 } from './handlers';
 
 export function InlineVideo({contentElementId, configuration, sectionProps}) {
-  const videoFile = useFileWithInlineRights({
-    configuration,
-    collectionName: 'videoFiles',
-    propertyName: 'id'
-  });
+  const videoFile = useFileWithCropPosition(
+    useFileWithInlineRights({
+      configuration, collectionName: 'videoFiles', propertyName: 'id'
+    }),
+    configuration.cropPosition
+  );
   const posterImageFile = useFileWithInlineRights({
     configuration,
     collectionName: 'imageFiles',
     propertyName: 'posterId'
   });
 
-  const portraitVideoFile = useFileWithInlineRights({
-    configuration,
-    collectionName: 'videoFiles',
-    propertyName: 'portraitId'
-  });
+  const portraitVideoFile = useFileWithCropPosition(
+    useFileWithInlineRights({
+      configuration, collectionName: 'videoFiles', propertyName: 'portraitId'
+    }),
+    configuration.portraitCropPosition
+  );
   const portraitPosterImageFile = useFileWithInlineRights({
     configuration,
     collectionName: 'imageFiles',
     propertyName: 'portraitPosterId'
   });
 
-  // Only render OrientationAwareInlineImage if a portrait image has
-  // been selected. This prevents having the component rerender on
-  // orientation changes even if it does not depend on orientation at
-  // all.
   if (portraitVideoFile) {
     return (
       <OrientationAwareInlineVideo landscapeVideoFile={videoFile}
                                    portraitVideoFile={portraitVideoFile}
                                    landscapeMotifArea={configuration.motifArea}
                                    portraitMotifArea={configuration.portraitMotifArea}
+                                   landscapeImageModifiers={configuration.imageModifiers}
+                                   portraitImageModifiers={configuration.portraitImageModifiers}
                                    landscapePosterImageFile={posterImageFile}
                                    portraitPosterImageFile={portraitPosterImageFile}
                                    contentElementId={contentElementId}
@@ -71,6 +74,7 @@ export function InlineVideo({contentElementId, configuration, sectionProps}) {
     return (
       <OrientationUnawareInlineVideo videoFile={videoFile}
                                      motifArea={configuration.motifArea}
+                                     imageModifiers={configuration.imageModifiers}
                                      posterImageFile={posterImageFile}
                                      contentElementId={contentElementId}
                                      sectionProps={sectionProps}
@@ -83,6 +87,7 @@ function OrientationAwareInlineVideo({
   landscapeVideoFile, portraitVideoFile,
   landscapePosterImageFile, portraitPosterImageFile,
   landscapeMotifArea, portraitMotifArea,
+  landscapeImageModifiers, portraitImageModifiers,
   contentElementId, configuration,
   sectionProps
 }) {
@@ -91,6 +96,8 @@ function OrientationAwareInlineVideo({
                     portraitVideoFile : landscapeVideoFile;
   const motifArea = portraitOrientation && portraitVideoFile ?
                     portraitMotifArea : landscapeMotifArea;
+  const imageModifiers = portraitOrientation && portraitVideoFile ?
+                         portraitImageModifiers : landscapeImageModifiers;
 
   const posterImageFile = portraitOrientation && portraitPosterImageFile ?
                           portraitPosterImageFile : landscapePosterImageFile;
@@ -99,6 +106,7 @@ function OrientationAwareInlineVideo({
     <OrientationUnawareInlineVideo key={portraitOrientation}
                                    videoFile={videoFile}
                                    motifArea={motifArea}
+                                   imageModifiers={imageModifiers}
                                    posterImageFile={posterImageFile}
                                    contentElementId={contentElementId}
                                    sectionProps={sectionProps}
@@ -107,7 +115,7 @@ function OrientationAwareInlineVideo({
 }
 
 function OrientationUnawareInlineVideo({
-  videoFile, posterImageFile,
+  videoFile, posterImageFile, imageModifiers,
   contentElementId, configuration,
   sectionProps, motifArea
 }) {
@@ -121,37 +129,64 @@ function OrientationUnawareInlineVideo({
                  CropPositionComputingPlayer :
                  PlayerWithControlBar;
 
+  const {aspectRatio, rounded} = processImageModifiers(imageModifiers);
+
   return (
     <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
       <FitViewport file={videoFile}
+                   aspectRatio={aspectRatio}
                    fallbackAspectRatio={fallbackAspectRatio}
                    fill={configuration.position === 'backdrop'}>
-        <ContentElementBox configuration={configuration}>
-          <ContentElementFigure configuration={configuration}>
-            <FitViewport.Content>
-              <FilePlaceholder file={videoFile} />
-              <MutedIndicator visible={media.muted &&
-                                       playerState.shouldPlay &&
-                                       !configuration.keepMuted} />
-              <Player key={configuration.playbackMode === 'loop'}
-                      sectionProps={sectionProps}
-                      videoFile={videoFile}
-                      motifArea={motifArea}
-                      posterImageFile={posterImageFile}
-                      inlineFileRightsItems={inlineFileRightsItems}
-                      playerState={playerState}
-                      playerActions={playerActions}
-                      contentElementId={contentElementId}
-                      configuration={configuration} />
-            </FitViewport.Content>
-          </ContentElementFigure>
-        </ContentElementBox>
+        {renderContentElementBox({rounded, configuration},
+            <ContentElementFigure configuration={configuration}>
+              <FitViewport.Content>
+                <FilePlaceholder file={videoFile} />
+                <MutedIndicator visible={media.muted &&
+                                         playerState.shouldPlay &&
+                                         !configuration.keepMuted} />
+                <Player key={configuration.playbackMode === 'loop'}
+                        sectionProps={sectionProps}
+                        videoFile={videoFile}
+                        motifArea={motifArea}
+                        posterImageFile={posterImageFile}
+                        inlineFileRightsItems={inlineFileRightsItems}
+                        playerState={playerState}
+                        playerActions={playerActions}
+                        contentElementId={contentElementId}
+                        configuration={configuration}
+                        fit={(aspectRatio || configuration.position === 'backdrop') ? 'cover' : 'contain'}
+                        hideControlBar={rounded === 'circle' ||
+                                        configuration.hideControlBar ||
+                                        configuration.playbackMode === 'loop'}
+                        applyContentElementBoxStyles={rounded === 'circle'} />
+              </FitViewport.Content>
+            </ContentElementFigure>
+        )}
         <InlineFileRights configuration={configuration}
                           context="afterElement"
                           items={inlineFileRightsItems} />
       </FitViewport>
     </MediaInteractionTracking>
   )
+}
+
+function renderContentElementBox({rounded, configuration}, children) {
+  if (rounded === 'circle') {
+    const {style, className} = contentElementBoxProps(configuration, {borderRadius: 'circle'});
+
+    return (
+      <div className={className} style={style}>
+        {children}
+      </div>
+    );
+  }
+
+  return (
+    <ContentElementBox borderRadius={rounded}
+                       configuration={configuration}>
+      {children}
+    </ContentElementBox>
+  );
 }
 
 function CropPositionComputingPlayer({videoFile, motifArea, ...props}) {
@@ -172,7 +207,8 @@ function PlayerWithControlBar({
   inlineFileRightsItems,
   playerState, playerActions,
   contentElementId, configuration,
-  sectionProps
+  sectionProps, fit, hideControlBar,
+  applyContentElementBoxStyles
 }) {
   const {isEditable, isSelected} = useContentElementEditorState();
 
@@ -225,8 +261,7 @@ function PlayerWithControlBar({
                          defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                          playerState={playerState}
                          playerActions={playerActions}
-                         hideControlBar={configuration.hideControlBar ||
-                                         configuration.playbackMode === 'loop'}
+                         hideControlBar={hideControlBar}
                          hideBigPlayButton={configuration.playbackMode === 'loop'}
                          inlineFileRightsItems={inlineFileRightsItems}
                          configuration={configuration}
@@ -238,7 +273,7 @@ function PlayerWithControlBar({
                            shouldLoad ? 'poster' :
                            'none'}
                      loop={configuration.playbackMode === 'loop'}
-                     fit={configuration.position === 'backdrop' ? 'cover' : 'contain'}
+                     fit={fit}
                      playerState={playerState}
                      playerActions={playerActions}
                      videoFile={videoFile}
@@ -246,7 +281,8 @@ function PlayerWithControlBar({
                      defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                      quality={'high'}
                      playsInline={true}
-                     atmoDuringPlayback={configuration.atmoDuringPlayback} />
+                     atmoDuringPlayback={configuration.atmoDuringPlayback}
+                     applyContentElementBoxStyles={applyContentElementBoxStyles} />
       </PlayerEventContextDataProvider>
     </VideoPlayerControls>
   );
