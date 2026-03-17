@@ -21,11 +21,25 @@
   position: absolute;
   top: 0;
   left: 0;
-  object-fit: contain;
-  background: #000;
+  object-fit: cover;
+  display: none;
 }
 
 .cover img,
 .cover video {
   object-fit: cover;
+}
+
+.contentElementBox video,
+.contentElementBox img {
+  border-radius: var(--content-element-box-border-radius);
+  box-shadow: var(--content-element-box-box-shadow);
+}
+
+.posterVisible video {
+  visibility: hidden;
+}
+
+.posterVisible img {
+  display: block;
 }

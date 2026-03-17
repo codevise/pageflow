@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {useContentElementAttributes} from './useContentElementAttributes';
+import {contentElementBoxProps} from './contentElementBoxStyle';
 import {widths} from './layouts/widths';
 
 import styles from './ContentElementBox.module.css';
@@ -18,31 +19,19 @@ import styles from './ContentElementBox.module.css';
 export function ContentElementBox({children, configuration, borderRadius, positioned}) {
   const {position, width} = useContentElementAttributes();
 
-  const boxShadow = configuration?.boxShadow;
-  const outlineColor = configuration?.outlineColor;
+  const {style} = contentElementBoxProps(configuration, {borderRadius});
 
   if (position === 'backdrop') {
     return children;
   }
 
-  if (borderRadius === 'none' && !boxShadow && !outlineColor) {
+  if (borderRadius === 'none' && !Object.keys(style).length) {
     return children;
   }
 
-  const style = {
-    ...(borderRadius && borderRadius !== 'none' && {
-      '--content-element-box-border-radius': `var(--theme-content-element-box-border-radius-${borderRadius})`
-    }),
-    ...(boxShadow && {
-      '--content-element-box-shadow': `var(--theme-content-element-box-shadow-${boxShadow})`
-    }),
-    ...(outlineColor && {
-      '--content-element-box-outline-color': outlineColor
-    })
-  };
-
   return (
     <div className={classNames(
+           styles.properties,
            styles.wrapper,
            {[styles.full]: width === widths.full,
             [styles.positioned]: positioned}

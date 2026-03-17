@@ -720,7 +720,7 @@ de:
                 turnDown: Leiser weiterspielen
             hideControlBar:
               inline_help: Für kurze Videos, bei denen der Benutzer nicht an bestimmte Stellen springen will.
-              inline_help_disabled: Für Videos mit Wiedergabe-Modus "Loop" sind die Controls immer ausgeblendet.
+              inline_help_disabled: Für Videos mit Wiedergabe-Modus "Loop" oder kreisförmigem Zuschnitt sind die Controls immer ausgeblendet.
               label: Controls ausblenden
             id:
               label: Video
