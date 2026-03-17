@@ -93,10 +93,12 @@ function ImageWithCaption({
     <FitViewport file={imageFile}
                  aspectRatio={aspectRatio}
                  fallbackAspectRatio={0.75}>
-      <ContentElementBox borderRadius={isCircleCrop ? 'none' : rounded}>
+      <ContentElementBox borderRadius={isCircleCrop ? 'none' : rounded}
+                         configuration={isCircleCrop ? undefined : configuration}>
         <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
             <ContentElementBox borderRadius={isCircleCrop ? 'circle' : 'none'}
+                               configuration={isCircleCrop ? configuration : undefined}
                                positioned={isCircleCrop}>
               <ExpandableImage enabled={supportFullscreen && shouldLoad}
                                imageFile={imageFile}

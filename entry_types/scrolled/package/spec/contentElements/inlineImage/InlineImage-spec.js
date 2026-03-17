@@ -57,6 +57,28 @@ describe('InlineImage', () => {
       expect(contentElement.getBoxBorderRadius()).toEqual('circle');
     });
 
+    it('applies box shadow on circle box', () => {
+      const {getContentElement} = renderContentElement({
+        typeName: 'inlineImage',
+        configuration: {
+          id: 100,
+          boxShadow: 'md',
+          imageModifiers: [
+            {name: 'crop', value: 'circle'}
+          ]
+        },
+        imageFiles: [{
+          permaId: 100,
+          width: 200,
+          height: 100
+        }]
+      });
+
+      const contentElement = getContentElement();
+      expect(contentElement.getBoxBorderRadius()).toEqual('circle');
+      expect(contentElement.hasBoxShadow('md')).toBe(true);
+    });
+
     it('overrides rounded styles', () => {
       const {getContentElement} = renderContentElement({
         typeName: 'inlineImage',
@@ -98,6 +120,28 @@ describe('InlineImage', () => {
 
       const contentElement = getContentElement();
       expect(contentElement.getFitViewportAspectRatio()).toEqual('square');
+    });
+
+    it('applies box shadow on outer box with rounded styles', () => {
+      const {getContentElement} = renderContentElement({
+        typeName: 'inlineImage',
+        configuration: {
+          id: 100,
+          boxShadow: 'lg',
+          imageModifiers: [
+            {name: 'rounded', value: 'md'}
+          ]
+        },
+        imageFiles: [{
+          permaId: 100,
+          width: 200,
+          height: 100
+        }]
+      });
+
+      const contentElement = getContentElement();
+      expect(contentElement.getBoxBorderRadius()).toEqual('md');
+      expect(contentElement.hasBoxShadow('lg')).toBe(true);
     });
 
     it('applies rounded styles independently', () => {
