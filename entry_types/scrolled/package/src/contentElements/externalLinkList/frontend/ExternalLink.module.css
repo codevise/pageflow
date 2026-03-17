@@ -44,6 +44,8 @@
 .card {
   display: flex;
   border-radius: var(--theme-content-element-box-border-radius);
+  box-shadow: var(--content-element-box-shadow, 0 0 #000),
+              0 0 0 1px var(--content-element-box-outline-color, transparent);
   overflow: hidden;
   will-change: transform;
   flex: 1;

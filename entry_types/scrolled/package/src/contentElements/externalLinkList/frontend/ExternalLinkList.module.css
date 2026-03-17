@@ -80,7 +80,8 @@
   margin: 0 calc(-1 * var(--clip-margin));
 
   --scroller-padding-inline: calc(var(--clip-margin) + var(--full-width-padding, 0px));
-  padding: 0;
+  padding: 0 0 var(--theme-box-shadow-clip-margin-bottom);
+  margin-bottom: calc(var(--theme-box-shadow-clip-margin-bottom) * -1);
   scroll-padding-left: var(--scroller-padding-inline);
 
   --hover-scale-adjustment: 0.2;

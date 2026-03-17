@@ -117,7 +117,13 @@ export function ExternalLinkList(props) {
                     {[textPositionStyles.scroller]: scrollerEnabled}
                   )}
                   style={{'--overlay-opacity': overlayOpacity,
-                          '--thumbnail-aspect-ratio': `var(--theme-aspect-ratio-${props.configuration.thumbnailAspectRatio || 'wide'})`}}
+                          '--thumbnail-aspect-ratio': `var(--theme-aspect-ratio-${props.configuration.thumbnailAspectRatio || 'wide'})`,
+                          ...(props.configuration.boxShadow && {
+                            '--content-element-box-shadow': `var(--theme-content-element-box-shadow-${props.configuration.boxShadow})`
+                          }),
+                          ...(props.configuration.outlineColor && {
+                            '--content-element-box-outline-color': props.configuration.outlineColor
+                          })}}
                   onScroll={handleScroll}>
                 {linkList.map((link, index) =>
                   <ExternalLink {...link}
