@@ -190,6 +190,7 @@ const StyleListItemView = Marionette.ItemView.extend({
 
       this._colorPicker = new ColorPicker(colorInput, {
         defaultValue: this.model.defaultValue(),
+        ...this.model.inputOptions(),
         onChange: (color) => {
           this.model.set('value', color || '');
         }

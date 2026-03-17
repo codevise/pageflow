@@ -49,6 +49,10 @@ export const Style = Backbone.Model.extend({
 
   inputType() {
     return this.types[this.get('name')].inputType || 'none';
+  },
+
+  inputOptions() {
+    return this.types[this.get('name')].inputOptions || {};
   }
 });
 
