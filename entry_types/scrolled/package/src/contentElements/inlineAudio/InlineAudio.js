@@ -73,7 +73,7 @@ export function InlineAudio({contentElementId, configuration}) {
 
   return (
     <FitViewport file={posterImageFile}>
-      <ContentElementBox>
+      <ContentElementBox configuration={posterImageFile && configuration}>
         <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
             <AudioPlayerControls audioFile={audioFile}
