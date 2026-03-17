@@ -12,18 +12,34 @@ import styles from './ContentElementBox.module.css';
  *
  * @param {Object} props
  * @param {string} props.children - Content of box.
- * @param {string} props.borderRadius - Border radius value from theme scale, or "none" to render no wrapper.
+ * @param {Object} [props.configuration] - Content element configuration. Used to read box shadow and outline styles.
+ * @param {string} [props.borderRadius] - Border radius value from theme scale, or "none" to render no wrapper.
  */
-export function ContentElementBox({children, borderRadius, positioned}) {
+export function ContentElementBox({children, configuration, borderRadius, positioned}) {
   const {position, width} = useContentElementAttributes();
 
-  if (position === 'backdrop' || borderRadius === 'none') {
+  const boxShadow = configuration?.boxShadow;
+  const outlineColor = configuration?.outlineColor;
+
+  if (position === 'backdrop') {
     return children;
   }
 
-  const style = borderRadius ? {
-    '--content-element-box-border-radius': `var(--theme-content-element-box-border-radius-${borderRadius})`
-  } : {};
+  if (borderRadius === 'none' && !boxShadow && !outlineColor) {
+    return children;
+  }
+
+  const style = {
+    ...(borderRadius && borderRadius !== 'none' && {
+      '--content-element-box-border-radius': `var(--theme-content-element-box-border-radius-${borderRadius})`
+    }),
+    ...(boxShadow && {
+      '--content-element-box-shadow': `var(--theme-content-element-box-shadow-${boxShadow})`
+    }),
+    ...(outlineColor && {
+      '--content-element-box-outline-color': outlineColor
+    })
+  };
 
   return (
     <div className={classNames(

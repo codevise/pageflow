@@ -28,7 +28,8 @@ const scaleDefaultPropertyNames = {
   sectionPaddingTop: 'sectionDefaultPaddingTop',
   sectionPaddingBottom: 'sectionDefaultPaddingBottom',
   contentElementBoxBorderRadius: 'contentElementBoxBorderRadius',
-  contentElementMargin: 'contentElementMarginStyleDefault'
+  contentElementMargin: 'contentElementMarginStyleDefault',
+  contentElementBoxShadow: 'contentElementBoxShadowStyleDefault'
 };
 
 const defaultAspectRatios = [{
