@@ -9,6 +9,7 @@ editor.contentElementTypes.register('videoEmbed', {
   category: 'media',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
+  supportedStyles: ['boxShadow', 'outline'],
 
   configurationEditor({entry}) {
     this.tab('general', function() {

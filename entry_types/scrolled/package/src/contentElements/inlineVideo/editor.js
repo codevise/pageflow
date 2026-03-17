@@ -37,6 +37,7 @@ editor.contentElementTypes.register('inlineVideo', {
   category: 'media',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],
+  supportedStyles: ['boxShadow', 'outline'],
 
   defaultsInputs() {
     this.input('playbackMode', SelectInputView, {

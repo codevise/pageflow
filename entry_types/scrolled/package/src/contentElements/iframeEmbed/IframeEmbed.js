@@ -57,7 +57,7 @@ export function IframeEmbed({configuration}) {
     <div className={styles.wrapper}
          style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <FitViewport aspectRatio={configuration.autoResize ? null : aspectRatios[aspectRatio || 'wide']}>
-        <ContentElementBox>
+        <ContentElementBox configuration={configuration}>
           <ContentElementFigure configuration={configuration}>
             {utils.isBlank(configuration.source) && <Placeholder />}
             {renderSpanningWrapper(

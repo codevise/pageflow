@@ -30,7 +30,7 @@ export function DataWrapperChart({configuration}) {
   const backgroundColor = configuration.backgroundColor || '#323d4d';
 
   return (
-    <ContentElementBox>
+    <ContentElementBox configuration={configuration}>
       <ContentElementFigure configuration={configuration}>
         <div className={styles.container}
              style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined,

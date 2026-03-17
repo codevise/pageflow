@@ -126,7 +126,7 @@ function OrientationUnawareInlineVideo({
       <FitViewport file={videoFile}
                    fallbackAspectRatio={fallbackAspectRatio}
                    fill={configuration.position === 'backdrop'}>
-        <ContentElementBox>
+        <ContentElementBox configuration={configuration}>
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
               <FilePlaceholder file={videoFile} />
