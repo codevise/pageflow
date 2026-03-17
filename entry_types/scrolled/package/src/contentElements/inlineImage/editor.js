@@ -10,6 +10,7 @@ editor.contentElementTypes.register('inlineImage', {
   category: 'media',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
+  supportedStyles: ['boxShadow', 'outline'],
 
   defaultsInputs() {
     this.input('enableFullscreen', CheckBoxInputView);
