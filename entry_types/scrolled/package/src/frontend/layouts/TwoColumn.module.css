@@ -26,12 +26,12 @@
 
 .inline {
   --content-max-width: min(var(--layout-inline-content-max-width),
-                           var(--constrained-content-max-width, 100%));
+                           var(--constrained-content-max-width, 9999px));
 }
 
 .inline.width-lg {
   --content-max-width: min(var(--layout-inline-lg-content-max-width),
-                           var(--constrained-content-max-width, 100%));
+                           var(--constrained-content-max-width, 9999px));
 }
 
 .inline.width-xl {
@@ -123,7 +123,7 @@
 
 .constrainContentWidth .side {
   position: relative;
-  --side-offset: calc((min(var(--layout-inline-content-max-width), var(--constrained-content-max-width, 100%)) -
+  --side-offset: calc((min(var(--layout-inline-content-max-width), var(--constrained-content-max-width, 9999px)) -
                        var(--content-max-width)) / 2);
   right: var(--side-offset);
 }
