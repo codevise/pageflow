@@ -2,7 +2,6 @@ import {StylesCollection} from 'editor/collections/StylesCollection';
 import {Style} from 'editor/models/Style';
 
 import {useFakeTranslations} from 'pageflow/testHelpers';
-import {features} from 'pageflow/frontend';
 
 describe('StylesCollection', () => {
   const exampleTypes = {
@@ -37,8 +36,6 @@ describe('StylesCollection', () => {
     }
   };
 
-  beforeEach(() => features.enabledFeatureNames = []);
-
   describe('#getUnusedStyles', () => {
     useFakeTranslations({
       'pageflow_scrolled.editor.backdrop_effects.blur.label': 'Blur',
@@ -61,23 +58,6 @@ describe('StylesCollection', () => {
 
       expect(unusedStyles.pluck('name')).toContain('blur');
       expect(unusedStyles.findWhere({name: 'brightness'}).get('hidden')).toEqual(true);
-    });
-
-    it('does not include decoration styles by default', () => {
-      const styles = new StylesCollection([], {types: exampleTypes});
-
-      const unusedStyles = styles.getUnusedStyles();
-
-      expect(unusedStyles.pluck('name')).not.toContain('frame');
-    });
-
-    it('includes decoration styles if feature is enabled', () => {
-      const styles = new StylesCollection([], {types: exampleTypes});
-      features.enable('frontend', ['decoration_effects']);
-
-      const unusedStyles = styles.getUnusedStyles();
-
-      expect(unusedStyles.pluck('name')).toContain('frame');
     });
 
     it('selecting an unused style adds it to the collection', () => {
@@ -424,7 +404,7 @@ describe('StylesCollection', () => {
 
   describe('with effect types', () => {
     it('creates collection with effect style types', () => {
-      const styles = new StylesCollection([{name: 'blur', value: 50}], {types: Style.effectTypes});
+      const styles = new StylesCollection([{name: 'blur', value: 50}], {types: Style.getEffectTypes()});
 
       expect(styles.pluck('name')).toEqual(['blur']);
       expect(styles.first().minValue()).toEqual(0);

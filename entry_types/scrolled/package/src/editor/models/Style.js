@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
+import {features} from 'pageflow/frontend';
 
 export const Style = Backbone.Model.extend({
   initialize({name}, {types}) {
@@ -65,7 +66,7 @@ Style.getKind = function(name, types) {
   return types[name].kind;
 };
 
-Style.effectTypes = {
+const allEffectTypes = {
   blur: {
     inputType: 'slider',
     minValue: 0,
@@ -129,6 +130,18 @@ Style.effectTypes = {
   }
 };
 
+Style.getEffectTypes = function() {
+  if (features.isEnabled('decoration_effects')) {
+    return allEffectTypes;
+  }
+
+  return Object.fromEntries(
+    Object.entries(allEffectTypes).filter(
+      ([, type]) => type.kind !== 'decoration'
+    )
+  );
+};
+
 Style.getTypesForContentElement = function({entry, contentElement}) {
   const marginScale = entry.getScale('contentElementMargin');
   const defaultConfig = contentElement.getType().defaultConfig || {};
@@ -138,6 +151,7 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
 
   if (marginScale.values.length > 0) {
     result.marginTop = {
+      kind: 'spacing',
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginTop'),
       propertyName: 'marginTop',
       inputType: 'slider',
@@ -148,6 +162,7 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
     };
 
     result.marginBottom = {
+      kind: 'spacing',
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginBottom'),
       propertyName: 'marginBottom',
       inputType: 'slider',
@@ -163,6 +178,7 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
 
     if (boxShadowScale.values.length > 0) {
       result.boxShadow = {
+        kind: 'decoration',
         label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.boxShadow'),
         propertyName: 'boxShadow',
         inputType: 'slider',
@@ -177,6 +193,7 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
     const themeProperties = entry.getThemeProperties();
 
     result.outlineColor = {
+      kind: 'decoration',
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.outlineColor'),
       propertyName: 'outlineColor',
       inputType: 'color',

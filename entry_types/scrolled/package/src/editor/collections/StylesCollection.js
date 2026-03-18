@@ -1,6 +1,5 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
-import {features} from 'pageflow/frontend';
 import {Style} from '../models/Style';
 
 export const StylesCollection = Backbone.Collection.extend({
@@ -13,14 +12,8 @@ export const StylesCollection = Backbone.Collection.extend({
   getUnusedStyles() {
     const unusedStyles = new Backbone.Collection(
       Object
-        .entries(this.types)
-        .filter(
-          ([name, styleType]) => (
-            features.isEnabled('decoration_effects') ||
-            Style.getKind(name, this.types) !== 'decoration'
-          )
-        )
-        .map(([name]) => ({name})),
+        .keys(this.types)
+        .map(name => ({name})),
       {
         comparator: style => Object.keys(this.types).indexOf(style.get('name')),
         styles: this,

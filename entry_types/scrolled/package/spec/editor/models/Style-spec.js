@@ -3,6 +3,7 @@ import {Style} from 'editor/models/Style';
 import {editor} from 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories, useFakeTranslations} from 'pageflow/testHelpers';
+import {features} from 'pageflow/frontend';
 import {normalizeSeed} from 'support';
 
 describe('Style', () => {
@@ -80,6 +81,34 @@ describe('Style', () => {
     expect(style.inputType()).toEqual('color');
   });
 
+  describe('.getEffectTypes', () => {
+    beforeEach(() => features.enabledFeatureNames = []);
+
+    it('includes filter and animation effects', () => {
+      const types = Style.getEffectTypes();
+
+      expect(types).toHaveProperty('blur');
+      expect(types).toHaveProperty('autoZoom');
+      expect(types.blur.kind).toEqual('filter');
+      expect(types.autoZoom.kind).toEqual('animation');
+    });
+
+    it('excludes decoration effects by default', () => {
+      const types = Style.getEffectTypes();
+
+      expect(types).not.toHaveProperty('frame');
+    });
+
+    it('includes decoration effects when feature is enabled', () => {
+      features.enable('frontend', ['decoration_effects']);
+
+      const types = Style.getEffectTypes();
+
+      expect(types).toHaveProperty('frame');
+      expect(types.frame.kind).toEqual('decoration');
+    });
+  });
+
   describe('.getTypesForContentElement', () => {
     it('returns empty object when no margin scale is defined', () => {
       editor.contentElementTypes.register('textBlock', {});
@@ -140,11 +169,13 @@ describe('Style', () => {
 
       expect(result).toMatchObject({
         marginTop: {
+          kind: 'spacing',
           inputType: 'slider',
           values: ['sm', 'md', 'lg'],
           texts: ['Small', 'Medium', 'Large']
         },
         marginBottom: {
+          kind: 'spacing',
           inputType: 'slider',
           values: ['sm', 'md', 'lg'],
           texts: ['Small', 'Medium', 'Large']
@@ -274,6 +305,7 @@ describe('Style', () => {
 
       expect(result).toMatchObject({
         boxShadow: {
+          kind: 'decoration',
           inputType: 'slider',
           propertyName: 'boxShadow',
           values: ['sm', 'md', 'lg'],
@@ -364,6 +396,7 @@ describe('Style', () => {
 
       expect(result).toMatchObject({
         outlineColor: {
+          kind: 'decoration',
           inputType: 'color',
           propertyName: 'outlineColor'
         }
