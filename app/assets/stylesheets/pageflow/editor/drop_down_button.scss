@@ -160,7 +160,7 @@
     }
   }
 
-  ul {
+  &:not(:last-child) ul {
     border-bottom: solid 1px var(--ui-on-surface-color-lighter);
     padding-bottom: 1px;
     margin-bottom: 1px;
