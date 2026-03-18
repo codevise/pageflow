@@ -460,6 +460,50 @@ describe('Style', () => {
       );
     });
 
+    it('passes binding condition from supportedStyles object to type definition', () => {
+      const whenFn = posterId => !!posterId;
+
+      editor.contentElementTypes.register('inlineAudio', {
+        supportedStyles: [
+          {name: 'boxShadow', binding: 'posterId', when: whenFn}
+        ]
+      });
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'inlineAudio'}
+            ],
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementBoxShadow-sm': '0 1px 3px rgba(0,0,0,0.12)',
+                  'contentElementBoxShadow-md': '0 4px 6px rgba(0,0,0,0.1)'
+                }
+              }
+            },
+            themeTranslations: {
+              scales: {
+                contentElementBoxShadow: {
+                  sm: 'Small',
+                  md: 'Medium'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result.boxShadow.binding).toEqual('posterId');
+      expect(result.boxShadow.when).toBe(whenFn);
+    });
+
     it('does not return outlineColor when type does not have supportedStyles', () => {
       editor.contentElementTypes.register('textBlock', {});
 

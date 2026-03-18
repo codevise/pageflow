@@ -22,7 +22,7 @@ export const StyleListInputView = Marionette.ItemView.extend({
   initialize() {
     this.styles = new StylesCollection(
       this.readFromModel(),
-      {types: this.options.types}
+      {types: this.options.types, bindingModel: this.model}
     );
 
     this.listenTo(this.styles, 'add remove change', () => {
@@ -112,12 +112,18 @@ const StyleListItemView = Marionette.ItemView.extend({
   className: styles.item,
 
   template: (data) => `
-    <div class="${styles.label}">${data.label}</div>
-    ${renderInput(data.inputType)}
+    <div class="${styles.controls}">
+      <div class="${styles.label}">${data.label}</div>
+      ${renderInput(data.inputType)}
+    </div>
     <button class="${styles.remove}"
             title="${data.removeButtonTitle}">
     </button>
             `,
+
+  modelEvents: {
+    'change:available': 'updateAvailability'
+  },
 
   serializeData() {
     return {
@@ -127,7 +133,7 @@ const StyleListItemView = Marionette.ItemView.extend({
     };
   },
 
-  ui: cssModulesUtils.ui(styles, 'widget', 'value', 'colorInput'),
+  ui: cssModulesUtils.ui(styles, 'controls', 'widget', 'value', 'colorInput'),
 
   events: cssModulesUtils.events(styles, {
     'click remove': function() {
@@ -153,7 +159,14 @@ const StyleListItemView = Marionette.ItemView.extend({
     }
   }),
 
+  updateAvailability() {
+    const unavailable = this.model.get('available') === false;
+    this.$el.toggleClass(styles.unavailable, unavailable);
+    this.ui.controls.attr('inert', unavailable ? '' : null);
+  },
+
   onRender() {
+    this.updateAvailability();
     this.$el.addClass(styles[`input-${this.model.inputType()}`]);
 
     const values = this.model.values();

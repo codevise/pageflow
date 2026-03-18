@@ -468,6 +468,77 @@ describe('StyleListInputView', () => {
     expect(queryByRole('slider', {name: 'Opacity'})).toBeNull();
   });
 
+  it('makes controls inert when binding condition becomes false', () => {
+    const model = new Backbone.Model({
+      posterId: 5,
+      boxShadow: 'md'
+    });
+    const types = {
+      boxShadow: {
+        label: 'Box shadow',
+        kind: 'decoration',
+        propertyName: 'boxShadow',
+        inputType: 'slider',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'md',
+        binding: 'posterId',
+        when: posterId => !!posterId
+      }
+    };
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    render(view);
+
+    const controls = view.el.querySelector(`.${styles.controls}`);
+    expect(controls).not.toHaveAttribute('inert');
+
+    model.unset('posterId');
+
+    expect(controls).toHaveAttribute('inert');
+    expect(view.el.querySelector(`.${styles.item}`)).toHaveClass(styles.unavailable);
+  });
+
+  it('removes inert from controls when binding condition becomes true', () => {
+    const model = new Backbone.Model({
+      boxShadow: 'md'
+    });
+    const types = {
+      boxShadow: {
+        label: 'Box shadow',
+        kind: 'decoration',
+        propertyName: 'boxShadow',
+        inputType: 'slider',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'md',
+        binding: 'posterId',
+        when: posterId => !!posterId
+      }
+    };
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    render(view);
+
+    const controls = view.el.querySelector(`.${styles.controls}`);
+    expect(controls).toHaveAttribute('inert');
+
+    model.set('posterId', 5);
+
+    expect(controls).not.toHaveAttribute('inert');
+    expect(view.el.querySelector(`.${styles.item}`)).not.toHaveClass(styles.unavailable);
+  });
+
   it('allows removing styles', async () => {
     const types = {
       blur: {

@@ -122,8 +122,9 @@ toc:
     description: |
       Utility functions exported by `pageflow/ui`.
     children:
-      - i18nUtils
+      - attributeBindingUtils
       - cssModulesUtils
+      - i18nUtils
 
   - name: Test Helpers
     description: |

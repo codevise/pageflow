@@ -1,13 +1,26 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import {features} from 'pageflow/frontend';
+import {attributeBindingUtils} from 'pageflow/ui';
 
 export const Style = Backbone.Model.extend({
-  initialize({name}, {types}) {
+  initialize({name}, {types, bindingModel}) {
     this.types = types;
 
     if (!this.has('value')) {
       this.set('value', this.defaultValue());
+    }
+
+    const type = types[name];
+
+    if (type?.binding && bindingModel) {
+      attributeBindingUtils.setup({
+        binding: type.binding,
+        model: bindingModel,
+        listener: this,
+        option: type.when,
+        callback: available => this.set({available})
+      });
     }
   },
 
@@ -149,6 +162,19 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
 
   const supportedStyles = contentElement.getType().supportedStyles || [];
 
+  function findSupportedStyle(name) {
+    return supportedStyles.find(s => s === name || s.name === name);
+  }
+
+  function bindingOptions(name) {
+    const style = findSupportedStyle(name);
+    if (!style || typeof style === 'string') return {};
+    const {binding, when} = style;
+    return {
+      ...(binding && {binding, when})
+    };
+  }
+
   if (marginScale.values.length > 0) {
     result.marginTop = {
       kind: 'spacing',
@@ -173,7 +199,7 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
     };
   }
 
-  if (supportedStyles.includes('boxShadow')) {
+  if (findSupportedStyle('boxShadow')) {
     const boxShadowScale = entry.getScale('contentElementBoxShadow');
 
     if (boxShadowScale.values.length > 0) {
@@ -184,12 +210,13 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
         inputType: 'slider',
         values: boxShadowScale.values,
         texts: boxShadowScale.texts,
-        defaultValue: boxShadowScale.defaultValue
+        defaultValue: boxShadowScale.defaultValue,
+        ...bindingOptions('boxShadow')
       };
     }
   }
 
-  if (supportedStyles.includes('outline')) {
+  if (findSupportedStyle('outline')) {
     const themeProperties = entry.getThemeProperties();
 
     result.outlineColor = {
@@ -201,7 +228,8 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
       inputOptions: {
         alpha: true,
         swatches: entry.getUsedContentElementColors('outlineColor')
-      }
+      },
+      ...bindingOptions('outline')
     };
   }
 
