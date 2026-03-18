@@ -14,7 +14,14 @@ import * as i18nUtils from './utils/i18nUtils';
  */
 import * as cssModulesUtils from './utils/cssModulesUtils';
 
-export { i18nUtils, cssModulesUtils };
+/**
+ * Helpers for setting up attribute bindings.
+ *
+ * @alias attributeBindingUtils
+ */
+import * as attributeBindingUtils from './utils/attributeBindingUtils';
+
+export { i18nUtils, cssModulesUtils, attributeBindingUtils };
 export {default as Object} from '../Object';
 
 export * from './models/mixins/serverSideValidation';

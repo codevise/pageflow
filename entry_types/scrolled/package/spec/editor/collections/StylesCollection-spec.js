@@ -1,6 +1,7 @@
 import {StylesCollection} from 'editor/collections/StylesCollection';
 import {Style} from 'editor/models/Style';
 
+import Backbone from 'backbone';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 describe('StylesCollection', () => {
@@ -399,6 +400,68 @@ describe('StylesCollection', () => {
         expect(styles.first().get('value')).toEqual('sm');
         expect(styles.findWhere({name: 'crop'})).toBeUndefined();
       });
+    });
+  });
+
+  describe('conditional styles', () => {
+    it('hides unused style when condition is not met', () => {
+      const bindingModel = new Backbone.Model({posterId: null});
+      const types = {
+        boxShadow: {
+          label: 'Box shadow',
+          kind: 'decoration',
+          inputType: 'slider',
+          values: ['sm', 'md', 'lg'],
+          texts: ['S', 'M', 'L'],
+          defaultValue: 'md',
+          binding: 'posterId',
+          when: posterId => !!posterId
+        }
+      };
+
+      const styles = new StylesCollection([], {types, bindingModel});
+      const unusedStyles = styles.getUnusedStyles();
+
+      expect(unusedStyles.findWhere({name: 'boxShadow'}).get('hidden')).toEqual(true);
+    });
+
+    it('shows unused style when condition becomes met', () => {
+      const bindingModel = new Backbone.Model({posterId: null});
+      const types = {
+        boxShadow: {
+          label: 'Box shadow',
+          kind: 'decoration',
+          inputType: 'slider',
+          values: ['sm', 'md', 'lg'],
+          texts: ['S', 'M', 'L'],
+          defaultValue: 'md',
+          binding: 'posterId',
+          when: posterId => !!posterId
+        }
+      };
+
+      const styles = new StylesCollection([], {types, bindingModel});
+      const unusedStyles = styles.getUnusedStyles();
+
+      bindingModel.set('posterId', 5);
+
+      expect(unusedStyles.findWhere({name: 'boxShadow'}).get('hidden')).toEqual(false);
+    });
+
+    it('does not hide unused style without condition', () => {
+      const bindingModel = new Backbone.Model();
+      const types = {
+        outlineColor: {
+          label: 'Outline',
+          kind: 'decoration',
+          inputType: 'color'
+        }
+      };
+
+      const styles = new StylesCollection([], {types, bindingModel});
+      const unusedStyles = styles.getUnusedStyles();
+
+      expect(unusedStyles.findWhere({name: 'outlineColor'}).get('hidden')).toEqual(false);
     });
   });
 

@@ -119,6 +119,17 @@
   height: size(4);
 }
 
+.controls {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.unavailable .controls {
+  opacity: 0.4;
+}
+
 .remove {
   composes: cancel from '../icons.module.css';
   padding: 0 space(2);
