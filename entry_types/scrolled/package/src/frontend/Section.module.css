@@ -7,6 +7,7 @@
 
 .Section {
   position: relative;
+  scroll-margin-top: var(--widget-margin-top);
 
   --section-max-width:
     var(--theme-section-max-width);

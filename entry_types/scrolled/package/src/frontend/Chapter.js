@@ -3,9 +3,11 @@ import React from 'react';
 import {Section} from './Section';
 import {EventContextDataProvider} from './useEventContextData';
 
+import styles from './Chapter.module.css';
+
 export default function Chapter(props) {
   return (
-    <div id={props.chapterSlug}>
+    <div id={props.chapterSlug} className={styles.wrapper}>
       {renderSections(props.sections,
                       props.currentSectionIndex,
                       props.setCurrentSection)}
