@@ -1,6 +1,9 @@
 import React from 'react';
 
-import {DefaultNavigationPresenceProvider} from 'widgets/defaultNavigation/DefaultNavigationPresenceProvider';
+import {
+  DefaultNavigationPresenceProvider,
+  useDefaultNavigationState
+} from 'widgets/defaultNavigation/DefaultNavigationPresenceProvider';
 
 import styles from 'widgets/defaultNavigation/presenceClassNames.module.css';
 
@@ -8,8 +11,14 @@ import {renderInEntry} from 'pageflow-scrolled/testHelpers';
 import {act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+function LockNavButton() {
+  const {lockNavExpanded} = useDefaultNavigationState();
+  return <button onClick={lockNavExpanded}>Lock</button>;
+}
+
 describe('DefaultNavigationPresenceProvider', () => {
   afterEach(() => jest.restoreAllMocks());
+
   it('renders wrapper with class setting --widget-margin-top-max by default', () => {
     const {container} = renderInEntry(
       <DefaultNavigationPresenceProvider configuration={{}}>
@@ -66,41 +75,114 @@ describe('DefaultNavigationPresenceProvider', () => {
     expect(container.firstChild).toHaveClass(styles.expanded);
   });
 
-  it('toggles expanded class based on scroll direction', () => {
-    Object.defineProperty(window, 'scrollY', {
-      writable: true,
-      value: 0
+  describe('scroll direction', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+
+      Object.defineProperty(window, 'scrollY', {
+        writable: true,
+        value: 0
+      });
+
+      jest.spyOn(document.body, 'getBoundingClientRect').mockImplementation(() => ({
+        top: -window.scrollY,
+        left: 0,
+        right: 1024,
+        bottom: 768 - window.scrollY,
+        width: 1024,
+        height: 768
+      }));
     });
 
-    jest.spyOn(document.body, 'getBoundingClientRect').mockImplementation(() => ({
-      top: -window.scrollY,
-      left: 0,
-      right: 1024,
-      bottom: 768 - window.scrollY,
-      width: 1024,
-      height: 768
-    }));
-
-    const {container} = renderInEntry(
-      <DefaultNavigationPresenceProvider configuration={{}}>
-        <div />
-      </DefaultNavigationPresenceProvider>
-    );
-
-    expect(container.firstChild).toHaveClass(styles.expanded);
-
-    act(() => {
-      window.scrollY = 100;
-      window.dispatchEvent(new Event('scroll'));
+    afterEach(() => {
+      jest.useRealTimers();
     });
 
-    expect(container.firstChild).not.toHaveClass(styles.expanded);
+    it('toggles expanded class based on scroll direction', () => {
+      const {container} = renderInEntry(
+        <DefaultNavigationPresenceProvider configuration={{}}>
+          <div />
+        </DefaultNavigationPresenceProvider>
+      );
 
-    act(() => {
-      window.scrollY = 50;
-      window.dispatchEvent(new Event('scroll'));
+      expect(container.firstChild).toHaveClass(styles.expanded);
+
+      act(() => {
+        window.scrollY = 100;
+        window.dispatchEvent(new Event('scroll'));
+      });
+
+      expect(container.firstChild).not.toHaveClass(styles.expanded);
+
+      act(() => {
+        window.scrollY = 50;
+        window.dispatchEvent(new Event('scroll'));
+      });
+
+      expect(container.firstChild).toHaveClass(styles.expanded);
     });
 
-    expect(container.firstChild).toHaveClass(styles.expanded);
+    it('stays expanded during scroll lock', () => {
+      const {container, getByText} = renderInEntry(
+        <DefaultNavigationPresenceProvider configuration={{}}>
+          <LockNavButton />
+        </DefaultNavigationPresenceProvider>
+      );
+
+      act(() => {
+        getByText('Lock').click();
+      });
+
+      act(() => {
+        window.scrollY = 100;
+        window.dispatchEvent(new Event('scroll'));
+      });
+
+      expect(container.firstChild).toHaveClass(styles.expanded);
+    });
+
+    it('resumes collapsing after scroll lock timeout', () => {
+      const {container, getByText} = renderInEntry(
+        <DefaultNavigationPresenceProvider configuration={{}}>
+          <LockNavButton />
+        </DefaultNavigationPresenceProvider>
+      );
+
+      act(() => {
+        getByText('Lock').click();
+      });
+
+      act(() => {
+        jest.advanceTimersByTime(200);
+      });
+
+      act(() => {
+        window.scrollY = 100;
+        window.dispatchEvent(new Event('scroll'));
+      });
+
+      expect(container.firstChild).not.toHaveClass(styles.expanded);
+    });
+
+    it('re-expands nav when lockNavExpanded is called while collapsed', () => {
+      const {container, getByText} = renderInEntry(
+        <DefaultNavigationPresenceProvider configuration={{}}>
+          <LockNavButton />
+        </DefaultNavigationPresenceProvider>
+      );
+
+      act(() => {
+        window.scrollY = 100;
+        window.dispatchEvent(new Event('scroll'));
+      });
+
+      expect(container.firstChild).not.toHaveClass(styles.expanded);
+
+      act(() => {
+        getByText('Lock').click();
+      });
+
+      expect(container.firstChild).toHaveClass(styles.expanded);
+    });
   });
 });

@@ -7,6 +7,7 @@ import {
   usePhonePlatform
 } from 'pageflow-scrolled/frontend';
 
+import {useTimeoutFlag} from './useTimeoutFlag';
 import styles from './presenceClassNames.module.css';
 
 const DefaultNavigationContext = createContext({
@@ -21,9 +22,17 @@ export function useDefaultNavigationState() {
 export function DefaultNavigationPresenceProvider({configuration, children}) {
   const [navExpanded, setNavExpanded] = useState(true);
   const isPhonePlatform = usePhonePlatform();
+  const [scrollLockRef, activateScrollLock] = useTimeoutFlag(200);
+
+  const lockNavExpanded = useCallback(() => {
+    activateScrollLock();
+    setNavExpanded(true);
+  }, [activateScrollLock]);
 
   useScrollPosition(
     ({prevPos, currPos}) => {
+      if (scrollLockRef.current) return;
+
       const expand = currPos.y > prevPos.y ||
                      // Mobile Safari reports positive scroll position
                      // during scroll bounce animation when scrolling
@@ -51,8 +60,8 @@ export function DefaultNavigationPresenceProvider({configuration, children}) {
   );
 
   const contextValue = useMemo(
-    () => ({navExpanded, setNavExpanded}),
-    [navExpanded]
+    () => ({navExpanded, setNavExpanded, lockNavExpanded}),
+    [navExpanded, lockNavExpanded]
   );
 
   return (

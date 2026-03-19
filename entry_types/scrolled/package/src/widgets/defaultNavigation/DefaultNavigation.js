@@ -34,7 +34,7 @@ export function DefaultNavigation({
   logo,
   omitChapterNavigation
 }) {
-  const {navExpanded, setNavExpanded} = useDefaultNavigationState();
+  const {navExpanded, setNavExpanded, lockNavExpanded} = useDefaultNavigationState();
   const [menuOpen, setMenuOpen] = useState(!!configuration.defaultMobileNavVisible);
   const [readingProgress, setReadingProgress] = useState(0);
 
@@ -78,6 +78,7 @@ export function DefaultNavigation({
   };
 
   function handleMenuClick(chapterLinkId) {
+    lockNavExpanded();
     setMenuOpen(false);
   };
 
