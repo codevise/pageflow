@@ -32,14 +32,16 @@ const AspectRatioContext = React.createContext();
  * @param {Object} [props.opaque] - Render black background behind content.
  * @param {string} [props.fill] - Ignore aspect ration and fill viewport vertically.
  */
-export function FitViewport({file, aspectRatio, opaque, children, fill, scale}) {
-  if (!file && !aspectRatio) return children;
+export function FitViewport({file, aspectRatio, fallbackAspectRatio, opaque, children, fill, scale}) {
+  if (!file && !aspectRatio && !fallbackAspectRatio) return children;
 
   if (typeof aspectRatio === 'string') {
     aspectRatio = `var(--theme-aspect-ratio-${aspectRatio})`;
   }
 
-  aspectRatio = fill ? 'fill' : aspectRatio || (file.height / file.width);
+  aspectRatio = fill ? 'fill' :
+                aspectRatio ||
+                (file?.width ? file.height / file.width : fallbackAspectRatio);
 
   return (
     <div className={classNames(styles.container, {[styles.opaque]: opaque})}

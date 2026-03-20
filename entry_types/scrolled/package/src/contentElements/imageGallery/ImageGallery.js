@@ -250,7 +250,7 @@ function ItemImageWithCaption({item, imageFile, configuration, current, onClick,
 
   return (
     <FitViewport file={imageFile}
-                 aspectRatio={imageFile ? undefined : 0.75}
+                 fallbackAspectRatio={0.75}
                  scale={0.8}
                  opaque={!imageFile}>
       <ContentElementBox>

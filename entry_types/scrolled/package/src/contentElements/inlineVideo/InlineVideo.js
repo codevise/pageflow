@@ -123,8 +123,7 @@ function OrientationUnawareInlineVideo({
   return (
     <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
       <FitViewport file={videoFile}
-                   aspectRatio={videoFile ?
-                                undefined : fallbackAspectRatio}
+                   fallbackAspectRatio={fallbackAspectRatio}
                    fill={configuration.position === 'backdrop'}
                    opaque={!videoFile}>
         <ContentElementBox>

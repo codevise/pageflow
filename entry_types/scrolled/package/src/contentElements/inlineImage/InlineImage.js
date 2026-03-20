@@ -90,7 +90,8 @@ function ImageWithCaption({
 
   return (
     <FitViewport file={imageFile}
-                 aspectRatio={aspectRatio || (imageFile ? undefined : 0.75)}
+                 aspectRatio={aspectRatio}
+                 fallbackAspectRatio={0.75}
                  opaque={!imageFile}>
       <ContentElementBox borderRadius={isCircleCrop ? 'none' : rounded}>
         <ContentElementFigure configuration={configuration}>

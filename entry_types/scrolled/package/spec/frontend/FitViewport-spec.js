@@ -92,6 +92,38 @@ describe('FitViewport', () => {
     expect(container.querySelector(`.${fullscreenStyles.root}`)).not.toBeNull();
   });
 
+  it('uses fallback aspect ratio when file is present but not ready', () => {
+    const file = {isReady: false};
+    const {container} = render(
+      <FitViewport file={file} fallbackAspectRatio={0.75}>
+        <FitViewport.Content />
+      </FitViewport>
+    );
+
+    expect(getOuter(container)).toHaveStyle('--fit-viewport-aspect-ratio: 0.75');
+  });
+
+  it('uses file aspect ratio when file is ready even if fallback is given', () => {
+    const file = {width: 200, height: 100};
+    const {container} = render(
+      <FitViewport file={file} fallbackAspectRatio={0.75}>
+        <FitViewport.Content />
+      </FitViewport>
+    );
+
+    expect(getOuter(container)).toHaveStyle('--fit-viewport-aspect-ratio: 0.5');
+  });
+
+  it('uses fallback aspect ratio when no file is present', () => {
+    const {container} = render(
+      <FitViewport fallbackAspectRatio={0.75}>
+        <FitViewport.Content />
+      </FitViewport>
+    );
+
+    expect(getOuter(container)).toHaveStyle('--fit-viewport-aspect-ratio: 0.75');
+  });
+
   function getOuter(container) {
     return container.querySelector(`.${styles.container}`);
   }

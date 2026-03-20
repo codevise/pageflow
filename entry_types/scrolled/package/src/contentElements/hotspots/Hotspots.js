@@ -235,7 +235,7 @@ export function HotspotsImage({
            activeIndex={activeIndex}
            activateArea={activateArea}>
       <FitViewport file={imageFile}
-                   aspectRatio={imageFile ? undefined : 0.75}
+                   fallbackAspectRatio={0.75}
                    fill={configuration.position === 'backdrop'}
                    opaque={!imageFile}>
         <Composite activeIndex={activeIndex + 1}
