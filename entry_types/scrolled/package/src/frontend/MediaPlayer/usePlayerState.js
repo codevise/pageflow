@@ -42,7 +42,6 @@ export function playerStateReducer(state, action){
         isLoading: true,
         shouldPlay: true,
         playFailed: false,
-        unplayed: false,
         lastControlledVia: action.payload.via
       };
     case PLAYING:
@@ -50,6 +49,7 @@ export function playerStateReducer(state, action){
         ...state,
         shouldPlay: true,
         isPlaying: true,
+        unplayed: false,
         userIdle: false
       };
     case PLAY_AND_FADE_IN:

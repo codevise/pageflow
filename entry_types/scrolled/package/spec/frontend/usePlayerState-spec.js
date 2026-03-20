@@ -238,13 +238,23 @@ describe('usePlayerState', () => {
       expect(nextState.unplayed).toBe(true);
     });
 
-    it('is no longer unplayed after play action', () => {
+    it('is no longer unplayed after playing action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.play());
+      act(() => actions.playing());
+      const [nextState,] = result.current;
+
+      expect(nextState.unplayed).toBe(false);
+    });
+
+    it('stays unplayed after play action until playing', () => {
       const {result} = renderHookInEntry(() => usePlayerState());
       const [,actions] = result.current;
       act(() => actions.play());
       const [nextState,] = result.current;
 
-      expect(nextState.unplayed).toBe(false);
+      expect(nextState.unplayed).toBe(true);
     });
 
     it('becomes unplayed again when video ends to make it return to its initial look', () => {
