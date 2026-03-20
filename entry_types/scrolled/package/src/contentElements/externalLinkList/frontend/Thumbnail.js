@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {Image} from 'pageflow-scrolled/frontend';
+import {Image, FilePlaceholder} from 'pageflow-scrolled/frontend';
 
 import styles from './Thumbnail.module.css';
 
-export function Thumbnail({imageFile, aspectRatio, cropPosition, fit, load, children}) {
+export function Thumbnail({imageFile, aspectRatio, cropPosition, fit, load, showPlaceholder, children}) {
   imageFile = {
     ...imageFile,
     cropPosition
@@ -17,6 +17,7 @@ export function Thumbnail({imageFile, aspectRatio, cropPosition, fit, load, chil
     <div className={classNames(styles.thumbnail,
                                {[styles.cover]: fit === 'cover'})}
          style={{paddingTop: aspectRatioPadding}}>
+      {showPlaceholder && <FilePlaceholder file={imageFile} />}
       <Image imageFile={imageFile}
              load={load}
              preferSvg={true}

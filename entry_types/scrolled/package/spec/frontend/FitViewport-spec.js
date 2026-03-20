@@ -61,26 +61,6 @@ describe('FitViewport', () => {
     expect(getOuter(container)).toHaveStyle('--fit-viewport-scale: 0.8');
   });
 
-  it('is not opaque by default', () => {
-    const {container} = render(
-      <FitViewport aspectRatio={0.5}>
-        <FitViewport.Content />
-      </FitViewport>
-    );
-
-    expect(getOuter(container)).not.toHaveClass(styles.opaque);
-  });
-
-  it('can be made opaque', () => {
-    const {container} = render(
-      <FitViewport aspectRatio={0.5} opaque>
-        <FitViewport.Content />
-      </FitViewport>
-    );
-
-    expect(getOuter(container)).toHaveClass(styles.opaque);
-  });
-
   it('support covering full height', () => {
     const {container} = render(
       <FitViewport aspectRatio={0.5} fill>

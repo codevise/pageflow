@@ -5,6 +5,7 @@ import {
   ContentElementBox,
   ContentElementFigure,
   FitViewport,
+  Placeholder,
   ThirdPartyOptIn,
   ThirdPartyOptOutInfo,
   useContentElementEditorState,
@@ -55,10 +56,10 @@ export function IframeEmbed({configuration}) {
   return (
     <div className={styles.wrapper}
          style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
-      <FitViewport aspectRatio={configuration.autoResize ? null : aspectRatios[aspectRatio || 'wide']}
-                   opaque={utils.isBlank(configuration.source)}>
+      <FitViewport aspectRatio={configuration.autoResize ? null : aspectRatios[aspectRatio || 'wide']}>
         <ContentElementBox>
           <ContentElementFigure configuration={configuration}>
+            {utils.isBlank(configuration.source) && <Placeholder />}
             {renderSpanningWrapper(
               <ThirdPartyOptIn>
                 {shouldLoad &&

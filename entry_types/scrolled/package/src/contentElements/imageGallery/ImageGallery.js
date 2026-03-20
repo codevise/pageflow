@@ -7,6 +7,7 @@ import {
   useFileWithInlineRights,
   ContentElementBox,
   Figure,
+  FilePlaceholder,
   FitViewport,
   FullscreenViewer,
   Image,
@@ -251,8 +252,7 @@ function ItemImageWithCaption({item, imageFile, configuration, current, onClick,
   return (
     <FitViewport file={imageFile}
                  fallbackAspectRatio={0.75}
-                 scale={0.8}
-                 opaque={!imageFile}>
+                 scale={0.8}>
       <ContentElementBox>
         <Figure caption={caption}
                 variant={configuration.captionVariant}
@@ -260,6 +260,7 @@ function ItemImageWithCaption({item, imageFile, configuration, current, onClick,
                 addCaptionButtonVisible={current && !item.placeholder}
                 addCaptionButtonPosition="inside">
           <FitViewport.Content>
+            <FilePlaceholder file={imageFile} />
             <div onClick={onClick}>
               <Image imageFile={imageFile} load={shouldLoad} />
             </div>

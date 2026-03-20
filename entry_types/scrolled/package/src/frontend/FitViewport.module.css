@@ -23,11 +23,6 @@
   bottom: 0;
 }
 
-.opaque .inner {
-  background-color: #000;
-  color: #fff;
-}
-
 @media print {
   .container {
     page-break-inside: avoid;

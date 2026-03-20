@@ -5,6 +5,7 @@ import {
   ContentElementBox,
   Image,
   ContentElementFigure,
+  FilePlaceholder,
   FitViewport,
   FullscreenViewer,
   ToggleFullscreenCornerButton,
@@ -97,7 +98,7 @@ export function HotspotsImage({
   const {shouldLoad} = useContentElementLifecycle();
   const {isEditable, isSelected} = useContentElementEditorState();
 
-  const aspectRatio = imageFile ? `${imageFile.width} / ${imageFile.height}` : '3 / 4';
+  const aspectRatio = imageFile ? `${imageFile.width} / ${imageFile.height}` : '4 / 3';
 
   const [containerRect, containerRef] = useContentRect({
     enabled: shouldLoad
@@ -236,8 +237,7 @@ export function HotspotsImage({
            activateArea={activateArea}>
       <FitViewport file={imageFile}
                    fallbackAspectRatio={0.75}
-                   fill={configuration.position === 'backdrop'}
-                   opaque={!imageFile}>
+                   fill={configuration.position === 'backdrop'}>
         <Composite activeIndex={activeIndex + 1}
                    loop={false}
                    onNavigate={index => activateArea(index - 1)}>
@@ -248,6 +248,7 @@ export function HotspotsImage({
               <FitViewport.Content>
                 <div className={styles.stack}
                      ref={containerRef}>
+                  <FilePlaceholder file={imageFile} />
                   {renderLetterboxBackground()}
                   <div className={styles.wrapper}
                        ref={panZoomRefs.wrapper}
