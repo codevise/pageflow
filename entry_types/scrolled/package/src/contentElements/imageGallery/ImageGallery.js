@@ -148,7 +148,7 @@ function Scroller({
                                 contentElementWidth === contentElementWidths.xl},
                                {[styles.full]:
                                  contentElementWidth === contentElementWidths.full},
-                               {[styles.clip]: configuration.hidePeeks},
+                               {[styles.hidePeeks]: configuration.hidePeeks},
                                {[styles.customMargin]: customMargin})}>
       <div className={styles.leftButton}>
         <ScrollButton direction="left"
@@ -253,7 +253,7 @@ function ItemImageWithCaption({item, imageFile, configuration, current, onClick,
                  aspectRatio={imageFile ? undefined : 0.75}
                  scale={0.8}
                  opaque={!imageFile}>
-      <ContentElementBox>
+      <ContentElementBox configuration={configuration}>
         <Figure caption={caption}
                 variant={configuration.captionVariant}
                 onCaptionChange={handleCaptionChange}

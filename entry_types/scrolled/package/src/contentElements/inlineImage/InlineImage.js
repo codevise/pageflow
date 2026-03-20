@@ -10,7 +10,9 @@ import {
   useFileWithInlineRights,
   usePortraitOrientation,
   ExpandableImage,
-  InlineFileRights
+  InlineFileRights,
+  processImageModifiers,
+  useFileWithCropPosition
 } from 'pageflow-scrolled/frontend';
 import {features} from 'pageflow/frontend';
 
@@ -92,10 +94,12 @@ function ImageWithCaption({
     <FitViewport file={imageFile}
                  aspectRatio={aspectRatio || (imageFile ? undefined : 0.75)}
                  opaque={!imageFile}>
-      <ContentElementBox borderRadius={isCircleCrop ? 'none' : rounded}>
+      <ContentElementBox borderRadius={isCircleCrop ? 'none' : rounded}
+                         configuration={isCircleCrop ? undefined : configuration}>
         <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
             <ContentElementBox borderRadius={isCircleCrop ? 'circle' : 'none'}
+                               configuration={isCircleCrop ? configuration : undefined}
                                positioned={isCircleCrop}>
               <ExpandableImage enabled={supportFullscreen && shouldLoad}
                                imageFile={imageFile}
@@ -145,20 +149,3 @@ function imageVariantAndSizes(contentElementWidth) {
   return {variant: 'medium'};
 }
 
-function processImageModifiers(imageModifiers) {
-  const cropValue = getModiferValue(imageModifiers, 'crop');
-  const isCircleCrop = cropValue === 'circle';
-
-  return {
-    aspectRatio: isCircleCrop ? 1 : cropValue,
-    rounded: isCircleCrop ? 'circle' : getModiferValue(imageModifiers, 'rounded')
-  };
-}
-
-function getModiferValue(imageModifiers, name) {
-  return (imageModifiers || []).find(imageModifier => imageModifier.name === name)?.value;
-}
-
-function useFileWithCropPosition(file, cropPosition) {
-  return file && {...file, cropPosition};
-}

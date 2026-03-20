@@ -1,5 +1,5 @@
 import {editor, InlineFileRightsMenuItem, ImageModifierListInputView} from 'pageflow-scrolled/editor';
-import {contentElementWidths} from 'pageflow-scrolled/frontend';
+import {contentElementWidths, processImageModifiers} from 'pageflow-scrolled/frontend';
 import {FileInputView} from 'pageflow/editor';
 import {SeparatorView, CheckBoxInputView} from 'pageflow/ui';
 
@@ -10,6 +10,7 @@ editor.contentElementTypes.register('inlineImage', {
   category: 'media',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
+  supportedStyles: ['boxShadow', 'outline'],
 
   defaultsInputs() {
     this.input('enableFullscreen', CheckBoxInputView);
@@ -20,12 +21,12 @@ editor.contentElementTypes.register('inlineImage', {
       this.input('id', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
-        positioning: imageModifiers => imageModifiers?.length,
+        positioning: imageModifiers => !!processImageModifiers(imageModifiers).aspectRatio,
         positioningBinding: 'imageModifiers',
         positioningOptions: () => {
-          const aspectRatio = entry.getAspectRatio(this.model.get('imageModifiers')?.[0]?.value);
+          const {aspectRatio} = processImageModifiers(this.model.get('imageModifiers'));
           return {
-            preview: aspectRatio && (1 / aspectRatio)
+            preview: aspectRatio && (1 / entry.getAspectRatio(aspectRatio))
           };
         },
         dropDownMenuItems: [InlineFileRightsMenuItem]
@@ -38,13 +39,13 @@ editor.contentElementTypes.register('inlineImage', {
       this.input('portraitId', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
-        positioning: imageModifiers => imageModifiers?.length,
+        positioning: imageModifiers => !!processImageModifiers(imageModifiers).aspectRatio,
         positioningBinding: 'portraitImageModifiers',
         positioningOptions: () => {
-          const aspectRatio =  entry.getAspectRatio(this.model.get('portraitImageModifiers')?.[0]?.value);
+          const {aspectRatio} = processImageModifiers(this.model.get('portraitImageModifiers'));
           return {
-            preview: aspectRatio && (1 / aspectRatio)
-          }
+            preview: aspectRatio && (1 / entry.getAspectRatio(aspectRatio))
+          };
         }
       });
       this.input('portraitImageModifiers', ImageModifierListInputView, {

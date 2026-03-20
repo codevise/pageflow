@@ -1,8 +1,8 @@
 import {StylesCollection} from 'editor/collections/StylesCollection';
 import {Style} from 'editor/models/Style';
 
+import Backbone from 'backbone';
 import {useFakeTranslations} from 'pageflow/testHelpers';
-import {features} from 'pageflow/frontend';
 
 describe('StylesCollection', () => {
   const exampleTypes = {
@@ -37,8 +37,6 @@ describe('StylesCollection', () => {
     }
   };
 
-  beforeEach(() => features.enabledFeatureNames = []);
-
   describe('#getUnusedStyles', () => {
     useFakeTranslations({
       'pageflow_scrolled.editor.backdrop_effects.blur.label': 'Blur',
@@ -61,23 +59,6 @@ describe('StylesCollection', () => {
 
       expect(unusedStyles.pluck('name')).toContain('blur');
       expect(unusedStyles.findWhere({name: 'brightness'}).get('hidden')).toEqual(true);
-    });
-
-    it('does not include decoration styles by default', () => {
-      const styles = new StylesCollection([], {types: exampleTypes});
-
-      const unusedStyles = styles.getUnusedStyles();
-
-      expect(unusedStyles.pluck('name')).not.toContain('frame');
-    });
-
-    it('includes decoration styles if feature is enabled', () => {
-      const styles = new StylesCollection([], {types: exampleTypes});
-      features.enable('frontend', ['decoration_effects']);
-
-      const unusedStyles = styles.getUnusedStyles();
-
-      expect(unusedStyles.pluck('name')).toContain('frame');
     });
 
     it('selecting an unused style adds it to the collection', () => {
@@ -422,9 +403,71 @@ describe('StylesCollection', () => {
     });
   });
 
+  describe('conditional styles', () => {
+    it('hides unused style when condition is not met', () => {
+      const bindingModel = new Backbone.Model({posterId: null});
+      const types = {
+        boxShadow: {
+          label: 'Box shadow',
+          kind: 'decoration',
+          inputType: 'slider',
+          values: ['sm', 'md', 'lg'],
+          texts: ['S', 'M', 'L'],
+          defaultValue: 'md',
+          binding: 'posterId',
+          when: posterId => !!posterId
+        }
+      };
+
+      const styles = new StylesCollection([], {types, bindingModel});
+      const unusedStyles = styles.getUnusedStyles();
+
+      expect(unusedStyles.findWhere({name: 'boxShadow'}).get('hidden')).toEqual(true);
+    });
+
+    it('shows unused style when condition becomes met', () => {
+      const bindingModel = new Backbone.Model({posterId: null});
+      const types = {
+        boxShadow: {
+          label: 'Box shadow',
+          kind: 'decoration',
+          inputType: 'slider',
+          values: ['sm', 'md', 'lg'],
+          texts: ['S', 'M', 'L'],
+          defaultValue: 'md',
+          binding: 'posterId',
+          when: posterId => !!posterId
+        }
+      };
+
+      const styles = new StylesCollection([], {types, bindingModel});
+      const unusedStyles = styles.getUnusedStyles();
+
+      bindingModel.set('posterId', 5);
+
+      expect(unusedStyles.findWhere({name: 'boxShadow'}).get('hidden')).toEqual(false);
+    });
+
+    it('does not hide unused style without condition', () => {
+      const bindingModel = new Backbone.Model();
+      const types = {
+        outlineColor: {
+          label: 'Outline',
+          kind: 'decoration',
+          inputType: 'color'
+        }
+      };
+
+      const styles = new StylesCollection([], {types, bindingModel});
+      const unusedStyles = styles.getUnusedStyles();
+
+      expect(unusedStyles.findWhere({name: 'outlineColor'}).get('hidden')).toEqual(false);
+    });
+  });
+
   describe('with effect types', () => {
     it('creates collection with effect style types', () => {
-      const styles = new StylesCollection([{name: 'blur', value: 50}], {types: Style.effectTypes});
+      const styles = new StylesCollection([{name: 'blur', value: 50}], {types: Style.getEffectTypes()});
 
       expect(styles.pluck('name')).toEqual(['blur']);
       expect(styles.first().minValue()).toEqual(0);

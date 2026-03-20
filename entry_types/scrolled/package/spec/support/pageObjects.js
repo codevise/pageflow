@@ -278,6 +278,16 @@ function createContentElementPageObject(el) {
       return match ? match[1] : cssValue;
     },
 
+    hasBoxShadow(value) {
+      const wrapper = el.querySelector(`.${contentElementBoxStyles.wrapper}`);
+      return wrapper && wrapper.style.getPropertyValue('--content-element-box-shadow') === `var(--theme-content-element-box-shadow-${value})`;
+    },
+
+    hasOutlineColor(value) {
+      const wrapper = el.querySelector(`.${contentElementBoxStyles.wrapper}`);
+      return wrapper && wrapper.style.getPropertyValue('--content-element-box-outline-color') === value;
+    },
+
     hasMargin() {
       return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
     },

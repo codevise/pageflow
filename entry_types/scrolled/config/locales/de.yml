@@ -720,7 +720,7 @@ de:
                 turnDown: Leiser weiterspielen
             hideControlBar:
               inline_help: Für kurze Videos, bei denen der Benutzer nicht an bestimmte Stellen springen will.
-              inline_help_disabled: Für Videos mit Wiedergabe-Modus "Loop" sind die Controls immer ausgeblendet.
+              inline_help_disabled: Für Videos mit Wiedergabe-Modus "Loop" oder kreisförmigem Zuschnitt sind die Controls immer ausgeblendet.
               label: Controls ausblenden
             id:
               label: Video
@@ -1427,6 +1427,11 @@ de:
           lg: L
           xl: XL
           xxl: XXL
+        contentElementBoxShadow:
+          sm: S
+          md: M
+          lg: L
+          xl: XL
       content_element_text_inline_file_rights_attributes:
         showTextInlineFileRightsBackdrop:
           label: "Abblendung hinter Rechteangabe"
@@ -1467,6 +1472,8 @@ de:
         remove: "Stil entfernen"
         marginTop: "Abstand oben"
         marginBottom: "Abstand unten"
+        boxShadow: "Schatten"
+        outlineColor: "Umrandung"
       image_modifier_list_input:
         add: "Stil hinzufügen..."
         remove: "Stil entfernen"

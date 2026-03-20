@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
-import {features} from 'pageflow/frontend';
+import {attributeBindingUtils} from 'pageflow/ui';
 import {Style} from '../models/Style';
 
 export const StylesCollection = Backbone.Collection.extend({
@@ -8,22 +8,18 @@ export const StylesCollection = Backbone.Collection.extend({
 
   initialize(models, options = {}) {
     this.types = options.types || {};
+    this.bindingModel = options.bindingModel;
   },
 
   getUnusedStyles() {
     const unusedStyles = new Backbone.Collection(
       Object
-        .entries(this.types)
-        .filter(
-          ([name, styleType]) => (
-            features.isEnabled('decoration_effects') ||
-            Style.getKind(name, this.types) !== 'decoration'
-          )
-        )
-        .map(([name]) => ({name})),
+        .keys(this.types)
+        .map(name => ({name})),
       {
         comparator: style => Object.keys(this.types).indexOf(style.get('name')),
         styles: this,
+        bindingModel: this.bindingModel,
         model: UnusedStyle
       }
     );
@@ -48,8 +44,9 @@ function updateSeparation(styles, types) {
 }
 
 const UnusedStyle = Backbone.Model.extend({
-  initialize({name}, {styles}) {
-    const {items} = styles.types[name];
+  initialize({name}, {styles, bindingModel}) {
+    const type = styles.types[name];
+    const {items} = type;
 
     this.set('label', Style.getLabel(name, styles.types));
 
@@ -62,18 +59,34 @@ const UnusedStyle = Backbone.Model.extend({
     }
     else {
       this.selected = () => {
-        styles.add({name: this.get('name')}, {types: styles.types});
+        styles.add({name: this.get('name')}, {types: styles.types, bindingModel: styles.bindingModel});
       }
     }
 
-    const update = () => {
-      this.set({
-        hidden: !!styles.findWhere({name: this.get('name')}) && !items
-      });
+    const updateHidden = () => {
+      const inUse = !!styles.findWhere({name: this.get('name')}) && !items;
+      this.set({hidden: inUse || !this.get('available')});
     };
 
-    this.listenTo(styles, 'add remove', update);
-    update();
+    this.listenTo(styles, 'add remove', updateHidden);
+
+    if (type.binding && bindingModel) {
+      attributeBindingUtils.setup({
+        binding: type.binding,
+        model: bindingModel,
+        listener: this,
+        option: type.when,
+        callback: available => {
+          this.set({available});
+          updateHidden();
+        }
+      });
+    }
+    else {
+      this.set({available: true});
+    }
+
+    updateHidden();
   }
 });
 
@@ -138,7 +151,7 @@ const UnusedStyleItem = Backbone.Model.extend({
   _applyStyle(currentStyle) {
     this.styles.remove(currentStyle);
     this._removeIncompatibleStyles();
-    this.styles.add({name: this.styleName, value: this.get(('value'))}, {types: this.styles.types});
+    this.styles.add({name: this.styleName, value: this.get(('value'))}, {types: this.styles.types, bindingModel: this.styles.bindingModel});
   },
 
   _removeIncompatibleStyles() {

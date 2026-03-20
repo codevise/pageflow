@@ -22,6 +22,7 @@ editor.contentElementTypes.register('externalLinkList', {
   category: 'tilesAndLinks',
   supportedPositions: ['inline', 'standAlone'],
   supportedWidthRange: ['m', 'full'],
+  supportedStyles: ['boxShadow', 'outline'],
 
   defaultConfig: {
     thumbnailAspectRatio: 'square'

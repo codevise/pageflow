@@ -9,7 +9,8 @@ import {
   useDarkBackground,
   useTheme,
   contentElementWidthName,
-  contentElementWidths
+  contentElementWidths,
+  contentElementBoxProps
 } from 'pageflow-scrolled/frontend';
 
 import {ExternalLink} from './ExternalLink';
@@ -87,6 +88,8 @@ export function ExternalLinkList(props) {
   const overlayOpacity = props.configuration.overlayOpacity !== undefined ?
                          props.configuration.overlayOpacity / 100 : 0.7;
 
+  const boxProps = contentElementBoxProps(props.configuration);
+
   return wrapWithFlippedItemProvider(
     <div className={classNames({[styles.contentMargin]: props.customMargin || fullWidth},
                                props.configuration.linkButtonVariant &&
@@ -108,6 +111,8 @@ export function ExternalLinkList(props) {
                     props.configuration.variant &&
                     `scope-externalLinkList-${props.configuration.variant}`,
 
+                    boxProps.className,
+
                     textPositionStyles.list,
                     textPositionStyles[`layout-${layout}`],
                     textPositionStyles[`width-${contentElementWidthName(props.contentElementWidth)}`],
@@ -117,7 +122,8 @@ export function ExternalLinkList(props) {
                     {[textPositionStyles.scroller]: scrollerEnabled}
                   )}
                   style={{'--overlay-opacity': overlayOpacity,
-                          '--thumbnail-aspect-ratio': `var(--theme-aspect-ratio-${props.configuration.thumbnailAspectRatio || 'wide'})`}}
+                          '--thumbnail-aspect-ratio': `var(--theme-aspect-ratio-${props.configuration.thumbnailAspectRatio || 'wide'})`,
+                          ...boxProps.style}}
                   onScroll={handleScroll}>
                 {linkList.map((link, index) =>
                   <ExternalLink {...link}

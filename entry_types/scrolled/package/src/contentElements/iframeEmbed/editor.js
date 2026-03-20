@@ -13,6 +13,7 @@ editor.contentElementTypes.register('iframeEmbed', {
   featureName: 'iframe_embed_content_element',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
+  supportedStyles: ['boxShadow', 'outline'],
 
   configurationEditor({entry}) {
     this.tab('general', function() {
