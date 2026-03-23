@@ -1,6 +1,6 @@
-import {withInlineEditingAlternative} from './inlineEditing';
+import {extensible} from './extensions';
 
-export const LinkTooltipProvider = withInlineEditingAlternative(
+export const LinkTooltipProvider = extensible(
   'LinkTooltipProvider',
   function LinkTooltipProvider({children}) {
     return children;

@@ -1,29 +1,48 @@
-export {EntryDecorator} from './EntryDecorator';
-export {ContentDecorator} from './ContentDecorator';
-export {SectionDecorator} from './SectionDecorator';
-export {ContentElementDecorator} from './ContentElementDecorator';
+import {EntryDecorator} from './EntryDecorator';
+import {ContentDecorator} from './ContentDecorator';
+import {SectionDecorator} from './SectionDecorator';
+import {ContentElementDecorator} from './ContentElementDecorator';
+import {SelectableWidgetDecorator} from './SelectableWidgetDecorator';
+import {WidgetDecorator} from './WidgetDecorator';
+import {BackdropDecorator} from './BackdropDecorator';
+import {BackgroundContentElementDecorator} from './BackgroundContentElementDecorator';
+import {ForegroundDecorator} from './ForegroundDecorator';
 
-export {LayoutWithPlaceholder} from './LayoutWithPlaceholder';
+import {LayoutWithPlaceholder} from './LayoutWithPlaceholder';
+import {EditableText} from './EditableText';
+import {EditableInlineText} from './EditableInlineText';
+import {EditableTable} from './EditableTable';
+import {EditableLink} from './EditableLink';
+import {LinkTooltipProvider} from './LinkTooltip';
+import {WidgetSelectionRect} from './WidgetSelectionRect';
+import {ActionButton} from './ActionButton';
+import {ActionButtons} from './ActionButtons';
+import {PhonePlatformProvider} from './PhonePlatformProvider';
+import {Placeholder} from './Placeholder';
 
-export {EditableText} from './EditableText';
-export {EditableInlineText} from './EditableInlineText';
-export {EditableTable} from './EditableTable';
-export {EditableLink} from './EditableLink';
-
-export {LinkTooltipProvider} from './LinkTooltip';
-
-export {SelectableWidgetDecorator} from './SelectableWidgetDecorator';
-export {WidgetDecorator} from './WidgetDecorator';
-export {WidgetSelectionRect} from './WidgetSelectionRect';
-
-export {ActionButton} from './ActionButton';
-export {ActionButtons} from './ActionButtons';
-
-export {PhonePlatformProvider} from './PhonePlatformProvider';
-
-export {BackdropDecorator} from './BackdropDecorator';
-export {BackgroundContentElementDecorator} from './BackgroundContentElementDecorator';
-
-export {ForegroundDecorator} from './ForegroundDecorator';
-
-export {Placeholder} from './Placeholder';
+export const extensions = {
+  decorators: {
+    Entry: EntryDecorator,
+    Content: ContentDecorator,
+    Section: SectionDecorator,
+    ContentElement: ContentElementDecorator,
+    SelectableWidget: SelectableWidgetDecorator,
+    Widget: WidgetDecorator,
+    Backdrop: BackdropDecorator,
+    BackgroundContentElement: BackgroundContentElementDecorator,
+    Foreground: ForegroundDecorator
+  },
+  alternatives: {
+    LayoutWithPlaceholder,
+    EditableText,
+    EditableInlineText,
+    EditableTable,
+    EditableLink,
+    LinkTooltipProvider,
+    WidgetSelectionRect,
+    ActionButton,
+    ActionButtons,
+    PhonePlatformProvider,
+    Placeholder
+  }
+};

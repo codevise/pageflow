@@ -1,5 +1,5 @@
-import {withInlineEditingAlternative} from './inlineEditing';
+import {extensible} from './extensions';
 
-export const ActionButtons = withInlineEditingAlternative('ActionButtons', function ActionButtons() {
+export const ActionButtons = extensible('ActionButtons', function ActionButtons() {
   return null;
 });

@@ -3,9 +3,9 @@ import React from 'react';
 import {PhonePlatformContext} from './PhonePlatformContext';
 import {useBrowserFeature} from './useBrowserFeature';
 
-import {withInlineEditingAlternative} from './inlineEditing';
+import {extensible} from './extensions';
 
-export const PhonePlatformProvider = withInlineEditingAlternative('PhonePlatformProvider', function PhonePlatformProvider({children}) {
+export const PhonePlatformProvider = extensible('PhonePlatformProvider', function PhonePlatformProvider({children}) {
   const isPhonePlatform = useBrowserFeature('phone platform')
 
   return (

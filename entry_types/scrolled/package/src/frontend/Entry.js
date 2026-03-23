@@ -5,9 +5,9 @@ import {Widget} from './Widget';
 import {SelectableWidget} from './SelectableWidget';
 import {WidgetPresenceWrapper} from './WidgetPresenceWrapper';
 
-import {withInlineEditingDecorator} from './inlineEditing';
+import {extensible} from './extensions';
 
-export const Entry = withInlineEditingDecorator('EntryDecorator', function Entry() {
+export const Entry = extensible('Entry', function Entry() {
   return (
     <WidgetPresenceWrapper>
       <Widget role="consent" />

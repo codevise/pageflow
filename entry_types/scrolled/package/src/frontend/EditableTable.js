@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {withInlineEditingAlternative} from './inlineEditing';
+import {extensible} from './extensions';
 import {Text} from './Text';
 import {utils} from './utils';
 
@@ -31,7 +31,7 @@ const defaultValue = [{
   ],
 }];
 
-export const EditableTable = withInlineEditingAlternative('EditableTable', function EditableTable({
+export const EditableTable = extensible('EditableTable', function EditableTable({
   value, className,
   labelScaleCategory = 'body',
   valueScaleCategory = 'body',

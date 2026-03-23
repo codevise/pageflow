@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import {camelize} from './utils/camelize';
 import {paletteColor} from './paletteColor';
-import {withInlineEditingAlternative} from './inlineEditing';
+import {extensible} from './extensions';
 import {useDarkBackground} from './backgroundColor';
 import {Text} from './Text';
 import {Link} from './Link';
@@ -16,7 +16,7 @@ const defaultValue = [{
   children: [{ text: '' }],
 }];
 
-export const EditableText = withInlineEditingAlternative('EditableText', function EditableText({
+export const EditableText = extensible('EditableText', function EditableText({
   value, className, scaleCategory = 'body', typographyVariant, typographySize
 }) {
   return (

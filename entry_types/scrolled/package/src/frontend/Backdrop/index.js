@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {withInlineEditingDecorator} from '../inlineEditing';
+import {extensible} from '../extensions';
 import useDimension from '../useDimension';
 import {useSectionLifecycle} from '../useSectionLifecycle';
 
@@ -10,7 +10,7 @@ import {BackgroundAsset} from './BackgroundAsset';
 import styles from '../Backdrop.module.css';
 import sharedTransitionStyles from '../transitions/shared.module.css';
 
-export const Backdrop = withInlineEditingDecorator('BackdropDecorator', function Backdrop(props) {
+export const Backdrop = extensible('Backdrop', function Backdrop(props) {
   const [containerDimension, setContainerRef] = useDimension();
   const {shouldLoad} = useSectionLifecycle();
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import {withInlineEditingAlternative} from './inlineEditing';
+import {extensible} from './extensions';
 import styles from './Placeholder.module.css';
 
-export const Placeholder = withInlineEditingAlternative('Placeholder', function Placeholder() {
+export const Placeholder = extensible('Placeholder', function Placeholder() {
   return <div className={styles.placeholder} />;
 });

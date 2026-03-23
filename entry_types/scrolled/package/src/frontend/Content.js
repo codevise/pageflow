@@ -5,7 +5,7 @@ import {VhFix} from './VhFix';
 import {useActiveExcursion} from './useActiveExcursion';
 import {useCurrentSectionIndexState} from './useCurrentChapter';
 import {useEntryStructure} from '../entryState';
-import {withInlineEditingDecorator} from './inlineEditing';
+import {extensible} from './extensions';
 import {usePostMessageListener} from './usePostMessageListener';
 import {useSectionChangeEvents} from './useSectionChangeEvents';
 import {sectionChangeMessagePoster} from './sectionChangeMessagePoster';
@@ -22,7 +22,7 @@ import {
 
 import styles from './Content.module.css';
 
-export const Content = withInlineEditingDecorator('ContentDecorator', function Content(props) {
+export const Content = extensible('Content', function Content(props) {
   const entryStructure = useEntryStructure();
   const scrollToTarget = useScrollToTarget();
 

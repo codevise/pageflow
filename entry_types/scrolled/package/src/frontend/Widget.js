@@ -2,9 +2,9 @@ import React from 'react';
 
 import {api} from './api';
 import {useWidget} from '../entryState';
-import {withInlineEditingDecorator} from './inlineEditing';
+import {extensible} from './extensions';
 
-export const Widget = withInlineEditingDecorator('WidgetDecorator', function Widget({role, props, children, renderFallback}) {
+export const Widget = extensible('Widget', function Widget({role, props, children, renderFallback}) {
   const widget = useWidget({role});
 
   if (!widget) {
