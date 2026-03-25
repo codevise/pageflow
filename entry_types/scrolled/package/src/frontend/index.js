@@ -110,6 +110,8 @@ export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
 export {EditableLink} from './EditableLink';
 export {ActionButton} from './ActionButton';
+export {FilePlaceholder} from './FilePlaceholderDecorator';
+export {Placeholder} from './Placeholder';
 export {LinkTooltipProvider} from './LinkTooltipProvider';
 export {PhonePlatformContext} from './PhonePlatformContext';
 export {

@@ -4,6 +4,7 @@ import {
   ContentElementBox,
   Image,
   ContentElementFigure,
+  FilePlaceholder,
   FitViewport,
   contentElementWidths,
   useContentElementLifecycle,
@@ -90,8 +91,8 @@ function ImageWithCaption({
 
   return (
     <FitViewport file={imageFile}
-                 aspectRatio={aspectRatio || (imageFile ? undefined : 0.75)}
-                 opaque={!imageFile}>
+                 aspectRatio={aspectRatio}
+                 fallbackAspectRatio={0.75}>
       <ContentElementBox borderRadius={isCircleCrop ? 'none' : rounded}>
         <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
@@ -100,6 +101,7 @@ function ImageWithCaption({
               <ExpandableImage enabled={supportFullscreen && shouldLoad}
                                imageFile={imageFile}
                                contentElementId={contentElementId}>
+                <FilePlaceholder file={imageFile} />
                 <Image imageFile={imageFile}
                        load={shouldLoad}
                        structuredData={true}

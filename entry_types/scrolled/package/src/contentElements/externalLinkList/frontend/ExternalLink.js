@@ -165,7 +165,8 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
                        aspectRatio={props.thumbnailAspectRatio}
                        cropPosition={props.thumbnailCropPosition}
                        fit={props.thumbnailFit}
-                       load={props.loadImages}>
+                       load={props.loadImages}
+                       showPlaceholder={isEditable}>
               <InlineFileRights configuration={configuration}
                                 context="insideElement"
                                 position={props.textPosition === 'overlay' ? 'top': 'bottom'}

@@ -61,26 +61,6 @@ describe('FitViewport', () => {
     expect(getOuter(container)).toHaveStyle('--fit-viewport-scale: 0.8');
   });
 
-  it('is not opaque by default', () => {
-    const {container} = render(
-      <FitViewport aspectRatio={0.5}>
-        <FitViewport.Content />
-      </FitViewport>
-    );
-
-    expect(getOuter(container)).not.toHaveClass(styles.opaque);
-  });
-
-  it('can be made opaque', () => {
-    const {container} = render(
-      <FitViewport aspectRatio={0.5} opaque>
-        <FitViewport.Content />
-      </FitViewport>
-    );
-
-    expect(getOuter(container)).toHaveClass(styles.opaque);
-  });
-
   it('support covering full height', () => {
     const {container} = render(
       <FitViewport aspectRatio={0.5} fill>
@@ -90,6 +70,38 @@ describe('FitViewport', () => {
 
     expect(getOuter(container)).not.toHaveStyle('--fit-viewport-aspect-ratio: 0.5');
     expect(container.querySelector(`.${fullscreenStyles.root}`)).not.toBeNull();
+  });
+
+  it('uses fallback aspect ratio when file is present but not ready', () => {
+    const file = {isReady: false};
+    const {container} = render(
+      <FitViewport file={file} fallbackAspectRatio={0.75}>
+        <FitViewport.Content />
+      </FitViewport>
+    );
+
+    expect(getOuter(container)).toHaveStyle('--fit-viewport-aspect-ratio: 0.75');
+  });
+
+  it('uses file aspect ratio when file is ready even if fallback is given', () => {
+    const file = {width: 200, height: 100};
+    const {container} = render(
+      <FitViewport file={file} fallbackAspectRatio={0.75}>
+        <FitViewport.Content />
+      </FitViewport>
+    );
+
+    expect(getOuter(container)).toHaveStyle('--fit-viewport-aspect-ratio: 0.5');
+  });
+
+  it('uses fallback aspect ratio when no file is present', () => {
+    const {container} = render(
+      <FitViewport fallbackAspectRatio={0.75}>
+        <FitViewport.Content />
+      </FitViewport>
+    );
+
+    expect(getOuter(container)).toHaveStyle('--fit-viewport-aspect-ratio: 0.75');
   });
 
   function getOuter(container) {

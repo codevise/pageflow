@@ -25,3 +25,5 @@ export {BackdropDecorator} from './BackdropDecorator';
 export {BackgroundContentElementDecorator} from './BackgroundContentElementDecorator';
 
 export {ForegroundDecorator} from './ForegroundDecorator';
+
+export {Placeholder} from './Placeholder';

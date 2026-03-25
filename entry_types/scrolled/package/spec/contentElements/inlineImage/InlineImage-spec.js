@@ -337,5 +337,23 @@ describe('InlineImage', () => {
       const contentElement = getContentElement();
       expect(contentElement.getFitViewportAspectRatio()).toEqual('0.75');
     });
+
+    it('uses default aspect ratio when file is not ready', () => {
+      const {getContentElement} = renderContentElement({
+        typeName: 'inlineImage',
+        configuration: {
+          id: 100
+        },
+        imageFiles: [{
+          permaId: 100,
+          isReady: false,
+          width: null,
+          height: null
+        }]
+      });
+
+      const contentElement = getContentElement();
+      expect(contentElement.getFitViewportAspectRatio()).toEqual('0.75');
+    });
   });
 });

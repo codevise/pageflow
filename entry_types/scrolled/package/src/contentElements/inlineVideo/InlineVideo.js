@@ -5,6 +5,7 @@ import {
   VideoPlayer,
   ContentElementBox,
   ContentElementFigure,
+  FilePlaceholder,
   MediaInteractionTracking,
   VideoPlayerControls,
   InlineFileRights,
@@ -123,13 +124,12 @@ function OrientationUnawareInlineVideo({
   return (
     <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
       <FitViewport file={videoFile}
-                   aspectRatio={videoFile ?
-                                undefined : fallbackAspectRatio}
-                   fill={configuration.position === 'backdrop'}
-                   opaque={!videoFile}>
+                   fallbackAspectRatio={fallbackAspectRatio}
+                   fill={configuration.position === 'backdrop'}>
         <ContentElementBox>
           <ContentElementFigure configuration={configuration}>
             <FitViewport.Content>
+              <FilePlaceholder file={videoFile} />
               <MutedIndicator visible={media.muted &&
                                        playerState.shouldPlay &&
                                        !configuration.keepMuted} />
