@@ -84,6 +84,7 @@ function buildEntry(entry, contentElement, item, getPreviewConfiguration) {
     fullHeight: false,
     layout: 'left',
     exposeMotifArea: false,
+    paddingTop: 'xxxs',
     backdrop: {
       ...section.configuration.attributes.backdrop,
       imageMotifArea: null,
