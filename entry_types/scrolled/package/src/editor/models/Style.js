@@ -1,12 +1,26 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
+import {features} from 'pageflow/frontend';
+import {attributeBindingUtils} from 'pageflow/ui';
 
 export const Style = Backbone.Model.extend({
-  initialize({name}, {types}) {
+  initialize({name}, {types, bindingModel}) {
     this.types = types;
 
     if (!this.has('value')) {
       this.set('value', this.defaultValue());
+    }
+
+    const type = types[name];
+
+    if (type?.binding && bindingModel) {
+      attributeBindingUtils.setup({
+        binding: type.binding,
+        model: bindingModel,
+        listener: this,
+        option: type.when,
+        callback: available => this.set({available})
+      });
     }
   },
 
@@ -49,6 +63,10 @@ export const Style = Backbone.Model.extend({
 
   inputType() {
     return this.types[this.get('name')].inputType || 'none';
+  },
+
+  inputOptions() {
+    return this.types[this.get('name')].inputOptions || {};
   }
 });
 
@@ -61,7 +79,7 @@ Style.getKind = function(name, types) {
   return types[name].kind;
 };
 
-Style.effectTypes = {
+const allEffectTypes = {
   blur: {
     inputType: 'slider',
     minValue: 0,
@@ -125,13 +143,41 @@ Style.effectTypes = {
   }
 };
 
+Style.getEffectTypes = function() {
+  if (features.isEnabled('decoration_effects')) {
+    return allEffectTypes;
+  }
+
+  return Object.fromEntries(
+    Object.entries(allEffectTypes).filter(
+      ([, type]) => type.kind !== 'decoration'
+    )
+  );
+};
+
 Style.getTypesForContentElement = function({entry, contentElement}) {
   const marginScale = entry.getScale('contentElementMargin');
   const defaultConfig = contentElement.getType().defaultConfig || {};
   const result = {};
 
+  const supportedStyles = contentElement.getType().supportedStyles || [];
+
+  function findSupportedStyle(name) {
+    return supportedStyles.find(s => s === name || s.name === name);
+  }
+
+  function bindingOptions(name) {
+    const style = findSupportedStyle(name);
+    if (!style || typeof style === 'string') return {};
+    const {binding, when} = style;
+    return {
+      ...(binding && {binding, when})
+    };
+  }
+
   if (marginScale.values.length > 0) {
     result.marginTop = {
+      kind: 'spacing',
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginTop'),
       propertyName: 'marginTop',
       inputType: 'slider',
@@ -142,6 +188,7 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
     };
 
     result.marginBottom = {
+      kind: 'spacing',
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginBottom'),
       propertyName: 'marginBottom',
       inputType: 'slider',
@@ -149,6 +196,40 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
       texts: marginScale.texts,
       defaultValue: marginScale.defaultValue,
       ...('marginBottom' in defaultConfig && {resetValue: defaultConfig.marginBottom})
+    };
+  }
+
+  if (findSupportedStyle('boxShadow')) {
+    const boxShadowScale = entry.getScale('contentElementBoxShadow');
+
+    if (boxShadowScale.values.length > 0) {
+      result.boxShadow = {
+        kind: 'decoration',
+        label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.boxShadow'),
+        propertyName: 'boxShadow',
+        inputType: 'slider',
+        values: boxShadowScale.values,
+        texts: boxShadowScale.texts,
+        defaultValue: boxShadowScale.defaultValue,
+        ...bindingOptions('boxShadow')
+      };
+    }
+  }
+
+  if (findSupportedStyle('outline')) {
+    const themeProperties = entry.getThemeProperties();
+
+    result.outlineColor = {
+      kind: 'decoration',
+      label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.outlineColor'),
+      propertyName: 'outlineColor',
+      inputType: 'color',
+      defaultValue: themeProperties.root?.outlineColor,
+      inputOptions: {
+        alpha: true,
+        swatches: entry.getUsedContentElementColors('outlineColor')
+      },
+      ...bindingOptions('outline')
     };
   }
 

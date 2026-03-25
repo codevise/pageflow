@@ -1,7 +1,8 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
 
-import {editor, InlineFileRightsMenuItem, EditMotifAreaDialogView} from 'pageflow-scrolled/editor';
+import {editor, InlineFileRightsMenuItem, EditMotifAreaDialogView, ImageModifierListInputView} from 'pageflow-scrolled/editor';
+import {processImageModifiers} from 'pageflow-scrolled/frontend';
 import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView, SeparatorView, LabelOnlyView} from 'pageflow/ui';
 
@@ -37,6 +38,7 @@ editor.contentElementTypes.register('inlineVideo', {
   category: 'media',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],
+  supportedStyles: ['boxShadow', 'outline'],
 
   defaultsInputs() {
     this.input('playbackMode', SelectInputView, {
@@ -51,7 +53,14 @@ editor.contentElementTypes.register('inlineVideo', {
       this.input('id', FileInputView, {
         collection: 'video_files',
         fileSelectionHandler: 'contentElementConfiguration',
-        positioning: false,
+        positioning: imageModifiers => !!processImageModifiers(imageModifiers).aspectRatio,
+        positioningBinding: 'imageModifiers',
+        positioningOptions: () => {
+          const {aspectRatio} = processImageModifiers(this.model.get('imageModifiers'));
+          return {
+            preview: aspectRatio && (1 / entry.getAspectRatio(aspectRatio))
+          };
+        },
         defaultTextTrackFilePropertyName: 'defaultTextTrackFileId',
         dropDownMenuItems: [EditMotifAreaMenuItem, InlineFileRightsMenuItem]
       });
@@ -61,11 +70,23 @@ editor.contentElementTypes.register('inlineVideo', {
         positioning: false,
         dropDownMenuItems: [InlineFileRightsMenuItem]
       });
+      this.input('imageModifiers', ImageModifierListInputView, {
+        entry,
+        visibleBinding: 'id',
+        visible: () => this.model.getReference('id', 'video_files')
+      });
 
       this.input('portraitId', FileInputView, {
         collection: 'video_files',
         fileSelectionHandler: 'contentElementConfiguration',
-        positioning: false,
+        positioning: imageModifiers => !!processImageModifiers(imageModifiers).aspectRatio,
+        positioningBinding: 'portraitImageModifiers',
+        positioningOptions: () => {
+          const {aspectRatio} = processImageModifiers(this.model.get('portraitImageModifiers'));
+          return {
+            preview: aspectRatio && (1 / entry.getAspectRatio(aspectRatio))
+          };
+        },
         defaultTextTrackFilePropertyName: 'defaultTextTrackFileId',
         dropDownMenuItems: [EditMotifAreaMenuItem, InlineFileRightsMenuItem]
       });
@@ -77,6 +98,11 @@ editor.contentElementTypes.register('inlineVideo', {
         visible: () => this.model.getReference('portraitId', 'video_files'),
         dropDownMenuItems: [InlineFileRightsMenuItem]
       });
+      this.input('portraitImageModifiers', ImageModifierListInputView, {
+        entry,
+        visibleBinding: 'portraitId',
+        visible: () => this.model.getReference('portraitId', 'video_files')
+      });
 
       this.view(SeparatorView);
 
@@ -85,8 +111,10 @@ editor.contentElementTypes.register('inlineVideo', {
       });
 
       this.input('hideControlBar', CheckBoxInputView, {
-        disabledBinding: 'playbackMode',
-        disabled: playbackMode => playbackMode === 'loop',
+        disabledBinding: ['playbackMode', 'imageModifiers'],
+        disabled: ([playbackMode, imageModifiers]) =>
+          playbackMode === 'loop' ||
+          processImageModifiers(imageModifiers).rounded === 'circle',
         displayCheckedIfDisabled: true
       });
 

@@ -21,17 +21,21 @@ export function MediaPlayer(props) {
   const isStaticPreview = useIsStaticPreview();
   const load = props.load === 'auto' && isStaticPreview ? 'poster' : props.load;
 
+  const posterVisible = props.posterImageUrl &&
+                        (props.type !== 'video' ||
+                         load === 'poster' ||
+                         !props.playerState.dataLoaded ||
+                         props.playerState.unplayed);
+
   return (
     <div className={classNames(styles.wrapper,
                                styles[props.fit],
-                               {[textTrackStyles.inset]: props.textTracksInset})}>
+                               {[styles.contentElementBox]: props.applyContentElementBoxStyles,
+                                [styles.posterVisible]: posterVisible,
+                                [textTrackStyles.inset]: props.textTracksInset})}>
       {load === 'auto' && <PreparedMediaPlayer {...props} />}
       {load !== 'none' && <Poster imageUrl={props.posterImageUrl}
-                                        objectPosition={props.objectPosition}
-                                        hide={props.type === 'video' &&
-                                              load !== 'poster' &&
-                                              props.playerState.dataLoaded &&
-                                              !props.playerState.unplayed} />}
+                                        objectPosition={props.objectPosition} />}
     </div>
   );
 }
@@ -40,7 +44,7 @@ MediaPlayer.defaultProps = {
   load: 'auto'
 };
 
-function Poster({imageUrl, objectPosition, hide}) {
+function Poster({imageUrl, objectPosition}) {
   if (!imageUrl) {
     return null;
   }
@@ -49,7 +53,6 @@ function Poster({imageUrl, objectPosition, hide}) {
     <img src={imageUrl}
          alt=""
          style={{
-           display: hide ? 'none' : undefined,
            objectPosition: objectPosition && `${objectPosition.x}% ${objectPosition.y}%`
          }} />
   );

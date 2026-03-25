@@ -1959,6 +1959,9 @@ de:
       feature_name: "'Titel und Bild'-Lade-Ansicht"
       widget_type_name: Titel und Bild
     ui:
+      color_picker:
+        hue: "Farbton"
+        opacity: "Deckkraft"
       configuration_editor:
         tabs:
           consent_bar: Consent-Leiste

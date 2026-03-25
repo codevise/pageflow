@@ -38,7 +38,10 @@ export * from './Atmo';
 export * from './useAtmo';
 
 export {ContentElementBox} from './ContentElementBox';
+export {contentElementBoxProps} from './contentElementBoxStyle';
 export {ContentElementFigure} from './ContentElementFigure';
+export {processImageModifiers} from './imageModifiers';
+export {useFileWithCropPosition} from './useFileWithCropPosition';
 export {MediaInteractionTracking} from './MediaInteractionTracking';
 export {MediaPlayerControls} from './MediaPlayerControls';
 export {VideoPlayerControls} from './VideoPlayerControls';

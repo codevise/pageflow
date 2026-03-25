@@ -1,4 +1,5 @@
 // Inspired by https://github.com/mdbassit/Coloris
+import I18n from 'i18n-js';
 
 const ctx = typeof OffscreenCanvas !== 'undefined' &&
             new OffscreenCanvas(1, 1).getContext('2d');
@@ -81,6 +82,12 @@ export default class ColorPicker {
     this._alphaSlider = this._picker.querySelector('.color_picker-alpha input');
     this._alphaMarker = this._picker.querySelector('.color_picker-alpha div');
     this._swatchesContainer = this._picker.querySelector('.color_picker-swatches');
+
+    this._hueSlider.setAttribute('aria-label', I18n.t('pageflow.ui.color_picker.hue'));
+
+    if (this._alpha) {
+      this._alphaSlider.setAttribute('aria-label', I18n.t('pageflow.ui.color_picker.opacity'));
+    }
   }
 
   _wrapInput() {

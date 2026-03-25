@@ -17,6 +17,18 @@ editor.contentElementTypes.register('inlineAudio', {
   category: 'media',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
+  supportedStyles: [
+    {
+      name: 'boxShadow',
+      when: posterId => !!posterId,
+      binding: 'posterId'
+    },
+    {
+      name: 'outline',
+      when: posterId => !!posterId,
+      binding: 'posterId'
+    }
+  ],
 
   defaultConfig: {playerControlVariant: 'waveformBars'},
 

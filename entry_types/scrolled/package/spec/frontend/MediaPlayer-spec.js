@@ -9,6 +9,7 @@ import {media} from 'pageflow/frontend';
 import {MediaPlayer} from 'frontend/MediaPlayer';
 import {EventContext} from 'frontend/useEventContextData';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
+import styles from 'frontend/MediaPlayer.module.css';
 
 describe('MediaPlayer', () => {
   useFakeMedia();
@@ -114,6 +115,91 @@ describe('MediaPlayer', () => {
 
     expect(queryPlayer()).toBeNull();
     expect(getByRole('img')).toHaveAttribute('src', 'poster.jpg');
+  });
+
+  it('has posterVisible class when video has poster and has not started playing', () => {
+    const {container} = render(<MediaPlayer {...requiredProps()}
+                                            posterImageUrl="poster.jpg"
+                                            sources={getVideoSources()} />);
+
+    expect(container.firstChild).toHaveClass(styles.posterVisible);
+  });
+
+  it('does not have posterVisible class when video has no poster', () => {
+    const {container} = render(<MediaPlayer {...requiredProps()}
+                                            sources={getVideoSources()} />);
+
+    expect(container.firstChild).not.toHaveClass(styles.posterVisible);
+  });
+
+  it('does not have posterVisible class when video data loaded and played', () => {
+    const playerState = {
+      ...getInitialPlayerState(),
+      dataLoaded: true,
+      unplayed: false
+    };
+
+    const {container} = render(<MediaPlayer {...requiredProps()}
+                                            posterImageUrl="poster.jpg"
+                                            playerState={playerState}
+                                            sources={getVideoSources()} />);
+
+    expect(container.firstChild).not.toHaveClass(styles.posterVisible);
+  });
+
+  it('has posterVisible class when video data loaded but still unplayed', () => {
+    const playerState = {
+      ...getInitialPlayerState(),
+      dataLoaded: true,
+      unplayed: true
+    };
+
+    const {container} = render(<MediaPlayer {...requiredProps()}
+                                            posterImageUrl="poster.jpg"
+                                            playerState={playerState}
+                                            sources={getVideoSources()} />);
+
+    expect(container.firstChild).toHaveClass(styles.posterVisible);
+  });
+
+  it('has posterVisible class for audio type with poster', () => {
+    const {container} = render(<MediaPlayer {...requiredProps()}
+                                            type="audio"
+                                            posterImageUrl="poster.jpg"
+                                            sources={getAudioSources()} />);
+
+    expect(container.firstChild).toHaveClass(styles.posterVisible);
+  });
+
+  it('keeps posterVisible class for audio type during playback', () => {
+    const playerState = {
+      ...getInitialPlayerState(),
+      dataLoaded: true,
+      unplayed: false
+    };
+
+    const {container} = render(<MediaPlayer {...requiredProps()}
+                                            type="audio"
+                                            posterImageUrl="poster.jpg"
+                                            playerState={playerState}
+                                            sources={getAudioSources()} />);
+
+    expect(container.firstChild).toHaveClass(styles.posterVisible);
+  });
+
+  it('applies contentElementBox class when applyContentElementBoxStyles is set', () => {
+    const {container} = render(<MediaPlayer {...requiredProps()}
+                                            applyContentElementBoxStyles={true}
+                                            sources={getVideoSources()} />);
+
+    expect(container.firstChild).toHaveClass(styles.contentElementBox);
+  });
+
+  it('does not apply contentElementBox class by default', () => {
+    const {container} = render(<MediaPlayer {...requiredProps()}
+                                            sources={getVideoSources()} />);
+
+    expect(container.firstChild).not.toHaveClass(styles.contentElementBox);
   });
 
   it('renders audio player when sources are present', () => {

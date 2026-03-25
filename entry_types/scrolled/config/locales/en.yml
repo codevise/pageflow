@@ -705,7 +705,7 @@ en:
                 turnDown: Keep playing at lower volume
             hideControlBar:
               inline_help: For short videos where there is no need to seek.
-              inline_help_disabled: Controls are always hidden for videos with playback mode "Loop".
+              inline_help_disabled: Controls are always hidden for videos with playback mode "Loop" or circle crop.
               label: Hide controls
             id:
               label: Video
@@ -1411,6 +1411,11 @@ en:
           lg: L
           xl: XL
           xxl: XXL
+        contentElementBoxShadow:
+          sm: S
+          md: M
+          lg: L
+          xl: XL
       content_element_text_inline_file_rights_attributes:
         showTextInlineFileRightsBackdrop:
           label: "Backdrop behind inline file rights"
@@ -1451,6 +1456,8 @@ en:
         remove: "Remove style"
         marginTop: "Margin top"
         marginBottom: "Margin bottom"
+        boxShadow: "Box shadow"
+        outlineColor: "Outline"
       image_modifier_list_input:
         add: "Add style..."
         remove: "Remove style"

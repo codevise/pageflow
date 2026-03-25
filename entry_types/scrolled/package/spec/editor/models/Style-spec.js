@@ -3,6 +3,7 @@ import {Style} from 'editor/models/Style';
 import {editor} from 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories, useFakeTranslations} from 'pageflow/testHelpers';
+import {features} from 'pageflow/frontend';
 import {normalizeSeed} from 'support';
 
 describe('Style', () => {
@@ -22,7 +23,9 @@ describe('Style', () => {
   };
 
   useFakeTranslations({
-    'pageflow_scrolled.editor.backdrop_effects.blur.label': 'Blur'
+    'pageflow_scrolled.editor.backdrop_effects.blur.label': 'Blur',
+    'pageflow_scrolled.editor.content_element_style_list_input.boxShadow': 'Box shadow',
+    'pageflow_scrolled.editor.content_element_style_list_input.outlineColor': 'Outline'
   });
 
   it('has label based on translation', () => {
@@ -76,6 +79,34 @@ describe('Style', () => {
     const style = new Style({name: 'frame'}, {types: exampleTypes});
 
     expect(style.inputType()).toEqual('color');
+  });
+
+  describe('.getEffectTypes', () => {
+    beforeEach(() => features.enabledFeatureNames = []);
+
+    it('includes filter and animation effects', () => {
+      const types = Style.getEffectTypes();
+
+      expect(types).toHaveProperty('blur');
+      expect(types).toHaveProperty('autoZoom');
+      expect(types.blur.kind).toEqual('filter');
+      expect(types.autoZoom.kind).toEqual('animation');
+    });
+
+    it('excludes decoration effects by default', () => {
+      const types = Style.getEffectTypes();
+
+      expect(types).not.toHaveProperty('frame');
+    });
+
+    it('includes decoration effects when feature is enabled', () => {
+      features.enable('frontend', ['decoration_effects']);
+
+      const types = Style.getEffectTypes();
+
+      expect(types).toHaveProperty('frame');
+      expect(types.frame.kind).toEqual('decoration');
+    });
   });
 
   describe('.getTypesForContentElement', () => {
@@ -138,11 +169,13 @@ describe('Style', () => {
 
       expect(result).toMatchObject({
         marginTop: {
+          kind: 'spacing',
           inputType: 'slider',
           values: ['sm', 'md', 'lg'],
           texts: ['Small', 'Medium', 'Large']
         },
         marginBottom: {
+          kind: 'spacing',
           inputType: 'slider',
           values: ['sm', 'md', 'lg'],
           texts: ['Small', 'Medium', 'Large']
@@ -230,6 +263,266 @@ describe('Style', () => {
 
       expect(result.marginTop.defaultValue).toEqual('sm');
       expect(result.marginBottom.defaultValue).toEqual('sm');
+    });
+
+    it('returns boxShadow type when supportedStyles includes boxShadow and scale is defined', () => {
+      editor.contentElementTypes.register('inlineImage', {
+        supportedStyles: ['boxShadow']
+      });
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'inlineImage'}
+            ],
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementBoxShadow-sm': '0 1px 3px rgba(0,0,0,0.12)',
+                  'contentElementBoxShadow-md': '0 4px 6px rgba(0,0,0,0.1)',
+                  'contentElementBoxShadow-lg': '0 10px 15px rgba(0,0,0,0.1)'
+                }
+              }
+            },
+            themeTranslations: {
+              scales: {
+                contentElementBoxShadow: {
+                  sm: 'Small',
+                  md: 'Medium',
+                  lg: 'Large'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result).toMatchObject({
+        boxShadow: {
+          kind: 'decoration',
+          inputType: 'slider',
+          propertyName: 'boxShadow',
+          values: ['sm', 'md', 'lg'],
+          texts: ['Small', 'Medium', 'Large']
+        }
+      });
+    });
+
+    it('does not return boxShadow when type does not have supportedStyles', () => {
+      editor.contentElementTypes.register('textBlock', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'textBlock'}
+            ],
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementBoxShadow-sm': '0 1px 3px rgba(0,0,0,0.12)',
+                  'contentElementBoxShadow-md': '0 4px 6px rgba(0,0,0,0.1)'
+                }
+              }
+            },
+            themeTranslations: {
+              scales: {
+                contentElementBoxShadow: {
+                  sm: 'Small',
+                  md: 'Medium'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result).not.toHaveProperty('boxShadow');
+    });
+
+    it('does not return boxShadow when no scale is defined', () => {
+      editor.contentElementTypes.register('inlineImage', {
+        supportedStyles: ['boxShadow']
+      });
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'inlineImage'}
+            ]
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result).not.toHaveProperty('boxShadow');
+    });
+
+    it('returns outlineColor type when supportedStyles includes outline', () => {
+      editor.contentElementTypes.register('inlineImage', {
+        supportedStyles: ['outline']
+      });
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'inlineImage'}
+            ]
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result).toMatchObject({
+        outlineColor: {
+          kind: 'decoration',
+          inputType: 'color',
+          propertyName: 'outlineColor'
+        }
+      });
+    });
+
+    it('uses outlineColor theme property as default for outlineColor', () => {
+      editor.contentElementTypes.register('inlineImage', {
+        supportedStyles: ['outline']
+      });
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'inlineImage'}
+            ],
+            themeOptions: {
+              properties: {
+                root: {
+                  outlineColor: '#cc0000'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result.outlineColor.defaultValue).toEqual('#cc0000');
+    });
+
+    it('includes used outline colors as swatches in outlineColor inputOptions', () => {
+      editor.contentElementTypes.register('inlineImage', {
+        supportedStyles: ['outline']
+      });
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'inlineImage', configuration: {outlineColor: '#ff0000'}},
+              {id: 2, typeName: 'inlineImage', configuration: {outlineColor: '#00ff00'}},
+              {id: 3, typeName: 'inlineImage'}
+            ]
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result.outlineColor.inputOptions.swatches).toEqual(
+        expect.arrayContaining(['#ff0000', '#00ff00'])
+      );
+    });
+
+    it('passes binding condition from supportedStyles object to type definition', () => {
+      const whenFn = posterId => !!posterId;
+
+      editor.contentElementTypes.register('inlineAudio', {
+        supportedStyles: [
+          {name: 'boxShadow', binding: 'posterId', when: whenFn}
+        ]
+      });
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'inlineAudio'}
+            ],
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementBoxShadow-sm': '0 1px 3px rgba(0,0,0,0.12)',
+                  'contentElementBoxShadow-md': '0 4px 6px rgba(0,0,0,0.1)'
+                }
+              }
+            },
+            themeTranslations: {
+              scales: {
+                contentElementBoxShadow: {
+                  sm: 'Small',
+                  md: 'Medium'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result.boxShadow.binding).toEqual('posterId');
+      expect(result.boxShadow.when).toBe(whenFn);
+    });
+
+    it('does not return outlineColor when type does not have supportedStyles', () => {
+      editor.contentElementTypes.register('textBlock', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'textBlock'}
+            ]
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result).not.toHaveProperty('outlineColor');
     });
   });
 

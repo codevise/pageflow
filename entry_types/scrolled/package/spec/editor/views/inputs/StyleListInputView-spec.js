@@ -11,7 +11,9 @@ import styles from 'editor/views/inputs/StyleListInputView.module.css';
 describe('StyleListInputView', () => {
   useFakeTranslations({
     'pageflow_scrolled.editor.style_list_input.add': 'Add style',
-    'pageflow_scrolled.editor.style_list_input.remove': 'Remove style'
+    'pageflow_scrolled.editor.style_list_input.remove': 'Remove style',
+    'pageflow.ui.color_picker.hue': 'Hue',
+    'pageflow.ui.color_picker.opacity': 'Opacity'
   });
 
   it('displays styles', () => {
@@ -417,6 +419,124 @@ describe('StyleListInputView', () => {
     await user.click(getByRole('button', {name: 'Remove style'}));
 
     expect(view.el).not.toHaveClass(styles.allUsed);
+  });
+
+  it('renders hue and opacity sliders with aria-labels for color input with alpha', () => {
+    const types = {
+      outlineColor: {
+        label: 'Outline',
+        inputType: 'color',
+        propertyName: 'outlineColor',
+        inputOptions: {alpha: true}
+      }
+    };
+    const model = new Backbone.Model({outlineColor: '#ff000080'});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    const {getByRole} = render(view);
+
+    expect(getByRole('slider', {name: 'Hue'})).toBeDefined();
+    expect(getByRole('slider', {name: 'Opacity'})).toBeDefined();
+  });
+
+  it('renders hue slider with aria-label for color input without alpha', () => {
+    const types = {
+      frame: {
+        label: 'Frame',
+        inputType: 'color',
+        defaultValue: '#ffffff'
+      }
+    };
+    const model = new Backbone.Model({styles: [
+      {name: 'frame', value: '#ffffff'}
+    ]});
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    const {getByRole, queryByRole} = render(view);
+
+    expect(getByRole('slider', {name: 'Hue'})).toBeDefined();
+    expect(queryByRole('slider', {name: 'Opacity'})).toBeNull();
+  });
+
+  it('makes controls inert when binding condition becomes false', () => {
+    const model = new Backbone.Model({
+      posterId: 5,
+      boxShadow: 'md'
+    });
+    const types = {
+      boxShadow: {
+        label: 'Box shadow',
+        kind: 'decoration',
+        propertyName: 'boxShadow',
+        inputType: 'slider',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'md',
+        binding: 'posterId',
+        when: posterId => !!posterId
+      }
+    };
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    render(view);
+
+    const controls = view.el.querySelector(`.${styles.controls}`);
+    expect(controls).not.toHaveAttribute('inert');
+
+    model.unset('posterId');
+
+    expect(controls).toHaveAttribute('inert');
+    expect(view.el.querySelector(`.${styles.item}`)).toHaveClass(styles.unavailable);
+  });
+
+  it('removes inert from controls when binding condition becomes true', () => {
+    const model = new Backbone.Model({
+      boxShadow: 'md'
+    });
+    const types = {
+      boxShadow: {
+        label: 'Box shadow',
+        kind: 'decoration',
+        propertyName: 'boxShadow',
+        inputType: 'slider',
+        values: ['sm', 'md', 'lg'],
+        texts: ['Small', 'Medium', 'Large'],
+        defaultValue: 'md',
+        binding: 'posterId',
+        when: posterId => !!posterId
+      }
+    };
+
+    const view = new StyleListInputView({
+      model,
+      propertyName: 'styles',
+      types,
+      translationKeyPrefix: 'pageflow_scrolled.editor.style_list_input'
+    });
+    render(view);
+
+    const controls = view.el.querySelector(`.${styles.controls}`);
+    expect(controls).toHaveAttribute('inert');
+
+    model.set('posterId', 5);
+
+    expect(controls).not.toHaveAttribute('inert');
+    expect(view.el.querySelector(`.${styles.item}`)).not.toHaveClass(styles.unavailable);
   });
 
   it('allows removing styles', async () => {

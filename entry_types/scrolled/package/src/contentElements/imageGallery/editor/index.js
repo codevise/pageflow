@@ -20,6 +20,7 @@ editor.contentElementTypes.register('imageGallery', {
   category: 'media',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
+  supportedStyles: ['boxShadow', 'outline'],
 
   configurationEditor({entry, contentElement}) {
     this.tab('general', function() {

@@ -3,8 +3,8 @@
   right: 0;
   top: 0;
   color: #fff;
-  background: linear-gradient(30deg, transparent, transparent 60%, #000000a6);
-  padding: 5px 5px 40px 70px;
+  filter: drop-shadow(0 0 3px #00000080);
+  padding: 5px;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s;

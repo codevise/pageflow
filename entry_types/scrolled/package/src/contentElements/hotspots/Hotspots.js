@@ -51,7 +51,7 @@ export function Hotspots({
           floatingStrategy={(configuration.position === 'standAlone' ||
                              configuration.position === 'backdrop') ? 'fixed' : 'absolute'}>
           {children =>
-            <ContentElementBox>
+            <ContentElementBox configuration={configuration}>
               <ContentElementFigure configuration={configuration}>
                 <div className={styles.clip}>
                   {children}
