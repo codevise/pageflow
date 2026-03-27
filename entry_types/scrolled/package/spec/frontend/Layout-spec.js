@@ -537,11 +537,9 @@ describe('Layout', () => {
 
       it('decreases size when inlining wide side elements', () => {
         const items = [
-          {id: 1, type: 'probe', position: 'side', width: -2},
-          {id: 2, type: 'probe', position: 'side', width: -1},
-          {id: 3, type: 'probe', position: 'side'},
-          {id: 4, type: 'probe', position: 'side', width: 1},
-          {id: 5, type: 'probe', position: 'side', width: 2}
+          {id: 1, type: 'probe', position: 'side'},
+          {id: 2, type: 'probe', position: 'side', width: 1},
+          {id: 3, type: 'probe', position: 'side', width: 2}
         ];
         window.matchMedia.mockViewportWidth(500);
         const {container} = renderInEntry(
@@ -564,17 +562,15 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual(
-          '[inline xs 1 ][inline sm 2 ][inline md 3 4 ][inline lg 5 ]'
+          '[inline md 1 2 ][inline lg 3 ]'
         );
       });
 
       it('decreases size when inlining wide sticky elements', () => {
         const items = [
-          {id: 1, type: 'probe', position: 'sticky', width: -2},
-          {id: 2, type: 'probe', position: 'sticky', width: -1},
-          {id: 3, type: 'probe', position: 'sticky'},
-          {id: 4, type: 'probe', position: 'sticky', width: 1},
-          {id: 5, type: 'probe', position: 'sticky', width: 2}
+          {id: 1, type: 'probe', position: 'sticky'},
+          {id: 2, type: 'probe', position: 'sticky', width: 1},
+          {id: 3, type: 'probe', position: 'sticky', width: 2}
         ];
         window.matchMedia.mockViewportWidth(500);
         const {container} = renderInEntry(
@@ -597,9 +593,10 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual(
-          '[inline xs 1 ][inline sm 2 ][inline md 3 4 ][inline lg 5 ]'
+          '[inline md 1 2 ][inline lg 3 ]'
         );
       });
+
     });
 
     describe('in center variant', () => {
@@ -1380,6 +1377,56 @@ describe('Layout', () => {
         <Layout sectionProps={{layout: 'left'}} items={items}>
           {children => children}
         </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['restrict-xs'])).not.toBeNull();
+    });
+
+    it('does not decrease size of inlined side element with width below md', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'side', width: -2}
+      ];
+      window.matchMedia.mockViewportWidth(500);
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>,
+        {
+          seed: {
+            themeOptions: {
+              properties: {
+                root: {
+                  twoColumnStickyBreakpoint: '950px'
+                }
+              }
+            }
+          }
+        }
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['restrict-xs'])).not.toBeNull();
+    });
+
+    it('does not decrease size of inlined sticky element with width below md', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'sticky', width: -2}
+      ];
+      window.matchMedia.mockViewportWidth(500);
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>,
+        {
+          seed: {
+            themeOptions: {
+              properties: {
+                root: {
+                  twoColumnStickyBreakpoint: '950px'
+                }
+              }
+            }
+          }
+        }
       );
 
       expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['restrict-xs'])).not.toBeNull();
