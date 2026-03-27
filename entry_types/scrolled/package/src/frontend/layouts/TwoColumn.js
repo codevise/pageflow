@@ -73,11 +73,13 @@ function renderItemGroup(props, box, key) {
                                            styles[`width-${widthName(box.width)}`],
                                            {[styles.customMargin]: box.customMargin})}>
         {props.children(
-          <RestrictWidth width={box.width} alignment={box.alignment}>
-            <ContentElements sectionProps={props.sectionProps}
-                             customMargin={box.customMargin}
-                             items={box.items} />
-          </RestrictWidth>,
+          <ContentElements sectionProps={props.sectionProps}
+                           customMargin={box.customMargin}
+                           items={box.items}>
+            {(item, child) =>
+              restrictWidth(item.effectiveWidth, item.effectiveAlignment, child)
+            }
+          </ContentElements>,
           {
             position: box.position,
             width: box.width,
@@ -94,18 +96,17 @@ function renderItemGroup(props, box, key) {
   }
 }
 
-function RestrictWidth({width, alignment, children}) {
+function restrictWidth(width, alignment, children) {
   if (width >= 0) {
     return children;
   }
-  else {
-    return (
-      <div className={classNames(styles[`restrict-${widthName(width)}`],
-                                 styles[`align-${alignment}`])}>
-        {children}
-      </div>
-    );
-  }
+
+  return (
+    <div className={classNames(styles[`restrict-${widthName(width)}`],
+                               styles[`align-${alignment}`])}>
+      {children}
+    </div>
+  );
 }
 
 function groupItemsByPosition(items, shouldInline, isContentPadded) {
@@ -134,14 +135,16 @@ function groupItemsByPosition(items, shouldInline, isContentPadded) {
       width -= 1;
     }
 
+    const boxWidth = position === 'inline' ? Math.max(width, widths.md) : width;
+
     if (!currentGroup || previousPosition !== position ||
         (onTheSide(position) && currentBox.customMargin !== customMargin) ||
-        currentBox.width !== width) {
+        currentBox.width !== boxWidth) {
       currentBox = null;
 
       if (!(onTheSide(previousPosition) && position === 'inline' && width <= widths.md)) {
         currentGroup = {
-          width: onTheSide(position) ? widths.md : width,
+          width: onTheSide(position) ? widths.md : boxWidth,
           boxes: []
         };
 
@@ -149,12 +152,11 @@ function groupItemsByPosition(items, shouldInline, isContentPadded) {
       }
     }
 
-    if (!currentBox || currentBox.customMargin !== customMargin || currentBox.alignment !== alignment) {
+    if (!currentBox || currentBox.customMargin !== customMargin) {
       currentBox = {
         customMargin,
         position,
-        width,
-        alignment,
+        width: boxWidth,
         items: []
       };
 
@@ -171,6 +173,8 @@ function groupItemsByPosition(items, shouldInline, isContentPadded) {
 
     item = {
       ...item,
+      effectiveWidth: width,
+      effectiveAlignment: alignment,
       marginBottom: item.props?.marginBottom
     };
 
