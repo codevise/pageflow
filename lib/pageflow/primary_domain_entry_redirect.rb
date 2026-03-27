@@ -4,6 +4,10 @@ module Pageflow
   #
   # @since 12.4
   class PrimaryDomainEntryRedirect
+    def initialize(ignore_additional_cnames: false)
+      @ignore_additional_cnames = ignore_additional_cnames
+    end
+
     def call(entry, request)
       site = entry.site
 
@@ -16,6 +20,8 @@ module Pageflow
     private
 
     def known_domains(site)
+      return [site.cname] if @ignore_additional_cnames
+
       [
         site.cname,
         (site.additional_cnames || '').split(',').map(&:strip)
