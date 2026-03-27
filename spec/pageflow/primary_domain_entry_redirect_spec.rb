@@ -34,6 +34,30 @@ module Pageflow
       expect(redirect).to eq(nil)
     end
 
+    it 'redirects additional site domain to primary when ignore_additional_cnames is set' do
+      site = create(:site,
+                    cname: 'pageflow.example.com',
+                    additional_cnames: 'extra.example.com, other.example.com')
+      entry = create(:entry, site:)
+      request = request('https://extra.example.com/some-entry')
+
+      redirect = PrimaryDomainEntryRedirect.new(ignore_additional_cnames: true).call(entry, request)
+
+      expect(redirect).to eq('https://pageflow.example.com/some-entry')
+    end
+
+    it 'still returns nil for primary domain when ignore_additional_cnames is set' do
+      site = create(:site,
+                    cname: 'pageflow.example.com',
+                    additional_cnames: 'extra.example.com')
+      entry = create(:entry, site:)
+      request = request('https://pageflow.example.com/some-entry')
+
+      redirect = PrimaryDomainEntryRedirect.new(ignore_additional_cnames: true).call(entry, request)
+
+      expect(redirect).to eq(nil)
+    end
+
     it 'returns nil if site does not have domains' do
       site = create(:site, cname: '')
       entry = create(:entry, site:)
