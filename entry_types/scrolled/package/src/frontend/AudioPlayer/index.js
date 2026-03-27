@@ -38,6 +38,7 @@ export function AudioPlayer({audioFile, posterImageFile, ...props}) {
                        posterImageUrl={posterImageFile && posterImageFile.isReady ?
                                        posterImageFile.urls.large : undefined}
                        altText={audioFile.configuration.alt}
+                       mediaEventsContextData={{fileDisplayName: audioFile.displayName}}
                        {...props} />
           <AudioStructuredData file={audioFile} />
         </div>

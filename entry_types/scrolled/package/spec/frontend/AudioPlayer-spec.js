@@ -110,6 +110,36 @@ describe('AudioPlayer', () => {
     );
   });
 
+  it('passes displayName from audio file as media events context data', () => {
+    const spyMedia = jest.spyOn(media, 'getPlayer');
+
+    renderInEntry(
+      () => <AudioPlayer {...requiredProps()}
+                         audioFile={useFile({collectionName: 'audioFiles', permaId: 100})} />,
+      {
+        seed: {
+          fileUrlTemplates: {
+            audioFiles: {
+              mp3: ':id_partition/:basename.mp3'
+            }
+          },
+          audioFiles: [
+            {id: 1, permaId: 100, isReady: true, displayName: 'Podcast.mp3'}
+          ]
+        }
+      }
+    );
+
+    expect(spyMedia).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        mediaEventsContextData: expect.objectContaining({
+          fileDisplayName: 'Podcast.mp3'
+        })
+      })
+    );
+  });
+
   it('without id no media player is requested', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
 

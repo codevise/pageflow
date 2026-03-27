@@ -277,6 +277,26 @@ describe('MediaPlayer', () => {
     ));
   });
 
+  it('merges mediaEventsContextData prop into EventContext data for getPlayer', () => {
+    const eventContextData = {some: 'data'};
+
+    render(<MediaPlayer {...requiredProps()}
+                        type={'video'}
+                        mediaEventsContextData={{fileDisplayName: 'my-video.mp4'}}
+                        sources={getVideoSources()} />,
+           {
+             wrapper: ({children}) =>
+               <EventContext.Provider value={eventContextData}>{children}</EventContext.Provider>
+           });
+
+    expect(media.getPlayer).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        mediaEventsContextData: {some: 'data', fileDisplayName: 'my-video.mp4'}
+      })
+    );
+  });
+
   it('does not request new Player for same sources', () => {
     const {rerender} =
       render(<MediaPlayer {...requiredProps()}
