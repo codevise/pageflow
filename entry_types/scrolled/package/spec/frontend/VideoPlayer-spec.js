@@ -161,6 +161,36 @@ describe('VideoPlayer', () => {
     );
   });
 
+  it('passes displayName from video file as media events context data', () => {
+    const spyMedia = jest.spyOn(media, 'getPlayer');
+
+    renderInEntry(
+      () => <VideoPlayer {...requiredProps()}
+                         videoFile={useFile({collectionName: 'videoFiles', permaId: 100})} />,
+      {
+        seed: {
+          fileUrlTemplates: {
+            videoFiles: {
+              high: ':id_partition/high/:basename.mp4'
+            }
+          },
+          videoFiles: [
+            {id: 1, permaId: 100, isReady: true, displayName: 'Interview.mp4'}
+          ]
+        }
+      }
+    );
+
+    expect(spyMedia).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        mediaEventsContextData: expect.objectContaining({
+          fileDisplayName: 'Interview.mp4'
+        })
+      })
+    );
+  });
+
   it('without id no media player is request', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
     renderInEntry(<VideoPlayer {...requiredProps()} />);
