@@ -21,7 +21,7 @@
   content: "↵";
   position: absolute;
   display: block;
-  font-size: 13px;
+  font-size: var(--ui-font-size);
   font-weight: normal;
   bottom: 2px;
   left: 2px;

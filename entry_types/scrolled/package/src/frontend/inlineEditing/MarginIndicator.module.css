@@ -45,7 +45,7 @@
   position: absolute;
   left: 5px;
   top: 5px;
-  font-family: Arial, sans-serif;
+  font-family: var(--ui-font-family);
   font-size: 12px;
   padding: space(1) space(2);
   white-space: nowrap;

@@ -31,7 +31,7 @@ class LoggingConnection
   end
 end
 
-module Pageflow # rubocop:disable Style/OneClassPerFile
+module Pageflow
   describe NestedRevisionComponentCopy do
     describe '#copy_all' do
       it 'copies nested revision components' do

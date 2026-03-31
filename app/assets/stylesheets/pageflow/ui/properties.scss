@@ -1,4 +1,17 @@
 :root { // scss-lint:disable PropertyCount
+  // Match pageflow/ui/normalize.scss which is not included in all
+  // contexts that use these properties.
+  --ui-font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji';
+
   --ui-font-size: 13px;
 
   --ui-surface-color: #fff;
