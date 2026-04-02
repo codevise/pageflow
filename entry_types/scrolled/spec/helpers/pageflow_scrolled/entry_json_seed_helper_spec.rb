@@ -1130,11 +1130,11 @@ module PageflowScrolled
                                          })
         end
 
-        it 'supports including scrolled inline editing translations' do
+        it 'includes inline editing translations when load_inline_editing is set' do
           translation(I18n.locale, 'pageflow_scrolled.inline_editing.some', 'text')
           entry = create(:published_entry, type_name: 'scrolled')
 
-          result = render(helper, entry, translations: {include_inline_editing: true})
+          result = render(helper, entry, load_inline_editing: true)
 
           expect(result).to include_json(i18n: {
                                            translations: {
@@ -1166,6 +1166,16 @@ module PageflowScrolled
           result = render(helper, entry, skip_i18n: true)
 
           expect(JSON.parse(result)).not_to have_key('i18n')
+        end
+      end
+
+      context 'feature loading flags' do
+        it 'includes loadInlineEditing in config when load_inline_editing option is set' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry, load_inline_editing: true)
+
+          expect(result).to include_json(config: {loadInlineEditing: true})
         end
       end
 

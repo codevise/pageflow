@@ -157,7 +157,7 @@ global.pageflowScrolledRender = async function(seed) {
   await browser.detectFeatures();
   await loadDashUnlessHlsSupported(seed);
 
-  if (editMode) {
+  if (seed.config.loadInlineEditing) {
     await loadInlineEditingComponents();
   }
   else {

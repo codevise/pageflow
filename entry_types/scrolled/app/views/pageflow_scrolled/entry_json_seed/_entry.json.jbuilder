@@ -53,14 +53,17 @@ json.config do
   json.cut_off entry.cutoff_mode_enabled_for?(request)
   json.embed options.fetch(:embed, false)
   json.origin_url options[:origin_url] if options[:origin_url]
+  json.load_inline_editing true if options[:load_inline_editing]
 end
 
 unless options[:skip_i18n]
   json.i18n do
     json.default_locale I18n.default_locale
     json.locale I18n.locale
-    json.translations scrolled_i18n_translations(entry,
-                                                 **options.fetch(:translations, {}))
+    json.translations scrolled_i18n_translations(
+      entry,
+      include_inline_editing: !!options[:load_inline_editing]
+    )
   end
 end
 
