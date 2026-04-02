@@ -1,17 +1,18 @@
 import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect'
-import {render} from '@testing-library/react'
+import {render, act} from '@testing-library/react'
 import {
   extensible,
   provideExtensions,
-  clearExtensions
+  clearExtensions,
+  ExtensionsProvider
 } from 'frontend/extensions';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 
 describe('extensions', () => {
   afterEach(() => {
-    clearExtensions();
+    act(() => clearExtensions());
   });
 
   describe('extensible with decorator', () => {
@@ -113,6 +114,50 @@ describe('extensions', () => {
   });
 
   describe('provideExtensions', () => {
+    it('re-renders decorator after mount', () => {
+      const TestComponent = extensible('TestComponent', function TestComponent() {
+        return <span>Component</span>;
+      });
+
+      const {container} = render(<ExtensionsProvider><TestComponent /></ExtensionsProvider>);
+      expect(container).not.toHaveTextContent('Decorator');
+
+      act(() => {
+        provideExtensions({
+          decorators: {
+            TestComponent({children}) {
+              return <div>Decorator{children}</div>;
+            }
+          }
+        });
+      });
+
+      expect(container).toHaveTextContent('DecoratorComponent');
+    });
+
+    it('re-renders alternative after mount', () => {
+      const TestComponent = extensible('TestComponent', function TestComponent() {
+        return <span>Original</span>;
+      });
+
+      const {container} = render(<ExtensionsProvider><TestComponent /></ExtensionsProvider>);
+      expect(container).toHaveTextContent('Original');
+
+      act(() => {
+        provideExtensions({
+          alternatives: {
+            TestComponent() {
+              return <span>Alternative</span>;
+            }
+          }
+        });
+      });
+
+      expect(container).toHaveTextContent('Alternative');
+      expect(container).not.toHaveTextContent('Original');
+    });
+
+
     it('replaces previous extensions', () => {
       const TestComponent = extensible('TestComponent', function TestComponent() {
         return <span>Original</span>;
