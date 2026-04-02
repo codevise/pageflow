@@ -5,8 +5,8 @@ import {renderInEntryWithSectionLifecycle} from 'support';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
 import {frontend} from 'pageflow-scrolled/frontend';
-import {Backdrop} from 'frontend/v1/Backdrop';
-import {useBackdrop} from 'frontend/v1/useBackdrop';
+import {Backdrop} from 'frontend/Backdrop';
+import {useBackdrop} from 'frontend/useBackdrop';
 import styles from 'frontend/Backdrop.module.css';
 
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';

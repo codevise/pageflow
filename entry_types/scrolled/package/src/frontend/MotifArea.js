@@ -1,9 +1,9 @@
 import React, {useRef, useEffect, useCallback, useContext} from 'react';
 import classNames from 'classnames';
 
-import styles from '../MotifArea.module.css';
+import styles from './MotifArea.module.css';
 
-import {MotifAreaVisibilityContext} from '../MotifAreaVisibilityProvider';
+import {MotifAreaVisibilityContext} from './MotifAreaVisibilityProvider';
 
 export const MotifArea = function MotifArea(props) {
   const lastPosition = useRef();

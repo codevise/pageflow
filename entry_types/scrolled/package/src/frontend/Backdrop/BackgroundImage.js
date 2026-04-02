@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {Image} from '../../Image';
+import {Image} from '../Image';
 import {MotifArea} from '../MotifArea';
-import {useSectionLifecycle} from '../../useSectionLifecycle';
+import {useSectionLifecycle} from '../useSectionLifecycle';
 import {Effects} from './Effects';
 import {features} from 'pageflow/frontend';
 

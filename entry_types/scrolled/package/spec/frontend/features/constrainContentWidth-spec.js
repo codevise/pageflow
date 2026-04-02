@@ -4,8 +4,8 @@ import '@testing-library/jest-dom/extend-expect';
 
 import {api} from 'frontend/api';
 
-import {useMotifAreaState} from 'frontend/v1/useMotifAreaState';
-jest.mock('frontend/v1/useMotifAreaState');
+import {useMotifAreaState} from 'frontend/useMotifAreaState';
+jest.mock('frontend/useMotifAreaState');
 
 describe('constrainContentWidth', () => {
   usePageObjects();

@@ -1,9 +1,9 @@
 import React, {useMemo} from 'react';
 
-import {ContentElement} from '../../ContentElement';
-import {useSectionLifecycle} from '../../useSectionLifecycle';
+import {ContentElement} from '../ContentElement';
+import {useSectionLifecycle} from '../useSectionLifecycle';
 
-import {withInlineEditingDecorator} from '../../inlineEditing';
+import {withInlineEditingDecorator} from '../inlineEditing';
 
 export const BackgroundContentElement = withInlineEditingDecorator(
   'BackgroundContentElementDecorator',

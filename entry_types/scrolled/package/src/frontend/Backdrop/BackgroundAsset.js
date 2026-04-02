@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Fullscreen from './../../Fullscreen';
-import FillColor from './../../FillColor';
-import {useBackgroundFile} from './../useBackgroundFile';
+import Fullscreen from '../Fullscreen';
+import FillColor from '../FillColor';
+import {useBackgroundFile} from '../useBackgroundFile';
 
 import {BackgroundVideo} from './BackgroundVideo';
 import {BackgroundImage} from './BackgroundImage';

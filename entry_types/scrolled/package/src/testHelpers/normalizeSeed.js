@@ -94,9 +94,7 @@ export function normalizeSeed({
       defaultFileRights: defaultFileRights,
       legalInfo: normalizeLegalInfo(legalInfo),
       theme: normalizeTheme({themeOptions, themeAssets, themeTranslations}),
-      additionalSeedData: additionalSeedData || {
-        frontendVersion: 1
-      },
+      additionalSeedData: additionalSeedData || {},
       consentVendors: consentVendors || [],
       contentElementConsentVendors: contentElementConsentVendors || {},
       cutOff,

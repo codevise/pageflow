@@ -1,5 +1,5 @@
-import {useContentElement, useFileWithInlineRights} from '../../entryState';
-import {usePortraitOrientation} from '../usePortraitOrientation';
+import {useContentElement, useFileWithInlineRights} from '../entryState';
+import {usePortraitOrientation} from './usePortraitOrientation';
 
 export function useBackdrop(section) {
   const videoBackdrop = useFileBackdrop({
