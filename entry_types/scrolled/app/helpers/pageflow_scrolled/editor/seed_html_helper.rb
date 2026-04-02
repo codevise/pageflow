@@ -16,7 +16,7 @@ module PageflowScrolled
         html = render(template: 'pageflow_scrolled/entries/show',
                       locals: {
                         entry:,
-                        widget_scope: :editor,
+                        entry_mode: :editor,
                         skip_ssr: true,
                         skip_structured_data: true,
                         skip_feed_link_tags: true,

@@ -29,10 +29,10 @@ module PageflowScrolled
       )
     end
 
-    def scrolled_frontend_packs(entry, widget_scope:)
+    def scrolled_frontend_packs(entry, entry_mode:)
       ['pageflow-scrolled-frontend'] +
-        scrolled_additional_frontend_packs(entry, widget_scope) +
-        scrolled_frontend_widget_type_packs(entry, widget_scope)
+        scrolled_additional_frontend_packs(entry, entry_mode) +
+        scrolled_frontend_widget_type_packs(entry, entry_mode)
     end
 
     def scrolled_editor_packs(entry)
