@@ -1738,3 +1738,5 @@ en:
       content_element_margin_top: Top margin
       content_element_margin_bottom: Bottom margin
       expose_motif_area: Expose motif
+    review:
+      toolbar_label: Comments

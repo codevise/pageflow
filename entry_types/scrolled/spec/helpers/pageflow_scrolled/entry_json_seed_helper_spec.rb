@@ -1149,6 +1149,23 @@ module PageflowScrolled
                                          })
         end
 
+        it 'includes review translations when load_commenting is set' do
+          translation(I18n.locale, 'pageflow_scrolled.review.some', 'text')
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry, load_commenting: true)
+
+          expect(result).to include_json(i18n: {
+                                           translations: {
+                                             I18n.locale => {
+                                               pageflow_scrolled: {
+                                                 review: {some: 'text'}
+                                               }
+                                             }
+                                           }
+                                         })
+        end
+
         it 'includes locale and default locale' do
           entry = create(:published_entry, type_name: 'scrolled')
 
@@ -1176,6 +1193,22 @@ module PageflowScrolled
           result = render(helper, entry, load_inline_editing: true)
 
           expect(result).to include_json(config: {loadInlineEditing: true})
+        end
+
+        it 'includes loadCommenting in config when load_commenting option is set' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry, load_commenting: true)
+
+          expect(result).to include_json(config: {loadCommenting: true})
+        end
+
+        it 'does not include loadCommenting in config by default' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(JSON.parse(result)['config']).not_to have_key('loadCommenting')
         end
       end
 

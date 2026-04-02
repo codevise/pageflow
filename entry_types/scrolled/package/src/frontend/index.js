@@ -169,6 +169,12 @@ global.pageflowScrolledRender = async function(seed) {
   }
 
   render(seed);
+
+  if (seed.config.loadCommenting) {
+    import(/* webpackPreload: true */ './commenting').then(
+      ({loadCommentingComponents}) => loadCommentingComponents()
+    );
+  }
 }
 
 global.pageflowScrolledRegisterUpdateSeedHandler = function() {

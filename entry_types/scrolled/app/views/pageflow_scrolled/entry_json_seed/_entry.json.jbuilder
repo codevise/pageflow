@@ -54,6 +54,7 @@ json.config do
   json.embed options.fetch(:embed, false)
   json.origin_url options[:origin_url] if options[:origin_url]
   json.load_inline_editing true if options[:load_inline_editing]
+  json.load_commenting true if options[:load_commenting]
 end
 
 unless options[:skip_i18n]
@@ -62,7 +63,8 @@ unless options[:skip_i18n]
     json.locale I18n.locale
     json.translations scrolled_i18n_translations(
       entry,
-      include_inline_editing: !!options[:load_inline_editing]
+      include_inline_editing: !!options[:load_inline_editing],
+      include_review: !!options[:load_commenting]
     )
   end
 end

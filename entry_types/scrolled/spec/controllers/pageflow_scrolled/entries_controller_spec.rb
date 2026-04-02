@@ -188,6 +188,22 @@ module PageflowScrolled
 
         expect(response.body).to include('"originUrl":"http://test.host/test/entry"')
       end
+
+      it 'includes loadCommenting flag in preview mode' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry:, mode: :preview)
+
+        expect(response.body).to include('"loadCommenting":true')
+      end
+
+      it 'does not include loadCommenting flag in published mode' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry:)
+
+        expect(response.body).not_to include('"loadCommenting"')
+      end
     end
   end
 end

@@ -15,19 +15,30 @@ module PageflowScrolled
 
     def show
       entry = get_published_entry_from_env
+      mode = get_entry_mode_from_env
 
       I18n.locale = entry.locale
 
       render(
         locals: {
           entry:,
-          entry_mode: get_entry_mode_from_env,
-          seed_options: {
-            embed: get_embed_from_env,
-            origin_url: request.original_url
-          }
+          entry_mode: mode,
+          seed_options: seed_options(mode)
         }
       )
+    end
+
+    private
+
+    def seed_options(mode)
+      options = {
+        embed: get_embed_from_env,
+        origin_url: request.original_url
+      }
+
+      options[:load_commenting] = true if mode == :preview
+
+      options
     end
   end
 end
