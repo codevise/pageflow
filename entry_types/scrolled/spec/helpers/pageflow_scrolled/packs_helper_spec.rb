@@ -243,6 +243,33 @@ module PageflowScrolled
       end
     end
 
+    describe 'scrolled_frontend_stylesheet_packs' do
+      it 'includes core frontend pack' do
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_frontend_stylesheet_packs(entry,
+                                                           entry_mode: :published)
+
+        expect(result).to include('pageflow-scrolled-frontend')
+      end
+
+      it 'includes inline editing stylesheet pack only in editor mode' do
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        expect(
+          helper.scrolled_frontend_stylesheet_packs(entry, entry_mode: :editor)
+        ).to include('pageflow-scrolled-frontend-inlineEditing')
+
+        expect(
+          helper.scrolled_frontend_stylesheet_packs(entry, entry_mode: :preview)
+        ).not_to include('pageflow-scrolled-frontend-inlineEditing')
+
+        expect(
+          helper.scrolled_frontend_stylesheet_packs(entry, entry_mode: :published)
+        ).not_to include('pageflow-scrolled-frontend-inlineEditing')
+      end
+    end
+
     describe 'scrolled_editor_packs' do
       it 'includes editor pack' do
         entry = create(:published_entry, type_name: 'scrolled')

@@ -42,12 +42,21 @@ function external(id) {
   return !['.', '/', '$'].includes(id[0]);
 }
 
-const plugins = ({extractCss, moduleDirectories} = {}) => [
+const plugins = ({extractCss, splitCss, moduleDirectories} = {}) => [
   postcss({
     modules: true,
     extract: extractCss,
-    minimize: extractCss
+    minimize: extractCss,
+    ...(splitCss && {exclude: Object.keys(splitCss)})
   }),
+  ...Object.entries(splitCss || {}).map(([include, output]) =>
+    postcss({
+      modules: true,
+      extract: output,
+      minimize: true,
+      include: [include]
+    })
+  ),
   babel({
     exclude: 'node_modules/**',
     extensions: ['js', 'jsx', 'svg'],
@@ -264,7 +273,12 @@ const pageflowScrolled = [
       format: 'esm',
     },
     external,
-    plugins: plugins({extractCss: true}),
+    plugins: plugins({
+      extractCss: true,
+      splitCss: {
+        '**/inlineEditing/**': pageflowScrolledPackageRoot + '/frontend/inlineEditing.css'
+      }
+    }),
     ...ignoreJSXWarning
   },
   {
