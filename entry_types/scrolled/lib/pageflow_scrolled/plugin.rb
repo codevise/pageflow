@@ -208,7 +208,6 @@ module PageflowScrolled
         c.features.register('iframe_embed_content_element')
         c.features.register('social_embed_content_element')
         c.features.register('legacy_social_embed_content_elements')
-        c.features.register('frontend_v2')
         c.features.register('scrolled_entry_fragment_caching')
         c.features.register('backdrop_content_elements')
         c.features.register('custom_palette_colors')
@@ -223,11 +222,6 @@ module PageflowScrolled
             PageflowScrolled::EntryStructuredDataTypes::FaqPage.new
           )
         end
-
-        c.additional_frontend_seed_data.register(
-          'frontendVersion',
-          FRONTEND_VERSION_SEED_DATA
-        )
 
         c.content_element_consent_vendors.register(
           IFRAME_EMBED_CONSENT_VENDOR,
@@ -259,14 +253,6 @@ module PageflowScrolled
       valid_providers = ['x', 'instagram', 'bluesky', 'tiktok']
 
       valid_providers.include?(provider) ? provider : nil
-    end
-
-    FRONTEND_VERSION_SEED_DATA = lambda do |request:, entry:, **|
-      if request.params[:frontend] == 'v2' || entry.feature_state('frontend_v2')
-        2
-      else
-        1
-      end
     end
   end
 end
