@@ -14,11 +14,11 @@ module Pageflow
                               display_text: lambda do |entry|
                                 if entry.translation_group
                                   entry.translation_group
-                                    .entries
-                                    .order('title ASC')
-                                    .map(&:title)
-                                    .join(' / ')
-                                    .presence
+                                  .entries
+                                  .order('title ASC')
+                                  .map(&:title)
+                                  .join(' / ')
+                                  .presence
                                 else
                                   entry.title
                                 end

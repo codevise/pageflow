@@ -10,7 +10,8 @@ module Pageflow
 
         def select_action(label)
           actions_button.click
-          Capybara.current_session.find('#editor_menu_container .drop_down_button_item', text: label).click
+          Capybara.current_session.find('#editor_menu_container .drop_down_button_item',
+                                        text: label).click
         end
 
         def back_button

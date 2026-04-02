@@ -26,8 +26,8 @@ module Pageflow
       end
 
       def as_json
-        config.page_types.each_with_object({}) do |page_type, result|
-          result[page_type.name.to_sym] = page_type_seed(page_type)
+        config.page_types.to_h do |page_type|
+          [page_type.name.to_sym, page_type_seed(page_type)]
         end
       end
 

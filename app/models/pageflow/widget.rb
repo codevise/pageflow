@@ -95,8 +95,8 @@ module Pageflow
       def placeholders_by_role
         return {} unless options[:include_placeholders]
 
-        config.widget_types.roles.each_with_object({}) do |role, result|
-          result[role] = Widget.new(role:, type_name: nil, subject: nil)
+        config.widget_types.roles.to_h do |role|
+          [role, Widget.new(role:, type_name: nil, subject: nil)]
         end
       end
 

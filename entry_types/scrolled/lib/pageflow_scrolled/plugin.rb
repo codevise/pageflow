@@ -1,6 +1,6 @@
 module PageflowScrolled
   # @api private
-  class Plugin < Pageflow::Plugin
+  class Plugin < Pageflow::Plugin # rubocop:disable Metrics/ClassLength
     def configure(config)
       config.features.register('scrolled_entry_type') do |feature_config|
         feature_config.entry_types.register(PageflowScrolled.entry_type)
@@ -71,7 +71,8 @@ module PageflowScrolled
               'section_default_padding_top' => 'max(10em, 20svh)',
               'section_default_padding_bottom' => 'max(10em, 20svh)',
               'content_element_margin_style_default' => '2em',
-              'content_element_box_shadow_style_default' => '0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.15)',
+              'content_element_box_shadow_style_default' =>
+                '0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.15)',
               'box_shadow_clip_margin_bottom' => '3rem',
               'outline_color' => '#a0a0a080'
             },

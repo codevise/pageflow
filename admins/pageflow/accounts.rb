@@ -21,8 +21,8 @@ module Pageflow
         account.memberships.size if authorized?(:read, account)
       end
       account_memberships = current_user.memberships.on_accounts
-      account_roles = account_memberships.each_with_object({}) do |membership, roles|
-        roles[membership.entity_id] = membership.role
+      account_roles = account_memberships.to_h do |membership|
+        [membership.entity_id, membership.role]
       end
       if authorized?(:see_own_role_on, :accounts)
         column :own_role do |account|
@@ -43,16 +43,16 @@ module Pageflow
     searchable_select_options(text_attribute: :name,
                               scope: lambda do
                                 Account
-                                  .accessible_by(current_ability, :read)
-                                  .order(:name)
+                                .accessible_by(current_ability, :read)
+                                .order(:name)
                               end)
 
     searchable_select_options(name: :member_addable,
                               text_attribute: :name,
                               scope: lambda do
                                 AccountPolicy::Scope.new(current_user, Account)
-                                  .member_addable
-                                  .order(:name)
+                                .member_addable
+                                .order(:name)
                               end)
 
     form partial: 'form'

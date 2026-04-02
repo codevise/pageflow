@@ -35,7 +35,7 @@ module Pageflow
 
     def with_thumbnail_support
       select do |file_type|
-        file_type.model.instance_methods.include?(:thumbnail_url)
+        file_type.model.method_defined?(:thumbnail_url)
       end
     end
 

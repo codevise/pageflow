@@ -7,8 +7,8 @@ module Pageflow
       class IncompatibleVersionsError < StandardError; end
 
       def dump
-        Pageflow.config.page_types.each_with_object({}) do |page_type, version_requirements|
-          version_requirements[page_type.name] = page_type.export_version
+        Pageflow.config.page_types.to_h do |page_type|
+          [page_type.name, page_type.export_version]
         end
       end
 

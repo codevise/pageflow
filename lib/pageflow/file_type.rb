@@ -153,8 +153,8 @@ module Pageflow
 
     def convert_custom_attributes_option(custom_attributes)
       if custom_attributes.is_a?(Array)
-        custom_attributes.each_with_object({}) do |attribute_name, result|
-          result[attribute_name] = {permitted_create_param: true}
+        custom_attributes.to_h do |attribute_name|
+          [attribute_name, {permitted_create_param: true}]
         end
       elsif custom_attributes.is_a?(Hash)
         custom_attributes

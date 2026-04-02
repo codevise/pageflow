@@ -247,6 +247,7 @@ describe('LinkTooltip', () => {
       <MainStorylineActivity activeExcursion={activeExcursion}>
         <LinkTooltipProvider>
           <LinkPreview href="https://example.com" openInNewTab={false}>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a>Test Link</a>
           </LinkPreview>
         </LinkTooltipProvider>

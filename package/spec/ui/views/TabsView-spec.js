@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import {fireEvent, within} from '@testing-library/dom';
+import {fireEvent} from '@testing-library/dom';
 
 import {TabsView} from 'pageflow/ui';
 

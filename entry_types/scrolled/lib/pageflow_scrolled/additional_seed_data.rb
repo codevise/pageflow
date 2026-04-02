@@ -19,8 +19,8 @@ module PageflowScrolled
 
     # @api private
     def for(entry, request, options = {})
-      items_for_entry(entry, options).each_with_object({}) do |item, result|
-        result[item.name] = item.callable.call(entry:, request:, foo: 1)
+      items_for_entry(entry, options).to_h do |item|
+        [item.name, item.callable.call(entry:, request:, foo: 1)]
       end
     end
 

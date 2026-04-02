@@ -54,7 +54,7 @@ module Pageflow
                                    'image' => {
                                      '@type' => 'ImageObject',
                                      'url' => image_file
-                                       .thumbnail_url(:thumbnail_large),
+                                              .thumbnail_url(:thumbnail_large),
                                      'width' => 560,
                                      'height' => 315
                                    },

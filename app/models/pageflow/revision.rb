@@ -212,7 +212,7 @@ module Pageflow
         'manual_start' => manual_start,
         'overview_button_enabled' => overview_button_enabled
       }.delete_if { |_k, v| v.nil? }
-        .merge(read_attribute(:configuration) || {})
+       .merge(read_attribute(:configuration) || {})
     end
 
     def self.ransackable_attributes(_auth_object = nil)

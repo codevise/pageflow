@@ -127,10 +127,10 @@ describe('usePrivacyLink', () => {
 
   it('returns props with onClick for javascript: privacy settings url', () => {
     const {result} = renderHookInEntry(
-      // eslint-disable-next-line no-script-url
       () => usePrivacyLink(), {
         seed: {
           legalInfo: {
+            // eslint-disable-next-line no-script-url
             privacy: {url: 'javascript:pageflowDisplayPrivacySettings()'}
           }
         }
@@ -144,10 +144,10 @@ describe('usePrivacyLink', () => {
 
   it('does not append vendors to javascript: privacy settings url', () => {
     const {result} = renderHookInEntry(
-      // eslint-disable-next-line no-script-url
       () => usePrivacyLink({vendors: 'spotify'}), {
         seed: {
           legalInfo: {
+            // eslint-disable-next-line no-script-url
             privacy: {url: 'javascript:pageflowDisplayPrivacySettings()'}
           }
         }
