@@ -9,7 +9,7 @@ module PageflowScrolled
         entry = create(:published_entry, type_name: 'scrolled')
 
         result = helper.scrolled_frontend_packs(entry,
-                                                widget_scope: :published)
+                                                entry_mode: :published)
 
         expect(result).to include('pageflow-scrolled-frontend')
       end
@@ -26,7 +26,7 @@ module PageflowScrolled
         entry = create(:published_entry, type_name: 'scrolled')
 
         result = helper.scrolled_frontend_packs(entry,
-                                                widget_scope: :editor)
+                                                entry_mode: :editor)
 
         expect(result).to include('pageflow-scrolled/contentElements/extra')
       end
@@ -43,7 +43,7 @@ module PageflowScrolled
         entry = create(:published_entry, type_name: 'scrolled')
 
         result = helper.scrolled_frontend_packs(entry,
-                                                widget_scope: :published)
+                                                entry_mode: :published)
 
         expect(result).to include('pageflow-scrolled/contentElements/extra')
       end
@@ -61,7 +61,7 @@ module PageflowScrolled
         entry = create(:published_entry, type_name: 'scrolled')
 
         result = helper.scrolled_frontend_packs(entry,
-                                                widget_scope: :editor)
+                                                entry_mode: :editor)
 
         expect(result).to include('pageflow-scrolled/contentElements/extra')
       end
@@ -80,7 +80,7 @@ module PageflowScrolled
         create(:content_element, revision: entry.revision, type_name: 'extra')
 
         result = helper.scrolled_frontend_packs(entry,
-                                                widget_scope: :published)
+                                                entry_mode: :published)
 
         expect(result).to include('pageflow-scrolled/contentElements/extra')
       end
@@ -98,7 +98,7 @@ module PageflowScrolled
         entry = create(:published_entry, type_name: 'scrolled')
 
         result = helper.scrolled_frontend_packs(entry,
-                                                widget_scope: :published)
+                                                entry_mode: :published)
 
         expect(result).not_to include('pageflow-scrolled/contentElements/extra')
       end
@@ -130,7 +130,7 @@ module PageflowScrolled
 
         entry = create(:published_entry, type_name: 'scrolled')
 
-        result = helper.scrolled_frontend_packs(entry, widget_scope: :editor)
+        result = helper.scrolled_frontend_packs(entry, entry_mode: :editor)
 
         expect(result).to include('some/script/if-true')
         expect(result).to include('some/script/unless-false')
@@ -165,7 +165,7 @@ module PageflowScrolled
 
         entry = create(:published_entry, type_name: 'scrolled')
 
-        result = helper.scrolled_frontend_packs(entry, widget_scope: :published)
+        result = helper.scrolled_frontend_packs(entry, entry_mode: :published)
 
         expect(result).to include('some/script/if-true')
         expect(result).to include('some/script/unless-false')
@@ -184,7 +184,7 @@ module PageflowScrolled
         entry = create(:published_entry, type_name: 'scrolled')
 
         result = helper.scrolled_frontend_packs(entry,
-                                                widget_scope: :editor)
+                                                entry_mode: :editor)
 
         expect(result).to include('pageflow-scrolled/widgets/customNavigation')
         expect(result).to include('pageflow-scrolled/widgets/otherNavigation')
@@ -205,7 +205,7 @@ module PageflowScrolled
                type_name: 'customNavigation')
 
         result = helper.scrolled_frontend_packs(entry,
-                                                widget_scope: :published)
+                                                entry_mode: :published)
 
         expect(result).to include('pageflow-scrolled/widgets/customNavigation')
         expect(result).not_to include('pageflow-scrolled/widgets/otherNavigation')
@@ -224,7 +224,7 @@ module PageflowScrolled
         entry = create(:published_entry, type_name: 'scrolled')
 
         result = helper.scrolled_frontend_packs(entry,
-                                                widget_scope: :editor)
+                                                entry_mode: :editor)
 
         expect(result).not_to include('pageflow-scrolled/widgets/customNavigation')
       end
@@ -237,7 +237,7 @@ module PageflowScrolled
         entry = create(:published_entry, type_name: 'scrolled')
 
         result = helper.scrolled_frontend_packs(entry,
-                                                widget_scope: :editor)
+                                                entry_mode: :editor)
 
         expect(result).not_to include('pageflow-scrolled/widgets/test')
       end
