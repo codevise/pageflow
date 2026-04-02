@@ -101,9 +101,9 @@ module Pageflow
                               text_attribute: :name,
                               scope: lambda do
                                 AccountPolicy::Scope
-                                  .new(current_user, Account)
-                                  .entry_movable
-                                  .order(:name)
+                                .new(current_user, Account)
+                                .entry_movable
+                                .order(:name)
                               end)
 
     searchable_select_options(name: :eligible_sites,
@@ -111,8 +111,8 @@ module Pageflow
                               scope: lambda do |params|
                                 account = Account.find(params[:account_id])
                                 SitePolicy::Scope
-                                  .new(current_user, Site)
-                                  .sites_allowed_for(account)
+                                .new(current_user, Site)
+                                .sites_allowed_for(account)
                               end,
                               filter: lambda do |term, scope|
                                 scope.ransack(account_name_cont: term).result
@@ -318,7 +318,7 @@ module Pageflow
       end
 
       # rubocop:todo Metrics/PerceivedComplexity
-      def permitted_attributes # rubocop:todo Metrics/AbcSize
+      def permitted_attributes # rubocop:todo Metrics/AbcSize, Metrics/CyclomaticComplexity
         result = [:title, :type_name, {permalink_attributes: [:slug, :directory_id]}]
         target = if !params[:id] && current_user.admin?
                    Account.first
@@ -331,7 +331,7 @@ module Pageflow
         result += permitted_account_attributes
 
         result << :folder_id if create_or_new_action? ||
-                                  (params[:id] && authorized?(:configure_folder_for, resource))
+                                (params[:id] && authorized?(:configure_folder_for, resource))
 
         accounts = if params[:id]
                      resource.account

@@ -40,26 +40,30 @@ module Pageflow
 
       Pageflow
         .config.thumbnail_styles.transform_values { |options| options.merge(style_defaults) }
-        .merge(
-          print: {geometry: '300x300>',
-                  **style_defaults,
-                  convert_options: '-quality 10 -interlace Plane'},
-          medium: {geometry: '1024x1024>',
-                   **style_defaults,
-                   convert_options: '-quality 70 -interlace Plane'},
-          large: {geometry: '1920x1920>',
-                  **style_defaults,
-                  convert_options: '-quality 70 -interlace Plane'},
-          ultra: {geometry: '3840x3840>',
-                  **style_defaults,
-                  convert_options: '-quality 90 -interlace Plane'},
-          panorama_medium: {geometry: ImageFile.scale_down_to_cover(1024, 1024),
-                            format: panorama_format,
-                            convert_options: '-quality 90 -interlace Plane'},
-          panorama_large: {geometry: ImageFile.scale_down_to_cover(1920, 1080),
-                           format: panorama_format,
-                           convert_options: '-quality 90 -interlace Plane'}
-        )
+                                .merge(
+                                  print: {geometry: '300x300>',
+                                          **style_defaults,
+                                          convert_options: '-quality 10 -interlace Plane'},
+                                  medium: {geometry: '1024x1024>',
+                                           **style_defaults,
+                                           convert_options: '-quality 70 -interlace Plane'},
+                                  large: {geometry: '1920x1920>',
+                                          **style_defaults,
+                                          convert_options: '-quality 70 -interlace Plane'},
+                                  ultra: {geometry: '3840x3840>',
+                                          **style_defaults,
+                                          convert_options: '-quality 90 -interlace Plane'},
+                                  panorama_medium: {
+                                    geometry: ImageFile.scale_down_to_cover(1024, 1024),
+                                    format: panorama_format,
+                                    convert_options: '-quality 90 -interlace Plane'
+                                  },
+                                  panorama_large: {
+                                    geometry: ImageFile.scale_down_to_cover(1920, 1080),
+                                    format: panorama_format,
+                                    convert_options: '-quality 90 -interlace Plane'
+                                  }
+                                )
         .merge(social_image_styles)
     end
 

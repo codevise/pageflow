@@ -42,7 +42,7 @@ module PageflowScrolled
         pageflow_configure do |config|
           config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
             entry_type_config.consent_vendor_url_matchers = {
-              /\.typeform\.com\// => 'typeform'
+              %r{\.typeform\.com/} => 'typeform'
             }
           end
         end
@@ -62,7 +62,7 @@ module PageflowScrolled
         pageflow_configure do |config|
           config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
             entry_type_config.consent_vendor_url_matchers = {
-              /\.typeform\.com\// => 'typeform'
+              %r{\.typeform\.com/} => 'typeform'
             }
           end
         end
@@ -82,7 +82,7 @@ module PageflowScrolled
         pageflow_configure do |config|
           config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
             entry_type_config.consent_vendor_url_matchers = {
-              /google\.com\/maps\/embed/ => 'googleMaps'
+              %r{google\.com/maps/embed} => 'googleMaps'
             }
           end
         end

@@ -551,7 +551,7 @@ module Pageflow
         rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
 
         config.for_entry_type(rainbow_entry_type) do |c|
-          c.themes.register_options_transform(->(options, **) {
+          c.themes.register_options_transform(lambda { |options, **|
             if options[:colors].blank?
               options.deep_merge(colors: {accent: '#default'})
             else
@@ -642,7 +642,6 @@ module Pageflow
         rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
 
         config.for_entry_type(rainbow_entry_type) do |c|
-
           c.features.register('legacy_colors') do |feature_config|
             feature_config.themes.register_default_options(colors: {accent: '#legacy'})
           end

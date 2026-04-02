@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useContext, useMemo, createContext, useState} from 'react';
+import React, {useRef, useEffect, useContext, useMemo, createContext} from 'react';
 import classNames from 'classnames';
 import {useOnScreen} from './useOnScreen';
 import {useDelayedBoolean} from './useDelayedBoolean';

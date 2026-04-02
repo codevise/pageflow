@@ -9,7 +9,7 @@ module Pageflow
                             attachment: nil,
                             file_name: 'image.jpg')
         exported_id = 10
-        fixture_file = File.open(Engine.root.join('spec', 'fixtures', 'image.jpg'))
+        fixture_file = Engine.root.join('spec', 'fixtures', 'image.jpg').open
 
         Dir.mktmpdir do |dir|
           archive_file_name = File.join(dir, 'archive.zip')

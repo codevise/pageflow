@@ -14,7 +14,7 @@ module Pageflow
       {
         pageflow: {
           public: I18n.t('pageflow.public', locale: I18n.default_locale)
-                      .dup
+                  .dup
                       .deep_merge(I18n.t('pageflow.public', locale: entry.locale),
                                   &merge_ignoring_nil)
         }

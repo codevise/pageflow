@@ -3,9 +3,7 @@ module Pageflow
     include RenderJsonHelper
 
     def themes_options_json_seed(config = Pageflow.config)
-      config.themes.each_with_object({}) { |theme, options|
-        options[theme.name] = theme.options
-      }.to_json.html_safe
+      config.themes.to_h { |theme| [theme.name, theme.options] }.to_json.html_safe
     end
 
     def theme_json_seeds(config)

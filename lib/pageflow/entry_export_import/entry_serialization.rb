@@ -14,10 +14,10 @@ module Pageflow
           # to prevent it from showing up in Active Admin JSON exports.
           # It is included separately as part of the entry export.
           'entry' => entry
-            .as_json(except: [:folder_id, :password_digest, :users_count])
-            .merge('features_configuration' => entry.features_configuration,
-                   'draft' => RevisionSerialization.dump(entry.draft),
-                   'last_publication' => dump_publication(publication))
+                     .as_json(except: [:folder_id, :password_digest, :users_count])
+                     .merge('features_configuration' => entry.features_configuration,
+                            'draft' => RevisionSerialization.dump(entry.draft),
+                            'last_publication' => dump_publication(publication))
         }
       end
 

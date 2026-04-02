@@ -166,7 +166,7 @@ module Pageflow
       "#{[*chain, model].first.old_foreign_key} = #{@old_root_id}"
     end
 
-    Model = Struct.new(:klass, :foreign_key, :level, keyword_init: true) do
+    Model = Struct.new(:klass, :foreign_key, :level) do
       def self.for(revision_components:)
         revision_components.map do |revision_component|
           Model.new(klass: revision_component, foreign_key: 'revision_id', level: 1)

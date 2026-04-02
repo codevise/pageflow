@@ -1,10 +1,10 @@
 module Pageflow
   class ImageFileUrlTemplates # rubocop:todo Style/Documentation
     def call
-      styles.each_with_object({}) do |style, result|
-        result[style] = replace_extension_with_placeholder(
+      styles.to_h do |style|
+        [style, replace_extension_with_placeholder(
           UrlTemplate.from_attachment(example_file.attachment, style)
-        )
+        )]
       end
     end
 

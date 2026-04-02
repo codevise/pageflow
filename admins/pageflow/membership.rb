@@ -12,9 +12,9 @@ module Pageflow
                                 user = User.find(params[:parent_id])
 
                                 PotentialMemberships
-                                  .creatable_by(current_user)
-                                  .accounts_for_user(user)
-                                  .order(:name)
+                                .creatable_by(current_user)
+                                .accounts_for_user(user)
+                                .order(:name)
                               end)
 
     searchable_select_options(name: :potential_entries_for_user,
@@ -24,8 +24,8 @@ module Pageflow
                               scope: lambda do |params|
                                 user = User.find(params[:parent_id])
                                 entries = PotentialMemberships
-                                  .creatable_by(current_user)
-                                  .entries_for_user(user)
+                                          .creatable_by(current_user)
+                                          .entries_for_user(user)
 
                                 if can?(:see, :accounts)
                                   entries.include_account_name.order('account_name', :title)
@@ -42,9 +42,9 @@ module Pageflow
                               scope: lambda do |params|
                                 account = Account.find(params[:parent_id])
                                 PotentialMemberships
-                                  .creatable_by(current_user)
-                                  .users_for_account(account)
-                                  .order(:last_name, :first_name)
+                                .creatable_by(current_user)
+                                .users_for_account(account)
+                                .order(:last_name, :first_name)
                               end,
                               filter: lambda do |term, scope|
                                 UserNameQuery::Scope.new(term, scope).resolve
@@ -55,9 +55,9 @@ module Pageflow
                               scope: lambda do |params|
                                 entry = Entry.find(params[:parent_id])
                                 PotentialMemberships
-                                  .creatable_by(current_user)
-                                  .users_for_entry(entry)
-                                  .order(:last_name, :first_name)
+                                .creatable_by(current_user)
+                                .users_for_entry(entry)
+                                .order(:last_name, :first_name)
                               end,
                               filter: lambda do |term, scope|
                                 UserNameQuery::Scope.new(term, scope).resolve

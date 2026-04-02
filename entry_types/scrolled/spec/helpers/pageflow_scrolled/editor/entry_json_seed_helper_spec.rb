@@ -119,7 +119,7 @@ module PageflowScrolled
           pageflow_configure do |config|
             config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
               entry_type_config.consent_vendor_url_matchers = {
-                /\.some-vendor\.com\// => 'someVendor'
+                %r{\.some-vendor\.com/} => 'someVendor'
               }
             end
           end

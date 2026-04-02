@@ -83,8 +83,8 @@ module PageflowScrolled
       private
 
       def extract_breakpoint_declarations!(declarations)
-        BREAKPOINTS.keys.each_with_object({}) { |breakpoint_name, result|
-          result[breakpoint_name] = declarations.delete(breakpoint_name)
+        BREAKPOINTS.keys.to_h { |breakpoint_name|
+          [breakpoint_name, declarations.delete(breakpoint_name)]
         }.compact
       end
 
