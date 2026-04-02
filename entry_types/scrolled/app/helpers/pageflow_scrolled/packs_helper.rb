@@ -10,9 +10,15 @@ module PageflowScrolled
 
     def scrolled_frontend_stylesheet_packs_tag(entry, options)
       stylesheet_pack_tag(
-        *scrolled_frontend_packs(entry, **options),
+        *scrolled_frontend_stylesheet_packs(entry, **options),
         media: 'all'
       )
+    end
+
+    def scrolled_frontend_stylesheet_packs(entry, entry_mode:)
+      packs = scrolled_frontend_packs(entry, entry_mode: entry_mode)
+      packs += ['pageflow-scrolled-frontend-inlineEditing'] if entry_mode == :editor
+      packs
     end
 
     def scrolled_editor_javascript_packs_tag(entry)
