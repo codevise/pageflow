@@ -23,20 +23,20 @@ module PageflowScrolled
         locals: {
           entry:,
           entry_mode: mode,
-          seed_options: seed_options(mode)
+          seed_options: seed_options(entry, mode)
         }
       )
     end
 
     private
 
-    def seed_options(mode)
+    def seed_options(entry, mode)
       options = {
         embed: get_embed_from_env,
         origin_url: request.original_url
       }
 
-      options[:load_commenting] = true if mode == :preview
+      options[:load_commenting] = true if mode == :preview && entry.feature_state('commenting')
 
       options
     end

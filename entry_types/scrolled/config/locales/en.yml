@@ -1,5 +1,7 @@
 en:
   pageflow:
+    commenting:
+      feature_name: Comments
     datawrapper_chart_embed_opt_in:
       feature_name: Opt-in for Datawrapper embeds
     image_srcset:
