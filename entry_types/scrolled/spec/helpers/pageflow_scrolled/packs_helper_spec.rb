@@ -248,25 +248,42 @@ module PageflowScrolled
         entry = create(:published_entry, type_name: 'scrolled')
 
         result = helper.scrolled_frontend_stylesheet_packs(entry,
-                                                           entry_mode: :published)
+                                                           entry_mode: :published,
+                                                           seed_options: {})
 
         expect(result).to include('pageflow-scrolled-frontend')
       end
 
-      it 'includes inline editing stylesheet pack only in editor mode' do
+      it 'includes inline editing stylesheet pack when load_inline_editing seed option is set' do
         entry = create(:published_entry, type_name: 'scrolled')
 
         expect(
-          helper.scrolled_frontend_stylesheet_packs(entry, entry_mode: :editor)
+          helper.scrolled_frontend_stylesheet_packs(entry,
+                                                    entry_mode: :editor,
+                                                    seed_options: {load_inline_editing: true})
         ).to include('pageflow-scrolled-frontend-inlineEditing')
 
         expect(
-          helper.scrolled_frontend_stylesheet_packs(entry, entry_mode: :preview)
+          helper.scrolled_frontend_stylesheet_packs(entry,
+                                                    entry_mode: :editor,
+                                                    seed_options: {})
         ).not_to include('pageflow-scrolled-frontend-inlineEditing')
+      end
+
+      it 'includes commenting stylesheet pack when load_commenting seed option is set' do
+        entry = create(:published_entry, type_name: 'scrolled')
 
         expect(
-          helper.scrolled_frontend_stylesheet_packs(entry, entry_mode: :published)
-        ).not_to include('pageflow-scrolled-frontend-inlineEditing')
+          helper.scrolled_frontend_stylesheet_packs(entry,
+                                                    entry_mode: :preview,
+                                                    seed_options: {load_commenting: true})
+        ).to include('pageflow-scrolled-frontend-commenting')
+
+        expect(
+          helper.scrolled_frontend_stylesheet_packs(entry,
+                                                    entry_mode: :preview,
+                                                    seed_options: {})
+        ).not_to include('pageflow-scrolled-frontend-commenting')
       end
     end
 

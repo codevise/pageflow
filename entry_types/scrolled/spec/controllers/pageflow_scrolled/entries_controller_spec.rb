@@ -214,6 +214,40 @@ module PageflowScrolled
 
         expect(response.body).not_to include('"loadCommenting"')
       end
+
+      it 'does not include inline editing stylesheet pack' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry:)
+
+        expect(response.body).not_to have_selector(
+          'link[href*="pageflow-scrolled-frontend-inlineEditing"]',
+          visible: false
+        )
+      end
+
+      it 'includes commenting stylesheet pack in preview mode when feature is enabled' do
+        entry = create(:entry, :published, type_name: 'scrolled',
+                                           with_feature: 'commenting')
+
+        get_with_entry_env(:show, entry:, mode: :preview)
+
+        expect(response.body).to have_selector(
+          'link[href*="pageflow-scrolled-frontend-commenting"]',
+          visible: false
+        )
+      end
+
+      it 'does not include commenting stylesheet pack when feature is disabled' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry:, mode: :preview)
+
+        expect(response.body).not_to have_selector(
+          'link[href*="pageflow-scrolled-frontend-commenting"]',
+          visible: false
+        )
+      end
     end
   end
 end

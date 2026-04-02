@@ -81,6 +81,9 @@ module.exports = {
     },
     'pageflow-scrolled-frontend-inlineEditing': {
       import: ['pageflow-scrolled/frontend/inlineEditing.css']
+    },
+    'pageflow-scrolled-frontend-commenting': {
+      import: ['pageflow-scrolled/frontend/commenting.css']
     }
   }
 };

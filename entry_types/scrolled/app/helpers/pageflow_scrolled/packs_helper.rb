@@ -8,16 +8,17 @@ module PageflowScrolled
       )
     end
 
-    def scrolled_frontend_stylesheet_packs_tag(entry, options)
+    def scrolled_frontend_stylesheet_packs_tag(entry, **)
       stylesheet_pack_tag(
-        *scrolled_frontend_stylesheet_packs(entry, **options),
+        *scrolled_frontend_stylesheet_packs(entry, **),
         media: 'all'
       )
     end
 
-    def scrolled_frontend_stylesheet_packs(entry, entry_mode:)
+    def scrolled_frontend_stylesheet_packs(entry, entry_mode:, seed_options: {})
       packs = scrolled_frontend_packs(entry, entry_mode: entry_mode)
-      packs += ['pageflow-scrolled-frontend-inlineEditing'] if entry_mode == :editor
+      packs += ['pageflow-scrolled-frontend-inlineEditing'] if seed_options[:load_inline_editing]
+      packs += ['pageflow-scrolled-frontend-commenting'] if seed_options[:load_commenting]
       packs
     end
 
