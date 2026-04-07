@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+}
+
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+  padding: space(3);
+  background: var(--ui-surface-color);
+  border-radius: rounded(lg);
+  box-shadow: var(--ui-box-shadow);
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: space(1);
+}
+
+.commentAuthor {
+  font-weight: 600;
+  font-size: var(--ui-font-size);
+}
+
+.commentBody {
+  font-size: var(--ui-font-size);
+  line-height: 1.4;
+}
