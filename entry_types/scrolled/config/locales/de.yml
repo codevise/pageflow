@@ -1913,3 +1913,6 @@ de:
       expose_motif_area: Motiv freilegen
     review:
       toolbar_label: Kommentare
+      reply_count:
+        one: 1 Antwort
+        other: '%{count} Antworten'

@@ -1742,3 +1742,6 @@ en:
       expose_motif_area: Expose motif
     review:
       toolbar_label: Comments
+      reply_count:
+        one: 1 reply
+        other: '%{count} replies'

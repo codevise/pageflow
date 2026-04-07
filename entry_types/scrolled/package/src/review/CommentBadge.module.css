@@ -7,7 +7,7 @@
   border-radius: rounded(full);
   background: var(--ui-accent-color);
   color: var(--ui-on-accent-color);
-  font-family: var(--ui-font-family);
+  font-family: inherit;
   font-size: space(3.5);
   font-weight: 600;
   line-height: 0;
