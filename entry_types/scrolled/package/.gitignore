@@ -6,6 +6,8 @@
 /contentElements-editor.js
 /contentElements-frontend.js
 /contentElements-frontend.css
+/review.css
+/review.js
 /testHelpers.js
 /widgets
 /.storybook/out/

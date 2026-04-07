@@ -35,7 +35,9 @@ module.exports = {
         alias: {
           ...config.resolve.alias,
           'pageflow/frontend': path.resolve(__dirname, '../../../../package/src/frontend'),
+          'pageflow/review': path.resolve(__dirname, '../../../../package/src/review'),
           'pageflow-scrolled/frontend': path.resolve(__dirname, '../src/frontend'),
+          'pageflow-scrolled/review': path.resolve(__dirname, '../src/review'),
           'pageflow-scrolled/testHelpers': path.resolve(__dirname, '../src/testHelpers')
         }
       }
