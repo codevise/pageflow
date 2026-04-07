@@ -5,7 +5,7 @@ import {postCreateCommentThreadMessage} from './postMessage';
 
 import styles from './NewThreadForm.module.css';
 
-export function NewThreadForm({subjectType, subjectId, onSubmit}) {
+export function NewThreadForm({subjectType, subjectId, onSubmit, onCancel}) {
   const {t} = useI18n({locale: 'ui'});
   const [body, setBody] = useState('');
 
@@ -26,11 +26,18 @@ export function NewThreadForm({subjectType, subjectId, onSubmit}) {
                 onChange={e => setBody(e.target.value)}
                 placeholder={t('pageflow_scrolled.review.add_comment_placeholder')}
                 rows={3} />
-      <button className={styles.submitButton}
-              type="submit"
-              aria-label={t('pageflow_scrolled.review.submit')}>
-        {t('pageflow_scrolled.review.submit')}
-      </button>
+      <div className={styles.actions}>
+        {onCancel &&
+          <button className={styles.cancelButton}
+                  type="button"
+                  onClick={onCancel}>
+            {t('pageflow_scrolled.review.cancel')}
+          </button>}
+        <button className={styles.submitButton}
+                type="submit">
+          {t('pageflow_scrolled.review.submit')}
+        </button>
+      </div>
     </form>
   );
 }

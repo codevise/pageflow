@@ -1742,8 +1742,10 @@ en:
       expose_motif_area: Expose motif
     review:
       toolbar_label: Comments
+      new_topic: New topic
       add_comment_placeholder: Add a comment...
       submit: Submit
+      cancel: Cancel
       reply_count:
         one: 1 reply
         other: '%{count} replies'

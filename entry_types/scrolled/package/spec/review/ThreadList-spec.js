@@ -11,7 +11,9 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.reply_count.one': '1 reply',
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
-    'pageflow_scrolled.review.submit': 'Submit'
+    'pageflow_scrolled.review.submit': 'Submit',
+    'pageflow_scrolled.review.new_topic': 'New topic',
+    'pageflow_scrolled.review.cancel': 'Cancel'
   });
   it('displays comments of threads for subject', () => {
     const {getByText} = renderWithReviewState(
@@ -211,5 +213,69 @@ describe('ThreadList', () => {
     );
 
     postMessage.mockRestore();
+  });
+
+  it('shows new topic form automatically when no threads exist', () => {
+    const {getByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />
+    );
+
+    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+  });
+
+  it('hides new topic form behind button when threads exist', () => {
+    const {queryByPlaceholderText, getByRole} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+    expect(getByRole('button', {name: 'New topic'})).toBeInTheDocument();
+  });
+
+  it('shows form when New topic button is clicked', async () => {
+    const user = userEvent.setup();
+
+    const {getByPlaceholderText, getByRole} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    await user.click(getByRole('button', {name: 'New topic'}));
+
+    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+  });
+
+  it('hides form when cancel is clicked', async () => {
+    const user = userEvent.setup();
+
+    const {getByRole, queryByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    await user.click(getByRole('button', {name: 'New topic'}));
+    await user.click(getByRole('button', {name: 'Cancel'}));
+
+    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+    expect(getByRole('button', {name: 'New topic'})).toBeInTheDocument();
   });
 });
