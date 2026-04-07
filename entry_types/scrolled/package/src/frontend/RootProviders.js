@@ -12,31 +12,34 @@ import {MediaMutedProvider} from './useMediaMuted';
 import {AudioFocusProvider} from './useAudioFocus';
 import {ConsentProvider} from './thirdPartyConsent';
 import {CurrentSectionProvider} from './useCurrentChapter';
+import {ExtensionsProvider} from './extensions';
 import {ScrollTargetEmitterProvider} from './useScrollTarget';
 
 export function RootProviders({seed, consent = consentApi, children}) {
   return (
     <FocusOutlineProvider>
       <BrowserFeaturesProvider>
-        <PhonePlatformProvider>
-          <PhoneLayoutProvider>
-            <MediaMutedProvider>
-              <AudioFocusProvider>
-                <EntryStateProvider seed={seed}>
-                  <CurrentSectionProvider>
-                    <LocaleProvider>
-                      <ConsentProvider consent={consent}>
-                        <ScrollTargetEmitterProvider>
-                          {children}
-                        </ScrollTargetEmitterProvider>
-                      </ConsentProvider>
-                    </LocaleProvider>
-                  </CurrentSectionProvider>
-                </EntryStateProvider>
-              </AudioFocusProvider>
-            </MediaMutedProvider>
-          </PhoneLayoutProvider>
-        </PhonePlatformProvider>
+        <ExtensionsProvider>
+          <PhonePlatformProvider>
+            <PhoneLayoutProvider>
+              <MediaMutedProvider>
+                <AudioFocusProvider>
+                  <EntryStateProvider seed={seed}>
+                    <CurrentSectionProvider>
+                      <LocaleProvider>
+                        <ConsentProvider consent={consent}>
+                          <ScrollTargetEmitterProvider>
+                            {children}
+                          </ScrollTargetEmitterProvider>
+                        </ConsentProvider>
+                      </LocaleProvider>
+                    </CurrentSectionProvider>
+                  </EntryStateProvider>
+                </AudioFocusProvider>
+              </MediaMutedProvider>
+            </PhoneLayoutProvider>
+          </PhonePlatformProvider>
+        </ExtensionsProvider>
       </BrowserFeaturesProvider>
     </FocusOutlineProvider>
   );

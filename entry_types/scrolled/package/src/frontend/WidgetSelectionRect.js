@@ -1,6 +1,6 @@
-import {withInlineEditingAlternative} from './inlineEditing';
+import {extensible} from './extensions';
 
-export const WidgetSelectionRect = withInlineEditingAlternative(
+export const WidgetSelectionRect = extensible(
   'WidgetSelectionRect',
   function WidgetSelectionRect({children}) {
     return children;

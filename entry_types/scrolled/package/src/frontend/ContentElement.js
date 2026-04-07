@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {api} from './api';
-import {withInlineEditingDecorator} from './inlineEditing';
+import {extensible} from './extensions';
 import {ContentElementAttributesProvider} from './useContentElementAttributes';
 import {ContentElementLifecycleProvider} from './useContentElementLifecycle';
 import {ContentElementMargin} from './ContentElementMargin';
@@ -9,8 +9,8 @@ import {ContentElementErrorBoundary} from './ContentElementErrorBoundary';
 
 import styles from './ContentElement.module.css';
 
-export const ContentElement = React.memo(withInlineEditingDecorator(
-  'ContentElementDecorator',
+export const ContentElement = React.memo(extensible(
+  'ContentElement',
   function ContentElement(props) {
     const Component = api.contentElementTypes.getComponent(props.type);
     const {defaultMarginTop} = api.contentElementTypes.getOptions(props.type) || {};

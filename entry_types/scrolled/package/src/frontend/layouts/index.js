@@ -3,12 +3,12 @@ import React from 'react';
 import {TwoColumn} from './TwoColumn';
 import {Center} from './Center';
 
-import {withInlineEditingAlternative} from '../inlineEditing';
+import {extensible} from '../extensions';
 
 export {widths, widthName} from './widths';
 
 export const Layout = React.memo(
-  withInlineEditingAlternative('LayoutWithPlaceholder', LayoutWithoutInlineEditing),
+  extensible('LayoutWithPlaceholder', LayoutWithoutInlineEditing),
   (prevProps, nextProps) => (
     prevProps.sectionId === nextProps.sectionId &&
     prevProps.items === nextProps.items &&

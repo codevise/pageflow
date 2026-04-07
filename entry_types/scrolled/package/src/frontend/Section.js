@@ -16,7 +16,7 @@ import {useScrollTarget} from './useScrollTarget';
 import {usePhoneLayout} from './usePhoneLayout';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
 import {SectionViewTimelineProvider} from './SectionViewTimelineProvider';
-import {withInlineEditingDecorator} from './inlineEditing';
+import {extensible} from './extensions';
 import {BackgroundColorProvider} from './backgroundColor';
 import {SelectableWidget} from './SelectableWidget';
 import {useSectionPadding} from './useSectionPaddingCustomProperties';
@@ -30,7 +30,7 @@ import {useBackdrop} from './useBackdrop';
 import styles from './Section.module.css';
 import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
 
-const Section = withInlineEditingDecorator('SectionDecorator', function Section({
+const Section = extensible('Section', function Section({
   section, transitions, backdrop, contentElements, state, onActivate, domIdPrefix
 }) {
   const ref = useScrollTarget(section.id);

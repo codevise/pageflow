@@ -3,10 +3,10 @@ import React, {useMemo} from 'react';
 import {ContentElement} from '../ContentElement';
 import {useSectionLifecycle} from '../useSectionLifecycle';
 
-import {withInlineEditingDecorator} from '../inlineEditing';
+import {extensible} from '../extensions';
 
-export const BackgroundContentElement = withInlineEditingDecorator(
-  'BackgroundContentElementDecorator',
+export const BackgroundContentElement = extensible(
+  'BackgroundContentElement',
   function BackgroundContentElement({
     contentElement, isIntersecting, onMotifAreaUpdate, containerDimension
   }) {

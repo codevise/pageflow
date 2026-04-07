@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {withInlineEditingAlternative} from './inlineEditing';
+import {extensible} from './extensions';
 import {Link} from './Link';
 
-export const EditableLink = withInlineEditingAlternative(
+export const EditableLink = extensible(
   'EditableLink',
   function EditableLink({className, href, openInNewTab, onClick, children}) {
     return (

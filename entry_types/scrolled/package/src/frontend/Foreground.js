@@ -1,13 +1,13 @@
 import React, {createContext, useContext} from 'react';
 import classNames from 'classnames';
 
-import {withInlineEditingDecorator} from './inlineEditing';
+import {extensible} from './extensions';
 
 import styles from './Foreground.module.css';
 
 export const ForcePaddingContext = createContext(false);
 
-export const Foreground = withInlineEditingDecorator('ForegroundDecorator', function Foreground(props) {
+export const Foreground = extensible('Foreground', function Foreground(props) {
   const forcePadding = useContext(ForcePaddingContext);
 
   return (
