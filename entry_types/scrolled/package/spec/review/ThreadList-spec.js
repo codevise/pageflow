@@ -1,5 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {ThreadList} from 'review/ThreadList';
@@ -8,7 +9,9 @@ import {renderWithReviewState} from 'testHelpers/renderWithReviewState';
 describe('ThreadList', () => {
   useFakeTranslations({
     'pageflow_scrolled.review.reply_count.one': '1 reply',
-    'pageflow_scrolled.review.reply_count.other': '%{count} replies'
+    'pageflow_scrolled.review.reply_count.other': '%{count} replies',
+    'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
+    'pageflow_scrolled.review.submit': 'Submit'
   });
   it('displays comments of threads for subject', () => {
     const {getByText} = renderWithReviewState(
@@ -141,7 +144,8 @@ describe('ThreadList', () => {
     expect(getAllByText('E')).toHaveLength(1);
   });
 
-  it('expands collapsed thread on click', () => {
+  it('expands collapsed thread on click', async () => {
+    const user = userEvent.setup();
     const {getByText, queryByText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
       {
@@ -159,7 +163,7 @@ describe('ThreadList', () => {
 
     expect(queryByText('Hidden reply')).not.toBeInTheDocument();
 
-    getByText('1 reply').click();
+    await user.click(getByText('1 reply'));
 
     expect(getByText('Hidden reply')).toBeInTheDocument();
   });
@@ -181,5 +185,31 @@ describe('ThreadList', () => {
 
     expect(getByText('First thread')).toBeInTheDocument();
     expect(getByText('Second thread')).toBeInTheDocument();
+  });
+
+  it('posts create thread message on form submit', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+    const {getByPlaceholderText, getByRole} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />
+    );
+
+    await user.type(getByPlaceholderText('Add a comment...'), 'New thread');
+    await user.click(getByRole('button', {name: 'Submit'}));
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {
+        type: 'CREATE_COMMENT_THREAD',
+        payload: {
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          body: 'New thread'
+        }
+      },
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
   });
 });

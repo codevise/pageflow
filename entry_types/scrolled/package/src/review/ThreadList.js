@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 
 import {useCommentThreads} from './ReviewStateProvider';
 import {Thread} from './Thread';
+import {NewThreadForm} from './NewThreadForm';
 
 import styles from './ThreadList.module.css';
 
@@ -21,6 +22,8 @@ export function ThreadList({subjectType, subjectId}) {
                 collapsed={threads.length > 1 && expandedThreadId !== thread.id}
                 onToggle={() => toggleThread(thread.id)} />
       ))}
+      <NewThreadForm subjectType={subjectType}
+                     subjectId={subjectId} />
     </div>
   );
 }

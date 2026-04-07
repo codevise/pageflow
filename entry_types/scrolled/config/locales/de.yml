@@ -1913,6 +1913,8 @@ de:
       expose_motif_area: Motiv freilegen
     review:
       toolbar_label: Kommentare
+      add_comment_placeholder: Kommentar hinzufügen...
+      submit: Absenden
       reply_count:
         one: 1 Antwort
         other: '%{count} Antworten'

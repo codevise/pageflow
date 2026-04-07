@@ -1,0 +1,36 @@
+import React, {useState} from 'react';
+
+import {useI18n} from '../frontend/i18n';
+import {postCreateCommentThreadMessage} from './postMessage';
+
+import styles from './NewThreadForm.module.css';
+
+export function NewThreadForm({subjectType, subjectId, onSubmit}) {
+  const {t} = useI18n({locale: 'ui'});
+  const [body, setBody] = useState('');
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (!body.trim()) return;
+
+    postCreateCommentThreadMessage({subjectType, subjectId, body});
+    setBody('');
+
+    if (onSubmit) onSubmit();
+  }
+
+  return (
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <textarea className={styles.input}
+                value={body}
+                onChange={e => setBody(e.target.value)}
+                placeholder={t('pageflow_scrolled.review.add_comment_placeholder')}
+                rows={3} />
+      <button className={styles.submitButton}
+              type="submit"
+              aria-label={t('pageflow_scrolled.review.submit')}>
+        {t('pageflow_scrolled.review.submit')}
+      </button>
+    </form>
+  );
+}

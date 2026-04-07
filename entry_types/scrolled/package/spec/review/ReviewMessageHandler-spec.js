@@ -3,12 +3,35 @@ import BackboneEvents from 'backbone-events-standalone';
 import {ReviewMessageHandler} from 'review/ReviewMessageHandler';
 
 function fakeReviewSession() {
-  const session = {};
+  const session = {
+    createThread: jest.fn().mockResolvedValue()
+  };
+
   Object.assign(session, BackboneEvents);
   return session;
 }
 
 describe('ReviewMessageHandler', () => {
+  it('calls session.createThread on CREATE_COMMENT_THREAD message', async () => {
+    const session = fakeReviewSession();
+    const targetWindow = {postMessage: jest.fn()};
+
+    ReviewMessageHandler.create({session, targetWindow});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {
+        type: 'CREATE_COMMENT_THREAD',
+        payload: {subjectType: 'CE', subjectId: 10, body: 'Test'}
+      },
+      origin: window.location.origin
+    }));
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(session.createThread).toHaveBeenCalledWith({
+      subjectType: 'CE', subjectId: 10, body: 'Test'
+    });
+  });
   it('posts REVIEW_STATE_RESET to target window on session reset', () => {
     const session = fakeReviewSession();
     const targetWindow = {postMessage: jest.fn()};

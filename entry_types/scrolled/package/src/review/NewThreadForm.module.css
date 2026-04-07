@@ -1,0 +1,35 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+  padding: space(3);
+  background: var(--ui-surface-color);
+  border-radius: rounded(lg);
+  box-shadow: var(--ui-box-shadow);
+}
+
+.input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  color: var(--ui-on-surface-color);
+  background: var(--ui-surface-color);
+  border: 1px solid var(--ui-on-surface-color-lighter);
+  border-radius: rounded();
+  padding: space(2);
+  outline: none;
+  resize: none;
+}
+
+.submitButton {
+  align-self: flex-end;
+  font: inherit;
+  font-weight: 500;
+  color: var(--ui-on-primary-color);
+  background: var(--ui-primary-color);
+  border: none;
+  border-radius: rounded();
+  padding: space(1.5) space(3);
+  cursor: pointer;
+}

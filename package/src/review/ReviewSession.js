@@ -6,6 +6,22 @@ export class ReviewSession {
     this._request = request;
   }
 
+  async createThread({subjectType, subjectId, body}) {
+    const thread = await this._request({
+      url: `/review/entries/${this._entryId}/comment_threads`,
+      method: 'POST',
+      payload: {
+        comment_thread: {
+          subject_type: subjectType,
+          subject_id: subjectId,
+          comment: {body}
+        }
+      }
+    });
+
+    this.trigger('change:thread', thread);
+  }
+
   async fetch() {
     const data = await this._request({
       url: `/review/entries/${this._entryId}/comment_threads`,
