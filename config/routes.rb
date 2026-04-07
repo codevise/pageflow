@@ -77,6 +77,12 @@ Pageflow::Engine.routes.draw do
       resource :oembed, only: [:show]
     end
 
+    namespace :review do
+      resources :entries, only: [] do
+        resources :comment_threads, only: [:index]
+      end
+    end
+
     root to: redirect('/admin')
   end
 
