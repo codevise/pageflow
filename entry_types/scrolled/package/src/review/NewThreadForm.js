@@ -2,12 +2,19 @@ import React, {useState} from 'react';
 
 import {useI18n} from '../frontend/i18n';
 import {postCreateCommentThreadMessage} from './postMessage';
+import {autoGrow, autoResize} from './autoGrow';
 
+import SendIcon from './images/send.svg';
 import styles from './NewThreadForm.module.css';
 
 export function NewThreadForm({subjectType, subjectId, onSubmit, onCancel}) {
   const {t} = useI18n({locale: 'ui'});
   const [body, setBody] = useState('');
+
+  function handleChange(e) {
+    setBody(e.target.value);
+    autoGrow(e.target);
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -22,8 +29,9 @@ export function NewThreadForm({subjectType, subjectId, onSubmit, onCancel}) {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <textarea className={styles.input}
+                ref={autoResize}
                 value={body}
-                onChange={e => setBody(e.target.value)}
+                onChange={handleChange}
                 placeholder={t('pageflow_scrolled.review.add_comment_placeholder')}
                 rows={3} />
       <div className={styles.actions}>
@@ -35,7 +43,7 @@ export function NewThreadForm({subjectType, subjectId, onSubmit, onCancel}) {
           </button>}
         <button className={styles.submitButton}
                 type="submit">
-          {t('pageflow_scrolled.review.submit')}
+          <SendIcon /> {t('pageflow_scrolled.review.send')}
         </button>
       </div>
     </form>

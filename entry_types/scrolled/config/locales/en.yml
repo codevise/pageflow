@@ -1744,8 +1744,10 @@ en:
       toolbar_label: Comments
       new_topic: New topic
       add_comment_placeholder: Add a comment...
-      submit: Submit
+      reply_placeholder: Reply...
       cancel: Cancel
+      send: Send
+      enter_for_new_line: Enter for new line
       reply_count:
         one: 1 reply
         other: '%{count} replies'

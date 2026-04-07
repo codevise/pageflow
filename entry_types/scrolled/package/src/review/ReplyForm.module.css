@@ -1,11 +1,5 @@
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: space(2);
-  padding: space(3);
-  background: var(--ui-surface-color);
-  border-radius: rounded(lg);
-  box-shadow: var(--ui-box-shadow);
+  padding-left: space(8);
 }
 
 .input {
@@ -30,18 +24,14 @@
 
 .actions {
   display: flex;
-  justify-content: flex-end;
-  gap: space(2);
+  align-items: center;
+  justify-content: space-between;
+  margin-top: space(1.5);
 }
 
-.cancelButton {
-  font: inherit;
-  font-weight: 500;
+.hint {
   color: var(--ui-on-surface-color-light);
-  background: none;
-  border: none;
-  padding: space(1.5) space(3);
-  cursor: pointer;
+  font-size: space(3);
 }
 
 .submitButton {

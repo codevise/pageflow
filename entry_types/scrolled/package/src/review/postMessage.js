@@ -5,6 +5,13 @@ export function postCreateCommentThreadMessage({subjectType, subjectId, body}) {
   );
 }
 
+export function postCreateCommentMessage({threadId, body}) {
+  window.top.postMessage(
+    {type: 'CREATE_COMMENT', payload: {threadId, body}},
+    window.location.origin
+  );
+}
+
 export function postReviewStateResetMessage(targetWindow, state) {
   targetWindow.postMessage(
     {type: 'REVIEW_STATE_RESET', payload: state},

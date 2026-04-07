@@ -74,4 +74,43 @@ describe('ReviewSession', () => {
       expect.objectContaining({id: 1, subjectType: 'ContentElement'})
     );
   });
+
+  it('emits change:thread with appended comment after createComment', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'CE', subjectId: 10, comments: [
+            {id: 100, body: 'First', creatorId: 42}
+          ]}
+        ]
+      })
+      .mockResolvedValueOnce({
+        id: 101, body: 'Reply', creatorId: 42
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    const listener = jest.fn();
+    session.on('change:thread', listener);
+
+    await session.createComment({threadId: 1, body: 'Reply'});
+
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/review/entries/5/comment_threads/1/comments',
+      method: 'POST',
+      payload: {comment: {body: 'Reply'}}
+    });
+
+    expect(listener).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: 1,
+        comments: [
+          expect.objectContaining({body: 'First'}),
+          expect.objectContaining({body: 'Reply'})
+        ]
+      })
+    );
+  });
 });

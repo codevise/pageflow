@@ -11,9 +11,11 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.reply_count.one': '1 reply',
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
-    'pageflow_scrolled.review.submit': 'Submit',
     'pageflow_scrolled.review.new_topic': 'New topic',
-    'pageflow_scrolled.review.cancel': 'Cancel'
+    'pageflow_scrolled.review.cancel': 'Cancel',
+    'pageflow_scrolled.review.reply_placeholder': 'Reply...',
+    'pageflow_scrolled.review.send': 'Send',
+    'pageflow_scrolled.review.enter_for_new_line': 'Enter for new line'
   });
   it('displays comments of threads for subject', () => {
     const {getByText} = renderWithReviewState(
@@ -198,7 +200,7 @@ describe('ThreadList', () => {
     );
 
     await user.type(getByPlaceholderText('Add a comment...'), 'New thread');
-    await user.click(getByRole('button', {name: 'Submit'}));
+    await user.click(getByRole('button', {name: 'Send'}));
 
     expect(postMessage).toHaveBeenCalledWith(
       {
@@ -277,5 +279,87 @@ describe('ThreadList', () => {
 
     expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
     expect(getByRole('button', {name: 'New topic'})).toBeInTheDocument();
+  });
+
+  it('posts create comment message when replying to thread', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+    const {getByPlaceholderText, getByRole} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    await user.type(getByPlaceholderText('Reply...'), 'My reply');
+    await user.click(getByRole('button', {name: 'Send'}));
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {
+        type: 'CREATE_COMMENT',
+        payload: {threadId: 1, body: 'My reply'}
+      },
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
+  });
+
+  it('hides reply submit button when textarea is empty', () => {
+    const {queryByRole, getByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(getByPlaceholderText('Reply...')).toBeInTheDocument();
+    expect(queryByRole('button', {name: 'Send'})).not.toBeInTheDocument();
+  });
+
+  it('shows reply submit button when text is entered', async () => {
+    const user = userEvent.setup();
+
+    const {getByRole, getByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    await user.type(getByPlaceholderText('Reply...'), 'Some text');
+
+    expect(getByRole('button', {name: 'Send'})).toBeInTheDocument();
+  });
+
+  it('shows reply form in collapsed thread without replies', () => {
+    const {getAllByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'First topic', creatorName: 'Bob', creatorId: 2}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'Second topic', creatorName: 'Alice', creatorId: 1}
+          ]}
+        ]
+      }
+    );
+
+    expect(getAllByPlaceholderText('Reply...')).toHaveLength(2);
   });
 });

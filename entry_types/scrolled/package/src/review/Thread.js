@@ -3,6 +3,7 @@ import React from 'react';
 import {useI18n} from '../frontend/i18n';
 import {AvatarStack} from './Avatar';
 import {Comment} from './Comment';
+import {ReplyForm} from './ReplyForm';
 
 import styles from './Thread.module.css';
 
@@ -22,6 +23,7 @@ export function Thread({thread, collapsed, onToggle}) {
       {!collapsed && replies.map(comment => (
         <Comment key={comment.id} comment={comment} />
       ))}
+      {(!collapsed || replies.length === 0) && <ReplyForm threadId={thread.id} />}
     </div>
   );
 }
