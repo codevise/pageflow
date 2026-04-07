@@ -4,9 +4,9 @@ import {act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
-import {useMotifAreaState} from 'frontend/v1/useMotifAreaState';
+import {useMotifAreaState} from 'frontend/useMotifAreaState';
 jest.mock('frontend/usePortraitOrientation');
-jest.mock('frontend/v1/useMotifAreaState');
+jest.mock('frontend/useMotifAreaState');
 
 describe('section padding', () => {
   useInlineEditingPageObjects();

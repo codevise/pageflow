@@ -62,17 +62,6 @@ module PageflowScrolled
         expect(response.body).to have_selector('a[href="https://example.com"][target="_top"]')
       end
 
-      it 'renders generated media queries if frontend v2' do
-        entry = create(:entry, :published, type_name: 'scrolled')
-
-        get_with_entry_env(:show, entry:, params: {frontend: 'v2'})
-
-        expect(response.body)
-          .to have_selector('script',
-                            visible: false,
-                            text: 'pageflowScrolledSSRAspectRatioMediaQueries')
-      end
-
       it 'renders widget head fragments' do
         widget_type = Pageflow::TestWidgetType
                       .new(name: 'test_widget',

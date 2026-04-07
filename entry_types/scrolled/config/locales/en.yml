@@ -67,8 +67,6 @@ en:
               values:
                 large: Large
                 small: Small
-    frontend_v2:
-      feature_name: Frontend v2
     hls_instead_of_dash:
       feature_name: Use HLS instead of DASH for videos
     iconInlineFileRights:

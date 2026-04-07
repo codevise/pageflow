@@ -3,7 +3,7 @@ import {viewTimelineStub} from 'support/viewTimelineStub';
 import {animateStub} from 'support/animateStub';
 import '@testing-library/jest-dom/extend-expect'
 
-import effectsStyles from 'frontend/v1/Backdrop/Effects.module.css';
+import effectsStyles from 'frontend/Backdrop/Effects.module.css';
 
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 jest.mock('frontend/usePortraitOrientation');

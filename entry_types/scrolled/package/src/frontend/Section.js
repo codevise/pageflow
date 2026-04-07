@@ -5,7 +5,6 @@ import { SectionAtmo } from './SectionAtmo';
 
 import {
   useSectionForegroundContentElements,
-  useAdditionalSeedData,
   useFileWithInlineRights
 } from '../entryState';
 
@@ -24,8 +23,9 @@ import {useSectionPadding} from './useSectionPaddingCustomProperties';
 import {SectionIntersectionProbe} from './SectionIntersectionObserver';
 import {getAppearanceComponents, getAppearanceSectionScopeName, useAppearanceOverlayStyle} from './appearance';
 
-import * as v1 from './v1';
-import * as v2 from './v2';
+import {Backdrop} from './Backdrop';
+import {useMotifAreaState} from './useMotifAreaState';
+import {useBackdrop} from './useBackdrop';
 
 import styles from './Section.module.css';
 import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
@@ -33,21 +33,10 @@ import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
 const Section = withInlineEditingDecorator('SectionDecorator', function Section({
   section, transitions, backdrop, contentElements, state, onActivate, domIdPrefix
 }) {
-  const {
-    useBackdropSectionClassNames,
-    useBackdropSectionCustomProperties
-  } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
-
   const ref = useScrollTarget(section.id);
 
   const sectionOverlayStyle = useAppearanceOverlayStyle(section);
   const transitionStyles = getTransitionStyles(section, sectionOverlayStyle);
-
-  const backdropSectionClassNames = useBackdropSectionClassNames(backdrop, {
-    layout: section.layout,
-    exposeMotifArea: section.exposeMotifArea,
-    empty: !contentElements.length,
-  });
 
   const atmoAudioFile = useFileWithInlineRights({
     configuration: section,
@@ -62,15 +51,11 @@ const Section = withInlineEditingDecorator('SectionDecorator', function Section(
              ref={ref}
              className={classNames(styles.Section,
                                    transitionStyles.section,
-                                   backdropSectionClassNames,
                                    {[styles.first]: section.sectionIndex === 0 && !section.chapter?.isExcursion},
                                    {[styles.narrow]: section.width === 'narrow'},
                                    `scope-${getAppearanceSectionScopeName(section.appearance)}`,
                                    section.invert ? styles.darkContent : styles.lightContent)}
-             style={{
-               ...useBackdropSectionCustomProperties(backdrop),
-               ...sectionPadding.styles
-             }}>
+             style={sectionPadding.styles}>
       <SectionLifecycleProvider onActivate={onActivate}
                                 entersWithFadeTransition={section.transition?.startsWith('fade')}>
         <SectionIntersectionProbe section={section} />
@@ -109,11 +94,6 @@ Section.defaultProps = {
 function SectionContents({
   section, backdrop, contentElements, state, transitions, transitionStyles, sectionOverlayStyle, sectionPadding
 }) {
-  const {
-    Backdrop,
-    useMotifAreaState
-  } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
-
   const {shouldPrepare} = useSectionLifecycle();
 
   const [, exitTransition] = transitions;
@@ -205,10 +185,6 @@ function ConnectedSection(props) {
     layout: props.section.layout,
     phoneLayout: usePhoneLayout()
   });
-
-  const {
-    useBackdrop,
-  } = (useAdditionalSeedData('frontendVersion') === 2 ? v2 : v1);
 
   const backdrop = useBackdrop(props.section);
 

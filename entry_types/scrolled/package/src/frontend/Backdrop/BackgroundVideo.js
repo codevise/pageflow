@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 
-import {VideoPlayer} from './../../VideoPlayer';
-import {MotifArea} from './../MotifArea';
-import {usePlayerState} from './../../MediaPlayer/usePlayerState';
-import {useSectionLifecycle} from './../../useSectionLifecycle';
+import {VideoPlayer} from '../VideoPlayer';
+import {MotifArea} from '../MotifArea';
+import {usePlayerState} from '../MediaPlayer/usePlayerState';
+import {useSectionLifecycle} from '../useSectionLifecycle';
 import {Effects} from './Effects';
 import {documentHiddenState} from 'pageflow/frontend';
-import {PlayerEventContextDataProvider} from '../../useEventContextData';
+import {PlayerEventContextDataProvider} from '../useEventContextData';
 
-export function BackgroundVideo({video, onMotifAreaUpdate}) {
+export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {
   const [playerState, playerActions] = usePlayerState();
   const {shouldLoad, shouldPrepare} = useSectionLifecycle({
     onVisible() {
@@ -55,13 +55,17 @@ export function BackgroundVideo({video, onMotifAreaUpdate}) {
                        playerActions={playerActions}
                        videoFile={video}
                        textTracksDisabled={true}
+                       adaptiveMinQuality="high"
                        fit="cover"
                        loop={true}
                        playsInline={true} />
         </PlayerEventContextDataProvider>
       </Effects>
       <MotifArea key={video.permaId}
-                 onUpdate={onMotifAreaUpdate} />
+                 onUpdate={onMotifAreaUpdate}
+                 file={video}
+                 containerWidth={containerDimension.width}
+                 containerHeight={containerDimension.height}/>
     </>
   );
 }

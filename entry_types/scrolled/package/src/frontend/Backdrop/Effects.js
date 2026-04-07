@@ -1,14 +1,14 @@
 import React, {useRef, useState} from 'react';
 import classNames from 'classnames';
-import {useIsomorphicLayoutEffect} from '../../useIsomorphicLayoutEffect';
+import {useIsomorphicLayoutEffect} from '../useIsomorphicLayoutEffect';
 
 import styles from './Effects.module.css';
 
-import {useSectionViewTimeline} from '../../SectionViewTimelineProvider';
-import {useSectionLifecycle} from '../../useSectionLifecycle';
-import {useIsStaticPreview} from '../../useScrollPositionLifecycle';
-import {prefersReducedMotion} from '../../prefersReducedMotion';
-import {getEffectValue} from '../../getEffectValue';
+import {useSectionViewTimeline} from '../SectionViewTimelineProvider';
+import {useSectionLifecycle} from '../useSectionLifecycle';
+import {useIsStaticPreview} from '../useScrollPositionLifecycle';
+import {prefersReducedMotion} from '../prefersReducedMotion';
+import {getEffectValue} from '../getEffectValue';
 
 export function Effects({file, children}) {
   const ref = useRef();

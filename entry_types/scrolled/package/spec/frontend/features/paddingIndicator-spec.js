@@ -1,9 +1,9 @@
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
 import {fakeParentWindow} from 'support';
-import {useMotifAreaState} from 'frontend/v1/useMotifAreaState';
+import {useMotifAreaState} from 'frontend/useMotifAreaState';
 import '@testing-library/jest-dom/extend-expect';
 
-jest.mock('frontend/v1/useMotifAreaState');
+jest.mock('frontend/useMotifAreaState');
 
 describe('PaddingIndicator', () => {
   useInlineEditingPageObjects();
