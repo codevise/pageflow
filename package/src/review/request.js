@@ -11,6 +11,7 @@ export async function request({url, method, payload}) {
 
   if (payload) {
     headers['Content-Type'] = 'application/json';
+    headers['X-CSRF-Token'] = getCSRFToken();
     options.body = JSON.stringify(payload);
   }
 
@@ -21,4 +22,10 @@ export async function request({url, method, payload}) {
   }
 
   return response.json();
+}
+
+function getCSRFToken() {
+  const meta = typeof document !== 'undefined' &&
+               document.querySelector('meta[name="csrf-token"]');
+  return meta ? meta.content : '';
 }
