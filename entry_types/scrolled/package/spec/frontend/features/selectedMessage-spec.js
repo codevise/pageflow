@@ -1,9 +1,10 @@
 import React from 'react';
 import {frontend, WidgetSelectionRect} from 'frontend';
+import {features} from 'pageflow/frontend';
 
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
 import {fakeParentWindow} from 'support';
-import {fireEvent} from '@testing-library/react';
+import {act, fireEvent, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('SELECTED message', () => {
@@ -183,6 +184,45 @@ describe('SELECTED message', () => {
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
       payload: {id: 'header', type: 'widget'}
+    }, expect.anything());
+  });
+
+  it('is posted with type contentElementComments when comment badge is clicked', async () => {
+    features.enable('frontend', ['commenting']);
+
+    const {getByRole} = renderEntry({
+      seed: {
+        contentElements: [{id: 1, permaId: 10, typeName: 'withTestId', configuration: {testId: 5}}]
+      }
+    });
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'REVIEW_STATE_RESET',
+          payload: {
+            currentUser: {id: 1},
+            commentThreads: [{
+              id: 1,
+              subjectType: 'ContentElement',
+              subjectId: 10,
+              comments: [{id: 100, body: 'Review this'}]
+            }]
+          }
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(getByRole('status')).toBeInTheDocument();
+    });
+
+    fireEvent.click(getByRole('status'));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 1, type: 'contentElementComments'}
     }, expect.anything());
   });
 });

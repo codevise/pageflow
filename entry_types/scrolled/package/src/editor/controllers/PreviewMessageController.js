@@ -155,7 +155,10 @@ export const PreviewMessageController = Object.extend({
 
         this.preservedScrollTarget = null;
 
-        if (type === 'contentElement') {
+        if (type === 'contentElementComments') {
+          this.editor.navigate(`/scrolled/content_elements/${id}/comments`, {trigger: true})
+        }
+        else if (type === 'contentElement') {
           const contentElement = this.entry.contentElements.get(id);
           this.editor.navigate(contentElement.getEditorPath(), {trigger: true})
         }

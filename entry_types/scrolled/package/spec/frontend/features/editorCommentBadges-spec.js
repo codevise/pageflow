@@ -14,7 +14,21 @@ describe('editor comment badges', () => {
     features.enable('frontend', ['commenting']);
   });
 
-  it('displays comment badge after receiving review state', async () => {
+  it('does not display comment icon when element is not selected', () => {
+    const {queryByRole} = renderEntry({
+      seed: {
+        contentElements: [{
+          typeName: 'withTestId',
+          permaId: 10,
+          configuration: {testId: 5}
+        }]
+      }
+    });
+
+    expect(queryByRole('status')).not.toBeInTheDocument();
+  });
+
+  it('displays dot badge when threads exist and element is not selected', async () => {
     const {getByRole} = renderEntry({
       seed: {
         contentElements: [{
@@ -45,6 +59,7 @@ describe('editor comment badges', () => {
 
     await waitFor(() => {
       expect(getByRole('status')).toBeInTheDocument();
+      expect(getByRole('status')).not.toHaveTextContent(/\d/);
     });
   });
 });

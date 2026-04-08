@@ -495,6 +495,22 @@ describe('PreviewMessageController', () => {
     })).resolves.toBe('/');
   });
 
+  it('navigates to comments route on SELECTED message for contentElementComments', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'contentElementComments'}}, '*');
+    })).resolves.toBe('/scrolled/content_elements/1/comments');
+  });
+
   it('updates configuration on UPDATE_CONTENT_ELEMENT message', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({

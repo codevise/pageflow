@@ -1,11 +1,12 @@
 import React from 'react';
 import {frontend} from 'frontend';
+import {features} from 'pageflow/frontend';
 
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
 import {fakeParentWindow} from 'support';
 import {changeLocationHash} from 'support/changeLocationHash';
 import '@testing-library/jest-dom/extend-expect'
-import {act} from '@testing-library/react';
+import {act, fireEvent, waitFor} from '@testing-library/react';
 
 describe('content element selection', () => {
   useInlineEditingPageObjects();
@@ -98,5 +99,49 @@ describe('content element selection', () => {
     act(() => changeLocationHash('#test-excursion'));
 
     expect(mainContentElement.isSelected()).toBe(false);
+  });
+
+  it('marks selection rect as selected when comment badge is clicked', async () => {
+    features.enable('frontend', ['commenting']);
+
+    const {getByRole, getContentElementByTestId} = renderEntry({
+      seed: {
+        contentElements: [{
+          id: 1,
+          permaId: 10,
+          typeName: 'withTestId',
+          configuration: {testId: 5}
+        }]
+      }
+    });
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'REVIEW_STATE_RESET',
+          payload: {
+            currentUser: {id: 1},
+            commentThreads: [{
+              id: 1,
+              subjectType: 'ContentElement',
+              subjectId: 10,
+              comments: [{id: 100, body: 'Review this'}]
+            }]
+          }
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(getByRole('status')).toBeInTheDocument();
+    });
+
+    const contentElement = getContentElementByTestId(5);
+    expect(contentElement.isSelected()).toBe(false);
+
+    fireEvent.click(getByRole('status'));
+
+    expect(contentElement.isSelected()).toBe(true);
   });
 });

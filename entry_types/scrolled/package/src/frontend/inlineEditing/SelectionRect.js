@@ -15,6 +15,7 @@ export function SelectionRect(props) {
                                 [styles.inset]: props.inset,
                                 [styles.selected]: props.selected,
                                 [styles.draggable]: props.drag,
+                                [styles.hasCommentBadge]: props.commentBadge && !props.commentBadgeInset,
                                 [styles.start]: props.selected && props.start,
                                 [styles.end]: props.selected && props.end})}
          aria-label={props.ariaLabel}
@@ -22,6 +23,7 @@ export function SelectionRect(props) {
          data-scrollpoint={props.scrollPoint ? 'selection' : undefined}
          onClick={props.onClick}>
       {renderDragHandle(props)}
+      {renderCommentBadge(props)}
       {renderToolbar(props)}
 
       <InsertButton {...props} at="before" />
@@ -60,6 +62,20 @@ function renderDragHandle({drag, dragHandleTitle}) {
   return (
     <div ref={drag} className={styles.dragHandle} title={dragHandleTitle}>
       <MoveIcon />
+    </div>
+  );
+}
+
+function renderCommentBadge({commentBadge, commentBadgeInset}) {
+  if (!commentBadge) {
+    return null;
+  }
+
+  return (
+    <div className={classNames(styles.commentBadge,
+                               {[styles.commentBadgeInset]: commentBadgeInset})}
+         onClick={e => e.stopPropagation()}>
+      {commentBadge}
     </div>
   );
 }

@@ -35,7 +35,7 @@ RSpec.feature 'as entry previewer, commenting on content elements', js: true do
 
     visit(pageflow.revision_path(entry.draft))
 
-    expect(page).to have_css('[role="status"]', text: '1', wait: 10)
+    expect(page).to have_css('[role="status"]', wait: 10)
   end
 
   scenario 'sees thread comments when clicking badge' do
@@ -61,7 +61,7 @@ RSpec.feature 'as entry previewer, commenting on content elements', js: true do
 
     visit(pageflow.revision_path(entry.draft))
 
-    find('[role="status"]', text: '1', wait: 10).click
+    find('[role="status"]', wait: 10).click
 
     expect(page).to have_text('Please review this', wait: 10)
   end
@@ -89,7 +89,7 @@ RSpec.feature 'as entry previewer, commenting on content elements', js: true do
 
     visit(pageflow.revision_path(entry.draft))
 
-    find('[role="status"]', text: '1', wait: 10).click
+    find('[role="status"]', wait: 10).click
     expect(page).to have_text('Please review this', wait: 10)
 
     page.find('textarea', match: :first, wait: 10).fill_in(with: 'Looks good!')
@@ -116,6 +116,6 @@ RSpec.feature 'as entry previewer, commenting on content elements', js: true do
     page.find('textarea', match: :first, wait: 10).fill_in(with: 'First comment')
     page.find('button[type="submit"]', match: :first).click
 
-    expect(page).to have_css('[role="status"]', text: '1', wait: 10)
+    expect(page).to have_css('[role="status"]', wait: 10)
   end
 end
