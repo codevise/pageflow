@@ -1748,6 +1748,7 @@ en:
       cancel: Cancel
       send: Send
       enter_for_new_line: Enter for new line
+      toggle_replies: Toggle replies
       reply_count:
         one: 1 reply
         other: '%{count} replies'

@@ -1919,6 +1919,7 @@ de:
       cancel: Abbrechen
       send: Senden
       enter_for_new_line: Enter für neue Zeile
+      toggle_replies: Antworten umschalten
       reply_count:
         one: 1 Antwort
         other: '%{count} Antworten'

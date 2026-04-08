@@ -15,7 +15,8 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.cancel': 'Cancel',
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
-    'pageflow_scrolled.review.enter_for_new_line': 'Enter for new line'
+    'pageflow_scrolled.review.enter_for_new_line': 'Enter for new line',
+    'pageflow_scrolled.review.toggle_replies': 'Toggle replies'
   });
   it('displays comments of threads for subject', () => {
     const {getByText} = renderWithReviewState(
@@ -148,7 +149,50 @@ describe('ThreadList', () => {
     expect(getAllByText('E')).toHaveLength(1);
   });
 
-  it('expands collapsed thread on click', async () => {
+  it('shows chevron toggle on threads with replies', () => {
+    const {getAllByRole} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Topic', creatorName: 'Bob', creatorId: 2},
+            {id: 11, body: 'Reply', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'No replies', creatorName: 'Eve', creatorId: 3}
+          ]}
+        ]
+      }
+    );
+
+    expect(getAllByRole('button', {name: 'Toggle replies'})).toHaveLength(1);
+  });
+
+  it('expands collapsed thread via chevron', async () => {
+    const user = userEvent.setup();
+    const {getByRole, getByText, queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'First comment', creatorName: 'Bob', creatorId: 2},
+            {id: 11, body: 'Hidden reply', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'Other thread', creatorName: 'Eve', creatorId: 3}
+          ]}
+        ]
+      }
+    );
+
+    expect(queryByText('Hidden reply')).not.toBeInTheDocument();
+
+    await user.click(getByRole('button', {name: 'Toggle replies'}));
+
+    expect(getByText('Hidden reply')).toBeInTheDocument();
+  });
+
+  it('expands collapsed thread via reply count button', async () => {
     const user = userEvent.setup();
     const {getByText, queryByText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />,

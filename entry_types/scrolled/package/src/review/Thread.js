@@ -5,6 +5,7 @@ import {AvatarStack} from './Avatar';
 import {Comment} from './Comment';
 import {ReplyForm} from './ReplyForm';
 
+import ChevronIcon from './images/chevron.svg';
 import styles from './Thread.module.css';
 
 export function Thread({thread, collapsed, onToggle}) {
@@ -14,15 +15,25 @@ export function Thread({thread, collapsed, onToggle}) {
 
   return (
     <div className={styles.thread}>
+      {replies.length > 0 &&
+        <button className={styles.chevronButton}
+                onClick={onToggle}
+                aria-label={t('pageflow_scrolled.review.toggle_replies')}>
+          <ChevronIcon className={collapsed ? '' : styles.chevronExpanded} />
+        </button>}
+
       {firstComment && <Comment comment={firstComment} />}
+
       {collapsed && replies.length > 0 &&
         <button className={styles.expandButton} onClick={onToggle}>
           {t('pageflow_scrolled.review.reply_count', {count: replies.length})}
           <AvatarStack names={replies.map(c => c.creatorName)} />
         </button>}
+
       {!collapsed && replies.map(comment => (
         <Comment key={comment.id} comment={comment} />
       ))}
+
       {(!collapsed || replies.length === 0) && <ReplyForm threadId={thread.id} />}
     </div>
   );

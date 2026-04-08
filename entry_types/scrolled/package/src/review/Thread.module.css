@@ -1,4 +1,5 @@
 .thread {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: space(2);
@@ -6,6 +7,30 @@
   background: var(--ui-surface-color);
   border-radius: rounded(lg);
   box-shadow: var(--ui-box-shadow);
+}
+
+.chevronButton {
+  position: absolute;
+  top: space(3);
+  right: space(4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: space(6);
+  color: var(--ui-on-surface-color-light);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.chevronButton:hover {
+  color: var(--ui-on-surface-color);
+}
+
+.chevronExpanded {
+  transform: rotate(180deg);
+  transition: transform 0.2s;
 }
 
 .expandButton {
