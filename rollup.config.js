@@ -272,7 +272,7 @@ const pageflowScrolled = [
     external,
     plugins: [
       image({include: pageflowScrolledPackageRoot + '/src/editor/views/images/*.svg'}),
-      ...plugins()
+      ...plugins({extractCss: true})
     ]
   },
   {

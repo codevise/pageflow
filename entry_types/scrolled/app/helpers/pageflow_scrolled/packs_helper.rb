@@ -50,7 +50,8 @@ module PageflowScrolled
     end
 
     def scrolled_editor_stylesheet_packs(entry)
-      Pageflow.config_for(entry).additional_editor_packs.stylesheet_paths(entry) +
+      ['pageflow-scrolled-editor'] +
+        Pageflow.config_for(entry).additional_editor_packs.stylesheet_paths(entry) +
         Pageflow.config_for(entry).additional_frontend_packs.paths(entry)
     end
 

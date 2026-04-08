@@ -22,6 +22,8 @@ module.exports = {
 
   moduleNameMapper: {
     '^pageflow-scrolled/contentElements-frontend$': '<rootDir>/src/contentElements/frontend',
+    "^pageflow-scrolled/editor\\.css$": "<rootDir>/spec/support/jest/editor-css-stub",
+    "^pageflow-scrolled/review\\.css$": "<rootDir>/spec/support/jest/review-css-stub",
     "^pageflow-scrolled/([^/]*)$": "<rootDir>/src/$1",
 
     // Make specs run even if ignored json file is not present

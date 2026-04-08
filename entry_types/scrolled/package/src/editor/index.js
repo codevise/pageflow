@@ -1,5 +1,8 @@
 /*global pageflow*/
 
+import 'pageflow-scrolled/editor.css';
+import 'pageflow-scrolled/review.css';
+
 import './views/configurationEditors/groups/CommonContentElementAttributes';
 import './views/configurationEditors/groups/LinkButtonVariant';
 import './views/widgetTypes/roles';

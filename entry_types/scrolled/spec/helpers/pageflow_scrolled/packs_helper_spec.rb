@@ -432,6 +432,14 @@ module PageflowScrolled
     end
 
     describe 'scrolled_editor_stylesheet_packs' do
+      it 'includes core frontend pack' do
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_editor_stylesheet_packs(entry)
+
+        expect(result).to include('pageflow-scrolled-editor')
+      end
+
       it 'does not include editor packs without stylesheet option' do
         pageflow_configure do |config|
           config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
