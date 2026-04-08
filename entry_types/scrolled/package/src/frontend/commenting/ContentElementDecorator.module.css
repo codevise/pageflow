@@ -1,3 +1,8 @@
 .wrapper {
   position: relative;
 }
+
+.selected {
+  box-shadow: 0 0 0 2px var(--ui-accent-color),
+              0 0 0 calc(2px + space(1)) var(--ui-accent-color-glow);
+}

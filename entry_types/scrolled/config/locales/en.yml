@@ -1741,7 +1741,9 @@ en:
       content_element_margin_bottom: Bottom margin
       expose_motif_area: Expose motif
     review:
-      toolbar_label: Comments
+      add_comment: Add comment
+      cancel_add_comment: Cancel
+      select_content_element: Select to comment
       new_topic: New topic
       add_comment_placeholder: Add a comment...
       reply_placeholder: Reply...

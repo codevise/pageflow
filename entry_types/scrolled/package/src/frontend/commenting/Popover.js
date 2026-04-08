@@ -1,30 +1,36 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import classNames from 'classnames';
 
 import {CommentBadge, ThreadList} from 'pageflow-scrolled/review';
+import {useSelectedSubject} from './SelectedSubjectProvider';
 
 import styles from './Popover.module.css';
 
 export function Popover({subjectType, subjectId, placement}) {
-  const [open, setOpen] = useState(false);
+  const {isSelected, hasSelection, showNewForm, select, clearSelection} = useSelectedSubject(subjectType, subjectId);
   const ref = useRef(null);
 
-  const handleBadgeClick = useCallback(() => {
-    setOpen(prev => !prev);
-  }, []);
+  function handleBadgeClick() {
+    if (isSelected) {
+      clearSelection();
+    }
+    else {
+      select();
+    }
+  }
 
   useEffect(() => {
-    if (!open) return;
+    if (!isSelected) return;
 
     function handleClick(event) {
       if (ref.current && !ref.current.contains(event.target)) {
-        setOpen(false);
+        clearSelection();
       }
     }
 
     function handleKeyDown(event) {
       if (event.key === 'Escape') {
-        setOpen(false);
+        clearSelection();
       }
     }
 
@@ -35,7 +41,7 @@ export function Popover({subjectType, subjectId, placement}) {
       document.removeEventListener('pointerdown', handleClick);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open]);
+  }, [isSelected, clearSelection]);
 
   const onLeft = placement && placement.startsWith('left');
   const onBottom = placement && placement.startsWith('bottom');
@@ -47,12 +53,16 @@ export function Popover({subjectType, subjectId, placement}) {
                                 [styles.bottom]: onBottom})}>
       <CommentBadge subjectType={subjectType}
                     subjectId={subjectId}
-                    active={open}
+                    active={isSelected}
+                    hidden={hasSelection && !isSelected}
                     onClick={handleBadgeClick} />
       <div className={styles.threadListContainer}>
-        {open &&
+        {isSelected &&
           <ThreadList subjectType={subjectType}
-                      subjectId={subjectId} />}
+                      subjectId={subjectId}
+                      showNewForm={showNewForm}
+                      reversed={onLeft}
+                      onDismiss={clearSelection} />}
       </div>
     </div>
   );

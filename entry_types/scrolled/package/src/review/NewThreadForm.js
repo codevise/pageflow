@@ -30,6 +30,7 @@ export function NewThreadForm({subjectType, subjectId, onSubmit, onCancel}) {
     <form className={styles.form} onSubmit={handleSubmit}>
       <textarea className={styles.input}
                 ref={autoResize}
+                autoFocus
                 value={body}
                 onChange={handleChange}
                 placeholder={t('pageflow_scrolled.review.add_comment_placeholder')}

@@ -3,14 +3,20 @@ import React, {useEffect} from 'react';
 import {useEntryMetadata} from '../../entryState';
 import {createReviewSession} from 'pageflow/review';
 import {ReviewStateProvider, ReviewMessageHandler} from 'pageflow-scrolled/review';
+import {AddCommentModeProvider} from './AddCommentModeProvider';
+import {SelectedSubjectProvider} from './SelectedSubjectProvider';
 import {FloatingToolbar} from './FloatingToolbar';
 
 export function EntryDecorator(props) {
   return (
     <ReviewStateProvider>
       <ReviewSessionSetup />
-      {props.children}
-      <FloatingToolbar />
+      <SelectedSubjectProvider>
+        <AddCommentModeProvider>
+          {props.children}
+          <FloatingToolbar />
+        </AddCommentModeProvider>
+      </SelectedSubjectProvider>
     </ReviewStateProvider>
   );
 }

@@ -17,7 +17,8 @@
   opacity: 0.9;
 }
 
-.badge:hover {
+.badge:hover,
+.active {
   opacity: 1;
 }
 
