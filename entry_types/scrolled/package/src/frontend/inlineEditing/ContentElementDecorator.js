@@ -1,6 +1,8 @@
 import React from 'react';
 import {useDrag} from 'react-dnd';
 
+import {features} from 'pageflow/frontend';
+import {CommentBadge} from 'pageflow-scrolled/review';
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useI18n} from '../i18n';
 import {api} from '../api';
@@ -56,25 +58,32 @@ function DefaultSelectionRect(props) {
   });
 
   return (
-    <SelectionRect selected={isSelected}
-                   scrollPoint={isSelected}
-                   drag={drag}
-                   dragHandleTitle={t('pageflow_scrolled.inline_editing.drag_content_element')}
-                   full={props.width === widths.full || props.customMargin}
-                   inset={props.position === 'backdrop'}
-                   ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
-                   insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
-                   onClick={() => select()}
-                   onInsertButtonClick={at =>
-                     postInsertContentElementMessage({id: props.id, at})}>
-      <div ref={preview}>
-        {props.children}
-      </div>
-      <DropTargets accept="contentElement"
-                   canDrop={({id}) => id !== props.id}
-                   onDrop={({id, range, at}) =>
-                     postMoveContentElementMessage({id, range, to: {id: props.id, at}})}/>
-    </SelectionRect>
+    <>
+      {features.isEnabled('commenting') &&
+        <div className={styles.commentBadge}>
+          <CommentBadge subjectType="ContentElement"
+                        subjectId={props.permaId} />
+        </div>}
+      <SelectionRect selected={isSelected}
+                     scrollPoint={isSelected}
+                     drag={drag}
+                     dragHandleTitle={t('pageflow_scrolled.inline_editing.drag_content_element')}
+                     full={props.width === widths.full || props.customMargin}
+                     inset={props.position === 'backdrop'}
+                     ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
+                     insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
+                     onClick={() => select()}
+                     onInsertButtonClick={at =>
+                       postInsertContentElementMessage({id: props.id, at})}>
+        <div ref={preview}>
+          {props.children}
+        </div>
+        <DropTargets accept="contentElement"
+                     canDrop={({id}) => id !== props.id}
+                     onDrop={({id, range, at}) =>
+                       postMoveContentElementMessage({id, range, to: {id: props.id, at}})}/>
+      </SelectionRect>
+    </>
   )
 }
 

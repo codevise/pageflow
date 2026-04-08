@@ -1,5 +1,6 @@
 import 'editor/config';
 import {editor} from 'pageflow-scrolled/editor';
+import {features} from 'pageflow/frontend';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {PreviewMessageController} from 'editor/controllers/PreviewMessageController';
 import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView';
@@ -45,6 +46,31 @@ describe('PreviewMessageController', () => {
       });
       window.postMessage({type: 'READY'}, '*');
     })).resolves.toMatchObject({type: 'ACK'});
+  });
+
+  it('sends REVIEW_STATE_RESET to iframe after READY when commenting enabled', () => {
+    features.enable('frontend', ['commenting']);
+    jest.spyOn(window, 'fetch').mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({currentUser: {id: 1}, commentThreads: []})
+    });
+
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'REVIEW_STATE_RESET') {
+          resolve(event.data);
+        }
+      });
+      window.postMessage({type: 'READY'}, '*');
+    })).resolves.toMatchObject({
+      type: 'REVIEW_STATE_RESET',
+      payload: {currentUser: {id: 1}, commentThreads: []}
+    });
   });
 
   it('sets current section index in model on CHANGE_SECTION message', () => {

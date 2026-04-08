@@ -1,2 +1,12 @@
 .wrapper {
+  position: relative;
+}
+
+.commentBadge {
+  position: absolute;
+  top: 0;
+  right: -0.9em;
+  transform: translateY(-50%);
+  z-index: 2;
+  pointer-events: auto;
 }

@@ -7,6 +7,7 @@ export const ReviewMessageHandler = {
   create({session, targetWindow}) {
     function handleMessage(event) {
       if (window.location.href.indexOf(event.origin) !== 0) return;
+      if (event.source !== targetWindow) return;
 
       const {type, payload} = event.data;
 

@@ -4,7 +4,11 @@ export class ReviewSession {
   constructor({entryId, request}) {
     this._entryId = entryId;
     this._request = request;
-    this._threads = {};
+    this._state = null;
+  }
+
+  get state() {
+    return this._state;
   }
 
   async createThread({subjectType, subjectId, body}) {
@@ -20,7 +24,7 @@ export class ReviewSession {
       }
     });
 
-    this._threads[thread.id] = thread;
+    this._upsertThread(thread);
     this.trigger('change:thread', thread);
   }
 
@@ -31,15 +35,16 @@ export class ReviewSession {
       payload: {comment: {body}}
     });
 
-    const thread = this._threads[threadId];
+    const thread = this._findThread(threadId);
 
     if (thread) {
-      this._threads[threadId] = {
+      const updatedThread = {
         ...thread,
         comments: [...thread.comments, comment]
       };
 
-      this.trigger('change:thread', this._threads[threadId]);
+      this._upsertThread(updatedThread);
+      this.trigger('change:thread', updatedThread);
     }
   }
 
@@ -49,14 +54,40 @@ export class ReviewSession {
       method: 'GET'
     });
 
-    data.commentThreads.forEach(thread => {
-      this._threads[thread.id] = thread;
-    });
-
-    this.trigger('reset', {
+    this._state = {
       currentUser: data.currentUser,
       commentThreads: data.commentThreads
-    });
+    };
+
+    this.trigger('reset', this._state);
+  }
+
+  _findThread(id) {
+    return this._state?.commentThreads.find(t => t.id === id);
+  }
+
+  _upsertThread(thread) {
+    if (!this._state) return;
+
+    const threads = this._state.commentThreads;
+    const index = threads.findIndex(t => t.id === thread.id);
+
+    if (index >= 0) {
+      this._state = {
+        ...this._state,
+        commentThreads: [
+          ...threads.slice(0, index),
+          thread,
+          ...threads.slice(index + 1)
+        ]
+      };
+    }
+    else {
+      this._state = {
+        ...this._state,
+        commentThreads: [...threads, thread]
+      };
+    }
   }
 }
 
