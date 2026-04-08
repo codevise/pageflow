@@ -8,7 +8,7 @@ import {renderInEntry} from 'support';
 import {clearExtensions} from 'frontend/extensions';
 import {loadCommentingComponents} from 'frontend/commenting';
 
-describe('commenting mode', () => {
+describe('commenting badges', () => {
   usePageObjects();
 
   beforeEach(() => {

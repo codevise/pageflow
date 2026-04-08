@@ -1,0 +1,9 @@
+.anchor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.floating {
+  z-index: 200;
+}

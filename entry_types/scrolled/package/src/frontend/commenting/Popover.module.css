@@ -1,0 +1,21 @@
+.popover {
+  display: flex;
+  align-items: flex-start;
+  gap: space(2);
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-font-size);
+  color: var(--ui-on-surface-color);
+}
+
+.reversed {
+  flex-direction: row-reverse;
+}
+
+.bottom {
+  flex-direction: column;
+}
+
+.threadListContainer {
+  min-width: space(72);
+  max-width: space(96);
+}
