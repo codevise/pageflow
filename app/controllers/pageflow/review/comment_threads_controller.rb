@@ -28,6 +28,21 @@ module Pageflow
         render :create, status: :created
       end
 
+      def update
+        entry = DraftEntry.find(params[:entry_id])
+        authorize!(:read, entry.to_model)
+
+        @comment_thread = entry.comment_threads.find(params[:id])
+
+        if ActiveModel::Type::Boolean.new.cast(params[:comment_thread][:resolved])
+          @comment_thread.resolve(current_user)
+        else
+          @comment_thread.unresolve
+        end
+
+        render :create
+      end
+
       private
 
       def thread_params

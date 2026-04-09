@@ -125,5 +125,88 @@ module Pageflow
         expect(response.status).to eq(403)
       end
     end
+
+    describe '#update' do
+      it 'resolves a thread' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        creator: user)
+
+        sign_in(user, scope: :user)
+        patch(:update, params: {
+                entry_id: entry.id,
+                id: thread.id,
+                comment_thread: {resolved: true}
+              }, format: 'json')
+
+        expect(response.status).to eq(200)
+        expect(thread.reload.resolved_at).to be_present
+        expect(thread.resolver).to eq(user)
+        expect(response.body).to include_json(
+          id: thread.id,
+          resolvedAt: be_present
+        )
+      end
+
+      it 'unresolves a thread' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        resolver = create(:user)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        creator: user,
+                        resolved_at: Time.current,
+                        resolved_by_id: resolver.id)
+
+        sign_in(user, scope: :user)
+        patch(:update, params: {
+                entry_id: entry.id,
+                id: thread.id,
+                comment_thread: {resolved: false}
+              }, format: 'json')
+
+        expect(response.status).to eq(200)
+        expect(thread.reload.resolved_at).to be_nil
+        expect(thread.resolver).to be_nil
+        expect(response.body).to include_json(
+          id: thread.id,
+          resolvedAt: nil
+        )
+      end
+
+      it 'requires user to be signed in' do
+        entry = create(:entry)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        creator: create(:user))
+
+        patch(:update, params: {
+                entry_id: entry.id,
+                id: thread.id,
+                comment_thread: {resolved: true}
+              }, format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+
+      it 'requires read permission on entry' do
+        user = create(:user)
+        entry = create(:entry)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        creator: create(:user))
+
+        sign_in(user, scope: :user)
+        patch(:update, params: {
+                entry_id: entry.id,
+                id: thread.id,
+                comment_thread: {resolved: true}
+              }, format: 'json')
+
+        expect(response.status).to eq(403)
+      end
+    end
   end
 end

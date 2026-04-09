@@ -79,7 +79,7 @@ Pageflow::Engine.routes.draw do
 
     namespace :review do
       resources :entries, only: [] do
-        resources :comment_threads, only: [:index, :create] do
+        resources :comment_threads, only: [:index, :create, :update] do
           resources :comments, only: [:create]
         end
       end
