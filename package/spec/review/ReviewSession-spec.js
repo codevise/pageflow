@@ -119,6 +119,92 @@ describe('ReviewSession', () => {
     ]);
   });
 
+  it('emits change:thread with resolvedAt after updateThread', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'CE', subjectId: 10, resolvedAt: null, comments: []}
+        ]
+      })
+      .mockResolvedValueOnce({
+        id: 1,
+        subjectType: 'CE',
+        subjectId: 10,
+        resolvedAt: '2026-04-09T10:00:00Z',
+        comments: []
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    const listener = jest.fn();
+    session.on('change:thread', listener);
+
+    await session.updateThread({threadId: 1, resolved: true});
+
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/review/entries/5/comment_threads/1',
+      method: 'PATCH',
+      payload: {comment_thread: {resolved: true}}
+    });
+
+    expect(listener).toHaveBeenCalledWith(
+      expect.objectContaining({id: 1, resolvedAt: '2026-04-09T10:00:00Z'})
+    );
+  });
+
+  it('updates state after updateThread', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'CE', subjectId: 10, resolvedAt: null, comments: []}
+        ]
+      })
+      .mockResolvedValueOnce({
+        id: 1, subjectType: 'CE', subjectId: 10,
+        resolvedAt: '2026-04-09T10:00:00Z', comments: []
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+    await session.updateThread({threadId: 1, resolved: true});
+
+    expect(session.state.commentThreads).toEqual([
+      expect.objectContaining({id: 1, resolvedAt: '2026-04-09T10:00:00Z'})
+    ]);
+  });
+
+  it('emits change:thread with null resolvedAt after unresolving', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'CE', subjectId: 10, resolvedAt: '2026-04-09T10:00:00Z', comments: []}
+        ]
+      })
+      .mockResolvedValueOnce({
+        id: 1,
+        subjectType: 'CE',
+        subjectId: 10,
+        resolvedAt: null,
+        comments: []
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    const listener = jest.fn();
+    session.on('change:thread', listener);
+
+    await session.updateThread({threadId: 1, resolved: false});
+
+    expect(listener).toHaveBeenCalledWith(
+      expect.objectContaining({id: 1, resolvedAt: null})
+    );
+  });
+
   it('updates state after createComment', async () => {
     const request = jest.fn()
       .mockResolvedValueOnce({

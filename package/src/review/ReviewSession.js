@@ -28,6 +28,17 @@ export class ReviewSession {
     this.trigger('change:thread', thread);
   }
 
+  async updateThread({threadId, resolved}) {
+    const thread = await this._request({
+      url: `/review/entries/${this._entryId}/comment_threads/${threadId}`,
+      method: 'PATCH',
+      payload: {comment_thread: {resolved}}
+    });
+
+    this._upsertThread(thread);
+    this.trigger('change:thread', thread);
+  }
+
   async createComment({threadId, body}) {
     const comment = await this._request({
       url: `/review/entries/${this._entryId}/comment_threads/${threadId}/comments`,
