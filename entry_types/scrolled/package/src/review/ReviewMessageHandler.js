@@ -17,6 +17,9 @@ export const ReviewMessageHandler = {
       else if (type === 'CREATE_COMMENT') {
         session.createComment(payload);
       }
+      else if (type === 'UPDATE_THREAD') {
+        session.updateThread(payload);
+      }
     }
 
     function handleReset(state) {

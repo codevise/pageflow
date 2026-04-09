@@ -5,7 +5,8 @@ import {ReviewMessageHandler} from 'review/ReviewMessageHandler';
 function fakeReviewSession() {
   const session = {
     createThread: jest.fn().mockResolvedValue(),
-    createComment: jest.fn().mockResolvedValue()
+    createComment: jest.fn().mockResolvedValue(),
+    updateThread: jest.fn().mockResolvedValue()
   };
 
   Object.assign(session, BackboneEvents);
@@ -89,6 +90,27 @@ describe('ReviewMessageHandler', () => {
     );
 
     window.postMessage.mockRestore();
+  });
+
+  it('calls session.updateThread on UPDATE_THREAD message from targetWindow', async () => {
+    const session = fakeReviewSession();
+
+    ReviewMessageHandler.create({session, targetWindow: window});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {
+        type: 'UPDATE_THREAD',
+        payload: {threadId: 1, resolved: true}
+      },
+      origin: window.location.origin,
+      source: window
+    }));
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(session.updateThread).toHaveBeenCalledWith({
+      threadId: 1, resolved: true
+    });
   });
 
   it('ignores messages not from targetWindow', async () => {
