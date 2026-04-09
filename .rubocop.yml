@@ -173,6 +173,10 @@ Lint/UselessConstantScoping:
 Gemspec/DevelopmentDependencies:
   Enabled: false
 
+# Allow I18n-style %{var} tokens
+Style/FormatStringToken:
+  Mode: conservative
+
 # Ignore empty specs and factory traits
 Lint/EmptyBlock:
   Exclude:

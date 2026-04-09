@@ -8,7 +8,8 @@ import styles from './CommentBadge.module.css';
 
 export function CommentBadge({subjectType, subjectId, onClick, mode}) {
   const threads = useCommentThreads(subjectType, subjectId);
-  const hasThreads = threads.length > 0;
+  const unresolvedCount = threads.filter(t => !t.resolvedAt).length;
+  const hasThreads = unresolvedCount > 0;
 
   const variant = resolveVariant(mode, hasThreads);
 
@@ -21,7 +22,7 @@ export function CommentBadge({subjectType, subjectId, onClick, mode}) {
             className={classNames(styles.badge, styles[variant])}
             onClick={onClick}>
       {variant !== 'dot' && <CommentIcon className={styles.icon} />}
-      {(variant === 'active' || variant === 'expanded') && threads.length > 1 ? threads.length : null}
+      {(variant === 'active' || variant === 'expanded') && unresolvedCount > 1 ? unresolvedCount : null}
     </button>
   );
 }

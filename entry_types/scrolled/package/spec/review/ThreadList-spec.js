@@ -16,7 +16,11 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.review.enter_for_new_line': 'Enter for new line',
-    'pageflow_scrolled.review.toggle_replies': 'Toggle replies'
+    'pageflow_scrolled.review.toggle_replies': 'Toggle replies',
+    'pageflow_scrolled.review.resolve': 'Mark as resolved',
+    'pageflow_scrolled.review.unresolve': 'Mark as unresolved',
+    'pageflow_scrolled.review.resolved_count.one': '1 resolved',
+    'pageflow_scrolled.review.resolved_count.other': '%{count} resolved'
   });
   it('displays comments of threads for subject', () => {
     const {getByText} = renderWithReviewState(
@@ -387,6 +391,127 @@ describe('ThreadList', () => {
     await user.type(getByPlaceholderText('Reply...'), 'Some text');
 
     expect(getByRole('button', {name: 'Send'})).toBeInTheDocument();
+  });
+
+  it('hides resolved threads and shows resolved count pill', () => {
+    const {queryByText, getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z',
+           comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: null,
+           comments: [{id: 20, body: 'Active thread', creatorName: 'Alice', creatorId: 1}]}
+        ]
+      }
+    );
+
+    expect(getByText('Active thread')).toBeInTheDocument();
+    expect(queryByText('Resolved thread')).not.toBeInTheDocument();
+    expect(getByText('1 resolved')).toBeInTheDocument();
+  });
+
+  it('toggles resolved threads when pill is clicked', async () => {
+    const user = userEvent.setup();
+
+    const {getByText, queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z',
+           comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: null,
+           comments: [{id: 20, body: 'Active thread', creatorName: 'Alice', creatorId: 1}]}
+        ]
+      }
+    );
+
+    await user.click(getByText('1 resolved'));
+    expect(getByText('Resolved thread')).toBeInTheDocument();
+    expect(getByText('1 resolved')).toBeInTheDocument();
+
+    await user.click(getByText('1 resolved'));
+    expect(queryByText('Resolved thread')).not.toBeInTheDocument();
+  });
+
+  it('posts resolve message when resolve button is clicked', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+    const {getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: null,
+           comments: [{id: 10, body: 'Open thread', creatorName: 'Bob', creatorId: 2}]}
+        ]
+      }
+    );
+
+    await user.click(getByText('Mark as resolved'));
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {type: 'UPDATE_THREAD', payload: {threadId: 1, resolved: true}},
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
+  });
+
+  it('does not show resolve button on collapsed threads with replies', () => {
+    const {queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: null,
+           comments: [
+             {id: 10, body: 'First thread', creatorName: 'Bob', creatorId: 2},
+             {id: 11, body: 'Reply', creatorName: 'Alice', creatorId: 1}
+           ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: null,
+           comments: [
+             {id: 20, body: 'Second thread', creatorName: 'Alice', creatorId: 1},
+             {id: 21, body: 'Reply', creatorName: 'Bob', creatorId: 2}
+           ]}
+        ]
+      }
+    );
+
+    expect(queryByText('Mark as resolved')).not.toBeInTheDocument();
+  });
+
+  it('does not show reply form on resolved threads', async () => {
+    const user = userEvent.setup();
+
+    const {queryByPlaceholderText, getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: null,
+           comments: [{id: 10, body: 'Active thread', creatorName: 'Bob', creatorId: 2}]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z',
+           comments: [{id: 20, body: 'Resolved thread', creatorName: 'Alice', creatorId: 1}]}
+        ]
+      }
+    );
+
+    await user.click(getByText('1 resolved'));
+
+    const replyFields = queryByPlaceholderText('Reply...');
+    expect(replyFields).toBeInTheDocument();
+
+    expect(getByText('Resolved thread')).toBeInTheDocument();
+    const resolvedThread = getByText('Resolved thread').closest('[class*="thread"]');
+    expect(resolvedThread.querySelector('textarea[placeholder="Reply..."]')).toBeNull();
   });
 
   it('shows reply form in collapsed thread without replies', () => {

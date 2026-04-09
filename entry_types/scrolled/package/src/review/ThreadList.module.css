@@ -24,3 +24,35 @@
 .reversed {
   align-self: flex-end;
 }
+
+.resolvedSection {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+  margin-top: space(3);
+}
+
+.resolvedPill {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: space(1);
+  font: inherit;
+  font-size: space(3);
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--ui-on-primary-color);
+  background: var(--ui-primary-color);
+  border: 0;
+  border-radius: rounded(full);
+  padding: space(1) space(1.5) space(1) space(2.5);
+  cursor: pointer;
+}
+
+.chevron {
+  transition: transform 0.2s;
+}
+
+.chevronExpanded {
+  transform: rotate(180deg);
+}
