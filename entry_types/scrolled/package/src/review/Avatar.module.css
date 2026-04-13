@@ -1,0 +1,31 @@
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: space(6);
+  height: space(6);
+  border-radius: rounded(full);
+  background: var(--ui-primary-color);
+  color: var(--ui-on-primary-color);
+  font-size: space(3);
+  font-weight: 600;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.avatarStack {
+  display: flex;
+}
+
+.stackedAvatar {
+  width: space(5);
+  height: space(5);
+  font-size: space(2.5);
+  line-height: 0;
+  margin-right: space(-1.5);
+  border: 2px solid var(--ui-surface-color);
+}
+
+.stackedAvatar:last-child {
+  margin-right: 0;
+}

@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+}
+
+.newTopicButton {
+  display: flex;
+  align-items: center;
+  gap: space(1.5);
+  align-self: flex-start;
+  font: inherit;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--ui-on-surface-color);
+  background: var(--ui-surface-color);
+  border: 0;
+  border-radius: rounded();
+  box-shadow: var(--ui-box-shadow);
+  padding: space(1.5) space(2);
+  cursor: pointer;
+}
+
+.reversed {
+  align-self: flex-end;
+}

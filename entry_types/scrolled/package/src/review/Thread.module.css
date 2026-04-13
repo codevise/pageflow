@@ -1,0 +1,53 @@
+.thread {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+  padding: space(3);
+  background: var(--ui-surface-color);
+  border-radius: rounded(lg);
+  box-shadow: var(--ui-box-shadow);
+}
+
+.chevronButton {
+  position: absolute;
+  top: space(3);
+  right: space(4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: space(6);
+  color: var(--ui-on-surface-color-light);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.chevronButton:hover {
+  color: var(--ui-on-surface-color);
+}
+
+.chevronExpanded {
+  transform: rotate(180deg);
+  transition: transform 0.2s;
+}
+
+.expandButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: space(2);
+  padding: 0 0 0 space(8);
+  font: inherit;
+  font-weight: 500;
+  color: var(--ui-primary-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.expandButton:hover {
+  text-decoration: underline;
+}

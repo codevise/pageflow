@@ -1,14 +1,20 @@
 .toolbar {
   position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0;
+  right: 0;
   z-index: 100;
-  padding: 8px 16px;
-  background: #ffd24d;
-  color: #795f0f;
-  border-radius: 20px;
-  font-family: sans-serif;
-  font-size: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: space(2);
+}
+
+.button {
+  font-family: var(--ui-font-family);
+  color: var(--ui-on-primary-color);
+  background: var(--ui-primary-color);
+  border: none;
+  border-radius: rounded(md);
+  padding: space(2);
+  cursor: pointer;
+  box-shadow: var(--ui-box-shadow-md);
+  display: flex;
+  align-items: center;
 }
