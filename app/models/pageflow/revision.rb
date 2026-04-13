@@ -27,6 +27,8 @@ module Pageflow
     has_many :chapters, -> { order(CHAPTER_ORDER) }, through: :storylines
     has_many :pages, -> { reorder(PAGE_ORDER) }, through: :storylines
 
+    has_many :comment_threads, dependent: :destroy
+
     has_many :file_usages, dependent: :destroy
 
     has_many :image_files, -> { extending WithFileUsageExtension },

@@ -149,6 +149,15 @@ const pageflow = [
     plugins: plugins()
   },
   {
+    input: pageflowPackageRoot + '/src/review/index.js',
+    output: {
+      file: pageflowPackageRoot + '/review.js',
+      format: 'esm'
+    },
+    external,
+    plugins: plugins()
+  },
+  {
     input: pageflowPackageRoot + '/src/ui/index.js',
     output: {
       file: 'app/assets/javascripts/pageflow/dist/ui.js',
@@ -280,6 +289,16 @@ const pageflowScrolled = [
         '**/commenting/**': pageflowScrolledPackageRoot + '/frontend/commenting.css'
       }
     }),
+    ...ignoreJSXWarning
+  },
+  {
+    input: pageflowScrolledPackageRoot + '/src/review/index.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/review.js',
+      format: 'esm',
+    },
+    external,
+    plugins: plugins({extractCss: true}),
     ...ignoreJSXWarning
   },
   {

@@ -38,6 +38,7 @@ module Pageflow
              :author, :publisher, :keywords,
              :published_at,
              :noindex?,
+             :comment_threads,
              :configuration,
              :structured_data_type_name,
              to: :revision)

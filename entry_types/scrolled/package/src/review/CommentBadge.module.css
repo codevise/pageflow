@@ -1,0 +1,27 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: space(1);
+  height: space(7);
+  padding: space(1) space(3);
+  border-radius: rounded(full);
+  background: var(--ui-accent-color);
+  color: var(--ui-on-accent-color);
+  font-family: var(--ui-font-family);
+  font-size: space(3.5);
+  font-weight: 600;
+  line-height: 0;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 0 space(1) var(--ui-accent-color-glow);
+  opacity: 0.9;
+}
+
+.badge:hover {
+  opacity: 1;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+}
