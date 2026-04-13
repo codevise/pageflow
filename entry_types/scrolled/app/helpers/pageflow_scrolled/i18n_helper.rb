@@ -1,16 +1,28 @@
 module PageflowScrolled
   # @api private
   module I18nHelper
-    def scrolled_i18n_translations(entry, include_inline_editing: false)
+    def scrolled_i18n_translations(entry,
+                                   include_inline_editing: false,
+                                   include_review: false)
       result = scrolled_i18n_public_translations(entry)
 
-      return result unless include_inline_editing
+      if include_inline_editing
+        result = result.deep_merge(I18n.locale.to_s => {
+                                     pageflow_scrolled: {
+                                       inline_editing: I18n.t('pageflow_scrolled.inline_editing')
+                                     }
+                                   })
+      end
 
-      result.deep_merge(I18n.locale.to_s => {
-                          pageflow_scrolled: {
-                            inline_editing: I18n.t('pageflow_scrolled.inline_editing')
-                          }
-                        })
+      if include_review
+        result = result.deep_merge(I18n.locale.to_s => {
+                                     pageflow_scrolled: {
+                                       review: I18n.t('pageflow_scrolled.review')
+                                     }
+                                   })
+      end
+
+      result
     end
 
     private

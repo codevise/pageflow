@@ -157,7 +157,7 @@ global.pageflowScrolledRender = async function(seed) {
   await browser.detectFeatures();
   await loadDashUnlessHlsSupported(seed);
 
-  if (editMode) {
+  if (seed.config.loadInlineEditing) {
     await loadInlineEditingComponents();
   }
   else {
@@ -169,6 +169,12 @@ global.pageflowScrolledRender = async function(seed) {
   }
 
   render(seed);
+
+  if (seed.config.loadCommenting) {
+    import(/* webpackPreload: true */ './commenting').then(
+      ({loadCommentingComponents}) => loadCommentingComponents()
+    );
+  }
 }
 
 global.pageflowScrolledRegisterUpdateSeedHandler = function() {

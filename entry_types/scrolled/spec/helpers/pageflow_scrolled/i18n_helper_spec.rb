@@ -111,6 +111,32 @@ module PageflowScrolled
                                          }
                                        })
       end
+
+      it 'supports including review translations in current locale' do
+        translation(I18n.locale, 'pageflow_scrolled.review.some', 'text')
+        entry = create(:published_entry, revision_attributes: {locale: 'fr'})
+
+        result = helper.scrolled_i18n_translations(entry, include_review: true)
+
+        expect(result).to include_json(I18n.locale => {
+                                         pageflow_scrolled: {
+                                           review: {some: 'text'}
+                                         }
+                                       })
+      end
+
+      it 'does not include review translations by default' do
+        translation(I18n.locale, 'pageflow_scrolled.review.some', 'text')
+        entry = create(:published_entry, revision_attributes: {locale: I18n.locale})
+
+        result = helper.scrolled_i18n_translations(entry)
+
+        expect(result).not_to include_json(I18n.locale => {
+                                             pageflow_scrolled: {
+                                               review: {some: 'text'}
+                                             }
+                                           })
+      end
     end
   end
 end

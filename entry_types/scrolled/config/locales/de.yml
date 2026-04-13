@@ -1,5 +1,7 @@
 de:
   pageflow:
+    commenting:
+      feature_name: Kommentare
     datawrapper_chart_embed_opt_in:
       feature_name: Opt-in für Datawrapper Embeds
     image_srcset:
@@ -1909,3 +1911,5 @@ de:
       content_element_margin_top: Oberer Außenabstand
       content_element_margin_bottom: Unterer Außenabstand
       expose_motif_area: Motiv freilegen
+    review:
+      toolbar_label: Kommentare

@@ -1,5 +1,7 @@
 en:
   pageflow:
+    commenting:
+      feature_name: Comments
     datawrapper_chart_embed_opt_in:
       feature_name: Opt-in for Datawrapper embeds
     image_srcset:
@@ -1738,3 +1740,5 @@ en:
       content_element_margin_top: Top margin
       content_element_margin_bottom: Bottom margin
       expose_motif_area: Expose motif
+    review:
+      toolbar_label: Comments

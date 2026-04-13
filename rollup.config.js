@@ -276,7 +276,8 @@ const pageflowScrolled = [
     plugins: plugins({
       extractCss: true,
       splitCss: {
-        '**/inlineEditing/**': pageflowScrolledPackageRoot + '/frontend/inlineEditing.css'
+        '**/inlineEditing/**': pageflowScrolledPackageRoot + '/frontend/inlineEditing.css',
+        '**/commenting/**': pageflowScrolledPackageRoot + '/frontend/commenting.css'
       }
     }),
     ...ignoreJSXWarning

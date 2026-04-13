@@ -1130,11 +1130,11 @@ module PageflowScrolled
                                          })
         end
 
-        it 'supports including scrolled inline editing translations' do
+        it 'includes inline editing translations when load_inline_editing is set' do
           translation(I18n.locale, 'pageflow_scrolled.inline_editing.some', 'text')
           entry = create(:published_entry, type_name: 'scrolled')
 
-          result = render(helper, entry, translations: {include_inline_editing: true})
+          result = render(helper, entry, load_inline_editing: true)
 
           expect(result).to include_json(i18n: {
                                            translations: {
@@ -1143,6 +1143,23 @@ module PageflowScrolled
                                                  inline_editing: {
                                                    some: 'text'
                                                  }
+                                               }
+                                             }
+                                           }
+                                         })
+        end
+
+        it 'includes review translations when load_commenting is set' do
+          translation(I18n.locale, 'pageflow_scrolled.review.some', 'text')
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry, load_commenting: true)
+
+          expect(result).to include_json(i18n: {
+                                           translations: {
+                                             I18n.locale => {
+                                               pageflow_scrolled: {
+                                                 review: {some: 'text'}
                                                }
                                              }
                                            }
@@ -1166,6 +1183,32 @@ module PageflowScrolled
           result = render(helper, entry, skip_i18n: true)
 
           expect(JSON.parse(result)).not_to have_key('i18n')
+        end
+      end
+
+      context 'feature loading flags' do
+        it 'includes loadInlineEditing in config when load_inline_editing option is set' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry, load_inline_editing: true)
+
+          expect(result).to include_json(config: {loadInlineEditing: true})
+        end
+
+        it 'includes loadCommenting in config when load_commenting option is set' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry, load_commenting: true)
+
+          expect(result).to include_json(config: {loadCommenting: true})
+        end
+
+        it 'does not include loadCommenting in config by default' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(JSON.parse(result)['config']).not_to have_key('loadCommenting')
         end
       end
 

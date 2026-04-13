@@ -213,6 +213,7 @@ module PageflowScrolled
         c.features.register('custom_palette_colors')
         c.features.register('decoration_effects')
         c.features.register('backdrop_size')
+        c.features.register('commenting')
         c.features.register('image_srcset')
         c.features.enable_by_default('image_srcset')
 
