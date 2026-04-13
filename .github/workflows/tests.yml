@@ -3,12 +3,13 @@ on: [push, pull_request]
 
 env:
   RAILS_ENV: test
-  PAGEFLOW_DB_HOST: 127.0.0.1
+  PAGEFLOW_DB_HOST: mysql
 
 jobs:
   rspec:
     name: ${{ matrix.job }} (Rails ${{ matrix.rails-version }})
     runs-on: ubuntu-latest
+    container: ghcr.io/${{ github.repository }}/test:latest
     env:
       PAGEFLOW_RAILS_VERSION: ${{ matrix.rails-version }}
 
@@ -25,34 +26,29 @@ jobs:
         include:
           - job: pageflow
             engine-name: pageflow
-            ruby-version: 3.4
             engine-directory: .
             rspec-command: bin/rspec --tag ~js
             install-audiowaveform: true
 
           - job: pageflow_js
             engine-name: pageflow
-            ruby-version: 3.4
             engine-directory: .
             rspec-command: bin/rspec-with-retry --tag js
 
           - job: pageflow_paged
             engine-name: pageflow_paged
-            ruby-version: 3.4
             engine-directory: entry_types/paged
             plugin-name: pageflow_paged
             rspec-command: bin/rspec
 
           - job: pageflow_scrolled
             engine-name: pageflow_scrolled
-            ruby-version: 3.4
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
             rspec-command: bin/rspec --tag ~js
 
           - job: pageflow_scrolled_js
             engine-name: pageflow_scrolled
-            ruby-version: 3.4
             engine-directory: entry_types/scrolled
             plugin-name: pageflow_scrolled
             rspec-command: bin/rspec-with-retry-on-timeout --tag js
@@ -64,7 +60,6 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
           - 3306:3306
-        # Set health checks to wait until mysql has started
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -73,7 +68,6 @@ jobs:
 
       redis:
         image: redis
-        # Set health checks to wait until redis has started
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
@@ -81,7 +75,7 @@ jobs:
           --health-retries 5
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     # Caching
 
@@ -89,52 +83,19 @@ jobs:
       uses: actions/cache@v4
       with:
         path: vendor/bundle
-        key: ${{ runner.os }}-ruby-${{ matrix.ruby-version }}-rails-${{ matrix.rails-version }}-gems-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
+        key: ${{ runner.os }}-gems-rails-${{ matrix.rails-version }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
         restore-keys: |
-          ${{ runner.os }}-ruby-${{ matrix.ruby-version }}-rails-${{ matrix.rails-version }}-gems-
-
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+          ${{ runner.os }}-gems-rails-${{ matrix.rails-version }}-
 
     - name: Set up cache for Yarn
       uses: actions/cache@v4
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        path: .yarn-cache
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    # Ruby/Node
-
-    - name: Set up Ruby ${{ matrix.ruby-version }}
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby-version }}
-
-    - name: Use Node.js 22
-      uses: actions/setup-node@v1
-      with:
-        node-version: 22
-
     # Dependencies
-
-    - name: Install imagemagick package for image processing
-      run: |
-        sudo apt-get update
-        sudo apt-get install imagemagick
-
-    - name: Install libvips package for image processing
-      run: |
-        sudo apt-get update
-        sudo apt-get install libvips-dev
-
-    - name: Install audiowaveform package
-      if: ${{ matrix.install-audiowaveform == true}}
-      run: |
-        sudo add-apt-repository -y ppa:chris-needham/ppa
-        sudo apt-get update
-        sudo apt-get install audiowaveform
 
     - name: Bundle install
       run: |
@@ -143,7 +104,7 @@ jobs:
 
     - name: Yarn install
       run: |
-        yarn install
+        yarn install --cache-folder .yarn-cache
 
     # Build
 
@@ -171,6 +132,7 @@ jobs:
 
   jest:
     runs-on: ubuntu-latest
+    container: ghcr.io/${{ github.repository }}/test:latest
 
     strategy:
       fail-fast: false
@@ -186,29 +148,20 @@ jobs:
             package-directory: entry_types/scrolled/package
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+    - uses: actions/checkout@v4
 
     - name: Set up cache for Yarn
       uses: actions/cache@v4
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        path: .yarn-cache
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    - name: Set up Node.js 22
-      uses: actions/setup-node@v1
-      with:
-        node-version: 22
-
     - name: Yarn install
       run: |
-        yarn install
-        (cd entry_types/paged/packages/pageflow-paged-react; yarn install)
+        yarn install --cache-folder .yarn-cache
+        (cd entry_types/paged/packages/pageflow-paged-react; yarn install --cache-folder ../../../../.yarn-cache)
 
     - name: Build packages
       run: |
