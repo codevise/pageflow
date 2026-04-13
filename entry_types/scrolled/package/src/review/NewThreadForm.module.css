@@ -1,0 +1,59 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+  padding: space(3);
+  background: var(--ui-surface-color);
+  border-radius: rounded(lg);
+  box-shadow: var(--ui-box-shadow);
+}
+
+.input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  color: var(--ui-on-surface-color);
+  background: var(--ui-surface-color);
+  border: 1px solid var(--ui-on-surface-color-lighter);
+  border-radius: rounded();
+  padding: space(2);
+  outline: none;
+  resize: none;
+  overflow: hidden;
+}
+
+.input:focus {
+  border-color: var(--ui-primary-color);
+  box-shadow: 0 0 0 2px var(--ui-primary-color-lightest);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: space(2);
+}
+
+.cancelButton {
+  font: inherit;
+  font-weight: 500;
+  color: var(--ui-on-surface-color-light);
+  background: none;
+  border: none;
+  padding: space(1.5) space(3);
+  cursor: pointer;
+}
+
+.submitButton {
+  display: flex;
+  align-items: center;
+  gap: space(1);
+  font: inherit;
+  font-weight: 500;
+  color: var(--ui-on-primary-color);
+  background: var(--ui-primary-color);
+  border: none;
+  border-radius: rounded();
+  padding: space(1.5) space(3);
+  cursor: pointer;
+}

@@ -248,6 +248,35 @@ module PageflowScrolled
           visible: false
         )
       end
+
+      it 'renders csrf meta tags when commenting is enabled' do
+        entry = create(:entry, :published, type_name: 'scrolled',
+                                           with_feature: 'commenting')
+
+        with_forgery_protection do
+          get_with_entry_env(:show, entry:, mode: :preview)
+        end
+
+        expect(response.body).to have_selector('meta[name="csrf-param"]', visible: false)
+        expect(response.body).to have_selector('meta[name="csrf-token"]', visible: false)
+      end
+
+      it 'does not render csrf meta tags when commenting is disabled' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        with_forgery_protection do
+          get_with_entry_env(:show, entry:, mode: :preview)
+        end
+
+        expect(response.body).not_to have_selector('meta[name="csrf-param"]', visible: false)
+      end
+    end
+
+    def with_forgery_protection
+      ActionController::Base.allow_forgery_protection = true
+      yield
+    ensure
+      ActionController::Base.allow_forgery_protection = false
     end
   end
 end

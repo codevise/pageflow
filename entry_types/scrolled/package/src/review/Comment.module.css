@@ -1,0 +1,23 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: space(2);
+  margin-bottom: space(1);
+}
+
+.author {
+  font-weight: 600;
+  color: var(--ui-on-surface-color);
+}
+
+.timestamp {
+  font-size: space(3);
+  color: var(--ui-on-surface-color-light);
+}
+
+.body {
+  margin: 0;
+  padding-left: space(8);
+  line-height: 1.4;
+  color: var(--ui-on-surface-color);
+}
