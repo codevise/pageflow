@@ -20,7 +20,8 @@ export const ContentElementCommentsView = Marionette.ItemView.extend({
     ReactDOM.render(
       <ReviewStateProvider initialState={session.state}>
         <ThreadList subjectType="ContentElement"
-                    subjectId={this.model.get('permaId')} />
+                    subjectId={this.model.get('permaId')}
+                    newTopicButtonClassName={styles.newTopicButton} />
       </ReviewStateProvider>,
       this.$el.find(`.${styles.container}`)[0]
     );

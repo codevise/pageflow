@@ -16,7 +16,7 @@
   background: var(--ui-surface-color);
   border: 0;
   border-radius: rounded();
-  box-shadow: var(--ui-box-shadow);
+  box-shadow: var(--review-thread-box-shadow, var(--ui-box-shadow));
   padding: space(1.5) space(2);
   cursor: pointer;
 }
