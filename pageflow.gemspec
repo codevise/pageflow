@@ -15,11 +15,11 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{,entry_types/*/}' \
                 '{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*',
-                'package/{config/**/*,vendor/**/*.js,editor.js,frontend.js,ui.js,' \
+                'package/{config/**/*,vendor/**/*.js,editor.js,frontend.js,review.js,ui.js,' \
                 'testHelpers.js,package.json}',
                 'entry_types/scrolled/package/' \
                 '{config/**/*,contentElements-frontend.{js,css},frontend-server.js,' \
-                'contentElements/*.{css,js},' \
+                'contentElements/*.{css,js},review.{css,js},' \
                 'widgets/*.{css,js},widgets-server.js,' \
                 'values/*,testHelpers.js,' \
                 'contentElements-editor.js,frontend/*.{js,css},editor.js,package.json}',
