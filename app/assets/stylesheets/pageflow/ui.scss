@@ -4,6 +4,8 @@
 @import "./ui/properties";
 @import "./ui/functions";
 
+@import "pageflow/ui/overrides";
+
 %pageflow-ui {
   @import "./ui/forms";
   @import "./ui/color_picker";

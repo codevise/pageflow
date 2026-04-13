@@ -21,7 +21,8 @@ module PageflowScrolled
     config.i18n.load_path += Dir[config.root.join('config', 'locales', '**', '*.yml').to_s]
 
     initializer 'pageflow_scrolled.assets.precompile' do |app|
-      app.config.assets.precompile += %w[pageflow_scrolled/legacy.js]
+      app.config.assets.precompile += %w[pageflow_scrolled/legacy.js
+                                         pageflow_scrolled/ui.css]
     end
   end
 end
