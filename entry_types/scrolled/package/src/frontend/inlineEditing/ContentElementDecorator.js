@@ -1,6 +1,8 @@
 import React from 'react';
 import {useDrag} from 'react-dnd';
 
+import {features} from 'pageflow/frontend';
+import {CommentBadge} from 'pageflow-scrolled/review';
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useI18n} from '../i18n';
 import {api} from '../api';
@@ -48,7 +50,7 @@ function OptionalSelectionRect(props) {
 }
 
 function DefaultSelectionRect(props) {
-  const {isSelected, select} = useContentElementEditorState();
+  const {isSelected, select, selectComments, commentsSelected} = useContentElementEditorState();
   const {t} = useI18n({locale: 'ui'});
 
   const [, drag, preview] = useDrag({
@@ -62,6 +64,12 @@ function DefaultSelectionRect(props) {
                    dragHandleTitle={t('pageflow_scrolled.inline_editing.drag_content_element')}
                    full={props.width === widths.full || props.customMargin}
                    inset={props.position === 'backdrop'}
+                   commentBadge={features.isEnabled('commenting') &&
+                     <CommentBadge subjectType="ContentElement"
+                                   subjectId={props.permaId}
+                                   mode={commentsSelected ? 'active' : isSelected ? 'icon' : 'dot'}
+                                   onClick={() => selectComments()} />}
+                   commentBadgeInset={!isSelected && !commentsSelected}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
                    onClick={() => select()}

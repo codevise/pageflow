@@ -2,11 +2,12 @@ import React, {createContext, useContext, useEffect, useMemo, useReducer} from '
 
 const ReviewStateContext = createContext(null);
 
-export function ReviewStateProvider({children}) {
-  const [state, dispatch] = useReducer(reducer, {
-    currentUser: null,
-    threads: {}
-  });
+export function ReviewStateProvider({initialState, children}) {
+  const [state, dispatch] = useReducer(
+    reducer,
+    initialState,
+    initState
+  );
 
   useEffect(() => {
     function handleMessage(event) {
@@ -49,6 +50,15 @@ export function useCommentThreads(subjectType, subjectId) {
     ),
     [commentThreads, subjectType, subjectId]
   );
+}
+
+function initState(initialState) {
+  if (initialState) {
+    return reducer({currentUser: null, threads: {}},
+                   {type: 'RESET', payload: initialState});
+  }
+
+  return {currentUser: null, threads: {}};
 }
 
 function reducer(state, action) {

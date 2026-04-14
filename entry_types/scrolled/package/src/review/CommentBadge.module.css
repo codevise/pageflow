@@ -1,5 +1,5 @@
 .badge {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: space(1);
   height: space(7);
@@ -22,7 +22,22 @@
   opacity: 1;
 }
 
+.iconOnly {
+  background: none;
+  color: currentColor;
+  box-shadow: none;
+  padding: 10px;
+  height: auto;
+}
+
+.dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  padding: 0;
+}
+
 .icon {
-  width: 16px;
-  height: 16px;
+  display: block;
+  width: 15px;
+  height: 15px;
 }

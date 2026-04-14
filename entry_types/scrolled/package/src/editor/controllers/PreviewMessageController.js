@@ -1,4 +1,5 @@
 import {Object} from 'pageflow/ui';
+import {ReviewMessageHandler} from 'pageflow-scrolled/review';
 import {watchCollections} from '../../entryState';
 import {InsertContentElementDialogView} from '../views/InsertContentElementDialogView'
 import {SelectLinkDestinationDialogView} from '../views/SelectLinkDestinationDialogView'
@@ -9,12 +10,20 @@ export const PreviewMessageController = Object.extend({
     this.iframeWindow = iframeWindow;
     this.editor = editor;
 
+    if (entry.reviewSession) {
+      this.reviewMessageHandler = ReviewMessageHandler.create({
+        session: entry.reviewSession,
+        targetWindow: iframeWindow
+      });
+    }
+
     this.listener = this.handleMessage.bind(this);
     window.addEventListener('message', this.listener);
   },
 
   dispose() {
     window.removeEventListener('message', this.listener);
+    if (this.reviewMessageHandler) this.reviewMessageHandler.dispose();
   },
 
   handleMessage(message) {
@@ -130,6 +139,10 @@ export const PreviewMessageController = Object.extend({
         }
 
         postMessage({type: 'ACK'})
+
+        if (this.entry.reviewSession) {
+          this.entry.reviewSession.fetch();
+        }
       }
       else if (message.data.type === 'CHANGE_SECTION') {
         this.entry.set({
@@ -142,7 +155,10 @@ export const PreviewMessageController = Object.extend({
 
         this.preservedScrollTarget = null;
 
-        if (type === 'contentElement') {
+        if (type === 'contentElementComments') {
+          this.editor.navigate(`/scrolled/content_elements/${id}/comments`, {trigger: true})
+        }
+        else if (type === 'contentElement') {
           const contentElement = this.entry.contentElements.get(id);
           this.editor.navigate(contentElement.getEditorPath(), {trigger: true})
         }

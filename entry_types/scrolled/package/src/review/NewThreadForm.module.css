@@ -5,7 +5,8 @@
   padding: space(3);
   background: var(--ui-surface-color);
   border-radius: rounded(lg);
-  box-shadow: var(--ui-box-shadow);
+  box-shadow: var(--review-thread-box-shadow, var(--ui-box-shadow));
+  border: var(--review-thread-border, none);
 }
 
 .input {

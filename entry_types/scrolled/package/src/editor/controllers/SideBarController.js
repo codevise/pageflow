@@ -1,12 +1,14 @@
 import Marionette from 'backbone.marionette';
 
 import {editor} from 'pageflow-scrolled/editor';
+import {BackButtonDecoratorView} from 'pageflow/editor';
 
 import {EditChapterView} from '../views/EditChapterView';
 import {EditSectionView} from '../views/EditSectionView';
 import {EditSectionTransitionView} from '../views/EditSectionTransitionView';
 import {EditSectionPaddingsView} from '../views/EditSectionPaddingsView';
 import {EditContentElementView} from '../views/EditContentElementView';
+import {ContentElementCommentsView} from '../views/ContentElementCommentsView';
 
 export const SideBarController = Marionette.Controller.extend({
   initialize: function(options) {
@@ -44,6 +46,16 @@ export const SideBarController = Marionette.Controller.extend({
       model: this.entry.sections.get(id),
       editor,
       position
+    }));
+  },
+
+  contentElementComments: function(id) {
+    this.region.show(new BackButtonDecoratorView({
+      view: new ContentElementCommentsView({
+        entry: this.entry,
+        model: this.entry.contentElements.get(id),
+        editor
+      })
     }));
   },
 

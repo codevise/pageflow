@@ -98,6 +98,11 @@
   width: calc(50% - 10px - 0.5em);
 }
 
+.hasCommentBadge:not(.full) .insert-before::after {
+  right: 5px;
+  width: calc(50% - 10px - 0.5em);
+}
+
 .full .insert::before,
 .full .insert::after {
   width: calc(50% - 5px + selectionPadding2);
@@ -175,7 +180,32 @@
   color: #fff;
 }
 
+.commentBadge {
+  position: absolute;
+  top: -7px;
+  right: 10px;
+  transform: translate(100%, -50%);
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.commentBadgeInset {
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.full .commentBadge:not(.commentBadgeInset) {
+  right: 0;
+  transform: translate(0, 0);
+}
+
+.hasCommentBadge:not(.full):after {
+  top: 5px;
+}
+
 .inset .dragHandle,
+.inset .commentBadge,
 .inset .insert,
 .inset:after {
   display: none;

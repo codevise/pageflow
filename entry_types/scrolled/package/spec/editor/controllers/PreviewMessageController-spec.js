@@ -1,5 +1,6 @@
 import 'editor/config';
 import {editor} from 'pageflow-scrolled/editor';
+import {features} from 'pageflow/frontend';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {PreviewMessageController} from 'editor/controllers/PreviewMessageController';
 import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView';
@@ -45,6 +46,31 @@ describe('PreviewMessageController', () => {
       });
       window.postMessage({type: 'READY'}, '*');
     })).resolves.toMatchObject({type: 'ACK'});
+  });
+
+  it('sends REVIEW_STATE_RESET to iframe after READY when commenting enabled', () => {
+    features.enable('frontend', ['commenting']);
+    jest.spyOn(window, 'fetch').mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({currentUser: {id: 1}, commentThreads: []})
+    });
+
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'REVIEW_STATE_RESET') {
+          resolve(event.data);
+        }
+      });
+      window.postMessage({type: 'READY'}, '*');
+    })).resolves.toMatchObject({
+      type: 'REVIEW_STATE_RESET',
+      payload: {currentUser: {id: 1}, commentThreads: []}
+    });
   });
 
   it('sets current section index in model on CHANGE_SECTION message', () => {
@@ -467,6 +493,22 @@ describe('PreviewMessageController', () => {
       editor.on('navigate', resolve);
       window.postMessage({type: 'SELECTED', payload: {}}, '*');
     })).resolves.toBe('/');
+  });
+
+  it('navigates to comments route on SELECTED message for contentElementComments', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'contentElementComments'}}, '*');
+    })).resolves.toBe('/scrolled/content_elements/1/comments');
   });
 
   it('updates configuration on UPDATE_CONTENT_ELEMENT message', () => {

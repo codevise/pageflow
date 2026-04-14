@@ -53,8 +53,7 @@ export function Popover({subjectType, subjectId, placement}) {
                                 [styles.bottom]: onBottom})}>
       <CommentBadge subjectType={subjectType}
                     subjectId={subjectId}
-                    active={isSelected}
-                    hidden={hasSelection && !isSelected}
+                    mode={isSelected ? 'active' : undefined}
                     onClick={handleBadgeClick} />
       <div className={styles.threadListContainer}>
         {isSelected &&

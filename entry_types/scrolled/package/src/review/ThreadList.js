@@ -9,7 +9,7 @@ import {NewThreadForm} from './NewThreadForm';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, showNewForm: showNewFormProp, reversed, onDismiss}) {
+export function ThreadList({subjectType, subjectId, showNewForm: showNewFormProp, reversed, onDismiss, newTopicButtonClassName}) {
   const {t} = useI18n({locale: 'ui'});
   const threads = useCommentThreads(subjectType, subjectId);
   const [expandedThreadId, setExpandedThreadId] = useState(null);
@@ -24,7 +24,8 @@ export function ThreadList({subjectType, subjectId, showNewForm: showNewFormProp
     <div className={styles.container}>
       {!showNewForm &&
         <button className={classNames(styles.newTopicButton,
-                                          {[styles.reversed]: reversed})}
+                                      newTopicButtonClassName,
+                                      {[styles.reversed]: reversed})}
                 onClick={() => setFormToggled(true)}
                 aria-label={t('pageflow_scrolled.review.new_topic')}>
           <NewTopicIcon />

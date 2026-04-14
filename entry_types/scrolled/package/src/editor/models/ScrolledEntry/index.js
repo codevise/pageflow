@@ -1,5 +1,7 @@
 import {Entry, editor} from 'pageflow/editor';
 import I18n from 'i18n-js';
+import {features} from 'pageflow/frontend';
+import {createReviewSession} from 'pageflow/review';
 
 import {ConsentVendors} from '../ConsentVendors';
 
@@ -75,6 +77,10 @@ export const ScrolledEntry = Entry.extend({
     editor.savingRecords.watch(this.chapters);
 
     this.scrolledSeed = seed;
+
+    if (features.isEnabled('commenting')) {
+      this.reviewSession = createReviewSession({entryId: this.id});
+    }
   },
 
   insertContentElement(attributes, {id, at, splitPoint}) {

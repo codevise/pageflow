@@ -1,6 +1,7 @@
 /node_modules
 /contentElements
 /editor.js
+/editor.css
 /frontend
 /frontend-server.js
 /contentElements-editor.js
