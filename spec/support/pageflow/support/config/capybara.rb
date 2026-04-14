@@ -11,6 +11,7 @@ Capybara.register_driver :selenium_chrome_headless_no_sandbox do |app|
 
   options.add_argument('--headless=new')
   options.add_argument('--no-sandbox')
+  options.add_argument('--disable-dev-shm-usage')
   options.add_argument('--disable-gpu') if Gem.win_platform?
 
   Capybara::Selenium::Driver.new(app,
