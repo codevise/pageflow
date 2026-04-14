@@ -12,6 +12,13 @@ export function postCreateCommentMessage({threadId, body}) {
   );
 }
 
+export function postUpdateThreadMessage({threadId, resolved}) {
+  window.top.postMessage(
+    {type: 'UPDATE_THREAD', payload: {threadId, resolved}},
+    window.location.origin
+  );
+}
+
 export function postReviewStateResetMessage(targetWindow, state) {
   targetWindow.postMessage(
     {type: 'REVIEW_STATE_RESET', payload: state},

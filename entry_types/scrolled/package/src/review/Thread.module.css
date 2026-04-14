@@ -52,3 +52,28 @@
 .expandButton:hover {
   text-decoration: underline;
 }
+
+.resolveRow {
+  display: flex;
+  justify-content: center;
+  margin-top: space(2);
+  padding-top: space(2);
+  border-top: 1px solid var(--ui-on-surface-color-lightest);
+}
+
+.resolveButton {
+  font: inherit;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: space(1);
+  color: var(--ui-on-surface-color-light);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.resolveButton:hover {
+  color: var(--ui-primary-color);
+}

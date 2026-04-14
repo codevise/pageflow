@@ -1751,6 +1751,11 @@ en:
       send: Send
       enter_for_new_line: Enter for new line
       toggle_replies: Toggle replies
+      resolve: Mark as resolved
+      unresolve: Mark as unresolved
+      resolved_count:
+        one: 1 resolved
+        other: '%{count} resolved'
       reply_count:
         one: 1 reply
         other: '%{count} replies'

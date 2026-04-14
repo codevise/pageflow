@@ -33,6 +33,34 @@ describe('CommentBadge', () => {
     expect(getByRole('status')).toHaveTextContent('2');
   });
 
+  it('only counts unresolved threads', () => {
+    const {getByRole} = renderWithReviewState(
+      <CommentBadge subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, resolvedAt: null, comments: []},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, resolvedAt: null, comments: []},
+          {id: 3, subjectType: 'ContentElement', subjectId: 10, resolvedAt: '2026-04-09T10:00:00Z', comments: []}
+        ]
+      }
+    );
+
+    expect(getByRole('status')).toHaveTextContent('2');
+  });
+
+  it('renders nothing when all threads are resolved', () => {
+    const {container} = renderWithReviewState(
+      <CommentBadge subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, resolvedAt: '2026-04-09T10:00:00Z', comments: []}
+        ]
+      }
+    );
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it('renders nothing when no threads exist for subject', () => {
     const {container} = renderWithReviewState(
       <CommentBadge subjectType="ContentElement" subjectId={10} />

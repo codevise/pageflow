@@ -1922,6 +1922,11 @@ de:
       send: Senden
       enter_for_new_line: Enter für neue Zeile
       toggle_replies: Antworten umschalten
+      resolve: Als gelöst markieren
+      unresolve: Als ungelöst markieren
+      resolved_count:
+        one: 1 erledigt
+        other: '%{count} erledigt'
       reply_count:
         one: 1 Antwort
         other: '%{count} Antworten'
