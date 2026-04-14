@@ -1,0 +1,4 @@
+.highlight {
+  background-color: var(--ui-accent-color-glow);
+  border-bottom: 2px solid var(--ui-accent-color);
+}
