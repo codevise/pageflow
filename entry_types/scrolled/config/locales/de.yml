@@ -1915,6 +1915,7 @@ de:
       add_comment: Kommentar hinzufügen
       cancel_add_comment: Abbrechen
       select_content_element: Zum Kommentieren auswählen
+      select_text_to_comment: Text zum Kommentieren auswählen
       new_topic: Neues Thema
       add_comment_placeholder: Kommentar hinzufügen...
       reply_placeholder: Antworten...

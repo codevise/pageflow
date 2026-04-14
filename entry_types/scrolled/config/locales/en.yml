@@ -1744,6 +1744,7 @@ en:
       add_comment: Add comment
       cancel_add_comment: Cancel
       select_content_element: Select to comment
+      select_text_to_comment: Select text to comment
       new_topic: New topic
       add_comment_placeholder: Add a comment...
       reply_placeholder: Reply...
