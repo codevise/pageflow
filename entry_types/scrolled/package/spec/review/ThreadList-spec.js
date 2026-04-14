@@ -265,6 +265,29 @@ describe('ThreadList', () => {
     postMessage.mockRestore();
   });
 
+  it('includes subjectRange in create thread message', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+    const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 12}};
+
+    const {getByPlaceholderText, getByRole} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} subjectRange={subjectRange} />
+    );
+
+    await user.type(getByPlaceholderText('Add a comment...'), 'Range comment');
+    await user.click(getByRole('button', {name: 'Send'}));
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {
+        type: 'CREATE_COMMENT_THREAD',
+        payload: expect.objectContaining({subjectRange})
+      },
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
+  });
+
   it('shows new topic form automatically when no threads exist', () => {
     const {getByPlaceholderText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />

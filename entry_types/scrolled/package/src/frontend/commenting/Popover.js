@@ -7,7 +7,7 @@ import {useSelectedSubject} from './SelectedSubjectProvider';
 import styles from './Popover.module.css';
 
 export function Popover({subjectType, subjectId, placement}) {
-  const {isSelected, hasSelection, showNewForm, select, clearSelection} = useSelectedSubject(subjectType, subjectId);
+  const {isSelected, showNewForm, subjectRange, select, clearSelection} = useSelectedSubject(subjectType, subjectId);
   const ref = useRef(null);
 
   function handleBadgeClick() {
@@ -59,6 +59,7 @@ export function Popover({subjectType, subjectId, placement}) {
         {isSelected &&
           <ThreadList subjectType={subjectType}
                       subjectId={subjectId}
+                      subjectRange={subjectRange}
                       showNewForm={showNewForm}
                       reversed={onLeft}
                       onDismiss={clearSelection} />}

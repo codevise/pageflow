@@ -38,5 +38,6 @@ export function useSelectedSubject(subjectType, subjectId) {
   }, [setSelectedSubject, subjectType, subjectId]);
 
   return {isSelected, hasSelection: !!selectedSubject, select, clearSelection,
-          showNewForm: isSelected && selectedSubject.showNewForm};
+          showNewForm: isSelected && selectedSubject.showNewForm,
+          subjectRange: isSelected ? selectedSubject.subjectRange : undefined};
 }

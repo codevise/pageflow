@@ -11,7 +11,7 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, showNewForm: showNewFormProp, reversed, onDismiss, newTopicButtonClassName}) {
+export function ThreadList({subjectType, subjectId, subjectRange, showNewForm: showNewFormProp, reversed, onDismiss, newTopicButtonClassName}) {
   const {t} = useI18n({locale: 'ui'});
   const threads = useCommentThreads(subjectType, subjectId);
 
@@ -42,6 +42,7 @@ export function ThreadList({subjectType, subjectId, showNewForm: showNewFormProp
       {showNewForm &&
         <NewThreadForm subjectType={subjectType}
                        subjectId={subjectId}
+                       subjectRange={subjectRange}
                        onSubmit={() => setFormToggled(false)}
                        onCancel={() => {
                          setFormToggled(false);
