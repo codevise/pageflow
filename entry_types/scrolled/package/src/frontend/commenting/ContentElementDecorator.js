@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {api} from '../api';
 import {useAddCommentMode} from './AddCommentModeProvider';
 import {AddCommentOverlay} from './AddCommentOverlay';
 import {FloatingAnchor} from './FloatingAnchor';
@@ -9,7 +10,21 @@ import {useSelectedSubject} from './SelectedSubjectProvider';
 
 import styles from './ContentElementDecorator.module.css';
 
-export function ContentElementDecorator({permaId, children}) {
+export function ContentElementDecorator({type, permaId, children}) {
+  const {inlineComments} = api.contentElementTypes.getOptions(type) || {};
+
+  if (inlineComments) {
+    return children;
+  }
+
+  return (
+    <DefaultCommentDecorator permaId={permaId}>
+      {children}
+    </DefaultCommentDecorator>
+  );
+}
+
+function DefaultCommentDecorator({permaId, children}) {
   const {active} = useAddCommentMode();
   const {isSelected} = useSelectedSubject('ContentElement', permaId);
 
