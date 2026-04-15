@@ -34,11 +34,11 @@ export function Popover({subjectType, subjectId, placement}) {
       }
     }
 
-    document.addEventListener('pointerdown', handleClick);
+    document.addEventListener('mousedown', handleClick);
     document.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.removeEventListener('pointerdown', handleClick);
+      document.removeEventListener('mousedown', handleClick);
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isSelected, clearSelection]);

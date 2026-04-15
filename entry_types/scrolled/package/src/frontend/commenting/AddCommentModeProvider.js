@@ -40,17 +40,17 @@ export function AddCommentModeProvider({children}) {
   useEffect(() => {
     if (!active) return;
 
-    function handlePointerDown(event) {
+    function handleMouseDown(event) {
       if (!event.target.closest('[data-add-comment-overlay]') &&
           !event.target.closest('[data-add-comment-toggle]')) {
         setActive(false);
       }
     }
 
-    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('mousedown', handleMouseDown);
 
     return () => {
-      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('mousedown', handleMouseDown);
     };
   }, [active]);
 
