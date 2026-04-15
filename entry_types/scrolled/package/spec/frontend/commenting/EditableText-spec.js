@@ -75,4 +75,25 @@ describe('commenting EditableText', () => {
 
     expect(queryByText('Select text to comment')).not.toBeInTheDocument();
   });
+
+  it('skips hint and highlights immediately when text is already selected', async () => {
+    const user = userEvent.setup();
+    const slateRange = {
+      anchor: {path: [0, 0], offset: 5},
+      focus: {path: [0, 0], offset: 9}
+    };
+
+    const {getByText, queryByText, toggleAddCommentMode} = renderWithCommenting(
+      <EditableText value={value} />
+    );
+
+    await slateSelection.simulateChange(user, getByText('Some text to comment on'), slateRange);
+    toggleAddCommentMode();
+
+    expect(queryByText('Select text to comment')).not.toBeInTheDocument();
+
+    const highlight = document.querySelector(`.${highlightStyles.highlight}`);
+    expect(highlight).toBeInTheDocument();
+    expect(highlight).toHaveTextContent('text');
+  });
 });

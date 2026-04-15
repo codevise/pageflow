@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import classNames from 'classnames';
 import {createEditor, Text as SlateText, Range} from 'slate';
 import {Slate, Editable, withReact} from 'slate-react';
@@ -37,9 +37,10 @@ function CommentingEditableText({
 }) {
   const editor = useMemo(() => withLinks(withReact(createEditor())), []);
   const {contentElementPermaId} = useContentElementAttributes();
-  const {active, deactivate} = useAddCommentMode();
+  const {active, deactivate, preselect, clearPreselection} = useAddCommentMode();
   const {subjectRange, select} = useSelectedSubject('ContentElement', contentElementPermaId);
 
+  usePreselection(editor, contentElementPermaId, active, preselect, clearPreselection);
   const handleMouseUp = useSelectTextOnMouseUp(active, editor, deactivate, select);
 
   const decorate = useCallback(([node, path]) => {
@@ -97,6 +98,31 @@ function useSelectTextOnMouseUp(active, editor, deactivate, select) {
     deactivate();
     select({showNewForm: true, subjectRange: slateRange});
   }, [active, editor, deactivate, select]);
+}
+
+function usePreselection(editor, contentElementPermaId, active, preselect, clearPreselection) {
+  useEffect(() => {
+    function handleSelectionChange() {
+      if (active) return;
+
+      const slateRange = slateSelection.inEditor(editor);
+
+      if (slateRange) {
+        preselect({
+          subjectType: 'ContentElement',
+          subjectId: contentElementPermaId,
+          subjectRange: slateRange,
+          showNewForm: true
+        });
+      }
+      else {
+        clearPreselection(contentElementPermaId);
+      }
+    }
+
+    document.addEventListener('selectionchange', handleSelectionChange);
+    return () => document.removeEventListener('selectionchange', handleSelectionChange);
+  }, [editor, contentElementPermaId, active, preselect, clearPreselection]);
 }
 
 function withLinks(editor) {
