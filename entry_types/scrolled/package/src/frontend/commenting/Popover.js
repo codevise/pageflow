@@ -6,8 +6,8 @@ import {useSelectedSubject} from './SelectedSubjectProvider';
 
 import styles from './Popover.module.css';
 
-export function Popover({subjectType, subjectId, placement}) {
-  const {isSelected, showNewForm, subjectRange, select, clearSelection} = useSelectedSubject(subjectType, subjectId);
+export function Popover({subjectType, subjectId, subjectRange, placement}) {
+  const {isSelected, showNewForm, select, clearSelection} = useSelectedSubject(subjectType, subjectId, subjectRange);
   const ref = useRef(null);
 
   function handleBadgeClick() {
@@ -53,6 +53,7 @@ export function Popover({subjectType, subjectId, placement}) {
                                 [styles.bottom]: onBottom})}>
       <CommentBadge subjectType={subjectType}
                     subjectId={subjectId}
+                    subjectRange={subjectRange}
                     mode={isSelected ? 'active' : undefined}
                     onClick={handleBadgeClick} />
       <div className={styles.threadListContainer}>

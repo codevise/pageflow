@@ -61,6 +61,33 @@ describe('ThreadList', () => {
     expect(queryByText('Other type')).not.toBeInTheDocument();
   });
 
+  it('only displays threads matching subjectRange when provided', () => {
+    const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 12}};
+
+    const {getByText, queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} subjectRange={subjectRange} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, subjectRange, comments: [
+            {id: 10, body: 'Matching range', creatorName: 'Bob', creatorId: 2}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'No range', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 3, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {anchor: {path: [1, 0], offset: 0}, focus: {path: [1, 0], offset: 5}},
+           comments: [
+            {id: 30, body: 'Different range', creatorName: 'Eve', creatorId: 3}
+          ]}
+        ]
+      }
+    );
+
+    expect(getByText('Matching range')).toBeInTheDocument();
+    expect(queryByText('No range')).not.toBeInTheDocument();
+    expect(queryByText('Different range')).not.toBeInTheDocument();
+  });
+
   it('displays formatted timestamp', () => {
     const {getByText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
