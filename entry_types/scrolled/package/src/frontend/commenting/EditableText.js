@@ -1,26 +1,26 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import classNames from 'classnames';
-import {createEditor, Text as SlateText, Range} from 'slate';
+import {createEditor} from 'slate';
 import {Slate, Editable, withReact} from 'slate-react';
 
 import {Text} from '../Text';
+import {useCommentThreads, useCommentHighlights, decorateCommentHighlights, useRangeAnchors, RangeAnchor, commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
 import {PlainEditableText, renderElement, renderLeaf} from '../EditableText';
 import {useContentElementAttributes} from '../useContentElementAttributes';
 import {useAddCommentMode} from './AddCommentModeProvider';
 import {useSelectedSubject} from './SelectedSubjectProvider';
 import {AddCommentHint} from './AddCommentHint';
+import {PopoversColumn} from './PopoversColumn';
 import {slateSelection} from './slateSelection';
 
 import textStyles from '../EditableText.module.css';
-import overlayStyles from './AddCommentOverlay.module.css';
-import highlightStyles from './EditableTextHighlight.module.css';
+import commentingStyles from './EditableTextHighlight.module.css';
 
 const defaultValue = [{
   type: 'paragraph',
   children: [{text: ''}],
 }];
 
-const emptyDecorations = [];
 
 export const EditableText = React.memo(function EditableText(props) {
   const {inlineComments} = useContentElementAttributes();
@@ -36,37 +36,49 @@ function CommentingEditableText({
   value, className, scaleCategory = 'body', typographyVariant, typographySize
 }) {
   const editor = useMemo(() => withLinks(withReact(createEditor())), []);
+  const {anchors, registerAnchor} = useRangeAnchors();
   const {contentElementPermaId} = useContentElementAttributes();
   const {active, deactivate, preselect, clearPreselection} = useAddCommentMode();
   const {subjectRange, select} = useSelectedSubject('ContentElement', contentElementPermaId);
+  const threads = useCommentThreads(
+    {subjectType: 'ContentElement', subjectId: contentElementPermaId},
+    {resolved: false}
+  );
 
-  usePreselection(editor, contentElementPermaId, active, preselect, clearPreselection);
-  const handleMouseUp = useSelectTextOnMouseUp(active, editor, deactivate, select);
+  const highlights = useCommentHighlights(threads, subjectRange);
 
-  const decorate = useCallback(([node, path]) => {
-    if (!subjectRange || !SlateText.isText(node)) return emptyDecorations;
+  usePreselection(editor, contentElementPermaId, threads, active, preselect, clearPreselection);
+  const handleMouseUp = useSelectTextOnMouseUp(active, editor, threads, deactivate, select);
 
-    const nodeRange = {
-      anchor: {path, offset: 0},
-      focus: {path, offset: node.text.length}
-    };
-
-    const intersection = Range.intersection(subjectRange, nodeRange);
-    if (!intersection) return emptyDecorations;
-
-    return [{...intersection, commentHighlight: true}];
-  }, [subjectRange]);
+  const decorate = useMemo(
+    () => decorateCommentHighlights(editor, highlights),
+    [editor, highlights]
+  );
 
   const renderLeafCb = useCallback(({attributes, children, leaf}) => {
     if (leaf.commentHighlight) {
-      children = <span className={highlightStyles.highlight}>{children}</span>;
+      children = (
+        <ClickableHighlight subjectRange={leaf.subjectRange}>
+          {children}
+        </ClickableHighlight>
+      );
     }
+
+    if (leaf.firstInRange) {
+      children = (
+        <RangeAnchor rangeKey={leaf.rangeKey} onRegister={registerAnchor}>
+          {children}
+        </RangeAnchor>
+      );
+    }
+
     return renderLeaf({attributes, children, leaf});
-  }, []);
+  }, [registerAnchor]);
 
   return (
-    <div className={classNames(textStyles.root, className,
-                              {[overlayStyles.highlight]: active && !subjectRange})}
+    <div ref={anchors.containerRef}
+         className={classNames(textStyles.root, className,
+                              {[commentingStyles.activeOverlay]: active && !subjectRange})}
          data-add-comment-overlay
          style={{position: 'relative'}}>
       <Text scaleCategory={scaleCategory}
@@ -75,7 +87,7 @@ function CommentingEditableText({
         <Slate editor={editor}
                value={value || defaultValue}
                onChange={() => {}}>
-          <Editable key={subjectRange ? 'highlighted' : 'plain'}
+          <Editable key={(subjectRange ? 'highlighted' : 'plain') + threads.length}
                     onMouseUp={handleMouseUp}
                     readOnly
                     decorate={decorate}
@@ -84,23 +96,54 @@ function CommentingEditableText({
         </Slate>
       </Text>
       {active && !subjectRange && <AddCommentHint />}
+      <PopoversColumn highlights={highlights}
+                      anchors={anchors} />
     </div>
   );
 }
 
-function useSelectTextOnMouseUp(active, editor, deactivate, select) {
+function ClickableHighlight({subjectRange, children}) {
+  const {contentElementPermaId} = useContentElementAttributes();
+  const {deactivate} = useAddCommentMode();
+  const {isSelected, select} = useSelectedSubject('ContentElement', contentElementPermaId, subjectRange);
+
+  function handleClick(event) {
+    if (event.target.closest('a')) return;
+    if (isSelected) return;
+
+    deactivate();
+    select();
+  }
+
+  return (
+    <span className={classNames(highlightStyles.highlight,
+                                {[highlightStyles.selected]: isSelected,
+                                 [commentingStyles.clickable]: !isSelected})}
+          data-comment-highlight
+          onClick={handleClick}>
+      {children}
+    </span>
+  );
+}
+
+function useSelectTextOnMouseUp(active, editor, threads, deactivate, select) {
   return useCallback(() => {
     if (!active) return;
 
     const slateRange = slateSelection.inEditor(editor);
     if (!slateRange) return;
 
+    const matchingThread = findMatchingThread(threads, slateRange);
+
     deactivate();
-    select({showNewForm: true, subjectRange: slateRange});
-  }, [active, editor, deactivate, select]);
+    select({
+      subjectRange: matchingThread?.subjectRange || slateRange,
+      showNewForm: !matchingThread
+    });
+  }, [active, editor, threads, deactivate, select]);
 }
 
-function usePreselection(editor, contentElementPermaId, active, preselect, clearPreselection) {
+function usePreselection(editor, contentElementPermaId, threads, active, preselect, clearPreselection) {
   useEffect(() => {
     function handleSelectionChange() {
       if (active) return;
@@ -108,11 +151,13 @@ function usePreselection(editor, contentElementPermaId, active, preselect, clear
       const slateRange = slateSelection.inEditor(editor);
 
       if (slateRange) {
+        const matchingThread = findMatchingThread(threads, slateRange);
+
         preselect({
           subjectType: 'ContentElement',
           subjectId: contentElementPermaId,
-          subjectRange: slateRange,
-          showNewForm: true
+          subjectRange: matchingThread?.subjectRange || slateRange,
+          showNewForm: !matchingThread
         });
       }
       else {
@@ -122,7 +167,12 @@ function usePreselection(editor, contentElementPermaId, active, preselect, clear
 
     document.addEventListener('selectionchange', handleSelectionChange);
     return () => document.removeEventListener('selectionchange', handleSelectionChange);
-  }, [editor, contentElementPermaId, active, preselect, clearPreselection]);
+  }, [editor, contentElementPermaId, threads, active, preselect, clearPreselection]);
+}
+
+function findMatchingThread(threads, slateRange) {
+  const key = JSON.stringify(slateRange);
+  return threads.find(t => JSON.stringify(t.subjectRange) === key);
 }
 
 function withLinks(editor) {

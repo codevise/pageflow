@@ -1,0 +1,9 @@
+.highlight {
+  background-color: var(--ui-accent-color-lightest);
+  border-bottom: 2px solid var(--ui-accent-color-lighter);
+}
+
+.selected {
+  background-color: var(--ui-accent-color-lighter);
+  border-bottom: 2px solid var(--ui-accent-color);
+}

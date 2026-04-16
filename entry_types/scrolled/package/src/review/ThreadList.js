@@ -19,7 +19,9 @@ export function ThreadList({subjectType, subjectId, subjectRange, showNewForm: s
   const [expandedThreadId, setExpandedThreadId] = useState(null);
   const [formToggled, setFormToggled] = useState(null);
   const [showResolved, setShowResolved] = useState(false);
-  const showNewForm = formToggled !== null ? formToggled : (showNewFormProp || activeThreads.length === 0);
+  const showNewForm = formToggled !== null ? formToggled :
+                      showNewFormProp !== undefined ? showNewFormProp :
+                      activeThreads.length === 0;
 
   function toggleThread(threadId) {
     setExpandedThreadId(expandedThreadId === threadId ? null : threadId);

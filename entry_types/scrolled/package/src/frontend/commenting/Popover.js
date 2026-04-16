@@ -6,7 +6,7 @@ import {useSelectedSubject} from './SelectedSubjectProvider';
 
 import styles from './Popover.module.css';
 
-export function Popover({subjectType, subjectId, subjectRange, placement}) {
+export function Popover({subjectType, subjectId, subjectRange, placement, suppressNewForm}) {
   const {isSelected, showNewForm, select, clearSelection} = useSelectedSubject(subjectType, subjectId, subjectRange);
   const ref = useRef(null);
 
@@ -23,7 +23,7 @@ export function Popover({subjectType, subjectId, subjectRange, placement}) {
     if (!isSelected) return;
 
     function handleClick(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (ref.current && !ref.current.contains(event.target) && !event.target.closest('[data-comment-highlight]')) {
         clearSelection();
       }
     }
@@ -61,7 +61,7 @@ export function Popover({subjectType, subjectId, subjectRange, placement}) {
           <ThreadList subjectType={subjectType}
                       subjectId={subjectId}
                       subjectRange={subjectRange}
-                      showNewForm={showNewForm}
+                      showNewForm={showNewForm && !suppressNewForm}
                       reversed={onLeft}
                       onDismiss={clearSelection} />}
       </div>
