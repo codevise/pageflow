@@ -6,7 +6,7 @@ import {useSelectedSubject} from './SelectedSubjectProvider';
 
 import styles from './Popover.module.css';
 
-export function Popover({subjectType, subjectId, subjectRange, placement, suppressNewForm}) {
+export function Popover({subjectType, subjectId, subjectRange, placement, suppressNewForm, hideNewTopicButton}) {
   const {isSelected, showNewForm, select, clearSelection} = useSelectedSubject(subjectType, subjectId, subjectRange);
   const ref = useRef(null);
 
@@ -62,6 +62,7 @@ export function Popover({subjectType, subjectId, subjectRange, placement, suppre
                       subjectId={subjectId}
                       subjectRange={subjectRange}
                       showNewForm={showNewForm && !suppressNewForm}
+                      hideNewTopicButton={hideNewTopicButton}
                       reversed={onLeft}
                       onDismiss={clearSelection} />}
       </div>

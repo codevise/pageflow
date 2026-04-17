@@ -346,6 +346,21 @@ describe('ThreadList', () => {
     expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
   });
 
+  it('hides new topic button when hideNewTopicButton is true', () => {
+    const {queryByRole} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} hideNewTopicButton={true} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(queryByRole('button', {name: 'New topic'})).not.toBeInTheDocument();
+  });
+
   it('hides new topic form behind button when threads exist', () => {
     const {queryByPlaceholderText, getByRole} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />,

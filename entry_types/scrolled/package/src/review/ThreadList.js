@@ -11,7 +11,7 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, showNewForm: showNewFormProp, reversed, onDismiss, newTopicButtonClassName}) {
+export function ThreadList({subjectType, subjectId, subjectRange, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss, newTopicButtonClassName}) {
   const {t} = useI18n({locale: 'ui'});
   const activeThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
   const resolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
@@ -29,7 +29,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, showNewForm: s
 
   return (
     <div className={styles.container}>
-      {!showNewForm &&
+      {!showNewForm && !hideNewTopicButton &&
         <button className={classNames(styles.newTopicButton,
                                       newTopicButtonClassName,
                                       {[styles.reversed]: reversed})}
