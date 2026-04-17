@@ -379,9 +379,19 @@ const pageflowScrolled = [
   )))
 ];
 
-export default [
+const allConfigs = [
   ...pageflow,
   ...pageflowScrolled,
   ...pageflowPaged,
   ...pageflowPagedReact
-]
+];
+
+export default allConfigs.map(config => ({
+  ...config,
+  watch: {
+    chokidar: {
+      usePolling: true,
+      interval: 500
+    }
+  }
+}))
