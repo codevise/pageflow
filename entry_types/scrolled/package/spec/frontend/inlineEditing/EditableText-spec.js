@@ -2,11 +2,15 @@ import React from 'react';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 
+import {features} from 'pageflow/frontend';
 import {EditableText} from 'frontend';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {renderWithCommenting} from 'testHelpers/renderWithCommenting';
 
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
+
+import {commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
 
 describe('EditableText', () => {
   beforeAll(loadInlineEditingComponents);
@@ -171,5 +175,39 @@ describe('EditableText', () => {
     );
 
     expect(container.querySelector('.custom-placeholder')).not.toBeInTheDocument()
+  });
+
+  describe('with commenting', () => {
+    beforeEach(() => {
+      jest.spyOn(features, 'isEnabled').mockImplementation(
+        name => name === 'commenting'
+      );
+    });
+
+    afterEach(() => {
+      features.isEnabled.mockRestore();
+    });
+
+    it('highlights thread ranges', () => {
+      const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+      const {container} = renderWithCommenting(
+        <EditableText value={value} contentElementId={1} />,
+        {
+          wrapper,
+          commentThreads: [{
+            id: 1,
+            subjectType: 'ContentElement',
+            subjectId: 10,
+            subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
+            comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+          }]
+        }
+      );
+
+      const highlight = container.querySelector(`.${highlightStyles.highlight}`);
+      expect(highlight).toBeInTheDocument();
+      expect(highlight).toHaveTextContent('text');
+    });
   });
 });

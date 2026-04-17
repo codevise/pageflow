@@ -1,6 +1,7 @@
 export {ReviewStateProvider, useCommentThreads} from './ReviewStateProvider';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
-export {CommentBadge} from './CommentBadge';
+export {ThreadsBadge} from './ThreadsBadge';
+export {Badge} from './Badge';
 export {ThreadList} from './ThreadList';
 export {postCreateCommentThreadMessage} from './postMessage';
 export {useCommentHighlights, decorateCommentHighlights} from './commentHighlights';

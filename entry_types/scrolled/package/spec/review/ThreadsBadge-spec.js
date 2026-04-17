@@ -1,13 +1,13 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 
-import {CommentBadge} from 'review/CommentBadge';
+import {ThreadsBadge} from 'review/ThreadsBadge';
 import {renderWithReviewState} from 'testHelpers/renderWithReviewState';
 
-describe('CommentBadge', () => {
+describe('ThreadsBadge', () => {
   it('does not display count for single thread', () => {
     const {getByRole} = renderWithReviewState(
-      <CommentBadge subjectType="ContentElement" subjectId={10} />,
+      <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
           {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: []}
@@ -20,7 +20,7 @@ describe('CommentBadge', () => {
 
   it('displays thread count for subject', () => {
     const {getByRole} = renderWithReviewState(
-      <CommentBadge subjectType="ContentElement" subjectId={10} />,
+      <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
           {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: []},
@@ -35,7 +35,7 @@ describe('CommentBadge', () => {
 
   it('only counts unresolved threads', () => {
     const {getByRole} = renderWithReviewState(
-      <CommentBadge subjectType="ContentElement" subjectId={10} />,
+      <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
           {id: 1, subjectType: 'ContentElement', subjectId: 10, resolvedAt: null, comments: []},
@@ -50,7 +50,7 @@ describe('CommentBadge', () => {
 
   it('renders nothing when all threads are resolved', () => {
     const {container} = renderWithReviewState(
-      <CommentBadge subjectType="ContentElement" subjectId={10} />,
+      <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
           {id: 1, subjectType: 'ContentElement', subjectId: 10, resolvedAt: '2026-04-09T10:00:00Z', comments: []}
@@ -63,7 +63,7 @@ describe('CommentBadge', () => {
 
   it('renders nothing when no threads exist for subject', () => {
     const {container} = renderWithReviewState(
-      <CommentBadge subjectType="ContentElement" subjectId={10} />
+      <ThreadsBadge subjectType="ContentElement" subjectId={10} />
     );
 
     expect(container).toBeEmptyDOMElement();
@@ -72,7 +72,7 @@ describe('CommentBadge', () => {
   describe('mode icon', () => {
     it('renders icon without count when no threads', () => {
       const {getByRole} = renderWithReviewState(
-        <CommentBadge subjectType="ContentElement" subjectId={10} mode="icon" />
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} mode="icon" />
       );
 
       expect(getByRole('status')).toBeInTheDocument();
@@ -81,7 +81,7 @@ describe('CommentBadge', () => {
 
     it('renders full pill when threads exist', () => {
       const {getByRole} = renderWithReviewState(
-        <CommentBadge subjectType="ContentElement" subjectId={10} mode="icon" />,
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} mode="icon" />,
         {
           commentThreads: [
             {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: []},
@@ -97,7 +97,7 @@ describe('CommentBadge', () => {
   describe('mode dot', () => {
     it('renders nothing when no threads', () => {
       const {container} = renderWithReviewState(
-        <CommentBadge subjectType="ContentElement" subjectId={10} mode="dot" />
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} mode="dot" />
       );
 
       expect(container).toBeEmptyDOMElement();
@@ -105,7 +105,7 @@ describe('CommentBadge', () => {
 
     it('renders dot badge without count when threads exist', () => {
       const {getByRole} = renderWithReviewState(
-        <CommentBadge subjectType="ContentElement" subjectId={10} mode="dot" />,
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} mode="dot" />,
         {
           commentThreads: [
             {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: []}
@@ -122,7 +122,7 @@ describe('CommentBadge', () => {
     const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 12}};
 
     const {getByRole} = renderWithReviewState(
-      <CommentBadge subjectType="ContentElement" subjectId={10} subjectRange={subjectRange} />,
+      <ThreadsBadge subjectType="ContentElement" subjectId={10} subjectRange={subjectRange} />,
       {
         commentThreads: [
           {id: 1, subjectType: 'ContentElement', subjectId: 10, subjectRange, comments: []},
@@ -140,7 +140,7 @@ describe('CommentBadge', () => {
   describe('mode active', () => {
     it('renders full pill even without threads', () => {
       const {getByRole} = renderWithReviewState(
-        <CommentBadge subjectType="ContentElement" subjectId={10} mode="active" />
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} mode="active" />
       );
 
       expect(getByRole('status')).toBeInTheDocument();

@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import classNames from 'classnames';
 import {createEditor, Transforms, Node, Text as SlateText, Range} from 'slate';
 import {Slate, Editable, withReact, ReactEditor} from 'slate-react';
@@ -10,6 +10,8 @@ import {useCachedValue} from '../useCachedValue';
 import {useContentElementEditorCommandSubscription} from '../../useContentElementEditorCommandSubscription';
 import {useContentElementEditorState} from '../../useContentElementEditorState';
 import {TextPlaceholder} from '../TextPlaceholder';
+import {BadgeColumn} from './BadgeColumn';
+import {useCommenting} from './useCommenting';
 
 import {withCustomInsertBreak} from './withCustomInsertBreak';
 import {
@@ -98,6 +100,16 @@ export const EditableText = React.memo(function EditableText({
     }
   }, [autoFocus, editor]);
 
+  const {
+    enabled: commentingEnabled,
+    anchors,
+    highlights,
+    decorate: decorateComments,
+    withCommentHighlightDecoration,
+    editableRemountKey,
+    resetRangeRefs
+  } = useCommenting(editor);
+
   const [cachedValue, setCachedValue] = useCachedValue(value, {
     defaultValue: [{
       type: 'paragraph',
@@ -107,6 +119,7 @@ export const EditableText = React.memo(function EditableText({
     onReset: nextValue => {
       resetSelectionIfOutsideNextValue(editor, nextValue);
       resetHistory(editor);
+      resetRangeRefs();
     }
   });
 
@@ -146,14 +159,26 @@ export const EditableText = React.memo(function EditableText({
     }
   });
 
-  const [dropTargetsActive, ref] = useDropTargetsActive();
+  const [dropTargetsActive, dropTargetsRef] = useDropTargetsActive();
+
+  const decorate = useMemo(() => {
+    if (!commentingEnabled) {
+      return decorateLineBreaks;
+    }
+
+    return entry => [...decorateLineBreaks(entry), ...decorateComments(entry)];
+  }, [decorateComments, commentingEnabled]);
+
+  const renderLeaf = useCallback(props => (
+    renderLeafWithLineBreakDecoration(withCommentHighlightDecoration(props))
+  ), [withCommentHighlightDecoration]);
 
   return (
     <Text scaleCategory={scaleCategory}
           typographyVariant={typographyVariant}
           typographySize={typographySize}>
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
-           ref={ref}>
+           ref={el => { dropTargetsRef(el); anchors.containerRef.current = el; }}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
           <LinkTooltipProvider disabled={editor.selection && !Range.isCollapsed(editor.selection)}
                                position={floatingControlsPosition}>
@@ -161,17 +186,20 @@ export const EditableText = React.memo(function EditableText({
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
             <HoveringToolbar>
               <Editable
+                key={editableRemountKey}
                 className={className}
-                decorate={decorateLineBreaks}
+                decorate={decorate}
                 onKeyDown={handleKeyDown}
                 renderElement={renderElementWithLinkPreview}
-                renderLeaf={renderLeafWithLineBreakDecoration} />
+                renderLeaf={renderLeaf} />
             </HoveringToolbar>
           </LinkTooltipProvider>
         </Slate>
         <TextPlaceholder text={placeholder}
                          className={placeholderClassName}
                          visible={isBlank(cachedValue)} />
+        {commentingEnabled &&
+          <BadgeColumn highlights={highlights} anchors={anchors} />}
       </div>
     </Text>
   );
