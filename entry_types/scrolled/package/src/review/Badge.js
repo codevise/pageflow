@@ -1,17 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {useCommentThreads} from './ReviewStateProvider';
-
 import CommentIcon from './images/comment.svg';
-import styles from './CommentBadge.module.css';
+import styles from './Badge.module.css';
 
-export function CommentBadge({subjectType, subjectId, subjectRange, onClick, mode}) {
-  const threads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
-  const unresolvedCount = threads.length;
-  const hasThreads = unresolvedCount > 0;
-
-  const variant = resolveVariant(mode, hasThreads);
+export function Badge({counter, mode, onClick}) {
+  const variant = resolveVariant(mode, counter > 0);
 
   if (!variant) {
     return null;
@@ -22,7 +16,7 @@ export function CommentBadge({subjectType, subjectId, subjectRange, onClick, mod
             className={classNames(styles.badge, styles[variant])}
             onClick={onClick}>
       {variant !== 'dot' && <CommentIcon className={styles.icon} />}
-      {(variant === 'active' || variant === 'expanded') && unresolvedCount > 1 ? unresolvedCount : null}
+      {(variant === 'active' || variant === 'expanded') && counter > 1 ? counter : null}
     </button>
   );
 }

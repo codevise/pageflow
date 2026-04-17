@@ -6,12 +6,17 @@ import {SelectedSubjectProvider} from '../frontend/commenting/SelectedSubjectPro
 import {AddCommentModeProvider, useAddCommentMode} from '../frontend/commenting/AddCommentModeProvider';
 import {ContentElementAttributesProvider} from '../frontend/useContentElementAttributes';
 
+function PassThrough({children}) {
+  return children;
+}
+
 export function renderWithCommenting(ui, {
   contentElementId = 1,
   contentElementPermaId = 10,
   inlineComments = true,
   commentThreads = [],
-  currentUser = null
+  currentUser = null,
+  wrapper: OuterWrapper = PassThrough
 } = {}) {
   let addCommentModeRef;
 
@@ -22,19 +27,21 @@ export function renderWithCommenting(ui, {
   }
 
   const result = render(
-    <ReviewStateProvider initialState={{currentUser, commentThreads}}>
-      <SelectedSubjectProvider>
-        <AddCommentModeProvider>
-          <AddCommentModeCapture>
-            <ContentElementAttributesProvider id={contentElementId}
-                                              permaId={contentElementPermaId}
-                                              inlineComments={inlineComments}>
-              {ui}
-            </ContentElementAttributesProvider>
-          </AddCommentModeCapture>
-        </AddCommentModeProvider>
-      </SelectedSubjectProvider>
-    </ReviewStateProvider>
+    <OuterWrapper>
+      <ReviewStateProvider initialState={{currentUser, commentThreads}}>
+        <SelectedSubjectProvider>
+          <AddCommentModeProvider>
+            <AddCommentModeCapture>
+              <ContentElementAttributesProvider id={contentElementId}
+                                                permaId={contentElementPermaId}
+                                                inlineComments={inlineComments}>
+                {ui}
+              </ContentElementAttributesProvider>
+            </AddCommentModeCapture>
+          </AddCommentModeProvider>
+        </SelectedSubjectProvider>
+      </ReviewStateProvider>
+    </OuterWrapper>
   );
 
   return {
