@@ -39,23 +39,24 @@ export function ReviewStateProvider({initialState, children}) {
   );
 }
 
-export function useCommentThreads(subjectType, subjectId, subjectRange) {
+export function useCommentThreads(subject, {resolved} = {}) {
   const context = useContext(ReviewStateContext);
   const commentThreads = context ? context.commentThreads : [];
+  const {subjectType, subjectId, subjectRange} = subject || {};
 
-  return useMemo(
-    () => commentThreads.filter(
+  return useMemo(() => {
+    const rangeKey = subjectRange ? JSON.stringify(subjectRange) : undefined;
+
+    return commentThreads.filter(
       thread => thread.subjectType === subjectType &&
                 thread.subjectId === subjectId &&
-                (!subjectRange || rangesEqual(thread.subjectRange, subjectRange))
-    ),
-    [commentThreads, subjectType, subjectId, subjectRange]
-  );
-}
-
-function rangesEqual(a, b) {
-  if (!a || !b) return false;
-  return JSON.stringify(a) === JSON.stringify(b);
+                (!rangeKey ||
+                 JSON.stringify(thread.subjectRange) === rangeKey) &&
+                (resolved === undefined ||
+                 (resolved === false && !thread.resolvedAt) ||
+                 (resolved === true && !!thread.resolvedAt))
+    );
+  }, [commentThreads, subjectType, subjectId, subjectRange, resolved]);
 }
 
 function initState(initialState) {

@@ -13,10 +13,8 @@ import styles from './ThreadList.module.css';
 
 export function ThreadList({subjectType, subjectId, subjectRange, showNewForm: showNewFormProp, reversed, onDismiss, newTopicButtonClassName}) {
   const {t} = useI18n({locale: 'ui'});
-  const threads = useCommentThreads(subjectType, subjectId, subjectRange);
-
-  const activeThreads = threads.filter(thread => !thread.resolvedAt);
-  const resolvedThreads = threads.filter(thread => thread.resolvedAt);
+  const activeThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
+  const resolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
 
   const [expandedThreadId, setExpandedThreadId] = useState(null);
   const [formToggled, setFormToggled] = useState(null);
