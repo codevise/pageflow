@@ -73,7 +73,7 @@ export function Selection(props) {
     if (!isContentElementSelected && boundsRef.current) {
       hideRect(ref.current);
       boundsRef.current = null;
-      window.getSelection().removeAllRanges();
+      Transforms.deselect(editor);
       return;
     }
 

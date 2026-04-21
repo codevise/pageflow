@@ -30,7 +30,15 @@ export function useCommenting(editor) {
 
   const {trackedThreads, resetRangeRefs} = useCommentRangeRefs(editor, threads);
   const {anchors, registerAnchor} = useRangeAnchors();
-  const highlights = useCommentHighlights(trackedThreads);
+  const {isSelected: newThreadActive, range: newThreadRange} = useEditorSelection({
+    type: 'newThread',
+    id: contentElementPermaId
+  });
+
+  const highlights = useCommentHighlights(
+    trackedThreads,
+    newThreadActive ? newThreadRange : undefined
+  );
 
   const decorate = useMemo(
     () => enabled ? decorateCommentHighlights(editor, highlights) : null,
@@ -40,7 +48,7 @@ export function useCommenting(editor) {
   const withCommentHighlightDecoration = useCallback(({attributes, children, leaf}) => {
     if (leaf.commentHighlight) {
       children = (
-        <HighlightSpan rangeKey={leaf.rangeKey}>
+        <HighlightSpan rangeKey={leaf.rangeKey} contentElementPermaId={contentElementPermaId}>
           {children}
         </HighlightSpan>
       );
@@ -55,13 +63,13 @@ export function useCommenting(editor) {
     }
 
     return {attributes, children, leaf};
-  // `threads` is included to invalidate this callback (and the
-  // `renderLeaf` that wraps it) when comment threads update. Without
-  // that, slate-react's `MemoizedText` would skip re-rendering leaves
-  // whose decorations changed because its memo equality function does
-  // not compare `decorations`.
+  // `threads` and `newThreadRange` are included to invalidate this
+  // callback (and the `renderLeaf` that wraps it) when decorations
+  // change. Without that, slate-react's `MemoizedText` would skip
+  // re-rendering leaves whose decorations changed because its memo
+  // equality function does not compare `decorations`.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [registerAnchor, threads]);
+  }, [registerAnchor, contentElementPermaId, threads, newThreadRange]);
 
   return {
     enabled,
@@ -73,9 +81,16 @@ export function useCommenting(editor) {
   };
 }
 
-function HighlightSpan({rangeKey, children}) {
+function HighlightSpan({rangeKey, contentElementPermaId, children}) {
   const threadId = parseInt(rangeKey, 10);
-  const {isSelected} = useEditorSelection({type: 'commentThread', id: threadId});
+  const {isSelected: threadSelected} = useEditorSelection({
+    type: 'commentThread', id: threadId
+  });
+  const {isSelected: newThreadActive} = useEditorSelection({
+    type: 'newThread', id: contentElementPermaId
+  });
+  const isSelected = threadSelected ||
+                     (rangeKey === 'selection' && newThreadActive);
 
   return (
     <span className={classNames(highlightStyles.highlight,

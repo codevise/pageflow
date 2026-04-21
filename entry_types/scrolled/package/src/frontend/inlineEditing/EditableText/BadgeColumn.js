@@ -5,6 +5,7 @@ import {useSlate} from 'slate-react';
 
 import {Badge, useAnchoredFloating} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
+import {useContentElementAttributes} from '../../useContentElementAttributes';
 import {useEditorSelection} from '../EditorState';
 import {highlightOverlapsSelection} from './highlightOverlapsSelection';
 
@@ -21,14 +22,22 @@ export function BadgeColumn({highlights, anchors}) {
 
 function PositionedBadge({highlight, editorSelection, anchors}) {
   const portalRoot = useFloatingPortalRoot();
-  const {select, isSelected} = useEditorSelection({type: 'commentThread', id: highlight.thread?.id});
+  const {contentElementPermaId} = useContentElementAttributes();
+  const {select, isSelected: threadSelected} = useEditorSelection({
+    type: 'commentThread', id: highlight.thread?.id
+  });
+  const {isSelected: newThreadActive} = useEditorSelection({
+    type: 'newThread', id: contentElementPermaId
+  });
 
   const {refs, floatingStyles, hasAnchor} =
     useAnchoredFloating(highlight.key, anchors);
 
   if (!hasAnchor) return null;
 
-  const mode = isSelected ? 'active' :
+  const isActive = threadSelected ||
+                   (highlight.key === 'selection' && newThreadActive);
+  const mode = isActive ? 'active' :
                highlightOverlapsSelection(highlight, editorSelection) ? undefined :
                'dot';
 
