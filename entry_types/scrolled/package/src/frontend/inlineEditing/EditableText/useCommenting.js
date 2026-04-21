@@ -30,7 +30,15 @@ export function useCommenting(editor) {
 
   const {trackedThreads, resetRangeRefs} = useCommentRangeRefs(editor, threads);
   const {anchors, registerAnchor} = useRangeAnchors();
-  const highlights = useCommentHighlights(trackedThreads);
+  const {isSelected: newThreadActive, range: newThreadRange} = useEditorSelection({
+    type: 'newThread',
+    id: contentElementPermaId
+  });
+
+  const highlights = useCommentHighlights(
+    trackedThreads,
+    newThreadActive ? newThreadRange : undefined
+  );
 
   const decorate = useMemo(
     () => enabled ? decorateCommentHighlights(editor, highlights) : null,
@@ -40,7 +48,7 @@ export function useCommenting(editor) {
   const withCommentHighlightDecoration = useCallback(({attributes, children, leaf}) => {
     if (leaf.commentHighlight) {
       children = (
-        <HighlightSpan rangeKey={leaf.rangeKey}>
+        <HighlightSpan rangeKey={leaf.rangeKey} contentElementPermaId={contentElementPermaId}>
           {children}
         </HighlightSpan>
       );
@@ -55,7 +63,7 @@ export function useCommenting(editor) {
     }
 
     return {attributes, children, leaf};
-  }, [registerAnchor]);
+  }, [registerAnchor, contentElementPermaId]);
 
   return {
     enabled,
@@ -63,14 +71,21 @@ export function useCommenting(editor) {
     anchors,
     decorate,
     withCommentHighlightDecoration,
-    editableRemountKey: `threads-${threads.length}`,
+    editableRemountKey: `${newThreadRange ? 'highlighted-' : 'plain-'}${threads.length}`,
     resetRangeRefs
   };
 }
 
-function HighlightSpan({rangeKey, children}) {
+function HighlightSpan({rangeKey, contentElementPermaId, children}) {
   const threadId = parseInt(rangeKey, 10);
-  const {isSelected} = useEditorSelection({type: 'commentThread', id: threadId});
+  const {isSelected: threadSelected} = useEditorSelection({
+    type: 'commentThread', id: threadId
+  });
+  const {isSelected: newThreadActive} = useEditorSelection({
+    type: 'newThread', id: contentElementPermaId
+  });
+  const isSelected = threadSelected ||
+                     (rangeKey === 'selection' && newThreadActive);
 
   return (
     <span className={classNames(highlightStyles.highlight,

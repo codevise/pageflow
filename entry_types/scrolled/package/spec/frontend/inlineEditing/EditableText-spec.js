@@ -237,6 +237,46 @@ describe('EditableText', () => {
       expect(getByRole('status')).toHaveClass(badgeStyles.dot);
     });
 
+    it('highlights pending new thread range from editor state', () => {
+      let setSelectionRef;
+      function SelectionCapture({children}) {
+        const {select} = useEditorSelection();
+        useEffect(() => {
+          setSelectionRef = select;
+        }, [select]);
+        return children;
+      }
+
+      const selectionWrapper = ({children}) => wrapper({
+        children: <SelectionCapture>{children}</SelectionCapture>
+      });
+
+      const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+      const {container} = renderWithCommenting(
+        <EditableText value={value} contentElementId={1} />,
+        {wrapper: selectionWrapper}
+      );
+
+      expect(container.querySelector(`.${highlightStyles.highlight}`))
+        .not.toBeInTheDocument();
+
+      act(() => setSelectionRef({
+        type: 'newThread',
+        id: 10,
+        subjectType: 'ContentElement',
+        range: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}}
+      }));
+
+      const highlight = container.querySelector(`.${highlightStyles.highlight}`);
+      expect(highlight).toBeInTheDocument();
+      expect(highlight).toHaveTextContent('text');
+      expect(highlight).toHaveClass(highlightStyles.selected);
+
+      const badge = document.querySelector(`[role="status"]`);
+      expect(badge).toHaveClass(badgeStyles.active);
+    });
+
     it('applies selected style to highlight when thread is selected in editor state', () => {
       let setSelectionRef;
       function SelectionCapture({children}) {

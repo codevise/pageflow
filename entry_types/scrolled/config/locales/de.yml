@@ -1852,6 +1852,7 @@ de:
           aktiviert wurde.
     inline_editing:
       add_caption: Beschriftung hinzufügen
+      add_comment: Kommentar hinzufügen
       add_content_element: Neues Element hinzufügen
       cancel: Abbrechen
       drag_content_element: Ziehen, um Element zu verschieben
