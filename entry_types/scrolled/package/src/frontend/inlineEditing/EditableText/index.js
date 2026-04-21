@@ -106,7 +106,8 @@ export const EditableText = React.memo(function EditableText({
     highlights,
     decorate: decorateComments,
     withCommentHighlightDecoration,
-    resetRangeRefs
+    resetRangeRefs,
+    getTrackedSubjectRanges
   } = useCommenting(editor);
 
   const [cachedValue, setCachedValue] = useCachedValue(value, {
@@ -114,7 +115,11 @@ export const EditableText = React.memo(function EditableText({
       type: 'paragraph',
       children: [{ text: '' }],
     }],
-    onDebouncedChange: onChange,
+    onDebouncedChange: nextValue => {
+      if (onChange) {
+        onChange(nextValue, {commentThreadSubjectRanges: getTrackedSubjectRanges()});
+      }
+    },
     onReset: nextValue => {
       resetSelectionIfOutsideNextValue(editor, nextValue);
       resetHistory(editor);
