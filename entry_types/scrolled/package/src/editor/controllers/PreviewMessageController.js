@@ -161,6 +161,15 @@ export const PreviewMessageController = Object.extend({
         else if (type === 'commentThread') {
           this.editor.navigate(`/scrolled/comment_threads/${id}`, {trigger: true})
         }
+        else if (type === 'newThread') {
+          const {subjectType, range} = message.data.payload;
+          const payload = encodeURIComponent(JSON.stringify({subjectRange: range}));
+          this.editor.navigate(
+            `/scrolled/comment_threads/new?subjectType=${subjectType}` +
+            `&subjectId=${id}&payload=${payload}`,
+            {trigger: true}
+          );
+        }
         else if (type === 'contentElement') {
           const contentElement = this.entry.contentElements.get(id);
           this.editor.navigate(contentElement.getEditorPath(), {trigger: true})

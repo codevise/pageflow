@@ -10,6 +10,7 @@ import {EditSectionPaddingsView} from '../views/EditSectionPaddingsView';
 import {EditContentElementView} from '../views/EditContentElementView';
 import {ContentElementCommentsView} from '../views/ContentElementCommentsView';
 import {CommentThreadView} from '../views/CommentThreadView';
+import {NewThreadView} from '../views/NewThreadView';
 
 export const SideBarController = Marionette.Controller.extend({
   initialize: function(options) {
@@ -73,6 +74,20 @@ export const SideBarController = Marionette.Controller.extend({
       view: new CommentThreadView({
         entry: this.entry,
         threadId: parseInt(id, 10),
+        editor
+      })
+    }));
+  },
+
+  newThread: function(subjectType, subjectId, payload) {
+    const {subjectRange} = JSON.parse(decodeURIComponent(payload));
+
+    this.region.show(new BackButtonDecoratorView({
+      view: new NewThreadView({
+        entry: this.entry,
+        subjectType,
+        subjectId: parseInt(subjectId, 10),
+        subjectRange,
         editor
       })
     }));
