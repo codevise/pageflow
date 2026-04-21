@@ -39,6 +39,11 @@ export function ReviewStateProvider({initialState, children}) {
   );
 }
 
+export function useCommentThread(threadId) {
+  const context = useContext(ReviewStateContext);
+  return context?.commentThreads.find(t => t.id === threadId);
+}
+
 export function useCommentThreads(subject, {resolved} = {}) {
   const context = useContext(ReviewStateContext);
   const commentThreads = context ? context.commentThreads : [];

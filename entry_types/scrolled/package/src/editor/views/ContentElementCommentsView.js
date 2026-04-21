@@ -1,34 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Marionette from 'backbone.marionette';
 
-import {ReviewStateProvider, ReviewMessageHandler, ThreadList} from 'pageflow-scrolled/review';
+import {ThreadList} from 'pageflow-scrolled/review';
 
+import {ReviewView} from './ReviewView';
 import styles from './ContentElementCommentsView.module.css';
 
-export const ContentElementCommentsView = Marionette.ItemView.extend({
-  template: () => `<div class="${styles.container}"></div>`,
-
-  onShow() {
-    const session = this.options.entry.reviewSession;
-
-    this.reviewMessageHandler = ReviewMessageHandler.create({
-      session,
-      targetWindow: window
-    });
-
-    ReactDOM.render(
-      <ReviewStateProvider initialState={session.state}>
-        <ThreadList subjectType="ContentElement"
-                    subjectId={this.model.get('permaId')}
-                    newTopicButtonClassName={styles.newTopicButton} />
-      </ReviewStateProvider>,
-      this.$el.find(`.${styles.container}`)[0]
+export const ContentElementCommentsView = ReviewView.extend({
+  renderContent() {
+    return (
+      <ThreadList subjectType="ContentElement"
+                  subjectId={this.model.get('permaId')}
+                  newTopicButtonClassName={styles.newTopicButton} />
     );
-  },
-
-  onClose() {
-    this.reviewMessageHandler.dispose();
-    ReactDOM.unmountComponentAtNode(this.$el.find(`.${styles.container}`)[0]);
   }
 });

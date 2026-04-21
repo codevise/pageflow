@@ -1,10 +1,3 @@
-.container {
-  position: relative;
-  padding-top: space(4);
-  --review-thread-box-shadow: none;
-  --review-thread-border: 1px solid var(--ui-on-surface-color-lightest);
-}
-
 .newTopicButton {
   composes: secondaryIconButton from './buttons.module.css';
   display: flex !important;

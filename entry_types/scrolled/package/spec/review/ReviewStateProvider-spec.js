@@ -5,6 +5,7 @@ import {renderHook} from '@testing-library/react-hooks';
 
 import {
   ReviewStateProvider,
+  useCommentThread,
   useCommentThreads
 } from 'review/ReviewStateProvider';
 import {
@@ -128,5 +129,49 @@ describe('ReviewStateProvider', () => {
     });
 
     expect(result.current).toEqual([]);
+  });
+
+  describe('useCommentThread', () => {
+    it('returns the thread with the given id', () => {
+      const {result} = renderHook(
+        () => useCommentThread(2),
+        {
+          wrapper: ({children}) => (
+            <ReviewStateProvider initialState={{
+              currentUser: null,
+              commentThreads: [
+                {id: 1, subjectType: 'CE', subjectId: 10, comments: []},
+                {id: 2, subjectType: 'CE', subjectId: 10,
+                 comments: [{id: 100, body: 'Hello'}]}
+              ]
+            }}>
+              {children}
+            </ReviewStateProvider>
+          )
+        }
+      );
+
+      expect(result.current).toMatchObject({id: 2, comments: [{body: 'Hello'}]});
+    });
+
+    it('returns undefined for unknown thread id', () => {
+      const {result} = renderHook(
+        () => useCommentThread(999),
+        {
+          wrapper: ({children}) => (
+            <ReviewStateProvider initialState={{
+              currentUser: null,
+              commentThreads: [
+                {id: 1, subjectType: 'CE', subjectId: 10, comments: []}
+              ]
+            }}>
+              {children}
+            </ReviewStateProvider>
+          )
+        }
+      );
+
+      expect(result.current).toBeUndefined();
+    });
   });
 });

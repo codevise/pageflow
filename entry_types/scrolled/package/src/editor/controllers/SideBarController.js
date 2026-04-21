@@ -9,6 +9,7 @@ import {EditSectionTransitionView} from '../views/EditSectionTransitionView';
 import {EditSectionPaddingsView} from '../views/EditSectionPaddingsView';
 import {EditContentElementView} from '../views/EditContentElementView';
 import {ContentElementCommentsView} from '../views/ContentElementCommentsView';
+import {CommentThreadView} from '../views/CommentThreadView';
 
 export const SideBarController = Marionette.Controller.extend({
   initialize: function(options) {
@@ -64,6 +65,16 @@ export const SideBarController = Marionette.Controller.extend({
       entry: this.entry,
       model: this.entry.contentElements.get(id),
       editor
+    }));
+  },
+
+  commentThread: function(id) {
+    this.region.show(new BackButtonDecoratorView({
+      view: new CommentThreadView({
+        entry: this.entry,
+        threadId: parseInt(id, 10),
+        editor
+      })
     }));
   }
 });
