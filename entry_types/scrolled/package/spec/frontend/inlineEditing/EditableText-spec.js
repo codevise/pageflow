@@ -5,9 +5,11 @@ import {HTML5Backend} from 'react-dnd-html5-backend';
 import {features} from 'pageflow/frontend';
 import {EditableText} from 'frontend';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {EditorStateProvider} from 'frontend/inlineEditing/EditorState';
 import {renderWithCommenting} from 'testHelpers/renderWithCommenting';
+import {fakeParentWindow} from 'support';
 
-import {render} from '@testing-library/react';
+import {render, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
 import {commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
@@ -208,6 +210,40 @@ describe('EditableText', () => {
       const highlight = container.querySelector(`.${highlightStyles.highlight}`);
       expect(highlight).toBeInTheDocument();
       expect(highlight).toHaveTextContent('text');
+    });
+
+    it('posts SELECTED commentThread message when badge is clicked', () => {
+      fakeParentWindow();
+      window.parent.postMessage = jest.fn();
+
+      const editorWrapper = ({children}) => (
+        <DndProvider backend={HTML5Backend}>
+          <EditorStateProvider>{children}</EditorStateProvider>
+        </DndProvider>
+      );
+
+      const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+      const {getByRole} = renderWithCommenting(
+        <EditableText value={value} contentElementId={1} />,
+        {
+          wrapper: editorWrapper,
+          commentThreads: [{
+            id: 5,
+            subjectType: 'ContentElement',
+            subjectId: 10,
+            subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
+            comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+          }]
+        }
+      );
+
+      fireEvent.click(getByRole('status'));
+
+      expect(window.parent.postMessage).toHaveBeenCalledWith({
+        type: 'SELECTED',
+        payload: {type: 'commentThread', id: 5}
+      }, expect.anything());
     });
   });
 });
