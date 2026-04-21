@@ -525,6 +525,33 @@ describe('PreviewMessageController', () => {
     })).resolves.toBe('/scrolled/comment_threads/42');
   });
 
+  it('navigates to new thread route with encoded payload on SELECTED for newThread', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed()
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    const range = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
+    const expectedPayload = encodeURIComponent(JSON.stringify({subjectRange: range}));
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {
+          type: 'newThread',
+          id: 10,
+          subjectType: 'ContentElement',
+          range
+        }
+      }, '*');
+    })).resolves.toBe(
+      `/scrolled/comment_threads/new?subjectType=ContentElement&subjectId=10&payload=${expectedPayload}`
+    );
+  });
+
   it('updates configuration on UPDATE_CONTENT_ELEMENT message', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
