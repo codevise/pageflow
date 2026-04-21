@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 
 import {CommentThreadView} from 'editor/views/CommentThreadView';
 
@@ -37,5 +38,39 @@ describe('CommentThreadView', () => {
 
     expect(getByText('Second thread')).toBeInTheDocument();
     expect(queryByText('First thread')).not.toBeInTheDocument();
+  });
+
+  it('resolves thread and resets selection when resolve button is clicked', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+    const entry = createEntry({});
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 5, subjectType: 'ContentElement', subjectId: 10, resolvedAt: null,
+         comments: [{id: 100, body: 'Open thread', creatorName: 'Alice'}]}
+      ]
+    });
+
+    const resetSelectionListener = jest.fn();
+    entry.on('resetSelection', resetSelectionListener);
+
+    const view = new CommentThreadView({
+      entry,
+      threadId: 5,
+      editor: {}
+    });
+
+    const {getByText} = renderBackboneView(view);
+
+    await user.click(getByText('Resolve'));
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {type: 'UPDATE_THREAD', payload: {threadId: 5, resolved: true}},
+      window.location.origin
+    );
+    expect(resetSelectionListener).toHaveBeenCalled();
+
+    postMessage.mockRestore();
   });
 });
