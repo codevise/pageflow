@@ -415,6 +415,128 @@ module PageflowScrolled
 
         expect(response.status).to eq(404)
       end
+
+      it 'updates subject_range of comment threads of the updated content element' do
+        entry = create(:entry, type_name: 'scrolled')
+        content_element = create(:content_element, :text_block, revision: entry.draft)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        subject_type: 'ContentElement',
+                        subject_id: content_element.perma_id,
+                        subject_range: {'anchor' => {'path' => [0, 0], 'offset' => 0},
+                                        'focus' => {'path' => [0, 0], 'offset' => 5}})
+
+        authorize_for_editor_controller(entry)
+        patch(:update,
+              params: {
+                entry_type: 'scrolled',
+                entry_id: entry.id,
+                id: content_element.id,
+                content_element: {configuration: {children: 'xSome text'}},
+                comment_thread_subject_ranges: {
+                  thread.id.to_s => {anchor: {path: [0, 0], offset: 1},
+                                     focus: {path: [0, 0], offset: 6}}
+                }
+              }, format: 'json', as: :json)
+
+        expect(thread.reload.subject_range).to eq(
+          'anchor' => {'path' => [0, 0], 'offset' => 1},
+          'focus' => {'path' => [0, 0], 'offset' => 6}
+        )
+      end
+
+      it 'ignores subject_range entries for threads of other content elements' do
+        entry = create(:entry, type_name: 'scrolled')
+        content_element = create(:content_element, :text_block, revision: entry.draft)
+        other_element = create(:content_element, :text_block, revision: entry.draft)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        subject_type: 'ContentElement',
+                        subject_id: other_element.perma_id,
+                        subject_range: {'anchor' => {'path' => [0, 0], 'offset' => 0},
+                                        'focus' => {'path' => [0, 0], 'offset' => 5}})
+
+        authorize_for_editor_controller(entry)
+        patch(:update,
+              params: {
+                entry_type: 'scrolled',
+                entry_id: entry.id,
+                id: content_element.id,
+                content_element: {configuration: {children: 'text'}},
+                comment_thread_subject_ranges: {
+                  thread.id.to_s => {anchor: {path: [9, 9], offset: 9},
+                                     focus: {path: [9, 9], offset: 9}}
+                }
+              }, format: 'json', as: :json)
+
+        expect(thread.reload.subject_range).to eq(
+          'anchor' => {'path' => [0, 0], 'offset' => 0},
+          'focus' => {'path' => [0, 0], 'offset' => 5}
+        )
+      end
+
+      it 'ignores subject_range entries for threads of a different entry' do
+        entry = create(:entry, type_name: 'scrolled')
+        content_element = create(:content_element, :text_block, revision: entry.draft)
+        other_entry = create(:entry, type_name: 'scrolled')
+        thread = create(:comment_thread,
+                        revision: other_entry.draft,
+                        subject_type: 'ContentElement',
+                        subject_id: content_element.perma_id,
+                        subject_range: {'anchor' => {'path' => [0, 0], 'offset' => 0},
+                                        'focus' => {'path' => [0, 0], 'offset' => 5}})
+
+        authorize_for_editor_controller(entry)
+        patch(:update,
+              params: {
+                entry_type: 'scrolled',
+                entry_id: entry.id,
+                id: content_element.id,
+                content_element: {configuration: {children: 'text'}},
+                comment_thread_subject_ranges: {
+                  thread.id.to_s => {anchor: {path: [9, 9], offset: 9},
+                                     focus: {path: [9, 9], offset: 9}}
+                }
+              }, format: 'json', as: :json)
+
+        expect(thread.reload.subject_range).to eq(
+          'anchor' => {'path' => [0, 0], 'offset' => 0},
+          'focus' => {'path' => [0, 0], 'offset' => 5}
+        )
+      end
+
+      it 'ignores non-subject_range keys in comment_thread_subject_ranges' do
+        entry = create(:entry, type_name: 'scrolled')
+        content_element = create(:content_element, :text_block, revision: entry.draft)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        subject_type: 'ContentElement',
+                        subject_id: content_element.perma_id,
+                        subject_range: {'anchor' => {'path' => [0, 0], 'offset' => 0},
+                                        'focus' => {'path' => [0, 0], 'offset' => 5}},
+                        resolved_at: nil)
+
+        authorize_for_editor_controller(entry)
+        patch(:update,
+              params: {
+                entry_type: 'scrolled',
+                entry_id: entry.id,
+                id: content_element.id,
+                content_element: {configuration: {}},
+                comment_thread_subject_ranges: {
+                  thread.id.to_s => {
+                    anchor: {path: [0, 0], offset: 1},
+                    focus: {path: [0, 0], offset: 6},
+                    resolved_at: '2030-01-01',
+                    subject_id: 9999
+                  }
+                }
+              }, format: 'json', as: :json)
+
+        thread.reload
+        expect(thread.resolved_at).to be_nil
+        expect(thread.subject_id).to eq(content_element.perma_id)
+      end
     end
 
     describe '#order' do
@@ -428,7 +550,7 @@ module PageflowScrolled
         put(:order,
             params: {
               entry_type: 'scrolled',
-              entry_id: entry,
+              entry_id: entry.id,
               section_id: section,
               ids: [content_elements.first.id, content_elements.last.id]
             }, format: 'json')
@@ -447,7 +569,7 @@ module PageflowScrolled
         put(:order,
             params: {
               entry_type: 'scrolled',
-              entry_id: entry,
+              entry_id: entry.id,
               section_id: section_in_other_entry,
               ids: [content_element.id]
             }, format: 'json')
@@ -466,7 +588,7 @@ module PageflowScrolled
         delete(:destroy,
                params: {
                  entry_type: 'scrolled',
-                 entry_id: entry,
+                 entry_id: entry.id,
                  id: content_element
                }, format: 'json')
 
@@ -483,7 +605,7 @@ module PageflowScrolled
         delete(:destroy,
                params: {
                  entry_type: 'scrolled',
-                 entry_id: entry,
+                 entry_id: entry.id,
                  id: content_element_in_other_entry
                }, format: 'json')
 
