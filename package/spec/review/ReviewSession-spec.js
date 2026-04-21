@@ -323,4 +323,111 @@ describe('ReviewSession', () => {
       })
     );
   });
+
+  describe('subject range updates', () => {
+    const threadA = {
+      id: 1, subjectType: 'ContentElement', subjectId: 10,
+      subjectRange: {anchor: {path: [0, 0], offset: 0},
+                     focus: {path: [0, 0], offset: 5}},
+      comments: []
+    };
+    const threadB = {
+      id: 2, subjectType: 'ContentElement', subjectId: 10,
+      subjectRange: {anchor: {path: [0, 0], offset: 10},
+                     focus: {path: [0, 0], offset: 15}},
+      comments: []
+    };
+    const newRangeA = {anchor: {path: [0, 0], offset: 1},
+                       focus: {path: [0, 0], offset: 6}};
+
+    function setupSession() {
+      return new ReviewSession({
+        entryId: 5,
+        initialState: {
+          currentUser: {id: 1, name: 'Alice'},
+          commentThreads: [threadA, threadB]
+        }
+      });
+    }
+
+    describe('diffSubjectRangeUpdates', () => {
+      it('returns only threads whose subjectRange actually changed', async () => {
+        const session = setupSession();
+
+        const changed = session.diffSubjectRangeUpdates({
+          1: newRangeA,
+          2: threadB.subjectRange
+        });
+
+        expect(changed).toEqual({1: newRangeA});
+      });
+
+      it('returns empty object when no ranges differ', async () => {
+        const session = setupSession();
+
+        const changed = session.diffSubjectRangeUpdates({
+          1: threadA.subjectRange,
+          2: threadB.subjectRange
+        });
+
+        expect(changed).toEqual({});
+      });
+
+      it('skips unknown thread ids', async () => {
+        const session = setupSession();
+
+        const changed = session.diffSubjectRangeUpdates({
+          999: {anchor: {path: [9, 9], offset: 9},
+                focus: {path: [9, 9], offset: 9}}
+        });
+
+        expect(changed).toEqual({});
+      });
+
+      it('does not mutate session state', async () => {
+        const session = setupSession();
+
+        session.diffSubjectRangeUpdates({1: newRangeA});
+
+        const stored = session.state.commentThreads.find(t => t.id === 1);
+        expect(stored.subjectRange).toEqual(threadA.subjectRange);
+      });
+    });
+
+    describe('applySubjectRangeUpdates', () => {
+      it('updates stored subjectRange for each passed thread', async () => {
+        const session = setupSession();
+
+        session.applySubjectRangeUpdates({1: newRangeA});
+
+        const stored = session.state.commentThreads.find(t => t.id === 1);
+        expect(stored.subjectRange).toEqual(newRangeA);
+      });
+
+      it('emits change:thread for each updated thread', async () => {
+        const session = setupSession();
+        const listener = jest.fn();
+        session.on('change:thread', listener);
+
+        session.applySubjectRangeUpdates({1: newRangeA});
+
+        expect(listener).toHaveBeenCalledWith(
+          expect.objectContaining({id: 1, subjectRange: newRangeA})
+        );
+      });
+
+      it('ignores unknown thread ids', async () => {
+        const session = setupSession();
+        const listener = jest.fn();
+        session.on('change:thread', listener);
+
+        session.applySubjectRangeUpdates({
+          999: {anchor: {path: [9, 9], offset: 9},
+                focus: {path: [9, 9], offset: 9}}
+        });
+
+        expect(listener).not.toHaveBeenCalled();
+      });
+    });
+  });
 });
