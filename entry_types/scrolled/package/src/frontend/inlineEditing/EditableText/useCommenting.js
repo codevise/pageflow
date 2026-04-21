@@ -1,4 +1,5 @@
 import React, {useCallback, useMemo} from 'react';
+import classNames from 'classnames';
 
 import {features} from 'pageflow/frontend';
 import {
@@ -11,6 +12,7 @@ import {
 } from 'pageflow-scrolled/review';
 
 import {useContentElementAttributes} from '../../useContentElementAttributes';
+import {useEditorSelection} from '../EditorState';
 import {useCommentRangeRefs} from './useCommentRangeRefs';
 
 // Bundles all commenting-related state and render helpers for the
@@ -37,7 +39,11 @@ export function useCommenting(editor) {
 
   const withCommentHighlightDecoration = useCallback(({attributes, children, leaf}) => {
     if (leaf.commentHighlight) {
-      children = <span className={highlightStyles.highlight}>{children}</span>;
+      children = (
+        <HighlightSpan rangeKey={leaf.rangeKey}>
+          {children}
+        </HighlightSpan>
+      );
     }
 
     if (leaf.firstInRange) {
@@ -65,4 +71,16 @@ export function useCommenting(editor) {
     withCommentHighlightDecoration,
     resetRangeRefs
   };
+}
+
+function HighlightSpan({rangeKey, children}) {
+  const threadId = parseInt(rangeKey, 10);
+  const {isSelected} = useEditorSelection({type: 'commentThread', id: threadId});
+
+  return (
+    <span className={classNames(highlightStyles.highlight,
+                                {[highlightStyles.selected]: isSelected})}>
+      {children}
+    </span>
+  );
 }
