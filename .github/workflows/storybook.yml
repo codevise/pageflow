@@ -18,6 +18,8 @@ env:
 
 jobs:
   snapshot:
+    # Skip when PR description contains [skip percy] to reduce Percy usage
+    if: github.event_name != 'pull_request' || !contains(github.event.pull_request.body, '[skip percy]')
     runs-on: ubuntu-latest
 
     services:
