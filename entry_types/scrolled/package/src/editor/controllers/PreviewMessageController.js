@@ -221,11 +221,19 @@ export const PreviewMessageController = Object.extend({
         this.entry.moveContentElement({id, range}, to);
       }
       else if (message.data.type === 'UPDATE_CONTENT_ELEMENT') {
-        const {id, configuration} = message.data.payload;
+        const {id, configuration, commentThreadSubjectRanges} = message.data.payload;
+        const contentElement = this.entry.contentElements.get(id);
 
-        this.entry.contentElements.get(id).configuration.set(
-          configuration, {ignoreInWatchCollection: true}
-        );
+        if (commentThreadSubjectRanges) {
+          this.entry.updateContentElement(
+            contentElement, configuration, {commentThreadSubjectRanges}
+          );
+        }
+        else {
+          contentElement.configuration.set(
+            configuration, {ignoreInWatchCollection: true}
+          );
+        }
       }
       else if (message.data.type === 'UPDATE_WIDGET') {
         const {role, configuration} = message.data.payload;

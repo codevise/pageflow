@@ -13,7 +13,7 @@ import {
   postSelectLinkDestinationMessage
 } from 'frontend/inlineEditing/postMessage';
 import {setupGlobals} from 'pageflow/testHelpers';
-import {useFakeXhr, normalizeSeed, factories, createIframeWindow} from 'support';
+import {normalizeSeed, factories, createIframeWindow, useFakeXhr} from 'support';
 
 describe('PreviewMessageController', () => {
   beforeAll(() => editor.contentElementTypes.register('textBlock', {}));
@@ -568,6 +568,45 @@ describe('PreviewMessageController', () => {
       });
       postUpdateContentElementMessage({id: 1, configuration: {some: 'value'}});
     })).resolves.toEqual('value');
+  });
+
+  it('updates configuration and review session ranges on UPDATE_CONTENT_ELEMENT with ranges', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      })
+    });
+    entry.reviewSession = factories.reviewSession({
+      entryId: entry.id,
+      commentThreads: [
+        {id: 7, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {anchor: {path: [0, 0], offset: 0},
+                        focus: {path: [0, 0], offset: 3}},
+         comments: []}
+      ]
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    const threadChange = new Promise(resolve =>
+      entry.reviewSession.once('change:thread', resolve)
+    );
+
+    postUpdateContentElementMessage({
+      id: 1,
+      configuration: {some: 'value'},
+      commentThreadSubjectRanges: {
+        '7': {anchor: {path: [0, 0], offset: 1},
+              focus: {path: [0, 0], offset: 4}}
+      }
+    });
+
+    await threadChange;
+
+    expect(entry.contentElements.get(1).configuration.get('some')).toBe('value');
+    expect(entry.reviewSession.state.commentThreads.find(t => t.id === 7).subjectRange)
+      .toEqual({anchor: {path: [0, 0], offset: 1},
+                focus: {path: [0, 0], offset: 4}});
   });
 
   it('updates configuration on UPDATE_WIDGET message', () => {

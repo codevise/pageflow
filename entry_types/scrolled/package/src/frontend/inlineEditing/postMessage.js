@@ -18,13 +18,14 @@ export function postMoveContentElementMessage({id, range, to}) {
   );
 }
 
-export function postUpdateContentElementMessage({id, configuration}) {
+export function postUpdateContentElementMessage({id, configuration, commentThreadSubjectRanges}) {
   window.parent.postMessage(
     {
       type: 'UPDATE_CONTENT_ELEMENT',
       payload: {
         id,
-        configuration
+        configuration,
+        commentThreadSubjectRanges
       }
     },
     window.location.origin
