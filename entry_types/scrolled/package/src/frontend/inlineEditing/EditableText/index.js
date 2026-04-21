@@ -194,12 +194,12 @@ export const EditableText = React.memo(function EditableText({
                 renderLeaf={renderLeaf} />
             </HoveringToolbar>
           </LinkTooltipProvider>
+          {commentingEnabled &&
+            <BadgeColumn highlights={highlights} anchors={anchors} />}
         </Slate>
         <TextPlaceholder text={placeholder}
                          className={placeholderClassName}
                          visible={isBlank(cachedValue)} />
-        {commentingEnabled &&
-          <BadgeColumn highlights={highlights} anchors={anchors} />}
       </div>
     </Text>
   );

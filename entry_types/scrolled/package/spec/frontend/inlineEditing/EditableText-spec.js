@@ -1,25 +1,30 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 
 import {features} from 'pageflow/frontend';
 import {EditableText} from 'frontend';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
-import {EditorStateProvider} from 'frontend/inlineEditing/EditorState';
+import {EditorStateProvider, useEditorSelection} from 'frontend/inlineEditing/EditorState';
 import {renderWithCommenting} from 'testHelpers/renderWithCommenting';
 import {fakeParentWindow} from 'support';
 
-import {render, fireEvent} from '@testing-library/react';
+import {render, fireEvent, act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
 import {commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
+import badgeStyles from 'review/Badge.module.css';
 
 describe('EditableText', () => {
   beforeAll(loadInlineEditingComponents);
 
   beforeAll(() => window.getSelection = function() {});
 
-  const wrapper = ({children}) => <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
+  const wrapper = ({children}) => (
+    <DndProvider backend={HTML5Backend}>
+      <EditorStateProvider>{children}</EditorStateProvider>
+    </DndProvider>
+  );
 
   it('renders text from value', () => {
     const value = [{
@@ -212,22 +217,71 @@ describe('EditableText', () => {
       expect(highlight).toHaveTextContent('text');
     });
 
-    it('posts SELECTED commentThread message when badge is clicked', () => {
-      fakeParentWindow();
-      window.parent.postMessage = jest.fn();
+    it('renders badge in dot mode by default', () => {
+      const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
 
-      const editorWrapper = ({children}) => (
-        <DndProvider backend={HTML5Backend}>
-          <EditorStateProvider>{children}</EditorStateProvider>
-        </DndProvider>
+      const {getByRole} = renderWithCommenting(
+        <EditableText value={value} contentElementId={1} />,
+        {
+          wrapper,
+          commentThreads: [{
+            id: 5,
+            subjectType: 'ContentElement',
+            subjectId: 10,
+            subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
+            comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+          }]
+        }
       );
+
+      expect(getByRole('status')).toHaveClass(badgeStyles.dot);
+    });
+
+    it('renders badge in active mode when thread is selected in editor state', () => {
+      let setSelectionRef;
+      function SelectionCapture({children}) {
+        const {select} = useEditorSelection();
+        useEffect(() => {
+          setSelectionRef = select;
+        }, [select]);
+        return children;
+      }
+
+      const selectionWrapper = ({children}) => wrapper({
+        children: <SelectionCapture>{children}</SelectionCapture>
+      });
 
       const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
 
       const {getByRole} = renderWithCommenting(
         <EditableText value={value} contentElementId={1} />,
         {
-          wrapper: editorWrapper,
+          wrapper: selectionWrapper,
+          commentThreads: [{
+            id: 5,
+            subjectType: 'ContentElement',
+            subjectId: 10,
+            subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
+            comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+          }]
+        }
+      );
+
+      act(() => setSelectionRef({type: 'commentThread', id: 5}));
+
+      expect(getByRole('status')).toHaveClass(badgeStyles.active);
+    });
+
+    it('posts SELECTED commentThread message when badge is clicked', () => {
+      fakeParentWindow();
+      window.parent.postMessage = jest.fn();
+
+      const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+      const {getByRole} = renderWithCommenting(
+        <EditableText value={value} contentElementId={1} />,
+        {
+          wrapper,
           commentThreads: [{
             id: 5,
             subjectType: 'ContentElement',
