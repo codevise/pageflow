@@ -28,7 +28,8 @@ export function useCommenting(editor) {
     {resolved: false}
   );
 
-  const {trackedThreads, resetRangeRefs} = useCommentRangeRefs(editor, threads);
+  const {trackedThreads, resetRangeRefs, getTrackedSubjectRanges} =
+    useCommentRangeRefs(editor, threads);
   const {anchors, registerAnchor} = useRangeAnchors();
   const {isSelected: newThreadActive, range: newThreadRange} = useEditorSelection({
     type: 'newThread',
@@ -72,7 +73,8 @@ export function useCommenting(editor) {
     decorate,
     withCommentHighlightDecoration,
     editableRemountKey: `${newThreadRange ? 'highlighted-' : 'plain-'}${threads.length}`,
-    resetRangeRefs
+    resetRangeRefs,
+    getTrackedSubjectRanges
   };
 }
 

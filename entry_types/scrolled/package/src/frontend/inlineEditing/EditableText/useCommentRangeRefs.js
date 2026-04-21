@@ -47,7 +47,21 @@ export function useCommentRangeRefs(editor, threads) {
     return ref?.current ? {...t, subjectRange: ref.current} : t;
   });
 
-  return {trackedThreads, resetRangeRefs};
+  const getTrackedSubjectRanges = useCallback(() => {
+    const ranges = {};
+
+    threads.forEach(t => {
+      const ref = rangeRefsMap.current.get(t.id);
+
+      if (ref?.current) {
+        ranges[t.id] = ref.current;
+      }
+    });
+
+    return ranges;
+  }, [threads]);
+
+  return {trackedThreads, resetRangeRefs, getTrackedSubjectRanges};
 }
 
 function isValidRange(editor, range) {

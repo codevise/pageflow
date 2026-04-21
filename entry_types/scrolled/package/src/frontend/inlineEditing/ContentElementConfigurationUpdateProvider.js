@@ -7,8 +7,8 @@ import {postUpdateContentElementMessage} from './postMessage';
 export function ContentElementConfigurationUpdateProvider({id, permaId, children}) {
   const dispatch = useEntryStateDispatch();
   const update = useCallback(
-    configuration => {
-      postUpdateContentElementMessage({id, configuration});
+    (configuration, {commentThreadSubjectRanges} = {}) => {
+      postUpdateContentElementMessage({id, configuration, commentThreadSubjectRanges});
       updateContentElementConfiguration({
         dispatch,
         permaId,
