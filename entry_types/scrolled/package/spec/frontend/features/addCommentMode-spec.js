@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {Entry} from 'frontend/Entry';
+import {api} from 'frontend/api';
 import {usePageObjects} from 'support/pageObjects';
 import {renderInEntry} from 'support';
 import {clearExtensions} from 'frontend/extensions';
@@ -168,6 +169,29 @@ describe('add comment mode', () => {
     await user.click(getByRole('button', {name: 'Cancel add comment'}));
 
     expect(queryByRole('button', {name: 'Select to comment'})).not.toBeInTheDocument();
+  });
+
+  it('does not show overlay on inlineComments elements', async () => {
+    api.contentElementTypes.register('withInlineComments', {
+      component: function WithInlineComments() {
+        return <div data-testid="inlineCommentsElement" />;
+      },
+      inlineComments: true
+    });
+
+    const user = userEvent.setup();
+    const {getByRole, queryAllByRole} = renderInEntry(<Entry />, {
+      seed: {
+        contentElements: [
+          {typeName: 'withInlineComments'},
+          {typeName: 'withTestId', configuration: {testId: 5}}
+        ]
+      }
+    });
+
+    await user.click(getByRole('button', {name: 'Add comment'}));
+
+    expect(queryAllByRole('button', {name: 'Select to comment'})).toHaveLength(1);
   });
 
   it('exits add comment mode when clicking outside', async () => {

@@ -16,7 +16,7 @@ const defaultValue = [{
   children: [{ text: '' }],
 }];
 
-export const EditableText = extensible('EditableText', function EditableText({
+export function PlainEditableText({
   value, className, scaleCategory = 'body', typographyVariant, typographySize
 }) {
   return (
@@ -26,7 +26,9 @@ export const EditableText = extensible('EditableText', function EditableText({
       </Text>
     </div>
   );
-});
+}
+
+export const EditableText = extensible('EditableText', PlainEditableText);
 
 function render(children) {
   return children.map((element, index) => {

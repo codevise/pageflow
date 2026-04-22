@@ -97,6 +97,49 @@ describe('ReviewSession', () => {
     );
   });
 
+  it('includes subject_range in createThread request', async () => {
+    const subjectRange = {
+      anchor: {path: [0, 0], offset: 5},
+      focus: {path: [0, 0], offset: 12}
+    };
+
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: []
+      })
+      .mockResolvedValueOnce({
+        id: 1,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        subjectRange,
+        comments: [{id: 100, body: 'About this text', creatorId: 42}]
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    await session.createThread({
+      subjectType: 'ContentElement',
+      subjectId: 10,
+      subjectRange,
+      body: 'About this text'
+    });
+
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/review/entries/5/comment_threads',
+      method: 'POST',
+      payload: {
+        comment_thread: {
+          subject_type: 'ContentElement',
+          subject_id: 10,
+          subject_range: subjectRange,
+          comment: {body: 'About this text'}
+        }
+      }
+    });
+  });
+
   it('updates state after createThread', async () => {
     const request = jest.fn()
       .mockResolvedValueOnce({

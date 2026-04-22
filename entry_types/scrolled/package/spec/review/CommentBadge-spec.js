@@ -118,6 +118,25 @@ describe('CommentBadge', () => {
     });
   });
 
+  it('only counts threads matching subjectRange when provided', () => {
+    const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 12}};
+
+    const {getByRole} = renderWithReviewState(
+      <CommentBadge subjectType="ContentElement" subjectId={10} subjectRange={subjectRange} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, subjectRange, comments: []},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: []},
+          {id: 3, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {anchor: {path: [1, 0], offset: 0}, focus: {path: [1, 0], offset: 5}},
+           comments: []}
+        ]
+      }
+    );
+
+    expect(getByRole('status')).not.toHaveTextContent(/\d/);
+  });
+
   describe('mode active', () => {
     it('renders full pill even without threads', () => {
       const {getByRole} = renderWithReviewState(

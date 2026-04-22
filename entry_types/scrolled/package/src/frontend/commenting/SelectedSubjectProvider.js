@@ -26,17 +26,19 @@ export function SelectedSubjectProvider({children}) {
   );
 }
 
-export function useSelectedSubject(subjectType, subjectId) {
+export function useSelectedSubject(subjectType, subjectId, subjectRange) {
   const {selectedSubject, setSelectedSubject, clearSelection} = useContext(SelectedSubjectContext);
 
   const isSelected = selectedSubject &&
                      selectedSubject.subjectType === subjectType &&
-                     selectedSubject.subjectId === subjectId;
+                     selectedSubject.subjectId === subjectId &&
+                     (!subjectRange || JSON.stringify(selectedSubject.subjectRange) === JSON.stringify(subjectRange));
 
   const select = useCallback((options) => {
-    setSelectedSubject({subjectType, subjectId, ...options});
-  }, [setSelectedSubject, subjectType, subjectId]);
+    setSelectedSubject({subjectType, subjectId, subjectRange, ...options});
+  }, [setSelectedSubject, subjectType, subjectId, subjectRange]);
 
   return {isSelected, hasSelection: !!selectedSubject, select, clearSelection,
-          showNewForm: isSelected && selectedSubject.showNewForm};
+          showNewForm: isSelected && selectedSubject.showNewForm,
+          subjectRange: isSelected ? selectedSubject.subjectRange : undefined};
 }

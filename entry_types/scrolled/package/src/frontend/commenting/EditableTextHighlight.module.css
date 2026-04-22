@@ -1,0 +1,8 @@
+.activeOverlay {
+  box-shadow: 0 0 0 2px var(--ui-selection-color),
+              0 0 0 calc(2px + space(1)) var(--ui-selection-color-light);
+}
+
+.clickable {
+  cursor: pointer;
+}

@@ -35,6 +35,28 @@ describe('ReviewMessageHandler', () => {
     });
   });
 
+  it('passes subjectRange through to session.createThread', async () => {
+    const session = fakeReviewSession();
+    const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 12}};
+
+    ReviewMessageHandler.create({session, targetWindow: window});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {
+        type: 'CREATE_COMMENT_THREAD',
+        payload: {subjectType: 'CE', subjectId: 10, subjectRange, body: 'About this text'}
+      },
+      origin: window.location.origin,
+      source: window
+    }));
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(session.createThread).toHaveBeenCalledWith(
+      expect.objectContaining({subjectRange})
+    );
+  });
+
   it('calls session.createComment on CREATE_COMMENT message from targetWindow', async () => {
     const session = fakeReviewSession();
 

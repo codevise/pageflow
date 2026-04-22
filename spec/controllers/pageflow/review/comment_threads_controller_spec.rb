@@ -33,6 +33,33 @@ module Pageflow
         )
       end
 
+      it 'returns subject_range of threads' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        create(:comment_thread,
+               revision: entry.draft,
+               creator: user,
+               subject_range: {
+                 'anchor' => {'path' => [0, 0], 'offset' => 5},
+                 'focus' => {'path' => [0, 0], 'offset' => 12}
+               })
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(
+          commentThreads: [
+            {
+              subjectRange: {
+                'anchor' => {'path' => [0, 0], 'offset' => 5},
+                'focus' => {'path' => [0, 0], 'offset' => 12}
+              }
+            }
+          ]
+        )
+      end
+
       it 'does not have N+1 queries' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
@@ -90,6 +117,34 @@ module Pageflow
           subjectId: 5,
           creatorId: user.id,
           comments: [{body: 'Looks good!', creatorId: user.id}]
+        )
+      end
+
+      it 'creates thread with subject_range' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        subject_range = {
+          'anchor' => {'path' => [0, 0], 'offset' => 5},
+          'focus' => {'path' => [0, 0], 'offset' => 12}
+        }
+
+        sign_in(user, scope: :user)
+        post(:create, params: {
+               entry_id: entry.id,
+               comment_thread: {
+                 subject_type: 'ContentElement',
+                 subject_id: 5,
+                 subject_range:,
+                 comment: {body: 'About this text'}
+               }
+             }, as: :json)
+
+        expect(response.status).to eq(201)
+        expect(response.body).to include_json(
+          subjectRange: {
+            'anchor' => {'path' => [0, 0], 'offset' => 5},
+            'focus' => {'path' => [0, 0], 'offset' => 12}
+          }
         )
       end
 

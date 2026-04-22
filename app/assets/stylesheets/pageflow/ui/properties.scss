@@ -58,7 +58,9 @@
   --ui-box-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 
   --ui-accent-color: #ffd24d;
-  --ui-accent-color-glow: #ffd24d3d;
+  --ui-accent-color-light: hsla(44, 100%, 65%, 0.6);
+  --ui-accent-color-lighter: hsla(44, 100%, 65%, 0.3);
+  --ui-accent-color-lightest: hsla(44, 100%, 65%, 0.1);
   --ui-on-accent-color: #795f0f;
 
   --ui-on-button-color: var(--ui-primary-color);

@@ -1,6 +1,6 @@
-export function postCreateCommentThreadMessage({subjectType, subjectId, body}) {
+export function postCreateCommentThreadMessage({subjectType, subjectId, subjectRange, body}) {
   window.top.postMessage(
-    {type: 'CREATE_COMMENT_THREAD', payload: {subjectType, subjectId, body}},
+    {type: 'CREATE_COMMENT_THREAD', payload: {subjectType, subjectId, subjectRange, body}},
     window.location.origin
   );
 }

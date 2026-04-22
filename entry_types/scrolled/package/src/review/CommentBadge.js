@@ -6,9 +6,9 @@ import {useCommentThreads} from './ReviewStateProvider';
 import CommentIcon from './images/comment.svg';
 import styles from './CommentBadge.module.css';
 
-export function CommentBadge({subjectType, subjectId, onClick, mode}) {
-  const threads = useCommentThreads(subjectType, subjectId);
-  const unresolvedCount = threads.filter(t => !t.resolvedAt).length;
+export function CommentBadge({subjectType, subjectId, subjectRange, onClick, mode}) {
+  const threads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
+  const unresolvedCount = threads.length;
   const hasThreads = unresolvedCount > 0;
 
   const variant = resolveVariant(mode, hasThreads);

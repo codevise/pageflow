@@ -7,7 +7,7 @@ import {autoGrow, autoResize} from './autoGrow';
 import SendIcon from './images/send.svg';
 import styles from './NewThreadForm.module.css';
 
-export function NewThreadForm({subjectType, subjectId, onSubmit, onCancel}) {
+export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit, onCancel}) {
   const {t} = useI18n({locale: 'ui'});
   const [body, setBody] = useState('');
 
@@ -20,7 +20,7 @@ export function NewThreadForm({subjectType, subjectId, onSubmit, onCancel}) {
     event.preventDefault();
     if (!body.trim()) return;
 
-    postCreateCommentThreadMessage({subjectType, subjectId, body});
+    postCreateCommentThreadMessage({subjectType, subjectId, subjectRange, body});
     setBody('');
 
     if (onSubmit) onSubmit();

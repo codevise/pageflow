@@ -25,7 +25,7 @@
   font-size: space(3.5);
   font-weight: 600;
   padding: space(1.5) space(3);
-  box-shadow: 0 0 0 space(1) var(--ui-accent-color-glow);
+  box-shadow: 0 0 0 space(1) var(--ui-accent-color-lighter);
   opacity: 0.9;
 }
 

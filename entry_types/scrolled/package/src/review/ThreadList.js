@@ -11,17 +11,17 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, showNewForm: showNewFormProp, reversed, onDismiss, newTopicButtonClassName}) {
+export function ThreadList({subjectType, subjectId, subjectRange, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss, newTopicButtonClassName}) {
   const {t} = useI18n({locale: 'ui'});
-  const threads = useCommentThreads(subjectType, subjectId);
-
-  const activeThreads = threads.filter(thread => !thread.resolvedAt);
-  const resolvedThreads = threads.filter(thread => thread.resolvedAt);
+  const activeThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
+  const resolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
 
   const [expandedThreadId, setExpandedThreadId] = useState(null);
   const [formToggled, setFormToggled] = useState(null);
   const [showResolved, setShowResolved] = useState(false);
-  const showNewForm = formToggled !== null ? formToggled : (showNewFormProp || activeThreads.length === 0);
+  const showNewForm = formToggled !== null ? formToggled :
+                      showNewFormProp !== undefined ? showNewFormProp :
+                      activeThreads.length === 0;
 
   function toggleThread(threadId) {
     setExpandedThreadId(expandedThreadId === threadId ? null : threadId);
@@ -29,7 +29,7 @@ export function ThreadList({subjectType, subjectId, showNewForm: showNewFormProp
 
   return (
     <div className={styles.container}>
-      {!showNewForm &&
+      {!showNewForm && !hideNewTopicButton &&
         <button className={classNames(styles.newTopicButton,
                                       newTopicButtonClassName,
                                       {[styles.reversed]: reversed})}
@@ -42,6 +42,7 @@ export function ThreadList({subjectType, subjectId, showNewForm: showNewFormProp
       {showNewForm &&
         <NewThreadForm subjectType={subjectType}
                        subjectId={subjectId}
+                       subjectRange={subjectRange}
                        onSubmit={() => setFormToggled(false)}
                        onCancel={() => {
                          setFormToggled(false);

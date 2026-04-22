@@ -3,6 +3,8 @@ module Pageflow
   class CommentThread < ApplicationRecord
     include RevisionComponent
 
+    serialize :subject_range, coder: JSON
+
     belongs_to :creator, class_name: 'User'
     belongs_to :resolver, class_name: 'User', foreign_key: :resolved_by_id, optional: true
     has_many :comments, dependent: :destroy

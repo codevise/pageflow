@@ -31,7 +31,7 @@ function postThreadChange(payload) {
 describe('ReviewStateProvider', () => {
   it('provides empty initial state', () => {
     const {result} = renderHook(
-      () => useCommentThreads('CE', 10),
+      () => useCommentThreads({subjectType: 'CE', subjectId: 10}),
       {wrapper}
     );
 
@@ -40,7 +40,7 @@ describe('ReviewStateProvider', () => {
 
   it('updates state on reset message', async () => {
     const {result, waitForNextUpdate} = renderHook(
-      () => useCommentThreads('CE', 10),
+      () => useCommentThreads({subjectType: 'CE', subjectId: 10}),
       {wrapper}
     );
 
@@ -58,9 +58,32 @@ describe('ReviewStateProvider', () => {
     expect(result.current[0].id).toBe(1);
   });
 
+  it('filters by resolved option', () => {
+    const {result} = renderHook(
+      () => useCommentThreads({subjectType: 'CE', subjectId: 10}, {resolved: false}),
+      {
+        wrapper: ({children}) => (
+          <ReviewStateProvider initialState={{
+            currentUser: null,
+            commentThreads: [
+              {id: 1, subjectType: 'CE', subjectId: 10, resolvedAt: null, comments: []},
+              {id: 2, subjectType: 'CE', subjectId: 10, resolvedAt: '2026-04-09', comments: []},
+              {id: 3, subjectType: 'CE', subjectId: 10, resolvedAt: null, comments: []}
+            ]
+          }}>
+            {children}
+          </ReviewStateProvider>
+        )
+      }
+    );
+
+    expect(result.current).toHaveLength(2);
+    expect(result.current.map(t => t.id)).toEqual([1, 3]);
+  });
+
   it('updates single thread on thread change message', async () => {
     const {result, waitForNextUpdate} = renderHook(
-      () => useCommentThreads('CE', 10),
+      () => useCommentThreads({subjectType: 'CE', subjectId: 10}),
       {wrapper}
     );
 
@@ -87,7 +110,7 @@ describe('ReviewStateProvider', () => {
 
   it('ignores messages from different origins', () => {
     const {result} = renderHook(
-      () => useCommentThreads('CE', 10),
+      () => useCommentThreads({subjectType: 'CE', subjectId: 10}),
       {wrapper}
     );
 

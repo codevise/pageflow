@@ -6,8 +6,8 @@ import {useSelectedSubject} from './SelectedSubjectProvider';
 
 import styles from './Popover.module.css';
 
-export function Popover({subjectType, subjectId, placement}) {
-  const {isSelected, hasSelection, showNewForm, select, clearSelection} = useSelectedSubject(subjectType, subjectId);
+export function Popover({subjectType, subjectId, subjectRange, placement, suppressNewForm, hideNewTopicButton}) {
+  const {isSelected, showNewForm, select, clearSelection} = useSelectedSubject(subjectType, subjectId, subjectRange);
   const ref = useRef(null);
 
   function handleBadgeClick() {
@@ -23,7 +23,7 @@ export function Popover({subjectType, subjectId, placement}) {
     if (!isSelected) return;
 
     function handleClick(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (ref.current && !ref.current.contains(event.target) && !event.target.closest('[data-comment-highlight]')) {
         clearSelection();
       }
     }
@@ -34,11 +34,11 @@ export function Popover({subjectType, subjectId, placement}) {
       }
     }
 
-    document.addEventListener('pointerdown', handleClick);
+    document.addEventListener('mousedown', handleClick);
     document.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.removeEventListener('pointerdown', handleClick);
+      document.removeEventListener('mousedown', handleClick);
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isSelected, clearSelection]);
@@ -53,13 +53,16 @@ export function Popover({subjectType, subjectId, placement}) {
                                 [styles.bottom]: onBottom})}>
       <CommentBadge subjectType={subjectType}
                     subjectId={subjectId}
+                    subjectRange={subjectRange}
                     mode={isSelected ? 'active' : undefined}
                     onClick={handleBadgeClick} />
       <div className={styles.threadListContainer}>
         {isSelected &&
           <ThreadList subjectType={subjectType}
                       subjectId={subjectId}
-                      showNewForm={showNewForm}
+                      subjectRange={subjectRange}
+                      showNewForm={showNewForm && !suppressNewForm}
+                      hideNewTopicButton={hideNewTopicButton}
                       reversed={onLeft}
                       onDismiss={clearSelection} />}
       </div>

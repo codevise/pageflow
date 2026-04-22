@@ -13,11 +13,11 @@ export const ContentElement = React.memo(extensible(
   'ContentElement',
   function ContentElement(props) {
     const Component = api.contentElementTypes.getComponent(props.type);
-    const {defaultMarginTop} = api.contentElementTypes.getOptions(props.type) || {};
+    const {defaultMarginTop, inlineComments} = api.contentElementTypes.getOptions(props.type) || {};
 
     if (Component) {
       return (
-        <ContentElementAttributesProvider id={props.id} width={props.width} position={props.position}>
+        <ContentElementAttributesProvider id={props.id} permaId={props.permaId} width={props.width} position={props.position} inlineComments={inlineComments}>
           <ContentElementLifecycleProvider type={props.type}
                                            override={props.lifecycleOverride}>
             <ContentElementMargin width={props.width}

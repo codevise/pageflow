@@ -10,6 +10,7 @@ RSpec.feature 'as entry previewer, commenting on content elements', js: true do
   before do
     translation('en', 'pageflow_scrolled.review.add_comment', 'Add comment')
     translation('en', 'pageflow_scrolled.review.select_content_element', 'Select to comment')
+    translation('en', 'pageflow_scrolled.review.select_text_to_comment', 'Select text to comment')
     translation('en', 'pageflow_scrolled.review.resolve', 'Mark as resolved')
     translation('en', 'pageflow_scrolled.review.unresolve', 'Mark as unresolved')
     translation('en', 'pageflow_scrolled.review.resolved_count.one', '1 resolved')
@@ -161,5 +162,28 @@ RSpec.feature 'as entry previewer, commenting on content elements', js: true do
 
     expect(page).not_to have_text('1 resolved', wait: 10)
     expect(page).to have_text('Needs work')
+  end
+
+  scenario 'shows select text hint for text block elements in add comment mode' do
+    entry = create(:entry, :published, type_name: 'scrolled',
+                                       with_feature: 'commenting',
+                                       draft_attributes: {locale: 'en'})
+    create(:content_element,
+           revision: entry.draft,
+           type_name: 'textBlock',
+           configuration: {
+             value: [{
+               'type' => 'paragraph',
+               'children' => [{'text' => 'Some example text to comment on'}]
+             }]
+           })
+
+    Pageflow::Dom::Admin::Page.sign_in_as(:previewer, on: entry)
+
+    visit(pageflow.revision_path(entry.draft))
+
+    find('[aria-label="Add comment"]', wait: 10).click
+
+    expect(page).to have_text('Select text to comment', wait: 10)
   end
 end

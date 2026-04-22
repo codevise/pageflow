@@ -13,7 +13,7 @@
   line-height: 0;
   cursor: pointer;
   border: none;
-  box-shadow: 0 0 0 space(1) var(--ui-accent-color-glow);
+  box-shadow: 0 0 0 space(1) var(--ui-accent-color-lighter);
   opacity: 0.9;
 }
 

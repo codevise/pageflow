@@ -61,6 +61,33 @@ describe('ThreadList', () => {
     expect(queryByText('Other type')).not.toBeInTheDocument();
   });
 
+  it('only displays threads matching subjectRange when provided', () => {
+    const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 12}};
+
+    const {getByText, queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} subjectRange={subjectRange} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, subjectRange, comments: [
+            {id: 10, body: 'Matching range', creatorName: 'Bob', creatorId: 2}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'No range', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 3, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {anchor: {path: [1, 0], offset: 0}, focus: {path: [1, 0], offset: 5}},
+           comments: [
+            {id: 30, body: 'Different range', creatorName: 'Eve', creatorId: 3}
+          ]}
+        ]
+      }
+    );
+
+    expect(getByText('Matching range')).toBeInTheDocument();
+    expect(queryByText('No range')).not.toBeInTheDocument();
+    expect(queryByText('Different range')).not.toBeInTheDocument();
+  });
+
   it('displays formatted timestamp', () => {
     const {getByText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
@@ -265,12 +292,73 @@ describe('ThreadList', () => {
     postMessage.mockRestore();
   });
 
+  it('includes subjectRange in create thread message', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+    const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 12}};
+
+    const {getByPlaceholderText, getByRole} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} subjectRange={subjectRange} />
+    );
+
+    await user.type(getByPlaceholderText('Add a comment...'), 'Range comment');
+    await user.click(getByRole('button', {name: 'Send'}));
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {
+        type: 'CREATE_COMMENT_THREAD',
+        payload: expect.objectContaining({subjectRange})
+      },
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
+  });
+
   it('shows new topic form automatically when no threads exist', () => {
     const {getByPlaceholderText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />
     );
 
     expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+  });
+
+  it('shows new topic form when showNewForm is true', () => {
+    const {getByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={true} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+  });
+
+  it('does not auto show new topic form when showNewForm is false', () => {
+    const {queryByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />
+    );
+
+    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+  });
+
+  it('hides new topic button when hideNewTopicButton is true', () => {
+    const {queryByRole} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} hideNewTopicButton={true} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(queryByRole('button', {name: 'New topic'})).not.toBeInTheDocument();
   });
 
   it('hides new topic form behind button when threads exist', () => {
