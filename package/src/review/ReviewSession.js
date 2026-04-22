@@ -1,10 +1,10 @@
 import BackboneEvents from 'backbone-events-standalone';
 
 export class ReviewSession {
-  constructor({entryId, request}) {
+  constructor({entryId, request, initialState = null}) {
     this._entryId = entryId;
     this._request = request;
-    this._state = null;
+    this._state = initialState;
   }
 
   get state() {

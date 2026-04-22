@@ -15,6 +15,8 @@ import {
   FileTypes
 } from 'pageflow/editor';
 
+import {ReviewSession} from 'pageflow/review';
+
 /**
  * Build editor Backbone models for tests.
  */
@@ -70,6 +72,34 @@ export const factories = {
 
   theme: function theme(attributes, options) {
     return new Theme(attributes, options);
+  },
+
+  /**
+   * Build a real `ReviewSession` pre-populated with state — suitable for
+   * Backbone view specs that would otherwise stub out the session.
+   *
+   * Commenting UI is always gated on a signed-in user; the `currentUser`
+   * default reflects that. Specs override it only when they care about
+   * the current user's identity (permissions, ownership, etc.).
+   *
+   * @param {Object} [options]
+   * @param {Object} [options.currentUser] - Current user exposed via `session.state.currentUser`.
+   * @param {Array}  [options.commentThreads] - Seed threads exposed via `session.state.commentThreads`.
+   * @param {Object} [options.entryId] - Entry id used when constructing request URLs.
+   * @param {Function} [options.request] - Override the request function. Defaults to a jest mock resolving to the seeded state.
+   * @returns {ReviewSession}
+   */
+  reviewSession: function reviewSession({
+    currentUser = {id: 1, name: 'Test User'},
+    commentThreads = [],
+    entryId = 1,
+    request
+  } = {}) {
+    return new ReviewSession({
+      entryId,
+      request: request || jest.fn().mockResolvedValue({currentUser, commentThreads}),
+      initialState: {currentUser, commentThreads}
+    });
   },
 
   /**
