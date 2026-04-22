@@ -53,6 +53,7 @@ module Pageflow
 
     def create_redirect
       directory.redirects.where(slug:).delete_all
+      PermalinkRedirect.where(slug: slug_was, directory_id: directory_id_was).delete_all
       entry.permalink_redirects.create!(slug: slug_was,
                                         directory_id: directory_id_was)
     end

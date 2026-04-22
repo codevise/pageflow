@@ -326,6 +326,35 @@ module Pageflow
       expect(entry.permalink_redirects.reload).to be_empty
     end
 
+    it 'removes redirect left behind while unpublished entry took the slug' do
+      directory = create(:permalink_directory)
+      previous_entry = create(
+        :entry,
+        :published,
+        site: directory.site,
+        permalink_attributes: {
+          directory:,
+          slug: 'shared-slug'
+        }
+      )
+      draft_entry = create(
+        :entry,
+        site: directory.site,
+        permalink_attributes: {
+          directory:,
+          slug: 'draft-slug'
+        }
+      )
+
+      previous_entry.update(permalink_attributes: {slug: 'moved-slug'})
+      draft_entry.update(permalink_attributes: {slug: 'shared-slug'})
+      draft_entry.update_column(:first_published_at, 1.day.ago)
+
+      expect {
+        draft_entry.update!(permalink_attributes: {slug: 'another-slug'})
+      }.not_to raise_error
+    end
+
     it 'destroys permalink when entry is destroyed' do
       entry = create(
         :entry,
