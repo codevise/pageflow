@@ -54,25 +54,29 @@ export function Batch(entry, section) {
   // transformations below:
 
   function split(contentElement, splitPoint, {insertAt} = {}) {
-    const [c1, c2] = contentElement.getType().split(getCurrentConfiguration(contentElement), splitPoint);
+    const {before, after} = normalizeSplitResult(
+      contentElement.getType().split(
+        getCurrentConfiguration(contentElement), splitPoint, {ranges: {}}
+      )
+    );
     let splitOffContentElement;
 
     if (insertAt === 'before') {
       splitOffContentElement = new ContentElement({
         typeName: contentElement.get('typeName'),
-        configuration: c1
+        configuration: before.configuration
       });
 
       insertBefore(contentElement, splitOffContentElement);
-      markForUpdate(contentElement, c2);
+      markForUpdate(contentElement, after.configuration);
     }
     else {
       splitOffContentElement = new ContentElement({
         typeName: contentElement.get('typeName'),
-        configuration: c2
+        configuration: after.configuration
       });
 
-      markForUpdate(contentElement, c1);
+      markForUpdate(contentElement, before.configuration);
       insertAfter(contentElement, splitOffContentElement);
     }
 
@@ -87,8 +91,13 @@ export function Batch(entry, section) {
       return;
     }
 
-    const mergedConfiguration = before.getType().merge(getCurrentConfiguration(before),
-                                                       getCurrentConfiguration(after));
+    const {configuration: mergedConfiguration} = normalizeMergeResult(
+      before.getType().merge(
+        getCurrentConfiguration(before),
+        getCurrentConfiguration(after),
+        {rangesA: {}, rangesB: {}}
+      )
+    );
 
     // Update the aleady persisted content element, if one has not yet
     // been persisted. For example, let X be a content element in
@@ -287,4 +296,25 @@ export function Batch(entry, section) {
       }
     });
   }
+}
+
+// Types can still return the plain [cBefore, cAfter] shape from
+// split() and a bare configuration object from merge(). Normalize both
+// to the range-aware object shape for Batch internals.
+function normalizeSplitResult(result) {
+  if (Array.isArray(result)) {
+    return {
+      before: {configuration: result[0], ranges: {}},
+      after: {configuration: result[1], ranges: {}}
+    };
+  }
+  return result;
+}
+
+function normalizeMergeResult(result) {
+  if (result && typeof result === 'object' &&
+      'configuration' in result && 'ranges' in result) {
+    return result;
+  }
+  return {configuration: result, ranges: {}};
 }
