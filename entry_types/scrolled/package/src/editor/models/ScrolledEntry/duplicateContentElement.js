@@ -2,7 +2,7 @@ import {Batch} from './Batch';
 import {ContentElement} from '../ContentElement';
 
 export function duplicateContentElement(entry, contentElement) {
-  const batch = new Batch(entry, contentElement.section);
+  const batch = new Batch(entry, contentElement.section, {reviewSession: entry.reviewSession});
 
   const newContentElement = new ContentElement({
     typeName: contentElement.get('typeName'),

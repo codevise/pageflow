@@ -886,5 +886,79 @@ describe('ScrolledEntry', () => {
         );
       });
     });
+
+    describe('for range-aware content elements with comment threads', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('rangeAware', {
+          getLength(configuration) {
+            return configuration.items.length;
+          },
+
+          split(configuration, at, {ranges}) {
+            const beforeRanges = {};
+            const afterRanges = {};
+            Object.entries(ranges).forEach(([id, {start, end}]) => {
+              if (end <= at) {
+                beforeRanges[id] = {start, end};
+              }
+              else if (start >= at) {
+                afterRanges[id] = {start: start - at, end: end - at};
+              }
+              else {
+                beforeRanges[id] = {start, end: at};
+              }
+            });
+            return {
+              before: {
+                configuration: {items: configuration.items.slice(0, at)},
+                ranges: beforeRanges
+              },
+              after: {
+                configuration: {items: configuration.items.slice(at)},
+                ranges: afterRanges
+              }
+            };
+          }
+        });
+
+        testContext.entry = factories.entry(ScrolledEntry, {id: 100}, {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 5, permaId: 50, position: 0, typeName: 'rangeAware',
+               configuration: {items: ['a', 'b', 'c']}}
+            ]
+          })
+        });
+
+        testContext.entry.reviewSession = factories.reviewSession({
+          commentThreads: [
+            {id: 7, subjectType: 'ContentElement', subjectId: 50,
+             subjectRange: {start: 0, end: 1}, comments: []},
+            {id: 8, subjectType: 'ContentElement', subjectId: 50,
+             subjectRange: {start: 2, end: 3}, comments: []}
+          ]
+        });
+      });
+
+      setupGlobals({entry: () => testContext.entry});
+
+      it('migrates after-split threads onto the new split-off element', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'split', id: 5, splitPoint: 2});
+
+        const body = JSON.parse(requests[0].requestBody);
+        const splitOff = body.content_elements.find(
+          item => item.typeName === 'rangeAware' && !item.id
+        );
+
+        expect(splitOff).toBeDefined();
+        expect(splitOff.migrate_comment_threads).toEqual([8]);
+        expect(body.comment_thread_subject_ranges).toEqual({
+          8: {start: 0, end: 1}
+        });
+      });
+    });
   });
 });

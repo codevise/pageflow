@@ -8,13 +8,14 @@ import {maybeMergeWithAdjacent} from './maybeMergeWithAdjacent';
 // adjacent by moving a content element away (e.g. two text blocks
 // surrounding an image that is moved away).
 export function moveContentElement(entry, contentElement, {range, sibling, at, splitPoint, success}) {
-  const sourceBatch = new Batch(entry, contentElement.section);
+  const batchOptions = {reviewSession: entry.reviewSession};
+  const sourceBatch = new Batch(entry, contentElement.section, batchOptions);
 
   // If we move content elements between sections, merges will need to
   // be performed in the section where the content element came from.
   const targetBatch = sibling.section === contentElement.section ?
                       sourceBatch :
-                      new Batch(entry, sibling.section);
+                      new Batch(entry, sibling.section, batchOptions);
 
   if (range && !rangeCoversWholeElement(sourceBatch, contentElement, range)) {
     if (contentElement === sibling && at === 'split') {

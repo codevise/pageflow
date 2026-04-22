@@ -256,5 +256,64 @@ describe('ScrolledEntry', () => {
         });
       });
     });
+
+    describe('for range-aware content elements with comment threads', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('rangeAware', {
+          getLength(configuration) {
+            return configuration.items.length;
+          },
+
+          merge(configurationA, configurationB, {rangesA, rangesB}) {
+            const offset = configurationA.items.length;
+            const ranges = {...rangesA};
+            Object.entries(rangesB).forEach(([id, {start, end}]) => {
+              ranges[id] = {start: start + offset, end: end + offset};
+            });
+            return {
+              configuration: {items: configurationA.items.concat(configurationB.items)},
+              ranges
+            };
+          }
+        });
+
+        testContext.entry = factories.entry(ScrolledEntry, {id: 100}, {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 4, permaId: 40, position: 0, typeName: 'rangeAware',
+               configuration: {items: ['a', 'b']}},
+              {id: 5, permaId: 50, position: 1},
+              {id: 6, permaId: 60, position: 2, typeName: 'rangeAware',
+               configuration: {items: ['c', 'd']}}
+            ]
+          })
+        });
+
+        testContext.entry.reviewSession = factories.reviewSession({
+          commentThreads: [
+            {id: 7, subjectType: 'ContentElement', subjectId: 40,
+             subjectRange: {start: 0, end: 1}, comments: []},
+            {id: 8, subjectType: 'ContentElement', subjectId: 60,
+             subjectRange: {start: 0, end: 1}, comments: []}
+          ]
+        });
+      });
+
+      setupGlobals({entry: () => testContext.entry});
+
+      it('migrates threads from the removed block onto the surviving merged block', () => {
+        const {entry, requests} = testContext;
+
+        entry.deleteContentElement(entry.contentElements.get(5));
+
+        const body = JSON.parse(requests[0].requestBody);
+        const survivor = body.content_elements.find(item => item.id === 4);
+
+        expect(survivor.migrate_comment_threads).toEqual([8]);
+        expect(body.comment_thread_subject_ranges).toEqual({
+          8: {start: 2, end: 3}
+        });
+      });
+    });
   });
 });
