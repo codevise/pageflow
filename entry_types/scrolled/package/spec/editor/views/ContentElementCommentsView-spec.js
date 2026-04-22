@@ -37,7 +37,6 @@ describe('ContentElementCommentsView', () => {
     });
 
     const {getByText} = renderBackboneView(view);
-    view.onShow();
 
     expect(getByText('Looks good')).toBeInTheDocument();
   });
@@ -58,7 +57,6 @@ describe('ContentElementCommentsView', () => {
     });
 
     const {getByText} = renderBackboneView(view);
-    act(() => view.onShow());
 
     act(() => {
       entry.reviewSession.trigger('change:thread', {
