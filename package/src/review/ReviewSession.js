@@ -78,18 +78,35 @@ export class ReviewSession {
   }
 
   applySubjectRangeUpdates(ranges) {
+    const updates = {};
+    Object.entries(ranges).forEach(([id, range]) => {
+      updates[id] = {subjectRange: range};
+    });
+    this.applyThreadUpdates(updates);
+  }
+
+  applyThreadUpdates(updates) {
     if (!this._state) return;
 
-    Object.entries(ranges).forEach(([id, range]) => {
+    Object.entries(updates).forEach(([id, changes]) => {
       const threadId = Number(id);
       const thread = this._findThread(threadId);
 
       if (!thread) return;
 
-      const updated = {...thread, subjectRange: range};
+      const updated = {...thread, ...changes};
       this._upsertThread(updated);
       this.trigger('change:thread', updated);
     });
+  }
+
+  findThreadsFor({subjectType, subjectId}) {
+    if (!this._state) return [];
+
+    return this._state.commentThreads.filter(
+      thread => thread.subjectType === subjectType &&
+                thread.subjectId === subjectId
+    );
   }
 
   async fetch() {

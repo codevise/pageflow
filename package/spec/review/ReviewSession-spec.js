@@ -430,4 +430,137 @@ describe('ReviewSession', () => {
       });
     });
   });
+
+  describe('findThreadsFor', () => {
+    const threadA = {
+      id: 1, subjectType: 'ContentElement', subjectId: 10, comments: []
+    };
+    const threadB = {
+      id: 2, subjectType: 'ContentElement', subjectId: 10, comments: []
+    };
+    const threadC = {
+      id: 3, subjectType: 'ContentElement', subjectId: 20, comments: []
+    };
+    const threadD = {
+      id: 4, subjectType: 'Section', subjectId: 10, comments: []
+    };
+
+    function setupSession() {
+      return new ReviewSession({
+        entryId: 5,
+        initialState: {
+          currentUser: null,
+          commentThreads: [threadA, threadB, threadC, threadD]
+        }
+      });
+    }
+
+    it('returns threads matching subjectType and subjectId', () => {
+      const session = setupSession();
+
+      const result = session.findThreadsFor({
+        subjectType: 'ContentElement', subjectId: 10
+      });
+
+      expect(result.map(t => t.id)).toEqual([1, 2]);
+    });
+
+    it('returns empty array when nothing matches', () => {
+      const session = setupSession();
+
+      const result = session.findThreadsFor({
+        subjectType: 'ContentElement', subjectId: 99
+      });
+
+      expect(result).toEqual([]);
+    });
+
+    it('returns empty array before fetch when state is null', () => {
+      const session = new ReviewSession({entryId: 5});
+
+      const result = session.findThreadsFor({
+        subjectType: 'ContentElement', subjectId: 10
+      });
+
+      expect(result).toEqual([]);
+    });
+  });
+
+  describe('applyThreadUpdates', () => {
+    const threadA = {
+      id: 1, subjectType: 'ContentElement', subjectId: 10,
+      subjectRange: {anchor: {path: [0, 0], offset: 0},
+                     focus: {path: [0, 0], offset: 5}},
+      comments: []
+    };
+    const threadB = {
+      id: 2, subjectType: 'ContentElement', subjectId: 10,
+      subjectRange: {anchor: {path: [0, 0], offset: 10},
+                     focus: {path: [0, 0], offset: 15}},
+      comments: []
+    };
+
+    function setupSession() {
+      return new ReviewSession({
+        entryId: 5,
+        initialState: {
+          currentUser: null,
+          commentThreads: [threadA, threadB]
+        }
+      });
+    }
+
+    it('updates subjectRange for a thread that stays on its content element', () => {
+      const session = setupSession();
+      const newRange = {anchor: {path: [0, 0], offset: 1},
+                        focus: {path: [0, 0], offset: 6}};
+
+      session.applyThreadUpdates({1: {subjectRange: newRange}});
+
+      const stored = session.state.commentThreads.find(t => t.id === 1);
+      expect(stored.subjectRange).toEqual(newRange);
+    });
+
+    it('migrates a thread to a different subject_id with a new range', () => {
+      const session = setupSession();
+      const newRange = {anchor: {path: [0, 0], offset: 0},
+                        focus: {path: [0, 0], offset: 2}};
+
+      session.applyThreadUpdates({
+        2: {subjectId: 60, subjectRange: newRange}
+      });
+
+      const stored = session.state.commentThreads.find(t => t.id === 2);
+      expect(stored).toMatchObject({subjectId: 60, subjectRange: newRange});
+    });
+
+    it('emits change:thread for each updated thread', () => {
+      const session = setupSession();
+      const listener = jest.fn();
+      session.on('change:thread', listener);
+
+      session.applyThreadUpdates({
+        1: {subjectRange: threadA.subjectRange},
+        2: {subjectId: 60}
+      });
+
+      expect(listener).toHaveBeenCalledTimes(2);
+      expect(listener).toHaveBeenCalledWith(expect.objectContaining({id: 1}));
+      expect(listener).toHaveBeenCalledWith(
+        expect.objectContaining({id: 2, subjectId: 60})
+      );
+    });
+
+    it('ignores unknown thread ids', () => {
+      const session = setupSession();
+      const listener = jest.fn();
+      session.on('change:thread', listener);
+
+      session.applyThreadUpdates({
+        999: {subjectId: 60}
+      });
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+  });
 });
