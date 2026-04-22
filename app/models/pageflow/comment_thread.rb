@@ -21,6 +21,14 @@ module Pageflow
       update!(resolved_at: nil, resolver: nil)
     end
 
+    def self.migrate_to_subject(revision:, subject_type:, subject_id:, thread_ids:)
+      return if thread_ids.blank?
+
+      where(revision_id: revision.id,
+            subject_type:,
+            id: thread_ids).update_all(subject_id:, updated_at: Time.current)
+    end
+
     def self.update_subject_ranges_for(revision:, subject_type:, subject_id:, ranges:)
       return if ranges.blank?
 

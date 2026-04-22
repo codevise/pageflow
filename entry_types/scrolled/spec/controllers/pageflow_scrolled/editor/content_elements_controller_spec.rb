@@ -272,6 +272,100 @@ module PageflowScrolled
                                                 }
                                               ])
       end
+
+      it 'migrates comment threads to newly created content element ' \
+         'before applying subject_range updates' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        original_element = create(:content_element, :text_block, section:)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        subject_type: 'ContentElement',
+                        subject_id: original_element.perma_id,
+                        subject_range: {'anchor' => {'path' => [0, 0], 'offset' => 0},
+                                        'focus' => {'path' => [0, 0], 'offset' => 5}})
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: original_element.id, configuration: {children: 'before'}},
+                 {typeName: 'textBlock',
+                  configuration: {children: 'after'},
+                  migrate_comment_threads: [thread.id]}
+               ],
+               comment_thread_subject_ranges: {
+                 thread.id.to_s => {anchor: {path: [0, 0], offset: 2},
+                                    focus: {path: [0, 0], offset: 4}}
+               }
+             }, format: 'json', as: :json)
+
+        new_element = section.content_elements.find_by(configuration: {'children' => 'after'})
+
+        expect(thread.reload).to have_attributes(
+          subject_id: new_element.perma_id,
+          subject_range: {'anchor' => {'path' => [0, 0], 'offset' => 2},
+                          'focus' => {'path' => [0, 0], 'offset' => 4}}
+        )
+      end
+
+      it 'migrates threads onto an existing content element ' \
+         'when the batch references a merge survivor' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        survivor = create(:content_element, :text_block, section:)
+        removed = create(:content_element, :text_block, section:)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        subject_type: 'ContentElement',
+                        subject_id: removed.perma_id,
+                        subject_range: {'anchor' => {'path' => [0, 0], 'offset' => 0},
+                                        'focus' => {'path' => [0, 0], 'offset' => 5}})
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: survivor.id,
+                  configuration: {children: 'merged'},
+                  migrate_comment_threads: [thread.id]},
+                 {id: removed.id, _delete: true}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(thread.reload.subject_id).to eq(survivor.perma_id)
+      end
+
+      it 'does not migrate threads from a different entry' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        other_entry = create(:entry, type_name: 'scrolled')
+        foreign_thread = create(:comment_thread,
+                                revision: other_entry.draft,
+                                subject_type: 'ContentElement',
+                                subject_id: 9999)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {typeName: 'textBlock',
+                  configuration: {children: 'new'},
+                  migrate_comment_threads: [foreign_thread.id]}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(foreign_thread.reload.subject_id).to eq(9999)
+      end
     end
 
     describe '#create' do

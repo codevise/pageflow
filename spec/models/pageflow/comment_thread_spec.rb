@@ -2,6 +2,77 @@ require 'spec_helper'
 
 module Pageflow
   describe CommentThread do
+    describe '.migrate_to_subject' do
+      it 'updates subject_id of matching threads' do
+        revision = create(:revision)
+        thread = create(:comment_thread,
+                        revision:,
+                        subject_type: 'ContentElement',
+                        subject_id: 10)
+
+        CommentThread.migrate_to_subject(
+          revision:,
+          subject_type: 'ContentElement',
+          subject_id: 20,
+          thread_ids: [thread.id]
+        )
+
+        expect(thread.reload.subject_id).to eq(20)
+      end
+
+      it 'does not touch threads of a different revision' do
+        revision = create(:revision)
+        other_revision = create(:revision)
+        thread = create(:comment_thread,
+                        revision: other_revision,
+                        subject_type: 'ContentElement',
+                        subject_id: 10)
+
+        CommentThread.migrate_to_subject(
+          revision:,
+          subject_type: 'ContentElement',
+          subject_id: 20,
+          thread_ids: [thread.id]
+        )
+
+        expect(thread.reload.subject_id).to eq(10)
+      end
+
+      it 'does not touch threads of a different subject_type' do
+        revision = create(:revision)
+        thread = create(:comment_thread,
+                        revision:,
+                        subject_type: 'OtherType',
+                        subject_id: 10)
+
+        CommentThread.migrate_to_subject(
+          revision:,
+          subject_type: 'ContentElement',
+          subject_id: 20,
+          thread_ids: [thread.id]
+        )
+
+        expect(thread.reload.subject_id).to eq(10)
+      end
+
+      it 'is a no-op when thread_ids is blank' do
+        revision = create(:revision)
+        thread = create(:comment_thread,
+                        revision:,
+                        subject_type: 'ContentElement',
+                        subject_id: 10)
+
+        expect {
+          CommentThread.migrate_to_subject(
+            revision:,
+            subject_type: 'ContentElement',
+            subject_id: 20,
+            thread_ids: []
+          )
+        }.not_to(change { thread.reload.subject_id })
+      end
+    end
+
     describe '.update_subject_ranges_for' do
       let(:range) do
         {'anchor' => {'path' => [0, 0], 'offset' => 0},
