@@ -33,6 +33,21 @@ describe('ReviewSession', () => {
     });
   });
 
+  it('exposes initialState when passed to constructor', () => {
+    const session = new ReviewSession({
+      entryId: 5,
+      initialState: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [{id: 1, comments: []}]
+      }
+    });
+
+    expect(session.state).toEqual({
+      currentUser: {id: 42, name: 'Alice'},
+      commentThreads: [{id: 1, comments: []}]
+    });
+  });
+
   it('exposes state after fetch', async () => {
     const request = jest.fn().mockResolvedValue({
       currentUser: {id: 42, name: 'Alice'},

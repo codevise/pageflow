@@ -1,9 +1,8 @@
 import '@testing-library/jest-dom/extend-expect';
-import BackboneEvents from 'backbone-events-standalone';
 
 import {ContentElementCommentsView} from 'editor/views/ContentElementCommentsView';
 
-import {useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
+import {factories, useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
 import {act, waitFor} from '@testing-library/react';
 
@@ -20,8 +19,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
     });
-    entry.reviewSession = fakeReviewSession({
-      currentUser: {id: 1},
+    entry.reviewSession = factories.reviewSession({
       commentThreads: [{
         id: 1,
         subjectType: 'ContentElement',
@@ -45,10 +43,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
     });
-    entry.reviewSession = fakeReviewSession({
-      currentUser: {id: 1},
-      commentThreads: []
-    });
+    entry.reviewSession = factories.reviewSession();
 
     const view = new ContentElementCommentsView({
       entry,
@@ -72,14 +67,3 @@ describe('ContentElementCommentsView', () => {
     });
   });
 });
-
-function fakeReviewSession(state = null) {
-  const session = {
-    state,
-    createThread: jest.fn().mockResolvedValue(),
-    createComment: jest.fn().mockResolvedValue()
-  };
-
-  Object.assign(session, BackboneEvents);
-  return session;
-}
