@@ -65,7 +65,7 @@ jobs:
         run: bundle exec rubocop
 
       - name: Run ESLint in pageflow package
-        run: yarn --cwd package lint .
+        run: yarn --cwd package lint --max-warnings 0 .
 
       - name: Run ESLint in pageflow-scrolled
-        run: yarn --cwd entry_types/scrolled/package lint .
+        run: yarn --cwd entry_types/scrolled/package lint --max-warnings 0 .
