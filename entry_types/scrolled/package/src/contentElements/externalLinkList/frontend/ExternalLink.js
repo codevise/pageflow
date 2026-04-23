@@ -165,6 +165,7 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
                        aspectRatio={props.thumbnailAspectRatio}
                        cropPosition={props.thumbnailCropPosition}
                        fit={props.thumbnailFit}
+                       linkWidth={props.linkWidth}
                        load={props.loadImages}
                        showPlaceholder={isEditable}>
               <InlineFileRights configuration={configuration}

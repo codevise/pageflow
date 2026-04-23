@@ -5,6 +5,7 @@ import React from 'react';
 import {renderInEntry} from 'support';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import {features} from 'pageflow/frontend';
 
 describe('ExternalLink', () => {
   it('renders link with href', () => {
@@ -237,6 +238,29 @@ describe('ExternalLink', () => {
     expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('medium'));
   });
 
+  it('falls back to linkThumbnailLarge for large linkWidth when image_srcset disabled', () => {
+    const {getByRole} = renderInEntry(
+      <ExternalLink configuration={{}}
+                    url=""
+                    loadImages={true}
+                    thumbnail={5}
+                    linkWidth="xxl" />,
+      {
+        seed: {
+          imageFiles: [{permaId: 5}],
+          imageFileUrlTemplates: {
+            linkThumbnailLarge: ':id_partition/linkThumbnailLarge/image.jpg',
+            medium: ':id_partition/medium/image.jpg',
+            large: ':id_partition/large/image.jpg'
+          },
+        }
+      }
+    )
+
+    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('linkThumbnailLarge'));
+    expect(getByRole('img')).not.toHaveAttribute('srcset');
+  });
+
   it('uses medium image as thumbnail with thumbnail fit contain', () => {
     const {getByRole} = renderInEntry(
       <ExternalLink configuration={{}}
@@ -256,6 +280,86 @@ describe('ExternalLink', () => {
     )
 
     expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('medium'));
+  });
+
+  describe('srcset', () => {
+    beforeEach(() => features.enable('frontend', ['image_srcset']));
+    afterEach(() => features.enabledFeatureNames = []);
+
+    it('uses medium and large srcset for linkWidth m', () => {
+      const {getByRole} = renderInEntry(
+        <ExternalLink configuration={{}}
+                      url=""
+                      loadImages={true}
+                      thumbnail={5}
+                      linkWidth="m" />,
+        {
+          seed: {
+            imageFiles: [{permaId: 5, id: 1, width: 4000, height: 3000}],
+            imageFileUrlTemplates: {
+              linkThumbnailLarge: ':id_partition/linkThumbnailLarge/image.jpg',
+              medium: ':id_partition/medium/image.jpg',
+              large: ':id_partition/large/image.jpg'
+            },
+          }
+        }
+      )
+
+      expect(getByRole('img')).toHaveAttribute('srcset',
+        '000/000/001/medium/image.jpg 1024w, 000/000/001/large/image.jpg 1920w');
+      expect(getByRole('img')).toHaveAttribute('sizes',
+        '(min-width: 950px) 50vw, 100vw');
+    });
+
+    it('uses medium, large and ultra srcset for linkWidth xxl', () => {
+      const {getByRole} = renderInEntry(
+        <ExternalLink configuration={{}}
+                      url=""
+                      loadImages={true}
+                      thumbnail={5}
+                      linkWidth="xxl" />,
+        {
+          seed: {
+            imageFiles: [{permaId: 5, id: 1, width: 4000, height: 3000}],
+            imageFileUrlTemplates: {
+              linkThumbnailLarge: ':id_partition/linkThumbnailLarge/image.jpg',
+              medium: ':id_partition/medium/image.jpg',
+              large: ':id_partition/large/image.jpg',
+              ultra: ':id_partition/ultra/image.jpg'
+            },
+          }
+        }
+      )
+
+      expect(getByRole('img')).toHaveAttribute('srcset',
+        '000/000/001/medium/image.jpg 1024w, ' +
+        '000/000/001/large/image.jpg 1920w, ' +
+        '000/000/001/ultra/image.jpg 3840w');
+      expect(getByRole('img')).toHaveAttribute('sizes', '100vw');
+    });
+
+    it('still uses linkThumbnailLarge for small linkWidth', () => {
+      const {getByRole} = renderInEntry(
+        <ExternalLink configuration={{}}
+                      url=""
+                      loadImages={true}
+                      thumbnail={5}
+                      linkWidth="s" />,
+        {
+          seed: {
+            imageFiles: [{permaId: 5, id: 1, width: 4000, height: 3000}],
+            imageFileUrlTemplates: {
+              linkThumbnailLarge: ':id_partition/linkThumbnailLarge/image.jpg',
+              medium: ':id_partition/medium/image.jpg',
+              large: ':id_partition/large/image.jpg'
+            },
+          }
+        }
+      )
+
+      expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('linkThumbnailLarge'));
+      expect(getByRole('img')).not.toHaveAttribute('srcset');
+    });
   });
 });
 

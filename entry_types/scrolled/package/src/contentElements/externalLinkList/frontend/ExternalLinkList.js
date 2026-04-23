@@ -135,6 +135,7 @@ export function ExternalLinkList(props) {
                                 thumbnailFit={props.configuration.thumbnailFit || 'cover'}
                                 textPosition={props.configuration.textPosition || 'below'}
                                 textSize={props.configuration.textSize || 'small'}
+                                linkWidth={linkWidth}
                                 darkBackground={darkBackground}
                                 loadImages={shouldLoad}
                                 outlined={isSelected}
