@@ -7,7 +7,7 @@ import {Image, FilePlaceholder} from 'pageflow-scrolled/frontend';
 import styles from './Thumbnail.module.css';
 
 export function Thumbnail({imageFile, aspectRatio, cropPosition, fit, linkWidth,
-                           load, showPlaceholder, children}) {
+                           load, showPlaceholder, renderImageLink, children}) {
   imageFile = {
     ...imageFile,
     cropPosition
@@ -16,17 +16,19 @@ export function Thumbnail({imageFile, aspectRatio, cropPosition, fit, linkWidth,
   const aspectRatioPadding = getAspectRatioPadding(aspectRatio, imageFile);
   const {variant, sizes} = variantAndSizes({aspectRatio, cropPosition, fit, linkWidth});
 
+  const image = <Image imageFile={imageFile}
+                       load={load}
+                       preferSvg={true}
+                       variant={variant}
+                       sizes={sizes}
+                       fit={fit} />;
+
   return (
     <div className={classNames(styles.thumbnail,
                                {[styles.cover]: fit === 'cover'})}
          style={{paddingTop: aspectRatioPadding}}>
       {showPlaceholder && <FilePlaceholder file={imageFile} />}
-      <Image imageFile={imageFile}
-             load={load}
-             preferSvg={true}
-             variant={variant}
-             sizes={sizes}
-             fit={fit} />
+      {renderImageLink ? renderImageLink(image) : image}
       {children}
     </div>
   );

@@ -1,8 +1,11 @@
 import {ExternalLink} from 'contentElements/externalLinkList/frontend/ExternalLink';
+import styles from 'contentElements/externalLinkList/frontend/ExternalLink.module.css';
 
 import React from 'react';
 
 import {renderInEntry} from 'support';
+import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
+import {useFakeTranslations} from 'pageflow/testHelpers';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {features} from 'pageflow/frontend';
@@ -359,6 +362,159 @@ describe('ExternalLink', () => {
 
       expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('linkThumbnailLarge'));
       expect(getByRole('img')).not.toHaveAttribute('srcset');
+    });
+  });
+
+  describe('card link', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.public.more': 'More'
+    });
+
+    it('wraps title in a link when title is present and href is set', () => {
+      const configuration = {
+        itemLinks: {1: {href: 'http://example.com'}},
+        itemTexts: {1: {title: value('Title')}}
+      };
+
+      renderInEntry(<ExternalLink id={1} configuration={configuration} />);
+
+      expect(screen.getByRole('link', {name: 'Title'}))
+        .toHaveAttribute('href', 'http://example.com');
+    });
+
+    it('wraps thumbnail image in a link named by its alt when textPosition is none', () => {
+      const configuration = {
+        itemLinks: {1: {href: 'http://example.com'}}
+      };
+
+      renderInEntry(
+        <ExternalLink id={1}
+                      configuration={configuration}
+                      textPosition="none"
+                      thumbnail={5}
+                      loadImages={true} />,
+        {
+          seed: {
+            imageFiles: [{permaId: 5, configuration: {alt: 'Vendor logo'}}],
+            imageFileUrlTemplates: {
+              linkThumbnailLarge: ':id_partition/linkThumbnailLarge/image.jpg'
+            }
+          }
+        }
+      );
+
+      expect(screen.getByRole('link', {name: 'Vendor logo'}))
+        .toHaveAttribute('href', 'http://example.com');
+    });
+
+    it('keeps lifted file rights outside the image link when textPosition is none', () => {
+      const configuration = {
+        itemLinks: {1: {href: 'http://example.com'}}
+      };
+
+      const {container} = renderInEntry(
+        <ExternalLink id={1}
+                      configuration={configuration}
+                      textPosition="none" />
+      );
+
+      const link = screen.getByRole('link');
+      container.querySelectorAll(`.${styles.liftedFileRights}`).forEach(el => {
+        expect(link.contains(el)).toBe(false);
+      });
+    });
+
+    it('renders a visually-hidden More fallback link when no title or description', () => {
+      const configuration = {
+        itemLinks: {1: {href: 'http://example.com'}}
+      };
+
+      renderInEntry(<ExternalLink id={1} configuration={configuration} />);
+
+      expect(screen.getByRole('link', {name: 'More'}))
+        .toHaveAttribute('href', 'http://example.com');
+    });
+
+    it('references description from More link via aria-describedby', () => {
+      const configuration = {
+        itemLinks: {1: {href: 'http://example.com'}},
+        itemTexts: {1: {description: value('Some description')}}
+      };
+
+      const {container} = renderInEntry(
+        <ExternalLink id={1} configuration={configuration} />
+      );
+
+      const link = screen.getByRole('link', {name: 'More'});
+      const describedById = link.getAttribute('aria-describedby');
+      expect(describedById).toBeTruthy();
+      expect(container.querySelector(`[id="${describedById}"]`))
+        .toHaveTextContent('Some description');
+    });
+
+    it('omits aria-describedby when no description is present', () => {
+      const configuration = {
+        itemLinks: {1: {href: 'http://example.com'}}
+      };
+
+      renderInEntry(<ExternalLink id={1} configuration={configuration} />);
+
+      expect(screen.getByRole('link', {name: 'More'}))
+        .not.toHaveAttribute('aria-describedby');
+    });
+
+    it('does not nest a description inner link inside the card link', () => {
+      const configuration = {
+        itemLinks: {1: {href: 'http://example.com'}},
+        itemTexts: {
+          1: {
+            description: [{
+              type: 'paragraph',
+              children: [
+                {text: 'See '},
+                {type: 'link',
+                 href: 'https://inner.example.com',
+                 children: [{text: 'here'}]}
+              ]
+            }]
+          }
+        }
+      };
+
+      renderInEntry(<ExternalLink id={1} configuration={configuration} />);
+
+      const cardLink = screen.getByRole('link', {name: 'More'});
+      const innerLink = screen.getByRole('link', {name: 'here'});
+      expect(cardLink.contains(innerLink)).toBe(false);
+    });
+
+    describe('in editor mode', () => {
+      it('does not render inner title link', () => {
+        const configuration = {
+          itemLinks: {1: {href: 'http://example.com'}},
+          itemTexts: {1: {title: value('Title')}}
+        };
+
+        const {container} = renderInContentElement(
+          <ExternalLink id={1} configuration={configuration} />,
+          {editorState: {isEditable: true}}
+        );
+
+        expect(container.querySelector(`.${styles.titleLink}`)).toBeNull();
+      });
+
+      it('does not render More fallback link', () => {
+        const configuration = {
+          itemLinks: {1: {href: 'http://example.com'}}
+        };
+
+        const {container} = renderInContentElement(
+          <ExternalLink id={1} configuration={configuration} />,
+          {editorState: {isEditable: true}}
+        );
+
+        expect(container.querySelector(`.${styles.moreLink}`)).toBeNull();
+      });
     });
   });
 });

@@ -33,20 +33,72 @@
   opacity: 1;
 }
 
+.cardWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  will-change: transform;
+}
+
+.cardWrapper > .card,
+.moreLink {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.moreLink {
+  z-index: 1;
+  text-decoration: none;
+}
+
+.moreLinkLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.titleLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.titleLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
 .textPosition-below .cardWrapper,
 .textPosition-right .cardWrapper {
   height: 100%;
-  display: flex;
-  flex-direction: column;
   transition: transform 0.3s;
+}
+
+.link.textPosition-below .cardWrapper {
+  --hover-scale: var(--theme-external-links-card-hover-scale, 1.05);
+}
+
+.link.textPosition-right .cardWrapper {
+  --hover-scale: var(--theme-external-links-card-hover-scale, 1.02);
+}
+
+.link:not(.outlined):hover .cardWrapper {
+  transform: scale(calc(1 + (var(--hover-scale) - 1) * var(--hover-scale-adjustment, 1)));
 }
 
 .card {
   display: flex;
+  position: relative;
   border-radius: var(--theme-content-element-box-border-radius);
   box-shadow: var(--content-element-box-box-shadow);
   overflow: hidden;
-  will-change: transform;
   flex: 1;
 }
 
@@ -69,18 +121,6 @@
 
 .textPosition-title {
   composes: textPosition-none;
-}
-
-.link.textPosition-below .cardWrapper {
-  --hover-scale: var(--theme-external-links-card-hover-scale, 1.05);
-}
-
-.link.textPosition-right .cardWrapper {
-  --hover-scale: var(--theme-external-links-card-hover-scale, 1.02);
-}
-
-.link:not(.outlined):hover .cardWrapper {
-  transform: scale(calc(1 + (var(--hover-scale) - 1) * var(--hover-scale-adjustment, 1)));
 }
 
 .textPosition-right .thumbnail {
@@ -130,23 +170,19 @@
 }
 
 .textPosition-overlay .front .background {
-  position: relative;
   align-self: end;
-  background: transparent;
+  padding-top: 2rem;
+  margin-top: -2rem;
   z-index: 1;
-}
-
-.textPosition-overlay .front .background::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: -2rem;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(0deg, var(--card-surface-color), transparent);
-  opacity: calc(0.9 * var(--overlay-opacity, 0.7));
-  pointer-events: none;
+  background: linear-gradient(
+    0deg,
+    color-mix(
+      in srgb,
+      var(--card-surface-color) calc(0.9 * var(--overlay-opacity, 0.7) * 100%),
+      transparent
+    ),
+    transparent
+  );
 }
 
 .textPosition-none .front .background {
@@ -184,6 +220,11 @@
 
 .details > :first-child p:first-child {
   margin-top: 0;
+}
+
+.description a {
+  position: relative;
+  z-index: 2;
 }
 
 .button {
