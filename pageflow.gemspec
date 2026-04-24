@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
                 'contentElements/*.{css,js},review.{css,js},' \
                 'widgets/*.{css,js},widgets-server.js,' \
                 'values/*,testHelpers.js,' \
-                'contentElements-editor.js,enryState.js,frontend/*.{js,css},editor.{js,css},' \
+                'contentElements-editor.js,entryState.js,frontend/*.{js,css},editor.{js,css},' \
                 'package.json}',
                 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
 
