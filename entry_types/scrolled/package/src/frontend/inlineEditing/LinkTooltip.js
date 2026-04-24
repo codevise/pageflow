@@ -12,8 +12,7 @@ import {
 } from '@floating-ui/react';
 
 import {useI18n} from '../i18n';
-import {useChapter, useDownloadableFile} from '../../entryState';
-import {useMainStoryline} from '../../entryState/structure';
+import {useChapter, useDownloadableFile, useMainStoryline} from 'pageflow-scrolled/entryState';
 import {SectionThumbnail} from '../SectionThumbnail';
 import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
 import {useStorylineActivity} from '../storylineActivity';

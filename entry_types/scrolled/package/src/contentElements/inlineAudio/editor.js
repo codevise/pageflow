@@ -3,6 +3,7 @@ import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
 import {SelectInputView, SeparatorView, ColorInputView} from 'pageflow/ui';
 import I18n from 'i18n-js';
 
+// eslint-disable-next-line no-restricted-imports
 import {
   defaultRemainingWaveformColor,
   defaultRemainingWaveformColorInverted,

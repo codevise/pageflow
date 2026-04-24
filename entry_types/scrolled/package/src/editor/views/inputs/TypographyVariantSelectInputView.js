@@ -5,7 +5,7 @@ import Backbone from 'backbone';
 import styles from './TypographyVariantSelectInputView.module.css';
 
 import {ListboxInputView} from './ListboxInputView';
-import {watchCollections} from '../../../entryState';
+import {watchCollections} from 'pageflow-scrolled/entryState';
 import {StandaloneSectionThumbnail} from 'pageflow-scrolled/frontend'
 
 export const TypographyVariantSelectInputView = ListboxInputView.extend({

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 
-import {useEntryMetadata} from '../../entryState';
+import {useEntryMetadata} from 'pageflow-scrolled/entryState';
 import {createReviewSession} from 'pageflow/review';
 import {ReviewStateProvider, ReviewMessageHandler} from 'pageflow-scrolled/review';
 import {AddCommentModeProvider} from './AddCommentModeProvider';

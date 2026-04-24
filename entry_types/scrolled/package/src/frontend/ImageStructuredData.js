@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {ensureProtocol} from './utils/urls';
-import {useEntryMetadata} from '../entryState';
+import {useEntryMetadata} from 'pageflow-scrolled/entryState';
 
 import {StructuredData} from './StructuredData';
 

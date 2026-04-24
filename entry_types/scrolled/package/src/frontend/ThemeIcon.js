@@ -31,7 +31,7 @@ import exitFullscreen from './icons/exitFullscreen.svg';
 import play from './icons/play.svg';
 import pause from './icons/pause.svg';
 
-import {useTheme} from '../entryState';
+import {useTheme} from 'pageflow-scrolled/entryState';
 
 const icons = {
   expand: arrowRight,

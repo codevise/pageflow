@@ -3,7 +3,7 @@ import React from 'react';
 import {consent as consentApi} from 'pageflow/frontend';
 
 import {BrowserFeaturesProvider} from './useBrowserFeature';
-import {EntryStateProvider} from '../entryState';
+import {EntryStateProvider} from 'pageflow-scrolled/entryState';
 import {FocusOutlineProvider} from './focusOutline';
 import {LocaleProvider} from './i18n';
 import {PhonePlatformProvider} from './PhonePlatformProvider';

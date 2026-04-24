@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useConsentGiven} from './hooks';
 import {useI18n} from '../i18n';
 import {useContentElementAttributes} from '../useContentElementAttributes';
-import {useContentElementConsentVendor} from '../../entryState';
+import {useContentElementConsentVendor} from 'pageflow-scrolled/entryState';
 import {usePrivacyLink} from '../usePrivacyLink';
 
 import styles from './OptIn.module.css';

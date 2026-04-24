@@ -1,7 +1,7 @@
 import {EditConfigurationView} from 'pageflow/editor';
 import {EditSectionTransitionEffectView} from './EditSectionTransitionEffectView';
 import {getAvailableTransitionNames} from 'pageflow-scrolled/frontend';
-import {normalizeSectionConfigurationData} from '../../entryState';
+import {normalizeSectionConfigurationData} from 'pageflow-scrolled/entryState';
 
 export const EditSectionTransitionView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_section_transition',

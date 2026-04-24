@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {useTheme} from '../../entryState';
+import {useTheme} from 'pageflow-scrolled/entryState';
 import {Scale} from '../../shared/Scale';
 import {getAppearanceSectionScopeName} from '../appearance';
 import {useEditorSelection} from './EditorState';

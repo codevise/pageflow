@@ -1,4 +1,4 @@
-import {useContentElement, useFileWithInlineRights} from '../entryState';
+import {useContentElement, useFileWithInlineRights} from 'pageflow-scrolled/entryState';
 import {usePortraitOrientation} from './usePortraitOrientation';
 
 export function useBackdrop(section) {

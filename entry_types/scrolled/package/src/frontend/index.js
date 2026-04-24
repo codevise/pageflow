@@ -81,7 +81,7 @@ export {
   useTheme,
   useShareProviders,
   useShareUrl
-} from '../entryState';
+} from 'pageflow-scrolled/entryState';
 
 export {ContentElementAttributesProvider} from './useContentElementAttributes';
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';

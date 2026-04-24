@@ -1,6 +1,6 @@
 import React, {useContext, createContext} from 'react';
 import I18n from 'i18n-js';
-import {useEntryMetadata} from '../entryState';
+import {useEntryMetadata} from 'pageflow-scrolled/entryState';
 
 const LocaleContext = createContext('en');
 

@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import {cssModulesUtils} from 'pageflow/ui';
-import {watchCollections} from '../../entryState';
+import {watchCollections} from 'pageflow-scrolled/entryState';
 import {StandaloneSectionThumbnail} from 'pageflow-scrolled/frontend'
 
 import styles from './SectionThumbnailView.module.css';

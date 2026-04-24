@@ -17,7 +17,8 @@ export {
   useChapters,
   useChapter,
   useSectionForegroundContentElements,
-  useContentElement
+  useContentElement,
+  useMainStoryline
 } from './structure';
 export {useFile} from './useFile';
 export {useFileWithInlineRights} from './useFileWithInlineRights';

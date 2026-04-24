@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {useDarkBackground} from '../../backgroundColor';
-import {useTheme} from '../../../entryState';
+import {useTheme} from 'pageflow-scrolled/entryState';
 import {Waveform} from './Waveform';
 import {TimeDisplay} from '../TimeDisplay';
 import {TextTracksMenu} from '../TextTracksMenu';

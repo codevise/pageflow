@@ -1,6 +1,6 @@
 import {Object} from 'pageflow/ui';
 import {ReviewMessageHandler} from 'pageflow-scrolled/review';
-import {watchCollections} from '../../entryState';
+import {watchCollections} from 'pageflow-scrolled/entryState';
 import {InsertContentElementDialogView} from '../views/InsertContentElementDialogView'
 import {SelectLinkDestinationDialogView} from '../views/SelectLinkDestinationDialogView'
 

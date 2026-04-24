@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Measure from 'react-measure';
 
 import {RootProviders} from './RootProviders';
-import {useEntryStateDispatch, useSection} from '../entryState';
+import {useEntryStateDispatch, useSection} from 'pageflow-scrolled/entryState';
 import {Section} from './Section';
 import {FullscreenDimensionProvider} from './Fullscreen';
 import {StaticPreview} from './useScrollPositionLifecycle';
