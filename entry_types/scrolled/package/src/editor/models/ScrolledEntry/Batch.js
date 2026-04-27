@@ -314,11 +314,18 @@ export function Batch(entry, section, {reviewSession} = {}) {
       },
 
       success(response) {
-        applyConfigurationChanges();
-        applyPositions();
         applyAdditions(response);
+        applyPositions();
         applyDeletions();
         applyThreadUpdates();
+        // Apply configuration changes last so that the value flip
+        // observed by `useCachedValue` happens after `reviewSession`
+        // already holds the migrated thread ranges. `onReset` then
+        // clears `useCommentRangeRefs`'s map and the post-render
+        // effect rebuilds it from the new thread subject ranges
+        // against the new editor content — no reliance on
+        // `isValidRange` filtering out stale OLD ranges.
+        applyConfigurationChanges();
 
         section.contentElements.sort();
 

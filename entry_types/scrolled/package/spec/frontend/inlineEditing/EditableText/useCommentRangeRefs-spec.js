@@ -83,4 +83,51 @@ describe('useCommentRangeRefs', () => {
       });
     });
   });
+
+  describe('trackedThreads', () => {
+    it('reflects upstream subjectRange after resetRangeRefs is called', () => {
+      const editor = withReact(createEditor());
+      editor.children = [
+        {type: 'paragraph', children: [{text: 'first paragraph'}]},
+        {type: 'paragraph', children: [{text: 'second paragraph'}]}
+      ];
+
+      const initialThreads = [{
+        id: 1,
+        subjectRange: {anchor: {path: [1, 0], offset: 0},
+                       focus: {path: [1, 0], offset: 6}}
+      }];
+
+      const {result, rerender} = renderHook(
+        ({threads}) => useCommentRangeRefs(editor, threads),
+        {initialProps: {threads: initialThreads}}
+      );
+
+      // The element is split: surviving content keeps only the second
+      // paragraph (now at index 0). The thread's subjectRange is
+      // updated externally via session.applyThreadUpdates to reflect
+      // the shifted block path. `resetRangeRefs` is what
+      // `useCachedValue.onReset` would call when the new value
+      // arrives.
+      act(() => {
+        editor.children = [
+          {type: 'paragraph', children: [{text: 'second paragraph'}]}
+        ];
+        result.current.resetRangeRefs();
+      });
+
+      const updatedThreads = [{
+        id: 1,
+        subjectRange: {anchor: {path: [0, 0], offset: 0},
+                       focus: {path: [0, 0], offset: 6}}
+      }];
+
+      rerender({threads: updatedThreads});
+
+      expect(result.current.trackedThreads[0].subjectRange).toEqual({
+        anchor: {path: [0, 0], offset: 0},
+        focus: {path: [0, 0], offset: 6}
+      });
+    });
+  });
 });

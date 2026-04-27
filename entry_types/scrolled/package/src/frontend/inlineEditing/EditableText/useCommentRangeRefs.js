@@ -1,6 +1,13 @@
 import {useCallback, useEffect, useRef} from 'react';
 import {Editor, Node} from 'slate';
 
+// Keeps a Slate `rangeRef` per comment thread alive so that ongoing
+// text edits stay reflected in the thread's effective subject range
+// without round-tripping through the server. When the upstream value
+// is replaced (e.g. after a structural shift applied by the editor),
+// `useCachedValue` invokes `resetRangeRefs` from `onReset` so the
+// next render falls back to the upstream `subjectRange` and the
+// post-render effect repopulates the map against the new content.
 export function useCommentRangeRefs(editor, threads) {
   const rangeRefsMap = useRef(new Map());
 
@@ -39,22 +46,21 @@ export function useCommentRangeRefs(editor, threads) {
       rangeRef.unref();
     }
     rangeRefsMap.current.clear();
-    syncRangeRefs(threads);
-  }, [threads, syncRangeRefs]);
+  }, []);
 
   const trackedThreads = threads.map(t => {
-    const ref = rangeRefsMap.current.get(t.id);
-    return ref?.current ? {...t, subjectRange: ref.current} : t;
+    const rangeRef = rangeRefsMap.current.get(t.id);
+    return rangeRef?.current ? {...t, subjectRange: rangeRef.current} : t;
   });
 
   const getTrackedSubjectRanges = useCallback(() => {
     const ranges = {};
 
     threads.forEach(t => {
-      const ref = rangeRefsMap.current.get(t.id);
+      const rangeRef = rangeRefsMap.current.get(t.id);
 
-      if (ref?.current) {
-        ranges[t.id] = ref.current;
+      if (rangeRef?.current) {
+        ranges[t.id] = rangeRef.current;
       }
     });
 
