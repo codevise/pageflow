@@ -75,6 +75,14 @@
   z-index: 1;
 }
 
+body > :global(#root) .titleLink:focus {
+  outline: none;
+}
+
+.card:has(.titleLink:focus) {
+  outline: var(--focus-outline);
+}
+
 .textPosition-below .cardWrapper,
 .textPosition-right .cardWrapper {
   height: 100%;
