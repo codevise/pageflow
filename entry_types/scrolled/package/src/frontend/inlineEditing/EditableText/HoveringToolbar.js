@@ -2,12 +2,15 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Editor, Range, Transforms} from 'slate';
 import {ReactEditor, useSlate} from 'slate-react';
 
+import {features} from 'pageflow/frontend';
 import {useFloating, FloatingPortal, shift, offset} from '@floating-ui/react';
 
 import {Toolbar} from '../Toolbar';
 import {useI18n} from '../../i18n';
 import {useSelectLinkDestination} from '../useSelectLinkDestination';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
+import {useContentElementAttributes} from '../../useContentElementAttributes';
+import {useEditorSelection} from '../EditorState';
 import {isMarkActive, toggleMark} from './marks';
 
 import BoldIcon from '../images/bold.svg';
@@ -17,11 +20,13 @@ import StrikethroughIcon from '../images/strikethrough.svg';
 import SubIcon from '../images/sub.svg';
 import SupIcon from '../images/sup.svg';
 import LinkIcon from '../images/link.svg';
+import AddCommentIcon from '../images/addComment.svg';
 
 export function HoveringToolbar({children}) {
   const editor = useSlate()
   const {t} = useI18n({locale: 'ui'});
   const selectLinkDestination = useSelectLinkDestination();
+  const startNewThread = useStartNewThread(editor);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -91,7 +96,7 @@ export function HoveringToolbar({children}) {
        <FloatingPortal root={floatingPortalRoot}>
          <div ref={refs.setFloating}
               style={floatingStyles}>
-           {renderToolbar(editor, t, selectLinkDestination)}
+           {renderToolbar(editor, t, selectLinkDestination, startNewThread)}
          </div>
        </FloatingPortal>}
       {children}
@@ -99,7 +104,27 @@ export function HoveringToolbar({children}) {
   );
 }
 
-function renderToolbar(editor, t, selectLinkDestination) {
+// Returns a function that opens the new-thread form for the current
+// selection, or null when commenting is disabled for this element.
+function useStartNewThread(editor) {
+  const {contentElementPermaId, inlineComments} = useContentElementAttributes();
+  const commentingEnabled = features.isEnabled('commenting') && inlineComments;
+  const {select: selectNewThread} = useEditorSelection({
+    type: 'newThread',
+    id: contentElementPermaId
+  });
+
+  if (!commentingEnabled) return null;
+
+  return () => selectNewThread({
+    type: 'newThread',
+    id: contentElementPermaId,
+    subjectType: 'ContentElement',
+    range: editor.selection
+  });
+}
+
+function renderToolbar(editor, t, selectLinkDestination, startNewThread) {
   const buttons = [
     {
       name: 'bold',
@@ -138,15 +163,20 @@ function renderToolbar(editor, t, selectLinkDestination) {
             t('pageflow_scrolled.inline_editing.insert_link'),
       icon: LinkIcon
     },
+    ...(startNewThread ? [{
+      name: 'comment',
+      text: t('pageflow_scrolled.inline_editing.add_comment'),
+      icon: AddCommentIcon
+    }] : [])
   ].map(button => ({...button, active: isButtonActive(editor, button.name)}));
 
   return (
     <Toolbar buttons={buttons}
-             onButtonClick={name => handleButtonClick(editor, name, selectLinkDestination)}/>
+             onButtonClick={name => handleButtonClick(editor, name, selectLinkDestination, startNewThread)}/>
   );
 }
 
-function handleButtonClick(editor, format, selectLinkDestination) {
+function handleButtonClick(editor, format, selectLinkDestination, startNewThread) {
   if (format === 'link') {
     if (isLinkActive(editor)) {
       unwrapLink(editor);
@@ -156,6 +186,9 @@ function handleButtonClick(editor, format, selectLinkDestination) {
         wrapLink(editor, href, openInNewTab);
       }, () => {});
     }
+  }
+  else if (format === 'comment') {
+    startNewThread();
   }
   else {
     toggleMark(editor, format);

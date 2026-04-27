@@ -1,8 +1,11 @@
-export {ReviewStateProvider, useCommentThreads} from './ReviewStateProvider';
+export {ReviewStateProvider, useCommentThreads, useCommentThread} from './ReviewStateProvider';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
-export {CommentBadge} from './CommentBadge';
+export {ThreadsBadge} from './ThreadsBadge';
+export {Badge} from './Badge';
 export {ThreadList} from './ThreadList';
-export {postCreateCommentThreadMessage} from './postMessage';
+export {Thread} from './Thread';
+export {NewThreadForm} from './NewThreadForm';
+export {postCreateCommentThreadMessage, postUpdateThreadMessage} from './postMessage';
 export {useCommentHighlights, decorateCommentHighlights} from './commentHighlights';
 export {default as commentHighlightStyles} from './commentHighlights.module.css';
 export {useRangeAnchors, RangeAnchor, useAnchoredFloating} from './rangeAnchors';

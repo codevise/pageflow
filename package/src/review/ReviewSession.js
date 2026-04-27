@@ -1,10 +1,10 @@
 import BackboneEvents from 'backbone-events-standalone';
 
 export class ReviewSession {
-  constructor({entryId, request}) {
+  constructor({entryId, request, initialState = null}) {
     this._entryId = entryId;
     this._request = request;
-    this._state = null;
+    this._state = initialState;
   }
 
   get state() {
@@ -60,6 +60,38 @@ export class ReviewSession {
     }
   }
 
+  diffSubjectRangeUpdates(ranges) {
+    const changed = {};
+
+    if (!this._state) return changed;
+
+    Object.entries(ranges).forEach(([id, range]) => {
+      const threadId = Number(id);
+      const thread = this._findThread(threadId);
+
+      if (!thread || sameRange(thread.subjectRange, range)) return;
+
+      changed[threadId] = range;
+    });
+
+    return changed;
+  }
+
+  applySubjectRangeUpdates(ranges) {
+    if (!this._state) return;
+
+    Object.entries(ranges).forEach(([id, range]) => {
+      const threadId = Number(id);
+      const thread = this._findThread(threadId);
+
+      if (!thread) return;
+
+      const updated = {...thread, subjectRange: range};
+      this._upsertThread(updated);
+      this.trigger('change:thread', updated);
+    });
+  }
+
   async fetch() {
     const data = await this._request({
       url: `/review/entries/${this._entryId}/comment_threads`,
@@ -104,3 +136,7 @@ export class ReviewSession {
 }
 
 Object.assign(ReviewSession.prototype, BackboneEvents);
+
+function sameRange(a, b) {
+  return JSON.stringify(a) === JSON.stringify(b);
+}

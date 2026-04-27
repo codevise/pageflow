@@ -21,5 +21,9 @@ export function renderBackboneView(view) {
   view.render();
   container.appendChild(view.el);
 
+  if (view.onShow) {
+    view.onShow();
+  }
+
   return within(view.el);
 }

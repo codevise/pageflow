@@ -19,6 +19,7 @@ import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
 import {duplicateContentElement} from './duplicateContentElement';
+import {updateContentElement} from './updateContentElement';
 
 import {sortColors} from './sortColors';
 import {Scale} from '../../../shared/Scale';
@@ -141,6 +142,10 @@ export const ScrolledEntry = Entry.extend({
       splitPoint,
       success
     });
+  },
+
+  updateContentElement(contentElement, configuration, options = {}) {
+    updateContentElement(this, contentElement, configuration, options);
   },
 
   deleteContentElement(contentElement) {

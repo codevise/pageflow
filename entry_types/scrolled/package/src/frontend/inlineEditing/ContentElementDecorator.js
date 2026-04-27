@@ -2,7 +2,7 @@ import React from 'react';
 import {useDrag} from 'react-dnd';
 
 import {features} from 'pageflow/frontend';
-import {CommentBadge} from 'pageflow-scrolled/review';
+import {ThreadsBadge} from 'pageflow-scrolled/review';
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useI18n} from '../i18n';
 import {api} from '../api';
@@ -65,7 +65,7 @@ function DefaultSelectionRect(props) {
                    full={props.width === widths.full || props.customMargin}
                    inset={props.position === 'backdrop'}
                    commentBadge={features.isEnabled('commenting') &&
-                     <CommentBadge subjectType="ContentElement"
+                     <ThreadsBadge subjectType="ContentElement"
                                    subjectId={props.permaId}
                                    mode={commentsSelected ? 'active' : isSelected ? 'icon' : 'dot'}
                                    onClick={() => selectComments()} />}

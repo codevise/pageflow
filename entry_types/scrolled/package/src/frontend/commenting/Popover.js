@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import classNames from 'classnames';
 
-import {CommentBadge, ThreadList} from 'pageflow-scrolled/review';
+import {ThreadsBadge, ThreadList} from 'pageflow-scrolled/review';
 import {useSelectedSubject} from './SelectedSubjectProvider';
 
 import styles from './Popover.module.css';
@@ -51,7 +51,7 @@ export function Popover({subjectType, subjectId, subjectRange, placement, suppre
          className={classNames(styles.popover,
                                {[styles.reversed]: onLeft,
                                 [styles.bottom]: onBottom})}>
-      <CommentBadge subjectType={subjectType}
+      <ThreadsBadge subjectType={subjectType}
                     subjectId={subjectId}
                     subjectRange={subjectRange}
                     mode={isSelected ? 'active' : undefined}

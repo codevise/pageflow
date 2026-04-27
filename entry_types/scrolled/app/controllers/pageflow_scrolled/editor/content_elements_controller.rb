@@ -27,7 +27,11 @@ module PageflowScrolled
 
       def update
         content_element = ContentElement.all_for_revision(@entry.draft).find(params[:id])
-        content_element.update(content_element_params)
+
+        ContentElement.transaction do
+          content_element.update(content_element_params)
+          update_comment_thread_subject_ranges(content_element)
+        end
 
         head :no_content
       rescue ActiveRecord::RecordNotFound
@@ -65,6 +69,27 @@ module PageflowScrolled
               .transform_keys(&:underscore)
               .permit(:type_name, :position)
               .merge(configuration:)
+      end
+
+      def update_comment_thread_subject_ranges(content_element)
+        ranges = permitted_subject_ranges
+        return if ranges.blank?
+
+        Pageflow::CommentThread.update_subject_ranges_for(
+          revision: @entry.draft,
+          subject_type: 'ContentElement',
+          subject_id: content_element.perma_id,
+          ranges:
+        )
+      end
+
+      def permitted_subject_ranges
+        ranges = params[:comment_thread_subject_ranges]
+        return nil if ranges.blank?
+
+        ranges.to_unsafe_h.transform_values do |range|
+          range.is_a?(Hash) ? range.slice('anchor', 'focus') : {}
+        end
       end
     end
   end
