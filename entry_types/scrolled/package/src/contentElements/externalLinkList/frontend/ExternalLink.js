@@ -7,6 +7,7 @@ import {
   EditableInlineText,
   EditableText,
   InlineFileRights,
+  Link,
   Text,
   useFileWithInlineRights,
   useContentElementConfigurationUpdate,
@@ -100,6 +101,19 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
             utils.isBlankEditableTextValue(itemTexts[id]?.description || legacyTexts.description));
   }
 
+  function getCardLinkMode() {
+    if (isEditable || !href || displayButtons) {
+      return 'none';
+    }
+    if (props.textPosition === 'none') {
+      return 'image';
+    }
+    if (titlePresent) {
+      return 'title';
+    }
+    return 'more';
+  }
+
   const href = itemLinks[id] ? itemLinks[id]?.href : ensureAbsolute(props.url);
   const openInNewTab = itemLinks[id] ? itemLinks[id]?.openInNewTab : props.open_in_new_tab;
 
@@ -111,6 +125,12 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
                                     props.textPosition === 'none';
 
   const inlineFileRightsItems = [{file: thumbnailImageFile, label: 'image'}];
+
+  const titlePresent = presentOrEditing('title');
+  const descriptionPresent = presentOrEditing('description');
+  const cardLinkMode = getCardLinkMode();
+  const descriptionElementId = `external-link-${contentElementId}-${id}-description`;
+
   return (
     <li className={classNames(styles.item,
                               styles[`textPosition-${props.textPosition}`],
@@ -119,18 +139,21 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
                               {[styles.highlighted]: props.highlighted},
                               {[styles.selected]: props.selected})}
         onClick={props.onClick}>
-      <Link isEnabled={!displayButtons}
-            isEditable={isEditable}
-            linkPreviewDisabled={props.selected && configuration.backfaces}
-            actionButtonVisible={props.selected}
-            actionButtonPortal={true}
-            href={href}
-            openInNewTab={openInNewTab}
-            onChange={handleLinkChange}>
+      <EditorLinkWrapper isEditable={isEditable}
+                         linkPreviewDisabled={props.selected && configuration.backfaces}
+                         actionButtonVisible={props.selected}
+                         actionButtonPortal={true}
+                         href={href}
+                         openInNewTab={openInNewTab}
+                         onChange={handleLinkChange}>
         <div className={styles.cardWrapper}>
           {renderItemContent()}
+          {cardLinkMode === 'more' &&
+           <MoreLink href={href}
+                     openInNewTab={openInNewTab}
+                     describedBy={descriptionPresent ? descriptionElementId : undefined} />}
         </div>
-      </Link>
+      </EditorLinkWrapper>
     </li>
   );
 
@@ -167,7 +190,14 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
                        fit={props.thumbnailFit}
                        linkWidth={props.linkWidth}
                        load={props.loadImages}
-                       showPlaceholder={isEditable}>
+                       showPlaceholder={isEditable}
+                       renderImageLink={cardLinkMode === 'image'
+                         ? (image) => (
+                             <Link href={href} openInNewTab={openInNewTab}>
+                               {image}
+                             </Link>
+                           )
+                         : undefined}>
               <InlineFileRights configuration={configuration}
                                 context="insideElement"
                                 position={props.textPosition === 'overlay' ? 'top': 'bottom'}
@@ -189,17 +219,23 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
                                      placeholder={t('pageflow_scrolled.inline_editing.type_tagline')}
                                      onChange={value => handleTextChange('tagline', value)} />
                </Text>}
-              {presentOrEditing('title') &&
+              {titlePresent &&
                <Text scaleCategory={`teaserTitle-${scaleCategorySuffix}`}>
-                 <EditableInlineText value={itemTexts[id]?.title || legacyTexts.title}
-                                     placeholder={t('pageflow_scrolled.inline_editing.type_heading')}
-                                     onChange={value => handleTextChange('title', value)} />
+                 <TitleLink isEnabled={cardLinkMode === 'title'}
+                            href={href}
+                            openInNewTab={openInNewTab}>
+                   <EditableInlineText value={itemTexts[id]?.title || legacyTexts.title}
+                                       placeholder={t('pageflow_scrolled.inline_editing.type_heading')}
+                                       onChange={value => handleTextChange('title', value)} />
+                 </TitleLink>
                </Text>}
-              {presentOrEditing('description') &&
-               <EditableText value={itemTexts[id]?.description || legacyTexts.description}
-                             scaleCategory={`teaserDescription-${scaleCategorySuffix}`}
-                             placeholder={t('pageflow_scrolled.inline_editing.type_text')}
-                             onChange={value => handleTextChange('description', value)} />}
+              {descriptionPresent &&
+               <div className={styles.description} id={descriptionElementId}>
+                 <EditableText value={itemTexts[id]?.description || legacyTexts.description}
+                               scaleCategory={`teaserDescription-${scaleCategorySuffix}`}
+                               placeholder={t('pageflow_scrolled.inline_editing.type_text')}
+                               onChange={value => handleTextChange('description', value)} />
+               </div>}
               {configuration.displayButtons && !configuration.backfaces &&
                presentOrEditing('link') &&
                <div className={styles.button}>
@@ -261,8 +297,40 @@ export function ExternalLink({id, configuration, contentElementId, ...props}) {
   }
 }
 
-function Link({isEnabled, isEditable, ...props}) {
-  if ((isEnabled && props.href) || isEditable) {
+function TitleLink({isEnabled, href, openInNewTab, children}) {
+  if (isEnabled) {
+    return (
+      <Link href={href}
+            openInNewTab={openInNewTab}
+            attributes={{className: styles.titleLink}}>
+        {children}
+      </Link>
+    );
+  }
+  else {
+    return children;
+  }
+}
+
+function MoreLink({href, openInNewTab, describedBy}) {
+  const {t: translateWithEntryLocale} = useI18n();
+
+  return (
+    <Link href={href}
+          openInNewTab={openInNewTab}
+          attributes={{
+            className: styles.moreLink,
+            'aria-describedby': describedBy
+          }}>
+      <span className={styles.moreLinkLabel}>
+        {translateWithEntryLocale('pageflow_scrolled.public.more')}
+      </span>
+    </Link>
+  );
+}
+
+function EditorLinkWrapper({isEditable, ...props}) {
+  if (isEditable) {
     return (
       <EditableLink {...props}
                     allowRemove={true} />

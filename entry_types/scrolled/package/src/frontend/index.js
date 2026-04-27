@@ -112,6 +112,7 @@ export {EditableTable} from './EditableTable';
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
 export {EditableLink} from './EditableLink';
+export {Link} from './Link';
 export {ActionButton} from './ActionButton';
 export {FilePlaceholder} from './FilePlaceholderDecorator';
 export {Placeholder} from './Placeholder';
