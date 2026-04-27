@@ -1,11 +1,13 @@
+body > :global(#root) {
+  --focus-outline: 3px solid #518ad2;
+}
+
+.focusOutlineDisabled > :global(#root) {
+  --focus-outline: none;
+}
+
 body > :global(#root) a:focus,
 body > :global(#root) button:focus,
 body > :global(#root) [tabindex]:focus {
-  outline: 3px solid #518ad2;
-}
-
-.focusOutlineDisabled > :global(#root) [tabindex]:focus,
-.focusOutlineDisabled > :global(#root) button:focus,
-.focusOutlineDisabled > :global(#root) a:focus {
-  outline: none;
+  outline: var(--focus-outline);
 }
