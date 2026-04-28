@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 import {
   useFloating,
@@ -21,7 +21,10 @@ export function useRangeAnchors() {
     setVersion(v => v + 1);
   }, []);
 
-  const anchors = {containerRef, _elements: elements, _version: version};
+  const anchors = useMemo(
+    () => ({containerRef, _elements: elements, _version: version}),
+    [version]
+  );
 
   return {anchors, registerAnchor};
 }

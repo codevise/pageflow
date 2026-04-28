@@ -23,6 +23,6 @@ export function TextBlock(props) {
                   className={className}
                   selectionRect={true}
                   placeholder={t('pageflow_scrolled.inline_editing.type_text')}
-                  onChange={value => updateConfiguration({value})} />
+                  onChange={(value, options) => updateConfiguration({value}, options)} />
   );
 }

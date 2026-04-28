@@ -158,6 +158,18 @@ export const PreviewMessageController = Object.extend({
         if (type === 'contentElementComments') {
           this.editor.navigate(`/scrolled/content_elements/${id}/comments`, {trigger: true})
         }
+        else if (type === 'commentThread') {
+          this.editor.navigate(`/scrolled/comment_threads/${id}`, {trigger: true})
+        }
+        else if (type === 'newThread') {
+          const {subjectType, range} = message.data.payload;
+          const payload = encodeURIComponent(JSON.stringify({subjectRange: range}));
+          this.editor.navigate(
+            `/scrolled/comment_threads/new?subjectType=${subjectType}` +
+            `&subjectId=${id}&payload=${payload}`,
+            {trigger: true}
+          );
+        }
         else if (type === 'contentElement') {
           const contentElement = this.entry.contentElements.get(id);
           this.editor.navigate(contentElement.getEditorPath(), {trigger: true})
@@ -209,11 +221,19 @@ export const PreviewMessageController = Object.extend({
         this.entry.moveContentElement({id, range}, to);
       }
       else if (message.data.type === 'UPDATE_CONTENT_ELEMENT') {
-        const {id, configuration} = message.data.payload;
+        const {id, configuration, commentThreadSubjectRanges} = message.data.payload;
+        const contentElement = this.entry.contentElements.get(id);
 
-        this.entry.contentElements.get(id).configuration.set(
-          configuration, {ignoreInWatchCollection: true}
-        );
+        if (commentThreadSubjectRanges) {
+          this.entry.updateContentElement(
+            contentElement, configuration, {commentThreadSubjectRanges}
+          );
+        }
+        else {
+          contentElement.configuration.set(
+            configuration, {ignoreInWatchCollection: true}
+          );
+        }
       }
       else if (message.data.type === 'UPDATE_WIDGET') {
         const {role, configuration} = message.data.payload;
