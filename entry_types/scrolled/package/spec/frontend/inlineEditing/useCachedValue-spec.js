@@ -79,6 +79,26 @@ describe('useCachedValue', () => {
     expect(listener).not.toHaveBeenCalled();
   });
 
+  it('does not reset a follow-up local edit after passed value caught up to a previous one', () => {
+    const listener = jest.fn();
+    const {result, rerender} = renderHook(
+      ({value}) => useCachedValue(value, {
+        onReset: listener
+      }),
+      {initialProps: {value: 'value'}}
+    );
+
+    let [, setValue] = result.current;
+    act(() => setValue('new value'));
+    rerender({value: 'new value'});
+    [, setValue] = result.current;
+    act(() => setValue('newer value'));
+
+    const [cachedValue] = result.current;
+    expect(cachedValue).toBe('newer value');
+    expect(listener).not.toHaveBeenCalled();
+  });
+
   it('calls onDebouncedChange after value has not been set for given delay', () => {
     const listener = jest.fn();
     const {result} = renderHook(() => useCachedValue('value', {

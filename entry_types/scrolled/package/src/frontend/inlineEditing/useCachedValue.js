@@ -20,6 +20,17 @@ export function useCachedValue(value, {
     previousValue.current = value;
   }
 
+  // Track the upstream value across renders. The branch above only
+  // assigns when an external change is observed; without this effect,
+  // a render that sees `value` already in sync with `cachedValue` (a
+  // local edit echoed back via `onDebouncedChange`) would leave
+  // `previousValue.current` stale. The next local edit would then
+  // misread that stale value as an external change and overwrite the
+  // edit with `onReset`.
+  useEffect(() => {
+    previousValue.current = value;
+  });
+
   const debouncedHandler = useDebouncedCallback(onDebouncedChange, delay);
 
   const setValue = useCallback(value => {
