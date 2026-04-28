@@ -221,6 +221,19 @@ function resetSelectionIfOutsideNextValue(editor, nextValue) {
   if (editor.selection && (!hasTextAtPoint(nextEditor, editor.selection.anchor) ||
                            !hasTextAtPoint(nextEditor, editor.selection.focus))) {
     Transforms.deselect(editor);
+    // Also drop the browser's DOM cursor when it sits inside this
+    // editor's contenteditable. Otherwise slate-react's throttled
+    // `selectionchange` listener would later re-sync that stale
+    // cursor — clamped to the start of the now-shrunken content —
+    // back into `editor.selection`, and `Selection`'s auto-select
+    // would treat it as a user click and re-select this content
+    // element (overriding whatever the calling op selected, e.g. a
+    // freshly inserted image).
+    const domSelection = window.getSelection();
+    const editorEl = ReactEditor.toDOMNode(editor, editor);
+    if (domSelection && editorEl.contains(domSelection.anchorNode)) {
+      domSelection.removeAllRanges();
+    }
   }
 }
 
