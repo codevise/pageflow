@@ -314,18 +314,28 @@ export function Batch(entry, section, {reviewSession} = {}) {
       },
 
       success(response) {
-        applyAdditions(response);
-        applyPositions();
-        applyDeletions();
+        // Each step's intermediate state is observable in the iframe
+        // (Backbone change events propagate as separate postMessages
+        // and re-render React without batching), so the order
+        // resolves these dependencies:
+        //
+        // - permaIds before thread updates: thread migrations
+        //   resolve `target.get('permaId')`.
+        // - Thread updates before configuration changes: the
+        //   value-flip render in `useCachedValue` clears rangeRefs
+        //   and falls back to `thread.subjectRange`, which must
+        //   already be migrated.
+        // - Positions before additions: Backbone's collection
+        //   comparator drops new elements into their sorted slot.
+        // - Configuration changes before deletions: a delete-merge
+        //   survivor grows before its sibling disappears (no
+        //   brief collapse).
+        applyPermaIds(response);
         applyThreadUpdates();
-        // Apply configuration changes last so that the value flip
-        // observed by `useCachedValue` happens after `reviewSession`
-        // already holds the migrated thread ranges. `onReset` then
-        // clears `useCommentRangeRefs`'s map and the post-render
-        // effect rebuilds it from the new thread subject ranges
-        // against the new editor content — no reliance on
-        // `isValidRange` filtering out stale OLD ranges.
         applyConfigurationChanges();
+        applyPositions();
+        applyAdditions();
+        applyDeletions();
 
         section.contentElements.sort();
 
@@ -384,18 +394,24 @@ export function Batch(entry, section, {reviewSession} = {}) {
   // Functionality to apply the recorded changes to the underlying
   // section once the request succeeded:
 
-  function applyAdditions(response) {
+  function applyPermaIds(response) {
     contentElements.forEach((contentElement, index) => {
       if (contentElement.isNew()) {
-        section.contentElements.add(contentElement);
-
         contentElement.set({
           id: response[index].id,
           permaId: response[index].permaId
         });
       }
-      else if (contentElement.section !== section) {
+    });
+  }
+
+  function applyAdditions() {
+    contentElements.forEach(contentElement => {
+      if (contentElement.section && contentElement.section !== section) {
         contentElement.section.contentElements.remove(contentElement);
+        section.contentElements.add(contentElement);
+      }
+      else if (!section.contentElements.contains(contentElement)) {
         section.contentElements.add(contentElement);
       }
     });
