@@ -1,4 +1,6 @@
 import I18n from 'i18n-js';
+import {Node, Point} from 'slate';
+
 import {utils} from 'pageflow-scrolled/frontend';
 import {editor} from 'pageflow-scrolled/editor';
 import {InfoBoxView} from 'pageflow/editor';
@@ -97,27 +99,58 @@ editor.contentElementTypes.register('textBlock', {
     });
   },
 
-  split(configuration, insertIndex) {
+  split(configuration, at, {ranges}) {
     const value = getValue(configuration);
+    const beforeValue = value.slice(0, at);
+    const afterValue = value.slice(at);
 
-    return  [
-      {
-        ...configuration,
-        value: value.slice(0, insertIndex),
-      },
-      {
-        ...configuration,
-        value: value.slice(insertIndex),
+    const beforeRanges = {};
+    const afterRanges = {};
+
+    Object.entries(ranges).forEach(([id, range]) => {
+      const startPath = Math.min(range.anchor.path[0], range.focus.path[0]);
+      const endPath = Math.max(range.anchor.path[0], range.focus.path[0]);
+
+      if (endPath < at) {
+        beforeRanges[id] = range;
       }
-    ];
-  },
-
-  merge(configurationA, configurationB) {
-    const value = getValue(configurationA).concat(getValue(configurationB));
+      else if (startPath >= at) {
+        afterRanges[id] = shiftRange(range, -at);
+      }
+      else {
+        const start = Point.isBefore(range.anchor, range.focus) ?
+                      range.anchor : range.focus;
+        beforeRanges[id] = {
+          anchor: start,
+          focus: endOfBlock(beforeValue, at - 1)
+        };
+      }
+    });
 
     return {
-      ...configurationA,
-      value,
+      before: {
+        configuration: {...configuration, value: beforeValue},
+        ranges: beforeRanges
+      },
+      after: {
+        configuration: {...configuration, value: afterValue},
+        ranges: afterRanges
+      }
+    };
+  },
+
+  merge(configurationA, configurationB, {rangesA, rangesB}) {
+    const valueA = getValue(configurationA);
+    const valueB = getValue(configurationB);
+
+    const ranges = {...rangesA};
+    Object.entries(rangesB).forEach(([id, range]) => {
+      ranges[id] = shiftRange(range, valueA.length);
+    });
+
+    return {
+      configuration: {...configurationA, value: valueA.concat(valueB)},
+      ranges
     };
   },
 
@@ -149,6 +182,22 @@ editor.contentElementTypes.register('textBlock', {
 function getValue(configuration) {
   // Value might still be empty if text block has not been edited
   return configuration.value || [{type: 'paragraph', children: [{text: ''}]}];
+}
+
+function shiftRange(range, delta) {
+  return {
+    anchor: shiftPoint(range.anchor, delta),
+    focus: shiftPoint(range.focus, delta)
+  };
+}
+
+function shiftPoint(point, delta) {
+  return {...point, path: [point.path[0] + delta, ...point.path.slice(1)]};
+}
+
+function endOfBlock(value, blockIndex) {
+  const [lastNode, lastPath] = Node.last({children: value}, [blockIndex]);
+  return {path: lastPath, offset: lastNode.text.length};
 }
 
 function ensureTextContent(node) {

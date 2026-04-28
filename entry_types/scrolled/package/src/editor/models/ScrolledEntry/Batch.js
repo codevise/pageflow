@@ -4,7 +4,13 @@ import Backbone from 'backbone';
 // Allows recording changes to a section's content elements,
 // persisting the changes to the server in a single request and
 // applying them to the section once the requests succeeds.
-export function Batch(entry, section) {
+//
+// When a `reviewSession` is passed, structural ops that go through
+// `split`/`maybeMerge` also collect the resulting comment-thread range
+// updates and subject_id migrations so both the payload and the
+// post-save `ReviewSession` state stay in sync with the new
+// Slate coordinate system.
+export function Batch(entry, section, {reviewSession} = {}) {
   // Shallow copy of the section's list of content elements to store
   // ordering changes and newly inserted content elements.
   const contentElements = section.contentElements.toArray();
@@ -16,6 +22,19 @@ export function Batch(entry, section) {
   // Content elements that have been removed from contentElements
   // and shall be deleted on the server.
   const markedForDeletion = [];
+
+  // New ranges for comment threads, keyed by threadId. Holds both
+  // updates for threads that stay on their content element and the
+  // post-shift range for threads being migrated (the latter also
+  // appear in `threadMigrations`).
+  const threadRangeUpdates = {};
+
+  // Comment threads migrating to a different content element.
+  // Shape: {threadId: targetContentElement}. The target reference is
+  // resolved to an id (for existing) or to the newly-assigned
+  // perma_id (for new, via applyAdditions) at payload-assembly /
+  // success time.
+  const threadMigrations = {};
 
   // Track whether changes have been recorded which need to be
   // persisted to the server.
@@ -54,26 +73,38 @@ export function Batch(entry, section) {
   // transformations below:
 
   function split(contentElement, splitPoint, {insertAt} = {}) {
-    const [c1, c2] = contentElement.getType().split(getCurrentConfiguration(contentElement), splitPoint);
+    const {before, after} = normalizeSplitResult(
+      contentElement.getType().split(
+        getCurrentConfiguration(contentElement),
+        splitPoint,
+        {ranges: collectRanges(contentElement)}
+      )
+    );
     let splitOffContentElement;
 
     if (insertAt === 'before') {
       splitOffContentElement = new ContentElement({
         typeName: contentElement.get('typeName'),
-        configuration: c1
+        configuration: before.configuration
       });
 
       insertBefore(contentElement, splitOffContentElement);
-      markForUpdate(contentElement, c2);
+      markForUpdate(contentElement, after.configuration);
+
+      recordRangeUpdates(after.ranges);
+      recordThreadMigrations(before.ranges, splitOffContentElement);
     }
     else {
       splitOffContentElement = new ContentElement({
         typeName: contentElement.get('typeName'),
-        configuration: c2
+        configuration: after.configuration
       });
 
-      markForUpdate(contentElement, c1);
+      markForUpdate(contentElement, before.configuration);
       insertAfter(contentElement, splitOffContentElement);
+
+      recordRangeUpdates(before.ranges);
+      recordThreadMigrations(after.ranges, splitOffContentElement);
     }
 
     return splitOffContentElement;
@@ -87,8 +118,16 @@ export function Batch(entry, section) {
       return;
     }
 
-    const mergedConfiguration = before.getType().merge(getCurrentConfiguration(before),
-                                                       getCurrentConfiguration(after));
+    const rangesA = collectRanges(before);
+    const rangesB = collectRanges(after);
+    const {configuration: mergedConfiguration, ranges: mergedRanges} =
+      normalizeMergeResult(
+        before.getType().merge(
+          getCurrentConfiguration(before),
+          getCurrentConfiguration(after),
+          {rangesA, rangesB}
+        )
+      );
 
     // Update the aleady persisted content element, if one has not yet
     // been persisted. For example, let X be a content element in
@@ -133,22 +172,24 @@ export function Batch(entry, section) {
     //     paragraph B
     //     paragraph C
     //
-    if (before.isNew() && !after.isNew()) {
-      remove(before);
-      markForUpdate(after, mergedConfiguration);
+    const survivor = before.isNew() && !after.isNew() ? after : before;
+    const removed = survivor === before ? after : before;
+    const removedRanges = removed === before ? rangesA : rangesB;
+    const survivorRanges = survivor === before ? rangesA : rangesB;
 
-      return after;
+    markForUpdate(survivor, mergedConfiguration);
+    remove(removed);
+    if (!removed.isNew()) {
+      markForDeletion(removed);
     }
-    else {
-      markForUpdate(before, mergedConfiguration);
-      remove(after);
 
-      if (!after.isNew()) {
-        markForDeletion(after);
-      }
+    // The type's merge is expected to preserve every input thread id
+    // in `mergedRanges` (with shifted offsets where appropriate), so
+    // splitting `mergedRanges` along the input range maps is exhaustive.
+    recordThreadMigrations(pickRanges(mergedRanges, removedRanges), survivor);
+    recordRangeUpdates(pickRanges(mergedRanges, survivorRanges));
 
-      return before;
-    }
+    return survivor;
   }
 
   function insertBefore(sibling, contentElement) {
@@ -189,6 +230,67 @@ export function Batch(entry, section) {
     return changedConfigurations[contentElement.id] || contentElement.configuration.attributes;
   }
 
+  // Bookkeeping for comment thread range updates and subject_id
+  // migrations recorded by structural ops above. `reviewSession` is
+  // only mutated in the post-save `applyThreadUpdates`, so callers
+  // that read live ranges mid-batch must go through `collectRanges`
+  // to see pending migrations.
+
+  function collectRanges(contentElement) {
+    if (!reviewSession) return {};
+
+    const result = {};
+
+    if (!contentElement.isNew()) {
+      const threads = reviewSession.findThreadsFor({
+        subjectType: 'ContentElement',
+        subjectId: contentElement.get('permaId')
+      });
+
+      threads.forEach(thread => {
+        // Threads with a pending migration away from this element are
+        // excluded — `findThreadsFor` reads `reviewSession` state which
+        // has not yet been updated for in-batch migrations, so it
+        // would otherwise still return them.
+        const migratedAway = thread.id in threadMigrations &&
+                             threadMigrations[thread.id] !== contentElement;
+
+        if (thread.subjectRange && !migratedAway) {
+          result[thread.id] = thread.subjectRange;
+        }
+      });
+    }
+
+    // Threads migrated to this element earlier in the batch are not
+    // yet reflected in reviewSession — include their pending ranges so
+    // later ops on this element see them.
+    Object.entries(threadMigrations).forEach(([threadId, target]) => {
+      if (target === contentElement) {
+        result[Number(threadId)] = threadRangeUpdates[threadId];
+      }
+    });
+
+    return result;
+  }
+
+  function recordRangeUpdates(rangesByThreadId) {
+    Object.entries(rangesByThreadId).forEach(([id, range]) => {
+      threadRangeUpdates[Number(id)] = range;
+    });
+  }
+
+  function recordThreadMigrations(rangesByThreadId, targetContentElement) {
+    Object.entries(rangesByThreadId).forEach(([id, range]) => {
+      recordThreadMigration(Number(id), targetContentElement, range);
+    });
+  }
+
+  function recordThreadMigration(threadId, targetContentElement, newRange) {
+    threadMigrations[threadId] = targetContentElement;
+    threadRangeUpdates[threadId] = newRange;
+    isDirty = true;
+  }
+
   // Functionality to assemble and perform the batch request to
   // persist the recorded changes:
 
@@ -201,17 +303,29 @@ export function Batch(entry, section) {
   function save({success} = {}) {
     isDirty = false;
 
+    const commentThreadSubjectRanges = createCommentThreadSubjectRanges();
+
     Backbone.sync('update', section, {
       url: `${section.url()}/content_elements/batch`,
       attrs: {
-        content_elements: createBatchItems()
+        content_elements: createBatchItems(),
+        ...(Object.keys(commentThreadSubjectRanges).length > 0 &&
+            {comment_thread_subject_ranges: commentThreadSubjectRanges})
       },
 
       success(response) {
-        applyConfigurationChanges();
-        applyPositions();
         applyAdditions(response);
+        applyPositions();
         applyDeletions();
+        applyThreadUpdates();
+        // Apply configuration changes last so that the value flip
+        // observed by `useCachedValue` happens after `reviewSession`
+        // already holds the migrated thread ranges. `onReset` then
+        // clears `useCommentRangeRefs`'s map and the post-render
+        // effect rebuilds it from the new thread subject ranges
+        // against the new editor content — no reliance on
+        // `isValidRange` filtering out stale OLD ranges.
+        applyConfigurationChanges();
 
         section.contentElements.sort();
 
@@ -223,29 +337,48 @@ export function Batch(entry, section) {
   }
 
   function createBatchItems() {
+    const migrateIdsByElement = groupMigrationsByElement();
+
     return [
       ...contentElements.map(contentElement => {
-        if (contentElement.isNew()) {
-          return {
-            typeName: contentElement.get('typeName'),
-            configuration: contentElement.configuration.attributes
-          };
-        }
-        else if (changedConfigurations[contentElement.id]) {
-          return {
-            id: contentElement.id,
-            configuration: changedConfigurations[contentElement.id]
-          };
-        }
-        else {
-          return contentElement.pick('id');
-        }
+        const migrateIds = migrateIdsByElement.get(contentElement) || [];
+        const isNew = contentElement.isNew();
+        const changedConfiguration = changedConfigurations[contentElement.id];
+
+        return {
+          ...(isNew
+            ? {typeName: contentElement.get('typeName'),
+               configuration: contentElement.configuration.attributes}
+            : {id: contentElement.id}),
+          ...(!isNew && changedConfiguration && {configuration: changedConfiguration}),
+          ...(migrateIds.length > 0 && {migrate_comment_threads: migrateIds})
+        };
       }),
       ...markedForDeletion.map(contentElement => ({
         id: contentElement.id,
         _delete: true
       }))
     ];
+  }
+
+  function createCommentThreadSubjectRanges() {
+    // Migrations whose new range matches the thread's current range
+    // are filtered out by `diffSubjectRangeUpdates` here — that's
+    // fine, the per-element `migrate_comment_threads` array still
+    // moves the thread, and the unchanged range stays as-is on the
+    // server.
+    return reviewSession ?
+           reviewSession.diffSubjectRangeUpdates(threadRangeUpdates) :
+           {};
+  }
+
+  function groupMigrationsByElement() {
+    return Object.entries(threadMigrations).reduce((map, [threadId, target]) => {
+      const list = map.get(target) || [];
+      list.push(Number(threadId));
+      map.set(target, list);
+      return map;
+    }, new Map());
   }
 
   // Functionality to apply the recorded changes to the underlying
@@ -287,4 +420,48 @@ export function Batch(entry, section) {
       }
     });
   }
+
+  function applyThreadUpdates() {
+    if (!reviewSession) return;
+
+    const updates = {};
+    Object.entries(threadRangeUpdates).forEach(([id, range]) => {
+      updates[id] = {subjectRange: range};
+    });
+    Object.entries(threadMigrations).forEach(([id, target]) => {
+      updates[id] = {
+        ...updates[id],
+        subjectId: target.get('permaId')
+      };
+    });
+
+    reviewSession.applyThreadUpdates(updates);
+  }
+}
+
+// Types can still return the plain [cBefore, cAfter] shape from
+// split() and a bare configuration object from merge(). Normalize both
+// to the range-aware object shape for Batch internals.
+function normalizeSplitResult(result) {
+  if (Array.isArray(result)) {
+    return {
+      before: {configuration: result[0], ranges: {}},
+      after: {configuration: result[1], ranges: {}}
+    };
+  }
+  return result;
+}
+
+function pickRanges(source, keysSource) {
+  const result = {};
+  Object.keys(keysSource).forEach(id => { result[id] = source[id]; });
+  return result;
+}
+
+function normalizeMergeResult(result) {
+  if (result && typeof result === 'object' &&
+      'configuration' in result && 'ranges' in result) {
+    return result;
+  }
+  return {configuration: result, ranges: {}};
 }

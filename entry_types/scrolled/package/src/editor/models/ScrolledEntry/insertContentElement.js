@@ -5,7 +5,7 @@ import {ContentElement} from '../ContentElement';
 // Insert content element before, after or at a split of a sibling
 // element (e.g. between two paragraphs of a text block).
 export function insertContentElement(entry, sibling, attributes, {at, splitPoint}) {
-  const batch = new Batch(entry, sibling.section);
+  const batch = new Batch(entry, sibling.section, {reviewSession: entry.reviewSession});
 
   if (at === 'split') {
     batch.split(sibling, splitPoint, {insertAt: 'after'});

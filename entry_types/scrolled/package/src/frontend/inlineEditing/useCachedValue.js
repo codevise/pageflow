@@ -7,16 +7,18 @@ export function useCachedValue(value, {
   const [cachedValue, setCachedValue] = useState(value || defaultValue);
   const previousValue = useRef(value);
 
-  useEffect(() => {
-    if (previousValue.current !== value && value !== cachedValue) {
-      onReset && onReset(value);
-      setCachedValue(value);
-    }
-  }, [onReset, value, cachedValue]);
-
-  useEffect(() => {
+  // Adjust state during render: when the upstream value changes,
+  // call `onReset` and flip `cachedValue` immediately so the first
+  // committed render after the change already observes the new
+  // value. React detects the in-render setState and re-runs the
+  // component before commit, so no extra render lands on the
+  // screen — and `onReset` side effects are visible to the same
+  // render that observes the new `cachedValue`.
+  if (previousValue.current !== value && value !== cachedValue) {
+    onReset && onReset(value);
+    setCachedValue(value);
     previousValue.current = value;
-  });
+  }
 
   const debouncedHandler = useDebouncedCallback(onDebouncedChange, delay);
 

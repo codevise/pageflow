@@ -1364,5 +1364,235 @@ describe('ScrolledEntry', () => {
         });
       });
     });
+
+    describe('for range-aware content elements with comment threads', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {});
+        editor.contentElementTypes.register('rangeAware', {
+          getLength(configuration) {
+            return configuration.items.length;
+          },
+
+          split(configuration, at, {ranges}) {
+            const beforeRanges = {};
+            const afterRanges = {};
+            Object.entries(ranges).forEach(([id, {start, end}]) => {
+              if (end <= at) {
+                beforeRanges[id] = {start, end};
+              }
+              else if (start >= at) {
+                afterRanges[id] = {start: start - at, end: end - at};
+              }
+              else {
+                beforeRanges[id] = {start, end: at};
+              }
+            });
+            return {
+              before: {
+                configuration: {items: configuration.items.slice(0, at)},
+                ranges: beforeRanges
+              },
+              after: {
+                configuration: {items: configuration.items.slice(at)},
+                ranges: afterRanges
+              }
+            };
+          },
+
+          merge(configurationA, configurationB, {rangesA, rangesB}) {
+            const offset = configurationA.items.length;
+            const ranges = {...rangesA};
+            Object.entries(rangesB).forEach(([id, {start, end}]) => {
+              ranges[id] = {start: start + offset, end: end + offset};
+            });
+            return {
+              configuration: {items: configurationA.items.concat(configurationB.items)},
+              ranges
+            };
+          }
+        });
+      });
+
+      function setupEntry(commentThreads) {
+        testContext.entry.reviewSession = factories.reviewSession({commentThreads});
+      }
+
+      describe('with adjacent rangeAware blocks bridged by an image', () => {
+        beforeEach(() => {
+          testContext.entry = factories.entry(ScrolledEntry, {id: 100}, {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {id: 4, permaId: 40, position: 0, typeName: 'rangeAware',
+                 configuration: {items: ['a', 'b', 'c']}},
+                {id: 5, permaId: 50, position: 1, typeName: 'inlineImage'},
+                {id: 6, permaId: 60, position: 2, typeName: 'rangeAware',
+                 configuration: {items: ['d', 'e']}}
+              ]
+            })
+          });
+
+          setupEntry([
+            {id: 7, subjectType: 'ContentElement', subjectId: 40,
+             subjectRange: {start: 0, end: 1}, comments: []},
+            {id: 8, subjectType: 'ContentElement', subjectId: 40,
+             subjectRange: {start: 2, end: 3}, comments: []},
+            {id: 9, subjectType: 'ContentElement', subjectId: 60,
+             subjectRange: {start: 0, end: 1}, comments: []}
+          ]);
+        });
+
+        setupGlobals({entry: () => testContext.entry});
+
+        it('migrates right-block threads to surviving left block on plain merge', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 5}, {at: 'after', id: 6});
+
+          const body = JSON.parse(requests[0].requestBody);
+          const survivor = body.content_elements.find(item => item.id === 4);
+
+          expect(survivor.migrate_comment_threads).toEqual([9]);
+          expect(body.comment_thread_subject_ranges).toEqual({
+            9: {start: 3, end: 4}
+          });
+        });
+
+        it('migrates split-off threads through chained split-then-merge', () => {
+          const {entry, requests} = testContext;
+
+          // Image moves into id=4's split at index 2. Split-off (items
+          // ['c']) becomes adjacent to id=6 and merges into id=6.
+          // Thread 8 was at items[2] on id=4 → migrates onto split-off
+          // (range [0,1]) → migrates onto id=6 with merged range [0,1].
+          // Thread 9 (originally on id=6 at [0,1]) shifts to [1,2].
+          entry.moveContentElement({id: 5},
+                                   {at: 'split', id: 4, splitPoint: 2});
+
+          const body = JSON.parse(requests[0].requestBody);
+          const survivor = body.content_elements.find(item => item.id === 6);
+
+          expect(survivor.migrate_comment_threads).toEqual([8]);
+          expect(body.comment_thread_subject_ranges).toEqual({
+            8: {start: 0, end: 1},
+            9: {start: 1, end: 2}
+          });
+        });
+
+        it('updates review session state on chained split-then-merge success', () => {
+          const {entry, server} = testContext;
+
+          entry.moveContentElement({id: 5},
+                                   {at: 'split', id: 4, splitPoint: 2});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 4, permaId: 40},
+              {id: 5, permaId: 50},
+              {id: 6, permaId: 60}
+            ])]
+          );
+
+          const thread = entry.reviewSession.state.commentThreads.find(t => t.id === 8);
+          expect(thread).toMatchObject({
+            subjectId: 60,
+            subjectRange: {start: 0, end: 1}
+          });
+        });
+      });
+
+      describe('with mergable siblings left behind in the source section', () => {
+        beforeEach(() => {
+          testContext.entry = factories.entry(ScrolledEntry, {id: 100}, {
+            entryTypeSeed: normalizeSeed({
+              sections: [
+                {id: 10, permaId: 11, configuration: {}},
+                {id: 20, permaId: 21, configuration: {}}
+              ],
+              contentElements: [
+                {id: 4, sectionId: 10, permaId: 40, position: 0,
+                 typeName: 'rangeAware', configuration: {items: ['a', 'b']}},
+                {id: 5, sectionId: 10, permaId: 50, position: 1,
+                 typeName: 'inlineImage'},
+                {id: 6, sectionId: 10, permaId: 60, position: 2,
+                 typeName: 'rangeAware', configuration: {items: ['c', 'd']}},
+                {id: 7, sectionId: 20, permaId: 70, position: 0,
+                 typeName: 'inlineImage'}
+              ]
+            })
+          });
+
+          setupEntry([
+            {id: 8, subjectType: 'ContentElement', subjectId: 40,
+             subjectRange: {start: 0, end: 1}, comments: []},
+            {id: 9, subjectType: 'ContentElement', subjectId: 60,
+             subjectRange: {start: 0, end: 1}, comments: []}
+          ]);
+        });
+
+        setupGlobals({entry: () => testContext.entry});
+
+        it('migrates source-section threads in the source-section save', () => {
+          const {entry, requests} = testContext;
+
+          entry.moveContentElement({id: 5}, {at: 'before', id: 7});
+
+          const sourceRequest = requests.find(r =>
+            r.url === '/editor/entries/100/scrolled/sections/10/content_elements/batch'
+          );
+          const body = JSON.parse(sourceRequest.requestBody);
+          const survivor = body.content_elements.find(item => item.id === 4);
+
+          expect(survivor.migrate_comment_threads).toEqual([9]);
+          expect(body.comment_thread_subject_ranges).toEqual({
+            9: {start: 2, end: 3}
+          });
+        });
+      });
+
+      describe('with a partial range moved out of a rangeAware block', () => {
+        beforeEach(() => {
+          testContext.entry = factories.entry(ScrolledEntry, {id: 100}, {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {id: 4, permaId: 40, position: 0, typeName: 'rangeAware',
+                 configuration: {items: ['a', 'b', 'c', 'd']}},
+                {id: 5, permaId: 50, position: 1, typeName: 'inlineImage'}
+              ]
+            })
+          });
+
+          setupEntry([
+            {id: 7, subjectType: 'ContentElement', subjectId: 40,
+             subjectRange: {start: 0, end: 1}, comments: []},
+            {id: 8, subjectType: 'ContentElement', subjectId: 40,
+             subjectRange: {start: 2, end: 3}, comments: []}
+          ]);
+        });
+
+        setupGlobals({entry: () => testContext.entry});
+
+        it('migrates threads inside the moved range to the new split-off element', () => {
+          const {entry, requests} = testContext;
+
+          // Extract items[2..4] from id=4 and move after the image.
+          entry.moveContentElement(
+            {id: 4, range: [2, 4]},
+            {id: 5, at: 'after'}
+          );
+
+          const body = JSON.parse(requests[0].requestBody);
+          const splitOff = body.content_elements.find(
+            item => item.typeName === 'rangeAware' && !item.id
+          );
+
+          expect(splitOff).toBeDefined();
+          expect(splitOff.migrate_comment_threads).toEqual([8]);
+          expect(body.comment_thread_subject_ranges).toEqual({
+            8: {start: 0, end: 1}
+          });
+        });
+      });
+    });
   });
 });

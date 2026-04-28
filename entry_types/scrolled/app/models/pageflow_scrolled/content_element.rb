@@ -33,15 +33,16 @@ module PageflowScrolled
 
     # @api private
     class Batch
-      def initialize(section, items)
+      def initialize(section, items, comment_thread_subject_ranges: nil)
         @section = section
         @storyline = section.chapter.storyline
         @items = items
+        @comment_thread_subject_ranges = comment_thread_subject_ranges
       end
 
       def save!
         ContentElement.transaction do
-          @items.map.with_index { |item, index|
+          result = @items.map.with_index { |item, index|
             if item[:_delete]
               @section.content_elements.delete(item[:id])
               nil
@@ -49,6 +50,9 @@ module PageflowScrolled
               create_or_update(item, index)
             end
           }.compact
+
+          update_subject_ranges
+          result
         end
       end
 
@@ -60,11 +64,34 @@ module PageflowScrolled
           position: index
         }.merge(item.slice(:type_name, :configuration))
 
-        if item[:id]
-          @storyline.content_elements.update(item[:id], attributes)
-        else
-          @section.content_elements.create(attributes)
-        end
+        content_element = if item[:id]
+                            @storyline.content_elements.update(item[:id], attributes)
+                          else
+                            @section.content_elements.create(attributes)
+                          end
+
+        migrate_comment_threads(content_element, item[:migrate_comment_threads])
+        content_element
+      end
+
+      def migrate_comment_threads(content_element, thread_ids)
+        Pageflow::CommentThread.migrate_to_subject(
+          revision: @storyline.revision,
+          subject_type: 'ContentElement',
+          subject_id: content_element.perma_id,
+          thread_ids:
+        )
+      end
+
+      def update_subject_ranges
+        return if @comment_thread_subject_ranges.blank?
+
+        Pageflow::CommentThread.update_subject_ranges_for(
+          revision: @storyline.revision,
+          subject_type: 'ContentElement',
+          subject_id: @section.content_elements.pluck(:perma_id),
+          ranges: @comment_thread_subject_ranges
+        )
       end
     end
   end
