@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import classNames from 'classnames';
-import {createEditor} from 'slate';
-import {Slate, Editable, withReact} from 'slate-react';
+import {createEditor, Editor} from 'slate';
+import {Slate, Editable, ReactEditor, withReact} from 'slate-react';
 
 import {Text} from '../Text';
 import {useCommentThreads, useCommentHighlights, decorateCommentHighlights, useRangeAnchors, RangeAnchor, commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
@@ -127,10 +127,11 @@ function ClickableHighlight({subjectRange, children}) {
 }
 
 function useSelectTextOnMouseUp(active, editor, threads, deactivate, select) {
-  return useCallback(() => {
+  return useCallback((event) => {
     if (!active) return;
 
-    const slateRange = slateSelection.inEditor(editor);
+    const slateRange = slateSelection.inEditor(editor) ||
+                       topLevelRangeFromEvent(editor, event);
     if (!slateRange) return;
 
     const matchingThread = findMatchingThread(threads, slateRange);
@@ -141,6 +142,21 @@ function useSelectTextOnMouseUp(active, editor, threads, deactivate, select) {
       showNewForm: !matchingThread
     });
   }, [active, editor, threads, deactivate, select]);
+}
+
+function topLevelRangeFromEvent(editor, event) {
+  if (event.target.closest('a')) return null;
+  if (event.target.closest('[data-comment-highlight]')) return null;
+
+  try {
+    const node = ReactEditor.toSlateNode(editor, event.target);
+    const path = ReactEditor.findPath(editor, node);
+    if (!path.length) return null;
+    return Editor.range(editor, [path[0]]);
+  }
+  catch (e) {
+    return null;
+  }
 }
 
 function usePreselection(editor, contentElementPermaId, threads, active, preselect, clearPreselection) {

@@ -119,6 +119,53 @@ describe('commenting EditableText', () => {
     expect(highlight).toHaveTextContent('text');
   });
 
+  it('selects whole top level node when clicking without selection in add comment mode', async () => {
+    const user = userEvent.setup();
+    const multiBlockValue = [
+      {type: 'paragraph', children: [{text: 'First paragraph'}]},
+      {type: 'paragraph', children: [{text: 'Second paragraph'}]}
+    ];
+
+    const {getByText, toggleAddCommentMode} = renderWithCommenting(
+      <EditableText value={multiBlockValue} />
+    );
+
+    toggleAddCommentMode();
+    await user.click(getByText('Second paragraph'));
+
+    const highlight = document.querySelector(`.${highlightStyles.highlight}`);
+    expect(highlight).toBeInTheDocument();
+    expect(highlight).toHaveTextContent('Second paragraph');
+    expect(highlight).not.toHaveTextContent('First paragraph');
+  });
+
+  it('selects existing thread when clicking its highlight in add comment mode', async () => {
+    const user = userEvent.setup();
+    const subjectRange = {
+      anchor: {path: [0, 0], offset: 5},
+      focus: {path: [0, 0], offset: 9}
+    };
+
+    const {getByText, queryByPlaceholderText, toggleAddCommentMode} = renderWithCommenting(
+      <EditableText value={value} />,
+      {
+        commentThreads: [{
+          id: 1,
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          subjectRange,
+          comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+        }]
+      }
+    );
+
+    toggleAddCommentMode();
+    await user.click(document.querySelector(`.${highlightStyles.highlight}`));
+
+    expect(getByText('A comment')).toBeInTheDocument();
+    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+  });
+
   it('highlights thread ranges as clickable', () => {
     const subjectRange = {
       anchor: {path: [0, 0], offset: 5},
