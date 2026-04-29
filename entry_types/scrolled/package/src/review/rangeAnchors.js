@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 import {
   useFloating,
-  offset, autoUpdate
+  flip, autoUpdate
 } from '@floating-ui/react';
 
 export function useRangeAnchors() {
@@ -41,14 +41,22 @@ export function RangeAnchor({rangeKey, onRegister, children}) {
   return <span ref={ref}>{children}</span>;
 }
 
-export function useAnchoredFloating(rangeKey, anchors) {
+export function useAnchoredFloating(rangeKey, anchors, {
+  placement = 'right-start',
+  flipOnOverflow = false,
+  mainAxisOffset = 8,
+  fitWidth
+} = {}) {
   const hasAnchor = anchors._elements.current.has(rangeKey);
 
-  const {refs, floatingStyles, placement, isPositioned} = useFloating({
-    placement: 'right-start',
+  const {
+    refs, floatingStyles, placement: resolvedPlacement, isPositioned, middlewareData
+  } = useFloating({
+    placement,
     middleware: [
-      alignToContainerEdge(anchors.containerRef),
-      offset({mainAxis: 8})
+      alignToContainerEdge(anchors.containerRef, {mainAxisOffset, fitWidth}),
+      ...(flipOnOverflow ? [flip({crossAxis: false, padding: 8})] : []),
+      clampXToViewport({viewportPadding: 8})
     ],
     whileElementsMounted: (reference, floating, update) =>
       autoUpdate(reference, floating, update, {elementResize: false})
@@ -62,10 +70,16 @@ export function useAnchoredFloating(rangeKey, anchors) {
     }
   }, [refs, anchors, rangeKey, anchors._version]);
 
-  return {refs, floatingStyles, placement, isPositioned, hasAnchor};
+  const fits = middlewareData.alignToContainerEdge?.fits;
+
+  return {refs, floatingStyles, placement: resolvedPlacement, isPositioned, hasAnchor, fits};
 }
 
-function alignToContainerEdge(containerRef) {
+function alignToContainerEdge(containerRef, {
+  mainAxisOffset = 0,
+  viewportPadding = 8,
+  fitWidth
+} = {}) {
   return {
     name: 'alignToContainerEdge',
     fn({rects, placement}) {
@@ -75,14 +89,41 @@ function alignToContainerEdge(containerRef) {
 
       const containerRect = containerEl.getBoundingClientRect();
 
+      let x;
       if (placement.startsWith('right')) {
-        return {x: containerRect.right};
+        x = containerRect.right + mainAxisOffset;
       }
       else if (placement.startsWith('left')) {
-        return {x: containerRect.left - rects.floating.width};
+        x = containerRect.left - rects.floating.width - mainAxisOffset;
+      }
+      else {
+        return {};
       }
 
-      return {};
+      const data = {};
+      if (fitWidth !== undefined) {
+        const viewportWidth = document.documentElement.clientWidth;
+        const fitsRight =
+          containerRect.right + mainAxisOffset + fitWidth + viewportPadding <= viewportWidth;
+        const fitsLeft =
+          containerRect.left - mainAxisOffset - fitWidth - viewportPadding >= 0;
+        data.fits = fitsRight || fitsLeft;
+      }
+
+      return {x, data};
+    }
+  };
+}
+
+function clampXToViewport({viewportPadding = 8} = {}) {
+  return {
+    name: 'clampXToViewport',
+    fn({x, rects}) {
+      const viewportWidth = document.documentElement.clientWidth;
+      const maxX = viewportWidth - rects.floating.width - viewportPadding;
+      const minX = viewportPadding;
+
+      return {x: Math.max(minX, Math.min(x, maxX))};
     }
   };
 }

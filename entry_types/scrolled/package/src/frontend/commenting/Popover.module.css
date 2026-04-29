@@ -19,6 +19,17 @@
   flex-direction: column;
 }
 
+.narrow {
+  position: relative;
+}
+
+.narrow .threadListContainer {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: space(2);
+}
+
 .threadListContainer {
   min-width: space(72);
   max-width: space(96);

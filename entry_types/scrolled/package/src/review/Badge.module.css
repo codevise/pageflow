@@ -1,9 +1,11 @@
+@value breakpoint-md from 'pageflow-scrolled/values/breakpoints.module.css';
+
 .badge {
   display: flex;
   align-items: center;
   gap: space(1);
-  height: space(7);
-  padding: space(1) space(3);
+  height: auto;
+  padding: space(1.5);
   border-radius: rounded(full);
   background: var(--ui-accent-color);
   color: var(--ui-on-accent-color);
@@ -15,6 +17,13 @@
   border: none;
   box-shadow: 0 0 0 space(1) var(--ui-accent-color-lighter);
   opacity: 0.9;
+}
+
+@media breakpoint-md {
+  .badge {
+    height: space(7);
+    padding: space(1) space(3);
+  }
 }
 
 .badge:hover,

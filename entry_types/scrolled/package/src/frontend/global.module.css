@@ -39,6 +39,10 @@
   z-index: 1000;
 }
 
+:global [data-floating-ui-portal]:has([data-floating-raised]) {
+  z-index: 1001;
+}
+
 :global #floating-ui-above-navigation-widgets {
   z-index: 20000;
 }
