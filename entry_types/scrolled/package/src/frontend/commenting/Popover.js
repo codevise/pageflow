@@ -6,7 +6,7 @@ import {useSelectedSubject} from './SelectedSubjectProvider';
 
 import styles from './Popover.module.css';
 
-export function Popover({subjectType, subjectId, subjectRange, placement, suppressNewForm, hideNewTopicButton}) {
+export function Popover({subjectType, subjectId, subjectRange, placement, narrow, suppressNewForm, hideNewTopicButton}) {
   const {isSelected, showNewForm, select, clearSelection} = useSelectedSubject(subjectType, subjectId, subjectRange);
   const ref = useRef(null);
 
@@ -50,7 +50,8 @@ export function Popover({subjectType, subjectId, subjectRange, placement, suppre
     <div ref={ref}
          className={classNames(styles.popover,
                                {[styles.reversed]: onLeft,
-                                [styles.bottom]: onBottom})}>
+                                [styles.bottom]: onBottom,
+                                [styles.narrow]: narrow})}>
       <ThreadsBadge subjectType={subjectType}
                     subjectId={subjectId}
                     subjectRange={subjectRange}
