@@ -48,6 +48,7 @@ export function Popover({subjectType, subjectId, subjectRange, placement, narrow
 
   return (
     <div ref={ref}
+         data-floating-raised={isSelected || undefined}
          className={classNames(styles.popover,
                                {[styles.reversed]: onLeft,
                                 [styles.bottom]: onBottom,
