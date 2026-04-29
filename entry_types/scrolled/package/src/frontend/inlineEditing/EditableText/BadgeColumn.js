@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {FloatingPortal} from '@floating-ui/react';
-import {useSlate} from 'slate-react';
+import {useSlate, ReactEditor} from 'slate-react';
 
 import {Badge, useAnchoredFloating} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
@@ -11,11 +11,17 @@ import {highlightOverlapsSelection} from './highlightOverlapsSelection';
 
 export function BadgeColumn({highlights, anchors}) {
   const editor = useSlate();
+  // Treat `editor.selection` as a live cursor only while the editor
+  // is focused. After the user clicks away, slate-react's throttled
+  // `selectionchange` listener can sync a clamped DOM cursor back
+  // into `editor.selection`, which would otherwise flip badges back
+  // to overlap mode without any actual selection.
+  const editorSelection = ReactEditor.isFocused(editor) ? editor.selection : null;
 
   return highlights.map(highlight => (
     <PositionedBadge key={highlight.key}
                      highlight={highlight}
-                     editorSelection={editor.selection}
+                     editorSelection={editorSelection}
                      anchors={anchors} />
   ));
 }
