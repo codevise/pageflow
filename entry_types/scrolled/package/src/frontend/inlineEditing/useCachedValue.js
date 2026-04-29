@@ -7,26 +7,13 @@ export function useCachedValue(value, {
   const [cachedValue, setCachedValue] = useState(value || defaultValue);
   const previousValue = useRef(value);
 
-  // Adjust state during render: when the upstream value changes,
-  // call `onReset` and flip `cachedValue` immediately so the first
-  // committed render after the change already observes the new
-  // value. React detects the in-render setState and re-runs the
-  // component before commit, so no extra render lands on the
-  // screen — and `onReset` side effects are visible to the same
-  // render that observes the new `cachedValue`.
-  if (previousValue.current !== value && value !== cachedValue) {
-    onReset && onReset(value);
-    setCachedValue(value);
-    previousValue.current = value;
-  }
+  useEffect(() => {
+    if (previousValue.current !== value && value !== cachedValue) {
+      onReset && onReset(value);
+      setCachedValue(value);
+    }
+  }, [onReset, value, cachedValue]);
 
-  // Track the upstream value across renders. The branch above only
-  // assigns when an external change is observed; without this effect,
-  // a render that sees `value` already in sync with `cachedValue` (a
-  // local edit echoed back via `onDebouncedChange`) would leave
-  // `previousValue.current` stale. The next local edit would then
-  // misread that stale value as an external change and overwrite the
-  // edit with `onReset`.
   useEffect(() => {
     previousValue.current = value;
   });

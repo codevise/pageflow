@@ -78,6 +78,17 @@ export function Selection(props) {
     }
 
     if (!isContentElementSelected && !boundsRef.current) {
+      // Only treat the selection as user-initiated when the editor is
+      // actually focused. After an external value replacement, the
+      // browser may clamp its DOM cursor to the start of the
+      // shrunken contenteditable; slate-react's throttled
+      // `selectionchange` listener then re-syncs that cursor into
+      // `editor.selection`. Without this guard, that synthetic
+      // selection would re-select the content element here.
+      if (!ReactEditor.isFocused(editor)) {
+        return;
+      }
+
       select();
     }
 
