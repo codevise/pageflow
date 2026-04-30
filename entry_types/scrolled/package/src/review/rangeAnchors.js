@@ -75,7 +75,7 @@ export function useAnchoredFloating(rangeKey, anchors, {
   return {refs, floatingStyles, placement: resolvedPlacement, isPositioned, hasAnchor, fits};
 }
 
-function alignToContainerEdge(containerRef, {
+export function alignToContainerEdge(containerRef, {
   mainAxisOffset = 0,
   viewportPadding = 0,
   fitWidth

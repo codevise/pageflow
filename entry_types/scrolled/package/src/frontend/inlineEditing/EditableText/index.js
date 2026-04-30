@@ -11,6 +11,7 @@ import {useContentElementEditorCommandSubscription} from '../../useContentElemen
 import {useContentElementEditorState} from '../../useContentElementEditorState';
 import {TextPlaceholder} from '../TextPlaceholder';
 import {BadgeColumn} from './BadgeColumn';
+import {PendingSelectionBadge} from './PendingSelectionBadge';
 import {useCommenting} from './useCommenting';
 
 import {withCustomInsertBreak} from './withCustomInsertBreak';
@@ -198,7 +199,10 @@ export const EditableText = React.memo(function EditableText({
             </HoveringToolbar>
           </LinkTooltipProvider>
           {commentingEnabled &&
-            <BadgeColumn highlights={highlights} anchors={anchors} />}
+            <>
+              <BadgeColumn highlights={highlights} anchors={anchors} />
+              <PendingSelectionBadge containerRef={anchors.containerRef} />
+            </>}
         </Slate>
         <TextPlaceholder text={placeholder}
                          className={placeholderClassName}

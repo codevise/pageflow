@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Editor, Range, Transforms} from 'slate';
+import React, {useCallback, useState} from 'react';
+import {Editor, Transforms} from 'slate';
 import {ReactEditor, useSlate} from 'slate-react';
 
 import {features} from 'pageflow/frontend';
@@ -11,6 +11,7 @@ import {useSelectLinkDestination} from '../useSelectLinkDestination';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {useContentElementAttributes} from '../../useContentElementAttributes';
 import {useEditorSelection} from '../EditorState';
+import {useEffectiveSelection} from './useEffectiveSelection';
 import {isMarkActive, toggleMark} from './marks';
 
 import BoldIcon from '../images/bold.svg';
@@ -29,7 +30,6 @@ export function HoveringToolbar({children}) {
   const startNewThread = useStartNewThread(editor);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
 
   const {refs, floatingStyles} = useFloating({
     placement: 'bottom-start',
@@ -44,21 +44,13 @@ export function HoveringToolbar({children}) {
     ]
   });
 
-  useEffect(() => {
-    const {selection} = editor
-
-    if (
-      isDragging ||
-      !selection ||
-      !ReactEditor.isFocused(editor) ||
-      Range.isCollapsed(selection) ||
-      Editor.string(editor, selection) === ''
-    ) {
+  useEffectiveSelection(editor, useCallback(selection => {
+    if (!selection) {
       setIsOpen(false);
-      return
+      return;
     }
 
-    const domRange = ReactEditor.toDOMRange(editor, editor.selection);
+    const domRange = ReactEditor.toDOMRange(editor, selection);
 
     refs.setPositionReference({
       getBoundingClientRect: () => domRange.getBoundingClientRect(),
@@ -66,32 +58,12 @@ export function HoveringToolbar({children}) {
     });
 
     setIsOpen(true);
-  }, [refs, editor, editor.selection, isDragging]);
-
-  const handleMouseDown = useCallback(() => {
-    setIsDragging(true);
-
-    function handleMouseUp() {
-      // When clicking inside a selection, the selection sometimes
-      // only resets after mouseup has fired. Prevent toolbar from
-      // shortly being hidden and shown again before finally being
-      // hidden when the selection resets.
-      setTimeout(() => {
-        setIsDragging(false);
-      }, 10)
-    }
-
-    document.addEventListener('mouseup', handleMouseUp);
-
-    return () => {
-      document.removeEventListener('mouseup', handleMouseUp);
-    }
-  }, []);
+  }, [editor, refs]));
 
   const floatingPortalRoot = useFloatingPortalRoot();
 
   return (
-    <div onMouseDown={handleMouseDown}>
+    <>
       {isOpen &&
        <FloatingPortal root={floatingPortalRoot}>
          <div ref={refs.setFloating}
@@ -100,7 +72,7 @@ export function HoveringToolbar({children}) {
          </div>
        </FloatingPortal>}
       {children}
-    </div>
+    </>
   );
 }
 
