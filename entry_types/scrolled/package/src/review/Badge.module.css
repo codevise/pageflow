@@ -1,10 +1,9 @@
-@value breakpoint-md from 'pageflow-scrolled/values/breakpoints.module.css';
-
 .badge {
+  --dot-size: 12px;
+  --icon-size: 15px;
   display: flex;
   align-items: center;
   gap: space(1);
-  height: auto;
   padding: space(1.5);
   border-radius: rounded(full);
   background: var(--ui-accent-color);
@@ -19,13 +18,6 @@
   opacity: 0.9;
 }
 
-@media breakpoint-md {
-  .badge {
-    height: space(7);
-    padding: space(1) space(3);
-  }
-}
-
 .badge:hover,
 .active {
   opacity: 1;
@@ -35,18 +27,25 @@
   background: none;
   color: currentColor;
   box-shadow: none;
-  padding: 10px;
-  height: auto;
 }
 
 .dot {
-  width: 0.7rem;
-  height: 0.7rem;
-  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dot::before {
+  content: '';
+  display: block;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  margin: calc((var(--icon-size) - var(--dot-size)) / 2);
+  border-radius: 50%;
+  background: var(--ui-accent-color);
 }
 
 .icon {
   display: block;
-  width: 15px;
-  height: 15px;
+  width: var(--icon-size);
+  height: var(--icon-size);
 }
