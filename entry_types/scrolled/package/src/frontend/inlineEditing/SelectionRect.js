@@ -11,7 +11,8 @@ import MoveIcon from './images/move.svg';
 export function SelectionRect(props) {
   return (
     <div className={classNames(styles.main,
-                               {[styles.full]: props.full,
+                               {[styles.openSides]: props.full && !props.inset,
+                                [styles.tug]: props.full || props.customMargin,
                                 [styles.inset]: props.inset,
                                 [styles.selected]: props.selected,
                                 [styles.draggable]: props.drag,

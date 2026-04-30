@@ -62,7 +62,8 @@ function DefaultSelectionRect(props) {
                    scrollPoint={isSelected}
                    drag={drag}
                    dragHandleTitle={t('pageflow_scrolled.inline_editing.drag_content_element')}
-                   full={props.width === widths.full || props.customMargin}
+                   full={props.width === widths.full}
+                   customMargin={props.customMargin}
                    inset={props.position === 'backdrop'}
                    commentBadge={features.isEnabled('commenting') &&
                      <ThreadsBadge subjectType="ContentElement"
@@ -89,8 +90,12 @@ function DefaultSelectionRect(props) {
 function renderMarginIndicators(props) {
   return (
     <>
-      <MarginIndicator marginValue={props.itemProps?.marginTop} position="top" />
-      <MarginIndicator marginValue={props.itemProps?.marginBottom} position="bottom" />
+      <MarginIndicator marginValue={props.itemProps?.marginTop}
+                       position="top"
+                       tooltipInset={props.width === widths.full || props.customMargin} />
+      <MarginIndicator marginValue={props.itemProps?.marginBottom}
+                       position="bottom"
+                       tooltipInset={props.width === widths.full || props.customMargin} />
     </>
   );
 }
