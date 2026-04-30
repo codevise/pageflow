@@ -5,11 +5,19 @@ import {Editor, Node} from 'slate';
 // text edits stay reflected in the thread's effective subject range
 // without round-tripping through the server. When the upstream value
 // is replaced (e.g. after a structural shift applied by the editor),
-// `useCachedValue` invokes `resetRangeRefs` from `onReset` so the
-// next render falls back to the upstream `subjectRange` and the
-// post-render effect repopulates the map against the new content.
+// `EditableText` calls `resetRangeRefs` from `useCachedValue`'s
+// `onReset`, which fires from an effect *before* `setCachedValue`
+// triggers the re-render in which Slate's `<Slate>` useMemo replaces
+// `editor.children` with the new value. So `resetRangeRefs` only
+// drops the stale refs and arms `pendingResyncRef`; the second effect
+// below consumes that flag on the next render — by which point
+// `editor.children` has flipped — and rebuilds against the new
+// content. Rebuilding inside `resetRangeRefs` would sync against the
+// still-old content and skip migrated threads whose new path doesn't
+// yet exist there.
 export function useCommentRangeRefs(editor, threads) {
   const rangeRefsMap = useRef(new Map());
+  const pendingResyncRef = useRef(false);
 
   const syncRangeRefs = useCallback((threads) => {
     const map = rangeRefsMap.current;
@@ -41,11 +49,19 @@ export function useCommentRangeRefs(editor, threads) {
     };
   }, [threads, syncRangeRefs]);
 
+  useEffect(() => {
+    if (pendingResyncRef.current) {
+      pendingResyncRef.current = false;
+      syncRangeRefs(threads);
+    }
+  });
+
   const resetRangeRefs = useCallback(() => {
     for (const rangeRef of rangeRefsMap.current.values()) {
       rangeRef.unref();
     }
     rangeRefsMap.current.clear();
+    pendingResyncRef.current = true;
   }, []);
 
   const trackedThreads = threads.map(t => {
