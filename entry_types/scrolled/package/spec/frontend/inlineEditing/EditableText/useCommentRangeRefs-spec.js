@@ -57,6 +57,33 @@ describe('useCommentRangeRefs', () => {
       });
     });
 
+    it('preserves the live rangeRef across threads array updates', () => {
+      const range = {
+        anchor: {path: [0, 0], offset: 6},
+        focus: {path: [0, 0], offset: 11}
+      };
+
+      const {editor, result, rerender} = setup([{id: 1, subjectRange: range}]);
+
+      // Live edit ahead of any debounced save: rangeRef shifts forward.
+      act(() => {
+        Transforms.insertText(editor, 'X', {at: {path: [0, 0], offset: 0}});
+      });
+
+      // The reviewSession state provider produces a new threads array
+      // each time anything in the session updates — including the
+      // round-trip echo of a debounced save, which arrives with the
+      // *saved* `subjectRange` (i.e., behind any keystrokes that
+      // landed during the network round-trip). Recreating the rangeRef
+      // here would snap the highlight back to that stale range; the
+      // live tracking must survive.
+      rerender({threads: [{id: 1, subjectRange: range}]});
+
+      expect(result.current.getTrackedSubjectRanges()).toEqual({
+        1: {anchor: {path: [0, 0], offset: 7}, focus: {path: [0, 0], offset: 12}}
+      });
+    });
+
     it('includes all tracked threads regardless of whether their range moved', () => {
       const unchangedRange = {anchor: {path: [0, 0], offset: 0},
                                focus: {path: [0, 0], offset: 2}};

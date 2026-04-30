@@ -38,16 +38,18 @@ export function useCommentRangeRefs(editor, threads) {
   }, [editor]);
 
   useEffect(() => {
-    const map = rangeRefsMap.current;
     syncRangeRefs(threads);
+  }, [threads, syncRangeRefs]);
 
+  useEffect(() => {
+    const map = rangeRefsMap.current;
     return () => {
       for (const rangeRef of map.values()) {
         rangeRef.unref();
       }
       map.clear();
     };
-  }, [threads, syncRangeRefs]);
+  }, [editor]);
 
   useEffect(() => {
     if (pendingResyncRef.current) {
