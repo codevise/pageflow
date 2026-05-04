@@ -17,6 +17,14 @@ export const mediaEvents = function(player, context) {
     triggerMediaEvent('play');
   });
 
+  player.on('seeking', function() {
+    triggerMediaEvent('seeking');
+  });
+
+  player.on('seeked', function() {
+    triggerMediaEvent('seeked');
+  });
+
   player.on('timeupdate', function() {
     triggerMediaEvent('timeupdate');
   });
