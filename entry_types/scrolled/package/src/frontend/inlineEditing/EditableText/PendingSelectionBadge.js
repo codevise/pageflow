@@ -7,6 +7,7 @@ import {Badge, alignToContainerEdge} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {useDarkBackground} from '../../backgroundColor';
 import {useEffectiveSelection} from './useEffectiveSelection';
+import {useStartNewThread} from './useStartNewThread';
 
 import styles from './BadgeColumn.module.css';
 
@@ -15,6 +16,7 @@ export function PendingSelectionBadge({containerRef}) {
   const portalRoot = useFloatingPortalRoot();
   const [isVisible, setIsVisible] = useState(false);
   const darkBackground = useDarkBackground();
+  const startNewThread = useStartNewThread(editor);
 
   const {refs, floatingStyles} = useFloating({
     placement: 'left-start',
@@ -44,7 +46,7 @@ export function PendingSelectionBadge({containerRef}) {
       <div ref={refs.setFloating}
            className={classNames(styles.box, darkBackground ? styles.onDark : styles.onLight)}
            style={floatingStyles}>
-        <Badge counter={0} mode="icon" />
+        <Badge counter={0} mode="icon" onClick={startNewThread} />
       </div>
     </FloatingPortal>
   );

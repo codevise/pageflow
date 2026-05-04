@@ -2,16 +2,14 @@ import React, {useCallback, useState} from 'react';
 import {Editor, Transforms} from 'slate';
 import {ReactEditor, useSlate} from 'slate-react';
 
-import {features} from 'pageflow/frontend';
 import {useFloating, FloatingPortal, shift, offset} from '@floating-ui/react';
 
 import {Toolbar} from '../Toolbar';
 import {useI18n} from '../../i18n';
 import {useSelectLinkDestination} from '../useSelectLinkDestination';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
-import {useContentElementAttributes} from '../../useContentElementAttributes';
-import {useEditorSelection} from '../EditorState';
 import {useEffectiveSelection} from './useEffectiveSelection';
+import {useStartNewThread} from './useStartNewThread';
 import {isMarkActive, toggleMark} from './marks';
 
 import BoldIcon from '../images/bold.svg';
@@ -74,26 +72,6 @@ export function HoveringToolbar({children}) {
       {children}
     </>
   );
-}
-
-// Returns a function that opens the new-thread form for the current
-// selection, or null when commenting is disabled for this element.
-function useStartNewThread(editor) {
-  const {contentElementPermaId, inlineComments} = useContentElementAttributes();
-  const commentingEnabled = features.isEnabled('commenting') && inlineComments;
-  const {select: selectNewThread} = useEditorSelection({
-    type: 'newThread',
-    id: contentElementPermaId
-  });
-
-  if (!commentingEnabled) return null;
-
-  return () => selectNewThread({
-    type: 'newThread',
-    id: contentElementPermaId,
-    subjectType: 'ContentElement',
-    range: editor.selection
-  });
 }
 
 function renderToolbar(editor, t, selectLinkDestination, startNewThread) {
