@@ -9,7 +9,6 @@ import {useI18n} from '../../i18n';
 import {useSelectLinkDestination} from '../useSelectLinkDestination';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {useEffectiveSelection} from './useEffectiveSelection';
-import {useStartNewThread} from './useStartNewThread';
 import {isMarkActive, toggleMark} from './marks';
 
 import BoldIcon from '../images/bold.svg';
@@ -19,13 +18,11 @@ import StrikethroughIcon from '../images/strikethrough.svg';
 import SubIcon from '../images/sub.svg';
 import SupIcon from '../images/sup.svg';
 import LinkIcon from '../images/link.svg';
-import AddCommentIcon from '../images/addComment.svg';
 
 export function HoveringToolbar({children}) {
   const editor = useSlate()
   const {t} = useI18n({locale: 'ui'});
   const selectLinkDestination = useSelectLinkDestination();
-  const startNewThread = useStartNewThread(editor);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -66,7 +63,7 @@ export function HoveringToolbar({children}) {
        <FloatingPortal root={floatingPortalRoot}>
          <div ref={refs.setFloating}
               style={floatingStyles}>
-           {renderToolbar(editor, t, selectLinkDestination, startNewThread)}
+           {renderToolbar(editor, t, selectLinkDestination)}
          </div>
        </FloatingPortal>}
       {children}
@@ -74,7 +71,7 @@ export function HoveringToolbar({children}) {
   );
 }
 
-function renderToolbar(editor, t, selectLinkDestination, startNewThread) {
+function renderToolbar(editor, t, selectLinkDestination) {
   const buttons = [
     {
       name: 'bold',
@@ -112,21 +109,16 @@ function renderToolbar(editor, t, selectLinkDestination, startNewThread) {
             t('pageflow_scrolled.inline_editing.remove_link') :
             t('pageflow_scrolled.inline_editing.insert_link'),
       icon: LinkIcon
-    },
-    ...(startNewThread ? [{
-      name: 'comment',
-      text: t('pageflow_scrolled.inline_editing.add_comment'),
-      icon: AddCommentIcon
-    }] : [])
+    }
   ].map(button => ({...button, active: isButtonActive(editor, button.name)}));
 
   return (
     <Toolbar buttons={buttons}
-             onButtonClick={name => handleButtonClick(editor, name, selectLinkDestination, startNewThread)}/>
+             onButtonClick={name => handleButtonClick(editor, name, selectLinkDestination)}/>
   );
 }
 
-function handleButtonClick(editor, format, selectLinkDestination, startNewThread) {
+function handleButtonClick(editor, format, selectLinkDestination) {
   if (format === 'link') {
     if (isLinkActive(editor)) {
       unwrapLink(editor);
@@ -136,9 +128,6 @@ function handleButtonClick(editor, format, selectLinkDestination, startNewThread
         wrapLink(editor, href, openInNewTab);
       }, () => {});
     }
-  }
-  else if (format === 'comment') {
-    startNewThread();
   }
   else {
     toggleMark(editor, format);
