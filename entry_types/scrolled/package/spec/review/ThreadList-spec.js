@@ -88,6 +88,51 @@ describe('ThreadList', () => {
     expect(queryByText('Different range')).not.toBeInTheDocument();
   });
 
+  it('applies filter prop to narrow threads', () => {
+    const {getByText, queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  filter={thread => thread.id === 1} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Kept', creatorName: 'Bob', creatorId: 2}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'Filtered out', creatorName: 'Alice', creatorId: 1}
+          ]}
+        ]
+      }
+    );
+
+    expect(getByText('Kept')).toBeInTheDocument();
+    expect(queryByText('Filtered out')).not.toBeInTheDocument();
+  });
+
+  it('applies filter prop to resolved threads', async () => {
+    const user = userEvent.setup();
+    const {getByText, queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  filter={thread => thread.id === 1} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z',
+           comments: [{id: 10, body: 'Kept resolved', creatorName: 'Bob', creatorId: 2}]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z',
+           comments: [{id: 20, body: 'Filtered resolved', creatorName: 'Alice', creatorId: 1}]}
+        ]
+      }
+    );
+
+    await user.click(getByText('1 resolved'));
+
+    expect(getByText('Kept resolved')).toBeInTheDocument();
+    expect(queryByText('Filtered resolved')).not.toBeInTheDocument();
+  });
+
   it('displays formatted timestamp', () => {
     const {getByText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
