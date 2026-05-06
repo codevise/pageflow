@@ -50,13 +50,16 @@ export const SideBarController = Marionette.Controller.extend({
     }));
   },
 
-  contentElementComments: function(id) {
-    this.region.show(new BackButtonDecoratorView({
-      view: new ContentElementCommentsView({
-        entry: this.entry,
-        model: this.entry.contentElements.get(id),
-        editor
-      })
+  contentElementComments: function(id, payload) {
+    const threadIds = payload ?
+                      JSON.parse(decodeURIComponent(payload)).threadIds :
+                      undefined;
+
+    this.region.show(new ContentElementCommentsView({
+      entry: this.entry,
+      model: this.entry.contentElements.get(id),
+      editor,
+      threadIds
     }));
   },
 
