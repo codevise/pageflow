@@ -158,6 +158,24 @@ describe('PreviewMessageController', () => {
     })).resolves.toMatchObject({type: 'SELECT', payload: {id: 1, type: 'contentElement'}});
   });
 
+  it('posts SELECT_COMMENT_THREAD message on selectCommentThread event', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT_COMMENT_THREAD') resolve(event.data);
+      });
+      entry.trigger('selectCommentThread', 7);
+    })).resolves.toMatchObject({
+      type: 'SELECT_COMMENT_THREAD',
+      payload: {threadId: 7}
+    });
+  });
+
   it('passes on range from selectContentElement event', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({

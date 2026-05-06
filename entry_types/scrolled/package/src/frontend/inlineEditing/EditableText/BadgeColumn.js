@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 
 import {Range, Transforms} from 'slate';
 import {FloatingPortal} from '@floating-ui/react';
@@ -7,6 +7,7 @@ import {useSlate, ReactEditor} from 'slate-react';
 import {Badge, useAnchoredFloating} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {useContentElementAttributes} from '../../useContentElementAttributes';
+import {usePostMessageListener} from '../../usePostMessageListener';
 import {useEditorSelection} from '../EditorState';
 import {highlightOverlapsSelection} from './highlightOverlapsSelection';
 
@@ -44,30 +45,7 @@ function PositionedBadge({editor, highlight, highlights, editorSelection, anchor
   const {refs, floatingStyles, hasAnchor} =
     useAnchoredFloating(highlight.key, anchors, {placement: 'left-start'});
 
-  if (!hasAnchor) return null;
-
-  const isHighlightedThread = !!highlight.thread &&
-                              commentsSelection?.highlightedThreadId === highlight.thread.id;
-  const isActive = isHighlightedThread ||
-                   (highlight.key === 'selection' && newThreadActive);
-  // When a thread is highlighted, fall back to its start point for the
-  // overlap check so siblings in the same block stay in regular mode
-  // even if focus has drifted away from the slate editor. Use just the
-  // start point (not the full range) to stay consistent with
-  // highlightOverlapsSelection, which anchors to highlight starts.
-  const highlightedRange = commentsSelection?.highlightedThreadId ?
-                           highlights.find(
-                             h => h.thread?.id === commentsSelection.highlightedThreadId
-                           )?.range :
-                           null;
-  const fallbackPoint = highlightedRange && Range.start(highlightedRange);
-  const overlapSelection = editorSelection ||
-                           (fallbackPoint && {anchor: fallbackPoint, focus: fallbackPoint});
-  const mode = isActive ? 'active' :
-               highlightOverlapsSelection(highlight, overlapSelection) ? undefined :
-               'dot';
-
-  function handleClick() {
+  const handleClick = useCallback(() => {
     if (highlight.key === 'selection') {
       selectComments();
       return;
@@ -96,7 +74,37 @@ function PositionedBadge({editor, highlight, highlights, editorSelection, anchor
       highlightedThreadId: highlight.thread?.id,
       threadIds
     });
-  }
+  }, [editor, highlight, highlights, selectComments, contentElementId]);
+
+  usePostMessageListener(useCallback(data => {
+    if (data.type === 'SELECT_COMMENT_THREAD' &&
+        data.payload.threadId === highlight.thread?.id) {
+      handleClick();
+    }
+  }, [highlight, handleClick]));
+
+  if (!hasAnchor) return null;
+
+  const isHighlightedThread = !!highlight.thread &&
+                              commentsSelection?.highlightedThreadId === highlight.thread.id;
+  const isActive = isHighlightedThread ||
+                   (highlight.key === 'selection' && newThreadActive);
+  // When a thread is highlighted, fall back to its start point for the
+  // overlap check so siblings in the same block stay in regular mode
+  // even if focus has drifted away from the slate editor. Use just the
+  // start point (not the full range) to stay consistent with
+  // highlightOverlapsSelection, which anchors to highlight starts.
+  const highlightedRange = commentsSelection?.highlightedThreadId ?
+                           highlights.find(
+                             h => h.thread?.id === commentsSelection.highlightedThreadId
+                           )?.range :
+                           null;
+  const fallbackPoint = highlightedRange && Range.start(highlightedRange);
+  const overlapSelection = editorSelection ||
+                           (fallbackPoint && {anchor: fallbackPoint, focus: fallbackPoint});
+  const mode = isActive ? 'active' :
+               highlightOverlapsSelection(highlight, overlapSelection) ? undefined :
+               'dot';
 
   return (
     <FloatingPortal root={portalRoot}>

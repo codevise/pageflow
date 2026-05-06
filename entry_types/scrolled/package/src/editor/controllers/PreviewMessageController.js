@@ -113,6 +113,13 @@ export const PreviewMessageController = Object.extend({
             })
           });
 
+          this.listenTo(this.entry, 'selectCommentThread', threadId => {
+            postMessage({
+              type: 'SELECT_COMMENT_THREAD',
+              payload: {threadId}
+            })
+          });
+
           this.listenTo(this.entry, 'selectWidget', widget => {
             postMessage({
               type: 'SELECT',

@@ -488,5 +488,49 @@ describe('EditableText', () => {
         }
       }, expect.anything());
     });
+
+    it('runs badge click logic on SELECT_COMMENT_THREAD message', () => {
+      fakeParentWindow();
+      window.parent.postMessage = jest.fn();
+
+      const subjectRange = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
+      const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+      renderWithCommenting(
+        <EditableText value={value} contentElementId={1} />,
+        {
+          wrapper,
+          commentThreads: [{
+            id: 9,
+            subjectType: 'ContentElement',
+            subjectId: 10,
+            subjectRange,
+            comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+          }]
+        }
+      );
+
+      window.parent.postMessage.mockClear();
+
+      act(() => {
+        window.postMessage({
+          type: 'SELECT_COMMENT_THREAD',
+          payload: {threadId: 9}
+        }, '*');
+      });
+
+      return expect(new Promise(resolve => {
+        const original = window.parent.postMessage;
+        window.parent.postMessage = (data, ...rest) => {
+          original(data, ...rest);
+          if (data.type === 'SELECTED' && data.payload.type === 'contentElementComments') {
+            resolve(data);
+          }
+        };
+      })).resolves.toMatchObject({
+        type: 'SELECTED',
+        payload: {type: 'contentElementComments', id: 1, highlightedThreadId: 9}
+      });
+    });
   });
 });
