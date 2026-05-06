@@ -511,6 +511,27 @@ describe('PreviewMessageController', () => {
     })).resolves.toBe('/scrolled/content_elements/1/comments');
   });
 
+  it('navigates to comments route with threadIds payload on SELECTED contentElementComments', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    const expectedPayload = encodeURIComponent(JSON.stringify({threadIds: [3, 7]}));
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 10, type: 'contentElementComments', threadIds: [3, 7]}
+      }, '*');
+    })).resolves.toBe(
+      `/scrolled/content_elements/10/comments?payload=${expectedPayload}`
+    );
+  });
+
   it('navigates to new thread route with encoded payload on SELECTED for newThread', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {

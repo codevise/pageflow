@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {Range} from 'slate';
 import {FloatingPortal} from '@floating-ui/react';
 import {useSlate, ReactEditor} from 'slate-react';
 
@@ -23,16 +24,17 @@ export function BadgeColumn({highlights, anchors}) {
   return highlights.map(highlight => (
     <PositionedBadge key={highlight.key}
                      highlight={highlight}
+                     highlights={highlights}
                      editorSelection={editorSelection}
                      anchors={anchors} />
   ));
 }
 
-function PositionedBadge({highlight, editorSelection, anchors}) {
+function PositionedBadge({highlight, highlights, editorSelection, anchors}) {
   const portalRoot = useFloatingPortalRoot();
-  const {contentElementPermaId} = useContentElementAttributes();
-  const {select, isSelected: threadSelected} = useEditorSelection({
-    type: 'commentThread', id: highlight.thread?.id
+  const {contentElementId, contentElementPermaId} = useContentElementAttributes();
+  const {select: selectComments, selection: commentsSelection} = useEditorSelection({
+    type: 'contentElementComments', id: contentElementId
   });
   const {isSelected: newThreadActive} = useEditorSelection({
     type: 'newThread', id: contentElementPermaId
@@ -43,16 +45,52 @@ function PositionedBadge({highlight, editorSelection, anchors}) {
 
   if (!hasAnchor) return null;
 
-  const isActive = threadSelected ||
+  const isHighlightedThread = !!highlight.thread &&
+                              commentsSelection?.highlightedThreadId === highlight.thread.id;
+  const isActive = isHighlightedThread ||
                    (highlight.key === 'selection' && newThreadActive);
+  // When a thread is highlighted, fall back to its start point for the
+  // overlap check so siblings in the same block stay in regular mode
+  // even if focus has drifted away from the slate editor. Use just the
+  // start point (not the full range) to stay consistent with
+  // highlightOverlapsSelection, which anchors to highlight starts.
+  const highlightedRange = commentsSelection?.highlightedThreadId ?
+                           highlights.find(
+                             h => h.thread?.id === commentsSelection.highlightedThreadId
+                           )?.range :
+                           null;
+  const fallbackPoint = highlightedRange && Range.start(highlightedRange);
+  const overlapSelection = editorSelection ||
+                           (fallbackPoint && {anchor: fallbackPoint, focus: fallbackPoint});
   const mode = isActive ? 'active' :
-               highlightOverlapsSelection(highlight, editorSelection) ? undefined :
+               highlightOverlapsSelection(highlight, overlapSelection) ? undefined :
                'dot';
+
+  function handleClick() {
+    if (highlight.key === 'selection') {
+      selectComments();
+      return;
+    }
+
+    const highlightStart = Range.start(highlight.range);
+    const threadIds = highlights
+      .filter(h => h.thread && highlightOverlapsSelection(
+        h, {anchor: highlightStart, focus: highlightStart}
+      ))
+      .map(h => h.thread.id);
+
+    selectComments({
+      type: 'contentElementComments',
+      id: contentElementId,
+      highlightedThreadId: highlight.thread?.id,
+      threadIds
+    });
+  }
 
   return (
     <FloatingPortal root={portalRoot}>
       <div ref={refs.setFloating} className={styles.box} style={floatingStyles}>
-        <Badge counter={1} mode={mode} onClick={() => select()} />
+        <Badge counter={1} mode={mode} onClick={handleClick} />
       </div>
     </FloatingPortal>
   );
