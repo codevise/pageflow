@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Range} from 'slate';
+import {Range, Transforms} from 'slate';
 import {FloatingPortal} from '@floating-ui/react';
 import {useSlate, ReactEditor} from 'slate-react';
 
@@ -23,6 +23,7 @@ export function BadgeColumn({highlights, anchors}) {
 
   return highlights.map(highlight => (
     <PositionedBadge key={highlight.key}
+                     editor={editor}
                      highlight={highlight}
                      highlights={highlights}
                      editorSelection={editorSelection}
@@ -30,7 +31,7 @@ export function BadgeColumn({highlights, anchors}) {
   ));
 }
 
-function PositionedBadge({highlight, highlights, editorSelection, anchors}) {
+function PositionedBadge({editor, highlight, highlights, editorSelection, anchors}) {
   const portalRoot = useFloatingPortalRoot();
   const {contentElementId, contentElementPermaId} = useContentElementAttributes();
   const {select: selectComments, selection: commentsSelection} = useEditorSelection({
@@ -72,7 +73,17 @@ function PositionedBadge({highlight, highlights, editorSelection, anchors}) {
       return;
     }
 
+    // Don't try to also clear the DOM selection here: calling
+    // removeAllRanges fires a selectionchange that slate-react's
+    // listener picks up and uses to overwrite editor.selection back
+    // to null — undoing this Transforms.select and dropping the
+    // selection rect. The visible text selection therefore lingers
+    // on screen until the user's next interaction with the editor;
+    // slate's internal state (which downstream consumers depend on)
+    // stays correct.
     const highlightStart = Range.start(highlight.range);
+    Transforms.select(editor, highlightStart);
+
     const threadIds = highlights
       .filter(h => h.thread && highlightOverlapsSelection(
         h, {anchor: highlightStart, focus: highlightStart}
