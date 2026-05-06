@@ -161,6 +161,11 @@ export const PreviewMessageController = Object.extend({
         const {type, id, position} = message.data.payload;
 
         this.preservedScrollTarget = null;
+        this.entry.set({
+          highlightedThreadId: type === 'contentElementComments' ?
+                               message.data.payload.highlightedThreadId :
+                               undefined
+        });
 
         if (type === 'contentElementComments') {
           const {threadIds} = message.data.payload;

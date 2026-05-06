@@ -550,6 +550,38 @@ describe('PreviewMessageController', () => {
     );
   });
 
+  it('sets highlightedThreadId on entry on SELECTED contentElementComments', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:highlightedThreadId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 10, type: 'contentElementComments', highlightedThreadId: 5}
+      }, '*');
+    })).resolves.toBe(5);
+  });
+
+  it('clears highlightedThreadId on entry on SELECTED with non-comments type', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    entry.set('highlightedThreadId', 5);
+
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:highlightedThreadId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 10, type: 'sectionSettings'}
+      }, '*');
+    })).resolves.toBeUndefined();
+  });
+
   it('navigates to new thread route with encoded payload on SELECTED for newThread', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {
