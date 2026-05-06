@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import {ThreadsBadge} from 'review/ThreadsBadge';
 import {renderWithReviewState} from 'testHelpers/renderWithReviewState';
+import {fakeParentWindow} from 'support';
 
 describe('ThreadsBadge', () => {
   it('does not display count for single thread', () => {
@@ -144,6 +145,72 @@ describe('ThreadsBadge', () => {
       );
 
       expect(getByRole('status')).toBeInTheDocument();
+    });
+  });
+
+  describe('on SELECT_COMMENT_THREAD message', () => {
+    let scrollIntoView;
+
+    beforeEach(() => {
+      fakeParentWindow();
+      scrollIntoView = jest.fn();
+      Element.prototype.scrollIntoView = scrollIntoView;
+    });
+
+    afterEach(() => {
+      delete Element.prototype.scrollIntoView;
+    });
+
+    it('scrolls into view and calls onSelectThread when threadId matches', async () => {
+      const onSelectThread = jest.fn();
+
+      renderWithReviewState(
+        <ThreadsBadge subjectType="ContentElement"
+                      subjectId={10}
+                      onSelectThread={onSelectThread} />,
+        {
+          commentThreads: [
+            {id: 5, subjectType: 'ContentElement', subjectId: 10, comments: []}
+          ]
+        }
+      );
+
+      await new Promise(resolve => {
+        window.postMessage({
+          type: 'SELECT_COMMENT_THREAD',
+          payload: {threadId: 5}
+        }, '*');
+        setTimeout(resolve, 0);
+      });
+
+      expect(scrollIntoView).toHaveBeenCalled();
+      expect(onSelectThread).toHaveBeenCalledWith(5);
+    });
+
+    it('ignores messages for non-matching threadIds', async () => {
+      const onSelectThread = jest.fn();
+
+      renderWithReviewState(
+        <ThreadsBadge subjectType="ContentElement"
+                      subjectId={10}
+                      onSelectThread={onSelectThread} />,
+        {
+          commentThreads: [
+            {id: 5, subjectType: 'ContentElement', subjectId: 10, comments: []}
+          ]
+        }
+      );
+
+      await new Promise(resolve => {
+        window.postMessage({
+          type: 'SELECT_COMMENT_THREAD',
+          payload: {threadId: 999}
+        }, '*');
+        setTimeout(resolve, 0);
+      });
+
+      expect(scrollIntoView).not.toHaveBeenCalled();
+      expect(onSelectThread).not.toHaveBeenCalled();
     });
   });
 });

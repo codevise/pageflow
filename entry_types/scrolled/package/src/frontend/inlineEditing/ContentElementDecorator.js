@@ -70,7 +70,12 @@ function DefaultSelectionRect(props) {
                      <ThreadsBadge subjectType="ContentElement"
                                    subjectId={props.permaId}
                                    mode={commentsSelected ? 'active' : isSelected ? 'icon' : 'dot'}
-                                   onClick={() => selectComments()} />}
+                                   onClick={() => selectComments()}
+                                   onSelectThread={threadId => selectComments({
+                                     type: 'contentElementComments',
+                                     id: props.id,
+                                     highlightedThreadId: threadId
+                                   })} />}
                    commentBadgeInset={!isSelected}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}

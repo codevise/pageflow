@@ -79,9 +79,12 @@ function PositionedBadge({editor, highlight, highlights, editorSelection, anchor
   usePostMessageListener(useCallback(data => {
     if (data.type === 'SELECT_COMMENT_THREAD' &&
         data.payload.threadId === highlight.thread?.id) {
+      if (refs.floating.current) {
+        refs.floating.current.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+      }
       handleClick();
     }
-  }, [highlight, handleClick]));
+  }, [highlight, handleClick, refs.floating]));
 
   if (!hasAnchor) return null;
 

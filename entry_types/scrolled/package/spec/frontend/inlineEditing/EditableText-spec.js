@@ -489,9 +489,11 @@ describe('EditableText', () => {
       }, expect.anything());
     });
 
-    it('runs badge click logic on SELECT_COMMENT_THREAD message', () => {
+    it('runs badge click logic and scrolls into view on SELECT_COMMENT_THREAD message', async () => {
       fakeParentWindow();
       window.parent.postMessage = jest.fn();
+      const scrollIntoView = jest.fn();
+      Element.prototype.scrollIntoView = scrollIntoView;
 
       const subjectRange = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
       const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
@@ -512,14 +514,7 @@ describe('EditableText', () => {
 
       window.parent.postMessage.mockClear();
 
-      act(() => {
-        window.postMessage({
-          type: 'SELECT_COMMENT_THREAD',
-          payload: {threadId: 9}
-        }, '*');
-      });
-
-      return expect(new Promise(resolve => {
+      const echoed = new Promise(resolve => {
         const original = window.parent.postMessage;
         window.parent.postMessage = (data, ...rest) => {
           original(data, ...rest);
@@ -527,10 +522,22 @@ describe('EditableText', () => {
             resolve(data);
           }
         };
-      })).resolves.toMatchObject({
+      });
+
+      act(() => {
+        window.postMessage({
+          type: 'SELECT_COMMENT_THREAD',
+          payload: {threadId: 9}
+        }, '*');
+      });
+
+      await expect(echoed).resolves.toMatchObject({
         type: 'SELECTED',
         payload: {type: 'contentElementComments', id: 1, highlightedThreadId: 9}
       });
+
+      expect(scrollIntoView).toHaveBeenCalled();
+      delete Element.prototype.scrollIntoView;
     });
   });
 });
