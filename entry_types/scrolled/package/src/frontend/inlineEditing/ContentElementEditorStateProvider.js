@@ -14,7 +14,12 @@ export function ContentElementEditorStateProvider({id, children}) {
   );
 
   const storylineMode = useStorylineActivity();
-  const isSelectedInForeground = (isSelected || commentsSelected) && storylineMode === 'active';
+  const inForeground = storylineMode === 'active';
+  const type = inForeground ?
+               (isSelected ? 'contentElement' :
+                commentsSelected ? 'contentElementComments' :
+                null) :
+               null;
 
   const previousTransientState = useRef({});
   const setTransientState = useCallback(state => {
@@ -28,11 +33,11 @@ export function ContentElementEditorStateProvider({id, children}) {
     isEditable: true,
     select,
     selectComments,
-    isSelected: isSelectedInForeground,
-    commentsSelected,
+    isSelected: !!type,
+    type,
     range,
     setTransientState
-  }), [select, selectComments, isSelectedInForeground, commentsSelected, range, setTransientState]);
+  }), [select, selectComments, type, range, setTransientState]);
 
   return (
     <ContentElementEditorStateContext.Provider value={value}>
