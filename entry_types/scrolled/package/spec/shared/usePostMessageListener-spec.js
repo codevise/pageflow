@@ -1,4 +1,4 @@
-import {usePostMessageListener} from 'frontend/usePostMessageListener';
+import {usePostMessageListener} from 'shared/usePostMessageListener';
 
 import {renderHook} from '@testing-library/react-hooks';
 import {fakeParentWindow, tick} from 'support';

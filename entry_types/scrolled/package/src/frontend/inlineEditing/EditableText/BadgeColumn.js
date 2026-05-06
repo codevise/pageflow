@@ -7,7 +7,7 @@ import {useSlate, ReactEditor} from 'slate-react';
 import {Badge, useAnchoredFloating} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {useContentElementAttributes} from '../../useContentElementAttributes';
-import {usePostMessageListener} from '../../usePostMessageListener';
+import {usePostMessageListener} from '../../../shared/usePostMessageListener';
 import {useEditorSelection} from '../EditorState';
 import {highlightOverlapsSelection} from './highlightOverlapsSelection';
 

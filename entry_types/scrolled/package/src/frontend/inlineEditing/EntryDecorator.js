@@ -2,7 +2,7 @@ import React, {useEffect, useCallback} from 'react';
 
 import {ReviewStateProvider} from 'pageflow-scrolled/review';
 import {useEntryStateDispatch} from 'pageflow-scrolled/entryState';
-import {usePostMessageListener} from '../usePostMessageListener';
+import {usePostMessageListener} from '../../shared/usePostMessageListener';
 import {EditorStateProvider, useEditorSelection} from './EditorState';
 import {
   useContentElementEditorCommandEmitter,
