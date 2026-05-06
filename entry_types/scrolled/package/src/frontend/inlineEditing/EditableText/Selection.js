@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import {Editor, Transforms, Node} from 'slate';
 import {useSlate, ReactEditor} from 'slate-react';
 import {useDrag} from 'react-dnd';
@@ -6,9 +6,13 @@ import {useDrag} from 'react-dnd';
 import styles from './index.module.css';
 
 import {SelectionRect} from '../SelectionRect';
+import {useContentElementAttributes} from '../../useContentElementAttributes';
 import {useContentElementEditorState} from '../../useContentElementEditorState';
 import {useI18n} from '../../i18n';
 import {postInsertContentElementMessage} from '../postMessage';
+import {useEditorSelection} from '../EditorState';
+import {cursorLeftHighlightedThreadBlock} from './cursorLeftHighlightedThreadBlock';
+import {cursorMovedFromPendingNewThreadRange} from './cursorMovedFromPendingNewThreadRange';
 import {getUniformSelectedNode} from './getUniformSelectedNode';
 import {toggleBlock, isBlockActive} from './blocks';
 import {computeBounds} from './computeBounds';
@@ -34,8 +38,24 @@ export function Selection(props) {
     setTransientState,
     select,
     isSelected: isContentElementSelected,
+    type,
     range
   } = useContentElementEditorState();
+
+  const {contentElementPermaId} = useContentElementAttributes();
+
+  const {selection: commentsSelection} = useEditorSelection(
+    useMemo(
+      () => ({type: 'contentElementComments', id: props.contentElementId}),
+      [props.contentElementId]
+    )
+  );
+  const {isSelected: newThreadActive, range: newThreadRange} = useEditorSelection(
+    useMemo(
+      () => ({type: 'newThread', id: contentElementPermaId}),
+      [contentElementPermaId]
+    )
+  );
 
   useEffect(() => {
     const {selection} = editor;
@@ -44,7 +64,7 @@ export function Selection(props) {
       return
     }
 
-    if (isContentElementSelected && range && lastRangeRef.current !== range) {
+    if (type === 'contentElement' && range && lastRangeRef.current !== range) {
       lastRangeRef.current = range;
 
       if (range[1] === range[0] + 1) {
@@ -93,6 +113,20 @@ export function Selection(props) {
     }
 
     const [start, end] = computeBounds(editor);
+
+    if (type === 'contentElementComments' &&
+        cursorLeftHighlightedThreadBlock({
+          editor, commentsSelection, highlights: props.highlights
+        })) {
+      select();
+      return;
+    }
+
+    if (newThreadActive && newThreadRange &&
+        cursorMovedFromPendingNewThreadRange({editor, newThreadRange})) {
+      select();
+      return;
+    }
 
     setTransientState({
       editableTextIsSingleBlock: editor.children.length <= 1,

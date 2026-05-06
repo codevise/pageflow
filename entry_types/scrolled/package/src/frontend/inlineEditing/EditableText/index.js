@@ -187,7 +187,8 @@ export const EditableText = React.memo(function EditableText({
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
           <LinkTooltipProvider disabled={editor.selection && !Range.isCollapsed(editor.selection)}
                                position={floatingControlsPosition}>
-            {selectionRect && <Selection contentElementId={contentElementId} />}
+            {selectionRect && <Selection contentElementId={contentElementId}
+                                         highlights={highlights} />}
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
             <HoveringToolbar>
               <Editable
