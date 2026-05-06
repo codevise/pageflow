@@ -11,7 +11,7 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss, newTopicButtonClassName}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss, newTopicButtonClassName}) {
   const {t} = useI18n({locale: 'ui'});
   const allActiveThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
   const allResolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
@@ -63,7 +63,9 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, showNe
                 thread={thread}
                 collapsed={activeThreads.length > 1 && expandedThreadId !== thread.id}
                 onToggle={() => toggleThread(thread.id)}
-                onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})} />
+                onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})}
+                onClick={onThreadClick && (() => onThreadClick(thread))}
+                highlighted={thread.id === highlightedThreadId} />
       ))}
 
       {resolvedThreads.length > 0 &&
@@ -80,7 +82,9 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, showNe
                     thread={thread}
                     collapsed={resolvedThreads.length > 1 && expandedThreadId !== thread.id}
                     onToggle={() => toggleThread(thread.id)}
-                    onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})} />
+                    onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})}
+                    onClick={onThreadClick && (() => onThreadClick(thread))}
+                    highlighted={thread.id === highlightedThreadId} />
           ))}
         </div>}
     </div>

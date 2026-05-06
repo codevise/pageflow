@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import {useI18n} from '../frontend/i18n';
 import {AvatarStack} from './Avatar';
@@ -10,14 +11,19 @@ import ResolveIcon from './images/resolve.svg';
 import UnresolveIcon from './images/unresolve.svg';
 import styles from './Thread.module.css';
 
-export function Thread({thread, collapsed, onToggle, onResolve}) {
+export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlighted}) {
   const {t} = useI18n({locale: 'ui'});
   const firstComment = thread.comments[0];
   const replies = thread.comments.slice(1);
   const repliesCollapsed = collapsed && replies.length > 0;
 
   return (
-    <div className={styles.thread}>
+    <div className={classNames(styles.thread, {
+           [styles.highlighted]: highlighted,
+           [styles.clickable]: onClick
+         })}
+         onClick={onClick}
+         aria-current={highlighted ? 'true' : undefined}>
       {replies.length > 0 &&
         <button className={styles.chevronButton}
                 onClick={onToggle}

@@ -109,6 +109,49 @@ describe('ThreadList', () => {
     expect(queryByText('Filtered out')).not.toBeInTheDocument();
   });
 
+  it('marks the thread matching highlightedThreadId with aria-current', () => {
+    const {container, getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  highlightedThreadId={2} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'first', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'second', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    const highlighted = container.querySelector('[aria-current="true"]');
+    expect(highlighted).toContainElement(getByText('second'));
+    expect(highlighted).not.toContainElement(getByText('first'));
+  });
+
+  it('fires onThreadClick with the clicked thread', async () => {
+    const user = userEvent.setup();
+    const onThreadClick = jest.fn();
+    const {getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  onThreadClick={onThreadClick} />,
+      {
+        commentThreads: [
+          {id: 7, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 70, body: 'click me', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    await user.click(getByText('click me'));
+
+    expect(onThreadClick).toHaveBeenCalledWith(expect.objectContaining({id: 7}));
+  });
+
   it('applies filter prop to resolved threads', async () => {
     const user = userEvent.setup();
     const {getByText, queryByText} = renderWithReviewState(
