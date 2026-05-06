@@ -39,7 +39,7 @@ describe('highlightOverlapsSelection', () => {
     expect(highlightOverlapsSelection(highlight, selection)).toBe(false);
   });
 
-  it('returns true when selection is in a block inside a multi-block highlight range', () => {
+  it('returns false when selection is in a middle block of a multi-block highlight', () => {
     const multiBlockHighlight = {
       range: {
         anchor: {path: [1, 0], offset: 0},
@@ -49,6 +49,21 @@ describe('highlightOverlapsSelection', () => {
     const selection = {
       anchor: {path: [2, 0], offset: 0},
       focus: {path: [2, 0], offset: 0}
+    };
+
+    expect(highlightOverlapsSelection(multiBlockHighlight, selection)).toBe(false);
+  });
+
+  it('returns true when selection is in the same block as a multi-block highlight start', () => {
+    const multiBlockHighlight = {
+      range: {
+        anchor: {path: [1, 0], offset: 0},
+        focus: {path: [3, 0], offset: 5}
+      }
+    };
+    const selection = {
+      anchor: {path: [1, 0], offset: 2},
+      focus: {path: [1, 0], offset: 2}
     };
 
     expect(highlightOverlapsSelection(multiBlockHighlight, selection)).toBe(true);
