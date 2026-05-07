@@ -164,7 +164,13 @@ export const PreviewMessageController = Object.extend({
         this.entry.set({
           highlightedThreadId: type === 'contentElementComments' ?
                                message.data.payload.highlightedThreadId :
-                               undefined
+                               undefined,
+          selectedContentElementCommentsId:
+            type === 'contentElement' || type === 'contentElementComments' ?
+              id :
+              type === 'newThread' ?
+                this.entry.contentElements.findWhere({permaId: id})?.id :
+                undefined
         });
 
         if (type === 'contentElementComments') {

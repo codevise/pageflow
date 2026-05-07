@@ -582,6 +582,77 @@ describe('PreviewMessageController', () => {
     })).resolves.toBeUndefined();
   });
 
+  it('sets selectedContentElementCommentsId on SELECTED contentElementComments', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:selectedContentElementCommentsId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 7, type: 'contentElementComments'}
+      }, '*');
+    })).resolves.toBe(7);
+  });
+
+  it('sets selectedContentElementCommentsId on SELECTED contentElement', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({contentElements: [{id: 4}]})
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:selectedContentElementCommentsId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 4, type: 'contentElement'}
+      }, '*');
+    })).resolves.toBe(4);
+  });
+
+  it('sets selectedContentElementCommentsId from permaId on SELECTED newThread', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({contentElements: [{id: 4, permaId: 100}]})
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:selectedContentElementCommentsId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {
+          id: 100,
+          type: 'newThread',
+          subjectType: 'ContentElement',
+          range: {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 1}}
+        }
+      }, '*');
+    })).resolves.toBe(4);
+  });
+
+  it('clears selectedContentElementCommentsId on SELECTED with non-content-element type', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    entry.set('selectedContentElementCommentsId', 9);
+
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:selectedContentElementCommentsId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 10, type: 'sectionSettings'}
+      }, '*');
+    })).resolves.toBeUndefined();
+  });
+
   it('navigates to new thread route with encoded payload on SELECTED for newThread', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {
