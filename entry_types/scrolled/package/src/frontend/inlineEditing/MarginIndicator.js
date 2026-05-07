@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import {useTheme} from 'pageflow-scrolled/entryState';
 import {Scale} from '../../shared/Scale';
@@ -7,7 +8,7 @@ import {useI18n} from '../i18n';
 
 import styles from './MarginIndicator.module.css';
 
-export function MarginIndicator({marginValue, position}) {
+export function MarginIndicator({marginValue, position, tooltipInset}) {
   const {isSelected} = useContentElementEditorState();
   const theme = useTheme();
   const {t} = useI18n({locale: 'ui'});
@@ -31,7 +32,7 @@ export function MarginIndicator({marginValue, position}) {
     <div aria-label={label}
          className={styles[`indicator-${position}`]}
          style={{'--indicator-height': `var(--theme-content-element-margin-${marginValue})`}}>
-      <div className={styles.tooltip}
+      <div className={classNames(styles.tooltip, {[styles.inset]: tooltipInset})}
            title={label}>
         {scale.texts[index]}
       </div>

@@ -8,4 +8,4 @@ export {NewThreadForm} from './NewThreadForm';
 export {postCreateCommentThreadMessage, postUpdateThreadMessage} from './postMessage';
 export {useCommentHighlights, decorateCommentHighlights} from './commentHighlights';
 export {default as commentHighlightStyles} from './commentHighlights.module.css';
-export {useRangeAnchors, RangeAnchor, useAnchoredFloating} from './rangeAnchors';
+export {useRangeAnchors, RangeAnchor, useAnchoredFloating, alignToContainerEdge} from './rangeAnchors';

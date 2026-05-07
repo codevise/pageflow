@@ -44,7 +44,7 @@ export function RangeAnchor({rangeKey, onRegister, children}) {
 export function useAnchoredFloating(rangeKey, anchors, {
   placement = 'right-start',
   flipOnOverflow = false,
-  mainAxisOffset = 8,
+  mainAxisOffset = 32,
   fitWidth
 } = {}) {
   const hasAnchor = anchors._elements.current.has(rangeKey);
@@ -56,7 +56,7 @@ export function useAnchoredFloating(rangeKey, anchors, {
     middleware: [
       alignToContainerEdge(anchors.containerRef, {mainAxisOffset, fitWidth}),
       ...(flipOnOverflow ? [flip({crossAxis: false, padding: 8})] : []),
-      clampXToViewport({viewportPadding: 8})
+      clampXToViewport({viewportPadding: 0})
     ],
     whileElementsMounted: (reference, floating, update) =>
       autoUpdate(reference, floating, update, {elementResize: false})
@@ -75,9 +75,9 @@ export function useAnchoredFloating(rangeKey, anchors, {
   return {refs, floatingStyles, placement: resolvedPlacement, isPositioned, hasAnchor, fits};
 }
 
-function alignToContainerEdge(containerRef, {
+export function alignToContainerEdge(containerRef, {
   mainAxisOffset = 0,
-  viewportPadding = 8,
+  viewportPadding = 0,
   fitWidth
 } = {}) {
   return {

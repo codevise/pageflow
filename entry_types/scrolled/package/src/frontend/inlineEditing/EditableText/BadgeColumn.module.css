@@ -1,0 +1,19 @@
+@value (
+  darkContentTextColor, lightContentTextColor
+) from "pageflow-scrolled/values/colors.module.css";
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.onDark {
+  color: lightContentTextColor;
+}
+
+.onLight {
+  color: darkContentTextColor;
+}

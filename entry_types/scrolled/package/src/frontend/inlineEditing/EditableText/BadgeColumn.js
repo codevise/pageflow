@@ -9,6 +9,8 @@ import {useContentElementAttributes} from '../../useContentElementAttributes';
 import {useEditorSelection} from '../EditorState';
 import {highlightOverlapsSelection} from './highlightOverlapsSelection';
 
+import styles from './BadgeColumn.module.css';
+
 export function BadgeColumn({highlights, anchors}) {
   const editor = useSlate();
   // Treat `editor.selection` as a live cursor only while the editor
@@ -37,7 +39,7 @@ function PositionedBadge({highlight, editorSelection, anchors}) {
   });
 
   const {refs, floatingStyles, hasAnchor} =
-    useAnchoredFloating(highlight.key, anchors);
+    useAnchoredFloating(highlight.key, anchors, {placement: 'left-start'});
 
   if (!hasAnchor) return null;
 
@@ -49,7 +51,7 @@ function PositionedBadge({highlight, editorSelection, anchors}) {
 
   return (
     <FloatingPortal root={portalRoot}>
-      <div ref={refs.setFloating} style={floatingStyles}>
+      <div ref={refs.setFloating} className={styles.box} style={floatingStyles}>
         <Badge counter={1} mode={mode} onClick={() => select()} />
       </div>
     </FloatingPortal>

@@ -43,10 +43,14 @@
   border-radius: 3px;
   visibility: visible;
   position: absolute;
-  left: 5px;
+  left: 10px;
   top: 5px;
   font-family: var(--ui-font-family);
   font-size: 12px;
   padding: space(1) space(2);
   white-space: nowrap;
+}
+
+.tooltip.inset {
+  left: 35px;
 }
