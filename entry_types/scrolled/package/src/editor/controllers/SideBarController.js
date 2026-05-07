@@ -8,6 +8,7 @@ import {EditSectionView} from '../views/EditSectionView';
 import {EditSectionTransitionView} from '../views/EditSectionTransitionView';
 import {EditSectionPaddingsView} from '../views/EditSectionPaddingsView';
 import {EditContentElementView} from '../views/EditContentElementView';
+import {CommentsView} from '../views/CommentsView';
 import {ContentElementCommentsView} from '../views/ContentElementCommentsView';
 import {NewThreadView} from '../views/NewThreadView';
 
@@ -47,6 +48,14 @@ export const SideBarController = Marionette.Controller.extend({
       model: this.entry.sections.get(id),
       editor,
       position
+    }));
+  },
+
+  comments: function(tab) {
+    this.region.show(new CommentsView({
+      entry: this.entry,
+      editor,
+      defaultTab: tab
     }));
   },
 

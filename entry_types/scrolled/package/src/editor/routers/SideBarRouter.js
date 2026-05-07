@@ -2,6 +2,8 @@ import Marionette from 'backbone.marionette';
 
 export const SideBarRouter = Marionette.AppRouter.extend({
   appRoutes: {
+    'scrolled/comments?tab=:tab': 'comments',
+    'scrolled/comments': 'comments',
     'scrolled/chapters/:id': 'chapter',
     'scrolled/sections/:id/transition': 'sectionTransition',
     'scrolled/sections/:id/paddings?position=:position': 'sectionPaddings',

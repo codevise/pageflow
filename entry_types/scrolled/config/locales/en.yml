@@ -1567,6 +1567,12 @@ en:
         linkButtonVariant:
           label: Button Variante
           blank: "(Default)"
+      main_menu:
+        comments: Comments
+      comments_view:
+        tabs:
+          comments: All comments
+          selection: For selection
     help_entries:
       content_elements:
         menu_item: Content Elements

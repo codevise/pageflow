@@ -10,7 +10,7 @@ import {EntryPreviewView} from './views/EntryPreviewView';
 import {SideBarRouter} from './routers/SideBarRouter';
 import {SideBarController} from './controllers/SideBarController';
 
-import {browser} from 'pageflow/frontend';
+import {browser, features} from 'pageflow/frontend';
 
 import {
   CheckBoxInputView,
@@ -53,6 +53,16 @@ editor.registerEntryType('scrolled', {
 editor.registerSideBarRouting({
   router: SideBarRouter,
   controller: SideBarController
+});
+
+editor.addInitializer(() => {
+  if (features.isEnabled('commenting')) {
+    editor.registerMainMenuItem({
+      translationKey: 'pageflow_scrolled.editor.main_menu.comments',
+      path: '/scrolled/comments',
+      id: 'comments'
+    });
+  }
 });
 
 editor.registerFileSelectionHandler('contentElementConfiguration',
