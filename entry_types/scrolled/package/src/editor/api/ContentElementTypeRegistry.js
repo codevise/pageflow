@@ -79,6 +79,10 @@ export class ContentElementTypeRegistry {
     };
   }
 
+  findPictogram(typeName) {
+    return this.contentElementTypes[typeName]?.pictogram;
+  }
+
   groupedByCategory() {
     const result = [];
     const categoriesByName = {};
