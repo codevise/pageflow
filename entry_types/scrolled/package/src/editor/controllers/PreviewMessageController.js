@@ -1,3 +1,4 @@
+import Backbone from 'backbone';
 import {Object} from 'pageflow/ui';
 import {ReviewMessageHandler} from 'pageflow-scrolled/review';
 import {watchCollections} from 'pageflow-scrolled/entryState';
@@ -174,7 +175,12 @@ export const PreviewMessageController = Object.extend({
         });
 
         if (type === 'contentElementComments') {
-          this.editor.navigate('/scrolled/content_elements/comments', {trigger: true})
+          // Stay on the current tab when the user is already on the
+          // comments route — only force the selection tab when arriving
+          // there from elsewhere.
+          if (!Backbone.history.fragment?.startsWith('scrolled/comments')) {
+            this.editor.navigate('/scrolled/comments?tab=selection', {trigger: true})
+          }
         }
         else if (type === 'newThread') {
           const {subjectType, range} = message.data.payload;

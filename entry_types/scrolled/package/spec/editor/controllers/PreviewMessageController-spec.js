@@ -1,4 +1,5 @@
 import 'editor/config';
+import Backbone from 'backbone';
 import {editor} from 'pageflow-scrolled/editor';
 import {features} from 'pageflow/frontend';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
@@ -513,7 +514,7 @@ describe('PreviewMessageController', () => {
     })).resolves.toBe('/');
   });
 
-  it('navigates to comments route on SELECTED message for contentElementComments', () => {
+  it('navigates to comments route with tab=selection on SELECTED contentElementComments', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
@@ -526,7 +527,60 @@ describe('PreviewMessageController', () => {
     return expect(new Promise(resolve => {
       editor.on('navigate', resolve);
       window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'contentElementComments'}}, '*');
-    })).resolves.toBe('/scrolled/content_elements/comments');
+    })).resolves.toBe('/scrolled/comments?tab=selection');
+  });
+
+  it('does not navigate on SELECTED contentElementComments while on the comments route', async () => {
+    Backbone.history.fragment = 'scrolled/comments';
+
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    const navigate = jest.fn();
+    editor.on('navigate', navigate);
+
+    await new Promise(resolve => {
+      entry.once('change:highlightedThreadId', resolve);
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 10, type: 'contentElementComments', highlightedThreadId: 7}
+      }, '*');
+    });
+
+    expect(navigate).not.toHaveBeenCalled();
+    expect(entry.get('highlightedThreadId')).toBe(7);
+
+    Backbone.history.fragment = undefined;
+  });
+
+  it('does not navigate on SELECTED contentElementComments while on the comments selection tab', async () => {
+    Backbone.history.fragment = 'scrolled/comments?tab=selection';
+
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    const navigate = jest.fn();
+    editor.on('navigate', navigate);
+
+    await new Promise(resolve => {
+      entry.once('change:highlightedThreadId', resolve);
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 10, type: 'contentElementComments', highlightedThreadId: 7}
+      }, '*');
+    });
+
+    expect(navigate).not.toHaveBeenCalled();
+
+    Backbone.history.fragment = undefined;
   });
 
   it('sets highlightedThreadId on entry on SELECTED contentElementComments', () => {
