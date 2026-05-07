@@ -152,6 +152,51 @@ describe('ThreadList', () => {
     expect(onThreadClick).toHaveBeenCalledWith(expect.objectContaining({id: 7}));
   });
 
+  it('hides reply form on non-highlighted threads when restrictInteractionsToHighlighted', () => {
+    const {getByText, queryAllByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  highlightedThreadId={2}
+                  restrictInteractionsToHighlighted />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'first', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'second', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    const replyInputs = queryAllByPlaceholderText('Reply...');
+    expect(replyInputs).toHaveLength(1);
+    expect(getByText('second').closest('[aria-current="true"]'))
+      .toContainElement(replyInputs[0]);
+  });
+
+  it('hides resolve button on non-highlighted threads when restrictInteractionsToHighlighted', () => {
+    const {queryAllByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  highlightedThreadId={2}
+                  restrictInteractionsToHighlighted />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'first', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'second', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(queryAllByText('Mark as resolved')).toHaveLength(1);
+  });
+
   it('applies filter prop to resolved threads', async () => {
     const user = userEvent.setup();
     const {getByText, queryByText} = renderWithReviewState(

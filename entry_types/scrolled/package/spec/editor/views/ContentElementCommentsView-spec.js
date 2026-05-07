@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
+import {editor} from 'pageflow-scrolled/editor';
 import {ContentElementCommentsView} from 'editor/views/ContentElementCommentsView';
 
 import {factories, useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
@@ -30,7 +31,7 @@ describe('ContentElementCommentsView', () => {
       }]
     });
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
 
     const {getByText} = renderBackboneView(view);
 
@@ -53,7 +54,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
 
     const {getByText, queryByText} = renderBackboneView(view);
 
@@ -75,7 +76,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
 
     const {getByText} = renderBackboneView(view);
 
@@ -97,7 +98,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
     const {getByText, queryByText} = renderBackboneView(view);
 
     expect(getByText('Out of scope')).toBeInTheDocument();
@@ -130,7 +131,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
     const {getByText, queryByText} = renderBackboneView(view);
 
     expect(getByText('On first')).toBeInTheDocument();
@@ -162,7 +163,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     expect(getByText('second').closest('[aria-current="true"]')).not.toBeNull();
@@ -185,7 +186,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     expect(getByText('first').closest('[aria-current="true"]')).toBeNull();
@@ -214,7 +215,7 @@ describe('ContentElementCommentsView', () => {
     const listener = jest.fn();
     entry.on('selectCommentThread', listener);
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     await user.click(getByText('click me'));
@@ -240,7 +241,7 @@ describe('ContentElementCommentsView', () => {
     const listener = jest.fn();
     entry.on('selectCommentThread', listener);
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     expect(getByText('click me').closest('[aria-current="true"]')).toBeNull();
@@ -264,7 +265,7 @@ describe('ContentElementCommentsView', () => {
       }]
     });
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
     const {queryByRole} = renderBackboneView(view);
 
     expect(queryByRole('button', {name: 'New topic'})).not.toBeInTheDocument();
@@ -277,7 +278,7 @@ describe('ContentElementCommentsView', () => {
     entry.set('selectedContentElementCommentsId', 1);
     entry.reviewSession = factories.reviewSession();
 
-    const view = new ContentElementCommentsView({entry, editor: {}});
+    const view = new ContentElementCommentsView({entry, editor});
 
     const {getByText} = renderBackboneView(view);
 

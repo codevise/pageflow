@@ -16,6 +16,7 @@ describe('EntryCommentsView', () => {
   useFakeTranslations({
     'pageflow_scrolled.review.new_topic': 'New topic',
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
+    'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.editor.content_elements.textBlock.name': 'Text',
     'pageflow_scrolled.editor.content_elements.image.name': 'Image'
@@ -170,6 +171,29 @@ describe('EntryCommentsView', () => {
     act(() => { entry.set('highlightedThreadId', 1); });
 
     expect(getByText('first').closest('[aria-current="true"]')).not.toBeNull();
+  });
+
+  it('only shows reply form on the highlighted thread', () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 10, body: 'first', creatorName: 'Alice'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 20, body: 'second', creatorName: 'Bob'}]}
+      ]
+    });
+    entry.set('highlightedThreadId', 2);
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText, queryAllByPlaceholderText} = renderBackboneView(view);
+
+    const replyInputs = queryAllByPlaceholderText('Reply...');
+    expect(replyInputs).toHaveLength(1);
+    expect(getByText('second').closest('[aria-current="true"]'))
+      .toContainElement(replyInputs[0]);
   });
 
   it('shows the content element type name as group label', () => {

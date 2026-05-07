@@ -75,6 +75,7 @@ function ContentElementGroup({contentElement, highlightedThreadId, onThreadClick
                   subjectId={permaId}
                   highlightedThreadId={highlightedThreadId}
                   onThreadClick={onThreadClick}
+                  restrictInteractionsToHighlighted
                   hideNewTopicButton />
     </div>
   );

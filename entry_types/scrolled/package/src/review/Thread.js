@@ -11,7 +11,7 @@ import ResolveIcon from './images/resolve.svg';
 import UnresolveIcon from './images/unresolve.svg';
 import styles from './Thread.module.css';
 
-export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlighted}) {
+export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlighted, interactive = true}) {
   const {t} = useI18n({locale: 'ui'});
   const firstComment = thread.comments[0];
   const replies = thread.comments.slice(1);
@@ -43,10 +43,10 @@ export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlig
         <Comment key={comment.id} comment={comment} />
       ))}
 
-      {!thread.resolvedAt && !repliesCollapsed &&
+      {interactive && !thread.resolvedAt && !repliesCollapsed &&
         <ReplyForm threadId={thread.id} />}
 
-      {onResolve && !repliesCollapsed &&
+      {interactive && onResolve && !repliesCollapsed &&
         <div className={styles.resolveRow}>
           <button className={styles.resolveButton} onClick={onResolve}>
             {thread.resolvedAt ? <UnresolveIcon /> : <ResolveIcon />}
