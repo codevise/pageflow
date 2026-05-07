@@ -7,8 +7,10 @@ import {TabsView} from 'pageflow/ui';
 import {EntryCommentsView} from './EntryCommentsView';
 import {ContentElementCommentsView} from './ContentElementCommentsView';
 
+import styles from './CommentsView.module.css';
+
 export const CommentsView = Marionette.ItemView.extend({
-  className: 'comments_view',
+  className: styles.root,
 
   template: () => `
     <a class="back">${I18n.t('pageflow.editor.templates.back_button_decorator.outline')}</a>
