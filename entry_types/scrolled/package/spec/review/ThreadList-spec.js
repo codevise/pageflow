@@ -179,6 +179,29 @@ describe('ThreadList', () => {
     expect(onThreadClick).toHaveBeenCalledWith(expect.objectContaining({id: 7}));
   });
 
+  it('scrolls the highlighted thread into view', () => {
+    const {getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  highlightedThreadId={2} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'first', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'second', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    const scrollIntoView = Element.prototype.scrollIntoView;
+    expect(scrollIntoView).toHaveBeenCalled();
+    expect(scrollIntoView.mock.instances[0])
+      .toBe(getByText('second').closest('[aria-current="true"]'));
+  });
+
   it('orders threads via compareRanges when provided', () => {
     const compareRanges = (a, b) => a.start - b.start;
 

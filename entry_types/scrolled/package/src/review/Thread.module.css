@@ -8,6 +8,7 @@
   border-radius: rounded(lg);
   box-shadow: var(--review-thread-box-shadow, var(--ui-box-shadow));
   border: var(--review-thread-border, none);
+  scroll-margin-top: space(11);
 }
 
 .clickable {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import classNames from 'classnames';
 
 import {useI18n} from '../frontend/i18n';
@@ -17,8 +17,17 @@ export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlig
   const replies = thread.comments.slice(1);
   const repliesCollapsed = collapsed && replies.length > 0;
 
+  const ref = useRef();
+
+  useEffect(() => {
+    if (highlighted && ref.current) {
+      ref.current.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+    }
+  }, [highlighted]);
+
   return (
-    <div className={classNames(styles.thread, {
+    <div ref={ref}
+         className={classNames(styles.thread, {
            [styles.highlighted]: highlighted,
            [styles.clickable]: onClick
          })}
