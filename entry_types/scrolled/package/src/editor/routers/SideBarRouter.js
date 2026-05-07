@@ -9,7 +9,6 @@ export const SideBarRouter = Marionette.AppRouter.extend({
     'scrolled/sections/:id/paddings?position=:position': 'sectionPaddings',
     'scrolled/sections/:id/paddings': 'sectionPaddings',
     'scrolled/sections/:id': 'section',
-    'scrolled/content_elements/comments': 'contentElementComments',
     'scrolled/content_elements/:id': 'contentElement',
     'scrolled/comment_threads/new?subjectType=:subjectType&subjectId=:subjectId&payload=:payload': 'newThread'
   }
