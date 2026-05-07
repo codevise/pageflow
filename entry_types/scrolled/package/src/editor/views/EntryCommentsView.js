@@ -67,12 +67,14 @@ function ContentElementGroup({contentElement, highlightedThreadId, onThreadClick
   const typeName = contentElement.get('typeName');
   const label = I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`);
   const pictogram = editor.contentElementTypes.findPictogram(typeName) || defaultPictogram;
+  const compareRanges = editor.contentElementTypes.findCompareRanges(typeName);
 
   return (
     <div className={styles.group}>
       <ContentElementTypeSeparator label={label} pictogram={pictogram} />
       <ThreadList subjectType="ContentElement"
                   subjectId={permaId}
+                  compareRanges={compareRanges}
                   highlightedThreadId={highlightedThreadId}
                   onThreadClick={onThreadClick}
                   restrictInteractionsToHighlighted

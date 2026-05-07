@@ -11,18 +11,18 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, compareRanges, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss}) {
   const {t} = useI18n({locale: 'ui'});
   const allActiveThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
   const allResolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
 
   const activeThreads = useMemo(
-    () => filter ? allActiveThreads.filter(filter) : allActiveThreads,
-    [allActiveThreads, filter]
+    () => sortByRange(filter ? allActiveThreads.filter(filter) : allActiveThreads, compareRanges),
+    [allActiveThreads, filter, compareRanges]
   );
   const resolvedThreads = useMemo(
-    () => filter ? allResolvedThreads.filter(filter) : allResolvedThreads,
-    [allResolvedThreads, filter]
+    () => sortByRange(filter ? allResolvedThreads.filter(filter) : allResolvedThreads, compareRanges),
+    [allResolvedThreads, filter, compareRanges]
   );
 
   const [expandedThreadId, setExpandedThreadId] = useState(null);
@@ -92,4 +92,9 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
         </div>}
     </div>
   );
+}
+
+function sortByRange(threads, compareRanges) {
+  if (!compareRanges) return threads;
+  return [...threads].sort((a, b) => compareRanges(a.subjectRange, b.subjectRange));
 }

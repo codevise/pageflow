@@ -11,6 +11,12 @@ import {act, waitFor} from '@testing-library/react';
 describe('ContentElementCommentsView', () => {
   const {createEntry} = useEditorGlobals();
 
+  beforeAll(() => {
+    editor.contentElementTypes.register('fixture', {
+      compareRanges: (a, b) => (a?.start ?? 0) - (b?.start ?? 0)
+    });
+  });
+
   useFakeTranslations({
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
     'pageflow_scrolled.review.new_topic': 'New topic',
@@ -19,7 +25,7 @@ describe('ContentElementCommentsView', () => {
 
   it('displays threads of selected content element from session state', () => {
     const entry = createEntry({
-      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
     entry.set('selectedContentElementCommentsId', 1);
     entry.reviewSession = factories.reviewSession({
@@ -40,7 +46,7 @@ describe('ContentElementCommentsView', () => {
 
   it('filters threads by transient state commentThreadIdsAtSelection', () => {
     const entry = createEntry({
-      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
     entry.set('selectedContentElementCommentsId', 1);
     entry.contentElements.get(1).transientState
@@ -64,7 +70,7 @@ describe('ContentElementCommentsView', () => {
 
   it('shows all threads when transient state has no commentThreadIdsAtSelection', () => {
     const entry = createEntry({
-      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
     entry.set('selectedContentElementCommentsId', 1);
     entry.reviewSession = factories.reviewSession({
@@ -86,7 +92,7 @@ describe('ContentElementCommentsView', () => {
 
   it('updates filter when transient state changes', async () => {
     const entry = createEntry({
-      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
     entry.set('selectedContentElementCommentsId', 1);
     entry.reviewSession = factories.reviewSession({
@@ -117,8 +123,8 @@ describe('ContentElementCommentsView', () => {
   it('updates when selectedContentElementCommentsId changes', async () => {
     const entry = createEntry({
       contentElements: [
-        {id: 1, permaId: 10, typeName: 'textBlock'},
-        {id: 2, permaId: 11, typeName: 'textBlock'}
+        {id: 1, permaId: 10, typeName: 'fixture'},
+        {id: 2, permaId: 11, typeName: 'fixture'}
       ]
     });
     entry.set('selectedContentElementCommentsId', 1);
@@ -148,7 +154,7 @@ describe('ContentElementCommentsView', () => {
 
   it('marks thread matching entry.highlightedThreadId with aria-current when scoped', () => {
     const entry = createEntry({
-      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
     entry.set('selectedContentElementCommentsId', 1);
     entry.contentElements.get(1).transientState
@@ -172,7 +178,7 @@ describe('ContentElementCommentsView', () => {
 
   it('updates highlight when entry.highlightedThreadId changes', () => {
     const entry = createEntry({
-      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
     entry.set('selectedContentElementCommentsId', 1);
     entry.contentElements.get(1).transientState
@@ -200,7 +206,7 @@ describe('ContentElementCommentsView', () => {
     const user = userEvent.setup();
 
     const entry = createEntry({
-      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
     entry.set('selectedContentElementCommentsId', 1);
     entry.contentElements.get(1).transientState
@@ -227,7 +233,7 @@ describe('ContentElementCommentsView', () => {
     const user = userEvent.setup();
 
     const entry = createEntry({
-      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
     entry.set('selectedContentElementCommentsId', 1);
     entry.set('highlightedThreadId', 7);
@@ -251,9 +257,61 @@ describe('ContentElementCommentsView', () => {
     expect(listener).not.toHaveBeenCalled();
   });
 
+  it("orders threads by the type's compareRanges", () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
+    });
+    entry.set('selectedContentElementCommentsId', 1);
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {start: 20},
+         comments: [{id: 10, body: 'second', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {start: 10},
+         comments: [{id: 20, body: 'first', creatorName: 'B'}]}
+      ]
+    });
+
+    const view = new ContentElementCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    const order = ['first', 'second']
+      .map(text => getByText(text).getBoundingClientRect().top);
+
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+  });
+
+  it("orders scoped threads by the type's compareRanges", () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
+    });
+    entry.set('selectedContentElementCommentsId', 1);
+    entry.contentElements.get(1).transientState
+      .set('commentThreadIdsAtSelection', [1, 2]);
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {start: 20},
+         comments: [{id: 10, body: 'second', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {start: 10},
+         comments: [{id: 20, body: 'first', creatorName: 'B'}]}
+      ]
+    });
+
+    const view = new ContentElementCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    const order = ['first', 'second']
+      .map(text => getByText(text).getBoundingClientRect().top);
+
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+  });
+
   it('does not render a new-topic button', () => {
     const entry = createEntry({
-      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
     entry.set('selectedContentElementCommentsId', 1);
     entry.reviewSession = factories.reviewSession({
@@ -273,7 +331,7 @@ describe('ContentElementCommentsView', () => {
 
   it('updates when session emits change:thread', async () => {
     const entry = createEntry({
-      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
     entry.set('selectedContentElementCommentsId', 1);
     entry.reviewSession = factories.reviewSession();

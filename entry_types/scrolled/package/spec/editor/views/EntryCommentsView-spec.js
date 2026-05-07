@@ -13,6 +13,12 @@ import {useEditorGlobals} from 'support';
 describe('EntryCommentsView', () => {
   const {createEntry} = useEditorGlobals();
 
+  beforeAll(() => {
+    editor.contentElementTypes.register('fixture', {
+      compareRanges: (a, b) => (a?.start ?? 0) - (b?.start ?? 0)
+    });
+  });
+
   useFakeTranslations({
     'pageflow_scrolled.review.new_topic': 'New topic',
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
@@ -194,6 +200,33 @@ describe('EntryCommentsView', () => {
     expect(replyInputs).toHaveLength(1);
     expect(getByText('second').closest('[aria-current="true"]'))
       .toContainElement(replyInputs[0]);
+  });
+
+  it("orders threads within a group by the type's compareRanges", () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {start: 30},
+         comments: [{id: 10, body: 'third', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {start: 10},
+         comments: [{id: 20, body: 'first', creatorName: 'B'}]},
+        {id: 3, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {start: 20},
+         comments: [{id: 30, body: 'second', creatorName: 'C'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    const order = ['first', 'second', 'third']
+      .map(text => getByText(text).getBoundingClientRect().top);
+
+    expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
   it('shows the content element type name as group label', () => {

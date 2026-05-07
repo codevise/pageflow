@@ -152,6 +152,34 @@ describe('ThreadList', () => {
     expect(onThreadClick).toHaveBeenCalledWith(expect.objectContaining({id: 7}));
   });
 
+  it('orders threads via compareRanges when provided', () => {
+    const compareRanges = (a, b) => a.start - b.start;
+
+    const {getAllByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  compareRanges={compareRanges} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {start: 30},
+           comments: [{id: 10, body: 'third', creatorName: 'Bob', creatorId: 2}]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {start: 10},
+           comments: [{id: 20, body: 'first', creatorName: 'Alice', creatorId: 1}]},
+          {id: 3, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {start: 20},
+           comments: [{id: 30, body: 'second', creatorName: 'Eve', creatorId: 3}]}
+        ]
+      }
+    );
+
+    const order = ['first', 'second', 'third']
+      .map(text => getAllByText(text)[0].getBoundingClientRect().top);
+
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+  });
+
   it('hides reply form on non-highlighted threads when restrictInteractionsToHighlighted', () => {
     const {getByText, queryAllByPlaceholderText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement"
