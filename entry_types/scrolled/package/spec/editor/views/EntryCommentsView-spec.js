@@ -179,6 +179,85 @@ describe('EntryCommentsView', () => {
     expect(getByText('first').closest('[aria-current="true"]')).not.toBeNull();
   });
 
+  it("highlights all threads of the selected element when it has no commentThreadIdsAtSelection", () => {
+    const entry = createEntry({
+      contentElements: [
+        {id: 1, permaId: 10, typeName: 'image'},
+        {id: 2, permaId: 11, typeName: 'image'}
+      ]
+    });
+    entry.set('selectedContentElementCommentsId', 1);
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 10, body: 'on selected one', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 20, body: 'on selected two', creatorName: 'B'}]},
+        {id: 3, subjectType: 'ContentElement', subjectId: 11,
+         comments: [{id: 30, body: 'on other', creatorName: 'C'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('on selected one').closest('[aria-current="true"]')).not.toBeNull();
+    expect(getByText('on selected two').closest('[aria-current="true"]')).not.toBeNull();
+    expect(getByText('on other').closest('[aria-current="true"]')).toBeNull();
+  });
+
+  it("falls back to highlightedThreadId when the selected element has commentThreadIdsAtSelection", () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+    });
+    entry.set('selectedContentElementCommentsId', 1);
+    entry.contentElements.get(1).transientState
+      .set('commentThreadIdsAtSelection', [2]);
+    entry.set('highlightedThreadId', 2);
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 10, body: 'first', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 20, body: 'second', creatorName: 'B'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('first').closest('[aria-current="true"]')).toBeNull();
+    expect(getByText('second').closest('[aria-current="true"]')).not.toBeNull();
+  });
+
+  it('updates highlights when selectedContentElementCommentsId changes', () => {
+    const entry = createEntry({
+      contentElements: [
+        {id: 1, permaId: 10, typeName: 'image'},
+        {id: 2, permaId: 11, typeName: 'image'}
+      ]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 10, body: 'on one', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 11,
+         comments: [{id: 20, body: 'on two', creatorName: 'B'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('on one').closest('[aria-current="true"]')).toBeNull();
+    expect(getByText('on two').closest('[aria-current="true"]')).toBeNull();
+
+    act(() => { entry.set('selectedContentElementCommentsId', 2); });
+
+    expect(getByText('on one').closest('[aria-current="true"]')).toBeNull();
+    expect(getByText('on two').closest('[aria-current="true"]')).not.toBeNull();
+  });
+
   it('only shows reply form on the highlighted thread', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]

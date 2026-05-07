@@ -25,6 +25,10 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, compar
     [allResolvedThreads, filter, compareRanges]
   );
 
+  const isHighlighted = thread => Array.isArray(highlightedThreadId) ?
+                                  highlightedThreadId.includes(thread.id) :
+                                  thread.id === highlightedThreadId;
+
   const [expandedThreadId, setExpandedThreadId] = useState(null);
   const [formToggled, setFormToggled] = useState(null);
   const [showResolved, setShowResolved] = useState(false);
@@ -64,9 +68,8 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, compar
                 onToggle={() => toggleThread(thread.id)}
                 onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})}
                 onClick={onThreadClick && (() => onThreadClick(thread))}
-                highlighted={thread.id === highlightedThreadId}
-                interactive={!restrictInteractionsToHighlighted ||
-                             thread.id === highlightedThreadId} />
+                highlighted={isHighlighted(thread)}
+                interactive={!restrictInteractionsToHighlighted || isHighlighted(thread)} />
       ))}
 
       {resolvedThreads.length > 0 &&
@@ -85,9 +88,8 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, compar
                     onToggle={() => toggleThread(thread.id)}
                     onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})}
                     onClick={onThreadClick && (() => onThreadClick(thread))}
-                    highlighted={thread.id === highlightedThreadId}
-                    interactive={!restrictInteractionsToHighlighted ||
-                                 thread.id === highlightedThreadId} />
+                    highlighted={isHighlighted(thread)}
+                    interactive={!restrictInteractionsToHighlighted || isHighlighted(thread)} />
           ))}
         </div>}
     </div>

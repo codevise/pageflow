@@ -131,6 +131,33 @@ describe('ThreadList', () => {
     expect(highlighted).not.toContainElement(getByText('first'));
   });
 
+  it('highlights every thread when highlightedThreadId is an array of ids', () => {
+    const {container, getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  highlightedThreadId={[1, 2]} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'first', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'second', creatorName: 'Bob', creatorId: 2}
+          ]},
+          {id: 3, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 30, body: 'third', creatorName: 'Eve', creatorId: 3}
+          ]}
+        ]
+      }
+    );
+
+    const highlighted = container.querySelectorAll('[aria-current="true"]');
+    expect(highlighted).toHaveLength(2);
+    expect(getByText('first').closest('[aria-current="true"]')).not.toBeNull();
+    expect(getByText('second').closest('[aria-current="true"]')).not.toBeNull();
+    expect(getByText('third').closest('[aria-current="true"]')).toBeNull();
+  });
+
   it('fires onThreadClick with the clicked thread', async () => {
     const user = userEvent.setup();
     const onThreadClick = jest.fn();
