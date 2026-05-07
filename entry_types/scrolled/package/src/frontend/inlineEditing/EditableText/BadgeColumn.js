@@ -59,22 +59,14 @@ function PositionedBadge({editor, highlight, highlights, editorSelection, anchor
     // on screen until the user's next interaction with the editor;
     // slate's internal state (which downstream consumers depend on)
     // stays correct.
-    const highlightStart = Range.start(highlight.range);
-    Transforms.select(editor, highlightStart);
-
-    const threadIds = highlights
-      .filter(h => h.thread && highlightOverlapsSelection(
-        h, {anchor: highlightStart, focus: highlightStart}
-      ))
-      .map(h => h.thread.id);
+    Transforms.select(editor, Range.start(highlight.range));
 
     selectComments({
       type: 'contentElementComments',
       id: contentElementId,
-      highlightedThreadId: highlight.thread?.id,
-      threadIds
+      highlightedThreadId: highlight.thread?.id
     });
-  }, [editor, highlight, highlights, selectComments, contentElementId]);
+  }, [editor, highlight, selectComments, contentElementId]);
 
   usePostMessageListener(useCallback(data => {
     if (data.type === 'SELECT_COMMENT_THREAD' &&

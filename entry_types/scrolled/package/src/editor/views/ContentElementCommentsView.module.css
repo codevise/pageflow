@@ -1,7 +1,0 @@
-.newTopicButton {
-  composes: secondaryIconButton from './buttons.module.css';
-  display: flex !important;
-  position: absolute;
-  right: 0;
-  bottom: 100%;
-}

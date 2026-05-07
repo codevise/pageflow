@@ -410,81 +410,34 @@ describe('EditableText', () => {
       expect(badges[2]).toHaveClass(badgeStyles.dot);
     });
 
-    it('posts SELECTED contentElementComments with overlapping threadIds on badge click', () => {
+    it('posts SELECTED contentElementComments with highlightedThreadId on badge click', () => {
       fakeParentWindow();
       window.parent.postMessage = jest.fn();
 
       const value = [
-        {type: 'paragraph', children: [{text: 'First paragraph'}]},
-        {type: 'paragraph', children: [{text: 'Second paragraph'}]}
+        {type: 'paragraph', children: [{text: 'First paragraph'}]}
       ];
 
-      const {getAllByRole} = renderWithCommenting(
+      const {getByRole} = renderWithCommenting(
         <EditableText value={value} contentElementId={1} />,
         {
           wrapper,
           commentThreads: [
             {id: 5, subjectType: 'ContentElement', subjectId: 10,
              subjectRange: {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}},
-             comments: [{id: 1, body: 'p0a', creatorName: 'Alice', creatorId: 1}]},
-            {id: 6, subjectType: 'ContentElement', subjectId: 10,
-             subjectRange: {anchor: {path: [0, 0], offset: 6}, focus: {path: [0, 0], offset: 9}},
-             comments: [{id: 2, body: 'p0b', creatorName: 'Bob', creatorId: 2}]},
-            {id: 7, subjectType: 'ContentElement', subjectId: 10,
-             subjectRange: {anchor: {path: [1, 0], offset: 0}, focus: {path: [1, 0], offset: 6}},
-             comments: [{id: 3, body: 'p1', creatorName: 'Eve', creatorId: 3}]}
+             comments: [{id: 1, body: 'a', creatorName: 'Alice', creatorId: 1}]}
           ]
         }
       );
 
-      const badges = getAllByRole('status');
-      fireEvent.click(badges[0]);
+      fireEvent.click(getByRole('status'));
 
       expect(window.parent.postMessage).toHaveBeenCalledWith({
         type: 'SELECTED',
         payload: {
           type: 'contentElementComments',
           id: 1,
-          highlightedThreadId: 5,
-          threadIds: [5, 6]
-        }
-      }, expect.anything());
-    });
-
-    it('scopes threadIds to clicked highlight\'s start block, ignoring later blocks it spans', () => {
-      fakeParentWindow();
-      window.parent.postMessage = jest.fn();
-
-      const value = [
-        {type: 'paragraph', children: [{text: 'First paragraph'}]},
-        {type: 'paragraph', children: [{text: 'Second paragraph'}]}
-      ];
-
-      const {getAllByRole} = renderWithCommenting(
-        <EditableText value={value} contentElementId={1} />,
-        {
-          wrapper,
-          commentThreads: [
-            {id: 5, subjectType: 'ContentElement', subjectId: 10,
-             subjectRange: {anchor: {path: [0, 0], offset: 0}, focus: {path: [1, 0], offset: 6}},
-             comments: [{id: 1, body: 'spans', creatorName: 'Alice', creatorId: 1}]},
-            {id: 7, subjectType: 'ContentElement', subjectId: 10,
-             subjectRange: {anchor: {path: [1, 0], offset: 7}, focus: {path: [1, 0], offset: 16}},
-             comments: [{id: 2, body: 'p1', creatorName: 'Eve', creatorId: 2}]}
-          ]
-        }
-      );
-
-      const badges = getAllByRole('status');
-      fireEvent.click(badges[0]);
-
-      expect(window.parent.postMessage).toHaveBeenCalledWith({
-        type: 'SELECTED',
-        payload: {
-          type: 'contentElementComments',
-          id: 1,
-          highlightedThreadId: 5,
-          threadIds: [5]
+          highlightedThreadId: 5
         }
       }, expect.anything());
     });

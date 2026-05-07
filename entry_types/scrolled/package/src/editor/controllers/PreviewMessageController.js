@@ -174,11 +174,7 @@ export const PreviewMessageController = Object.extend({
         });
 
         if (type === 'contentElementComments') {
-          const {threadIds} = message.data.payload;
-          const query = threadIds ?
-                        `?payload=${encodeURIComponent(JSON.stringify({threadIds}))}` :
-                        '';
-          this.editor.navigate(`/scrolled/content_elements/${id}/comments${query}`, {trigger: true})
+          this.editor.navigate('/scrolled/content_elements/comments', {trigger: true})
         }
         else if (type === 'newThread') {
           const {subjectType, range} = message.data.payload;

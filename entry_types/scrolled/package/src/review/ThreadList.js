@@ -11,7 +11,7 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss, newTopicButtonClassName}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss}) {
   const {t} = useI18n({locale: 'ui'});
   const allActiveThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
   const allResolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
@@ -40,7 +40,6 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
     <div className={styles.container}>
       {!showNewForm && !hideNewTopicButton &&
         <button className={classNames(styles.newTopicButton,
-                                      newTopicButtonClassName,
                                       {[styles.reversed]: reversed})}
                 onClick={() => setFormToggled(true)}
                 aria-label={t('pageflow_scrolled.review.new_topic')}>
