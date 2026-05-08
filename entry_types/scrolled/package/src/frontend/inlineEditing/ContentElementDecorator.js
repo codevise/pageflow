@@ -22,7 +22,7 @@ import {ContentElementEditorStateProvider} from './ContentElementEditorStateProv
 export function ContentElementDecorator(props) {
   return (
     <div className={styles.wrapper} data-scrollpoint={props.id}>
-      <ContentElementEditorStateProvider id={props.id}>
+      <ContentElementEditorStateProvider id={props.id} permaId={props.permaId}>
         <OptionalSelectionRect {...props}>
           <ContentElementConfigurationUpdateProvider id={props.id} permaId={props.permaId}>
             {renderMarginIndicators(props)}

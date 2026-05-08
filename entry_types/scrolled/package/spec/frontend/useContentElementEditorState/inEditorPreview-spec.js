@@ -57,7 +57,7 @@ describe('useContentElementEditorState in editor preview', () => {
     });
 
     renderInEntry(<Entry />, {
-      seed: {contentElements: [{id: 7, typeName: 'test'}]}
+      seed: {contentElements: [{id: 7, permaId: 70, typeName: 'test'}]}
     });
 
     expect(captured.type).toBeNull();
@@ -68,6 +68,10 @@ describe('useContentElementEditorState in editor preview', () => {
 
     act(() => setSelectionRef({type: 'contentElementComments', id: 7}));
     expect(captured.type).toBe('contentElementComments');
+    expect(captured.isSelected).toBe(true);
+
+    act(() => setSelectionRef({type: 'newThread', id: 70}));
+    expect(captured.type).toBe('newThread');
     expect(captured.isSelected).toBe(true);
   });
 

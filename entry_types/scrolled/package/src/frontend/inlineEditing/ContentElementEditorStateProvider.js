@@ -5,12 +5,15 @@ import {useEditorSelection} from './EditorState';
 import {postUpdateTransientContentElementStateMessage} from './postMessage';
 import {useStorylineActivity} from '../storylineActivity';
 
-export function ContentElementEditorStateProvider({id, children}) {
+export function ContentElementEditorStateProvider({id, permaId, children}) {
   const {isSelected, select, range} = useEditorSelection(
     useMemo(() => ({id, type: 'contentElement'}), [id])
   );
   const {isSelected: commentsSelected, select: selectComments} = useEditorSelection(
     useMemo(() => ({id, type: 'contentElementComments'}), [id])
+  );
+  const {isSelected: newThreadSelected, select: selectNewThread} = useEditorSelection(
+    useMemo(() => ({id: permaId, type: 'newThread'}), [permaId])
   );
 
   const storylineMode = useStorylineActivity();
@@ -18,6 +21,7 @@ export function ContentElementEditorStateProvider({id, children}) {
   const type = inForeground ?
                (isSelected ? 'contentElement' :
                 commentsSelected ? 'contentElementComments' :
+                newThreadSelected ? 'newThread' :
                 null) :
                null;
 
@@ -33,11 +37,12 @@ export function ContentElementEditorStateProvider({id, children}) {
     isEditable: true,
     select,
     selectComments,
+    selectNewThread,
     isSelected: !!type,
     type,
     range,
     setTransientState
-  }), [select, selectComments, type, range, setTransientState]);
+  }), [select, selectComments, selectNewThread, type, range, setTransientState]);
 
   return (
     <ContentElementEditorStateContext.Provider value={value}>
@@ -45,6 +50,7 @@ export function ContentElementEditorStateProvider({id, children}) {
     </ContentElementEditorStateContext.Provider>
   )
 }
+
 function shallowEqual(obj1, obj2) {
   return Object.keys(obj1).length === Object.keys(obj2).length &&
          Object.keys(obj1).every(key =>
