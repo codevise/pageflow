@@ -1587,9 +1587,13 @@ de:
       main_menu:
         comments: Kommentare
       comments_view:
+        new_thread: Neues Thema
         tabs:
           comments: Alle Kommentare
           selection: Für Auswahl
+      new_thread_view:
+        tabs:
+          newComment: Neues Thema
     help_entries:
       content_elements:
         menu_item: Inhaltselemente

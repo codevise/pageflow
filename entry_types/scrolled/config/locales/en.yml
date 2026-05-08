@@ -1570,9 +1570,13 @@ en:
       main_menu:
         comments: Comments
       comments_view:
+        new_thread: New topic
         tabs:
           comments: All comments
           selection: For selection
+      new_thread_view:
+        tabs:
+          newComment: New topic
     help_entries:
       content_elements:
         menu_item: Content Elements

@@ -177,6 +177,37 @@ describe('PreviewMessageController', () => {
     });
   });
 
+  it('forwards selectNewThread events to iframe as SELECT newThread', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    const range = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT' && event.data.payload.type === 'newThread') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('selectNewThread', {
+        id: 10,
+        subjectType: 'ContentElement',
+        range
+      });
+    })).resolves.toMatchObject({
+      type: 'SELECT',
+      payload: {
+        type: 'newThread',
+        id: 10,
+        subjectType: 'ContentElement',
+        range
+      }
+    });
+  });
+
   it('passes on range from selectContentElement event', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({

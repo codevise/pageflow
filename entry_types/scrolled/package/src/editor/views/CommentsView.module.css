@@ -7,10 +7,19 @@
  * color sideways to hide highlighted threads' accent halo as they
  * scroll past underneath.
  */
+.root > div {
+  margin: space(2.5) 0;
+}
+
 .root :global(.tabs_view-scroller) {
   position: sticky;
   top: -10px;
   z-index: 1;
   background-color: var(--ui-surface-color);
   box-shadow: 0 0 0 space(1) var(--ui-surface-color);
+}
+
+.newThreadButton {
+  composes: secondaryAddButton from './buttons.module.css';
+  float: right;
 }
