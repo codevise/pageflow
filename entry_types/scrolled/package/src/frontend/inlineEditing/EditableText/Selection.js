@@ -17,6 +17,7 @@ import {getUniformSelectedNode} from './getUniformSelectedNode';
 import {toggleBlock, isBlockActive} from './blocks';
 import {commentThreadIdsAtSelection} from './commentThreadIdsAtSelection';
 import {computeBounds} from './computeBounds';
+import {newCommentThreadSubjectRange} from './newCommentThreadSubjectRange';
 
 import TextIcon from '../images/text.svg';
 import HeadingIcon from '../images/heading.svg';
@@ -139,6 +140,7 @@ export function Selection(props) {
       commentThreadIdsAtSelection: commentThreadIdsAtSelection(
         props.highlights || [], editor.selection
       ),
+      newCommentThreadSubjectRange: newCommentThreadSubjectRange(editor),
     });
 
     boundsRef.current = {start, end};
