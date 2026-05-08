@@ -187,6 +187,27 @@ describe('SELECTED message', () => {
     }, expect.anything());
   });
 
+  it('is posted with type newThread when comment badge is clicked and no threads exist', () => {
+    features.enable('frontend', ['commenting']);
+
+    const {getByRole, getByTestId} = renderEntry({
+      seed: {
+        contentElements: [{id: 1, permaId: 10, typeName: 'withTestId', configuration: {testId: 5}}]
+      }
+    });
+
+    // Select the content element so the icon-mode badge becomes visible
+    // even without threads.
+    fireEvent.click(getByTestId('contentElement-5'));
+
+    fireEvent.click(getByRole('status'));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {type: 'newThread', id: 10}
+    }, expect.anything());
+  });
+
   it('is posted with type contentElementComments when comment badge is clicked', async () => {
     features.enable('frontend', ['commenting']);
 

@@ -50,7 +50,8 @@ function OptionalSelectionRect(props) {
 }
 
 function DefaultSelectionRect(props) {
-  const {isSelected, type, select, selectComments} = useContentElementEditorState();
+  const {isSelected, type, select, selectComments, selectNewThread} =
+    useContentElementEditorState();
   const commentsSelected = type === 'contentElementComments';
   const {t} = useI18n({locale: 'ui'});
 
@@ -70,7 +71,9 @@ function DefaultSelectionRect(props) {
                      <ThreadsBadge subjectType="ContentElement"
                                    subjectId={props.permaId}
                                    mode={commentsSelected ? 'active' : isSelected ? 'icon' : 'dot'}
-                                   onClick={() => selectComments()}
+                                   onClick={threads => threads.length === 0 ?
+                                                       selectNewThread() :
+                                                       selectComments()}
                                    onSelectThread={threadId => selectComments({
                                      type: 'contentElementComments',
                                      id: props.id,
