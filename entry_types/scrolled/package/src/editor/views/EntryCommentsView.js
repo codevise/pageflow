@@ -122,6 +122,7 @@ function ContentElementGroup({
                   highlightedThreadId={groupHighlight}
                   onThreadClick={onThreadClick}
                   restrictInteractionsToHighlighted
+                  showNewForm={false}
                   hideNewTopicButton />
     </div>
   );

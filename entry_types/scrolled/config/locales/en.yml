@@ -1772,3 +1772,4 @@ en:
       reply_count:
         one: 1 reply
         other: '%{count} replies'
+      no_threads_yet: No comments yet

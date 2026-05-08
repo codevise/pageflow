@@ -43,6 +43,7 @@ export const ContentElementCommentsView = ReviewView.extend({
         <ThreadList subjectType="ContentElement"
                     subjectId={contentElement.get('permaId')}
                     compareRanges={compareRanges}
+                    showNewForm={false}
                     hideNewTopicButton />
       );
     }
@@ -54,6 +55,7 @@ export const ContentElementCommentsView = ReviewView.extend({
                   compareRanges={compareRanges}
                   highlightedThreadId={highlightedThreadId}
                   onThreadClick={onThreadClick}
+                  showNewForm={false}
                   hideNewTopicButton />
     );
   },

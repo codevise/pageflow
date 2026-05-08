@@ -20,7 +20,8 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.resolve': 'Mark as resolved',
     'pageflow_scrolled.review.unresolve': 'Mark as unresolved',
     'pageflow_scrolled.review.resolved_count.one': '1 resolved',
-    'pageflow_scrolled.review.resolved_count.other': '%{count} resolved'
+    'pageflow_scrolled.review.resolved_count.other': '%{count} resolved',
+    'pageflow_scrolled.review.no_threads_yet': 'No comments yet'
   });
   it('displays comments of threads for subject', () => {
     const {getByText} = renderWithReviewState(
@@ -555,6 +556,52 @@ describe('ThreadList', () => {
     );
 
     expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+  });
+
+  it('shows blank slate when no threads exist and showNewForm is false', () => {
+    const {getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />
+    );
+
+    expect(getByText('No comments yet')).toBeInTheDocument();
+  });
+
+  it('does not show blank slate when active threads exist', () => {
+    const {queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Looks good', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(queryByText('No comments yet')).not.toBeInTheDocument();
+  });
+
+  it('does not show blank slate when only resolved threads exist', () => {
+    const {queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z',
+           comments: [{id: 10, body: 'Resolved', creatorName: 'Bob', creatorId: 2}]}
+        ]
+      }
+    );
+
+    expect(queryByText('No comments yet')).not.toBeInTheDocument();
+  });
+
+  it('does not show blank slate when showNewForm is true', () => {
+    const {queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />
+    );
+
+    expect(queryByText('No comments yet')).not.toBeInTheDocument();
   });
 
   it('hides new topic button when hideNewTopicButton is true', () => {

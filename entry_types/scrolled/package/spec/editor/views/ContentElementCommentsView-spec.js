@@ -20,7 +20,8 @@ describe('ContentElementCommentsView', () => {
   useFakeTranslations({
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
     'pageflow_scrolled.review.new_topic': 'New topic',
-    'pageflow_scrolled.review.send': 'Send'
+    'pageflow_scrolled.review.send': 'Send',
+    'pageflow_scrolled.review.no_threads_yet': 'No comments yet'
   });
 
   it('displays threads of selected content element from session state', () => {
@@ -307,6 +308,32 @@ describe('ContentElementCommentsView', () => {
       .map(text => getByText(text).getBoundingClientRect().top);
 
     expect(order).toEqual([...order].sort((a, b) => a - b));
+  });
+
+  it('does not render the new thread form when selected element has no threads', () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+    });
+    entry.set('selectedContentElementCommentsId', 1);
+    entry.reviewSession = factories.reviewSession();
+
+    const view = new ContentElementCommentsView({entry, editor});
+    const {queryByPlaceholderText} = renderBackboneView(view);
+
+    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+  });
+
+  it('shows blank slate when selected element has no threads', () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+    });
+    entry.set('selectedContentElementCommentsId', 1);
+    entry.reviewSession = factories.reviewSession();
+
+    const view = new ContentElementCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('No comments yet')).toBeInTheDocument();
   });
 
   it('does not render a new-topic button', () => {

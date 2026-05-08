@@ -40,6 +40,8 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, compar
     setExpandedThreadId(expandedThreadId === threadId ? null : threadId);
   }
 
+  const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
+
   return (
     <div className={styles.container}>
       {!showNewForm && !hideNewTopicButton &&
@@ -60,6 +62,11 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, compar
                          setFormToggled(false);
                          if (activeThreads.length === 0 && onDismiss) onDismiss();
                        }} />}
+
+      {noThreads && !showNewForm &&
+        <p className={styles.blankSlate}>
+          {t('pageflow_scrolled.review.no_threads_yet')}
+        </p>}
 
       {activeThreads.map(thread => (
         <Thread key={thread.id}
