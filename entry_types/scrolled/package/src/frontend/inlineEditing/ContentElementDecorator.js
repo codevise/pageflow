@@ -52,7 +52,7 @@ function OptionalSelectionRect(props) {
 function DefaultSelectionRect(props) {
   const {isSelected, type, select, selectComments, selectNewThread} =
     useContentElementEditorState();
-  const commentsSelected = type === 'contentElementComments';
+  const commentsSelected = type === 'contentElementComments' || type === 'newThread';
   const {t} = useI18n({locale: 'ui'});
 
   const [, drag, preview] = useDrag({
