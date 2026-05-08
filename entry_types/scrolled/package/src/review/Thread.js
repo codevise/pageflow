@@ -29,7 +29,8 @@ export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlig
     <div ref={ref}
          className={classNames(styles.thread, {
            [styles.highlighted]: highlighted,
-           [styles.clickable]: onClick
+           [styles.clickable]: onClick,
+           [styles.resolved]: thread.resolvedAt
          })}
          onClick={onClick}
          aria-current={highlighted ? 'true' : undefined}>
