@@ -1575,6 +1575,7 @@ en:
           comments: All comments
           selection: For selection
       new_thread_view:
+        back: Comments
         tabs:
           newComment: New topic
     help_entries:

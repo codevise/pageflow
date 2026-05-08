@@ -1592,6 +1592,7 @@ de:
           comments: Alle Kommentare
           selection: Für Auswahl
       new_thread_view:
+        back: Kommentare
         tabs:
           newComment: Neues Thema
     help_entries:
