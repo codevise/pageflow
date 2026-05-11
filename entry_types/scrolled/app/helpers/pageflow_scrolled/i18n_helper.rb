@@ -32,10 +32,14 @@ module PageflowScrolled
     end
 
     def scrolled_i18n_public_translations(entry)
-      translations =
-        I18n.t('pageflow_scrolled.public', locale: I18n.default_locale, default: {})
-            .deep_merge(I18n.t('pageflow_scrolled.public', locale: entry.locale, default: {}),
-                        &MERGE_IGNORING_NIL)
+      locales = [I18n.default_locale, *I18n.fallbacks[entry.locale].reverse].uniq
+
+      translations = locales.reduce({}) do |result, locale|
+        result.deep_merge(
+          I18n.t('pageflow_scrolled.public', locale:, default: {}),
+          &MERGE_IGNORING_NIL
+        )
+      end
 
       {
         entry.locale => {
