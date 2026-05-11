@@ -4,6 +4,8 @@ import {browser} from 'pageflow/frontend';
 import {EditorApi} from './api';
 import {app} from './app';
 import I18n from 'i18n-js';
+import {patchSprocketsI18nForParentLocaleFallback}
+  from './utils/patchSprocketsI18nForParentLocaleFallback';
 
 export const editor = new EditorApi();
 
@@ -15,6 +17,9 @@ export const startEditor = function(options) {
   I18n.defaultLocale = window.I18n.defaultLocale;
   I18n.locale = window.I18n.locale;
   I18n.translations = window.I18n.translations;
+  I18n.fallbacks = window.I18n.fallbacks;
+
+  patchSprocketsI18nForParentLocaleFallback(window.I18n);
 
   $(function() {
     editor.ensureBrowserSupport(() => {

@@ -84,6 +84,25 @@ module PageflowScrolled
                                        })
       end
 
+      it 'merges parent locale translations for regional entry locales' do
+        translation(I18n.default_locale, 'pageflow_scrolled.public.from_default', 'default_text')
+        translation(:nl, 'pageflow_scrolled.public.from_parent', 'nl_text')
+        translation(:'nl-BE', 'pageflow_scrolled.public.from_regional', 'be_text')
+        entry = create(:published_entry, revision_attributes: {locale: 'nl-BE'})
+
+        result = helper.scrolled_i18n_translations(entry)
+
+        expect(result).to include_json('nl-BE': {
+                                         pageflow_scrolled: {
+                                           public: {
+                                             from_default: 'default_text',
+                                             from_parent: 'nl_text',
+                                             from_regional: 'be_text'
+                                           }
+                                         }
+                                       })
+      end
+
       it 'supports including inline_editing translations in current locale' do
         translation(I18n.locale, 'pageflow_scrolled.inline_editing.some', 'text')
         entry = create(:published_entry, revision_attributes: {locale: 'fr'})

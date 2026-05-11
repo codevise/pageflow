@@ -67,6 +67,22 @@ module Pageflow
 
         expect(result[:pageflow][:public][:some][:key]).to eq('default_text')
       end
+
+      it 'merges parent locale translations for regional entry locales' do
+        translation(I18n.default_locale, 'pageflow.public.from_default', 'default_text')
+        translation(:nl, 'pageflow.public.from_parent', 'nl_text')
+        translation(:'nl-BE', 'pageflow.public.from_regional', 'be_text')
+
+        entry = PublishedEntry.new(create(:entry,
+                                          :published,
+                                          published_revision_attributes: {locale: 'nl-BE'}))
+
+        result = helper.public_i18n_translations(entry)
+
+        expect(result[:pageflow][:public][:from_default]).to eq('default_text')
+        expect(result[:pageflow][:public][:from_parent]).to eq('nl_text')
+        expect(result[:pageflow][:public][:from_regional]).to eq('be_text')
+      end
     end
   end
 end

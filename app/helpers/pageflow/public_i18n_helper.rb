@@ -11,14 +11,14 @@ module Pageflow
         value.presence || fallback
       end
 
-      {
-        pageflow: {
-          public: I18n.t('pageflow.public', locale: I18n.default_locale)
-                  .dup
-                      .deep_merge(I18n.t('pageflow.public', locale: entry.locale),
-                                  &merge_ignoring_nil)
-        }
-      }
+      locales = [I18n.default_locale, *I18n.fallbacks[entry.locale].reverse].uniq
+
+      translations = locales.reduce({}) do |result, locale|
+        result.deep_merge(I18n.t('pageflow.public', locale:, default: {}),
+                          &merge_ignoring_nil)
+      end
+
+      {pageflow: {public: translations}}
     end
   end
 end
