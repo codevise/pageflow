@@ -1,5 +1,5 @@
 import {useRef, useCallback} from 'react';
-import {usePostMessageListener} from '../usePostMessageListener';
+import {usePostMessageListener} from '../../shared/usePostMessageListener';
 
 // Scroll points are used to preserve scroll position when toggling
 // the editor phone preview. Each ContentElementDecorator renders a

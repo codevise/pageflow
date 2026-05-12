@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 
 import {Range, Transforms} from 'slate';
 import {FloatingPortal} from '@floating-ui/react';
@@ -7,6 +7,7 @@ import {useSlate, ReactEditor} from 'slate-react';
 import {Badge, useAnchoredFloating} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {useContentElementAttributes} from '../../useContentElementAttributes';
+import {usePostMessageListener} from '../../../shared/usePostMessageListener';
 import {useEditorSelection} from '../EditorState';
 import {highlightOverlapsSelection} from './highlightOverlapsSelection';
 
@@ -44,6 +45,39 @@ function PositionedBadge({editor, highlight, highlights, editorSelection, anchor
   const {refs, floatingStyles, hasAnchor} =
     useAnchoredFloating(highlight.key, anchors, {placement: 'left-start'});
 
+  const handleClick = useCallback(() => {
+    if (highlight.key === 'selection') {
+      selectComments();
+      return;
+    }
+
+    // Don't try to also clear the DOM selection here: calling
+    // removeAllRanges fires a selectionchange that slate-react's
+    // listener picks up and uses to overwrite editor.selection back
+    // to null — undoing this Transforms.select and dropping the
+    // selection rect. The visible text selection therefore lingers
+    // on screen until the user's next interaction with the editor;
+    // slate's internal state (which downstream consumers depend on)
+    // stays correct.
+    Transforms.select(editor, Range.start(highlight.range));
+
+    selectComments({
+      type: 'contentElementComments',
+      id: contentElementId,
+      highlightedThreadId: highlight.thread?.id
+    });
+  }, [editor, highlight, selectComments, contentElementId]);
+
+  usePostMessageListener(useCallback(data => {
+    if (data.type === 'SELECT_COMMENT_THREAD' &&
+        data.payload.threadId === highlight.thread?.id) {
+      if (refs.floating.current) {
+        refs.floating.current.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+      }
+      handleClick();
+    }
+  }, [highlight, handleClick, refs.floating]));
+
   if (!hasAnchor) return null;
 
   const isHighlightedThread = !!highlight.thread &&
@@ -66,37 +100,6 @@ function PositionedBadge({editor, highlight, highlights, editorSelection, anchor
   const mode = isActive ? 'active' :
                highlightOverlapsSelection(highlight, overlapSelection) ? undefined :
                'dot';
-
-  function handleClick() {
-    if (highlight.key === 'selection') {
-      selectComments();
-      return;
-    }
-
-    // Don't try to also clear the DOM selection here: calling
-    // removeAllRanges fires a selectionchange that slate-react's
-    // listener picks up and uses to overwrite editor.selection back
-    // to null — undoing this Transforms.select and dropping the
-    // selection rect. The visible text selection therefore lingers
-    // on screen until the user's next interaction with the editor;
-    // slate's internal state (which downstream consumers depend on)
-    // stays correct.
-    const highlightStart = Range.start(highlight.range);
-    Transforms.select(editor, highlightStart);
-
-    const threadIds = highlights
-      .filter(h => h.thread && highlightOverlapsSelection(
-        h, {anchor: highlightStart, focus: highlightStart}
-      ))
-      .map(h => h.thread.id);
-
-    selectComments({
-      type: 'contentElementComments',
-      id: contentElementId,
-      highlightedThreadId: highlight.thread?.id,
-      threadIds
-    });
-  }
 
   return (
     <FloatingPortal root={portalRoot}>

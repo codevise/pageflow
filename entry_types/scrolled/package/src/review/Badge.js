@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import classNames from 'classnames';
 
 import CommentIcon from './images/comment.svg';
 import styles from './Badge.module.css';
 
-export function Badge({counter, mode, onClick}) {
+export const Badge = forwardRef(function Badge({counter, mode, onClick}, ref) {
   const variant = resolveVariant(mode, counter > 0);
 
   if (!variant) {
@@ -12,14 +12,15 @@ export function Badge({counter, mode, onClick}) {
   }
 
   return (
-    <button role="status"
+    <button ref={ref}
+            role="status"
             className={classNames(styles.badge, styles[variant])}
             onClick={onClick}>
       {variant !== 'dot' && <CommentIcon className={styles.icon} />}
       {(variant === 'active' || variant === 'expanded') && counter > 1 ? counter : null}
     </button>
   );
-}
+});
 
 function resolveVariant(mode, hasThreads) {
   switch (mode) {

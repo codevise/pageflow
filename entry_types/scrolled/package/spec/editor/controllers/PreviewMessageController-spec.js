@@ -1,4 +1,5 @@
 import 'editor/config';
+import Backbone from 'backbone';
 import {editor} from 'pageflow-scrolled/editor';
 import {features} from 'pageflow/frontend';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
@@ -156,6 +157,24 @@ describe('PreviewMessageController', () => {
       });
       entry.trigger('selectContentElement', entry.contentElements.first());
     })).resolves.toMatchObject({type: 'SELECT', payload: {id: 1, type: 'contentElement'}});
+  });
+
+  it('posts SELECT_COMMENT_THREAD message on selectCommentThread event', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT_COMMENT_THREAD') resolve(event.data);
+      });
+      entry.trigger('selectCommentThread', 7);
+    })).resolves.toMatchObject({
+      type: 'SELECT_COMMENT_THREAD',
+      payload: {threadId: 7}
+    });
   });
 
   it('passes on range from selectContentElement event', async () => {
@@ -495,7 +514,7 @@ describe('PreviewMessageController', () => {
     })).resolves.toBe('/');
   });
 
-  it('navigates to comments route on SELECTED message for contentElementComments', () => {
+  it('navigates to comments route with tab=selection on SELECTED contentElementComments', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
@@ -508,10 +527,12 @@ describe('PreviewMessageController', () => {
     return expect(new Promise(resolve => {
       editor.on('navigate', resolve);
       window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'contentElementComments'}}, '*');
-    })).resolves.toBe('/scrolled/content_elements/1/comments');
+    })).resolves.toBe('/scrolled/comments?tab=selection');
   });
 
-  it('navigates to comments route with threadIds payload on SELECTED contentElementComments', () => {
+  it('does not navigate on SELECTED contentElementComments while on the comments route', async () => {
+    Backbone.history.fragment = 'scrolled/comments';
+
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
@@ -519,17 +540,150 @@ describe('PreviewMessageController', () => {
     const iframeWindow = createIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
-    const expectedPayload = encodeURIComponent(JSON.stringify({threadIds: [3, 7]}));
+    const navigate = jest.fn();
+    editor.on('navigate', navigate);
 
-    return expect(new Promise(resolve => {
-      editor.on('navigate', resolve);
+    await new Promise(resolve => {
+      entry.once('change:highlightedThreadId', resolve);
       window.postMessage({
         type: 'SELECTED',
-        payload: {id: 10, type: 'contentElementComments', threadIds: [3, 7]}
+        payload: {id: 10, type: 'contentElementComments', highlightedThreadId: 7}
       }, '*');
-    })).resolves.toBe(
-      `/scrolled/content_elements/10/comments?payload=${expectedPayload}`
-    );
+    });
+
+    expect(navigate).not.toHaveBeenCalled();
+    expect(entry.get('highlightedThreadId')).toBe(7);
+
+    Backbone.history.fragment = undefined;
+  });
+
+  it('does not navigate on SELECTED contentElementComments while on the comments selection tab', async () => {
+    Backbone.history.fragment = 'scrolled/comments?tab=selection';
+
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    const navigate = jest.fn();
+    editor.on('navigate', navigate);
+
+    await new Promise(resolve => {
+      entry.once('change:highlightedThreadId', resolve);
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 10, type: 'contentElementComments', highlightedThreadId: 7}
+      }, '*');
+    });
+
+    expect(navigate).not.toHaveBeenCalled();
+
+    Backbone.history.fragment = undefined;
+  });
+
+  it('sets highlightedThreadId on entry on SELECTED contentElementComments', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:highlightedThreadId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 10, type: 'contentElementComments', highlightedThreadId: 5}
+      }, '*');
+    })).resolves.toBe(5);
+  });
+
+  it('clears highlightedThreadId on entry on SELECTED with non-comments type', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    entry.set('highlightedThreadId', 5);
+
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:highlightedThreadId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 10, type: 'sectionSettings'}
+      }, '*');
+    })).resolves.toBeUndefined();
+  });
+
+  it('sets selectedContentElementCommentsId on SELECTED contentElementComments', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:selectedContentElementCommentsId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 7, type: 'contentElementComments'}
+      }, '*');
+    })).resolves.toBe(7);
+  });
+
+  it('sets selectedContentElementCommentsId on SELECTED contentElement', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({contentElements: [{id: 4}]})
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:selectedContentElementCommentsId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 4, type: 'contentElement'}
+      }, '*');
+    })).resolves.toBe(4);
+  });
+
+  it('sets selectedContentElementCommentsId from permaId on SELECTED newThread', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({contentElements: [{id: 4, permaId: 100}]})
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:selectedContentElementCommentsId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {
+          id: 100,
+          type: 'newThread',
+          subjectType: 'ContentElement',
+          range: {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 1}}
+        }
+      }, '*');
+    })).resolves.toBe(4);
+  });
+
+  it('clears selectedContentElementCommentsId on SELECTED with non-content-element type', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    entry.set('selectedContentElementCommentsId', 9);
+
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      entry.once('change:selectedContentElementCommentsId', (model, value) => resolve(value));
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 10, type: 'sectionSettings'}
+      }, '*');
+    })).resolves.toBeUndefined();
   });
 
   it('navigates to new thread route with encoded payload on SELECTED for newThread', () => {

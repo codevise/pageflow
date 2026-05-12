@@ -8,7 +8,7 @@ import {EditSectionView} from '../views/EditSectionView';
 import {EditSectionTransitionView} from '../views/EditSectionTransitionView';
 import {EditSectionPaddingsView} from '../views/EditSectionPaddingsView';
 import {EditContentElementView} from '../views/EditContentElementView';
-import {ContentElementCommentsView} from '../views/ContentElementCommentsView';
+import {CommentsView} from '../views/CommentsView';
 import {NewThreadView} from '../views/NewThreadView';
 
 export const SideBarController = Marionette.Controller.extend({
@@ -50,16 +50,11 @@ export const SideBarController = Marionette.Controller.extend({
     }));
   },
 
-  contentElementComments: function(id, payload) {
-    const threadIds = payload ?
-                      JSON.parse(decodeURIComponent(payload)).threadIds :
-                      undefined;
-
-    this.region.show(new ContentElementCommentsView({
+  comments: function(tab) {
+    this.region.show(new CommentsView({
       entry: this.entry,
-      model: this.entry.contentElements.get(id),
       editor,
-      threadIds
+      defaultTab: tab
     }));
   },
 

@@ -10,6 +10,19 @@
   border: var(--review-thread-border, none);
 }
 
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:not(.highlighted):hover {
+  border-color: var(--review-thread-hover-border-color, var(--ui-accent-color-light));
+}
+
+.highlighted {
+  --review-thread-border: solid 1px var(--ui-accent-color);
+  --review-thread-box-shadow: 0 0 0 space(1) var(--ui-accent-color-lighter);
+}
+
 .chevronButton {
   position: absolute;
   top: space(3);

@@ -1,3 +1,4 @@
+import Backbone from 'backbone';
 import {Object} from 'pageflow/ui';
 import {ReviewMessageHandler} from 'pageflow-scrolled/review';
 import {watchCollections} from 'pageflow-scrolled/entryState';
@@ -113,6 +114,13 @@ export const PreviewMessageController = Object.extend({
             })
           });
 
+          this.listenTo(this.entry, 'selectCommentThread', threadId => {
+            postMessage({
+              type: 'SELECT_COMMENT_THREAD',
+              payload: {threadId}
+            })
+          });
+
           this.listenTo(this.entry, 'selectWidget', widget => {
             postMessage({
               type: 'SELECT',
@@ -154,13 +162,25 @@ export const PreviewMessageController = Object.extend({
         const {type, id, position} = message.data.payload;
 
         this.preservedScrollTarget = null;
+        this.entry.set({
+          highlightedThreadId: type === 'contentElementComments' ?
+                               message.data.payload.highlightedThreadId :
+                               undefined,
+          selectedContentElementCommentsId:
+            type === 'contentElement' || type === 'contentElementComments' ?
+              id :
+              type === 'newThread' ?
+                this.entry.contentElements.findWhere({permaId: id})?.id :
+                undefined
+        });
 
         if (type === 'contentElementComments') {
-          const {threadIds} = message.data.payload;
-          const query = threadIds ?
-                        `?payload=${encodeURIComponent(JSON.stringify({threadIds}))}` :
-                        '';
-          this.editor.navigate(`/scrolled/content_elements/${id}/comments${query}`, {trigger: true})
+          // Stay on the current tab when the user is already on the
+          // comments route — only force the selection tab when arriving
+          // there from elsewhere.
+          if (!Backbone.history.fragment?.startsWith('scrolled/comments')) {
+            this.editor.navigate('/scrolled/comments?tab=selection', {trigger: true})
+          }
         }
         else if (type === 'newThread') {
           const {subjectType, range} = message.data.payload;

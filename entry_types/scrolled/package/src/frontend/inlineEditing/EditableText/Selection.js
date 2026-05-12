@@ -15,6 +15,7 @@ import {cursorLeftHighlightedThreadBlock} from './cursorLeftHighlightedThreadBlo
 import {cursorMovedFromPendingNewThreadRange} from './cursorMovedFromPendingNewThreadRange';
 import {getUniformSelectedNode} from './getUniformSelectedNode';
 import {toggleBlock, isBlockActive} from './blocks';
+import {commentThreadIdsAtSelection} from './commentThreadIdsAtSelection';
 import {computeBounds} from './computeBounds';
 
 import TextIcon from '../images/text.svg';
@@ -135,6 +136,9 @@ export function Selection(props) {
       typographySize: getUniformSelectedNode(editor, 'size')?.size,
       color: getUniformSelectedNode(editor, 'color')?.color,
       textAlign: getUniformSelectedNode(editor, 'textAlign')?.textAlign,
+      commentThreadIdsAtSelection: commentThreadIdsAtSelection(
+        props.highlights || [], editor.selection
+      ),
     });
 
     boundsRef.current = {start, end};

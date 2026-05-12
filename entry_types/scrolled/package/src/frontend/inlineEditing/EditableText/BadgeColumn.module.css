@@ -8,6 +8,7 @@
   justify-content: center;
   width: 30px;
   height: 30px;
+  scroll-margin: space(8);
 }
 
 .onDark {

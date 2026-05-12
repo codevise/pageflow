@@ -6,7 +6,7 @@ import {useActiveExcursion} from './useActiveExcursion';
 import {useCurrentSectionIndexState} from './useCurrentChapter';
 import {useEntryStructure} from 'pageflow-scrolled/entryState';
 import {extensible} from './extensions';
-import {usePostMessageListener} from './usePostMessageListener';
+import {usePostMessageListener} from '../shared/usePostMessageListener';
 import {useSectionChangeEvents} from './useSectionChangeEvents';
 import {sectionChangeMessagePoster} from './sectionChangeMessagePoster';
 import {useScrollToTarget} from './useScrollTarget';
