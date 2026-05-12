@@ -11,7 +11,8 @@ module Pageflow
         value.presence || fallback
       end
 
-      locales = [I18n.default_locale, *I18n.fallbacks[entry.locale].reverse].uniq
+      locales = [I18n.default_locale, *I18n.fallbacks[entry.locale].reverse].uniq &
+                I18n.available_locales
 
       translations = locales.reduce({}) do |result, locale|
         result.deep_merge(I18n.t('pageflow.public', locale:, default: {}),

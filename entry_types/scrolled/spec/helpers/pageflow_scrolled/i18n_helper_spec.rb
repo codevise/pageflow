@@ -103,6 +103,23 @@ module PageflowScrolled
                                        })
       end
 
+      it 'skips fallback parents that are not in I18n.available_locales' do
+        translation(I18n.default_locale, 'pageflow_scrolled.public.shared', 'en_text')
+        translation(:'pt-BR', 'pageflow_scrolled.public.regional', 'br_text')
+        entry = create(:published_entry, revision_attributes: {locale: 'pt-BR'})
+
+        result = helper.scrolled_i18n_translations(entry)
+
+        expect(result).to include_json('pt-BR': {
+                                         pageflow_scrolled: {
+                                           public: {
+                                             shared: 'en_text',
+                                             regional: 'br_text'
+                                           }
+                                         }
+                                       })
+      end
+
       it 'supports including inline_editing translations in current locale' do
         translation(I18n.locale, 'pageflow_scrolled.inline_editing.some', 'text')
         entry = create(:published_entry, revision_attributes: {locale: 'fr'})

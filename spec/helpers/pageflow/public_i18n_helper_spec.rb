@@ -83,6 +83,20 @@ module Pageflow
         expect(result[:pageflow][:public][:from_parent]).to eq('nl_text')
         expect(result[:pageflow][:public][:from_regional]).to eq('be_text')
       end
+
+      it 'skips fallback parents that are not in I18n.available_locales' do
+        translation(I18n.default_locale, 'pageflow.public.shared', 'en_text')
+        translation(:'pt-BR', 'pageflow.public.regional', 'br_text')
+
+        entry = PublishedEntry.new(create(:entry,
+                                          :published,
+                                          published_revision_attributes: {locale: 'pt-BR'}))
+
+        result = helper.public_i18n_translations(entry)
+
+        expect(result[:pageflow][:public][:shared]).to eq('en_text')
+        expect(result[:pageflow][:public][:regional]).to eq('br_text')
+      end
     end
   end
 end
