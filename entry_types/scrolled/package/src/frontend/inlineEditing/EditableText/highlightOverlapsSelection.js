@@ -12,8 +12,7 @@ export function highlightOverlapsSelection(highlight, selection) {
     selEndBlock -= 1;
   }
 
-  const hlStart = Range.start(highlight.range).path[0];
-  const hlEnd = Range.end(highlight.range).path[0];
+  const hlStartBlock = Range.start(highlight.range).path[0];
 
-  return selStartBlock <= hlEnd && hlStart <= selEndBlock;
+  return selStartBlock <= hlStartBlock && hlStartBlock <= selEndBlock;
 }
