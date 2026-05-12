@@ -1,8 +1,9 @@
 import {frontend, Entry, useContentElementEditorState} from 'pageflow-scrolled/frontend';
 import {renderInEntry} from 'support';
+import {useEditorSelection} from 'frontend/inlineEditing/EditorState';
 
 import React, {useEffect} from 'react';
-import {fireEvent} from '@testing-library/react';
+import {act, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
@@ -35,6 +36,39 @@ describe('useContentElementEditorState in editor preview', () => {
 
     expect(getByTestId('one')).toHaveTextContent('Unselected');
     expect(getByTestId('two')).toHaveTextContent('Selected');
+  });
+
+  it('exposes type matching the active selection', () => {
+    let captured = {};
+    let setSelectionRef;
+
+    frontend.contentElementTypes.register('test', {
+      component: function Test() {
+        const state = useContentElementEditorState();
+        const {select} = useEditorSelection();
+
+        captured = state;
+        useEffect(() => {
+          setSelectionRef = select;
+        }, [select]);
+
+        return null;
+      }
+    });
+
+    renderInEntry(<Entry />, {
+      seed: {contentElements: [{id: 7, typeName: 'test'}]}
+    });
+
+    expect(captured.type).toBeNull();
+
+    act(() => setSelectionRef({type: 'contentElement', id: 7}));
+    expect(captured.type).toBe('contentElement');
+    expect(captured.isSelected).toBe(true);
+
+    act(() => setSelectionRef({type: 'contentElementComments', id: 7}));
+    expect(captured.type).toBe('contentElementComments');
+    expect(captured.isSelected).toBe(true);
   });
 
   it('returns true for isEditable', () => {

@@ -50,7 +50,8 @@ function OptionalSelectionRect(props) {
 }
 
 function DefaultSelectionRect(props) {
-  const {isSelected, select, selectComments, commentsSelected} = useContentElementEditorState();
+  const {isSelected, type, select, selectComments} = useContentElementEditorState();
+  const commentsSelected = type === 'contentElementComments';
   const {t} = useI18n({locale: 'ui'});
 
   const [, drag, preview] = useDrag({
@@ -70,7 +71,7 @@ function DefaultSelectionRect(props) {
                                    subjectId={props.permaId}
                                    mode={commentsSelected ? 'active' : isSelected ? 'icon' : 'dot'}
                                    onClick={() => selectComments()} />}
-                   commentBadgeInset={!isSelected && !commentsSelected}
+                   commentBadgeInset={!isSelected}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
                    onClick={() => select()}
