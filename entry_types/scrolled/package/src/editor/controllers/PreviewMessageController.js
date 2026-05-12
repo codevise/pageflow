@@ -156,10 +156,11 @@ export const PreviewMessageController = Object.extend({
         this.preservedScrollTarget = null;
 
         if (type === 'contentElementComments') {
-          this.editor.navigate(`/scrolled/content_elements/${id}/comments`, {trigger: true})
-        }
-        else if (type === 'commentThread') {
-          this.editor.navigate(`/scrolled/comment_threads/${id}`, {trigger: true})
+          const {threadIds} = message.data.payload;
+          const query = threadIds ?
+                        `?payload=${encodeURIComponent(JSON.stringify({threadIds}))}` :
+                        '';
+          this.editor.navigate(`/scrolled/content_elements/${id}/comments${query}`, {trigger: true})
         }
         else if (type === 'newThread') {
           const {subjectType, range} = message.data.payload;

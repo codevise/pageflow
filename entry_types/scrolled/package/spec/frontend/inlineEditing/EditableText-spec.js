@@ -310,13 +310,15 @@ describe('EditableText', () => {
       expect(container.querySelector(`.${highlightStyles.highlight}`))
         .not.toHaveClass(highlightStyles.selected);
 
-      act(() => setSelectionRef({type: 'commentThread', id: 5}));
+      act(() => setSelectionRef({
+        type: 'contentElementComments', id: 1, highlightedThreadId: 5
+      }));
 
       expect(container.querySelector(`.${highlightStyles.highlight}`))
         .toHaveClass(highlightStyles.selected);
     });
 
-    it('renders badge in active mode when thread is selected in editor state', () => {
+    it('renders only the highlighted thread badge in active mode', () => {
       let setSelectionRef;
       function SelectionCapture({children}) {
         const {select} = useEditorSelection();
@@ -330,52 +332,160 @@ describe('EditableText', () => {
         children: <SelectionCapture>{children}</SelectionCapture>
       });
 
-      const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+      const value = [
+        {type: 'paragraph', children: [{text: 'First paragraph thread here'}]},
+        {type: 'paragraph', children: [{text: 'Second paragraph thread here'}]}
+      ];
 
-      const {getByRole} = renderWithCommenting(
+      const {getAllByRole} = renderWithCommenting(
         <EditableText value={value} contentElementId={1} />,
         {
           wrapper: selectionWrapper,
-          commentThreads: [{
-            id: 5,
-            subjectType: 'ContentElement',
-            subjectId: 10,
-            subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
-            comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
-          }]
+          commentThreads: [
+            {id: 5, subjectType: 'ContentElement', subjectId: 10,
+             subjectRange: {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}},
+             comments: [{id: 1, body: 'first', creatorName: 'Alice', creatorId: 1}]},
+            {id: 7, subjectType: 'ContentElement', subjectId: 10,
+             subjectRange: {anchor: {path: [1, 0], offset: 0}, focus: {path: [1, 0], offset: 6}},
+             comments: [{id: 2, body: 'second', creatorName: 'Bob', creatorId: 2}]}
+          ]
         }
       );
 
-      act(() => setSelectionRef({type: 'commentThread', id: 5}));
+      act(() => setSelectionRef({
+        type: 'contentElementComments', id: 1, highlightedThreadId: 5
+      }));
 
-      expect(getByRole('status')).toHaveClass(badgeStyles.active);
+      const badges = getAllByRole('status');
+      expect(badges).toHaveLength(2);
+      expect(badges[0]).toHaveClass(badgeStyles.active);
+      expect(badges[1]).not.toHaveClass(badgeStyles.active);
     });
 
-    it('posts SELECTED commentThread message when badge is clicked', () => {
+    it('renders sibling badge in regular mode when in same block as highlighted thread', () => {
+      let setSelectionRef;
+      function SelectionCapture({children}) {
+        const {select} = useEditorSelection();
+        useEffect(() => {
+          setSelectionRef = select;
+        }, [select]);
+        return children;
+      }
+
+      const selectionWrapper = ({children}) => wrapper({
+        children: <SelectionCapture>{children}</SelectionCapture>
+      });
+
+      const value = [
+        {type: 'paragraph', children: [{text: 'First paragraph with two threads'}]},
+        {type: 'paragraph', children: [{text: 'Second paragraph thread'}]}
+      ];
+
+      const {getAllByRole} = renderWithCommenting(
+        <EditableText value={value} contentElementId={1} />,
+        {
+          wrapper: selectionWrapper,
+          commentThreads: [
+            {id: 5, subjectType: 'ContentElement', subjectId: 10,
+             subjectRange: {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}},
+             comments: [{id: 1, body: 'a', creatorName: 'Alice', creatorId: 1}]},
+            {id: 6, subjectType: 'ContentElement', subjectId: 10,
+             subjectRange: {anchor: {path: [0, 0], offset: 6}, focus: {path: [0, 0], offset: 9}},
+             comments: [{id: 2, body: 'b', creatorName: 'Bob', creatorId: 2}]},
+            {id: 7, subjectType: 'ContentElement', subjectId: 10,
+             subjectRange: {anchor: {path: [1, 0], offset: 0}, focus: {path: [1, 0], offset: 6}},
+             comments: [{id: 3, body: 'c', creatorName: 'Eve', creatorId: 3}]}
+          ]
+        }
+      );
+
+      act(() => setSelectionRef({
+        type: 'contentElementComments', id: 1, highlightedThreadId: 5
+      }));
+
+      const badges = getAllByRole('status');
+      expect(badges).toHaveLength(3);
+      expect(badges[0]).toHaveClass(badgeStyles.active);
+      expect(badges[1]).not.toHaveClass(badgeStyles.dot);
+      expect(badges[2]).toHaveClass(badgeStyles.dot);
+    });
+
+    it('posts SELECTED contentElementComments with overlapping threadIds on badge click', () => {
       fakeParentWindow();
       window.parent.postMessage = jest.fn();
 
-      const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+      const value = [
+        {type: 'paragraph', children: [{text: 'First paragraph'}]},
+        {type: 'paragraph', children: [{text: 'Second paragraph'}]}
+      ];
 
-      const {getByRole} = renderWithCommenting(
+      const {getAllByRole} = renderWithCommenting(
         <EditableText value={value} contentElementId={1} />,
         {
           wrapper,
-          commentThreads: [{
-            id: 5,
-            subjectType: 'ContentElement',
-            subjectId: 10,
-            subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
-            comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
-          }]
+          commentThreads: [
+            {id: 5, subjectType: 'ContentElement', subjectId: 10,
+             subjectRange: {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}},
+             comments: [{id: 1, body: 'p0a', creatorName: 'Alice', creatorId: 1}]},
+            {id: 6, subjectType: 'ContentElement', subjectId: 10,
+             subjectRange: {anchor: {path: [0, 0], offset: 6}, focus: {path: [0, 0], offset: 9}},
+             comments: [{id: 2, body: 'p0b', creatorName: 'Bob', creatorId: 2}]},
+            {id: 7, subjectType: 'ContentElement', subjectId: 10,
+             subjectRange: {anchor: {path: [1, 0], offset: 0}, focus: {path: [1, 0], offset: 6}},
+             comments: [{id: 3, body: 'p1', creatorName: 'Eve', creatorId: 3}]}
+          ]
         }
       );
 
-      fireEvent.click(getByRole('status'));
+      const badges = getAllByRole('status');
+      fireEvent.click(badges[0]);
 
       expect(window.parent.postMessage).toHaveBeenCalledWith({
         type: 'SELECTED',
-        payload: {type: 'commentThread', id: 5}
+        payload: {
+          type: 'contentElementComments',
+          id: 1,
+          highlightedThreadId: 5,
+          threadIds: [5, 6]
+        }
+      }, expect.anything());
+    });
+
+    it('scopes threadIds to clicked highlight\'s start block, ignoring later blocks it spans', () => {
+      fakeParentWindow();
+      window.parent.postMessage = jest.fn();
+
+      const value = [
+        {type: 'paragraph', children: [{text: 'First paragraph'}]},
+        {type: 'paragraph', children: [{text: 'Second paragraph'}]}
+      ];
+
+      const {getAllByRole} = renderWithCommenting(
+        <EditableText value={value} contentElementId={1} />,
+        {
+          wrapper,
+          commentThreads: [
+            {id: 5, subjectType: 'ContentElement', subjectId: 10,
+             subjectRange: {anchor: {path: [0, 0], offset: 0}, focus: {path: [1, 0], offset: 6}},
+             comments: [{id: 1, body: 'spans', creatorName: 'Alice', creatorId: 1}]},
+            {id: 7, subjectType: 'ContentElement', subjectId: 10,
+             subjectRange: {anchor: {path: [1, 0], offset: 7}, focus: {path: [1, 0], offset: 16}},
+             comments: [{id: 2, body: 'p1', creatorName: 'Eve', creatorId: 2}]}
+          ]
+        }
+      );
+
+      const badges = getAllByRole('status');
+      fireEvent.click(badges[0]);
+
+      expect(window.parent.postMessage).toHaveBeenCalledWith({
+        type: 'SELECTED',
+        payload: {
+          type: 'contentElementComments',
+          id: 1,
+          highlightedThreadId: 5,
+          threadIds: [5]
+        }
       }, expect.anything());
     });
   });

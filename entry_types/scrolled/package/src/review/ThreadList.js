@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import classNames from 'classnames';
 
 import {useI18n} from '../frontend/i18n';
@@ -11,10 +11,19 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss, newTopicButtonClassName}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss, newTopicButtonClassName}) {
   const {t} = useI18n({locale: 'ui'});
-  const activeThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
-  const resolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
+  const allActiveThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
+  const allResolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
+
+  const activeThreads = useMemo(
+    () => filter ? allActiveThreads.filter(filter) : allActiveThreads,
+    [allActiveThreads, filter]
+  );
+  const resolvedThreads = useMemo(
+    () => filter ? allResolvedThreads.filter(filter) : allResolvedThreads,
+    [allResolvedThreads, filter]
+  );
 
   const [expandedThreadId, setExpandedThreadId] = useState(null);
   const [formToggled, setFormToggled] = useState(null);

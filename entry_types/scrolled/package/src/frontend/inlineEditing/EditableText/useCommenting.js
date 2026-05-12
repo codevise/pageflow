@@ -49,7 +49,7 @@ export function useCommenting(editor) {
   const withCommentHighlightDecoration = useCallback(({attributes, children, leaf}) => {
     if (leaf.commentHighlight) {
       children = (
-        <HighlightSpan rangeKey={leaf.rangeKey} contentElementPermaId={contentElementPermaId}>
+        <HighlightSpan rangeKey={leaf.rangeKey}>
           {children}
         </HighlightSpan>
       );
@@ -83,15 +83,16 @@ export function useCommenting(editor) {
   };
 }
 
-function HighlightSpan({rangeKey, contentElementPermaId, children}) {
+function HighlightSpan({rangeKey, children}) {
+  const {contentElementId, contentElementPermaId} = useContentElementAttributes();
   const threadId = parseInt(rangeKey, 10);
-  const {isSelected: threadSelected} = useEditorSelection({
-    type: 'commentThread', id: threadId
+  const {isSelected: commentsSelected, selection: commentsSelection} = useEditorSelection({
+    type: 'contentElementComments', id: contentElementId
   });
   const {isSelected: newThreadActive} = useEditorSelection({
     type: 'newThread', id: contentElementPermaId
   });
-  const isSelected = threadSelected ||
+  const isSelected = (commentsSelected && commentsSelection?.highlightedThreadId === threadId) ||
                      (rangeKey === 'selection' && newThreadActive);
 
   return (
