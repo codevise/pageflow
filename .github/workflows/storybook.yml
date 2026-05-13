@@ -5,6 +5,7 @@ on:
     paths:
       - entry_types/scrolled/package/src/**
       - entry_types/scrolled/package/.storybook/**
+      - .github/workflows/storybook.yml
   push:
     branches:
       - master
@@ -13,7 +14,7 @@ on:
 
 env:
   RAILS_ENV: test
-  PAGEFLOW_DB_HOST: 127.0.0.1
+  PAGEFLOW_DB_HOST: mysql
   PT: b55731926f7bcb9344a0b3ff662613954a4137d3c21c1be748e9929823f19b08
 
 jobs:
@@ -21,6 +22,11 @@ jobs:
     # Skip when PR description contains [skip percy] to reduce Percy usage
     if: github.event_name != 'pull_request' || !contains(github.event.pull_request.body, '[skip percy]')
     runs-on: ubuntu-latest
+    container: ghcr.io/${{ github.repository }}/test:latest
+
+    defaults:
+      run:
+        shell: bash
 
     services:
       mysql:
@@ -37,7 +43,7 @@ jobs:
           --health-retries 5
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     # Shared variables
 
@@ -65,41 +71,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gems-
 
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
     - name: Set up cache for Yarn
       uses: actions/cache@v4
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        path: .yarn-cache
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    # Ruby/Node
-
-    - name: Set up Ruby 3.4
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.4
-
-    - name: Set up Node.js 22
-      uses: actions/setup-node@v1
-      with:
-        node-version: 22
-
     # Dependencies
-
-    - name: Install imagemagick package for image processing
-      run: |
-        sudo apt-get update
-        sudo apt-get install imagemagick
-
-    - name: Install libvips package for image processing
-      run: |
-        sudo apt-get update
-        sudo apt-get install libvips-dev
 
     - name: Bundle install
       run: |
@@ -108,7 +88,7 @@ jobs:
 
     - name: Yarn install
       run: |
-        yarn install
+        yarn install --cache-folder .yarn-cache
 
     # Build
 
