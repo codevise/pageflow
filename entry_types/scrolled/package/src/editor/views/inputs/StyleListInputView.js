@@ -199,13 +199,13 @@ const StyleListItemView = Marionette.ItemView.extend({
     const colorInput = this.ui.colorInput[0];
 
     if (colorInput) {
-      colorInput.value = this.model.get('value') || this.model.defaultValue() || '';
+      colorInput.value = this.model.getColor() || this.model.defaultColor() || '';
 
       this._colorPicker = new ColorPicker(colorInput, {
-        defaultValue: this.model.defaultValue(),
+        defaultValue: this.model.defaultColor(),
         ...this.model.inputOptions(),
         onChange: (color) => {
-          this.model.set('value', color || '');
+          this.model.setColor(color || '');
         }
       });
     }

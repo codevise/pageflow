@@ -26,7 +26,7 @@ export const Style = Backbone.Model.extend({
   label() {
     const name = this.get('name');
     const label = Style.getLabel(name, this.types);
-    const item = this.types[name].items?.find(item => item.value === this.get('value'));
+    const item = this.types[name].items?.find(item => this.valueMatches(item.value));
 
     if (item) {
       return `${label}: ${item.label}`;
@@ -36,8 +36,41 @@ export const Style = Backbone.Model.extend({
     }
   },
 
+  valueMatches(partial) {
+    const value = this.get('value');
+
+    if (partial && typeof partial === 'object') {
+      if (!value || typeof value !== 'object') {
+        return false;
+      }
+
+      return Object.entries(partial).every(([key, expected]) => value[key] === expected);
+    }
+
+    return value === partial;
+  },
+
+  getColor() {
+    return readColor(this.get('value'));
+  },
+
+  setColor(color) {
+    const value = this.get('value');
+
+    if (value && typeof value === 'object') {
+      this.set('value', {...value, color});
+    }
+    else {
+      this.set('value', color);
+    }
+  },
+
   defaultValue() {
     return this.types[this.get('name')].defaultValue;
+  },
+
+  defaultColor() {
+    return readColor(this.defaultValue());
   },
 
   minValue() {
@@ -68,6 +101,14 @@ export const Style = Backbone.Model.extend({
     return this.types[this.get('name')].inputOptions || {};
   }
 });
+
+function readColor(value) {
+  if (value && typeof value === 'object') {
+    return value.color;
+  }
+
+  return value;
+}
 
 Style.getLabel = function(name, types) {
   return types[name].label ||

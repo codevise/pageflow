@@ -80,6 +80,103 @@ describe('Style', () => {
     expect(style.inputType()).toEqual('color');
   });
 
+  describe('#valueMatches', () => {
+    it('returns true when scalar value equals the partial', () => {
+      const style = new Style({name: 'blur', value: 30}, {types: exampleTypes});
+
+      expect(style.valueMatches(30)).toBe(true);
+    });
+
+    it('returns false when scalar value does not equal the partial', () => {
+      const style = new Style({name: 'blur', value: 30}, {types: exampleTypes});
+
+      expect(style.valueMatches(40)).toBe(false);
+    });
+
+    it('returns true when object value contains every partial entry', () => {
+      const style = new Style(
+        {name: 'frame', value: {color: '#fff', design: 'vintage'}},
+        {types: exampleTypes}
+      );
+
+      expect(style.valueMatches({design: 'vintage'})).toBe(true);
+    });
+
+    it('returns false when object value lacks a partial entry', () => {
+      const style = new Style(
+        {name: 'frame', value: {color: '#fff', design: 'default'}},
+        {types: exampleTypes}
+      );
+
+      expect(style.valueMatches({design: 'vintage'})).toBe(false);
+    });
+
+    it('returns false when value is scalar but partial is an object', () => {
+      const style = new Style({name: 'frame', value: '#fff'}, {types: exampleTypes});
+
+      expect(style.valueMatches({design: 'vintage'})).toBe(false);
+    });
+  });
+
+  describe('#getColor / #setColor', () => {
+    it('reads scalar value as the color', () => {
+      const style = new Style({name: 'frame', value: '#ff0'}, {types: exampleTypes});
+
+      expect(style.getColor()).toEqual('#ff0');
+    });
+
+    it('reads color key from object value', () => {
+      const style = new Style(
+        {name: 'frame', value: {color: '#ff0', design: 'default'}},
+        {types: exampleTypes}
+      );
+
+      expect(style.getColor()).toEqual('#ff0');
+    });
+
+    it('replaces scalar value when setting color', () => {
+      const style = new Style({name: 'frame', value: '#ff0'}, {types: exampleTypes});
+
+      style.setColor('#0f0');
+
+      expect(style.get('value')).toEqual('#0f0');
+    });
+
+    it('updates color key when setting color on object value', () => {
+      const style = new Style(
+        {name: 'frame', value: {color: '#ff0', design: 'vintage'}},
+        {types: exampleTypes}
+      );
+
+      style.setColor('#0f0');
+
+      expect(style.get('value')).toEqual({color: '#0f0', design: 'vintage'});
+    });
+  });
+
+  describe('#label', () => {
+    it('finds matching item by partial value match for structured values', () => {
+      const style = new Style(
+        {name: 'frame', value: {color: '#ff0', design: 'vintage'}},
+        {
+          types: {
+            frame: {
+              label: 'Frame',
+              inputType: 'color',
+              defaultValue: {color: '#ffffff'},
+              items: [
+                {value: {design: 'default'}, label: 'Default'},
+                {value: {design: 'vintage'}, label: 'Vintage'}
+              ]
+            }
+          }
+        }
+      );
+
+      expect(style.label()).toEqual('Frame: Vintage');
+    });
+  });
+
   describe('.getEffectTypes', () => {
     useFakeTranslations({
       'pageflow_scrolled.editor.backdrop_effects.backdropFrame-default': 'Default',

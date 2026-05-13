@@ -320,6 +320,71 @@ describe('StylesCollection', () => {
       });
     });
 
+    describe('with items declaring structured (object) values', () => {
+      const frameTypes = {
+        frame: {
+          label: 'Frame',
+          inputType: 'color',
+          defaultValue: {color: '#ffffff'},
+          items: [
+            {label: 'Default', value: {design: 'default'}},
+            {label: 'Vintage', value: {design: 'vintage'}}
+          ]
+        }
+      };
+
+      it('adds style by merging picked item value into type defaultValue', () => {
+        const styles = new StylesCollection([], {types: frameTypes});
+        const unusedStyles = styles.getUnusedStyles();
+
+        unusedStyles.first().get('items').findWhere({label: 'Vintage'}).selected();
+
+        expect(styles.pluck('value')).toEqual([
+          {color: '#ffffff', design: 'vintage'}
+        ]);
+      });
+
+      it('preserves other keys of existing object value when picking a new item', () => {
+        const styles = new StylesCollection(
+          [{name: 'frame', value: {color: '#ff0', design: 'default'}}],
+          {types: frameTypes}
+        );
+        const unusedStyles = styles.getUnusedStyles();
+
+        unusedStyles.first().get('items').findWhere({label: 'Vintage'}).selected();
+
+        expect(styles.pluck('value')).toEqual([
+          {color: '#ff0', design: 'vintage'}
+        ]);
+      });
+
+      it('promotes scalar value to {color} for color inputType before merging', () => {
+        const styles = new StylesCollection(
+          [{name: 'frame', value: '#ff0'}],
+          {types: frameTypes}
+        );
+        const unusedStyles = styles.getUnusedStyles();
+
+        unusedStyles.first().get('items').findWhere({label: 'Vintage'}).selected();
+
+        expect(styles.pluck('value')).toEqual([
+          {color: '#ff0', design: 'vintage'}
+        ]);
+      });
+
+      it('treats item match by partial value when disabling currently selected item', () => {
+        const styles = new StylesCollection(
+          [{name: 'frame', value: {color: '#ff0', design: 'vintage'}}],
+          {types: frameTypes}
+        );
+        const unusedStyles = styles.getUnusedStyles();
+        const items = unusedStyles.first().get('items');
+
+        expect(items.findWhere({label: 'Vintage'}).get('disabled')).toEqual(true);
+        expect(items.findWhere({label: 'Default'}).get('disabled')).toEqual(false);
+      });
+    });
+
     describe('incompatible styles', () => {
       it('circle crop item includes incompatibleWith property', () => {
         const imageModifierTypes = {
