@@ -9,7 +9,7 @@ jest.mock('frontend/usePortraitOrientation');
 describe('backdrop decoration effects', () => {
   usePageObjects();
 
-  it('does not render Backdrop frame', () => {
+  it('does not render Backdrop frame when no frame effect is set', () => {
     const {container} = renderEntry({
       seed: {
         imageFiles: [{permaId: 100}],
@@ -27,7 +27,7 @@ describe('backdrop decoration effects', () => {
     expect(container.querySelector(`.${effectsStyles.outer}`)).not.toBeInTheDocument();
   });
 
-  it('renders elements if effect is present', () => {
+  it('renders legacy string value as .scope-backdropFrame-default', () => {
     const {container} = renderEntry({
       seed: {
         imageFiles: [{permaId: 100}],
@@ -37,10 +37,7 @@ describe('backdrop decoration effects', () => {
             configuration: {
               backdrop: {image: 100},
               backdropEffects: [
-                {
-                  name: 'frame',
-                  value: '#ff0'
-                }
+                {name: 'frame', value: '#ff0'}
               ]
             }
           }
@@ -48,10 +45,89 @@ describe('backdrop decoration effects', () => {
       }
     });
 
-    expect(container.querySelector(`.${effectsStyles.outer}`)).toBeInTheDocument();
+    const outer = container.querySelector(`.${effectsStyles.outer}`);
+
+    expect(outer).toBeInTheDocument();
+    expect(outer).toHaveClass('scope-backdropFrame-default');
+    expect(outer).toHaveStyle('--frame-color: #ff0');
   });
 
-  it('supports scroll parallax for mobile image', () => {
+  it('renders structured value with named design as .scope-backdropFrame-<design>', () => {
+    const {container} = renderEntry({
+      seed: {
+        imageFiles: [{permaId: 100}],
+        sections: [
+          {
+            permaId: 1,
+            configuration: {
+              backdrop: {image: 100},
+              backdropEffects: [
+                {name: 'frame', value: {color: '#abc', design: 'vintage'}}
+              ]
+            }
+          }
+        ]
+      }
+    });
+
+    const outer = container.querySelector(`.${effectsStyles.outer}`);
+
+    expect(outer).toBeInTheDocument();
+    expect(outer).toHaveClass('scope-backdropFrame-vintage');
+    expect(outer).toHaveStyle('--frame-color: #abc');
+  });
+
+  it('renders structured value with default design as .scope-backdropFrame-default', () => {
+    const {container} = renderEntry({
+      seed: {
+        imageFiles: [{permaId: 100}],
+        sections: [
+          {
+            permaId: 1,
+            configuration: {
+              backdrop: {image: 100},
+              backdropEffects: [
+                {name: 'frame', value: {color: '#ff0', design: 'default'}}
+              ]
+            }
+          }
+        ]
+      }
+    });
+
+    const outer = container.querySelector(`.${effectsStyles.outer}`);
+
+    expect(outer).toBeInTheDocument();
+    expect(outer).toHaveClass('scope-backdropFrame-default');
+    expect(outer).toHaveStyle('--frame-color: #ff0');
+  });
+
+  it('renders structured value without design as .scope-backdropFrame-default', () => {
+    const {container} = renderEntry({
+      seed: {
+        imageFiles: [{permaId: 100}],
+        sections: [
+          {
+            permaId: 1,
+            configuration: {
+              backdrop: {image: 100},
+              backdropEffects: [
+                {name: 'frame', value: {color: '#ff0'}}
+              ]
+            }
+          }
+        ]
+      }
+    });
+
+    const outer = container.querySelector(`.${effectsStyles.outer}`);
+
+    expect(outer).toBeInTheDocument();
+    expect(outer).toHaveClass('scope-backdropFrame-default');
+    expect(outer).toHaveStyle('--frame-color: #ff0');
+  });
+
+  it('supports frame effect on mobile image', () => {
     usePortraitOrientation.mockReturnValue(true);
 
     const {container} = renderEntry({
@@ -69,10 +145,7 @@ describe('backdrop decoration effects', () => {
                 imageMobile: 101
               },
               backdropEffectsMobile: [
-                {
-                  name: 'frame',
-                  value: '#ff0'
-                }
+                {name: 'frame', value: {color: '#ff0', design: 'vintage'}}
               ]
             }
           }
@@ -80,7 +153,10 @@ describe('backdrop decoration effects', () => {
       }
     });
 
-    expect(container.querySelector(`.${effectsStyles.outer}`)).toBeInTheDocument();
-    expect(container.querySelector(`.${effectsStyles.outer}`)).toHaveStyle('--frame-color: #ff0');
+    const outer = container.querySelector(`.${effectsStyles.outer}`);
+
+    expect(outer).toBeInTheDocument();
+    expect(outer).toHaveClass('scope-backdropFrame-vintage');
+    expect(outer).toHaveStyle('--frame-color: #ff0');
   });
 });
