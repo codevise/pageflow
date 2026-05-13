@@ -211,7 +211,6 @@ module PageflowScrolled
         c.features.register('scrolled_entry_fragment_caching')
         c.features.register('backdrop_content_elements')
         c.features.register('custom_palette_colors')
-        c.features.register('decoration_effects')
         c.features.register('backdrop_size')
         c.features.register('commenting')
         c.features.register('image_srcset')

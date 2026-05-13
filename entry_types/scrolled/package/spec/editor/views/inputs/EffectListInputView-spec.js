@@ -5,6 +5,7 @@ import Backbone from 'backbone';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {renderBackboneView as render, useFakeTranslations} from 'pageflow/testHelpers';
+import {factories} from 'support';
 
 describe('EffectListInputView', () => {
   useFakeTranslations({
@@ -18,7 +19,11 @@ describe('EffectListInputView', () => {
       {name: 'blur', value: 30}
     ]});
 
-    const view = new EffectListInputView({model, propertyName: 'effects'});
+    const view = new EffectListInputView({
+      model,
+      entry: factories.scrolledEntry(),
+      propertyName: 'effects'
+    });
     view.render();
 
     expect(view.el).toHaveTextContent('Blur 30');
@@ -27,7 +32,11 @@ describe('EffectListInputView', () => {
   it('allows adding effects', async () => {
     const model = new Backbone.Model();
 
-    const view = new EffectListInputView({model, propertyName: 'effects'});
+    const view = new EffectListInputView({
+      model,
+      entry: factories.scrolledEntry(),
+      propertyName: 'effects'
+    });
 
     const user = userEvent.setup();
     const {getByRole} = render(view);
@@ -42,7 +51,11 @@ describe('EffectListInputView', () => {
       {name: 'blur', value: 30}
     ]});
 
-    const view = new EffectListInputView({model, propertyName: 'effects'});
+    const view = new EffectListInputView({
+      model,
+      entry: factories.scrolledEntry(),
+      propertyName: 'effects'
+    });
 
     const user = userEvent.setup();
     const {getByRole} = render(view);

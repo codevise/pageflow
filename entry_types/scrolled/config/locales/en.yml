@@ -123,8 +123,6 @@ en:
                 with_projection:
                   blank_slate: Choose a projection in the file settings, to mark it as a 360° image.
                   name: 360° images
-    decoration_effects:
-      feature_name: Decoration Effects
     icon_scroll_indicator:
       feature_name: Icon Scroll Indicator
     iconScrollIndicator:

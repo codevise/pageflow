@@ -3,6 +3,7 @@ import {Style} from 'editor/models/Style';
 
 import Backbone from 'backbone';
 import {useFakeTranslations} from 'pageflow/testHelpers';
+import {factories} from 'support';
 
 describe('StylesCollection', () => {
   const exampleTypes = {
@@ -467,7 +468,10 @@ describe('StylesCollection', () => {
 
   describe('with effect types', () => {
     it('creates collection with effect style types', () => {
-      const styles = new StylesCollection([{name: 'blur', value: 50}], {types: Style.getEffectTypes()});
+      const styles = new StylesCollection(
+        [{name: 'blur', value: 50}],
+        {types: Style.getEffectTypes({entry: factories.scrolledEntry()})}
+      );
 
       expect(styles.pluck('name')).toEqual(['blur']);
       expect(styles.first().minValue()).toEqual(0);

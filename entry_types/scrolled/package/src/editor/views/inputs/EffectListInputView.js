@@ -5,7 +5,7 @@ export const EffectListInputView = function(options) {
   return new StyleListInputView({
     ...options,
     hideLabel: true,
-    types: Style.getEffectTypes(),
+    types: Style.getEffectTypes({entry: options.entry}),
     translationKeyPrefix: 'pageflow_scrolled.editor.effect_list_input'
   });
 };

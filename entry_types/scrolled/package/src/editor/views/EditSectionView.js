@@ -100,6 +100,7 @@ export const EditSectionView = EditConfigurationView.extend({
         highlight: 'boxWithArrow'
       });
       this.input('backdropEffects', EffectListInputView, {
+        entry,
         visibleBinding: ['backdropType', 'backdropImage'],
         visible: ([backdropType]) =>
           (backdropType === 'image' &&
@@ -134,6 +135,7 @@ export const EditSectionView = EditConfigurationView.extend({
         highlight: 'boxWithArrow'
       });
       this.input('backdropEffectsMobile', EffectListInputView, {
+        entry,
         visibleBinding: ['backdropType', 'backdropImageMobile'],
         visible: ([backdropType]) =>
           (backdropType === 'image' &&

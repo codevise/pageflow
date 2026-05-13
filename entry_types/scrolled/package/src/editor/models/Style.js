@@ -1,6 +1,5 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
-import {features} from 'pageflow/frontend';
 import {attributeBindingUtils} from 'pageflow/ui';
 
 export const Style = Backbone.Model.extend({
@@ -136,24 +135,37 @@ const allEffectTypes = {
     defaultValue: 50,
     kind: 'animation'
   },
-  frame: {
+};
+
+Style.getEffectTypes = function({entry}) {
+  const frameType = getBackdropFrameEffectType(entry);
+
+  return {
+    ...allEffectTypes,
+    ...(frameType && {frame: frameType})
+  };
+};
+
+function getBackdropFrameEffectType(entry) {
+  const [designs, labels] = entry.getComponentVariants({
+    name: 'backdropFrame',
+    translationKeysScope: 'backdrop_effects'
+  });
+
+  if (designs.length === 0) {
+    return null;
+  }
+
+  return {
     kind: 'decoration',
     inputType: 'color',
-    defaultValue: '#ffffff'
-  }
-};
-
-Style.getEffectTypes = function() {
-  if (features.isEnabled('decoration_effects')) {
-    return allEffectTypes;
-  }
-
-  return Object.fromEntries(
-    Object.entries(allEffectTypes).filter(
-      ([, type]) => type.kind !== 'decoration'
-    )
-  );
-};
+    defaultValue: {color: '#ffffff'},
+    items: designs.map((design, index) => ({
+      value: {design},
+      label: labels[index]
+    }))
+  };
+}
 
 Style.getTypesForContentElement = function({entry, contentElement}) {
   const marginScale = entry.getScale('contentElementMargin');
