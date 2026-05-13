@@ -121,6 +121,13 @@ export const PreviewMessageController = Object.extend({
             })
           });
 
+          this.listenTo(this.entry, 'selectNewThread', payload => {
+            postMessage({
+              type: 'SELECT',
+              payload: {type: 'newThread', ...payload}
+            })
+          });
+
           this.listenTo(this.entry, 'selectWidget', widget => {
             postMessage({
               type: 'SELECT',

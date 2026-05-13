@@ -20,7 +20,8 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.resolve': 'Mark as resolved',
     'pageflow_scrolled.review.unresolve': 'Mark as unresolved',
     'pageflow_scrolled.review.resolved_count.one': '1 resolved',
-    'pageflow_scrolled.review.resolved_count.other': '%{count} resolved'
+    'pageflow_scrolled.review.resolved_count.other': '%{count} resolved',
+    'pageflow_scrolled.review.no_threads_yet': 'No comments yet'
   });
   it('displays comments of threads for subject', () => {
     const {getByText} = renderWithReviewState(
@@ -131,6 +132,33 @@ describe('ThreadList', () => {
     expect(highlighted).not.toContainElement(getByText('first'));
   });
 
+  it('highlights every thread when highlightedThreadId is an array of ids', () => {
+    const {container, getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  highlightedThreadId={[1, 2]} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'first', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'second', creatorName: 'Bob', creatorId: 2}
+          ]},
+          {id: 3, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 30, body: 'third', creatorName: 'Eve', creatorId: 3}
+          ]}
+        ]
+      }
+    );
+
+    const highlighted = container.querySelectorAll('[aria-current="true"]');
+    expect(highlighted).toHaveLength(2);
+    expect(getByText('first').closest('[aria-current="true"]')).not.toBeNull();
+    expect(getByText('second').closest('[aria-current="true"]')).not.toBeNull();
+    expect(getByText('third').closest('[aria-current="true"]')).toBeNull();
+  });
+
   it('fires onThreadClick with the clicked thread', async () => {
     const user = userEvent.setup();
     const onThreadClick = jest.fn();
@@ -150,6 +178,102 @@ describe('ThreadList', () => {
     await user.click(getByText('click me'));
 
     expect(onThreadClick).toHaveBeenCalledWith(expect.objectContaining({id: 7}));
+  });
+
+  it('scrolls the highlighted thread into view', () => {
+    const {getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  highlightedThreadId={2} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'first', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'second', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    const scrollIntoView = Element.prototype.scrollIntoView;
+    expect(scrollIntoView).toHaveBeenCalled();
+    expect(scrollIntoView.mock.instances[0])
+      .toBe(getByText('second').closest('[aria-current="true"]'));
+  });
+
+  it('orders threads via compareRanges when provided', () => {
+    const compareRanges = (a, b) => a.start - b.start;
+
+    const {getAllByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  compareRanges={compareRanges} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {start: 30},
+           comments: [{id: 10, body: 'third', creatorName: 'Bob', creatorId: 2}]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {start: 10},
+           comments: [{id: 20, body: 'first', creatorName: 'Alice', creatorId: 1}]},
+          {id: 3, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {start: 20},
+           comments: [{id: 30, body: 'second', creatorName: 'Eve', creatorId: 3}]}
+        ]
+      }
+    );
+
+    const order = ['first', 'second', 'third']
+      .map(text => getAllByText(text)[0].getBoundingClientRect().top);
+
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+  });
+
+  it('hides reply form on non-highlighted threads when restrictInteractionsToHighlighted', () => {
+    const {getByText, queryAllByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  highlightedThreadId={2}
+                  restrictInteractionsToHighlighted />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'first', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'second', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    const replyInputs = queryAllByPlaceholderText('Reply...');
+    expect(replyInputs).toHaveLength(1);
+    expect(getByText('second').closest('[aria-current="true"]'))
+      .toContainElement(replyInputs[0]);
+  });
+
+  it('hides resolve button on non-highlighted threads when restrictInteractionsToHighlighted', () => {
+    const {queryAllByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  highlightedThreadId={2}
+                  restrictInteractionsToHighlighted />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'first', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'second', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(queryAllByText('Mark as resolved')).toHaveLength(1);
   });
 
   it('applies filter prop to resolved threads', async () => {
@@ -432,6 +556,52 @@ describe('ThreadList', () => {
     );
 
     expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+  });
+
+  it('shows blank slate when no threads exist and showNewForm is false', () => {
+    const {getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />
+    );
+
+    expect(getByText('No comments yet')).toBeInTheDocument();
+  });
+
+  it('does not show blank slate when active threads exist', () => {
+    const {queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Looks good', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(queryByText('No comments yet')).not.toBeInTheDocument();
+  });
+
+  it('does not show blank slate when only resolved threads exist', () => {
+    const {queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z',
+           comments: [{id: 10, body: 'Resolved', creatorName: 'Bob', creatorId: 2}]}
+        ]
+      }
+    );
+
+    expect(queryByText('No comments yet')).not.toBeInTheDocument();
+  });
+
+  it('does not show blank slate when showNewForm is true', () => {
+    const {queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />
+    );
+
+    expect(queryByText('No comments yet')).not.toBeInTheDocument();
   });
 
   it('hides new topic button when hideNewTopicButton is true', () => {

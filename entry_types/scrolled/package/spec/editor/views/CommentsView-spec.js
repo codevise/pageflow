@@ -9,6 +9,14 @@ import {useEditorGlobals} from 'support';
 import {fireEvent} from '@testing-library/dom';
 import {act} from '@testing-library/react';
 
+function unselectedEntry(createEntry) {
+  const entry = createEntry({
+    contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+  });
+  entry.reviewSession = factories.reviewSession();
+  return entry;
+}
+
 describe('CommentsView', () => {
   const {createEntry} = useEditorGlobals();
 
@@ -19,6 +27,7 @@ describe('CommentsView', () => {
     'pageflow_scrolled.editor.content_elements.textBlock.name': 'Text',
     'pageflow_scrolled.editor.comments_view.tabs.comments': 'All comments',
     'pageflow_scrolled.editor.comments_view.tabs.selection': 'For selection',
+    'pageflow_scrolled.editor.comments_view.new_thread': 'New topic',
     'pageflow.editor.templates.back_button_decorator.outline': 'Outline'
   });
 
@@ -106,6 +115,74 @@ describe('CommentsView', () => {
     expect(navigate).toHaveBeenCalledWith('/', {trigger: true});
 
     navigate.mockRestore();
+  });
+
+  it('disables the new-thread button when no content element is selected', () => {
+    const entry = unselectedEntry(createEntry);
+
+    const view = new CommentsView({entry, editor});
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button', {name: 'New topic'})).toBeDisabled();
+  });
+
+  it('enables the new-thread button when a content element is selected', () => {
+    const entry = unselectedEntry(createEntry);
+    entry.set('selectedContentElementCommentsId', 1);
+
+    const view = new CommentsView({entry, editor});
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button', {name: 'New topic'})).not.toBeDisabled();
+  });
+
+  it("toggles the new-thread button when entry.selectedContentElementCommentsId changes", () => {
+    const entry = unselectedEntry(createEntry);
+
+    const view = new CommentsView({entry, editor});
+    const {getByRole} = renderBackboneView(view);
+
+    expect(getByRole('button', {name: 'New topic'})).toBeDisabled();
+
+    act(() => { entry.set('selectedContentElementCommentsId', 1); });
+
+    expect(getByRole('button', {name: 'New topic'})).not.toBeDisabled();
+  });
+
+  it('triggers selectNewThread on entry when the new-thread button is clicked', () => {
+    const entry = unselectedEntry(createEntry);
+    entry.set('selectedContentElementCommentsId', 1);
+    const range = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
+    entry.contentElements.get(1).transientState
+      .set('newCommentThreadSubjectRange', range);
+
+    const view = new CommentsView({entry, editor});
+    const {getByRole} = renderBackboneView(view);
+
+    const listener = jest.fn();
+    entry.on('selectNewThread', listener);
+
+    fireEvent.click(getByRole('button', {name: 'New topic'}));
+
+    expect(listener).toHaveBeenCalledWith({
+      id: 10,
+      subjectType: 'ContentElement',
+      range
+    });
+  });
+
+  it('does not trigger selectNewThread when clicking the button while disabled', () => {
+    const entry = unselectedEntry(createEntry);
+
+    const view = new CommentsView({entry, editor});
+    const {getByRole} = renderBackboneView(view);
+
+    const listener = jest.fn();
+    entry.on('selectNewThread', listener);
+
+    fireEvent.click(getByRole('button', {name: 'New topic'}));
+
+    expect(listener).not.toHaveBeenCalled();
   });
 
 });

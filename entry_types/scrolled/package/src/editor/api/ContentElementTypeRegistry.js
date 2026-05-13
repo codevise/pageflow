@@ -83,6 +83,10 @@ export class ContentElementTypeRegistry {
     return this.contentElementTypes[typeName]?.pictogram;
   }
 
+  findCompareRanges(typeName) {
+    return this.contentElementTypes[typeName]?.compareRanges;
+  }
+
   groupedByCategory() {
     const result = [];
     const categoriesByName = {};

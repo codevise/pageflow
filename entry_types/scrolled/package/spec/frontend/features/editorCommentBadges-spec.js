@@ -5,6 +5,8 @@ import {features} from 'pageflow/frontend';
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
 import {fakeParentWindow} from 'support';
 
+import badgeStyles from 'review/Badge.module.css';
+
 describe('editor comment badges', () => {
   useInlineEditingPageObjects();
 
@@ -61,5 +63,29 @@ describe('editor comment badges', () => {
       expect(getByRole('status')).toBeInTheDocument();
       expect(getByRole('status')).not.toHaveTextContent(/\d/);
     });
+  });
+
+  it('renders badge in active mode when newThread is selected on the element', () => {
+    const {getByRole} = renderEntry({
+      seed: {
+        contentElements: [{
+          typeName: 'withTestId',
+          permaId: 10,
+          configuration: {testId: 5}
+        }]
+      }
+    });
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'SELECT',
+          payload: {type: 'newThread', id: 10}
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    expect(getByRole('status')).toHaveClass(badgeStyles.active);
   });
 });

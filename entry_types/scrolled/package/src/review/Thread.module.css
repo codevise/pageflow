@@ -8,6 +8,7 @@
   border-radius: rounded(lg);
   box-shadow: var(--review-thread-box-shadow, var(--ui-box-shadow));
   border: var(--review-thread-border, none);
+  scroll-margin-top: space(11);
 }
 
 .clickable {
@@ -18,9 +19,14 @@
   border-color: var(--review-thread-hover-border-color, var(--ui-accent-color-light));
 }
 
-.highlighted {
+.highlighted:not(.resolved) {
   --review-thread-border: solid 1px var(--ui-accent-color);
   --review-thread-box-shadow: 0 0 0 space(1) var(--ui-accent-color-lighter);
+}
+
+.resolved {
+  opacity: var(--review-resolved-thread-opacity, 1);
+  background: var(--review-resolved-thread-background, var(--ui-surface-color));
 }
 
 .chevronButton {

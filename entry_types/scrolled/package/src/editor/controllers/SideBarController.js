@@ -1,7 +1,6 @@
 import Marionette from 'backbone.marionette';
 
 import {editor} from 'pageflow-scrolled/editor';
-import {BackButtonDecoratorView} from 'pageflow/editor';
 
 import {EditChapterView} from '../views/EditChapterView';
 import {EditSectionView} from '../views/EditSectionView';
@@ -69,14 +68,12 @@ export const SideBarController = Marionette.Controller.extend({
   newThread: function(subjectType, subjectId, payload) {
     const {subjectRange} = JSON.parse(decodeURIComponent(payload));
 
-    this.region.show(new BackButtonDecoratorView({
-      view: new NewThreadView({
-        entry: this.entry,
-        subjectType,
-        subjectId: parseInt(subjectId, 10),
-        subjectRange,
-        editor
-      })
+    this.region.show(new NewThreadView({
+      entry: this.entry,
+      subjectType,
+      subjectId: parseInt(subjectId, 10),
+      subjectRange,
+      editor
     }));
   }
 });

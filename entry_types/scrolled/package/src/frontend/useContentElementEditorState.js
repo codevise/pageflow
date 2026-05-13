@@ -4,7 +4,8 @@ export const ContentElementEditorStateContext = createContext({
   isSelected: false,
   isEditable: false,
   setTransientState() {},
-  select() {}
+  select() {},
+  selectNewThread() {}
 });
 
 /**

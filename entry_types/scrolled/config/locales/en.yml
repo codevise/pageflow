@@ -1570,9 +1570,14 @@ en:
       main_menu:
         comments: Comments
       comments_view:
+        new_thread: New topic
         tabs:
           comments: All comments
           selection: For selection
+      new_thread_view:
+        back: Comments
+        tabs:
+          newComment: New topic
     help_entries:
       content_elements:
         menu_item: Content Elements
@@ -1767,3 +1772,4 @@ en:
       reply_count:
         one: 1 reply
         other: '%{count} replies'
+      no_threads_yet: No comments yet

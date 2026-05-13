@@ -10,6 +10,7 @@
 .check,
 .drag,
 .helpCircled,
+.plus,
 .plusCircled,
 .rightBold,
 .rightOpen,
@@ -58,6 +59,10 @@
 
 .helpCircled::before {
   content: "\e704";
+}
+
+.plus::before {
+  content: "\2b";
 }
 
 .plusCircled::before {

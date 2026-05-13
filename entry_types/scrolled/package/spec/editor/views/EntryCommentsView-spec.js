@@ -13,9 +13,16 @@ import {useEditorGlobals} from 'support';
 describe('EntryCommentsView', () => {
   const {createEntry} = useEditorGlobals();
 
+  beforeAll(() => {
+    editor.contentElementTypes.register('fixture', {
+      compareRanges: (a, b) => (a?.start ?? 0) - (b?.start ?? 0)
+    });
+  });
+
   useFakeTranslations({
     'pageflow_scrolled.review.new_topic': 'New topic',
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
+    'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.editor.content_elements.textBlock.name': 'Text',
     'pageflow_scrolled.editor.content_elements.image.name': 'Image'
@@ -170,6 +177,135 @@ describe('EntryCommentsView', () => {
     act(() => { entry.set('highlightedThreadId', 1); });
 
     expect(getByText('first').closest('[aria-current="true"]')).not.toBeNull();
+  });
+
+  it("highlights all threads of the selected element when it has no commentThreadIdsAtSelection", () => {
+    const entry = createEntry({
+      contentElements: [
+        {id: 1, permaId: 10, typeName: 'image'},
+        {id: 2, permaId: 11, typeName: 'image'}
+      ]
+    });
+    entry.set('selectedContentElementCommentsId', 1);
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 10, body: 'on selected one', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 20, body: 'on selected two', creatorName: 'B'}]},
+        {id: 3, subjectType: 'ContentElement', subjectId: 11,
+         comments: [{id: 30, body: 'on other', creatorName: 'C'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('on selected one').closest('[aria-current="true"]')).not.toBeNull();
+    expect(getByText('on selected two').closest('[aria-current="true"]')).not.toBeNull();
+    expect(getByText('on other').closest('[aria-current="true"]')).toBeNull();
+  });
+
+  it("falls back to highlightedThreadId when the selected element has commentThreadIdsAtSelection", () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+    });
+    entry.set('selectedContentElementCommentsId', 1);
+    entry.contentElements.get(1).transientState
+      .set('commentThreadIdsAtSelection', [2]);
+    entry.set('highlightedThreadId', 2);
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 10, body: 'first', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 20, body: 'second', creatorName: 'B'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('first').closest('[aria-current="true"]')).toBeNull();
+    expect(getByText('second').closest('[aria-current="true"]')).not.toBeNull();
+  });
+
+  it('updates highlights when selectedContentElementCommentsId changes', () => {
+    const entry = createEntry({
+      contentElements: [
+        {id: 1, permaId: 10, typeName: 'image'},
+        {id: 2, permaId: 11, typeName: 'image'}
+      ]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 10, body: 'on one', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 11,
+         comments: [{id: 20, body: 'on two', creatorName: 'B'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('on one').closest('[aria-current="true"]')).toBeNull();
+    expect(getByText('on two').closest('[aria-current="true"]')).toBeNull();
+
+    act(() => { entry.set('selectedContentElementCommentsId', 2); });
+
+    expect(getByText('on one').closest('[aria-current="true"]')).toBeNull();
+    expect(getByText('on two').closest('[aria-current="true"]')).not.toBeNull();
+  });
+
+  it('only shows reply form on the highlighted thread', () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 10, body: 'first', creatorName: 'Alice'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 20, body: 'second', creatorName: 'Bob'}]}
+      ]
+    });
+    entry.set('highlightedThreadId', 2);
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText, queryAllByPlaceholderText} = renderBackboneView(view);
+
+    const replyInputs = queryAllByPlaceholderText('Reply...');
+    expect(replyInputs).toHaveLength(1);
+    expect(getByText('second').closest('[aria-current="true"]'))
+      .toContainElement(replyInputs[0]);
+  });
+
+  it("orders threads within a group by the type's compareRanges", () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {start: 30},
+         comments: [{id: 10, body: 'third', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {start: 10},
+         comments: [{id: 20, body: 'first', creatorName: 'B'}]},
+        {id: 3, subjectType: 'ContentElement', subjectId: 10,
+         subjectRange: {start: 20},
+         comments: [{id: 30, body: 'second', creatorName: 'C'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    const order = ['first', 'second', 'third']
+      .map(text => getByText(text).getBoundingClientRect().top);
+
+    expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
   it('shows the content element type name as group label', () => {

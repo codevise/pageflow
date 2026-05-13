@@ -22,7 +22,7 @@ import {ContentElementEditorStateProvider} from './ContentElementEditorStateProv
 export function ContentElementDecorator(props) {
   return (
     <div className={styles.wrapper} data-scrollpoint={props.id}>
-      <ContentElementEditorStateProvider id={props.id}>
+      <ContentElementEditorStateProvider id={props.id} permaId={props.permaId}>
         <OptionalSelectionRect {...props}>
           <ContentElementConfigurationUpdateProvider id={props.id} permaId={props.permaId}>
             {renderMarginIndicators(props)}
@@ -50,8 +50,9 @@ function OptionalSelectionRect(props) {
 }
 
 function DefaultSelectionRect(props) {
-  const {isSelected, type, select, selectComments} = useContentElementEditorState();
-  const commentsSelected = type === 'contentElementComments';
+  const {isSelected, type, select, selectComments, selectNewThread} =
+    useContentElementEditorState();
+  const commentsSelected = type === 'contentElementComments' || type === 'newThread';
   const {t} = useI18n({locale: 'ui'});
 
   const [, drag, preview] = useDrag({
@@ -70,7 +71,9 @@ function DefaultSelectionRect(props) {
                      <ThreadsBadge subjectType="ContentElement"
                                    subjectId={props.permaId}
                                    mode={commentsSelected ? 'active' : isSelected ? 'icon' : 'dot'}
-                                   onClick={() => selectComments()}
+                                   onClick={threads => threads.length === 0 ?
+                                                       selectNewThread() :
+                                                       selectComments()}
                                    onSelectThread={threadId => selectComments({
                                      type: 'contentElementComments',
                                      id: props.id,

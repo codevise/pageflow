@@ -18,13 +18,15 @@ export const ContentElementCommentsView = ReviewView.extend({
   },
 
   props() {
+    const {entry, editor} = this.options;
     const contentElement = this._contentElement;
+    const typeName = contentElement?.get('typeName');
     return {
       contentElement,
       threadIds: contentElement?.transientState.get('commentThreadIdsAtSelection'),
-      highlightedThreadId: this.options.entry.get('highlightedThreadId'),
-      onThreadClick: thread =>
-        this.options.entry.trigger('selectCommentThread', thread.id)
+      compareRanges: typeName && editor.contentElementTypes.findCompareRanges(typeName),
+      highlightedThreadId: entry.get('highlightedThreadId'),
+      onThreadClick: thread => entry.trigger('selectCommentThread', thread.id)
     };
   },
 
@@ -33,13 +35,15 @@ export const ContentElementCommentsView = ReviewView.extend({
   // there is no anchor for an individual thread in the iframe, so
   // highlighting one in the list would have no counterpart in the
   // preview.
-  renderContent({contentElement, threadIds, highlightedThreadId, onThreadClick}) {
+  renderContent({contentElement, threadIds, compareRanges, highlightedThreadId, onThreadClick}) {
     if (!contentElement) return null;
 
     if (threadIds === undefined) {
       return (
         <ThreadList subjectType="ContentElement"
                     subjectId={contentElement.get('permaId')}
+                    compareRanges={compareRanges}
+                    showNewForm={false}
                     hideNewTopicButton />
       );
     }
@@ -48,8 +52,10 @@ export const ContentElementCommentsView = ReviewView.extend({
       <ThreadList subjectType="ContentElement"
                   subjectId={contentElement.get('permaId')}
                   filter={thread => threadIds.includes(thread.id)}
+                  compareRanges={compareRanges}
                   highlightedThreadId={highlightedThreadId}
                   onThreadClick={onThreadClick}
+                  showNewForm={false}
                   hideNewTopicButton />
     );
   },

@@ -11,19 +11,23 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, compareRanges, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss}) {
   const {t} = useI18n({locale: 'ui'});
   const allActiveThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
   const allResolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
 
   const activeThreads = useMemo(
-    () => filter ? allActiveThreads.filter(filter) : allActiveThreads,
-    [allActiveThreads, filter]
+    () => sortByRange(filter ? allActiveThreads.filter(filter) : allActiveThreads, compareRanges),
+    [allActiveThreads, filter, compareRanges]
   );
   const resolvedThreads = useMemo(
-    () => filter ? allResolvedThreads.filter(filter) : allResolvedThreads,
-    [allResolvedThreads, filter]
+    () => sortByRange(filter ? allResolvedThreads.filter(filter) : allResolvedThreads, compareRanges),
+    [allResolvedThreads, filter, compareRanges]
   );
+
+  const isHighlighted = thread => Array.isArray(highlightedThreadId) ?
+                                  highlightedThreadId.includes(thread.id) :
+                                  thread.id === highlightedThreadId;
 
   const [expandedThreadId, setExpandedThreadId] = useState(null);
   const [formToggled, setFormToggled] = useState(null);
@@ -35,6 +39,8 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
   function toggleThread(threadId) {
     setExpandedThreadId(expandedThreadId === threadId ? null : threadId);
   }
+
+  const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
 
   return (
     <div className={styles.container}>
@@ -57,6 +63,11 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
                          if (activeThreads.length === 0 && onDismiss) onDismiss();
                        }} />}
 
+      {noThreads && !showNewForm &&
+        <p className={styles.blankSlate}>
+          {t('pageflow_scrolled.review.no_threads_yet')}
+        </p>}
+
       {activeThreads.map(thread => (
         <Thread key={thread.id}
                 thread={thread}
@@ -64,7 +75,8 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
                 onToggle={() => toggleThread(thread.id)}
                 onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})}
                 onClick={onThreadClick && (() => onThreadClick(thread))}
-                highlighted={thread.id === highlightedThreadId} />
+                highlighted={isHighlighted(thread)}
+                interactive={!restrictInteractionsToHighlighted || isHighlighted(thread)} />
       ))}
 
       {resolvedThreads.length > 0 &&
@@ -83,9 +95,15 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
                     onToggle={() => toggleThread(thread.id)}
                     onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})}
                     onClick={onThreadClick && (() => onThreadClick(thread))}
-                    highlighted={thread.id === highlightedThreadId} />
+                    highlighted={isHighlighted(thread)}
+                    interactive={!restrictInteractionsToHighlighted || isHighlighted(thread)} />
           ))}
         </div>}
     </div>
   );
+}
+
+function sortByRange(threads, compareRanges) {
+  if (!compareRanges) return threads;
+  return [...threads].sort((a, b) => compareRanges(a.subjectRange, b.subjectRange));
 }

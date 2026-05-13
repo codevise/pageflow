@@ -18,6 +18,11 @@
   composes: plusCircled from './icons.module.css';
 }
 
+.secondaryAddButton {
+  composes: secondaryIconButton;
+  composes: plus from './icons.module.css';
+}
+
 .cancelButton {
   composes: secondaryIconButton;
   composes: cancel from './icons.module.css';

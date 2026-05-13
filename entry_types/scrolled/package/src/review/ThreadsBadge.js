@@ -8,13 +8,17 @@ export function ThreadsBadge({subjectType, subjectId, subjectRange, onClick, onS
   const threads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
   const ref = useRef();
 
+  const handleClick = useCallback(() => {
+    if (onClick) onClick(threads);
+  }, [onClick, threads]);
+
   return (
     <>
       {threads.length > 0 &&
         <SelectThreadListener threads={threads}
                               badgeRef={ref}
                               onSelectThread={onSelectThread} />}
-      <Badge ref={ref} counter={threads.length} mode={mode} onClick={onClick} />
+      <Badge ref={ref} counter={threads.length} mode={mode} onClick={handleClick} />
     </>
   );
 }

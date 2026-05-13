@@ -1,0 +1,25 @@
+/*
+ * Pin the tab bar to the top of the sidebar's scrolling area so it
+ * stays visible while the active tab's thread list scrolls past
+ * underneath. The outer sidebar scroller does the scrolling. The
+ * negative top offset cancels the scroller's 10px padding so the bar
+ * meets the sidebar edge cleanly. The box-shadow extends the surface
+ * color sideways to hide highlighted threads' accent halo as they
+ * scroll past underneath.
+ */
+.root > div {
+  margin: space(2.5) 0;
+}
+
+.root :global(.tabs_view-scroller) {
+  position: sticky;
+  top: -10px;
+  z-index: 1;
+  background-color: var(--ui-surface-color);
+  box-shadow: 0 0 0 space(1) var(--ui-surface-color);
+}
+
+.newThreadButton {
+  composes: secondaryAddButton from './buttons.module.css';
+  float: right;
+}

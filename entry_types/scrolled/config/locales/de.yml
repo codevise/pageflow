@@ -1587,9 +1587,14 @@ de:
       main_menu:
         comments: Kommentare
       comments_view:
+        new_thread: Neues Thema
         tabs:
           comments: Alle Kommentare
           selection: Für Auswahl
+      new_thread_view:
+        back: Kommentare
+        tabs:
+          newComment: Neues Thema
     help_entries:
       content_elements:
         menu_item: Inhaltselemente
@@ -1938,3 +1943,4 @@ de:
       reply_count:
         one: 1 Antwort
         other: '%{count} Antworten'
+      no_threads_yet: Noch keine Kommentare

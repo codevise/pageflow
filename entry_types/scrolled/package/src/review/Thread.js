@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import classNames from 'classnames';
 
 import {useI18n} from '../frontend/i18n';
@@ -11,16 +11,26 @@ import ResolveIcon from './images/resolve.svg';
 import UnresolveIcon from './images/unresolve.svg';
 import styles from './Thread.module.css';
 
-export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlighted}) {
+export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlighted, interactive = true}) {
   const {t} = useI18n({locale: 'ui'});
   const firstComment = thread.comments[0];
   const replies = thread.comments.slice(1);
   const repliesCollapsed = collapsed && replies.length > 0;
 
+  const ref = useRef();
+
+  useEffect(() => {
+    if (highlighted && ref.current) {
+      ref.current.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+    }
+  }, [highlighted]);
+
   return (
-    <div className={classNames(styles.thread, {
+    <div ref={ref}
+         className={classNames(styles.thread, {
            [styles.highlighted]: highlighted,
-           [styles.clickable]: onClick
+           [styles.clickable]: onClick,
+           [styles.resolved]: thread.resolvedAt
          })}
          onClick={onClick}
          aria-current={highlighted ? 'true' : undefined}>
@@ -43,10 +53,10 @@ export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlig
         <Comment key={comment.id} comment={comment} />
       ))}
 
-      {!thread.resolvedAt && !repliesCollapsed &&
+      {interactive && !thread.resolvedAt && !repliesCollapsed &&
         <ReplyForm threadId={thread.id} />}
 
-      {onResolve && !repliesCollapsed &&
+      {interactive && onResolve && !repliesCollapsed &&
         <div className={styles.resolveRow}>
           <button className={styles.resolveButton} onClick={onResolve}>
             {thread.resolvedAt ? <UnresolveIcon /> : <ResolveIcon />}
