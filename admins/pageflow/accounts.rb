@@ -51,8 +51,8 @@ module Pageflow
                               text_attribute: :name,
                               scope: lambda do
                                 AccountPolicy::Scope.new(current_user, Account)
-                                .member_addable
-                                .order(:name)
+                                                    .member_addable
+                                                    .order(:name)
                               end)
 
     form partial: 'form'
