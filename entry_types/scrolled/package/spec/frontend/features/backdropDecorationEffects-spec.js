@@ -127,6 +127,31 @@ describe('backdrop decoration effects', () => {
     expect(outer).toHaveStyle('--frame-color: #ff0');
   });
 
+  it('renders frame effect on color backdrop', () => {
+    const {container} = renderEntry({
+      seed: {
+        sections: [
+          {
+            permaId: 1,
+            configuration: {
+              backdropType: 'color',
+              backdrop: {color: '#000'},
+              backdropEffects: [
+                {name: 'frame', value: {color: '#ff0', design: 'vintage'}}
+              ]
+            }
+          }
+        ]
+      }
+    });
+
+    const outer = container.querySelector(`.${effectsStyles.outer}`);
+
+    expect(outer).toBeInTheDocument();
+    expect(outer).toHaveClass('scope-backdropFrame-vintage');
+    expect(outer).toHaveStyle('--frame-color: #ff0');
+  });
+
   it('supports frame effect on mobile image', () => {
     usePortraitOrientation.mockReturnValue(true);
 

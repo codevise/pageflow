@@ -78,13 +78,29 @@ describe('EditSectionView', () => {
       .not.toContain('backdropEffects');
   });
 
-  it('does not display backdrop effects input if image is present but type is color', () => {
+  it('displays backdrop effects input on color backdrop if theme defines frame designs', () => {
     const entry = createEntry({
-      imageFiles: [{perma_id: 100}],
-      sections: [{id: 1, configuration: {
-        backdropType: 'color',
-        backdropImage: 100
-      }}]
+      themeOptions: {
+        properties: {'backdropFrame-default': {}}
+      },
+      sections: [{id: 1, configuration: {backdropType: 'color'}}]
+    });
+
+    const view = new EditSectionView({
+      model: entry.sections.get(1),
+      entry
+    });
+
+    view.render();
+    const configurationEditor = ConfigurationEditor.find(view);
+
+    expect(configurationEditor.visibleInputPropertyNames())
+      .toContain('backdropEffects');
+  });
+
+  it('does not display backdrop effects input on color backdrop if theme has no frame designs', () => {
+    const entry = createEntry({
+      sections: [{id: 1, configuration: {backdropType: 'color'}}]
     });
 
     const view = new EditSectionView({

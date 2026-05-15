@@ -64,6 +64,40 @@ describe('EffectListInputView', () => {
     expect(model.get('effects')).toEqual([])
   });
 
+  describe('with kinds option', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.backdrop_effects.blur.label': 'Blur',
+      'pageflow_scrolled.editor.backdrop_effects.backdropFrame-default': 'Default',
+      'pageflow_scrolled.editor.effect_list_input.add': 'Add effect',
+      'pageflow_scrolled.editor.effect_list_input.remove': 'Remove effect'
+    });
+
+    it('restricts the type list to effects with one of the named kinds', async () => {
+      const entry = factories.scrolledEntry({}, {
+        seed: {
+          themeOptions: {
+            properties: {'backdropFrame-default': {}}
+          }
+        }
+      });
+
+      const model = new Backbone.Model();
+      const view = new EffectListInputView({
+        model,
+        entry,
+        kinds: ['decoration'],
+        propertyName: 'effects'
+      });
+
+      const user = userEvent.setup();
+      const {getByRole, queryByRole} = render(view);
+      await user.click(getByRole('button', {name: 'Add effect'}));
+
+      expect(getByRole('link', {name: 'Default'})).toBeInTheDocument();
+      expect(queryByRole('link', {name: 'Blur'})).not.toBeInTheDocument();
+    });
+  });
+
   describe('with effects whose name is not in the type list', () => {
     it('does not render or crash on unknown effect names', () => {
       const model = new Backbone.Model({effects: [

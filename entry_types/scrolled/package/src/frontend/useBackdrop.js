@@ -25,7 +25,8 @@ export function useBackdrop(section) {
   else if (section.backdrop?.color ||
       (section.backdrop?.image && section.backdrop.image.toString().startsWith('#'))) {
     return {
-      color: section.backdrop.color || section.backdrop.image
+      color: section.backdrop.color || section.backdrop.image,
+      effects: section.backdropEffects
     }
   }
   else {
