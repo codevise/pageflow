@@ -121,7 +121,7 @@ const UnusedStyleItem = Backbone.Model.extend({
 
   _calculateDisabledState() {
     const currentStyle = this.styles.findWhere({name: this.styleName});
-    const isCurrentlySelected = currentStyle?.get('value') === this.get('value');
+    const isCurrentlySelected = !!currentStyle?.valueMatches(this.get('value'));
 
     if (this.isDefault) {
       return !currentStyle;
@@ -149,9 +149,22 @@ const UnusedStyleItem = Backbone.Model.extend({
   },
 
   _applyStyle(currentStyle) {
+    const newValue = this._buildNewValue(currentStyle);
     this.styles.remove(currentStyle);
     this._removeIncompatibleStyles();
-    this.styles.add({name: this.styleName, value: this.get(('value'))}, {types: this.styles.types, bindingModel: this.styles.bindingModel});
+    this.styles.add({name: this.styleName, value: newValue}, {types: this.styles.types, bindingModel: this.styles.bindingModel});
+  },
+
+  _buildNewValue(currentStyle) {
+    const itemValue = this.get('value');
+
+    if (!itemValue || typeof itemValue !== 'object') {
+      return itemValue;
+    }
+
+    const baseValue = existingObjectValue(currentStyle, this.styles.types[this.styleName]);
+
+    return {...baseValue, ...itemValue};
   },
 
   _removeIncompatibleStyles() {
@@ -170,7 +183,7 @@ const UnusedStyleItem = Backbone.Model.extend({
       const styleType = this.styles.types[style.get('name')];
 
       if (styleType?.items) {
-        const currentItem = styleType.items.find(item => item.value === style.get('value'));
+        const currentItem = styleType.items.find(item => style.valueMatches(item.value));
 
         if (currentItem?.incompatibleWith?.includes(this.styleName)) {
           this.styles.remove(style);
@@ -179,3 +192,23 @@ const UnusedStyleItem = Backbone.Model.extend({
     });
   }
 });
+
+function existingObjectValue(currentStyle, type) {
+  if (currentStyle) {
+    const value = currentStyle.get('value');
+
+    if (value && typeof value === 'object') {
+      return value;
+    }
+
+    if (typeof value === 'string' && type?.inputType === 'color') {
+      return {color: value};
+    }
+  }
+
+  if (type?.defaultValue && typeof type.defaultValue === 'object') {
+    return type.defaultValue;
+  }
+
+  return {};
+}

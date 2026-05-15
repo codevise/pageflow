@@ -5,6 +5,7 @@ import Backbone from 'backbone';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {renderBackboneView as render, useFakeTranslations} from 'pageflow/testHelpers';
+import {factories} from 'support';
 
 describe('EffectListInputView', () => {
   useFakeTranslations({
@@ -18,7 +19,11 @@ describe('EffectListInputView', () => {
       {name: 'blur', value: 30}
     ]});
 
-    const view = new EffectListInputView({model, propertyName: 'effects'});
+    const view = new EffectListInputView({
+      model,
+      entry: factories.scrolledEntry(),
+      propertyName: 'effects'
+    });
     view.render();
 
     expect(view.el).toHaveTextContent('Blur 30');
@@ -27,7 +32,11 @@ describe('EffectListInputView', () => {
   it('allows adding effects', async () => {
     const model = new Backbone.Model();
 
-    const view = new EffectListInputView({model, propertyName: 'effects'});
+    const view = new EffectListInputView({
+      model,
+      entry: factories.scrolledEntry(),
+      propertyName: 'effects'
+    });
 
     const user = userEvent.setup();
     const {getByRole} = render(view);
@@ -42,12 +51,112 @@ describe('EffectListInputView', () => {
       {name: 'blur', value: 30}
     ]});
 
-    const view = new EffectListInputView({model, propertyName: 'effects'});
+    const view = new EffectListInputView({
+      model,
+      entry: factories.scrolledEntry(),
+      propertyName: 'effects'
+    });
 
     const user = userEvent.setup();
     const {getByRole} = render(view);
     await user.click(getByRole('button', {name: 'Remove effect'}));
 
     expect(model.get('effects')).toEqual([])
+  });
+
+  describe('with kinds option', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.backdrop_effects.blur.label': 'Blur',
+      'pageflow_scrolled.editor.backdrop_effects.backdropFrame-default': 'Default',
+      'pageflow_scrolled.editor.effect_list_input.add': 'Add effect',
+      'pageflow_scrolled.editor.effect_list_input.remove': 'Remove effect'
+    });
+
+    it('restricts the type list to effects with one of the named kinds', async () => {
+      const entry = factories.scrolledEntry({}, {
+        seed: {
+          themeOptions: {
+            properties: {'backdropFrame-default': {}}
+          }
+        }
+      });
+
+      const model = new Backbone.Model();
+      const view = new EffectListInputView({
+        model,
+        entry,
+        kinds: ['decoration'],
+        propertyName: 'effects'
+      });
+
+      const user = userEvent.setup();
+      const {getByRole, queryByRole} = render(view);
+      await user.click(getByRole('button', {name: 'Add effect'}));
+
+      expect(getByRole('link', {name: 'Default'})).toBeInTheDocument();
+      expect(queryByRole('link', {name: 'Blur'})).not.toBeInTheDocument();
+    });
+  });
+
+  describe('with effects whose name is not in the type list', () => {
+    it('does not render or crash on unknown effect names', () => {
+      const model = new Backbone.Model({effects: [
+        {name: 'mysteryEffect', value: 42},
+        {name: 'blur', value: 30}
+      ]});
+
+      const view = new EffectListInputView({
+        model,
+        entry: factories.scrolledEntry(),
+        propertyName: 'effects'
+      });
+      view.render();
+
+      expect(view.el).toHaveTextContent('Blur 30');
+      expect(view.el).not.toHaveTextContent('mysteryEffect');
+    });
+
+    it('preserves unknown effects when a known effect is removed', async () => {
+      const model = new Backbone.Model({effects: [
+        {name: 'mysteryEffect', value: 42},
+        {name: 'blur', value: 30}
+      ]});
+
+      const view = new EffectListInputView({
+        model,
+        entry: factories.scrolledEntry(),
+        propertyName: 'effects'
+      });
+
+      const user = userEvent.setup();
+      const {getByRole} = render(view);
+      await user.click(getByRole('button', {name: 'Remove effect'}));
+
+      expect(model.get('effects')).toEqual([
+        {name: 'mysteryEffect', value: 42}
+      ]);
+    });
+
+    it('preserves unknown effects when a new effect is added', async () => {
+      const model = new Backbone.Model({effects: [
+        {name: 'mysteryEffect', value: 42}
+      ]});
+
+      const view = new EffectListInputView({
+        model,
+        entry: factories.scrolledEntry(),
+        propertyName: 'effects'
+      });
+
+      const user = userEvent.setup();
+      const {getByRole} = render(view);
+      await user.click(getByRole('button', {name: 'Add effect'}));
+      await user.click(getByRole('link', {name: 'Blur'}));
+
+      expect(model.get('effects')).toEqual([
+        {name: 'blur', value: 50},
+        {name: 'mysteryEffect', value: 42}
+      ]);
+    });
   });
 });

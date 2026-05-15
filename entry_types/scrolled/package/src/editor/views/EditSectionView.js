@@ -10,6 +10,7 @@ import {LayoutSelectInputView} from './inputs/LayoutSelectInputView';
 import {BackdropContentElementInputView} from './inputs/BackdropContentElementInputView';
 import {EditMotifAreaInputView} from './inputs/EditMotifAreaInputView';
 import {EffectListInputView} from './inputs/EffectListInputView';
+import {Style} from '../models/Style';
 import {SectionPaddingsInputView} from './inputs/SectionPaddingsInputView';
 import {InlineFileRightsMenuItem} from '../models/InlineFileRightsMenuItem'
 import {createSectionMenuItems} from '../models/sectionMenuItems';
@@ -100,6 +101,7 @@ export const EditSectionView = EditConfigurationView.extend({
         highlight: 'boxWithArrow'
       });
       this.input('backdropEffects', EffectListInputView, {
+        entry,
         visibleBinding: ['backdropType', 'backdropImage'],
         visible: ([backdropType]) =>
           (backdropType === 'image' &&
@@ -134,6 +136,7 @@ export const EditSectionView = EditConfigurationView.extend({
         highlight: 'boxWithArrow'
       });
       this.input('backdropEffectsMobile', EffectListInputView, {
+        entry,
         visibleBinding: ['backdropType', 'backdropImageMobile'],
         visible: ([backdropType]) =>
           (backdropType === 'image' &&
@@ -148,6 +151,14 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBindingValue: 'color',
         swatches: entry.getUsedSectionBackgroundColors()
       });
+      if (hasDecorationEffects(entry)) {
+        this.input('backdropEffects', EffectListInputView, {
+          entry,
+          kinds: ['decoration'],
+          visibleBinding: 'backdropType',
+          visible: backdropType => backdropType === 'color'
+        });
+      }
 
       this.input('backdropContentElement', BackdropContentElementInputView, {
         editor,
@@ -260,4 +271,9 @@ function motifAreaDisabled([
   }
 
   return true;
+}
+
+function hasDecorationEffects(entry) {
+  return Object.values(Style.getEffectTypes({entry}))
+    .some(type => type.kind === 'decoration');
 }

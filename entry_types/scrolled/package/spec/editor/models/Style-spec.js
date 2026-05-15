@@ -2,9 +2,8 @@ import {Style} from 'editor/models/Style';
 
 import {editor} from 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
-import {factories, useFakeTranslations} from 'pageflow/testHelpers';
-import {features} from 'pageflow/frontend';
-import {normalizeSeed} from 'support';
+import {useFakeTranslations} from 'pageflow/testHelpers';
+import {factories, normalizeSeed} from 'support';
 
 describe('Style', () => {
   const exampleTypes = {
@@ -81,11 +80,113 @@ describe('Style', () => {
     expect(style.inputType()).toEqual('color');
   });
 
+  describe('#valueMatches', () => {
+    it('returns true when scalar value equals the partial', () => {
+      const style = new Style({name: 'blur', value: 30}, {types: exampleTypes});
+
+      expect(style.valueMatches(30)).toBe(true);
+    });
+
+    it('returns false when scalar value does not equal the partial', () => {
+      const style = new Style({name: 'blur', value: 30}, {types: exampleTypes});
+
+      expect(style.valueMatches(40)).toBe(false);
+    });
+
+    it('returns true when object value contains every partial entry', () => {
+      const style = new Style(
+        {name: 'frame', value: {color: '#fff', design: 'vintage'}},
+        {types: exampleTypes}
+      );
+
+      expect(style.valueMatches({design: 'vintage'})).toBe(true);
+    });
+
+    it('returns false when object value lacks a partial entry', () => {
+      const style = new Style(
+        {name: 'frame', value: {color: '#fff', design: 'default'}},
+        {types: exampleTypes}
+      );
+
+      expect(style.valueMatches({design: 'vintage'})).toBe(false);
+    });
+
+    it('returns false when value is scalar but partial is an object', () => {
+      const style = new Style({name: 'frame', value: '#fff'}, {types: exampleTypes});
+
+      expect(style.valueMatches({design: 'vintage'})).toBe(false);
+    });
+  });
+
+  describe('#getColor / #setColor', () => {
+    it('reads scalar value as the color', () => {
+      const style = new Style({name: 'frame', value: '#ff0'}, {types: exampleTypes});
+
+      expect(style.getColor()).toEqual('#ff0');
+    });
+
+    it('reads color key from object value', () => {
+      const style = new Style(
+        {name: 'frame', value: {color: '#ff0', design: 'default'}},
+        {types: exampleTypes}
+      );
+
+      expect(style.getColor()).toEqual('#ff0');
+    });
+
+    it('replaces scalar value when setting color', () => {
+      const style = new Style({name: 'frame', value: '#ff0'}, {types: exampleTypes});
+
+      style.setColor('#0f0');
+
+      expect(style.get('value')).toEqual('#0f0');
+    });
+
+    it('updates color key when setting color on object value', () => {
+      const style = new Style(
+        {name: 'frame', value: {color: '#ff0', design: 'vintage'}},
+        {types: exampleTypes}
+      );
+
+      style.setColor('#0f0');
+
+      expect(style.get('value')).toEqual({color: '#0f0', design: 'vintage'});
+    });
+  });
+
+  describe('#label', () => {
+    it('finds matching item by partial value match for structured values', () => {
+      const style = new Style(
+        {name: 'frame', value: {color: '#ff0', design: 'vintage'}},
+        {
+          types: {
+            frame: {
+              label: 'Frame',
+              inputType: 'color',
+              defaultValue: {color: '#ffffff'},
+              items: [
+                {value: {design: 'default'}, label: 'Default'},
+                {value: {design: 'vintage'}, label: 'Vintage'}
+              ]
+            }
+          }
+        }
+      );
+
+      expect(style.label()).toEqual('Frame: Vintage');
+    });
+  });
+
   describe('.getEffectTypes', () => {
-    beforeEach(() => features.enabledFeatureNames = []);
+    useFakeTranslations({
+      'pageflow_scrolled.editor.backdrop_effects.backdropFrame-default': 'Default',
+      'pageflow_scrolled.editor.backdrop_effects.backdropFrame-vintage': 'Vintage'
+    });
 
     it('includes filter and animation effects', () => {
-      const types = Style.getEffectTypes();
+      const entry = factories.scrolledEntry({}, {seed: {}});
+
+      const types = Style.getEffectTypes({entry});
 
       expect(types).toHaveProperty('blur');
       expect(types).toHaveProperty('autoZoom');
@@ -93,19 +194,74 @@ describe('Style', () => {
       expect(types.autoZoom.kind).toEqual('animation');
     });
 
-    it('excludes decoration effects by default', () => {
-      const types = Style.getEffectTypes();
+    it('does not include frame effect when no backdropFrame scopes exist', () => {
+      const entry = factories.scrolledEntry({}, {
+        seed: {
+          themeOptions: {
+            properties: {cardsAppearance: {}, 'quote-largeCentered': {}}
+          }
+        }
+      });
+
+      const types = Style.getEffectTypes({entry});
 
       expect(types).not.toHaveProperty('frame');
     });
 
-    it('includes decoration effects when feature is enabled', () => {
-      features.enable('frontend', ['decoration_effects']);
+    it('exposes a single frame effect with color input and structured default', () => {
+      const entry = factories.scrolledEntry({}, {
+        seed: {
+          themeOptions: {
+            properties: {'backdropFrame-default': {}}
+          }
+        }
+      });
 
-      const types = Style.getEffectTypes();
+      const types = Style.getEffectTypes({entry});
 
-      expect(types).toHaveProperty('frame');
-      expect(types.frame.kind).toEqual('decoration');
+      expect(types.frame).toMatchObject({
+        kind: 'decoration',
+        inputType: 'color',
+        defaultValue: {color: '#ffffff'}
+      });
+    });
+
+    it('builds one item per backdropFrame-<design> scope with translated label', () => {
+      const entry = factories.scrolledEntry({}, {
+        seed: {
+          themeOptions: {
+            properties: {
+              'backdropFrame-default': {},
+              'backdropFrame-vintage': {}
+            }
+          }
+        }
+      });
+
+      const types = Style.getEffectTypes({entry});
+
+      expect(types.frame.items).toEqual([
+        {value: {design: 'default'}, label: 'Default'},
+        {value: {design: 'vintage'}, label: 'Vintage'}
+      ]);
+    });
+
+    it('does not consider unrelated scopes as frame designs', () => {
+      const entry = factories.scrolledEntry({}, {
+        seed: {
+          themeOptions: {
+            properties: {
+              'backdropFrame-default': {},
+              cardsAppearance: {},
+              'quote-largeCentered': {}
+            }
+          }
+        }
+      });
+
+      const types = Style.getEffectTypes({entry});
+
+      expect(types.frame.items.map(item => item.value.design)).toEqual(['default']);
     });
   });
 

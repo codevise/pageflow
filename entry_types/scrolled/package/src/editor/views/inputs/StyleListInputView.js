@@ -31,7 +31,10 @@ export const StyleListInputView = Marionette.ItemView.extend({
   },
 
   readFromModel() {
-    const serialized = this.model.get(this.options.propertyName) || [];
+    const stored = this.model.get(this.options.propertyName) || [];
+    const isKnown = ({name}) => name in this.options.types;
+
+    this._unsupportedStyles = stored.filter(entry => !isKnown(entry));
 
     const fromProperties = Object.entries(this.options.types)
       .filter(([, type]) => {
@@ -43,7 +46,7 @@ export const StyleListInputView = Marionette.ItemView.extend({
       })
       .map(([name, type]) => ({name, value: this.model.get(type.propertyName)}));
 
-    return [...serialized, ...fromProperties];
+    return [...stored.filter(isKnown), ...fromProperties];
   },
 
   saveToModel() {
@@ -73,7 +76,10 @@ export const StyleListInputView = Marionette.ItemView.extend({
       }
     });
 
-    this.model.set(this.options.propertyName, serialized);
+    this.model.set(this.options.propertyName, [
+      ...serialized,
+      ...(this._unsupportedStyles || [])
+    ]);
   },
 
   onRender() {
@@ -199,13 +205,13 @@ const StyleListItemView = Marionette.ItemView.extend({
     const colorInput = this.ui.colorInput[0];
 
     if (colorInput) {
-      colorInput.value = this.model.get('value') || this.model.defaultValue() || '';
+      colorInput.value = this.model.getColor() || this.model.defaultColor() || '';
 
       this._colorPicker = new ColorPicker(colorInput, {
-        defaultValue: this.model.defaultValue(),
+        defaultValue: this.model.defaultColor(),
         ...this.model.inputOptions(),
         onChange: (color) => {
-          this.model.set('value', color || '');
+          this.model.setColor(color || '');
         }
       });
     }

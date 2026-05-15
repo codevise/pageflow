@@ -123,8 +123,6 @@ de:
                 with_projection:
                   blank_slate: Gebe in den Datei-Einstellungen eines Bildes eine Projektion an, um es als 360° Bild zu markieren.
                   name: 360° Bilder
-    decoration_effects:
-      feature_name: Dekoration-Effekte
     icon_scroll_indicator:
       feature_name: Icon Scroll-Indikator
     iconScrollIndicator:
