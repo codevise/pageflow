@@ -24,13 +24,13 @@ describe('add comment mode', () => {
     'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment'
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.spyOn(window, 'fetch').mockResolvedValue({
       ok: true,
       json: () => Promise.resolve({currentUser: null, commentThreads: []})
     });
 
-    loadCommentingComponents();
+    await loadCommentingComponents();
   });
 
   afterEach(() => {
