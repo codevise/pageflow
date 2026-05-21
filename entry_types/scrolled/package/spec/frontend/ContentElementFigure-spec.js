@@ -52,7 +52,7 @@ describe('ContentElementFigure', () => {
       <ContentElementFigure configuration={configuration} />,
       {
         seed: {},
-        editorState: {isEditable: true, setTransientState}
+        inlineEditing: {transientState: setTransientState}
       }
     );
 
@@ -73,7 +73,7 @@ describe('ContentElementFigure', () => {
       <ContentElementFigure configuration={configuration} />,
       {
         seed: {},
-        editorState: {isEditable: true, setTransientState}
+        inlineEditing: {transientState: setTransientState}
       }
     );
     unmount();
@@ -95,7 +95,7 @@ describe('ContentElementFigure', () => {
       <ContentElementFigure configuration={configuration} />,
       {
         seed: {},
-        editorState: {isEditable: false, setTransientState}
+        inlineEditing: {isEditable: false, transientState: setTransientState}
       }
     );
 

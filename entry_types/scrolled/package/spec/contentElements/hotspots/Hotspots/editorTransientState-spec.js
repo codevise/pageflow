@@ -31,7 +31,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />,
       {
         seed,
-        editorState: {isEditable: true, isSelected: true, setTransientState}
+        inlineEditing: {isSelected: true, transientState: setTransientState}
       }
     );
     await user.click(clickableArea(container));

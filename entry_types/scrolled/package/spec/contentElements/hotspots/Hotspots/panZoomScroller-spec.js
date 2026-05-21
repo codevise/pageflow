@@ -421,7 +421,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} contentElementId={1} />,
       {
         seed,
-        editorState: {isSelected: true, isEditable: true}
+        inlineEditing: {isSelected: true}
       }
     );
     simulateScrollPosition('near viewport');

@@ -33,7 +33,7 @@ describe('ExternalLinkList', () => {
     renderInContentElement(
       <ExternalLinkList configuration={configuration} sectionProps={{}} />,
       {
-        editorState: {isEditable: true, isSelected: true, setTransientState}
+        inlineEditing: {isSelected: true, transientState: setTransientState}
       }
     );
     await user.click(screen.getByText('Some link').closest('li'));
@@ -60,7 +60,7 @@ describe('ExternalLinkList', () => {
     const {container} = renderInContentElement(
       <ExternalLinkList configuration={configuration} sectionProps={{}} />,
       {
-        editorState: {isEditable: true, isSelected: true}
+        inlineEditing: {isSelected: true}
       }
     );
     await user.click(screen.getByText('Some link').closest('li'));
@@ -88,7 +88,7 @@ describe('ExternalLinkList', () => {
     const {container} = renderInContentElement(
       <ExternalLinkList configuration={configuration} sectionProps={{}} />,
       {
-        editorState: {isEditable: true}
+        inlineEditing: true
       }
     );
     await user.click(screen.getByText('Some link').closest('li'));
@@ -117,7 +117,7 @@ describe('ExternalLinkList', () => {
     const {container} = renderInContentElement(
       <ExternalLinkList configuration={configuration} sectionProps={{}} />,
       {
-        editorState: {isEditable: true, isSelected: true, setTransientState}
+        inlineEditing: {isSelected: true, transientState: setTransientState}
       }
     );
     const link = screen.getByText('Some link').closest('li');
@@ -139,7 +139,7 @@ describe('ExternalLinkList', () => {
     const {container, triggerEditorCommand} = renderInContentElement(
       <ExternalLinkList configuration={configuration} sectionProps={{}} />,
       {
-        editorState: {isSelected: true, isEditable: true}
+        inlineEditing: {isSelected: true}
       }
     );
     triggerEditorCommand({type: 'HIGHLIGHT_ITEM', index: 0});
@@ -157,7 +157,7 @@ describe('ExternalLinkList', () => {
     const {container, triggerEditorCommand} = renderInContentElement(
       <ExternalLinkList configuration={configuration} sectionProps={{}} />,
       {
-        editorState: {isSelected: true, isEditable: true}
+        inlineEditing: {isSelected: true}
       }
     );
 
@@ -177,7 +177,7 @@ describe('ExternalLinkList', () => {
     const {container, triggerEditorCommand} = renderInContentElement(
       <ExternalLinkList configuration={configuration} sectionProps={{}} />,
       {
-        editorState: {isSelected: true, isEditable: true}
+        inlineEditing: {isSelected: true}
       }
     );
     triggerEditorCommand({type: 'SET_SELECTED_ITEM', index: 0});

@@ -27,7 +27,7 @@ describe('TextInlineFileRights', () => {
       <TextInlineFileRights configuration={{}} />,
       {
         seed: {},
-        editorState: {isEditable: true, setTransientState}
+        inlineEditing: {transientState: setTransientState}
       }
     );
 
@@ -41,7 +41,7 @@ describe('TextInlineFileRights', () => {
       <TextInlineFileRights configuration={{}} />,
       {
         seed: {},
-        editorState: {isEditable: true, setTransientState}
+        inlineEditing: {transientState: setTransientState}
       }
     );
     unmount();
@@ -56,7 +56,7 @@ describe('TextInlineFileRights', () => {
       <TextInlineFileRights configuration={{}} context="insideElement" />,
       {
         seed: {},
-        editorState: {isEditable: true, setTransientState}
+        inlineEditing: {transientState: setTransientState}
       }
     );
     unmount();

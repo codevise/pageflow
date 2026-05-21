@@ -42,7 +42,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} />,
       {
         seed,
-        editorState: {isSelected: true, isEditable: true}
+        inlineEditing: {isSelected: true}
       }
     );
 

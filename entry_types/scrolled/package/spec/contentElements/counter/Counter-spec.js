@@ -27,9 +27,7 @@ describe('Counter', () => {
         contentElementId={5}
         contentElementWidth={contentElementWidths.md}
         sectionProps={{}}
-      />, {
-        editorState: {isEditable: false}
-      }
+      />
     );
   }
 
@@ -199,9 +197,7 @@ describe('Counter', () => {
           contentElementId={5}
           contentElementWidth={width || contentElementWidths.md}
           sectionProps={sectionProps || {}}
-        />, {
-          editorState: {isEditable: false}
-        }
+        />
       );
     }
 
