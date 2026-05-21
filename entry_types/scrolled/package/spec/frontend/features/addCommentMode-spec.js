@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {api} from 'frontend/api';
-import {renderEntry, useCommentingPageObjects} from 'support/pageObjects';
+import {renderEntry, useCommentingPageObjects} from 'support/pageObjects/commenting';
 
 describe('add comment mode', () => {
   useCommentingPageObjects();

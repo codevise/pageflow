@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {EditableText} from 'frontend/commenting/EditableText';
-import {renderWithCommenting} from 'testHelpers/renderWithCommenting';
 import {slateSelection} from 'frontend/commenting/slateSelection';
+import {renderEntry, useCommentingPageObjects} from 'support/pageObjects/commenting';
 
 import {commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
 import commentingStyles from 'frontend/commenting/EditableTextHighlight.module.css';
@@ -13,7 +13,12 @@ import commentingStyles from 'frontend/commenting/EditableTextHighlight.module.c
 jest.mock('frontend/commenting/slateSelection');
 
 describe('commenting EditableText', () => {
+  useCommentingPageObjects();
+
   useFakeTranslations({
+    'pageflow_scrolled.review.add_comment': 'Add comment',
+    'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment',
+    'pageflow_scrolled.review.select_content_element': 'Select to comment',
     'pageflow_scrolled.review.select_text_to_comment': 'Select text to comment',
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
     'pageflow_scrolled.review.new_topic': 'New topic',
@@ -23,24 +28,26 @@ describe('commenting EditableText', () => {
 
   const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
 
-  it('renders plain text without commenting UI when inlineComments is not set', () => {
-    const {getByText, queryByText, toggleAddCommentMode} = renderWithCommenting(
-      <EditableText value={value} />,
-      {inlineComments: false}
-    );
+  it('renders plain text without commenting UI when inlineComments is not set', async () => {
+    const {getByText, queryByText, toggleAddCommentMode} = renderEntry({
+      contentElement: {ui: <EditableText value={value} />}
+    });
 
-    toggleAddCommentMode();
+    await toggleAddCommentMode();
 
     expect(getByText('Some text to comment on')).toBeInTheDocument();
     expect(queryByText('Select text to comment')).not.toBeInTheDocument();
   });
 
-  it('shows hint in add comment mode', () => {
-    const {getByText, toggleAddCommentMode} = renderWithCommenting(
-      <EditableText value={value} />
-    );
+  it('shows hint in add comment mode', async () => {
+    const {getByText, toggleAddCommentMode} = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true}
+      }
+    });
 
-    toggleAddCommentMode();
+    await toggleAddCommentMode();
 
     expect(getByText('Select text to comment')).toBeInTheDocument();
   });
@@ -52,11 +59,14 @@ describe('commenting EditableText', () => {
       focus: {path: [0, 0], offset: 9}
     };
 
-    const {getByText, toggleAddCommentMode} = renderWithCommenting(
-      <EditableText value={value} />
-    );
+    const {getByText, toggleAddCommentMode} = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true}
+      }
+    });
 
-    toggleAddCommentMode();
+    await toggleAddCommentMode();
     await slateSelection.simulateChange(user, getByText('Some text to comment on'), slateRange);
 
     const highlight = document.querySelector(`.${highlightStyles.highlight}`);
@@ -71,11 +81,14 @@ describe('commenting EditableText', () => {
       focus: {path: [0, 0], offset: 9}
     };
 
-    const {getByText, queryByText, toggleAddCommentMode} = renderWithCommenting(
-      <EditableText value={value} />
-    );
+    const {getByText, queryByText, toggleAddCommentMode} = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true}
+      }
+    });
 
-    toggleAddCommentMode();
+    await toggleAddCommentMode();
     await slateSelection.simulateChange(user, getByText('Some text to comment on'), slateRange);
 
     expect(queryByText('Select text to comment')).not.toBeInTheDocument();
@@ -88,11 +101,14 @@ describe('commenting EditableText', () => {
       focus: {path: [0, 0], offset: 9}
     };
 
-    const {getByText, getByPlaceholderText, toggleAddCommentMode} = renderWithCommenting(
-      <EditableText value={value} />
-    );
+    const {getByText, getByPlaceholderText, toggleAddCommentMode} = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true}
+      }
+    });
 
-    toggleAddCommentMode();
+    await toggleAddCommentMode();
     await slateSelection.simulateChange(user, getByText('Some text to comment on'), slateRange);
 
     expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
@@ -105,12 +121,15 @@ describe('commenting EditableText', () => {
       focus: {path: [0, 0], offset: 9}
     };
 
-    const {getByText, queryByText, toggleAddCommentMode} = renderWithCommenting(
-      <EditableText value={value} />
-    );
+    const {getByText, queryByText, toggleAddCommentMode} = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true}
+      }
+    });
 
     await slateSelection.simulateChange(user, getByText('Some text to comment on'), slateRange);
-    toggleAddCommentMode();
+    await toggleAddCommentMode();
 
     expect(queryByText('Select text to comment')).not.toBeInTheDocument();
 
@@ -126,11 +145,14 @@ describe('commenting EditableText', () => {
       {type: 'paragraph', children: [{text: 'Second paragraph'}]}
     ];
 
-    const {getByText, toggleAddCommentMode} = renderWithCommenting(
-      <EditableText value={multiBlockValue} />
-    );
+    const {getByText, toggleAddCommentMode} = renderEntry({
+      contentElement: {
+        ui: <EditableText value={multiBlockValue} />,
+        typeOptions: {inlineComments: true}
+      }
+    });
 
-    toggleAddCommentMode();
+    await toggleAddCommentMode();
     await user.click(getByText('Second paragraph'));
 
     const highlight = document.querySelector(`.${highlightStyles.highlight}`);
@@ -146,9 +168,13 @@ describe('commenting EditableText', () => {
       focus: {path: [0, 0], offset: 9}
     };
 
-    const {getByText, queryByPlaceholderText, toggleAddCommentMode} = renderWithCommenting(
-      <EditableText value={value} />,
-      {
+    const {getByText, queryByPlaceholderText, toggleAddCommentMode} = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true}
+      },
+      commenting: {
+        currentUser: null,
         commentThreads: [{
           id: 1,
           subjectType: 'ContentElement',
@@ -157,9 +183,9 @@ describe('commenting EditableText', () => {
           comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
         }]
       }
-    );
+    });
 
-    toggleAddCommentMode();
+    await toggleAddCommentMode();
     await user.click(document.querySelector(`.${highlightStyles.highlight}`));
 
     expect(getByText('A comment')).toBeInTheDocument();
@@ -172,9 +198,13 @@ describe('commenting EditableText', () => {
       focus: {path: [0, 0], offset: 9}
     };
 
-    const {container} = renderWithCommenting(
-      <EditableText value={value} />,
-      {
+    const {container} = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true}
+      },
+      commenting: {
+        currentUser: null,
         commentThreads: [{
           id: 1,
           subjectType: 'ContentElement',
@@ -183,7 +213,7 @@ describe('commenting EditableText', () => {
           comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
         }]
       }
-    );
+    });
 
     const highlight = container.querySelector(`.${highlightStyles.highlight}`);
     expect(highlight).toBeInTheDocument();
@@ -197,9 +227,13 @@ describe('commenting EditableText', () => {
       focus: {path: [0, 0], offset: 9}
     };
 
-    const {getByRole} = renderWithCommenting(
-      <EditableText value={value} />,
-      {
+    const {getByRole} = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true}
+      },
+      commenting: {
+        currentUser: null,
         commentThreads: [{
           id: 1,
           subjectType: 'ContentElement',
@@ -208,7 +242,7 @@ describe('commenting EditableText', () => {
           comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
         }]
       }
-    );
+    });
 
     expect(getByRole('status')).toBeInTheDocument();
   });
@@ -220,9 +254,13 @@ describe('commenting EditableText', () => {
       focus: {path: [0, 0], offset: 9}
     };
 
-    const {container, queryByPlaceholderText, toggleAddCommentMode} = renderWithCommenting(
-      <EditableText value={value} />,
-      {
+    const {container, queryByPlaceholderText, toggleAddCommentMode} = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true}
+      },
+      commenting: {
+        currentUser: null,
         commentThreads: [{
           id: 1,
           subjectType: 'ContentElement',
@@ -231,9 +269,9 @@ describe('commenting EditableText', () => {
           comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
         }]
       }
-    );
+    });
 
-    toggleAddCommentMode();
+    await toggleAddCommentMode();
     await slateSelection.simulateChange(
       user,
       container.querySelector('[data-slate-editor]'),

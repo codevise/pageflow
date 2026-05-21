@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, waitFor} from '@testing-library/react';
 
-import {renderEntry, useCommentingPageObjects} from 'support/pageObjects';
+import {renderEntry, useCommentingPageObjects} from 'support/pageObjects/commenting';
 
 describe('commenting badges', () => {
   useCommentingPageObjects();
