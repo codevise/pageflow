@@ -1,9 +1,9 @@
-import {act} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import {act, within} from '@testing-library/react';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {loadCommentingComponents} from 'frontend/commenting';
 import {clearExtensions} from 'frontend/extensionRegistry';
+import contentElementDecoratorStyles from 'frontend/commenting/ContentElementDecorator.module.css';
 
 import {
   renderEntry as baseRenderEntry,
@@ -23,10 +23,12 @@ export function renderEntry({
 
   return {
     ...result,
-    async toggleAddCommentMode() {
-      const user = userEvent.setup();
-      await user.click(result.getByRole('button', {name: 'Add comment'}));
-    }
+    getAddCommentButton: () => result.getByRole('button', {name: 'Add comment'}),
+    getCancelAddCommentButton: () => result.getByRole('button', {name: 'Cancel add comment'}),
+    getNewThreadInput: () => result.getByPlaceholderText('Add a comment...'),
+    queryNewThreadInput: () => result.queryByPlaceholderText('Add a comment...'),
+    getAllCommentBadges: () => result.getAllByRole('status'),
+    queryAllCommentBadges: () => result.queryAllByRole('status')
   };
 }
 
@@ -43,18 +45,29 @@ export function useCommentingPageObjects() {
     'pageflow_scrolled.review.add_comment': 'Add comment',
     'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment',
     'pageflow_scrolled.review.select_content_element': 'Select to comment',
-    'pageflow_scrolled.review.select_text_to_comment': 'Select text to comment',
-    'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
-    'pageflow_scrolled.review.new_topic': 'New topic',
-    'pageflow_scrolled.review.send': 'Send',
-    'pageflow_scrolled.review.cancel': 'Cancel'
+    'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...'
   });
 
   usePageObjects();
 }
 
 function createCommentingContentElementPageObject(el) {
+  const wrapper = el.closest(`.${contentElementDecoratorStyles.wrapper}`);
+
   return {
-    ...baseCreateContentElementPageObject(el)
+    ...baseCreateContentElementPageObject(el),
+
+    getSelectToCommentButton: () => {
+      if (!wrapper) {
+        throw new Error(
+          'Content element has no commenting wrapper. ' +
+          'Was it registered with inlineComments: true?'
+        );
+      }
+      return within(wrapper).getByRole('button', {name: 'Select to comment'});
+    },
+
+    hasSelectToCommentButton: () =>
+      !!wrapper && !!within(wrapper).queryByRole('button', {name: 'Select to comment'})
   };
 }

@@ -17,7 +17,7 @@ describe('commenting badges', () => {
       })
     });
 
-    const {getByRole} = renderEntry({
+    const entry = renderEntry({
       seed: {
         contentElements: [{
           typeName: 'withTestId',
@@ -28,12 +28,12 @@ describe('commenting badges', () => {
     });
 
     await waitFor(() => {
-      expect(getByRole('status')).toBeInTheDocument();
+      expect(entry.queryAllCommentBadges()).toHaveLength(1);
     });
   });
 
   it('shows thread list when clicking badge', () => {
-    const {getByRole, getByText} = renderEntry({
+    const entry = renderEntry({
       seed: {
         contentElements: [{
           typeName: 'withTestId',
@@ -50,9 +50,9 @@ describe('commenting badges', () => {
       }
     });
 
-    fireEvent.click(getByRole('status'));
+    fireEvent.click(entry.getAllCommentBadges()[0]);
 
-    expect(getByText('Nice work')).toBeInTheDocument();
-    expect(getByText('Bob')).toBeInTheDocument();
+    expect(entry.getByText('Nice work')).toBeInTheDocument();
+    expect(entry.getByText('Bob')).toBeInTheDocument();
   });
 });
