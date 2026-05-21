@@ -1,23 +1,12 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {api} from 'frontend/api';
 import {renderEntry, useCommentingPageObjects} from 'support/pageObjects/commenting';
 
 describe('add comment mode', () => {
   useCommentingPageObjects();
-
-  useFakeTranslations({
-    'pageflow_scrolled.review.add_comment': 'Add comment',
-    'pageflow_scrolled.review.select_content_element': 'Select to comment',
-    'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
-    'pageflow_scrolled.review.new_topic': 'New topic',
-    'pageflow_scrolled.review.send': 'Send',
-    'pageflow_scrolled.review.cancel': 'Cancel',
-    'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment'
-  });
 
   it('renders add comment button', () => {
     const {getByRole} = renderEntry({
