@@ -4,10 +4,10 @@ import {renderInEntry, fakeParentWindow, tick} from 'support';
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 
-import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 
 describe('useContentElementEditorCommandSubscription in editor preview', () => {
-  beforeAll(loadInlineEditingComponents);
+  beforeAll(loadInlineEditingExtensions);
 
   it('invokes callback for content element commands sent via post message', async () => {
     fakeParentWindow();

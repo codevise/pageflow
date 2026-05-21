@@ -3,14 +3,14 @@ import React from 'react';
 import {ExternalLinkList} from 'contentElements/externalLinkList/frontend/ExternalLinkList';
 import linkStyles from 'contentElements/externalLinkList/frontend/ExternalLink.module.css';
 
-import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('ExternalLinkList', () => {
-  beforeAll(loadInlineEditingComponents);
+  beforeAll(loadInlineEditingExtensions);
 
   it('sets selected item id in transient state in editor', async () => {
     const configuration = {

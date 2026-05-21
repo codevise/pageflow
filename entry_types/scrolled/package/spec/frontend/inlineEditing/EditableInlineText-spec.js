@@ -1,13 +1,13 @@
 import React from 'react';
 
 import {EditableInlineText} from 'frontend';
-import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('EditableInlineText', () => {
-  beforeAll(loadInlineEditingComponents);
+  beforeAll(loadInlineEditingExtensions);
 
   it('renders text from value', () => {
     const value = [{

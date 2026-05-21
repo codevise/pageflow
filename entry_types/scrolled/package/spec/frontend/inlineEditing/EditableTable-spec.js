@@ -1,14 +1,14 @@
 import React from 'react';
 
 import {EditableTable} from 'frontend';
-import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 import * as phoneLayout from 'frontend/usePhoneLayout';
 
 import {render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('EditableText', () => {
-  beforeAll(loadInlineEditingComponents);
+  beforeAll(loadInlineEditingExtensions);
 
   it('renders class name on table', () => {
     render(<EditableTable value={[]}

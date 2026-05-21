@@ -1,5 +1,5 @@
 import {usePhonePlatform} from 'frontend/usePhonePlatform';
-import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 
 import {renderHookInEntry} from 'support';
 import {asyncHandlingOf} from 'support/asyncHandlingOf';
@@ -7,7 +7,7 @@ import {asyncHandlingOf} from 'support/asyncHandlingOf';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('usePhonePlatform', () => {
-  beforeAll(loadInlineEditingComponents);
+  beforeAll(loadInlineEditingExtensions);
 
   it('sets value when emulation mode is mobile', async () => {
     const {result} = renderHookInEntry(() => usePhonePlatform());

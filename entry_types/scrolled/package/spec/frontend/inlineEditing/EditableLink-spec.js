@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 import {useSelectLinkDestination} from 'frontend/inlineEditing/useSelectLinkDestination';
 import {EditableLink} from 'frontend';
 import {useFakeTranslations} from 'pageflow/testHelpers';
@@ -26,7 +26,7 @@ describe('EditableLink', () => {
     'pageflow_scrolled.inline_editing.remove_link': 'Remove link'
   });
 
-  beforeAll(loadInlineEditingComponents);
+  beforeAll(loadInlineEditingExtensions);
 
   it('renders children with className', () => {
     const {getByText} = render(

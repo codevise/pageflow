@@ -7,10 +7,10 @@ import React, {useEffect} from 'react';
 import {act, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
-import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 
 describe('useContentElementEditorState in editor preview', () => {
-  beforeAll(loadInlineEditingComponents);
+  beforeAll(loadInlineEditingExtensions);
   useFakeParentWindow();
 
   it('lets content elements determine whether they are selected', () => {

@@ -1,7 +1,7 @@
 import {act, fireEvent} from '@testing-library/react';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
-import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 import {clearExtensions} from 'frontend/extensionRegistry';
 import badgeStyles from 'review/Badge.module.css';
 
@@ -28,7 +28,7 @@ export function useInlineEditingPageObjects() {
   useFakeParentWindow();
 
   beforeAll(async () => {
-    await loadInlineEditingComponents();
+    await loadInlineEditingExtensions();
   });
 
   afterAll(() => {
