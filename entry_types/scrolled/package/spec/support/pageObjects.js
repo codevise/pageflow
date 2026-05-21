@@ -13,6 +13,8 @@ import twoColumnLayoutStyles from 'frontend/layouts/TwoColumn.module.css';
 import boxBoundaryMarginStyles from 'frontend/foregroundBoxes/BoxBoundaryMargin.module.css';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {loadCommentingComponents} from 'frontend/commenting';
+import {clearExtensions} from 'frontend/extensionRegistry';
 import {api} from 'frontend/api';
 
 import {act, fireEvent, queryHelpers, queries, within} from '@testing-library/react'
@@ -75,6 +77,10 @@ export function useInlineEditingPageObjects() {
     await loadInlineEditingComponents();
   });
 
+  afterAll(() => {
+    act(() => clearExtensions());
+  });
+
   useFakeTranslations({
     'pageflow_scrolled.inline_editing.select_section': 'Select section',
     'pageflow_scrolled.inline_editing.select_content_element': 'Select content element',
@@ -90,6 +96,18 @@ export function useInlineEditingPageObjects() {
     'pageflow_scrolled.inline_editing.padding_suppressed_after_full_width': 'Padding suppressed after full width element',
     'pageflow_scrolled.inline_editing.content_element_margin_top': 'Top margin',
     'pageflow_scrolled.inline_editing.content_element_margin_bottom': 'Bottom margin'
+  });
+
+  usePageObjects();
+}
+
+export function useCommentingPageObjects() {
+  beforeAll(async () => {
+    await loadCommentingComponents();
+  });
+
+  afterAll(() => {
+    act(() => clearExtensions());
   });
 
   usePageObjects();

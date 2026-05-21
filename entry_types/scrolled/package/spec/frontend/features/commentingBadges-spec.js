@@ -1,20 +1,10 @@
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, waitFor} from '@testing-library/react';
+import {fireEvent, waitFor} from '@testing-library/react';
 
-import {renderEntry, usePageObjects} from 'support/pageObjects';
-import {clearExtensions} from 'frontend/extensionRegistry';
-import {loadCommentingComponents} from 'frontend/commenting';
+import {renderEntry, useCommentingPageObjects} from 'support/pageObjects';
 
 describe('commenting badges', () => {
-  usePageObjects();
-
-  beforeEach(async () => {
-    await loadCommentingComponents();
-  });
-
-  afterEach(() => {
-    act(() => clearExtensions());
-  });
+  useCommentingPageObjects();
 
   it('fetches threads from API and displays badge', async () => {
     jest.spyOn(window, 'fetch').mockResolvedValue({

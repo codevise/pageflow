@@ -1,16 +1,13 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {api} from 'frontend/api';
-import {renderEntry, usePageObjects} from 'support/pageObjects';
-import {clearExtensions} from 'frontend/extensionRegistry';
-import {loadCommentingComponents} from 'frontend/commenting';
+import {renderEntry, useCommentingPageObjects} from 'support/pageObjects';
 
 describe('add comment mode', () => {
-  usePageObjects();
+  useCommentingPageObjects();
 
   useFakeTranslations({
     'pageflow_scrolled.review.add_comment': 'Add comment',
@@ -20,14 +17,6 @@ describe('add comment mode', () => {
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.review.cancel': 'Cancel',
     'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment'
-  });
-
-  beforeEach(async () => {
-    await loadCommentingComponents();
-  });
-
-  afterEach(() => {
-    act(() => clearExtensions());
   });
 
   it('renders add comment button', () => {
