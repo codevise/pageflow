@@ -8,8 +8,6 @@ import '@testing-library/jest-dom/extend-expect';
 describe('inline editing EditableText typography', () => {
   useInlineEditingPageObjects();
 
-  beforeAll(() => window.getSelection = function() {});
-
   const paragraphValue = [{
     type: 'paragraph',
     children: [{text: 'Some text'}]

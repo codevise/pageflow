@@ -13,8 +13,6 @@ import {commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/revie
 describe('inline editing EditableText comment highlights', () => {
   useInlineEditingPageObjects();
 
-  beforeAll(() => window.getSelection = function() {});
-
   beforeEach(() => {
     jest.spyOn(features, 'isEnabled').mockImplementation(
       name => name === 'commenting'

@@ -9,8 +9,6 @@ import '@testing-library/jest-dom/extend-expect';
 describe('inline editing EditableText comment badges', () => {
   useInlineEditingPageObjects();
 
-  beforeAll(() => window.getSelection = function() {});
-
   beforeEach(() => {
     jest.spyOn(features, 'isEnabled').mockImplementation(
       name => name === 'commenting'

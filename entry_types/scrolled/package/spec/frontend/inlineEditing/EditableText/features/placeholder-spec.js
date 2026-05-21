@@ -8,8 +8,6 @@ import '@testing-library/jest-dom/extend-expect';
 describe('inline editing EditableText placeholder', () => {
   useInlineEditingPageObjects();
 
-  beforeAll(() => window.getSelection = function() {});
-
   const headingValue = [{
     type: 'heading',
     children: [{text: 'Some text'}]

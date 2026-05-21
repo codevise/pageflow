@@ -15,6 +15,7 @@ module.exports = {
     '<rootDir>/spec/support/matchMediaStub.js',
     '<rootDir>/spec/support/requestAnimationFrameStub.js',
     '<rootDir>/spec/support/scrollIntoViewStub.js',
+    '<rootDir>/spec/support/getSelectionStub.js',
     '<rootDir>/spec/support/fakeBrowserFeatures.js'
   ],
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],

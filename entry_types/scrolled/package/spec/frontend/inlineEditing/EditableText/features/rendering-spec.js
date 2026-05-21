@@ -8,8 +8,6 @@ import '@testing-library/jest-dom/extend-expect';
 describe('inline editing EditableText rendering', () => {
   useInlineEditingPageObjects();
 
-  beforeAll(() => window.getSelection = function() {});
-
   it('renders text from value', () => {
     const value = [{
       type: 'heading',
