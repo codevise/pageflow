@@ -2,7 +2,7 @@ import React from 'react';
 
 import {api} from './api';
 import {useWidget} from 'pageflow-scrolled/entryState';
-import {extensible} from './extensions';
+import {extensible} from './extensionRegistry';
 
 export const Widget = extensible('Widget', function Widget({role, props, children, renderFallback}) {
   const widget = useWidget({role});

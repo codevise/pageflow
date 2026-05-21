@@ -5,7 +5,7 @@ import {act, fireEvent, waitFor} from '@testing-library/react';
 import {Entry} from 'frontend/Entry';
 import {usePageObjects} from 'support/pageObjects';
 import {renderInEntry} from 'support';
-import {clearExtensions} from 'frontend/extensions';
+import {clearExtensions} from 'frontend/extensionRegistry';
 import {loadCommentingComponents} from 'frontend/commenting';
 
 describe('commenting badges', () => {

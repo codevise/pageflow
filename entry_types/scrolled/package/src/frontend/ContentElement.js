@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {api} from './api';
-import {extensible} from './extensions';
+import {extensible} from './extensionRegistry';
 import {ContentElementAttributesProvider} from './useContentElementAttributes';
 import {ContentElementLifecycleProvider} from './useContentElementLifecycle';
 import {ContentElementMargin} from './ContentElementMargin';

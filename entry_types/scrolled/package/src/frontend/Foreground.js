@@ -1,7 +1,7 @@
 import React, {createContext, useContext} from 'react';
 import classNames from 'classnames';
 
-import {extensible} from './extensions';
+import {extensible} from './extensionRegistry';
 
 import styles from './Foreground.module.css';
 

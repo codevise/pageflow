@@ -16,7 +16,7 @@ import {useScrollTarget} from './useScrollTarget';
 import {usePhoneLayout} from './usePhoneLayout';
 import {SectionLifecycleProvider, useSectionLifecycle} from './useSectionLifecycle'
 import {SectionViewTimelineProvider} from './SectionViewTimelineProvider';
-import {extensible} from './extensions';
+import {extensible} from './extensionRegistry';
 import {BackgroundColorProvider} from './backgroundColor';
 import {SelectableWidget} from './SelectableWidget';
 import {useSectionPadding} from './useSectionPaddingCustomProperties';

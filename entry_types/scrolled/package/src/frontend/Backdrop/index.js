@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {extensible} from '../extensions';
+import {extensible} from '../extensionRegistry';
 import useDimension from '../useDimension';
 import {useSectionLifecycle} from '../useSectionLifecycle';
 

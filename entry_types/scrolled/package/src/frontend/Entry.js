@@ -5,7 +5,7 @@ import {Widget} from './Widget';
 import {SelectableWidget} from './SelectableWidget';
 import {WidgetPresenceWrapper} from './WidgetPresenceWrapper';
 
-import {extensible} from './extensions';
+import {extensible} from './extensionRegistry';
 
 export const Entry = extensible('Entry', function Entry() {
   return (

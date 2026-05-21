@@ -7,10 +7,10 @@ import {
   provideExtensions,
   clearExtensions,
   ExtensionsProvider
-} from 'frontend/extensions';
+} from 'frontend/extensionRegistry';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 
-describe('extensions', () => {
+describe('extensionRegistry', () => {
   afterEach(() => {
     act(() => clearExtensions());
   });

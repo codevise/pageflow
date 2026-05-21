@@ -1,4 +1,4 @@
-import {extensible} from './extensions';
+import {extensible} from './extensionRegistry';
 
 export const WidgetSelectionRect = extensible(
   'WidgetSelectionRect',

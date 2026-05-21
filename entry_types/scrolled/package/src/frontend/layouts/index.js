@@ -3,7 +3,7 @@ import React from 'react';
 import {TwoColumn} from './TwoColumn';
 import {Center} from './Center';
 
-import {extensible} from '../extensions';
+import {extensible} from '../extensionRegistry';
 
 export {widths, widthName} from './widths';
 

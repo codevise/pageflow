@@ -3,7 +3,7 @@ import React, {useMemo} from 'react';
 import {ContentElement} from '../ContentElement';
 import {useSectionLifecycle} from '../useSectionLifecycle';
 
-import {extensible} from '../extensions';
+import {extensible} from '../extensionRegistry';
 
 export const BackgroundContentElement = extensible(
   'BackgroundContentElement',

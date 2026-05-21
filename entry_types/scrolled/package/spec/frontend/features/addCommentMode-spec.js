@@ -8,7 +8,7 @@ import {Entry} from 'frontend/Entry';
 import {api} from 'frontend/api';
 import {usePageObjects} from 'support/pageObjects';
 import {renderInEntry} from 'support';
-import {clearExtensions} from 'frontend/extensions';
+import {clearExtensions} from 'frontend/extensionRegistry';
 import {loadCommentingComponents} from 'frontend/commenting';
 
 describe('add comment mode', () => {
