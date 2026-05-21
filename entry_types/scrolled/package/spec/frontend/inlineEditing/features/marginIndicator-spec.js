@@ -1,7 +1,7 @@
-import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
+import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects/inlineEditing';
 import '@testing-library/jest-dom/extend-expect';
 
-describe('MarginIndicator', () => {
+describe('inline editing MarginIndicator', () => {
   useInlineEditingPageObjects();
 
   it('displays scale translation for top margin when element is selected', () => {

@@ -2,11 +2,11 @@ import '@testing-library/jest-dom/extend-expect';
 import {act, waitFor} from '@testing-library/react';
 import {features} from 'pageflow/frontend';
 
-import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
+import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects/inlineEditing';
 
 import badgeStyles from 'review/Badge.module.css';
 
-describe('editor comment badges', () => {
+describe('inline editing comment badges', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {

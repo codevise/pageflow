@@ -1,7 +1,7 @@
-import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
+import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects/inlineEditing';
 import '@testing-library/jest-dom/extend-expect'
 
-describe('INSERT_CONTENT_ELEMENT message', () => {
+describe('inline editing INSERT_CONTENT_ELEMENT message', () => {
   useInlineEditingPageObjects();
 
 

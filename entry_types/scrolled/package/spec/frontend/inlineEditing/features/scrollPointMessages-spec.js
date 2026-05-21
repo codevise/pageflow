@@ -1,8 +1,8 @@
-import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects';
+import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inlineEditing';
 
 import {asyncHandlingOf} from 'support/asyncHandlingOf';
 
-describe('scroll point messages', () => {
+describe('inline editing scroll point messages', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {
