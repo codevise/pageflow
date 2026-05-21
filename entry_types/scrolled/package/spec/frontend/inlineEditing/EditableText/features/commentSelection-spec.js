@@ -3,7 +3,6 @@ import React from 'react';
 import {features} from 'pageflow/frontend';
 import {EditableText} from 'frontend';
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inlineEditing';
-import {fakeParentWindow} from 'support';
 
 import {act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -22,7 +21,6 @@ describe('inline editing EditableText comment selection messages', () => {
   });
 
   it('posts SELECTED contentElementComments with highlightedThreadId on badge click', () => {
-    fakeParentWindow();
     window.parent.postMessage = jest.fn();
 
     const value = [
@@ -57,7 +55,6 @@ describe('inline editing EditableText comment selection messages', () => {
   });
 
   it('runs badge click logic and scrolls into view on SELECT_COMMENT_THREAD message', async () => {
-    fakeParentWindow();
     window.parent.postMessage = jest.fn();
     const scrollIntoView = jest.fn();
     Element.prototype.scrollIntoView = scrollIntoView;

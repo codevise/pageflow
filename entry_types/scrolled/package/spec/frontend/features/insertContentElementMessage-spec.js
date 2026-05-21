@@ -1,12 +1,10 @@
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
-import {fakeParentWindow} from 'support';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('INSERT_CONTENT_ELEMENT message', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {
-    fakeParentWindow()
     window.parent.postMessage = jest.fn();
   });
 

@@ -3,14 +3,12 @@ import React, {useEffect} from 'react';
 import {frontend, useContentElementConfigurationUpdate} from 'frontend';
 
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects';
-import {fakeParentWindow} from 'support';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('useContentElementConfigurationUpdate', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {
-    fakeParentWindow()
     window.parent.postMessage = jest.fn();
   });
 

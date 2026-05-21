@@ -3,7 +3,6 @@ import {frontend} from 'frontend';
 import {features} from 'pageflow/frontend';
 
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
-import {fakeParentWindow} from 'support';
 import {changeLocationHash} from 'support/changeLocationHash';
 import '@testing-library/jest-dom/extend-expect'
 import {act, fireEvent, waitFor} from '@testing-library/react';
@@ -12,7 +11,6 @@ describe('content element selection', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {
-    fakeParentWindow()
     window.parent.postMessage = jest.fn();
     window.location.hash = '#initial';
   });

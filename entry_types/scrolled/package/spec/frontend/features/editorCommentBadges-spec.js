@@ -3,7 +3,6 @@ import {act, waitFor} from '@testing-library/react';
 import {features} from 'pageflow/frontend';
 
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
-import {fakeParentWindow} from 'support';
 
 import badgeStyles from 'review/Badge.module.css';
 
@@ -11,7 +10,6 @@ describe('editor comment badges', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {
-    fakeParentWindow();
     window.parent.postMessage = jest.fn();
     features.enable('frontend', ['commenting']);
   });

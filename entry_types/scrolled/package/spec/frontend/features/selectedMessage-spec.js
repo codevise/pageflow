@@ -3,7 +3,6 @@ import {frontend, WidgetSelectionRect} from 'frontend';
 import {features} from 'pageflow/frontend';
 
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
-import {fakeParentWindow} from 'support';
 import {act, fireEvent, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
@@ -11,7 +10,6 @@ describe('SELECTED message', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {
-    fakeParentWindow()
     window.parent.postMessage = jest.fn();
   });
 

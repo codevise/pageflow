@@ -1,5 +1,4 @@
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects';
-import {fakeParentWindow} from 'support';
 
 import {asyncHandlingOf} from 'support/asyncHandlingOf';
 
@@ -7,7 +6,6 @@ describe('scroll point messages', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {
-    fakeParentWindow();
     window.parent.postMessage = jest.fn();
     window.scrollTo = jest.fn();
   });
