@@ -5,7 +5,7 @@ import {EditableText} from 'frontend';
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inlineEditing';
 import {fakeParentWindow} from 'support';
 
-import {act, fireEvent} from '@testing-library/react';
+import {act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('inline editing EditableText comment selection messages', () => {
@@ -46,7 +46,7 @@ describe('inline editing EditableText comment selection messages', () => {
       }
     });
 
-    fireEvent.click(entry.queryAllCommentBadges()[0].el);
+    entry.queryAllCommentBadges()[0].select();
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',

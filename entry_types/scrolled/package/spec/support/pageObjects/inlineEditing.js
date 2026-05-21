@@ -1,4 +1,4 @@
-import {act} from '@testing-library/react';
+import {act, fireEvent} from '@testing-library/react';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
@@ -56,6 +56,7 @@ function createCommentBadgePageObject(el) {
   return {
     el,
     isInDotMode: () => el.classList.contains(badgeStyles.dot),
-    isActive: () => el.classList.contains(badgeStyles.active)
+    isActive: () => el.classList.contains(badgeStyles.active),
+    select: () => fireEvent.click(el)
   };
 }

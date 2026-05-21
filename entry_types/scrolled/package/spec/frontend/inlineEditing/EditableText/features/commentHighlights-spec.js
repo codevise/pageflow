@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import {features} from 'pageflow/frontend';
 import {EditableText} from 'frontend';
-import {useEditorSelection} from 'frontend/inlineEditing/EditorState';
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inlineEditing';
+import {fakeParentWindow} from 'support';
 
-import {act} from '@testing-library/react';
+import {act, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import {commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
@@ -51,17 +51,12 @@ describe('inline editing EditableText comment highlights', () => {
     expect(highlight).toHaveTextContent('text');
   });
 
-  it('highlights pending new thread range from editor state', () => {
-    let setSelectionRef;
-    function SelectionCapture({children}) {
-      const {select} = useEditorSelection();
-      useEffect(() => { setSelectionRef = select; }, [select]);
-      return children;
-    }
+  it('highlights pending new thread range from editor state', async () => {
+    fakeParentWindow();
 
     const entry = renderEntry({
       contentElement: {
-        ui: <SelectionCapture><EditableText value={value} /></SelectionCapture>,
+        ui: <EditableText value={value} />,
         typeOptions: {inlineComments: true}
       }
     });
@@ -69,31 +64,33 @@ describe('inline editing EditableText comment highlights', () => {
     expect(entry.container.querySelector(`.${highlightStyles.highlight}`))
       .not.toBeInTheDocument();
 
-    act(() => setSelectionRef({
-      type: 'newThread',
-      id: 10,
-      subjectType: 'ContentElement',
-      range: subjectRange
-    }));
+    act(() => {
+      window.postMessage({
+        type: 'SELECT',
+        payload: {
+          type: 'newThread',
+          id: 10,
+          subjectType: 'ContentElement',
+          range: subjectRange
+        }
+      }, '*');
+    });
+
+    await waitFor(() => {
+      expect(entry.container.querySelector(`.${highlightStyles.highlight}`))
+        .toBeInTheDocument();
+    });
 
     const highlight = entry.container.querySelector(`.${highlightStyles.highlight}`);
-    expect(highlight).toBeInTheDocument();
     expect(highlight).toHaveTextContent('text');
     expect(highlight).toHaveClass(highlightStyles.selected);
   });
 
-  it('applies selected style to highlight when thread is selected in editor state', () => {
-    let setSelectionRef;
-    function SelectionCapture({children}) {
-      const {select} = useEditorSelection();
-      useEffect(() => { setSelectionRef = select; }, [select]);
-      return children;
-    }
-
+  it('applies selected style to highlight when thread badge is clicked', () => {
     const entry = renderEntry({
       contentElement: {
-        ui: <SelectionCapture><EditableText value={value} /></SelectionCapture>,
-        typeOptions: {inlineComments: true}
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
       },
       commenting: {
         currentUser: null,
@@ -110,9 +107,7 @@ describe('inline editing EditableText comment highlights', () => {
     expect(entry.container.querySelector(`.${highlightStyles.highlight}`))
       .not.toHaveClass(highlightStyles.selected);
 
-    act(() => setSelectionRef({
-      type: 'contentElementComments', id: 1, highlightedThreadId: 5
-    }));
+    entry.queryAllCommentBadges()[0].select();
 
     expect(entry.container.querySelector(`.${highlightStyles.highlight}`))
       .toHaveClass(highlightStyles.selected);

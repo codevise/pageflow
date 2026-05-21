@@ -1,11 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import {features} from 'pageflow/frontend';
 import {EditableText} from 'frontend';
-import {useEditorSelection} from 'frontend/inlineEditing/EditorState';
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inlineEditing';
 
-import {act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('inline editing EditableText comment badges', () => {
@@ -49,13 +47,6 @@ describe('inline editing EditableText comment badges', () => {
   });
 
   it('renders only the highlighted thread badge in active mode', () => {
-    let setSelectionRef;
-    function SelectionCapture({children}) {
-      const {select} = useEditorSelection();
-      useEffect(() => { setSelectionRef = select; }, [select]);
-      return children;
-    }
-
     const value = [
       {type: 'paragraph', children: [{text: 'First paragraph thread here'}]},
       {type: 'paragraph', children: [{text: 'Second paragraph thread here'}]}
@@ -63,7 +54,7 @@ describe('inline editing EditableText comment badges', () => {
 
     const entry = renderEntry({
       contentElement: {
-        ui: <SelectionCapture><EditableText value={value} /></SelectionCapture>,
+        ui: <EditableText value={value} />,
         typeOptions: {inlineComments: true, customSelectionRect: true}
       },
       commenting: {
@@ -79,9 +70,7 @@ describe('inline editing EditableText comment badges', () => {
       }
     });
 
-    act(() => setSelectionRef({
-      type: 'contentElementComments', id: 1, highlightedThreadId: 5
-    }));
+    entry.queryAllCommentBadges()[0].select();
 
     const badges = entry.queryAllCommentBadges();
     expect(badges).toHaveLength(2);
@@ -90,13 +79,6 @@ describe('inline editing EditableText comment badges', () => {
   });
 
   it('renders sibling badge in regular mode when in same block as highlighted thread', () => {
-    let setSelectionRef;
-    function SelectionCapture({children}) {
-      const {select} = useEditorSelection();
-      useEffect(() => { setSelectionRef = select; }, [select]);
-      return children;
-    }
-
     const value = [
       {type: 'paragraph', children: [{text: 'First paragraph with two threads'}]},
       {type: 'paragraph', children: [{text: 'Second paragraph thread'}]}
@@ -104,7 +86,7 @@ describe('inline editing EditableText comment badges', () => {
 
     const entry = renderEntry({
       contentElement: {
-        ui: <SelectionCapture><EditableText value={value} /></SelectionCapture>,
+        ui: <EditableText value={value} />,
         typeOptions: {inlineComments: true, customSelectionRect: true}
       },
       commenting: {
@@ -123,9 +105,7 @@ describe('inline editing EditableText comment badges', () => {
       }
     });
 
-    act(() => setSelectionRef({
-      type: 'contentElementComments', id: 1, highlightedThreadId: 5
-    }));
+    entry.queryAllCommentBadges()[0].select();
 
     const badges = entry.queryAllCommentBadges();
     expect(badges).toHaveLength(3);
