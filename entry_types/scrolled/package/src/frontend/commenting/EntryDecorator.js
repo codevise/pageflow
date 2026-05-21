@@ -7,13 +7,13 @@ import {AddCommentModeProvider} from './AddCommentModeProvider';
 import {SelectedSubjectProvider} from './SelectedSubjectProvider';
 import {FloatingToolbar} from './FloatingToolbar';
 
-export function EntryDecorator(props) {
+export function EntryDecorator({commentingInitialState, children}) {
   return (
-    <ReviewStateProvider>
-      <ReviewSessionSetup />
+    <ReviewStateProvider initialState={commentingInitialState}>
+      <ReviewSessionSetup initialState={commentingInitialState} />
       <SelectedSubjectProvider>
         <AddCommentModeProvider>
-          {props.children}
+          {children}
           <FloatingToolbar />
         </AddCommentModeProvider>
       </SelectedSubjectProvider>
@@ -21,20 +21,22 @@ export function EntryDecorator(props) {
   );
 }
 
-function ReviewSessionSetup() {
+function ReviewSessionSetup({initialState}) {
   const entryMetadata = useEntryMetadata();
   const entryId = entryMetadata?.id;
 
   useEffect(() => {
     if (!entryId) return;
 
-    const session = createReviewSession({entryId});
+    const session = createReviewSession({entryId, initialState});
     const handler = ReviewMessageHandler.create({session, targetWindow: window});
 
-    session.fetch();
+    if (!initialState) {
+      session.fetch();
+    }
 
     return () => handler.dispose();
-  }, [entryId]);
+  }, [entryId, initialState]);
 
   return null;
 }

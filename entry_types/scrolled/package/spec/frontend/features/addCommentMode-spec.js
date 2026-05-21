@@ -4,10 +4,8 @@ import {act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
-import {Entry} from 'frontend/Entry';
 import {api} from 'frontend/api';
-import {usePageObjects} from 'support/pageObjects';
-import {renderInEntry} from 'support';
+import {renderEntry, usePageObjects} from 'support/pageObjects';
 import {clearExtensions} from 'frontend/extensionRegistry';
 import {loadCommentingComponents} from 'frontend/commenting';
 
@@ -25,21 +23,15 @@ describe('add comment mode', () => {
   });
 
   beforeEach(async () => {
-    jest.spyOn(window, 'fetch').mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({currentUser: null, commentThreads: []})
-    });
-
     await loadCommentingComponents();
   });
 
   afterEach(() => {
     act(() => clearExtensions());
-    window.fetch.mockRestore();
   });
 
   it('renders add comment button', () => {
-    const {getByRole} = renderInEntry(<Entry />, {
+    const {getByRole} = renderEntry({
       seed: {
         contentElements: [{
           typeName: 'withTestId',
@@ -53,7 +45,7 @@ describe('add comment mode', () => {
 
   it('shows highlight overlays on content elements when activated', async () => {
     const user = userEvent.setup();
-    const {getByRole} = renderInEntry(<Entry />, {
+    const {getByRole} = renderEntry({
       seed: {
         contentElements: [{
           typeName: 'withTestId',
@@ -69,7 +61,7 @@ describe('add comment mode', () => {
 
   it('opens new thread form when selecting element', async () => {
     const user = userEvent.setup();
-    const {getByRole, getByPlaceholderText} = renderInEntry(<Entry />, {
+    const {getByRole, getByPlaceholderText} = renderEntry({
       seed: {
         contentElements: [{
           typeName: 'withTestId',
@@ -85,26 +77,22 @@ describe('add comment mode', () => {
   });
 
   it('auto expands new thread form when selecting element with existing threads', async () => {
-    window.fetch.mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({
+    const user = userEvent.setup();
+    const {getByRole, getByPlaceholderText} = renderEntry({
+      seed: {
+        contentElements: [{
+          typeName: 'withTestId',
+          permaId: 10,
+          configuration: {testId: 5}
+        }]
+      },
+      commenting: {
         currentUser: null,
         commentThreads: [{
           id: 1,
           subjectType: 'ContentElement',
           subjectId: 10,
           comments: [{id: 1, body: 'Existing comment', createdAt: '2026-01-01T00:00:00Z'}]
-        }]
-      })
-    });
-
-    const user = userEvent.setup();
-    const {getByRole, getByPlaceholderText} = renderInEntry(<Entry />, {
-      seed: {
-        contentElements: [{
-          typeName: 'withTestId',
-          permaId: 10,
-          configuration: {testId: 5}
         }]
       }
     });
@@ -117,7 +105,7 @@ describe('add comment mode', () => {
 
   it('closes popover when cancelling new thread form on element without threads', async () => {
     const user = userEvent.setup();
-    const {getByRole, queryByRole} = renderInEntry(<Entry />, {
+    const {getByRole, queryByRole} = renderEntry({
       seed: {
         contentElements: [{
           typeName: 'withTestId',
@@ -135,7 +123,7 @@ describe('add comment mode', () => {
 
   it('exits add comment mode when overlay is clicked', async () => {
     const user = userEvent.setup();
-    const {getByRole, queryByRole} = renderInEntry(<Entry />, {
+    const {getByRole, queryByRole} = renderEntry({
       seed: {
         contentElements: [{
           typeName: 'withTestId',
@@ -154,7 +142,7 @@ describe('add comment mode', () => {
 
   it('deactivates when clicking toggle button again', async () => {
     const user = userEvent.setup();
-    const {getByRole, queryByRole} = renderInEntry(<Entry />, {
+    const {getByRole, queryByRole} = renderEntry({
       seed: {
         contentElements: [{
           typeName: 'withTestId',
@@ -180,7 +168,7 @@ describe('add comment mode', () => {
     });
 
     const user = userEvent.setup();
-    const {getByRole, queryAllByRole} = renderInEntry(<Entry />, {
+    const {getByRole, queryAllByRole} = renderEntry({
       seed: {
         contentElements: [
           {typeName: 'withInlineComments'},
@@ -196,7 +184,7 @@ describe('add comment mode', () => {
 
   it('exits add comment mode when clicking outside', async () => {
     const user = userEvent.setup();
-    const {getByRole, queryByRole} = renderInEntry(<Entry />, {
+    const {getByRole, queryByRole} = renderEntry({
       seed: {
         contentElements: [{
           typeName: 'withTestId',

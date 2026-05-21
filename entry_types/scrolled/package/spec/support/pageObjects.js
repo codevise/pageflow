@@ -19,8 +19,13 @@ import {act, fireEvent, queryHelpers, queries, within} from '@testing-library/re
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {simulateScrollingIntoView} from './fakeIntersectionObserver';
 
-export function renderEntry({seed, consent, isStaticPreview, phonePlatform} = {}) {
-  const result = renderInEntry(<Entry />, {
+export function renderEntry({
+  seed, consent, isStaticPreview, phonePlatform,
+  commenting = {currentUser: null, commentThreads: []}
+} = {}) {
+  const entry = <Entry commentingInitialState={commenting} />;
+
+  const result = renderInEntry(entry, {
     seed,
     consent,
     phonePlatform,
@@ -31,7 +36,7 @@ export function renderEntry({seed, consent, isStaticPreview, phonePlatform} = {}
   return {
     ...result,
     rerender() {
-      result.rerender(<Entry />);
+      result.rerender(entry);
     }
   }
 }
