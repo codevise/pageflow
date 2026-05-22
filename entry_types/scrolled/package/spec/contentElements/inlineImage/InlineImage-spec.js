@@ -6,6 +6,7 @@ import '@testing-library/jest-dom/extend-expect'
 
 import {InlineImage} from 'contentElements/inlineImage/InlineImage';
 import {features} from 'pageflow/frontend';
+import {useFakeFeatures} from 'pageflow/testHelpers';
 import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 jest.mock('frontend/usePortraitOrientation');
 
@@ -239,8 +240,7 @@ describe('InlineImage', () => {
   });
 
   describe('srcset', () => {
-    beforeEach(() => features.enable('frontend', ['image_srcset']));
-    afterEach(() => features.enabledFeatureNames = []);
+    useFakeFeatures('frontend', ['image_srcset']);
 
     function renderInlineImage({contentElementWidth = 0, ...seedOptions} = {}) {
       const result = renderInContentElement(

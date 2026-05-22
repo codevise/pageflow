@@ -1,13 +1,13 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories, normalizeSeed} from 'support';
-import {features} from 'pageflow/frontend';
+import {useFakeFeatures} from 'pageflow/testHelpers';
 
 describe('ContentElement', () => {
   describe('getAvailablePositions', () => {
-    beforeEach(() => {
-      features.enable('frontend', ['backdrop_content_elements']);
+    useFakeFeatures('frontend', ['backdrop_content_elements']);
 
+    beforeEach(() => {
       editor.contentElementTypes.register('inlineImage', {});
       editor.contentElementTypes.register('soundDisclaimer', {supportedPositions: ['inline']});
     });
