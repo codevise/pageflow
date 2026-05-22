@@ -1,7 +1,7 @@
 import {act, within} from '@testing-library/react';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
-import {loadCommentingComponents} from 'frontend/commenting';
+import {loadCommentingExtensions} from 'frontend/commenting';
 import {clearExtensions} from 'frontend/extensionRegistry';
 import contentElementDecoratorStyles from 'frontend/commenting/ContentElementDecorator.module.css';
 
@@ -34,7 +34,7 @@ export function renderEntry({
 
 export function useCommentingPageObjects() {
   beforeAll(async () => {
-    await loadCommentingComponents();
+    await loadCommentingExtensions();
   });
 
   afterAll(() => {

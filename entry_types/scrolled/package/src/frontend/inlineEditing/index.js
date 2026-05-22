@@ -1,6 +1,6 @@
 import {provideExtensions} from '../extensionRegistry';
 
-export function loadInlineEditingComponents() {
+export function loadInlineEditingExtensions() {
   return import('./extensions').then(({extensions}) => {
     provideExtensions(extensions);
   });

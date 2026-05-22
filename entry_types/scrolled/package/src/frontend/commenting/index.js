@@ -1,6 +1,6 @@
 import {provideExtensions} from '../extensionRegistry';
 
-export function loadCommentingComponents() {
+export function loadCommentingExtensions() {
   return import(/* webpackPreload: true */ './extensions').then(({extensions}) => {
     provideExtensions(extensions);
   });
