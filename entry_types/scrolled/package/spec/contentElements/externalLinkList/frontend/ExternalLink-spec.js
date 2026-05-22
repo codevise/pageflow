@@ -497,7 +497,7 @@ describe('ExternalLink', () => {
 
         const {container} = renderInContentElement(
           <ExternalLink id={1} configuration={configuration} />,
-          {editorState: {isEditable: true}}
+          {inlineEditing: true}
         );
 
         expect(container.querySelector(`.${styles.titleLink}`)).toBeNull();
@@ -510,7 +510,7 @@ describe('ExternalLink', () => {
 
         const {container} = renderInContentElement(
           <ExternalLink id={1} configuration={configuration} />,
-          {editorState: {isEditable: true}}
+          {inlineEditing: true}
         );
 
         expect(container.querySelector(`.${styles.moreLink}`)).toBeNull();

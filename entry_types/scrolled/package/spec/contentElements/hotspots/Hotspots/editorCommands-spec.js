@@ -28,7 +28,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} contentElementId={1} />,
       {
         seed,
-        editorState: {isSelected: true, isEditable: true}
+        inlineEditing: {isSelected: true}
       }
     );
     triggerEditorCommand({type: 'HIGHLIGHT_AREA', index: 0});
@@ -52,7 +52,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} contentElementId={1} />,
       {
         seed,
-        editorState: {isSelected: true, isEditable: true}
+        inlineEditing: {isSelected: true}
       }
     );
     triggerEditorCommand({type: 'HIGHLIGHT_AREA', index: 0});
@@ -80,7 +80,7 @@ describe('Hotspots', () => {
       <Hotspots configuration={configuration} contentElementId={1} />,
       {
         seed,
-        editorState: {isSelected: true, isEditable: true}
+        inlineEditing: {isSelected: true}
       }
     );
     simulateScrollPosition('near viewport');

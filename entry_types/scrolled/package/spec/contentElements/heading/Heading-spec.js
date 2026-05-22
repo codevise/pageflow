@@ -20,9 +20,7 @@ describe('Heading', () => {
         contentElementId={5}
         contentElementWidth={width || contentElementWidths.md}
         sectionProps={{sectionIndex: 1, ...sectionProps}}
-      />, {
-        editorState: {isEditable: false}
-      }
+      />
     );
   }
 

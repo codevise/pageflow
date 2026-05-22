@@ -73,7 +73,7 @@ describe('EditableLink', () => {
     renderInContentElement(
       <EditableLink>Some text</EditableLink>,
       {
-        editorState: {isSelected: true}
+        inlineEditing: {isSelected: true}
       }
     );
 
@@ -84,7 +84,7 @@ describe('EditableLink', () => {
     renderInContentElement(
       <EditableLink actionButtonVisible={false}>Some text</EditableLink>,
       {
-        editorState: {isSelected: true}
+        inlineEditing: {isSelected: true}
       }
     );
 

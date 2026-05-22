@@ -12,7 +12,7 @@ describe('ExternalLinkList placeholder', () => {
     const {container} = renderInContentElement(
       <ExternalLinkList configuration={{links: [{id: 1}]}}
                         sectionProps={{}} />,
-      {editorState: {isEditable: true}}
+      {inlineEditing: true}
     );
 
     expect(container.querySelector(`.${styles.placeholder}`)).not.toBeNull();
@@ -21,8 +21,7 @@ describe('ExternalLinkList placeholder', () => {
   it('does not render placeholder in published entry', () => {
     const {container} = renderInContentElement(
       <ExternalLinkList configuration={{links: [{id: 1}]}}
-                        sectionProps={{}} />,
-      {editorState: {isEditable: false}}
+                        sectionProps={{}} />
     );
 
     expect(container.querySelector(`.${styles.placeholder}`)).toBeNull();

@@ -109,7 +109,7 @@ describe('Hotspots', () => {
     const {container} = renderInContentElement(
       <Hotspots configuration={configuration} />, {
         seed,
-        editorState: {isSelected: true, isEditable: true}
+        inlineEditing: {isSelected: true}
       }
     );
 
