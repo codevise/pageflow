@@ -11,7 +11,6 @@ describe('content element selection', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {
-    window.parent.postMessage = jest.fn();
     window.location.hash = '#initial';
   });
 

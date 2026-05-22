@@ -21,7 +21,6 @@ describe('inline editing EditableText comment selection messages', () => {
   });
 
   it('posts SELECTED contentElementComments with highlightedThreadId on badge click', () => {
-    window.parent.postMessage = jest.fn();
 
     const value = [
       {type: 'paragraph', children: [{text: 'First paragraph'}]}
@@ -55,7 +54,6 @@ describe('inline editing EditableText comment selection messages', () => {
   });
 
   it('runs badge click logic and scrolls into view on SELECT_COMMENT_THREAD message', async () => {
-    window.parent.postMessage = jest.fn();
     const scrollIntoView = jest.fn();
     Element.prototype.scrollIntoView = scrollIntoView;
 

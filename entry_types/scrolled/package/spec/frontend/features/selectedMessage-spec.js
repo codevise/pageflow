@@ -9,9 +9,6 @@ import '@testing-library/jest-dom/extend-expect'
 describe('SELECTED message', () => {
   useInlineEditingPageObjects();
 
-  beforeEach(() => {
-    window.parent.postMessage = jest.fn();
-  });
 
   it('is posted when content element is clicked', () => {
     frontend.contentElementTypes.register('text', {

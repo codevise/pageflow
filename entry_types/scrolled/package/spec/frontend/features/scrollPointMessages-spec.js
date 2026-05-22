@@ -6,7 +6,6 @@ describe('scroll point messages', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {
-    window.parent.postMessage = jest.fn();
     window.scrollTo = jest.fn();
   });
 

@@ -4,9 +4,6 @@ import '@testing-library/jest-dom/extend-expect'
 describe('MOVE_CONTENT_ELEMENT message', () => {
   useInlineEditingPageObjects();
 
-  beforeEach(() => {
-    window.parent.postMessage = jest.fn();
-  });
 
   it('is posted when content element is dragged before other content element', () => {
     const {getContentElementByTestId} = renderEntry({

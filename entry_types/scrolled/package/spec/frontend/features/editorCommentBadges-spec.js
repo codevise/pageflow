@@ -10,7 +10,6 @@ describe('editor comment badges', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {
-    window.parent.postMessage = jest.fn();
     features.enable('frontend', ['commenting']);
   });
 

@@ -8,9 +8,6 @@ import '@testing-library/jest-dom/extend-expect'
 describe('useContentElementConfigurationUpdate', () => {
   useInlineEditingPageObjects();
 
-  beforeEach(() => {
-    window.parent.postMessage = jest.fn();
-  });
 
   it('lets content elements use hook to update their own configuration', () => {
     frontend.contentElementTypes.register('text', {

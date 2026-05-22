@@ -4,9 +4,6 @@ import '@testing-library/jest-dom/extend-expect'
 describe('INSERT_CONTENT_ELEMENT message', () => {
   useInlineEditingPageObjects();
 
-  beforeEach(() => {
-    window.parent.postMessage = jest.fn();
-  });
 
   it('is posted when selection rect insert button is clicked', () => {
     const {getContentElementByTestId} = renderEntry({
