@@ -5,7 +5,7 @@ import {VhFix} from './VhFix';
 import {useActiveExcursion} from './useActiveExcursion';
 import {useCurrentSectionIndexState} from './useCurrentChapter';
 import {useEntryStructure} from 'pageflow-scrolled/entryState';
-import {extensible} from './extensions';
+import {extensible} from './extensionRegistry';
 import {usePostMessageListener} from '../shared/usePostMessageListener';
 import {useSectionChangeEvents} from './useSectionChangeEvents';
 import {sectionChangeMessagePoster} from './sectionChangeMessagePoster';

@@ -15,6 +15,7 @@ import styles from './foregroundBoxes/GradientBox.module.css';
 
 import {RootProviders} from './RootProviders';
 import {loadInlineEditingComponents} from './inlineEditing';
+import {loadCommentingComponents} from './commenting';
 import {loadDashUnlessHlsSupported} from './dash';
 import {registerConsentVendors} from './thirdPartyConsent';
 
@@ -172,9 +173,7 @@ global.pageflowScrolledRender = async function(seed) {
   render(seed);
 
   if (seed.config.loadCommenting) {
-    import(/* webpackPreload: true */ './commenting').then(
-      ({loadCommentingComponents}) => loadCommentingComponents()
-    );
+    loadCommentingComponents();
   }
 }
 

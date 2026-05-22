@@ -12,7 +12,7 @@ import {MediaMutedProvider} from './useMediaMuted';
 import {AudioFocusProvider} from './useAudioFocus';
 import {ConsentProvider} from './thirdPartyConsent';
 import {CurrentSectionProvider} from './useCurrentChapter';
-import {ExtensionsProvider} from './extensions';
+import {ExtensionsProvider} from './extensionRegistry';
 import {ScrollTargetEmitterProvider} from './useScrollTarget';
 
 export function RootProviders({seed, consent = consentApi, children}) {

@@ -1,4 +1,4 @@
-import {extensible} from './extensions';
+import {extensible} from './extensionRegistry';
 
 export const ActionButton = extensible('ActionButton', function ActionButton() {
   return null;

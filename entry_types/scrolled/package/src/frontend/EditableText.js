@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import {camelize} from './utils/camelize';
 import {paletteColor} from './paletteColor';
-import {extensible} from './extensions';
+import {extensible} from './extensionRegistry';
 import {useDarkBackground} from './backgroundColor';
 import {Text} from './Text';
 import {Link} from './Link';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {extensible} from './extensions';
+import {extensible} from './extensionRegistry';
 import {Link} from './Link';
 
 export const EditableLink = extensible(

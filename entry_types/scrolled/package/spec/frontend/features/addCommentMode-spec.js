@@ -8,7 +8,7 @@ import {Entry} from 'frontend/Entry';
 import {api} from 'frontend/api';
 import {usePageObjects} from 'support/pageObjects';
 import {renderInEntry} from 'support';
-import {clearExtensions} from 'frontend/extensions';
+import {clearExtensions} from 'frontend/extensionRegistry';
 import {loadCommentingComponents} from 'frontend/commenting';
 
 describe('add comment mode', () => {
@@ -24,13 +24,13 @@ describe('add comment mode', () => {
     'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment'
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.spyOn(window, 'fetch').mockResolvedValue({
       ok: true,
       json: () => Promise.resolve({currentUser: null, commentThreads: []})
     });
 
-    loadCommentingComponents();
+    await loadCommentingComponents();
   });
 
   afterEach(() => {
