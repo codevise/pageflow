@@ -4,6 +4,10 @@ import _ from 'underscore';
 /**
  * Define translations to use in tests.
  *
+ * Multiple calls within the same describe block (or across nested
+ * describes) compose: each call's translations are merged on top of
+ * whatever previous `useFakeTranslations` calls already provided.
+ *
  * @param {Object} translations -
  *   A mapping of either the form `(translation key => translated
  *   text)`.  Translation keys can contains dots.
@@ -47,12 +51,19 @@ export function useFakeTranslations(translations, {multiLocale} = {}) {
   beforeEach(function() {
     originalTranslations = I18n.translations;
 
+    const base = I18n.translations
+      ? JSON.parse(JSON.stringify(I18n.translations))
+      : {};
+
     if (multiLocale) {
-      I18n.translations = keysWithDotsToNestedObjects(translations);
+      applyTranslations(base, translations);
     }
     else {
-      I18n.translations = {en: keysWithDotsToNestedObjects(translations)};
+      base.en = base.en || {};
+      applyTranslations(base.en, translations);
     }
+
+    I18n.translations = base;
   });
 
   afterEach(() => {
@@ -60,17 +71,16 @@ export function useFakeTranslations(translations, {multiLocale} = {}) {
   });
 }
 
-function keysWithDotsToNestedObjects(translations) {
-  return _(translations).reduce((result, value, key) => {
-    var keys = key.split('.');
-    var last = keys.pop();
+function applyTranslations(target, translations) {
+  _(translations).each((value, key) => {
+    const keys = key.split('.');
+    const last = keys.pop();
 
-    var inner = _(keys).reduce((r, key) => {
-      r[key] = r[key] || {};
-      return r[key];
-    }, result);
+    const inner = _(keys).reduce((r, k) => {
+      r[k] = r[k] || {};
+      return r[k];
+    }, target);
 
     inner[last] = value;
-    return result;
-  }, {});
+  });
 }

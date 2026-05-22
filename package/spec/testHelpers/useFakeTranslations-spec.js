@@ -22,4 +22,33 @@ describe('useFakeTranslations', () => {
       expect(I18n.t('some.key')).toEqual('some text');
     });
   });
+
+  describe('when called multiple times', () => {
+    useFakeTranslations({
+      'some.key': 'first text'
+    });
+
+    useFakeTranslations({
+      'other.key': 'other text'
+    });
+
+    it('merges translations from all calls', () => {
+      expect(I18n.t('some.key')).toEqual('first text');
+      expect(I18n.t('other.key')).toEqual('other text');
+    });
+  });
+
+  describe('when later call overrides earlier value', () => {
+    useFakeTranslations({
+      'shared.key': 'first'
+    });
+
+    useFakeTranslations({
+      'shared.key': 'second'
+    });
+
+    it('uses the later value', () => {
+      expect(I18n.t('shared.key')).toEqual('second');
+    });
+  });
 });

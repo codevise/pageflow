@@ -3,6 +3,6 @@ import {request} from './request';
 
 export {ReviewSession};
 
-export function createReviewSession({entryId}) {
-  return new ReviewSession({entryId, request});
+export function createReviewSession({entryId, initialState}) {
+  return new ReviewSession({entryId, request, initialState});
 }

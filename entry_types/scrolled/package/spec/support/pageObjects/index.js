@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {renderInEntry} from './index';
+import {renderInEntry} from '..';
 import {Entry} from 'frontend/Entry';
 import foregroundStyles from 'frontend/Foreground.module.css';
 import sharedTransitionStyles from 'frontend/transitions/shared.module.css';
@@ -13,27 +13,56 @@ import twoColumnLayoutStyles from 'frontend/layouts/TwoColumn.module.css';
 import boxBoundaryMarginStyles from 'frontend/foregroundBoxes/BoxBoundaryMargin.module.css';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
+import {clearExtensions} from 'frontend/extensionRegistry';
 import {api} from 'frontend/api';
 
 import {act, fireEvent, queryHelpers, queries, within} from '@testing-library/react'
 import {useFakeTranslations} from 'pageflow/testHelpers';
-import {simulateScrollingIntoView} from './fakeIntersectionObserver';
+import {simulateScrollingIntoView} from '../fakeIntersectionObserver';
 
-export function renderEntry({seed, consent, isStaticPreview, phonePlatform} = {}) {
-  const result = renderInEntry(<Entry />, {
-    seed,
+export function renderEntry({
+  seed, consent, isStaticPreview, phonePlatform,
+  entryProps,
+  contentElement,
+  contentElementFactory = createContentElementPageObject
+} = {}) {
+  const effectiveSeed = contentElement ? mergeContentElement(seed, contentElement) : seed;
+  const entry = <Entry {...entryProps} />;
+
+  const result = renderInEntry(entry, {
+    seed: effectiveSeed,
     consent,
     phonePlatform,
     wrapper: isStaticPreview ? StaticPreview : null,
-    queries: {...queries, ...pageObjectQueries}
+    queries: {...queries, ...buildPageObjectQueries({contentElementFactory})}
   });
 
   return {
     ...result,
     rerender() {
-      result.rerender(<Entry />);
+      result.rerender(entry);
     }
   }
+}
+
+function mergeContentElement(seed, {ui, typeName, typeOptions = {}, permaId = 10, configuration = {}}) {
+  let resolvedTypeName = typeName;
+
+  if (ui) {
+    resolvedTypeName = 'withUi';
+    api.contentElementTypes.register('withUi', {
+      ...typeOptions,
+      component: function WithUi() { return ui; }
+    });
+  }
+
+  return {
+    ...seed,
+    contentElements: [
+      ...(seed?.contentElements || []),
+      {typeName: resolvedTypeName, permaId, configuration}
+    ]
+  };
 }
 
 export function renderContentElement({typeName, configuration = {}, ...seedOptions} = {}) {
@@ -70,6 +99,10 @@ export function useInlineEditingPageObjects() {
     await loadInlineEditingComponents();
   });
 
+  afterAll(() => {
+    act(() => clearExtensions());
+  });
+
   useFakeTranslations({
     'pageflow_scrolled.inline_editing.select_section': 'Select section',
     'pageflow_scrolled.inline_editing.select_content_element': 'Select content element',
@@ -104,71 +137,76 @@ export function usePageObjects() {
   });
 }
 
-const pageObjectQueries = {
-  getSectionByPermaId(container, permaId) {
-    const el = queryHelpers.queryByAttribute('id',
-                                             container,
-                                             `section-${permaId}`);
+function buildPageObjectQueries({contentElementFactory}) {
+  return {
+    getSectionByPermaId(container, permaId) {
+      const el = queryHelpers.queryByAttribute('id',
+                                               container,
+                                               `section-${permaId}`);
 
-    if (!el) {
-      throw queryHelpers.getElementError(
-        `Unable to find section with perma id ${permaId}.`,
-        container
-      );
-    }
+      if (!el) {
+        throw queryHelpers.getElementError(
+          `Unable to find section with perma id ${permaId}.`,
+          container
+        );
+      }
 
-    return createSectionPageObject(el);
-  },
+      return createSectionPageObject(el);
+    },
 
-  getContentElementByTestId(container, testId) {
-    const el = queryHelpers.queryByAttribute('data-testid',
-                                             container,
-                                             `contentElement-${testId}`);
+    getContentElementByTestId(container, testId) {
+      const el = queryHelpers.queryByAttribute('data-testid',
+                                               container,
+                                               `contentElement-${testId}`);
 
-    if (!el) {
-      throw queryHelpers.getElementError(
-        `Unable to find content element with testId id ${testId}.`,
-        container
-      );
-    }
+      if (!el) {
+        throw queryHelpers.getElementError(
+          `Unable to find content element with testId id ${testId}.`,
+          container
+        );
+      }
 
-    return createContentElementPageObject(el);
-  },
+      return contentElementFactory(el);
+    },
 
 
-  fakeSectionBoundingClientRectsByPermaId(container, rectsByPermaId) {
-    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function() {
-      const idAttribute = this.getAttribute('id');
-      const permaId = idAttribute?.split('-')[1];
+    fakeSectionBoundingClientRectsByPermaId,
+    fakeContentElementBoundingClientRectsByTestId
+  };
+}
 
-      return {
-        top: 0,
-        left: 0,
-        width: 0,
-        height: 0,
-        bottom: 0,
-        right: 0,
-        ...(permaId ? rectsByPermaId[permaId] : {})
-      };
-    });
-  },
+function fakeSectionBoundingClientRectsByPermaId(container, rectsByPermaId) {
+  jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function() {
+    const idAttribute = this.getAttribute('id');
+    const permaId = idAttribute?.split('-')[1];
 
-  fakeContentElementBoundingClientRectsByTestId(container, rectsByTestId) {
-    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function() {
-      const testIdAttribute = this.querySelector('[data-testid]')?.getAttribute('data-testid');
-      const testId = testIdAttribute?.split('-')[1];
+    return {
+      top: 0,
+      left: 0,
+      width: 0,
+      height: 0,
+      bottom: 0,
+      right: 0,
+      ...(permaId ? rectsByPermaId[permaId] : {})
+    };
+  });
+}
 
-      return {
-        top: 0,
-        left: 0,
-        width: 0,
-        height: 0,
-        bottom: 0,
-        right: 0,
-        ...(testId ? rectsByTestId[testId] : {})
-      };
-    });
-  }
+function fakeContentElementBoundingClientRectsByTestId(container, rectsByTestId) {
+  jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function() {
+    const testIdAttribute = this.querySelector('[data-testid]')?.getAttribute('data-testid');
+    const testId = testIdAttribute?.split('-')[1];
+
+    return {
+      top: 0,
+      left: 0,
+      width: 0,
+      height: 0,
+      bottom: 0,
+      right: 0,
+      ...(testId ? rectsByTestId[testId] : {})
+    };
+  });
 }
 
 function createSectionPageObject(el) {
@@ -255,7 +293,7 @@ function createSectionPageObject(el) {
   }
 }
 
-function createContentElementPageObject(el) {
+export function createContentElementPageObject(el) {
   const selectionRect = el.closest('[aria-label="Select content element"]');
 
   return {
