@@ -2,10 +2,10 @@ import React, {useEffect} from 'react';
 
 import {frontend, useContentElementConfigurationUpdate} from 'frontend';
 
-import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects';
+import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inlineEditing';
 import '@testing-library/jest-dom/extend-expect'
 
-describe('useContentElementConfigurationUpdate', () => {
+describe('inline editing useContentElementConfigurationUpdate', () => {
   useInlineEditingPageObjects();
 
 

@@ -1,7 +1,7 @@
-import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
+import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects/inlineEditing';
 import '@testing-library/jest-dom/extend-expect'
 
-describe('MOVE_CONTENT_ELEMENT message', () => {
+describe('inline editing MOVE_CONTENT_ELEMENT message', () => {
   useInlineEditingPageObjects();
 
 

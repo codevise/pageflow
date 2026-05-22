@@ -91,8 +91,6 @@ export function renderContentElement({typeName, configuration = {}, ...seedOptio
   };
 }
 
-export {useInlineEditingPageObjects} from './inlineEditing';
-
 export function usePageObjects() {
   beforeEach(() => {
     jest.restoreAllMocks();

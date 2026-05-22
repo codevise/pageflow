@@ -2,11 +2,11 @@ import React from 'react';
 import {frontend, WidgetSelectionRect} from 'frontend';
 import {features} from 'pageflow/frontend';
 
-import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
+import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects/inlineEditing';
 import {act, fireEvent, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
-describe('SELECTED message', () => {
+describe('inline editing SELECTED message', () => {
   useInlineEditingPageObjects();
 
 

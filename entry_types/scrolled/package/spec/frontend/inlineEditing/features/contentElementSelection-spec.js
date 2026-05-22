@@ -2,12 +2,12 @@ import React from 'react';
 import {frontend} from 'frontend';
 import {features} from 'pageflow/frontend';
 
-import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
+import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects/inlineEditing';
 import {changeLocationHash} from 'support/changeLocationHash';
 import '@testing-library/jest-dom/extend-expect'
 import {act, fireEvent, waitFor} from '@testing-library/react';
 
-describe('content element selection', () => {
+describe('inline editing content element selection', () => {
   useInlineEditingPageObjects();
 
   beforeEach(() => {

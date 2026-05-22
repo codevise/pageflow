@@ -1,10 +1,10 @@
-import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
+import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects/inlineEditing';
 import {useMotifAreaState} from 'frontend/useMotifAreaState';
 import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('frontend/useMotifAreaState');
 
-describe('PaddingIndicator', () => {
+describe('inline editing PaddingIndicator', () => {
   useInlineEditingPageObjects();
 
   it('displays scale translation for top padding when section is selected', () => {
