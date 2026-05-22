@@ -9,12 +9,12 @@ import {
   ContentElementEditorCommandSubscriptionProvider
 } from './ContentElementEditorCommandSubscriptionProvider';
 
-export function EntryDecorator({children}) {
+export function EntryDecorator({commentingInitialState, children}) {
   const contentElementEditorCommandEmitter = useContentElementEditorCommandEmitter();
 
   return (
     <EditorStateProvider>
-      <ReviewStateProvider>
+      <ReviewStateProvider initialState={commentingInitialState}>
         <MessageHandler contentElementEditorCommandEmitter={contentElementEditorCommandEmitter} />
         <ContentElementEditorCommandSubscriptionProvider emitter={contentElementEditorCommandEmitter}>
           {children}
