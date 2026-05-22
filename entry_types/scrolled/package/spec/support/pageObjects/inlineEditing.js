@@ -5,6 +5,7 @@ import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 import {clearExtensions} from 'frontend/extensionRegistry';
 import badgeStyles from 'review/Badge.module.css';
 
+import {useFakeParentWindow} from '../fakeWindows';
 import {
   renderEntry as baseRenderEntry,
   usePageObjects
@@ -24,6 +25,8 @@ export function renderEntry({commenting, ...options} = {}) {
 }
 
 export function useInlineEditingPageObjects() {
+  useFakeParentWindow();
+
   beforeAll(async () => {
     await loadInlineEditingComponents();
   });

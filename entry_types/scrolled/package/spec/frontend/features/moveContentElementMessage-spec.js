@@ -1,14 +1,9 @@
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
-import {fakeParentWindow} from 'support';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('MOVE_CONTENT_ELEMENT message', () => {
   useInlineEditingPageObjects();
 
-  beforeEach(() => {
-    fakeParentWindow()
-    window.parent.postMessage = jest.fn();
-  });
 
   it('is posted when content element is dragged before other content element', () => {
     const {getContentElementByTestId} = renderEntry({

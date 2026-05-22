@@ -1,13 +1,8 @@
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects';
-import {fakeParentWindow} from 'support';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('MarginIndicator', () => {
   useInlineEditingPageObjects();
-
-  beforeEach(() => {
-    fakeParentWindow();
-  });
 
   it('displays scale translation for top margin when element is selected', () => {
     const {getContentElementByTestId} = renderEntry({

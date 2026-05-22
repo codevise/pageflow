@@ -1,7 +1,7 @@
 import 'widgets/excursionSheet';
 
 import {renderEntry, usePageObjects} from 'support/pageObjects';
-import {fakeParentWindow} from 'support';
+import {useFakeParentWindow} from 'support/fakeWindows';
 import {changeLocationHash} from 'support/changeLocationHash';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import 'support/viewTimelineStub';
@@ -11,14 +11,10 @@ import userEvent from '@testing-library/user-event';
 
 describe('CHANGE_SECTION message', () => {
   usePageObjects();
+  useFakeParentWindow();
 
   useFakeTranslations({
     'pageflow_scrolled.public.close': 'Close'
-  });
-
-  beforeEach(() => {
-    fakeParentWindow()
-    window.parent.postMessage = jest.fn();
   });
 
   it('is posted when section becomes active', () => {

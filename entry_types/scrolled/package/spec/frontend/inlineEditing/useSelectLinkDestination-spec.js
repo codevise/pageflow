@@ -1,13 +1,12 @@
 import {useSelectLinkDestination} from 'frontend/inlineEditing/useSelectLinkDestination';
 
 import {renderHook} from '@testing-library/react-hooks';
-import {fakeParentWindow} from 'support';
+import {useFakeParentWindow} from 'support/fakeWindows';
 
 describe('useSelectLinkDestination', () => {
-  it('returns function that posts SELECT_LINK_DESTINATION message', () => {
-    fakeParentWindow();
-    window.parent.postMessage = jest.fn();
+  useFakeParentWindow();
 
+  it('returns function that posts SELECT_LINK_DESTINATION message', () => {
     const {result} = renderHook(() => useSelectLinkDestination());
     const selectLinkDestination = result.current;
     selectLinkDestination().catch(() => {});
@@ -19,9 +18,6 @@ describe('useSelectLinkDestination', () => {
   });
 
   it('returns function returns promise which resolves on LINK_DESTINATION_SELECTED message', () => {
-    fakeParentWindow();
-    window.parent.postMessage = jest.fn();
-
     const {result} = renderHook(() => useSelectLinkDestination());
     const selectLinkDestination = result.current;
     const promise = selectLinkDestination();
@@ -35,9 +31,6 @@ describe('useSelectLinkDestination', () => {
   });
 
   it('rejects promise on when function is called again', () => {
-    fakeParentWindow();
-    window.parent.postMessage = jest.fn();
-
     const {result} = renderHook(() => useSelectLinkDestination());
     const selectLinkDestination = result.current;
     const promise = selectLinkDestination();
@@ -47,9 +40,6 @@ describe('useSelectLinkDestination', () => {
   });
 
   it('ignores other messages send to window', () => {
-    fakeParentWindow();
-    window.parent.postMessage = jest.fn();
-
     const {result} = renderHook(() => useSelectLinkDestination());
     const selectLinkDestination = result.current;
     const promise = selectLinkDestination();

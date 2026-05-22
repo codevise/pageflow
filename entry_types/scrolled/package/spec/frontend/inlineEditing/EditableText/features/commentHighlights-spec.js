@@ -3,7 +3,6 @@ import React from 'react';
 import {features} from 'pageflow/frontend';
 import {EditableText} from 'frontend';
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inlineEditing';
-import {fakeParentWindow} from 'support';
 
 import {act, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -50,8 +49,6 @@ describe('inline editing EditableText comment highlights', () => {
   });
 
   it('highlights pending new thread range from editor state', async () => {
-    fakeParentWindow();
-
     const entry = renderEntry({
       contentElement: {
         ui: <EditableText value={value} />,

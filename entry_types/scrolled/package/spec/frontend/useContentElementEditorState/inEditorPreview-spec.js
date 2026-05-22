@@ -1,5 +1,6 @@
 import {frontend, Entry, useContentElementEditorState} from 'pageflow-scrolled/frontend';
 import {renderInEntry} from 'support';
+import {useFakeParentWindow} from 'support/fakeWindows';
 import {useEditorSelection} from 'frontend/inlineEditing/EditorState';
 
 import React, {useEffect} from 'react';
@@ -10,6 +11,7 @@ import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 
 describe('useContentElementEditorState in editor preview', () => {
   beforeAll(loadInlineEditingComponents);
+  useFakeParentWindow();
 
   it('lets content elements determine whether they are selected', () => {
     frontend.contentElementTypes.register('test', {
@@ -98,7 +100,6 @@ describe('useContentElementEditorState in editor preview', () => {
   });
 
   it('lets content elements publish transient state via post message', () => {
-    window.parent.postMessage = jest.fn();
     frontend.contentElementTypes.register('test', {
       component: function Test() {
         const {setTransientState} = useContentElementEditorState();
@@ -116,7 +117,7 @@ describe('useContentElementEditorState in editor preview', () => {
       }
     });
 
-    expect(window.postMessage).toHaveBeenCalledWith({
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'UPDATE_TRANSIENT_CONTENT_ELEMENT_STATE',
       payload: {
         id: 5,
@@ -126,7 +127,6 @@ describe('useContentElementEditorState in editor preview', () => {
   });
 
   it('does not send message if transient state is shallow equal to previous transient state', () => {
-    window.parent.postMessage = jest.fn();
     frontend.contentElementTypes.register('test', {
       component: function Test() {
         const {setTransientState} = useContentElementEditorState();
@@ -144,8 +144,9 @@ describe('useContentElementEditorState in editor preview', () => {
       }
     });
 
+    window.parent.postMessage.mockClear();
     rerender(<Entry />);
 
-    expect(window.postMessage).toHaveBeenCalledTimes(1);
+    expect(window.parent.postMessage).not.toHaveBeenCalled();
   });
 });
