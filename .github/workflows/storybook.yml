@@ -125,10 +125,8 @@ jobs:
         bundle exec rake pageflow_scrolled:storybook:seed:setup[package/.storybook]
 
     - name: Snapshot
-      uses: percy/storybook-action@v0.1.6
-      with:
-        working-directory: entry_types/scrolled/package
-        custom-command: yarn run snapshot
+      working-directory: entry_types/scrolled/package
+      run: yarn run snapshot
 
     - name: Publish
       working-directory: entry_types/scrolled/package
