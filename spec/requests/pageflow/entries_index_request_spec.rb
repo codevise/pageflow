@@ -56,6 +56,22 @@ module Pageflow
           .to include('Root Story published rendered by entry type frontend app')
       end
 
+      it 'responds with not found for non-html format' do
+        site = create(:site, cname: 'pageflow.example.com')
+        create(:entry,
+               :published,
+               site:,
+               type_name: 'test',
+               title: 'Root Story',
+               permalink_attributes: {slug: '', allow_root_path: true})
+
+        get('/',
+            params: {},
+            headers: {'HTTP_HOST' => 'pageflow.example.com', 'HTTP_ACCEPT' => 'text/plain'})
+
+        expect(response.status).to eq(404)
+      end
+
       it 'responds with not found if no site matches cname' do
         get('/', params: {}, headers: {'HTTP_HOST' => 'unknown.example.com'})
 
