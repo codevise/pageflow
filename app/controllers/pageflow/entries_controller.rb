@@ -15,7 +15,9 @@ module Pageflow
       )
 
       if entry
-        handle_public_entry_request(entry)
+        respond_to do |format|
+          format.html { handle_public_entry_request(entry) }
+        end
       elsif site.home_url.present?
         redirect_to(site.home_url, allow_other_host: true)
       else
