@@ -12,7 +12,8 @@ export const api = {
    * typeName (string), configuration (object), fallback (function returning
    * default UI), and children (content element).
    *
-   * @property {React.Component} contentElementErrorBoundary
+   * @name frontend_contentElementErrorBoundary
+   * @type {React.Component}
    */
   contentElementErrorBoundary: undefined
 }
