@@ -1,3 +1,4 @@
+export * from './matchers';
 export * from './normalizeSeed';
 export * from './renderReactBasedBackboneView';
 export * from './renderInContentElement';

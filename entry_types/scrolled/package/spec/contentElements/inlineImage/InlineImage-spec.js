@@ -1,7 +1,6 @@
 import React from 'react';
 import 'contentElements/inlineImage/frontend';
-import {renderContentElement, usePageObjects} from 'support/pageObjects';
-import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
+import {renderInContentElement, useContentElementMatchers} from 'pageflow-scrolled/testHelpers';
 import '@testing-library/jest-dom/extend-expect'
 
 import {InlineImage} from 'contentElements/inlineImage/InlineImage';
@@ -11,16 +10,26 @@ import {usePortraitOrientation} from 'frontend/usePortraitOrientation';
 jest.mock('frontend/usePortraitOrientation');
 
 describe('InlineImage', () => {
-  usePageObjects();
+  useContentElementMatchers();
 
   beforeEach(() => {
     usePortraitOrientation.mockReturnValue(false);
   });
 
+  function renderInlineImage({contentElementWidth = 0, configuration = {id: 100}, ...seedOptions} = {}) {
+    const result = renderInContentElement(
+      <InlineImage contentElementId={42}
+                   contentElementWidth={contentElementWidth}
+                   configuration={configuration} />,
+      {seed: seedOptions}
+    );
+    result.simulateScrollPosition('near viewport');
+    return result;
+  }
+
   describe('circle crop', () => {
     it('forces 1:1 aspect ratio', () => {
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100,
           imageModifiers: [
@@ -34,13 +43,11 @@ describe('InlineImage', () => {
         }]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getFitViewportAspectRatio()).toEqual('square');
+      expect(container).toContainFitViewport({aspectRatio: 'square'});
     });
 
     it('applies circle border radius', () => {
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100,
           imageModifiers: [
@@ -54,13 +61,11 @@ describe('InlineImage', () => {
         }]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getBoxBorderRadius()).toEqual('circle');
+      expect(container).toContainContentElementBox({borderRadius: 'circle'});
     });
 
     it('applies box shadow on circle box', () => {
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100,
           boxShadow: 'md',
@@ -75,14 +80,11 @@ describe('InlineImage', () => {
         }]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getBoxBorderRadius()).toEqual('circle');
-      expect(contentElement.hasBoxShadow('md')).toBe(true);
+      expect(container).toContainContentElementBox({borderRadius: 'circle', boxShadow: 'md'});
     });
 
     it('overrides rounded styles', () => {
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100,
           imageModifiers: [
@@ -97,15 +99,13 @@ describe('InlineImage', () => {
         }]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getBoxBorderRadius()).toEqual('circle');
+      expect(container).toContainContentElementBox({borderRadius: 'circle'});
     });
   });
 
   describe('regular crop', () => {
     it('applies aspect ratio from crop value', () => {
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100,
           imageModifiers: [
@@ -119,13 +119,11 @@ describe('InlineImage', () => {
         }]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getFitViewportAspectRatio()).toEqual('square');
+      expect(container).toContainFitViewport({aspectRatio: 'square'});
     });
 
     it('applies box shadow on outer box with rounded styles', () => {
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100,
           boxShadow: 'lg',
@@ -140,14 +138,11 @@ describe('InlineImage', () => {
         }]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getBoxBorderRadius()).toEqual('md');
-      expect(contentElement.hasBoxShadow('lg')).toBe(true);
+      expect(container).toContainContentElementBox({borderRadius: 'md', boxShadow: 'lg'});
     });
 
     it('applies rounded styles independently', () => {
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100,
           imageModifiers: [
@@ -162,9 +157,8 @@ describe('InlineImage', () => {
         }]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getFitViewportAspectRatio()).toEqual('square');
-      expect(contentElement.getBoxBorderRadius()).toEqual('md');
+      expect(container).toContainFitViewport({aspectRatio: 'square'});
+      expect(container).toContainContentElementBox({borderRadius: 'md'});
     });
   });
 
@@ -172,8 +166,7 @@ describe('InlineImage', () => {
     it('applies circle crop when in portrait orientation', () => {
       usePortraitOrientation.mockReturnValue(true);
 
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100,
           portraitId: 101,
@@ -198,16 +191,14 @@ describe('InlineImage', () => {
         ]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getFitViewportAspectRatio()).toEqual('square');
-      expect(contentElement.getBoxBorderRadius()).toEqual('circle');
+      expect(container).toContainFitViewport({aspectRatio: 'square'});
+      expect(container).toContainContentElementBox({borderRadius: 'circle'});
     });
 
     it('applies landscape modifiers when not in portrait orientation', () => {
       usePortraitOrientation.mockReturnValue(false);
 
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100,
           portraitId: 101,
@@ -233,25 +224,13 @@ describe('InlineImage', () => {
         ]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getFitViewportAspectRatio()).toEqual('wide');
-      expect(contentElement.getBoxBorderRadius()).toEqual('md');
+      expect(container).toContainFitViewport({aspectRatio: 'wide'});
+      expect(container).toContainContentElementBox({borderRadius: 'md'});
     });
   });
 
   describe('srcset', () => {
     useFakeFeatures('frontend', ['image_srcset']);
-
-    function renderInlineImage({contentElementWidth = 0, ...seedOptions} = {}) {
-      const result = renderInContentElement(
-        <InlineImage contentElementId={42}
-                     contentElementWidth={contentElementWidth}
-                     configuration={{id: 100}} />,
-        {seed: seedOptions}
-      );
-      result.simulateScrollPosition('near viewport');
-      return result;
-    }
 
     it('uses medium and large srcset for default width', () => {
       const {getByRole} = renderInlineImage({
@@ -352,8 +331,7 @@ describe('InlineImage', () => {
 
   describe('basic functionality', () => {
     it('renders with FitViewport and ContentElementBox', () => {
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100
         },
@@ -364,27 +342,23 @@ describe('InlineImage', () => {
         }]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.hasFitViewport()).toBe(true);
-      expect(contentElement.containsBox()).toBe(true);
+      expect(container).toContainFitViewport();
+      expect(container).toContainContentElementBox();
     });
 
     it('uses default aspect ratio when no crop modifier and no file', () => {
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           // No image file id
         },
         imageFiles: []
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getFitViewportAspectRatio()).toEqual('0.75');
+      expect(container).toContainFitViewport({aspectRatio: '0.75'});
     });
 
     it('uses default aspect ratio when file is not ready', () => {
-      const {getContentElement} = renderContentElement({
-        typeName: 'inlineImage',
+      const {container} = renderInlineImage({
         configuration: {
           id: 100
         },
@@ -396,8 +370,7 @@ describe('InlineImage', () => {
         }]
       });
 
-      const contentElement = getContentElement();
-      expect(contentElement.getFitViewportAspectRatio()).toEqual('0.75');
+      expect(container).toContainFitViewport({aspectRatio: '0.75'});
     });
   });
 });

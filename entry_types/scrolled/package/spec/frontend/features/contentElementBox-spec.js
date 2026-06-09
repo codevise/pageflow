@@ -3,10 +3,12 @@ import {frontend, ContentElementBox} from 'frontend';
 import React from 'react';
 
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {useContentElementMatchers} from 'pageflow-scrolled/testHelpers';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('content element box', () => {
   usePageObjects();
+  useContentElementMatchers();
 
   beforeEach(() => {
     frontend.contentElementTypes.register('test', {
@@ -91,7 +93,7 @@ describe('content element box', () => {
       }
     });
 
-    expect(getContentElementByTestId('test').containsBox()).toEqual(true);
+    expect(getContentElementByTestId('test')).toContainContentElementBox();
   });
 
   it('does not render box for backdrop content element', () => {
@@ -114,7 +116,7 @@ describe('content element box', () => {
       }
     });
 
-    expect(getContentElementByTestId('test').containsBox()).toEqual(false);
+    expect(getContentElementByTestId('test')).not.toContainContentElementBox();
   });
 
   it('applies border radius class when borderRadius prop is provided', () => {
@@ -126,8 +128,7 @@ describe('content element box', () => {
       }
     });
 
-    const contentElement = getContentElementByTestId('testRounded');
-    expect(contentElement.hasBoxBorderRadius('md')).toBe(true);
+    expect(getContentElementByTestId('testRounded')).toContainContentElementBox({borderRadius: 'md'});
   });
 
   it('does not render box when borderRadius is "none"', () => {
@@ -139,7 +140,7 @@ describe('content element box', () => {
       }
     });
 
-    expect(getContentElementByTestId('testNone').containsBox()).toEqual(false);
+    expect(getContentElementByTestId('testNone')).not.toContainContentElementBox();
   });
 
   it('applies box shadow CSS custom property from configuration', () => {
@@ -152,7 +153,7 @@ describe('content element box', () => {
       }
     });
 
-    expect(getContentElementByTestId('testBoxShadow').hasBoxShadow('md')).toBe(true);
+    expect(getContentElementByTestId('testBoxShadow')).toContainContentElementBox({boxShadow: 'md'});
   });
 
   it('applies outline color CSS custom property from configuration', () => {
@@ -165,7 +166,7 @@ describe('content element box', () => {
       }
     });
 
-    expect(getContentElementByTestId('testOutline').hasOutlineColor('#ff0000')).toBe(true);
+    expect(getContentElementByTestId('testOutline')).toContainContentElementBox({outlineColor: '#ff0000'});
   });
 
   it('renders box when borderRadius is "none" but configuration has boxShadow', () => {
@@ -178,7 +179,7 @@ describe('content element box', () => {
       }
     });
 
-    expect(getContentElementByTestId('testBoxShadowNoBorderRadius').containsBox()).toEqual(true);
-    expect(getContentElementByTestId('testBoxShadowNoBorderRadius').hasBoxShadow('md')).toBe(true);
+    expect(getContentElementByTestId('testBoxShadowNoBorderRadius'))
+      .toContainContentElementBox({boxShadow: 'md'});
   });
 });
