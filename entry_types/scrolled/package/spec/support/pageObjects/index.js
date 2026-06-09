@@ -4,8 +4,6 @@ import {renderInEntry} from '..';
 import {Entry} from 'frontend/Entry';
 import foregroundStyles from 'frontend/Foreground.module.css';
 import sharedTransitionStyles from 'frontend/transitions/shared.module.css';
-import contentElementMarginStyles from 'frontend/ContentElementMargin.module.css';
-import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
 import centerLayoutStyles from 'frontend/layouts/Center.module.css';
 import twoColumnLayoutStyles from 'frontend/layouts/TwoColumn.module.css';
 import boxBoundaryMarginStyles from 'frontend/foregroundBoxes/BoxBoundaryMargin.module.css';
@@ -235,41 +233,6 @@ export function createContentElementPageObject(el) {
 
   return {
     el,
-
-    hasMargin() {
-      return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
-    },
-
-    hasTopMargin() {
-      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
-      return wrapper && !wrapper.classList.contains(contentElementMarginStyles.noTopMargin);
-    },
-
-    getMarginTop() {
-      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
-      return wrapper && wrapper.style.getPropertyValue('--margin-top');
-    },
-
-    getMarginBottom() {
-      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
-      return wrapper && wrapper.style.getPropertyValue('--margin-bottom');
-    },
-
-    getPrevMarginBottom() {
-      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
-      return wrapper && wrapper.style.getPropertyValue('--prev-margin-bottom');
-    },
-
-    hasScrollSpace() {
-      return !!el.closest(`.${contentElementScrollSpaceStyles.wrapper}`);
-    },
-
-    hasAlignment(alignment) {
-      return !!(
-        el.closest(`.${centerLayoutStyles[`align-${alignment}`]}`) ||
-        el.closest(`.${twoColumnLayoutStyles[`align-${alignment}`]}`)
-      );
-    },
 
     getMarginIndicator(position) {
       const {getByLabelText} = within(selectionRect);
