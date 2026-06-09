@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import {act, waitFor} from '@testing-library/react';
-import {features} from 'pageflow/frontend';
+import {useFakeFeatures} from 'pageflow/testHelpers';
 
 import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects/inlineEditing';
 
@@ -8,10 +8,7 @@ import badgeStyles from 'review/Badge.module.css';
 
 describe('inline editing comment badges', () => {
   useInlineEditingPageObjects();
-
-  beforeEach(() => {
-    features.enable('frontend', ['commenting']);
-  });
+  useFakeFeatures('frontend', ['commenting']);
 
   it('does not display comment icon when element is not selected', () => {
     const {queryByRole} = renderEntry({

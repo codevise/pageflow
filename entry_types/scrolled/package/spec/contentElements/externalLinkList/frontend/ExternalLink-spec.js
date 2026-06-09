@@ -5,10 +5,9 @@ import React from 'react';
 
 import {renderInEntry} from 'support';
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
-import {useFakeTranslations} from 'pageflow/testHelpers';
+import {useFakeFeatures, useFakeTranslations} from 'pageflow/testHelpers';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import {features} from 'pageflow/frontend';
 
 describe('ExternalLink', () => {
   it('renders link with href', () => {
@@ -286,8 +285,7 @@ describe('ExternalLink', () => {
   });
 
   describe('srcset', () => {
-    beforeEach(() => features.enable('frontend', ['image_srcset']));
-    afterEach(() => features.enabledFeatureNames = []);
+    useFakeFeatures('frontend', ['image_srcset']);
 
     it('uses medium and large srcset for linkWidth m', () => {
       const {getByRole} = renderInEntry(
