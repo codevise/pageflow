@@ -21,7 +21,7 @@
   },
   "scripts": {
     "test": "jest",
-    "lint": "eslint"
+    "lint": "eslint --rulesdir config/eslint-rules"
   },
   "dependencies": {
     "backbone-events-standalone": "^0.2.7",

@@ -5,6 +5,7 @@ toc:
     children:
       - frontend_contentElementTypes
       - frontend_widgetTypes
+      - frontend_contentElementErrorBoundary
   - name: Editor API
     description: |
       Main entry point of editor API to register new content element types.
@@ -45,6 +46,7 @@ toc:
       - useLegalInfo
       - useMediaMuted
       - usePortraitOrientation
+      - usePrivacyLink
       - useShareProviders
       - useShareUrl
       - useTheme
@@ -60,6 +62,7 @@ toc:
       - normalizeSeed
       - renderInEntry
       - renderInContentElement
+      - renderInEntryWithContentElementLifecycle
       - renderHookInEntry
   - name: Storybook Support
     description: |

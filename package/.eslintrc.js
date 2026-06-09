@@ -46,6 +46,18 @@ module.exports = {
     {
       "files": ["spec/**/*.js", "src/testHelpers/**/*.js"],
       "extends": ["plugin:jest/recommended"]
+    },
+    {
+      // Directories passed to documentation.js in
+      // .github/workflows/docs.yml.
+      "files": [
+        "src/editor/**/*.js",
+        "src/ui/**/*.js",
+        "src/testHelpers/**/*.js"
+      ],
+      "rules": {
+        "documented-in-toc": "error"
+      }
     }
   ]
 };

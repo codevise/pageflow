@@ -48,6 +48,14 @@ module.exports = {
           "patterns": ["**/entryState/**", "../**/entryState"]
         }]
       }
+    },
+    {
+      // Directories passed to documentation.js in
+      // .github/workflows/docs.yml.
+      "files": ["src/**/*.js", "spec/support/**/*.js"],
+      "rules": {
+        "documented-in-toc": "error"
+      }
     }
   ]
 };

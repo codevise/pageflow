@@ -50,6 +50,7 @@ toc:
       - EditConfigurationView
       - ReferenceInputView
       - FileInputView
+      - OembedUrlInputView
 
   - name: Editor - Misc Views
     description: |
@@ -57,6 +58,7 @@ toc:
     children:
       - modelLifecycleTrackingView
       - DropDownButtonView
+      - DestroyMenuItem
       - ListView
       - ModelThumbnailView
 
@@ -132,4 +134,5 @@ toc:
     children:
       - factories
       - setupGlobals
+      - useFakeFeatures
       - useFakeTranslations
