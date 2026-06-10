@@ -19,14 +19,24 @@ regardless of whether the unit under test is a `.js` file or a `/`
 directory. This keeps spec layout invariant under
 `src/Foo.js → src/Foo/index.js` refactorings.
 
+It follows that a unit's behavior tests live in exactly one place: the
+flat `spec/Foo-spec.js`, or — once split — `spec/Foo/features/`, but
+**never both**. A `spec/Foo-spec.js` next to a `spec/Foo/features/`
+directory means a `src/Foo.js → src/Foo/index.js` refactoring left the
+top-level spec behind; fold it into `features/`. (Helper and
+sub-component unit specs at `spec/Foo/<helper>-spec.js` test *different*
+units and may sit beside a flat `spec/Foo-spec.js` — it is specifically
+`Foo-spec.js` together with `Foo/features/` that must not coexist.)
+
 A *unit spec* mirrors a single source unit and stays at the directory
 level, named after that unit. A unit is usually a separate file
 (`spec/Foo/<helper>-spec.js` for `src/Foo/<helper>.js`), but can also be
 a **named export** of the main file — e.g. `AudioPlayer/index.js`
 exports both the `AudioPlayer` component and a `processSources` helper,
-so `processSources-spec.js` mirrors that export and is *not* a topic
-split. (`structuredData-spec.js` in the same directory, which exercises
-the component's behavior, is.)
+so `processSources-spec.js` mirrors that export and stays at the
+directory level. The component's own rendered behavior (e.g. its
+structured-data output) is a topic split, so it lives under `features/`
+(`features/structuredData-spec.js`).
 
 `features/` holds the remaining *behavior-grouped* tests, written
 against the unit's stable public interface; these tend to outlive the
