@@ -5,14 +5,15 @@ import {Entry} from 'frontend/Entry';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 import {api} from 'frontend/api';
 
-import {act, fireEvent, queryHelpers, queries, within} from '@testing-library/react'
+import {act, queryHelpers, queries} from '@testing-library/react'
 import {simulateScrollingIntoView} from '../fakeIntersectionObserver';
 
 export function renderEntry({
   seed, consent, isStaticPreview, phonePlatform,
   entryProps,
   contentElement,
-  contentElementFactory = createContentElementPageObject
+  contentElementFactory = createContentElementPageObject,
+  sectionFactory = createSectionPageObject
 } = {}) {
   const effectiveSeed = contentElement ? mergeContentElement(seed, contentElement) : seed;
   const entry = <Entry {...entryProps} />;
@@ -22,7 +23,7 @@ export function renderEntry({
     consent,
     phonePlatform,
     wrapper: isStaticPreview ? StaticPreview : null,
-    queries: {...queries, ...buildPageObjectQueries({contentElementFactory})}
+    queries: {...queries, ...buildPageObjectQueries({contentElementFactory, sectionFactory})}
   });
 
   return {
@@ -67,7 +68,7 @@ export function usePageObjects() {
   });
 }
 
-function buildPageObjectQueries({contentElementFactory}) {
+function buildPageObjectQueries({contentElementFactory, sectionFactory}) {
   return {
     getSectionByPermaId(container, permaId) {
       const el = queryHelpers.queryByAttribute('id',
@@ -81,7 +82,7 @@ function buildPageObjectQueries({contentElementFactory}) {
         );
       }
 
-      return createSectionPageObject(el);
+      return sectionFactory(el);
     },
 
     getContentElementByTestId(container, testId) {
@@ -139,89 +140,18 @@ function fakeContentElementBoundingClientRectsByTestId(container, rectsByTestId)
   });
 }
 
-function createSectionPageObject(el) {
-  const selectionRect = el.closest('[aria-label="Select section"]');
-
+export function createSectionPageObject(el) {
   return {
     el,
 
     simulateScrollingIntoView() {
       act(() => simulateScrollingIntoView(el));
-    },
-
-    select() {
-      fireEvent.mouseDown(selectionRect);
-    },
-
-    clickAddContentElement() {
-      const {getByTitle} = within(selectionRect);
-      fireEvent.click(getByTitle('Add content element'));
-    },
-
-    clickEditTransitionBefore() {
-      const {getByTitle} = within(selectionRect);
-      fireEvent.mouseDown(getByTitle('Edit section transition before'));
-    },
-
-    clickEditTransitionAfter() {
-      const {getByTitle} = within(selectionRect);
-      fireEvent.mouseDown(getByTitle('Edit section transition after'));
-    },
-
-    getPaddingIndicator(position) {
-      const {getByLabelText} = within(selectionRect);
-      const labels = {
-        top: 'Edit top padding',
-        bottom: 'Edit bottom padding'
-      };
-      return getByLabelText(labels[position]);
-    },
-
-    selectPadding(position) {
-      fireEvent.mouseDown(selectionRect);
-      fireEvent.click(this.getPaddingIndicator(position));
     }
   }
 }
 
 export function createContentElementPageObject(el) {
-  const selectionRect = el.closest('[aria-label="Select content element"]');
-
   return {
-    el,
-
-    getMarginIndicator(position) {
-      const {getByLabelText} = within(selectionRect);
-      const labels = {
-        top: 'Top margin',
-        bottom: 'Bottom margin'
-      };
-      return getByLabelText(labels[position]);
-    },
-
-    select() {
-      fireEvent.click(selectionRect);
-    },
-
-    isSelected() {
-      return selectionRect.getAttribute('aria-selected') === 'true';
-    },
-
-    clickInsertAfterButton() {
-      const {getByTitle} = within(selectionRect);
-      fireEvent.click(getByTitle('Insert content element after'));
-    },
-
-    drag(at, otherContentElement) {
-      const {getByTitle} = within(selectionRect);
-      fireEvent.dragStart(getByTitle('Drag to move'));
-      otherContentElement._drop(at);
-    },
-
-    _drop(at) {
-      const {getByTestId} = within(selectionRect);
-      const target = getByTestId(`drop-${at}`);
-      fireEvent.drop(target);
-    }
+    el
   }
 }
