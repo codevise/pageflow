@@ -2,6 +2,25 @@ import styles from '../../frontend/ContentElementBox.module.css';
 
 import {getElement} from './getElement';
 
+/**
+ * Assert that the subject contains a `ContentElementBox` and, optionally,
+ * that the box has specific theme styles applied. Registered via
+ * {@link useContentElementMatchers}.
+ *
+ * The subject is a DOM element, e.g. the `container` returned by
+ * {@link renderInContentElement}. Negate with `.not` to assert that no
+ * box is present.
+ *
+ * @param {Object} [options]
+ * @param {string} [options.boxShadow] - Expected box shadow theme scale, e.g. `'md'`.
+ * @param {string} [options.borderRadius] - Expected border radius theme scale, e.g. `'circle'`.
+ * @param {string} [options.outlineColor] - Expected outline color.
+ *
+ * @example
+ * expect(container).toContainContentElementBox();
+ * expect(container).toContainContentElementBox({borderRadius: 'circle', boxShadow: 'md'});
+ * expect(container).not.toContainContentElementBox();
+ */
 export function toContainContentElementBox(subject, options = {}) {
   const wrapper = getElement(subject).querySelector(`.${styles.wrapper}`);
 

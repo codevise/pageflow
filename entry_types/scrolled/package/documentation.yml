@@ -53,14 +53,18 @@ toc:
       Helper functions that can be used in content elements.
     children:
       - paletteColor
-  - name: Spec Support
+  - name: Test Helpers
     description: |
-      Helper functions to use in specs.
+      Helpers for testing content elements, available via
+      `pageflow-scrolled/testHelpers`.
     children:
       - normalizeSeed
       - renderInEntry
       - renderInContentElement
       - renderHookInEntry
+      - useContentElementMatchers
+      - toContainContentElementBox
+      - toContainFitViewport
   - name: Storybook Support
     description: |
       Helper functions to use in content element stories.

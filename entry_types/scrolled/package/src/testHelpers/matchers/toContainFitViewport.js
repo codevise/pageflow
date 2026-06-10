@@ -2,6 +2,24 @@ import styles from '../../frontend/FitViewport.module.css';
 
 import {getElement} from './getElement';
 
+/**
+ * Assert that the subject contains a `FitViewport` and, optionally, that
+ * it has a specific aspect ratio. Registered via
+ * {@link useContentElementMatchers}.
+ *
+ * The subject is a DOM element, e.g. the `container` returned by
+ * {@link renderInContentElement}. Negate with `.not` to assert that no
+ * `FitViewport` is present.
+ *
+ * @param {Object} [options]
+ * @param {string} [options.aspectRatio] -
+ *   Expected aspect ratio: a theme scale name (e.g. `'square'`) or a raw
+ *   ratio value (e.g. `'0.75'`).
+ *
+ * @example
+ * expect(container).toContainFitViewport();
+ * expect(container).toContainFitViewport({aspectRatio: 'square'});
+ */
 export function toContainFitViewport(subject, {aspectRatio} = {}) {
   const container = getElement(subject).querySelector(`.${styles.container}`);
 
