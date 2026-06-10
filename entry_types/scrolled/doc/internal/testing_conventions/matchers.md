@@ -50,7 +50,22 @@ render these wrappers.
 | `toHaveScrollSpace()` | The element sits inside a scroll-space wrapper. |
 | `toHaveAlignment(value)` | The element carries the alignment class for the given value. |
 
-Both sets are registered through the `useXxx` hooks listed under
+**Section matchers** (`spec/support/matchers/`, enabled with
+`useSectionMatchers()`) assert a section's foreground/layout state. The
+subject is a section page object (`getSectionByPermaId(...)`), so they
+also require `renderEntry`.
+
+| Matcher | Asserts |
+| --- | --- |
+| `toHaveSuppressedPadding({top, bottom})` | The foreground suppresses top/bottom padding. |
+| `toHaveRemainingSpace({above, below})` | The foreground keeps remaining vertical space above/below the content. |
+| `toHaveForcedPadding()` | The foreground forces padding (inline editing). |
+| `toHaveFadedOutForeground()` | The foreground is faded out by a transition. |
+| `toHavePerElementFadeTransition()` | The section uses the per-element fade transition. |
+| `toHaveFirstBoxSuppressedTopMargin()` | The first foreground box has its top margin suppressed. |
+| `toHaveConstrainedContentWidth()` | The section constrains its content width. |
+
+These sets are registered through the `useXxx` hooks listed under
 [Setup hooks](render-helpers.md#setup-hooks).
 
 ## Adding a matcher

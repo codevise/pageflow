@@ -1,5 +1,6 @@
 import React from 'react';
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {useSectionMatchers} from 'support/matchers';
 import '@testing-library/jest-dom/extend-expect';
 
 import {api} from 'frontend/api';
@@ -9,6 +10,7 @@ jest.mock('frontend/useMotifAreaState');
 
 describe('constrainContentWidth', () => {
   usePageObjects();
+  useSectionMatchers();
 
   beforeEach(() => {
     api.contentElementTypes.register('probe', {
@@ -31,7 +33,7 @@ describe('constrainContentWidth', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasConstrainedContentWidth()).toBe(true);
+    expect(getSectionByPermaId(6)).toHaveConstrainedContentWidth();
   });
 
   it('does not apply class for shadow appearance', () => {
@@ -44,7 +46,7 @@ describe('constrainContentWidth', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasConstrainedContentWidth()).toBe(false);
+    expect(getSectionByPermaId(6)).not.toHaveConstrainedContentWidth();
   });
 
   it('applies class for split appearance with center layout', () => {
@@ -59,7 +61,7 @@ describe('constrainContentWidth', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasConstrainedContentWidth()).toBe(true);
+    expect(getSectionByPermaId(6)).toHaveConstrainedContentWidth();
   });
 
   it('does not apply class when content is padded', () => {
@@ -74,7 +76,7 @@ describe('constrainContentWidth', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasConstrainedContentWidth()).toBe(false);
+    expect(getSectionByPermaId(6)).not.toHaveConstrainedContentWidth();
   });
 
   it('passes constrainContentWidth to content elements via sectionProps', () => {

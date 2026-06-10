@@ -67,7 +67,8 @@ in the order they appear below.
 | `usePageObjects` | `support/pageObjects` | Page-object queries for `renderEntry`, the `withTestId` helper content element, and `jest.restoreAllMocks()` per test. |
 | `useInlineEditingPageObjects` / `useCommentingPageObjects` | `support/pageObjects` | Page-object sugar for the respective extension, built on `usePageObjects`. |
 | `useContentElementMatchers` | `pageflow-scrolled/testHelpers` | The public content element [matchers](matchers.md). |
-| `useContentElementLayoutMatchers` | `support/matchers` | The internal layout [matchers](matchers.md). |
+| `useContentElementLayoutMatchers` | `support/matchers` | The internal content element layout [matchers](matchers.md). |
+| `useSectionMatchers` | `support/matchers` | The internal section [matchers](matchers.md). |
 | `useFakeFeatures` | `pageflow/testHelpers` | Enables named feature flags for the test. |
 
 (`useEditorGlobals`, `useFakeMedia`, and `useFakeParentWindow` are

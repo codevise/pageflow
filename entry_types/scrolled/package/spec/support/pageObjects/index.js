@@ -2,11 +2,6 @@ import React from 'react';
 
 import {renderInEntry} from '..';
 import {Entry} from 'frontend/Entry';
-import foregroundStyles from 'frontend/Foreground.module.css';
-import sharedTransitionStyles from 'frontend/transitions/shared.module.css';
-import centerLayoutStyles from 'frontend/layouts/Center.module.css';
-import twoColumnLayoutStyles from 'frontend/layouts/TwoColumn.module.css';
-import boxBoundaryMarginStyles from 'frontend/foregroundBoxes/BoxBoundaryMargin.module.css';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 import {api} from 'frontend/api';
 
@@ -146,7 +141,6 @@ function fakeContentElementBoundingClientRectsByTestId(container, rectsByTestId)
 
 function createSectionPageObject(el) {
   const selectionRect = el.closest('[aria-label="Select section"]');
-  const foreground = el.querySelector(`.${foregroundStyles.Foreground}`);
 
   return {
     el,
@@ -174,34 +168,6 @@ function createSectionPageObject(el) {
       fireEvent.mouseDown(getByTitle('Edit section transition after'));
     },
 
-    hasSuppressedTopPadding() {
-      return foreground.classList.contains(foregroundStyles.suppressedPaddingTop);
-    },
-
-    hasSuppressedBottomPadding() {
-      return foreground.classList.contains(foregroundStyles.suppressedPaddingBottom);
-    },
-
-    hasForcedPadding() {
-      return foreground.classList.contains(foregroundStyles.forcePadding);
-    },
-
-    hasRemainingSpaceAbove() {
-      return foreground.classList.contains(foregroundStyles.spaceAbove);
-    },
-
-    hasRemainingSpaceBelow() {
-      return foreground.classList.contains(foregroundStyles.spaceBelow);
-    },
-
-    hasFadedOutForeground() {
-      return foreground.classList.contains(sharedTransitionStyles.fadedOut);
-    },
-
-    usesPerElementFadeTransition() {
-      return foreground.classList.contains(sharedTransitionStyles.perElementFade);
-    },
-
     getPaddingIndicator(position) {
       const {getByLabelText} = within(selectionRect);
       const labels = {
@@ -214,16 +180,6 @@ function createSectionPageObject(el) {
     selectPadding(position) {
       fireEvent.mouseDown(selectionRect);
       fireEvent.click(this.getPaddingIndicator(position));
-    },
-
-    hasFirstBoxSuppressedTopMargin() {
-      const firstBox = foreground.querySelector(`.${boxBoundaryMarginStyles.noTopMargin}`);
-      return !!firstBox;
-    },
-
-    hasConstrainedContentWidth() {
-      return !!(el.querySelector(`.${twoColumnLayoutStyles.constrainContentWidth}`) ||
-                el.querySelector(`.${centerLayoutStyles.constrainContentWidth}`));
     }
   }
 }
