@@ -1,14 +1,14 @@
-import {toHaveContentElementMargin} from './toHaveContentElementMargin';
-import {toHaveScrollSpace} from './toHaveScrollSpace';
-import {toHaveAlignment} from './toHaveAlignment';
+import {toHaveContentElementMargin} from './contentElement/toHaveContentElementMargin';
+import {toHaveScrollSpace} from './contentElement/toHaveScrollSpace';
+import {toHaveAlignment} from './contentElement/toHaveAlignment';
 
-import {toHaveSuppressedPadding} from './toHaveSuppressedPadding';
-import {toHaveRemainingSpace} from './toHaveRemainingSpace';
-import {toHaveForcedPadding} from './toHaveForcedPadding';
-import {toHaveFadedOutForeground} from './toHaveFadedOutForeground';
-import {toHavePerElementFadeTransition} from './toHavePerElementFadeTransition';
-import {toHaveFirstBoxSuppressedTopMargin} from './toHaveFirstBoxSuppressedTopMargin';
-import {toHaveConstrainedContentWidth} from './toHaveConstrainedContentWidth';
+import {toHaveSuppressedPadding} from './section/toHaveSuppressedPadding';
+import {toHaveRemainingSpace} from './section/toHaveRemainingSpace';
+import {toHaveForcedPadding} from './section/toHaveForcedPadding';
+import {toHaveFadedOutForeground} from './section/toHaveFadedOutForeground';
+import {toHavePerElementFadeTransition} from './section/toHavePerElementFadeTransition';
+import {toHaveFirstBoxSuppressedTopMargin} from './section/toHaveFirstBoxSuppressedTopMargin';
+import {toHaveConstrainedContentWidth} from './section/toHaveConstrainedContentWidth';
 
 export function useContentElementLayoutMatchers() {
   beforeEach(() => {

@@ -38,8 +38,8 @@ Plugin authors need these to test their own components.
 | `toContainContentElementBox({boxShadow, borderRadius, outlineColor})` | A `<ContentElementBox>` is present (bare call), and the requested theme styles are applied. `.not` asserts absence. |
 | `toContainFitViewport({aspectRatio})` | A `<FitViewport>` is present (bare call) with the requested aspect ratio. `.not` asserts absence. |
 
-**Internal matchers** (`spec/support/matchers/`, enabled with
-`useContentElementLayoutMatchers()`) cover framework state applied
+**Internal matchers** (`spec/support/matchers/contentElement/`, enabled
+with `useContentElementLayoutMatchers()`) cover framework state applied
 *around* the element. They depend on the entry-level layout, so the
 subject must come from `renderEntry` — `renderInContentElement` does not
 render these wrappers.
@@ -50,7 +50,7 @@ render these wrappers.
 | `toHaveScrollSpace()` | The element sits inside a scroll-space wrapper. |
 | `toHaveAlignment(value)` | The element carries the alignment class for the given value. |
 
-**Section matchers** (`spec/support/matchers/`, enabled with
+**Section matchers** (`spec/support/matchers/section/`, enabled with
 `useSectionMatchers()`) assert a section's foreground/layout state. The
 subject is a section page object (`getSectionByPermaId(...)`), so they
 also require `renderEntry`.
