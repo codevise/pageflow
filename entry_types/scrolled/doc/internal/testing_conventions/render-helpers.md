@@ -6,7 +6,7 @@ defines the **kind / scope / context / unit** vocabulary used here.
 ## Two kinds of render helpers
 
 **Scoped fixtures** (white-box) set up the providers/state for a single
-scope and render a component in isolation of the surrounding entry. They
+scope and render a component in isolation of the surrounding entry. Most
 ship as part of the public API (`pageflow-scrolled/testHelpers`) so that
 content element plugins can use them too.
 
@@ -14,20 +14,26 @@ content element plugins can use them too.
 official `Entry` component and interact with it via *page objects*. They
 live in `spec/support/` and are internal to this package.
 
-| Helper | Import from | Scope |
-| --- | --- | --- |
-| `renderInEntry` | `pageflow-scrolled/testHelpers` | Entry state + `RootProviders`. For any component that needs entry state but nothing more. |
-| `renderHookInEntry` | `pageflow-scrolled/testHelpers` | Same as `renderInEntry`, for selector hooks that read entry state. |
-| `renderInContentElement` | `pageflow-scrolled/testHelpers` | Content-element scope: attributes, lifecycle, command emitter, optional inline-editing context. For components rendered *inside* a content element. |
-| `renderWithReviewState` | `pageflow-scrolled/testHelpers` | `ReviewStateProvider` only. For code in `src/review/`. |
-| `renderEntry` | `support/pageObjects` | Full `Entry`. Returns page-object queries (`getContentElementByTestId`, `getSectionByPermaId`). For cross-cutting frontend features and integration behavior. |
+The import path follows from the kind: scoped fixtures from
+`pageflow-scrolled/testHelpers`; page objects and `renderEntry` from
+`support/pageObjects`.
+
+| Helper | Scope |
+| --- | --- |
+| `renderInEntry` | Entry state + `RootProviders`. For any component that needs entry state but nothing more. |
+| `renderHookInEntry` | Same as `renderInEntry`, for selector hooks that read entry state. |
+| `renderInContentElement` | Content-element scope: attributes, lifecycle, command emitter, optional inline-editing context. For components rendered *inside* a content element. |
+| `renderEntry` | Full `Entry`, driven through page objects (`getContentElementByTestId`, `getSectionByPermaId`). For cross-cutting frontend features and integration behavior. |
+
+`renderWithReviewState` is a further scoped fixture for `src/review/`
+code — package-internal (imported from `testHelpers/renderWithReviewState`,
+not the public barrel), setting up `ReviewStateProvider` only.
 
 ## Picking a helper
 
-Pick the smallest-scope helper sufficient for the behavior under test.
-The path of the spec file is the strongest signal: `spec/<path>-spec.js`
-mirrors `src/<path>.js`, and the scope at that path determines which
-helper to use.
+Pick the smallest-scope helper sufficient for the behavior under test. A
+component's scope is set by what it must render against — which providers
+and state:
 
 - A content element's component (`src/contentElements/<name>/<Component>.js`)
   → `renderInContentElement`, asserting with [matchers](matchers.md).
@@ -39,22 +45,11 @@ helper to use.
   layout) → `renderEntry` with page objects.
 
 `renderInContentElement` returns extra controls beyond the
-`@testing-library/react` result: `simulateScrollPosition`,
-`triggerEditorCommand`, and `simulateStorylineMode`. Its `inlineEditing`
-option opts the element into an inline-editing context — pass `true` for
-editable defaults or an object (`{isEditable, isSelected,
-transientState}`) to override.
-
-## Custom wrappers
-
-`renderInEntry` and `renderInContentElement` accept a `wrapper` option: a
-`({children}) => JSX` component that adds extra providers around the
-rendered tree. Use it for a one-off provider combination a test needs.
-
-When a combination is common enough to be discoverable, add a named
-option to the render helper that installs the providers internally —
-this is how `renderInContentElement`'s `inlineEditing` option works —
-rather than repeating the same custom `wrapper` across specs.
+`@testing-library/react` result — `simulateScrollPosition`,
+`triggerEditorCommand`, `simulateStorylineMode` — and takes an
+`inlineEditing` option that opts the element into an inline-editing
+context (pass `true` for editable defaults, or an object to override
+individual flags). See the helper's source for the exact surface.
 
 ## Setup hooks
 
@@ -73,3 +68,15 @@ in the order they appear below.
 
 (`useEditorGlobals`, `useFakeMedia`, and `useFakeParentWindow` are
 further fixtures for editor, media, and parent-window scenarios.)
+
+## Checks
+
+- ❌ Reaching for `renderEntry` where a scoped fixture suffices — use the
+  smallest scope the behavior needs; `renderEntry` is for behavior that
+  only exists because pieces compose.
+- ❌ Asserting an internal layout or section [matcher](matchers.md) on a
+  subject from `renderInContentElement` — those wrappers only exist under
+  `renderEntry`.
+- ❌ The same custom `wrapper` copied across specs — a recurring setup
+  need signals the testing API should grow a named option (like
+  `renderInContentElement`'s `inlineEditing`), not repeated wrappers.

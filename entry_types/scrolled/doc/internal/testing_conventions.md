@@ -26,8 +26,7 @@ each area in depth — read the one matching your task.
 ## Guides
 
 - [Render helpers](testing_conventions/render-helpers.md) — the two kinds
-  of helper, how to pick one, custom wrappers, and the `useXxx` setup
-  hooks.
+  of helper, how to pick one, and the `useXxx` setup hooks.
 - [Matchers](testing_conventions/matchers.md) — asserting element state;
   public vs. internal matchers, the polymorphic subject, and how to add
   one.

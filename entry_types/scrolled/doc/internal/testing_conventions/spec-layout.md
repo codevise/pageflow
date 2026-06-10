@@ -3,81 +3,107 @@
 Part of the [Testing Conventions](../testing_conventions.md) guide, which
 defines the **kind / scope / context / unit** vocabulary used here.
 
-Specs mirror source structure. Two rules govern when a spec becomes a
-directory:
+Specs mirror source structure. This guide tells you where a new spec file
+goes: start with the decision procedure; the rationale and checks below
+settle the cases it doesn't spell out.
 
-1. A **`src/Foo.js`** source file corresponds to a **`spec/Foo-spec.js`**
-   spec file. When it grows large enough to split into topics, it becomes
-   a directory: topic files live at `spec/Foo/features/<topic>-spec.js`.
-2. A **`src/Foo/`** source directory corresponds to a **`spec/Foo/`** spec
-   directory, with one `spec/Foo/<helper>-spec.js` per
-   `src/Foo/<helper>.js`. Topic splits of the main component live in
-   `spec/Foo/features/` alongside the helper specs.
+## Where does my spec go?
 
-The `features/` sub-namespace is the *only* place topic splits live,
-regardless of whether the unit under test is a `.js` file or a `/`
-directory. This keeps spec layout invariant under
-`src/Foo.js → src/Foo/index.js` refactorings.
+Find the source you're testing, then read off the spec path:
 
-It follows that a unit's behavior tests live in exactly one place: the
-flat `spec/Foo-spec.js`, or — once split — `spec/Foo/features/`, but
-**never both**. A `spec/Foo-spec.js` next to a `spec/Foo/features/`
-directory means a `src/Foo.js → src/Foo/index.js` refactoring left the
-top-level spec behind; fold it into `features/`. (Helper and
-sub-component unit specs at `spec/Foo/<helper>-spec.js` test *different*
-units and may sit beside a flat `spec/Foo-spec.js` — it is specifically
-`Foo-spec.js` together with `Foo/features/` that must not coexist.)
+| Source | Spec path |
+| --- | --- |
+| `src/Foo.js` (unsplit) | `spec/Foo-spec.js` |
+| `src/Foo.js` or `src/Foo/index.js`, split into topics | `spec/Foo/features/<topic>-spec.js` |
+| `src/Foo/<helper>.js` | `spec/Foo/<helper>-spec.js` |
+| a **named export** of `src/Foo/index.js` | `spec/Foo/<export>-spec.js` |
 
-A *unit spec* mirrors a single source unit and stays at the directory
-level, named after that unit. A unit is usually a separate file
-(`spec/Foo/<helper>-spec.js` for `src/Foo/<helper>.js`), but can also be
-a **named export** of the main file — e.g. `AudioPlayer/index.js`
-exports both the `AudioPlayer` component and a `processSources` helper,
-so `processSources-spec.js` mirrors that export and stays at the
-directory level. The component's own rendered behavior (e.g. its
-structured-data output) is a topic split, so it lives under `features/`
-(`features/structuredData-spec.js`).
+Two kinds of spec live under a `spec/Foo/` directory, and they answer to
+different sources:
 
-`features/` holds the remaining *behavior-grouped* tests, written
-against the unit's stable public interface; these tend to outlive the
-internal helpers they exercise. The path's scope and context determine
-which render helper and setup hooks the specs in that directory use.
+- **Unit specs** mirror a single source unit — a `src/Foo/<helper>.js`
+  file or a named export of the main file — and sit at the directory
+  level, named after that unit. Example: `AudioPlayer/index.js`
+  exports both the `AudioPlayer` component and a `processSources`
+  helper, so `processSources-spec.js` tests that helper at the
+  directory level.
+- **Topic splits** of the main unit's own behavior go under `features/`,
+  never beside it. The `AudioPlayer` component's rendered behavior (e.g.
+  its structured-data output) is a topic, so it lives at
+  `features/structuredData-spec.js`.
 
-**`features/` attaches to the level of the unit under test.** The
-directory path identifies the unit — whatever has a source counterpart
-at that path — and `features/` nests *under* it to group that unit's
-behavior topics; it never floats up to the context root. So the
-`EditableText` component (`src/frontend/inlineEditing/EditableText/`)
-owns `spec/frontend/inlineEditing/EditableText/features/`, with its
-helper specs (`blocks-spec.js`, `marks-spec.js`, …) alongside.
-Conversely, behavior with no single source counterpart in a context —
-the inline-editing integration itself (`contentElementSelection`,
-`marginIndicator`) — lives directly in that context's
-`spec/frontend/inlineEditing/features/`. The render helper a spec uses
-is the *mechanism*, not the unit: most feature specs use `renderEntry`,
-but that never turns a component into a topic of its parent context.
+`features/` is the *only* place topic splits live — for a `.js` file and
+a `/` directory unit alike. These specs are written against the unit's
+stable public interface, so they tend to outlive the internal helpers
+they exercise.
 
 ## Placement across contexts
 
-The directory path encodes the *context* a spec runs in: specs under
-`spec/frontend/inlineEditing/` load the inline-editing extension, those
-under `spec/frontend/commenting/` the commenting extension, and those
-directly under `spec/frontend/` neither. When a unit behaves differently
-across these contexts, it gets one spec per context, named after the
-unit, in the matching directory — the path conveys the context, so the
-filenames stay identical.
+The directory path encodes the *context* a spec runs in:
 
-Prefer committing to the public interface over its wiring. When a unit's
-behavior changes across contexts because an extension swaps a provider —
-an implementation detail you may want to refactor — test it end-to-end
-through a fake consumer with `renderEntry`, rather than white-box-driving
-the replacement mechanism (which couples the spec to how providers are
-registered, not to the contract). For example `usePhonePlatform` is
-asserted via a probe content element in
-`spec/frontend/features/usePhonePlatform-spec.js` (default provider,
-reads the `browser`) and
-`spec/frontend/inlineEditing/features/usePhonePlatform-spec.js` (the
-inline-editing provider, driven by the editor's emulation-mode
-messages). Both live in `features/` because they exercise rendered
-behavior; a spec that instead drove the hook directly with
-`renderHookInEntry` would be a dir-level white-box unit spec.
+| Directory | Context (loaded extension) |
+| --- | --- |
+| `spec/frontend/` | none |
+| `spec/frontend/inlineEditing/` | inline editing |
+| `spec/frontend/commenting/` | commenting |
+
+When a unit behaves differently across contexts, give it **one spec per
+context**, named after the unit, in the matching directory. The path
+conveys the context, so the filenames stay identical.
+
+The context also determine which render helper and setup hooks a spec
+uses — see [render helpers](render-helpers.md).
+
+## Which level owns `features/`?
+
+`features/` groups a unit's behavior topics, so it sits at the level of
+whatever it tests. Ask whether that behavior has a single source
+counterpart:
+
+- **It does** → `features/` nests under that unit. The `EditableText`
+  component (`src/frontend/inlineEditing/EditableText/`) owns
+  `spec/frontend/inlineEditing/EditableText/features/`, with its helper
+  specs (`blocks-spec.js`, `marks-spec.js`, …) alongside.
+- **It doesn't** — the behavior *is* a context's integration
+  (`contentElementSelection`, `marginIndicator` for inline editing) →
+  `features/` sits at that context root,
+  `spec/frontend/inlineEditing/features/`.
+
+## Rationale
+
+- **Why `features/` is the only home for topic splits.** It keeps spec
+  layout invariant under a `src/Foo.js → src/Foo/index.js` refactoring:
+  the topic specs don't move when the source file becomes a directory.
+- **Why a unit's behavior tests live in exactly one place.** A flat
+  `spec/Foo-spec.js` and a `spec/Foo/features/` directory both holding
+  behavior tests is the tell-tale of that refactoring leaving the
+  top-level spec behind. They must not coexist (see checks).
+- **Why the render helper doesn't decide ownership.** The helper a spec
+  uses is the *mechanism*, not the unit. Most feature specs use
+  `renderEntry`, but that never turns a component into a topic of its
+  parent context — the source counterpart at the path does.
+- **Why prefer the public interface over its wiring.** When behavior
+  changes across contexts because an extension swaps a provider — an
+  implementation detail you may want to refactor — test it end-to-end
+  through a fake consumer with `renderEntry`, not by white-box-driving
+  the replacement mechanism (which couples the spec to how providers are
+  registered, not to the contract).
+
+## Checks
+
+Scan for these before opening a PR:
+
+- ❌ `spec/Foo-spec.js` coexisting with `spec/Foo/features/` — a
+  refactoring left the top-level spec behind; fold it into `features/`.
+  (Helper and named-export unit specs at `spec/Foo/<helper>-spec.js`
+  *may* sit beside a flat `spec/Foo-spec.js` — they test different units.
+  It is specifically `Foo-spec.js` together with `Foo/features/` that
+  must not coexist.)
+- ❌ A topic split living outside `features/` (e.g. beside the helper
+  specs) — move it under `features/`.
+- ❌ A `features/` directory floated up to the context root when the
+  behavior *does* have a source counterpart deeper in the tree — push it
+  down to the unit that owns it.
+- ❌ The same spec duplicated per context when its behavior doesn't
+  actually differ by context — one spec per context is for behavior that
+  *changes* across them, not identical assertions.

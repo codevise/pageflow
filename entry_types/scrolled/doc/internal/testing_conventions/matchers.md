@@ -26,53 +26,53 @@ expect(getContentElementByTestId('probe')).toHaveAlignment('right');
 ## Public vs internal
 
 The dividing line is **what the content element controls** vs **what the
-framework applies around it**.
+framework applies around it**. Each tier below has a fixed subject and
+setup hook; the matchers live one file per matcher in the directory
+noted, which is the source of truth for their exact signatures and
+assertions.
 
-**Public matchers** (`src/testHelpers/matchers/`, shipped via
-`pageflow-scrolled/testHelpers`, enabled with `useContentElementMatchers()`)
-cover chrome a content element opts into through framework components.
-Plugin authors need these to test their own components.
+**Public matchers** cover chrome a content element opts into through
+framework components — plugin authors need these to test their own
+components. Shipped via `pageflow-scrolled/testHelpers`, enabled with
+`useContentElementMatchers()`; the subject is a `renderInContentElement`
+container or a `renderEntry` page object. In `src/testHelpers/matchers/`:
+`toContainContentElementBox`, `toContainFitViewport`.
 
-| Matcher | Asserts |
-| --- | --- |
-| `toContainContentElementBox({boxShadow, borderRadius, outlineColor})` | A `<ContentElementBox>` is present (bare call), and the requested theme styles are applied. `.not` asserts absence. |
-| `toContainFitViewport({aspectRatio})` | A `<FitViewport>` is present (bare call) with the requested aspect ratio. `.not` asserts absence. |
+**Internal layout matchers** cover framework state applied *around* the
+element (margins, scroll space, alignment). They depend on the
+entry-level layout, so the subject must come from `renderEntry` —
+`renderInContentElement` does not render these wrappers. Enabled with
+`useContentElementLayoutMatchers()`. In
+`spec/support/matchers/contentElement/`: `toHaveContentElementMargin`,
+`toHaveScrollSpace`, `toHaveAlignment`.
 
-**Internal matchers** (`spec/support/matchers/contentElement/`, enabled
-with `useContentElementLayoutMatchers()`) cover framework state applied
-*around* the element. They depend on the entry-level layout, so the
-subject must come from `renderEntry` — `renderInContentElement` does not
-render these wrappers.
-
-| Matcher | Asserts |
-| --- | --- |
-| `toHaveContentElementMargin({top, bottom, prevBottom, topTrimmed})` | A content element margin wrapper is present; the `--margin-*` custom properties (raw CSS strings) match; `topTrimmed` checks the trim class. `.not` asserts absence. |
-| `toHaveScrollSpace()` | The element sits inside a scroll-space wrapper. |
-| `toHaveAlignment(value)` | The element carries the alignment class for the given value. |
-
-**Section matchers** (`spec/support/matchers/section/`, enabled with
-`useSectionMatchers()`) assert a section's foreground/layout state. The
+**Section matchers** assert a section's foreground/layout state. The
 subject is a section page object (`getSectionByPermaId(...)`), so they
-also require `renderEntry`.
+also require `renderEntry`. Enabled with `useSectionMatchers()`. In
+`spec/support/matchers/section/`: `toHaveSuppressedPadding`,
+`toHaveRemainingSpace`, `toHaveForcedPadding`, `toHaveFadedOutForeground`,
+`toHavePerElementFadeTransition`, `toHaveFirstBoxSuppressedTopMargin`,
+`toHaveConstrainedContentWidth`.
 
-| Matcher | Asserts |
-| --- | --- |
-| `toHaveSuppressedPadding({top, bottom})` | The foreground suppresses top/bottom padding. |
-| `toHaveRemainingSpace({above, below})` | The foreground keeps remaining vertical space above/below the content. |
-| `toHaveForcedPadding()` | The foreground forces padding (inline editing). |
-| `toHaveFadedOutForeground()` | The foreground is faded out by a transition. |
-| `toHavePerElementFadeTransition()` | The section uses the per-element fade transition. |
-| `toHaveFirstBoxSuppressedTopMargin()` | The first foreground box has its top margin suppressed. |
-| `toHaveConstrainedContentWidth()` | The section constrains its content width. |
-
-These sets are registered through the `useXxx` hooks listed under
+The `useXxx` hooks are listed under
 [Setup hooks](render-helpers.md#setup-hooks).
 
 ## Adding a matcher
 
 Ask: *would an external plugin's test suite need this to verify their
 component behaves correctly?* If yes, it is public; if it asserts
-framework state the plugin does not control, it is internal. Register
-public matchers through `useContentElementMatchers` and internal ones
-through `useContentElementLayoutMatchers` so specs opt in explicitly,
-mirroring `usePageObjects`.
+framework state the plugin does not control, it is internal. Register it
+through the hook for its tier — `useContentElementMatchers` (public),
+`useContentElementLayoutMatchers` (internal layout), or
+`useSectionMatchers` (section) — so specs opt in explicitly, mirroring
+`usePageObjects`.
+
+## Checks
+
+- ❌ An internal layout or section matcher asserted on a subject from
+  `renderInContentElement` — those wrappers only exist under `renderEntry`.
+- ❌ A new matcher registered in the wrong tier — public is only for
+  chrome a plugin controls through framework components; framework state
+  applied around the element is internal.
+- ❌ A matcher's job duplicated in a page object — matchers assert; page
+  objects locate and act.
