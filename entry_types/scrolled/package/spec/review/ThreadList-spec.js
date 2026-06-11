@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {ThreadList} from 'review/ThreadList';
-import {renderWithReviewState} from 'testHelpers/renderWithReviewState';
+import {renderWithReviewState} from 'support/renderWithReviewState';
 
 describe('ThreadList', () => {
   useFakeTranslations({

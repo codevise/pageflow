@@ -14,7 +14,7 @@ content element plugins can use them too.
 official `Entry` component and interact with it via *page objects*. They
 live in `spec/support/` and are internal to this package.
 
-The import path follows from the kind: scoped fixtures from
+The import path follows from the kind: public scoped fixtures from
 `pageflow-scrolled/testHelpers`; page objects and `renderEntry` from
 `support/pageObjects`.
 
@@ -25,9 +25,9 @@ The import path follows from the kind: scoped fixtures from
 | `renderInContentElement` | Content-element scope: attributes, lifecycle, command emitter, optional inline-editing context. For components rendered *inside* a content element. |
 | `renderEntry` | Full `Entry`, driven through page objects (`getContentElementByTestId`, `getSectionByPermaId`). For cross-cutting frontend features and integration behavior. |
 
-`renderWithReviewState` is a further scoped fixture for `src/review/`
-code — package-internal (imported from `testHelpers/renderWithReviewState`,
-not the public barrel), setting up `ReviewStateProvider` only.
+`renderWithReviewState` is an internal scoped fixture for `src/review/`
+UI, imported from `support/renderWithReviewState`; it sets up
+`ReviewStateProvider` only.
 
 ## Picking a helper
 

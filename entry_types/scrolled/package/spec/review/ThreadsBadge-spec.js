@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 
 import {ThreadsBadge} from 'review/ThreadsBadge';
-import {renderWithReviewState} from 'testHelpers/renderWithReviewState';
+import {renderWithReviewState} from 'support/renderWithReviewState';
 import {fakeParentWindow} from 'support';
 
 describe('ThreadsBadge', () => {
