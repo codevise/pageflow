@@ -1,7 +1,9 @@
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {useContentElementLayoutMatchers} from 'support/matchers';
 
 describe('content element scroll space', () => {
   usePageObjects();
+  useContentElementLayoutMatchers();
 
   it('does not apply scroll space to elements by default', () => {
     const {getContentElementByTestId} = renderEntry({
@@ -15,7 +17,7 @@ describe('content element scroll space', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).hasScrollSpace()).toBe(false);
+    expect(getContentElementByTestId(1)).not.toHaveScrollSpace();
   });
 
   it('applies scroll space to elements with stand alone position', () => {
@@ -31,6 +33,6 @@ describe('content element scroll space', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).hasScrollSpace()).toBe(true);
+    expect(getContentElementByTestId(1)).toHaveScrollSpace();
   });
 });

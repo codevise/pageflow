@@ -1,4 +1,4 @@
-import {act, fireEvent} from '@testing-library/react';
+import {act, fireEvent, within} from '@testing-library/react';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
@@ -8,11 +8,15 @@ import badgeStyles from 'review/Badge.module.css';
 import {useFakeParentWindow} from '../fakeWindows';
 import {
   renderEntry as baseRenderEntry,
+  createSectionPageObject as baseCreateSectionPageObject,
+  createContentElementPageObject as baseCreateContentElementPageObject,
   usePageObjects
 } from './index';
 
 export function renderEntry({commenting, ...options} = {}) {
   const result = baseRenderEntry({
+    sectionFactory: createInlineEditingSectionPageObject,
+    contentElementFactory: createInlineEditingContentElementPageObject,
     ...options,
     entryProps: {commentingInitialState: commenting}
   });
@@ -21,6 +25,89 @@ export function renderEntry({commenting, ...options} = {}) {
     ...result,
     queryAllCommentBadges: () =>
       result.queryAllByRole('status').map(createCommentBadgePageObject)
+  };
+}
+
+function createInlineEditingSectionPageObject(el) {
+  const selectionRect = el.closest('[aria-label="Select section"]');
+
+  return {
+    ...baseCreateSectionPageObject(el),
+
+    select() {
+      fireEvent.mouseDown(selectionRect);
+    },
+
+    clickAddContentElement() {
+      const {getByTitle} = within(selectionRect);
+      fireEvent.click(getByTitle('Add content element'));
+    },
+
+    clickEditTransitionBefore() {
+      const {getByTitle} = within(selectionRect);
+      fireEvent.mouseDown(getByTitle('Edit section transition before'));
+    },
+
+    clickEditTransitionAfter() {
+      const {getByTitle} = within(selectionRect);
+      fireEvent.mouseDown(getByTitle('Edit section transition after'));
+    },
+
+    getPaddingIndicator(position) {
+      const {getByLabelText} = within(selectionRect);
+      const labels = {
+        top: 'Edit top padding',
+        bottom: 'Edit bottom padding'
+      };
+      return getByLabelText(labels[position]);
+    },
+
+    selectPadding(position) {
+      fireEvent.mouseDown(selectionRect);
+      fireEvent.click(this.getPaddingIndicator(position));
+    }
+  };
+}
+
+function createInlineEditingContentElementPageObject(el) {
+  const selectionRect = el.closest('[aria-label="Select content element"]');
+
+  return {
+    ...baseCreateContentElementPageObject(el),
+
+    getMarginIndicator(position) {
+      const {getByLabelText} = within(selectionRect);
+      const labels = {
+        top: 'Top margin',
+        bottom: 'Bottom margin'
+      };
+      return getByLabelText(labels[position]);
+    },
+
+    select() {
+      fireEvent.click(selectionRect);
+    },
+
+    isSelected() {
+      return selectionRect.getAttribute('aria-selected') === 'true';
+    },
+
+    clickInsertAfterButton() {
+      const {getByTitle} = within(selectionRect);
+      fireEvent.click(getByTitle('Insert content element after'));
+    },
+
+    drag(at, otherContentElement) {
+      const {getByTitle} = within(selectionRect);
+      fireEvent.dragStart(getByTitle('Drag to move'));
+      otherContentElement._drop(at);
+    },
+
+    _drop(at) {
+      const {getByTestId} = within(selectionRect);
+      const target = getByTestId(`drop-${at}`);
+      fireEvent.drop(target);
+    }
   };
 }
 

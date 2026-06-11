@@ -2,26 +2,18 @@ import React from 'react';
 
 import {renderInEntry} from '..';
 import {Entry} from 'frontend/Entry';
-import foregroundStyles from 'frontend/Foreground.module.css';
-import sharedTransitionStyles from 'frontend/transitions/shared.module.css';
-import contentElementBoxStyles from 'frontend/ContentElementBox.module.css';
-import contentElementMarginStyles from 'frontend/ContentElementMargin.module.css';
-import contentElementScrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
-import fitViewportStyles from 'frontend/FitViewport.module.css';
-import centerLayoutStyles from 'frontend/layouts/Center.module.css';
-import twoColumnLayoutStyles from 'frontend/layouts/TwoColumn.module.css';
-import boxBoundaryMarginStyles from 'frontend/foregroundBoxes/BoxBoundaryMargin.module.css';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 import {api} from 'frontend/api';
 
-import {act, fireEvent, queryHelpers, queries, within} from '@testing-library/react'
+import {act, queryHelpers, queries} from '@testing-library/react'
 import {simulateScrollingIntoView} from '../fakeIntersectionObserver';
 
 export function renderEntry({
   seed, consent, isStaticPreview, phonePlatform,
   entryProps,
   contentElement,
-  contentElementFactory = createContentElementPageObject
+  contentElementFactory = createContentElementPageObject,
+  sectionFactory = createSectionPageObject
 } = {}) {
   const effectiveSeed = contentElement ? mergeContentElement(seed, contentElement) : seed;
   const entry = <Entry {...entryProps} />;
@@ -31,7 +23,7 @@ export function renderEntry({
     consent,
     phonePlatform,
     wrapper: isStaticPreview ? StaticPreview : null,
-    queries: {...queries, ...buildPageObjectQueries({contentElementFactory})}
+    queries: {...queries, ...buildPageObjectQueries({contentElementFactory, sectionFactory})}
   });
 
   return {
@@ -62,35 +54,6 @@ function mergeContentElement(seed, {ui, typeName, typeOptions = {}, permaId = 10
   };
 }
 
-export function renderContentElement({typeName, configuration = {}, ...seedOptions} = {}) {
-  const seed = {
-    contentElements: [{
-      permaId: 10,
-      typeName,
-      configuration
-    }],
-    ...seedOptions
-  };
-
-  const result = renderEntry({seed});
-
-  return {
-    ...result,
-    getContentElement() {
-      const el = result.container.querySelector('[class*="ContentElementMargin_module__wrapper"]');
-
-      if (!el) {
-        throw queryHelpers.getElementError(
-          `Unable to find content element with type ${typeName}.`,
-          result.container
-        );
-      }
-
-      return createContentElementPageObject(el);
-    }
-  };
-}
-
 export function usePageObjects() {
   beforeEach(() => {
     jest.restoreAllMocks();
@@ -105,7 +68,7 @@ export function usePageObjects() {
   });
 }
 
-function buildPageObjectQueries({contentElementFactory}) {
+function buildPageObjectQueries({contentElementFactory, sectionFactory}) {
   return {
     getSectionByPermaId(container, permaId) {
       const el = queryHelpers.queryByAttribute('id',
@@ -119,7 +82,7 @@ function buildPageObjectQueries({contentElementFactory}) {
         );
       }
 
-      return createSectionPageObject(el);
+      return sectionFactory(el);
     },
 
     getContentElementByTestId(container, testId) {
@@ -177,209 +140,18 @@ function fakeContentElementBoundingClientRectsByTestId(container, rectsByTestId)
   });
 }
 
-function createSectionPageObject(el) {
-  const selectionRect = el.closest('[aria-label="Select section"]');
-  const foreground = el.querySelector(`.${foregroundStyles.Foreground}`);
-
+export function createSectionPageObject(el) {
   return {
     el,
 
     simulateScrollingIntoView() {
       act(() => simulateScrollingIntoView(el));
-    },
-
-    select() {
-      fireEvent.mouseDown(selectionRect);
-    },
-
-    clickAddContentElement() {
-      const {getByTitle} = within(selectionRect);
-      fireEvent.click(getByTitle('Add content element'));
-    },
-
-    clickEditTransitionBefore() {
-      const {getByTitle} = within(selectionRect);
-      fireEvent.mouseDown(getByTitle('Edit section transition before'));
-    },
-
-    clickEditTransitionAfter() {
-      const {getByTitle} = within(selectionRect);
-      fireEvent.mouseDown(getByTitle('Edit section transition after'));
-    },
-
-    hasSuppressedTopPadding() {
-      return foreground.classList.contains(foregroundStyles.suppressedPaddingTop);
-    },
-
-    hasSuppressedBottomPadding() {
-      return foreground.classList.contains(foregroundStyles.suppressedPaddingBottom);
-    },
-
-    hasForcedPadding() {
-      return foreground.classList.contains(foregroundStyles.forcePadding);
-    },
-
-    hasRemainingSpaceAbove() {
-      return foreground.classList.contains(foregroundStyles.spaceAbove);
-    },
-
-    hasRemainingSpaceBelow() {
-      return foreground.classList.contains(foregroundStyles.spaceBelow);
-    },
-
-    hasFadedOutForeground() {
-      return foreground.classList.contains(sharedTransitionStyles.fadedOut);
-    },
-
-    usesPerElementFadeTransition() {
-      return foreground.classList.contains(sharedTransitionStyles.perElementFade);
-    },
-
-    getPaddingIndicator(position) {
-      const {getByLabelText} = within(selectionRect);
-      const labels = {
-        top: 'Edit top padding',
-        bottom: 'Edit bottom padding'
-      };
-      return getByLabelText(labels[position]);
-    },
-
-    selectPadding(position) {
-      fireEvent.mouseDown(selectionRect);
-      fireEvent.click(this.getPaddingIndicator(position));
-    },
-
-    hasFirstBoxSuppressedTopMargin() {
-      const firstBox = foreground.querySelector(`.${boxBoundaryMarginStyles.noTopMargin}`);
-      return !!firstBox;
-    },
-
-    hasConstrainedContentWidth() {
-      return !!(el.querySelector(`.${twoColumnLayoutStyles.constrainContentWidth}`) ||
-                el.querySelector(`.${centerLayoutStyles.constrainContentWidth}`));
     }
   }
 }
 
 export function createContentElementPageObject(el) {
-  const selectionRect = el.closest('[aria-label="Select content element"]');
-
   return {
-    containsBox() {
-      return !!el.querySelector(`.${contentElementBoxStyles.wrapper}`);
-    },
-
-    hasBoxBorderRadius(value) {
-      const wrapper = el.querySelector(`.${contentElementBoxStyles.wrapper}`);
-      return wrapper && wrapper.style.getPropertyValue('--content-element-box-border-radius') === `var(--theme-content-element-box-border-radius-${value})`;
-    },
-
-    getBoxBorderRadius() {
-      const wrapper = el.querySelector(`.${contentElementBoxStyles.wrapper}`);
-      if (!wrapper) return null;
-
-      const cssValue = wrapper.style.getPropertyValue('--content-element-box-border-radius');
-      // Extract the value from var(--theme-content-element-box-border-radius-VALUE)
-      const match = cssValue.match(/var\(--theme-content-element-box-border-radius-(.+)\)/);
-      return match ? match[1] : cssValue;
-    },
-
-    hasBoxShadow(value) {
-      const wrapper = el.querySelector(`.${contentElementBoxStyles.wrapper}`);
-      return wrapper && wrapper.style.getPropertyValue('--content-element-box-shadow') === `var(--theme-content-element-box-shadow-${value})`;
-    },
-
-    hasOutlineColor(value) {
-      const wrapper = el.querySelector(`.${contentElementBoxStyles.wrapper}`);
-      return wrapper && wrapper.style.getPropertyValue('--content-element-box-outline-color') === value;
-    },
-
-    hasMargin() {
-      return !!el.closest(`.${contentElementMarginStyles.wrapper}`);
-    },
-
-    hasTopMargin() {
-      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
-      return wrapper && !wrapper.classList.contains(contentElementMarginStyles.noTopMargin);
-    },
-
-    getMarginTop() {
-      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
-      return wrapper && wrapper.style.getPropertyValue('--margin-top');
-    },
-
-    getMarginBottom() {
-      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
-      return wrapper && wrapper.style.getPropertyValue('--margin-bottom');
-    },
-
-    getPrevMarginBottom() {
-      const wrapper = el.closest(`.${contentElementMarginStyles.wrapper}`);
-      return wrapper && wrapper.style.getPropertyValue('--prev-margin-bottom');
-    },
-
-    hasScrollSpace() {
-      return !!el.closest(`.${contentElementScrollSpaceStyles.wrapper}`);
-    },
-
-    hasFitViewport() {
-      return !!el.querySelector(`.${fitViewportStyles.container}`);
-    },
-
-    hasAlignment(alignment) {
-      return !!(
-        el.closest(`.${centerLayoutStyles[`align-${alignment}`]}`) ||
-        el.closest(`.${twoColumnLayoutStyles[`align-${alignment}`]}`)
-      );
-    },
-
-    getFitViewportAspectRatio() {
-      const container = el.querySelector(`.${fitViewportStyles.container}`);
-      if (!container) return null;
-
-      const cssValue = container.style.getPropertyValue('--fit-viewport-aspect-ratio');
-      // Extract the value from var(--theme-aspect-ratio-VALUE) or return the raw value
-      const match = cssValue.match(/var\(--theme-aspect-ratio-(.+)\)/);
-      return match ? match[1] : cssValue;
-    },
-
-    isFitViewportOpaque() {
-      const container = el.querySelector(`.${fitViewportStyles.container}`);
-      return container?.classList.contains(fitViewportStyles.opaque);
-    },
-
-    getMarginIndicator(position) {
-      const {getByLabelText} = within(selectionRect);
-      const labels = {
-        top: 'Top margin',
-        bottom: 'Bottom margin'
-      };
-      return getByLabelText(labels[position]);
-    },
-
-    select() {
-      fireEvent.click(selectionRect);
-    },
-
-    isSelected() {
-      return selectionRect.getAttribute('aria-selected') === 'true';
-    },
-
-    clickInsertAfterButton() {
-      const {getByTitle} = within(selectionRect);
-      fireEvent.click(getByTitle('Insert content element after'));
-    },
-
-    drag(at, otherContentElement) {
-      const {getByTitle} = within(selectionRect);
-      fireEvent.dragStart(getByTitle('Drag to move'));
-      otherContentElement._drop(at);
-    },
-
-    _drop(at) {
-      const {getByTestId} = within(selectionRect);
-      const target = getByTestId(`drop-${at}`);
-      fireEvent.drop(target);
-    }
+    el
   }
 }

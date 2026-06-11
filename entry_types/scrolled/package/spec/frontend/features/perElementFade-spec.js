@@ -1,7 +1,9 @@
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {useSectionMatchers} from 'support/matchers';
 
 describe('fade transitions with backdrop blur', () => {
   usePageObjects();
+  useSectionMatchers();
 
   it('uses per-element fade to preserve backdrop blur', () => {
     const {getSectionByPermaId} = renderEntry({
@@ -16,7 +18,7 @@ describe('fade transitions with backdrop blur', () => {
       }
     });
 
-    expect(getSectionByPermaId(10).usesPerElementFadeTransition()).toBe(true);
+    expect(getSectionByPermaId(10)).toHavePerElementFadeTransition();
   });
 
   it('uses regular fade when there is no backdrop blur', () => {
@@ -32,6 +34,6 @@ describe('fade transitions with backdrop blur', () => {
       }
     });
 
-    expect(getSectionByPermaId(10).usesPerElementFadeTransition()).toBe(false);
+    expect(getSectionByPermaId(10)).not.toHavePerElementFadeTransition();
   });
 });

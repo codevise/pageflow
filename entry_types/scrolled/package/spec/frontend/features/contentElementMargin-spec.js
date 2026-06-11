@@ -1,11 +1,13 @@
 import React from 'react';
 
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {useContentElementLayoutMatchers} from 'support/matchers';
 
 import {contentElementWidths as widths, frontend} from 'pageflow-scrolled/frontend';
 
 describe('content element margin', () => {
   usePageObjects();
+  useContentElementLayoutMatchers();
 
   it('applies margin to content elements by default', () => {
     const {getContentElementByTestId} = renderEntry({
@@ -17,7 +19,7 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).hasMargin()).toBe(true);
+    expect(getContentElementByTestId(1)).toHaveContentElementMargin();
   });
 
   it('does not apply margin to full width content elements', () => {
@@ -30,7 +32,7 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).hasMargin()).toBe(false);
+    expect(getContentElementByTestId(1)).not.toHaveContentElementMargin();
   });
 
   it('does not apply top margin to first content element in section', () => {
@@ -44,8 +46,8 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).hasTopMargin()).toBe(false);
-    expect(getContentElementByTestId(2).hasTopMargin()).toBe(true);
+    expect(getContentElementByTestId(1)).toHaveContentElementMargin({topTrimmed: true});
+    expect(getContentElementByTestId(2)).toHaveContentElementMargin({topTrimmed: false});
   });
 
   it('does not trim custom margin top on first content element in section', () => {
@@ -58,7 +60,7 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).hasTopMargin()).toBe(true);
+    expect(getContentElementByTestId(1)).toHaveContentElementMargin({topTrimmed: false});
   });
 
   it('still applies top margin to first content element in cards appearance', () => {
@@ -72,8 +74,8 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).hasTopMargin()).toBe(true);
-    expect(getContentElementByTestId(2).hasTopMargin()).toBe(true);
+    expect(getContentElementByTestId(1)).toHaveContentElementMargin({topTrimmed: false});
+    expect(getContentElementByTestId(2)).toHaveContentElementMargin({topTrimmed: false});
   });
 
   it('supports defaultMarginTop option in content element registration', () => {
@@ -93,7 +95,7 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).getMarginTop()).toBe('1.375rem');
+    expect(getContentElementByTestId(1)).toHaveContentElementMargin({top: '1.375rem'});
   });
 
   it('sets margin top via --margin-top custom property', () => {
@@ -106,7 +108,7 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).getMarginTop()).toBe('var(--theme-content-element-margin-xl)');
+    expect(getContentElementByTestId(1)).toHaveContentElementMargin({top: 'var(--theme-content-element-margin-xl)'});
   });
 
   it('sets margin bottom via --prev-margin-bottom on next element', () => {
@@ -120,8 +122,8 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).getMarginBottom()).toBe('');
-    expect(getContentElementByTestId(2).getPrevMarginBottom()).toBe('var(--theme-content-element-margin-lg)');
+    expect(getContentElementByTestId(1)).toHaveContentElementMargin({bottom: ''});
+    expect(getContentElementByTestId(2)).toHaveContentElementMargin({prevBottom: 'var(--theme-content-element-margin-lg)'});
   });
 
   it('applies --margin-bottom when next element has different width', () => {
@@ -136,8 +138,8 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(2).getMarginBottom()).toBe('var(--theme-content-element-margin-lg)');
-    expect(getContentElementByTestId(3).getPrevMarginBottom()).toBe('');
+    expect(getContentElementByTestId(2)).toHaveContentElementMargin({bottom: 'var(--theme-content-element-margin-lg)'});
+    expect(getContentElementByTestId(3)).toHaveContentElementMargin({prevBottom: ''});
   });
 
   it('passes previous inline element margin bottom skipping side elements', () => {
@@ -152,9 +154,9 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).getMarginBottom()).toBe('');
-    expect(getContentElementByTestId(2).getPrevMarginBottom()).toBe('');
-    expect(getContentElementByTestId(3).getPrevMarginBottom()).toBe('var(--theme-content-element-margin-lg)');
+    expect(getContentElementByTestId(1)).toHaveContentElementMargin({bottom: ''});
+    expect(getContentElementByTestId(2)).toHaveContentElementMargin({prevBottom: ''});
+    expect(getContentElementByTestId(3)).toHaveContentElementMargin({prevBottom: 'var(--theme-content-element-margin-lg)'});
   });
 
   it('sets margin top via --margin-top custom property in center layout', () => {
@@ -167,7 +169,7 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).getMarginTop()).toBe('var(--theme-content-element-margin-xl)');
+    expect(getContentElementByTestId(1)).toHaveContentElementMargin({top: 'var(--theme-content-element-margin-xl)'});
   });
 
   it('sets margin bottom via --margin-bottom custom property in center layout', () => {
@@ -180,6 +182,6 @@ describe('content element margin', () => {
       }
     });
 
-    expect(getContentElementByTestId(1).getMarginBottom()).toBe('var(--theme-content-element-margin-xl)');
+    expect(getContentElementByTestId(1)).toHaveContentElementMargin({bottom: 'var(--theme-content-element-margin-xl)'});
   });
 });

@@ -1,6 +1,7 @@
 import  'widgets/excursionSheet';
 
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {useSectionMatchers} from 'support/matchers';
 import {changeLocationHash} from 'support/changeLocationHash';
 import 'support/viewTimelineStub';
 import 'support/animateStub';
@@ -9,6 +10,7 @@ import {act} from '@testing-library/react';
 
 describe('transitions', () => {
   usePageObjects();
+  useSectionMatchers();
 
   it('applies foreground-above and foreground-below classes when scrolling middle section into view', () => {
     const {getSectionByPermaId} = renderEntry({
@@ -41,9 +43,9 @@ describe('transitions', () => {
 
     getSectionByPermaId(2).simulateScrollingIntoView();
 
-    expect(getSectionByPermaId(1).hasFadedOutForeground()).toBe(true);
-    expect(getSectionByPermaId(2).hasFadedOutForeground()).toBe(false);
-    expect(getSectionByPermaId(3).hasFadedOutForeground()).toBe(true);
+    expect(getSectionByPermaId(1)).toHaveFadedOutForeground();
+    expect(getSectionByPermaId(2)).not.toHaveFadedOutForeground();
+    expect(getSectionByPermaId(3)).toHaveFadedOutForeground();
   });
 
   it('fades foreground for sections with fade transition in excursions', () => {
@@ -104,8 +106,8 @@ describe('transitions', () => {
     act(() => changeLocationHash('#some-excursion'));
     getSectionByPermaId(2).simulateScrollingIntoView();
 
-    expect(getSectionByPermaId(1).hasFadedOutForeground()).toBe(true);
-    expect(getSectionByPermaId(2).hasFadedOutForeground()).toBe(false);
-    expect(getSectionByPermaId(3).hasFadedOutForeground()).toBe(true);
+    expect(getSectionByPermaId(1)).toHaveFadedOutForeground();
+    expect(getSectionByPermaId(2)).not.toHaveFadedOutForeground();
+    expect(getSectionByPermaId(3)).toHaveFadedOutForeground();
   });
 });

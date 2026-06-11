@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from '@testing-library/react';
 
-import {ReviewStateProvider} from '../review/ReviewStateProvider';
+import {ReviewStateProvider} from 'review/ReviewStateProvider';
 
 export function renderWithReviewState(ui, {commentThreads = [], currentUser = null} = {}) {
   return render(

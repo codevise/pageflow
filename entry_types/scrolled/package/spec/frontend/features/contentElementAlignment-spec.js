@@ -1,8 +1,10 @@
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {useContentElementLayoutMatchers} from 'support/matchers';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('content element alignment', () => {
   usePageObjects();
+  useContentElementLayoutMatchers();
 
   it('applies alignment class for narrow inline element', () => {
     const {getContentElementByTestId} = renderEntry({
@@ -18,8 +20,7 @@ describe('content element alignment', () => {
       }
     });
 
-    const contentElement = getContentElementByTestId('probe');
-    expect(contentElement.hasAlignment('right')).toBe(true);
+    expect(getContentElementByTestId('probe')).toHaveAlignment('right');
   });
 
   it('applies alignment class for narrow standAlone element', () => {
@@ -41,8 +42,7 @@ describe('content element alignment', () => {
       }
     });
 
-    const contentElement = getContentElementByTestId('probe');
-    expect(contentElement.hasAlignment('right')).toBe(true);
+    expect(getContentElementByTestId('probe')).toHaveAlignment('right');
   });
 
   it('ignores alignment class when width changes', () => {
@@ -59,7 +59,6 @@ describe('content element alignment', () => {
       }
     });
 
-    const contentElement = getContentElementByTestId('probe');
-    expect(contentElement.hasAlignment('left')).toBe(false);
+    expect(getContentElementByTestId('probe')).not.toHaveAlignment('left');
   });
 });

@@ -1,4 +1,5 @@
 import {renderEntry, usePageObjects} from 'support/pageObjects';
+import {useSectionMatchers} from 'support/matchers';
 import {act} from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
@@ -10,6 +11,7 @@ jest.mock('frontend/useMotifAreaState');
 
 describe('section padding', () => {
   usePageObjects();
+  useSectionMatchers();
 
   it('does not suppress top padding by default', () => {
     const {getSectionByPermaId} = renderEntry({
@@ -19,7 +21,7 @@ describe('section padding', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasSuppressedTopPadding()).toBe(false);
+    expect(getSectionByPermaId(6)).toHaveSuppressedPadding({top: false});
   });
 
   it('does not suppress bottom padding by default', () => {
@@ -30,7 +32,7 @@ describe('section padding', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasSuppressedBottomPadding()).toBe(false);
+    expect(getSectionByPermaId(6)).toHaveSuppressedPadding({bottom: false});
   });
 
   it('suppresses top padding if first content element is full width', () => {
@@ -41,7 +43,7 @@ describe('section padding', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasSuppressedTopPadding()).toBe(true);
+    expect(getSectionByPermaId(6)).toHaveSuppressedPadding({top: true});
   });
 
   it('suppresses top padding if motif area is content padded', () => {
@@ -54,7 +56,7 @@ describe('section padding', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasSuppressedTopPadding()).toBe(true);
+    expect(getSectionByPermaId(6)).toHaveSuppressedPadding({top: true});
   });
 
   it('does not suppress first box top margin if motif area becomes content padded', () => {
@@ -65,11 +67,11 @@ describe('section padding', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasFirstBoxSuppressedTopMargin()).toBe(true);
+    expect(getSectionByPermaId(6)).toHaveFirstBoxSuppressedTopMargin();
 
     act(() => useMotifAreaState.mockContentPadded());
 
-    expect(getSectionByPermaId(6).hasFirstBoxSuppressedTopMargin()).toBe(false);
+    expect(getSectionByPermaId(6)).not.toHaveFirstBoxSuppressedTopMargin();
   });
 
   it('suppresses bottom padding if last content element is full width', () => {
@@ -80,7 +82,7 @@ describe('section padding', () => {
       }
     });
 
-    expect(getSectionByPermaId(6).hasSuppressedBottomPadding()).toBe(true);
+    expect(getSectionByPermaId(6)).toHaveSuppressedPadding({bottom: true});
   });
 
   it('does not set inline padding styles when no paddingTop/paddingBottom set', () => {
@@ -234,8 +236,7 @@ describe('section padding', () => {
     });
 
     const section = getSectionByPermaId(6);
-    expect(section.hasRemainingSpaceAbove()).toBe(false);
-    expect(section.hasRemainingSpaceBelow()).toBe(false);
+    expect(section).toHaveRemainingSpace({above: false, below: false});
   });
 
   it('supports remaining vertical space above content', () => {
@@ -251,8 +252,7 @@ describe('section padding', () => {
     });
 
     const section = getSectionByPermaId(6);
-    expect(section.hasRemainingSpaceAbove()).toBe(true);
-    expect(section.hasRemainingSpaceBelow()).toBe(false);
+    expect(section).toHaveRemainingSpace({above: true, below: false});
   });
 
   it('supports remaining vertical space below content', () => {
@@ -268,7 +268,6 @@ describe('section padding', () => {
     });
 
     const section = getSectionByPermaId(6);
-    expect(section.hasRemainingSpaceAbove()).toBe(false);
-    expect(section.hasRemainingSpaceBelow()).toBe(true);
+    expect(section).toHaveRemainingSpace({above: false, below: true});
   });
 });
