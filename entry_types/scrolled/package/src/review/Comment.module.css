@@ -20,4 +20,5 @@
   padding-left: space(8);
   line-height: 1.4;
   color: var(--ui-on-surface-color);
+  white-space: pre-wrap;
 }
