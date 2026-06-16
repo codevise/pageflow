@@ -1,0 +1,46 @@
+.wrapper {
+  position: relative;
+}
+
+.commentBadge {
+  box-sizing: border-box;
+  position: relative;
+  /* Sit above the section Foreground (z-index 3) so the badge stays
+     reachable; the section establishes no stacking context of its own. */
+  z-index: 4;
+  display: flex;
+  align-items: flex-end;
+  height: 44px;
+  padding: 0 0 10px 10px;
+  pointer-events: none;
+}
+
+.commentBadge > * {
+  pointer-events: auto;
+}
+
+.commentBadge.sticky {
+  position: sticky;
+  bottom: 0;
+}
+
+/* Absorb the badge box's height; on the section, not the sticky badge. */
+.wrapper > section {
+  margin-bottom: -44px;
+}
+
+.addButton {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pill {
+  composes: pill from './AddCommentOverlay.module.css';
+}
+
+.addButton:hover .pill,
+.addButton:focus .pill {
+  opacity: 1;
+}

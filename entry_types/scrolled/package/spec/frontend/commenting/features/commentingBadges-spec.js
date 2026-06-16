@@ -55,4 +55,25 @@ describe('commenting badges', () => {
     expect(entry.getByText('Nice work')).toBeInTheDocument();
     expect(entry.getByText('Bob')).toBeInTheDocument();
   });
+
+  it('shows thread list when clicking a section badge', () => {
+    const entry = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]
+      },
+      commenting: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'Section', subjectId: 10, comments: [
+            {id: 10, body: 'On the section', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    });
+
+    fireEvent.click(entry.getAllCommentBadges()[0]);
+
+    expect(entry.getByText('On the section')).toBeInTheDocument();
+  });
 });

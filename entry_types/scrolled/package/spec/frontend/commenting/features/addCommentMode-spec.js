@@ -186,4 +186,19 @@ describe('add comment mode', () => {
 
     expect(contentElement.hasSelectToCommentButton()).toBe(false);
   });
+
+  it('opens new thread form when selecting a section', async () => {
+    const user = userEvent.setup();
+    const entry = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]
+      }
+    });
+
+    await user.click(entry.getAddCommentButton());
+    await user.click(entry.getByRole('button', {name: 'Select section to comment'}));
+
+    expect(entry.getNewThreadInput()).toBeInTheDocument();
+  });
 });
