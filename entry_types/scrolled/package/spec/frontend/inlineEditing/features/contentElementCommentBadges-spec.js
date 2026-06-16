@@ -6,7 +6,7 @@ import {useInlineEditingPageObjects, renderEntry} from 'support/pageObjects/inli
 
 import badgeStyles from 'review/Badge.module.css';
 
-describe('inline editing comment badges', () => {
+describe('inline editing content element comment badges', () => {
   useInlineEditingPageObjects();
   useFakeFeatures('frontend', ['commenting']);
 

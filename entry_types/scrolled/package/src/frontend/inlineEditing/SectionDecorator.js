@@ -6,6 +6,8 @@ import contentElementStyles from './ContentElementDecorator.module.css';
 import widgetSelectionRectStyles from './WidgetSelectionRect.module.css';
 import paddingIndicatorStyles from './PaddingIndicator.module.css';
 
+import {features} from 'pageflow/frontend';
+import {ThreadsBadge, useCommentThreads} from 'pageflow-scrolled/review';
 import {Toolbar} from './Toolbar';
 import {ForcePaddingContext} from '../Foreground';
 import {useEditorSelection} from './EditorState';
@@ -16,6 +18,7 @@ import transitionIcon from './images/arrows.svg';
 
 export function SectionDecorator({backdrop, section, contentElements, transitions, children}) {
   const {t} = useI18n({locale: 'ui'});
+  const commentingEnabled = features.isEnabled('commenting');
 
   const {isSelected: isSectionSelected, select, resetSelection} = useEditorSelection({
     id: section.id,
@@ -27,7 +30,31 @@ export function SectionDecorator({backdrop, section, contentElements, transition
     type: 'sectionPaddings'
   });
 
-  const isSelected = isPaddingSelected || isSectionSelected;
+  const {isSelected: isCommentsSelected, select: selectComments} = useEditorSelection({
+    id: section.id,
+    type: 'sectionComments'
+  });
+
+  const {isSelected: isNewThreadSelected, select: selectNewThread} = useEditorSelection({
+    type: 'newThread',
+    subjectType: 'Section',
+    subjectId: section.permaId
+  });
+
+  // Viewing a section's comments or composing a new thread on it.
+  const commentsSelected = isCommentsSelected || isNewThreadSelected;
+
+  // The section reads as selected while its comments are open, so the
+  // section and the sidebar comment panel stay visually in sync.
+  const isSelected = isSectionSelected || isPaddingSelected || commentsSelected;
+
+  const threads = useCommentThreads(
+    {subjectType: 'Section', subjectId: section.permaId},
+    {resolved: false}
+  );
+  const hasThreads = threads.length > 0;
+
+  const clipBadgeCorner = (isSectionSelected || isPaddingSelected) && !hasThreads;
 
   const {isSelected: isBackdropElementSelected} = useEditorSelection({
     id: backdrop.contentElement?.id,
@@ -61,6 +88,7 @@ export function SectionDecorator({backdrop, section, contentElements, transition
         !event.target.closest(`.${backdropStyles.wrapper}`) &&
         !event.target.closest(`.${widgetSelectionRectStyles.wrapper}`) &&
         !event.target.closest(`.${paddingIndicatorStyles.indicator}`) &&
+        !event.target.closest(`.${styles.commentBadge}`) &&
         !event.target.closest('#fullscreenRoot') &&
         !event.target.closest('[data-floating-ui-portal]')) {
       isSectionSelected ? resetSelection() : select();
@@ -69,7 +97,8 @@ export function SectionDecorator({backdrop, section, contentElements, transition
 
   return (
     <div aria-label={t('pageflow_scrolled.inline_editing.select_section')}
-         className={className(isSelected, transitionSelection, isHighlighted, isBackdropElementSelected, transitions)}
+         aria-selected={isSelected}
+         className={className(isSelected, transitionSelection, isHighlighted, isBackdropElementSelected, transitions, clipBadgeCorner, commentingEnabled)}
          onMouseDown={selectIfOutsideContentItem}>
       <div className={styles.controls}>
         {renderEditTransitionButton({id: section.previousSection && section.id,
@@ -82,21 +111,37 @@ export function SectionDecorator({backdrop, section, contentElements, transition
       <MotifAreaVisibilityProvider visible={isSelected}>
         <ForcePaddingContext.Provider value={isLastContentElementSelected ||
                                              isSectionSelected ||
-                                             isHighlighted}>
+                                             isHighlighted ||
+                                             commentsSelected}>
           {children}
         </ForcePaddingContext.Provider>
       </MotifAreaVisibilityProvider>
+      {commentingEnabled &&
+       <div className={classNames(styles.commentBadge, {[styles.sticky]: hasThreads || commentsSelected})}>
+         <ThreadsBadge subjectType="Section"
+                       subjectId={section.permaId}
+                       mode={commentsSelected ? 'active' :
+                             isSelected ? 'icon' : 'dot'}
+                       onClick={() => hasThreads ? selectComments() : selectNewThread()}
+                       onSelectThread={threadId => selectComments({
+                         type: 'sectionComments',
+                         id: section.id,
+                         highlightedThreadId: threadId
+                       })} />
+       </div>}
     </div>
   );
 }
 
-function className(isSelected, transitionSelection, isHighlighted, isBackdropElementSelected, transitions) {
+function className(isSelected, transitionSelection, isHighlighted, isBackdropElementSelected, transitions, clipBadgeCorner, commenting) {
   return classNames(styles.wrapper, {
     [styles.selected]: isSelected,
     [styles.highlighted]: isHighlighted,
     [styles.lineAbove]: isBackdropElementSelected && transitions[0].startsWith('fade'),
     [styles.lineBelow]: isBackdropElementSelected && transitions[1].startsWith('fade'),
-    [styles.transitionSelected]: transitionSelection.isSelected
+    [styles.transitionSelected]: transitionSelection.isSelected,
+    [styles.clipBadgeCorner]: clipBadgeCorner,
+    [styles.commenting]: commenting
   });
 }
 

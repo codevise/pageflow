@@ -84,6 +84,53 @@ section::before {
   overflow: hidden;
 }
 
+.commentBadge {
+  box-sizing: border-box;
+  position: relative;
+  z-index: 11;
+  height: 44px;
+  pointer-events: none;
+}
+
+.commentBadge.sticky {
+  position: sticky;
+  bottom: 0px;
+}
+
+.commentBadge > button {
+  position: absolute;
+  transform: translate(0, 50%);
+  pointer-events: auto;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.selected .commentBadge.sticky {
+  bottom: 10px;
+}
+
+.selected .commentBadge > button {
+  bottom: 7px;
+  left: space(-1.5);
+}
+
+.selected .commentBadge.sticky > button {
+  left: 0;
+}
+
+/* clip-path clips the border and inset shadow behind the transparent icon. */
+.clipBadgeCorner > section::before {
+  --nodge: 15px;
+  clip-path: polygon(0 -10%, 100% -10%, 100% 110%,
+                     var(--nodge) 110%, var(--nodge) calc(100% - var(--nodge)), 0 calc(100% - var(--nodge)));
+}
+
+/* Absorb the badge box's height; on the section, not the sticky badge. Scoped
+ * to commenting since the box only renders then. */
+.commenting > section {
+  margin-bottom: -44px;
+}
+
 .transitionToolbar-before {
   composes: toolbar;
   top: 0;
