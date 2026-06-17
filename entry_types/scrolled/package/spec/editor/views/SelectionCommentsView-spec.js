@@ -455,4 +455,42 @@ describe('SelectionCommentsView', () => {
     });
     expect(queryByText('On element')).not.toBeInTheDocument();
   });
+
+  // The SELECTED message sets highlightedThreadId and
+  // selectedCommentsSubject in one go. The change:highlightedThreadId
+  // listener rerenders before change:selectedCommentsSubject refreshes
+  // the resolved model, so props must derive the model from the current
+  // subject rather than a stale cache.
+  it('does not crash switching from section to content element comments in one set', async () => {
+    const entry = createEntry({
+      sections: [{id: 5, permaId: 50}],
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture', sectionId: 5}]
+    });
+    entry.set('selectedCommentsSubject', {subjectType: 'Section', id: 5});
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'Section', subjectId: 50,
+         comments: [{id: 100, body: 'On section', creatorName: 'Alice'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 200, body: 'On element', creatorName: 'Bob'}]}
+      ]
+    });
+
+    const view = new SelectionCommentsView({entry, editor});
+    const {getByText, queryByText} = renderBackboneView(view);
+
+    expect(getByText('On section')).toBeInTheDocument();
+
+    act(() => {
+      entry.set({
+        highlightedThreadId: 2,
+        selectedCommentsSubject: {subjectType: 'ContentElement', id: 1}
+      });
+    });
+
+    await waitFor(() => {
+      expect(getByText('On element')).toBeInTheDocument();
+    });
+    expect(queryByText('On section')).not.toBeInTheDocument();
+  });
 });

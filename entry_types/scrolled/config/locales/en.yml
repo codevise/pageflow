@@ -1569,6 +1569,7 @@ en:
         comments: Comments
       comments_view:
         new_thread: New topic
+        section: Section
         tabs:
           comments: All comments
           selection: For selection

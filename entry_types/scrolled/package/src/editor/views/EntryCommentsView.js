@@ -23,8 +23,9 @@ export const EntryCommentsView = ReviewView.extend({
   props() {
     const {entry, editor} = this.options;
     return {
-      items: collectContentElements(entry),
+      items: collectItems(entry),
       selectedElement: this._selectedElement,
+      selectedSection: this._selectedSection,
       // Undefined for elements without a slate cursor (e.g. images);
       // an array (possibly empty) for textBlocks where Selection.js
       // has reported the cursor's overlapping threads.
@@ -36,18 +37,23 @@ export const EntryCommentsView = ReviewView.extend({
     };
   },
 
-  renderContent({items, selectedElement, transientThreadIds, highlightedThreadId, onThreadClick, editor}) {
+  renderContent({items, selectedElement, selectedSection, transientThreadIds, highlightedThreadId, onThreadClick, editor}) {
     return (
       <div className={styles.list}>
-        {items.map(({contentElement}) => (
-          <ContentElementGroup key={contentElement.get('permaId')}
-                               contentElement={contentElement}
-                               isSelected={contentElement === selectedElement}
+        {items.map(item => item.type === 'section' ?
+          <SectionGroup key={`section-${item.section.get('permaId')}`}
+                        section={item.section}
+                        isSelected={item.section === selectedSection}
+                        highlightedThreadId={highlightedThreadId}
+                        onThreadClick={onThreadClick} /> :
+          <ContentElementGroup key={`element-${item.contentElement.get('permaId')}`}
+                               contentElement={item.contentElement}
+                               isSelected={item.contentElement === selectedElement}
                                selectedHasTransientThreadIds={transientThreadIds !== undefined}
                                highlightedThreadId={highlightedThreadId}
                                onThreadClick={onThreadClick}
                                editor={editor} />
-        ))}
+        )}
       </div>
     );
   },
@@ -67,6 +73,10 @@ export const EntryCommentsView = ReviewView.extend({
       subject?.subjectType === 'ContentElement' ?
         this.options.entry.contentElements.get(subject.id) :
         null;
+    this._selectedSection =
+      subject?.subjectType === 'Section' ?
+        this.options.entry.sections.get(subject.id) :
+        null;
 
     if (this._selectedElement) {
       this.listenTo(this._selectedElement.transientState,
@@ -76,13 +86,17 @@ export const EntryCommentsView = ReviewView.extend({
   }
 });
 
-function collectContentElements(entry) {
+// Section comment groups precede the content element groups of the
+// same section, so a reviewer sees feedback on the section as a whole
+// above feedback on its individual elements.
+function collectItems(entry) {
   const items = [];
 
   entry.chapters.each(chapter => {
     chapter.sections.each(section => {
+      items.push({type: 'section', section});
       section.contentElements.each(contentElement => {
-        items.push({contentElement, section});
+        items.push({type: 'contentElement', contentElement});
       });
     });
   });
@@ -118,7 +132,7 @@ function ContentElementGroup({
 
   return (
     <div className={styles.group}>
-      <ContentElementTypeSeparator label={label} pictogram={pictogram} />
+      <Separator label={label} pictogram={pictogram} />
       <ThreadList subjectType="ContentElement"
                   subjectId={permaId}
                   compareRanges={compareRanges}
@@ -131,7 +145,36 @@ function ContentElementGroup({
   );
 }
 
-function ContentElementTypeSeparator({label, pictogram}) {
+function SectionGroup({section, isSelected, highlightedThreadId, onThreadClick}) {
+  const permaId = section.get('permaId');
+  const threads = useCommentThreads({
+    subjectType: 'Section',
+    subjectId: permaId
+  });
+
+  if (threads.length === 0) {
+    return null;
+  }
+
+  // A section has no per-thread anchor in the preview, so selecting it
+  // highlights all its threads at once, like a whole-element image badge.
+  const groupHighlight = isSelected ? threads.map(t => t.id) : highlightedThreadId;
+
+  return (
+    <div className={styles.group}>
+      <Separator label={I18n.t('pageflow_scrolled.editor.comments_view.section')} />
+      <ThreadList subjectType="Section"
+                  subjectId={permaId}
+                  highlightedThreadId={groupHighlight}
+                  onThreadClick={onThreadClick}
+                  restrictInteractionsToHighlighted
+                  showNewForm={false}
+                  hideNewTopicButton />
+    </div>
+  );
+}
+
+function Separator({label, pictogram}) {
   return (
     <div className={styles.separator}>
       <span className={styles.rule} />

@@ -20,7 +20,13 @@ export const SelectionCommentsView = ReviewView.extend({
   props() {
     const {entry, editor} = this.options;
     const subject = entry.get('selectedCommentsSubject');
-    const model = this._model;
+
+    // Resolve the model from the current subject rather than the cached
+    // `this._model`: a `change:highlightedThreadId` rerender can run
+    // before `change:selectedCommentsSubject` refreshes `this._model`,
+    // leaving a stale Section model paired with a new ContentElement
+    // subject.
+    const model = this._resolveModel();
 
     if (!subject || !model) {
       return {};

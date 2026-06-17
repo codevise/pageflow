@@ -25,7 +25,8 @@ describe('EntryCommentsView', () => {
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.editor.content_elements.textBlock.name': 'Text',
-    'pageflow_scrolled.editor.content_elements.image.name': 'Image'
+    'pageflow_scrolled.editor.content_elements.image.name': 'Image',
+    'pageflow_scrolled.editor.comments_view.section': 'Section'
   });
 
   it('renders a thread group only for content elements that have threads', () => {
@@ -363,5 +364,92 @@ describe('EntryCommentsView', () => {
     const pictogram = view.el.querySelector(`.${styles.pictogram}`);
     expect(pictogram).toBeInTheDocument();
     expect(pictogram.style.maskImage).not.toBe('');
+  });
+
+  it('renders a section thread group with a label-only separator', () => {
+    const entry = createEntry({
+      sections: [{id: 1, permaId: 10}],
+      contentElements: [{id: 1, permaId: 100, sectionId: 1, typeName: 'image'}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [{
+        id: 1, subjectType: 'Section', subjectId: 10,
+        comments: [{id: 100, body: 'On the section', creatorName: 'Alice'}]
+      }]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('On the section')).toBeInTheDocument();
+    expect(getByText('Section')).toBeInTheDocument();
+    expect(view.el.querySelector(`.${styles.pictogram}`)).toBeNull();
+  });
+
+  it("renders a section's comments above its content element comments", () => {
+    const entry = createEntry({
+      sections: [{id: 1, permaId: 10}],
+      contentElements: [{id: 1, permaId: 100, sectionId: 1, typeName: 'image'}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 100,
+         comments: [{id: 1, body: 'on element', creatorName: 'A'}]},
+        {id: 2, subjectType: 'Section', subjectId: 10,
+         comments: [{id: 2, body: 'on section', creatorName: 'B'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    const sectionComment = getByText('on section');
+    const elementComment = getByText('on element');
+
+    expect(sectionComment.compareDocumentPosition(elementComment) &
+           Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it('does not render a section group when the section has no threads', () => {
+    const entry = createEntry({
+      sections: [{id: 1, permaId: 10}],
+      contentElements: [{id: 1, permaId: 100, sectionId: 1, typeName: 'image'}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [{
+        id: 1, subjectType: 'ContentElement', subjectId: 100,
+        comments: [{id: 100, body: 'on element', creatorName: 'Alice'}]
+      }]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {queryByText} = renderBackboneView(view);
+
+    expect(queryByText('on element')).toBeInTheDocument();
+    expect(queryByText('Section')).not.toBeInTheDocument();
+  });
+
+  it('highlights all threads of the selected section', () => {
+    const entry = createEntry({
+      sections: [{id: 1, permaId: 10}, {id: 2, permaId: 20}]
+    });
+    entry.set('selectedCommentsSubject', {subjectType: 'Section', id: 1});
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'Section', subjectId: 10,
+         comments: [{id: 10, body: 'on selected one', creatorName: 'A'}]},
+        {id: 2, subjectType: 'Section', subjectId: 10,
+         comments: [{id: 20, body: 'on selected two', creatorName: 'B'}]},
+        {id: 3, subjectType: 'Section', subjectId: 20,
+         comments: [{id: 30, body: 'on other', creatorName: 'C'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('on selected one').closest('[aria-current="true"]')).not.toBeNull();
+    expect(getByText('on selected two').closest('[aria-current="true"]')).not.toBeNull();
+    expect(getByText('on other').closest('[aria-current="true"]')).toBeNull();
   });
 });
