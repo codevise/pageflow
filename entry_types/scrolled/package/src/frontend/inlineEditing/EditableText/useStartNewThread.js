@@ -8,15 +8,16 @@ export function useStartNewThread(editor) {
   const commentingEnabled = features.isEnabled('commenting') && inlineComments;
   const {select: selectNewThread} = useEditorSelection({
     type: 'newThread',
-    id: contentElementPermaId
+    subjectType: 'ContentElement',
+    subjectId: contentElementPermaId
   });
 
   if (!commentingEnabled) return null;
 
   return () => selectNewThread({
     type: 'newThread',
-    id: contentElementPermaId,
     subjectType: 'ContentElement',
+    subjectId: contentElementPermaId,
     range: editor.selection
   });
 }

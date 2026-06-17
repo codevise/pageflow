@@ -2,9 +2,10 @@ import React from 'react';
 
 import {features} from 'pageflow/frontend';
 import {EditableText} from 'frontend';
+import {useStartNewThread} from 'frontend/inlineEditing/EditableText/useStartNewThread';
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inlineEditing';
 
-import {act} from '@testing-library/react';
+import {act, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('inline editing EditableText comment selection messages', () => {
@@ -49,6 +50,34 @@ describe('inline editing EditableText comment selection messages', () => {
         type: 'contentElementComments',
         id: 1,
         highlightedThreadId: 5
+      }
+    }, expect.anything());
+  });
+
+  it('posts SELECTED newThread with subject and range when starting a thread on a text range', () => {
+    const range = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
+
+    function StartNewThreadButton() {
+      const startNewThread = useStartNewThread({selection: range});
+      return <button onClick={startNewThread}>Start thread</button>;
+    }
+
+    const {getByText} = renderEntry({
+      contentElement: {
+        ui: <StartNewThreadButton />,
+        typeOptions: {inlineComments: true}
+      }
+    });
+
+    fireEvent.click(getByText('Start thread'));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {
+        type: 'newThread',
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        range
       }
     }, expect.anything());
   });

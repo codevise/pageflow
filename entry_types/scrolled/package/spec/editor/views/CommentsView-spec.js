@@ -165,7 +165,7 @@ describe('CommentsView', () => {
     fireEvent.click(getByRole('button', {name: 'New topic'}));
 
     expect(listener).toHaveBeenCalledWith({
-      id: 10,
+      subjectId: 10,
       subjectType: 'ContentElement',
       range
     });

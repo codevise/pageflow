@@ -193,7 +193,7 @@ describe('PreviewMessageController', () => {
         }
       });
       entry.trigger('selectNewThread', {
-        id: 10,
+        subjectId: 10,
         subjectType: 'ContentElement',
         range
       });
@@ -201,7 +201,7 @@ describe('PreviewMessageController', () => {
       type: 'SELECT',
       payload: {
         type: 'newThread',
-        id: 10,
+        subjectId: 10,
         subjectType: 'ContentElement',
         range
       }
@@ -691,9 +691,9 @@ describe('PreviewMessageController', () => {
       window.postMessage({
         type: 'SELECTED',
         payload: {
-          id: 100,
           type: 'newThread',
           subjectType: 'ContentElement',
+          subjectId: 100,
           range: {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 1}}
         }
       }, '*');
@@ -734,8 +734,8 @@ describe('PreviewMessageController', () => {
         type: 'SELECTED',
         payload: {
           type: 'newThread',
-          id: 10,
           subjectType: 'ContentElement',
+          subjectId: 10,
           range
         }
       }, '*');

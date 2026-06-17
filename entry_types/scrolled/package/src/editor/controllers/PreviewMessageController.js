@@ -166,7 +166,7 @@ export const PreviewMessageController = Object.extend({
         });
       }
       else if (message.data.type === 'SELECTED') {
-        const {type, id, position} = message.data.payload;
+        const {type, id, subjectType, subjectId, position} = message.data.payload;
 
         this.preservedScrollTarget = null;
         this.entry.set({
@@ -177,7 +177,7 @@ export const PreviewMessageController = Object.extend({
             type === 'contentElement' || type === 'contentElementComments' ?
               id :
               type === 'newThread' ?
-                this.entry.contentElements.findWhere({permaId: id})?.id :
+                this.entry.contentElements.findWhere({permaId: subjectId})?.id :
                 undefined
         });
 
@@ -190,11 +190,11 @@ export const PreviewMessageController = Object.extend({
           }
         }
         else if (type === 'newThread') {
-          const {subjectType, range} = message.data.payload;
+          const {range} = message.data.payload;
           const payload = encodeURIComponent(JSON.stringify({subjectRange: range}));
           this.editor.navigate(
             `/scrolled/comment_threads/new?subjectType=${subjectType}` +
-            `&subjectId=${id}&payload=${payload}`,
+            `&subjectId=${subjectId}&payload=${payload}`,
             {trigger: true}
           );
         }

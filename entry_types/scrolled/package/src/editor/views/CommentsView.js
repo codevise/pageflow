@@ -59,7 +59,7 @@ export const CommentsView = Marionette.ItemView.extend({
 
     const contentElement = entry.contentElements.get(id);
     entry.trigger('selectNewThread', {
-      id: contentElement.get('permaId'),
+      subjectId: contentElement.get('permaId'),
       subjectType: 'ContentElement',
       range: contentElement.transientState.get('newCommentThreadSubjectRange')
     });

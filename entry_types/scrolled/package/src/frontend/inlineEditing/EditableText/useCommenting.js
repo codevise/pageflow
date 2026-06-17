@@ -33,7 +33,8 @@ export function useCommenting(editor) {
   const {anchors, registerAnchor} = useRangeAnchors();
   const {isSelected: newThreadActive, range: newThreadRange} = useEditorSelection({
     type: 'newThread',
-    id: contentElementPermaId
+    subjectType: 'ContentElement',
+    subjectId: contentElementPermaId
   });
 
   const highlights = useCommentHighlights(
@@ -90,7 +91,7 @@ function HighlightSpan({rangeKey, children}) {
     type: 'contentElementComments', id: contentElementId
   });
   const {isSelected: newThreadActive} = useEditorSelection({
-    type: 'newThread', id: contentElementPermaId
+    type: 'newThread', subjectType: 'ContentElement', subjectId: contentElementPermaId
   });
   const isSelected = (commentsSelected && commentsSelection?.highlightedThreadId === threadId) ||
                      (rangeKey === 'selection' && newThreadActive);

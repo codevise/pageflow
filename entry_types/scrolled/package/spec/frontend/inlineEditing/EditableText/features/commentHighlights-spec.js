@@ -64,8 +64,8 @@ describe('inline editing EditableText comment highlights', () => {
         type: 'SELECT',
         payload: {
           type: 'newThread',
-          id: 10,
           subjectType: 'ContentElement',
+          subjectId: 10,
           range: subjectRange
         }
       }, '*');

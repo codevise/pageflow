@@ -39,7 +39,7 @@ function PositionedBadge({editor, highlight, highlights, editorSelection, anchor
     type: 'contentElementComments', id: contentElementId
   });
   const {isSelected: newThreadActive} = useEditorSelection({
-    type: 'newThread', id: contentElementPermaId
+    type: 'newThread', subjectType: 'ContentElement', subjectId: contentElementPermaId
   });
 
   const {refs, floatingStyles, hasAnchor} =

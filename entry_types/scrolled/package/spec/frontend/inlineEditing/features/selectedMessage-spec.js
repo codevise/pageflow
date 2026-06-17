@@ -199,7 +199,7 @@ describe('inline editing SELECTED message', () => {
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
-      payload: {type: 'newThread', id: 10}
+      payload: {type: 'newThread', subjectType: 'ContentElement', subjectId: 10}
     }, expect.anything());
   });
 

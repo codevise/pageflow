@@ -74,7 +74,7 @@ describe('inline editing comment badges', () => {
       window.dispatchEvent(new MessageEvent('message', {
         data: {
           type: 'SELECT',
-          payload: {type: 'newThread', id: 10}
+          payload: {type: 'newThread', subjectType: 'ContentElement', subjectId: 10}
         },
         origin: window.location.origin
       }));

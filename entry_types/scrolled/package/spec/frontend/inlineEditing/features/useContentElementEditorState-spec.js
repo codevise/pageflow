@@ -67,7 +67,7 @@ describe('inline editing useContentElementEditorState', () => {
     expect(captured.type).toBe('contentElementComments');
     expect(captured.isSelected).toBe(true);
 
-    act(() => setSelectionRef({type: 'newThread', id: 10}));
+    act(() => setSelectionRef({type: 'newThread', subjectType: 'ContentElement', subjectId: 10}));
     expect(captured.type).toBe('newThread');
     expect(captured.isSelected).toBe(true);
   });

@@ -54,7 +54,7 @@ export function Selection(props) {
   );
   const {isSelected: newThreadActive, range: newThreadRange} = useEditorSelection(
     useMemo(
-      () => ({type: 'newThread', id: contentElementPermaId}),
+      () => ({type: 'newThread', subjectType: 'ContentElement', subjectId: contentElementPermaId}),
       [contentElementPermaId]
     )
   );
