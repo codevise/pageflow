@@ -7,7 +7,6 @@ import {useSlate, ReactEditor} from 'slate-react';
 import {Badge, useAnchoredFloating} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {useContentElementAttributes} from '../../useContentElementAttributes';
-import {usePostMessageListener} from '../../../shared/usePostMessageListener';
 import {useEditorSelection} from '../EditorState';
 import {highlightOverlapsSelection} from './highlightOverlapsSelection';
 
@@ -67,16 +66,6 @@ function PositionedBadge({editor, highlight, highlights, editorSelection, anchor
       highlightedThreadId: highlight.thread?.id
     });
   }, [editor, highlight, selectComments, contentElementId]);
-
-  usePostMessageListener(useCallback(data => {
-    if (data.type === 'SELECT_COMMENT_THREAD' &&
-        data.payload.threadId === highlight.thread?.id) {
-      if (refs.floating.current) {
-        refs.floating.current.scrollIntoView({block: 'nearest', behavior: 'smooth'});
-      }
-      handleClick();
-    }
-  }, [highlight, handleClick, refs.floating]));
 
   if (!hasAnchor) return null;
 

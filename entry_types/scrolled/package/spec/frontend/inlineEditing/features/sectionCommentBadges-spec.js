@@ -200,5 +200,54 @@ describe('inline editing section comment badges', () => {
     });
 
     expect(section.scrollIntoView).toHaveBeenCalled();
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {type: 'sectionComments', id: 1, highlightedThreadId: 1}
+    }, expect.anything());
+  });
+
+  it('reveals a resolved section thread on SELECT_COMMENT_THREAD even without a badge', () => {
+    const {queryByRole, getByLabelText} = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{sectionId: 1, permaId: 100}]
+      }
+    });
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'REVIEW_STATE_RESET',
+          payload: {
+            currentUser: {id: 1},
+            commentThreads: [{
+              id: 3, subjectType: 'Section', subjectId: 10,
+              resolvedAt: '2026-06-01T00:00:00Z',
+              comments: [{id: 100, body: 'Resolved'}]
+            }]
+          }
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    // Resolved threads are not counted by the badge.
+    expect(queryByRole('status')).not.toBeInTheDocument();
+
+    const section = getByLabelText('Select section');
+    section.scrollIntoView = jest.fn();
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {type: 'SELECT_COMMENT_THREAD', payload: {threadId: 3}},
+        origin: window.location.origin
+      }));
+    });
+
+    expect(section.scrollIntoView).toHaveBeenCalled();
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {type: 'sectionComments', id: 1, highlightedThreadId: 3}
+    }, expect.anything());
   });
 });

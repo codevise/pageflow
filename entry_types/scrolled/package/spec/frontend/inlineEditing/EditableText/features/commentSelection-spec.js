@@ -133,4 +133,40 @@ describe('inline editing EditableText comment selection messages', () => {
     expect(scrollIntoView).toHaveBeenCalled();
     delete Element.prototype.scrollIntoView;
   });
+
+  it('scrolls a resolved thread into view when selected via SELECT_COMMENT_THREAD', () => {
+    const scrollIntoView = jest.fn();
+    Element.prototype.scrollIntoView = scrollIntoView;
+
+    const subjectRange = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
+    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+    renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: null,
+        commentThreads: [{
+          id: 9,
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          subjectRange,
+          resolvedAt: '2026-06-01T00:00:00Z',
+          comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+        }]
+      }
+    });
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {type: 'SELECT_COMMENT_THREAD', payload: {threadId: 9}},
+        origin: window.location.origin
+      }));
+    });
+
+    expect(scrollIntoView).toHaveBeenCalled();
+    delete Element.prototype.scrollIntoView;
+  });
 });

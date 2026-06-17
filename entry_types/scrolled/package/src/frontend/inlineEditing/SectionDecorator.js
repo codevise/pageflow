@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useRef} from 'react';
 import classNames from 'classnames';
 import styles from './SectionDecorator.module.css';
 import backdropStyles from './BackdropDecorator.module.css';
@@ -11,6 +11,7 @@ import {ThreadsBadge, useCommentThreads} from 'pageflow-scrolled/review';
 import {Toolbar} from './Toolbar';
 import {ForcePaddingContext} from '../Foreground';
 import {useEditorSelection} from './EditorState';
+import {useSelectCommentThreadHandler} from './useSelectCommentThreadHandler';
 import {MotifAreaVisibilityProvider} from '../MotifAreaVisibilityProvider';
 import {useI18n} from '../i18n';
 
@@ -54,6 +55,19 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   );
   const hasThreads = threads.length > 0;
 
+  const wrapperRef = useRef();
+
+  useSelectCommentThreadHandler({
+    subjectType: 'Section',
+    subjectId: section.permaId,
+    getScrollTarget: useCallback(() => wrapperRef.current, []),
+    selectThread: useCallback(threadId => selectComments({
+      type: 'sectionComments',
+      id: section.id,
+      highlightedThreadId: threadId
+    }), [selectComments, section.id])
+  });
+
   const clipBadgeCorner = (isSectionSelected || isPaddingSelected) && !hasThreads;
 
   const {isSelected: isBackdropElementSelected} = useEditorSelection({
@@ -96,7 +110,8 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   }
 
   return (
-    <div aria-label={t('pageflow_scrolled.inline_editing.select_section')}
+    <div ref={wrapperRef}
+         aria-label={t('pageflow_scrolled.inline_editing.select_section')}
          aria-selected={isSelected}
          className={className(isSelected, transitionSelection, isHighlighted, isBackdropElementSelected, transitions, clipBadgeCorner, commentingEnabled)}
          onMouseDown={selectIfOutsideContentItem}>
@@ -122,12 +137,7 @@ export function SectionDecorator({backdrop, section, contentElements, transition
                        subjectId={section.permaId}
                        mode={commentsSelected ? 'active' :
                              isSelected ? 'icon' : 'dot'}
-                       onClick={() => hasThreads ? selectComments() : selectNewThread()}
-                       onSelectThread={threadId => selectComments({
-                         type: 'sectionComments',
-                         id: section.id,
-                         highlightedThreadId: threadId
-                       })} />
+                       onClick={() => hasThreads ? selectComments() : selectNewThread()} />
        </div>}
     </div>
   );
