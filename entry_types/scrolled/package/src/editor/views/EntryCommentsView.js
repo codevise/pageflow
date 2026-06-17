@@ -15,7 +15,7 @@ export const EntryCommentsView = ReviewView.extend({
                   'change:highlightedThreadId',
                   () => this.rerender());
     this.listenTo(entry,
-                  'change:selectedContentElementCommentsId',
+                  'change:selectedCommentsSubject',
                   this._onSelectedChange);
     this._observeSelectedElement();
   },
@@ -62,8 +62,11 @@ export const EntryCommentsView = ReviewView.extend({
       this.stopListening(this._selectedElement.transientState);
     }
 
-    const id = this.options.entry.get('selectedContentElementCommentsId');
-    this._selectedElement = id ? this.options.entry.contentElements.get(id) : null;
+    const subject = this.options.entry.get('selectedCommentsSubject');
+    this._selectedElement =
+      subject?.subjectType === 'ContentElement' ?
+        this.options.entry.contentElements.get(subject.id) :
+        null;
 
     if (this._selectedElement) {
       this.listenTo(this._selectedElement.transientState,

@@ -173,15 +173,11 @@ export const PreviewMessageController = Object.extend({
           highlightedThreadId: type === 'contentElementComments' ?
                                message.data.payload.highlightedThreadId :
                                undefined,
-          selectedContentElementCommentsId:
-            type === 'contentElement' || type === 'contentElementComments' ?
-              id :
-              type === 'newThread' ?
-                this.entry.contentElements.findWhere({permaId: subjectId})?.id :
-                undefined
+          selectedCommentsSubject:
+            selectedCommentsSubjectFor(this.entry, message.data.payload)
         });
 
-        if (type === 'contentElementComments') {
+        if (type === 'contentElementComments' || type === 'sectionComments') {
           // Stay on the current tab when the user is already on the
           // comments route — only force the selection tab when arriving
           // there from elsewhere.
@@ -300,3 +296,25 @@ export const PreviewMessageController = Object.extend({
     }
   }
 });
+
+function selectedCommentsSubjectFor(entry, payload) {
+  const {type, id, subjectType, subjectId} = payload;
+
+  if (type === 'contentElement' || type === 'contentElementComments') {
+    return {subjectType: 'ContentElement', id};
+  }
+
+  if (type === 'sectionComments' ||
+      type === 'sectionSettings' ||
+      type === 'sectionPaddings' ||
+      type === 'sectionTransition') {
+    return {subjectType: 'Section', id};
+  }
+
+  if (type === 'newThread') {
+    const collection = subjectType === 'Section' ? entry.sections : entry.contentElements;
+    return {subjectType, id: collection.findWhere({permaId: subjectId})?.id};
+  }
+
+  return undefined;
+}

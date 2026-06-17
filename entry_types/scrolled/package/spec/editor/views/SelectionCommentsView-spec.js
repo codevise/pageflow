@@ -2,13 +2,13 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
 import {editor} from 'pageflow-scrolled/editor';
-import {ContentElementCommentsView} from 'editor/views/ContentElementCommentsView';
+import {SelectionCommentsView} from 'editor/views/SelectionCommentsView';
 
 import {factories, useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
 import {act, waitFor} from '@testing-library/react';
 
-describe('ContentElementCommentsView', () => {
+describe('SelectionCommentsView', () => {
   const {createEntry} = useEditorGlobals();
 
   beforeAll(() => {
@@ -28,7 +28,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession({
       commentThreads: [{
         id: 1,
@@ -38,7 +38,7 @@ describe('ContentElementCommentsView', () => {
       }]
     });
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
 
     const {getByText} = renderBackboneView(view);
 
@@ -49,7 +49,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.contentElements.get(1).transientState
       .set('commentThreadIdsAtSelection', [1]);
     entry.reviewSession = factories.reviewSession({
@@ -61,7 +61,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
 
     const {getByText, queryByText} = renderBackboneView(view);
 
@@ -73,7 +73,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession({
       commentThreads: [
         {id: 1, subjectType: 'ContentElement', subjectId: 10,
@@ -83,7 +83,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
 
     const {getByText} = renderBackboneView(view);
 
@@ -95,7 +95,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession({
       commentThreads: [
         {id: 1, subjectType: 'ContentElement', subjectId: 10,
@@ -105,7 +105,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {getByText, queryByText} = renderBackboneView(view);
 
     expect(getByText('Out of scope')).toBeInTheDocument();
@@ -121,14 +121,14 @@ describe('ContentElementCommentsView', () => {
     expect(getByText('In scope')).toBeInTheDocument();
   });
 
-  it('updates when selectedContentElementCommentsId changes', async () => {
+  it('updates when selectedCommentsSubject changes', async () => {
     const entry = createEntry({
       contentElements: [
         {id: 1, permaId: 10, typeName: 'fixture'},
         {id: 2, permaId: 11, typeName: 'fixture'}
       ]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession({
       commentThreads: [
         {id: 1, subjectType: 'ContentElement', subjectId: 10,
@@ -138,13 +138,13 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {getByText, queryByText} = renderBackboneView(view);
 
     expect(getByText('On first')).toBeInTheDocument();
 
     act(() => {
-      entry.set('selectedContentElementCommentsId', 2);
+      entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 2});
     });
 
     await waitFor(() => {
@@ -157,7 +157,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.contentElements.get(1).transientState
       .set('commentThreadIdsAtSelection', [1, 2]);
     entry.set('highlightedThreadId', 2);
@@ -170,7 +170,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     expect(getByText('second').closest('[aria-current="true"]')).not.toBeNull();
@@ -181,7 +181,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.contentElements.get(1).transientState
       .set('commentThreadIdsAtSelection', [1, 2]);
     entry.reviewSession = factories.reviewSession({
@@ -193,7 +193,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     expect(getByText('first').closest('[aria-current="true"]')).toBeNull();
@@ -209,7 +209,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.contentElements.get(1).transientState
       .set('commentThreadIdsAtSelection', [7]);
     entry.reviewSession = factories.reviewSession({
@@ -222,7 +222,7 @@ describe('ContentElementCommentsView', () => {
     const listener = jest.fn();
     entry.on('selectCommentThread', listener);
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     await user.click(getByText('click me'));
@@ -236,7 +236,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.set('highlightedThreadId', 7);
     entry.reviewSession = factories.reviewSession({
       commentThreads: [{
@@ -248,7 +248,7 @@ describe('ContentElementCommentsView', () => {
     const listener = jest.fn();
     entry.on('selectCommentThread', listener);
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     expect(getByText('click me').closest('[aria-current="true"]')).toBeNull();
@@ -262,7 +262,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession({
       commentThreads: [
         {id: 1, subjectType: 'ContentElement', subjectId: 10,
@@ -274,7 +274,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     const order = ['first', 'second']
@@ -287,7 +287,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.contentElements.get(1).transientState
       .set('commentThreadIdsAtSelection', [1, 2]);
     entry.reviewSession = factories.reviewSession({
@@ -301,7 +301,7 @@ describe('ContentElementCommentsView', () => {
       ]
     });
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     const order = ['first', 'second']
@@ -314,10 +314,10 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession();
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {queryByPlaceholderText} = renderBackboneView(view);
 
     expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
@@ -327,10 +327,10 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession();
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {getByText} = renderBackboneView(view);
 
     expect(getByText('No comments yet')).toBeInTheDocument();
@@ -340,7 +340,7 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession({
       commentThreads: [{
         id: 1,
@@ -350,7 +350,7 @@ describe('ContentElementCommentsView', () => {
       }]
     });
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
     const {queryByRole} = renderBackboneView(view);
 
     expect(queryByRole('button', {name: 'New topic'})).not.toBeInTheDocument();
@@ -360,10 +360,10 @@ describe('ContentElementCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession();
 
-    const view = new ContentElementCommentsView({entry, editor});
+    const view = new SelectionCommentsView({entry, editor});
 
     const {getByText} = renderBackboneView(view);
 
@@ -379,5 +379,80 @@ describe('ContentElementCommentsView', () => {
     await waitFor(() => {
       expect(getByText('New comment')).toBeInTheDocument();
     });
+  });
+
+  it('displays threads of selected section from session state', () => {
+    const entry = createEntry({
+      sections: [{id: 5, permaId: 50}],
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture', sectionId: 5}]
+    });
+    entry.set('selectedCommentsSubject', {subjectType: 'Section', id: 5});
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [{
+        id: 1,
+        subjectType: 'Section',
+        subjectId: 50,
+        comments: [{id: 100, body: 'On the section', creatorName: 'Alice'}]
+      }]
+    });
+
+    const view = new SelectionCommentsView({entry, editor});
+
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('On the section')).toBeInTheDocument();
+  });
+
+  it('shows all section threads since sections are never scoped', () => {
+    const entry = createEntry({
+      sections: [{id: 5, permaId: 50}],
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture', sectionId: 5}]
+    });
+    entry.set('selectedCommentsSubject', {subjectType: 'Section', id: 5});
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'Section', subjectId: 50,
+         comments: [{id: 100, body: 'First', creatorName: 'Alice'}]},
+        {id: 2, subjectType: 'Section', subjectId: 50,
+         comments: [{id: 200, body: 'Second', creatorName: 'Bob'}]}
+      ]
+    });
+
+    const view = new SelectionCommentsView({entry, editor});
+
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('First')).toBeInTheDocument();
+    expect(getByText('Second')).toBeInTheDocument();
+  });
+
+  it('updates when selection switches from content element to section', async () => {
+    const entry = createEntry({
+      sections: [{id: 5, permaId: 50}],
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture', sectionId: 5}]
+    });
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 100, body: 'On element', creatorName: 'Alice'}]},
+        {id: 2, subjectType: 'Section', subjectId: 50,
+         comments: [{id: 200, body: 'On section', creatorName: 'Bob'}]}
+      ]
+    });
+
+    const view = new SelectionCommentsView({entry, editor});
+    const {getByText, queryByText} = renderBackboneView(view);
+
+    expect(getByText('On element')).toBeInTheDocument();
+
+    act(() => {
+      entry.set('selectedCommentsSubject', {subjectType: 'Section', id: 5});
+    });
+
+    await waitFor(() => {
+      expect(getByText('On section')).toBeInTheDocument();
+    });
+    expect(queryByText('On element')).not.toBeInTheDocument();
   });
 });

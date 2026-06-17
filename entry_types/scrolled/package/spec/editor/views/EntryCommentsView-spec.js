@@ -186,7 +186,7 @@ describe('EntryCommentsView', () => {
         {id: 2, permaId: 11, typeName: 'image'}
       ]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession({
       commentThreads: [
         {id: 1, subjectType: 'ContentElement', subjectId: 10,
@@ -210,7 +210,7 @@ describe('EntryCommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.contentElements.get(1).transientState
       .set('commentThreadIdsAtSelection', [2]);
     entry.set('highlightedThreadId', 2);
@@ -230,7 +230,7 @@ describe('EntryCommentsView', () => {
     expect(getByText('second').closest('[aria-current="true"]')).not.toBeNull();
   });
 
-  it('updates highlights when selectedContentElementCommentsId changes', () => {
+  it('updates highlights when selectedCommentsSubject changes', () => {
     const entry = createEntry({
       contentElements: [
         {id: 1, permaId: 10, typeName: 'image'},
@@ -252,7 +252,7 @@ describe('EntryCommentsView', () => {
     expect(getByText('on one').closest('[aria-current="true"]')).toBeNull();
     expect(getByText('on two').closest('[aria-current="true"]')).toBeNull();
 
-    act(() => { entry.set('selectedContentElementCommentsId', 2); });
+    act(() => { entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 2}); });
 
     expect(getByText('on one').closest('[aria-current="true"]')).toBeNull();
     expect(getByText('on two').closest('[aria-current="true"]')).not.toBeNull();
