@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 
 import {useI18n} from '../frontend/i18n';
 import {postCreateCommentThreadMessage} from './postMessage';
@@ -10,6 +10,13 @@ import styles from './NewThreadForm.module.css';
 export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit, onCancel}) {
   const {t} = useI18n({locale: 'ui'});
   const [body, setBody] = useState('');
+
+  // preventScroll keeps focus from yanking the page to the top before the
+  // portaled popover has been positioned by floating-ui.
+  const setInputRef = useCallback(node => {
+    autoResize(node);
+    node?.focus({preventScroll: true});
+  }, []);
 
   function handleChange(e) {
     setBody(e.target.value);
@@ -29,8 +36,7 @@ export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit, o
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <textarea className={styles.input}
-                ref={autoResize}
-                autoFocus
+                ref={setInputRef}
                 value={body}
                 onChange={handleChange}
                 placeholder={t('pageflow_scrolled.review.add_comment_placeholder')}
