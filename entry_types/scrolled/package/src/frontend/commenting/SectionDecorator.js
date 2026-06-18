@@ -26,7 +26,10 @@ export function SectionDecorator({section, children}) {
                                  {[styles.sticky]: hasThreads || active || isSelected})}>
         {active ?
          <AddCommentButton permaId={section.permaId} /> :
-         <Popover subjectType="Section" subjectId={section.permaId} />}
+         <Popover subjectType="Section"
+                  subjectId={section.permaId}
+                  placement="top-start"
+                  strategy="fixed" />}
       </div>
     </div>
   );

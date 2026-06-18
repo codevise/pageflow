@@ -64,7 +64,7 @@ function CommentingEditableText({
       );
     }
 
-    if (leaf.firstInRange) {
+    if (leaf.lastInRange) {
       children = (
         <RangeAnchor rangeKey={leaf.rangeKey} onRegister={registerAnchor}>
           {children}

@@ -31,6 +31,10 @@ export function decorateCommentHighlights(editor, highlights) {
           Range.start(intersection),
           Range.start(highlight.range)
         );
+        const isLast = Point.equals(
+          Range.end(intersection),
+          Range.end(highlight.range)
+        );
 
         decorations.push({
           ...intersection,
@@ -38,7 +42,8 @@ export function decorateCommentHighlights(editor, highlights) {
           subjectRange: highlight.range,
           rangeKey: highlight.key,
           resolved: !!highlight.thread?.resolvedAt,
-          ...(isFirst && {firstInRange: true})
+          ...(isFirst && {firstInRange: true}),
+          ...(isLast && {lastInRange: true})
         });
       }
     }
