@@ -115,8 +115,9 @@ describe('inline editing EditableText comment highlights', () => {
         .toBeInTheDocument();
     });
 
-    expect(entry.container.querySelector(`.${highlightStyles.highlight}`))
-      .toHaveClass(highlightStyles.selected);
+    const highlight = entry.container.querySelector(`.${highlightStyles.highlight}`);
+    expect(highlight).toHaveClass(highlightStyles.resolved);
+    expect(highlight).not.toHaveClass(highlightStyles.selected);
   });
 
   it('keeps the resolved thread highlighted when a cursor sits in another block', () => {
@@ -162,7 +163,8 @@ describe('inline editing EditableText comment highlights', () => {
     const highlight = entry.container.querySelector(`.${highlightStyles.highlight}`);
     expect(highlight).toBeInTheDocument();
     expect(highlight).toHaveTextContent('Second');
-    expect(highlight).toHaveClass(highlightStyles.selected);
+    expect(highlight).toHaveClass(highlightStyles.resolved);
+    expect(highlight).not.toHaveClass(highlightStyles.selected);
   });
 
   it('applies selected style to highlight when thread badge is clicked', () => {

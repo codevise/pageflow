@@ -37,6 +37,7 @@ export function decorateCommentHighlights(editor, highlights) {
           commentHighlight: true,
           subjectRange: highlight.range,
           rangeKey: highlight.key,
+          resolved: !!highlight.thread?.resolvedAt,
           ...(isFirst && {firstInRange: true})
         });
       }

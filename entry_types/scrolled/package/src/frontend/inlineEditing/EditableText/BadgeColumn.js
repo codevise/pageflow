@@ -87,7 +87,10 @@ function PositionedBadge({editor, highlight, overlapSelection, anchors}) {
   return (
     <FloatingPortal root={portalRoot}>
       <div ref={refs.setFloating} className={styles.box} style={floatingStyles}>
-        <Badge counter={1} mode={mode} onClick={handleClick} />
+        <Badge counter={1}
+               mode={mode}
+               resolved={!!highlight.thread?.resolvedAt}
+               onClick={handleClick} />
       </div>
     </FloatingPortal>
   );

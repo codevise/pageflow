@@ -7,3 +7,11 @@
   background-color: var(--ui-accent-color-lighter);
   border-bottom: 2px solid var(--ui-accent-color);
 }
+
+/* A resolved thread shown only because it is the highlighted thread is
+   muted to grey, matching how the comments sidebar de-emphasizes
+   resolved threads. */
+.resolved {
+  background-color: var(--ui-accent-grey-color-lighter);
+  border-bottom: 2px solid var(--ui-accent-grey-color);
+}
