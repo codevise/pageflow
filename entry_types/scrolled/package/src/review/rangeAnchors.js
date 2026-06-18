@@ -82,19 +82,21 @@ export function alignToContainerEdge(containerRef, {
 } = {}) {
   return {
     name: 'alignToContainerEdge',
-    fn({rects, placement}) {
+    fn(state) {
       const containerEl = containerRef.current;
 
       if (!containerEl) return {};
 
+      const {rects, placement} = state;
       const containerRect = containerEl.getBoundingClientRect();
+      const toLocalX = viewportToLocalX(state);
 
       let x;
       if (placement.startsWith('right')) {
-        x = containerRect.right + mainAxisOffset;
+        x = toLocalX(containerRect.right + mainAxisOffset);
       }
       else if (placement.startsWith('left')) {
-        x = containerRect.left - rects.floating.width - mainAxisOffset;
+        x = toLocalX(containerRect.left - mainAxisOffset) - rects.floating.width;
       }
       else {
         return {};
@@ -118,12 +120,32 @@ export function alignToContainerEdge(containerRef, {
 function clampXToViewport({viewportPadding = 8} = {}) {
   return {
     name: 'clampXToViewport',
-    fn({x, rects}) {
+    fn(state) {
+      const {x, rects} = state;
+      const toLocalX = viewportToLocalX(state);
       const viewportWidth = document.documentElement.clientWidth;
-      const maxX = viewportWidth - rects.floating.width - viewportPadding;
-      const minX = viewportPadding;
+
+      const minX = toLocalX(viewportPadding);
+      const maxX = toLocalX(viewportWidth - viewportPadding) - rects.floating.width;
 
       return {x: Math.max(minX, Math.min(x, maxX))};
     }
   };
+}
+
+// Floating UI applies `x`/`y` relative to the floating element's offsetParent
+// and reports `rects.reference` in that same (unscaled) space, while
+// getBoundingClientRect speaks viewport coordinates. As long as the badges
+// were portaled to the document root those spaces coincided, but rendered
+// inside the (relatively positioned, transform-scaled) main storyline sheet
+// they no longer do. Derive the offsetParent's current scale from the
+// reference and build a converter from viewport into the local space the
+// middleware must return.
+function viewportToLocalX({rects, elements}) {
+  const referenceRect = elements.reference.getBoundingClientRect();
+  const scale = rects.reference.width ?
+                referenceRect.width / rects.reference.width :
+                1;
+
+  return viewportX => rects.reference.x + (viewportX - referenceRect.left) / scale;
 }

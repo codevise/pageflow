@@ -9,6 +9,10 @@
   width: 30px;
   height: 30px;
   scroll-margin: space(8);
+  /* The box is positioned via floating styles; keep it above the selection
+     rect (z-index 1) now that badges are no longer portaled into a higher
+     layer. */
+  z-index: 2;
 }
 
 .onDark {

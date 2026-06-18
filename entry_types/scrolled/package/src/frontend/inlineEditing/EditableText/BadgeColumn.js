@@ -1,11 +1,9 @@
 import React, {useCallback} from 'react';
 
 import {Range, Transforms} from 'slate';
-import {FloatingPortal} from '@floating-ui/react';
 import {useSlate, ReactEditor} from 'slate-react';
 
 import {Badge, useAnchoredFloating} from 'pageflow-scrolled/review';
-import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {useContentElementCommentSelection} from '../useCommentSelection';
 import {highlightOverlapsSelection} from './highlightOverlapsSelection';
 
@@ -48,7 +46,6 @@ export function BadgeColumn({highlights, anchors}) {
 }
 
 function PositionedBadge({editor, highlight, overlapSelection, anchors}) {
-  const portalRoot = useFloatingPortalRoot();
   const {selected, highlightedThreadId, selectComments, selectThread} =
     useContentElementCommentSelection();
 
@@ -85,13 +82,11 @@ function PositionedBadge({editor, highlight, overlapSelection, anchors}) {
                'dot';
 
   return (
-    <FloatingPortal root={portalRoot}>
-      <div ref={refs.setFloating} className={styles.box} style={floatingStyles}>
-        <Badge counter={1}
-               mode={mode}
-               resolved={!!highlight.thread?.resolvedAt}
-               onClick={handleClick} />
-      </div>
-    </FloatingPortal>
+    <div ref={refs.setFloating} className={styles.box} style={floatingStyles}>
+      <Badge counter={1}
+             mode={mode}
+             resolved={!!highlight.thread?.resolvedAt}
+             onClick={handleClick} />
+    </div>
   );
 }
