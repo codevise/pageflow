@@ -105,6 +105,7 @@ export const EditableText = React.memo(function EditableText({
     enabled: commentingEnabled,
     anchors,
     highlights,
+    visibleHighlights,
     decorate: decorateComments,
     withCommentHighlightDecoration,
     resetRangeRefs,
@@ -201,7 +202,7 @@ export const EditableText = React.memo(function EditableText({
           </LinkTooltipProvider>
           {commentingEnabled &&
             <>
-              <BadgeColumn highlights={highlights} anchors={anchors} />
+              <BadgeColumn highlights={visibleHighlights} anchors={anchors} />
               <PendingSelectionBadge containerRef={anchors.containerRef} />
             </>}
         </Slate>

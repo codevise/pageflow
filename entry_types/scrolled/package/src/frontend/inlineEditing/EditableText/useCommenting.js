@@ -63,14 +63,23 @@ export function useCommenting(editor) {
     selectThread
   });
 
-  const visibleThreads =
-    trackedThreads.filter(t => !t.resolvedAt || t.id === highlightedThreadId);
+  // Build highlights for all tracked threads, resolved included, so the
+  // thread ids at the cursor (which scope the comments sidebar) cover
+  // resolved threads too. Only `visibleHighlights` get a text overlay and
+  // a badge; a resolved thread stays hidden until it is the highlighted
+  // thread.
+  const highlights = useCommentHighlights(trackedThreads, newThreadRange);
 
-  const highlights = useCommentHighlights(visibleThreads, newThreadRange);
+  const visibleHighlights = useMemo(
+    () => highlights.filter(
+      h => !h.thread?.resolvedAt || h.thread.id === highlightedThreadId
+    ),
+    [highlights, highlightedThreadId]
+  );
 
   const decorate = useMemo(
-    () => enabled ? decorateCommentHighlights(editor, highlights) : null,
-    [editor, highlights, enabled]
+    () => enabled ? decorateCommentHighlights(editor, visibleHighlights) : null,
+    [editor, visibleHighlights, enabled]
   );
 
   const withCommentHighlightDecoration = useCallback(({attributes, children, leaf}) => {
@@ -102,6 +111,7 @@ export function useCommenting(editor) {
   return {
     enabled,
     highlights,
+    visibleHighlights,
     anchors,
     decorate,
     withCommentHighlightDecoration,

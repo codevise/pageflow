@@ -21,7 +21,9 @@ describe('SelectionCommentsView', () => {
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
     'pageflow_scrolled.review.new_topic': 'New topic',
     'pageflow_scrolled.review.send': 'Send',
-    'pageflow_scrolled.review.no_threads_yet': 'No comments yet'
+    'pageflow_scrolled.review.no_threads_yet': 'No comments yet',
+    'pageflow_scrolled.review.resolved_count.one': '1 resolved',
+    'pageflow_scrolled.review.resolved_count.other': '%{count} resolved'
   });
 
   it('displays threads of selected content element from session state', () => {
@@ -228,6 +230,35 @@ describe('SelectionCommentsView', () => {
     await user.click(getByText('click me'));
 
     expect(listener).toHaveBeenCalledWith(7);
+  });
+
+  it('shows resolved threads collapsed when their ids are at the selection', async () => {
+    const user = userEvent.setup();
+
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
+    });
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
+    entry.contentElements.get(1).transientState
+      .set('commentThreadIdsAtSelection', [7]);
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [{
+        id: 7,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        resolvedAt: '2026-06-01T00:00:00Z',
+        comments: [{id: 100, body: 'Resolved comment', creatorName: 'Alice'}]
+      }]
+    });
+
+    const view = new SelectionCommentsView({entry, editor});
+    const {getByText, getByRole, queryByText} = renderBackboneView(view);
+
+    expect(queryByText('Resolved comment')).not.toBeInTheDocument();
+
+    await user.click(getByRole('button', {name: '1 resolved'}));
+
+    expect(getByText('Resolved comment')).toBeInTheDocument();
   });
 
   it('does not highlight or trigger selectCommentThread when not scoped', async () => {
