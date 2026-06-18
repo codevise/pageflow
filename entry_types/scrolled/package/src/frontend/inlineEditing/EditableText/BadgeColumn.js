@@ -13,6 +13,8 @@ import styles from './BadgeColumn.module.css';
 
 export function BadgeColumn({highlights, anchors}) {
   const editor = useSlate();
+  const {highlightedThreadId} = useContentElementCommentSelection();
+
   // Treat `editor.selection` as a live cursor only while the editor
   // is focused. After the user clicks away, slate-react's throttled
   // `selectionchange` listener can sync a clamped DOM cursor back
@@ -20,17 +22,32 @@ export function BadgeColumn({highlights, anchors}) {
   // to overlap mode without any actual selection.
   const editorSelection = ReactEditor.isFocused(editor) ? editor.selection : null;
 
+  // When a thread is highlighted, fall back to its start point for the
+  // overlap check so siblings in the same block stay in regular mode
+  // even if focus has drifted away from the slate editor. Use just the
+  // start point (not the full range) to stay consistent with
+  // highlightOverlapsSelection, which anchors to highlight starts. The
+  // overlap selection is the same for every badge, so resolve it once
+  // here rather than per badge.
+  const highlightedRange = highlightedThreadId ?
+                           highlights.find(
+                             h => h.thread?.id === highlightedThreadId
+                           )?.range :
+                           null;
+  const fallbackPoint = highlightedRange && Range.start(highlightedRange);
+  const overlapSelection = editorSelection ||
+                           (fallbackPoint && {anchor: fallbackPoint, focus: fallbackPoint});
+
   return highlights.map(highlight => (
     <PositionedBadge key={highlight.key}
                      editor={editor}
                      highlight={highlight}
-                     highlights={highlights}
-                     editorSelection={editorSelection}
+                     overlapSelection={overlapSelection}
                      anchors={anchors} />
   ));
 }
 
-function PositionedBadge({editor, highlight, highlights, editorSelection, anchors}) {
+function PositionedBadge({editor, highlight, overlapSelection, anchors}) {
   const portalRoot = useFloatingPortalRoot();
   const {selected, highlightedThreadId, selectComments, selectThread} =
     useContentElementCommentSelection();
@@ -63,19 +80,6 @@ function PositionedBadge({editor, highlight, highlights, editorSelection, anchor
                               highlightedThreadId === highlight.thread.id;
   const isActive = isHighlightedThread ||
                    (highlight.key === 'selection' && selected === 'newThread');
-  // When a thread is highlighted, fall back to its start point for the
-  // overlap check so siblings in the same block stay in regular mode
-  // even if focus has drifted away from the slate editor. Use just the
-  // start point (not the full range) to stay consistent with
-  // highlightOverlapsSelection, which anchors to highlight starts.
-  const highlightedRange = highlightedThreadId ?
-                           highlights.find(
-                             h => h.thread?.id === highlightedThreadId
-                           )?.range :
-                           null;
-  const fallbackPoint = highlightedRange && Range.start(highlightedRange);
-  const overlapSelection = editorSelection ||
-                           (fallbackPoint && {anchor: fallbackPoint, focus: fallbackPoint});
   const mode = isActive ? 'active' :
                highlightOverlapsSelection(highlight, overlapSelection) ? undefined :
                'dot';
