@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Editor, Transforms, Node} from 'slate';
 import {useSlate, ReactEditor} from 'slate-react';
 import {useDrag} from 'react-dnd';
@@ -6,11 +6,10 @@ import {useDrag} from 'react-dnd';
 import styles from './index.module.css';
 
 import {SelectionRect} from '../SelectionRect';
-import {useContentElementAttributes} from '../../useContentElementAttributes';
 import {useContentElementEditorState} from '../../useContentElementEditorState';
 import {useI18n} from '../../i18n';
 import {postInsertContentElementMessage} from '../postMessage';
-import {useEditorSelection} from '../EditorState';
+import {useContentElementCommentSelection} from '../useCommentSelection';
 import {cursorLeftHighlightedThreadBlock} from './cursorLeftHighlightedThreadBlock';
 import {cursorMovedFromPendingNewThreadRange} from './cursorMovedFromPendingNewThreadRange';
 import {getUniformSelectedNode} from './getUniformSelectedNode';
@@ -44,20 +43,9 @@ export function Selection(props) {
     range
   } = useContentElementEditorState();
 
-  const {contentElementPermaId} = useContentElementAttributes();
-
-  const {selection: commentsSelection} = useEditorSelection(
-    useMemo(
-      () => ({type: 'contentElementComments', id: props.contentElementId}),
-      [props.contentElementId]
-    )
-  );
-  const {isSelected: newThreadActive, range: newThreadRange} = useEditorSelection(
-    useMemo(
-      () => ({type: 'newThread', subjectType: 'ContentElement', subjectId: contentElementPermaId}),
-      [contentElementPermaId]
-    )
-  );
+  const {selected, highlightedThreadId, newThreadRange} =
+    useContentElementCommentSelection();
+  const newThreadActive = selected === 'newThread';
 
   useEffect(() => {
     const {selection} = editor;
@@ -118,7 +106,7 @@ export function Selection(props) {
 
     if (type === 'contentElementComments' &&
         cursorLeftHighlightedThreadBlock({
-          editor, commentsSelection, highlights: props.highlights
+          editor, highlightedThreadId, highlights: props.highlights
         })) {
       select();
       return;

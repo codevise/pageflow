@@ -3,13 +3,13 @@
 // thread should keep the highlight in place (so the comment can be
 // referenced while editing); only block changes mean the user moved
 // past the comment's anchor.
-export function cursorLeftHighlightedThreadBlock({editor, commentsSelection, highlights}) {
-  if (!commentsSelection?.highlightedThreadId || !highlights) {
+export function cursorLeftHighlightedThreadBlock({editor, highlightedThreadId, highlights}) {
+  if (!highlightedThreadId || !highlights) {
     return false;
   }
 
   const highlightedRange = highlights.find(
-    h => h.thread?.id === commentsSelection.highlightedThreadId
+    h => h.thread?.id === highlightedThreadId
   )?.range;
 
   if (!highlightedRange) return false;

@@ -6,8 +6,7 @@ import {useSlate, ReactEditor} from 'slate-react';
 
 import {Badge, useAnchoredFloating} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
-import {useContentElementAttributes} from '../../useContentElementAttributes';
-import {useEditorSelection} from '../EditorState';
+import {useContentElementCommentSelection} from '../useCommentSelection';
 import {highlightOverlapsSelection} from './highlightOverlapsSelection';
 
 import styles from './BadgeColumn.module.css';
@@ -33,13 +32,8 @@ export function BadgeColumn({highlights, anchors}) {
 
 function PositionedBadge({editor, highlight, highlights, editorSelection, anchors}) {
   const portalRoot = useFloatingPortalRoot();
-  const {contentElementId, contentElementPermaId} = useContentElementAttributes();
-  const {select: selectComments, selection: commentsSelection} = useEditorSelection({
-    type: 'contentElementComments', id: contentElementId
-  });
-  const {isSelected: newThreadActive} = useEditorSelection({
-    type: 'newThread', subjectType: 'ContentElement', subjectId: contentElementPermaId
-  });
+  const {selected, highlightedThreadId, selectComments, selectThread} =
+    useContentElementCommentSelection();
 
   const {refs, floatingStyles, hasAnchor} =
     useAnchoredFloating(highlight.key, anchors, {placement: 'left-start'});
@@ -60,27 +54,23 @@ function PositionedBadge({editor, highlight, highlights, editorSelection, anchor
     // stays correct.
     Transforms.select(editor, Range.start(highlight.range));
 
-    selectComments({
-      type: 'contentElementComments',
-      id: contentElementId,
-      highlightedThreadId: highlight.thread?.id
-    });
-  }, [editor, highlight, selectComments, contentElementId]);
+    selectThread(highlight.thread?.id);
+  }, [editor, highlight, selectComments, selectThread]);
 
   if (!hasAnchor) return null;
 
   const isHighlightedThread = !!highlight.thread &&
-                              commentsSelection?.highlightedThreadId === highlight.thread.id;
+                              highlightedThreadId === highlight.thread.id;
   const isActive = isHighlightedThread ||
-                   (highlight.key === 'selection' && newThreadActive);
+                   (highlight.key === 'selection' && selected === 'newThread');
   // When a thread is highlighted, fall back to its start point for the
   // overlap check so siblings in the same block stay in regular mode
   // even if focus has drifted away from the slate editor. Use just the
   // start point (not the full range) to stay consistent with
   // highlightOverlapsSelection, which anchors to highlight starts.
-  const highlightedRange = commentsSelection?.highlightedThreadId ?
+  const highlightedRange = highlightedThreadId ?
                            highlights.find(
-                             h => h.thread?.id === commentsSelection.highlightedThreadId
+                             h => h.thread?.id === highlightedThreadId
                            )?.range :
                            null;
   const fallbackPoint = highlightedRange && Range.start(highlightedRange);

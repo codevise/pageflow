@@ -11,6 +11,7 @@ import {ThreadsBadge, useCommentThreads} from 'pageflow-scrolled/review';
 import {Toolbar} from './Toolbar';
 import {ForcePaddingContext} from '../Foreground';
 import {useEditorSelection} from './EditorState';
+import {useCommentSelection} from './useCommentSelection';
 import {useSelectCommentThreadHandler} from './useSelectCommentThreadHandler';
 import {MotifAreaVisibilityProvider} from '../MotifAreaVisibilityProvider';
 import {useI18n} from '../i18n';
@@ -31,19 +32,20 @@ export function SectionDecorator({backdrop, section, contentElements, transition
     type: 'sectionPaddings'
   });
 
-  const {isSelected: isCommentsSelected, select: selectComments} = useEditorSelection({
+  const {
+    selected: commentSelectionState,
+    selectComments,
+    selectThread,
+    selectNewThread
+  } = useCommentSelection({
+    type: 'sectionComments',
     id: section.id,
-    type: 'sectionComments'
-  });
-
-  const {isSelected: isNewThreadSelected, select: selectNewThread} = useEditorSelection({
-    type: 'newThread',
     subjectType: 'Section',
     subjectId: section.permaId
   });
 
   // Viewing a section's comments or composing a new thread on it.
-  const commentsSelected = isCommentsSelected || isNewThreadSelected;
+  const commentsSelected = commentSelectionState !== null;
 
   // The section reads as selected while its comments are open, so the
   // section and the sidebar comment panel stay visually in sync.
@@ -61,11 +63,7 @@ export function SectionDecorator({backdrop, section, contentElements, transition
     subjectType: 'Section',
     subjectId: section.permaId,
     getScrollTarget: useCallback(() => wrapperRef.current, []),
-    selectThread: useCallback(threadId => selectComments({
-      type: 'sectionComments',
-      id: section.id,
-      highlightedThreadId: threadId
-    }), [selectComments, section.id])
+    selectThread
   });
 
   const clipBadgeCorner = (isSectionSelected || isPaddingSelected) && !hasThreads;

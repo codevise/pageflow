@@ -14,7 +14,7 @@ import {
 } from 'pageflow-scrolled/review';
 
 import {useContentElementAttributes} from '../../useContentElementAttributes';
-import {useEditorSelection} from '../EditorState';
+import {useContentElementCommentSelection} from '../useCommentSelection';
 import {useSelectCommentThreadHandler} from '../useSelectCommentThreadHandler';
 import {useCommentRangeRefs} from './useCommentRangeRefs';
 
@@ -23,8 +23,7 @@ import {useCommentRangeRefs} from './useCommentRangeRefs';
 // disabled for the current content element; consumers can then skip
 // the commenting-specific decorate/BadgeColumn paths.
 export function useCommenting(editor) {
-  const {contentElementId, contentElementPermaId, inlineComments} =
-    useContentElementAttributes();
+  const {contentElementPermaId, inlineComments} = useContentElementAttributes();
   const enabled = features.isEnabled('commenting') && inlineComments;
 
   // Track ranges for resolved threads too, so their subject ranges keep
@@ -38,19 +37,8 @@ export function useCommenting(editor) {
   const {trackedThreads, resetRangeRefs, getTrackedSubjectRanges} =
     useCommentRangeRefs(editor, threads);
   const {anchors, registerAnchor} = useRangeAnchors();
-  const {isSelected: newThreadActive, range: newThreadRange} = useEditorSelection({
-    type: 'newThread',
-    subjectType: 'ContentElement',
-    subjectId: contentElementPermaId
-  });
-
-  const commentsSelectionOptions = useMemo(
-    () => ({type: 'contentElementComments', id: contentElementId}),
-    [contentElementId]
-  );
-  const {select: selectComments, selection: commentsSelection} =
-    useEditorSelection(commentsSelectionOptions);
-  const highlightedThreadId = commentsSelection?.highlightedThreadId;
+  const {highlightedThreadId, newThreadRange, selectThread} =
+    useContentElementCommentSelection();
 
   // Move the cursor into the thread's block before the handler selects
   // it, so `Selection`'s `cursorLeftHighlightedThreadBlock` does not
@@ -72,20 +60,13 @@ export function useCommenting(editor) {
         Transforms.select(editor, Range.start(range));
       }
     }, [editor, getTrackedSubjectRanges]),
-    selectThread: useCallback(threadId => selectComments({
-      type: 'contentElementComments',
-      id: contentElementId,
-      highlightedThreadId: threadId
-    }), [selectComments, contentElementId])
+    selectThread
   });
 
   const visibleThreads =
     trackedThreads.filter(t => !t.resolvedAt || t.id === highlightedThreadId);
 
-  const highlights = useCommentHighlights(
-    visibleThreads,
-    newThreadActive ? newThreadRange : undefined
-  );
+  const highlights = useCommentHighlights(visibleThreads, newThreadRange);
 
   const decorate = useMemo(
     () => enabled ? decorateCommentHighlights(editor, highlights) : null,
@@ -149,16 +130,10 @@ function domElementAtRangeStart(editor, range) {
 }
 
 function HighlightSpan({rangeKey, children}) {
-  const {contentElementId, contentElementPermaId} = useContentElementAttributes();
   const threadId = parseInt(rangeKey, 10);
-  const {isSelected: commentsSelected, selection: commentsSelection} = useEditorSelection({
-    type: 'contentElementComments', id: contentElementId
-  });
-  const {isSelected: newThreadActive} = useEditorSelection({
-    type: 'newThread', subjectType: 'ContentElement', subjectId: contentElementPermaId
-  });
-  const isSelected = (commentsSelected && commentsSelection?.highlightedThreadId === threadId) ||
-                     (rangeKey === 'selection' && newThreadActive);
+  const {selected, highlightedThreadId} = useContentElementCommentSelection();
+  const isSelected = (selected === 'comments' && highlightedThreadId === threadId) ||
+                     (rangeKey === 'selection' && selected === 'newThread');
 
   return (
     <span className={classNames(highlightStyles.highlight,
