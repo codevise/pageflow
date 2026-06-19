@@ -377,3 +377,44 @@ en:
 
 Users will now be able to select "Brand Blue" as a color for quotes,
 counters and text paragraphs.
+
+## Background Color Presets
+
+Themes can supply a set of background color presets that editors can
+pick from when choosing the background color of a section, the surface
+color of cards or the overlay color of split sections. They appear as
+swatches in the color picker, separated by a divider from the colors
+already used elsewhere in the story.
+
+Unlike palette colors, presets are **not** CSS custom properties and are
+**not** referenced by name. When an editor picks a preset, its color
+value is copied into the section. Editing or removing a preset later
+therefore does not change sections that already use that color – think
+of a preset as a suggested starting point rather than a managed color
+that stays in sync. This makes presets a good fit for background colors,
+which are usually chosen for a specific section while looking at its
+content and contrast, and rarely meant to change story-wide.
+
+Presets are configured via the `presets` theme option as a list of
+objects with a `value` and an optional `name`:
+
+``` ruby
+entry_type_config.themes.register(:my_custom_theme,
+                                  # ...
+                                  presets: {
+                                    background_colors: [
+                                      {value: '#c9e9fb', name: 'Extra Light Blue'},
+                                      {value: '#b9d3c6', name: 'BG Green'},
+                                      {value: '#f6e8d7', name: 'BG Sand'}
+                                    ]
+                                  })
+```
+
+The `name` is shown as the swatch's tooltip. Since presets are data, not
+managed colors, the name is stored inline with the value instead of in a
+translation file. This keeps presets editable from a host application
+(for example via theme customization overrides) without having to deploy
+translations.
+
+If a theme defines no `presets`, the color picker only offers the colors
+already used in other sections, as before.

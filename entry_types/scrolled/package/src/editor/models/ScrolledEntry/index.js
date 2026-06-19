@@ -420,6 +420,15 @@ export const ScrolledEntry = Entry.extend({
     return sortColors([...colors].filter(Boolean));
   },
 
+  getBackgroundColorPresets() {
+    const presets = this.scrolledSeed.config.theme.options.presets || {};
+
+    return (presets.backgroundColors || []).map(({value, name}) => ({
+      value,
+      text: name || value
+    }));
+  },
+
   getThemeProperties() {
     return this.scrolledSeed.config.theme.options.properties || {};
   },

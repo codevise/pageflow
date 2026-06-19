@@ -88,6 +88,91 @@ describe('ColorPicker', () => {
     });
   });
 
+  describe('labelled swatches', () => {
+    it('uses object value as swatch color and text as title', () => {
+      createColorPicker({swatches: [{value: '#aabbcc', text: 'Sky'}]});
+
+      var button = picker().querySelector('.color_picker-swatches button');
+
+      expect(button.title).toBe('Sky');
+      expect(button).toHaveStyle('color: #aabbcc');
+    });
+
+    it('falls back to value as title when text is missing', () => {
+      createColorPicker({swatches: [{value: '#aabbcc'}]});
+
+      var button = picker().querySelector('.color_picker-swatches button');
+
+      expect(button.title).toBe('#aabbcc');
+    });
+
+    it('applies object swatch value when clicked', () => {
+      createColorPicker({swatches: [{value: '#aabbcc', text: 'Sky'}]});
+      open();
+
+      picker().querySelector('.color_picker-swatches button')
+        .dispatchEvent(new Event('click', {bubbles: true}));
+
+      expect(input.value).toBe('#aabbcc');
+    });
+
+    it('filters translucent object swatches when alpha is not enabled', () => {
+      createColorPicker({
+        swatches: [{value: '#aabbcc', text: 'A'}, {value: '#ff000080', text: 'B'}]
+      });
+
+      expect(picker().querySelectorAll('.color_picker-swatches button')).toHaveLength(1);
+    });
+  });
+
+  describe('swatch groups', () => {
+    function dividerCount() {
+      return picker().querySelectorAll('.color_picker-swatch_divider').length;
+    }
+
+    it('renders a divider between groups of swatches', () => {
+      createColorPicker({
+        swatches: [
+          {value: '#aabbcc', group: 'presets'},
+          {value: '#112233', group: 'used'}
+        ]
+      });
+
+      expect(dividerCount()).toBe(1);
+      expect(picker().querySelectorAll('.color_picker-swatches button')).toHaveLength(2);
+    });
+
+    it('keeps swatches that share a group together', () => {
+      createColorPicker({
+        swatches: [
+          {value: '#aabbcc', group: 'presets'},
+          {value: '#445566', group: 'presets'},
+          {value: '#112233', group: 'used'}
+        ]
+      });
+
+      expect(dividerCount()).toBe(1);
+      expect(picker().querySelectorAll('.color_picker-swatches button')).toHaveLength(3);
+    });
+
+    it('renders no divider for plain swatches', () => {
+      createColorPicker({swatches: ['#aabbcc', '#112233']});
+
+      expect(dividerCount()).toBe(0);
+      expect(picker().querySelectorAll('.color_picker-swatches button')).toHaveLength(2);
+    });
+
+    it('still applies the value of a grouped swatch when clicked', () => {
+      createColorPicker({swatches: [{value: '#aabbcc', group: 'presets'}]});
+      open();
+
+      picker().querySelector('.color_picker-swatches button')
+        .dispatchEvent(new Event('click', {bubbles: true}));
+
+      expect(input.value).toBe('#aabbcc');
+    });
+  });
+
   describe('open and close', () => {
     it('opens picker on input click', () => {
       createColorPicker();

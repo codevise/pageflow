@@ -121,9 +121,9 @@ export default class ColorPicker {
   }
 
   _renderSwatches() {
-    const swatches = this._alpha
-      ? this._swatches
-      : this._swatches.filter(s => !isTranslucentSwatch(s));
+    const swatches = this._swatches
+      .map(normalizeSwatch)
+      .filter(swatch => this._alpha || !isTranslucentSwatch(swatch.value));
 
     this._swatchesContainer.textContent = '';
     this._swatchesContainer.classList.toggle('color_picker-empty', !swatches.length);
@@ -132,13 +132,21 @@ export default class ColorPicker {
       return;
     }
 
-    swatches.forEach(swatch => {
-      const button = document.createElement('button');
-      button.setAttribute('type', 'button');
-      button.title = swatch;
-      button.style.color = swatch;
-      button.textContent = swatch;
-      this._swatchesContainer.appendChild(button);
+    groupSwatches(swatches).forEach((group, index) => {
+      if (index > 0) {
+        const divider = document.createElement('span');
+        divider.className = 'color_picker-swatch_divider';
+        this._swatchesContainer.appendChild(divider);
+      }
+
+      group.swatches.forEach(({value, text}) => {
+        const button = document.createElement('button');
+        button.setAttribute('type', 'button');
+        button.title = text;
+        button.style.color = value;
+        button.textContent = value;
+        this._swatchesContainer.appendChild(button);
+      });
     });
   }
 
@@ -648,4 +656,30 @@ function getClipRect(element) {
 
 function isTranslucentSwatch(str) {
   return str.length > 7 && str.slice(-2).toLowerCase() !== 'ff';
+}
+
+function normalizeSwatch(swatch) {
+  return typeof swatch === 'string' ?
+         {value: swatch, text: swatch} :
+         {value: swatch.value, text: swatch.text || swatch.value, group: swatch.group};
+}
+
+function groupSwatches(swatches) {
+  const groups = [];
+  const groupsByKey = new Map();
+
+  swatches.forEach(swatch => {
+    const key = swatch.group || '';
+    let group = groupsByKey.get(key);
+
+    if (!group) {
+      group = {key, swatches: []};
+      groupsByKey.set(key, group);
+      groups.push(group);
+    }
+
+    group.swatches.push(swatch);
+  });
+
+  return groups;
 }

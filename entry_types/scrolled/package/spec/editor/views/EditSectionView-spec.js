@@ -3,6 +3,12 @@ import {EditSectionView} from 'editor/views/EditSectionView';
 import {ConfigurationEditor, DropDownButton, useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
 
+function backdropColorSwatches(view) {
+  return view.$el.find('.color_input').filter((_, el) =>
+    el.querySelector('.color_picker-swatches button[title="Extra Light Blue"]')
+  ).first();
+}
+
 describe('EditSectionView', () => {
   const {createEntry} = useEditorGlobals();
 
@@ -269,6 +275,100 @@ describe('EditSectionView', () => {
 
     expect(configurationEditor.visibleInputPropertyNames())
       .not.toContain('backdropEffectsMobile');
+  });
+
+  describe('background color presets', () => {
+    it('offers theme background color presets as swatches', () => {
+      const entry = createEntry({
+        themeOptions: {
+          presets: {
+            backgroundColors: [{value: '#c9e9fb', name: 'Extra Light Blue'}]
+          }
+        },
+        sections: [{id: 1, configuration: {backdropType: 'color'}}]
+      });
+
+      const view = new EditSectionView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      view.render();
+
+      const swatch =
+        view.$el.find('.color_picker-swatches button[title="Extra Light Blue"]')[0];
+
+      expect(swatch).toBeDefined();
+      expect(swatch.textContent).toBe('#c9e9fb');
+    });
+
+    it('offers colors already used in other sections as swatches', () => {
+      const entry = createEntry({
+        sections: [
+          {id: 1, configuration: {backdropType: 'color'}},
+          {id: 2, configuration: {backdropType: 'color', backdropColor: '#040404'}}
+        ]
+      });
+
+      const view = new EditSectionView({
+        model: entry.sections.get(1),
+        entry
+      });
+
+      view.render();
+
+      const swatch =
+        view.$el.find('.color_picker-swatches button[title="#040404"]')[0];
+
+      expect(swatch).toBeDefined();
+    });
+
+    describe('swatch group divider', () => {
+      it('separates theme presets from used colors with a divider', () => {
+        const entry = createEntry({
+          themeOptions: {
+            presets: {
+              backgroundColors: [{value: '#c9e9fb', name: 'Extra Light Blue'}]
+            }
+          },
+          sections: [
+            {id: 1, configuration: {backdropType: 'color'}},
+            {id: 2, configuration: {backdropType: 'color', backdropColor: '#040404'}}
+          ]
+        });
+
+        const view = new EditSectionView({
+          model: entry.sections.get(1),
+          entry
+        });
+
+        view.render();
+
+        expect(backdropColorSwatches(view).find('.color_picker-swatch_divider'))
+          .toHaveLength(1);
+      });
+
+      it('shows no divider when no colors are used yet', () => {
+        const entry = createEntry({
+          themeOptions: {
+            presets: {
+              backgroundColors: [{value: '#c9e9fb', name: 'Extra Light Blue'}]
+            }
+          },
+          sections: [{id: 1, configuration: {backdropType: 'color'}}]
+        });
+
+        const view = new EditSectionView({
+          model: entry.sections.get(1),
+          entry
+        });
+
+        view.render();
+
+        expect(backdropColorSwatches(view).find('.color_picker-swatch_divider'))
+          .toHaveLength(0);
+      });
+    });
   });
 
   describe('actions dropdown', () => {
