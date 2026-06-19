@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import {useI18n} from '../frontend/i18n';
 import {postCreateCommentMessage} from './postMessage';
 import {autoGrow, autoResize} from './autoGrow';
+import {isSubmitShortcut} from './submitShortcut';
 
 import SendIcon from './images/send.svg';
 import styles from './ReplyForm.module.css';
@@ -19,6 +20,17 @@ export function ReplyForm({threadId}) {
 
   function handleSubmit(event) {
     event.preventDefault();
+    createReply();
+  }
+
+  function handleKeyDown(event) {
+    if (isSubmitShortcut(event)) {
+      event.preventDefault();
+      createReply();
+    }
+  }
+
+  function createReply() {
     if (!hasText) return;
 
     postCreateCommentMessage({threadId, body});
@@ -31,6 +43,7 @@ export function ReplyForm({threadId}) {
                 ref={autoResize}
                 value={body}
                 onChange={handleChange}
+                onKeyDown={handleKeyDown}
                 placeholder={t('pageflow_scrolled.review.reply_placeholder')}
                 rows={1} />
       {hasText &&

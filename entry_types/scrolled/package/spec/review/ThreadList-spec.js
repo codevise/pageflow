@@ -744,6 +744,35 @@ describe('ThreadList', () => {
     postMessage.mockRestore();
   });
 
+  it('submits reply on Ctrl+Enter', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+    const {getByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    await user.type(getByPlaceholderText('Reply...'),
+                    'Quick reply{Control>}{Enter}{/Control}');
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {
+        type: 'CREATE_COMMENT',
+        payload: {threadId: 1, body: 'Quick reply'}
+      },
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
+  });
+
   it('hides reply submit button when textarea is empty', () => {
     const {queryByRole, getByPlaceholderText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
