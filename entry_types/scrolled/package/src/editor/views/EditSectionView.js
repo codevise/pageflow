@@ -33,6 +33,11 @@ export const EditSectionView = EditConfigurationView.extend({
     const entry = this.options.entry;
     const editor = this.options.editor;
 
+    const backgroundColorSwatches = [
+      ...entry.getBackgroundColorPresets(),
+      ...entry.getUsedSectionBackgroundColors()
+    ];
+
     const editMotifAreaMenuItem = {
       name: 'editMotifArea',
       label: I18n.t('pageflow_scrolled.editor.edit_motif_area_menu_item'),
@@ -149,7 +154,7 @@ export const EditSectionView = EditConfigurationView.extend({
       this.input('backdropColor', ColorInputView, {
         visibleBinding: 'backdropType',
         visibleBindingValue: 'color',
-        swatches: entry.getUsedSectionBackgroundColors()
+        swatches: backgroundColorSwatches
       });
       if (hasDecorationEffects(entry)) {
         this.input('backdropEffects', EffectListInputView, {
@@ -212,7 +217,7 @@ export const EditSectionView = EditConfigurationView.extend({
         placeholderColorBinding: 'invert',
         placeholderColor: invert => invert ? '#101010' : '#ffffff',
         placeholderColorDescription: I18n.t('pageflow_scrolled.editor.edit_section.attributes.cardSurfaceColor.auto_color'),
-        swatches: entry.getUsedSectionBackgroundColors()
+        swatches: backgroundColorSwatches
       });
 
       this.input('splitOverlayColor', ColorInputView, {
@@ -223,7 +228,7 @@ export const EditSectionView = EditConfigurationView.extend({
         placeholderColorBinding: 'invert',
         placeholderColor: invert => invert ? '#ffffffb3' : '#000000b3',
         placeholderColorDescription: I18n.t('pageflow_scrolled.editor.edit_section.attributes.splitOverlayColor.auto_color'),
-        swatches: entry.getUsedSectionBackgroundColors()
+        swatches: backgroundColorSwatches
       });
 
       this.input('overlayBackdropBlur', SliderInputView, {
