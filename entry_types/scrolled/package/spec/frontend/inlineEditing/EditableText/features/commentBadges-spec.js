@@ -4,6 +4,7 @@ import {features} from 'pageflow/frontend';
 import {EditableText} from 'frontend';
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inlineEditing';
 
+import {act, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('inline editing EditableText comment badges', () => {
@@ -74,6 +75,45 @@ describe('inline editing EditableText comment badges', () => {
     expect(badges).toHaveLength(2);
     expect(badges[0].isActive()).toBe(true);
     expect(badges[1].isActive()).toBe(false);
+  });
+
+  it('renders a revealed resolved thread badge in resolved style', async () => {
+    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+    const entry = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: null,
+        commentThreads: [{
+          id: 7,
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
+          resolvedAt: '2026-06-01T00:00:00Z',
+          comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+        }]
+      }
+    });
+
+    expect(entry.queryAllCommentBadges()).toHaveLength(0);
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {type: 'SELECT_COMMENT_THREAD', payload: {threadId: 7}},
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(entry.queryAllCommentBadges()).toHaveLength(1);
+    });
+
+    const badge = entry.queryAllCommentBadges()[0];
+    expect(badge.isResolved()).toBe(true);
+    expect(badge.isActive()).toBe(true);
   });
 
   it('renders sibling badge in regular mode when in same block as highlighted thread', () => {

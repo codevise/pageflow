@@ -199,7 +199,7 @@ describe('inline editing SELECTED message', () => {
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
-      payload: {type: 'newThread', id: 10}
+      payload: {type: 'newThread', subjectType: 'ContentElement', subjectId: 10}
     }, expect.anything());
   });
 
@@ -239,6 +239,108 @@ describe('inline editing SELECTED message', () => {
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
       payload: {id: 1, type: 'contentElementComments'}
+    }, expect.anything());
+  });
+
+  it('is posted with type newThread when section comment badge is clicked and no threads exist', () => {
+    features.enable('frontend', ['commenting']);
+
+    const {getByRole, getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{sectionId: 1, permaId: 100}]
+      }
+    });
+
+    // Select the section so the icon-mode badge becomes visible even
+    // without threads.
+    getSectionByPermaId(10).select();
+
+    fireEvent.click(getByRole('status'));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {type: 'newThread', subjectType: 'Section', subjectId: 10}
+    }, expect.anything());
+  });
+
+  it('is posted with type sectionComments when section comment badge is clicked', async () => {
+    features.enable('frontend', ['commenting']);
+
+    const {getByRole} = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{sectionId: 1, permaId: 100}]
+      }
+    });
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'REVIEW_STATE_RESET',
+          payload: {
+            currentUser: {id: 1},
+            commentThreads: [{
+              id: 1,
+              subjectType: 'Section',
+              subjectId: 10,
+              comments: [{id: 100, body: 'Review this'}]
+            }]
+          }
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(getByRole('status')).toBeInTheDocument();
+    });
+
+    fireEvent.click(getByRole('status'));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 1, type: 'sectionComments'}
+    }, expect.anything());
+  });
+
+  it('does not select the section when its comment badge is pressed', async () => {
+    features.enable('frontend', ['commenting']);
+
+    const {getByRole} = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{sectionId: 1, permaId: 100}]
+      }
+    });
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'REVIEW_STATE_RESET',
+          payload: {
+            currentUser: {id: 1},
+            commentThreads: [{
+              id: 1,
+              subjectType: 'Section',
+              subjectId: 10,
+              comments: [{id: 100, body: 'Review this'}]
+            }]
+          }
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(getByRole('status')).toBeInTheDocument();
+    });
+
+    fireEvent.mouseDown(getByRole('status'));
+
+    expect(window.parent.postMessage).not.toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 1, type: 'sectionSettings'}
     }, expect.anything());
   });
 });

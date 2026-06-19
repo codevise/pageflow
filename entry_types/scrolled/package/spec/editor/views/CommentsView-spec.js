@@ -35,7 +35,7 @@ describe('CommentsView', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]
     });
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     entry.reviewSession = factories.reviewSession({
       commentThreads: [{
         id: 1,
@@ -128,7 +128,7 @@ describe('CommentsView', () => {
 
   it('enables the new-thread button when a content element is selected', () => {
     const entry = unselectedEntry(createEntry);
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
 
     const view = new CommentsView({entry, editor});
     const {getByRole} = renderBackboneView(view);
@@ -136,7 +136,7 @@ describe('CommentsView', () => {
     expect(getByRole('button', {name: 'New topic'})).not.toBeDisabled();
   });
 
-  it("toggles the new-thread button when entry.selectedContentElementCommentsId changes", () => {
+  it("toggles the new-thread button when entry.selectedCommentsSubject changes", () => {
     const entry = unselectedEntry(createEntry);
 
     const view = new CommentsView({entry, editor});
@@ -144,14 +144,14 @@ describe('CommentsView', () => {
 
     expect(getByRole('button', {name: 'New topic'})).toBeDisabled();
 
-    act(() => { entry.set('selectedContentElementCommentsId', 1); });
+    act(() => { entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1}); });
 
     expect(getByRole('button', {name: 'New topic'})).not.toBeDisabled();
   });
 
   it('triggers selectNewThread on entry when the new-thread button is clicked', () => {
     const entry = unselectedEntry(createEntry);
-    entry.set('selectedContentElementCommentsId', 1);
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
     const range = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
     entry.contentElements.get(1).transientState
       .set('newCommentThreadSubjectRange', range);
@@ -165,9 +165,31 @@ describe('CommentsView', () => {
     fireEvent.click(getByRole('button', {name: 'New topic'}));
 
     expect(listener).toHaveBeenCalledWith({
-      id: 10,
+      subjectId: 10,
       subjectType: 'ContentElement',
       range
+    });
+  });
+
+  it('triggers selectNewThread for a selected section without a range', () => {
+    const entry = createEntry({
+      sections: [{id: 5, permaId: 50}],
+      contentElements: [{id: 1, permaId: 10, typeName: 'textBlock', sectionId: 5}]
+    });
+    entry.reviewSession = factories.reviewSession();
+    entry.set('selectedCommentsSubject', {subjectType: 'Section', id: 5});
+
+    const view = new CommentsView({entry, editor});
+    const {getByRole} = renderBackboneView(view);
+
+    const listener = jest.fn();
+    entry.on('selectNewThread', listener);
+
+    fireEvent.click(getByRole('button', {name: 'New topic'}));
+
+    expect(listener).toHaveBeenCalledWith({
+      subjectId: 50,
+      subjectType: 'Section'
     });
   });
 

@@ -13,7 +13,10 @@ export function ContentElementEditorStateProvider({id, permaId, children}) {
     useMemo(() => ({id, type: 'contentElementComments'}), [id])
   );
   const {isSelected: newThreadSelected, select: selectNewThread} = useEditorSelection(
-    useMemo(() => ({id: permaId, type: 'newThread'}), [permaId])
+    useMemo(
+      () => ({type: 'newThread', subjectType: 'ContentElement', subjectId: permaId}),
+      [permaId]
+    )
   );
 
   const storylineMode = useStorylineActivity();

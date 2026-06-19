@@ -12,7 +12,6 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
     'pageflow_scrolled.review.new_topic': 'New topic',
-    'pageflow_scrolled.review.cancel': 'Cancel',
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.review.enter_for_new_line': 'Enter for new line',
@@ -527,6 +526,46 @@ describe('ThreadList', () => {
     postMessage.mockRestore();
   });
 
+  it('submits new thread on Ctrl+Enter', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+    const {getByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />
+    );
+
+    await user.type(getByPlaceholderText('Add a comment...'),
+                    'Quick thread{Control>}{Enter}{/Control}');
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {
+        type: 'CREATE_COMMENT_THREAD',
+        payload: {
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          body: 'Quick thread'
+        }
+      },
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
+  });
+
+  it('shows keyboard hint while composing a new thread', async () => {
+    const user = userEvent.setup();
+
+    const {getByPlaceholderText, getByText, queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />
+    );
+
+    expect(queryByText('Enter for new line')).not.toBeInTheDocument();
+
+    await user.type(getByPlaceholderText('Add a comment...'), 'Draft');
+
+    expect(getByText('Enter for new line')).toBeInTheDocument();
+  });
+
   it('shows new topic form automatically when no threads exist', () => {
     const {getByPlaceholderText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />
@@ -654,10 +693,10 @@ describe('ThreadList', () => {
     expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
   });
 
-  it('hides form when cancel is clicked', async () => {
+  it('does not show a cancel button after expanding the new thread form', async () => {
     const user = userEvent.setup();
 
-    const {getByRole, queryByPlaceholderText} = renderWithReviewState(
+    const {getByRole, queryByRole, getByPlaceholderText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
@@ -669,10 +708,9 @@ describe('ThreadList', () => {
     );
 
     await user.click(getByRole('button', {name: 'New topic'}));
-    await user.click(getByRole('button', {name: 'Cancel'}));
 
-    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
-    expect(getByRole('button', {name: 'New topic'})).toBeInTheDocument();
+    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+    expect(queryByRole('button', {name: 'Cancel'})).not.toBeInTheDocument();
   });
 
   it('posts create comment message when replying to thread', async () => {
@@ -697,6 +735,35 @@ describe('ThreadList', () => {
       {
         type: 'CREATE_COMMENT',
         payload: {threadId: 1, body: 'My reply'}
+      },
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
+  });
+
+  it('submits reply on Ctrl+Enter', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+    const {getByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    await user.type(getByPlaceholderText('Reply...'),
+                    'Quick reply{Control>}{Enter}{/Control}');
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {
+        type: 'CREATE_COMMENT',
+        payload: {threadId: 1, body: 'Quick reply'}
       },
       window.location.origin
     );

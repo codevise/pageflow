@@ -11,7 +11,7 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, compareRanges, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, onDismiss}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, compareRanges, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed}) {
   const {t} = useI18n({locale: 'ui'});
   const allActiveThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
   const allResolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
@@ -57,11 +57,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, compar
         <NewThreadForm subjectType={subjectType}
                        subjectId={subjectId}
                        subjectRange={subjectRange}
-                       onSubmit={() => setFormToggled(false)}
-                       onCancel={() => {
-                         setFormToggled(false);
-                         if (activeThreads.length === 0 && onDismiss) onDismiss();
-                       }} />}
+                       onSubmit={() => setFormToggled(false)} />}
 
       {noThreads && !showNewForm &&
         <p className={styles.blankSlate}>

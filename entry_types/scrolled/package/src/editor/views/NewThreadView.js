@@ -54,8 +54,7 @@ const NewThreadFormView = ReviewView.extend({
       <NewThreadForm subjectType={subjectType}
                      subjectId={subjectId}
                      subjectRange={subjectRange}
-                     onSubmit={leave}
-                     onCancel={leave} />
+                     onSubmit={leave} />
     );
   }
 });

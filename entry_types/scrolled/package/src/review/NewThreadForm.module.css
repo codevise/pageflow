@@ -31,18 +31,15 @@
 
 .actions {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: space(2);
 }
 
-.cancelButton {
-  font: inherit;
-  font-weight: 500;
+.hint {
+  margin-right: auto;
   color: var(--ui-on-surface-color-light);
-  background: none;
-  border: none;
-  padding: space(1.5) space(3);
-  cursor: pointer;
+  font-size: space(3);
 }
 
 .submitButton {

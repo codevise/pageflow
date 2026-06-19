@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useCallback, useRef} from 'react';
 import {useDrag} from 'react-dnd';
 
 import {features} from 'pageflow/frontend';
 import {ThreadsBadge} from 'pageflow-scrolled/review';
 import {useContentElementEditorState} from '../useContentElementEditorState';
+import {useSelectCommentThreadHandler} from './useSelectCommentThreadHandler';
 import {useI18n} from '../i18n';
 import {api} from '../api';
 import {widths} from '../layouts';
@@ -55,12 +56,26 @@ function DefaultSelectionRect(props) {
   const commentsSelected = type === 'contentElementComments' || type === 'newThread';
   const {t} = useI18n({locale: 'ui'});
 
+  const selectionRectRef = useRef();
+
+  useSelectCommentThreadHandler({
+    subjectType: 'ContentElement',
+    subjectId: props.permaId,
+    getScrollTarget: useCallback(() => selectionRectRef.current, []),
+    selectThread: useCallback(threadId => selectComments({
+      type: 'contentElementComments',
+      id: props.id,
+      highlightedThreadId: threadId
+    }), [selectComments, props.id])
+  });
+
   const [, drag, preview] = useDrag({
     item: { type: 'contentElement', id: props.id }
   });
 
   return (
-    <SelectionRect selected={isSelected}
+    <SelectionRect ref={selectionRectRef}
+                   selected={isSelected}
                    scrollPoint={isSelected}
                    drag={drag}
                    dragHandleTitle={t('pageflow_scrolled.inline_editing.drag_content_element')}
@@ -73,12 +88,7 @@ function DefaultSelectionRect(props) {
                                    mode={commentsSelected ? 'active' : isSelected ? 'icon' : 'dot'}
                                    onClick={threads => threads.length === 0 ?
                                                        selectNewThread() :
-                                                       selectComments()}
-                                   onSelectThread={threadId => selectComments({
-                                     type: 'contentElementComments',
-                                     id: props.id,
-                                     highlightedThreadId: threadId
-                                   })} />}
+                                                       selectComments()} />}
                    commentBadgeInset={!isSelected}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}

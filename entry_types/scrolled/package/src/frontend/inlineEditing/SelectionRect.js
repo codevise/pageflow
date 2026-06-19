@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {forwardRef, useState} from 'react';
 import classNames from 'classnames';
 
 import {Toolbar} from './Toolbar';
@@ -8,9 +8,10 @@ import styles from './SelectionRect.module.css';
 import PlusIcon from './images/plus.svg';
 import MoveIcon from './images/move.svg';
 
-export function SelectionRect(props) {
+export const SelectionRect = forwardRef(function SelectionRect(props, ref) {
   return (
-    <div className={classNames(styles.main,
+    <div ref={ref}
+         className={classNames(styles.main,
                                {[styles.openSides]: props.full && !props.inset,
                                 [styles.tug]: props.full || props.customMargin,
                                 [styles.inset]: props.inset,
@@ -34,7 +35,7 @@ export function SelectionRect(props) {
       <InsertButton {...props} at="after" />
     </div>
   );
-}
+});
 
 function InsertButton(props) {
   const [insertHovered, setInsertHovered] = useState(false);

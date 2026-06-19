@@ -46,7 +46,9 @@ export function useEditorSelection(options) {
 
     const isSelected = !!(selection && options &&
                           selection.id === options.id &&
-                          selection.type === options.type);
+                          selection.type === options.type &&
+                          selection.subjectType === options.subjectType &&
+                          selection.subjectId === options.subjectId);
 
     return {
       range: selection?.range,

@@ -1,17 +1,12 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {api} from 'frontend/api';
 import {renderEntry, useCommentingPageObjects} from 'support/pageObjects/commenting';
 
 describe('add comment mode', () => {
   useCommentingPageObjects();
-
-  useFakeTranslations({
-    'pageflow_scrolled.review.cancel': 'Cancel'
-  });
 
   it('renders add comment button', () => {
     const entry = renderEntry({
@@ -84,24 +79,6 @@ describe('add comment mode', () => {
     await user.click(entry.getContentElementByTestId(5).getSelectToCommentButton());
 
     expect(entry.getNewThreadInput()).toBeInTheDocument();
-  });
-
-  it('closes popover when cancelling new thread form on element without threads', async () => {
-    const user = userEvent.setup();
-    const entry = renderEntry({
-      seed: {
-        contentElements: [{
-          typeName: 'withTestId',
-          configuration: {testId: 5}
-        }]
-      }
-    });
-
-    await user.click(entry.getAddCommentButton());
-    await user.click(entry.getContentElementByTestId(5).getSelectToCommentButton());
-    await user.click(entry.getByRole('button', {name: 'Cancel'}));
-
-    expect(entry.queryAllCommentBadges()).toHaveLength(0);
   });
 
   it('exits add comment mode when overlay is clicked', async () => {
@@ -185,5 +162,20 @@ describe('add comment mode', () => {
     await user.click(document.body);
 
     expect(contentElement.hasSelectToCommentButton()).toBe(false);
+  });
+
+  it('opens new thread form when selecting a section', async () => {
+    const user = userEvent.setup();
+    const entry = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]
+      }
+    });
+
+    await user.click(entry.getAddCommentButton());
+    await user.click(entry.getByRole('button', {name: 'Select section to comment'}));
+
+    expect(entry.getNewThreadInput()).toBeInTheDocument();
   });
 });

@@ -63,6 +63,12 @@
   --ui-accent-color-lightest: hsla(44, 100%, 65%, 0.1);
   --ui-on-accent-color: #795f0f;
 
+  --ui-accent-grey-color: hsl(44, 0%, 75%);
+  --ui-accent-grey-color-light: hsla(44, 0%, 75%, 0.6);
+  --ui-accent-grey-color-lighter: hsla(44, 0%, 75%, 0.3);
+  --ui-accent-grey-color-lightest: hsla(44, 0%, 75%, 0.1);
+  --ui-on-accent-grey-color: hsl(44, 0%, 27%);
+
   --ui-on-button-color: var(--ui-primary-color);
   --ui-button-border-color: var(--ui-primary-color-light);
   --ui-button-hover-border-color: var(--ui-primary-color);

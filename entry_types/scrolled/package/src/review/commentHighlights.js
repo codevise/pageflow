@@ -31,13 +31,19 @@ export function decorateCommentHighlights(editor, highlights) {
           Range.start(intersection),
           Range.start(highlight.range)
         );
+        const isLast = Point.equals(
+          Range.end(intersection),
+          Range.end(highlight.range)
+        );
 
         decorations.push({
           ...intersection,
           commentHighlight: true,
           subjectRange: highlight.range,
           rangeKey: highlight.key,
-          ...(isFirst && {firstInRange: true})
+          resolved: !!highlight.thread?.resolvedAt,
+          ...(isFirst && {firstInRange: true}),
+          ...(isLast && {lastInRange: true})
         });
       }
     }

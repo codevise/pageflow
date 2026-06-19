@@ -147,6 +147,7 @@ function createCommentBadgePageObject(el) {
     el,
     isInDotMode: () => el.classList.contains(badgeStyles.dot),
     isActive: () => el.classList.contains(badgeStyles.active),
+    isResolved: () => el.classList.contains(badgeStyles.resolved),
     select: () => fireEvent.click(el)
   };
 }

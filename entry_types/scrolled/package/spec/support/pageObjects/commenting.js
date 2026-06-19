@@ -45,6 +45,7 @@ export function useCommentingPageObjects() {
     'pageflow_scrolled.review.add_comment': 'Add comment',
     'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment',
     'pageflow_scrolled.review.select_content_element': 'Select to comment',
+    'pageflow_scrolled.review.select_section': 'Select section to comment',
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...'
   });
 

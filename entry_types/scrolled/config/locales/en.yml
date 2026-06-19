@@ -1569,6 +1569,7 @@ en:
         comments: Comments
       comments_view:
         new_thread: New topic
+        section: Section
         tabs:
           comments: All comments
           selection: For selection
@@ -1754,6 +1755,7 @@ en:
       add_comment: Add comment
       cancel_add_comment: Cancel
       select_content_element: Select to comment
+      select_section: Select section to comment
       select_text_to_comment: Select text to comment
       new_topic: New topic
       add_comment_placeholder: Add a comment...

@@ -5,7 +5,7 @@ import {editor} from 'pageflow/editor';
 import {cssModulesUtils, TabsView} from 'pageflow/ui';
 
 import {EntryCommentsView} from './EntryCommentsView';
-import {ContentElementCommentsView} from './ContentElementCommentsView';
+import {SelectionCommentsView} from './SelectionCommentsView';
 
 import styles from './CommentsView.module.css';
 
@@ -31,7 +31,7 @@ export const CommentsView = Marionette.ItemView.extend({
 
   initialize: function() {
     this.listenTo(this.options.entry,
-                  'change:selectedContentElementCommentsId',
+                  'change:selectedCommentsSubject',
                   this._updateNewThreadButton);
   },
 
@@ -46,7 +46,7 @@ export const CommentsView = Marionette.ItemView.extend({
     tabsView.tab('comments', () =>
       new EntryCommentsView({entry, editor: editorApi}));
     tabsView.tab('selection', () =>
-      new ContentElementCommentsView({entry, editor: editorApi}));
+      new SelectionCommentsView({entry, editor: editorApi}));
 
     this.appendSubview(tabsView, {to: this.ui.tabs});
     this._updateNewThreadButton();
@@ -54,15 +54,24 @@ export const CommentsView = Marionette.ItemView.extend({
 
   startNewThread: function() {
     const {entry} = this.options;
-    const id = entry.get('selectedContentElementCommentsId');
-    if (!id) return;
+    const subject = entry.get('selectedCommentsSubject');
+    if (!subject) return;
 
-    const contentElement = entry.contentElements.get(id);
-    entry.trigger('selectNewThread', {
-      id: contentElement.get('permaId'),
-      subjectType: 'ContentElement',
-      range: contentElement.transientState.get('newCommentThreadSubjectRange')
-    });
+    if (subject.subjectType === 'Section') {
+      const section = entry.sections.get(subject.id);
+      entry.trigger('selectNewThread', {
+        subjectId: section.get('permaId'),
+        subjectType: 'Section'
+      });
+    }
+    else {
+      const contentElement = entry.contentElements.get(subject.id);
+      entry.trigger('selectNewThread', {
+        subjectId: contentElement.get('permaId'),
+        subjectType: 'ContentElement',
+        range: contentElement.transientState.get('newCommentThreadSubjectRange')
+      });
+    }
   },
 
   goBack: function() {
@@ -70,7 +79,7 @@ export const CommentsView = Marionette.ItemView.extend({
   },
 
   _updateNewThreadButton: function() {
-    const enabled = !!this.options.entry.get('selectedContentElementCommentsId');
+    const enabled = !!this.options.entry.get('selectedCommentsSubject');
     this.$(cssModulesUtils.selector(styles, 'newThreadButton'))
       .prop('disabled', !enabled);
   }

@@ -23,6 +23,18 @@
   opacity: 1;
 }
 
+/* Badge of a resolved thread shown only because it is the highlighted
+   thread - muted to grey instead of the accent color. */
+.resolved {
+  background: var(--ui-accent-grey-color);
+  color: var(--ui-on-accent-grey-color);
+  box-shadow: 0 0 0 space(1) var(--ui-accent-grey-color-lighter);
+}
+
+.resolved.dot::before {
+  background: var(--ui-accent-grey-color);
+}
+
 .iconOnly {
   background: none;
   color: currentColor;

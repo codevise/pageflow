@@ -6,7 +6,11 @@ module.exports = {
     "plugin:storybook/recommended"
   ],
   "rules": {
-    "no-trailing-spaces": "error"
+    "no-trailing-spaces": "error",
+    // react-app enables no-unused-expressions, but ESLint 6 predates
+    // ChainExpression and flags optional-chaining call statements like
+    // `node?.focus()` as unused. The other packages do not enable the rule.
+    "no-unused-expressions": "off"
   },
   "settings": {
     "import/resolver": {

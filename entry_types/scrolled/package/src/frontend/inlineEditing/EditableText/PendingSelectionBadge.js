@@ -1,10 +1,9 @@
 import React, {useCallback, useState} from 'react';
 import classNames from 'classnames';
-import {FloatingPortal, useFloating} from '@floating-ui/react';
+import {useFloating} from '@floating-ui/react';
 import {ReactEditor, useSlate} from 'slate-react';
 
 import {Badge, alignToContainerEdge} from 'pageflow-scrolled/review';
-import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {useDarkBackground} from '../../backgroundColor';
 import {useEffectiveSelection} from './useEffectiveSelection';
 import {useStartNewThread} from './useStartNewThread';
@@ -13,7 +12,6 @@ import styles from './BadgeColumn.module.css';
 
 export function PendingSelectionBadge({containerRef}) {
   const editor = useSlate();
-  const portalRoot = useFloatingPortalRoot();
   const [isVisible, setIsVisible] = useState(false);
   const darkBackground = useDarkBackground();
   const startNewThread = useStartNewThread(editor);
@@ -42,12 +40,10 @@ export function PendingSelectionBadge({containerRef}) {
   if (!isVisible) return null;
 
   return (
-    <FloatingPortal root={portalRoot}>
-      <div ref={refs.setFloating}
-           className={classNames(styles.box, darkBackground ? styles.onDark : styles.onLight)}
-           style={floatingStyles}>
-        <Badge counter={0} mode="icon" onClick={startNewThread} />
-      </div>
-    </FloatingPortal>
+    <div ref={refs.setFloating}
+         className={classNames(styles.box, darkBackground ? styles.onDark : styles.onLight)}
+         style={floatingStyles}>
+      <Badge counter={0} mode="icon" onClick={startNewThread} />
+    </div>
   );
 }

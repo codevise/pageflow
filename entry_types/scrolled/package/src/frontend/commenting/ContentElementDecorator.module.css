@@ -6,3 +6,19 @@
   box-shadow: 0 0 0 2px var(--ui-accent-color),
               0 0 0 calc(2px + space(1)) var(--ui-accent-color-lighter);
 }
+
+.badge {
+  position: absolute;
+  bottom: -0.5em;
+  left: -0.5em;
+  transform: translate(-50%, 50%);
+  z-index: 5;
+}
+
+/* Full-bleed elements reach the viewport edge, so keep the badge flush to the
+   left rather than overhanging it (mirrors the .tug treatment in inline
+   editing's SelectionRect). */
+.badgeFlush {
+  left: 0;
+  transform: translate(0, 50%);
+}
