@@ -132,13 +132,21 @@ export default class ColorPicker {
       return;
     }
 
-    swatches.forEach(({value, text}) => {
-      const button = document.createElement('button');
-      button.setAttribute('type', 'button');
-      button.title = text;
-      button.style.color = value;
-      button.textContent = value;
-      this._swatchesContainer.appendChild(button);
+    groupSwatches(swatches).forEach((group, index) => {
+      if (index > 0) {
+        const divider = document.createElement('span');
+        divider.className = 'color_picker-swatch_divider';
+        this._swatchesContainer.appendChild(divider);
+      }
+
+      group.swatches.forEach(({value, text}) => {
+        const button = document.createElement('button');
+        button.setAttribute('type', 'button');
+        button.title = text;
+        button.style.color = value;
+        button.textContent = value;
+        this._swatchesContainer.appendChild(button);
+      });
     });
   }
 
@@ -653,5 +661,25 @@ function isTranslucentSwatch(str) {
 function normalizeSwatch(swatch) {
   return typeof swatch === 'string' ?
          {value: swatch, text: swatch} :
-         {value: swatch.value, text: swatch.text || swatch.value};
+         {value: swatch.value, text: swatch.text || swatch.value, group: swatch.group};
+}
+
+function groupSwatches(swatches) {
+  const groups = [];
+  const groupsByKey = new Map();
+
+  swatches.forEach(swatch => {
+    const key = swatch.group || '';
+    let group = groupsByKey.get(key);
+
+    if (!group) {
+      group = {key, swatches: []};
+      groupsByKey.set(key, group);
+      groups.push(group);
+    }
+
+    group.swatches.push(swatch);
+  });
+
+  return groups;
 }

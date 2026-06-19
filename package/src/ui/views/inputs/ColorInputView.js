@@ -42,12 +42,14 @@ import template from '../../templates/inputs/colorInput.jst';
  *   colors are stored in `#rrggbbaa` format. Fully opaque colors still
  *   use `#rrggbb`.
  *
- * @param {Array<string|{value: string, text: string}>} [options.swatches]
+ * @param {Array<string|{value: string, text: string, group: string}>} [options.swatches]
  *   Preset colors to be displayed inside the picker drop down. Each
- *   entry is either a color string or an object with a `value` color
- *   and a `text` label shown as the swatch's tooltip. The default
- *   value, if present, is always used as the first swatch
- *   automatically. Swatches are deduplicated by value.
+ *   entry is either a color string or an object with a `value` color,
+ *   a `text` label shown as the swatch's tooltip and an optional
+ *   `group` key. Consecutive swatches with a different `group` are
+ *   separated by a divider in the picker. The default value, if
+ *   present, is always used as the first swatch automatically. Swatches
+ *   are deduplicated by value.
  *
  * @class
  */

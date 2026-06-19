@@ -91,6 +91,19 @@ describe('pageflow.ColorInputView', () => {
     expect(buttons[0]).toHaveAttribute('title', 'Concrete');
   });
 
+  it('separates swatch groups with a divider in the picker', () => {
+    render({
+      model: new Backbone.Model(),
+      propertyName: 'color',
+      swatches: [
+        {value: '#cdcdcd', text: 'Concrete', group: 'presets'},
+        {value: '#dedede', text: 'Smoke', group: 'used'}
+      ]
+    });
+
+    expect(document.querySelectorAll('.color_picker-swatch_divider')).toHaveLength(1);
+  });
+
   describe('with defaultValue option', () => {
     it('falls back to default value', () => {
       const {getByRole} = render({
