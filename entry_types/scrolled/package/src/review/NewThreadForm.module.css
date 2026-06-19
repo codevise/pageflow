@@ -42,16 +42,6 @@
   font-size: space(3);
 }
 
-.cancelButton {
-  font: inherit;
-  font-weight: 500;
-  color: var(--ui-on-surface-color-light);
-  background: none;
-  border: none;
-  padding: space(1.5) space(3);
-  cursor: pointer;
-}
-
 .submitButton {
   display: flex;
   align-items: center;

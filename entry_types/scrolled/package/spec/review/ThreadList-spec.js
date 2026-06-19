@@ -12,7 +12,6 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
     'pageflow_scrolled.review.new_topic': 'New topic',
-    'pageflow_scrolled.review.cancel': 'Cancel',
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.review.enter_for_new_line': 'Enter for new line',
@@ -694,10 +693,10 @@ describe('ThreadList', () => {
     expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
   });
 
-  it('hides form when cancel is clicked', async () => {
+  it('does not show a cancel button after expanding the new thread form', async () => {
     const user = userEvent.setup();
 
-    const {getByRole, queryByPlaceholderText} = renderWithReviewState(
+    const {getByRole, queryByRole, getByPlaceholderText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
@@ -709,10 +708,9 @@ describe('ThreadList', () => {
     );
 
     await user.click(getByRole('button', {name: 'New topic'}));
-    await user.click(getByRole('button', {name: 'Cancel'}));
 
-    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
-    expect(getByRole('button', {name: 'New topic'})).toBeInTheDocument();
+    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+    expect(queryByRole('button', {name: 'Cancel'})).not.toBeInTheDocument();
   });
 
   it('posts create comment message when replying to thread', async () => {

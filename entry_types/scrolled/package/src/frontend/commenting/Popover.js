@@ -85,8 +85,7 @@ export function Popover({
                         subjectId={subjectId}
                         subjectRange={subjectRange}
                         showNewForm={showNewForm}
-                        hideNewTopicButton={hideNewTopicButton}
-                        onDismiss={clearSelection} />
+                        hideNewTopicButton={hideNewTopicButton} />
           </div>
         </FloatingPortal>}
     </span>

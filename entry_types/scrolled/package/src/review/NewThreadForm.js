@@ -8,7 +8,7 @@ import {isSubmitShortcut} from './submitShortcut';
 import SendIcon from './images/send.svg';
 import styles from './NewThreadForm.module.css';
 
-export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit, onCancel}) {
+export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit}) {
   const {t} = useI18n({locale: 'ui'});
   const [body, setBody] = useState('');
   const hasText = body.trim().length > 0;
@@ -60,12 +60,6 @@ export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit, o
           <span className={styles.hint}>
             {t('pageflow_scrolled.review.enter_for_new_line')}
           </span>}
-        {onCancel &&
-          <button className={styles.cancelButton}
-                  type="button"
-                  onClick={onCancel}>
-            {t('pageflow_scrolled.review.cancel')}
-          </button>}
         <button className={styles.submitButton}
                 type="submit">
           <SendIcon /> {t('pageflow_scrolled.review.send')}

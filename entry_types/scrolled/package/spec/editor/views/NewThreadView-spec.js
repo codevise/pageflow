@@ -15,7 +15,6 @@ describe('NewThreadView', () => {
   useFakeTranslations({
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
     'pageflow_scrolled.review.send': 'Send',
-    'pageflow_scrolled.review.cancel': 'Cancel',
     'pageflow_scrolled.editor.new_thread_view.tabs.newComment': 'New topic',
     'pageflow_scrolled.editor.new_thread_view.back': 'Comments'
   });
