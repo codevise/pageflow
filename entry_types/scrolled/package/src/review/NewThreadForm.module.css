@@ -31,8 +31,15 @@
 
 .actions {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: space(2);
+}
+
+.hint {
+  margin-right: auto;
+  color: var(--ui-on-surface-color-light);
+  font-size: space(3);
 }
 
 .cancelButton {

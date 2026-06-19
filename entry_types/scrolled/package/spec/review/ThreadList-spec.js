@@ -527,6 +527,46 @@ describe('ThreadList', () => {
     postMessage.mockRestore();
   });
 
+  it('submits new thread on Ctrl+Enter', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+    const {getByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />
+    );
+
+    await user.type(getByPlaceholderText('Add a comment...'),
+                    'Quick thread{Control>}{Enter}{/Control}');
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {
+        type: 'CREATE_COMMENT_THREAD',
+        payload: {
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          body: 'Quick thread'
+        }
+      },
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
+  });
+
+  it('shows keyboard hint while composing a new thread', async () => {
+    const user = userEvent.setup();
+
+    const {getByPlaceholderText, getByText, queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />
+    );
+
+    expect(queryByText('Enter for new line')).not.toBeInTheDocument();
+
+    await user.type(getByPlaceholderText('Add a comment...'), 'Draft');
+
+    expect(getByText('Enter for new line')).toBeInTheDocument();
+  });
+
   it('shows new topic form automatically when no threads exist', () => {
     const {getByPlaceholderText} = renderWithReviewState(
       <ThreadList subjectType="ContentElement" subjectId={10} />
