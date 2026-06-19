@@ -34,8 +34,8 @@ export const EditSectionView = EditConfigurationView.extend({
     const editor = this.options.editor;
 
     const backgroundColorSwatches = [
-      ...entry.getBackgroundColorPresets(),
-      ...entry.getUsedSectionBackgroundColors()
+      ...entry.getBackgroundColorPresets().map(swatch => ({...swatch, group: 'presets'})),
+      ...entry.getUsedSectionBackgroundColors().map(value => ({value, group: 'used'}))
     ];
 
     const editMotifAreaMenuItem = {
