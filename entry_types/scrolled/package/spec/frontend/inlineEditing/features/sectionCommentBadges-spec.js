@@ -54,6 +54,19 @@ describe('inline editing section comment badges', () => {
     });
   });
 
+  it('clips the badge corner when the section is selected without threads', () => {
+    const {getByLabelText, getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{sectionId: 1, permaId: 100}]
+      }
+    });
+
+    getSectionByPermaId(10).select();
+
+    expect(getByLabelText('Select section')).toHaveClass(sectionStyles.clipBadgeCorner);
+  });
+
   it('renders badge in active mode when newThread is selected on the section', () => {
     const {getByRole} = renderEntry({
       seed: {
@@ -249,5 +262,22 @@ describe('inline editing section comment badges', () => {
       type: 'SELECTED',
       payload: {type: 'sectionComments', id: 1, highlightedThreadId: 3}
     }, expect.anything());
+  });
+});
+
+describe('inline editing section comment badges with commenting disabled', () => {
+  useInlineEditingPageObjects();
+
+  it('does not clip the badge corner when the section is selected', () => {
+    const {getByLabelText, getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{sectionId: 1, permaId: 100}]
+      }
+    });
+
+    getSectionByPermaId(10).select();
+
+    expect(getByLabelText('Select section')).not.toHaveClass(sectionStyles.clipBadgeCorner);
   });
 });

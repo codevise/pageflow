@@ -66,7 +66,7 @@ export function SectionDecorator({backdrop, section, contentElements, transition
     selectThread
   });
 
-  const clipBadgeCorner = (isSectionSelected || isPaddingSelected) && !hasThreads;
+  const clipBadgeCorner = commentingEnabled && (isSectionSelected || isPaddingSelected) && !hasThreads;
 
   const {isSelected: isBackdropElementSelected} = useEditorSelection({
     id: backdrop.contentElement?.id,
