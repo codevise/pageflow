@@ -121,9 +121,9 @@ export default class ColorPicker {
   }
 
   _renderSwatches() {
-    const swatches = this._alpha
-      ? this._swatches
-      : this._swatches.filter(s => !isTranslucentSwatch(s));
+    const swatches = this._swatches
+      .map(normalizeSwatch)
+      .filter(swatch => this._alpha || !isTranslucentSwatch(swatch.value));
 
     this._swatchesContainer.textContent = '';
     this._swatchesContainer.classList.toggle('color_picker-empty', !swatches.length);
@@ -132,12 +132,12 @@ export default class ColorPicker {
       return;
     }
 
-    swatches.forEach(swatch => {
+    swatches.forEach(({value, text}) => {
       const button = document.createElement('button');
       button.setAttribute('type', 'button');
-      button.title = swatch;
-      button.style.color = swatch;
-      button.textContent = swatch;
+      button.title = text;
+      button.style.color = value;
+      button.textContent = value;
       this._swatchesContainer.appendChild(button);
     });
   }
@@ -648,4 +648,10 @@ function getClipRect(element) {
 
 function isTranslucentSwatch(str) {
   return str.length > 7 && str.slice(-2).toLowerCase() !== 'ff';
+}
+
+function normalizeSwatch(swatch) {
+  return typeof swatch === 'string' ?
+         {value: swatch, text: swatch} :
+         {value: swatch.value, text: swatch.text || swatch.value};
 }

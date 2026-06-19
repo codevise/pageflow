@@ -69,6 +69,28 @@ describe('pageflow.ColorInputView', () => {
     expect(buttons[1]).toHaveTextContent('#dedede');
   });
 
+  it('allows passing swatches with labels', () => {
+    const {getAllByRole} = render({
+      model: new Backbone.Model(),
+      propertyName: 'color',
+      swatches: [{value: '#cdcdcd', text: 'Concrete'}]
+    });
+
+    expect(getAllByRole('button')[0]).toHaveAttribute('title', 'Concrete');
+  });
+
+  it('deduplicates swatches by value across labelled and plain entries', () => {
+    const {getAllByRole} = render({
+      model: new Backbone.Model(),
+      propertyName: 'color',
+      swatches: [{value: '#cdcdcd', text: 'Concrete'}, '#cdcdcd']
+    });
+
+    const buttons = getAllByRole('button');
+    expect(buttons).toHaveLength(1);
+    expect(buttons[0]).toHaveAttribute('title', 'Concrete');
+  });
+
   describe('with defaultValue option', () => {
     it('falls back to default value', () => {
       const {getByRole} = render({

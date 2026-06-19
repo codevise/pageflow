@@ -88,6 +88,43 @@ describe('ColorPicker', () => {
     });
   });
 
+  describe('labelled swatches', () => {
+    it('uses object value as swatch color and text as title', () => {
+      createColorPicker({swatches: [{value: '#aabbcc', text: 'Sky'}]});
+
+      var button = picker().querySelector('.color_picker-swatches button');
+
+      expect(button.title).toBe('Sky');
+      expect(button).toHaveStyle('color: #aabbcc');
+    });
+
+    it('falls back to value as title when text is missing', () => {
+      createColorPicker({swatches: [{value: '#aabbcc'}]});
+
+      var button = picker().querySelector('.color_picker-swatches button');
+
+      expect(button.title).toBe('#aabbcc');
+    });
+
+    it('applies object swatch value when clicked', () => {
+      createColorPicker({swatches: [{value: '#aabbcc', text: 'Sky'}]});
+      open();
+
+      picker().querySelector('.color_picker-swatches button')
+        .dispatchEvent(new Event('click', {bubbles: true}));
+
+      expect(input.value).toBe('#aabbcc');
+    });
+
+    it('filters translucent object swatches when alpha is not enabled', () => {
+      createColorPicker({
+        swatches: [{value: '#aabbcc', text: 'A'}, {value: '#ff000080', text: 'B'}]
+      });
+
+      expect(picker().querySelectorAll('.color_picker-swatches button')).toHaveLength(1);
+    });
+  });
+
   describe('open and close', () => {
     it('opens picker on input click', () => {
       createColorPicker();

@@ -42,10 +42,12 @@ import template from '../../templates/inputs/colorInput.jst';
  *   colors are stored in `#rrggbbaa` format. Fully opaque colors still
  *   use `#rrggbb`.
  *
- * @param {string[]} [options.swatches]
- *   Preset color values to be displayed inside the picker drop
- *   down. The default value, if present, is always used as the
- *   first swatch automatically.
+ * @param {Array<string|{value: string, text: string}>} [options.swatches]
+ *   Preset colors to be displayed inside the picker drop down. Each
+ *   entry is either a color string or an object with a `value` color
+ *   and a `text` label shown as the swatch's tooltip. The default
+ *   value, if present, is always used as the first swatch
+ *   automatically. Swatches are deduplicated by value.
  *
  * @class
  */
@@ -112,8 +114,9 @@ export const ColorInputView = Marionette.ItemView.extend({
   getSwatches: function() {
     return _.chain([this.defaultValue(), this.options.swatches])
       .flatten()
-      .uniq()
       .compact()
+      .map(swatch => typeof swatch === 'string' ? {value: swatch} : swatch)
+      .uniq(swatch => swatch.value)
       .value();
   },
 
