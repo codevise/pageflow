@@ -167,6 +167,7 @@ de:
         drag_hint: Ziehen, um das Kapitel zu verschieben
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
         chapter: Kapitel
+        excursion: Exkurs
         unnamed: Unbenannt
         hidden_in_navigation: In der Navigationsleiste ausgeblendet
       common_content_element_attributes:

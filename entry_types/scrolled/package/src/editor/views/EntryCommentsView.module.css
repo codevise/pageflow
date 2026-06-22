@@ -3,6 +3,27 @@
   flex-direction: column;
 }
 
+.chapter {
+  display: flex;
+  flex-direction: column;
+}
+
+.chapterHeading {
+  display: flex;
+  align-items: center;
+  gap: space(2);
+  padding: space(5) 0 space(2);
+}
+
+.chapterNumber {
+  font-weight: bold;
+  color: var(--ui-on-surface-color-light);
+}
+
+.chapterTitle {
+  font-weight: bold;
+}
+
 .group {
   cursor: pointer;
 }

@@ -3,8 +3,11 @@ import React from 'react';
 import {ThreadList} from 'pageflow-scrolled/review';
 
 import {ReviewView} from './ReviewView';
+import styles from './SelectionCommentsView.module.css';
 
 export const SelectionCommentsView = ReviewView.extend({
+  className: styles.root,
+
   initialize() {
     const {entry} = this.options;
 

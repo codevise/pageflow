@@ -167,6 +167,7 @@ en:
         drag_hint: Drag to move chapter
         save_error: There was an error while saving this chapter.
         chapter: Chapter
+        excursion: Excursion
         unnamed: Untitled
         hidden_in_navigation: Hidden in navigation bar
       common_content_element_attributes:

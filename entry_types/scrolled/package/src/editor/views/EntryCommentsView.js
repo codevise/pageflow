@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import I18n from 'i18n-js';
 
-import {ThreadList, useCommentThreads} from 'pageflow-scrolled/review';
+import {EntryStateProvider, useEntryStateDispatch, watchCollections} from 'pageflow-scrolled/entryState';
+import {ThreadList, useLocatedCommentThreads} from 'pageflow-scrolled/review';
 
 import {ReviewView} from './ReviewView';
 import defaultPictogram from './images/defaultPictogram.svg';
@@ -23,9 +24,8 @@ export const EntryCommentsView = ReviewView.extend({
   props() {
     const {entry, editor} = this.options;
     return {
-      items: collectItems(entry),
-      selectedElement: this._selectedElement,
-      selectedSection: this._selectedSection,
+      entry,
+      selectedSubject: entry.get('selectedCommentsSubject') || null,
       // Undefined for elements without a slate cursor (e.g. images);
       // an array (possibly empty) for textBlocks where Selection.js
       // has reported the cursor's overlapping threads.
@@ -37,24 +37,12 @@ export const EntryCommentsView = ReviewView.extend({
     };
   },
 
-  renderContent({items, selectedElement, selectedSection, transientThreadIds, highlightedThreadId, onThreadClick, editor}) {
+  renderContent({entry, ...props}) {
     return (
-      <div className={styles.list}>
-        {items.map(item => item.type === 'section' ?
-          <SectionGroup key={`section-${item.section.get('permaId')}`}
-                        section={item.section}
-                        isSelected={item.section === selectedSection}
-                        highlightedThreadId={highlightedThreadId}
-                        onThreadClick={onThreadClick} /> :
-          <ContentElementGroup key={`element-${item.contentElement.get('permaId')}`}
-                               contentElement={item.contentElement}
-                               isSelected={item.contentElement === selectedElement}
-                               selectedHasTransientThreadIds={transientThreadIds !== undefined}
-                               highlightedThreadId={highlightedThreadId}
-                               onThreadClick={onThreadClick}
-                               editor={editor} />
-        )}
-      </div>
+      <EntryStateProvider seed={entry.scrolledSeed}>
+        <WatchEntryCollections entry={entry} />
+        <CommentsList {...props} />
+      </EntryStateProvider>
     );
   },
 
@@ -73,10 +61,6 @@ export const EntryCommentsView = ReviewView.extend({
       subject?.subjectType === 'ContentElement' ?
         this.options.entry.contentElements.get(subject.id) :
         null;
-    this._selectedSection =
-      subject?.subjectType === 'Section' ?
-        this.options.entry.sections.get(subject.id) :
-        null;
 
     if (this._selectedElement) {
       this.listenTo(this._selectedElement.transientState,
@@ -86,47 +70,93 @@ export const EntryCommentsView = ReviewView.extend({
   }
 });
 
-// Section comment groups precede the content element groups of the
-// same section, so a reviewer sees feedback on the section as a whole
-// above feedback on its individual elements.
-function collectItems(entry) {
-  const items = [];
+function WatchEntryCollections({entry}) {
+  const dispatch = useEntryStateDispatch();
 
-  entry.chapters.each(chapter => {
-    chapter.sections.each(section => {
-      items.push({type: 'section', section});
-      section.contentElements.each(contentElement => {
-        items.push({type: 'contentElement', contentElement});
-      });
-    });
-  });
+  useEffect(() => watchCollections(entry, {dispatch}), [entry, dispatch]);
 
-  return items;
+  return null;
 }
 
-function ContentElementGroup({
-  contentElement, isSelected, selectedHasTransientThreadIds,
-  highlightedThreadId, onThreadClick, editor
-}) {
-  const permaId = contentElement.get('permaId');
-  const threads = useCommentThreads({
-    subjectType: 'ContentElement',
-    subjectId: permaId
-  });
+function CommentsList({selectedSubject, transientThreadIds, highlightedThreadId, onThreadClick, editor}) {
+  const {chapters} = useLocatedCommentThreads();
 
-  if (threads.length === 0) {
+  return (
+    <div className={styles.list}>
+      {chapters.map((chapter, index) =>
+        <ChapterGroup key={`chapter-${chapter.permaId}`}
+                      chapter={chapter}
+                      number={chapter.isExcursion ? null : index + 1}
+                      selectedSubject={selectedSubject}
+                      transientThreadIds={transientThreadIds}
+                      highlightedThreadId={highlightedThreadId}
+                      onThreadClick={onThreadClick}
+                      editor={editor} />
+      )}
+    </div>
+  );
+}
+
+function ChapterGroup({chapter, number, ...groupProps}) {
+  if (chapter.threadCount === 0) {
     return null;
   }
 
-  const typeName = contentElement.get('typeName');
-  const label = I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`);
-  const pictogram = editor.contentElementTypes.findPictogram(typeName) || defaultPictogram;
-  const compareRanges = editor.contentElementTypes.findCompareRanges(typeName);
+  return (
+    <div className={styles.chapter}>
+      <ChapterHeading number={number} title={chapter.title} />
+      {/* Section comment groups precede the content element groups of
+          the same section, so a reviewer sees feedback on the section
+          as a whole above feedback on its individual elements. */}
+      {chapter.sections.map(section => (
+        <React.Fragment key={`section-${section.permaId}`}>
+          {section.threads.length > 0 &&
+           <SectionGroup section={section} {...groupProps} />}
+          {section.contentElements.map(contentElement =>
+            contentElement.threads.length > 0 &&
+            <ContentElementGroup key={`element-${contentElement.permaId}`}
+                                 contentElement={contentElement}
+                                 {...groupProps} />
+          )}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
+function ChapterHeading({number, title}) {
+  return (
+    <div className={styles.chapterHeading}>
+      <span className={styles.rule} />
+      <span className={styles.chapterNumber}>
+        {number != null ?
+         `${I18n.t('pageflow_scrolled.editor.chapter_item.chapter')} ${number}` :
+         I18n.t('pageflow_scrolled.editor.chapter_item.excursion')}
+      </span>
+      <span className={styles.chapterTitle}>
+        {title}
+      </span>
+      <span className={styles.rule} />
+    </div>
+  );
+}
+
+function ContentElementGroup({
+  contentElement, selectedSubject, transientThreadIds,
+  highlightedThreadId, onThreadClick, editor
+}) {
+  const {permaId, type, threads} = contentElement;
+  const label = I18n.t(`pageflow_scrolled.editor.content_elements.${type}.name`);
+  const pictogram = editor.contentElementTypes.findPictogram(type) || defaultPictogram;
+  const compareRanges = editor.contentElementTypes.findCompareRanges(type);
+
+  const isSelected = selectedSubject?.subjectType === 'ContentElement' &&
+                     selectedSubject.id === contentElement.id;
 
   // Element-level badges (e.g. on images) have no per-thread anchor in
   // the iframe, so clicking such a badge highlights every thread of
   // the element rather than just one.
-  const groupHighlight = isSelected && !selectedHasTransientThreadIds ?
+  const groupHighlight = isSelected && transientThreadIds === undefined ?
                          threads.map(t => t.id) :
                          highlightedThreadId;
 
@@ -145,16 +175,11 @@ function ContentElementGroup({
   );
 }
 
-function SectionGroup({section, isSelected, highlightedThreadId, onThreadClick}) {
-  const permaId = section.get('permaId');
-  const threads = useCommentThreads({
-    subjectType: 'Section',
-    subjectId: permaId
-  });
+function SectionGroup({section, selectedSubject, highlightedThreadId, onThreadClick}) {
+  const {permaId, threads} = section;
 
-  if (threads.length === 0) {
-    return null;
-  }
+  const isSelected = selectedSubject?.subjectType === 'Section' &&
+                     selectedSubject.id === section.id;
 
   // A section has no per-thread anchor in the preview, so selecting it
   // highlights all its threads at once, like a whole-element image badge.
