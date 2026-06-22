@@ -12,14 +12,14 @@ export function EntryDecorator({commentingInitialState, children}) {
   return (
     <ReviewStateProvider initialState={commentingInitialState}>
       <ReviewSessionSetup initialState={commentingInitialState} />
-      <SelectedSubjectProvider>
-        <AddCommentModeProvider>
-          <CommentDisplayFilterProvider>
+      <CommentDisplayFilterProvider>
+        <SelectedSubjectProvider>
+          <AddCommentModeProvider>
             {children}
             <FloatingToolbar />
-          </CommentDisplayFilterProvider>
-        </AddCommentModeProvider>
-      </SelectedSubjectProvider>
+          </AddCommentModeProvider>
+        </SelectedSubjectProvider>
+      </CommentDisplayFilterProvider>
     </ReviewStateProvider>
   );
 }

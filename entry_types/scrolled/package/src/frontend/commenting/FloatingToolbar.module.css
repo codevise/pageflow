@@ -22,6 +22,27 @@
   align-items: center;
 }
 
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.count {
+  font-family: var(--ui-font-family);
+  font-variant-numeric: tabular-nums;
+  color: var(--ui-on-surface-color);
+  min-width: 1.5em;
+  text-align: center;
+}
+
+.chevronUp {
+  transform: rotate(180deg);
+}
+
+.chevronDown {
+  transform: rotate(0deg);
+}
+
 .segmented {
   display: flex;
   border-radius: rounded(md);
