@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {useLocatedCommentThreads} from 'pageflow-scrolled/review';
 import {useI18n} from '../i18n';
 import {useAddCommentMode} from './AddCommentModeProvider';
 import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
@@ -19,46 +20,32 @@ export function FloatingToolbar() {
          role="group"
          aria-label={t('pageflow_scrolled.review.comment_toolbar')}
          data-comment-toolbar>
+      <PositionIndicator />
       <ResolutionToggleButton />
-      <ThreadNavigation />
+      <NavigationArrows />
       <AddCommentButton />
     </div>
   );
 }
 
-const resolutions = ['unresolved', 'all'];
-
-function ResolutionToggleButton() {
+function PositionIndicator() {
   const {t} = useI18n({locale: 'ui'});
-  const {resolution, setResolution} = useCommentDisplayFilter();
+  const {count, position} = useCommentNavigation();
 
   return (
-    <div className={styles.segmented}
-         role="group"
-         aria-label={t('pageflow_scrolled.review.filter.label')}>
-      {resolutions.map(value => (
-        <button key={value}
-                type="button"
-                className={styles.segment}
-                aria-pressed={resolution === value}
-                onClick={() => setResolution(value)}>
-          {t(`pageflow_scrolled.review.filter.${value}`)}
-        </button>
-      ))}
-    </div>
+    <span className={styles.count}
+          title={t('pageflow_scrolled.review.comment_count', {count})}>
+      {position || '–'} /
+    </span>
   );
 }
 
-function ThreadNavigation() {
+function NavigationArrows() {
   const {t} = useI18n({locale: 'ui'});
-  const {count, position, goToPrevious, goToNext} = useCommentNavigation();
+  const {count, goToPrevious, goToNext} = useCommentNavigation();
 
   return (
-    <>
-      <span className={styles.count}
-            title={t('pageflow_scrolled.review.comment_count', {count})}>
-        {position ? `${position} / ${count}` : count}
-      </span>
+    <div className={styles.navigation}>
       <button className={styles.button}
               onClick={goToPrevious}
               disabled={count === 0}
@@ -73,7 +60,39 @@ function ThreadNavigation() {
               title={t('pageflow_scrolled.review.next_comment')}>
         <ChevronIcon className={styles.chevronDown} />
       </button>
-    </>
+    </div>
+  );
+}
+
+const resolutions = ['unresolved', 'all'];
+
+function ResolutionToggleButton() {
+  const {t} = useI18n({locale: 'ui'});
+  const {resolution, setResolution} = useCommentDisplayFilter();
+  const {threads} = useLocatedCommentThreads();
+
+  const counts = {
+    unresolved: threads.filter(thread => !thread.resolvedAt).length,
+    all: threads.length
+  };
+
+  return (
+    <div className={styles.segmented}
+         role="group"
+         aria-label={t('pageflow_scrolled.review.filter.label')}>
+      {resolutions.map(value => (
+        <button key={value}
+                type="button"
+                className={styles.segment}
+                aria-pressed={resolution === value}
+                onClick={() => setResolution(value)}>
+          {t(`pageflow_scrolled.review.filter.${value}`)}
+          <span className={styles.segmentCount} aria-hidden="true">
+            {counts[value]}
+          </span>
+        </button>
+      ))}
+    </div>
   );
 }
 

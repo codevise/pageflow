@@ -10,10 +10,10 @@ describe('comment navigation', () => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
   });
 
-  it('shows the number of navigable comments for the current filter', () => {
+  it('shows a dash in the position indicator before stepping', () => {
     const entry = renderEntryWithTwoThreads();
 
-    expect(within(entry.getCommentToolbar()).getByTitle('2 comments')).toBeInTheDocument();
+    expect(within(entry.getCommentToolbar()).getByText('– /')).toBeInTheDocument();
   });
 
   it('opens each thread popover when cycling forward', () => {
@@ -79,17 +79,17 @@ describe('comment navigation', () => {
     expect(entry.queryByText('Resolved comment')).not.toBeInTheDocument();
   });
 
-  it('shows the current position alongside the total while stepping', () => {
+  it('shows the current position while stepping', () => {
     const entry = renderEntryWithTwoThreads();
 
     const toolbar = entry.getCommentToolbar();
     const next = entry.getNextCommentButton();
 
     fireEvent.click(next);
-    expect(within(toolbar).getByText('1 / 2')).toBeInTheDocument();
+    expect(within(toolbar).getByText('1 /')).toBeInTheDocument();
 
     fireEvent.click(next);
-    expect(within(toolbar).getByText('2 / 2')).toBeInTheDocument();
+    expect(within(toolbar).getByText('2 /')).toBeInTheDocument();
   });
 
   it('highlights the current thread when stepping within one element', () => {
