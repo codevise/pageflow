@@ -1,6 +1,7 @@
 import React, {createContext, useCallback, useContext, useMemo, useState} from 'react';
 
 import {useLocatedCommentThreads} from 'pageflow-scrolled/review';
+import {useActiveExcursion} from '../useActiveExcursion';
 import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
 
 const SelectedSubjectContext = createContext({
@@ -18,6 +19,7 @@ const CommentNavigationContext = createContext({
 export function SelectedSubjectProvider({children}) {
   const {resolution} = useCommentDisplayFilter();
   const {chapters} = useLocatedCommentThreads();
+  const {activateExcursionOfSection, returnFromExcursion} = useActiveExcursion();
 
   const [selectedSubject, setSelectedSubject] = useState(null);
 
@@ -42,13 +44,25 @@ export function SelectedSubjectProvider({children}) {
 
     const target = targets[next];
 
+    // Activate the excursion the target lives in (or leave the current
+    // one) before selecting it, so its popover can mount and open. Only
+    // needed when moving to a different subject.
+    if (!selectedSubject || subjectKey(selectedSubject) !== target.key) {
+      if (target.excursion) {
+        activateExcursionOfSection({id: target.sectionId});
+      }
+      else {
+        returnFromExcursion();
+      }
+    }
+
     setSelectedSubject({
       subjectType: target.subjectType,
       subjectId: target.subjectId,
       subjectRange: target.subjectRange,
       highlightedThreadId: target.threadId
     });
-  }, [targets, selectedSubject]);
+  }, [targets, selectedSubject, activateExcursionOfSection, returnFromExcursion]);
 
   const selection = useMemo(() => ({
     selectedSubject,

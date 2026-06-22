@@ -26,11 +26,7 @@ export const Content = extensible('Content', function Content(props) {
   const entryStructure = useEntryStructure();
   const scrollToTarget = useScrollToTarget();
 
-  const {
-    activeExcursion,
-    activateExcursionOfSection,
-    returnFromExcursion
-  } = useActiveExcursion(entryStructure, {scrollToTarget});
+  const {activeExcursion, activateExcursionOfSection, returnFromExcursion} = useActiveExcursion();
 
   const [currentSectionIndex, setCurrentSectionIndexState] = useCurrentSectionIndexState();
   const [currentExcursionSectionIndex, setCurrentExcursionSectionIndex] = useState(0);
