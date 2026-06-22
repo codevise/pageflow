@@ -51,10 +51,11 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   // section and the sidebar comment panel stay visually in sync.
   const isSelected = isSectionSelected || isPaddingSelected || commentsSelected;
 
-  const threads = useCommentThreads(
-    {subjectType: 'Section', subjectId: section.permaId},
-    {resolved: false}
-  );
+  const threads = useCommentThreads({
+    subjectType: 'Section',
+    subjectId: section.permaId,
+    resolution: 'unresolved'
+  });
   const hasThreads = threads.length > 0;
 
   const wrapperRef = useRef();

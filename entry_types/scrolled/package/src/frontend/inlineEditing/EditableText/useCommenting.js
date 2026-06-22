@@ -18,6 +18,8 @@ import {useContentElementCommentSelection} from '../useCommentSelection';
 import {useSelectCommentThreadHandler} from '../useSelectCommentThreadHandler';
 import {useCommentRangeRefs} from './useCommentRangeRefs';
 
+const noThreads = [];
+
 // Bundles all commenting-related state and render helpers for the
 // EditableText editor. Returns `enabled: false` when commenting is
 // disabled for the current content element; consumers can then skip
@@ -30,9 +32,11 @@ export function useCommenting(editor) {
   // following live edits and stay correct once a thread is reopened.
   // Resolved threads are merely hidden from the highlight overlay until
   // they become the highlighted thread (see `visibleThreads`).
-  const threads = useCommentThreads(
-    enabled ? {subjectType: 'ContentElement', subjectId: contentElementPermaId} : null
-  );
+  const elementThreads = useCommentThreads({
+    subjectType: 'ContentElement',
+    subjectId: contentElementPermaId
+  });
+  const threads = enabled ? elementThreads : noThreads;
 
   const {trackedThreads, resetRangeRefs, getTrackedSubjectRanges} =
     useCommentRangeRefs(editor, threads);

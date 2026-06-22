@@ -4,7 +4,7 @@ import {useCommentThreads} from './ReviewStateProvider';
 import {Badge} from './Badge';
 
 export function ThreadsBadge({subjectType, subjectId, subjectRange, onClick, mode}) {
-  const threads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
+  const threads = useCommentThreads({subjectType, subjectId, subjectRange, resolution: 'unresolved'});
 
   const handleClick = useCallback(() => {
     if (onClick) onClick(threads);

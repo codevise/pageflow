@@ -13,10 +13,11 @@ import styles from './SectionDecorator.module.css';
 export function SectionDecorator({section, children}) {
   const {active} = useAddCommentMode();
   const {isSelected} = useSelectedSubject('Section', section.permaId);
-  const threads = useCommentThreads(
-    {subjectType: 'Section', subjectId: section.permaId},
-    {resolved: false}
-  );
+  const threads = useCommentThreads({
+    subjectType: 'Section',
+    subjectId: section.permaId,
+    resolution: 'unresolved'
+  });
   const hasThreads = threads.length > 0;
 
   return (

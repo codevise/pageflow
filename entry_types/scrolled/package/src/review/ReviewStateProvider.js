@@ -44,24 +44,29 @@ export function useCommentThread(threadId) {
   return context?.commentThreads.find(t => t.id === threadId);
 }
 
-export function useCommentThreads(subject, {resolved} = {}) {
+export function useCommentThreads({subjectType, subjectId, subjectRange, resolution = 'all'} = {}) {
   const context = useContext(ReviewStateContext);
   const commentThreads = context ? context.commentThreads : [];
-  const {subjectType, subjectId, subjectRange} = subject || {};
+  const hasSubject = subjectType !== undefined;
 
   return useMemo(() => {
     const rangeKey = subjectRange ? JSON.stringify(subjectRange) : undefined;
 
     return commentThreads.filter(
-      thread => thread.subjectType === subjectType &&
-                thread.subjectId === subjectId &&
-                (!rangeKey ||
-                 JSON.stringify(thread.subjectRange) === rangeKey) &&
-                (resolved === undefined ||
-                 (resolved === false && !thread.resolvedAt) ||
-                 (resolved === true && !!thread.resolvedAt))
+      thread => (!hasSubject ||
+                 (thread.subjectType === subjectType &&
+                  thread.subjectId === subjectId &&
+                  (!rangeKey ||
+                   JSON.stringify(thread.subjectRange) === rangeKey))) &&
+                matchesResolution(thread, resolution)
     );
-  }, [commentThreads, subjectType, subjectId, subjectRange, resolved]);
+  }, [commentThreads, hasSubject, subjectType, subjectId, subjectRange, resolution]);
+}
+
+function matchesResolution(thread, resolution) {
+  return resolution === 'all' ||
+         (resolution === 'unresolved' && !thread.resolvedAt) ||
+         (resolution === 'resolved' && !!thread.resolvedAt);
 }
 
 function initState(initialState) {
