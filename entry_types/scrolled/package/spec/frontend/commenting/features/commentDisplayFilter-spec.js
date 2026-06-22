@@ -6,6 +6,29 @@ import {renderEntry, useCommentingPageObjects} from 'support/pageObjects/comment
 describe('comment display filter', () => {
   useCommentingPageObjects();
 
+  beforeEach(() => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+  });
+
+  it('expands resolved comments in the popover when showing all', () => {
+    const entry = renderEntry({
+      seed: {contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]},
+      commenting: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 1, resolvedAt: '2026-01-01',
+           comments: [{id: 10, body: 'Resolved comment', creatorName: 'Bob', creatorId: 2}]}
+        ]
+      }
+    });
+
+    fireEvent.click(entry.getCommentFilterButton('all'));
+    fireEvent.click(entry.getAllCommentBadges()[0]);
+
+    expect(entry.getByText('Resolved comment')).toBeInTheDocument();
+    expect(entry.queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+  });
+
   it('shows the unresolved and total comment counts in the segments', () => {
     const entry = renderEntry({
       seed: {

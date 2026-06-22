@@ -59,6 +59,7 @@ export function Popover({
                         showNewForm={showNewForm}
                         hideNewTopicButton={hideNewTopicButton}
                         highlightedThreadId={highlightedThreadId}
+                        expandResolved={resolution === 'all'}
                         onDismiss={clearSelection} />}
     </span>
   );
@@ -66,7 +67,7 @@ export function Popover({
 
 function OpenThreadList({
   reference, subjectType, subjectId, subjectRange,
-  placement, strategy, showNewForm, hideNewTopicButton, highlightedThreadId, onDismiss
+  placement, strategy, showNewForm, hideNewTopicButton, highlightedThreadId, expandResolved, onDismiss
 }) {
   const portalRoot = useFloatingPortalRoot();
 
@@ -121,6 +122,7 @@ function OpenThreadList({
                     subjectId={subjectId}
                     subjectRange={subjectRange}
                     highlightedThreadId={highlightedThreadId}
+                    expandResolved={expandResolved}
                     showNewForm={showNewForm}
                     hideNewTopicButton={hideNewTopicButton} />
       </div>
