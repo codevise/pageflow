@@ -17,7 +17,8 @@ export function FloatingToolbar() {
   return (
     <div className={styles.toolbar}
          role="group"
-         aria-label={t('pageflow_scrolled.review.comment_toolbar')}>
+         aria-label={t('pageflow_scrolled.review.comment_toolbar')}
+         data-comment-toolbar>
       <ResolutionToggleButton />
       <ThreadNavigation />
       <AddCommentButton />
@@ -50,13 +51,13 @@ function ResolutionToggleButton() {
 
 function ThreadNavigation() {
   const {t} = useI18n({locale: 'ui'});
-  const {count, goToPrevious, goToNext} = useCommentNavigation();
+  const {count, position, goToPrevious, goToNext} = useCommentNavigation();
 
   return (
     <>
       <span className={styles.count}
             title={t('pageflow_scrolled.review.comment_count', {count})}>
-        {count}
+        {position ? `${position} / ${count}` : count}
       </span>
       <button className={styles.button}
               onClick={goToPrevious}

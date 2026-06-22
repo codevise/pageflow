@@ -79,6 +79,61 @@ describe('comment navigation', () => {
     expect(entry.queryByText('Resolved comment')).not.toBeInTheDocument();
   });
 
+  it('shows the current position alongside the total while stepping', () => {
+    const entry = renderEntryWithTwoThreads();
+
+    const toolbar = entry.getCommentToolbar();
+    const next = entry.getNextCommentButton();
+
+    fireEvent.click(next);
+    expect(within(toolbar).getByText('1 / 2')).toBeInTheDocument();
+
+    fireEvent.click(next);
+    expect(within(toolbar).getByText('2 / 2')).toBeInTheDocument();
+  });
+
+  it('highlights the current thread when stepping within one element', () => {
+    const entry = renderEntryWithTwoThreadsOnOneElement();
+
+    const next = entry.getNextCommentButton();
+
+    fireEvent.click(next);
+    expect(entry.getByText('First thread').closest('[aria-current="true"]')).not.toBeNull();
+    expect(entry.getByText('Second thread').closest('[aria-current="true"]')).toBeNull();
+
+    fireEvent.click(next);
+    expect(entry.getByText('Second thread').closest('[aria-current="true"]')).not.toBeNull();
+    expect(entry.getByText('First thread').closest('[aria-current="true"]')).toBeNull();
+  });
+
+  it('keeps the popover open when pressing a toolbar button', () => {
+    const entry = renderEntryWithTwoThreadsOnOneElement();
+
+    const next = entry.getNextCommentButton();
+
+    fireEvent.click(next);
+    expect(entry.getByText('First thread')).toBeInTheDocument();
+
+    fireEvent.mouseDown(next);
+
+    expect(entry.getByText('First thread')).toBeInTheDocument();
+  });
+
+  function renderEntryWithTwoThreadsOnOneElement() {
+    return renderEntry({
+      seed: {contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]},
+      commenting: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 1, resolvedAt: null,
+           comments: [{id: 10, body: 'First thread', creatorName: 'Bob', creatorId: 2}]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 1, resolvedAt: null,
+           comments: [{id: 11, body: 'Second thread', creatorName: 'Bob', creatorId: 2}]}
+        ]
+      }
+    });
+  }
+
   function renderEntryWithTwoThreads() {
     return renderEntry({
       seed: {

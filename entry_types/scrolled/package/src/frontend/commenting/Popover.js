@@ -58,6 +58,7 @@ export function Popover({
                         strategy={strategy}
                         showNewForm={showNewForm}
                         hideNewTopicButton={hideNewTopicButton}
+                        highlightedThreadId={highlightedThreadId}
                         onDismiss={clearSelection} />}
     </span>
   );
@@ -65,7 +66,7 @@ export function Popover({
 
 function OpenThreadList({
   reference, subjectType, subjectId, subjectRange,
-  placement, strategy, showNewForm, hideNewTopicButton, onDismiss
+  placement, strategy, showNewForm, hideNewTopicButton, highlightedThreadId, onDismiss
 }) {
   const portalRoot = useFloatingPortalRoot();
 
@@ -90,6 +91,7 @@ function OpenThreadList({
       if (reference?.contains(event.target)) return;
       if (refs.floating.current?.contains(event.target)) return;
       if (event.target.closest('[data-comment-highlight]')) return;
+      if (event.target.closest('[data-comment-toolbar]')) return;
 
       onDismiss();
     }
@@ -118,6 +120,7 @@ function OpenThreadList({
         <ThreadList subjectType={subjectType}
                     subjectId={subjectId}
                     subjectRange={subjectRange}
+                    highlightedThreadId={highlightedThreadId}
                     showNewForm={showNewForm}
                     hideNewTopicButton={hideNewTopicButton} />
       </div>

@@ -12,6 +12,7 @@ const SelectedSubjectContext = createContext({
 
 const CommentNavigationContext = createContext({
   count: 0,
+  position: 0,
   goToNext: () => {},
   goToPrevious: () => {}
 });
@@ -64,6 +65,11 @@ export function SelectedSubjectProvider({children}) {
     });
   }, [targets, selectedSubject, activateExcursionOfSection, returnFromExcursion]);
 
+  const position = useMemo(
+    () => currentTargetIndex(targets, selectedSubject) + 1,
+    [targets, selectedSubject]
+  );
+
   const selection = useMemo(() => ({
     selectedSubject,
     setSelectedSubject,
@@ -72,9 +78,10 @@ export function SelectedSubjectProvider({children}) {
 
   const navigation = useMemo(() => ({
     count: targets.length,
+    position,
     goToNext: () => goTo(1),
     goToPrevious: () => goTo(-1)
-  }), [targets.length, goTo]);
+  }), [targets.length, position, goTo]);
 
   return (
     <SelectedSubjectContext.Provider value={selection}>
