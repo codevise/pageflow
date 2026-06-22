@@ -11,6 +11,7 @@ export {
 export {
   normalizeSectionConfigurationData,
   useEntryStructure,
+  useEntryStructureWithContentElements,
   useSectionsWithChapter,
   useSection,
   useMainChapters,

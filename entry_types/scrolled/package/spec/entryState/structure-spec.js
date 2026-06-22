@@ -1,5 +1,6 @@
 import {
   useEntryStructure,
+  useEntryStructureWithContentElements,
   useSectionsWithChapter,
   useChapter,
   useChapters,
@@ -271,6 +272,93 @@ describe('useEntryStructure', () => {
 
     expect(entryStructure).toMatchObject(expectedEntryStructure);
     expect(entryStructure.mainSectionsCount).toBe(2);
+  });
+});
+
+describe('useEntryStructureWithContentElements', () => {
+  it('nests ordered content elements under each section', () => {
+    const {result} = renderHookInEntry(
+      () => useEntryStructureWithContentElements(),
+      {
+        seed: {
+          storylines: storylinesSeed,
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: contentElementsSeed
+        }
+      }
+    );
+
+    expect(result.current.main[0].sections[0].contentElements).toMatchObject([
+      {id: 1, permaId: 1001, sectionId: 1, type: 'heading'},
+      {id: 2, permaId: 1002, sectionId: 1, type: 'textBlock'}
+    ]);
+  });
+
+  it('nests content elements under excursion sections', () => {
+    const {result} = renderHookInEntry(
+      () => useEntryStructureWithContentElements(),
+      {
+        seed: {
+          storylines: storylinesSeed,
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: [
+            ...contentElementsSeed,
+            {id: 6, permaId: 1006, sectionId: 3, typeName: 'textBlock', configuration: {}}
+          ]
+        }
+      }
+    );
+
+    expect(result.current.excursions[0].sections[0].contentElements).toMatchObject([
+      {permaId: 1006, type: 'textBlock'}
+    ]);
+  });
+
+  it('includes content elements with backdrop position', () => {
+    const {result} = renderHookInEntry(
+      () => useEntryStructureWithContentElements(),
+      {
+        seed: {
+          sections: [{id: 1, permaId: 101}],
+          contentElements: [
+            {id: 1, permaId: 1001, sectionId: 1, typeName: 'image',
+             configuration: {position: 'backdrop'}}
+          ]
+        }
+      }
+    );
+
+    expect(result.current.main[0].sections[0].contentElements).toMatchObject([
+      {permaId: 1001, type: 'image'}
+    ]);
+  });
+
+  it('keeps the fields useEntryStructure returns on sections and chapters', () => {
+    const {result} = renderHookInEntry(
+      () => useEntryStructureWithContentElements(),
+      {
+        seed: {
+          storylines: storylinesSeed,
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: contentElementsSeed
+        }
+      }
+    );
+
+    expect(result.current.main[0]).toMatchObject({
+      permaId: 10,
+      title: 'Chapter 1',
+      isExcursion: false
+    });
+    expect(result.current.main[0].sections[0]).toMatchObject({
+      permaId: 101,
+      sectionIndex: 0,
+      transition: 'scroll'
+    });
+    expect(result.current.mainSectionsCount).toBe(2);
   });
 });
 
