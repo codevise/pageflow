@@ -4,6 +4,9 @@
   right: 0;
   z-index: 1100;
   padding: space(2);
+  display: flex;
+  align-items: center;
+  gap: space(2);
 }
 
 .button {
@@ -17,4 +20,25 @@
   box-shadow: var(--ui-box-shadow-md);
   display: flex;
   align-items: center;
+}
+
+.segmented {
+  display: flex;
+  border-radius: rounded(md);
+  overflow: hidden;
+  box-shadow: var(--ui-box-shadow-md);
+}
+
+.segment {
+  font-family: var(--ui-font-family);
+  color: var(--ui-on-surface-color);
+  background: var(--ui-surface-color);
+  border: none;
+  padding: space(2) space(3);
+  cursor: pointer;
+}
+
+.segment[aria-pressed='true'] {
+  color: var(--ui-on-primary-color);
+  background: var(--ui-primary-color);
 }

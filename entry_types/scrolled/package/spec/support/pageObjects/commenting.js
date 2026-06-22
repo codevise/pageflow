@@ -28,7 +28,9 @@ export function renderEntry({
     getNewThreadInput: () => result.getByPlaceholderText('Add a comment...'),
     queryNewThreadInput: () => result.queryByPlaceholderText('Add a comment...'),
     getAllCommentBadges: () => result.getAllByRole('status'),
-    queryAllCommentBadges: () => result.queryAllByRole('status')
+    queryAllCommentBadges: () => result.queryAllByRole('status'),
+    getCommentFilterButton: resolution =>
+      result.getByRole('button', {name: resolution === 'all' ? 'All' : 'Unresolved'})
   };
 }
 
@@ -46,7 +48,10 @@ export function useCommentingPageObjects() {
     'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment',
     'pageflow_scrolled.review.select_content_element': 'Select to comment',
     'pageflow_scrolled.review.select_section': 'Select section to comment',
-    'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...'
+    'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
+    'pageflow_scrolled.review.filter.label': 'Filter comments',
+    'pageflow_scrolled.review.filter.unresolved': 'Unresolved',
+    'pageflow_scrolled.review.filter.all': 'All'
   });
 
   usePageObjects();

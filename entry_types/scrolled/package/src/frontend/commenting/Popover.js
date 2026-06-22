@@ -6,6 +6,7 @@ import {
 
 import {ThreadsBadge, ThreadList} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
+import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
 import {useSelectedSubject} from './SelectedSubjectProvider';
 
 import styles from './Popover.module.css';
@@ -16,6 +17,7 @@ export function Popover({
 }) {
   const {isSelected, showNewForm, select, clearSelection} =
     useSelectedSubject(subjectType, subjectId, subjectRange);
+  const {resolution} = useCommentDisplayFilter();
   const [reference, setReference] = useState(null);
 
   function handleBadgeClick() {
@@ -32,6 +34,7 @@ export function Popover({
       <ThreadsBadge subjectType={subjectType}
                     subjectId={subjectId}
                     subjectRange={subjectRange}
+                    resolution={resolution}
                     mode={isSelected ? 'active' : undefined}
                     onClick={handleBadgeClick} />
       {isSelected &&
