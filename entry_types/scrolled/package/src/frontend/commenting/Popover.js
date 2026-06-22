@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   useFloating, FloatingPortal,
   offset, flip, shift, autoUpdate
@@ -16,10 +16,47 @@ export function Popover({
 }) {
   const {isSelected, showNewForm, select, clearSelection} =
     useSelectedSubject(subjectType, subjectId, subjectRange);
+  const [reference, setReference] = useState(null);
+
+  function handleBadgeClick() {
+    if (isSelected) {
+      clearSelection();
+    }
+    else {
+      select();
+    }
+  }
+
+  return (
+    <span ref={setReference} className={styles.badge}>
+      <ThreadsBadge subjectType={subjectType}
+                    subjectId={subjectId}
+                    subjectRange={subjectRange}
+                    mode={isSelected ? 'active' : undefined}
+                    onClick={handleBadgeClick} />
+      {isSelected &&
+        <OpenThreadList reference={reference}
+                        subjectType={subjectType}
+                        subjectId={subjectId}
+                        subjectRange={subjectRange}
+                        placement={placement}
+                        strategy={strategy}
+                        showNewForm={showNewForm}
+                        hideNewTopicButton={hideNewTopicButton}
+                        onDismiss={clearSelection} />}
+    </span>
+  );
+}
+
+function OpenThreadList({
+  reference, subjectType, subjectId, subjectRange,
+  placement, strategy, showNewForm, hideNewTopicButton, onDismiss
+}) {
   const portalRoot = useFloatingPortalRoot();
 
   const {refs, floatingStyles} = useFloating({
-    open: isSelected,
+    open: true,
+    elements: {reference},
     placement,
     strategy,
     middleware: [
@@ -33,29 +70,18 @@ export function Popover({
     whileElementsMounted: autoUpdate
   });
 
-  function handleBadgeClick() {
-    if (isSelected) {
-      clearSelection();
-    }
-    else {
-      select();
-    }
-  }
-
   useEffect(() => {
-    if (!isSelected) return;
-
     function handleClick(event) {
-      if (refs.reference.current?.contains(event.target)) return;
+      if (reference?.contains(event.target)) return;
       if (refs.floating.current?.contains(event.target)) return;
       if (event.target.closest('[data-comment-highlight]')) return;
 
-      clearSelection();
+      onDismiss();
     }
 
     function handleKeyDown(event) {
       if (event.key === 'Escape') {
-        clearSelection();
+        onDismiss();
       }
     }
 
@@ -66,28 +92,20 @@ export function Popover({
       document.removeEventListener('mousedown', handleClick);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isSelected, clearSelection, refs.reference, refs.floating]);
+  }, [reference, refs.floating, onDismiss]);
 
   return (
-    <span ref={refs.setReference} className={styles.badge}>
-      <ThreadsBadge subjectType={subjectType}
+    <FloatingPortal root={portalRoot}>
+      <div ref={refs.setFloating}
+           data-floating-raised
+           className={styles.threadList}
+           style={floatingStyles}>
+        <ThreadList subjectType={subjectType}
                     subjectId={subjectId}
                     subjectRange={subjectRange}
-                    mode={isSelected ? 'active' : undefined}
-                    onClick={handleBadgeClick} />
-      {isSelected &&
-        <FloatingPortal root={portalRoot}>
-          <div ref={refs.setFloating}
-               data-floating-raised
-               className={styles.threadList}
-               style={floatingStyles}>
-            <ThreadList subjectType={subjectType}
-                        subjectId={subjectId}
-                        subjectRange={subjectRange}
-                        showNewForm={showNewForm}
-                        hideNewTopicButton={hideNewTopicButton} />
-          </div>
-        </FloatingPortal>}
-    </span>
+                    showNewForm={showNewForm}
+                    hideNewTopicButton={hideNewTopicButton} />
+      </div>
+    </FloatingPortal>
   );
 }

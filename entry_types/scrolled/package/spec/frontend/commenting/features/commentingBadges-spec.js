@@ -76,4 +76,52 @@ describe('commenting badges', () => {
 
     expect(entry.getByText('On the section')).toBeInTheDocument();
   });
+
+  it('closes the thread list when clicking outside', () => {
+    const entry = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]
+      },
+      commenting: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'Section', subjectId: 10, comments: [
+            {id: 10, body: 'On the section', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    });
+
+    fireEvent.click(entry.getAllCommentBadges()[0]);
+    expect(entry.getByText('On the section')).toBeInTheDocument();
+
+    fireEvent.mouseDown(document.body);
+
+    expect(entry.queryByText('On the section')).not.toBeInTheDocument();
+  });
+
+  it('closes the thread list when pressing Escape', () => {
+    const entry = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]
+      },
+      commenting: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'Section', subjectId: 10, comments: [
+            {id: 10, body: 'On the section', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    });
+
+    fireEvent.click(entry.getAllCommentBadges()[0]);
+    expect(entry.getByText('On the section')).toBeInTheDocument();
+
+    fireEvent.keyDown(document, {key: 'Escape'});
+
+    expect(entry.queryByText('On the section')).not.toBeInTheDocument();
+  });
 });
