@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
 import {editor} from 'pageflow-scrolled/editor';
+import {review} from 'pageflow-scrolled/review';
 import {SelectionCommentsView} from 'editor/views/SelectionCommentsView';
 
 import {factories, useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
@@ -12,7 +13,7 @@ describe('SelectionCommentsView', () => {
   const {createEntry} = useEditorGlobals();
 
   beforeAll(() => {
-    editor.contentElementTypes.register('fixture', {
+    review.contentElementTypes.register('fixture', {
       compareRanges: (a, b) => (a?.start ?? 0) - (b?.start ?? 0)
     });
   });

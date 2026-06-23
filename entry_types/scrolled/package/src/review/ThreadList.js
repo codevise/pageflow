@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import {useI18n} from '../frontend/i18n';
 import {useCommentThreads} from './ReviewStateProvider';
+import {sortByRange} from './sortByRange';
 import {Thread} from './Thread';
 import {NewThreadForm} from './NewThreadForm';
 import {postUpdateThreadMessage} from './postMessage';
@@ -99,9 +100,4 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, compar
         </div>}
     </div>
   );
-}
-
-function sortByRange(threads, compareRanges) {
-  if (!compareRanges) return threads;
-  return [...threads].sort((a, b) => compareRanges(a.subjectRange, b.subjectRange));
 }

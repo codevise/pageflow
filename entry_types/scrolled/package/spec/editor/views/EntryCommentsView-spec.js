@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import {act} from '@testing-library/react';
 
 import {editor} from 'pageflow-scrolled/editor';
+import {review} from 'pageflow-scrolled/review';
 
 import {EntryCommentsView} from 'editor/views/EntryCommentsView';
 import styles from 'editor/views/EntryCommentsView.module.css';
@@ -14,7 +15,7 @@ describe('EntryCommentsView', () => {
   const {createEntry} = useEditorGlobals();
 
   beforeAll(() => {
-    editor.contentElementTypes.register('fixture', {
+    review.contentElementTypes.register('fixture', {
       compareRanges: (a, b) => (a?.start ?? 0) - (b?.start ?? 0)
     });
   });

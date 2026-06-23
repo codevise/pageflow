@@ -2,6 +2,7 @@ import React from 'react';
 
 import {useLocatedCommentThreads} from 'review/useLocatedCommentThreads';
 import {ReviewStateProvider} from 'review/ReviewStateProvider';
+import {review} from 'review/api';
 
 import {renderHookInEntry} from 'support';
 
@@ -75,6 +76,24 @@ describe('useLocatedCommentThreads', () => {
 
     expect(result.current.chapters[0].threadCount).toBe(2);
     expect(result.current.chapters[1].threadCount).toBe(1);
+  });
+
+  it("orders a content element's threads by the type's compareRanges", () => {
+    review.contentElementTypes.register('textBlock', {
+      compareRanges: (a, b) => a - b
+    });
+
+    const {result} = renderLocatedCommentThreads([
+      {id: 1, subjectType: 'ContentElement', subjectId: 10001, subjectRange: 2, comments: []},
+      {id: 2, subjectType: 'ContentElement', subjectId: 10001, subjectRange: 1, comments: []}
+    ]);
+
+    const element = result.current.chapters[0].sections[0].contentElements[0];
+
+    expect(element.threads.map(t => t.id)).toEqual([2, 1]);
+    expect(result.current.threads.map(t => t.id)).toEqual([2, 1]);
+
+    review.contentElementTypes.types = {};
   });
 
   it('provides a flat list of threads in document order, section before its elements', () => {

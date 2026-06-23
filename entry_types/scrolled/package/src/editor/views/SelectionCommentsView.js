@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {ThreadList} from 'pageflow-scrolled/review';
+import {ThreadList, review} from 'pageflow-scrolled/review';
 
 import {ReviewView} from './ReviewView';
 import styles from './SelectionCommentsView.module.css';
@@ -21,7 +21,7 @@ export const SelectionCommentsView = ReviewView.extend({
   },
 
   props() {
-    const {entry, editor} = this.options;
+    const {entry} = this.options;
     const subject = entry.get('selectedCommentsSubject');
 
     // Resolve the model from the current subject rather than the cached
@@ -41,7 +41,7 @@ export const SelectionCommentsView = ReviewView.extend({
         subjectType: 'ContentElement',
         subjectId: model.get('permaId'),
         threadIds: model.transientState.get('commentThreadIdsAtSelection'),
-        compareRanges: typeName && editor.contentElementTypes.findCompareRanges(typeName),
+        compareRanges: typeName && review.contentElementTypes.findCompareRanges(typeName),
         highlightedThreadId: entry.get('highlightedThreadId'),
         onThreadClick: thread => entry.trigger('selectCommentThread', thread.id)
       };

@@ -1,3 +1,4 @@
+export {review} from './api';
 export {ReviewStateProvider, useCommentThreads, useCommentThread} from './ReviewStateProvider';
 export {useLocatedCommentThreads} from './useLocatedCommentThreads';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
