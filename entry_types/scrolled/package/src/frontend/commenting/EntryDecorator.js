@@ -5,6 +5,7 @@ import {createReviewSession} from 'pageflow/review';
 import {ReviewStateProvider, ReviewMessageHandler} from 'pageflow-scrolled/review';
 import {AddCommentModeProvider} from './AddCommentModeProvider';
 import {CommentDisplayFilterProvider} from './CommentDisplayFilterProvider';
+import {CommentingVisibilityProvider} from './CommentingVisibilityProvider';
 import {SelectedSubjectProvider} from './SelectedSubjectProvider';
 import {FloatingToolbar} from './FloatingToolbar';
 
@@ -12,14 +13,16 @@ export function EntryDecorator({commentingInitialState, children}) {
   return (
     <ReviewStateProvider initialState={commentingInitialState}>
       <ReviewSessionSetup initialState={commentingInitialState} />
-      <CommentDisplayFilterProvider>
-        <SelectedSubjectProvider>
-          <AddCommentModeProvider>
-            {children}
-            <FloatingToolbar />
-          </AddCommentModeProvider>
-        </SelectedSubjectProvider>
-      </CommentDisplayFilterProvider>
+      <CommentingVisibilityProvider>
+        <CommentDisplayFilterProvider>
+          <SelectedSubjectProvider>
+            <AddCommentModeProvider>
+              {children}
+              <FloatingToolbar />
+            </AddCommentModeProvider>
+          </SelectedSubjectProvider>
+        </CommentDisplayFilterProvider>
+      </CommentingVisibilityProvider>
     </ReviewStateProvider>
   );
 }

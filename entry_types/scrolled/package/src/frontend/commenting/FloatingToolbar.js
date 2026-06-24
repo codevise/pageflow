@@ -5,15 +5,23 @@ import {useLocatedCommentThreads} from 'pageflow-scrolled/review';
 import {useI18n} from '../i18n';
 import {useAddCommentMode} from './AddCommentModeProvider';
 import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
+import {useCommentingVisibility} from './CommentingVisibilityProvider';
 import {useCommentNavigation} from './SelectedSubjectProvider';
 
 import AddCommentIcon from './images/addComment.svg';
 import CancelCommentIcon from './images/cancelComment.svg';
 import ChevronIcon from './images/chevron.svg';
+import HideCommentsIcon from './images/hideComments.svg';
+import ShowCommentsIcon from './images/showComments.svg';
 import styles from './FloatingToolbar.module.css';
 
 export function FloatingToolbar() {
   const {t} = useI18n({locale: 'ui'});
+  const {visible} = useCommentingVisibility();
+
+  if (!visible) {
+    return <ShowCommentsButton />;
+  }
 
   return (
     <div className={styles.toolbar}
@@ -23,8 +31,39 @@ export function FloatingToolbar() {
       <PositionIndicator />
       <ResolutionToggleButton />
       <NavigationArrows />
+      <HideCommentsButton />
       <AddCommentButton />
     </div>
+  );
+}
+
+function HideCommentsButton() {
+  const {t} = useI18n({locale: 'ui'});
+  const {toggle} = useCommentingVisibility();
+  const label = t('pageflow_scrolled.review.hide_comments');
+
+  return (
+    <button className={styles.button}
+            onClick={toggle}
+            aria-label={label}
+            title={label}>
+      <HideCommentsIcon className={styles.toggleIcon} />
+    </button>
+  );
+}
+
+function ShowCommentsButton() {
+  const {t} = useI18n({locale: 'ui'});
+  const {toggle} = useCommentingVisibility();
+  const label = t('pageflow_scrolled.review.show_comments');
+
+  return (
+    <button className={styles.puck}
+            onClick={toggle}
+            aria-label={label}
+            title={label}>
+      <ShowCommentsIcon className={styles.toggleIcon} />
+    </button>
   );
 }
 
