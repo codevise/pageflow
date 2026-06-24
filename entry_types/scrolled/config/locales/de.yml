@@ -1926,6 +1926,17 @@ de:
     review:
       add_comment: Kommentar hinzufügen
       cancel_add_comment: Abbrechen
+      comment_toolbar: Kommentare
+      filter:
+        label: Kommentare filtern
+        unresolved: Ungelöst
+        all: Alle
+      previous_comment: Vorheriger Kommentar
+      next_comment: Nächster Kommentar
+      comment_count:
+        zero: Keine Kommentare
+        one: 1 Kommentar
+        other: '%{count} Kommentare'
       select_content_element: Zum Kommentieren auswählen
       select_section: Abschnitt zum Kommentieren auswählen
       select_text_to_comment: Text zum Kommentieren auswählen

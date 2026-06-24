@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {ThreadList} from 'review/ThreadList';
+import {ScrollHighlightedThreadIntoViewProvider} from 'review/scrollHighlightedThreadIntoView';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 
 describe('ThreadList', () => {
@@ -179,11 +180,13 @@ describe('ThreadList', () => {
     expect(onThreadClick).toHaveBeenCalledWith(expect.objectContaining({id: 7}));
   });
 
-  it('scrolls the highlighted thread into view', () => {
+  it('scrolls the highlighted thread into view within the scroll context', () => {
     const {getByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement"
-                  subjectId={10}
-                  highlightedThreadId={2} />,
+      <ScrollHighlightedThreadIntoViewProvider>
+        <ThreadList subjectType="ContentElement"
+                    subjectId={10}
+                    highlightedThreadId={2} />
+      </ScrollHighlightedThreadIntoViewProvider>,
       {
         commentThreads: [
           {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
@@ -200,6 +203,26 @@ describe('ThreadList', () => {
     expect(scrollIntoView).toHaveBeenCalled();
     expect(scrollIntoView.mock.instances[0])
       .toBe(getByText('second').closest('[aria-current="true"]'));
+  });
+
+  it('does not scroll the highlighted thread into view outside the scroll context', () => {
+    renderWithReviewState(
+      <ThreadList subjectType="ContentElement"
+                  subjectId={10}
+                  highlightedThreadId={2} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'first', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'second', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
   });
 
   it('orders threads via compareRanges when provided', () => {
@@ -943,5 +966,56 @@ describe('ThreadList', () => {
     );
 
     expect(getAllByPlaceholderText('Reply...')).toHaveLength(2);
+  });
+
+  it('expands resolved threads by default when expandResolved is set', () => {
+    const {getByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} expandResolved />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: null,
+           comments: [{id: 10, body: 'Active thread', creatorName: 'Alice', creatorId: 1}]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z',
+           comments: [{id: 20, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]}
+        ]
+      }
+    );
+
+    expect(getByText('Active thread')).toBeInTheDocument();
+    expect(getByText('Resolved thread')).toBeInTheDocument();
+  });
+
+  it('shows resolved threads instead of the new form when all are resolved and expandResolved is set', () => {
+    const {getByText, queryByPlaceholderText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} expandResolved />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z',
+           comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]}
+        ]
+      }
+    );
+
+    expect(getByText('Resolved thread')).toBeInTheDocument();
+    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+  });
+
+  it('still auto-shows the new form for only-resolved threads without expandResolved', () => {
+    const {getByPlaceholderText, queryByText} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z',
+           comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]}
+        ]
+      }
+    );
+
+    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+    expect(queryByText('Resolved thread')).not.toBeInTheDocument();
   });
 });

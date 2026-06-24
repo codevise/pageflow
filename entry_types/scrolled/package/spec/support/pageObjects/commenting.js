@@ -23,12 +23,17 @@ export function renderEntry({
 
   return {
     ...result,
+    getCommentToolbar: () => result.getByRole('group', {name: 'Comments'}),
     getAddCommentButton: () => result.getByRole('button', {name: 'Add comment'}),
     getCancelAddCommentButton: () => result.getByRole('button', {name: 'Cancel add comment'}),
     getNewThreadInput: () => result.getByPlaceholderText('Add a comment...'),
     queryNewThreadInput: () => result.queryByPlaceholderText('Add a comment...'),
     getAllCommentBadges: () => result.getAllByRole('status'),
-    queryAllCommentBadges: () => result.queryAllByRole('status')
+    queryAllCommentBadges: () => result.queryAllByRole('status'),
+    getCommentFilterButton: resolution =>
+      result.getByRole('button', {name: resolution === 'all' ? 'All' : 'Unresolved'}),
+    getPreviousCommentButton: () => result.getByRole('button', {name: 'Previous comment'}),
+    getNextCommentButton: () => result.getByRole('button', {name: 'Next comment'})
   };
 }
 
@@ -44,9 +49,16 @@ export function useCommentingPageObjects() {
   useFakeTranslations({
     'pageflow_scrolled.review.add_comment': 'Add comment',
     'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment',
+    'pageflow_scrolled.review.comment_toolbar': 'Comments',
+    'pageflow_scrolled.review.comment_count': '%{count} comments',
     'pageflow_scrolled.review.select_content_element': 'Select to comment',
     'pageflow_scrolled.review.select_section': 'Select section to comment',
-    'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...'
+    'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
+    'pageflow_scrolled.review.filter.label': 'Filter comments',
+    'pageflow_scrolled.review.filter.unresolved': 'Unresolved',
+    'pageflow_scrolled.review.filter.all': 'All',
+    'pageflow_scrolled.review.previous_comment': 'Previous comment',
+    'pageflow_scrolled.review.next_comment': 'Next comment'
   });
 
   usePageObjects();

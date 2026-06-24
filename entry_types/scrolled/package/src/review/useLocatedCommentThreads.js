@@ -2,7 +2,9 @@ import {useMemo} from 'react';
 
 import {useEntryStructureWithContentElements} from 'pageflow-scrolled/entryState';
 
+import {review} from './api';
 import {useCommentThreads} from './ReviewStateProvider';
+import {sortByRange} from './sortByRange';
 
 /**
  * Joins the comment threads from the review state with the entry
@@ -25,8 +27,11 @@ export function useLocatedCommentThreads() {
     const locatedThreads = new Set();
     const threads = [];
 
-    const take = (subjectType, subjectId) => {
-      const subjectThreads = threadsBySubject[subjectKey(subjectType, subjectId)] || [];
+    const take = (subjectType, subjectId, compareRanges) => {
+      const subjectThreads = sortByRange(
+        threadsBySubject[subjectKey(subjectType, subjectId)] || [],
+        compareRanges
+      );
       subjectThreads.forEach(thread => locatedThreads.add(thread));
       threads.push(...subjectThreads);
       return subjectThreads;
@@ -38,7 +43,11 @@ export function useLocatedCommentThreads() {
         threads: take('Section', section.permaId),
         contentElements: section.contentElements.map(contentElement => ({
           ...contentElement,
-          threads: take('ContentElement', contentElement.permaId)
+          threads: take(
+            'ContentElement',
+            contentElement.permaId,
+            review.contentElementTypes.findCompareRanges(contentElement.type)
+          )
         }))
       }));
 

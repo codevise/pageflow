@@ -158,13 +158,6 @@ editor.contentElementTypes.register('textBlock', {
     return getValue(configuration).length;
   },
 
-  compareRanges(a, b) {
-    if (!a && !b) return 0;
-    if (!a) return 1;
-    if (!b) return -1;
-    return Point.compare(rangeStart(a), rangeStart(b));
-  },
-
   handleDestroy(contentElement) {
     const transientState = contentElement.get('transientState') || {};
 
@@ -200,10 +193,6 @@ function shiftRange(range, delta) {
 
 function shiftPoint(point, delta) {
   return {...point, path: [point.path[0] + delta, ...point.path.slice(1)]};
-}
-
-function rangeStart(range) {
-  return Point.isBefore(range.anchor, range.focus) ? range.anchor : range.focus;
 }
 
 function endOfBlock(value, blockIndex) {

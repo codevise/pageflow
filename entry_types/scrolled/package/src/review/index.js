@@ -1,3 +1,4 @@
+export {review} from './api';
 export {ReviewStateProvider, useCommentThreads, useCommentThread} from './ReviewStateProvider';
 export {useLocatedCommentThreads} from './useLocatedCommentThreads';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
@@ -5,6 +6,7 @@ export {ThreadsBadge} from './ThreadsBadge';
 export {Badge} from './Badge';
 export {ThreadList} from './ThreadList';
 export {Thread} from './Thread';
+export {ScrollHighlightedThreadIntoViewProvider} from './scrollHighlightedThreadIntoView';
 export {NewThreadForm} from './NewThreadForm';
 export {postCreateCommentThreadMessage, postUpdateThreadMessage} from './postMessage';
 export {useCommentHighlights, decorateCommentHighlights} from './commentHighlights';

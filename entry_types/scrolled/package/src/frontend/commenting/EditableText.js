@@ -8,6 +8,7 @@ import {useCommentThreads, useCommentHighlights, decorateCommentHighlights, useR
 import {PlainEditableText, renderElement, renderLeaf} from '../EditableText';
 import {useContentElementAttributes} from '../useContentElementAttributes';
 import {useAddCommentMode} from './AddCommentModeProvider';
+import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
 import {useSelectedSubject} from './SelectedSubjectProvider';
 import {AddCommentHint} from './AddCommentHint';
 import {PopoversColumn} from './PopoversColumn';
@@ -40,10 +41,11 @@ function CommentingEditableText({
   const {contentElementPermaId} = useContentElementAttributes();
   const {active, deactivate, preselect, clearPreselection} = useAddCommentMode();
   const {subjectRange, select} = useSelectedSubject('ContentElement', contentElementPermaId);
+  const {resolution} = useCommentDisplayFilter();
   const threads = useCommentThreads({
     subjectType: 'ContentElement',
     subjectId: contentElementPermaId,
-    resolution: 'unresolved'
+    resolution
   });
 
   const highlights = useCommentHighlights(threads, subjectRange);

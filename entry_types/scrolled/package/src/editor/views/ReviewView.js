@@ -2,7 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Marionette from 'backbone.marionette';
 
-import {ReviewStateProvider, ReviewMessageHandler} from 'pageflow-scrolled/review';
+import {
+  ReviewStateProvider,
+  ReviewMessageHandler,
+  ScrollHighlightedThreadIntoViewProvider
+} from 'pageflow-scrolled/review';
 
 import styles from './ReviewView.module.css';
 
@@ -41,7 +45,9 @@ export const ReviewView = Marionette.ItemView.extend({
     const session = this.options.entry.reviewSession;
     ReactDOM.render(
       <ReviewStateProvider initialState={session.state}>
-        {this.renderContent(this.props())}
+        <ScrollHighlightedThreadIntoViewProvider>
+          {this.renderContent(this.props())}
+        </ScrollHighlightedThreadIntoViewProvider>
       </ReviewStateProvider>,
       this._containerEl()
     );

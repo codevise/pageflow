@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import {useI18n} from '../frontend/i18n';
 import {useCommentThreads} from './ReviewStateProvider';
+import {sortByRange} from './sortByRange';
 import {Thread} from './Thread';
 import {NewThreadForm} from './NewThreadForm';
 import {postUpdateThreadMessage} from './postMessage';
@@ -11,7 +12,7 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, compareRanges, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, compareRanges, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved}) {
   const {t} = useI18n({locale: 'ui'});
   const allActiveThreads = useCommentThreads({subjectType, subjectId, subjectRange, resolution: 'unresolved'});
   const allResolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange, resolution: 'resolved'});
@@ -31,16 +32,18 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, compar
 
   const [expandedThreadId, setExpandedThreadId] = useState(null);
   const [formToggled, setFormToggled] = useState(null);
-  const [showResolved, setShowResolved] = useState(false);
+  const [resolvedToggled, setResolvedToggled] = useState(null);
+
+  const showResolved = resolvedToggled !== null ? resolvedToggled : !!expandResolved;
+
+  const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
   const showNewForm = formToggled !== null ? formToggled :
                       showNewFormProp !== undefined ? showNewFormProp :
-                      activeThreads.length === 0;
+                      expandResolved ? noThreads : activeThreads.length === 0;
 
   function toggleThread(threadId) {
     setExpandedThreadId(expandedThreadId === threadId ? null : threadId);
   }
-
-  const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
 
   return (
     <div className={styles.container}>
@@ -78,7 +81,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, compar
       {resolvedThreads.length > 0 &&
         <div className={styles.resolvedSection}>
           <button className={styles.resolvedPill}
-                  onClick={() => setShowResolved(!showResolved)}>
+                  onClick={() => setResolvedToggled(!showResolved)}>
             {t('pageflow_scrolled.review.resolved_count', {count: resolvedThreads.length})}
             <ChevronIcon className={classNames(styles.chevron,
                                                {[styles.chevronExpanded]: showResolved})} />
@@ -97,9 +100,4 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, compar
         </div>}
     </div>
   );
-}
-
-function sortByRange(threads, compareRanges) {
-  if (!compareRanges) return threads;
-  return [...threads].sort((a, b) => compareRanges(a.subjectRange, b.subjectRange));
 }

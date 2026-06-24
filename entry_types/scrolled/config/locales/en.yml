@@ -1755,6 +1755,17 @@ en:
     review:
       add_comment: Add comment
       cancel_add_comment: Cancel
+      comment_toolbar: Comments
+      filter:
+        label: Filter comments
+        unresolved: Unresolved
+        all: All
+      previous_comment: Previous comment
+      next_comment: Next comment
+      comment_count:
+        zero: No comments
+        one: 1 comment
+        other: '%{count} comments'
       select_content_element: Select to comment
       select_section: Select section to comment
       select_text_to_comment: Select text to comment

@@ -1,6 +1,18 @@
-import {useCallback, useEffect, useState, useMemo, useRef} from 'react';
+import React, {createContext, useCallback, useContext, useEffect, useState, useMemo, useRef} from 'react';
 
-export function useActiveExcursion(entryStructure, {scrollToTarget} = {}) {
+import {useEntryStructure} from 'pageflow-scrolled/entryState';
+import {useScrollToTarget} from './useScrollTarget';
+
+const ActiveExcursionContext = createContext({
+  activeExcursion: undefined,
+  activateExcursionOfSection: () => {},
+  returnFromExcursion: () => {}
+});
+
+export function ActiveExcursionProvider({children}) {
+  const entryStructure = useEntryStructure();
+  const scrollToTarget = useScrollToTarget();
+
   const [activeExcursionId, setActiveExcursionId] = useState();
   const [scrollTarget, setScrollTarget] = useState();
   const returnUrlRef = useRef(null);
@@ -109,7 +121,20 @@ export function useActiveExcursion(entryStructure, {scrollToTarget} = {}) {
 
   const activeExcursion = useMemo(() => {
     return entryStructure.excursions.find(excursion => excursion.id === activeExcursionId);
-  }, [entryStructure, activeExcursionId])
+  }, [entryStructure, activeExcursionId]);
 
-  return {activeExcursion, activateExcursionOfSection, returnFromExcursion};
+  const value = useMemo(
+    () => ({activeExcursion, activateExcursionOfSection, returnFromExcursion}),
+    [activeExcursion, activateExcursionOfSection, returnFromExcursion]
+  );
+
+  return (
+    <ActiveExcursionContext.Provider value={value}>
+      {children}
+    </ActiveExcursionContext.Provider>
+  );
+}
+
+export function useActiveExcursion() {
+  return useContext(ActiveExcursionContext);
 }

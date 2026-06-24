@@ -14,6 +14,7 @@ import {ConsentProvider} from './thirdPartyConsent';
 import {CurrentSectionProvider} from './useCurrentChapter';
 import {ExtensionsProvider} from './extensionRegistry';
 import {ScrollTargetEmitterProvider} from './useScrollTarget';
+import {ActiveExcursionProvider} from './useActiveExcursion';
 
 export function RootProviders({seed, consent = consentApi, children}) {
   return (
@@ -29,7 +30,9 @@ export function RootProviders({seed, consent = consentApi, children}) {
                       <LocaleProvider>
                         <ConsentProvider consent={consent}>
                           <ScrollTargetEmitterProvider>
-                            {children}
+                            <ActiveExcursionProvider>
+                              {children}
+                            </ActiveExcursionProvider>
                           </ScrollTargetEmitterProvider>
                         </ConsentProvider>
                       </LocaleProvider>

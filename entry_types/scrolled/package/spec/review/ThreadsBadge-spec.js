@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import {ThreadsBadge} from 'review/ThreadsBadge';
 import {renderWithReviewState} from 'support/renderWithReviewState';
+import badgeStyles from 'review/Badge.module.css';
 
 describe('ThreadsBadge', () => {
   it('does not display count for single thread', () => {
@@ -59,6 +60,34 @@ describe('ThreadsBadge', () => {
     );
 
     expect(container).toBeEmptyDOMElement();
+  });
+
+  it('renders the badge as resolved when all shown threads are resolved', () => {
+    const {getByRole} = renderWithReviewState(
+      <ThreadsBadge subjectType="ContentElement" subjectId={10} resolution="all" />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, resolvedAt: '2026-04-09T10:00:00Z', comments: []},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, resolvedAt: '2026-04-09T10:00:00Z', comments: []}
+        ]
+      }
+    );
+
+    expect(getByRole('status')).toHaveClass(badgeStyles.resolved);
+  });
+
+  it('does not render the badge as resolved when an unresolved thread remains', () => {
+    const {getByRole} = renderWithReviewState(
+      <ThreadsBadge subjectType="ContentElement" subjectId={10} resolution="all" />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, resolvedAt: '2026-04-09T10:00:00Z', comments: []},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, resolvedAt: null, comments: []}
+        ]
+      }
+    );
+
+    expect(getByRole('status')).not.toHaveClass(badgeStyles.resolved);
   });
 
   it('renders nothing when no threads exist for subject', () => {

@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import I18n from 'i18n-js';
 
 import {EntryStateProvider, useEntryStateDispatch, watchCollections} from 'pageflow-scrolled/entryState';
-import {ThreadList, useLocatedCommentThreads} from 'pageflow-scrolled/review';
+import {ThreadList, useLocatedCommentThreads, review} from 'pageflow-scrolled/review';
 
 import {ReviewView} from './ReviewView';
 import defaultPictogram from './images/defaultPictogram.svg';
@@ -148,7 +148,7 @@ function ContentElementGroup({
   const {permaId, type, threads} = contentElement;
   const label = I18n.t(`pageflow_scrolled.editor.content_elements.${type}.name`);
   const pictogram = editor.contentElementTypes.findPictogram(type) || defaultPictogram;
-  const compareRanges = editor.contentElementTypes.findCompareRanges(type);
+  const compareRanges = review.contentElementTypes.findCompareRanges(type);
 
   const isSelected = selectedSubject?.subjectType === 'ContentElement' &&
                      selectedSubject.id === contentElement.id;
