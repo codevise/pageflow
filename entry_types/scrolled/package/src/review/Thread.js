@@ -5,6 +5,7 @@ import {useI18n} from '../frontend/i18n';
 import {AvatarStack} from './Avatar';
 import {Comment} from './Comment';
 import {ReplyForm} from './ReplyForm';
+import {useScrollHighlightedThreadIntoView} from './scrollHighlightedThreadIntoView';
 
 import ChevronIcon from './images/chevron.svg';
 import ResolveIcon from './images/resolve.svg';
@@ -18,12 +19,13 @@ export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlig
   const repliesCollapsed = collapsed && replies.length > 0;
 
   const ref = useRef();
+  const scrollHighlightedIntoView = useScrollHighlightedThreadIntoView();
 
   useEffect(() => {
-    if (highlighted && ref.current) {
+    if (scrollHighlightedIntoView && highlighted && ref.current) {
       ref.current.scrollIntoView({block: 'nearest', behavior: 'smooth'});
     }
-  }, [highlighted]);
+  }, [scrollHighlightedIntoView, highlighted]);
 
   return (
     <div ref={ref}

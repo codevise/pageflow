@@ -5,6 +5,7 @@ export {ThreadsBadge} from './ThreadsBadge';
 export {Badge} from './Badge';
 export {ThreadList} from './ThreadList';
 export {Thread} from './Thread';
+export {ScrollHighlightedThreadIntoViewProvider} from './scrollHighlightedThreadIntoView';
 export {NewThreadForm} from './NewThreadForm';
 export {postCreateCommentThreadMessage, postUpdateThreadMessage} from './postMessage';
 export {useCommentHighlights, decorateCommentHighlights} from './commentHighlights';
