@@ -45,7 +45,7 @@
    so the puck morphs in fully opaque (nothing flips), lingers, then fades to
    its semi-transparent rest state. Hovering or focusing cancels the animation
    for an instant opaque state; leaving re-runs it, so it only dims again a
-   couple of seconds after the cursor leaves. */
+   moment after the cursor leaves. */
 .puck {
   position: fixed;
   bottom: 0;
@@ -64,7 +64,7 @@
   padding: space(2);
   cursor: pointer;
   opacity: 0.6;
-  animation: puckIdle 0.5s ease 2s backwards;
+  animation: puckIdle 0.5s ease 0.5s backwards;
   view-transition-name: comment-toolbar;
 }
 

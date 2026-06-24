@@ -9,6 +9,7 @@ import {PlainEditableText, renderElement, renderLeaf} from '../EditableText';
 import {useContentElementAttributes} from '../useContentElementAttributes';
 import {useAddCommentMode} from './AddCommentModeProvider';
 import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
+import {useCommentingVisibility} from './CommentingVisibilityProvider';
 import {useSelectedSubject} from './SelectedSubjectProvider';
 import {AddCommentHint} from './AddCommentHint';
 import {PopoversColumn} from './PopoversColumn';
@@ -25,8 +26,9 @@ const defaultValue = [{
 
 export const EditableText = React.memo(function EditableText(props) {
   const {inlineComments} = useContentElementAttributes();
+  const {visible} = useCommentingVisibility();
 
-  if (inlineComments) {
+  if (inlineComments && visible) {
     return <CommentingEditableText {...props} />;
   }
 

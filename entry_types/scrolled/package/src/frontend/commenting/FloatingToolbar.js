@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import classNames from 'classnames';
 
 import {useLocatedCommentThreads} from 'pageflow-scrolled/review';
@@ -18,6 +18,13 @@ import styles from './FloatingToolbar.module.css';
 export function FloatingToolbar() {
   const {t} = useI18n({locale: 'ui'});
   const {visible} = useCommentingVisibility();
+  const {active, deactivate} = useAddCommentMode();
+
+  useEffect(() => {
+    if (!visible && active) {
+      deactivate();
+    }
+  }, [visible, active, deactivate]);
 
   if (!visible) {
     return <ShowCommentsButton />;

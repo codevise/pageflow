@@ -5,6 +5,7 @@ import {api} from '../api';
 import {widths} from '../layouts';
 import {useAddCommentMode} from './AddCommentModeProvider';
 import {AddCommentOverlay} from './AddCommentOverlay';
+import {useCommentingVisibility} from './CommentingVisibilityProvider';
 import {Popover} from './Popover';
 import {useSelectedSubject} from './SelectedSubjectProvider';
 
@@ -26,8 +27,13 @@ export function ContentElementDecorator({type, width, customMargin, permaId, chi
 }
 
 function DefaultCommentDecorator({permaId, flush, children}) {
+  const {visible} = useCommentingVisibility();
   const {active} = useAddCommentMode();
   const {isSelected} = useSelectedSubject('ContentElement', permaId);
+
+  if (!visible) {
+    return children;
+  }
 
   return (
     <div className={classNames(styles.wrapper, {[styles.selected]: isSelected})}>
