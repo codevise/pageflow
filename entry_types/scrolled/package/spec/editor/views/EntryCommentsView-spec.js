@@ -26,7 +26,106 @@ describe('EntryCommentsView', () => {
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.editor.content_elements.textBlock.name': 'Text',
     'pageflow_scrolled.editor.content_elements.image.name': 'Image',
-    'pageflow_scrolled.editor.comments_view.section': 'Section'
+    'pageflow_scrolled.editor.comments_view.section': 'Section',
+    'pageflow_scrolled.editor.chapter_item.chapter': 'Chapter',
+    'pageflow_scrolled.editor.chapter_item.excursion': 'Excursion'
+  });
+
+  it('renders a chapter heading with number and title above its groups', () => {
+    const entry = createEntry({
+      chapters: [
+        {id: 1, permaId: 10, storylineId: 1000, position: 0, configuration: {title: 'Intro'}}
+      ],
+      sections: [{id: 1, permaId: 100, chapterId: 1, position: 0}],
+      contentElements: [{id: 1, permaId: 1000, sectionId: 1, typeName: 'image'}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [{
+        id: 1, subjectType: 'ContentElement', subjectId: 1000,
+        comments: [{id: 100, body: 'A comment', creatorName: 'Alice'}]
+      }]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    const heading = getByText('Intro');
+    const comment = getByText('A comment');
+
+    expect(getByText('Chapter 1')).toBeInTheDocument();
+    expect(heading.compareDocumentPosition(comment) &
+           Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it('groups excursion chapters below main chapters', () => {
+    const entry = createEntry({
+      storylines: [
+        {id: 1000, permaId: 100, position: 0, configuration: {main: true}},
+        {id: 2000, permaId: 200, position: 1, configuration: {}}
+      ],
+      chapters: [
+        {id: 1, permaId: 10, storylineId: 1000, position: 0, configuration: {title: 'Main chapter'}},
+        {id: 2, permaId: 20, storylineId: 2000, position: 0, configuration: {title: 'My excursion'}}
+      ],
+      sections: [
+        {id: 1, permaId: 100, chapterId: 1, position: 0},
+        {id: 2, permaId: 200, chapterId: 2, position: 0}
+      ],
+      contentElements: [
+        {id: 1, permaId: 1000, sectionId: 1, typeName: 'image'},
+        {id: 2, permaId: 2000, sectionId: 2, typeName: 'image'}
+      ]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 1000,
+         comments: [{id: 1, body: 'in main', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 2000,
+         comments: [{id: 2, body: 'in excursion', creatorName: 'B'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    const mainComment = getByText('in main');
+    const excursionHeading = getByText('My excursion');
+    const excursionComment = getByText('in excursion');
+
+    expect(getByText('Excursion')).toBeInTheDocument();
+    expect(mainComment.compareDocumentPosition(excursionHeading) &
+           Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(mainComment.compareDocumentPosition(excursionComment) &
+           Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it('does not render a heading for a chapter without threads', () => {
+    const entry = createEntry({
+      chapters: [
+        {id: 1, permaId: 10, storylineId: 1000, position: 0, configuration: {title: 'Has comments'}},
+        {id: 2, permaId: 20, storylineId: 1000, position: 1, configuration: {title: 'Empty chapter'}}
+      ],
+      sections: [
+        {id: 1, permaId: 100, chapterId: 1, position: 0},
+        {id: 2, permaId: 200, chapterId: 2, position: 0}
+      ],
+      contentElements: [
+        {id: 1, permaId: 1000, sectionId: 1, typeName: 'image'},
+        {id: 2, permaId: 2000, sectionId: 2, typeName: 'image'}
+      ]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [{
+        id: 1, subjectType: 'ContentElement', subjectId: 1000,
+        comments: [{id: 1, body: 'a comment', creatorName: 'A'}]
+      }]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText, queryByText} = renderBackboneView(view);
+
+    expect(getByText('Has comments')).toBeInTheDocument();
+    expect(queryByText('Empty chapter')).not.toBeInTheDocument();
   });
 
   it('renders a thread group only for content elements that have threads', () => {

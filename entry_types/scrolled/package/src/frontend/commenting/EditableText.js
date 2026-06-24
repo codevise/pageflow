@@ -40,10 +40,11 @@ function CommentingEditableText({
   const {contentElementPermaId} = useContentElementAttributes();
   const {active, deactivate, preselect, clearPreselection} = useAddCommentMode();
   const {subjectRange, select} = useSelectedSubject('ContentElement', contentElementPermaId);
-  const threads = useCommentThreads(
-    {subjectType: 'ContentElement', subjectId: contentElementPermaId},
-    {resolved: false}
-  );
+  const threads = useCommentThreads({
+    subjectType: 'ContentElement',
+    subjectId: contentElementPermaId,
+    resolution: 'unresolved'
+  });
 
   const highlights = useCommentHighlights(threads, subjectRange);
 

@@ -59,9 +59,52 @@ describe('ReviewStateProvider', () => {
     expect(result.current[0].id).toBe(1);
   });
 
-  it('filters by resolved option', () => {
+  it('returns all threads when no subject is given', () => {
     const {result} = renderHook(
-      () => useCommentThreads({subjectType: 'CE', subjectId: 10}, {resolved: false}),
+      () => useCommentThreads(),
+      {
+        wrapper: ({children}) => (
+          <ReviewStateProvider initialState={{
+            currentUser: null,
+            commentThreads: [
+              {id: 1, subjectType: 'CE', subjectId: 10, comments: []},
+              {id: 2, subjectType: 'Section', subjectId: 20, comments: []}
+            ]
+          }}>
+            {children}
+          </ReviewStateProvider>
+        )
+      }
+    );
+
+    expect(result.current.map(t => t.id)).toEqual([1, 2]);
+  });
+
+  it('filters all threads by resolution when no subject is given', () => {
+    const {result} = renderHook(
+      () => useCommentThreads({resolution: 'unresolved'}),
+      {
+        wrapper: ({children}) => (
+          <ReviewStateProvider initialState={{
+            currentUser: null,
+            commentThreads: [
+              {id: 1, subjectType: 'CE', subjectId: 10, resolvedAt: null, comments: []},
+              {id: 2, subjectType: 'Section', subjectId: 20, resolvedAt: '2026-04-09', comments: []},
+              {id: 3, subjectType: 'CE', subjectId: 30, resolvedAt: null, comments: []}
+            ]
+          }}>
+            {children}
+          </ReviewStateProvider>
+        )
+      }
+    );
+
+    expect(result.current.map(t => t.id)).toEqual([1, 3]);
+  });
+
+  it('filters by resolution unresolved', () => {
+    const {result} = renderHook(
+      () => useCommentThreads({subjectType: 'CE', subjectId: 10, resolution: 'unresolved'}),
       {
         wrapper: ({children}) => (
           <ReviewStateProvider initialState={{
@@ -80,6 +123,28 @@ describe('ReviewStateProvider', () => {
 
     expect(result.current).toHaveLength(2);
     expect(result.current.map(t => t.id)).toEqual([1, 3]);
+  });
+
+  it('filters by resolution resolved', () => {
+    const {result} = renderHook(
+      () => useCommentThreads({subjectType: 'CE', subjectId: 10, resolution: 'resolved'}),
+      {
+        wrapper: ({children}) => (
+          <ReviewStateProvider initialState={{
+            currentUser: null,
+            commentThreads: [
+              {id: 1, subjectType: 'CE', subjectId: 10, resolvedAt: null, comments: []},
+              {id: 2, subjectType: 'CE', subjectId: 10, resolvedAt: '2026-04-09', comments: []},
+              {id: 3, subjectType: 'CE', subjectId: 10, resolvedAt: '2026-04-10', comments: []}
+            ]
+          }}>
+            {children}
+          </ReviewStateProvider>
+        )
+      }
+    );
+
+    expect(result.current.map(t => t.id)).toEqual([2, 3]);
   });
 
   it('updates single thread on thread change message', async () => {

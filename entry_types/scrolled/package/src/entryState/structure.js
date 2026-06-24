@@ -45,48 +45,100 @@ export function useEntryStructure() {
   const chapters = useChapters();
   const sections = useEntryStateCollectionItems('sections');
 
+  return useMemo(
+    () => buildEntryStructure({mainStoryline, chapters, sections}),
+    [mainStoryline, chapters, sections]
+  );
+};
+
+/**
+ * Like {@link useEntryStructure}, but additionally nests an ordered
+ * `contentElements` array (including backdrop elements) into each
+ * section. Kept separate so the more frequently used
+ * `useEntryStructure` does not re-derive when content elements change.
+ *
+ * @private
+ */
+export function useEntryStructureWithContentElements() {
+  const mainStoryline = useMainStoryline();
+  const chapters = useChapters();
+  const sections = useEntryStateCollectionItems('sections');
+  const contentElements = useEntryStateCollectionItems('contentElements');
+
   return useMemo(() => {
-    const enrichedSections = sections.map(section => sectionData(section));
+    const contentElementsBySectionId = {};
 
-    const main = [];
-    const excursions = [];
+    contentElements.forEach(contentElement => {
+      const sectionContentElements =
+        contentElementsBySectionId[contentElement.sectionId] ||
+        (contentElementsBySectionId[contentElement.sectionId] = []);
 
-    chapters.forEach(chapter => {
-      const chapterSections = enrichedSections.filter(
-        item => item.chapterId === chapter.id
-      );
-
-      const isExcursion = chapter.storylineId !== mainStoryline.id;
-
-      chapter = {
-        ...chapter,
-        isExcursion,
-        sections: chapterSections
-      };
-
-      chapterSections.forEach(section =>
-        section.chapter = chapter
-      );
-
-      if (isExcursion) {
-        excursions.push(chapter);
-      }
-      else {
-        main.push(chapter);
-      }
+      sectionContentElements.push(contentElementSubjectData(contentElement));
     });
 
-    const mainSections = main.flatMap(chapter => chapter.sections);
-    linkAndIndexSections(mainSections);
-    excursions.forEach(excursion => linkAndIndexSections(excursion.sections));
-
-    return {
-      main,
-      excursions,
-      mainSectionsCount: mainSections.length
-    }
-  }, [mainStoryline, chapters, sections]);
+    return buildEntryStructure({
+      mainStoryline,
+      chapters,
+      sections,
+      contentElementsBySectionId
+    });
+  }, [mainStoryline, chapters, sections, contentElements]);
 };
+
+function buildEntryStructure({mainStoryline, chapters, sections, contentElementsBySectionId}) {
+  const enrichedSections = sections.map(section => ({
+    ...sectionData(section),
+    ...(contentElementsBySectionId &&
+        {contentElements: contentElementsBySectionId[section.id] || []})
+  }));
+
+  const main = [];
+  const excursions = [];
+
+  chapters.forEach(chapter => {
+    const chapterSections = enrichedSections.filter(
+      item => item.chapterId === chapter.id
+    );
+
+    const isExcursion = chapter.storylineId !== mainStoryline.id;
+
+    chapter = {
+      ...chapter,
+      isExcursion,
+      sections: chapterSections
+    };
+
+    chapterSections.forEach(section =>
+      section.chapter = chapter
+    );
+
+    if (isExcursion) {
+      excursions.push(chapter);
+    }
+    else {
+      main.push(chapter);
+    }
+  });
+
+  const mainSections = main.flatMap(chapter => chapter.sections);
+  linkAndIndexSections(mainSections);
+  excursions.forEach(excursion => linkAndIndexSections(excursion.sections));
+
+  return {
+    main,
+    excursions,
+    mainSectionsCount: mainSections.length
+  };
+}
+
+function contentElementSubjectData(contentElement) {
+  return {
+    id: contentElement.id,
+    permaId: contentElement.permaId,
+    sectionId: contentElement.sectionId,
+    type: contentElement.typeName
+  };
+}
 
 function linkAndIndexSections(sections) {
   sections.forEach((section, index) => {

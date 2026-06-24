@@ -1,4 +1,5 @@
 export {ReviewStateProvider, useCommentThreads, useCommentThread} from './ReviewStateProvider';
+export {useLocatedCommentThreads} from './useLocatedCommentThreads';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
 export {ThreadsBadge} from './ThreadsBadge';
 export {Badge} from './Badge';

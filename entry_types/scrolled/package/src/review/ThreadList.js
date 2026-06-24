@@ -13,8 +13,8 @@ import styles from './ThreadList.module.css';
 
 export function ThreadList({subjectType, subjectId, subjectRange, filter, compareRanges, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed}) {
   const {t} = useI18n({locale: 'ui'});
-  const allActiveThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: false});
-  const allResolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange}, {resolved: true});
+  const allActiveThreads = useCommentThreads({subjectType, subjectId, subjectRange, resolution: 'unresolved'});
+  const allResolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange, resolution: 'resolved'});
 
   const activeThreads = useMemo(
     () => sortByRange(filter ? allActiveThreads.filter(filter) : allActiveThreads, compareRanges),
