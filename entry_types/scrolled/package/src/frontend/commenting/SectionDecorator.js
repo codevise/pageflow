@@ -5,6 +5,7 @@ import {useCommentThreads} from 'pageflow-scrolled/review';
 import {useI18n} from '../i18n';
 import {useAddCommentMode} from './AddCommentModeProvider';
 import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
+import {useCommentingVisibility} from './CommentingVisibilityProvider';
 import {useSelectedSubject} from './SelectedSubjectProvider';
 import {Popover} from './Popover';
 
@@ -12,6 +13,7 @@ import AddCommentIcon from './images/addComment.svg';
 import styles from './SectionDecorator.module.css';
 
 export function SectionDecorator({section, children}) {
+  const {visible} = useCommentingVisibility();
   const {active} = useAddCommentMode();
   const {isSelected} = useSelectedSubject('Section', section.permaId);
   const {resolution} = useCommentDisplayFilter();
@@ -21,6 +23,10 @@ export function SectionDecorator({section, children}) {
     resolution
   });
   const hasThreads = threads.length > 0;
+
+  if (!visible) {
+    return children;
+  }
 
   return (
     <div className={styles.wrapper}>

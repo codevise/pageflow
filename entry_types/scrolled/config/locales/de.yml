@@ -1926,6 +1926,8 @@ de:
     review:
       add_comment: Kommentar hinzufügen
       cancel_add_comment: Abbrechen
+      hide_comments: Kommentare ausblenden
+      show_comments: Kommentare einblenden
       comment_toolbar: Kommentare
       filter:
         label: Kommentare filtern

@@ -24,6 +24,10 @@ export function renderEntry({
   return {
     ...result,
     getCommentToolbar: () => result.getByRole('group', {name: 'Comments'}),
+    queryCommentToolbar: () => result.queryByRole('group', {name: 'Comments'}),
+    getHideCommentsButton: () => result.getByRole('button', {name: 'Hide comments'}),
+    getShowCommentsButton: () => result.getByRole('button', {name: 'Show comments'}),
+    queryShowCommentsButton: () => result.queryByRole('button', {name: 'Show comments'}),
     getAddCommentButton: () => result.getByRole('button', {name: 'Add comment'}),
     getCancelAddCommentButton: () => result.getByRole('button', {name: 'Cancel add comment'}),
     getNewThreadInput: () => result.getByPlaceholderText('Add a comment...'),
@@ -49,6 +53,8 @@ export function useCommentingPageObjects() {
   useFakeTranslations({
     'pageflow_scrolled.review.add_comment': 'Add comment',
     'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment',
+    'pageflow_scrolled.review.hide_comments': 'Hide comments',
+    'pageflow_scrolled.review.show_comments': 'Show comments',
     'pageflow_scrolled.review.comment_toolbar': 'Comments',
     'pageflow_scrolled.review.comment_count': '%{count} comments',
     'pageflow_scrolled.review.select_content_element': 'Select to comment',

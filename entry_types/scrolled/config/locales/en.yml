@@ -1755,6 +1755,8 @@ en:
     review:
       add_comment: Add comment
       cancel_add_comment: Cancel
+      hide_comments: Hide comments
+      show_comments: Show comments
       comment_toolbar: Comments
       filter:
         label: Filter comments
