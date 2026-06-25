@@ -1,3 +1,7 @@
 .root > div {
   margin: space(2.5) 0;
 }
+
+.form {
+  padding-top: space(4);
+}

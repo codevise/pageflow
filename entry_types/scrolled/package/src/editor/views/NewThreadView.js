@@ -46,6 +46,8 @@ export const NewThreadView = Marionette.ItemView.extend({
 });
 
 const NewThreadFormView = ReviewView.extend({
+  className: styles.form,
+
   renderContent() {
     const {entry, subjectType, subjectId, subjectRange} = this.options;
     const leave = () => entry.trigger('resetSelection');
