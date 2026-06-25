@@ -25,9 +25,13 @@ The import path follows from the kind: public scoped fixtures from
 | `renderInContentElement` | Content-element scope: attributes, lifecycle, command emitter, optional inline-editing context. For components rendered *inside* a content element. |
 | `renderEntry` | Full `Entry`, driven through page objects (`getContentElementByTestId`, `getSectionByPermaId`). For cross-cutting frontend features and integration behavior. |
 
-`renderWithReviewState` is an internal scoped fixture for `src/review/`
-UI, imported from `support/renderWithReviewState`; it sets up
-`ReviewStateProvider` only.
+`renderWithReviewState` renders `src/review/` UI, imported from
+`support/renderWithReviewState`. Review UI resolves entry structure
+(e.g. the section a comment subject lives in), so it builds on
+`renderInEntry` and layers `ReviewStateProvider` on top. Its
+`renderHookWithReviewState` counterpart does the same on top of
+`renderHookInEntry` for selector hooks that read entry and review
+state.
 
 ## Picking a helper
 

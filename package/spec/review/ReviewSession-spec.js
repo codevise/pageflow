@@ -155,6 +155,79 @@ describe('ReviewSession', () => {
     });
   });
 
+  it('includes section_perma_id in createThread request', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: []
+      })
+      .mockResolvedValueOnce({
+        id: 1,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        sectionPermaId: 7,
+        comments: [{id: 100, body: 'Looks good!', creatorId: 42}]
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    await session.createThread({
+      subjectType: 'ContentElement',
+      subjectId: 10,
+      sectionPermaId: 7,
+      body: 'Looks good!'
+    });
+
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/review/entries/5/comment_threads',
+      method: 'POST',
+      payload: {
+        comment_thread: {
+          subject_type: 'ContentElement',
+          subject_id: 10,
+          section_perma_id: 7,
+          comment: {body: 'Looks good!'}
+        }
+      }
+    });
+  });
+
+  it('omits section_perma_id from createThread request when not given', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: []
+      })
+      .mockResolvedValueOnce({
+        id: 1,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        comments: [{id: 100, body: 'Looks good!', creatorId: 42}]
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    await session.createThread({
+      subjectType: 'ContentElement',
+      subjectId: 10,
+      body: 'Looks good!'
+    });
+
+    expect(request).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        payload: {
+          comment_thread: {
+            subject_type: 'ContentElement',
+            subject_id: 10,
+            comment: {body: 'Looks good!'}
+          }
+        }
+      })
+    );
+  });
+
   it('updates state after createThread', async () => {
     const request = jest.fn()
       .mockResolvedValueOnce({

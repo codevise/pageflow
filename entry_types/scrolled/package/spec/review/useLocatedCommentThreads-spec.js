@@ -1,10 +1,7 @@
-import React from 'react';
-
 import {useLocatedCommentThreads} from 'review/useLocatedCommentThreads';
-import {ReviewStateProvider} from 'review/ReviewStateProvider';
 import {review} from 'review/api';
 
-import {renderHookInEntry} from 'support';
+import {renderHookWithReviewState} from 'support/renderWithReviewState';
 
 const storylinesSeed = [
   {id: 1, permaId: 10, position: 1, configuration: {main: true}},
@@ -25,18 +22,14 @@ const contentElementsSeed = [
 ];
 
 function renderLocatedCommentThreads(commentThreads) {
-  return renderHookInEntry(() => useLocatedCommentThreads(), {
+  return renderHookWithReviewState(() => useLocatedCommentThreads(), {
     seed: {
       storylines: storylinesSeed,
       chapters: chaptersSeed,
       sections: sectionsSeed,
       contentElements: contentElementsSeed
     },
-    wrapper: ({children}) => (
-      <ReviewStateProvider initialState={{currentUser: null, commentThreads}}>
-        {children}
-      </ReviewStateProvider>
-    )
+    commentThreads
   });
 }
 
@@ -52,6 +45,18 @@ describe('useLocatedCommentThreads', () => {
     expect(section.threads.map(t => t.id)).toEqual([2]);
     expect(section.contentElements[0].threads.map(t => t.id)).toEqual([1]);
     expect(section.contentElements[1].threads).toEqual([]);
+  });
+
+  it('places threads by subject without needing a sectionPermaId', () => {
+    const {result} = renderLocatedCommentThreads([
+      {id: 1, subjectType: 'ContentElement', subjectId: 10001, comments: []}
+    ]);
+
+    const section = result.current.chapters[0].sections[0];
+
+    expect(section.contentElements[0].threads.map(t => t.id)).toEqual([1]);
+    expect(section.orphanedThreads).toEqual([]);
+    expect(result.current.orphanedThreads).toEqual([]);
   });
 
   it('orders chapters main first then excursions and includes excursion threads', () => {
@@ -106,14 +111,39 @@ describe('useLocatedCommentThreads', () => {
     expect(result.current.threads.map(t => t.id)).toEqual([2, 1, 3]);
   });
 
-  it('buckets threads with unknown subject into orphanedThreads', () => {
+  it('relocates a thread whose content element was deleted to its section', () => {
     const {result} = renderLocatedCommentThreads([
-      {id: 1, subjectType: 'ContentElement', subjectId: 10001, comments: []},
-      {id: 4, subjectType: 'ContentElement', subjectId: 99999, comments: []}
+      {id: 4, subjectType: 'ContentElement', subjectId: 99999,
+       sectionPermaId: 1000, comments: []}
     ]);
 
+    const section = result.current.chapters[0].sections[0];
+
+    expect(section.orphanedThreads.map(t => t.id)).toEqual([4]);
+    expect(result.current.orphanedThreads).toEqual([]);
+  });
+
+  it('keeps threads whose section no longer exists in the top-level orphans', () => {
+    const {result} = renderLocatedCommentThreads([
+      {id: 1, subjectType: 'ContentElement', subjectId: 10001, comments: []},
+      {id: 4, subjectType: 'ContentElement', subjectId: 99999, sectionPermaId: 88888, comments: []}
+    ]);
+
+    expect(result.current.chapters[0].sections[0].orphanedThreads).toEqual([]);
     expect(result.current.orphanedThreads.map(t => t.id)).toEqual([4]);
     expect(result.current.threads.map(t => t.id)).toEqual([1]);
+  });
+
+  it('leaves orphanedThreads empty on sections without orphaned threads', () => {
+    const {result} = renderLocatedCommentThreads([
+      {id: 2, subjectType: 'Section', subjectId: 1000, comments: []}
+    ]);
+
+    result.current.chapters.forEach(chapter =>
+      chapter.sections.forEach(section =>
+        expect(section.orphanedThreads).toEqual([])
+      )
+    );
   });
 
   it('attaches resolved threads as well', () => {

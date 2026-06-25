@@ -8,6 +8,7 @@ import {
   useSection,
   useSectionForegroundContentElements,
   useContentElement,
+  useSectionPermaIdOfSubject,
   watchCollections
 } from 'entryState';
 
@@ -499,6 +500,50 @@ describe('useSection', () => {
     const section = result.current;
 
     expect(section.fullHeight).toEqual(true)
+  });
+});
+
+describe('useSectionPermaIdOfSubject', () => {
+  const seed = {
+    chapters: chaptersSeed,
+    sections: sectionsSeed,
+    contentElements: contentElementsSeed
+  };
+
+  it('returns the parent section perma id for a content element subject', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionPermaIdOfSubject({subjectType: 'ContentElement', subjectId: 1003}),
+      {seed}
+    );
+
+    expect(result.current).toEqual(102);
+  });
+
+  it('returns the perma id itself for a section subject', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionPermaIdOfSubject({subjectType: 'Section', subjectId: 102}),
+      {seed}
+    );
+
+    expect(result.current).toEqual(102);
+  });
+
+  it('returns undefined for an unknown content element', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionPermaIdOfSubject({subjectType: 'ContentElement', subjectId: 9999}),
+      {seed}
+    );
+
+    expect(result.current).toBeUndefined();
+  });
+
+  it('returns undefined for an unknown subject type', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionPermaIdOfSubject({subjectType: 'Entry', subjectId: 1}),
+      {seed}
+    );
+
+    expect(result.current).toBeUndefined();
   });
 });
 

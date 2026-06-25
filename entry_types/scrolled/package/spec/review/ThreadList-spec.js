@@ -526,6 +526,65 @@ describe('ThreadList', () => {
     postMessage.mockRestore();
   });
 
+  it('includes the parent section perma id in create thread message', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+    const {getByPlaceholderText, getByRole} = renderWithReviewState(
+      <ThreadList subjectType="ContentElement" subjectId={1001} />,
+      {
+        seed: {
+          sections: [{id: 1, permaId: 50}],
+          contentElements: [{id: 1, permaId: 1001, sectionId: 1, typeName: 'textBlock'}]
+        }
+      }
+    );
+
+    await user.type(getByPlaceholderText('Add a comment...'), 'New thread');
+    await user.click(getByRole('button', {name: 'Send'}));
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {
+        type: 'CREATE_COMMENT_THREAD',
+        payload: expect.objectContaining({
+          subjectType: 'ContentElement',
+          subjectId: 1001,
+          sectionPermaId: 50
+        })
+      },
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
+  });
+
+  it('sends the section perma id itself for section subjects', async () => {
+    const user = userEvent.setup();
+    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+    const {getByPlaceholderText, getByRole} = renderWithReviewState(
+      <ThreadList subjectType="Section" subjectId={50} />,
+      {seed: {sections: [{id: 1, permaId: 50}]}}
+    );
+
+    await user.type(getByPlaceholderText('Add a comment...'), 'Section comment');
+    await user.click(getByRole('button', {name: 'Send'}));
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {
+        type: 'CREATE_COMMENT_THREAD',
+        payload: expect.objectContaining({
+          subjectType: 'Section',
+          subjectId: 50,
+          sectionPermaId: 50
+        })
+      },
+      window.location.origin
+    );
+
+    postMessage.mockRestore();
+  });
+
   it('includes subjectRange in create thread message', async () => {
     const user = userEvent.setup();
     const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
