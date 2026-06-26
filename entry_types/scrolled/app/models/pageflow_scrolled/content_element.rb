@@ -52,6 +52,7 @@ module PageflowScrolled
           }.compact
 
           update_subject_ranges
+          reconcile_section_perma_ids
           result
         end
       end
@@ -91,6 +92,20 @@ module PageflowScrolled
           subject_type: 'ContentElement',
           subject_id: @section.content_elements.pluck(:perma_id),
           ranges: @comment_thread_subject_ranges
+        )
+      end
+
+      # A comment thread's section follows its content element. Reconcile
+      # the section perma id of threads on this section's content elements
+      # so threads stay relocatable to the right section once their
+      # content element is deleted — e.g. after a content element was
+      # moved here from another section.
+      def reconcile_section_perma_ids
+        Pageflow::CommentThread.update_section_perma_id_for(
+          revision: @storyline.revision,
+          subject_type: 'ContentElement',
+          subject_id: @section.content_elements.pluck(:perma_id),
+          section_perma_id: @section.perma_id
         )
       end
     end

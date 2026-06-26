@@ -366,6 +366,52 @@ module PageflowScrolled
 
         expect(foreign_thread.reload.subject_id).to eq(9999)
       end
+
+      it 'updates section_perma_id of threads whose content element moves into the section' do
+        entry = create(:entry, type_name: 'scrolled')
+        source_section = create(:section, revision: entry.draft)
+        target_section = create(:section, revision: entry.draft)
+        element = create(:content_element, :text_block, section: source_section)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        subject_type: 'ContentElement',
+                        subject_id: element.perma_id,
+                        section_perma_id: source_section.perma_id)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry.id,
+               section_id: target_section.id,
+               content_elements: [{id: element.id}]
+             }, format: 'json', as: :json)
+
+        expect(thread.reload.section_perma_id).to eq(target_section.perma_id)
+      end
+
+      it 'leaves section_perma_id untouched for threads that stay in their section' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        element = create(:content_element, :text_block, section:)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        subject_type: 'ContentElement',
+                        subject_id: element.perma_id,
+                        section_perma_id: section.perma_id)
+
+        authorize_for_editor_controller(entry)
+
+        expect {
+          post(:batch,
+               params: {
+                 entry_type: 'scrolled',
+                 entry_id: entry.id,
+                 section_id: section.id,
+                 content_elements: [{id: element.id, configuration: {children: 'x'}}]
+               }, format: 'json', as: :json)
+        }.not_to(change { thread.reload.updated_at })
+      end
     end
 
     describe '#create' do
