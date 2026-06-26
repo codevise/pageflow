@@ -2,7 +2,11 @@ import React, {useEffect} from 'react';
 
 import {useEntryMetadata} from 'pageflow-scrolled/entryState';
 import {createReviewSession} from 'pageflow/review';
-import {ReviewStateProvider, ReviewMessageHandler} from 'pageflow-scrolled/review';
+import {
+  ReviewStateProvider,
+  ReviewMessageHandler,
+  LocatedCommentThreadsProvider
+} from 'pageflow-scrolled/review';
 import {AddCommentModeProvider} from './AddCommentModeProvider';
 import {CommentDisplayFilterProvider} from './CommentDisplayFilterProvider';
 import {CommentingVisibilityProvider} from './CommentingVisibilityProvider';
@@ -13,16 +17,18 @@ export function EntryDecorator({commentingInitialState, children}) {
   return (
     <ReviewStateProvider initialState={commentingInitialState}>
       <ReviewSessionSetup initialState={commentingInitialState} />
-      <CommentingVisibilityProvider>
-        <CommentDisplayFilterProvider>
-          <SelectedSubjectProvider>
-            <AddCommentModeProvider>
-              {children}
-              <FloatingToolbar />
-            </AddCommentModeProvider>
-          </SelectedSubjectProvider>
-        </CommentDisplayFilterProvider>
-      </CommentingVisibilityProvider>
+      <LocatedCommentThreadsProvider>
+        <CommentingVisibilityProvider>
+          <CommentDisplayFilterProvider>
+            <SelectedSubjectProvider>
+              <AddCommentModeProvider>
+                {children}
+                <FloatingToolbar />
+              </AddCommentModeProvider>
+            </SelectedSubjectProvider>
+          </CommentDisplayFilterProvider>
+        </CommentingVisibilityProvider>
+      </LocatedCommentThreadsProvider>
     </ReviewStateProvider>
   );
 }

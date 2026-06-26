@@ -1,6 +1,6 @@
 import React, {useEffect, useCallback} from 'react';
 
-import {ReviewStateProvider} from 'pageflow-scrolled/review';
+import {ReviewStateProvider, LocatedCommentThreadsProvider} from 'pageflow-scrolled/review';
 import {useEntryStateDispatch} from 'pageflow-scrolled/entryState';
 import {usePostMessageListener} from '../../shared/usePostMessageListener';
 import {EditorStateProvider, useEditorSelection} from './EditorState';
@@ -16,9 +16,11 @@ export function EntryDecorator({commentingInitialState, children}) {
     <EditorStateProvider>
       <ReviewStateProvider initialState={commentingInitialState}>
         <MessageHandler contentElementEditorCommandEmitter={contentElementEditorCommandEmitter} />
-        <ContentElementEditorCommandSubscriptionProvider emitter={contentElementEditorCommandEmitter}>
-          {children}
-        </ContentElementEditorCommandSubscriptionProvider>
+        <LocatedCommentThreadsProvider>
+          <ContentElementEditorCommandSubscriptionProvider emitter={contentElementEditorCommandEmitter}>
+            {children}
+          </ContentElementEditorCommandSubscriptionProvider>
+        </LocatedCommentThreadsProvider>
       </ReviewStateProvider>
     </EditorStateProvider>
   );

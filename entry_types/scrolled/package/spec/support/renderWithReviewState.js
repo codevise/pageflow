@@ -2,6 +2,7 @@ import React from 'react';
 
 import {renderInEntry, renderHookInEntry} from 'pageflow-scrolled/testHelpers';
 import {ReviewStateProvider} from 'review/ReviewStateProvider';
+import {LocatedCommentThreadsProvider} from 'review/useLocatedCommentThreads';
 
 // Renders src/review/ UI within entry state plus ReviewStateProvider.
 // Review UI resolves entry structure (e.g. the section a comment subject
@@ -27,7 +28,9 @@ function reviewStateWrapper({commentThreads = [], currentUser = null} = {}) {
   return function ReviewStateWrapper({children}) {
     return (
       <ReviewStateProvider initialState={{currentUser, commentThreads}}>
-        {children}
+        <LocatedCommentThreadsProvider>
+          {children}
+        </LocatedCommentThreadsProvider>
       </ReviewStateProvider>
     );
   };

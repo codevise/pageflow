@@ -28,9 +28,10 @@ The import path follows from the kind: public scoped fixtures from
 `renderWithReviewState` renders `src/review/` UI, imported from
 `support/renderWithReviewState`. Review UI resolves entry structure
 (e.g. the section a comment subject lives in), so it builds on
-`renderInEntry` and layers `ReviewStateProvider` on top. Its
-`renderHookWithReviewState` counterpart does the same on top of
-`renderHookInEntry` for selector hooks that read entry and review
+`renderInEntry` and layers `ReviewStateProvider` plus
+`LocatedCommentThreadsProvider` (which joins threads to that structure)
+on top. Its `renderHookWithReviewState` counterpart does the same on top
+of `renderHookInEntry` for selector hooks that read entry and review
 state.
 
 ## Picking a helper

@@ -1,6 +1,7 @@
 import {useLocatedCommentThreads} from 'review/useLocatedCommentThreads';
 import {review} from 'review/api';
 
+import {renderHookInEntry} from 'pageflow-scrolled/testHelpers';
 import {renderHookWithReviewState} from 'support/renderWithReviewState';
 
 const storylinesSeed = [
@@ -55,8 +56,7 @@ describe('useLocatedCommentThreads', () => {
     const section = result.current.chapters[0].sections[0];
 
     expect(section.contentElements[0].threads.map(t => t.id)).toEqual([1]);
-    expect(section.orphanedThreads).toEqual([]);
-    expect(result.current.orphanedThreads).toEqual([]);
+    expect(section.threads).toEqual([]);
   });
 
   it('orders chapters main first then excursions and includes excursion threads', () => {
@@ -72,14 +72,15 @@ describe('useLocatedCommentThreads', () => {
     expect(chapters[1].sections[0].contentElements[0].threads.map(t => t.id)).toEqual([3]);
   });
 
-  it('counts all threads of a chapter', () => {
+  it('counts all threads of a chapter, orphans included', () => {
     const {result} = renderLocatedCommentThreads([
       {id: 1, subjectType: 'ContentElement', subjectId: 10001, comments: []},
       {id: 2, subjectType: 'Section', subjectId: 1000, comments: []},
+      {id: 4, subjectType: 'ContentElement', subjectId: 99999, sectionPermaId: 1000, comments: []},
       {id: 3, subjectType: 'ContentElement', subjectId: 20001, comments: []}
     ]);
 
-    expect(result.current.chapters[0].threadCount).toBe(2);
+    expect(result.current.chapters[0].threadCount).toBe(3);
     expect(result.current.chapters[1].threadCount).toBe(1);
   });
 
@@ -111,39 +112,54 @@ describe('useLocatedCommentThreads', () => {
     expect(result.current.threads.map(t => t.id)).toEqual([2, 1, 3]);
   });
 
-  it('relocates a thread whose content element was deleted to its section', () => {
+  it('exposes a bySubject index of each subject\'s threads', () => {
     const {result} = renderLocatedCommentThreads([
+      {id: 1, subjectType: 'ContentElement', subjectId: 10001, comments: []},
+      {id: 2, subjectType: 'Section', subjectId: 1000, comments: []}
+    ]);
+
+    const {bySubject} = result.current;
+
+    expect(bySubject.get('Section:1000').map(t => t.id)).toEqual([2]);
+    expect(bySubject.get('ContentElement:10001').map(t => t.id)).toEqual([1]);
+  });
+
+  it('leads a section with its orphaned threads, flagged, before its own', () => {
+    const {result} = renderLocatedCommentThreads([
+      {id: 2, subjectType: 'Section', subjectId: 1000, comments: []},
       {id: 4, subjectType: 'ContentElement', subjectId: 99999,
        sectionPermaId: 1000, comments: []}
     ]);
 
     const section = result.current.chapters[0].sections[0];
 
-    expect(section.orphanedThreads.map(t => t.id)).toEqual([4]);
-    expect(result.current.orphanedThreads).toEqual([]);
+    expect(section.threads.map(t => t.id)).toEqual([4, 2]);
+    expect(section.threads[0].orphaned).toBe(true);
+    expect(section.threads[1].orphaned).toBeFalsy();
   });
 
-  it('keeps threads whose section no longer exists in the top-level orphans', () => {
+  it('leads the first section with orphans whose section is also gone', () => {
     const {result} = renderLocatedCommentThreads([
       {id: 1, subjectType: 'ContentElement', subjectId: 10001, comments: []},
       {id: 4, subjectType: 'ContentElement', subjectId: 99999, sectionPermaId: 88888, comments: []}
     ]);
 
-    expect(result.current.chapters[0].sections[0].orphanedThreads).toEqual([]);
-    expect(result.current.orphanedThreads.map(t => t.id)).toEqual([4]);
-    expect(result.current.threads.map(t => t.id)).toEqual([1]);
+    const firstSection = result.current.chapters[0].sections[0];
+
+    expect(firstSection.threads.map(t => t.id)).toEqual([4]);
+    expect(firstSection.threads[0].orphaned).toBe(true);
+    expect(result.current.threads.map(t => t.id)).toEqual([4, 1]);
   });
 
-  it('leaves orphanedThreads empty on sections without orphaned threads', () => {
+  it('leaves sections without orphans unflagged', () => {
     const {result} = renderLocatedCommentThreads([
       {id: 2, subjectType: 'Section', subjectId: 1000, comments: []}
     ]);
 
-    result.current.chapters.forEach(chapter =>
-      chapter.sections.forEach(section =>
-        expect(section.orphanedThreads).toEqual([])
-      )
-    );
+    const section = result.current.chapters[0].sections[0];
+
+    expect(section.threads.map(t => t.id)).toEqual([2]);
+    expect(section.threads[0].orphaned).toBeFalsy();
   });
 
   it('attaches resolved threads as well', () => {
@@ -155,5 +171,11 @@ describe('useLocatedCommentThreads', () => {
     const section = result.current.chapters[0].sections[0];
 
     expect(section.contentElements[1].threads.map(t => t.id)).toEqual([5]);
+  });
+
+  it('returns an empty result without a provider', () => {
+    const {result} = renderHookInEntry(() => useLocatedCommentThreads());
+
+    expect(result.current).toEqual({chapters: [], threads: [], bySubject: new Map()});
   });
 });

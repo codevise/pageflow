@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import React, {createContext, useContext, useMemo} from 'react';
 
 import {useEntryStructureWithContentElements} from 'pageflow-scrolled/entryState';
 
@@ -6,32 +6,48 @@ import {review} from './api';
 import {useCommentThreads} from './ReviewStateProvider';
 import {sortByRange} from './sortByRange';
 
+const EMPTY = {chapters: [], threads: [], bySubject: new Map()};
+
+const LocatedCommentThreadsContext = createContext(EMPTY);
+
+// Computes the located threads once and shares them through context. The
+// navigator, the toolbar and the many per-section decorators all read the
+// same result instead of each re-running the (entry structure × threads)
+// join.
+export function LocatedCommentThreadsProvider({children}) {
+  const located = useComputeLocatedCommentThreads();
+
+  return (
+    <LocatedCommentThreadsContext.Provider value={located}>
+      {children}
+    </LocatedCommentThreadsContext.Provider>
+  );
+}
+
 /**
- * Joins the comment threads from the review state with the entry
- * structure so both the editor sidebar and the preview navigator can
- * present threads grouped by their location in the entry.
- *
- * Threads are placed by their subject (a section or content element).
- * Threads whose content element has been deleted are kept in context by
- * their section's `orphanedThreads`, matched via the persisted
- * `sectionPermaId`; threads whose section is gone too end up in the
- * top-level `orphanedThreads`. Also returns a flat list of all located
- * threads in document order.
- *
  * @private
  */
 export function useLocatedCommentThreads() {
+  return useContext(LocatedCommentThreadsContext);
+}
+
+// Joins the review state's threads with the entry structure. Each section
+// and content element carries its threads in final display order; threads
+// whose content element was deleted ("orphans", matched via the persisted
+// `sectionPermaId`) lead their section flagged with `orphaned`, and orphans
+// whose section is gone too lead the first section so they stay reachable.
+// Also returns a flat document-order `threads` list and a `bySubject` index
+// keyed by `${subjectType}:${subjectId}` for useLocatedCommentThreadsForSubject.
+function useComputeLocatedCommentThreads() {
   const structure = useEntryStructureWithContentElements();
   const allThreads = useCommentThreads();
 
   return useMemo(() => {
     const threadsBySubject = groupBySubject(allThreads);
     const threadsBySection = groupBySection(allThreads);
-    const threads = [];
 
     // Placing a thread on its (live) subject removes it from its section
-    // bucket. Whatever remains once every subject has been visited are
-    // the threads whose subject is gone — a section's orphans.
+    // bucket; whatever remains once every subject is visited are orphans.
     const take = (subjectType, subjectId, compareRanges) => {
       const subjectThreads = sortByRange(
         threadsBySubject[subjectKey(subjectType, subjectId)] || [],
@@ -40,12 +56,12 @@ export function useLocatedCommentThreads() {
       subjectThreads.forEach(thread =>
         threadsBySection.get(thread.sectionPermaId)?.delete(thread)
       );
-      threads.push(...subjectThreads);
       return subjectThreads;
     };
 
-    const locateChapter = chapter => {
-      const sections = chapter.sections.map(section => ({
+    const chapters = [...structure.main, ...structure.excursions].map(chapter => ({
+      ...chapter,
+      sections: chapter.sections.map(section => ({
         ...section,
         threads: take('Section', section.permaId),
         contentElements: section.contentElements.map(contentElement => ({
@@ -56,32 +72,79 @@ export function useLocatedCommentThreads() {
             review.contentElementTypes.findCompareRanges(contentElement.type)
           )
         }))
-      }));
+      }))
+    }));
 
-      return {...chapter, sections, threadCount: countThreads(sections)};
-    };
-
-    const chapters = [...structure.main, ...structure.excursions].map(locateChapter);
-
-    // All subjects have been visited, so the section buckets now hold
-    // only orphaned threads. Attach those whose section survives; the
-    // rest stay globally orphaned.
+    // The section buckets now hold only orphans. Lead each section with its
+    // own orphans; orphans whose section is gone too lead the first section
+    // so they surface at the top of the list instead of vanishing.
     chapters.forEach(chapter =>
       chapter.sections.forEach(section => {
-        section.orphanedThreads = drainSection(threadsBySection, section.permaId);
+        section.threads = [...drainSection(threadsBySection, section.permaId),
+                           ...section.threads];
       })
     );
 
-    const orphanedThreads = [...threadsBySection.values()].flatMap(set => [...set]);
+    const firstSection = chapters[0]?.sections[0];
+    const homelessOrphans = [...threadsBySection.values()]
+      .flatMap(set => [...set])
+      .map(markOrphan);
 
-    return {chapters, threads, orphanedThreads};
+    if (firstSection && homelessOrphans.length > 0) {
+      firstSection.threads = [...homelessOrphans, ...firstSection.threads];
+    }
+
+    chapters.forEach(chapter => {
+      chapter.threadCount = countThreads(chapter.sections);
+    });
+
+    return {
+      chapters,
+      threads: flatten(chapters),
+      bySubject: buildSubjectIndex(chapters)
+    };
   }, [structure, allThreads]);
 }
 
 function drainSection(threadsBySection, sectionPermaId) {
   const orphans = threadsBySection.get(sectionPermaId);
   threadsBySection.delete(sectionPermaId);
-  return orphans ? [...orphans] : [];
+  return orphans ? [...orphans].map(markOrphan) : [];
+}
+
+function markOrphan(thread) {
+  return {...thread, orphaned: true};
+}
+
+function flatten(chapters) {
+  const threads = [];
+
+  chapters.forEach(chapter =>
+    chapter.sections.forEach(section => {
+      threads.push(...section.threads);
+      section.contentElements.forEach(contentElement =>
+        threads.push(...contentElement.threads)
+      );
+    })
+  );
+
+  return threads;
+}
+
+function buildSubjectIndex(chapters) {
+  const bySubject = new Map();
+
+  chapters.forEach(chapter =>
+    chapter.sections.forEach(section => {
+      bySubject.set(subjectKey('Section', section.permaId), section.threads);
+      section.contentElements.forEach(contentElement =>
+        bySubject.set(subjectKey('ContentElement', contentElement.permaId),
+                      contentElement.threads)
+      );
+    })
+  );
+
+  return bySubject;
 }
 
 function countThreads(sections) {

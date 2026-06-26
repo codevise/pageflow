@@ -5,7 +5,8 @@ import Marionette from 'backbone.marionette';
 import {
   ReviewStateProvider,
   ReviewMessageHandler,
-  ScrollHighlightedThreadIntoViewProvider
+  ScrollHighlightedThreadIntoViewProvider,
+  LocatedCommentThreadsProvider
 } from 'pageflow-scrolled/review';
 import {
   EntryStateProvider,
@@ -54,9 +55,11 @@ export const ReviewView = Marionette.ItemView.extend({
       <ReviewStateProvider initialState={entry.reviewSession.state}>
         <EntryStateProvider seed={entry.scrolledSeed}>
           <WatchEntryCollections entry={entry} />
-          <ScrollHighlightedThreadIntoViewProvider>
-            {this.renderContent(this.props())}
-          </ScrollHighlightedThreadIntoViewProvider>
+          <LocatedCommentThreadsProvider>
+            <ScrollHighlightedThreadIntoViewProvider>
+              {this.renderContent(this.props())}
+            </ScrollHighlightedThreadIntoViewProvider>
+          </LocatedCommentThreadsProvider>
         </EntryStateProvider>
       </ReviewStateProvider>,
       this._containerEl()
