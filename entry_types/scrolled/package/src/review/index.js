@@ -1,6 +1,7 @@
 export {review} from './api';
 export {ReviewStateProvider, useCommentThreads, useCommentThread} from './ReviewStateProvider';
 export {LocatedCommentThreadsProvider, useLocatedCommentThreads} from './useLocatedCommentThreads';
+export {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
 export {ThreadsBadge} from './ThreadsBadge';
 export {Badge} from './Badge';
