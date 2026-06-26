@@ -1,7 +1,7 @@
 import React from 'react';
 import I18n from 'i18n-js';
 
-import {ThreadList, useLocatedCommentThreads, review} from 'pageflow-scrolled/review';
+import {ThreadList, useLocatedCommentThreads} from 'pageflow-scrolled/review';
 
 import {ReviewView} from './ReviewView';
 import defaultPictogram from './images/defaultPictogram.svg';
@@ -133,7 +133,6 @@ function ContentElementGroup({
   const {permaId, type, threads} = contentElement;
   const label = I18n.t(`pageflow_scrolled.editor.content_elements.${type}.name`);
   const pictogram = editor.contentElementTypes.findPictogram(type) || defaultPictogram;
-  const compareRanges = review.contentElementTypes.findCompareRanges(type);
 
   const isSelected = selectedSubject?.subjectType === 'ContentElement' &&
                      selectedSubject.id === contentElement.id;
@@ -150,7 +149,6 @@ function ContentElementGroup({
       <Separator label={label} pictogram={pictogram} />
       <ThreadList subjectType="ContentElement"
                   subjectId={permaId}
-                  compareRanges={compareRanges}
                   highlightedThreadId={groupHighlight}
                   onThreadClick={onThreadClick}
                   restrictInteractionsToHighlighted

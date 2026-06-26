@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {ThreadList, review} from 'pageflow-scrolled/review';
+import {ThreadList} from 'pageflow-scrolled/review';
 
 import {ReviewView} from './ReviewView';
 import styles from './SelectionCommentsView.module.css';
@@ -36,12 +36,10 @@ export const SelectionCommentsView = ReviewView.extend({
     }
 
     if (subject.subjectType === 'ContentElement') {
-      const typeName = model.get('typeName');
       return {
         subjectType: 'ContentElement',
         subjectId: model.get('permaId'),
         threadIds: model.transientState.get('commentThreadIdsAtSelection'),
-        compareRanges: typeName && review.contentElementTypes.findCompareRanges(typeName),
         highlightedThreadId: entry.get('highlightedThreadId'),
         onThreadClick: thread => entry.trigger('selectCommentThread', thread.id)
       };
@@ -57,15 +55,16 @@ export const SelectionCommentsView = ReviewView.extend({
   // scoped to a list of thread ids. For unscoped subjects (whole
   // content elements such as images, or whole sections) there is no
   // anchor for an individual thread in the iframe, so highlighting one
-  // in the list would have no counterpart in the preview.
-  renderContent({subjectType, subjectId, threadIds, compareRanges, highlightedThreadId, onThreadClick}) {
+  // in the list would have no counterpart in the preview. A section's
+  // list also surfaces the threads of its deleted content elements,
+  // since ThreadList resolves them from the located threads.
+  renderContent({subjectType, subjectId, threadIds, highlightedThreadId, onThreadClick}) {
     if (!subjectType) return null;
 
     if (threadIds === undefined) {
       return (
         <ThreadList subjectType={subjectType}
                     subjectId={subjectId}
-                    compareRanges={compareRanges}
                     showNewForm={false}
                     hideNewTopicButton />
       );
@@ -75,7 +74,6 @@ export const SelectionCommentsView = ReviewView.extend({
       <ThreadList subjectType={subjectType}
                   subjectId={subjectId}
                   filter={thread => threadIds.includes(thread.id)}
-                  compareRanges={compareRanges}
                   highlightedThreadId={highlightedThreadId}
                   onThreadClick={onThreadClick}
                   showNewForm={false}

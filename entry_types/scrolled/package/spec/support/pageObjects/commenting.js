@@ -60,6 +60,7 @@ export function useCommentingPageObjects() {
     'pageflow_scrolled.review.select_content_element': 'Select to comment',
     'pageflow_scrolled.review.select_section': 'Select section to comment',
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
+    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element',
     'pageflow_scrolled.review.filter.label': 'Filter comments',
     'pageflow_scrolled.review.filter.unresolved': 'Unresolved',
     'pageflow_scrolled.review.filter.all': 'All',

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {useCommentThreads} from 'pageflow-scrolled/review';
+import {useLocatedCommentThreadsForSubject} from 'pageflow-scrolled/review';
 import {useI18n} from '../i18n';
 import {useAddCommentMode} from './AddCommentModeProvider';
 import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
@@ -17,7 +17,7 @@ export function SectionDecorator({section, children}) {
   const {active} = useAddCommentMode();
   const {isSelected} = useSelectedSubject('Section', section.permaId);
   const {resolution} = useCommentDisplayFilter();
-  const threads = useCommentThreads({
+  const threads = useLocatedCommentThreadsForSubject({
     subjectType: 'Section',
     subjectId: section.permaId,
     resolution

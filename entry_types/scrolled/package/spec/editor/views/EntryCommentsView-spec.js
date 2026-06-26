@@ -29,7 +29,8 @@ describe('EntryCommentsView', () => {
     'pageflow_scrolled.editor.content_elements.image.name': 'Image',
     'pageflow_scrolled.editor.comments_view.section': 'Section',
     'pageflow_scrolled.editor.chapter_item.chapter': 'Chapter',
-    'pageflow_scrolled.editor.chapter_item.excursion': 'Excursion'
+    'pageflow_scrolled.editor.chapter_item.excursion': 'Excursion',
+    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element'
   });
 
   it('renders a chapter heading with number and title above its groups', () => {
@@ -527,6 +528,49 @@ describe('EntryCommentsView', () => {
 
     expect(queryByText('on element')).toBeInTheDocument();
     expect(queryByText('Section')).not.toBeInTheDocument();
+  });
+
+  it('keeps a deleted content element thread in its section with a hint', () => {
+    const entry = createEntry({
+      sections: [{id: 1, permaId: 10}],
+      contentElements: [{id: 1, permaId: 100, sectionId: 1, typeName: 'image'}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [{
+        id: 1, subjectType: 'ContentElement', subjectId: 999, sectionPermaId: 10,
+        comments: [{id: 100, body: 'On a deleted element', creatorName: 'Alice'}]
+      }]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('On a deleted element')).toBeInTheDocument();
+    expect(getByText('Refers to a deleted element')).toBeInTheDocument();
+    expect(getByText('Section')).toBeInTheDocument();
+  });
+
+  it('shows orphaned threads above the section\'s own threads', () => {
+    const entry = createEntry({
+      sections: [{id: 1, permaId: 10}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'Section', subjectId: 10,
+         comments: [{id: 10, body: 'on section', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 999, sectionPermaId: 10,
+         comments: [{id: 20, body: 'on deleted element', creatorName: 'B'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    const orphan = getByText('on deleted element');
+    const sectionThread = getByText('on section');
+
+    expect(orphan.compareDocumentPosition(sectionThread) &
+           Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it('highlights all threads of the selected section', () => {
