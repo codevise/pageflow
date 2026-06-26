@@ -60,6 +60,25 @@ module Pageflow
         )
       end
 
+      it 'returns section_perma_id of threads' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        create(:comment_thread,
+               revision: entry.draft,
+               creator: user,
+               section_perma_id: 12)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(
+          commentThreads: [
+            {sectionPermaId: 12}
+          ]
+        )
+      end
+
       it 'does not have N+1 queries' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
@@ -118,6 +137,26 @@ module Pageflow
           creatorId: user.id,
           comments: [{body: 'Looks good!', creatorId: user.id}]
         )
+      end
+
+      it 'creates thread with section_perma_id' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        post(:create, params: {
+               entry_id: entry.id,
+               comment_thread: {
+                 subject_type: 'ContentElement',
+                 subject_id: 5,
+                 section_perma_id: 12,
+                 comment: {body: 'Looks good!'}
+               }
+             }, format: 'json')
+
+        expect(response.status).to eq(201)
+        expect(response.body).to include_json(sectionPermaId: 12)
+        expect(Pageflow::CommentThread.last.section_perma_id).to eq(12)
       end
 
       it 'creates thread with subject_range' do

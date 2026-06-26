@@ -46,7 +46,8 @@ module Pageflow
       private
 
       def thread_params
-        permitted = params.require(:comment_thread).permit(:subject_type, :subject_id)
+        permitted = params.require(:comment_thread)
+                          .permit(:subject_type, :subject_id, :section_perma_id)
         permitted[:subject_range] = params[:comment_thread][:subject_range]&.permit!
         permitted
       end
