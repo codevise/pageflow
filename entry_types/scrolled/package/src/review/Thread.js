@@ -43,6 +43,11 @@ export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlig
           <ChevronIcon className={collapsed ? '' : styles.chevronExpanded} />
         </button>}
 
+      {thread.orphaned &&
+        <p className={styles.deletedHint}>
+          {t('pageflow_scrolled.review.refers_to_deleted_element')}
+        </p>}
+
       {firstComment && <Comment comment={firstComment} />}
 
       {repliesCollapsed &&

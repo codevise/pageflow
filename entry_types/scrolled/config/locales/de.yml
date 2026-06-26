@@ -1976,3 +1976,4 @@ de:
         one: 1 Antwort
         other: '%{count} Antworten'
       no_threads_yet: Noch keine Kommentare
+      refers_to_deleted_element: Bezieht sich auf ein gelöschtes Element
