@@ -16,6 +16,12 @@
   opacity: 1;
 }
 
+/* Make room for the fullscreen toggle button (40px button + 2px
+   margins) so the two do not overlap in the top right corner. */
+.wrapper.besideFullscreenButton {
+  right: 44px;
+}
+
 .eqBar {
   transform: scale(1, -1) translate(0, -24px);
   fill: #fff;

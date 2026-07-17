@@ -24,6 +24,7 @@ import {
 } from 'pageflow-scrolled/frontend';
 
 import {MutedIndicator} from './MutedIndicator';
+import {FullscreenVideo, useFullscreenActive} from './FullscreenVideo';
 
 import {
   getLifecycleHandlers,
@@ -131,6 +132,33 @@ function OrientationUnawareInlineVideo({
 
   const {aspectRatio, rounded} = processImageModifiers(imageModifiers);
 
+  const supportFullscreen =
+    configuration.enableFullscreen &&
+    configuration.position !== 'backdrop' &&
+    configuration.playbackMode !== 'loop';
+
+  const mutedIndicatorVisible = media.muted &&
+                                playerState.shouldPlay &&
+                                !configuration.keepMuted;
+
+  const player = (
+    <Player key={configuration.playbackMode === 'loop'}
+            sectionProps={sectionProps}
+            videoFile={videoFile}
+            motifArea={motifArea}
+            posterImageFile={posterImageFile}
+            inlineFileRightsItems={inlineFileRightsItems}
+            playerState={playerState}
+            playerActions={playerActions}
+            contentElementId={contentElementId}
+            configuration={configuration}
+            fit={(aspectRatio || configuration.position === 'backdrop') ? 'cover' : 'contain'}
+            hideControlBar={rounded === 'circle' ||
+                            configuration.hideControlBar ||
+                            configuration.playbackMode === 'loop'}
+            applyContentElementBoxStyles={rounded === 'circle'} />
+  );
+
   return (
     <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
       <FitViewport file={videoFile}
@@ -141,24 +169,14 @@ function OrientationUnawareInlineVideo({
             <ContentElementFigure configuration={configuration}>
               <FitViewport.Content>
                 <FilePlaceholder file={videoFile} />
-                <MutedIndicator visible={media.muted &&
-                                         playerState.shouldPlay &&
-                                         !configuration.keepMuted} />
-                <Player key={configuration.playbackMode === 'loop'}
-                        sectionProps={sectionProps}
-                        videoFile={videoFile}
-                        motifArea={motifArea}
-                        posterImageFile={posterImageFile}
-                        inlineFileRightsItems={inlineFileRightsItems}
-                        playerState={playerState}
-                        playerActions={playerActions}
-                        contentElementId={contentElementId}
-                        configuration={configuration}
-                        fit={(aspectRatio || configuration.position === 'backdrop') ? 'cover' : 'contain'}
-                        hideControlBar={rounded === 'circle' ||
-                                        configuration.hideControlBar ||
-                                        configuration.playbackMode === 'loop'}
-                        applyContentElementBoxStyles={rounded === 'circle'} />
+                <MutedIndicator visible={mutedIndicatorVisible}
+                                besideFullscreenButton={supportFullscreen} />
+                {supportFullscreen ?
+                 <FullscreenVideo playerState={playerState}
+                                  keepButtonVisible={mutedIndicatorVisible}>
+                   {player}
+                 </FullscreenVideo> :
+                 player}
               </FitViewport.Content>
             </ContentElementFigure>
         )}
@@ -211,9 +229,10 @@ function PlayerWithControlBar({
   applyContentElementBoxStyles
 }) {
   const {isEditable, isSelected} = useContentElementEditorState();
+  const isFullscreen = useFullscreenActive();
 
   const {shouldLoad, shouldPrepare} = useContentElementLifecycle(
-    getLifecycleHandlers({configuration, playerActions, mediaMuted: media.muted})
+    getLifecycleHandlers({configuration, playerActions, mediaMuted: media.muted, isFullscreen})
   );
 
   useAudioFocus({

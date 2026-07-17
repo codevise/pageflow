@@ -1,4 +1,6 @@
 de:
   pageflow_scrolled:
     public:
+      enter_fullscreen: Vollbildmodus öffnen
+      exit_fullscreen: Vollbildmodus verlassen
       flip_card: Karte wenden

@@ -105,6 +105,7 @@ export {useMediaMuted, useOnUnmuteMedia} from './useMediaMuted';
 export {usePortraitOrientation} from './usePortraitOrientation';
 export {useScrollPosition} from './useScrollPosition';
 export {usePhonePlatform} from './usePhonePlatform';
+export {usePlayerControlsInactive} from './usePlayerControlsInactive';
 export {useIsomorphicLayoutEffect} from './useIsomorphicLayoutEffect';
 export {MainStorylineActivity, useStorylineActivity} from './storylineActivity';
 export {useDelayedBoolean} from './useDelayedBoolean';

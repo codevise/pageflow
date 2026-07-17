@@ -1,4 +1,6 @@
 en:
   pageflow_scrolled:
     public:
+      enter_fullscreen: Enter fullscreen
+      exit_fullscreen: Exit fullscreen
       flip_card: Flip card
