@@ -163,11 +163,11 @@ export function renderLeaf({attributes, children, leaf}) {
   }
 
   if (leaf.sub) {
-    children = <sub>{children}</sub>
+    children = <sub className={styles.sub}>{children}</sub>
   }
 
   if (leaf.sup) {
-    children = <sup>{children}</sup>
+    children = <sup className={styles.sup}>{children}</sup>
   }
 
   return <span {...attributes}>{children}</span>
