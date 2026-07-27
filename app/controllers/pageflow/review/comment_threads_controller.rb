@@ -19,10 +19,8 @@ module Pageflow
         @comment_thread = entry.comment_threads.build(thread_params)
         @comment_thread.creator = current_user
 
-        @comment_thread.comments.build(
-          body: params[:comment_thread][:comment][:body],
-          creator: current_user
-        )
+        first_comment = @comment_thread.comments.build(first_comment_params)
+        first_comment.creator = current_user
 
         @comment_thread.save!
         render :create, status: :created
@@ -50,6 +48,10 @@ module Pageflow
                           .permit(:subject_type, :subject_id, :section_perma_id)
         permitted[:subject_range] = params[:comment_thread][:subject_range]&.permit!
         permitted
+      end
+
+      def first_comment_params
+        params.require(:comment_thread).require(:comment).permit(:body, :quote)
       end
     end
   end

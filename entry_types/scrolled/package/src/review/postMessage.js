@@ -1,16 +1,18 @@
-export function postCreateCommentThreadMessage({subjectType, subjectId, subjectRange, sectionPermaId, body}) {
+export function postCreateCommentThreadMessage({
+  subjectType, subjectId, subjectRange, sectionPermaId, body, quote
+}) {
   window.top.postMessage(
     {
       type: 'CREATE_COMMENT_THREAD',
-      payload: {subjectType, subjectId, subjectRange, sectionPermaId, body}
+      payload: {subjectType, subjectId, subjectRange, sectionPermaId, body, quote}
     },
     window.location.origin
   );
 }
 
-export function postCreateCommentMessage({threadId, body}) {
+export function postCreateCommentMessage({threadId, body, quote}) {
   window.top.postMessage(
-    {type: 'CREATE_COMMENT', payload: {threadId, body}},
+    {type: 'CREATE_COMMENT', payload: {threadId, body, quote}},
     window.location.origin
   );
 }

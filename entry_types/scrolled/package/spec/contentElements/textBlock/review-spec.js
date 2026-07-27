@@ -46,4 +46,45 @@ describe('contentElements/textBlock/review', () => {
     expect(compareRanges(r, undefined)).toBeLessThan(0);
     expect(compareRanges(undefined, undefined)).toBe(0);
   });
+
+  describe('extractQuote', () => {
+    const extractQuote = review.contentElementTypes.findExtractQuote('textBlock');
+
+    const value = [
+      {type: 'paragraph', children: [{text: 'The quick brown fox'}]},
+      {type: 'paragraph', children: [{text: 'jumps over the lazy dog'}]}
+    ];
+
+    it('returns the text covered by the range', () => {
+      expect(extractQuote({value}, range([0, 0, 4], [0, 0, 15]))).toEqual('quick brown');
+    });
+
+    it('joins the text of blocks the range spans', () => {
+      expect(extractQuote({value}, range([0, 0, 16], [1, 0, 5]))).toEqual('fox\njumps');
+    });
+
+    it('handles ranges whose focus precedes their anchor', () => {
+      expect(extractQuote({value}, range([0, 0, 15], [0, 0, 4]))).toEqual('quick brown');
+    });
+
+    it('trims surrounding whitespace', () => {
+      expect(extractQuote({value}, range([0, 0, 3], [0, 0, 16]))).toEqual('quick brown');
+    });
+
+    it('returns null for ranges pointing past the end of the value', () => {
+      expect(extractQuote({value}, range([5, 0, 0], [5, 0, 3]))).toBeNull();
+    });
+
+    it('returns null for collapsed ranges', () => {
+      expect(extractQuote({value}, range([0, 0, 4], [0, 0, 4]))).toBeNull();
+    });
+
+    it('returns null for content elements without a value', () => {
+      expect(extractQuote({}, range([0, 0, 0], [0, 0, 3]))).toBeNull();
+    });
+
+    it('returns null for element wide comments without a range', () => {
+      expect(extractQuote({value})).toBeNull();
+    });
+  });
 });

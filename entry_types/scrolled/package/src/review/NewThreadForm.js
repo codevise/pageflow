@@ -4,6 +4,7 @@ import {useSectionPermaIdOfSubject} from 'pageflow-scrolled/entryState';
 
 import {useI18n} from '../frontend/i18n';
 import {postCreateCommentThreadMessage} from './postMessage';
+import {useSubjectQuote} from './subjectQuote';
 import {autoGrow, autoResize} from './autoGrow';
 import {isSubmitShortcut} from './submitShortcut';
 
@@ -16,6 +17,10 @@ export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit}) 
   const hasText = body.trim().length > 0;
 
   const sectionPermaId = useSectionPermaIdOfSubject({subjectType, subjectId});
+
+  // Recorded now since the commented text can change afterwards, leaving the
+  // comment without the wording it referred to.
+  const quote = useSubjectQuote({subjectType, subjectId, subjectRange});
 
   // preventScroll keeps focus from yanking the page to the top before the
   // portaled popover has been positioned by floating-ui.
@@ -44,7 +49,9 @@ export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit}) 
   function createThread() {
     if (!hasText) return;
 
-    postCreateCommentThreadMessage({subjectType, subjectId, subjectRange, sectionPermaId, body});
+    postCreateCommentThreadMessage({
+      subjectType, subjectId, subjectRange, sectionPermaId, body, quote
+    });
     setBody('');
 
     if (onSubmit) onSubmit();

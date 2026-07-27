@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {ThreadList} from 'review/ThreadList';
+import {review} from 'review/api';
 import {ScrollHighlightedThreadIntoViewProvider} from 'review/scrollHighlightedThreadIntoView';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 
@@ -34,6 +35,10 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.resolved_count.other': '%{count} resolved',
     'pageflow_scrolled.review.no_threads_yet': 'No comments yet',
     'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element'
+  });
+
+  afterEach(() => {
+    review.contentElementTypes.types = {};
   });
 
   it('displays comments of threads for the subject', () => {
@@ -431,6 +436,44 @@ describe('ThreadList', () => {
       postMessage.mockRestore();
     });
 
+    it('includes the quote of the selected range in create thread message', async () => {
+      const user = userEvent.setup();
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      review.contentElementTypes.register('textBlock', {
+        extractQuote: configuration => configuration.value
+      });
+
+      const {getByPlaceholderText, getByRole} = renderWithReviewState(
+        <ThreadList subjectType="ContentElement"
+                    subjectId={10}
+                    subjectRange={{anchor: {path: [0, 0], offset: 0},
+                                   focus: {path: [0, 0], offset: 6}}} />,
+        {
+          seed: {
+            sections: [{id: 1, permaId: 1}],
+            contentElements: [{
+              id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock',
+              configuration: {value: 'Quoted text'}
+            }]
+          }
+        }
+      );
+
+      await user.type(getByPlaceholderText('Add a comment...'), 'New thread');
+      await user.click(getByRole('button', {name: 'Send'}));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'CREATE_COMMENT_THREAD',
+          payload: expect.objectContaining({quote: 'Quoted text'})
+        },
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
+
     it('sends the section perma id itself for section subjects', async () => {
       const user = userEvent.setup();
       const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
@@ -568,7 +611,50 @@ describe('ThreadList', () => {
       expect(postMessage).toHaveBeenCalledWith(
         {
           type: 'CREATE_COMMENT',
-          payload: {threadId: 1, body: 'My reply'}
+          payload: expect.objectContaining({threadId: 1, body: 'My reply'})
+        },
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
+
+    it('includes the quote of the thread range in create comment message', async () => {
+      const user = userEvent.setup();
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      review.contentElementTypes.register('textBlock', {
+        extractQuote: configuration => configuration.value
+      });
+
+      const subjectRange = {anchor: {path: [0, 0], offset: 0},
+                            focus: {path: [0, 0], offset: 6}};
+
+      const {getByPlaceholderText, getByRole} = renderWithReviewState(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          seed: {
+            sections: [{id: 1, permaId: 1}],
+            contentElements: [{
+              id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock',
+              configuration: {value: 'Quoted text'}
+            }]
+          },
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10, subjectRange, comments: [
+              {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
+            ]}
+          ]
+        }
+      );
+
+      await user.type(getByPlaceholderText('Reply...'), 'My reply');
+      await user.click(getByRole('button', {name: 'Send'}));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'CREATE_COMMENT',
+          payload: expect.objectContaining({quote: 'Quoted text'})
         },
         window.location.origin
       );

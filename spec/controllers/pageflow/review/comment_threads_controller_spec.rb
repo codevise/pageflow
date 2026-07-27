@@ -79,6 +79,23 @@ module Pageflow
         )
       end
 
+      it 'returns quote of comments' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        thread = create(:comment_thread, revision: entry.draft, creator: user)
+        create(:comment, comment_thread: thread, creator: user, quote: 'quick brown')
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(
+          commentThreads: [
+            {comments: [{quote: 'quick brown'}]}
+          ]
+        )
+      end
+
       it 'does not have N+1 queries' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
@@ -157,6 +174,27 @@ module Pageflow
         expect(response.status).to eq(201)
         expect(response.body).to include_json(sectionPermaId: 12)
         expect(Pageflow::CommentThread.last.section_perma_id).to eq(12)
+      end
+
+      it 'creates first comment with quote' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        post(:create, params: {
+               entry_id: entry.id,
+               comment_thread: {
+                 subject_type: 'ContentElement',
+                 subject_id: 5,
+                 comment: {body: 'About this text', quote: 'quick brown'}
+               }
+             }, format: 'json')
+
+        expect(response.status).to eq(201)
+        expect(response.body).to include_json(
+          comments: [{body: 'About this text', quote: 'quick brown'}]
+        )
+        expect(Pageflow::Comment.last.quote).to eq('quick brown')
       end
 
       it 'creates thread with subject_range' do

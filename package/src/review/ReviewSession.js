@@ -11,7 +11,9 @@ export class ReviewSession {
     return this._state;
   }
 
-  async createThread({subjectType, subjectId, subjectRange, sectionPermaId, body}) {
+  async createThread({
+    subjectType, subjectId, subjectRange, sectionPermaId, body, quote
+  }) {
     const thread = await this._request({
       url: `/review/entries/${this._entryId}/comment_threads`,
       method: 'POST',
@@ -21,7 +23,7 @@ export class ReviewSession {
           subject_id: subjectId,
           ...(subjectRange && {subject_range: subjectRange}),
           ...(sectionPermaId != null && {section_perma_id: sectionPermaId}),
-          comment: {body}
+          comment: {body, ...(quote && {quote})}
         }
       }
     });
@@ -41,11 +43,11 @@ export class ReviewSession {
     this.trigger('change:thread', thread);
   }
 
-  async createComment({threadId, body}) {
+  async createComment({threadId, body, quote}) {
     const comment = await this._request({
       url: `/review/entries/${this._entryId}/comment_threads/${threadId}/comments`,
       method: 'POST',
-      payload: {comment: {body}}
+      payload: {comment: {body, ...(quote && {quote})}}
     });
 
     const thread = this._findThread(threadId);

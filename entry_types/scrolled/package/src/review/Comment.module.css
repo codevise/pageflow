@@ -15,6 +15,17 @@
   color: var(--ui-on-surface-color-light);
 }
 
+.quote {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  margin: 0 0 space(2) space(8);
+  padding-left: space(2);
+  border-left: solid 2px var(--ui-on-surface-color-lightest);
+  color: var(--ui-on-surface-color-light);
+}
+
 .body {
   margin: 0;
   padding-left: space(8);

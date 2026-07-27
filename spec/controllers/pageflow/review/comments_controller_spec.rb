@@ -25,6 +25,23 @@ module Pageflow
         )
       end
 
+      it 'creates comment with quote' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft, creator: user)
+
+        sign_in(user, scope: :user)
+        post(:create, params: {
+               entry_id: entry.id,
+               comment_thread_id: thread.id,
+               comment: {body: 'Still wrong', quote: 'lazy dog'}
+             }, format: 'json')
+
+        expect(response.status).to eq(201)
+        expect(response.body).to include_json(quote: 'lazy dog')
+        expect(Pageflow::Comment.last.quote).to eq('lazy dog')
+      end
+
       it 'requires user to be signed in' do
         entry = create(:entry)
         thread = create(:comment_thread, revision: entry.draft)

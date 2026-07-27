@@ -4,7 +4,7 @@ import {Avatar} from './Avatar';
 
 import styles from './Comment.module.css';
 
-export function Comment({comment}) {
+export function Comment({comment, showQuote}) {
   return (
     <div className={styles.comment}>
       <div className={styles.header}>
@@ -13,6 +13,8 @@ export function Comment({comment}) {
         {comment.createdAt &&
           <time className={styles.timestamp}>{formatDate(comment.createdAt)}</time>}
       </div>
+      {showQuote &&
+        <blockquote className={styles.quote}>{comment.quote}</blockquote>}
       <p className={styles.body}>{comment.body}</p>
     </div>
   );
