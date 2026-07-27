@@ -1,5 +1,7 @@
 import React, {useCallback, useState} from 'react';
 
+import {useSectionPermaIdOfSubject} from 'pageflow-scrolled/entryState';
+
 import {useI18n} from '../frontend/i18n';
 import {postCreateCommentThreadMessage} from './postMessage';
 import {autoGrow, autoResize} from './autoGrow';
@@ -12,6 +14,8 @@ export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit}) 
   const {t} = useI18n({locale: 'ui'});
   const [body, setBody] = useState('');
   const hasText = body.trim().length > 0;
+
+  const sectionPermaId = useSectionPermaIdOfSubject({subjectType, subjectId});
 
   // preventScroll keeps focus from yanking the page to the top before the
   // portaled popover has been positioned by floating-ui.
@@ -40,7 +44,7 @@ export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit}) 
   function createThread() {
     if (!hasText) return;
 
-    postCreateCommentThreadMessage({subjectType, subjectId, subjectRange, body});
+    postCreateCommentThreadMessage({subjectType, subjectId, subjectRange, sectionPermaId, body});
     setBody('');
 
     if (onSubmit) onSubmit();

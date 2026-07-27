@@ -63,7 +63,7 @@ export function useCommentThreads({subjectType, subjectId, subjectRange, resolut
   }, [commentThreads, hasSubject, subjectType, subjectId, subjectRange, resolution]);
 }
 
-function matchesResolution(thread, resolution) {
+export function matchesResolution(thread, resolution) {
   return resolution === 'all' ||
          (resolution === 'unresolved' && !thread.resolvedAt) ||
          (resolution === 'resolved' && !!thread.resolvedAt);

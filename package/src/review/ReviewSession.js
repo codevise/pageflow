@@ -11,7 +11,7 @@ export class ReviewSession {
     return this._state;
   }
 
-  async createThread({subjectType, subjectId, subjectRange, body}) {
+  async createThread({subjectType, subjectId, subjectRange, sectionPermaId, body}) {
     const thread = await this._request({
       url: `/review/entries/${this._entryId}/comment_threads`,
       method: 'POST',
@@ -20,6 +20,7 @@ export class ReviewSession {
           subject_type: subjectType,
           subject_id: subjectId,
           ...(subjectRange && {subject_range: subjectRange}),
+          ...(sectionPermaId != null && {section_perma_id: sectionPermaId}),
           comment: {body}
         }
       }

@@ -230,5 +230,80 @@ module Pageflow
         expect(t2.reload.subject_range).to eq(new_range)
       end
     end
+
+    describe '.update_section_perma_id_for' do
+      it 'sets section_perma_id of matching threads' do
+        revision = create(:revision)
+        thread = create(:comment_thread,
+                        revision:,
+                        subject_type: 'ContentElement',
+                        subject_id: 10,
+                        section_perma_id: 1)
+
+        CommentThread.update_section_perma_id_for(
+          revision:,
+          subject_type: 'ContentElement',
+          subject_id: [10],
+          section_perma_id: 2
+        )
+
+        expect(thread.reload.section_perma_id).to eq(2)
+      end
+
+      it 'accepts multiple subject_ids' do
+        revision = create(:revision)
+        t1 = create(:comment_thread,
+                    revision:, subject_type: 'ContentElement',
+                    subject_id: 10, section_perma_id: 1)
+        t2 = create(:comment_thread,
+                    revision:, subject_type: 'ContentElement',
+                    subject_id: 20, section_perma_id: 1)
+
+        CommentThread.update_section_perma_id_for(
+          revision:,
+          subject_type: 'ContentElement',
+          subject_id: [10, 20],
+          section_perma_id: 2
+        )
+
+        expect(t1.reload.section_perma_id).to eq(2)
+        expect(t2.reload.section_perma_id).to eq(2)
+      end
+
+      it 'does not touch threads of a different revision' do
+        revision = create(:revision)
+        other_revision = create(:revision)
+        thread = create(:comment_thread,
+                        revision: other_revision,
+                        subject_type: 'ContentElement',
+                        subject_id: 10,
+                        section_perma_id: 1)
+
+        CommentThread.update_section_perma_id_for(
+          revision:,
+          subject_type: 'ContentElement',
+          subject_id: [10],
+          section_perma_id: 2
+        )
+
+        expect(thread.reload.section_perma_id).to eq(1)
+      end
+
+      it 'is a no-op when subject_id is blank' do
+        revision = create(:revision)
+        thread = create(:comment_thread,
+                        revision:, subject_type: 'ContentElement',
+                        subject_id: 10, section_perma_id: 1)
+
+        expect {
+          CommentThread.update_section_perma_id_for(
+            revision:,
+            subject_type: 'ContentElement',
+            subject_id: [],
+            section_perma_id: 2
+          )
+        }.not_to(change { thread.reload.section_perma_id })
+      end
+    end
   end
 end

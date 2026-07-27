@@ -77,6 +77,53 @@ describe('commenting badges', () => {
     expect(entry.getByText('On the section')).toBeInTheDocument();
   });
 
+  it('shows a deleted element thread in the section thread list', () => {
+    const entry = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]
+      },
+      commenting: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'Section', subjectId: 10, comments: [
+            {id: 10, body: 'On the section', creatorName: 'Bob', creatorId: 2}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 999, sectionPermaId: 10, comments: [
+            {id: 20, body: 'On a deleted element', creatorName: 'Eve', creatorId: 3}
+          ]}
+        ]
+      }
+    });
+
+    fireEvent.click(entry.getAllCommentBadges()[0]);
+
+    expect(entry.getByText('On a deleted element')).toBeInTheDocument();
+    expect(entry.getByText('Refers to a deleted element')).toBeInTheDocument();
+  });
+
+  it('shows a section badge for a section whose only thread is on a deleted element', () => {
+    const entry = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]
+      },
+      commenting: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 999, sectionPermaId: 10, comments: [
+            {id: 10, body: 'On a deleted element', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    });
+
+    fireEvent.click(entry.getAllCommentBadges()[0]);
+
+    expect(entry.getByText('On a deleted element')).toBeInTheDocument();
+    expect(entry.getByText('Refers to a deleted element')).toBeInTheDocument();
+  });
+
   it('closes the thread list when clicking outside', () => {
     const entry = renderEntry({
       seed: {

@@ -332,6 +332,7 @@ export function Batch(entry, section, {reviewSession} = {}) {
         //   brief collapse).
         applyPermaIds(response);
         applyThreadUpdates();
+        reconcileSectionPermaIds();
         applyConfigurationChanges();
         applyPositions();
         applyAdditions();
@@ -449,6 +450,32 @@ export function Batch(entry, section, {reviewSession} = {}) {
         ...updates[id],
         subjectId: target.get('permaId')
       };
+    });
+
+    reviewSession.applyThreadUpdates(updates);
+  }
+
+  // A thread's section follows its content element. Runs after
+  // applyThreadUpdates so migrated threads already carry their new
+  // subjectId and are found on this section's content elements. Keeps
+  // the in-memory state in sync with the server-side reconcile so a
+  // thread relocates to the right section once its content element is
+  // deleted in the same session.
+  function reconcileSectionPermaIds() {
+    if (!reviewSession) return;
+
+    const sectionPermaId = section.get('permaId');
+    const updates = {};
+
+    contentElements.forEach(contentElement => {
+      reviewSession.findThreadsFor({
+        subjectType: 'ContentElement',
+        subjectId: contentElement.get('permaId')
+      }).forEach(thread => {
+        if (thread.sectionPermaId !== sectionPermaId) {
+          updates[thread.id] = {sectionPermaId};
+        }
+      });
     });
 
     reviewSession.applyThreadUpdates(updates);

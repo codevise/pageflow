@@ -29,6 +29,13 @@
   background: var(--review-resolved-thread-background, var(--ui-surface-color));
 }
 
+.deletedHint {
+  margin: 0;
+  font-size: space(3);
+  font-style: italic;
+  color: var(--ui-on-surface-color-light);
+}
+
 .chevronButton {
   position: absolute;
   top: space(3);

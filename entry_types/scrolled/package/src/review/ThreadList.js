@@ -2,8 +2,7 @@ import React, {useMemo, useState} from 'react';
 import classNames from 'classnames';
 
 import {useI18n} from '../frontend/i18n';
-import {useCommentThreads} from './ReviewStateProvider';
-import {sortByRange} from './sortByRange';
+import {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
 import {Thread} from './Thread';
 import {NewThreadForm} from './NewThreadForm';
 import {postUpdateThreadMessage} from './postMessage';
@@ -12,18 +11,24 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, compareRanges, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved}) {
   const {t} = useI18n({locale: 'ui'});
-  const allActiveThreads = useCommentThreads({subjectType, subjectId, subjectRange, resolution: 'unresolved'});
-  const allResolvedThreads = useCommentThreads({subjectType, subjectId, subjectRange, resolution: 'resolved'});
+
+  // Threads arrive already located: in display order, with orphans of
+  // deleted content elements folded into their section on top and flagged.
+  // The list only filters by the selection and splits resolved from active.
+  const allActiveThreads =
+    useLocatedCommentThreadsForSubject({subjectType, subjectId, subjectRange, resolution: 'unresolved'});
+  const allResolvedThreads =
+    useLocatedCommentThreadsForSubject({subjectType, subjectId, subjectRange, resolution: 'resolved'});
 
   const activeThreads = useMemo(
-    () => sortByRange(filter ? allActiveThreads.filter(filter) : allActiveThreads, compareRanges),
-    [allActiveThreads, filter, compareRanges]
+    () => (filter ? allActiveThreads.filter(filter) : allActiveThreads),
+    [allActiveThreads, filter]
   );
   const resolvedThreads = useMemo(
-    () => sortByRange(filter ? allResolvedThreads.filter(filter) : allResolvedThreads, compareRanges),
-    [allResolvedThreads, filter, compareRanges]
+    () => (filter ? allResolvedThreads.filter(filter) : allResolvedThreads),
+    [allResolvedThreads, filter]
   );
 
   const isHighlighted = thread => Array.isArray(highlightedThreadId) ?

@@ -1804,3 +1804,4 @@ en:
         one: 1 reply
         other: '%{count} replies'
       no_threads_yet: No comments yet
+      refers_to_deleted_element: Refers to a deleted element

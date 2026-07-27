@@ -7,7 +7,7 @@ import widgetSelectionRectStyles from './WidgetSelectionRect.module.css';
 import paddingIndicatorStyles from './PaddingIndicator.module.css';
 
 import {features} from 'pageflow/frontend';
-import {ThreadsBadge, useCommentThreads} from 'pageflow-scrolled/review';
+import {ThreadsBadge, useLocatedCommentThreadsForSubject} from 'pageflow-scrolled/review';
 import {Toolbar} from './Toolbar';
 import {ForcePaddingContext} from '../Foreground';
 import {useEditorSelection} from './EditorState';
@@ -51,7 +51,7 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   // section and the sidebar comment panel stay visually in sync.
   const isSelected = isSectionSelected || isPaddingSelected || commentsSelected;
 
-  const threads = useCommentThreads({
+  const threads = useLocatedCommentThreadsForSubject({
     subjectType: 'Section',
     subjectId: section.permaId,
     resolution: 'unresolved'

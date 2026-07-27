@@ -254,6 +254,30 @@ export function useContentElement({permaId, layout}) {
   );
 }
 
+/**
+ * Returns the perma id of the section a comment subject lives in: the
+ * subject's perma id itself for a section subject, the parent section's
+ * perma id for a content element subject. Persisted with new threads so
+ * they stay grouped under their section once the subject is deleted.
+ *
+ * @private
+ */
+export function useSectionPermaIdOfSubject({subjectType, subjectId}) {
+  const contentElement = useEntryStateCollectionItem('contentElements', subjectId);
+  const sections = useEntryStateCollectionItems('sections');
+
+  return useMemo(() => {
+    switch (subjectType) {
+    case 'Section':
+      return subjectId;
+    case 'ContentElement':
+      return sections.find(section => section.id === contentElement?.sectionId)?.permaId;
+    default:
+      return undefined;
+    }
+  }, [subjectType, subjectId, contentElement, sections]);
+}
+
 function contentElementData(contentElement, layout, phoneLayout) {
   const position = getPosition(contentElement, layout, phoneLayout);
 

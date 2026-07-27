@@ -137,7 +137,18 @@ function navigableTargets(chapters, resolution) {
     chapter.sections.forEach(section => {
       const location = {sectionId: section.id, excursion: chapter.isExcursion};
 
-      pushTargets(targets, section.threads, location);
+      // A section's list also holds the orphaned threads of its deleted
+      // content elements; all of them navigate to the section, since an
+      // orphan's own subject no longer exists in the preview.
+      section.threads.forEach(thread => targets.push({
+        key: subjectKey({subjectType: 'Section', subjectId: section.permaId}),
+        subjectType: 'Section',
+        subjectId: section.permaId,
+        threadId: thread.id,
+        resolved: !!thread.resolvedAt,
+        ...location
+      }));
+
       section.contentElements.forEach(contentElement => {
         pushTargets(targets, contentElement.threads, location);
       });

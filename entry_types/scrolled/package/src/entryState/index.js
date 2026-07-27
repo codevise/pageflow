@@ -19,6 +19,7 @@ export {
   useChapter,
   useSectionForegroundContentElements,
   useContentElement,
+  useSectionPermaIdOfSubject,
   useMainStoryline
 } from './structure';
 export {useFile} from './useFile';

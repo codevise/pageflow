@@ -24,7 +24,8 @@ describe('SelectionCommentsView', () => {
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.review.no_threads_yet': 'No comments yet',
     'pageflow_scrolled.review.resolved_count.one': '1 resolved',
-    'pageflow_scrolled.review.resolved_count.other': '%{count} resolved'
+    'pageflow_scrolled.review.resolved_count.other': '%{count} resolved',
+    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element'
   });
 
   it('displays threads of selected content element from session state', () => {
@@ -456,6 +457,27 @@ describe('SelectionCommentsView', () => {
 
     expect(getByText('First')).toBeInTheDocument();
     expect(getByText('Second')).toBeInTheDocument();
+  });
+
+  it('shows orphaned threads of the selected section with a hint', () => {
+    const entry = createEntry({
+      sections: [{id: 5, permaId: 50}]
+    });
+    entry.set('selectedCommentsSubject', {subjectType: 'Section', id: 5});
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'Section', subjectId: 50,
+         comments: [{id: 100, body: 'On the section', creatorName: 'Alice'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 999, sectionPermaId: 50,
+         comments: [{id: 200, body: 'On a deleted element', creatorName: 'Bob'}]}
+      ]
+    });
+
+    const view = new SelectionCommentsView({entry, editor});
+    const {getByText} = renderBackboneView(view);
+
+    expect(getByText('On a deleted element')).toBeInTheDocument();
+    expect(getByText('Refers to a deleted element')).toBeInTheDocument();
   });
 
   it('updates when selection switches from content element to section', async () => {

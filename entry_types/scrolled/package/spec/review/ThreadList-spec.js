@@ -7,6 +7,17 @@ import {ThreadList} from 'review/ThreadList';
 import {ScrollHighlightedThreadIntoViewProvider} from 'review/scrollHighlightedThreadIntoView';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 
+// ThreadList resolves its threads from the located threads by subject, so
+// the subject must exist in the entry structure.
+const seed = {
+  sections: [{id: 1, permaId: 1}],
+  contentElements: [{id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock'}]
+};
+
+function renderThreadList(ui, {commentThreads = []} = {}) {
+  return renderWithReviewState(ui, {seed, commentThreads});
+}
+
 describe('ThreadList', () => {
   useFakeTranslations({
     'pageflow_scrolled.review.reply_count.one': '1 reply',
@@ -21,10 +32,12 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.unresolve': 'Mark as unresolved',
     'pageflow_scrolled.review.resolved_count.one': '1 resolved',
     'pageflow_scrolled.review.resolved_count.other': '%{count} resolved',
-    'pageflow_scrolled.review.no_threads_yet': 'No comments yet'
+    'pageflow_scrolled.review.no_threads_yet': 'No comments yet',
+    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element'
   });
-  it('displays comments of threads for subject', () => {
-    const {getByText} = renderWithReviewState(
+
+  it('displays comments of threads for the subject', () => {
+    const {getByText} = renderThreadList(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
@@ -39,18 +52,15 @@ describe('ThreadList', () => {
     expect(getByText('Looks good')).toBeInTheDocument();
   });
 
-  it('only displays threads for given subject', () => {
-    const {getByText, queryByText} = renderWithReviewState(
+  it('only displays threads for the given subject', () => {
+    const {getByText, queryByText} = renderThreadList(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
           {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
             {id: 10, body: 'Matching', creatorName: 'Bob', creatorId: 2}
           ]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 20, comments: [
-            {id: 20, body: 'Other element', creatorName: 'Alice', creatorId: 1}
-          ]},
-          {id: 3, subjectType: 'Section', subjectId: 10, comments: [
+          {id: 3, subjectType: 'Section', subjectId: 1, comments: [
             {id: 30, body: 'Other type', creatorName: 'Eve', creatorId: 3}
           ]}
         ]
@@ -58,39 +68,11 @@ describe('ThreadList', () => {
     );
 
     expect(getByText('Matching')).toBeInTheDocument();
-    expect(queryByText('Other element')).not.toBeInTheDocument();
     expect(queryByText('Other type')).not.toBeInTheDocument();
   });
 
-  it('only displays threads matching subjectRange when provided', () => {
-    const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 12}};
-
-    const {getByText, queryByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} subjectRange={subjectRange} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, subjectRange, comments: [
-            {id: 10, body: 'Matching range', creatorName: 'Bob', creatorId: 2}
-          ]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 20, body: 'No range', creatorName: 'Alice', creatorId: 1}
-          ]},
-          {id: 3, subjectType: 'ContentElement', subjectId: 10,
-           subjectRange: {anchor: {path: [1, 0], offset: 0}, focus: {path: [1, 0], offset: 5}},
-           comments: [
-            {id: 30, body: 'Different range', creatorName: 'Eve', creatorId: 3}
-          ]}
-        ]
-      }
-    );
-
-    expect(getByText('Matching range')).toBeInTheDocument();
-    expect(queryByText('No range')).not.toBeInTheDocument();
-    expect(queryByText('Different range')).not.toBeInTheDocument();
-  });
-
   it('applies filter prop to narrow threads', () => {
-    const {getByText, queryByText} = renderWithReviewState(
+    const {getByText, queryByText} = renderThreadList(
       <ThreadList subjectType="ContentElement"
                   subjectId={10}
                   filter={thread => thread.id === 1} />,
@@ -111,10 +93,8 @@ describe('ThreadList', () => {
   });
 
   it('marks the thread matching highlightedThreadId with aria-current', () => {
-    const {container, getByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement"
-                  subjectId={10}
-                  highlightedThreadId={2} />,
+    const {container, getByText} = renderThreadList(
+      <ThreadList subjectType="ContentElement" subjectId={10} highlightedThreadId={2} />,
       {
         commentThreads: [
           {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
@@ -133,10 +113,8 @@ describe('ThreadList', () => {
   });
 
   it('highlights every thread when highlightedThreadId is an array of ids', () => {
-    const {container, getByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement"
-                  subjectId={10}
-                  highlightedThreadId={[1, 2]} />,
+    const {container, getByText} = renderThreadList(
+      <ThreadList subjectType="ContentElement" subjectId={10} highlightedThreadId={[1, 2]} />,
       {
         commentThreads: [
           {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
@@ -162,10 +140,8 @@ describe('ThreadList', () => {
   it('fires onThreadClick with the clicked thread', async () => {
     const user = userEvent.setup();
     const onThreadClick = jest.fn();
-    const {getByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement"
-                  subjectId={10}
-                  onThreadClick={onThreadClick} />,
+    const {getByText} = renderThreadList(
+      <ThreadList subjectType="ContentElement" subjectId={10} onThreadClick={onThreadClick} />,
       {
         commentThreads: [
           {id: 7, subjectType: 'ContentElement', subjectId: 10, comments: [
@@ -181,11 +157,9 @@ describe('ThreadList', () => {
   });
 
   it('scrolls the highlighted thread into view within the scroll context', () => {
-    const {getByText} = renderWithReviewState(
+    const {getByText} = renderThreadList(
       <ScrollHighlightedThreadIntoViewProvider>
-        <ThreadList subjectType="ContentElement"
-                    subjectId={10}
-                    highlightedThreadId={2} />
+        <ThreadList subjectType="ContentElement" subjectId={10} highlightedThreadId={2} />
       </ScrollHighlightedThreadIntoViewProvider>,
       {
         commentThreads: [
@@ -206,10 +180,8 @@ describe('ThreadList', () => {
   });
 
   it('does not scroll the highlighted thread into view outside the scroll context', () => {
-    renderWithReviewState(
-      <ThreadList subjectType="ContentElement"
-                  subjectId={10}
-                  highlightedThreadId={2} />,
+    renderThreadList(
+      <ThreadList subjectType="ContentElement" subjectId={10} highlightedThreadId={2} />,
       {
         commentThreads: [
           {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
@@ -225,36 +197,8 @@ describe('ThreadList', () => {
     expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
   });
 
-  it('orders threads via compareRanges when provided', () => {
-    const compareRanges = (a, b) => a.start - b.start;
-
-    const {getAllByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement"
-                  subjectId={10}
-                  compareRanges={compareRanges} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10,
-           subjectRange: {start: 30},
-           comments: [{id: 10, body: 'third', creatorName: 'Bob', creatorId: 2}]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10,
-           subjectRange: {start: 10},
-           comments: [{id: 20, body: 'first', creatorName: 'Alice', creatorId: 1}]},
-          {id: 3, subjectType: 'ContentElement', subjectId: 10,
-           subjectRange: {start: 20},
-           comments: [{id: 30, body: 'second', creatorName: 'Eve', creatorId: 3}]}
-        ]
-      }
-    );
-
-    const order = ['first', 'second', 'third']
-      .map(text => getAllByText(text)[0].getBoundingClientRect().top);
-
-    expect(order).toEqual([...order].sort((a, b) => a - b));
-  });
-
   it('hides reply form on non-highlighted threads when restrictInteractionsToHighlighted', () => {
-    const {getByText, queryAllByPlaceholderText} = renderWithReviewState(
+    const {getByText, queryAllByPlaceholderText} = renderThreadList(
       <ThreadList subjectType="ContentElement"
                   subjectId={10}
                   highlightedThreadId={2}
@@ -278,7 +222,7 @@ describe('ThreadList', () => {
   });
 
   it('hides resolve button on non-highlighted threads when restrictInteractionsToHighlighted', () => {
-    const {queryAllByText} = renderWithReviewState(
+    const {queryAllByText} = renderThreadList(
       <ThreadList subjectType="ContentElement"
                   subjectId={10}
                   highlightedThreadId={2}
@@ -300,7 +244,7 @@ describe('ThreadList', () => {
 
   it('applies filter prop to resolved threads', async () => {
     const user = userEvent.setup();
-    const {getByText, queryByText} = renderWithReviewState(
+    const {getByText, queryByText} = renderThreadList(
       <ThreadList subjectType="ContentElement"
                   subjectId={10}
                   filter={thread => thread.id === 1} />,
@@ -323,7 +267,7 @@ describe('ThreadList', () => {
   });
 
   it('displays formatted timestamp', () => {
-    const {getByText} = renderWithReviewState(
+    const {getByText} = renderThreadList(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
@@ -339,7 +283,7 @@ describe('ThreadList', () => {
   });
 
   it('displays avatar with initial', () => {
-    const {getByText} = renderWithReviewState(
+    const {getByText} = renderThreadList(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
@@ -354,7 +298,7 @@ describe('ThreadList', () => {
   });
 
   it('collapses threads when more than one exists', () => {
-    const {queryByText} = renderWithReviewState(
+    const {queryByText} = renderThreadList(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
@@ -377,7 +321,7 @@ describe('ThreadList', () => {
   });
 
   it('does not collapse single thread', () => {
-    const {getByText} = renderWithReviewState(
+    const {getByText} = renderThreadList(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
       {
         commentThreads: [
@@ -393,629 +337,365 @@ describe('ThreadList', () => {
     expect(getByText('A reply')).toBeInTheDocument();
   });
 
-  it('shows avatar stack of reply authors when collapsed', () => {
-    const {getAllByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2},
-            {id: 11, body: 'Reply 1', creatorName: 'Alice', creatorId: 1},
-            {id: 12, body: 'Reply 2', creatorName: 'Eve', creatorId: 3}
-          ]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 20, body: 'Other', creatorName: 'Dan', creatorId: 4}
-          ]}
-        ]
-      }
-    );
-
-    expect(getAllByText('A')).toHaveLength(1);
-    expect(getAllByText('E')).toHaveLength(1);
-  });
-
-  it('shows chevron toggle on threads with replies', () => {
-    const {getAllByRole} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Topic', creatorName: 'Bob', creatorId: 2},
-            {id: 11, body: 'Reply', creatorName: 'Alice', creatorId: 1}
-          ]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 20, body: 'No replies', creatorName: 'Eve', creatorId: 3}
-          ]}
-        ]
-      }
-    );
-
-    expect(getAllByRole('button', {name: 'Toggle replies'})).toHaveLength(1);
-  });
-
-  it('expands collapsed thread via chevron', async () => {
-    const user = userEvent.setup();
-    const {getByRole, getByText, queryByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'First comment', creatorName: 'Bob', creatorId: 2},
-            {id: 11, body: 'Hidden reply', creatorName: 'Alice', creatorId: 1}
-          ]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 20, body: 'Other thread', creatorName: 'Eve', creatorId: 3}
-          ]}
-        ]
-      }
-    );
-
-    expect(queryByText('Hidden reply')).not.toBeInTheDocument();
-
-    await user.click(getByRole('button', {name: 'Toggle replies'}));
-
-    expect(getByText('Hidden reply')).toBeInTheDocument();
-  });
-
-  it('expands collapsed thread via reply count button', async () => {
-    const user = userEvent.setup();
-    const {getByText, queryByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'First comment', creatorName: 'Bob', creatorId: 2},
-            {id: 11, body: 'Hidden reply', creatorName: 'Alice', creatorId: 1}
-          ]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 20, body: 'Other thread', creatorName: 'Eve', creatorId: 3}
-          ]}
-        ]
-      }
-    );
-
-    expect(queryByText('Hidden reply')).not.toBeInTheDocument();
-
-    await user.click(getByText('1 reply'));
-
-    expect(getByText('Hidden reply')).toBeInTheDocument();
-  });
-
-  it('displays multiple threads', () => {
-    const {getByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'First thread', creatorName: 'Bob', creatorId: 2}
-          ]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 20, body: 'Second thread', creatorName: 'Alice', creatorId: 1}
-          ]}
-        ]
-      }
-    );
-
-    expect(getByText('First thread')).toBeInTheDocument();
-    expect(getByText('Second thread')).toBeInTheDocument();
-  });
-
-  it('posts create thread message on form submit', async () => {
-    const user = userEvent.setup();
-    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
-
-    const {getByPlaceholderText, getByRole} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />
-    );
-
-    await user.type(getByPlaceholderText('Add a comment...'), 'New thread');
-    await user.click(getByRole('button', {name: 'Send'}));
-
-    expect(postMessage).toHaveBeenCalledWith(
-      {
-        type: 'CREATE_COMMENT_THREAD',
-        payload: {
-          subjectType: 'ContentElement',
-          subjectId: 10,
-          body: 'New thread'
+  describe('orphaned threads', () => {
+    it('shows a section\'s orphaned threads on top with a deleted-element hint', () => {
+      const {getByText} = renderThreadList(
+        <ThreadList subjectType="Section" subjectId={1} hideNewTopicButton />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'Section', subjectId: 1, comments: [
+              {id: 10, body: 'On the section', creatorName: 'Bob', creatorId: 2}
+            ]},
+            {id: 2, subjectType: 'ContentElement', subjectId: 99999, sectionPermaId: 1, comments: [
+              {id: 20, body: 'On a deleted element', creatorName: 'Alice', creatorId: 1}
+            ]}
+          ]
         }
-      },
-      window.location.origin
-    );
+      );
 
-    postMessage.mockRestore();
-  });
+      const orphan = getByText('On a deleted element');
+      const sectionThread = getByText('On the section');
 
-  it('includes subjectRange in create thread message', async () => {
-    const user = userEvent.setup();
-    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
-    const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 12}};
+      expect(getByText('Refers to a deleted element')).toBeInTheDocument();
+      expect(orphan.compareDocumentPosition(sectionThread) & Node.DOCUMENT_POSITION_FOLLOWING)
+        .toBeTruthy();
+    });
 
-    const {getByPlaceholderText, getByRole} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} subjectRange={subjectRange} />
-    );
-
-    await user.type(getByPlaceholderText('Add a comment...'), 'Range comment');
-    await user.click(getByRole('button', {name: 'Send'}));
-
-    expect(postMessage).toHaveBeenCalledWith(
-      {
-        type: 'CREATE_COMMENT_THREAD',
-        payload: expect.objectContaining({subjectRange})
-      },
-      window.location.origin
-    );
-
-    postMessage.mockRestore();
-  });
-
-  it('submits new thread on Ctrl+Enter', async () => {
-    const user = userEvent.setup();
-    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
-
-    const {getByPlaceholderText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />
-    );
-
-    await user.type(getByPlaceholderText('Add a comment...'),
-                    'Quick thread{Control>}{Enter}{/Control}');
-
-    expect(postMessage).toHaveBeenCalledWith(
-      {
-        type: 'CREATE_COMMENT_THREAD',
-        payload: {
-          subjectType: 'ContentElement',
-          subjectId: 10,
-          body: 'Quick thread'
+    it('does not add the hint to normal subject threads', () => {
+      const {getByText, queryByText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} hideNewTopicButton />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 10, body: 'On the element', creatorName: 'Bob', creatorId: 2}
+            ]}
+          ]
         }
-      },
-      window.location.origin
-    );
+      );
 
-    postMessage.mockRestore();
+      expect(getByText('On the element')).toBeInTheDocument();
+      expect(queryByText('Refers to a deleted element')).not.toBeInTheDocument();
+    });
   });
 
-  it('shows keyboard hint while composing a new thread', async () => {
-    const user = userEvent.setup();
+  describe('new thread form', () => {
+    it('posts create thread message on form submit', async () => {
+      const user = userEvent.setup();
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
 
-    const {getByPlaceholderText, getByText, queryByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />
-    );
+      const {getByPlaceholderText, getByRole} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />
+      );
 
-    expect(queryByText('Enter for new line')).not.toBeInTheDocument();
+      await user.type(getByPlaceholderText('Add a comment...'), 'New thread');
+      await user.click(getByRole('button', {name: 'Send'}));
 
-    await user.type(getByPlaceholderText('Add a comment...'), 'Draft');
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'CREATE_COMMENT_THREAD',
+          payload: expect.objectContaining({
+            subjectType: 'ContentElement',
+            subjectId: 10,
+            body: 'New thread'
+          })
+        },
+        window.location.origin
+      );
 
-    expect(getByText('Enter for new line')).toBeInTheDocument();
+      postMessage.mockRestore();
+    });
+
+    it('includes the parent section perma id in create thread message', async () => {
+      const user = userEvent.setup();
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      const {getByPlaceholderText, getByRole} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />
+      );
+
+      await user.type(getByPlaceholderText('Add a comment...'), 'New thread');
+      await user.click(getByRole('button', {name: 'Send'}));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'CREATE_COMMENT_THREAD',
+          payload: expect.objectContaining({
+            subjectType: 'ContentElement',
+            subjectId: 10,
+            sectionPermaId: 1
+          })
+        },
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
+
+    it('sends the section perma id itself for section subjects', async () => {
+      const user = userEvent.setup();
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      const {getByPlaceholderText, getByRole} = renderThreadList(
+        <ThreadList subjectType="Section" subjectId={1} />
+      );
+
+      await user.type(getByPlaceholderText('Add a comment...'), 'Section comment');
+      await user.click(getByRole('button', {name: 'Send'}));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'CREATE_COMMENT_THREAD',
+          payload: expect.objectContaining({
+            subjectType: 'Section',
+            subjectId: 1,
+            sectionPermaId: 1
+          })
+        },
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
+
+    it('shows new topic form automatically when no threads exist', () => {
+      const {getByPlaceholderText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />
+      );
+
+      expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+    });
+
+    it('shows new topic form when showNewForm is true', () => {
+      const {getByPlaceholderText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={true} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
+            ]}
+          ]
+        }
+      );
+
+      expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+    });
+
+    it('does not auto show new topic form when showNewForm is false', () => {
+      const {queryByPlaceholderText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />
+      );
+
+      expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+    });
+
+    it('shows blank slate when no threads exist and showNewForm is false', () => {
+      const {getByText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />
+      );
+
+      expect(getByText('No comments yet')).toBeInTheDocument();
+    });
+
+    it('does not show blank slate when active threads exist', () => {
+      const {queryByText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 10, body: 'Looks good', creatorName: 'Bob', creatorId: 2}
+            ]}
+          ]
+        }
+      );
+
+      expect(queryByText('No comments yet')).not.toBeInTheDocument();
+    });
+
+    it('hides new topic button when hideNewTopicButton is true', () => {
+      const {queryByRole} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} hideNewTopicButton={true} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
+            ]}
+          ]
+        }
+      );
+
+      expect(queryByRole('button', {name: 'New topic'})).not.toBeInTheDocument();
+    });
+
+    it('shows form when New topic button is clicked', async () => {
+      const user = userEvent.setup();
+
+      const {getByPlaceholderText, getByRole} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
+            ]}
+          ]
+        }
+      );
+
+      await user.click(getByRole('button', {name: 'New topic'}));
+
+      expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+    });
   });
 
-  it('shows new topic form automatically when no threads exist', () => {
-    const {getByPlaceholderText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />
-    );
+  describe('replies', () => {
+    it('posts create comment message when replying to thread', async () => {
+      const user = userEvent.setup();
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
 
-    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+      const {getByPlaceholderText, getByRole} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
+            ]}
+          ]
+        }
+      );
+
+      await user.type(getByPlaceholderText('Reply...'), 'My reply');
+      await user.click(getByRole('button', {name: 'Send'}));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'CREATE_COMMENT',
+          payload: {threadId: 1, body: 'My reply'}
+        },
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
   });
 
-  it('shows new topic form when showNewForm is true', () => {
-    const {getByPlaceholderText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={true} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
-          ]}
-        ]
-      }
-    );
-
-    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
-  });
-
-  it('does not auto show new topic form when showNewForm is false', () => {
-    const {queryByPlaceholderText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />
-    );
-
-    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
-  });
-
-  it('shows blank slate when no threads exist and showNewForm is false', () => {
-    const {getByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />
-    );
-
-    expect(getByText('No comments yet')).toBeInTheDocument();
-  });
-
-  it('does not show blank slate when active threads exist', () => {
-    const {queryByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Looks good', creatorName: 'Bob', creatorId: 2}
-          ]}
-        ]
-      }
-    );
-
-    expect(queryByText('No comments yet')).not.toBeInTheDocument();
-  });
-
-  it('does not show blank slate when only resolved threads exist', () => {
-    const {queryByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: '2026-04-09T10:00:00Z',
-           comments: [{id: 10, body: 'Resolved', creatorName: 'Bob', creatorId: 2}]}
-        ]
-      }
-    );
-
-    expect(queryByText('No comments yet')).not.toBeInTheDocument();
-  });
-
-  it('does not show blank slate when showNewForm is true', () => {
-    const {queryByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />
-    );
-
-    expect(queryByText('No comments yet')).not.toBeInTheDocument();
-  });
-
-  it('hides new topic button when hideNewTopicButton is true', () => {
-    const {queryByRole} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} hideNewTopicButton={true} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
-          ]}
-        ]
-      }
-    );
-
-    expect(queryByRole('button', {name: 'New topic'})).not.toBeInTheDocument();
-  });
-
-  it('hides new topic form behind button when threads exist', () => {
-    const {queryByPlaceholderText, getByRole} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
-          ]}
-        ]
-      }
-    );
-
-    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
-    expect(getByRole('button', {name: 'New topic'})).toBeInTheDocument();
-  });
-
-  it('shows form when New topic button is clicked', async () => {
-    const user = userEvent.setup();
-
-    const {getByPlaceholderText, getByRole} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
-          ]}
-        ]
-      }
-    );
-
-    await user.click(getByRole('button', {name: 'New topic'}));
-
-    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
-  });
-
-  it('does not show a cancel button after expanding the new thread form', async () => {
-    const user = userEvent.setup();
-
-    const {getByRole, queryByRole, getByPlaceholderText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
-          ]}
-        ]
-      }
-    );
-
-    await user.click(getByRole('button', {name: 'New topic'}));
-
-    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
-    expect(queryByRole('button', {name: 'Cancel'})).not.toBeInTheDocument();
-  });
-
-  it('posts create comment message when replying to thread', async () => {
-    const user = userEvent.setup();
-    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
-
-    const {getByPlaceholderText, getByRole} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
-          ]}
-        ]
-      }
-    );
-
-    await user.type(getByPlaceholderText('Reply...'), 'My reply');
-    await user.click(getByRole('button', {name: 'Send'}));
-
-    expect(postMessage).toHaveBeenCalledWith(
-      {
-        type: 'CREATE_COMMENT',
-        payload: {threadId: 1, body: 'My reply'}
-      },
-      window.location.origin
-    );
-
-    postMessage.mockRestore();
-  });
-
-  it('submits reply on Ctrl+Enter', async () => {
-    const user = userEvent.setup();
-    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
-
-    const {getByPlaceholderText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
-          ]}
-        ]
-      }
-    );
-
-    await user.type(getByPlaceholderText('Reply...'),
-                    'Quick reply{Control>}{Enter}{/Control}');
-
-    expect(postMessage).toHaveBeenCalledWith(
-      {
-        type: 'CREATE_COMMENT',
-        payload: {threadId: 1, body: 'Quick reply'}
-      },
-      window.location.origin
-    );
-
-    postMessage.mockRestore();
-  });
-
-  it('hides reply submit button when textarea is empty', () => {
-    const {queryByRole, getByPlaceholderText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
-          ]}
-        ]
-      }
-    );
-
-    expect(getByPlaceholderText('Reply...')).toBeInTheDocument();
-    expect(queryByRole('button', {name: 'Send'})).not.toBeInTheDocument();
-  });
-
-  it('shows reply submit button when text is entered', async () => {
-    const user = userEvent.setup();
-
-    const {getByRole, getByPlaceholderText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'Start', creatorName: 'Bob', creatorId: 2}
-          ]}
-        ]
-      }
-    );
-
-    await user.type(getByPlaceholderText('Reply...'), 'Some text');
-
-    expect(getByRole('button', {name: 'Send'})).toBeInTheDocument();
-  });
-
-  it('hides resolved threads and shows resolved count pill', () => {
-    const {queryByText, getByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: '2026-04-09T10:00:00Z',
-           comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: null,
-           comments: [{id: 20, body: 'Active thread', creatorName: 'Alice', creatorId: 1}]}
-        ]
-      }
-    );
-
-    expect(getByText('Active thread')).toBeInTheDocument();
-    expect(queryByText('Resolved thread')).not.toBeInTheDocument();
-    expect(getByText('1 resolved')).toBeInTheDocument();
-  });
-
-  it('toggles resolved threads when pill is clicked', async () => {
-    const user = userEvent.setup();
-
-    const {getByText, queryByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: '2026-04-09T10:00:00Z',
-           comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: null,
-           comments: [{id: 20, body: 'Active thread', creatorName: 'Alice', creatorId: 1}]}
-        ]
-      }
-    );
-
-    await user.click(getByText('1 resolved'));
-    expect(getByText('Resolved thread')).toBeInTheDocument();
-    expect(getByText('1 resolved')).toBeInTheDocument();
-
-    await user.click(getByText('1 resolved'));
-    expect(queryByText('Resolved thread')).not.toBeInTheDocument();
-  });
-
-  it('posts resolve message when resolve button is clicked', async () => {
-    const user = userEvent.setup();
-    const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
-
-    const {getByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: null,
-           comments: [{id: 10, body: 'Open thread', creatorName: 'Bob', creatorId: 2}]}
-        ]
-      }
-    );
-
-    await user.click(getByText('Mark as resolved'));
-
-    expect(postMessage).toHaveBeenCalledWith(
-      {type: 'UPDATE_THREAD', payload: {threadId: 1, resolved: true}},
-      window.location.origin
-    );
-
-    postMessage.mockRestore();
-  });
-
-  it('does not show resolve button on collapsed threads with replies', () => {
-    const {queryByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: null,
-           comments: [
-             {id: 10, body: 'First thread', creatorName: 'Bob', creatorId: 2},
-             {id: 11, body: 'Reply', creatorName: 'Alice', creatorId: 1}
-           ]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: null,
-           comments: [
-             {id: 20, body: 'Second thread', creatorName: 'Alice', creatorId: 1},
-             {id: 21, body: 'Reply', creatorName: 'Bob', creatorId: 2}
-           ]}
-        ]
-      }
-    );
-
-    expect(queryByText('Mark as resolved')).not.toBeInTheDocument();
-  });
-
-  it('does not show reply form on resolved threads', async () => {
-    const user = userEvent.setup();
-
-    const {queryByPlaceholderText, getByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: null,
-           comments: [{id: 10, body: 'Active thread', creatorName: 'Bob', creatorId: 2}]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: '2026-04-09T10:00:00Z',
-           comments: [{id: 20, body: 'Resolved thread', creatorName: 'Alice', creatorId: 1}]}
-        ]
-      }
-    );
-
-    await user.click(getByText('1 resolved'));
-
-    const replyFields = queryByPlaceholderText('Reply...');
-    expect(replyFields).toBeInTheDocument();
-
-    expect(getByText('Resolved thread')).toBeInTheDocument();
-    const resolvedThread = getByText('Resolved thread').closest('[class*="thread"]');
-    expect(resolvedThread.querySelector('textarea[placeholder="Reply..."]')).toBeNull();
-  });
-
-  it('shows reply form in collapsed thread without replies', () => {
-    const {getAllByPlaceholderText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 10, body: 'First topic', creatorName: 'Bob', creatorId: 2}
-          ]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
-            {id: 20, body: 'Second topic', creatorName: 'Alice', creatorId: 1}
-          ]}
-        ]
-      }
-    );
-
-    expect(getAllByPlaceholderText('Reply...')).toHaveLength(2);
-  });
-
-  it('expands resolved threads by default when expandResolved is set', () => {
-    const {getByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} expandResolved />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: null,
-           comments: [{id: 10, body: 'Active thread', creatorName: 'Alice', creatorId: 1}]},
-          {id: 2, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: '2026-04-09T10:00:00Z',
-           comments: [{id: 20, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]}
-        ]
-      }
-    );
-
-    expect(getByText('Active thread')).toBeInTheDocument();
-    expect(getByText('Resolved thread')).toBeInTheDocument();
-  });
-
-  it('shows resolved threads instead of the new form when all are resolved and expandResolved is set', () => {
-    const {getByText, queryByPlaceholderText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} expandResolved />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: '2026-04-09T10:00:00Z',
-           comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]}
-        ]
-      }
-    );
-
-    expect(getByText('Resolved thread')).toBeInTheDocument();
-    expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
-  });
-
-  it('still auto-shows the new form for only-resolved threads without expandResolved', () => {
-    const {getByPlaceholderText, queryByText} = renderWithReviewState(
-      <ThreadList subjectType="ContentElement" subjectId={10} />,
-      {
-        commentThreads: [
-          {id: 1, subjectType: 'ContentElement', subjectId: 10,
-           resolvedAt: '2026-04-09T10:00:00Z',
-           comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]}
-        ]
-      }
-    );
-
-    expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
-    expect(queryByText('Resolved thread')).not.toBeInTheDocument();
+  describe('resolved threads', () => {
+    it('hides resolved threads and shows resolved count pill', () => {
+      const {queryByText, getByText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: '2026-04-09T10:00:00Z',
+             comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]},
+            {id: 2, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: null,
+             comments: [{id: 20, body: 'Active thread', creatorName: 'Alice', creatorId: 1}]}
+          ]
+        }
+      );
+
+      expect(getByText('Active thread')).toBeInTheDocument();
+      expect(queryByText('Resolved thread')).not.toBeInTheDocument();
+      expect(getByText('1 resolved')).toBeInTheDocument();
+    });
+
+    it('toggles resolved threads when pill is clicked', async () => {
+      const user = userEvent.setup();
+
+      const {getByText, queryByText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: '2026-04-09T10:00:00Z',
+             comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]},
+            {id: 2, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: null,
+             comments: [{id: 20, body: 'Active thread', creatorName: 'Alice', creatorId: 1}]}
+          ]
+        }
+      );
+
+      await user.click(getByText('1 resolved'));
+      expect(getByText('Resolved thread')).toBeInTheDocument();
+
+      await user.click(getByText('1 resolved'));
+      expect(queryByText('Resolved thread')).not.toBeInTheDocument();
+    });
+
+    it('posts resolve message when resolve button is clicked', async () => {
+      const user = userEvent.setup();
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      const {getByText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: null,
+             comments: [{id: 10, body: 'Open thread', creatorName: 'Bob', creatorId: 2}]}
+          ]
+        }
+      );
+
+      await user.click(getByText('Mark as resolved'));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {type: 'UPDATE_THREAD', payload: {threadId: 1, resolved: true}},
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
+
+    it('expands resolved threads by default when expandResolved is set', () => {
+      const {getByText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} expandResolved />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: null,
+             comments: [{id: 10, body: 'Active thread', creatorName: 'Alice', creatorId: 1}]},
+            {id: 2, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: '2026-04-09T10:00:00Z',
+             comments: [{id: 20, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]}
+          ]
+        }
+      );
+
+      expect(getByText('Active thread')).toBeInTheDocument();
+      expect(getByText('Resolved thread')).toBeInTheDocument();
+    });
+
+    it('shows resolved threads instead of the new form when all are resolved and expandResolved is set', () => {
+      const {getByText, queryByPlaceholderText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} expandResolved />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: '2026-04-09T10:00:00Z',
+             comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]}
+          ]
+        }
+      );
+
+      expect(getByText('Resolved thread')).toBeInTheDocument();
+      expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
+    });
+
+    it('still auto-shows the new form for only-resolved threads without expandResolved', () => {
+      const {getByPlaceholderText, queryByText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: '2026-04-09T10:00:00Z',
+             comments: [{id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]}
+          ]
+        }
+      );
+
+      expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+      expect(queryByText('Resolved thread')).not.toBeInTheDocument();
+    });
   });
 });

@@ -54,6 +54,35 @@ describe('inline editing section comment badges', () => {
     });
   });
 
+  it('displays a badge for a section whose only thread is on a deleted element', async () => {
+    const {getByRole} = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{sectionId: 1, permaId: 100}]
+      }
+    });
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'REVIEW_STATE_RESET',
+          payload: {
+            currentUser: {id: 1},
+            commentThreads: [{
+              id: 1, subjectType: 'ContentElement', subjectId: 999, sectionPermaId: 10,
+              comments: [{id: 100, body: 'On a deleted element'}]
+            }]
+          }
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(getByRole('status')).toBeInTheDocument();
+    });
+  });
+
   it('clips the badge corner when the section is selected without threads', () => {
     const {getByLabelText, getSectionByPermaId} = renderEntry({
       seed: {

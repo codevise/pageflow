@@ -42,6 +42,16 @@ module Pageflow
             )
     end
 
+    def self.update_section_perma_id_for(revision:, subject_type:, subject_id:, section_perma_id:)
+      return if subject_id.blank?
+
+      where(revision_id: revision.id,
+            subject_type:,
+            subject_id:)
+        .where.not(section_perma_id:)
+        .update_all(section_perma_id:, updated_at: Time.current)
+    end
+
     def self.subject_range_case_sql(ranges)
       when_clauses = ranges.map do |id, range|
         sanitize_sql_array(['WHEN ? THEN ?', id.to_i, range.to_json])

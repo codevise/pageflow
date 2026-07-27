@@ -1550,6 +1550,49 @@ describe('ScrolledEntry', () => {
         });
       });
 
+      describe('when moving a content element with threads to another section', () => {
+        beforeEach(() => {
+          testContext.entry = factories.entry(ScrolledEntry, {id: 100}, {
+            entryTypeSeed: normalizeSeed({
+              sections: [
+                {id: 10, permaId: 11, configuration: {}},
+                {id: 20, permaId: 21, configuration: {}}
+              ],
+              contentElements: [
+                {id: 4, sectionId: 10, permaId: 40, position: 0,
+                 typeName: 'inlineImage'},
+                {id: 7, sectionId: 20, permaId: 70, position: 0,
+                 typeName: 'inlineImage'}
+              ]
+            })
+          });
+
+          setupEntry([
+            {id: 8, subjectType: 'ContentElement', subjectId: 40,
+             sectionPermaId: 11, comments: []}
+          ]);
+        });
+
+        setupGlobals({entry: () => testContext.entry});
+
+        it('updates the moved threads section perma id on success', () => {
+          const {entry, server} = testContext;
+
+          entry.moveContentElement({id: 4}, {at: 'after', id: 7});
+
+          server.respond(
+            'PUT', '/editor/entries/100/scrolled/sections/20/content_elements/batch',
+            [200, {'Content-Type': 'application/json'}, JSON.stringify([
+              {id: 7, permaId: 70},
+              {id: 4, permaId: 40}
+            ])]
+          );
+
+          const thread = entry.reviewSession.state.commentThreads.find(t => t.id === 8);
+          expect(thread.sectionPermaId).toEqual(21);
+        });
+      });
+
       describe('with a partial range moved out of a rangeAware block', () => {
         beforeEach(() => {
           testContext.entry = factories.entry(ScrolledEntry, {id: 100}, {

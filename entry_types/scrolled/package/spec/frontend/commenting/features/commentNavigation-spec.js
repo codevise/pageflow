@@ -106,6 +106,28 @@ describe('comment navigation', () => {
     expect(entry.getByText('First thread').closest('[aria-current="true"]')).toBeNull();
   });
 
+  it('steps to a deleted element\'s orphaned thread and lands on its section', () => {
+    const entry = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 10}],
+        contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]
+      },
+      commenting: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 2, subjectType: 'ContentElement', subjectId: 99999,
+           sectionPermaId: 10, resolvedAt: null,
+           comments: [{id: 20, body: 'On a deleted element', creatorName: 'Bob', creatorId: 2}]}
+        ]
+      }
+    });
+
+    fireEvent.click(entry.getNextCommentButton());
+
+    expect(entry.getByText('On a deleted element')).toBeInTheDocument();
+    expect(entry.getByText('Refers to a deleted element')).toBeInTheDocument();
+  });
+
   it('keeps the popover open when pressing a toolbar button', () => {
     const entry = renderEntryWithTwoThreadsOnOneElement();
 
