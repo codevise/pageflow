@@ -14,6 +14,26 @@ module Pageflow
       expect(folder).not_to be_valid
     end
 
+    it 'allows parent folder from same revision' do
+      revision = create(:revision)
+      parent = create(:file_folder, revision:)
+      folder = build(:file_folder, revision:, parent_folder_perma_id: parent.perma_id)
+
+      expect(folder).to be_valid
+    end
+
+    it 'requires parent folder perma id to refer to folder of same revision' do
+      entry = create(:entry)
+      other_folder = create(:file_folder, revision: entry.draft)
+      folder = build(:file_folder,
+                     revision: create(:revision, entry:),
+                     parent_folder_perma_id: other_folder.perma_id)
+
+      folder.valid?
+
+      expect(folder.errors[:parent_folder_perma_id].length).to be >= 1
+    end
+
     describe '#parent' do
       it 'returns folder with matching perma id from same revision' do
         revision = create(:revision)
@@ -29,12 +49,15 @@ module Pageflow
         expect(folder.parent).to be_nil
       end
 
+      # Data which the validation prevents from being created in the
+      # first place.
       it 'ignores folders of other revisions' do
         entry = create(:entry)
         other_folder = create(:file_folder, revision: entry.draft)
-        folder = create(:file_folder,
-                        revision: create(:revision, entry:),
-                        parent_folder_perma_id: other_folder.perma_id)
+        folder = build(:file_folder,
+                       revision: create(:revision, entry:),
+                       parent_folder_perma_id: other_folder.perma_id)
+        folder.save!(validate: false)
 
         expect(folder.parent).to be_nil
       end
@@ -53,9 +76,9 @@ module Pageflow
       it 'ignores folders of other revisions' do
         entry = create(:entry)
         folder = create(:file_folder, revision: entry.draft)
-        create(:file_folder,
-               revision: create(:revision, entry:),
-               parent_folder_perma_id: folder.perma_id)
+        build(:file_folder,
+              revision: create(:revision, entry:),
+              parent_folder_perma_id: folder.perma_id).save!(validate: false)
 
         expect(folder.children).to be_empty
       end

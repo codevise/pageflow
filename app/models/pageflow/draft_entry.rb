@@ -61,6 +61,10 @@ module Pageflow
       file.destroy if file.usages.reload.empty?
     end
 
+    def create_folder!(attributes)
+      draft.file_folders.create!(attributes)
+    end
+
     def use_file(file)
       draft.file_usages.create!(file: file.to_model,
                                 configuration: file.configuration,
