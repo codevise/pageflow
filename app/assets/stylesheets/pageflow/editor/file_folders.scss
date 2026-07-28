@@ -66,4 +66,13 @@
     display: block;
     color: var(--ui-on-surface-color-light);
   }
+
+  // Takes the place of the name, so that the row keeps its height while
+  // the name is being entered.
+  &-input {
+    box-sizing: border-box;
+    flex: 1;
+    align-self: center;
+    margin-right: space(2);
+  }
 }

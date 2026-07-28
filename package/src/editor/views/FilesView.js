@@ -12,7 +12,7 @@ import {FilesExplorerView} from './FilesExplorerView';
 import {FilteredFilesView} from './FilteredFilesView';
 import {ChooseImporterView} from './ChooseImporterView';
 import {FilesImporterView} from './FilesImporterView';
-import {SelectButtonView} from './SelectButtonView';
+import {DropDownButtonView} from './DropDownButtonView';
 import {filesPath} from '../utils/filesPath';
 
 import {state} from '$state';
@@ -62,12 +62,18 @@ export const FilesView = Marionette.ItemView.extend({
       });
     }
 
-    this.addFileModel = new Backbone.Model({
-      label: I18n.t('pageflow.editor.views.files_view.add'),
-      options: menuOptions
+    menuOptions.push({
+      label: I18n.t('pageflow.editor.views.files_view.folder'),
+      handler: this.addFolder.bind(this),
+      separated: true
     });
 
-    this.$el.append(this.subview(new SelectButtonView({model: this.addFileModel })).el);
+    this.$el.append(this.subview(new DropDownButtonView({
+      label: I18n.t('pageflow.editor.views.files_view.add'),
+      items: this.addMenuItems(menuOptions),
+      alignMenu: 'right',
+      buttonClassName: 'manage_files-add'
+    })).el);
 
     var fileTypes = this.fileTypes();
 
@@ -110,6 +116,16 @@ export const FilesView = Marionette.ItemView.extend({
     this.$el.append(this.subview(tabsView).el);
   },
 
+  addMenuItems: function(menuOptions) {
+    return new Backbone.Collection(menuOptions.map(function(option) {
+      var item = new Backbone.Model({label: option.label, separated: option.separated});
+
+      item.selected = option.handler;
+
+      return item;
+    }));
+  },
+
   // Only a selection which is restricted to a single file type can be
   // named. Otherwise the requested type is merely a preselection.
   selectionFileType: function() {
@@ -134,6 +150,17 @@ export const FilesView = Marionette.ItemView.extend({
 
     editor.navigate(filesPath({folderPermaId: folder && folder.get('perma_id')}),
                     {trigger: true});
+  },
+
+  // The folder is only persisted once the user has entered a name in the
+  // row which appears for folders that have not been created yet.
+  addFolder: function() {
+    var folder = this.currentFolder();
+
+    this.model.fileFolders.add({
+      name: '',
+      parent_folder_perma_id: folder ? folder.get('perma_id') : null
+    });
   },
 
   selectFolder: function(folder) {

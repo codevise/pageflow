@@ -41,6 +41,10 @@ describe('FilesView', () => {
     'pageflow.editor.templates.list_search_field.hint_in_folder':
       'Type %{hotkey} to search this folder',
     'pageflow.editor.templates.list_search_field.reset': 'Clear name filter',
+    'pageflow.editor.views.files_view.folder': 'New folder',
+    'pageflow.editor.views.files_view.upload': 'Upload file...',
+    'pageflow.editor.views.files_view.reuse': 'Reuse file...',
+    'pageflow.editor.views.folder_item_view.name': 'Folder name',
     'pageflow.editor.views.files_blank_slate_view.empty_folder': 'This folder is empty',
     'pageflow.editor.views.files_blank_slate_view.no_matches': 'Nothing matches',
     'pageflow.editor.templates.files_blank_slate.no_files': 'No files'
@@ -461,7 +465,7 @@ describe('FilesView', () => {
       const view = new FilesView({model: entry});
 
       const queries = render(view);
-      entry.fileFolders.add({perma_id: 4, name: 'Aerials'});
+      entry.fileFolders.add({id: 20, perma_id: 4, name: 'Aerials'});
 
       expect(folderNames(queries)).toEqual(['Aerials', 'Interviews', 'Landscapes']);
     });
@@ -648,6 +652,132 @@ describe('FilesView', () => {
       await user.click(getByRole('button', {name: 'Leave folder'}));
 
       expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
+    });
+
+    describe('adding a folder', () => {
+      let testContext;
+
+      beforeEach(() => {
+        testContext = {};
+      });
+
+      support.useFakeXhr(() => testContext);
+
+      async function addFolder(user, queries) {
+        await user.click(queries.getByRole('button', {name: 'Add file'}));
+        await user.click(queries.getByRole('link', {name: 'New folder'}));
+
+        return queries.getByLabelText('Folder name');
+      }
+
+      it('renders row with input for name', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await addFolder(user, queries);
+
+        expect(input).not.toBeNull();
+      });
+
+      it('is offered below a separator in the add menu', () => {
+        const view = new FilesView({model: entryWithFolders()});
+
+        render(view);
+
+        const addMenu = within(view.el.querySelector('.manage_files-add')
+                                   .closest('.drop_down_button'));
+
+        expect(addMenu.getAllByRole('link').map(link => link.textContent))
+          .toEqual(['Upload file...', 'Reuse file...', 'New folder']);
+        expect(addMenu.getByRole('link', {name: 'New folder'}).closest('li'))
+          .toHaveClass('separated');
+      });
+
+      it('creates folder when name is confirmed', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await addFolder(user, queries);
+        await user.type(input, 'Aerials{Enter}');
+
+        expect(testContext.requests[0].method).toEqual('POST');
+        expect(JSON.parse(testContext.requests[0].requestBody))
+          .toMatchObject({file_folder: {name: 'Aerials', parent_folder_perma_id: null}});
+      });
+
+      it('creates folder inside current folder', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry, folderPermaId: '1'});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await addFolder(user, queries);
+        await user.type(input, 'Aerials{Enter}');
+
+        expect(JSON.parse(testContext.requests[0].requestBody))
+          .toMatchObject({file_folder: {name: 'Aerials', parent_folder_perma_id: 1}});
+      });
+
+      it('creates folder when input loses focus', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await addFolder(user, queries);
+        await user.type(input, 'Aerials');
+        input.blur();
+
+        expect(testContext.requests[0].method).toEqual('POST');
+      });
+
+      it('discards folder when input loses focus while empty', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await addFolder(user, queries);
+        input.blur();
+
+        expect(testContext.requests).toEqual([]);
+        expect(queries.queryByLabelText('Folder name')).toBeNull();
+        expect(entry.fileFolders.length).toEqual(3);
+      });
+
+      it('discards folder on escape', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await addFolder(user, queries);
+        await user.type(input, 'Aerials{Escape}');
+
+        expect(testContext.requests).toEqual([]);
+        expect(entry.fileFolders.length).toEqual(3);
+      });
+
+      it('renders folder as row once it has been created', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await addFolder(user, queries);
+        await user.type(input, 'Aerials{Enter}');
+        testContext.requests[0].respond(
+          200,
+          {'Content-Type': 'application/json'},
+          JSON.stringify({id: 20, perma_id: 4, name: 'Aerials'})
+        );
+
+        expect(queries.queryByLabelText('Folder name')).toBeNull();
+        expect(queries.getByRole('button', {name: /^Aerials/})).not.toBeNull();
+      });
     });
 
     describe('searching', () => {

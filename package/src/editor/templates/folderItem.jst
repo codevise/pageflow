@@ -1,11 +1,17 @@
 <span class="file_folders-pictogram" aria-hidden="true"></span>
 
 <div class="file_folders-info">
-  <button class="file_folders-button" type="button">
-    <span class="file_folders-title">
-      <span class="file_folders-name"></span>
-      <span class="file_folders-chevron" aria-hidden="true"></span>
-    </span>
-    <span class="file_folders-file_count"></span>
-  </button>
+  <% if (data.naming) { %>
+    <input class="file_folders-input"
+           type="text"
+           aria-label="<%= I18n.t('pageflow.editor.views.folder_item_view.name') %>" />
+  <% } else { %>
+    <button class="file_folders-button" type="button">
+      <span class="file_folders-title">
+        <span class="file_folders-name"></span>
+        <span class="file_folders-chevron" aria-hidden="true"></span>
+      </span>
+      <span class="file_folders-file_count"></span>
+    </button>
+  <% } %>
 </div>

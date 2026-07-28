@@ -1564,13 +1564,14 @@ de:
         files_view:
           add: Hinzufügen
           authenticating: Authentifizieren
-          import: Importieren
+          folder: Neuer Ordner
+          import: Datei importieren...
           importer:
             heading: Dateien importieren von
-          reuse: Wiederverwenden
+          reuse: Datei wiederverwenden...
           tabs:
             files: Dateien
-          upload: Hochladen
+          upload: Datei hochladen...
         file_type_pills_view:
           group_label: 'Nach Dateityp filtern'
           hint: 'Dateityp anklicken, um nur dessen Dateien anzuzeigen. Mit Strg/Cmd Dateitypen kombinieren.'
@@ -1592,6 +1593,7 @@ de:
           file_count:
             one: '1 Datei'
             other: '%{count} Dateien'
+          name: 'Ordnername'
         inputs:
           file_input:
             auto_default_text_track: "(Automatisch)"
