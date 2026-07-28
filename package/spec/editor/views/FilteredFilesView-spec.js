@@ -20,7 +20,10 @@ describe('FilteredFilesView', () => {
     'pageflow.editor.templates.list_search_field.reset': 'Clear name filter',
     'pageflow.editor.views.filtered_files_view.sort_button_label': 'Sort',
     'pageflow.editor.views.filtered_files_view.sort.alphabetical': 'Alphabetical',
-    'pageflow.editor.views.filtered_files_view.sort.most_recent': 'Most recent'
+    'pageflow.editor.views.filtered_files_view.sort.most_recent': 'Most recent',
+    'pageflow.editor.files.tabs.image_files': 'Images',
+    'pageflow.editor.files.tabs.video_files': 'Videos',
+    'pageflow.editor.views.file_type_pills_view.group_label': 'Filter by file type'
   });
 
   it('uses entry type-specific translations if provided', () => {
@@ -504,6 +507,81 @@ describe('FilteredFilesView', () => {
     const names = getAllByText(/\.(png|mp4)$/).map(el => el.textContent);
 
     expect(names).toEqual(['image.png']);
+  });
+
+  it('renders file type pills below search field', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png'}],
+        video_files: [{id: 1, display_name: 'video.mp4'}]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ],
+      fileTypeSelection: new FileTypeSelection()
+    });
+
+    const {getByRole, getByLabelText} = render(view);
+    const searchField = getByLabelText('Filter files');
+    const pills = getByRole('group', {name: 'Filter by file type'});
+
+    expect(searchField.compareDocumentPosition(pills) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .toBeTruthy();
+  });
+
+  it('keeps file type pills in the header which sticks while scrolling', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png'}],
+        video_files: [{id: 1, display_name: 'video.mp4'}]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ],
+      fileTypeSelection: new FileTypeSelection()
+    });
+
+    const {getByRole, getByLabelText} = render(view);
+    const header = view.el.querySelector('.filtered_files-header');
+
+    expect(header).toContainElement(getByLabelText('Filter files'));
+    expect(header).toContainElement(getByRole('group', {name: 'Filter by file type'}));
+  });
+
+  it('renders no file type pills without file type selection', () => {
+    const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+    const entry = f.entry({}, {fileTypes, filesAttributes: {}});
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [fileTypes.first()]
+    });
+
+    const {queryByRole} = render(view);
+
+    expect(queryByRole('group', {name: 'Filter by file type'})).toBeNull();
   });
 
   it('changes sort order when selecting item from drop down', async () => {

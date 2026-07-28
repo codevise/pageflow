@@ -100,6 +100,7 @@ export * from './views/HelpView';
 export * from './views/BackgroundPositioningPreviewView';
 export * from './views/PageLinksView';
 export * from './views/FilesView';
+export * from './views/FileTypePillsView';
 export * from './views/FileMetaDataItemValueView';
 export * from './views/PublishEntryView';
 export * from './views/DropDownButtonView';

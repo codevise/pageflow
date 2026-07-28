@@ -1545,6 +1545,9 @@ en:
             heading: Import files from
           reuse: Reuse
           upload: Upload
+        file_type_pills_view:
+          group_label: 'Filter by file type'
+          hint: 'Click a file type to show only its files. Hold Ctrl/Cmd to combine file types.'
         filtered_files_view:
           banner_prefix: 'Active filter:'
           sort_button_label: 'Sort'

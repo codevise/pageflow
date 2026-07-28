@@ -10,6 +10,7 @@ import {editor} from '../base';
 import {CombinedFilesCollection} from '../collections/CombinedFilesCollection';
 import {SubsetCollection} from '../collections/SubsetCollection';
 import {FileItemView} from './FileItemView';
+import {FileTypePillsView} from './FileTypePillsView';
 import {Search} from '../models/Search';
 import {ListHighlight} from '../models/ListHighlight';
 import {ListSearchFieldView} from './ListSearchFieldView';
@@ -25,6 +26,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   ui: {
     banner: '.filtered_files-banner',
     filterName: '.filtered_files-filter_name',
+    header: '.filtered_files-header',
     filterBar: '.filtered_files-filter_bar',
     sort: '.filtered_files-sort',
   },
@@ -79,6 +81,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     this.renderNamedFilter();
     this.renderSearchField();
     this.renderSortMenu();
+    this.renderFileTypePills();
     this.renderCollectionView();
   },
 
@@ -109,6 +112,18 @@ export const FilteredFilesView = Marionette.ItemView.extend({
         {name: 'most_recent'}
       ], {search: this.search})
     }), {to: this.ui.filterBar});
+  },
+
+  renderFileTypePills: function() {
+    if (!this.options.fileTypeSelection) {
+      return;
+    }
+
+    this.appendSubview(new FileTypePillsView({
+      entry: this.options.entry,
+      fileTypes: this.options.fileTypes,
+      fileTypeSelection: this.options.fileTypeSelection
+    }), {to: this.ui.header});
   },
 
   renderCollectionView: function() {

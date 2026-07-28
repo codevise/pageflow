@@ -1553,6 +1553,9 @@ de:
             heading: Dateien importieren von
           reuse: Wiederverwenden
           upload: Hochladen
+        file_type_pills_view:
+          group_label: 'Nach Dateityp filtern'
+          hint: 'Dateityp anklicken, um nur dessen Dateien anzuzeigen. Mit Strg/Cmd Dateitypen kombinieren.'
         filtered_files_view:
           banner_prefix: 'Aktiver Filter:'
           sort_button_label: 'Sortieren'

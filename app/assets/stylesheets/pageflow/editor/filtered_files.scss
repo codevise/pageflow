@@ -22,14 +22,20 @@
     top: space(4);
   }
 
+  // Keeps search field, sort menu and file type pills in reach while
+  // scrolling through a long list of files.
+  &-header {
+    position: sticky;
+    top: -10px;
+    z-index: 2;
+    background-color: var(--ui-surface-color);
+  }
+
   &-filter_bar {
     display: flex;
     align-items: center;
     gap: space(1);
-    background-color: var(--ui-surface-color);
-    position: sticky;
-    top: -10px;
-    z-index: 2;
+    margin-top: space(1);
 
     .drop_down_button button {
       @include fa-sort-amount-desc-icon;
