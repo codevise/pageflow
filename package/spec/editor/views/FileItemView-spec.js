@@ -1,6 +1,8 @@
 import Backbone from 'backbone';
 
-import {FileItemView, FileMetaDataOverlayView, ListHighlight} from 'pageflow/editor';
+import {
+  FileItemView, FileMetaDataOverlayView, ListHighlight, MoveFileDialogView, app
+} from 'pageflow/editor';
 
 import * as support from '$support';
 import userEvent from '@testing-library/user-event';
@@ -16,6 +18,7 @@ describe('FileItemView', () => {
     'pageflow.editor.templates.file_item.actions': 'Actions',
     'pageflow.editor.templates.file_item.cancel_upload': 'Cancel upload',
     'pageflow.editor.templates.file_item.destroy': 'Delete',
+    'pageflow.editor.templates.file_item.move': 'Move...',
     'pageflow.editor.templates.file_item.settings': 'Settings',
     'pageflow.editor.templates.file_item.select': 'Select'
   });
@@ -294,7 +297,7 @@ describe('FileItemView', () => {
       const {getAllByRole} = render(view);
 
       expect(getAllByRole('link').map(link => link.textContent))
-        .toEqual(['Cancel upload', 'Delete']);
+        .toEqual(['Move...', 'Cancel upload', 'Delete']);
     });
 
     it('destroys file when delete is selected', () => {
@@ -346,6 +349,93 @@ describe('FileItemView', () => {
         .not.toHaveClass('is_hidden');
       expect(getByRole('link', {name: 'Delete'}).closest('li'))
         .toHaveClass('is_hidden');
+    });
+  });
+
+  describe('move', () => {
+    afterEach(() => app.dialogRegion.reset());
+
+    function fileFolders(attributes) {
+      return support.factories.entry({}, {fileFoldersAttributes: attributes}).fileFolders;
+    }
+
+    // The item stays in the menu and is only hidden, so that it can
+    // appear once the entry has folders.
+    function isOffered(queries) {
+      return !queries.getByRole('link', {name: 'Move...'}).closest('li')
+                     .classList.contains('is_hidden');
+    }
+
+    it('is offered for file in entry with folders', () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        fileFolders: fileFolders([{id: 10, perma_id: 1, name: 'Interviews'}])
+      });
+
+      const queries = render(view);
+
+      expect(isOffered(queries)).toBe(true);
+    });
+
+    it('is not offered without folders to move the file into', () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        fileFolders: fileFolders([])
+      });
+
+      const queries = render(view);
+
+      expect(isOffered(queries)).toBe(false);
+    });
+
+    it('is not offered for folders which are still being named', () => {
+      const folders = fileFolders([]);
+      folders.add({name: ''});
+
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        fileFolders: folders
+      });
+
+      const queries = render(view);
+
+      expect(isOffered(queries)).toBe(false);
+    });
+
+    it('is offered once the first folder has been created', () => {
+      const folders = fileFolders([]);
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        fileFolders: folders
+      });
+
+      const queries = render(view);
+      folders.add({id: 10, perma_id: 1, name: 'Interviews'});
+
+      expect(isOffered(queries)).toBe(true);
+    });
+
+    it('is not offered for file which has not been created yet', () => {
+      const view = new FileItemView({
+        model: support.factories.file({}),
+        fileFolders: fileFolders([{id: 10, perma_id: 1, name: 'Interviews'}])
+      });
+
+      const queries = render(view);
+
+      expect(isOffered(queries)).toBe(false);
+    });
+
+    it('opens dialog for file when selected', () => {
+      const file = support.factories.file({id: 123});
+      const folders = fileFolders([{id: 10, perma_id: 1, name: 'Interviews'}]);
+      const view = new FileItemView({model: file, fileFolders: folders});
+
+      const {getByRole} = render(view);
+      getByRole('link', {name: 'Move...'}).click();
+
+      expect(app.dialogRegion.currentView).toBeInstanceOf(MoveFileDialogView);
+      expect(app.dialogRegion.currentView.model).toBe(file);
     });
   });
 

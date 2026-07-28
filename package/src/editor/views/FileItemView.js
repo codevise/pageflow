@@ -8,6 +8,7 @@ import {DropDownButtonView} from './DropDownButtonView';
 import {FileMetaDataOverlayView} from './FileMetaDataOverlayView';
 import {FileSettingsDialogView} from './FileSettingsDialogView';
 import {FileThumbnailView} from './FileThumbnailView';
+import {MoveFileDialogView} from './MoveFileDialogView';
 import {listHighlighting} from './mixins/listHighlighting';
 import {loadable} from './mixins/loadable';
 
@@ -57,10 +58,18 @@ export const FileItemView = Marionette.ItemView.extend({
 
   initialize: function() {
     this.menuItems = this.createMenuItems();
+
+    if (this.options.fileFolders) {
+      this.listenTo(this.options.fileFolders, 'add remove change:id', this.updateMoveItem);
+    }
   },
 
   createMenuItems: function() {
     var items = new Backbone.Collection([
+      {
+        name: 'move',
+        label: I18n.t('pageflow.editor.templates.file_item.move')
+      },
       {
         name: 'cancel',
         label: I18n.t('pageflow.editor.templates.file_item.cancel_upload')
@@ -72,6 +81,7 @@ export const FileItemView = Marionette.ItemView.extend({
       }
     ]);
 
+    items.findWhere({name: 'move'}).selected = () => this.move();
     items.findWhere({name: 'cancel'}).selected = () => this.cancel();
     items.findWhere({name: 'destroy'}).selected = () => this.destroy();
 
@@ -163,10 +173,24 @@ export const FileItemView = Marionette.ItemView.extend({
     this.menuItem('cancel').set('hidden', !this.model.isUploading());
     this.menuItem('destroy').set('hidden', this.model.isUploading());
 
+    this.updateMoveItem();
+
     this.ui.confirmButton.toggle(this.model.isConfirmable());
     this.ui.retryButton.toggle(this.model.isRetryable());
 
     this.updateToggleLabel();
+  },
+
+  // Only folders which have been created can hold a file, so an entry
+  // whose only folder is still being named has nothing to move into.
+  updateMoveItem: function() {
+    var folders = this.options.fileFolders;
+
+    var movable = !this.model.isNew() && !!folders && folders.some(function(folder) {
+      return !folder.isNew();
+    });
+
+    this.menuItem('move').set('hidden', !movable);
   },
 
   // Moving the pointer across the list would otherwise flash the
@@ -227,6 +251,13 @@ export const FileItemView = Marionette.ItemView.extend({
 
     this.ui.thumbnailButton.attr('aria-expanded', isExpanded.toString());
     this.ui.thumbnailButton.attr('aria-label', label);
+  },
+
+  move: function() {
+    MoveFileDialogView.open({
+      model: this.model,
+      fileFolders: this.options.fileFolders
+    });
   },
 
   destroy: function() {

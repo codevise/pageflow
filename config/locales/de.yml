@@ -1404,6 +1404,7 @@ de:
           download: Herunterladen
           expand_details: Details einblenden
           collapse_details: Details ausblenden
+          move: Verschieben...
           retry: Erneut versuchen
           select: Auswählen
           settings: Einstellungen
@@ -1620,6 +1621,12 @@ de:
               invalid_provider: "Ungültiger Anbieter"
               not_found: "URL nicht gefunden"
               error: "Fehler beim Auflösen der URL"
+        move_file_dialog_view:
+          cancel: 'Abbrechen'
+          current: 'Aktueller Ordner'
+          header: 'Datei verschieben'
+          hint: 'Wähle den Ordner aus, in den %{file} verschoben werden soll.'
+          root: 'Kein Ordner'
         page_item_view:
           unnamed: "(Unbenannt)"
         page_link_item_view:

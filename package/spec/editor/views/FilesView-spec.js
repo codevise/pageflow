@@ -1,4 +1,4 @@
-import {FilesView, editor} from 'pageflow/editor';
+import {FilesView, app, editor} from 'pageflow/editor';
 
 import * as support from '$support';
 import {within} from '@testing-library/dom';
@@ -50,7 +50,14 @@ describe('FilesView', () => {
     'pageflow.editor.views.folder_item_view.destroy': 'Delete',
     'pageflow.editor.views.files_blank_slate_view.empty_folder': 'This folder is empty',
     'pageflow.editor.views.files_blank_slate_view.no_matches': 'Nothing matches',
-    'pageflow.editor.templates.files_blank_slate.no_files': 'No files'
+    'pageflow.editor.templates.files_blank_slate.no_files': 'No files',
+    'pageflow.editor.templates.file_item.actions': 'File actions',
+    'pageflow.editor.templates.file_item.move': 'Move...',
+    'pageflow.editor.views.move_file_dialog_view.header': 'Move file',
+    'pageflow.editor.views.move_file_dialog_view.hint': 'Select the folder to move %{file} to.',
+    'pageflow.editor.views.move_file_dialog_view.root': 'No folder',
+    'pageflow.editor.views.move_file_dialog_view.current': 'Current folder',
+    'pageflow.editor.views.move_file_dialog_view.cancel': 'Cancel'
   });
 
   function entryWithFiles({imageFileTypeOptions} = {}) {
@@ -960,6 +967,89 @@ describe('FilesView', () => {
         const {queryByRole} = render(view);
 
         expect(queryByRole('link', {name: 'Rename'})).toBeNull();
+      });
+    });
+
+    describe('moving a file from the list', () => {
+      let testContext;
+
+      beforeEach(() => {
+        testContext = {};
+      });
+
+      support.useFakeXhr(() => testContext);
+
+      afterEach(() => app.dialogRegion.reset());
+
+      async function openMoveDialog(user, queries, fileName) {
+        const row = queries.getByText(fileName).closest('li');
+
+        await user.click(within(row).getByRole('link', {name: 'Move...'}));
+
+        return within(app.dialogRegion.currentView.el);
+      }
+
+      it('moves file into the chosen folder', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const dialog = await openMoveDialog(user, queries, 'unfiled.png');
+        await user.click(dialog.getByRole('button', {name: /^Landscapes/}));
+
+        expect(entry.getFileCollection('image_files').get(1).get('folder_perma_id')).toEqual(3);
+        expect(testContext.requests[0].url).toEqual('/editor/entries/1/files/image_files/1');
+      });
+
+      it('removes file from the list it has been moved out of', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const dialog = await openMoveDialog(user, queries, 'unfiled.png');
+        await user.click(dialog.getByRole('button', {name: /^Landscapes/}));
+
+        expect(fileNames(queries)).toEqual([]);
+      });
+
+      it('moves file out of its folder when no folder is chosen', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry, folderPermaId: '1'});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const dialog = await openMoveDialog(user, queries, 'interview.png');
+        await user.click(dialog.getByRole('button', {name: /^No folder/}));
+
+        expect(entry.getFileCollection('image_files').get(2).get('folder_perma_id')).toBeNull();
+        expect(fileNames(queries)).toEqual(['interview.mp4']);
+      });
+
+      it('updates the number of files in the folders involved', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const dialog = await openMoveDialog(user, queries, 'unfiled.png');
+        await user.click(dialog.getByRole('button', {name: /^Landscapes/}));
+
+        expect(queries.getByRole('button', {name: /^Landscapes/}).textContent)
+          .toContain('1 file');
+      });
+
+      it('is not offered in selection mode', () => {
+        const view = new FilesView({
+          model: entryWithFolders(),
+          fileTypeName: 'image_files',
+          allowSelectingAny: true,
+          selectionHandler: {call: jest.fn(), getReferer: () => '/'},
+          pathParams: {}
+        });
+
+        const {queryByRole} = render(view);
+
+        expect(queryByRole('link', {name: 'Move...'})).toBeNull();
       });
     });
 

@@ -1396,6 +1396,7 @@ en:
           download: Download
           expand_details: Show details
           collapse_details: Hide details
+          move: Move...
           retry: Retry
           select: Select
           settings: Settings
@@ -1612,6 +1613,12 @@ en:
               invalid_provider: "Invalid provider"
               not_found: "URL not found"
               error: "Error resolving URL"
+        move_file_dialog_view:
+          cancel: 'Cancel'
+          current: 'Current folder'
+          header: 'Move file'
+          hint: 'Select the folder to move %{file} to.'
+          root: 'No folder'
         page_item_view:
           unnamed: "(New page)"
         page_link_item_view:
