@@ -1,0 +1,40 @@
+.folder_breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: space(1);
+  padding: space(2) 0 space(2) space(1);
+
+  // Deeply nested folders with long names wrap rather than push the
+  // path out of the sidebar.
+  &-path {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &-root {
+    @include folder-icon;
+
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: var(--ui-primary-color-light);
+    cursor: pointer;
+  }
+
+  &-separator {
+    @include right-open-icon;
+
+    margin: 0 space(1);
+    color: var(--ui-on-surface-color-lighter);
+    font-size: 12px;
+  }
+
+  &-parent {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: var(--ui-on-surface-color-light);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}

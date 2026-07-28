@@ -42,6 +42,20 @@ export const FileFoldersCollection = Backbone.Collection.extend({
     return this.byPermaId(folder.get('parent_folder_perma_id'));
   },
 
+  // Broken data with a folder nested inside one of its own descendants
+  // would make walking up the tree loop forever.
+  ancestorsOf: function(folder) {
+    var result = [];
+    var current = this.parentOf(folder);
+
+    while (current && result.indexOf(current) < 0) {
+      result.unshift(current);
+      current = this.parentOf(current);
+    }
+
+    return result;
+  },
+
   childrenOf: function(folder) {
     var permaId = folder ? folder.get('perma_id') : null;
 

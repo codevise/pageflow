@@ -160,6 +160,7 @@ export * from './views/ConfirmEncodingView';
 export * from './views/FilesBlankSlateView';
 export * from './views/FilesListItemView';
 export * from './views/FilteredFilesView';
+export * from './views/FolderBreadcrumbView';
 export * from './views/FolderItemView';
 export * from './views/DropDownButtonItemView';
 export * from './views/EditMetaDataView';

@@ -1,6 +1,7 @@
 import {FilesView, editor} from 'pageflow/editor';
 
 import * as support from '$support';
+import {within} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
@@ -24,6 +25,8 @@ describe('FilesView', () => {
     'pageflow.editor.files.singular.image_files': 'an image',
     'pageflow.editor.views.filtered_files_view.any_file_type': 'a file',
     'pageflow.editor.views.filtered_files_view.select': 'Select %{name}',
+    'pageflow.editor.views.folder_breadcrumb_view.label': 'Folder path',
+    'pageflow.editor.views.folder_breadcrumb_view.reset': 'Leave folder',
     'pageflow.editor.views.filtered_files_view.cancel_selection': 'Cancel selection',
     'pageflow.editor.templates.files.back': 'Back',
     'pageflow.editor.views.folder_item_view.file_count': {
@@ -527,6 +530,86 @@ describe('FilesView', () => {
 
         expect(queries.getByText('This folder is empty')).not.toBeNull();
       });
+    });
+
+    it('does not render breadcrumb in root list', () => {
+      const view = new FilesView({model: entryWithFolders()});
+
+      const {queryByRole} = render(view);
+
+      expect(queryByRole('navigation', {name: 'Folder path'})).toBeNull();
+    });
+
+    it('renders name of current folder in breadcrumb', () => {
+      const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('navigation', {name: 'Folder path'})).toHaveTextContent('Interviews');
+    });
+
+    it('renders breadcrumb above the list', () => {
+      const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+
+      const {getByRole} = render(view);
+      const breadcrumb = getByRole('navigation', {name: 'Folder path'});
+      const list = view.el.querySelector('.filtered_files-list');
+
+      expect(breadcrumb.compareDocumentPosition(list) & Node.DOCUMENT_POSITION_FOLLOWING)
+        .toBeTruthy();
+    });
+
+    it('renders parent folders in breadcrumb', () => {
+      const view = new FilesView({model: entryWithFolders(), folderPermaId: '2'});
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('navigation', {name: 'Folder path'}))
+        .toHaveTextContent('InterviewsRaw');
+    });
+
+    it('navigates to parent folder when breadcrumb segment is clicked', async () => {
+      const view = new FilesView({
+        model: entryWithFolders(),
+        folderPermaId: '2',
+        pathParams: {}
+      });
+      const user = userEvent.setup();
+
+      const {getByRole} = render(view);
+      const breadcrumb = within(getByRole('navigation', {name: 'Folder path'}));
+      await user.click(breadcrumb.getByRole('button', {name: 'Interviews'}));
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/files/folders/1', {trigger: true});
+    });
+
+    it('separates every folder name from what precedes it', () => {
+      const view = new FilesView({model: entryWithFolders(), folderPermaId: '2'});
+
+      const {getByRole} = render(view);
+      const breadcrumb = getByRole('navigation', {name: 'Folder path'});
+
+      expect(Array.from(breadcrumb.children).map(child => child.className)).toEqual([
+        'folder_breadcrumb-root',
+        'folder_breadcrumb-separator',
+        'folder_breadcrumb-parent',
+        'folder_breadcrumb-separator',
+        'folder_breadcrumb-current'
+      ]);
+    });
+
+    it('navigates to root list when leaving folder', async () => {
+      const view = new FilesView({
+        model: entryWithFolders(),
+        folderPermaId: '2',
+        pathParams: {}
+      });
+      const user = userEvent.setup();
+
+      const {getByRole} = render(view);
+      await user.click(getByRole('button', {name: 'Leave folder'}));
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
     });
 
     it('removes file from list when it is moved into folder', () => {

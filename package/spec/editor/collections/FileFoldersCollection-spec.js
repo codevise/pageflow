@@ -128,6 +128,37 @@ describe('FileFoldersCollection', () => {
     });
   });
 
+  describe('#ancestorsOf', () => {
+    it('returns folders the given folder is nested in from outermost to innermost', () => {
+      const fileFolders = collection([
+        {perma_id: 1, name: 'Interviews'},
+        {perma_id: 2, name: 'Raw', parent_folder_perma_id: 1},
+        {perma_id: 3, name: 'Takes', parent_folder_perma_id: 2}
+      ]);
+
+      const ancestors = fileFolders.ancestorsOf(fileFolders.byPermaId(3));
+
+      expect(ancestors.map(folder => folder.get('name'))).toEqual(['Interviews', 'Raw']);
+    });
+
+    it('returns empty list for folder without parent', () => {
+      const fileFolders = collection([{perma_id: 1, name: 'Interviews'}]);
+
+      expect(fileFolders.ancestorsOf(fileFolders.byPermaId(1))).toEqual([]);
+    });
+
+    it('stops at folders which are their own ancestors', () => {
+      const fileFolders = collection([
+        {perma_id: 1, name: 'Interviews', parent_folder_perma_id: 2},
+        {perma_id: 2, name: 'Raw', parent_folder_perma_id: 1}
+      ]);
+
+      const ancestors = fileFolders.ancestorsOf(fileFolders.byPermaId(1));
+
+      expect(ancestors.map(folder => folder.get('name'))).toEqual(['Interviews', 'Raw']);
+    });
+  });
+
   describe('persistence', () => {
     support.useFakeXhr(() => testContext);
 

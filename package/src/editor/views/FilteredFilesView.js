@@ -14,6 +14,7 @@ import {SubsetCollection} from '../collections/SubsetCollection';
 import {FilesBlankSlateView} from './FilesBlankSlateView';
 import {FilesListItemView} from './FilesListItemView';
 import {FileTypePillsView} from './FileTypePillsView';
+import {FolderBreadcrumbView} from './FolderBreadcrumbView';
 import {Search} from '../models/Search';
 import {ListHighlight} from '../models/ListHighlight';
 import {ListSearchFieldView} from './ListSearchFieldView';
@@ -110,6 +111,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     this.renderSearchField();
     this.renderSortMenu();
     this.renderFileTypePills();
+    this.renderBreadcrumb();
     this.renderCollectionView();
   },
 
@@ -202,6 +204,20 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       fileTypes: this.options.fileTypes,
       fileTypeSelection: this.options.fileTypeSelection
     }), {to: this.ui.header});
+  },
+
+  renderBreadcrumb: function() {
+    if (!this.options.folder) {
+      return;
+    }
+
+    var view = this.subview(new FolderBreadcrumbView({
+      model: this.options.folder,
+      fileFolders: this.options.fileFolders,
+      onSelect: this.options.onSelectFolder
+    }));
+
+    view.$el.insertBefore(this.ui.list);
   },
 
   renderCollectionView: function() {

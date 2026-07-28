@@ -1573,6 +1573,9 @@ en:
           sort:
             alphabetical: 'Alphabetical'
             most_recent: 'Most recent'
+        folder_breadcrumb_view:
+          label: 'Folder path'
+          reset: 'Leave folder'
         folder_item_view:
           file_count:
             one: '1 file'

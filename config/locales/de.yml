@@ -1581,6 +1581,9 @@ de:
           sort:
             alphabetical: 'Alphabetisch'
             most_recent: 'Zuletzt hochgeladen'
+        folder_breadcrumb_view:
+          label: 'Ordnerpfad'
+          reset: 'Ordner verlassen'
         folder_item_view:
           file_count:
             one: '1 Datei'
