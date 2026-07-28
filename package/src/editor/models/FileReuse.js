@@ -17,7 +17,8 @@ export const FileReuse = Backbone.Model.extend({
 FileReuse.submit = function(otherEntry, file, options) {
   new FileReuse({
     other_entry_id: otherEntry.get('id'),
-    file_id: file.get('id')
+    file_id: file.get('id'),
+    folder_perma_id: options.folderPermaId
   }, {
     entry: options.entry,
     fileType: file.fileType()

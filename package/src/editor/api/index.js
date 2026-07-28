@@ -160,6 +160,15 @@ export const EditorApi = Object.extend(
   },
 
   /**
+   * Set the folder that top level files are placed in when they are
+   * uploaded. This value is automatically set and unset upon navigating
+   * towards the appropriate views.
+   */
+  setUploadFolder: function(folder) {
+    this.nextUploadFolder = folder;
+  },
+
+  /**
    * Set the name of the help entry that shall be selected by
    * default when the help view is opened. This value is
    * automatically reset when navigation occurs.

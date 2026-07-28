@@ -75,6 +75,7 @@ export const FilesImporterView = Marionette.ItemView.extend({
             file_size: -1,
             rights: file.rights,
             source_url: file.url,
+            folder_perma_id: self.options.folderPermaId,
             configuration: {
               source_url: file.source_url
             }

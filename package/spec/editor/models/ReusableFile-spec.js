@@ -113,6 +113,7 @@ describe('ReusableFile', () => {
         display_name: 'My Image',
         rights: 'someone',
         file_name: 'image_jpg',
+        folder_perma_id: null,
         configuration: {
           some: 'value'
         }
@@ -127,6 +128,30 @@ describe('ReusableFile', () => {
     file.set('display_name', 'New Name');
 
     expect(file.save).toHaveBeenCalled();
+  });
+
+  it('includes folder_perma_id in JSON', () => {
+    var file = new File({state: 'processed', folder_perma_id: 5});
+
+    expect(file.toJSON()).toMatchObject({folder_perma_id: 5});
+  });
+
+  it('auto saves when folder_perma_id changes', () => {
+    var file = new File({id: 5});
+    file.save = jest.fn();
+
+    file.set('folder_perma_id', 7);
+
+    expect(file.save).toHaveBeenCalled();
+  });
+
+  it('does not save folder_perma_id of file which has not been created yet', () => {
+    var file = new File({});
+    file.save = jest.fn();
+
+    file.set('folder_perma_id', 7);
+
+    expect(file.save).not.toHaveBeenCalled();
   });
 
   describe('download_url attribute', () => {

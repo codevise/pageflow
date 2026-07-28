@@ -94,6 +94,30 @@ describe('Entry', () => {
       });
     });
 
+    it('posts folder perma id when reusing into folder', () => {
+      var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, [{id: 12}]);
+      var entry = testContext.buildEntry({id: 1}, {
+        files: {
+          image_files: new Backbone.Collection()
+        }
+      });
+      var otherEntry = testContext.buildEntry({id: 2}, {
+        files: {
+          image_files: new Backbone.Collection()
+        }
+      });
+
+      entry.reuseFile(otherEntry, imageFiles.first(), {folderPermaId: 5});
+
+      expect(JSON.parse(testContext.requests[0].requestBody)).toEqual({
+        file_reuse: {
+          file_id: 12,
+          other_entry_id: 2,
+          folder_perma_id: 5
+        }
+      });
+    });
+
     it('adds file to files collection on success', () => {
       var entry = testContext.buildEntry({id: 1}, {
         files: {

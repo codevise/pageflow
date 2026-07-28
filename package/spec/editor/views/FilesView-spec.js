@@ -654,6 +654,31 @@ describe('FilesView', () => {
       expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
     });
 
+    it('uploads into current folder', () => {
+      const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+
+      render(view);
+
+      expect(editor.nextUploadFolder.get('name')).toEqual('Interviews');
+    });
+
+    it('uploads into no folder in root list', () => {
+      const view = new FilesView({model: entryWithFolders()});
+
+      render(view);
+
+      expect(editor.nextUploadFolder).toBeUndefined();
+    });
+
+    it('stops uploading into folder once files view is closed', () => {
+      const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+
+      render(view);
+      view.close();
+
+      expect(editor.nextUploadFolder).toBeUndefined();
+    });
+
     describe('adding a folder', () => {
       let testContext;
 

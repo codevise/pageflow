@@ -38,10 +38,12 @@ export const FilesView = Marionette.ItemView.extend({
       },
       {
         label: I18n.t('pageflow.editor.views.files_view.reuse'),
-        handler: function() {
+        handler: () => {
           FilesExplorerView.open({
-            callback: function(otherEntry, file) {
-              state.entry.reuseFile(otherEntry, file);
+            callback: (otherEntry, file) => {
+              state.entry.reuseFile(otherEntry, file, {
+                folderPermaId: this.currentFolderPermaId()
+              });
             }
           });
         }
@@ -50,11 +52,12 @@ export const FilesView = Marionette.ItemView.extend({
     if(editor.fileImporters.keys().length > 0){
       menuOptions.push({
         label: I18n.t('pageflow.editor.views.files_view.import'),
-        handler: function () {
+        handler: () => {
           ChooseImporterView.open({
-            callback: function (importer) {
+            callback: (importer) => {
               FilesImporterView.open({
-                importer: importer
+                importer: importer,
+                folderPermaId: this.currentFolderPermaId()
               });
             }
           });
@@ -99,6 +102,8 @@ export const FilesView = Marionette.ItemView.extend({
     var tabsView = new TabsView({
       i18n: 'pageflow.editor.views.files_view.tabs'
     });
+
+    editor.setUploadFolder(this.currentFolder());
 
     tabsView.tab('files', () => new FilteredFilesView({
       entry: this.model,
@@ -150,6 +155,18 @@ export const FilesView = Marionette.ItemView.extend({
 
     editor.navigate(filesPath({folderPermaId: folder && folder.get('perma_id')}),
                     {trigger: true});
+  },
+
+  currentFolderPermaId: function() {
+    var folder = this.currentFolder();
+
+    return folder && folder.get('perma_id');
+  },
+
+  onClose: function() {
+    Marionette.ItemView.prototype.onClose.call(this);
+
+    editor.setUploadFolder(undefined);
   },
 
   // The folder is only persisted once the user has entered a name in the

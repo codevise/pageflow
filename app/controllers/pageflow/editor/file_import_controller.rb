@@ -59,6 +59,7 @@ module Pageflow
                           :content_type,
                           :file_size,
                           :url,
+                          :folder_perma_id,
                           {configuration: [:alt, :source_url]}])
           .require(:files)
       end

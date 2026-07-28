@@ -44,6 +44,9 @@ export const FileUploader = Object.extend({
       throw(new NestedTypeError(upload, {fileType: fileType,
                                                   fileTypes: this.fileTypes}));
     }
+    else if (editor.nextUploadFolder) {
+      file.set('folder_perma_id', editor.nextUploadFolder.get('perma_id'));
+    }
 
     this.entry.getFileCollection(fileType).add(file);
 

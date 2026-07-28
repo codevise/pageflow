@@ -24,6 +24,7 @@ export const ReusableFile = Backbone.Model.extend({
         'rights',
         'parent_file_id',
         'parent_file_model_type',
+        'folder_perma_id',
         'content_type',
         'file_size'
       ],
@@ -45,6 +46,12 @@ export const ReusableFile = Backbone.Model.extend({
     });
 
     this.listenTo(this, 'change:display_name', function() {
+      if (!this.isNew()) {
+        this.save();
+      }
+    });
+
+    this.listenTo(this, 'change:folder_perma_id', function() {
       if (!this.isNew()) {
         this.save();
       }
