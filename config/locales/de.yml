@@ -1590,10 +1590,14 @@ de:
           label: 'Ordnerpfad'
           reset: 'Ordner verlassen'
         folder_item_view:
+          actions: 'Ordner-Aktionen'
+          destroy: 'Löschen'
           file_count:
             one: '1 Datei'
             other: '%{count} Dateien'
-          name: 'Ordnername'
+          name: 'Name des neuen Ordners'
+          new_name: 'Neuer Name des Ordners'
+          rename: 'Umbenennen'
         inputs:
           file_input:
             auto_default_text_track: "(Automatisch)"

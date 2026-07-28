@@ -67,6 +67,17 @@
     color: var(--ui-on-surface-color-light);
   }
 
+  // Lines up with the buttons of file rows. The button stretches over
+  // the whole row, so the menu has to stay above it.
+  &-actions {
+    --drop-down-button-width: 32px;
+
+    position: relative;
+    z-index: 1;
+    display: flex;
+    padding: space(0.5) space(0.5) 0 0;
+  }
+
   // Takes the place of the name, so that the row keeps its height while
   // the name is being entered.
   &-input {

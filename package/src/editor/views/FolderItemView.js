@@ -1,6 +1,8 @@
+import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
+import {DropDownButtonView} from './DropDownButtonView';
 import {listHighlighting} from './mixins/listHighlighting';
 
 import template from '../templates/folderItem.jst';
@@ -15,6 +17,7 @@ export const FolderItemView = Marionette.ItemView.extend({
   ui: {
     name: '.file_folders-name',
     fileCount: '.file_folders-file_count',
+    actions: '.file_folders-actions',
     input: '.file_folders-input'
   },
 
@@ -33,6 +36,8 @@ export const FolderItemView = Marionette.ItemView.extend({
   },
 
   initialize: function() {
+    this.menuItems = this.createMenuItems();
+
     this.listenTo(this.options.files,
                   'add remove change:folder_perma_id',
                   this.updateFileCount);
@@ -40,22 +45,96 @@ export const FolderItemView = Marionette.ItemView.extend({
     this.listenTo(this.options.fileFolders,
                   'add remove change:parent_folder_perma_id',
                   this.updateFileCount);
+
+    this.listenTo(this.options.files,
+                  'add remove change:folder_perma_id',
+                  this.updateDestroyItem);
+
+    this.listenTo(this.options.fileFolders,
+                  'add remove change:parent_folder_perma_id',
+                  this.updateDestroyItem);
+  },
+
+  createMenuItems: function() {
+    var items = new Backbone.Collection([
+      {
+        name: 'rename',
+        label: I18n.t('pageflow.editor.views.folder_item_view.rename')
+      },
+      {
+        name: 'destroy',
+        label: I18n.t('pageflow.editor.views.folder_item_view.destroy'),
+        destructive: true
+      }
+    ]);
+
+    items.findWhere({name: 'rename'}).selected = () => {
+      this.renaming = true;
+      this.render();
+    };
+
+    items.findWhere({name: 'destroy'}).selected = () => this.model.destroy();
+
+    return items;
+  },
+
+  // The server refuses to delete a folder which still holds files or
+  // subfolders. Files hidden by the file type filter cannot make one
+  // look empty, since such a folder is not listed to begin with.
+  updateDestroyItem: function() {
+    var permaId = this.model.get('perma_id');
+
+    var empty = !this.options.fileFolders.childrenOf(this.model).length &&
+                !this.options.files.some(function(file) {
+                  return file.get('folder_perma_id') === permaId;
+                });
+
+    this.menuItems.findWhere({name: 'destroy'}).set('hidden', !empty);
   },
 
   serializeData: function() {
-    return {naming: this.model.isNew()};
+    return {
+      naming: this.isEditingName(),
+      nameLabel: I18n.t(this.renaming ?
+                        'pageflow.editor.views.folder_item_view.new_name' :
+                        'pageflow.editor.views.folder_item_view.name')
+    };
   },
 
   onRender: function() {
     this.$el.toggleClass('selectable', !!this.options.selectionHandler);
 
-    this.$el.toggleClass('naming', this.model.isNew());
+    this.$el.toggleClass('naming', this.isEditingName());
     this.update();
     this.updateFileCount();
+    this.updateDestroyItem();
+    this.renderActionsDropDown();
 
-    if (this.model.isNew()) {
-      setTimeout(() => this.ui.input.focus(), 0);
+    if (this.isEditingName()) {
+      this.ui.input.val(this.model.get('name'));
+      setTimeout(() => this.ui.input.focus().select(), 0);
     }
+  },
+
+  // Navigating into the folder is the only action offered in selection
+  // mode.
+  renderActionsDropDown: function() {
+    if (this.isEditingName() || this.options.selectionHandler) {
+      return;
+    }
+
+    this.appendSubview(new DropDownButtonView({
+      items: this.menuItems,
+      title: I18n.t('pageflow.editor.views.folder_item_view.actions'),
+      alignMenu: 'right',
+      ellipsisIcon: true,
+      borderless: true,
+      openOnClick: true
+    }), {to: this.ui.actions});
+  },
+
+  isEditingName: function() {
+    return this.model.isNew() || !!this.renaming;
   },
 
   // Navigating into the folder is the only action of the row, so it is
@@ -99,24 +178,38 @@ export const FolderItemView = Marionette.ItemView.extend({
     }
   },
 
+  // Rerendering removes the input, which can trigger another blur.
   commit: function() {
-    var name = this.ui.input.val().trim();
-
-    if (!name) {
-      return this.discard();
+    if (!this.isEditingName()) {
+      return;
     }
 
+    var name = this.ui.input.val().trim();
+
     if (this.model.isNew()) {
+      if (!name) {
+        return this.discard();
+      }
+
       this.model.set('name', name);
-      this.model.save();
+      return this.model.save();
+    }
+
+    this.renaming = false;
+    this.render();
+
+    if (name) {
+      this.model.set('name', name);
     }
   },
 
-  // Blurring after the row has been discarded already would otherwise
-  // try to remove the model a second time.
   discard: function() {
     if (this.model.isNew()) {
       this.model.collection?.remove(this.model);
+    }
+    else if (this.renaming) {
+      this.renaming = false;
+      this.render();
     }
   }
 });

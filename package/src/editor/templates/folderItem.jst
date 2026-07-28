@@ -4,7 +4,7 @@
   <% if (data.naming) { %>
     <input class="file_folders-input"
            type="text"
-           aria-label="<%= I18n.t('pageflow.editor.views.folder_item_view.name') %>" />
+           aria-label="<%= data.nameLabel %>" />
   <% } else { %>
     <button class="file_folders-button" type="button">
       <span class="file_folders-title">
@@ -13,5 +13,7 @@
       </span>
       <span class="file_folders-file_count"></span>
     </button>
+
+    <div class="file_folders-actions"></div>
   <% } %>
 </div>

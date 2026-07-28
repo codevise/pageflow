@@ -44,7 +44,10 @@ describe('FilesView', () => {
     'pageflow.editor.views.files_view.folder': 'New folder',
     'pageflow.editor.views.files_view.upload': 'Upload file...',
     'pageflow.editor.views.files_view.reuse': 'Reuse file...',
-    'pageflow.editor.views.folder_item_view.name': 'Folder name',
+    'pageflow.editor.views.folder_item_view.name': 'Name of new folder',
+    'pageflow.editor.views.folder_item_view.new_name': 'New name of folder',
+    'pageflow.editor.views.folder_item_view.rename': 'Rename',
+    'pageflow.editor.views.folder_item_view.destroy': 'Delete',
     'pageflow.editor.views.files_blank_slate_view.empty_folder': 'This folder is empty',
     'pageflow.editor.views.files_blank_slate_view.no_matches': 'Nothing matches',
     'pageflow.editor.templates.files_blank_slate.no_files': 'No files'
@@ -692,7 +695,7 @@ describe('FilesView', () => {
         await user.click(queries.getByRole('button', {name: 'Add file'}));
         await user.click(queries.getByRole('link', {name: 'New folder'}));
 
-        return queries.getByLabelText('Folder name');
+        return queries.getByLabelText('Name of new folder');
       }
 
       it('renders row with input for name', async () => {
@@ -769,7 +772,7 @@ describe('FilesView', () => {
         input.blur();
 
         expect(testContext.requests).toEqual([]);
-        expect(queries.queryByLabelText('Folder name')).toBeNull();
+        expect(queries.queryByLabelText('Name of new folder')).toBeNull();
         expect(entry.fileFolders.length).toEqual(3);
       });
 
@@ -800,8 +803,163 @@ describe('FilesView', () => {
           JSON.stringify({id: 20, perma_id: 4, name: 'Aerials'})
         );
 
-        expect(queries.queryByLabelText('Folder name')).toBeNull();
+        expect(queries.queryByLabelText('Name of new folder')).toBeNull();
         expect(queries.getByRole('button', {name: /^Aerials/})).not.toBeNull();
+      });
+    });
+
+    describe('deleting a folder from the list', () => {
+      let testContext;
+
+      beforeEach(() => {
+        testContext = {};
+      });
+
+      support.useFakeXhr(() => testContext);
+
+      function deleteLink(queries, name) {
+        const row = queries.getByRole('button', {name}).closest('li');
+
+        return within(row).getByRole('link', {name: 'Delete'});
+      }
+
+      // The item stays in the menu and is only hidden, so that it can
+      // appear once the folder has been emptied.
+      function isOffered(queries, name) {
+        return !deleteLink(queries, name).closest('li').classList.contains('is_hidden');
+      }
+
+      it('is offered for folder without files and subfolders', () => {
+        const view = new FilesView({model: entryWithFolders()});
+
+        const queries = render(view);
+
+        expect(isOffered(queries, /^Landscapes/)).toBe(true);
+      });
+
+      it('is not offered for folder holding files', () => {
+        const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+
+        const queries = render(view);
+
+        expect(isOffered(queries, /^Raw/)).toBe(false);
+      });
+
+      it('is not offered for folder holding subfolders', () => {
+        const view = new FilesView({model: entryWithFolders()});
+
+        const queries = render(view);
+
+        expect(isOffered(queries, /^Interviews/)).toBe(false);
+      });
+
+      it('is offered once the last file has left the folder', () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry, folderPermaId: '1'});
+
+        const queries = render(view);
+
+        expect(isOffered(queries, /^Raw/)).toBe(false);
+
+        entry.getFileCollection('image_files').get(3).set('folder_perma_id', null);
+
+        expect(isOffered(queries, /^Raw/)).toBe(true);
+      });
+
+      it('destroys folder when selected', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.click(deleteLink(queries, /^Landscapes/));
+
+        expect(testContext.requests[0].method).toEqual('DELETE');
+        expect(testContext.requests[0].url).toEqual('/editor/entries/1/file_folders/12');
+      });
+    });
+
+    describe('renaming a folder from the list', () => {
+      let testContext;
+
+      beforeEach(() => {
+        testContext = {};
+      });
+
+      support.useFakeXhr(() => testContext);
+
+      async function startRenaming(user, queries) {
+        const row = queries.getByRole('button', {name: /^Interviews/}).closest('li');
+
+        await user.click(within(row).getByRole('link', {name: 'Rename'}));
+
+        return within(row).getByLabelText('New name of folder');
+      }
+
+      it('turns folder name into input holding current name', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await startRenaming(user, queries);
+
+        expect(input).toHaveValue('Interviews');
+      });
+
+      it('saves new name when it is confirmed', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await startRenaming(user, queries);
+        await user.clear(input);
+        await user.type(input, 'Portraits{Enter}');
+
+        expect(testContext.requests[0].method).toEqual('PUT');
+        expect(testContext.requests[0].url).toEqual('/editor/entries/1/file_folders/10');
+        expect(JSON.parse(testContext.requests[0].requestBody))
+          .toMatchObject({file_folder: {name: 'Portraits'}});
+        expect(folderNames(queries)).toContain('Portraits');
+      });
+
+      it('keeps current name on escape', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await startRenaming(user, queries);
+        await user.clear(input);
+        await user.type(input, 'Portraits{Escape}');
+
+        expect(testContext.requests).toEqual([]);
+        expect(folderNames(queries)).toEqual(['Interviews', 'Landscapes']);
+      });
+
+      it('keeps current name when input is emptied', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const input = await startRenaming(user, queries);
+        await user.clear(input);
+        input.blur();
+
+        expect(testContext.requests).toEqual([]);
+        expect(folderNames(queries)).toEqual(['Interviews', 'Landscapes']);
+      });
+
+      it('is not offered in selection mode', () => {
+        const view = new FilesView({
+          model: entryWithFolders(),
+          fileTypeName: 'image_files',
+          allowSelectingAny: true,
+          selectionHandler: {call: jest.fn(), getReferer: () => '/'},
+          pathParams: {}
+        });
+
+        const {queryByRole} = render(view);
+
+        expect(queryByRole('link', {name: 'Rename'})).toBeNull();
       });
     });
 
@@ -899,7 +1057,7 @@ describe('FilesView', () => {
         await user.click(queries.getByRole('button', {name: 'Add file'}));
         await user.click(queries.getByRole('link', {name: 'New folder'}));
 
-        expect(queries.getByLabelText('Folder name')).not.toBeNull();
+        expect(queries.getByLabelText('Name of new folder')).not.toBeNull();
       });
     });
 

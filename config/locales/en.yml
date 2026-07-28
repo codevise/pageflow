@@ -1582,10 +1582,14 @@ en:
           label: 'Folder path'
           reset: 'Leave folder'
         folder_item_view:
+          actions: 'Folder actions'
+          destroy: 'Delete'
           file_count:
             one: '1 file'
             other: '%{count} files'
-          name: 'Folder name'
+          name: 'Name of new folder'
+          new_name: 'New name of folder'
+          rename: 'Rename'
         inputs:
           file_input:
             auto_default_text_track: "(Auto)"
