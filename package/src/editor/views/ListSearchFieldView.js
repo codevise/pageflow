@@ -1,3 +1,4 @@
+import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import $ from 'jquery';
 
@@ -9,6 +10,7 @@ export const ListSearchFieldView = Marionette.ItemView.extend({
 
   ui: {
     input: '.list_search_field-term',
+    placeholder: '.list_search_field-placeholder'
   },
 
   events: {
@@ -27,6 +29,9 @@ export const ListSearchFieldView = Marionette.ItemView.extend({
   onRender() {
     this.toggleReset();
 
+    this.ui.input.attr('aria-label', this.label());
+    this.ui.placeholder.html(this.hint());
+
     if (this.options.ariaControlsId) {
       this.ui.input.attr('aria-controls', this.options.ariaControlsId);
     }
@@ -41,6 +46,18 @@ export const ListSearchFieldView = Marionette.ItemView.extend({
 
   onClose() {
     $(document).off('keydown', this.handleDocumentKeyDown);
+  },
+
+  label() {
+    return this.options.label ||
+           I18n.t('pageflow.editor.templates.list_search_field.placeholder');
+  },
+
+  hint() {
+    return I18n.t(
+      this.options.hintTranslationKey || 'pageflow.editor.templates.list_search_field.hint',
+      {hotkey: '<kbd>/</kbd>'}
+    );
   },
 
   changeTerm() {

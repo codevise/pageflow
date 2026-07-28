@@ -1437,6 +1437,8 @@ de:
         list_search_field:
           placeholder: 'Dateien filtern'
           hint: 'Mit %{hotkey} suchen'
+          hint_in_all_folders: 'Mit %{hotkey} in allen Ordnern suchen'
+          hint_in_folder: 'Mit %{hotkey} in diesem Ordner suchen'
           reset: 'Filter zurücksetzen'
         loading:
           loading: Daten werden geladen.
@@ -1576,6 +1578,8 @@ de:
           any_file_type: 'Datei'
           cancel_selection: 'Auswahl abbrechen'
           reset_filter: 'Filter zurücksetzen'
+          search: 'Dateien und Ordner filtern'
+          search_in_folder: 'Dateien in %{folder} filtern'
           select: '%{name} auswählen'
           sort_button_label: 'Sortieren'
           sort:

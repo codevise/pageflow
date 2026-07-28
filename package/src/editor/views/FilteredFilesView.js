@@ -85,8 +85,13 @@ export const FilteredFilesView = Marionette.ItemView.extend({
 
       this.visibleFolders = new SubsetCollection({
         parent: this.options.fileFolders,
-        filter: this.isChildOfFolder.bind(this),
+        filter: this.isVisibleFolder.bind(this),
         watchAttribute: 'parent_folder_perma_id'
+      });
+
+      this.listenTo(this.search, 'change:term', function() {
+        this.folderFiles.updateFilter(this.matchesFolder.bind(this));
+        this.visibleFolders.updateFilter(this.isVisibleFolder.bind(this));
       });
     }
 
@@ -176,10 +181,27 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   renderSearchField() {
     this.searchFieldView = this.appendSubview(new ListSearchFieldView({
       search: this.search,
+      label: this.searchLabel(),
+      hintTranslationKey: this.searchHintTranslationKey(),
       listHighlight: this.listHighlight,
       ariaControlsId: 'filtered_files',
       autoFocus: !!this.options.selectionHandler
     }), {to: this.ui.filterBar});
+  },
+
+  searchHintTranslationKey: function() {
+    return this.options.folder ?
+           'pageflow.editor.templates.list_search_field.hint_in_folder' :
+           'pageflow.editor.templates.list_search_field.hint_in_all_folders';
+  },
+
+  searchLabel: function() {
+    if (this.options.folder) {
+      return I18n.t('pageflow.editor.views.filtered_files_view.search_in_folder',
+                    {folder: this.options.folder.get('name')});
+    }
+
+    return I18n.t('pageflow.editor.views.filtered_files_view.search');
   },
 
   renderSortMenu: function() {
@@ -277,12 +299,28 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     return this.options.fileTypeSelection.matches(file);
   },
 
+  // Searching the root list looks into all folders. Inside a folder,
+  // searching stays scoped to that folder.
   matchesFolder: function(file) {
+    if (this.searchesAllFolders()) {
+      return true;
+    }
+
     return file.get('folder_perma_id') === this.folderPermaId();
   },
 
-  isChildOfFolder: function(folder) {
+  // Folder name hits are only of interest while searching the root list.
+  // Inside a folder, subfolders would just be noise among the file hits.
+  isVisibleFolder: function(folder) {
+    if (this.search.get('term')) {
+      return this.searchesAllFolders() && this.search.matchesValue(folder.get('name'));
+    }
+
     return folder.get('parent_folder_perma_id') === this.folderPermaId();
+  },
+
+  searchesAllFolders: function() {
+    return !this.options.folder && !!this.search.get('term');
   },
 
   folderPermaId: function() {

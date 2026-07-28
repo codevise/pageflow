@@ -1429,6 +1429,8 @@ en:
         list_search_field:
           placeholder: 'Filter files'
           hint: 'Type %{hotkey} to search'
+          hint_in_all_folders: 'Type %{hotkey} to search all folders'
+          hint_in_folder: 'Type %{hotkey} to search this folder'
           reset: 'Clear filter'
         loading:
           loading: Loading...
@@ -1568,6 +1570,8 @@ en:
           any_file_type: 'a file'
           cancel_selection: 'Cancel selection'
           reset_filter: 'Reset filter'
+          search: 'Filter files and folders'
+          search_in_folder: 'Filter files in %{folder}'
           select: 'Select %{name}'
           sort_button_label: 'Sort'
           sort:

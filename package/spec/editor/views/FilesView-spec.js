@@ -33,10 +33,17 @@ describe('FilesView', () => {
       one: '1 file',
       other: '%{count} files'
     },
+    'pageflow.editor.views.filtered_files_view.search': 'Filter files and folders',
+    'pageflow.editor.views.filtered_files_view.search_in_folder': 'Filter files in %{folder}',
+    'pageflow.editor.templates.list_search_field.hint': 'Type %{hotkey} to search',
+    'pageflow.editor.templates.list_search_field.hint_in_all_folders':
+      'Type %{hotkey} to search all folders',
+    'pageflow.editor.templates.list_search_field.hint_in_folder':
+      'Type %{hotkey} to search this folder',
+    'pageflow.editor.templates.list_search_field.reset': 'Clear name filter',
     'pageflow.editor.views.files_blank_slate_view.empty_folder': 'This folder is empty',
     'pageflow.editor.views.files_blank_slate_view.no_matches': 'Nothing matches',
-    'pageflow.editor.templates.files_blank_slate.no_files': 'No files',
-    'pageflow.editor.templates.list_search_field.placeholder': 'Filter files'
+    'pageflow.editor.templates.files_blank_slate.no_files': 'No files'
   });
 
   function entryWithFiles({imageFileTypeOptions} = {}) {
@@ -172,6 +179,26 @@ describe('FilesView', () => {
       return Array.from(view.el.querySelectorAll('#filtered_files > li'))
                   .map(el => el.querySelector('.file_folders-name, .file_name').textContent);
     }
+
+    function searchHint(view) {
+      return view.el.querySelector('.list_search_field-placeholder').textContent.trim();
+    }
+
+    it('hints that searching the root list looks into all folders', () => {
+      const view = new FilesView({model: entryWithFolders()});
+
+      render(view);
+
+      expect(searchHint(view)).toEqual('Type / to search all folders');
+    });
+
+    it('hints that searching inside a folder stays in it', () => {
+      const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+
+      render(view);
+
+      expect(searchHint(view)).toEqual('Type / to search this folder');
+    });
 
     it('renders folders without parent in root list', () => {
       const view = new FilesView({model: entryWithFolders()});
@@ -321,7 +348,7 @@ describe('FilesView', () => {
       const user = userEvent.setup();
 
       const {getByLabelText} = render(view);
-      getByLabelText('Filter files').focus();
+      getByLabelText('Filter files and folders').focus();
       await user.keyboard('{ArrowDown}');
 
       expect(view.el.querySelector('.keyboard_highlight'))
@@ -339,7 +366,7 @@ describe('FilesView', () => {
       const user = userEvent.setup();
 
       const {getByLabelText} = render(view);
-      getByLabelText('Filter files').focus();
+      getByLabelText('Filter files and folders').focus();
       await user.keyboard('{ArrowDown}{Enter}');
 
       expect(editor.router.navigate).toHaveBeenCalledWith('/files/folders/1',
@@ -496,7 +523,7 @@ describe('FilesView', () => {
         const user = userEvent.setup();
 
         const queries = render(view);
-        await user.type(queries.getByLabelText('Filter files'), 'nope');
+        await user.type(queries.getByLabelText('Filter files in Interviews'), 'nope');
 
         expect(queries.getByText('Nothing matches')).not.toBeNull();
       });
@@ -518,6 +545,17 @@ describe('FilesView', () => {
         const queries = render(view);
 
         expect(queries.queryByText('No files')).toBeNull();
+      });
+
+      it('states that nothing matches in the root list while files and folders are hidden',
+         async () => {
+        const view = new FilesView({model: entryWithEmptyFolder()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files and folders'), 'nope');
+
+        expect(queries.getByText('Nothing matches')).not.toBeNull();
       });
 
       it('updates once the last file has been removed from the folder', () => {
@@ -610,6 +648,60 @@ describe('FilesView', () => {
       await user.click(getByRole('button', {name: 'Leave folder'}));
 
       expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
+    });
+
+    describe('searching', () => {
+      it('finds files in all folders from root list', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files and folders'), 'raw');
+
+        expect(fileNames(queries)).toEqual(['raw.png']);
+      });
+
+      it('finds folders by name from root list', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files and folders'), 'raw');
+
+        expect(folderNames(queries)).toEqual(['Raw']);
+      });
+
+      it('restores folders of root list when search is cleared', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files and folders'), 'raw');
+        await user.clear(queries.getByLabelText('Filter files and folders'));
+
+        expect(folderNames(queries)).toEqual(['Interviews', 'Landscapes']);
+        expect(fileNames(queries)).toEqual(['unfiled.png']);
+      });
+
+      it('stays inside current folder', async () => {
+        const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files in Interviews'), 'png');
+
+        expect(fileNames(queries)).toEqual(['interview.png']);
+      });
+
+      it('does not render folders while searching inside folder', async () => {
+        const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files in Interviews'), 'raw');
+
+        expect(folderNames(queries)).toEqual([]);
+      });
     });
 
     it('removes file from list when it is moved into folder', () => {
